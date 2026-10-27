@@ -1,17 +1,14 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Unit, Definition as UnitDefinition } from "../../unit.js";
 import type { Id as DefinitionId } from "../../action/definition.js";
-import type { Definitions } from "../../action/definitions.js";
-import { Actions } from "../../action/actions.js";
-import * as cooldown from "../../action/cooldown.js";
+import type { Actions } from "../../action/actions.js";
 import * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
 import * as hook from "../../../hook.js";
 import type { Hook as ReleaseHook, ReleasedHook } from "./release.js";
-import { period } from "./timing.js";
 
 export interface Definition {
-    readonly definitions: Definitions;
+    readonly initialize: (battle: BattleState) => Result<Actions>;
     readonly select?: (battle: BattleState, self: Unit & Action) => Result<readonly DefinitionId[]>;
 }
 
@@ -58,28 +55,12 @@ export function createDefinition(definition: Definition): Definition {
 }
 
 export function initialize(battle: BattleState, definition: Definition): Result<State> {
-    let actions = Actions.empty();
-
-    for (const id of definition.definitions.keys()) {
-        definition.definitions.read(id, (configured) => {
-            const initialized = configured.initialize(battle);
-            battle = initialized.state;
-            actions = actions.add({
-                definition: configured,
-                state: initialized.value,
-                execution: null,
-                cooldown: cooldown.initialize(
-                    period(configured.intervalTicks, configured.speed),
-                    battle.tick,
-                ),
-            });
-        });
-    }
+    const initialized = definition.initialize(battle);
 
     return {
-        state: battle,
+        state: initialized.state,
         value: {
-            actions,
+            actions: initialized.value,
             nextExecutionId: 0,
             interval: [],
             speed: [],

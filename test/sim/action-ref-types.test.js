@@ -23,8 +23,8 @@ import type { Action as ActionCapability } from ${source("unit/capability/action
 import type { Action, Executing, View, ExecutingView } from ${source("unit/action/action")};
 import { ref } from ${source("unit/action/action")};
 import { Actions } from ${source("unit/action/actions")};
+import { create as createAction, createActions } from ${source("unit/action/initialize")};
 import type { Definition } from ${source("unit/action/definition")};
-import { Definitions } from ${source("unit/action/definitions")};
 import { all, start, get, cancel, update, getAction, updateState } from ${source("unit/action/operations")};
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
 type Assert<T extends true> = T;
@@ -38,9 +38,6 @@ const definition: Definition<object, { count: number }> = {
     start: current => ({ state: current, value: { count: 0 } }),
     step: (current, host, self) => ({ state: update(current, ref(host, self), state => ({ count: state.count + 1 })), value: false }),
 };
-const definitions = Definitions.empty().add(definition);
-const recoveredDefinition = definitions.get("count", definition);
-type RecoveredDefinition = Assert<Equal<typeof recoveredDefinition, Definition<object, { count: number }> | undefined>>;
 const started = start(battle, source, definition);
 if (started.value.type === "STARTED") {
     const current = get(started.state, started.value.ref);
@@ -65,8 +62,6 @@ entries.replace(definition, { ...action, execution: { ...action.execution, state
 entries.add(get(battle, erased)!);
 // @ts-expect-error A typed Definition fixes execution state inference.
 entries.replace(definition, { ...action, execution: { ...action.execution, state: { count: "wrong" } } });
-// @ts-expect-error Definition enumeration hides content callbacks.
-definitions.values().find(value => value.id === "count")!.step;
 cancel(battle, erased, "SCRIPT");
 // @ts-expect-error Phantom identity cannot be manufactured.
 const forged: Ref<Executing<object, { count: number }>> = { id: 0 };
@@ -112,6 +107,14 @@ const persistent: Definition<{ uses: number }, { target: string }> = {
         return { state: current, value: false };
     },
 };
+const configuration: ActionCapability["definition"]["action"] = {
+    initialize: current => createActions(current, createAction(definition), createAction(persistent)),
+};
+const initialized = configuration.initialize(battle);
+// @ts-expect-error Generic initialized entries hide persistent content state.
+initialized.value.get("persistent")!.state;
+const initializedPersistent = initialized.value.get("persistent", persistent)!;
+const initializedUses: number = initializedPersistent.state.uses;
 declare const actionHost: Unit & ActionCapability;
 // @ts-expect-error Untyped queries hide persistent content state.
 actionHost.action.actions.get("persistent")!.state;
@@ -120,11 +123,11 @@ const usage: number = persistentEntry.state.uses;
 actionHost.action.actions.replace(persistent, { ...persistentEntry, state: { uses: 2 } });
 // @ts-expect-error
  actionHost.action.actions.replace(persistent, { ...persistentEntry, state: { uses: "wrong" } });
-Definitions.empty().add(definition).add(persistent).read("persistent", configured => {
-    const stored = getAction(battle, source, configured)!;
+actionHost.action.actions.read("persistent", self => {
+    const stored = getAction(battle, source, self.definition)!;
     // @ts-expect-error Unknown configuration keeps its private type abstract.
     stored.state.uses;
-    return updateState(battle, source, configured, current => current);
+    return updateState(battle, source, self.definition, current => current);
 });
 `,
         );

@@ -13,7 +13,7 @@ import { createBattleState } from "../../dist/core/battle/state.js";
 import { initialize as initializeUnit } from "../../dist/core/unit/initialize.js";
 import { add, update } from "../../dist/core/battle/unit.js";
 import { step } from "../../dist/core/battle/runtime.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
 import { resolveSpeed } from "../../dist/core/unit/capability/action/timing.js";
 import { invisibilityKind } from "../../dist/content/effects/visibility.js";
@@ -32,7 +32,7 @@ const unit = (id, column, fields = {}) => ({
     definition: { hooks: [],
         id: `terrain-unit/${id}`,
         vitality: { maxHp: 1000, defense: 0, resistance: 0 },
-        offense: { attack: 100 }, action: { definitions: Definitions.empty() },
+        offense: { attack: 100 }, action: actionCapability(),
         layer: { type: "GROUND" }, allegiance: { side: "ALLY" },
         targetable: { restrictions: [] }, spatialPresence: {},
         ...fields,

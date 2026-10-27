@@ -1,58 +1,35 @@
-import { normal as normalSite } from "../terrain/condition.js";
-import { update as updateUnit } from "../../core/battle/unit.js";
-import { hasTargetable } from "../../core/unit/capability/targetable/capability.js";
-import { createArknightsElementalDefinition } from "../../data/arknights/elemental.js";
-import { Definitions } from "../../core/unit/action/definitions.js";
-import { clearCooldown, get as getAction } from "../../core/unit/action/operations.js";
-import { ref as actionRef } from "../../core/unit/action/action.js";
-import {
-    create as createAttack,
-    type Attack,
-    type Configuration as AttackConfiguration,
-} from "../actions/attack.js";
-import { create as createSkillAttack, type State as SkillAttackState } from "../actions/skill.js";
-import { hasCandidate } from "../../core/battle/targeting/select.js";
-import * as filters from "../../core/battle/targeting/filter.js";
-import * as compare from "../../core/battle/targeting/compare.js";
-import { first } from "../../core/battle/targeting/selector.js";
-import { calculateHealing } from "../../core/battle/healing/calculate.js";
-import { applyHealing } from "../../core/battle/healing/apply.js";
-import type { HealingRequest } from "../../core/battle/healing/contract.js";
-import { calculateDamage } from "../../core/battle/damage/calculate.js";
-import { applyDamage } from "../../core/battle/damage/apply.js";
-import type { DamageRequest } from "../../core/battle/damage/contract.js";
-import { get as getCurrentUnit, ref as unitRef } from "../../core/unit/query.js";
-import { blocked } from "../../core/battle/blocking/query.js";
-import { hasBlocker } from "../../core/unit/capability/blocking/blocker.js";
-import type { Profile } from "../../data/arknights/operator.js";
-import { secondsToTicks } from "../../data/arknights/tick.js";
-import { createRng } from "../../core/common/rng.js";
-import { type State as BattleState } from "../../core/battle/state.js";
-import { modify } from "../../core/unit/capability/skill/sp.js";
-import type { Direction } from "../../core/geometry/direction.js";
-import { fromTiles } from "../../core/geometry/range.js";
-import type { Unit, Id, Definition as UnitDefinition } from "../../core/unit/unit.js";
-import type { Definitions as CapabilityDefinitions } from "../../core/unit/capability/catalog.js";
-import { hasAction } from "../../core/unit/capability/action/capability.js";
-import { hasOffense } from "../../core/unit/capability/offense/capability.js";
-import { createDefinition as createDeployableDefinition } from "../../core/unit/capability/deployable/capability.js";
-import { resolveAttack } from "../../core/unit/capability/offense/query.js";
+import { normal as normalSite } from "../../terrain/condition.js";
+import { update as updateUnit } from "../../../core/battle/unit.js";
+import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
+import { createArknightsElementalDefinition } from "../../../data/arknights/elemental.js";
+import { create as createAction, createActions } from "../../../core/unit/action/initialize.js";
+import { clearCooldown } from "../../../core/unit/action/operations.js";
+import type { Attack } from "../../actions/attack.js";
+import type { State as SkillAttackState } from "../../actions/skill.js";
+import { hasCandidate } from "../../../core/battle/targeting/select.js";
+import { get as getCurrentUnit, ref as unitRef } from "../../../core/unit/query.js";
+import { blocked } from "../../../core/battle/blocking/query.js";
+import { hasBlocker } from "../../../core/unit/capability/blocking/blocker.js";
+import type { Profile } from "../../../data/arknights/operator.js";
+import { secondsToTicks } from "../../../data/arknights/tick.js";
+import { modify } from "../../../core/unit/capability/skill/sp.js";
+import type { Direction } from "../../../core/geometry/direction.js";
+import type { Unit, Definition as UnitDefinition } from "../../../core/unit/unit.js";
+import type { Definitions as CapabilityDefinitions } from "../../../core/unit/capability/catalog.js";
+import { hasAction } from "../../../core/unit/capability/action/capability.js";
+import { createDefinition as createDeployableDefinition } from "../../../core/unit/capability/deployable/capability.js";
 import {
     hasSkill,
     type Definition as SkillDefinition,
-} from "../../core/unit/capability/skill/capability.js";
-import { finish } from "../../core/unit/capability/skill/operations.js";
-import { stun } from "../effects/stun.js";
-import { healFree } from "../effects/protection.js";
-import {
-    hasVitality,
-    resolveMaxHp,
-    type Vitality,
-} from "../../core/unit/capability/vitality/capability.js";
-import { removeHook, setHook } from "../../core/battle/damage/hook.js";
-import type { Definition as EffectDefinition } from "../../core/unit/effect/definition.js";
-import { ref as effectRef } from "../../core/unit/effect/effect.js";
-import { get, install, update } from "../../core/unit/effect/operations.js";
+} from "../../../core/unit/capability/skill/capability.js";
+import { healFree } from "../../effects/protection.js";
+import { hasVitality, type Vitality } from "../../../core/unit/capability/vitality/capability.js";
+import { removeHook, setHook } from "../../../core/battle/damage/hook.js";
+import type { Definition as EffectDefinition } from "../../../core/unit/effect/definition.js";
+import { ref as effectRef } from "../../../core/unit/effect/effect.js";
+import { get, install, update } from "../../../core/unit/effect/operations.js";
+import { createNormal, createSkill } from "./action.js";
+import { value, healSelf } from "./common.js";
 
 export interface Definition
     extends
@@ -103,16 +80,6 @@ export function readShield(
     );
 }
 
-function value(entries: Profile["moduleTrait"], key: string): number {
-    const entry = entries.find((entry) => entry.key === key);
-
-    if (entry === undefined) {
-        throw new TypeError(`Mudrock content requires ${key}`);
-    }
-
-    return entry.value;
-}
-
 function hasSarkazTag(unit: Unit | undefined): boolean {
     const definition = unit?.definition;
 
@@ -129,23 +96,6 @@ function hasSarkazTag(unit: Unit | undefined): boolean {
         Array.isArray(profile.tags) &&
         profile.tags.includes("sarkaz")
     );
-}
-
-function healSelf(state: BattleState, unitId: Id, ratio: number): BattleState {
-    const unit = state.battlefield.units.get(unitId);
-
-    if (unit === undefined || !hasVitality(unit)) {
-        return state;
-    }
-
-    const maxHp = resolveMaxHp(unit.vitality, unit.definition.vitality);
-    const request: HealingRequest = {
-        source: unitRef(unit),
-        target: unitRef(unit),
-        parameters: { power: maxHp * ratio, multiplier: 1 },
-    };
-
-    return applyHealing(request, calculateHealing(state, request)).state;
 }
 
 function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality> {
@@ -285,53 +235,6 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
     return definition;
 }
 
-function attackDefinition(
-    profile: Profile,
-    direction: Direction,
-    skill: boolean,
-    recoveryTicks: number,
-): AttackConfiguration {
-    const withinRange = filters.range(
-        fromTiles(skill ? profile.skillRange! : profile.range, direction),
-    );
-
-    return {
-        id: skill ? "mudrock/s2" : "normal-attack",
-        speed: profile.attributes.attackSpeed,
-        triggerBindingId: "primary",
-        intervalTicks: secondsToTicks(profile.attributes.baseAttackTime),
-        recoveryTicks,
-        followUps: [],
-        targetGroups: [
-            {
-                id: "primary",
-                targeting: {
-                    purposes: ["DAMAGE"],
-                    filter: filters.and(
-                        filters.damage,
-                        filters.ground,
-                        skill ? withinRange : filters.or(withinRange, filters.blocking),
-                    ),
-                    selector: first(
-                        skill ? Number.MAX_SAFE_INTEGER : 1,
-                        skill
-                            ? compare.distance
-                            : compare.combine(compare.blockedFirst, compare.distance),
-                    ),
-                },
-                operations: [
-                    {
-                        type: "DAMAGE",
-                        power: 0,
-                        powerSource: "SOURCE_ATTACK",
-                        damageType: "PHYSICAL",
-                    },
-                ],
-            },
-        ],
-    };
-}
-
 export function create(
     profile: Profile,
     options: { readonly direction?: Direction; readonly recoveryTicks?: number } = {},
@@ -354,82 +257,9 @@ export function create(
     const recoveryTicks = options.recoveryTicks ?? 0;
 
     const shield = shieldEffect(profile);
-    const activeConfiguration = attackDefinition(profile, direction, true, recoveryTicks);
-    const normalAttack = createAttack(attackDefinition(profile, direction, false, recoveryTicks));
-    const targeting = activeConfiguration.targetGroups[0].targeting;
-    const attackScale = value(profile.skill.blackboard, "atk_scale");
-    const healRatio = value(profile.skill.blackboard, "hp_ratio");
-    const stunChance = value(profile.skill.blackboard, "buff_prob");
-    const stunTicks = secondsToTicks(value(profile.skill.blackboard, "stun"));
-    const action = createSkillAttack({
-        ...activeConfiguration,
-        markerId: "mudrock/s2",
-        output(state, host, self) {
-            const source = getCurrentUnit(state, host);
-
-            if (source === undefined || !hasSkill(source) || source.skill.active === null) {
-                return state;
-            }
-
-            const power = hasOffense(source) ? resolveAttack(state, unitRef(source))! : 0;
-            state = healSelf(state, source.id, healRatio);
-
-            for (const targetRef of self.execution.state.bindings.primary ?? []) {
-                if (getAction(state, actionRef(host, self))?.execution.status !== "RUNNING") {
-                    return state;
-                }
-
-                const currentSource = getCurrentUnit(state, host);
-                const target = getCurrentUnit(state, targetRef);
-
-                if (currentSource?.lifecycle !== "PRESENT") {
-                    return state;
-                }
-
-                if (
-                    target === undefined ||
-                    !hasVitality(target) ||
-                    !hasTargetable(target) ||
-                    !targeting.filter(
-                        state,
-                        { ...targeting, source: unitRef(currentSource) },
-                        target,
-                    )
-                ) {
-                    continue;
-                }
-
-                const request: DamageRequest = {
-                    source: unitRef(source),
-                    target: unitRef(target),
-                    parameters: {
-                        type: "PHYSICAL",
-                        attack: { power, multiplier: attackScale, addition: 0 },
-                        penetration: { fixed: 0, proportional: 0 },
-                    },
-                };
-                state = applyDamage(request, calculateDamage(state, request)).state;
-                const rng = createRng(state.execution.rngState);
-                const applyStun = rng.chance(stunChance);
-                state = { ...state, execution: { ...state.execution, rngState: rng.state() } };
-                const survivor = getCurrentUnit(state, unitRef(target));
-
-                if (applyStun && survivor !== undefined) {
-                    state = install(state, unitRef(survivor), stun, {
-                        source: source.id,
-                        scopes: [{ type: "TICK", tick: state.tick + stunTicks }],
-                    }).state;
-                }
-            }
-
-            return state;
-        },
-        onEnd(state, _host, self) {
-            return self.execution.state.data.activation === null
-                ? state
-                : finish(state, self.execution.state.data.activation);
-        },
-    });
+    const normalAttack = createNormal(profile, direction, recoveryTicks);
+    const action = createSkill(profile, direction, recoveryTicks);
+    const targeting = action.attack.targetGroups[0].targeting;
     const skill: SkillDefinition = {
         ...profile.skill.definition,
         activation: {
@@ -457,6 +287,9 @@ export function create(
             },
         },
     };
+    const initializeNormalAttack = createAction(normalAttack);
+    const initializeAction = createAction(action);
+
     const definition: Definition = {
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
         id: profile.id,
@@ -486,7 +319,7 @@ export function create(
             geometry: { radius: 0.70709997 },
         },
         action: {
-            definitions: Definitions.empty().add(normalAttack).add(action),
+            initialize: (battle) => createActions(battle, initializeNormalAttack, initializeAction),
             select: (battle, self) => ({
                 state: battle,
                 value: [hasSkill(self) && self.skill.active !== null ? action.id : normalAttack.id],

@@ -14,7 +14,7 @@ import { createDefinition as createSkillDefinition } from '../../dist/core/unit/
 import * as skills from '../../dist/core/unit/capability/skill/operations.js';
 import { ref as activationRef } from '../../dist/core/unit/capability/skill/activation.js';
 import { create as createAttack } from '../../dist/content/actions/attack.js';
-import { Definitions } from '../../dist/core/unit/action/definitions.js';
+import { actionCapability } from "../helpers/actions.js";
 import { initialize } from "../helpers/unit.js";
 import { createBattleState } from '../../dist/core/battle/state.js';
 import { getUnit } from '../helpers/unit.js';
@@ -35,13 +35,15 @@ function action(maxTargets = 1, extra = {}) {
   });
 }
 function actor(skill, { attackTargets = 1, windupTicks = 0, activeAction } = {}) {
-  let definitions = Definitions.empty().add(action(attackTargets, { windupTicks }));
-  if (activeAction !== undefined) definitions = definitions.add(action(2, { id: activeAction, windupTicks }));
+  const normal = action(attackTargets, { windupTicks });
+  const capability = activeAction === undefined
+    ? actionCapability(normal)
+    : actionCapability(normal, action(2, { id: activeAction, windupTicks }));
   return { hooks: [],
     id: 'skill-actor', vitality: { maxHp: 100000, defense: 0, resistance: 0 }, offense: { attack: 100 },
     allegiance: { side: 'ALLY' },
     layer: { type: 'GROUND' }, hitbox: { shape: hit },
-    blocker: { capacity: 0, geometry: { radius: 0.1 } }, action: { definitions, select: (battle, self) => ({ state: battle, value: [self.skill.active !== null ? activeAction ?? 'normal' : 'normal'] }) }, skill,
+    blocker: { capacity: 0, geometry: { radius: 0.1 } }, action: { ...capability, select: (battle, self) => ({ state: battle, value: [self.skill.active !== null ? activeAction ?? 'normal' : 'normal'] }) }, skill,
   };
 }
 function target() {

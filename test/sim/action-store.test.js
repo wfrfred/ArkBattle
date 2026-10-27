@@ -5,7 +5,9 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Actions } from "../../dist/core/unit/action/actions.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { create as createAction, createActions } from "../../dist/core/unit/action/initialize.js";
+import { initialize as initializeActions } from "../../dist/core/unit/capability/action/capability.js";
+import { actionCapability } from "../helpers/actions.js";
 import * as operations from "../../dist/core/unit/action/operations.js";
 import { initialize } from "../../dist/core/unit/initialize.js";
 import { add as addUnit } from "../../dist/core/battle/unit.js";
@@ -20,26 +22,43 @@ const definition = (id, data = {}, execution = {}) => ({
 });
 const aggregate = (configured, state, execution = null) => ({ definition: configured, state, cooldown: { periodTicks: 10, readyAtTick: 0 }, execution });
 
-test("Action Definitions preserve paired programs and snapshot-bound query order", () => {
-    const first = definition("number", { count: 3 }, { remaining: 2 });
-    const second = definition("string", { mode: "first" }, { targets: [] });
-    const original = Definitions.empty().add(first).add(second);
-    const values = original.values();
-    const changed = original.add(definition("third"));
-    assert.deepEqual(values.map(value => value.id).toArray(), ["number", "string"]);
-    assert.deepEqual(values.map(value => value.id).toArray(), ["number", "string"]);
-    assert.deepEqual(changed.keys().toArray(), ["number", "string", "third"]);
-    assert.strictEqual(original.get(first.id), first);
-    assert.strictEqual(original.get(first.id, first), first);
-    assert.equal(original.get(first.id, { ...first }), undefined);
-    assert.equal(original.get("missing"), undefined);
-    assert.deepEqual(original.read(first.id, configured => configured.initialize(fixtureBattle()).value), { count: 3 });
-    assert.deepEqual(original.read(second.id, configured => configured.initialize(fixtureBattle()).value), { mode: "first" });
-    assert.equal(original.read("missing", () => assert.fail("missing programs must not dispatch")), undefined);
-    assert.throws(() => original.add({ ...first }), RangeError);
-    assert.throws(() => Definitions.empty().add({ ...first, id: "" }), TypeError);
-    assert.throws(() => Definitions.empty().add({ ...first, intervalTicks: -1 }), RangeError);
-    assert.throws(() => Definitions.empty().add({ ...first, speed: Infinity }), RangeError);
+test("Action initialization composes ordered programs and creates independent persistent data", () => {
+    const calls = [];
+    const make = (id, data, execution) => ({
+        ...definition(id, data, execution),
+        initialize(state) {
+            calls.push([id, state.execution.rngState]);
+            return {
+                state: { ...state, execution: { ...state.execution, rngState: state.execution.rngState + 1 } },
+                value: { ...data },
+            };
+        },
+    });
+    const first = make("number", { count: 3 }, { remaining: 2 });
+    const second = make("string", { mode: "first" }, { targets: [] });
+    const firstInitializer = createAction(first), secondInitializer = createAction(second);
+    const configured = { initialize: battle => createActions(battle, firstInitializer, secondInitializer) };
+    const initial = fixtureBattle(7, { rngState: 10 });
+    const a = initializeActions(initial, configured);
+    const b = initializeActions(a.state, configured);
+    assert.deepEqual(calls, [["number", 10], ["string", 11], ["number", 12], ["string", 13]]);
+    assert.equal(initial.execution.rngState, 10);
+    assert.equal(a.state.execution.rngState, 12);
+    assert.equal(b.state.execution.rngState, 14);
+    assert.deepEqual(a.value.actions.keys().toArray(), ["number", "string"]);
+    assert.deepEqual(a.value.actions.get(first.id, first).state, { count: 3 });
+    assert.deepEqual(a.value.actions.get(second.id, second).state, { mode: "first" });
+    assert.notEqual(a.value.actions.get(first.id, first).state, b.value.actions.get(first.id, first).state);
+    assert.notEqual(a.value.actions.get(second.id, second).state, b.value.actions.get(second.id, second).state);
+    assert.equal(a.value.actions.get(first.id, first).execution, null);
+    const empty = initializeActions(initial, { initialize: createActions });
+    assert.equal(empty.state, initial);
+    assert.equal(empty.value.actions.size, 0);
+    assert.equal(empty.value.nextExecutionId, 0);
+    assert.throws(() => createActions(initial, firstInitializer, createAction({ ...first })), RangeError);
+    assert.throws(() => createAction({ ...first, id: "" }), TypeError);
+    assert.throws(() => createAction({ ...first, intervalTicks: -1 }), RangeError);
+    assert.throws(() => createAction({ ...first, speed: Infinity }), RangeError);
 });
 
 test("Actions stores one aggregate per definition and preserves paired private types", () => {
@@ -91,7 +110,7 @@ test("Action initialization, start and termination retain one persistent aggrega
             return battle;
         },
     };
-    const created = initialize(fixtureBattle(), { id: 0, position: [0, 0], definition: { hooks: [], id: "program-host", action: { definitions: Definitions.empty().add(configured) } } });
+    const created = initialize(fixtureBattle(), { id: 0, position: [0, 0], definition: { hooks: [], id: "program-host", action: actionCapability(configured) } });
     const before = addUnit(created.state, created.value), source = units.ref(created.value);
     const started = operations.start(before, source, configured);
     assert.equal(started.value.type, "STARTED");
@@ -118,10 +137,9 @@ import type { Query } from ${source("common/query")};
 import type { State as BattleState } from ${source("battle/state")};
 import type { Unit } from ${source("unit/unit")};
 import type { Action as ActionCapability } from ${source("unit/capability/action/capability")};
-import type { Definition, View as DefinitionView } from ${source("unit/action/definition")};
+import type { Definition } from ${source("unit/action/definition")};
 import { ref, type Action, type Executing, type View, type ExecutingView } from ${source("unit/action/action")};
 import { Actions } from ${source("unit/action/actions")};
-import { Definitions } from ${source("unit/action/definitions")};
 import * as operations from ${source("unit/action/operations")};
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
 type Assert<T extends true> = T;
@@ -155,8 +173,6 @@ Actions.empty().replace(configured, { ...precise, execution: { ...precise.execut
 ref(source, publicAction);
 // @ts-expect-error An erased reference cannot update private execution data.
 operations.update(battle, publicRef, state => state);
-const definitions = Definitions.empty().values();
-type DefinitionValues = Assert<Equal<typeof definitions, Query<DefinitionView>>>;
 Actions.empty().read(configured.id, self => { self.definition.start(battle, source, self); });
 Actions.empty().readExecution(0, self => self.definition.step(battle, source, self));
 `);

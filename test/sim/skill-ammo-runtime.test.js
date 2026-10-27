@@ -16,7 +16,7 @@ import { getUnit } from "../helpers/unit.js";
 import * as tracking from "../../dist/content/projectiles/tracking.js";
 
 import { create as createAttack } from "../../dist/content/actions/skill.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import { ref as actionRef } from "../../dist/core/unit/action/action.js";
 import * as actions from "../../dist/core/unit/action/operations.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
@@ -88,7 +88,7 @@ function scenario({ ammo = 1, targets = 1, interrupt = false, windupTicks = 0, o
     allegiance: { side: "ALLY" },
     layer: { type: "GROUND" }, hitbox: { shape: hit },
     blocker: { capacity: 0, geometry: { radius: 0.1 } }, skill,
-    action: { definitions: Definitions.empty().add(action) },
+    action: actionCapability(action),
   };
   const receiver = { hooks: [],
     id: "ammo-target", targetable: { restrictions: [] }, vitality: { maxHp: 10000, defense: 0, resistance: 0 }, allegiance: { side: "ENEMY" }, layer: { type: "GROUND" }, hitbox: { shape: hit },

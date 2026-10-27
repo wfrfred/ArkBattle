@@ -23,7 +23,7 @@ import { initialize, placement } from "../helpers/unit.js";
 import { effectFixtureWork } from "../helpers/effects.js";
 import { seededPlacement } from "../helpers/aura.js";
 import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import { ref as actionRef } from "../../dist/core/unit/action/action.js";
 import * as actions from "../../dist/core/unit/action/operations.js";
 import { install as installEffect, update as updateEffect, end as endEffect } from "../../dist/core/unit/effect/operations.js";
@@ -54,7 +54,7 @@ function actor(id, program) {
         ...passive(id),
         allegiance: { side: "ALLY" },
         blocker: { capacity: 0, geometry: { radius: 0.1 } },
-        action: { definitions: Definitions.empty().add(program) },
+        action: actionCapability(program),
     };
 }
 

@@ -4,7 +4,7 @@ import { normal } from '../../dist/content/terrain/definition.js';
 import { unitsAt } from "../helpers/battlefield.js";
 import { damage as damageTargeting, healing as healingTargeting } from "../helpers/targeting.js";
 import { definition as skillDefinition } from "../helpers/skill.js";
-import { Definitions } from '../../dist/core/unit/action/definitions.js';
+import { actionCapability } from "../helpers/actions.js";
 import { create as createAttack } from '../../dist/content/actions/attack.js';
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -46,7 +46,7 @@ const definition = () => ({ hooks: [],
     },
     vitality: { maxHp: 100, defense: 20, resistance: 10 },
     offense: { attack: 10 },
-    action: createActionCapabilityDefinition({ definitions: Definitions.empty().add(createAttack({ id: 'normal', speed: 100,
+    action: createActionCapabilityDefinition(actionCapability(createAttack({ id: 'normal', speed: 100,
             triggerBindingId: "primary",
             intervalTicks: 3,
             recoveryTicks: 0,
@@ -70,7 +70,7 @@ const definition = () => ({ hooks: [],
                     }),
                 },
             ],
-         })) }),
+         }))),
     elemental: {
         maxEp: 1000,
         recoveryPerSecond: 0,

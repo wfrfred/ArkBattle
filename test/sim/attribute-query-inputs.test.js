@@ -3,7 +3,7 @@ import { test } from "node:test";
 import * as attribute from "../../dist/core/unit/contribution/attribute.js";
 import * as units from "../../dist/core/unit/query.js";
 import { update as updateUnit, remove as removeUnit } from "../../dist/core/battle/unit.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import * as action from "../../dist/core/unit/capability/action/capability.js";
 import * as timing from "../../dist/core/unit/capability/action/timing.js";
 import * as movement from "../../dist/core/unit/capability/locomotion/operations.js";
@@ -24,7 +24,7 @@ function fixture(tick = 0) {
         id: 1, position: [0, 0], definition: { hooks: [],
             id: "dynamic-attributes",
             vitality: { maxHp: 100, defense: 100, resistance: 20 },
-            action: action.createDefinition({ definitions: Definitions.empty().add(program) }),
+            action: action.createDefinition(actionCapability(program)),
             locomotion: {
                 speed: 0.5, minSpeed: 0, halfBodyWidth: 0,
                 steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 },

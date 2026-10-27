@@ -1,5 +1,5 @@
 import { damage as damageTargeting, healing as healingTargeting } from "../helpers/targeting.js";
-import { Definitions } from '../../dist/core/unit/action/definitions.js';
+import { actionCapability } from "../helpers/actions.js";
 import { create as createAttack } from '../../dist/content/actions/attack.js';
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
@@ -253,7 +253,7 @@ test("attribute modifiers: native Mire percentages affect existing ASPD and norm
                 minSpeed: 0.1 / 30,
                 steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 },
             },
-            action: { definitions: Definitions.empty().add(createAttack({ id: 'normal', speed: 200,
+            action: actionCapability(createAttack({ id: 'normal', speed: 200,
                     triggerBindingId: "unused",
                     intervalTicks: 30,
                     recoveryTicks: 0,
@@ -274,14 +274,14 @@ test("attribute modifiers: native Mire percentages affect existing ASPD and norm
                         },
                     ],
                     followUps: [],
-                 })) },
+                 })),
         },
     });
     let installed = effectFixtureWork(unit);
     installed = effects.install(installed, unitRef(getUnit(installed, 0)), program).state;
     const receiver = getUnit(installed, 0);
     assert.equal(
-        resolveSpeed(installed, unitRef(receiver), receiver.definition.action.definitions.values().toArray()[0]),
+        resolveSpeed(installed, unitRef(receiver), receiver.action.actions.values().toArray()[0].definition),
         190,
     );
     close(

@@ -2,7 +2,7 @@ import { update as updateUnit } from "../core/battle/unit.js";
 import type { Input } from "../core/battle/contract.js";
 import type { FragmentDefinition } from "../core/battle/schedule/definition.js";
 import type { Definition as UnitDefinition } from "../core/unit/unit.js";
-import { Definitions } from "../core/unit/action/definitions.js";
+import { create as createAction, createActions } from "../core/unit/action/initialize.js";
 import { hasActionDefinition } from "../core/unit/capability/action/capability.js";
 import { create as createAttack, isAttack } from "../content/actions/attack.js";
 import { calculateDamage } from "../core/battle/damage/calculate.js";
@@ -116,67 +116,66 @@ export function createTacticalProjectileDemo(
     };
 
     function transform<D extends UnitDefinition>(definition: D): D {
-        if (!hasActionDefinition(definition)) {
+        if (
+            !hasActionDefinition(definition) ||
+            !("attack" in definition) ||
+            !isAttack(definition.attack)
+        ) {
             return definition;
         }
 
-        let definitions = Definitions.empty();
+        const attack = createAttack({
+            ...definition.attack.attack,
+            windupTicks: 6,
+            recoveryTicks: 6,
+            markerId: "demo-shell",
+            output: (state, host, self) => {
+                const source = getCurrentUnit(state, host);
+                const targetId = self.execution.state.target.id;
+                const target = state.battlefield.units.get(targetId);
 
-        for (const id of definition.action.definitions.keys()) {
-            definition.action.definitions.read(id, (current) => {
-                if (!isAttack(current)) {
-                    definitions = definitions.add(current);
-
-                    return;
+                if (source === undefined || target === undefined || !hasVitality(target)) {
+                    return state;
                 }
 
-                const attack = createAttack({
-                    ...current.attack,
-                    windupTicks: 6,
-                    recoveryTicks: 6,
-                    markerId: "demo-shell",
-                    output: (state, host, self) => {
-                        const source = getCurrentUnit(state, host);
-                        const targetId = self.execution.state.target.id;
-                        const target = state.battlefield.units.get(targetId);
+                if (!hasOffense(source)) {
+                    throw new Error("projectile demo source requires Offense capability");
+                }
 
-                        if (source === undefined || target === undefined || !hasVitality(target)) {
-                            return state;
-                        }
+                const cachedAtk = resolveAttack(state, unitRef(source))!;
 
-                        if (!hasOffense(source)) {
-                            throw new Error("projectile demo source requires Offense capability");
-                        }
-
-                        const cachedAtk = resolveAttack(state, unitRef(source))!;
-
-                        const launched = createProjectile(state, shell, {
-                            position: source.position,
-                            state: {
-                                source: unitRef(source),
-                                target: unitRef(target),
-                                destination: target.position,
-                                cachedAtk,
-                                speedPerTick: 0.12,
-                                stopDelayTicks: 6,
-                                stopAtTick: null,
-                                hitAttempted: false,
-                                launchedAtTick: state.tick,
-                            },
-                        });
-                        state = install(launched.state, unitRef(source), boost, {
-                            source: source.id,
-                            scopes: [{ type: "TICK", tick: state.tick + 70 }],
-                        }).state;
-
-                        return state;
+                const launched = createProjectile(state, shell, {
+                    position: source.position,
+                    state: {
+                        source: unitRef(source),
+                        target: unitRef(target),
+                        destination: target.position,
+                        cachedAtk,
+                        speedPerTick: 0.12,
+                        stopDelayTicks: 6,
+                        stopAtTick: null,
+                        hitAttempted: false,
+                        launchedAtTick: state.tick,
                     },
                 });
-                definitions = definitions.add(attack);
-            });
-        }
+                state = install(launched.state, unitRef(source), boost, {
+                    source: source.id,
+                    scopes: [{ type: "TICK", tick: state.tick + 70 }],
+                }).state;
 
-        return { ...definition, action: { ...definition.action, definitions } };
+                return state;
+            },
+        });
+        const initializeAttack = createAction(attack);
+
+        return {
+            ...definition,
+            attack,
+            action: {
+                ...definition.action,
+                initialize: (battle: BattleState) => createActions(battle, initializeAttack),
+            },
+        };
     }
 
     const fragment = (value: FragmentDefinition): FragmentDefinition => ({

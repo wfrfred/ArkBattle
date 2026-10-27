@@ -9,7 +9,7 @@ import { unitsAt } from "../helpers/battlefield.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { damage as damageTargeting } from "../helpers/targeting.js";
 import { fixtureBattle, fixtureDefinition } from "../helpers/unit.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import { create as createAttack } from "../../dist/content/actions/attack.js";
 import { Effects } from "../../dist/core/unit/effect/effects.js";
 import { test } from "node:test";
@@ -170,7 +170,7 @@ const catalogDefinition = () => Object.freeze({
     steeringParameters: Object.freeze({ steeringFactor: 1, maxSteeringForce: 100 }),
   }),
   allegiance: Object.freeze({ side: 'ALLY' }),
-  action: createActionCapabilityDefinition({ definitions: Definitions.empty().add(createAttack({ id: 'normal', speed: 100,
+  action: createActionCapabilityDefinition(actionCapability(createAttack({ id: 'normal', speed: 100,
     triggerBindingId: 'primary',
     intervalTicks: 3, recoveryTicks: 0, followUps: [],
     targetGroups: [{ id: 'primary',
@@ -180,7 +180,7 @@ const catalogDefinition = () => Object.freeze({
       ] }, canTargetAir: false, includeBlockingRelations: false, preferBlockingRelations: false,
         ignoreTargetFree: false, ignoreInvisible: false, maxTargets: 1 }),
     }],
-   })) }),
+   }))),
   layer: Object.freeze({ type: 'GROUND' }),
   hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.25 } },
   blocker: { capacity: 2, geometry: { radius: 0.7 } },
@@ -205,7 +205,7 @@ test('core unit initialization pairs every declared capability with its initiali
   assert.equal(initialized.state, battle);
   assert.equal(unit.definition, definition);
   assert.equal(unit.vitality.hp, 100);
-  assert.equal(unit.action.actions.size, definition.action.definitions.size);
+  assert.equal(unit.action.actions.size, 1);
   assert.equal(hasRoute(unit), true);
   assert.equal(unit.route.main.definition, definition.route);
   assert.equal(unit.spatialPresence.present, true);

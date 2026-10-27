@@ -162,7 +162,7 @@ const defenseInput:Contribution<VitalityInput>={id:'defense',value:(current,self
 const actionInput:Contribution<ActionInput>={id:'action',value:(current,self)=>{
  const state:BattleState=current;
  const count:number=self.action.speed.length;
- self.definition.action.definitions.values();
+ self.definition.action.initialize;
  // @ts-expect-error action input does not prove another capability.
  self.skill.active;
  return [];

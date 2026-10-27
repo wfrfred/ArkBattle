@@ -13,7 +13,7 @@ import * as effects from "../../dist/core/unit/effect/operations.js";
 import { createDefinition as createSkillDefinition, setEndedHook } from "../../dist/core/unit/capability/skill/capability.js";
 import { activate, finish } from "../../dist/core/unit/capability/skill/operations.js";
 import { ref as activationRef } from "../../dist/core/unit/capability/skill/activation.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import * as actions from "../../dist/core/unit/action/operations.js";
 import { fixtureBattlefieldState as fixtureBattlefield } from "../helpers/battlefield.js";
 
@@ -48,7 +48,7 @@ for (const reason of ["DEATH", "RETREAT", "SCRIPT"]) {
       },
     };
     let state = createBattleState(fixtureBattlefield([
-      unit(0, { skill, action: { definitions: Definitions.empty().add(action) } }),
+      unit(0, { skill, action: actionCapability(action) }),
       unit(1),
     ]));
     const source = getUnit(state, 0);

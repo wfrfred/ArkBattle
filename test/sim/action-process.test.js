@@ -5,7 +5,7 @@ import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { ref as actionRef } from "../../dist/core/unit/action/action.js";
 import { advance } from "../../dist/core/unit/action/advance.js";
 import * as actions from "../../dist/core/unit/action/operations.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { remove } from "../../dist/core/battle/unit.js";
@@ -103,7 +103,7 @@ test("action: different definitions share a source while their state and effects
     const first = create("first"),
         second = create("second");
     const initial = battle(
-        unit(0, { action: { definitions: Definitions.empty().add(first).add(second) } }),
+        unit(0, { action: actionCapability(first, second) }),
         unit(1),
     );
     const a = accepted(first, initial),

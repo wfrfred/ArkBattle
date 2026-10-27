@@ -1,14 +1,15 @@
 import { tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import * as blockingQueries from "../../dist/core/battle/blocking/query.js";
-import { advance as advanceBlocking } from "../../dist/core/battle/blocking/operations.js";
+import { advance as advanceBlocking, release as releaseBlocking } from "../../dist/core/battle/blocking/operations.js";
 import { damage as damageElement } from "../../dist/core/unit/capability/elemental/operations.js";
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { prepare } from '../../dist/data/arknights/enemy.js';
-import { create as createHound } from '../../dist/content/enemies/hound.js';
-import { create as createCrossbowman, createArrow } from '../../dist/content/enemies/crossbowman.js';
+import { create as createHound } from '../../dist/content/enemies/hound/unit.js';
+import { create as createCrossbowman } from '../../dist/content/enemies/crossbowman/unit.js';
+import { createArrow } from '../../dist/content/enemies/crossbowman/action.js';
 import { initialize } from "../helpers/unit.js";
 
 import { createBattleState } from '../../dist/core/battle/state.js';
@@ -24,6 +25,7 @@ import { invisibleRestriction, camouflageRestriction, untargetableRestriction } 
 import { invincibleRestriction } from '../../dist/content/effects/protection.js';
 import { range } from '../../dist/core/battle/targeting/filter.js';
 import { advance as advanceAction } from '../../dist/core/unit/action/advance.js';
+import { advance as advanceCombat } from '../../dist/core/battle/steps/combat.js';
 import { advance as advanceProjectiles } from '../../dist/core/battle/projectile.js';
 import * as projectiles from '../../dist/core/battle/projectile.js';
 import * as projectilesQuery from '../../dist/core/projectile/query.js';
@@ -132,20 +134,28 @@ test('a blocked hound selects its blocker directly despite normal targeting rest
   }
 });
 
-test('enemy ranged selection exempts only its actual blocker, including outside ordinary range', () => {
+test('crossbow selects melee for its actual blocker while ranged targeting keeps ordinary restrictions', () => {
   const narrow = [{ type: 'CIRCLE', offset: [0, 0], radius: 0.01 }];
   const projectile = { definition: createArrow(), speedPerSecond: 6, stopDelayTicks: 0 };
-  const { definition, action } = createCrossbowman({ ...profile('enemy_1003_ncbow'), rangeRadius: 0.01 }, {
+  const { definition, actions } = createCrossbowman({ ...profile('enemy_1003_ncbow'), rangeRadius: 0.01 }, {
     windupTicks: 1, recoveryTicks: 1, hitRadius: 0.2, projectile,
   }, 0.2);
   const blocker = guard(0, [2, 2], 1, [{ id: 'innate', value: invisibleRestriction }]);
   const bow = initialize({ id: 1, position: [2, 2.5], definition });
   const state = advanceBlocking(addUnit(addUnit(emptyBattle(), blocker), bow));
-  const request = { ...action.attack.targetGroups[0].targeting, source: unitRef(bow) };
+  const request = { ...actions.melee.attack.targetGroups[0].targeting, source: unitRef(bow) };
+  const ranged = { ...actions.ranged.attack.targetGroups[0].targeting, source: unitRef(bow) };
 
   assert.equal(range(narrow)(state, request, getUnit(state, 0)), false);
   assert.equal(allowsRestrictions(state, request, getUnit(state, 0)), false);
   assert.deepEqual(select(state, request).value.map(ref => ref.id), [0]);
+  assert.deepEqual(select(state, ranged).value, []);
+  assert.deepEqual(definition.action.select(state, getUnit(state, 1)).value, ['melee']);
+  const started = advanceCombat(state);
+  const released = advanceCombat({ ...started, tick: 1 });
+  assert.equal(getUnit(released, 0).vitality.hp, 800);
+  assert.equal(released.battlefield.projectiles.size, 0);
+  assert.deepEqual(definition.action.select(released, getUnit(released, 1)).value, []);
 
   const unblocked = addUnit(addUnit(emptyBattle(), guard(0, [2, 2.5], 0, [
     { id: 'innate', value: invisibleRestriction },
@@ -153,6 +163,8 @@ test('enemy ranged selection exempts only its actual blocker, including outside 
   assert.deepEqual(blockingQueries.relations(unblocked).map(({ blocker, blocked }) => ({ blockerUnitId: blocker.id, blockedUnitId: blocked.id })), []);
   assert.equal(range(narrow)(unblocked, request, getUnit(unblocked, 0)), true);
   assert.deepEqual(select(unblocked, request).value, []);
+  assert.deepEqual(select(unblocked, ranged).value, []);
+  assert.deepEqual(definition.action.select(unblocked, getUnit(unblocked, 1)).value, ['ranged']);
 });
 
 test('directly selecting an invincible blocker still preserves damage reception rules', () => {
@@ -175,7 +187,7 @@ test('directly selecting an invincible blocker still preserves damage reception 
 test('crossbow uses explicit windup and arrow speed, then settles damage on contact', () => {
 
   const projectileDefinition = createArrow();
-  const { definition, action: attack } = createCrossbowman(profile('enemy_1003_ncbow'), {
+  const { definition, actions: { ranged: attack } } = createCrossbowman(profile('enemy_1003_ncbow'), {
     windupTicks: 1, recoveryTicks: 1, hitRadius: 0.2,
     projectile: { definition: projectileDefinition, speedPerSecond: 6, stopDelayTicks: 0 },
   }, 0.2);
@@ -211,9 +223,54 @@ test('different crossbow configurations share an arrow definition in one battle'
   assert.strictEqual(base.definition.elemental.bursts.BURN, advanced.definition.elemental.bursts.BURN);
   assert.equal(base.definition.offense.attack, 240);
   assert.equal(advanced.definition.offense.attack, 310);
-  assert.equal(base.action.attack.windupTicks, 1);
-  assert.equal(advanced.action.attack.windupTicks, 2);
+  assert.equal(base.actions.ranged.attack.windupTicks, 1);
+  assert.equal(advanced.actions.ranged.attack.windupTicks, 2);
+  assert.equal(base.actions.melee.attack.intervalTicks, base.actions.ranged.attack.intervalTicks);
   assert.strictEqual(base.definition.attackTiming.projectile.definition, advanced.definition.attackTiming.projectile.definition);
+});
+
+test('crossbow switching between ranged and blocker melee preserves independent cooldowns', () => {
+  const { definition, actions } = createCrossbowman(profile('enemy_1003_ncbow'), {
+    windupTicks: 0, recoveryTicks: 0, hitRadius: 0.2,
+    projectile: { definition: createArrow(), speedPerSecond: 6, stopDelayTicks: 0 },
+  }, 0.2);
+  const bow = initialize({ id: 1, position: [2, 2.5], definition });
+  const initial = addUnit(addUnit(emptyBattle(), guard(0, [2, 2])), bow);
+  const cooldown = (battle, action) => getUnit(battle, 1).action.actions.get(action.id).cooldown.readyAtTick;
+  const period = actions.ranged.intervalTicks;
+  assert.equal(period, 72);
+  assert.equal(getUnit(initial, 1).action.actions.size, 2);
+
+  const ranged = advanceCombat(initial);
+  assert.equal(ranged.battlefield.projectiles.size, 1);
+  assert.equal(cooldown(ranged, actions.ranged), period);
+  assert.equal(cooldown(ranged, actions.melee), 0);
+
+  const blocked = advanceBlocking({ ...ranged, tick: 1 });
+  assert.deepEqual(blockingQueries.relations(blocked).map(({ blocked }) => blocked.id), [1]);
+  const melee = advanceCombat(blocked);
+  assert.equal(getUnit(melee, 0).vitality.hp, 800);
+  assert.equal(melee.battlefield.projectiles.size, 1);
+  assert.equal(cooldown(melee, actions.melee), period + 1);
+  assert.equal(cooldown(melee, actions.ranged), period);
+
+  const unblocked = releaseBlocking({ ...melee, tick: 2 }, unitRef(getUnit(melee, 1)));
+  assert.equal(getUnit(advanceCombat(unblocked), 1).action.nextExecutionId, 2);
+  const rangedAgain = advanceCombat({ ...unblocked, tick: period });
+  assert.equal(rangedAgain.battlefield.projectiles.size, 2);
+  assert.equal(cooldown(rangedAgain, actions.ranged), period * 2);
+  assert.equal(cooldown(rangedAgain, actions.melee), period + 1);
+
+  const blockedAgain = advanceBlocking({ ...rangedAgain, tick: period + 1 });
+  const meleeAgain = advanceCombat(blockedAgain);
+  assert.equal(getUnit(meleeAgain, 0).vitality.hp, 600);
+  assert.equal(meleeAgain.battlefield.projectiles.size, 2);
+  assert.equal(cooldown(meleeAgain, actions.ranged), period * 2);
+  assert.equal(cooldown(meleeAgain, actions.melee), period * 2 + 1);
+  assert.deepEqual(meleeAgain.events.filter(event => event.type === 'ACTION_RELEASED')
+    .map(event => [event.executionId, event.tick]), [[0, 0], [1, 1], [2, period], [3, period + 1]]);
+  assert.equal(cooldown(ranged, actions.melee), 0);
+  assert.equal(getUnit(initial, 0).vitality.hp, 1000);
 });
 
 test('enemy content keeps hit radius and terrain avoidance width independent', () => {

@@ -17,7 +17,7 @@ import { createLegacyCombatSpec } from '../../dist/legacy/combat.js';
 import { getUnit, transitionUnit } from '../helpers/unit.js';
 import { initialize, placement } from "../helpers/unit.js";
 import { create as createAttack, chooseTargets } from '../../dist/content/actions/attack.js';
-import { Definitions } from '../../dist/core/unit/action/definitions.js';
+import { actionCapability } from "../helpers/actions.js";
 import { start } from '../../dist/core/unit/action/operations.js';
 import { ref as unitRef } from '../../dist/core/unit/query.js';
 import { createInput as createRouteDefinition } from '../../dist/core/battle/creation/route.js';
@@ -50,7 +50,7 @@ function definition(receiver = 'CHARACTER', overrides = {}, elementOptions = {})
     offense: { attack: 100 },
     allegiance: { side: receiver === 'CHARACTER' ? 'ALLY' : 'ENEMY' },
     layer: { type: 'GROUND' }, hitbox: { shape: hit },
-    action: { definitions: Definitions.empty().add(action()) },
+    action: actionCapability(action()),
     elemental: createArknightsElementalDefinition({ receiver, ...elementOptions }), ...overrides };
 }
 function unit(receiver = 'CHARACTER', overrides = {}, elementOptions = {}) {
@@ -313,7 +313,7 @@ test('elemental attacks select EP receivers without Vitality', () => {
     operations: [{ type: 'ELEMENT_DAMAGE', elementType: 'NEURAL', power: 100 }] }],
   });
   const healer = initialize({ id: 0, position: [0, 0], definition: definition('CHARACTER', {
-    action: { definitions: Definitions.empty().add(healingAction).add(damageAction) },
+    action: actionCapability(healingAction, damageAction),
   }) });
   const { vitality: omitted, ...receiverDefinition } = definition('CHARACTER');
   let receiver = initialize({ id: 1, position: [1, 0], definition: receiverDefinition });
@@ -342,7 +342,7 @@ test('elemental attack targeting uses current request-specific reception Rules',
   const neural = attackFor('NEURAL');
   const burn = attackFor('BURN');
   const caster = initialize({ id: 0, position: [0, 0], definition: definition('CHARACTER', {
-    action: { definitions: Definitions.empty().add(neural).add(burn) },
+    action: actionCapability(neural, burn),
   }) });
   const receiver = unit('ENEMY');
   let work = effectFixtureWork(caster, receiver);
@@ -370,9 +370,9 @@ function battle(receiver, type, { moving = false, targetStates } = {}) {
     ] }],
   });
   const caster = definition('CHARACTER', { hooks: [], id: 'caster', allegiance: { side: 'ALLY' },
-    action: { definitions: Definitions.empty().add(casterAttack) } });
+    action: actionCapability(casterAttack) });
   const victim = definition(receiver, { hooks: [], id: 'victim', allegiance: { side: 'ENEMY' },
-    action: { definitions: Definitions.empty().add(action(1)) },
+    action: actionCapability(action(1)),
     ...(moving ? { locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0.001, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } }, blockable: { volume: 1 } } : {}) });
   const base = createLegacyCombatSpec({ rows: 1, columns: 8, operators: [], enemies: [], maxTicks: 600, seed: 7 });
   const keepOpen = { hooks: [], id: 'future', vitality: { maxHp: 1, defense: 0, resistance: 0 }, locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } } };

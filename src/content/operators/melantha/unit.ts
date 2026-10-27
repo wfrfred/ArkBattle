@@ -1,31 +1,27 @@
-import { normal as normalSite } from "../terrain/condition.js";
-import { update as updateUnit } from "../../core/battle/unit.js";
-import { createArknightsElementalDefinition } from "../../data/arknights/elemental.js";
-import { Definitions } from "../../core/unit/action/definitions.js";
-import { create as createAttack } from "../actions/attack.js";
-import * as filters from "../../core/battle/targeting/filter.js";
-import * as compare from "../../core/battle/targeting/compare.js";
-import { first } from "../../core/battle/targeting/selector.js";
-import { get as getCurrentUnit, ref as unitRef } from "../../core/unit/query.js";
-import type { Profile } from "../../data/arknights/operator.js";
+import { normal as normalSite } from "../../terrain/condition.js";
+import { update as updateUnit } from "../../../core/battle/unit.js";
+import { createArknightsElementalDefinition } from "../../../data/arknights/elemental.js";
+import { create as createAction, createActions } from "../../../core/unit/action/initialize.js";
+import { get as getCurrentUnit, ref as unitRef } from "../../../core/unit/query.js";
+import type { Profile } from "../../../data/arknights/operator.js";
 
-import type { Definition as UnitDefinition } from "../../core/unit/unit.js";
-import type { Definitions as CapabilityDefinitions } from "../../core/unit/capability/catalog.js";
-import type { Definition as SkillDefinition } from "../../core/unit/capability/skill/capability.js";
-import { ref as activationRef } from "../../core/unit/capability/skill/activation.js";
-import { createDefinition as createDeployableDefinition } from "../../core/unit/capability/deployable/capability.js";
+import type { Definition as UnitDefinition } from "../../../core/unit/unit.js";
+import type { Definitions as CapabilityDefinitions } from "../../../core/unit/capability/catalog.js";
+import type { Definition as SkillDefinition } from "../../../core/unit/capability/skill/capability.js";
+import { ref as activationRef } from "../../../core/unit/capability/skill/activation.js";
+import { createDefinition as createDeployableDefinition } from "../../../core/unit/capability/deployable/capability.js";
 import {
     hasOffense,
     setAttackContribution,
     removeAttackContribution,
     type Offense,
-} from "../../core/unit/capability/offense/capability.js";
-import type { Definition as EffectDefinition } from "../../core/unit/effect/definition.js";
-import { install } from "../../core/unit/effect/operations.js";
-import * as attribute from "../../core/unit/contribution/attribute.js";
-import type { Direction } from "../../core/geometry/direction.js";
-import { fromTiles } from "../../core/geometry/range.js";
-import { secondsToTicks } from "../../data/arknights/tick.js";
+} from "../../../core/unit/capability/offense/capability.js";
+import type { Definition as EffectDefinition } from "../../../core/unit/effect/definition.js";
+import { install } from "../../../core/unit/effect/operations.js";
+import * as attribute from "../../../core/unit/contribution/attribute.js";
+import type { Direction } from "../../../core/geometry/direction.js";
+import { secondsToTicks } from "../../../data/arknights/tick.js";
+import { create as createAttack } from "./action.js";
 
 export interface Definition
     extends
@@ -118,6 +114,9 @@ export function create(profile: Profile, direction: Direction = "RIGHT"): Defini
         },
     };
 
+    const attack = createAttack(profile, direction);
+    const initializeAttack = createAction(attack);
+
     return {
         id: profile.id,
         profile,
@@ -147,44 +146,7 @@ export function create(profile: Profile, direction: Direction = "RIGHT"): Defini
             geometry: { radius: 0.70709997 },
         },
         action: {
-            definitions: Definitions.empty().add(
-                createAttack({
-                    id: "normal-attack",
-                    speed: profile.attributes.attackSpeed,
-                    triggerBindingId: "primary",
-                    intervalTicks: secondsToTicks(profile.attributes.baseAttackTime),
-                    recoveryTicks: 0,
-                    followUps: [],
-                    targetGroups: [
-                        {
-                            id: "primary",
-                            targeting: {
-                                purposes: ["DAMAGE"],
-                                filter: filters.and(
-                                    filters.damage,
-                                    filters.ground,
-                                    filters.or(
-                                        filters.range(fromTiles(profile.range, direction)),
-                                        filters.blocking,
-                                    ),
-                                ),
-                                selector: first(
-                                    1,
-                                    compare.combine(compare.blockedFirst, compare.distance),
-                                ),
-                            },
-                            operations: [
-                                {
-                                    type: "DAMAGE",
-                                    power: profile.attributes.attack,
-                                    powerSource: "SOURCE_ATTACK",
-                                    damageType: "PHYSICAL",
-                                },
-                            ],
-                        },
-                    ],
-                }),
-            ),
+            initialize: (battle) => createActions(battle, initializeAttack),
         },
         skill,
         hooks: [

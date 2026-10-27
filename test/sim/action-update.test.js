@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import * as actions from "../../dist/core/unit/action/operations.js";
 import { ref } from "../../dist/core/unit/action/action.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import { initialize } from "../../dist/core/unit/initialize.js";
 import * as units from "../../dist/core/unit/query.js";
 import { add as addUnit, remove as removeUnit } from "../../dist/core/battle/unit.js";
@@ -23,7 +23,7 @@ function create(programs = [program()]) {
         position: [0, 0],
         definition: { hooks: [],
             id: "update-owner",
-            action: { definitions: programs.reduce((definitions, item) => definitions.add(item), Definitions.empty()) },
+            action: actionCapability(...programs),
         },
     });
     const source = units.ref(initialized.value);
@@ -143,7 +143,7 @@ test("Action update distinguishes identical local execution IDs on different hos
     const fixture = create([configured]);
     const second = initialize(fixture.battle, {         id: 1,
         position: [1, 0],
-        definition: { hooks: [], id: "second-owner", action: { definitions: Definitions.empty().add(configured) } },
+        definition: { hooks: [], id: "second-owner", action: actionCapability(configured) },
     });
     const withSecond = addUnit(second.state, second.value);
     const started = actions.start(withSecond, units.ref(second.value), configured);

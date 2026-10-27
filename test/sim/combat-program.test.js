@@ -3,7 +3,7 @@ import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, unit, actionDefinition, geometry } from "../helpers/action-fixture.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import { createWithState } from "../../dist/content/actions/attack.js";
 import * as actions from "../../dist/core/unit/action/operations.js";
 import { advance } from "../../dist/core/unit/action/advance.js";
@@ -127,7 +127,7 @@ test("ordinary attack: live source attack reads current contributions and fixed 
         ],
     });
     const fixed = actionDefinition(5, { id: "fixed" });
-    const source = unit(0, { action: { definitions: Definitions.empty().add(live).add(fixed) } });
+    const source = unit(0, { action: actionCapability(live, fixed) });
     const initial = battle(source, unit(1));
     const boosted = updateUnit(initial, [{
         ...source,

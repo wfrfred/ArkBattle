@@ -35,7 +35,7 @@ import { appendEvents } from "../../dist/core/battle/state.js";
 import { add as addUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { initialize } from "../helpers/unit.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import { ref as actionRef } from "../../dist/core/unit/action/action.js";
 import { update as updateAction } from "../../dist/core/unit/action/operations.js";
 import { install as installEffect } from "../../dist/core/unit/effect/operations.js";
@@ -668,7 +668,7 @@ test('core battle propagates nested settlement errors without publishing battlef
     },
   };
   const input = deploymentBattleInput({ initialUnits: [
-    { definition: { hooks: [], id: 'nested-action-source', vitality: { maxHp: 100, defense: 0, resistance: 0 }, action: { definitions: Definitions.empty().add(action) } }, position: [0, 0] },
+    { definition: { hooks: [], id: 'nested-action-source', vitality: { maxHp: 100, defense: 0, resistance: 0 }, action: actionCapability(action) }, position: [0, 0] },
     { definition: { hooks: [], id: 'nested-target', vitality: { maxHp: 100, defense: 0, resistance: 0 } }, position: [1, 0] },
   ] });
   let runtime = initializeBattle(input);

@@ -2,7 +2,7 @@ import * as unitQueries from "../../dist/core/unit/query.js";
 import { damage as damageTargeting, healing as healingTargeting } from "../helpers/targeting.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { fixtureBattle } from "../helpers/unit.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import { create as createAttack } from "../../dist/content/actions/attack.js";
 import { healing } from "../helpers/vitality.js";
 import { initialize as initializeVitality } from "../../dist/core/unit/capability/vitality/capability.js";
@@ -65,14 +65,14 @@ test("native attack buff data builds a shared Definition and changes attacks thr
   const actor = { hooks: [],
     id: "native-skill-actor", vitality: { maxHp: 1000, defense: 0, resistance: 0 }, offense: { attack: 100 },
     allegiance: { side: "ALLY" }, layer: { type: "GROUND" }, skill: compiled,
-    action: { definitions: Definitions.empty().add(createAttack({ id: "normal",
+    action: actionCapability(createAttack({ id: "normal",
       triggerBindingId: "target", intervalTicks: 30, recoveryTicks: 0, followUps: [],
       targetGroups: [{ id: "target", targeting: damageTargeting({
         type: "DAMAGE", scope: { type: "RANGE", geometry },
         canTargetAir: true, includeBlockingRelations: false, preferBlockingRelations: false,
         ignoreTargetFree: false, ignoreInvisible: false, maxTargets: 1,
       }), operations: [{ type: "DAMAGE", powerSource: "SOURCE_ATTACK", power: 1, damageType: "TRUE" }] }],
-    })) },
+    })),
   };
   const target = { hooks: [],
     id: "stationary-content-target", targetable: { restrictions: [] }, spatialPresence: {}, vitality: { maxHp: 1000000, defense: 0, resistance: 0 }, allegiance: { side: "ENEMY" },

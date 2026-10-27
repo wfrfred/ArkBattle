@@ -70,7 +70,9 @@ Unit 装配在 unit/initialize.ts，公开 initialize(battle, input) → Result<
 
 装配按登记次序调用所选 initializer，逐个接续返回的 battle，再组合完整 Unit。初始化可以读取当前战场或按所属流程消费 RNG；后续初始化与创建流程使用返回版本，不能重新接回旧 battle。这个阶段 Unit 尚未登记，初始化不能假设自己或兄弟能力已经可从战场取得。登记、Skill 入场及 Unit 的 enter Hook 等登场结算由创建流程负责。
 
-Action Capability 在此阶段按静态 Definitions 次序执行每个行动 Definition.initialize，在单一 action.actions 容器中创建聚合条目：Definition、持久 state、初始就绪的 Cooldown 和 execution: null；即使尚未启动也已经存在。每次 start 只创建当前 Execution，宿主内 nextExecutionId 独立递增；Typed Ref 携带 host 与本轮 execution.id。step／onEnd 通过 Executing 类型取得非空执行，宿主引用由回调参数提供。完成或取消只清空 execution，保留最新持久 state 与 Cooldown。Skill 的持久私有数据同样随 Unit 初始化建立，本次激活数据在 activate 时创建。
+Action Capability 的 Definition 保存 initialize(battle) → Result<Actions> 和可选 select。具体内容在类型明确处创建行动初始化函数，再以 createActions 顺序组合；Capability 接续返回的 BattleState，将 Actions 放入公共 State，并建立执行 ID 计数、贡献、规则和 Hook 的初值。配置不另存静态 Definition 集合，也不让调度器恢复具体内容类型。
+
+每个行动创建程序生成配对的 Definition、持久 state、初始就绪的 Cooldown 和 execution: null；即使尚未启动也已经存在。每次 start 只创建当前 Execution，宿主内 nextExecutionId 独立递增；Typed Ref 携带 host 与本轮 execution.id。step／onEnd 通过 Executing 类型取得非空执行，宿主引用由回调参数提供。完成或取消只清空 execution，保留最新持久 state 与 Cooldown。Skill 的持久私有数据同样随 Unit 初始化建立，本次激活数据在 activate 时创建。
 
 路线、部署占格和 Card 归属等属于具体实例的创建业务。Placement 接收可选 tile，提供登记地块时要求 Unit 已声明 Occupancy，登记 Slot 来自该 Capability 的 Definition；状态与双槽反向表见 [Occupancy 与 Support](occupancy.md)；部署在通用初始化结果上设置本次费用与 Card 等字段。带路线的 Unit 由 battle/creation/routed-unit.ts 的 initialize(battle, input) 创建，公开 Input／Initialization，结果字段为 unit；它先规范化路线并采样总偏移，将最终 Route Definition 与初始位置交给 Unit 初始化。输出 Definition 保留原 D 的内容字段和各联合分支元数据，仅将 route 字段替换为规范化的 Route.Definition，不把原 Definition 收窄为通用能力配置。Route 与 Locomotion 通过 Catalog 独立装配，见 [Navigation、Route 与 Locomotion 设计](navigation.md)。
 
@@ -80,7 +82,7 @@ Core 不提供干员或敌人 Archetype 层；内容直接组合 Unit Definition
 
 ## 待整理：单位标签与 Profile 依赖
 
-泥岩的萨卡兹减伤目前通过 content/operators/mudrock.ts 的 hasSarkazTag 读取攻击者 definition.profile.tags。这里需要的是战斗中的单位标签语义，完整数据 Profile 不应成为跨内容查询接口。
+泥岩的萨卡兹减伤目前通过 content/operators/mudrock/unit.ts 的 hasSarkazTag 读取攻击者 definition.profile.tags。这里需要的是战斗中的单位标签语义，完整数据 Profile 不应成为跨内容查询接口。
 
 后续整理单位标签时，应明确数据归属和查询接口，再迁移萨卡兹判断与 Profile 挂载。迁移必须保留现有减伤语义。标签归属确定前保留当前运行时依赖；名称、外观等展示信息与构造时已分配到各能力的基础属性分别按其职责处理。
 

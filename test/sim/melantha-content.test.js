@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { prepare } from '../../dist/data/arknights/operator.js';
-import { create } from '../../dist/content/operators/melantha.js';
+import { create } from '../../dist/content/operators/melantha/unit.js';
 
 import { initialize } from "../helpers/unit.js";
 import { createBattleState } from '../../dist/core/battle/state.js';
@@ -79,12 +79,12 @@ test('explicit skill finish removes only skill output, preserving Melantha talen
 test('ordinary attacks read current talent and skill contributions instead of captured table attack', () => {
 
   const definition = create(profile());
-  const attack = definition.action.definitions.values().toArray()[0];
   const receiver = initialize({ id: 1, position: [1, 0], definition: { hooks: [],
     id: 'receiver', targetable: { restrictions: [] }, vitality: { maxHp: 10000, defense: 0, resistance: 0 }, allegiance: { side: 'ENEMY' }, layer: { type: 'GROUND' },
     hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: .1 } },
   } });
   const source = initialize({ id: 0, position: [0, 0], definition });
+  const attack = source.action.actions.read('normal-attack', self => self.definition);
   let state = add(createBattleState(fixtureBattlefieldState([receiver])), source);
   state = updateUnit(state, [{ ...getUnit(state, 0), skill: { ...getUnit(state, 0).skill, sp: { ...getUnit(state, 0).skill.sp, value: 40 } } }]);
   state = activateSkill({ ...state, tick: 0  }, unitRef(getUnit(state, 0))).state;
@@ -108,7 +108,6 @@ test('the ordinary ground block radius catches a target 0.6 units from Melantha'
 
 test('Melantha still checks active targeting restrictions on enemies she is blocking', () => {
   const definition = create(profile());
-  const attack = definition.action.definitions.values().toArray()[0];
   for (const value of [invisibleRestriction, camouflageRestriction, untargetableRestriction]) {
     const receiver = initialize({ id: 1, position: [0.6, 0], definition: { hooks: [],
       id: 'hidden-blocked-enemy', targetable: { restrictions: [{ id: 'innate', value }] },
@@ -117,6 +116,7 @@ test('Melantha still checks active targeting restrictions on enemies she is bloc
       hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: .1 } },
     } });
     const source = initialize({ id: 0, position: [0, 0], definition });
+    const attack = source.action.actions.read('normal-attack', self => self.definition);
     const state = advanceBlocking(createBattleState(fixtureBattlefieldState([source, receiver])));
 
     assert.deepEqual(blockingQueries.relations(state).map(({ blocker, blocked }) => ({ blockerUnitId: blocker.id, blockedUnitId: blocked.id })), [{ blockerUnitId: 0, blockedUnitId: 1 }]);

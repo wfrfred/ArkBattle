@@ -12,11 +12,13 @@ Meta 可以选择配置或提供关卡输入。卫戍的普通／金色等政策
 
 ## 内容目录与共享规则
 
-每种敌人拥有独立的内容模块，例如 `enemies/hound.ts`、`enemies/crossbowman.ts`。具体模块负责自己的创建入口、特殊行为及所用弹道；确实共用的地面能力装配和攻击时序可以由普通函数提供。场景选择敌人和配置波次，不通过一个带敌人 ID 分支的中央工厂构造所有内容。
+具体内容按角色目录组织，例如 `enemies/hound/`、`enemies/crossbowman/`、`operators/melantha/`、`operators/mudrock/`。action.ts 描述该角色的具体行动、目标条件、私有状态和输出程序；unit.ts 组装属性、Capability、天赋与行动选择策略。Unit 的 action.initialize 用 createActions 接续各项具体创建程序，运行时只维护 Actions，不另建静态定义注册表。
+
+弩手的 action.ts 分别定义 melee 与 ranged，两者有各自的冷却和执行状态。unit.ts 按当前阻挡关系选择近战或远程，在已有主动作执行期间不并发启动另一主动作；选择和互斥属于内容策略。场景选择敌人和配置波次，不通过一个带敌人 ID 分支的中央工厂构造所有内容。确实共用的地面属性与能力装配由普通函数提供，具体攻击程序归各自内容。
 
 装置行为位于 `devices/`。`crate.ts`、`shooting-platform.ts` 接受类型化配置并构造 Unit Definition，通过 Unit 的 enter／leave Hook 处理改格和清理；实际共用的改格函数放在 Content 内。射击台在 Occupancy 的 SUPPORT Definition 中提供 occupantAdded／occupantRemoved Hook，为当前乘员安装独占的禁阻挡 Blocker.Rule，解除登记或消失时清理自身规则，不改写地块阻挡许可。Data 只解析资源与关卡实例，并根据资源标识选择工厂，不在运行程序中按 Prefab Key 决定业务。内部批量登记交换用于验证结构与同步通知，不能证明游戏允许自由搬动平台。
 
-干员按职业、分支、干员组织：`operators/defender/unyield/mudrock.ts`、`operators/guard/fearless/melantha.ts`。职业目录负责分类；分支共享模块表达共同特性和默认行为；具体干员显式组合这些函数，接入自己的天赋、技能及模组变化。该目录结构不要求建立模板继承、中央分支注册表或逐层转发工厂。只有出现实际共享规则时才建立对应模块。
+干员的分支共享模块表达共同特性和默认行为；具体干员显式组合这些函数，接入自己的天赋、技能及模组变化。不建立模板继承、中央分支注册表或逐层转发工厂。只有出现实际共享规则时才建立对应模块。
 
 例如，不屈者的友方普通治疗限制和 UNY-X 模组的阻挡来源减伤属于分支规则；泥岩的护盾、扣盾自疗、萨卡兹减伤和二技能属于个人内容。分支函数继续读取规范化 Profile 中的阻挡容量、攻击间隔和范围，不按职业或分支名称硬编码所有配置下的数值。数据表的职业／分支标识用于分类和配置核对，不承担动态选择行为程序的职责。
 

@@ -6,7 +6,7 @@ import { test } from 'node:test';
 import { createTacticalContentDemo, defaults } from '../../dist/legacy/tactical-demo-content.js';
 import { parseLevelDefinition } from '../../dist/data/arknights/level.js';
 import { initialize as initializeBattle, step as stepBattle } from '../../dist/core/battle/runtime.js';
-import { readShield } from '../../dist/content/operators/mudrock.js';
+import { readShield } from '../../dist/content/operators/mudrock/unit.js';
 
 const data = JSON.parse(readFileSync(new URL('../fixtures/arknights/main-mode-units.json', import.meta.url)));
 const json = value => JSON.parse(JSON.stringify(value));

@@ -6,7 +6,7 @@ import { update as updateUnit } from "../../dist/core/battle/unit.js";
 import { create } from "../../dist/core/battlefield/state.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "./tiles.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "./actions.js";
 
 const tile = createTile({
     heightType: "LOWLAND", meleeBlockable: true, buildableType: "ALL", passableMask: "ALL",
@@ -23,7 +23,7 @@ export function fixtureDefinition(capability) {
     switch (capability) {
         case "offense": return { attack: 0 };
         case "vitality": return { maxHp: 100, defense: 0, resistance: 0 };
-        case "action": return { definitions: Definitions.empty() };
+        case "action": return actionCapability();
         case "locomotion": return {
             halfBodyWidth: 0, minSpeed: 0, speed: 0,
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 },

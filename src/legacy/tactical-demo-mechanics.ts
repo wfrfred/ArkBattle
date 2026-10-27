@@ -1,9 +1,5 @@
-import { Definitions } from "../core/unit/action/definitions.js";
-import {
-    create as createAttack,
-    isAttack,
-    type Configuration as AttackConfiguration,
-} from "../content/actions/attack.js";
+import { create as createAction, createActions } from "../core/unit/action/initialize.js";
+import { create as createAttack } from "../content/actions/attack.js";
 import type { Input } from "../core/battle/contract.js";
 
 import type { Map } from "../core/battlefield/map/map.js";
@@ -47,46 +43,41 @@ export function createTacticalMechanicsDemo(
     const maxTicks = (scenario === "SKILL" ? 120 : 60) * TICKS_PER_SECOND;
     const elementType = scenario === "SKILL" ? null : ELEMENT_SCENARIOS[scenario];
     const sourceDefinition = source.definition;
-    const action = sourceDefinition.action.definitions.read<AttackConfiguration | null>(
-        "normal-attack",
-        (current) => (isAttack(current) ? current.attack : null),
-    );
-
-    if (action === undefined || action === null) {
-        throw new TypeError("mechanics demo requires an ordinary attack");
-    }
-
+    const action = sourceDefinition.attack.attack;
     const group = action.targetGroups[0];
-    const definition =
-        scenario === "SKILL"
-            ? {
-                  ...sourceDefinition,
-                  skill: compileArknightsAttackBuffSkill(rawSkill, 4),
-              }
-            : {
-                  ...sourceDefinition,
-                  action: {
-                      ...sourceDefinition.action,
-                      definitions: Definitions.empty().add(
-                          createAttack({
-                              ...action,
-                              targetGroups: [
-                                  {
-                                      ...group,
-                                      operations: [
-                                          ...group.operations,
-                                          {
-                                              type: "ELEMENT_DAMAGE",
-                                              elementType: ELEMENT_SCENARIOS[scenario],
-                                              power: 400,
-                                          },
-                                      ],
-                                  },
-                              ],
-                          }),
-                      ),
-                  },
-              };
+    let definition: typeof sourceDefinition & {
+        readonly skill?: ReturnType<typeof compileArknightsAttackBuffSkill>;
+    };
+
+    if (scenario === "SKILL") {
+        definition = { ...sourceDefinition, skill: compileArknightsAttackBuffSkill(rawSkill, 4) };
+    } else {
+        const attack = createAttack({
+            ...action,
+            targetGroups: [
+                {
+                    ...group,
+                    operations: [
+                        ...group.operations,
+                        {
+                            type: "ELEMENT_DAMAGE",
+                            elementType: ELEMENT_SCENARIOS[scenario],
+                            power: 400,
+                        },
+                    ],
+                },
+            ],
+        });
+        const initializeAttack = createAction(attack);
+        definition = {
+            ...sourceDefinition,
+            attack,
+            action: {
+                ...sourceDefinition.action,
+                initialize: (battle) => createActions(battle, initializeAttack),
+            },
+        };
+    }
 
     const target = {
         ...spawn.definition,

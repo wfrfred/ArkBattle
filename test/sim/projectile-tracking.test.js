@@ -7,7 +7,7 @@ import * as projectiles from '../../dist/core/battle/projectile.js';
 import * as projectilesQuery from '../../dist/core/projectile/query.js';
 import { advance } from '../../dist/core/battle/projectile.js';
 import { ref } from '../../dist/core/unit/query.js';
-import { createArrow } from '../../dist/content/enemies/crossbowman.js';
+import { createArrow } from '../../dist/content/enemies/crossbowman/action.js';
 import * as tracking from '../../dist/content/projectiles/tracking.js';
 import { unit as actionUnit } from '../helpers/action-fixture.js';
 import { createTacticalProjectileDemo } from '../../dist/legacy/projectile-demo.js';
@@ -141,14 +141,15 @@ test('arrow damage retains an existing source identity even when its HP is zero 
 test('demo projectile damage clears removed sources for both live and cached attack policies', () => {
   for (const cachedOnly of [false, true]) {
     const actor = actionUnit(0, { action: true });
+    const attack = actor.action.actions.read('primary', self => self.definition);
     const { input } = createTacticalProjectileDemo({
-      initialUnits: [{ definition: actor.definition, position: actor.position }],
+      initialUnits: [{ definition: { ...actor.definition, attack }, position: actor.position }],
       schedule: { type: 'TIMELINE', spawns: [] },
     }, cachedOnly);
     const source = initialize({ id: 0, ...input.initialUnits[0] });
     const target = actionUnit(1);
     const battle = addUnit(addUnit(fixtureBattle(), source), target);
-    const started = startAction(battle, ref(source), source.definition.action.definitions.get('primary'));
+    const started = source.action.actions.read('primary', self => startAction(battle, ref(source), self.definition));
     assert.equal(started.value.type, 'STARTED');
     const launched = advanceAction({ ...started.state, tick: 6 }, started.value.ref);
     const self = projectilesQuery.all(launched).toArray()[0];

@@ -5,7 +5,7 @@ import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { fixtureBattlefieldState as fixtureBattlefield } from "../helpers/battlefield.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import * as actions from "../../dist/core/unit/action/operations.js";
 import { create as createBattlefield } from "../../dist/core/battlefield/state.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
@@ -242,7 +242,7 @@ test("effect terminal callback can retire its host and settle remote Action and 
         initialize({
             id: 0,
             position: [0, 0],
-            definition: { hooks: [], id: "source", vitality: { maxHp: 100, defense: 0, resistance: 0 }, skill, action: { definitions: Definitions.empty().add(action) } },
+            definition: { hooks: [], id: "source", vitality: { maxHp: 100, defense: 0, resistance: 0 }, skill, action: actionCapability(action) },
         }),
         initialize({
             id: 1,

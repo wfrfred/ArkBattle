@@ -7,7 +7,7 @@ import { fixtureBattlefieldState } from "../helpers/battlefield.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { Projectiles } from "../../dist/core/projectile/projectiles.js";
 import { Actions } from "../../dist/core/unit/action/actions.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 
 const data = { lookup() {} };
 
@@ -35,7 +35,7 @@ const withAction = (actor, execution = { id: 0, startedAtTick: 0, status: 'RUNNI
   };
   return {
     ...actor,
-    definition: { ...actor.definition, action: { definitions: Definitions.empty().add(definition) } },
+    definition: { ...actor.definition, action: actionCapability(definition) },
     action: {
       actions: Actions.empty().add({
         definition, state: {}, cooldown: { periodTicks: 10, readyAtTick: 0 }, execution,

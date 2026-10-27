@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize } from "../../dist/core/unit/initialize.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import * as actions from "../../dist/core/unit/action/operations.js";
 import * as effects from "../../dist/core/unit/effect/operations.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
@@ -16,8 +16,8 @@ const program = (id, configuration = {}) => ({
     ...configuration,
 });
 
-function create(battle, definitions, id = 0) {
-    const initialized = initialize(battle, { id, position: [id, 0], definition: { hooks: [], id: "persistent", action: { definitions } } });
+function create(battle, capability, id = 0) {
+    const initialized = initialize(battle, { id, position: [id, 0], definition: { hooks: [], id: "persistent", action: capability } });
     return { state: addUnit(initialized.state, initialized.value), source: unitRef(initialized.value), unit: initialized.value };
 }
 
@@ -30,9 +30,9 @@ test("Action initializes every aggregate before any start and threads battle res
         },
     });
     const first = make("first"), second = make("second");
-    const definitions = Definitions.empty().add(first).add(second);
+    const capability = actionCapability(first, second);
     const initial = fixtureBattle(37, { rngState: 12 });
-    const a = create(initial, definitions), b = create(a.state, definitions, 1);
+    const a = create(initial, capability), b = create(a.state, capability, 1);
     assert.deepEqual(calls, [["first", 12], ["second", 13], ["first", 14], ["second", 15]]);
     assert.equal(b.state.execution.rngState, 16);
     assert.equal(initial.execution.rngState, 12);
@@ -58,7 +58,7 @@ test("Action completion and cancellation clear execution while preserving persis
             return { state: actions.updateState(state, source, self.definition, current => ({ count: current.count + 1 })), value: count === 0 };
         },
     });
-    const fixture = create(fixtureBattle(), Definitions.empty().add(definition));
+    const fixture = create(fixtureBattle(), actionCapability(definition));
     const first = actions.start(fixture.state, fixture.source, definition);
     assert.equal(first.value.type, "STARTED");
     assert.equal(actions.get(first.state, first.value.ref), undefined);
@@ -86,7 +86,7 @@ test("Action startup commits cooldown using the latest aggregate after callbacks
             return { state, value: { sampledCount: self.state.count } };
         },
     });
-    const fixture = create(fixtureBattle(), Definitions.empty().add(definition).add(sibling));
+    const fixture = create(fixtureBattle(), actionCapability(definition, sibling));
     const started = actions.start(fixture.state, fixture.source, definition);
     assert.equal(started.value.type, "STARTED");
     assert.deepEqual(actions.getAction(started.state, fixture.source, definition).state, { count: 7 });
@@ -107,7 +107,7 @@ test("Action termination preserves persistent and cooldown updates from dependen
             return actions.updateCooldown(state, source, self.definition.id, current => ({ ...current, readyAtTick: 80 }));
         },
     });
-    const fixture = create(fixtureBattle(), Definitions.empty().add(definition));
+    const fixture = create(fixtureBattle(), actionCapability(definition));
     const started = actions.start(fixture.state, fixture.source, definition);
     const dependency = {
         id: "ending-dependency", initialize: () => ({}),

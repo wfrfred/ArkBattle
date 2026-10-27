@@ -12,7 +12,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { prepare } from "../../dist/data/arknights/operator.js";
-import { create, readShield } from "../../dist/content/operators/mudrock.js";
+import { create, readShield } from "../../dist/content/operators/mudrock/unit.js";
 
 import { initialize } from "../helpers/unit.js";
 import { createBattleState } from "../../dist/core/battle/state.js";

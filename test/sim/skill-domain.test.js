@@ -10,7 +10,7 @@ import { create as value } from "../../dist/core/unit/contribution/attribute.js"
 import { initialize } from "../helpers/unit.js";
 import { get as getHookHost, ref } from "../../dist/core/unit/query.js";
 import { effectFixtureWork } from "../helpers/effects.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import { start as startAction } from "../../dist/core/unit/action/operations.js";
 import { fixture, definition, at, change, currentRef } from "../helpers/skill.js";
 import * as effects from "../../dist/core/unit/effect/operations.js";
@@ -449,7 +449,7 @@ test("generic Action scheduling does not itself award ACTION SP", () => {
     };
     const unit = initialize({ id: 1, position: [0, 0], definition: {
         id: "actor", skill: definition({ sp: resource({ recovery: { type: "ACTION", amount: 1 } }) }),
-        action: { definitions: Definitions.empty().add(action) },
+        action: actionCapability(action),
     } });
     const battle = startAction(effectFixtureWork(unit), ref(unit), action).state;
     assert.equal(read(battle).sp.value, 0);

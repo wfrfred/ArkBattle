@@ -4,10 +4,11 @@ import { createInput, type Input as RouteInput } from "../core/battle/creation/r
 import { prepare as prepareOperator, type Configuration } from "../data/arknights/operator.js";
 import { prepare as prepareEnemy } from "../data/arknights/enemy.js";
 import { TICKS_PER_SECOND } from "../core/tick.js";
-import * as melantha from "../content/operators/melantha.js";
-import * as mudrock from "../content/operators/mudrock.js";
-import { create as createHound } from "../content/enemies/hound.js";
-import { create as createCrossbowman, createArrow } from "../content/enemies/crossbowman.js";
+import * as melantha from "../content/operators/melantha/unit.js";
+import * as mudrock from "../content/operators/mudrock/unit.js";
+import { create as createHound } from "../content/enemies/hound/unit.js";
+import { create as createCrossbowman } from "../content/enemies/crossbowman/unit.js";
+import { createArrow } from "../content/enemies/crossbowman/action.js";
 import type { LegacyUnitMetadata } from "./tactical-demo-presentation.js";
 import type { Unit } from "../core/unit/unit.js";
 

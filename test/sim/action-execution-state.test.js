@@ -3,7 +3,7 @@ import { setRule } from "../../dist/core/unit/capability/action/capability.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, unit } from "../helpers/action-fixture.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
@@ -24,7 +24,7 @@ test("action storage: heterogeneous definitions retain their private state and c
     const first = program("number", { start: (state) => ({ state, value: { count: 3 } }) });
     const second = program("text", { start: (state) => ({ state, value: { message: "ready" } }) });
     const initial = battle(
-        unit(0, { action: { definitions: Definitions.empty().add(first).add(second) } }),
+        unit(0, { action: actionCapability(first, second) }),
     );
     const source = unitRef(getUnit(initial, 0));
     const a = actions.start(initial, source, first),
@@ -41,7 +41,7 @@ test("action storage: same-definition reentry is rejected while another definiti
     const first = program("first"),
         second = program("second");
     const initial = battle(
-        unit(0, { action: { definitions: Definitions.empty().add(first).add(second) } }),
+        unit(0, { action: actionCapability(first, second) }),
     );
     const source = unitRef(getUnit(initial, 0));
     const a = actions.start(initial, source, first);
@@ -94,7 +94,7 @@ test("action storage: a throwing later instance cannot mutate earlier published 
         },
     });
     const initial = battle(
-        unit(0, { action: { definitions: Definitions.empty().add(first).add(second) } }),
+        unit(0, { action: actionCapability(first, second) }),
     );
     const source = unitRef(getUnit(initial, 0)),
         a = actions.start(initial, source, first),
@@ -119,7 +119,7 @@ test("action: startup rules prohibit new instances while an accepted program kee
     });
     const second = program("blocked");
     const initial = battle(
-        unit(0, { action: { definitions: Definitions.empty().add(first).add(second) } }),
+        unit(0, { action: actionCapability(first, second) }),
     );
     const source = unitRef(getUnit(initial, 0)),
         started = actions.start(initial, source, first);

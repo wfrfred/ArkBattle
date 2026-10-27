@@ -4,7 +4,7 @@ import { test } from "node:test";
 import { battle, unit } from "../helpers/action-fixture.js";
 import * as cooldown from "../../dist/core/unit/action/cooldown.js";
 import * as actions from "../../dist/core/unit/action/operations.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import {
     resolveInterval,
     resolveSpeed,
@@ -110,7 +110,7 @@ test("action timing: starting uses contributions and cooldowns from the returned
         },
     });
     const initial = battle(unit(0, {
-        action: { definitions: Definitions.empty().add(definition).add(sibling) },
+        action: actionCapability(definition, sibling),
     }));
     const started = actions.start(initial, unitRef(getUnit(initial, 0)), definition);
     assert.equal(started.value.type, "STARTED");
@@ -178,7 +178,7 @@ test("action timing: each configured definition retains its own cooldown", () =>
     const first = program("short", { intervalTicks: 10 }),
         second = program("long", { intervalTicks: 30 });
     const initial = battle(
-        unit(0, { action: { definitions: Definitions.empty().add(first).add(second) } }),
+        unit(0, { action: actionCapability(first, second) }),
     );
     const source = unitRef(getUnit(initial, 0));
     const a = actions.start(initial, source, first),

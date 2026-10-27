@@ -5,7 +5,7 @@ import { calculateDamage } from "../../dist/core/battle/damage/calculate.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { definition as skillDefinition } from "../helpers/skill.js";
 import { enter as enterSkill } from "../../dist/core/unit/capability/skill/operations.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import { create as createAttack } from "../../dist/content/actions/attack.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { fixtureBattlefieldState } from "../helpers/battlefield.js";
@@ -66,18 +66,25 @@ function coreCombatRoute(startPosition = [1, 8], overrides = {}) {
 
 
 function unitFacts(unit) {
-  return unit.action === undefined ? unit : {
+  if (unit.action === undefined) return unit;
+  const actionDefinitionFacts = ({ initialize, start, step, onEnd, ...definition }) => {
+    if (definition.attack !== undefined) {
+      definition.attack = { ...definition.attack, targetGroups: definition.attack.targetGroups.map(group => {
+        const { filter, selector, ...targeting } = group.targeting;
+        return { ...group, targeting };
+      }) };
+    }
+    return definition;
+  };
+  const { initialize, ...configuration } = unit.definition.action;
+  const definition = { ...unit.definition, action: configuration };
+  if (definition.attack !== undefined) definition.attack = actionDefinitionFacts(definition.attack);
+  return {
     ...unit,
+    definition,
     action: { ...unit.action, actions: new Map(unit.action.actions.values().map(state => {
       const id = state.definition.id;
-      const { initialize, start, step, onEnd, ...definition } = state.definition;
-      if (definition.attack !== undefined) {
-        definition.attack = { ...definition.attack, targetGroups: definition.attack.targetGroups.map(group => {
-          const { filter, selector, ...targeting } = group.targeting;
-          return { ...group, targeting };
-        }) };
-      }
-      return [id, { ...state, definition }];
+      return [id, { ...state, definition: actionDefinitionFacts(state.definition) }];
     })) },
   };
 }
@@ -314,7 +321,7 @@ test('core combat: immutable updates preserve earlier combat state', () => {
   assert.deepEqual((battle = advanceBattle(battle, [])), (replay = advanceBattle(replay, [])));
   const snapshot = battle;
   const operator = snapshot.battlefield.units.get(0);
-  const actionId = operator.definition.action.definitions.values().toArray()[0].id;
+  const actionId = operator.action.actions.values().toArray()[0].definition.id;
   const readyAtTick = operator.action.actions.get(actionId).cooldown.readyAtTick;
   const hp = operator.vitality.hp;
   assert.deepEqual(blockingQueries.relations(snapshot).map(({ blocker, blocked }) => [blocker.id, blocked.id]), [[0, 1]]);
@@ -339,7 +346,7 @@ test('core combat: immutable updates preserve earlier combat state', () => {
   assert.deepEqual(blockingQueries.relations(draft).map(({ blocker, blocked }) => ([blocker.id, blocked.id])), []);
   assert.equal(unitQueries.get(draft, { id: 0 }).action.actions.get(actionId).cooldown.readyAtTick, 999999);
   const targetingRequest = { source: unitRef(snapshot.battlefield.units.get(1)),
-    ...operator.definition.action.definitions.values().toArray()[0].attack.targetGroups[0].targeting };
+    ...operator.action.actions.values().toArray()[0].definition.attack.targetGroups[0].targeting };
   assert.equal(allowsRestrictions({ battlefield }, targetingRequest, unitQueries.get(draft, { id: 0 })), false);
 
   assert.equal(unitQueries.get(previous, { id: 0 }), operator);
@@ -380,12 +387,12 @@ test('core combat: the limited legacy adapter rejects unsupported content and pr
     enemies: [{ definition: walker({ bat: 2, aspd: 100, speed: 1 }), route: coreCombatRoute() }],
   };
   let battle = createLegacyCombatBattle(options);
-  assert.equal(battle.battlefield.units.get(0).definition.action.definitions.values().toArray()[0].intervalTicks, 15);
+  assert.equal(battle.battlefield.units.get(0).action.actions.values().toArray()[0].definition.intervalTicks, 15);
   (battle = advanceBattle(battle, []));
   const enemy = battle.battlefield.units.get(1);
 
-  assert.equal(enemy.definition.action.definitions.values().toArray()[0].intervalTicks, 60);
-  assert.equal(battle.battlefield.units.get(0).definition.action.definitions.values().toArray()[0].speed, 200);
+  assert.equal(enemy.action.actions.values().toArray()[0].definition.intervalTicks, 60);
+  assert.equal(battle.battlefield.units.get(0).action.actions.values().toArray()[0].definition.speed, 200);
   assert.equal(enemy.definition.locomotion.speed, 1 / 60);
   assert.throws(() => createLegacyCombatBattle({ ...options, operators: [{ definition: guard({ skill: { spCost: 1 } }), position: [1, 5] }] }), /does not execute operator skills/);
   assert.throws(() => createLegacyCombatBattle({ ...options, operators: [{ definition: guard({ dmgType: 'heal' }), position: [1, 5] }] }), /only supports physical, arts and true damage/);
@@ -473,9 +480,9 @@ function actionUnit(id, side, position, { hp = 100, effects: initialEffects = []
     id: `action_unit_${id}`, targetable: { restrictions: [] }, vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side },
     layer: { type: 'GROUND' }, hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.1 } }, blocker: { capacity: 0, geometry: { radius: 0 } },
     ...(skill === undefined ? {} : { skill }),
-    action: { definitions: Definitions.empty().add(action ?? attackDefinition([
+    action: actionCapability(action ?? attackDefinition([
       { id: 'primary', targeting: damageTargeting(), operations: [damageEffect(0)] },
-    ])) },
+    ])),
   };
   let unit = initialize({ id, definition, position });
   unit = { ...unit, vitality: { ...unit.vitality, hp } };
@@ -691,7 +698,7 @@ test('core action: healing target selection owns the heal-free exception', () =>
     const source = actionUnit(0, 'ALLY', [0, 0], { action });
     const target = actionUnit(1, 'ALLY', [1, 0], { hp: 40, effects: [healFree] });
     const before = JSON.stringify([source, target]);
-    const result = startSingleAction(source, source.definition.action.definitions.values().toArray()[0], {
+    const result = startSingleAction(source, source.action.actions.values().toArray()[0].definition, {
       battlefield: fixtureBattlefieldState([source, target]), tick: 0,
     });
     const heals = result.events.filter(event => event.type === 'HEAL');
@@ -708,7 +715,7 @@ test('core action: explicitly declared query purposes gate mixed outputs while s
   const mixed = actionUnit(0, 'ALLY', [0, 0], { action: attackDefinition([
     { id: 'attack', targeting: damageTargeting({ purposes: ['DAMAGE', 'HEAL'] }), operations: [damageEffect(10), healEffect(5)] },
   ]) });
-  const result = startSingleAction(mixed, mixed.definition.action.definitions.values().toArray()[0], {
+  const result = startSingleAction(mixed, mixed.action.actions.values().toArray()[0].definition, {
     battlefield: fixtureBattlefieldState([mixed, target]), tick: 0,
   });
   assert.deepEqual(result.events, []);
@@ -716,7 +723,7 @@ test('core action: explicitly declared query purposes gate mixed outputs while s
   const damageOnly = actionUnit(0, 'ALLY', [0, 0], { action: attackDefinition([
     { id: 'attack', targeting: damageTargeting(), operations: [damageEffect(10), healEffect(5)] },
   ]) });
-  const permitted = startSingleAction(damageOnly, damageOnly.definition.action.definitions.values().toArray()[0], {
+  const permitted = startSingleAction(damageOnly, damageOnly.action.actions.values().toArray()[0].definition, {
     battlefield: fixtureBattlefieldState([damageOnly, target]), tick: 0,
   });
   assert.equal(permitted.events.find(event => event.type === 'DAMAGE').hp, 70);
@@ -725,7 +732,7 @@ test('core action: explicitly declared query purposes gate mixed outputs while s
   const source = actionUnit(0, 'ALLY', [0, 0], { hp: 60, effects: [healFree], action: attackDefinition([
     { id: 'attack', targeting: damageTargeting(), operations: [damageEffect(10)] },
   ], [{ receiver: { type: 'SOURCE' }, operation: healEffect(15) }]) });
-  const stepped = startSingleAction(source, source.definition.action.definitions.values().toArray()[0], {
+  const stepped = startSingleAction(source, source.action.actions.values().toArray()[0].definition, {
     battlefield: fixtureBattlefieldState([source, target]), tick: 0,
   });
   assert.deepEqual(stepped.events.map(event => event.type), ['ACTION', 'ACTION_RELEASED', 'DAMAGE', 'HEAL', 'ACTION_FINISHED']);
@@ -743,7 +750,7 @@ test('core action: secondary target groups cannot trigger the action and use ind
   ]);
   const source = actionUnit(0, 'ALLY', [0, 0], { action: definition });
   const friend = actionUnit(2, 'ALLY', [2, 0], { hp: 40 });
-  const compiled = source.definition.action.definitions.values().toArray()[0];
+  const compiled = source.action.actions.values().toArray()[0].definition;
   const noEnemy = startSingleAction(source, compiled, { battlefield: fixtureBattlefieldState([source, friend]), tick: 0 });
   assert.deepEqual(noEnemy.units.map(unit => unit.id), [source.id, friend.id]);
   assert.deepEqual(noEnemy.removedUnitIds, []);
@@ -799,7 +806,7 @@ test('core action: binding follow-ups retain the selected target and read preced
   ], [{ receiver: { type: 'BINDING', bindingId: 'restore' }, operation: healEffect(5) }]) });
   const first = actionUnit(1, 'ALLY', [1, 0], { hp: 30 });
   const second = actionUnit(2, 'ALLY', [2, 0], { hp: 40 });
-  const result = startSingleAction(source, source.definition.action.definitions.values().toArray()[0], {
+  const result = startSingleAction(source, source.action.actions.values().toArray()[0].definition, {
     battlefield: fixtureBattlefieldState([source, first, second]), tick: 0,
   });
 

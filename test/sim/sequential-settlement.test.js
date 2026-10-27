@@ -6,7 +6,7 @@ import { add as addUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { remove } from "../../dist/core/battle/unit.js";
 
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 import * as actions from "../../dist/core/unit/action/operations.js";
 import { advance as advanceAction } from "../../dist/core/unit/action/advance.js";
 import { install } from "../../dist/core/unit/effect/operations.js";
@@ -34,7 +34,7 @@ for (const nested of ["cancel", "advance", "advance complete", "advance waiting"
                     nested === "advance waiting" && state.tick >= self.execution.state.finishAtTick) };
             },
         };
-        let state = battle(unit(0, { action: { definitions: Definitions.empty().add(first).add(second) } }), unit(1));
+        let state = battle(unit(0, { action: actionCapability(first, second) }), unit(1));
         const acceptedFirst = actions.start(state, unitRef(getUnit(state, 0)), first);
         const firstRef = acceptedFirst.value.ref;
         const acceptedSecond = actions.start(acceptedFirst.state, unitRef(getUnit(state, 0)), second);

@@ -16,7 +16,7 @@ import { update as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import * as actions from "../../dist/core/unit/action/operations.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "../helpers/actions.js";
 
 function spec(initialUnits) {
     return {
@@ -193,7 +193,7 @@ test("action runtime: host order advances old instances before selection and def
         },
     });
     const create = id => unit(id, { side: "ALLY", action: {
-        definitions: Definitions.empty().add(old).add(child),
+        ...actionCapability(old, child),
         select(state, self) {
             if (state.tick > 0) trace.push(`select/${self.id}`);
             return { state, value: ["old"] };
@@ -273,7 +273,7 @@ test("action runtime preserves execution start order when selection reverses con
     });
     const first = make("first"), second = make("second");
     const actor = unit(0, { action: {
-        definitions: Definitions.empty().add(first).add(second),
+        ...actionCapability(first, second),
         select: state => ({ state, value: ["second", "first"] }),
     } });
     let state = initializeBattle(spec([actor, unit(1)]));

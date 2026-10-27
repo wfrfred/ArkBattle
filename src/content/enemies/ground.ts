@@ -5,33 +5,17 @@ import { ref as unitRef } from "../../core/unit/query.js";
 import { isCasting } from "../../core/unit/action/operations.js";
 import { hasLocomotion } from "../../core/unit/capability/locomotion/capability.js";
 import { setRule } from "../../core/unit/capability/locomotion/operations.js";
-import { Definitions } from "../../core/unit/action/definitions.js";
-import { create as createAttack, type Attack } from "../actions/attack.js";
 import type { Profile } from "../../data/arknights/enemy.js";
-import { perSecondToPerTick, secondsToTicks } from "../../data/arknights/tick.js";
+import { perSecondToPerTick } from "../../data/arknights/tick.js";
 import { assertPositiveNumber } from "../../core/common/assert.js";
 import type { Definition as UnitDefinition } from "../../core/unit/unit.js";
 import type { Definitions as CapabilityDefinitions } from "../../core/unit/capability/catalog.js";
-import type { Range } from "../../core/geometry/range.js";
-import * as filters from "../../core/battle/targeting/filter.js";
-import * as compare from "../../core/battle/targeting/compare.js";
-import { first } from "../../core/battle/targeting/selector.js";
-
-export type Scope =
-    { readonly type: "RANGE"; readonly geometry: Range } | { readonly type: "BLOCKER" };
-
-export interface AttackTiming {
-    readonly windupTicks: number;
-    readonly recoveryTicks: number;
-    readonly hitRadius: number;
-}
 
 export interface Definition
     extends
         UnitDefinition,
         Pick<
             CapabilityDefinitions,
-            | "action"
             | "allegiance"
             | "blockable"
             | "elemental"
@@ -43,14 +27,12 @@ export interface Definition
             | "targetable"
             | "vitality"
         > {
-    readonly attack: Attack;
     readonly massLevel: number;
 }
 
 export function createDefinition(
     profile: Profile,
-    timing: AttackTiming,
-    scope: Scope,
+    hitRadius: number,
     halfBodyWidth: number,
 ): Definition {
     if (profile.stunImmune) {
@@ -60,42 +42,7 @@ export function createDefinition(
         throw new TypeError("this enemy content requires a blockable ground unit");
     }
 
-    assertPositiveNumber(timing.hitRadius, "enemy hit radius");
-
-    const combat = filters.and(filters.present, filters.alive, filters.hostile, filters.blocker);
-    const attack = createAttack({
-        id: "normal-attack",
-        speed: profile.attackSpeed,
-        triggerBindingId: "primary",
-        intervalTicks: secondsToTicks(profile.baseAttackTime),
-        windupTicks: timing.windupTicks,
-        recoveryTicks: timing.recoveryTicks,
-        targetGroups: [
-            {
-                id: "primary",
-                targeting: {
-                    purposes: ["DAMAGE"],
-                    filter:
-                        scope.type === "BLOCKER"
-                            ? combat
-                            : filters.or(
-                                  combat,
-                                  filters.and(filters.damage, filters.range(scope.geometry)),
-                              ),
-                    selector: first(1, compare.combine(compare.blockedFirst, compare.distance)),
-                },
-                operations: [
-                    {
-                        type: "DAMAGE",
-                        power: profile.attack,
-                        powerSource: "SOURCE_ATTACK",
-                        damageType: "PHYSICAL",
-                    },
-                ],
-            },
-        ],
-        followUps: [],
-    });
+    assertPositiveNumber(hitRadius, "enemy hit radius");
 
     const elemental = createArknightsElementalDefinition({ receiver: "ENEMY" });
 
@@ -135,7 +82,7 @@ export function createDefinition(
         allegiance: { side: "ENEMY" },
         layer: { type: "GROUND" },
         hitbox: {
-            shape: { type: "CIRCLE", offset: [0, 0], radius: timing.hitRadius },
+            shape: { type: "CIRCLE", offset: [0, 0], radius: hitRadius },
         },
         blockable: { volume: profile.blockVolume },
         locomotion: {
@@ -146,7 +93,5 @@ export function createDefinition(
         },
         spatialPresence: {},
         targetable: { restrictions: [] },
-        action: { definitions: Definitions.empty().add(attack) },
-        attack,
     };
 }

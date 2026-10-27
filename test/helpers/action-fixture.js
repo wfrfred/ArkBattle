@@ -7,7 +7,7 @@ import { createBattleState } from "../../dist/core/battle/state.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "./tiles.js";
 import { initialize } from "./unit.js";
-import { Definitions } from "../../dist/core/unit/action/definitions.js";
+import { actionCapability } from "./actions.js";
 import { create as createAttack } from "../../dist/content/actions/attack.js";
 
 export const geometry = [{ type: "CIRCLE", offset: [0, 0], radius: 10 }];
@@ -58,10 +58,10 @@ export function unit(
         action === false
             ? undefined
             : action === true
-              ? { definitions: Definitions.empty().add(actionDefinition()) }
-              : "definitions" in action
-                ? action
-                : { definitions: Definitions.empty().add(action) };
+              ? actionCapability(actionDefinition())
+              : "start" in action
+                ? actionCapability(action)
+                : action;
     const definition = { hooks: [],
         id: `action-${id}`,
         vitality: { maxHp: hp, defense: 0, resistance: 0 },

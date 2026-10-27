@@ -46,7 +46,7 @@ import {
     type Tables as ContentTables,
     type ConfigurationInput as ContentConfiguration,
 } from "./tactical-demo-content.js";
-import { readShield } from "../content/operators/mudrock.js";
+import { readShield } from "../content/operators/mudrock/unit.js";
 import { hasVitality, resolveMaxHp } from "../core/unit/capability/vitality/capability.js";
 
 interface LegacyView {

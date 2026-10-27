@@ -13,7 +13,7 @@ Action 负责行为程序的选择、启动、推进与完整终止。具体内�
 | 对象 | 职责 |
 | --- | --- |
 | unit/action/Definition | 行动身份、基础 intervalTicks／speed、持久 initialize、start／step 与可选 onEnd |
-| Unit Action Capability Definition | 静态异构 Definitions 输入和可选 select 程序 |
+| Unit Action Capability Definition | 创建本 Unit 行动的 initialize 程序和可选 select 程序 |
 | Unit Action Capability State | 单一 Actions 容器、宿主内 nextExecutionId、interval／speed 贡献、启动 Rule、释放前拦截与成功释放通知 |
 | Action | 一种配置行动在某 Unit 上的 Definition、持久 state、Cooldown 和当前 execution |
 | Execution | 本次执行的 id、startedAtTick、status 和私有 state |
@@ -25,7 +25,7 @@ Rule 只负责启动准入，不自动中断现有执行。眩晕等需要中断
 
 ## 2. 模块与导入
 
-聚合类型、Execution、静态 Definition、容器、Cooldown 和生命周期操作位于 unit/action/；Capability 配置、贡献、Rule、周期属性与释放 Hook 位于 unit/capability/action/。领域内使用 Definition、Action、Execution、Id 等局部名字，不建立仅缩短路径的转发层。
+聚合类型、Execution、Definition、创建程序、容器、Cooldown 和生命周期操作位于 unit/action/；Capability 配置、贡献、Rule、周期属性与释放 Hook 位于 unit/capability/action/。领域内使用 Definition、Action、Execution、Id 等局部名字，不建立仅缩短路径的转发层。
 
 ```typescript
 import type { Definition as ActionDefinition } from "./action/definition.js";
@@ -84,7 +84,9 @@ export interface Execution<E extends object> {
 
 Executing<P, E> 是 execution 非空的 Action 类型收窄，不是另一份运行对象。step／onEnd 直接读取 self.execution.state，持久数据读取 self.state。宿主引用由回调的 source 参数提供，Action 与 Execution 不重复保存 host。
 
-Definition.initialize 在 Unit 初始化时逐项执行，创建各自的 P、初始就绪的 Cooldown 和 execution: null，并接续 Result.state。即使从未启动，该聚合条目也已经存在。共享 Definition 的不同 Unit 分别初始化，私有数据不共享。此时宿主尚未登记，不能从战场查询自己或假设兄弟能力已经可用。start 不补建缺失的配置条目。
+具体内容将 Definition<P, E> 交给 unit/action/initialize.ts 的 create，得到创建行动的初始化函数；类型配对在这个具体创建位置建立。Unit 的 Action Capability.initialize 调用内容提供的 initialize，内容使用 createActions 按顺序执行这些函数，接续每项 Result.state，并将完整聚合条目加入 Actions。
+
+每项创建程序调用自己的 Definition.initialize，建立 P、初始就绪的 Cooldown 和 execution: null。即使从未启动，该聚合条目也已经存在。共享 Definition 的不同 Unit 分别初始化，私有状态随各次创建产生。此时宿主尚未登记，不能从战场查询自己或假设兄弟能力已经可用。start 不补建缺失的配置条目。
 
 start 取得当前已配对的 Action，只检查本次内容条件、初始化 E 和必要采样；null 表示未启动。已发生的状态更新接续返回，普通无变更拒绝返回输入 battle。伤害、召唤、绑定本次执行的 Effect 及可能同步重入的业务，在 execution 登记后由 step 执行。start 初始化阶段不递归启动自己或改变来源配置。
 
@@ -92,7 +94,20 @@ step.value 表达是否完成。本轮私有进度通过 `update(battle, ref(sou
 
 ## 4. 异构容器与执行身份
 
-Unit.action.actions 是该宿主唯一运行容器，按 definition.id 保存 Action。静态 Definitions 只负责配置输入和初始化；运行时的默认候选、启动派发、冷却刷新从 Actions 条目进入，由条目取得 Definition。
+Unit.action.actions 是该宿主唯一运行容器，按 definition.id 保存 Action。Capability 配置只保存 initialize 与可选 select，不保留静态定义集合。具体内容负责组合自己的创建程序；默认候选、启动派发、冷却刷新从运行时 Actions 条目进入，由条目取得 Definition。
+
+```typescript
+import { create as createAction, createActions } from "./action/initialize.js";
+
+const attack = createAction(attackDefinition);
+const skillAttack = createAction(skillAttackDefinition);
+
+const action = {
+    initialize: (battle: BattleState) => createActions(battle, attack, skillAttack),
+};
+```
+
+create 在接收具体 Definition 时校验非空 ID、基础间隔与速度一次，返回的函数负责创建并登记自己的 Action；重复 ID 由 Actions.add 拒绝。createActions 只从空 Actions 开始逐项接续 BattleState 和容器，不解释内容私有 P／E，也不读取底层 Store。内容通过具名的具体 Definition 或 typed Ref 读写私有状态。
 
 Actions 以私有 Store<DefinitionId, View> 保存完整聚合对象。get(id)／values() 只公开 Definition 元数据、Cooldown 与可空的 Execution 元数据，隐藏 P、E 及完整程序回调。get(id, definition) 以 Definition 对象身份恢复具体 Action<P, E>；read(id, reader) 在未知条目上保持 P／E 配对。readExecution(id, reader) 在同一容器中找到当前执行，再以 execution 非空的配对类型派发，不维护第二份执行集合或索引。
 
@@ -136,7 +151,7 @@ BattleState 不另存全场 Action 集合。all 按 Unit 集合顺序展平当�
 
 ```typescript
 interface Definition {
-    readonly definitions: Definitions;
+    readonly initialize: (battle: BattleState) => Result<Actions>;
     readonly select?: (battle: BattleState, self: Unit & ActionCapability) => Result<readonly string[]>;
 }
 

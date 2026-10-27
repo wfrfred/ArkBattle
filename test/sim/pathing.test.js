@@ -122,9 +122,7 @@ function projectionFacts(state) {
   return { ...state, navigation: { ...state.navigation, baseline: { WALK: { ...state.navigation.baseline.WALK }, FLY: { ...state.navigation.baseline.FLY } } }, projectiles: state.projectiles.values().toArray(), units: new Map([...state.units].map(([id, unit]) => [
     id, { ...unit, effects: unit.effects.toJSON(), definition: unit.definition.action === undefined
       ? unit.definition
-      : { ...unit.definition, action: { ...unit.definition.action,
-        definitions: unit.definition.action.definitions.values().toArray().map(definitionFacts),
-      } },
+      : { ...unit.definition, action: definitionFacts(unit.definition.action) },
       ...(unit.action === undefined ? {} : { action: { ...unit.action,
         actions: new Map(unit.action.actions.values().map(current => [current.definition.id, {
           ...current, definition: definitionFacts(current.definition),

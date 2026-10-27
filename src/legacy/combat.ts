@@ -1,6 +1,6 @@
 import { createArknightsElementalDefinition } from "../data/arknights/elemental.js";
-import { Definitions } from "../core/unit/action/definitions.js";
-import { create as createAttack } from "../content/actions/attack.js";
+import { create as createAction, createActions } from "../core/unit/action/initialize.js";
+import { create as createAttack, type Attack } from "../content/actions/attack.js";
 import * as filters from "../core/battle/targeting/filter.js";
 import * as compare from "../core/battle/targeting/compare.js";
 import { first } from "../core/battle/targeting/selector.js";
@@ -157,6 +157,41 @@ function operatorDefinition(value: unknown, direction: Direction) {
         throw new TypeError("canHitFly must be boolean when specified");
     }
 
+    const attack = createAttack({
+        id: "normal-attack",
+        speed: timing.attackSpeed,
+        triggerBindingId: "primary",
+        intervalTicks: timing.baseAttackTimeTicks,
+        recoveryTicks: 0,
+        targetGroups: [
+            {
+                id: "primary",
+                targeting: {
+                    purposes: ["DAMAGE"],
+                    filter: filters.and(
+                        filters.damage,
+                        ...(canTargetAir ? [] : [filters.ground]),
+                        filters.or(
+                            filters.range(fromTiles(attackRange(definition.rangeGrid), direction)),
+                            filters.blocking,
+                        ),
+                    ),
+                    selector: first(1, compare.combine(compare.blockedFirst, compare.distance)),
+                },
+                operations: [
+                    {
+                        type: "DAMAGE",
+                        power: numberField(stats.atk, "attack"),
+                        powerSource: "SOURCE_ATTACK",
+                        damageType: damageType(definition.dmgType),
+                    },
+                ],
+            },
+        ],
+        followUps: [],
+    });
+    const initializeAttack = createAction(attack);
+
     return {
         hooks: [],
         targetable: { restrictions: [] },
@@ -178,47 +213,9 @@ function operatorDefinition(value: unknown, direction: Direction) {
             capacity: numberField(stats.blockCnt, "block capacity"),
             geometry: { radius: 0.70709997 },
         },
+        attack,
         action: {
-            definitions: Definitions.empty().add(
-                createAttack({
-                    id: "normal-attack",
-                    speed: timing.attackSpeed,
-                    triggerBindingId: "primary",
-                    intervalTicks: timing.baseAttackTimeTicks,
-                    recoveryTicks: 0,
-                    targetGroups: [
-                        {
-                            id: "primary",
-                            targeting: {
-                                purposes: ["DAMAGE"],
-                                filter: filters.and(
-                                    filters.damage,
-                                    ...(canTargetAir ? [] : [filters.ground]),
-                                    filters.or(
-                                        filters.range(
-                                            fromTiles(attackRange(definition.rangeGrid), direction),
-                                        ),
-                                        filters.blocking,
-                                    ),
-                                ),
-                                selector: first(
-                                    1,
-                                    compare.combine(compare.blockedFirst, compare.distance),
-                                ),
-                            },
-                            operations: [
-                                {
-                                    type: "DAMAGE",
-                                    power: numberField(stats.atk, "attack"),
-                                    powerSource: "SOURCE_ATTACK",
-                                    damageType: damageType(definition.dmgType),
-                                },
-                            ],
-                        },
-                    ],
-                    followUps: [],
-                }),
-            ),
+            initialize: (battle) => createActions(battle, initializeAttack),
         },
         direction,
     } satisfies UnitDefinition &
@@ -233,7 +230,7 @@ function operatorDefinition(value: unknown, direction: Direction) {
             | "hitbox"
             | "blocker"
             | "action"
-        > & { readonly direction: Direction };
+        > & { readonly direction: Direction; readonly attack: Attack };
 }
 
 function enemyDefinition(value: unknown) {
@@ -254,6 +251,49 @@ function enemyDefinition(value: unknown) {
 
     const radius = numberField(stats.rangeRadius, "enemy range radius");
     const combat = filters.and(filters.present, filters.alive, filters.hostile, filters.blocker);
+
+    const attack = createAttack({
+        id: "normal-attack",
+        speed: timing.attackSpeed,
+        triggerBindingId: "primary",
+        intervalTicks: timing.baseAttackTimeTicks,
+        recoveryTicks: applyWay === "RANGED" ? Math.ceil(0.35 * TICKS_PER_SECOND) : 0,
+        targetGroups: [
+            {
+                id: "primary",
+                targeting: {
+                    purposes: ["DAMAGE"],
+                    filter:
+                        applyWay === "MELEE"
+                            ? combat
+                            : filters.or(
+                                  combat,
+                                  filters.and(
+                                      filters.damage,
+                                      filters.range([
+                                          {
+                                              type: "CIRCLE",
+                                              offset: [0, 0],
+                                              radius,
+                                          },
+                                      ]),
+                                  ),
+                              ),
+                    selector: first(1, compare.combine(compare.blockedFirst, compare.distance)),
+                },
+                operations: [
+                    {
+                        type: "DAMAGE",
+                        power: numberField(stats.atk, "attack"),
+                        powerSource: "SOURCE_ATTACK",
+                        damageType: damageType(stats.dmgType),
+                    },
+                ],
+            },
+        ],
+        followUps: [],
+    });
+    const initializeAttack = createAction(attack);
 
     return {
         hooks: [],
@@ -280,53 +320,9 @@ function enemyDefinition(value: unknown) {
         },
 
         blockable: { volume: numberField(stats.blockCnt, "block volume") },
+        attack,
         action: {
-            definitions: Definitions.empty().add(
-                createAttack({
-                    id: "normal-attack",
-                    speed: timing.attackSpeed,
-                    triggerBindingId: "primary",
-                    intervalTicks: timing.baseAttackTimeTicks,
-                    recoveryTicks: applyWay === "RANGED" ? Math.ceil(0.35 * TICKS_PER_SECOND) : 0,
-                    targetGroups: [
-                        {
-                            id: "primary",
-                            targeting: {
-                                purposes: ["DAMAGE"],
-                                filter:
-                                    applyWay === "MELEE"
-                                        ? combat
-                                        : filters.or(
-                                              combat,
-                                              filters.and(
-                                                  filters.damage,
-                                                  filters.range([
-                                                      {
-                                                          type: "CIRCLE",
-                                                          offset: [0, 0],
-                                                          radius,
-                                                      },
-                                                  ]),
-                                              ),
-                                          ),
-                                selector: first(
-                                    1,
-                                    compare.combine(compare.blockedFirst, compare.distance),
-                                ),
-                            },
-                            operations: [
-                                {
-                                    type: "DAMAGE",
-                                    power: numberField(stats.atk, "attack"),
-                                    powerSource: "SOURCE_ATTACK",
-                                    damageType: damageType(stats.dmgType),
-                                },
-                            ],
-                        },
-                    ],
-                    followUps: [],
-                }),
-            ),
+            initialize: (battle) => createActions(battle, initializeAttack),
         },
     } satisfies UnitDefinition &
         Pick<
@@ -342,7 +338,7 @@ function enemyDefinition(value: unknown) {
             | "hitbox"
             | "blockable"
             | "action"
-        >;
+        > & { readonly attack: Attack };
 }
 
 function combatMap(options: LegacyCombatOptions): Map {
