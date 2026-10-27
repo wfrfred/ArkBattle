@@ -59,7 +59,7 @@ export function unit(
             ? undefined
             : action === true
               ? actionCapability(actionDefinition())
-              : "start" in action
+              : "prepare" in action
                 ? actionCapability(action)
                 : action;
     const definition = { hooks: [],
