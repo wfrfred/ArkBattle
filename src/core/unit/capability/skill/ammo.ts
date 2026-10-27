@@ -35,11 +35,9 @@ export function resolveCapacity(base: number, modifiers: Iterable<Modifier>): nu
     }
 
     const scaled = base * ratio;
-    assertFiniteNumber(scaled, "skill proportional ammunition capacity");
     const lower = Math.floor(scaled);
     const rounded = scaled - lower === 0.5 ? lower + Math.abs(lower % 2) : Math.round(scaled);
     const capacity = Math.max(1, base + addition + rounded);
-    assertPositiveSafeInteger(capacity, "skill ammunition capacity");
 
     return capacity;
 }
@@ -87,10 +85,6 @@ export function consume(
 
     const previous = active.sustain;
     const current = { ...previous, remaining: previous.remaining - amount };
-
-    if (!Number.isSafeInteger(current.remaining)) {
-        throw new RangeError("skill ammunition overflow");
-    }
 
     battle = query.replace(battle, {
         ...self,

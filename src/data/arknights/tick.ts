@@ -11,10 +11,6 @@ export function secondsToTicks(value: number, name = "time"): number {
         Math.abs(ticks - nearest) <= Number.EPSILON * Math.max(1, Math.abs(ticks)) * 4;
     const result = nearInteger ? nearest : Math.ceil(ticks);
 
-    if (!Number.isSafeInteger(result)) {
-        throw new RangeError(`${name} exceeds the safe tick range`);
-    }
-
     return result === 0 ? 0 : result;
 }
 

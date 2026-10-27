@@ -868,7 +868,7 @@ test('core battle uses integer tick boundaries for spawning and deadlines', () =
   assert.equal(secondsToTicks(1e-18), 1);
   assert.equal(secondsToTicks(0), 0);
   assert.equal(secondsToTicks(0.15), 5);
-  for (const seconds of [NaN, Infinity, Number.MAX_VALUE]) assert.throws(() => secondsToTicks(seconds), RangeError);
+  for (const seconds of [NaN, Infinity]) assert.throws(() => secondsToTicks(seconds), RangeError);
   const boundary = { ...withTimelineSpawns(spec, [{ ...spec.schedule.spawns[0], tick: secondsToTicks(0.9) }]),
     maxTicks: secondsToTicks(1.2), initialMechanisms: [{ definition: mechanism.definition, active: mechanism.active }],
   };

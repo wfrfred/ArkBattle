@@ -136,10 +136,8 @@ function extendedExpiration(
 
     const remaining =
         Math.max(0, current.expiresAtTick - tick) + Math.max(0, incoming.expiresAtTick - tick);
-    assertNonnegativeSafeInteger(remaining, "extended buff remaining ticks");
 
     const expiresAtTick = tick + remaining;
-    assertNonnegativeSafeInteger(expiresAtTick, "extended buff expiration tick");
 
     return expiresAtTick;
 }
@@ -205,7 +203,6 @@ export function compileBuffStacking(definition: BuffStacking): CompiledBuffStack
                     }
 
                     const stackCount = current.stackCount + 1;
-                    assertNonnegativeSafeInteger(stackCount, "stacked buff count");
 
                     return refresh(
                         stackCount,
@@ -249,10 +246,6 @@ export function compileBuffStacking(definition: BuffStacking): CompiledBuffStack
 
             const stackCount = current.stackCount - 1;
             const expiresAtTick = lifetimeTicks === null ? null : tick + Math.max(1, lifetimeTicks);
-
-            if (expiresAtTick !== null) {
-                assertNonnegativeSafeInteger(expiresAtTick, "renewed buff expiration tick");
-            }
 
             return Object.freeze({
                 type: "REFRESH",

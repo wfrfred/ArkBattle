@@ -131,7 +131,6 @@ export function activate(
                 data: definition.initialize(battle, self),
             };
             const nextActivationId = active.id + 1;
-            assertNonnegativeSafeInteger(nextActivationId, "skill activation allocation progress");
 
             battle = instance.replace(battle, {
                 ...self,
@@ -399,7 +398,6 @@ export function extendTime(
             }
 
             const endsAtTick = Math.max(battle.tick, active.sustain.endsAtTick + ticks);
-            assertNonnegativeSafeInteger(endsAtTick, "skill ending tick");
 
             return instance.replace(battle, {
                 ...self,
@@ -443,9 +441,7 @@ function initialSustain<S extends object, A extends object>(
             modifier.apply(battle, unit, definition.durationTicks, contribution.resolve(entries)),
         ),
     );
-    assertNonnegativeSafeInteger(budget, "skill sustain budget");
     const endsAtTick = battle.tick + budget;
-    assertNonnegativeSafeInteger(endsAtTick, "skill ending tick");
 
     return { type: "TIME", endsAtTick };
 }

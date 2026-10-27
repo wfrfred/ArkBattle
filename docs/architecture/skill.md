@@ -58,6 +58,8 @@ TIME 实例仅保存 endsAtTick。AMMO 保存 initial、remaining、replenished�
 
 持续时间与初始弹药贡献在发动、支付 SP 之前采样。之后的贡献变化影响后续发动；本次时长可通过 extendTime 明确调整。
 
+持续时间、耗弹量及贡献输入在实际入口校验。内部预算、到期 Tick、剩余弹药与激活身份按游戏尺度直接计算，不重复检查算术结果是否超过安全整数范围。
+
 TIME 的 setDurationContribution 使用 Skill 领域 Modifier，可在发动输入版本中读取 SP 决定预算。雷狼龙S空爆按消耗充能延长持续时间，既可在此采样预算，也可由启动程序按原生流程消费并延时；该案例不证明通用属性叠加。哈蒂娅的运行中条件延长由 extendTime 表达。
 
 AMMO 的 setAmmoContribution 使用 ammo.Modifier `{ addition, ratio }`，归并公式为 `max(1, base + Σaddition + RoundToEven(base × Σratio))`。固定追加不参与比例乘算。TIME 与 AMMO 使用各自的贡献载荷和 setter。

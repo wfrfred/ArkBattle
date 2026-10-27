@@ -195,7 +195,7 @@ test("buff stacking: compiled rules own their definition and planning leaves all
     assert.deepEqual(incoming, application(8, 30));
 });
 
-test("buff stacking: unsafe counts, tick values and extension arithmetic fail before returning a plan", () => {
+test("buff stacking: unsafe counts and tick values fail before returning a plan", () => {
     const stack = compileBuffStacking(description("STACK", { maxStackCnt: -1 }));
     for (const count of [-1, 0.5, NaN, Number.MAX_SAFE_INTEGER + 1]) {
         assert.throws(() => stack.validStackCount(count), /safe integer/);
@@ -206,12 +206,6 @@ test("buff stacking: unsafe counts, tick values and extension arithmetic fail be
         assert.throws(() => stack.plan(undefined, application(1, 20), value), /safe integer/);
         assert.throws(() => stack.plan(undefined, application(1, value), 0), /safe integer/);
     }
-    assert.throws(() => stack.plan(application(Number.MAX_SAFE_INTEGER, 20), application(1, 30), 10), /safe integer/);
-    const extend = compileBuffStacking(description("EXTEND_TIME"));
-    const maximum = Number.MAX_SAFE_INTEGER;
-    assert.throws(() => extend.plan(application(1, maximum), application(1, maximum), 0), /remaining ticks/);
-    assert.throws(() => extend.plan(application(1, maximum), application(1, maximum), maximum - 1), /expiration tick/);
-    assert.deepEqual(extend.plan(application(1, maximum), application(1, maximum), maximum), refresh(1, maximum));
     for (const maxStackCount of [-1, 0.5, NaN, Infinity, "2", Number.MAX_SAFE_INTEGER + 1]) {
         assert.throws(() => stack.plan({ ...application(1, 20), maxStackCount }, application(1, 30), 10), /safe integer/);
         assert.throws(() => stack.plan(application(1, 20), { ...application(1, 30), maxStackCount }, 10), /safe integer/);

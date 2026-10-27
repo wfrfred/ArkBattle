@@ -6,6 +6,8 @@
 
 外部可变数据转入领域时完成必要转换；领域内部的 readonly 对象、数组和坐标直接共享，不以“快照”或假设调用方违约修改为理由重复复制、冻结。新状态只创建实际改变的部分。不得为推测的低概率并发或安全场景增加复杂度；确有必要时先说明并通知用户。只用一次的逻辑直接放在所属操作内，不提前包装；异常直接抛出，不使用 try/catch 或静默容错掩盖非法输入。
 
+数值按当前游戏尺度处理：数据和配置入口校验有限数、正负与整数等业务约束，内部信任这些约束。已校验数值的加减乘算、Tick 累加和身份递增不为极端浮点溢出或安全整数上界追加结果检查。游戏规定的范围、容量、舍入与普通浮点误差纠正仍按具体业务执行。
+
 Tile 的构造入口 tile.create 接收 `{ terrain, initial }` Definition，校验初始 walkCost，返回 `{ definition, state: definition.initial }`。只读 Definition、初始 State 与地形参数直接共享，不 freeze、不深拷贝、不规范化负零，也不由 Core 补充 Content 的部署条件。具体参数由 Content 的 Terrain Definition.create 校验；原始地图解析通过泛型入口加入 Tiles，内部不重复检查具体地形参数。
 
 battlefield/map/map.ts 公开 Map、Marker、BlockEdge 和 create／contains／get，不引入品牌或 Fields 包装。create 校验正行列数、Tiles 数量、标记坐标与边的合法范围。Tiles 通过泛型 add 建立稠密序列，普通 get／values 返回公共 View，传入 Terrain Definition 时按对象身份恢复具体 Tile 类型。replace(index, state) 保留 Tile Definition，只更新通用 State，不要求调用方恢复地形参数类型；内部信任上层已经确认的索引与 State，不重复检查索引存在性或 walkCost。markers／blockEdges 空洞在读取属性时自然抛错，不另设防御分支。get 复用 contains 的边界判断，内部不重复校验坐标格式。

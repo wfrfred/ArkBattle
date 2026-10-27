@@ -86,7 +86,7 @@ test("buff expiry: raw counts above the effective cap skip reload until they rea
     assert.deepEqual(unlimited.expire(application(4), 30, 30), refresh(3, 60, true));
 });
 
-test("buff expiry: zero lifetime advances one tick, while invalid inputs and overflow fail", () => {
+test("buff expiry: zero lifetime advances one tick, while invalid inputs fail", () => {
     const rule = compileBuffStacking(description());
     assert.deepEqual(rule.expire(application(3, 0), 0, 0), refresh(2, 1, true));
     for (const value of [-1, 0.5, undefined, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
@@ -97,11 +97,6 @@ test("buff expiry: zero lifetime advances one tick, while invalid inputs and ove
         assert.throws(() => rule.expire(application(value), 30, 30), /safe integer/);
         assert.throws(() => rule.expire(application(3, value), 30, 30), /safe integer/);
     }
-    assert.throws(() => rule.expire(application(3), 30, Number.MAX_SAFE_INTEGER), /safe integer/);
-    assert.deepEqual(
-        rule.expire(application(3), null, Number.MAX_SAFE_INTEGER),
-        refresh(2, null, true),
-    );
 });
 
 function harness({ stackCount = 3, maxValidStackCnt = -1 } = {}) {
