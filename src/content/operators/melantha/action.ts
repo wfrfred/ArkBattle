@@ -1,7 +1,7 @@
 import { create as createAttack, type Attack } from "../../actions/attack.js";
-import * as filters from "../../../core/battle/targeting/filter.js";
-import * as compare from "../../../core/battle/targeting/compare.js";
-import { first } from "../../../core/battle/targeting/selector.js";
+import * as targeting from "../../../core/battle/targeting/index.js";
+import { first } from "../../../core/battle/targeting/index.js";
+
 import type { Direction } from "../../../core/geometry/direction.js";
 import { fromTiles } from "../../../core/geometry/range.js";
 import type { Profile } from "../../../data/arknights/operator.js";
@@ -20,15 +20,18 @@ export function create(profile: Profile, direction: Direction): Attack {
                 id: "primary",
                 targeting: {
                     purposes: ["DAMAGE"],
-                    filter: filters.and(
-                        filters.damage,
-                        filters.ground,
-                        filters.or(
-                            filters.range(fromTiles(profile.range, direction)),
-                            filters.blocking,
+                    filter: targeting.and(
+                        targeting.damage,
+                        targeting.ground,
+                        targeting.or(
+                            targeting.range(fromTiles(profile.range, direction)),
+                            targeting.blocking,
                         ),
                     ),
-                    selector: first(1, compare.combine(compare.blockedFirst, compare.distance)),
+                    selector: first(
+                        1,
+                        targeting.combine(targeting.blockedFirst, targeting.distance),
+                    ),
                 },
                 operations: [
                     {

@@ -1,11 +1,11 @@
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
-import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { select } from "../../dist/core/battle/targeting/select.js";
-import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
+import { ref as unitRef } from "../../dist/core/unit/index.js";
+import { select } from "../../dist/core/battle/targeting/index.js";
+import { resolveAttack } from "../../dist/core/unit/capability/offense/index.js";
 import { initializers } from "../../dist/core/unit/capability/catalog.js";
 import { initialize as initializeUnit, placement } from "./unit.js";
 import { getUnit } from "./unit.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import { definition, attackBuff, effectFixtureWork } from "./effects.js";
 
 export const effectProgram = (id, initialize = () => ({})) => ({ id, initialize });

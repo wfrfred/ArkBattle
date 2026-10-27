@@ -1,7 +1,7 @@
 import { tiles as tileEntries } from './tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import { World } from "../../dist/core/geometry/coordinate.js";
-import { isSpatiallyPresent } from "../../dist/core/unit/capability/presence/capability.js";
+import { isSpatiallyPresent } from "../../dist/core/unit/capability/presence/index.js";
 import { create } from "../../dist/core/battlefield/state.js";
 import { add as addUnit, update as updateUnit } from "../../dist/core/battlefield/unit.js";
 import { create as createMap, contains } from "../../dist/core/battlefield/map/map.js";

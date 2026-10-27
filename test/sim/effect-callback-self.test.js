@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import { ref } from "../../dist/core/unit/effect/effect.js";
 import * as units from "../../dist/core/unit/query.js";
 import { add as addUnit } from "../../dist/core/battle/unit.js";

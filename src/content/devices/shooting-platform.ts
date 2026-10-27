@@ -1,10 +1,14 @@
-import type { State as BattleState } from "../../core/battle/state.js";
+import type { State as BattleState } from "../../core/battle/index.js";
 import { remove as removeUnit, update as updateUnit } from "../../core/battle/unit.js";
 import { at as occupancyAt } from "../../core/battlefield/occupancy.js";
 import type { TilePosition } from "../../core/geometry/coordinate.js";
-import { hasOccupancy } from "../../core/unit/capability/occupancy/capability.js";
-import { hasBlocker, removeRule, setRule } from "../../core/unit/capability/blocking/blocker.js";
-import type { Id } from "../../core/unit/unit.js";
+import { hasOccupancy } from "../../core/unit/capability/occupancy/index.js";
+import {
+    hasBlocker,
+    removeBlockerRule as removeRule,
+    setBlockerRule as setRule,
+} from "../../core/unit/capability/blocking/index.js";
+import type { Id } from "../../core/unit/index.js";
 import { apply, restore, type Configuration, type Definition } from "./tile.js";
 
 function clearOccupant(battle: BattleState, position: TilePosition): BattleState {

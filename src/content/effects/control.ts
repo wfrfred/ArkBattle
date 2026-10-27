@@ -1,8 +1,8 @@
 import { update as updateUnit } from "../../core/battle/unit.js";
-import type { Definition } from "../../core/unit/effect/definition.js";
+import type { Definition } from "../../core/unit/effect/index.js";
 
-import * as skill from "../../core/unit/capability/skill/capability.js";
-import * as units from "../../core/unit/query.js";
+import * as skill from "../../core/unit/capability/skill/index.js";
+import * as units from "../../core/unit/index.js";
 
 export const silence: Definition<object> = {
     id: "control/silence",

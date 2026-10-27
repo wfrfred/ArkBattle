@@ -1,13 +1,13 @@
 import { update as updateUnit } from "../../core/battle/unit.js";
 
-import type { Definition } from "../../core/unit/effect/definition.js";
-import * as action from "../../core/unit/capability/action/capability.js";
-import * as blocker from "../../core/unit/capability/blocking/blocker.js";
-import * as locomotion from "../../core/unit/capability/locomotion/capability.js";
-import * as movement from "../../core/unit/capability/locomotion/operations.js";
-import * as skill from "../../core/unit/capability/skill/capability.js";
+import type { Definition } from "../../core/unit/effect/index.js";
+import * as action from "../../core/unit/capability/action/index.js";
+import * as blocking from "../../core/unit/capability/blocking/index.js";
+import * as locomotion from "../../core/unit/capability/locomotion/index.js";
+
+import * as skill from "../../core/unit/capability/skill/index.js";
 import { cancelForUnit } from "../../core/unit/action/index.js";
-import * as units from "../../core/unit/query.js";
+import * as units from "../../core/unit/index.js";
 
 export const stun: Definition<object> = {
     id: "control/stun",
@@ -26,11 +26,11 @@ export const stun: Definition<object> = {
             {
                 ...unit,
                 ...(action.hasAction(unit) ? { action: action.setRule(unit.action, rule) } : {}),
-                ...(blocker.hasBlocker(unit)
-                    ? { blocker: blocker.setRule(unit.blocker, rule) }
+                ...(blocking.hasBlocker(unit)
+                    ? { blocker: blocking.setBlockerRule(unit.blocker, rule) }
                     : {}),
                 ...(locomotion.hasLocomotion(unit)
-                    ? { locomotion: movement.setRule(unit.locomotion, rule) }
+                    ? { locomotion: locomotion.setRule(unit.locomotion, rule) }
                     : {}),
                 ...(skill.hasSkill(unit)
                     ? { skill: skill.setRule(unit.skill, { id, allowsActivation: () => false }) }
@@ -53,11 +53,11 @@ export const stun: Definition<object> = {
             {
                 ...unit,
                 ...(action.hasAction(unit) ? { action: action.removeRule(unit.action, id) } : {}),
-                ...(blocker.hasBlocker(unit)
-                    ? { blocker: blocker.removeRule(unit.blocker, id) }
+                ...(blocking.hasBlocker(unit)
+                    ? { blocker: blocking.removeBlockerRule(unit.blocker, id) }
                     : {}),
                 ...(locomotion.hasLocomotion(unit)
-                    ? { locomotion: movement.removeRule(unit.locomotion, id) }
+                    ? { locomotion: locomotion.removeRule(unit.locomotion, id) }
                     : {}),
                 ...(skill.hasSkill(unit) ? { skill: skill.removeRule(unit.skill, id) } : {}),
             },

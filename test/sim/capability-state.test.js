@@ -5,7 +5,7 @@ import * as offense from "../../dist/core/unit/capability/offense/capability.js"
 import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
 import * as blockable from "../../dist/core/unit/capability/blocking/blockable.js";
 import * as locomotion from "../../dist/core/unit/capability/locomotion/capability.js";
-import * as movement from "../../dist/core/unit/capability/locomotion/operations.js";
+import * as movement from "../../dist/core/unit/capability/locomotion/index.js";
 import * as action from "../../dist/core/unit/capability/action/capability.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/capability.js";
 import * as damage from "../../dist/core/battle/damage/hook.js";

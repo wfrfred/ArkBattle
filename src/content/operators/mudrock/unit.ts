@@ -9,28 +9,39 @@ import {
 } from "../../../core/unit/action/index.js";
 import type { Attack } from "../../actions/attack.js";
 import type { State as SkillAttackState } from "../../actions/skill.js";
-import { hasCandidate } from "../../../core/battle/targeting/select.js";
-import { get as getCurrentUnit, ref as unitRef } from "../../../core/unit/query.js";
-import { blocked } from "../../../core/battle/blocking/query.js";
-import { hasBlocker } from "../../../core/unit/capability/blocking/blocker.js";
+import { hasCandidate } from "../../../core/battle/targeting/index.js";
+import {
+    get as getCurrentUnit,
+    ref as unitRef,
+    type Unit,
+    type Definition as UnitDefinition,
+} from "../../../core/unit/index.js";
+import { blocked } from "../../../core/battle/blocking/index.js";
+import { hasBlocker } from "../../../core/unit/capability/blocking/index.js";
 import type { Profile } from "../../../data/arknights/operator.js";
 import { secondsToTicks } from "../../../data/arknights/tick.js";
-import { modify } from "../../../core/unit/capability/skill/sp.js";
-import type { Direction } from "../../../core/geometry/direction.js";
-import type { Unit, Definition as UnitDefinition } from "../../../core/unit/unit.js";
-import type { Definitions as CapabilityDefinitions } from "../../../core/unit/capability/catalog.js";
-import { hasAction } from "../../../core/unit/capability/action/capability.js";
-import { createDefinition as createDeployableDefinition } from "../../../core/unit/capability/deployable/capability.js";
 import {
+    modify,
     hasSkill,
     type Definition as SkillDefinition,
-} from "../../../core/unit/capability/skill/capability.js";
+} from "../../../core/unit/capability/skill/index.js";
+import type { Direction } from "../../../core/geometry/direction.js";
+
+import type { Definitions as CapabilityDefinitions } from "../../../core/unit/capability/catalog.js";
+import { hasAction } from "../../../core/unit/capability/action/index.js";
+import { createDefinition as createDeployableDefinition } from "../../../core/unit/capability/deployable/index.js";
+
 import { healFree } from "../../effects/protection.js";
-import { hasVitality, type Vitality } from "../../../core/unit/capability/vitality/capability.js";
-import { removeHook, setHook } from "../../../core/battle/damage/hook.js";
-import type { Definition as EffectDefinition } from "../../../core/unit/effect/definition.js";
-import { ref as effectRef } from "../../../core/unit/effect/effect.js";
-import { get, install, update } from "../../../core/unit/effect/operations.js";
+import { hasVitality, type Vitality } from "../../../core/unit/capability/vitality/index.js";
+import { removeHook, setHook } from "../../../core/battle/damage/index.js";
+import {
+    type Definition as EffectDefinition,
+    ref as effectRef,
+    get,
+    install,
+    update,
+} from "../../../core/unit/effect/index.js";
+
 import { createNormal, createSkill } from "./action.js";
 import { value, healSelf } from "./common.js";
 

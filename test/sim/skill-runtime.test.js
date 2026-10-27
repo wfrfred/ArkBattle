@@ -1,25 +1,25 @@
-import * as unitQueries from "../../dist/core/unit/query.js";
+import * as unitQueries from "../../dist/core/unit/index.js";
 import { damage as damageTargeting, healing as healingTargeting } from "../helpers/targeting.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
-import { ref as unitRef } from "../../dist/core/unit/query.js";
+import { ref as unitRef } from "../../dist/core/unit/index.js";
 import { attackBuff } from "../helpers/effects.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import { fixtureBattlefieldState as fixtureBattlefield } from "../helpers/battlefield.js";
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { initialize as initializeBattle, step as stepBattle } from '../../dist/core/battle/runtime.js';
+import { initialize as initializeBattle, step as stepBattle } from '../../dist/core/battle/index.js';
 import { createLegacyCombatSpec } from '../../dist/legacy/combat.js';
 
-import { createDefinition as createSkillDefinition } from '../../dist/core/unit/capability/skill/capability.js';
-import * as skills from '../../dist/core/unit/capability/skill/operations.js';
+import { createDefinition as createSkillDefinition } from '../../dist/core/unit/capability/skill/index.js';
+import * as skills from '../../dist/core/unit/capability/skill/index.js';
 import { ref as activationRef } from '../../dist/core/unit/capability/skill/activation.js';
 import { create as createAttack } from '../../dist/content/actions/attack.js';
 import { actionCapability } from "../helpers/actions.js";
 import { initialize } from "../helpers/unit.js";
 import { createBattleState } from '../../dist/core/battle/state.js';
 import { getUnit } from '../helpers/unit.js';
-import { setDamageReceptionRule } from '../../dist/core/unit/capability/vitality/capability.js';
-import { setHook } from '../../dist/core/battle/damage/hook.js';
+import { setDamageReceptionRule } from '../../dist/core/unit/capability/vitality/index.js';
+import { setHook } from '../../dist/core/battle/damage/index.js';
 
 const geometry = [{ type: 'CIRCLE', offset: [0, 0], radius: 5 }];
 const hit = { type: 'CIRCLE', offset: [0, 0], radius: 0.1 };

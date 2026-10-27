@@ -4,7 +4,7 @@ import {
     assertPositiveNumber,
 } from "../../core/common/assert.js";
 import type { Definitions } from "../../core/unit/capability/catalog.js";
-import type { Definition as UnitDefinition } from "../../core/unit/unit.js";
+import type { Definition as UnitDefinition } from "../../core/unit/index.js";
 import type { EnemyMovementPrefab } from "./prefab.js";
 import { perSecondToPerTick } from "./tick.js";
 

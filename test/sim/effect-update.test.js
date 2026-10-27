@@ -4,7 +4,7 @@ import { initialize, fixtureBattle } from "../helpers/unit.js";
 import { add as addUnit, remove as removeUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 
 function fixture(data, callbacks = {}, initial = {}) {

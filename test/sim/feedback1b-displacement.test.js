@@ -7,8 +7,8 @@ import { createInput, createTiming } from "../../dist/core/battle/creation/route
 import { initialize as initializeRoutedUnit } from "../../dist/core/battle/creation/routed-unit.js";
 import { add as addUnit, update as updateUnit } from "../../dist/core/battle/unit.js";
 import { ref, get } from "../../dist/core/unit/query.js";
-import * as route from "../../dist/core/unit/capability/route/operations.js";
-import { advance as advanceLocomotion } from "../../dist/core/unit/capability/locomotion/operations.js";
+import * as route from "../../dist/core/unit/capability/route/index.js";
+import { advance as advanceLocomotion } from "../../dist/core/unit/capability/locomotion/index.js";
 import { createSteeringParameters, integrate } from "../../dist/core/unit/capability/locomotion/steering.js";
 import { reflect as reflectNavigationMovement } from "../../dist/core/unit/capability/locomotion/motion.js";
 

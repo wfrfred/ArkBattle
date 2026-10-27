@@ -1,7 +1,7 @@
 import { update as updateUnit } from "../../core/battle/unit.js";
 
-import type { Definition } from "../../core/unit/effect/definition.js";
-import * as units from "../../core/unit/query.js";
+import type { Definition } from "../../core/unit/effect/index.js";
+import * as units from "../../core/unit/index.js";
 import { areHostile, hasAllegiance } from "../../core/unit/capability/allegiance/capability.js";
 import * as targetable from "../../core/unit/capability/targetable/capability.js";
 

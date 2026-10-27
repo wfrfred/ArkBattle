@@ -5,8 +5,8 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize } from "../helpers/unit.js";
 import { effectFixtureWork, install, definition } from "../helpers/effects.js";
-import * as effect from "../../dist/core/unit/effect/operations.js";
-import { get } from "../../dist/core/unit/effect/operations.js";
+import * as effect from "../../dist/core/unit/effect/index.js";
+import { get } from "../../dist/core/unit/effect/index.js";
 
 const unit = () =>
     initialize({

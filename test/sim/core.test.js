@@ -543,8 +543,8 @@ test('catalog products preserve supplied definitions, capability states and guar
 import { initialize as initializeUnit } from ${sourceModule('initialize')};
 import type { Definitions as CapabilityDefinitions, Product } from ${sourceModule('capability/catalog')};
 import { initialize as initializeRoutedUnit, type Input as RoutedUnitInput } from ${sourceModule('../battle/creation/routed-unit')};
-import { advance as advanceLocomotion } from ${sourceModule('capability/locomotion/operations')};
-import { advance as advanceRoute, movementTarget, pathMotionMode } from ${sourceModule('capability/route/operations')};
+import { advance as advanceLocomotion } from ${sourceModule('capability/locomotion/index')};
+import { advance as advanceRoute, movementTarget, pathMotionMode } from ${sourceModule('capability/route/index')};
 import { ref as unitRef, get as getUnit } from ${sourceModule('query')};
 import type { Unit, Definition as UnitDefinition } from ${sourceModule('unit')};
 import type { ImmutableData } from ${sourceModule('../common/immutable-data')};

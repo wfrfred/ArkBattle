@@ -12,7 +12,7 @@ import { createBattleState } from "../../dist/core/battle/state.js";
 import { add, update as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { remove } from "../../dist/core/battle/unit.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { actionCapability } from "../helpers/actions.js";
 import { createDefinition as actionDefinition } from "../../dist/core/unit/capability/action/capability.js";

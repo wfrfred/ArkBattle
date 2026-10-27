@@ -1,15 +1,10 @@
 import { hash as navigationHash } from "../core/battlefield/navigation/map.js";
 import { apply as applyOverlays } from "../core/battlefield/navigation/overlay.js";
-import {
-    initialize,
-    step as stepBattle,
-    type Command,
-    type Event,
-} from "../core/battle/runtime.js";
-import { getSpawnScheduleCounts } from "../core/battle/schedule/runtime.js";
-import * as units from "../core/unit/query.js";
-import { relations as blockingRelations } from "../core/battle/blocking/query.js";
-import * as projectiles from "../core/projectile/query.js";
+import { initialize, step as stepBattle, type Command, type Event } from "../core/battle/index.js";
+import { getSpawnScheduleCounts } from "../core/battle/schedule/index.js";
+import * as units from "../core/unit/index.js";
+import { relations as blockingRelations } from "../core/battle/blocking/index.js";
+import * as projectiles from "../core/projectile/index.js";
 import type { Map as TileMap } from "../core/battlefield/map/map.js";
 import { infection, mire, deepsea, smog } from "../content/terrain/definition.js";
 import { TICKS_PER_SECOND } from "../core/tick.js";
@@ -32,14 +27,14 @@ import {
 import { createTacticalProjectileDemo } from "./projectile-demo.js";
 import { project as projectTrackingProjectile } from "../content/projectiles/tracking.js";
 import { hasAllegiance } from "../core/unit/capability/allegiance/capability.js";
-import { hasAction } from "../core/unit/capability/action/capability.js";
-import { hasSkill } from "../core/unit/capability/skill/capability.js";
+import { hasAction } from "../core/unit/capability/action/index.js";
+import { hasSkill } from "../core/unit/capability/skill/index.js";
 import {
     createTacticalMechanicsDemo,
     isTacticalMechanicsScenario,
     type TacticalMechanicsScenario,
 } from "./tactical-demo-mechanics.js";
-import { hasElemental } from "../core/unit/capability/elemental/capability.js";
+import { hasElemental } from "../core/unit/capability/elemental/index.js";
 import {
     createTacticalContentDemo,
     defaults as contentDefaults,
@@ -47,7 +42,7 @@ import {
     type ConfigurationInput as ContentConfiguration,
 } from "./tactical-demo-content.js";
 import { readShield } from "../content/operators/mudrock/unit.js";
-import { hasVitality, resolveMaxHp } from "../core/unit/capability/vitality/capability.js";
+import { hasVitality, resolveMaxHp } from "../core/unit/capability/vitality/index.js";
 
 interface LegacyView {
     setStage(stage: Record<string, unknown>): unknown;

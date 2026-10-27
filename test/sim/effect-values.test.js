@@ -1,11 +1,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { setDeadline, deadline } from "../../dist/core/unit/effect/effect.js";
-import {
-    get,
-    update,
-    validateScopes,
-} from "../../dist/core/unit/effect/operations.js";
+import { get, update } from "../../dist/core/unit/effect/index.js";
+import { validateScopes } from "../../dist/core/unit/effect/operations.js";
 import { getUnit } from "../helpers/unit.js";
 import { initialize } from "../helpers/unit.js";
 import { definition, effectFixtureWork, install, replaceEffectFixture } from "../helpers/effects.js";

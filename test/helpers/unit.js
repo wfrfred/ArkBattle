@@ -1,6 +1,6 @@
 import { tiles as tileEntries } from './tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
-import { initialize as initializeUnit } from "../../dist/core/unit/initialize.js";
+import { initialize as initializeUnit } from "../../dist/core/unit/index.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
 import { create } from "../../dist/core/battlefield/state.js";

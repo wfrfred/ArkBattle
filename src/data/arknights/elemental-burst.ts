@@ -1,28 +1,30 @@
 import { update as updateUnit } from "../../core/battle/unit.js";
 import type { Ref } from "../../core/common/ref.js";
-import { type State as BattleState } from "../../core/battle/state.js";
+import type { State as BattleState } from "../../core/battle/index.js";
 import { TICKS_PER_SECOND } from "../../core/tick.js";
-import * as units from "../../core/unit/query.js";
-import { ref as effectRef } from "../../core/unit/effect/effect.js";
-import type { Definition as EffectDefinition } from "../../core/unit/effect/definition.js";
-import * as effects from "../../core/unit/effect/operations.js";
+import * as units from "../../core/unit/index.js";
+import * as effects from "../../core/unit/effect/index.js";
+import {
+    ref as effectRef,
+    type Definition as EffectDefinition,
+} from "../../core/unit/effect/index.js";
+
 import {
     ref as burstRef,
     type Burst,
-    type Definition,
-} from "../../core/unit/capability/elemental/burst.js";
-import type { Elemental } from "../../core/unit/capability/elemental/capability.js";
-import {
+    type BurstDefinition as Definition,
+    type Elemental,
     available,
     get as getBurst,
     resolveBurstRecoverySpeed,
-} from "../../core/unit/capability/elemental/query.js";
+} from "../../core/unit/capability/elemental/index.js";
+
 import {
     hasAction,
     setBeforeReleaseHook,
     removeBeforeReleaseHook,
     type Action,
-} from "../../core/unit/capability/action/capability.js";
+} from "../../core/unit/capability/action/index.js";
 import {
     hasVitality,
     setDefenseContribution,
@@ -30,17 +32,20 @@ import {
     setResistanceContribution,
     removeResistanceContribution,
     type Vitality,
-} from "../../core/unit/capability/vitality/capability.js";
+} from "../../core/unit/capability/vitality/index.js";
 import {
     hasOffense,
     setAttackContribution,
     removeAttackContribution,
-} from "../../core/unit/capability/offense/capability.js";
-import { hasSkill } from "../../core/unit/capability/skill/capability.js";
-import { modify } from "../../core/unit/capability/skill/sp.js";
-import type { DamageRequest } from "../../core/battle/damage/contract.js";
-import { calculateDamage } from "../../core/battle/damage/calculate.js";
-import { applyDamage } from "../../core/battle/damage/apply.js";
+} from "../../core/unit/capability/offense/index.js";
+import { hasSkill, modify } from "../../core/unit/capability/skill/index.js";
+
+import {
+    type DamageRequest,
+    calculateDamage,
+    applyDamage,
+} from "../../core/battle/damage/index.js";
+
 import * as attribute from "../../core/unit/contribution/attribute.js";
 import { stun } from "../../content/effects/stun.js";
 import { silence, blockSpRecovery } from "../../content/effects/control.js";

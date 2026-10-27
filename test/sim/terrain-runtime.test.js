@@ -3,7 +3,7 @@ import { test } from "node:test";
 import * as terrain from "../../dist/content/terrain/definition.js";
 import { createTerrainMechanism } from "../../dist/content/terrain/mechanism.js";
 import * as mechanisms from "../../dist/core/battle/mechanism.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import * as units from "../../dist/core/unit/query.js";
 import { createTile } from "../helpers/tiles.js";
 import { Tiles } from "../../dist/core/battlefield/map/tiles.js";

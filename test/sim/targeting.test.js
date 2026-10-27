@@ -2,7 +2,7 @@ import { search as searchBlocking } from "../../dist/core/battle/blocking/operat
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { createRng } from "../../dist/core/common/rng.js";
-import { hasCandidate, select } from "../../dist/core/battle/targeting/select.js";
+import { hasCandidate, select } from "../../dist/core/battle/targeting/index.js";
 import * as filters from "../../dist/core/battle/targeting/filter.js";
 import * as selectors from "../../dist/core/battle/targeting/selector.js";
 import * as compare from "../../dist/core/battle/targeting/compare.js";

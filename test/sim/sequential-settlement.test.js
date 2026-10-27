@@ -9,7 +9,7 @@ import { remove } from "../../dist/core/battle/unit.js";
 import { actionCapability } from "../helpers/actions.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { advance as advanceAction } from "../../dist/core/unit/action/index.js";
-import { install } from "../../dist/core/unit/effect/operations.js";
+import { install } from "../../dist/core/unit/effect/index.js";
 import { advancePredefined } from "../../dist/core/battle/steps/predefined.js";
 import { instantiateUnitPlacement } from "../../dist/core/battle/creation/placement.js";
 

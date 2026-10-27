@@ -1,4 +1,4 @@
-import { ref } from "../../dist/core/unit/query.js";
+import { ref } from "../../dist/core/unit/index.js";
 import { add, update, remove } from "../../dist/core/battlefield/unit.js";
 
 export function applyUnitChanges(previous, content) {

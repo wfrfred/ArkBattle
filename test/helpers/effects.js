@@ -1,18 +1,18 @@
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
-import { ref as unitRef } from "../../dist/core/unit/query.js";
+import { ref as unitRef } from "../../dist/core/unit/index.js";
 import { fixtureBattlefieldState as fixtureBattlefield } from "./battlefield.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { getUnit, transitionUnit } from "./unit.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
-import { get } from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
+import { get } from "../../dist/core/unit/effect/index.js";
 import {
     setAttackContribution,
     removeAttackContribution,
-} from "../../dist/core/unit/capability/offense/capability.js";
+} from "../../dist/core/unit/capability/offense/index.js";
 import {
     setMaxHpContribution,
     removeMaxHpContribution,
-} from "../../dist/core/unit/capability/vitality/capability.js";
+} from "../../dist/core/unit/capability/vitality/index.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 
 export function effectFixtureWork(...units) {

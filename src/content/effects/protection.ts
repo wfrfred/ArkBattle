@@ -1,10 +1,10 @@
 import { update as updateUnit } from "../../core/battle/unit.js";
 
-import type { Definition } from "../../core/unit/effect/definition.js";
-import * as vitality from "../../core/unit/capability/vitality/capability.js";
-import * as elemental from "../../core/unit/capability/elemental/capability.js";
+import type { Definition } from "../../core/unit/effect/index.js";
+import * as vitality from "../../core/unit/capability/vitality/index.js";
+import * as elemental from "../../core/unit/capability/elemental/index.js";
 import * as targetable from "../../core/unit/capability/targetable/capability.js";
-import * as units from "../../core/unit/query.js";
+import * as units from "../../core/unit/index.js";
 import { untargetableRestriction } from "./visibility.js";
 
 export const invincibilityKind = Symbol("invincibility");

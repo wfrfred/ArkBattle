@@ -6,7 +6,7 @@ import { add as addUnit, update as updateUnit } from "../../dist/core/battle/uni
 import { getUnit } from "../helpers/unit.js";
 import { Map } from "../../dist/core/battlefield/navigation/map.js";
 import * as navigation from "../../dist/core/battlefield/navigation/state.js";
-import * as locomotion from "../../dist/core/unit/capability/locomotion/operations.js";
+import * as locomotion from "../../dist/core/unit/capability/locomotion/index.js";
 
 const near = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-12, `${actual} ≈ ${expected}`);
 const cell = extra => ({ passable: true, cost: 1, departures: { UP: true, RIGHT: true, DOWN: true, LEFT: true }, ...extra });

@@ -12,14 +12,16 @@ Effect 用于表达属性增益、护盾、周期伤害与治疗、技能附带�
 
 | 模块 | 职责 |
 | --- | --- |
+| [unit/effect/index.ts](../../src/core/unit/effect/index.ts) | 显式公共类型、查询与生命周期操作 |
 | `unit/effect/definition.ts` | 共享 Definition 与生命周期回调 |
 | `unit/effect/effect.ts` | 实例、身份、Scope 与局部值转换 |
 | `unit/effect/effects.ts` | 不可变异构容器与宿主内 ID 进度 |
+| `unit/effect/query.ts` | 按精确 Ref 读取当前实例的 get |
 | `unit/effect/operations.ts` | 安装、私有数据更新、启停、推进与完整结束 |
 | `battle/execution/lifetime.ts` | 关闭生命周期并结束依赖 Effect |
 | `content/effects/` | 护盾、异常、属性增益、Aura 等具体程序 |
 
-Effect、Hook、Contribution 都在 Unit 域内，与 Capability 平级。Effect 集合是 Unit 的组成部分；具体能力负责自己的数值和事件。
+内容从 index 导入公开契约；get 已从 operations.ts 迁入 query.ts，领域操作直接依赖该查询。Effects 容器与 dependency.ts 的索引实现不从公共入口导出。Effect、Hook、Contribution 都在 Unit 域内，与 Capability 平级。Effect 集合是 Unit 的组成部分；具体能力负责自己的数值和事件。
 
 | 模块            | 负责什么                                          | 集合由谁持有                 |
 | --------------- | ------------------------------------------------- | ---------------------------- |
@@ -245,8 +247,9 @@ Contribution 的登记／撤销与 Hook 的开关是两种自然接入方式，�
 | `setDeadline(effect, tickOrNull)`                 | 局部值转换；不自动提交或推进战斗                         |
 | `bindLifetime(battle, ref, lifetime)`              | 检查真实生命周期和 DAG，返回新状态及绑定结果             |
 | `end(battle, ref, reason?)`                       | 返回完成同步结束后的战斗状态                             |
-| `closeLifetime(battle, lifetime, reason?)`        | 返回完成相关 Effect 结束后的状态                         |
 | `advance(battle)`                                | 由 Runtime 调度，返回一次 Effect 时间推进后的状态         |
+
+closeLifetime(battle, lifetime, reason?) 是 battle/execution/lifetime.ts 的 Core 生命周期协作，供所属领域在完整终止流程中调用，不从 Effect 公共入口导出。
 
 ```typescript
 function update<S extends object, H extends object>(

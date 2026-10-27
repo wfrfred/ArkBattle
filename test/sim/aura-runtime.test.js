@@ -13,7 +13,7 @@ import { createTile } from "../helpers/tiles.js";
 
 import { createDefinition as createDeployableDefinition } from "../helpers/deployable.js";
 import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import { effectFixtureWork } from "../helpers/effects.js";
 import {
     attackEffect,

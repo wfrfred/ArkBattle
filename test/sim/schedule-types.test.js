@@ -14,7 +14,7 @@ test('schedule execution carries its definition through spawning and queries and
     writeFileSync(path, `
 import type { SpawnScheduleDefinition, TimelineScheduleDefinition, WavesScheduleDefinition } from ${sourceModule('schedule/definition')};
 import { createSpawnScheduleExecution, type SpawnScheduleExecution, type SpawnScheduleState, type TimelineScheduleState, type WavesScheduleState } from ${sourceModule('schedule/state')};
-import { advanceSpawnSchedule, recordScheduleSpawns, resolveScheduleUnits, isSpawnScheduleCompleted, getUnspawnedCount, getSpawnScheduleCounts } from ${sourceModule('schedule/runtime')};
+import { advanceSpawnSchedule, recordScheduleSpawns, resolveScheduleUnits, isSpawnScheduleCompleted, getUnspawnedCount, getSpawnScheduleCounts } from ${sourceModule('schedule/index')};
 import { advanceSpawning } from ${sourceModule('steps/spawning')};
 declare const definition: SpawnScheduleDefinition;
 declare const progress: SpawnScheduleState;

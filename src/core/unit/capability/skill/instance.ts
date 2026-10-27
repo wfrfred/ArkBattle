@@ -44,3 +44,27 @@ export function setData<S extends object, A extends object>(
 
     return data === self.state.data ? self : { ...self, state: { ...self.state, data } };
 }
+
+export function replaceHost(battle: BattleState, self: Unit & Skill): BattleState {
+    return updateUnit(battle, [self]);
+}
+
+export function replaceActivation<A extends object>(
+    battle: BattleState,
+    reference: Ref<Activation<A>>,
+    self: NoInfer<Activation<A>>,
+): BattleState {
+    const host = units.get(battle, reference.host);
+
+    if (host?.skill.active?.id !== reference.id || host.skill.active.status === "ENDING") {
+        return battle;
+    }
+    if (self.status !== host.skill.active.status) {
+        throw new TypeError("skill activation status requires a lifecycle operation");
+    }
+    if (host.skill.active.startedAtTick !== self.startedAtTick) {
+        throw new TypeError("skill activation start tick cannot change");
+    }
+
+    return replaceHost(battle, { ...host, skill: { ...host.skill, active: self } });
+}

@@ -11,7 +11,7 @@ import {
     parseAttributeModifiers,
 } from "../../dist/data/arknights/modifier.js";
 import { getUnit } from "../helpers/unit.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import { initialize } from "../helpers/unit.js";
 import {
     setAttackContribution,

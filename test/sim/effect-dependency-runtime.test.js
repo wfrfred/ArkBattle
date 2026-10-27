@@ -7,7 +7,7 @@ import { createBattleState } from "../../dist/core/battle/state.js";
 import { add as addUnit, remove as removeUnit, update as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { remove } from "../../dist/core/battle/unit.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import { dependents } from "../../dist/core/unit/effect/dependency.js";
 import { initialize, fixtureBattle } from "../helpers/unit.js";
 

@@ -14,7 +14,7 @@ import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "../helpers/tiles.js";
 import { Map as NavigationMap } from "../../dist/core/battlefield/navigation/map.js";
 import { create as createNavigation, nextPoint as nextNavigationPoint } from "../../dist/core/battlefield/navigation/state.js";
-import * as routeOperations from "../../dist/core/unit/capability/route/operations.js";
+import * as routeOperations from "../../dist/core/unit/capability/route/index.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { World } from "../../dist/core/geometry/coordinate.js";
 

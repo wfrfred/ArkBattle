@@ -5,7 +5,7 @@ import { getUnit } from "../helpers/unit.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { ref as actionRef } from "../../dist/core/unit/action/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/operations.js";
 import { ELEMENT_TYPES, createDefinition } from "../../dist/core/unit/capability/elemental/capability.js";
 import { ref as burstRef } from "../../dist/core/unit/capability/elemental/burst.js";

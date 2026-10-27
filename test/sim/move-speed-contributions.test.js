@@ -14,9 +14,9 @@ import {
     removeSpeedContribution,
     setRule,
     removeRule,
-} from "../../dist/core/unit/capability/locomotion/operations.js";
-import { advance } from "../../dist/core/unit/capability/locomotion/operations.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+} from "../../dist/core/unit/capability/locomotion/index.js";
+import { advance } from "../../dist/core/unit/capability/locomotion/index.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import * as modifier from "../../dist/core/unit/contribution/attribute.js";
 
 const address = { host: { id: 0 }, id: 0 };

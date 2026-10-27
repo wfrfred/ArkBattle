@@ -4,6 +4,8 @@ Elemental 负责元素值、元素损伤与治疗、一次爆发的身份和冷�
 
 Unit Definition 直接关联共享的 Elemental Definition，Content 提供爆发程序。
 
+公开类型、查询和业务操作从 [elemental/index.ts](../../src/core/unit/capability/elemental/index.ts) 导入，包括供内容读取基础在场资格的 available。下文 operations／query 表示实现职责；完整宿主写回已从 query.ts 移入 operations.ts 的私有 replaceHost，不作为公共内容操作。
+
 ## 1. 能力与定义
 
 [capability.ts](../../src/core/unit/capability/elemental/capability.ts) 的 Definition 为：
@@ -76,6 +78,7 @@ type End =
 | query.resolveMaxEp／resolveRecoverySpeed／resolveElementResistance／resolveDamageResistance／resolveBurstRecoverySpeed | `(battle, host: Ref<Unit & Elemental>) => number \| undefined` |
 | query.resolveDamageRatio | `(battle, host: Ref<Unit & Elemental>) => number \| undefined` |
 | query.currentType／damageRatio | `(self: Unit, maxEp?) => Type \| undefined / number`；已知对象的局部查询 |
+| query.available | `(self: Unit) => boolean`；基础在场、空间存在与生命资格查询 |
 
 DamageOutcome 为 APPLIED `{ amount, burst: Ref<Burst> | null }` 或 REJECTED `{ reason }`；HealOutcome 为 APPLIED `{ amounts: Values }` 或 REJECTED `{ reason }`。零作用可以成功返回 APPLIED，不派发实际变化 Hook。操作接受普通 Unit Ref，目标不具有 Elemental 时返回 NO_ELEMENTAL。
 

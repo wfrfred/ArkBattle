@@ -17,7 +17,7 @@ import type { State as BattleState, Result } from ${source("core/battle/state")}
 import { ref as actionRef } from ${source("core/unit/action/index")};
 import { update, getAction, updateState } from ${source("core/unit/action/index")};
 import type { Activation } from ${source("core/unit/capability/skill/activation")};
-import { get as getActivation } from ${source("core/unit/capability/skill/query")};
+import { get as getActivation } from ${source("core/unit/capability/skill/index")};
 import { consume, check } from ${source("core/unit/capability/skill/ammo")};
 import { create, createWithState, isAttack, type Attack, type Configuration } from ${source("content/actions/attack")};
 import { create as createSkillAttack, type State as SkillAttackState } from ${source("content/actions/skill")};

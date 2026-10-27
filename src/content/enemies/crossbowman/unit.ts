@@ -1,6 +1,6 @@
 import type { Attack } from "../../actions/attack.js";
 import type { Profile } from "../../../data/arknights/enemy.js";
-import type { Unit } from "../../../core/unit/unit.js";
+import { type Unit, ref } from "../../../core/unit/index.js";
 import type {
     Definitions as CapabilityDefinitions,
     Product,
@@ -10,8 +10,8 @@ import {
     createActions,
     isCasting,
 } from "../../../core/unit/action/index.js";
-import { ref } from "../../../core/unit/query.js";
-import { hasBlockable } from "../../../core/unit/capability/blocking/blockable.js";
+
+import { hasBlockable } from "../../../core/unit/capability/blocking/index.js";
 import {
     createDefinition as createGroundDefinition,
     type Definition as GroundDefinition,

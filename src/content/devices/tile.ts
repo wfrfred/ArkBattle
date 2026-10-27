@@ -1,12 +1,12 @@
-import type { State as BattleState } from "../../core/battle/state.js";
+import type { State as BattleState } from "../../core/battle/index.js";
 import { update as updateTile } from "../../core/battle/tile.js";
 import { get as getTile } from "../../core/battlefield/map/map.js";
 import type { State as TileState } from "../../core/battlefield/map/tile.js";
 import type { TilePosition } from "../../core/geometry/coordinate.js";
-import type { Definition as DeployableDefinition } from "../../core/unit/capability/deployable/capability.js";
-import type { Definition as OccupancyDefinition } from "../../core/unit/capability/occupancy/capability.js";
-import type { Definition as VitalityDefinition } from "../../core/unit/capability/vitality/capability.js";
-import type { Definition as UnitDefinition } from "../../core/unit/unit.js";
+import type { Definition as DeployableDefinition } from "../../core/unit/capability/deployable/index.js";
+import type { Definition as OccupancyDefinition } from "../../core/unit/capability/occupancy/index.js";
+import type { Definition as VitalityDefinition } from "../../core/unit/capability/vitality/index.js";
+import type { Definition as UnitDefinition } from "../../core/unit/index.js";
 import { hole } from "../terrain/definition.js";
 
 export interface Definition extends UnitDefinition {

@@ -1,4 +1,4 @@
-import { initialize } from "../../dist/core/battle/runtime.js";
+import { initialize } from "../../dist/core/battle/index.js";
 import { createLegacyCombatSpec } from "../../dist/legacy/combat.js";
 
 export function createLegacyCombatBattle(options) {

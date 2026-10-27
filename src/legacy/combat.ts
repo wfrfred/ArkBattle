@@ -1,24 +1,24 @@
 import { createArknightsElementalDefinition } from "../data/arknights/elemental.js";
 import { create as createAction, createActions } from "../core/unit/action/index.js";
 import { create as createAttack, type Attack } from "../content/actions/attack.js";
-import * as filters from "../core/battle/targeting/filter.js";
-import * as compare from "../core/battle/targeting/compare.js";
-import { first } from "../core/battle/targeting/selector.js";
+import * as targeting from "../core/battle/targeting/index.js";
+import { first } from "../core/battle/targeting/index.js";
+
 import { assertFiniteNumber, assertPositiveSafeInteger } from "../core/common/assert.js";
-import type { Input } from "../core/battle/contract.js";
+import type { Input } from "../core/battle/index.js";
 import { create as createMap, type Map } from "../core/battlefield/map/map.js";
 import { create as createTile } from "../core/battlefield/map/tile.js";
 import { Tiles } from "../core/battlefield/map/tiles.js";
 import { normal } from "../content/terrain/definition.js";
 import { normal as normalCondition } from "../content/terrain/condition.js";
-import type { DamageType } from "../core/battle/damage/contract.js";
+import type { DamageType } from "../core/battle/damage/index.js";
 import { Tile, type TilePosition } from "../core/geometry/coordinate.js";
 import type { Direction } from "../core/geometry/direction.js";
 import { fromTiles } from "../core/geometry/range.js";
 import type { Input as RouteInput } from "../core/battle/creation/route.js";
 import { TICKS_PER_SECOND } from "../core/tick.js";
 import type { Definitions as CapabilityDefinitions } from "../core/unit/capability/catalog.js";
-import type { Definition as UnitDefinition } from "../core/unit/unit.js";
+import type { Definition as UnitDefinition } from "../core/unit/index.js";
 
 interface LegacyCombatContent {
     readonly operators: readonly {
@@ -168,15 +168,20 @@ function operatorDefinition(value: unknown, direction: Direction) {
                 id: "primary",
                 targeting: {
                     purposes: ["DAMAGE"],
-                    filter: filters.and(
-                        filters.damage,
-                        ...(canTargetAir ? [] : [filters.ground]),
-                        filters.or(
-                            filters.range(fromTiles(attackRange(definition.rangeGrid), direction)),
-                            filters.blocking,
+                    filter: targeting.and(
+                        targeting.damage,
+                        ...(canTargetAir ? [] : [targeting.ground]),
+                        targeting.or(
+                            targeting.range(
+                                fromTiles(attackRange(definition.rangeGrid), direction),
+                            ),
+                            targeting.blocking,
                         ),
                     ),
-                    selector: first(1, compare.combine(compare.blockedFirst, compare.distance)),
+                    selector: first(
+                        1,
+                        targeting.combine(targeting.blockedFirst, targeting.distance),
+                    ),
                 },
                 operations: [
                     {
@@ -250,7 +255,12 @@ function enemyDefinition(value: unknown) {
     }
 
     const radius = numberField(stats.rangeRadius, "enemy range radius");
-    const combat = filters.and(filters.present, filters.alive, filters.hostile, filters.blocker);
+    const combat = targeting.and(
+        targeting.present,
+        targeting.alive,
+        targeting.hostile,
+        targeting.blocker,
+    );
 
     const attack = createAttack({
         id: "normal-attack",
@@ -266,11 +276,11 @@ function enemyDefinition(value: unknown) {
                     filter:
                         applyWay === "MELEE"
                             ? combat
-                            : filters.or(
+                            : targeting.or(
                                   combat,
-                                  filters.and(
-                                      filters.damage,
-                                      filters.range([
+                                  targeting.and(
+                                      targeting.damage,
+                                      targeting.range([
                                           {
                                               type: "CIRCLE",
                                               offset: [0, 0],
@@ -279,7 +289,10 @@ function enemyDefinition(value: unknown) {
                                       ]),
                                   ),
                               ),
-                    selector: first(1, compare.combine(compare.blockedFirst, compare.distance)),
+                    selector: first(
+                        1,
+                        targeting.combine(targeting.blockedFirst, targeting.distance),
+                    ),
                 },
                 operations: [
                     {

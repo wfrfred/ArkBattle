@@ -1,17 +1,21 @@
 import { Vec2 } from "../../core/common/vector.js";
 import type { Ref } from "../../core/common/ref.js";
-import { appendEvents, type State as BattleState } from "../../core/battle/state.js";
-import type { Definition as ProjectileDefinition } from "../../core/projectile/definition.js";
-import type { Projectile, View } from "../../core/projectile/projectile.js";
-import * as projectiles from "../../core/projectile/query.js";
+import { appendEvents, type State as BattleState } from "../../core/battle/index.js";
+import * as projectiles from "../../core/projectile/index.js";
+import type {
+    Definition as ProjectileDefinition,
+    Projectile,
+    View,
+} from "../../core/projectile/index.js";
+
 import { stop, update } from "../../core/battle/projectile.js";
 import { type WorldPosition } from "../../core/geometry/coordinate.js";
-import { hasOffense } from "../../core/unit/capability/offense/capability.js";
-import { resolveAttack } from "../../core/unit/capability/offense/query.js";
-import { isSpatiallyPresent } from "../../core/unit/capability/presence/capability.js";
-import type { Vitality } from "../../core/unit/capability/vitality/capability.js";
-import * as units from "../../core/unit/query.js";
-import type { Unit } from "../../core/unit/unit.js";
+import { hasOffense, resolveAttack } from "../../core/unit/capability/offense/index.js";
+
+import { isSpatiallyPresent } from "../../core/unit/capability/presence/index.js";
+import type { Vitality } from "../../core/unit/capability/vitality/index.js";
+import * as units from "../../core/unit/index.js";
+import type { Unit } from "../../core/unit/index.js";
 
 export interface State {
     readonly source: Ref<Unit> | null;

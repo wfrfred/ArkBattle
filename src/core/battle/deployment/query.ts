@@ -1,9 +1,30 @@
 import type { TilePosition } from "../../geometry/coordinate.js";
-import type { Definition as DeployableDefinition } from "../../unit/capability/deployable/capability.js";
+import {
+    hasDeployable,
+    type Definition as DeployableDefinition,
+} from "../../unit/capability/deployable/capability.js";
 import type { Slot } from "../../unit/capability/occupancy/capability.js";
 import { get as getTile } from "../../battlefield/map/map.js";
 import { at } from "../../battlefield/occupancy.js";
 import type { State as BattlefieldState } from "../../battlefield/state.js";
+import type { State as BattleState } from "../state.js";
+import type * as card from "./card.js";
+
+export function getCard(state: BattleState, id: card.Id): card.Card | undefined {
+    return state.deployment.cards.find((current) => current.id === id);
+}
+
+export function usedSlots(state: BattleState): number {
+    let slots = 0;
+
+    for (const unit of state.battlefield.units.values()) {
+        if (hasDeployable(unit)) {
+            slots += unit.definition.deployable.slots;
+        }
+    }
+
+    return slots;
+}
 
 export interface DeploymentRequest {
     readonly profile: DeployableDefinition;

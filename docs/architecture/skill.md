@@ -2,6 +2,8 @@
 
 Skill 负责 SP、发动、持续预算、主动操作和完整终止。Action 负责行为程序，Effect 负责附着影响及依赖清理；具体内容组合这些领域的公开接口。
 
+内容从 [skill/index.ts](../../src/core/unit/capability/skill/index.ts) 导入公开契约；query.ts 负责 Activation 查询，instance.ts 负责配对 Instance 的读取与局部变换。Core 的完整实例写回保持内部协议，不随公共入口公开。
+
 ## 1. Definition 与状态
 
 `capability.Definition<S, A>` 直接保存在 Unit Definition 中，由所有部署实例共享。
@@ -20,9 +22,11 @@ Skill 负责 SP、发动、持续预算、主动操作和完整终止。Action �
 
 `Skill` Capability 与公共 `State` 均不携带内容泛型，宿主身份始终为 `Ref<Unit & Skill>`。Catalog 和 `skill.initialize(battle, definition)` 都只返回公共 State，不另设 Stored Capability，也不通过直接初始化恢复私有类型。SP、Rule、Hook、Contribution 只依赖这个公共能力。
 
-内容程序的 `Definition<S, A>` 保留持久状态 S 与激活状态 A。Definition 的回调接收配对的 `Instance<S, A>`：`host` 定位宿主，`definition` 保存具体程序，`state` 保存同一程序的私有数据和当前激活。领域内部 `internal/read` 在统一边界恢复这组配对；调用者不能自行选择 S／A 宣称宿主类型。需要在 Activation 回调中访问持久 S 时，使用 `instance.get(battle, host, definition)`；该查询同样以当前配置 Definition 的对象身份确认配对。跨领域回调后继续执行时，仍须从当前 battle 重新读取。
+内容程序的 `Definition<S, A>` 保留持久状态 S 与激活状态 A。Definition 的回调接收配对的 `Instance<S, A>`：`host` 定位宿主，`definition` 保存具体程序，`state` 保存同一程序的私有数据和当前激活。领域内部 `internal/read` 在统一边界恢复这组配对；调用者不能自行选择 S／A 宣称宿主类型。领域内部需要恢复持久 S 时，通过 instance.ts 的 get(battle, host, definition) 按当前配置 Definition 的对象身份确认配对；get、setData 和配对写回协议不从公共入口导出。跨领域回调后继续执行时，仍须从当前 battle 重新读取。
 
-`Activation<A>` 保存 `host: Ref<Unit & Skill>`、id、startedAtTick、ACTIVE／ENDING、Sustain 和 data。私有类型 A 的证明来自具体 Definition 的内容回调，通过 `activation.ref(self)` 保留；也可以向 `query.get(battle, ref, definition)` 传入具体 Definition，由运行时对象身份比对确认当前配置程序后恢复 A。仅凭普通宿主 Ref 调用 `activate` 返回公共 Activation，不能指定或推导私有类型。`replaceActivation(battle, ref, self)` 由 typed Ref 确定私有 A，待写回值使用 NoInfer，不能通过替换数据反向扩大类型。typed Activation Ref 不意味着宿主私有状态 S 可被恢复，过期激活身份不能读取、消费或结束新激活。
+`Activation<A>` 保存 `host: Ref<Unit & Skill>`、id、startedAtTick、ACTIVE／ENDING、Sustain 和 data。私有类型 A 的证明来自具体 Definition 的内容回调，通过公共 `ref(self)` 保留；也可以向 `get(battle, ref, definition)` 传入具体 Definition，由运行时对象身份比对确认当前配置程序后恢复 A。仅凭普通宿主 Ref 调用 `activate` 返回公共 Activation，不能指定或推导私有类型。typed Activation Ref 不意味着宿主私有状态 S 可被恢复，过期激活身份不能读取、消费或结束新激活。
+
+原 query.ts 的完整宿主写回与激活写回分别归入 instance.ts 的 replaceHost／replaceActivation，与配对 Instance 的 replace 一同供 Core 内部使用，不从 index 导出。replaceActivation 仍由 typed Ref 确定私有 A，待写回值使用 NoInfer，不能通过替换数据反向扩大类型；生命周期变化仍由完整业务操作负责。
 
 ## 2. SP
 

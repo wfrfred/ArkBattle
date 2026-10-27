@@ -1,22 +1,25 @@
-import type { Event } from "../core/battle/contract.js";
-import type { State as BattleState } from "../core/battle/state.js";
-import * as units from "../core/unit/query.js";
-import { hasBlockable } from "../core/unit/capability/blocking/blockable.js";
-import { blockerOf } from "../core/battle/blocking/query.js";
-import * as projectiles from "../core/projectile/query.js";
-import type { DamageType } from "../core/battle/damage/contract.js";
+import type { Event, State as BattleState } from "../core/battle/index.js";
+
+import * as units from "../core/unit/index.js";
+import type { Unit, Id } from "../core/unit/index.js";
+import { hasBlockable } from "../core/unit/capability/blocking/index.js";
+import { blockerOf } from "../core/battle/blocking/index.js";
+import * as projectiles from "../core/projectile/index.js";
+import type { DamageType } from "../core/battle/damage/index.js";
 import { hasAllegiance } from "../core/unit/capability/allegiance/capability.js";
 import {
     hasElemental,
     type Type as ElementType,
-} from "../core/unit/capability/elemental/capability.js";
-import { damageRatio, currentType } from "../core/unit/capability/elemental/query.js";
-import { hasLocomotion } from "../core/unit/capability/locomotion/capability.js";
-import { hasRoute } from "../core/unit/capability/route/capability.js";
-import { isSpatiallyPresent } from "../core/unit/capability/presence/capability.js";
+    damageRatio,
+    currentType,
+} from "../core/unit/capability/elemental/index.js";
+
+import { hasLocomotion } from "../core/unit/capability/locomotion/index.js";
+import { hasRoute } from "../core/unit/capability/route/index.js";
+import { isSpatiallyPresent } from "../core/unit/capability/presence/index.js";
 import { hasLayer } from "../core/unit/capability/layer/capability.js";
-import { hasAction } from "../core/unit/capability/action/capability.js";
-import { hasSkill } from "../core/unit/capability/skill/capability.js";
+import { hasAction } from "../core/unit/capability/action/index.js";
+import { hasSkill } from "../core/unit/capability/skill/index.js";
 import { stun } from "../content/effects/stun.js";
 import { invincible } from "../content/effects/protection.js";
 import { project as projectTrackingProjectile } from "../content/projectiles/tracking.js";
@@ -24,9 +27,9 @@ import {
     hasVitality,
     hasVitalityDefinition,
     resolveMaxHp as resolveVitalityMaxHp,
-} from "../core/unit/capability/vitality/capability.js";
+} from "../core/unit/capability/vitality/index.js";
 import type { Direction } from "../core/geometry/direction.js";
-import type { Unit, Id } from "../core/unit/unit.js";
+
 import { TICKS_PER_SECOND } from "../core/tick.js";
 
 export interface LegacyData {

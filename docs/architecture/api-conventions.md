@@ -54,7 +54,30 @@ Action 的准备程序为 prepare，推进与结束回调为 onTick／onEnd；Pr
 5. 实现文件的 export 可以用于领域内部共享，不自动构成公共 API。内部模型、容器、Execution 类型与配对读写协议按实际需要深导；不为覆盖全部内部导出扩大 index，也不为公共入口复制另一套类型。
 6. 按实际用途整理各领域，不套统一拆分模板，不增加只缩短路径的转发层，不保留重复类型；仅调整公共导出与导入路径时不新增测试，不借入口整理扩张业务语义或无关实现。
 
-首轮公共入口整理落在 [Action](action.md#2-模块与导入)，其他领域按各自现有契约与实际需要处理。
+### Core 领域入口与保留边界
+
+下表列出当前公共入口及保留的直接依赖。index 只选择已有契约，不汇聚所有 Core 导出；Core 内部仍按实际依赖精确导入实现文件。
+
+| 领域 | 公共入口 | 保留边界 |
+| --- | --- | --- |
+| 战斗运行 | [battle/index.ts](../../src/core/battle/index.ts) | 仅 initialize／step／simulateBattle、战斗契约类型、State／OperationResult 与 appendEvents；不聚合 Unit、Projectile、Creation 等独立操作。 |
+| Unit | [unit/index.ts](../../src/core/unit/index.ts) | 模型、Hook 类型、initialize 与 ref／all／get；完整登记、更新、离场和推进仍归 battle/unit.ts，Field 的纯存储操作仍归 battlefield/unit.ts。 |
+| Action | [unit/action/index.ts](../../src/core/unit/action/index.ts) | 创建、查询、字段更新、业务操作与调度协作；Actions、Execution、Cooldown 和共享 end 按职责深导，不扩大内容写回或推进权限。 |
+| Effect | [unit/effect/index.ts](../../src/core/unit/effect/index.ts) | 类型、ref、get 与生命周期操作；get 实现在 query.ts，Effects 容器和依赖索引保持内部职责。 |
+| Projectile | [projectile/index.ts](../../src/core/projectile/index.ts) | 类型与 ref／all／get；完整 create／update／stop／advance 保留 battle/projectile.ts，容器仍由 Battlefield 持有。 |
+| Blocking | [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) | 关系查询、公开操作与 Hook 类型；整批更新准备、差分、通知与维护继续在 operations.ts 内有序结算，内部阶段接口不从 index 导出。 |
+| Damage／Healing | [damage/index.ts](../../src/core/battle/damage/index.ts)、[healing/index.ts](../../src/core/battle/healing/index.ts) | 各自的 Calculate／Apply 两阶段、请求／报告及 Hook 登记；阶段派发保持内部实现，不合并结算协议。 |
+| Targeting | [battle/targeting/index.ts](../../src/core/battle/targeting/index.ts) | Filter／Comparator／Selector、hasCandidate 与 select；只读 hasCandidate 归 query.ts，可能消费 RNG 的选择保留 select.ts。 |
+| Deployment | [battle/deployment/index.ts](../../src/core/battle/deployment/index.ts) | 模型、查询、资源维护、部署命令与生命周期协作；resources.ts 的完整 Card 写回 updateCard 不公开，lifecycle.ts 不依赖完整 Unit 操作。 |
+| Schedule | [battle/schedule/index.ts](../../src/core/battle/schedule/index.ts) | 配置、执行状态、创建、推进、登记／结算与统计查询；isSpawnScheduleCompleted／getSpawnedCount／getSpawnScheduleCounts／getUnspawnedCount 归 query.ts，队列算法与辅助计算保持内部依赖。 |
+| 多文件 Capability | unit/capability/ 下 action、blocking、deployable、elemental、locomotion、occupancy、offense、presence、route、skill、vitality 各自的 index.ts | 十一个入口显式选择类型、局部变换、查询与业务操作；内部 read、完整实例写回、阶段派发和具体运动算法不因共享导出成为内容 API。 |
+| 小 Capability 与 Catalog | allegiance／hitbox／layer／targetable 的 capability.ts；unit/capability/catalog.ts | 单文件能力保留自然入口；Catalog 只维护初始化字典与派生类型，不增加模板 index 或另一套能力映射。 |
+| Contribution、Hook 与 Tick | unit/contribution/contribution.ts、attribute.ts；core/hook.ts、tick.ts | 各自保留明确的数据／计算／派发入口，不设全 Core 聚合层。 |
+| Common 与 Geometry | common/、geometry/ 下现有功能模块 | Ref、Query、集合、数值、坐标与几何按用途直接导入；私有 Store 不经公共入口公开。 |
+| Map、Field 与空间查询 | battlefield/map/map.ts、tile.ts、terrain.ts；battlefield/state.ts、occupancy.ts、spatial/query.ts | 保留现有自然入口及只读／纯转换边界；Tiles 等内部容器不为 index 公开，完整地块结算仍归 battle/tile.ts。 |
+| Navigation | battlefield/navigation/ 下现有状态、缓存、寻路与射线模块 | 按实际算法和依赖直接导入，不为统一模板增加聚合入口。 |
+| Mechanism 与 Creation | battle/mechanism.ts；battle/creation/ 下具体创建模块 | Mechanism 保留单模块契约及内部容器；各创建流程保留自身公开输入与结果，不并入 Runtime 入口。 |
+| Runtime 内部协作 | battle/execution/、steps/ 及 battle/occupancy.ts 等同步协作实现 | 生命周期清理、阶段编排和登记通知按需直接依赖，不作为独立内容入口。 |
 
 ## 2. 参数与职责
 
@@ -96,7 +119,7 @@ interface Effect<S extends object, H extends object> extends Identified<{
     readonly host: Ref<Unit & H>;
 }
 
-// unit/query.ts
+// unit/index.ts 公开；实现在 unit/query.ts
 export declare function ref<U extends Unit>(unit: U): Ref<U>;
 export declare function all(battle: BattleState): Query<Unit>;
 
@@ -142,7 +165,7 @@ Effect.install 返回 Ref<Effect<S, H>>；get(battle, ref) 从精确引用恢复
 
 Projectile 使用 `create(battle, definition, { position, state }) → Result<Ref<Projectile<S>>>`；ref 保留已知实例类型，get 按引用读取当前对象。projectile/projectiles.ts 中的 Projectiles 以私有 Store 保存完整实例，Battlefield 持有容器状态，battle/projectile.ts 直接完成容器替换，普通查询返回不含 state／回调的 View；精确 Ref、Definition 对象身份查询和 read 分别负责已知类型读取与通用派发，见 [Projectile 设计](projectile.md#3-异构集合与类型恢复)。
 
-存储 Map、关系表、事件和 Command 中的数字 ID 是协议数据。Unit 查询统一使用 unit/query.ts 的 all／get，不再提供 battle.getUnit。已有 Ref 的业务保留身份传递；命令、旧回调与 remove 的 Unit ID 入参仍沿用现有契约，不为本轮模块收敛增加另一套查询协议。
+存储 Map、关系表、事件和 Command 中的数字 ID 是协议数据。Unit 查询由 unit/index.ts 公开 all／get，实现在 unit/query.ts，不再提供 battle.getUnit。已有 Ref 的业务保留身份传递；命令、旧回调与 remove 的 Unit ID 入参仍沿用现有契约，不为本轮模块收敛增加另一套查询协议。
 
 ## 3. 固定 Hook Context 与状态接续
 
@@ -159,8 +182,8 @@ Hook<C,T> 是 `(battle, context, current) => Result<T>`。C 是本次派发固�
 | 接口 | 当前形状 | 待调整内容 |
 | --- | --- | --- |
 | [Deployment.retreat / deploy](../../src/core/battle/deployment/operations.ts) | retreat 按 unitId；deploy 接收 request | 目标为 `retreat(battle, ref)`；deploy 接收 Card 身份与部署输入，属于创建操作。 |
-| [refundUnit / recycleUnitCard](../../src/core/battle/deployment/deployment.ts) | `(battle, unit, reason, tick) => BattleState` | unit 是离场前明确取得的历史业务载荷，不应机械改成查询已移除 Unit；当前 tick 是 battle.tick 的重复来源，后续收口。 |
-| [Deployment.advance](../../src/core/battle/deployment/deployment.ts)／[advanceSpawning](../../src/core/battle/steps/spawning.ts) | `(battle, tick)`／`(battle, commands, tick)` | 实际调用重复传入当前 battle.tick；保留 Card／Schedule 局部计算自己的时点参数。 |
+| [refundUnit / recycleUnitCard](../../src/core/battle/deployment/lifecycle.ts) | `(battle, unit, reason, tick) => BattleState` | unit 是离场前明确取得的历史业务载荷，不应机械改成查询已移除 Unit；当前 tick 是 battle.tick 的重复来源，后续收口。 |
+| [Deployment.advance](../../src/core/battle/deployment/resources.ts)／[advanceSpawning](../../src/core/battle/steps/spawning.ts) | `(battle, tick)`／`(battle, commands, tick)` | 实际调用重复传入当前 battle.tick；保留 Card／Schedule 局部计算自己的时点参数。 |
 
 接口整理保留真实可接受输入：允许普通 Unit 并用报告表达缺少能力的操作，继续使用 `Ref<Unit>`；要求明确能力的推进使用 `Ref<Unit & H>`。命名遵循 ESM 惯例，不以转发层统一签名。
 
@@ -178,7 +201,7 @@ Offense、Action、Locomotion、Vitality 的动态 Input 均为 `(battle, self: 
 
 Tactical 的导出函数、Definition 回调与容器公共方法遵循五类约定。Hook 的固定事件 Context、MovementContext 业务输入、创建时的宿主身份、容器内部数字键、私有状态 transform、纯 Geometry／Navigation／Card／Cooldown 计算均有明确职责，不能机械升级为 Battle 操作。battle/deployment/query.ts 的 evaluateDeployment(field, request) 是 Deployment 的纯资格计算，读取 Battlefield 提供的当前地块与占格事实；归属按业务职责划分，参数按实际数据需求收窄，不因位于 Battle 目录就要求完整 BattleState。
 
-Skill／Elemental 查询文件中的完整实例写回是 Core 内部协议，不向内容推广为通用操作。Action 按 Definition 聚合持久 state、Cooldown 和当前 Execution；内容分别用 updateState、updateCooldown、update 变换对应字段，不提交完整旧条目。Unit 的 leave Hook 以 Departure 为固定终止历史载荷，保留开始离场时的 Unit 与 reason。
+Skill 的完整实例写回归 instance.ts：replaceHost 与 replaceActivation 是从 query.ts 迁出的内部协议，连同配对 Instance 的 replace 均不从公共 index 导出。Elemental 的完整宿主写回是 operations.ts 中的私有 replaceHost；query.ts 只保留查询。两者均不向内容推广完整实例写回。Action 按 Definition 聚合持久 state、Cooldown 和当前 Execution；内容分别用 updateState、updateCooldown、update 变换对应字段，不提交完整旧条目。Unit 的 leave Hook 以 Departure 为固定终止历史载荷，保留开始离场时的 Unit 与 reason。
 
 Card.advance 与 Action 的局部 Cooldown 计算只处理显式传入的局部值，保留必要的 tick 参数。Projectile 的发射时点、到期时点等历史事实也继续保存。
 

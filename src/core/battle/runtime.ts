@@ -16,20 +16,14 @@ import * as projectiles from "../projectile/query.js";
 import { advanceElements } from "./steps/elemental.js";
 import { advanceSkills } from "./steps/skills.js";
 import { finishBattleEvents } from "./events.js";
-import {
-    getSpawnScheduleCounts,
-    isSpawnScheduleCompleted,
-    resolveScheduleUnits,
-} from "./schedule/runtime.js";
+import { getSpawnScheduleCounts, isSpawnScheduleCompleted } from "./schedule/query.js";
+import { resolveScheduleUnits } from "./schedule/runtime.js";
 import { createSpawnScheduleDefinition } from "./schedule/definition.js";
 import { createSpawnScheduleExecution } from "./schedule/state.js";
 import { initializeBattlefield } from "./initialization.js";
 import * as unit from "./unit.js";
-import {
-    addCard,
-    advance as advanceDeployment,
-    initialize as initializeDeployment,
-} from "./deployment/deployment.js";
+import { addCard, advance as advanceDeployment } from "./deployment/resources.js";
+import { initialize as initializeDeployment } from "./deployment/deployment.js";
 
 export type { Input, Command, Event, Result } from "./contract.js";
 

@@ -2,6 +2,8 @@
 
 本页规定 Navigation、Route 与 Locomotion 的类型、API 与行为契约。
 
+Route 与 Locomotion 的公共契约分别从 [route/index.ts](../../src/core/unit/capability/route/index.ts)、[locomotion/index.ts](../../src/core/unit/capability/locomotion/index.ts) 导入；Navigation 保留下面按状态与算法划分的自然入口，不增加模板 index。Core 调度可以直接依赖实际模型、查询和操作文件。
+
 文件按职责划分：
 
 ```text
@@ -234,7 +236,7 @@ Route 不对 Navigation 返回的追踪点追加整段射线筛选，也不回�
 
 Definition.pathMotionMode 是初始通行模式，Progress.pathMotionMode 是当前模式。setPathMotionMode 更新当前活动 Progress，保留 Definition 和 Phase；Main 与 Alternative 各自保存模式，clearAlternative 恢复 Main 原有模式。Route 查询与传给 Locomotion 的 mode 读取同一当前值。Layer 的 State.type（unit.layer.type）独立表达空地身份，升空不自动改变寻路方式。startPosition 用于初始位置及路线相关查询；Definition.offset 是构造最终 Definition 前已经采样的总路线偏移，Progress 不重复保存。原始 offset 与 randomRange 只作为 Spawn 构造输入，不将 randomRange 保留在最终 Definition 中。
 
-requireAllCheckpoints 承接原 visitEveryCheckPoint 的语义，控制是否允许在尚未逐个完成路点时，因抵达终点而提前完成路线。alwaysCheckCurrentPoint 同样是固定执行政策，由 Definition 持有。CONSUMED 表示当前指令已经消费，用于同步重入时避免重复执行，不表示整条路线完成。类型与初始化由 route/capability.ts 定义，领域操作由 route/operations.ts 提供。
+requireAllCheckpoints 承接原 visitEveryCheckPoint 的语义，控制是否允许在尚未逐个完成路点时，因抵达终点而提前完成路线。alwaysCheckCurrentPoint 同样是固定执行政策，由 Definition 持有。CONSUMED 表示当前指令已经消费，用于同步重入时避免重复执行，不表示整条路线完成。类型、初始化及 isCompleted／pathMotionMode 的局部读取归 route/capability.ts；movementTarget 及其 target／recoveryPoint 辅助查询归 route/query.ts，target 仅供领域内部共享，不从 index 导出。完整路线操作仍由 route/operations.ts 提供，公共入口名字与业务契约不变。
 
 ### 指令归一化
 
@@ -378,7 +380,7 @@ export function setSpeedContribution(
 export function removeSpeedContribution(state: State, id: string): State;
 ```
 
-类型、初始化、类型守卫及纯 Rule 登记变换位于 locomotion/capability.ts；operations.ts 提供完整推进与属性登记，并重新导出 Rule 变换。canMove 与 resolveSpeed 是内部辅助函数。初始化验证速度、下限、几何半宽和转向参数非负，不要求基础速度已经大于 minSpeed。
+类型、初始化、类型守卫及 Rule／速度贡献的局部登记变换统一位于 locomotion/capability.ts；operations.ts 只提供完整推进，不再转发局部 setter。canMove 与 resolveSpeed 是内部辅助函数。初始化验证速度、下限、几何半宽和转向参数非负，不要求基础速度已经大于 minSpeed。
 
 推进读取最新 Unit，要求生命周期 PRESENT、空间存在且所有 Rule 允许。Movement 在 Route 推进后查询当前关系，只有自主移动受阻挡门禁约束；Locomotion 不直接依赖 Blocking，保留历史 velocity。Blocking 不再同步专用禁移 Rule，见 [Blocking 设计](blocking.md)。有效速度为 `max(minSpeed, attribute.apply(speed, contributions)) * speedMultiplier`。无目标时 Runtime 不调用 advance；速度为零或不允许移动时返回原 BattleState，保留 velocity。
 

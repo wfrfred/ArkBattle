@@ -7,9 +7,9 @@ import { getUnit } from "./unit.js";
 import { create } from "../../dist/core/battlefield/state.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "./tiles.js";
-import * as blocking from "../../dist/core/battle/blocking/operations.js";
-import * as query from "../../dist/core/battle/blocking/query.js";
-import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
+import * as blocking from "../../dist/core/battle/blocking/index.js";
+import * as query from "../../dist/core/battle/blocking/index.js";
+import * as blocker from "../../dist/core/unit/capability/blocking/index.js";
 import * as attribute from "../../dist/core/unit/contribution/attribute.js";
 
 export function fixture(units = [], { rows = 3, columns = 12 } = {}) {

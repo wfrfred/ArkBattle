@@ -2,7 +2,7 @@ import { ref as unitReference } from "../../dist/core/unit/query.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import { ref as actionRef } from "../../dist/core/unit/action/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";

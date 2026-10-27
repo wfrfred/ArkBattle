@@ -11,8 +11,8 @@ import { create as createMap, get as getTile } from "../../dist/core/battlefield
 import { create as createTile } from "../../dist/core/battlefield/map/tile.js";
 import { Tiles } from "../../dist/core/battlefield/map/tiles.js";
 import { Tile } from "../../dist/core/geometry/coordinate.js";
-import { initialize } from "../../dist/core/unit/initialize.js";
-import { createDefinition as createDeployable } from "../../dist/core/unit/capability/deployable/capability.js";
+import { initialize } from "../../dist/core/unit/index.js";
+import { createDefinition as createDeployable } from "../../dist/core/unit/capability/deployable/index.js";
 
 function battle(firstTerrain = normal, firstCost = 2000) {
     const tiles = [0, 1, 2].reduce((entries, index) => entries.add(createTile({

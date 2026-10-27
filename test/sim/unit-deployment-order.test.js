@@ -2,7 +2,7 @@ import { changeTile } from "../helpers/tiles.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { add, update } from "../../dist/core/battle/unit.js";
-import { addCard, notifyDeployed } from "../../dist/core/battle/deployment/deployment.js";
+import { addCard, notifyDeployed } from "../../dist/core/battle/deployment/index.js";
 import { deploy } from "../../dist/core/battle/deployment/operations.js";
 import { setHook as setBlockingHook } from "../../dist/core/unit/capability/blocking/blocker.js";
 import { createDefinition as createDeployable } from "../helpers/deployable.js";

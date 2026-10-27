@@ -12,7 +12,7 @@ import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createDefinition as createDeployableDefinition } from "../helpers/deployable.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { addCard } from "../../dist/core/battle/deployment/deployment.js";
+import { addCard } from "../../dist/core/battle/deployment/index.js";
 import { resolveDeploymentCommands } from "../../dist/core/battle/deployment/operations.js";
 import {
     advancePredefined,
@@ -24,8 +24,8 @@ import { initialize } from "../helpers/unit.js";
 import { createDefinition as createSkillDefinition } from "../../dist/core/unit/capability/skill/capability.js";
 import { activate } from "../../dist/core/unit/capability/skill/operations.js";
 import { ref as activationRef } from "../../dist/core/unit/capability/skill/activation.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
-import { get } from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
+import { get } from "../../dist/core/unit/effect/index.js";
 import { definition } from "../helpers/effects.js";
 import {
     setHook,

@@ -100,3 +100,11 @@ export function initialize(battle: BattleState, definition: Definition): Result<
         },
     };
 }
+
+export function isCompleted(state: State): boolean {
+    return state.main.phase.type === "COMPLETED";
+}
+
+export function pathMotionMode(state: State): MotionMode {
+    return (state.alternative ?? state.main).pathMotionMode;
+}

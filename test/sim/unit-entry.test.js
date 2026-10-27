@@ -14,7 +14,7 @@ import { getUnit, initialize, fixtureBattle } from '../helpers/unit.js';
 import { instantiateUnitPlacement } from '../../dist/core/battle/creation/placement.js';
 import { createDefinition as createSkillDefinition } from '../../dist/core/unit/capability/skill/capability.js';
 import { advancePredefined } from '../../dist/core/battle/steps/predefined.js';
-import { resolveScheduleUnits } from '../../dist/core/battle/schedule/runtime.js';
+import { resolveScheduleUnits } from '../../dist/core/battle/schedule/index.js';
 import { create as createMap } from '../../dist/core/battlefield/map/map.js';
 import { createInput as createRouteDefinition } from '../../dist/core/battle/creation/route.js';
 

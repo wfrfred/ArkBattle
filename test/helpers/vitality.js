@@ -1,13 +1,13 @@
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { initialize } from "./unit.js";
 import { transitionUnit, getUnit } from "./unit.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
-import * as damageHooks from "../../dist/core/battle/damage/hook.js";
-import * as healingHooks from "../../dist/core/battle/healing/hook.js";
-import { calculateHealing } from "../../dist/core/battle/healing/calculate.js";
-import { applyHealing } from "../../dist/core/battle/healing/apply.js";
-import { calculateDamage } from "../../dist/core/battle/damage/calculate.js";
-import { applyDamage } from "../../dist/core/battle/damage/apply.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
+import * as damageHooks from "../../dist/core/battle/damage/index.js";
+import * as healingHooks from "../../dist/core/battle/healing/index.js";
+import { calculateHealing } from "../../dist/core/battle/healing/index.js";
+import { applyHealing } from "../../dist/core/battle/healing/index.js";
+import { calculateDamage } from "../../dist/core/battle/damage/index.js";
+import { applyDamage } from "../../dist/core/battle/damage/index.js";
 import { definition, effectFixtureWork, installFixtureEffect } from "./effects.js";
 
 export { effectFixtureWork as workFor, installFixtureEffect as attach };

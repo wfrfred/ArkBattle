@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { createWithState, chooseTargets } from "../../dist/content/actions/attack.js";
-import { select } from "../../dist/core/battle/targeting/select.js";
+import { select } from "../../dist/core/battle/targeting/index.js";
 import { random } from "../../dist/core/battle/targeting/selector.js";
 import { getUnit } from "../helpers/unit.js";
 import { ref } from "../../dist/core/unit/query.js";

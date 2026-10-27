@@ -1,10 +1,10 @@
 import { create as createAction, createActions } from "../core/unit/action/index.js";
 import { create as createAttack } from "../content/actions/attack.js";
-import type { Input } from "../core/battle/contract.js";
+import type { Input } from "../core/battle/index.js";
 
 import type { Map } from "../core/battlefield/map/map.js";
 import { TICKS_PER_SECOND } from "../core/tick.js";
-import type { Type as ElementType } from "../core/unit/capability/elemental/capability.js";
+import type { Type as ElementType } from "../core/unit/capability/elemental/index.js";
 import { createInput, type Input as RouteInput } from "../core/battle/creation/route.js";
 import { createArknightsElementalDefinition } from "../data/arknights/elemental.js";
 import { compileArknightsAttackBuffSkill } from "../data/arknights/skill-buff.js";

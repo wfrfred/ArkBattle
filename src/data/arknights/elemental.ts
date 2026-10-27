@@ -2,8 +2,9 @@ import {
     createDefinition as createElementalDefinition,
     type Definition as ElementalDefinition,
     type Type,
-} from "../../core/unit/capability/elemental/capability.js";
-import type { Definition as BurstDefinition } from "../../core/unit/capability/elemental/burst.js";
+    type BurstDefinition,
+} from "../../core/unit/capability/elemental/index.js";
+
 import { create as createBurstDefinition } from "./elemental-burst.js";
 import { secondsToTicks } from "./tick.js";
 

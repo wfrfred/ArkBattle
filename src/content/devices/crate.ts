@@ -1,4 +1,4 @@
-import { hasOccupancy } from "../../core/unit/capability/occupancy/capability.js";
+import { hasOccupancy } from "../../core/unit/capability/occupancy/index.js";
 import { apply, restore, type Configuration, type Definition } from "./tile.js";
 
 export function create(configuration: Configuration): Definition {

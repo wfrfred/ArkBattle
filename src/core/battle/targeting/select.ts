@@ -5,13 +5,6 @@ import type { Unit } from "../../unit/unit.js";
 import type { State as BattleState, Result } from "../state.js";
 import type { Request } from "./contract.js";
 
-export function hasCandidate(battle: BattleState, request: Request): boolean {
-    return units
-        .all(battle)
-        .filter(hasTargetable)
-        .some((target) => request.filter(battle, request, target));
-}
-
 export function select(
     battle: BattleState,
     request: Request,

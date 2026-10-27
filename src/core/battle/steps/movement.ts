@@ -1,9 +1,12 @@
 import {
     hasRoute,
+    isCompleted,
+    pathMotionMode,
     type Definition as RouteDefinition,
     type Route,
 } from "../../unit/capability/route/capability.js";
 import * as route from "../../unit/capability/route/operations.js";
+import { movementTarget } from "../../unit/capability/route/query.js";
 import { hasLocomotion, type Locomotion } from "../../unit/capability/locomotion/capability.js";
 import { hasBlockable } from "../../unit/capability/blocking/blockable.js";
 import * as locomotion from "../../unit/capability/locomotion/operations.js";
@@ -20,12 +23,12 @@ function advanceLocomotion(
     moveMultiplier: number,
 ): BattleState {
     const ref = units.ref(unit);
-    const target = route.movementTarget(battle, ref);
+    const target = movementTarget(battle, ref);
 
     return target === null
         ? battle
         : locomotion.advance(battle, ref, target, {
-              mode: route.pathMotionMode(unit.route),
+              mode: pathMotionMode(unit.route),
               speedMultiplier: moveMultiplier,
           });
 }
@@ -85,7 +88,7 @@ export function advanceMovement(
             continue;
         }
         if (
-            !route.isCompleted(unit.route) &&
+            !isCompleted(unit.route) &&
             (!hasBlockable(unit) || unit.blockable.blocker === null) &&
             hasLocomotion(unit)
         ) {
@@ -107,7 +110,7 @@ export function resolveRouteCompletion(battle: BattleState): BattleState {
 
         if (
             unit?.lifecycle !== "PRESENT" ||
-            !route.isCompleted(unit.route) ||
+            !isCompleted(unit.route) ||
             (hasBlockable(unit) && unit.blockable.blocker !== null)
         ) {
             continue;

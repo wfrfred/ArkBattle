@@ -10,8 +10,9 @@ import { createBattleState } from "../../dist/core/battle/state.js";
 import { getUnit } from "../helpers/unit.js";
 import { deploy, retreat } from "../../dist/core/battle/deployment/operations.js";
 import {
-    addCard, advance, changeDp, getCard, initialize as initializeDeployment, updateCard,
-} from "../../dist/core/battle/deployment/deployment.js";
+    addCard, advance, changeDp, getCard, initialize as initializeDeployment,
+} from "../../dist/core/battle/deployment/index.js";
+import { updateCard } from "../../dist/core/battle/deployment/resources.js";
 import * as cards from "../../dist/core/battle/deployment/card.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import {

@@ -46,7 +46,7 @@ import {
     type Action,
     type Executing,
 } from "./action/index.js";
-import type { Action as ActionCapability } from "./capability/action/capability.js";
+import type { Action as ActionCapability } from "./capability/action/index.js";
 import * as actions from "./action/index.js";
 ```
 

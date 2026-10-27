@@ -1,22 +1,22 @@
-import * as unitQueries from "../../dist/core/unit/query.js";
+import * as unitQueries from "../../dist/core/unit/index.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { fixtureBattle } from "../helpers/unit.js";
 import { healing } from "../helpers/vitality.js";
-import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { initialize as initializeActionState } from "../../dist/core/unit/capability/action/capability.js";
+import { ref as unitRef } from "../../dist/core/unit/index.js";
+import { initialize as initializeActionState } from "../../dist/core/unit/capability/action/index.js";
 import {
     setAttackContribution,
     removeAttackContribution,
-} from "../../dist/core/unit/capability/offense/capability.js";
+} from "../../dist/core/unit/capability/offense/index.js";
 import {
     setHook as setDamageHook,
     removeHook as removeDamageHook,
-} from "../../dist/core/battle/damage/hook.js";
-import { get as getEffect } from "../../dist/core/unit/effect/operations.js";
+} from "../../dist/core/battle/damage/index.js";
+import { get as getEffect } from "../../dist/core/unit/effect/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { initialize as initializeBattle, step as stepBattle } from "../../dist/core/battle/runtime.js";
+import { initialize as initializeBattle, step as stepBattle } from "../../dist/core/battle/index.js";
 
 import { createLegacyCombatSpec } from "../../dist/legacy/combat.js";
 import { initialize, placement } from "../helpers/unit.js";
@@ -26,13 +26,13 @@ import { createInput as createRouteDefinition } from "../../dist/core/battle/cre
 import { actionCapability } from "../helpers/actions.js";
 import { ref as actionRef } from "../../dist/core/unit/action/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
-import { install as installEffect, update as updateEffect, end as endEffect } from "../../dist/core/unit/effect/operations.js";
+import { install as installEffect, update as updateEffect, end as endEffect } from "../../dist/core/unit/effect/index.js";
 import * as modifier from "../../dist/core/unit/contribution/attribute.js";
-import { initialize as initializeVitalityState } from "../../dist/core/unit/capability/vitality/capability.js";
-import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
+import { initialize as initializeVitalityState } from "../../dist/core/unit/capability/vitality/index.js";
+import { resolveAttack } from "../../dist/core/unit/capability/offense/index.js";
 import { getUnit, transitionUnit } from "../helpers/unit.js";
 import * as tracking from "../../dist/content/projectiles/tracking.js";
-import { all as allProjectiles, ref as projectileRef } from "../../dist/core/projectile/query.js";
+import { all as allProjectiles, ref as projectileRef } from "../../dist/core/projectile/index.js";
 import { create as createProjectile, update as updateProjectile, stop as stopProjectile } from "../../dist/core/battle/projectile.js";
 
 const hit = { type: "CIRCLE", offset: [0, 0], radius: 0.1 };

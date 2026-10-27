@@ -1,31 +1,33 @@
 import { update as updateUnit } from "../core/battle/unit.js";
-import type { Input } from "../core/battle/contract.js";
-import type { FragmentDefinition } from "../core/battle/schedule/definition.js";
-import type { Definition as UnitDefinition } from "../core/unit/unit.js";
+import type { Input, State as BattleState } from "../core/battle/index.js";
+import type { FragmentDefinition } from "../core/battle/schedule/index.js";
+import {
+    type Definition as UnitDefinition,
+    get as getCurrentUnit,
+    ref as unitRef,
+} from "../core/unit/index.js";
 import { create as createAction, createActions } from "../core/unit/action/index.js";
-import { hasActionDefinition } from "../core/unit/capability/action/capability.js";
+import { hasActionDefinition } from "../core/unit/capability/action/index.js";
 import { create as createAttack, isAttack } from "../content/actions/attack.js";
-import { calculateDamage } from "../core/battle/damage/calculate.js";
-import { applyDamage } from "../core/battle/damage/apply.js";
-import type { DamageRequest } from "../core/battle/damage/contract.js";
-import { get as getCurrentUnit, ref as unitRef } from "../core/unit/query.js";
+import { calculateDamage, applyDamage, type DamageRequest } from "../core/battle/damage/index.js";
+
 import * as tracking from "../content/projectiles/tracking.js";
 
-import { type State as BattleState } from "../core/battle/state.js";
-import type { Projectile } from "../core/projectile/projectile.js";
+import type { Projectile } from "../core/projectile/index.js";
 import { create as createProjectile } from "../core/battle/projectile.js";
 import * as attribute from "../core/unit/contribution/attribute.js";
-import { install } from "../core/unit/effect/operations.js";
-import type { Definition } from "../core/unit/effect/definition.js";
+import { install, type Definition } from "../core/unit/effect/index.js";
+
 import {
     hasOffense,
     setAttackContribution,
     removeAttackContribution,
     type Offense,
-} from "../core/unit/capability/offense/capability.js";
-import { resolveAttack } from "../core/unit/capability/offense/query.js";
+    resolveAttack,
+} from "../core/unit/capability/offense/index.js";
+
 import { healFree } from "../content/effects/protection.js";
-import { hasVitality } from "../core/unit/capability/vitality/capability.js";
+import { hasVitality } from "../core/unit/capability/vitality/index.js";
 import { hasTargetable } from "../core/unit/capability/targetable/capability.js";
 
 export function createTacticalProjectileDemo(

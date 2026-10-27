@@ -4,6 +4,8 @@ Blocking 负责阻挡关系的建立、解除及必要维护。本文描述两�
 
 Blocker／Blockable 的数值与局部 State 接口见 [Capability API](capability.md#blocking)。状态归属与同步返回契约见 [函数式内核](functional-core.md)。
 
+关系查询与公开结算从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入，两端 Capability 的类型与局部变换从 [unit/capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入。整批更新的准备、差分、通知及维护继续在 operations.ts 内保持有序内聚，Core 按需精确依赖这些阶段接口，不将它们扩为内容 API。
+
 ## 已确定的职责与调度政策
 
 以下政策已实现。阻挡资格、容量裁撤和业务副作用按原生证据核对；搜索候选与容量接续采用下述明确的项目政策。普通接敌采用项目固定阶段，不重构 Combat／Movement 来模拟 Unity 按 UID 逐对象 OnTick。

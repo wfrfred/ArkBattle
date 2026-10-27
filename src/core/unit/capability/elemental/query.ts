@@ -1,4 +1,3 @@
-import { update as updateUnit } from "../../../battle/unit.js";
 import type { Ref } from "../../../common/ref.js";
 import { type State as BattleState } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
@@ -22,14 +21,6 @@ export function get(battle: BattleState, reference: Ref<Burst>): Burst | undefin
     const burst = units.get(battle, reference.host)?.elemental.burst;
 
     return burst?.id === reference.id ? burst : undefined;
-}
-
-export function replace(battle: BattleState, self: Unit & Elemental): BattleState {
-    const current = units.get(battle, units.ref(self));
-
-    return current?.definition.elemental === self.definition.elemental
-        ? updateUnit(battle, [self])
-        : battle;
 }
 
 export function resolveMaxEp(battle: BattleState, host: Ref<Unit & Elemental>): number | undefined {

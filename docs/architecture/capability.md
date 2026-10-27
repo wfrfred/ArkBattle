@@ -66,7 +66,7 @@ export type Product<D> = {
 
 Product<D>.definition 直接保留 D，包含内容自有字段、字面量与联合分支信息；各 Capability 的运行 State 则使用 initializer 派生的标准 States 类型。SelectedKeys 的条件以 [D] 包裹，只有联合 Definition 的所有分支都明确要求某项能力时才承诺对应 State；可选能力也不提供存在保证。Unit 基础身份与生命周期 Hook 契约归 Unit 模块。类型推导与运行时装配共用 initializers，不另建能力映射表。Definition 与内部状态按项目契约保持不可变，不额外套深只读包装、复制或冻结。
 
-Unit 装配在 unit/initialize.ts，公开 initialize(battle, input) → Result<Unit & Product<D>>。Input 的 id、definition、position 为必填，effects 可选；已有 Effects 容器直接沿用，未提供时使用 Effects.empty()。实现签名接收 Input<Definition & Partial<Definitions>>，按配置键是否存在选择能力，并直接读取 definition[key]；不使用 Reflect，也不重复检查内部能力配置是否为 undefined 或 null。已知能力的 Definition 受 Catalog 派生类型约束；通用装配结果只承诺 Definition 中明确选择的能力。Skill.initialize 返回完整的非泛型 Capability State，程序私有类型由领域内部恢复。
+Unit 装配实现在 unit/initialize.ts，由 [unit/index.ts](../../src/core/unit/index.ts) 公开 initialize(battle, input) → Result<Unit & Product<D>> 及模型、Hook 类型和查询；完整登记与离场操作仍直接归 battle/unit.ts。Input 的 id、definition、position 为必填，effects 可选；已有 Effects 容器直接沿用，未提供时使用 Effects.empty()。实现签名接收 Input<Definition & Partial<Definitions>>，按配置键是否存在选择能力，并直接读取 definition[key]；不使用 Reflect，也不重复检查内部能力配置是否为 undefined 或 null。已知能力的 Definition 受 Catalog 派生类型约束；通用装配结果只承诺 Definition 中明确选择的能力。Skill.initialize 返回完整的非泛型 Capability State，程序私有类型由领域内部恢复。
 
 装配按登记次序调用所选 initializer，逐个接续返回的 battle，再组合完整 Unit。初始化可以读取当前战场或按所属流程消费 RNG；后续初始化与创建流程使用返回版本，不能重新接回旧 battle。这个阶段 Unit 尚未登记，初始化不能假设自己或兄弟能力已经可从战场取得。登记、Skill 入场及 Unit 的 enter Hook 等登场结算由创建流程负责。
 
@@ -79,6 +79,8 @@ Action Capability 的 Definition 保存 initialize(battle) → Result<Actions> �
 Core 不提供干员或敌人 Archetype 层；内容直接组合 Unit Definition 与所需的 Catalog Definitions，具体创建流程只声明实际需要的能力。Unit.initialize 是统一构造入口，负责按 Definition 建立能力配对。Unit 登记后的 Definition 与能力组成保持稳定，局部 State 可以更新；内部领域操作遵守此契约。路线可改变 SpatialPresence.present，不能临时安装或删除 SpatialPresence。查询与历史业务记录直接共享不可变 Unit，保留内容自有状态字段。
 
 领域的结构存在性检查不反向依赖 Catalog。无需中央 hasCapability、CapabilityMap 或 DefinitionPart 描述业务依赖。
+
+多文件 Capability 通过各自 index.ts 显式公开类型、局部变换、查询与业务操作；单文件的小能力保留 capability.ts 自然入口。完整列表及内部深导边界见[Core 入口表](api-conventions.md#core-领域入口与保留边界)，Catalog 继续直接使用实际初始化依赖，不经公共入口反向汇聚。
 
 ## 待整理：单位标签与 Profile 依赖
 

@@ -1,5 +1,5 @@
 import type { Ref } from "../../core/common/ref.js";
-import type { State as BattleState, Result } from "../../core/battle/state.js";
+import type { State as BattleState, OperationResult as Result } from "../../core/battle/index.js";
 import * as mechanisms from "../../core/battle/mechanism.js";
 import type { MechanismDefinition } from "../../core/battle/mechanism.js";
 import { remove as removeUnit } from "../../core/battle/unit.js";
@@ -9,12 +9,14 @@ import type {
 } from "../../core/battlefield/map/terrain.js";
 import { contains } from "../../core/battlefield/map/map.js";
 import { World } from "../../core/geometry/coordinate.js";
-import type { Id, Unit } from "../../core/unit/unit.js";
-import * as units from "../../core/unit/query.js";
-import * as effects from "../../core/unit/effect/operations.js";
-import { ref as effectRef, type View as EffectView } from "../../core/unit/effect/effect.js";
+import * as units from "../../core/unit/index.js";
+import type { Id, Unit } from "../../core/unit/index.js";
+
+import * as effects from "../../core/unit/effect/index.js";
+import { ref as effectRef, type View as EffectView } from "../../core/unit/effect/index.js";
+
 import { hasLayer } from "../../core/unit/capability/layer/capability.js";
-import { isSpatiallyPresent } from "../../core/unit/capability/presence/capability.js";
+import { isSpatiallyPresent } from "../../core/unit/capability/presence/index.js";
 import { hasAllegiance } from "../../core/unit/capability/allegiance/capability.js";
 import { hasTargetable } from "../../core/unit/capability/targetable/capability.js";
 import { TICKS_PER_SECOND } from "../../core/tick.js";

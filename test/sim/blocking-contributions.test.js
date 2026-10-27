@@ -19,7 +19,7 @@ import {
 import {
     canBeBlocked, resolveVolume, setVolumeContribution, removeVolumeContribution, setRule, removeRule,
 } from "../../dist/core/unit/capability/blocking/blockable.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import * as contribution from "../../dist/core/unit/contribution/contribution.js";
 import * as modifier from "../../dist/core/unit/contribution/attribute.js";
 import { compileAttributeModifiers, parseAttributeModifiers } from "../../dist/data/arknights/modifier.js";

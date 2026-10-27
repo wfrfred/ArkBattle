@@ -9,7 +9,7 @@ import { add, remove } from "../../dist/core/battle/unit.js";
 import { initialize } from "../helpers/unit.js";
 
 import * as mechanisms from "../../dist/core/battle/mechanism.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import { createDefinition as createSkillDefinition, setEndedHook } from "../../dist/core/unit/capability/skill/capability.js";
 import { activate, finish } from "../../dist/core/unit/capability/skill/operations.js";
 import { ref as activationRef } from "../../dist/core/unit/capability/skill/activation.js";

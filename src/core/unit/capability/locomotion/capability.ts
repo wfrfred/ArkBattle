@@ -3,7 +3,7 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { MotionMode } from "../../../battlefield/navigation/state.js";
 import { type WorldPosition } from "../../../geometry/coordinate.js";
 import type { Unit } from "../../unit.js";
-import type { Contribution } from "../../contribution/contribution.js";
+import * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
 import type { SteeringParameters } from "./steering.js";
 import * as registry from "../../../hook.js";
@@ -26,7 +26,7 @@ export type Input =
 
 export interface State {
     readonly velocity: WorldPosition;
-    readonly speed: readonly Contribution<Input>[];
+    readonly speed: readonly contribution.Contribution<Input>[];
     readonly rules: readonly Rule[];
 }
 
@@ -72,4 +72,16 @@ export function removeRule(state: State, id: string): State {
     const rules = registry.remove(state.rules, id);
 
     return rules === state.rules ? state : { ...state, rules };
+}
+
+export function setSpeedContribution(state: State, entry: contribution.Contribution<Input>): State {
+    const speed = contribution.set(state.speed, entry);
+
+    return speed === state.speed ? state : { ...state, speed };
+}
+
+export function removeSpeedContribution(state: State, id: string): State {
+    const speed = contribution.remove(state.speed, id);
+
+    return speed === state.speed ? state : { ...state, speed };
 }

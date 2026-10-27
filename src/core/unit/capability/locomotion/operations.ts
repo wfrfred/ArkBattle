@@ -10,24 +10,10 @@ import type { Unit } from "../../unit.js";
 import * as contribution from "../../contribution/contribution.js";
 import * as attribute from "../../contribution/attribute.js";
 import { isSpatiallyPresent } from "../presence/capability.js";
-import type { Input, Locomotion, MovementContext, MovementTarget, State } from "./capability.js";
+import type { Locomotion, MovementContext, MovementTarget } from "./capability.js";
 import { calculate as avoidance } from "./avoidance.js";
 import { reflect } from "./motion.js";
 import { integrate } from "./steering.js";
-
-export { setRule, removeRule } from "./capability.js";
-
-export function setSpeedContribution(state: State, entry: contribution.Contribution<Input>): State {
-    const speed = contribution.set(state.speed, entry);
-
-    return speed === state.speed ? state : { ...state, speed };
-}
-
-export function removeSpeedContribution(state: State, id: string): State {
-    const speed = contribution.remove(state.speed, id);
-
-    return speed === state.speed ? state : { ...state, speed };
-}
 
 function canMove(battle: BattleState, self: Unit & Locomotion): boolean {
     return self.locomotion.rules.every((rule) => rule.allows(battle, self));

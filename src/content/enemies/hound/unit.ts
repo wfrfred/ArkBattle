@@ -1,6 +1,6 @@
 import type { Attack } from "../../actions/attack.js";
 import type { Profile } from "../../../data/arknights/enemy.js";
-import type { Unit } from "../../../core/unit/unit.js";
+import type { Unit } from "../../../core/unit/index.js";
 import type {
     Definitions as CapabilityDefinitions,
     Product,

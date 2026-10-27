@@ -1,21 +1,23 @@
 import { create as createAttack, type Attack } from "../../actions/attack.js";
-import { calculateDamage } from "../../../core/battle/damage/calculate.js";
-import { applyDamage } from "../../../core/battle/damage/apply.js";
-import type { DamageRequest } from "../../../core/battle/damage/contract.js";
-import * as units from "../../../core/unit/query.js";
+import {
+    calculateDamage,
+    applyDamage,
+    type DamageRequest,
+} from "../../../core/battle/damage/index.js";
+
+import * as units from "../../../core/unit/index.js";
 import type { Profile } from "../../../data/arknights/enemy.js";
 import { perSecondToPerTick, secondsToTicks } from "../../../data/arknights/tick.js";
 import { assertNonnegativeSafeInteger, assertPositiveNumber } from "../../../core/common/assert.js";
 import { create as createProjectile } from "../../../core/battle/projectile.js";
-import type { Projectile as ProjectileInstance } from "../../../core/projectile/projectile.js";
-import type { State as BattleState } from "../../../core/battle/state.js";
+import type { Projectile as ProjectileInstance } from "../../../core/projectile/index.js";
+import type { State as BattleState } from "../../../core/battle/index.js";
 import * as tracking from "../../projectiles/tracking.js";
-import { hasOffense } from "../../../core/unit/capability/offense/capability.js";
-import { resolveAttack } from "../../../core/unit/capability/offense/query.js";
-import { hasVitality } from "../../../core/unit/capability/vitality/capability.js";
-import * as filters from "../../../core/battle/targeting/filter.js";
-import * as compare from "../../../core/battle/targeting/compare.js";
-import { first } from "../../../core/battle/targeting/selector.js";
+import { hasOffense, resolveAttack } from "../../../core/unit/capability/offense/index.js";
+
+import { hasVitality } from "../../../core/unit/capability/vitality/index.js";
+import * as targeting from "../../../core/battle/targeting/index.js";
+import { first } from "../../../core/battle/targeting/index.js";
 
 export interface Timing {
     readonly windupTicks: number;
@@ -70,13 +72,13 @@ export function createMelee(profile: Profile, timing: Timing): Attack {
                 id: "primary",
                 targeting: {
                     purposes: ["DAMAGE"],
-                    filter: filters.and(
-                        filters.present,
-                        filters.alive,
-                        filters.hostile,
-                        filters.blocker,
+                    filter: targeting.and(
+                        targeting.present,
+                        targeting.alive,
+                        targeting.hostile,
+                        targeting.blocker,
                     ),
-                    selector: first(1, compare.distance),
+                    selector: first(1, targeting.distance),
                 },
                 operations: [
                     {
@@ -107,14 +109,14 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
                 id: "primary",
                 targeting: {
                     purposes: ["DAMAGE"],
-                    filter: filters.and(
-                        filters.damage,
-                        filters.not(filters.blocker),
-                        filters.range([
+                    filter: targeting.and(
+                        targeting.damage,
+                        targeting.not(targeting.blocker),
+                        targeting.range([
                             { type: "CIRCLE", offset: [0, 0], radius: profile.rangeRadius },
                         ]),
                     ),
-                    selector: first(1, compare.distance),
+                    selector: first(1, targeting.distance),
                 },
                 operations: [
                     {

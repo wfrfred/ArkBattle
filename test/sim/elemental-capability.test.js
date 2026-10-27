@@ -28,7 +28,7 @@ import { get, ref } from '../../dist/core/unit/query.js';
 import { transitionUnit } from '../helpers/unit.js';
 import { remove } from '../../dist/core/battle/unit.js';
 import { create as modifier } from '../../dist/core/unit/contribution/attribute.js';
-import * as effects from '../../dist/core/unit/effect/operations.js';
+import * as effects from '../../dist/core/unit/effect/index.js';
 import { effectFixtureWork } from '../helpers/effects.js';
 
 const simpleBursts = (program = {}) => Object.fromEntries(ELEMENT_TYPES.map(type => [type, {

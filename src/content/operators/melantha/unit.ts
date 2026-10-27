@@ -2,22 +2,28 @@ import { normal as normalSite } from "../../terrain/condition.js";
 import { update as updateUnit } from "../../../core/battle/unit.js";
 import { createArknightsElementalDefinition } from "../../../data/arknights/elemental.js";
 import { create as createAction, createActions } from "../../../core/unit/action/index.js";
-import { get as getCurrentUnit, ref as unitRef } from "../../../core/unit/query.js";
+import {
+    get as getCurrentUnit,
+    ref as unitRef,
+    type Definition as UnitDefinition,
+} from "../../../core/unit/index.js";
 import type { Profile } from "../../../data/arknights/operator.js";
 
-import type { Definition as UnitDefinition } from "../../../core/unit/unit.js";
 import type { Definitions as CapabilityDefinitions } from "../../../core/unit/capability/catalog.js";
-import type { Definition as SkillDefinition } from "../../../core/unit/capability/skill/capability.js";
-import { ref as activationRef } from "../../../core/unit/capability/skill/activation.js";
-import { createDefinition as createDeployableDefinition } from "../../../core/unit/capability/deployable/capability.js";
+import {
+    type Definition as SkillDefinition,
+    ref as activationRef,
+} from "../../../core/unit/capability/skill/index.js";
+
+import { createDefinition as createDeployableDefinition } from "../../../core/unit/capability/deployable/index.js";
 import {
     hasOffense,
     setAttackContribution,
     removeAttackContribution,
     type Offense,
-} from "../../../core/unit/capability/offense/capability.js";
-import type { Definition as EffectDefinition } from "../../../core/unit/effect/definition.js";
-import { install } from "../../../core/unit/effect/operations.js";
+} from "../../../core/unit/capability/offense/index.js";
+import { type Definition as EffectDefinition, install } from "../../../core/unit/effect/index.js";
+
 import * as attribute from "../../../core/unit/contribution/attribute.js";
 import type { Direction } from "../../../core/geometry/direction.js";
 import { secondsToTicks } from "../../../data/arknights/tick.js";

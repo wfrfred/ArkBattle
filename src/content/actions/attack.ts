@@ -4,9 +4,14 @@ import {
     assertNonnegativeSafeInteger,
     assertPositiveNumber,
 } from "../../core/common/assert.js";
-import { appendEvents, type State as BattleState, type Result } from "../../core/battle/state.js";
-import type { Unit } from "../../core/unit/unit.js";
-import * as units from "../../core/unit/query.js";
+import {
+    appendEvents,
+    type State as BattleState,
+    type OperationResult as Result,
+} from "../../core/battle/index.js";
+import * as units from "../../core/unit/index.js";
+import type { Unit } from "../../core/unit/index.js";
+
 import {
     ref,
     type Action,
@@ -14,25 +19,36 @@ import {
     type Definition as ActionDefinition,
 } from "../../core/unit/action/index.js";
 import * as actions from "../../core/unit/action/index.js";
-import type { Action as ActionCapability } from "../../core/unit/capability/action/capability.js";
-import { isSpatiallyPresent } from "../../core/unit/capability/presence/capability.js";
-import { beforeRelease, released } from "../../core/unit/capability/action/release.js";
-import { hasOffense } from "../../core/unit/capability/offense/capability.js";
-import { resolveAttack } from "../../core/unit/capability/offense/query.js";
-import { calculateDamage } from "../../core/battle/damage/calculate.js";
-import { applyDamage } from "../../core/battle/damage/apply.js";
-import type { DamageRequest, DamageType } from "../../core/battle/damage/contract.js";
-import { hasVitality } from "../../core/unit/capability/vitality/capability.js";
-import { calculateHealing } from "../../core/battle/healing/calculate.js";
-import { applyHealing } from "../../core/battle/healing/apply.js";
-import type { HealingRequest } from "../../core/battle/healing/contract.js";
+import {
+    type Action as ActionCapability,
+    beforeRelease,
+    released,
+} from "../../core/unit/capability/action/index.js";
+import { isSpatiallyPresent } from "../../core/unit/capability/presence/index.js";
+
+import { hasOffense, resolveAttack } from "../../core/unit/capability/offense/index.js";
+
+import {
+    calculateDamage,
+    applyDamage,
+    type DamageRequest,
+    type DamageType,
+} from "../../core/battle/damage/index.js";
+
+import { hasVitality } from "../../core/unit/capability/vitality/index.js";
+import {
+    calculateHealing,
+    applyHealing,
+    type HealingRequest,
+} from "../../core/battle/healing/index.js";
+
 import {
     damage as damageElement,
     heal as healElement,
-} from "../../core/unit/capability/elemental/operations.js";
-import type { Type as ElementType } from "../../core/unit/capability/elemental/capability.js";
-import type { Request } from "../../core/battle/targeting/contract.js";
-import { select } from "../../core/battle/targeting/select.js";
+    type Type as ElementType,
+} from "../../core/unit/capability/elemental/index.js";
+
+import { type Request, select } from "../../core/battle/targeting/index.js";
 
 export type Operation =
     | {

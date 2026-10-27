@@ -1,4 +1,4 @@
-import type { Input } from "../core/battle/contract.js";
+import type { Input } from "../core/battle/index.js";
 import type { Map } from "../core/battlefield/map/map.js";
 import { createInput, type Input as RouteInput } from "../core/battle/creation/route.js";
 import { prepare as prepareOperator, type Configuration } from "../data/arknights/operator.js";
@@ -10,7 +10,7 @@ import { create as createHound } from "../content/enemies/hound/unit.js";
 import { create as createCrossbowman } from "../content/enemies/crossbowman/unit.js";
 import { createArrow } from "../content/enemies/crossbowman/action.js";
 import type { LegacyUnitMetadata } from "./tactical-demo-presentation.js";
-import type { Unit } from "../core/unit/unit.js";
+import type { Unit } from "../core/unit/index.js";
 
 export interface Tables {
     readonly characters: Readonly<Record<string, unknown>>;

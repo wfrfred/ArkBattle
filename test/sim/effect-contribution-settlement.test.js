@@ -5,7 +5,7 @@ import { test } from "node:test";
 import { initialize } from "../helpers/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { resolveMaxHp } from "../../dist/core/unit/capability/vitality/capability.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import { effectFixtureWork, install, maxHpBuff } from "../helpers/effects.js";
 
 test("sequential lifecycle callbacks observe each capability change immediately", () => {

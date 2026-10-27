@@ -10,7 +10,7 @@ import { createBattleState } from "../../dist/core/battle/state.js";
 import { getUnit, transitionUnit } from "../helpers/unit.js";
 import {
     notifyDeployed,
-} from "../../dist/core/battle/deployment/deployment.js";
+} from "../../dist/core/battle/deployment/index.js";
 import { setHook, removeHook } from "../../dist/core/unit/capability/deployable/hook.js";
 import { createDefinition as createDeployable } from "../helpers/deployable.js";
 import { remove, update as updateUnit } from "../../dist/core/battle/unit.js";
@@ -18,7 +18,7 @@ import { remove, update as updateUnit } from "../../dist/core/battle/unit.js";
 import { initialize } from "../helpers/unit.js";
 
 import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
-import { install } from "../../dist/core/unit/effect/operations.js";
+import { install } from "../../dist/core/unit/effect/index.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "../helpers/tiles.js";
 import { fixtureBattlefieldState } from "../helpers/battlefield.js";

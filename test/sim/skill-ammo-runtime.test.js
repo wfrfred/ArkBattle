@@ -8,7 +8,7 @@ import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { transitionUnit } from "../helpers/unit.js";
 import { setBeforeReleaseHook, removeBeforeReleaseHook } from "../../dist/core/unit/capability/action/capability.js";
 import { attackBuff } from "../helpers/effects.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize as initializeBattle, step as stepBattle } from "../../dist/core/battle/runtime.js";

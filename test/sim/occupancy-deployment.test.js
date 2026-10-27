@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { addCard } from "../../dist/core/battle/deployment/deployment.js";
+import { addCard } from "../../dist/core/battle/deployment/index.js";
 import { deploy } from "../../dist/core/battle/deployment/operations.js";
 import { at } from "../../dist/core/battlefield/occupancy.js";
 import { createDefinition as createDeployable } from "../helpers/deployable.js";

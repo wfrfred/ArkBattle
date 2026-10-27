@@ -2,7 +2,7 @@
 
 Targeting 执行本次目标选择；Targetable 提供单位参与索敌的能力及目标侧限制。领域内使用 Request、Filter、Selector、Comparator、Definition、State 等短命名。下文省略 import，targeting 表示 Targeting 领域的命名空间导入。
 
-Targeting 位于 `battle/targeting/`，Targetable 位于 `unit/capability/targetable/`。标准伤害、治疗与元素 Filter 由 Targeting 提供，具体内容显式组合本次请求的策略。
+Targeting 位于 `battle/targeting/`，公共契约从 [index.ts](../../src/core/battle/targeting/index.ts) 导入；Targetable 保留 `unit/capability/targetable/capability.ts` 单文件入口。标准伤害、治疗与元素 Filter 由 Targeting 提供，具体内容显式组合本次请求的策略。
 
 ## Targeting
 
@@ -69,7 +69,7 @@ export function hasCandidate(
 
 select 通过 units.all(battle) 按逻辑登记顺序枚举具有 Targetable 的单位，执行 request.filter，固定筛选后的 Unit 快照后调用 request.selector。空集合也交给 Selector。Selector 返回值来自候选的约束属于调用契约，不另设输出恢复或运行时验证层。
 
-hasCandidate 短路判断是否存在通过显式 Filter 的候选，不调用 Selector，不消费 RNG。它不承诺最终一定选出目标，例如数量为零的 Selector 仍返回空结果。Skill 等只读启动条件使用这个查询；需要实际选目标的 Action 接续 select 的 Result。
+hasCandidate 实现在 query.ts，短路判断是否存在通过显式 Filter 的候选，不调用 Selector，不消费 RNG。它不承诺最终一定选出目标，例如数量为零的 Selector 仍返回空结果。Skill 等只读启动条件使用这个查询；需要实际选目标的 Action 接续 select 的 Result。select 保留在 select.ts，按 Selector 返回的状态接续随机消费，不归入只读查询。
 
 filter.ts 提供 and、or、not、notSelf、present、alive、hostile、sameSide、ground、range、blocking、blocker、missingHp，以及标准组合 damage、healing、elementDamage 和 elementHealing。它们各自表达明确条件，调用方选择组合。阻挡关系只影响显式范围与排序政策，不隐式豁免限制。
 

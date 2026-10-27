@@ -11,17 +11,17 @@ test('Unit initialization derives capability pairs directly from the supplied de
   const source = name => JSON.stringify(fileURLToPath(new URL(`../../src/core/${name}.js`, import.meta.url)));
   const path = join(directory, 'definition.mts');
   writeFileSync(path, `
-import type { Unit, Definition as UnitDefinition } from ${source('unit/unit')};
+import type { Unit, Definition as UnitDefinition } from ${source('unit/index')};
 import type { Definitions, Product } from ${source('unit/capability/catalog')};
-import { initialize } from ${source('unit/initialize')};
-import { hasOffense, type Offense } from ${source('unit/capability/offense/capability')};
-import { hasSkill, type Definition as SkillDefinition, type Skill } from ${source('unit/capability/skill/capability')};
-import type { Vitality } from ${source('unit/capability/vitality/capability')};
-import type { Route, Definition as RouteDefinition } from ${source('unit/capability/route/capability')};
-import type { Elemental } from ${source('unit/capability/elemental/capability')};
+import { initialize } from ${source('unit/index')};
+import { hasOffense, type Offense } from ${source('unit/capability/offense/index')};
+import { hasSkill, type Definition as SkillDefinition, type Skill } from ${source('unit/capability/skill/index')};
+import type { Vitality } from ${source('unit/capability/vitality/index')};
+import type { Route, Definition as RouteDefinition } from ${source('unit/capability/route/index')};
+import type { Elemental } from ${source('unit/capability/elemental/index')};
 import type { Definition as EffectDefinition } from ${source('unit/effect/definition')};
-import { install } from ${source('unit/effect/operations')};
-import { ref, get } from ${source('unit/query')};
+import { install } from ${source('unit/effect/index')};
+import { ref, get } from ${source('unit/index')};
 import { initialize as initializeRoutedUnit } from ${source('battle/creation/routed-unit')};
 import type { EnemySpawnDefinition } from ${source('battle/schedule/definition')};
 import type { Input as RouteInput } from ${source('battle/creation/route')};
@@ -162,12 +162,12 @@ test('base Unit has common fields while concrete content and guards provide capa
   const source = name => JSON.stringify(fileURLToPath(new URL(`../../src/${name}.js`, import.meta.url)));
   const path = join(directory, 'content.mts');
   writeFileSync(path, `
-import type { Unit } from ${source('core/unit/unit')};
-import { initialize } from ${source('core/unit/initialize')};
+import type { Unit } from ${source('core/unit/index')};
+import { initialize } from ${source('core/unit/index')};
 import type { State as BattleState } from ${source('core/battle/state')};
 import { update as updateUnit } from ${source('core/battle/unit')};
-import { hasVitality, type Vitality } from ${source('core/unit/capability/vitality/capability')};
-import type { Offense } from ${source('core/unit/capability/offense/capability')};
+import { hasVitality, type Vitality } from ${source('core/unit/capability/vitality/index')};
+import type { Offense } from ${source('core/unit/capability/offense/index')};
 import type { Definition as MudrockDefinition } from ${source('content/operators/mudrock/unit')};
 import type { Definition as MelanthaDefinition } from ${source('content/operators/melantha/unit')};
 import type { Definition as HoundDefinition } from ${source('content/enemies/hound/unit')};

@@ -5,7 +5,7 @@ import type {
     FragmentDefinition,
     SpawnActionDefinition,
     SpawnScheduleDefinition,
-} from "../../core/battle/schedule/definition.js";
+} from "../../core/battle/schedule/index.js";
 import type { Input as RouteInput } from "../../core/battle/creation/route.js";
 import type { ArknightsEnemyMovementContent } from "./enemy.js";
 import type {

@@ -6,7 +6,7 @@ import { update as updateUnit, remove as removeUnit } from "../../dist/core/batt
 import { actionCapability } from "../helpers/actions.js";
 import * as action from "../../dist/core/unit/capability/action/capability.js";
 import * as timing from "../../dist/core/unit/capability/action/timing.js";
-import * as movement from "../../dist/core/unit/capability/locomotion/operations.js";
+import * as movement from "../../dist/core/unit/capability/locomotion/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/capability.js";
 import { resolveDefense } from "../../dist/core/unit/capability/vitality/query.js";
 import { fixtureBattle, initialize } from "../helpers/unit.js";

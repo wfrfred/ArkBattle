@@ -1,4 +1,4 @@
-import { evaluateDeployment } from "./query.js";
+import { evaluateDeployment, getCard, usedSlots } from "./query.js";
 import { Tile, type TilePosition } from "../../geometry/coordinate.js";
 import { hasDeployable } from "../../unit/capability/deployable/capability.js";
 import { instantiateUnitPlacement } from "../creation/placement.js";
@@ -6,7 +6,9 @@ import type { Id } from "../../unit/unit.js";
 import type { Command } from "../contract.js";
 import { add, remove } from "../unit.js";
 import { appendEvents, type State as BattleState, type Result } from "../state.js";
-import { changeDp, getCard, notifyDeployed, updateCard, usedSlots } from "./deployment.js";
+import { changeDp } from "./deployment.js";
+import { notifyDeployed } from "./lifecycle.js";
+import { updateCard } from "./resources.js";
 import * as card from "./card.js";
 
 export interface DeployRequest {

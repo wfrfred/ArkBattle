@@ -1,5 +1,5 @@
 import type { Seed } from "../../core/common/rng.js";
-import type { Input } from "../../core/battle/contract.js";
+import type { Input } from "../../core/battle/index.js";
 import type { PredefinedDefinition } from "../../core/battle/steps/predefined.js";
 import type { ArknightsBlackboardEntry } from "./blackboard.js";
 import type { ArknightsMapOptions, ArknightsTileContext } from "./map.js";

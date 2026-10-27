@@ -13,7 +13,7 @@ import * as attribute from "../../contribution/attribute.js";
 import { hasVitality } from "../vitality/capability.js";
 import type { Skill } from "./capability.js";
 import * as modifier from "./modifier.js";
-import * as query from "./query.js";
+import { replaceHost } from "./instance.js";
 import { dispatch } from "./hook.js";
 
 export type Source = "TIME" | "ACTION" | "HIT" | "EXTERNAL";
@@ -245,7 +245,7 @@ export function recover(
         previous: state.value,
         current: state.value + gained,
     };
-    battle = query.replace(battle, {
+    battle = replaceHost(battle, {
         ...self,
         skill: { ...self.skill, sp: { ...state, value: event.current } },
     });
@@ -285,7 +285,7 @@ export function pay(battle: BattleState, ref: Ref<Unit & Skill>, amount?: number
         previous: state.value,
         current: state.value - cost,
     };
-    battle = query.replace(battle, {
+    battle = replaceHost(battle, {
         ...self,
         skill: { ...self.skill, sp: { ...state, value: event.current } },
     });
@@ -328,7 +328,7 @@ export function modify(
     }
 
     const event: Modified = { delta, amount, forced, previous: state.value, current };
-    battle = query.replace(battle, {
+    battle = replaceHost(battle, {
         ...self,
         skill: { ...self.skill, sp: { ...state, value: current } },
     });
@@ -393,7 +393,7 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
     }
 
     const next = { ...state, recovery, lastTick: battle.tick };
-    battle = query.replace(battle, { ...self, skill: { ...self.skill, sp: next } });
+    battle = replaceHost(battle, { ...self, skill: { ...self.skill, sp: next } });
 
     return pulses === 0 ? battle : recover(battle, ref, "TIME", pulses).state;
 }

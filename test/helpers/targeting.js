@@ -1,7 +1,7 @@
-import { damage as damageFilter, healing as healingFilter } from "../../dist/core/battle/targeting/filter.js";
-import * as filters from "../../dist/core/battle/targeting/filter.js";
-import * as compare from "../../dist/core/battle/targeting/compare.js";
-import { first } from "../../dist/core/battle/targeting/selector.js";
+import { damage as damageFilter, healing as healingFilter } from "../../dist/core/battle/targeting/index.js";
+import * as filters from "../../dist/core/battle/targeting/index.js";
+import * as compare from "../../dist/core/battle/targeting/index.js";
+import { first } from "../../dist/core/battle/targeting/index.js";
 import { allowsRestrictions } from "../../dist/core/unit/capability/targetable/capability.js";
 import { invisibilityKind, untargetableKind, allyUntargetableKind } from "../../dist/content/effects/visibility.js";
 import { invincibilityKind, healFreeKind } from "../../dist/content/effects/protection.js";

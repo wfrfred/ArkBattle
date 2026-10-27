@@ -1,9 +1,8 @@
 import { create as createAttack, type Attack } from "../../actions/attack.js";
 import type { Profile } from "../../../data/arknights/enemy.js";
 import { secondsToTicks } from "../../../data/arknights/tick.js";
-import * as filters from "../../../core/battle/targeting/filter.js";
-import * as compare from "../../../core/battle/targeting/compare.js";
-import { first } from "../../../core/battle/targeting/selector.js";
+import * as targeting from "../../../core/battle/targeting/index.js";
+import { first } from "../../../core/battle/targeting/index.js";
 
 export interface Timing {
     readonly windupTicks: number;
@@ -23,13 +22,16 @@ export function create(profile: Profile, timing: Timing): Attack {
                 id: "primary",
                 targeting: {
                     purposes: ["DAMAGE"],
-                    filter: filters.and(
-                        filters.present,
-                        filters.alive,
-                        filters.hostile,
-                        filters.blocker,
+                    filter: targeting.and(
+                        targeting.present,
+                        targeting.alive,
+                        targeting.hostile,
+                        targeting.blocker,
                     ),
-                    selector: first(1, compare.combine(compare.blockedFirst, compare.distance)),
+                    selector: first(
+                        1,
+                        targeting.combine(targeting.blockedFirst, targeting.distance),
+                    ),
                 },
                 operations: [
                     {

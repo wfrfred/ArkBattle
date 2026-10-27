@@ -1,14 +1,14 @@
 import { update as updateUnit } from "../../core/battle/unit.js";
 import { createArknightsElementalDefinition } from "../../data/arknights/elemental.js";
 
-import { ref as unitRef } from "../../core/unit/query.js";
+import { ref as unitRef, type Definition as UnitDefinition } from "../../core/unit/index.js";
 import { isCasting } from "../../core/unit/action/index.js";
-import { hasLocomotion } from "../../core/unit/capability/locomotion/capability.js";
-import { setRule } from "../../core/unit/capability/locomotion/operations.js";
+import { hasLocomotion, setRule } from "../../core/unit/capability/locomotion/index.js";
+
 import type { Profile } from "../../data/arknights/enemy.js";
 import { perSecondToPerTick } from "../../data/arknights/tick.js";
 import { assertPositiveNumber } from "../../core/common/assert.js";
-import type { Definition as UnitDefinition } from "../../core/unit/unit.js";
+
 import type { Definitions as CapabilityDefinitions } from "../../core/unit/capability/catalog.js";
 
 export interface Definition

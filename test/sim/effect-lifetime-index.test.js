@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize } from "../helpers/unit.js";
 import { getUnit, transitionUnit } from "../helpers/unit.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import { dependents } from "../../dist/core/unit/effect/dependency.js";
 import { definition, install, effectFixtureWork } from "../helpers/effects.js";
 const unit = (id) => initialize({ id, position: [0, 0], definition: { hooks: [], id: `host-${id}` } });

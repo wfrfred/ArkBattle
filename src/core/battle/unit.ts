@@ -14,7 +14,7 @@ import { closeLifetime } from "./execution/lifetime.js";
 import * as dependency from "../unit/effect/dependency.js";
 import type { State as BattleState } from "./state.js";
 import { notifyUnitLeave } from "./mechanism.js";
-import { recordUnitDeployment, refundUnit, recycleUnitCard } from "./deployment/deployment.js";
+import { recordUnitDeployment, refundUnit, recycleUnitCard } from "./deployment/lifecycle.js";
 import * as occupancy from "./occupancy.js";
 import * as hooks from "../hook.js";
 

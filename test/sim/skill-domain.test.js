@@ -14,7 +14,7 @@ import { actionCapability } from "../helpers/actions.js";
 import { start as startAction } from "../../dist/core/unit/action/index.js";
 import { advance as advanceAction } from "../../dist/core/unit/action/index.js";
 import { fixture, definition, at, change, currentRef } from "../helpers/skill.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 
 const resource = (overrides = {}) => ({
     initial: 0, capacity: 6, requirement: 3, cost: 3,

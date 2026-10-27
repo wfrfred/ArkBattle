@@ -13,6 +13,7 @@ import type { Skill } from "./capability.js";
 import { dispatch } from "./hook.js";
 import { finish } from "./operations.js";
 import * as query from "./query.js";
+import { replaceHost } from "./instance.js";
 import type { Ammo } from "./sustain.js";
 
 export interface Modifier {
@@ -86,7 +87,7 @@ export function consume(
     const previous = active.sustain;
     const current = { ...previous, remaining: previous.remaining - amount };
 
-    battle = query.replace(battle, {
+    battle = replaceHost(battle, {
         ...self,
         skill: { ...self.skill, active: { ...active, sustain: current } },
     });
@@ -174,7 +175,7 @@ function add(
         remaining: previous.remaining + amount,
         replenished: previous.replenished + (replenishing ? amount : 0),
     };
-    battle = query.replace(battle, {
+    battle = replaceHost(battle, {
         ...self,
         skill: { ...self.skill, active: { ...active, sustain: current } },
     });

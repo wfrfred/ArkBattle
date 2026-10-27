@@ -14,7 +14,7 @@ import { create as createCrate } from "../../content/devices/crate.js";
 import { create as createShootingPlatform } from "../../content/devices/shooting-platform.js";
 import type { Definition as DeviceDefinition } from "../../content/devices/tile.js";
 import { Tile } from "../../core/geometry/coordinate.js";
-import { createDefinition as createDeployableDefinition } from "../../core/unit/capability/deployable/capability.js";
+import { createDefinition as createDeployableDefinition } from "../../core/unit/capability/deployable/index.js";
 import type { ArknightsPredefinedInstance } from "./level.js";
 import type { PredefinedPrefab } from "./prefab.js";
 import { secondsToTicks } from "./tick.js";

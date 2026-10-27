@@ -1,3 +1,4 @@
+import { update as updateUnit } from "../../../battle/unit.js";
 import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
@@ -142,7 +143,7 @@ export function damage(
         burst === null
             ? Object.freeze({ ...normalizedEp(currentSelf, maximum), [request.type]: current })
             : elementValues(0);
-    battle = query.replace(battle, {
+    battle = replaceHost(battle, {
         ...currentSelf,
         elemental: {
             ...currentSelf.elemental,
@@ -231,7 +232,7 @@ export function heal(
         current: Object.freeze(current),
         amounts: Object.freeze(amounts),
     };
-    battle = query.replace(battle, {
+    battle = replaceHost(battle, {
         ...self,
         elemental: { ...self.elemental, ep: event.current },
     });
@@ -271,7 +272,7 @@ function end(battle: BattleState, reference: Ref<Burst>, ending: End): BattleSta
 
     const definition = self.definition.elemental.bursts[active.type];
     const closing: Burst = { ...active, status: "ENDING" };
-    battle = query.replace(battle, { ...self, elemental: { ...self.elemental, burst: closing } });
+    battle = replaceHost(battle, { ...self, elemental: { ...self.elemental, burst: closing } });
     battle = closeLifetime(
         battle,
         { type: "ELEMENTAL_BURST", ref: reference },
@@ -289,7 +290,7 @@ function end(battle: BattleState, reference: Ref<Burst>, ending: End): BattleSta
 
     if (host?.elemental.burst?.id === reference.id) {
         const maximum = query.resolveMaxEp(battle, reference.host)!;
-        battle = query.replace(battle, {
+        battle = replaceHost(battle, {
             ...host,
             elemental: {
                 ...host.elemental,
@@ -353,7 +354,7 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
         next.ep = Object.freeze(ep);
     }
 
-    battle = query.replace(battle, { ...self, elemental: next });
+    battle = replaceHost(battle, { ...self, elemental: next });
 
     return next.burst?.status === "ACTIVE" && next.burst.remainingTicks <= 0
         ? finish(battle, burstRef(next.burst))
@@ -367,4 +368,12 @@ function normalizedEp(self: Unit & Elemental, maximum: number): Values {
         BURN: Math.min(maximum, Math.max(0, self.elemental.ep.BURN)),
         NECROSIS: Math.min(maximum, Math.max(0, self.elemental.ep.NECROSIS)),
     });
+}
+
+function replaceHost(battle: BattleState, self: Unit & Elemental): BattleState {
+    const current = units.get(battle, units.ref(self));
+
+    return current?.definition.elemental === self.definition.elemental
+        ? updateUnit(battle, [self])
+        : battle;
 }

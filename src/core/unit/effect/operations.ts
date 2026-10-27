@@ -19,16 +19,13 @@ import {
 } from "./effect.js";
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import { dependents } from "./dependency.js";
+import { get } from "./query.js";
 
 export interface Initial<S extends object> {
     readonly source?: Id | null;
     readonly scopes?: readonly Scope[];
     readonly data?: S;
     readonly enabled?: boolean;
-}
-
-export function get<E extends View>(battle: BattleState, ref: Ref<E>): E | undefined {
-    return units.get(battle, ref.host)?.effects.get(ref);
 }
 
 export function install<S extends object, H extends object>(

@@ -9,7 +9,7 @@ import { parseSiteCondition, parseAllowedSiteConditions } from "./site-condition
 import {
     createSteeringParameters,
     type SteeringParameters,
-} from "../../core/unit/capability/locomotion/steering.js";
+} from "../../core/unit/capability/locomotion/index.js";
 import { secondsToTicks } from "./tick.js";
 
 export interface EnemyMovementPrefab {

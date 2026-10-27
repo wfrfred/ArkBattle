@@ -2,6 +2,8 @@
 
 Vitality 保存 HP、MaxHP、DEF、RES，以及伤害与治疗的 Hook 登记和伤害接收规则。`battle/damage/`、`battle/healing/` 提供普通伤害与治疗的完整操作，复用[公共 Hook 契约](functional-core.md#6-hook-和生命周期的纯契约)。
 
+上层分别从 [vitality/index.ts](../../src/core/unit/capability/vitality/index.ts)、[damage/index.ts](../../src/core/battle/damage/index.ts) 与 [healing/index.ts](../../src/core/battle/healing/index.ts) 导入公共契约。Damage／Healing 保持 Calculate／Apply 两阶段；Hook 登记与公开类型可由入口取得，内部 dispatch 不公开。
+
 普通 Damage 覆盖物理、法术、真实与元素 HP 伤害。特殊生命机制、伤害分类和死亡扫描等未完成设计分别保留在第 3.2、4.2、5 节，不作为普通主路径的占位字段。
 
 ## 0. Vitality Capability

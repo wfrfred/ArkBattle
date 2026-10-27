@@ -14,7 +14,7 @@ import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createMechanismDefinition } from "../../dist/core/battle/mechanism.js";
 import { createRng } from "../../dist/core/common/rng.js";
 import { initialize as initializeBattle, step as advanceBattle, simulateBattle } from "../../dist/core/battle/runtime.js";
-import { advanceSpawnSchedule, getSpawnScheduleCounts, getSpawnedCount, getUnspawnedCount, isSpawnScheduleCompleted, recordScheduleSpawns, resolveScheduleUnits } from "../../dist/core/battle/schedule/runtime.js";
+import { advanceSpawnSchedule, getSpawnScheduleCounts, getSpawnedCount, getUnspawnedCount, isSpawnScheduleCompleted, recordScheduleSpawns, resolveScheduleUnits } from "../../dist/core/battle/schedule/index.js";
 import { createSpawnScheduleExecution } from "../../dist/core/battle/schedule/state.js";
 import { createSpawnScheduleDefinition } from "../../dist/core/battle/schedule/definition.js";
 import { createSteeringParameters } from "../../dist/core/unit/capability/locomotion/steering.js";
@@ -38,7 +38,7 @@ import { initialize } from "../helpers/unit.js";
 import { actionCapability } from "../helpers/actions.js";
 import { ref as actionRef } from "../../dist/core/unit/action/index.js";
 import { update as updateAction } from "../../dist/core/unit/action/index.js";
-import { install as installEffect } from "../../dist/core/unit/effect/operations.js";
+import { install as installEffect } from "../../dist/core/unit/effect/index.js";
 
 const navigationMap = (state, mode = 'WALK') => applyOverlays(state.baseline[mode], state.overlays[mode]);
 

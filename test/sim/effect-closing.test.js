@@ -13,8 +13,8 @@ import {
     removeHook,
     setHook,
 } from "../../dist/core/battle/damage/hook.js";
-import * as effect from "../../dist/core/unit/effect/operations.js";
-import { get } from "../../dist/core/unit/effect/operations.js";
+import * as effect from "../../dist/core/unit/effect/index.js";
+import { get } from "../../dist/core/unit/effect/index.js";
 import { effectFixtureWork, install, definition, attackBuff } from "../helpers/effects.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
 

@@ -8,26 +8,29 @@ import {
     type State as SkillAttackState,
 } from "../../actions/skill.js";
 import { get as getAction, ref as actionRef } from "../../../core/unit/action/index.js";
-import { get as getCurrentUnit, ref as unitRef } from "../../../core/unit/query.js";
+import { get as getCurrentUnit, ref as unitRef } from "../../../core/unit/index.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
-import { hasOffense } from "../../../core/unit/capability/offense/capability.js";
-import { resolveAttack } from "../../../core/unit/capability/offense/query.js";
-import { hasSkill } from "../../../core/unit/capability/skill/capability.js";
-import { finish } from "../../../core/unit/capability/skill/operations.js";
-import { hasVitality } from "../../../core/unit/capability/vitality/capability.js";
-import { calculateDamage } from "../../../core/battle/damage/calculate.js";
-import { applyDamage } from "../../../core/battle/damage/apply.js";
-import type { DamageRequest } from "../../../core/battle/damage/contract.js";
-import * as filters from "../../../core/battle/targeting/filter.js";
-import * as compare from "../../../core/battle/targeting/compare.js";
-import { first } from "../../../core/battle/targeting/selector.js";
+import { hasOffense, resolveAttack } from "../../../core/unit/capability/offense/index.js";
+
+import { hasSkill, finish } from "../../../core/unit/capability/skill/index.js";
+
+import { hasVitality } from "../../../core/unit/capability/vitality/index.js";
+import {
+    calculateDamage,
+    applyDamage,
+    type DamageRequest,
+} from "../../../core/battle/damage/index.js";
+
+import * as targeting from "../../../core/battle/targeting/index.js";
+import { first } from "../../../core/battle/targeting/index.js";
+
 import { createRng } from "../../../core/common/rng.js";
 import type { Direction } from "../../../core/geometry/direction.js";
 import { fromTiles } from "../../../core/geometry/range.js";
 import type { Profile } from "../../../data/arknights/operator.js";
 import { secondsToTicks } from "../../../data/arknights/tick.js";
 import { stun } from "../../effects/stun.js";
-import { install } from "../../../core/unit/effect/operations.js";
+import { install } from "../../../core/unit/effect/index.js";
 import { value, healSelf } from "./common.js";
 
 function attackDefinition(
@@ -36,7 +39,7 @@ function attackDefinition(
     skill: boolean,
     recoveryTicks: number,
 ): AttackConfiguration {
-    const withinRange = filters.range(
+    const withinRange = targeting.range(
         fromTiles(skill ? profile.skillRange! : profile.range, direction),
     );
 
@@ -52,16 +55,16 @@ function attackDefinition(
                 id: "primary",
                 targeting: {
                     purposes: ["DAMAGE"],
-                    filter: filters.and(
-                        filters.damage,
-                        filters.ground,
-                        skill ? withinRange : filters.or(withinRange, filters.blocking),
+                    filter: targeting.and(
+                        targeting.damage,
+                        targeting.ground,
+                        skill ? withinRange : targeting.or(withinRange, targeting.blocking),
                     ),
                     selector: first(
                         skill ? Number.MAX_SAFE_INTEGER : 1,
                         skill
-                            ? compare.distance
-                            : compare.combine(compare.blockedFirst, compare.distance),
+                            ? targeting.distance
+                            : targeting.combine(targeting.blockedFirst, targeting.distance),
                     ),
                 },
                 operations: [

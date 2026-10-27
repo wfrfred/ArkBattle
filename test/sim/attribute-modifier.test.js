@@ -11,7 +11,7 @@ import {
 } from "../../dist/data/arknights/modifier.js";
 import { remove as removeUnit } from "../../dist/core/battle/unit.js";
 import { getUnit, transitionUnit } from "../helpers/unit.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import {
     setAttackContribution,
     removeAttackContribution,
@@ -25,8 +25,8 @@ import { resolveSpeed } from "../../dist/core/unit/capability/action/timing.js";
 import {
     setSpeedContribution as setMoveSpeedContribution,
     removeSpeedContribution as removeMoveSpeedContribution,
-} from "../../dist/core/unit/capability/locomotion/operations.js";
-import { advance as advanceLocomotion } from "../../dist/core/unit/capability/locomotion/operations.js";
+} from "../../dist/core/unit/capability/locomotion/index.js";
+import { advance as advanceLocomotion } from "../../dist/core/unit/capability/locomotion/index.js";
 import { initialize } from "../helpers/unit.js";
 import * as modifier from "../../dist/core/unit/contribution/attribute.js";
 import {

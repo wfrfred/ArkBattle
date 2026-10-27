@@ -16,28 +16,28 @@ test("direct Effect definitions type host capabilities, private state and immuta
     writeFileSync(
         path,
         `
-import { initialize } from ${module("unit/initialize")};
-import type { Unit } from ${module("unit/unit")};
+import { initialize } from ${module("unit/index")};
+import type { Unit } from ${module("unit/index")};
 import type { Ref } from ${module("common/ref")};
 import type { State as BattleState } from ${module("battle/state")};
-import type { Vitality, Input as VitalityInput } from ${module("unit/capability/vitality/capability")};
-import { resolveDefense } from ${module("unit/capability/vitality/query")};
-import { setDefenseContribution, setMaxHpContribution } from ${module("unit/capability/vitality/capability")};
-import { setAttackContribution, type Input as AttackInput, type Offense } from ${module("unit/capability/offense/capability")};
+import type { Vitality, Input as VitalityInput } from ${module("unit/capability/vitality/index")};
+import { resolveDefense } from ${module("unit/capability/vitality/index")};
+import { setDefenseContribution, setMaxHpContribution } from ${module("unit/capability/vitality/index")};
+import { setAttackContribution, type Input as AttackInput, type Offense } from ${module("unit/capability/offense/index")};
 import { setCapacityContribution, canBlock, setHook as setBlockerHook, type Rule as BlockerRule, type Blocker } from ${module("unit/capability/blocking/blocker")};
 import { setVolumeContribution, canBeBlocked, setHook as setBlockableHook, type Rule as BlockableRule, type Blockable } from ${module("unit/capability/blocking/blockable")};
 import { blockerOf, blocked, usedCapacity } from ${module("battle/blocking/query")};
-import type { Locomotion, Input as MovementInput } from ${module("unit/capability/locomotion/capability")};
-import { setSpeedContribution as setActionSpeedContribution, type Action, type Input as ActionInput } from ${module("unit/capability/action/capability")};
-import { setSpeedContribution } from ${module("unit/capability/locomotion/operations")};
-import type { Route, Progress } from ${module("unit/capability/route/capability")};
+import type { Locomotion, Input as MovementInput } from ${module("unit/capability/locomotion/index")};
+import { setSpeedContribution as setActionSpeedContribution, type Action, type Input as ActionInput } from ${module("unit/capability/action/index")};
+import { setSpeedContribution } from ${module("unit/capability/locomotion/index")};
+import type { Route, Progress } from ${module("unit/capability/route/index")};
 import type { Definition } from ${module("unit/effect/definition")};
-import { install, update, get } from ${module("unit/effect/operations")};
+import { install, update, get } from ${module("unit/effect/index")};
 import { ref as effectRef, type Effect } from ${module("unit/effect/effect")};
 import { Effects } from ${module("unit/effect/effects")};
 import type { Contribution } from ${module("unit/contribution/contribution")};
 import type { Modifier } from ${module("unit/contribution/attribute")};
-import { ref as unitRef, get as getUnit } from ${module("unit/query")};
+import { ref as unitRef, get as getUnit } from ${module("unit/index")};
 const host=initialize(battle, {id:1,position:[0,0],definition:{hooks: [], id:'host',vitality: { maxHp: 100, defense: 0, resistance: 0 }}}).value;
 const content: Definition<{charges:number},Vitality> = {
  id:'shield',initialize:()=>({charges:2}),

@@ -1,10 +1,13 @@
-import type { State as BattleState } from "../../../core/battle/state.js";
-import type { Id } from "../../../core/unit/unit.js";
-import { ref as unitRef } from "../../../core/unit/query.js";
-import { hasVitality, resolveMaxHp } from "../../../core/unit/capability/vitality/capability.js";
-import { calculateHealing } from "../../../core/battle/healing/calculate.js";
-import { applyHealing } from "../../../core/battle/healing/apply.js";
-import type { HealingRequest } from "../../../core/battle/healing/contract.js";
+import type { State as BattleState } from "../../../core/battle/index.js";
+import { type Id, ref as unitRef } from "../../../core/unit/index.js";
+
+import { hasVitality, resolveMaxHp } from "../../../core/unit/capability/vitality/index.js";
+import {
+    calculateHealing,
+    applyHealing,
+    type HealingRequest,
+} from "../../../core/battle/healing/index.js";
+
 import type { Profile } from "../../../data/arknights/operator.js";
 
 export function value(entries: Profile["moduleTrait"], key: string): number {

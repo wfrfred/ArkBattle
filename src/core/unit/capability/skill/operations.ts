@@ -343,7 +343,7 @@ export function enter(battle: BattleState, host: Ref<Unit & Skill>): BattleState
             }
             if (hasVitality(unit) && self.definition.sp?.recovery.type === "HIT") {
                 const updated = { ...unit, vitality: setDamageHook(unit.vitality, hitRecovery) };
-                battle = query.replace(battle, updated);
+                battle = instance.replaceHost(battle, updated);
             }
 
             const current = units.get(battle, self.host);
@@ -357,7 +357,7 @@ export function enter(battle: BattleState, host: Ref<Unit & Skill>): BattleState
                     ...current,
                     action: setReleasedHook(current.action, actionRecovery),
                 };
-                battle = query.replace(battle, updated);
+                battle = instance.replaceHost(battle, updated);
             }
 
             const entered = instance.get(battle, self.host, self.definition);

@@ -4,7 +4,7 @@ import { initialize } from "../../dist/core/unit/initialize.js";
 import { actionCapability } from "../helpers/actions.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { advance } from "../../dist/core/unit/action/index.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { add as addUnit } from "../../dist/core/battle/unit.js";
 import { getUnit, fixtureBattle } from "../helpers/unit.js";

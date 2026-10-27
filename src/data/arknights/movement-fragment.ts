@@ -2,8 +2,8 @@ import type { Seed } from "../../core/common/rng.js";
 import {
     createSpawnScheduleDefinition,
     type ScheduledEnemySpawn,
-} from "../../core/battle/schedule/definition.js";
-import type { Input } from "../../core/battle/contract.js";
+} from "../../core/battle/schedule/index.js";
+import type { Input } from "../../core/battle/index.js";
 import { createTiming } from "../../core/battle/creation/route.js";
 import type { ArknightsLevelDefinition } from "./level.js";
 import { resolveActionSpawn, type ArknightsEnemyResolver } from "./schedule.js";

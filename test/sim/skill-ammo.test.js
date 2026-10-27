@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { getUnit } from "../helpers/unit.js";
 import * as skills from "../../dist/core/unit/capability/skill/operations.js";
 import * as ammo from "../../dist/core/unit/capability/skill/ammo.js";
-import * as query from "../../dist/core/unit/capability/skill/query.js";
+import * as query from "../../dist/core/unit/capability/skill/index.js";
 import { setAmmoContribution, removeAmmoContribution } from "../../dist/core/unit/capability/skill/capability.js";
 import { fixture, at, change, currentRef } from "../helpers/skill.js";
 

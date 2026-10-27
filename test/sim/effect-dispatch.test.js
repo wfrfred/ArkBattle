@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { unit, workFor, attach, request, damageEffect, healingEffect, setSelf, stateOf } from "../helpers/vitality.js";
 import { getUnit, transitionUnit } from "../helpers/unit.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import * as damage from "../../dist/core/battle/damage/hook.js";
 import * as healing from "../../dist/core/battle/healing/hook.js";
 import { calculateDamage } from "../../dist/core/battle/damage/calculate.js";

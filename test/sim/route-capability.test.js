@@ -4,7 +4,7 @@ import {
     initialize,
     hasRoute,
 } from "../../dist/core/unit/capability/route/capability.js";
-import * as route from "../../dist/core/unit/capability/route/operations.js";
+import * as route from "../../dist/core/unit/capability/route/index.js";
 import { Effects } from "../../dist/core/unit/effect/effects.js";
 import { add as addUnit, update as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";

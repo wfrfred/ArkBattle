@@ -1,20 +1,22 @@
 import type { Ref } from "../../core/common/ref.js";
-import type { State as BattleState } from "../../core/battle/state.js";
+import type { State as BattleState } from "../../core/battle/index.js";
 import { update as updateUnit } from "../../core/battle/unit.js";
-import { applyDamage } from "../../core/battle/damage/apply.js";
-import { calculateDamage } from "../../core/battle/damage/calculate.js";
-import type { Definition } from "../../core/unit/effect/definition.js";
-import * as effects from "../../core/unit/effect/operations.js";
-import { ref as effectRef, type Effect } from "../../core/unit/effect/effect.js";
-import type { Unit } from "../../core/unit/unit.js";
-import * as units from "../../core/unit/query.js";
-import * as offense from "../../core/unit/capability/offense/capability.js";
-import * as action from "../../core/unit/capability/action/capability.js";
-import { hasLocomotion } from "../../core/unit/capability/locomotion/capability.js";
-import * as movement from "../../core/unit/capability/locomotion/operations.js";
-import { hasVitality } from "../../core/unit/capability/vitality/capability.js";
+import { applyDamage, calculateDamage } from "../../core/battle/damage/index.js";
+
+import * as effects from "../../core/unit/effect/index.js";
+import { type Definition, ref as effectRef, type Effect } from "../../core/unit/effect/index.js";
+
+import * as units from "../../core/unit/index.js";
+import type { Unit } from "../../core/unit/index.js";
+
+import * as offense from "../../core/unit/capability/offense/index.js";
+import * as action from "../../core/unit/capability/action/index.js";
+import * as locomotion from "../../core/unit/capability/locomotion/index.js";
+import { hasLocomotion } from "../../core/unit/capability/locomotion/index.js";
+
+import { hasVitality } from "../../core/unit/capability/vitality/index.js";
 import { hasAllegiance } from "../../core/unit/capability/allegiance/capability.js";
-import { hasBlocker } from "../../core/unit/capability/blocking/blocker.js";
+import { hasBlocker } from "../../core/unit/capability/blocking/index.js";
 import * as targetable from "../../core/unit/capability/targetable/capability.js";
 import * as attribute from "../../core/unit/contribution/attribute.js";
 import { TICKS_PER_SECOND } from "../../core/tick.js";
@@ -148,8 +150,8 @@ function changeModifiers(
                 ? {
                       locomotion:
                           modifiers?.movementSpeed === undefined
-                              ? movement.removeSpeedContribution(unit.locomotion, id)
-                              : movement.setSpeedContribution(unit.locomotion, {
+                              ? locomotion.removeSpeedContribution(unit.locomotion, id)
+                              : locomotion.setSpeedContribution(unit.locomotion, {
                                     id,
                                     value: [modifiers.movementSpeed],
                                 }),

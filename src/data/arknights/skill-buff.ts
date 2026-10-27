@@ -1,17 +1,20 @@
 import { update as updateUnit } from "../../core/battle/unit.js";
-import { get as getUnit, ref as unitRef } from "../../core/unit/query.js";
+import { get as getUnit, ref as unitRef } from "../../core/unit/index.js";
 
 import * as attribute from "../../core/unit/contribution/attribute.js";
-import type { Definition } from "../../core/unit/effect/definition.js";
-import { install } from "../../core/unit/effect/operations.js";
+import { type Definition, install } from "../../core/unit/effect/index.js";
+
 import {
     hasOffense,
     removeAttackContribution,
     setAttackContribution,
     type Offense,
-} from "../../core/unit/capability/offense/capability.js";
-import type { Definition as SkillDefinition } from "../../core/unit/capability/skill/capability.js";
-import { ref as activationRef } from "../../core/unit/capability/skill/activation.js";
+} from "../../core/unit/capability/offense/index.js";
+import {
+    type Definition as SkillDefinition,
+    ref as activationRef,
+} from "../../core/unit/capability/skill/index.js";
+
 import { parseArknightsSkillLevel } from "./skill-definition.js";
 
 export function compileArknightsAttackBuffSkill(value: unknown, level: number): SkillDefinition {

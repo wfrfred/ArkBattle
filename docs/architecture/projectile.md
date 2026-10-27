@@ -14,6 +14,7 @@ Projectile 是具有空间位置的独立执行实例，存于 Battlefield。框
 
 ## 模块归属
 
+- [projectile/index.ts](../../src/core/projectile/index.ts) 是类型与 ref／all／get 的显式公共入口；完整 Battle 操作仍直接从 battle/projectile.ts 导入，不为入口汇聚搬动模型或操作。
 - `projectile/projectile.ts`、`definition.ts`、`event.ts` 定义实例、内容程序与事件类型。
 - `projectile/query.ts` 提供 `all`、`get` 和 `ref`，与 Unit 查询入口一致。all 返回绑定传入 BattleState 版本、按登记顺序惰性遍历的 Query<View>，不自动筛选生命周期或转换 Ref；get/ref 保留 Typed Ref 中的已知对象类型。
 - `projectile/projectiles.ts` 封装异构容器与 `read` 类型配对；不推进生命周期。

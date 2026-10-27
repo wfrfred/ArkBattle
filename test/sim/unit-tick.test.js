@@ -9,7 +9,7 @@ import { getUnit } from "../helpers/unit.js";
 import { advance } from "../../dist/core/battle/unit.js";
 import { initialize } from "../helpers/unit.js";
 import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
-import { install } from "../../dist/core/unit/effect/operations.js";
+import { install } from "../../dist/core/unit/effect/index.js";
 import { fixtureBattlefieldState } from "../helpers/battlefield.js";
 import { map, unit as combatUnit } from "../helpers/action-fixture.js";
 

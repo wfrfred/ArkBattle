@@ -39,15 +39,21 @@ Deployable 表达场上实例的部署参数和本次部署事实。Deployment �
 
 ```text
 unit/capability/deployable/
+├── index.ts            显式公共类型、局部操作与部署 Hook
 ├── capability.ts       Definition、State、查询与初始化
 └── hook.ts             部署观察 Hook 的类型及不可变增删
 
 battle/deployment/
+├── index.ts            显式公共查询、资源、部署与生命周期协作
 ├── card.ts             单个 Card 的数据与局部转换
-├── deployment.ts       Card 集合、DP、时间推进与部署通知
-├── query.ts            当前地块与占格资格查询
+├── deployment.ts       Definition、Input、State、初始化与局部 DP 转换
+├── query.ts            Card、已用额度、当前地块与占格资格查询
+├── resources.ts        Card 登记／写回及 Card、DP 时间推进
+├── lifecycle.ts        登记事件、退款、回卡与部署通知
 └── operations.ts       完整部署、撤退与 Command 处理
 ```
+
+上层通过两个领域各自的 index 导入公共契约。lifecycle.ts 不依赖 battle/unit.ts 或完整部署命令，Unit 生命周期可以直接调用登记、退款与回卡协作，部署操作可以在 add 返回后通知；现有事件与清理顺序保持不变。resources.ts 的 updateCard 是内部完整写回，不从公共 index 导出。
 
 ```typescript
 // unit/capability/deployable/capability.ts
@@ -165,7 +171,7 @@ Contribution 是泛型不可变数值候选，不依赖 Unit，可以用于 Card
 
 ## API 与 Commands
 
-局部 Card 操作返回新 Card；完整领域结算接收并返回 BattleState 或 Result，不直接写入 Runtime。
+局部 Card 操作返回新 Card；完整领域结算接收并返回 BattleState 或 Result，不直接写入 Runtime。以下按实现职责列出接口，包含 Core 内部使用的 Card 变换与写回，不表示所有函数都属于 index 的公开范围。
 
 ```typescript
 // card.ts
@@ -183,16 +189,24 @@ removeCostContribution(card, id): Card;
 setRedeployContribution(card, contribution): Card;
 removeRedeployContribution(card, id): Card;
 
-// Deployment 聚合状态与完整结算
-addCard(state, input): Result<CardId>;
+// query.ts
 getCard(state, cardId): Card | undefined;
-updateCard(state, card): BattleState;
-changeDp(deployment, amount, tick): DeploymentState;
-advance(state, tick): BattleState;
 usedSlots(state): number;
+
+// deployment.ts：局部 DP 状态转换
+changeDp(deployment, amount, tick): DeploymentState;
+
+// resources.ts
+addCard(state, input): Result<CardId>;
+advance(state, tick): BattleState;
+updateCard(state, card): BattleState; // Core 内部完整写回
+
+// operations.ts
 deploy(state, request): Result<DeployOutcome>;
 retreat(state, unitId): BattleState;
 ```
+
+recordUnitDeployment、refundUnit、recycleUnitCard 与 notifyDeployed 的实现统一位于 lifecycle.ts；它们接收各阶段明确取得的业务载荷，不重新拼接完整 Unit 登记或离场流程。
 
 战斗 Input 可配置 `deployment: { definition, cards }`。Card 输入包含 unit、可选 supply 和 navigationModifiers；供给缺省采用普通干员规则。不配置该部分时，场下 Card 集合为空、初始 DP 为 0。
 

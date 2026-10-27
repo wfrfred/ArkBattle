@@ -6,7 +6,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { initialize } from "../helpers/unit.js";
 import * as units from "../../dist/core/unit/query.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import { ref } from "../../dist/core/unit/effect/effect.js";
 import { effectFixtureWork } from "../helpers/effects.js";
 
@@ -86,7 +86,7 @@ import type { Locomotion } from ${source("unit/capability/locomotion/capability"
 import type { Effect, View, Lifetime } from ${source("unit/effect/effect")};
 import { ref } from ${source("unit/effect/effect")};
 import type { Definition } from ${source("unit/effect/definition")};
-import * as effects from ${source("unit/effect/operations")};
+import * as effects from ${source("unit/effect/index")};
 
 declare const battle: BattleState;
 declare const host: Ref<Unit & Vitality & Locomotion>;

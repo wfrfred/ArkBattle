@@ -11,7 +11,7 @@ import {
 import { beforeRelease } from "../../dist/core/unit/capability/action/release.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { advance } from "../../dist/core/unit/action/index.js";
-import * as effects from "../../dist/core/unit/effect/operations.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 
 const CONTINUE = { type: "CONTINUE" };
 const program = {

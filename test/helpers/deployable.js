@@ -1,6 +1,6 @@
-import { createDefinition as create } from "../../dist/core/unit/capability/deployable/capability.js";
+import { createDefinition as create } from "../../dist/core/unit/capability/deployable/index.js";
 import * as conditions from "../../dist/content/terrain/condition.js";
-export { initialize, hasDeployable } from "../../dist/core/unit/capability/deployable/capability.js";
+export { initialize, hasDeployable } from "../../dist/core/unit/capability/deployable/index.js";
 
 export function createDefinition({ buildableType, advancedBuildableMask = 1, ...definition }) {
     return create({
