@@ -1,0 +1,23 @@
+{
+  "index": 76531,
+  "name": "OnTick",
+  "type": 11393,
+  "returnType": 83059,
+  "parameterStart": 75106,
+  "generic": -1,
+  "token": 100739828,
+  "flags": 198,
+  "iflags": 0,
+  "slot": 27,
+  "parameterCount": 1,
+  "address": 6453404480,
+  "fullname": "Torappu.Battle.Enemy.OnTick",
+  "parameters": [
+    {
+      "index": 75106,
+      "name": "fixedDeltaTime",
+      "token": 134292840,
+      "type": 53178
+    }
+  ]
+}

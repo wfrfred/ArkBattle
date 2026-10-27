@@ -1,0 +1,71 @@
+export interface Group {
+    readonly id: string;
+    readonly priority: number;
+}
+
+export interface Contribution<V> {
+    readonly id: string;
+    readonly value: V;
+    readonly group?: Group;
+}
+
+export function set<V>(
+    entries: readonly Contribution<V>[],
+    contribution: Contribution<V>,
+): readonly Contribution<V>[] {
+    const index = entries.findIndex(({ id }) => id === contribution.id);
+
+    if (index === -1) {
+        return [...entries, contribution];
+    }
+    if (entries[index] === contribution) {
+        return entries;
+    }
+
+    const updated = [...entries];
+    updated[index] = contribution;
+
+    return updated;
+}
+
+export function remove<V>(
+    entries: readonly Contribution<V>[],
+    id: string,
+): readonly Contribution<V>[] {
+    const updated = entries.filter((entry) => entry.id !== id);
+
+    return updated.length === entries.length ? entries : updated;
+}
+
+export function resolve<V>(entries: readonly Contribution<V>[]): readonly V[] {
+    const ordered = [...entries].sort((a, b) => {
+        if (a.id === b.id) {
+            return 0;
+        }
+
+        return a.id < b.id ? -1 : 1;
+    });
+    const winners = new Map<string, Contribution<V>>();
+
+    for (const entry of ordered) {
+        if (entry.group === undefined) {
+            continue;
+        }
+
+        const current = winners.get(entry.group.id);
+
+        if (current === undefined || entry.group.priority > current.group!.priority) {
+            winners.set(entry.group.id, entry);
+        }
+    }
+
+    const values: V[] = [];
+
+    for (const entry of ordered) {
+        if (entry.group === undefined || winners.get(entry.group.id) === entry) {
+            values.push(entry.value);
+        }
+    }
+
+    return values;
+}

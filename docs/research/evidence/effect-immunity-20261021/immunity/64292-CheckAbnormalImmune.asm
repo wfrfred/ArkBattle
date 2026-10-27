@@ -1,0 +1,37 @@
+; Torappu.Battle.Attributes.CheckAbnormalImmune metadata=64292 token=0x600fb25 VA=0x1806488d0 RVA=0x6488d0 size=0x70
+00000001806488d0: mov      qword ptr [rsp + 8], rbx
+00000001806488d5: push     rdi
+00000001806488d6: sub      rsp, 0x20
+00000001806488da: cmp      byte ptr [rip + 0x86478ca], 0
+00000001806488e1: mov      edi, edx
+00000001806488e3: mov      rbx, rcx
+00000001806488e6: jne      0x1806488fb
+00000001806488e8: lea      rcx, [rip + 0x8227219] ; GenericMethodInfo 292621 @0x18886fb08
+00000001806488ef: call     0x18048bf00
+00000001806488f4: mov      byte ptr [rip + 0x86478b0], 1
+00000001806488fb: mov      rdx, qword ptr [rip + 0x8227206] ; GenericMethodInfo 292621 @0x18886fb08
+0000000180648902: mov      ecx, edi
+0000000180648904: mov      rbx, qword ptr [rbx + 0x28]
+0000000180648908: call     0x1844dc660
+000000018064890d: test     rbx, rbx
+0000000180648910: je       0x18064892d
+0000000180648912: cmp      eax, dword ptr [rbx + 0x18]
+0000000180648915: jae      0x180648933
+0000000180648917: cdqe     
+0000000180648919: cmp      word ptr [rbx + rax*2 + 0x20], 0
+000000018064891f: mov      rbx, qword ptr [rsp + 0x30]
+0000000180648924: setg     al
+0000000180648927: add      rsp, 0x20
+000000018064892b: pop      rdi
+000000018064892c: ret      
+000000018064892d: call     0x18048c0b0
+0000000180648932: int3     
+0000000180648933: call     0x18048c0a0
+0000000180648938: int3     
+0000000180648939: int3     
+000000018064893a: int3     
+000000018064893b: int3     
+000000018064893c: int3     
+000000018064893d: int3     
+000000018064893e: int3     
+000000018064893f: int3     

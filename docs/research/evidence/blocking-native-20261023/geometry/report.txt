@@ -1,0 +1,23 @@
+Blocking positional adjustment — native evidence, 2026-10-23
+
+Scope
+The installed GameAssembly.dll/global-metadata.dat fingerprints match the earlier blocking-lifecycle.json. These are complete ordinary native method bodies and literal data reads, not a gameplay recording. XLua replacement paths are visible but were not executed.
+
+Directly confirmed
+1. BlockManager.AddBlockee [77191] VA 0x180aa0430 calls BlockBalancer.CalculateBlockOffset [78270] VA 0x180af3090 before Enemy.RegisterBlocker [76432] VA 0x180a73e00.
+2. CalculateBlockOffset uses the target's map position, the blocker's map position, the blocker's minBlockDistToTarget, and previous blockees' stableBlockPosition. It does not use Hitbox geometry or pairwise physical colliders.
+3. Character.get_minBlockDistToTarget [75893] and Enemy.get_minBlockDistToTarget [76552] ordinary native branches return 0.5. This is a separation distance, not the 0.7071/0.8944 acquisition radius. GiantTrap reads a separate configured field.
+4. Let v = enemy.position - blocker.position. If |v| < minDistance, replace v by normalized(v) * minDistance. Native vector normalization leaves zero/nearly-zero vectors at zero; it does not invent an outward direction for coincident centers.
+5. Preliminary point = blocker.position + v. If any earlier blockee's stable position is within squared distance 0.01, calculate separation from the earlier blockees. For distances below 0.1, add a perpendicular direction derived from that blockee relative to the blocker. For 0.1 <= d < 0.4, add normalize(delta) * (0.4 - d) * 50. Outside 0.4, add nothing. Then v = normalize(v + normalize(separation) * 0.2) * |v|. The result preserves the radial distance while changing direction.
+6. Enemy.RegisterBlocker writes the target's blocker pointer at 0x180a73f73, emits Entity event 0x18 at 0x180a73f8a, calls BuffContainer.OnOwnerBlockeeChanged at 0x180a73fa7, then invokes _MoveToBlockPosition at 0x180a74088 using blocker.position + adjustedOffset.
+7. Enemy._MoveToBlockPosition [76515] VA 0x180a799d0 stores the destination at enemy+0x400 and starts either DOTween or the deterministic BattleTween path. Both read duration 0.2 from DLL literal 0x186e40b18. Callback [76564]/[76567] calls VisualObject.SetPosition [77880], so this changes the actual map/world position read by get_mapPosition, not merely a decorative sprite offset.
+8. Enemy.get_stableBlockPosition [76363] VA 0x180a7fef0 returns the saved final position while a block-position tween is active and a blocker exists; otherwise it returns current map position. Later enemies therefore use the earlier enemies' intended settled positions during their interpolation.
+
+Current Stronghold difference
+src/core/tactical/battlefield/blocking/relations.ts creates the relationship and movement.ts installs the movement-denial Rule, but neither computes nor applies this blocking displacement. This can change attack-range boundaries, later contact, and the positions used by area effects. Choosing to omit the 0.2s interpolation is a separate simplification from omitting the final displacement.
+
+Unconfirmed / not implied
+The native interpolation easing curve, all interruption combinations, and every special content override are not established by this extraction. The existence of a 0.2s tween does not require a generic tween subsystem in Stronghold. No recommendation is made to reproduce the native half-committed relationship notification windows.
+
+PRTS corroboration
+https://prts.wiki/w/作战机制 — midpoint blocking checks, air-drop separation to radius 0.5, coincident-center exception, and multi-blockee positional adjustment. PRTS description is corroboration; the numeric constants above were independently read from the DLL.

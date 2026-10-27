@@ -1,0 +1,512 @@
+[
+  {
+    "type": 11147,
+    "name": "Torappu.Battle.FilterUtil.FilterType",
+    "values": [
+      {
+        "field": 84019,
+        "name": "ALL",
+        "value": 0,
+        "raw": "00020406080a0c0e"
+      },
+      {
+        "field": 84020,
+        "name": "DIST_TO_EXIT_ASC",
+        "value": 1,
+        "raw": "020406080a0c0e10"
+      },
+      {
+        "field": 84021,
+        "name": "HP_RATIO_ASC",
+        "value": 2,
+        "raw": "0406080a0c0e1012"
+      },
+      {
+        "field": 84022,
+        "name": "HP_RATIO_NOT_FULL_ASC",
+        "value": 3,
+        "raw": "06080a0c0e101214"
+      },
+      {
+        "field": 84023,
+        "name": "HATRED_DES",
+        "value": 4,
+        "raw": "080a0c0e10121416"
+      },
+      {
+        "field": 84024,
+        "name": "HP_RATIO_NOT_FULL",
+        "value": 5,
+        "raw": "0a0c0e1012141618"
+      },
+      {
+        "field": 84025,
+        "name": "HATRED_DES_FLY_FIRST",
+        "value": 6,
+        "raw": "0c0e10121416181a"
+      },
+      {
+        "field": 84026,
+        "name": "HATRED_DES_RANGED_FIRST",
+        "value": 7,
+        "raw": "0e10121416181a1c"
+      },
+      {
+        "field": 84027,
+        "name": "DEF_DES",
+        "value": 8,
+        "raw": "10121416181a1c1e"
+      },
+      {
+        "field": 84028,
+        "name": "DEF_ASC",
+        "value": 9,
+        "raw": "121416181a1c1e20"
+      },
+      {
+        "field": 84029,
+        "name": "DIST_TO_SOURCE_DES",
+        "value": 10,
+        "raw": "1416181a1c1e2022"
+      },
+      {
+        "field": 84030,
+        "name": "DIST_TO_SOURCE_ASC",
+        "value": 11,
+        "raw": "16181a1c1e202224"
+      },
+      {
+        "field": 84031,
+        "name": "NOT_STUNNED_HATRED_DES",
+        "value": 12,
+        "raw": "181a1c1e20222426"
+      },
+      {
+        "field": 84032,
+        "name": "DIRECTIONAL_DIST_TO_SOURCE_ASC",
+        "value": 13,
+        "raw": "1a1c1e2022242628"
+      },
+      {
+        "field": 84033,
+        "name": "RANDOM",
+        "value": 14,
+        "raw": "1c1e20222426282a"
+      },
+      {
+        "field": 84034,
+        "name": "HP_DES",
+        "value": 15,
+        "raw": "1e20222426282a2c"
+      },
+      {
+        "field": 84035,
+        "name": "HP_ASC",
+        "value": 16,
+        "raw": "20222426282a2c2e"
+      },
+      {
+        "field": 84036,
+        "name": "ATK_DES",
+        "value": 17,
+        "raw": "222426282a2c2e30"
+      },
+      {
+        "field": 84037,
+        "name": "ATK_ASC",
+        "value": 18,
+        "raw": "2426282a2c2e3032"
+      },
+      {
+        "field": 84038,
+        "name": "MAX_HP_DES",
+        "value": 19,
+        "raw": "26282a2c2e303234"
+      },
+      {
+        "field": 84039,
+        "name": "MAX_HP_ASC",
+        "value": 20,
+        "raw": "282a2c2e30323436"
+      },
+      {
+        "field": 84040,
+        "name": "HAAK_ONLY_FORWARD_FIRST_MANHATTAN_ASC",
+        "value": 21,
+        "raw": "2a2c2e3032343638"
+      },
+      {
+        "field": 84041,
+        "name": "HATRED_DES_UNBLOCKED_FIRST",
+        "value": 22,
+        "raw": "2c2e30323436383a"
+      },
+      {
+        "field": 84042,
+        "name": "HP_NOT_FULL_RANDOM",
+        "value": 23,
+        "raw": "2e30323436383a3c"
+      },
+      {
+        "field": 84043,
+        "name": "HATRED_DES_INVISIBLE_FIRST",
+        "value": 24,
+        "raw": "30323436383a3c3e"
+      },
+      {
+        "field": 84044,
+        "name": "HATRED_DES_DIST_FARTHER_FIRST",
+        "value": 25,
+        "raw": "323436383a3c3e40"
+      },
+      {
+        "field": 84045,
+        "name": "HATRED_DES_DIST_NEARER_FIRST",
+        "value": 26,
+        "raw": "3436383a3c3e4042"
+      },
+      {
+        "field": 84046,
+        "name": "MASS_DES",
+        "value": 27,
+        "raw": "36383a3c3e404244"
+      },
+      {
+        "field": 84047,
+        "name": "MASS_ASC",
+        "value": 28,
+        "raw": "383a3c3e40424446"
+      },
+      {
+        "field": 84048,
+        "name": "HATRED_DES_SLEEPING_FIRST",
+        "value": 29,
+        "raw": "3a3c3e4042444648"
+      },
+      {
+        "field": 84049,
+        "name": "HP_RATIO_ASC_CONTAINS_STATUS_RESISTABLE_BUFF_FIRST",
+        "value": 30,
+        "raw": "3c3e40424446484a"
+      },
+      {
+        "field": 84050,
+        "name": "HATRED_DES_IMMUNE_SLEEPING_EXCLUDE",
+        "value": 31,
+        "raw": "3e40424446484a4c"
+      },
+      {
+        "field": 84051,
+        "name": "EP_DES",
+        "value": 32,
+        "raw": "40424446484a4c4e"
+      },
+      {
+        "field": 84052,
+        "name": "HATRED_DES_BLOCKED_FIRST",
+        "value": 33,
+        "raw": "424446484a4c4e50"
+      },
+      {
+        "field": 84053,
+        "name": "CREATED_TIME_DES",
+        "value": 34,
+        "raw": "4446484a4c4e5052"
+      },
+      {
+        "field": 84054,
+        "name": "CREATED_TIME_ASC",
+        "value": 35,
+        "raw": "46484a4c4e505254"
+      },
+      {
+        "field": 84055,
+        "name": "HP_RATIO_NOT_FULL_ASC_MY_TOKEN_OR_ME_FIRST",
+        "value": 36,
+        "raw": "484a4c4e50525456"
+      },
+      {
+        "field": 84056,
+        "name": "EP_MIN_ASC_HP_RATIO_ASC_FIRST_NOT_ALL_FULL",
+        "value": 37,
+        "raw": "4a4c4e5052545658"
+      },
+      {
+        "field": 84057,
+        "name": "HP_RATIO_ASC_EP_MIN_ASC_FIRST_NOT_ALL_FULL",
+        "value": 38,
+        "raw": "4c4e50525456585a"
+      },
+      {
+        "field": 84058,
+        "name": "HP_RATIO_ASC_CREATED_TIME_DES_FIRST",
+        "value": 39,
+        "raw": "4e50525456585a5c"
+      },
+      {
+        "field": 84059,
+        "name": "HATRED_DES_COLD_FIRST_THEN_NOT_FROZEN",
+        "value": 40,
+        "raw": "50525456585a5c5e"
+      },
+      {
+        "field": 84060,
+        "name": "GRIDPOS_BY_SMALL_COL_BIG_ROW",
+        "value": 41,
+        "raw": "525456585a5c5e60"
+      },
+      {
+        "field": 84061,
+        "name": "BLOCK_COUNT_DES",
+        "value": 42,
+        "raw": "5456585a5c5e6062"
+      },
+      {
+        "field": 84062,
+        "name": "HP_RATIO_ASC_CONTAINS_STATUS_RESISTABLE_BUFF",
+        "value": 43,
+        "raw": "56585a5c5e606264"
+      },
+      {
+        "field": 84063,
+        "name": "MASS_DES_SLEEPING_FIRST",
+        "value": 44,
+        "raw": "585a5c5e60626466"
+      },
+      {
+        "field": 84064,
+        "name": "HP_RATIO_DES",
+        "value": 45,
+        "raw": "5a5c5e6062646668"
+      },
+      {
+        "field": 84065,
+        "name": "HATRED_ASC",
+        "value": 46,
+        "raw": "5c5e60626466686a"
+      },
+      {
+        "field": 84066,
+        "name": "LOWLAND_FIRST_CREATED_TIME_DES",
+        "value": 47,
+        "raw": "5e60626466686a6c"
+      },
+      {
+        "field": 84067,
+        "name": "TILE_HEIGHT_DES",
+        "value": 48,
+        "raw": "60626466686a6c6e"
+      },
+      {
+        "field": 84068,
+        "name": "ONLY_LEVITATED_HATRED_DES",
+        "value": 49,
+        "raw": "626466686a6c6e70"
+      },
+      {
+        "field": 84069,
+        "name": "ENEMY_FIRST_HATRED_DES",
+        "value": 50,
+        "raw": "6466686a6c6e7072"
+      },
+      {
+        "field": 84070,
+        "name": "HATRED_DES_LOWLAND_FIRST",
+        "value": 51,
+        "raw": "66686a6c6e707274"
+      },
+      {
+        "field": 84071,
+        "name": "HATRED_DES_HIGHLAND_FIRST",
+        "value": 52,
+        "raw": "686a6c6e70727476"
+      },
+      {
+        "field": 84072,
+        "name": "HATRED_DES_ELITE_BOSS_FIRST",
+        "value": 53,
+        "raw": "6a6c6e7072747678"
+      },
+      {
+        "field": 84073,
+        "name": "CROSS_ONLY_WITH_HATRED_DES",
+        "value": 54,
+        "raw": "6c6e70727476787a"
+      },
+      {
+        "field": 84074,
+        "name": "FOOTBALL_SEARCH_TEAMMATE",
+        "value": 55,
+        "raw": "6e70727476787a7c"
+      },
+      {
+        "field": 84075,
+        "name": "BLOCK_CNT_NO_ZERO_DIST_TO_SOURCE_ASC",
+        "value": 56,
+        "raw": "70727476787a7c7e"
+      },
+      {
+        "field": 84076,
+        "name": "PREFER_NOT_IN_EP_BREAK_AND_HATRED_DES",
+        "value": 57,
+        "raw": "727476787a7c7e80"
+      },
+      {
+        "field": 84077,
+        "name": "STAY_STILL_RANDOM",
+        "value": 58,
+        "raw": "7476787a7c7e8080"
+      },
+      {
+        "field": 84078,
+        "name": "HATRED_DES_BLOCKED_BY_OWNER_FIRST",
+        "value": 59,
+        "raw": "76787a7c7e808080"
+      },
+      {
+        "field": 84079,
+        "name": "EP_WATER_DES",
+        "value": 60,
+        "raw": "787a7c7e80808082"
+      },
+      {
+        "field": 84080,
+        "name": "BLOCK_COUNT_ASC_CREATED_TIME_DES_FIRST",
+        "value": 61,
+        "raw": "7a7c7e8080808280"
+      },
+      {
+        "field": 84081,
+        "name": "HATRED_DES_CHARACTER_FIRST",
+        "value": 62,
+        "raw": "7c7e808080828084"
+      },
+      {
+        "field": 84082,
+        "name": "HP_RATIO_ASC_CONTAINS_STATUS_RESISTABLE_BUFF_FIRST_EVEN_HP_FULL",
+        "value": 63,
+        "raw": "7e80808082808480"
+      },
+      {
+        "field": 84083,
+        "name": "KALSIT_M3_SELECTOR",
+        "value": 64,
+        "raw": "8080808280848086"
+      },
+      {
+        "field": 84084,
+        "name": "HP_RATIO_ASC_BUT_SP_LOSS_DES_FIRST",
+        "value": 65,
+        "raw": "8082808480868088"
+      },
+      {
+        "field": 84085,
+        "name": "AMMO_NOT_FULL_ASC_CREATED_TIME_DES_FIRST",
+        "value": 66,
+        "raw": "808480868088808a"
+      },
+      {
+        "field": 84086,
+        "name": "MAGIC_RESIST_ASC",
+        "value": 67,
+        "raw": "80868088808a808c"
+      },
+      {
+        "field": 84087,
+        "name": "MAGIC_RESIST_DES",
+        "value": 68,
+        "raw": "8088808a808c808e"
+      },
+      {
+        "field": 84088,
+        "name": "PREFER_IN_EP_BREAK_AND_MIN_EP_THEN_HATRED_DES",
+        "value": 69,
+        "raw": "808a808c808e8090"
+      },
+      {
+        "field": 84089,
+        "name": "DIST_TO_EXIT_DES",
+        "value": 70,
+        "raw": "808c808e80908092"
+      },
+      {
+        "field": 84090,
+        "name": "FILTER_CHAR_BUILDABLE_TYPE_MELEE_FIRST_HATRED_DES",
+        "value": 71,
+        "raw": "808e809080928094"
+      },
+      {
+        "field": 84091,
+        "name": "HATRED_DES_SLEEPING_LAST",
+        "value": 72,
+        "raw": "8090809280948096"
+      },
+      {
+        "field": 84092,
+        "name": "HATRED_DES_SLEEPING_LAST_EXCLUDE_SLEEP_IMMUNE",
+        "value": 73,
+        "raw": "8092809480968098"
+      },
+      {
+        "field": 84093,
+        "name": "HP_RATIO_ASC_HATRED_DES",
+        "value": 74,
+        "raw": "809480968098809a"
+      },
+      {
+        "field": 84094,
+        "name": "HP_RATIO_NOT_FULL_ASC_FLY_FIRST",
+        "value": 75,
+        "raw": "80968098809a809c"
+      },
+      {
+        "field": 84095,
+        "name": "PATH_DIST_TO_SOURCE_ASC",
+        "value": 76,
+        "raw": "8098809a809c0002"
+      },
+      {
+        "field": 84096,
+        "name": "DIST_TO_SOURCE_ASC_LOWLAND_FIRST",
+        "value": 77,
+        "raw": "809a809c00020406"
+      },
+      {
+        "field": 84097,
+        "name": "HP_RATIO_ASC_DIST_TO_SOURCE_ASC_FIRST",
+        "value": 78,
+        "raw": "809c00020406080a"
+      }
+    ]
+  },
+  {
+    "type": 38170,
+    "name": "Torappu.AbnormalCombo",
+    "values": [
+      {
+        "field": 316404,
+        "name": "SLEEPING",
+        "value": 0,
+        "raw": "0002040600020406"
+      },
+      {
+        "field": 316405,
+        "name": "SHELTERING",
+        "value": 1,
+        "raw": "0204060002040600"
+      },
+      {
+        "field": 316406,
+        "name": "ISOLATE",
+        "value": 2,
+        "raw": "0406000204060002"
+      },
+      {
+        "field": 316407,
+        "name": "E_NUM",
+        "value": 3,
+        "raw": "0600020406000200"
+      }
+    ]
+  }
+]

@@ -1,0 +1,121 @@
+{
+  "typename": "Torappu.BuildableType",
+  "type": {
+    "index": 38171,
+    "name": "BuildableType",
+    "namespace": "Torappu",
+    "raw": [
+      6617178,
+      491302,
+      45187,
+      4294967295,
+      52686,
+      59011,
+      4294967295,
+      257,
+      316408,
+      4294967295,
+      4294967295,
+      4294967295,
+      4294967295,
+      4294967295,
+      359213,
+      46099,
+      389,
+      0,
+      5,
+      1507328,
+      196608,
+      3091,
+      33554513
+    ],
+    "fieldStart": 316408,
+    "methodStart": 4294967295,
+    "fieldCount": 5,
+    "methodCount": 0
+  },
+  "fields": [
+    {
+      "index": 316408,
+      "name": "value__",
+      "type": 59035,
+      "typeName": "int",
+      "attrs": 1542,
+      "static": false,
+      "offset": 16,
+      "boxedOffset": 16,
+      "unboxedOffset": 0,
+      "token": 67109352
+    },
+    {
+      "index": 316409,
+      "name": "NONE",
+      "type": 45191,
+      "typeName": "Torappu.BuildableType",
+      "attrs": 32854,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67109353
+    },
+    {
+      "index": 316410,
+      "name": "MELEE",
+      "type": 45191,
+      "typeName": "Torappu.BuildableType",
+      "attrs": 32854,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67109354
+    },
+    {
+      "index": 316411,
+      "name": "RANGED",
+      "type": 45191,
+      "typeName": "Torappu.BuildableType",
+      "attrs": 32854,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67109355
+    },
+    {
+      "index": 316412,
+      "name": "ALL",
+      "type": 45191,
+      "typeName": "Torappu.BuildableType",
+      "attrs": 32854,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67109356
+    }
+  ],
+  "enumsCorrected": [
+    {
+      "name": "NONE",
+      "value": 0,
+      "encodedByte": "00"
+    },
+    {
+      "name": "MELEE",
+      "value": 1,
+      "encodedByte": "02"
+    },
+    {
+      "name": "RANGED",
+      "value": 2,
+      "encodedByte": "04"
+    },
+    {
+      "name": "ALL",
+      "value": 3,
+      "encodedByte": "06"
+    }
+  ]
+}

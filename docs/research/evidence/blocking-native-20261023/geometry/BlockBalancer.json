@@ -1,0 +1,123 @@
+{
+  "type": {
+    "index": 11534,
+    "name": "BlockBalancer",
+    "namespace": "Torappu.Battle",
+    "raw": [
+      2881886,
+      2369788,
+      44708,
+      4294967295,
+      63016,
+      44708,
+      4294967295,
+      1048961,
+      88358,
+      78270,
+      4294967295,
+      4294967295,
+      4294967295,
+      4294967295,
+      109301,
+      4294967295,
+      0,
+      1,
+      4,
+      262144,
+      0,
+      3072,
+      33565967
+    ],
+    "fieldStart": 88358,
+    "methodStart": 78270,
+    "fieldCount": 4,
+    "methodCount": 1
+  },
+  "fields": [
+    {
+      "index": 88358,
+      "name": "MIN_DIST_BTW_BLOCKEES_SQR",
+      "type": 75056,
+      "typeName": "float",
+      "attrs": 32849,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67197223
+    },
+    {
+      "index": 88359,
+      "name": "CLOSE_DIST_BTW_BLOCKEERS",
+      "type": 75056,
+      "typeName": "float",
+      "attrs": 32849,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67197224
+    },
+    {
+      "index": 88360,
+      "name": "CLOSE_DIST_BTW_BLOCKEES_SQR",
+      "type": 75056,
+      "typeName": "float",
+      "attrs": 32849,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67197225
+    },
+    {
+      "index": 88361,
+      "name": "MERGE_FACTOR_OF_SEPARATION",
+      "type": 75056,
+      "typeName": "float",
+      "attrs": 32849,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67197226
+    }
+  ],
+  "methods": [
+    {
+      "index": 78270,
+      "name": "CalculateBlockOffset",
+      "type": 11534,
+      "returnType": 82722,
+      "parameterStart": 76570,
+      "generic": -1,
+      "token": 100741567,
+      "flags": 150,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 3,
+      "address": "0x180af3090",
+      "fullname": "Torappu.Battle.BlockBalancer.CalculateBlockOffset",
+      "parameters": [
+        {
+          "index": 76570,
+          "name": "blockees",
+          "token": 134294304,
+          "type": 17386
+        },
+        {
+          "index": 76571,
+          "name": "target",
+          "token": 134294305,
+          "type": 52144
+        },
+        {
+          "index": 76572,
+          "name": "source",
+          "token": 134294306,
+          "type": 56854
+        }
+      ]
+    }
+  ]
+}

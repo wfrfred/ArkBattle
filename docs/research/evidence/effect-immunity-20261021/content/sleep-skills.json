@@ -1,0 +1,1120 @@
+{
+  "bundle": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+  "sha256": "14306a31b1856f61b25812a69a2a057b7c4634561fb2c2bccc42fb37ee41a27e",
+  "objects": [
+    {
+      "id": -8628590135974443577,
+      "name": "AutoLoadBoxRange",
+      "path": "skchr_kafka_1/Selector",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 6402471694868989383
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": -2891200616113119906
+        },
+        "m_Name": "",
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0
+      }
+    },
+    {
+      "id": -7958160289681521209,
+      "name": "SkillSubTalents",
+      "path": "skchr_kafka_1",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 4492077302126724551
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 8997391673365660191
+        },
+        "m_Name": ""
+      }
+    },
+    {
+      "id": -7248098570773402230,
+      "name": "UberEffectEmitter",
+      "path": "skchr_iris_2",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 3698839612937137546
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": -550693537895634864
+        },
+        "m_Name": "",
+        "_hitEffects": [],
+        "_castEffects": [
+          {
+            "_directionType": 0,
+            "_effects": [
+              "iris_skill_02_buff",
+              "",
+              "",
+              ""
+            ],
+            "_oneshot": 1,
+            "_startEvent": 2,
+            "_endEvent": 3,
+            "_onlyOnce": 0,
+            "_useFourDirectionalFace": 0,
+            "_delayIfFirstAttack": 0.0,
+            "_hookEffectAfterFirstAttack": ""
+          },
+          {
+            "_directionType": 0,
+            "_effects": [
+              "iris_skill_02_start",
+              "",
+              "",
+              ""
+            ],
+            "_oneshot": 1,
+            "_startEvent": 2,
+            "_endEvent": 3,
+            "_onlyOnce": 0,
+            "_useFourDirectionalFace": 0,
+            "_delayIfFirstAttack": 0.0,
+            "_hookEffectAfterFirstAttack": ""
+          }
+        ],
+        "_attachEffects": [],
+        "_inputTargetEffects": [],
+        "_castTargetEffects": [],
+        "_convertCastEndToAttachFinish": 0,
+        "_recalculatePlaybackSpeed": 0,
+        "_preDelayFactor": 0.0
+      }
+    },
+    {
+      "id": -6310533032844802617,
+      "name": "MeleeAttack",
+      "path": "skchr_kafka_1/FinalAttack",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 2914642706258642375
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 4381884627089348317
+        },
+        "m_Name": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 5168085173266269639
+        },
+        "_metadata": {
+          "namedAsAlias": "FinalAttack",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 1,
+        "_selectTargetTiming": 0,
+        "_timeMode": 2,
+        "_alwaysIncludeTarget": 0,
+        "_allowNoTarget": 1,
+        "_animKey": "",
+        "_endAnimKey": "",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.30000001192092896,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 0,
+        "_faceToDefault": 0,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": [],
+        "_maxAnimScale": -1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 0,
+        "_atkScale": 1.0,
+        "_atkScaleKey": "atk_scale",
+        "_attackType": 1,
+        "_elementDamageType": 0,
+        "_epDamageRatio": 0.0,
+        "_useDynamicAttackType": 0,
+        "_deliveryParaWhenReplaceActionNode": 0,
+        "_damageType": 2,
+        "_extraDamageType": 0,
+        "_alwaysPutIncludeTargetFirst": 0
+      }
+    },
+    {
+      "id": -6302911326722134646,
+      "name": "AutoLoadBoxRange",
+      "path": "skchr_iris_2/Selector",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -3659925242604360310
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": -2891200616113119906
+        },
+        "m_Name": "",
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0
+      }
+    },
+    {
+      "id": -5566110641502698041,
+      "name": "ActiveBuffAbility",
+      "path": "skchr_kafka_1/Disarm",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -1417658763668306489
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": -4234909118878081699
+        },
+        "m_Name": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 0,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_buffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [
+                11
+              ],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "kafka_s_1[disarm]",
+            "loadFromDB": 0,
+            "isDurableBuff": 0,
+            "isDamageMissable": 0,
+            "isSilenceable": 0,
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0,
+            "statusResistable": 2,
+            "templateKey": "kafka_s_1",
+            "disableOverride": 0,
+            "overrideKey": "",
+            "overrideType": 0,
+            "maxStackCnt": 1,
+            "refreshRemainingTimeWhenStackMax": 0,
+            "clearAllStackCntWhenTimeUp": 0,
+            "maxValidStackCnt": -1,
+            "independentCharacterSource": 0,
+            "overrideEffectKey": "kafka_skill_01_buff",
+            "overrideOnEventPriority": 0,
+            "onEventPriority": 0,
+            "audioSignal": "",
+            "lifeTimeType": 1,
+            "takeSnapshotWhenExtend": 0,
+            "durationKey": "",
+            "remainingTimeKey": "",
+            "lifeTime": 0.0,
+            "triggerLifeType": 0,
+            "triggerCnt": 0,
+            "triggerInterval": -1.0,
+            "waitFirstTriggerInterval": 1,
+            "firstTriggerInterval": -1.0,
+            "priority": -1,
+            "priorityBBKeys": [],
+            "stripBlackboardParamsWithBuffKey": 0,
+            "blackboard": [],
+            "enableInitDirectionFromSource": 0
+          }
+        ],
+        "_waitForCasting": 1,
+        "_updateLifetimeWhenSpellStart": 0,
+        "_preDelay": 0.03999999910593033,
+        "_escapeTime": 0.6499999761581421,
+        "_checkBuffEarlyFinish": 0,
+        "_passiveBuffs": [],
+        "_ignoreInfiniteBuffCooldown": 0,
+        "_enableUpdateCooldown": 0
+      }
+    },
+    {
+      "id": -5367884313813662265,
+      "name": "AbilityParallelGroup",
+      "path": "skchr_kafka_1",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 4492077302126724551
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 8671737732485835867
+        },
+        "m_Name": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 532903923363399111
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_abilities": [
+          {
+            "m_FileID": 0,
+            "m_PathID": -5566110641502698041
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 5889527310525842887
+          }
+        ],
+        "_alsoInterruptSubAbilities": 0,
+        "_useEscaptime": 1,
+        "_alsoCheckChildrenAffecting": 1,
+        "_finishAllAbilitiesIfOneFinish": 0,
+        "_mainAbility": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_timeMode": 1,
+        "_updateCooldownAfterSubAbilitiesAttached": 0
+      }
+    },
+    {
+      "id": -3124538660086233657,
+      "name": "AutoLoadBoxRange",
+      "path": "skchr_kafka_1/ApplySleeping/Trigger",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -6422896254636866105
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": -2891200616113119906
+        },
+        "m_Name": "",
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0
+      }
+    },
+    {
+      "id": -3087661495124245049,
+      "name": "PassiveBuffAbility",
+      "path": "skchr_kafka_1/1",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -4817494349620263481
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 3800760148018415462
+        },
+        "m_Name": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_buffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [
+                17
+              ],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "kafka_s_1[camouflage]",
+            "loadFromDB": 0,
+            "isDurableBuff": 0,
+            "isDamageMissable": 0,
+            "isSilenceable": 0,
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0,
+            "statusResistable": 2,
+            "templateKey": "empty",
+            "disableOverride": 0,
+            "overrideKey": "",
+            "overrideType": 0,
+            "maxStackCnt": 1,
+            "refreshRemainingTimeWhenStackMax": 0,
+            "clearAllStackCntWhenTimeUp": 0,
+            "maxValidStackCnt": -1,
+            "independentCharacterSource": 0,
+            "overrideEffectKey": "",
+            "overrideOnEventPriority": 0,
+            "onEventPriority": 0,
+            "audioSignal": "",
+            "lifeTimeType": 2,
+            "takeSnapshotWhenExtend": 0,
+            "durationKey": "",
+            "remainingTimeKey": "",
+            "lifeTime": 0.0,
+            "triggerLifeType": 0,
+            "triggerCnt": 0,
+            "triggerInterval": -1.0,
+            "waitFirstTriggerInterval": 1,
+            "firstTriggerInterval": -1.0,
+            "priority": -1,
+            "priorityBBKeys": [],
+            "stripBlackboardParamsWithBuffKey": 0,
+            "blackboard": [],
+            "enableInitDirectionFromSource": 0
+          },
+          {
+            "attributes": {
+              "abnormalFlags": [],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": [
+                {
+                  "attributeType": 5,
+                  "formulaItem": 3,
+                  "value": 0.0,
+                  "loadFromBlackboard": 0,
+                  "fetchBaseValueFromSourceEntity": 0
+                },
+                {
+                  "attributeType": 1,
+                  "formulaItem": 1,
+                  "value": 0.0,
+                  "loadFromBlackboard": 1,
+                  "fetchBaseValueFromSourceEntity": 0
+                }
+              ]
+            },
+            "buffKey": "kafka_tel_sub",
+            "loadFromDB": 0,
+            "isDurableBuff": 0,
+            "isDamageMissable": 0,
+            "isSilenceable": 0,
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0,
+            "statusResistable": 2,
+            "templateKey": "kafka_s_1_sub_talent",
+            "disableOverride": 0,
+            "overrideKey": "",
+            "overrideType": 0,
+            "maxStackCnt": 1,
+            "refreshRemainingTimeWhenStackMax": 0,
+            "clearAllStackCntWhenTimeUp": 0,
+            "maxValidStackCnt": -1,
+            "independentCharacterSource": 0,
+            "overrideEffectKey": "kafka_talent_buff",
+            "overrideOnEventPriority": 0,
+            "onEventPriority": 0,
+            "audioSignal": "",
+            "lifeTimeType": 2,
+            "takeSnapshotWhenExtend": 0,
+            "durationKey": "",
+            "remainingTimeKey": "",
+            "lifeTime": 0.0,
+            "triggerLifeType": 0,
+            "triggerCnt": 0,
+            "triggerInterval": -1.0,
+            "waitFirstTriggerInterval": 1,
+            "firstTriggerInterval": -1.0,
+            "priority": -1,
+            "priorityBBKeys": [],
+            "stripBlackboardParamsWithBuffKey": 0,
+            "blackboard": [],
+            "enableInitDirectionFromSource": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": -2745201220858296889,
+      "name": "ConstrainedTalent",
+      "path": "skchr_kafka_1/1",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -4817494349620263481
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": -6720127530813467842
+        },
+        "m_Name": "",
+        "_overwriteTalentKey": "",
+        "_overwriteParentRangeId": 0,
+        "_checkValidBySkillIndex": [],
+        "_attachInDummy": 0,
+        "_defaultModeIndex": -1,
+        "_attackBlackboardModeIndex": -1,
+        "_extraAttackBlackboardModeIndices": [],
+        "_overrideDefaultRangeId": 0,
+        "_applyTalentScale": 0,
+        "_influenceSkillBlackboard": 0,
+        "_fromRawDataToSkill": 0,
+        "_applyTalentRange": 0,
+        "_applyBlackboardBySkill": 0,
+        "_applyStrBlackboardBySkill": 0,
+        "_writeRangeIdToProjectileBlackboard": 0,
+        "_affectWhenNotRootTalent": 0,
+        "_scaleCertainKeyFlag": 0,
+        "_scaleCertainKeyList": [],
+        "_scaleCertainMode": 0,
+        "_scaleModeIndices": []
+      }
+    },
+    {
+      "id": -1832285605663095353,
+      "name": "AppearSkill",
+      "path": "skchr_kafka_1",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 4492077302126724551
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 2822254928132392630
+        },
+        "m_Name": "",
+        "_maxTriggerTime": -1,
+        "_allowSpRecoveryWhenAffecting": 0,
+        "_limitGlobalTriggerTime": 0,
+        "_hidden": 0,
+        "_showSpBarEvenHidden": 0,
+        "_showSpAsBulletMode": 0,
+        "_showSpRatioAsProgress": 0,
+        "_playCharWordVoice": 1,
+        "_playCharWordWithPassiveType": 0,
+        "_earlyVoice": 0,
+        "_canCastWithNoSp": 0,
+        "_canSilenced": 0,
+        "_canUseInAbnormalState": 0,
+        "_defaultModeIndex": -1,
+        "_attackBlackboardModeIndex": -1,
+        "_extraAttackBlackboardModeIndices": [],
+        "_rangeIdModeIndex": -1,
+        "_extraRangeIdModeIndices": [],
+        "_rangeIdUsageType": 7,
+        "_writeDurationToAttackBlackboard": 0,
+        "_attachSignalIds": 1,
+        "_extraAbilities": [
+          {
+            "m_FileID": 0,
+            "m_PathID": -6310533032844802617
+          }
+        ],
+        "_useEscapeTime": 1,
+        "_earlySkillFinishAtAttackFinished": 0,
+        "_stopAffectOnInterrupt": 0,
+        "_showProgressToNext": 0,
+        "_hideSkillStackCount": 0,
+        "_hideHudSkillStackCount": 0,
+        "_playSkillBeginAnim": 0,
+        "_beginAnim": "Skill_Begin",
+        "_beginAnimDown": "",
+        "_beginEffect": [],
+        "_useFaceVector": 0,
+        "_beginAnimValidator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_availableValidator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_overrideStartEffect": "kafka_skill_01_start",
+        "_switchToState": 1,
+        "_castOnLocate": 0,
+        "_overrideAudioSignalId": 0
+      }
+    },
+    {
+      "id": -632599811205511737,
+      "name": "AdvancedSelector",
+      "path": "skchr_kafka_1/ApplySleeping/Trigger",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -6422896254636866105
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 7080728813803358465
+        },
+        "m_Name": "",
+        "_targetSide": 2,
+        "_targetMotion": 1,
+        "_targetCategory": 1,
+        "_postFilter": 31,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 20,
+        "_abnormalCombo": 2,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 0,
+        "_maxTargetKey": "max_target",
+        "_maxNum": 1,
+        "_excludeOwner": 0,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0
+      }
+    },
+    {
+      "id": -370435481658135158,
+      "name": "RangedAttack",
+      "path": "skchr_iris_2",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 3698839612937137546
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 4156651312234227407
+        },
+        "m_Name": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 2841671250638531978
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 1,
+        "_selectTargetTiming": 0,
+        "_timeMode": 1,
+        "_alwaysIncludeTarget": 1,
+        "_allowNoTarget": 0,
+        "_animKey": "Skill_2",
+        "_endAnimKey": "",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 0,
+        "_faceToDefault": 1,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": [],
+        "_maxAnimScale": 1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 0,
+        "_atkScale": 0.0,
+        "_atkScaleKey": "atk_scale",
+        "_attackType": 1,
+        "_elementDamageType": 0,
+        "_epDamageRatio": 0.0,
+        "_useDynamicAttackType": 0,
+        "_deliveryParaWhenReplaceActionNode": 0,
+        "_projectileKey": "projectile_chr_iris_s2_1",
+        "_mountPointType": 2,
+        "_useMountGroup": 0,
+        "_mountGroup": {
+          "loopType": 0,
+          "mountPoints": []
+        },
+        "_damageType": 2,
+        "_waitForProjectileInvalid": 0,
+        "_notClearProjectileWhenCastEnd": 0,
+        "_fireAttackFinishWhenProjectileInvalid": 0,
+        "_minPostDelayWhenProjectileInvalid": 0.0,
+        "_waitForAnimEndWhenProjectileInvalid": 0,
+        "_projectileDestination": 0,
+        "_extraDamageType": 0,
+        "_emitToInputPosWhenTargetIsInvalid": 0,
+        "_emitToInputRootTileWhenTargetIsInvalid": 0,
+        "_useCachedAtkOnly": 0,
+        "_transferSource": 0,
+        "_extraProjectileKeys": [],
+        "_fireCreateProjectileEvent": 0
+      }
+    },
+    {
+      "id": 344865850494610826,
+      "name": "CastSkill",
+      "path": "skchr_iris_2",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 3698839612937137546
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 6851783972288338031
+        },
+        "m_Name": "",
+        "_maxTriggerTime": -1,
+        "_allowSpRecoveryWhenAffecting": 0,
+        "_limitGlobalTriggerTime": 0,
+        "_hidden": 0,
+        "_showSpBarEvenHidden": 0,
+        "_showSpAsBulletMode": 0,
+        "_showSpRatioAsProgress": 0,
+        "_playCharWordVoice": 1,
+        "_playCharWordWithPassiveType": 0,
+        "_earlyVoice": 0,
+        "_canCastWithNoSp": 0,
+        "_canSilenced": 0,
+        "_canUseInAbnormalState": 0,
+        "_defaultModeIndex": -1,
+        "_attackBlackboardModeIndex": -1,
+        "_extraAttackBlackboardModeIndices": [],
+        "_rangeIdModeIndex": -1,
+        "_extraRangeIdModeIndices": [],
+        "_rangeIdUsageType": 7,
+        "_writeDurationToAttackBlackboard": 0,
+        "_attachSignalIds": 0,
+        "_extraAbilities": [],
+        "_useEscapeTime": 0,
+        "_earlySkillFinishAtAttackFinished": 0,
+        "_stopAffectOnInterrupt": 0,
+        "_showProgressToNext": 0,
+        "_hideSkillStackCount": 0,
+        "_hideHudSkillStackCount": 0,
+        "_playSkillBeginAnim": 0,
+        "_beginAnim": "",
+        "_beginAnimDown": "",
+        "_beginEffect": [],
+        "_useFaceVector": 0,
+        "_beginAnimValidator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_availableValidator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_trigger": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_switchToState": 1,
+        "_uninterruptibleOnAbilityPredelay": 0,
+        "_canSwitchDuringBorn": 1,
+        "_canCastDuringBorn": 1,
+        "_checkHasTargetBeforeDoCast": 0,
+        "_useTriggerInManualMode": 0,
+        "_allowNoTarget": 1,
+        "_shouldCastLikeAttack": 0,
+        "_isRemoteControlled": 0,
+        "_hideRangeToShow": 0,
+        "_forceToShowRange": 0,
+        "_forceUseBaseShowRange": 0,
+        "_rangeToShow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_recoverSpIfNoTarget": 0,
+        "_resetAbilityCooldownWhenCastEnd": 0,
+        "_onlyAvailableWhenTokenValid": 0,
+        "_hasUniStackColor": 0,
+        "_skipSpCheckInSkillState": 0
+      }
+    },
+    {
+      "id": 532903923363399111,
+      "name": "AdvancedSelector",
+      "path": "skchr_kafka_1/Selector",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 6402471694868989383
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 7080728813803358465
+        },
+        "m_Name": "",
+        "_targetSide": 2,
+        "_targetMotion": 1,
+        "_targetCategory": 1,
+        "_postFilter": 0,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 20,
+        "_abnormalCombo": 2,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 0,
+        "_maxTargetKey": "max_target",
+        "_maxNum": 1,
+        "_excludeOwner": 0,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0
+      }
+    },
+    {
+      "id": 1925038834642372039,
+      "name": "ThreePartChannelingAnimation",
+      "path": "skchr_kafka_1/Disarm",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -1417658763668306489
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 680305599797508032
+        },
+        "m_Name": "",
+        "_default": {
+          "beginAnim": "Born",
+          "loopAnim": "Skill_Loop",
+          "endAnim": "Skill_End"
+        },
+        "_overrideDownAnimation": 0,
+        "_down": {
+          "beginAnim": "",
+          "loopAnim": "",
+          "endAnim": ""
+        },
+        "_overrideUpAnimation": 0,
+        "_up": {
+          "beginAnim": "",
+          "loopAnim": "",
+          "endAnim": ""
+        },
+        "_faceToFront": 0,
+        "_faceToDefault": 0,
+        "_waitForAttachFinishEvent": 0,
+        "_earlyFinishEndIdleAnimation": 0,
+        "_fireAttackFinishEvent": 0,
+        "_delayToFireAttackSkillEvent": 0,
+        "_delaySecond": 0.20000000298023224,
+        "_fireAnimEndEvent": 0,
+        "_dontPlayBeginAnimFromInterrupted": 0,
+        "_onlyPlayBeginAnimWhenFirstAttack": 0,
+        "_delayToAnimateEndAnimation": 1,
+        "_delayToAnimateEndAnimationTime": 0.6499999761581421,
+        "_playIdleAnimInTheEnd": 0
+      }
+    },
+    {
+      "id": 2841671250638531978,
+      "name": "AdvancedSelector",
+      "path": "skchr_iris_2/Selector",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -3659925242604360310
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 7080728813803358465
+        },
+        "m_Name": "",
+        "_targetSide": 2,
+        "_targetMotion": 3,
+        "_targetCategory": 1,
+        "_postFilter": 31,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 20,
+        "_abnormalCombo": 2,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 1,
+        "_maxTargetKey": "max_target",
+        "_maxNum": 2,
+        "_excludeOwner": 0,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0
+      }
+    },
+    {
+      "id": 3790170055994164679,
+      "name": "ConstBoxRange",
+      "path": "skchr_kafka_1/FinalAttack/Selector",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -7208416382806211129
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": -4310568981281620583
+        },
+        "m_Name": "",
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0,
+        "_rangeId": "x-5"
+      }
+    },
+    {
+      "id": 5168085173266269639,
+      "name": "AdvancedSelector",
+      "path": "skchr_kafka_1/FinalAttack/Selector",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -7208416382806211129
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 7080728813803358465
+        },
+        "m_Name": "",
+        "_targetSide": 2,
+        "_targetMotion": 1,
+        "_targetCategory": 1,
+        "_postFilter": 0,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 20,
+        "_abnormalCombo": 1,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 0,
+        "_maxTargetKey": "max_target",
+        "_maxNum": 1,
+        "_excludeOwner": 0,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0
+      }
+    },
+    {
+      "id": 5889527310525842887,
+      "name": "AnimatedActionToTargetAbility",
+      "path": "skchr_kafka_1/ApplySleeping",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -873889165345110585
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 2165892974539515790
+        },
+        "m_Name": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": -632599811205511737
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 0,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 1,
+        "_selectTargetTiming": 0,
+        "_timeMode": 1,
+        "_alwaysIncludeTarget": 1,
+        "_allowNoTarget": 1,
+        "_animKey": "",
+        "_endAnimKey": "",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 0,
+        "_faceToDefault": 0,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [
+                0
+              ],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "kafka_s_1[sleep]",
+            "loadFromDB": 0,
+            "isDurableBuff": 0,
+            "isDamageMissable": 0,
+            "isSilenceable": 0,
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0,
+            "statusResistable": 2,
+            "templateKey": "empty",
+            "disableOverride": 0,
+            "overrideKey": "",
+            "overrideType": 0,
+            "maxStackCnt": 1,
+            "refreshRemainingTimeWhenStackMax": 0,
+            "clearAllStackCntWhenTimeUp": 0,
+            "maxValidStackCnt": -1,
+            "independentCharacterSource": 0,
+            "overrideEffectKey": "kafka_skill_01_hit_buff",
+            "overrideOnEventPriority": 0,
+            "onEventPriority": 0,
+            "audioSignal": "",
+            "lifeTimeType": 1,
+            "takeSnapshotWhenExtend": 0,
+            "durationKey": "",
+            "remainingTimeKey": "",
+            "lifeTime": 0.0,
+            "triggerLifeType": 0,
+            "triggerCnt": 0,
+            "triggerInterval": -1.0,
+            "waitFirstTriggerInterval": 1,
+            "firstTriggerInterval": -1.0,
+            "priority": -1,
+            "priorityBBKeys": [],
+            "stripBlackboardParamsWithBuffKey": 0,
+            "blackboard": [],
+            "enableInitDirectionFromSource": 0
+          }
+        ],
+        "_maxAnimScale": -1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 0,
+        "_actions": {
+          "SerializedState": "[]",
+          "SerializedObjectReferences": []
+        },
+        "_attackType": 1,
+        "_useDynamicAttackType": 0
+      }
+    }
+  ]
+}

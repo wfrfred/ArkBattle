@@ -1,0 +1,44 @@
+[
+  {
+    "cab": "CAB-30754eafd4c74eea4c2ae008db22b0ca",
+    "objectId": -6478552835978072609,
+    "class": "Torappu.Battle.Abilities.RangedAttack",
+    "go": "MainAttack",
+    "projectile": "projectile_chr_wisdel_s3"
+  },
+  {
+    "cab": "CAB-30754eafd4c74eea4c2ae008db22b0ca",
+    "objectId": -4191133412231909921,
+    "class": "Torappu.Battle.Abilities.RangedAttack",
+    "go": "Attack_B",
+    "projectile": "projectile_chr_wisdel_default"
+  },
+  {
+    "cab": "CAB-30754eafd4c74eea4c2ae008db22b0ca",
+    "objectId": -3634096059350356513,
+    "class": "Torappu.Battle.Abilities.RangedAttack",
+    "go": "Attack",
+    "projectile": "projectile_chr_wisdel_s2"
+  },
+  {
+    "cab": "CAB-30754eafd4c74eea4c2ae008db22b0ca",
+    "objectId": -1978783587831353889,
+    "class": "Torappu.Battle.Abilities.RangedAttack",
+    "go": "Attack_A",
+    "projectile": "projectile_chr_wisdel_default"
+  },
+  {
+    "cab": "CAB-30754eafd4c74eea4c2ae008db22b0ca",
+    "objectId": 2275143083200507359,
+    "class": "Torappu.Battle.Abilities.MultiRangedAttackWithResetSpellCnt",
+    "go": "Attack",
+    "projectile": "projectile_chr_wisdel_s2"
+  },
+  {
+    "cab": "CAB-30754eafd4c74eea4c2ae008db22b0ca",
+    "objectId": 3082456590823550431,
+    "class": "Torappu.Battle.Abilities.RangedAttack",
+    "go": "Attack_C",
+    "projectile": "projectile_chr_wisdel_default"
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "index": 77204,
+  "name": "Reset",
+  "type": 11414,
+  "returnType": 83059,
+  "parameterStart": -1,
+  "generic": -1,
+  "token": 100740501,
+  "flags": 134,
+  "iflags": 0,
+  "slot": 65535,
+  "parameterCount": 0,
+  "address": 6453594464,
+  "fullname": "Torappu.Battle.BlockManager.Reset",
+  "parameters": []
+}

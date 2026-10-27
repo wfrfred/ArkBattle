@@ -1,0 +1,72 @@
+[
+  {
+    "spec": 280717,
+    "raw": [
+      26037,
+      7343,
+      -1
+    ],
+    "method": "Torappu.PriorityQueue`1.Remove",
+    "index": 26037
+  },
+  {
+    "spec": 284126,
+    "raw": [
+      26195,
+      570,
+      -1
+    ],
+    "method": "Torappu.UnorderedArray`1.Remove",
+    "index": 26195
+  },
+  {
+    "spec": 280718,
+    "raw": [
+      26031,
+      7343,
+      -1
+    ],
+    "method": "Torappu.PriorityQueue`1.get_Item",
+    "index": 26031
+  },
+  {
+    "spec": 280719,
+    "raw": [
+      26029,
+      7343,
+      -1
+    ],
+    "method": "Torappu.PriorityQueue`1.get_count",
+    "index": 26029
+  },
+  {
+    "spec": 270124,
+    "raw": [
+      250691,
+      7343,
+      -1
+    ],
+    "method": "System.Collections.Generic.List`1.Add",
+    "index": 250691
+  },
+  {
+    "spec": 271782,
+    "raw": [
+      250691,
+      497,
+      -1
+    ],
+    "method": "System.Collections.Generic.List`1.Add",
+    "index": 250691
+  },
+  {
+    "spec": 281972,
+    "raw": [
+      220174,
+      13966,
+      -1
+    ],
+    "method": "Torappu.SingletonMonoBehaviour`1.get_instance",
+    "index": 220174
+  }
+]

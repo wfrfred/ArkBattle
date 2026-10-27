@@ -1,0 +1,74 @@
+[
+  {
+    "index": 85240,
+    "name": "_excludeKey",
+    "type": 44790,
+    "typeName": "bool",
+    "attrs": 1,
+    "static": false,
+    "offset": 144,
+    "boxedOffset": null,
+    "unboxedOffset": null,
+    "token": 67194105
+  },
+  {
+    "index": 85241,
+    "name": "_buffs",
+    "type": 33773,
+    "typeName": "type(0x1d, data=0x188a2ad40)",
+    "attrs": 1,
+    "static": false,
+    "offset": 152,
+    "boxedOffset": null,
+    "unboxedOffset": null,
+    "token": 67194106
+  },
+  {
+    "index": 85242,
+    "name": "_filterBuffSource",
+    "type": 44790,
+    "typeName": "bool",
+    "attrs": 1,
+    "static": false,
+    "offset": 160,
+    "boxedOffset": null,
+    "unboxedOffset": null,
+    "token": 67194107
+  },
+  {
+    "index": 85243,
+    "name": "_hostAsTarget",
+    "type": 44790,
+    "typeName": "bool",
+    "attrs": 1,
+    "static": false,
+    "offset": 161,
+    "boxedOffset": null,
+    "unboxedOffset": null,
+    "token": 67194108
+  },
+  {
+    "index": 85244,
+    "name": "__Hotfix0_Validate",
+    "type": 51110,
+    "typeName": "XLua.DelegateBridge",
+    "attrs": 17,
+    "static": true,
+    "offset": 0,
+    "boxedOffset": null,
+    "unboxedOffset": null,
+    "token": 67194109
+  },
+  {
+    "index": 85245,
+    "name": "_c__Hotfix0_ctor",
+    "type": 51110,
+    "typeName": "XLua.DelegateBridge",
+    "attrs": 17,
+    "static": true,
+    "offset": 8,
+    "boxedOffset": null,
+    "unboxedOffset": null,
+    "token": 67194110
+  }
+]

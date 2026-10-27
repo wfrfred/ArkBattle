@@ -1,0 +1,22 @@
+; Torappu.PeriodicTicker.Tick metadata=25963 token=0x600656c VA=0x181e043d0 RVA=0x1e043d0 size=0x20
+0000000181e043d0: cmp      dword ptr [rcx + 0x14], 0
+0000000181e043d4: jle      0x181e043dd
+0000000181e043d6: dec      dword ptr [rcx + 0x14]
+0000000181e043d9: cmp      dword ptr [rcx + 0x14], 0
+0000000181e043dd: sete     al
+0000000181e043e0: ret      
+0000000181e043e1: int3     
+0000000181e043e2: int3     
+0000000181e043e3: int3     
+0000000181e043e4: int3     
+0000000181e043e5: int3     
+0000000181e043e6: int3     
+0000000181e043e7: int3     
+0000000181e043e8: int3     
+0000000181e043e9: int3     
+0000000181e043ea: int3     
+0000000181e043eb: int3     
+0000000181e043ec: int3     
+0000000181e043ed: int3     
+0000000181e043ee: int3     
+0000000181e043ef: int3     

@@ -1,0 +1,29 @@
+{
+  "index": 25960,
+  "name": ".ctor",
+  "type": 1447,
+  "returnType": 83059,
+  "parameterStart": 39714,
+  "generic": -1,
+  "token": 100689257,
+  "flags": 6278,
+  "iflags": 0,
+  "slot": 65535,
+  "parameterCount": 2,
+  "address": 6473925616,
+  "fullname": "Torappu.PeriodicTicker..ctor",
+  "parameters": [
+    {
+      "index": 39714,
+      "name": "period",
+      "token": 134257446,
+      "type": 59011
+    },
+    {
+      "index": 39715,
+      "name": "waitFirstPeriod",
+      "token": 134257447,
+      "type": 44814
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+[
+  {
+    "sourceFile": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+    "attributeDataOffset": 42291468,
+    "rangeIndex": 8627,
+    "fieldIndex": 22959,
+    "fieldName": "maxHp",
+    "token": "0x40059b0",
+    "startOffset": 144577,
+    "endOffset": 144596,
+    "absoluteOffset": 42436045,
+    "blobHex": "01c876000002000055c0014c8e000c0000803f",
+    "constructorIndex": 30408,
+    "constructor": {
+      "type": "Torappu.AttributeMetaAttribute",
+      "index": 30408,
+      "name": ".ctor",
+      "address": 6479195056,
+      "slot": 65535,
+      "parameters": [
+        "attribute",
+        "min"
+      ]
+    },
+    "decoded": {
+      "attributeType": 0,
+      "min": 1.0
+    }
+  },
+  {
+    "sourceFile": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+    "attributeDataOffset": 42291468,
+    "rangeIndex": 8630,
+    "fieldIndex": 22962,
+    "fieldName": "magicResistance",
+    "token": "0x40059b3",
+    "startOffset": 144634,
+    "endOffset": 144658,
+    "absoluteOffset": 42436102,
+    "blobHex": "01c976000003000055c0014c8e060c000000000c0000c842",
+    "constructorIndex": 30409,
+    "constructor": {
+      "type": "Torappu.AttributeMetaAttribute",
+      "index": 30409,
+      "name": ".ctor",
+      "address": 6479194896,
+      "slot": 65535,
+      "parameters": [
+        "attribute",
+        "min",
+        "max"
+      ]
+    },
+    "decoded": {
+      "attributeType": 3,
+      "min": 0.0,
+      "max": 100.0
+    }
+  }
+]

@@ -1,0 +1,120 @@
+Blocking 模式、资格、半径调查（2026-10-23）
+
+范围与证据强度
+本轮重新读取本机 GameAssembly.dll/global-metadata.dat，按 metadata method index 提取完整原生方法体并跟踪接口封装，不止复述旧 blocking-lifecycle 摘录。DLL 与旧证据指纹相同（218523112 bytes；旧证据 SHA256 583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5）。所有方法仍带 XLua hotfix 分支；本文描述无 hotfix 的普通 native 分支，未验证实战正在加载的 Lua 替代实现。末尾跳表被 capstone 当作指令输出不属于可执行逻辑。
+本目录每个 <index>.asm 为完整方法提取；methods.json/Character.json/Enemy.json/Tile.json/Entity.json 保存字段及签名。枚举常量是 IL2CPP v29 compressed signed zigzag，不能按4字节整数直读；*-type-correct.json 给出了正确值。
+
+一、直接证实：模式不是移动方式的别名
+1. Character.get_blockMode [75898] VA 0x180a39480
+   effective mode 优先采用 rootTile.charBlockMotionMode（非WALK时覆盖），否则使用 m_changableBlockMode (+0x51c)。
+   Character 原始 _motionMode (+0x2c8)、原始 _blockMode (+0x2cc)、动态 m_changableBlockMode (+0x51c)、Entity.m_changeableMotionMode (+0x94) 是独立字段。
+2. Enemy._CheckMotionModeBlockable [76430] VA 0x180a78230
+   if (blocker.ignoreBlockMode) return true;
+   return enemy.changeableMotionMode == blocker.blockMode;
+   此处使用 Entity.changeableMotionMode，未读取 pathMotionMode，不是按寻路WALK/FLY判断。
+3. 原生相关字段类型是 Torappu.MotionMode（metadata type38183）：WALK=0、FLY=1、E_NUM=2。这里没有独立 GROUND/AIR/NONE 的阻挡枚举。禁挡可由独立 BlockFree、容量、资格等因素造成；不能把“原生有NONE”当作已证事实。Stronghold 仍可选择自己的命名，不必复制共享枚举。
+4. Enemy.get_blockMode [76549] VA 0x180a7b7f0，普通分支就是 Entity.changeableMotionMode。Enemy 也实现 IBlocker（_specificBlockMask 控制能阻挡谁）；不要求将其硬编码为只会被阻挡的敌方对象。
+
+二、直接证实：搜索端的地块资格，不是可通行性
+BlockManager.SearchBlockee [77190] VA 0x180aa09e0：
+  remaining = max(0, entity.blockCnt - usedVolume)
+  terrainAllowed = blocker.blockMode == FLY
+      || (entity.rootTile 有效 && entity.rootTile.isMeleeBlockable)
+  if (entity.isBlockFree || entity.isStunned || remaining<=0 || !terrainAllowed) return
+  然后取敌人候选，走 _CheckBlockable 和 FilterWithVolume。
+关键地址：0x180aa0b64 get_blockMode 接口封装；0x180aa0b69 cmp 1，FLY直接越过地块检查；0x180aa0bff Tile.isMeleeBlockable；0x180aa0c0c BlockFree；0x180aa0c1e Stunned。
+
+Tile.get_isMeleeBlockable [70673] VA 0x1808c6070：
+  if (blackboard 存在 tile_blockable 的 bool) return 该bool;
+  return !tile.isHighland;
+Tile.get_isHighland [70670] VA 0x1808c5f10：ordinary branch 检查 TileData.heightType == 1。
+因此至少需要区分：行走通行规则、地块高度、显式 tile_blockable 覆盖。没有证据支持统一使用 passableMask==ALL/WALK_ONLY 表达地面阻挡资格。围墙通常由高台高度排除，显式黑板仍能覆盖；“墙不可走所以不能挡”不是这里的原生判定。
+
+承载问题的证据边界：
+- 本轮这些入口没有检查某个“承载者Unit的Hitbox/Layer/Allegiance”。搜索看的是阻挡者有效 rootTile，Tile.isMeleeBlockable 看地块数据/黑板。
+- 动态地块会改变角色阻挡模式：Tile.get_charBlockMotionMode [70632] VA 0x1808c5190，未装动态位置控制器返回WALK；有控制器时其当前 dynamicPositionDelta.z（字段+0x38）>0.1 返回FLY，否则WALK。对应控制器 getter [70791] 0x1808baeb0 同样判断。
+- 这证明某些地块动态高度可以覆盖角色的BlockMode；不能进一步宣称它就是所有“干员承载在装置上”的共同实现。尚未完整追踪装置覆盖地块高度/黑板的所有路径。当前支持关系按承载Unit.tileBinding.heightType直接拒绝，是项目政策，不是上述方法可直接推出的原生统一契约。
+
+三、直接证实：候选资格及阵营是定向允许关系
+BlockManager._CheckBlockable [77194] VA 0x180aa1430：
+  拒绝候选与source是同一Unity对象；候选必须能转换为 Enemy；source必须实现IBlocker。
+  candidate.sideType != NONE
+  (blocker.blockSideMask & candidate.sideType) == candidate.sideType
+  enemy.CheckBlockable(blocker)
+  usedVolume + enemy.blockVolume <= blocker.blockCnt
+  weight = FP(distanceSquared(candidate.mapPosition, source.mapPosition))
+  volume = enemy.blockVolume
+
+Character.get_blockSideMask [75886] VA 0x180a39680 普通返回 SideType.ENEMY (2)。
+Enemy.get_blockSideMask [76560] VA 0x180a7b910 返回 _specificBlockMask (+0x340)。
+Enemy.get_canBlockEnemies [76559] VA 0x180a7bc60 返回 _specificBlockMask>0；Character.get_canBlockEnemies [75885] 0x180a39b40 普通恒true。
+SideType enum：NONE0 ALLY1 ENEMY2 BOTH_ALLY_AND_ENEMY3 NEUTRAL4 ALL7。
+因此不能普遍用“不同阵营”“互相敌对”替代阻挡者对目标的允许掩码。普通角色只挡ENEMY；特殊敌人阻挡能力可以配置不同掩码。Stronghold 是否需要通用掩码可依覆盖内容决定，但不能把areHostile等价为原生全部资格。
+
+Enemy.CheckBlockable [76428] VA 0x180a6bb70：
+  拒绝已经保存valid m_blocker的Enemy；
+  blocker.CheckInBlockRange(enemy, tolerance=0)；
+  Enemy.CheckBlockableWithoutCheckRange(blocker)。
+Enemy.CheckBlockableWithoutCheckRange [76429] VA 0x180a6b980：
+  enemy.alive（虚slot40）；enemy.hasCombat（虚slot149）；!enemy.isBlockFree；
+  _CheckMotionModeBlockable；
+  若有 specialBlockCondition，则执行 specialBlockCondition.CheckBlockable(blocker.entity, enemy)。
+Enemy.get_hasCombat [76356] VA 0x180a7d1f0：Unit.hasCombat 且没有 AbnormalFlag.DISABLE_COMBAT（索引20，compressed enum已核实）。
+Entity.get_isBlockFree [66511] VA 0x180705590：AbnormalFlag.BLOCK_FREE(3)、FEARED(33)、ATTRACTED(41)任一存在，或实例常驻flag(+0x26)。这三个枚举已从压缩metadata默认值核实；本轮未穷尽其内容来源，不应简化成纯地面Layer。
+特殊条件方法 [76914] 0x180a9af70 对Buff及若干组合条件另作资格判断，可由Content级Rule承接，不必因此核心硬编码单位类型。
+
+四、直接证实：普通角色阻挡检测半径是0.7071 / 0.8944，和偏移0.5不同
+Character.get_blockRadiusSquare [75890] VA 0x180a39570：
+  WALK默认平方半径：DLL常量0x186e41c00 = 0.4999903738498688，即float(0.7071)^2；
+  FLY默认平方半径：DLL常量0x186e41c04 = 0.7999513745307922，即float(0.8944)^2。
+Character.get__blockRadius [75892] VA 0x180a38a40：
+  WALK常量0x186e41b90 = 0.707099974155426；
+  FLY常量0x186e41c08 = 0.8944000005722046。
+注意这是接敌距离半径，不是 BlockBalancer 的 minBlockDistToTarget=0.5，两个量不能混用。
+
+BlockRadiusManager.HookBlockRadius [77168] VA 0x180aa1b00：
+  仅 blocker.blockMode==FLY 时读取 attributes[37] (BLOCK_RADIUS_SCALE)，
+  与 blocker.defaultBlockRadiusScale 比较；相等时走默认常量，发生变化才使用Hook分支。
+BlockRadiusManager.GetBlockRadius [77169] VA 0x180aa1a50：
+  FLY => 0.8944 * float(attributes[37])；
+  非FLY => 0.7071。
+Character.get_blockRadiusSquare Hook分支取得两次GetBlockRadius相乘。角色默认scale getter [75927] 0x180a39f70 另存完整asm。
+因此 BLOCK_RADIUS_SCALE 只修改FLY阻挡半径，WALK不受该属性影响（动态查询，不是初始化时固定）。
+
+Character.CheckInBlockRange [76015] VA 0x180a28250：
+  distanceSquared(enemy.mapPosition,self.mapPosition) <= self.blockRadiusSquare - tolerance。
+  相等允许，按双方中心点；这里未使用Hitbox。
+Enemy.CheckInBlockRange [76554] VA 0x180a6be30 普通分支同样按自身blockMode选择默认平方半径并做中心距判断。
+
+特殊装置：
+Trap.get_blockRadiusSquare [77516] VA 0x180aa7fb0 直接返回实例float字段+0x57c（配置型override，不是普通角色公式）。
+GiantTrap.get_blockRadiusSquare [77103] VA 0x180aa82f0 返回平方半径常量0.4999903738498688（和普通WALK相同）；其CheckInBlockRange [77113] VA 0x180aa69c0 遍历自身位置列表(+0x630)的多个位置，任一位置到目标中心距离落入平方半径则允许。不能把所有巨型单位统一简化为“中心单圆”而声称等价；具体内容未统计。
+
+五、直接证实：切换BlockMode时同步解除，再通知
+Character.ChangeBlockMode [75968] VA 0x180a27d30：写动态blockMode(+0x51c)，立即调用OnBlockModeChanged。
+Character.ResetBlockMode [75969] VA 0x180a309b0：恢复原始_blockMode(+0x2cc)，同样立即调用。
+Character.OnBlockModeChanged [75970] VA 0x180a2d0e0：
+  if (m_oldBlockMode == get_blockMode()) return;
+  blockManager.ClearAllBlockees(this); // 0x180a2d167
+  m_oldBlockMode = get_blockMode();    // 清理回调后重新查询
+  buffContainer.OnOwnerBlockModeChanged(); // 0x180a2d195
+  这里没有立即SearchBlockee；后续搜索入口另行决定新接敌。
+Character.OnTick [76022] 的0x180a2ee4d也调用OnBlockModeChanged，能检测地块动态高度等导致的有效mode变化。
+Action.Nodes.ChangeCharBlockMode.Execute [99959] VA 0x181162980 根据节点输入调用ChangeBlockMode或ResetBlockMode。
+
+Character.RevalidateBlockees [76018] VA 0x180a31150：
+  仅FLY模式才复制现有blockedEnemies列表并逐个调用Enemy.CheckBlockable，拒绝时RemoveBlockee。
+  此方法由Character.OnAttributeDirty [76035] 中0x180a2c8f5调用（与BLOCK_RADIUS_SCALE变化相关），native体存在距离重新验证入口。
+  但CheckBlockable又拒绝已有valid m_blocker，形成“纯native路径可把现有项全移除”的疑点。未确认 live XLua 是否替换该行为，不能用这一段宣称最终实战一律怎样保留AIR旧关系。
+
+六、与当前Stronghold的实质差异（只观察，不修改）
+- facts.ts ground来自Layer；isGroundBlocker使用地块WALK可通行。原生用独立BlockMode/目标changeableMotionMode、Tile.isMeleeBlockable，不从pathMotionMode推导。
+- relations.ts canBlockFrom 一律按承载Unit highland拒绝。原生FLY阻挡绕过地块近战阻挡限制；承载全局政策尚未完成证据链。
+- relations.ts canBlockTarget 使用areHostile + ground。原生是定向blockSideMask + mode兼容 + alive/hasCombat/BlockFree/特殊条件。
+- 当前半径为静态geometry.radius、未表达FLY半径属性。原生角色半径分模式，BLOCK_RADIUS_SCALE只影响FLY。
+- 当前更改普通状态会重算关系；原生模式切换是明确同步ClearAllBlockees并通知，后续是否立即重接敌由独立搜索入口决定。
+- 巨型装置存在多个阻挡距离原点，当前单个Unit中心半径无法完全覆盖该类内容；无需据此立即引入通用复杂几何。
+- 旧关系保持、容量减少、全局搜索竞争另由团队同轮研究，不在本报告重复裁定。
+
+尚未确认清单
+1. 活跃Lua替换后的AIR重验实战政策；2. 所有装置承载如何改变有效Tile数据/黑板；3. 所有特殊装置半径/多点几何覆盖范围；4. 本轮未追出BLOCK_FREE/FEARED/ATTRACTED完整内容来源；5. 模式/阵营切换以外每种状态变化的实际关系通知时点由另一条生命周期调查补齐。

@@ -1,0 +1,5540 @@
+{
+  "Torappu.Battle.Projectile.": [
+    {
+      "index": 71285,
+      "name": "get_isAlive",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734582,
+      "flags": 2534,
+      "iflags": 0,
+      "slot": 37,
+      "parameterCount": 0,
+      "address": 6451745120,
+      "fullname": "Torappu.Battle.Projectile.get_isAlive",
+      "parameters": []
+    },
+    {
+      "index": 71286,
+      "name": "get_mainEffect",
+      "type": 10773,
+      "returnType": 51951,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734583,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451745600,
+      "fullname": "Torappu.Battle.Projectile.get_mainEffect",
+      "parameters": []
+    },
+    {
+      "index": 71287,
+      "name": "get_effectReplacePairs",
+      "type": 10773,
+      "returnType": 33180,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734584,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451744736,
+      "fullname": "Torappu.Battle.Projectile.get_effectReplacePairs",
+      "parameters": []
+    },
+    {
+      "index": 71288,
+      "name": "get_currentTime",
+      "type": 10773,
+      "returnType": 53178,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734585,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451744544,
+      "fullname": "Torappu.Battle.Projectile.get_currentTime",
+      "parameters": []
+    },
+    {
+      "index": 71289,
+      "name": "set_currentTime",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70639,
+      "generic": -1,
+      "token": 100734586,
+      "flags": 2177,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451747760,
+      "fullname": "Torappu.Battle.Projectile.set_currentTime",
+      "parameters": [
+        {
+          "index": 70639,
+          "name": "value",
+          "token": 134288373,
+          "type": 53178
+        }
+      ]
+    },
+    {
+      "index": 71290,
+      "name": "get_lifeTime",
+      "type": 10773,
+      "returnType": 53178,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734587,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451745504,
+      "fullname": "Torappu.Battle.Projectile.get_lifeTime",
+      "parameters": []
+    },
+    {
+      "index": 71291,
+      "name": "get_remainingTime",
+      "type": 10773,
+      "returnType": 53178,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734588,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451746320,
+      "fullname": "Torappu.Battle.Projectile.get_remainingTime",
+      "parameters": []
+    },
+    {
+      "index": 71292,
+      "name": "get_bodyTransform",
+      "type": 10773,
+      "returnType": 79524,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734589,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451744304,
+      "fullname": "Torappu.Battle.Projectile.get_bodyTransform",
+      "parameters": []
+    },
+    {
+      "index": 71293,
+      "name": "get_source",
+      "type": 10773,
+      "returnType": 52648,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734590,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451746736,
+      "fullname": "Torappu.Battle.Projectile.get_source",
+      "parameters": []
+    },
+    {
+      "index": 71294,
+      "name": "get_sourceMapPos",
+      "type": 10773,
+      "returnType": 82722,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734591,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451746624,
+      "fullname": "Torappu.Battle.Projectile.get_sourceMapPos",
+      "parameters": []
+    },
+    {
+      "index": 71295,
+      "name": "get_startMapPos",
+      "type": 10773,
+      "returnType": 82722,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734592,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451746848,
+      "fullname": "Torappu.Battle.Projectile.get_startMapPos",
+      "parameters": []
+    },
+    {
+      "index": 71296,
+      "name": "get_traceTarget",
+      "type": 10773,
+      "returnType": 52648,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734593,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451747552,
+      "fullname": "Torappu.Battle.Projectile.get_traceTarget",
+      "parameters": []
+    },
+    {
+      "index": 71297,
+      "name": "get_traceTargetMapPos",
+      "type": 10773,
+      "returnType": 26621,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734594,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451747424,
+      "fullname": "Torappu.Battle.Projectile.get_traceTargetMapPos",
+      "parameters": []
+    },
+    {
+      "index": 71298,
+      "name": "get_ability",
+      "type": 10773,
+      "returnType": 35130,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734595,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451743632,
+      "fullname": "Torappu.Battle.Projectile.get_ability",
+      "parameters": []
+    },
+    {
+      "index": 71299,
+      "name": "get_type",
+      "type": 10773,
+      "returnType": 103024,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734596,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451747664,
+      "fullname": "Torappu.Battle.Projectile.get_type",
+      "parameters": []
+    },
+    {
+      "index": 71300,
+      "name": "get_projectileType",
+      "type": 10773,
+      "returnType": 103021,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734597,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451746224,
+      "fullname": "Torappu.Battle.Projectile.get_projectileType",
+      "parameters": []
+    },
+    {
+      "index": 71301,
+      "name": "get_projectileDirection",
+      "type": 10773,
+      "returnType": 82758,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734598,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451745904,
+      "fullname": "Torappu.Battle.Projectile.get_projectileDirection",
+      "parameters": []
+    },
+    {
+      "index": 71302,
+      "name": "get_timeRatio",
+      "type": 10773,
+      "returnType": 75036,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734599,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451747056,
+      "fullname": "Torappu.Battle.Projectile.get_timeRatio",
+      "parameters": []
+    },
+    {
+      "index": 71303,
+      "name": "get_movementAdjustable",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734600,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451745712,
+      "fullname": "Torappu.Battle.Projectile.get_movementAdjustable",
+      "parameters": []
+    },
+    {
+      "index": 71304,
+      "name": "set_movementAdjustable",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70640,
+      "generic": -1,
+      "token": 100734601,
+      "flags": 2177,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451748224,
+      "fullname": "Torappu.Battle.Projectile.set_movementAdjustable",
+      "parameters": [
+        {
+          "index": 70640,
+          "name": "value",
+          "token": 134288374,
+          "type": 44789
+        }
+      ]
+    },
+    {
+      "index": 71305,
+      "name": "get_eliminatable",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734602,
+      "flags": 2502,
+      "iflags": 0,
+      "slot": 39,
+      "parameterCount": 0,
+      "address": 6451744832,
+      "fullname": "Torappu.Battle.Projectile.get_eliminatable",
+      "parameters": []
+    },
+    {
+      "index": 71306,
+      "name": "set_eliminatable",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70641,
+      "generic": -1,
+      "token": 100734603,
+      "flags": 2177,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451747984,
+      "fullname": "Torappu.Battle.Projectile.set_eliminatable",
+      "parameters": [
+        {
+          "index": 70641,
+          "name": "value",
+          "token": 134288375,
+          "type": 44789
+        }
+      ]
+    },
+    {
+      "index": 71307,
+      "name": "get_isEliminated",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734604,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451745216,
+      "fullname": "Torappu.Battle.Projectile.get_isEliminated",
+      "parameters": []
+    },
+    {
+      "index": 71308,
+      "name": "get_hasHitTraceTarget",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734605,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451744928,
+      "fullname": "Torappu.Battle.Projectile.get_hasHitTraceTarget",
+      "parameters": []
+    },
+    {
+      "index": 71309,
+      "name": "get_targetTransform",
+      "type": 10773,
+      "returnType": 79524,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734606,
+      "flags": 2180,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451746960,
+      "fullname": "Torappu.Battle.Projectile.get_targetTransform",
+      "parameters": []
+    },
+    {
+      "index": 71310,
+      "name": "set_targetTransform",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70642,
+      "generic": -1,
+      "token": 100734607,
+      "flags": 2177,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451748464,
+      "fullname": "Torappu.Battle.Projectile.set_targetTransform",
+      "parameters": [
+        {
+          "index": 70642,
+          "name": "value",
+          "token": 134288376,
+          "type": 79524
+        }
+      ]
+    },
+    {
+      "index": 71311,
+      "name": "get_context",
+      "type": 10773,
+      "returnType": 49161,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734608,
+      "flags": 2180,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451744400,
+      "fullname": "Torappu.Battle.Projectile.get_context",
+      "parameters": []
+    },
+    {
+      "index": 71312,
+      "name": "get_blackboard",
+      "type": 10773,
+      "returnType": 44675,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734609,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451744192,
+      "fullname": "Torappu.Battle.Projectile.get_blackboard",
+      "parameters": []
+    },
+    {
+      "index": 71313,
+      "name": "get_stopAfterMaxHit",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734610,
+      "flags": 3524,
+      "iflags": 0,
+      "slot": 40,
+      "parameterCount": 0,
+      "address": 0,
+      "fullname": "Torappu.Battle.Projectile.get_stopAfterMaxHit",
+      "parameters": []
+    },
+    {
+      "index": 71314,
+      "name": "get_stopAfterFirstHit",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734611,
+      "flags": 3524,
+      "iflags": 0,
+      "slot": 41,
+      "parameterCount": 0,
+      "address": 0,
+      "fullname": "Torappu.Battle.Projectile.get_stopAfterFirstHit",
+      "parameters": []
+    },
+    {
+      "index": 71315,
+      "name": "get_stopWhenSourceInvalid",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734612,
+      "flags": 3524,
+      "iflags": 0,
+      "slot": 42,
+      "parameterCount": 0,
+      "address": 0,
+      "fullname": "Torappu.Battle.Projectile.get_stopWhenSourceInvalid",
+      "parameters": []
+    },
+    {
+      "index": 71316,
+      "name": "get_alwaysHitTraceTargetInTheEnd",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734613,
+      "flags": 3524,
+      "iflags": 0,
+      "slot": 43,
+      "parameterCount": 0,
+      "address": 0,
+      "fullname": "Torappu.Battle.Projectile.get_alwaysHitTraceTargetInTheEnd",
+      "parameters": []
+    },
+    {
+      "index": 71317,
+      "name": "get_alwaysHitTraceTargetWhenReached",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734614,
+      "flags": 3524,
+      "iflags": 0,
+      "slot": 44,
+      "parameterCount": 0,
+      "address": 0,
+      "fullname": "Torappu.Battle.Projectile.get_alwaysHitTraceTargetWhenReached",
+      "parameters": []
+    },
+    {
+      "index": 71318,
+      "name": "get_alwaysReachInTheEnd",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734615,
+      "flags": 3524,
+      "iflags": 0,
+      "slot": 45,
+      "parameterCount": 0,
+      "address": 0,
+      "fullname": "Torappu.Battle.Projectile.get_alwaysReachInTheEnd",
+      "parameters": []
+    },
+    {
+      "index": 71319,
+      "name": "get_alwaysHitTraceTarget",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734616,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451743744,
+      "fullname": "Torappu.Battle.Projectile.get_alwaysHitTraceTarget",
+      "parameters": []
+    },
+    {
+      "index": 71320,
+      "name": "get_key",
+      "type": 10773,
+      "returnType": 77200,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734617,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451745408,
+      "fullname": "Torappu.Battle.Projectile.get_key",
+      "parameters": []
+    },
+    {
+      "index": 71321,
+      "name": "set_key",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70643,
+      "generic": -1,
+      "token": 100734618,
+      "flags": 2177,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451748096,
+      "fullname": "Torappu.Battle.Projectile.set_key",
+      "parameters": [
+        {
+          "index": 70643,
+          "name": "value",
+          "token": 134288377,
+          "type": 77200
+        }
+      ]
+    },
+    {
+      "index": 71322,
+      "name": "get_originalKey",
+      "type": 10773,
+      "returnType": 77200,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734619,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451745808,
+      "fullname": "Torappu.Battle.Projectile.get_originalKey",
+      "parameters": []
+    },
+    {
+      "index": 71323,
+      "name": "set_originalKey",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70644,
+      "generic": -1,
+      "token": 100734620,
+      "flags": 2177,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451748336,
+      "fullname": "Torappu.Battle.Projectile.set_originalKey",
+      "parameters": [
+        {
+          "index": 70644,
+          "name": "value",
+          "token": 134288378,
+          "type": 77200
+        }
+      ]
+    },
+    {
+      "index": 71324,
+      "name": "get_audioSignalKey",
+      "type": 10773,
+      "returnType": 77200,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734621,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451743920,
+      "fullname": "Torappu.Battle.Projectile.get_audioSignalKey",
+      "parameters": []
+    },
+    {
+      "index": 71325,
+      "name": "get_isStopped",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734622,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451745312,
+      "fullname": "Torappu.Battle.Projectile.get_isStopped",
+      "parameters": []
+    },
+    {
+      "index": 71326,
+      "name": "get_hasReached",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734623,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451745024,
+      "fullname": "Torappu.Battle.Projectile.get_hasReached",
+      "parameters": []
+    },
+    {
+      "index": 71327,
+      "name": "get_damageMissFlag",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734624,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451744640,
+      "fullname": "Torappu.Battle.Projectile.get_damageMissFlag",
+      "parameters": []
+    },
+    {
+      "index": 71328,
+      "name": "set_damageMissFlag",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70645,
+      "generic": -1,
+      "token": 100734625,
+      "flags": 2177,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451747872,
+      "fullname": "Torappu.Battle.Projectile.set_damageMissFlag",
+      "parameters": [
+        {
+          "index": 70645,
+          "name": "value",
+          "token": 134288379,
+          "type": 44789
+        }
+      ]
+    },
+    {
+      "index": 71329,
+      "name": "get_behaviours",
+      "type": 10773,
+      "returnType": 34418,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734626,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451744096,
+      "fullname": "Torappu.Battle.Projectile.get_behaviours",
+      "parameters": []
+    },
+    {
+      "index": 71330,
+      "name": "OnAllocate",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734627,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 25,
+      "parameterCount": 0,
+      "address": 6451727120,
+      "fullname": "Torappu.Battle.Projectile.OnAllocate",
+      "parameters": []
+    },
+    {
+      "index": 71331,
+      "name": "Init",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70646,
+      "generic": -1,
+      "token": 100734628,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 7,
+      "address": 6451721568,
+      "fullname": "Torappu.Battle.Projectile.Init",
+      "parameters": [
+        {
+          "index": 70646,
+          "name": "key",
+          "token": 134288380,
+          "type": 77200
+        },
+        {
+          "index": 70647,
+          "name": "start",
+          "token": 134288381,
+          "type": 57560
+        },
+        {
+          "index": 70648,
+          "name": "target",
+          "token": 134288382,
+          "type": 57560
+        },
+        {
+          "index": 70649,
+          "name": "ability",
+          "token": 134288383,
+          "type": 35130
+        },
+        {
+          "index": 70650,
+          "name": "type",
+          "token": 134288384,
+          "type": 103024
+        },
+        {
+          "index": 70651,
+          "name": "originalKey",
+          "token": 134288385,
+          "type": 77200
+        },
+        {
+          "index": 70652,
+          "name": "effectReplacePairs",
+          "token": 134288386,
+          "type": 33180
+        }
+      ]
+    },
+    {
+      "index": 71332,
+      "name": "Init",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70653,
+      "generic": -1,
+      "token": 100734629,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 8,
+      "address": 6451723744,
+      "fullname": "Torappu.Battle.Projectile.Init",
+      "parameters": [
+        {
+          "index": 70653,
+          "name": "key",
+          "token": 134288387,
+          "type": 77200
+        },
+        {
+          "index": 70654,
+          "name": "source",
+          "token": 134288388,
+          "type": 52648
+        },
+        {
+          "index": 70655,
+          "name": "start",
+          "token": 134288389,
+          "type": 57560
+        },
+        {
+          "index": 70656,
+          "name": "target",
+          "token": 134288390,
+          "type": 57560
+        },
+        {
+          "index": 70657,
+          "name": "ability",
+          "token": 134288391,
+          "type": 35130
+        },
+        {
+          "index": 70658,
+          "name": "type",
+          "token": 134288392,
+          "type": 103024
+        },
+        {
+          "index": 70659,
+          "name": "originalKey",
+          "token": 134288393,
+          "type": 77200
+        },
+        {
+          "index": 70660,
+          "name": "effectReplacePairs",
+          "token": 134288394,
+          "type": 33180
+        }
+      ]
+    },
+    {
+      "index": 71333,
+      "name": "Init",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70661,
+      "generic": -1,
+      "token": 100734630,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 6,
+      "address": 6451725216,
+      "fullname": "Torappu.Battle.Projectile.Init",
+      "parameters": [
+        {
+          "index": 70661,
+          "name": "key",
+          "token": 134288395,
+          "type": 77200
+        },
+        {
+          "index": 70662,
+          "name": "sourceProjectile",
+          "token": 134288396,
+          "type": 65192
+        },
+        {
+          "index": 70663,
+          "name": "target",
+          "token": 134288397,
+          "type": 57560
+        },
+        {
+          "index": 70664,
+          "name": "type",
+          "token": 134288398,
+          "type": 103024
+        },
+        {
+          "index": 70665,
+          "name": "originalKey",
+          "token": 134288399,
+          "type": 77200
+        },
+        {
+          "index": 70666,
+          "name": "effectReplacePairs",
+          "token": 134288400,
+          "type": 33180
+        }
+      ]
+    },
+    {
+      "index": 71334,
+      "name": "_InitInline",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70667,
+      "generic": -1,
+      "token": 100734631,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451740064,
+      "fullname": "Torappu.Battle.Projectile._InitInline",
+      "parameters": [
+        {
+          "index": 70667,
+          "name": "target",
+          "token": 134288401,
+          "type": 57560
+        },
+        {
+          "index": 70668,
+          "name": "start",
+          "token": 134288402,
+          "type": 57560
+        }
+      ]
+    },
+    {
+      "index": 71335,
+      "name": "RegisterMovement",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70669,
+      "generic": -1,
+      "token": 100734632,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451734272,
+      "fullname": "Torappu.Battle.Projectile.RegisterMovement",
+      "parameters": [
+        {
+          "index": 70669,
+          "name": "movement",
+          "token": 134288403,
+          "type": 44160
+        }
+      ]
+    },
+    {
+      "index": 71336,
+      "name": "SetTraceTarget",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70670,
+      "generic": -1,
+      "token": 100734633,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451735392,
+      "fullname": "Torappu.Battle.Projectile.SetTraceTarget",
+      "parameters": [
+        {
+          "index": 70670,
+          "name": "target",
+          "token": 134288404,
+          "type": 57560
+        }
+      ]
+    },
+    {
+      "index": 71337,
+      "name": "AttachGraphicProjectile",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70671,
+      "generic": -1,
+      "token": 100734634,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451716880,
+      "fullname": "Torappu.Battle.Projectile.AttachGraphicProjectile",
+      "parameters": [
+        {
+          "index": 70671,
+          "name": "projectile",
+          "token": 134288405,
+          "type": 65192
+        }
+      ]
+    },
+    {
+      "index": 71338,
+      "name": "Interrupt",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734635,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451727024,
+      "fullname": "Torappu.Battle.Projectile.Interrupt",
+      "parameters": []
+    },
+    {
+      "index": 71339,
+      "name": "Trigger",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734636,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451736544,
+      "fullname": "Torappu.Battle.Projectile.Trigger",
+      "parameters": []
+    },
+    {
+      "index": 71340,
+      "name": "TryEliminate",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734637,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451736832,
+      "fullname": "Torappu.Battle.Projectile.TryEliminate",
+      "parameters": []
+    },
+    {
+      "index": 71341,
+      "name": "RegisterActions",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70672,
+      "generic": -1,
+      "token": 100734638,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 4,
+      "address": 6451732672,
+      "fullname": "Torappu.Battle.Projectile.RegisterActions",
+      "parameters": [
+        {
+          "index": 70672,
+          "name": "ev",
+          "token": 134288406,
+          "type": 103009
+        },
+        {
+          "index": 70673,
+          "name": "actions",
+          "token": 134288407,
+          "type": 17338
+        },
+        {
+          "index": 70674,
+          "name": "additive",
+          "token": 134288408,
+          "type": 44814
+        },
+        {
+          "index": 70675,
+          "name": "cacheAtk",
+          "token": 134288409,
+          "type": 44814
+        }
+      ]
+    },
+    {
+      "index": 71342,
+      "name": "RegisterBuffs",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70676,
+      "generic": -1,
+      "token": 100734639,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451733200,
+      "fullname": "Torappu.Battle.Projectile.RegisterBuffs",
+      "parameters": [
+        {
+          "index": 70676,
+          "name": "buffDataList",
+          "token": 134288410,
+          "type": 17353
+        },
+        {
+          "index": 70677,
+          "name": "additive",
+          "token": 134288411,
+          "type": 44814
+        }
+      ]
+    },
+    {
+      "index": 71343,
+      "name": "RegisterExtraBlackboard",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70678,
+      "generic": -1,
+      "token": 100734640,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451733712,
+      "fullname": "Torappu.Battle.Projectile.RegisterExtraBlackboard",
+      "parameters": [
+        {
+          "index": 70678,
+          "name": "extraBlackboard",
+          "token": 134288412,
+          "type": 44675
+        },
+        {
+          "index": 70679,
+          "name": "additive",
+          "token": 134288413,
+          "type": 44814
+        }
+      ]
+    },
+    {
+      "index": 71344,
+      "name": "OnTick",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70680,
+      "generic": -1,
+      "token": 100734641,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 27,
+      "parameterCount": 1,
+      "address": 6451731184,
+      "fullname": "Torappu.Battle.Projectile.OnTick",
+      "parameters": [
+        {
+          "index": 70680,
+          "name": "deltaTime",
+          "token": 134288414,
+          "type": 53178
+        }
+      ]
+    },
+    {
+      "index": 71345,
+      "name": "UpdateTargetGroundPosZ",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70681,
+      "generic": -1,
+      "token": 100734642,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451737856,
+      "fullname": "Torappu.Battle.Projectile.UpdateTargetGroundPosZ",
+      "parameters": [
+        {
+          "index": 70681,
+          "name": "target",
+          "token": 134288415,
+          "type": 57560
+        },
+        {
+          "index": 70682,
+          "name": "targetGroundPosZ",
+          "token": 134288416,
+          "type": 31601
+        }
+      ]
+    },
+    {
+      "index": 71346,
+      "name": "ExtraCheckToFinish",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734643,
+      "flags": 452,
+      "iflags": 0,
+      "slot": 46,
+      "parameterCount": 0,
+      "address": 6451711344,
+      "fullname": "Torappu.Battle.Projectile.ExtraCheckToFinish",
+      "parameters": []
+    },
+    {
+      "index": 71347,
+      "name": "DealHitTarget",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": 70683,
+      "generic": -1,
+      "token": 100734644,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451719232,
+      "fullname": "Torappu.Battle.Projectile.DealHitTarget",
+      "parameters": [
+        {
+          "index": 70683,
+          "name": "target",
+          "token": 134288417,
+          "type": 52648
+        },
+        {
+          "index": 70684,
+          "name": "force",
+          "token": 134288418,
+          "type": 44789
+        }
+      ]
+    },
+    {
+      "index": 71348,
+      "name": "DealHitTargetLeft",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70685,
+      "generic": -1,
+      "token": 100734645,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 47,
+      "parameterCount": 1,
+      "address": 6451719072,
+      "fullname": "Torappu.Battle.Projectile.DealHitTargetLeft",
+      "parameters": [
+        {
+          "index": 70685,
+          "name": "target",
+          "token": 134288419,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71349,
+      "name": "EnsureLifeTime",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70686,
+      "generic": -1,
+      "token": 100734646,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451720272,
+      "fullname": "Torappu.Battle.Projectile.EnsureLifeTime",
+      "parameters": [
+        {
+          "index": 70686,
+          "name": "duration",
+          "token": 134288420,
+          "type": 53178
+        },
+        {
+          "index": 70687,
+          "name": "clearTraceTarget",
+          "token": 134288421,
+          "type": 44789
+        }
+      ]
+    },
+    {
+      "index": 71350,
+      "name": "GatherEffects",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70688,
+      "generic": -1,
+      "token": 100734647,
+      "flags": 486,
+      "iflags": 0,
+      "slot": 35,
+      "parameterCount": 1,
+      "address": 6451720880,
+      "fullname": "Torappu.Battle.Projectile.GatherEffects",
+      "parameters": [
+        {
+          "index": 70688,
+          "name": "effects",
+          "token": 134288422,
+          "type": 23977
+        }
+      ]
+    },
+    {
+      "index": 71351,
+      "name": "GatherBuffs",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70689,
+      "generic": -1,
+      "token": 100734648,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 48,
+      "parameterCount": 1,
+      "address": 6451720560,
+      "fullname": "Torappu.Battle.Projectile.GatherBuffs",
+      "parameters": [
+        {
+          "index": 70689,
+          "name": "results",
+          "token": 134288423,
+          "type": 21600
+        }
+      ]
+    },
+    {
+      "index": 71352,
+      "name": "RegisterEventCallback",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70690,
+      "generic": -1,
+      "token": 100734649,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451733376,
+      "fullname": "Torappu.Battle.Projectile.RegisterEventCallback",
+      "parameters": [
+        {
+          "index": 70690,
+          "name": "ev",
+          "token": 134288424,
+          "type": 103009
+        },
+        {
+          "index": 70691,
+          "name": "cb",
+          "token": 134288425,
+          "type": 6100
+        }
+      ]
+    },
+    {
+      "index": 71353,
+      "name": "ApplyAtkScaleToDamageNode",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70692,
+      "generic": -1,
+      "token": 100734650,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 4,
+      "address": 6451715424,
+      "fullname": "Torappu.Battle.Projectile.ApplyAtkScaleToDamageNode",
+      "parameters": [
+        {
+          "index": 70692,
+          "name": "atkScale",
+          "token": 134288426,
+          "type": 53178
+        },
+        {
+          "index": 70693,
+          "name": "alsoApplyToElementDamage",
+          "token": 134288427,
+          "type": 44814
+        },
+        {
+          "index": 70694,
+          "name": "overwrite",
+          "token": 134288428,
+          "type": 44814
+        },
+        {
+          "index": 70695,
+          "name": "oneShot",
+          "token": 134288429,
+          "type": 44814
+        }
+      ]
+    },
+    {
+      "index": 71354,
+      "name": "PlayBehaviourAudio",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70696,
+      "generic": -1,
+      "token": 100734651,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451732304,
+      "fullname": "Torappu.Battle.Projectile.PlayBehaviourAudio",
+      "parameters": [
+        {
+          "index": 70696,
+          "name": "pos",
+          "token": 134288430,
+          "type": 82758
+        }
+      ]
+    },
+    {
+      "index": 71355,
+      "name": "OnAttackTimeChanged",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70697,
+      "generic": -1,
+      "token": 100734652,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451727232,
+      "fullname": "Torappu.Battle.Projectile.OnAttackTimeChanged",
+      "parameters": [
+        {
+          "index": 70697,
+          "name": "newValue",
+          "token": 134288431,
+          "type": 53178
+        }
+      ]
+    },
+    {
+      "index": 71356,
+      "name": "ResetAll",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734653,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451734704,
+      "fullname": "Torappu.Battle.Projectile.ResetAll",
+      "parameters": []
+    },
+    {
+      "index": 71357,
+      "name": "GetLifeTime",
+      "type": 10773,
+      "returnType": 75036,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734654,
+      "flags": 1476,
+      "iflags": 0,
+      "slot": 49,
+      "parameterCount": 0,
+      "address": 0,
+      "fullname": "Torappu.Battle.Projectile.GetLifeTime",
+      "parameters": []
+    },
+    {
+      "index": 71358,
+      "name": "GetMaxHitNum",
+      "type": 10773,
+      "returnType": 59011,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734655,
+      "flags": 1478,
+      "iflags": 0,
+      "slot": 50,
+      "parameterCount": 0,
+      "address": 0,
+      "fullname": "Torappu.Battle.Projectile.GetMaxHitNum",
+      "parameters": []
+    },
+    {
+      "index": 71359,
+      "name": "GetKeepAlreadyHitTime",
+      "type": 10773,
+      "returnType": 53178,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734656,
+      "flags": 452,
+      "iflags": 0,
+      "slot": 51,
+      "parameterCount": 0,
+      "address": 6451721424,
+      "fullname": "Torappu.Battle.Projectile.GetKeepAlreadyHitTime",
+      "parameters": []
+    },
+    {
+      "index": 71360,
+      "name": "OnProjectileBorn",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734657,
+      "flags": 452,
+      "iflags": 0,
+      "slot": 52,
+      "parameterCount": 0,
+      "address": 6451729312,
+      "fullname": "Torappu.Battle.Projectile.OnProjectileBorn",
+      "parameters": []
+    },
+    {
+      "index": 71361,
+      "name": "OnProjectileStop",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734658,
+      "flags": 452,
+      "iflags": 0,
+      "slot": 53,
+      "parameterCount": 0,
+      "address": 6451730384,
+      "fullname": "Torappu.Battle.Projectile.OnProjectileStop",
+      "parameters": []
+    },
+    {
+      "index": 71362,
+      "name": "OnHitTarget",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70698,
+      "generic": -1,
+      "token": 100734659,
+      "flags": 452,
+      "iflags": 0,
+      "slot": 54,
+      "parameterCount": 1,
+      "address": 6451728528,
+      "fullname": "Torappu.Battle.Projectile.OnHitTarget",
+      "parameters": [
+        {
+          "index": 70698,
+          "name": "target",
+          "token": 134288432,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71363,
+      "name": "OnBehavioursHitTarget",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70699,
+      "generic": -1,
+      "token": 100734660,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451727520,
+      "fullname": "Torappu.Battle.Projectile.OnBehavioursHitTarget",
+      "parameters": [
+        {
+          "index": 70699,
+          "name": "target",
+          "token": 134288433,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71364,
+      "name": "OnHitTargetLeft",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70700,
+      "generic": -1,
+      "token": 100734661,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451727808,
+      "fullname": "Torappu.Battle.Projectile.OnHitTargetLeft",
+      "parameters": [
+        {
+          "index": 70700,
+          "name": "target",
+          "token": 134288434,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71365,
+      "name": "OnProjectileReached",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734662,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451730096,
+      "fullname": "Torappu.Battle.Projectile.OnProjectileReached",
+      "parameters": []
+    },
+    {
+      "index": 71366,
+      "name": "DealProjectileReached",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734663,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451719600,
+      "fullname": "Torappu.Battle.Projectile.DealProjectileReached",
+      "parameters": []
+    },
+    {
+      "index": 71367,
+      "name": "SetHasReached",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734664,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451735296,
+      "fullname": "Torappu.Battle.Projectile.SetHasReached",
+      "parameters": []
+    },
+    {
+      "index": 71368,
+      "name": "SetUnReached",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734665,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451736288,
+      "fullname": "Torappu.Battle.Projectile.SetUnReached",
+      "parameters": []
+    },
+    {
+      "index": 71369,
+      "name": "CheckTargetAlreadyHitAndUpdate",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": 70701,
+      "generic": -1,
+      "token": 100734666,
+      "flags": 452,
+      "iflags": 0,
+      "slot": 55,
+      "parameterCount": 1,
+      "address": 6451717296,
+      "fullname": "Torappu.Battle.Projectile.CheckTargetAlreadyHitAndUpdate",
+      "parameters": [
+        {
+          "index": 70701,
+          "name": "target",
+          "token": 134288435,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71370,
+      "name": "UpdateAlreadyHit",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70702,
+      "generic": -1,
+      "token": 100734667,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451737440,
+      "fullname": "Torappu.Battle.Projectile.UpdateAlreadyHit",
+      "parameters": [
+        {
+          "index": 70702,
+          "name": "target",
+          "token": 134288436,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71371,
+      "name": "CheckTargetAlreadyHit",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": 70703,
+      "generic": -1,
+      "token": 100734668,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451717456,
+      "fullname": "Torappu.Battle.Projectile.CheckTargetAlreadyHit",
+      "parameters": [
+        {
+          "index": 70703,
+          "name": "target",
+          "token": 134288437,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71372,
+      "name": "ClearTargetsAlreadyHitList",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734669,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451718368,
+      "fullname": "Torappu.Battle.Projectile.ClearTargetsAlreadyHitList",
+      "parameters": []
+    },
+    {
+      "index": 71373,
+      "name": "StopMe",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734670,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451736384,
+      "fullname": "Torappu.Battle.Projectile.StopMe",
+      "parameters": []
+    },
+    {
+      "index": 71374,
+      "name": "RecycleSelfImmediately",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734671,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451732576,
+      "fullname": "Torappu.Battle.Projectile.RecycleSelfImmediately",
+      "parameters": []
+    },
+    {
+      "index": 71375,
+      "name": "_DealHitTraceTarget",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734672,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451738944,
+      "fullname": "Torappu.Battle.Projectile._DealHitTraceTarget",
+      "parameters": []
+    },
+    {
+      "index": 71376,
+      "name": "_DelayToBorn",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734673,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451739136,
+      "fullname": "Torappu.Battle.Projectile._DelayToBorn",
+      "parameters": []
+    },
+    {
+      "index": 71377,
+      "name": "_CreateMainEffect",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70704,
+      "generic": -1,
+      "token": 100734674,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451738512,
+      "fullname": "Torappu.Battle.Projectile._CreateMainEffect",
+      "parameters": [
+        {
+          "index": 70704,
+          "name": "effect",
+          "token": 134288438,
+          "type": 77200
+        }
+      ]
+    },
+    {
+      "index": 71378,
+      "name": "ClearMainEffectIfNot",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734675,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451717856,
+      "fullname": "Torappu.Battle.Projectile.ClearMainEffectIfNot",
+      "parameters": []
+    },
+    {
+      "index": 71379,
+      "name": "_StopGraphicProjectileIfNot",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734676,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451742096,
+      "fullname": "Torappu.Battle.Projectile._StopGraphicProjectileIfNot",
+      "parameters": []
+    },
+    {
+      "index": 71380,
+      "name": "ReplaceMainEffect",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70705,
+      "generic": -1,
+      "token": 100734677,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451734576,
+      "fullname": "Torappu.Battle.Projectile.ReplaceMainEffect",
+      "parameters": [
+        {
+          "index": 70705,
+          "name": "effect",
+          "token": 134288439,
+          "type": 77200
+        }
+      ]
+    },
+    {
+      "index": 71381,
+      "name": "CreateExtraFollowEffect",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": 70706,
+      "generic": -1,
+      "token": 100734678,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 5,
+      "address": 6451718496,
+      "fullname": "Torappu.Battle.Projectile.CreateExtraFollowEffect",
+      "parameters": [
+        {
+          "index": 70706,
+          "name": "effectKey",
+          "token": 134288440,
+          "type": 77200
+        },
+        {
+          "index": 70707,
+          "name": "setAsParent",
+          "token": 134288441,
+          "type": 44814
+        },
+        {
+          "index": 70708,
+          "name": "clearOnProjectileStop",
+          "token": 134288442,
+          "type": 44814
+        },
+        {
+          "index": 70709,
+          "name": "clearOnProjectileHit",
+          "token": 134288443,
+          "type": 44814
+        },
+        {
+          "index": 70710,
+          "name": "replaceSameKey",
+          "token": 134288444,
+          "type": 44814
+        }
+      ]
+    },
+    {
+      "index": 71382,
+      "name": "_GetExtraFollowEffectManager",
+      "type": 10773,
+      "returnType": 103015,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734679,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451739296,
+      "fullname": "Torappu.Battle.Projectile._GetExtraFollowEffectManager",
+      "parameters": []
+    },
+    {
+      "index": 71383,
+      "name": "_TryClearMainEffectWhenReachedIfNot",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734680,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451742304,
+      "fullname": "Torappu.Battle.Projectile._TryClearMainEffectWhenReachedIfNot",
+      "parameters": []
+    },
+    {
+      "index": 71384,
+      "name": "Awake",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734681,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451717200,
+      "fullname": "Torappu.Battle.Projectile.Awake",
+      "parameters": []
+    },
+    {
+      "index": 71385,
+      "name": "ReplaceActionNodes",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70711,
+      "generic": -1,
+      "token": 100734682,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451734400,
+      "fullname": "Torappu.Battle.Projectile.ReplaceActionNodes",
+      "parameters": [
+        {
+          "index": 70711,
+          "name": "ev",
+          "token": 134288445,
+          "type": 103009
+        },
+        {
+          "index": 70712,
+          "name": "newActionNodes",
+          "token": 134288446,
+          "type": 21224
+        }
+      ]
+    },
+    {
+      "index": 71386,
+      "name": "GetActionNodes",
+      "type": 10773,
+      "returnType": 17338,
+      "parameterStart": 70713,
+      "generic": -1,
+      "token": 100734683,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451721264,
+      "fullname": "Torappu.Battle.Projectile.GetActionNodes",
+      "parameters": [
+        {
+          "index": 70713,
+          "name": "ev",
+          "token": 134288447,
+          "type": 103009
+        }
+      ]
+    },
+    {
+      "index": 71387,
+      "name": "RunActions",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70714,
+      "generic": -1,
+      "token": 100734684,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451735136,
+      "fullname": "Torappu.Battle.Projectile.RunActions",
+      "parameters": [
+        {
+          "index": 70714,
+          "name": "ev",
+          "token": 134288448,
+          "type": 103009
+        },
+        {
+          "index": 70715,
+          "name": "tile",
+          "token": 134288449,
+          "type": 78698
+        }
+      ]
+    },
+    {
+      "index": 71388,
+      "name": "_GetProjectileTimeScale",
+      "type": 10773,
+      "returnType": 53178,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734685,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451739568,
+      "fullname": "Torappu.Battle.Projectile._GetProjectileTimeScale",
+      "parameters": []
+    },
+    {
+      "index": 71389,
+      "name": "RegisterMoveScale",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": 70716,
+      "generic": -1,
+      "token": 100734686,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451734032,
+      "fullname": "Torappu.Battle.Projectile.RegisterMoveScale",
+      "parameters": [
+        {
+          "index": 70716,
+          "name": "moveScale",
+          "token": 134288450,
+          "type": 53178
+        }
+      ]
+    },
+    {
+      "index": 71390,
+      "name": "UnregisterMoveScale",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70717,
+      "generic": -1,
+      "token": 100734687,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451737040,
+      "fullname": "Torappu.Battle.Projectile.UnregisterMoveScale",
+      "parameters": [
+        {
+          "index": 70717,
+          "name": "moveScale",
+          "token": 134288451,
+          "type": 53178
+        }
+      ]
+    },
+    {
+      "index": 71391,
+      "name": "_UpdateEffectTimeScale",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734688,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451742416,
+      "fullname": "Torappu.Battle.Projectile._UpdateEffectTimeScale",
+      "parameters": []
+    },
+    {
+      "index": 71392,
+      "name": "_InitOuterAdjustableSettings",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734689,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451741488,
+      "fullname": "Torappu.Battle.Projectile._InitOuterAdjustableSettings",
+      "parameters": []
+    },
+    {
+      "index": 71393,
+      "name": "_CalculateEliminatable",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734690,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451738240,
+      "fullname": "Torappu.Battle.Projectile._CalculateEliminatable",
+      "parameters": []
+    },
+    {
+      "index": 71394,
+      "name": "_CalculateMovementAdjustable",
+      "type": 10773,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734691,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451738368,
+      "fullname": "Torappu.Battle.Projectile._CalculateMovementAdjustable",
+      "parameters": []
+    },
+    {
+      "index": 71395,
+      "name": "_InitBahavioursIfNot",
+      "type": 10773,
+      "returnType": 34418,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734692,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451739856,
+      "fullname": "Torappu.Battle.Projectile._InitBahavioursIfNot",
+      "parameters": []
+    },
+    {
+      "index": 71396,
+      "name": ".ctor",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734693,
+      "flags": 6276,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451742848,
+      "fullname": "Torappu.Battle.Projectile..ctor",
+      "parameters": []
+    },
+    {
+      "index": 71397,
+      "name": "<>xLuaBaseProxy_OnAllocate",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734694,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451737024,
+      "fullname": "Torappu.Battle.Projectile.<>xLuaBaseProxy_OnAllocate",
+      "parameters": []
+    },
+    {
+      "index": 71398,
+      "name": "<>xLuaBaseProxy_OnTick",
+      "type": 10773,
+      "returnType": 83059,
+      "parameterStart": 70718,
+      "generic": -1,
+      "token": 100734695,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6447894416,
+      "fullname": "Torappu.Battle.Projectile.<>xLuaBaseProxy_OnTick",
+      "parameters": [
+        {
+          "index": 70718,
+          "name": "P0",
+          "token": 134288452,
+          "type": 53178
+        }
+      ]
+    },
+    {
+      "index": 71399,
+      "name": "StopProjectile",
+      "type": 10766,
+      "returnType": 83059,
+      "parameterStart": 70719,
+      "generic": -1,
+      "token": 100734696,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451694752,
+      "fullname": "Torappu.Battle.Projectile.FriendComponent.StopProjectile",
+      "parameters": [
+        {
+          "index": 70719,
+          "name": "projectileCachedByFriendComp",
+          "token": 134288453,
+          "type": 65192
+        }
+      ]
+    },
+    {
+      "index": 71400,
+      "name": ".ctor",
+      "type": 10766,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734697,
+      "flags": 6276,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451694880,
+      "fullname": "Torappu.Battle.Projectile.FriendComponent..ctor",
+      "parameters": []
+    },
+    {
+      "index": 71401,
+      "name": "get_projectile",
+      "type": 10767,
+      "returnType": 65192,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734698,
+      "flags": 2180,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451687680,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.get_projectile",
+      "parameters": []
+    },
+    {
+      "index": 71402,
+      "name": "set_projectile",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": 70720,
+      "generic": -1,
+      "token": 100734699,
+      "flags": 2177,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451688528,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.set_projectile",
+      "parameters": [
+        {
+          "index": 70720,
+          "name": "value",
+          "token": 134288454,
+          "type": 65192
+        }
+      ]
+    },
+    {
+      "index": 71403,
+      "name": "get_traceTarget",
+      "type": 10767,
+      "returnType": 52648,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734700,
+      "flags": 2180,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451688096,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.get_traceTarget",
+      "parameters": []
+    },
+    {
+      "index": 71404,
+      "name": "get_source",
+      "type": 10767,
+      "returnType": 52648,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734701,
+      "flags": 2180,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451687776,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.get_source",
+      "parameters": []
+    },
+    {
+      "index": 71405,
+      "name": "get_currentHitNum",
+      "type": 10767,
+      "returnType": 59011,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734702,
+      "flags": 2180,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451686720,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.get_currentHitNum",
+      "parameters": []
+    },
+    {
+      "index": 71406,
+      "name": "get_isStopped",
+      "type": 10767,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734703,
+      "flags": 2180,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451687360,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.get_isStopped",
+      "parameters": []
+    },
+    {
+      "index": 71407,
+      "name": "get_hasReached",
+      "type": 10767,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734704,
+      "flags": 2180,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451687040,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.get_hasReached",
+      "parameters": []
+    },
+    {
+      "index": 71408,
+      "name": "get_behavioursInited",
+      "type": 10767,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734705,
+      "flags": 2180,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451686544,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.get_behavioursInited",
+      "parameters": []
+    },
+    {
+      "index": 71409,
+      "name": "get_behaviourUniqueId",
+      "type": 10767,
+      "returnType": 81642,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734706,
+      "flags": 2180,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451686448,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.get_behaviourUniqueId",
+      "parameters": []
+    },
+    {
+      "index": 71410,
+      "name": "set_behaviourUniqueId",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": 70721,
+      "generic": -1,
+      "token": 100734707,
+      "flags": 2177,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451688416,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.set_behaviourUniqueId",
+      "parameters": [
+        {
+          "index": 70721,
+          "name": "value",
+          "token": 134288455,
+          "type": 81642
+        }
+      ]
+    },
+    {
+      "index": 71411,
+      "name": "Init",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": 70722,
+      "generic": -1,
+      "token": 100734708,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 4,
+      "parameterCount": 3,
+      "address": 6451684672,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.Init",
+      "parameters": [
+        {
+          "index": 70722,
+          "name": "start",
+          "token": 134288456,
+          "type": 57560
+        },
+        {
+          "index": 70723,
+          "name": "target",
+          "token": 134288457,
+          "type": 57560
+        },
+        {
+          "index": 70724,
+          "name": "projectile",
+          "token": 134288458,
+          "type": 65192
+        }
+      ]
+    },
+    {
+      "index": 71412,
+      "name": "OnTick",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": 70725,
+      "generic": -1,
+      "token": 100734709,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 5,
+      "parameterCount": 1,
+      "address": 6451677936,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.OnTick",
+      "parameters": [
+        {
+          "index": 70725,
+          "name": "deltaTime",
+          "token": 134288459,
+          "type": 53178
+        }
+      ]
+    },
+    {
+      "index": 71413,
+      "name": "OnProjectileBorn",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734710,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 6,
+      "parameterCount": 0,
+      "address": 6451685296,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.OnProjectileBorn",
+      "parameters": []
+    },
+    {
+      "index": 71414,
+      "name": "OnProjectileStop",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734711,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 7,
+      "parameterCount": 0,
+      "address": 6451677840,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.OnProjectileStop",
+      "parameters": []
+    },
+    {
+      "index": 71415,
+      "name": "OnProjectileTrigger",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734712,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 8,
+      "parameterCount": 0,
+      "address": 6451685392,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.OnProjectileTrigger",
+      "parameters": []
+    },
+    {
+      "index": 71416,
+      "name": "OnProjectileReached",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734713,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 9,
+      "parameterCount": 0,
+      "address": 6451677744,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.OnProjectileReached",
+      "parameters": []
+    },
+    {
+      "index": 71417,
+      "name": "OnHitTarget",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": 70726,
+      "generic": -1,
+      "token": 100734714,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 10,
+      "parameterCount": 1,
+      "address": 6451685200,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.OnHitTarget",
+      "parameters": [
+        {
+          "index": 70726,
+          "name": "target",
+          "token": 134288460,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71418,
+      "name": "OnHitTargetLeft",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": 70727,
+      "generic": -1,
+      "token": 100734715,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 11,
+      "parameterCount": 1,
+      "address": 6451685104,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.OnHitTargetLeft",
+      "parameters": [
+        {
+          "index": 70727,
+          "name": "target",
+          "token": 134288461,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71419,
+      "name": "OnAttackTimeChanged",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": 70728,
+      "generic": -1,
+      "token": 100734716,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 12,
+      "parameterCount": 1,
+      "address": 6451685008,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.OnAttackTimeChanged",
+      "parameters": [
+        {
+          "index": 70728,
+          "name": "newValue",
+          "token": 134288462,
+          "type": 53178
+        }
+      ]
+    },
+    {
+      "index": 71420,
+      "name": "TryRegisterExtraActionNode",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734717,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 13,
+      "parameterCount": 0,
+      "address": 6451686192,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.TryRegisterExtraActionNode",
+      "parameters": []
+    },
+    {
+      "index": 71421,
+      "name": "GetTimeScale",
+      "type": 10767,
+      "returnType": 53178,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734718,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 14,
+      "parameterCount": 0,
+      "address": 6451677584,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.GetTimeScale",
+      "parameters": []
+    },
+    {
+      "index": 71422,
+      "name": "Stop",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734719,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451685664,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.Stop",
+      "parameters": []
+    },
+    {
+      "index": 71423,
+      "name": "Reached",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734720,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451685488,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.Reached",
+      "parameters": []
+    },
+    {
+      "index": 71424,
+      "name": "TouchReached",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734721,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451685840,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.TouchReached",
+      "parameters": []
+    },
+    {
+      "index": 71425,
+      "name": "TryClearMainEffectWhenReachedIfNot",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734722,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451686016,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.TryClearMainEffectWhenReachedIfNot",
+      "parameters": []
+    },
+    {
+      "index": 71426,
+      "name": "GetNewEffectIfHooked",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": 70729,
+      "generic": -1,
+      "token": 100734723,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451684160,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.GetNewEffectIfHooked",
+      "parameters": [
+        {
+          "index": 70729,
+          "name": "effectKey",
+          "token": 134288463,
+          "type": 31642
+        }
+      ]
+    },
+    {
+      "index": 71427,
+      "name": "AssignBodyTransformLocalPos",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": 70730,
+      "generic": -1,
+      "token": 100734724,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451683744,
+      "fullname": "Torappu.Battle.Projectile.Behaviour.AssignBodyTransformLocalPos",
+      "parameters": [
+        {
+          "index": 70730,
+          "name": "localPos",
+          "token": 134288464,
+          "type": 82758
+        }
+      ]
+    },
+    {
+      "index": 71428,
+      "name": ".ctor",
+      "type": 10767,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734725,
+      "flags": 6276,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451686288,
+      "fullname": "Torappu.Battle.Projectile.Behaviour..ctor",
+      "parameters": []
+    },
+    {
+      "index": 71429,
+      "name": "get_blackboard",
+      "type": 10768,
+      "returnType": 44675,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734726,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6449137632,
+      "fullname": "Torappu.Battle.Projectile.ActionController.get_blackboard",
+      "parameters": []
+    },
+    {
+      "index": 71430,
+      "name": "set_blackboard",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": 70731,
+      "generic": -1,
+      "token": 100734727,
+      "flags": 2177,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451668448,
+      "fullname": "Torappu.Battle.Projectile.ActionController.set_blackboard",
+      "parameters": [
+        {
+          "index": 70731,
+          "name": "value",
+          "token": 134288465,
+          "type": 44675
+        }
+      ]
+    },
+    {
+      "index": 71431,
+      "name": "get_projectile",
+      "type": 10768,
+      "returnType": 65192,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734728,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6449052048,
+      "fullname": "Torappu.Battle.Projectile.ActionController.get_projectile",
+      "parameters": []
+    },
+    {
+      "index": 71432,
+      "name": "set_projectile",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": 70732,
+      "generic": -1,
+      "token": 100734729,
+      "flags": 2177,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6447943888,
+      "fullname": "Torappu.Battle.Projectile.ActionController.set_projectile",
+      "parameters": [
+        {
+          "index": 70732,
+          "name": "value",
+          "token": 134288466,
+          "type": 65192
+        }
+      ]
+    },
+    {
+      "index": 71433,
+      "name": "get_extraBuffsInTheEnd",
+      "type": 10768,
+      "returnType": 32974,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734730,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6447729744,
+      "fullname": "Torappu.Battle.Projectile.ActionController.get_extraBuffsInTheEnd",
+      "parameters": []
+    },
+    {
+      "index": 71434,
+      "name": "get_hasExtraBuffsInTheEnd",
+      "type": 10768,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734731,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451668384,
+      "fullname": "Torappu.Battle.Projectile.ActionController.get_hasExtraBuffsInTheEnd",
+      "parameters": []
+    },
+    {
+      "index": 71435,
+      "name": "get_actionsToAttach",
+      "type": 10768,
+      "returnType": 32699,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734732,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6447723200,
+      "fullname": "Torappu.Battle.Projectile.ActionController.get_actionsToAttach",
+      "parameters": []
+    },
+    {
+      "index": 71436,
+      "name": "Init",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": 70733,
+      "generic": -1,
+      "token": 100734733,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451660432,
+      "fullname": "Torappu.Battle.Projectile.ActionController.Init",
+      "parameters": [
+        {
+          "index": 70733,
+          "name": "ability",
+          "token": 134288467,
+          "type": 35130
+        },
+        {
+          "index": 70734,
+          "name": "projectile",
+          "token": 134288468,
+          "type": 65192
+        }
+      ]
+    },
+    {
+      "index": 71437,
+      "name": "InitFromProjectile",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": 70735,
+      "generic": -1,
+      "token": 100734734,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451660000,
+      "fullname": "Torappu.Battle.Projectile.ActionController.InitFromProjectile",
+      "parameters": [
+        {
+          "index": 70735,
+          "name": "sourceProjectile",
+          "token": 134288469,
+          "type": 65192
+        },
+        {
+          "index": 70736,
+          "name": "projectile",
+          "token": 134288470,
+          "type": 65192
+        }
+      ]
+    },
+    {
+      "index": 71438,
+      "name": "RegisterActions",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": 70737,
+      "generic": -1,
+      "token": 100734735,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 3,
+      "address": 6451662576,
+      "fullname": "Torappu.Battle.Projectile.ActionController.RegisterActions",
+      "parameters": [
+        {
+          "index": 70737,
+          "name": "ev",
+          "token": 134288471,
+          "type": 103009
+        },
+        {
+          "index": 70738,
+          "name": "actions",
+          "token": 134288472,
+          "type": 17338
+        },
+        {
+          "index": 70739,
+          "name": "additive",
+          "token": 134288473,
+          "type": 44789
+        }
+      ]
+    },
+    {
+      "index": 71439,
+      "name": "RegisterBuffs",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": 70740,
+      "generic": -1,
+      "token": 100734736,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451663072,
+      "fullname": "Torappu.Battle.Projectile.ActionController.RegisterBuffs",
+      "parameters": [
+        {
+          "index": 70740,
+          "name": "buffDataList",
+          "token": 134288474,
+          "type": 17353
+        },
+        {
+          "index": 70741,
+          "name": "additive",
+          "token": 134288475,
+          "type": 44789
+        }
+      ]
+    },
+    {
+      "index": 71440,
+      "name": "RegisterExtraBlackboard",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": 70742,
+      "generic": -1,
+      "token": 100734737,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451663344,
+      "fullname": "Torappu.Battle.Projectile.ActionController.RegisterExtraBlackboard",
+      "parameters": [
+        {
+          "index": 70742,
+          "name": "extraBlackboard",
+          "token": 134288476,
+          "type": 44675
+        },
+        {
+          "index": 70743,
+          "name": "additive",
+          "token": 134288477,
+          "type": 44789
+        }
+      ]
+    },
+    {
+      "index": 71441,
+      "name": "OnHitTarget",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": 70744,
+      "generic": -1,
+      "token": 100734738,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451661120,
+      "fullname": "Torappu.Battle.Projectile.ActionController.OnHitTarget",
+      "parameters": [
+        {
+          "index": 70744,
+          "name": "target",
+          "token": 134288478,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71442,
+      "name": "OnHitTargetLeft",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": 70745,
+      "generic": -1,
+      "token": 100734739,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451660880,
+      "fullname": "Torappu.Battle.Projectile.ActionController.OnHitTargetLeft",
+      "parameters": [
+        {
+          "index": 70745,
+          "name": "target",
+          "token": 134288479,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71443,
+      "name": "OnProjectileStop",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734740,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451661616,
+      "fullname": "Torappu.Battle.Projectile.ActionController.OnProjectileStop",
+      "parameters": []
+    },
+    {
+      "index": 71444,
+      "name": "OnProjectileTrigger",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734741,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451662560,
+      "fullname": "Torappu.Battle.Projectile.ActionController.OnProjectileTrigger",
+      "parameters": []
+    },
+    {
+      "index": 71445,
+      "name": "OnProjectileBorn",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734742,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451661520,
+      "fullname": "Torappu.Battle.Projectile.ActionController.OnProjectileBorn",
+      "parameters": []
+    },
+    {
+      "index": 71446,
+      "name": "OnProjectileReached",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734743,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451661536,
+      "fullname": "Torappu.Battle.Projectile.ActionController.OnProjectileReached",
+      "parameters": []
+    },
+    {
+      "index": 71447,
+      "name": "GetActionNodes",
+      "type": 10768,
+      "returnType": 17338,
+      "parameterStart": 70746,
+      "generic": -1,
+      "token": 100734744,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451659952,
+      "fullname": "Torappu.Battle.Projectile.ActionController.GetActionNodes",
+      "parameters": [
+        {
+          "index": 70746,
+          "name": "ev",
+          "token": 134288480,
+          "type": 103009
+        }
+      ]
+    },
+    {
+      "index": 71448,
+      "name": "ReplaceActionNodes",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": 70747,
+      "generic": -1,
+      "token": 100734745,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451663568,
+      "fullname": "Torappu.Battle.Projectile.ActionController.ReplaceActionNodes",
+      "parameters": [
+        {
+          "index": 70747,
+          "name": "ev",
+          "token": 134288481,
+          "type": 103009
+        },
+        {
+          "index": 70748,
+          "name": "newActionNodes",
+          "token": 134288482,
+          "type": 21224
+        }
+      ]
+    },
+    {
+      "index": 71449,
+      "name": "_RunActions",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": 70749,
+      "generic": -1,
+      "token": 100734746,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451667440,
+      "fullname": "Torappu.Battle.Projectile.ActionController._RunActions",
+      "parameters": [
+        {
+          "index": 70749,
+          "name": "ev",
+          "token": 134288483,
+          "type": 103009
+        },
+        {
+          "index": 70750,
+          "name": "rewriteTarget",
+          "token": 134288484,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71450,
+      "name": "RunActionsOnTile",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": 70751,
+      "generic": -1,
+      "token": 100734747,
+      "flags": 131,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451663600,
+      "fullname": "Torappu.Battle.Projectile.ActionController.RunActionsOnTile",
+      "parameters": [
+        {
+          "index": 70751,
+          "name": "ev",
+          "token": 134288485,
+          "type": 103009
+        },
+        {
+          "index": 70752,
+          "name": "tile",
+          "token": 134288486,
+          "type": 78698
+        }
+      ]
+    },
+    {
+      "index": 71451,
+      "name": "_AttachBuffs",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": 70753,
+      "generic": -1,
+      "token": 100734748,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451664224,
+      "fullname": "Torappu.Battle.Projectile.ActionController._AttachBuffs",
+      "parameters": [
+        {
+          "index": 70753,
+          "name": "buffs",
+          "token": 134288487,
+          "type": 17353
+        },
+        {
+          "index": 70754,
+          "name": "target",
+          "token": 134288488,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71452,
+      "name": "_AttachExtraBuffWhenStopHit",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": 70755,
+      "generic": -1,
+      "token": 100734749,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451666272,
+      "fullname": "Torappu.Battle.Projectile.ActionController._AttachExtraBuffWhenStopHit",
+      "parameters": [
+        {
+          "index": 70755,
+          "name": "target",
+          "token": 134288489,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71453,
+      "name": "_AttachExtraBuffWhenStop",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734750,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451666912,
+      "fullname": "Torappu.Battle.Projectile.ActionController._AttachExtraBuffWhenStop",
+      "parameters": []
+    },
+    {
+      "index": 71454,
+      "name": "_AttachExtraBuffWhenReached",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": 70756,
+      "generic": -1,
+      "token": 100734751,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451665632,
+      "fullname": "Torappu.Battle.Projectile.ActionController._AttachExtraBuffWhenReached",
+      "parameters": [
+        {
+          "index": 70756,
+          "name": "target",
+          "token": 134288490,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71455,
+      "name": "AttachExtraBuffsToTargetMap",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": 70757,
+      "generic": -1,
+      "token": 100734752,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451659600,
+      "fullname": "Torappu.Battle.Projectile.ActionController.AttachExtraBuffsToTargetMap",
+      "parameters": [
+        {
+          "index": 70757,
+          "name": "target",
+          "token": 134288491,
+          "type": 52648
+        },
+        {
+          "index": 70758,
+          "name": "buff",
+          "token": 134288492,
+          "type": 45051
+        }
+      ]
+    },
+    {
+      "index": 71456,
+      "name": ".ctor",
+      "type": 10768,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734753,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451668112,
+      "fullname": "Torappu.Battle.Projectile.ActionController..ctor",
+      "parameters": []
+    },
+    {
+      "index": 71457,
+      "name": ".ctor",
+      "type": 10769,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734754,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451692352,
+      "fullname": "Torappu.Battle.Projectile.EventToActionPair..ctor",
+      "parameters": []
+    },
+    {
+      "index": 71458,
+      "name": ".ctor",
+      "type": 10770,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734755,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451692288,
+      "fullname": "Torappu.Battle.Projectile.EventToActionMap..ctor",
+      "parameters": []
+    },
+    {
+      "index": 71459,
+      "name": "Create",
+      "type": 10772,
+      "returnType": 44789,
+      "parameterStart": 70759,
+      "generic": -1,
+      "token": 100734756,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 7,
+      "address": 6451693216,
+      "fullname": "Torappu.Battle.Projectile.ExtraFollowEffectManager.Create",
+      "parameters": [
+        {
+          "index": 70759,
+          "name": "effectKey",
+          "token": 134288493,
+          "type": 77200
+        },
+        {
+          "index": 70760,
+          "name": "bodyTransform",
+          "token": 134288494,
+          "type": 79524
+        },
+        {
+          "index": 70761,
+          "name": "source",
+          "token": 134288495,
+          "type": 52648
+        },
+        {
+          "index": 70762,
+          "name": "setAsParent",
+          "token": 134288496,
+          "type": 44789
+        },
+        {
+          "index": 70763,
+          "name": "clearOnProjectileStop",
+          "token": 134288497,
+          "type": 44789
+        },
+        {
+          "index": 70764,
+          "name": "clearOnProjectileHit",
+          "token": 134288498,
+          "type": 44789
+        },
+        {
+          "index": 70765,
+          "name": "replaceSameKey",
+          "token": 134288499,
+          "type": 44789
+        }
+      ]
+    },
+    {
+      "index": 71460,
+      "name": "ClearAll",
+      "type": 10772,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734757,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451692416,
+      "fullname": "Torappu.Battle.Projectile.ExtraFollowEffectManager.ClearAll",
+      "parameters": []
+    },
+    {
+      "index": 71461,
+      "name": "ClearByKey",
+      "type": 10772,
+      "returnType": 83059,
+      "parameterStart": 70766,
+      "generic": -1,
+      "token": 100734758,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451692720,
+      "fullname": "Torappu.Battle.Projectile.ExtraFollowEffectManager.ClearByKey",
+      "parameters": [
+        {
+          "index": 70766,
+          "name": "effectKey",
+          "token": 134288500,
+          "type": 77200
+        }
+      ]
+    },
+    {
+      "index": 71462,
+      "name": "ClearOnProjectileStop",
+      "type": 10772,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734759,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451693056,
+      "fullname": "Torappu.Battle.Projectile.ExtraFollowEffectManager.ClearOnProjectileStop",
+      "parameters": []
+    },
+    {
+      "index": 71463,
+      "name": "ClearOnProjectileHit",
+      "type": 10772,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734760,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451692896,
+      "fullname": "Torappu.Battle.Projectile.ExtraFollowEffectManager.ClearOnProjectileHit",
+      "parameters": []
+    },
+    {
+      "index": 71464,
+      "name": "_GetEffects",
+      "type": 10772,
+      "returnType": 25892,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734761,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451694448,
+      "fullname": "Torappu.Battle.Projectile.ExtraFollowEffectManager._GetEffects",
+      "parameters": []
+    },
+    {
+      "index": 71465,
+      "name": "FinishAt",
+      "type": 10772,
+      "returnType": 83059,
+      "parameterStart": 70767,
+      "generic": -1,
+      "token": 100734762,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451694208,
+      "fullname": "Torappu.Battle.Projectile.ExtraFollowEffectManager.FinishAt",
+      "parameters": [
+        {
+          "index": 70767,
+          "name": "index",
+          "token": 134288501,
+          "type": 59011
+        }
+      ]
+    },
+    {
+      "index": 71466,
+      "name": ".ctor",
+      "type": 10772,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734763,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6447758528,
+      "fullname": "Torappu.Battle.Projectile.ExtraFollowEffectManager..ctor",
+      "parameters": []
+    },
+    {
+      "index": 71467,
+      "name": ".ctor",
+      "type": 10771,
+      "returnType": 83059,
+      "parameterStart": 70768,
+      "generic": -1,
+      "token": 100734764,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 4,
+      "address": 6451694592,
+      "fullname": "Torappu.Battle.Projectile.ExtraFollowEffectManager.ExtraFollowEffect..ctor",
+      "parameters": [
+        {
+          "index": 70768,
+          "name": "key",
+          "token": 134288502,
+          "type": 77200
+        },
+        {
+          "index": 70769,
+          "name": "effect",
+          "token": 134288503,
+          "type": 51951
+        },
+        {
+          "index": 70770,
+          "name": "clearOnProjectileStop",
+          "token": 134288504,
+          "type": 44789
+        },
+        {
+          "index": 70771,
+          "name": "clearOnProjectileHit",
+          "token": 134288505,
+          "type": 44789
+        }
+      ]
+    }
+  ],
+  "HarpoonProjectile": [
+    {
+      "index": 71110,
+      "name": "get_pullForceLevel",
+      "type": 10750,
+      "returnType": 59011,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734407,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451697328,
+      "fullname": "Torappu.Battle.HarpoonProjectile.get_pullForceLevel",
+      "parameters": []
+    },
+    {
+      "index": 71111,
+      "name": "OnReset",
+      "type": 10750,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734408,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 29,
+      "parameterCount": 0,
+      "address": 6451696608,
+      "fullname": "Torappu.Battle.HarpoonProjectile.OnReset",
+      "parameters": []
+    },
+    {
+      "index": 71112,
+      "name": "OnInit",
+      "type": 10750,
+      "returnType": 83059,
+      "parameterStart": 70559,
+      "generic": -1,
+      "token": 100734409,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 30,
+      "parameterCount": 1,
+      "address": 6451695184,
+      "fullname": "Torappu.Battle.HarpoonProjectile.OnInit",
+      "parameters": [
+        {
+          "index": 70559,
+          "name": "initHeight",
+          "token": 134288293,
+          "type": 75036
+        }
+      ]
+    },
+    {
+      "index": 71113,
+      "name": "OnProjectileStop",
+      "type": 10750,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734410,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 53,
+      "parameterCount": 0,
+      "address": 6451695952,
+      "fullname": "Torappu.Battle.HarpoonProjectile.OnProjectileStop",
+      "parameters": []
+    },
+    {
+      "index": 71114,
+      "name": "_StopCollideHighLand",
+      "type": 10750,
+      "returnType": 83059,
+      "parameterStart": 70560,
+      "generic": -1,
+      "token": 100734411,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451696944,
+      "fullname": "Torappu.Battle.HarpoonProjectile._StopCollideHighLand",
+      "parameters": [
+        {
+          "index": 70560,
+          "name": "obj",
+          "token": 134288294,
+          "type": 63016
+        }
+      ]
+    },
+    {
+      "index": 71115,
+      "name": "SetPullForceLevel",
+      "type": 10750,
+      "returnType": 83059,
+      "parameterStart": 70561,
+      "generic": -1,
+      "token": 100734412,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451696768,
+      "fullname": "Torappu.Battle.HarpoonProjectile.SetPullForceLevel",
+      "parameters": [
+        {
+          "index": 70561,
+          "name": "level",
+          "token": 134288295,
+          "type": 59011
+        }
+      ]
+    },
+    {
+      "index": 71116,
+      "name": "DoLink",
+      "type": 10750,
+      "returnType": 57255,
+      "parameterStart": 70562,
+      "generic": -1,
+      "token": 100734413,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 56,
+      "parameterCount": 1,
+      "address": 6451694976,
+      "fullname": "Torappu.Battle.HarpoonProjectile.DoLink",
+      "parameters": [
+        {
+          "index": 70562,
+          "name": "rawTarget",
+          "token": 134288296,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71117,
+      "name": ".ctor",
+      "type": 10750,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734414,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451697216,
+      "fullname": "Torappu.Battle.HarpoonProjectile..ctor",
+      "parameters": []
+    },
+    {
+      "index": 71118,
+      "name": "<>n__0",
+      "type": 10750,
+      "returnType": 57255,
+      "parameterStart": 70563,
+      "generic": -1,
+      "token": 100734415,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451696880,
+      "fullname": "Torappu.Battle.HarpoonProjectile.<>n__0",
+      "parameters": [
+        {
+          "index": 70563,
+          "name": "target",
+          "token": 134288297,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71119,
+      "name": "<>xLuaBaseProxy_OnReset",
+      "type": 10750,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734416,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451696928,
+      "fullname": "Torappu.Battle.HarpoonProjectile.<>xLuaBaseProxy_OnReset",
+      "parameters": []
+    },
+    {
+      "index": 71120,
+      "name": "<>xLuaBaseProxy_OnInit",
+      "type": 10750,
+      "returnType": 83059,
+      "parameterStart": 70564,
+      "generic": -1,
+      "token": 100734417,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451696896,
+      "fullname": "Torappu.Battle.HarpoonProjectile.<>xLuaBaseProxy_OnInit",
+      "parameters": [
+        {
+          "index": 70564,
+          "name": "P0",
+          "token": 134288298,
+          "type": 75036
+        }
+      ]
+    },
+    {
+      "index": 71121,
+      "name": "<>xLuaBaseProxy_OnProjectileStop",
+      "type": 10750,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734418,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451696912,
+      "fullname": "Torappu.Battle.HarpoonProjectile.<>xLuaBaseProxy_OnProjectileStop",
+      "parameters": []
+    },
+    {
+      "index": 71122,
+      "name": "<>xLuaBaseProxy_DoLink",
+      "type": 10750,
+      "returnType": 57255,
+      "parameterStart": 70565,
+      "generic": -1,
+      "token": 100734419,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451696880,
+      "fullname": "Torappu.Battle.HarpoonProjectile.<>xLuaBaseProxy_DoLink",
+      "parameters": [
+        {
+          "index": 70565,
+          "name": "P0",
+          "token": 134288299,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71123,
+      "name": ".ctor",
+      "type": 10749,
+      "returnType": 83059,
+      "parameterStart": 70566,
+      "generic": -1,
+      "token": 100734420,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6447904976,
+      "fullname": "Torappu.Battle.HarpoonProjectile.<DoLink>d__19..ctor",
+      "parameters": [
+        {
+          "index": 70566,
+          "name": "<>1__state",
+          "token": 134288300,
+          "type": 59011
+        }
+      ]
+    },
+    {
+      "index": 71124,
+      "name": "System.IDisposable.Dispose",
+      "type": 10749,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734421,
+      "flags": 481,
+      "iflags": 0,
+      "slot": 5,
+      "parameterCount": 0,
+      "address": 6447746912,
+      "fullname": "Torappu.Battle.HarpoonProjectile.<DoLink>d__19.System.IDisposable.Dispose",
+      "parameters": []
+    },
+    {
+      "index": 71125,
+      "name": "MoveNext",
+      "type": 10749,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734422,
+      "flags": 481,
+      "iflags": 0,
+      "slot": 6,
+      "parameterCount": 0,
+      "address": 6451771536,
+      "fullname": "Torappu.Battle.HarpoonProjectile.<DoLink>d__19.MoveNext",
+      "parameters": []
+    },
+    {
+      "index": 71126,
+      "name": "System.Collections.Generic.IEnumerator<System.Object>.get_Current",
+      "type": 10749,
+      "returnType": 63016,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734423,
+      "flags": 2529,
+      "iflags": 0,
+      "slot": 4,
+      "parameterCount": 0,
+      "address": 6447729744,
+      "fullname": "Torappu.Battle.HarpoonProjectile.<DoLink>d__19.System.Collections.Generic.IEnumerator<System.Object>.get_Current",
+      "parameters": []
+    },
+    {
+      "index": 71127,
+      "name": "System.Collections.IEnumerator.Reset",
+      "type": 10749,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734424,
+      "flags": 481,
+      "iflags": 0,
+      "slot": 8,
+      "parameterCount": 0,
+      "address": 6451773584,
+      "fullname": "Torappu.Battle.HarpoonProjectile.<DoLink>d__19.System.Collections.IEnumerator.Reset",
+      "parameters": []
+    },
+    {
+      "index": 71128,
+      "name": "System.Collections.IEnumerator.get_Current",
+      "type": 10749,
+      "returnType": 63016,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734425,
+      "flags": 2529,
+      "iflags": 0,
+      "slot": 7,
+      "parameterCount": 0,
+      "address": 6447729744,
+      "fullname": "Torappu.Battle.HarpoonProjectile.<DoLink>d__19.System.Collections.IEnumerator.get_Current",
+      "parameters": []
+    }
+  ],
+  "NetCatcherProjectile": [
+    {
+      "index": 71241,
+      "name": "get_firstPullBackDestination",
+      "type": 10761,
+      "returnType": 82722,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734538,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451712224,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.get_firstPullBackDestination",
+      "parameters": []
+    },
+    {
+      "index": 71242,
+      "name": "get_isFirstPart",
+      "type": 10761,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734539,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451712336,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.get_isFirstPart",
+      "parameters": []
+    },
+    {
+      "index": 71243,
+      "name": "get_pullForceLevel",
+      "type": 10761,
+      "returnType": 59011,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734540,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451712432,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.get_pullForceLevel",
+      "parameters": []
+    },
+    {
+      "index": 71244,
+      "name": "OnReset",
+      "type": 10761,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734541,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 29,
+      "parameterCount": 0,
+      "address": 6451709520,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.OnReset",
+      "parameters": []
+    },
+    {
+      "index": 71245,
+      "name": "OnInit",
+      "type": 10761,
+      "returnType": 83059,
+      "parameterStart": 70619,
+      "generic": -1,
+      "token": 100734542,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 30,
+      "parameterCount": 1,
+      "address": 6451707584,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.OnInit",
+      "parameters": [
+        {
+          "index": 70619,
+          "name": "initHeight",
+          "token": 134288353,
+          "type": 75036
+        }
+      ]
+    },
+    {
+      "index": 71246,
+      "name": "OnProjectileStop",
+      "type": 10761,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734543,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 53,
+      "parameterCount": 0,
+      "address": 6451709056,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.OnProjectileStop",
+      "parameters": []
+    },
+    {
+      "index": 71247,
+      "name": "SetPullForceLevel",
+      "type": 10761,
+      "returnType": 83059,
+      "parameterStart": 70620,
+      "generic": -1,
+      "token": 100734544,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451710560,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.SetPullForceLevel",
+      "parameters": [
+        {
+          "index": 70620,
+          "name": "level",
+          "token": 134288354,
+          "type": 59011
+        }
+      ]
+    },
+    {
+      "index": 71248,
+      "name": "ExtraCheckToFinish",
+      "type": 10761,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734545,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 46,
+      "parameterCount": 0,
+      "address": 6451705808,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.ExtraCheckToFinish",
+      "parameters": []
+    },
+    {
+      "index": 71249,
+      "name": "_StopForceOnEnemy",
+      "type": 10761,
+      "returnType": 83059,
+      "parameterStart": 70621,
+      "generic": -1,
+      "token": 100734546,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451711808,
+      "fullname": "Torappu.Battle.NetCatcherProjectile._StopForceOnEnemy",
+      "parameters": [
+        {
+          "index": 70621,
+          "name": "rawTarget",
+          "token": 134288355,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71250,
+      "name": "StartSecondPartProjectile",
+      "type": 10761,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734547,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451710944,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.StartSecondPartProjectile",
+      "parameters": []
+    },
+    {
+      "index": 71251,
+      "name": "DoLink",
+      "type": 10761,
+      "returnType": 57255,
+      "parameterStart": 70622,
+      "generic": -1,
+      "token": 100734548,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 56,
+      "parameterCount": 1,
+      "address": 6451705600,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.DoLink",
+      "parameters": [
+        {
+          "index": 70622,
+          "name": "rawTarget",
+          "token": 134288356,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71252,
+      "name": "DoLink_SecondPart",
+      "type": 10761,
+      "returnType": 57255,
+      "parameterStart": 70623,
+      "generic": -1,
+      "token": 100734549,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451705392,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.DoLink_SecondPart",
+      "parameters": [
+        {
+          "index": 70623,
+          "name": "rawTarget",
+          "token": 134288357,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71253,
+      "name": "SetPullTime",
+      "type": 10761,
+      "returnType": 83059,
+      "parameterStart": 70624,
+      "generic": -1,
+      "token": 100734550,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451710672,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.SetPullTime",
+      "parameters": [
+        {
+          "index": 70624,
+          "name": "target",
+          "token": 134288358,
+          "type": 52144
+        },
+        {
+          "index": 70625,
+          "name": "pullTime",
+          "token": 134288359,
+          "type": 75036
+        }
+      ]
+    },
+    {
+      "index": 71254,
+      "name": "OnTick",
+      "type": 10761,
+      "returnType": 83059,
+      "parameterStart": 70626,
+      "generic": -1,
+      "token": 100734551,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 27,
+      "parameterCount": 1,
+      "address": 6451709632,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.OnTick",
+      "parameters": [
+        {
+          "index": 70626,
+          "name": "deltaTime",
+          "token": 134288360,
+          "type": 53178
+        }
+      ]
+    },
+    {
+      "index": 71255,
+      "name": "_DoPull",
+      "type": 10761,
+      "returnType": 57255,
+      "parameterStart": 70627,
+      "generic": -1,
+      "token": 100734552,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 5,
+      "address": 6451711456,
+      "fullname": "Torappu.Battle.NetCatcherProjectile._DoPull",
+      "parameters": [
+        {
+          "index": 70627,
+          "name": "target",
+          "token": 134288361,
+          "type": 52144
+        },
+        {
+          "index": 70628,
+          "name": "destination",
+          "token": 134288362,
+          "type": 82722
+        },
+        {
+          "index": 70629,
+          "name": "duration",
+          "token": 134288363,
+          "type": 75036
+        },
+        {
+          "index": 70630,
+          "name": "pullCond",
+          "token": 134288364,
+          "type": 13455
+        },
+        {
+          "index": 70631,
+          "name": "stopAfterPulledBack",
+          "token": 134288365,
+          "type": 44789
+        }
+      ]
+    },
+    {
+      "index": 71256,
+      "name": "GetEffectFollowTarget",
+      "type": 10761,
+      "returnType": 52144,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734553,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451706560,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.GetEffectFollowTarget",
+      "parameters": []
+    },
+    {
+      "index": 71257,
+      "name": ".ctor",
+      "type": 10761,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734554,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451712112,
+      "fullname": "Torappu.Battle.NetCatcherProjectile..ctor",
+      "parameters": []
+    },
+    {
+      "index": 71258,
+      "name": "<DoLink>b__29_0",
+      "type": 10761,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734555,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451711312,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<DoLink>b__29_0",
+      "parameters": []
+    },
+    {
+      "index": 71259,
+      "name": "<>n__0",
+      "type": 10761,
+      "returnType": 57255,
+      "parameterStart": 70632,
+      "generic": -1,
+      "token": 100734556,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451696880,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<>n__0",
+      "parameters": [
+        {
+          "index": 70632,
+          "name": "target",
+          "token": 134288366,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71260,
+      "name": "<DoLink_SecondPart>b__30_0",
+      "type": 10761,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734557,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451711328,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<DoLink_SecondPart>b__30_0",
+      "parameters": []
+    },
+    {
+      "index": 71261,
+      "name": "<>xLuaBaseProxy_OnReset",
+      "type": 10761,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734558,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451696928,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<>xLuaBaseProxy_OnReset",
+      "parameters": []
+    },
+    {
+      "index": 71262,
+      "name": "<>xLuaBaseProxy_OnInit",
+      "type": 10761,
+      "returnType": 83059,
+      "parameterStart": 70633,
+      "generic": -1,
+      "token": 100734559,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451696896,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<>xLuaBaseProxy_OnInit",
+      "parameters": [
+        {
+          "index": 70633,
+          "name": "P0",
+          "token": 134288367,
+          "type": 75036
+        }
+      ]
+    },
+    {
+      "index": 71263,
+      "name": "<>xLuaBaseProxy_OnProjectileStop",
+      "type": 10761,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734560,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451696912,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<>xLuaBaseProxy_OnProjectileStop",
+      "parameters": []
+    },
+    {
+      "index": 71264,
+      "name": "<>xLuaBaseProxy_ExtraCheckToFinish",
+      "type": 10761,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734561,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451711344,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<>xLuaBaseProxy_ExtraCheckToFinish",
+      "parameters": []
+    },
+    {
+      "index": 71265,
+      "name": "<>xLuaBaseProxy_DoLink",
+      "type": 10761,
+      "returnType": 57255,
+      "parameterStart": 70634,
+      "generic": -1,
+      "token": 100734562,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451696880,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<>xLuaBaseProxy_DoLink",
+      "parameters": [
+        {
+          "index": 70634,
+          "name": "P0",
+          "token": 134288368,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 71266,
+      "name": "<>xLuaBaseProxy_OnTick",
+      "type": 10761,
+      "returnType": 83059,
+      "parameterStart": 70635,
+      "generic": -1,
+      "token": 100734563,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451711440,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<>xLuaBaseProxy_OnTick",
+      "parameters": [
+        {
+          "index": 70635,
+          "name": "P0",
+          "token": 134288369,
+          "type": 53178
+        }
+      ]
+    },
+    {
+      "index": 71267,
+      "name": ".ctor",
+      "type": 10758,
+      "returnType": 83059,
+      "parameterStart": 70636,
+      "generic": -1,
+      "token": 100734564,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6447904976,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<DoLink>d__29..ctor",
+      "parameters": [
+        {
+          "index": 70636,
+          "name": "<>1__state",
+          "token": 134288370,
+          "type": 59011
+        }
+      ]
+    },
+    {
+      "index": 71268,
+      "name": "System.IDisposable.Dispose",
+      "type": 10758,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734565,
+      "flags": 481,
+      "iflags": 0,
+      "slot": 5,
+      "parameterCount": 0,
+      "address": 6447746912,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<DoLink>d__29.System.IDisposable.Dispose",
+      "parameters": []
+    },
+    {
+      "index": 71269,
+      "name": "MoveNext",
+      "type": 10758,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734566,
+      "flags": 481,
+      "iflags": 0,
+      "slot": 6,
+      "parameterCount": 0,
+      "address": 6451774272,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<DoLink>d__29.MoveNext",
+      "parameters": []
+    },
+    {
+      "index": 71270,
+      "name": "System.Collections.Generic.IEnumerator<System.Object>.get_Current",
+      "type": 10758,
+      "returnType": 63016,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734567,
+      "flags": 2529,
+      "iflags": 0,
+      "slot": 4,
+      "parameterCount": 0,
+      "address": 6447729744,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<DoLink>d__29.System.Collections.Generic.IEnumerator<System.Object>.get_Current",
+      "parameters": []
+    },
+    {
+      "index": 71271,
+      "name": "System.Collections.IEnumerator.Reset",
+      "type": 10758,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734568,
+      "flags": 481,
+      "iflags": 0,
+      "slot": 8,
+      "parameterCount": 0,
+      "address": 6451775056,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<DoLink>d__29.System.Collections.IEnumerator.Reset",
+      "parameters": []
+    },
+    {
+      "index": 71272,
+      "name": "System.Collections.IEnumerator.get_Current",
+      "type": 10758,
+      "returnType": 63016,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734569,
+      "flags": 2529,
+      "iflags": 0,
+      "slot": 7,
+      "parameterCount": 0,
+      "address": 6447729744,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<DoLink>d__29.System.Collections.IEnumerator.get_Current",
+      "parameters": []
+    },
+    {
+      "index": 71273,
+      "name": ".ctor",
+      "type": 10759,
+      "returnType": 83059,
+      "parameterStart": 70637,
+      "generic": -1,
+      "token": 100734570,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6447904976,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<DoLink_SecondPart>d__30..ctor",
+      "parameters": [
+        {
+          "index": 70637,
+          "name": "<>1__state",
+          "token": 134288371,
+          "type": 59011
+        }
+      ]
+    },
+    {
+      "index": 71274,
+      "name": "System.IDisposable.Dispose",
+      "type": 10759,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734571,
+      "flags": 481,
+      "iflags": 0,
+      "slot": 5,
+      "parameterCount": 0,
+      "address": 6447746912,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<DoLink_SecondPart>d__30.System.IDisposable.Dispose",
+      "parameters": []
+    },
+    {
+      "index": 71275,
+      "name": "MoveNext",
+      "type": 10759,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734572,
+      "flags": 481,
+      "iflags": 0,
+      "slot": 6,
+      "parameterCount": 0,
+      "address": 6451776032,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<DoLink_SecondPart>d__30.MoveNext",
+      "parameters": []
+    },
+    {
+      "index": 71276,
+      "name": "System.Collections.Generic.IEnumerator<System.Object>.get_Current",
+      "type": 10759,
+      "returnType": 63016,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734573,
+      "flags": 2529,
+      "iflags": 0,
+      "slot": 4,
+      "parameterCount": 0,
+      "address": 6447729744,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<DoLink_SecondPart>d__30.System.Collections.Generic.IEnumerator<System.Object>.get_Current",
+      "parameters": []
+    },
+    {
+      "index": 71277,
+      "name": "System.Collections.IEnumerator.Reset",
+      "type": 10759,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734574,
+      "flags": 481,
+      "iflags": 0,
+      "slot": 8,
+      "parameterCount": 0,
+      "address": 6451776640,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<DoLink_SecondPart>d__30.System.Collections.IEnumerator.Reset",
+      "parameters": []
+    },
+    {
+      "index": 71278,
+      "name": "System.Collections.IEnumerator.get_Current",
+      "type": 10759,
+      "returnType": 63016,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734575,
+      "flags": 2529,
+      "iflags": 0,
+      "slot": 7,
+      "parameterCount": 0,
+      "address": 6447729744,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<DoLink_SecondPart>d__30.System.Collections.IEnumerator.get_Current",
+      "parameters": []
+    },
+    {
+      "index": 71279,
+      "name": ".ctor",
+      "type": 10760,
+      "returnType": 83059,
+      "parameterStart": 70638,
+      "generic": -1,
+      "token": 100734576,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6447904976,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<_DoPull>d__33..ctor",
+      "parameters": [
+        {
+          "index": 70638,
+          "name": "<>1__state",
+          "token": 134288372,
+          "type": 59011
+        }
+      ]
+    },
+    {
+      "index": 71280,
+      "name": "System.IDisposable.Dispose",
+      "type": 10760,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734577,
+      "flags": 481,
+      "iflags": 0,
+      "slot": 5,
+      "parameterCount": 0,
+      "address": 6447746912,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<_DoPull>d__33.System.IDisposable.Dispose",
+      "parameters": []
+    },
+    {
+      "index": 71281,
+      "name": "MoveNext",
+      "type": 10760,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734578,
+      "flags": 481,
+      "iflags": 0,
+      "slot": 6,
+      "parameterCount": 0,
+      "address": 6451776720,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<_DoPull>d__33.MoveNext",
+      "parameters": []
+    },
+    {
+      "index": 71282,
+      "name": "System.Collections.Generic.IEnumerator<System.Object>.get_Current",
+      "type": 10760,
+      "returnType": 63016,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734579,
+      "flags": 2529,
+      "iflags": 0,
+      "slot": 4,
+      "parameterCount": 0,
+      "address": 6447729744,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<_DoPull>d__33.System.Collections.Generic.IEnumerator<System.Object>.get_Current",
+      "parameters": []
+    },
+    {
+      "index": 71283,
+      "name": "System.Collections.IEnumerator.Reset",
+      "type": 10760,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734580,
+      "flags": 481,
+      "iflags": 0,
+      "slot": 8,
+      "parameterCount": 0,
+      "address": 6451778480,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<_DoPull>d__33.System.Collections.IEnumerator.Reset",
+      "parameters": []
+    },
+    {
+      "index": 71284,
+      "name": "System.Collections.IEnumerator.get_Current",
+      "type": 10760,
+      "returnType": 63016,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734581,
+      "flags": 2529,
+      "iflags": 0,
+      "slot": 7,
+      "parameterCount": 0,
+      "address": 6447729744,
+      "fullname": "Torappu.Battle.NetCatcherProjectile.<_DoPull>d__33.System.Collections.IEnumerator.get_Current",
+      "parameters": []
+    }
+  ],
+  "PullHitTargetBehaviour": [
+    {
+      "index": 86410,
+      "name": "Init",
+      "type": 12568,
+      "returnType": 83059,
+      "parameterStart": 83043,
+      "generic": -1,
+      "token": 100749707,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 4,
+      "parameterCount": 3,
+      "address": 6456354720,
+      "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.Init",
+      "parameters": [
+        {
+          "index": 83043,
+          "name": "start",
+          "token": 134300790,
+          "type": 57560
+        },
+        {
+          "index": 83044,
+          "name": "target",
+          "token": 134300791,
+          "type": 57560
+        },
+        {
+          "index": 83045,
+          "name": "projectile",
+          "token": 134300792,
+          "type": 65192
+        }
+      ]
+    },
+    {
+      "index": 86411,
+      "name": "OnTick",
+      "type": 12568,
+      "returnType": 83059,
+      "parameterStart": 83046,
+      "generic": -1,
+      "token": 100749708,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 5,
+      "parameterCount": 1,
+      "address": 6456356240,
+      "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.OnTick",
+      "parameters": [
+        {
+          "index": 83046,
+          "name": "deltaTime",
+          "token": 134300793,
+          "type": 53178
+        }
+      ]
+    },
+    {
+      "index": 86412,
+      "name": "OnHitTarget",
+      "type": 12568,
+      "returnType": 83059,
+      "parameterStart": 83047,
+      "generic": -1,
+      "token": 100749709,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 10,
+      "parameterCount": 1,
+      "address": 6456354976,
+      "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.OnHitTarget",
+      "parameters": [
+        {
+          "index": 83047,
+          "name": "target",
+          "token": 134300794,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 86413,
+      "name": "OnProjectileStop",
+      "type": 12568,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100749710,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 7,
+      "parameterCount": 0,
+      "address": 6456355552,
+      "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.OnProjectileStop",
+      "parameters": []
+    },
+    {
+      "index": 86414,
+      "name": "_DoLink",
+      "type": 12568,
+      "returnType": 57255,
+      "parameterStart": 83048,
+      "generic": -1,
+      "token": 100749711,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6456356496,
+      "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour._DoLink",
+      "parameters": [
+        {
+          "index": 83048,
+          "name": "target",
+          "token": 134300795,
+          "type": 52144
+        }
+      ]
+    },
+    {
+      "index": 86415,
+      "name": ".ctor",
+      "type": 12568,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100749712,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6456356704,
+      "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour..ctor",
+      "parameters": []
+    },
+    {
+      "index": 86416,
+      "name": "<>xLuaBaseProxy_Init",
+      "type": 12568,
+      "returnType": 83059,
+      "parameterStart": 83049,
+      "generic": -1,
+      "token": 100749713,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 3,
+      "address": 6451677728,
+      "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.<>xLuaBaseProxy_Init",
+      "parameters": [
+        {
+          "index": 83049,
+          "name": "P0",
+          "token": 134300796,
+          "type": 57560
+        },
+        {
+          "index": 83050,
+          "name": "P1",
+          "token": 134300797,
+          "type": 57560
+        },
+        {
+          "index": 83051,
+          "name": "P2",
+          "token": 134300798,
+          "type": 65192
+        }
+      ]
+    },
+    {
+      "index": 86417,
+      "name": "<>xLuaBaseProxy_OnTick",
+      "type": 12568,
+      "returnType": 83059,
+      "parameterStart": 83052,
+      "generic": -1,
+      "token": 100749714,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6456222144,
+      "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.<>xLuaBaseProxy_OnTick",
+      "parameters": [
+        {
+          "index": 83052,
+          "name": "P0",
+          "token": 134300799,
+          "type": 53178
+        }
+      ]
+    },
+    {
+      "index": 86418,
+      "name": "<>xLuaBaseProxy_OnHitTarget",
+      "type": 12568,
+      "returnType": 83059,
+      "parameterStart": 83053,
+      "generic": -1,
+      "token": 100749715,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6456224080,
+      "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.<>xLuaBaseProxy_OnHitTarget",
+      "parameters": [
+        {
+          "index": 83053,
+          "name": "P0",
+          "token": 134300800,
+          "type": 52648
+        }
+      ]
+    },
+    {
+      "index": 86419,
+      "name": "<>xLuaBaseProxy_OnProjectileStop",
+      "type": 12568,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100749716,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6456222128,
+      "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.<>xLuaBaseProxy_OnProjectileStop",
+      "parameters": []
+    },
+    {
+      "index": 86420,
+      "name": ".ctor",
+      "type": 12567,
+      "returnType": 83059,
+      "parameterStart": 83054,
+      "generic": -1,
+      "token": 100749717,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6447904976,
+      "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.<_DoLink>d__8..ctor",
+      "parameters": [
+        {
+          "index": 83054,
+          "name": "<>1__state",
+          "token": 134300801,
+          "type": 59011
+        }
+      ]
+    },
+    {
+      "index": 86421,
+      "name": "System.IDisposable.Dispose",
+      "type": 12567,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100749718,
+      "flags": 481,
+      "iflags": 0,
+      "slot": 5,
+      "parameterCount": 0,
+      "address": 6447746912,
+      "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.<_DoLink>d__8.System.IDisposable.Dispose",
+      "parameters": []
+    },
+    {
+      "index": 86422,
+      "name": "MoveNext",
+      "type": 12567,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100749719,
+      "flags": 481,
+      "iflags": 0,
+      "slot": 6,
+      "parameterCount": 0,
+      "address": 6456408640,
+      "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.<_DoLink>d__8.MoveNext",
+      "parameters": []
+    },
+    {
+      "index": 86423,
+      "name": "System.Collections.Generic.IEnumerator<System.Object>.get_Current",
+      "type": 12567,
+      "returnType": 63016,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100749720,
+      "flags": 2529,
+      "iflags": 0,
+      "slot": 4,
+      "parameterCount": 0,
+      "address": 6447729744,
+      "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.<_DoLink>d__8.System.Collections.Generic.IEnumerator<System.Object>.get_Current",
+      "parameters": []
+    },
+    {
+      "index": 86424,
+      "name": "System.Collections.IEnumerator.Reset",
+      "type": 12567,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100749721,
+      "flags": 481,
+      "iflags": 0,
+      "slot": 8,
+      "parameterCount": 0,
+      "address": 6456410656,
+      "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.<_DoLink>d__8.System.Collections.IEnumerator.Reset",
+      "parameters": []
+    },
+    {
+      "index": 86425,
+      "name": "System.Collections.IEnumerator.get_Current",
+      "type": 12567,
+      "returnType": 63016,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100749722,
+      "flags": 2529,
+      "iflags": 0,
+      "slot": 7,
+      "parameterCount": 0,
+      "address": 6447729744,
+      "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.<_DoLink>d__8.System.Collections.IEnumerator.get_Current",
+      "parameters": []
+    }
+  ],
+  "CharSearchBlockeeImmediate": [
+    {
+      "index": 99961,
+      "name": "get_allowedSource",
+      "type": 15034,
+      "returnType": 89069,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100763258,
+      "flags": 2246,
+      "iflags": 0,
+      "slot": 4,
+      "parameterCount": 0,
+      "address": 6460682208,
+      "fullname": "Torappu.Battle.Action.Nodes.CharSearchBlockeeImmediate.get_allowedSource",
+      "parameters": []
+    },
+    {
+      "index": 99962,
+      "name": "Execute",
+      "type": 15034,
+      "returnType": 44789,
+      "parameterStart": 94531,
+      "generic": -1,
+      "token": 100763259,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 6,
+      "parameterCount": 3,
+      "address": 6460681760,
+      "fullname": "Torappu.Battle.Action.Nodes.CharSearchBlockeeImmediate.Execute",
+      "parameters": [
+        {
+          "index": 94531,
+          "name": "blackboard",
+          "token": 134312276,
+          "type": 44675
+        },
+        {
+          "index": 94532,
+          "name": "sourceType",
+          "token": 134312277,
+          "type": 89069
+        },
+        {
+          "index": 94533,
+          "name": "snapshot",
+          "token": 134312278,
+          "type": 31896
+        }
+      ]
+    },
+    {
+      "index": 99963,
+      "name": ".ctor",
+      "type": 15034,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100763260,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6460682112,
+      "fullname": "Torappu.Battle.Action.Nodes.CharSearchBlockeeImmediate..ctor",
+      "parameters": []
+    }
+  ],
+  "Character._SearchBlockee": [
+    {
+      "index": 76016,
+      "name": "_SearchBlockee",
+      "type": 11346,
+      "returnType": 83059,
+      "parameterStart": 74740,
+      "generic": -1,
+      "token": 100739313,
+      "flags": 452,
+      "iflags": 0,
+      "slot": 236,
+      "parameterCount": 1,
+      "address": 6453166592,
+      "fullname": "Torappu.Battle.Character._SearchBlockee",
+      "parameters": [
+        {
+          "index": 74740,
+          "name": "force",
+          "token": 134292474,
+          "type": 44814
+        }
+      ]
+    }
+  ],
+  "Character.OnBlockModeChanged": [
+    {
+      "index": 75970,
+      "name": "OnBlockModeChanged",
+      "type": 11346,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100739267,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6453121248,
+      "fullname": "Torappu.Battle.Character.OnBlockModeChanged",
+      "parameters": []
+    }
+  ],
+  "Character.OnAttributeDirty": [
+    {
+      "index": 76035,
+      "name": "OnAttributeDirty",
+      "type": 11346,
+      "returnType": 83059,
+      "parameterStart": 74751,
+      "generic": -1,
+      "token": 100739332,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 126,
+      "parameterCount": 2,
+      "address": 6453119056,
+      "fullname": "Torappu.Battle.Character.OnAttributeDirty",
+      "parameters": [
+        {
+          "index": 74751,
+          "name": "attributeType",
+          "token": 134292485,
+          "type": 42794
+        },
+        {
+          "index": 74752,
+          "name": "oldValue",
+          "token": 134292486,
+          "type": 53178
+        }
+      ]
+    }
+  ],
+  "Enemy.States.UnbalanceState.OnAfterPhysicSimulate": [
+    {
+      "index": 76753,
+      "name": "OnAfterPhysicSimulate",
+      "type": 11369,
+      "returnType": 83059,
+      "parameterStart": 75254,
+      "generic": -1,
+      "token": 100740050,
+      "flags": 486,
+      "iflags": 0,
+      "slot": 23,
+      "parameterCount": 1,
+      "address": 6453585648,
+      "fullname": "Torappu.Battle.Enemy.States.UnbalanceState.OnAfterPhysicSimulate",
+      "parameters": [
+        {
+          "index": 75254,
+          "name": "deltaTimeAsFloat",
+          "token": 134292988,
+          "type": 75036
+        }
+      ]
+    }
+  ],
+  "Torappu.Battle.BObject.OnFixedUpdate": [],
+  "Torappu.Battle.BObject.OnTick": [
+    {
+      "index": 65036,
+      "name": "OnTick",
+      "type": 10083,
+      "returnType": 83059,
+      "parameterStart": 65310,
+      "generic": -1,
+      "token": 100728333,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 27,
+      "parameterCount": 1,
+      "address": 6447746912,
+      "fullname": "Torappu.Battle.BObject.OnTick",
+      "parameters": [
+        {
+          "index": 65310,
+          "name": "deltaTime",
+          "token": 134283044,
+          "type": 53178
+        }
+      ]
+    }
+  ],
+  "Torappu.Battle.BObject.OnLateFixedUpdate": []
+}

@@ -1,0 +1,23 @@
+{
+  "index": 25961,
+  "name": "Reset",
+  "type": 1447,
+  "returnType": 83059,
+  "parameterStart": 39716,
+  "generic": -1,
+  "token": 100689258,
+  "flags": 486,
+  "iflags": 0,
+  "slot": 5,
+  "parameterCount": 1,
+  "address": 6473925520,
+  "fullname": "Torappu.PeriodicTicker.Reset",
+  "parameters": [
+    {
+      "index": 39716,
+      "name": "waitFirstPeriod",
+      "token": 134257448,
+      "type": 44814
+    }
+  ]
+}

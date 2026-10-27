@@ -1,0 +1,569 @@
+{
+  "battleOptionsType": 9843,
+  "battleOptionsFields": [
+    {
+      "index": 67762,
+      "name": "MOVE_MULTIPLIER",
+      "type": 63125,
+      "typeName": "CodeStage.AntiCheat.ObscuredTypes.ObscuredFloat",
+      "attrs": 22,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176627
+    },
+    {
+      "index": 67763,
+      "name": "COST_INCREASE_TIME",
+      "type": 63125,
+      "typeName": "CodeStage.AntiCheat.ObscuredTypes.ObscuredFloat",
+      "attrs": 22,
+      "static": true,
+      "offset": 24,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176628
+    },
+    {
+      "index": 67764,
+      "name": "MAX_COST",
+      "type": 63130,
+      "typeName": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt",
+      "attrs": 22,
+      "static": true,
+      "offset": 48,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176629
+    },
+    {
+      "index": 67765,
+      "name": "MAX_COST_CEIL",
+      "type": 63130,
+      "typeName": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt",
+      "attrs": 22,
+      "static": true,
+      "offset": 68,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176630
+    },
+    {
+      "index": 67766,
+      "name": "MIN_COST",
+      "type": 63130,
+      "typeName": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt",
+      "attrs": 22,
+      "static": true,
+      "offset": 88,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176631
+    },
+    {
+      "index": 67767,
+      "name": "INITIAL_COST",
+      "type": 63130,
+      "typeName": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt",
+      "attrs": 22,
+      "static": true,
+      "offset": 108,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176632
+    },
+    {
+      "index": 67768,
+      "name": "CHARACTER_LIMIT",
+      "type": 63130,
+      "typeName": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt",
+      "attrs": 22,
+      "static": true,
+      "offset": 128,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176633
+    },
+    {
+      "index": 67769,
+      "name": "MAX_LIFE_POINT",
+      "type": 63130,
+      "typeName": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt",
+      "attrs": 22,
+      "static": true,
+      "offset": 148,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176634
+    },
+    {
+      "index": 67770,
+      "name": "ENEMY_TAUNT_LEVEL_MUL",
+      "type": 63130,
+      "typeName": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt",
+      "attrs": 22,
+      "static": true,
+      "offset": 168,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176635
+    },
+    {
+      "index": 67771,
+      "name": "BATTLE_ROLLBACK_SPEED",
+      "type": 44797,
+      "typeName": "bool",
+      "attrs": 22,
+      "static": true,
+      "offset": 188,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176636
+    },
+    {
+      "index": 67772,
+      "name": "STEERING_ENABLED",
+      "type": 44797,
+      "typeName": "bool",
+      "attrs": 22,
+      "static": true,
+      "offset": 189,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176637
+    },
+    {
+      "index": 67773,
+      "name": "REACHABLE_CHECK_IGNORE_START_TILE",
+      "type": 44797,
+      "typeName": "bool",
+      "attrs": 22,
+      "static": true,
+      "offset": 190,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176638
+    },
+    {
+      "index": 67774,
+      "name": "IS_TRAINING_LEVEL",
+      "type": 44797,
+      "typeName": "bool",
+      "attrs": 22,
+      "static": true,
+      "offset": 191,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176639
+    },
+    {
+      "index": 67775,
+      "name": "IS_LIMIT_FPS",
+      "type": 44797,
+      "typeName": "bool",
+      "attrs": 22,
+      "static": true,
+      "offset": 192,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176640
+    },
+    {
+      "index": 67776,
+      "name": "SYNC_MAXCOST_CEIL_WITH_MAXCOST",
+      "type": 44797,
+      "typeName": "bool",
+      "attrs": 22,
+      "static": true,
+      "offset": 193,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176641
+    },
+    {
+      "index": 67777,
+      "name": "GLOBAL_UNIT_COLOR",
+      "type": 48444,
+      "typeName": "UnityEngine.Color",
+      "attrs": 22,
+      "static": true,
+      "offset": 196,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176642
+    },
+    {
+      "index": 67778,
+      "name": "GLOBAL_BUILDABLE_COLOR",
+      "type": 48444,
+      "typeName": "UnityEngine.Color",
+      "attrs": 22,
+      "static": true,
+      "offset": 212,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176643
+    },
+    {
+      "index": 67779,
+      "name": "GLOBAL_TRAP_TINT_COLOR",
+      "type": 48444,
+      "typeName": "UnityEngine.Color",
+      "attrs": 22,
+      "static": true,
+      "offset": 228,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176644
+    },
+    {
+      "index": 67780,
+      "name": "GLOBAL_EMISSION_COLOR",
+      "type": 48444,
+      "typeName": "UnityEngine.Color",
+      "attrs": 22,
+      "static": true,
+      "offset": 244,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176645
+    },
+    {
+      "index": 67781,
+      "name": "GLOBAL_HIGHLAND_BUILDABLE_COLOR",
+      "type": 48444,
+      "typeName": "UnityEngine.Color",
+      "attrs": 22,
+      "static": true,
+      "offset": 260,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176646
+    },
+    {
+      "index": 67782,
+      "name": "GLOBAL_HIGHLAND_EMISSION_COLOR",
+      "type": 48444,
+      "typeName": "UnityEngine.Color",
+      "attrs": 22,
+      "static": true,
+      "offset": 276,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176647
+    }
+  ],
+  "methods": [
+    {
+      "index": 71047,
+      "name": "Torappu.Battle.MoveController.get_moveSpeed",
+      "va": "0x1808b8750",
+      "size": 352,
+      "slot": 4,
+      "parameters": [],
+      "file": "71047-Torappu_Battle_MoveController-get_moveSpeed.asm",
+      "sha256": "0b0e37bfb32e1e1700b560a6edb8e07f9dbaf7e9aec7078fd0eb30b8b422a9e7"
+    },
+    {
+      "index": 71048,
+      "name": "Torappu.Battle.MoveController.get_velocity",
+      "va": "0x1808b8910",
+      "size": 112,
+      "slot": 65535,
+      "parameters": [],
+      "file": "71048-Torappu_Battle_MoveController-get_velocity.asm",
+      "sha256": "22f68a644ce0ee4a1f15261a25e37ab982dae5441b9f9125da50b8b6999df4ab"
+    },
+    {
+      "index": 62950,
+      "name": "Torappu.Battle.BattleOptions..cctor",
+      "va": "0x1805da9c0",
+      "size": 960,
+      "slot": 65535,
+      "parameters": [],
+      "file": "62950-Torappu_Battle_BattleOptions-_cctor.asm",
+      "sha256": "54e31e4af99c8b8fdb7b79c0535107033b048008d076fcf4276f2e3466139961"
+    },
+    {
+      "index": 220344,
+      "name": "Torappu.MathUtil.IsZero",
+      "va": "0x1866e5420",
+      "size": 192,
+      "slot": 65535,
+      "parameters": [
+        {
+          "index": 165922,
+          "name": "value",
+          "token": 134218445,
+          "type": 53178,
+          "typeInfo": {
+            "index": 53178,
+            "pointer": "0x188a5e6b0",
+            "kind": 17,
+            "attrs": 0,
+            "data": 38268,
+            "name": "Torappu.FP"
+          }
+        }
+      ],
+      "file": "220344-Torappu_MathUtil-IsZero.asm",
+      "sha256": "991d55bf59d378a3950b88cb548a5e60b95c0651591a83db09cef14f04c9087d"
+    },
+    {
+      "index": 220345,
+      "name": "Torappu.MathUtil.IsZero",
+      "va": "0x1866e53a0",
+      "size": 128,
+      "slot": 65535,
+      "parameters": [
+        {
+          "index": 165923,
+          "name": "pos",
+          "token": 134218446,
+          "type": 77713,
+          "typeInfo": {
+            "index": 77713,
+            "pointer": "0x188a77640",
+            "kind": 17,
+            "attrs": 0,
+            "data": 38273,
+            "name": "Torappu.TSVector2"
+          }
+        }
+      ],
+      "file": "220345-Torappu_MathUtil-IsZero.asm",
+      "sha256": "4cd2513a45fb7b9bbf956b63a57dd233eb3ca1c195d3f4728c6e799c7aaae9ea"
+    },
+    {
+      "index": 220378,
+      "name": "Torappu.MathUtil.IsZero",
+      "va": "0x1866e54e0",
+      "size": 32,
+      "slot": 65535,
+      "parameters": [
+        {
+          "index": 165989,
+          "name": "v",
+          "token": 134218512,
+          "type": 75036,
+          "typeInfo": {
+            "index": 75036,
+            "pointer": "0x188a2aaf0",
+            "kind": 12,
+            "attrs": 0,
+            "data": 41017,
+            "name": "float"
+          }
+        }
+      ],
+      "file": "220378-Torappu_MathUtil-IsZero.asm",
+      "sha256": "c64bef5c193489d68609c8ddb419fbb2c78c2cd0e9dacc9a0cfcb277c687e729"
+    },
+    {
+      "index": 220379,
+      "name": "Torappu.MathUtil.IsZero",
+      "va": "0x1866e5600",
+      "size": 32,
+      "slot": 65535,
+      "parameters": [
+        {
+          "index": 165990,
+          "name": "v",
+          "token": 134218513,
+          "type": 51493,
+          "typeInfo": {
+            "index": 51493,
+            "pointer": "0x188a2c6e0",
+            "kind": 13,
+            "attrs": 0,
+            "data": 40922,
+            "name": "double"
+          }
+        }
+      ],
+      "file": "220379-Torappu_MathUtil-IsZero.asm",
+      "sha256": "724192f94f15ab78a439a041a4252a3ca3ff740454bcebf3f3f54af91fec3854"
+    },
+    {
+      "index": 220411,
+      "name": "Torappu.MathUtil.IsZero",
+      "va": "0x1866e5620",
+      "size": 192,
+      "slot": 65535,
+      "parameters": [
+        {
+          "index": 166050,
+          "name": "pos",
+          "token": 134218573,
+          "type": 82722,
+          "typeInfo": {
+            "index": 82722,
+            "pointer": "0x188a2b340",
+            "kind": 17,
+            "attrs": 0,
+            "data": 45390,
+            "name": "UnityEngine.Vector2"
+          }
+        }
+      ],
+      "file": "220411-Torappu_MathUtil-IsZero.asm",
+      "sha256": "b10c65a67ccea61a9a3a43505c6fef35cf56cc6c56c7627b8edf592acf26bab2"
+    },
+    {
+      "index": 220412,
+      "name": "Torappu.MathUtil.IsZero",
+      "va": "0x1866e5500",
+      "size": 256,
+      "slot": 65535,
+      "parameters": [
+        {
+          "index": 166051,
+          "name": "pos",
+          "token": 134218574,
+          "type": 82758,
+          "typeInfo": {
+            "index": 82758,
+            "pointer": "0x188a2b450",
+            "kind": 17,
+            "attrs": 0,
+            "data": 45387,
+            "name": "UnityEngine.Vector3"
+          }
+        }
+      ],
+      "file": "220412-Torappu_MathUtil-IsZero.asm",
+      "sha256": "2f7834a16d70d6b2cba45d05ed859fd96292620fce8561cc234507e129297a39"
+    },
+    {
+      "index": 220423,
+      "name": "Torappu.MathUtil.NormalizeDirectionSafely",
+      "va": "0x1866e5e20",
+      "size": 160,
+      "slot": 65535,
+      "parameters": [
+        {
+          "index": 166075,
+          "name": "direction",
+          "token": 134218598,
+          "type": 82722,
+          "typeInfo": {
+            "index": 82722,
+            "pointer": "0x188a2b340",
+            "kind": 17,
+            "attrs": 0,
+            "data": 45390,
+            "name": "UnityEngine.Vector2"
+          }
+        },
+        {
+          "index": 166076,
+          "name": "tolerance",
+          "token": 134218599,
+          "type": 75055,
+          "typeInfo": {
+            "index": 75055,
+            "pointer": "0x188adb210",
+            "kind": 12,
+            "attrs": 4112,
+            "data": 41017,
+            "name": "float"
+          }
+        }
+      ],
+      "file": "220423-Torappu_MathUtil-NormalizeDirectionSafely.asm",
+      "sha256": "12a56815920ee09a3b1f17e71bf768da7f13046fe3d52073b9946aefd58df86d"
+    },
+    {
+      "index": 220424,
+      "name": "Torappu.MathUtil.NormalizeDirectionSafely",
+      "va": "0x1866e5ec0",
+      "size": 592,
+      "slot": 65535,
+      "parameters": [
+        {
+          "index": 166077,
+          "name": "direction",
+          "token": 134218600,
+          "type": 82758,
+          "typeInfo": {
+            "index": 82758,
+            "pointer": "0x188a2b450",
+            "kind": 17,
+            "attrs": 0,
+            "data": 45387,
+            "name": "UnityEngine.Vector3"
+          }
+        }
+      ],
+      "file": "220424-Torappu_MathUtil-NormalizeDirectionSafely.asm",
+      "sha256": "c991e750a7956335e81466f701f133ddd8b92d97ea2c60ec10af6e56775a8e01"
+    },
+    {
+      "index": 282406,
+      "name": "UnityEngine.Vector2.Normalize",
+      "va": "0x1805353f0",
+      "size": 320,
+      "slot": 65535,
+      "parameters": [],
+      "file": "282406-UnityEngine_Vector2-Normalize.asm",
+      "sha256": "efe272ac66c1e26a5bfa9c68ef2e297e0f5d04060f146035bd30db40ff1f76f0"
+    },
+    {
+      "index": 282407,
+      "name": "UnityEngine.Vector2.get_normalized",
+      "va": "0x180535530",
+      "size": 224,
+      "slot": 65535,
+      "parameters": [],
+      "file": "282407-UnityEngine_Vector2-get_normalized.asm",
+      "sha256": "17406dc5d5809d3d1858da893829f4e5f116bc873de0d5e1daca397f68b53006"
+    },
+    {
+      "index": 282422,
+      "name": "UnityEngine.Vector2.ClampMagnitude",
+      "va": "0x186b53e50",
+      "size": 256,
+      "slot": 65535,
+      "parameters": [
+        {
+          "index": 236402,
+          "name": "vector",
+          "token": 134220755,
+          "type": 82722,
+          "typeInfo": {
+            "index": 82722,
+            "pointer": "0x188a2b340",
+            "kind": 17,
+            "attrs": 0,
+            "data": 45390,
+            "name": "UnityEngine.Vector2"
+          }
+        },
+        {
+          "index": 236403,
+          "name": "maxLength",
+          "token": 134220756,
+          "type": 75036,
+          "typeInfo": {
+            "index": 75036,
+            "pointer": "0x188a2aaf0",
+            "kind": 12,
+            "attrs": 0,
+            "data": 41017,
+            "name": "float"
+          }
+        }
+      ],
+      "file": "282422-UnityEngine_Vector2-ClampMagnitude.asm",
+      "sha256": "a6b57b31454c065a76aa4bd7f3b7b65a7f0b8ed46a2d6f110693cf9a4634e620"
+    }
+  ],
+  "scalarConstants": [
+    {
+      "va": "0x186e3fdc4",
+      "f32": 100.0,
+      "usedBy": "MoveController._CalculateSteeringForce legacy branch"
+    }
+  ]
+}

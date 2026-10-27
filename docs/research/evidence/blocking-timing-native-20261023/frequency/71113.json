@@ -1,0 +1,16 @@
+{
+  "index": 71113,
+  "name": "OnProjectileStop",
+  "type": 10750,
+  "returnType": 83059,
+  "parameterStart": -1,
+  "generic": -1,
+  "token": 100734410,
+  "flags": 196,
+  "iflags": 0,
+  "slot": 53,
+  "parameterCount": 0,
+  "address": 6451695952,
+  "fullname": "Torappu.Battle.HarpoonProjectile.OnProjectileStop",
+  "parameters": []
+}

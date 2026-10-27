@@ -1,0 +1,109 @@
+{
+  "type": {
+    "index": 11352,
+    "name": "EnemyStateMachine",
+    "namespace": "",
+    "raw": [
+      2840361,
+      16,
+      112693,
+      95897,
+      14678,
+      112693,
+      4294967295,
+      1048579,
+      86511,
+      76639,
+      4294967295,
+      4294967295,
+      4294967295,
+      3795,
+      101676,
+      11416,
+      0,
+      3,
+      2,
+      655360,
+      65537,
+      3072,
+      33565787
+    ],
+    "fieldStart": 86511,
+    "methodStart": 76639,
+    "fieldCount": 2,
+    "methodCount": 3
+  },
+  "fields": [
+    {
+      "index": 86511,
+      "name": "_c__Hotfix0_ctor",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67195376
+    },
+    {
+      "index": 86512,
+      "name": "__Hotfix0_OnTick",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 8,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67195377
+    }
+  ],
+  "methods": [
+    {
+      "index": 76639,
+      "name": ".ctor",
+      "type": 11352,
+      "returnType": 83059,
+      "parameterStart": 75182,
+      "generic": -1,
+      "token": 100739936,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6453528976,
+      "fullname": "Torappu.Battle.Enemy.States.EnemyStateMachine..ctor"
+    },
+    {
+      "index": 76640,
+      "name": "OnTick",
+      "type": 11352,
+      "returnType": 83059,
+      "parameterStart": 75184,
+      "generic": -1,
+      "token": 100739937,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 8,
+      "parameterCount": 1,
+      "address": 6453528752,
+      "fullname": "Torappu.Battle.Enemy.States.EnemyStateMachine.OnTick"
+    },
+    {
+      "index": 76641,
+      "name": "<>xLuaBaseProxy_OnTick",
+      "type": 11352,
+      "returnType": 83059,
+      "parameterStart": 75185,
+      "generic": -1,
+      "token": 100739938,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6453528960,
+      "fullname": "Torappu.Battle.Enemy.States.EnemyStateMachine.<>xLuaBaseProxy_OnTick"
+    }
+  ]
+}

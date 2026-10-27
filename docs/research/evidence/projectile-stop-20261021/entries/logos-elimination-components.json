@@ -1,0 +1,150 @@
+[
+  {
+    "bundle": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4133_logos.ab",
+    "sha256": "4b39500dd0c4ae3a0c2db17e09b942f7686b94fa9504ea654a20effb2ac3574b",
+    "type": "EliminateProjectileAbility",
+    "component": {
+      "object": {
+        "id": 8587170977828672971,
+        "start": 121088,
+        "size": 208,
+        "typeid": 28,
+        "classid": 114,
+        "scriptTypeIndex": 0,
+        "scriptid": "2dd85f905c1b1f9d3f8af5424c321db8"
+      },
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -5615559086309141045
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": -8472532906046541671
+        },
+        "m_Name": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": -7800239368906435125
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 1,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 1,
+        "_selectTargetTiming": 0,
+        "_timeMode": 1,
+        "_alwaysIncludeTarget": 0,
+        "_allowNoTarget": 1,
+        "_animKey": "Skill_3_End",
+        "_endAnimKey": "",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 1,
+        "_faceToDefault": 0,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": [],
+        "_maxAnimScale": -1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 0
+      }
+    },
+    "gameObject": {
+      "object": {
+        "id": -5615559086309141045,
+        "start": 103936,
+        "size": 71,
+        "typeid": 6,
+        "classid": 1,
+        "scriptTypeIndex": -1,
+        "scriptid": null
+      },
+      "fields": {
+        "m_Component": [
+          {
+            "component": {
+              "m_FileID": 0,
+              "m_PathID": 5132451155511711179
+            }
+          },
+          {
+            "component": {
+              "m_FileID": 0,
+              "m_PathID": 8587170977828672971
+            }
+          },
+          {
+            "component": {
+              "m_FileID": 0,
+              "m_PathID": -3056567031894731317
+            }
+          },
+          {
+            "component": {
+              "m_FileID": 0,
+              "m_PathID": -9007948760567147061
+            }
+          }
+        ],
+        "m_Layer": {
+          "raw": "0c000000",
+          "unresolvedType": "common:934"
+        },
+        "m_Name": "Attack",
+        "m_Tag": {
+          "raw": "0000",
+          "unresolvedType": "common:907"
+        },
+        "m_IsActive": {
+          "raw": "01",
+          "unresolvedType": "common:76"
+        }
+      }
+    },
+    "hierarchy": "char_4133_logos/Modes/S3_End/Body/Attack",
+    "selector": {
+      "object": {
+        "id": -7800239368906435125,
+        "start": 102416,
+        "size": 36,
+        "typeid": 10,
+        "classid": 114,
+        "scriptTypeIndex": 13,
+        "scriptid": "6c8bfeab88cda87565cca3e26cb2347f"
+      },
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 8084434814728639947
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 1966733865724876027
+        },
+        "m_Name": "",
+        "_targetSide": 2
+      }
+    },
+    "selectorType": "AdvancedProjectileSelector"
+  }
+]

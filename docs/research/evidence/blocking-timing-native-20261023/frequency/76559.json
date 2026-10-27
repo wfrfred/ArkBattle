@@ -1,0 +1,16 @@
+{
+  "index": 76559,
+  "name": "get_canBlockEnemies",
+  "type": 11393,
+  "returnType": 44789,
+  "parameterStart": -1,
+  "generic": -1,
+  "token": 100739856,
+  "flags": 2534,
+  "iflags": 0,
+  "slot": 202,
+  "parameterCount": 0,
+  "address": 6453443680,
+  "fullname": "Torappu.Battle.Enemy.get_canBlockEnemies",
+  "parameters": []
+}

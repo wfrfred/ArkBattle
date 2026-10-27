@@ -1,0 +1,86 @@
+{
+  "type": {
+    "index": 15034,
+    "name": "CharSearchBlockeeImmediate",
+    "namespace": "",
+    "raw": [
+      3384322,
+      16,
+      100758,
+      62849,
+      39961,
+      100758,
+      4294967295,
+      1048578,
+      119111,
+      99961,
+      4294967295,
+      14257,
+      4294967295,
+      4294967295,
+      164373,
+      17694,
+      0,
+      65539,
+      4,
+      458752,
+      65536,
+      3072,
+      33569468
+    ],
+    "fieldStart": 119111,
+    "methodStart": 99961,
+    "fieldCount": 4,
+    "methodCount": 3
+  },
+  "fields": [
+    {
+      "index": 119111,
+      "name": "_targetType",
+      "type": 100487,
+      "typeName": "Torappu.Battle.Action.Nodes.ActionTargetType",
+      "attrs": 1,
+      "static": false,
+      "offset": 16,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67227976
+    },
+    {
+      "index": 119112,
+      "name": "__Hotfix0_get_allowedSource",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67227977
+    },
+    {
+      "index": 119113,
+      "name": "__Hotfix0_Execute",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 8,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67227978
+    },
+    {
+      "index": 119114,
+      "name": "_c__Hotfix0_ctor",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 16,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67227979
+    }
+  ]
+}

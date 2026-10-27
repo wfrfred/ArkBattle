@@ -1,0 +1,28 @@
+; Torappu.PeriodicTicker.Reset metadata=25961 token=0x600656a VA=0x181e04390 RVA=0x1e04390 size=0x30
+0000000181e04390: sub      rsp, 0x28
+0000000181e04394: test     dl, dl
+0000000181e04396: je       0x181e0439d
+0000000181e04398: mov      eax, dword ptr [rcx + 0x10]
+0000000181e0439b: jmp      0x181e0439f
+0000000181e0439d: xor      eax, eax
+0000000181e0439f: test     rcx, rcx
+0000000181e043a2: je       0x181e043ac
+0000000181e043a4: mov      dword ptr [rcx + 0x14], eax
+0000000181e043a7: add      rsp, 0x28
+0000000181e043ab: ret      
+0000000181e043ac: call     0x18048c0b0
+0000000181e043b1: int3     
+0000000181e043b2: int3     
+0000000181e043b3: int3     
+0000000181e043b4: int3     
+0000000181e043b5: int3     
+0000000181e043b6: int3     
+0000000181e043b7: int3     
+0000000181e043b8: int3     
+0000000181e043b9: int3     
+0000000181e043ba: int3     
+0000000181e043bb: int3     
+0000000181e043bc: int3     
+0000000181e043bd: int3     
+0000000181e043be: int3     
+0000000181e043bf: int3     

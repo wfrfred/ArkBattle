@@ -1,0 +1,23 @@
+{
+  "index": 77301,
+  "name": "<>xLuaBaseProxy__SearchBlockee",
+  "type": 11433,
+  "returnType": 83059,
+  "parameterStart": 75606,
+  "generic": -1,
+  "token": 100740598,
+  "flags": 1,
+  "iflags": 0,
+  "slot": 65535,
+  "parameterCount": 1,
+  "address": 6453656880,
+  "fullname": "Torappu.Battle.PropLikeStaticBlockToken.<>xLuaBaseProxy__SearchBlockee",
+  "parameters": [
+    {
+      "index": 75606,
+      "name": "P0",
+      "token": 134293340,
+      "type": 44789
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+Blocking 实际机制调查（2026-10-23）
+
+本次工作是原生机制调查，不是重构方案或实现。重新读取安装客户端的 GameAssembly.dll 和 global-metadata.dat，保存完整方法体，并补查泛型实例、接口派发、字段和数值常量。源码与测试未修改。
+输入文件指纹与此前blocking-lifecycle.json一致。版本为本机已安装版本，不能称作线上最新；未执行实际战斗或运行时XLua替换。静态原生分支、调用链推断、项目选择、未确认行为分开记录。
+
+详细证据
+- modes/report.txt：模式、目标资格、地块、阵营、半径、模式切换。
+- competition/report.txt：更新顺序、目标权重、容量筛选、建立时复核。
+- retention/report.txt：旧关系、容量下降、解除/重接敌、生命周期、同步通知。
+- geometry/report.txt：接敌偏移、稳定阻挡位置、0.2秒位置插值。
+- manifest.json：原始证据文件及SHA256。
+
+一、阻挡模式与资格：已确认的重要事实
+
+阻挡者的blockMode、目标的changeableMotionMode和寻路pathMotionMode是不同事实。普通原生模式字段复用MotionMode(WALK/FLY)，没有独立GROUND/AIR/NONE枚举；禁挡由BlockFree/战斗资格/容量等表达。项目可以用自己的领域类型，但不能声称原生存在这一三态枚举。
+
+模式匹配：ignoreBlockMode允许跳过，否则目标changeableMotionMode必须等于阻挡者blockMode。
+地面阻挡：有效rootTile必须存在且isMeleeBlockable。
+空中阻挡：跳过这一地块近战阻挡限制。
+Tile.isMeleeBlockable优先使用tile_blockable黑板值，未设置才取!isHighland，不是WALK可通行判定。
+目标资格还包括alive、hasCombat、非BlockFree、尚未被别人阻挡、范围、特殊阻挡条件。BlockFree查询包含BLOCK_FREE、FEARED、ATTRACTED及常驻标志。
+阵营是阻挡者的定向blockSideMask：普通角色只允许ENEMY，特殊阻挡者可提供其他掩码；不普遍等于areHostile。
+普通角色检测半径：地面0.7071、空中0.8944；BLOCK_RADIUS_SCALE只影响空中半径，动态查询。0.5是接敌后分离距离，不能混用。
+
+当前差异：facts.ts用Layer+WALK可通行性，relations.ts用areHostile+ground，缺少独立阻挡模式与上述地块语义。承载Unit为highland即拒绝的现行规则，尚无完整原生统一证据。
+
+二、新关系竞争：已确认
+
+普通ObjectManager按实例分配UID升序生成validAndBorned快照，再顺序OnTick。Character自身的Tick调用自己的搜索。因此普通同轮ready的阻挡者按其更新先后竞争；显式立即搜索和搜索ticker会改变实际次序，不能概括成任何场景低UID永远先挡。
+同一阻挡者内部按中心距离平方的FP权重排序。原生权重比较含近似相等政策；判同权重后按目标实例UID。不是全局让每个敌人选择最近阻挡者，也不是目标ID优先。
+
+普通搜索伪代码：
+  等待搜索ticker允许，或显式force搜索
+  读取当前资格和初始剩余容量
+  若剩余容量<=0，退出
+  取得合格候选，按距离权重、目标UID排序
+  按初始容量贪心装入selected；装不下的跳过，继续后面
+  完成selected后，再逐个AddBlockee
+  每次Add前再读取当前容量、占用、目标体积，仍放得下才尝试建立
+
+建立回调增加容量不自动把初始预算以外的目标补进本轮名单；减少容量则可能使后续selected建立失败。后续或嵌套搜索另算。
+当前按目标ID先后选择最近阻挡者，存在实质差异。例如早更新阻挡者A距敌0.49，晚更新B距敌0.1，原生A可能先取得目标，当前算法会选B。单一阻挡者也可能错误优先较远的低ID敌人。
+满阻挡提前退出本身有普通原生依据；大君之触/赐的特殊关系增容内容未在本轮完整闭合，不能凭通用早退断言该机制必错。
+
+三、旧关系保持、解除与容量下降：已确认
+
+普通角色/敌人更新、BlockManager.Tick和CombatWrapper读取旧关系的路径，没有每Tick按距离复核。特定强制位移、Blink、失衡、浮空入口显式解除；不能把所有低层SetPosition都看成自动解除。
+ReleaseBlock仅解除当前关系，不提供持续禁挡豁免，也不自己触发搜索。后续同Tick若出现普通或立即搜索，可重新接敌；拉拽弹道停止调用SearchBlockeeImmediate有直接证据。
+
+容量下降伪代码（无嵌套干预的普通路径）：
+  capacity = 当前容量
+  while 当前总占用 > capacity:
+      enemy = 已阻挡列表最后一个
+      从列表移除并减去当前体积
+      清除enemy的blocker身份并通知
+      通知blocker
+
+这保留的是能满足容量的登记前缀，不是遍历保留所有放得下的旧关系。
+例：[体积2的A,体积1的B]，容量3降至1，会先解除B，再解除A。本次裁撤结束为空；后续搜索仍可能重新挡住B。当前实现直接保留B，区别在解除、重接敌、通知顺序等可观察行为。
+体积变化也会重新核算当前阻挡者总占用，再进行容量裁撤，不是只在起手计费。
+原生裁撤函数起手采样capacity，回调后不重新取capacity；这是历史实现事实，不是项目应该复制的重入规范。
+
+四、生命周期与通知：已确认
+
+Dying、Dead、Finish多个入口显式清理阻挡，模式变化也先清理旧关系再通知；不是只有注销对象才解除。
+Stronghold的LEAVING与原生状态机并非一一对应，但当前active不检查lifecycle，HP>0的离场清理回调仍可保留阻挡，是需要明确的项目契约。
+
+阻挡通知为同步业务回调，可以执行Buff内容，不只是追加表现日志。
+原生建立顺序是：写enemy.blocker→enemy通知→位置修正→返回→blocker列表及总占用记账→blocker通知。
+单个解除先修改blocker列表，再清enemy.blocker并通知；全部解除则逐个清enemy并通知，最后才统一清blocker列表。原生存在不同的半更新可见窗口。
+项目保留唯一权威BlockingRelation集合更合理；如果采用提交完整关系后通知，是项目主动选择的一致性契约，不能以原生作错误背书。通知后后续业务仍需读取最新BattleState和资格。
+
+五、位置偏移、速度与攻击：已确认的范围
+
+接敌会产生实际坐标变化。BlockBalancer先把过近敌人沿中心连线分离到通常0.5距离；与既有阻挡位置过近时还会调整方向。
+后续敌人使用已有敌人的stableBlockPosition，在前一个位置插值未完成时就看到它的最终目标位置。
+_MoveToBlockPosition以0.2秒Tween写入SetPosition，确定性BattleTween分支也存在，不能把它当作纯sprite表现。省略最终偏移与简化插值是两个不同决定。
+
+普通Locomotion暂停保留控制器历史velocity的结论，已由locomotion-native-20261019原生证据确认；阻挡并不要求清零它。控制器velocity不等于物理刚体velocity，也不意味着解除后一定绕过攻击/状态的移动限制。
+
+阻挡直接提供近战敌人的已有战斗目标，Targeting和Action负责选择及攻击行为。当前近战敌人已能通过实际阻挡关系选择其阻挡者；不能把这个例外扩张成双方一律无视所有不可选中限制。
+
+特殊几何：普通检测使用中心点，不使用Hitbox；Trap可覆盖半径，GiantTrap存在多个检测中心。并不因此要求把阻挡改成通用Hitbox碰撞。
+
+六、未确认与项目自由度
+
+未确认：运行时热更后的AIR半径重验、所有承载装置的地块覆盖链、所有特殊敌人的阻挡资格与关系增容实现、所有特殊移动和插值中断组合。
+AIR重验有明确入口，但当前native fallback会把已有blocker视为CheckBlockable失败，字面存在清除所有旧项的疑点；没有实战或热更证据，不宣称这就是正式游戏政策。
+
+无需复制：原生PriorityQueue容器、3次搜索ticker、FP数值细节、双向半更新窗口或完整Unity位置Tween框架。是否简化调度/近似距离/插值，由对可观察行为的影响决定；不能把当前不同的竞争算法或容量裁撤算法描述为已复刻原生。
+
+外部佐证（主体结论均另有本地原生证据）
+https://prts.wiki/w/作战机制
+https://prts.wiki/w/云迹
+https://prts.wiki/w/游戏数据基础
+https://prts.wiki/w/大君之触
+https://prts.wiki/w/大君之赐

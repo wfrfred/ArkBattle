@@ -1,0 +1,38 @@
+[
+  {
+    "address": "0x1808d1384",
+    "dst": "0x180a31400",
+    "method": 71113,
+    "owner": "Torappu.Battle.HarpoonProjectile.OnProjectileStop"
+  },
+  {
+    "address": "0x1808d4607",
+    "dst": "0x180a31400",
+    "method": 71246,
+    "owner": "Torappu.Battle.NetCatcherProjectile.OnProjectileStop"
+  },
+  {
+    "address": "0x180a2ef0a",
+    "dst": "0x180005540",
+    "method": 76022,
+    "owner": "Torappu.Battle.Character.OnTick"
+  },
+  {
+    "address": "0x180a724e5",
+    "dst": "0x180aa09e0",
+    "method": 76531,
+    "owner": "Torappu.Battle.Enemy.OnTick"
+  },
+  {
+    "address": "0x180d42d3d",
+    "dst": "0x180a31400",
+    "method": 86413,
+    "owner": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.OnProjectileStop"
+  },
+  {
+    "address": "0x181162f30",
+    "dst": "0x180a31400",
+    "method": 99962,
+    "owner": "Torappu.Battle.Action.Nodes.CharSearchBlockeeImmediate.Execute"
+  }
+]

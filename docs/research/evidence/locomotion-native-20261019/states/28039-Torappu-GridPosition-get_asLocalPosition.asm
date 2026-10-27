@@ -1,0 +1,16 @@
+; Torappu.GridPosition.get_asLocalPosition metadata=28039 token=0x6006d88 VA=0x182104010 RVA=0x2104010 size=0x20
+0000000182104010: movd     xmm0, dword ptr [rcx + 4]
+0000000182104015: movd     xmm1, dword ptr [rcx]
+0000000182104019: cvtdq2ps xmm0, xmm0
+000000018210401c: cvtdq2ps xmm1, xmm1
+000000018210401f: unpcklps xmm0, xmm1
+0000000182104022: movq     rax, xmm0
+0000000182104027: ret      
+0000000182104028: int3     
+0000000182104029: int3     
+000000018210402a: int3     
+000000018210402b: int3     
+000000018210402c: int3     
+000000018210402d: int3     
+000000018210402e: int3     
+000000018210402f: int3     

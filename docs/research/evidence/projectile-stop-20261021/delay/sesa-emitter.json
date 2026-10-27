@@ -1,0 +1,16 @@
+[
+  {
+    "cab": "CAB-1beabca2c4cdd091cbe5d483527f1ebb",
+    "objectId": -304606939443788811,
+    "class": "Torappu.Battle.Abilities.RangedAttack",
+    "go": "Attack",
+    "projectile": "projectile_sesa"
+  },
+  {
+    "cab": "CAB-1beabca2c4cdd091cbe5d483527f1ebb",
+    "objectId": 4404844242656265205,
+    "class": "Torappu.Battle.Abilities.RangedAttack",
+    "go": "Attack",
+    "projectile": "projectile_sesa_s2"
+  }
+]

@@ -1,0 +1,4870 @@
+{
+  "checkedOn": "2026-10-15",
+  "scope": "Fresh file hashes, metadata and method-pointer location; direct-call opcode/displacement checks against retained prior disassembly; not fresh full disassembly or runtime execution.",
+  "dllSha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+  "metadataSha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+  "types": [
+    {
+      "index": 5401,
+      "name": "Torappu.SkillData",
+      "fields": [
+        {
+          "name": "name",
+          "typeIndex": 77205,
+          "offset": "0x10"
+        },
+        {
+          "name": "skillId",
+          "typeIndex": 77205,
+          "offset": "0x18"
+        },
+        {
+          "name": "rangeId",
+          "typeIndex": 77205,
+          "offset": "0x20"
+        },
+        {
+          "name": "iconId",
+          "typeIndex": 77205,
+          "offset": "0x28"
+        },
+        {
+          "name": "level",
+          "typeIndex": 59016,
+          "offset": "0x30"
+        },
+        {
+          "name": "description",
+          "typeIndex": 77205,
+          "offset": "0x38"
+        },
+        {
+          "name": "skillType",
+          "typeIndex": 75475,
+          "offset": "0x40"
+        },
+        {
+          "name": "durationType",
+          "typeIndex": 75444,
+          "offset": "0x44"
+        },
+        {
+          "name": "spData",
+          "typeIndex": 75838,
+          "offset": "0x48"
+        },
+        {
+          "name": "prefabKey",
+          "typeIndex": 77205,
+          "offset": "0x50"
+        },
+        {
+          "name": "duration",
+          "typeIndex": 75040,
+          "offset": "0x58"
+        },
+        {
+          "name": "blackboard",
+          "typeIndex": 44677,
+          "offset": "0x60"
+        },
+        {
+          "name": "isPrefabKeyOverridden",
+          "typeIndex": 44794,
+          "offset": "0x68"
+        },
+        {
+          "name": "m_inited",
+          "typeIndex": 44790,
+          "offset": "0x69"
+        },
+        {
+          "name": "__Hotfix0_get_isValid",
+          "typeIndex": 51110,
+          "offset": "0x0"
+        },
+        {
+          "name": "__Hotfix0_get_needToDisplay",
+          "typeIndex": 51110,
+          "offset": "0x8"
+        },
+        {
+          "name": "__Hotfix0_get_spCost",
+          "typeIndex": 51110,
+          "offset": "0x10"
+        },
+        {
+          "name": "__Hotfix0_get_maxSp",
+          "typeIndex": 51110,
+          "offset": "0x18"
+        },
+        {
+          "name": "__Hotfix0_InitIfNot",
+          "typeIndex": 51110,
+          "offset": "0x20"
+        },
+        {
+          "name": "__Hotfix0_CreateInvalid",
+          "typeIndex": 51110,
+          "offset": "0x28"
+        },
+        {
+          "name": "__Hotfix0_GetSkillId",
+          "typeIndex": 51110,
+          "offset": "0x30"
+        },
+        {
+          "name": "__Hotfix0_GetIconId",
+          "typeIndex": 51110,
+          "offset": "0x38"
+        },
+        {
+          "name": "__Hotfix0_Duplicate",
+          "typeIndex": 51110,
+          "offset": "0x40"
+        },
+        {
+          "name": "_c__Hotfix0_ctor",
+          "typeIndex": 51110,
+          "offset": "0x48"
+        }
+      ],
+      "methods": [
+        {
+          "index": 32859,
+          "typeIndex": 5401,
+          "type": "Torappu.SkillData",
+          "name": "get_isValid",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x600805c",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18252a700",
+          "va": 6481422080
+        },
+        {
+          "index": 32860,
+          "typeIndex": 5401,
+          "type": "Torappu.SkillData",
+          "name": "get_needToDisplay",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x600805d",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18252a8f0",
+          "va": 6481422576
+        },
+        {
+          "index": 32861,
+          "typeIndex": 5401,
+          "type": "Torappu.SkillData",
+          "name": "get_spCost",
+          "returnType": 59011,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x600805e",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18252a950",
+          "va": 6481422672
+        },
+        {
+          "index": 32862,
+          "typeIndex": 5401,
+          "type": "Torappu.SkillData",
+          "name": "get_maxSp",
+          "returnType": 59011,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x600805f",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18252a760",
+          "va": 6481422176
+        },
+        {
+          "index": 32863,
+          "typeIndex": 5401,
+          "type": "Torappu.SkillData",
+          "name": "InitIfNot",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6008060",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18252a520",
+          "va": 6481421600
+        },
+        {
+          "index": 32864,
+          "typeIndex": 5401,
+          "type": "Torappu.SkillData",
+          "name": "CreateInvalid",
+          "returnType": 75437,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6008061",
+          "flags": 150,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18252a180",
+          "va": 6481420672
+        },
+        {
+          "index": 32865,
+          "typeIndex": 5401,
+          "type": "Torappu.SkillData",
+          "name": "GetSkillId",
+          "returnType": 77200,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6008062",
+          "flags": 486,
+          "slot": 4,
+          "parameterCount": 0,
+          "address": "0x18252a4c0",
+          "va": 6481421504
+        },
+        {
+          "index": 32866,
+          "typeIndex": 5401,
+          "type": "Torappu.SkillData",
+          "name": "GetIconId",
+          "returnType": 77200,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6008063",
+          "flags": 486,
+          "slot": 5,
+          "parameterCount": 0,
+          "address": "0x18252a460",
+          "va": 6481421408
+        },
+        {
+          "index": 32867,
+          "typeIndex": 5401,
+          "type": "Torappu.SkillData",
+          "name": "Duplicate",
+          "returnType": 75437,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6008064",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18252a200",
+          "va": 6481420800
+        },
+        {
+          "index": 32868,
+          "typeIndex": 5401,
+          "type": "Torappu.SkillData",
+          "name": ".ctor",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6008065",
+          "flags": 6278,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18252a610",
+          "va": 6481421840
+        }
+      ]
+    },
+    {
+      "index": 10186,
+      "name": ".SpController",
+      "fields": [
+        {
+          "name": "m_spType",
+          "typeIndex": 75848,
+          "offset": "0x10"
+        },
+        {
+          "name": "m_owner",
+          "typeIndex": 52649,
+          "offset": "0x18"
+        },
+        {
+          "name": "m_spCost",
+          "typeIndex": 63128,
+          "offset": "0x20"
+        },
+        {
+          "name": "m_increments",
+          "typeIndex": 33703,
+          "offset": "0x38"
+        },
+        {
+          "name": "m_spRecoverTimer",
+          "typeIndex": 64981,
+          "offset": "0x40"
+        },
+        {
+          "name": "__Hotfix0_get_isFull",
+          "typeIndex": 51110,
+          "offset": "0x0"
+        },
+        {
+          "name": "__Hotfix0_get_isTimerValid",
+          "typeIndex": 51110,
+          "offset": "0x8"
+        },
+        {
+          "name": "__Hotfix0_get_spType",
+          "typeIndex": 51110,
+          "offset": "0x10"
+        },
+        {
+          "name": "__Hotfix0_get_progressToFull",
+          "typeIndex": 51110,
+          "offset": "0x18"
+        },
+        {
+          "name": "__Hotfix0_get_progressToReady",
+          "typeIndex": 51110,
+          "offset": "0x20"
+        },
+        {
+          "name": "__Hotfix0_get_progressToNext",
+          "typeIndex": 51110,
+          "offset": "0x28"
+        },
+        {
+          "name": "__Hotfix0_get_progressLayer",
+          "typeIndex": 51110,
+          "offset": "0x30"
+        },
+        {
+          "name": "__Hotfix0_get_spCost",
+          "typeIndex": 51110,
+          "offset": "0x38"
+        },
+        {
+          "name": "__Hotfix0_get_spCostZero",
+          "typeIndex": 51110,
+          "offset": "0x40"
+        },
+        {
+          "name": "__Hotfix0_MarkInvalid",
+          "typeIndex": 51110,
+          "offset": "0x48"
+        },
+        {
+          "name": "__Hotfix0_Reset",
+          "typeIndex": 51110,
+          "offset": "0x50"
+        },
+        {
+          "name": "__Hotfix0_ResetSpTimer",
+          "typeIndex": 51110,
+          "offset": "0x58"
+        },
+        {
+          "name": "__Hotfix0_UpdateSpData",
+          "typeIndex": 51110,
+          "offset": "0x60"
+        },
+        {
+          "name": "__Hotfix0_OnTakeDamage",
+          "typeIndex": 51110,
+          "offset": "0x68"
+        },
+        {
+          "name": "__Hotfix0_OnOutputAttackOrHeal",
+          "typeIndex": 51110,
+          "offset": "0x70"
+        },
+        {
+          "name": "__Hotfix0_UpdateSpRecoveryPerSec",
+          "typeIndex": 51110,
+          "offset": "0x78"
+        },
+        {
+          "name": "__Hotfix0_OnTick",
+          "typeIndex": 51110,
+          "offset": "0x80"
+        },
+        {
+          "name": "__Hotfix0__RecoverMp",
+          "typeIndex": 51110,
+          "offset": "0x88"
+        },
+        {
+          "name": "_c__Hotfix0_ctor",
+          "typeIndex": 51110,
+          "offset": "0x90"
+        }
+      ],
+      "methods": [
+        {
+          "index": 66735,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "get_isFull",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x60104b0",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18070aa00",
+          "va": 6449834496
+        },
+        {
+          "index": 66736,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "get_isTimerValid",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x60104b1",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18070aac0",
+          "va": 6449834688
+        },
+        {
+          "index": 66737,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "get_spType",
+          "returnType": 75847,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x60104b2",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18070b2e0",
+          "va": 6449836768
+        },
+        {
+          "index": 66738,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "get_progressToFull",
+          "returnType": 53178,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x60104b3",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18070acd0",
+          "va": 6449835216
+        },
+        {
+          "index": 66739,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "get_progressToReady",
+          "returnType": 53178,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x60104b4",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18070aff0",
+          "va": 6449836016
+        },
+        {
+          "index": 66740,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "get_progressToNext",
+          "returnType": 53178,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x60104b5",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18070ae60",
+          "va": 6449835616
+        },
+        {
+          "index": 66741,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "get_progressLayer",
+          "returnType": 53178,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x60104b6",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18070ab30",
+          "va": 6449834800
+        },
+        {
+          "index": 66742,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "get_spCost",
+          "returnType": 59011,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x60104b7",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18070b260",
+          "va": 6449836640
+        },
+        {
+          "index": 66743,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "get_spCostZero",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x60104b8",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18070b1c0",
+          "va": 6449836480
+        },
+        {
+          "index": 66744,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "MarkInvalid",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x60104b9",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x180709f20",
+          "va": 6449831712
+        },
+        {
+          "index": 66745,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "Reset",
+          "returnType": 83059,
+          "parametersStart": 66738,
+          "genericContainer": 4294967295,
+          "token": "0x60104ba",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 2,
+          "address": "0x18070a360",
+          "va": 6449832800
+        },
+        {
+          "index": 66746,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "ResetSpTimer",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x60104bb",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18070a2f0",
+          "va": 6449832688
+        },
+        {
+          "index": 66747,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "UpdateSpData",
+          "returnType": 83059,
+          "parametersStart": 66740,
+          "genericContainer": 4294967295,
+          "token": "0x60104bc",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 2,
+          "address": "0x18070a4f0",
+          "va": 6449833200
+        },
+        {
+          "index": 66748,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "OnTakeDamage",
+          "returnType": 83059,
+          "parametersStart": 66742,
+          "genericContainer": 4294967295,
+          "token": "0x60104bd",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x18070a090",
+          "va": 6449832080
+        },
+        {
+          "index": 66749,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "OnOutputAttackOrHeal",
+          "returnType": 83059,
+          "parametersStart": 66743,
+          "genericContainer": 4294967295,
+          "token": "0x60104be",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x180709f90",
+          "va": 6449831824
+        },
+        {
+          "index": 66750,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "UpdateSpRecoveryPerSec",
+          "returnType": 83059,
+          "parametersStart": 66744,
+          "genericContainer": 4294967295,
+          "token": "0x60104bf",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 2,
+          "address": "0x18070a670",
+          "va": 6449833584
+        },
+        {
+          "index": 66751,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "OnTick",
+          "returnType": 83059,
+          "parametersStart": 66746,
+          "genericContainer": 4294967295,
+          "token": "0x60104c0",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x18070a1c0",
+          "va": 6449832384
+        },
+        {
+          "index": 66752,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": "_RecoverMp",
+          "returnType": 83059,
+          "parametersStart": 66747,
+          "genericContainer": 4294967295,
+          "token": "0x60104c1",
+          "flags": 129,
+          "slot": 65535,
+          "parameterCount": 2,
+          "address": "0x18070a830",
+          "va": 6449834032
+        },
+        {
+          "index": 66753,
+          "typeIndex": 10186,
+          "type": ".SpController",
+          "name": ".ctor",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x60104c2",
+          "flags": 6278,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18070a930",
+          "va": 6449834288
+        }
+      ]
+    },
+    {
+      "index": 10921,
+      "name": "Torappu.Battle.BasicSkill",
+      "fields": [
+        {
+          "name": "_maxTriggerTime",
+          "typeIndex": 59012,
+          "offset": "0x18"
+        },
+        {
+          "name": "_allowSpRecoveryWhenAffecting",
+          "typeIndex": 44790,
+          "offset": "0x1c"
+        },
+        {
+          "name": "_limitGlobalTriggerTime",
+          "typeIndex": 44790,
+          "offset": "0x1d"
+        },
+        {
+          "name": "_hidden",
+          "typeIndex": 44790,
+          "offset": "0x1e"
+        },
+        {
+          "name": "_showSpBarEvenHidden",
+          "typeIndex": 44790,
+          "offset": "0x1f"
+        },
+        {
+          "name": "_showSpAsBulletMode",
+          "typeIndex": 44790,
+          "offset": "0x20"
+        },
+        {
+          "name": "_showSpRatioAsProgress",
+          "typeIndex": 44790,
+          "offset": "0x21"
+        },
+        {
+          "name": "_playCharWordVoice",
+          "typeIndex": 44790,
+          "offset": "0x22"
+        },
+        {
+          "name": "_playCharWordWithPassiveType",
+          "typeIndex": 44790,
+          "offset": "0x23"
+        },
+        {
+          "name": "_earlyVoice",
+          "typeIndex": 44790,
+          "offset": "0x24"
+        },
+        {
+          "name": "_canCastWithNoSp",
+          "typeIndex": 44790,
+          "offset": "0x25"
+        },
+        {
+          "name": "_canSilenced",
+          "typeIndex": 44790,
+          "offset": "0x26"
+        },
+        {
+          "name": "_canUseInAbnormalState",
+          "typeIndex": 44790,
+          "offset": "0x27"
+        },
+        {
+          "name": "_defaultModeIndex",
+          "typeIndex": 59012,
+          "offset": "0x28"
+        },
+        {
+          "name": "_attackBlackboardModeIndex",
+          "typeIndex": 59012,
+          "offset": "0x2c"
+        },
+        {
+          "name": "_extraAttackBlackboardModeIndices",
+          "typeIndex": 33374,
+          "offset": "0x30"
+        },
+        {
+          "name": "_rangeIdModeIndex",
+          "typeIndex": 59012,
+          "offset": "0x38"
+        },
+        {
+          "name": "_extraRangeIdModeIndices",
+          "typeIndex": 33374,
+          "offset": "0x40"
+        },
+        {
+          "name": "_rangeIdUsageType",
+          "typeIndex": 66959,
+          "offset": "0x48"
+        },
+        {
+          "name": "_writeDurationToAttackBlackboard",
+          "typeIndex": 44790,
+          "offset": "0x49"
+        },
+        {
+          "name": "_attachSignalIds",
+          "typeIndex": 44790,
+          "offset": "0x4a"
+        },
+        {
+          "name": "_extraAbilities",
+          "typeIndex": 32788,
+          "offset": "0x50"
+        },
+        {
+          "name": "_useEscapeTime",
+          "typeIndex": 44790,
+          "offset": "0x58"
+        },
+        {
+          "name": "_earlySkillFinishAtAttackFinished",
+          "typeIndex": 44790,
+          "offset": "0x59"
+        },
+        {
+          "name": "_stopAffectOnInterrupt",
+          "typeIndex": 44790,
+          "offset": "0x5a"
+        },
+        {
+          "name": "_showProgressToNext",
+          "typeIndex": 44790,
+          "offset": "0x5b"
+        },
+        {
+          "name": "_hideSkillStackCount",
+          "typeIndex": 44790,
+          "offset": "0x5c"
+        },
+        {
+          "name": "_hideHudSkillStackCount",
+          "typeIndex": 44790,
+          "offset": "0x5d"
+        },
+        {
+          "name": "_playSkillBeginAnim",
+          "typeIndex": 44790,
+          "offset": "0x5e"
+        },
+        {
+          "name": "_beginAnim",
+          "typeIndex": 77201,
+          "offset": "0x60"
+        },
+        {
+          "name": "_beginAnimDown",
+          "typeIndex": 77201,
+          "offset": "0x68"
+        },
+        {
+          "name": "_beginEffect",
+          "typeIndex": 33773,
+          "offset": "0x70"
+        },
+        {
+          "name": "_useFaceVector",
+          "typeIndex": 44790,
+          "offset": "0x78"
+        },
+        {
+          "name": "_beginAnimValidator",
+          "typeIndex": 77821,
+          "offset": "0x80"
+        },
+        {
+          "name": "_availableValidator",
+          "typeIndex": 77821,
+          "offset": "0x88"
+        },
+        {
+          "name": "m_triggerCnt",
+          "typeIndex": 59012,
+          "offset": "0x90"
+        },
+        {
+          "name": "m_rangeIdModeIndex",
+          "typeIndex": 59012,
+          "offset": "0x94"
+        },
+        {
+          "name": "m_waitForSkillEnd",
+          "typeIndex": 44790,
+          "offset": "0x98"
+        },
+        {
+          "name": "m_isEarlyFinished",
+          "typeIndex": 44790,
+          "offset": "0x99"
+        },
+        {
+          "name": "m_isOverloaded",
+          "typeIndex": 44790,
+          "offset": "0x9a"
+        },
+        {
+          "name": "m_playCharWordWithPassiveType",
+          "typeIndex": 44790,
+          "offset": "0x9b"
+        },
+        {
+          "name": "m_costMinSp",
+          "typeIndex": 59012,
+          "offset": "0x9c"
+        },
+        {
+          "name": "m_castWithNoSp",
+          "typeIndex": 44790,
+          "offset": "0xa0"
+        },
+        {
+          "name": "m_owner",
+          "typeIndex": 47217,
+          "offset": "0xa8"
+        },
+        {
+          "name": "m_data",
+          "typeIndex": 75438,
+          "offset": "0xb0"
+        },
+        {
+          "name": "m_attackBlackboard",
+          "typeIndex": 44676,
+          "offset": "0xb8"
+        },
+        {
+          "name": "m_ability",
+          "typeIndex": 35131,
+          "offset": "0xc0"
+        },
+        {
+          "name": "m_registeredAsModifier",
+          "typeIndex": 44790,
+          "offset": "0xc8"
+        },
+        {
+          "name": "m_maxTriggerTime",
+          "typeIndex": 59012,
+          "offset": "0xcc"
+        },
+        {
+          "name": "m_beginEffects",
+          "typeIndex": 20766,
+          "offset": "0xd0"
+        },
+        {
+          "name": "m_behaviours",
+          "typeIndex": 34153,
+          "offset": "0xd8"
+        },
+        {
+          "name": "m_chantBehavior",
+          "typeIndex": 47003,
+          "offset": "0xe0"
+        },
+        {
+          "name": "m_startSkill",
+          "typeIndex": 39926,
+          "offset": "0xe8"
+        },
+        {
+          "name": "m_startSkillCoroutine",
+          "typeIndex": 49302,
+          "offset": "0xf0"
+        },
+        {
+          "name": "m_beginAnim",
+          "typeIndex": 77201,
+          "offset": "0x100"
+        },
+        {
+          "name": "m_beginAnimDown",
+          "typeIndex": 77201,
+          "offset": "0x108"
+        },
+        {
+          "name": "<cachedOperationSide>k__BackingField",
+          "typeIndex": 64688,
+          "offset": "0x110"
+        },
+        {
+          "name": "<blackboard>k__BackingField",
+          "typeIndex": 44676,
+          "offset": "0x118"
+        },
+        {
+          "name": "__Hotfix0_get_isOverloaded",
+          "typeIndex": 51110,
+          "offset": "0x0"
+        },
+        {
+          "name": "__Hotfix0_get_attributeMask",
+          "typeIndex": 51110,
+          "offset": "0x8"
+        },
+        {
+          "name": "__Hotfix0_get_triggerCnt",
+          "typeIndex": 51110,
+          "offset": "0x10"
+        },
+        {
+          "name": "__Hotfix0_get_abnormalFlagMask",
+          "typeIndex": 51110,
+          "offset": "0x18"
+        },
+        {
+          "name": "__Hotfix0_get_abnormalImmuneMask",
+          "typeIndex": 51110,
+          "offset": "0x20"
+        },
+        {
+          "name": "__Hotfix0_get_abnormalAntiMask",
+          "typeIndex": 51110,
+          "offset": "0x28"
+        },
+        {
+          "name": "__Hotfix0_get_abnormalComboMask",
+          "typeIndex": 51110,
+          "offset": "0x30"
+        },
+        {
+          "name": "__Hotfix0_get_abnormalComboImmuneMask",
+          "typeIndex": 51110,
+          "offset": "0x38"
+        },
+        {
+          "name": "__Hotfix0_get_showSpAsBulletMode",
+          "typeIndex": 51110,
+          "offset": "0x40"
+        },
+        {
+          "name": "__Hotfix0_get_recoverSpWhenAffecting",
+          "typeIndex": 51110,
+          "offset": "0x48"
+        },
+        {
+          "name": "__Hotfix0_get_defaultModeIndex",
+          "typeIndex": 51110,
+          "offset": "0x50"
+        },
+        {
+          "name": "__Hotfix0_GetDefaultModeIndex",
+          "typeIndex": 51110,
+          "offset": "0x58"
+        },
+        {
+          "name": "__Hotfix0_get_useAttackBlackboardModeIndex",
+          "typeIndex": 51110,
+          "offset": "0x60"
+        },
+        {
+          "name": "__Hotfix0_get_stateUninterruptible",
+          "typeIndex": 51110,
+          "offset": "0x68"
+        },
+        {
+          "name": "__Hotfix0_SatisfySkillRangeIdModeIndex",
+          "typeIndex": 51110,
+          "offset": "0x70"
+        },
+        {
+          "name": "__Hotfix0_IsAvailable",
+          "typeIndex": 51110,
+          "offset": "0x78"
+        },
+        {
+          "name": "__Hotfix0_get_ownerCanUseSkill",
+          "typeIndex": 51110,
+          "offset": "0x80"
+        },
+        {
+          "name": "__Hotfix0_get_ownerNotInAbnormalState",
+          "typeIndex": 51110,
+          "offset": "0x88"
+        },
+        {
+          "name": "__Hotfix0_get_ownerCanUseInAbnormalState",
+          "typeIndex": 51110,
+          "offset": "0x90"
+        },
+        {
+          "name": "__Hotfix0_get_ownerSkillActivatable",
+          "typeIndex": 51110,
+          "offset": "0x98"
+        },
+        {
+          "name": "__Hotfix0_IsTriggerable",
+          "typeIndex": 51110,
+          "offset": "0xa0"
+        },
+        {
+          "name": "__Hotfix0_IsAvailableForAutoTrigger",
+          "typeIndex": 51110,
+          "offset": "0xa8"
+        },
+        {
+          "name": "__Hotfix0_IsAutoSkillTriggerable",
+          "typeIndex": 51110,
+          "offset": "0xb0"
+        },
+        {
+          "name": "__Hotfix0_IsOpTriggerable",
+          "typeIndex": 51110,
+          "offset": "0xb8"
+        },
+        {
+          "name": "__Hotfix0_IsClickable",
+          "typeIndex": 51110,
+          "offset": "0xc0"
+        },
+        {
+          "name": "__Hotfix0_IsOpRetriggerable",
+          "typeIndex": 51110,
+          "offset": "0xc8"
+        },
+        {
+          "name": "__Hotfix0_IsRetriggerClickable",
+          "typeIndex": 51110,
+          "offset": "0xd0"
+        },
+        {
+          "name": "__Hotfix0_IsRetriggerAvailable",
+          "typeIndex": 51110,
+          "offset": "0xd8"
+        },
+        {
+          "name": "__Hotfix0_isRetriggerable",
+          "typeIndex": 51110,
+          "offset": "0xe0"
+        },
+        {
+          "name": "__Hotfix0_IsSuspendable",
+          "typeIndex": 51110,
+          "offset": "0xe8"
+        },
+        {
+          "name": "__Hotfix0_IsDiscardable",
+          "typeIndex": 51110,
+          "offset": "0xf0"
+        },
+        {
+          "name": "__Hotfix0_CanTriggerWithReason",
+          "typeIndex": 51110,
+          "offset": "0xf8"
+        },
+        {
+          "name": "__Hotfix0_get_chantSuspendable",
+          "typeIndex": 51110,
+          "offset": "0x100"
+        },
+        {
+          "name": "__Hotfix0_get_isAffecting",
+          "typeIndex": 51110,
+          "offset": "0x108"
+        },
+        {
+          "name": "__Hotfix0_get_cachedOperationSide",
+          "typeIndex": 51110,
+          "offset": "0x110"
+        },
+        {
+          "name": "__Hotfix0_set_cachedOperationSide",
+          "typeIndex": 51110,
+          "offset": "0x118"
+        },
+        {
+          "name": "__Hotfix0_get_shouldCastLikeAttack",
+          "typeIndex": 51110,
+          "offset": "0x120"
+        },
+        {
+          "name": "__Hotfix0_get_shouldChangeToChargeColor",
+          "typeIndex": 51110,
+          "offset": "0x128"
+        },
+        {
+          "name": "__Hotfix0_get_overrideAudioSignalId",
+          "typeIndex": 51110,
+          "offset": "0x130"
+        },
+        {
+          "name": "__Hotfix0_get_overloadRatio",
+          "typeIndex": 51110,
+          "offset": "0x138"
+        },
+        {
+          "name": "__Hotfix0_get_alwaysShowSpCount",
+          "typeIndex": 51110,
+          "offset": "0x140"
+        },
+        {
+          "name": "__Hotfix0_get_remainingTime",
+          "typeIndex": 51110,
+          "offset": "0x148"
+        },
+        {
+          "name": "__Hotfix0_get_remainingProgress",
+          "typeIndex": 51110,
+          "offset": "0x150"
+        },
+        {
+          "name": "__Hotfix0_get_remainingOverloadProgress",
+          "typeIndex": 51110,
+          "offset": "0x158"
+        },
+        {
+          "name": "__Hotfix0_TryForceToOverloadProgress",
+          "typeIndex": 51110,
+          "offset": "0x160"
+        },
+        {
+          "name": "__Hotfix0_get_availableCnt",
+          "typeIndex": 51110,
+          "offset": "0x168"
+        },
+        {
+          "name": "__Hotfix0_get_progressToReady",
+          "typeIndex": 51110,
+          "offset": "0x170"
+        },
+        {
+          "name": "__Hotfix0_get_spCostZero",
+          "typeIndex": 51110,
+          "offset": "0x178"
+        },
+        {
+          "name": "__Hotfix0_get_blackboard",
+          "typeIndex": 51110,
+          "offset": "0x180"
+        },
+        {
+          "name": "__Hotfix0_set_blackboard",
+          "typeIndex": 51110,
+          "offset": "0x188"
+        },
+        {
+          "name": "__Hotfix0_get_ability",
+          "typeIndex": 51110,
+          "offset": "0x190"
+        },
+        {
+          "name": "__Hotfix0_get_familyGroup",
+          "typeIndex": 51110,
+          "offset": "0x198"
+        },
+        {
+          "name": "__Hotfix0_get_rangeToShow",
+          "typeIndex": 51110,
+          "offset": "0x1a0"
+        },
+        {
+          "name": "__Hotfix0_get_playCharWordVoice",
+          "typeIndex": 51110,
+          "offset": "0x1a8"
+        },
+        {
+          "name": "__Hotfix0_get_playCharWordWithPassiveType",
+          "typeIndex": 51110,
+          "offset": "0x1b0"
+        },
+        {
+          "name": "__Hotfix0_get_earlyVoice",
+          "typeIndex": 51110,
+          "offset": "0x1b8"
+        },
+        {
+          "name": "__Hotfix0_get_canCastWithNoSp",
+          "typeIndex": 51110,
+          "offset": "0x1c0"
+        },
+        {
+          "name": "__Hotfix0_get_spEnough",
+          "typeIndex": 51110,
+          "offset": "0x1c8"
+        },
+        {
+          "name": "__Hotfix0_get_canSkipReduceSp",
+          "typeIndex": 51110,
+          "offset": "0x1d0"
+        },
+        {
+          "name": "__Hotfix0_get_forceToShowRange",
+          "typeIndex": 51110,
+          "offset": "0x1d8"
+        },
+        {
+          "name": "__Hotfix0_get_forceUseBaseShowRange",
+          "typeIndex": 51110,
+          "offset": "0x1e0"
+        },
+        {
+          "name": "__Hotfix0_get_isUsedUp",
+          "typeIndex": 51110,
+          "offset": "0x1e8"
+        },
+        {
+          "name": "__Hotfix0_get_registeredAsModifier",
+          "typeIndex": 51110,
+          "offset": "0x1f0"
+        },
+        {
+          "name": "__Hotfix0_set_registeredAsModifier",
+          "typeIndex": 51110,
+          "offset": "0x1f8"
+        },
+        {
+          "name": "__Hotfix0_get_useRangeIdModeIndex",
+          "typeIndex": 51110,
+          "offset": "0x200"
+        },
+        {
+          "name": "__Hotfix0_get_data",
+          "typeIndex": 51110,
+          "offset": "0x208"
+        },
+        {
+          "name": "__Hotfix0_get_hidden",
+          "typeIndex": 51110,
+          "offset": "0x210"
+        },
+        {
+          "name": "__Hotfix0_get_needToDisplay",
+          "typeIndex": 51110,
+          "offset": "0x218"
+        },
+        {
+          "name": "__Hotfix0_get_needToDisplaySpBar",
+          "typeIndex": 51110,
+          "offset": "0x220"
+        },
+        {
+          "name": "__Hotfix0_get_isRemoteControlled",
+          "typeIndex": 51110,
+          "offset": "0x228"
+        },
+        {
+          "name": "__Hotfix0_get_hideProgressFlag",
+          "typeIndex": 51110,
+          "offset": "0x230"
+        },
+        {
+          "name": "__Hotfix0_get_hasPlayedBeginAnim",
+          "typeIndex": 51110,
+          "offset": "0x238"
+        },
+        {
+          "name": "__Hotfix0_get_rangeidUsageType",
+          "typeIndex": 51110,
+          "offset": "0x240"
+        },
+        {
+          "name": "__Hotfix0_get_owner",
+          "typeIndex": 51110,
+          "offset": "0x248"
+        },
+        {
+          "name": "__Hotfix0_get_escapeTime",
+          "typeIndex": 51110,
+          "offset": "0x250"
+        },
+        {
+          "name": "__Hotfix0_get_playSkillBeginAnim",
+          "typeIndex": 51110,
+          "offset": "0x258"
+        },
+        {
+          "name": "__Hotfix0_get_hasSkillBeginAnim",
+          "typeIndex": 51110,
+          "offset": "0x260"
+        },
+        {
+          "name": "__Hotfix0_get_beginAnim",
+          "typeIndex": 51110,
+          "offset": "0x268"
+        },
+        {
+          "name": "__Hotfix0_get_hasChant",
+          "typeIndex": 51110,
+          "offset": "0x270"
+        },
+        {
+          "name": "__Hotfix0_get_chantProgress",
+          "typeIndex": 51110,
+          "offset": "0x278"
+        },
+        {
+          "name": "__Hotfix0_get_isInChant",
+          "typeIndex": 51110,
+          "offset": "0x280"
+        },
+        {
+          "name": "__Hotfix0_get_isInExtraChant",
+          "typeIndex": 51110,
+          "offset": "0x288"
+        },
+        {
+          "name": "__Hotfix0_get_chantBehaviour",
+          "typeIndex": 51110,
+          "offset": "0x290"
+        },
+        {
+          "name": "__Hotfix0_get_canCastCheck",
+          "typeIndex": 51110,
+          "offset": "0x298"
+        },
+        {
+          "name": "__Hotfix0_get_beginEffect",
+          "typeIndex": 51110,
+          "offset": "0x2a0"
+        },
+        {
+          "name": "__Hotfix0_get_writeDurationToAttackBlackboard",
+          "typeIndex": 51110,
+          "offset": "0x2a8"
+        },
+        {
+          "name": "__Hotfix0_get_isOverloadSkill",
+          "typeIndex": 51110,
+          "offset": "0x2b0"
+        },
+        {
+          "name": "__Hotfix0_AssignData",
+          "typeIndex": 51110,
+          "offset": "0x2b8"
+        },
+        {
+          "name": "__Hotfix0_Cast",
+          "typeIndex": 51110,
+          "offset": "0x2c0"
+        },
+        {
+          "name": "__Hotfix0_Tick",
+          "typeIndex": 51110,
+          "offset": "0x2c8"
+        },
+        {
+          "name": "__Hotfix0_OnSkillStart",
+          "typeIndex": 51110,
+          "offset": "0x2d0"
+        },
+        {
+          "name": "__Hotfix0_OnSkillEnd",
+          "typeIndex": 51110,
+          "offset": "0x2d8"
+        },
+        {
+          "name": "__Hotfix0_RetriggerSkill",
+          "typeIndex": 51110,
+          "offset": "0x2e0"
+        },
+        {
+          "name": "__Hotfix0_InterruptIfNot",
+          "typeIndex": 51110,
+          "offset": "0x2e8"
+        },
+        {
+          "name": "__Hotfix0_OnEnterSkillState",
+          "typeIndex": 51110,
+          "offset": "0x2f0"
+        },
+        {
+          "name": "__Hotfix0_TryPrepare",
+          "typeIndex": 51110,
+          "offset": "0x2f8"
+        },
+        {
+          "name": "__Hotfix0_CanCastCheckBeforeStart",
+          "typeIndex": 51110,
+          "offset": "0x300"
+        },
+        {
+          "name": "__Hotfix0_GetBehaviour",
+          "typeIndex": 51110,
+          "offset": "0x308"
+        },
+        {
+          "name": "__Hotfix0_OnInit",
+          "typeIndex": 51110,
+          "offset": "0x310"
+        },
+        {
+          "name": "__Hotfix0_OnBorn",
+          "typeIndex": 51110,
+          "offset": "0x318"
+        },
+        {
+          "name": "__Hotfix0_OnLocate",
+          "typeIndex": 51110,
+          "offset": "0x320"
+        },
+        {
+          "name": "__Hotfix0_OnOverload",
+          "typeIndex": 51110,
+          "offset": "0x328"
+        },
+        {
+          "name": "__Hotfix0_OnOwnerFinish",
+          "typeIndex": 51110,
+          "offset": "0x330"
+        },
+        {
+          "name": "__Hotfix0_OnCastSucceed",
+          "typeIndex": 51110,
+          "offset": "0x338"
+        },
+        {
+          "name": "__Hotfix0_OnCastFailedInSkillState",
+          "typeIndex": 51110,
+          "offset": "0x340"
+        },
+        {
+          "name": "__Hotfix0_OnBeforeAttack",
+          "typeIndex": 51110,
+          "offset": "0x348"
+        },
+        {
+          "name": "__Hotfix0_OnAfterAttack",
+          "typeIndex": 51110,
+          "offset": "0x350"
+        },
+        {
+          "name": "__Hotfix0_GetValue",
+          "typeIndex": 51110,
+          "offset": "0x358"
+        },
+        {
+          "name": "__Hotfix0_GetAttackBlackboard",
+          "typeIndex": 51110,
+          "offset": "0x360"
+        },
+        {
+          "name": "__Hotfix0_PlayBeginEffectAndAudio",
+          "typeIndex": 51110,
+          "offset": "0x368"
+        },
+        {
+          "name": "__Hotfix0_InterruptStartIfNot",
+          "typeIndex": 51110,
+          "offset": "0x370"
+        },
+        {
+          "name": "__Hotfix0_DoStartSkill",
+          "typeIndex": 51110,
+          "offset": "0x378"
+        },
+        {
+          "name": "__Hotfix0_PlayBeginAnimation",
+          "typeIndex": 51110,
+          "offset": "0x380"
+        },
+        {
+          "name": "__Hotfix0_PlayBeginAudio",
+          "typeIndex": 51110,
+          "offset": "0x388"
+        },
+        {
+          "name": "__Hotfix0_OnBeforeSkillBeginAnim",
+          "typeIndex": 51110,
+          "offset": "0x390"
+        },
+        {
+          "name": "__Hotfix0_OnBeforeSkillStart",
+          "typeIndex": 51110,
+          "offset": "0x398"
+        },
+        {
+          "name": "__Hotfix0_OnBeforePlayBeginAnimation",
+          "typeIndex": 51110,
+          "offset": "0x3a0"
+        },
+        {
+          "name": "__Hotfix0_ClearBeginEffect",
+          "typeIndex": 51110,
+          "offset": "0x3a8"
+        },
+        {
+          "name": "__Hotfix0_DealDummySkillBehaviours",
+          "typeIndex": 51110,
+          "offset": "0x3b0"
+        },
+        {
+          "name": "__Hotfix0_GatherEffects",
+          "typeIndex": 51110,
+          "offset": "0x3b8"
+        },
+        {
+          "name": "__Hotfix0_GatherProjectiles",
+          "typeIndex": 51110,
+          "offset": "0x3c0"
+        },
+        {
+          "name": "__Hotfix0_GatherBuffs",
+          "typeIndex": 51110,
+          "offset": "0x3c8"
+        },
+        {
+          "name": "__Hotfix0_GatherActionNodes",
+          "typeIndex": 51110,
+          "offset": "0x3d0"
+        },
+        {
+          "name": "__Hotfix0_OnTick",
+          "typeIndex": 51110,
+          "offset": "0x3d8"
+        },
+        {
+          "name": "__Hotfix0_OverloadIfNecessary",
+          "typeIndex": 51110,
+          "offset": "0x3e0"
+        },
+        {
+          "name": "__Hotfix0_ReduceSp",
+          "typeIndex": 51110,
+          "offset": "0x3e8"
+        },
+        {
+          "name": "__Hotfix0_UpdateSpRecovery",
+          "typeIndex": 51110,
+          "offset": "0x3f0"
+        },
+        {
+          "name": "__Hotfix0_OnCastFinish",
+          "typeIndex": 51110,
+          "offset": "0x3f8"
+        },
+        {
+          "name": "__Hotfix0_Awake",
+          "typeIndex": 51110,
+          "offset": "0x400"
+        },
+        {
+          "name": "__Hotfix0__GenerateSignalId",
+          "typeIndex": 51110,
+          "offset": "0x408"
+        },
+        {
+          "name": "__Hotfix0__OnReceiveAttackFinishEvent",
+          "typeIndex": 51110,
+          "offset": "0x410"
+        },
+        {
+          "name": "__Hotfix0__ApplyModifierToData",
+          "typeIndex": 51110,
+          "offset": "0x418"
+        },
+        {
+          "name": "__Hotfix0_PostprocessData",
+          "typeIndex": 51110,
+          "offset": "0x420"
+        },
+        {
+          "name": "__Hotfix0_SwitchSkillRangeIdModeIndex",
+          "typeIndex": 51110,
+          "offset": "0x428"
+        },
+        {
+          "name": "__Hotfix0_SwitchSkillCharWordToPassiveType",
+          "typeIndex": 51110,
+          "offset": "0x430"
+        },
+        {
+          "name": "__Hotfix0_ModifyCostMinSp",
+          "typeIndex": 51110,
+          "offset": "0x438"
+        },
+        {
+          "name": "__Hotfix0_ModifyCastWithNoSp",
+          "typeIndex": 51110,
+          "offset": "0x440"
+        },
+        {
+          "name": "__Hotfix0__IsStackable",
+          "typeIndex": 51110,
+          "offset": "0x448"
+        },
+        {
+          "name": "__Hotfix0_get_isAvailableToShowStackCount",
+          "typeIndex": 51110,
+          "offset": "0x450"
+        },
+        {
+          "name": "__Hotfix0_get_hideHudSkillStackCount",
+          "typeIndex": 51110,
+          "offset": "0x458"
+        },
+        {
+          "name": "__Hotfix0_ReplaceBeginAnim",
+          "typeIndex": 51110,
+          "offset": "0x460"
+        },
+        {
+          "name": "__Hotfix0_ClearReplaceBeginAnim",
+          "typeIndex": 51110,
+          "offset": "0x468"
+        },
+        {
+          "name": "_c__Hotfix0_ctor",
+          "typeIndex": 51110,
+          "offset": "0x470"
+        }
+      ],
+      "methods": [
+        {
+          "index": 72575,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_isOverloaded",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b80",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x180960020",
+          "va": 6452281376
+        },
+        {
+          "index": 72576,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_attributeMask",
+          "returnType": 59047,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b81",
+          "flags": 2534,
+          "slot": 4,
+          "parameterCount": 0,
+          "address": "0x18095ef40",
+          "va": 6452277056
+        },
+        {
+          "index": 72577,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_triggerCnt",
+          "returnType": 59011,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b82",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x180961a00",
+          "va": 6452288000
+        },
+        {
+          "index": 72578,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_abnormalFlagMask",
+          "returnType": 59047,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b83",
+          "flags": 2534,
+          "slot": 5,
+          "parameterCount": 0,
+          "address": "0x18095edd0",
+          "va": 6452276688
+        },
+        {
+          "index": 72579,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_abnormalImmuneMask",
+          "returnType": 59047,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b84",
+          "flags": 2534,
+          "slot": 6,
+          "parameterCount": 0,
+          "address": "0x18095ee80",
+          "va": 6452276864
+        },
+        {
+          "index": 72580,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_abnormalAntiMask",
+          "returnType": 59047,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b85",
+          "flags": 2534,
+          "slot": 7,
+          "parameterCount": 0,
+          "address": "0x18095ecb0",
+          "va": 6452276400
+        },
+        {
+          "index": 72581,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_abnormalComboMask",
+          "returnType": 59047,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b86",
+          "flags": 2534,
+          "slot": 8,
+          "parameterCount": 0,
+          "address": "0x18095ed70",
+          "va": 6452276592
+        },
+        {
+          "index": 72582,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_abnormalComboImmuneMask",
+          "returnType": 59047,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b87",
+          "flags": 2534,
+          "slot": 9,
+          "parameterCount": 0,
+          "address": "0x18095ed10",
+          "va": 6452276496
+        },
+        {
+          "index": 72583,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_showSpAsBulletMode",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b88",
+          "flags": 2502,
+          "slot": 15,
+          "parameterCount": 0,
+          "address": "0x180961640",
+          "va": 6452287040
+        },
+        {
+          "index": 72584,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_recoverSpWhenAffecting",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b89",
+          "flags": 2502,
+          "slot": 16,
+          "parameterCount": 0,
+          "address": "0x180961040",
+          "va": 6452285504
+        },
+        {
+          "index": 72585,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_defaultModeIndex",
+          "returnType": 59011,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b8a",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095f610",
+          "va": 6452278800
+        },
+        {
+          "index": 72586,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "GetDefaultModeIndex",
+          "returnType": 59011,
+          "parametersStart": 71679,
+          "genericContainer": 4294967295,
+          "token": "0x6011b8b",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x180959e40",
+          "va": 6452256320
+        },
+        {
+          "index": 72587,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_useAttackBlackboardModeIndex",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b8c",
+          "flags": 2180,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x180961a60",
+          "va": 6452288096
+        },
+        {
+          "index": 72588,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_stateUninterruptible",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b8d",
+          "flags": 2502,
+          "slot": 17,
+          "parameterCount": 0,
+          "address": "0x1809619a0",
+          "va": 6452287904
+        },
+        {
+          "index": 72589,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "SatisfySkillRangeIdModeIndex",
+          "returnType": 44789,
+          "parametersStart": 71680,
+          "genericContainer": 4294967295,
+          "token": "0x6011b8e",
+          "flags": 454,
+          "slot": 18,
+          "parameterCount": 1,
+          "address": "0x18095de40",
+          "va": 6452272704
+        },
+        {
+          "index": 72590,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "IsAvailable",
+          "returnType": 44789,
+          "parametersStart": 71681,
+          "genericContainer": 4294967295,
+          "token": "0x6011b8f",
+          "flags": 454,
+          "slot": 19,
+          "parameterCount": 1,
+          "address": "0x18095a4c0",
+          "va": 6452257984
+        },
+        {
+          "index": 72591,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_ownerCanUseSkill",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b90",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x180960490",
+          "va": 6452282512
+        },
+        {
+          "index": 72592,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_ownerNotInAbnormalState",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b91",
+          "flags": 2180,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x180960730",
+          "va": 6452283184
+        },
+        {
+          "index": 72593,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_ownerCanUseInAbnormalState",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b92",
+          "flags": 2180,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x1809603a0",
+          "va": 6452282272
+        },
+        {
+          "index": 72594,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_ownerSkillActivatable",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b93",
+          "flags": 2177,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x1809607a0",
+          "va": 6452283296
+        },
+        {
+          "index": 72595,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "IsTriggerable",
+          "returnType": 44789,
+          "parametersStart": 71682,
+          "genericContainer": 4294967295,
+          "token": "0x6011b94",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 2,
+          "address": "0x18095acc0",
+          "va": 6452260032
+        },
+        {
+          "index": 72596,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "IsAvailableForAutoTrigger",
+          "returnType": 44789,
+          "parametersStart": 71684,
+          "genericContainer": 4294967295,
+          "token": "0x6011b95",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x18095a3f0",
+          "va": 6452257776
+        },
+        {
+          "index": 72597,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "IsAutoSkillTriggerable",
+          "returnType": 44789,
+          "parametersStart": 71685,
+          "genericContainer": 4294967295,
+          "token": "0x6011b96",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x18095a330",
+          "va": 6452257584
+        },
+        {
+          "index": 72598,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "IsOpTriggerable",
+          "returnType": 44789,
+          "parametersStart": 71686,
+          "genericContainer": 4294967295,
+          "token": "0x6011b97",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x18095a970",
+          "va": 6452259184
+        },
+        {
+          "index": 72599,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "IsClickable",
+          "returnType": 44789,
+          "parametersStart": 71687,
+          "genericContainer": 4294967295,
+          "token": "0x6011b98",
+          "flags": 454,
+          "slot": 20,
+          "parameterCount": 1,
+          "address": "0x18095a5f0",
+          "va": 6452258288
+        },
+        {
+          "index": 72600,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "IsOpRetriggerable",
+          "returnType": 44789,
+          "parametersStart": 71688,
+          "genericContainer": 4294967295,
+          "token": "0x6011b99",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x18095a740",
+          "va": 6452258624
+        },
+        {
+          "index": 72601,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "IsRetriggerClickable",
+          "returnType": 44789,
+          "parametersStart": 71689,
+          "genericContainer": 4294967295,
+          "token": "0x6011b9a",
+          "flags": 454,
+          "slot": 21,
+          "parameterCount": 1,
+          "address": "0x18095aae0",
+          "va": 6452259552
+        },
+        {
+          "index": 72602,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "IsRetriggerAvailable",
+          "returnType": 44789,
+          "parametersStart": 71690,
+          "genericContainer": 4294967295,
+          "token": "0x6011b9b",
+          "flags": 454,
+          "slot": 22,
+          "parameterCount": 1,
+          "address": "0x18095aa70",
+          "va": 6452259440
+        },
+        {
+          "index": 72603,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "isRetriggerable",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b9c",
+          "flags": 454,
+          "slot": 23,
+          "parameterCount": 0,
+          "address": "0x180961b80",
+          "va": 6452288384
+        },
+        {
+          "index": 72604,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "IsSuspendable",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b9d",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095ac30",
+          "va": 6452259888
+        },
+        {
+          "index": 72605,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "IsDiscardable",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011b9e",
+          "flags": 454,
+          "slot": 24,
+          "parameterCount": 0,
+          "address": "0x180955fe0",
+          "va": 6452240352
+        },
+        {
+          "index": 72606,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "CanTriggerWithReason",
+          "returnType": 44789,
+          "parametersStart": 71691,
+          "genericContainer": 4294967295,
+          "token": "0x6011b9f",
+          "flags": 452,
+          "slot": 25,
+          "parameterCount": 1,
+          "address": "0x180959220",
+          "va": 6452253216
+        },
+        {
+          "index": 72607,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_chantSuspendable",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011ba0",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095f520",
+          "va": 6452278560
+        },
+        {
+          "index": 72608,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_isAffecting",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011ba1",
+          "flags": 2502,
+          "slot": 26,
+          "parameterCount": 0,
+          "address": "0x18095fc50",
+          "va": 6452280400
+        },
+        {
+          "index": 72609,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_cachedOperationSide",
+          "returnType": 64687,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011ba2",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095f2c0",
+          "va": 6452277952
+        },
+        {
+          "index": 72610,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "set_cachedOperationSide",
+          "returnType": 83059,
+          "parametersStart": 71692,
+          "genericContainer": 4294967295,
+          "token": "0x6011ba3",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x180961c60",
+          "va": 6452288608
+        },
+        {
+          "index": 72611,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_shouldCastLikeAttack",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011ba4",
+          "flags": 2502,
+          "slot": 27,
+          "parameterCount": 0,
+          "address": "0x180961580",
+          "va": 6452286848
+        },
+        {
+          "index": 72612,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_shouldChangeToChargeColor",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011ba5",
+          "flags": 2502,
+          "slot": 28,
+          "parameterCount": 0,
+          "address": "0x1809615e0",
+          "va": 6452286944
+        },
+        {
+          "index": 72613,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_overrideAudioSignalId",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011ba6",
+          "flags": 2502,
+          "slot": 29,
+          "parameterCount": 0,
+          "address": "0x180956860",
+          "va": 6452242528
+        },
+        {
+          "index": 72614,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_overloadRatio",
+          "returnType": 53178,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011ba7",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x1809602e0",
+          "va": 6452282080
+        },
+        {
+          "index": 72615,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_alwaysShowSpCount",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011ba8",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095eee0",
+          "va": 6452276960
+        },
+        {
+          "index": 72616,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_remainingTime",
+          "returnType": 53178,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011ba9",
+          "flags": 2502,
+          "slot": 30,
+          "parameterCount": 0,
+          "address": "0x1809578f0",
+          "va": 6452246768
+        },
+        {
+          "index": 72617,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_remainingProgress",
+          "returnType": 53178,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011baa",
+          "flags": 2502,
+          "slot": 31,
+          "parameterCount": 0,
+          "address": "0x180961310",
+          "va": 6452286224
+        },
+        {
+          "index": 72618,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_remainingOverloadProgress",
+          "returnType": 53178,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bab",
+          "flags": 2502,
+          "slot": 32,
+          "parameterCount": 0,
+          "address": "0x180961100",
+          "va": 6452285696
+        },
+        {
+          "index": 72619,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "TryForceToOverloadProgress",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bac",
+          "flags": 454,
+          "slot": 33,
+          "parameterCount": 0,
+          "address": "0x18095e180",
+          "va": 6452273536
+        },
+        {
+          "index": 72620,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_availableCnt",
+          "returnType": 59011,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bad",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095efa0",
+          "va": 6452277152
+        },
+        {
+          "index": 72621,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_progressToReady",
+          "returnType": 53178,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bae",
+          "flags": 2502,
+          "slot": 34,
+          "parameterCount": 0,
+          "address": "0x1809609e0",
+          "va": 6452283872
+        },
+        {
+          "index": 72622,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_spCostZero",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011baf",
+          "flags": 2502,
+          "slot": 35,
+          "parameterCount": 0,
+          "address": "0x1809616a0",
+          "va": 6452287136
+        },
+        {
+          "index": 72623,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_blackboard",
+          "returnType": 44675,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bb0",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095f260",
+          "va": 6452277856
+        },
+        {
+          "index": 72624,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "set_blackboard",
+          "returnType": 83059,
+          "parametersStart": 71693,
+          "genericContainer": 4294967295,
+          "token": "0x6011bb1",
+          "flags": 2177,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x180961be0",
+          "va": 6452288480
+        },
+        {
+          "index": 72625,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_ability",
+          "returnType": 35130,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bb2",
+          "flags": 2534,
+          "slot": 36,
+          "parameterCount": 0,
+          "address": "0x18095ec50",
+          "va": 6452276304
+        },
+        {
+          "index": 72626,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_familyGroup",
+          "returnType": 86059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bb3",
+          "flags": 2502,
+          "slot": 37,
+          "parameterCount": 0,
+          "address": "0x18095f7f0",
+          "va": 6452279280
+        },
+        {
+          "index": 72627,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_rangeToShow",
+          "returnType": 57190,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bb4",
+          "flags": 2502,
+          "slot": 38,
+          "parameterCount": 0,
+          "address": "0x180960cf0",
+          "va": 6452284656
+        },
+        {
+          "index": 72628,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_playCharWordVoice",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bb5",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x1809608c0",
+          "va": 6452283584
+        },
+        {
+          "index": 72629,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_playCharWordWithPassiveType",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bb6",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x180960920",
+          "va": 6452283680
+        },
+        {
+          "index": 72630,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_earlyVoice",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bb7",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095f670",
+          "va": 6452278896
+        },
+        {
+          "index": 72631,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_canCastWithNoSp",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bb8",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095f390",
+          "va": 6452278160
+        },
+        {
+          "index": 72632,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_spEnough",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bb9",
+          "flags": 2502,
+          "slot": 39,
+          "parameterCount": 0,
+          "address": "0x1809617c0",
+          "va": 6452287424
+        },
+        {
+          "index": 72633,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_canSkipReduceSp",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bba",
+          "flags": 2500,
+          "slot": 40,
+          "parameterCount": 0,
+          "address": "0x180956050",
+          "va": 6452240464
+        },
+        {
+          "index": 72634,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_forceToShowRange",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bbb",
+          "flags": 2500,
+          "slot": 41,
+          "parameterCount": 0,
+          "address": "0x18095f850",
+          "va": 6452279376
+        },
+        {
+          "index": 72635,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_forceUseBaseShowRange",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bbc",
+          "flags": 2500,
+          "slot": 42,
+          "parameterCount": 0,
+          "address": "0x18095f8b0",
+          "va": 6452279472
+        },
+        {
+          "index": 72636,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_isUsedUp",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bbd",
+          "flags": 2502,
+          "slot": 43,
+          "parameterCount": 0,
+          "address": "0x1809600e0",
+          "va": 6452281568
+        },
+        {
+          "index": 72637,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_registeredAsModifier",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bbe",
+          "flags": 2180,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x1809610a0",
+          "va": 6452285600
+        },
+        {
+          "index": 72638,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "set_registeredAsModifier",
+          "returnType": 83059,
+          "parametersStart": 71694,
+          "genericContainer": 4294967295,
+          "token": "0x6011bbf",
+          "flags": 2180,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x180961cd0",
+          "va": 6452288720
+        },
+        {
+          "index": 72639,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_useRangeIdModeIndex",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bc0",
+          "flags": 2180,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x180961ac0",
+          "va": 6452288192
+        },
+        {
+          "index": 72640,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_data",
+          "returnType": 75437,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bc1",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095f5b0",
+          "va": 6452278704
+        },
+        {
+          "index": 72641,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_hidden",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bc2",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095fb30",
+          "va": 6452280112
+        },
+        {
+          "index": 72642,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_needToDisplay",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bc3",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x180960260",
+          "va": 6452281952
+        },
+        {
+          "index": 72643,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_needToDisplaySpBar",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bc4",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x180960190",
+          "va": 6452281744
+        },
+        {
+          "index": 72644,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_isRemoteControlled",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bc5",
+          "flags": 2502,
+          "slot": 44,
+          "parameterCount": 0,
+          "address": "0x180960080",
+          "va": 6452281472
+        },
+        {
+          "index": 72645,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_hideProgressFlag",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bc6",
+          "flags": 2502,
+          "slot": 45,
+          "parameterCount": 0,
+          "address": "0x18095fbf0",
+          "va": 6452280304
+        },
+        {
+          "index": 72646,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_hasPlayedBeginAnim",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bc7",
+          "flags": 2502,
+          "slot": 46,
+          "parameterCount": 0,
+          "address": "0x18095f9a0",
+          "va": 6452279712
+        },
+        {
+          "index": 72647,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_rangeidUsageType",
+          "returnType": 66958,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bc8",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x180960fe0",
+          "va": 6452285408
+        },
+        {
+          "index": 72648,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_owner",
+          "returnType": 47216,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bc9",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x180960860",
+          "va": 6452283488
+        },
+        {
+          "index": 72649,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_escapeTime",
+          "returnType": 53178,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bca",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095f6d0",
+          "va": 6452278992
+        },
+        {
+          "index": 72650,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_playSkillBeginAnim",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bcb",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x180960980",
+          "va": 6452283776
+        },
+        {
+          "index": 72651,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_hasSkillBeginAnim",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bcc",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095fa00",
+          "va": 6452279808
+        },
+        {
+          "index": 72652,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_beginAnim",
+          "returnType": 77200,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bcd",
+          "flags": 2502,
+          "slot": 47,
+          "parameterCount": 0,
+          "address": "0x18095f110",
+          "va": 6452277520
+        },
+        {
+          "index": 72653,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_hasChant",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bce",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095f910",
+          "va": 6452279568
+        },
+        {
+          "index": 72654,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_chantProgress",
+          "returnType": 75036,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bcf",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095f460",
+          "va": 6452278368
+        },
+        {
+          "index": 72655,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_isInChant",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bd0",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095fe20",
+          "va": 6452280864
+        },
+        {
+          "index": 72656,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_isInExtraChant",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bd1",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095ff00",
+          "va": 6452281088
+        },
+        {
+          "index": 72657,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_chantBehaviour",
+          "returnType": 47002,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bd2",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095f400",
+          "va": 6452278272
+        },
+        {
+          "index": 72658,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_canCastCheck",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bd3",
+          "flags": 2502,
+          "slot": 48,
+          "parameterCount": 0,
+          "address": "0x18095f320",
+          "va": 6452278048
+        },
+        {
+          "index": 72659,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_beginEffect",
+          "returnType": 33772,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bd4",
+          "flags": 2502,
+          "slot": 49,
+          "parameterCount": 0,
+          "address": "0x18095f200",
+          "va": 6452277760
+        },
+        {
+          "index": 72660,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_writeDurationToAttackBlackboard",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bd5",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x180961b20",
+          "va": 6452288288
+        },
+        {
+          "index": 72661,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_isOverloadSkill",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bd6",
+          "flags": 2502,
+          "slot": 50,
+          "parameterCount": 0,
+          "address": "0x18095ffc0",
+          "va": 6452281280
+        },
+        {
+          "index": 72662,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "AssignData",
+          "returnType": 83059,
+          "parametersStart": 71695,
+          "genericContainer": 4294967295,
+          "token": "0x6011bd7",
+          "flags": 454,
+          "slot": 51,
+          "parameterCount": 4,
+          "address": "0x1809582e0",
+          "va": 6452249312
+        },
+        {
+          "index": 72663,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "Cast",
+          "returnType": 44789,
+          "parametersStart": 71699,
+          "genericContainer": 4294967295,
+          "token": "0x6011bd8",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 2,
+          "address": "0x180959290",
+          "va": 6452253328
+        },
+        {
+          "index": 72664,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "Tick",
+          "returnType": 83059,
+          "parametersStart": 71701,
+          "genericContainer": 4294967295,
+          "token": "0x6011bd9",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x18095dfe0",
+          "va": 6452273120
+        },
+        {
+          "index": 72665,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "DoCast",
+          "returnType": 44789,
+          "parametersStart": 71702,
+          "genericContainer": 4294967295,
+          "token": "0x6011bda",
+          "flags": 1476,
+          "slot": 52,
+          "parameterCount": 2,
+          "address": "0x0",
+          "va": 0
+        },
+        {
+          "index": 72666,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OnSkillStart",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bdb",
+          "flags": 132,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095ca00",
+          "va": 6452267520
+        },
+        {
+          "index": 72667,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OnSkillEnd",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bdc",
+          "flags": 452,
+          "slot": 53,
+          "parameterCount": 0,
+          "address": "0x18095c480",
+          "va": 6452266112
+        },
+        {
+          "index": 72668,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "UseSkill",
+          "returnType": 44789,
+          "parametersStart": 71704,
+          "genericContainer": 4294967295,
+          "token": "0x6011bdd",
+          "flags": 1478,
+          "slot": 54,
+          "parameterCount": 1,
+          "address": "0x0",
+          "va": 0
+        },
+        {
+          "index": 72669,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "RetriggerSkill",
+          "returnType": 44789,
+          "parametersStart": 71705,
+          "genericContainer": 4294967295,
+          "token": "0x6011bde",
+          "flags": 454,
+          "slot": 55,
+          "parameterCount": 1,
+          "address": "0x18095ddd0",
+          "va": 6452272592
+        },
+        {
+          "index": 72670,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "InterruptIfNot",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bdf",
+          "flags": 454,
+          "slot": 56,
+          "parameterCount": 0,
+          "address": "0x18095a090",
+          "va": 6452256912
+        },
+        {
+          "index": 72671,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OnEnterSkillState",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011be0",
+          "flags": 454,
+          "slot": 57,
+          "parameterCount": 0,
+          "address": "0x18095bdc0",
+          "va": 6452264384
+        },
+        {
+          "index": 72672,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "TryPrepare",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011be1",
+          "flags": 454,
+          "slot": 58,
+          "parameterCount": 0,
+          "address": "0x18095e410",
+          "va": 6452274192
+        },
+        {
+          "index": 72673,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "CanCastCheckBeforeStart",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011be2",
+          "flags": 454,
+          "slot": 59,
+          "parameterCount": 0,
+          "address": "0x1809591c0",
+          "va": 6452253120
+        },
+        {
+          "index": 72674,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "GetBehaviour",
+          "returnType": 278,
+          "parametersStart": 4294967295,
+          "genericContainer": 639,
+          "token": "0x6011be3",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x0",
+          "va": 0
+        },
+        {
+          "index": 72675,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OnInit",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011be4",
+          "flags": 454,
+          "slot": 60,
+          "parameterCount": 0,
+          "address": "0x18095bea0",
+          "va": 6452264608
+        },
+        {
+          "index": 72676,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OnBorn",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011be5",
+          "flags": 454,
+          "slot": 61,
+          "parameterCount": 0,
+          "address": "0x18095b620",
+          "va": 6452262432
+        },
+        {
+          "index": 72677,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OnLocate",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011be6",
+          "flags": 454,
+          "slot": 62,
+          "parameterCount": 0,
+          "address": "0x180956800",
+          "va": 6452242432
+        },
+        {
+          "index": 72678,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OnOverload",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011be7",
+          "flags": 454,
+          "slot": 63,
+          "parameterCount": 0,
+          "address": "0x18095c010",
+          "va": 6452264976
+        },
+        {
+          "index": 72679,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OnOwnerFinish",
+          "returnType": 83059,
+          "parametersStart": 71706,
+          "genericContainer": 4294967295,
+          "token": "0x6011be8",
+          "flags": 454,
+          "slot": 64,
+          "parameterCount": 1,
+          "address": "0x18095c0f0",
+          "va": 6452265200
+        },
+        {
+          "index": 72680,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OnCastSucceed",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011be9",
+          "flags": 452,
+          "slot": 65,
+          "parameterCount": 0,
+          "address": "0x18095ba80",
+          "va": 6452263552
+        },
+        {
+          "index": 72681,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OnCastFailedInSkillState",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bea",
+          "flags": 454,
+          "slot": 66,
+          "parameterCount": 0,
+          "address": "0x18095b870",
+          "va": 6452263024
+        },
+        {
+          "index": 72682,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OnBeforeAttack",
+          "returnType": 44789,
+          "parametersStart": 71707,
+          "genericContainer": 4294967295,
+          "token": "0x6011beb",
+          "flags": 454,
+          "slot": 67,
+          "parameterCount": 2,
+          "address": "0x18095b090",
+          "va": 6452261008
+        },
+        {
+          "index": 72683,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OnAfterAttack",
+          "returnType": 83059,
+          "parametersStart": 71709,
+          "genericContainer": 4294967295,
+          "token": "0x6011bec",
+          "flags": 454,
+          "slot": 68,
+          "parameterCount": 3,
+          "address": "0x18095af30",
+          "va": 6452260656
+        },
+        {
+          "index": 72684,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "GetValue",
+          "returnType": 44789,
+          "parametersStart": 71712,
+          "genericContainer": 4294967295,
+          "token": "0x6011bed",
+          "flags": 486,
+          "slot": 10,
+          "parameterCount": 5,
+          "address": "0x180959fb0",
+          "va": 6452256688
+        },
+        {
+          "index": 72685,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "GetAttackBlackboard",
+          "returnType": 44675,
+          "parametersStart": 71717,
+          "genericContainer": 4294967295,
+          "token": "0x6011bee",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x180959d70",
+          "va": 6452256112
+        },
+        {
+          "index": 72686,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "PlayBeginEffectAndAudio",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bef",
+          "flags": 454,
+          "slot": 69,
+          "parameterCount": 0,
+          "address": "0x18095d580",
+          "va": 6452270464
+        },
+        {
+          "index": 72687,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "InterruptStartIfNot",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bf0",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095a1d0",
+          "va": 6452257232
+        },
+        {
+          "index": 72688,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "DoStartSkill",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bf1",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x180959790",
+          "va": 6452254608
+        },
+        {
+          "index": 72689,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "PlayBeginAnimation",
+          "returnType": 57255,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bf2",
+          "flags": 454,
+          "slot": 70,
+          "parameterCount": 0,
+          "address": "0x18095d280",
+          "va": 6452269696
+        },
+        {
+          "index": 72690,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "PlayBeginAudio",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bf3",
+          "flags": 454,
+          "slot": 71,
+          "parameterCount": 0,
+          "address": "0x18095d330",
+          "va": 6452269872
+        },
+        {
+          "index": 72691,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OnBeforeSkillBeginAnim",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bf4",
+          "flags": 454,
+          "slot": 72,
+          "parameterCount": 0,
+          "address": "0x18095b200",
+          "va": 6452261376
+        },
+        {
+          "index": 72692,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OnBeforeSkillStart",
+          "returnType": 83059,
+          "parametersStart": 71718,
+          "genericContainer": 4294967295,
+          "token": "0x6011bf5",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x18095b260",
+          "va": 6452261472
+        },
+        {
+          "index": 72693,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OnBeforePlayBeginAnimation",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bf6",
+          "flags": 129,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095b120",
+          "va": 6452261152
+        },
+        {
+          "index": 72694,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "ClearBeginEffect",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bf7",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x180959460",
+          "va": 6452253792
+        },
+        {
+          "index": 72695,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "DealDummySkillBehaviours",
+          "returnType": 83059,
+          "parametersStart": 71719,
+          "genericContainer": 4294967295,
+          "token": "0x6011bf8",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 2,
+          "address": "0x180959690",
+          "va": 6452254352
+        },
+        {
+          "index": 72696,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "GatherEffects",
+          "returnType": 83059,
+          "parametersStart": 71721,
+          "genericContainer": 4294967295,
+          "token": "0x6011bf9",
+          "flags": 454,
+          "slot": 73,
+          "parameterCount": 1,
+          "address": "0x180959a60",
+          "va": 6452255328
+        },
+        {
+          "index": 72697,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "GatherProjectiles",
+          "returnType": 83059,
+          "parametersStart": 71722,
+          "genericContainer": 4294967295,
+          "token": "0x6011bfa",
+          "flags": 454,
+          "slot": 74,
+          "parameterCount": 1,
+          "address": "0x180959c60",
+          "va": 6452255840
+        },
+        {
+          "index": 72698,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "GatherBuffs",
+          "returnType": 83059,
+          "parametersStart": 71723,
+          "genericContainer": 4294967295,
+          "token": "0x6011bfb",
+          "flags": 454,
+          "slot": 75,
+          "parameterCount": 1,
+          "address": "0x180959950",
+          "va": 6452255056
+        },
+        {
+          "index": 72699,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "GatherActionNodes",
+          "returnType": 83059,
+          "parametersStart": 71724,
+          "genericContainer": 4294967295,
+          "token": "0x6011bfc",
+          "flags": 454,
+          "slot": 76,
+          "parameterCount": 1,
+          "address": "0x180959830",
+          "va": 6452254768
+        },
+        {
+          "index": 72700,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OnTick",
+          "returnType": 83059,
+          "parametersStart": 71725,
+          "genericContainer": 4294967295,
+          "token": "0x6011bfd",
+          "flags": 452,
+          "slot": 77,
+          "parameterCount": 1,
+          "address": "0x18095cf00",
+          "va": 6452268800
+        },
+        {
+          "index": 72701,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OverloadIfNecessary",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011bfe",
+          "flags": 129,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095d090",
+          "va": 6452269200
+        },
+        {
+          "index": 72702,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "ReduceSp",
+          "returnType": 44789,
+          "parametersStart": 71726,
+          "genericContainer": 4294967295,
+          "token": "0x6011bff",
+          "flags": 132,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x18095dad0",
+          "va": 6452271824
+        },
+        {
+          "index": 72703,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "UpdateSpRecovery",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011c00",
+          "flags": 452,
+          "slot": 78,
+          "parameterCount": 0,
+          "address": "0x18095e4f0",
+          "va": 6452274416
+        },
+        {
+          "index": 72704,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "OnCastFinish",
+          "returnType": 83059,
+          "parametersStart": 71727,
+          "genericContainer": 4294967295,
+          "token": "0x6011c01",
+          "flags": 452,
+          "slot": 79,
+          "parameterCount": 3,
+          "address": "0x18095b990",
+          "va": 6452263312
+        },
+        {
+          "index": 72705,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "Awake",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011c02",
+          "flags": 452,
+          "slot": 80,
+          "parameterCount": 0,
+          "address": "0x180958f90",
+          "va": 6452252560
+        },
+        {
+          "index": 72706,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "_GenerateSignalId",
+          "returnType": 77200,
+          "parametersStart": 71730,
+          "genericContainer": 4294967295,
+          "token": "0x6011c03",
+          "flags": 132,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x18095e6f0",
+          "va": 6452274928
+        },
+        {
+          "index": 72707,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "_OnReceiveAttackFinishEvent",
+          "returnType": 83059,
+          "parametersStart": 71731,
+          "genericContainer": 4294967295,
+          "token": "0x6011c04",
+          "flags": 129,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x18095e900",
+          "va": 6452275456
+        },
+        {
+          "index": 72708,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "_ApplyModifierToData",
+          "returnType": 83059,
+          "parametersStart": 71732,
+          "genericContainer": 4294967295,
+          "token": "0x6011c05",
+          "flags": 129,
+          "slot": 65535,
+          "parameterCount": 2,
+          "address": "0x18095e5e0",
+          "va": 6452274656
+        },
+        {
+          "index": 72709,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "PostprocessData",
+          "returnType": 83059,
+          "parametersStart": 71734,
+          "genericContainer": 4294967295,
+          "token": "0x6011c06",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x18095d990",
+          "va": 6452271504
+        },
+        {
+          "index": 72710,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "SwitchSkillRangeIdModeIndex",
+          "returnType": 83059,
+          "parametersStart": 71735,
+          "genericContainer": 4294967295,
+          "token": "0x6011c07",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x18095df70",
+          "va": 6452273008
+        },
+        {
+          "index": 72711,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "SwitchSkillCharWordToPassiveType",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011c08",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095df10",
+          "va": 6452272912
+        },
+        {
+          "index": 72712,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "ModifyCostMinSp",
+          "returnType": 83059,
+          "parametersStart": 71736,
+          "genericContainer": 4294967295,
+          "token": "0x6011c09",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x18095aec0",
+          "va": 6452260544
+        },
+        {
+          "index": 72713,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "ModifyCastWithNoSp",
+          "returnType": 83059,
+          "parametersStart": 71737,
+          "genericContainer": 4294967295,
+          "token": "0x6011c0a",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 1,
+          "address": "0x18095ae50",
+          "va": 6452260432
+        },
+        {
+          "index": 72714,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "_IsStackable",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011c0b",
+          "flags": 129,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095e790",
+          "va": 6452275088
+        },
+        {
+          "index": 72715,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_isAvailableToShowStackCount",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011c0c",
+          "flags": 2502,
+          "slot": 81,
+          "parameterCount": 0,
+          "address": "0x18095fdc0",
+          "va": 6452280768
+        },
+        {
+          "index": 72716,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "get_hideHudSkillStackCount",
+          "returnType": 44789,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011c0d",
+          "flags": 2182,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095fb90",
+          "va": 6452280208
+        },
+        {
+          "index": 72717,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "ReplaceBeginAnim",
+          "returnType": 83059,
+          "parametersStart": 71738,
+          "genericContainer": 4294967295,
+          "token": "0x6011c0e",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 2,
+          "address": "0x18095dd00",
+          "va": 6452272384
+        },
+        {
+          "index": 72718,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": "ClearReplaceBeginAnim",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011c0f",
+          "flags": 134,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x180959600",
+          "va": 6452254208
+        },
+        {
+          "index": 72719,
+          "typeIndex": 10921,
+          "type": "Torappu.Battle.BasicSkill",
+          "name": ".ctor",
+          "returnType": 83059,
+          "parametersStart": 4294967295,
+          "genericContainer": 4294967295,
+          "token": "0x6011c10",
+          "flags": 6276,
+          "slot": 65535,
+          "parameterCount": 0,
+          "address": "0x18095eb60",
+          "va": 6452276064
+        }
+      ]
+    }
+  ],
+  "directCallChecks": [
+    {
+      "method": "Torappu.Battle.Ability.CleanupForNextCast",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d4be9",
+      "bytes": "e81273ebff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.CleanupForNextCast",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d4bf5",
+      "bytes": "e80673ebff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.CleanupForNextCast",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d4c2b",
+      "bytes": "e81075ebff",
+      "expected": "0x18048c140",
+      "actual": "0x18048c140",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.CleanupForNextCast",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d4c38",
+      "bytes": "e833ec0500",
+      "expected": "0x180633870",
+      "actual": "0x180633870",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.CleanupForNextCast",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d4c4b",
+      "bytes": "e8906debff",
+      "expected": "0x18048b9e0",
+      "actual": "0x18048b9e0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d5938",
+      "bytes": "e8c365ebff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d5972",
+      "bytes": "e88965ebff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d59a4",
+      "bytes": "e867dfcd02",
+      "expected": "0x1832b3910",
+      "actual": "0x1832b3910",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d59c6",
+      "bytes": "e83513e7ff",
+      "expected": "0x180446d00",
+      "actual": "0x180446d00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d59ed",
+      "bytes": "e80e13e7ff",
+      "expected": "0x180446d00",
+      "actual": "0x180446d00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d5a1a",
+      "bytes": "e8e164ebff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d5a56",
+      "bytes": "e8a512e7ff",
+      "expected": "0x180446d00",
+      "actual": "0x180446d00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d5a87",
+      "bytes": "e8b4ed8201",
+      "expected": "0x181e04840",
+      "actual": "0x181e04840",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d5aa0",
+      "bytes": "e89bed8201",
+      "expected": "0x181e04840",
+      "actual": "0x181e04840",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d5aba",
+      "bytes": "e83126d202",
+      "expected": "0x1832f80f0",
+      "actual": "0x1832f80f0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d5b4a",
+      "bytes": "e8c11fd202",
+      "expected": "0x1832f7b10",
+      "actual": "0x1832f7b10",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d5b5f",
+      "bytes": "e84c65ebff",
+      "expected": "0x18048c0b0",
+      "actual": "0x18048c0b0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.StartCastingInternal",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d6d39",
+      "bytes": "e8c251ebff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.StartCastingInternal",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d6d45",
+      "bytes": "e8b651ebff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.StartCastingInternal",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d6d7f",
+      "bytes": "e8bc53ebff",
+      "expected": "0x18048c140",
+      "actual": "0x18048c140",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.StartCastingInternal",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d6d86",
+      "bytes": "e8c5a80600",
+      "expected": "0x180641650",
+      "actual": "0x180641650",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.StartCastingInternal",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x1805d6d9a",
+      "bytes": "e861ffe6ff",
+      "expected": "0x180446d00",
+      "actual": "0x180446d00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095ca19",
+      "bytes": "e8e2f4b2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095ca25",
+      "bytes": "e8d6f4b2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095ca31",
+      "bytes": "e8caf4b2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095ca3d",
+      "bytes": "e8bef4b2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095ca49",
+      "bytes": "e8b2f4b2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095ca55",
+      "bytes": "e8a6f4b2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095ca61",
+      "bytes": "e89af4b2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095ca6d",
+      "bytes": "e88ef4b2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cab2",
+      "bytes": "e849f4b2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cae7",
+      "bytes": "e8749ca002",
+      "expected": "0x183366760",
+      "actual": "0x183366760",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cb13",
+      "bytes": "e868200d00",
+      "expected": "0x180a2eb80",
+      "actual": "0x180a2eb80",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cb28",
+      "bytes": "e8d330b503",
+      "expected": "0x1844afc00",
+      "actual": "0x1844afc00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cb72",
+      "bytes": "e889a1aeff",
+      "expected": "0x180446d00",
+      "actual": "0x180446d00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cbbc",
+      "bytes": "e83ff3b2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cbf1",
+      "bytes": "e86a9ba002",
+      "expected": "0x183366760",
+      "actual": "0x183366760",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cc04",
+      "bytes": "e8776edaff",
+      "expected": "0x180703a80",
+      "actual": "0x180703a80",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cc13",
+      "bytes": "e8c803b0ff",
+      "expected": "0x18045cfe0",
+      "actual": "0x18045cfe0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cc34",
+      "bytes": "e8a7ebbbff",
+      "expected": "0x18051b7e0",
+      "actual": "0x18051b7e0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cc54",
+      "bytes": "e827fff703",
+      "expected": "0x1848dcb80",
+      "actual": "0x1848dcb80",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cc5e",
+      "bytes": "e89d2d0000",
+      "expected": "0x18095fa00",
+      "actual": "0x18095fa00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cc7a",
+      "bytes": "e881f2b2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095ccaf",
+      "bytes": "e8ace6dc02",
+      "expected": "0x18372b360",
+      "actual": "0x18372b360",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095ccc7",
+      "bytes": "e834f2b2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cd01",
+      "bytes": "e85ad04505",
+      "expected": "0x185db9d60",
+      "actual": "0x185db9d60",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cd1f",
+      "bytes": "e8bcbfc102",
+      "expected": "0x183578ce0",
+      "actual": "0x183578ce0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cd37",
+      "bytes": "e8c4f1b2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cd6c",
+      "bytes": "e8ef99a002",
+      "expected": "0x183366760",
+      "actual": "0x183366760",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cd85",
+      "bytes": "e8d6751700",
+      "expected": "0x180ad4360",
+      "actual": "0x180ad4360",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cda7",
+      "bytes": "e854f1b2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cddc",
+      "bytes": "e87f99a002",
+      "expected": "0x183366760",
+      "actual": "0x183366760",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cdf4",
+      "bytes": "e847f3b2ff",
+      "expected": "0x18048c140",
+      "actual": "0x18048c140",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095ce24",
+      "bytes": "e8c70ccdff",
+      "expected": "0x18062daf0",
+      "actual": "0x18062daf0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095ce30",
+      "bytes": "e81bae9d04",
+      "expected": "0x185337c50",
+      "actual": "0x185337c50",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095ce43",
+      "bytes": "e88862ceff",
+      "expected": "0x1806430d0",
+      "actual": "0x1806430d0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095ce5b",
+      "bytes": "e8a0f0b2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095ce90",
+      "bytes": "e8cb98a002",
+      "expected": "0x183366760",
+      "actual": "0x183366760",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095ce9f",
+      "bytes": "e82ccf0d00",
+      "expected": "0x180a39dd0",
+      "actual": "0x180a39dd0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095cee5",
+      "bytes": "e8b6f1b2ff",
+      "expected": "0x18048c0a0",
+      "actual": "0x18048c0a0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnSkillStart",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095ceeb",
+      "bytes": "e8c0f1b2ff",
+      "expected": "0x18048c0b0",
+      "actual": "0x18048c0b0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c10e",
+      "bytes": "e8edfdb2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c11a",
+      "bytes": "e8e1fdb2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c126",
+      "bytes": "e8d5fdb2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c132",
+      "bytes": "e8c9fdb2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c13e",
+      "bytes": "e8bdfdb2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c173",
+      "bytes": "e888abaeff",
+      "expected": "0x180446d00",
+      "actual": "0x180446d00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c19e",
+      "bytes": "e85dfdb2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c1d3",
+      "bytes": "e8587f9c02",
+      "expected": "0x183324130",
+      "actual": "0x183324130",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c1ff",
+      "bytes": "e84cbbc7ff",
+      "expected": "0x1805d7d50",
+      "actual": "0x1805d7d50",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c20d",
+      "bytes": "e83e2a0000",
+      "expected": "0x18095ec50",
+      "actual": "0x18095ec50",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c220",
+      "bytes": "e80b8cc7ff",
+      "expected": "0x1805d4e30",
+      "actual": "0x1805d4e30",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c23e",
+      "bytes": "e86d330000",
+      "expected": "0x18095f5b0",
+      "actual": "0x18095f5b0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c24c",
+      "bytes": "e89f240000",
+      "expected": "0x18095e6f0",
+      "actual": "0x18095e6f0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c259",
+      "bytes": "e802460000",
+      "expected": "0x180960860",
+      "actual": "0x180960860",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c271",
+      "bytes": "e8cafeb2ff",
+      "expected": "0x18048c140",
+      "actual": "0x18048c140",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c27e",
+      "bytes": "e8ed772006",
+      "expected": "0x186b63a70",
+      "actual": "0x186b63a70",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c29e",
+      "bytes": "e85dfcb2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c2d3",
+      "bytes": "e888a4a002",
+      "expected": "0x183366760",
+      "actual": "0x183366760",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c2ec",
+      "bytes": "e86f801700",
+      "expected": "0x180ad4360",
+      "actual": "0x180ad4360",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c30a",
+      "bytes": "e8f1fbb2ff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c339",
+      "bytes": "e822450000",
+      "expected": "0x180960860",
+      "actual": "0x180960860",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c351",
+      "bytes": "e8eafdb2ff",
+      "expected": "0x18048c140",
+      "actual": "0x18048c140",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c380",
+      "bytes": "e86b17cdff",
+      "expected": "0x18062daf0",
+      "actual": "0x18062daf0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c38d",
+      "bytes": "e83e590000",
+      "expected": "0x180961cd0",
+      "actual": "0x180961cd0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c3a2",
+      "bytes": "e85938b503",
+      "expected": "0x1844afc00",
+      "actual": "0x1844afc00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c3f2",
+      "bytes": "e809a9aeff",
+      "expected": "0x180446d00",
+      "actual": "0x180446d00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c46c",
+      "bytes": "e82ffcb2ff",
+      "expected": "0x18048c0a0",
+      "actual": "0x18048c0a0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+      "source": "docs/tactical-research/evidence/skill-lifecycle.json",
+      "address": "0x18095c472",
+      "bytes": "e839fcb2ff",
+      "expected": "0x18048c0b0",
+      "actual": "0x18048c0b0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.get_isAffecting",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d7cd9",
+      "bytes": "e82242ebff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.get_isAffecting",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d7d0e",
+      "bytes": "e8ed41ebff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.get_isCasting",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d7ea9",
+      "bytes": "e85240ebff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d5938",
+      "bytes": "e8c365ebff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d5972",
+      "bytes": "e88965ebff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d59a4",
+      "bytes": "e867dfcd02",
+      "expected": "0x1832b3910",
+      "actual": "0x1832b3910",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d59c6",
+      "bytes": "e83513e7ff",
+      "expected": "0x180446d00",
+      "actual": "0x180446d00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d59ed",
+      "bytes": "e80e13e7ff",
+      "expected": "0x180446d00",
+      "actual": "0x180446d00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d5a1a",
+      "bytes": "e8e164ebff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d5a56",
+      "bytes": "e8a512e7ff",
+      "expected": "0x180446d00",
+      "actual": "0x180446d00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d5a87",
+      "bytes": "e8b4ed8201",
+      "expected": "0x181e04840",
+      "actual": "0x181e04840",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d5aa0",
+      "bytes": "e89bed8201",
+      "expected": "0x181e04840",
+      "actual": "0x181e04840",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d5aba",
+      "bytes": "e83126d202",
+      "expected": "0x1832f80f0",
+      "actual": "0x1832f80f0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d5b4a",
+      "bytes": "e8c11fd202",
+      "expected": "0x1832f7b10",
+      "actual": "0x1832f7b10",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.FinishIfNot",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d5b5f",
+      "bytes": "e84c65ebff",
+      "expected": "0x18048c0b0",
+      "actual": "0x18048c0b0",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.StartCastingInternal",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d6d39",
+      "bytes": "e8c251ebff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.StartCastingInternal",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d6d45",
+      "bytes": "e8b651ebff",
+      "expected": "0x18048bf00",
+      "actual": "0x18048bf00",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.StartCastingInternal",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d6d7f",
+      "bytes": "e8bc53ebff",
+      "expected": "0x18048c140",
+      "actual": "0x18048c140",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.StartCastingInternal",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d6d86",
+      "bytes": "e8c5a80600",
+      "expected": "0x180641650",
+      "actual": "0x180641650",
+      "matches": true
+    },
+    {
+      "method": "Torappu.Battle.Ability.StartCastingInternal",
+      "source": "docs/tactical-research/evidence/action-eligibility-and-interruption.json",
+      "address": "0x1805d6d9a",
+      "bytes": "e861ffe6ff",
+      "expected": "0x180446d00",
+      "actual": "0x180446d00",
+      "matches": true
+    }
+  ]
+}

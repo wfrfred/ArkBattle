@@ -1,0 +1,34 @@
+{
+    "name": "arkbattle",
+    "version": "0.1.0",
+    "private": true,
+    "description": "A deterministic Arknights battle simulation engine.",
+    "license": "GPL-3.0-or-later",
+    "type": "module",
+    "scripts": {
+        "predemo": "npm run build",
+        "demo": "node scripts/demo.mjs",
+        "build": "tsc -p tsconfig.json",
+        "pretest": "npm run build",
+        "test": "node --test --test-concurrency=4 test/common/*.test.js test/sim/*.test.js test/content/*.test.js",
+        "typecheck": "tsc -p tsconfig.json --noEmit",
+        "lint": "eslint src --max-warnings=0",
+        "lint:fix": "eslint src --fix --max-warnings=0",
+        "format": "prettier --write \"src/**/*.ts\" eslint.config.mjs .prettierrc.json package.json tsconfig.json",
+        "format:check": "prettier --check \"src/**/*.ts\" eslint.config.mjs .prettierrc.json package.json tsconfig.json",
+        "check": "npm run lint && npm run format:check && npm run typecheck"
+    },
+    "engines": {
+        "node": "^22.13.0 || >=24.0.0"
+    },
+    "devDependencies": {
+        "@eslint/js": "10.0.1",
+        "@stylistic/eslint-plugin": "5.10.0",
+        "@types/node": "^26.6.4",
+        "eslint": "10.12.0",
+        "eslint-config-prettier": "10.1.8",
+        "prettier": "3.9.9",
+        "typescript": "npm:@typescript/typescript6@^6.0.2",
+        "typescript-eslint": "8.71.1"
+    }
+}

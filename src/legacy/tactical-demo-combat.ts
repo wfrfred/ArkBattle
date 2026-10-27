@@ -1,0 +1,75 @@
+import type { Map } from "../core/battlefield/map/map.js";
+import type { Input as RouteInput } from "../core/battle/creation/route.js";
+import { TICKS_PER_SECOND } from "../core/tick.js";
+import { createLegacyCombatSpec, type LegacyCombatOptions } from "./combat.js";
+import type { LegacyData } from "./tactical-demo-presentation.js";
+
+export type TacticalCombatScenario = "MIXED" | "RANGED" | "BLOCKING" | "PROJECTILE";
+
+function definition(value: unknown, id: string): Record<string, unknown> {
+    if (value === null || typeof value !== "object" || Array.isArray(value)) {
+        throw new TypeError(`missing demo combat definition: ${id}`);
+    }
+
+    return value as Record<string, unknown>;
+}
+
+function ordinaryAttack(operator: Record<string, unknown>) {
+    return {
+        chessId: operator.chessId,
+        stats: operator.stats,
+        rangeGrid: operator.rangeGrid,
+        dmgType: operator.dmgType,
+        attackKind: operator.attackKind,
+        projectile: "none",
+        canHitFly: operator.canHitFly,
+        targetPriority: "nearest",
+    };
+}
+
+export function createTacticalCombatDemoSpec(
+    map: Map,
+    route: RouteInput,
+    data: LegacyData,
+    seed: number,
+    scenario: TacticalCombatScenario = "MIXED",
+) {
+    const operators: LegacyCombatOptions["operators"][number][] = [];
+
+    if (scenario !== "RANGED" && scenario !== "PROJECTILE") {
+        operators.push({
+            definition: ordinaryAttack(
+                definition(data.lookup("chess", "chess_char_3_05_a"), "chess_char_3_05_a"),
+            ),
+            position: [5, 6],
+            direction: "RIGHT",
+        });
+    }
+    if (scenario !== "BLOCKING") {
+        const operatorId = scenario === "PROJECTILE" ? "chess_char_1_11_a" : "chess_char_3_01_a";
+        operators.push({
+            definition: ordinaryAttack(definition(data.lookup("chess", operatorId), operatorId)),
+            position: [4, 4],
+            direction: "RIGHT",
+        });
+    }
+
+    const enemy = definition(data.lookup("enemies", "enemy_1000_gopro_2"), "enemy_1000_gopro_2");
+    const ordinaryEnemy = {
+        key: enemy.key,
+        stats: enemy.stats,
+        applyWay: enemy.applyWay,
+    };
+
+    return createLegacyCombatSpec({
+        map,
+        operators,
+        enemies: (scenario === "BLOCKING" ? [3, 3, 3] : [3, 11, 19]).map((seconds) => ({
+            definition: ordinaryEnemy,
+            route,
+            tick: seconds * TICKS_PER_SECOND,
+        })),
+        maxTicks: 45 * TICKS_PER_SECOND,
+        seed,
+    });
+}

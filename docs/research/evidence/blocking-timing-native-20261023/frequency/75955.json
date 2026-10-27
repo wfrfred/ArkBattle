@@ -1,0 +1,16 @@
+{
+  "index": 75955,
+  "name": "SearchBlockeeImmediate",
+  "type": 11346,
+  "returnType": 83059,
+  "parameterStart": -1,
+  "generic": -1,
+  "token": 100739252,
+  "flags": 134,
+  "iflags": 0,
+  "slot": 65535,
+  "parameterCount": 0,
+  "address": 6453138432,
+  "fullname": "Torappu.Battle.Character.SearchBlockeeImmediate",
+  "parameters": []
+}

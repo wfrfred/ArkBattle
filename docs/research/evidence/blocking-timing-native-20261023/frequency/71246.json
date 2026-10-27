@@ -1,0 +1,16 @@
+{
+  "index": 71246,
+  "name": "OnProjectileStop",
+  "type": 10761,
+  "returnType": 83059,
+  "parameterStart": -1,
+  "generic": -1,
+  "token": 100734543,
+  "flags": 196,
+  "iflags": 0,
+  "slot": 53,
+  "parameterCount": 0,
+  "address": 6451709056,
+  "fullname": "Torappu.Battle.NetCatcherProjectile.OnProjectileStop",
+  "parameters": []
+}

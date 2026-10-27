@@ -1,0 +1,237 @@
+[
+  {
+    "name": "STUNNED",
+    "value": 0,
+    "inDisappearMask": false
+  },
+  {
+    "name": "SP_RECOVER_STOPPED",
+    "value": 1,
+    "inDisappearMask": false
+  },
+  {
+    "name": "TARGET_FREE",
+    "value": 2,
+    "inDisappearMask": false
+  },
+  {
+    "name": "BLOCK_FREE",
+    "value": 3,
+    "inDisappearMask": true
+  },
+  {
+    "name": "HIDDEN",
+    "value": 4,
+    "inDisappearMask": false
+  },
+  {
+    "name": "INVINCIBLE",
+    "value": 5,
+    "inDisappearMask": true
+  },
+  {
+    "name": "UNDEADABLE",
+    "value": 6,
+    "inDisappearMask": false
+  },
+  {
+    "name": "HEAL_FREE",
+    "value": 7,
+    "inDisappearMask": false
+  },
+  {
+    "name": "UNBALANCE_IMMUNE",
+    "value": 8,
+    "inDisappearMask": true
+  },
+  {
+    "name": "INVISIBLE",
+    "value": 9,
+    "inDisappearMask": false
+  },
+  {
+    "name": "UNUSED_PLACEHOLDER_2",
+    "value": 14,
+    "inDisappearMask": false
+  },
+  {
+    "name": "ALLY_TARGET_FREE",
+    "value": 15,
+    "inDisappearMask": false
+  },
+  {
+    "name": "UNUSED_PLACEHOLDER_1",
+    "value": 10,
+    "inDisappearMask": false
+  },
+  {
+    "name": "DISARMED",
+    "value": 11,
+    "inDisappearMask": false
+  },
+  {
+    "name": "SILENCED",
+    "value": 12,
+    "inDisappearMask": false
+  },
+  {
+    "name": "UNMOVABLE",
+    "value": 13,
+    "inDisappearMask": false
+  },
+  {
+    "name": "FROZEN",
+    "value": 16,
+    "inDisappearMask": false
+  },
+  {
+    "name": "CAMOUFLAGE",
+    "value": 17,
+    "inDisappearMask": false
+  },
+  {
+    "name": "FORCE_DISARMED",
+    "value": 18,
+    "inDisappearMask": false
+  },
+  {
+    "name": "STUNNED_NO_AMPLIFY_DAMAGE",
+    "value": 19,
+    "inDisappearMask": false
+  },
+  {
+    "name": "DISABLE_COMBAT",
+    "value": 20,
+    "inDisappearMask": false
+  },
+  {
+    "name": "ELEMENT_FREE_ALL",
+    "value": 21,
+    "inDisappearMask": false
+  },
+  {
+    "name": "UNMOVABLE_PRIVATE",
+    "value": 22,
+    "inDisappearMask": false
+  },
+  {
+    "name": "COLD",
+    "value": 23,
+    "inDisappearMask": false
+  },
+  {
+    "name": "SKILL_NOT_ACTIVATABLE",
+    "value": 24,
+    "inDisappearMask": false
+  },
+  {
+    "name": "LEVITATE",
+    "value": 25,
+    "inDisappearMask": false
+  },
+  {
+    "name": "DURANCE",
+    "value": 26,
+    "inDisappearMask": false
+  },
+  {
+    "name": "NOT_WITHDRAWABLE",
+    "value": 27,
+    "inDisappearMask": false
+  },
+  {
+    "name": "OUT_OF_GROUND",
+    "value": 28,
+    "inDisappearMask": false
+  },
+  {
+    "name": "SP_MODIFY_STOPPED",
+    "value": 29,
+    "inDisappearMask": false
+  },
+  {
+    "name": "ANTI_STATUS_RESISTABLE",
+    "value": 30,
+    "inDisappearMask": false
+  },
+  {
+    "name": "DISARMED_COMBAT",
+    "value": 31,
+    "inDisappearMask": false
+  },
+  {
+    "name": "TOWER_TARGET_FREE",
+    "value": 32,
+    "inDisappearMask": false
+  },
+  {
+    "name": "FEARED",
+    "value": 33,
+    "inDisappearMask": false
+  },
+  {
+    "name": "SKILL_ACTIVABLE_IN_ABNORMAL",
+    "value": 34,
+    "inDisappearMask": false
+  },
+  {
+    "name": "MOTION_TARGET_FREE",
+    "value": 35,
+    "inDisappearMask": false
+  },
+  {
+    "name": "FORCE_LEVITATE",
+    "value": 36,
+    "inDisappearMask": false
+  },
+  {
+    "name": "BUFF_ADD_CAN_BE_CANCELED_IF_DEFENSE",
+    "value": 37,
+    "inDisappearMask": false
+  },
+  {
+    "name": "DEFENSE_BUFF_ADD_IF_CANCELABLE_BUFF",
+    "value": 38,
+    "inDisappearMask": false
+  },
+  {
+    "name": "PALSY",
+    "value": 39,
+    "inDisappearMask": false
+  },
+  {
+    "name": "PALSYING",
+    "value": 40,
+    "inDisappearMask": false
+  },
+  {
+    "name": "ATTRACTED",
+    "value": 41,
+    "inDisappearMask": false
+  },
+  {
+    "name": "FEARED_PRIVATE",
+    "value": 42,
+    "inDisappearMask": false
+  },
+  {
+    "name": "DOZE",
+    "value": 43,
+    "inDisappearMask": false
+  },
+  {
+    "name": "TELEPORTED",
+    "value": 44,
+    "inDisappearMask": false
+  },
+  {
+    "name": "GROUND_BOUND",
+    "value": 45,
+    "inDisappearMask": false
+  },
+  {
+    "name": "E_NUM",
+    "value": 46,
+    "inDisappearMask": false
+  }
+]

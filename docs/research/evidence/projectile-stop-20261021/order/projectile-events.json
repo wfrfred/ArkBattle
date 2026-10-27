@@ -1,0 +1,42 @@
+[
+  {
+    "name": "ON_HIT_OBJECT",
+    "value": 0,
+    "raw": "00020406080a0c0e"
+  },
+  {
+    "name": "ON_REACHED_TARGET",
+    "value": 1,
+    "raw": "020406080a0c0e00"
+  },
+  {
+    "name": "ON_HIT_TILE",
+    "value": 2,
+    "raw": "0406080a0c0e0002"
+  },
+  {
+    "name": "ON_PROJECTILE_STOP",
+    "value": 3,
+    "raw": "06080a0c0e000204"
+  },
+  {
+    "name": "ON_PROJECTILE_ELIMINATE",
+    "value": 4,
+    "raw": "080a0c0e00020400"
+  },
+  {
+    "name": "ON_PROJECTILE_BORN",
+    "value": 5,
+    "raw": "0a0c0e0002040002"
+  },
+  {
+    "name": "ON_PROJECTILE_TRIGGER",
+    "value": 6,
+    "raw": "0c0e000204000200"
+  },
+  {
+    "name": "E_NUM",
+    "value": 7,
+    "raw": "0e00020400020002"
+  }
+]

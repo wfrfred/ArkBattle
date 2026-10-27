@@ -1,0 +1,1003 @@
+{
+  "date": "2026-10-19",
+  "scope": "Ordinary native MoveController integration, no runtime Lua/hotfix or full-game execution.",
+  "imageBase": "0x180000000",
+  "inputs": [
+    {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+      "size": 218523112,
+      "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5"
+    },
+    {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+      "size": 45805368,
+      "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f"
+    }
+  ],
+  "fields": [
+    {
+      "index": 79499,
+      "name": "OBSTACLE_AVOID_TICK_PERIOD",
+      "type": 59037,
+      "typeName": "int",
+      "attrs": 32849,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188364
+    },
+    {
+      "index": 79500,
+      "name": "OBSTACLE_AVOID_FORCE_FACTOR",
+      "type": 75056,
+      "typeName": "float",
+      "attrs": 32849,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188365
+    },
+    {
+      "index": 79501,
+      "name": "MIN_OBSTACLE_AVOID_INFLUENCE_FACTOR",
+      "type": 75056,
+      "typeName": "float",
+      "attrs": 32849,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188366
+    },
+    {
+      "index": 79502,
+      "name": "SEPARATION_TICK_PERIOD",
+      "type": 59037,
+      "typeName": "int",
+      "attrs": 32849,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188367
+    },
+    {
+      "index": 79503,
+      "name": "SEPARATION_FORCE_FACTOR",
+      "type": 75056,
+      "typeName": "float",
+      "attrs": 32849,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188368
+    },
+    {
+      "index": 79504,
+      "name": "SEPARATION_RADIUS",
+      "type": 75056,
+      "typeName": "float",
+      "attrs": 32849,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188369
+    },
+    {
+      "index": 79505,
+      "name": "MIN_SEPARATION_SUM_DELTA",
+      "type": 75056,
+      "typeName": "float",
+      "attrs": 32849,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188370
+    },
+    {
+      "index": 79506,
+      "name": "TILE_NEAR_THRESHOLD",
+      "type": 75056,
+      "typeName": "float",
+      "attrs": 32849,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188371
+    },
+    {
+      "index": 79507,
+      "name": "_steeringFactor",
+      "type": 75037,
+      "typeName": "float",
+      "attrs": 1,
+      "static": false,
+      "offset": 24,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188372
+    },
+    {
+      "index": 79508,
+      "name": "_maxSteeringForce",
+      "type": 75039,
+      "typeName": "float",
+      "attrs": 4,
+      "static": false,
+      "offset": 28,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188373
+    },
+    {
+      "index": 79509,
+      "name": "_halfBodyWidth",
+      "type": 75037,
+      "typeName": "float",
+      "attrs": 1,
+      "static": false,
+      "offset": 32,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188374
+    },
+    {
+      "index": 79510,
+      "name": "m_steeringFactor",
+      "type": 75039,
+      "typeName": "float",
+      "attrs": 4,
+      "static": false,
+      "offset": 36,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188375
+    },
+    {
+      "index": 79511,
+      "name": "m_target",
+      "type": 57677,
+      "typeName": "Torappu.Battle.IMovable",
+      "attrs": 4,
+      "static": false,
+      "offset": 40,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188376
+    },
+    {
+      "index": 79512,
+      "name": "m_footOffset",
+      "type": 82723,
+      "typeName": "UnityEngine.Vector2",
+      "attrs": 1,
+      "static": false,
+      "offset": 48,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188377
+    },
+    {
+      "index": 79513,
+      "name": "m_lastVelocity",
+      "type": 82725,
+      "typeName": "UnityEngine.Vector2",
+      "attrs": 4,
+      "static": false,
+      "offset": 56,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188378
+    },
+    {
+      "index": 79514,
+      "name": "m_lastObstacleAvoidForce",
+      "type": 82723,
+      "typeName": "UnityEngine.Vector2",
+      "attrs": 1,
+      "static": false,
+      "offset": 64,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188379
+    },
+    {
+      "index": 79515,
+      "name": "m_lastSeparationForce",
+      "type": 82725,
+      "typeName": "UnityEngine.Vector2",
+      "attrs": 4,
+      "static": false,
+      "offset": 72,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188380
+    },
+    {
+      "index": 79516,
+      "name": "m_obstacleAvoidTicker",
+      "type": 63896,
+      "typeName": "Torappu.PeriodicTicker",
+      "attrs": 4,
+      "static": false,
+      "offset": 80,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188381
+    },
+    {
+      "index": 79517,
+      "name": "m_separationTicker",
+      "type": 63896,
+      "typeName": "Torappu.PeriodicTicker",
+      "attrs": 4,
+      "static": false,
+      "offset": 88,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188382
+    },
+    {
+      "index": 79518,
+      "name": "__Hotfix0_get_moveSpeed",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188383
+    },
+    {
+      "index": 79519,
+      "name": "__Hotfix0_get_velocity",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 8,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188384
+    },
+    {
+      "index": 79520,
+      "name": "__Hotfix0_set_velocity",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 16,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188385
+    },
+    {
+      "index": 79521,
+      "name": "__Hotfix0_get_steeringFactor",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 24,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188386
+    },
+    {
+      "index": 79522,
+      "name": "__Hotfix0_set_steeringFactor",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 32,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188387
+    },
+    {
+      "index": 79523,
+      "name": "__Hotfix0_get_footOffset",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 40,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188388
+    },
+    {
+      "index": 79524,
+      "name": "__Hotfix0_get_halfBodyWidth",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 48,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188389
+    },
+    {
+      "index": 79525,
+      "name": "__Hotfix0_Reset",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 56,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188390
+    },
+    {
+      "index": 79526,
+      "name": "__Hotfix0_OnStart",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 64,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188391
+    },
+    {
+      "index": 79527,
+      "name": "__Hotfix0_CalculateMoveDelta",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 72,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188392
+    },
+    {
+      "index": 79528,
+      "name": "__Hotfix0_CalculateTotalForce",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 80,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188393
+    },
+    {
+      "index": 79529,
+      "name": "__Hotfix0__CalculateSteeringForce",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 88,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188394
+    },
+    {
+      "index": 79530,
+      "name": "__Hotfix0_CalculateIsHanging",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 96,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188395
+    },
+    {
+      "index": 79531,
+      "name": "__Hotfix0__CalculateObstacleAvoidForce",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 104,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188396
+    },
+    {
+      "index": 79532,
+      "name": "__Hotfix0__GetFootMapPosition",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 112,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188397
+    },
+    {
+      "index": 79533,
+      "name": "__Hotfix0_GetBodyEdgeOffset",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 120,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188398
+    },
+    {
+      "index": 79534,
+      "name": "__Hotfix0_OnTick",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 128,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188399
+    },
+    {
+      "index": 79535,
+      "name": "__Hotfix0__ConveyorMove",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 136,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188400
+    },
+    {
+      "index": 79536,
+      "name": "__Hotfix0__CanApplyConveyorMove",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 144,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188401
+    },
+    {
+      "index": 79537,
+      "name": "__Hotfix0__ClampConveyorDelta",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 152,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188402
+    },
+    {
+      "index": 79538,
+      "name": "__Hotfix0__ClampConveyorDeltaSingleStep",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 160,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188403
+    },
+    {
+      "index": 79539,
+      "name": "__Hotfix0__ClampConveyorDeltaByBodyEdge",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 168,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188404
+    },
+    {
+      "index": 79540,
+      "name": "__Hotfix0__CanConveyorEnterGrid",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 176,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188405
+    },
+    {
+      "index": 79541,
+      "name": "_c__Hotfix0_ctor",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 184,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188406
+    }
+  ],
+  "methods": [
+    {
+      "index": 71049,
+      "name": "Torappu.Battle.MoveController.set_velocity",
+      "va": "0x1808b89f0",
+      "size": 112,
+      "slot": 65535,
+      "returnType": {
+        "index": 83059,
+        "pointer": "0x188a2d860",
+        "kind": 1,
+        "attrs": 0,
+        "data": 41061,
+        "name": "void"
+      },
+      "parameters": [
+        {
+          "index": 70510,
+          "name": "value",
+          "token": 134288244,
+          "type": 82722,
+          "typeInfo": {
+            "index": 82722,
+            "pointer": "0x188a2b340",
+            "kind": 17,
+            "attrs": 0,
+            "data": 45390,
+            "name": "UnityEngine.Vector2"
+          }
+        }
+      ],
+      "file": "71049-set_velocity.asm",
+      "sha256": "b54a8ac741653a08bd3a4927e3da424b2e48a36216d80dc71a842ae269e4e753"
+    },
+    {
+      "index": 71050,
+      "name": "Torappu.Battle.MoveController.get_steeringFactor",
+      "va": "0x1808b88b0",
+      "size": 96,
+      "slot": 65535,
+      "returnType": {
+        "index": 75036,
+        "pointer": "0x188a2aaf0",
+        "kind": 12,
+        "attrs": 0,
+        "data": 41017,
+        "name": "float"
+      },
+      "parameters": [],
+      "file": "71050-get_steeringFactor.asm",
+      "sha256": "ef2c4847e2b74be70f2483f16c4ab7edf10419947cc8bc10252dbb4e26b3677e"
+    },
+    {
+      "index": 71051,
+      "name": "Torappu.Battle.MoveController.set_steeringFactor",
+      "va": "0x1808b8980",
+      "size": 112,
+      "slot": 65535,
+      "returnType": {
+        "index": 83059,
+        "pointer": "0x188a2d860",
+        "kind": 1,
+        "attrs": 0,
+        "data": 41061,
+        "name": "void"
+      },
+      "parameters": [
+        {
+          "index": 70511,
+          "name": "value",
+          "token": 134288245,
+          "type": 75036,
+          "typeInfo": {
+            "index": 75036,
+            "pointer": "0x188a2aaf0",
+            "kind": 12,
+            "attrs": 0,
+            "data": 41017,
+            "name": "float"
+          }
+        }
+      ],
+      "file": "71051-set_steeringFactor.asm",
+      "sha256": "a31b152231f7a4c77bd99324421570b0ecd05740b3a8daecbe031215d0e4b088"
+    },
+    {
+      "index": 71052,
+      "name": "Torappu.Battle.MoveController.get_footOffset",
+      "va": "0x1808b8680",
+      "size": 112,
+      "slot": 65535,
+      "returnType": {
+        "index": 82722,
+        "pointer": "0x188a2b340",
+        "kind": 17,
+        "attrs": 0,
+        "data": 45390,
+        "name": "UnityEngine.Vector2"
+      },
+      "parameters": [],
+      "file": "71052-get_footOffset.asm",
+      "sha256": "65ac76366b002f84dfe06494ebb14b8b27a2f28e86ce65c49f9190e7cc47ce8b"
+    },
+    {
+      "index": 71053,
+      "name": "Torappu.Battle.MoveController.get_halfBodyWidth",
+      "va": "0x1808b86f0",
+      "size": 96,
+      "slot": 65535,
+      "returnType": {
+        "index": 75036,
+        "pointer": "0x188a2aaf0",
+        "kind": 12,
+        "attrs": 0,
+        "data": 41017,
+        "name": "float"
+      },
+      "parameters": [],
+      "file": "71053-get_halfBodyWidth.asm",
+      "sha256": "6d05f593cb8060727f941b70640440ee8fc847fbea3cf08753b8e44da9d29415"
+    },
+    {
+      "index": 71054,
+      "name": "Torappu.Battle.MoveController.Reset",
+      "va": "0x1808b6980",
+      "size": 368,
+      "slot": 65535,
+      "returnType": {
+        "index": 83059,
+        "pointer": "0x188a2d860",
+        "kind": 1,
+        "attrs": 0,
+        "data": 41061,
+        "name": "void"
+      },
+      "parameters": [
+        {
+          "index": 70512,
+          "name": "target",
+          "token": 134288246,
+          "type": 57676,
+          "typeInfo": {
+            "index": 57676,
+            "pointer": "0x18899b380",
+            "kind": 18,
+            "attrs": 0,
+            "data": 10221,
+            "name": "Torappu.Battle.IMovable"
+          }
+        }
+      ],
+      "file": "71054-Reset.asm",
+      "sha256": "23d55aab3a86528ce6f65292bda7f4586b093904132a56ac16332cf699241589"
+    },
+    {
+      "index": 71055,
+      "name": "Torappu.Battle.MoveController.OnStart",
+      "va": "0x1808b67c0",
+      "size": 288,
+      "slot": 5,
+      "returnType": {
+        "index": 83059,
+        "pointer": "0x188a2d860",
+        "kind": 1,
+        "attrs": 0,
+        "data": 41061,
+        "name": "void"
+      },
+      "parameters": [],
+      "file": "71055-OnStart.asm",
+      "sha256": "707f0a45e8a43c6bc36a9b869e257210b48215440c3ef1b64a1df53a84cf54dc"
+    },
+    {
+      "index": 71056,
+      "name": "Torappu.Battle.MoveController.CalculateMoveDelta",
+      "va": "0x1808b6140",
+      "size": 1008,
+      "slot": 6,
+      "returnType": {
+        "index": 82722,
+        "pointer": "0x188a2b340",
+        "kind": 17,
+        "attrs": 0,
+        "data": 45390,
+        "name": "UnityEngine.Vector2"
+      },
+      "parameters": [
+        {
+          "index": 70513,
+          "name": "direction",
+          "token": 134288247,
+          "type": 82722,
+          "typeInfo": {
+            "index": 82722,
+            "pointer": "0x188a2b340",
+            "kind": 17,
+            "attrs": 0,
+            "data": 45390,
+            "name": "UnityEngine.Vector2"
+          }
+        },
+        {
+          "index": 70514,
+          "name": "deltaTime",
+          "token": 134288248,
+          "type": 75036,
+          "typeInfo": {
+            "index": 75036,
+            "pointer": "0x188a2aaf0",
+            "kind": 12,
+            "attrs": 0,
+            "data": 41017,
+            "name": "float"
+          }
+        },
+        {
+          "index": 70515,
+          "name": "isHanging",
+          "token": 134288249,
+          "type": 31108,
+          "typeInfo": {
+            "index": 31108,
+            "pointer": "0x1889e3420",
+            "kind": 2,
+            "attrs": 2,
+            "data": 40907,
+            "name": "bool"
+          }
+        }
+      ],
+      "file": "71056-CalculateMoveDelta.asm",
+      "sha256": "4622bd3e1546af147a16809b010ecfdd2d5ba9bbc50fe3f74d0c804d49defe83"
+    },
+    {
+      "index": 71057,
+      "name": "Torappu.Battle.MoveController.CalculateTotalForce",
+      "va": "0x1808b6530",
+      "size": 432,
+      "slot": 65535,
+      "returnType": {
+        "index": 82722,
+        "pointer": "0x188a2b340",
+        "kind": 17,
+        "attrs": 0,
+        "data": 45390,
+        "name": "UnityEngine.Vector2"
+      },
+      "parameters": [
+        {
+          "index": 70516,
+          "name": "direction",
+          "token": 134288250,
+          "type": 82722,
+          "typeInfo": {
+            "index": 82722,
+            "pointer": "0x188a2b340",
+            "kind": 17,
+            "attrs": 0,
+            "data": 45390,
+            "name": "UnityEngine.Vector2"
+          }
+        },
+        {
+          "index": 70517,
+          "name": "isHanging",
+          "token": 134288251,
+          "type": 31108,
+          "typeInfo": {
+            "index": 31108,
+            "pointer": "0x1889e3420",
+            "kind": 2,
+            "attrs": 2,
+            "data": 40907,
+            "name": "bool"
+          }
+        }
+      ],
+      "file": "71057-CalculateTotalForce.asm",
+      "sha256": "63e837da5bd44b51ef3d5393391da2fdec9b7ad3fe43dc1f590d6266dff7f91f"
+    },
+    {
+      "index": 71058,
+      "name": "Torappu.Battle.MoveController._CalculateSteeringForce",
+      "va": "0x1808b71d0",
+      "size": 448,
+      "slot": 7,
+      "returnType": {
+        "index": 82722,
+        "pointer": "0x188a2b340",
+        "kind": 17,
+        "attrs": 0,
+        "data": 45390,
+        "name": "UnityEngine.Vector2"
+      },
+      "parameters": [
+        {
+          "index": 70518,
+          "name": "moveForce",
+          "token": 134288252,
+          "type": 82722,
+          "typeInfo": {
+            "index": 82722,
+            "pointer": "0x188a2b340",
+            "kind": 17,
+            "attrs": 0,
+            "data": 45390,
+            "name": "UnityEngine.Vector2"
+          }
+        },
+        {
+          "index": 70519,
+          "name": "direction",
+          "token": 134288253,
+          "type": 82722,
+          "typeInfo": {
+            "index": 82722,
+            "pointer": "0x188a2b340",
+            "kind": 17,
+            "attrs": 0,
+            "data": 45390,
+            "name": "UnityEngine.Vector2"
+          }
+        }
+      ],
+      "file": "71058-_CalculateSteeringForce.asm",
+      "sha256": "185fb5647a777a8ac5618db3246f166e9762ee9f4ba0d34e9fe3a781b609c032"
+    },
+    {
+      "index": 71070,
+      "name": "Torappu.Battle.MoveController..ctor",
+      "va": "0x1808b8580",
+      "size": 256,
+      "slot": 65535,
+      "returnType": {
+        "index": 83059,
+        "pointer": "0x188a2d860",
+        "kind": 1,
+        "attrs": 0,
+        "data": 41061,
+        "name": "void"
+      },
+      "parameters": [],
+      "file": "71070-_ctor.asm",
+      "sha256": "b379b99523899a61bfedd1d945292db4998bd5c8f843a4186d19c88c6e1cb488"
+    },
+    {
+      "index": 76491,
+      "name": "Torappu.Battle.Enemy._MoveByCursor",
+      "va": "0x180a78fc0",
+      "size": 1840,
+      "slot": 65535,
+      "returnType": {
+        "index": 82722,
+        "pointer": "0x188a2b340",
+        "kind": 17,
+        "attrs": 0,
+        "data": 45390,
+        "name": "UnityEngine.Vector2"
+      },
+      "parameters": [
+        {
+          "index": 75071,
+          "name": "cursor",
+          "token": 134292805,
+          "type": 51365,
+          "typeInfo": {
+            "index": 51365,
+            "pointer": "0x188ace540",
+            "kind": 18,
+            "attrs": 0,
+            "data": 10658,
+            "name": "Torappu.Battle.DirectionCursor"
+          }
+        },
+        {
+          "index": 75072,
+          "name": "deltaTime",
+          "token": 134292806,
+          "type": 75036,
+          "typeInfo": {
+            "index": 75036,
+            "pointer": "0x188a2aaf0",
+            "kind": 12,
+            "attrs": 0,
+            "data": 41017,
+            "name": "float"
+          }
+        },
+        {
+          "index": 75073,
+          "name": "isHanging",
+          "token": 134292807,
+          "type": 31108,
+          "typeInfo": {
+            "index": 31108,
+            "pointer": "0x1889e3420",
+            "kind": 2,
+            "attrs": 2,
+            "data": 40907,
+            "name": "bool"
+          }
+        }
+      ],
+      "file": "76491-_MoveByCursor.asm",
+      "sha256": "5e5dcf54948b8037f0c271c7f7dc25e9e3b0318c394e2dd0793621669ced1d17"
+    },
+    {
+      "index": 70273,
+      "name": "Torappu.Battle.DirectionCursor.PredictReached",
+      "va": "0x180896590",
+      "size": 400,
+      "slot": 10,
+      "returnType": {
+        "index": 44789,
+        "pointer": "0x188a2c480",
+        "kind": 2,
+        "attrs": 0,
+        "data": 40907,
+        "name": "bool"
+      },
+      "parameters": [
+        {
+          "index": 69787,
+          "name": "stepDistance",
+          "token": 134287521,
+          "type": 75036,
+          "typeInfo": {
+            "index": 75036,
+            "pointer": "0x188a2aaf0",
+            "kind": 12,
+            "attrs": 0,
+            "data": 41017,
+            "name": "float"
+          }
+        },
+        {
+          "index": 69788,
+          "name": "direction",
+          "token": 134287522,
+          "type": 31769,
+          "typeInfo": {
+            "index": 31769,
+            "pointer": "0x188b37550",
+            "kind": 17,
+            "attrs": 2,
+            "data": 45390,
+            "name": "UnityEngine.Vector2"
+          }
+        },
+        {
+          "index": 69789,
+          "name": "nextPos",
+          "token": 134287523,
+          "type": 31769,
+          "typeInfo": {
+            "index": 31769,
+            "pointer": "0x188b37550",
+            "kind": 17,
+            "attrs": 2,
+            "data": 45390,
+            "name": "UnityEngine.Vector2"
+          }
+        }
+      ],
+      "file": "70273-PredictReached.asm",
+      "sha256": "f9b07ba5cb5f1b798c2215a6593bd115e4850f9398f49e26f46329361d15579c"
+    }
+  ]
+}

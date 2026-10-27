@@ -1,0 +1,2502 @@
+{
+  "types": [
+    {
+      "index": 10743,
+      "name": "MoveController",
+      "namespace": "Torappu.Battle",
+      "raw": [
+        2679466,
+        2369788,
+        62125,
+        4294967295,
+        61835,
+        62125,
+        4294967295,
+        1048577,
+        79499,
+        71047,
+        4294967295,
+        8725,
+        4294967295,
+        3500,
+        86514,
+        9894,
+        0,
+        327704,
+        43,
+        589824,
+        65537,
+        3072,
+        33565176
+      ],
+      "fieldStart": 79499,
+      "methodStart": 71047,
+      "fieldCount": 43,
+      "methodCount": 24,
+      "qualifiedName": "Torappu.Battle.MoveController",
+      "fields": [
+        {
+          "index": 79499,
+          "name": "OBSTACLE_AVOID_TICK_PERIOD",
+          "type": 59037,
+          "typeName": "int",
+          "attrs": 32849,
+          "static": true,
+          "offset": 0,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188364
+        },
+        {
+          "index": 79500,
+          "name": "OBSTACLE_AVOID_FORCE_FACTOR",
+          "type": 75056,
+          "typeName": "float",
+          "attrs": 32849,
+          "static": true,
+          "offset": 0,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188365
+        },
+        {
+          "index": 79501,
+          "name": "MIN_OBSTACLE_AVOID_INFLUENCE_FACTOR",
+          "type": 75056,
+          "typeName": "float",
+          "attrs": 32849,
+          "static": true,
+          "offset": 0,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188366
+        },
+        {
+          "index": 79502,
+          "name": "SEPARATION_TICK_PERIOD",
+          "type": 59037,
+          "typeName": "int",
+          "attrs": 32849,
+          "static": true,
+          "offset": 0,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188367
+        },
+        {
+          "index": 79503,
+          "name": "SEPARATION_FORCE_FACTOR",
+          "type": 75056,
+          "typeName": "float",
+          "attrs": 32849,
+          "static": true,
+          "offset": 0,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188368
+        },
+        {
+          "index": 79504,
+          "name": "SEPARATION_RADIUS",
+          "type": 75056,
+          "typeName": "float",
+          "attrs": 32849,
+          "static": true,
+          "offset": 0,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188369
+        },
+        {
+          "index": 79505,
+          "name": "MIN_SEPARATION_SUM_DELTA",
+          "type": 75056,
+          "typeName": "float",
+          "attrs": 32849,
+          "static": true,
+          "offset": 0,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188370
+        },
+        {
+          "index": 79506,
+          "name": "TILE_NEAR_THRESHOLD",
+          "type": 75056,
+          "typeName": "float",
+          "attrs": 32849,
+          "static": true,
+          "offset": 0,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188371
+        },
+        {
+          "index": 79507,
+          "name": "_steeringFactor",
+          "type": 75037,
+          "typeName": "float",
+          "attrs": 1,
+          "static": false,
+          "offset": 24,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188372
+        },
+        {
+          "index": 79508,
+          "name": "_maxSteeringForce",
+          "type": 75039,
+          "typeName": "float",
+          "attrs": 4,
+          "static": false,
+          "offset": 28,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188373
+        },
+        {
+          "index": 79509,
+          "name": "_halfBodyWidth",
+          "type": 75037,
+          "typeName": "float",
+          "attrs": 1,
+          "static": false,
+          "offset": 32,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188374
+        },
+        {
+          "index": 79510,
+          "name": "m_steeringFactor",
+          "type": 75039,
+          "typeName": "float",
+          "attrs": 4,
+          "static": false,
+          "offset": 36,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188375
+        },
+        {
+          "index": 79511,
+          "name": "m_target",
+          "type": 57677,
+          "typeName": "Torappu.Battle.IMovable",
+          "attrs": 4,
+          "static": false,
+          "offset": 40,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188376
+        },
+        {
+          "index": 79512,
+          "name": "m_footOffset",
+          "type": 82723,
+          "typeName": "UnityEngine.Vector2",
+          "attrs": 1,
+          "static": false,
+          "offset": 48,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188377
+        },
+        {
+          "index": 79513,
+          "name": "m_lastVelocity",
+          "type": 82725,
+          "typeName": "UnityEngine.Vector2",
+          "attrs": 4,
+          "static": false,
+          "offset": 56,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188378
+        },
+        {
+          "index": 79514,
+          "name": "m_lastObstacleAvoidForce",
+          "type": 82723,
+          "typeName": "UnityEngine.Vector2",
+          "attrs": 1,
+          "static": false,
+          "offset": 64,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188379
+        },
+        {
+          "index": 79515,
+          "name": "m_lastSeparationForce",
+          "type": 82725,
+          "typeName": "UnityEngine.Vector2",
+          "attrs": 4,
+          "static": false,
+          "offset": 72,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188380
+        },
+        {
+          "index": 79516,
+          "name": "m_obstacleAvoidTicker",
+          "type": 63896,
+          "typeName": "Torappu.PeriodicTicker",
+          "attrs": 4,
+          "static": false,
+          "offset": 80,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188381
+        },
+        {
+          "index": 79517,
+          "name": "m_separationTicker",
+          "type": 63896,
+          "typeName": "Torappu.PeriodicTicker",
+          "attrs": 4,
+          "static": false,
+          "offset": 88,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188382
+        },
+        {
+          "index": 79518,
+          "name": "__Hotfix0_get_moveSpeed",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 0,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188383
+        },
+        {
+          "index": 79519,
+          "name": "__Hotfix0_get_velocity",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 8,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188384
+        },
+        {
+          "index": 79520,
+          "name": "__Hotfix0_set_velocity",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 16,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188385
+        },
+        {
+          "index": 79521,
+          "name": "__Hotfix0_get_steeringFactor",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 24,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188386
+        },
+        {
+          "index": 79522,
+          "name": "__Hotfix0_set_steeringFactor",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 32,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188387
+        },
+        {
+          "index": 79523,
+          "name": "__Hotfix0_get_footOffset",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 40,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188388
+        },
+        {
+          "index": 79524,
+          "name": "__Hotfix0_get_halfBodyWidth",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 48,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188389
+        },
+        {
+          "index": 79525,
+          "name": "__Hotfix0_Reset",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 56,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188390
+        },
+        {
+          "index": 79526,
+          "name": "__Hotfix0_OnStart",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 64,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188391
+        },
+        {
+          "index": 79527,
+          "name": "__Hotfix0_CalculateMoveDelta",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 72,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188392
+        },
+        {
+          "index": 79528,
+          "name": "__Hotfix0_CalculateTotalForce",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 80,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188393
+        },
+        {
+          "index": 79529,
+          "name": "__Hotfix0__CalculateSteeringForce",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 88,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188394
+        },
+        {
+          "index": 79530,
+          "name": "__Hotfix0_CalculateIsHanging",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 96,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188395
+        },
+        {
+          "index": 79531,
+          "name": "__Hotfix0__CalculateObstacleAvoidForce",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 104,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188396
+        },
+        {
+          "index": 79532,
+          "name": "__Hotfix0__GetFootMapPosition",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 112,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188397
+        },
+        {
+          "index": 79533,
+          "name": "__Hotfix0_GetBodyEdgeOffset",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 120,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188398
+        },
+        {
+          "index": 79534,
+          "name": "__Hotfix0_OnTick",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 128,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188399
+        },
+        {
+          "index": 79535,
+          "name": "__Hotfix0__ConveyorMove",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 136,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188400
+        },
+        {
+          "index": 79536,
+          "name": "__Hotfix0__CanApplyConveyorMove",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 144,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188401
+        },
+        {
+          "index": 79537,
+          "name": "__Hotfix0__ClampConveyorDelta",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 152,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188402
+        },
+        {
+          "index": 79538,
+          "name": "__Hotfix0__ClampConveyorDeltaSingleStep",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 160,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188403
+        },
+        {
+          "index": 79539,
+          "name": "__Hotfix0__ClampConveyorDeltaByBodyEdge",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 168,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188404
+        },
+        {
+          "index": 79540,
+          "name": "__Hotfix0__CanConveyorEnterGrid",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 176,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188405
+        },
+        {
+          "index": 79541,
+          "name": "_c__Hotfix0_ctor",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 184,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67188406
+        }
+      ]
+    },
+    {
+      "index": 10914,
+      "name": "SeparateMoveController",
+      "namespace": "Torappu.Battle",
+      "raw": [
+        2725123,
+        2369788,
+        74209,
+        4294967295,
+        62125,
+        74209,
+        4294967295,
+        1048577,
+        81400,
+        72515,
+        4294967295,
+        4294967295,
+        4294967295,
+        4294967295,
+        88719,
+        10318,
+        0,
+        4,
+        9,
+        589824,
+        65536,
+        3072,
+        33565347
+      ],
+      "fieldStart": 81400,
+      "methodStart": 72515,
+      "fieldCount": 9,
+      "methodCount": 4,
+      "qualifiedName": "Torappu.Battle.SeparateMoveController",
+      "fields": [
+        {
+          "index": 81400,
+          "name": "_separationForceFactor",
+          "type": 75037,
+          "typeName": "float",
+          "attrs": 1,
+          "static": false,
+          "offset": 96,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67190265
+        },
+        {
+          "index": 81401,
+          "name": "_separationRadius",
+          "type": 75037,
+          "typeName": "float",
+          "attrs": 1,
+          "static": false,
+          "offset": 100,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67190266
+        },
+        {
+          "index": 81402,
+          "name": "_minSeparationSumDelta",
+          "type": 75037,
+          "typeName": "float",
+          "attrs": 1,
+          "static": false,
+          "offset": 104,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67190267
+        },
+        {
+          "index": 81403,
+          "name": "_separationTickPeriod",
+          "type": 59012,
+          "typeName": "int",
+          "attrs": 1,
+          "static": false,
+          "offset": 108,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67190268
+        },
+        {
+          "index": 81404,
+          "name": "m_relevantUnitsPtr",
+          "type": 20773,
+          "typeName": "type(0x15, data=0x188afb180)",
+          "attrs": 33,
+          "static": false,
+          "offset": 112,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67190269
+        },
+        {
+          "index": 81405,
+          "name": "m_circle",
+          "type": 77565,
+          "typeName": "Torappu.Battle.TPhysic2D.TCircle",
+          "attrs": 1,
+          "static": false,
+          "offset": 120,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67190270
+        },
+        {
+          "index": 81406,
+          "name": "__Hotfix0_CalculateIsHanging",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 0,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67190271
+        },
+        {
+          "index": 81407,
+          "name": "__Hotfix0__CalculateSeparationForce",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 8,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67190272
+        },
+        {
+          "index": 81408,
+          "name": "_c__Hotfix0_ctor",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 16,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67190273
+        }
+      ]
+    },
+    {
+      "index": 11369,
+      "name": "UnbalanceState",
+      "namespace": "",
+      "raw": [
+        2840952,
+        16,
+        112706,
+        95897,
+        112682,
+        112706,
+        4294967295,
+        1048579,
+        86615,
+        76739,
+        4294967295,
+        9966,
+        4294967295,
+        3801,
+        101874,
+        11443,
+        2253,
+        393233,
+        18,
+        1572864,
+        327683,
+        3072,
+        33565804
+      ],
+      "fieldStart": 86615,
+      "methodStart": 76739,
+      "fieldCount": 18,
+      "methodCount": 17,
+      "qualifiedName": "Torappu.Battle.Enemy.States.UnbalanceState",
+      "fields": [
+        {
+          "index": 86615,
+          "name": "m_mapValidGrids",
+          "type": 14516,
+          "typeName": "type(0x15, data=0x188b3bff0)",
+          "attrs": 1,
+          "static": false,
+          "offset": 24,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195480
+        },
+        {
+          "index": 86616,
+          "name": "__Hotfix0_get_attributeMask",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 0,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195481
+        },
+        {
+          "index": 86617,
+          "name": "__Hotfix0_get_abnormalFlagMask",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 8,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195482
+        },
+        {
+          "index": 86618,
+          "name": "__Hotfix0_get_abnormalImmuneMask",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 16,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195483
+        },
+        {
+          "index": 86619,
+          "name": "__Hotfix0_get_abnormalAntiMask",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 24,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195484
+        },
+        {
+          "index": 86620,
+          "name": "__Hotfix0_get_abnormalComboMask",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 32,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195485
+        },
+        {
+          "index": 86621,
+          "name": "__Hotfix0_get_abnormalComboImmuneMask",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 40,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195486
+        },
+        {
+          "index": 86622,
+          "name": "__Hotfix0_GetValue",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 48,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195487
+        },
+        {
+          "index": 86623,
+          "name": "__Hotfix0_OnEnter",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 56,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195488
+        },
+        {
+          "index": 86624,
+          "name": "__Hotfix0_OnExit",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 64,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195489
+        },
+        {
+          "index": 86625,
+          "name": "__Hotfix0_OnTick",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 72,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195490
+        },
+        {
+          "index": 86626,
+          "name": "__Hotfix0__CheckCollideWithHighLand",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 80,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195491
+        },
+        {
+          "index": 86627,
+          "name": "__Hotfix0__UpdateFriction",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 88,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195492
+        },
+        {
+          "index": 86628,
+          "name": "__Hotfix0__UpdatePullSources",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 96,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195493
+        },
+        {
+          "index": 86629,
+          "name": "__Hotfix0_OnPhysicObjectInit",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 104,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195494
+        },
+        {
+          "index": 86630,
+          "name": "__Hotfix0_OnAfterPhysicSimulate",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 112,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195495
+        },
+        {
+          "index": 86631,
+          "name": "__Hotfix0_OnPhysicObjectRecycle",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 120,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195496
+        },
+        {
+          "index": 86632,
+          "name": "_c__Hotfix0_ctor",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 128,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195497
+        }
+      ]
+    },
+    {
+      "index": 11356,
+      "name": "MoveState",
+      "namespace": "",
+      "raw": [
+        1883679,
+        16,
+        112698,
+        95897,
+        112682,
+        112698,
+        4294967295,
+        1048578,
+        86525,
+        76654,
+        4294967295,
+        9953,
+        4294967295,
+        4294967295,
+        101718,
+        11421,
+        6766,
+        65543,
+        7,
+        917504,
+        131072,
+        3072,
+        33565791
+      ],
+      "fieldStart": 86525,
+      "methodStart": 76654,
+      "fieldCount": 7,
+      "methodCount": 7,
+      "qualifiedName": "Torappu.Battle.Enemy.States.MoveState",
+      "fields": [
+        {
+          "index": 86525,
+          "name": "__Hotfix0_get_isHanging",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 0,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195390
+        },
+        {
+          "index": 86526,
+          "name": "__Hotfix0_set_isHanging",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 8,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195391
+        },
+        {
+          "index": 86527,
+          "name": "__Hotfix0_OnEnter",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 16,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195392
+        },
+        {
+          "index": 86528,
+          "name": "__Hotfix0_OnExit",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 24,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195393
+        },
+        {
+          "index": 86529,
+          "name": "__Hotfix0_OnTick",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 32,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195394
+        },
+        {
+          "index": 86530,
+          "name": "__Hotfix0_UpdateMoveAnimation",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 40,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195395
+        },
+        {
+          "index": 86531,
+          "name": "_c__Hotfix0_ctor",
+          "type": 51110,
+          "typeName": "XLua.DelegateBridge",
+          "attrs": 17,
+          "static": true,
+          "offset": 48,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195396
+        }
+      ]
+    }
+  ],
+  "methods": [
+    {
+      "index": 25962,
+      "name": "Reset",
+      "type": 1447,
+      "returnType": 83059,
+      "parameterStart": 39717,
+      "generic": -1,
+      "token": 100689259,
+      "flags": 486,
+      "iflags": 0,
+      "slot": 6,
+      "parameterCount": 2,
+      "address": 6473925568,
+      "qualifiedName": "Torappu.PeriodicTicker.Reset",
+      "parameters": [
+        {
+          "index": 39717,
+          "name": "newPeriod",
+          "token": 134257449,
+          "type": 59011
+        },
+        {
+          "index": 39718,
+          "name": "waitFirstPeriod",
+          "token": 134257450,
+          "type": 44814
+        }
+      ],
+      "rva": "0x1e043c0",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 25963,
+      "name": "Tick",
+      "type": 1447,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100689260,
+      "flags": 486,
+      "iflags": 0,
+      "slot": 7,
+      "parameterCount": 0,
+      "address": 6473925584,
+      "qualifiedName": "Torappu.PeriodicTicker.Tick",
+      "parameters": [],
+      "rva": "0x1e043d0",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 25964,
+      "name": "Next",
+      "type": 1447,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100689261,
+      "flags": 486,
+      "iflags": 0,
+      "slot": 8,
+      "parameterCount": 0,
+      "address": 6473925488,
+      "qualifiedName": "Torappu.PeriodicTicker.Next",
+      "parameters": [],
+      "rva": "0x1e04370",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 70087,
+      "name": "GetAdjacentTilesEnemies",
+      "type": 10632,
+      "returnType": 83059,
+      "parameterStart": 69642,
+      "generic": -1,
+      "token": 100733384,
+      "flags": 150,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6451346848,
+      "qualifiedName": "Torappu.Battle.Map.GetAdjacentTilesEnemies",
+      "parameters": [
+        {
+          "index": 69642,
+          "name": "tile",
+          "token": 134287376,
+          "type": 78698
+        },
+        {
+          "index": 69643,
+          "name": "enemies",
+          "token": 134287377,
+          "type": 20771
+        }
+      ],
+      "rva": "0x87bda0",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 71054,
+      "name": "Reset",
+      "type": 10743,
+      "returnType": 83059,
+      "parameterStart": 70512,
+      "generic": -1,
+      "token": 100734351,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6451587456,
+      "qualifiedName": "Torappu.Battle.MoveController.Reset",
+      "parameters": [
+        {
+          "index": 70512,
+          "name": "target",
+          "token": 134288246,
+          "type": 57676
+        }
+      ],
+      "rva": "0x8b6980",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 71055,
+      "name": "OnStart",
+      "type": 10743,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734352,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 5,
+      "parameterCount": 0,
+      "address": 6451587008,
+      "qualifiedName": "Torappu.Battle.MoveController.OnStart",
+      "parameters": [],
+      "rva": "0x8b67c0",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 71059,
+      "name": "CalculateIsHanging",
+      "type": 10743,
+      "returnType": 83059,
+      "parameterStart": 70520,
+      "generic": -1,
+      "token": 100734356,
+      "flags": 452,
+      "iflags": 0,
+      "slot": 8,
+      "parameterCount": 2,
+      "address": 6451584608,
+      "qualifiedName": "Torappu.Battle.MoveController.CalculateIsHanging",
+      "parameters": [
+        {
+          "index": 70520,
+          "name": "direction",
+          "token": 134288254,
+          "type": 82722
+        },
+        {
+          "index": 70521,
+          "name": "resultForce",
+          "token": 134288255,
+          "type": 31767
+        }
+      ],
+      "rva": "0x8b5e60",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 71070,
+      "name": ".ctor",
+      "type": 10743,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100734367,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6451594624,
+      "qualifiedName": "Torappu.Battle.MoveController..ctor",
+      "parameters": [],
+      "rva": "0x8b8580",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 72515,
+      "name": "CalculateIsHanging",
+      "type": 10914,
+      "returnType": 83059,
+      "parameterStart": 71647,
+      "generic": -1,
+      "token": 100735812,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 8,
+      "parameterCount": 2,
+      "address": 6452204608,
+      "qualifiedName": "Torappu.Battle.SeparateMoveController.CalculateIsHanging",
+      "parameters": [
+        {
+          "index": 71647,
+          "name": "direction",
+          "token": 134289381,
+          "type": 82722
+        },
+        {
+          "index": 71648,
+          "name": "resultForce",
+          "token": 134289382,
+          "type": 31767
+        }
+      ],
+      "rva": "0x94d440",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 72516,
+      "name": "_CalculateSeparationForce",
+      "type": 10914,
+      "returnType": 82722,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100735813,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6452205024,
+      "qualifiedName": "Torappu.Battle.SeparateMoveController._CalculateSeparationForce",
+      "parameters": [],
+      "rva": "0x94d5e0",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 72517,
+      "name": ".ctor",
+      "type": 10914,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100735814,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6452207760,
+      "qualifiedName": "Torappu.Battle.SeparateMoveController..ctor",
+      "parameters": [],
+      "rva": "0x94e090",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76289,
+      "name": "get_onlyCollideWhenUnbalance",
+      "type": 11393,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100739586,
+      "flags": 2500,
+      "iflags": 0,
+      "slot": 215,
+      "parameterCount": 0,
+      "address": 6453458160,
+      "qualifiedName": "Torappu.Battle.Enemy.get_onlyCollideWhenUnbalance",
+      "parameters": [],
+      "rva": "0xa7f4f0",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76359,
+      "name": "get_isMovingBySelf",
+      "type": 11393,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100739656,
+      "flags": 2246,
+      "iflags": 0,
+      "slot": 158,
+      "parameterCount": 0,
+      "address": 6453453728,
+      "qualifiedName": "Torappu.Battle.Enemy.get_isMovingBySelf",
+      "parameters": [],
+      "rva": "0xa7e3a0",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76384,
+      "name": "get_rigidbody2D",
+      "type": 11393,
+      "returnType": 68053,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100739681,
+      "flags": 2180,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6453459408,
+      "qualifiedName": "Torappu.Battle.Enemy.get_rigidbody2D",
+      "parameters": [],
+      "rva": "0xa7f9d0",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76385,
+      "name": "set_rigidbody2D",
+      "type": 11393,
+      "returnType": 83059,
+      "parameterStart": 74950,
+      "generic": -1,
+      "token": 100739682,
+      "flags": 2177,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6453466352,
+      "qualifiedName": "Torappu.Battle.Enemy.set_rigidbody2D",
+      "parameters": [
+        {
+          "index": 74950,
+          "name": "value",
+          "token": 134292684,
+          "type": 68053
+        }
+      ],
+      "rva": "0xa814f0",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76435,
+      "name": "KnockBack",
+      "type": 11393,
+      "returnType": 83059,
+      "parameterStart": 74984,
+      "generic": -1,
+      "token": 100739732,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 232,
+      "parameterCount": 3,
+      "address": 6453391648,
+      "qualifiedName": "Torappu.Battle.Enemy.KnockBack",
+      "parameters": [
+        {
+          "index": 74984,
+          "name": "direction",
+          "token": 134292718,
+          "type": 82722
+        },
+        {
+          "index": 74985,
+          "name": "force",
+          "token": 134292719,
+          "type": 75036
+        },
+        {
+          "index": 74986,
+          "name": "changeFaceByDirection",
+          "token": 134292720,
+          "type": 44789
+        }
+      ],
+      "rva": "0xa6f120",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76436,
+      "name": "DisableCurrentStillPull",
+      "type": 11393,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100739733,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6453380224,
+      "qualifiedName": "Torappu.Battle.Enemy.DisableCurrentStillPull",
+      "parameters": [],
+      "rva": "0xa6c480",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76437,
+      "name": "BeginPull",
+      "type": 11393,
+      "returnType": 44789,
+      "parameterStart": 74987,
+      "generic": -1,
+      "token": 100739734,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 233,
+      "parameterCount": 3,
+      "address": 6453370848,
+      "qualifiedName": "Torappu.Battle.Enemy.BeginPull",
+      "parameters": [
+        {
+          "index": 74987,
+          "name": "source",
+          "token": 134292721,
+          "type": 43963
+        },
+        {
+          "index": 74988,
+          "name": "direction",
+          "token": 134292722,
+          "type": 82722
+        },
+        {
+          "index": 74989,
+          "name": "force",
+          "token": 134292723,
+          "type": 75036
+        }
+      ],
+      "rva": "0xa69fe0",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76438,
+      "name": "StillPull",
+      "type": 11393,
+      "returnType": 44789,
+      "parameterStart": 74990,
+      "generic": -1,
+      "token": 100739735,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 3,
+      "address": 6453416656,
+      "qualifiedName": "Torappu.Battle.Enemy.StillPull",
+      "parameters": [
+        {
+          "index": 74990,
+          "name": "source",
+          "token": 134292724,
+          "type": 43963
+        },
+        {
+          "index": 74991,
+          "name": "direction",
+          "token": 134292725,
+          "type": 82722
+        },
+        {
+          "index": 74992,
+          "name": "force",
+          "token": 134292726,
+          "type": 75036
+        }
+      ],
+      "rva": "0xa752d0",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76439,
+      "name": "TryEarlyStopPull",
+      "type": 11393,
+      "returnType": 44789,
+      "parameterStart": 74993,
+      "generic": -1,
+      "token": 100739736,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6453418624,
+      "qualifiedName": "Torappu.Battle.Enemy.TryEarlyStopPull",
+      "parameters": [
+        {
+          "index": 74993,
+          "name": "source",
+          "token": 134292727,
+          "type": 43963
+        }
+      ],
+      "rva": "0xa75a80",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76440,
+      "name": "EndPull",
+      "type": 11393,
+      "returnType": 83059,
+      "parameterStart": 74994,
+      "generic": -1,
+      "token": 100739737,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 234,
+      "parameterCount": 1,
+      "address": 6453381488,
+      "qualifiedName": "Torappu.Battle.Enemy.EndPull",
+      "parameters": [
+        {
+          "index": 74994,
+          "name": "source",
+          "token": 134292728,
+          "type": 43963
+        }
+      ],
+      "rva": "0xa6c970",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76452,
+      "name": "ForceSetPositionByWorldCoords",
+      "type": 11393,
+      "returnType": 83059,
+      "parameterStart": 75013,
+      "generic": -1,
+      "token": 100739749,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6453385616,
+      "qualifiedName": "Torappu.Battle.Enemy.ForceSetPositionByWorldCoords",
+      "parameters": [
+        {
+          "index": 75013,
+          "name": "targetPos",
+          "token": 134292747,
+          "type": 82722
+        }
+      ],
+      "rva": "0xa6d990",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76493,
+      "name": "_ResetPhysicsStatus",
+      "type": 11393,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100739790,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6453436912,
+      "qualifiedName": "Torappu.Battle.Enemy._ResetPhysicsStatus",
+      "parameters": [],
+      "rva": "0xa7a1f0",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76539,
+      "name": "_InitPhysics",
+      "type": 11393,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100739836,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6453431344,
+      "qualifiedName": "Torappu.Battle.Enemy._InitPhysics",
+      "parameters": [],
+      "rva": "0xa78c30",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76656,
+      "name": "OnEnter",
+      "type": 11356,
+      "returnType": 83059,
+      "parameterStart": 75192,
+      "generic": -1,
+      "token": 100739953,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 10,
+      "parameterCount": 1,
+      "address": 6453556512,
+      "qualifiedName": "Torappu.Battle.Enemy.States.MoveState.OnEnter",
+      "parameters": [
+        {
+          "index": 75192,
+          "name": "lastState",
+          "token": 134292926,
+          "type": 59011
+        }
+      ],
+      "rva": "0xa97520",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76657,
+      "name": "OnExit",
+      "type": 11356,
+      "returnType": 83059,
+      "parameterStart": 75193,
+      "generic": -1,
+      "token": 100739954,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 11,
+      "parameterCount": 1,
+      "address": 6453557056,
+      "qualifiedName": "Torappu.Battle.Enemy.States.MoveState.OnExit",
+      "parameters": [
+        {
+          "index": 75193,
+          "name": "newState",
+          "token": 134292927,
+          "type": 59011
+        }
+      ],
+      "rva": "0xa97740",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76658,
+      "name": "OnTick",
+      "type": 11356,
+      "returnType": 83059,
+      "parameterStart": 75194,
+      "generic": -1,
+      "token": 100739955,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 12,
+      "parameterCount": 1,
+      "address": 6453557200,
+      "qualifiedName": "Torappu.Battle.Enemy.States.MoveState.OnTick",
+      "parameters": [
+        {
+          "index": 75194,
+          "name": "deltaTime",
+          "token": 134292928,
+          "type": 53178
+        }
+      ],
+      "rva": "0xa977d0",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76746,
+      "name": "OnEnter",
+      "type": 11369,
+      "returnType": 83059,
+      "parameterStart": 75248,
+      "generic": -1,
+      "token": 100740043,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 10,
+      "parameterCount": 1,
+      "address": 6453585856,
+      "qualifiedName": "Torappu.Battle.Enemy.States.UnbalanceState.OnEnter",
+      "parameters": [
+        {
+          "index": 75248,
+          "name": "lastState",
+          "token": 134292982,
+          "type": 59011
+        }
+      ],
+      "rva": "0xa9e7c0",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76747,
+      "name": "OnExit",
+      "type": 11369,
+      "returnType": 83059,
+      "parameterStart": 75249,
+      "generic": -1,
+      "token": 100740044,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 11,
+      "parameterCount": 1,
+      "address": 6453586960,
+      "qualifiedName": "Torappu.Battle.Enemy.States.UnbalanceState.OnExit",
+      "parameters": [
+        {
+          "index": 75249,
+          "name": "newState",
+          "token": 134292983,
+          "type": 59011
+        }
+      ],
+      "rva": "0xa9ec10",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76748,
+      "name": "OnTick",
+      "type": 11369,
+      "returnType": 83059,
+      "parameterStart": 75250,
+      "generic": -1,
+      "token": 100740045,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 12,
+      "parameterCount": 1,
+      "address": 6453587728,
+      "qualifiedName": "Torappu.Battle.Enemy.States.UnbalanceState.OnTick",
+      "parameters": [
+        {
+          "index": 75250,
+          "name": "deltaTime",
+          "token": 134292984,
+          "type": 53178
+        }
+      ],
+      "rva": "0xa9ef10",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76749,
+      "name": "_CheckCollideWithHighLand",
+      "type": 11369,
+      "returnType": 44789,
+      "parameterStart": 75251,
+      "generic": -1,
+      "token": 100740046,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6453588816,
+      "qualifiedName": "Torappu.Battle.Enemy.States.UnbalanceState._CheckCollideWithHighLand",
+      "parameters": [
+        {
+          "index": 75251,
+          "name": "enemy",
+          "token": 134292985,
+          "type": 52144
+        },
+        {
+          "index": 75252,
+          "name": "scopeOffset",
+          "token": 134292986,
+          "type": 75036
+        }
+      ],
+      "rva": "0xa9f350",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76750,
+      "name": "_UpdateFriction",
+      "type": 11369,
+      "returnType": 44789,
+      "parameterStart": 75253,
+      "generic": -1,
+      "token": 100740047,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": 6453590032,
+      "qualifiedName": "Torappu.Battle.Enemy.States.UnbalanceState._UpdateFriction",
+      "parameters": [
+        {
+          "index": 75253,
+          "name": "deltaTime",
+          "token": 134292987,
+          "type": 75036
+        }
+      ],
+      "rva": "0xa9f810",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76751,
+      "name": "_UpdatePullSources",
+      "type": 11369,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100740048,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6453590784,
+      "qualifiedName": "Torappu.Battle.Enemy.States.UnbalanceState._UpdatePullSources",
+      "parameters": [],
+      "rva": "0xa9fb00",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76752,
+      "name": "OnPhysicObjectInit",
+      "type": 11369,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100740049,
+      "flags": 486,
+      "iflags": 0,
+      "slot": 21,
+      "parameterCount": 0,
+      "address": 6453587440,
+      "qualifiedName": "Torappu.Battle.Enemy.States.UnbalanceState.OnPhysicObjectInit",
+      "parameters": [],
+      "rva": "0xa9edf0",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76753,
+      "name": "OnAfterPhysicSimulate",
+      "type": 11369,
+      "returnType": 83059,
+      "parameterStart": 75254,
+      "generic": -1,
+      "token": 100740050,
+      "flags": 486,
+      "iflags": 0,
+      "slot": 23,
+      "parameterCount": 1,
+      "address": 6453585648,
+      "qualifiedName": "Torappu.Battle.Enemy.States.UnbalanceState.OnAfterPhysicSimulate",
+      "parameters": [
+        {
+          "index": 75254,
+          "name": "deltaTimeAsFloat",
+          "token": 134292988,
+          "type": 75036
+        }
+      ],
+      "rva": "0xa9e6f0",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 76754,
+      "name": "OnPhysicObjectRecycle",
+      "type": 11369,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100740051,
+      "flags": 486,
+      "iflags": 0,
+      "slot": 22,
+      "parameterCount": 0,
+      "address": 6453587584,
+      "qualifiedName": "Torappu.Battle.Enemy.States.UnbalanceState.OnPhysicObjectRecycle",
+      "parameters": [],
+      "rva": "0xa9ee80",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 78700,
+      "name": "QueryEnemy",
+      "type": 11605,
+      "returnType": 83059,
+      "parameterStart": 76931,
+      "generic": -1,
+      "token": 100741997,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": 6454129088,
+      "qualifiedName": "Torappu.Battle.TPhysic2D.TPhysicManager.QueryEnemy",
+      "parameters": [
+        {
+          "index": 76931,
+          "name": "circle",
+          "token": 134294665,
+          "type": 77564
+        },
+        {
+          "index": 76932,
+          "name": "retList",
+          "token": 134294666,
+          "type": 22130
+        }
+      ],
+      "rva": "0xb231c0",
+      "readBound": "next greater mapped managed method address"
+    },
+    {
+      "index": 223632,
+      "name": "get_enableDynamicTree",
+      "type": 38776,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100667226,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": 6551054240,
+      "qualifiedName": "Torappu.Config.RemoteConfig.get_enableDynamicTree",
+      "parameters": [],
+      "rva": "0x67927a0",
+      "readBound": "next greater mapped managed method address"
+    }
+  ],
+  "constants": {
+    "OBSTACLE_AVOID_TICK_PERIOD": {
+      "field": 79499,
+      "type": 59011,
+      "dataIndex": 174764,
+      "offset": 21939540,
+      "bytes": "06000080"
+    },
+    "OBSTACLE_AVOID_FORCE_FACTOR": {
+      "field": 79500,
+      "type": 75036,
+      "dataIndex": 174765,
+      "offset": 21939541,
+      "bytes": "0000803f"
+    },
+    "MIN_OBSTACLE_AVOID_INFLUENCE_FACTOR": {
+      "field": 79501,
+      "type": 75036,
+      "dataIndex": 174769,
+      "offset": 21939545,
+      "bytes": "0000003f"
+    },
+    "SEPARATION_TICK_PERIOD": {
+      "field": 79502,
+      "type": 59011,
+      "dataIndex": 174773,
+      "offset": 21939549,
+      "bytes": "06000040"
+    },
+    "SEPARATION_FORCE_FACTOR": {
+      "field": 79503,
+      "type": 75036,
+      "dataIndex": 174774,
+      "offset": 21939550,
+      "bytes": "00004040"
+    },
+    "SEPARATION_RADIUS": {
+      "field": 79504,
+      "type": 75036,
+      "dataIndex": 174778,
+      "offset": 21939554,
+      "bytes": "0000803e"
+    },
+    "MIN_SEPARATION_SUM_DELTA": {
+      "field": 79505,
+      "type": 75036,
+      "dataIndex": 174782,
+      "offset": 21939558,
+      "bytes": "cdcc4c3d"
+    },
+    "TILE_NEAR_THRESHOLD": {
+      "field": 79506,
+      "type": 75036,
+      "dataIndex": 174786,
+      "offset": 21939562,
+      "bytes": "0000803e"
+    }
+  },
+  "source": {
+    "dll": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+    "metadata": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+    "dllSha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+    "metadataSha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+    "imageBase": "0x180000000"
+  },
+  "selectedEnemyFields": [
+    {
+      "index": 86069,
+      "name": "m_lastMoveDirVec",
+      "type": 82725,
+      "typeName": "UnityEngine.Vector2",
+      "attrs": 4,
+      "static": false,
+      "offset": 704,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67194934
+    },
+    {
+      "index": 86077,
+      "name": "_useMoveDirAsFaceDir",
+      "type": 44790,
+      "typeName": "bool",
+      "attrs": 1,
+      "static": false,
+      "offset": 736,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67194942
+    },
+    {
+      "index": 86078,
+      "name": "_scaleMoveBySpeed",
+      "type": 44790,
+      "typeName": "bool",
+      "attrs": 1,
+      "static": false,
+      "offset": 737,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67194943
+    },
+    {
+      "index": 86079,
+      "name": "_scaleMoveAnimationRange",
+      "type": 82723,
+      "typeName": "UnityEngine.Vector2",
+      "attrs": 1,
+      "static": false,
+      "offset": 740,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67194944
+    },
+    {
+      "index": 86084,
+      "name": "_keepMoveAnimScale",
+      "type": 44790,
+      "typeName": "bool",
+      "attrs": 1,
+      "static": false,
+      "offset": 762,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67194949
+    },
+    {
+      "index": 86107,
+      "name": "m_totalMoveDist",
+      "type": 75037,
+      "typeName": "float",
+      "attrs": 1,
+      "static": false,
+      "offset": 840,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67194972
+    },
+    {
+      "index": 86120,
+      "name": "m_moveController",
+      "type": 62126,
+      "typeName": "Torappu.Battle.MoveController",
+      "attrs": 4,
+      "static": false,
+      "offset": 912,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67194985
+    },
+    {
+      "index": 86137,
+      "name": "m_nonTriggerCollider",
+      "type": 48424,
+      "typeName": "UnityEngine.Collider2D",
+      "attrs": 1,
+      "static": false,
+      "offset": 1056,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67195002
+    },
+    {
+      "index": 86138,
+      "name": "m_mainTriggerCollider",
+      "type": 48424,
+      "typeName": "UnityEngine.Collider2D",
+      "attrs": 1,
+      "static": false,
+      "offset": 1064,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67195003
+    },
+    {
+      "index": 86139,
+      "name": "m_mainTriggerColliderRadius",
+      "type": 53179,
+      "typeName": "Torappu.FP",
+      "attrs": 1,
+      "static": false,
+      "offset": 1072,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67195004
+    },
+    {
+      "index": 86140,
+      "name": "m_pullSources",
+      "type": 20371,
+      "typeName": "type(0x15, data=0x188a926c0)",
+      "attrs": 1,
+      "static": false,
+      "offset": 1080,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67195005
+    },
+    {
+      "index": 86141,
+      "name": "m_disabledPullSources",
+      "type": 20371,
+      "typeName": "type(0x15, data=0x188a926c0)",
+      "attrs": 1,
+      "static": false,
+      "offset": 1088,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67195006
+    },
+    {
+      "index": 86149,
+      "name": "m_disableSwitchFaceByMove",
+      "type": 44792,
+      "typeName": "bool",
+      "attrs": 4,
+      "static": false,
+      "offset": 1196,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67195014
+    },
+    {
+      "index": 86167,
+      "name": "<rigidbody2D>k__BackingField",
+      "type": 68054,
+      "typeName": "UnityEngine.Rigidbody2D",
+      "attrs": 1,
+      "static": false,
+      "offset": 1368,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67195032
+    }
+  ],
+  "virtualCalls": [
+    {
+      "type": 11393,
+      "slot": 40,
+      "nativeOffset": "0x3c0",
+      "method": 66349,
+      "qualifiedName": "Torappu.Battle.Entity.get_alive"
+    },
+    {
+      "type": 11393,
+      "slot": 52,
+      "nativeOffset": "0x480",
+      "method": 76322,
+      "qualifiedName": "Torappu.Battle.Enemy.get_rootTile"
+    },
+    {
+      "type": 11393,
+      "slot": 153,
+      "nativeOffset": "0xad0",
+      "method": 76358,
+      "qualifiedName": "Torappu.Battle.Enemy.get_isInCombat"
+    },
+    {
+      "type": 11393,
+      "slot": 158,
+      "nativeOffset": "0xb20",
+      "method": 76359,
+      "qualifiedName": "Torappu.Battle.Enemy.get_isMovingBySelf"
+    },
+    {
+      "type": 11393,
+      "slot": 215,
+      "nativeOffset": "0xeb0",
+      "method": 76289,
+      "qualifiedName": "Torappu.Battle.Enemy.get_onlyCollideWhenUnbalance"
+    },
+    {
+      "type": 11393,
+      "slot": 241,
+      "nativeOffset": "0x1050",
+      "method": 76512,
+      "qualifiedName": "Torappu.Battle.Enemy.PlayUnbalanceAnimation"
+    },
+    {
+      "type": 10743,
+      "slot": 0,
+      "nativeOffset": "0x140",
+      "method": 282924,
+      "qualifiedName": "UnityEngine.Object.Equals"
+    },
+    {
+      "type": 10743,
+      "slot": 1,
+      "nativeOffset": "0x150",
+      "method": 242637,
+      "qualifiedName": "System.Object.Finalize"
+    },
+    {
+      "type": 10743,
+      "slot": 2,
+      "nativeOffset": "0x160",
+      "method": 282923,
+      "qualifiedName": "UnityEngine.Object.GetHashCode"
+    },
+    {
+      "type": 10743,
+      "slot": 3,
+      "nativeOffset": "0x170",
+      "method": 282975,
+      "qualifiedName": "UnityEngine.Object.ToString"
+    },
+    {
+      "type": 10743,
+      "slot": 4,
+      "nativeOffset": "0x180",
+      "method": 71047,
+      "qualifiedName": "Torappu.Battle.MoveController.get_moveSpeed"
+    },
+    {
+      "type": 10743,
+      "slot": 5,
+      "nativeOffset": "0x190",
+      "method": 71055,
+      "qualifiedName": "Torappu.Battle.MoveController.OnStart"
+    },
+    {
+      "type": 10743,
+      "slot": 6,
+      "nativeOffset": "0x1a0",
+      "method": 71056,
+      "qualifiedName": "Torappu.Battle.MoveController.CalculateMoveDelta"
+    },
+    {
+      "type": 10743,
+      "slot": 7,
+      "nativeOffset": "0x1b0",
+      "method": 71058,
+      "qualifiedName": "Torappu.Battle.MoveController._CalculateSteeringForce"
+    },
+    {
+      "type": 10743,
+      "slot": 8,
+      "nativeOffset": "0x1c0",
+      "method": 71059,
+      "qualifiedName": "Torappu.Battle.MoveController.CalculateIsHanging"
+    },
+    {
+      "type": 10914,
+      "slot": 0,
+      "nativeOffset": "0x140",
+      "method": 282924,
+      "qualifiedName": "UnityEngine.Object.Equals"
+    },
+    {
+      "type": 10914,
+      "slot": 1,
+      "nativeOffset": "0x150",
+      "method": 242637,
+      "qualifiedName": "System.Object.Finalize"
+    },
+    {
+      "type": 10914,
+      "slot": 2,
+      "nativeOffset": "0x160",
+      "method": 282923,
+      "qualifiedName": "UnityEngine.Object.GetHashCode"
+    },
+    {
+      "type": 10914,
+      "slot": 3,
+      "nativeOffset": "0x170",
+      "method": 282975,
+      "qualifiedName": "UnityEngine.Object.ToString"
+    },
+    {
+      "type": 10914,
+      "slot": 4,
+      "nativeOffset": "0x180",
+      "method": 71047,
+      "qualifiedName": "Torappu.Battle.MoveController.get_moveSpeed"
+    },
+    {
+      "type": 10914,
+      "slot": 5,
+      "nativeOffset": "0x190",
+      "method": 71055,
+      "qualifiedName": "Torappu.Battle.MoveController.OnStart"
+    },
+    {
+      "type": 10914,
+      "slot": 6,
+      "nativeOffset": "0x1a0",
+      "method": 71056,
+      "qualifiedName": "Torappu.Battle.MoveController.CalculateMoveDelta"
+    },
+    {
+      "type": 10914,
+      "slot": 7,
+      "nativeOffset": "0x1b0",
+      "method": 71058,
+      "qualifiedName": "Torappu.Battle.MoveController._CalculateSteeringForce"
+    },
+    {
+      "type": 10914,
+      "slot": 8,
+      "nativeOffset": "0x1c0",
+      "method": 72515,
+      "qualifiedName": "Torappu.Battle.SeparateMoveController.CalculateIsHanging"
+    }
+  ],
+  "limits": [
+    "Ordinary compiled native branch only; hotfix bridge gates retained in assembly.",
+    "No live battle execution or census of runtime content activation; installed enemy prefab bundles were scanned statically, and positive samples retain exact raw bytes."
+  ],
+  "forceModeEnum": [
+    {
+      "index": 370135,
+      "name": "Force",
+      "type": 53982,
+      "typeName": "UnityEngine.ForceMode2D",
+      "attrs": 32854,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67108883,
+      "constant": 0,
+      "constantType": "int",
+      "decoding": "compressed signed literal: Force first byte00 ->0, Impulse first byte02 ->1"
+    },
+    {
+      "index": 370136,
+      "name": "Impulse",
+      "type": 53982,
+      "typeName": "UnityEngine.ForceMode2D",
+      "attrs": 32854,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67108884,
+      "constant": 1,
+      "constantType": "int",
+      "decoding": "compressed signed literal: Force first byte00 ->0, Impulse first byte02 ->1"
+    }
+  ],
+  "decodedConstants": {
+    "OBSTACLE_AVOID_TICK_PERIOD": 3,
+    "OBSTACLE_AVOID_FORCE_FACTOR": 1.0,
+    "MIN_OBSTACLE_AVOID_INFLUENCE_FACTOR": 0.5,
+    "SEPARATION_TICK_PERIOD": 3,
+    "SEPARATION_FORCE_FACTOR": 3.0,
+    "SEPARATION_RADIUS": 0.25,
+    "MIN_SEPARATION_SUM_DELTA": 0.05000000074505806,
+    "TILE_NEAR_THRESHOLD": 0.25,
+    "integerEncoding": "IL2CPP metadata v29 compressed signed integers; these positive one-byte values are unsigned>>1. Raw field blobs include following bytes."
+  },
+  "derivedConstants": [
+    {
+      "method": 72517,
+      "instruction": "0x18094e0d1",
+      "field": "_separationForceFactor",
+      "value": 1000
+    },
+    {
+      "method": 72517,
+      "instruction": "0x18094e0d8",
+      "field": "_separationRadius",
+      "value": 0.5
+    },
+    {
+      "method": 72517,
+      "instruction": "0x18094e0df",
+      "field": "_minSeparationSumDelta",
+      "value": 0.05
+    },
+    {
+      "method": 72517,
+      "instruction": "0x18094e0e6",
+      "field": "_separationTickPeriod",
+      "value": 3
+    }
+  ],
+  "eligibilityFields": [
+    {
+      "type": "Torappu.Battle.BObject",
+      "fields": [
+        {
+          "index": 70820,
+          "name": "<isDisappeared>k__BackingField",
+          "type": 44790,
+          "typeName": "bool",
+          "attrs": 1,
+          "static": false,
+          "offset": 38,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67179685
+        }
+      ]
+    },
+    {
+      "type": "Torappu.Battle.Enemy.States.Blackboard",
+      "fields": [
+        {
+          "index": 86500,
+          "name": "isHanging",
+          "type": 44794,
+          "typeName": "bool",
+          "attrs": 6,
+          "static": false,
+          "offset": 16,
+          "boxedOffset": null,
+          "unboxedOffset": null,
+          "token": 67195365
+        }
+      ]
+    }
+  ]
+}

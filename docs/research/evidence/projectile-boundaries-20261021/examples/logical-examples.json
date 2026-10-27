@@ -1,0 +1,1235 @@
+{
+  "projectile_catap_logic": [
+    {
+      "pathid": -8893666568131901728,
+      "classid": 4,
+      "type": "",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -8036553233887525152
+        },
+        "m_LocalRotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "m_LocalPosition": {
+          "x": -21.969999313354492,
+          "y": -3.7151455879211426,
+          "z": -9.2802734375
+        },
+        "m_LocalScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "m_Children": [
+          {
+            "m_FileID": 0,
+            "m_PathID": -2092309156958173472
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": 6692803737903957728
+          }
+        ],
+        "m_Father": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        }
+      }
+    },
+    {
+      "pathid": -6697424808613116192,
+      "classid": 114,
+      "type": "SimpleProjectile",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -8036553233887525152
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": -8797129986015012478
+        },
+        "m_Name": "",
+        "_randomDelayToBorn": 0.0,
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": -2092309156958173472
+        },
+        "_keepAlreadyHitTime": -1.0,
+        "_mainEffect": "",
+        "_clearMainEffectWhenReached": 1,
+        "_actionController": {
+          "_detachBuffsWhenTargetLeave": 0,
+          "_detachAllBuffsWhenStopped": 0,
+          "_onlyAddBuffsToTraceTarget": 0,
+          "_onlyAddBuffsToTargetOnce": 0,
+          "_dontAddBuffs": 0,
+          "_excludeAttachments": 0,
+          "_useSelfBlackboard": 0,
+          "_extraBuffsInTheEnd": [],
+          "_useExtraBuffsWhenStopHit": 0,
+          "_addExtraBuffsWhenReached": 0,
+          "_detachAllExtraBuffsWhenStopped": 0
+        },
+        "_fixDealHitTargetLeft": 0,
+        "_stopGraphicProjectileWhenClearMainEffect": 0,
+        "_overrideAudioSignal": "",
+        "_fireProjectileReachedEvent": 0,
+        "_eliminatableStatus": 0,
+        "_movementAdjustableStatus": 0,
+        "_managedBySource": 0,
+        "_projectileType": 0,
+        "_containsChildrenBehaviours": 0,
+        "_canHitSameTargetMultipleTimes": 0,
+        "_lifeTimeType": 1,
+        "_lifeTime": 10.0,
+        "_getLifeTimeFromBB": 0,
+        "_hitNumType": 2,
+        "_maxHitNum": 1,
+        "_getMaxHitNumFromBB": 0,
+        "_maxHitNumBBKey": "",
+        "_stopAfterMaxHit": 1,
+        "_stopAfterFirstHit": 0,
+        "_stopWhenSourceInvalid": 0,
+        "_alwaysHitTraceTargetInTheEnd": 1,
+        "_alwaysHitTraceTargetWhenReached": 0,
+        "_alwaysReachInTheEnd": 0,
+        "_limitedMaxHitNumToSourceBlockedCnt": 0,
+        "_allowZeroBlockCntLimit": 0
+      }
+    },
+    {
+      "pathid": -2434201079515248928,
+      "classid": 114,
+      "type": "HitBehaviour",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -8036553233887525152
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": -3494225671239136090
+        },
+        "m_Name": "",
+        "_targetOptions": {
+          "targetSide": 2,
+          "targetMotion": 3,
+          "targetCategory": 1,
+          "enableAdvancedOptions": 1,
+          "ignoreTargetFree": 0,
+          "ignoreAllyTargetFree": 0,
+          "ignoreHealFree": 0,
+          "ignoreMotionMode": 0,
+          "ignoreTargetSide": 0,
+          "excludeSomeAbnormalFlags": 0,
+          "containSomeAbnormalFlags": 0,
+          "excludeAbnormalFlag": 0,
+          "containAbnormalFlag": 0,
+          "purposeMask": 0,
+          "professionMask": 0,
+          "checkUnitType": 0,
+          "unitTypeMask": 0,
+          "onlyIgnoreSomeOfTargetFreeCase": 0,
+          "abnormalFlag": 0,
+          "abnormalCombo": 0
+        },
+        "_goThroughWall": 1,
+        "_onlyCheckHitWhenReachTarget": 1,
+        "_onlyCheckHitWhenStop": 0,
+        "_canFlyThroughTheDeathArea": 0,
+        "_exceptTraceTarget": 0,
+        "_overridePurposeMaskWithTargetOptions": 0,
+        "_rangeToLoad": {
+          "m_FileID": 0,
+          "m_PathID": 7942857942245574368
+        },
+        "_onlyTraceTarget": 0,
+        "_ignoreCamouflage": 1,
+        "_ignoreRangeScale": 0,
+        "_exceptSource": 0,
+        "_mergeTraceTargetMotion": 0,
+        "_markReachedOnlyWhenTargetEnter": 0,
+        "_exceptFlyCharacter": 0
+      }
+    },
+    {
+      "pathid": 7182038264257644256,
+      "classid": 114,
+      "type": "EffectBehaviour",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -8036553233887525152
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 6834194400804168919
+        },
+        "m_Name": "",
+        "_effectsWhenStart": [],
+        "_effectsWhenReached": [],
+        "_effectsWhenHit": [
+          "catap_attack_01_hit"
+        ],
+        "_effectsToTargetWhenStart": [],
+        "_effectsToTileWhenStart": [],
+        "_effectsWhenStop": [],
+        "_effectOnTrigger": [],
+        "_replaceHitEffectAfterFirstHit": 0,
+        "_repalceEffectsWhenHit": [],
+        "_onlyPlayHitEffectOnTraceTarget": 1,
+        "_onlyPlayHitEffectOnNotTraceTarget": 0,
+        "_onlyPlayHitEffectOnce": 0,
+        "_clearHitEffectOnStop": 0,
+        "_clearPlayEffectOnStop": 0,
+        "_clearEffectsOnTileOnStop": 0,
+        "_clearReachedEffectWhenStop": 0,
+        "_alwaysPlayStartEffects": 0,
+        "_playStartEffectOnlyOnProjectile": 0,
+        "_useSourceFaceVector": 0,
+        "_useSourceFaceVectorOnHit": 0,
+        "_useSourceFaceVectorOnStart": 0,
+        "_forceReachTargetGround": 0,
+        "_followTargetGround": 0,
+        "_replaceMainEffectWhenReach": 0,
+        "_mainEffectToReplace": "",
+        "_useTraceTargetWhenReach": 0,
+        "_setReachEffectOnProjectile": 0,
+        "_syncEffectScaleViaProjectile": 0
+      }
+    },
+    {
+      "pathid": 8015532543194105568,
+      "classid": 114,
+      "type": "ParacurveMovement",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -8036553233887525152
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 5247176549481151122
+        },
+        "m_Name": "",
+        "_rotateToTarget": 1,
+        "_forceReachedWhenTimeup": 1,
+        "_useSourceDirection": 0,
+        "_useTargetDirection": 0,
+        "_useStartToTarget": 0,
+        "_awayFromSourceAsDirection": 0,
+        "_flyToTargetLocationOnly": 0,
+        "_useSourceDirectionRandomArcAngleStart": 0,
+        "_useSourceToTargetRandomArcAngleStart": 0,
+        "_useSourceDirectionArcAngleWithRatio": 0,
+        "_useSourceToTargetArcAngleWithRatio": 0,
+        "_sourceDirectionArcAngleRatio": 0.0,
+        "_sourceToTargetArcAngle": 0.0,
+        "_adjustSourceToTargetArcAngleBySourceFace": 0,
+        "_flyToPredefinedLocation": 0,
+        "_predefinedLocation": 0,
+        "_freezeRotationZ": 1,
+        "_freezeRotationXY": 0,
+        "_exactMatchCameraForward": 0,
+        "_resetToTargetPosWhenReached": 0,
+        "_resetToTracetargetMapPosV3": 0,
+        "_handleWithIBuildableTarget": 0,
+        "_forceResetToTargetPosWhenReached": 0,
+        "_fixProjectileZWhenReached": 0,
+        "_fixOnProjectileReached": 0,
+        "_onlyReachedInTime": 0.0,
+        "_speed": 8.0,
+        "_raiseHeight": 0.30000001192092896,
+        "_delayAfterReached": 0,
+        "_delayTime": 0.0,
+        "_updateDelayTimeOnlyOnce": 0,
+        "_noRaiseHeightThreshold": 1.2999999523162842,
+        "_comeBack": 0,
+        "_comeBackSpeedScale": 0.25,
+        "_inverseParacurve": 0,
+        "_useRandomHeight": 0,
+        "_randomHeightRange": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "_randomInverseParacurve": 0
+      }
+    }
+  ],
+  "projectile_crossbow_logic": [
+    {
+      "pathid": -5817870333110915488,
+      "classid": 4,
+      "type": "",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -1604394424664199584
+        },
+        "m_LocalRotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "m_LocalPosition": {
+          "x": -3.3611950874328613,
+          "y": -3.7151455879211426,
+          "z": -9.2802734375
+        },
+        "m_LocalScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "m_Children": [
+          {
+            "m_FileID": 0,
+            "m_PathID": -7202416682152628640
+          }
+        ],
+        "m_Father": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        }
+      }
+    },
+    {
+      "pathid": -5354178854122688928,
+      "classid": 114,
+      "type": "AdvancedMovement",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -1604394424664199584
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": -1429203677512073985
+        },
+        "m_Name": "",
+        "_rotateToTarget": 1,
+        "_forceReachedWhenTimeup": 1,
+        "_useSourceDirection": 0,
+        "_useTargetDirection": 0,
+        "_useStartToTarget": 0,
+        "_awayFromSourceAsDirection": 0,
+        "_flyToTargetLocationOnly": 0,
+        "_useSourceDirectionRandomArcAngleStart": 0,
+        "_useSourceToTargetRandomArcAngleStart": 0,
+        "_useSourceDirectionArcAngleWithRatio": 0,
+        "_useSourceToTargetArcAngleWithRatio": 0,
+        "_sourceDirectionArcAngleRatio": 0.0,
+        "_sourceToTargetArcAngle": 0.0,
+        "_adjustSourceToTargetArcAngleBySourceFace": 0,
+        "_flyToPredefinedLocation": 0,
+        "_predefinedLocation": 0,
+        "_freezeRotationZ": 0,
+        "_freezeRotationXY": 0,
+        "_exactMatchCameraForward": 0,
+        "_resetToTargetPosWhenReached": 0,
+        "_resetToTracetargetMapPosV3": 0,
+        "_handleWithIBuildableTarget": 0,
+        "_forceResetToTargetPosWhenReached": 0,
+        "_fixProjectileZWhenReached": 0,
+        "_fixOnProjectileReached": 0,
+        "_onlyReachedInTime": 0.0,
+        "_moveType": 1,
+        "_moveTypeData": {
+          "data": []
+        },
+        "_speed": 10.0,
+        "_distance": 0.0,
+        "_comeBack": 0,
+        "_comeBackSpeedScale": 0.25,
+        "_delayToStart": 0.0,
+        "_delayAfterReached": 0.0,
+        "_delayToReachAfterHit": 0.0,
+        "_clearTraceTargetWhenReached": 1,
+        "_updateDelayTimeOnlyOnce": 0,
+        "_skipSmoothLerpDirection": 0,
+        "_addInertia": 0,
+        "_turnSpeed": 0.0,
+        "_useDynamicSpeed": 0,
+        "_deltaSpeedPerSec": 0.0,
+        "_finalSpeed": 0.0,
+        "_randomOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "_forceUseTargetMountPoint": 0,
+        "_rotateToTargetOnDelayToStart": 0,
+        "_drawFuncTurnAndWaveDebugLine": 0,
+        "_fixProjectileHasReached": 0
+      }
+    },
+    {
+      "pathid": 5585898552488029792,
+      "classid": 114,
+      "type": "EffectBehaviour",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -1604394424664199584
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 6834194400804168919
+        },
+        "m_Name": "",
+        "_effectsWhenStart": [],
+        "_effectsWhenReached": [],
+        "_effectsWhenHit": [
+          "common_hit_01"
+        ],
+        "_effectsToTargetWhenStart": [],
+        "_effectsToTileWhenStart": [],
+        "_effectsWhenStop": [],
+        "_effectOnTrigger": [],
+        "_replaceHitEffectAfterFirstHit": 0,
+        "_repalceEffectsWhenHit": [],
+        "_onlyPlayHitEffectOnTraceTarget": 0,
+        "_onlyPlayHitEffectOnNotTraceTarget": 0,
+        "_onlyPlayHitEffectOnce": 0,
+        "_clearHitEffectOnStop": 0,
+        "_clearPlayEffectOnStop": 0,
+        "_clearEffectsOnTileOnStop": 0,
+        "_clearReachedEffectWhenStop": 0,
+        "_alwaysPlayStartEffects": 0,
+        "_playStartEffectOnlyOnProjectile": 0,
+        "_useSourceFaceVector": 0,
+        "_useSourceFaceVectorOnHit": 0,
+        "_useSourceFaceVectorOnStart": 0,
+        "_forceReachTargetGround": 0,
+        "_followTargetGround": 0,
+        "_replaceMainEffectWhenReach": 0,
+        "_mainEffectToReplace": "",
+        "_useTraceTargetWhenReach": 0,
+        "_setReachEffectOnProjectile": 0,
+        "_syncEffectScaleViaProjectile": 0
+      }
+    },
+    {
+      "pathid": 5817916136774037088,
+      "classid": 114,
+      "type": "SimpleProjectile",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -1604394424664199584
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": -8797129986015012478
+        },
+        "m_Name": "",
+        "_randomDelayToBorn": 0.0,
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": -5817870333110915488
+        },
+        "_keepAlreadyHitTime": -1.0,
+        "_mainEffect": "",
+        "_clearMainEffectWhenReached": 0,
+        "_actionController": {
+          "_detachBuffsWhenTargetLeave": 0,
+          "_detachAllBuffsWhenStopped": 0,
+          "_onlyAddBuffsToTraceTarget": 0,
+          "_onlyAddBuffsToTargetOnce": 0,
+          "_dontAddBuffs": 0,
+          "_excludeAttachments": 0,
+          "_useSelfBlackboard": 0,
+          "_extraBuffsInTheEnd": [],
+          "_useExtraBuffsWhenStopHit": 0,
+          "_addExtraBuffsWhenReached": 0,
+          "_detachAllExtraBuffsWhenStopped": 0
+        },
+        "_fixDealHitTargetLeft": 0,
+        "_stopGraphicProjectileWhenClearMainEffect": 0,
+        "_overrideAudioSignal": "",
+        "_fireProjectileReachedEvent": 0,
+        "_eliminatableStatus": 0,
+        "_movementAdjustableStatus": 0,
+        "_managedBySource": 0,
+        "_projectileType": 0,
+        "_containsChildrenBehaviours": 0,
+        "_canHitSameTargetMultipleTimes": 0,
+        "_lifeTimeType": 1,
+        "_lifeTime": 5.0,
+        "_getLifeTimeFromBB": 0,
+        "_hitNumType": 1,
+        "_maxHitNum": 1,
+        "_getMaxHitNumFromBB": 0,
+        "_maxHitNumBBKey": "",
+        "_stopAfterMaxHit": 1,
+        "_stopAfterFirstHit": 0,
+        "_stopWhenSourceInvalid": 0,
+        "_alwaysHitTraceTargetInTheEnd": 1,
+        "_alwaysHitTraceTargetWhenReached": 0,
+        "_alwaysReachInTheEnd": 0,
+        "_limitedMaxHitNumToSourceBlockedCnt": 0,
+        "_allowZeroBlockCntLimit": 0
+      }
+    }
+  ],
+  "projectile_amiya_s2_logic": [
+    {
+      "pathid": -5001051551460098578,
+      "classid": 4,
+      "type": "",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 2689747447809637870
+        },
+        "m_LocalRotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "m_LocalPosition": {
+          "x": -3.3611950874328613,
+          "y": -3.7151455879211426,
+          "z": -9.2802734375
+        },
+        "m_LocalScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "m_Children": [
+          {
+            "m_FileID": 0,
+            "m_PathID": -693367062528000530
+          }
+        ],
+        "m_Father": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        }
+      }
+    },
+    {
+      "pathid": -3643411625692561938,
+      "classid": 114,
+      "type": "SimpleProjectile",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 2689747447809637870
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": -8797129986015012478
+        },
+        "m_Name": "",
+        "_randomDelayToBorn": 0.0,
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": -693367062528000530
+        },
+        "_keepAlreadyHitTime": -1.0,
+        "_mainEffect": "",
+        "_clearMainEffectWhenReached": 0,
+        "_actionController": {
+          "_detachBuffsWhenTargetLeave": 0,
+          "_detachAllBuffsWhenStopped": 0,
+          "_onlyAddBuffsToTraceTarget": 0,
+          "_onlyAddBuffsToTargetOnce": 0,
+          "_dontAddBuffs": 0,
+          "_excludeAttachments": 0,
+          "_useSelfBlackboard": 0,
+          "_extraBuffsInTheEnd": [],
+          "_useExtraBuffsWhenStopHit": 0,
+          "_addExtraBuffsWhenReached": 0,
+          "_detachAllExtraBuffsWhenStopped": 0
+        },
+        "_fixDealHitTargetLeft": 0,
+        "_stopGraphicProjectileWhenClearMainEffect": 0,
+        "_overrideAudioSignal": "",
+        "_fireProjectileReachedEvent": 0,
+        "_eliminatableStatus": 0,
+        "_movementAdjustableStatus": 0,
+        "_managedBySource": 0,
+        "_projectileType": 0,
+        "_containsChildrenBehaviours": 0,
+        "_canHitSameTargetMultipleTimes": 0,
+        "_lifeTimeType": 1,
+        "_lifeTime": 5.0,
+        "_getLifeTimeFromBB": 0,
+        "_hitNumType": 1,
+        "_maxHitNum": 1,
+        "_getMaxHitNumFromBB": 0,
+        "_maxHitNumBBKey": "",
+        "_stopAfterMaxHit": 0,
+        "_stopAfterFirstHit": 0,
+        "_stopWhenSourceInvalid": 0,
+        "_alwaysHitTraceTargetInTheEnd": 1,
+        "_alwaysHitTraceTargetWhenReached": 0,
+        "_alwaysReachInTheEnd": 0,
+        "_limitedMaxHitNumToSourceBlockedCnt": 0,
+        "_allowZeroBlockCntLimit": 0
+      }
+    },
+    {
+      "pathid": 947111864409980398,
+      "classid": 114,
+      "type": "AmiyaS2Movement",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 2689747447809637870
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 4341765569970106565
+        },
+        "m_Name": "",
+        "_rotateToTarget": 0,
+        "_forceReachedWhenTimeup": 1,
+        "_useSourceDirection": 0,
+        "_useTargetDirection": 0,
+        "_useStartToTarget": 0,
+        "_awayFromSourceAsDirection": 0,
+        "_flyToTargetLocationOnly": 0,
+        "_useSourceDirectionRandomArcAngleStart": 0,
+        "_useSourceToTargetRandomArcAngleStart": 0,
+        "_useSourceDirectionArcAngleWithRatio": 0,
+        "_useSourceToTargetArcAngleWithRatio": 0,
+        "_sourceDirectionArcAngleRatio": 0.0,
+        "_sourceToTargetArcAngle": 0.0,
+        "_adjustSourceToTargetArcAngleBySourceFace": 0,
+        "_flyToPredefinedLocation": 0,
+        "_predefinedLocation": 0,
+        "_freezeRotationZ": 0,
+        "_freezeRotationXY": 0,
+        "_exactMatchCameraForward": 0,
+        "_resetToTargetPosWhenReached": 0,
+        "_resetToTracetargetMapPosV3": 0,
+        "_handleWithIBuildableTarget": 0,
+        "_forceResetToTargetPosWhenReached": 0,
+        "_fixProjectileZWhenReached": 0,
+        "_fixOnProjectileReached": 0,
+        "_onlyReachedInTime": 0.0,
+        "_startDistance": 2.0,
+        "_zOffset": 0.0,
+        "_startDuration": 0.15000000596046448,
+        "_time": 0.15000000596046448,
+        "_yAnimateOffset": 0.10000000149011612,
+        "_yAnimateSpeed": 5.0
+      }
+    },
+    {
+      "pathid": 4869940359897415150,
+      "classid": 114,
+      "type": "EffectBehaviour",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 2689747447809637870
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 6834194400804168919
+        },
+        "m_Name": "",
+        "_effectsWhenStart": [],
+        "_effectsWhenReached": [],
+        "_effectsWhenHit": [
+          "amiya_skill_02_hit"
+        ],
+        "_effectsToTargetWhenStart": [],
+        "_effectsToTileWhenStart": [],
+        "_effectsWhenStop": [],
+        "_effectOnTrigger": [],
+        "_replaceHitEffectAfterFirstHit": 0,
+        "_repalceEffectsWhenHit": [],
+        "_onlyPlayHitEffectOnTraceTarget": 0,
+        "_onlyPlayHitEffectOnNotTraceTarget": 0,
+        "_onlyPlayHitEffectOnce": 0,
+        "_clearHitEffectOnStop": 0,
+        "_clearPlayEffectOnStop": 0,
+        "_clearEffectsOnTileOnStop": 0,
+        "_clearReachedEffectWhenStop": 0,
+        "_alwaysPlayStartEffects": 0,
+        "_playStartEffectOnlyOnProjectile": 0,
+        "_useSourceFaceVector": 0,
+        "_useSourceFaceVectorOnHit": 0,
+        "_useSourceFaceVectorOnStart": 0,
+        "_forceReachTargetGround": 0,
+        "_followTargetGround": 0,
+        "_replaceMainEffectWhenReach": 0,
+        "_mainEffectToReplace": "",
+        "_useTraceTargetWhenReach": 0,
+        "_setReachEffectOnProjectile": 0,
+        "_syncEffectScaleViaProjectile": 0
+      }
+    }
+  ],
+  "projectile_crsbow": [
+    {
+      "pathid": -4798306852508181545,
+      "classid": 50,
+      "type": "",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 8369377657188080599
+        },
+        "m_BodyType": 1,
+        "m_Simulated": {
+          "raw": "01",
+          "unresolvedType": "common:76"
+        },
+        "m_UseFullKinematicContacts": {
+          "raw": "00",
+          "unresolvedType": "common:76"
+        },
+        "m_UseAutoMass": {
+          "raw": "00",
+          "unresolvedType": "common:76"
+        },
+        "m_Mass": 1.0,
+        "m_LinearDrag": 0.0,
+        "m_AngularDrag": 0.05000000074505806,
+        "m_GravityScale": 1.0,
+        "m_Material": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "m_Interpolate": 0,
+        "m_SleepingMode": 0,
+        "m_CollisionDetection": 0,
+        "m_Constraints": 0
+      }
+    },
+    {
+      "pathid": -2721299313409238057,
+      "classid": 58,
+      "type": "",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 8369377657188080599
+        },
+        "m_Enabled": 1,
+        "m_Density": 1.0,
+        "m_Material": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "m_IsTrigger": {
+          "raw": "01",
+          "unresolvedType": "common:76"
+        },
+        "m_UsedByEffector": {
+          "raw": "00",
+          "unresolvedType": "common:76"
+        },
+        "m_UsedByComposite": {
+          "raw": "00",
+          "unresolvedType": "common:76"
+        },
+        "m_Offset": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "m_Radius": 0.5
+      }
+    },
+    {
+      "pathid": -2008815958967297065,
+      "classid": 114,
+      "type": "HitBehaviour",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 8369377657188080599
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": -3494225671239136090
+        },
+        "m_Name": "",
+        "_targetOptions": {
+          "targetSide": 2,
+          "targetMotion": 3,
+          "targetCategory": 1,
+          "enableAdvancedOptions": 1,
+          "ignoreTargetFree": 0,
+          "ignoreAllyTargetFree": 0,
+          "ignoreHealFree": 0,
+          "ignoreMotionMode": 0,
+          "ignoreTargetSide": 0,
+          "excludeSomeAbnormalFlags": 0,
+          "containSomeAbnormalFlags": 0,
+          "excludeAbnormalFlag": 0,
+          "containAbnormalFlag": 0,
+          "purposeMask": 0,
+          "professionMask": 0,
+          "checkUnitType": 0,
+          "unitTypeMask": 0,
+          "onlyIgnoreSomeOfTargetFreeCase": 0,
+          "abnormalFlag": 0,
+          "abnormalCombo": 0
+        },
+        "_goThroughWall": 1,
+        "_onlyCheckHitWhenReachTarget": 0,
+        "_onlyCheckHitWhenStop": 0,
+        "_canFlyThroughTheDeathArea": 0,
+        "_exceptTraceTarget": 0,
+        "_overridePurposeMaskWithTargetOptions": 0,
+        "_rangeToLoad": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_onlyTraceTarget": 0,
+        "_ignoreCamouflage": 0,
+        "_ignoreRangeScale": 0,
+        "_exceptSource": 0,
+        "_mergeTraceTargetMotion": 0,
+        "_markReachedOnlyWhenTargetEnter": 0,
+        "_exceptFlyCharacter": 0
+      }
+    },
+    {
+      "pathid": -123534182117188649,
+      "classid": 114,
+      "type": "FarthestPointMovement",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 8369377657188080599
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": -7879463504869738731
+        },
+        "m_Name": "",
+        "_rotateToTarget": 1,
+        "_forceReachedWhenTimeup": 0,
+        "_useSourceDirection": 1,
+        "_useTargetDirection": 0,
+        "_useStartToTarget": 0,
+        "_awayFromSourceAsDirection": 0,
+        "_flyToTargetLocationOnly": 0,
+        "_useSourceDirectionRandomArcAngleStart": 0,
+        "_useSourceToTargetRandomArcAngleStart": 0,
+        "_useSourceDirectionArcAngleWithRatio": 0,
+        "_useSourceToTargetArcAngleWithRatio": 0,
+        "_sourceDirectionArcAngleRatio": 0.0,
+        "_sourceToTargetArcAngle": 0.0,
+        "_adjustSourceToTargetArcAngleBySourceFace": 0,
+        "_flyToPredefinedLocation": 0,
+        "_predefinedLocation": 0,
+        "_freezeRotationZ": 0,
+        "_freezeRotationXY": 0,
+        "_exactMatchCameraForward": 0,
+        "_resetToTargetPosWhenReached": 0,
+        "_resetToTracetargetMapPosV3": 0,
+        "_handleWithIBuildableTarget": 0,
+        "_forceResetToTargetPosWhenReached": 0,
+        "_fixProjectileZWhenReached": 0,
+        "_fixOnProjectileReached": 0,
+        "_onlyReachedInTime": 0.0,
+        "_moveType": 4,
+        "_moveTypeData": {
+          "data": []
+        },
+        "_speed": 10.0,
+        "_distance": 0.0,
+        "_comeBack": 0,
+        "_comeBackSpeedScale": 0.25,
+        "_delayToStart": 0.0,
+        "_delayAfterReached": 0.0,
+        "_delayToReachAfterHit": 0.0,
+        "_clearTraceTargetWhenReached": 1,
+        "_updateDelayTimeOnlyOnce": 0,
+        "_skipSmoothLerpDirection": 0,
+        "_addInertia": 0,
+        "_turnSpeed": 0.0,
+        "_useDynamicSpeed": 0,
+        "_deltaSpeedPerSec": 0.0,
+        "_finalSpeed": 0.0,
+        "_randomOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "_forceUseTargetMountPoint": 0,
+        "_rotateToTargetOnDelayToStart": 0,
+        "_drawFuncTurnAndWaveDebugLine": 0,
+        "_fixProjectileHasReached": 0,
+        "_targetHeightType": 0,
+        "_useStartDirection": 0,
+        "_withinAbilityRange": 1,
+        "_useConstDirection": 0,
+        "_constDirection": 0,
+        "_useDirToTarget": 0,
+        "_useVerticalDir": 0,
+        "_useHorizontalDir": 0,
+        "_removeTraceTargetAtStart": 0,
+        "_useEightWaysDirection": 0,
+        "_useTraceTargetDirection": 0
+      }
+    },
+    {
+      "pathid": 1279840423073635287,
+      "classid": 114,
+      "type": "EffectBehaviour",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 8369377657188080599
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 6834194400804168919
+        },
+        "m_Name": "",
+        "_effectsWhenStart": [],
+        "_effectsWhenReached": [],
+        "_effectsWhenHit": [
+          "trap_crsbow_attack_01_hit"
+        ],
+        "_effectsToTargetWhenStart": [],
+        "_effectsToTileWhenStart": [],
+        "_effectsWhenStop": [],
+        "_effectOnTrigger": [],
+        "_replaceHitEffectAfterFirstHit": 0,
+        "_repalceEffectsWhenHit": [],
+        "_onlyPlayHitEffectOnTraceTarget": 0,
+        "_onlyPlayHitEffectOnNotTraceTarget": 0,
+        "_onlyPlayHitEffectOnce": 0,
+        "_clearHitEffectOnStop": 0,
+        "_clearPlayEffectOnStop": 0,
+        "_clearEffectsOnTileOnStop": 0,
+        "_clearReachedEffectWhenStop": 0,
+        "_alwaysPlayStartEffects": 0,
+        "_playStartEffectOnlyOnProjectile": 0,
+        "_useSourceFaceVector": 0,
+        "_useSourceFaceVectorOnHit": 0,
+        "_useSourceFaceVectorOnStart": 0,
+        "_forceReachTargetGround": 0,
+        "_followTargetGround": 0,
+        "_replaceMainEffectWhenReach": 0,
+        "_mainEffectToReplace": "",
+        "_useTraceTargetWhenReach": 0,
+        "_setReachEffectOnProjectile": 0,
+        "_syncEffectScaleViaProjectile": 0
+      }
+    },
+    {
+      "pathid": 1864997230084971479,
+      "classid": 114,
+      "type": "SimpleProjectile",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 8369377657188080599
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": -8797129986015012478
+        },
+        "m_Name": "",
+        "_randomDelayToBorn": 0.0,
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": -8374275865599321129
+        },
+        "_keepAlreadyHitTime": -1.0,
+        "_mainEffect": "trap_crsbow_attack_01_trail",
+        "_clearMainEffectWhenReached": 0,
+        "_actionController": {
+          "_detachBuffsWhenTargetLeave": 0,
+          "_detachAllBuffsWhenStopped": 0,
+          "_onlyAddBuffsToTraceTarget": 0,
+          "_onlyAddBuffsToTargetOnce": 0,
+          "_dontAddBuffs": 0,
+          "_excludeAttachments": 0,
+          "_useSelfBlackboard": 0,
+          "_extraBuffsInTheEnd": [],
+          "_useExtraBuffsWhenStopHit": 0,
+          "_addExtraBuffsWhenReached": 0,
+          "_detachAllExtraBuffsWhenStopped": 0
+        },
+        "_fixDealHitTargetLeft": 0,
+        "_stopGraphicProjectileWhenClearMainEffect": 0,
+        "_overrideAudioSignal": "",
+        "_fireProjectileReachedEvent": 0,
+        "_eliminatableStatus": 0,
+        "_movementAdjustableStatus": 0,
+        "_managedBySource": 0,
+        "_projectileType": 0,
+        "_containsChildrenBehaviours": 0,
+        "_canHitSameTargetMultipleTimes": 0,
+        "_lifeTimeType": 1,
+        "_lifeTime": 60.0,
+        "_getLifeTimeFromBB": 0,
+        "_hitNumType": 1,
+        "_maxHitNum": 1,
+        "_getMaxHitNumFromBB": 0,
+        "_maxHitNumBBKey": "",
+        "_stopAfterMaxHit": 1,
+        "_stopAfterFirstHit": 0,
+        "_stopWhenSourceInvalid": 0,
+        "_alwaysHitTraceTargetInTheEnd": 0,
+        "_alwaysHitTraceTargetWhenReached": 0,
+        "_alwaysReachInTheEnd": 0,
+        "_limitedMaxHitNumToSourceBlockedCnt": 0,
+        "_allowZeroBlockCntLimit": 0
+      }
+    },
+    {
+      "pathid": 8956371263176137687,
+      "classid": 4,
+      "type": "",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": 8369377657188080599
+        },
+        "m_LocalRotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "m_LocalPosition": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "m_LocalScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "m_Children": [
+          {
+            "m_FileID": 0,
+            "m_PathID": -8374275865599321129
+          }
+        ],
+        "m_Father": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        }
+      }
+    }
+  ],
+  "projectile_amiya_logic": [
+    {
+      "pathid": -1988626768282074803,
+      "classid": 114,
+      "type": "EffectBehaviour",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -8615812902768819891
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 6834194400804168919
+        },
+        "m_Name": "",
+        "_effectsWhenStart": [],
+        "_effectsWhenReached": [],
+        "_effectsWhenHit": [
+          "amiya_attack_01_hit"
+        ],
+        "_effectsToTargetWhenStart": [],
+        "_effectsToTileWhenStart": [],
+        "_effectsWhenStop": [],
+        "_effectOnTrigger": [],
+        "_replaceHitEffectAfterFirstHit": 0,
+        "_repalceEffectsWhenHit": [],
+        "_onlyPlayHitEffectOnTraceTarget": 0,
+        "_onlyPlayHitEffectOnNotTraceTarget": 0,
+        "_onlyPlayHitEffectOnce": 0,
+        "_clearHitEffectOnStop": 0,
+        "_clearPlayEffectOnStop": 0,
+        "_clearEffectsOnTileOnStop": 0,
+        "_clearReachedEffectWhenStop": 0,
+        "_alwaysPlayStartEffects": 0,
+        "_playStartEffectOnlyOnProjectile": 0,
+        "_useSourceFaceVector": 0,
+        "_useSourceFaceVectorOnHit": 0,
+        "_useSourceFaceVectorOnStart": 0,
+        "_forceReachTargetGround": 0,
+        "_followTargetGround": 0,
+        "_replaceMainEffectWhenReach": 0,
+        "_mainEffectToReplace": "",
+        "_useTraceTargetWhenReach": 0,
+        "_setReachEffectOnProjectile": 0,
+        "_syncEffectScaleViaProjectile": 0
+      }
+    },
+    {
+      "pathid": -207943885924744883,
+      "classid": 114,
+      "type": "AmiyaDefaultMovement",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -8615812902768819891
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": 2247585246492197002
+        },
+        "m_Name": "",
+        "_rotateToTarget": 0,
+        "_forceReachedWhenTimeup": 1,
+        "_useSourceDirection": 0,
+        "_useTargetDirection": 0,
+        "_useStartToTarget": 0,
+        "_awayFromSourceAsDirection": 0,
+        "_flyToTargetLocationOnly": 0,
+        "_useSourceDirectionRandomArcAngleStart": 0,
+        "_useSourceToTargetRandomArcAngleStart": 0,
+        "_useSourceDirectionArcAngleWithRatio": 0,
+        "_useSourceToTargetArcAngleWithRatio": 0,
+        "_sourceDirectionArcAngleRatio": 0.0,
+        "_sourceToTargetArcAngle": 0.0,
+        "_adjustSourceToTargetArcAngleBySourceFace": 0,
+        "_flyToPredefinedLocation": 0,
+        "_predefinedLocation": 0,
+        "_freezeRotationZ": 0,
+        "_freezeRotationXY": 0,
+        "_exactMatchCameraForward": 0,
+        "_resetToTargetPosWhenReached": 0,
+        "_resetToTracetargetMapPosV3": 0,
+        "_handleWithIBuildableTarget": 0,
+        "_forceResetToTargetPosWhenReached": 0,
+        "_fixProjectileZWhenReached": 0,
+        "_fixOnProjectileReached": 0,
+        "_onlyReachedInTime": 0.0,
+        "_startDistance": 2.5,
+        "_zOffset": 0.0,
+        "_startDuration": 0.15000000596046448,
+        "_time": 0.15000000596046448
+      }
+    },
+    {
+      "pathid": 7667209295825846605,
+      "classid": 114,
+      "type": "SimpleProjectile",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -8615812902768819891
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": -8797129986015012478
+        },
+        "m_Name": "",
+        "_randomDelayToBorn": 0.0,
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_keepAlreadyHitTime": -1.0,
+        "_mainEffect": "",
+        "_clearMainEffectWhenReached": 0,
+        "_actionController": {
+          "_detachBuffsWhenTargetLeave": 0,
+          "_detachAllBuffsWhenStopped": 0,
+          "_onlyAddBuffsToTraceTarget": 0,
+          "_onlyAddBuffsToTargetOnce": 0,
+          "_dontAddBuffs": 0,
+          "_excludeAttachments": 0,
+          "_useSelfBlackboard": 0,
+          "_extraBuffsInTheEnd": [],
+          "_useExtraBuffsWhenStopHit": 0,
+          "_addExtraBuffsWhenReached": 0,
+          "_detachAllExtraBuffsWhenStopped": 0
+        },
+        "_fixDealHitTargetLeft": 0,
+        "_stopGraphicProjectileWhenClearMainEffect": 0,
+        "_overrideAudioSignal": "",
+        "_fireProjectileReachedEvent": 0,
+        "_eliminatableStatus": 0,
+        "_movementAdjustableStatus": 0,
+        "_managedBySource": 0,
+        "_projectileType": 0,
+        "_containsChildrenBehaviours": 0,
+        "_canHitSameTargetMultipleTimes": 0,
+        "_lifeTimeType": 1,
+        "_lifeTime": 10.0,
+        "_getLifeTimeFromBB": 0,
+        "_hitNumType": 1,
+        "_maxHitNum": 1,
+        "_getMaxHitNumFromBB": 0,
+        "_maxHitNumBBKey": "",
+        "_stopAfterMaxHit": 1,
+        "_stopAfterFirstHit": 0,
+        "_stopWhenSourceInvalid": 0,
+        "_alwaysHitTraceTargetInTheEnd": 1,
+        "_alwaysHitTraceTargetWhenReached": 0,
+        "_alwaysReachInTheEnd": 0,
+        "_limitedMaxHitNumToSourceBlockedCnt": 0,
+        "_allowZeroBlockCntLimit": 0
+      }
+    },
+    {
+      "pathid": 8402238746666778957,
+      "classid": 4,
+      "type": "",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": -8615812902768819891
+        },
+        "m_LocalRotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "m_LocalPosition": {
+          "x": -3.3611950874328613,
+          "y": -3.7151455879211426,
+          "z": -9.2802734375
+        },
+        "m_LocalScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "m_Children": [],
+        "m_Father": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        }
+      }
+    }
+  ]
+}

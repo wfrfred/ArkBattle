@@ -1,0 +1,131 @@
+import { getUnit } from "../helpers/unit.js";
+import { ref as unitRef } from "../../dist/core/unit/query.js";
+import assert from "node:assert/strict";
+import { test } from "node:test";
+import { initialize } from "../helpers/unit.js";
+import * as effect from "../../dist/core/unit/effect/operations.js";
+import { get } from "../../dist/core/unit/effect/operations.js";
+import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
+import { effectFixtureWork, install, definition, attackBuff } from "../helpers/effects.js";
+
+const unit = () =>
+    initialize({
+        id: 0,
+        position: [0, 0],
+        definition: { hooks: [],
+            id: "competition-unit",
+            vitality: { maxHp: 100, defense: 0, resistance: 0 },
+            offense: { attack: 100 },
+        },
+    });
+const group = (priority) => ({ id: "mutually-exclusive", priority });
+
+test("effect groups: replacing the selected rule withdraws old output and restores its state when the winner ends", () => {
+    const trace = [];
+    const weak = attackBuff("weak", 20, {
+        group: group(1),
+        onEnable: (state, self) => {
+            trace.push(["weak+", self.data.amount]);
+            return state;
+        },
+        onDisable: (state) => {
+            trace.push(["weak-"]);
+            return state;
+        },
+    });
+    const strong = attackBuff("strong", 50, {
+        group: group(2),
+        onEnable: (state) => {
+            trace.push(["strong+"]);
+            return state;
+        },
+        onDisable: (state) => {
+            trace.push(["strong-"]);
+            return state;
+        },
+    });
+    let battle = effectFixtureWork(unit());
+    let first;
+    ({ state: battle, value: first } = install(battle, weak));
+    let second;
+    ({ state: battle, value: second } = install(battle, strong));
+    assert.equal(get(battle, first).status, "INACTIVE");
+    assert.equal(get(battle, first).enabled, true);
+    assert.equal(get(battle, second).status, "ACTIVE");
+    assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 0))), 150);
+    battle = effect.update(battle, first, data => ({ amount: 30 }));
+    battle = effect.end(battle, second);
+    assert.equal(get(battle, first).status, "ACTIVE");
+    assert.equal(get(battle, first).data.amount, 30);
+    assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 0))), 130);
+    assert.deepEqual(trace, [["weak+", 20], ["weak-"], ["strong+"], ["strong-"], ["weak+", 30]]);
+});
+
+test("effect groups: equal priority retains the earlier identity across different definitions", () => {
+    let battle = effectFixtureWork(unit());
+    let first;
+    ({ state: battle, value: first } = install(
+        battle,
+        definition("first", {}, { group: group(2) }),
+    ));
+    let second;
+    ({ state: battle, value: second } = install(
+        battle,
+        definition("second", {}, { group: group(2) }),
+    ));
+    assert.equal(get(battle, first).status, "ACTIVE");
+    assert.equal(get(battle, second).status, "INACTIVE");
+    battle = effect.end(battle, first);
+    assert.equal(get(battle, second).status, "ACTIVE");
+});
+
+test("effect groups: disabling the strongest rule does not select a weaker fallback", () => {
+    let battle = effectFixtureWork(unit());
+    let weak;
+    ({ state: battle, value: weak } = install(battle, attackBuff("weak", 20, { group: group(1) })));
+    let strong;
+    ({ state: battle, value: strong } = install(
+        battle,
+        attackBuff("strong", 50, { group: group(2) }),
+    ));
+    battle = effect.setEnabled(battle, strong, false);
+    assert.equal(get(battle, strong).status, "INACTIVE");
+    assert.equal(get(battle, weak).status, "INACTIVE");
+    assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 0))), 100);
+    battle = effect.end(battle, strong);
+    assert.equal(get(battle, weak).status, "ACTIVE");
+    assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 0))), 120);
+});
+
+test("effect groups: unrelated groups and ungrouped Effects provide their outputs together", () => {
+    let battle = effectFixtureWork(unit());
+    battle = install(battle, attackBuff("plain", 5)).state;
+    battle = install(battle, attackBuff("one", 20, { group: { id: "one", priority: 1 } })).state;
+    battle = install(battle, attackBuff("two", 30, { group: { id: "two", priority: 1 } })).state;
+    assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 0))), 155);
+});
+
+test("effect groups: a stronger rule installed during withdrawal supersedes the outer selection", () => {
+    let battle = effectFixtureWork(unit());
+    let replacementRef;
+    const replacement = attackBuff("replacement", 300, { group: group(3) });
+    const weak = attackBuff("weak", 10, {
+        group: group(1),
+        onDisable(state, self) {
+            const installed = effect.install(state, self.host, replacement, {});
+            replacementRef = installed.value;
+            return installed.state;
+        },
+    });
+    let weakRef;
+    ({ state: battle, value: weakRef } = install(battle, weak));
+    let middleRef;
+    ({ state: battle, value: middleRef } = install(
+        battle,
+        attackBuff("middle", 100, { group: group(2) }),
+    ));
+    assert.equal(get(battle, weakRef).status, "INACTIVE");
+    assert.equal(get(battle, middleRef).status, "INACTIVE");
+    assert.equal(get(battle, replacementRef).status, "ACTIVE");
+    assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 0))), 400);
+});

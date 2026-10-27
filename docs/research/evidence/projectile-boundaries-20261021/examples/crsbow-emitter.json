@@ -1,0 +1,478 @@
+[
+  [
+    -7934074358518679293,
+    "sktok_dqcrsbow",
+    "CastSkill",
+    {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 3258279823279618307
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 6851783972288338031
+      },
+      "m_Name": "",
+      "_maxTriggerTime": -1,
+      "_allowSpRecoveryWhenAffecting": 0,
+      "_limitGlobalTriggerTime": 0,
+      "_hidden": 0,
+      "_showSpBarEvenHidden": 0,
+      "_showSpAsBulletMode": 0,
+      "_showSpRatioAsProgress": 0,
+      "_playCharWordVoice": 1,
+      "_playCharWordWithPassiveType": 0,
+      "_earlyVoice": 0,
+      "_canCastWithNoSp": 0,
+      "_canSilenced": 0,
+      "_canUseInAbnormalState": 0,
+      "_defaultModeIndex": -1,
+      "_attackBlackboardModeIndex": -1,
+      "_extraAttackBlackboardModeIndices": [],
+      "_rangeIdModeIndex": -1,
+      "_extraRangeIdModeIndices": [],
+      "_rangeIdUsageType": 7,
+      "_writeDurationToAttackBlackboard": 0,
+      "_attachSignalIds": 0,
+      "_extraAbilities": [],
+      "_useEscapeTime": 0,
+      "_earlySkillFinishAtAttackFinished": 0,
+      "_stopAffectOnInterrupt": 0,
+      "_showProgressToNext": 0,
+      "_hideSkillStackCount": 0,
+      "_hideHudSkillStackCount": 0,
+      "_playSkillBeginAnim": 0,
+      "_beginAnim": "",
+      "_beginAnimDown": "",
+      "_beginEffect": [],
+      "_useFaceVector": 0,
+      "_beginAnimValidator": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "_availableValidator": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "_trigger": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "_switchToState": 1,
+      "_uninterruptibleOnAbilityPredelay": 0,
+      "_canSwitchDuringBorn": 1,
+      "_canCastDuringBorn": 1,
+      "_checkHasTargetBeforeDoCast": 0,
+      "_useTriggerInManualMode": 0,
+      "_allowNoTarget": 1,
+      "_shouldCastLikeAttack": 0,
+      "_isRemoteControlled": 0,
+      "_hideRangeToShow": 0,
+      "_forceToShowRange": 0,
+      "_forceUseBaseShowRange": 0,
+      "_rangeToShow": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "_recoverSpIfNoTarget": 0,
+      "_resetAbilityCooldownWhenCastEnd": 0,
+      "_onlyAvailableWhenTokenValid": 0,
+      "_hasUniStackColor": 0,
+      "_skipSpCheckInSkillState": 0
+    }
+  ],
+  [
+    -1578521892814335321,
+    "sktok_crsbow",
+    "AlwaysTrigger",
+    {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 2159293732999320231
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": -2995189732062982133
+      },
+      "m_Name": ""
+    }
+  ],
+  [
+    -1066395501153103193,
+    "sktok_crsbow",
+    "MultiRangedAttack",
+    {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 2159293732999320231
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": -3698736381282439861
+      },
+      "m_Name": "",
+      "_selector": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "_metadata": {
+        "namedAsAlias": "",
+        "blackboardPrefix": ""
+      },
+      "_overrideSignalId": "",
+      "_interruptAbilityOnDetach": 0,
+      "_attachPassiveBuffsOnDummy": 1,
+      "_ignoreIfOwnerDead": 0,
+      "_forceAsDmgOrHealAbility": 0,
+      "_waitForAttackEvent": 0,
+      "_interuptIfTargetDead": 0,
+      "_resetCdStrategy": 1,
+      "_selectTargetSource": 2,
+      "_selectTargetTiming": 0,
+      "_timeMode": 0,
+      "_alwaysIncludeTarget": 1,
+      "_allowNoTarget": 1,
+      "_animKey": "Attack",
+      "_endAnimKey": "Attack_End",
+      "_downAnimKey": "",
+      "_downEndAnimKey": "",
+      "_upAnimKey": "",
+      "_upEndAnimKey": "",
+      "_cooldown": 0.0,
+      "_cooldownKey": "duration",
+      "_preDelay": 0.16699999570846558,
+      "_escapeTime": 0.0,
+      "_faceToTarget": 1,
+      "_faceToDefault": 0,
+      "_faceToFront": 0,
+      "_faceToFirstCastTarget": 0,
+      "_checkFaceToFirstCastTargetDownAttack": 0,
+      "_forceFaceToDirection": 0,
+      "_activeBuffs": [],
+      "_maxAnimScale": 1.0,
+      "_onlyPlayEndAnimWhenIsLastAbility": 0,
+      "_ignorePalsyInterrupt": 0,
+      "_affectedBySlowDown": 0,
+      "_atkScale": 1.0,
+      "_atkScaleKey": "atk_scale",
+      "_attackType": 1,
+      "_elementDamageType": 0,
+      "_epDamageRatio": 0.0,
+      "_useDynamicAttackType": 0,
+      "_deliveryParaWhenReplaceActionNode": 0,
+      "_projectileKey": "projectile_crsbow",
+      "_mountPointType": 2,
+      "_useMountGroup": 0,
+      "_mountGroup": {
+        "loopType": 0,
+        "mountPoints": []
+      },
+      "_damageType": 1,
+      "_waitForProjectileInvalid": 0,
+      "_notClearProjectileWhenCastEnd": 0,
+      "_fireAttackFinishWhenProjectileInvalid": 0,
+      "_minPostDelayWhenProjectileInvalid": 0.0,
+      "_waitForAnimEndWhenProjectileInvalid": 0,
+      "_projectileDestination": 0,
+      "_extraDamageType": 0,
+      "_emitToInputPosWhenTargetIsInvalid": 1,
+      "_emitToInputRootTileWhenTargetIsInvalid": 0,
+      "_useCachedAtkOnly": 0,
+      "_transferSource": 0,
+      "_extraProjectileKeys": [],
+      "_fireCreateProjectileEvent": 0,
+      "_additionalTimes": 2,
+      "_triggerDelta": 0.10000000149011612,
+      "_waitAttackEventForAllAttacks": 0,
+      "_additionalProjectile": "",
+      "_useMultiAdditionalProjectiles": 0,
+      "_additionalProjectiles": [],
+      "_enableMountPointGroup": 0,
+      "_mountPointGroup": [],
+      "_onlyFeedActionsToFirstOne": 0,
+      "_onlyTrigAudioSignalForFirstOne": 1,
+      "_limitToOneTargetAfterFirstRound": 0,
+      "_splitDamage": 0,
+      "_addSpellCntToSignalId": 0,
+      "_addSpellCntToLastSignalId": 0,
+      "_onlyFeedActiveBuffToLastOne": 0,
+      "_onlyFeedActiveBuffToFirstOne": 0,
+      "_refreshTimesOnCastStart": 0,
+      "_castToFirstRoundTargetLocationsAtProjectileBirth": 0,
+      "_hookTheLastProjectile": ""
+    }
+  ],
+  [
+    1009311635910064387,
+    "sktok_dqcrsbow",
+    "",
+    {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 3258279823279618307
+      },
+      "m_LocalRotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -3.102349310779573e-08,
+        "w": 1.0
+      },
+      "m_LocalPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "m_LocalScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "m_Children": [],
+      "m_Father": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      }
+    }
+  ],
+  [
+    2809071030467416743,
+    "sktok_crsbow",
+    "",
+    {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 2159293732999320231
+      },
+      "m_LocalRotation": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -3.102349310779573e-08,
+        "w": 1.0
+      },
+      "m_LocalPosition": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "m_LocalScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "m_Children": [],
+      "m_Father": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      }
+    }
+  ],
+  [
+    4230755285775186179,
+    "sktok_dqcrsbow",
+    "AlwaysTrigger",
+    {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 3258279823279618307
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": -2995189732062982133
+      },
+      "m_Name": ""
+    }
+  ],
+  [
+    8325836638443590311,
+    "sktok_crsbow",
+    "CastSkill",
+    {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 2159293732999320231
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": 6851783972288338031
+      },
+      "m_Name": "",
+      "_maxTriggerTime": -1,
+      "_allowSpRecoveryWhenAffecting": 0,
+      "_limitGlobalTriggerTime": 0,
+      "_hidden": 0,
+      "_showSpBarEvenHidden": 0,
+      "_showSpAsBulletMode": 0,
+      "_showSpRatioAsProgress": 0,
+      "_playCharWordVoice": 1,
+      "_playCharWordWithPassiveType": 0,
+      "_earlyVoice": 0,
+      "_canCastWithNoSp": 0,
+      "_canSilenced": 0,
+      "_canUseInAbnormalState": 0,
+      "_defaultModeIndex": -1,
+      "_attackBlackboardModeIndex": -1,
+      "_extraAttackBlackboardModeIndices": [],
+      "_rangeIdModeIndex": -1,
+      "_extraRangeIdModeIndices": [],
+      "_rangeIdUsageType": 7,
+      "_writeDurationToAttackBlackboard": 0,
+      "_attachSignalIds": 0,
+      "_extraAbilities": [],
+      "_useEscapeTime": 0,
+      "_earlySkillFinishAtAttackFinished": 0,
+      "_stopAffectOnInterrupt": 0,
+      "_showProgressToNext": 0,
+      "_hideSkillStackCount": 0,
+      "_hideHudSkillStackCount": 0,
+      "_playSkillBeginAnim": 0,
+      "_beginAnim": "",
+      "_beginAnimDown": "",
+      "_beginEffect": [],
+      "_useFaceVector": 0,
+      "_beginAnimValidator": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "_availableValidator": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "_trigger": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "_switchToState": 1,
+      "_uninterruptibleOnAbilityPredelay": 0,
+      "_canSwitchDuringBorn": 1,
+      "_canCastDuringBorn": 1,
+      "_checkHasTargetBeforeDoCast": 0,
+      "_useTriggerInManualMode": 0,
+      "_allowNoTarget": 1,
+      "_shouldCastLikeAttack": 0,
+      "_isRemoteControlled": 0,
+      "_hideRangeToShow": 0,
+      "_forceToShowRange": 0,
+      "_forceUseBaseShowRange": 0,
+      "_rangeToShow": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "_recoverSpIfNoTarget": 0,
+      "_resetAbilityCooldownWhenCastEnd": 0,
+      "_onlyAvailableWhenTokenValid": 0,
+      "_hasUniStackColor": 0,
+      "_skipSpCheckInSkillState": 0
+    }
+  ],
+  [
+    8958567025672485123,
+    "sktok_dqcrsbow",
+    "MultiRangedAttack",
+    {
+      "m_GameObject": {
+        "m_FileID": 0,
+        "m_PathID": 3258279823279618307
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "m_FileID": 1,
+        "m_PathID": -3698736381282439861
+      },
+      "m_Name": "",
+      "_selector": {
+        "m_FileID": 0,
+        "m_PathID": 0
+      },
+      "_metadata": {
+        "namedAsAlias": "",
+        "blackboardPrefix": ""
+      },
+      "_overrideSignalId": "",
+      "_interruptAbilityOnDetach": 0,
+      "_attachPassiveBuffsOnDummy": 1,
+      "_ignoreIfOwnerDead": 0,
+      "_forceAsDmgOrHealAbility": 0,
+      "_waitForAttackEvent": 0,
+      "_interuptIfTargetDead": 0,
+      "_resetCdStrategy": 1,
+      "_selectTargetSource": 2,
+      "_selectTargetTiming": 0,
+      "_timeMode": 0,
+      "_alwaysIncludeTarget": 1,
+      "_allowNoTarget": 1,
+      "_animKey": "Attack",
+      "_endAnimKey": "Attack_End",
+      "_downAnimKey": "",
+      "_downEndAnimKey": "",
+      "_upAnimKey": "",
+      "_upEndAnimKey": "",
+      "_cooldown": 0.0,
+      "_cooldownKey": "duration",
+      "_preDelay": 0.16699999570846558,
+      "_escapeTime": 0.0,
+      "_faceToTarget": 1,
+      "_faceToDefault": 0,
+      "_faceToFront": 0,
+      "_faceToFirstCastTarget": 0,
+      "_checkFaceToFirstCastTargetDownAttack": 0,
+      "_forceFaceToDirection": 0,
+      "_activeBuffs": [],
+      "_maxAnimScale": 1.0,
+      "_onlyPlayEndAnimWhenIsLastAbility": 0,
+      "_ignorePalsyInterrupt": 0,
+      "_affectedBySlowDown": 0,
+      "_atkScale": 1.0,
+      "_atkScaleKey": "atk_scale",
+      "_attackType": 1,
+      "_elementDamageType": 0,
+      "_epDamageRatio": 0.0,
+      "_useDynamicAttackType": 0,
+      "_deliveryParaWhenReplaceActionNode": 0,
+      "_projectileKey": "projectile_dqcrsbow",
+      "_mountPointType": 2,
+      "_useMountGroup": 0,
+      "_mountGroup": {
+        "loopType": 0,
+        "mountPoints": []
+      },
+      "_damageType": 1,
+      "_waitForProjectileInvalid": 0,
+      "_notClearProjectileWhenCastEnd": 0,
+      "_fireAttackFinishWhenProjectileInvalid": 0,
+      "_minPostDelayWhenProjectileInvalid": 0.0,
+      "_waitForAnimEndWhenProjectileInvalid": 0,
+      "_projectileDestination": 0,
+      "_extraDamageType": 0,
+      "_emitToInputPosWhenTargetIsInvalid": 1,
+      "_emitToInputRootTileWhenTargetIsInvalid": 0,
+      "_useCachedAtkOnly": 0,
+      "_transferSource": 0,
+      "_extraProjectileKeys": [],
+      "_fireCreateProjectileEvent": 0,
+      "_additionalTimes": 2,
+      "_triggerDelta": 0.10000000149011612,
+      "_waitAttackEventForAllAttacks": 0,
+      "_additionalProjectile": "",
+      "_useMultiAdditionalProjectiles": 0,
+      "_additionalProjectiles": [],
+      "_enableMountPointGroup": 0,
+      "_mountPointGroup": [],
+      "_onlyFeedActionsToFirstOne": 0,
+      "_onlyTrigAudioSignalForFirstOne": 1,
+      "_limitToOneTargetAfterFirstRound": 0,
+      "_splitDamage": 0,
+      "_addSpellCntToSignalId": 0,
+      "_addSpellCntToLastSignalId": 0,
+      "_onlyFeedActiveBuffToLastOne": 0,
+      "_onlyFeedActiveBuffToFirstOne": 0,
+      "_refreshTimesOnCastStart": 0,
+      "_castToFirstRoundTargetLocationsAtProjectileBirth": 0,
+      "_hookTheLastProjectile": ""
+    }
+  ]
+]

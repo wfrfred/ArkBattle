@@ -1,0 +1,84 @@
+{
+  "repository": "Kengxxiao/ArknightsGameData",
+  "commit": "bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d",
+  "path": "zh_CN/gamedata/levels/obt/main/level_tough_14-10.json",
+  "blob_sha1": "7eb7376af2f34124d3bb8afedfaad5c77cc9e180",
+  "sha256": "195634e1ce05dc92e67b24cea1ad8b31dab171fcce1f32fdd7d42d698108d8bc",
+  "route_pointer": "/routes/55",
+  "route": {
+    "motionMode": "WALK",
+    "startPosition": {
+      "row": 3,
+      "col": 0
+    },
+    "endPosition": {
+      "row": 3,
+      "col": 0
+    },
+    "spawnRandomRange": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "spawnOffset": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "checkpoints": [
+      {
+        "type": "MOVE",
+        "time": 0.0,
+        "position": {
+          "row": 3,
+          "col": 1
+        },
+        "reachOffset": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "randomizeReachOffset": false,
+        "reachDistance": 0.0
+      },
+      {
+        "type": "WAIT_FOR_SECONDS",
+        "time": 500.0,
+        "position": {
+          "row": 0,
+          "col": 0
+        },
+        "reachOffset": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "randomizeReachOffset": false,
+        "reachDistance": 0.0
+      }
+    ],
+    "allowDiagonalMove": true,
+    "visitEveryTileCenter": false,
+    "visitEveryNodeCenter": false,
+    "visitEveryCheckPoint": true
+  },
+  "spawn_pointer": "/waves/0/fragments/2/actions/8",
+  "spawn": {
+    "actionType": "SPAWN",
+    "managedByScheduler": true,
+    "key": "enemy_1555_lrking",
+    "count": 1,
+    "preDelay": 9.0,
+    "interval": 1.0,
+    "routeIndex": 55,
+    "blockFragment": false,
+    "autoPreviewRoute": false,
+    "autoDisplayEnemyInfo": false,
+    "isUnharmfulAndAlwaysCountAsKilled": true,
+    "hiddenGroup": null,
+    "randomSpawnGroupKey": null,
+    "randomSpawnGroupPackKey": null,
+    "randomType": "ALWAYS",
+    "refreshType": "ALWAYS",
+    "weight": 0,
+    "dontBlockWave": true,
+    "forceBlockWaveInBranch": false
+  },
+  "verification": "Original route and its direct SPAWN reference in stage configuration; this battle was not executed."
+}

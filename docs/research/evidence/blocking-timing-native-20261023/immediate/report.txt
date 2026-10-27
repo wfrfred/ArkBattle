@@ -1,0 +1,64 @@
+Blocking native timing: explicit additional search within one BattleController.OnTick
+Date: 2026-10-23
+Scope: installed official GameAssembly native branches, same fingerprint as blocking-native-20261023/manifest.json. Static disassembly, no live battle trace and no assertion about active XLua replacement bodies. An OnTick here is one logical simulation Tick, not one Unity render frame.
+
+1. SearchBlockeeImmediate bypasses the normal search cadence and has no same-Tick guard.
+Character.SearchBlockeeImmediate [75955] 0x180a31400:
+  get_alive at virtual slot40 (vtable offset 0x3c0), false -> return.
+  dl=1 at 0x180a31495 -> virtual _SearchBlockee slot236 (vtable+0x1000) at0x180a314ad.
+Character._SearchBlockee [76016] 0x180a38200:
+  passes the bool unchanged into BlockManager.SearchBlockee [77190] at0x180a3827e.
+BlockManager.SearchBlockee [77190] 0x180aa09e0 (existing full evidence competition/77190.asm):
+  0x180aa0abe test force; true ->0x180aa0ade, bypassing PeriodicTicker.isReady.
+  PeriodicTicker.Next() at0x180aa0aed is still called, but its returned bool is NOT checked.
+  Thus an earlier regular search does not suppress a later force search in the same Tick. Repeated force entries can each execute search qualification/selection.
+Important precision: Next resets the countdown only when it was zero; when positive it returns false unchanged. Force still proceeds in either case. It is incorrect to describe force as universally resetting the countdown, and equally incorrect to describe the cadence as per-Tick deduplication.
+
+2. Actual force callers (direct calls scanned in .text and il2cpp, full asm saved):
+  HarpoonProjectile.OnProjectileStop [71113] 0x1808d1150 ->0x1808d1384 calls SearchBlockeeImmediate.
+  NetCatcherProjectile.OnProjectileStop [71246] 0x1808d4480 ->0x1808d4607.
+  Projectiles.PullHitTargetBehaviour.OnProjectileStop [86413] 0x180d42ae0 ->0x180d42d3d.
+  Action.Nodes.CharSearchBlockeeImmediate.Execute [99962] 0x181162e20 ->0x181162f30.
+Harpoon/NetCatcher stop only reaches force search when a pull was attached, saved link target remains valid, target casts to an Enemy and source casts to a valid Character. In each native stop path the target receives virtual Enemy.EndPull(slot234 =0xea) before source.SearchBlockeeImmediate. It is not an unconditional search on every projectile stop.
+The Action node gets its configured action target, checks it is a valid Character, then calls Immediate synchronously. Existence of this generic node does not by itself prove which shipped content invokes it or when; no concrete content configuration was newly audited in this round.
+
+3. Closed real executable Harpoon coroutine chain, not just xrefs:
+A. Startup:
+  LinkProjectile.OnHitTarget [71180] 0x1808d2740 calls virtual DoLink(slot56) at0x1808d2937, then BattleController.StartBattleCoroutine [64743] at0x1808d2962.
+  HarpoonProjectile.DoLink [71116] 0x1808d0d80 creates HarpoonProjectile.<DoLink>d__19, saves projectile and target, returns IEnumerator.
+  StartBattleCoroutine [64743] checks BattleController.get_isDeterministic at0x1806331c2. In deterministic mode it calls CoroutineSimulator.StartCoroutine [64232] at0x180633290; StartCoroutine immediately runs RuntimeHandler.MoveNext at0x18065d37d before registering continuation if needed; in non-deterministic mode it starts a Unity MonoBehaviour coroutine instead. Do not claim the deterministic scheduler is used unconditionally in all client play modes.
+B. Later logical Tick, deterministic path:
+  BattleController.OnTick [64825] (root driver/64825.asm) has ObjectManager.OnFixedUpdate at0x18062ca4d, which includes ordinary Character.OnTick search; physics simulation follows at0x18062cc3b; then CoroutineSimulator.SimulateTick [64230] at0x18062ce1d.
+  SimulateTick -> RuntimeHandler.MoveNext [64245] at0x18065d18c -> IEnumerator.MoveNext (interface dispatch slot0 at0x180660160; fast equivalent at0x18066024a).
+  HarpoonProjectile.<DoLink>d__19.MoveNext [71125] 0x1808e3890 resumes its saved state3 at0x1808e3984, reads the now-current target mapPosition, checks current pull/block-range conditions (CheckTargetWithinBlockRange at0x1808e3ad1, TryEarlyStopPull at0x1808e3af6), and can call Projectile.StopMe [71373] at0x1808e3b5c when its configured close-stop branch applies (0x1808e3b06 ->0x1808e3b57) or StillPull returns false (0x1808e3b4e ->0x1808e3b57). Another postdelay force-evaluation branch calls StopMe at0x1808e3ec5 when effective force is zero. The same resumed coroutine yields the fixed-update marker again at0x1808e3e9d..0x1808e3eb4 when continuation remains legal.
+  StopMe guards repeat Stop, sets isStopped and synchronously invokes virtual OnProjectileStop(slot53) at0x1808dafb2, then DestroyMe.
+  Harpoon.OnProjectileStop -> Enemy.EndPull -> source.SearchBlockeeImmediate -> _SearchBlockee(true) -> BlockManager.SearchBlockee bypassing cadence.
+C. Consequence (statically established permitted ordering, not a recorded battle frame):
+  same logical OnTick:
+    source Character's regular search (if ticker ready)
+    -> physics position update
+    -> existing Harpoon coroutine finishes and stops
+    -> source force search again using the updated current world state.
+  No second global Blocking pass exists in this proof. A second search is a local explicit operation on that source. Search may return no eligible target/capacity; that does not change the fact a second search entry is permitted.
+  Other coroutine exit conditions and content hotfixes need separate audit if exact concrete content timing is required.
+
+4. Another direct object-update route (corroborating, not required for claim):
+  Projectile.OnTick [71344] 0x1808d9af0 advances its timer and can call StopMe at0x1808d9e16 after lifetime/source/ExtraCheckToFinish conditions.
+  Harpoon inherits LinkProjectile.OnTick [71178], which invokes base Projectile.OnTick at0x1808d2e87. Source already existed before its projectile allocation, so in ordinary UID object-update ordering the source can already have had its regular search earlier that same ObjectManager update.
+  StopMe invokes Harpoon.OnProjectileStop and the same force search synchronously. This is an additional native timing route during object iteration; the fully closed coroutine path above avoids assuming all stop causes are timer-only.
+
+5. State-change paths are not automatically Acquire.
+  Character.OnBlockModeChanged [75970] 0x180a2d0e0: compare cached mode -> ClearAllBlockees at0x180a2d167 -> cache new mode -> BuffContainer.OnOwnerBlockModeChanged. No built-in Search in this body.
+  Character.OnAttributeDirty [76035] 0x180a2c850:
+    blockCnt attr5 -> UpdateBlockees at0x180a2c91a -> BuffContainer.OnBlockCntChanged at0x180a2c933. No built-in Search in this body.
+    BLOCK_RADIUS_SCALE attr37 -> RevalidateBlockees, no search.
+  Content callbacks reached by these operations may independently execute Actions, including an immediate-search node, but that is a nested content operation and not an automatic native global reacquisition rule.
+  Direct call scan and Character virtual-slot scan did not find an independent built-in deployment/initialization SearchBlockeeImmediate call. This does not exclude all runtime Lua/content action use; no blanket promise about every deployment is made.
+
+6. Unified physics is not a mandatory second blocking sweep.
+  BattleController.OnTick has Physics2D.Simulate followed by IPhysicObject.OnAfterPhysicSimulate dispatch, not a second call over all blockers.
+  Concrete Enemy.States.UnbalanceState.OnAfterPhysicSimulate [76753] 0x180a9e6f0 just reads the Enemy's now-current map position and calls VisualObject.SetPosition at0x180a9e792; no Search in this body.
+  Physics collision/other content callback can of course enter a projectile stop path synchronously. Evidence here supports explicit extra searches, not an always-run postphysics Acquire step.
+
+Architectural implication (recommendation, not client behavior claim):
+  A fixed regular Blocking Step can coexist with an explicit local search operation for the small number of business entrances that need immediate reacquisition after displacement/pull ending. Do not infer that every Unit update or every Release should Acquire immediately, and do not introduce a global multi-round-until-stable solver from these native paths.

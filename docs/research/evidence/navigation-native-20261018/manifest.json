@@ -1,0 +1,560 @@
+{
+  "date": "2026-10-18",
+  "scope": "Current installed Windows IL2CPP v29 default-native paths. No runtime Lua/hotfix or in-game trajectory execution. Ray emulation uses original 70342/70343 x64 with narrow dependency stubs.",
+  "imageBase": "0x180000000",
+  "inputs": [
+    {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+      "size": 218523112,
+      "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5"
+    },
+    {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+      "size": 45805368,
+      "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f"
+    }
+  ],
+  "methods": [
+    {
+      "index": 28063,
+      "name": "Torappu.GridPosition..cctor",
+      "token": "0x6006da0",
+      "VA": "0x182103c00",
+      "RVA": "0x2103c00",
+      "parameters": [],
+      "evidence": null
+    },
+    {
+      "index": 70002,
+      "name": "Torappu.Battle.Map.EndBatchTileUpdate",
+      "token": "0x6011173",
+      "VA": "0x18087b150",
+      "RVA": "0x87b150",
+      "parameters": [],
+      "evidence": null
+    },
+    {
+      "index": 70004,
+      "name": "Torappu.Battle.Map.UpdateRoutes",
+      "token": "0x6011175",
+      "VA": "0x180882900",
+      "RVA": "0x882900",
+      "parameters": [
+        "motionMode"
+      ],
+      "evidence": "70004-call-chain.asm"
+    },
+    {
+      "index": 70190,
+      "name": "Torappu.Battle.BasicCursor.MoveCheckpoint.GetNextDirection",
+      "token": "0x601122f",
+      "VA": "0x1808a0200",
+      "RVA": "0x8a0200",
+      "parameters": [
+        "pos"
+      ],
+      "evidence": "70190-call-chain.asm"
+    },
+    {
+      "index": 70273,
+      "name": "Torappu.Battle.DirectionCursor.PredictReached",
+      "token": "0x6011282",
+      "VA": "0x180896590",
+      "RVA": "0x896590",
+      "parameters": [
+        "stepDistance",
+        "direction",
+        "nextPos"
+      ],
+      "evidence": "70273-call-chain.asm"
+    },
+    {
+      "index": 70277,
+      "name": "Torappu.Battle.DirectionCursor.GetNextDirection",
+      "token": "0x6011286",
+      "VA": "0x180894f60",
+      "RVA": "0x894f60",
+      "parameters": [],
+      "evidence": "70277-call-chain.asm"
+    },
+    {
+      "index": 70291,
+      "name": "Torappu.Battle.DirectionCursor.GetLocatorPosition",
+      "token": "0x6011294",
+      "VA": "0x180894ed0",
+      "RVA": "0x894ed0",
+      "parameters": [],
+      "evidence": null
+    },
+    {
+      "index": 70331,
+      "name": "Torappu.Battle.SPFA.GenerateNextMap",
+      "token": "0x60112bc",
+      "VA": "0x1808a4ec0",
+      "RVA": "0x8a4ec0",
+      "parameters": [
+        "request",
+        "nextMap"
+      ],
+      "evidence": "70331-call-chain.asm"
+    },
+    {
+      "index": 70332,
+      "name": "Torappu.Battle.SPFA.GenerateNextMapWithoutCaching",
+      "token": "0x60112bd",
+      "VA": "0x1808a4e00",
+      "RVA": "0x8a4e00",
+      "parameters": [
+        "request",
+        "nextMap"
+      ],
+      "evidence": "70332-call-chain.asm"
+    },
+    {
+      "index": 70333,
+      "name": "Torappu.Battle.SPFA._GenerateNextMapImpl",
+      "token": "0x60112be",
+      "VA": "0x1808a5860",
+      "RVA": "0x8a5860",
+      "parameters": [
+        "request",
+        "nextMap"
+      ],
+      "evidence": "70333-SPFA-GenerateRaw.asm"
+    },
+    {
+      "index": 70340,
+      "name": "Torappu.Battle.SPFA._LoadedCacheMap",
+      "token": "0x60112c5",
+      "VA": "0x1808a5e50",
+      "RVA": "0x8a5e50",
+      "parameters": [
+        "cache",
+        "destination"
+      ],
+      "evidence": "70340-call-chain.asm"
+    },
+    {
+      "index": 70341,
+      "name": "Torappu.Battle.SPFA._PostprocessAndMakeNextMapSmoothly",
+      "token": "0x60112c6",
+      "VA": "0x1808a5fe0",
+      "RVA": "0x8a5fe0",
+      "parameters": [
+        "request",
+        "nextMap"
+      ],
+      "evidence": "70341-SPFA-Smooth.asm"
+    },
+    {
+      "index": 70342,
+      "name": "Torappu.Battle.SPFA._RaycastBresenhamLine",
+      "token": "0x60112c7",
+      "VA": "0x1808a6290",
+      "RVA": "0x8a6290",
+      "parameters": [
+        "a",
+        "b",
+        "motion",
+        "nextMap"
+      ],
+      "evidence": "70342-SPFA-Bresenham.asm"
+    },
+    {
+      "index": 70343,
+      "name": "Torappu.Battle.SPFA._RaycastSegmentLine",
+      "token": "0x60112c8",
+      "VA": "0x1808a68f0",
+      "RVA": "0x8a68f0",
+      "parameters": [
+        "a",
+        "b",
+        "motion",
+        "nextMap"
+      ],
+      "evidence": "70343-SPFA-Axis.asm"
+    },
+    {
+      "index": 70344,
+      "name": "Torappu.Battle.SPFA._CheckRectangeAllClear",
+      "token": "0x60112c9",
+      "VA": "0x1808a5700",
+      "RVA": "0x8a5700",
+      "parameters": [
+        "a",
+        "b",
+        "motion",
+        "nextMap"
+      ],
+      "evidence": "70344-SPFA-Rectangle.asm"
+    },
+    {
+      "index": 70362,
+      "name": "Torappu.Battle.Route.ReconstructNextMap",
+      "token": "0x60112db",
+      "VA": "0x1808a2d60",
+      "RVA": "0x8a2d60",
+      "parameters": [],
+      "evidence": "70362-call-chain.asm"
+    },
+    {
+      "index": 70384,
+      "name": "Torappu.Battle.Route._GetNextTurn",
+      "token": "0x60112f1",
+      "VA": "0x1808a3ee0",
+      "RVA": "0x8a3ee0",
+      "parameters": [
+        "currentNextMap",
+        "nodePos",
+        "hasTargetInNext",
+        "targetNodeInNext"
+      ],
+      "evidence": "70384-call-chain.asm"
+    },
+    {
+      "index": 70388,
+      "name": "Torappu.Battle.Route.Node.Reset",
+      "token": "0x60112f5",
+      "VA": "0x1808a0d60",
+      "RVA": "0x8a0d60",
+      "parameters": [
+        "pos",
+        "tile"
+      ],
+      "evidence": "70388-Node-Reset.asm"
+    },
+    {
+      "index": 70389,
+      "name": "Torappu.Battle.Route.Node.GetSafeNextPosition",
+      "token": "0x60112f6",
+      "VA": "0x1808a0b20",
+      "RVA": "0x8a0b20",
+      "parameters": [],
+      "evidence": "70389-Node-SafeNextPosition.asm"
+    },
+    {
+      "index": 70390,
+      "name": "Torappu.Battle.Route.Node.GetSafeNextGrid",
+      "token": "0x60112f7",
+      "VA": "0x1808a0aa0",
+      "RVA": "0x8a0aa0",
+      "parameters": [],
+      "evidence": "70390-Node-SafeNextGrid.asm"
+    },
+    {
+      "index": 70394,
+      "name": "Torappu.Battle.Route.Node.CheckObstacleLikeOrInvalid",
+      "token": "0x60112fb",
+      "VA": "0x1808a08a0",
+      "RVA": "0x8a08a0",
+      "parameters": [
+        "mode"
+      ],
+      "evidence": "70394-Node-Obstacle.asm"
+    },
+    {
+      "index": 70580,
+      "name": "Torappu.Battle.HoleTile.get_moveCost",
+      "token": "0x60113b5",
+      "VA": "0x1808addd0",
+      "RVA": "0x8addd0",
+      "parameters": [],
+      "evidence": null
+    },
+    {
+      "index": 70582,
+      "name": "Torappu.Battle.HoleTile.get_isObstacleLike",
+      "token": "0x60113b7",
+      "VA": "0x1808add70",
+      "RVA": "0x8add70",
+      "parameters": [],
+      "evidence": null
+    },
+    {
+      "index": 70678,
+      "name": "Torappu.Battle.Tile.get_moveCost",
+      "token": "0x6011417",
+      "VA": "0x1808adc40",
+      "RVA": "0x8adc40",
+      "parameters": [],
+      "evidence": null
+    },
+    {
+      "index": 70679,
+      "name": "Torappu.Battle.Tile.get_isObstacleLike",
+      "token": "0x6011418",
+      "VA": "0x1808adbb0",
+      "RVA": "0x8adbb0",
+      "parameters": [],
+      "evidence": "70679-Tile-IsObstacleLike.asm"
+    },
+    {
+      "index": 70706,
+      "name": "Torappu.Battle.Tile.IsPassableGoTo",
+      "token": "0x6011433",
+      "VA": "0x1808bf8f0",
+      "RVA": "0x8bf8f0",
+      "parameters": [
+        "mode",
+        "direction"
+      ],
+      "evidence": null
+    },
+    {
+      "index": 70734,
+      "name": "Torappu.Battle.Tile.TryUpdateOptions",
+      "token": "0x601144f",
+      "VA": "0x1808c3820",
+      "RVA": "0x8c3820",
+      "parameters": [
+        "newOptions",
+        "keepCurrentPassableMask",
+        "ignoreBlockAnyRoutes",
+        "keepCurrentBuildableType"
+      ],
+      "evidence": null
+    },
+    {
+      "index": 70739,
+      "name": "Torappu.Battle.Tile.RewriteOptions",
+      "token": "0x6011454",
+      "VA": "0x1808c2cd0",
+      "RVA": "0x8c2cd0",
+      "parameters": [
+        "newOptions"
+      ],
+      "evidence": null
+    },
+    {
+      "index": 71056,
+      "name": "Torappu.Battle.MoveController.CalculateMoveDelta",
+      "token": "0x6011591",
+      "VA": "0x1808b6140",
+      "RVA": "0x8b6140",
+      "parameters": [
+        "direction",
+        "deltaTime",
+        "isHanging"
+      ],
+      "evidence": null
+    },
+    {
+      "index": 71057,
+      "name": "Torappu.Battle.MoveController.CalculateTotalForce",
+      "token": "0x6011592",
+      "VA": "0x1808b6530",
+      "RVA": "0x8b6530",
+      "parameters": [
+        "direction",
+        "isHanging"
+      ],
+      "evidence": null
+    },
+    {
+      "index": 71059,
+      "name": "Torappu.Battle.MoveController.CalculateIsHanging",
+      "token": "0x6011594",
+      "VA": "0x1808b5e60",
+      "RVA": "0x8b5e60",
+      "parameters": [
+        "direction",
+        "resultForce"
+      ],
+      "evidence": "71059-call-chain.asm"
+    },
+    {
+      "index": 71060,
+      "name": "Torappu.Battle.MoveController._CalculateObstacleAvoidForce",
+      "token": "0x6011595",
+      "VA": "0x1808b6af0",
+      "RVA": "0x8b6af0",
+      "parameters": [
+        "mapPos",
+        "footPos",
+        "motionMode"
+      ],
+      "evidence": "71060-call-chain.asm"
+    },
+    {
+      "index": 76470,
+      "name": "Torappu.Battle.Enemy.ChangePathMotionMode",
+      "token": "0x6012ab7",
+      "VA": "0x180a6b600",
+      "RVA": "0xa6b600",
+      "parameters": [
+        "mode"
+      ],
+      "evidence": null
+    },
+    {
+      "index": 76487,
+      "name": "Torappu.Battle.Enemy._MoveByRoute",
+      "token": "0x6012ac8",
+      "VA": "0x180a796f0",
+      "RVA": "0xa796f0",
+      "parameters": [
+        "deltaTime",
+        "isHanging"
+      ],
+      "evidence": null
+    },
+    {
+      "index": 76491,
+      "name": "Torappu.Battle.Enemy._MoveByCursor",
+      "token": "0x6012acc",
+      "VA": "0x180a78fc0",
+      "RVA": "0xa78fc0",
+      "parameters": [
+        "cursor",
+        "deltaTime",
+        "isHanging"
+      ],
+      "evidence": "76491-call-chain.asm"
+    },
+    {
+      "index": 220066,
+      "name": "Torappu.SharedConsts..cctor",
+      "token": "0x600016c",
+      "VA": "0x1866ea8c0",
+      "RVA": "0x66ea8c0",
+      "parameters": [],
+      "evidence": null
+    }
+  ],
+  "Route.Node": {
+    "typeIndex": 10668,
+    "unboxedSize": 48,
+    "fields": [
+      {
+        "index": 78706,
+        "name": "pos",
+        "type": 55017,
+        "typeName": "Torappu.GridPosition",
+        "attrs": 6,
+        "static": false,
+        "offset": 16,
+        "boxedOffset": 16,
+        "unboxedOffset": 0,
+        "token": 67187571
+      },
+      {
+        "index": 78707,
+        "name": "tile",
+        "type": 78701,
+        "typeName": "Torappu.Battle.Tile",
+        "attrs": 6,
+        "static": false,
+        "offset": 24,
+        "boxedOffset": 24,
+        "unboxedOffset": 8,
+        "token": 67187572
+      },
+      {
+        "index": 78708,
+        "name": "nextTurn",
+        "type": 82726,
+        "typeName": "UnityEngine.Vector2",
+        "attrs": 6,
+        "static": false,
+        "offset": 32,
+        "boxedOffset": 32,
+        "unboxedOffset": 16,
+        "token": 67187573
+      },
+      {
+        "index": 78709,
+        "name": "next",
+        "type": 55017,
+        "typeName": "Torappu.GridPosition",
+        "attrs": 6,
+        "static": false,
+        "offset": 40,
+        "boxedOffset": 40,
+        "unboxedOffset": 24,
+        "token": 67187574
+      },
+      {
+        "index": 78710,
+        "name": "hasNext",
+        "type": 44794,
+        "typeName": "bool",
+        "attrs": 6,
+        "static": false,
+        "offset": 48,
+        "boxedOffset": 48,
+        "unboxedOffset": 32,
+        "token": 67187575
+      },
+      {
+        "index": 78711,
+        "name": "distance",
+        "type": 59016,
+        "typeName": "int",
+        "attrs": 6,
+        "static": false,
+        "offset": 52,
+        "boxedOffset": 52,
+        "unboxedOffset": 36,
+        "token": 67187576
+      },
+      {
+        "index": 78712,
+        "name": "distToFinal",
+        "type": 59016,
+        "typeName": "int",
+        "attrs": 6,
+        "static": false,
+        "offset": 56,
+        "boxedOffset": 56,
+        "unboxedOffset": 40,
+        "token": 67187577
+      },
+      {
+        "index": 78713,
+        "name": "isInOpenList",
+        "type": 44794,
+        "typeName": "bool",
+        "attrs": 6,
+        "static": false,
+        "offset": 60,
+        "boxedOffset": 60,
+        "unboxedOffset": 44,
+        "token": 67187578
+      }
+    ]
+  },
+  "reverseDirections": {
+    "values": [
+      2,
+      3,
+      0,
+      1
+    ],
+    "fieldMetadataIndex": 320410,
+    "metadataOffset": "0x1503c28"
+  },
+  "artifactChecksums": {
+    "70004-call-chain.asm": "1704edd3c6d401cffc245b576db4bf61005267ba4311178e780aa4753ac2e2db",
+    "70190-call-chain.asm": "e36f929728707bf7ec76fc2c69c35e2605af335e0d7e5087d6d2b2965501e750",
+    "70273-call-chain.asm": "90eeefca70866a84c5850f5e975933624164658b1b39d67de01448af205f5fbc",
+    "70277-call-chain.asm": "7f984fa28c675c79d2cb9fe496539d88583fab6c1312b4d48b7f211b7471bdb5",
+    "70331-call-chain.asm": "2c8deb3045dc37343ac78e25706a54456e38488893f14be54938c1e2422b0600",
+    "70332-call-chain.asm": "e9d136132488c23df54894c3bd443be7cbd3b8b9d5bcddf3498e37cd77a38bee",
+    "70333-SPFA-GenerateRaw.asm": "30fab576d8151ec142d020d20fcf3a4d76662117c22f5b28522eb7c11a7829b2",
+    "70340-call-chain.asm": "ee655684b621372b6f65c934d2cbb0034fd4b2459eb9c9308d537b7e37144c11",
+    "70341-SPFA-Smooth.asm": "3846a247be08e9bedbd65326e022f947c39389f37a6fcb3d4b8550f2180e42be",
+    "70342-SPFA-Bresenham.asm": "6b6f85ed463163edaf28ccce5718d85a0547b1d69f401ecc57567ef60d701032",
+    "70343-SPFA-Axis.asm": "e6ee1a33672b9a924edb2a4c815e7a465574afdad40b221e5376b36a44e291c1",
+    "70344-SPFA-Rectangle.asm": "9464808c6c8fbadf0a0c28494a0b8e7e14583bebca41acbab84ff8e28497d009",
+    "70362-call-chain.asm": "b71fe7e92ad2f7ec420f9e135cdd6632185be5135e35d2d5455215c0f153168e",
+    "70384-call-chain.asm": "b3580affd051268ab8d93390b897cfd40f59d97b46f7b24c9947e5c2c4343649",
+    "70388-Node-Reset.asm": "7e270f23083a05181c79d65b34f4065ea118791bd39f3e9594dbef5729d40a71",
+    "70389-Node-SafeNextPosition.asm": "2c86d66010c9ecc77e67f73ccc1587a4bc84e52720c5c3ca143e19c1aab1e4e3",
+    "70390-Node-SafeNextGrid.asm": "a50145189e80d01711f856780d5a4868807c7010d25d6f08ef5d31191b40d75b",
+    "70394-Node-Obstacle.asm": "ecee89e644cdd46288c65f398e5fb99af08ce1c6ceff56a6481035857f0164de",
+    "70679-Tile-IsObstacleLike.asm": "58bec3b6e064c9567ddd70f3afb709690242b514e359dac92b254c5008386544",
+    "71059-call-chain.asm": "b721e9dcd097512aa8197b57053bd63ab0df7cffb5a65caf1418d8ccb6d3e715",
+    "71060-call-chain.asm": "5421537c22b0a5dd1bf7a9949a9464a4d0325e3c05e163e8f185bc672831aabc",
+    "76491-call-chain.asm": "5de072d365b79e207b8e038787a3d8f35f1d463c1e80866acf5b8c4fbc1239e9"
+  }
+}

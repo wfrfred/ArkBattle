@@ -1,0 +1,123 @@
+import { update as updateUnit } from "../../core/battle/unit.js";
+
+import type { Definition } from "../../core/unit/effect/definition.js";
+import * as vitality from "../../core/unit/capability/vitality/capability.js";
+import * as elemental from "../../core/unit/capability/elemental/capability.js";
+import * as targetable from "../../core/unit/capability/targetable/capability.js";
+import * as units from "../../core/unit/query.js";
+import { untargetableRestriction } from "./visibility.js";
+
+export const invincibilityKind = Symbol("invincibility");
+
+export const healFreeKind = Symbol("heal-free");
+
+export const invincibleRestriction: targetable.Restriction = {
+    kind: invincibilityKind,
+    allows: untargetableRestriction.allows,
+};
+
+export const healFreeRestriction: targetable.Restriction = {
+    kind: healFreeKind,
+    allows: (_battle, request) => !request.purposes.includes("HEAL"),
+};
+
+export const invincible: Definition<object, targetable.Targetable> = {
+    id: "protection/invincible",
+    initialize: () => ({}),
+    onEnable(state, self) {
+        const unit = units.get(state, self.host);
+
+        if (unit === undefined) {
+            return state;
+        }
+
+        const id = `@effect/${self.id}/invincible`;
+
+        return updateUnit(state, [
+            {
+                ...unit,
+                targetable: targetable.setRestriction(unit.targetable, {
+                    id,
+                    value: invincibleRestriction,
+                }),
+                ...(elemental.hasElemental(unit)
+                    ? {
+                          elemental: elemental.setRule(unit.elemental, {
+                              id,
+                              allowsDamage: () => false,
+                          }),
+                      }
+                    : {}),
+                ...(vitality.hasVitality(unit)
+                    ? {
+                          vitality: vitality.setDamageReceptionRule(unit.vitality, {
+                              id,
+                              allows: () => false,
+                          }),
+                      }
+                    : {}),
+            },
+        ]);
+    },
+    onDisable(state, self) {
+        const unit = units.get(state, self.host);
+
+        if (unit === undefined) {
+            return state;
+        }
+
+        const id = `@effect/${self.id}/invincible`;
+
+        return updateUnit(state, [
+            {
+                ...unit,
+                targetable: targetable.removeRestriction(unit.targetable, id),
+                ...(elemental.hasElemental(unit)
+                    ? { elemental: elemental.removeRule(unit.elemental, id) }
+                    : {}),
+                ...(vitality.hasVitality(unit)
+                    ? { vitality: vitality.removeDamageReceptionRule(unit.vitality, id) }
+                    : {}),
+            },
+        ]);
+    },
+};
+
+export const healFree: Definition<object, targetable.Targetable> = {
+    id: "protection/heal-free",
+    initialize: () => ({}),
+    onEnable(state, self) {
+        const unit = units.get(state, self.host);
+
+        if (unit === undefined) {
+            return state;
+        }
+
+        return updateUnit(state, [
+            {
+                ...unit,
+                targetable: targetable.setRestriction(unit.targetable, {
+                    id: `@effect/${self.id}/heal-free`,
+                    value: healFreeRestriction,
+                }),
+            },
+        ]);
+    },
+    onDisable(state, self) {
+        const unit = units.get(state, self.host);
+
+        if (unit === undefined) {
+            return state;
+        }
+
+        return updateUnit(state, [
+            {
+                ...unit,
+                targetable: targetable.removeRestriction(
+                    unit.targetable,
+                    `@effect/${self.id}/heal-free`,
+                ),
+            },
+        ]);
+    },
+};

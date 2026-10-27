@@ -1,0 +1,155 @@
+{
+  "typename": "Torappu.Battle.SideType",
+  "type": {
+    "index": 9850,
+    "name": "SideType",
+    "namespace": "Torappu.Battle",
+    "raw": [
+      2375736,
+      2369788,
+      74958,
+      4294967295,
+      52686,
+      59011,
+      4294967295,
+      257,
+      67923,
+      4294967295,
+      4294967295,
+      4294967295,
+      4294967295,
+      4294967295,
+      75498,
+      8365,
+      389,
+      0,
+      7,
+      1507328,
+      196608,
+      3091,
+      33564283
+    ],
+    "fieldStart": 67923,
+    "methodStart": 4294967295,
+    "fieldCount": 7,
+    "methodCount": 0
+  },
+  "fields": [
+    {
+      "index": 67923,
+      "name": "value__",
+      "type": 59035,
+      "typeName": "int",
+      "attrs": 1542,
+      "static": false,
+      "offset": 16,
+      "boxedOffset": 16,
+      "unboxedOffset": 0,
+      "token": 67176788
+    },
+    {
+      "index": 67924,
+      "name": "NONE",
+      "type": 74966,
+      "typeName": "Torappu.Battle.SideType",
+      "attrs": 32854,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176789
+    },
+    {
+      "index": 67925,
+      "name": "ALLY",
+      "type": 74966,
+      "typeName": "Torappu.Battle.SideType",
+      "attrs": 32854,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176790
+    },
+    {
+      "index": 67926,
+      "name": "ENEMY",
+      "type": 74966,
+      "typeName": "Torappu.Battle.SideType",
+      "attrs": 32854,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176791
+    },
+    {
+      "index": 67927,
+      "name": "BOTH_ALLY_AND_ENEMY",
+      "type": 74966,
+      "typeName": "Torappu.Battle.SideType",
+      "attrs": 32854,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176792
+    },
+    {
+      "index": 67928,
+      "name": "NEUTRAL",
+      "type": 74966,
+      "typeName": "Torappu.Battle.SideType",
+      "attrs": 32854,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176793
+    },
+    {
+      "index": 67929,
+      "name": "ALL",
+      "type": 74966,
+      "typeName": "Torappu.Battle.SideType",
+      "attrs": 32854,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67176794
+    }
+  ],
+  "enumsCorrected": [
+    {
+      "name": "NONE",
+      "value": 0,
+      "encodedByte": "00"
+    },
+    {
+      "name": "ALLY",
+      "value": 1,
+      "encodedByte": "02"
+    },
+    {
+      "name": "ENEMY",
+      "value": 2,
+      "encodedByte": "04"
+    },
+    {
+      "name": "BOTH_ALLY_AND_ENEMY",
+      "value": 3,
+      "encodedByte": "06"
+    },
+    {
+      "name": "NEUTRAL",
+      "value": 4,
+      "encodedByte": "08"
+    },
+    {
+      "name": "ALL",
+      "value": 7,
+      "encodedByte": "0e"
+    }
+  ]
+}

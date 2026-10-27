@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>ArkBattle · Legacy rendering demo</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%230c0f0e'/%3E%3Cpath fill='%234ed8af' d='M5 3h3v2h2V3h4v2h2V3h3v5l-2 2v7l2 2v2H5v-2l2-2v-7L5 8z'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="/fonts/fonts.css" />
+  <link rel="stylesheet" href="/css/theme.css" />
+  <script type="importmap">
+    { "imports": { "preact": "/vendor/preact.module.js", "preact/hooks": "/vendor/hooks.module.js", "htm": "/vendor/htm.module.js" } }
+  </script>
+  <!-- PixiJS 7 + pixi-spine as classic scripts (global PIXI / PIXI.spine), like the game page -->
+  <script src="/vendor/pixi.min.js"></script>
+  <script src="/vendor/pixi-spine.js"></script>
+  <style>
+    html, body { margin: 0; height: 100%; background: #0a0e0d; overflow: hidden; }
+    #field { position: fixed; inset: 0; }
+    .rd-panel {
+      position: fixed; right: 12px; bottom: 12px; z-index: 5; display: flex; flex-direction: column; gap: 8px;
+      padding: 10px 12px; min-width: 320px; max-width: calc(100vw - 48px); max-height: calc(100vh - 48px); overflow: auto; background: rgba(12, 16, 15, .86); border: 1px solid #2f3a35;
+      color: #c3cbc7; font: 13px/1.35 "Noto Sans SC", system-ui, sans-serif; backdrop-filter: blur(6px);
+    }
+    .rd-panel.is-hidden { display: none; }
+    .rd-panel > * { flex-shrink: 0; }
+    .rd-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .rd-panel select, .rd-panel button, .rd-panel input[type=number] {
+      background: #1e2421; color: #f2f2f2; border: 1px solid #3e4b45; padding: 4px 8px; font: inherit; cursor: pointer;
+    }
+    .rd-panel input[type=number] { width: 86px; cursor: text; }
+    .rd-panel button:disabled { opacity: .4; cursor: default; }
+    .rd-row[hidden] { display: none; }
+    .rd-content { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+    .rd-content[hidden] { display: none; }
+    .rd-content label { display: flex; flex-direction: column; gap: 4px; font-size: 11px; }
+    .rd-content input[type=number] { box-sizing: border-box; width: 100%; }
+    .rd-content button { align-self: end; }
+    .rd-scope { color: #8a948f; font-size: 11px; }
+    .rd-result { color: #4ed8af; font-weight: 700; }
+    .rd-panel button.is-on { border-color: #4ed8af; color: #4ed8af; }
+    .rd-panel input[type=range] { flex: 1; accent-color: #4ed8af; }
+    .rd-title { font-weight: 700; color: #f2f2f2; }
+    .rd-micro { font: 11px/1 Bender, Oxanium, monospace; letter-spacing: .08em; color: #4ed8af; text-transform: uppercase; }
+    .rd-stats { font: 12px/1.4 Bender, Oxanium, ui-monospace, monospace; color: #8a948f; white-space: pre; }
+    .rd-log { position: fixed; left: 12px; bottom: 12px; z-index: 5; max-width: 42vw; font: 12px/1.4 ui-monospace, monospace; color: #8a948f; pointer-events: none; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <div id="field"></div>
+  <div class="rd-panel" id="panel">
+    <div class="rd-row"><span class="rd-micro">RENDER DEMO</span><span class="rd-title" id="title">—</span></div>
+    <div class="rd-row">
+      <select id="scene" aria-label="scene"></select>
+      <select id="stage" aria-label="stage"></select>
+      <button id="play" type="button">❚❚</button>
+      <select id="speed" aria-label="speed">
+        <option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option>
+      </select>
+      <button id="editable" type="button" class="is-on">编辑</button>
+    </div>
+    <div class="rd-row" id="core-controls" hidden>
+      <label for="seed">种子</label><input id="seed" type="number" min="0" max="4294967295" step="1" value="123" required />
+      <button id="step" type="button">单帧</button><button id="reset" type="button">重置</button>
+      <button id="appear-crates" type="button">工事出现</button><button id="remove-crates" type="button">移除工事</button>
+      <button id="trigger-dragon" type="button">触发飞行分支</button>
+    </div>
+    <form class="rd-content" id="content-controls" hidden>
+      <label>泥岩精英阶段<select id="content-elite"><option value="1">精一</option><option value="2" selected>精二</option></select></label>
+      <label>等级<input id="content-level" type="number" min="1" max="90" step="1" value="60" required /></label>
+      <label>潜能<input id="content-potential" type="number" min="1" max="6" step="1" value="1" required /></label>
+      <label>二技能等级<input id="content-skill-level" type="number" min="1" max="10" step="1" value="7" required /></label>
+      <label>信赖 %<input id="content-trust" type="number" min="0" max="200" step="1" value="100" required /></label>
+      <label>模组<select id="content-module"><option value="">未装备</option><option value="uniequip_002_mudrok">X 模组</option></select></label>
+      <label>模组等级<select id="content-module-level"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
+      <button type="submit">应用并重置</button>
+    </form>
+    <div class="rd-row" id="projectile-controls" hidden>
+      <button id="next-release" type="button">下一次发射</button>
+      <button id="retreat-source" type="button">撤退来源</button>
+      <button id="stop-projectiles" type="button">停止当前弹道</button>
+    </div>
+    <div class="rd-row" id="skill-controls" hidden>
+      <button id="next-skill-ready" type="button">充满 SP</button>
+      <button id="activate-skill" type="button">释放技能</button>
+      <button id="finish-skill" type="button">结束技能</button>
+    </div>
+    <div class="rd-row rd-scope" id="core-scope" hidden>生成与移动演示；地形伤害、部署和交战尚未接入</div>
+    <div class="rd-row rd-result" id="core-result" aria-live="polite" hidden></div>
+    <div class="rd-row">
+      <span class="rd-micro">BOARD</span>
+      <button id="board3d" type="button" class="is-on" title="official 3D board (three.js) / 2D atlas board">3D</button>
+      <select id="cam" aria-label="camera">
+        <option value="">scene camera</option>
+        <option value="prep">prep · shop</option><option value="prep-noshop">prep · shop collapsed</option>
+        <option value="normal">battle</option><option value="unite">联防 全景</option><option value="boss">最终攻势 全景</option>
+        <option value="boss-L">最终攻势 左</option><option value="boss-R">最终攻势 右</option><option value="pen">enemy pen</option>
+        <option value="fa-L">最终攻势 整备 左</option><option value="fa-R">最终攻势 整备 右</option>
+      </select>
+    </div>
+    <div class="rd-row"><input id="scrub" type="range" min="0" max="1000" value="0" aria-label="scrub" /><span id="time" class="rd-stats">0.0 s</span></div>
+    <div class="rd-stats" id="stats"></div>
+  </div>
+  <div class="rd-log" id="log"></div>
+  <script type="module" src="/dev/render-demo.js"></script>
+</body>
+</html>

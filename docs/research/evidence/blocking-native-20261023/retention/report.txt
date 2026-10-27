@@ -1,0 +1,165 @@
+Blocking 原生补查：旧关系、容量、解除、生命周期与通知（2026-10-23）
+
+证据范围
+本次重新读取安装中的 GameAssembly.dll 与 global-metadata.dat，对下面方法保存完整 native 方法反汇编，额外做直接 call xref、字段布局与泛型方法名称恢复。不是只复述旧 blocking-lifecycle.json 摘录。
+输入指纹见 provenance.json；与旧记录完全一致（GameAssembly SHA256 583b04ff...）。分析的是 native fallback 分支，未验证运行时 XLua 替换，也未运行客户端战斗。
+本目录 *.asm 首行包含 metadata index、VA、RVA、长度；有跳表的数据区不要当作业务指令。generic-names.json 确认 ObjectPtr.isValid/Lock、List.Add/Remove/get_Item 和 EventPool.Emit。
+
+一、普通旧关系保持（直接证实 + 有边界的调用链判断）
+
+1. BlockManager.Tick [77203] 0x180aa1010 仅调用 PeriodicTicker.Tick；不遍历旧关系，不检查距离。
+2. Character.OnTick [76022] 0x180a2ec90：
+   Unit.OnTick；若不alive则退出。
+   OnBlockModeChanged（0x180a2ee4d）；
+   如果 !alwaysBlockFree 且 (isBlockFree || isStunned)，ClearAllBlockees（0x180a2eeb4）；
+   若 !alwaysBlockFree，推进搜索ticker并调用搜索入口。
+   普通旧关系路径没有逐一距离检查。
+3. Enemy.OnTick [76531] 0x180a72340：
+   Unit.OnTick、HeightController.OnTick；不alive则走死后Tick。
+   isBlockFree时 ReleaseFromBlocker（0x180a7243d）；
+   自己具有阻挡敌人能力时，blockFree/stun/unbalance/levitate会 ClearAllBlockees（0x180a7249e）；
+   随后其自身BlockManager的Tick/Search也是找新关系。
+4. Enemy.get_isInCombat [76358] 0x180a7dfe0：保存blocker能Lock成有效Unity对象即true；否则看自己阻挡列表非空。没有距离检查。
+5. Enemy.CombatWrapper.GetTarget [76877] 0x180a89f80：优先返回保存的blocker；否则尝试自己BlockManager里的战斗目标。没有重新索敌/range资格判断。
+6. Enemy.CheckBlockable [76428] 0x180a6bb70 是建立新关系用的资格函数：
+   若 m_blocker.isValid，直接false；否则阻挡者CheckInBlockRange，再CheckBlockableWithoutCheckRange。
+   isValid名称由generic spec280378→ObjectPtr<T>.get_isValid确认。
+
+因此可以确认：在已追踪的普通角色/敌人更新路径中，关系不是每Tick按距离重新构建；距离是新关系建立条件。不能把它表述成“所有机制都永不重验距离”，见下面AIR半径变动例外。也不意味着任何SetPosition都能拖着关系走：特定强制位移入口会显式Release。
+
+AIR半径属性变动的特别分支（代码直接证实，实际战斗结果未确认）
+Character.OnAttributeDirty [76035] 0x180a2c850 在 attribute=37（BLOCK_RADIUS_SCALE）调用 Character.RevalidateBlockees [76018] 0x180a31150。
+RevalidateBlockees只在 blockMode==1（AIR）继续，复制现有blockedEnemies列表，再逐个 Enemy.CheckBlockable；false就 RemoveBlockee。
+有个不应掩盖的native异常：CheckBlockable会因已有m_blocker.isValid返回false，按当前fallback字面执行，会移除已有关系，并不是单纯只释放跑出新半径的关系。新关系是否稍后重建、实际是否有XLua替换，未验证。因此报告为“存在AIR专用重验入口 + native fallback有疑点”，不能升级为“实际客户端半径变化必然全清”。本次没有替它编造正确性解释。
+
+二、容量缩减和体积变化（直接证实）
+
+BlockManager.UpdateBlockees [77192] 0x180aa1170；完整111行。
+伪代码（正常无嵌套修改的可观察路径）：
+  capacity = blocker.asEntity.blockCnt;  // 函数开始采样
+  while blockedManager.totalVolume > capacity:
+      enemy = blockedManager.list[lastIndex]
+      if blockedManager.list.Remove(enemy):
+          blockedManager.totalVolume -= enemy.blockVolume
+      enemy.UnregisterBlocker(blocker)
+      blocker.OnBlockeeChanged()
+
+关键指令：
+0x180aa11de–11e2 capacity放r15d；
+0x180aa1218 totalVolume与r15d比较；
+0x180aa122f–123f list.Count-1取尾；
+0x180aa129b List.Remove；0x180aa12ac–12b8 减该enemy当前volume；
+0x180aa12cb UnregisterBlocker；0x180aa12d5 blocker.OnBlockeeChanged；
+0x180aa12e3 回到while，重新读取manager/list/total，但不重新读取capacity。
+BlockedEnemyManager.TryPickOneToRemoveIfVolumeExceeded [77184] 0x180aa2030 独立确认：超容返回list尾元素。
+
+结论：这是后登记先解除，直到整个剩余前缀不超容；不是扫描并保留能装下的集合。
+例：按先后登记[体积2的A,体积1的B]，容量3→1：先解除B，仍2>1，再解除A，本轮容量裁撤结束时为空。
+注意别把“本轮裁撤为空”扩大成“最终永远不再挡B”：后续搜索可能重新获取B。若Stronghold一次完整settlement把裁撤与重接敌合并，最终列表可能再次有B，仍需要事件与重新接敌先后语义区分。
+
+触发时机：
+Character.OnAttributeDirty [76035] 在 attribute=5（blockCnt）先同步 UpdateBlockees（0x180a2c91a），后 BuffContainer.OnBlockCntChanged（0x180a2c933）。
+Enemy.OnBlockVolumeChanged [76434] 0x180a6ff50：找当前blocker→RecalculateBlockeesTotalVolume（0x180a70052）→UpdateBlockees（0x180a70078）。
+Enemy.set_blockVolumeAddition [76352] 0x180a80b40 也有更新当前blocker容量流程，见本目录asm。
+因此体积不是只在建立时计费，当前体积变化会触发重新核算/裁撤。
+
+重入边界：上述capacity是函数起始采样，并非每次OnBlockeeChanged后重新查询。通知是同步调用，native没有在该方法中提供统一事务/重入保护，也不能据此宣称旧实现天然安全。
+如果Stronghold选择每次跨领域回调后读最新事实，这是我们自己明确定义的安全契约；不需要复制native局部变量与半边关系窗口。
+
+三、解除与同Tick重接敌（直接证实 + 条件性结论）
+
+Enemy.ReleaseBlock [76546] 0x180a74110：
+  ReleaseFromBlocker();
+  如果自己也能阻挡敌人，则自己的BlockManager.ClearAllBlockees(self)。
+没有设置通用“本Tick不能重接敌”标记，也没有启动通用unblock cooldown；但它也不主动Search。
+
+Enemy.ReleaseFromBlocker [76492] 0x180a741c0：
+  m_blocker.isValid → Lock → blocker.AsValidIBlocker(out iBlocker)；
+  若仍有效，iBlocker.blockManager.RemoveBlockee(iBlocker,self)；
+  最后如果有blockTween则取消它。
+所以解除会结束当前阻挡位移tween，不是仅抹掉一个pointer。
+
+普通解除入口：
+- Enemy.ForceSetPositionByWorldCoords [76452] 0x180a6d990：virtual get_isInCombat后（slot153），若true在0x180a6da41 ReleaseBlock，然后VisualObject.SetPosition。
+- Enemy.Blink [76448] 0x180a6a8c0：0x180a6aaae ReleaseBlock。
+- Enemy.BlinkWithDirection [76449] 0x180a6a4c0：0x180a6a595 ReleaseBlock。
+- Enemy.Blink重载 [76450] 0x180a6ae10：0x180a6af1e ReleaseBlock。
+  上述Blink均先检查isInCombat；不能笼统声称所有低层SetPosition都会自动解除。
+- Enemy.States.UnbalanceState.OnEnter [76746] 0x180a9e7c0：0x180a9e858立即ReleaseBlock。
+- Enemy.States.LevitateState.OnEnter [76732] 0x180a96920：0x180a969bf立即ReleaseBlock。
+- 其他直接xref包括TransportInternal、FallDown、ReachExit、Dead、FakeDeath，列表见xrefs.txt；本轮主要逐行检查上列。
+
+重接敌需要另一个搜索入口：
+Character.SearchBlockeeImmediate [75955] 0x180a31400：先alive，再virtual _SearchBlockee(force=true)，绕过常规搜索周期。
+BlockManager.SearchBlockee [77190] 0x180aa09e0：force=false时先isReady；force=true跳过isReady，但仍Next()推进ticker，再做当前资格/容量/候选判断。
+PullHitTargetBehaviour.OnProjectileStop [86413] 0x180d42ae0：原生0x180d42d3d直接调用Character.SearchBlockeeImmediate。
+同类HarpoonProjectile/NetCatcherProjectile停止也有直接调用（完整xref已存）。
+
+结论：
+“仅解除当前关系”不等于“暂时不能被阻挡”。纯解除以后若同Tick稍后又发生允许的Search，完全可以同Tick再接敌；但不是ReleaseBlock自己保证立即重建，也不是每次无关Battlefield mutation都重建。
+推拉/失衡/浮空过程能否接敌取决于对应持续资格，不靠Release这个动作制造持续豁免。具体资格真值由模式调查补齐。
+
+四、生命周期与关系通知（直接证实）
+
+Character.States.DyingState.OnEnter [76185] 0x180a69720 在0x180a69885 ClearAllBlockees；DeadState.OnEnter [76171] 0x180a67490 在0x180a6753f也清；Character.OnFinish [76033] 0x180a2d9f0 在0x180a2dbd1再清。
+Enemy Dead/Finish入口ReleaseBlock，直接xref分别0x180a8b419、0x180a70ce8。多入口幂等清理不是“只有对象注销时才释放”。
+这不能直接等同Stronghold.LEAVING：native Dying/Dead/Finish语义与我们的LEAVING清理阶段不一一对应，但足以否定“只要对象还在容器里就必定继续阻挡”的模型。
+
+通知是同步执行：
+Enemy.UnregisterBlocker [76433] 0x180a76b50 先比较传入blocker与当前ObjectPtr相等；匹配才清m_blocker，EmitEvent(ON_BLOCKEE_CHANGED=事件枚举顺序24)，再BuffContainer.OnOwnerBlockeeChanged。
+0x180a76c49 清pointer；0x180a76c60 EmitEvent；0x180a76c79 Buff通知。
+Character.OnBlockeeChanged [76017] 0x180a2d1c0 同样EmitEvent→BuffContainer.OnOwnerBlockeeChanged。
+BuffContainer.OnOwnerBlockeeChanged [65434] 0x180675680 是同步遍历当前有效Buff，跳过finished/disabled，逐个Buff.OnOwnerBlockeeChanged，再_CheckFinishedBuffs。
+因此可调用任意内容行为；不能把它当成仅追加一个用于显示的事件。
+
+五、关系更新并非原生全程原子，双方可见性有窗口（直接证实）
+
+建立顺序：
+BlockManager.AddBlockee [77191] 0x180aa0430 起手检查容量；CalculateBlockOffset；
+Enemy.RegisterBlocker [76432] 0x180a73e00：
+  CheckBlockableWithoutCheckRange（0x180a73f10）；
+  写enemy.m_blocker（0x180a73f73）；
+  enemy.EmitEvent（0x180a73f8a）；enemy.Buff.OnOwnerBlockeeChanged（0x180a73fa7）；
+  移动到阻挡点；返回true。
+回到AddBlockee后：
+  再检查enemy.alive（0x180aa0588）；
+  当前enemy.volume加到blocker.totalVolume（0x180aa05c6）；List.Add（0x180aa05d8）；
+  blocker.OnBlockeeChanged（0x180aa05e2）。
+virtual +0x3c0即Entity.get_alive，slot40，IL2CPP vtable base0x140；方法66349/Character override75822。
+因此enemy侧的同步通知执行时，enemy已经指向blocker，blocker的列表/占用还没有加入enemy。并且回调返回后只检查enemy.alive，没有重新验capacity，也没有重新确认enemy.m_blocker仍是外层blocker。
+
+单个解除顺序：
+RemoveBlockee [77193] 0x180aa08a0：
+  先blocker.List.Remove并减totalVolume（0x180aa08f6–0913）；
+  enemy.UnregisterBlocker清pointer并通知（0x180aa0926）；
+  blocker.OnBlockeeChanged（0x180aa0949尾调用helper）。
+此处enemy通知时双方已经不关联。
+
+全部解除顺序：
+ClearAllBlockees [77196] 0x180aa0660：
+  按列表末尾到开头，对每个enemy先UnregisterBlocker（0x180aa0716）；
+  全部通知完才令blocker.totalVolume=0并List.Clear（0x180aa074b–075d）；
+  最后一次blocker.OnBlockeeChanged（0x180aa078c）。
+所以逐个enemy通知时，blocker列表可能仍包含已经被清pointer的旧敌人。这与单个RemoveBlockee不同，native没有一套统一原子可见性协议。
+
+Stronghold的影响：
+- 不应为了“复刻”复制两边可矛盾的存储结构；当前单一BlockingRelation权威集合更合适。
+- 需要确定关系提交→同步通知的统一项目契约，处理通知后宿主离场、容量变化、关系被解除/重建。
+- 不能靠一个起手资格检查覆盖整个候选循环。
+- 需要保留ON_BLOCKEE_CHANGED这类真实业务触发点，但通知种类/事件日志名称是项目接口设计，不能从原生EventPool直接抄API。
+
+六、当前Stronghold实质差异与优先级
+
+1. 容量缩减目前“按旧顺序保留能装下的任意关系”，native为“从尾端裁撤到前缀满足容量”。这是实质差异；尤其触发解除事件或期间有回调时可观察。
+2. 当前每次Battlefield transition统一reconcile+acquire，native解除与搜索分开、有普通周期和主动immediate入口。仅Release后立刻同次重建是项目政策，不能说完全复刻。
+3. 当前旧关系不重验距离与普通native大体相符；AIR动态半径是特殊重验入口，不足以证明所有旧关系都该统一重验距离。
+4. 当前readBlockingFacts.active不看LEAVING，在HP>0的离场清理回调里可继续阻挡；native多个死亡/Finish入口显式解除。项目应明确LEAVING资格，不必复制原生状态机。
+5. 当前建立/解除仅纯关系+禁移Rule，没有真实内容关系通知；native确认有同步业务通知。应在领域Operation层考虑BattleState接续与重入。
+6. 当前没有blockTween取消和接敌位置修正，属于另一条可观察空间行为；几何研究负责具体偏移。
+
+未确认/不夸大：
+- 本次没运行客户端实战，也没装载XLua运行时替换。
+- 未证明每个特殊敌人/装置都走相同路径。
+- 触发同Tick接替的全局对象更新次序、普通搜索周期精确差异由competition调查负责。
+- AIR RevalidateBlockees字面疑点不认作已证实实战bug。
+- 不把原生固定capacity、双向半更新窗口当作Stronghold应照搬的重入规范。

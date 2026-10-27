@@ -1,0 +1,16 @@
+{
+  "index": 25959,
+  "name": "get_isReady",
+  "type": 1447,
+  "returnType": 44789,
+  "parameterStart": -1,
+  "generic": -1,
+  "token": 100689256,
+  "flags": 2534,
+  "iflags": 0,
+  "slot": 4,
+  "parameterCount": 0,
+  "address": 6470154768,
+  "fullname": "Torappu.PeriodicTicker.get_isReady",
+  "parameters": []
+}

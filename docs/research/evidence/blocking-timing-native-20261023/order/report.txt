@@ -1,0 +1,134 @@
+原生普通接敌搜索与移动时序调查（2026-10-23）
+
+范围与证据等级
+- 直接重新读取本机 GameAssembly.dll + global-metadata.dat 的普通 native 默认路径；文件指纹见 provenance.json。
+- N=机器码/元数据直接证实，I=从已闭合调用链推导，U=本轮未证实。
+- 不是实机帧日志；没有运行 Unity 游戏或激活 XLua replacement。不能把普通默认路径概括为所有角色节点/热更的保证。
+- 只写 /tmp 证据；未修改项目源码、测试、提交。
+
+核心结论
+1. 原生没有“全体移动结束，再统一搜索阻挡”的普通阶段，也没有“全体搜索结束，再统一移动”的普通阶段。
+2. ObjectManager 按 UID 依次调用各对象完整 OnTick。某阻挡者到达自己 OnTick 的搜索语句时，低 UID 对象的本帧 OnTick 已执行，高 UID 对象尚未执行。
+3. 对同一对象，自身状态机（包括本帧普通路线运动/攻击）先执行，自己的 BlockManager 搜索随后执行；但这不是“所有位置变化以后”，同一 Enemy 后面还有 ConveyorMove，全局之后还有 Physics 与其他回调。
+4. 在这条普通全局驱动中，OnFixedUpdate 仅驱动一次普通对象 OnTick，OnLateFixedUpdate 没有第二次通用普通接敌扫描。单个阻挡者普通 OnTick 的 SearchBlockee 调用点只有一个；同帧显式/内容立即搜索另算。
+
+一、全局驱动（N）
+BattleController.OnTick metadata64825 VA0x18062c440：
+  0x18062c7a1 BattleTweenMgr.Tick（启用时）
+  0x18062c9e7 Deck.OnFixedUpdate（逐活跃玩家）
+  0x18062ca4d ObjectManager.OnFixedUpdate metadata71077 VA0x1808d5300
+  0x18062caf6 Map.OnFixedUpdate
+  0x18062cb11 LevelScript.ActionExecutorManager.Tick
+  0x18062cb2c LevelScriptEventManager.OnTick
+  0x18062cbba PlayerOperationQueue.Drain / 0x18062cbf6 ReplayController.Tick
+  0x18062cc3b UnityEngine.Physics2D.Simulate metadata318496 VA0x186bc5160（条件分支）
+  0x18062cd03 / 0x18062cd2f IPhysicObject.OnAfterPhysicSimulate
+    硬编码快分支 0x18062cd3c Enemy.UnbalanceState.OnAfterPhysicSimulate
+  0x18062ce1d CoroutineSimulator.SimulateTick（条件分支）
+  0x18062ce87 模块虚调用
+  0x18062ceaa GlobalEnvSystemController.Tick
+  0x18062cebe ObjectManager.OnLateFixedUpdate metadata71078 VA0x1808d54d0
+这里只列与位置、额外业务时点、Late 判断相关的调用，不宣称列出所有图形/统计操作。
+
+ObjectManager.OnFixedUpdate 71077：
+  0x1808d538d 读取优先队列个数；0x1808d53a8..53bc 清 cachedList；
+  0x1808d53d0..5441 按优先队列 index0..count-1 遍历，0x1808d53f9 检查 validAndBorned，0x1808d5437 加入本次 cachedList；
+  0x1808d5455..54a4 顺序调用 cachedList 中各对象，0x1808d549c 调用 vslot27=OnTick。
+这是“先建立本次候选，再逐对象完整更新”，不是分阶段移动和阻挡。
+
+对象顺序已有本轮复核的证据：
+  ObjectManager.Register 71074 VA0x1808d56a0，0x1808d570c 调 PriorityQueue<BObject>.Add（实际泛型体0x1851afc50）。
+  BObject.CompareTo(BObject) 65023 VA0x180662560，以 +0x18 instanceUid 的 UInt32.CompareTo 排序。
+  BObject.OnAllocate 65034 VA0x1806628f0，0x180662932..2938 全局计数递增赋 instanceUid，然后登记。
+  该泛型 Add 及升序证明可对照项目已有 evidence/blocking-native-20261023/competition/objects_add_full.asm 和 report.txt 第4节。
+因此是分配身份顺序；不能偷换成干员部署时间/敌人出生时间。
+
+二、同一对象的普通运动与自身搜索（N）
+共有基础调用链：
+  Character.OnTick76022 0x180a2ed13 / Enemy.OnTick76531 0x180a723db
+    -> Unit.OnTick77699 VA0x180acbdb0
+       0x180acbe0b -> Entity.OnTick66697 VA0x1806fadf0
+          0x1806faea6 -> StateMachine.Tick33274 VA0x1826483e0
+             0x1826483fe -> 当前 IStateNode.OnTick dispatch helper0x185c34d70
+             0x185c358f0 -> Enemy.MoveState.OnTick76658 VA0x180a977d0
+          0x1806faec7 -> BuffContainer.Tick
+          然后 HP/EP恢复、SP/EP控制、AbilityTick 等基础业务
+    <- 返回派生类 OnTick 后执行自己的阻挡搜索
+
+注意：StateMachine.Tick 在 currentState!=null 时先调用当前状态 OnTick（+0x50），随后才虚调用 StateMachine.OnTick（vslot8，包含 blackboard tick）。
+完整 helper185c34d70.asm 已取得，MoveState 明确直接分支0x185c358f0，不是仅按名称猜测状态机执行内容。
+
+普通路线运动闭合：
+  MoveState.OnTick76658：
+    0x180a97950 读取 Enemy.blocker；已被挡时切换状态，不继续后续普通运动；
+    0x180a97a9c 调 Enemy vslot237，元数据=Enemy._MoveByRoute76487 VA0x180a796f0；
+  _MoveByRoute 0x180a79791 -> _MoveByCursor76491 VA0x180a78fc0；
+  _MoveByCursor：计算delta或arrival，经几何修正后，
+    0x180a793ac VisualObject.SetPosition（普通候选位移路径），
+    0x180a7942c VisualObject.SetPosition（arrival路径），
+    0x180a7952d VisualObject.SetPosition（地图外恢复路径）。
+因此自主位移真实位置写入发生在基础 Entity.OnTick 返回之前，不是 Late/Physics 才提交。
+MoveState 的恐惧/吸引路径也在同一当前状态 OnTick 中分支执行对应移动；特殊状态可能不发生自主位移。
+
+Character 的普通搜索：
+  76022 VA0x180a2ec90
+  0x180a2ed13 -> Unit/Entity/StateMachine
+  0x180a2ee4d -> OnBlockModeChanged（可同步清理）
+  0x180a2eeb4 -> ClearAllBlockees（block-free/stun相应分支）
+  0x180a2eefa -> BlockManager.Tick77203
+  0x180a2ef0a -> dispatch helper0x180005540，传入slot236
+     slot236元数据=Character._SearchBlockee76016 VA0x180a38200
+     -> BlockManager.SearchBlockee77190 VA0x180aa09e0。
+因此角色状态/攻击及自身 Buff tick 可先影响搜索资格和容量。
+
+Enemy 作为阻挡者的普通搜索：
+  76531 VA0x180a72340
+  0x180a723db -> Unit/Entity/StateMachine（当前运动状态的真实移动在其中）
+  0x180a723f6 -> HeightController.OnTick
+  检查存活、blockFree、canBlockEnemies、stun/unbalance/levitate，必要时清关系
+  0x180a724c7 -> BlockManager.Tick77203
+  0x180a724e5 -> BlockManager.SearchBlockee77190（canBlockEnemies分支）
+  0x180a725a9 -> DirectionCursor.OnTick70287（普通主路线cursor）
+  主路线终点业务
+  0x180a728d5 / 0x180a729ce -> Fear/AttractController.OnTick
+  0x180a729e9 -> MoveController.OnTick71063
+  0x180a729f6 -> _UpdateCurrentTile76500
+  之后移动距离记录、EnemySkill.Tick等。
+
+容易误判的 MoveController.OnTick：
+  71063 VA0x1808b68e0 的普通默认体仅转换dt，0x1808b695e 调 _ConveyorMove71064 VA0x1808b7f60。
+  它不是先前普通 Steering/route 的第二次积分。
+  因此“自身正常路线运动在搜索前”成立；“自身所有位移在搜索前”不成立，传送带业务在其后。
+
+三、跨对象位置观察（I，调用链闭合）
+设 B 是本轮普通搜索就绪的阻挡者，E 是会在本次 MoveState 执行普通移动的目标：
+  UID(B)<UID(E)：B.OnTick 包括 SearchBlockee 先执行，搜索读取 E 此时当前坐标；E 自身本帧路线位移尚未执行。
+  UID(E)<UID(B)：E.OnTick 包括路线运动先执行，随后 B 普通搜索读取 E 已更新坐标。
+阻挡检查 _CheckBlockable77194 读取双方当前 mapPosition 做中心距离权重；并非明确固定为帧初坐标。
+这不是两个同条件下的全局策略，而是同一个按对象交错更新产生的区别。
+若 earlier B 建立关系，later E 的 MoveState 可在0x180a97950看到 blocker 并停止其自主路线推进；
+若 E 先移动进入范围，再由later B建立关系，则本帧移动已经发生。后续接敌位置修正另算。
+搜索也有周期就绪判断，B并非每帧必然真正查询候选，故这里只讨论B已就绪的帧。
+注意：物理宽相查询的索引同步细节不在本子任务覆盖范围；上述结论是对象调用顺序与当前坐标读取，非实机无条件接敌结果保证。
+
+四、Late与物理阶段是否普通再搜索（N + 明确范围）
+ObjectManager.OnLateFixedUpdate71078 VA0x1808d54d0 同样重建候选并顺序调用 vslot28=OnLateTick，call0x1808d566c。
+Character/Enemy 未在该类型声明自己的 OnLateTick；继承 Unit.OnLateTick77700 VA0x180acacf0。
+Unit.OnLateTick 默认路径：
+  0x180acad54 -> 基类空Late（相同空native地址0x18050cf60）
+  0x180acad7e 取Ability对象，然后0x180acadd6调用其Late业务
+  0x180acadfb -> GraphicFollowController.Tick77134（尾调用）。
+这里没有再次执行普通 BlockManager.Tick/SearchBlockee 的普遍阶段。
+BattleController的全局Physics2D.Simulate、OnAfterPhysicSimulate发生在全部普通对象OnTick之后；
+它们可能改变位置或通过内容产生其他同步业务，不能据无直接Search符号就断言这些回调绝不调用立即搜索。
+本轮直接确认的是：已读到的普通全局驱动没有固定第二次全场接敌扫描。
+显式SearchBlockeeImmediate、Ability/节点/Coroutine回调中的额外搜索由另一调查分支列入口；它们不是当前普通OnTick循环自动重跑。
+
+五、对固定 Blocking Step 的含义（设计推论，非原生事实）
+- 一次独立全场Blocking Step，无论放在全体自主移动前还是后，都不能同时还原上述两种UID相对顺序。
+- 之前“原生普通接敌究竟在移动前还是移动后”的二选一表述不成立；同一对象的局部偏序可以确认，跨对象由UID交错。
+- 把普通Acquire统一到固定一步仍可作为有意识简化，不能以原生存在相同全局阶段作理由。
+- 前置一步：所有人统一按该时点位置接敌，可以阻止后续本Tick自主运动；刚在后续运动中进入范围的敌人通常等下一轮普通Acquire。
+- 后置一步：所有人先执行本Tick自主运动，然后统一接敌；不追溯取消已经发生的位移。
+- 两轮全场扫描也不能因“同帧可以多次显式搜索”自动成立：它会增加原生没有承诺的全场机会。
+- 必要释放/容量裁撤同步执行与上述普通Acquire时点独立；现有选择方向不受这一发现推翻。

@@ -1,0 +1,23 @@
+{
+  "index": 77203,
+  "name": "Tick",
+  "type": 11414,
+  "returnType": 83059,
+  "parameterStart": 75551,
+  "generic": -1,
+  "token": 100740500,
+  "flags": 134,
+  "iflags": 0,
+  "slot": 65535,
+  "parameterCount": 1,
+  "address": 6453596176,
+  "fullname": "Torappu.Battle.BlockManager.Tick",
+  "parameters": [
+    {
+      "index": 75551,
+      "name": "deltaTime",
+      "token": 134293285,
+      "type": 53178
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+Blocking native investigation: new relationship competition
+Checked 2026-10-23 against installed GameAssembly.dll and IL2CPP metadata. Evidence is the complete native default paths extracted to the neighboring *.asm files. XLua hotfix branches are present; active replacement behavior and Unity gameplay were not executed. No repository source edits/tests/commits were made.
+
+1. Directly confirmed: the normal search is blocker-driven, not target-driven.
+- Character.OnTick [76022] 0x180a2ec90 calls BlockManager.Tick then virtual slot 236 at 0x180a2ef0a; metadata identifies slot236 as Character._SearchBlockee [76016]. The small dispatch helper 0x180005540 selects that exact vtable slot.
+- Character._SearchBlockee [76016] 0x180a38200 dispatches to own BlockManager.SearchBlockee [77190], 0x180aa09e0.
+- Enemy.OnTick [76531] 0x180a72340 also directly calls own BlockManager.SearchBlockee at 0x180a724e5 for Enemy instances that implement blocker business. Do not model the core by Operator/Enemy archetype branches.
+- SearchBlockee normally checks its PeriodicTicker readiness; force bypasses readiness, then both paths advance the ticker (0x180aa0abe–0x180aa0aed). Constructor/ticker details were already investigated elsewhere.
+- Search obtains blocker current capacity and stored used volume once, computes remaining=max(capacity-used,0). At 0x180aa0c2b–0x180aa0c2e it returns if remaining<=0 BEFORE candidate gathering or invoking _CheckBlockable. Thus generic native normal search at full capacity does not detect additional contact candidates. This says nothing about special-content bypasses.
+
+2. Directly confirmed: within a blocker, candidates are ordered by center-distance weight, then instance UID under the native weight equality policy.
+- Two search candidate sources exist: TPhysicManager.QueryEnemy [78700] (native physics branch), or unitManager units (generic FilterWithVolumne<Unit> branch). Both feed the same weighted/volume selection algorithm. The physics branch calls FilterWithVolume [74627], 0x1809d7e10; generic wrapper [74626] is instantiated at 0x184511e30 and forwards to shared generic implementation 0x184511870.
+- _CheckBlockable [77194], 0x180aa1430 checks enemy side is nonzero and fully contained in blockSideMask, Enemy.CheckBlockable, and current manager used+this enemy volume<=blocker current capacity. Success emits weight=FP((enemy.mapPosition.x-blocker.mapPosition.x)^2+(enemy.mapPosition.y-blocker.mapPosition.y)^2) at 0x180aa163f–0x180aa169d and emits blockVolume at 0x180aa16a3–0x180aa16b5.
+- FilterUtil.s_weightQueue is not a list of insertion order: type27168 decodes as Torappu.PriorityQueue<FilterUtil.WeightedTarget<Entity>>. Verified by decoding Il2CppGenericClass and generic method specifications (generics.py).
+- FilterWithVolume constructs WeightedTarget at 0x1809d8051. Instantiated constructor metadata74742 at 0x185528bb0 stores distance weight at+0, target at+0x10, volume at+0x18, and priorWeight=FP.Zero at+8. Every normal blocking candidate has the same zero priorWeight.
+- Instantiated WeightedTarget.CompareTo metadata74744 at 0x1855279c0 FIRST compares priorWeight at+8 (not distance). Then it compares weight at+0 via native FP/Abs/Round/Approximately logic. On weight equality under that policy, at 0x1855280f5–0x185528191 it invokes target.CompareTo(otherTarget).
+- Entity.CompareTo [66718] at 0x1806f1750 (default native branch) directly compares instanceUid, offset+0x18, using UInt32.CompareTo 0x185ee3720. Thus same/native-equivalent distance priorities prefer lower allocated instance UID. It is NOT simply input order, encounter order, hatred, or strict JavaScript distanceSquared === equality.
+- PriorityQueue.Add metadata26036 instantiated at0x1851afeb0 scans sorted entries; continues when new.CompareTo(existing)>0, otherwise inserts before existing. The queue therefore enumerates comparator ascending. If keys compare exactly equal (same target/UID), new entry would insert before old, so this data structure is not generally a stable insertion-order queue. Unique candidate identities make that irrelevant for ordinary targets.
+- Scope limit: the exact numeric threshold behavior of the FP distance approximate-equality policy has not been reimplemented/emulated here; report as native FP weight comparator, not a claim of exact Number comparison.
+
+3. Directly confirmed: capacity selection is an ordered greedy fit, done for the whole candidate list BEFORE any relationship registration.
+FilterWithVolume [74627] 0x1809d7e10, selection 0x1809d8105–0x1809d81d2:
+  selected=[]; used=0;
+  for entry in sortedWeightQueue:
+    if used>=initialRemaining: break;
+    if used+entry.volume<=initialRemaining:
+       selected.append(entry.target); used+=entry.volume;
+    else: continue;
+  return selected;
+Candidate that cannot fit is SKIPPED; later smaller candidates can still fit. Native is not take-first-N, and is not a combinatorial maximize-count/occupancy solver.
+SearchBlockee calls selection at0x180aa0da2, gets the completed selected list, THEN loops AddBlockee at0x180aa0e4c; fallback generic branch does the same, selection0x180aa0f19 then Add0x180aa0fb6. There is no select-one/add-one continuation.
+- If RegisterBlocker callback increases capacity, candidates omitted by initial budget do not get backfilled into this search. A later search/immediate nested search may observe the new capacity.
+- AddBlockee [77191] 0x180aa0430 rereads actual capacity, stored used volume and current target volume immediately before registration (0x180aa04ea–0x180aa0518); it rejects if the sum now exceeds capacity. Thus a callback that decreases capacity can prevent later already-selected entries from registering.
+- AddBlockee itself does not rerun the entire original _CheckBlockable predicate (side/range/etc), so do not describe native as fully revalidating all qualification before each Add.
+- Note native asymmetry: Enemy.RegisterBlocker is invoked at0x180aa055a; only after it returns true and target remains alive does AddBlockee reread volume and update manager totalVolume (0x180aa05bb–0x180aa05c6) and append blockee (0x180aa05d8). Any RegisterBlocker callbacks therefore occur before blocker-manager list/occupancy bookkeeping is completed. This is a native historical execution order, not evidence that Stronghold should reproduce partial relationship visibility.
+
+4. Directly confirmed normal object update ordering: ascending allocation UID, after a candidate snapshot.
+- ObjectManager.m_objects type27170 is PriorityQueue<BObject>, not registration-order List.
+- ObjectManager.Register [71074] 0x1808d56a0 calls PriorityQueue<BObject>.Add at0x1808d570c, instantiated0x1851afc50.
+- BObject.CompareTo(BObject) [65023] 0x180662560 checks Unity validity of other, then UInt32-compares instanceUid at+0x18; no priority, distance or side terms. BObject.CompareTo(object) [65024] does the same after cast. Character/Enemy do not declare overrides of this BObject signature; Entity additionally implements its Entity-specific CompareTo above.
+- BObject.OnAllocate [65034] 0x1806628f0 increments globalCounter then assigns instanceUid at0x180662932–0x180662938, before calling BattleController.RegisterBObject. UID means allocation identity; it must not be equated with deployment time/born time without an extra creation-lifecycle proof.
+- ObjectManager.OnFixedUpdate [71077] 0x1808d5300: captures queue count, clears cachedList, traverses index0..count-1, includes validAndBorned objects; then traverses cachedList forward and invokes each object's OnTick virtual slot27 (0x1808d549c).
+- BattleController.OnTick [64825] 0x18062c440 calls ObjectManager.OnFixedUpdate at0x18062ca4d.
+Inference with tightly closed chain: among ordinary ready blockers searched through their normal OnTick in the same native object update, lower allocated UID searches first and can claim an enemy before a later, closer blocker. There is no global choose-nearest-blocker auction in this path. Explicit SearchBlockeeImmediate outside normal update and different ticker readiness can alter who reaches the search first, so this is not a universal lower-UID-always-wins rule.
+
+5. Stronghold semantic differences (read only, src/core/tactical/battlefield/blocking/relations.ts).
+- Current updateBlockingRelations settles globally; targets ID ascending each choose nearest available blocker, tie blocker ID. Native normal path is per blocker in object update order; within one blocker it chooses enemy distance weight then enemy UID. This can change who blocks a target and which targets fill capacity. Example lower-UID blocker A distance.49 and later blocker B distance.10 both ready: native A may acquire, current nearest-blocker policy chooses B.
+- Current new-target order is target ID, not distance-per-blocker; a farther early-ID target can consume capacity ahead of a nearby later-ID target. This can change which enemy leaks.
+- Current relationship reconciliation packs old entries that fit; native UpdateBlockees uses tail dropping (separate lifecycle investigation), which is a different operation from this new-entry greedy fit. Do not merge the two algorithms.
+- Current pure Battlefield relation update has no synchronous registration callbacks; native has those callbacks and batch selection vs actual Add capacity distinction. If adding callbacks in Stronghold, explicitly choose coherent committed-relationship visibility and latest-state qualification; native partial-bookkeeping order is not a requirement by itself.
+- Current generic full-capacity skip has native support. Special 大君之触/赐 behavior remains a separate content investigation, not disproved by this generic early return.
+- Local/global map transition settlement vs client 3-update periodic search can affect observable timing. Preserve project intentional simplification separately from native findings.
+
+Artifacts:
+77190.asm SearchBlockee (complete method to next metadata method)
+77194.asm _CheckBlockable (complete)
+74627.asm FilterWithVolume (complete)
+generic_filter_full.asm wrapper and generic_filter_impl.asm full generic algorithm
+weighted_compare_full.asm complete comparator including cold/native+XLua tails
+weighted_ctor_full.asm complete constructor
+weightqueue_add_full.asm; objects_add_full.asm; generics.py method/type recovery
+71077.asm ObjectManager.OnFixedUpdate; 71074.asm Register
+65023.asm BObject.CompareTo; 66718.asm Entity.CompareTo; 65034.asm OnAllocate
+76022.asm Character.OnTick; 76016.asm _SearchBlockee; interface-ec.asm virtual-slot dispatch
+76531.asm Enemy.OnTick; 64825.asm BattleController.OnTick
+77191.asm AddBlockee (complete)

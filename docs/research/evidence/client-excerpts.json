@@ -1,0 +1,567 @@
+{
+  "collectedOn": "2026-10-07",
+  "kind": "selected-static-client-evidence",
+  "scopeNote": "摘录是字段投影，未列字段不能理解为不存在；未执行Lua/hotfix或实战。仓库整理数据与原始数据镜像不是同一个来源。",
+  "clientRoot": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game",
+  "manifest": {
+    "versionId": "26-08-16-14-00-43_415873",
+    "manifestName": "5bf3460e8509049311389521ce77a6cc.idx",
+    "manifestVersion": "V077"
+  },
+  "clientFiles": [
+    {
+      "path": "GameAssembly.dll",
+      "size": 214586344,
+      "sha256": "6edbc00b11e016c8935bbc45f158d5363f63d35038b0a69f8297612235e533ce"
+    },
+    {
+      "path": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+      "size": 45263956,
+      "sha256": "ee7f1239e1cff67620a7964d651189dbb5c98e13699169096be2a907fd541118"
+    },
+    {
+      "path": "Arknights_Data/StreamingAssets/AB/Windows/hot_update_list.json",
+      "size": 2364821,
+      "sha256": "77f952641360a44cc50b3902625bd9b07c7f646bbfd866b5623667dc135daacb"
+    }
+  ],
+  "nativeMethods": [
+    {
+      "type": "Torappu.Battle.Attributes",
+      "index": 63722,
+      "name": "_CalculateAttributeValue",
+      "address": "0x180656f40",
+      "slot": 65535,
+      "parameters": [
+        "attributeType"
+      ]
+    },
+    {
+      "type": "Torappu.Battle.Projectile+ActionController",
+      "index": 70602,
+      "name": "OnHitTarget",
+      "address": "0x1808b3990",
+      "slot": 65535,
+      "parameters": [
+        "target"
+      ]
+    },
+    {
+      "type": "Torappu.Battle.Projectiles.ScaleableHitBehaviour",
+      "index": 85485,
+      "name": "OnBeforeHitTarget",
+      "address": "0x180d29300",
+      "slot": 65535,
+      "parameters": [
+        "target"
+      ]
+    },
+    {
+      "type": "Torappu.Battle.Action.ActionUtil",
+      "index": 99407,
+      "name": "RunActions",
+      "address": "0x181155c10",
+      "slot": 65535,
+      "parameters": [
+        "actions",
+        "sourceType",
+        "blackboard",
+        "snapshot"
+      ]
+    },
+    {
+      "type": "Torappu.Battle.Action.Nodes+Dice",
+      "index": 96937,
+      "name": "Execute",
+      "address": "0x181070530",
+      "slot": 6,
+      "parameters": [
+        "blackboard",
+        "sourceType",
+        "snapshot"
+      ]
+    },
+    {
+      "type": "Torappu.Battle.Abilities.AuraAbility",
+      "index": 90904,
+      "name": "DealTargetTouched",
+      "address": "0x180ecaca0",
+      "slot": 102,
+      "parameters": [
+        "target",
+        "meta"
+      ]
+    },
+    {
+      "type": "Torappu.Battle.Abilities.AuraAbility",
+      "index": 90905,
+      "name": "DealTargetLeft",
+      "address": "0x180ecabd0",
+      "slot": 103,
+      "parameters": [
+        "target",
+        "meta"
+      ]
+    },
+    {
+      "type": "Torappu.Battle.Abilities.AuraAbility",
+      "index": 90907,
+      "name": "_DoTargetCheckAndEnter",
+      "address": "0x180eccc40",
+      "slot": 65535,
+      "parameters": [
+        "target"
+      ]
+    },
+    {
+      "type": "Torappu.Battle.Abilities.GlobalAuraAbility",
+      "index": 91076,
+      "name": "DealTarget",
+      "address": "0x180edf0f0",
+      "slot": 101,
+      "parameters": [
+        "target"
+      ]
+    },
+    {
+      "type": "Torappu.Battle.Abilities.GlobalAuraAbility",
+      "index": 91077,
+      "name": "_OnUnitBornOrRallyPointReborn",
+      "address": "0x180ee1d10",
+      "slot": 65535,
+      "parameters": [
+        "arg"
+      ]
+    },
+    {
+      "type": "Torappu.Battle.Abilities.GlobalAuraAbility",
+      "index": 91073,
+      "name": "_ClearBuffs",
+      "address": "0x180ee0a30",
+      "slot": 65535,
+      "parameters": []
+    },
+    {
+      "type": "Torappu.Battle.BattleController",
+      "index": 64099,
+      "name": "RegisterUnit",
+      "address": "0x18063dd80",
+      "slot": 65535,
+      "parameters": [
+        "unit"
+      ]
+    },
+    {
+      "type": "Torappu.Battle.BattleController",
+      "index": 64217,
+      "name": "CreateAndInitGlobalBuff",
+      "address": "0x18062ca20",
+      "slot": 65535,
+      "parameters": [
+        "globalBuffData"
+      ]
+    },
+    {
+      "type": "Torappu.Battle.BattleController",
+      "index": 64218,
+      "name": "CreateAndAttachAllUnitGlobalBuff",
+      "address": "0x18062c720",
+      "slot": 65535,
+      "parameters": [
+        "globalBuffData"
+      ]
+    },
+    {
+      "type": "Torappu.Battle.GlobalBuff",
+      "index": 66773,
+      "name": "TryAddBuff",
+      "address": "0x18073e280",
+      "slot": 13,
+      "parameters": [
+        "unit",
+        "isInit"
+      ]
+    },
+    {
+      "type": "Torappu.Battle.GlobalBuff",
+      "index": 66775,
+      "name": "OnRemoved",
+      "address": "0x18073dfc0",
+      "slot": 15,
+      "parameters": []
+    },
+    {
+      "type": "Torappu.Battle.GlobalEnvSystem",
+      "index": 67105,
+      "name": "OnInit",
+      "address": "0x180768070",
+      "slot": 65535,
+      "parameters": [
+        "id",
+        "overrideBlackboard"
+      ]
+    },
+    {
+      "type": "Torappu.Battle.GlobalEnvSystemController",
+      "index": 67173,
+      "name": "Tick",
+      "address": "0x180765e40",
+      "slot": 65535,
+      "parameters": [
+        "deltaTime"
+      ]
+    },
+    {
+      "type": "Torappu.Battle.Runes.Internal.CAttributesMul",
+      "index": 84345,
+      "name": "DoPreprocessChar",
+      "address": "0x180cbcff0",
+      "slot": 20,
+      "parameters": [
+        "inOut",
+        "character"
+      ]
+    }
+  ],
+  "prefabBuffDescriptors": [
+    {
+      "buffKey": "wisdel_t_1[bomb]",
+      "templateKey": "wisdel_t_1[bomb]",
+      "overrideKey": "",
+      "overrideType": 2,
+      "maxStackCnt": 1,
+      "independentCharacterSource": false
+    }
+  ],
+  "buffTemplateExcerpts": [
+    {
+      "templateKey": "wisdel_t_1[projectile_shock]",
+      "onEventPriority": 0,
+      "events": [
+        {
+          "rawEventKey": 0,
+          "actionsInSerializedOrder": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+Dice",
+              "_probKey": "prob"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+              "_targetType": "BUFF_OWNER",
+              "_buffKeys": [
+                "wisdel_t_1[bomb]"
+              ],
+              "_checkBuffSource": false
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+AOEDamage",
+              "_targetType": "BUFF_OWNER",
+              "_sourceType": "BUFF_SOURCE",
+              "_damageType": "PHYSICAL",
+              "_attackType": "NORMAL",
+              "_radius": 1.1,
+              "_damageScale": "bomb_atk_scale",
+              "_checkTargetAlive": false
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+AlwaysNext"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+CreateEffect",
+              "_targetType": "BUFF_OWNER",
+              "_sourceType": "BUFF_SOURCE"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+PlayAudio"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById",
+              "_targetType": "BUFF_OWNER",
+              "_sourceType": "BUFF_SOURCE",
+              "_buffKey": "wisdel_t_1[bomb]",
+              "_checkBuffSource": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "templateKey": "wisdel_t_1[bomb]",
+      "onEventPriority": 0,
+      "events": [
+        {
+          "rawEventKey": 0,
+          "actionsInSerializedOrder": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+IfElse",
+              "_conditionNode": {
+                "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+                "_targetType": "BUFF_SOURCE",
+                "_buffKeys": [
+                  "wisdel_t_1"
+                ],
+                "_checkBuffSource": false
+              },
+              "_succeedNodes": [
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+AttachAsDerivedBuffById",
+                  "_sourceType": "BUFF_SOURCE",
+                  "_buffKey": "wisdel_t_1",
+                  "_finishDerivedBuffIfParentFinish": true,
+                  "_attachToSourceHost": false,
+                  "_finishDerivedBuffIfNoParent": false
+                }
+              ],
+              "_failNodes": [
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "prefabSources": {
+    "buffTemplates": {
+      "bundle": "config/buff_template_holder.ab",
+      "holderObjectId": "6070581171229484677"
+    },
+    "characterPrefab": {
+      "serializedContainer": "CAB-30754eafd4c74eea4c2ae008db22b0ca",
+      "characterKey": "char_1035_wisdel"
+    },
+    "note": "template/descriptor摘录来自此前实际bundle解码结果；数据镜像的角色/技能数值未加入此客户端版本证据。"
+  },
+  "selectedNativeCalls": [
+    {
+      "methodIndex": 70602,
+      "note": "条件分支中的相关call按指令地址列出，不是无条件运行轨迹。",
+      "instructions": [
+        "0x1808b3a8c call 0x1808b4620 Torappu.Battle.Projectile+ActionController._AttachBuffs",
+        "0x1808b3adc call 0x1805e1640 Torappu.Battle.AbilityAttachment.Apply",
+        "0x1808b3aea call 0x1808b4de0 Torappu.Battle.Projectile+ActionController._AttachExtraBuffWhenStopHit",
+        "0x1808b3afa call 0x1808b5260 Torappu.Battle.Projectile+ActionController._RunActions"
+      ]
+    },
+    {
+      "methodIndex": 90904,
+      "note": "常规原生进入路径向目标安装Buff并写入TargetMeta.buffIds；来源、参数和ability关联分别传入。",
+      "instructions": [
+        "0x180ecad52 mov rsi, qword ptr [rsi + 0x10] ; TargetMeta.buffIds",
+        "0x180ecada0 call 0x1806fcaa0 Torappu.Battle.Entity.AddBuffsToIdList"
+      ]
+    },
+    {
+      "methodIndex": 90905,
+      "note": "离开是否撤销受_removeBuffWhenTargetLeave控制；不是所有Aura必定离开即移除。",
+      "instructions": [
+        "0x180ecac2a cmp byte ptr [rsi + 0x124], cl ; conditional removal",
+        "0x180ecac46 call 0x180709130 Torappu.Battle.Entity.RemoveBuffs"
+      ]
+    },
+    {
+      "methodIndex": 91076,
+      "note": "GlobalAura常规目标处理安装接收端Buff；目标关联另由该ability维护。",
+      "instructions": [
+        "0x180edf311 call 0x1806fcaa0 Torappu.Battle.Entity.AddBuffsToIdList"
+      ]
+    },
+    {
+      "methodIndex": 91077,
+      "note": "出生/集结点重生处理存在配置控制的旧Buff移除分支；完整内容配置需逐项选择。",
+      "instructions": [
+        "0x180ee1ec0 call 0x180709130 Torappu.Battle.Entity.RemoveBuffs"
+      ]
+    },
+    {
+      "methodIndex": 91073,
+      "note": "GlobalAura清理接收实例存在removeBuffWhenAbilityDetached配置判断；只摘录相关条件和移除入口。",
+      "instructions": [
+        "0x180ee119f cmp byte ptr [rax + 0x12d], 0",
+        "0x180ee11fa call 0x180709130 Torappu.Battle.Entity.RemoveBuffs",
+        "0x180ee1280 call 0x180709130 Torappu.Battle.Entity.RemoveBuffs"
+      ]
+    },
+    {
+      "methodIndex": 64099,
+      "note": "先向UnitManager注册，再遍历m_globalBuffs；vslot13对应TryAddBuff(unit,true)。这是普通后注册接入，不是全部出生回调结束后的保证。",
+      "instructions": [
+        "0x18063de3e call 0x180ac8220 Torappu.Battle.UnitManager.Register",
+        "0x18063de6d mov rax, qword ptr [rdi + 0x68] ; m_globalBuffs",
+        "0x18063debc mov r8b, 1 ; isInit",
+        "0x18063dec5 mov r10, qword ptr [r9 + 0x208] ; vslot 13",
+        "0x18063ded3 call r10 ; GlobalBuff.TryAddBuff"
+      ]
+    },
+    {
+      "methodIndex": 64218,
+      "note": "创建/初始化并登记后遍历当前UnitManager单位，调用TryAddBuff(unit,true)；不能推广到另一创建入口64217。",
+      "instructions": [
+        "0x18062c85e call 0x1808d1be0 Torappu.Battle.BattleFactory.CreateGlobalBuff",
+        "0x18062c901 mov r8, qword ptr [rip + 0x7e7a4b8] ; append globalBuff to collection",
+        "0x18062c967 call 0x180651f60 Torappu.Battle.BattleController.get_unitManager",
+        "0x18062c9b8 mov r8b, 1 ; isInit",
+        "0x18062c9c1 mov r10, qword ptr [r9 + 0x208] ; vslot 13",
+        "0x18062c9cf call r10 ; GlobalBuff.TryAddBuff"
+      ]
+    },
+    {
+      "methodIndex": 66773,
+      "note": "通过目标/extraValidator/次数等资格后按_buff描述安装；记录目标到Buff UID列表的关联。未执行Lua/hotfix。",
+      "instructions": [
+        "0x18073e59a call 0x1806fc7d0 Torappu.Battle.Entity.AddBuff",
+        "0x18073e5b7 mov r14, qword ptr [rbx + 0x138] ; m_targetMap",
+        "0x18073e640 call 0x18069aca0 Torappu.Battle.Buff.get_instanceUid"
+      ]
+    },
+    {
+      "methodIndex": 66775,
+      "note": "按m_targetMap所记目标/接收Buff身份清理，然后清map并通知source；不按当前几何候选推导应移除的实例。",
+      "instructions": [
+        "0x18073e0a7 mov rdx, qword ptr [rsi + 0x138] ; m_targetMap",
+        "0x18073e198 call 0x180709130 Torappu.Battle.Entity.RemoveBuffs",
+        "0x18073e1d9 mov rcx, qword ptr [rsi + 0x138] ; clear target bindings"
+      ]
+    },
+    {
+      "methodIndex": 84345,
+      "note": "CAttributesMul常规预处理分支直接转换inOut属性；char_attribute_mul runeKey到该类的注册绑定尚未独立闭合。",
+      "instructions": [
+        "0x180cbd053 jmp 0x180cb0940 Torappu.Battle.Runes.Rune.ApplyChangesToAttributesMul"
+      ]
+    }
+  ],
+  "auraAndGlobalFieldProjections": [
+    {
+      "type": "Torappu.Battle.Abilities.AuraAbility",
+      "fields": [
+        "_buffs",
+        "_removeBuffWhenTargetLeave",
+        "_removeBuffWhenAbilityDetached",
+        "_onlyAddBuffOnceForEachTarget",
+        "m_range",
+        "m_targetMap",
+        "m_targetHashSet"
+      ],
+      "note": "字段存在证明政策可配置；这里未写入某具体prefab的取值。"
+    },
+    {
+      "type": "Torappu.Battle.Abilities.AuraAbility+TargetMeta",
+      "fields": [
+        "buffIds"
+      ]
+    },
+    {
+      "type": "Torappu.Battle.Abilities.GlobalAuraAbility",
+      "fields": [
+        "_removeBuffWhenAbilityDetached",
+        "_listenUnitRebornEvent",
+        "_tryRemoveBuffFirstWhenReborn",
+        "_interval",
+        "_clearBuffsWhenDisappear",
+        "m_targetMap",
+        "m_targetList",
+        "m_triggerTicker",
+        "m_tickTimer"
+      ],
+      "note": "成员身份/安装关联与周期事实分别存在；字段名不独立决定所有内容行为。"
+    },
+    {
+      "type": "Torappu.Battle.GlobalBuff",
+      "fields": [
+        "_buffs",
+        "m_extraValidator",
+        "m_buffAddLimitedTimes",
+        "m_cachedAddedUnits",
+        "m_source",
+        "m_targetMap",
+        "blackboard"
+      ],
+      "selectedOffsets": {
+        "m_targetMap": "0x138"
+      }
+    },
+    {
+      "type": "Torappu.Battle.BattleController",
+      "fields": [
+        "m_globalBuffs",
+        "m_globalEnvSystemController"
+      ],
+      "selectedOffsets": {
+        "m_globalBuffs": "0x68"
+      }
+    },
+    {
+      "type": "Torappu.Battle.GlobalEnvSystem",
+      "fields": [
+        "m_envExecutors",
+        "m_envManagers",
+        "m_envManagerMap",
+        "m_blackboard",
+        "m_id",
+        "_lifeTimeSetting"
+      ],
+      "note": "独立环境对象并非强制转换成接收端Unit Buff；具体manager/program仍需沿选定内容核对。"
+    }
+  ],
+  "globalContentDataExcerpts": {
+    "sourceKind": "repository-content-data",
+    "note": "描述和配置可支持领域语义判断；不是autoChess Lua执行或额度内部字段的证明。",
+    "examples": [
+      {
+        "source": "data/bands.json",
+        "bandId": "band_ermengard",
+        "name": "埃芒加德",
+        "description": "【命结之秘】战斗中前3个被击倒的干员立刻复活！",
+        "buffs": [
+          {
+            "key": "env_gbuff_new_with_verify",
+            "bb": {
+              "max_respawn_cnt": 3
+            },
+            "bbStr": {
+              "key": "act1autochess_band28_buff"
+            }
+          }
+        ]
+      },
+      {
+        "source": "data/bands.json",
+        "bandId": "band_qalaisa",
+        "name": "卡莱莎",
+        "description": "【食腐之蝶】我方干员被击倒时，场上剩余我方单位攻击力+20%（最大200%，持续至该干员被击倒或战斗结束）",
+        "buffs": [
+          {
+            "key": "env_gbuff_new_with_verify",
+            "bb": {
+              "atk": 0.2,
+              "max_stack_cnt": 10
+            },
+            "bbStr": {
+              "key": "act1autochess_band15_buff"
+            }
+          }
+        ]
+      },
+      {
+        "source": "data/bands.json",
+        "bandId": "band_mberry",
+        "name": "桑葚",
+        "description": "【药枚实验】战斗开始时，使最右边的所有我方单位获得效果：每次攻击时有25%的概率获得1层护盾（最多1层）",
+        "buffs": [
+          {
+            "key": "env_gbuff_new_with_verify",
+            "bb": {
+              "prob": 0.25
+            },
+            "bbStr": {
+              "key": "act1autochess_band17_buff"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

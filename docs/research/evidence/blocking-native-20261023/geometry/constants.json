@@ -1,0 +1,52 @@
+[
+  {
+    "instruction": "0x180a3b9c7",
+    "address": "0x186e3fda4",
+    "float": 0.5
+  },
+  {
+    "instruction": "0x180a7edd7",
+    "address": "0x186e3fda4",
+    "float": 0.5
+  },
+  {
+    "instruction": "0x180af336a",
+    "address": "0x186e421dc",
+    "float": 0.010000000707805157
+  },
+  {
+    "instruction": "0x180af342e",
+    "address": "0x186e421f8",
+    "float": 50.0
+  },
+  {
+    "instruction": "0x180af358c",
+    "address": "0x186e421e0",
+    "float": 0.1600000113248825
+  },
+  {
+    "instruction": "0x180af363f",
+    "address": "0x186e416a4",
+    "float": 0.4000000059604645
+  },
+  {
+    "instruction": "0x180af37eb",
+    "address": "0x186e40b18",
+    "float": 0.20000000298023224
+  },
+  {
+    "instruction": "0x180a79b97",
+    "address": "0x186e40b18",
+    "float": 0.20000000298023224
+  },
+  {
+    "instruction": "0x180a79c76",
+    "address": "0x186e40b18",
+    "float": 0.20000000298023224
+  },
+  {
+    "instruction": "0x1805355a8",
+    "address": "0x186e3fd88",
+    "float": 9.999999747378752e-06
+  }
+]

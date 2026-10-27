@@ -1,0 +1,50 @@
+{
+  "methods": [
+    {
+      "index": 70275,
+      "name": "Torappu.Battle.DirectionCursor._GetNextTarget",
+      "va": "0x180897700",
+      "size": 1568,
+      "slot": 11,
+      "parameters": [],
+      "file": "70275-_GetNextTarget.asm",
+      "sha256": "b7ca27872fe93231f22247a08088a24e3c788e0600f4b58ac4baf3a6949e512f"
+    },
+    {
+      "index": 220699,
+      "name": "Torappu.TSVector2.ClampMagnitude",
+      "va": "0x18670b710",
+      "size": 544,
+      "slot": 65535,
+      "parameters": [
+        {
+          "index": 166491,
+          "name": "vector",
+          "token": 134219014,
+          "type": 77713
+        },
+        {
+          "index": 166492,
+          "name": "maxLength",
+          "token": 134219015,
+          "type": 53178
+        }
+      ],
+      "file": "220699-ClampMagnitude.asm",
+      "sha256": "29aad34e51b0e6ecb585cfd5a21fde176ae96884d8ec99b40d9efd3ff094b6a0"
+    }
+  ],
+  "rawHelpers": [
+    {
+      "va": "0x1805e7770",
+      "size": 256,
+      "behavior": "return v if |v|<=max else v/|v|*max",
+      "file": "raw-1805e7770-vector-clamp.asm",
+      "sha256": "8c47ac35cab1818965db55f52d2bd00e2f7dc2a67426a9742e46e5dda482ca53"
+    }
+  ],
+  "flagWritePatternScan": {
+    "pattern": "C6 /0 disp32=0xbd immediate0or1 with simplebase rax..rdi",
+    "scope": "Pattern is only a limited native scan, not all ways to write globals or runtime Lua values. No conclusion of global immutability."
+  }
+}

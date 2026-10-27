@@ -1,0 +1,1406 @@
+[
+  {
+    "gameObject": "projectile_sesa_s2_logic",
+    "id": -3451668071680085344,
+    "components": [
+      {
+        "id": 7579265489722503840,
+        "class": ".",
+        "classid": 4,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -3451668071680085344
+          },
+          "m_LocalRotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": -21.969999313354492,
+            "y": -3.7151455879211426,
+            "z": -9.2802734375
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": [
+            {
+              "m_FileID": 0,
+              "m_PathID": -7215739739730382176
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": -1376325414900043104
+            }
+          ],
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        }
+      },
+      {
+        "id": 3007869759292469920,
+        "class": "Torappu.Battle.SimpleProjectile",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -3451668071680085344
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": -8797129986015012478
+          },
+          "m_Name": "",
+          "_randomDelayToBorn": 0.0,
+          "_bodyTransform": {
+            "m_FileID": 0,
+            "m_PathID": -7215739739730382176
+          },
+          "_keepAlreadyHitTime": -1.0,
+          "_mainEffect": "",
+          "_clearMainEffectWhenReached": 1,
+          "_actionController": {
+            "_detachBuffsWhenTargetLeave": 0,
+            "_detachAllBuffsWhenStopped": 0,
+            "_onlyAddBuffsToTraceTarget": 0,
+            "_onlyAddBuffsToTargetOnce": 0,
+            "_dontAddBuffs": 0,
+            "_excludeAttachments": 0,
+            "_useSelfBlackboard": 0,
+            "_extraBuffsInTheEnd": [],
+            "_useExtraBuffsWhenStopHit": 0,
+            "_addExtraBuffsWhenReached": 0,
+            "_detachAllExtraBuffsWhenStopped": 0
+          },
+          "_fixDealHitTargetLeft": 0,
+          "_stopGraphicProjectileWhenClearMainEffect": 0,
+          "_overrideAudioSignal": "",
+          "_fireProjectileReachedEvent": 0,
+          "_eliminatableStatus": 0,
+          "_movementAdjustableStatus": 0,
+          "_managedBySource": 0,
+          "_projectileType": 0,
+          "_containsChildrenBehaviours": 0,
+          "_canHitSameTargetMultipleTimes": 0,
+          "_lifeTimeType": 1,
+          "_lifeTime": 10.0,
+          "_getLifeTimeFromBB": 0,
+          "_hitNumType": 2,
+          "_maxHitNum": 1,
+          "_getMaxHitNumFromBB": 0,
+          "_maxHitNumBBKey": "",
+          "_stopAfterMaxHit": 1,
+          "_stopAfterFirstHit": 0,
+          "_stopWhenSourceInvalid": 0,
+          "_alwaysHitTraceTargetInTheEnd": 0,
+          "_alwaysHitTraceTargetWhenReached": 0,
+          "_alwaysReachInTheEnd": 0,
+          "_limitedMaxHitNumToSourceBlockedCnt": 0,
+          "_allowZeroBlockCntLimit": 0
+        }
+      },
+      {
+        "id": -6240621897345174880,
+        "class": "Torappu.Battle.Projectiles.EffectBehaviour",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -3451668071680085344
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 6834194400804168919
+          },
+          "m_Name": "",
+          "_effectsWhenStart": [],
+          "_effectsWhenReached": [
+            "sesa_skill_02_hit"
+          ],
+          "_effectsWhenHit": [],
+          "_effectsToTargetWhenStart": [],
+          "_effectsToTileWhenStart": [],
+          "_effectsWhenStop": [],
+          "_effectOnTrigger": [],
+          "_replaceHitEffectAfterFirstHit": 0,
+          "_repalceEffectsWhenHit": [],
+          "_onlyPlayHitEffectOnTraceTarget": 0,
+          "_onlyPlayHitEffectOnNotTraceTarget": 0,
+          "_onlyPlayHitEffectOnce": 0,
+          "_clearHitEffectOnStop": 0,
+          "_clearPlayEffectOnStop": 0,
+          "_clearEffectsOnTileOnStop": 0,
+          "_clearReachedEffectWhenStop": 0,
+          "_alwaysPlayStartEffects": 0,
+          "_playStartEffectOnlyOnProjectile": 0,
+          "_useSourceFaceVector": 0,
+          "_useSourceFaceVectorOnHit": 0,
+          "_useSourceFaceVectorOnStart": 0,
+          "_forceReachTargetGround": 0,
+          "_followTargetGround": 0,
+          "_replaceMainEffectWhenReach": 0,
+          "_mainEffectToReplace": "",
+          "_useTraceTargetWhenReach": 0,
+          "_setReachEffectOnProjectile": 0,
+          "_syncEffectScaleViaProjectile": 0
+        }
+      },
+      {
+        "id": 3763221006184641184,
+        "class": "Torappu.Battle.Projectiles.HitBehaviour",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -3451668071680085344
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": -3494225671239136090
+          },
+          "m_Name": "",
+          "_targetOptions": {
+            "targetSide": 2,
+            "targetMotion": 3,
+            "targetCategory": 1,
+            "enableAdvancedOptions": 1,
+            "ignoreTargetFree": 0,
+            "ignoreAllyTargetFree": 0,
+            "ignoreHealFree": 0,
+            "ignoreMotionMode": 0,
+            "ignoreTargetSide": 0,
+            "excludeSomeAbnormalFlags": 0,
+            "containSomeAbnormalFlags": 0,
+            "excludeAbnormalFlag": 0,
+            "containAbnormalFlag": 0,
+            "purposeMask": 0,
+            "professionMask": 0,
+            "checkUnitType": 0,
+            "unitTypeMask": 0,
+            "onlyIgnoreSomeOfTargetFreeCase": 0,
+            "abnormalFlag": 0,
+            "abnormalCombo": 0
+          },
+          "_goThroughWall": 1,
+          "_onlyCheckHitWhenReachTarget": 0,
+          "_onlyCheckHitWhenStop": 1,
+          "_canFlyThroughTheDeathArea": 0,
+          "_exceptTraceTarget": 0,
+          "_overridePurposeMaskWithTargetOptions": 0,
+          "_rangeToLoad": {
+            "m_FileID": 0,
+            "m_PathID": -5489889389965380960
+          },
+          "_onlyTraceTarget": 0,
+          "_ignoreCamouflage": 1,
+          "_ignoreRangeScale": 0,
+          "_exceptSource": 0,
+          "_mergeTraceTargetMotion": 0,
+          "_markReachedOnlyWhenTargetEnter": 0,
+          "_exceptFlyCharacter": 0
+        }
+      },
+      {
+        "id": -5462933652690799968,
+        "class": "Torappu.Battle.Projectiles.ParacurveMovement",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -3451668071680085344
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 5247176549481151122
+          },
+          "m_Name": "",
+          "_rotateToTarget": 1,
+          "_forceReachedWhenTimeup": 1,
+          "_useSourceDirection": 0,
+          "_useTargetDirection": 0,
+          "_useStartToTarget": 0,
+          "_awayFromSourceAsDirection": 0,
+          "_flyToTargetLocationOnly": 0,
+          "_useSourceDirectionRandomArcAngleStart": 0,
+          "_useSourceToTargetRandomArcAngleStart": 0,
+          "_useSourceDirectionArcAngleWithRatio": 0,
+          "_useSourceToTargetArcAngleWithRatio": 0,
+          "_sourceDirectionArcAngleRatio": 0.0,
+          "_sourceToTargetArcAngle": 0.0,
+          "_adjustSourceToTargetArcAngleBySourceFace": 0,
+          "_flyToPredefinedLocation": 0,
+          "_predefinedLocation": 0,
+          "_freezeRotationZ": 1,
+          "_freezeRotationXY": 0,
+          "_exactMatchCameraForward": 0,
+          "_resetToTargetPosWhenReached": 1,
+          "_resetToTracetargetMapPosV3": 0,
+          "_handleWithIBuildableTarget": 0,
+          "_forceResetToTargetPosWhenReached": 0,
+          "_fixProjectileZWhenReached": 0,
+          "_fixOnProjectileReached": 0,
+          "_onlyReachedInTime": 0.0,
+          "_speed": 8.0,
+          "_raiseHeight": 0.30000001192092896,
+          "_delayAfterReached": 1,
+          "_delayTime": 2.0,
+          "_updateDelayTimeOnlyOnce": 0,
+          "_noRaiseHeightThreshold": 1.2999999523162842,
+          "_comeBack": 0,
+          "_comeBackSpeedScale": 0.25,
+          "_inverseParacurve": 0,
+          "_useRandomHeight": 0,
+          "_randomHeightRange": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "_randomInverseParacurve": 0
+        }
+      }
+    ]
+  },
+  {
+    "gameObject": "projectile_crossbow_logic",
+    "id": -1604394424664199584,
+    "components": [
+      {
+        "id": -5817870333110915488,
+        "class": ".",
+        "classid": 4,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -1604394424664199584
+          },
+          "m_LocalRotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": -3.3611950874328613,
+            "y": -3.7151455879211426,
+            "z": -9.2802734375
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": [
+            {
+              "m_FileID": 0,
+              "m_PathID": -7202416682152628640
+            }
+          ],
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        }
+      },
+      {
+        "id": 5817916136774037088,
+        "class": "Torappu.Battle.SimpleProjectile",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -1604394424664199584
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": -8797129986015012478
+          },
+          "m_Name": "",
+          "_randomDelayToBorn": 0.0,
+          "_bodyTransform": {
+            "m_FileID": 0,
+            "m_PathID": -5817870333110915488
+          },
+          "_keepAlreadyHitTime": -1.0,
+          "_mainEffect": "",
+          "_clearMainEffectWhenReached": 0,
+          "_actionController": {
+            "_detachBuffsWhenTargetLeave": 0,
+            "_detachAllBuffsWhenStopped": 0,
+            "_onlyAddBuffsToTraceTarget": 0,
+            "_onlyAddBuffsToTargetOnce": 0,
+            "_dontAddBuffs": 0,
+            "_excludeAttachments": 0,
+            "_useSelfBlackboard": 0,
+            "_extraBuffsInTheEnd": [],
+            "_useExtraBuffsWhenStopHit": 0,
+            "_addExtraBuffsWhenReached": 0,
+            "_detachAllExtraBuffsWhenStopped": 0
+          },
+          "_fixDealHitTargetLeft": 0,
+          "_stopGraphicProjectileWhenClearMainEffect": 0,
+          "_overrideAudioSignal": "",
+          "_fireProjectileReachedEvent": 0,
+          "_eliminatableStatus": 0,
+          "_movementAdjustableStatus": 0,
+          "_managedBySource": 0,
+          "_projectileType": 0,
+          "_containsChildrenBehaviours": 0,
+          "_canHitSameTargetMultipleTimes": 0,
+          "_lifeTimeType": 1,
+          "_lifeTime": 5.0,
+          "_getLifeTimeFromBB": 0,
+          "_hitNumType": 1,
+          "_maxHitNum": 1,
+          "_getMaxHitNumFromBB": 0,
+          "_maxHitNumBBKey": "",
+          "_stopAfterMaxHit": 1,
+          "_stopAfterFirstHit": 0,
+          "_stopWhenSourceInvalid": 0,
+          "_alwaysHitTraceTargetInTheEnd": 1,
+          "_alwaysHitTraceTargetWhenReached": 0,
+          "_alwaysReachInTheEnd": 0,
+          "_limitedMaxHitNumToSourceBlockedCnt": 0,
+          "_allowZeroBlockCntLimit": 0
+        }
+      },
+      {
+        "id": -5354178854122688928,
+        "class": "Torappu.Battle.Projectiles.AdvancedMovement",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -1604394424664199584
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": -1429203677512073985
+          },
+          "m_Name": "",
+          "_rotateToTarget": 1,
+          "_forceReachedWhenTimeup": 1,
+          "_useSourceDirection": 0,
+          "_useTargetDirection": 0,
+          "_useStartToTarget": 0,
+          "_awayFromSourceAsDirection": 0,
+          "_flyToTargetLocationOnly": 0,
+          "_useSourceDirectionRandomArcAngleStart": 0,
+          "_useSourceToTargetRandomArcAngleStart": 0,
+          "_useSourceDirectionArcAngleWithRatio": 0,
+          "_useSourceToTargetArcAngleWithRatio": 0,
+          "_sourceDirectionArcAngleRatio": 0.0,
+          "_sourceToTargetArcAngle": 0.0,
+          "_adjustSourceToTargetArcAngleBySourceFace": 0,
+          "_flyToPredefinedLocation": 0,
+          "_predefinedLocation": 0,
+          "_freezeRotationZ": 0,
+          "_freezeRotationXY": 0,
+          "_exactMatchCameraForward": 0,
+          "_resetToTargetPosWhenReached": 0,
+          "_resetToTracetargetMapPosV3": 0,
+          "_handleWithIBuildableTarget": 0,
+          "_forceResetToTargetPosWhenReached": 0,
+          "_fixProjectileZWhenReached": 0,
+          "_fixOnProjectileReached": 0,
+          "_onlyReachedInTime": 0.0,
+          "_moveType": 1,
+          "_moveTypeData": {
+            "data": []
+          },
+          "_speed": 10.0,
+          "_distance": 0.0,
+          "_comeBack": 0,
+          "_comeBackSpeedScale": 0.25,
+          "_delayToStart": 0.0,
+          "_delayAfterReached": 0.0,
+          "_delayToReachAfterHit": 0.0,
+          "_clearTraceTargetWhenReached": 1,
+          "_updateDelayTimeOnlyOnce": 0,
+          "_skipSmoothLerpDirection": 0,
+          "_addInertia": 0,
+          "_turnSpeed": 0.0,
+          "_useDynamicSpeed": 0,
+          "_deltaSpeedPerSec": 0.0,
+          "_finalSpeed": 0.0,
+          "_randomOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "_forceUseTargetMountPoint": 0,
+          "_rotateToTargetOnDelayToStart": 0,
+          "_drawFuncTurnAndWaveDebugLine": 0,
+          "_fixProjectileHasReached": 0
+        }
+      },
+      {
+        "id": 5585898552488029792,
+        "class": "Torappu.Battle.Projectiles.EffectBehaviour",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -1604394424664199584
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 6834194400804168919
+          },
+          "m_Name": "",
+          "_effectsWhenStart": [],
+          "_effectsWhenReached": [],
+          "_effectsWhenHit": [
+            "common_hit_01"
+          ],
+          "_effectsToTargetWhenStart": [],
+          "_effectsToTileWhenStart": [],
+          "_effectsWhenStop": [],
+          "_effectOnTrigger": [],
+          "_replaceHitEffectAfterFirstHit": 0,
+          "_repalceEffectsWhenHit": [],
+          "_onlyPlayHitEffectOnTraceTarget": 0,
+          "_onlyPlayHitEffectOnNotTraceTarget": 0,
+          "_onlyPlayHitEffectOnce": 0,
+          "_clearHitEffectOnStop": 0,
+          "_clearPlayEffectOnStop": 0,
+          "_clearEffectsOnTileOnStop": 0,
+          "_clearReachedEffectWhenStop": 0,
+          "_alwaysPlayStartEffects": 0,
+          "_playStartEffectOnlyOnProjectile": 0,
+          "_useSourceFaceVector": 0,
+          "_useSourceFaceVectorOnHit": 0,
+          "_useSourceFaceVectorOnStart": 0,
+          "_forceReachTargetGround": 0,
+          "_followTargetGround": 0,
+          "_replaceMainEffectWhenReach": 0,
+          "_mainEffectToReplace": "",
+          "_useTraceTargetWhenReach": 0,
+          "_setReachEffectOnProjectile": 0,
+          "_syncEffectScaleViaProjectile": 0
+        }
+      }
+    ]
+  },
+  {
+    "gameObject": "projectile_chr_wisdel_s1_logic",
+    "id": -674042269457897492,
+    "components": [
+      {
+        "id": -1434373604685830164,
+        "class": ".",
+        "classid": 4,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -674042269457897492
+          },
+          "m_LocalRotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": [
+            {
+              "m_FileID": 0,
+              "m_PathID": 6739406248312776684
+            }
+          ],
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        }
+      },
+      {
+        "id": 1447161751656212460,
+        "class": "Torappu.Battle.SimpleProjectile",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -674042269457897492
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": -8797129986015012478
+          },
+          "m_Name": "",
+          "_randomDelayToBorn": 0.0,
+          "_bodyTransform": {
+            "m_FileID": 0,
+            "m_PathID": 6739406248312776684
+          },
+          "_keepAlreadyHitTime": 0.0,
+          "_mainEffect": "",
+          "_clearMainEffectWhenReached": 1,
+          "_actionController": {
+            "_detachBuffsWhenTargetLeave": 0,
+            "_detachAllBuffsWhenStopped": 0,
+            "_onlyAddBuffsToTraceTarget": 1,
+            "_onlyAddBuffsToTargetOnce": 1,
+            "_dontAddBuffs": 0,
+            "_excludeAttachments": 0,
+            "_useSelfBlackboard": 0,
+            "_extraBuffsInTheEnd": [
+              {
+                "attributes": {
+                  "abnormalFlags": [],
+                  "abnormalImmunes": [],
+                  "abnormalAntis": [],
+                  "abnormalCombos": [],
+                  "abnormalComboImmunes": [],
+                  "attributeModifiers": []
+                },
+                "buffKey": "wisdel_t_1[projectile_shock]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "wisdel_t_1[projectile_shock]",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 0,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": [],
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": [],
+                "enableInitDirectionFromSource": 0
+              }
+            ],
+            "_useExtraBuffsWhenStopHit": 1,
+            "_addExtraBuffsWhenReached": 0,
+            "_detachAllExtraBuffsWhenStopped": 0
+          },
+          "_fixDealHitTargetLeft": 1,
+          "_stopGraphicProjectileWhenClearMainEffect": 0,
+          "_overrideAudioSignal": "",
+          "_fireProjectileReachedEvent": 0,
+          "_eliminatableStatus": 0,
+          "_movementAdjustableStatus": 0,
+          "_managedBySource": 0,
+          "_projectileType": 0,
+          "_containsChildrenBehaviours": 0,
+          "_canHitSameTargetMultipleTimes": 0,
+          "_lifeTimeType": 1,
+          "_lifeTime": 5.0,
+          "_getLifeTimeFromBB": 0,
+          "_hitNumType": 2,
+          "_maxHitNum": 1,
+          "_getMaxHitNumFromBB": 0,
+          "_maxHitNumBBKey": "",
+          "_stopAfterMaxHit": 0,
+          "_stopAfterFirstHit": 0,
+          "_stopWhenSourceInvalid": 0,
+          "_alwaysHitTraceTargetInTheEnd": 0,
+          "_alwaysHitTraceTargetWhenReached": 0,
+          "_alwaysReachInTheEnd": 1,
+          "_limitedMaxHitNumToSourceBlockedCnt": 0,
+          "_allowZeroBlockCntLimit": 0
+        }
+      },
+      {
+        "id": 4051109163363543020,
+        "class": "Torappu.Battle.Projectiles.AdvancedMovement",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -674042269457897492
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": -1429203677512073985
+          },
+          "m_Name": "",
+          "_rotateToTarget": 1,
+          "_forceReachedWhenTimeup": 1,
+          "_useSourceDirection": 0,
+          "_useTargetDirection": 0,
+          "_useStartToTarget": 0,
+          "_awayFromSourceAsDirection": 0,
+          "_flyToTargetLocationOnly": 0,
+          "_useSourceDirectionRandomArcAngleStart": 0,
+          "_useSourceToTargetRandomArcAngleStart": 0,
+          "_useSourceDirectionArcAngleWithRatio": 0,
+          "_useSourceToTargetArcAngleWithRatio": 0,
+          "_sourceDirectionArcAngleRatio": 0.0,
+          "_sourceToTargetArcAngle": 0.0,
+          "_adjustSourceToTargetArcAngleBySourceFace": 0,
+          "_flyToPredefinedLocation": 0,
+          "_predefinedLocation": 0,
+          "_freezeRotationZ": 0,
+          "_freezeRotationXY": 0,
+          "_exactMatchCameraForward": 0,
+          "_resetToTargetPosWhenReached": 0,
+          "_resetToTracetargetMapPosV3": 1,
+          "_handleWithIBuildableTarget": 0,
+          "_forceResetToTargetPosWhenReached": 0,
+          "_fixProjectileZWhenReached": 0,
+          "_fixOnProjectileReached": 0,
+          "_onlyReachedInTime": 0.0,
+          "_moveType": 1,
+          "_moveTypeData": {
+            "data": []
+          },
+          "_speed": 10.0,
+          "_distance": 0.0,
+          "_comeBack": 0,
+          "_comeBackSpeedScale": 0.25,
+          "_delayToStart": 0.0,
+          "_delayAfterReached": 0.15000000596046448,
+          "_delayToReachAfterHit": 0.0,
+          "_clearTraceTargetWhenReached": 0,
+          "_updateDelayTimeOnlyOnce": 1,
+          "_skipSmoothLerpDirection": 0,
+          "_addInertia": 0,
+          "_turnSpeed": 0.0,
+          "_useDynamicSpeed": 0,
+          "_deltaSpeedPerSec": 0.0,
+          "_finalSpeed": 0.0,
+          "_randomOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "_forceUseTargetMountPoint": 0,
+          "_rotateToTargetOnDelayToStart": 0,
+          "_drawFuncTurnAndWaveDebugLine": 0,
+          "_fixProjectileHasReached": 0
+        }
+      },
+      {
+        "id": -3221274581976471572,
+        "class": "Torappu.Battle.Projectiles.ScaleableHitBehaviour",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -674042269457897492
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 9002520987852067696
+          },
+          "m_Name": "",
+          "_targetOptions": {
+            "targetSide": 2,
+            "targetMotion": 1,
+            "targetCategory": 1,
+            "enableAdvancedOptions": 1,
+            "ignoreTargetFree": 0,
+            "ignoreAllyTargetFree": 0,
+            "ignoreHealFree": 0,
+            "ignoreMotionMode": 0,
+            "ignoreTargetSide": 0,
+            "excludeSomeAbnormalFlags": 0,
+            "containSomeAbnormalFlags": 0,
+            "excludeAbnormalFlag": 0,
+            "containAbnormalFlag": 0,
+            "purposeMask": 0,
+            "professionMask": 0,
+            "checkUnitType": 0,
+            "unitTypeMask": 0,
+            "onlyIgnoreSomeOfTargetFreeCase": 0,
+            "abnormalFlag": 0,
+            "abnormalCombo": 0
+          },
+          "_goThroughWall": 1,
+          "_onlyCheckHitWhenReachTarget": 1,
+          "_onlyCheckHitWhenStop": 0,
+          "_canFlyThroughTheDeathArea": 0,
+          "_exceptTraceTarget": 0,
+          "_overridePurposeMaskWithTargetOptions": 0,
+          "_rangeToLoad": {
+            "m_FileID": 0,
+            "m_PathID": 6246095135753054188
+          },
+          "_onlyTraceTarget": 0,
+          "_ignoreCamouflage": 1,
+          "_ignoreRangeScale": 0,
+          "_exceptSource": 0,
+          "_mergeTraceTargetMotion": 0,
+          "_markReachedOnlyWhenTargetEnter": 0,
+          "_exceptFlyCharacter": 0,
+          "_applyExtraAtkScale": 0,
+          "_atkScale": 1.0,
+          "_atkScaleKey": "append_atk_scale",
+          "_checkValidViaBBKey": "",
+          "_applyAtkScaleTraceTgt": 1,
+          "_atkScaleKeyTraceTgt": "main_atk_scale",
+          "_applyAtkScaleExcludeTraceTgt": 0,
+          "_atkScaleKeyExcludeTraceTgt": "",
+          "_applyAtkScaleCheckTargetNum": 0,
+          "_compareTargetNumType": 0,
+          "_atkScaleKeyCheckTargetNum": ""
+        }
+      },
+      {
+        "id": 6246095135753054188,
+        "class": "Torappu.Battle.CircleRange",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -674042269457897492
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 6185056810787956083
+          },
+          "m_Name": "",
+          "_useBlackboardRangeId": 0,
+          "_extendable": 0,
+          "_scaleble": 1
+        }
+      },
+      {
+        "id": -3066547320483600404,
+        "class": ".",
+        "classid": 58,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -674042269457897492
+          },
+          "m_Enabled": 1,
+          "m_Density": 1.0,
+          "m_Material": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "m_IsTrigger": {
+            "raw": "01",
+            "unresolvedType": "common:76"
+          },
+          "m_UsedByEffector": {
+            "raw": "00",
+            "unresolvedType": "common:76"
+          },
+          "m_UsedByComposite": {
+            "raw": "00",
+            "unresolvedType": "common:76"
+          },
+          "m_Offset": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "m_Radius": 1.100000023841858
+        }
+      },
+      {
+        "id": -6211646482809411604,
+        "class": "Torappu.Battle.Projectiles.ScaleableHitBehaviour",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -674042269457897492
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 9002520987852067696
+          },
+          "m_Name": "",
+          "_targetOptions": {
+            "targetSide": 2,
+            "targetMotion": 1,
+            "targetCategory": 1,
+            "enableAdvancedOptions": 1,
+            "ignoreTargetFree": 0,
+            "ignoreAllyTargetFree": 0,
+            "ignoreHealFree": 0,
+            "ignoreMotionMode": 0,
+            "ignoreTargetSide": 0,
+            "excludeSomeAbnormalFlags": 0,
+            "containSomeAbnormalFlags": 0,
+            "excludeAbnormalFlag": 0,
+            "containAbnormalFlag": 0,
+            "purposeMask": 0,
+            "professionMask": 0,
+            "checkUnitType": 0,
+            "unitTypeMask": 0,
+            "onlyIgnoreSomeOfTargetFreeCase": 0,
+            "abnormalFlag": 0,
+            "abnormalCombo": 0
+          },
+          "_goThroughWall": 1,
+          "_onlyCheckHitWhenReachTarget": 0,
+          "_onlyCheckHitWhenStop": 1,
+          "_canFlyThroughTheDeathArea": 0,
+          "_exceptTraceTarget": 0,
+          "_overridePurposeMaskWithTargetOptions": 0,
+          "_rangeToLoad": {
+            "m_FileID": 0,
+            "m_PathID": 6246095135753054188
+          },
+          "_onlyTraceTarget": 0,
+          "_ignoreCamouflage": 1,
+          "_ignoreRangeScale": 0,
+          "_exceptSource": 0,
+          "_mergeTraceTargetMotion": 0,
+          "_markReachedOnlyWhenTargetEnter": 0,
+          "_exceptFlyCharacter": 0,
+          "_applyExtraAtkScale": 1,
+          "_atkScale": 1.0,
+          "_atkScaleKey": "append_atk_scale",
+          "_checkValidViaBBKey": "enable_third_attack",
+          "_applyAtkScaleTraceTgt": 1,
+          "_atkScaleKeyTraceTgt": "main_atk_scale",
+          "_applyAtkScaleExcludeTraceTgt": 0,
+          "_atkScaleKeyExcludeTraceTgt": "",
+          "_applyAtkScaleCheckTargetNum": 0,
+          "_compareTargetNumType": 0,
+          "_atkScaleKeyCheckTargetNum": ""
+        }
+      },
+      {
+        "id": 34472864596699116,
+        "class": "Torappu.Battle.Projectiles.EffectBehaviour",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -674042269457897492
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 6834194400804168919
+          },
+          "m_Name": "",
+          "_effectsWhenStart": [],
+          "_effectsWhenReached": [],
+          "_effectsWhenHit": [
+            "wisdel_skill_01_hit"
+          ],
+          "_effectsToTargetWhenStart": [],
+          "_effectsToTileWhenStart": [],
+          "_effectsWhenStop": [],
+          "_effectOnTrigger": [],
+          "_replaceHitEffectAfterFirstHit": 0,
+          "_repalceEffectsWhenHit": [],
+          "_onlyPlayHitEffectOnTraceTarget": 0,
+          "_onlyPlayHitEffectOnNotTraceTarget": 0,
+          "_onlyPlayHitEffectOnce": 0,
+          "_clearHitEffectOnStop": 0,
+          "_clearPlayEffectOnStop": 0,
+          "_clearEffectsOnTileOnStop": 0,
+          "_clearReachedEffectWhenStop": 0,
+          "_alwaysPlayStartEffects": 0,
+          "_playStartEffectOnlyOnProjectile": 0,
+          "_useSourceFaceVector": 0,
+          "_useSourceFaceVectorOnHit": 0,
+          "_useSourceFaceVectorOnStart": 0,
+          "_forceReachTargetGround": 0,
+          "_followTargetGround": 0,
+          "_replaceMainEffectWhenReach": 0,
+          "_mainEffectToReplace": "",
+          "_useTraceTargetWhenReach": 0,
+          "_setReachEffectOnProjectile": 0,
+          "_syncEffectScaleViaProjectile": 0
+        }
+      },
+      {
+        "id": 3359566424387430380,
+        "class": "Torappu.Battle.Projectiles.ScaleableHitBehaviour",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -674042269457897492
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 9002520987852067696
+          },
+          "m_Name": "",
+          "_targetOptions": {
+            "targetSide": 2,
+            "targetMotion": 1,
+            "targetCategory": 1,
+            "enableAdvancedOptions": 1,
+            "ignoreTargetFree": 0,
+            "ignoreAllyTargetFree": 0,
+            "ignoreHealFree": 0,
+            "ignoreMotionMode": 0,
+            "ignoreTargetSide": 0,
+            "excludeSomeAbnormalFlags": 0,
+            "containSomeAbnormalFlags": 0,
+            "excludeAbnormalFlag": 0,
+            "containAbnormalFlag": 0,
+            "purposeMask": 0,
+            "professionMask": 0,
+            "checkUnitType": 0,
+            "unitTypeMask": 0,
+            "onlyIgnoreSomeOfTargetFreeCase": 0,
+            "abnormalFlag": 0,
+            "abnormalCombo": 0
+          },
+          "_goThroughWall": 1,
+          "_onlyCheckHitWhenReachTarget": 0,
+          "_onlyCheckHitWhenStop": 1,
+          "_canFlyThroughTheDeathArea": 0,
+          "_exceptTraceTarget": 0,
+          "_overridePurposeMaskWithTargetOptions": 0,
+          "_rangeToLoad": {
+            "m_FileID": 0,
+            "m_PathID": 6246095135753054188
+          },
+          "_onlyTraceTarget": 0,
+          "_ignoreCamouflage": 1,
+          "_ignoreRangeScale": 0,
+          "_exceptSource": 0,
+          "_mergeTraceTargetMotion": 0,
+          "_markReachedOnlyWhenTargetEnter": 0,
+          "_exceptFlyCharacter": 0,
+          "_applyExtraAtkScale": 1,
+          "_atkScale": 1.0,
+          "_atkScaleKey": "append_atk_scale",
+          "_checkValidViaBBKey": "",
+          "_applyAtkScaleTraceTgt": 1,
+          "_atkScaleKeyTraceTgt": "main_atk_scale",
+          "_applyAtkScaleExcludeTraceTgt": 0,
+          "_atkScaleKeyExcludeTraceTgt": "",
+          "_applyAtkScaleCheckTargetNum": 0,
+          "_compareTargetNumType": 0,
+          "_atkScaleKeyCheckTargetNum": ""
+        }
+      },
+      {
+        "id": -8572990326552385556,
+        "class": "Torappu.Battle.Projectiles.EffectBehaviour",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": -674042269457897492
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 6834194400804168919
+          },
+          "m_Name": "",
+          "_effectsWhenStart": [],
+          "_effectsWhenReached": [],
+          "_effectsWhenHit": [],
+          "_effectsToTargetWhenStart": [],
+          "_effectsToTileWhenStart": [],
+          "_effectsWhenStop": [
+            "wisdel_skill_01_hit_02"
+          ],
+          "_effectOnTrigger": [],
+          "_replaceHitEffectAfterFirstHit": 0,
+          "_repalceEffectsWhenHit": [],
+          "_onlyPlayHitEffectOnTraceTarget": 0,
+          "_onlyPlayHitEffectOnNotTraceTarget": 0,
+          "_onlyPlayHitEffectOnce": 0,
+          "_clearHitEffectOnStop": 0,
+          "_clearPlayEffectOnStop": 0,
+          "_clearEffectsOnTileOnStop": 0,
+          "_clearReachedEffectWhenStop": 0,
+          "_alwaysPlayStartEffects": 0,
+          "_playStartEffectOnlyOnProjectile": 0,
+          "_useSourceFaceVector": 0,
+          "_useSourceFaceVectorOnHit": 0,
+          "_useSourceFaceVectorOnStart": 0,
+          "_forceReachTargetGround": 1,
+          "_followTargetGround": 0,
+          "_replaceMainEffectWhenReach": 0,
+          "_mainEffectToReplace": "",
+          "_useTraceTargetWhenReach": 0,
+          "_setReachEffectOnProjectile": 0,
+          "_syncEffectScaleViaProjectile": 0
+        }
+      }
+    ]
+  },
+  {
+    "gameObject": "projectile_chr_heyak_s3_logic",
+    "id": 7679718550797213149,
+    "components": [
+      {
+        "id": -1319599375646794275,
+        "class": ".",
+        "classid": 4,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 7679718550797213149
+          },
+          "m_LocalRotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": [
+            {
+              "m_FileID": 0,
+              "m_PathID": 3066170298123738589
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": -8740240666532323875
+            }
+          ],
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        }
+      },
+      {
+        "id": -2392613464365277731,
+        "class": "Torappu.Battle.SimpleProjectile",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 7679718550797213149
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": -8797129986015012478
+          },
+          "m_Name": "",
+          "_randomDelayToBorn": 0.30000001192092896,
+          "_bodyTransform": {
+            "m_FileID": 0,
+            "m_PathID": 3066170298123738589
+          },
+          "_keepAlreadyHitTime": -1.0,
+          "_mainEffect": "",
+          "_clearMainEffectWhenReached": 1,
+          "_actionController": {
+            "_detachBuffsWhenTargetLeave": 0,
+            "_detachAllBuffsWhenStopped": 0,
+            "_onlyAddBuffsToTraceTarget": 0,
+            "_onlyAddBuffsToTargetOnce": 0,
+            "_dontAddBuffs": 0,
+            "_excludeAttachments": 0,
+            "_useSelfBlackboard": 0,
+            "_extraBuffsInTheEnd": [],
+            "_useExtraBuffsWhenStopHit": 0,
+            "_addExtraBuffsWhenReached": 0,
+            "_detachAllExtraBuffsWhenStopped": 0
+          },
+          "_fixDealHitTargetLeft": 1,
+          "_stopGraphicProjectileWhenClearMainEffect": 0,
+          "_overrideAudioSignal": "",
+          "_fireProjectileReachedEvent": 0,
+          "_eliminatableStatus": 0,
+          "_movementAdjustableStatus": 0,
+          "_managedBySource": 0,
+          "_projectileType": 0,
+          "_containsChildrenBehaviours": 0,
+          "_canHitSameTargetMultipleTimes": 0,
+          "_lifeTimeType": 1,
+          "_lifeTime": 4.0,
+          "_getLifeTimeFromBB": 0,
+          "_hitNumType": 1,
+          "_maxHitNum": 1,
+          "_getMaxHitNumFromBB": 0,
+          "_maxHitNumBBKey": "",
+          "_stopAfterMaxHit": 0,
+          "_stopAfterFirstHit": 0,
+          "_stopWhenSourceInvalid": 0,
+          "_alwaysHitTraceTargetInTheEnd": 0,
+          "_alwaysHitTraceTargetWhenReached": 0,
+          "_alwaysReachInTheEnd": 0,
+          "_limitedMaxHitNumToSourceBlockedCnt": 0,
+          "_allowZeroBlockCntLimit": 0
+        }
+      },
+      {
+        "id": -5591427038317257251,
+        "class": "Torappu.Battle.Projectiles.SelectorHitBehaviour",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 7679718550797213149
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": -5673327578790077295
+          },
+          "m_Name": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 662432406710771165
+          },
+          "_resetRangeSelectorByBB": 0,
+          "_ignoreRangeScale": 1,
+          "_interval": 0.029999999329447746,
+          "_waitFirstPeriod": 0,
+          "_firstPeriod": -1.0,
+          "_onlyCheckHitWhenReachTarget": 0,
+          "_onlyCheckHitWhenStop": 0,
+          "_exceptTraceTarget": 0,
+          "_hitPasserby": 1,
+          "_ignoreSmallEps": 0,
+          "_effectsWhenSelectPredict": 0.0,
+          "_selectEffectOnGround": 1,
+          "_effectsWhenSelect": [],
+          "_playAudioWhenSelect": 0,
+          "_intervalBbKey": "interval",
+          "_limitedHitTimesBbKey": "",
+          "_limitedHitTimes": 0,
+          "_stopWhenLimitedHitTimesUsedUp": 0,
+          "_exceptSource": 0
+        }
+      },
+      {
+        "id": -6555492100322435619,
+        "class": "Torappu.Battle.Projectiles.FarthestPointMovement",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 7679718550797213149
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": -7879463504869738731
+          },
+          "m_Name": "",
+          "_rotateToTarget": 0,
+          "_forceReachedWhenTimeup": 1,
+          "_useSourceDirection": 1,
+          "_useTargetDirection": 0,
+          "_useStartToTarget": 0,
+          "_awayFromSourceAsDirection": 0,
+          "_flyToTargetLocationOnly": 0,
+          "_useSourceDirectionRandomArcAngleStart": 0,
+          "_useSourceToTargetRandomArcAngleStart": 0,
+          "_useSourceDirectionArcAngleWithRatio": 0,
+          "_useSourceToTargetArcAngleWithRatio": 0,
+          "_sourceDirectionArcAngleRatio": 0.0,
+          "_sourceToTargetArcAngle": 0.0,
+          "_adjustSourceToTargetArcAngleBySourceFace": 0,
+          "_flyToPredefinedLocation": 0,
+          "_predefinedLocation": 0,
+          "_freezeRotationZ": 0,
+          "_freezeRotationXY": 0,
+          "_exactMatchCameraForward": 0,
+          "_resetToTargetPosWhenReached": 0,
+          "_resetToTracetargetMapPosV3": 0,
+          "_handleWithIBuildableTarget": 0,
+          "_forceResetToTargetPosWhenReached": 0,
+          "_fixProjectileZWhenReached": 0,
+          "_fixOnProjectileReached": 0,
+          "_onlyReachedInTime": 0.0,
+          "_moveType": 4,
+          "_moveTypeData": {
+            "data": []
+          },
+          "_speed": 1.0,
+          "_distance": 0.0,
+          "_comeBack": 0,
+          "_comeBackSpeedScale": 0.25,
+          "_delayToStart": 0.0,
+          "_delayAfterReached": 0.0,
+          "_delayToReachAfterHit": 0.12999999523162842,
+          "_clearTraceTargetWhenReached": 1,
+          "_updateDelayTimeOnlyOnce": 1,
+          "_skipSmoothLerpDirection": 0,
+          "_addInertia": 0,
+          "_turnSpeed": 0.0,
+          "_useDynamicSpeed": 0,
+          "_deltaSpeedPerSec": 0.0,
+          "_finalSpeed": 0.0,
+          "_randomOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "_forceUseTargetMountPoint": 0,
+          "_rotateToTargetOnDelayToStart": 0,
+          "_drawFuncTurnAndWaveDebugLine": 0,
+          "_fixProjectileHasReached": 0,
+          "_targetHeightType": 0,
+          "_useStartDirection": 0,
+          "_withinAbilityRange": 1,
+          "_useConstDirection": 0,
+          "_constDirection": 0,
+          "_useDirToTarget": 0,
+          "_useVerticalDir": 0,
+          "_useHorizontalDir": 0,
+          "_removeTraceTargetAtStart": 1,
+          "_useEightWaysDirection": 0,
+          "_useTraceTargetDirection": 0
+        }
+      },
+      {
+        "id": 240205452139879901,
+        "class": "Torappu.Battle.ScaleAtkScaleViaTimeRatioBehaviour",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 7679718550797213149
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 1290026516536407645
+          },
+          "m_Name": "",
+          "_minKey": "min_atk_scale",
+          "_maxKey": "max_atk_scale",
+          "_scaleCurve": {
+            "common:299": [
+              {
+                "time": 0.0,
+                "value": 0.0,
+                "inSlope": 2.258312463760376,
+                "outSlope": 2.258312463760376,
+                "weightedMode": 0,
+                "inWeight": 0.3333333432674408,
+                "outWeight": 0.3333333432674408
+              },
+              {
+                "time": 0.44280850887298584,
+                "value": 1.0,
+                "inSlope": 2.258312463760376,
+                "outSlope": Infinity,
+                "weightedMode": 0,
+                "inWeight": 0.3333333432674408,
+                "outWeight": 0.3333333432674408
+              },
+              {
+                "time": 1.0,
+                "value": 1.0,
+                "inSlope": 0.0,
+                "outSlope": 0.0,
+                "weightedMode": 0,
+                "inWeight": 0.3333333432674408,
+                "outWeight": 0.3333333432674408
+              }
+            ],
+            "m_PreInfinity": 2,
+            "m_PostInfinity": 2,
+            "m_RotationOrder": 4
+          }
+        }
+      },
+      {
+        "id": 4927975731625844189,
+        "class": "Torappu.Battle.Projectiles.EffectBehaviour",
+        "classid": 114,
+        "fields": {
+          "m_GameObject": {
+            "m_FileID": 0,
+            "m_PathID": 7679718550797213149
+          },
+          "m_Enabled": 1,
+          "m_Script": {
+            "m_FileID": 1,
+            "m_PathID": 6834194400804168919
+          },
+          "m_Name": "",
+          "_effectsWhenStart": [],
+          "_effectsWhenReached": [
+            "heyak_skill_03_trail_01_end"
+          ],
+          "_effectsWhenHit": [
+            "heyak_skill_03_hit_01"
+          ],
+          "_effectsToTargetWhenStart": [],
+          "_effectsToTileWhenStart": [],
+          "_effectsWhenStop": [],
+          "_effectOnTrigger": [],
+          "_replaceHitEffectAfterFirstHit": 0,
+          "_repalceEffectsWhenHit": [],
+          "_onlyPlayHitEffectOnTraceTarget": 0,
+          "_onlyPlayHitEffectOnNotTraceTarget": 0,
+          "_onlyPlayHitEffectOnce": 0,
+          "_clearHitEffectOnStop": 0,
+          "_clearPlayEffectOnStop": 0,
+          "_clearEffectsOnTileOnStop": 0,
+          "_clearReachedEffectWhenStop": 0,
+          "_alwaysPlayStartEffects": 0,
+          "_playStartEffectOnlyOnProjectile": 0,
+          "_useSourceFaceVector": 0,
+          "_useSourceFaceVectorOnHit": 0,
+          "_useSourceFaceVectorOnStart": 0,
+          "_forceReachTargetGround": 0,
+          "_followTargetGround": 0,
+          "_replaceMainEffectWhenReach": 0,
+          "_mainEffectToReplace": "heyak_skill_03_trail_01_end",
+          "_useTraceTargetWhenReach": 0,
+          "_setReachEffectOnProjectile": 0,
+          "_syncEffectScaleViaProjectile": 0
+        }
+      }
+    ]
+  }
+]

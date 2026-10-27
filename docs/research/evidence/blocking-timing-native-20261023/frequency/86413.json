@@ -1,0 +1,16 @@
+{
+  "index": 86413,
+  "name": "OnProjectileStop",
+  "type": 12568,
+  "returnType": 83059,
+  "parameterStart": -1,
+  "generic": -1,
+  "token": 100749710,
+  "flags": 198,
+  "iflags": 0,
+  "slot": 7,
+  "parameterCount": 0,
+  "address": 6456355552,
+  "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.OnProjectileStop",
+  "parameters": []
+}

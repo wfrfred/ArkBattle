@@ -1,0 +1,6 @@
+0x1808e0da1 -> 71049 71538 Torappu.Battle.RacingEnemy._OnRacingEnemyFallDown@0x1808e0b90
+0x180a719fa -> 71054 76471 Torappu.Battle.Enemy.OnReset@0x180a718e0
+0x180a90b0e -> 76493 76756 Torappu.Battle.Enemy.States.FallDownState.OnEnter@0x180a90aa0
+0x180a9ecdd -> 76493 76747 Torappu.Battle.Enemy.States.UnbalanceState.OnExit@0x180a9ec10
+0x180aade48 -> 71049 77264 Torappu.Battle.MarblesLikeEnemy._UpdateMoveVelocity@0x180aadbb0
+0x18117a74d -> 76452 100350 Torappu.Battle.Action.Nodes.BlinkNode.Execute@0x181179fa0

@@ -1,0 +1,749 @@
+{
+  "repository": "Kengxxiao/ArknightsGameData",
+  "commit": "bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d",
+  "scope": "All JSON blobs in levels/obt and levels/activities from fixed official-data mirror revision; route-like objects recognized by allowDiagonalMove; blob SHA-1 checked for every file.",
+  "excluded_reclamation_paths": [
+    "/obt/sandbox/",
+    "/activities/act1sandbox/"
+  ],
+  "all": {
+    "files": 3997,
+    "routes": 147252,
+    "errors": 0,
+    "fields": {
+      "motionMode": {
+        "\"WALK\"": 114614,
+        "\"FLY\"": 9420,
+        "\"E_NUM\"": 15371,
+        "0": 7376,
+        "1": 471
+      },
+      "allowDiagonalMove": {
+        "true": 147252
+      },
+      "visitEveryTileCenter": {
+        "false": 147252
+      },
+      "visitEveryNodeCenter": {
+        "false": 147252
+      },
+      "visitEveryCheckPoint": {
+        "false": 136679,
+        "true": 7844,
+        "null": 2729
+      }
+    },
+    "tags": {
+      "motionMode": 32638,
+      "spawnRandomRange": 3741,
+      "spawnOffset": 1430,
+      "visitEveryCheckPoint": 7844
+    },
+    "examples": {
+      "spawnOffset": [
+        {
+          "path": "zh_CN/gamedata/levels/activities/act1vautochess/level_act1vautochess_05-09.json",
+          "at": "/routes/7",
+          "data": {
+            "motionMode": "WALK",
+            "startPosition": {
+              "row": 4,
+              "col": 13
+            },
+            "endPosition": {
+              "row": 2,
+              "col": 4
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.2
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        },
+        {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_02-07.json",
+          "at": "/routes/8",
+          "data": {
+            "motionMode": "WALK",
+            "startPosition": {
+              "row": 1,
+              "col": 7
+            },
+            "endPosition": {
+              "row": 2,
+              "col": 9
+            },
+            "spawnOffset": {
+              "x": 0.12,
+              "y": 0.12
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        },
+        {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_02-08.json",
+          "at": "/routes/24",
+          "data": {
+            "motionMode": "WALK",
+            "startPosition": {
+              "row": 3,
+              "col": 9
+            },
+            "endPosition": {
+              "row": 6,
+              "col": 9
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.3
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        }
+      ],
+      "spawnRandomRange": [
+        {
+          "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_escaped_multi.json",
+          "at": "/routes/0",
+          "data": {
+            "motionMode": "FLY",
+            "startPosition": {
+              "row": 9,
+              "col": 18
+            },
+            "endPosition": {
+              "row": 9,
+              "col": 2
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.3,
+              "y": 0.3
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        },
+        {
+          "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_escaped_single.json",
+          "at": "/routes/0",
+          "data": {
+            "motionMode": "FLY",
+            "startPosition": {
+              "row": 9,
+              "col": 10
+            },
+            "endPosition": {
+              "row": 9,
+              "col": 2
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.3,
+              "y": 0.3
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        },
+        {
+          "path": "zh_CN/gamedata/levels/activities/act1autochess/level_autochess_enemy_data.json",
+          "at": "/routes/0",
+          "data": {
+            "motionMode": "WALK",
+            "startPosition": {
+              "row": 9,
+              "col": 10
+            },
+            "endPosition": {
+              "row": 9,
+              "col": 2
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.1,
+              "y": 0.1
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        }
+      ],
+      "visitEveryCheckPoint": [
+        {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_09-01.json",
+          "at": "/routes/5",
+          "data": {
+            "motionMode": "WALK",
+            "startPosition": {
+              "row": 0,
+              "col": 2
+            },
+            "endPosition": {
+              "row": 3,
+              "col": 10
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": true
+          }
+        },
+        {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_12-17.json",
+          "at": "/routes/2",
+          "data": {
+            "motionMode": "WALK",
+            "startPosition": {
+              "row": 7,
+              "col": 6
+            },
+            "endPosition": {
+              "row": 2,
+              "col": 0
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": true
+          }
+        },
+        {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_13-09.json",
+          "at": "/extraRoutes/0",
+          "data": {
+            "motionMode": "WALK",
+            "startPosition": {
+              "row": 6,
+              "col": 8
+            },
+            "endPosition": {
+              "row": 4,
+              "col": 2
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": true
+          }
+        }
+      ],
+      "visitEveryNodeCenter": [],
+      "visitEveryTileCenter": [],
+      "motionMode": [
+        {
+          "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_01.json",
+          "at": "/routes/2",
+          "data": {
+            "motionMode": "FLY",
+            "startPosition": {
+              "row": 9,
+              "col": 10
+            },
+            "endPosition": {
+              "row": 9,
+              "col": 2
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        },
+        {
+          "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_02.json",
+          "at": "/routes/2",
+          "data": {
+            "motionMode": "FLY",
+            "startPosition": {
+              "row": 9,
+              "col": 10
+            },
+            "endPosition": {
+              "row": 9,
+              "col": 2
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        },
+        {
+          "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_03.json",
+          "at": "/routes/2",
+          "data": {
+            "motionMode": "FLY",
+            "startPosition": {
+              "row": 9,
+              "col": 10
+            },
+            "endPosition": {
+              "row": 9,
+              "col": 2
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        }
+      ]
+    }
+  },
+  "excluding_reclamation": {
+    "files": 3664,
+    "routes": 137741,
+    "errors": 0,
+    "fields": {
+      "motionMode": {
+        "\"WALK\"": 109010,
+        "\"FLY\"": 9224,
+        "\"E_NUM\"": 13773,
+        "0": 5279,
+        "1": 455
+      },
+      "allowDiagonalMove": {
+        "true": 137741
+      },
+      "visitEveryTileCenter": {
+        "false": 137741
+      },
+      "visitEveryNodeCenter": {
+        "false": 137741
+      },
+      "visitEveryCheckPoint": {
+        "false": 128337,
+        "true": 6675,
+        "null": 2729
+      }
+    },
+    "tags": {
+      "motionMode": 28731,
+      "spawnRandomRange": 3400,
+      "spawnOffset": 1410,
+      "visitEveryCheckPoint": 6675
+    },
+    "examples": {
+      "spawnOffset": [
+        {
+          "path": "zh_CN/gamedata/levels/activities/act1vautochess/level_act1vautochess_05-09.json",
+          "at": "/routes/7",
+          "data": {
+            "motionMode": "WALK",
+            "startPosition": {
+              "row": 4,
+              "col": 13
+            },
+            "endPosition": {
+              "row": 2,
+              "col": 4
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.2
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        },
+        {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_02-07.json",
+          "at": "/routes/8",
+          "data": {
+            "motionMode": "WALK",
+            "startPosition": {
+              "row": 1,
+              "col": 7
+            },
+            "endPosition": {
+              "row": 2,
+              "col": 9
+            },
+            "spawnOffset": {
+              "x": 0.12,
+              "y": 0.12
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        },
+        {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_02-08.json",
+          "at": "/routes/24",
+          "data": {
+            "motionMode": "WALK",
+            "startPosition": {
+              "row": 3,
+              "col": 9
+            },
+            "endPosition": {
+              "row": 6,
+              "col": 9
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.3
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        }
+      ],
+      "spawnRandomRange": [
+        {
+          "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_escaped_multi.json",
+          "at": "/routes/0",
+          "data": {
+            "motionMode": "FLY",
+            "startPosition": {
+              "row": 9,
+              "col": 18
+            },
+            "endPosition": {
+              "row": 9,
+              "col": 2
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.3,
+              "y": 0.3
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        },
+        {
+          "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_escaped_single.json",
+          "at": "/routes/0",
+          "data": {
+            "motionMode": "FLY",
+            "startPosition": {
+              "row": 9,
+              "col": 10
+            },
+            "endPosition": {
+              "row": 9,
+              "col": 2
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.3,
+              "y": 0.3
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        },
+        {
+          "path": "zh_CN/gamedata/levels/activities/act1autochess/level_autochess_enemy_data.json",
+          "at": "/routes/0",
+          "data": {
+            "motionMode": "WALK",
+            "startPosition": {
+              "row": 9,
+              "col": 10
+            },
+            "endPosition": {
+              "row": 9,
+              "col": 2
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.1,
+              "y": 0.1
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        }
+      ],
+      "visitEveryCheckPoint": [
+        {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_09-01.json",
+          "at": "/routes/5",
+          "data": {
+            "motionMode": "WALK",
+            "startPosition": {
+              "row": 0,
+              "col": 2
+            },
+            "endPosition": {
+              "row": 3,
+              "col": 10
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": true
+          }
+        },
+        {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_12-17.json",
+          "at": "/routes/2",
+          "data": {
+            "motionMode": "WALK",
+            "startPosition": {
+              "row": 7,
+              "col": 6
+            },
+            "endPosition": {
+              "row": 2,
+              "col": 0
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": true
+          }
+        },
+        {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_13-09.json",
+          "at": "/extraRoutes/0",
+          "data": {
+            "motionMode": "WALK",
+            "startPosition": {
+              "row": 6,
+              "col": 8
+            },
+            "endPosition": {
+              "row": 4,
+              "col": 2
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": true
+          }
+        }
+      ],
+      "visitEveryNodeCenter": [],
+      "visitEveryTileCenter": [],
+      "motionMode": [
+        {
+          "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_01.json",
+          "at": "/routes/2",
+          "data": {
+            "motionMode": "FLY",
+            "startPosition": {
+              "row": 9,
+              "col": 10
+            },
+            "endPosition": {
+              "row": 9,
+              "col": 2
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        },
+        {
+          "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_02.json",
+          "at": "/routes/2",
+          "data": {
+            "motionMode": "FLY",
+            "startPosition": {
+              "row": 9,
+              "col": 10
+            },
+            "endPosition": {
+              "row": 9,
+              "col": 2
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        },
+        {
+          "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_03.json",
+          "at": "/routes/2",
+          "data": {
+            "motionMode": "FLY",
+            "startPosition": {
+              "row": 9,
+              "col": 10
+            },
+            "endPosition": {
+              "row": 9,
+              "col": 2
+            },
+            "spawnOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "spawnRandomRange": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "allowDiagonalMove": true,
+            "visitEveryTileCenter": false,
+            "visitEveryNodeCenter": false,
+            "visitEveryCheckPoint": false
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "index": 77205,
+  "name": ".ctor",
+  "type": 11414,
+  "returnType": 83059,
+  "parameterStart": -1,
+  "generic": -1,
+  "token": 100740502,
+  "flags": 6278,
+  "iflags": 0,
+  "slot": 65535,
+  "parameterCount": 0,
+  "address": 6453598112,
+  "fullname": "Torappu.Battle.BlockManager..ctor",
+  "parameters": []
+}

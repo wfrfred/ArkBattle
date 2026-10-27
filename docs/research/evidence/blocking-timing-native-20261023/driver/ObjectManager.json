@@ -1,0 +1,88 @@
+{
+  "fields": [
+    {
+      "index": 79542,
+      "name": "m_objects",
+      "type": 27170,
+      "typeName": "type(0x15, data=0x188a3e490)",
+      "attrs": 1,
+      "static": false,
+      "offset": 16,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188407
+    },
+    {
+      "index": 79543,
+      "name": "m_cachedList",
+      "type": 21524,
+      "typeName": "type(0x15, data=0x188bb0f00)",
+      "attrs": 1,
+      "static": false,
+      "offset": 24,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188408
+    },
+    {
+      "index": 79544,
+      "name": "<projectiles>k__BackingField",
+      "type": 29783,
+      "typeName": "type(0x15, data=0x188ac2ba0)",
+      "attrs": 1,
+      "static": false,
+      "offset": 32,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188409
+    }
+  ],
+  "methods": [
+    {
+      "index": 71077,
+      "name": "OnFixedUpdate",
+      "type": 10744,
+      "returnType": 83059,
+      "parameterStart": 70538,
+      "generic": -1,
+      "token": 100734374,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": "0x1808d5300",
+      "fullname": "Torappu.Battle.ObjectManager.OnFixedUpdate",
+      "parameters": [
+        {
+          "index": 70538,
+          "name": "deltaTime",
+          "token": 134288272,
+          "type": 53178
+        }
+      ]
+    },
+    {
+      "index": 71078,
+      "name": "OnLateFixedUpdate",
+      "type": 10744,
+      "returnType": 83059,
+      "parameterStart": 70539,
+      "generic": -1,
+      "token": 100734375,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": "0x1808d54d0",
+      "fullname": "Torappu.Battle.ObjectManager.OnLateFixedUpdate",
+      "parameters": [
+        {
+          "index": 70539,
+          "name": "deltaTime",
+          "token": 134288273,
+          "type": 53178
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+    "sha256": "bfd637cca7e39e239534da33a580bc6a02d8f160a24708466028dee5e32d7b73"
+  },
+  {
+    "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+    "sha256": "14306a31b1856f61b25812a69a2a057b7c4634561fb2c2bccc42fb37ee41a27e"
+  },
+  {
+    "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1035_wisdel.ab",
+    "sha256": "dab9e0c52a280e2f8042e78cd2b71dcdabb373d92bab2a687f9a7fd57ae03d44"
+  },
+  {
+    "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_379_sesa.ab",
+    "sha256": "ecfb7da3ff39ed19c3c558430b17884eee720276cefd1f00fe16d1f3d296f40e"
+  },
+  {
+    "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1027_greyy2.ab",
+    "sha256": "2d5a4a14ace0979572f88d8cde1f7531a3e3bd414421f077dc3c05f004925c68"
+  }
+]

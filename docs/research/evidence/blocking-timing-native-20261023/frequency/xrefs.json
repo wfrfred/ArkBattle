@@ -1,0 +1,145 @@
+[
+  {
+    "at": "0x1808d1384",
+    "target": 75955,
+    "op": "call",
+    "owners": [
+      {
+        "index": 71113,
+        "name": "Torappu.Battle.HarpoonProjectile.OnProjectileStop",
+        "start": "0x1808d1150",
+        "offset": "0x234"
+      }
+    ]
+  },
+  {
+    "at": "0x1808d4607",
+    "target": 75955,
+    "op": "call",
+    "owners": [
+      {
+        "index": 71246,
+        "name": "Torappu.Battle.NetCatcherProjectile.OnProjectileStop",
+        "start": "0x1808d4480",
+        "offset": "0x187"
+      }
+    ]
+  },
+  {
+    "at": "0x180a2e7d1",
+    "target": 77204,
+    "op": "call",
+    "owners": [
+      {
+        "index": 76030,
+        "name": "Torappu.Battle.Character.OnReset",
+        "start": "0x180a2e650",
+        "offset": "0x181"
+      }
+    ]
+  },
+  {
+    "at": "0x180a2eefa",
+    "target": 77203,
+    "op": "call",
+    "owners": [
+      {
+        "index": 76022,
+        "name": "Torappu.Battle.Character.OnTick",
+        "start": "0x180a2ec90",
+        "offset": "0x26a"
+      }
+    ]
+  },
+  {
+    "at": "0x180a71c71",
+    "target": 77204,
+    "op": "call",
+    "owners": [
+      {
+        "index": 76471,
+        "name": "Torappu.Battle.Enemy.OnReset",
+        "start": "0x180a718e0",
+        "offset": "0x391"
+      }
+    ]
+  },
+  {
+    "at": "0x180a724c7",
+    "target": 77203,
+    "op": "call",
+    "owners": [
+      {
+        "index": 76531,
+        "name": "Torappu.Battle.Enemy.OnTick",
+        "start": "0x180a72340",
+        "offset": "0x187"
+      }
+    ]
+  },
+  {
+    "at": "0x180a724e5",
+    "target": 77190,
+    "op": "call",
+    "owners": [
+      {
+        "index": 76531,
+        "name": "Torappu.Battle.Enemy.OnTick",
+        "start": "0x180a72340",
+        "offset": "0x1a5"
+      }
+    ]
+  },
+  {
+    "at": "0x180d42d3d",
+    "target": 75955,
+    "op": "call",
+    "owners": [
+      {
+        "index": 86413,
+        "name": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.OnProjectileStop",
+        "start": "0x180d42ae0",
+        "offset": "0x25d"
+      }
+    ]
+  },
+  {
+    "at": "0x181162f30",
+    "target": 75955,
+    "op": "call",
+    "owners": [
+      {
+        "index": 99962,
+        "name": "Torappu.Battle.Action.Nodes.CharSearchBlockeeImmediate.Execute",
+        "start": "0x181162e20",
+        "offset": "0x110"
+      }
+    ]
+  },
+  {
+    "at": "0x180a3827e",
+    "target": 77190,
+    "op": "jmp",
+    "owners": [
+      {
+        "index": 76016,
+        "name": "Torappu.Battle.Character._SearchBlockee",
+        "start": "0x180a38200",
+        "offset": "0x7e"
+      }
+    ]
+  },
+  {
+    "at": "0x180aafd33",
+    "target": 76016,
+    "op": "jmp",
+    "owners": [
+      {
+        "index": 77301,
+        "name": "Torappu.Battle.PropLikeStaticBlockToken.<>xLuaBaseProxy__SearchBlockee",
+        "start": "0x180aafd30",
+        "offset": "0x3"
+      }
+    ]
+  }
+]

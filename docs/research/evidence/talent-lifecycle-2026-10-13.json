@@ -1,0 +1,1242 @@
+{
+  "collectedOn": "2026-10-13",
+  "kind": "bounded-current-client-native-talent-audit",
+  "scopeNote": "普通原生分支静态证据；未运行客户端，未确认XLua现场覆盖。字段为正面摘录，未列不代表不存在；未解开shared generic collector的MethodInfo。旧docs客户端指纹和方法索引不同，不混用。",
+  "clientRoot": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game",
+  "clientFiles": [
+    {
+      "path": "GameAssembly.dll",
+      "size": 218523112,
+      "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5"
+    },
+    {
+      "path": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+      "size": 45805368,
+      "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f"
+    }
+  ],
+  "metadataVersion": 29,
+  "locator": {
+    "codeGenModule": "Assembly-CSharp.dll",
+    "moduleVA": "0x1872593c0",
+    "methodPointerCount": 219703,
+    "methodPointersVA": "0x1885d6f80",
+    "mapping": "nativeVA = methodPointers[(metadataMethod.token & 0xffffff) - 1]",
+    "virtualMapping": "IL2CPP class vtable base +0x140; virtual entry = +0x140 + method.slot*0x10; direct shared aliases are kept, not arbitrarily resolved"
+  },
+  "nativeMethods": [
+    {
+      "methodIndex": 73304,
+      "typeIndex": 10962,
+      "type": "Torappu.Battle.BasicTalent",
+      "name": "Attach",
+      "token": "0x6011e59",
+      "params": 1,
+      "slot": 65535,
+      "va": "0x1809724d0",
+      "indexedDirectCalls": [],
+      "excerptRanges": [
+        {
+          "start": "0x180972516",
+          "end": "0x180972571"
+        }
+      ]
+    },
+    {
+      "methodIndex": 73305,
+      "typeIndex": 10962,
+      "type": "Torappu.Battle.BasicTalent",
+      "name": "Detach",
+      "token": "0x6011e5a",
+      "params": 0,
+      "slot": 65535,
+      "va": "0x1809729c0",
+      "indexedDirectCalls": [],
+      "excerptRanges": [
+        {
+          "start": "0x1809729ff",
+          "end": "0x180972a54"
+        }
+      ]
+    },
+    {
+      "methodIndex": 73274,
+      "typeIndex": 10962,
+      "type": "Torappu.Battle.BasicTalent",
+      "name": "get_isValid",
+      "token": "0x6011e3b",
+      "params": 0,
+      "slot": 65535,
+      "va": "0x180973df0",
+      "indexedDirectCalls": [],
+      "excerptRanges": [
+        {
+          "start": "0x180973e4d",
+          "end": "0x180973e6f"
+        }
+      ]
+    },
+    {
+      "methodIndex": 73275,
+      "typeIndex": 10962,
+      "type": "Torappu.Battle.BasicTalent",
+      "name": "get_isAttached",
+      "token": "0x6011e3c",
+      "params": 0,
+      "slot": 6,
+      "va": "0x180973bc0",
+      "indexedDirectCalls": [
+        "0x180973c0c jmp      0x1805d7d50 ; Torappu.Battle.Ability.get_isAttached [63039]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180973bfc",
+          "end": "0x180973c0c"
+        }
+      ]
+    },
+    {
+      "methodIndex": 73301,
+      "typeIndex": 10962,
+      "type": "Torappu.Battle.BasicTalent",
+      "name": "AssignData",
+      "token": "0x6011e56",
+      "params": 3,
+      "slot": 21,
+      "va": "0x180972000",
+      "indexedDirectCalls": [
+        "0x1809720a1 call     0x1809742f0 ; Torappu.Battle.BasicTalent.set_data [73296]",
+        "0x18097215f call     0x180973fc0 ; Torappu.Battle.BasicTalent.get_parentMode [73293]",
+        "0x1809721aa call     0x180973fc0 ; Torappu.Battle.BasicTalent.get_parentMode [73293]",
+        "0x1809721f9 call     0x1809730d0 ; Torappu.Battle.BasicTalent._CreateBlackboard [73320]",
+        "0x18097225b call     0x18231e520 ; Torappu.Blackboard.Assign [30812]",
+        "0x18097227a call     0x180abed90 ; .Delta.IsNull [77855]",
+        "0x18097228d call     0x18231f9a0 ; Torappu.Blackboard.MergeTo [30816]",
+        "0x1809722dc call     0x180704d90 ; Torappu.Battle.Entity.get_id [66343]",
+        "0x1809722e9 call     0x180708ce0 ; Torappu.Battle.Entity.get_tmplId [66345]",
+        "0x180972325 call     0x180ac8210 ; Torappu.Battle.Unit.GenerateTalentSignalId [77682]",
+        "0x18097242d call     0x18231f330 ; Torappu.Blackboard.GetFloatOrDefault [30832]",
+        "0x180972479 call     0x1805d6bc0 ; Torappu.Battle.Ability.SetData [63054]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x18097209b",
+          "end": "0x1809720a6"
+        },
+        {
+          "start": "0x1809722a5",
+          "end": "0x1809722bd"
+        },
+        {
+          "start": "0x180972457",
+          "end": "0x180972479"
+        }
+      ]
+    },
+    {
+      "methodIndex": 73317,
+      "typeIndex": 10962,
+      "type": "Torappu.Battle.BasicTalent",
+      "name": "DoAttach",
+      "token": "0x6011e66",
+      "params": 0,
+      "slot": 29,
+      "va": "0x1809716c0",
+      "indexedDirectCalls": [
+        "0x180971714 jmp      0x1805d4ae0 ; Torappu.Battle.Ability.Attach [63058]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x1809716ec",
+          "end": "0x180971714"
+        }
+      ]
+    },
+    {
+      "methodIndex": 73318,
+      "typeIndex": 10962,
+      "type": "Torappu.Battle.BasicTalent",
+      "name": "DoDetach",
+      "token": "0x6011e67",
+      "params": 0,
+      "slot": 30,
+      "va": "0x180971730",
+      "indexedDirectCalls": [
+        "0x18097177f jmp      0x1805d4e30 ; Torappu.Battle.Ability.Detach [63059]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x18097175a",
+          "end": "0x18097177f"
+        }
+      ]
+    },
+    {
+      "methodIndex": 76054,
+      "typeIndex": 11346,
+      "type": "Torappu.Battle.Character",
+      "name": "_AssignData",
+      "token": "0x6012917",
+      "params": 3,
+      "slot": 65535,
+      "va": "0x180a33dd0",
+      "indexedDirectCalls": [
+        "0x180a33e9d call     0x180662a30 ; Torappu.Battle.BObject.PreInit [65028]",
+        "0x180a33eab call     0x180a3d060 ; Torappu.Battle.Character.set_data [75907]",
+        "0x180a33ec3 call     0x180709810 ; Torappu.Battle.Entity.set_id [66344]",
+        "0x180a33ed2 call     0x180709e80 ; Torappu.Battle.Entity.set_tmplId [66346]",
+        "0x180a33f61 call     0x182518940 ; Torappu.CharSkinData.TryGetBattleSkin [32922]",
+        "0x180a33f88 call     0x1806415d0 ; Torappu.Battle.BattleController.get_factory [64506]",
+        "0x180a33f9a call     0x180704d90 ; Torappu.Battle.Entity.get_id [66343]",
+        "0x180a33fa7 call     0x180708ce0 ; Torappu.Battle.Entity.get_tmplId [66345]",
+        "0x180a33fca call     0x1808e9c40 ; Torappu.Battle.BattleFactory.CreateSkin [71622]",
+        "0x180a34006 call     0x180a31c60 ; Torappu.Battle.Character.SetupSkin [76019]",
+        "0x180a34020 call     0x180a36e10 ; Torappu.Battle.Character._PreprocessEquip [76060]",
+        "0x180a340c3 call     0x18252d550 ; Torappu.TalentData..ctor [33094]",
+        "0x180a3417f call     0x180a374c0 ; Torappu.Battle.Character._PreprocessTalents [76061]",
+        "0x180a34191 call     0x180a37070 ; Torappu.Battle.Character._PreprocessSkill [76055]",
+        "0x180a341a1 call     0x180a36110 ; Torappu.Battle.Character._GetDefaultModeIndex [76069]",
+        "0x180a341b7 call     0x180a36380 ; Torappu.Battle.Character._GetDefaultRangeId [76070]",
+        "0x180a34223 call     0x180ac17d0 ; Torappu.Battle.UnitDataFlowConfig.Init [77848]",
+        "0x180a34241 call     0x180a344b0 ; Torappu.Battle.Character._AssignSkill [76057]",
+        "0x180a34251 call     0x180a34780 ; Torappu.Battle.Character._AssignTalents [76062]",
+        "0x180a34263 call     0x180a34b90 ; Torappu.Battle.Character._AssignTrait [76064]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180a34179",
+          "end": "0x180a34263"
+        }
+      ]
+    },
+    {
+      "methodIndex": 76062,
+      "typeIndex": 11346,
+      "type": "Torappu.Battle.Character",
+      "name": "_AssignTalents",
+      "token": "0x601291f",
+      "params": 1,
+      "slot": 65535,
+      "va": "0x180a34780",
+      "indexedDirectCalls": [
+        "0x180a34839 call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a3485e call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a348f9 call     0x180972800 ; Torappu.Battle.BasicTalent.CheckValidBySkillIndex [73310]",
+        "0x180a3490b call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a34975 call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a34a0d call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a34a49 call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a34a9c call     0x180ac1520 ; Torappu.Battle.UnitDataFlowConfig.GetDelta [77849]",
+        "0x180a34ab7 call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a34add call     0x180972dc0 ; Torappu.Battle.BasicTalent.MarkInvalid [73309]",
+        "0x180a34ae7 call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a34b28 call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180a348ed",
+          "end": "0x180a348fe"
+        },
+        {
+          "start": "0x180a3492f",
+          "end": "0x180a3495e"
+        },
+        {
+          "start": "0x180a349db",
+          "end": "0x180a34a05"
+        },
+        {
+          "start": "0x180a34ace",
+          "end": "0x180a34add"
+        }
+      ]
+    },
+    {
+      "methodIndex": 76063,
+      "typeIndex": 11346,
+      "type": "Torappu.Battle.Character",
+      "name": "ReassignTalents",
+      "token": "0x6012920",
+      "params": 1,
+      "slot": 65535,
+      "va": "0x180a2fe50",
+      "indexedDirectCalls": [
+        "0x180a2ff0a call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a2ff2e call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a2ff58 call     0x180973df0 ; Torappu.Battle.BasicTalent.get_isValid [73274]",
+        "0x180a2ff77 call     0x1809729c0 ; Torappu.Battle.BasicTalent.Detach [73305]",
+        "0x180a2ff81 call     0x180a39dd0 ; Torappu.Battle.Character.get_data [75906]",
+        "0x180a2ff9b call     0x180972800 ; Torappu.Battle.BasicTalent.CheckValidBySkillIndex [73310]",
+        "0x180a2ffad call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a30059 call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a300ad call     0x180ac1520 ; Torappu.Battle.UnitDataFlowConfig.GetDelta [77849]",
+        "0x180a300f8 call     0x180ad10c0 ; Torappu.Battle.Unit.get_currentMode [77555]",
+        "0x180a30106 call     0x1809726b0 ; Torappu.Battle.BasicTalent.CheckRootOrValidModeTalent [73313]",
+        "0x180a30114 call     0x180ad2c00 ; Torappu.Battle.Unit.get_isDummy [77610]",
+        "0x180a30137 call     0x1809724d0 ; Torappu.Battle.BasicTalent.Attach [73304]",
+        "0x180a30143 call     0x180972dc0 ; Torappu.Battle.BasicTalent.MarkInvalid [73309]",
+        "0x180a3016e call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180a2ff58",
+          "end": "0x180a2ff9b"
+        },
+        {
+          "start": "0x180a300e2",
+          "end": "0x180a30143"
+        }
+      ]
+    },
+    {
+      "methodIndex": 76025,
+      "typeIndex": 11346,
+      "type": "Torappu.Battle.Character",
+      "name": "OnInit",
+      "token": "0x60128fa",
+      "params": 1,
+      "slot": 30,
+      "va": "0x180a2dd90",
+      "indexedDirectCalls": [
+        "0x180a2de20 call     0x180acaac0 ; Torappu.Battle.Unit.OnInit [77665]",
+        "0x180a2de87 call     0x180a3ad40 ; Torappu.Battle.Character.get_isBuiltPredefined [75881]",
+        "0x180a2de95 call     0x180a39dd0 ; Torappu.Battle.Character.get_data [75906]",
+        "0x180a2dea4 call     0x180a39dd0 ; Torappu.Battle.Character.get_data [75906]",
+        "0x180a2dee1 call     0x180a39c20 ; Torappu.Battle.Character.get_characterId [75831]",
+        "0x180a2def8 call     0x1806266c0 ; Torappu.Battle.BattleController.IsPredefinedAndNeedToTakeSnapshot [64688]",
+        "0x180a2df73 call     0x181e04750 ; Torappu.PeriodicTimer.Reset [25973]",
+        "0x180a2dfe5 call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a2e00e call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a2e02e call     0x180ad10c0 ; Torappu.Battle.Unit.get_currentMode [77555]",
+        "0x180a2e045 call     0x1809726b0 ; Torappu.Battle.BasicTalent.CheckRootOrValidModeTalent [73313]",
+        "0x180a2e053 call     0x180ad2c00 ; Torappu.Battle.Unit.get_isDummy [77610]",
+        "0x180a2e076 call     0x1809724d0 ; Torappu.Battle.BasicTalent.Attach [73304]",
+        "0x180a2e088 call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a2e0b5 jmp      0x180a382b0 ; Torappu.Battle.Character._SpawnDeckBuffs [76026]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180a2e02e",
+          "end": "0x180a2e076"
+        }
+      ]
+    },
+    {
+      "methodIndex": 76033,
+      "typeIndex": 11346,
+      "type": "Torappu.Battle.Character",
+      "name": "OnFinish",
+      "token": "0x6012902",
+      "params": 1,
+      "slot": 123,
+      "va": "0x180a2d9f0",
+      "indexedDirectCalls": [
+        "0x180a2da7f call     0x180a2b990 ; Torappu.Battle.Character.LogSnapshotIfNot [75988]",
+        "0x180a2da89 call     0x180a3c250 ; Torappu.Battle.Character.get_sharedData [75908]",
+        "0x180a2daa4 call     0x180a3c250 ; Torappu.Battle.Character.get_sharedData [75908]",
+        "0x180a2db29 call     0x180aca5b0 ; Torappu.Battle.Unit.OnFinish [77689]",
+        "0x180a2dbba call     0x1808bfdc0 ; Torappu.Battle.Tile.OnCharacterFinished [70723]",
+        "0x180a2dbd1 call     0x180aa0660 ; Torappu.Battle.BlockManager.ClearAllBlockees [77196]",
+        "0x180a2dc03 call     0x18062a840 ; Torappu.Battle.BattleController.OnCharacterFinished [64766]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180a2db22",
+          "end": "0x180a2db29"
+        }
+      ]
+    },
+    {
+      "methodIndex": 76027,
+      "typeIndex": 11346,
+      "type": "Torappu.Battle.Character",
+      "name": "OnBorn",
+      "token": "0x60128fc",
+      "params": 0,
+      "slot": 32,
+      "va": "0x180a2d260",
+      "indexedDirectCalls": [
+        "0x180a2d324 call     0x180703170 ; Torappu.Battle.Entity.get_direction [66391]",
+        "0x180a2d37d call     0x180703170 ; Torappu.Battle.Entity.get_direction [66391]",
+        "0x180a2d38b call     0x180703170 ; Torappu.Battle.Entity.get_direction [66391]",
+        "0x180a2d3ad call     0x180ad4090 ; Torappu.Battle.VisualObject.get_gridPosition [77871]",
+        "0x180a2d3c9 call     0x1808811e0 ; Torappu.Battle.Map.TryGetInitialLOrR [70015]",
+        "0x180a2d502 call     0x1806f2f10 ; Torappu.Battle.Entity.FaceTo [66535]",
+        "0x180a2d50c call     0x180aca090 ; Torappu.Battle.Unit.OnBorn [77696]",
+        "0x180a2d55b call     0x1805d4ae0 ; Torappu.Battle.Ability.Attach [63058]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180a2d502",
+          "end": "0x180a2d55b"
+        }
+      ]
+    },
+    {
+      "methodIndex": 77696,
+      "typeIndex": 11457,
+      "type": "Torappu.Battle.Unit",
+      "name": "OnBorn",
+      "token": "0x6012f81",
+      "params": 0,
+      "slot": 32,
+      "va": "0x180aca090",
+      "indexedDirectCalls": [
+        "0x180aca102 call     0x1806f7df0 ; Torappu.Battle.Entity.OnBorn [66647]",
+        "0x180aca125 call     0x18062f110 ; Torappu.Battle.BattleController.RegisterUnit [64672]",
+        "0x180aca205 call     0x1805d4ae0 ; Torappu.Battle.Ability.Attach [63058]",
+        "0x180aca311 call     0x1805d4ae0 ; Torappu.Battle.Ability.Attach [63058]",
+        "0x180aca356 call     0x18062d2b0 ; Torappu.Battle.BattleController.OnUnitBorn [64763]",
+        "0x180aca360 call     0x180702100 ; Torappu.Battle.Entity.get_buffContainer [66402]",
+        "0x180aca392 jmp      0x1806767d0 ; .BuffContainer.OnOwnerPostBorn [65371]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180aca102",
+          "end": "0x180aca125"
+        },
+        {
+          "start": "0x180aca356",
+          "end": "0x180aca392"
+        }
+      ]
+    },
+    {
+      "methodIndex": 77669,
+      "typeIndex": 11457,
+      "type": "Torappu.Battle.Unit",
+      "name": "InactiveMode",
+      "token": "0x6012f66",
+      "params": 2,
+      "slot": 65535,
+      "va": "0x180ac9020",
+      "indexedDirectCalls": [
+        "0x180ac913d call     0x1805d4e30 ; Torappu.Battle.Ability.Detach [63059]",
+        "0x180ac91c6 call     0x180973df0 ; Torappu.Battle.BasicTalent.get_isValid [73274]",
+        "0x180ac91e5 call     0x1809729c0 ; Torappu.Battle.BasicTalent.Detach [73305]",
+        "0x180ac9250 call     0x1805d4e30 ; Torappu.Battle.Ability.Detach [63059]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180ac917c",
+          "end": "0x180ac91e5"
+        }
+      ]
+    },
+    {
+      "methodIndex": 77836,
+      "typeIndex": 11459,
+      "type": "Torappu.Battle.UnitMode",
+      "name": "OnActivate",
+      "token": "0x601300d",
+      "params": 2,
+      "slot": 8,
+      "va": "0x180ac3ec0",
+      "indexedDirectCalls": [
+        "0x180ac3f64 call     0x180973df0 ; Torappu.Battle.BasicTalent.get_isValid [73274]",
+        "0x180ac3fd1 call     0x1809724d0 ; Torappu.Battle.BasicTalent.Attach [73304]",
+        "0x180ac4044 call     0x1805d4ae0 ; Torappu.Battle.Ability.Attach [63058]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180ac3f64",
+          "end": "0x180ac3fd1"
+        }
+      ]
+    },
+    {
+      "methodIndex": 77689,
+      "typeIndex": 11457,
+      "type": "Torappu.Battle.Unit",
+      "name": "OnFinish",
+      "token": "0x6012f7a",
+      "params": 1,
+      "slot": 123,
+      "va": "0x180aca5b0",
+      "indexedDirectCalls": [
+        "0x180aca61e call     0x1806f8c40 ; Torappu.Battle.Entity.OnFinish [66653]",
+        "0x180aca68e call     0x180ac9020 ; Torappu.Battle.Unit.InactiveMode [77669]",
+        "0x180aca7f3 call     0x18062d440 ; Torappu.Battle.BattleController.OnUnitFinished [64764]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180aca61e",
+          "end": "0x180aca68e"
+        }
+      ]
+    },
+    {
+      "methodIndex": 66653,
+      "typeIndex": 10201,
+      "type": "Torappu.Battle.Entity",
+      "name": "OnFinish",
+      "token": "0x601045e",
+      "params": 1,
+      "slot": 123,
+      "va": "0x1806f8c40",
+      "indexedDirectCalls": [
+        "0x1806f8d4e call     0x180640a10 ; Torappu.Battle.BattleController.get_context [64505]",
+        "0x1806f8e28 call     0x1806430d0 ; Torappu.Battle.BattleController.get_logger [64507]",
+        "0x1806f8ed0 call     0x1806430d0 ; Torappu.Battle.BattleController.get_logger [64507]",
+        "0x1806f8ee6 call     0x180704d90 ; Torappu.Battle.Entity.get_id [66343]",
+        "0x1806f8efd call     0x1807106d0 ; Torappu.Battle.BattleLogger.LogExtraBattleInfoCharacterKillCount [66991]",
+        "0x1806f8f21 call     0x1806430d0 ; Torappu.Battle.BattleController.get_logger [64507]",
+        "0x1806f8f2e call     0x180704d90 ; Torappu.Battle.Entity.get_id [66343]",
+        "0x1806f8f45 call     0x180710850 ; Torappu.Battle.BattleLogger.LogExtraBattleInfoEnemyDieBecauseOfFallDown [66992]",
+        "0x1806f8fd0 call     0x180702100 ; Torappu.Battle.Entity.get_buffContainer [66402]",
+        "0x1806f8fe7 call     0x180679d00 ; .BuffContainer.OnTargetKilled [65397]",
+        "0x1806f9007 call     0x1806f2700 ; Torappu.Battle.Entity.EmitEvent [66715]",
+        "0x1806f9011 call     0x180702100 ; Torappu.Battle.Entity.get_buffContainer [66402]",
+        "0x1806f902a call     0x180675d90 ; .BuffContainer.OnOwnerFinish [65373]",
+        "0x1806f9034 call     0x180702100 ; Torappu.Battle.Entity.get_buffContainer [66402]",
+        "0x1806f904a call     0x180664a90 ; .BuffContainer.Clear [65357]",
+        "0x1806f907b call     0x1806f12d0 ; Torappu.Battle.Entity.ClearHoldEffects [66640]",
+        "0x1806f908e call     0x18071c630 ; .EPController.OnFinish [66757]",
+        "0x1806f90b7 jmp      0x1806f2700 ; Torappu.Battle.Entity.EmitEvent [66715]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x1806f901f",
+          "end": "0x1806f9074"
+        }
+      ]
+    },
+    {
+      "methodIndex": 66639,
+      "typeIndex": 10201,
+      "type": "Torappu.Battle.Entity",
+      "name": "ClearAbilities",
+      "token": "0x6010450",
+      "params": 0,
+      "slot": 118,
+      "va": "0x1806f10e0",
+      "indexedDirectCalls": [
+        "0x1806f11e3 call     0x1805d4e30 ; Torappu.Battle.Ability.Detach [63059]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x1806f11c7",
+          "end": "0x1806f1211"
+        }
+      ]
+    },
+    {
+      "methodIndex": 77698,
+      "typeIndex": 11457,
+      "type": "Torappu.Battle.Unit",
+      "name": "OnRecycle",
+      "token": "0x6012f83",
+      "params": 0,
+      "slot": 26,
+      "va": "0x180acb160",
+      "indexedDirectCalls": [
+        "0x180acb2f8 call     0x182a4a830 ; Torappu.ObjectPool.PoolManager.Recycle [34636]",
+        "0x180acb458 call     0x182a4a830 ; Torappu.ObjectPool.PoolManager.Recycle [34636]",
+        "0x180acb4be call     0x180634f20 ; Torappu.Battle.BattleController.UnregisterUnit [64676]",
+        "0x180acb672 call     0x180acf8d0 ; Torappu.Battle.Unit._KillGraphicHolderHeightTween [77725]",
+        "0x180acb69a call     0x180acf2b0 ; Torappu.Battle.Unit._ApplyGraphicHolderPos [77723]",
+        "0x180acb6b1 call     0x180ad1cd0 ; Torappu.Battle.Unit.get_graphicFollow [77701]",
+        "0x180acb6c0 call     0x180aa84d0 ; Torappu.Battle.GraphicFollowController.ReleaseAll [77133]",
+        "0x180acb6ed jmp      0x1806f9e00 ; Torappu.Battle.Entity.OnRecycle [66658]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180acb583",
+          "end": "0x180acb5bf"
+        }
+      ]
+    },
+    {
+      "methodIndex": 76038,
+      "typeIndex": 11346,
+      "type": "Torappu.Battle.Character",
+      "name": "OnBeforeAttack",
+      "token": "0x6012907",
+      "params": 2,
+      "slot": 65535,
+      "va": "0x180a2cc00",
+      "indexedDirectCalls": [
+        "0x180a2cd16 call     0x18062a780 ; Torappu.Battle.BattleController.OnCharacterAtkOrCbt [64768]",
+        "0x180a2cd73 call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a2cda5 call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a2cdc5 call     0x180ad10c0 ; Torappu.Battle.Unit.get_currentMode [77555]",
+        "0x180a2cddc call     0x1809726b0 ; Torappu.Battle.BasicTalent.CheckRootOrValidModeTalent [73313]",
+        "0x180a2cdea call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a2ce3a call     0x180702100 ; Torappu.Battle.Entity.get_buffContainer [66402]",
+        "0x180a2ce49 call     0x18066cf80 ; .BuffContainer.OnBeforeAttack [65426]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180a2cda5",
+          "end": "0x180a2ce49"
+        }
+      ]
+    },
+    {
+      "methodIndex": 76039,
+      "typeIndex": 11346,
+      "type": "Torappu.Battle.Character",
+      "name": "OnAfterAttack",
+      "token": "0x6012908",
+      "params": 3,
+      "slot": 65535,
+      "va": "0x180a2c400",
+      "indexedDirectCalls": [
+        "0x180a2c4f2 call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a2c525 call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a2c545 call     0x180ad10c0 ; Torappu.Battle.Unit.get_currentMode [77555]",
+        "0x180a2c55c call     0x1809726b0 ; Torappu.Battle.BasicTalent.CheckRootOrValidModeTalent [73313]",
+        "0x180a2c56a call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]",
+        "0x180a2c5bd call     0x180702100 ; Torappu.Battle.Entity.get_buffContainer [66402]",
+        "0x180a2c5ee jmp      0x18066a8b0 ; .BuffContainer.OnAfterAttack [65427]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180a2c525",
+          "end": "0x180a2c5ee"
+        }
+      ]
+    },
+    {
+      "methodIndex": 73543,
+      "typeIndex": 11007,
+      "type": "Torappu.Battle.SilenceableTalent",
+      "name": "_UpdateInternalAbilityAttachStatus",
+      "token": "0x6011f48",
+      "params": 1,
+      "slot": 65535,
+      "va": "0x180999530",
+      "indexedDirectCalls": [
+        "0x18099959c call     0x180973f60 ; Torappu.Battle.BasicTalent.get_owner [73297]",
+        "0x1809995cf call     0x180973f60 ; Torappu.Battle.BasicTalent.get_owner [73297]",
+        "0x1809995e2 call     0x180706710 ; Torappu.Battle.Entity.get_isSilenced [66521]",
+        "0x1809995f9 call     0x180973f60 ; Torappu.Battle.BasicTalent.get_owner [73297]",
+        "0x180999633 call     0x180973f60 ; Torappu.Battle.BasicTalent.get_owner [73297]",
+        "0x180999646 call     0x1807062e0 ; Torappu.Battle.Entity.get_isNotAliveAndStartFinishing [66406]",
+        "0x180999662 call     0x180973750 ; Torappu.Battle.BasicTalent.get_ability [73300]",
+        "0x180999675 call     0x1805d7d50 ; Torappu.Battle.Ability.get_isAttached [63039]",
+        "0x180999687 call     0x180973750 ; Torappu.Battle.BasicTalent.get_ability [73300]",
+        "0x180999694 call     0x180973f60 ; Torappu.Battle.BasicTalent.get_owner [73297]",
+        "0x1809996b1 jmp      0x1805d4ae0 ; Torappu.Battle.Ability.Attach [63058]",
+        "0x1809996bb call     0x180973750 ; Torappu.Battle.BasicTalent.get_ability [73300]",
+        "0x1809996ca call     0x1805d7d50 ; Torappu.Battle.Ability.get_isAttached [63039]",
+        "0x1809996d8 call     0x180973750 ; Torappu.Battle.BasicTalent.get_ability [73300]",
+        "0x1809996f1 jmp      0x1805d4e30 ; Torappu.Battle.Ability.Detach [63059]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180999583",
+          "end": "0x180999595"
+        },
+        {
+          "start": "0x1809995dd",
+          "end": "0x1809995ea"
+        },
+        {
+          "start": "0x180999641",
+          "end": "0x1809996f1"
+        }
+      ]
+    },
+    {
+      "methodIndex": 73544,
+      "typeIndex": 11007,
+      "type": "Torappu.Battle.SilenceableTalent",
+      "name": "_OnAbnormalFlagPossiblyChanged",
+      "token": "0x6011f49",
+      "params": 1,
+      "slot": 65535,
+      "va": "0x1809994b0",
+      "indexedDirectCalls": [
+        "0x180999509 jmp      0x180999530 ; Torappu.Battle.SilenceableTalent._UpdateInternalAbilityAttachStatus [73543]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x1809994f4",
+          "end": "0x180999509"
+        }
+      ]
+    },
+    {
+      "methodIndex": 73525,
+      "typeIndex": 11006,
+      "type": "Torappu.Battle.RebornTalent",
+      "name": "AssignData",
+      "token": "0x6011f36",
+      "params": 3,
+      "slot": 21,
+      "va": "0x180996120",
+      "indexedDirectCalls": [
+        "0x18099625a call     0x180972000 ; Torappu.Battle.BasicTalent.AssignData [73301]",
+        "0x1809962ab call     0x18231f330 ; Torappu.Blackboard.GetFloatOrDefault [30832]",
+        "0x1809962d2 call     0x18231f330 ; Torappu.Blackboard.GetFloatOrDefault [30832]",
+        "0x1809962fd call     0x18231f680 ; Torappu.Blackboard.GetIntOrDefault [30835]",
+        "0x18099632b call     0x18231f680 ; Torappu.Blackboard.GetIntOrDefault [30835]",
+        "0x180996588 call     0x18231f330 ; Torappu.Blackboard.GetFloatOrDefault [30832]",
+        "0x180996648 call     0x18231f330 ; Torappu.Blackboard.GetFloatOrDefault [30832]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x18099625a",
+          "end": "0x18099627c"
+        },
+        {
+          "start": "0x180996330",
+          "end": "0x18099633f"
+        }
+      ]
+    },
+    {
+      "methodIndex": 73528,
+      "typeIndex": 11006,
+      "type": "Torappu.Battle.RebornTalent",
+      "name": "CheckReborn",
+      "token": "0x6011f39",
+      "params": 1,
+      "slot": 26,
+      "va": "0x1809967f0",
+      "indexedDirectCalls": [
+        "0x18099686e call     0x180973f60 ; Torappu.Battle.BasicTalent.get_owner [73297]",
+        "0x180996889 call     0x1806f19a0 ; Torappu.Battle.Entity.ContainsBuff [66562]",
+        "0x1809968de call     0x180973f60 ; Torappu.Battle.BasicTalent.get_owner [73297]",
+        "0x1809968f4 call     0x1807081e0 ; Torappu.Battle.Entity.get_respawnCnt [66389]",
+        "0x180996902 call     0x180709cb0 ; Torappu.Battle.Entity.set_respawnCnt [66390]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180996857",
+          "end": "0x180996902"
+        }
+      ]
+    },
+    {
+      "methodIndex": 77704,
+      "typeIndex": 11457,
+      "type": "Torappu.Battle.Unit",
+      "name": "OnHpZero",
+      "token": "0x6012f89",
+      "params": 2,
+      "slot": 121,
+      "va": "0x180aca920",
+      "indexedDirectCalls": [
+        "0x180aca9ab call     0x180ac68b0 ; Torappu.Battle.Unit.CheckReborn [77683]",
+        "0x180acaa89 call     0x1806f9170 ; Torappu.Battle.Entity.OnHpZero [66650]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180aca997",
+          "end": "0x180aca9b2"
+        },
+        {
+          "start": "0x180acaa58",
+          "end": "0x180acaa89"
+        }
+      ]
+    },
+    {
+      "methodIndex": 77683,
+      "typeIndex": 11457,
+      "type": "Torappu.Battle.Unit",
+      "name": "CheckReborn",
+      "token": "0x6012f74",
+      "params": 1,
+      "slot": 65535,
+      "va": "0x180ac68b0",
+      "indexedDirectCalls": [
+        "0x180ac6a29 call     0x180ad3930 ; Torappu.Battle.Unit.get_talents [77612]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180ac69ec",
+          "end": "0x180ac6a5c"
+        }
+      ]
+    },
+    {
+      "methodIndex": 77702,
+      "typeIndex": 11457,
+      "type": "Torappu.Battle.Unit",
+      "name": "OnAwake",
+      "token": "0x6012f87",
+      "params": 0,
+      "slot": 187,
+      "va": "0x180ac9da0",
+      "indexedDirectCalls": [
+        "0x180aca072 jmp      0x180ad3bc0 ; Torappu.Battle.Unit.set_talents [77613]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180aca04e",
+          "end": "0x180aca072"
+        }
+      ]
+    },
+    {
+      "methodIndex": 77703,
+      "typeIndex": 11457,
+      "type": "Torappu.Battle.Unit",
+      "name": "RecollectTalents",
+      "token": "0x6012f88",
+      "params": 0,
+      "slot": 143,
+      "va": "0x180accad0",
+      "indexedDirectCalls": [
+        "0x180accb3a jmp      0x180ad3bc0 ; Torappu.Battle.Unit.set_talents [77613]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180accb1b",
+          "end": "0x180accb3a"
+        }
+      ]
+    },
+    {
+      "methodIndex": 77844,
+      "typeIndex": 11459,
+      "type": "Torappu.Battle.UnitMode",
+      "name": "_InitTalents",
+      "token": "0x6013015",
+      "params": 0,
+      "slot": 65535,
+      "va": "0x180ac4e60",
+      "indexedDirectCalls": [
+        "0x180ac4ef5 call     0x180973020 ; Torappu.Battle.BasicTalent.SetParentMode [73311]"
+      ],
+      "excerptRanges": [
+        {
+          "start": "0x180ac4e89",
+          "end": "0x180ac4ef5"
+        }
+      ]
+    },
+    {
+      "methodIndex": 73269,
+      "typeIndex": 10961,
+      "type": "Torappu.Battle.AppearTalent",
+      "name": "_OnBorn",
+      "token": "0x6011e36",
+      "params": 1,
+      "slot": 65535,
+      "va": "0x180971da0",
+      "indexedDirectCalls": [],
+      "excerptRanges": [
+        {
+          "start": "0x180971de7",
+          "end": "0x180971ded"
+        },
+        {
+          "start": "0x180971e52",
+          "end": "0x180971e75"
+        }
+      ]
+    },
+    {
+      "methodIndex": 73270,
+      "typeIndex": 10961,
+      "type": "Torappu.Battle.AppearTalent",
+      "name": "_OnLocate",
+      "token": "0x6011e37",
+      "params": 1,
+      "slot": 65535,
+      "va": "0x180971ea0",
+      "indexedDirectCalls": [],
+      "excerptRanges": [
+        {
+          "start": "0x180971ee7",
+          "end": "0x180971eed"
+        },
+        {
+          "start": "0x180971f52",
+          "end": "0x180971f75"
+        }
+      ]
+    }
+  ],
+  "declaredFieldProjection": [
+    {
+      "typeIndex": 10962,
+      "type": "Torappu.Battle.BasicTalent",
+      "fields": [
+        {
+          "fieldIndex": 82272,
+          "name": "_overwriteTalentKey",
+          "typeDescriptor": 77201,
+          "token": "0x4014161"
+        },
+        {
+          "fieldIndex": 82273,
+          "name": "_overwriteParentRangeId",
+          "typeDescriptor": 44790,
+          "token": "0x4014162"
+        },
+        {
+          "fieldIndex": 82274,
+          "name": "_checkValidBySkillIndex",
+          "typeDescriptor": 22581,
+          "token": "0x4014163"
+        },
+        {
+          "fieldIndex": 82275,
+          "name": "m_owner",
+          "typeDescriptor": 82008,
+          "token": "0x4014164"
+        },
+        {
+          "fieldIndex": 82276,
+          "name": "m_ability",
+          "typeDescriptor": 35132,
+          "token": "0x4014165"
+        },
+        {
+          "fieldIndex": 82277,
+          "name": "<parentMode>k__BackingField",
+          "typeDescriptor": 82053,
+          "token": "0x4014166"
+        },
+        {
+          "fieldIndex": 82278,
+          "name": "<data>k__BackingField",
+          "typeDescriptor": 77768,
+          "token": "0x4014167"
+        }
+      ]
+    },
+    {
+      "typeIndex": 11006,
+      "type": "Torappu.Battle.RebornTalent",
+      "fields": [
+        {
+          "fieldIndex": 82556,
+          "name": "_maxRespawnCnt",
+          "typeDescriptor": 59012,
+          "token": "0x401427d"
+        },
+        {
+          "fieldIndex": 82566,
+          "name": "_buffsRetainedWhenReborn",
+          "typeDescriptor": 23978,
+          "token": "0x4014287"
+        },
+        {
+          "fieldIndex": 82567,
+          "name": "_detachAbilityWhenReborn",
+          "typeDescriptor": 44790,
+          "token": "0x4014288"
+        },
+        {
+          "fieldIndex": 82570,
+          "name": "_validWhenContainsBuff",
+          "typeDescriptor": 77201,
+          "token": "0x401428b"
+        },
+        {
+          "fieldIndex": 82572,
+          "name": "m_maxRespawnCnt",
+          "typeDescriptor": 59014,
+          "token": "0x401428d"
+        },
+        {
+          "fieldIndex": 82573,
+          "name": "m_respawnCnt",
+          "typeDescriptor": 59014,
+          "token": "0x401428e"
+        },
+        {
+          "fieldIndex": 82574,
+          "name": "m_rebornAfterWaveCnt",
+          "typeDescriptor": 59014,
+          "token": "0x401428f"
+        },
+        {
+          "fieldIndex": 82575,
+          "name": "m_defaultRespawnData",
+          "typeDescriptor": 111236,
+          "token": "0x4014290"
+        },
+        {
+          "fieldIndex": 82576,
+          "name": "m_respawnDataList",
+          "typeDescriptor": 25724,
+          "token": "0x4014291"
+        },
+        {
+          "fieldIndex": 82577,
+          "name": "m_handleAbility",
+          "typeDescriptor": 26737,
+          "token": "0x4014292"
+        }
+      ]
+    },
+    {
+      "typeIndex": 11007,
+      "type": "Torappu.Battle.SilenceableTalent",
+      "fields": [
+        {
+          "fieldIndex": 82604,
+          "name": "_isSilenceable",
+          "typeDescriptor": 44790,
+          "token": "0x40142ad"
+        },
+        {
+          "fieldIndex": 82605,
+          "name": "m_isManuallyAttached",
+          "typeDescriptor": 44790,
+          "token": "0x40142ae"
+        }
+      ]
+    },
+    {
+      "typeIndex": 11020,
+      "type": "Torappu.Battle.Talent",
+      "fields": [
+        {
+          "fieldIndex": 82674,
+          "name": "_attachInDummy",
+          "typeDescriptor": 44790,
+          "token": "0x40142f3"
+        },
+        {
+          "fieldIndex": 82675,
+          "name": "_defaultModeIndex",
+          "typeDescriptor": 59012,
+          "token": "0x40142f4"
+        },
+        {
+          "fieldIndex": 82679,
+          "name": "_applyTalentScale",
+          "typeDescriptor": 44790,
+          "token": "0x40142f8"
+        },
+        {
+          "fieldIndex": 82683,
+          "name": "_applyBlackboardBySkill",
+          "typeDescriptor": 44790,
+          "token": "0x40142fc"
+        },
+        {
+          "fieldIndex": 82686,
+          "name": "_affectWhenNotRootTalent",
+          "typeDescriptor": 44790,
+          "token": "0x40142ff"
+        }
+      ]
+    },
+    {
+      "typeIndex": 11346,
+      "type": "Torappu.Battle.Character",
+      "fields": [
+        {
+          "fieldIndex": 85562,
+          "name": "_traitAbility",
+          "typeDescriptor": 35131,
+          "token": "0x4014e3b"
+        },
+        {
+          "fieldIndex": 85594,
+          "name": "m_talentRange",
+          "typeDescriptor": 77201,
+          "token": "0x4014e5b"
+        },
+        {
+          "fieldIndex": 85628,
+          "name": "<data>k__BackingField",
+          "typeDescriptor": 44215,
+          "token": "0x4014e7d"
+        }
+      ]
+    },
+    {
+      "typeIndex": 11457,
+      "type": "Torappu.Battle.Unit",
+      "fields": [
+        {
+          "fieldIndex": 87487,
+          "name": "m_currentMode",
+          "typeDescriptor": 82053,
+          "token": "0x40155c0"
+        },
+        {
+          "fieldIndex": 87498,
+          "name": "<talents>k__BackingField",
+          "typeDescriptor": 32946,
+          "token": "0x40155cb"
+        },
+        {
+          "fieldIndex": 87499,
+          "name": "m_rootDynamicAbilities",
+          "typeDescriptor": 20673,
+          "token": "0x40155cc"
+        }
+      ]
+    },
+    {
+      "typeIndex": 11459,
+      "type": "Torappu.Battle.UnitMode",
+      "fields": [
+        {
+          "fieldIndex": 87743,
+          "name": "<host>k__BackingField",
+          "typeDescriptor": 82008,
+          "token": "0x40156c0"
+        },
+        {
+          "fieldIndex": 87747,
+          "name": "<talents>k__BackingField",
+          "typeDescriptor": 32946,
+          "token": "0x40156c4"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "level": "native-confirmed",
+      "claim": "官方确有共同BasicTalent组件协议和Unit.talents成员；UnitMode另持模式天赋数组。统一入口包括AssignData/Attach/Detach以及攻击/复活/回收虚方法。",
+      "anchors": [
+        77702,
+        77703,
+        77844,
+        73301,
+        73304,
+        73305
+      ]
+    },
+    {
+      "level": "native-confirmed",
+      "claim": "Character._AssignData按序调用_PreprocessTalents、_PreprocessSkill、_AssignSkill、_AssignTalents、_AssignTrait；_AssignTalents用skillIndex资格和按talentKey查询的talentMap判定，成功调用虚AssignData，失败MarkInvalid。BasicTalent.isValid普通实现检查data非空。",
+      "anchors": [
+        76054,
+        76062,
+        73274
+      ]
+    },
+    {
+      "level": "native-confirmed",
+      "claim": "Character.OnInit在Unit.OnInit之后逐天赋CheckRootOrValidModeTalent，满足才Attach；它在OnBorn之前具备附着入口。OnBorn本身经Unit注册、common/dynamic Ability附着和owner-post-born Buff事件；AppearTalent子类另按born或locate配置触发CastDirectly。不能把所有Talent等同onEnter一次安装。",
+      "anchors": [
+        76025,
+        76027,
+        77696,
+        73269,
+        73270
+      ]
+    },
+    {
+      "level": "native-confirmed",
+      "claim": "BasicTalent.AssignData向内部Ability.SetData；基础DoAttach/DoDetach委托Ability.Attach/Detach；BasicTalent.isAttached读取Ability.isAttached。Attach保存owner后调DoAttach；Detach先DoDetach再清owner。data有效性与当前participation不同。",
+      "anchors": [
+        73301,
+        73317,
+        73318,
+        73275,
+        73304,
+        73305
+      ]
+    },
+    {
+      "level": "native-confirmed",
+      "claim": "模式激活由UnitMode.OnActivate对有效且未附着的模式Talent调用Attach；InactiveMode对有效且已附着的模式Talent调用Detach；ReassignTalents有旧有效Talent.Detach、重AssignData、当前mode资格下重新Attach的路径。",
+      "anchors": [
+        77836,
+        77669,
+        76063
+      ]
+    },
+    {
+      "level": "native-confirmed",
+      "claim": "Character.OnFinish进入Unit.OnFinish；Entity.OnFinish先owner-finish Buff派发和Clear，再虚ClearAbilities；普通ClearAbilities逐已登记Ability.Detach。Unit.OnFinish还InactiveMode，Unit.OnRecycle另逐Talent虚OnRecycle。结束、附着失效、回收不是同一点。",
+      "anchors": [
+        76033,
+        77689,
+        66653,
+        66639,
+        77698
+      ]
+    },
+    {
+      "level": "native-confirmed",
+      "claim": "SilenceableTalent自己保存m_isManuallyAttached（+0x91），_UpdateInternalAbilityAttachStatus按_isSilenceable、owner.isSilenced与owner.isNotAliveAndStartFinishing决定内部Ability.Attach/Detach。这是该子类机制，不是证明所有Talent同样受沉默。",
+      "anchors": [
+        73543,
+        73544
+      ]
+    },
+    {
+      "level": "native-confirmed",
+      "claim": "RebornTalent持m_maxRespawnCnt（+0xe8）、m_respawnCnt（+0xec）、默认/额外respawnData等自己的状态，AssignData初始化，CheckReborn通过有效Buff/次数条件后先递增私有次数及Entity.respawnCnt再输出数据。Unit.OnHpZero在!skipReborn时先CheckReborn；该集合按isAttached筛选，首个成功的虚CheckReborn返回true。",
+      "anchors": [
+        73525,
+        73528,
+        77704,
+        77683
+      ]
+    },
+    {
+      "level": "native-confirmed",
+      "claim": "Character.OnBeforeAttack/OnAfterAttack先按当前mode资格遍历Talent虚回调，随后BuffContainer的对应事件。Talent自身回调和Buff派发确有不同入口，基础空行为和专门子类不能一律互相替代。",
+      "anchors": [
+        76038,
+        76039
+      ]
+    },
+    {
+      "level": "design-inference",
+      "claim": "本项目必须表达内容选型、资格/参与、专门私有状态、Ability/Effect联系及编队/部署/模式/退场协议；是否新建Talent Capability取决于这些事实是否有独立公共读取/转换责任。官方组件/数组本身不直接证明TS需要同名Capability，完全归零为静态Buff也缺乏证据。"
+    }
+  ],
+  "unknowns": [
+    "shared generic collector的完整MethodInfo名称与Unity prefab创建链未展开；当前已证数组赋值与使用，不凭它声称从字段不存在证明类不存在。",
+    "不同内容天赋实际prefab子类、模式可达性、编队/卡牌/目标模式入口未全闭合。",
+    "普通复活与撤退重部署、fake-death与整局生命周期不能统一；是否保留/重置某具体计数需逐机制核查。",
+    "Lua运行覆盖、所有子类及实际客户端战斗回放未执行。",
+    "未从当前方法列表穷尽证明不存在其他Talent容器、服务或更强通用状态；本次只报告已定位正面路径。"
+  ],
+  "metadataTypeHierarchy": [
+    {
+      "typeIndex": 10961,
+      "type": "Torappu.Battle.AppearTalent",
+      "parent": "Torappu.Battle.Talent"
+    },
+    {
+      "typeIndex": 10962,
+      "type": "Torappu.Battle.BasicTalent",
+      "parent": "UnityEngine.MonoBehaviour"
+    },
+    {
+      "typeIndex": 11006,
+      "type": "Torappu.Battle.RebornTalent",
+      "parent": "Torappu.Battle.Talent"
+    },
+    {
+      "typeIndex": 11007,
+      "type": "Torappu.Battle.SilenceableTalent",
+      "parent": "Torappu.Battle.Talent"
+    },
+    {
+      "typeIndex": 11020,
+      "type": "Torappu.Battle.Talent",
+      "parent": "Torappu.Battle.BasicTalent"
+    },
+    {
+      "typeIndex": 11346,
+      "type": "Torappu.Battle.Character",
+      "parent": "Torappu.Battle.Unit"
+    },
+    {
+      "typeIndex": 11457,
+      "type": "Torappu.Battle.Unit",
+      "parent": "Torappu.Battle.Entity"
+    },
+    {
+      "typeIndex": 11459,
+      "type": "Torappu.Battle.UnitMode",
+      "parent": "UnityEngine.MonoBehaviour"
+    }
+  ],
+  "extractionFiles": [
+    "/tmp/stronghold-talent-inspect.py",
+    "/tmp/stronghold-talent-native-addendum.py",
+    "/tmp/stronghold-talent-native-extra.py",
+    "/tmp/stronghold-talent-package.py"
+  ]
+}

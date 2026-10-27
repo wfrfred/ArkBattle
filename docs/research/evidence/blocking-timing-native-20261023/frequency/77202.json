@@ -1,0 +1,23 @@
+{
+  "index": 77202,
+  "name": "TryGetCombatTarget",
+  "type": 11414,
+  "returnType": 44789,
+  "parameterStart": 75550,
+  "generic": -1,
+  "token": 100740499,
+  "flags": 134,
+  "iflags": 0,
+  "slot": 65535,
+  "parameterCount": 1,
+  "address": 6453596208,
+  "fullname": "Torappu.Battle.BlockManager.TryGetCombatTarget",
+  "parameters": [
+    {
+      "index": 75550,
+      "name": "target",
+      "token": 134293284,
+      "type": 31223
+    }
+  ]
+}

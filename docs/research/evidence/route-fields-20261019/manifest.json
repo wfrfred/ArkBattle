@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-19",
+  "client_inputs": "../navigation-native-20261018/manifest.json",
+  "data_repository": "Kengxxiao/ArknightsGameData",
+  "data_commit": "bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d",
+  "scope": "Route field audit; native main branches and static level configuration, not in-game execution.",
+  "files": [
+    {
+      "path": "70367-Route-SpawnPosition.asm",
+      "bytes": 1367,
+      "sha256": "82f622663fc0444fc15ef19a7b215ac4385c185e241fc1c96560044aa5401cfa"
+    },
+    {
+      "path": "70368-Route-SpawnOffset.asm",
+      "bytes": 1717,
+      "sha256": "86e463f33f1f282be6f305d106f1df67c3bbf4717fd43d22e886c1a42c0027df"
+    },
+    {
+      "path": "22393-RandomVector2.asm",
+      "bytes": 4290,
+      "sha256": "c8663cd5ccca1aad73b81c4e4df7d2cbc0dd0b90ade5d7d4878de3395b4e7881"
+    },
+    {
+      "path": "76469-Enemy-Init.asm",
+      "bytes": 14795,
+      "sha256": "94aa28d0541780e677f12eeb37398664c5b92a6e043754cbdf25716ea4d09ff2"
+    },
+    {
+      "path": "70270-DirectionCursor-Initialize.asm",
+      "bytes": 5440,
+      "sha256": "5d57ac374df9eabde2eb7aba857fdab6dbdb80f78fa8980a673387673e491879"
+    },
+    {
+      "path": "70291-DirectionCursor-Locator.asm",
+      "bytes": 1882,
+      "sha256": "5f0cc3f7c0adfe570b8c49c4b9273e8ecde7a7849c7f2657c8f500eff3096516"
+    },
+    {
+      "path": "70273-DirectionCursor-Predict.asm",
+      "bytes": 4631,
+      "sha256": "90eeefca70866a84c5850f5e975933624164658b1b39d67de01448af205f5fbc"
+    },
+    {
+      "path": "70358-Route-TotalDistance.asm",
+      "bytes": 3195,
+      "sha256": "8af1c5b9311c54030e67425926be99fd0b98e5768d5683c3b8bb1b9abab4e6ba"
+    },
+    {
+      "path": "70373-Route-Reachable.asm",
+      "bytes": 6231,
+      "sha256": "aea9c056a6ddf7b42c2e9a54cef509811f62f66cff9f22bd93bb1baa060549d3"
+    },
+    {
+      "path": "76895-Fear-Cursor.asm",
+      "bytes": 9703,
+      "sha256": "4dede78648dc0062f3b8b9a8e19c9fcb7954276ebd497838ee07167a7371ae4c"
+    },
+    {
+      "path": "76905-Attract-Cursor.asm",
+      "bytes": 11597,
+      "sha256": "76a12c8bd0647cd55292f6db628243a5cd94281528c1507055586a2db8f084a0"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 20096,
+      "sha256": "cd20cded3a65c9823dccad998c72bb64b35dcc514ac9eaef97442b757dfa0afc"
+    },
+    {
+      "path": "visit-checkpoints-case.json",
+      "bytes": 2096,
+      "sha256": "7d09d2b530b8c548e10e74f976f148b229726a657c1db91952e23bf8f4918603"
+    }
+  ]
+}

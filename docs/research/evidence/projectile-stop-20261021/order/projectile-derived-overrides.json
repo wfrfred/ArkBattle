@@ -1,0 +1,134 @@
+[
+  {
+    "index": 10748,
+    "name": "Torappu.Battle.BounceProjectile",
+    "parent": 10773,
+    "methods": []
+  },
+  {
+    "index": 10750,
+    "name": "Torappu.Battle.HarpoonProjectile",
+    "parent": 10756,
+    "methods": [
+      {
+        "index": 71113,
+        "name": "OnProjectileStop",
+        "slot": 53,
+        "address": "0x1808d1150"
+      }
+    ]
+  },
+  {
+    "index": 10752,
+    "name": "Torappu.Battle.LaserProjectile",
+    "parent": 10756,
+    "methods": [
+      {
+        "index": 71132,
+        "name": "OnHitTarget",
+        "slot": 54,
+        "address": "0x1808d18d0"
+      }
+    ]
+  },
+  {
+    "index": 10754,
+    "name": "Torappu.Battle.LassoProjectile",
+    "parent": 10756,
+    "methods": [
+      {
+        "index": 71147,
+        "name": "OnHitTarget",
+        "slot": 54,
+        "address": "0x1808d1c80"
+      },
+      {
+        "index": 71148,
+        "name": "OnProjectileStop",
+        "slot": 53,
+        "address": "0x1808d1df0"
+      }
+    ]
+  },
+  {
+    "index": 10756,
+    "name": "Torappu.Battle.LinkProjectile",
+    "parent": 10773,
+    "methods": [
+      {
+        "index": 71178,
+        "name": "OnTick",
+        "slot": 27,
+        "address": "0x1808d2e20"
+      },
+      {
+        "index": 71180,
+        "name": "OnHitTarget",
+        "slot": 54,
+        "address": "0x1808d2740"
+      }
+    ]
+  },
+  {
+    "index": 10761,
+    "name": "Torappu.Battle.NetCatcherProjectile",
+    "parent": 10756,
+    "methods": [
+      {
+        "index": 71246,
+        "name": "OnProjectileStop",
+        "slot": 53,
+        "address": "0x1808d4480"
+      },
+      {
+        "index": 71254,
+        "name": "OnTick",
+        "slot": 27,
+        "address": "0x1808d46c0"
+      }
+    ]
+  },
+  {
+    "index": 10773,
+    "name": "Torappu.Battle.Projectile",
+    "parent": 10083,
+    "methods": [
+      {
+        "index": 71344,
+        "name": "OnTick",
+        "slot": 27,
+        "address": "0x1808d9af0"
+      },
+      {
+        "index": 71361,
+        "name": "OnProjectileStop",
+        "slot": 53,
+        "address": "0x1808d97d0"
+      },
+      {
+        "index": 71362,
+        "name": "OnHitTarget",
+        "slot": 54,
+        "address": "0x1808d9090"
+      },
+      {
+        "index": 71365,
+        "name": "OnProjectileReached",
+        "slot": 65535,
+        "address": "0x1808d96b0"
+      }
+    ]
+  },
+  {
+    "index": 10774,
+    "name": "Torappu.Battle.SimpleProjectile",
+    "parent": 10773,
+    "methods": []
+  },
+  {
+    "index": 10775,
+    "name": "Torappu.Battle.Thorn2PolygonProjectile",
+    "parent": 10774,
+    "methods": []
+  }
+]

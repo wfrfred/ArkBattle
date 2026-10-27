@@ -1,0 +1,18 @@
+[
+  {
+    "index": 75955,
+    "fullname": "Torappu.Battle.Character.SearchBlockeeImmediate",
+    "addresses": [
+      "; Torappu.Battle.Character.SearchBlockeeImmediate metadata=75955 token=0x60128b4 VA=0x180a31400 RVA=0xa31400 size=0xd0",
+      "0000000180a3149a: mov      rax, qword ptr [r8 + 0x1000]"
+    ]
+  },
+  {
+    "index": 76016,
+    "fullname": "Torappu.Battle.Character._SearchBlockee",
+    "addresses": [
+      "; Torappu.Battle.Character._SearchBlockee metadata=76016 token=0x60128f1 VA=0x180a38200 RVA=0xa38200 size=0xb0",
+      "0000000180a3827e: jmp      0x180aa09e0 ; Torappu.Battle.BlockManager.SearchBlockee [77190]"
+    ]
+  }
+]

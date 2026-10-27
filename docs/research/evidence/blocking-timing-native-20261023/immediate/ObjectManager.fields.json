@@ -1,0 +1,74 @@
+{
+  "type": {
+    "index": 10744,
+    "name": "ObjectManager",
+    "namespace": "Torappu.Battle",
+    "raw": [
+      2680482,
+      2369788,
+      63078,
+      4294967295,
+      63016,
+      63078,
+      4294967295,
+      1048577,
+      79542,
+      71071,
+      4294967295,
+      8730,
+      4294967295,
+      4294967295,
+      86523,
+      4294967295,
+      0,
+      65544,
+      3,
+      262144,
+      0,
+      3072,
+      33565177
+    ],
+    "fieldStart": 79542,
+    "methodStart": 71071,
+    "fieldCount": 3,
+    "methodCount": 8
+  },
+  "fields": [
+    {
+      "index": 79542,
+      "name": "m_objects",
+      "type": 27170,
+      "typeName": "type(0x15, data=0x188a3e490)",
+      "attrs": 1,
+      "static": false,
+      "offset": 16,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188407
+    },
+    {
+      "index": 79543,
+      "name": "m_cachedList",
+      "type": 21524,
+      "typeName": "type(0x15, data=0x188bb0f00)",
+      "attrs": 1,
+      "static": false,
+      "offset": 24,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188408
+    },
+    {
+      "index": 79544,
+      "name": "<projectiles>k__BackingField",
+      "type": 29783,
+      "typeName": "type(0x15, data=0x188ac2ba0)",
+      "attrs": 1,
+      "static": false,
+      "offset": 32,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67188409
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+import assert from "node:assert/strict";
+import { test } from "node:test";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+test("Unit Refs preserve guard proofs, permit covariance and reject forged or stronger identities", async () => {
+    const { default: ts } = await import("typescript");
+    const directory = mkdtempSync(join(tmpdir(), "stronghold-unit-ref-types-"));
+    const source = name => JSON.stringify(fileURLToPath(new URL(`../../src/core/${name}.js`, import.meta.url)));
+    const path = join(directory, "refs.mts");
+    try {
+        writeFileSync(path, `
+import type { Unit } from ${source("unit/unit")};
+import type { TickHook } from ${source("unit/hook")};
+import type { Result } from ${source("battle/state")};
+import type { Ref, Identity } from ${source("common/ref")};
+import type { Query } from ${source("common/query")};
+import type { State as BattleState } from ${source("battle/state")};
+import * as units from ${source("unit/query")};
+import { hasLocomotion, type Locomotion } from ${source("unit/capability/locomotion/capability")};
+import { hasVitality, type Vitality } from ${source("unit/capability/vitality/capability")};
+import { hasSkill, type Skill } from ${source("unit/capability/skill/capability")};
+type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
+type Assert<T extends true> = T;
+declare const battle: BattleState;
+declare const strong: Ref<Unit & Locomotion & Vitality>;
+declare const moving: Ref<Unit & Locomotion>;
+declare const known: Unit & Locomotion & Vitality;
+const weaker: Ref<Unit & Locomotion> = strong;
+const base: Ref<Unit> = weaker;
+// @ts-expect-error A weaker proof cannot satisfy a stronger requirement.
+const stronger: Ref<Unit & Locomotion & Vitality> = moving;
+// @ts-expect-error Unit identities require a query-generated proof.
+const forged: Ref<Unit & Locomotion> = { id: 1 };
+// @ts-expect-error Ref identities are immutable.
+weaker.id = 2;
+// @ts-expect-error A bare ID is not a typed Unit identity.
+units.get(battle, 1);
+// @ts-expect-error A known Unit is not itself a Ref.
+units.get(battle, known);
+// @ts-expect-error Ref construction requires a known Unit, not a bare ID.
+units.ref(1);
+const preserved = units.ref(known);
+type Preserved = Assert<Equal<typeof preserved, Ref<Unit & Locomotion & Vitality>>>;
+const current = units.get(battle, strong);
+type Current = Assert<Equal<typeof current, (Unit & Locomotion & Vitality) | undefined>>;
+const candidates = units.all(battle);
+type Candidates = Assert<Equal<typeof candidates, Query<Unit>>>;
+const candidateValues = candidates.toArray();
+type CandidateValues = Assert<Equal<typeof candidateValues, readonly Unit[]>>;
+const candidateRefs = candidates.map(units.ref).toArray();
+type CandidateRefs = Assert<Equal<typeof candidateRefs, readonly Ref<Unit>[]>>;
+type TickBattle = Assert<Equal<Parameters<TickHook["invoke"]>[0], BattleState>>;
+type TickContext = Assert<Equal<Parameters<TickHook["invoke"]>[1], Unit>>;
+const tick: TickHook = {
+    id: "tick", stage: "tick",
+    invoke(state, self) {
+        const reference: Ref<Unit> = units.ref(self);
+        return { state, value: undefined };
+    },
+};
+declare const tickById: (state: BattleState, unitId: number, current: void) => Result<void>;
+// @ts-expect-error Unit tick hooks receive a Unit context rather than its ID.
+const invalidTick: TickHook = { id: "invalid", stage: "tick", invoke: tickById };
+const locomotives = candidates.filter(hasLocomotion);
+type Locomotives = Assert<Equal<typeof locomotives, Query<Unit & Locomotion>>>;
+const movingRefs = locomotives.map(units.ref).toArray();
+type MovingRefs = Assert<Equal<typeof movingRefs, readonly Ref<Unit & Locomotion>[]>>;
+const skills = candidates.filter(hasSkill);
+type Skills = Assert<Equal<typeof skills, Query<Unit & Skill>>>;
+const both = candidates.filter((unit): unit is Unit & Locomotion & Vitality =>
+    hasLocomotion(unit) && hasVitality(unit));
+type Both = Assert<Equal<typeof both, Query<Unit & Locomotion & Vitality>>>;
+const sequential = locomotives.filter(hasVitality);
+type Sequential = Assert<Equal<typeof sequential, Query<Unit & Locomotion & Vitality>>>;
+const ordinary = candidates.filter(unit => unit.id > 0);
+type Ordinary = Assert<Equal<typeof ordinary, Query<Unit>>>;
+// @ts-expect-error An ordinary condition does not prove an additional Capability.
+const unproven: Query<Unit & Locomotion> = ordinary;
+type Address = Assert<Equal<Identity<Unit & Locomotion>, { readonly id: number }>>;
+interface HostedUnit extends Unit { readonly host: string }
+declare const hosted: HostedUnit;
+const hostedRef = units.ref(hosted);
+type HostedAddress = Assert<Equal<Identity<HostedUnit>, { readonly id: number }>>;
+// @ts-expect-error Business fields do not become identity fields.
+hostedRef.host;
+`);
+        const program = ts.createProgram([path], {
+            noEmit: true, strict: true, exactOptionalPropertyTypes: true,
+            noUncheckedIndexedAccess: true, target: ts.ScriptTarget.ES2022,
+            module: ts.ModuleKind.NodeNext, moduleResolution: ts.ModuleResolutionKind.NodeNext,
+            skipLibCheck: true, types: [],
+        });
+        assert.deepEqual(ts.getPreEmitDiagnostics(program).map(diagnostic =>
+            ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n")), []);
+    } finally {
+        rmSync(directory, { recursive: true, force: true });
+    }
+});

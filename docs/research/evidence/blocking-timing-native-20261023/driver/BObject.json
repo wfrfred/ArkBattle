@@ -1,0 +1,183 @@
+{
+  "fields": [
+    {
+      "index": 70814,
+      "name": "s_globalCounter",
+      "type": 81647,
+      "typeName": "uint",
+      "attrs": 17,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67179679
+    },
+    {
+      "index": 70815,
+      "name": "<instanceUid>k__BackingField",
+      "type": 81643,
+      "typeName": "uint",
+      "attrs": 1,
+      "static": false,
+      "offset": 24,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67179680
+    },
+    {
+      "index": 70816,
+      "name": "<side>k__BackingField",
+      "type": 74959,
+      "typeName": "Torappu.Battle.SideType",
+      "attrs": 1,
+      "static": false,
+      "offset": 28,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67179681
+    },
+    {
+      "index": 70817,
+      "name": "<playerSide>k__BackingField",
+      "type": 64688,
+      "typeName": "Torappu.PlayerSide",
+      "attrs": 1,
+      "static": false,
+      "offset": 32,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67179682
+    },
+    {
+      "index": 70818,
+      "name": "<inited>k__BackingField",
+      "type": 44790,
+      "typeName": "bool",
+      "attrs": 1,
+      "static": false,
+      "offset": 36,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67179683
+    },
+    {
+      "index": 70819,
+      "name": "<borned>k__BackingField",
+      "type": 44790,
+      "typeName": "bool",
+      "attrs": 1,
+      "static": false,
+      "offset": 37,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67179684
+    },
+    {
+      "index": 70820,
+      "name": "<isDisappeared>k__BackingField",
+      "type": 44790,
+      "typeName": "bool",
+      "attrs": 1,
+      "static": false,
+      "offset": 38,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67179685
+    },
+    {
+      "index": 70821,
+      "name": "m_prdCounter",
+      "type": 59012,
+      "typeName": "int",
+      "attrs": 1,
+      "static": false,
+      "offset": 40,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67179686
+    },
+    {
+      "index": 70822,
+      "name": "m_prdSubEntities",
+      "type": 25304,
+      "typeName": "type(0x15, data=0x188aa15c0)",
+      "attrs": 33,
+      "static": false,
+      "offset": 48,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67179687
+    }
+  ],
+  "methods": [
+    {
+      "index": 65030,
+      "name": "UpdateSideAndLayer",
+      "type": 10083,
+      "returnType": 83059,
+      "parameterStart": 65308,
+      "generic": -1,
+      "token": 100728327,
+      "flags": 132,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": "0x180662c70",
+      "fullname": "Torappu.Battle.BObject.UpdateSideAndLayer",
+      "parameters": [
+        {
+          "index": 65308,
+          "name": "side",
+          "token": 134283042,
+          "type": 74958
+        }
+      ]
+    },
+    {
+      "index": 65036,
+      "name": "OnTick",
+      "type": 10083,
+      "returnType": 83059,
+      "parameterStart": 65310,
+      "generic": -1,
+      "token": 100728333,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 27,
+      "parameterCount": 1,
+      "address": "0x18050cf60",
+      "fullname": "Torappu.Battle.BObject.OnTick",
+      "parameters": [
+        {
+          "index": 65310,
+          "name": "deltaTime",
+          "token": 134283044,
+          "type": 53178
+        }
+      ]
+    },
+    {
+      "index": 65037,
+      "name": "OnLateTick",
+      "type": 10083,
+      "returnType": 83059,
+      "parameterStart": 65311,
+      "generic": -1,
+      "token": 100728334,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 28,
+      "parameterCount": 1,
+      "address": "0x18050cf60",
+      "fullname": "Torappu.Battle.BObject.OnLateTick",
+      "parameters": [
+        {
+          "index": 65311,
+          "name": "deltaTime",
+          "token": 134283045,
+          "type": 53178
+        }
+      ]
+    }
+  ]
+}

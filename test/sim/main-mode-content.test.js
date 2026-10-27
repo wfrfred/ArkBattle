@@ -1,0 +1,64 @@
+import * as blockingQueries from "../../dist/core/battle/blocking/query.js";
+import * as unitQueries from "../../dist/core/unit/query.js";
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { test } from 'node:test';
+import { createTacticalContentDemo, defaults } from '../../dist/legacy/tactical-demo-content.js';
+import { parseLevelDefinition } from '../../dist/data/arknights/level.js';
+import { initialize as initializeBattle, step as stepBattle } from '../../dist/core/battle/runtime.js';
+import { readShield } from '../../dist/content/operators/mudrock.js';
+
+const data = JSON.parse(readFileSync(new URL('../fixtures/arknights/main-mode-units.json', import.meta.url)));
+const json = value => JSON.parse(JSON.stringify(value));
+const level = parseLevelDefinition(JSON.parse(readFileSync(new URL('../fixtures/arknights/level_act1autochess_m01.json', import.meta.url))), { consumeTileBlackboard: (_context, entry) => ['isValidHand', 'previewNotAlloed'].includes(entry.key) });
+const create = (tables, configuration) => {
+  const prepared = createTacticalContentDemo(level.map, level.routes[0], tables, configuration);
+  return { ...prepared, runtime: initializeBattle(prepared.input) };
+};
+
+test('main-mode content runs deterministic shield, skill, blocking and projectile settlement end to end', () => {
+  const configuration = { ...defaults, mudrock: { ...defaults.mudrock,
+    level: 90, potential: 5, skillLevel: 10,
+    module: { id: 'uniequip_002_mudrok', level: 3 },
+  } };
+  let first = create(data, configuration).runtime;
+  let second = create(data, configuration).runtime;
+  const before = first;
+  const events = [];
+  let hasBlocking = false;
+  let triggeredMelantha = false;
+  while (first.result === null) {
+    const guard = unitQueries.all(first).toArray().find(unit => unit.id === 1);
+    const commands = !triggeredMelantha && (guard?.skill.sp?.value ?? 0) >= (guard?.definition.skill.sp?.requirement ?? Infinity)
+      ? [{ type: 'ACTIVATE_SKILL', unitId: 1 }] : [];
+    if (commands.length) triggeredMelantha = true;
+    const step = (first = stepBattle(first, commands));
+    const replay = (second = stepBattle(second, commands));
+    assert.deepEqual(json(step.events), json(replay.events));
+    assert.deepEqual(step.result, replay.result);
+    events.push(...step.events);
+    hasBlocking ||= blockingQueries.relations(first).map(({ blocker, blocked }) => ({ blockerUnitId: blocker.id, blockedUnitId: blocked.id })).length > 0;
+  }
+  assert.deepEqual(json(unitQueries.all(first).toArray()), json(unitQueries.all(second).toArray()));
+  assert.deepEqual(first.execution, second.execution);
+  assert.deepEqual(first.result, second.result);
+  assert.deepEqual(json(first.schedule), json(second.schedule));
+  assert.ok(hasBlocking);
+  assert.ok(events.some(event => event.type === 'PROJECTILE_HIT'));
+  assert.ok(events.some(event => event.type === 'HEAL' && event.targetUnitId === 0));
+  assert.ok(events.some(event => event.type === 'DAMAGE' && event.targetUnitId === 0 && event.amount === 0));
+  assert.ok(events.some(event => event.type === 'SKILL_ACTIVATED' && event.unitId === 0));
+  assert.ok(events.some(event => event.type === 'SKILL_FINISHED' && event.unitId === 0));
+  assert.ok(events.some(event => event.type === 'SKILL_ACTIVATED' && event.unitId === 1));
+  assert.ok(events.some(event => event.type === 'DAMAGE' && event.sourceUnitId === 0 && event.amount > 0));
+  assert.equal(unitQueries.all(before).toArray().length, 2);
+  assert.equal(unitQueries.all(before).toArray()[0].vitality.hp, unitQueries.all(before).toArray()[0].definition.vitality.maxHp);
+  assert.equal(readShield(unitQueries.all(before).toArray()[0]).layers, 1);
+  assert.equal(unitQueries.all(before).toArray()[1].skill.active, null);
+});
+
+test('main-mode preparation rejects an unavailable configuration before constructing battle', () => {
+  assert.throws(() => create(data, { ...defaults, mudrock: { ...defaults.mudrock,
+    elite: 1, level: 60, skillLevel: 10,
+  } }), /mastery|精|unlock|elite|phase|skill level/i);
+});

@@ -1,0 +1,43 @@
+{
+  "scope": "Read-only installed Windows IL2CPP native fallback plus serialized config/buff_template_holder.ab. Runtime XLua overrides and executed game simulation not checked.",
+  "binary": {
+    "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5"
+  },
+  "metadata": {
+    "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f"
+  },
+  "configuration": {
+    "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+    "sha256": "12419ad8d1ea9f670cca214e525240c691cdf3796b82acc8050698d66c202a37"
+  },
+  "files": {
+    "64279-GetAbnormalFlag.asm": "ddab650a08bf36091f59608f6a8a9b36d53105e6724fe5594af42f5d9389e2f9",
+    "64280-GetAbnormalImmune.asm": "0134590f8e1392cc047e28d26ae2661f1c02cbf237edba42eaa98153efad8951",
+    "64282-GetAbnormalAnti.asm": "8b46541b98d79ac940371197656b470314dd58cda9a4b7178611530447c25ecc",
+    "64287-GetAbnormalFlagWithImmune.asm": "d980fd3f0654346f7f93a2ce7a102be1ca5b01dce7d2c7745a88667ff40f3d7b",
+    "64288-GetAbnormalFlagWithImmuneFlag.asm": "008c0eec89507f0f5d469cc7d0695f9fcc45daf5fd4d15767db361722a325f8b",
+    "64289-GetAbnormalFlagWithImmuneCombo.asm": "0ddfb69d1f270ac82ce645d133e7162a001f7e197efda3d3971ceff444787a1c",
+    "64292-CheckAbnormalImmune.asm": "7123803e79b2655d407b1307d2e054023cfdb81e7bbafc42129220a852e2af89",
+    "64293-CheckAbnormalComboImmune.asm": "4d59029b803e1b1b3f23249bd5ff99d4e12d66865829a675f57efc79644ecc87",
+    "64300-_CalculateAbnormalDirtyByModifier.asm": "20cb918c7a7ed49e62a604d9a3b0031cfeec5447660dca6b3ced601941e2b513",
+    "64314-GetAbnormalFlagWithImmuneComboFlag.asm": "88ab9206d261024c0f7d0b1fcd5eef5a1f760b6ff9088b0773ecba5a4ba4f203",
+    "64316-CheckAbnormalComboImmune.asm": "75079c9d6c4a76c1bc28482d7460e4e6d0c6315084a221922e420a24916c9682",
+    "65099-set_isEnabled.asm": "de75bbe05c82bda3ddcc767dcfa3e8580ff9562002361e9166a63c1ca4297523",
+    "65141-OnEnable.asm": "9e8315e0d09abb5212390958bddf13391cf32071a3fa3f3267e8c5292f49ab56",
+    "65146-OnTick.asm": "24d2feae9a4c4d1fd9d9e056313c88131424b8ddfda345fca2848e2a26f3251f",
+    "65198-OnOwnerAbnormalFlagDirty.asm": "a7f8c1599e19368b5d2a9ca061e0d386126ee01b85d1572a274eac5786ba413a",
+    "65253-CheckAbnormalFlagAnti.asm": "5fd6e805273355a28e896460b7832d4e4b54c0366b1966989c5f4fd7a4c20db9",
+    "65258-_CalcAbnormalMask.asm": "625a99419c6a95372d7f7cc856a07750bd543d6a3d4aa3460a7abdee745aa3cd",
+    "65267-_UpdateIsEnabledIfNotFinished.asm": "23c47a1c2bdfd825f6a787dafae5b654aafa07b98605f1af3eb83a08442b4c16",
+    "65310-NewBuff.asm": "eb9588f3ff9b6e201b8dfafa79620b358480998b3b3f61fd052ca379352b2b8c",
+    "65319-RemoveAllBuffsWithCertainAbnormalFlag.asm": "9fa1de48a316ee7010e9e44d5bcb03882457a2f5221da44b86943324de12c6dc",
+    "65363-_CheckThroughBuffAbnormalAnti.asm": "7d906014b5a19d4ba1e7f49b662e4712264eae5fff7adee63a0598cd03afe660",
+    "65367-_FilterBuffAbnormalAnti.asm": "d2073c6266c80bfb9049d57881ace2d1770e392023d6f85fcbbab9b9014d9770",
+    "65433-OnOwnerAbnormalFlagDirty.asm": "f975ac8c817558878d11afa2517a6583cdcef4a391e4e0c9c6f95ad078a73fd4",
+    "66544-AddBuff.asm": "7ec516c5fc51ff3a01728af7424b51309d71e82db53eab184ba22e4a8f11b997",
+    "66545-AddBuff.asm": "7434ee4e9f2b72466368df23cf6242b52f4d9ab9da5bcdf85df1db6f04b703d5",
+    "66700-_OnAbnormalFlagDirty.asm": "c1a293d225b5ee5034473060b6d564e18372c854585365dff5567176aa822d52",
+    "selected-templates.json": "f4c3272f98d31e4103dfc172c9d4b3f839d15618dececef804944837864de077",
+    "types.json": "e1bcc253e82c44968665ba57c09fc7009a17d9a74e3fd3602c61db19ba2bee20"
+  }
+}

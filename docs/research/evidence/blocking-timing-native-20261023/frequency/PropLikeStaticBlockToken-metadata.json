@@ -1,0 +1,587 @@
+{
+  "type": {
+    "index": 11433,
+    "name": "PropLikeStaticBlockToken",
+    "namespace": "Torappu.Battle",
+    "raw": [
+      2852614,
+      2369788,
+      65217,
+      4294967295,
+      78981,
+      65217,
+      4294967295,
+      1048577,
+      87194,
+      77287,
+      4294967295,
+      10138,
+      4995,
+      4294967295,
+      105242,
+      11741,
+      109,
+      65553,
+      13,
+      15925249,
+      1310720,
+      3080,
+      33565865
+    ],
+    "fieldStart": 87194,
+    "methodStart": 77287,
+    "fieldCount": 13,
+    "methodCount": 17
+  },
+  "fields": [
+    {
+      "index": 87194,
+      "name": "DIST_MAX",
+      "type": 53182,
+      "typeName": "Torappu.FP",
+      "attrs": 17,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67196059
+    },
+    {
+      "index": 87195,
+      "name": "m_checkedBlock",
+      "type": 44790,
+      "typeName": "bool",
+      "attrs": 1,
+      "static": false,
+      "offset": 1400,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67196060
+    },
+    {
+      "index": 87196,
+      "name": "m_blockCnt",
+      "type": 59012,
+      "typeName": "int",
+      "attrs": 1,
+      "static": false,
+      "offset": 1404,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67196061
+    },
+    {
+      "index": 87197,
+      "name": "m_cachedCheckBlockable",
+      "type": 96584,
+      "typeName": "Torappu.Battle.FilterUtil.FilterFuncWithVolumne",
+      "attrs": 1,
+      "static": false,
+      "offset": 1408,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67196062
+    },
+    {
+      "index": 87198,
+      "name": "__Hotfix0_get_blockCnt",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 8,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67196063
+    },
+    {
+      "index": 87199,
+      "name": "__Hotfix0_OnInit",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 16,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67196064
+    },
+    {
+      "index": 87200,
+      "name": "__Hotfix0_OnReset",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 24,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67196065
+    },
+    {
+      "index": 87201,
+      "name": "__Hotfix0_DoApplyModifier",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 32,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67196066
+    },
+    {
+      "index": 87202,
+      "name": "__Hotfix0__SearchBlockee",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 40,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67196067
+    },
+    {
+      "index": 87203,
+      "name": "__Hotfix0_BlockeeOffsetPosSet",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 48,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67196068
+    },
+    {
+      "index": 87204,
+      "name": "__Hotfix0_OnTick",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 56,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67196069
+    },
+    {
+      "index": 87205,
+      "name": "__Hotfix0__CheckBlockable",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 64,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67196070
+    },
+    {
+      "index": 87206,
+      "name": "_c__Hotfix0_ctor",
+      "type": 51110,
+      "typeName": "XLua.DelegateBridge",
+      "attrs": 17,
+      "static": true,
+      "offset": 72,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67196071
+    }
+  ],
+  "methods": [
+    {
+      "index": 77287,
+      "name": "get_blockCnt",
+      "type": 11433,
+      "returnType": 59011,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100740584,
+      "flags": 2246,
+      "iflags": 0,
+      "slot": 84,
+      "parameterCount": 0,
+      "address": "0x180ab0490",
+      "fullname": "Torappu.Battle.PropLikeStaticBlockToken.get_blockCnt",
+      "parameters": []
+    },
+    {
+      "index": 77288,
+      "name": "OnInit",
+      "type": 11433,
+      "returnType": 83059,
+      "parameterStart": 75592,
+      "generic": -1,
+      "token": 100740585,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 30,
+      "parameterCount": 1,
+      "address": "0x180aaf8b0",
+      "fullname": "Torappu.Battle.PropLikeStaticBlockToken.OnInit",
+      "parameters": [
+        {
+          "index": 75592,
+          "name": "initHeight",
+          "token": 134293326,
+          "type": 75036
+        }
+      ]
+    },
+    {
+      "index": 77289,
+      "name": "OnReset",
+      "type": 11433,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100740586,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 29,
+      "parameterCount": 0,
+      "address": "0x180aafaf0",
+      "fullname": "Torappu.Battle.PropLikeStaticBlockToken.OnReset",
+      "parameters": []
+    },
+    {
+      "index": 77290,
+      "name": "DoApplyModifier",
+      "type": 11433,
+      "returnType": 44789,
+      "parameterStart": 75593,
+      "generic": -1,
+      "token": 100740587,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 124,
+      "parameterCount": 2,
+      "address": "0x180aaf600",
+      "fullname": "Torappu.Battle.PropLikeStaticBlockToken.DoApplyModifier",
+      "parameters": [
+        {
+          "index": 75593,
+          "name": "modifier",
+          "token": 134293327,
+          "type": 31406
+        },
+        {
+          "index": 75594,
+          "name": "force",
+          "token": 134293328,
+          "type": 44789
+        }
+      ]
+    },
+    {
+      "index": 77291,
+      "name": "_SearchBlockee",
+      "type": 11433,
+      "returnType": 83059,
+      "parameterStart": 75595,
+      "generic": -1,
+      "token": 100740588,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 236,
+      "parameterCount": 1,
+      "address": "0x180aaff30",
+      "fullname": "Torappu.Battle.PropLikeStaticBlockToken._SearchBlockee",
+      "parameters": [
+        {
+          "index": 75595,
+          "name": "force",
+          "token": 134293329,
+          "type": 44814
+        }
+      ]
+    },
+    {
+      "index": 77292,
+      "name": "BlockeeOffsetPosSet",
+      "type": 11433,
+      "returnType": 82722,
+      "parameterStart": 75596,
+      "generic": -1,
+      "token": 100740589,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 239,
+      "parameterCount": 2,
+      "address": "0x180aaf2c0",
+      "fullname": "Torappu.Battle.PropLikeStaticBlockToken.BlockeeOffsetPosSet",
+      "parameters": [
+        {
+          "index": 75596,
+          "name": "offset",
+          "token": 134293330,
+          "type": 82722
+        },
+        {
+          "index": 75597,
+          "name": "enemy",
+          "token": 134293331,
+          "type": 52144
+        }
+      ]
+    },
+    {
+      "index": 77293,
+      "name": "OnTick",
+      "type": 11433,
+      "returnType": 83059,
+      "parameterStart": 75598,
+      "generic": -1,
+      "token": 100740590,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 27,
+      "parameterCount": 1,
+      "address": "0x180aafb90",
+      "fullname": "Torappu.Battle.PropLikeStaticBlockToken.OnTick",
+      "parameters": [
+        {
+          "index": 75598,
+          "name": "deltaTime",
+          "token": 134293332,
+          "type": 53178
+        }
+      ]
+    },
+    {
+      "index": 77294,
+      "name": "_CheckBlockable",
+      "type": 11433,
+      "returnType": 44789,
+      "parameterStart": 75599,
+      "generic": -1,
+      "token": 100740591,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 4,
+      "address": "0x180aafd50",
+      "fullname": "Torappu.Battle.PropLikeStaticBlockToken._CheckBlockable",
+      "parameters": [
+        {
+          "index": 75599,
+          "name": "entity",
+          "token": 134293333,
+          "type": 52648
+        },
+        {
+          "index": 75600,
+          "name": "source",
+          "token": 134293334,
+          "type": 52648
+        },
+        {
+          "index": 75601,
+          "name": "weight",
+          "token": 134293335,
+          "type": 31248
+        },
+        {
+          "index": 75602,
+          "name": "volume",
+          "token": 134293336,
+          "type": 31342
+        }
+      ]
+    },
+    {
+      "index": 77295,
+      "name": ".ctor",
+      "type": 11433,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100740592,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": "0x180ab0410",
+      "fullname": "Torappu.Battle.PropLikeStaticBlockToken..ctor",
+      "parameters": []
+    },
+    {
+      "index": 77296,
+      "name": ".cctor",
+      "type": 11433,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100740593,
+      "flags": 6289,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": "0x180ab03a0",
+      "fullname": "Torappu.Battle.PropLikeStaticBlockToken..cctor",
+      "parameters": []
+    },
+    {
+      "index": 77297,
+      "name": "<>xLuaBaseProxy_get_blockCnt",
+      "type": 11433,
+      "returnType": 59011,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100740594,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": "0x180aafd40",
+      "fullname": "Torappu.Battle.PropLikeStaticBlockToken.<>xLuaBaseProxy_get_blockCnt",
+      "parameters": []
+    },
+    {
+      "index": 77298,
+      "name": "<>xLuaBaseProxy_OnInit",
+      "type": 11433,
+      "returnType": 83059,
+      "parameterStart": 75603,
+      "generic": -1,
+      "token": 100740595,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": "0x180aafca0",
+      "fullname": "Torappu.Battle.PropLikeStaticBlockToken.<>xLuaBaseProxy_OnInit",
+      "parameters": [
+        {
+          "index": 75603,
+          "name": "P0",
+          "token": 134293337,
+          "type": 75036
+        }
+      ]
+    },
+    {
+      "index": 77299,
+      "name": "<>xLuaBaseProxy_OnReset",
+      "type": 11433,
+      "returnType": 83059,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100740596,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "address": "0x180aafcb0",
+      "fullname": "Torappu.Battle.PropLikeStaticBlockToken.<>xLuaBaseProxy_OnReset",
+      "parameters": []
+    },
+    {
+      "index": 77300,
+      "name": "<>xLuaBaseProxy_DoApplyModifier",
+      "type": 11433,
+      "returnType": 44789,
+      "parameterStart": 75604,
+      "generic": -1,
+      "token": 100740597,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": "0x180aaf170",
+      "fullname": "Torappu.Battle.PropLikeStaticBlockToken.<>xLuaBaseProxy_DoApplyModifier",
+      "parameters": [
+        {
+          "index": 75604,
+          "name": "P0",
+          "token": 134293338,
+          "type": 31406
+        },
+        {
+          "index": 75605,
+          "name": "P1",
+          "token": 134293339,
+          "type": 44789
+        }
+      ]
+    },
+    {
+      "index": 77301,
+      "name": "<>xLuaBaseProxy__SearchBlockee",
+      "type": 11433,
+      "returnType": 83059,
+      "parameterStart": 75606,
+      "generic": -1,
+      "token": 100740598,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": "0x180aafd30",
+      "fullname": "Torappu.Battle.PropLikeStaticBlockToken.<>xLuaBaseProxy__SearchBlockee",
+      "parameters": [
+        {
+          "index": 75606,
+          "name": "P0",
+          "token": 134293340,
+          "type": 44789
+        }
+      ]
+    },
+    {
+      "index": 77302,
+      "name": "<>xLuaBaseProxy_BlockeeOffsetPosSet",
+      "type": 11433,
+      "returnType": 82722,
+      "parameterStart": 75607,
+      "generic": -1,
+      "token": 100740599,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "address": "0x180aafc90",
+      "fullname": "Torappu.Battle.PropLikeStaticBlockToken.<>xLuaBaseProxy_BlockeeOffsetPosSet",
+      "parameters": [
+        {
+          "index": 75607,
+          "name": "P0",
+          "token": 134293341,
+          "type": 82722
+        },
+        {
+          "index": 75608,
+          "name": "P1",
+          "token": 134293342,
+          "type": 52144
+        }
+      ]
+    },
+    {
+      "index": 77303,
+      "name": "<>xLuaBaseProxy_OnTick",
+      "type": 11433,
+      "returnType": 83059,
+      "parameterStart": 75609,
+      "generic": -1,
+      "token": 100740600,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "address": "0x180aafd20",
+      "fullname": "Torappu.Battle.PropLikeStaticBlockToken.<>xLuaBaseProxy_OnTick",
+      "parameters": [
+        {
+          "index": 75609,
+          "name": "P0",
+          "token": 134293343,
+          "type": 53178
+        }
+      ]
+    }
+  ]
+}

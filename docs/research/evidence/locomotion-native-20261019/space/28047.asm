@@ -1,0 +1,25 @@
+; Torappu.GridPosition.FromVectorPosition metadata=28047 token=0x6006d90 VA=0x182103900 RVA=0x2103900 size=0x40
+0000000182103900: sub      rsp, 0x28
+0000000182103904: mov      qword ptr [rsp + 0x40], rcx
+0000000182103909: xor      edx, edx
+000000018210390b: movss    xmm0, dword ptr [rsp + 0x44]
+0000000182103911: call     0x18059e290
+0000000182103916: movss    xmm0, dword ptr [rsp + 0x40]
+000000018210391c: xor      edx, edx
+000000018210391e: mov      dword ptr [rsp + 0x48], eax
+0000000182103922: call     0x18059e290
+0000000182103927: mov      dword ptr [rsp + 0x4c], eax
+000000018210392b: mov      rax, qword ptr [rsp + 0x48]
+0000000182103930: add      rsp, 0x28
+0000000182103934: ret      
+0000000182103935: int3     
+0000000182103936: int3     
+0000000182103937: int3     
+0000000182103938: int3     
+0000000182103939: int3     
+000000018210393a: int3     
+000000018210393b: int3     
+000000018210393c: int3     
+000000018210393d: int3     
+000000018210393e: int3     
+000000018210393f: int3     

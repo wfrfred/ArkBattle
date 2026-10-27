@@ -1,0 +1,99 @@
+{
+  "fields": [],
+  "methods": [
+    {
+      "index": 83285,
+      "name": "get_allowManualTick",
+      "type": 12091,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100746582,
+      "flags": 3526,
+      "iflags": 0,
+      "slot": 0,
+      "parameterCount": 0,
+      "address": "0x0",
+      "fullname": "Torappu.Battle.GameMode.IGameMode.get_allowManualTick",
+      "parameters": []
+    },
+    {
+      "index": 83289,
+      "name": "get_HookGetNextWave",
+      "type": 12091,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100746586,
+      "flags": 3526,
+      "iflags": 0,
+      "slot": 4,
+      "parameterCount": 0,
+      "address": "0x0",
+      "fullname": "Torappu.Battle.GameMode.IGameMode.get_HookGetNextWave",
+      "parameters": []
+    },
+    {
+      "index": 83298,
+      "name": "get_enableHudSlowTicker",
+      "type": 12091,
+      "returnType": 44789,
+      "parameterStart": -1,
+      "generic": -1,
+      "token": 100746595,
+      "flags": 3526,
+      "iflags": 0,
+      "slot": 13,
+      "parameterCount": 0,
+      "address": "0x0",
+      "fullname": "Torappu.Battle.GameMode.IGameMode.get_enableHudSlowTicker",
+      "parameters": []
+    },
+    {
+      "index": 83313,
+      "name": "Tick",
+      "type": 12091,
+      "returnType": 83059,
+      "parameterStart": 80721,
+      "generic": -1,
+      "token": 100746610,
+      "flags": 1478,
+      "iflags": 0,
+      "slot": 28,
+      "parameterCount": 1,
+      "address": "0x0",
+      "fullname": "Torappu.Battle.GameMode.IGameMode.Tick",
+      "parameters": [
+        {
+          "index": 80721,
+          "name": "doDefaultTick",
+          "token": 134298468,
+          "type": 39925
+        }
+      ]
+    },
+    {
+      "index": 83369,
+      "name": "TryGetNextWaveIndexInGameMode",
+      "type": 12091,
+      "returnType": 44789,
+      "parameterStart": 80787,
+      "generic": -1,
+      "token": 100746666,
+      "flags": 1478,
+      "iflags": 0,
+      "slot": 84,
+      "parameterCount": 1,
+      "address": "0x0",
+      "fullname": "Torappu.Battle.GameMode.IGameMode.TryGetNextWaveIndexInGameMode",
+      "parameters": [
+        {
+          "index": 80787,
+          "name": "index",
+          "token": 134298534,
+          "type": 31342
+        }
+      ]
+    }
+  ]
+}

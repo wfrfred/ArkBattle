@@ -1,0 +1,204 @@
+import * as unitQueries from "../../dist/core/unit/query.js";
+import { get as unitQueryGet } from "../../dist/core/unit/query.js";
+import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
+import { ref as unitRef } from "../../dist/core/unit/query.js";
+import assert from "node:assert/strict";
+import { test } from "node:test";
+import { initialize } from "../helpers/unit.js";
+import { getUnit, transitionUnit } from "../helpers/unit.js";
+import * as effect from "../../dist/core/unit/effect/operations.js";
+import { get } from "../../dist/core/unit/effect/operations.js";
+import {
+    definition,
+    effectFixtureWork,
+    install,
+    at,
+    attackBuff,
+    refreshAttack,
+} from "../helpers/effects.js";
+import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
+
+const unit = (id = 0) =>
+    initialize({
+        id,
+        position: [0, 0],
+        definition: { hooks: [],
+            id: `effect-unit-${id}`,
+            vitality: { maxHp: 100, defense: 0, resistance: 0 },
+            offense: { attack: 100 },
+        },
+    });
+
+test("effects: a direct static definition initializes private state and runs install before enable", () => {
+    const seen = [];
+    const value = definition(
+        "direct",
+        { count: 0 },
+        {
+            onInstall(state, self) {
+                assert.equal(get(state, effectRef(self)).definition, value);
+                state = effect.update(state, effectRef(self), (current) => ({
+                    count: current.count + 1,
+                }));
+                seen.push(["install", get(state, effectRef(self)).data.count]);
+                return state;
+            },
+            onEnable(state, self) {
+                seen.push(["enable", self.data.count]);
+                return state;
+            },
+        },
+    );
+    let battle = effectFixtureWork(unit());
+    const old = battle;
+    let ref;
+    ({ state: battle, value: ref } = install(battle, value));
+    assert.equal(get(battle, ref).definition, value);
+    assert.deepEqual(get(battle, ref).data, { count: 1 });
+    assert.equal(get(battle, ref).status, "ACTIVE");
+    assert.deepEqual(seen, [
+        ["install", 1],
+        ["enable", 1],
+    ]);
+    assert.equal(unitQueries.get(old, { id: 0 }).effects?.values().length ?? 0, 0);
+});
+
+test("effects: updates share immutable values and container queries pair a definition with its data", () => {
+    const nested = { amount: 1 };
+    const value = definition("state", { count: 1, nested });
+    const other = definition("other");
+    let battle = effectFixtureWork(unit());
+    let ref;
+    ({ state: battle, value: ref } = install(battle, value));
+    const old = get(battle, ref);
+    battle = effect.update(battle, ref, (current) => ({ ...current, count: 2 }));
+    const current = get(battle, ref);
+    assert.equal(current.data.nested, nested);
+    assert.equal(old.data.count, 1);
+    assert.equal(current.data.count, 2);
+    assert.equal(getUnit(battle, 0).effects.get(ref.id, value), current);
+    assert.equal(getUnit(battle, 0).effects.get(ref.id, other), undefined);
+});
+
+test("effects: disabling withdraws output while preserving private state and identity", () => {
+    const seen = [];
+    const value = attackBuff("attack", 20, {
+        onInstall: (state) => {
+            seen.push("install");
+            return state;
+        },
+        onEnable: (state) => {
+            seen.push("enable");
+            return state;
+        },
+        onDisable: (state) => {
+            seen.push("disable");
+            return state;
+        },
+    });
+    let battle = effectFixtureWork(unit());
+    let ref;
+    ({ state: battle, value: ref } = install(battle, value));
+    const attack = () => resolveAttack(battle, unitRef(getUnit(battle, 0)));
+    assert.equal(attack(), 120);
+    battle = effect.setEnabled(battle, ref, false);
+    assert.equal(attack(), 100);
+    battle = effect.update(battle, ref, data => ({ amount: 30 }));
+    assert.equal(attack(), 100);
+    battle = effect.setEnabled(battle, ref, true);
+    assert.equal(attack(), 130);
+    assert.deepEqual(seen, ["install", "enable", "disable", "enable"]);
+    assert.equal(get(battle, ref).id, ref.id);
+});
+
+test("effects: content explicitly refreshes a static contribution after changing private state", () => {
+    const value = attackBuff();
+    let battle = effectFixtureWork(unit());
+    let ref;
+    ({ state: battle, value: ref } = install(battle, value));
+    const previous = battle;
+    battle = effect.update(battle, ref, data => ({ amount: 50 }));
+    assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 0))), 120);
+    battle = refreshAttack(battle, ref);
+    assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 0))), 150);
+    assert.equal(resolveAttack(previous, unitRef(getUnit(previous, 0))), 120);
+});
+
+test("effects: ending withdraws outputs before terminal business and repeated ending does nothing", () => {
+    const seen = [];
+    const value = attackBuff("ending", 20, {
+        onDisable(state, self) {
+            seen.push(["disable", self.status]);
+            return state;
+        },
+        onEnd(state, self, reason) {
+            seen.push(["end", reason, resolveAttack(state, unitRef(getUnit(state, 0)))]);
+            return effect.end(state, effectRef(self), "REENTRANT");
+        },
+    });
+    let battle = effectFixtureWork(unit());
+    let ref;
+    ({ state: battle, value: ref } = install(battle, value));
+    battle = effect.end(battle, ref, "DISPELLED");
+    battle = effect.end(battle, ref, "OTHER");
+    assert.deepEqual(
+        seen.map((entry) => entry[0]),
+        ["disable", "end"],
+    );
+    assert.deepEqual(seen[1], ["end", "DISPELLED", 100]);
+    assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 0))), 100);
+});
+
+test("effects: callbacks read current Unit state after a preceding nested operation", () => {
+    const value = definition(
+        "current-host",
+        {},
+        {
+            onInstall(state, self) {
+                const sampledHost = unitQueryGet(state, self.host);
+                state = transitionUnit(state, 0, (current) => ({
+                    ...current,
+                    vitality: { ...current.vitality, hp: 30 },
+                }));
+                assert.equal(sampledHost.vitality.hp, 100, "An explicitly sampled host retains its input version");
+                assert.equal(unitQueryGet(state, self.host).vitality.hp, 30);
+                return state;
+            },
+            onTick(state, self) {
+                return effect.update(state, effectRef(self), () => ({
+                    observedHp: unitQueryGet(state, self.host).vitality.hp,
+                    tick: state.tick,
+                }));
+            },
+        },
+    );
+    let battle = effectFixtureWork(unit());
+    let ref;
+    ({ state: battle, value: ref } = install(battle, value));
+    battle = effect.advance(at(battle, 7));
+    assert.deepEqual(get(battle, ref).data, { observedHp: 30, tick: 7 });
+});
+
+test("effects: a callback retains its input instance after a nested operation ends it", () => {
+    const seen = [];
+    const value = definition(
+        "ended-by-operation",
+        {},
+        {
+            onTick(state, self) {
+                state = effect.end(state, effectRef(self), "EXPLICIT");
+                seen.push(self.status);
+                assert.equal(get(state, effectRef(self)), undefined);
+                return state;
+            },
+        },
+    );
+    let battle = effectFixtureWork(unit());
+    let ref;
+    ({ state: battle, value: ref } = install(battle, value));
+
+    battle = effect.advance(at(battle, 1));
+
+    assert.deepEqual(seen, ["ACTIVE"], "self retains its input version after ending");
+    assert.equal(get(battle, ref), undefined);
+});

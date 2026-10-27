@@ -1,0 +1,44 @@
+export interface State {
+    readonly periodTicks: number;
+    readonly readyAtTick: number;
+}
+
+export function initialize(periodTicks: number, tick: number): State {
+    return { periodTicks, readyAtTick: tick };
+}
+
+export function remaining(state: State, tick: number): number {
+    return Math.max(0, state.readyAtTick - tick);
+}
+
+export function reset(state: State, tick: number): State {
+    const readyAtTick = tick + state.periodTicks;
+
+    return readyAtTick === state.readyAtTick ? state : { ...state, readyAtTick };
+}
+
+export function clear(state: State, tick: number): State {
+    return state.readyAtTick === tick ? state : { ...state, readyAtTick: tick };
+}
+
+export function resizeKeepingProgress(state: State, periodTicks: number, tick: number): State {
+    if (periodTicks === state.periodTicks) {
+        return state;
+    }
+
+    const fraction = Math.min(1, remaining(state, tick) / state.periodTicks);
+    const readyAtTick = tick + periodTicks * fraction;
+
+    return { periodTicks, readyAtTick };
+}
+
+export function resizeKeepingElapsed(state: State, periodTicks: number, tick: number): State {
+    if (periodTicks === state.periodTicks) {
+        return state;
+    }
+
+    const elapsed = Math.max(0, tick - (state.readyAtTick - state.periodTicks));
+    const readyAtTick = tick + Math.max(0, periodTicks - elapsed);
+
+    return { periodTicks, readyAtTick };
+}

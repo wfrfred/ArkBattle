@@ -1,0 +1,149 @@
+Blocking ordinary search frequency and explicit searches — native investigation 2026-10-23
+
+Scope
+- Same installed official Windows client as blocking-native-20261023 evidence.
+- Full native method bodies and metadata, ordinary C# branches. Live XLua delegates may replace these methods and are not established by this extraction.
+- No Stronghold source, tests, architecture documents or commits changed.
+- Evidence is in this directory: per-method .asm + .json, PeriodicTicker.json, BlockManager.json, Character-metadata.json, PropLikeStaticBlockToken-metadata.json, xrefs.json. The aggregate scheduling relation to movement is a separate sibling investigation.
+
+1. Directly confirmed periodic ticker formula
+Torappu.PeriodicTicker [type 1447]:
+    m_tickPeriod: int at +0x10
+    m_tickCount: int at +0x14
+
+Constructor [25960] VA 0x181e043f0:
+    period = supplied period
+    count = waitFirstPeriod ? period : 0
+get_isReady [25959] VA 0x181a6ba10:
+    return count == 0
+Tick [25963] VA 0x181e043d0:
+    if count > 0: --count
+    return count == 0
+Next [25964] VA 0x181e04370:
+    if count != 0: return false
+    count = period
+    return true
+Reset(waitFirstPeriod) [25961] VA 0x181e04390:
+    count = waitFirstPeriod ? period : 0
+Reset(newPeriod,waitFirstPeriod) [25962] VA 0x181e043c0:
+    period = newPeriod
+    count = waitFirstPeriod ? newPeriod : 0
+
+Important: Next is NOT unconditional Reset. A forced search while count > 0 does not extend the countdown.
+
+2. BlockManager initialization and consumption
+BlockManager constructor [77205] VA 0x180aa17a0:
+    at 0x180aa18c0 xor r8d,r8d (waitFirstPeriod=false)
+    at 0x180aa18c3 mov edx,3
+    at 0x180aa18cb call PeriodicTicker.ctor
+    ticker stored at BlockManager +0x20 (m_findBlockeeTicker)
+Therefore newly constructed manager is ready immediately, period 3.
+
+BlockManager.Reset [77204] VA 0x180aa0960:
+    at 0x180aa0975 xor edx,edx
+    at 0x180aa0977 calls ticker.Reset(false)
+Also resets list/count; ordinary reset re-arms immediate readiness.
+
+BlockManager.Tick [77203] VA 0x180aa1010:
+    obtains ticker +0x20 then tail calls PeriodicTicker.Tick at 0x180aa1023.
+    The deltaTime parameter is NOT used at all.
+Thus this is a counter of BlockManager.Tick calls, not elapsed seconds or renderer frames.
+
+BlockManager.SearchBlockee [77190] VA 0x180aa09e0, force is parameter r8b:
+    0x180aa0abe test force
+    force==false -> 0x180aa0ad1 ticker.get_isReady -> if false return
+    force==true -> bypass readiness condition
+    both -> 0x180aa0aed ticker.Next(); return value ignored
+    only then check owner, capacity/tile/BlockFree/Stunned and search candidates.
+So an eligible attempt consumes readiness even if the later business checks reject acquisition or find no targets.
+
+Equivalent pseudocode:
+    SearchBlockee(owner, force):
+        if !force && !ticker.isReady:
+            return
+        ticker.Next()  // resets only if currently ready
+        if owner is ineligible or full:
+            return
+        candidates = searchAndSelect(...)
+        for candidate in candidates:
+            AddBlockee(owner,candidate)
+There is no repeat-until-stable or multi-search loop; its loop is selected targets within this one search.
+
+3. Ordinary automatic call count
+Character.OnTick [76022] VA 0x180a2ec90:
+    invokes Unit.OnTick first at 0x180a2ed13.
+    alive condition gates remaining body.
+    mode/invalidity maintenance can clear existing blockees.
+    at 0x180a2eefa -> BlockManager.Tick(deltaTime), one call.
+    at 0x180a2ef0a -> indirect managed virtual dispatch helper index 0xec, with force=false.
+Character metadata establishes _SearchBlockee [76016] virtual slot=236=0xec.
+_SearchBlockee [76016] VA 0x180a38200:
+    absent XLua replacement, directly tail calls BlockManager.SearchBlockee(owner,force) at 0x180a3827e.
+    No loop, second ticker tick or secondary ordinary search in this method.
+
+Enemy.OnTick [76531] VA 0x180a72340:
+    only when get_canBlockEnemies() is true, at 0x180a724c7 -> its own BlockManager.Tick.
+    at 0x180a724e5 -> BlockManager.SearchBlockee(this,false).
+    One ordinary attempt, no repeated automatic search loop.
+    get_canBlockEnemies [76559] 0x180a7bc60 ordinarily checks its block mask field >0, but may have XLua replacement.
+An Enemy having its own blocker is not another search of a Character's BlockManager.
+
+Direct call-site scan xrefs.json:
+    BlockManager.Tick only ordinary native direct callers Character.OnTick and Enemy.OnTick.
+    BlockManager.SearchBlockee only Enemy.OnTick and Character._SearchBlockee (tail call).
+    BlockManager.Reset ordinary direct callers Character.OnReset and Enemy.OnReset.
+Indirect virtual/hotfix callers are a separate limitation; scan is not a proof no possible script can call these.
+
+For one normally updated eligible owner, attempts occur at updates 0,3,6,9... after initial ready state. Counts after each ordinary eligible update:
+    update 0: Tick 0->0, search, Next 0->3
+    update 1: Tick 3->2, ordinary attempt returns
+    update 2: Tick 2->1, ordinary attempt returns
+    update 3: Tick 1->0, search, Next 0->3
+Call it every 3 eligible fixed logic updates; don't call it every 3 rendered frames. Whether ordinary updating is skipped because the actor is dead or a special override applies affects the count.
+
+4. Explicit immediate searches are real business entrances
+Character.SearchBlockeeImmediate [75955] VA 0x180a31400:
+    checks get_alive (virtual slot40, at 0x180a3147b/7d).
+    calls virtual _SearchBlockee(force=true) at 0x180a314ad (tail dispatch).
+    No same-Tick guard or debounce.
+
+Actual direct callers found in native executable:
+- HarpoonProjectile.OnProjectileStop [71113] 0x1808d1150 -> at 0x1808d1384.
+- NetCatcherProjectile.OnProjectileStop [71246] 0x1808d4480 -> at 0x1808d4607.
+- Projectiles.PullHitTargetBehaviour.OnProjectileStop [86413] 0x180d42ae0 -> at 0x180d42d3d. It gets source, casts Character, verifies Unity identity and invokes immediate search.
+- Action.Nodes.CharSearchBlockeeImmediate.Execute [99962] 0x181162e20 -> at 0x181162f30. It resolves selected Action target, casts Character, then calls immediate search.
+These are concrete native contents, not merely hypothetical API reentrancy. Determining exactly which content schedules multiple such events on one Tick, and their placement relative to normal owner update, requires the full tick/coroutine call chain; this frequency extraction does not pretend a recorded gameplay trace.
+
+5. What force does to next ordinary search
+- count==0: force bypasses check; Next changes 0->3. It consumes the current ready slot.
+- count==1/2/3: force bypasses check; Next returns false and leaves count unchanged. It DOES NOT restart the 3-update countdown.
+- ordinary search just ran (count=3), explicit force later in same logic Tick still searches; count remains3.
+- explicit force before normal owner update, count=1: force searches without resetting; owner Tick 1->0 then ordinary search also occurs.
+- explicit force before normal owner update, count=0: force consumes ready ->3; owner Tick ->2; ordinary search is skipped.
+- two explicit force entrances in same Tick are both accepted on alive owner. There is no global once-per-Tick constraint. This is a control-flow consequence, not a claim that a particular two-content combination has been run in the game.
+- repeated artificial calls to Character.OnTick would advance this count, but that is not evidence the normal scheduler does so; normal update count must be read from scheduler, not inferred from public callability.
+
+6. Different owners and lack of a native global Blocking fixed-point phase
+Each owner owns its own ticker/manager. Different blockers each make their independent attempt during their update. A battle frame can have multiple searches across blockers by ordinary design. They are not repeated global rounds: owner A's search does not cause all earlier owners to search again.
+The native manager contains no worklist, convergence loop, or global 'run until no new relations' phase.
+One search may acquire several targets from its selected list. That is one selected-candidate iteration, not a second search from updated world state.
+
+7. Important special override, avoid universalizing the ordinary period
+PropLikeStaticBlockToken._SearchBlockee [77291] VA 0x180aaff30 overrides Character slot236. Actual field metadata:
+    m_checkedBlock bool at +0x578
+    m_blockCnt int at +0x57c
+    m_cachedCheckBlockable at +0x580
+Native path:
+    0x180ab000b if m_checkedBlock && !force: return
+    sets m_checkedBlock=false and m_blockCnt=0
+    unregisters old blockees and clears list/total
+    applies own checks/filter (not BlockManager.SearchBlockee)
+    adds selected blockees
+    at 0x180ab0360 sets m_checkedBlock=true on successful path
+This special object's normal search can be one-shot until another change/reset; force can redo it. It does not demonstrate ordinary Character search requires multiple global rounds. Its own complete special OnTick and content reachability are beyond ordinary-blocking scope.
+
+8. Consequence for Stronghold architecture (inference, not native identity)
+- Native directly supports independent release/maintenance and ordinary acquire entrances.
+- A project-wide ordinary Blocking Step once per Tick is a reasonable chosen simplification, but not a literal reconstruction of native's per-owner period or native interleaving with each Unit's update.
+- Keep an explicit acquire operation available to contents which require immediate search after pull/action. Do not implement these as a rule that every Unit update triggers global acquire, and do not impose a broad once-per-Tick guard that suppresses explicitly requested searches.
+- No evidence here supports two global Blocking passes merely because native has ordinary plus explicit search calls. The required relative position of the one ordinary Step comes from complete movement-order investigation.

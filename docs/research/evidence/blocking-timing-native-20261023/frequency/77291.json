@@ -1,0 +1,23 @@
+{
+  "index": 77291,
+  "name": "_SearchBlockee",
+  "type": 11433,
+  "returnType": 83059,
+  "parameterStart": 75595,
+  "generic": -1,
+  "token": 100740588,
+  "flags": 196,
+  "iflags": 0,
+  "slot": 236,
+  "parameterCount": 1,
+  "address": 6453657392,
+  "fullname": "Torappu.Battle.PropLikeStaticBlockToken._SearchBlockee",
+  "parameters": [
+    {
+      "index": 75595,
+      "name": "force",
+      "token": 134293329,
+      "type": 44814
+    }
+  ]
+}

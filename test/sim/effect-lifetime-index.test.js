@@ -1,0 +1,51 @@
+import { closeLifetime } from "../../dist/core/battle/execution/lifetime.js";
+import assert from "node:assert/strict";
+import { test } from "node:test";
+import { initialize } from "../helpers/unit.js";
+import { getUnit, transitionUnit } from "../helpers/unit.js";
+import * as effects from "../../dist/core/unit/effect/operations.js";
+import { dependents } from "../../dist/core/unit/effect/dependency.js";
+import { definition, install, effectFixtureWork } from "../helpers/effects.js";
+const unit = (id) => initialize({ id, position: [0, 0], definition: { hooks: [], id: `host-${id}` } });
+
+test("scope index tracks remote dependencies and preserves captured indexes", () => {
+    let battle = effectFixtureWork(unit(1), unit(2), unit(9));
+    const content = definition("indexed");
+    let parent;
+    ({ state: battle, value: parent } = install(battle, content, 1));
+    let child;
+    ({ state: battle, value: child } = install(battle, content, 9, { scopes: [{ type: "EFFECT", ref: parent }] }));
+    let other;
+    ({ state: battle, value: other } = install(battle, content, 2, { scopes: [{ type: "EFFECT", ref: parent }] }));
+    const captured = battle;
+    assert.deepEqual(dependents(battle.effect.dependency, { type: "EFFECT", ref: parent }), [other, child]);
+    battle = effects.end(battle, other);
+    assert.deepEqual(dependents(battle.effect.dependency, { type: "EFFECT", ref: parent }), [child]);
+    assert.equal(captured.effect.dependency.effect.get(1).get(0).length, 2);
+    const unrelated = battle.effect.dependency;
+    battle = transitionUnit(battle, 2, (current) => ({ ...current, position: [1, 0] }));
+    assert.equal(battle.effect.dependency, unrelated);
+    battle = effects.end(battle, parent);
+    assert.deepEqual(dependents(battle.effect.dependency, { type: "EFFECT", ref: parent }), []);
+    assert.deepEqual(getUnit(battle, 9).effects.values().toArray(), []);
+});
+
+test("binding rejects scope cycles while sharing independent scopes", () => {
+    let battle = effectFixtureWork(unit(1), unit(2));
+    const content = definition("cycle");
+    let first;
+    ({ state: battle, value: first } = install(battle, content, 1));
+    let second;
+    ({ state: battle, value: second } = install(battle, content, 2, { scopes: [{ type: "EFFECT", ref: first }] }));
+    assert.throws(() => effects.bindLifetime(battle, first, { type: "EFFECT", ref: second }), /cycle/);
+    const bound = effects.bindLifetime(battle, second, { type: "UNIT", ref: { id: 1 } });
+    battle = bound.state;
+    assert.equal(bound.value, true);
+    assert.deepEqual(
+        dependents(battle.effect.dependency, { type: "UNIT", ref: { id: 1 } }),
+        [second],
+    );
+    battle = closeLifetime(battle, { type: "UNIT", ref: { id: 1 } });
+    assert.deepEqual(getUnit(battle, 1).effects.values().toArray(), []);
+    assert.deepEqual(getUnit(battle, 2).effects.values().toArray(), []);
+});

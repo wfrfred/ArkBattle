@@ -1,0 +1,20 @@
+BattleController driver boundary — 2026-10-23
+
+The question is answered in units of one BattleController.OnTick (a logical battle update), not a rendered frame. The native method pointer/metadata files are from the same installed client as blocking-native-20261023. Active XLua replacement delegates are not executed.
+
+Directly checked ordinary driver path:
+- BattleController.FixedUpdate [64824] VA 0x180624800 creates/caches the OnTick callback at +0x1b0, then dispatches gameMode.Tick(callback) through helper 0x18061a6d0 at callsite 0x180624926.
+- DefaultGameMode.Tick [82164] VA 0x180c1b5e0 invokes the supplied callback once on its normal unpaused native path. There is no local loop invoking two Blocking rounds.
+- AutoChessGameMode.Tick [80991] dispatches to AutoChessGameManager.OnTick instead of establishing that every mode is identical. No claim about render-frame or all game-mode scheduling follows from the default driver.
+- ManualFrameTick [64666] VA 0x180629410 can invoke OnTick as a whole logic update; it is not a special second Blocking phase inside an existing OnTick.
+
+Inside one BattleController.OnTick [64825], VA 0x18062c440:
+- BattleTweenMgr.Tick callsite 0x18062c7a1 occurs before the ordinary object updates.
+- ObjectManager.OnFixedUpdate [71077] is called once at 0x18062ca4d. Each object's normal OnTick, including StateMachine movement and automatic Blocking searches, occurs within this traversal.
+- Map.OnFixedUpdate follows at 0x18062caf6, then level action/event executors.
+- In the explicit Unity Physics2D simulation branch, Simulate occurs via native wrapper callsite 0x18062cc3b, followed by IPhysicObject after-simulation callbacks. Their content may have other operations; this is not evidence of a second generic Blocking search.
+- CoroutineSimulator.SimulateTick [64230] callsite 0x18062ce1d follows object updating. Projectile coroutines may therefore perform later synchronous business operations in the same logical Tick; the concrete Stop→immediate-search path is investigated in sibling immediate/report.txt.
+- ObjectManager.OnLateFixedUpdate [71078] is called once at 0x18062cebe. No second ObjectManager.OnFixedUpdate call or global repeat-until-stable loop appears in this ordinary method.
+
+Boundary of conclusion
+The raw direct-call scan of executable sections (.text and il2cpp) finds the above single calls to ObjectManager normal/late updates. A call-site scan alone does not rule out callback-induced explicit searches; sibling reports deliberately preserve those. Unity render-loop scheduling, all game-mode overrides, and active Lua replacements are not equated with one logical Tick in this report.

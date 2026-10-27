@@ -1,0 +1,122 @@
+[
+  {
+    "spec": 280377,
+    "raw": [
+      22913,
+      478,
+      -1
+    ],
+    "method": "Torappu.ObjectPtr`1.Lock",
+    "index": 22913
+  },
+  {
+    "spec": 280378,
+    "raw": [
+      22911,
+      478,
+      -1
+    ],
+    "method": "Torappu.ObjectPtr`1.get_isValid",
+    "index": 22911
+  },
+  {
+    "spec": 280379,
+    "raw": [
+      22918,
+      478,
+      -1
+    ],
+    "method": "Torappu.ObjectPtr`1.op_Equality",
+    "index": 22918
+  },
+  {
+    "spec": 280380,
+    "raw": [
+      22915,
+      478,
+      -1
+    ],
+    "method": "Torappu.ObjectPtr`1.op_Implicit",
+    "index": 22915
+  },
+  {
+    "spec": 271394,
+    "raw": [
+      250733,
+      476,
+      -1
+    ],
+    "method": "System.Collections.Generic.List`1.Remove",
+    "index": 250733
+  },
+  {
+    "spec": 271395,
+    "raw": [
+      250680,
+      476,
+      -1
+    ],
+    "method": "System.Collections.Generic.List`1.get_Count",
+    "index": 250680
+  },
+  {
+    "spec": 271396,
+    "raw": [
+      250686,
+      476,
+      -1
+    ],
+    "method": "System.Collections.Generic.List`1.get_Item",
+    "index": 250686
+  },
+  {
+    "spec": 271389,
+    "raw": [
+      250691,
+      476,
+      -1
+    ],
+    "method": "System.Collections.Generic.List`1.Add",
+    "index": 250691
+  },
+  {
+    "spec": 271388,
+    "raw": [
+      250677,
+      476,
+      -1
+    ],
+    "method": "System.Collections.Generic.List`1..ctor",
+    "index": 250677
+  },
+  {
+    "spec": 287958,
+    "raw": [
+      219860,
+      -1,
+      476
+    ],
+    "method": "Torappu.CollectionExtensions.SafeCount",
+    "index": 219860
+  },
+  {
+    "spec": 257252,
+    "raw": [
+      250751,
+      476,
+      -1
+    ],
+    "method": "System.Collections.Generic.List`1.Enumerator.MoveNext",
+    "index": 250751
+  },
+  {
+    "spec": 262050,
+    "raw": [
+      220931,
+      6102,
+      -1
+    ],
+    "method": "Torappu.EventPool`1.Emit",
+    "index": 220931
+  }
+]

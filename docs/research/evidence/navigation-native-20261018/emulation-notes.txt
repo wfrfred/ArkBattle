@@ -1,0 +1,29 @@
+Bounded native ray verification, 2026-10-18
+
+emulate-rays.py executes original x64 instructions for
+Torappu.Battle.SPFA._RaycastBresenhamLine (70342, VA1808a6290)
+and _RaycastSegmentLine (70343, VA1808a68f0) in Unicorn2.1.4.
+It starts at the actual function prologue and returns through a sentinel.
+Sparse PE pages are loaded on demand; no game process/runtime is started.
+
+Dependencies are explicit narrow stubs:
+- metadata initializer/class initializer: no-op; required TypeInfo/static bases
+  supplied with initialized class state and null Lua bridge delegates.
+- rectangular Node accessor: returns distinct unboxed Node identity per input cell.
+- Node.CheckObstacleLikeOrInvalid: synthetic distance/cost/blocked-cell inputs.
+- Node.IsPassableGoTo overloads: synthetic outgoing direction masks.
+- MathUtil.Swap<int>: swaps integer values.
+- GridPosition constructor: writes row/column fields.
+
+Thus these tests execute the actual ray traversal, normalization, error update,
+rectangle loop, and conditional calls, but do NOT independently verify the
+stubbed Node/Tile/runtime implementations or game-wide integration. WALK only.
+
+Five cases match reconstructed nativeRay model:
+1 clear [0,0]->[1,4]: true
+2 same ray with [1,0] blocked off ideal line: false, rectangular prepass reads it
+3 [0,0]->[0,2], endpoint denies RIGHT: false, endpoint direction checked
+4 [0,0]->[2,2], corner side [0,1] blocked: false
+5 axis mode [0,0]->[0,2], cost1000 at [0,1]: true, zero Node checks
+
+See emulated-ray-results.json for exact dependency call trace.

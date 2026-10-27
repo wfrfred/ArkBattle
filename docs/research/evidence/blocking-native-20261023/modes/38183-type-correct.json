@@ -1,0 +1,104 @@
+{
+  "typename": "Torappu.MotionMode",
+  "type": {
+    "index": 38183,
+    "name": "MotionMode",
+    "namespace": "Torappu",
+    "raw": [
+      6617562,
+      491302,
+      62080,
+      4294967295,
+      52686,
+      59011,
+      4294967295,
+      257,
+      316456,
+      4294967295,
+      4294967295,
+      4294967295,
+      4294967295,
+      4294967295,
+      359428,
+      46126,
+      389,
+      0,
+      4,
+      1507328,
+      196608,
+      3091,
+      33554525
+    ],
+    "fieldStart": 316456,
+    "methodStart": 4294967295,
+    "fieldCount": 4,
+    "methodCount": 0
+  },
+  "fields": [
+    {
+      "index": 316456,
+      "name": "value__",
+      "type": 59035,
+      "typeName": "int",
+      "attrs": 1542,
+      "static": false,
+      "offset": 16,
+      "boxedOffset": 16,
+      "unboxedOffset": 0,
+      "token": 67109400
+    },
+    {
+      "index": 316457,
+      "name": "WALK",
+      "type": 62085,
+      "typeName": "Torappu.MotionMode",
+      "attrs": 32854,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67109401
+    },
+    {
+      "index": 316458,
+      "name": "FLY",
+      "type": 62085,
+      "typeName": "Torappu.MotionMode",
+      "attrs": 32854,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67109402
+    },
+    {
+      "index": 316459,
+      "name": "E_NUM",
+      "type": 62085,
+      "typeName": "Torappu.MotionMode",
+      "attrs": 32854,
+      "static": true,
+      "offset": 0,
+      "boxedOffset": null,
+      "unboxedOffset": null,
+      "token": 67109403
+    }
+  ],
+  "enumsCorrected": [
+    {
+      "name": "WALK",
+      "value": 0,
+      "encodedByte": "00"
+    },
+    {
+      "name": "FLY",
+      "value": 1,
+      "encodedByte": "02"
+    },
+    {
+      "name": "E_NUM",
+      "value": 2,
+      "encodedByte": "04"
+    }
+  ]
+}

@@ -1,0 +1,1261 @@
+[
+  {
+    "index": 65200,
+    "name": "OnOwnerBlockModeChanged",
+    "type": 10090,
+    "returnType": 83059,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100728497,
+    "flags": 132,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x180685f40",
+    "fullname": "Torappu.Battle.Buff.OnOwnerBlockModeChanged",
+    "parameters": []
+  },
+  {
+    "index": 65435,
+    "name": "OnOwnerBlockModeChanged",
+    "type": 10088,
+    "returnType": 83059,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100728732,
+    "flags": 134,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x180675420",
+    "fullname": "Torappu.Battle.Buff.BuffContainer.OnOwnerBlockModeChanged",
+    "parameters": []
+  },
+  {
+    "index": 75654,
+    "name": "Validate",
+    "type": 11298,
+    "returnType": 44789,
+    "parameterStart": 74500,
+    "generic": -1,
+    "token": 100738951,
+    "flags": 198,
+    "iflags": 0,
+    "slot": 5,
+    "parameterCount": 1,
+    "address": "0x180a1f090",
+    "fullname": "Torappu.Battle.TargetBlockModeValidator.Validate",
+    "parameters": [
+      {
+        "index": 74500,
+        "name": "target",
+        "token": 134292234,
+        "type": 52648
+      }
+    ]
+  },
+  {
+    "index": 75655,
+    "name": ".ctor",
+    "type": 11298,
+    "returnType": 83059,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100738952,
+    "flags": 6278,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x180a1f1d0",
+    "fullname": "Torappu.Battle.TargetBlockModeValidator..ctor",
+    "parameters": []
+  },
+  {
+    "index": 75656,
+    "name": "<>xLuaBaseProxy_Validate",
+    "type": 11298,
+    "returnType": 44789,
+    "parameterStart": 74501,
+    "generic": -1,
+    "token": 100738953,
+    "flags": 1,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 1,
+    "address": "0x180a0b9d0",
+    "fullname": "Torappu.Battle.TargetBlockModeValidator.<>xLuaBaseProxy_Validate",
+    "parameters": [
+      {
+        "index": 74501,
+        "name": "P0",
+        "token": 134292235,
+        "type": 52648
+      }
+    ]
+  },
+  {
+    "index": 75898,
+    "name": "get_blockMode",
+    "type": 11346,
+    "returnType": 62080,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100739195,
+    "flags": 2534,
+    "iflags": 0,
+    "slot": 199,
+    "parameterCount": 0,
+    "address": "0x180a39480",
+    "fullname": "Torappu.Battle.Character.get_blockMode",
+    "parameters": []
+  },
+  {
+    "index": 75899,
+    "name": "get_ignoreBlockMode",
+    "type": 11346,
+    "returnType": 44789,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100739196,
+    "flags": 2534,
+    "iflags": 0,
+    "slot": 201,
+    "parameterCount": 0,
+    "address": "0x180a3abd0",
+    "fullname": "Torappu.Battle.Character.get_ignoreBlockMode",
+    "parameters": []
+  },
+  {
+    "index": 75968,
+    "name": "ChangeBlockMode",
+    "type": 11346,
+    "returnType": 83059,
+    "parameterStart": 74669,
+    "generic": -1,
+    "token": 100739265,
+    "flags": 134,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 1,
+    "address": "0x180a27d30",
+    "fullname": "Torappu.Battle.Character.ChangeBlockMode",
+    "parameters": [
+      {
+        "index": 74669,
+        "name": "mode",
+        "token": 134292403,
+        "type": 62080
+      }
+    ]
+  },
+  {
+    "index": 75969,
+    "name": "ResetBlockMode",
+    "type": 11346,
+    "returnType": 83059,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100739266,
+    "flags": 134,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x180a309b0",
+    "fullname": "Torappu.Battle.Character.ResetBlockMode",
+    "parameters": []
+  },
+  {
+    "index": 75970,
+    "name": "OnBlockModeChanged",
+    "type": 11346,
+    "returnType": 83059,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100739267,
+    "flags": 134,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x180a2d0e0",
+    "fullname": "Torappu.Battle.Character.OnBlockModeChanged",
+    "parameters": []
+  },
+  {
+    "index": 76549,
+    "name": "get_blockMode",
+    "type": 11393,
+    "returnType": 62080,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100739846,
+    "flags": 2534,
+    "iflags": 0,
+    "slot": 201,
+    "parameterCount": 0,
+    "address": "0x180a7b7f0",
+    "fullname": "Torappu.Battle.Enemy.get_blockMode",
+    "parameters": []
+  },
+  {
+    "index": 76550,
+    "name": "get_ignoreBlockMode",
+    "type": 11393,
+    "returnType": 44789,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100739847,
+    "flags": 2534,
+    "iflags": 0,
+    "slot": 203,
+    "parameterCount": 0,
+    "address": "0x180a7daa0",
+    "fullname": "Torappu.Battle.Enemy.get_ignoreBlockMode",
+    "parameters": []
+  },
+  {
+    "index": 77155,
+    "name": "get_blockMode",
+    "type": 11411,
+    "returnType": 62080,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100740452,
+    "flags": 3526,
+    "iflags": 0,
+    "slot": 2,
+    "parameterCount": 0,
+    "address": "0x0",
+    "fullname": "Torappu.Battle.IBlocker.get_blockMode",
+    "parameters": []
+  },
+  {
+    "index": 77157,
+    "name": "get_ignoreBlockMode",
+    "type": 11411,
+    "returnType": 44789,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100740454,
+    "flags": 3526,
+    "iflags": 0,
+    "slot": 4,
+    "parameterCount": 0,
+    "address": "0x0",
+    "fullname": "Torappu.Battle.IBlocker.get_ignoreBlockMode",
+    "parameters": []
+  },
+  {
+    "index": 92611,
+    "name": "LoadData",
+    "type": 13278,
+    "returnType": 83059,
+    "parameterStart": 88037,
+    "generic": -1,
+    "token": 100755908,
+    "flags": 196,
+    "iflags": 0,
+    "slot": 6,
+    "parameterCount": 1,
+    "address": "0x180f34180",
+    "fullname": "Torappu.Battle.Abilities.CharacterBlockModeToggleChecker.LoadData",
+    "parameters": [
+      {
+        "index": 88037,
+        "name": "blackboard",
+        "token": 134305782,
+        "type": 44675
+      }
+    ]
+  },
+  {
+    "index": 92612,
+    "name": "CheckInitialToggled",
+    "type": 13278,
+    "returnType": 44789,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100755909,
+    "flags": 198,
+    "iflags": 0,
+    "slot": 5,
+    "parameterCount": 0,
+    "address": "0x180f34120",
+    "fullname": "Torappu.Battle.Abilities.CharacterBlockModeToggleChecker.CheckInitialToggled",
+    "parameters": []
+  },
+  {
+    "index": 92613,
+    "name": "OnTick",
+    "type": 13278,
+    "returnType": 83059,
+    "parameterStart": 88038,
+    "generic": -1,
+    "token": 100755910,
+    "flags": 198,
+    "iflags": 0,
+    "slot": 9,
+    "parameterCount": 1,
+    "address": "0x180f341e0",
+    "fullname": "Torappu.Battle.Abilities.CharacterBlockModeToggleChecker.OnTick",
+    "parameters": [
+      {
+        "index": 88038,
+        "name": "deltaTime",
+        "token": 134305783,
+        "type": 53178
+      }
+    ]
+  },
+  {
+    "index": 92614,
+    "name": "_CheckCondition",
+    "type": 13278,
+    "returnType": 44789,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100755911,
+    "flags": 129,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x180f34260",
+    "fullname": "Torappu.Battle.Abilities.CharacterBlockModeToggleChecker._CheckCondition",
+    "parameters": []
+  },
+  {
+    "index": 92615,
+    "name": ".ctor",
+    "type": 13278,
+    "returnType": 83059,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100755912,
+    "flags": 6278,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x180f343d0",
+    "fullname": "Torappu.Battle.Abilities.CharacterBlockModeToggleChecker..ctor",
+    "parameters": []
+  },
+  {
+    "index": 92616,
+    "name": "<>xLuaBaseProxy_OnTick",
+    "type": 13278,
+    "returnType": 83059,
+    "parameterStart": 88039,
+    "generic": -1,
+    "token": 100755913,
+    "flags": 1,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 1,
+    "address": "0x180f2b110",
+    "fullname": "Torappu.Battle.Abilities.CharacterBlockModeToggleChecker.<>xLuaBaseProxy_OnTick",
+    "parameters": [
+      {
+        "index": 88039,
+        "name": "P0",
+        "token": 134305784,
+        "type": 53178
+      }
+    ]
+  },
+  {
+    "index": 99460,
+    "name": "get_allowedSource",
+    "type": 14869,
+    "returnType": 89069,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100762757,
+    "flags": 2246,
+    "iflags": 0,
+    "slot": 4,
+    "parameterCount": 0,
+    "address": "0x1811344b0",
+    "fullname": "Torappu.Battle.Action.Nodes.CheckBlockMode.get_allowedSource",
+    "parameters": []
+  },
+  {
+    "index": 99461,
+    "name": "Execute",
+    "type": 14869,
+    "returnType": 44789,
+    "parameterStart": 94032,
+    "generic": -1,
+    "token": 100762758,
+    "flags": 198,
+    "iflags": 0,
+    "slot": 6,
+    "parameterCount": 3,
+    "address": "0x1811342e0",
+    "fullname": "Torappu.Battle.Action.Nodes.CheckBlockMode.Execute",
+    "parameters": [
+      {
+        "index": 94032,
+        "name": "blackboard",
+        "token": 134311777,
+        "type": 44675
+      },
+      {
+        "index": 94033,
+        "name": "sourceType",
+        "token": 134311778,
+        "type": 89069
+      },
+      {
+        "index": 94034,
+        "name": "snapshot",
+        "token": 134311779,
+        "type": 31896
+      }
+    ]
+  },
+  {
+    "index": 99462,
+    "name": ".ctor",
+    "type": 14869,
+    "returnType": 83059,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100762759,
+    "flags": 6278,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x181134440",
+    "fullname": "Torappu.Battle.Action.Nodes.CheckBlockMode..ctor",
+    "parameters": []
+  },
+  {
+    "index": 99958,
+    "name": "get_allowedSource",
+    "type": 15033,
+    "returnType": 89069,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100763255,
+    "flags": 2246,
+    "iflags": 0,
+    "slot": 4,
+    "parameterCount": 0,
+    "address": "0x181162b80",
+    "fullname": "Torappu.Battle.Action.Nodes.ChangeCharBlockMode.get_allowedSource",
+    "parameters": []
+  },
+  {
+    "index": 99959,
+    "name": "Execute",
+    "type": 15033,
+    "returnType": 44789,
+    "parameterStart": 94528,
+    "generic": -1,
+    "token": 100763256,
+    "flags": 198,
+    "iflags": 0,
+    "slot": 6,
+    "parameterCount": 3,
+    "address": "0x181162980",
+    "fullname": "Torappu.Battle.Action.Nodes.ChangeCharBlockMode.Execute",
+    "parameters": [
+      {
+        "index": 94528,
+        "name": "blackboard",
+        "token": 134312273,
+        "type": 44675
+      },
+      {
+        "index": 94529,
+        "name": "sourceType",
+        "token": 134312274,
+        "type": 89069
+      },
+      {
+        "index": 94530,
+        "name": "snapshot",
+        "token": 134312275,
+        "type": 31896
+      }
+    ]
+  },
+  {
+    "index": 99960,
+    "name": ".ctor",
+    "type": 15033,
+    "returnType": 83059,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100763257,
+    "flags": 6278,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x181162b20",
+    "fullname": "Torappu.Battle.Action.Nodes.ChangeCharBlockMode..ctor",
+    "parameters": []
+  },
+  {
+    "index": 76430,
+    "name": "_CheckMotionModeBlockable",
+    "type": 11393,
+    "returnType": 44789,
+    "parameterStart": 74979,
+    "generic": -1,
+    "token": 100739727,
+    "flags": 129,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 1,
+    "address": "0x180a78230",
+    "fullname": "Torappu.Battle.Enemy._CheckMotionModeBlockable",
+    "parameters": [
+      {
+        "index": 74979,
+        "name": "blocker",
+        "token": 134292713,
+        "type": 56854
+      }
+    ]
+  },
+  {
+    "index": 70673,
+    "name": "get_isMeleeBlockable",
+    "type": 10717,
+    "returnType": 44789,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100733970,
+    "flags": 2182,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x1808c6070",
+    "fullname": "Torappu.Battle.Tile.get_isMeleeBlockable",
+    "parameters": []
+  },
+  {
+    "index": 76428,
+    "name": "CheckBlockable",
+    "type": 11393,
+    "returnType": 44789,
+    "parameterStart": 74977,
+    "generic": -1,
+    "token": 100739725,
+    "flags": 134,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 1,
+    "address": "0x180a6bb70",
+    "fullname": "Torappu.Battle.Enemy.CheckBlockable",
+    "parameters": [
+      {
+        "index": 74977,
+        "name": "blocker",
+        "token": 134292711,
+        "type": 56854
+      }
+    ]
+  },
+  {
+    "index": 76429,
+    "name": "CheckBlockableWithoutCheckRange",
+    "type": 11393,
+    "returnType": 44789,
+    "parameterStart": 74978,
+    "generic": -1,
+    "token": 100739726,
+    "flags": 134,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 1,
+    "address": "0x180a6b980",
+    "fullname": "Torappu.Battle.Enemy.CheckBlockableWithoutCheckRange",
+    "parameters": [
+      {
+        "index": 74978,
+        "name": "blocker",
+        "token": 134292712,
+        "type": 56854
+      }
+    ]
+  },
+  {
+    "index": 76914,
+    "name": "CheckBlockable",
+    "type": 11390,
+    "returnType": 44789,
+    "parameterStart": 75365,
+    "generic": -1,
+    "token": 100740211,
+    "flags": 134,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 2,
+    "address": "0x180a9af70",
+    "fullname": "Torappu.Battle.Enemy.SpecialBlockCondition.CheckBlockable",
+    "parameters": [
+      {
+        "index": 75365,
+        "name": "blocker",
+        "token": 134293099,
+        "type": 52648
+      },
+      {
+        "index": 75366,
+        "name": "blockee",
+        "token": 134293100,
+        "type": 52648
+      }
+    ]
+  },
+  {
+    "index": 77194,
+    "name": "_CheckBlockable",
+    "type": 11414,
+    "returnType": 44789,
+    "parameterStart": 75538,
+    "generic": -1,
+    "token": 100740491,
+    "flags": 129,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 4,
+    "address": "0x180aa1430",
+    "fullname": "Torappu.Battle.BlockManager._CheckBlockable",
+    "parameters": [
+      {
+        "index": 75538,
+        "name": "entity",
+        "token": 134293272,
+        "type": 52648
+      },
+      {
+        "index": 75539,
+        "name": "source",
+        "token": 134293273,
+        "type": 52648
+      },
+      {
+        "index": 75540,
+        "name": "weight",
+        "token": 134293274,
+        "type": 31248
+      },
+      {
+        "index": 75541,
+        "name": "volume",
+        "token": 134293275,
+        "type": 31342
+      }
+    ]
+  },
+  {
+    "index": 77294,
+    "name": "_CheckBlockable",
+    "type": 11433,
+    "returnType": 44789,
+    "parameterStart": 75599,
+    "generic": -1,
+    "token": 100740591,
+    "flags": 129,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 4,
+    "address": "0x180aafd50",
+    "fullname": "Torappu.Battle.PropLikeStaticBlockToken._CheckBlockable",
+    "parameters": [
+      {
+        "index": 75599,
+        "name": "entity",
+        "token": 134293333,
+        "type": 52648
+      },
+      {
+        "index": 75600,
+        "name": "source",
+        "token": 134293334,
+        "type": 52648
+      },
+      {
+        "index": 75601,
+        "name": "weight",
+        "token": 134293335,
+        "type": 31248
+      },
+      {
+        "index": 75602,
+        "name": "volume",
+        "token": 134293336,
+        "type": 31342
+      }
+    ]
+  },
+  {
+    "index": 75890,
+    "name": "get_blockRadiusSquare",
+    "type": 11346,
+    "returnType": 75036,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100739187,
+    "flags": 2502,
+    "iflags": 0,
+    "slot": 223,
+    "parameterCount": 0,
+    "address": "0x180a39570",
+    "fullname": "Torappu.Battle.Character.get_blockRadiusSquare",
+    "parameters": []
+  },
+  {
+    "index": 75892,
+    "name": "get__blockRadius",
+    "type": 11346,
+    "returnType": 75036,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100739189,
+    "flags": 2500,
+    "iflags": 0,
+    "slot": 225,
+    "parameterCount": 0,
+    "address": "0x180a38a40",
+    "fullname": "Torappu.Battle.Character.get__blockRadius",
+    "parameters": []
+  },
+  {
+    "index": 75927,
+    "name": "get_defaultBlockRadiusScale",
+    "type": 11346,
+    "returnType": 53178,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100739224,
+    "flags": 2502,
+    "iflags": 0,
+    "slot": 232,
+    "parameterCount": 0,
+    "address": "0x180a39f70",
+    "fullname": "Torappu.Battle.Character.get_defaultBlockRadiusScale",
+    "parameters": []
+  },
+  {
+    "index": 76551,
+    "name": "get_blockRadiusSquare",
+    "type": 11393,
+    "returnType": 75036,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100739848,
+    "flags": 2502,
+    "iflags": 0,
+    "slot": 242,
+    "parameterCount": 0,
+    "address": "0x180a7b870",
+    "fullname": "Torappu.Battle.Enemy.get_blockRadiusSquare",
+    "parameters": []
+  },
+  {
+    "index": 76558,
+    "name": "get_defaultBlockRadiusScale",
+    "type": 11393,
+    "returnType": 53178,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100739855,
+    "flags": 2534,
+    "iflags": 0,
+    "slot": 207,
+    "parameterCount": 0,
+    "address": "0x180a7c1b0",
+    "fullname": "Torappu.Battle.Enemy.get_defaultBlockRadiusScale",
+    "parameters": []
+  },
+  {
+    "index": 77103,
+    "name": "get_blockRadiusSquare",
+    "type": 11405,
+    "returnType": 75036,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100740400,
+    "flags": 2246,
+    "iflags": 0,
+    "slot": 223,
+    "parameterCount": 0,
+    "address": "0x180aa82f0",
+    "fullname": "Torappu.Battle.GiantTrap.get_blockRadiusSquare",
+    "parameters": []
+  },
+  {
+    "index": 77115,
+    "name": "<>xLuaBaseProxy_get_blockRadiusSquare",
+    "type": 11405,
+    "returnType": 75036,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100740412,
+    "flags": 1,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x180aa7fb0",
+    "fullname": "Torappu.Battle.GiantTrap.<>xLuaBaseProxy_get_blockRadiusSquare",
+    "parameters": []
+  },
+  {
+    "index": 77158,
+    "name": "get_blockRadiusSquare",
+    "type": 11411,
+    "returnType": 75036,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100740455,
+    "flags": 3526,
+    "iflags": 0,
+    "slot": 5,
+    "parameterCount": 0,
+    "address": "0x0",
+    "fullname": "Torappu.Battle.IBlocker.get_blockRadiusSquare",
+    "parameters": []
+  },
+  {
+    "index": 77161,
+    "name": "get_defaultBlockRadiusScale",
+    "type": 11411,
+    "returnType": 53178,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100740458,
+    "flags": 3526,
+    "iflags": 0,
+    "slot": 8,
+    "parameterCount": 0,
+    "address": "0x0",
+    "fullname": "Torappu.Battle.IBlocker.get_defaultBlockRadiusScale",
+    "parameters": []
+  },
+  {
+    "index": 77168,
+    "name": "HookBlockRadius",
+    "type": 11412,
+    "returnType": 44789,
+    "parameterStart": 75515,
+    "generic": -1,
+    "token": 100740465,
+    "flags": 454,
+    "iflags": 0,
+    "slot": 4,
+    "parameterCount": 1,
+    "address": "0x180aa1b00",
+    "fullname": "Torappu.Battle.BlockRadiusManager.HookBlockRadius",
+    "parameters": [
+      {
+        "index": 75515,
+        "name": "iBlocker",
+        "token": 134293249,
+        "type": 56854
+      }
+    ]
+  },
+  {
+    "index": 77169,
+    "name": "GetBlockRadius",
+    "type": 11412,
+    "returnType": 75036,
+    "parameterStart": 75516,
+    "generic": -1,
+    "token": 100740466,
+    "flags": 454,
+    "iflags": 0,
+    "slot": 5,
+    "parameterCount": 1,
+    "address": "0x180aa1a50",
+    "fullname": "Torappu.Battle.BlockRadiusManager.GetBlockRadius",
+    "parameters": [
+      {
+        "index": 75516,
+        "name": "iBlocker",
+        "token": 134293250,
+        "type": 56854
+      }
+    ]
+  },
+  {
+    "index": 77170,
+    "name": "GetBlockCircle",
+    "type": 11412,
+    "returnType": 77564,
+    "parameterStart": 75517,
+    "generic": -1,
+    "token": 100740467,
+    "flags": 454,
+    "iflags": 0,
+    "slot": 6,
+    "parameterCount": 1,
+    "address": "0x180aa1970",
+    "fullname": "Torappu.Battle.BlockRadiusManager.GetBlockCircle",
+    "parameters": [
+      {
+        "index": 75517,
+        "name": "character",
+        "token": 134293251,
+        "type": 56854
+      }
+    ]
+  },
+  {
+    "index": 77171,
+    "name": "GetBlockCircle",
+    "type": 11412,
+    "returnType": 77564,
+    "parameterStart": 75518,
+    "generic": -1,
+    "token": 100740468,
+    "flags": 454,
+    "iflags": 0,
+    "slot": 7,
+    "parameterCount": 2,
+    "address": "0x180aa1a00",
+    "fullname": "Torappu.Battle.BlockRadiusManager.GetBlockCircle",
+    "parameters": [
+      {
+        "index": 75518,
+        "name": "character",
+        "token": 134293252,
+        "type": 56854
+      },
+      {
+        "index": 75519,
+        "name": "centerPara",
+        "token": 134293253,
+        "type": 82722
+      }
+    ]
+  },
+  {
+    "index": 77172,
+    "name": ".ctor",
+    "type": 11412,
+    "returnType": 83059,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100740469,
+    "flags": 6278,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x18050fcc0",
+    "fullname": "Torappu.Battle.BlockRadiusManager..ctor",
+    "parameters": []
+  },
+  {
+    "index": 77197,
+    "name": "HookBlockRadius",
+    "type": 11414,
+    "returnType": 44789,
+    "parameterStart": 75545,
+    "generic": -1,
+    "token": 100740494,
+    "flags": 134,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 1,
+    "address": "0x180aa0860",
+    "fullname": "Torappu.Battle.BlockManager.HookBlockRadius",
+    "parameters": [
+      {
+        "index": 75545,
+        "name": "blocker",
+        "token": 134293279,
+        "type": 56854
+      }
+    ]
+  },
+  {
+    "index": 77198,
+    "name": "GetBlockRadius",
+    "type": 11414,
+    "returnType": 75036,
+    "parameterStart": 75546,
+    "generic": -1,
+    "token": 100740495,
+    "flags": 134,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 1,
+    "address": "0x180aa0840",
+    "fullname": "Torappu.Battle.BlockManager.GetBlockRadius",
+    "parameters": [
+      {
+        "index": 75546,
+        "name": "blocker",
+        "token": 134293280,
+        "type": 56854
+      }
+    ]
+  },
+  {
+    "index": 77516,
+    "name": "get_blockRadiusSquare",
+    "type": 11448,
+    "returnType": 75036,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100740813,
+    "flags": 2246,
+    "iflags": 0,
+    "slot": 223,
+    "parameterCount": 0,
+    "address": "0x180aa7fb0",
+    "fullname": "Torappu.Battle.Trap.get_blockRadiusSquare",
+    "parameters": []
+  },
+  {
+    "index": 77539,
+    "name": "<>xLuaBaseProxy_get_blockRadiusSquare",
+    "type": 11448,
+    "returnType": 75036,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100740836,
+    "flags": 1,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x180ab98f0",
+    "fullname": "Torappu.Battle.Trap.<>xLuaBaseProxy_get_blockRadiusSquare",
+    "parameters": []
+  },
+  {
+    "index": 66511,
+    "name": "get_isBlockFree",
+    "type": 10201,
+    "returnType": 44789,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100729808,
+    "flags": 2182,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x180705590",
+    "fullname": "Torappu.Battle.Entity.get_isBlockFree",
+    "parameters": []
+  },
+  {
+    "index": 68856,
+    "name": "_ScanBlockers",
+    "type": 10489,
+    "returnType": 83059,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100732153,
+    "flags": 129,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x1807cea40",
+    "fullname": "Torappu.Battle.Act52SideBattleManager._ScanBlockers",
+    "parameters": []
+  },
+  {
+    "index": 74312,
+    "name": "get_checkOwnerCanBlockEnemy",
+    "type": 11099,
+    "returnType": 44789,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100737609,
+    "flags": 2180,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x1809bd480",
+    "fullname": "Torappu.Battle.AdvancedSelectorWithEnemyOptions.get_checkOwnerCanBlockEnemy",
+    "parameters": []
+  },
+  {
+    "index": 74317,
+    "name": "_CheckOwnerCanBlockEnemy",
+    "type": 11099,
+    "returnType": 44789,
+    "parameterStart": 72989,
+    "generic": -1,
+    "token": 100737614,
+    "flags": 129,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 1,
+    "address": "0x1809bd200",
+    "fullname": "Torappu.Battle.AdvancedSelectorWithEnemyOptions._CheckOwnerCanBlockEnemy",
+    "parameters": [
+      {
+        "index": 72989,
+        "name": "enemy",
+        "token": 134290723,
+        "type": 52144
+      }
+    ]
+  },
+  {
+    "index": 75885,
+    "name": "get_canBlockEnemies",
+    "type": 11346,
+    "returnType": 44789,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100739182,
+    "flags": 2534,
+    "iflags": 0,
+    "slot": 200,
+    "parameterCount": 0,
+    "address": "0x180a39b40",
+    "fullname": "Torappu.Battle.Character.get_canBlockEnemies",
+    "parameters": []
+  },
+  {
+    "index": 76559,
+    "name": "get_canBlockEnemies",
+    "type": 11393,
+    "returnType": 44789,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100739856,
+    "flags": 2534,
+    "iflags": 0,
+    "slot": 202,
+    "parameterCount": 0,
+    "address": "0x180a7bc60",
+    "fullname": "Torappu.Battle.Enemy.get_canBlockEnemies",
+    "parameters": []
+  },
+  {
+    "index": 77156,
+    "name": "get_canBlockEnemies",
+    "type": 11411,
+    "returnType": 44789,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100740453,
+    "flags": 3526,
+    "iflags": 0,
+    "slot": 3,
+    "parameterCount": 0,
+    "address": "0x0",
+    "fullname": "Torappu.Battle.IBlocker.get_canBlockEnemies",
+    "parameters": []
+  },
+  {
+    "index": 27557,
+    "name": "_UnblockSleep",
+    "type": 1514,
+    "returnType": 83059,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100690854,
+    "flags": 145,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x182015a90",
+    "fullname": "Torappu.ScreenUtil._UnblockSleep",
+    "parameters": []
+  },
+  {
+    "index": 45211,
+    "name": "Unblock",
+    "type": 6834,
+    "returnType": 83059,
+    "parameterStart": 51726,
+    "generic": -1,
+    "token": 100708508,
+    "flags": 134,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 1,
+    "address": "0x183cbffe0",
+    "fullname": "Torappu.Building.BuildingModeRaycastManager.Unblock",
+    "parameters": [
+      {
+        "index": 51726,
+        "name": "key",
+        "token": 134269458,
+        "type": 67018
+      }
+    ]
+  },
+  {
+    "index": 74672,
+    "name": "_Filter_HatredDesUnblockedFirst",
+    "type": 11149,
+    "returnType": 44789,
+    "parameterStart": 73444,
+    "generic": -1,
+    "token": 100737969,
+    "flags": 145,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 4,
+    "address": "0x1809de610",
+    "fullname": "Torappu.Battle.FilterUtil._Filter_HatredDesUnblockedFirst",
+    "parameters": [
+      {
+        "index": 73444,
+        "name": "candidate",
+        "token": 134291178,
+        "type": 52648
+      },
+      {
+        "index": 73445,
+        "name": "source",
+        "token": 134291179,
+        "type": 52648
+      },
+      {
+        "index": 73446,
+        "name": "weight",
+        "token": 134291180,
+        "type": 31248
+      },
+      {
+        "index": 73447,
+        "name": "priorWeight",
+        "token": 134291181,
+        "type": 31248
+      }
+    ]
+  },
+  {
+    "index": 116359,
+    "name": "_UnblockRaycast",
+    "type": 17744,
+    "returnType": 83059,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100779656,
+    "flags": 129,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x1815b1610",
+    "fullname": "Torappu.UI.UIPopupWindow._UnblockRaycast",
+    "parameters": []
+  },
+  {
+    "index": 263559,
+    "name": "UnblockReader",
+    "type": 44127,
+    "returnType": 83059,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100668596,
+    "flags": 131,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": "0x18627d660",
+    "fullname": "System.Net.FileWebRequest.UnblockReader",
+    "parameters": []
+  }
+]

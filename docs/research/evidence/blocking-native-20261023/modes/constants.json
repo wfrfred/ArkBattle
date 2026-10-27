@@ -1,0 +1,44 @@
+[
+  {
+    "method": 75890,
+    "instruction": "0x180a39642",
+    "address": "0x186e41c04",
+    "float": 0.7999513745307922
+  },
+  {
+    "method": 75890,
+    "instruction": "0x180a39650",
+    "address": "0x186e41c00",
+    "float": 0.4999903738498688
+  },
+  {
+    "method": 75892,
+    "instruction": "0x180a38ae5",
+    "address": "0x186e41c08",
+    "float": 0.8944000005722046
+  },
+  {
+    "method": 75892,
+    "instruction": "0x180a38af3",
+    "address": "0x186e41b90",
+    "float": 0.707099974155426
+  },
+  {
+    "method": 77169,
+    "instruction": "0x180aa1add",
+    "address": "0x186e41c08",
+    "float": 0.8944000005722046
+  },
+  {
+    "method": 77169,
+    "instruction": "0x180aa1aeb",
+    "address": "0x186e41b90",
+    "float": 0.707099974155426
+  },
+  {
+    "method": 70632,
+    "instruction": "0x1808c521e",
+    "address": "0x186e3ff14",
+    "float": 0.10000000149011612
+  }
+]

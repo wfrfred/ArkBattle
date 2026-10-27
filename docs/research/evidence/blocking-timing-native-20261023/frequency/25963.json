@@ -1,0 +1,16 @@
+{
+  "index": 25963,
+  "name": "Tick",
+  "type": 1447,
+  "returnType": 44789,
+  "parameterStart": -1,
+  "generic": -1,
+  "token": 100689260,
+  "flags": 486,
+  "iflags": 0,
+  "slot": 7,
+  "parameterCount": 0,
+  "address": 6473925584,
+  "fullname": "Torappu.PeriodicTicker.Tick",
+  "parameters": []
+}

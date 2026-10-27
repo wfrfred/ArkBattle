@@ -1,0 +1,70 @@
+普通接敌搜索与移动的时序调查（2026-10-23）
+
+口径
+本报告用一次 BattleController.OnTick 表示一个逻辑 Tick；不把 Unity 渲染帧与逻辑 Tick 混为一谈。证据来自本机安装客户端普通 native 分支的完整反汇编和 IL2CPP 元数据；未执行客户端战斗或运行时 XLua 替换。源码、测试未修改。
+
+结论一：同一对象内部，自主移动先于自己的普通搜索；全场没有统一的前后位置。
+ObjectManager.OnFixedUpdate 按实例分配 UID 顺序逐个执行完整 OnTick。
+Character/Enemy.OnTick → Unit.OnTick → Entity.OnTick → StateMachine.Tick；当前 MoveState 可以在这里完成普通路线位移和实际位置写入。
+从基础 OnTick 返回后，派生 Character/具备阻挡能力的 Enemy 才执行自己的 BlockManager.Tick 和普通 SearchBlockee。
+因此局部顺序为：状态机（可能运动/攻击）→基础Buff/资源/Ability等→自己的普通接敌搜索→剩余本对象业务。
+
+跨对象：
+  阻挡者B的UID < 目标E的UID：B搜索时，E的本Tick普通路线移动尚未执行。
+  目标E的UID < 阻挡者B的UID：E先完成本Tick运动，B再搜索。
+搜索的中心距离判断/权重读取当时当前mapPosition，并不是强制使用整帧初始快照。
+先取得的阻挡关系可被后更新E的MoveState看到，阻止它继续自主移动；后取得的关系不会追溯撤销之前已经执行的位移。
+这里证明调用顺序和当前坐标读取，不声称穷尽物理宽相索引同步或每个特殊单位的接敌结果。
+
+不能把后段 MoveController.OnTick 误认成第二次普通运动：它的普通默认体只处理传送带。传送带在Enemy自身搜索之后，全局还有Tween/Physics/其他业务，所以“所有位置变化都在搜索前”不成立。
+
+结论二：普通自动搜索不是同Tick多轮收敛。
+同一个普通阻挡者一次正常OnTick只有一个自动搜索调用点。普通驱动的Late没有第二次全场接敌扫描，也没有搜索到关系稳定为止的循环。
+BlockManager持有独立PeriodicTicker(3,false)：初始ready；每次BlockManager.Tick最多将剩余计数减1；不按deltaTime累积。普通尝试只有ready才查询候选，所以正常连续更新时搜索发生于第0、3、6…次推进。
+所有阻挡者各搜索一次，是一轮遍历中的多个独立搜索，不等于全场重复多轮。
+一次搜索选中多个目标并逐项Add，也不是从最新状态重新搜索一轮。
+
+结论三：同一个逻辑Tick可以有额外的显式立即搜索。
+Character.SearchBlockeeImmediate 检查存活，调用_SearchBlockee(force=true)，普通实现转入同一个BlockManager.SearchBlockee。
+force跳过isReady；不存在lastSearchTick或同Tick去重。
+Next()仅在计数原为0时装入3；计数非0时不改变。因此：
+  普通搜索后计数=3，同Tick再force仍可以执行，计数保持3。
+  force在计数=1且普通更新之前执行，不重置；随后普通Tick将计数减到0，同Tick还可以执行普通搜索。
+  force在计数=0时执行，会消耗ready并将计数装入3，影响随后普通尝试。
+不能把“强制搜索”概括成每次重置3Tick冷却。
+明确业务入口包括HarpoonProjectile/NetCatcherProjectile停止、PullHitTargetBehaviour停止和CharSearchBlockeeImmediate Action节点。完整停止与协程调用链见immediate/report.txt。
+已闭合的实际可执行链（确定性协程分支，非实战帧日志）：
+  ObjectManager普通搜索
+  → 全局物理模拟
+  → CoroutineSimulator恢复已有Harpoon拉拽协程
+  → 检查更新后的目标坐标/拉拽条件，决定StopMe
+  → Harpoon.OnProjectileStop
+  → Enemy.EndPull
+  → 来源Character.SearchBlockeeImmediate
+  → 同一个逻辑Tick再次进入搜索。
+非确定性分支使用Unity协程，不把它的恢复时点混称为上述固定逻辑Tick内阶段。
+模式切换自身只有清理与通知，容量属性dirty自身只有裁撤与通知；这两类操作没有通用地附带一次重新搜索。
+
+设计含义（项目选择，不是原生接口）
+用户选定的“必要解除/裁撤同步完成，普通Acquire放固定Blocking Step”可以保留。
+但是原生没有一个全局移动前或移动后阶段可直接照搬；统一放在任何一边都是明确简化。
+放移动前：本次已接敌可禁止后续移动；之后才走入范围的目标通常等下一轮普通搜索。
+放移动后：先消费本Tick运动预算，再接敌；不追溯取消已有位移。
+普通一步与按需立即搜索可以并存，不需要因每次updateUnit都全场搜索，也没有证据要求普通Blocking做两轮或不动点循环。
+额外显式搜索不能被调度器“同Tick只能一次”的技术防重条件吞掉。
+
+证据入口
+order/report.txt：当前状态真实位移写入→自身搜索、UID交错、Conveyor/Physics/Late边界。
+frequency/report.txt：PeriodicTicker完整实现、一次普通入口、force计数语义、特殊搜索覆盖。
+immediate/report.txt：实际停止/Action调用者、额外搜索执行链。
+driver/report.txt：逻辑Tick驱动、ObjectManager/Physics/Coroutine/Late偏序，渲染帧口径边界。
+
+关键方法定位
+ObjectManager.OnFixedUpdate [71077] 0x1808d5300，逐对象OnTick call 0x1808d549c。
+Entity.OnTick [66697] 0x1806fadf0，StateMachine.Tick call 0x1806faea6。
+Enemy._MoveByCursor [76491] 0x180a78fc0，普通/arrival SetPosition 0x180a793ac/0x180a7942c。
+Character.OnTick [76022] 0x180a2ec90，普通搜索dispatch 0x180a2ef0a。
+Enemy.OnTick [76531] 0x180a72340，自身普通搜索0x180a724e5。
+BlockManager.SearchBlockee [77190] 0x180aa09e0。
+Character.SearchBlockeeImmediate [75955] 0x180a31400。
+PeriodicTicker.Tick [25963] 0x181e043d0，Next [25964] 0x181e04370。

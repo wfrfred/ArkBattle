@@ -1,0 +1,16 @@
+{
+  "index": 77188,
+  "name": "get_exposedRawList",
+  "type": 11414,
+  "returnType": 17386,
+  "parameterStart": -1,
+  "generic": -1,
+  "token": 100740485,
+  "flags": 2182,
+  "iflags": 0,
+  "slot": 65535,
+  "parameterCount": 0,
+  "address": 6453598544,
+  "fullname": "Torappu.Battle.BlockManager.get_exposedRawList",
+  "parameters": []
+}

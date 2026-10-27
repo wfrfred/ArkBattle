@@ -1,0 +1,125 @@
+[
+  {
+    "index": 64230,
+    "name": "SimulateTick",
+    "type": 10022,
+    "returnType": 83059,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100727527,
+    "flags": 134,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": 6449123488,
+    "fullname": "Torappu.Battle.CoroutineSimulator.SimulateTick",
+    "params": []
+  },
+  {
+    "index": 64231,
+    "name": "Reset",
+    "type": 10022,
+    "returnType": 83059,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100727528,
+    "flags": 134,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": 6449123360,
+    "fullname": "Torappu.Battle.CoroutineSimulator.Reset",
+    "params": []
+  },
+  {
+    "index": 64232,
+    "name": "StartCoroutine",
+    "type": 10022,
+    "returnType": 93897,
+    "parameterStart": 64330,
+    "generic": -1,
+    "token": 100727529,
+    "flags": 134,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 2,
+    "address": 6449123840,
+    "fullname": "Torappu.Battle.CoroutineSimulator.StartCoroutine",
+    "params": [
+      {
+        "index": 64330,
+        "name": "mono",
+        "token": 134282064,
+        "type": 61835
+      },
+      {
+        "index": 64331,
+        "name": "routine",
+        "token": 134282065,
+        "type": 57255
+      }
+    ]
+  },
+  {
+    "index": 64233,
+    "name": "StopCoroutine",
+    "type": 10022,
+    "returnType": 44789,
+    "parameterStart": 64332,
+    "generic": -1,
+    "token": 100727530,
+    "flags": 134,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 1,
+    "address": 6449124736,
+    "fullname": "Torappu.Battle.CoroutineSimulator.StopCoroutine",
+    "params": [
+      {
+        "index": 64332,
+        "name": "id",
+        "token": 134282066,
+        "type": 93897
+      }
+    ]
+  },
+  {
+    "index": 64234,
+    "name": "StopAllCoroutines",
+    "type": 10022,
+    "returnType": 83059,
+    "parameterStart": 64333,
+    "generic": -1,
+    "token": 100727531,
+    "flags": 134,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 1,
+    "address": 6449124400,
+    "fullname": "Torappu.Battle.CoroutineSimulator.StopAllCoroutines",
+    "params": [
+      {
+        "index": 64333,
+        "name": "mono",
+        "token": 134282067,
+        "type": 61835
+      }
+    ]
+  },
+  {
+    "index": 64235,
+    "name": ".ctor",
+    "type": 10022,
+    "returnType": 83059,
+    "parameterStart": -1,
+    "generic": -1,
+    "token": 100727532,
+    "flags": 6278,
+    "iflags": 0,
+    "slot": 65535,
+    "parameterCount": 0,
+    "address": 6449124992,
+    "fullname": "Torappu.Battle.CoroutineSimulator..ctor",
+    "params": []
+  }
+]
