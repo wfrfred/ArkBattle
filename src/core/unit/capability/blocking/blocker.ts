@@ -83,14 +83,7 @@ export function canBlock(unit: Unit & Blocker): boolean {
     return unit.blocker.rules.every((rule) => rule.allows(unit));
 }
 
-function changeCapacityContributions(
-    state: State,
-    transition: (
-        entries: readonly contribution.Contribution<readonly attribute.Modifier[]>[],
-    ) => readonly contribution.Contribution<readonly attribute.Modifier[]>[],
-): State {
-    const capacity = transition(state.capacity);
-
+function setCapacityContributions(state: State, capacity: State["capacity"]): State {
     return capacity === state.capacity ? state : { ...state, capacity };
 }
 
@@ -98,11 +91,11 @@ export function setCapacityContribution(
     state: State,
     entry: contribution.Contribution<readonly attribute.Modifier[]>,
 ): State {
-    return changeCapacityContributions(state, (entries) => contribution.set(entries, entry));
+    return setCapacityContributions(state, contribution.set(state.capacity, entry));
 }
 
 export function removeCapacityContribution(state: State, id: string): State {
-    return changeCapacityContributions(state, (entries) => contribution.remove(entries, id));
+    return setCapacityContributions(state, contribution.remove(state.capacity, id));
 }
 
 export function resolveCapacity(definition: Definition, state: State): number {

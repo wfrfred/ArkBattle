@@ -66,10 +66,10 @@ function create<P extends object>(
 ): MechanismDefinition<ContactState> {
     const clear: NonNullable<MechanismDefinition<ContactState>["onEnd"]> = (battle, self) => {
         const owned = [...self.state.contacts.values()];
-        battle = mechanisms.update(battle, mechanisms.ref(self), (current) => ({
-            ...current,
+        battle = mechanisms.setState(battle, mechanisms.ref(self), {
+            ...self.state,
             contacts: new Map(),
-        }));
+        });
 
         if (!behaviour.retainOnLeave) {
             for (const contact of owned) {
@@ -99,26 +99,28 @@ function create<P extends object>(
                 );
             const selectedSet = new Set(selected);
             const candidates = units.all(battle).map(units.ref).toArray();
-            battle = mechanisms.update(battle, reference, (current) => ({
-                ...current,
+            battle = mechanisms.setState(battle, reference, {
+                ...self.state,
                 indices: selected,
                 scanTick: battle.tick + behaviour.intervalTicks,
-            }));
+            });
 
             function setContact(state: BattleState, unitId: Id, contact?: Contact): BattleState {
-                return mechanisms.get(state, reference) === undefined
-                    ? state
-                    : mechanisms.update(state, reference, (current) => {
-                          const contacts = new Map(current.contacts);
+                const current = mechanisms.get(state, reference);
 
-                          if (contact === undefined) {
-                              contacts.delete(unitId);
-                          } else {
-                              contacts.set(unitId, contact);
-                          }
+                if (current === undefined) {
+                    return state;
+                }
 
-                          return { ...current, contacts };
-                      });
+                const contacts = new Map(current.state.contacts);
+
+                if (contact === undefined) {
+                    contacts.delete(unitId);
+                } else {
+                    contacts.set(unitId, contact);
+                }
+
+                return mechanisms.setState(state, reference, { ...current.state, contacts });
             }
 
             function indexOf(unit: Unit): number | undefined {
@@ -228,12 +230,10 @@ function create<P extends object>(
                 return battle;
             }
 
-            return mechanisms.update(battle, mechanisms.ref(self), (current) => {
-                const contacts = new Map(current.contacts);
-                contacts.delete(departure.unit.id);
+            const contacts = new Map(self.state.contacts);
+            contacts.delete(departure.unit.id);
 
-                return { ...current, contacts };
-            });
+            return mechanisms.setState(battle, mechanisms.ref(self), { ...self.state, contacts });
         },
         onDisable: clear,
         onEnd: clear,

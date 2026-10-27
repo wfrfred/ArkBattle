@@ -1,10 +1,10 @@
 import { resolveDefense } from "../../dist/core/unit/capability/vitality/query.js";
-import { getUnit } from "../helpers/unit.js";
+import { getUnit, initialize, replaceUnit } from "../helpers/unit.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { initialize } from "../helpers/unit.js";
-import { transitionUnit } from "../helpers/unit.js";
+
+
 import {
     setAttackContribution,
     removeAttackContribution,
@@ -38,7 +38,8 @@ test("attribute selection keeps weaker candidates while independent attributes s
     assert.equal(resolveAttack(before, unitRef(getUnit(before, 1))), 160);
     const current = getUnit(before, 1);
     assert.equal(resolveDefense(before, unitRef(current)).defense, 30);
-    battle = transitionUnit(battle, 1, (current) => ({ ...current, offense: removeAttackContribution(current.offense, "b") }));
+    const currentUnit = getUnit(battle, 1);
+    battle = replaceUnit(battle, { ...currentUnit, offense: removeAttackContribution(currentUnit.offense, "b") });
     assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 1))), 400);
     assert.equal(resolveAttack(before, unitRef(getUnit(before, 1))), 160);
 });
@@ -56,12 +57,12 @@ test("dynamic values read current sources while selection changes explicitly", (
     unit = ({ ...unit, offense: setAttackContribution(unit.offense, dynamic("b", unitRef(sourceB), 0.6)) });
     let battle = effectFixtureWork(unit, sourceA, sourceB);
     assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 1))), 160);
-    battle = transitionUnit(battle, 3, (current) =>
-        ({ ...current, offense: setAttackContribution(current.offense, { id: "source", value: [create({ finalAddition: 100 })] }) }),
-    );
+    const currentUnit2 = getUnit(battle, 3);
+    battle = replaceUnit(battle, { ...currentUnit2, offense: setAttackContribution(currentUnit2.offense, { id: "source", value: [create({ finalAddition: 100 })] }) });
     assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 1))), 220);
     const before = battle;
-    battle = transitionUnit(battle, 1, (current) => ({ ...current, offense: setAttackContribution(current.offense, dynamic("a", unitRef(sourceA), 0.7)) }));
+    const currentUnit3 = getUnit(battle, 1);
+    battle = replaceUnit(battle, { ...currentUnit3, offense: setAttackContribution(currentUnit3.offense, dynamic("a", unitRef(sourceA), 0.7)) });
     assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 1))), 170);
     assert.equal(resolveAttack(before, unitRef(getUnit(before, 1))), 220);
 });

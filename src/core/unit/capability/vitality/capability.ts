@@ -87,15 +87,7 @@ export function removeDamageReceptionRule(state: State, id: string): State {
         : { ...state, damageReceptionRules };
 }
 
-function changeMaxHpContributions(
-    state: State,
-    definition: Definition,
-    transition: (
-        entries: readonly contribution.Contribution<readonly attribute.Modifier[]>[],
-    ) => readonly contribution.Contribution<readonly attribute.Modifier[]>[],
-): State {
-    const maxHp = transition(state.maxHp);
-
+function setMaxHpContributions(state: State, definition: Definition, maxHp: State["maxHp"]): State {
     if (maxHp === state.maxHp) {
         return state;
     }
@@ -116,50 +108,43 @@ export function setMaxHpContribution(
     definition: Definition,
     entry: contribution.Contribution<readonly attribute.Modifier[]>,
 ): State {
-    return changeMaxHpContributions(state, definition, (entries) =>
-        contribution.set(entries, entry),
-    );
+    return setMaxHpContributions(state, definition, contribution.set(state.maxHp, entry));
 }
 
 export function removeMaxHpContribution(state: State, definition: Definition, id: string): State {
-    return changeMaxHpContributions(state, definition, (entries) =>
-        contribution.remove(entries, id),
-    );
+    return setMaxHpContributions(state, definition, contribution.remove(state.maxHp, id));
 }
 
 export function resolveMaxHp(state: State, definition: Definition): number {
     return Math.max(1, attribute.apply(definition.maxHp, contribution.resolve(state.maxHp).flat()));
 }
 
-function updateContributions(
+function setContributions(
     state: State,
     parameter: "defense" | "resistance",
-    transition: (entries: State["defense"]) => State["defense"],
+    entries: State["defense"],
 ): State {
-    const current = state[parameter];
-    const updated = transition(current);
-
-    return updated === current ? state : { ...state, [parameter]: updated };
+    return entries === state[parameter] ? state : { ...state, [parameter]: entries };
 }
 
 export function setDefenseContribution(
     state: State,
     entry: contribution.Contribution<Input>,
 ): State {
-    return updateContributions(state, "defense", (entries) => contribution.set(entries, entry));
+    return setContributions(state, "defense", contribution.set(state.defense, entry));
 }
 
 export function removeDefenseContribution(state: State, id: string): State {
-    return updateContributions(state, "defense", (entries) => contribution.remove(entries, id));
+    return setContributions(state, "defense", contribution.remove(state.defense, id));
 }
 
 export function setResistanceContribution(
     state: State,
     entry: contribution.Contribution<Input>,
 ): State {
-    return updateContributions(state, "resistance", (entries) => contribution.set(entries, entry));
+    return setContributions(state, "resistance", contribution.set(state.resistance, entry));
 }
 
 export function removeResistanceContribution(state: State, id: string): State {
-    return updateContributions(state, "resistance", (entries) => contribution.remove(entries, id));
+    return setContributions(state, "resistance", contribution.remove(state.resistance, id));
 }

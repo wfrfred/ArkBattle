@@ -10,13 +10,13 @@ import { initialize } from "../helpers/unit.js";
 import { effectFixtureWork } from "../helpers/effects.js";
 
 const hook = (id, invoke, accepts = () => true) => ({ id, stage: "receivingStarted", priority: 0, accepts, invoke });
-const change = (battle, transform) => {
+const setVitality = (battle, vitality) => {
     const unit = getUnit(battle, 0);
-    return updateUnit(battle, [{ ...unit, vitality: transform(unit.vitality) }]);
+    return updateUnit(battle, [{ ...unit, vitality }]);
 };
 function fixture(hooks, hp = 100) {
     const unit = initialize({ id: 0, position: [0, 0], definition: { hooks: [], id: "receiver", vitality: { maxHp: 100, defense: 0, resistance: 0 } } });
-    return change(effectFixtureWork(unit), vitality => ({ ...vitality, hp, damageHooks: hooks }));
+    return setVitality(effectFixtureWork(unit), { ...unit.vitality, hp, damageHooks: hooks });
 }
 const damage = (battle, power = 1) => {
     const request = {
@@ -37,7 +37,7 @@ for (const enabled of [true, false]) {
             hook("A", battle => {
                 seen.push("A");
                 battle = healing(battle, { source: null, target: { id: 0 }, parameters: { power: 10, multiplier: 1 } }).state;
-                return { state: change(battle, vitality => setHook(vitality, replacement)), value: undefined };
+                return { state: setVitality(battle, setHook(getUnit(battle, 0).vitality, replacement)), value: undefined };
             }),
             hook("B", battle => { seen.push("old B"); return { state: battle, value: undefined }; }, () => {
                 seen.push("old enabled");
@@ -56,7 +56,7 @@ test("receivingStarted dispatch skips removed IDs and replacements moved to anot
     const state = fixture([
         hook("A", battle => {
             seen.push("A");
-            return { state: change(battle, vitality => setHook(removeHook(vitality, "B"), {
+            return { state: setVitality(battle, setHook(removeHook(getUnit(battle, 0).vitality, "B"), {
                 id: "C", stage: "completed", priority: 0, accepts: () => false,
                 invoke: () => { throw new Error("inactive replacement must not run"); },
             })), value: undefined };
@@ -73,7 +73,7 @@ test("receivingStarted dispatch defers newly registered IDs until a later dispat
     const seen = [];
     const added = hook("C", battle => { seen.push("C"); return { state: battle, value: undefined }; });
     let state = fixture([
-        hook("A", battle => { seen.push("A"); return { state: change(battle, vitality => setHook(vitality, added)), value: undefined }; }),
+        hook("A", battle => { seen.push("A"); return { state: setVitality(battle, setHook(getUnit(battle, 0).vitality, added)), value: undefined }; }),
         hook("B", battle => { seen.push("B"); return { state: battle, value: undefined }; }),
     ]);
     state = damage(state);
@@ -89,7 +89,7 @@ test("nested receivingStarted dispatch independently selects current IDs", () =>
         hook("A", (battle, { calculated }) => {
             seen.push(["A", calculated.amount]);
             if (calculated.amount !== 1) return { state: battle, value: undefined };
-            battle = change(battle, vitality => setHook(vitality, added));
+            battle = setVitality(battle, setHook(getUnit(battle, 0).vitality, added));
             return { state: damage(battle, 2), value: undefined };
         }),
         hook("B", (battle, { calculated }) => { seen.push(["B", calculated.amount]); return { state: battle, value: undefined }; }),

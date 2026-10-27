@@ -19,7 +19,7 @@ import {
     createPredefinedDefinition,
 } from "../../dist/core/battle/steps/predefined.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
-import { getUnit, transitionUnit } from "../helpers/unit.js";
+import { getUnit, replaceUnit } from "../helpers/unit.js";
 import { initialize } from "../helpers/unit.js";
 import { createDefinition as createSkillDefinition } from "../../dist/core/unit/capability/skill/capability.js";
 import { activate } from "../../dist/core/unit/capability/skill/operations.js";
@@ -50,22 +50,23 @@ function fixture() {
         {
             onInstall(state, self) {
                 const ref = effectRef(self);
-                return transitionUnit(state, ref.host.id, (unit) =>
-                    ({ ...unit, vitality: setHook(unit.vitality, {
+                const currentUnit = getUnit(state, ref.host.id);
+                return replaceUnit(state, ({ ...currentUnit, vitality: setHook(currentUnit.vitality, {
                         id: "consume",
                         stage: "receiving",
                         priority: 0,
                         accepts: (battle, context) => getUnit(battle, context.request.target.id)?.effects.values().toArray().find(effect => effect.id === ref.id)?.status === "ACTIVE",
                         invoke(state, context, value) {
                             const current = get(state, ref);
-                            state = effects.update(state, ref, data => ({ consumed: data.consumed + 1 }));
+                            const currentData = effects.get(state, ref).data;
+                            state = effects.setData(state, ref, { consumed: currentData.consumed + 1 });
                             return { state, value };
                         },
-                    }) }),
-                );
+                    }) }));
             },
             onEnd(state, self) {
-                return transitionUnit(state, self.host.id, (unit) => ({ ...unit, vitality: removeHook(unit.vitality, "consume") }));
+                const currentUnit1 = getUnit(state, self.host.id);
+                return replaceUnit(state, ({ ...currentUnit1, vitality: removeHook(currentUnit1.vitality, "consume") }));
             },
         },
     );

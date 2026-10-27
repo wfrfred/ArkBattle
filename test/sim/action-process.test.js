@@ -46,7 +46,8 @@ test("action: private progress and sampled values survive immutable branches wit
         }),
         onTick(state, source, self) {
             if (state.tick < self.execution.state.releaseAtTick) return { state, value: false };
-            state = actions.updateExecution(state, executionRef(source, self), currentState => ({ ...currentState, released: true }));
+            const currentState2 = actions.getExecution(state, executionRef(source, self)).execution.state;
+            state = actions.setExecutionState(state, executionRef(source, self), { ...currentState2, released: true });
             state = updateUnit(state, [{
                 ...getUnit(state, 1),
                 vitality: { ...getUnit(state, 1).vitality, hp: self.execution.state.power - 7 },
@@ -97,7 +98,8 @@ test("action: different definitions share a source while their state and effects
         program(id, {
             onTick(state, source, self) {
                 if (self.execution.state.progress === 0) state = installOwned(state, source, self);
-                state = actions.updateExecution(state, executionRef(source, self), currentState => ({ progress: currentState.progress + 1 }));
+                const currentState2 = actions.getExecution(state, executionRef(source, self)).execution.state;
+                state = actions.setExecutionState(state, executionRef(source, self), { progress: currentState2.progress + 1 });
                 return { state, value: false };
             },
         });
@@ -126,8 +128,9 @@ test("action: equal local identities on different hosts keep progress and lifeti
                     scopes: [{ type: "ACTION", ref: executionRef(source, self) }],
                 }).state;
             }
+            const currentState2 = actions.getExecution(state, executionRef(source, self)).execution.state;
             return {
-                state: actions.updateExecution(state, executionRef(source, self), currentState => ({ progress: currentState.progress + 1 })),
+                state: actions.setExecutionState(state, executionRef(source, self), { progress: currentState2.progress + 1 }),
                 value: false,
             };
         },
@@ -176,13 +179,13 @@ test("action: dependency cleanup may remove its ending host before one terminal 
                     return remove(state, source.id, "SCRIPT");
                 },
             });
-            return { state: actions.updateExecution(state, executionRef(source, self), () => ({ progress: 1 })), value: false };
+            return { state: actions.setExecutionState(state, executionRef(source, self), { progress: 1 }), value: false };
         },
         onEnd(state, source, self, outcome) {
             trace.push(outcome.type);
             assert.equal(getUnit(state, source.id), undefined);
             assert.equal(actions.getExecution(state, executionRef(source, self)), undefined);
-            assert.throws(() => actions.updateExecution(state, executionRef(source, self), () => ({ progress: 9 })), /unknown unit: 0/);
+            assert.throws(() => actions.setExecutionState(state, executionRef(source, self), { progress: 9 }), /unknown unit: 0/);
             return state;
         },
     });
@@ -211,7 +214,7 @@ test("action: private progress is visible to nested callbacks before their busin
     const definition = program("visible", {
         onTick(state, source, self) {
             currentRef = executionRef(source, self);
-            state = actions.updateExecution(state, executionRef(source, self), () => ({ progress: 1 }));
+            state = actions.setExecutionState(state, executionRef(source, self), { progress: 1 });
             return { state: installOwned(state, source, self, dependency), value: true };
         },
     });
@@ -289,7 +292,7 @@ test("action: source departure completes nested cleanup while entered content co
             assert.equal(actions.getExecution(state, executionRef(source, self)), undefined);
             trace.push("returned");
             state = updateUnit(state, [{ ...getUnit(state, 1), position: [4, 0] }]);
-            assert.throws(() => actions.updateExecution(state, executionRef(source, self), () => ({ progress: 9 })), /unknown unit: 0/);
+            assert.throws(() => actions.setExecutionState(state, executionRef(source, self), { progress: 9 }), /unknown unit: 0/);
             return { state, value: true };
         },
         onEnd: (state) => {
@@ -318,7 +321,7 @@ test("action: a throwing program leaves its input progress, instances and target
     const definition = program("failure", {
         onTick(state, source, self) {
             if (state.tick === 0) return { state, value: false };
-            state = actions.updateExecution(state, executionRef(source, self), () => ({ progress: 7 }));
+            state = actions.setExecutionState(state, executionRef(source, self), { progress: 7 });
             state = updateUnit(state, [{ ...getUnit(state, 1), position: [4, 0] }]);
             throw failure;
         },

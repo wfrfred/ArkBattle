@@ -80,10 +80,10 @@ export function install<S extends object, H extends object>(
     return { state: battle, value: ref };
 }
 
-export function update<S extends object, H extends object>(
+export function setData<S extends object, H extends object>(
     battle: BattleState,
     ref: Ref<Effect<S, H>>,
-    transform: (data: NoInfer<S>) => NoInfer<S>,
+    data: NoInfer<S>,
 ): BattleState {
     const unit = units.get(battle, ref.host);
 
@@ -96,8 +96,6 @@ export function update<S extends object, H extends object>(
     if (self === undefined) {
         throw new RangeError(`unknown effect: ${ref.id}`);
     }
-
-    const data = transform(self.data);
 
     return data === self.data
         ? battle

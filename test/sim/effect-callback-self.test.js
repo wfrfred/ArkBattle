@@ -32,13 +32,15 @@ test("Effect lifecycle callbacks receive their current instance directly and a s
         initialize: () => ({ count: 0 }),
         onInstall(battle, self) {
             observe("install", battle, self);
-            return effects.update(battle, ref(self), data => ({ count: data.count + 1 }));
+            const currentData = effects.get(battle, ref(self)).data;
+            return effects.setData(battle, ref(self), { count: currentData.count + 1 });
         },
         onEnable: (battle, self) => observe("enable", battle, self),
         onDisable: (battle, self) => observe("disable", battle, self),
         onTick(battle, self) {
             observe("tick", battle, self);
-            return effects.update(battle, ref(self), data => ({ count: data.count + 1 }));
+            const currentData = effects.get(battle, ref(self)).data;
+            return effects.setData(battle, ref(self), { count: currentData.count + 1 });
         },
         onEnd: (battle, self, reason) => observe("end", battle, self, reason),
     };
@@ -66,7 +68,10 @@ test("Effect onEnd receives private data updated by disable and dependent cleanu
     const program = {
         id: "parent-data",
         initialize: () => ({ count: 0 }),
-        onDisable: (battle, self) => effects.update(battle, ref(self), data => ({ count: data.count + 1 })),
+        onDisable: (battle, self) => {
+            const currentData = effects.get(battle, ref(self)).data;
+            return effects.setData(battle, ref(self), { count: currentData.count + 1 });
+        },
         onEnd(battle, self, reason) {
             assert.equal(self, effects.get(battle, ref(self)));
             seen.push([self.data.count, reason]);
@@ -81,7 +86,8 @@ test("Effect onEnd receives private data updated by disable and dependent cleanu
         onEnd(battle, self, reason) {
             assert.equal(self.status, "ENDING");
             assert.equal(reason, "PARENT_END");
-            return effects.update(battle, parent, data => ({ count: data.count + 10 }));
+            const currentData = effects.get(battle, parent).data;
+            return effects.setData(battle, parent, { count: currentData.count + 10 });
         },
     }, { scopes: [{ type: "EFFECT", ref: parent }] });
     const battle = effects.end(child.state, parent, "PARENT_END");
@@ -96,7 +102,10 @@ test("Effect terminal self survives nested host removal and still cleans indepen
     const installed = effects.install(fixture(), { id: 1 }, {
         id: "resource-owner",
         initialize: () => ({ cleaned: false, resource: null }),
-        onDisable: (battle, self) => effects.update(battle, ref(self), data => ({ ...data, cleaned: true })),
+        onDisable: (battle, self) => {
+            const currentData = effects.get(battle, ref(self)).data;
+            return effects.setData(battle, ref(self), { ...currentData, cleaned: true });
+        },
         onEnd(battle, self, reason) {
             assert.equal(units.get(battle, self.host), undefined);
             assert.equal(effects.get(battle, ref(self)), undefined);
@@ -115,7 +124,8 @@ test("Effect terminal self survives nested host removal and still cleans indepen
                 position: [0, 0], state: {},
             });
             owned = created.value;
-            return effects.update(created.state, installed.value, data => ({ ...data, resource: owned }));
+            const currentData = effects.get(created.state, installed.value).data;
+            return effects.setData(created.state, installed.value, { ...currentData, resource: owned });
         },
     }, { scopes: [{ type: "EFFECT", ref: installed.value }] });
     const child = effects.install(producer.state, { id: 2 }, {

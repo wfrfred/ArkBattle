@@ -113,7 +113,7 @@ test("batch Unit updates reconcile effects before later operations", () => {
     }]);
     assert.deepEqual(dependents(previous.effect.dependency, lifetime), []);
     assert.deepEqual(dependents(battle.effect.dependency, lifetime), [effectRef(instance)]);
-    battle = effects.update(battle, effectRef(instance), () => ({ changed: true }));
+    battle = effects.setData(battle, effectRef(instance), { changed: true });
     assert.deepEqual(effects.get(battle, effectRef(instance)).data, { changed: true });
     assert.deepEqual(getUnit(previous, 1).occupancy.tile, null);
     assert.deepEqual(getUnit(battle, 1).occupancy.tile, [0, 1]);

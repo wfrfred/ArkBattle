@@ -55,8 +55,7 @@ function projectionHarness() {
   return {
     map,
     get state() { return branches[0].state; },
-    commit(transform) {
-      const content = transform(branches[0].state);
+    commit(content) {
       const facts = branches.map(branch => {
         const previous = branch.state;
         const snapshot = projectionSnapshot(previous);
@@ -79,8 +78,8 @@ const occupancyTile = column => [0, column];
 const unit = (id, position, definition = {}, states = {}) => initialize({
   id, position, definition: { hooks: [], id: `spatial_dependencies_${id}`, ...definition }, states,
 });
-const register = units => state => ({ ...state, units: new Map([...state.units, ...units.map(unit => [unit.id, unit])]) });
-const update = (id, mutate) => state => ({ ...state, units: new Map([...state.units, [id, mutate(state.units.get(id))]]) });
+const register = (state, units) => ({ ...state, units: new Map([...state.units, ...units.map(unit => [unit.id, unit])]) });
+const update = (state, unit) => ({ ...state, units: new Map([...state.units, [unit.id, unit]]) });
 
 const occupancyCases = [
   {
@@ -117,11 +116,11 @@ for (const scenario of occupancyCases) {
     const supported = unit(2, [1, 0], {}, {
       spatialPresence: { present: true }, occupancy: { tile: occupancyTile(1) },
     });
-    assert.deepEqual(h.commit(register([provider, supported])), new Map([
+    assert.deepEqual(h.commit(register(h.state, [provider, supported])), new Map([
       [1, { occupant: { id: 2 }, support: { id: 1 } }],
     ]));
     const previous = h.state;
-    const facts = h.commit(update(scenario.id, scenario.mutate));
+    const facts = h.commit(update(h.state, scenario.mutate(h.state.units.get(scenario.id))));
     assert.deepEqual(facts, new Map(scenario.occupancy));
     assert.deepEqual(h.state.units.get(scenario.id).position, previous.units.get(scenario.id).position);
     if (scenario.tileOnly) {
@@ -142,11 +141,11 @@ test('equivalent occupancy tile values preserve occupancy indexes and both slots
     occupancy: { slot: 'SUPPORT', hooks: [] },
   }, { occupancy: { tile: occupancyTile(1) } });
   const supported = unit(2, [1, 0], {}, { occupancy: { tile: occupancyTile(1) } });
-  h.commit(register([provider, supported]));
+  h.commit(register(h.state, [provider, supported]));
   const previous = h.state;
-  const facts = h.commit(update(1, unit => ({
-    ...unit, occupancy: { tile: occupancyTile(1) },
-  })));
+  const facts = h.commit(update(h.state, {
+    ...h.state.units.get(1), occupancy: { tile: occupancyTile(1) },
+  }));
   assert.deepEqual(facts, new Map([[1, { occupant: { id: 2 }, support: { id: 1 } }]]));
   assert.deepEqual(unitsAt(h.state, [0, 1]).map(unit => unit.id), unitsAt(previous, [0, 1]).map(unit => unit.id));
   assert.equal(h.state.occupancy, previous.occupancy);
@@ -163,11 +162,11 @@ test('Field unit updates preserve spatial queries without acquiring or owning bl
     vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ENEMY' },
     blockable: { volume: 1 }, layer: { type: 'GROUND' },
   });
-  h.commit(register([blocker, target]));
+  h.commit(register(h.state, [blocker, target]));
   assert.equal('blockingRelations' in h.state, false);
   assert.deepEqual(h.state.units.get(1).blocker.blocked, []);
   assert.equal(h.state.units.get(2).blockable.blocker, null);
-  h.commit(update(2, unit => ({ ...unit, position: [1.25, 0] })));
+  h.commit(update(h.state, { ...h.state.units.get(2), position: [1.25, 0] }));
   assert.equal(h.state.units.get(2).blockable.blocker, null);
   assert.deepEqual(h.state.units.get(1).blocker.blocked, []);
   assert.deepEqual(unitsAt(h.state, [0, 1]).map(unit => unit.id), [1, 2]);

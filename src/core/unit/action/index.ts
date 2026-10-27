@@ -16,9 +16,9 @@ export { all, forUnit, getAction, getExecution, isCasting } from "./query.js";
 
 export {
     start,
-    updateExecution,
-    updateState,
-    updateCooldown,
+    setExecutionState,
+    setState,
+    setCooldown,
     cancel,
     cancelForUnit,
     refreshCooldowns,

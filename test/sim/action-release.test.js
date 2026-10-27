@@ -2,7 +2,7 @@ import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { actionDefinition, battle, unit } from "../helpers/action-fixture.js";
-import { getUnit, transitionUnit } from "../helpers/unit.js";
+import { getUnit, replaceUnit } from "../helpers/unit.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import {
     setBeforeReleaseHook,
@@ -32,9 +32,10 @@ function releaseEffect(id, data, invoke) {
         initialize: () => data,
         onInstall(state, self) {
             const ref = effectRef(self);
-            return transitionUnit(state, ref.host.id, (current) => ({
-                ...current,
-                action: setBeforeReleaseHook(current.action, {
+            const currentUnit = getUnit(state, ref.host.id);
+            return replaceUnit(state, ({
+                ...currentUnit,
+                action: setBeforeReleaseHook(currentUnit.action, {
                     id: `release/${ref.id}`,
                     accepts: (battle) => effects.get(battle, ref)?.status === "ACTIVE",
                     invoke: (battle, context, current) =>
@@ -43,17 +44,20 @@ function releaseEffect(id, data, invoke) {
             }));
         },
         onEnd: (state, self) =>
-            transitionUnit(state, self.host.id, (current) => ({
-                ...current,
-                action: removeBeforeReleaseHook(current.action, `release/${self.id}`),
-            })),
+            {
+                const currentUnit1 = getUnit(state, self.host.id);
+                return replaceUnit(state, ({
+                ...currentUnit1,
+                action: removeBeforeReleaseHook(currentUnit1.action, `release/${self.id}`),
+            }));
+            },
     };
     return definition;
 }
 const attach = (state, definition) =>
     effects.install(state, unitRef(getUnit(state, 0)), definition);
 const change = (state, ref, data) =>
-    effects.update(state, ref, () => data);
+    effects.setData(state, ref, data);
 
 test("action release: ordinary and disabled effects continue without executing disabled hooks", () => {
     const started = initial();
@@ -72,12 +76,15 @@ test("action release: hiding the source in a continuing hook cancels before rele
         { ...unit(0, { action: attack }), spatialPresence: { present: true } },
         unit(1),
     );
-    const installed = attach(initial, releaseEffect("hide-source", {}, (state, { unit }) => ({
-        state: transitionUnit(state, unit.id, (current) => ({
-            ...current, spatialPresence: { present: false },
+    const installed = attach(initial, releaseEffect("hide-source", {}, (state, { unit }) => {
+        const currentUnit2 = getUnit(state, unit.id);
+        return ({
+        state: replaceUnit(state, ({
+            ...currentUnit2, spatialPresence: { present: false },
         })),
         value: CONTINUE,
-    })));
+    });
+    }));
     const started = actions.start(installed.state, actions.ref(unitRef(getUnit(installed.state, 0)), attack));
 
     assert.equal(started.value.type, "STARTED");
@@ -227,15 +234,17 @@ test("action release: selected IDs invoke their current replacement while new ID
             seen.push("first");
             if (!registered) {
                 registered = true;
-                state = transitionUnit(state, 0, (current) => ({ ...current,
-                    action: setBeforeReleaseHook(setBeforeReleaseHook(current.action, replacement), later),
+                const currentUnit3 = getUnit(state, 0);
+                state = replaceUnit(state, ({ ...currentUnit3,
+                    action: setBeforeReleaseHook(setBeforeReleaseHook(currentUnit3.action, replacement), later),
                 }));
             }
             return { state, value: CONTINUE };
         },
     };
-    const state = transitionUnit(started.state, 0, (current) => ({ ...current,
-        action: setBeforeReleaseHook(setBeforeReleaseHook(current.action, first), {
+    const currentUnit4 = getUnit(started.state, 0);
+    const state = replaceUnit(started.state, ({ ...currentUnit4,
+        action: setBeforeReleaseHook(setBeforeReleaseHook(currentUnit4.action, first), {
             id: "version", accepts: () => true,
             invoke: () => assert.fail("the selected registration has a new version"),
         }),
@@ -252,21 +261,24 @@ test("action release: hooks share fixed identities and receive the preceding sta
     const started = initial();
     let fixed;
     const directive = { type: "CONTINUE" };
-    let state = transitionUnit(started.state, 0, (unit) => ({ ...unit,
-        action: setBeforeReleaseHook(unit.action, {
+    const currentUnit6 = getUnit(started.state, 0);
+    let state = replaceUnit(started.state, ({ ...currentUnit6,
+        action: setBeforeReleaseHook(currentUnit6.action, {
             id: "first",
             invoke(state, context, current) {
                 fixed = context;
                 assert.deepEqual(current, CONTINUE);
                 assert.equal(context.action, started.value.ref);
-                return { state: transitionUnit(state, 0, unit => ({ ...unit,
-                    vitality: { ...unit.vitality, hp: 75 },
+                const currentUnit5 = getUnit(state, 0);
+                return { state: replaceUnit(state, ({ ...currentUnit5,
+                    vitality: { ...currentUnit5.vitality, hp: 75 },
                 })), value: directive };
             },
         }),
     }));
-    state = transitionUnit(state, 0, (unit) => ({ ...unit,
-        action: setBeforeReleaseHook(unit.action, {
+    const currentUnit7 = getUnit(state, 0);
+    state = replaceUnit(state, ({ ...currentUnit7,
+        action: setBeforeReleaseHook(currentUnit7.action, {
             id: "second",
             accepts(state, context, current) {
                 assert.equal(context, fixed);

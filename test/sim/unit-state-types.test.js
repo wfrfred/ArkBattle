@@ -32,7 +32,7 @@ import { setSpeedContribution as setActionSpeedContribution, type Action, type I
 import { setSpeedContribution } from ${module("unit/capability/locomotion/index")};
 import type { Route, Progress } from ${module("unit/capability/route/index")};
 import type { Definition } from ${module("unit/effect/definition")};
-import { install, update, get } from ${module("unit/effect/index")};
+import { install, setData, get } from ${module("unit/effect/index")};
 import { ref as effectRef, type Effect } from ${module("unit/effect/effect")};
 import { Effects } from ${module("unit/effect/effects")};
 import type { Contribution } from ${module("unit/contribution/contribution")};
@@ -45,12 +45,12 @@ const content: Definition<{charges:number},Vitality> = {
    const unit=getUnit(state,self.host)!;
    const hp:number=unit.vitality.hp;
    // @ts-expect-error private state remains specific to this definition.
-   update(state,effectRef(self),()=>({missing:1}));
+   setData(state,effectRef(self),{missing:1});
    // @ts-expect-error stored values are readonly.
    self.status='ENDING';
    // @ts-expect-error shared host state must use immutable transitions.
    unit.vitality.hp=hp;
-   return update(state,effectRef(self),current=>({charges:current.charges-1}));
+   return setData(state,effectRef(self),{charges:self.data.charges-1});
  }
 };
 declare const battle:BattleState;
@@ -64,9 +64,9 @@ if(ref!==undefined) {
  if(found!==undefined){
    const charges:number=found.data.charges;
    const typed:Effect<{charges:number},Vitality>=found;
-   update(battle,ref,()=>({charges:5}));
+   setData(battle,ref,{charges:5});
    // @ts-expect-error state transitions preserve the Effect's private state type.
-   update(battle,ref,()=>({charges:'five'}));
+   setData(battle,ref,{charges:'five'});
  }
 }
 declare const shield:Effect<{charges:number},Vitality>;

@@ -1,6 +1,6 @@
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { initialize } from "./unit.js";
-import { transitionUnit, getUnit } from "./unit.js";
+import { replaceUnit, getUnit } from "./unit.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as damageHooks from "../../dist/core/battle/damage/index.js";
 import * as healingHooks from "../../dist/core/battle/healing/index.js";
@@ -62,8 +62,7 @@ export function setSelf(state, context, self, next) {
     const current = unit && unit.effects.get(self.id, self.definition);
     return current === undefined
         ? state
-        : effects.update(state, effectRef(current),
-              typeof next === "function" ? next : () => next);
+        : effects.setData(state, effectRef(current), next);
 }
 
 export function current(state, context, self) {
@@ -76,7 +75,8 @@ function hookEffect(domain, id, initial, entries, callbacks = {}) {
     content = definition(id, initial, {
         ...callbacks,
         onInstall(state, self) {
-            state = transitionUnit(state, self.host.id, (unit) =>
+            const unit = getUnit(state, self.host.id);
+            state = replaceUnit(state,
                 entries.reduce(
                     (unit, entry, index) => ({
                         ...unit,
@@ -109,7 +109,8 @@ function hookEffect(domain, id, initial, entries, callbacks = {}) {
             return callbacks.onInstall ? callbacks.onInstall(state, self) : state;
         },
         onEnd(state, self, reason) {
-            state = transitionUnit(state, self.host.id, (unit) =>
+            const unit = getUnit(state, self.host.id);
+            state = replaceUnit(state,
                 entries.reduce(
                     (unit, _entry, index) => ({
                         ...unit,
@@ -144,10 +145,10 @@ export function barrier(id = "barrier", remainingAmount = 500, priority = 0) {
                 if (pending.cancellation !== null) return { state, value: pending };
                 const absorbed = Math.min(pending.amount, self.data.remainingAmount);
                 if (absorbed <= 0) return { state, value: pending };
-                state = setSelf(state, context, self, (state) => ({
-                    ...state,
-                    remainingAmount: state.remainingAmount - absorbed,
-                }));
+                state = setSelf(state, context, self, {
+                    ...self.data,
+                    remainingAmount: self.data.remainingAmount - absorbed,
+                });
                 return {
                     state,
                     value: {

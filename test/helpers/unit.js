@@ -80,10 +80,6 @@ export function getUnit(battle, id) {
     return battle.battlefield.units.get(id);
 }
 
-export function transitionUnit(battle, id, transform) {
-    const current = getUnit(battle, id);
-    if (current === undefined) return battle;
-    const next = transform(current);
-    if (next.id !== id) throw new TypeError("unit transition cannot change identity");
-    return updateUnit(battle, [next]);
+export function replaceUnit(battle, unit) {
+    return updateUnit(battle, [unit]);
 }

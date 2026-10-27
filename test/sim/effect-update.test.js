@@ -19,7 +19,7 @@ function fixture(data, callbacks = {}, initial = {}) {
     return { ...created, definition };
 }
 
-test("Effect update transforms current private data and preserves identity, Definition and lifecycle facts", () => {
+test("Effect data writes preserve identity, Definition, lifecycle facts and earlier snapshots", () => {
     const nested = { sampled: 7 };
     const initial = fixture(
         { count: 1, nested },
@@ -27,16 +27,12 @@ test("Effect update transforms current private data and preserves identity, Defi
         { source: 42, enabled: false, scopes: [{ type: "TICK", tick: 100 }] },
     );
     const original = effects.get(initial.state, initial.value);
-    const first = effects.update(initial.state, initial.value, data => ({ ...data, count: data.count + 4 }));
-    let received;
-    const second = effects.update(first, initial.value, data => {
-        received = data;
-        return { ...data, count: data.count + 1 };
-    });
+    const first = effects.setData(initial.state, initial.value, { ...original.data, count: original.data.count + 4 });
+    const latest = effects.get(first, initial.value);
+    const second = effects.setData(first, initial.value, { ...latest.data, count: latest.data.count + 1 });
     const current = effects.get(second, initial.value);
 
-    assert.strictEqual(received, effects.get(first, initial.value).data);
-    assert.equal(received.count, 5);
+    assert.equal(latest.data.count, 5);
     assert.equal(current.data.count, 6);
     assert.equal(original.data.count, 1);
     assert.strictEqual(current.data.nested, nested);
@@ -51,29 +47,21 @@ test("Effect update transforms current private data and preserves identity, Defi
     assert.strictEqual(second.execution, initial.state.execution);
 });
 
-test("Effect update returns the original BattleState when the transform returns its input", () => {
+test("Writing the same Effect data returns the original BattleState", () => {
     const created = fixture({ count: 1 });
     const original = effects.get(created.state, created.value);
-    let calls = 0;
-    const unchanged = effects.update(created.state, created.value, data => {
-        calls++;
-        assert.strictEqual(data, original.data);
-        return data;
-    });
+    const unchanged = effects.setData(created.state, created.value, original.data);
 
     assert.strictEqual(unchanged, created.state);
     assert.strictEqual(effects.get(unchanged, created.value), original);
-    assert.equal(calls, 1);
 });
 
-test("Effect update does not call its transform after the instance or its host has been removed", () => {
+test("Effect data writes reject removed instances and hosts", () => {
     const created = fixture({ count: 1 });
     const ended = effects.end(created.state, created.value);
     const removed = removeUnit(ended, created.value.host.id, "RETREAT");
-    const forbidden = () => { throw new Error("missing Effect transform called"); };
-
-    assert.throws(() => effects.update(ended, created.value, forbidden), /unknown effect: 0/);
-    assert.throws(() => effects.update(removed, created.value, forbidden), /unknown unit: 0/);
+    assert.throws(() => effects.setData(ended, created.value, { count: 2 }), /unknown effect: 0/);
+    assert.throws(() => effects.setData(removed, created.value, { count: 2 }), /unknown unit: 0/);
     assert.equal(effects.get(ended, created.value), undefined);
     assert.equal(effects.get(removed, created.value), undefined);
 });
@@ -84,14 +72,16 @@ test("Effect update remains available during both ENDING callbacks without reviv
         onDisable(state, self) {
             const ref = effectRef(self);
             assert.equal(effects.get(state, ref).status, "ENDING");
-            state = effects.update(state, ref, data => ({ ...data, phases: [...data.phases, "disable"] }));
+            const currentData = effects.get(state, ref).data;
+            state = effects.setData(state, ref, { ...currentData, phases: [...currentData.phases, "disable"] });
             observed.push(effects.get(state, ref).data.phases);
             return state;
         },
         onEnd(state, self) {
             const ref = effectRef(self);
             assert.deepEqual(self.data.phases, ["disable"]);
-            state = effects.update(state, ref, data => ({ ...data, phases: [...data.phases, "end"] }));
+            const currentData = effects.get(state, ref).data;
+            state = effects.setData(state, ref, { ...currentData, phases: [...currentData.phases, "end"] });
             assert.equal(effects.get(state, ref).status, "ENDING");
             assert.strictEqual(effects.end(state, ref), state);
             observed.push(effects.get(state, ref).data.phases);
@@ -112,7 +102,8 @@ test("Effect installation callbacks can initialize private data before enable ob
         onInstall(state, self) {
             const ref = effectRef(self);
             assert.equal(effects.get(state, ref).status, "INSTALLING");
-            return effects.update(state, ref, data => ({ ...data, count: data.count + 1 }));
+            const currentData = effects.get(state, ref).data;
+            return effects.setData(state, ref, { ...currentData, count: currentData.count + 1 });
         },
         onEnable(state, self) {
             observed.push(self.data.count);
@@ -123,14 +114,4 @@ test("Effect installation callbacks can initialize private data before enable ob
     assert.deepEqual(observed, [1]);
     assert.equal(effects.get(created.state, created.value).data.count, 1);
     assert.equal(effects.get(created.state, created.value).status, "ACTIVE");
-});
-
-test("a failed Effect transform preserves the previously published instance", () => {
-    const created = fixture({ count: 1 });
-    const original = effects.get(created.state, created.value);
-    const failure = new Error("transform failed");
-
-    assert.throws(() => effects.update(created.state, created.value, () => { throw failure; }), error => error === failure);
-    assert.strictEqual(effects.get(created.state, created.value), original);
-    assert.equal(original.data.count, 1);
 });

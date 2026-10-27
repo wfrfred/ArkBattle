@@ -33,6 +33,8 @@ const definition: Definition<Persistent, Active> = createDefinition({
     id: "typed-skill", initialize: () => ({ count: 0 }), sp: null,
     onEnter: (current, program) => {
         const count: number = program.state.data.count;
+        // @ts-expect-error Persistent data is supplied as a value rather than a transform.
+        setPersistentData(program, () => ({ count: count + 1 }));
         return replace(current, setPersistentData(program, { count: count + 1 }));
     },
     activation: { trigger: "MANUAL", sustain: { type: "INFINITE" },
@@ -102,6 +104,8 @@ get(battle, self);
 get(battle, erased)!.data.mode;
 // @ts-expect-error
 setData(self, { mode: "INVALID" });
+// @ts-expect-error Activation data is supplied as a value rather than a transform.
+setData(self, () => ({ mode: "SECOND" }));
 // @ts-expect-error writeback cannot infer a different private state from the replacement value.
 replaceActivation(battle, known, { ...self, data: { mode: "INVALID" } });
 `);

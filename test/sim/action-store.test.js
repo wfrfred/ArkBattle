@@ -103,7 +103,8 @@ test("Action initialization, start and termination retain one persistent aggrega
     const configured = {
         ...definition("program", { starts: 0 }, { remaining: 2 }),
         prepare(battle, source, self) {
-            return { state: operations.updateState(battle, operations.ref(source, self.definition), current => ({ starts: current.starts + 1 })), value: { remaining: 2 } };
+            const currentState = operations.getAction(battle, operations.ref(source, self.definition)).state;
+            return { state: operations.setState(battle, operations.ref(source, self.definition), { starts: currentState.starts + 1 }), value: { remaining: 2 } };
         },
         onEnd(battle, source, self, end) {
             ended.push([self.execution.status, self.execution.state.remaining, end]);
@@ -173,7 +174,7 @@ Actions.empty().replace(configured, { ...precise, execution: { ...precise.execut
 // @ts-expect-error An idle aggregate cannot identify an execution.
 executionRef(source, publicAction);
 // @ts-expect-error An erased reference cannot update private execution data.
-operations.updateExecution(battle, publicRef, state => state);
+operations.setExecutionState(battle, publicRef, {});
 Actions.empty().read(configured.id, self => { self.definition.prepare(battle, source, self); });
 Actions.empty().readExecution(0, self => self.definition.onTick(battle, source, self));
 `);

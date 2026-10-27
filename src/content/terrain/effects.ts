@@ -84,10 +84,10 @@ function reconcileSmog(
     }
 
     if (blocked !== self.data.wasBlocking || restoreAt !== self.data.restoreAt) {
-        battle = effects.update(battle, effectRef(self), () => ({
+        battle = effects.setData(battle, effectRef(self), {
             wasBlocking: blocked,
             restoreAt,
-        }));
+        });
         unit = units.get(battle, self.host)!;
     }
 
@@ -196,10 +196,10 @@ export function createInfectionEffect(params: InfectionParams): Definition<Perio
                 return battle;
             }
 
-            battle = effects.update(battle, effectRef(self), (current) => ({
-                ...current,
+            battle = effects.setData(battle, effectRef(self), {
+                ...self.data,
                 nextTick: battle.tick + TICKS_PER_SECOND,
-            }));
+            });
 
             return damage(battle, self.host, params.damage);
         },
@@ -222,10 +222,10 @@ export function createDeepseaEffect(params: DeepseaParams): Definition<PeriodicS
                 return battle;
             }
 
-            battle = effects.update(battle, effectRef(self), (current) => ({
-                ...current,
+            battle = effects.setData(battle, effectRef(self), {
+                ...self.data,
                 nextTick: battle.tick + TICKS_PER_SECOND,
-            }));
+            });
 
             return damage(battle, self.host, params.damage);
         },
@@ -259,10 +259,10 @@ export function createMireEffect(params: MireParams): Definition<MireState> {
             const gain =
                 enemy && hasMass(unit) && unit.definition.massLevel >= params.massThreshold ? 2 : 1;
             const stacks = Math.min(params.maxStacks, self.data.stacks + gain);
-            battle = effects.update(battle, effectRef(self), () => ({
+            battle = effects.setData(battle, effectRef(self), {
                 stacks,
                 nextTick: battle.tick + params.stackIntervalTicks,
-            }));
+            });
 
             return changeModifiers(battle, self.host, `terrain/${self.id}`, {
                 attackSpeed: attribute.create({ multiplier: stacks * params.attackSpeedPerStack }),

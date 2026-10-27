@@ -12,7 +12,8 @@ import { nextPoint, setOverlay } from "../../dist/core/battlefield/navigation/st
 import { evaluateDeployment } from "../../dist/core/battle/deployment/query.js";
 import { normal as normalTerrain } from "../../dist/content/terrain/definition.js";
 import { normal, deepsea, tide } from "../../dist/content/terrain/condition.js";
-import { fixture, holder, target, acquire, ownerId, change } from "../helpers/blocking.js";
+import { fixture, holder, target, acquire, ownerId } from "../helpers/blocking.js";
+import { getUnit, replaceUnit } from "../helpers/unit.js";
 
 const initial = {
     elevation: "LOWLAND", placement: "ALL", passability: "ALL",
@@ -77,13 +78,14 @@ test("navigation observes current tile rules and retains independent overlays", 
 
 test("complete tile updates release invalid blocking and retain nested tile changes", () => {
     let battle = fixture([holder(), target()]);
-    battle = change(battle, 10, source => ({ ...source, blocker: {
-        ...source.blocker,
+    const currentUnit = getUnit(battle, 10);
+    battle = replaceUnit(battle, { ...currentUnit, blocker: {
+        ...currentUnit.blocker,
         released: [{ id: "change-tile-on-release", invoke(state) {
             const tile = state.battlefield.map.tiles.get(14);
             return { state: updateBattleTile(state, [1, 2], { ...tile.state, siteCondition: tide }), value: undefined };
         } }],
-    } }));
+    } });
     battle = acquire(battle);
     assert.equal(ownerId(battle), 10);
     const previous = battle;

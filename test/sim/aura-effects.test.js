@@ -4,14 +4,17 @@ import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { closeLifetime } from "../../dist/core/battle/execution/lifetime.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { getUnit, transitionUnit } from "../helpers/unit.js";
+import { getUnit, replaceUnit } from "../helpers/unit.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { get } from "../../dist/core/unit/effect/index.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
 import { definition, effectFixtureWork, install, at } from "../helpers/effects.js";
 import { attackEffect, auraUnit, auraEffect } from "../helpers/aura.js";
 const move = (battle, id, x) =>
-    transitionUnit(battle, id, (unit) => ({ ...unit, position: [x, 0] }));
+    {
+        const currentUnit = getUnit(battle, id);
+        return replaceUnit(battle, ({ ...currentUnit, position: [x, 0] }));
+    };
 
 test("aura membership persists after a child ends until leave and reentry", () => {
     const receiver = attackEffect("receiver");
@@ -95,10 +98,11 @@ test("ordinary end policies decide each receiver against current state", () => {
                         {},
                     );
                     state = installed.state;
-                    state = effects.update(state, effectRef(self), (current) => ({
-                            ...current,
-                            bindings: [...current.bindings, { unitId, ref: installed.value }],
-                        }));
+                    const currentData = effects.get(state, effectRef(self)).data;
+                    state = effects.setData(state, effectRef(self), {
+                            ...currentData,
+                            bindings: [...currentData.bindings, { unitId, ref: installed.value }],
+                        });
                 }
                 return state;
             },

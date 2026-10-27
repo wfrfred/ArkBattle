@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { remove as removeUnit } from "../../dist/core/battle/unit.js";
-import { getUnit } from "../helpers/unit.js";
+import { getUnit, replaceUnit } from "../helpers/unit.js";
 import { advanceMovement } from "../../dist/core/battle/steps/movement.js";
 import * as blocking from "../../dist/core/battle/blocking/operations.js";
 import * as locomotion from "../../dist/core/unit/capability/locomotion/capability.js";
 import * as presence from "../../dist/core/unit/capability/presence/operations.js";
-import { fixture, holder, target, change, acquire, ownerId, blockedIds } from "../helpers/blocking.js";
+import { fixture, holder, target, acquire, ownerId, blockedIds } from "../helpers/blocking.js";
 
 const route = (checkpoints = []) => ({
     pathMotionMode: "WALK", startPosition: [1, 2], endPosition: [1, 10], offset: [0, 0],
@@ -78,9 +78,10 @@ test("blocking does not change independently registered Locomotion rules", () =>
     battle = blocking.release(battle, { id: 20 });
     assert.equal(getUnit(battle, 20).locomotion.rules, rules);
     assertStopped(battle);
-    battle = change(battle, 20, unit => ({
-        ...unit, locomotion: locomotion.removeRule(unit.locomotion, casting.id),
-    }));
+    const currentUnit = getUnit(battle, 20);
+    battle = replaceUnit(battle, {
+        ...currentUnit, locomotion: locomotion.removeRule(currentUnit.locomotion, casting.id),
+    });
     assert.deepEqual(getUnit(battle, 20).locomotion.rules, [allowed]);
     assertMoves(battle);
 });

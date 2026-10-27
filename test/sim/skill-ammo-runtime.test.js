@@ -5,7 +5,7 @@ import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { create as createProjectile } from "../../dist/core/battle/projectile.js";
 import { all as allProjectiles } from "../../dist/core/projectile/query.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { transitionUnit } from "../helpers/unit.js";
+import { replaceUnit } from "../helpers/unit.js";
 import { setBeforeReleaseHook, removeBeforeReleaseHook } from "../../dist/core/unit/capability/action/capability.js";
 import { attackBuff } from "../helpers/effects.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
@@ -35,29 +35,42 @@ const range = [{ type: "CIRCLE", offset: [0, 0], radius: 8 }];
 function scenario({ ammo = 1, targets = 1, interrupt = false, windupTicks = 0, output, actionProgram, hideAfterDamage = false } = {}) {
   const buff = attackBuff("runtime-ammo-attack", 100, {
     onInstall: (state, self) => {
-      if (hideAfterDamage) state = transitionUnit(state, self.host.id, current => ({
-        ...current, vitality: setHook(current.vitality, {
+      if (hideAfterDamage) {
+          const currentUnit1 = getUnit(state, self.host.id);
+          state = replaceUnit(state, ({
+        ...currentUnit1, vitality: setHook(currentUnit1.vitality, {
           id: "hide-after-damage", stage: "hpApplied", priority: 0,
           accepts: (_state, event) => event.request.source?.id === self.host.id,
           invoke: (state, context, current) => {
             assert.equal(context.application.hpLoss, 200);
-            return { state: transitionUnit(state, context.request.source.id, current => ({
-              ...current, spatialPresence: { present: false },
+            const currentUnit = getUnit(state, context.request.source.id);
+            return { state: replaceUnit(state, ({
+              ...currentUnit, spatialPresence: { present: false },
             })), value: current };
           },
         }),
       }));
-      if (interrupt) state = transitionUnit(state, self.host.id, current => ({ ...current, action: setBeforeReleaseHook(current.action, {
+      }
+      if (interrupt) {
+          const currentUnit2 = getUnit(state, self.host.id);
+          state = replaceUnit(state, ({ ...currentUnit2, action: setBeforeReleaseHook(currentUnit2.action, {
         id: "ammo-interrupt", accepts: () => true,
         invoke: state => ({ state, value: { type: "INTERRUPT", recoveryTicks: 15 } }),
       }) }));
+      }
       return state;
     },
     onEnd: (state, self) => {
-      if (hideAfterDamage) state = transitionUnit(state, self.host.id, current => ({
-        ...current, vitality: removeHook(current.vitality, "hide-after-damage"),
+      if (hideAfterDamage) {
+          const currentUnit3 = getUnit(state, self.host.id);
+          state = replaceUnit(state, ({
+        ...currentUnit3, vitality: removeHook(currentUnit3.vitality, "hide-after-damage"),
       }));
-      if (interrupt) state = transitionUnit(state, self.host.id, current => ({ ...current, action: removeBeforeReleaseHook(current.action, "ammo-interrupt") }));
+      }
+      if (interrupt) {
+          const currentUnit4 = getUnit(state, self.host.id);
+          state = replaceUnit(state, ({ ...currentUnit4, action: removeBeforeReleaseHook(currentUnit4.action, "ammo-interrupt") }));
+      }
       return state;
     },
   });
@@ -232,7 +245,8 @@ test("ammo runtime: a content-defined follow-up preserves one ammunition payment
         state = normal.onTick(state, source, self).state;
         const current = actions.getExecution(state, executionRef(source, self));
         if (current === undefined) return { state, value: true };
-        return { state: actions.updateExecution(state, executionRef(source, current), currentState => ({ ...currentState, emitted: 1 })), value: false };
+        const currentState2 = actions.getExecution(state, executionRef(source, current)).execution.state;
+        return { state: actions.setExecutionState(state, executionRef(source, current), { ...currentState2, emitted: 1 }), value: false };
       }
       for (const target of self.execution.state.bindings.main) {
         state = dealDamage(state, { source: { id: source.id }, target: { id: target.id }, parameters: parameters(resolveAttack(state, source), "TRUE") }).state;

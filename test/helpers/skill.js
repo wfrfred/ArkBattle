@@ -30,9 +30,9 @@ export function fixture(input = {}, ...others) {
 
 export function at(battle, tick) { return { ...battle, tick }; }
 
-export function change(battle, transform, id = 1) {
+export function setSkill(battle, skill, id = 1) {
     const unit = getUnit(battle, id);
-    return updateUnit(battle, [{ ...unit, skill: transform(unit.skill) }]);
+    return updateUnit(battle, [{ ...unit, skill }]);
 }
 
 export function currentRef(battle, id = 1) {

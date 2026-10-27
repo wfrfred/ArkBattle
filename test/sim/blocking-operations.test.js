@@ -1,20 +1,26 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { add as addUnit } from "../../dist/core/battle/unit.js";
-import { getUnit } from "../helpers/unit.js";
+import { getUnit, replaceUnit } from "../helpers/unit.js";
 import * as blocking from "../../dist/core/battle/blocking/operations.js";
 import * as query from "../../dist/core/battle/blocking/query.js";
 import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
 import * as presence from "../../dist/core/unit/capability/presence/operations.js";
 import * as blockable from "../../dist/core/unit/capability/blocking/blockable.js";
-import { fixture, holder, target, change, acquire, blockedIds, ownerId, capacity, hook } from "../helpers/blocking.js";
+import { fixture, holder, target, acquire, blockedIds, ownerId, capacity, hook } from "../helpers/blocking.js";
 
-const onBlocker = (battle, id, key, entry) => change(battle, id, unit => ({
-    ...unit, blocker: blocker.setHook(unit.blocker, key, entry),
-}));
-const onBlockable = (battle, id, key, entry) => change(battle, id, unit => ({
-    ...unit, blockable: blockable.setHook(unit.blockable, key, entry),
-}));
+const onBlocker = (battle, id, key, entry) => {
+    const currentUnit = getUnit(battle, id);
+    return replaceUnit(battle, {
+    ...currentUnit, blocker: blocker.setHook(currentUnit.blocker, key, entry),
+});
+};
+const onBlockable = (battle, id, key, entry) => {
+    const currentUnit2 = getUnit(battle, id);
+    return replaceUnit(battle, {
+    ...currentUnit2, blockable: blockable.setHook(currentUnit2.blockable, key, entry),
+});
+};
 
 test("a failed acquire does not create transient relations or notifications", () => {
     let battle = fixture([holder(10, { capacity: 1 }), target(20, { volume: 2 })]);
@@ -72,9 +78,10 @@ test("later candidates are checked against live eligibility and live ownership",
     let battle = fixture([holder(10, { capacity: 3 }), holder(11, { capacity: 3 }), target(20), target(21), target(22)]);
     battle = onBlocker(battle, 10, "acquired", hook("alter-candidates", (state, { relation }) => {
         if (relation.blocked.id !== 20) return state;
-        state = change(state, 21, unit => ({
-            ...unit, blockable: blockable.setRule(unit.blockable, { id: "disabled", allows: () => false }),
-        }));
+        const currentUnit3 = getUnit(state, 21);
+        state = replaceUnit(state, {
+            ...currentUnit3, blockable: blockable.setRule(currentUnit3.blockable, { id: "disabled", allows: () => false }),
+        });
         return acquire(state, 11);
     }));
     battle = acquire(battle);
@@ -142,7 +149,8 @@ test("a nested unrelated update completes capacity maintenance before its caller
     battle = onBlocker(battle, 10, "released", hook("nested-update", (state, { relation }) => {
         removed.push(relation.blocked.id);
         if (relation.blocked.id !== 22) return state;
-        state = change(state, 30, unit => ({ ...unit, position: [10.25, 1] }));
+        const currentUnit4 = getUnit(state, 30);
+        state = replaceUnit(state, { ...currentUnit4, position: [10.25, 1] });
         assert.deepEqual(blockedIds(state), [20], "each nested update must complete required maintenance");
         return capacity(state, 10, 2);
     }));
@@ -184,15 +192,17 @@ test("a nested release stops the old relation's acquired Hooks without leaving c
     battle = onBlockable(battle, 20, "released", hook("released", (state, { relation }) => {
         order.push("blockable released");
         assert.equal(relation.blocked, acquiredRelation.blocked);
-        return change(state, 20, unit => ({
-            ...unit, blockable: blockable.removeVolumeContribution(unit.blockable, "relation-volume"),
-        }));
+        const currentUnit5 = getUnit(state, 20);
+        return replaceUnit(state, {
+            ...currentUnit5, blockable: blockable.removeVolumeContribution(currentUnit5.blockable, "relation-volume"),
+        });
     }));
     battle = onBlockable(battle, 20, "acquired", hook("install-contribution", state => {
         order.push("blockable acquired");
-        return change(state, 20, unit => ({
-            ...unit, blockable: blockable.setVolumeContribution(unit.blockable, { id: "relation-volume", value: 1 }),
-        }));
+        const currentUnit6 = getUnit(state, 20);
+        return replaceUnit(state, {
+            ...currentUnit6, blockable: blockable.setVolumeContribution(currentUnit6.blockable, { id: "relation-volume", value: 1 }),
+        });
     }));
     battle = acquire(battle);
     assert.deepEqual(order, ["blocker acquired", "blocker released", "blockable released"]);
@@ -313,7 +323,8 @@ test("a fresh same-owner Ref in an ordinary update does not notify or rebuild th
     }));
     battle = acquire(battle);
     const previous = getUnit(battle, 10).blocker.blocked;
-    battle = change(battle, 20, unit => ({ ...unit, blockable: { ...unit.blockable, blocker: { id: 10 } } }));
+    const currentUnit7 = getUnit(battle, 20);
+    battle = replaceUnit(battle, { ...currentUnit7, blockable: { ...currentUnit7.blockable, blocker: { id: 10 } } });
     assert.equal(getUnit(battle, 10).blocker.blocked, previous);
     assert.deepEqual(calls, ["acquired"]);
 });

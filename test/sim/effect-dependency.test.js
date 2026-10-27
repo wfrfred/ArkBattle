@@ -25,9 +25,8 @@ function host(id, entries) {
     return { id, effects };
 }
 
-function update(host, id, transform) {
-    const current = host.effects.get(id);
-    return { ...host, effects: host.effects.replace(ref(current), transform(current)) };
+function replaceEffect(host, effect) {
+    return { ...host, effects: host.effects.replace(ref(effect), effect) };
 }
 
 function identities(entries) {
@@ -77,7 +76,7 @@ for (const [type, partition] of [["ACTION", "action"], ["SKILL", "skill"], ["ELE
         assert.equal(dependents(state, first), state[partition].get(1).get(0));
         assert.equal(dependents(state, second), state[partition].get(2).get(0));
 
-        const changed = update(left, 0, effect => ({ ...effect, status: "ENDING" }));
+        const changed = replaceEffect(left, { ...left.effects.get(0), status: "ENDING" });
         const updated = derive(state, [{ previousUnit: left, nextUnit: changed }]);
         assert.deepEqual(dependents(updated, first), []);
         assert.equal(updated[partition].has(1), false);
@@ -103,7 +102,7 @@ test("incremental updates share untouched partitions, host branches and sibling 
         hostedLifetime("ELEMENTAL_BURST", 4, 0), hostedLifetime("EFFECT", 5, 0), unitLifetime(7),
     ] }]);
     const state = project([editedHost, untouchedHost]);
-    const nextHost = update(editedHost, 0, effect => ({ ...effect, scopes: [retained] }));
+    const nextHost = replaceEffect(editedHost, { ...editedHost.effects.get(0), scopes: [retained] });
     const updated = derive(state, [{ previousUnit: editedHost, nextUnit: nextHost }]);
     assert.notEqual(updated, state);
     assert.notEqual(updated.action, state.action);
@@ -117,7 +116,7 @@ test("incremental updates share untouched partitions, host branches and sibling 
     assert.deepEqual(identities(dependents(state, removed)), [[10, 0]]);
     assert.deepEqual(dependents(updated, removed), []);
     assert.equal(derive(state, [{ previousUnit: editedHost, nextUnit: { ...editedHost, position: [8, 0] } }]), state);
-    const dataOnly = update(editedHost, 0, effect => ({ ...effect, data: { changed: true } }));
+    const dataOnly = replaceEffect(editedHost, { ...editedHost.effects.get(0), data: { changed: true } });
     assert.equal(derive(state, [{ previousUnit: editedHost, nextUnit: dataOnly }]), state);
 });
 
@@ -131,7 +130,7 @@ test("duplicate scopes register once and ENDING removes only that Effect's depen
     ]);
     const state = project([owner]);
     assert.deepEqual(identities(dependents(state, lifetime)), [[10, 0], [10, 1], [10, 2]]);
-    const ending = update(owner, 0, effect => ({ ...effect, status: "ENDING" }));
+    const ending = replaceEffect(owner, { ...owner.effects.get(0), status: "ENDING" });
     const updated = derive(state, [{ previousUnit: owner, nextUnit: ending }]);
     assert.deepEqual(identities(dependents(updated, lifetime)), [[10, 1], [10, 2]]);
     assert.deepEqual(identities(dependents(state, lifetime)), [[10, 0], [10, 1], [10, 2]]);

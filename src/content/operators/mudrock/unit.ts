@@ -40,7 +40,7 @@ import {
     ref as effectRef,
     get,
     install,
-    update,
+    setData,
 } from "../../../core/unit/effect/index.js";
 
 import { createNormal, createSkill } from "./action.js";
@@ -136,7 +136,7 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
         id: SHIELD_ID,
         initialize: () => ({ layers: initialLayers, timer: interval, lastTick: 0 }),
         onInstall: (state, self) =>
-            update(state, effectRef(self), (data) => ({ ...data, lastTick: state.tick })),
+            setData(state, effectRef(self), { ...self.data, lastTick: state.tick }),
         onEnable: (state, self) => {
             const unit = getCurrentUnit(state, self.host);
 
@@ -167,10 +167,10 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
                                 return { state, value: pending };
                             }
                             if (shield.data.layers > 0) {
-                                state = update(state, ref, (data) => ({
-                                    ...data,
-                                    layers: data.layers - 1,
-                                }));
+                                state = setData(state, ref, {
+                                    ...shield.data,
+                                    layers: shield.data.layers - 1,
+                                });
                                 state = healSelf(state, self.host.id, healRatio);
                                 const current = getCurrentUnit(state, self.host);
 
@@ -238,12 +238,12 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
             const remaining = self.data.timer - elapsed;
             const pulses = remaining <= 0 ? Math.floor(-remaining / interval) + 1 : 0;
 
-            return update(state, effectRef(self), (data) => ({
-                ...data,
-                layers: Math.min(capacity, data.layers + pulses),
+            return setData(state, effectRef(self), {
+                ...self.data,
+                layers: Math.min(capacity, self.data.layers + pulses),
                 timer: remaining + pulses * interval,
                 lastTick: state.tick,
-            }));
+            });
         },
     };
 

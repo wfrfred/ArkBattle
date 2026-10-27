@@ -68,7 +68,8 @@ const install = (work, effect, expiresAtTick = null) =>
         scopes: expiresAtTick === null ? [] : [{ type: "TICK", tick: expiresAtTick }],
     });
 const change = (work, effect, next, setting) => {
-    work = effects.update(work, effectAddress, data => ({ ...data, ...next }));
+    const currentData = effects.get(work, effectAddress).data;
+    work = effects.setData(work, effectAddress, { ...currentData, ...next });
     return refreshContribution(work, effectAddress, effect, setting);
 };
 const entry = (id, value) => ({ id, value: [value] });
@@ -177,8 +178,7 @@ function battlefield(units) {
         work() { return battle; },
         publish(next) { battle = next; },
         search() { battle = acquire(battle, 0); },
-        commit(transform) {
-            const content = transform(battle.battlefield);
+        commit(content) {
             for (const [id, unit] of content.units) {
                 if (getUnit(battle, id) === undefined) battle = addUnit(battle, unit);
                 else if (getUnit(battle, id) !== unit) battle = updateUnit(battle, [unit]);
@@ -271,9 +271,9 @@ test("blocking volume: negative additions still consume one capacity while Rules
     assert.deepEqual(h.blocked(), []);
     for (const value of [-2, -10]) {
         const unit = h.state.units.get(1);
-        h.commit(state => ({ ...state, units: new Map([...state.units, ...[{
+        h.commit({ ...h.state, units: new Map([...h.state.units, ...[{
             ...unit, blockable: setVolumeContribution(unit.blockable, { id: "reduced", value }),
-        }].map(unit => [unit.id, unit])]) }));
+        }].map(unit => [unit.id, unit])]) });
         const current = h.state.units.get(1);
         assert.equal(resolveVolume(current.definition.blockable, current.blockable), 1);
         assert.equal(canBeBlocked(current), true);
@@ -281,12 +281,12 @@ test("blocking volume: negative additions still consume one capacity while Rules
         assert.deepEqual(h.blocked(), [1]);
         assert.equal(usedCapacity(h.work(), { id: 0 }), 1);
     }
-    h.commit(state => ({ ...state, units: new Map([...state.units, ...[enemy(2)].map(unit => [unit.id, unit])]) }));
+    h.commit({ ...h.state, units: new Map([...h.state.units, ...[enemy(2)].map(unit => [unit.id, unit])]) });
     assert.deepEqual(h.blocked(), [1]);
     const unit = h.state.units.get(1);
-    h.commit(state => ({ ...state, units: new Map([...state.units, ...[{
+    h.commit({ ...h.state, units: new Map([...h.state.units, ...[{
         ...unit, blockable: setRule(unit.blockable, { id: "unblockable", allows: () => false }),
-    }].map(unit => [unit.id, unit])]) }));
+    }].map(unit => [unit.id, unit])]) });
     assert.equal(canBeBlocked(h.state.units.get(1)), false);
     assert.deepEqual(h.blocked(), []);
     h.search();
@@ -298,17 +298,17 @@ test("blocking eligibility: overlapping rules release and reacquire targets inde
     const original = h.state.units.get(1);
     const first = { id: "first", allows: () => false };
     const second = { id: "second", allows: () => false };
-    const change = (transition) => {
+    const setBlockable = (blockable) => {
         const unit = h.state.units.get(1);
-        h.commit(state => ({ ...state, units: new Map([...state.units, ...[{ ...unit, blockable: transition(unit.blockable) }].map(unit => [unit.id, unit])]) }));
+        h.commit({ ...h.state, units: new Map([...h.state.units, ...[{ ...unit, blockable }].map(unit => [unit.id, unit])]) });
     };
-    change(state => setRule(state, first));
+    setBlockable(setRule(h.state.units.get(1).blockable, first));
     assert.deepEqual(h.blocked(), [2]);
-    change(state => setRule(state, second));
-    change(state => removeRule(state, first.id));
+    setBlockable(setRule(h.state.units.get(1).blockable, second));
+    setBlockable(removeRule(h.state.units.get(1).blockable, first.id));
     assert.equal(canBeBlocked(h.state.units.get(1)), false);
     assert.deepEqual(h.blocked(), [2]);
-    change(state => removeRule(state, second.id));
+    setBlockable(removeRule(h.state.units.get(1).blockable, second.id));
     assert.equal(canBeBlocked(h.state.units.get(1)), true);
     assert.deepEqual(h.blocked(), [2]);
     h.search();
@@ -328,7 +328,7 @@ test("blocking volume: equivalent contribution changes leave the blocking projec
             { id: "negative", value: -1 },
         ),
     };
-    const result = h.commit(state => ({ ...state, units: new Map([...state.units, ...[changed].map(unit => [unit.id, unit])]) }));
+    const result = h.commit({ ...h.state, units: new Map([...h.state.units, ...[changed].map(unit => [unit.id, unit])]) });
     assert.equal(h.state.units.get(0).blocker.blocked, before.units.get(0).blocker.blocked);
     assert.equal(h.state.occupancy, before.occupancy);
     assert.deepEqual(unitsAt(h.state, [0, 0]).map(unit => unit.id), unitsAt(before, [0, 0]).map(unit => unit.id));
@@ -371,10 +371,11 @@ test("blocking capacity: native stack renewal and terminal cleanup update real b
                 if (plan.type === "FINISH")
                     return effects.end(state, effectRef(self), "EXPIRED");
                 else {
-                    state = effects.update(state, effectRef(self), data => ({
-                        ...data,
+                    const currentData = effects.get(state, effectRef(self)).data;
+                    state = effects.setData(state, effectRef(self), {
+                        ...currentData,
                         stackCount: plan.stackCount,
-                    }));
+                    });
                     state = replaceEffectFixture(
                         state,
                         effectRef(self),
@@ -462,13 +463,13 @@ test("blocking capacity: replacing contribution entries without changing the res
     };
     assert.notEqual(changed.blocker.capacity, owner.blocker.capacity);
     assert.equal(capacityOf(changed), capacityOf(owner));
-    const result = h.commit(state => ({ ...state, units: new Map([...state.units, ...[changed].map(unit => [unit.id, unit])]) }));
+    const result = h.commit({ ...h.state, units: new Map([...h.state.units, ...[changed].map(unit => [unit.id, unit])]) });
     assert.equal(h.state.units.get(0).blocker.blocked, before.units.get(0).blocker.blocked);
     assert.equal(h.state.occupancy, before.occupancy);
     assert.deepEqual(unitsAt(h.state, [0, 0]).map(unit => unit.id), unitsAt(before, [0, 0]).map(unit => unit.id));
     assert.equal(h.state.navigation, before.navigation);
     const refreshed = ({ ...h.state.units.get(0), blocker: setCapacityContribution(h.state.units.get(0).blocker, entry("positive", modifier.create({ addition: 1.1 }))) });
     assert.equal(capacityOf(refreshed), 3);
-    h.commit(state => ({ ...state, units: new Map([...state.units, ...[refreshed].map(unit => [unit.id, unit])]) }));
+    h.commit({ ...h.state, units: new Map([...h.state.units, ...[refreshed].map(unit => [unit.id, unit])]) });
     assert.equal(h.state.units.get(0).blocker.blocked, before.units.get(0).blocker.blocked);
 });

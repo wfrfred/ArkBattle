@@ -8,7 +8,7 @@ import { ref as activationRef } from "../../dist/core/unit/capability/skill/acti
 import { get as getActivation } from "../../dist/core/unit/capability/skill/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { get as getHookHost, ref as unitRef } from "../../dist/core/unit/query.js";
-import { fixture, change } from "../helpers/skill.js";
+import { fixture, setSkill } from "../helpers/skill.js";
 import { definition as effectDefinition } from "../helpers/effects.js";
 
 const hook = (id, invoke) => ({ id, invoke });
@@ -50,10 +50,11 @@ test("onStart self-termination follows creation notification and entered content
         },
         onEnd(battle) { trace.push("end"); return battle; },
     } });
-    const state = change(f.state, (skill) => ({ ...skill,
+    const currentSkill = getUnit(f.state, 1).skill;
+    const state = setSkill(f.state, { ...currentSkill,
         activated: [hook("created", (battle) => { trace.push("activated"); return { state: battle, value: undefined }; })],
         ended: [hook("ended", (battle) => { trace.push("ended"); return { state: battle, value: undefined }; })],
-    }));
+    });
     const settled = skills.activate(state, f.ref);
     assert.deepEqual(trace, ["activated", "start", "end", "ended", "continued"]);
     assert.equal(getUnit(settled.state, 1).skill.active, null);
@@ -64,16 +65,18 @@ test("each nested dispatch gets fresh candidates while the outer dispatch keeps 
     const trace = [];
     const later = hook("later", (battle, { event }) => { trace.push(["later", event.current]); return { state: battle, value: undefined }; });
     const f = fixture();
-    let state = change(f.state, (skill) => ({ ...skill, spRecovered: [
+    const currentSkill2 = getUnit(f.state, 1).skill;
+    let state = setSkill(f.state, { ...currentSkill2, spRecovered: [
         hook("install", (battle, { host, event }) => {
             const self = getHookHost(battle, host);
 
             trace.push(["install", event.current]);
             if (event.current !== 1) return { state: battle, value: undefined };
-            battle = change(battle, (current) => ({ ...current, spRecovered: [...current.spRecovered, later] }));
+            const currentSkill3 = getUnit(battle, 1).skill;
+            battle = setSkill(battle, { ...currentSkill3, spRecovered: [...currentSkill3.spRecovered, later] });
             return { state: sp.recover(battle, unitRef(self), "TIME", 1).state, value: undefined };
         }),
-    ] }));
+    ] });
     state = sp.pay(state, f.ref, 2).state;
     state = sp.recover(state, f.ref, "TIME", 1).state;
     assert.deepEqual(trace, [["install", 1], ["install", 2], ["later", 2]]);
@@ -82,13 +85,15 @@ test("each nested dispatch gets fresh candidates while the outer dispatch keeps 
 test("removing a selected Hook during dispatch prevents its later invocation", () => {
     const trace = [];
     const f = fixture();
-    let state = change(f.state, (skill) => ({ ...skill, spPaid: [
+    const currentSkill4 = getUnit(f.state, 1).skill;
+    let state = setSkill(f.state, { ...currentSkill4, spPaid: [
         hook("remove", (battle) => {
             trace.push("remove");
-            return { state: change(battle, (current) => ({ ...current, spPaid: current.spPaid.filter(({ id }) => id !== "removed") })), value: undefined };
+            const currentSkill5 = getUnit(battle, 1).skill;
+            return { state: setSkill(battle, { ...currentSkill5, spPaid: currentSkill5.spPaid.filter(({ id }) => id !== "removed") }), value: undefined };
         }),
         hook("removed", (battle) => { trace.push("removed"); return { state: battle, value: undefined }; }),
-    ] }));
+    ] });
     state = sp.pay(state, f.ref, 1).state;
     assert.deepEqual(trace, ["remove"]);
 });
@@ -101,7 +106,8 @@ test("operation Rules gate user controls but cannot veto timeout or forced cance
     } });
     let state = skills.activate(f.state, f.ref).state;
     const reference = activationRef(getUnit(state, 1).skill.active);
-    state = change(state, (skill) => ({ ...skill, rules: [...skill.rules, { id: "no-control", allowsOperation: () => false }] }));
+    const currentSkill6 = getUnit(state, 1).skill;
+    state = setSkill(state, { ...currentSkill6, rules: [...currentSkill6.rules, { id: "no-control", allowsOperation: () => false }] });
     assert.equal(skills.operate(state, reference, "STOP").value.type, "REJECTED");
     assert.deepEqual(seen, []);
     state = skills.cancel(state, reference, "DEPARTURE");
@@ -115,7 +121,8 @@ test("activation payment and identity are committed together before a payment Ho
         trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}),
         onStart(battle) { starts++; return battle; },
     } });
-    let state = change(f.state, (skill) => ({ ...skill,
+    const currentSkill7 = getUnit(f.state, 1).skill;
+    let state = setSkill(f.state, { ...currentSkill7,
         spPaid: [hook("stop", (battle, { host, event }) => {
             const self = getHookHost(battle, host);
 
@@ -130,7 +137,7 @@ test("activation payment and identity are committed together before a payment Ho
             facts.push({ id: event.id, currentId: self.skill.active.id, status: self.skill.active.status });
             return { state: battle, value: undefined };
         })],
-    }));
+    });
     const result = skills.activate(state, f.ref);
     assert.equal(result.value.type, "ACTIVATED");
     assert.equal(starts, 0);
@@ -150,7 +157,8 @@ test("creation notification precedes departure triggered by the activation payme
             return battle;
         },
     } });
-    const state = change(f.state, (skill) => ({ ...skill,
+    const currentSkill8 = getUnit(f.state, 1).skill;
+    const state = setSkill(f.state, { ...currentSkill8,
         activated: [hook("created", (battle, { host, event }) => {
             const self = getHookHost(battle, host);
 
@@ -167,7 +175,7 @@ test("creation notification precedes departure triggered by the activation payme
             return { state: remove(battle, self.id, "RETREAT"), value: undefined };
         })],
         ended: [hook("ended", (battle) => { trace.push("ended"); return { state: battle, value: undefined }; })],
-    }));
+    });
     const settled = skills.activate(state, f.ref);
     assert.equal(settled.value.type, "ACTIVATED");
     assert.deepEqual(trace, ["activated", "spPaid", "onEnd", "ended"]);
@@ -182,7 +190,8 @@ test("an activated Hook can end the instance while later candidates and payment 
         onStart: () => assert.fail("the ended instance cannot enter its start program"),
         onEnd(battle) { trace.push("onEnd"); return battle; },
     } });
-    const state = change(f.state, (skill) => ({ ...skill,
+    const currentSkill9 = getUnit(f.state, 1).skill;
+    const state = setSkill(f.state, { ...currentSkill9,
         activated: [
             hook("first", (battle, { host, event }) => {
                 const self = getHookHost(battle, host);
@@ -214,7 +223,7 @@ test("an activated Hook can end the instance while later candidates and payment 
             trace.push("spPaid");
             return { state: battle, value: undefined };
         })],
-    }));
+    });
     const settled = skills.activate(state, f.ref);
     assert.equal(settled.value.type, "ACTIVATED");
     assert.deepEqual(trace, ["activated:first", "onEnd", "ended", "activated:return", "activated:later", "spPaid"]);
@@ -236,7 +245,8 @@ test("an ended Hook may start a replacement without running the old start or tim
             },
         },
     });
-    const state = change(f.state, (skill) => ({ ...skill,
+    const currentSkill10 = getUnit(f.state, 1).skill;
+    const state = setSkill(f.state, { ...currentSkill10,
         activated: [hook("replace-first", (battle, { event }) => ({ state: event.id === 0 ? skills.finish(battle, activationRef(event)) : battle, value: undefined }))],
         ended: [hook("restart", (battle, { host, event }) => {
             const self = getHookHost(battle, host);
@@ -245,7 +255,7 @@ return { state: event.activation.id === 0 ? skills.activate(battle, unitRef(self
             payments.push([event.previous, event.current]);
             return { state: battle, value: undefined };
         })],
-    }));
+    });
     const settled = skills.activate(state, f.ref);
     assert.equal(settled.value.type, "ACTIVATED");
     assert.equal(settled.value.ref.id, 0);
@@ -267,7 +277,8 @@ test("activation replacement changes live state while remaining observers retain
     });
     const seen = [];
     let original;
-    const state = change(f.state, skill => ({ ...skill, activated: [
+    const currentSkill11 = getUnit(f.state, 1).skill;
+    const state = setSkill(f.state, { ...currentSkill11, activated: [
         {
             id: "replace",
             invoke(battle, context) {
@@ -288,7 +299,7 @@ test("activation replacement changes live state while remaining observers retain
                 return { state: battle, value: undefined };
             },
         },
-    ] }));
+    ] });
     const result = skills.activate(state, f.ref);
     assert.deepEqual(seen, [[1, "ACTIVE", 1], [0, "ACTIVE", 1]]);
     assert.equal(getUnit(result.state, f.ref.id).skill.active.id, 1);

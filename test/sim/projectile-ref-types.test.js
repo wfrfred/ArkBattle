@@ -32,16 +32,16 @@ const definition: Definition<{ charges: number }> = {
     id: "charges",
     onStart(current, self) {
         const charges: number = self.state.charges;
-        return update(current, ref(self), latest => ({ state: { charges: latest.state.charges + charges } }));
+        return update(current, ref(self), { state: { charges: self.state.charges + charges } });
     },
     onTick(current, self) {
-        return update(current, ref(self), latest => ({ position: [latest.position[0] + 1, 0] }));
+        return update(current, ref(self), { position: [self.position[0] + 1, 0] });
     },
     onEnd(current, self, reason) {
         const charges: number = self.state.charges;
         const ending: "ACTIVE" | "ENDING" = self.lifecycle;
         if (reason === "DISPEL") return current;
-        return update(current, ref(self), latest => ({ state: { charges: latest.state.charges - charges } }));
+        return update(current, ref(self), { state: { charges: self.state.charges - charges } });
     },
 };
 const created = create(battle, definition, input);
@@ -68,18 +68,19 @@ entries.read(known.id, self => {
     self.definition.onStart?.(battle, self);
     self.definition.onTick?.(battle, self);
     self.definition.onEnd?.(battle, self, "EXPLICIT");
-    update(battle, ref(self), latest => ({ state: latest.state, position: latest.position }));
+    update(battle, ref(self), { state: self.state, position: self.position });
 });
-update(battle, known, latest => {
-    const charges: number = latest.state.charges;
-    // @ts-expect-error snapshots supplied to transform are read-only.
-    latest.position = [1, 0];
-    // @ts-expect-error private state values retain the precise Ref's type.
-    const wrong: string = latest.state.charges;
-    return { state: { charges: charges - 1 } };
-});
-update(battle, known, () => ({}));
-update(battle, known, latest => ({ position: latest.position }));
+const latest = get(battle, known)!;
+const charges: number = latest.state.charges;
+// @ts-expect-error queried snapshots are read-only.
+latest.position = [1, 0];
+// @ts-expect-error private state values retain the precise Ref's type.
+const wrong: string = latest.state.charges;
+update(battle, known, { state: { charges: charges - 1 } });
+update(battle, known, {});
+update(battle, known, { position: latest.position });
+// @ts-expect-error Updates take a value rather than a transform.
+update(battle, known, () => ({ state: { charges: 1 } }));
 // @ts-expect-error a precise reference fixes replacement state inference.
 entries.replace(known, { ...projectile, state: { charges: "wrong" } });
 // @ts-expect-error public references do not prove writable private state types.
@@ -115,11 +116,11 @@ get(battle, erased)!.definition.onTick;
 // @ts-expect-error
 get(battle, erased)!.state;
 // @ts-expect-error
-update(battle, erased, () => ({ state: {} }));
+update(battle, erased, { state: {} });
 // @ts-expect-error
-update(battle, known, () => ({ state: { charges: "wrong" } }));
+update(battle, known, { state: { charges: "wrong" } });
 // @ts-expect-error
-update(battle, unit, () => ({ position: [0, 0] }));
+update(battle, unit, { position: [0, 0] });
 // @ts-expect-error
 create(battle, definition, { ...input, state: { charges: "wrong" } });
 `);

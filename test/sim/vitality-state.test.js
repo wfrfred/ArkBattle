@@ -12,8 +12,8 @@ import {
 } from "../../dist/core/unit/capability/vitality/capability.js";
 import { initializers } from "../../dist/core/unit/capability/catalog.js";
 import { create } from "../../dist/core/unit/contribution/attribute.js";
-import { getUnit, transitionUnit } from "../helpers/unit.js";
-import { fixtureBattle, initialize as initializeUnit } from "../helpers/unit.js";
+import { getUnit, fixtureBattle, initialize as initializeUnit, replaceUnit } from "../helpers/unit.js";
+
 import { effectFixtureWork } from "../helpers/effects.js";
 
 test("Vitality starts full at its effective MaxHP and preserves fractional attributes", () => {
@@ -91,9 +91,12 @@ test("dynamic DEF and RES contributions use current Unit and battlefield facts w
         }),
     };
     const initial = effectFixtureWork(modified, source);
-    const current = transitionUnit(transitionUnit(initial, 1, unit => ({
-        ...unit, vitality: { ...unit.vitality, hp: 25 },
-    })), 2, unit => ({ ...unit, vitality: { ...unit.vitality, hp: 20.5 } }));
+    const currentUnit = getUnit(initial, 1);
+    const currentBattle = replaceUnit(initial, {
+        ...currentUnit, vitality: { ...currentUnit.vitality, hp: 25 },
+    });
+    const currentUnit2 = getUnit(currentBattle, 2);
+    const current = replaceUnit(currentBattle, { ...currentUnit2, vitality: { ...currentUnit2.vitality, hp: 20.5 } });
     const resolve = battle => {
         const unit = getUnit(battle, 1);
         return resolveDefense(battle, unitRef(unit));

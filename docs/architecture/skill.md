@@ -28,6 +28,8 @@ Skill 负责 SP、发动、持续预算、主动操作和完整终止。Action �
 
 原 query.ts 的完整宿主写回与激活写回分别归入 instance.ts 的 replaceHost／replaceActivation，与配对 Instance 的 replace 一同供 Core 内部使用，不从 index 导出。replaceActivation 仍由 typed Ref 确定私有 A，待写回值使用 NoInfer，不能通过替换数据反向扩大类型；生命周期变化仍由完整业务操作负责。
 
+instance.setData(self, data) 与 activation.setData(self, data) 只接收已经计算好的私有数据，分别返回更新 S 的 Instance 与更新 A 的 Activation；数据引用未变时返回原对象。两者是局部值操作，不读取或提交 BattleState。activation.setData 以 setActivationData 从公共入口导出；完整实例提交仍由 Core 内部的 replace／replaceActivation 负责。调用方计算结果值前按所需版本取得当前对象，跨完整操作后先接续 battle 并重读，局部 setter 不隐式恢复最新状态。
+
 ## 2. SP
 
 SP Definition 保存 initial、capacity、requirement、可选数值 cost 和 Recovery。cost 未指定时以有效 requirement 为基础，再结算 cost 贡献。特殊发动可在同一输入版本中查询本次 cost 并初始化形态数据。

@@ -332,21 +332,18 @@ export function createWithState<P extends object, E extends object>(
                     self.execution.startedAtTick - self.execution.state.previousReadyAtTick;
 
                 if (overdue >= 0 && overdue < 1) {
-                    battle = actions.updateCooldown(
-                        battle,
-                        ref(source, self.definition),
-                        (current) => ({
-                            ...current,
-                            readyAtTick:
-                                self.execution.state.previousReadyAtTick + current.periodTicks,
-                        }),
-                    );
+                    battle = actions.setCooldown(battle, ref(source, self.definition), {
+                        ...self.cooldown,
+                        readyAtTick:
+                            self.execution.state.previousReadyAtTick + self.cooldown.periodTicks,
+                    });
                 }
 
-                battle = actions.updateExecution(battle, identity, (current) => ({
-                    ...current,
+                const current = actions.getExecution(battle, identity)!;
+                battle = actions.setExecutionState(battle, identity, {
+                    ...current.execution.state,
                     cooldownAdjusted: true,
-                }));
+                });
                 self = actions.getExecution(battle, identity) ?? self;
                 battle = appendEvents(battle, [
                     {
@@ -362,10 +359,10 @@ export function createWithState<P extends object, E extends object>(
                 !self.execution.state.released &&
                 battle.tick >= self.execution.state.releaseAtTick
             ) {
-                battle = actions.updateExecution(battle, identity, (current) => ({
-                    ...current,
+                battle = actions.setExecutionState(battle, identity, {
+                    ...self.execution.state,
                     released: true,
-                }));
+                });
                 const permission = beforeRelease(battle, identity);
                 battle = permission.state;
                 const current = actions.getExecution(battle, identity);
@@ -378,14 +375,13 @@ export function createWithState<P extends object, E extends object>(
                 }
                 if (permission.value.type === "INTERRUPT") {
                     const recoveryTicks = permission.value.recoveryTicks;
-                    battle = actions.updateCooldown(
-                        battle,
-                        ref(source, self.definition),
-                        (current) => ({
-                            ...current,
-                            readyAtTick: Math.max(current.readyAtTick, battle.tick + recoveryTicks),
-                        }),
-                    );
+                    battle = actions.setCooldown(battle, ref(source, self.definition), {
+                        ...current.cooldown,
+                        readyAtTick: Math.max(
+                            current.cooldown.readyAtTick,
+                            battle.tick + recoveryTicks,
+                        ),
+                    });
 
                     return { state: actions.cancel(battle, identity, "INTERRUPTED"), value: true };
                 }

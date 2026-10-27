@@ -107,31 +107,29 @@ export function removeReleasedHook(state: State, id: string): State {
     return released === state.released ? state : { ...state, released };
 }
 
-function updateContributions(
+function setContributions(
     state: State,
     key: "interval" | "speed",
-    transition: (entries: State["interval"]) => State["interval"],
+    entries: State["interval"],
 ): State {
-    const updated = transition(state[key]);
-
-    return updated === state[key] ? state : { ...state, [key]: updated };
+    return entries === state[key] ? state : { ...state, [key]: entries };
 }
 
 export function setIntervalContribution(
     state: State,
     entry: contribution.Contribution<Input>,
 ): State {
-    return updateContributions(state, "interval", (entries) => contribution.set(entries, entry));
+    return setContributions(state, "interval", contribution.set(state.interval, entry));
 }
 
 export function removeIntervalContribution(state: State, id: string): State {
-    return updateContributions(state, "interval", (entries) => contribution.remove(entries, id));
+    return setContributions(state, "interval", contribution.remove(state.interval, id));
 }
 
 export function setSpeedContribution(state: State, entry: contribution.Contribution<Input>): State {
-    return updateContributions(state, "speed", (entries) => contribution.set(entries, entry));
+    return setContributions(state, "speed", contribution.set(state.speed, entry));
 }
 
 export function removeSpeedContribution(state: State, id: string): State {
-    return updateContributions(state, "speed", (entries) => contribution.remove(entries, id));
+    return setContributions(state, "speed", contribution.remove(state.speed, id));
 }

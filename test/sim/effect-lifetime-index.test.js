@@ -1,8 +1,8 @@
 import { closeLifetime } from "../../dist/core/battle/execution/lifetime.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { initialize } from "../helpers/unit.js";
-import { getUnit, transitionUnit } from "../helpers/unit.js";
+import { initialize, getUnit, replaceUnit } from "../helpers/unit.js";
+
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { dependents } from "../../dist/core/unit/effect/dependency.js";
 import { definition, install, effectFixtureWork } from "../helpers/effects.js";
@@ -23,7 +23,8 @@ test("scope index tracks remote dependencies and preserves captured indexes", ()
     assert.deepEqual(dependents(battle.effect.dependency, { type: "EFFECT", ref: parent }), [child]);
     assert.equal(captured.effect.dependency.effect.get(1).get(0).length, 2);
     const unrelated = battle.effect.dependency;
-    battle = transitionUnit(battle, 2, (current) => ({ ...current, position: [1, 0] }));
+    const currentUnit = getUnit(battle, 2);
+    battle = replaceUnit(battle, { ...currentUnit, position: [1, 0] });
     assert.equal(battle.effect.dependency, unrelated);
     battle = effects.end(battle, parent);
     assert.deepEqual(dependents(battle.effect.dependency, { type: "EFFECT", ref: parent }), []);

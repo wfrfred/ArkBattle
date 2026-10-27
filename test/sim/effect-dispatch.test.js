@@ -2,7 +2,7 @@ import { invincible, healFree } from "../../dist/content/effects/protection.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { unit, workFor, attach, request, damageEffect, healingEffect, setSelf, stateOf } from "../helpers/vitality.js";
-import { getUnit, transitionUnit } from "../helpers/unit.js";
+import { getUnit, replaceUnit } from "../helpers/unit.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as damage from "../../dist/core/battle/damage/hook.js";
 import * as healing from "../../dist/core/battle/healing/hook.js";
@@ -73,7 +73,8 @@ test("selected Hook IDs use current replacements while nested damage selects its
         calls.push(nested ? "nested-first" : "first");
         if (!changed) {
             changed = true;
-            state = transitionUnit(state, 1, value => withDamage({ ...value, vitality: damage.removeHook(value.vitality, "second") }, replacement, added));
+            const currentUnit = getUnit(state, 1);
+            state = replaceUnit(state, withDamage({ ...currentUnit, vitality: damage.removeHook(currentUnit.vitality, "second") }, replacement, added));
             nested = true;
             state = settle(state, request(10)).state;
             nested = false;
@@ -102,7 +103,8 @@ test("nested healing independently selects its latest receiver candidates", () =
         calls.push("damage");
         if (!changed) {
             changed = true;
-            state = transitionUnit(state, 2, value => ({ ...value, vitality: healing.setHook(healing.removeHook(value.vitality, "original"), newHealing) }));
+            const currentUnit2 = getUnit(state, 2);
+            state = replaceUnit(state, { ...currentUnit2, vitality: healing.setHook(healing.removeHook(currentUnit2.vitality, "original"), newHealing) });
             state = heal(state, healRequest()).state;
         }
         return { state, value: pending };
@@ -125,7 +127,8 @@ test("nested damage admits hooks registered before its own dispatch", () => {
         calls.push("healing");
         if (!changed) {
             changed = true;
-            state = transitionUnit(state, 2, value => withDamage(value, late));
+            const currentUnit3 = getUnit(state, 2);
+            state = replaceUnit(state, withDamage(currentUnit3, late));
             state = settle(state, request(10)).state;
         }
         return { state, value: pending };

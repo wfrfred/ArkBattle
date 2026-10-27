@@ -4,7 +4,7 @@ import {
     unit, workFor, attach, request, parameters, damageEffect, setSelf, stateOf,
 } from "../helpers/vitality.js";
 import { createRng } from "../../dist/core/common/rng.js";
-import { getUnit, transitionUnit } from "../helpers/unit.js";
+import { getUnit, replaceUnit } from "../helpers/unit.js";
 import { calculateDamage } from "../../dist/core/battle/damage/calculate.js";
 import { applyDamage } from "../../dist/core/battle/damage/apply.js";
 import { remove } from "../../dist/core/battle/unit.js";
@@ -20,11 +20,11 @@ test("damage calculation: independent candidates retain only the higher output b
             const cost = current.type === "ARTS" ? 2 : 1;
             const rng = createRng(state.execution.rngState);
             const roll = rng.next();
-            state = setSelf(state, context, self, data => ({
-                ...data,
-                formulaBudget: data.formulaBudget - cost,
-                formulaRolls: [...data.formulaRolls, roll],
-            }));
+            state = setSelf(state, context, self, {
+                ...self.data,
+                formulaBudget: self.data.formulaBudget - cost,
+                formulaRolls: [...self.data.formulaRolls, roll],
+            });
             state = healing(state, {
                 source: { id: 1 }, target: { id: 1 }, parameters: { power: cost * 10, multiplier: 1 },
             }).state;
@@ -37,11 +37,11 @@ test("damage calculation: independent candidates retain only the higher output b
             const cost = context.type === "ARTS" ? 2 : 1;
             const rng = createRng(state.execution.rngState);
             for (let i = 0; i < cost; i++) rng.next();
-            state = setSelf(state, context, self, data => ({
-                ...data,
-                outputBudget: data.outputBudget - cost,
-                outputInputs: [...data.outputInputs, { type: context.type, amount }],
-            }));
+            state = setSelf(state, context, self, {
+                ...self.data,
+                outputBudget: self.data.outputBudget - cost,
+                outputInputs: [...self.data.outputInputs, { type: context.type, amount }],
+            });
             return {
                 state: { ...state, execution: { ...state.execution, rngState: rng.state() } },
                 value: context.type === "ARTS" ? amount * 2 : amount,
@@ -51,13 +51,13 @@ test("damage calculation: independent candidates retain only the higher output b
     const reception = damageEffect("application-count", { receiving: 0, hpApplied: 0 }, [
         { stage: "receiving", invoke(state, context, self, pending) {
             return {
-                state: setSelf(state, context, self, data => ({ ...data, receiving: data.receiving + 1 })),
+                state: setSelf(state, context, self, { ...self.data, receiving: self.data.receiving + 1 }),
                 value: pending,
             };
         } },
         { stage: "hpApplied", invoke(state, context, self) {
             return {
-                state: setSelf(state, context, self, data => ({ ...data, hpApplied: data.hpApplied + 1 })),
+                state: setSelf(state, context, self, { ...self.data, hpApplied: self.data.hpApplied + 1 }),
                 value: undefined,
             };
         } },
@@ -116,13 +116,14 @@ test("damage calculation: independent candidates retain only the higher output b
 test("damage calculation: the formula reads defense changed synchronously by a Formula Hook", () => {
     const fortify = damageEffect("fortify-before-formula", {}, [{
         stage: "targetFormula", invoke(state, context, _self, current) {
+            const currentUnit = getUnit(state, context.target.id);
             return {
-                state: transitionUnit(state, context.target.id, target => ({
-                    ...target,
-                    vitality: setDefenseContribution(target.vitality, {
+                state: replaceUnit(state, {
+                    ...currentUnit,
+                    vitality: setDefenseContribution(currentUnit.vitality, {
                         id: "formula-defense", value: [modifier({ finalAddition: 80 })],
                     }),
-                })),
+                }),
                 value: current,
             };
         },
@@ -141,7 +142,7 @@ test("damage calculation: the formula reads defense changed synchronously by a F
 test("damage calculation: Formula removal rejects the result while retaining its completed state prefix", () => {
     const departure = damageEffect("formula-departure", { budget: 2 }, [
         { stage: "sourceFormula", priority: 200, invoke(state, context, self, current) {
-            state = setSelf(state, context, self, data => ({ ...data, budget: data.budget - 1 }));
+            state = setSelf(state, context, self, { ...self.data, budget: self.data.budget - 1 });
             state = healing(state, {
                 source: { id: 1 }, target: { id: 1 }, parameters: { power: 10, multiplier: 1 },
             }).state;

@@ -1,12 +1,10 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
-import { getUnit } from "../helpers/unit.js";
+import { getUnit, replaceUnit } from "../helpers/unit.js";
 import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
 import * as blockable from "../../dist/core/unit/capability/blocking/blockable.js";
-import {
-    fixture, holder, target, change, acquire, blockedIds, ownerId, capacity, hook,
-} from "../helpers/blocking.js";
+import { fixture, holder, target, acquire, blockedIds, ownerId, capacity, hook } from "../helpers/blocking.js";
 
 const assign = (battle, unit = getUnit(battle, 20)) => updateUnit(battle, [{
     ...unit,
@@ -43,13 +41,16 @@ for (const [name, create] of denied) {
     test(`a direct ownership update rejects ${name} before notifications`, () => {
         let battle = fixture(create());
         const calls = [];
-        for (const key of ["acquired", "released"]) battle = change(battle, 10, unit => ({
-            ...unit,
-            blocker: blocker.setHook(unit.blocker, key, hook(key, state => {
-                calls.push(key);
-                return state;
-            })),
-        }));
+        for (const key of ["acquired", "released"]) {
+            const currentUnit = getUnit(battle, 10);
+            battle = replaceUnit(battle, {
+                ...currentUnit,
+                blocker: blocker.setHook(currentUnit.blocker, key, hook(key, state => {
+                    calls.push(key);
+                    return state;
+                })),
+            });
+        }
         const initialOwner = getUnit(battle, 10);
         const initialTarget = getUnit(battle, 20);
 
@@ -81,12 +82,14 @@ test("ownership validation uses the proposed Unit instead of its previous volume
 
 test("a qualified ownership update preserves subsequent Hook changes", () => {
     let battle = fixture([holder(), target()]);
-    battle = change(battle, 10, unit => ({
-        ...unit,
-        blocker: blocker.setHook(unit.blocker, "acquired", hook("update-target", state => change(
-            state, 20, current => ({ ...current, vitality: { ...current.vitality, hp: 75 } }),
-        ))),
-    }));
+    const currentUnit2 = getUnit(battle, 10);
+    battle = replaceUnit(battle, {
+        ...currentUnit2,
+        blocker: blocker.setHook(currentUnit2.blocker, "acquired", hook("update-target", state => {
+            const currentUnit3 = getUnit(state, 20);
+            return replaceUnit(state, { ...currentUnit3, vitality: { ...currentUnit3.vitality, hp: 75 } });
+        })),
+    });
     const initial = battle;
 
     battle = assign(battle);
@@ -105,9 +108,10 @@ for (const [name, candidate, expectedError] of [
 ]) test(`updating ${name} does not trigger unrelated maintenance inside a release Hook`, () => {
     let battle = fixture([holder(10, { capacity: 3 }), target(20), target(21), target(22)]);
     const released = [];
-    battle = change(battle, 10, unit => ({
-        ...unit,
-        blocker: blocker.setHook(unit.blocker, "released", hook("restore-capacity", (state, { relation }) => {
+    const currentUnit4 = getUnit(battle, 10);
+    battle = replaceUnit(battle, {
+        ...currentUnit4,
+        blocker: blocker.setHook(currentUnit4.blocker, "released", hook("restore-capacity", (state, { relation }) => {
             released.push(relation.blocked.id);
             if (relation.blocked.id !== 22) return state;
             assert.deepEqual(blockedIds(state), [20, 21]);
@@ -118,7 +122,7 @@ for (const [name, candidate, expectedError] of [
             }
             return capacity(state, 10, 2);
         })),
-    }));
+    });
 
     battle = capacity(acquire(battle), 10, 1);
 

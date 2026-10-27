@@ -51,10 +51,6 @@ export function target(id = 20, { position = [2.25, 1], volume = 1, side = "ENEM
     });
 }
 
-export function change(battle, id, transform) {
-    return updateUnit(battle, [transform(getUnit(battle, id))]);
-}
-
 export function acquire(battle, id = 10) {
     return blocking.search(battle, { id });
 }
@@ -68,12 +64,13 @@ export function ownerId(battle, id = 20) {
 }
 
 export function capacity(battle, id, value) {
-    return change(battle, id, unit => ({
+    const unit = getUnit(battle, id);
+    return updateUnit(battle, [{
         ...unit,
         blocker: blocker.setCapacityContribution(unit.blocker, {
             id: "test-capacity", value: [attribute.create({ addition: value - unit.definition.blocker.capacity })],
         }),
-    }));
+    }]);
 }
 
 export function hook(id, invoke, accepts) {

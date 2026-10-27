@@ -66,18 +66,16 @@ export function all(battle: BattleState): Query<View> {
     return battle.mechanisms.values();
 }
 
-export function update<S extends object>(
+export function setState<S extends object>(
     battle: BattleState,
     reference: Ref<Mechanism<S>>,
-    transform: (current: NoInfer<S>) => NoInfer<S>,
+    state: NoInfer<S>,
 ): BattleState {
     const self = get(battle, reference);
 
     if (self === undefined) {
         throw new RangeError(`unknown mechanism: ${reference.id}`);
     }
-
-    const state = transform(self.state);
 
     return state === self.state
         ? battle

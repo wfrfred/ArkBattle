@@ -244,7 +244,8 @@ test("aura runtime: callback failure propagates the original error without publi
     let receiver;
     receiver = attackEffect("fallible-aura-receiver", {
         onInstall: (state, self) => {
-            state = effects.update(state, effectRef(self), (current) => ({ ...current, starts: 1 }));
+            const currentData = effects.get(state, effectRef(self)).data;
+            state = effects.setData(state, effectRef(self), { ...currentData, starts: 1 });
             if (self.host.id === 2) {
                 attempts.push(effectRef(self));
                 throw failure;

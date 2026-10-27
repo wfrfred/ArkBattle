@@ -41,7 +41,7 @@ test("effect installation: a nested weaker rule does not enable its parent befor
                 {},
             ));
             assert.equal(get(state, effectRef(self)).status, "INSTALLING");
-            state = effect.update(state, effectRef(self), data => ({ amount: 100 }));
+            state = effect.setData(state, effectRef(self), { amount: 100 });
             trace.push("install end");
             return state;
         },
@@ -71,7 +71,7 @@ for (const grouped of [false, true]) {
                 trace.push("install begin");
                 state = effect.setEnabled(state, effectRef(self), false);
                 state = effect.setEnabled(state, effectRef(self), true);
-                state = effect.update(state, effectRef(self), data => ({ amount: 100 }));
+                state = effect.setData(state, effectRef(self), { amount: 100 });
                 assert.equal(get(state, effectRef(self)).status, "INSTALLING");
                 trace.push("install end");
                 return state;
@@ -104,7 +104,7 @@ test("effect installation: an independent child enables while its parent finishe
             trace.push("install begin");
             state = effect.install(state, self.host, child, {}).state;
             assert.equal(get(state, effectRef(self)).status, "INSTALLING");
-            state = effect.update(state, effectRef(self), data => ({ amount: 100 }));
+            state = effect.setData(state, effectRef(self), { amount: 100 });
             trace.push("install end");
             return state;
         },

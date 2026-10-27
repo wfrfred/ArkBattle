@@ -2,7 +2,7 @@ import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { ref as unitRef } from "../../dist/core/unit/index.js";
 import { fixtureBattlefieldState as fixtureBattlefield } from "./battlefield.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
-import { getUnit, transitionUnit } from "./unit.js";
+import { getUnit, replaceUnit } from "./unit.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { get } from "../../dist/core/unit/effect/index.js";
 import {
@@ -45,10 +45,10 @@ export function at(state, tick) {
 }
 
 export function replaceEffectFixture(state, reference, self) {
-    return transitionUnit(state, reference.host.id, unit => {
-        const next = unit.effects.replace(reference, self);
-        return next === unit.effects ? unit : { ...unit, effects: next };
-    });
+    const unit = getUnit(state, reference.host.id);
+    if (unit === undefined) return state;
+    const next = unit.effects.replace(reference, self);
+    return next === unit.effects ? state : replaceUnit(state, { ...unit, effects: next });
 }
 
 export function attackBuff(id = "attack-buff", amount = 20, callbacks = {}) {
@@ -84,18 +84,20 @@ function contributionBuff(id, amount, set, remove, callbacks) {
         {
             ...callbacks,
             onEnable(state, self) {
-                state = transitionUnit(state, self.host.id, (unit) =>
-                    set(unit, {
+                const unit = getUnit(state, self.host.id);
+                if (unit !== undefined) {
+                    state = replaceUnit(state, set(unit, {
                         id: `${self.host.id}:${self.id}`,
                         value: [modifier({ finalAddition: self.data.amount })],
-                    }),
-                );
+                    }));
+                }
                 return callbacks.onEnable ? callbacks.onEnable(state, self) : state;
             },
             onDisable(state, self) {
-                state = transitionUnit(state, self.host.id, (unit) =>
-                    remove(unit, `${self.host.id}:${self.id}`),
-                );
+                const unit = getUnit(state, self.host.id);
+                if (unit !== undefined) {
+                    state = replaceUnit(state, remove(unit, `${self.host.id}:${self.id}`));
+                }
                 return callbacks.onDisable ? callbacks.onDisable(state, self) : state;
             },
         },
@@ -105,13 +107,15 @@ function contributionBuff(id, amount, set, remove, callbacks) {
 export function refreshAttack(state, ref) {
     const instance = get(state, ref);
     if (instance?.status !== "ACTIVE") return state;
-    return transitionUnit(state, ref.host.id, (unit) => ({
+    const unit = getUnit(state, ref.host.id);
+    if (unit === undefined) return state;
+    return replaceUnit(state, {
         ...unit,
         offense: setAttackContribution(unit.offense, {
             id: `${ref.host.id}:${ref.id}`,
             value: [modifier({ finalAddition: instance.data.amount })],
         }),
-    }));
+    });
 }
 
 export function contributionEffect(
@@ -122,8 +126,10 @@ export function contributionEffect(
 ) {
     let content;
     const key = (ref) => `${ref.host.id}:${ref.id}`;
-    const publish = (state, self) =>
-        transitionUnit(state, self.host.id, (unit) => ({
+    const publish = (state, self) => {
+        const unit = getUnit(state, self.host.id);
+        if (unit === undefined) return state;
+        return replaceUnit(state, {
             ...unit,
             [capability]: set(unit[capability], {
                 id: key(effectRef(self)),
@@ -137,7 +143,8 @@ export function contributionEffect(
                       }
                     : value(self, state, unit),
             }),
-        }));
+        });
+    };
     content = definition(id, initial, {
         ...callbacks,
         onEnable(state, self) {
@@ -145,10 +152,13 @@ export function contributionEffect(
             return callbacks.onEnable ? callbacks.onEnable(state, self) : state;
         },
         onDisable(state, self) {
-            state = transitionUnit(state, self.host.id, (unit) => ({
-                ...unit,
-                [capability]: remove(unit[capability], key(effectRef(self))),
-            }));
+            const unit = getUnit(state, self.host.id);
+            if (unit !== undefined) {
+                state = replaceUnit(state, {
+                    ...unit,
+                    [capability]: remove(unit[capability], key(effectRef(self))),
+                });
+            }
             return callbacks.onDisable ? callbacks.onDisable(state, self) : state;
         },
     });
@@ -158,7 +168,9 @@ export function contributionEffect(
 export function refreshContribution(state, ref, content, { capability, set, value, group }) {
     const current = get(state, ref);
     if (current?.status !== "ACTIVE") return state;
-    return transitionUnit(state, ref.host.id, (unit) => ({
+    const unit = getUnit(state, ref.host.id);
+    if (unit === undefined) return state;
+    return replaceUnit(state, {
         ...unit,
         [capability]: set(unit[capability], {
             id: `${ref.host.id}:${ref.id}`,
@@ -167,5 +179,5 @@ export function refreshContribution(state, ref, content, { capability, set, valu
                 : { group: typeof group === "function" ? group(current) : group }),
             value: value(current, state, unit),
         }),
-    }));
+    });
 }

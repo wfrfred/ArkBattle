@@ -19,7 +19,7 @@ import { createBattleState } from "../../dist/core/battle/state.js";
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { add } from "../../dist/core/battle/unit.js";
-import { advance, end, get, install, update as updateEffect } from "../../dist/core/unit/effect/index.js";
+import { advance, end, get, install, setData as setEffectData } from "../../dist/core/unit/effect/index.js";
 import { setHook, removeHook } from "../../dist/core/battle/damage/index.js";
 import { activate as activateSkill, advance as advanceSkill, finish as finishSkill } from "../../dist/core/unit/capability/skill/index.js";
 import { start, cancel, ref as actionRef } from "../../dist/core/unit/action/index.js";
@@ -136,7 +136,7 @@ test("an earlier barrier exhausts its budget without consuming Mudrock's shield 
                     const current = get(state, ref);
                     const absorbed = Math.min(current.data.remaining, pending.amount);
                     const remaining = current.data.remaining - absorbed;
-                    state = updateEffect(state, ref, data => ({ remaining }));
+                    state = setEffectData(state, ref, { remaining });
                     if (remaining === 0) state = end(state, ref);
                     return { state, value: { ...pending, amount: pending.amount - absorbed } };
                 },

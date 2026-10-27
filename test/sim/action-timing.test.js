@@ -125,8 +125,10 @@ test("action timing: startup rejects a cooldown introduced by its callback and r
     const definition = program("blocked-on-start", {
         initialize: state => ({ state, value: { attempts: 0 } }),
         prepare(state, source, self) {
-            state = actions.updateState(state, actions.ref(source, self.definition), current => ({ attempts: current.attempts + 1 }));
-            state = actions.updateCooldown(state, actions.ref(source, self.definition), current => ({ ...current, readyAtTick: 100 }));
+            const currentState = actions.getAction(state, actions.ref(source, self.definition)).state;
+            state = actions.setState(state, actions.ref(source, self.definition), { attempts: currentState.attempts + 1 });
+            const currentCooldown = actions.getAction(state, actions.ref(source, self.definition)).cooldown;
+            state = actions.setCooldown(state, actions.ref(source, self.definition), { ...currentCooldown, readyAtTick: 100 });
             return { state, value: {} };
         },
         onTick: () => assert.fail("a rejected startup cannot advance"),
@@ -148,8 +150,9 @@ test("action timing: a period change does not rescale an accepted private castin
         prepare: (state) => ({ state, value: { finishAtTick: state.tick + 20, observed: 0 } }),
         onTick(state, source, self) {
             if (state.tick >= self.execution.state.finishAtTick) return { state, value: true };
+            const currentState2 = actions.getExecution(state, executionRef(source, self)).execution.state;
             return {
-                state: actions.updateExecution(state, executionRef(source, self), currentState => ({ ...currentState, observed: currentState.observed + 1 })),
+                state: actions.setExecutionState(state, executionRef(source, self), { ...currentState2, observed: currentState2.observed + 1 }),
                 value: false,
             };
         },

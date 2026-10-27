@@ -42,7 +42,7 @@ export function create<S extends object>(
 export function update<S extends object>(
     battle: BattleState,
     reference: Ref<Projectile<S>>,
-    transform: (current: Projectile<NoInfer<S>>) => {
+    changes: {
         readonly position?: WorldPosition;
         readonly state?: NoInfer<S>;
     },
@@ -53,7 +53,6 @@ export function update<S extends object>(
         throw new RangeError(`unknown projectile: ${reference.id}`);
     }
 
-    const changes = transform(current);
     const position = changes.position ?? current.position;
     const state = changes.state ?? current.state;
 

@@ -12,13 +12,13 @@ import { initialize } from "../helpers/unit.js";
 import { effectFixtureWork } from "../helpers/effects.js";
 
 const hook = (id, invoke, priority = 0, accepts = () => true, stage = "receiving") => ({ id, stage, priority, accepts, invoke });
-const change = (battle, transform) => {
+const setVitality = (battle, vitality) => {
     const unit = getUnit(battle, 0);
-    return updateUnit(battle, [{ ...unit, vitality: transform(unit.vitality) }]);
+    return updateUnit(battle, [{ ...unit, vitality }]);
 };
 function fixture(domain, hooks) {
     const unit = initialize({ id: 0, position: [0, 0], definition: { hooks: [], id: "receiver", vitality: { maxHp: 100, defense: 0, resistance: 0 } } });
-    return change(effectFixtureWork(unit), vitality => ({ ...vitality, hp: 50, [`${domain}Hooks`]: hooks }));
+    return setVitality(effectFixtureWork(unit), { ...unit.vitality, hp: 50, [`${domain}Hooks`]: hooks });
 }
 const input = source => ({
     source, target: { id: 0 }, parameters: { type: "TRUE", attack: { power: 1, multiplier: 1, addition: 0 } },
@@ -43,8 +43,8 @@ for (const [domain, registry] of [["damage", damage], ["healing", healing]]) {
                 hook("A", (state, _context, current) => {
                     seen.push("A");
                     state = domain === "damage" ? heal(state, healingRequest(10)).state
-                        : change(state, vitality => ({ ...vitality, hp: 60 }));
-                    return { state: change(state, vitality => registry.setHook(vitality, replacement)), value: current };
+                        : setVitality(state, { ...getUnit(state, 0).vitality, hp: 60 });
+                    return { state: setVitality(state, registry.setHook(getUnit(state, 0).vitality, replacement)), value: current };
                 }, 10, () => true, stage),
                 hook("B", (state, _context, current) => { seen.push("old B"); return { state, value: current }; }, 1,
                     () => { seen.push("old enabled"); return !enabled; }, stage),
@@ -63,7 +63,7 @@ for (const [domain, registry] of [["damage", damage], ["healing", healing]]) {
             () => assert.fail("a replacement in another stage cannot check enabled"), "output");
         const original = fixture(domain, [
             hook("A", (state, _context, current) => {
-                seen.push("A"); return { state: change(state, vitality => registry.setHook(vitality, replacement)), value: current };
+                seen.push("A"); return { state: setVitality(state, registry.setHook(getUnit(state, 0).vitality, replacement)), value: current };
             }, 10, () => true, stage),
             hook("B", () => assert.fail("the replaced program cannot run"), 1, () => true, stage),
             hook("C", (state, _context, current) => { seen.push("C"); return { state, value: current }; }, 0, () => true, stage),
@@ -83,7 +83,7 @@ for (const domain of ["damage", "healing"]) {
                 contexts.push(context);
                 observed.push([context.outcome, getUnit(battle, 0).vitality.hp]);
                 battle = domain === "damage" ? heal(battle, healingRequest(21)).state
-                    : change(battle, vitality => ({ ...vitality, hp: 70 }));
+                    : setVitality(battle, { ...getUnit(battle, 0).vitality, hp: 70 });
                 return { state: battle, value: current };
             }, 10, () => true, stage),
             hook("second", (battle, context, current) => {
@@ -176,7 +176,7 @@ test("healing dispatch fixes candidate IDs while newly registered entries join t
     const initial = fixture("healing", [
         hook("first", (battle, _context, current) => {
             calls.push("first");
-            return { state: change(battle, vitality => healing.setHook(vitality, later)), value: current };
+            return { state: setVitality(battle, healing.setHook(getUnit(battle, 0).vitality, later)), value: current };
         }),
         hook("second", (battle, _context, current) => {
             calls.push("second"); return { state: battle, value: current };

@@ -182,8 +182,7 @@ function battlefieldProjectionHarness(rows = 2, columns = 5,
       }
     }
   };
-  const commit = transform => {
-    const content = transform(branches[0].state);
+  const commit = content => {
     const results = branches.map(branch => {
       const previous = branch.state;
       const snapshot = projectionSnapshot(previous);
@@ -196,8 +195,7 @@ function battlefieldProjectionHarness(rows = 2, columns = 5,
     equivalent();
     return results[0];
   };
-  const reject = (transform, expected) => {
-    const content = transform(branches[0].state);
+  const reject = (content, expected) => {
     for (const branch of branches) {
       const previous = branch.state;
       const snapshot = projectionSnapshot(previous);
@@ -223,12 +221,12 @@ const projectionUnit = (id, position, definition = {}, states = {}) => initializ
 test('core selective projection retains occupancy and route intent while queries read current Unit values', () => {
   const h = battlefieldProjectionHarness();
   const routed = routedEnemyHarness({ speedPerTick: 0.1, checkpoints: [coreMove(4)] });
-  h.commit(state => ({ ...state, units: new Map([...state.units, ...[routed.enemy].map(unit => [unit.id, unit])]) }));
+  h.commit({ ...h.state, units: new Map([...h.state.units, ...[routed.enemy].map(unit => [unit.id, unit])]) });
   const previous = h.state;
   const progress = previous.units.get(1).route.main;
-  h.commit(state => ({ ...state, units: new Map([...state.units, ...[{
-    ...state.units.get(1), vitality: { ...state.units.get(1).vitality, hp: 90 },
-  }].map(unit => [unit.id, unit])]) }));
+  h.commit({ ...h.state, units: new Map([...h.state.units, ...[{
+    ...h.state.units.get(1), vitality: { ...h.state.units.get(1).vitality, hp: 90 },
+  }].map(unit => [unit.id, unit])]) });
   assert.notEqual(h.state.units, previous.units);
   assert.equal(h.state.occupancy, previous.occupancy);
   assert.equal('blockingRelations' in h.state, false);
@@ -280,15 +278,15 @@ test('selective and full field projection derive current occupancy independently
   const platform = projectionUnit(12, [1, 0], {
     occupancy: { slot: 'SUPPORT', hooks: [] },
   }, { spatialPresence: { present: true }, occupancy: { tile: projectionTile(1) } });
-  const registered = h.commit(state => ({ ...state, units: new Map([[10, rider], [12, platform]]) }));
+  const registered = h.commit({ ...h.state, units: new Map([[10, rider], [12, platform]]) });
   assert.deepEqual(registered, new Map([[1, { occupant: { id: 10 }, support: { id: 12 } }]]));
-  const cleared = h.commit(state => ({ ...state, units: new Map([...state.units, [12, {
-    ...state.units.get(12), occupancy: { ...(state.units.get(12)).occupancy, tile: null },
-  }]]) }));
+  const cleared = h.commit({ ...h.state, units: new Map([...h.state.units, [12, {
+    ...h.state.units.get(12), occupancy: { ...(h.state.units.get(12)).occupancy, tile: null },
+  }]]) });
   assert.deepEqual(cleared, new Map([[1, { occupant: { id: 10 }, support: null }]]));
-  const restored = h.commit(state => ({ ...state, units: new Map([...state.units, [12, platform]]) }));
+  const restored = h.commit({ ...h.state, units: new Map([...h.state.units, [12, platform]]) });
   assert.deepEqual(restored, new Map([[1, { occupant: { id: 10 }, support: { id: 12 } }]]));
-  const removed = h.commit(state => ({ ...state, units: new Map([...state.units].filter(([id]) => id !== 12)) }));
+  const removed = h.commit({ ...h.state, units: new Map([...h.state.units].filter(([id]) => id !== 12)) });
   assert.deepEqual(removed, new Map([[1, { occupant: { id: 10 }, support: null }]]));
   assert.equal('blockingRelations' in h.state, false);
 });
@@ -335,38 +333,38 @@ test('complete battle updates preserve relation history and release on current e
 
 test('core selective and full projection preserve occupancy and reject bounds and slot conflicts atomically', () => {
   const h = battlefieldProjectionHarness();
-  h.commit(state => ({ ...state, units: new Map([...state.units, ...[battlefieldUnit(10, [0, 0])].map(unit => [unit.id, unit])]) }));
+  h.commit({ ...h.state, units: new Map([...h.state.units, ...[battlefieldUnit(10, [0, 0])].map(unit => [unit.id, unit])]) });
   const reserved = projectionUnit(11, [1, 0], {}, { spatialPresence: { present: false },
     occupancy: { tile: projectionTile(1) } });
-  h.commit(state => ({ ...state, units: new Map([...state.units, ...[reserved].map(unit => [unit.id, unit])]) }));
+  h.commit({ ...h.state, units: new Map([...h.state.units, ...[reserved].map(unit => [unit.id, unit])]) });
   const hiddenField = h.state;
   const occupancy = h.state.occupancy;
-  h.commit(state => ({ ...state, units: new Map([...state.units, ...[{
-    ...state.units.get(11), position: Object.freeze([1e30, 0]),
-  }].map(unit => [unit.id, unit])]) }));
+  h.commit({ ...h.state, units: new Map([...h.state.units, ...[{
+    ...h.state.units.get(11), position: Object.freeze([1e30, 0]),
+  }].map(unit => [unit.id, unit])]) });
   assert.deepEqual(h.state.units.get(11).position, [1e30, 0]);
   assert.deepEqual(unitsAt(h.state, [0, 1]), []);
   assert.equal(h.state.occupancy, occupancy);
   assert.equal(h.state.occupancy.get(1).occupant.id, 11);
-  h.commit(state => ({ ...state, units: new Map([...state.units, ...[{
-    ...state.units.get(11), position: Object.freeze([1, 0]), spatialPresence: { present: true },
-  }].map(unit => [unit.id, unit])]) }));
+  h.commit({ ...h.state, units: new Map([...h.state.units, ...[{
+    ...h.state.units.get(11), position: Object.freeze([1, 0]), spatialPresence: { present: true },
+  }].map(unit => [unit.id, unit])]) });
   assert.deepEqual(unitsAt(h.state, [0, 1]).map(unit => unit.id), [11]);
   assert.deepEqual(unitsAt(hiddenField, [0, 1]), []);
-  h.commit(state => ({ ...state, units: new Map([...state.units, ...[{
-    ...state.units.get(11), position: Object.freeze([1e30, 0]), spatialPresence: { present: false },
-  }].map(unit => [unit.id, unit])]) }));
+  h.commit({ ...h.state, units: new Map([...h.state.units, ...[{
+    ...h.state.units.get(11), position: Object.freeze([1e30, 0]), spatialPresence: { present: false },
+  }].map(unit => [unit.id, unit])]) });
   assert.deepEqual(unitsAt(h.state, [0, 1]), []);
-  h.reject(state => ({ ...state, units: new Map([...state.units, ...[projectionUnit(12, [2, 0], {}, {
+  h.reject({ ...h.state, units: new Map([...h.state.units, ...[projectionUnit(12, [2, 0], {}, {
     occupancy: { tile: projectionTile(1) },
-  })].map(unit => [unit.id, unit])]) }), /occupancy slot is already occupied/);
-  h.reject(state => ({ ...state, units: new Map([...state.units, ...[projectionUnit(12, [2, 0], {}, {
+  })].map(unit => [unit.id, unit])]) }, /occupancy slot is already occupied/);
+  h.reject({ ...h.state, units: new Map([...h.state.units, ...[projectionUnit(12, [2, 0], {}, {
     spatialPresence: { present: false }, occupancy: { tile: projectionTile(99) },
-  })].map(unit => [unit.id, unit])]) }), /occupancy tile is outside/);
-  h.commit(state => ({ ...state, units: new Map([...state.units, ...[battlefieldUnit(12, [0, 0])].map(unit => [unit.id, unit])]) }));
+  })].map(unit => [unit.id, unit])]) }, /occupancy tile is outside/);
+  h.commit({ ...h.state, units: new Map([...h.state.units, ...[battlefieldUnit(12, [0, 0])].map(unit => [unit.id, unit])]) });
   const reregistered = h.state.units.get(10);
-  h.commit(state => ({ ...state, units: new Map([...state.units].filter(([id]) => id !== 10)) }));
-  h.commit(state => ({ ...state, units: new Map([...state.units, [reregistered.id, reregistered]]) }));
+  h.commit({ ...h.state, units: new Map([...h.state.units].filter(([id]) => id !== 10)) });
+  h.commit({ ...h.state, units: new Map([...h.state.units, [reregistered.id, reregistered]]) });
   assert.deepEqual([...h.state.units.keys()], [11, 12, 10]);
   assert.deepEqual(unitsAt(h.state, [0, 0]).map(unit => unit.id), [12, 10]);
 });

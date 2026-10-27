@@ -145,9 +145,7 @@ export function create<S extends object>(
 export function update<S extends object>(
     battle: BattleState,
     reference: Ref<Projectile<S>>,
-    transform: (
-        current: Projectile<NoInfer<S>>,
-    ) => {
+    changes: {
         readonly position?: WorldPosition;
         readonly state?: NoInfer<S>;
     },
@@ -176,11 +174,11 @@ onStart(battle, self)
 
 身份计数器与实例登记均在 onStart 前生效；嵌套 create 不复用身份。onStart 可以同步终结自己，因此返回 Ref 不保证返回时实例仍存在；外层不得在回调之后重新写回旧实例。
 
-update 先从传入 battle 读取最新实例。缺失时抛出 RangeError，不调用 transform。transform 接收当前完整只读实例，使位置与私有状态能在一次纯转换中共同计算；只返回允许更新的 position 和 state，不执行其他 BattleState 操作。
+update 接收已经计算好的 `{ position?, state? }`，从传入 battle 读取最新实例；缺失时抛出 RangeError。调用方先查询当前实例，局部计算位置与私有状态后一次提交；计算与提交之间不执行其他完整操作，跨领域调用后先接续 battle，再重读所需实时状态。
 
-未提供的字段保留当前值，不隐含合并 S 内部字段。两个字段均未变化时返回原 BattleState；ACTIVE 和 ENDING 均允许更新，终结回调仍可能需要提交命中记录或清理进度。Core 只提取返回值中的 position／state，不直接展开返回对象；id、Definition 与 lifecycle 不进入此接口的写入边界。
+未提供的字段保留当前值，不隐含合并 S 内部字段。两个字段均未变化时返回原 BattleState；ACTIVE 和 ENDING 均允许更新，终结回调仍可能需要提交命中记录或清理进度。Core 只提取 changes 中的 position／state，不直接展开输入对象；id、Definition 与 lifecycle 不进入此接口的写入边界。
 
-`NoInfer` 阻止输入或变换结果反向放宽由 Definition／精确 Ref 确定的 S。私有更新必须保留实例与 Definition 对应的原始类型关联；Ref 可以弱化用于公共查询，主动弱化后写入不兼容的私有状态属于调用契约错误，不增加运行时数据形状检查。
+`NoInfer` 阻止输入结果值反向放宽由 Definition／精确 Ref 确定的 S。私有更新必须保留实例与 Definition 对应的原始类型关联；Ref 可以弱化用于公共查询，主动弱化后写入不兼容的私有状态属于调用契约错误，不增加运行时数据形状检查。
 
 ## 5. 时间推进
 

@@ -39,12 +39,7 @@ export function initialize(battle: BattleState, definition: Definition): Result<
     return { state: battle, value: { attack: [] } };
 }
 
-function changeAttackContributions(
-    state: State,
-    transition: (entries: State["attack"]) => State["attack"],
-): State {
-    const attack = transition(state.attack);
-
+function setAttackContributions(state: State, attack: State["attack"]): State {
     return attack === state.attack ? state : { ...state, attack };
 }
 
@@ -52,9 +47,9 @@ export function setAttackContribution(
     state: State,
     entry: contribution.Contribution<Input>,
 ): State {
-    return changeAttackContributions(state, (entries) => contribution.set(entries, entry));
+    return setAttackContributions(state, contribution.set(state.attack, entry));
 }
 
 export function removeAttackContribution(state: State, id: string): State {
-    return changeAttackContributions(state, (entries) => contribution.remove(entries, id));
+    return setAttackContributions(state, contribution.remove(state.attack, id));
 }

@@ -8,24 +8,19 @@ const create = () => projectiles.create(battle(), { id: "updatable" }, {
     position: [0, 0], state: { count: 0 },
 });
 
-test("Projectile update reads the latest complete instance and preserves earlier snapshots", () => {
+test("Projectile update accepts position and state values while preserving earlier snapshots", () => {
     const initial = create();
     const before = projectilesQuery.get(initial.state, initial.value);
-    const first = projectiles.update(initial.state, initial.value, current => ({
-        position: [current.position[0] + 1, 0],
-        state: { count: current.state.count + 1 },
-    }));
+    const first = projectiles.update(initial.state, initial.value, {
+        position: [before.position[0] + 1, 0],
+        state: { count: before.state.count + 1 },
+    });
     const firstInstance = projectilesQuery.get(first, initial.value);
-    let observed;
-    const second = projectiles.update(first, initial.value, current => {
-        observed = current;
-        return {
-            position: [current.position[0] + 1, 0],
-            state: { count: current.state.count + 1 },
-        };
+    const second = projectiles.update(first, initial.value, {
+        position: [firstInstance.position[0] + 1, 0],
+        state: { count: firstInstance.state.count + 1 },
     });
 
-    assert.strictEqual(observed, firstInstance);
     assert.deepEqual(projectilesQuery.get(second, initial.value).position, [2, 0]);
     assert.deepEqual(projectilesQuery.get(second, initial.value).state, { count: 2 });
     assert.strictEqual(projectilesQuery.get(initial.state, initial.value), before);
@@ -41,13 +36,14 @@ test("Projectile update writes only position and private state while preserving 
     });
     const original = projectilesQuery.get(second.state, first.value);
     const sibling = projectilesQuery.get(second.state, second.value);
-    const changed = projectiles.update(second.state, first.value, current => ({
+    const currentProjectile = projectilesQuery.get(second.state, first.value);
+    const changed = projectiles.update(second.state, first.value, {
         id: 999,
         lifecycle: "ENDING",
         definition: { id: "forbidden" },
         position: [1, 0],
-        state: { count: current.state.count + 1 },
-    }));
+        state: { count: currentProjectile.state.count + 1 },
+    });
     const current = projectilesQuery.get(changed, first.value);
 
     assert.equal(current.id, original.id);
@@ -68,22 +64,21 @@ test("Projectile update retains omitted fields and returns the original BattleSt
     const created = create();
     const original = projectilesQuery.get(created.state, created.value);
 
-    assert.strictEqual(projectiles.update(created.state, created.value, () => ({})), created.state);
-    assert.strictEqual(projectiles.update(created.state, created.value, current => ({
-        position: current.position, state: current.state,
-    })), created.state);
-    const moved = projectiles.update(created.state, created.value, () => ({ position: [1, 0] }));
+    assert.strictEqual(projectiles.update(created.state, created.value, {}), created.state);
+    const currentProjectile = projectilesQuery.get(created.state, created.value);
+    assert.strictEqual(projectiles.update(created.state, created.value, {
+        position: currentProjectile.position, state: currentProjectile.state,
+    }), created.state);
+    const moved = projectiles.update(created.state, created.value, { position: [1, 0] });
     assert.strictEqual(projectilesQuery.get(moved, created.value).state, original.state);
-    const changed = projectiles.update(created.state, created.value, () => ({ state: { count: 1 } }));
+    const changed = projectiles.update(created.state, created.value, { state: { count: 1 } });
     assert.strictEqual(projectilesQuery.get(changed, created.value).position, original.position);
 });
 
-test("Projectile update rejects missing instances without invoking the transform", () => {
+test("Projectile update rejects missing instances", () => {
     const created = create();
     const stopped = projectiles.stop(created.state, created.value);
-    assert.throws(() => projectiles.update(stopped, created.value, () => {
-        assert.fail("missing Projectile must not invoke transform");
-    }), /unknown projectile: 0/);
+    assert.throws(() => projectiles.update(stopped, created.value, { state: { count: 9 } }), /unknown projectile: 0/);
     assert.equal(projectilesQuery.get(stopped, created.value), undefined);
 });
 
@@ -93,9 +88,10 @@ test("Projectile update permits ENDING callbacks to publish cleanup and hit prog
         id: "ending-update",
         onEnd(battle, self) {
             assert.equal(self.lifecycle, "ENDING");
-            const changed = projectiles.update(battle, projectilesQuery.ref(self), current => ({
-                position: [2, 0], state: { count: current.state.count + 1 },
-            }));
+            const currentProjectile = projectilesQuery.get(battle, projectilesQuery.ref(self));
+            const changed = projectiles.update(battle, projectilesQuery.ref(self), {
+                position: [2, 0], state: { count: currentProjectile.state.count + 1 },
+            });
             observed = projectilesQuery.get(changed, projectilesQuery.ref(self));
             assert.equal(observed.lifecycle, "ENDING");
             return changed;
@@ -108,14 +104,4 @@ test("Projectile update permits ENDING callbacks to publish cleanup and hit prog
     assert.deepEqual(observed.position, [2, 0]);
     assert.equal(projectilesQuery.get(stopped, created.value), undefined);
     assert.deepEqual(projectilesQuery.get(created.state, created.value).state, { count: 0 });
-});
-
-test("A throwing Projectile transform leaves the published instance and input BattleState intact", () => {
-    const created = create();
-    const original = projectilesQuery.get(created.state, created.value);
-    assert.throws(() => projectiles.update(created.state, created.value, () => {
-        throw new Error("transform failed");
-    }), /transform failed/);
-    assert.strictEqual(projectilesQuery.get(created.state, created.value), original);
-    assert.deepEqual(original.state, { count: 0 });
 });

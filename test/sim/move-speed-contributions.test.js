@@ -74,8 +74,8 @@ const install = (work, program, expiresAtTick = null) =>
     effects.install(work, unitRef(getUnit(work, 0)), program, {
         scopes: expiresAtTick === null ? [] : [{ type: "TICK", tick: expiresAtTick }],
     });
-const changeSpeed = (work, program, transform) => {
-    work = effects.update(work, address, transform);
+const setSpeed = (work, program, data) => {
+    work = effects.setData(work, address, data);
     return refreshContribution(work, address, program, output);
 };
 function speed(work) {
@@ -99,13 +99,13 @@ test("move speed: minimum, arithmetic and movement permission are separate", () 
         ...h.unit, locomotion: removeRule(h.unit.locomotion, "stop"),
     }]);
     close(h.step(2, [20, 0], 0.5).position[0], 0.1 / 60);
-    h.work = changeSpeed(h.work, program, state => ({
-        ...state,
+    h.work = setSpeed(h.work, program, {
+        ...effects.get(h.work, address).data,
         value: modifier.create({
             addition: 1 / 30, multiplier: 0.5,
             finalAddition: 1 / 30, finalScaler: 2,
         }),
-    }));
+    });
     close(speed(h.work), 8 / 30);
 });
 
@@ -134,13 +134,13 @@ test("move speed: acceleration, zero budget and restoration use current contribu
     close(h.step(0).position[0], 0.25);
     h.work = install(h.work, program).state;
     close(h.step(1).position[0], 0.375);
-    h.work = changeSpeed(h.work, program, state => ({
-        ...state, value: modifier.create({ multiplier: 1 }),
-    }));
+    h.work = setSpeed(h.work, program, {
+        ...effects.get(h.work, address).data, value: modifier.create({ multiplier: 1 }),
+    });
     close(h.step(2).position[0], 0.875);
-    h.work = changeSpeed(h.work, program, state => ({
-        ...state, value: modifier.create({ multiplier: -1 }),
-    }));
+    h.work = setSpeed(h.work, program, {
+        ...effects.get(h.work, address).data, value: modifier.create({ multiplier: -1 }),
+    });
     const velocity = h.unit.locomotion.velocity;
     close(h.step(3).position[0], 0.875);
     assert.equal(h.unit.locomotion.velocity, velocity);

@@ -8,4 +8,4 @@ export { get } from "./query.js";
 
 export type { Initial } from "./operations.js";
 
-export { install, update, setEnabled, bindLifetime, end, advance } from "./operations.js";
+export { install, setData, setEnabled, bindLifetime, end, advance } from "./operations.js";

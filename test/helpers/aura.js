@@ -36,7 +36,6 @@ export function auraEffect(
     } = {},
 ) {
     const selfOf = (state, self) => effects.get(state, effectRef(self));
-    const save = (state, self, transform) => effects.update(state, effectRef(self), transform);
     const refresh = (state, initial) => {
         let self = selfOf(state, initial);
         if (self?.status !== "ACTIVE") return state;
@@ -52,10 +51,11 @@ export function auraEffect(
         const selected = selectedResult.value.map(target => target.id);
         for (const binding of self.data.bindings) {
             if (selected.includes(binding.unitId)) continue;
-            state = save(state, initial, (current) => ({
-                ...current,
-                bindings: current.bindings.filter((item) => item !== binding),
-            }));
+            const current = selfOf(state, initial);
+            state = effects.setData(state, effectRef(initial), {
+                ...current.data,
+                bindings: current.data.bindings.filter((item) => item !== binding),
+            });
             for (const ref of binding.refs)
                 state = effects.end(state, ref, "AURA_LEFT");
         }
@@ -63,10 +63,10 @@ export function auraEffect(
             self = selfOf(state, initial);
             if (self?.status !== "ACTIVE") break;
             if (self.data.bindings.some((binding) => binding.unitId === unitId)) continue;
-            state = save(state, self, (current) => ({
-                ...current,
-                bindings: [...current.bindings, { unitId, refs: [] }],
-            }));
+            state = effects.setData(state, effectRef(self), {
+                ...self.data,
+                bindings: [...self.data.bindings, { unitId, refs: [] }],
+            });
             self = selfOf(state, initial);
             if (self?.status !== "ACTIVE") break;
             const value = initialState(state, self, unitId);
@@ -84,12 +84,12 @@ export function auraEffect(
             const ref = installed.value;
             self = selfOf(state, initial);
             if (ref === undefined || self === undefined || self.status === "ENDING") continue;
-            state = save(state, self, (current) => ({
-                ...current,
-                bindings: current.bindings.map((binding) =>
+            state = effects.setData(state, effectRef(self), {
+                ...self.data,
+                bindings: self.data.bindings.map((binding) =>
                     binding.unitId === unitId ? { ...binding, refs: [ref] } : binding,
                 ),
-            }));
+            });
             if (self.status !== "ACTIVE")
                 state = effects.setEnabled(state, ref, false);
         }
@@ -102,10 +102,10 @@ export function auraEffect(
             ...(group === undefined ? {} : { group }),
             onTick(state, self) {
                 if (state.tick < self.data.nextRefreshTick) return state;
-                state = save(state, self, (current) => ({
-                    ...current,
+                state = effects.setData(state, effectRef(self), {
+                    ...self.data,
                     nextRefreshTick: state.tick + refreshInterval,
-                }));
+                });
                 return refresh(state, self);
             },
             onEnable(state, self) {

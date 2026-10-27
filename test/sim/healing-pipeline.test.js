@@ -3,8 +3,7 @@ import { test } from "node:test";
 import { unit, workFor, attach, healingEffect, damage } from "../helpers/vitality.js";
 import { calculateHealing } from "../../dist/core/battle/healing/calculate.js";
 import { applyHealing } from "../../dist/core/battle/healing/apply.js";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
-import { getUnit } from "../helpers/unit.js";
+import { getUnit, replaceUnit } from "../helpers/unit.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import { setMaxHpContribution } from "../../dist/core/unit/capability/vitality/capability.js";
 import * as attribute from "../../dist/core/unit/contribution/attribute.js";
@@ -15,7 +14,6 @@ const request = (power = 20, overrides = {}) => ({
 const heal = (battle, input = request()) => applyHealing(input, calculateHealing(battle, input));
 const hp = (battle, id = 2) => getUnit(battle, id)?.vitality.hp;
 const entry = (stage, invoke, priority = 0) => ({ stage, invoke, priority });
-const change = (battle, id, transition) => updateUnit(battle, [transition(getUnit(battle, id))]);
 
 function damaging(battle, power, target = { id: 2 }) {
     return damage(battle, {
@@ -116,14 +114,18 @@ test("healing pipeline: Receiving damage and a nested heal determine the latest 
 });
 
 test("healing pipeline: Receiving MaxHP changes are applied before calculating actual restoration", () => {
-    const resize = healingEffect("resize", {}, [entry("receiving", (state, _context, _self, pending) => ({
-        state: change(state, 2, value => ({
-            ...value,
-            vitality: setMaxHpContribution(value.vitality, value.definition.vitality, {
-                id: "double-hp", value: [attribute.create({ multiplier: 1 })],
+    const resize = healingEffect("resize", {}, [entry("receiving", (state, _context, _self, pending) => {
+        const current = getUnit(state, 2);
+        return {
+            state: replaceUnit(state, {
+                ...current,
+                vitality: setMaxHpContribution(current.vitality, current.definition.vitality, {
+                    id: "double-hp", value: [attribute.create({ multiplier: 1 })],
+                }),
             }),
-        })), value: pending,
-    }))]);
+            value: pending,
+        };
+    })]);
     const result = heal(workFor(unit(1), attach(unit(2, { hp: 50, maxHp: 100 }), resize)), request(150));
     assert.deepEqual(result.value.application, { hpBefore: 100, hpAfter: 200, hpGain: 100 });
     assert.equal(hp(result.state), 200);

@@ -35,7 +35,7 @@ Rule 只负责启动准入，不自动中断现有执行。眩晕等需要中断
 | 身份与类型 | ref、executionRef；Action、Execution、ExecutionView、Definition、Signal、StartOutcome |
 | 创建 | create、createActions |
 | 查询 | all、forUnit、getExecution、getAction、isCasting |
-| 业务操作 | start、updateExecution、updateState、updateCooldown、cancel、cancelForUnit、refreshCooldowns、resetCooldown、clearCooldown |
+| 业务操作 | start、setExecutionState、setState、setCooldown、cancel、cancelForUnit、refreshCooldowns、resetCooldown、clearCooldown |
 | 调度协作 | advance，仅由调度器主动调用 |
 
 五个查询实现在 [query.ts](../../src/core/unit/action/query.ts)；完整启动、写回与终止统一由 [operations.ts](../../src/core/unit/action/operations.ts) 实现。[advance.ts](../../src/core/unit/action/advance.ts) 派发执行程序，直接从 operations.ts 取得域内共享的 end，不经过公共入口。end 的内部导出不使其成为公共 API；advance 的公共协作入口也不扩大 Content 的调用权限。
@@ -109,7 +109,7 @@ Action<P, E> 表达持久行动，Execution<P, E> 表达其中某一轮执行的
 
 prepare 取得当前已配对的 Action，只检查本次内容条件、初始化 E 和必要采样；null 表示未启动。已发生的状态更新接续返回，普通无变更拒绝返回输入 battle。伤害、召唤、绑定本次执行的 Effect 及可能同步重入的业务，在 execution 登记后由 onTick 执行。prepare 阶段不递归启动自己或改变来源配置。
 
-onTick.value 表达是否完成。本轮私有进度通过 `updateExecution(battle, executionRef(source, self), current => next)` 写回；transform 取得当前 execution.state，只返回新的 E。需要被嵌套观察的进度先写回，再进入外部业务；callback 返回时不会自动用旧 self 覆盖当前 Action。
+onTick.value 表达是否完成。本轮私有进度通过 `setExecutionState(battle, executionRef(source, self), nextState)` 写回；调用方从当前 execution.state 计算新的 E，再提交结果值。需要被嵌套观察的进度先写回，再进入外部业务；callback 返回时不会自动用旧 self 覆盖当前 Action。
 
 ## 4. 异构容器与两种引用身份
 
@@ -136,7 +136,7 @@ values()／keys() 返回绑定容器版本的 Query，并保留配置登记顺�
 
 nextExecutionId 保存在 Capability State，从 0 开始；每次成功启动后递增，完成或取消不回收。不同宿主可以具有同号执行，完整执行身份为 host 与 execution.id。
 
-`ref(source, definition)` 生成持久 Ref<Action<P, E>>，其地址保存 host 与 Definition 对象。Definition 同时保留 P／E 配对，查询按 definition.id 定位并确认同一个 Definition。该引用跨多轮执行有效，getAction、start、updateState、updateCooldown、resetCooldown 和 clearCooldown 均以它指定目标行动。
+`ref(source, definition)` 生成持久 Ref<Action<P, E>>，其地址保存 host 与 Definition 对象。Definition 同时保留 P／E 配对，查询按 definition.id 定位并确认同一个 Definition。该引用跨多轮执行有效，getAction、start、setState、setCooldown、resetCooldown 和 clearCooldown 均以它指定目标行动。
 
 `executionRef(source, self)` 由宿主引用和当前 self.execution.id 生成 Ref<Execution<P, E>>，地址仍为 host 与执行 id。它只绑定本轮执行；本轮结束或后续执行 ID 不匹配时，getExecution 返回 undefined。执行查询、推进、取消、执行状态更新及 ACTION Lifetime 均使用这种引用。
 
@@ -211,7 +211,7 @@ interface State {
 
 Cooldown 保存 periodTicks／readyAtTick；reset 从当前时点开始完整周期，clear 立即就绪。resizeKeepingProgress 保留完成比例，resizeKeepingElapsed 保留绝对已过时间，二者明确分开。
 
-成功启动开始周期；结束和取消不默认重置或清空。refreshCooldowns 从 Actions 逐项读取对应 Definition 和当前 Cooldown；resetCooldown／clearCooldown 先刷新周期，再明确控制指定配置行动。updateCooldown 只变换指定条目的当前 Cooldown，不隐式刷新全部行动。
+成功启动开始周期；结束和取消不默认重置或清空。refreshCooldowns 从 Actions 逐项读取对应 Definition 和当前 Cooldown；resetCooldown／clearCooldown 先刷新周期，再明确控制指定配置行动。setCooldown 只设置指定条目的 Cooldown，不隐式刷新全部行动。
 
 普通攻击不足一 Tick 余量的节奏政策由具体攻击程序处理，不进入通用 reset；修正所用的先前到期时间在内容 prepare 返回的最新 BattleState 中采样，不能沿用回调前的冷却快照覆盖本次修改。周期变化不自动缩放已经采样的执行等待。
 
@@ -232,20 +232,20 @@ export declare function cancel(
     ref: Ref<ExecutionView>,
     reason?: string,
 ): BattleState;
-export declare function updateExecution<P extends object, E extends object>(
+export declare function setExecutionState<P extends object, E extends object>(
     battle: BattleState,
     ref: Ref<Execution<P, E>>,
-    transform: (current: NoInfer<E>) => NoInfer<E>,
+    state: NoInfer<E>,
 ): BattleState;
-export declare function updateState<P extends object, E extends object>(
+export declare function setState<P extends object, E extends object>(
     battle: BattleState,
     ref: Ref<Action<P, E>>,
-    transform: (current: NoInfer<P>) => NoInfer<P>,
+    state: NoInfer<P>,
 ): BattleState;
-export declare function updateCooldown<P extends object, E extends object>(
+export declare function setCooldown<P extends object, E extends object>(
     battle: BattleState,
     ref: Ref<Action<P, E>>,
-    transform: (current: CooldownState) => CooldownState,
+    cooldown: CooldownState,
 ): BattleState;
 export declare function resetCooldown<P extends object, E extends object>(
     battle: BattleState,
@@ -261,9 +261,9 @@ start 从当前 Action 检查配置对象身份、来源资格、execution 占�
 
 start 内的局部 check 复用同一套准入规则，在 prepare 前检查，并在 prepare 成功后从接续的 BattleState 重新读取宿主与聚合条目，按最新周期再次确认准入，再以其结果登记。prepare 返回 null 时直接返回 CONDITION。回调使自身进入冷却时返回 COOLDOWN，保留已经发生的修改。仍可启动时才基于最新宿主一次写回该 Action 的新 Cooldown、Execution 和 nextExecutionId，保留持久 state、兄弟行动及其他能力的修改。
 
-三类写入均从传入的最新 BattleState 读取当前值。updateExecution 以 Execution Ref 指定本轮，只修改 execution.state；updateState 与 updateCooldown 以 Action Ref 指定持久行动，分别只修改持久 state 与 Cooldown。它们不接收整份 Action，不允许内容顺带改写 Definition、执行身份或生命周期。transform 是纯局部值转换，不修改输入、不消费 RNG，也不执行嵌套领域操作；返回当前值引用时返回原 BattleState。
+三类写入只接收已经计算好的结果值。setExecutionState 以 Execution Ref 指定本轮，只设置 execution.state；setState 与 setCooldown 以 Action Ref 指定持久行动，分别只设置持久 state 与 Cooldown。Core 从传入的最新 BattleState 读取当前聚合条目，只替换指定字段，保留其他字段、Definition、执行身份和生命周期；给定值与当前字段引用相同时返回原 BattleState。
 
-宿主或指定执行缺失时，写入操作抛出 RangeError；Action Ref 所给 Definition 未配置或对象身份不匹配时抛出 TypeError。均不调用 transform。updateExecution 在 execution 为 ENDING 时抛出 TypeError；updateState／updateCooldown 可以在结束程序中更新持久事实。需要累加或保留其他字段时从 transform 的 current 构造结果，不捕获旧 self.state／self.execution.state 覆盖当前数据。`NoInfer` 限制变换结果参与泛型推导；精确 Ref 保持 P／E 关联，预先弱化类型后写入不兼容数据属于调用契约错误，不增加运行时形状校验。
+宿主或指定执行缺失时，写入操作抛出 RangeError；Action Ref 所给 Definition 未配置或对象身份不匹配时抛出 TypeError。setExecutionState 在 execution 为 ENDING 时抛出 TypeError；setState／setCooldown 可以在结束程序中更新持久事实。调用方从当前 battle 查询并计算下一值，计算和提交之间不执行其他完整操作；跨领域调用返回后先接续 battle，再重读所需实时状态，避免用旧 self.state／self.execution.state 覆盖当前数据。`NoInfer` 限制结果值参与泛型推导；精确 Ref 保持 P／E 关联，预先弱化类型后写入不兼容数据属于调用契约错误，不增加运行时形状校验。
 
 单个 Action 的完整写回由文件私有 replaceAction 统一，通过底层 Actions.replace(definition, next) 提交已配对条目，信任已有宿主、Definition 与执行身份。start 仍将新 Cooldown、Execution 和 nextExecutionId 一次写回；refreshCooldowns 仍批量构造后一次提交，不改为逐条写回。生命周期变更由完整领域操作管理，内容只调用对应字段的更新操作。
 

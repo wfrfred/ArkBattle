@@ -34,7 +34,8 @@ test("ordinary attack: phase correction samples the cooldown returned by its sta
     let initial = { ...battle(unit(0, { action: definition }), unit(1)), tick: 10 };
     const source = unitRef(getUnit(initial, 0));
     const current = actions.getAction(initial, actions.ref(source, definition));
-    initial = actions.updateCooldown(initial, actions.ref(source, definition), cooldown => ({ ...cooldown, readyAtTick: 9.75 }));
+    const currentCooldown = actions.getAction(initial, actions.ref(source, definition)).cooldown;
+    initial = actions.setCooldown(initial, actions.ref(source, definition), { ...currentCooldown, readyAtTick: 9.75 });
     const started = start(initial, definition);
     const advanced = advance(started.state, started.value.ref);
     assert.equal(started.value.type, "STARTED");

@@ -1,19 +1,19 @@
-import { fixtureBattle } from "../helpers/unit.js";
+import { fixtureBattle, getUnit, initialize } from "../helpers/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
-import { getUnit } from "../helpers/unit.js";
+
 import * as skills from "../../dist/core/unit/capability/skill/operations.js";
 import * as sp from "../../dist/core/unit/capability/skill/sp.js";
 import { initialize as initializeSkill, removeRule, setDurationContribution, removeDurationContribution } from "../../dist/core/unit/capability/skill/capability.js";
 import { create as value } from "../../dist/core/unit/contribution/attribute.js";
-import { initialize } from "../helpers/unit.js";
+
 import { get as getHookHost, ref } from "../../dist/core/unit/query.js";
 import { effectFixtureWork } from "../helpers/effects.js";
 import { actionCapability } from "../helpers/actions.js";
 import { start as startAction, ref as actionRef } from "../../dist/core/unit/action/index.js";
 import { advance as advanceAction } from "../../dist/core/unit/action/index.js";
-import { fixture, definition, at, change, currentRef } from "../helpers/skill.js";
+import { fixture, definition, at, setSkill, currentRef } from "../helpers/skill.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 
 const resource = (overrides = {}) => ({
@@ -27,16 +27,22 @@ function parameterEffect(id, modifiers) {
     return {
         id,
         initialize: () => ({}),
-        onEnable: (battle, self) => change(battle, (skill) => ({
-            ...skill,
+        onEnable: (battle, self) => {
+            const currentSkill = getUnit(battle, 1).skill;
+            return setSkill(battle, {
+            ...currentSkill,
             sp: Object.entries(modifiers).reduce((state, [key, value]) =>
-                sp.setContribution(state, key, { id: `${self.id}/${key}`, value }), skill.sp),
-        })),
-        onDisable: (battle, self) => change(battle, (skill) => ({
-            ...skill,
+                sp.setContribution(state, key, { id: `${self.id}/${key}`, value }), currentSkill.sp),
+        });
+        },
+        onDisable: (battle, self) => {
+            const currentSkill2 = getUnit(battle, 1).skill;
+            return setSkill(battle, {
+            ...currentSkill2,
             sp: Object.keys(modifiers).reduce((state, key) =>
-                sp.removeContribution(state, key, `${self.id}/${key}`), skill.sp),
-        })),
+                sp.removeContribution(state, key, `${self.id}/${key}`), currentSkill2.sp),
+        });
+        },
     };
 }
 
@@ -76,30 +82,34 @@ test("a Fever-style Effect independently removes the SP requirement and payment 
 
 test("SP parameter programs use explicit order and exclusive sources while default payment follows requirement", () => {
     const f = fixture({ sp: resource({ capacity: 10, cost: undefined }) });
-    let state = change(f.state, (skill) => ({ ...skill, sp: sp.setContribution(
-        sp.setContribution(skill.sp, "capacity", {
+    const currentSkill3 = getUnit(f.state, 1).skill;
+    let state = setSkill(f.state, { ...currentSkill3, sp: sp.setContribution(
+        sp.setContribution(currentSkill3.sp, "capacity", {
             id: "z-add", value: { priority: 0, apply: (_battle, _self, current) => current + 2 },
         }), "capacity", {
             id: "a-scale", value: { priority: 1, apply: (_battle, _self, current) => current * 2 },
         },
-    ) }));
+    ) });
     assert.equal(sp.resolveCapacity(state, f.ref), 24);
-    state = change(state, (skill) => ({ ...skill, sp: sp.setContribution(
-        sp.setContribution(skill.sp, "requirement", {
+    const currentSkill4 = getUnit(state, 1).skill;
+    state = setSkill(state, { ...currentSkill4, sp: sp.setContribution(
+        sp.setContribution(currentSkill4.sp, "requirement", {
             id: "weak", group: { id: "requirement", priority: 1 },
             value: { priority: 0, apply: () => 4 },
         }), "requirement", {
             id: "strong", group: { id: "requirement", priority: 2 },
             value: { priority: 0, apply: () => 5 },
         },
-    ) }));
+    ) });
     assert.equal(sp.resolveRequirement(state, f.ref), 5);
     assert.equal(sp.resolveCost(state, f.ref), 5);
-    state = change(state, (skill) => ({ ...skill, sp: sp.setContribution(skill.sp, "cost", {
+    const currentSkill5 = getUnit(state, 1).skill;
+    state = setSkill(state, { ...currentSkill5, sp: sp.setContribution(currentSkill5.sp, "cost", {
         id: "discount", value: { priority: 0, apply: (_battle, _self, current) => current / 2 },
-    }) }));
+    }) });
     assert.equal(sp.resolveCost(state, f.ref), 3);
-    state = change(state, (skill) => ({ ...skill, sp: sp.removeContribution(skill.sp, "requirement", "strong") }));
+    const currentSkill6 = getUnit(state, 1).skill;
+    state = setSkill(state, { ...currentSkill6, sp: sp.removeContribution(currentSkill6.sp, "requirement", "strong") });
     assert.equal(sp.resolveRequirement(state, f.ref), 4);
     assert.equal(sp.resolveCost(state, f.ref), 2);
 });
@@ -117,12 +127,15 @@ test("a charged duration program samples all prepayment charges when the activat
         value: { priority: 0, apply: (_battle, self, current) =>
             current * (1 + Math.floor(self.skill.sp.value / self.definition.skill.sp.requirement) * 0.4) },
     };
-    let state = change(at(f.state, 7), (skill) => setDurationContribution(skill, entry));
+    const currentBattle = at(f.state, 7);
+    const currentSkill7 = getUnit(currentBattle, 1).skill;
+    let state = setSkill(currentBattle, setDurationContribution(currentSkill7, entry));
     const started = skills.activate(state, f.ref);
     assert.equal(started.value.type, "ACTIVATED");
     assert.equal(read(started.state).sp.value, 0);
     assert.equal(read(started.state).active.sustain.endsAtTick, 367);
-    state = change(started.state, (skill) => removeDurationContribution(skill, entry.id));
+    const currentSkill8 = getUnit(started.state, 1).skill;
+    state = setSkill(started.state, removeDurationContribution(currentSkill8, entry.id));
     assert.equal(read(state).active.sustain.endsAtTick, 367);
     state = skills.finish(state, started.value.ref);
     state = sp.modify(state, f.ref, 10).state;
@@ -169,9 +182,10 @@ test("capacity, activation requirement and payment are separate numeric facts", 
 
 test("payment needs no Activation and ignores recovery and activation Rules", () => {
     const f = fixture({ sp: resource({ initial: 5 }), activation: null });
-    let state = change(f.state, (skill) => ({ ...skill, rules: [{
+    const currentSkill9 = getUnit(f.state, 1).skill;
+    let state = setSkill(f.state, { ...currentSkill9, rules: [{
         id: "blocked", allowsActivation: () => false, allowsRecovery: () => false,
-    }] }));
+    }] });
     state = sp.pay(state, f.ref, 3).state;
     assert.equal(read(state).sp.value, 2);
     assert.equal(read(state).active, null);
@@ -180,7 +194,8 @@ test("payment needs no Activation and ignores recovery and activation Rules", ()
 
 test("recovery Rules block ordinary positive modification, but not drains, payment or explicit force", () => {
     const f = fixture({ sp: resource({ initial: 4 }) });
-    const state = change(f.state, (skill) => ({ ...skill, rules: [{ id: "block", allowsRecovery: () => false }] }));
+    const currentSkill10 = getUnit(f.state, 1).skill;
+    const state = setSkill(f.state, { ...currentSkill10, rules: [{ id: "block", allowsRecovery: () => false }] });
     assert.equal(sp.recover(state, f.ref, "TIME", 1).state, state);
     assert.equal(sp.modify(state, f.ref, 1).state, state);
     assert.equal(read(sp.modify(state, f.ref, -2).state).sp.value, 2);
@@ -196,7 +211,8 @@ test("active recovery is a removable default Rule and payment remains legal duri
     assert.equal(sp.recover(state, f.ref, "TIME", 1).value.type, "REJECTED");
     state = sp.pay(state, f.ref, 1).state;
     assert.equal(read(state).sp.value, 2);
-    state = change(state, (skill) => removeRule(skill, "@skill/active-recovery"));
+    const currentSkill11 = getUnit(state, 1).skill;
+    state = setSkill(state, removeRule(currentSkill11, "@skill/active-recovery"));
     state = sp.recover(state, f.ref, "TIME", 1).state;
     assert.equal(read(state).sp.value, 3);
     assert.equal(read(state).active.status, "ACTIVE");
@@ -220,11 +236,13 @@ test("natural SP pauses while full and resumes the saved remainder without a bac
 test("recovery restrictions pause the natural timer and do not accumulate missed periods", () => {
     const f = fixture({ sp: resource() });
     let state = skills.advance(at(f.state, 12), f.ref);
-    state = change(state, (skill) => ({ ...skill, rules: [{ id: "block", allowsRecovery: () => false }] }));
+    const currentSkill12 = getUnit(state, 1).skill;
+    state = setSkill(state, { ...currentSkill12, rules: [{ id: "block", allowsRecovery: () => false }] });
     state = skills.advance(at(state, 200), f.ref);
     assert.equal(read(state).sp.value, 0);
     assert.equal(read(state).sp.recovery.remainingTicks, 18);
-    state = change(state, (skill) => ({ ...skill, rules: skill.rules.filter(({ id }) => id !== "block") }));
+    const currentSkill13 = getUnit(state, 1).skill;
+    state = setSkill(state, { ...currentSkill13, rules: currentSkill13.rules.filter(({ id }) => id !== "block") });
     state = skills.advance(at(state, 217), f.ref);
     assert.equal(read(state).sp.value, 0);
     state = skills.advance(at(state, 218), f.ref);
@@ -264,19 +282,22 @@ test("a paused zero-HP host still applies natural speed changes and zero-rate in
     let state = sp.advance(at(effectFixtureWork(unit), 12), reference);
     const current = getUnit(state, 1);
     state = updateUnit(state, [{ ...current, vitality: { ...current.vitality, hp: 0 } }]);
-    state = change(state, skill => ({ ...skill, sp: sp.setContribution(skill.sp, "recoverySpeed", {
+    const currentSkill14 = getUnit(state, 1).skill;
+    state = setSkill(state, { ...currentSkill14, sp: sp.setContribution(currentSkill14.sp, "recoverySpeed", {
         id: "double", value: [value({ finalScaler: 2 })],
-    }) }));
+    }) });
     state = sp.advance(at(state, 100), reference);
     assert.deepEqual(read(state).sp.recovery, { periodTicks: 15, remainingTicks: 3 });
     assert.equal(read(state).sp.lastTick, 100);
-    state = change(state, skill => ({ ...skill, sp: sp.setContribution(skill.sp, "recoveryMultiplier", {
+    const currentSkill15 = getUnit(state, 1).skill;
+    state = setSkill(state, { ...currentSkill15, sp: sp.setContribution(currentSkill15.sp, "recoveryMultiplier", {
         id: "zero", value: [value({ finalScaler: 0 })],
-    }) }));
+    }) });
     state = sp.advance(at(state, 200), reference);
     assert.equal(read(state).sp.recovery, null);
     assert.equal(read(state).sp.lastTick, 200);
-    state = change(state, skill => ({ ...skill, sp: sp.removeContribution(skill.sp, "recoveryMultiplier", "zero") }));
+    const currentSkill16 = getUnit(state, 1).skill;
+    state = setSkill(state, { ...currentSkill16, sp: sp.removeContribution(currentSkill16.sp, "recoveryMultiplier", "zero") });
     state = sp.advance(at(state, 300), reference);
     assert.deepEqual(read(state).sp.recovery, { periodTicks: 15, remainingTicks: 15 });
     assert.equal(read(state).sp.value, 0);
@@ -311,9 +332,10 @@ test("a long natural advance stops its timer when the first pulse fills SP", () 
 test("natural speed changes preserve absolute elapsed time instead of a completion fraction", () => {
     const f = fixture({ sp: resource() });
     let state = skills.advance(at(f.state, 12), f.ref);
-    state = change(state, (skill) => ({ ...skill, sp: { ...skill.sp, recoverySpeed: [
+    const currentSkill17 = getUnit(state, 1).skill;
+    state = setSkill(state, { ...currentSkill17, sp: { ...currentSkill17.sp, recoverySpeed: [
         { id: "double", value: [value({ finalScaler: 2 })] },
-    ] } }));
+    ] } });
     state = skills.advance(state, f.ref);
     assert.equal(read(state).sp.recovery.periodTicks, 15);
     assert.equal(read(state).sp.recovery.remainingTicks, 3);
@@ -324,12 +346,15 @@ test("natural speed changes preserve absolute elapsed time instead of a completi
 test("zero natural speed invalidates the timer and resumption starts a full period", () => {
     const f = fixture({ sp: resource() });
     let state = skills.advance(at(f.state, 12), f.ref);
-    state = change(state, (skill) => ({ ...skill, sp: { ...skill.sp, recoveryMultiplier: [
+    const currentSkill18 = getUnit(state, 1).skill;
+    state = setSkill(state, { ...currentSkill18, sp: { ...currentSkill18.sp, recoveryMultiplier: [
         { id: "zero", value: [value({ finalScaler: 0 })] },
-    ] } }));
+    ] } });
     state = skills.advance(state, f.ref);
     assert.equal(read(state).sp.recovery, null);
-    state = change(at(state, 100), (skill) => ({ ...skill, sp: { ...skill.sp, recoveryMultiplier: [] } }));
+    const currentBattle2 = at(state, 100);
+    const currentSkill19 = getUnit(currentBattle2, 1).skill;
+    state = setSkill(currentBattle2, { ...currentSkill19, sp: { ...currentSkill19.sp, recoveryMultiplier: [] } });
     state = skills.advance(state, f.ref);
     assert.equal(read(state).sp.recovery.remainingTicks, 30);
     state = skills.advance(at(state, 129), f.ref);
@@ -341,7 +366,8 @@ test("zero natural speed invalidates the timer and resumption starts a full peri
 test("SP Hooks keep settled reports across nested payment and dispatch only their own business", () => {
     const seen = [];
     const f = fixture({ sp: resource({ initial: 9, capacity: 20, requirement: 10 }) });
-    let state = change(f.state, (skill) => ({ ...skill,
+    const currentSkill20 = getUnit(f.state, 1).skill;
+    let state = setSkill(f.state, { ...currentSkill20,
         spRecovered: [
             observe("nested", (battle, { host, event }) => {
                 const self = getHookHost(battle, host);
@@ -359,7 +385,7 @@ test("SP Hooks keep settled reports across nested payment and dispatch only thei
             return { state: battle, value: undefined };
         })],
         spModified: [observe("not-modification", () => ({ state: assert.fail("wrong resource notification"), value: undefined }))],
-    }));
+    });
     state = sp.recover(state, f.ref, "TIME", 2).state;
     assert.deepEqual(seen, [["first", 9, 11], ["paid", 11, 0], ["after", 9, 11, 0]]);
     assert.equal(read(state).sp.value, 0);
@@ -370,7 +396,8 @@ test("persistent data survives activations and activation data is initialized in
         activation: { trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({ count: 0 }) },
     });
     let state = skills.activate(f.state, f.ref).state;
-    state = change(state, (skill) => ({ ...skill, data: { count: 7 } }));
+    const currentSkill21 = getUnit(state, 1).skill;
+    state = setSkill(state, { ...currentSkill21, data: { count: 7 } });
     state = skills.finish(state, currentRef(state));
     state = skills.activate(state, f.ref).state;
     assert.deepEqual(read(state).data, { count: 7 });

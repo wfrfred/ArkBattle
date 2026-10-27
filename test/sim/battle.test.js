@@ -37,7 +37,7 @@ import { getUnit } from "../helpers/unit.js";
 import { initialize } from "../helpers/unit.js";
 import { actionCapability } from "../helpers/actions.js";
 import { executionRef } from "../../dist/core/unit/action/index.js";
-import { updateExecution as updateAction } from "../../dist/core/unit/action/index.js";
+import { setExecutionState as setActionExecutionState } from "../../dist/core/unit/action/index.js";
 import { install as installEffect } from "../../dist/core/unit/effect/index.js";
 
 const navigationMap = (state, mode = 'WALK') => applyOverlays(state.baseline[mode], state.overlays[mode]);
@@ -656,7 +656,7 @@ test('core battle propagates nested settlement errors without publishing battlef
     prepare: state => ({ state, value: { entered: false } }),
     onTick(state, source, self) {
       if (self.execution.state.entered) return { state, value: false };
-      state = updateAction(state, executionRef(source, self), () => ({ entered: true }));
+      state = setActionExecutionState(state, executionRef(source, self), { entered: true });
       const unit = initialize({ id: state.execution.nextUnitId, position: [2, 0], definition: { hooks: [],
         id: 'nested-created', vitality: { maxHp: 10, defense: 0, resistance: 0 },
       } });

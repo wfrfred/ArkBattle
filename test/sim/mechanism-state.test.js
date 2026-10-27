@@ -25,7 +25,8 @@ test("mechanism instances keep typed independent state and old snapshots", () =>
     const definition = counter("shared");
     const [first, left] = register(initial, definition);
     const [base, right] = register(first, definition);
-    const updated = mechanisms.update(base, left, state => ({ count: state.count + 1 }));
+    const currentState = mechanisms.get(base, left).state;
+    const updated = mechanisms.setState(base, left, { count: currentState.count + 1 });
 
     assert.equal(initial.mechanisms.size, 0);
     assert.equal("mechanisms" in base.battlefield, false);
@@ -37,10 +38,11 @@ test("mechanism instances keep typed independent state and old snapshots", () =>
     assert.equal(base.battlefield, initial.battlefield);
     assert.equal(updated.execution, base.execution);
     assert.equal(base.execution.nextMechanismId, 2);
-    assert.equal(mechanisms.update(base, left, state => state), base);
+    const currentState2 = mechanisms.get(base, left).state;
+    assert.equal(mechanisms.setState(base, left, currentState2), base);
     assert.deepEqual(base.mechanisms.keys().toArray(), [left.id, right.id]);
 
-    const sibling = mechanisms.update(base, right, () => ({ count: 9 }));
+    const sibling = mechanisms.setState(base, right, { count: 9 });
     assert.equal(mechanisms.get(sibling, left).state.count, 0);
     assert.equal(mechanisms.get(updated, right).state.count, 0);
     assert.equal(base.mechanisms.get(left.id, definition), mechanisms.get(base, left));
@@ -54,7 +56,7 @@ test("mechanism private updates and identity allocation reject invalid operation
     const self = mechanisms.get(battle, reference);
     assert.equal(mechanisms.remove(initial, reference), initial);
     assert.equal(mechanisms.setActive(initial, reference, false), initial);
-    assert.throws(() => mechanisms.update(initial, reference, () => assert.fail()), RangeError);
+    assert.throws(() => mechanisms.setState(initial, reference, { count: 1 }), RangeError);
     assert.throws(() => battle.mechanisms.replace(reference, { ...self, id: 99 }), TypeError);
     assert.throws(() => battle.mechanisms.replace(reference, {
         ...self, definition: counter("other"),
@@ -77,15 +79,17 @@ test("disable and end publish lifecycle before reentrant callbacks", () => {
             const reference = mechanisms.ref(self);
             trace.push(["disable", mechanisms.get(battle, reference).status]);
             assert.equal(mechanisms.setActive(battle, reference, false), battle);
-            return mechanisms.update(battle, reference, state => ({ count: state.count + 1 }));
+            const currentState = mechanisms.get(battle, reference).state;
+            return mechanisms.setState(battle, reference, { count: currentState.count + 1 });
         },
         onEnd(battle, self) {
             const reference = mechanisms.ref(self);
             trace.push(["end", mechanisms.get(battle, reference).status, self.state.count]);
             assert.equal(mechanisms.remove(battle, reference), battle);
             assert.equal(mechanisms.setActive(battle, reference, true), battle);
-            battle = mechanisms.update(battle, reference, state => ({ count: state.count + 1 }));
-            return mechanisms.update(battle, sibling, () => ({ count: 7 }));
+            const currentState = mechanisms.get(battle, reference).state;
+            battle = mechanisms.setState(battle, reference, { count: currentState.count + 1 });
+            return mechanisms.setState(battle, sibling, { count: 7 });
         },
     });
     const [active, reference] = register(initial, definition);
@@ -122,8 +126,11 @@ test("advance fixes identities, rechecks latest state, and does not restore a re
             battle = mechanisms.remove(battle, removed);
             battle = mechanisms.setActive(battle, activated, true);
             const added = mechanisms.create(battle, counter("created", {
-                onTick: (state, next) => mechanisms.update(state, mechanisms.ref(next),
-                    value => ({ count: value.count + 1 })),
+                onTick: (state, next) => {
+                    const currentState = mechanisms.get(state, mechanisms.ref(next)).state;
+                    return mechanisms.setState(state, mechanisms.ref(next),
+                    { count: currentState.count + 1 });
+                },
             }));
             created = added.value;
             return mechanisms.remove(added.state, mechanisms.ref(self));
@@ -136,8 +143,11 @@ test("advance fixes identities, rechecks latest state, and does not restore a re
         onTick: () => assert.fail("removed candidates must be skipped"),
     }));
     [battle, activated] = register(battle, counter("activated", {
-        onTick: (state, self) => mechanisms.update(state, mechanisms.ref(self),
-            value => ({ count: value.count + 1 })),
+        onTick: (state, self) => {
+            const currentState = mechanisms.get(state, mechanisms.ref(self)).state;
+            return mechanisms.setState(state, mechanisms.ref(self),
+            { count: currentState.count + 1 });
+        },
     }), { active: false });
     const before = battle;
     battle = mechanisms.advance(battle);
@@ -156,16 +166,18 @@ test("onTick and nested unit departure preserve the latest mechanism state", () 
     const definition = mechanisms.createMechanismDefinition({
         id: "contacts", initialize: () => ({ contacts: [], departures: 0 }),
         onTick(state, self) {
-            state = mechanisms.update(state, mechanisms.ref(self), value => ({
-                ...value, contacts: [0],
-            }));
+            const currentState = mechanisms.get(state, mechanisms.ref(self)).state;
+            state = mechanisms.setState(state, mechanisms.ref(self), {
+                ...currentState, contacts: [0],
+            });
             return removeUnit(state, 0, "SCRIPT");
         },
         onUnitLeave(state, self, departure) {
             assert.deepEqual(self.state.contacts, [departure.unit.id]);
-            return mechanisms.update(state, mechanisms.ref(self), value => ({
-                contacts: [], departures: value.departures + 1,
-            }));
+            const currentState = mechanisms.get(state, mechanisms.ref(self)).state;
+            return mechanisms.setState(state, mechanisms.ref(self), {
+                contacts: [], departures: currentState.departures + 1,
+            });
         },
     });
     let reference;
@@ -200,9 +212,9 @@ test("runtime scans mechanisms after movement and before route completion", () =
         id: "terrain-stage", initialize: () => ({ position: null }),
         onTick(state, self) {
             assert.equal(state.battlefield.units.get(1).route.main.phase.type, "COMPLETED");
-            state = mechanisms.update(state, mechanisms.ref(self), () => ({
+            state = mechanisms.setState(state, mechanisms.ref(self), {
                 position: state.battlefield.units.get(0).position,
-            }));
+            });
             return removeUnit(state, 1, "DEATH");
         },
     });
@@ -235,7 +247,7 @@ const definition = mechanisms.createMechanismDefinition({
   id: 'counter', initialize: () => ({ count: 0 }),
   onTick(battle, self) {
     const count: number = self.state.count;
-    return mechanisms.update(battle, mechanisms.ref(self), state => ({ count: state.count + 1 }));
+    return mechanisms.setState(battle, mechanisms.ref(self), { count: self.state.count + 1 });
   },
 });
 const placed: Pick<Input, 'initialMechanisms'> = { initialMechanisms: [{ definition }] };
@@ -245,14 +257,16 @@ const predefined: PredefinedDefinition = {
 const created = mechanisms.create(battle, definition);
 const self = mechanisms.get(created.state, created.value)!;
 const count: number = self.state.count;
-mechanisms.update(created.state, created.value, state => ({ count: state.count + 1 }));
+mechanisms.setState(created.state, created.value, { count: self.state.count + 1 });
 // @ts-expect-error Mechanism updates preserve the private state type.
-mechanisms.update(created.state, created.value, state => ({ name: 'wrong' }));
+mechanisms.setState(created.state, created.value, { name: 'wrong' });
+// @ts-expect-error Mechanism state is supplied as a value rather than a transform.
+mechanisms.setState(created.state, created.value, state => ({ count: state.count + 1 }));
 const view = mechanisms.all(battle).find(() => true)!;
 // @ts-expect-error General views do not expose private state.
 view.state;
 // @ts-expect-error A view Ref cannot write private state.
-mechanisms.update(battle, mechanisms.ref(view), state => state);
+mechanisms.setState(battle, mechanisms.ref(view), {});
 // @ts-expect-error Public mechanism lookup takes a typed Ref.
 mechanisms.get(battle, 0);
 // @ts-expect-error Public removal takes a typed Ref.

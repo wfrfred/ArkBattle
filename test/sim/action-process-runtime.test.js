@@ -79,7 +79,8 @@ const program = (id, extra = {}) => ({
 test("action runtime: a newly registered instance first executes once and retained snapshots stay immutable", () => {
     const definition = program("progress", {
         onTick(state, source, self) {
-            state = actions.updateExecution(state, executionRef(source, self), currentState => ({ count: currentState.count + 1 }));
+            const currentState2 = actions.getExecution(state, executionRef(source, self)).execution.state;
+            state = actions.setExecutionState(state, executionRef(source, self), { count: currentState2.count + 1 });
             return { state, value: false };
         },
     });
@@ -99,8 +100,9 @@ test("action runtime: an execution registered before the same-tick scan is advan
     const definition = program("before-scan", {
         onTick(state, source, self) {
             ticks.push(state.tick);
+            const currentState = actions.getExecution(state, executionRef(source, self)).execution.state;
             return {
-                state: actions.updateExecution(state, executionRef(source, self), current => ({ count: current.count + 1 })),
+                state: actions.setExecutionState(state, executionRef(source, self), { count: currentState.count + 1 }),
                 value: false,
             };
         },
@@ -239,7 +241,7 @@ test("action runtime: a late exception publishes neither progressed action state
     const definition = program("failure", {
         onTick(state, source, self) {
             if (state.tick === 0) return { state, value: false };
-            state = actions.updateExecution(state, executionRef(source, self), () => ({ count: 9 }));
+            state = actions.setExecutionState(state, executionRef(source, self), { count: 9 });
             state = updateUnit(state, [{ ...getUnit(state, 1), position: [3, 0] }]);
             throw failure;
         },

@@ -15,7 +15,7 @@ test("Attack persistent and execution data keep separate types and typed activat
 import type { Ref } from ${source("core/common/ref")};
 import type { State as BattleState, Result } from ${source("core/battle/state")};
 import { executionRef, ref as actionRef } from ${source("core/unit/action/index")};
-import { updateExecution, getAction, updateState } from ${source("core/unit/action/index")};
+import { setExecutionState, getAction, getExecution, setState } from ${source("core/unit/action/index")};
 import type { Activation } from ${source("core/unit/capability/skill/activation")};
 import { get as getActivation } from ${source("core/unit/capability/skill/index")};
 import { consume, check } from ${source("core/unit/capability/skill/ammo")};
@@ -36,8 +36,9 @@ const counted = createWithState({
     output(current, source, self) {
         const persistent = getAction(current, actionRef(source, self.definition))!;
         const count: number = persistent.state.count;
-        current = updateState(current, actionRef(source, self.definition), state => ({ count: state.count + 1 }));
-        return updateExecution(current, executionRef(source, self), state => ({ ...state, data: { sampled: count } }));
+        current = setState(current, actionRef(source, self.definition), { count: persistent.state.count + 1 });
+        const latest = getExecution(current, executionRef(source, self))!;
+        return setExecutionState(current, executionRef(source, self), { ...latest.execution.state, data: { sampled: count } });
     },
     afterOutput(current, source, self) {
         const sampled: number = self.execution.state.data.sampled;

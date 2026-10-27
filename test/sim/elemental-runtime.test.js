@@ -14,8 +14,8 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { initialize as initializeBattle, step as stepBattle } from '../../dist/core/battle/index.js';
 import { createLegacyCombatSpec } from '../../dist/legacy/combat.js';
-import { getUnit, transitionUnit } from '../helpers/unit.js';
-import { initialize, placement } from "../helpers/unit.js";
+import { getUnit, initialize, placement, replaceUnit } from "../helpers/unit.js";
+
 import { create as createAttack, chooseTargets } from '../../dist/content/actions/attack.js';
 import { actionCapability } from "../helpers/actions.js";
 import { start, ref as actionRef } from '../../dist/core/unit/action/index.js';
@@ -179,11 +179,13 @@ test('elemental execution: paused and accelerated burst time also controls perio
   const speed = value => current => ({ ...current, elemental: setContribution(current.elemental, 'burstRecoverySpeed', {
     id: 'burst-speed', value: [modifier({ finalScaler: value })],
   }) });
-  work = transitionUnit(work, 1, speed(0));
+  const currentUnit = getUnit(work, 1);
+  work = replaceUnit(work, speed(0)(currentUnit));
   work = advance(work, 60);
   assert.equal(getUnit(work, 1).vitality.hp, 100000);
   assert.equal(getUnit(work, 1).elemental.burst.remainingTicks, 450);
-  work = transitionUnit(work, 1, speed(2));
+  const currentUnit2 = getUnit(work, 1);
+  work = replaceUnit(work, speed(2)(currentUnit2));
   work = advance(work, 210);
   assert.equal(getUnit(work, 1).vitality.hp, 92000);
   near(power(work), 100 * (1 - 0.5 * 5 / 15));
@@ -197,16 +199,18 @@ test('elemental execution: paused and accelerated burst time also controls perio
 for (const pause of ['spatial absence', 'zero HP']) {
   test(`elemental execution: ${pause} pauses Burst and periodic clocks without catchup on return`, () => {
     let work = element(effectFixtureWork(unit('ENEMY')), 'NECROSIS').state;
-    work = transitionUnit(work, 1, current => pause === 'spatial absence'
-      ? { ...current, spatialPresence: { present: false } }
-      : { ...current, vitality: { ...current.vitality, hp: 0 } });
+    const currentUnit3 = getUnit(work, 1);
+    work = replaceUnit(work, pause === 'spatial absence'
+      ? { ...currentUnit3, spatialPresence: { present: false } }
+      : { ...currentUnit3, vitality: { ...currentUnit3.vitality, hp: 0 } });
     work = advance(work, 100);
     assert.equal(getUnit(work, 1).elemental.burst.remainingTicks, 450);
     assert.equal(getUnit(work, 1).elemental.lastAdvancedTick, 100);
     assert.equal(work.events.some(event => event.type === 'DAMAGE'), false);
-    work = transitionUnit(work, 1, current => pause === 'spatial absence'
-      ? { ...current, spatialPresence: { present: true } }
-      : { ...current, vitality: { ...current.vitality, hp: 100000 } });
+    const currentUnit4 = getUnit(work, 1);
+    work = replaceUnit(work, pause === 'spatial absence'
+      ? { ...currentUnit4, spatialPresence: { present: true } }
+      : { ...currentUnit4, vitality: { ...currentUnit4.vitality, hp: 100000 } });
     work = advance(work, 130);
     assert.equal(getUnit(work, 1).elemental.burst.remainingTicks, 420);
     assert.equal(getUnit(work, 1).vitality.hp, 99200);
@@ -216,9 +220,10 @@ for (const pause of ['spatial absence', 'zero HP']) {
 
 test('elemental execution: temporary burn resistance follows Burst lifetime when recovery speed changes', () => {
   let work = element(effectFixtureWork(unit('ENEMY')), 'BURN').state;
-  work = transitionUnit(work, 1, current => ({ ...current, elemental: setContribution(current.elemental, 'burstRecoverySpeed', {
+  const currentUnit5 = getUnit(work, 1);
+  work = replaceUnit(work, { ...currentUnit5, elemental: setContribution(currentUnit5.elemental, 'burstRecoverySpeed', {
     id: 'burst-speed', value: [modifier({ finalScaler: 2 })],
-  }) }));
+  }) });
   work = advance(work, 149);
   assert.equal(defense(work).resistance, 30);
   work = advance(work, 150);
@@ -241,10 +246,11 @@ test('elemental HP damage ignores physical defense, magic resistance, source att
 
 test('HP elemental settlement and EP settlement read their distinct current contributions', () => {
   let work = effectFixtureWork(unit('ENEMY'));
-  work = transitionUnit(work, 1, current => ({ ...current, elemental: setContribution(
-    setContribution(current.elemental, 'damageResistance', { id: 'hp-resistance', value: [modifier({ addition: 50 })] }),
+  const currentUnit6 = getUnit(work, 1);
+  work = replaceUnit(work, { ...currentUnit6, elemental: setContribution(
+    setContribution(currentUnit6.elemental, 'damageResistance', { id: 'hp-resistance', value: [modifier({ addition: 50 })] }),
     'elementResistance', { id: 'ep-resistance', value: [modifier({ addition: 100 })] },
-  ) }));
+  ) });
   const hp = dealDamage(work, { source: null, target: { id: 1 }, parameters: parameters(100, 'ELEMENTAL') });
   assert.equal(hp.value.application.hpLoss, 50);
   const ep = element(hp.state, 'BURN', 0, 100);
@@ -278,16 +284,18 @@ test('elemental healing receives every EP bar independently from HP healing and 
   assert.equal(elemental.heal(broken, unitRef(getUnit(broken, 1)), { power: 1000, source: null }).value.type, 'REJECTED');
   let immune = effectFixtureWork(unit('CHARACTER'));
   immune = element(immune, 'BURN', 0, 100).state;
-  immune = transitionUnit(immune, 1, current => ({ ...current, elemental: setRule(current.elemental, { id: 'immune', allowsDamage: () => false }) }));
+  const currentUnit7 = getUnit(immune, 1);
+  immune = replaceUnit(immune, { ...currentUnit7, elemental: setRule(currentUnit7.elemental, { id: 'immune', allowsDamage: () => false }) });
   assert.equal(elemental.heal(immune, unitRef(getUnit(immune, 1)), { power: 100, source: null }).value.type, 'APPLIED');
 });
 
 test('invincibility observes incoming EP damage, permits EP healing and removes its Rule when the Effect ends', () => {
   const seen = [];
   let work = element(effectFixtureWork(unit()), 'BURN', 0, 200).state;
-  work = transitionUnit(work, 1, current => ({ ...current, elemental: setElementalHook(current.elemental, 'received', {
+  const currentUnit8 = getUnit(work, 1);
+  work = replaceUnit(work, { ...currentUnit8, elemental: setElementalHook(currentUnit8.elemental, 'received', {
     id: 'received', invoke: (battle, { event }) => { seen.push(event.request.power); return { state: battle, value: undefined }; },
-  }) }));
+  }) });
   const installed = effects.install(work, unitRef(getUnit(work, 1)), invincible);
   const denied = element(installed.state, 'BURN', 0, 100);
   assert.equal(denied.value.type, 'REJECTED');
@@ -349,9 +357,10 @@ test('elemental attack targeting uses current request-specific reception Rules',
   }) });
   const receiver = unit('ENEMY');
   let work = effectFixtureWork(caster, receiver);
-  work = transitionUnit(work, 1, current => ({ ...current, elemental: setRule(current.elemental, {
+  const currentUnit9 = getUnit(work, 1);
+  work = replaceUnit(work, { ...currentUnit9, elemental: setRule(currentUnit9.elemental, {
     id: 'only-burn', allowsDamage: (_battle, _self, request) => request.type === 'BURN',
-  }) }));
+  }) });
   assert.deepEqual(chooseTargets(work, unitRef(caster), neural.attack).value.primary, []);
   assert.deepEqual(chooseTargets(work, unitRef(caster), burn.attack).value.primary.map(ref => ref.id), [1]);
   assert.deepEqual(work.events, []);

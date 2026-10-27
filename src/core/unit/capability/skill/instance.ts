@@ -38,10 +38,8 @@ export function replace<S extends object, A extends object>(
 
 export function setData<S extends object, A extends object>(
     self: Instance<S, A>,
-    next: NoInfer<S> | ((current: NoInfer<S>) => NoInfer<S>),
+    data: NoInfer<S>,
 ): Instance<S, A> {
-    const data = typeof next === "function" ? next(self.state.data) : next;
-
     return data === self.state.data ? self : { ...self, state: { ...self.state, data } };
 }
 

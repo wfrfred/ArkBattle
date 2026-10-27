@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import * as modifier from "../../dist/core/unit/contribution/attribute.js";
 import * as contribution from "../../dist/core/unit/contribution/contribution.js";
-import { initialize } from "../helpers/unit.js";
+import { initialize, getUnit, replaceUnit } from "../helpers/unit.js";
 import {
     setAttackContribution,
     removeAttackContribution,
@@ -16,7 +16,7 @@ import {
 } from "../../dist/core/unit/capability/vitality/capability.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { add as addUnit, remove as removeUnit } from "../../dist/core/battle/unit.js";
-import { getUnit, transitionUnit } from "../helpers/unit.js";
+
 
 const unit = (id, attack = 100) =>
     initialize({
@@ -126,16 +126,17 @@ test("contributions: capability set, remove and replacement preserve prior snaps
     const sampled = ({ ...initial, offense: setAttackContribution(initial.offense, sample) });
     let work = workFor(sampled);
     assert.equal(resolveAttack(work, unitRef(getUnit(work, 1))), 250);
-    work = transitionUnit(work, 1, (current) => ({ ...current, offense: removeAttackContribution(current.offense, "inspiration") }));
+    const currentUnit = getUnit(work, 1);
+    work = replaceUnit(work, { ...currentUnit, offense: removeAttackContribution(currentUnit.offense, "inspiration") });
     assert.equal(resolveAttack(work, unitRef(getUnit(work, 1))), 100);
-    work = transitionUnit(work, 1, (current) => ({ ...current, offense: setAttackContribution(current.offense, sample) }));
+    const currentUnit2 = getUnit(work, 1);
+    work = replaceUnit(work, { ...currentUnit2, offense: setAttackContribution(currentUnit2.offense, sample) });
     assert.equal(resolveAttack(work, unitRef(getUnit(work, 1))), 250);
     const copied = getUnit(work, 1);
     assert.equal(copied.offense.attack, getUnit(work, 1).offense.attack);
     const resumedSnapshot = work;
-    work = transitionUnit(work, 1, (current) =>
-        ({ ...current, offense: setAttackContribution(current.offense, { id: "inspiration", value: [value(200)] }) }),
-    );
+    const currentUnit3 = getUnit(work, 1);
+    work = replaceUnit(work, { ...currentUnit3, offense: setAttackContribution(currentUnit3.offense, { id: "inspiration", value: [value(200)] }) });
     assert.equal(resolveAttack(work, unitRef(getUnit(work, 1))), 300);
     assert.equal(resolveAttack(resumedSnapshot, unitRef(getUnit(resumedSnapshot, 1))), 250);
 });
@@ -148,10 +149,11 @@ test("contributions: direct capability closures read current facts and retain pr
     let work = workFor(initial);
     const original = work;
     assert.equal(resolveAttack(original, unitRef(getUnit(original, 1))), 100);
-    work = transitionUnit(work, 1, (current) => ({
-        ...current,
-        vitality: { ...current.vitality, hp: 30 },
-    }));
+    const currentUnit4 = getUnit(work, 1);
+    work = replaceUnit(work, {
+        ...currentUnit4,
+        vitality: { ...currentUnit4.vitality, hp: 30 },
+    });
     assert.equal(resolveAttack(work, unitRef(getUnit(work, 1))), 200);
     assert.equal(resolveAttack(original, unitRef(getUnit(original, 1))), 100);
     assert.equal(getUnit(work, 1).offense.attack, initial.offense.attack);

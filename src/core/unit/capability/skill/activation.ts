@@ -43,11 +43,6 @@ export function ref<T extends Activation>(self: T): Ref<T> {
     return { host: self.host, id: self.id } as Ref<T>;
 }
 
-export function setData<A extends object>(
-    self: Activation<A>,
-    next: NoInfer<A> | ((current: NoInfer<A>) => NoInfer<A>),
-): Activation<A> {
-    const data = typeof next === "function" ? next(self.data) : next;
-
+export function setData<A extends object>(self: Activation<A>, data: NoInfer<A>): Activation<A> {
     return data === self.data ? self : { ...self, data };
 }

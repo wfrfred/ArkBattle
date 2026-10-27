@@ -15,10 +15,10 @@ test("Skill programs receive paired private state without specializing their hos
         onEnter(battle, self) {
             assert.equal(self.definition, f.definition);
             assert.equal(self.host.id, f.unit.id);
-            return replace(battle, setData(self, ({ count }) => ({ count: count + 1 })));
+            return replace(battle, setData(self, { count: self.state.data.count + 1 }));
         },
         onTick(battle, self) {
-            return replace(battle, setData(self, ({ count }) => ({ count: count + 1 })));
+            return replace(battle, setData(self, { count: self.state.data.count + 1 }));
         },
         activation: {
             trigger: "MANUAL", sustain: { type: "INFINITE" },
@@ -47,7 +47,7 @@ test("a Skill Definition token restores activation data only for its configured 
             trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}),
             onStart(battle, self) {
                 const program = getInstance(battle, self.host, f.definition);
-                return replace(battle, setData(program, ({ count }) => ({ count: count + 1 })));
+                return replace(battle, setData(program, { count: program.state.data.count + 1 }));
             },
         },
     });

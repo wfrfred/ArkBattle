@@ -35,7 +35,8 @@ function hitOriginal(battle, reference) {
     if (self === undefined || self.state.hit) return battle;
     const target = getUnit(battle, self.state.target);
     if (target?.lifecycle !== "PRESENT" || target.vitality.hp <= 0) return battle;
-    battle = projectiles.update(battle, reference, current => ({ state: { ...current.state, hit: true } }));
+    const currentProjectile = projectilesQuery.get(battle, reference);
+    battle = projectiles.update(battle, reference, { state: { ...currentProjectile.state, hit: true } });
     return dealDamage(battle, {
         source: self.state.source, target: { id: target.id }, parameters: parameters(self.state.power, "TRUE"),
     }).state;
@@ -44,7 +45,7 @@ function hitOriginal(battle, reference) {
 const arrow = {
     id: "original-target-arrow",
     onTick(battle, self) {
-        battle = projectiles.update(battle, projectilesQuery.ref(self), () => ({ position: [1, 0] }));
+        battle = projectiles.update(battle, projectilesQuery.ref(self), { position: [1, 0] });
         battle = hitOriginal(battle, projectilesQuery.ref(self));
         return projectiles.stop(battle, projectilesQuery.ref(self), "ARRIVED");
     },
@@ -163,7 +164,8 @@ test("Projectile advance fixes candidates and re-reads the latest instance and l
     const definition = { id: "same-name", onTick(battle, self) {
         observed.push([self.id, self.state.count]);
         if (self.id !== 0) return battle;
-        battle = projectiles.update(battle, laterRef, current => ({ state: { count: current.state.count + 4 } }));
+        const currentProjectile = projectilesQuery.get(battle, laterRef);
+        battle = projectiles.update(battle, laterRef, { state: { count: currentProjectile.state.count + 4 } });
         battle = projectiles.stop(battle, stoppedRef);
         return create(battle, spawned).state;
     } };
@@ -183,7 +185,8 @@ test("Projectile advance allows heterogeneous programs with equal names to keep 
     const observed = [];
     const charges = { id: "same", onTick(battle, self) {
         observed.push(self.state.charges);
-        return projectiles.update(battle, projectilesQuery.ref(self), current => ({ state: { charges: current.state.charges - 1 } }));
+        const currentProjectile = projectilesQuery.get(battle, projectilesQuery.ref(self));
+        return projectiles.update(battle, projectilesQuery.ref(self), { state: { charges: currentProjectile.state.charges - 1 } });
     } };
     const label = { id: "same", onTick(battle, self) { observed.push(self.state.label); return battle; } };
     const first = create(battle(), charges, { charges: 2 });
@@ -199,14 +202,15 @@ test("Projectile advance allows heterogeneous programs with equal names to keep 
 test("A stationary Projectile remains ACTIVE and can continue periodic output after arrival", () => {
     const pulse = { id: "stationary-pulse", onTick(battle, self) {
         if (!self.state.arrived) {
-            return projectiles.update(battle, projectilesQuery.ref(self), () => ({
+            return projectiles.update(battle, projectilesQuery.ref(self), {
                 position: [1, 0], state: { arrived: true, nextPulseTick: battle.tick + 1 },
-            }));
+            });
         }
         if (battle.tick < self.state.nextPulseTick) return battle;
-        battle = projectiles.update(battle, projectilesQuery.ref(self), current => ({
-            state: { ...current.state, nextPulseTick: battle.tick + 1 },
-        }));
+        const currentProjectile = projectilesQuery.get(battle, projectilesQuery.ref(self));
+        battle = projectiles.update(battle, projectilesQuery.ref(self), {
+            state: { ...currentProjectile.state, nextPulseTick: battle.tick + 1 },
+        });
         return dealDamage(battle, { source: null, target: { id: 1 }, parameters: parameters(3, "TRUE") }).state;
     } };
     const created = create(battle(unit(1)), pulse, { arrived: false, nextPulseTick: 0 });
@@ -235,7 +239,8 @@ test("Ordinary stop may hit the saved original target while DISPEL omits that co
 test("Original-target hit progress recorded before business prevents synchronous Stop fallback from repeating it", () => {
     let reference;
     const definition = { ...arrow, id: "reentrant-hit", onTick(battle, self) {
-        battle = projectiles.update(battle, projectilesQuery.ref(self), current => ({ state: { ...current.state, hit: true } }));
+        const currentProjectile = projectilesQuery.get(battle, projectilesQuery.ref(self));
+        battle = projectiles.update(battle, projectilesQuery.ref(self), { state: { ...currentProjectile.state, hit: true } });
         battle = projectiles.stop(battle, reference);
         return dealDamage(battle, { source: self.state.source, target: { id: self.state.target }, parameters: parameters(self.state.power, "TRUE") }).state;
     } };
@@ -264,7 +269,7 @@ test("Battle commands stop in order before survivors advance and ignore duplicat
     const observed = [];
     const definition = { id: "command", onTick(battle, self) {
         observed.push(["advance", self.id]);
-        return projectiles.update(battle, projectilesQuery.ref(self), () => ({ position: [1, 0] }));
+        return projectiles.update(battle, projectilesQuery.ref(self), { position: [1, 0] });
     }, onEnd(battle, self) { observed.push(["stop", self.id]); return battle; } };
     let initial = battle();
     for (let index = 0; index < 4; index++) initial = create(initial, definition).state;
@@ -281,7 +286,7 @@ test("Runtime freezes Projectile candidates before Unit callbacks, Action output
     const grandchild = { id: "grandchild", onTick(battle, self) { observed.push([self.definition.id, battle.tick]); return battle; } };
     const fromUnit = { id: "unit-child", onStart(battle) { observed.push(["unit-create", battle.tick]); return battle; }, onTick(battle, self) {
         observed.push([self.definition.id, battle.tick]);
-        return self.state.spawned ? battle : create(projectiles.update(battle, projectilesQuery.ref(self), () => ({ state: { spawned: true } })), grandchild).state;
+        return self.state.spawned ? battle : create(projectiles.update(battle, projectilesQuery.ref(self), { state: { spawned: true } }), grandchild).state;
     } };
     const fromAction = { id: "action-child", onStart(battle) { observed.push(["action-create", battle.tick]); return battle; }, onTick(battle, self) { observed.push([self.definition.id, battle.tick]); return battle; } };
     const source = unit(0, { hooks: [{ id: "test/tick", stage: "tick", invoke(battle) {

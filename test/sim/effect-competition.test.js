@@ -53,7 +53,7 @@ test("effect groups: replacing the selected rule withdraws old output and restor
     assert.equal(get(battle, first).enabled, true);
     assert.equal(get(battle, second).status, "ACTIVE");
     assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 0))), 150);
-    battle = effect.update(battle, first, data => ({ amount: 30 }));
+    battle = effect.setData(battle, first, { amount: 30 });
     battle = effect.end(battle, second);
     assert.equal(get(battle, first).status, "ACTIVE");
     assert.equal(get(battle, first).data.amount, 30);

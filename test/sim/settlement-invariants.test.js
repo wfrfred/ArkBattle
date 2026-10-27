@@ -21,7 +21,7 @@ test("settlement invariants: invalid final damage preserves its input despite pr
         let completed = 0;
         const content = damageEffect("invalid-damage", { uses: 0 }, [
             { stage: "receiving", invoke(state, context, self, pending) {
-                state = setSelf(state, context, self, current => ({ ...current, uses: current.uses + 1 }));
+                state = setSelf(state, context, self, { ...self.data, uses: self.data.uses + 1 });
                 state = heal(state, healingRequest(10)).state;
                 return { state, value: { ...pending, amount: malformed ? invalid : 30 } };
             } },
@@ -47,7 +47,7 @@ test("settlement invariants: invalid final healing preserves its input despite p
         let reactions = 0;
         const content = healingEffect("invalid-healing", { uses: 0 }, [
             { stage: "receiving", invoke(state, context, self, pending) {
-                state = setSelf(state, context, self, current => ({ ...current, uses: current.uses + 1 }));
+                state = setSelf(state, context, self, { ...self.data, uses: self.data.uses + 1 });
                 state = settle(state, damageRequest(10)).state;
                 return { state, value: { ...pending, amount: malformed ? invalid : 30 } };
             } },

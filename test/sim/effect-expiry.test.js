@@ -59,7 +59,8 @@ test("effect deadlines: layered content renews the same identity and ends only a
                     return effect.end(state, effectRef(self), "LAYERS_EXHAUSTED");
                 }
                 const deadline = state.tick + 2;
-                state = effect.update(state, effectRef(self), data => ({ ...data, layers, deadline }));
+                const currentData = effect.get(state, effectRef(self)).data;
+                state = effect.setData(state, effectRef(self), { ...currentData, layers, deadline });
                 return replaceEffectFixture(
                     state,
                     effectRef(self),

@@ -10,7 +10,7 @@ import {
     compileAttributeModifiers,
 } from "../../dist/data/arknights/modifier.js";
 import { remove as removeUnit } from "../../dist/core/battle/unit.js";
-import { getUnit, transitionUnit } from "../helpers/unit.js";
+import { getUnit, replaceUnit } from "../helpers/unit.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import {
     setAttackContribution,
@@ -221,13 +221,14 @@ test("attribute modifiers: native Mire percentages affect existing ASPD and norm
         {
             onEnable(state, self) {
                 const id = `${self.id}`;
-                return transitionUnit(state, self.host.id, (unit) => ({
-                    ...unit,
-                    action: setSpeedContribution(unit.action, {
+                const currentUnit = getUnit(state, self.host.id);
+                return replaceUnit(state, ({
+                    ...currentUnit,
+                    action: setSpeedContribution(currentUnit.action, {
                         id,
                         value: [sampled.get("ATTACK_SPEED")],
                     }),
-                    locomotion: setMoveSpeedContribution(unit.locomotion, {
+                    locomotion: setMoveSpeedContribution(currentUnit.locomotion, {
                         id,
                         value: [sampled.get("MOVE_SPEED")],
                     }),
@@ -235,10 +236,11 @@ test("attribute modifiers: native Mire percentages affect existing ASPD and norm
             },
             onDisable(state, self) {
                 const id = `${self.id}`;
-                return transitionUnit(state, self.host.id, (unit) => ({
-                    ...unit,
-                    action: removeSpeedContribution(unit.action, id),
-                    locomotion: removeMoveSpeedContribution(unit.locomotion, id),
+                const currentUnit1 = getUnit(state, self.host.id);
+                return replaceUnit(state, ({
+                    ...currentUnit1,
+                    action: removeSpeedContribution(currentUnit1.action, id),
+                    locomotion: removeMoveSpeedContribution(currentUnit1.locomotion, id),
                 }));
             },
         },
@@ -349,7 +351,7 @@ test("attribute modifiers: inspiration samples belong to the Effect input and re
     work = effects.setEnabled(work, ref, true);
     assert.equal(resolveAttack(work, unitRef(receiver)), 80);
     const sampledInput = sampleInput(work);
-    work = effects.update(work, ref, () => sampledInput);
+    work = effects.setData(work, ref, sampledInput);
     work = refreshContribution(work, ref, program, output);
     assert.equal(resolveAttack(work, unitRef(receiver)), 140);
     work = removeUnit(work, 0, "RETREAT");

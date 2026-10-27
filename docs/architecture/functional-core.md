@@ -88,10 +88,10 @@ applyDamage(request, calculation) → Result<DamageOutcome>
 calculateHealing(battle, request) → Result<CalculatedHealing | undefined>
 applyHealing(request, calculation) → Result<HealingOutcome>
 install(battle, hostRef, definition, initial) → Result<Ref<Effect<S, H>> | undefined>
-effects.update(battle, effectRef, current => nextData) → BattleState
+effects.setData(battle, effectRef, nextData) → BattleState
 actions.start(battle, actionRef) → Result<StartOutcome<P, E>>
-actions.updateState(battle, actionRef, current => nextState) → BattleState
-actions.updateExecution(battle, executionRef, current => nextState) → BattleState
+actions.setState(battle, actionRef, nextState) → BattleState
+actions.setExecutionState(battle, executionRef, nextState) → BattleState
 end(battle, ref, reason?) → BattleState
 actions.advance(battle, executionRef) → BattleState
 ```
@@ -220,11 +220,13 @@ candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定�
 
 Unit 持有不可变 Effects 容器，容器内部使用私有 Store 保存完整实例及 ID 进度。普通 `get(id)`／`values()` 只承诺公共 View 的身份、参与状态、来源、scopes 和定义元数据，不暴露私有 data 或完整回调。`values()`／`keys()` 返回绑定容器版本的 Query。精确 Ref 查询保留已有类型证明；`get(id, definition)` 检查 Definition 对象身份；通用生命周期操作通过 `read(id, reader)` 在同一组泛型下访问完整实例与 Definition。
 
-容器不接收战斗状态，也不决定生命周期阶段；完整 replace 由 Core 提交已经配对的值。Effect 容器保存宿主内 ID 进度，Action 的 nextExecutionId 保存于 Capability；Actions 按配置 ID 保存聚合条目，本轮终结只清空 execution。普通内容通过 `effects.update(battle, ref, current => next)` 更新私有 data，Action 的 updateExecution 通过本轮 Execution Ref 使用同样形式更新 execution.state，updateState／updateCooldown 通过持久 Action Ref 分别更新持久 state／Cooldown。Action Ref 由 host 与 Definition 定位，保留私有类型配对；Execution Ref 仍由 host 与本轮 execution.id 定位。两种引用读取同一聚合条目，不增加运行容器或 ID 分配。操作从最新 battle 读取当前载荷，缺失时不调用 transform，返回相同载荷引用时不生成新 battle。Action 的 execution 为 ENDING 时不允许普通执行更新；持久字段和 Effect 的结束清理仍按各自协议更新。
+容器不接收战斗状态，也不决定生命周期阶段；完整 replace 由 Core 提交已经配对的值。Effect 容器保存宿主内 ID 进度，Action 的 nextExecutionId 保存于 Capability；Actions 按配置 ID 保存聚合条目，本轮终结只清空 execution。普通内容通过 `effects.setData(battle, ref, nextData)` 提交私有 data，Action 的 setExecutionState 通过本轮 Execution Ref 使用同样形式设置 execution.state，setState／setCooldown 通过持久 Action Ref 分别设置持久 state／Cooldown。Action Ref 由 host 与 Definition 定位，保留私有类型配对；Execution Ref 仍由 host 与本轮 execution.id 定位。两种引用读取同一聚合条目，不增加运行容器或 ID 分配。操作从最新 battle 读取当前实例，只替换指定字段；给定载荷与当前字段引用相同时不生成新 battle。Action 的 execution 为 ENDING 时不允许普通执行写入；持久字段和 Effect 的结束清理仍按各自协议更新。
 
-Projectile 的异构容器归 projectile/projectiles.ts，状态仍由 Battlefield 持有，完整 battle/projectile.ts 操作直接替换容器。Projectile 使用同样的 latest-state 更新原则，但其 transform 直接读取完整只读实例，并返回 position／state 的局部更新；Core 只提取允许字段，ACTIVE 与 ENDING 均可写。Runtime 在整个 Step 的阶段回调开始前固定候选 Ref，逐项读取最新 ACTIVE 实例，本次新建实例不参与正常推进。
+Projectile 的异构容器归 projectile/projectiles.ts，状态仍由 Battlefield 持有，完整 battle/projectile.ts 操作直接替换容器。Projectile 的 update 接收已经计算好的 `{ position?, state? }`；Core 从当前实例保留未提供字段，只提取允许写入的 position／state，ACTIVE 与 ENDING 均可写。Runtime 在整个 Step 的阶段回调开始前固定候选 Ref，逐项读取最新 ACTIVE 实例，本次新建实例不参与正常推进。
 
-transform 是纯局部值转换，不修改输入或执行战斗操作；固定实例字段与生命周期由所属领域操作维护。`NoInfer` 限制新值参与泛型推导；调用者必须保留实例与 Definition 的原始私有类型关联。Ref 可协变查询，但借预先弱化的完整 Ref 写入不兼容数据属于调用契约错误，不增加运行时形状校验。Action 容器的 toJSON 诊断保存聚合条目与私有载荷，执行 ID 进度另由 Capability 保存；Effect 容器诊断同时保存私有载荷和自身 ID 进度。诊断不扩大普通 View，也不作为 Definition、回调或容器的恢复协议。
+通用写回只接收结果值。调用方从当前 battle 查询并局部计算下一值，计算与提交之间不执行其他完整操作；跨领域调用后先接续 battle，再重读所需实时状态。Skill Instance／Activation 的 setData 仍是局部对象操作，内部 replace 负责向战斗提交；私有 Contribution 集合 setter 也只接收已经算好的集合。Hook、生命周期程序、容器 read 与动态 Contribution Input 保留各自的回调职责。固定实例字段与生命周期由所属领域操作维护。
+
+`NoInfer` 限制新值参与泛型推导；调用者必须保留实例与 Definition 的原始私有类型关联。Ref 可协变查询，但借预先弱化的完整 Ref 写入不兼容数据属于调用契约错误，不增加运行时形状校验。Action 容器的 toJSON 诊断保存聚合条目与私有载荷，执行 ID 进度另由 Capability 保存；Effect 容器诊断同时保存私有载荷和自身 ID 进度。诊断不扩大普通 View，也不作为 Definition、回调或容器的恢复协议。
 
 self 是输入版本的值。嵌套调用返回后，遵守 [状态接续后的读取与续执行](#状态接续后的读取与续执行)：实时事实从返回 State 重新查询，明确采样与历史载荷保留。不使用动态 getter 偷偷追踪一个可变工作对象，也不以旧整份 Unit 覆盖新版本。
 
@@ -255,14 +257,14 @@ self 是输入版本的值。嵌套调用返回后，遵守 [状态接续后的�
 以吸收伤害后触发治疗的盾程序为例，派发方传入确定类型的 self 与伤害输入，程序按以下顺序接续：
 
 1. 从当前 battle 按 typed Ref 取得 Effect，使用当前 data 局部计算吸收结果。
-2. 用 `effects.update(battle, ref, current => next)` 把本次盾数消耗写入当前 data；计算与写入之间不推进 battle，transform 不执行后续业务。
+2. 用 `effects.setData(battle, ref, nextData)` 提交本次盾数消耗的结果值；计算与写入之间不推进 battle。
 3. 调用 Healing 的完整操作，并接续返回的 battle。
 4. 用 Effect 身份从新 battle 读取当前实例；若内容条件要求结束，调用 end 并接续其返回值。
 5. 返回最终 battle 与本次吸收结果。
 
 这不规定所有次数盾都在零层时结束，也不宣称所有盾的治疗、结束顺序相同。Effect self 已保存 typed host Ref，定位引用由实例产生，不为示例引入另一种通用 Context。
 
-`effects.update` 只写私有 data，不自动刷新 Contribution；需要修改已登记贡献的内容显式执行对应刷新。安装／启停／绑定／结束仍由生命周期操作完成，不通过私有数据转换绕过这些规则。
+`effects.setData` 只写私有 data，不自动刷新 Contribution；需要修改已登记贡献的内容显式执行对应刷新。安装／启停／绑定／结束仍由生命周期操作完成，不通过私有数据转换绕过这些规则。
 
 Healing 中若嵌套 Damage，Damage 必须把冷却消耗、HP、致死裁决、实际退场和 Effect 后继形成的新状态返回给 Healing，再返回外层盾程序。每层报告描述本次操作，不用最终 HP 净变化反推本次伤害／治疗量。
 

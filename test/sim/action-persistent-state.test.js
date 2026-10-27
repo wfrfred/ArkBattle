@@ -56,7 +56,8 @@ test("Action completion and cancellation clear execution while preserving persis
         initialize(state) { initialized++; return { state, value: { count: 0 } }; },
         onTick(state, source, self) {
             const count = self.state.count;
-            return { state: actions.updateState(state, actions.ref(source, self.definition), current => ({ count: current.count + 1 })), value: count === 0 };
+            const currentState = actions.getAction(state, actions.ref(source, self.definition)).state;
+            return { state: actions.setState(state, actions.ref(source, self.definition), { count: currentState.count + 1 }), value: count === 0 };
         },
     });
     const fixture = create(fixtureBattle(), actionCapability(definition));
@@ -86,8 +87,8 @@ test("Action startup commits cooldown using the latest aggregate after callbacks
     const sibling = program("sibling");
     const definition = program("nested", {
         prepare(state, source, self) {
-            state = actions.updateState(state, actions.ref(source, self.definition), () => ({ count: 7 }));
-            state = actions.updateState(state, actions.ref(source, sibling), () => ({ count: 9 }));
+            state = actions.setState(state, actions.ref(source, self.definition), { count: 7 });
+            state = actions.setState(state, actions.ref(source, sibling), { count: 9 });
             state = actions.resetCooldown(state, actions.ref(source, sibling));
             return { state, value: { sampledCount: self.state.count } };
         },
@@ -109,8 +110,10 @@ test("Action termination preserves persistent and cooldown updates from dependen
         onEnd(state, source, self) {
             trace.push(["end", self.execution.status, self.state.count, self.cooldown.readyAtTick]);
             assert.deepEqual(actions.start(state, actions.ref(source, self.definition)).value, { type: "REJECTED", reason: "CASTING" });
-            state = actions.updateState(state, actions.ref(source, self.definition), current => ({ count: current.count + 1 }));
-            return actions.updateCooldown(state, actions.ref(source, self.definition), current => ({ ...current, readyAtTick: 80 }));
+            const currentState = actions.getAction(state, actions.ref(source, self.definition)).state;
+            state = actions.setState(state, actions.ref(source, self.definition), { count: currentState.count + 1 });
+            const currentCooldown = actions.getAction(state, actions.ref(source, self.definition)).cooldown;
+            return actions.setCooldown(state, actions.ref(source, self.definition), { ...currentCooldown, readyAtTick: 80 });
         },
     });
     const fixture = create(fixtureBattle(), actionCapability(definition));
@@ -119,8 +122,10 @@ test("Action termination preserves persistent and cooldown updates from dependen
         id: "ending-dependency", initialize: () => ({}),
         onEnd(state) {
             trace.push(["dependency"]);
-            state = actions.updateState(state, actions.ref(fixture.source, definition), current => ({ count: current.count + 1 }));
-            return actions.updateCooldown(state, actions.ref(fixture.source, definition), current => ({ ...current, readyAtTick: 50 }));
+            const currentState = actions.getAction(state, actions.ref(fixture.source, definition)).state;
+            state = actions.setState(state, actions.ref(fixture.source, definition), { count: currentState.count + 1 });
+            const currentCooldown = actions.getAction(state, actions.ref(fixture.source, definition)).cooldown;
+            return actions.setCooldown(state, actions.ref(fixture.source, definition), { ...currentCooldown, readyAtTick: 50 });
         },
     };
     const installed = effects.install(started.state, fixture.source, dependency, { scopes: [{ type: "ACTION", ref: started.value.ref }] });

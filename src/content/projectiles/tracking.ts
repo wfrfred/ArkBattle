@@ -83,9 +83,9 @@ export function hit<S extends State>(
         return battle;
     }
 
-    battle = update(battle, reference, (latest) => ({
-        state: { ...latest.state, hitAttempted: true },
-    }));
+    battle = update(battle, reference, {
+        state: { ...current.state, hitAttempted: true },
+    });
     const marked = projectiles.get(battle, reference)!;
     const target = units.get(battle, marked.state.target);
 
@@ -134,10 +134,10 @@ export function advance<S extends State>(
           );
     const stopAtTick = reached ? battle.tick + self.state.stopDelayTicks : null;
 
-    battle = update(battle, reference, (latest) => ({
+    battle = update(battle, reference, {
         position,
-        state: { ...latest.state, destination, stopAtTick },
-    }));
+        state: { ...self.state, destination, stopAtTick },
+    });
 
     if (!reached) {
         return battle;

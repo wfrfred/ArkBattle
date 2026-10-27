@@ -7,7 +7,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize as initializeBattle, step as stepBattle } from "../../dist/core/battle/runtime.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
-import { getUnit, transitionUnit } from "../helpers/unit.js";
+import { getUnit, initialize, replaceUnit } from "../helpers/unit.js";
 import {
     notifyDeployed,
 } from "../../dist/core/battle/deployment/index.js";
@@ -15,7 +15,7 @@ import { setHook, removeHook } from "../../dist/core/unit/capability/deployable/
 import { createDefinition as createDeployable } from "../helpers/deployable.js";
 import { remove, update as updateUnit } from "../../dist/core/battle/unit.js";
 
-import { initialize } from "../helpers/unit.js";
+
 
 import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
 import { install } from "../../dist/core/unit/effect/index.js";
@@ -66,12 +66,18 @@ const record = (id, invoke, accepts) => ({
         return { state: invoke(state, deployed), value: undefined };
     },
 });
-const addHook = (state, unitId, entry) => transitionUnit(state, unitId, (unit) => ({
-    ...unit, deployable: setHook(unit.deployable, entry),
-}));
-const deleteHook = (state, unitId, id) => transitionUnit(state, unitId, (unit) => ({
-    ...unit, deployable: removeHook(unit.deployable, id),
-}));
+const addHook = (state, unitId, entry) => {
+    const currentUnit = getUnit(state, unitId);
+    return replaceUnit(state, {
+    ...currentUnit, deployable: setHook(currentUnit.deployable, entry),
+});
+};
+const deleteHook = (state, unitId, id) => {
+    const currentUnit2 = getUnit(state, unitId);
+    return replaceUnit(state, {
+    ...currentUnit2, deployable: removeHook(currentUnit2.deployable, id),
+});
+};
 
 test("deployment observers consume preceding state and recheck registration and eligibility", () => {
     const deployed = unit(1);
@@ -79,7 +85,8 @@ test("deployment observers consume preceding state and recheck registration and 
     const calls = [];
     state = addHook(state, 0, record("first", (state) => {
         calls.push("first");
-        state = transitionUnit(state, 0, (unit) => ({ ...unit, vitality: { ...unit.vitality, hp: 70 } }));
+        const currentUnit3 = getUnit(state, 0);
+        state = replaceUnit(state, { ...currentUnit3, vitality: { ...currentUnit3.vitality, hp: 70 } });
         return deleteHook(state, 0, "removed");
     }));
     state = addHook(state, 0, record("removed", () => assert.fail("removed observer ran")));
@@ -126,7 +133,8 @@ test("a nested deployment notification returns its state before the outer observ
             assert.equal(getUnit(state, 0).vitality.hp, 50);
             return state;
         }
-        return transitionUnit(state, 0, (unit) => ({ ...unit, vitality: { ...unit.vitality, hp: 50 } }));
+        const currentUnit4 = getUnit(state, 0);
+        return replaceUnit(state, { ...currentUnit4, vitality: { ...currentUnit4.vitality, hp: 50 } });
     }));
     const next = notifyDeployed(state, { unit: deployed, kind: "MANUAL" });
     assert.deepEqual(calls, ["MANUAL", "AUTOMATIC"]);

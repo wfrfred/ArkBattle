@@ -142,11 +142,12 @@ function harness({ stackCount = 3, maxValidStackCnt = -1 } = {}) {
                     self.data.lifetimeTicks, state.tick,
                 );
                 if (plan.type === "FINISH") return effects.end(state, effectRef(self), "EXPIRED");
-                state = effects.update(state, effectRef(self), data => ({
-                    ...data,
+                const currentData = effects.get(state, effectRef(self)).data;
+                state = effects.setData(state, effectRef(self), {
+                    ...currentData,
                     stackCount: plan.stackCount,
-                    sample: plan.reloadModifiers ? sample(plan.stackCount) : data.sample,
-                }));
+                    sample: plan.reloadModifiers ? sample(plan.stackCount) : currentData.sample,
+                });
                 state = replaceEffectFixture(
                     state,
                     effectRef(self),

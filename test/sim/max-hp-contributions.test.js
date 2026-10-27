@@ -3,7 +3,7 @@ import { ref as unitRef } from "../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize } from "../helpers/unit.js";
-import { getUnit, transitionUnit } from "../helpers/unit.js";
+import { getUnit, replaceUnit } from "../helpers/unit.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import {
     setMaxHpContribution,
@@ -69,7 +69,7 @@ test("MaxHP outputs coordinate each setter before its lifecycle callback", () =>
     battle = effects.setEnabled(battle, ref, false);
     assert.deepEqual(pair(battle), [50, 100]);
     const current = getUnit(battle, ref.host.id).effects.values().toArray().find(effect => effect.id === ref.id);
-    battle = effects.update(battle, ref, data => ({ amount: 200 }));
+    battle = effects.setData(battle, ref, { amount: 200 });
     battle = effects.setEnabled(battle, ref, true);
     assert.deepEqual(pair(battle), [150, 300]);
     battle = effects.end(battle, ref);
@@ -106,7 +106,8 @@ test("MaxHP tick deadline and callback successor use the latest HP ratio", () =>
         onEnd: (state, self) => effects.install(state, unitRef(getUnit(state, self.host.id)), successor, {}).state,
     });
     battle = install(battle, content, 1, { scopes: [{ type: "TICK", tick: 1 }] }).state;
-    battle = transitionUnit(battle, 1, (unit) => ({ ...unit, vitality: { ...unit.vitality, hp: 40 } }));
+    const currentUnit = getUnit(battle, 1);
+    battle = replaceUnit(battle, ({ ...currentUnit, vitality: { ...currentUnit.vitality, hp: 40 } }));
     battle = effects.advance(at(battle, 1));
     assert.deepEqual(pair(battle), [30, 150]);
     assert.equal(getUnit(battle, 1).effects.values().toArray()[0].definition, successor);

@@ -23,10 +23,11 @@ test("effect time: content controls periodic intervals and state is visible befo
         {
             onTick(state, self) {
                 if (state.tick < self.data.nextTick) return state;
-                state = effect.update(state, effectRef(self), (current) => ({
+                const currentData = effect.get(state, effectRef(self)).data;
+                state = effect.setData(state, effectRef(self), {
                     nextTick: state.tick + 3,
-                    count: current.count + 1,
-                }));
+                    count: currentData.count + 1,
+                });
                 seen.push([state.tick, get(state, effectRef(self)).data.count]);
                 return state;
             },
@@ -66,7 +67,7 @@ test("effect time: periodic progress pauses while inactive and resumes from the 
         {
             onTick(state, self) {
                 const progress = self.data.progress + 1;
-                state = effect.update(state, effectRef(self), data => ({ progress: progress === 5 ? 0 : progress }));
+                state = effect.setData(state, effectRef(self), { progress: progress === 5 ? 0 : progress });
 
                 if (progress === 5) triggered.push(state.tick);
                 return state;
@@ -112,7 +113,7 @@ test("effect time: a new Effect waits for the next advance while ended candidate
             onTick(state, self) {
                 seen.push("first");
                 if (self.data.spawned) return state;
-                state = effect.update(state, effectRef(self), data => ({ spawned: true }));
+                state = effect.setData(state, effectRef(self), { spawned: true });
                 state = effect.install(
                     state,
                     unitRef(getUnit(state, self.host.id)),
@@ -148,9 +149,10 @@ test("effect time: zero shield charges do not suspend the periodic recharge Effe
         { charges: 0 },
         {
             onTick(state, self) {
-                return effect.update(state, effectRef(self), (current) => ({
-                        charges: Math.min(3, current.charges + 1),
-                    }));
+                const currentData = effect.get(state, effectRef(self)).data;
+                return effect.setData(state, effectRef(self), {
+                        charges: Math.min(3, currentData.charges + 1),
+                    });
             },
         },
     );

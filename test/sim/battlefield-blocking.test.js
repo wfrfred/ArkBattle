@@ -1,13 +1,13 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { add as addUnit, update as updateUnit, remove as removeUnit } from "../../dist/core/battle/unit.js";
-import { getUnit } from "../helpers/unit.js";
+import { getUnit, replaceUnit } from "../helpers/unit.js";
 import { update as updateFieldUnit } from "../../dist/core/battlefield/unit.js";
 import * as blocking from "../../dist/core/battle/blocking/operations.js";
 import * as query from "../../dist/core/battle/blocking/query.js";
 import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
 import * as blockable from "../../dist/core/unit/capability/blocking/blockable.js";
-import { fixture, holder, target, change, acquire, blockedIds, ownerId, capacity } from "../helpers/blocking.js";
+import { fixture, holder, target, acquire, blockedIds, ownerId, capacity } from "../helpers/blocking.js";
 
 test("Field and Unit updates do not acquire blocking before an explicit search", () => {
     let battle = fixture([holder(), target(20, { position: [4, 1] })]);
@@ -62,12 +62,14 @@ test("new blockers and restored eligibility wait for search; existing relations 
     battle = addUnit(battle, holder(5, { position: [2.125, 1] }));
     battle = blocking.advance(battle);
     assert.equal(ownerId(battle), 10);
-    battle = change(battle, 10, unit => ({
-        ...unit, blocker: blocker.setRule(unit.blocker, { id: "disabled", allows: () => false }),
-    }));
+    const currentUnit = getUnit(battle, 10);
+    battle = replaceUnit(battle, {
+        ...currentUnit, blocker: blocker.setRule(currentUnit.blocker, { id: "disabled", allows: () => false }),
+    });
     assert.equal(ownerId(battle), undefined);
     assert.deepEqual(blockedIds(battle, 10), []);
-    battle = change(battle, 10, unit => ({ ...unit, blocker: blocker.removeRule(unit.blocker, "disabled") }));
+    const currentUnit2 = getUnit(battle, 10);
+    battle = replaceUnit(battle, { ...currentUnit2, blocker: blocker.removeRule(currentUnit2.blocker, "disabled") });
     assert.equal(ownerId(battle), undefined);
     battle = acquire(battle);
     assert.equal(ownerId(battle), 10);
@@ -83,7 +85,8 @@ for (const [name, transform] of [
     test(`updateUnit immediately releases invalid relations when blocker ${name}`, () => {
         let battle = acquire(fixture([holder(), holder(11, { position: [3, 1] }), target()]));
         const before = battle;
-        battle = change(battle, 10, transform);
+        const currentUnit3 = getUnit(battle, 10);
+        battle = replaceUnit(battle, transform(currentUnit3));
         assert.equal(ownerId(battle), undefined);
         assert.deepEqual(blockedIds(battle), []);
         assert.equal(ownerId(before), 10);
@@ -112,9 +115,10 @@ test("capacity shrinking removes the ordered tail until the remaining prefix fit
     assert.deepEqual(blockedIds(battle), []);
     battle = acquire(battle);
     assert.deepEqual(blockedIds(battle), [20, 21]);
-    battle = change(battle, 20, unit => ({
-        ...unit, blockable: blockable.setVolumeContribution(unit.blockable, { id: "larger", value: 2 }),
-    }));
+    const currentUnit4 = getUnit(battle, 20);
+    battle = replaceUnit(battle, {
+        ...currentUnit4, blockable: blockable.setVolumeContribution(currentUnit4.blockable, { id: "larger", value: 2 }),
+    });
     assert.deepEqual(blockedIds(battle), []);
     assert.equal(query.usedCapacity(battle, { id: 10 }), 0);
 });
@@ -122,8 +126,10 @@ test("capacity shrinking removes the ordered tail until the remaining prefix fit
 test("existing blocking is retained beyond acquisition distance and radius changes only affect search", () => {
     let battle = acquire(fixture([holder(), target()]));
     const stored = getUnit(battle, 10).blocker.blocked[0];
-    battle = change(battle, 20, unit => ({ ...unit, position: [8, 1] }));
-    battle = change(battle, 10, unit => ({ ...unit, blocker: { ...unit.blocker, geometry: { radius: 0 } } }));
+    const currentUnit5 = getUnit(battle, 20);
+    battle = replaceUnit(battle, { ...currentUnit5, position: [8, 1] });
+    const currentUnit6 = getUnit(battle, 10);
+    battle = replaceUnit(battle, { ...currentUnit6, blocker: { ...currentUnit6.blocker, geometry: { radius: 0 } } });
     assert.equal(getUnit(battle, 10).blocker.blocked[0], stored);
     assert.equal(ownerId(battle), 10);
     battle = blocking.release(battle, { id: 20 });
@@ -142,7 +148,10 @@ test("search uses inclusive radius and can acquire an out-of-map target", () => 
 
 test("ownership updates append and remove incrementally; an equivalent owner Ref preserves relation identity", () => {
     let battle = fixture([holder(10, { capacity: 3 }), target(20), target(21), target(22)]);
-    const assign = (state, id, owner) => change(state, id, unit => ({ ...unit, blockable: { ...unit.blockable, blocker: owner } }));
+    const assign = (state, id, owner) => {
+        const currentUnit7 = getUnit(state, id);
+        return replaceUnit(state, { ...currentUnit7, blockable: { ...currentUnit7.blockable, blocker: owner } });
+    };
     battle = assign(battle, 21, { id: 10 });
     battle = assign(battle, 20, { id: 10 });
     const before = getUnit(battle, 10).blocker.blocked;
@@ -159,8 +168,11 @@ test("ownership updates append and remove incrementally; an equivalent owner Ref
 
 test("a direct non-null ownership transfer is a contract error", () => {
     const battle = acquire(fixture([holder(), holder(11), target()]));
-    assert.throws(() => change(battle, 20, unit => ({
-        ...unit, blockable: { ...unit.blockable, blocker: { id: 11 } },
-    })), /release|transfer|ownership|blocker/i);
+    assert.throws(() => {
+        const currentUnit8 = getUnit(battle, 20);
+        return replaceUnit(battle, {
+        ...currentUnit8, blockable: { ...currentUnit8.blockable, blocker: { id: 11 } },
+    });
+    }, /release|transfer|ownership|blocker/i);
     assert.equal(ownerId(battle), 10);
 });

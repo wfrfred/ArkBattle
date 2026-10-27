@@ -79,13 +79,11 @@ test("action storage: replacements preserve earlier instances and never recreate
         source = unitRef(getUnit(initial, 0));
     const started = actions.start(initial, actions.ref(source, definition)),
         self = actions.getExecution(started.state, started.value.ref);
-    const changed = actions.updateExecution(started.state, executionRef(started.value.ref.host, self), () => ({ count: 1 }));
+    const changed = actions.setExecutionState(started.state, executionRef(started.value.ref.host, self), { count: 1 });
     assert.equal(actions.getExecution(changed, started.value.ref).execution.state.count, 1);
     assert.equal(actions.getExecution(started.state, started.value.ref).execution.state.count, 0);
     const cancelled = actions.cancel(changed, started.value.ref, "SCRIPT");
-    assert.throws(() => actions.updateExecution(cancelled, executionRef(started.value.ref.host, self), () => {
-        assert.fail("ended Action updated");
-    }), /unknown action execution: 0/);
+    assert.throws(() => actions.setExecutionState(cancelled, executionRef(started.value.ref.host, self), { count: 9 }), /unknown action execution: 0/);
     const restarted = actions.start({ ...cancelled, tick: 10 }, actions.ref(source, definition));
     assert.equal(restarted.value.type, "STARTED");
     assert.notEqual(restarted.value.ref.id, started.value.ref.id);
@@ -98,17 +96,21 @@ test("action storage: private state updates cannot change the fixed definition a
     const initial = battle(unit(0, { action: definition }));
     const started = actions.start(initial, actions.ref(unitRef(getUnit(initial, 0)), definition));
     const self = actions.getExecution(started.state, started.value.ref);
-    const changed = actions.updateExecution(started.state, executionRef(started.value.ref.host, self), current => ({ ...current, definition: other }));
+    const currentState = actions.getExecution(started.state, executionRef(started.value.ref.host, self)).execution.state;
+    const changed = actions.setExecutionState(started.state, executionRef(started.value.ref.host, self), { ...currentState, definition: other });
     assert.equal(actions.getExecution(changed, started.value.ref).definition, definition);
     assert.equal(actions.getExecution(changed, started.value.ref).execution.state.definition, other);
     assert.equal(actions.getExecution(started.state, started.value.ref), self);
 });
 
 test("action storage: a throwing later instance cannot mutate earlier published progress", () => {
-    const advanceCount = (state, source, self) => ({
-        state: actions.updateExecution(state, executionRef(source, self), currentState => ({ count: currentState.count + 1 })),
+    const advanceCount = (state, source, self) => {
+        const currentState2 = actions.getExecution(state, executionRef(source, self)).execution.state;
+        return ({
+        state: actions.setExecutionState(state, executionRef(source, self), { count: currentState2.count + 1 }),
         value: false,
     });
+    };
     const first = program("first", { onTick: advanceCount });
     const second = program("second", {
         onTick(state, source, self) {
@@ -134,8 +136,9 @@ test("action storage: a throwing later instance cannot mutate earlier published 
 test("action: startup rules prohibit new instances while an accepted program keeps its own continuation", () => {
     const first = program("running", {
         onTick(state, source, self) {
+            const currentState2 = actions.getExecution(state, executionRef(source, self)).execution.state;
             return {
-                state: actions.updateExecution(state, executionRef(source, self), currentState => ({ count: currentState.count + 1 })),
+                state: actions.setExecutionState(state, executionRef(source, self), { count: currentState2.count + 1 }),
                 value: state.tick >= 1,
             };
         },

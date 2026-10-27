@@ -24,7 +24,7 @@ Mechanism 使用全场唯一的 Typed Ref，私有 State 与 Definition 在容�
 
 - `create(battle, definition, options)` 初始化并登记实例，返回 Ref。
 - `get(battle, ref)` 查询当前实例。
-- `update(battle, ref, transform)` 仅更新私有 State。
+- `setState(battle, ref, state)` 接收已经计算好的私有 State，只替换该字段；当前实例的其他事实由 Core 保留，相同 State 引用返回原 BattleState。
 - `setActive(battle, ref, active)` 切换运行资格，停用时同步执行内容清理。
 - `remove(battle, ref)` 先进入 ENDING，再同步清理并注销。
 - `advance(battle)` 固定本轮候选，逐项读取最新 ACTIVE 实例并执行 `onTick(battle, self)`。

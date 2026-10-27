@@ -38,7 +38,7 @@ Effect 用于表达属性增益、护盾、周期伤害与治疗、技能附带�
 
 ## 2. Definition、实例与泛型
 
-Definition 是可共享的静态行为，Effect 是附着在一个 Unit 上的运行实例。实例直接保存 Definition 引用；创建接收 Definition，查询恢复类型，私有数据更新通过精确 Ref 和纯转换函数读取当前数据。
+Definition 是可共享的静态行为，Effect 是附着在一个 Unit 上的运行实例。实例直接保存 Definition 引用；创建接收 Definition，查询恢复类型，私有数据写回使用精确 Ref 与已经计算好的结果值。
 
 BattleState 是 battle 模块的不可变 State 数据值：
 
@@ -97,7 +97,7 @@ S 是实例私有数据的类型，例如护盾层数、周期进度或 Aura 的
 | `effects.replace(ref, next)`  | Core 完整替换；检查 Ref 与 next 的身份，并保留 Definition 对象及宿主 |
 | `effects.remove(id)`          | 返回移除实例的新容器，保留 ID 进度                        |
 
-具体内容已知 Definition 时，用 `get(id, definition)` 同时检查实例 ID 和 Definition 对象身份，再读取完整的 `Effect<S, H>`。仅字符串 ID 相同的另一个 Definition 不匹配。已持有精确 Ref 时直接使用 `get(ref)`，更新私有数据则调用领域 `update()`。
+具体内容已知 Definition 时，用 `get(id, definition)` 同时检查实例 ID 和 Definition 对象身份，再读取完整的 `Effect<S, H>`。仅字符串 ID 相同的另一个 Definition 不匹配。已持有精确 Ref 时直接使用 `get(ref)`，更新私有数据则调用领域 `setData()`。
 
 通用生命周期操作不知道实例的具体 S、H，却需要保持 Definition 与 self 私有数据的类型配对。存储接口因此提供：
 
@@ -112,7 +112,7 @@ reader 对任意 S、H 都成立，不将未知条目断言为某个具体业务
 
 异构存储需要的擦除与恢复集中在容器内部，不另设业务代码需要理解的 Instance 类型。`add()` 使用当前 nextId，不接受跳号或重用旧 ID。`replace()` 检查 Ref 与替换对象的宿主、局部 ID 一致，并保留原 Definition 对象身份；即使字符串 ID 相同，也不能改用另一个 Definition。缺失实例的 replace／remove 返回原容器，删除不回收已经分配的 ID。
 
-Effects 的完整替换属于 Core 存储接口。它不接收 BattleState，不选择或执行生命周期回调，不决定覆写赢家、不检查宿主生命周期，也不结束 Scope。Core 通过它提交已完成的领域结算；内容私有数据更新使用 `update()`，许可与生命周期变化使用相应完整操作。
+Effects 的完整替换属于 Core 存储接口。它不接收 BattleState，不选择或执行生命周期回调，不决定覆写赢家、不检查宿主生命周期，也不结束 Scope。Core 通过它提交已完成的领域结算；内容私有数据更新使用 `setData()`，许可与生命周期变化使用相应完整操作。
 
 不可变 State 直接共享这个容器。容器的 `toJSON()` 返回 `{ instances, nextId }`，其中 instances 是显式物化的诊断 Snapshot 数组；该类型在 View 之外保存 `data: unknown`，让 JSON 诊断包含私有数据与 ID 进度。诊断表示独立于普通 Query，不承担恢复 Definition、回调或运行容器的职责。
 
@@ -242,7 +242,7 @@ Contribution 的登记／撤销与 Hook 的开关是两种自然接入方式，�
 | ------------------------------------------------- | -------------------------------------------------------- |
 | `install(battle, hostRef, definition, initial)` | 返回 `Result<Ref<Effect<S, H>> \| undefined>`，拒绝时不创建实例     |
 | `get(battle, ref)`                    | 从明确输入版本查一个实例，不转换事实                     |
-| `update(battle, ref, transform)`                 | 对最新私有 data 作纯转换，返回相应战斗版本               |
+| `setData(battle, ref, data)`                 | 设置指定实例的私有 data，返回相应战斗版本               |
 | `setEnabled(battle, ref, enabled)`               | 返回完成许可、生效变化与回调后的状态                     |
 | `setDeadline(effect, tickOrNull)`                 | 局部值转换；不自动提交或推进战斗                         |
 | `bindLifetime(battle, ref, lifetime)`              | 检查真实生命周期和 DAG，返回新状态及绑定结果             |
@@ -252,20 +252,20 @@ Contribution 的登记／撤销与 Hook 的开关是两种自然接入方式，�
 closeLifetime(battle, lifetime, reason?) 是 battle/execution/lifetime.ts 的 Core 生命周期协作，供所属领域在完整终止流程中调用，不从 Effect 公共入口导出。
 
 ```typescript
-function update<S extends object, H extends object>(
+function setData<S extends object, H extends object>(
     battle: BattleState,
     ref: Ref<Effect<S, H>>,
-    transform: (data: NoInfer<S>) => NoInfer<S>,
+    data: NoInfer<S>,
 ): BattleState;
 ```
 
-`update()` 从传入 BattleState 重新读取当前实例，将最新 `self.data` 交给 transform。宿主或实例缺失时抛出 RangeError，不调用 transform；transform 返回原 data 引用时也返回原 BattleState。提交只改变 data，保留身份、Definition、source、scopes、enabled、status 和编号进度。
+`setData()` 接收已经计算好的 data，从传入 BattleState 重新读取当前实例。宿主或实例缺失时抛出 RangeError；给定 data 与当前 data 引用相同时返回原 BattleState。提交只改变 data，保留当前身份、Definition、source、scopes、enabled、status 和编号进度。
 
-transform 是纯值转换，不修改输入对象、不消耗 RNG、不调用战斗操作。内容在调用前完成业务采样，转换中使用最新 data 保留未变字段。INSTALLING、INACTIVE、ACTIVE、ENDING 都允许更新私有数据；onDisable／onEnd 因而可以更新清理进度，更新不会恢复生命周期或阻止最终移除。
+内容从当前 battle 查询 data，完成业务采样和局部计算后直接提交结果值，保留未变字段。计算和提交之间不执行其他完整操作；跨领域调用后先接续其 battle，再重读所需实时状态。INSTALLING、INACTIVE、ACTIVE、ENDING 都允许设置私有数据；onDisable／onEnd 因而可以更新清理进度，写入不会恢复生命周期或阻止最终移除。
 
-`update()` 不自动重建静态 Contribution、刷新 Aura 或重新执行 onEnable。内容程序接续返回状态，需要刷新输出时明确调用对应 Capability 的操作。生命周期程序用公开函数形成并返回后继版本，self 只表示本次调用的输入实例。
+`setData()` 不自动重建静态 Contribution、刷新 Aura 或重新执行 onEnable。内容程序接续返回状态，需要刷新输出时明确调用对应 Capability 的操作。生命周期程序用公开函数形成并返回后继版本，self 只表示本次调用的输入实例。
 
-`NoInfer` 约束本次 transform 的类型推导。私有更新必须保留实例与 Definition 对应的 S／H 类型关联；Ref 可协变查询，借预先弱化的完整 Ref 写入不兼容私有数据属于调用契约错误，不增加运行时数据形状检查。
+`NoInfer` 约束本次结果值的类型推导。私有更新必须保留实例与 Definition 对应的 S／H 类型关联；Ref 可协变查询，借预先弱化的完整 Ref 写入不兼容私有数据属于调用契约错误，不增加运行时数据形状检查。
 
 ### 结束流程
 
@@ -343,7 +343,7 @@ Contribution 分组平局使用 ID 字典序，Effect 覆写平局使用安装�
 
 属性增益通常在 onEnable 登记 Contribution、在 onDisable 撤销；具体 Definition 依赖所需 Capability，Effect 核心不依赖它们。Contribution 的载荷和计算模型由所属领域决定，详见[属性与贡献](capability.md#属性与贡献)。
 
-静态采样由内容决定刷新时点，动态 Contribution 在查询时只读求值。`update()` 不隐式刷新已经登记的输出；需要响应私有数据变化的内容明确更新相应 Contribution。
+静态采样由内容决定刷新时点，动态 Contribution 在查询时只读求值。`setData()` 不隐式刷新已经登记的输出；需要响应私有数据变化的内容明确更新相应 Contribution。
 
 ## 8. Aura 复用普通 Effect
 

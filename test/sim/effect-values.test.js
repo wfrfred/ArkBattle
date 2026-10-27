@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { setDeadline, deadline } from "../../dist/core/unit/effect/effect.js";
-import { get, update } from "../../dist/core/unit/effect/index.js";
+import { get, setData } from "../../dist/core/unit/effect/index.js";
 import { validateScopes } from "../../dist/core/unit/effect/operations.js";
 import { getUnit } from "../helpers/unit.js";
 import { initialize } from "../helpers/unit.js";
@@ -16,16 +16,16 @@ test("effect values: local no-ops and replacements retain the input version", ()
     const self = get(state, ref);
     assert.equal(getUnit(state, ref.host.id).effects.get(ref.id, definition("identity")), undefined);
     assert.equal(setDeadline(self, null), self);
-    assert.equal(update(state, ref, data => data), state);
+    const currentData = get(state, ref).data;
+    assert.equal(setData(state, ref, currentData), state);
     const unit = getUnit(state, 0);
-    const changed = update(state, ref, data => ({ ...data, charges: 1 }));
+    const currentData2 = get(state, ref).data;
+    const changed = setData(state, ref, { ...currentData2, charges: 1 });
     assert.equal(get(state, ref).data.charges, 2);
     assert.equal(get(changed, ref).data.charges, 1);
     assert.equal(getUnit(state, 0), unit);
     assert.throws(() => unit.effects.replace({ ...ref, id: 9 }, self), TypeError);
-    assert.throws(() => update(state, { ...ref, id: 9 }, () => {
-        throw new Error("missing Effect transformed");
-    }), /unknown effect: 9/);
+    assert.throws(() => setData(state, { ...ref, id: 9 }, { charges: 1 }), /unknown effect: 9/);
 });
 
 test("effect values: deadline updates preserve lifetime constraints and reject invalid time", () => {

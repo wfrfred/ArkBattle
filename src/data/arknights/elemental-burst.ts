@@ -137,10 +137,10 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
                                 .effects.get(effectId, paralysis)!;
                             const ref = effectRef(self);
                             const remaining = self.data.remaining - 1;
-                            battle = effects.update(battle, ref, (data) => ({
-                                ...data,
+                            battle = effects.setData(battle, ref, {
+                                ...self.data,
                                 remaining,
-                            }));
+                            });
 
                             if (remaining === 0) {
                                 battle = effects.end(battle, ref, "EXPLICIT");
@@ -232,11 +232,11 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
             );
             const previousSecond = Math.floor((self.data.elapsedTicks + 1e-8) / TICKS_PER_SECOND);
             const currentSecond = Math.floor((elapsedTicks + 1e-8) / TICKS_PER_SECOND);
-            battle = effects.update(battle, ref, (data) => ({
-                ...data,
+            battle = effects.setData(battle, ref, {
+                ...self.data,
                 elapsedTicks,
                 lastAdvancedTick: battle.tick,
-            }));
+            });
 
             for (let second = previousSecond + 1; second <= currentSecond; second++) {
                 let unit = activeHost(battle, scope.ref);
@@ -268,7 +268,7 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
                     const scaler =
                         1 -
                         profile.attackReductionRatio * Math.max(0, 1 - second / durationSeconds);
-                    battle = effects.update(battle, ref, (data) => ({ ...data, scaler }));
+                    battle = effects.setData(battle, ref, { ...current.data, scaler });
                     const host = activeHost(battle, scope.ref)!;
 
                     if (!hasOffense(host)) {
@@ -358,10 +358,10 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
                     battle = effects.install(battle, units.ref(unit), paralysis).state;
                 } else {
                     const current = unit.effects.get(existing.id, paralysis)!;
-                    battle = effects.update(battle, effectRef(current), (data) => ({
-                        ...data,
+                    battle = effects.setData(battle, effectRef(current), {
+                        ...current.data,
                         remaining: profile.paralysisStacks,
-                    }));
+                    });
                 }
             }
 

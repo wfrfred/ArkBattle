@@ -39,7 +39,8 @@ test("Effect references distinguish host-local identities and retrieve current h
     assert.deepEqual(Object.keys(firstRef).sort(), ["host", "id"]);
     assert.equal(effects.get(battle, secondRef).definition, poison);
 
-    battle = effects.update(battle, firstRef, data => ({ ...data, charges: 1 }));
+    const currentData = effects.get(battle, firstRef).data;
+    battle = effects.setData(battle, firstRef, { ...currentData, charges: 1 });
 
     assert.equal(effects.get(battle, firstRef).data.charges, 1);
     assert.equal(effects.get(previous, firstRef).data.charges, 2);
@@ -61,7 +62,8 @@ test("Effect writes preserve both the host and local instance identity", () => {
     const container = units.get(installed.state, self.host).effects;
     assert.throws(() => container.replace(installed.value, moved), TypeError);
     assert.equal(effects.get(installed.state, installed.value), self);
-    const replaced = effects.update(installed.state, installed.value, data => ({ ...data, charges: 1 }));
+    const currentData = effects.get(installed.state, installed.value).data;
+    const replaced = effects.setData(installed.state, installed.value, { ...currentData, charges: 1 });
     const changed = effects.get(replaced, installed.value);
     assert.equal(changed.host, self.host);
     assert.equal(changed.id, self.id);
@@ -118,17 +120,18 @@ const restored: Effect<{ charges: number }, Vitality> | undefined = relay(retain
 if (restored !== undefined) {
     const charges: number = restored.data.charges;
     const vitalityHost: (Unit & Vitality) | undefined = units.get(battle, restored.host);
-    effects.update(battle, retained, data => ({ ...data, charges: 1 }));
-    // @ts-expect-error a precise reference fixes the private data returned by its transform.
-    effects.update(battle, retained, () => poison.data);
-    // @ts-expect-error a private-state transform retains the known field types.
-    effects.update(battle, retained, data => ({ ...data, charges: "one" }));
+    effects.setData(battle, retained, { ...restored.data, charges: 1 });
+    // @ts-expect-error a precise reference fixes the private data type.
+    effects.setData(battle, retained, poison.data);
+    // @ts-expect-error private data retains the known field types.
+    effects.setData(battle, retained, { ...restored.data, charges: "one" });
 }
 const publicRef: Ref<View> = retained;
 // @ts-expect-error public identities do not prove a private data type.
-effects.update(battle, publicRef, data => data);
-// @ts-expect-error update requires a transform rather than a data snapshot.
-effects.update(battle, retained, { charges: 1 });
+effects.setData(battle, publicRef, { charges: 1 });
+effects.setData(battle, retained, { charges: 1 });
+// @ts-expect-error Effect data is supplied as a value rather than a transform.
+effects.setData(battle, retained, data => ({ ...data, charges: 1 }));
 // @ts-expect-error an identity address is not evidence of a referent type.
 const forged: Ref<Effect<{ charges: number }, Vitality>> = identity;
 // @ts-expect-error a raw address cannot recover Effect private state.

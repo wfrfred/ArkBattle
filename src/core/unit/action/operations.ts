@@ -21,52 +21,26 @@ export type StartOutcome<P extends object, E extends object> =
           readonly reason: "SOURCE_UNAVAILABLE" | "RULE" | "COOLDOWN" | "CASTING" | "CONDITION";
       };
 
-export function updateState<P extends object, E extends object>(
+export function setState<P extends object, E extends object>(
     battle: BattleState,
     reference: Ref<Action<P, E>>,
-    transform: (current: NoInfer<P>) => NoInfer<P>,
+    state: NoInfer<P>,
 ): BattleState {
-    const { host: source, definition } = reference;
-    const unit = units.get(battle, source);
+    const { unit, action } = getAction(battle, reference);
 
-    if (unit === undefined) {
-        throw new RangeError(`unknown unit: ${source.id}`);
-    }
-
-    const current = unit.action.actions.get(definition.id, definition);
-
-    if (current === undefined) {
-        throw new TypeError("action definition is not configured for its source");
-    }
-
-    const state = transform(current.state);
-
-    return state === current.state ? battle : replaceAction(battle, unit, { ...current, state });
+    return state === action.state ? battle : replaceAction(battle, unit, { ...action, state });
 }
 
-export function updateCooldown<P extends object, E extends object>(
+export function setCooldown<P extends object, E extends object>(
     battle: BattleState,
     reference: Ref<Action<P, E>>,
-    transform: (current: cooldown.State) => cooldown.State,
+    next: cooldown.State,
 ): BattleState {
-    const { host: source, definition } = reference;
-    const unit = units.get(battle, source);
+    const { unit, action } = getAction(battle, reference);
 
-    if (unit === undefined) {
-        throw new RangeError(`unknown unit: ${source.id}`);
-    }
-
-    const current = unit.action.actions.get(definition.id, definition);
-
-    if (current === undefined) {
-        throw new TypeError("action definition is not configured for its source");
-    }
-
-    const next = transform(current.cooldown);
-
-    return next === current.cooldown
+    return next === action.cooldown
         ? battle
-        : replaceAction(battle, unit, { ...current, cooldown: next });
+        : replaceAction(battle, unit, { ...action, cooldown: next });
 }
 
 export function start<P extends object, E extends object>(
@@ -158,10 +132,10 @@ export function start<P extends object, E extends object>(
     return { state: battle, value: { type: "STARTED", ref: execution } };
 }
 
-export function updateExecution<P extends object, E extends object>(
+export function setExecutionState<P extends object, E extends object>(
     battle: BattleState,
     reference: Ref<Execution<P, E>>,
-    transform: (current: NoInfer<E>) => NoInfer<E>,
+    state: NoInfer<E>,
 ): BattleState {
     const unit = units.get(battle, reference.host);
 
@@ -180,8 +154,6 @@ export function updateExecution<P extends object, E extends object>(
     if (current.execution.status === "ENDING") {
         throw new TypeError("cannot update an ending action");
     }
-
-    const state = transform(current.execution.state);
 
     return state === current.execution.state
         ? battle
@@ -316,7 +288,12 @@ export function resetCooldown<P extends object, E extends object>(
 ): BattleState {
     battle = refreshCooldowns(battle, reference.host);
 
-    return updateCooldown(battle, reference, (current) => cooldown.reset(current, battle.tick));
+    const { unit, action } = getAction(battle, reference);
+    const next = cooldown.reset(action.cooldown, battle.tick);
+
+    return next === action.cooldown
+        ? battle
+        : replaceAction(battle, unit, { ...action, cooldown: next });
 }
 
 export function clearCooldown<P extends object, E extends object>(
@@ -325,7 +302,31 @@ export function clearCooldown<P extends object, E extends object>(
 ): BattleState {
     battle = refreshCooldowns(battle, reference.host);
 
-    return updateCooldown(battle, reference, (current) => cooldown.clear(current, battle.tick));
+    const { unit, action } = getAction(battle, reference);
+    const next = cooldown.clear(action.cooldown, battle.tick);
+
+    return next === action.cooldown
+        ? battle
+        : replaceAction(battle, unit, { ...action, cooldown: next });
+}
+
+function getAction<P extends object, E extends object>(
+    battle: BattleState,
+    reference: Ref<Action<P, E>>,
+) {
+    const unit = units.get(battle, reference.host);
+
+    if (unit === undefined) {
+        throw new RangeError(`unknown unit: ${reference.host.id}`);
+    }
+
+    const action = unit.action.actions.get(reference.definition.id, reference.definition);
+
+    if (action === undefined) {
+        throw new TypeError("action definition is not configured for its source");
+    }
+
+    return { unit, action };
 }
 
 function replaceAction<P extends object, E extends object>(
