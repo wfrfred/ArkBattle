@@ -128,9 +128,9 @@ const action = {
 
 create 在接收具体 Definition 时校验非空 ID、基础间隔与速度一次，返回的函数负责创建并登记自己的 Action；重复 ID 由 Actions.add 拒绝。createActions 只从空 Actions 开始逐项接续 BattleState 和容器，不解释内容私有 P／E，也不读取底层 Store。内容通过具名的具体 Definition 或 typed Ref 读写私有状态。
 
-Actions 以私有 Store<DefinitionId, View> 保存完整聚合对象。get(id)／values() 只公开 Definition 元数据、Cooldown 与可空的 Execution 元数据，隐藏 P、E 及完整程序回调。get(id, definition) 以 Definition 对象身份恢复具体 Action<P, E>；read(id, reader) 在未知条目上保持 P／E 配对。内部 getExecution(id) 在同一容器中找到当前执行，返回 Execution | undefined，Execution 默认使用 object／object；容器内以 as Execution 恢复完整执行视图，作为受信的类型边界，不维护第二份执行集合或索引。
+Actions 以私有 Store<DefinitionId, View> 保存完整聚合对象。get(id)／values() 只公开 Definition 元数据、Cooldown 与可空的 Execution 元数据，隐藏 P、E 及完整程序回调。get(id, definition) 以 Definition 对象身份恢复具体 Action<P, E>。内部 getAction(id) 与 getExecution(id) 分别返回 Action | undefined 与 Execution | undefined；两者默认使用 object／object，擦除具体私有数据形状，容器内以 as Action／as Execution 恢复完整条目，作为受信的类型边界。当前执行仍从同一容器查找，不维护第二份执行集合或索引。
 
-Core 推进与终止只把当前执行交给它自身 Definition 的程序，不解释私有 P／E 的形状，因此不需要高阶 reader 传递具体泛型。内容查询仍由精确 Typed Ref 恢复 P／E，字段 setter 保留 NoInfer；内部完整读取不扩大普通 get／values 的公共 View，也不公开底层 Store。
+Core 的选择、冷却刷新、推进与终止直接读取内部完整条目，保持条目与其自身 Definition 的配对，不解释私有 P／E 的形状，也不通过高阶 reader 传递具体泛型。内容查询仍由精确 Typed Ref 恢复 P／E，字段 setter 保留 NoInfer；内部完整读取不扩大普通 get／values 的公共 View，也不公开底层 Store。
 
 同一 BattleState 内的连续只读求值复用已取得的宿主和条目；完整操作返回后仍按状态接续约定重新读取。释放派发在每项 Hook 前从当前版本检查执行与宿主资格，不缓存入口时的资格。
 
@@ -175,7 +175,7 @@ export declare function isCasting(
 
 ExecutionView 只公开本轮执行视图的 Definition 元数据、Cooldown 和非空 execution 元数据，仍隐藏私有 P／E。all／forUnit 返回本次已经物化的执行 Ref 候选，包含 ENDING；isCasting 同样保留 ENDING 占位，直到 execution 被清空。
 
-Actions.toJSON 返回聚合条目的诊断 Snapshot 数组，包含不解释类型的持久 state 和 execution.state。nextExecutionId 由 Capability State 单独保存。诊断表示不扩大普通 View，也不承担恢复 Definition、回调或容器的协议。
+Actions.toJSON 通过内部 getAction 读取完整条目，返回诊断 Snapshot 数组，包含不解释类型的持久 state 和 execution.state。nextExecutionId 由 Capability State 单独保存。诊断表示不扩大普通 View，也不承担恢复 Definition、回调或容器的协议。
 
 BattleState 不另存全场 Action 集合。all 按 Unit 集合顺序展平当前执行，各宿主内按 execution.id 升序枚举，保留本宿主的启动顺序；不承诺全场启动顺序。保留旧 BattleState 即保留旧聚合条目、执行进度及 nextExecutionId。Definition 直接共享；事件使用 sourceUnitId 与宿主内 executionId 标识一次执行。
 
@@ -282,7 +282,7 @@ Runtime 采用以下候选政策：
 1. 固定本轮 Unit 候选及每个宿主当时的执行 Ref，Unit 按 ID 排序。宿主离场由完整离场操作终止其执行，不保存脱离宿主的孤立 Execution。
 2. 对每个 Unit，先推进原有执行，再刷新 Cooldown；刷新返回后重新读取来源，仍为 PRESENT 且空间在场时才运行 select，已经离场或隐藏则跳过。
 3. select 返回本轮候选 Definition ID 及接续状态，可以表达优先级、随机选择和具体模式政策；未提供时从 Actions.keys() 取得全部配置项。
-4. 候选去重后逐一通过 Actions.read 取得配对条目并调用 start，每次读取最新来源与配置。列表顺序不代表引擎赋予的业务优先级。
+4. 候选去重后逐一通过内部 Actions.getAction 取得条目及其 Definition，再构造持久 Action Ref 调用 start，每次读取最新来源与配置。列表顺序不代表引擎赋予的业务优先级。
 5. 调度器扫描入口固定的执行 Ref，每项读取最新状态并推进一次。自动候选的 start 返回 STARTED 后，Combat 显式调用 advance 推进该 Ref，保持自动动作在同 Tick 首次执行。
 6. 本轮自动候选只尝试一次，不按“仍然就绪”循环重启即时完成的同一行动。
 7. 内容直接 start 或回调内嵌套 start 只登记执行，等待调度器推进。调度入口前已登记的执行可以在本次调度中推进；调度内嵌套登记的执行不在已固定快照中，等待后续调度。

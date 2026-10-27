@@ -248,13 +248,12 @@ export function refreshCooldowns(
     let actions = unit.action.actions;
 
     for (const id of actions.keys()) {
-        actions.read(id, (self) => {
-            const period = resolveInterval(battle, source, self.definition)!;
-            const next = cooldown.resizeKeepingProgress(self.cooldown, period, battle.tick);
-            if (next !== self.cooldown) {
-                actions = actions.replace(self.definition, { ...self, cooldown: next });
-            }
-        });
+        const self = actions.getAction(id)!;
+        const period = resolveInterval(battle, source, self.definition)!;
+        const next = cooldown.resizeKeepingProgress(self.cooldown, period, battle.tick);
+        if (next !== self.cooldown) {
+            actions = actions.replace(self.definition, { ...self, cooldown: next });
+        }
     }
 
     return actions === unit.action.actions

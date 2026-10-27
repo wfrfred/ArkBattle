@@ -39,13 +39,8 @@ export class Actions {
         return self?.definition === definition ? self : undefined;
     }
 
-    read<R>(
-        id: Id,
-        reader: <P extends object, E extends object>(self: Action<P, E>) => R,
-    ): R | undefined {
-        const self = this.#store.get(id);
-
-        return self === undefined ? undefined : reader(self as Action);
+    getAction(id: Id): Action | undefined {
+        return this.#store.get(id) as Action | undefined;
     }
 
     getExecution(id: ExecutionId): Execution | undefined {
@@ -77,7 +72,7 @@ export class Actions {
 
     toJSON(): readonly Snapshot[] {
         return this.values()
-            .map(({ definition }) => this.read<Snapshot>(definition.id, (self) => self)!)
+            .map(({ definition }) => this.getAction(definition.id)!)
             .toArray();
     }
 }

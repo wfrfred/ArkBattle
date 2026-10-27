@@ -331,9 +331,10 @@ test('core combat: immutable updates preserve earlier combat state', () => {
 
   const battlefield = snapshot.battlefield;
   const previous = snapshot;
+  const currentAction = operator.action.actions.getAction(actionId);
   const changed = {
     ...operator,
-    action: { ...operator.action, actions: operator.action.actions.read(actionId, current => operator.action.actions.replace(current.definition, { ...current, cooldown: { ...current.cooldown, readyAtTick: 999999 } })) },
+    action: { ...operator.action, actions: operator.action.actions.replace(currentAction.definition, { ...currentAction, cooldown: { ...currentAction.cooldown, readyAtTick: 999999 } }) },
     allegiance: { ...operator.allegiance, side: 'ENEMY' },
     layer: { ...operator.layer, type: 'AIR' },
     targetable: setRestriction(operator.targetable,

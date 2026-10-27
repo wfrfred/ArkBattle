@@ -141,7 +141,7 @@ test('arrow damage retains an existing source identity even when its HP is zero 
 test('demo projectile damage clears removed sources for both live and cached attack policies', () => {
   for (const cachedOnly of [false, true]) {
     const actor = actionUnit(0, { action: true });
-    const attack = actor.action.actions.read('primary', self => self.definition);
+    const attack = actor.action.actions.getAction('primary').definition;
     const { input } = createTacticalProjectileDemo({
       initialUnits: [{ definition: { ...actor.definition, attack }, position: actor.position }],
       schedule: { type: 'TIMELINE', spawns: [] },
@@ -149,7 +149,8 @@ test('demo projectile damage clears removed sources for both live and cached att
     const source = initialize({ id: 0, ...input.initialUnits[0] });
     const target = actionUnit(1);
     const battle = addUnit(addUnit(fixtureBattle(), source), target);
-    const started = source.action.actions.read('primary', self => startAction(battle, actionRef(ref(source), self.definition)));
+    const configured = source.action.actions.getAction('primary');
+    const started = startAction(battle, actionRef(ref(source), configured.definition));
     assert.equal(started.value.type, 'STARTED');
     const launched = advanceAction({ ...started.state, tick: 6 }, started.value.ref);
     const self = projectilesQuery.all(launched).toArray()[0];

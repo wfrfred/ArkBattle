@@ -72,7 +72,9 @@ test("Actions stores one aggregate per definition and preserves paired private t
     assert.equal(original.get(first.id, { ...first }), undefined);
     assert.equal(original.get("missing"), undefined);
     assert.deepEqual(original.keys().toArray(), ["first", "second"]);
-    assert.deepEqual(original.read(first.id, self => self.state), { count: 1 });
+    assert.strictEqual(original.getAction(first.id), one);
+    assert.deepEqual(original.getAction(first.id).state, { count: 1 });
+    assert.equal(original.getAction("missing"), undefined);
     assert.strictEqual(original.getExecution(0), two);
     assert.deepEqual(original.getExecution(0).execution.state, { message: "flying" });
     assert.equal(original.getExecution(9), undefined);
@@ -177,7 +179,13 @@ Actions.empty().replace(configured, { ...precise, execution: { ...precise.execut
 executionRef(source, publicAction);
 // @ts-expect-error An erased reference cannot update private execution data.
 operations.setExecutionState(battle, publicRef, {});
-Actions.empty().read(configured.id, self => { self.definition.prepare(battle, source, self); });
+const action = Actions.empty().getAction(configured.id);
+type ErasedAction = Assert<Equal<typeof action, Action | undefined>>;
+if (action !== undefined) {
+    action.definition.prepare(battle, source, action);
+    // @ts-expect-error An erased getter does not infer persistent content fields.
+    action.state.count;
+}
 const self = Actions.empty().getExecution(0);
 type ErasedExecution = Assert<Equal<typeof self, Execution | undefined>>;
 if (self !== undefined) {

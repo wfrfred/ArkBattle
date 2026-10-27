@@ -68,18 +68,16 @@ export function advance(battle: BattleState): BattleState {
                 break;
             }
 
-            const advanced = latest.action.actions.read(id, (self) => {
-                const started = actions.start(battle, actionRef(reference, self.definition));
-
-                return started.value.type === "STARTED"
-                    ? advanceAction(started.state, started.value.ref)
-                    : started.state;
-            });
-            if (advanced === undefined) {
+            const self = latest.action.actions.getAction(id);
+            if (self === undefined) {
                 throw new RangeError(`unknown selected action definition ${id}`);
             }
 
-            battle = advanced;
+            const started = actions.start(battle, actionRef(reference, self.definition));
+            battle =
+                started.value.type === "STARTED"
+                    ? advanceAction(started.state, started.value.ref)
+                    : started.state;
         }
     }
 

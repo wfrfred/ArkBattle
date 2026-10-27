@@ -166,12 +166,11 @@ const usage: number = persistentEntry.state.uses;
 actionHost.action.actions.replace(persistent, { ...persistentEntry, state: { uses: 2 } });
 // @ts-expect-error
  actionHost.action.actions.replace(persistent, { ...persistentEntry, state: { uses: "wrong" } });
-actionHost.action.actions.read("persistent", self => {
-    const stored = getAction(battle, actionRef(source, self.definition))!;
-    // @ts-expect-error Unknown configuration keeps its private type abstract.
-    stored.state.uses;
-    return setState(battle, actionRef(source, self.definition), stored.state);
-});
+const opaqueEntry = actionHost.action.actions.getAction("persistent")!;
+const opaqueStored = getAction(battle, actionRef(source, opaqueEntry.definition))!;
+// @ts-expect-error Unknown configuration does not expose concrete private fields.
+opaqueStored.state.uses;
+setState(battle, actionRef(source, opaqueEntry.definition), opaqueStored.state);
 `,
         );
         const program = ts.createProgram([path], {

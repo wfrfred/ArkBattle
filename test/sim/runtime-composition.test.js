@@ -289,12 +289,13 @@ function scenario({ failure = null, cancelled = false } = {}) {
     const primary = actor("primary-launcher", program(true));
     const sibling = actor("later-launcher", program(false));
     const siblingAction = initializeActionState(fixtureBattle(0), sibling.action).value;
+    const currentAction = siblingAction.actions.getAction("launch");
     const delayedSiblingAction = {
         ...siblingAction,
-        actions: siblingAction.actions.read("launch", current => siblingAction.actions.replace(current.definition, {
-            ...current,
+        actions: siblingAction.actions.replace(currentAction.definition, {
+            ...currentAction,
             cooldown: { periodTicks: 100, readyAtTick: 1 },
-        })),
+        }),
     };
     const scheduled = { hooks: [],
         spatialPresence: {},

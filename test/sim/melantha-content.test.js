@@ -85,7 +85,7 @@ test('ordinary attacks read current talent and skill contributions instead of ca
     hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: .1 } },
   } });
   const source = initialize({ id: 0, position: [0, 0], definition });
-  const attack = source.action.actions.read('normal-attack', self => self.definition);
+  const attack = source.action.actions.getAction('normal-attack').definition;
   let state = add(createBattleState(fixtureBattlefieldState([receiver])), source);
   state = updateUnit(state, [{ ...getUnit(state, 0), skill: { ...getUnit(state, 0).skill, sp: { ...getUnit(state, 0).skill.sp, value: 40 } } }]);
   state = activateSkill({ ...state, tick: 0  }, unitRef(getUnit(state, 0))).state;
@@ -118,7 +118,7 @@ test('Melantha still checks active targeting restrictions on enemies she is bloc
       hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: .1 } },
     } });
     const source = initialize({ id: 0, position: [0, 0], definition });
-    const attack = source.action.actions.read('normal-attack', self => self.definition);
+    const attack = source.action.actions.getAction('normal-attack').definition;
     const state = advanceBlocking(createBattleState(fixtureBattlefieldState([source, receiver])));
 
     assert.deepEqual(blockingQueries.relations(state).map(({ blocker, blocked }) => ({ blockerUnitId: blocker.id, blockedUnitId: blocked.id })), [{ blockerUnitId: 0, blockedUnitId: 1 }]);
