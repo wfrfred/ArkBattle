@@ -143,10 +143,7 @@ export function setExecutionState<P extends object, E extends object>(
         throw new RangeError(`unknown unit: ${reference.host.id}`);
     }
 
-    const current = unit.action.actions.readExecution(
-        reference.id,
-        (self) => self as unknown as Execution<P, E>,
-    );
+    const current = unit.action.actions.getExecution(reference.id);
 
     if (current === undefined) {
         throw new RangeError(`unknown action execution: ${reference.id}`);
@@ -175,60 +172,55 @@ export function end(
         return battle;
     }
 
-    return (
-        host.action.actions.readExecution(reference.id, (self) => {
-            if (self.execution.status === "ENDING") {
-                return battle;
-            }
+    const self = host.action.actions.getExecution(reference.id);
 
-            const ending: Execution<typeof self.state, typeof self.execution.state> = {
-                ...self,
-                execution: { ...self.execution, status: "ENDING" },
-            };
-            battle = replaceAction(battle, host, ending);
-            battle = closeLifetime(battle, { type: "ACTION", ref: reference }, lifetimeReason);
+    if (self === undefined || self.execution.status === "ENDING") {
+        return battle;
+    }
 
-            if (self.definition.onEnd !== undefined) {
-                const current = units
-                    .get(battle, reference.host)
-                    ?.action.actions.get(self.definition.id, self.definition);
-                const latest =
-                    current?.execution?.id === reference.id
-                        ? {
-                              definition: current.definition,
-                              state: current.state,
-                              cooldown: current.cooldown,
-                              execution: current.execution,
-                          }
-                        : ending;
-                battle = self.definition.onEnd(battle, reference.host, latest, result);
-            }
+    const ending: Execution = {
+        ...self,
+        execution: { ...self.execution, status: "ENDING" },
+    };
+    battle = replaceAction(battle, host, ending);
+    battle = closeLifetime(battle, { type: "ACTION", ref: reference }, lifetimeReason);
 
-            const latestHost = units.get(battle, reference.host);
-            const latestAction = latestHost?.action.actions.get(
-                self.definition.id,
-                self.definition,
-            );
+    if (self.definition.onEnd !== undefined) {
+        const current = units
+            .get(battle, reference.host)
+            ?.action.actions.get(self.definition.id, self.definition);
+        const latest =
+            current?.execution?.id === reference.id
+                ? {
+                      definition: current.definition,
+                      state: current.state,
+                      cooldown: current.cooldown,
+                      execution: current.execution,
+                  }
+                : ending;
+        battle = self.definition.onEnd(battle, reference.host, latest, result);
+    }
 
-            if (latestHost !== undefined && latestAction?.execution?.id === reference.id) {
-                battle = replaceAction(battle, latestHost, {
-                    ...latestAction,
-                    execution: null,
-                });
-            }
+    const latestHost = units.get(battle, reference.host);
+    const latestAction = latestHost?.action.actions.get(self.definition.id, self.definition);
 
-            return appendEvents(battle, [
-                {
-                    executionId: self.execution.id,
-                    sourceUnitId: reference.host.id,
-                    tick: battle.tick,
-                    ...(result.type === "FINISHED"
-                        ? { type: "ACTION_FINISHED" as const }
-                        : { type: "ACTION_CANCELLED" as const, reason: result.reason }),
-                },
-            ]);
-        }) ?? battle
-    );
+    if (latestHost !== undefined && latestAction?.execution?.id === reference.id) {
+        battle = replaceAction(battle, latestHost, {
+            ...latestAction,
+            execution: null,
+        });
+    }
+
+    return appendEvents(battle, [
+        {
+            executionId: self.execution.id,
+            sourceUnitId: reference.host.id,
+            tick: battle.tick,
+            ...(result.type === "FINISHED"
+                ? { type: "ACTION_FINISHED" as const }
+                : { type: "ACTION_CANCELLED" as const, reason: result.reason }),
+        },
+    ]);
 }
 
 export function cancel(

@@ -42,9 +42,8 @@ export function getExecution<X extends ExecutionView>(
     battle: BattleState,
     reference: Ref<X>,
 ): X | undefined {
-    return units
-        .get(battle, reference.host)
-        ?.action.actions.readExecution(reference.id, (self) => self as unknown as X);
+    return units.get(battle, reference.host)?.action.actions.getExecution(reference.id) as
+        X | undefined;
 }
 
 export function getAction<P extends object, E extends object>(

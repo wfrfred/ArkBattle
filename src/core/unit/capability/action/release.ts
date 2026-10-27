@@ -61,9 +61,6 @@ function running(battle: BattleState, context: Context): boolean {
 
     return (
         source?.lifecycle === "PRESENT" &&
-        source.action.actions.readExecution(
-            context.action.id,
-            (self) => self.execution.status === "RUNNING",
-        ) === true
+        source.action.actions.getExecution(context.action.id)?.execution.status === "RUNNING"
     );
 }

@@ -48,13 +48,10 @@ export class Actions {
         return self === undefined ? undefined : reader(self as Action);
     }
 
-    readExecution<R>(
-        id: ExecutionId,
-        reader: <P extends object, E extends object>(self: Execution<P, E>) => R,
-    ): R | undefined {
+    getExecution(id: ExecutionId): Execution | undefined {
         const self = this.values().find((entry) => entry.execution?.id === id);
 
-        return self === undefined ? undefined : reader(self as Execution);
+        return self as Execution | undefined;
     }
 
     values(): Query<View> {

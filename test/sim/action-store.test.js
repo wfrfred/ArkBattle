@@ -73,8 +73,9 @@ test("Actions stores one aggregate per definition and preserves paired private t
     assert.equal(original.get("missing"), undefined);
     assert.deepEqual(original.keys().toArray(), ["first", "second"]);
     assert.deepEqual(original.read(first.id, self => self.state), { count: 1 });
-    assert.deepEqual(original.readExecution(0, self => self.execution.state), { message: "flying" });
-    assert.equal(original.readExecution(9, () => assert.fail("missing execution must not dispatch")), undefined);
+    assert.strictEqual(original.getExecution(0), two);
+    assert.deepEqual(original.getExecution(0).execution.state, { message: "flying" });
+    assert.equal(original.getExecution(9), undefined);
     assert.throws(() => original.add(one), RangeError);
 });
 
@@ -93,8 +94,9 @@ test("Aggregate replacements keep configured order and old snapshots while clear
     assert.deepEqual(changed.keys().toArray(), ["first", "second"]);
     assert.strictEqual(query.toArray()[0], one);
     assert.strictEqual(query.toArray()[0], one);
-    assert.equal(changed.readExecution(7, () => assert.fail("cleared execution must not dispatch")), undefined);
-    assert.equal(original.readExecution(7, self => self.execution.state.remaining), 2);
+    assert.equal(changed.getExecution(7), undefined);
+    assert.strictEqual(original.getExecution(7), one);
+    assert.equal(original.getExecution(7).execution.state.remaining, 2);
     assert.deepEqual(JSON.parse(JSON.stringify(changed)).map(self => [self.definition.id, self.state, self.execution]), [["first", { count: 2 }, null], ["second", { text: "other" }, null]]);
 });
 
@@ -126,7 +128,7 @@ test("Action initialization, start and termination retain one persistent aggrega
     assert.deepEqual(operations.getExecution(started.state, started.value.ref).execution.state, { remaining: 2 });
 });
 
-test("Action public Views hide private state and generic read retains persistent/execution pairing", async () => {
+test("Action public Views hide private state while erased execution lookup remains callable", async () => {
     const { default: ts } = await import("typescript");
     const directory = mkdtempSync(join(tmpdir(), "arkbattle-action-store-types-"));
     const source = name => JSON.stringify(fileURLToPath(new URL(`../../src/core/${name}.js`, import.meta.url)));
@@ -176,7 +178,15 @@ executionRef(source, publicAction);
 // @ts-expect-error An erased reference cannot update private execution data.
 operations.setExecutionState(battle, publicRef, {});
 Actions.empty().read(configured.id, self => { self.definition.prepare(battle, source, self); });
-Actions.empty().readExecution(0, self => self.definition.onTick(battle, source, self));
+const self = Actions.empty().getExecution(0);
+type ErasedExecution = Assert<Equal<typeof self, Execution | undefined>>;
+if (self !== undefined) {
+    self.definition.onTick(battle, source, self);
+    // @ts-expect-error An erased getter does not infer persistent content fields.
+    self.state.count;
+    // @ts-expect-error An erased getter does not infer execution content fields.
+    self.execution.state.remaining;
+}
 `);
         const program = ts.createProgram([path], { noEmit: true, strict: true, exactOptionalPropertyTypes: true, noUncheckedIndexedAccess: true, target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.NodeNext, moduleResolution: ts.ModuleResolutionKind.NodeNext, skipLibCheck: true, types: [] });
         assert.deepEqual(ts.getPreEmitDiagnostics(program).map(diagnostic => ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n")), []);

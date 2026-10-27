@@ -128,7 +128,9 @@ const action = {
 
 create 在接收具体 Definition 时校验非空 ID、基础间隔与速度一次，返回的函数负责创建并登记自己的 Action；重复 ID 由 Actions.add 拒绝。createActions 只从空 Actions 开始逐项接续 BattleState 和容器，不解释内容私有 P／E，也不读取底层 Store。内容通过具名的具体 Definition 或 typed Ref 读写私有状态。
 
-Actions 以私有 Store<DefinitionId, View> 保存完整聚合对象。get(id)／values() 只公开 Definition 元数据、Cooldown 与可空的 Execution 元数据，隐藏 P、E 及完整程序回调。get(id, definition) 以 Definition 对象身份恢复具体 Action<P, E>；read(id, reader) 在未知条目上保持 P／E 配对。readExecution(id, reader) 在同一容器中找到当前执行，再以 execution 非空的配对类型派发，不维护第二份执行集合或索引。
+Actions 以私有 Store<DefinitionId, View> 保存完整聚合对象。get(id)／values() 只公开 Definition 元数据、Cooldown 与可空的 Execution 元数据，隐藏 P、E 及完整程序回调。get(id, definition) 以 Definition 对象身份恢复具体 Action<P, E>；read(id, reader) 在未知条目上保持 P／E 配对。内部 getExecution(id) 在同一容器中找到当前执行，返回 Execution | undefined，Execution 默认使用 object／object；容器内以 as Execution 恢复完整执行视图，作为受信的类型边界，不维护第二份执行集合或索引。
+
+Core 推进与终止只把当前执行交给它自身 Definition 的程序，不解释私有 P／E 的形状，因此不需要高阶 reader 传递具体泛型。内容查询仍由精确 Typed Ref 恢复 P／E，字段 setter 保留 NoInfer；内部完整读取不扩大普通 get／values 的公共 View，也不公开底层 Store。
 
 同一 BattleState 内的连续只读求值复用已取得的宿主和条目；完整操作返回后仍按状态接续约定重新读取。释放派发在每项 Hook 前从当前版本检查执行与宿主资格，不缓存入口时的资格。
 
@@ -285,7 +287,7 @@ Runtime 采用以下候选政策：
 6. 本轮自动候选只尝试一次，不按“仍然就绪”循环重启即时完成的同一行动。
 7. 内容直接 start 或回调内嵌套 start 只登记执行，等待调度器推进。调度入口前已登记的执行可以在本次调度中推进；调度内嵌套登记的执行不在已固定快照中，等待后续调度。
 
-advance(battle, ref) 实现在专用推进模块，并由公共入口导出供调度协作；仍仅由调度器主动调用，start 不隐式推进。它通过同一 Actions 容器的 readExecution 派发非空执行，并显式传入宿主引用。首次推进中的即时完成或同步取消按通常终止流程结算；内容不主动推进执行，不保存实例级同 Tick 去重字段。
+advance(battle, ref) 实现在专用推进模块，并由公共入口导出供调度协作；仍仅由调度器主动调用，start 不隐式推进。它通过同一 Actions 容器的 getExecution 直接取得当前执行，再调用该执行 Definition 的 onTick，并显式传入宿主引用；end 同样直接读取执行并调用其可选 onEnd，跨完整操作后的实时读取仍遵守状态接续约定。首次推进中的即时完成或同步取消按通常终止流程结算；内容不主动推进执行，不保存实例级同 Tick 去重字段。
 
 ## 8. 普通攻击、释放 Hook 与移动
 

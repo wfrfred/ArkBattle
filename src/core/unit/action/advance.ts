@@ -12,20 +12,16 @@ export function advance(battle: BattleState, reference: Ref<ExecutionView>): Bat
         return battle;
     }
 
-    return (
-        source.action.actions.readExecution(reference.id, (self) => {
-            if (self.execution.status !== "RUNNING") {
-                return battle;
-            }
-            if (source.lifecycle !== "PRESENT" || !isSpatiallyPresent(source)) {
-                return end(battle, reference, { type: "CANCELLED", reason: "SOURCE_ABSENT" });
-            }
+    const self = source.action.actions.getExecution(reference.id);
 
-            const advanced = self.definition.onTick(battle, reference.host, self);
+    if (self?.execution.status !== "RUNNING") {
+        return battle;
+    }
+    if (source.lifecycle !== "PRESENT" || !isSpatiallyPresent(source)) {
+        return end(battle, reference, { type: "CANCELLED", reason: "SOURCE_ABSENT" });
+    }
 
-            return advanced.value
-                ? end(advanced.state, reference, { type: "FINISHED" })
-                : advanced.state;
-        }) ?? battle
-    );
+    const advanced = self.definition.onTick(battle, reference.host, self);
+
+    return advanced.value ? end(advanced.state, reference, { type: "FINISHED" }) : advanced.state;
 }
