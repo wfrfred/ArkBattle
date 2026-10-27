@@ -27,6 +27,8 @@ Rule 只负责启动准入，不自动中断现有执行。眩晕等需要中断
 
 聚合类型、Execution、Definition、创建程序、容器、Cooldown 和生命周期操作位于 unit/action/；Capability 配置、贡献、Rule、周期属性与释放 Hook 位于 unit/capability/action/。领域内使用 Definition、Action、Execution、Id 等局部名字，不建立仅缩短路径的转发层。
 
+完整启动、写回与终止统一由 unit/action/operations.ts 实现；unit/action/advance.ts 派发执行程序，并复用同一终止入口。
+
 ```typescript
 import type { Definition as ActionDefinition } from "./action/definition.js";
 import { ref, type Action, type Executing } from "./action/action.js";
@@ -222,7 +224,7 @@ export declare function updateCooldown(
 ): BattleState;
 ```
 
-start 从当前 Action 检查配置对象身份、来源资格、execution 占用、Rule、Cooldown 和内容条件。未配置 Definition 属于调用／配置错误；普通拒绝不分配执行 ID 或开始周期。STARTED 表示已受理，首次 step 可能立即完成或被同步取消，因此返回时 Ref 可以已经失效。
+start 从当前 Action 检查配置对象身份、来源资格、execution 占用、Rule、Cooldown 和内容条件。未配置 Definition 属于调用／配置错误；普通拒绝不分配执行 ID 或开始周期。STARTED 表示已受理：start 构造 E、登记本轮 Execution 并重置 Cooldown，首次 step 由独立的 advance 入口执行。返回的 Ref 标识本轮执行，使用时仍从最新 BattleState 确认其状态。
 
 start 回调返回后重新读取当前宿主与聚合条目，按最新周期再次确认准入。回调使自身进入冷却时返回 COOLDOWN，保留已经发生的修改。仍可启动时才基于最新宿主一次写回该 Action 的新 Cooldown、Execution 和 nextExecutionId，保留持久 state、兄弟行动及其他能力的修改。
 
@@ -246,10 +248,11 @@ Runtime 采用以下候选政策：
 2. 对每个 Unit，先推进原有执行，再从最新状态运行该 Unit 的 select。
 3. select 返回本轮候选 Definition ID 及接续状态，可以表达优先级、随机选择和具体模式政策；未提供时从 Actions.keys() 取得全部配置项。
 4. 候选去重后逐一通过 Actions.read 取得配对条目并调用 start，每次读取最新来源与配置。列表顺序不代表引擎赋予的业务优先级。
-5. start 登记后立即首次 step；常规扫描仅推进 execution.startedAtTick 早于当前 Tick 的执行，因此同步新建执行不会重复首推。
+5. 调度器扫描入口固定的执行 Ref，每项读取最新状态并推进一次。自动候选的 start 返回 STARTED 后，Combat 显式调用 advance 推进该 Ref，保持自动动作在同 Tick 首次执行。
 6. 本轮自动候选只尝试一次，不按“仍然就绪”循环重启即时完成的同一行动。
+7. 内容直接 start 或回调内嵌套 start 只登记执行，等待调度器推进。调度入口前已登记的执行可以在本次调度中推进；调度内嵌套登记的执行不在已固定快照中，等待后续调度。
 
-advance(battle, ref) 位于专用推进模块，仅由调度器及启动后的首次执行使用。它通过同一 Actions 容器的 readExecution 派发非空执行，并显式传入宿主引用。内容使用启动、取消、写回及具体领域操作，不推进别人的执行，不保存实例级同 Tick 去重字段。
+advance(battle, ref) 位于专用推进模块，仅由调度器主动调用；start 不隐式推进。它通过同一 Actions 容器的 readExecution 派发非空执行，并显式传入宿主引用。首次推进中的即时完成或同步取消按通常终止流程结算；内容不主动推进执行，不保存实例级同 Tick 去重字段。
 
 ## 8. 普通攻击、释放 Hook 与移动
 

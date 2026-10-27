@@ -19,6 +19,7 @@ import { initialize, placement } from "../helpers/unit.js";
 import { create as createAttack, chooseTargets } from '../../dist/content/actions/attack.js';
 import { actionCapability } from "../helpers/actions.js";
 import { start } from '../../dist/core/unit/action/operations.js';
+import { advance as advanceAction } from '../../dist/core/unit/action/advance.js';
 import { ref as unitRef } from '../../dist/core/unit/query.js';
 import { createInput as createRouteDefinition } from '../../dist/core/battle/creation/route.js';
 import { definition as createSkillDefinition } from '../helpers/skill.js';
@@ -320,7 +321,8 @@ test('elemental attacks select EP receivers without Vitality', () => {
   let work = effectFixtureWork(healer, receiver);
   work = element(work, 'BURN', 0, 200).state;
   assert.deepEqual(chooseTargets(work, unitRef(healer), healingAction.attack).value.primary.map(ref => ref.id), [1]);
-  work = start(work, unitRef(healer), healingAction).state;
+  const healingStarted = start(work, unitRef(healer), healingAction);
+  work = advanceAction(healingStarted.state, healingStarted.value.ref);
   receiver = getUnit(work, 1);
   assert.equal('vitality' in receiver, false);
   assert.equal(receiver.elemental.ep.BURN, 900);
@@ -328,7 +330,8 @@ test('elemental attacks select EP receivers without Vitality', () => {
   const hostileReceiver = { ...receiver, allegiance: { side: 'ENEMY' } };
   work = effectFixtureWork(healer, hostileReceiver);
   assert.deepEqual(chooseTargets(work, unitRef(healer), damageAction.attack).value.primary.map(ref => ref.id), [1]);
-  work = start(work, unitRef(healer), damageAction).state;
+  const damageStarted = start(work, unitRef(healer), damageAction);
+  work = advanceAction(damageStarted.state, damageStarted.value.ref);
   assert.equal(getUnit(work, 1).elemental.ep.NEURAL, 900);
 });
 

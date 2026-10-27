@@ -4,6 +4,7 @@ import { battle, unit, actionDefinition, geometry } from "../helpers/action-fixt
 import { damage } from "../helpers/targeting.js";
 import * as units from "../../dist/core/unit/query.js";
 import * as actions from "../../dist/core/unit/action/operations.js";
+import { advance } from "../../dist/core/unit/action/advance.js";
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
 import { setHook } from "../../dist/core/battle/damage/hook.js";
 import { setAttackContribution } from "../../dist/core/unit/capability/offense/capability.js";
@@ -40,9 +41,10 @@ test("source attack samples current Offense separately for each target after nes
         }),
     }, second);
     const result = actions.start(initial, sourceRef, definition);
+    const advanced = advance(result.state, result.value.ref);
     assert.equal(result.value.type, "STARTED");
-    assert.equal(units.get(result.state, units.ref(first)).vitality.hp, 90);
-    assert.equal(units.get(result.state, units.ref(second)).vitality.hp, 75);
+    assert.equal(units.get(advanced, units.ref(first)).vitality.hp, 90);
+    assert.equal(units.get(advanced, units.ref(second)).vitality.hp, 75);
     assert.equal(units.get(initial, sourceRef).offense.attack.length, 0);
 });
 
@@ -55,7 +57,8 @@ test("fixed damage and healing do not require an Offense capability", () => {
     const sourceRef = units.ref(source);
     const initial = battle({ ...source, vitality: { ...source.vitality, hp: 50 } }, target);
     const result = actions.start(initial, sourceRef, definition);
+    const advanced = advance(result.state, result.value.ref);
     assert.equal(result.value.type, "STARTED");
-    assert.equal(units.get(result.state, sourceRef).vitality.hp, 55);
-    assert.equal(units.get(result.state, units.ref(target)).vitality.hp, 95);
+    assert.equal(units.get(advanced, sourceRef).vitality.hp, 55);
+    assert.equal(units.get(advanced, units.ref(target)).vitality.hp, 95);
 });

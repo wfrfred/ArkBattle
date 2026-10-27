@@ -51,11 +51,12 @@ test("a successful attack notifies released after its release event, restores AC
         return { state: current, value: undefined };
     })));
     const started = actions.start(state, f.ref, f.definition);
+    const advanced = advance(started.state, started.value.ref);
     assert.equal(started.value.type, "STARTED");
     assert.deepEqual(seen, [started.value.ref.id]);
-    assert.equal(getUnit(started.state, 0).skill.sp.value, 2);
-    assert.equal(getUnit(started.state, 1).vitality.hp, 93);
-    assert.deepEqual(started.state.events.filter(({ type }) => ["ACTION_RELEASED", "DAMAGE"].includes(type)).map(({ type }) => type), ["ACTION_RELEASED", "DAMAGE"]);
+    assert.equal(getUnit(advanced, 0).skill.sp.value, 2);
+    assert.equal(getUnit(advanced, 1).vitality.hp, 93);
+    assert.deepEqual(advanced.events.filter(({ type }) => ["ACTION_RELEASED", "DAMAGE"].includes(type)).map(({ type }) => type), ["ACTION_RELEASED", "DAMAGE"]);
     assert.equal(getUnit(f.state, 0).skill.sp.value, 0);
 });
 
@@ -78,10 +79,11 @@ test("beforeRelease interruption prevents the public release notification and AC
     }));
     state = changeAction(state, (action) => setReleasedHook(action, hook("unreleased", () => assert.fail("intercepted action did not release"))));
     const started = actions.start(state, f.ref, f.definition);
-    assert.equal(getUnit(started.state, 0).skill.sp.value, 0);
-    assert.equal(getUnit(started.state, 1).vitality.hp, 100);
-    assert.equal(started.state.events.some(({ type }) => type === "ACTION_RELEASED" || type === "DAMAGE"), false);
-    assert.deepEqual(started.state.events.filter(({ type }) => type === "ACTION_CANCELLED").map(({ reason }) => reason), ["INTERRUPTED"]);
+    const advanced = advance(started.state, started.value.ref);
+    assert.equal(getUnit(advanced, 0).skill.sp.value, 0);
+    assert.equal(getUnit(advanced, 1).vitality.hp, 100);
+    assert.equal(advanced.events.some(({ type }) => type === "ACTION_RELEASED" || type === "DAMAGE"), false);
+    assert.deepEqual(advanced.events.filter(({ type }) => type === "ACTION_CANCELLED").map(({ reason }) => reason), ["INTERRUPTED"]);
 });
 
 test("ACTION recovery can synchronously cancel the released Action before its old output executes", () => {
@@ -93,12 +95,13 @@ test("ACTION recovery can synchronously cancel the released Action before its ol
         return { state: actions.cancel(current, reference, "RECOVERY_CALLBACK"), value: undefined };
     })));
     const started = actions.start(state, f.ref, f.definition);
-    assert.equal(getUnit(started.state, 0).skill.sp.value, 1);
-    assert.equal(getUnit(started.state, 1).vitality.hp, 100);
-    assert.equal(actions.get(started.state, started.value.ref), undefined);
-    assert.equal(started.state.events.some(({ type }) => type === "ACTION_RELEASED"), true);
-    assert.equal(started.state.events.some(({ type }) => type === "DAMAGE"), false);
-    assert.deepEqual(started.state.events.filter(({ type }) => type === "ACTION_CANCELLED").map(({ reason }) => reason), ["RECOVERY_CALLBACK"]);
+    const advanced = advance(started.state, started.value.ref);
+    assert.equal(getUnit(advanced, 0).skill.sp.value, 1);
+    assert.equal(getUnit(advanced, 1).vitality.hp, 100);
+    assert.equal(actions.get(advanced, started.value.ref), undefined);
+    assert.equal(advanced.events.some(({ type }) => type === "ACTION_RELEASED"), true);
+    assert.equal(advanced.events.some(({ type }) => type === "DAMAGE"), false);
+    assert.deepEqual(advanced.events.filter(({ type }) => type === "ACTION_CANCELLED").map(({ reason }) => reason), ["RECOVERY_CALLBACK"]);
 });
 
 test("ACTION recovery can remove its host without continuing the released Action's old output", () => {
@@ -109,12 +112,13 @@ test("ACTION recovery can remove its host without continuing the released Action
         return { state: remove(current, context.host.id, "SCRIPT"), value: undefined };
     })));
     const started = actions.start(state, f.ref, f.definition);
+    const advanced = advance(started.state, started.value.ref);
     assert.deepEqual(recovered, { source: "ACTION", amount: 1, previous: 0, current: 1 });
-    assert.equal(getUnit(started.state, 0), undefined);
-    assert.equal(getUnit(started.state, 1).vitality.hp, 100);
-    assert.equal(actions.get(started.state, started.value.ref), undefined);
-    assert.equal(started.state.events.some(({ type }) => type === "ACTION_RELEASED"), true);
-    assert.equal(started.state.events.some(({ type }) => type === "DAMAGE"), false);
+    assert.equal(getUnit(advanced, 0), undefined);
+    assert.equal(getUnit(advanced, 1).vitality.hp, 100);
+    assert.equal(actions.get(advanced, started.value.ref), undefined);
+    assert.equal(advanced.events.some(({ type }) => type === "ACTION_RELEASED"), true);
+    assert.equal(advanced.events.some(({ type }) => type === "DAMAGE"), false);
 });
 
 test("default attack output reads bindings replaced by a released Hook from the latest Action", () => {
@@ -128,9 +132,10 @@ test("default attack output reads bindings replaced by a released Hook from the 
         })), value: undefined };
     })));
     const started = actions.start(state, f.ref, f.definition);
-    assert.equal(getUnit(started.state, 1).vitality.hp, 100);
-    assert.equal(getUnit(started.state, 2).vitality.hp, 93);
-    assert.deepEqual(started.state.events.filter(({ type }) => type === "DAMAGE").map(({ targetUnitId }) => targetUnitId), [2]);
+    const advanced = advance(started.state, started.value.ref);
+    assert.equal(getUnit(advanced, 1).vitality.hp, 100);
+    assert.equal(getUnit(advanced, 2).vitality.hp, 93);
+    assert.deepEqual(advanced.events.filter(({ type }) => type === "DAMAGE").map(({ targetUnitId }) => targetUnitId), [2]);
 });
 
 test("release dispatch reads replacements for selected IDs and defers newly registered IDs", () => {
@@ -165,8 +170,9 @@ test("generic Action start and step do not implicitly emit a release or grant AC
     const f = fixture({ action: definition });
     const state = changeAction(f.state, (action) => setReleasedHook(action, hook("unreleased", () => assert.fail("generic scheduling does not emit a release"))));
     const started = actions.start(state, f.ref, f.definition);
-    assert.equal(getUnit(started.state, 0).skill.sp.value, 0);
-    assert.equal(started.state.events.some(({ type }) => type === "ACTION_RELEASED"), false);
+    const advanced = advance(started.state, started.value.ref);
+    assert.equal(getUnit(advanced, 0).skill.sp.value, 0);
+    assert.equal(advanced.events.some(({ type }) => type === "ACTION_RELEASED"), false);
 });
 
 

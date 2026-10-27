@@ -35,11 +35,7 @@ export function advance(battle: BattleState): BattleState {
 
     for (const { source, instances } of candidates) {
         for (const reference of instances) {
-            const self = actions.get(battle, reference);
-
-            if (self !== undefined && self.execution.startedAtTick < battle.tick) {
-                battle = advanceAction(battle, reference);
-            }
+            battle = advanceAction(battle, reference);
         }
 
         const unit = units.get(battle, source);
@@ -69,16 +65,19 @@ export function advance(battle: BattleState): BattleState {
                 break;
             }
 
-            const started = latest.action.actions.read(
-                id,
-                (self) => actions.start(battle, reference, self.definition).state,
-            );
+            const advanced = latest.action.actions.read(id, (self) => {
+                const started = actions.start(battle, reference, self.definition);
 
-            if (started === undefined) {
+                return started.value.type === "STARTED"
+                    ? advanceAction(started.state, started.value.ref)
+                    : started.state;
+            });
+
+            if (advanced === undefined) {
                 throw new RangeError(`unknown selected action definition ${id}`);
             }
 
-            battle = started;
+            battle = advanced;
         }
     }
 

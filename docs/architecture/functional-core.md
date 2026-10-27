@@ -94,7 +94,7 @@ end(battle, ref, reason?) → BattleState
 advanceAction(battle, actionRef) → BattleState
 ```
 
-`BattleState` 是不可变数据值。只需要返回状态的操作可以直接返回 BattleState；报告和 outcome 按各领域的真实需求决定。完整接口分类见[接口约定](api-conventions.md)；上面的 advanceAction 只由 Runtime 调度。
+`BattleState` 是不可变数据值。只需要返回状态的操作可以直接返回 BattleState；报告和 outcome 按各领域的真实需求决定。完整接口分类见[接口约定](api-conventions.md)；上面的 advanceAction 只由 Runtime 调度。Action.start 完成执行登记和冷却重置；Runtime 推进入口快照中的执行，并在自动选择启动成功后显式首次推进。内容直接或嵌套启动的执行按登记相对调度快照的时点，等待本次或后续调度推进。
 
 Hook、生命周期和具体装备／技能程序同样遵守显式状态返回。它们可以调用 Damage、Healing、Effect、Skill 等纯结算函数，但不通过 setter、全局变量或捕获的旧执行上下文写回。
 

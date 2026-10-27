@@ -10,6 +10,7 @@ import {
 } from "../../dist/core/unit/capability/action/capability.js";
 import { beforeRelease } from "../../dist/core/unit/capability/action/release.js";
 import * as actions from "../../dist/core/unit/action/operations.js";
+import { advance } from "../../dist/core/unit/action/advance.js";
 import * as effects from "../../dist/core/unit/effect/operations.js";
 
 const CONTINUE = { type: "CONTINUE" };
@@ -80,11 +81,12 @@ test("action release: hiding the source in a continuing hook cancels before rele
     const started = actions.start(installed.state, unitRef(getUnit(installed.state, 0)), attack);
 
     assert.equal(started.value.type, "STARTED");
-    assert.equal(getUnit(started.state, 0).spatialPresence.present, false);
-    assert.equal(getUnit(started.state, 1).vitality.hp, 100);
-    assert.equal(getUnit(started.state, 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 0);
-    assert.equal(started.state.events.some(event => event.type === "ACTION_RELEASED" || event.type === "DAMAGE"), false);
-    assert.deepEqual(started.state.events.filter(event => event.type === "ACTION_CANCELLED").map(event => event.reason), ["SOURCE_ABSENT"]);
+    const cancelled = advance(started.state, started.value.ref);
+    assert.equal(getUnit(cancelled, 0).spatialPresence.present, false);
+    assert.equal(getUnit(cancelled, 1).vitality.hp, 100);
+    assert.equal(getUnit(cancelled, 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 0);
+    assert.equal(cancelled.events.some(event => event.type === "ACTION_RELEASED" || event.type === "DAMAGE"), false);
+    assert.deepEqual(cancelled.events.filter(event => event.type === "ACTION_CANCELLED").map(event => event.reason), ["SOURCE_ABSENT"]);
     assert.equal(getUnit(installed.state, 0).spatialPresence.present, true);
 });
 

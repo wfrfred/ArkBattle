@@ -4,6 +4,7 @@ import { battle, unit, actionDefinition } from "../helpers/action-fixture.js";
 import { getUnit } from "../helpers/unit.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { start } from "../../dist/core/unit/action/operations.js";
+import { advance } from "../../dist/core/unit/action/advance.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import { at } from "../../dist/core/battlefield/occupancy.js";
 
@@ -49,10 +50,11 @@ test("action event order: lethal output completes platform onLeave content befor
     };
     const state = battle(source, support, recipient);
     const result = start(state, unitRef(getUnit(state, 0)), definition);
-    const types = result.state.events.map((event) => event.type);
+    const completed = advance(result.state, result.value.ref);
+    const types = completed.events.map((event) => event.type);
     assert.ok(types.indexOf("DAMAGE") < types.indexOf("ACTION_FINISHED"));
     assert.deepEqual(trace, ["platform left", "occupant left", "action ended"]);
-    assert.deepEqual(result.state.removedUnits.map(removed => removed.unitId), [1, 2]);
-    assert.equal(getUnit(result.state, 1), undefined);
-    assert.equal(getUnit(result.state, 2), undefined);
+    assert.deepEqual(completed.removedUnits.map(removed => removed.unitId), [1, 2]);
+    assert.equal(getUnit(completed, 1), undefined);
+    assert.equal(getUnit(completed, 2), undefined);
 });

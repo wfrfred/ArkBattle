@@ -94,6 +94,27 @@ test("action runtime: a newly registered instance first executes once and retain
     assert.equal(retained.execution.state.count, 1);
 });
 
+test("action runtime: an execution registered before the same-tick scan is advanced once", () => {
+    const ticks = [];
+    const definition = program("before-scan", {
+        step(state, source, self) {
+            ticks.push(state.tick);
+            return {
+                state: actions.update(state, actionRef(source, self), current => ({ count: current.count + 1 })),
+                value: false,
+            };
+        },
+    });
+    const initial = initializeBattle(spec([unit(0, { action: definition }), unit(1)]));
+    const source = unitRef(getUnit(initial, 0));
+    const started = actions.start(initial, source, definition);
+    assert.deepEqual(ticks, []);
+    const stepped = stepBattle(started.state, []);
+    assert.deepEqual(ticks, [0]);
+    assert.equal(actions.get(stepped, started.value.ref).execution.state.count, 1);
+    assert.equal(actions.get(started.state, started.value.ref).execution.state.count, 0);
+});
+
 test("action runtime: an immediately finished definition starts once in one automatic scheduling pass", () => {
     let starts = 0;
     const definition = program("instant", {
@@ -202,11 +223,15 @@ test("action runtime: host order advances old instances before selection and def
     let runtime = initializeBattle(spec([create(0), create(1), unit(2)]));
     runtime = stepBattle(runtime, []);
     runtime = stepBattle(runtime, []);
-    assert.deepEqual(trace, ["old/0", "child/1", "select/0", "old/1", "select/1"]);
+    assert.deepEqual(trace, ["old/0", "select/0", "old/1", "select/1"]);
     const first = unitQueries.all(runtime).toArray().find(unit => unit.id === 0);
     const second = unitQueries.all(runtime).toArray().find(unit => unit.id === 1);
     assert.deepEqual(first.action.actions.values().filter(self => self.execution !== null).toArray().map(self => self.execution.id), [0]);
     assert.deepEqual(second.action.actions.values().filter(self => self.execution !== null).toArray().map(self => self.execution.id), [0, 1]);
+    assert.equal(second.action.actions.get("child").execution.startedAtTick, 1);
+    trace.length = 0;
+    runtime = stepBattle(runtime, []);
+    assert.deepEqual(trace, ["old/0", "select/0", "old/1", "child/1", "select/1"]);
 });
 
 test("action runtime: a late exception publishes neither progressed action state nor domain changes", () => {

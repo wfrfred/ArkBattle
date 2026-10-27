@@ -106,7 +106,8 @@ test('hound factory composes capabilities and attacks its retained blocker with 
   const damaged = damageElement(before, unitRef(hound), { source: null, type: 'BURN', power: 100 });
   assert.equal(getUnit(damaged.state, 1).elemental.ep.BURN, 900);
   assert.equal(getUnit(damaged.state, 1).vitality.hp, 820);
-  const after = startAction(before, unitRef(hound), attack).state;
+  const started = startAction(before, unitRef(hound), attack);
+  const after = advanceAction(started.state, started.value.ref);
   assert.equal(getUnit(after, 0).vitality.hp, 850);
   assert.equal(getUnit(before, 0).vitality.hp, 1000);
   assert.equal(before.events.some(event => event.type === "DAMAGE"), false);
@@ -129,7 +130,8 @@ test('a blocked hound selects its blocker directly despite normal targeting rest
     assert.deepEqual(select(before, request).value.map(ref => ref.id), [0]);
     const started = startAction(before, unitRef(hound), action);
     assert.equal(started.value.type, 'STARTED');
-    assert.ok(getUnit(started.state, 0).vitality.hp < 1000);
+    const advanced = advanceAction(started.state, started.value.ref);
+    assert.ok(getUnit(advanced, 0).vitality.hp < 1000);
     assert.equal(getUnit(before, 0).vitality.hp, 1000);
   }
 });
@@ -180,8 +182,9 @@ test('directly selecting an invincible blocker still preserves damage reception 
   const started = startAction(state, unitRef(hound), action);
 
   assert.equal(started.value.type, 'STARTED');
-  assert.equal(getUnit(started.state, 0).vitality.hp, 1000);
-  assert.equal(started.state.events.some(event => event.type === 'ACTION_RELEASED'), true);
+  const advanced = advanceAction(started.state, started.value.ref);
+  assert.equal(getUnit(advanced, 0).vitality.hp, 1000);
+  assert.equal(advanced.events.some(event => event.type === 'ACTION_RELEASED'), true);
 });
 
 test('crossbow uses explicit windup and arrow speed, then settles damage on contact', () => {

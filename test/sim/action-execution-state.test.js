@@ -20,6 +20,29 @@ const program = (id, extra = {}) => ({
     ...extra,
 });
 
+test("action start registers execution without invoking its first step", () => {
+    const steps = [];
+    const definition = program("registered", {
+        step(state, source, self) {
+            steps.push([state.tick, self.execution.state.count]);
+            return { state, value: true };
+        },
+    });
+    const initial = battle(unit(0, { action: definition }));
+    const source = unitRef(getUnit(initial, 0));
+    const started = actions.start(initial, source, definition);
+    assert.equal(started.value.type, "STARTED");
+    assert.deepEqual(steps, []);
+    assert.equal(actions.get(started.state, started.value.ref).execution.state.count, 0);
+    assert.equal(actions.getAction(started.state, source, definition).cooldown.readyAtTick, 10);
+    assert.equal(getUnit(started.state, 0).action.nextExecutionId, 1);
+    assert.equal(started.state.events.some(event => event.type === "ACTION_FINISHED"), false);
+    const finished = advance(started.state, started.value.ref);
+    assert.deepEqual(steps, [[0, 0]]);
+    assert.equal(actions.get(finished, started.value.ref), undefined);
+    assert.equal(actions.getAction(initial, source, definition).execution, null);
+});
+
 test("action storage: heterogeneous definitions retain their private state and callback pairing", () => {
     const first = program("number", { start: (state) => ({ state, value: { count: 3 } }) });
     const second = program("text", { start: (state) => ({ state, value: { message: "ready" } }) });
@@ -99,7 +122,7 @@ test("action storage: a throwing later instance cannot mutate earlier published 
     const source = unitRef(getUnit(initial, 0)),
         a = actions.start(initial, source, first),
         b = actions.start(a.state, source, second);
-    const before = b.state;
+    const before = advance(advance(b.state, a.value.ref), b.value.ref);
     assert.throws(() => {
         const next = advance({ ...before, tick: 1 }, a.value.ref);
         advance(next, b.value.ref);

@@ -259,7 +259,8 @@ test("S2 immediately overrides normal attack and recovery cooldown, heals once, 
     assert.equal(getUnit(active, 0).action.actions.get("normal-attack").cooldown.readyAtTick, 0);
     assert.equal(getUnit(active, 0).action.actions.get(fixture.action.id).cooldown.readyAtTick, 0);
     assert.deepEqual(fixture.definition.action.select(active, getUnit(active, 0)).value, [fixture.action.id]);
-    const executed = start(active, unitRef(getUnit(active, 0)), fixture.action).state;
+    const started = start(active, unitRef(getUnit(active, 0)), fixture.action);
+    const executed = advanceAction(started.state, started.value.ref);
     const amount = (fixture.prepared.attributes.attack + 100) * 2.1;
     approximate(getUnit(executed, 1).vitality.hp, 10000 - amount);
     approximate(getUnit(executed, 2).vitality.hp, 10000 - amount);
@@ -287,7 +288,8 @@ test("S2 stays active through configured recovery and finishes on completion or 
     for (const cancellation of [false, true]) {
         const fixture = setup({}, [enemy(1, [1, 0])], { recoveryTicks: 2 });
         let state = activateSkill({ ...sp(fixture.state, 5), tick: 0 }, unitRef(getUnit(sp(fixture.state, 5), 0)), "AUTO" ).state;
-        state = start(state, unitRef(getUnit(state, 0)), fixture.action).state;
+        const started = start(state, unitRef(getUnit(state, 0)), fixture.action);
+        state = advanceAction(started.state, started.value.ref);
         assert.notEqual(getUnit(state, 0).skill.active, null);
         assert.equal(getUnit(state, 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 1);
         if (cancellation) {
@@ -314,7 +316,8 @@ test("Mudrock content explicitly rejects unsupported module Y, another character
 test("an old S2 recovery cannot close a newer skill activation", () => {
     const fixture = setup({}, [enemy(1, [1, 0])], { recoveryTicks: 2 });
     let state = activateSkill({ ...sp(fixture.state, 5), tick: 0 }, unitRef(getUnit(sp(fixture.state, 5), 0)), "AUTO" ).state;
-    state = start(state, unitRef(getUnit(state, 0)), fixture.action).state;
+    const started = start(state, unitRef(getUnit(state, 0)), fixture.action);
+    state = advanceAction(started.state, started.value.ref);
     assert.equal(getUnit(state, 0).skill.active.id, 0);
     state = finishSkill({ ...{ ...state, tick: 1 }, tick: 1 }, activationRef(getUnit({ ...state, tick: 1 }, 0).skill.active));
     assert.ok(getUnit(state, 0).effects.values().toArray().every(effect => effect.definition.id !== "mudrock/skill-attack"));

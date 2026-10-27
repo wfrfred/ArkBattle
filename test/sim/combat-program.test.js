@@ -36,10 +36,11 @@ test("ordinary attack: phase correction samples the cooldown returned by its sta
     const current = actions.getAction(initial, source, definition);
     initial = actions.updateCooldown(initial, source, definition.id, cooldown => ({ ...cooldown, readyAtTick: 9.75 }));
     const started = start(initial, definition);
+    const advanced = advance(started.state, started.value.ref);
     assert.equal(started.value.type, "STARTED");
-    assert.equal(actions.getAction(started.state, source, definition).cooldown.readyAtTick, 20);
+    assert.equal(actions.getAction(advanced, source, definition).cooldown.readyAtTick, 20);
     assert.equal(actions.getAction(initial, source, definition).cooldown.readyAtTick, 9.75);
-    assert.equal(getUnit(started.state, 1).vitality.hp, 93);
+    assert.equal(getUnit(advanced, 1).vitality.hp, 93);
 });
 
 test("ordinary attack: domain settlements observe each preceding returned battle state", () => {
@@ -99,12 +100,13 @@ test("ordinary attack: domain settlements observe each preceding returned battle
         },
     );
     const result = start({ ...initial, tick: 7 }, definition);
+    const advanced = advance(result.state, result.value.ref);
     assert.equal(result.value.type, "STARTED");
     assert.equal(observed[0].request.parameters.attack.power, 10);
     assert.equal(observed[0].tick, 7);
     assert.equal(observed[1].request.target.id, 0);
     assert.equal(observed[1].targetHp, 90);
-    assert.equal(getUnit(result.state, 1).vitality.hp, 90);
+    assert.equal(getUnit(advanced, 1).vitality.hp, 90);
     assert.equal(getUnit(initial, 1).vitality.hp, 100);
 });
 
@@ -112,11 +114,13 @@ test("ordinary attack: a subsequent action selects a current target after the pr
     const definition = actionDefinition(7),
         initial = battle(unit(0, { action: definition }), unit(1, { hp: 7 }), unit(2));
     const first = start(initial, definition);
-    assert.equal(getUnit(first.state, 1), undefined);
-    assert.equal(getUnit(first.state, 2).vitality.hp, 100);
-    const second = start({ ...first.state, tick: 10 }, definition);
+    const firstState = advance(first.state, first.value.ref);
+    assert.equal(getUnit(firstState, 1), undefined);
+    assert.equal(getUnit(firstState, 2).vitality.hp, 100);
+    const second = start({ ...firstState, tick: 10 }, definition);
     assert.equal(second.value.type, "STARTED");
-    assert.equal(getUnit(second.state, 2).vitality.hp, 93);
+    const secondState = advance(second.state, second.value.ref);
+    assert.equal(getUnit(secondState, 2).vitality.hp, 93);
 });
 
 test("ordinary attack: live source attack reads current contributions and fixed power retains its own value", () => {
@@ -136,10 +140,12 @@ test("ordinary attack: live source attack reads current contributions and fixed 
             value: [modifier({ addition: 15 })],
         }),
     }]);
-    const first = start(boosted, live),
-        second = start(first.state, fixed);
-    assert.equal(getUnit(first.state, 1).vitality.hp, 75);
-    assert.equal(getUnit(second.state, 1).vitality.hp, 70);
+    const first = start(boosted, live);
+    const firstState = advance(first.state, first.value.ref);
+    const second = start(firstState, fixed);
+    const secondState = advance(second.state, second.value.ref);
+    assert.equal(getUnit(firstState, 1).vitality.hp, 75);
+    assert.equal(getUnit(secondState, 1).vitality.hp, 70);
     assert.equal(getUnit(initial, 1).vitality.hp, 100);
 });
 
@@ -171,9 +177,10 @@ test("ordinary attack: lethal retaliation invalidates a later unsampled source a
         }),
     });
     const result = start(initial, definition);
-    assert.equal(getUnit(result.state, 0), undefined);
-    assert.equal(getUnit(result.state, 1).vitality.hp, 90);
-    assert.equal(actions.get(result.state, result.value.ref), undefined);
+    const advanced = advance(result.state, result.value.ref);
+    assert.equal(getUnit(advanced, 0), undefined);
+    assert.equal(getUnit(advanced, 1).vitality.hp, 90);
+    assert.equal(actions.get(advanced, result.value.ref), undefined);
 });
 
 test("ordinary attack: no target rejects startup without an instance or a consumed cooldown", () => {
@@ -230,9 +237,10 @@ test("action: generic non-attack programs do not earn attack SP or consume skill
     let state = battle(unit(0, { action: definition, skill }), unit(1));
     state = activate(state, unitRef(getUnit(state, 0))).state;
     const result = start(state, definition);
-    assert.equal(getUnit(result.state, 0).skill.active.sustain.remaining, 3);
-    assert.equal(getUnit(result.state, 0).skill.sp.value, 0);
-    assert.equal(resolveAttack(result.state, unitRef(getUnit(result.state, 0))), 10);
+    const advanced = advance(result.state, result.value.ref);
+    assert.equal(getUnit(advanced, 0).skill.active.sustain.remaining, 3);
+    assert.equal(getUnit(advanced, 0).skill.sp.value, 0);
+    assert.equal(resolveAttack(advanced, unitRef(getUnit(advanced, 0))), 10);
 });
 
 test("ACTION recovery callbacks may cancel the releasing attack before its output", () => {
@@ -252,9 +260,10 @@ test("ACTION recovery callbacks may cancel the releasing attack before its outpu
     } };
     const original = enterSkill(battle(configured, unit(1)), unitRef(configured));
     const result = start(original, attack);
-    assert.equal(getUnit(result.state, 0).skill.sp.value, 1);
-    assert.equal(getUnit(result.state, 1).vitality.hp, 100);
-    assert.equal(getUnit(result.state, 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 0);
-    assert.equal(result.state.events.filter(event => event.type === "ACTION_RELEASED").length, 1);
+    const advanced = advance(result.state, result.value.ref);
+    assert.equal(getUnit(advanced, 0).skill.sp.value, 1);
+    assert.equal(getUnit(advanced, 1).vitality.hp, 100);
+    assert.equal(getUnit(advanced, 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 0);
+    assert.equal(advanced.events.filter(event => event.type === "ACTION_RELEASED").length, 1);
     assert.equal(getUnit(original, 0).skill.sp.value, 0);
 });

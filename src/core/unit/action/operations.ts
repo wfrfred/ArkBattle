@@ -1,7 +1,8 @@
 import { update as updateUnit } from "../../battle/unit.js";
+import { closeLifetime } from "../../battle/execution/lifetime.js";
 import type { Ref } from "../../common/ref.js";
 import { sort } from "../../common/collection.js";
-import { type State as BattleState, type Result } from "../../battle/state.js";
+import { appendEvents, type State as BattleState, type Result } from "../../battle/state.js";
 import * as units from "../query.js";
 import type { Unit } from "../unit.js";
 import { hasAction, type Action as ActionCapability } from "../capability/action/capability.js";
@@ -9,10 +10,8 @@ import { isSpatiallyPresent } from "../capability/presence/capability.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import { resolveInterval } from "../capability/action/timing.js";
 import { ref, type Action, type Executing, type ExecutingView } from "./action.js";
-import type { Definition, Id as DefinitionId } from "./definition.js";
+import type { Definition, Id as DefinitionId, End } from "./definition.js";
 import * as cooldown from "./cooldown.js";
-import { advance } from "./advance.js";
-import { end } from "./internal/end.js";
 
 export type StartOutcome<P extends object, E extends object> =
     | { readonly type: "STARTED"; readonly ref: Ref<Executing<P, E>> }
@@ -251,7 +250,7 @@ export function start<P extends object, E extends object>(
     ]);
     const reference = ref(source, self);
 
-    return { state: advance(battle, reference), value: { type: "STARTED", ref: reference } };
+    return { state: battle, value: { type: "STARTED", ref: reference } };
 }
 
 export function update<P extends object, E extends object>(
@@ -293,6 +292,85 @@ export function update<P extends object, E extends object>(
                   },
               },
           ]);
+}
+
+export function end(
+    battle: BattleState,
+    reference: Ref<ExecutingView>,
+    result: End,
+    lifetimeReason = result.type === "FINISHED" ? "ACTION_FINISHED" : result.reason,
+): BattleState {
+    const host = units.get(battle, reference.host);
+
+    if (host === undefined) {
+        return battle;
+    }
+
+    return (
+        host.action.actions.readExecution(reference.id, (self) => {
+            if (self.execution.status === "ENDING") {
+                return battle;
+            }
+
+            const ending: Executing<typeof self.state, typeof self.execution.state> = {
+                ...self,
+                execution: { ...self.execution, status: "ENDING" },
+            };
+            battle = updateUnit(battle, [
+                {
+                    ...host,
+                    action: {
+                        ...host.action,
+                        actions: host.action.actions.replace(self.definition, ending),
+                    },
+                },
+            ]);
+            battle = closeLifetime(battle, { type: "ACTION", ref: reference }, lifetimeReason);
+
+            if (self.definition.onEnd !== undefined) {
+                const current = units
+                    .get(battle, reference.host)
+                    ?.action.actions.get(self.definition.id, self.definition);
+                const latest =
+                    current?.execution?.id === reference.id
+                        ? { ...current, execution: current.execution }
+                        : ending;
+                battle = self.definition.onEnd(battle, reference.host, latest, result);
+            }
+
+            const latestHost = units.get(battle, reference.host);
+            const latestAction = latestHost?.action.actions.get(
+                self.definition.id,
+                self.definition,
+            );
+
+            if (latestHost !== undefined && latestAction?.execution?.id === reference.id) {
+                battle = updateUnit(battle, [
+                    {
+                        ...latestHost,
+                        action: {
+                            ...latestHost.action,
+                            actions: latestHost.action.actions.replace(self.definition, {
+                                ...latestAction,
+                                execution: null,
+                            }),
+                        },
+                    },
+                ]);
+            }
+
+            return appendEvents(battle, [
+                {
+                    executionId: self.execution.id,
+                    sourceUnitId: reference.host.id,
+                    tick: battle.tick,
+                    ...(result.type === "FINISHED"
+                        ? { type: "ACTION_FINISHED" as const }
+                        : { type: "ACTION_CANCELLED" as const, reason: result.reason }),
+                },
+            ]);
+        }) ?? battle
+    );
 }
 
 export function cancel(

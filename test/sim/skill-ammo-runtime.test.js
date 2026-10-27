@@ -19,6 +19,7 @@ import { create as createAttack } from "../../dist/content/actions/skill.js";
 import { actionCapability } from "../helpers/actions.js";
 import { ref as actionRef } from "../../dist/core/unit/action/action.js";
 import * as actions from "../../dist/core/unit/action/operations.js";
+import { advance as advanceAction } from "../../dist/core/unit/action/advance.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
 import { createDefinition as createSkillDefinition } from "../../dist/core/unit/capability/skill/capability.js";
 import { ref as activationRef } from "../../dist/core/unit/capability/skill/activation.js";
@@ -146,7 +147,8 @@ test("skill attack snapshots its output callback and ammunition cost when create
   state = activate(state, unitRef(actor)).state;
   configuration.afterOutput = current => { trace.push("replacement"); return current; };
   configuration.ammoPerAction = 3;
-  state = actions.start(state, unitRef(actor), attack).state;
+  const started = actions.start(state, unitRef(actor), attack);
+  state = advanceAction(started.state, started.value.ref);
   assert.deepEqual(trace, ["original"]);
   assert.equal(getUnit(state, 1).vitality.hp, 93);
   assert.equal(getUnit(state, 0).skill.active.sustain.remaining, 2);

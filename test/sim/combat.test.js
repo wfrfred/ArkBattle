@@ -20,6 +20,7 @@ import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "../helpers/tiles.js";
 import { initialize } from "../helpers/unit.js";
 import { start as startAction } from "../../dist/core/unit/action/operations.js";
+import { advance as advanceAction } from "../../dist/core/unit/action/advance.js";
 import { damage as damageFixture, healing as healingFixture } from "../helpers/targeting.js";
 import { topK } from "../../dist/core/common/collection.js";
 import { setMaxHpContribution } from "../../dist/core/unit/capability/vitality/capability.js";
@@ -37,14 +38,16 @@ import { createBattleState } from "../../dist/core/battle/state.js";
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 
-const startSingleAction = (source, definition, context) => {
+const executeSingleAction = (source, definition, context) => {
   let battleState = createBattleState(context.battlefield);
   battleState = updateUnit({ ...battleState, tick: context.tick }, [source]);
-  const actionState = startAction(battleState, unitRef(source), definition).state;
-  battleState = actionState;
+  const started = startAction(battleState, unitRef(source), definition);
+  battleState = started.value.type === 'STARTED'
+    ? advanceAction(started.state, started.value.ref)
+    : started.state;
   return { units: [...battleState.battlefield.units.values()],
     removedUnitIds: battleState.removedUnits.map(value => value.unitId),
-    events: battleState.events, execution: battleState.execution, state: getUnit(actionState, source.id).action };
+    events: battleState.events, execution: battleState.execution, state: getUnit(battleState, source.id).action };
 };
 
 
@@ -698,7 +701,7 @@ test('core action: healing target selection owns the heal-free exception', () =>
     const source = actionUnit(0, 'ALLY', [0, 0], { action });
     const target = actionUnit(1, 'ALLY', [1, 0], { hp: 40, effects: [healFree] });
     const before = JSON.stringify([source, target]);
-    const result = startSingleAction(source, source.action.actions.values().toArray()[0].definition, {
+    const result = executeSingleAction(source, source.action.actions.values().toArray()[0].definition, {
       battlefield: fixtureBattlefieldState([source, target]), tick: 0,
     });
     const heals = result.events.filter(event => event.type === 'HEAL');
@@ -715,7 +718,7 @@ test('core action: explicitly declared query purposes gate mixed outputs while s
   const mixed = actionUnit(0, 'ALLY', [0, 0], { action: attackDefinition([
     { id: 'attack', targeting: damageTargeting({ purposes: ['DAMAGE', 'HEAL'] }), operations: [damageEffect(10), healEffect(5)] },
   ]) });
-  const result = startSingleAction(mixed, mixed.action.actions.values().toArray()[0].definition, {
+  const result = executeSingleAction(mixed, mixed.action.actions.values().toArray()[0].definition, {
     battlefield: fixtureBattlefieldState([mixed, target]), tick: 0,
   });
   assert.deepEqual(result.events, []);
@@ -723,7 +726,7 @@ test('core action: explicitly declared query purposes gate mixed outputs while s
   const damageOnly = actionUnit(0, 'ALLY', [0, 0], { action: attackDefinition([
     { id: 'attack', targeting: damageTargeting(), operations: [damageEffect(10), healEffect(5)] },
   ]) });
-  const permitted = startSingleAction(damageOnly, damageOnly.action.actions.values().toArray()[0].definition, {
+  const permitted = executeSingleAction(damageOnly, damageOnly.action.actions.values().toArray()[0].definition, {
     battlefield: fixtureBattlefieldState([damageOnly, target]), tick: 0,
   });
   assert.equal(permitted.events.find(event => event.type === 'DAMAGE').hp, 70);
@@ -732,7 +735,7 @@ test('core action: explicitly declared query purposes gate mixed outputs while s
   const source = actionUnit(0, 'ALLY', [0, 0], { hp: 60, effects: [healFree], action: attackDefinition([
     { id: 'attack', targeting: damageTargeting(), operations: [damageEffect(10)] },
   ], [{ receiver: { type: 'SOURCE' }, operation: healEffect(15) }]) });
-  const stepped = startSingleAction(source, source.action.actions.values().toArray()[0].definition, {
+  const stepped = executeSingleAction(source, source.action.actions.values().toArray()[0].definition, {
     battlefield: fixtureBattlefieldState([source, target]), tick: 0,
   });
   assert.deepEqual(stepped.events.map(event => event.type), ['ACTION', 'ACTION_RELEASED', 'DAMAGE', 'HEAL', 'ACTION_FINISHED']);
@@ -751,7 +754,7 @@ test('core action: secondary target groups cannot trigger the action and use ind
   const source = actionUnit(0, 'ALLY', [0, 0], { action: definition });
   const friend = actionUnit(2, 'ALLY', [2, 0], { hp: 40 });
   const compiled = source.action.actions.values().toArray()[0].definition;
-  const noEnemy = startSingleAction(source, compiled, { battlefield: fixtureBattlefieldState([source, friend]), tick: 0 });
+  const noEnemy = executeSingleAction(source, compiled, { battlefield: fixtureBattlefieldState([source, friend]), tick: 0 });
   assert.deepEqual(noEnemy.units.map(unit => unit.id), [source.id, friend.id]);
   assert.deepEqual(noEnemy.removedUnitIds, []);
   assert.deepEqual(noEnemy.events, []);
@@ -759,7 +762,7 @@ test('core action: secondary target groups cannot trigger the action and use ind
   assert.equal(noEnemy.state.actions.values().some(action => action.execution !== null), false);
 
   const enemy = actionUnit(1, 'ENEMY', [1, 0], { hp: 80, effects: [healFree] });
-  const stepped = startSingleAction(source, compiled, { battlefield: fixtureBattlefieldState([source, friend, enemy]), tick: 0 });
+  const stepped = executeSingleAction(source, compiled, { battlefield: fixtureBattlefieldState([source, friend, enemy]), tick: 0 });
   assert.deepEqual(stepped.events.map(event => [event.type, event.targetUnitId]),
     [['ACTION', 1], ['ACTION_RELEASED', undefined], ['DAMAGE', 1], ['HEAL', 2], ['ACTION_FINISHED', undefined]]);
   assert.equal(stepped.units.find(unit => unit.id === 1).vitality.hp, 70);
@@ -806,7 +809,7 @@ test('core action: binding follow-ups retain the selected target and read preced
   ], [{ receiver: { type: 'BINDING', bindingId: 'restore' }, operation: healEffect(5) }]) });
   const first = actionUnit(1, 'ALLY', [1, 0], { hp: 30 });
   const second = actionUnit(2, 'ALLY', [2, 0], { hp: 40 });
-  const result = startSingleAction(source, source.action.actions.values().toArray()[0].definition, {
+  const result = executeSingleAction(source, source.action.actions.values().toArray()[0].definition, {
     battlefield: fixtureBattlefieldState([source, first, second]), tick: 0,
   });
 
