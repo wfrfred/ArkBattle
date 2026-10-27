@@ -39,7 +39,7 @@ function releaseEffect(id, data, invoke) {
                     id: `release/${ref.id}`,
                     accepts: (battle) => effects.get(battle, ref)?.status === "ACTIVE",
                     invoke: (battle, context, current) =>
-                        invoke(battle, { unit: getUnit(battle, context.source.id), action: context.action }, effects.get(battle, ref), ref, current),
+                        invoke(battle, { unit: getUnit(battle, context.source.id), execution: context.execution }, effects.get(battle, ref), ref, current),
                 }),
             }));
         },
@@ -268,7 +268,7 @@ test("action release: hooks share fixed identities and receive the preceding sta
             invoke(state, context, current) {
                 fixed = context;
                 assert.deepEqual(current, CONTINUE);
-                assert.equal(context.action, started.value.ref);
+                assert.equal(context.execution, started.value.ref);
                 const currentUnit5 = getUnit(state, 0);
                 return { state: replaceUnit(state, ({ ...currentUnit5,
                     vitality: { ...currentUnit5.vitality, hp: 75 },

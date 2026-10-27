@@ -12,7 +12,7 @@ export type Directive =
 
 export interface Context {
     readonly source: Ref<Unit & Action>;
-    readonly action: Ref<ExecutionView>;
+    readonly execution: Ref<ExecutionView>;
 }
 
 export type Hook = hook.Hook<Context, Directive>;
@@ -20,7 +20,7 @@ export type Hook = hook.Hook<Context, Directive>;
 export type ReleasedHook = hook.Hook<Context, void>;
 
 export function beforeRelease(battle: BattleState, ref: Ref<ExecutionView>): Result<Directive> {
-    const context: Context = { action: ref, source: ref.host };
+    const context: Context = { execution: ref, source: ref.host };
     const result = hook.dispatch<Context, Directive>(
         battle,
         context,
@@ -44,7 +44,7 @@ export function beforeRelease(battle: BattleState, ref: Ref<ExecutionView>): Res
 }
 
 export function released(battle: BattleState, ref: Ref<ExecutionView>): BattleState {
-    const context: Context = { action: ref, source: ref.host };
+    const context: Context = { execution: ref, source: ref.host };
 
     return hook.dispatch(battle, context, undefined, {
         candidates: (current) =>
@@ -60,6 +60,6 @@ function running(battle: BattleState, context: Context): boolean {
 
     return (
         source?.lifecycle === "PRESENT" &&
-        source.action.actions.getExecution(context.action.id)?.execution.status === "RUNNING"
+        source.action.actions.getExecution(context.execution.id)?.execution.status === "RUNNING"
     );
 }

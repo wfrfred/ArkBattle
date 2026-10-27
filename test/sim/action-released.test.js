@@ -43,7 +43,7 @@ test("a successful attack notifies released after its release event, restores AC
     const currentAction = getUnit(f.state, 0).action;
     const state = setAction(f.state, setReleasedHook(currentAction, hook("observe", (current, context) => {
         const source = getUnit(current, context.source.id);
-        const reference = context.action;
+        const reference = context.execution;
         assert.equal(current.events.at(-1).type, "ACTION_RELEASED");
         assert.equal(current.events.some(({ type }) => type === "DAMAGE"), false);
         assert.equal(source.skill.sp.value, 2);
@@ -131,7 +131,7 @@ test("default attack output reads bindings replaced by a released Hook from the 
     const f = fixture({ targets: 2 });
     const currentAction5 = getUnit(f.state, 0).action;
     const state = setAction(f.state, setReleasedHook(currentAction5, hook("rebind", (current, context) => {
-        const reference = context.action;
+        const reference = context.execution;
         const self = actions.getExecution(current, reference);
         assert.equal(self.execution.state.bindings.primary[0].id, 1);
         const currentState2 = actions.getExecution(current, executionRef(reference.host, self)).execution.state;
@@ -197,7 +197,7 @@ test("release observers stop after their Action ends and retain the completed ob
         id: "finish",
         invoke(state, context) {
             fixed = context;
-            return { state: actions.cancel(state, context.action, "HOOK_CANCELLED"), value: undefined };
+            return { state: actions.cancel(state, context.execution, "HOOK_CANCELLED"), value: undefined };
         },
     }));
     const currentAction12 = getUnit(state, 0).action;
@@ -207,9 +207,9 @@ test("release observers stop after their Action ends and retain the completed ob
     }));
     const started = actions.start(state, actions.ref(f.ref, f.definition));
     const next = released(started.state, started.value.ref);
-    assert.equal(fixed.action, started.value.ref);
+    assert.equal(fixed.execution, started.value.ref);
     assert.equal(fixed.source.id, f.ref.id);
-    assert.equal(actions.getExecution(next, fixed.action), undefined);
+    assert.equal(actions.getExecution(next, fixed.execution), undefined);
     assert.equal(next.events.at(-1).type, "ACTION_CANCELLED");
     assert.equal(actions.getExecution(started.state, started.value.ref).execution.status, "RUNNING");
 });
