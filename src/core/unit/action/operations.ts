@@ -8,7 +8,7 @@ import type { Action as ActionCapability } from "../capability/action/capability
 import { isSpatiallyPresent } from "../capability/presence/capability.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import { resolveInterval } from "../capability/action/timing.js";
-import { ref, type Executing, type ExecutingView } from "./action.js";
+import { ref, type Action, type Executing, type ExecutingView } from "./action.js";
 import type { Definition, Id as DefinitionId, End } from "./definition.js";
 import * as cooldown from "./cooldown.js";
 import { forUnit } from "./query.js";
@@ -40,17 +40,7 @@ export function updateState<P extends object, E extends object>(
 
     const state = transform(current.state);
 
-    return state === current.state
-        ? battle
-        : updateUnit(battle, [
-              {
-                  ...unit,
-                  action: {
-                      ...unit.action,
-                      actions: unit.action.actions.replace(definition, { ...current, state }),
-                  },
-              },
-          ]);
+    return state === current.state ? battle : replaceAction(battle, unit, { ...current, state });
 }
 
 export function updateCooldown(
@@ -70,18 +60,7 @@ export function updateCooldown(
 
         return next === self.cooldown
             ? battle
-            : updateUnit(battle, [
-                  {
-                      ...unit,
-                      action: {
-                          ...unit.action,
-                          actions: unit.action.actions.replace(self.definition, {
-                              ...self,
-                              cooldown: next,
-                          }),
-                      },
-                  },
-              ]);
+            : replaceAction(battle, unit, { ...self, cooldown: next });
     });
 
     if (updated === undefined) {
@@ -96,80 +75,69 @@ export function start<P extends object, E extends object>(
     source: Ref<Unit & ActionCapability>,
     definition: Definition<P, E>,
 ): Result<StartOutcome<P, E>> {
-    const unit = units.get(battle, source);
-    const reject = (
-        reason: Extract<StartOutcome<P, E>, { type: "REJECTED" }>["reason"],
-    ): Result<StartOutcome<P, E>> => ({ state: battle, value: { type: "REJECTED", reason } });
+    const reject = (reason: Extract<StartOutcome<P, E>, { type: "REJECTED" }>["reason"]) => ({
+        type: "REJECTED" as const,
+        reason,
+    });
 
-    if (
-        unit?.lifecycle !== "PRESENT" ||
-        !isSpatiallyPresent(unit) ||
-        (hasVitality(unit) && unit.vitality.hp <= 0)
-    ) {
-        return reject("SOURCE_UNAVAILABLE");
+    function check(battle: BattleState) {
+        const unit = units.get(battle, source);
+
+        if (
+            unit?.lifecycle !== "PRESENT" ||
+            !isSpatiallyPresent(unit) ||
+            (hasVitality(unit) && unit.vitality.hp <= 0)
+        ) {
+            return reject("SOURCE_UNAVAILABLE");
+        }
+
+        const action = unit.action.actions.get(definition.id, definition);
+
+        if (action === undefined) {
+            throw new TypeError("action definition is not configured for its source");
+        }
+        if (action.execution !== null) {
+            return reject("CASTING");
+        }
+        if (!unit.action.rules.every((rule) => rule.allows(battle, unit, definition.id))) {
+            return reject("RULE");
+        }
+
+        const period = resolveInterval(battle, source, definition)!;
+        const resized = cooldown.resizeKeepingProgress(action.cooldown, period, battle.tick);
+
+        if (cooldown.remaining(resized, battle.tick) > 0) {
+            return reject("COOLDOWN");
+        }
+
+        return { type: "READY" as const, unit, action, cooldown: resized };
     }
 
-    const current = unit.action.actions.get(definition.id, definition);
+    const initial = check(battle);
 
-    if (current === undefined) {
-        throw new TypeError("action definition is not configured for its source");
-    }
-    if (current.execution !== null) {
-        return reject("CASTING");
-    }
-    if (!unit.action.rules.every((rule) => rule.allows(battle, unit, definition.id))) {
-        return reject("RULE");
+    if (initial.type === "REJECTED") {
+        return { state: battle, value: initial };
     }
 
-    const period = resolveInterval(battle, source, definition)!;
-    const resized = cooldown.resizeKeepingProgress(current.cooldown, period, battle.tick);
-
-    if (cooldown.remaining(resized, battle.tick) > 0) {
-        return reject("COOLDOWN");
-    }
-
-    const initialized = definition.prepare(battle, source, current);
+    const initialized = definition.prepare(battle, source, initial.action);
     battle = initialized.state;
 
     if (initialized.value === null) {
-        return reject("CONDITION");
+        return { state: battle, value: reject("CONDITION") };
     }
 
-    const latest = units.get(battle, source);
+    const latest = check(battle);
 
-    if (
-        latest?.lifecycle !== "PRESENT" ||
-        !isSpatiallyPresent(latest) ||
-        (hasVitality(latest) && latest.vitality.hp <= 0)
-    ) {
-        return reject("SOURCE_UNAVAILABLE");
+    if (latest.type === "REJECTED") {
+        return { state: battle, value: latest };
     }
 
-    const latestAction = latest.action.actions.get(definition.id, definition)!;
-
-    if (latestAction.execution !== null) {
-        return reject("CASTING");
-    }
-    if (!latest.action.rules.every((rule) => rule.allows(battle, latest, definition.id))) {
-        return reject("RULE");
-    }
-
-    const latestPeriod = resolveInterval(battle, source, definition)!;
-    const acceptedCooldown = cooldown.resizeKeepingProgress(
-        latestAction.cooldown,
-        latestPeriod,
-        battle.tick,
-    );
-
-    if (cooldown.remaining(acceptedCooldown, battle.tick) > 0) {
-        return reject("COOLDOWN");
-    }
-
+    const { unit, action, cooldown: acceptedCooldown } = latest;
     const self: Executing<P, E> = {
-        ...latestAction,
+        ...action,
         cooldown: cooldown.reset(acceptedCooldown, battle.tick),
         execution: {
-            id: latest.action.nextExecutionId,
+            id: unit.action.nextExecutionId,
             startedAtTick: battle.tick,
             status: "RUNNING",
             state: initialized.value,
@@ -177,11 +145,11 @@ export function start<P extends object, E extends object>(
     };
     battle = updateUnit(battle, [
         {
-            ...latest,
+            ...unit,
             action: {
-                ...latest.action,
-                actions: latest.action.actions.replace(definition, self),
-                nextExecutionId: latest.action.nextExecutionId + 1,
+                ...unit.action,
+                actions: unit.action.actions.replace(definition, self),
+                nextExecutionId: unit.action.nextExecutionId + 1,
             },
         },
     ]);
@@ -217,18 +185,10 @@ export function update<P extends object, E extends object>(
 
     return state === current.execution.state
         ? battle
-        : updateUnit(battle, [
-              {
-                  ...unit,
-                  action: {
-                      ...unit.action,
-                      actions: unit.action.actions.replace(current.definition, {
-                          ...current,
-                          execution: { ...current.execution, state },
-                      }),
-                  },
-              },
-          ]);
+        : replaceAction(battle, unit, {
+              ...current,
+              execution: { ...current.execution, state },
+          });
 }
 
 export function end(
@@ -253,15 +213,7 @@ export function end(
                 ...self,
                 execution: { ...self.execution, status: "ENDING" },
             };
-            battle = updateUnit(battle, [
-                {
-                    ...host,
-                    action: {
-                        ...host.action,
-                        actions: host.action.actions.replace(self.definition, ending),
-                    },
-                },
-            ]);
+            battle = replaceAction(battle, host, ending);
             battle = closeLifetime(battle, { type: "ACTION", ref: reference }, lifetimeReason);
 
             if (self.definition.onEnd !== undefined) {
@@ -282,18 +234,10 @@ export function end(
             );
 
             if (latestHost !== undefined && latestAction?.execution?.id === reference.id) {
-                battle = updateUnit(battle, [
-                    {
-                        ...latestHost,
-                        action: {
-                            ...latestHost.action,
-                            actions: latestHost.action.actions.replace(self.definition, {
-                                ...latestAction,
-                                execution: null,
-                            }),
-                        },
-                    },
-                ]);
+                battle = replaceAction(battle, latestHost, {
+                    ...latestAction,
+                    execution: null,
+                });
             }
 
             return appendEvents(battle, [
@@ -383,4 +327,20 @@ export function clearCooldown(
     return updateCooldown(battle, source, definitionId, (current) =>
         cooldown.clear(current, battle.tick),
     );
+}
+
+function replaceAction<P extends object, E extends object>(
+    battle: BattleState,
+    unit: Unit & ActionCapability,
+    self: Action<P, E>,
+): BattleState {
+    return updateUnit(battle, [
+        {
+            ...unit,
+            action: {
+                ...unit.action,
+                actions: unit.action.actions.replace(self.definition, self),
+            },
+        },
+    ]);
 }

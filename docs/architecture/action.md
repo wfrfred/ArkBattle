@@ -239,13 +239,13 @@ export declare function updateCooldown(
 
 start 从当前 Action 检查配置对象身份、来源资格、execution 占用、Rule、Cooldown 和内容条件。未配置 Definition 属于调用／配置错误；普通拒绝不分配执行 ID 或开始周期。STARTED 表示已受理：start 通过 prepare 构造 E、登记本轮 Execution 并重置 Cooldown，首次 onTick 由独立的 advance 入口执行。返回的 Ref 标识本轮执行，使用时仍从最新 BattleState 确认其状态。
 
-prepare 回调返回后重新读取当前宿主与聚合条目，按最新周期再次确认准入。回调使自身进入冷却时返回 COOLDOWN，保留已经发生的修改。仍可启动时才基于最新宿主一次写回该 Action 的新 Cooldown、Execution 和 nextExecutionId，保留持久 state、兄弟行动及其他能力的修改。
+start 内的局部 check 复用同一套准入规则，在 prepare 前检查，并在 prepare 成功后从接续的 BattleState 重新读取宿主与聚合条目，按最新周期再次确认准入，再以其结果登记。prepare 返回 null 时直接返回 CONDITION。回调使自身进入冷却时返回 COOLDOWN，保留已经发生的修改。仍可启动时才基于最新宿主一次写回该 Action 的新 Cooldown、Execution 和 nextExecutionId，保留持久 state、兄弟行动及其他能力的修改。
 
 三类写入均从传入的最新 BattleState 读取当前值。update 只修改 execution.state；updateState 只修改持久 state；updateCooldown 只修改 Cooldown。它们不接收整份 Action，不允许内容顺带改写 Definition、执行身份或生命周期。transform 是纯局部值转换，不修改输入、不消费 RNG，也不执行嵌套领域操作；返回当前值引用时返回原 BattleState。
 
 宿主、指定执行或按 ID 指定的行动条目缺失时，写入操作抛出 RangeError；updateState 所给 Definition 未配置或对象身份不匹配时抛出 TypeError。均不调用 transform。update 在 execution 为 ENDING 时抛出 TypeError；updateState／updateCooldown 可以在结束程序中更新持久事实。需要累加或保留其他字段时从 transform 的 current 构造结果，不捕获旧 self.state／self.execution.state 覆盖当前数据。`NoInfer` 限制变换结果参与泛型推导；精确 Ref 和 Definition 保持 P／E 关联，预先弱化类型后写入不兼容数据属于调用契约错误，不增加运行时形状校验。
 
-底层 Actions.replace(definition, next) 供 Core 提交已经配对的完整聚合条目，内部信任已构造的 Definition 与执行身份。生命周期变更由完整领域操作管理，内容只调用对应字段的更新操作。
+单个 Action 的完整写回由文件私有 replaceAction 统一，通过底层 Actions.replace(definition, next) 提交已配对条目，信任已有宿主、Definition 与执行身份。start 仍将新 Cooldown、Execution 和 nextExecutionId 一次写回；refreshCooldowns 仍批量构造后一次提交，不改为逐条写回。生命周期变更由完整领域操作管理，内容只调用对应字段的更新操作。
 
 终止顺序为：execution.RUNNING → 写入 execution.ENDING → 关闭本轮 ACTION lifetime 及依赖 → 读取最新配对条目进入可选 onEnd → 清空 execution → 登记结束事件。重复终止看到 ENDING 不重复收尾；收尾完成前仍占用同配置启动位置。
 

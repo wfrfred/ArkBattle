@@ -32,6 +32,8 @@ field.map 持有当前地块。battlefield/tile.update 是运行态地块变更�
 
 Action 的准备程序为 prepare，推进与结束回调为 onTick／onEnd；Projectile 的登记后启动、推进与结束回调为 onStart／onTick／onEnd。onEnter／onLeave、onEnable／onDisable 与 onInstall 保留各自的场景、参与状态及安装语义，不因命名统一而合并或增加生命周期阶段，也不改变返回协议或调度职责。
 
+同一语义复用已有动词。函数内部的辅助函数可以依靠上下文使用 check 等短名；提升为模块级辅助函数时应补充用途，例如 checkStart。共享写回沿用 replace，并按实际对象区分 replaceAction、replaceHost，不为同类操作另造动词。公共接口结合所属领域与具体职责命名。
+
 以下情况按同一职责分类处理：
 
 | 情况 | 形状或规则 |
