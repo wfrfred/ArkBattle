@@ -280,7 +280,7 @@ onEnd 可以在宿主已因嵌套离场而消失时凭捕获的 ending 值执行
 Runtime 采用以下候选政策：
 
 1. 固定本轮 Unit 候选及每个宿主当时的执行 Ref，Unit 按 ID 排序。宿主离场由完整离场操作终止其执行，不保存脱离宿主的孤立 Execution。
-2. 对每个 Unit，先推进原有执行，再从最新状态运行该 Unit 的 select。
+2. 对每个 Unit，先推进原有执行，再刷新 Cooldown；刷新返回后重新读取来源，仍为 PRESENT 且空间在场时才运行 select，已经离场或隐藏则跳过。
 3. select 返回本轮候选 Definition ID 及接续状态，可以表达优先级、随机选择和具体模式政策；未提供时从 Actions.keys() 取得全部配置项。
 4. 候选去重后逐一通过 Actions.read 取得配对条目并调用 start，每次读取最新来源与配置。列表顺序不代表引擎赋予的业务优先级。
 5. 调度器扫描入口固定的执行 Ref，每项读取最新状态并推进一次。自动候选的 start 返回 STARTED 后，Combat 显式调用 advance 推进该 Ref，保持自动动作在同 Tick 首次执行。
@@ -292,6 +292,8 @@ advance(battle, ref) 实现在专用推进模块，并由公共入口导出供�
 ## 8. 普通攻击、释放 Hook 与移动
 
 可复用普通攻击程序位于 content/actions/attack.ts，直接调用 Damage、Healing 与 Elemental 的公开操作。它在 prepare 绑定目标并保存 releaseAtTick／finishAtTick、released 等执行进度；到点执行输出并在恢复结束后完成。create 提供空持久／执行数据的入口；createWithState<P, E> 明确区分 initialize(battle) → Result<P> 与 prepare(battle, source, self) → Result<E>。output／afterOutput／onEnd 接收显式 source 与 execution 非空的 Execution<P, State<E>>，模板私有数据位于 self.execution.state.data。
+
+CD 补偿、cooldownAdjusted 与 released 写回都通过完整 Unit 更新结算。Blocking 的 Rule 接收当前 Unit，可以按 Action 状态决定阻挡资格；关系失效时，维护流程同步派发 Blocking 的 released Hook，该 Hook 可以取消执行或使来源离场、隐藏。因此这三处写回返回后，Attack 都按同一 Execution Ref 重新读取，确认本轮仍为 RUNNING，且来源仍为 PRESENT、空间在场，再使用最新 self 继续；不满足时取消本轮或直接退出，不沿用写回前的 self。Combat 的 Cooldown 刷新同样可能触发这条维护链，刷新后的 select 使用重新确认的来源。
 
 Attack 模板统一校验前后摇、操作数值和绑定关系，上层内容不重复校验原样传入的同一字段。只读配置直接共享，公开 attack 配置只投影配置字段，不携带程序私有回调，也不额外复制、冻结其子对象。
 

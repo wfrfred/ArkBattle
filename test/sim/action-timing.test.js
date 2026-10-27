@@ -1,7 +1,7 @@
 import { executionRef } from "../../dist/core/unit/action/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { battle, unit } from "../helpers/action-fixture.js";
+import { actionDefinition, battle, unit } from "../helpers/action-fixture.js";
 import * as cooldown from "../../dist/core/unit/action/cooldown.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { actionCapability } from "../helpers/actions.js";
@@ -13,9 +13,12 @@ import {
 import {
     setSpeedContribution,
     setIntervalContribution,
+    setBeforeReleaseHook,
 } from "../../dist/core/unit/capability/action/capability.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+import { remove, update as updateUnit } from "../../dist/core/battle/unit.js";
+import { search as acquireBlocking } from "../../dist/core/battle/blocking/index.js";
+import { setRule as setBlockerRule, setHook as setBlockerHook } from "../../dist/core/unit/capability/blocking/blocker.js";
 import { getUnit } from "../helpers/unit.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { advance } from "../../dist/core/unit/action/index.js";
@@ -213,3 +216,83 @@ test("action timing: live contributions read the battle version provided by the 
     assert.equal(resolveInterval(next, source, definition), 20);
     assert.equal(resolveInterval(initial, source, definition), 30);
 });
+
+for (const { checkpoint, operation } of [
+    { checkpoint: "cooldown", operation: "cancel" },
+    { checkpoint: "cooldownAdjusted", operation: "cancel" },
+    { checkpoint: "cooldownAdjusted", operation: "remove" },
+    { checkpoint: "released", operation: "hide" },
+]) {
+    test(`attack stops when ${checkpoint} writeback triggers a Blocking Hook to ${operation} its source or execution`, () => {
+        const attack = actionDefinition(7);
+        const source = unit(0, { action: attack, blocker: { capacity: 1, geometry: { radius: 2 } } });
+        const target = unit(1, { blockable: { volume: 1 } });
+        const reference = unitRef(source);
+        const callbacks = [];
+        let beforeReleaseCalls = 0;
+        let initial = battle(source, target);
+        const current = getUnit(initial, source.id);
+        initial = updateUnit(initial, [{
+            ...current,
+            action: setBeforeReleaseHook(current.action, {
+                id: "must-not-release",
+                invoke(state) {
+                    beforeReleaseCalls++;
+                    return { state, value: { type: "CONTINUE" } };
+                },
+            }),
+            blocker: setBlockerHook(setBlockerRule(current.blocker, {
+                id: "blocking-during-attack",
+                allows(host) {
+                    const action = host.action.actions.get(attack.id, attack);
+                    return action.execution === null || (checkpoint === "cooldown"
+                        ? action.cooldown.readyAtTick !== 10.5
+                        : !action.execution.state[checkpoint]);
+                },
+            }), "released", {
+                id: "interrupt-on-release",
+                invoke(state, context) {
+                    const action = actions.getAction(state, actions.ref(context.host, attack));
+                    callbacks.push({
+                        readyAtTick: action.cooldown.readyAtTick,
+                        cooldownAdjusted: action.execution.state.cooldownAdjusted,
+                        released: action.execution.state.released,
+                    });
+                    if (operation === "remove") {
+                        return { state: remove(state, context.host.id, "SCRIPT"), value: undefined };
+                    }
+                    if (operation === "hide") {
+                        const host = getUnit(state, context.host.id);
+                        return { state: updateUnit(state, [{ ...host, spatialPresence: { present: false } }]), value: undefined };
+                    }
+                    const execution = executionRef(context.host, action);
+                    return { state: actions.cancel(state, execution, "BLOCKING_CALLBACK"), value: undefined };
+                },
+            }),
+        }]);
+        initial = acquireBlocking(initial, reference);
+        assert.deepEqual(getUnit(initial, source.id).blocker.blocked.map(ref => ref.id), [target.id]);
+        initial = actions.setCooldown(initial, actions.ref(reference, attack), { periodTicks: 10, readyAtTick: 0.5 });
+        const started = actions.start({ ...initial, tick: 1 }, actions.ref(reference, attack));
+        assert.equal(started.value.type, "STARTED");
+        assert.deepEqual(callbacks, []);
+
+        const advanced = advance(started.state, started.value.ref);
+
+        assert.deepEqual(callbacks, [{
+            readyAtTick: 10.5,
+            cooldownAdjusted: checkpoint !== "cooldown",
+            released: checkpoint === "released",
+        }]);
+        assert.equal(beforeReleaseCalls, 0);
+        assert.equal(actions.getExecution(advanced, started.value.ref), undefined);
+        assert.equal(getUnit(advanced, target.id).vitality.hp, 100);
+        assert.equal(advanced.events.some(event => event.type === "ACTION_RELEASED" || event.type === "DAMAGE"), false);
+        assert.equal(advanced.events.filter(event => event.type === "ACTION").length, checkpoint === "released" ? 1 : 0);
+        assert.deepEqual(advanced.events.filter(event => event.type === "ACTION_CANCELLED").map(event => event.reason), [operation === "cancel" ? "BLOCKING_CALLBACK" : "SOURCE_ABSENT"]);
+        if (operation === "remove") assert.equal(getUnit(advanced, source.id), undefined);
+        if (operation === "hide") assert.equal(getUnit(advanced, source.id).spatialPresence.present, false);
+        assert.equal(actions.getExecution(started.state, started.value.ref).execution.state.cooldownAdjusted, false);
+        assert.equal(getUnit(started.state, target.id).vitality.hp, 100);
+    });
+}

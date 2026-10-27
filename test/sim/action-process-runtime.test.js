@@ -6,7 +6,7 @@ import * as effects from "../../dist/core/unit/effect/index.js";
 import { executionRef } from "../../dist/core/unit/action/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { unit } from "../helpers/action-fixture.js";
+import { battle, unit } from "../helpers/action-fixture.js";
 import { initialize as initializeBattle, step as stepBattle } from "../../dist/core/battle/runtime.js";
 
 import { createLegacyCombatSpec } from "../../dist/legacy/combat.js";
@@ -17,6 +17,11 @@ import { getUnit } from "../helpers/unit.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { actionCapability } from "../helpers/actions.js";
+import { advance as advanceCombat } from "../../dist/core/battle/steps/combat.js";
+import { search as acquireBlocking } from "../../dist/core/battle/blocking/index.js";
+import { setRule as setBlockerRule, setHook as setBlockerHook } from "../../dist/core/unit/capability/blocking/blocker.js";
+import { setSpeedContribution } from "../../dist/core/unit/capability/action/capability.js";
+import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 
 function spec(initialUnits) {
     return {
@@ -74,6 +79,53 @@ const program = (id, extra = {}) => ({
     prepare: (state) => ({ state, value: { count: 0 } }),
     onTick: (state) => ({ state, value: false }),
     ...extra,
+});
+
+test("Combat skips selection when cooldown refresh removes its host through a Blocking Hook", () => {
+    let selections = 0;
+    const periods = [];
+    const definition = program("refresh-removal");
+    const capability = {
+        ...actionCapability(definition),
+        select(state) {
+            selections++;
+            return { state, value: [definition.id] };
+        },
+    };
+    const source = unit(0, { action: capability, blocker: { capacity: 1, geometry: { radius: 2 } } });
+    const target = unit(1, { blockable: { volume: 1 } });
+    const reference = unitRef(source);
+    let initial = battle(source, target);
+    const current = getUnit(initial, source.id);
+    initial = updateUnit(initial, [{
+        ...current,
+        action: setSpeedContribution(current.action, {
+            id: "tick-speed",
+            value: state => [modifier({ addition: state.tick >= 11 ? 100 : 0 })],
+        }),
+        blocker: setBlockerHook(setBlockerRule(current.blocker, {
+            id: "blocking-during-long-period",
+            allows: host => host.action.actions.get(definition.id).cooldown.periodTicks >= 10,
+        }), "released", {
+            id: "remove-on-release",
+            invoke(state, context) {
+                periods.push(actions.getAction(state, actions.ref(context.host, definition)).cooldown.periodTicks);
+                return { state: remove(state, context.host.id, "SCRIPT"), value: undefined };
+            },
+        }),
+    }]);
+    initial = acquireBlocking(initial, reference);
+    assert.deepEqual(getUnit(initial, source.id).blocker.blocked.map(ref => ref.id), [target.id]);
+
+    const advanced = advanceCombat({ ...initial, tick: 11 });
+
+    assert.deepEqual(periods, [5]);
+    assert.equal(selections, 0);
+    assert.equal(getUnit(advanced, source.id), undefined);
+    assert.equal(getUnit(advanced, target.id).vitality.hp, 100);
+    assert.deepEqual(advanced.removedUnits.map(({ unitId, reason }) => [unitId, reason]), [[source.id, "SCRIPT"]]);
+    assert.equal(advanced.events.some(event => event.type === "ACTION" || event.type === "DAMAGE"), false);
+    assert.equal(actions.getAction(initial, actions.ref(reference, definition)).cooldown.periodTicks, 10);
 });
 
 test("action runtime: a newly registered instance first executes once and retained snapshots stay immutable", () => {

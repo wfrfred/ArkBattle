@@ -331,14 +331,30 @@ export function createWithState<P extends object, E extends object>(
                         readyAtTick:
                             self.execution.state.previousReadyAtTick + self.cooldown.periodTicks,
                     });
+                    const current = actions.getExecution(battle, identity);
+                    if (current?.execution.status !== "RUNNING" || !sourcePresent(battle, source)) {
+                        return {
+                            state: actions.cancel(battle, identity, "SOURCE_ABSENT"),
+                            value: true,
+                        };
+                    }
+
+                    self = current;
                 }
 
-                const current = actions.getExecution(battle, identity)!;
                 battle = actions.setExecutionState(battle, identity, {
-                    ...current.execution.state,
+                    ...self.execution.state,
                     cooldownAdjusted: true,
                 });
-                self = actions.getExecution(battle, identity) ?? self;
+                const current = actions.getExecution(battle, identity);
+                if (current?.execution.status !== "RUNNING" || !sourcePresent(battle, source)) {
+                    return {
+                        state: actions.cancel(battle, identity, "SOURCE_ABSENT"),
+                        value: true,
+                    };
+                }
+
+                self = current;
                 battle = appendEvents(battle, [
                     {
                         type: "ACTION",
@@ -357,6 +373,15 @@ export function createWithState<P extends object, E extends object>(
                     ...self.execution.state,
                     released: true,
                 });
+                const releasing = actions.getExecution(battle, identity);
+                if (releasing?.execution.status !== "RUNNING" || !sourcePresent(battle, source)) {
+                    return {
+                        state: actions.cancel(battle, identity, "SOURCE_ABSENT"),
+                        value: true,
+                    };
+                }
+
+                self = releasing;
                 const permission = beforeRelease(battle, identity);
                 battle = permission.state;
                 const current = actions.getExecution(battle, identity);
