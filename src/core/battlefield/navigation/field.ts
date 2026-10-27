@@ -52,7 +52,6 @@ export function build(map: Map, target: TilePosition): Field {
             const [dRow, dCol] = Direction.vector(direction);
             const neighborRow = row + dRow;
             const neighborCol = col + dCol;
-
             if (
                 neighborRow < 0 ||
                 neighborRow >= map.rows ||
@@ -64,13 +63,11 @@ export function build(map: Map, target: TilePosition): Field {
 
             const neighbor = neighborRow * map.columns + neighborCol;
             const cell = map.cells[neighbor]!;
-
             if (!cell.passable || !cell.departures[Direction.opposite(direction)]) {
                 continue;
             }
 
             const candidate = distances[current]! + cell.cost;
-
             if (distances[neighbor]! >= 0 && candidate >= distances[neighbor]!) {
                 continue;
             }
@@ -121,7 +118,6 @@ function smooth(map: Map, nodes: (Node | null)[]): void {
 
         for (;;) {
             const candidate = nodes[next[0] * map.columns + next[1]]!.next;
-
             if (candidate === null || !canSmooth(map, nodes, from, candidate)) {
                 break;
             }

@@ -54,7 +54,6 @@ function defined(value: unknown, name: string): unknown {
     }
 
     const source = record(value, `enemy ${name}`);
-
     if (typeof source.m_defined !== "boolean") {
         throw new TypeError(`enemy ${name}.m_defined must be boolean`);
     }
@@ -70,7 +69,6 @@ function defined(value: unknown, name: string): unknown {
 
 function attribute(value: unknown, name: "maxHp" | "moveSpeed"): number | undefined {
     const number = defined(value, name);
-
     if (number === undefined) {
         return undefined;
     }
@@ -86,13 +84,11 @@ function attribute(value: unknown, name: "maxHp" | "moveSpeed"): number | undefi
 function movementValues(data: Record<string, unknown>): EnemyMovementValues {
     const attributes = record(data.attributes, "enemy attributes");
     const prefabKey = defined(data.prefabKey, "prefabKey");
-
     if (prefabKey !== undefined && (typeof prefabKey !== "string" || prefabKey.length === 0)) {
         throw new TypeError("defined enemy prefabKey must be nonempty");
     }
 
     const notCountInTotal = defined(data.notCountInTotal, "notCountInTotal");
-
     if (notCountInTotal !== undefined && typeof notCountInTotal !== "boolean") {
         throw new TypeError("defined enemy notCountInTotal must be boolean");
     }
@@ -154,13 +150,11 @@ export function resolveEnemyMovementValues(
 ): ArknightsResolvedEnemyMovement {
     const selectedLevel = enemyLevel(level);
     const source = record(value, "enemy database entry");
-
     if (typeof source.Key !== "string" || source.Key.length === 0) {
         throw new TypeError("enemy database Key must be nonempty");
     }
 
     const entries = source.Value;
-
     if (!Array.isArray(entries)) {
         throw new TypeError("enemy database Value must be an array");
     }
@@ -174,7 +168,6 @@ export function resolveEnemyMovementValues(
 
         const entry = record(entries[index], "enemy level entry");
         const entryLevel = enemyLevel(entry.level);
-
         if (levels.has(entryLevel)) {
             throw new RangeError(`duplicate enemy level ${entryLevel}`);
         }
@@ -184,13 +177,11 @@ export function resolveEnemyMovementValues(
     }
 
     const base = levels.get(0);
-
     if (base === undefined) {
         throw new RangeError("enemy database requires level 0");
     }
 
     const selected = levels.get(selectedLevel);
-
     if (selected === undefined) {
         throw new RangeError(`unknown enemy level ${selectedLevel}`);
     }
@@ -225,7 +216,6 @@ export function createEnemyMovementContent(
     profile: EnemyMovementPrefab,
 ): ArknightsEnemyMovementContent {
     const { id, maxHp, moveSpeed, prefabKey, notCountInTotal } = values;
-
     if (prefabKey !== profile.prefabKey) {
         throw new TypeError(`enemy movement prefab does not match ${prefabKey}`);
     }
@@ -308,7 +298,6 @@ function levelData(source: Record<string, unknown>, level: number): Record<strin
     const matches = source.Value.filter(
         (entry: unknown) => record(entry, "enemy level entry").level === level,
     );
-
     if (matches.length !== 1) {
         throw new RangeError(`enemy database requires exactly one level ${level}`);
     }
@@ -325,7 +314,6 @@ function mergeDefined(
     for (const layer of layers) {
         for (const [key, value] of Object.entries(layer)) {
             const current = defined(value, `${name}.${key}`);
-
             if (current !== undefined) {
                 result[key] = current;
             }
@@ -344,7 +332,6 @@ function numeric(source: Record<string, unknown>, key: string, fallback?: number
 
 function flag(source: Record<string, unknown>, key: string, fallback = false): boolean {
     const value = source[key] ?? fallback;
-
     if (typeof value !== "boolean") {
         throw new TypeError(`enemy ${key} must be boolean`);
     }
@@ -354,7 +341,6 @@ function flag(source: Record<string, unknown>, key: string, fallback = false): b
 
 function textValue(source: Record<string, unknown>, key: string): string {
     const value = source[key];
-
     if (typeof value !== "string" || value.length === 0) {
         throw new TypeError(`enemy ${key} must be nonempty`);
     }
@@ -433,7 +419,6 @@ export function prepare(value: unknown, configuration: Configuration): Profile {
     for (const layer of layers) {
         for (const key of ["skills", "talentBlackboard", "spData"]) {
             const current = layer[key];
-
             if (current != null && !(Array.isArray(current) && current.length === 0)) {
                 throw new TypeError(`unsupported enemy ${key}`);
             }
@@ -448,7 +433,6 @@ export function prepare(value: unknown, configuration: Configuration): Profile {
     }
 
     const tags = fields.enemyTags ?? [];
-
     if (!Array.isArray(tags) || !tags.every((tag: unknown) => typeof tag === "string")) {
         throw new TypeError("enemy tags must be a string array");
     }

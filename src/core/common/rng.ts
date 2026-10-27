@@ -78,7 +78,6 @@ export function createRng(seed: Seed): Rng {
         }
 
         const width = upper - lower;
-
         if (width > UINT32_RANGE) {
             throw new RangeError("integer range width must not exceed 2 ** 32");
         }

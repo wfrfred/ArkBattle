@@ -72,7 +72,6 @@ export function setState<S extends object>(
     state: NoInfer<S>,
 ): BattleState {
     const self = get(battle, reference);
-
     if (self === undefined) {
         throw new RangeError(`unknown mechanism: ${reference.id}`);
     }
@@ -86,7 +85,6 @@ export function setActive(battle: BattleState, reference: Ref<View>, active: boo
     return (
         battle.mechanisms.read(reference.id, (self) => {
             const status = active ? "ACTIVE" : "INACTIVE";
-
             if (self.status === "ENDING" || self.status === status) {
                 return battle;
             }

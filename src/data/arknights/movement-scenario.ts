@@ -98,7 +98,6 @@ function selectPredefines(
 
     for (const item of selections) {
         const path = predefinedPath(item);
-
         if (
             !Number.isSafeInteger(item.index) ||
             item.index < 0 ||
@@ -133,7 +132,6 @@ function loadPredefines(selected: readonly LocatedPredefined[], catalog: Arknigh
             catalog.prefab(prefabKey),
             skill.prefabKey === null ? undefined : catalog.prefab(skill.prefabKey),
         );
-
         if (profile.type === "MECHANISM") {
             controllers.push({ profile, skill, path });
         } else {
@@ -192,7 +190,6 @@ export function loadMovementScenario(
     rngState: Seed,
 ): ArknightsMovementScenario {
     const content = parseLevelContent(rawLevel);
-
     if (!content.options.steeringEnabled || content.options.functionDisableMask !== "NONE") {
         throw new RangeError("unsupported level movement controls");
     }
@@ -220,7 +217,6 @@ export function loadMovementScenario(
     const resolvedEnemies = new Map<ArknightsEnemyDbRef, ArknightsEnemyMovementContent>();
     const compiled = compileSpawnSchedule(level, selection, (reference) => {
         const existing = resolvedEnemies.get(reference);
-
         if (existing !== undefined) {
             return existing;
         }

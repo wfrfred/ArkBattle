@@ -18,7 +18,6 @@ export function advanceSpawning(
     for (const spawn of scheduled.spawns) {
         const id = state.execution.nextUnitId;
         const nextUnitId = id + 1;
-
         if (!Number.isSafeInteger(nextUnitId)) {
             throw new RangeError("unit identity overflow");
         }

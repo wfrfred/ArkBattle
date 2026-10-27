@@ -54,7 +54,6 @@ export function getUnspawnedCount(state: SpawnScheduleExecution): number {
             }
         } else if (state.main.phase === "FRAGMENTS") {
             const { fragmentIndex, queue } = state.main;
-
             if (queue !== null) {
                 count = addScheduleTicks(count, queue.spawns.length - queue.cursor);
             }

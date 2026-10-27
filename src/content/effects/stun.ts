@@ -14,7 +14,6 @@ export const stun: Definition<object> = {
     initialize: () => ({}),
     onEnable(state, self) {
         const unit = units.get(state, self.host);
-
         if (unit === undefined) {
             return state;
         }
@@ -42,7 +41,6 @@ export const stun: Definition<object> = {
     },
     onDisable(state, self) {
         const unit = units.get(state, self.host);
-
         if (unit === undefined) {
             return state;
         }

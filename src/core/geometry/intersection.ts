@@ -111,7 +111,6 @@ function sweepCircle(
     const projection = -(x * dx + y * dy);
     const cross = x * dy - y * dx;
     const discriminant = radius * radius * lengthSquared - cross * cross;
-
     if (discriminant < 0) {
         return null;
     }
@@ -162,7 +161,6 @@ export function sweep(
     const radius =
         (moving.type === "CIRCLE" ? moving.radius : 0) +
         (target.type === "CIRCLE" ? target.radius : 0);
-
     if (radius === 0) {
         return sweepBox(start, end, [width, height]);
     }
@@ -174,7 +172,6 @@ export function sweep(
     const horizontal = sweepBox(start, end, [width + radius, height]);
     const vertical = sweepBox(start, end, [width, height + radius]);
     let first = horizontal;
-
     if (vertical !== null && (first === null || vertical < first)) {
         first = vertical;
     }
@@ -182,7 +179,6 @@ export function sweep(
     for (const cx of [-width, width]) {
         for (const cy of [-height, height]) {
             const contact = sweepCircle(start, end, [cx, cy], radius);
-
             if (contact !== null && (first === null || contact < first)) {
                 first = contact;
             }

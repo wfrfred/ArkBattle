@@ -54,7 +54,6 @@ export function setDeadline<S extends object, H extends object>(
     }
 
     const deadlines = effect.scopes.filter((scope) => scope.type === "TICK");
-
     if (
         (tick === null && deadlines.length === 0) ||
         (deadlines.length === 1 && deadlines[0]!.tick === tick)

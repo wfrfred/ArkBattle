@@ -29,7 +29,6 @@ export function advance(battle: BattleState): BattleState {
 
     for (const { source } of candidates) {
         const unit = units.get(battle, source);
-
         if (unit !== undefined && hasVitality(unit) && unit.vitality.hp <= 0) {
             battle = remove(battle, source.id, "DEATH");
         }
@@ -41,7 +40,6 @@ export function advance(battle: BattleState): BattleState {
         }
 
         const unit = units.get(battle, source);
-
         if (
             unit === undefined ||
             !hasAction(unit) ||
@@ -62,7 +60,6 @@ export function advance(battle: BattleState): BattleState {
 
         for (const id of new Set(selected.value)) {
             const latest = units.get(battle, reference);
-
             if (latest?.lifecycle !== "PRESENT") {
                 break;
             }
@@ -74,7 +71,6 @@ export function advance(battle: BattleState): BattleState {
                     ? advanceAction(started.state, started.value.ref)
                     : started.state;
             });
-
             if (advanced === undefined) {
                 throw new RangeError(`unknown selected action definition ${id}`);
             }

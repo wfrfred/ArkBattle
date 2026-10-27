@@ -8,13 +8,11 @@ export function reflect(
     map: Map,
 ): WorldPosition {
     const origin = World.toTile(position);
-
     if (!map.contains(origin)) {
         return nextPosition;
     }
 
     const destination = World.toTile(nextPosition);
-
     if (
         (destination[0] === origin[0] && destination[1] === origin[1]) ||
         map.get(destination)?.passable === true

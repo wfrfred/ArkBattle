@@ -22,7 +22,6 @@ export function notify(
     for (const id of changed) {
         for (const field of [previous, next]) {
             const unit = field.units.get(id);
-
             if (unit !== undefined && hasOccupancy(unit) && unit.occupancy.tile !== null) {
                 const tile = unit.occupancy.tile;
                 positions.set(tile[0] * field.map.columns + tile[1], tile);
@@ -38,7 +37,6 @@ export function notify(
     for (const tile of positions.values()) {
         const before = at(previous, tile);
         const after = at(next, tile);
-
         if (
             before?.occupant?.id === after?.occupant?.id &&
             before?.support?.id === after?.support?.id
@@ -65,7 +63,6 @@ export function notify(
 
     for (const { stage, context } of candidates) {
         const definition = context.support.definition.occupancy;
-
         if (definition.slot === "SUPPORT") {
             const entries = definition.hooks.filter((entry) => entry.stage === stage);
 

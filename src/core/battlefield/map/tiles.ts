@@ -47,7 +47,6 @@ export class Tiles {
 
     replace(index: number, state: State): Tiles {
         const tile = this.#entries[index]!;
-
         if (tile.state === state) {
             return this;
         }

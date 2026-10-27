@@ -199,7 +199,6 @@ function string(value: unknown, name: string): string {
 
 function identifier(value: unknown, name: string): string {
     const result = string(value, name);
-
     if (result.length === 0) {
         throw new TypeError(`${name} must not be empty`);
     }
@@ -349,7 +348,6 @@ function enemyDbRef(
     unresolved: ArknightsContentIssue[],
 ): ArknightsEnemyDbRef {
     const source = object(value, name, ["useDb", "id", "level", "overwrittenData"]);
-
     if (source.useDb !== true) {
         throw new TypeError(`${name}.useDb=false is not supported`);
     }
@@ -419,19 +417,16 @@ function action(
         "dontBlockWave",
         "forceBlockWaveInBranch",
     ]);
-
     if (source.actionType !== "SPAWN") {
         throw new RangeError(`${name} has unsupported actionType ${String(source.actionType)}`);
     }
 
     const routeIndex = integer(source.routeIndex, `${name}.routeIndex`);
-
     if (routeIndex >= routeCount) {
         throw new RangeError(`${name} references missing route ${routeIndex}`);
     }
 
     const key = identifier(source.key, `${name}.key`);
-
     if (!enemyIds.has(key)) {
         throw new RangeError(`${name} references missing enemy ${key}`);
     }
@@ -516,20 +511,17 @@ function predefinedInstance(
         "potentialRank",
     ]);
     const phase = inst.phase;
-
     if (phase !== "PHASE_0" && phase !== "PHASE_1" && phase !== "PHASE_2") {
         throw new RangeError(`${name}.inst.phase is unsupported`);
     }
 
     const direction = source.direction;
-
     if (!Direction.is(direction)) {
         throw new RangeError(`${name}.direction is unsupported`);
     }
 
     for (const key of ["uniEquipIds", "masterInfos", "overrideTalents"] as const) {
         const value = source[key];
-
         if (value !== null && (!Array.isArray(value) || value.length !== 0)) {
             unresolved.push(
                 Object.freeze({
@@ -626,7 +618,6 @@ export function parseLevelContent(value: unknown): ArknightsLevelContent {
     const enemyIds = new Set<string>();
     const enemyDbRefs = array(source.enemyDbRefs, "level.enemyDbRefs", (item, path) => {
         const reference = enemyDbRef(item, path, unresolved);
-
         if (enemyIds.has(reference.id)) {
             throw new TypeError(`level.enemyDbRefs has duplicate enemy ${reference.id}`);
         }
@@ -649,7 +640,6 @@ export function parseLevelContent(value: unknown): ArknightsLevelContent {
             `${path}.maxTimeWaitingForNextWave`,
             -1,
         );
-
         if (maxTimeWaitingForNextWave < 0 && maxTimeWaitingForNextWave !== -1) {
             throw new RangeError(`${path}.maxTimeWaitingForNextWave must be -1 or non-negative`);
         }
@@ -688,7 +678,6 @@ export function parseLevelContent(value: unknown): ArknightsLevelContent {
     const levelOptions = options(source.options);
 
     const randomSeed = integer(source.randomSeed, "level.randomSeed", -(2 ** 31));
-
     if (randomSeed >= 2 ** 31) {
         throw new RangeError("level.randomSeed must be a signed 32-bit integer");
     }

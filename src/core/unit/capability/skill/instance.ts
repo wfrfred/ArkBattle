@@ -53,7 +53,6 @@ export function replaceActivation<A extends object>(
     self: NoInfer<Activation<A>>,
 ): BattleState {
     const host = units.get(battle, reference.host);
-
     if (host?.skill.active?.id !== reference.id || host.skill.active.status === "ENDING") {
         return battle;
     }

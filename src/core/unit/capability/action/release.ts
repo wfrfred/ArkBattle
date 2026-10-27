@@ -36,7 +36,6 @@ export function beforeRelease(battle: BattleState, ref: Ref<ExecutionView>): Res
                 directive.type === "INTERRUPT" || !running(current, context),
         },
     );
-
     if (result.value.type === "INTERRUPT") {
         assertNonnegativeSafeInteger(result.value.recoveryTicks, "action release recovery");
     }

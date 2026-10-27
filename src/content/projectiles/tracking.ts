@@ -63,7 +63,6 @@ export function project(battle: BattleState, reference: Ref<View>): Presentation
 
 export function attackPower<S extends State>(battle: BattleState, self: Projectile<S>): number {
     const source = self.state.source === null ? undefined : units.get(battle, self.state.source);
-
     if (source === undefined) {
         return self.state.cachedAtk;
     }
@@ -78,7 +77,6 @@ export function hit<S extends State>(
 ): BattleState {
     const reference = projectiles.ref(self);
     const current = projectiles.get(battle, reference);
-
     if (current === undefined || current.state.hitAttempted) {
         return battle;
     }
@@ -88,7 +86,6 @@ export function hit<S extends State>(
     });
     const marked = projectiles.get(battle, reference)!;
     const target = units.get(battle, marked.state.target);
-
     if (target?.lifecycle !== "PRESENT" || target.vitality.hp <= 0) {
         return battle;
     }

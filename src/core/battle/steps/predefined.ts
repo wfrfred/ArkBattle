@@ -100,13 +100,11 @@ export function advancePredefined(
         }
 
         const presence = reconcilePredefinedPresence(state);
-
         if (presence !== state.predefinedPresence) {
             state = { ...state, predefinedPresence: presence };
         }
 
         const definition = definitions.find((definition) => definition.id === command.definitionId);
-
         if (definition === undefined) {
             throw new RangeError(`unknown predefined definition: ${command.definitionId}`);
         }
@@ -137,7 +135,6 @@ export function advancePredefined(
         }
 
         const creation = definition.creation;
-
         if (creation.type === "UNIT") {
             const initialized = instantiateUnitPlacement(state, creation);
             state = initialized.state;

@@ -26,7 +26,6 @@ export function instantiateMechanismPlacement(
     const id = battle.execution.nextMechanismId;
     assertNonnegativeSafeInteger(id, "mechanism id");
     const nextMechanismId = id + 1;
-
     if (!Number.isSafeInteger(nextMechanismId)) {
         throw new RangeError("mechanism identity overflow");
     }

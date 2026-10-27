@@ -28,7 +28,6 @@ export function setOverlay(state: State, mode: MotionMode, overlay: Overlay): St
 
     const entries = [...state.overlays[mode]];
     const index = entries.findIndex((entry) => entry.id === overlay.id);
-
     if (index === -1) {
         entries.push(overlay);
     } else {
@@ -44,7 +43,6 @@ export function setOverlay(state: State, mode: MotionMode, overlay: Overlay): St
 export function removeOverlay(state: State, mode: MotionMode, ref: Ref<Overlay>): State {
     const entries = state.overlays[mode];
     const index = entries.findIndex((entry) => entry.id === ref.id);
-
     if (index === -1) {
         return state;
     }
@@ -67,13 +65,11 @@ export function nextPoint(
     const map = effectiveMap(state, mode);
     const currentTile = World.toTile(current);
     const targetTile = World.toTile(target);
-
     if (!map.contains(currentTile) || map.get(targetTile)?.passable !== true) {
         return null;
     }
 
     const node = field(map, targetTile).nodes[currentTile[0] * map.columns + currentTile[1]];
-
     if (node === null) {
         return null;
     }

@@ -48,14 +48,12 @@ export function update<S extends object>(
     },
 ): BattleState {
     const current = get(battle, reference);
-
     if (current === undefined) {
         throw new RangeError(`unknown projectile: ${reference.id}`);
     }
 
     const position = changes.position ?? current.position;
     const state = changes.state ?? current.state;
-
     if (position === current.position && state === current.state) {
         return battle;
     }

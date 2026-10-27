@@ -34,7 +34,6 @@ export class Effects {
         definition?: Definition<S, H>,
     ): View | E | Effect<S, H> | undefined {
         const effect = this.#entries.get(typeof identity === "number" ? identity : identity.id);
-
         if (typeof identity !== "number" && effect?.host.id !== identity.host.id) {
             return undefined;
         }
@@ -71,7 +70,6 @@ export class Effects {
         }
 
         const nextId = this.nextId + 1;
-
         if (!Number.isSafeInteger(nextId)) {
             throw new RangeError("effect identity overflow");
         }
@@ -88,7 +86,6 @@ export class Effects {
         }
 
         const previous = this.#entries.get(reference.id);
-
         if (previous === undefined) {
             return this;
         }

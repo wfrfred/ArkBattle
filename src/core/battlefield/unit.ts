@@ -23,7 +23,6 @@ export function update(state: State, updates: readonly Unit[]): State {
 
     for (const unit of updates) {
         const previous = state.units.get(unit.id)!;
-
         if (previous !== unit) {
             changes.push({ type: "UPDATE", previous, next: unit });
         }
@@ -34,7 +33,6 @@ export function update(state: State, updates: readonly Unit[]): State {
 
 export function remove(state: State, reference: Ref<Unit>): State {
     const previous = state.units.get(reference.id);
-
     if (previous === undefined) {
         throw new RangeError(`unknown unit: ${reference.id}`);
     }
@@ -69,7 +67,6 @@ function applyChanges(state: State, changes: readonly Change[]): State {
 
         return before !== after && (before?.[0] !== after?.[0] || before?.[1] !== after?.[1]);
     });
-
     if (occupancyChanges.length === 0) {
         return { ...state, units };
     }
@@ -82,7 +79,6 @@ function applyChanges(state: State, changes: readonly Change[]): State {
         }
 
         const before = change.previous.occupancy.tile;
-
         if (before === null) {
             continue;
         }
@@ -92,7 +88,6 @@ function applyChanges(state: State, changes: readonly Change[]): State {
         const slot =
             change.previous.definition.occupancy.slot === "OCCUPANT" ? "occupant" : "support";
         const next = { ...entry, [slot]: null };
-
         if (next.occupant === null && next.support === null) {
             occupancy.delete(key);
         } else {
@@ -107,7 +102,6 @@ function applyChanges(state: State, changes: readonly Change[]): State {
 
         const unit = change.next;
         const tile = unit.occupancy.tile;
-
         if (tile === null) {
             continue;
         }
@@ -119,7 +113,6 @@ function applyChanges(state: State, changes: readonly Change[]): State {
         const key = tile[0] * state.map.columns + tile[1];
         const entry = occupancy.get(key) ?? { occupant: null, support: null };
         const slot = unit.definition.occupancy.slot === "OCCUPANT" ? "occupant" : "support";
-
         if (entry[slot] !== null) {
             throw new RangeError("occupancy slot is already occupied");
         }

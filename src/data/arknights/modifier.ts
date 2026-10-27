@@ -68,7 +68,6 @@ export function parseAttributeModifiers(value: unknown): readonly AttributeModif
 
     for (let index = 0; index < value.length; index++) {
         const entry: unknown = value[index];
-
         if (
             !Object.hasOwn(value, index) ||
             entry === null ||
@@ -126,7 +125,6 @@ function sampleValue(
     const source = definition.fetchBaseValueFromSourceEntity
         ? input.readSourceAttribute(attributeType)
         : undefined;
-
     if (definition.fetchBaseValueFromSourceEntity && source === undefined) {
         return undefined;
     }

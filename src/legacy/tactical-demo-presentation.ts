@@ -272,7 +272,6 @@ function unitTuple(
 
         if (active !== null) {
             const sustain = active.sustain;
-
             if (sustain.type === "AMMO") {
                 sp = spMax * (Math.max(0, sustain.remaining) / Math.max(1, sustain.initial));
             } else if (sustain.type === "TIME" && sustain.endsAtTick > active.startedAtTick) {
@@ -393,7 +392,6 @@ export class TacticalDemoPresentation {
                     const target =
                         projectile?.traceTarget ??
                         this.#pendingAttackTargets.get(event.sourceUnitId);
-
                     if (target !== undefined) {
                         visible.push(this.#attack(event.sourceUnitId, target, after.tick));
                     }
@@ -424,7 +422,6 @@ export class TacticalDemoPresentation {
                 case "SKILL_ACTIVATED":
                 case "SKILL_FINISHED": {
                     const unit = after.battlefield.units.get(event.unitId);
-
                     if (
                         unit !== undefined &&
                         hasSkill(unit) &&
@@ -481,7 +478,6 @@ export class TacticalDemoPresentation {
                     const unit =
                         units.get(after, event.burst.host) ??
                         (removed?.type === "UNIT_REMOVED" ? removed.unit : undefined);
-
                     if (unit !== undefined) {
                         visible.push([
                             "fx",
@@ -507,7 +503,6 @@ export class TacticalDemoPresentation {
                     visible.push(["die", event.unitId, "killed"]);
 
                     const unit = event.unit;
-
                     if (isEnemy(unit)) {
                         this.#killedCount++;
                     }
@@ -621,7 +616,6 @@ export class TacticalDemoPresentation {
             }
 
             const recovery = unit.elemental.burst;
-
             if (recovery !== null) {
                 gauges.push([
                     unit.id,
@@ -635,7 +629,6 @@ export class TacticalDemoPresentation {
             }
 
             const type = currentType(unit);
-
             if (type === undefined) {
                 continue;
             }

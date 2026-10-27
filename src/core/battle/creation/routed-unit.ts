@@ -26,7 +26,6 @@ function sampleOffset(input: RouteInput, next: () => number): WorldPosition {
         const range = input.spawnRandomRange[axis]!;
         const offset = input.spawnOffset[axis]!;
         const coordinate = center[axis]!;
-
         if (
             !Number.isFinite(range * 2) ||
             !Number.isFinite(offset - range) ||

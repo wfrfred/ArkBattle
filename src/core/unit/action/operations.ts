@@ -55,7 +55,6 @@ export function start<P extends object, E extends object>(
 
     function check(battle: BattleState) {
         const unit = units.get(battle, source);
-
         if (
             unit?.lifecycle !== "PRESENT" ||
             !isSpatiallyPresent(unit) ||
@@ -65,7 +64,6 @@ export function start<P extends object, E extends object>(
         }
 
         const action = unit.action.actions.get(definition.id, definition);
-
         if (action === undefined) {
             throw new TypeError("action definition is not configured for its source");
         }
@@ -78,7 +76,6 @@ export function start<P extends object, E extends object>(
 
         const period = resolveInterval(battle, source, definition)!;
         const resized = cooldown.resizeKeepingProgress(action.cooldown, period, battle.tick);
-
         if (cooldown.remaining(resized, battle.tick) > 0) {
             return reject("COOLDOWN");
         }
@@ -87,7 +84,6 @@ export function start<P extends object, E extends object>(
     }
 
     const initial = check(battle);
-
     if (initial.type === "REJECTED") {
         return { state: battle, value: initial };
     }
@@ -100,7 +96,6 @@ export function start<P extends object, E extends object>(
     }
 
     const latest = check(battle);
-
     if (latest.type === "REJECTED") {
         return { state: battle, value: latest };
     }
@@ -138,13 +133,11 @@ export function setExecutionState<P extends object, E extends object>(
     state: NoInfer<E>,
 ): BattleState {
     const unit = units.get(battle, reference.host);
-
     if (unit === undefined) {
         throw new RangeError(`unknown unit: ${reference.host.id}`);
     }
 
     const current = unit.action.actions.getExecution(reference.id);
-
     if (current === undefined) {
         throw new RangeError(`unknown action execution: ${reference.id}`);
     }
@@ -167,13 +160,11 @@ export function end(
     lifetimeReason = result.type === "FINISHED" ? "ACTION_FINISHED" : result.reason,
 ): BattleState {
     const host = units.get(battle, reference.host);
-
     if (host === undefined) {
         return battle;
     }
 
     const self = host.action.actions.getExecution(reference.id);
-
     if (self === undefined || self.execution.status === "ENDING") {
         return battle;
     }
@@ -203,7 +194,6 @@ export function end(
 
     const latestHost = units.get(battle, reference.host);
     const latestAction = latestHost?.action.actions.get(self.definition.id, self.definition);
-
     if (latestHost !== undefined && latestAction?.execution?.id === reference.id) {
         battle = replaceAction(battle, latestHost, {
             ...latestAction,
@@ -251,7 +241,6 @@ export function refreshCooldowns(
     source: Ref<Unit & ActionCapability>,
 ): BattleState {
     const unit = units.get(battle, source);
-
     if (unit === undefined) {
         return battle;
     }
@@ -262,7 +251,6 @@ export function refreshCooldowns(
         actions.read(id, (self) => {
             const period = resolveInterval(battle, source, self.definition)!;
             const next = cooldown.resizeKeepingProgress(self.cooldown, period, battle.tick);
-
             if (next !== self.cooldown) {
                 actions = actions.replace(self.definition, { ...self, cooldown: next });
             }
@@ -307,13 +295,11 @@ function getAction<P extends object, E extends object>(
     reference: Ref<Action<P, E>>,
 ) {
     const unit = units.get(battle, reference.host);
-
     if (unit === undefined) {
         throw new RangeError(`unknown unit: ${reference.host.id}`);
     }
 
     const action = unit.action.actions.get(reference.definition.id, reference.definition);
-
     if (action === undefined) {
         throw new TypeError("action definition is not configured for its source");
     }

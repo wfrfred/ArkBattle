@@ -140,7 +140,6 @@ export function parseRouteDefinition(value: unknown): Input {
         "visitEveryCheckPoint",
     ]);
     const pathMotionMode = data.motionMode;
-
     if (pathMotionMode !== "WALK" && pathMotionMode !== "FLY") {
         throw new RangeError("unsupported Arknights route motion mode");
     }
@@ -152,7 +151,6 @@ export function parseRouteDefinition(value: unknown): Input {
 
     for (let index = 0; index < data.checkpoints.length; index++) {
         const value: unknown = data.checkpoints[index];
-
         if (!Object.hasOwn(data.checkpoints, index) || value === undefined) {
             throw new TypeError("route.checkpoints must be dense");
         }

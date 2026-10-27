@@ -10,7 +10,6 @@ const fields = new WeakMap<NavigationMap, Map<string, Field>>();
 export function effectiveMap(state: State, mode: MotionMode): NavigationMap {
     let modes = maps.get(state);
     const cached = modes?.[mode];
-
     if (cached !== undefined) {
         return cached;
     }
@@ -31,7 +30,6 @@ export function field(map: NavigationMap, target: TilePosition): Field {
     let targets = fields.get(map);
     const key = `${target[0]}:${target[1]}`;
     const cached = targets?.get(key);
-
     if (cached !== undefined) {
         return cached;
     }

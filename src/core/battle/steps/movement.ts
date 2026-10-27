@@ -54,7 +54,6 @@ export function advanceRouteCommands(
         }
 
         const unit = battle.battlefield.units.get(command.unitId);
-
         if (unit === undefined) {
             throw new RangeError(`unknown alternative route unit: ${command.unitId}`);
         }
@@ -83,7 +82,6 @@ export function advanceMovement(
     for (const ref of candidates) {
         battle = route.advance(battle, ref);
         const unit = units.get(battle, ref);
-
         if (unit?.lifecycle !== "PRESENT") {
             continue;
         }
@@ -107,7 +105,6 @@ export function resolveRouteCompletion(battle: BattleState): BattleState {
 
     for (const ref of candidates) {
         const unit = units.get(battle, ref);
-
         if (
             unit?.lifecycle !== "PRESENT" ||
             !isCompleted(unit.route) ||

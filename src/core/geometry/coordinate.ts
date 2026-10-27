@@ -8,7 +8,6 @@ export type WorldPosition = Vec2;
 function roundTiesToEven(value: number): number {
     const lower = Math.floor(value);
     const fraction = value - lower;
-
     if (fraction < 0.5) {
         return lower;
     }

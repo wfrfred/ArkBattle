@@ -150,7 +150,6 @@ export function chooseTargets(
     definition: Configuration,
 ): Result<State["bindings"]> {
     const unit = units.get(battle, source);
-
     if (unit === undefined) {
         return { state: battle, value: {} };
     }
@@ -179,7 +178,6 @@ function apply(
 
             if (operation.powerSource === "SOURCE_ATTACK") {
                 const current = units.get(battle, source);
-
                 if (current === undefined) {
                     power = undefined;
                 } else if (hasOffense(current)) {
@@ -209,7 +207,6 @@ function apply(
 
         case "HEAL": {
             const receiver = units.get(battle, target);
-
             if (receiver === undefined || !hasVitality(receiver)) {
                 return battle;
             }
@@ -257,7 +254,6 @@ export function createWithState<P extends object, E extends object>(
     }
 
     const ids = new Set(definition.targetGroups.map((group) => group.id));
-
     if (
         ids.has("") ||
         ids.size !== definition.targetGroups.length ||
@@ -301,7 +297,6 @@ export function createWithState<P extends object, E extends object>(
             const unit = units.get(battle, source);
             const bindings = selected.value;
             const target = bindings[definition.triggerBindingId]?.[0];
-
             if (unit === undefined || target === undefined) {
                 return { state: battle, value: null };
             }
@@ -330,7 +325,6 @@ export function createWithState<P extends object, E extends object>(
             if (!self.execution.state.cooldownAdjusted) {
                 const overdue =
                     self.execution.startedAtTick - self.execution.state.previousReadyAtTick;
-
                 if (overdue >= 0 && overdue < 1) {
                     battle = actions.setCooldown(battle, ref(source, self.definition), {
                         ...self.cooldown,
@@ -366,7 +360,6 @@ export function createWithState<P extends object, E extends object>(
                 const permission = beforeRelease(battle, identity);
                 battle = permission.state;
                 const current = actions.getExecution(battle, identity);
-
                 if (current?.execution.status !== "RUNNING" || !sourcePresent(battle, source)) {
                     return {
                         state: actions.cancel(battle, identity, "SOURCE_ABSENT"),
@@ -399,7 +392,6 @@ export function createWithState<P extends object, E extends object>(
                 battle = released(battle, identity);
 
                 const output = actions.getExecution(battle, identity);
-
                 if (output?.execution.status !== "RUNNING" || !sourcePresent(battle, source)) {
                     return {
                         state: actions.cancel(battle, identity, "SOURCE_ABSENT"),
@@ -442,7 +434,6 @@ export function createWithState<P extends object, E extends object>(
                 }
 
                 const completed = actions.getExecution(battle, identity);
-
                 if (completed?.execution.status !== "RUNNING") {
                     return { state: battle, value: true };
                 }

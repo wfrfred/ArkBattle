@@ -39,7 +39,6 @@ export function createUnitPlacementDefinition(
 
 function nextIdentity(value: number, name: string): number {
     const next = value + 1;
-
     if (!Number.isSafeInteger(next)) {
         throw new RangeError(`${name} identity overflow`);
     }

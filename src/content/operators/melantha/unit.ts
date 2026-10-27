@@ -105,7 +105,6 @@ export function create(profile: Profile, direction: Direction = "RIGHT"): Defini
             ...profile.skill.definition.activation!,
             onStart(state, self) {
                 const unit = getCurrentUnit(state, self.host);
-
                 if (unit === undefined || !hasOffense(unit)) {
                     return state;
                 }

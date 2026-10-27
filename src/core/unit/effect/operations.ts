@@ -65,7 +65,6 @@ export function install<S extends object, H extends object>(
     battle = updateUnit(battle, [{ ...unit, effects: unit.effects.add(instance) }]);
 
     const installed = get(battle, ref);
-
     if (installed?.status === "INSTALLING" && definition.onInstall !== undefined) {
         battle = definition.onInstall(battle, installed);
     }
@@ -86,13 +85,11 @@ export function setData<S extends object, H extends object>(
     data: NoInfer<S>,
 ): BattleState {
     const unit = units.get(battle, ref.host);
-
     if (unit === undefined) {
         throw new RangeError(`unknown unit: ${ref.host.id}`);
     }
 
     const self = unit.effects.get(ref);
-
     if (self === undefined) {
         throw new RangeError(`unknown effect: ${ref.id}`);
     }
@@ -104,7 +101,6 @@ export function setData<S extends object, H extends object>(
 
 export function setEnabled(battle: BattleState, ref: Ref<View>, enabled: boolean): BattleState {
     const instance = get(battle, ref);
-
     if (instance === undefined || instance.status === "ENDING" || instance.enabled === enabled) {
         return battle;
     }
@@ -120,7 +116,6 @@ export function bindLifetime(
     lifetime: Lifetime,
 ): Result<boolean> {
     const instance = get(battle, ref);
-
     if (instance === undefined || instance.status === "ENDING" || !available(battle, lifetime)) {
         return { state: battle, value: false };
     }
@@ -137,7 +132,6 @@ export function bindLifetime(
 
 export function end(battle: BattleState, ref: Ref<View>, reason = "EXPLICIT"): BattleState {
     const instance = get(battle, ref);
-
     if (instance === undefined || instance.status === "ENDING") {
         return battle;
     }
@@ -167,7 +161,6 @@ export function end(battle: BattleState, ref: Ref<View>, reason = "EXPLICIT"): B
         }
 
         const current = units.get(battle, ref.host);
-
         if (current !== undefined) {
             battle = updateUnit(battle, [
                 {
@@ -226,7 +219,6 @@ export function advance(battle: BattleState): BattleState {
 
         const current = get(battle, ref);
         const expires = current === undefined ? null : deadline(current);
-
         if (expires !== null && expires <= battle.tick) {
             battle = end(battle, ref, "EXPIRED");
         }
@@ -289,7 +281,6 @@ function change(
     },
 ): BattleState {
     const unit = units.get(battle, ref.host);
-
     if (unit === undefined) {
         return battle;
     }
@@ -336,7 +327,6 @@ function shouldBeActive(battle: BattleState, instance: View, unit: Unit): boolea
 function updateStatus(battle: BattleState, ref: Ref<View>): BattleState {
     const unit = units.get(battle, ref.host);
     const instance = get(battle, ref);
-
     if (
         unit === undefined ||
         instance === undefined ||
@@ -347,7 +337,6 @@ function updateStatus(battle: BattleState, ref: Ref<View>): BattleState {
     }
 
     const active = shouldBeActive(battle, instance, unit);
-
     if (active === (instance.status === "ACTIVE")) {
         return battle;
     }
@@ -401,7 +390,6 @@ function wouldCycle(battle: BattleState, ref: Ref<View>, lifetime: Lifetime): bo
     while (pending.length > 0) {
         const current = pending.pop()!;
         const identity = key({ type: "EFFECT", ref: current });
-
         if (identity === key({ type: "EFFECT", ref })) {
             return true;
         }

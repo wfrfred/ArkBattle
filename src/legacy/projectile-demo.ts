@@ -40,7 +40,6 @@ export function createTacticalProjectileDemo(
         initialize: () => ({}),
         onEnable: (state, self) => {
             const unit = getCurrentUnit(state, self.host);
-
             if (unit === undefined) {
                 return state;
             }
@@ -58,7 +57,6 @@ export function createTacticalProjectileDemo(
         },
         onDisable: (state, self) => {
             const unit = getCurrentUnit(state, self.host);
-
             if (unit === undefined) {
                 return state;
             }
@@ -81,7 +79,6 @@ export function createTacticalProjectileDemo(
             }
 
             const receiver = getCurrentUnit(state, unitRef(target));
-
             if (
                 receiver?.lifecycle !== "PRESENT" ||
                 !hasVitality(receiver) ||
@@ -135,7 +132,6 @@ export function createTacticalProjectileDemo(
                 const source = getCurrentUnit(state, host);
                 const targetId = self.execution.state.target.id;
                 const target = state.battlefield.units.get(targetId);
-
                 if (source === undefined || target === undefined || !hasVitality(target)) {
                     return state;
                 }

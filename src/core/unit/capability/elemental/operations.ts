@@ -80,7 +80,6 @@ export function damage(
     }
 
     let self = units.get(battle, target);
-
     if (self === undefined || !hasElemental(self) || !query.available(self)) {
         return {
             state: battle,
@@ -91,7 +90,6 @@ export function damage(
     battle = dispatch(battle, units.ref(self), "received", { request });
 
     const reason = query.damageRejection(battle, target, request);
-
     if (reason !== undefined) {
         return { state: battle, value: { type: "REJECTED", reason } };
     }
@@ -108,7 +106,6 @@ export function damage(
     battle = reception.state;
 
     const rejection = query.damageRejection(battle, target, request);
-
     if (rejection !== undefined) {
         return { state: battle, value: { type: "REJECTED", reason: rejection } };
     }
@@ -117,7 +114,6 @@ export function damage(
     const maximum = query.resolveMaxEp(battle, identity)!;
     const previous = Math.min(maximum, Math.max(0, currentSelf.elemental.ep[request.type]));
     const amount = Math.min(previous, reception.value);
-
     if (amount === 0) {
         return { state: battle, value: { type: "APPLIED", amount: 0, burst: null } };
     }
@@ -177,13 +173,11 @@ export function damage(
     if (reference !== null) {
         const host = units.get(battle, identity);
         const active = query.get(battle, reference);
-
         if (host !== undefined && query.available(host) && active?.status === "ACTIVE") {
             battle = definition.onStart(battle, active);
         }
 
         const after = query.get(battle, reference);
-
         if (after?.status === "ACTIVE" && after.remainingTicks <= 0) {
             battle = finish(battle, reference);
         }
@@ -200,13 +194,11 @@ export function heal(
     assertNonnegativeNumber(request.power, "element heal power");
 
     const reason = query.healRejection(battle, target, request);
-
     if (reason !== undefined) {
         return { state: battle, value: { type: "REJECTED", reason } };
     }
 
     const self = units.get(battle, target);
-
     if (self === undefined || !hasElemental(self)) {
         return { state: battle, value: { type: "REJECTED", reason: "TARGET_ABSENT" } };
     }
@@ -265,7 +257,6 @@ export function cancel(
 function end(battle: BattleState, reference: Ref<Burst>, ending: End): BattleState {
     const self = units.get(battle, reference.host);
     const active = self?.elemental.burst;
-
     if (self === undefined || active?.id !== reference.id || active.status !== "ACTIVE") {
         return battle;
     }
@@ -287,7 +278,6 @@ function end(battle: BattleState, reference: Ref<Burst>, ending: End): BattleSta
     }
 
     const host = units.get(battle, reference.host);
-
     if (host?.elemental.burst?.id === reference.id) {
         const maximum = query.resolveMaxEp(battle, reference.host)!;
         battle = replaceHost(battle, {
@@ -321,7 +311,6 @@ function end(battle: BattleState, reference: Ref<Burst>, ending: End): BattleSta
 
 export function advance(battle: BattleState, host: Ref<Unit & Elemental>): BattleState {
     const self = units.get(battle, host);
-
     if (self?.lifecycle !== "PRESENT") {
         return battle;
     }
@@ -344,7 +333,6 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
         const maximum = query.resolveMaxEp(battle, host)!;
         const ep = { ...normalizedEp(self, maximum) };
         const request: HealRequest = { source: null, power };
-
         if (query.canReceiveHeal(battle, host, request)) {
             for (const type of ELEMENT_TYPES) {
                 ep[type] = Math.min(maximum, ep[type] + power);

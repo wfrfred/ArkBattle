@@ -19,7 +19,6 @@ function clearOccupant(battle: BattleState, position: TilePosition): BattleState
 
 function currentOccupant(battle: BattleState, platformId: Id) {
     const platform = battle.battlefield.units.get(platformId);
-
     if (
         platform?.lifecycle !== "PRESENT" ||
         !hasOccupancy(platform) ||
@@ -30,7 +29,6 @@ function currentOccupant(battle: BattleState, platformId: Id) {
     }
 
     const occupancy = occupancyAt(battle.battlefield, platform.occupancy.tile);
-
     if (occupancy?.support?.id !== platform.id || occupancy.occupant === null) {
         return undefined;
     }
@@ -84,7 +82,6 @@ export function create(configuration: Configuration): Definition {
                     stage: "occupantRemoved",
                     invoke(battle, { support, occupant }) {
                         const current = battle.battlefield.units.get(occupant.id);
-
                         if (
                             current !== undefined &&
                             hasBlocker(current) &&
@@ -94,7 +91,6 @@ export function create(configuration: Configuration): Definition {
                                 current.blocker,
                                 `shooting-platform/${support.id}/block-free`,
                             );
-
                             if (blocker !== current.blocker) {
                                 battle = updateUnit(battle, [{ ...current, blocker }]);
                             }

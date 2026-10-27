@@ -9,7 +9,6 @@ import type { SpatialPresence } from "./capability.js";
 
 export function disappear(battle: BattleState, ref: Ref<Unit & SpatialPresence>): BattleState {
     const unit = units.get(battle, ref);
-
     if (unit?.lifecycle !== "PRESENT") {
         return battle;
     }
@@ -25,7 +24,6 @@ export function appear(
     position: WorldPosition,
 ): BattleState {
     const unit = units.get(battle, ref);
-
     if (unit?.lifecycle !== "PRESENT") {
         return battle;
     }

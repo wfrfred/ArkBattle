@@ -54,7 +54,6 @@ export function recycleUnitCard(
     }
 
     const value = getCard(state, unit.deployable.cardId);
-
     if (value === undefined) {
         throw new RangeError(`unknown deployment card ${unit.deployable.cardId}`);
     }

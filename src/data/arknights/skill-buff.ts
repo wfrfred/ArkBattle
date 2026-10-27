@@ -19,13 +19,11 @@ import { parseArknightsSkillLevel } from "./skill-definition.js";
 
 export function compileArknightsAttackBuffSkill(value: unknown, level: number): SkillDefinition {
     const parsed = parseArknightsSkillLevel(value, level);
-
     if (!/^skcom_atk_up\[[123]\]$/.test(parsed.definition.id)) {
         throw new TypeError(`unsupported attack buff skill ${parsed.definition.id}`);
     }
 
     const entries = parsed.blackboard.filter((entry) => entry.key.toLowerCase() === "atk");
-
     if (entries.length !== 1 || typeof entries[0]!.value !== "number") {
         throw new TypeError("attack buff skill requires one numeric atk blackboard entry");
     }
@@ -36,7 +34,6 @@ export function compileArknightsAttackBuffSkill(value: unknown, level: number): 
         initialize: () => ({ attackIncrease }),
         onEnable: (state, self) => {
             const unit = getUnit(state, self.host);
-
             if (unit === undefined) {
                 return state;
             }
@@ -53,7 +50,6 @@ export function compileArknightsAttackBuffSkill(value: unknown, level: number): 
         },
         onDisable: (state, self) => {
             const unit = getUnit(state, self.host);
-
             if (unit === undefined) {
                 return state;
             }
@@ -78,7 +74,6 @@ export function compileArknightsAttackBuffSkill(value: unknown, level: number): 
             },
             onStart: (state, self) => {
                 const unit = getUnit(state, self.host);
-
                 if (unit === undefined || !hasOffense(unit)) {
                     return state;
                 }

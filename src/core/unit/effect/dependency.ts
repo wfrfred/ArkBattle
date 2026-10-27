@@ -75,7 +75,6 @@ function compare(left: Ref<View>, right: Ref<View>): number {
 
 function add(bucket: Bucket, reference: Ref<View>): Bucket {
     const index = bucket.findIndex((entry) => compare(entry, reference) >= 0);
-
     if (index < 0) {
         return [...bucket, reference];
     }
@@ -109,7 +108,6 @@ export function derive(index: State, transitions: readonly UnitTransition[]): St
         if (lifetime.type === "UNIT") {
             const before = (unit ?? index.unit).get(lifetime.ref.id) ?? emptyBucket;
             const after = update(before, reference);
-
             if (after !== before) {
                 unit ??= new Map(index.unit);
 
@@ -128,7 +126,6 @@ export function derive(index: State, transitions: readonly UnitTransition[]): St
         const current = (hosted[branch] ?? index[branch]).get(host);
         const before = current?.get(lifetime.ref.id) ?? emptyBucket;
         const after = update(before, reference);
-
         if (after === before) {
             return;
         }
@@ -136,7 +133,6 @@ export function derive(index: State, transitions: readonly UnitTransition[]): St
         const hosts = (hosted[branch] ??= new Map(index[branch]));
         const entries = (edited[branch] ??= new Map());
         let instances = entries.get(host);
-
         if (instances === undefined) {
             instances = new Map(current);
             entries.set(host, instances);
@@ -181,7 +177,6 @@ export function derive(index: State, transitions: readonly UnitTransition[]): St
     for (const { previousUnit, nextUnit } of transitions) {
         const previousEffects = previousUnit?.effects;
         const nextEffects = nextUnit?.effects;
-
         if (previousEffects === nextEffects) {
             continue;
         }

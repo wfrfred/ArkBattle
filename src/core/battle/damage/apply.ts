@@ -19,14 +19,12 @@ export function applyDamage(
 ): Result<DamageOutcome> {
     let battle = calculated.state;
     const damage = calculated.value;
-
     if (damage === undefined) {
         return complete(battle, request, damage, { kind: "REJECTED" });
     }
 
     assertNonnegativeNumber(damage.amount, "output damage");
     const context = { request, calculated: damage };
-
     if (damage.amount === 0 || !canReceive(battle, context)) {
         return complete(battle, request, damage, { kind: "REJECTED" });
     }
@@ -86,7 +84,6 @@ export function applyDamage(
     }
 
     const current = units.get(battle, request.target);
-
     if (current?.lifecycle === "PRESENT" && current.vitality.hp <= 0) {
         battle = remove(battle, request.target.id, "DEATH");
     }

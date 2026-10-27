@@ -63,7 +63,6 @@ export function create(
     assertPositiveSafeInteger(columns, "battlefield column count");
 
     const tileCount = rows * columns;
-
     if (tiles.size !== tileCount) {
         throw new RangeError(`expected ${tileCount} tiles, got ${tiles.size}`);
     }
@@ -78,7 +77,6 @@ export function create(
 
     for (const [index, marker] of markers.entries()) {
         const position = marker.position;
-
         if (!contains(map, position)) {
             throw new RangeError(`marker at index ${index} is outside the map`);
         }
@@ -88,7 +86,6 @@ export function create(
         const position = edge.position;
         const [dRow, dCol] = Direction.vector(edge.direction);
         const neighbor: TilePosition = [position[0] + dRow, position[1] + dCol];
-
         if (!contains(map, position) && !contains(map, neighbor)) {
             throw new RangeError(`block edge at index ${index} has no endpoint inside the map`);
         }

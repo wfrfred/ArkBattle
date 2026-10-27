@@ -27,7 +27,6 @@ export function dispatch<C, T>(
         }
 
         const hook = options.find(battle, id);
-
         if (hook === undefined || hook.accepts?.(battle, context, current) === false) {
             continue;
         }
@@ -45,7 +44,6 @@ export function set<T extends { readonly id: string }>(
     entry: T,
 ): readonly T[] {
     const index = entries.findIndex((current) => current.id === entry.id);
-
     if (index < 0) {
         return [...entries, entry];
     }

@@ -27,7 +27,6 @@ export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
     battle = recordUnitDeployment(battle, unit);
     const reference = units.ref(unit);
     let current = units.get(battle, reference);
-
     if (current?.lifecycle === "PRESENT" && hasSkill(current)) {
         battle = skills.enter(battle, units.ref(current));
         current = units.get(battle, reference);
@@ -57,7 +56,6 @@ export function update<U extends Unit>(battle: BattleState, updates: readonly U[
 
         ids.add(unit.id);
         const previous = battle.battlefield.units.get(unit.id);
-
         if (previous === undefined) {
             throw new RangeError(`unknown unit: ${unit.id}`);
         }
@@ -101,7 +99,6 @@ export function update<U extends Unit>(battle: BattleState, updates: readonly U[
 
 export function remove(battle: BattleState, unitId: Id, reason: LeaveReason): BattleState {
     const unit = battle.battlefield.units.get(unitId);
-
     if (unit === undefined || unit.lifecycle === "LEAVING") {
         return battle;
     }
@@ -110,7 +107,6 @@ export function remove(battle: BattleState, unitId: Id, reason: LeaveReason): Ba
     const lifetime = { type: "UNIT" as const, ref: reference };
     battle = update(battle, [{ ...unit, lifecycle: "LEAVING" }]);
     const leaving = units.get(battle, reference);
-
     if (leaving !== undefined) {
         battle = refundUnit(battle, leaving, reason, battle.tick);
 
@@ -121,7 +117,6 @@ export function remove(battle: BattleState, unitId: Id, reason: LeaveReason): Ba
 
     battle = cancelForUnit(battle, reference, "SOURCE_ABSENT", reason);
     const elementalHost = units.get(battle, reference);
-
     if (
         elementalHost !== undefined &&
         hasElemental(elementalHost) &&
@@ -133,7 +128,6 @@ export function remove(battle: BattleState, unitId: Id, reason: LeaveReason): Ba
     battle = closeLifetime(battle, lifetime, reason);
 
     const departing = units.get(battle, reference);
-
     if (departing !== undefined) {
         const previous = battle.battlefield;
         const next = battlefield.remove(previous, reference);
@@ -164,7 +158,6 @@ export function advance(battle: BattleState): BattleState {
 
     for (const reference of candidates) {
         const self = units.get(battle, reference);
-
         if (self?.lifecycle === "PRESENT") {
             const entries = self.definition.hooks.filter((entry) => entry.stage === "tick");
 

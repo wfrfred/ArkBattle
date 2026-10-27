@@ -131,13 +131,11 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
         output: (state, host, self) => {
             const source = units.get(state, host);
             const target = units.get(state, self.execution.state.target);
-
             if (source === undefined || target === undefined || !hasVitality(target)) {
                 return state;
             }
 
             const cachedAtk = hasOffense(source) ? resolveAttack(state, units.ref(source)) : 0;
-
             if (cachedAtk === undefined) {
                 throw new Error("enemy arrow action requires Offense");
             }

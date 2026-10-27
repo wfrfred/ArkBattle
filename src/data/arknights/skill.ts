@@ -29,7 +29,6 @@ function characterSkill(
     characterValue: unknown,
 ): Record<string, unknown> {
     const character = object(characterValue, "character record");
-
     if (
         !Array.isArray(character.skills) ||
         instance.skillIndex < 0 ||
@@ -58,7 +57,6 @@ export function resolvePredefinedSkillBlackboard(
     const selected = characterSkill(instance, characterValue);
     const skillId = identifier(selected.skillId, "character skill id");
     const skill = object(skillValue, "skill record");
-
     if (skill.skillId !== skillId) {
         throw new TypeError(`skill record does not match ${skillId}`);
     }
@@ -80,7 +78,6 @@ export function resolvePredefinedSkillBlackboard(
 
     for (const entry of parseBlackboard(selectedLevel.blackboard, `${skillId} blackboard`)) {
         const key = entry.key.toLowerCase();
-
         if (blackboard.has(key)) {
             throw new TypeError(`${skillId} has duplicate blackboard key ${entry.key}`);
         }

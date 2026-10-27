@@ -10,7 +10,6 @@ import type { Progress, Route } from "./capability.js";
 
 export function target(progress: Progress): WorldPosition | null {
     const phase = progress.phase;
-
     if (phase.type === "END") {
         return Tile.center(progress.definition.endPosition);
     }
@@ -29,7 +28,6 @@ function recoveryPoint(battle: BattleState, self: Unit, progress: Progress): Wor
     const definition = progress.definition;
     const map = battle.battlefield.navigation.baseline[progress.pathMotionMode];
     const locator = Vec2.add(self.position, Vec2.negate(definition.offset));
-
     if (map.contains(World.toTile(self.position)) && map.contains(World.toTile(locator))) {
         return null;
     }
@@ -52,14 +50,12 @@ function recoveryPoint(battle: BattleState, self: Unit, progress: Progress): Wor
 
 export function movementTarget(battle: BattleState, ref: Ref<Unit & Route>): MovementTarget | null {
     const self = units.get(battle, ref);
-
     if (self?.lifecycle !== "PRESENT") {
         return null;
     }
 
     const progress = self.route.alternative ?? self.route.main;
     const goal = target(progress);
-
     if (goal === null) {
         return null;
     }
@@ -67,7 +63,6 @@ export function movementTarget(battle: BattleState, ref: Ref<Unit & Route>): Mov
     const definition = progress.definition;
     const map = battle.battlefield.navigation.baseline[progress.pathMotionMode];
     const locator = Vec2.add(self.position, Vec2.negate(definition.offset));
-
     if (!map.contains(World.toTile(self.position)) || !map.contains(World.toTile(locator))) {
         const recovery = recoveryPoint(battle, self, progress);
 

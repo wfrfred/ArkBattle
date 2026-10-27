@@ -119,7 +119,6 @@ export function dispatch<C, T>(
         },
         find(current, id) {
             const unit = units.get(current, owner);
-
             if (unit === undefined || !hasVitality(unit) || unit.lifecycle !== "PRESENT") {
                 return undefined;
             }

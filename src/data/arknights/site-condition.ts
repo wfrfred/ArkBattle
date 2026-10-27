@@ -27,13 +27,11 @@ function mask(value: unknown, name: string): number {
 
 export function parseSiteCondition(value: unknown, name: string): SiteCondition | null {
     const raw = mask(value, name);
-
     if (raw === 0) {
         return null;
     }
 
     const condition = CONDITIONS.find(([bit]) => bit === raw)?.[1];
-
     if (condition === undefined) {
         throw new TypeError(`${name} requires multiple site conditions`);
     }

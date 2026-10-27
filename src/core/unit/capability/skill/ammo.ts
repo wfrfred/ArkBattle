@@ -70,13 +70,11 @@ export function consume(
     assertPositiveSafeInteger(amount, "skill ammunition consumption");
 
     const self = units.get(battle, reference.host);
-
     if (self === undefined) {
         return rejected(battle, "UNAVAILABLE");
     }
 
     const active = self.skill.active;
-
     if (self.lifecycle !== "PRESENT" || active?.id !== reference.id || active.status !== "ACTIVE") {
         return rejected(battle, "UNAVAILABLE");
     }
@@ -139,13 +137,11 @@ function add(
     assertPositiveSafeInteger(requested, "skill ammunition replenishment");
 
     const self = units.get(battle, reference.host);
-
     if (self === undefined) {
         return rejected(battle, "UNAVAILABLE");
     }
 
     const active = self.skill.active;
-
     if (self.lifecycle !== "PRESENT" || active?.id !== reference.id || active.status !== "ACTIVE") {
         return rejected(battle, "UNAVAILABLE");
     }
@@ -162,7 +158,6 @@ function add(
             replenishing ? previous.initial - previous.replenished : requested,
         ),
     );
-
     if (amount === 0) {
         return {
             state: battle,

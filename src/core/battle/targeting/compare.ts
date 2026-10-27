@@ -10,7 +10,6 @@ export function combine(...comparators: readonly Comparator[]): Comparator {
     return (battle, request, left, right) => {
         for (const compare of comparators) {
             const order = compare(battle, request, left, right);
-
             if (order !== 0) {
                 return order;
             }

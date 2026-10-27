@@ -80,7 +80,6 @@ export function readShield(
     unit: Unit,
 ): { readonly layers: number; readonly timer: number } | undefined {
     const effect = unit.effects.values().find((entry) => entry.definition.id === SHIELD_ID);
-
     if (effect?.status !== "ACTIVE") {
         return undefined;
     }
@@ -97,7 +96,6 @@ export function readShield(
 
 function hasSarkazTag(unit: Unit | undefined): boolean {
     const definition = unit?.definition;
-
     if (definition === undefined || !("profile" in definition)) {
         return false;
     }
@@ -115,7 +113,6 @@ function hasSarkazTag(unit: Unit | undefined): boolean {
 
 function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality> {
     const talent = profile.talents.find((talent) => talent.key === "1");
-
     if (talent === undefined) {
         throw new TypeError("Mudrock content requires her shield talent");
     }
@@ -139,7 +136,6 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
             setData(state, effectRef(self), { ...self.data, lastTick: state.tick }),
         onEnable: (state, self) => {
             const unit = getCurrentUnit(state, self.host);
-
             if (unit === undefined) {
                 return state;
             }
@@ -157,7 +153,6 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
                         invoke(state, context, pending) {
                             const shield = get(state, ref);
                             const host = getCurrentUnit(state, self.host);
-
                             if (
                                 pending.cancellation !== null ||
                                 pending.amount <= 0 ||
@@ -173,7 +168,6 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
                                 });
                                 state = healSelf(state, self.host.id, healRatio);
                                 const current = getCurrentUnit(state, self.host);
-
                                 if (current !== undefined && hasSkill(current)) {
                                     state = modify(state, unitRef(current), extraSp).state;
                                 }
@@ -230,7 +224,6 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
         },
         onTick(state, self) {
             const elapsed = state.tick - self.data.lastTick;
-
             if (elapsed <= 0) {
                 return state;
             }
@@ -290,7 +283,6 @@ export function create(
             },
             onStart(state, self) {
                 const unit = getCurrentUnit(state, self.host);
-
                 if (unit === undefined || !hasAction(unit)) {
                     return state;
                 }

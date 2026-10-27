@@ -69,6 +69,7 @@ export default defineConfig({
             { blankLine: "always", prev: "*", next: "block-like" },
             { blankLine: "always", prev: "block-like", next: "*" },
             { blankLine: "any", prev: "block-like", next: "block-like" },
+            { blankLine: "any", prev: ["const", "let"], next: "if" },
             {
                 blankLine: "never",
                 prev: ["function-overload", exportedOverload],

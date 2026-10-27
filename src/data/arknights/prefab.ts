@@ -59,7 +59,6 @@ function object(value: unknown, name: string): Record<string, unknown> {
 
 function extraction(value: unknown): PrefabExtraction {
     const source = object(value, "prefab extraction");
-
     if (typeof source.prefabKey !== "string" || source.prefabKey.length === 0) {
         throw new TypeError("prefab extraction prefabKey must be nonempty");
     }
@@ -81,7 +80,6 @@ function extraction(value: unknown): PrefabExtraction {
 
         if (component.object !== undefined) {
             const record = object(component.object, `prefab component ${index} object`);
-
             if (typeof record.id !== "string" || record.id.length === 0 || objects.has(record.id)) {
                 throw new TypeError(`invalid prefab component object id at index ${index}`);
             }
@@ -95,7 +93,6 @@ function extraction(value: unknown): PrefabExtraction {
 
 function component(source: PrefabExtraction, field: string): Record<string, unknown> {
     const matches = source.components.filter((value) => Object.hasOwn(value, field));
-
     if (matches.length !== 1) {
         throw new TypeError(`${source.prefabKey} requires one component with ${field}`);
     }
@@ -170,7 +167,6 @@ function buffKeys(source: PrefabExtraction): ReadonlySet<string> {
 
         for (const value of fields._buffs) {
             const buff = object(value, "prefab buff");
-
             if (typeof buff.buffKey === "string") {
                 keys.add(buff.buffKey);
             }
@@ -189,13 +185,11 @@ function tokenMode(
     }
 
     const reference = object(token._modes[0], "token mode reference");
-
     if (reference.m_FileID !== 0 || typeof reference.m_PathID !== "string") {
         throw new TypeError(`${source.prefabKey} requires a local token mode reference`);
     }
 
     const mode = source.objects.get(reference.m_PathID);
-
     if (mode === undefined) {
         throw new TypeError(`${source.prefabKey} token mode is missing`);
     }
@@ -258,7 +252,6 @@ function deployable(
     const condition = object(token._buildCondition, "token build condition");
     const extra = object(condition.extraBuildConditionArray, "token extra build condition");
     const buildableType = condition.buildableType;
-
     if (buildableType !== 1 && buildableType !== 2 && buildableType !== 3) {
         throw new TypeError("unsupported token deployment buildable type");
     }
@@ -293,7 +286,6 @@ function deployable(
     }
 
     const serialized: unknown = JSON.parse(extra.SerializedState);
-
     if (serialized !== null && (!Array.isArray(serialized) || serialized.length !== 0)) {
         throw new TypeError("unsupported token serialized deployment condition");
     }
@@ -310,11 +302,9 @@ function deployable(
 export function parsePredefinedPrefab(value: unknown, skillValue?: unknown): PredefinedPrefab {
     const source = extraction(value);
     const token = component(source, "_rewriteTileOptions");
-
     if (boolean(token._rewriteTileOptions, "token _rewriteTileOptions")) {
         const mode = tokenMode(source, token);
         const options = object(mode._tileOptions, "token mode tile options");
-
         if (
             options.overrideObstacleLikeMoveCost !== true ||
             token._ignoreBlockAnyRoutes !== true ||
@@ -342,7 +332,6 @@ export function parsePredefinedPrefab(value: unknown, skillValue?: unknown): Pre
     const keys = buffKeys(skill);
     const mire = keys.has("buff_mire[mark]") && keys.has("buff_mire[checker]");
     const deepsea = keys.has("sea_drown[enemy]") && keys.has("buff_sea");
-
     if (mire === deepsea) {
         throw new TypeError(`unsupported mechanism profile ${source.prefabKey}`);
     }

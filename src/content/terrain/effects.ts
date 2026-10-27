@@ -49,7 +49,6 @@ export const smogEffect: Definition<SmogState, targetable.Targetable> = {
     onTick: reconcileSmog,
     onDisable(battle, self) {
         const unit = units.get(battle, self.host);
-
         if (unit === undefined) {
             return battle;
         }
@@ -67,7 +66,6 @@ function reconcileSmog(
     self: Effect<SmogState, targetable.Targetable>,
 ): BattleState {
     let unit = units.get(battle, self.host);
-
     if (unit === undefined) {
         return battle;
     }
@@ -94,7 +92,6 @@ function reconcileSmog(
     const id = `terrain/${self.id}`;
     const active = !blocked && restoreAt === null;
     const exists = unit.targetable.restrictions.some((entry) => entry.id === id);
-
     if (active === exists) {
         return battle;
     }
@@ -116,7 +113,6 @@ function changeModifiers(
     modifiers?: Modifiers,
 ): BattleState {
     const unit = units.get(battle, host);
-
     if (unit === undefined) {
         return battle;
     }
@@ -163,7 +159,6 @@ function changeModifiers(
 
 function damage(battle: BattleState, host: Ref<Unit>, amount: number): BattleState {
     const unit = units.get(battle, host);
-
     if (unit === undefined || !hasVitality(unit)) {
         return battle;
     }
@@ -250,7 +245,6 @@ export function createMireEffect(params: MireParams): Definition<MireState> {
             }
 
             const unit = units.get(battle, self.host);
-
             if (unit === undefined) {
                 return battle;
             }

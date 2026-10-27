@@ -18,7 +18,6 @@ export function random(k: number): Selector {
 
     return (battle, _request, candidates) => {
         const count = Math.min(k, candidates.length);
-
         if (count === 0) {
             return { state: battle, value: [] };
         }

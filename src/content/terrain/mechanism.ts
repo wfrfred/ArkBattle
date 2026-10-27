@@ -107,7 +107,6 @@ function create<P extends object>(
 
             function setContact(state: BattleState, unitId: Id, contact?: Contact): BattleState {
                 const current = mechanisms.get(state, reference);
-
                 if (current === undefined) {
                     return state;
                 }
@@ -141,7 +140,6 @@ function create<P extends object>(
             for (const unitId of self.state.contacts.keys()) {
                 const contact = mechanisms.get(battle, reference)?.state.contacts.get(unitId);
                 const current = battle.battlefield.units.get(unitId);
-
                 if (
                     contact !== undefined &&
                     (current === undefined || indexOf(current) === undefined)
@@ -161,7 +159,6 @@ function create<P extends object>(
 
                 const unit = units.get(battle, candidate);
                 const index = unit === undefined ? undefined : indexOf(unit);
-
                 if (unit === undefined || index === undefined) {
                     continue;
                 }
@@ -173,13 +170,11 @@ function create<P extends object>(
                     const effectExists =
                         previous.effect !== undefined &&
                         effects.get(battle, previous.effect) !== undefined;
-
                     if (previous.index === index && effectExists) {
                         continue;
                     }
 
                     const previousTile = map.tiles.get(previous.index, definition);
-
                     if (
                         effectExists &&
                         previousTile?.definition.terrain.params === tile.definition.terrain.params
@@ -196,7 +191,6 @@ function create<P extends object>(
                 }
 
                 const latest = units.get(battle, candidate);
-
                 if (
                     latest === undefined ||
                     indexOf(latest) !== index ||
@@ -215,7 +209,6 @@ function create<P extends object>(
                 }
 
                 const current = units.get(battle, candidate);
-
                 if (current !== undefined && indexOf(current) === index) {
                     battle = setContact(battle, unit.id, { index, effect: installed.value });
                 } else if (!behaviour.retainOnLeave && installed.value !== undefined) {
@@ -257,7 +250,6 @@ export function createTerrainMechanism(
                             effect.definition.id === "terrain/infection" &&
                             effect.status !== "ENDING",
                     );
-
                 if (previous !== undefined) {
                     return { state: battle, value: effectRef(previous) };
                 }

@@ -105,7 +105,6 @@ export function createSkill(
         markerId: "mudrock/s2",
         output(state, host, self) {
             const source = getCurrentUnit(state, host);
-
             if (source === undefined || !hasSkill(source) || source.skill.active === null) {
                 return state;
             }
@@ -152,7 +151,6 @@ export function createSkill(
                 const applyStun = rng.chance(stunChance);
                 state = { ...state, execution: { ...state.execution, rngState: rng.state() } };
                 const survivor = getCurrentUnit(state, unitRef(target));
-
                 if (applyStun && survivor !== undefined) {
                     state = install(state, unitRef(survivor), stun, {
                         source: source.id,

@@ -11,7 +11,6 @@ export function closeLifetime(
 ): BattleState {
     if (lifetime.type === "UNIT") {
         const unit = units.get(state, lifetime.ref);
-
         if (unit !== undefined && unit.lifecycle !== "LEAVING") {
             state = update(state, [{ ...unit, lifecycle: "LEAVING" }]);
         }

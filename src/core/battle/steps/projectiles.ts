@@ -16,7 +16,6 @@ export function advanceProjectiles(
         }
 
         const current = battle.battlefield.projectiles.get(command.projectileId);
-
         if (current !== undefined) {
             battle = stop(battle, ref(current));
         }

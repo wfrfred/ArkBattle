@@ -62,7 +62,6 @@ export function resolveActionSpawn(
 
     const reference = level.enemyDbRefs.find((reference) => reference.id === action.key)!;
     const content = resolveEnemy(reference);
-
     if (content.delayToBornTicks !== 0) {
         throw new RangeError("movement schedules require synchronous enemy births");
     }
@@ -117,7 +116,6 @@ export function compileSpawnSchedule(
             level.waves[item.waveIndex]?.fragments[item.fragmentIndex]?.actions[
                 item.actionIndex
             ] === undefined;
-
         if (missingOrDuplicate) {
             throw new RangeError(`action selection requires unique existing actions: ${path}`);
         }
@@ -152,7 +150,6 @@ export function compileSpawnSchedule(
                 preDelayTicks: secondsToTicks(fragment.preDelay),
                 actions: fragment.actions.flatMap((action, actionIndex) => {
                     const path = actionPath({ waveIndex, fragmentIndex, actionIndex });
-
                     if (!selected.has(path)) {
                         omittedActions.push(path);
 

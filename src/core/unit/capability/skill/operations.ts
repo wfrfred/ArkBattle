@@ -116,7 +116,6 @@ export function activate(
             const cost = definition.cost?.(battle, self) ?? sp.resolveCost(battle, identity) ?? 0;
             assertNonnegativeSafeInteger(cost, "skill activation SP cost");
             const previousSp = self.state.sp;
-
             if ((previousSp?.value ?? 0) < requirement || (previousSp?.value ?? 0) < cost) {
                 return reject("INSUFFICIENT_SP");
             }
@@ -167,7 +166,6 @@ export function activate(
 
             const current = instance.get(battle, self.host, self.definition);
             const host = units.get(battle, identity);
-
             if (
                 host?.lifecycle === "PRESENT" &&
                 isSpatiallyPresent(host) &&
@@ -180,7 +178,6 @@ export function activate(
             }
 
             const after = query.get(battle, reference);
-
             if (
                 after?.status === "ACTIVE" &&
                 after.sustain.type === "TIME" &&
@@ -211,7 +208,6 @@ function end(battle: BattleState, reference: Ref<Activation>, ending: End): Batt
         read(battle, reference.host, (self) => {
             const active = self.state.active;
             const definition = self.definition.activation;
-
             if (active?.id !== reference.id || active.status !== "ACTIVE" || definition === null) {
                 return battle;
             }
@@ -234,7 +230,6 @@ function end(battle: BattleState, reference: Ref<Activation>, ending: End): Batt
             }
 
             const host = instance.get(battle, self.host, self.definition);
-
             if (host?.state.active?.id === active.id) {
                 battle = instance.replace(battle, {
                     ...host,
@@ -311,7 +306,6 @@ export function advance(battle: BattleState, host: Ref<Unit & Skill>): BattleSta
     battle =
         read(battle, host, (self, unit) => {
             const active = self.state.active;
-
             if (unit.lifecycle !== "PRESENT" || active?.status !== "ACTIVE") {
                 return battle;
             }
@@ -323,7 +317,6 @@ export function advance(battle: BattleState, host: Ref<Unit & Skill>): BattleSta
         }) ?? battle;
     const self = units.get(battle, host);
     const trigger = self?.definition.skill.activation?.trigger;
-
     if (
         self?.lifecycle === "PRESENT" &&
         self.skill.active === null &&
@@ -347,7 +340,6 @@ export function enter(battle: BattleState, host: Ref<Unit & Skill>): BattleState
             }
 
             const current = units.get(battle, self.host);
-
             if (
                 current !== undefined &&
                 hasAction(current) &&
@@ -386,7 +378,6 @@ export function extendTime(
     return (
         read(battle, reference.host, (self, unit) => {
             const active = self.state.active;
-
             if (
                 unit.lifecycle !== "PRESENT" ||
                 (hasVitality(unit) && unit.vitality.hp <= 0) ||

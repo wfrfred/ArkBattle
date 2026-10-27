@@ -61,7 +61,6 @@ function resolve(
     parameter: Parameter,
 ): number | undefined {
     const self = units.get(battle, host);
-
     if (self === undefined || !hasElemental(self)) {
         return undefined;
     }
@@ -101,7 +100,6 @@ export function damageRejection(
     request: DamageRequest,
 ): string | undefined {
     const self = units.get(battle, host);
-
     if (self === undefined) {
         return "TARGET_ABSENT";
     }
@@ -129,7 +127,6 @@ export function healRejection(
     request: HealRequest,
 ): string | undefined {
     const self = units.get(battle, host);
-
     if (self === undefined) {
         return "TARGET_ABSENT";
     }

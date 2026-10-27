@@ -26,7 +26,6 @@ export function parseBlackboard(
         }
 
         const item: unknown = value[index];
-
         if (item === null || typeof item !== "object" || Array.isArray(item)) {
             throw new TypeError(`${path} must be an object`);
         }
@@ -40,7 +39,6 @@ export function parseBlackboard(
         }
 
         const key = source.key;
-
         if (typeof key !== "string") {
             throw new TypeError(`${path}.key must be a string`);
         }
@@ -61,7 +59,6 @@ export function parseBlackboard(
             source.valueStr === undefined && options.allowMissingValueStr === true
                 ? null
                 : source.valueStr;
-
         if (valueStr !== null && typeof valueStr !== "string") {
             throw new TypeError(`${path}.valueStr must be a string or null`);
         }

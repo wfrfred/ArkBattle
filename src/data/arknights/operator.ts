@@ -184,7 +184,6 @@ function interpolateAttributes(value: unknown, level: number): Attributes {
     });
     const first = frames[0];
     const last = frames.at(-1);
-
     if (first === undefined || last === undefined || level < first.level || level > last.level) {
         throw new RangeError("operator level is outside attribute keyframes");
     }
@@ -219,7 +218,6 @@ function trustFrame(
     for (const value of frames) {
         const frame = record(value, "favor frame");
         const data = record(frame.data, "favor frame data");
-
         if (data.percent !== percentage) {
             continue;
         }
@@ -239,14 +237,12 @@ function applyPotential(
     attributes: Attributes,
 ): void {
     const ranks = array(character.potentialRanks, "operator potential ranks");
-
     if (rank > ranks.length) {
         throw new RangeError("operator potential exceeds its available ranks");
     }
 
     for (const value of ranks.slice(0, rank)) {
         const potential = record(value, "operator potential rank");
-
         if (potential.type === "CUSTOM" && potential.buff === null) {
             continue;
         }
@@ -263,7 +259,6 @@ function applyPotential(
             const key = Object.hasOwn(potentialAttributes, type)
                 ? potentialAttributes[type]
                 : undefined;
-
             if (
                 key === undefined ||
                 modifier.formulaItem !== "ADDITION" ||
@@ -291,7 +286,6 @@ function selectedSkill(
         "selected operator skill",
     );
     const source = record(skill, "skill record");
-
     if (source.skillId !== text(selected.skillId, "selected skill identity")) {
         throw new TypeError("selected skill record does not match the operator skill");
     }
@@ -302,7 +296,6 @@ function selectedSkill(
     const common = array(character.allSkillLvlup, "common skill upgrades");
     const mastery = array(selected.levelUpCostCond, "skill mastery upgrades");
     const upgrades = [...common, ...mastery];
-
     if (configuration.skillLevel > upgrades.length + 1) {
         throw new RangeError("selected skill level exceeds its available upgrades");
     }
@@ -317,7 +310,6 @@ function selectedSkill(
         array(source.levels, "skill levels")[configuration.skillLevel - 1],
         "selected skill level",
     );
-
     if (level.durationType === "AMMO" || level.durationType === 1) {
         throw new TypeError(
             "AMMO operator skills require dedicated content and are unsupported here",
@@ -333,7 +325,6 @@ function selectedSkill(
 function range(value: unknown, id: unknown): readonly TilePosition[] {
     const key = text(id, "operator range identity");
     const source = record(record(value, "range table")[key], `range ${key}`);
-
     if (source.id !== key || source.direction !== 1) {
         throw new TypeError("operator range must use its matching identity and default direction");
     }
@@ -346,7 +337,6 @@ function range(value: unknown, id: unknown): readonly TilePosition[] {
         assertSafeInteger(grid.col, "range column");
         const tile: TilePosition = [grid.row, grid.col];
         const key = `${tile[0]},${tile[1]}`;
-
         if (seen.has(key)) {
             throw new RangeError("operator range must not contain duplicate tiles");
         }
@@ -383,7 +373,6 @@ function selectCandidate(
         const condition = record(candidate.unlockCondition, "talent unlock condition");
         const phase = elite(condition.phase);
         const level = number(condition.level, "talent unlock level");
-
         if (
             selected === undefined ||
             phase > selected.phase ||
@@ -413,13 +402,11 @@ function applyModule(
     talents: (Talent | undefined)[],
 ): readonly ArknightsBlackboardEntry[] {
     const module = configuration.module;
-
     if (module === undefined) {
         return [];
     }
 
     const equipment = record(tables.equipment, "module equipment record");
-
     if (equipment.uniEquipId !== module.id || equipment.charId !== id) {
         throw new TypeError("module equipment does not match the selected operator and module");
     }
@@ -444,7 +431,6 @@ function applyModule(
     const phase = array(battle.phases, "module phases")
         .map((value) => record(value, "module phase"))
         .find((phase) => phase.equipLevel === module.level);
-
     if (phase === undefined) {
         throw new RangeError("unknown module level");
     }
@@ -453,7 +439,6 @@ function applyModule(
         const key = Object.hasOwn(moduleAttributes, entry.key)
             ? moduleAttributes[entry.key]
             : undefined;
-
         if (key === undefined || entry.valueStr !== null) {
             throw new TypeError(`unsupported module attribute ${entry.key}`);
         }
@@ -465,7 +450,6 @@ function applyModule(
 
     for (const value of array(phase.parts, "module parts")) {
         const part = record(value, "module part");
-
         if (part.isToken === true || part.target === "DISPLAY") {
             continue;
         }
@@ -480,7 +464,6 @@ function applyModule(
                 record(part.overrideTraitDataBundle, "module trait bundle").candidates,
                 configuration,
             );
-
             if (candidate !== undefined) {
                 for (const entry of parseBlackboard(
                     candidate.blackboard,
@@ -494,7 +477,6 @@ function applyModule(
                 record(part.addOrOverrideTalentDataBundle, "module talent bundle").candidates,
                 configuration,
             );
-
             if (candidate === undefined) {
                 continue;
             }
@@ -504,7 +486,6 @@ function applyModule(
 
             if (index === -1) {
                 const previous = talents.findIndex((talent) => talent?.key === selected.key);
-
                 if (previous === -1) {
                     talents.push(selected);
                 } else {

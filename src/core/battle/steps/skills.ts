@@ -18,7 +18,6 @@ export function advanceSkills(state: BattleState, commands: readonly Command[]):
         }
 
         const unit = state.battlefield.units.get(command.unitId);
-
         if (unit === undefined || !hasSkill(unit)) {
             continue;
         }

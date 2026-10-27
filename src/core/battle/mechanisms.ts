@@ -101,7 +101,6 @@ export class Mechanisms {
         next: NoInfer<Mechanism<S>>,
     ): Mechanisms {
         const previous = this.get(reference);
-
         if (previous === undefined) {
             throw new RangeError(`unknown mechanism: ${reference.id}`);
         }

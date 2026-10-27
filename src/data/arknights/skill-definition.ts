@@ -78,7 +78,6 @@ export function parseArknightsSkillLevel(
     ammo?: number,
 ): ArknightsSkillLevel {
     const skill = object(value, "skill record");
-
     if (typeof skill.skillId !== "string" || skill.skillId.length === 0) {
         throw new TypeError("skill record requires an identity");
     }
@@ -93,7 +92,6 @@ export function parseArknightsSkillLevel(
 
     const selected = object(skill.levels[level - 1], "skill level");
     const ammunitionMode = selected.durationType === "AMMO" || selected.durationType === 1;
-
     if (
         selected.durationType !== undefined &&
         selected.durationType !== "NONE" &&

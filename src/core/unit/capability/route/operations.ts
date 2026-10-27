@@ -32,7 +32,6 @@ export function setPathMotionMode(
     mode: navigation.MotionMode,
 ): BattleState {
     const self = units.get(battle, ref);
-
     if (self?.lifecycle !== "PRESENT") {
         return battle;
     }
@@ -56,7 +55,6 @@ export function setAlternative(
     definition: Definition,
 ): BattleState {
     const self = units.get(battle, ref);
-
     if (self?.lifecycle !== "PRESENT") {
         return battle;
     }
@@ -81,7 +79,6 @@ export function clearAlternative(battle: BattleState, ref: Ref<Unit & Route>): B
 
 function atEnd(self: Unit, progress: Progress): boolean {
     const phase = progress.phase;
-
     if (
         phase.type === "COMPLETED" ||
         (phase.type === "CHECKPOINT" && progress.definition.requireAllCheckpoints)
@@ -123,7 +120,6 @@ function following(progress: Progress, index: number): Phase {
 export function advance(battle: BattleState, ref: Ref<Unit & Route>): BattleState {
     for (let remaining = TRANSITION_BUDGET; remaining > 0; remaining--) {
         let self = units.get(battle, ref);
-
         if (self?.lifecycle !== "PRESENT") {
             return battle;
         }
@@ -138,7 +134,6 @@ export function advance(battle: BattleState, ref: Ref<Unit & Route>): BattleStat
 
         const progress = self.route.alternative ?? self.route.main;
         const phase = progress.phase;
-
         if (phase.type === "COMPLETED") {
             return battle;
         }
@@ -151,7 +146,6 @@ export function advance(battle: BattleState, ref: Ref<Unit & Route>): BattleStat
 
         const checkpoint = progress.definition.checkpoints[phase.index]!;
         const state = phase.checkpointState;
-
         if (state.type === "WAITING") {
             if (battle.tick < state.deadlineTick) {
                 return battle;
@@ -173,7 +167,6 @@ export function advance(battle: BattleState, ref: Ref<Unit & Route>): BattleStat
                     locator,
                     goal,
                 ) === null;
-
             if (!(Vec2.distanceSquared(locator, goal) <= RADIUS * RADIUS) && !skipped) {
                 return battle;
             }

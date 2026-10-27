@@ -38,7 +38,6 @@ export function compileLevelMovementFragment(
 
     const wave = level.waves[0];
     const fragment = wave?.fragments[0];
-
     if (wave === undefined || fragment === undefined) {
         throw new RangeError("selected fragment does not exist");
     }
@@ -101,7 +100,6 @@ export function compileLevelMovementFragment(
                 }
 
                 const action = currentFragment.actions[actionIndex]!;
-
                 if (
                     !action.managedByScheduler ||
                     action.blockFragment ||

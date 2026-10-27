@@ -28,7 +28,6 @@ function terrainForce(
 ): WorldPosition {
     const tile = World.toTile(position);
     const current = map.get(tile);
-
     if (current === undefined) {
         return [0, 0];
     }
@@ -38,13 +37,11 @@ function terrainForce(
 
         for (const offset of NEIGHBORS) {
             const neighbor = Vec2.add(tile, offset);
-
             if (map.get(neighbor)?.passable !== true) {
                 continue;
             }
 
             const distance = Vec2.distanceSquared(position, Tile.center(neighbor));
-
             if (distance < nearest) {
                 nearest = distance;
                 force = [offset[1], offset[0]];
@@ -60,7 +57,6 @@ function terrainForce(
 
     for (const [row, col] of NEIGHBORS) {
         const neighbor = map.get(Vec2.add(tile, [row, col]));
-
         if (
             neighbor === undefined ||
             (neighbor.passable && (mode === "FLY" || neighbor.cost < 1000))
@@ -72,7 +68,6 @@ function terrainForce(
             Math.abs(col) *
             (Math.max(0, (position[0] + col * halfBodyWidth - center[0]) * col) - 0.25);
         const vertical = Math.abs(row) * (Math.max(0, (position[1] - center[1]) * row) - 0.25);
-
         if (horizontal > 0 && vertical > 0) {
             const average = (horizontal + vertical) / 2;
 

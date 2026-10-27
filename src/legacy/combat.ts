@@ -85,7 +85,6 @@ function damageType(value: unknown): DamageType {
 function attackTiming(stats: Record<string, unknown>) {
     const bat = numberField(stats.bat, "base attack time");
     const attackSpeed = numberField(stats.aspd, "attack speed");
-
     if (bat <= 0 || attackSpeed <= 0) {
         throw new RangeError("legacy attack time and attack speed must be positive");
     }
@@ -107,7 +106,6 @@ function attackRange(value: unknown): readonly TilePosition[] {
 
         const tile: TilePosition = [offset[0], offset[1]];
         const key = `${tile[0]},${tile[1]}`;
-
         if (seen.has(key)) {
             throw new RangeError("legacy attack range must not contain duplicate tiles");
         }
@@ -125,7 +123,6 @@ function rejectContent(definition: Record<string, unknown>): void {
 
     for (const field of ["skills", "talents", "abilities", "tokens"]) {
         const content = definition[field];
-
         if (Array.isArray(content) && content.length > 0) {
             throw new RangeError(`legacy combat does not execute ${field}`);
         }
@@ -152,7 +149,6 @@ function operatorDefinition(value: unknown, direction: Direction) {
     const timing = attackTiming(stats);
 
     const canTargetAir = definition.canHitFly ?? false;
-
     if (typeof canTargetAir !== "boolean") {
         throw new TypeError("canHitFly must be boolean when specified");
     }

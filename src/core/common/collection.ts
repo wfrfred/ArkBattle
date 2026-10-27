@@ -33,7 +33,6 @@ export function topK<T>(
 
             while (child > 0) {
                 const parent = Math.floor((child - 1) / 2);
-
                 if (order(heap[child]!, heap[parent]!) <= 0) {
                     break;
                 }

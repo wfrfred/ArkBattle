@@ -66,7 +66,6 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
         }),
         onEnable: (battle, self) => {
             const unit = units.get(battle, self.host);
-
             if (unit === undefined) {
                 return battle;
             }
@@ -92,7 +91,6 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
         },
         onDisable: (battle, self) => {
             const unit = units.get(battle, self.host);
-
             if (unit === undefined) {
                 return battle;
             }
@@ -112,7 +110,6 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
         initialize: () => ({ remaining: profile.paralysisStacks }),
         onInstall: (battle, self) => {
             const unit = units.get(battle, self.host);
-
             if (unit === undefined) {
                 return battle;
             }
@@ -148,7 +145,6 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
 
                             const recoveryTicks = TICKS_PER_SECOND / 2;
                             const current = units.get(battle, self.host);
-
                             if (current?.lifecycle === "PRESENT") {
                                 battle = effects.install(battle, self.host, stun, {
                                     scopes: [{ type: "TICK", tick: battle.tick + recoveryTicks }],
@@ -217,7 +213,6 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
         onTick: (battle, self) => {
             const ref = effectRef(self);
             const scope = self.scopes.find((scope) => scope.type === "ELEMENTAL_BURST");
-
             if (scope === undefined || getBurst(battle, scope.ref)?.status !== "ACTIVE") {
                 return battle;
             }
@@ -240,7 +235,6 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
 
             for (let second = previousSecond + 1; second <= currentSecond; second++) {
                 let unit = activeHost(battle, scope.ref);
-
                 if (unit === undefined || effects.get(battle, ref)?.status !== "ACTIVE") {
                     return battle;
                 }
@@ -259,7 +253,6 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
 
                 unit = activeHost(battle, scope.ref);
                 const current = effects.get(battle, ref);
-
                 if (unit === undefined || current?.status !== "ACTIVE") {
                     return battle;
                 }
@@ -270,7 +263,6 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
                         profile.attackReductionRatio * Math.max(0, 1 - second / durationSeconds);
                     battle = effects.setData(battle, ref, { ...current.data, scaler });
                     const host = activeHost(battle, scope.ref)!;
-
                     if (!hasOffense(host)) {
                         return battle;
                     }
@@ -302,7 +294,6 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
             const ref = burstRef(self);
             const scopes = [{ type: "ELEMENTAL_BURST" as const, ref }];
             let unit = activeHost(battle, ref);
-
             if (unit === undefined) {
                 return battle;
             }
@@ -353,7 +344,6 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
                     .find(
                         (effect) => effect.definition === paralysis && effect.status !== "ENDING",
                     );
-
                 if (existing === undefined) {
                     battle = effects.install(battle, units.ref(unit), paralysis).state;
                 } else {
@@ -384,7 +374,6 @@ function hurt(
     damage: NonNullable<ArknightsElementalBurstProfile["burstDamage"]>,
 ): BattleState {
     const host = activeHost(battle, ref);
-
     if (host === undefined || !hasVitality(host)) {
         return battle;
     }

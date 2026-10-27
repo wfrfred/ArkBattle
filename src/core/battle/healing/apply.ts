@@ -20,7 +20,6 @@ export function applyHealing(
 ): Result<HealingOutcome> {
     let battle = calculated.state;
     const healing = calculated.value;
-
     if (healing === undefined) {
         return complete(battle, request, healing, { kind: "REJECTED" });
     }

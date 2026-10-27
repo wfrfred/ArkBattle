@@ -56,7 +56,6 @@ export function create(
     assertNonnegativeSafeInteger(id, "card identity");
 
     const supply = definition.supply ?? operatorSupply;
-
     if (supply.stockLimit !== null) {
         assertNonnegativeSafeInteger(supply.stockLimit, "card stock limit");
     }

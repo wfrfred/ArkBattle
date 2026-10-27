@@ -40,7 +40,6 @@ export function advance(
     context: MovementContext,
 ): BattleState {
     const self = units.get(battle, ref);
-
     if (self?.lifecycle !== "PRESENT" || !isSpatiallyPresent(self) || !canMove(battle, self)) {
         return battle;
     }

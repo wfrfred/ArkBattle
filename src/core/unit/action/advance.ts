@@ -7,13 +7,11 @@ import { end } from "./operations.js";
 
 export function advance(battle: BattleState, reference: Ref<ExecutionView>): BattleState {
     const source = getUnit(battle, reference.host);
-
     if (source === undefined) {
         return battle;
     }
 
     const self = source.action.actions.getExecution(reference.id);
-
     if (self?.execution.status !== "RUNNING") {
         return battle;
     }

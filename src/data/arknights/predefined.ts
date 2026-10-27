@@ -32,7 +32,6 @@ function characterPhase(
     characterValue: unknown,
 ): Record<string, unknown> {
     const character = object(characterValue, "predefined character record");
-
     if (!Array.isArray(character.phases)) {
         throw new TypeError("predefined character phases must be an array");
     }
@@ -44,7 +43,6 @@ function characterPhase(
 
 function phasePrefabKey(phase: Record<string, unknown>): string {
     const key = phase.characterPrefabKey;
-
     if (typeof key !== "string" || key.length === 0) {
         throw new TypeError("predefined character prefab key must be nonempty");
     }
@@ -77,7 +75,6 @@ function predefinedCharacter(
     }
 
     const phase = characterPhase(instance, characterValue);
-
     if (phasePrefabKey(phase) !== profile.prefabKey) {
         throw new TypeError(`predefined character prefab does not match ${profile.prefabKey}`);
     }

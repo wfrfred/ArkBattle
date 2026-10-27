@@ -14,7 +14,6 @@ export function set<V>(
     contribution: Contribution<V>,
 ): readonly Contribution<V>[] {
     const index = entries.findIndex(({ id }) => id === contribution.id);
-
     if (index === -1) {
         return [...entries, contribution];
     }
@@ -53,7 +52,6 @@ export function resolve<V>(entries: readonly Contribution<V>[]): readonly V[] {
         }
 
         const current = winners.get(entry.group.id);
-
         if (current === undefined || entry.group.priority > current.group!.priority) {
             winners.set(entry.group.id, entry);
         }

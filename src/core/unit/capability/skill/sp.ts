@@ -126,7 +126,6 @@ export function validateDefinition(definition: Definition): void {
     }
 
     const recovery = definition.recovery;
-
     if (recovery.type === "TIME") {
         assertPositiveNumber(recovery.intervalTicks, "skill SP recovery interval");
     } else if (recovery.type !== "NONE") {
@@ -202,7 +201,6 @@ export function recover(
     }
 
     const self = units.get(battle, ref);
-
     if (self === undefined) {
         return rejected(battle, "UNAVAILABLE");
     }
@@ -213,7 +211,6 @@ export function recover(
 
     const state = self.skill.sp;
     const definition = self.definition.skill.sp;
-
     if (state === null || definition === null) {
         return rejected(battle, "NO_SP");
     }
@@ -231,7 +228,6 @@ export function recover(
             : 1);
     const capacity = resolve(battle, self, "capacity")!;
     const gained = Math.min(requested, Math.max(0, capacity - state.value));
-
     if (gained === 0 && requested !== 0) {
         return rejected(battle, "FULL");
     }
@@ -259,7 +255,6 @@ export function pay(battle: BattleState, ref: Ref<Unit & Skill>, amount?: number
     }
 
     const self = units.get(battle, ref);
-
     if (self === undefined) {
         return rejected(battle, "UNAVAILABLE");
     }
@@ -269,13 +264,11 @@ export function pay(battle: BattleState, ref: Ref<Unit & Skill>, amount?: number
     }
 
     const state = self.skill.sp;
-
     if (state === null || self.definition.skill.sp === null) {
         return rejected(battle, "NO_SP");
     }
 
     const cost = amount ?? resolve(battle, self, "cost")!;
-
     if (state.value < cost) {
         return rejected(battle, "INSUFFICIENT_SP");
     }
@@ -302,7 +295,6 @@ export function modify(
     assertSafeInteger(delta, "skill SP modification");
 
     const self = units.get(battle, ref);
-
     if (self === undefined) {
         return rejected(battle, "UNAVAILABLE");
     }
@@ -312,7 +304,6 @@ export function modify(
     }
 
     const state = self.skill.sp;
-
     if (state === null || self.definition.skill.sp === null) {
         return rejected(battle, "NO_SP");
     }
@@ -322,7 +313,6 @@ export function modify(
 
     const current = Math.min(resolve(battle, self, "capacity")!, Math.max(0, state.value + delta));
     const amount = current - state.value;
-
     if (amount === 0) {
         return applied(battle, 0);
     }
@@ -338,7 +328,6 @@ export function modify(
 
 export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleState {
     const self = units.get(battle, ref);
-
     if (self === undefined) {
         return battle;
     }
@@ -368,7 +357,6 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
                 : Math.max(0, periodTicks - (previous.periodTicks - previous.remainingTicks));
 
         const capacity = resolve(battle, self, "capacity")!;
-
         if (
             previous !== null &&
             available(self) &&
@@ -401,7 +389,6 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
 function resolve(battle: BattleState, self: Unit & Skill, key: Parameter): number | undefined {
     const definition = self.definition.skill.sp;
     const state = self.skill.sp;
-
     if (definition === null || state === null) {
         return undefined;
     }

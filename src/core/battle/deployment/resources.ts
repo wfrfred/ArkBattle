@@ -5,7 +5,6 @@ import { changeDp } from "./deployment.js";
 
 export function updateCard(state: BattleState, value: card.Card): BattleState {
     const index = state.deployment.cards.findIndex((current) => current.id === value.id);
-
     if (index < 0) {
         throw new RangeError(`unknown deployment card ${value.id}`);
     }
@@ -42,7 +41,6 @@ export function advance(state: BattleState, tick: number): BattleState {
     let deployment = state.deployment;
     const next = deployment.nextDpRecoveryAtTick;
     const interval = deployment.definition.dpRecoveryTicks;
-
     if (next !== null && interval !== null && tick >= next) {
         const count = Math.floor((tick - next) / interval) + 1;
         deployment = changeDp(deployment, count, tick);

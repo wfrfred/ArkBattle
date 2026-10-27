@@ -13,7 +13,6 @@ export function canSmooth(
     let [x0, y0]: TilePosition = steep ? from : [from[1], from[0]];
     let [x1, y1]: TilePosition = steep ? to : [to[1], to[0]];
     const reversed = x0 > x1;
-
     if (reversed) {
         [x0, x1] = [x1, x0];
         [y0, y1] = [y1, y0];

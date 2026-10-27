@@ -159,7 +159,6 @@ function parseTile(
     const consumed = new Set<string>();
     const heightType = string(source.heightType, "tile height type") as Elevation;
     const blockable = blackboard.find((entry) => entry.key === "tile_blockable");
-
     if (blockable !== undefined) {
         if (blockable.valueStr !== null) {
             throw new TypeError("tile_blockable requires a numeric blackboard value");
@@ -211,7 +210,6 @@ function parseTile(
         case "tile_infection": {
             function parameter(key: string): number {
                 const entry = blackboard.find((item) => item.key === key);
-
                 if (entry?.valueStr !== null) {
                     throw new TypeError(`infection requires numeric blackboard ${key}`);
                 }
@@ -266,7 +264,6 @@ function parseBlockEdge(value: unknown): BlockEdge {
     const pos = record(source.pos, "block edge position");
     requireKnownFields(pos, ["row", "col"], "block edge position");
     const direction = source.direction;
-
     if (!Direction.is(direction)) {
         throw new TypeError("unsupported block edge direction");
     }
@@ -293,13 +290,11 @@ export function parseBattlefieldMap(value: unknown, options: ArknightsMapOptions
     requireEmpty(source.layerRects, "map layers");
 
     const matrix = array(source.map, "map matrix");
-
     if (matrix.length === 0) {
         throw new RangeError("map matrix must have at least one row");
     }
 
     const columns = array(matrix[0], "map row").length;
-
     if (columns === 0) {
         throw new RangeError("map matrix must have at least one column");
     }
@@ -311,13 +306,11 @@ export function parseBattlefieldMap(value: unknown, options: ArknightsMapOptions
     for (let row = 0; row < matrix.length; row++) {
         const sourceRowIndex = matrix.length - row - 1;
         const rawRow = array(matrix[sourceRowIndex], "map row");
-
         if (rawRow.length !== columns) {
             throw new RangeError("map matrix must be rectangular");
         }
         for (let col = 0; col < columns; col++) {
             const definitionIndex = finite(rawRow[col], "tile definition index");
-
             if (
                 !Number.isSafeInteger(definitionIndex) ||
                 definitionIndex < 0 ||

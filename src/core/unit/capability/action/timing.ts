@@ -59,7 +59,6 @@ export function resolveInterval(
     definition: Timing,
 ): number | undefined {
     const unit = units.get(battle, source);
-
     if (unit === undefined) {
         return undefined;
     }

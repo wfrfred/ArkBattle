@@ -60,7 +60,6 @@ const finish = Object.freeze({ type: "FINISH" } as const);
 function overrideType(value: unknown): BuffOverrideType {
     for (const key in overrideTypes) {
         const type = key as BuffOverrideType;
-
         if (value === type || value === overrideTypes[type]) {
             return type;
         }
@@ -86,7 +85,6 @@ export function parseBuffStacking(value: unknown): BuffStacking {
     const refreshRemainingTimeWhenStackMax = source.refreshRemainingTimeWhenStackMax;
     const clearAllStackCntWhenTimeUp = source.clearAllStackCntWhenTimeUp;
     const takeSnapshotWhenExtend = source.takeSnapshotWhenExtend;
-
     if (
         typeof refreshRemainingTimeWhenStackMax !== "boolean" ||
         typeof clearAllStackCntWhenTimeUp !== "boolean" ||
@@ -189,7 +187,6 @@ export function compileBuffStacking(definition: BuffStacking): CompiledBuffStack
                         current.maxStackCount === undefined
                             ? configuredMaxStackCount
                             : current.maxStackCount;
-
                     if (maxStackCount !== null && current.stackCount >= maxStackCount) {
                         return current.stackCount === maxStackCount &&
                             rule.refreshRemainingTimeWhenStackMax

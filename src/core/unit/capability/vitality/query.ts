@@ -11,7 +11,6 @@ export function resolveDefense(
     reference: Ref<Unit & Vitality>,
 ): DefenseValues | undefined {
     const self = units.get(battle, reference);
-
     if (self === undefined) {
         return undefined;
     }

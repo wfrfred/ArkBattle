@@ -43,14 +43,12 @@ function advanceBranches(
         }
 
         const trigger = triggers[index]!;
-
         if (!Object.hasOwn(definition.branches, trigger.branchId)) {
             throw new RangeError(`unknown scheduler branch: ${trigger.branchId}`);
         }
 
         const branch = definition.branches[trigger.branchId]!;
         let cursor = branchCursors[trigger.branchId]!;
-
         if (cursor === branch.phases.length && trigger.isLoop && branch.phases.length > 0) {
             cursor = 0;
         }
@@ -88,7 +86,6 @@ function advanceMainWaves(
         }
 
         const wave = definition.waves[state.waveIndex];
-
         if (wave === undefined) {
             return { ...state, main: { phase: "COMPLETED" } };
         }
@@ -109,14 +106,12 @@ function advanceMainWaves(
             case "FRAGMENTS": {
                 const { fragmentIndex } = state.main;
                 const fragment = wave.fragments[fragmentIndex];
-
                 if (fragment === undefined) {
                     state = { ...state, main: { phase: "WAITING", startedAtTick: tick } };
                     break;
                 }
 
                 let queue = state.main.queue;
-
                 if (queue === null) {
                     const fragmentStartedAtTick = addScheduleTicks(tick, fragment.preDelayTicks);
                     const timing = createTiming({
@@ -152,7 +147,6 @@ function advanceMainWaves(
                     state.waveIndex + 1 < definition.waves.length &&
                     wave.maxWaitingTicks !== null &&
                     tick - state.main.startedAtTick >= wave.maxWaitingTicks;
-
                 if (waitingForWaveUnits && !waitingTimedOut) {
                     return state;
                 }
@@ -204,7 +198,6 @@ export function advanceSpawnSchedule(
     context: { readonly tick: number; readonly triggers?: readonly SpawnScheduleTrigger[] },
 ): SpawnScheduleAdvance {
     const tick = context.tick;
-
     if (previous.lastTick !== null && tick < previous.lastTick) {
         throw new RangeError("schedule tick must not move backwards");
     }
@@ -267,7 +260,6 @@ export function recordScheduleSpawns(
     for (let index = 0; index < spawns.length; index++) {
         const unitId = unitIds[index]!;
         const spawn = spawns[index]!;
-
         if (spawn.schedule.managedFinal) {
             newFinalUnitIds.push(unitId);
         }

@@ -131,7 +131,6 @@ const fixtureCache = new Map<string, Promise<unknown>>();
 
 function fixture(name: string): Promise<unknown> {
     let loaded = fixtureCache.get(name);
-
     if (loaded === undefined) {
         loaded = fetch(`/fixtures/${name}.json`)
             .then((response) => {
@@ -171,7 +170,6 @@ function stageRows(map: TileMap): string[] {
             Array.from({ length: map.columns }, (_, col) => {
                 const tile = map.tiles.get(row * map.columns + col)!;
                 const terrain = terrains.get(tile.definition.terrain.definition.id);
-
                 if (terrain !== undefined) {
                     return terrain;
                 }
@@ -236,7 +234,6 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
     if (Array.isArray(rawPredefines)) {
         predefines = rawPredefines.flatMap((value, index) => {
             const characterKey = String(record(record(value).inst).characterKey);
-
             if (!supported.has(characterKey)) {
                 return [];
             }
@@ -330,7 +327,6 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
     ): void {
         const visible = presentation.units(state);
         const fresh = visible.filter((unit) => !knownUnits.has(unit.info.id));
-
         if (fresh.length > 0 || visuals.length > 0) {
             view.pushEvents({
                 fieldId,
@@ -449,7 +445,6 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
 
     function skillStats() {
         const source = manualSkillUnit();
-
         if (source === undefined) {
             return null;
         }
@@ -485,7 +480,6 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
 
         const stats = (definitionId: string) => {
             const unit = units.all(state).find((unit) => unit.definition.id === definitionId);
-
             if (unit === undefined || !hasVitality(unit) || !hasSkill(unit)) {
                 return null;
             }
@@ -512,7 +506,6 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
             .filter(hasElemental)
             .find((unit) => hasAllegiance(unit) && unit.allegiance.side === "ENEMY");
         const type = mechanics?.elementType;
-
         if (target === undefined || type == null) {
             return null;
         }
@@ -674,7 +667,6 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
 
             if (type === "ACTIVATE_SKILL" || type === "FINISH_SKILL") {
                 const source = manualSkillUnit();
-
                 if (source === undefined) {
                     return;
                 }
@@ -688,7 +680,6 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
                 const source = units
                     .all(state)
                     .find((unit) => hasAllegiance(unit) && unit.allegiance.side === "ALLY");
-
                 if (source === undefined) {
                     return;
                 }

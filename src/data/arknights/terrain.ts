@@ -39,7 +39,6 @@ export function resolveTerrainControllers(
 
         function parameter(key: string): number {
             const entry = skill.blackboard.find((entry) => entry.key.toLowerCase() === key);
-
             if (entry?.valueStr !== null) {
                 throw new TypeError(`${profile.terrain} requires numeric blackboard ${key}`);
             }
@@ -74,7 +73,6 @@ export function resolveTerrainControllers(
 
             const damage = parameter("sea_drown[enemy].damage");
             const speed = parameter("sea_drown[enemy].move_speed");
-
             if (damage < 0 || speed < 0) {
                 throw new RangeError("deepsea damage and speed must be nonnegative");
             }

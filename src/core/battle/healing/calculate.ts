@@ -13,7 +13,6 @@ export function calculateHealing(
 
         return target?.lifecycle !== "PRESENT" || target.vitality.hp <= 0;
     };
-
     if (unavailable(battle)) {
         return { state: battle, value: undefined };
     }

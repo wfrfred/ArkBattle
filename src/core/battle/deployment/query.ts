@@ -44,20 +44,17 @@ export function evaluateDeployment(
     request: DeploymentRequest,
 ): DeploymentDecision {
     const tile = getTile(field.map, request.tile);
-
     if (tile === undefined) {
         return { type: "DENIED", reason: "OUTSIDE_MAP" };
     }
 
     const slot = request.slot ?? "OCCUPANT";
     const occupancy = at(field, request.tile);
-
     if (occupancy?.occupant != null || (slot === "SUPPORT" && occupancy?.support != null)) {
         return { type: "DENIED", reason: "OCCUPIED" };
     }
 
     const { placement, siteCondition } = tile.state;
-
     if (
         placement === "NONE" ||
         (placement !== "ALL" &&

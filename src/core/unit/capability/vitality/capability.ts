@@ -95,7 +95,6 @@ function setMaxHpContributions(state: State, definition: Definition, maxHp: Stat
     const next = { ...state, maxHp };
     const previousMax = resolveMaxHp(state, definition);
     const nextMax = resolveMaxHp(next, definition);
-
     if (previousMax === nextMax || state.hp <= 0) {
         return next;
     }

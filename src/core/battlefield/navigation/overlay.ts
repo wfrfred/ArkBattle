@@ -35,7 +35,6 @@ export function apply(base: Map, overlays: readonly Overlay[]): Map {
 
             const passable = cell.passable && !overlay.denyPassage;
             const cost = Math.max(cell.cost, overlay.cost ?? 1);
-
             if (
                 passable !== cell.passable ||
                 cost !== cell.cost ||

@@ -7,7 +7,6 @@ import * as navigation from "./map/navigation.js";
 
 export function update(field: State, position: TilePosition, state: TileState): State {
     const previous = maps.get(field.map, position);
-
     if (previous === undefined) {
         throw new RangeError("tile is outside the map");
     }

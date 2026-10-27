@@ -71,7 +71,6 @@ export function createDefinition<S extends object, A extends object>(
     }
 
     const policy = definition.activation?.sustain;
-
     if (policy?.type === "TIME") {
         assertNonnegativeSafeInteger(policy.durationTicks, "skill duration ticks");
     } else if (policy?.type === "AMMO") {
@@ -201,7 +200,6 @@ export function setAmmoContribution(
     entry: contribution.Contribution<AmmoInput>,
 ): State {
     const current = state.sustain;
-
     if (current?.type !== "AMMO") {
         return state;
     }
@@ -213,7 +211,6 @@ export function setAmmoContribution(
 
 export function removeAmmoContribution(state: State, id: string): State {
     const current = state.sustain;
-
     if (current?.type !== "AMMO") {
         return state;
     }
@@ -228,7 +225,6 @@ export function setDurationContribution(
     entry: contribution.Contribution<Modifier>,
 ): State {
     const current = state.sustain;
-
     if (current?.type !== "TIME") {
         return state;
     }
@@ -240,7 +236,6 @@ export function setDurationContribution(
 
 export function removeDurationContribution(state: State, id: string): State {
     const current = state.sustain;
-
     if (current?.type !== "TIME") {
         return state;
     }

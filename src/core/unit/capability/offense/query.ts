@@ -8,7 +8,6 @@ import type { Offense } from "./capability.js";
 
 export function resolveAttack(battle: BattleState, ref: Ref<Unit & Offense>): number | undefined {
     const self = units.get(battle, ref);
-
     if (self === undefined) {
         return undefined;
     }

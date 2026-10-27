@@ -58,20 +58,17 @@ export function deploy(state: BattleState, request: DeployRequest): Result<Deplo
     const active = [...state.battlefield.units.values()].filter(
         (unit) => hasDeployable(unit) && unit.deployable.cardId === request.cardId,
     ).length;
-
     if (activeLimit !== null && active >= activeLimit) {
         return reject("ACTIVE_LIMIT");
     }
 
     const definition = value.definition.unit;
     const slotLimit = state.deployment.definition.slotLimit;
-
     if (slotLimit !== null && usedSlots(state) + definition.deployable.slots > slotLimit) {
         return reject("SLOT_LIMIT");
     }
 
     const cost = card.resolveCost(value);
-
     if (state.deployment.dp < cost) {
         return reject("INSUFFICIENT_DP");
     }
@@ -82,7 +79,6 @@ export function deploy(state: BattleState, request: DeployRequest): Result<Deplo
         tile: request.tilePosition,
         slot,
     });
-
     if (decision.type === "DENIED") {
         return reject(decision.reason);
     }
