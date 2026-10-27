@@ -131,7 +131,7 @@ Ref 与静态 Definition 不同。Definition 相同可以有多个实例；实�
 ```typescript
 type Lifetime =
     | { readonly type: "UNIT"; readonly ref: Ref<Unit> }
-    | { readonly type: "ACTION"; readonly ref: Ref<ActionView> }
+    | { readonly type: "ACTION"; readonly ref: Ref<ExecutingView> }
     | { readonly type: "SKILL"; readonly ref: Ref<SkillActivation> }
     | { readonly type: "ELEMENTAL_BURST"; readonly ref: Ref<Burst> }
     | { readonly type: "EFFECT"; readonly ref: Ref<View> };
@@ -174,9 +174,9 @@ Battle 初始化时从已有 Unit 的 Effect 构建索引；完整 Unit 登记�
     同一个 Effect 结束流程
 ```
 
-Action 的完整身份为 host 与宿主内 id，ACTION 生命周期键为 ACTION:host:id；不同宿主的同号实例互不影响。Action、Skill、Elemental、Unit 等领域在自己的生命周期结束位置调用 `closeLifetime()`。Effect 系统负责结束已确定的实例及其依赖者，不替各个业务决定哪些实例应该保留。
+Action 的本轮执行身份为 host 与宿主内 execution.id，ACTION 生命周期键为 ACTION:host:id；长期配置条目保存于 Unit.action.actions，不是生命周期绑定目标。执行结束后旧 Ref 失效，同配置下一轮分配新 ID；不同宿主的同号执行互不影响。Action、Skill、Elemental、Unit 等领域在自己的生命周期结束位置调用 `closeLifetime()`。Effect 系统负责结束已确定的实例及其依赖者，不替各个业务决定哪些实例应该保留。
 
-生命周期资格以最新对象状态为准：Unit 为 PRESENT，Action 为 RUNNING，Skill Activation 与 Elemental Burst 为 ACTIVE，Effect 尚未进入 ENDING。所属领域先发布 ENDING／LEAVING，再清理依赖者和执行结束回调，因此同步重入时也不能为终结中的对象安装新依赖。Effect 自身先写 ENDING，再直接清理子依赖。closeLifetime 保留依赖清理职责，UNIT 入口同时确保宿主已进入 LEAVING。
+生命周期资格以最新对象状态为准：Unit 为 PRESENT，Action 的当前 Execution 为 RUNNING，Skill Activation 与 Elemental Burst 为 ACTIVE，Effect 尚未进入 ENDING。所属领域先发布 ENDING／LEAVING，再清理依赖者和执行结束回调，因此同步重入时也不能为终结中的对象安装新依赖。Effect 自身先写 ENDING，再直接清理子依赖。closeLifetime 保留依赖清理职责，UNIT 入口同时确保宿主已进入 LEAVING。
 
 ## 4. 生效状态与覆写
 

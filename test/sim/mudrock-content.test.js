@@ -246,18 +246,18 @@ test("S2 immediately overrides normal attack and recovery cooldown, heals once, 
         enemy(3, [1, 0], { layer: { type: "AIR" } }), enemy(4, [5, 0])]);
     let ready = sp(hp(fixture.state, 1000), 5);
     ready = save(ready, {
-        action: { ...getUnit(ready, 0).action, states: getUnit(ready, 0).action.states.keys().reduce(
+        action: { ...getUnit(ready, 0).action, actions: getUnit(ready, 0).action.actions.keys().reduce(
             (states, id) => states.read(id, current => states.replace(current.definition, {
                 ...current, cooldown: { readyAtTick: 10000, periodTicks: 60 },
             })),
-            getUnit(ready, 0).action.states,
+            getUnit(ready, 0).action.actions,
         ) },
         offense: setAttackContribution(getUnit(ready, 0).offense, { id: "test/attack", value: [modifier({ addition: 100 })] }),
     });
     const active = advanceSkill({ ...ready, tick: 0 }, unitRef(getUnit(ready, 0)));
     assert.equal(getUnit(active, 0).skill.active.sustain.type, "INFINITE");
-    assert.equal(getUnit(active, 0).action.states.get("normal-attack").cooldown.readyAtTick, 0);
-    assert.equal(getUnit(active, 0).action.states.get(fixture.action.id).cooldown.readyAtTick, 0);
+    assert.equal(getUnit(active, 0).action.actions.get("normal-attack").cooldown.readyAtTick, 0);
+    assert.equal(getUnit(active, 0).action.actions.get(fixture.action.id).cooldown.readyAtTick, 0);
     assert.deepEqual(fixture.definition.action.select(active, getUnit(active, 0)).value, [fixture.action.id]);
     const executed = start(active, unitRef(getUnit(active, 0)), fixture.action).state;
     const amount = (fixture.prepared.attributes.attack + 100) * 2.1;
@@ -289,7 +289,7 @@ test("S2 stays active through configured recovery and finishes on completion or 
         let state = activateSkill({ ...sp(fixture.state, 5), tick: 0 }, unitRef(getUnit(sp(fixture.state, 5), 0)), "AUTO" ).state;
         state = start(state, unitRef(getUnit(state, 0)), fixture.action).state;
         assert.notEqual(getUnit(state, 0).skill.active, null);
-        assert.equal(getUnit(state, 0).action.instances.size, 1);
+        assert.equal(getUnit(state, 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 1);
         if (cancellation) {
             state = cancel({ ...state, tick: 1 }, { host: { id: 0 }, id: 0 });
         } else {
@@ -298,7 +298,7 @@ test("S2 stays active through configured recovery and finishes on completion or 
             state = advanceAction({ ...state, tick: 2 }, { host: { id: 0 }, id: 0 });
         }
         assert.equal(getUnit(state, 0).skill.active, null);
-        assert.equal(getUnit(state, 0).action.instances.size, 0);
+        assert.equal(getUnit(state, 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 0);
         assert.equal(state.events.filter(event => event.type === "SKILL_FINISHED").length, 1);
         assert.equal(readShield(getUnit(state, 0)).layers, 1);
     }
@@ -323,7 +323,7 @@ test("an old S2 recovery cannot close a newer skill activation", () => {
     state = advanceAction(state, { host: { id: 0 }, id: 0 });
     const before = state;
     state = advanceAction({ ...state, tick: 2 }, { host: { id: 0 }, id: 0 });
-    assert.equal(getUnit(state, 0).action.instances.size, 0);
+    assert.equal(getUnit(state, 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 0);
     assert.equal(getUnit(state, 0).skill.active.id, 1);
     assert.equal(getUnit(before, 0).skill.active.id, 1);
     assert.deepEqual(state.events.filter(event => event.type === "SKILL_FINISHED").map(event => event.activationId), [0]);

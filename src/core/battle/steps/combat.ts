@@ -37,7 +37,7 @@ export function advance(battle: BattleState): BattleState {
         for (const reference of instances) {
             const self = actions.get(battle, reference);
 
-            if (self !== undefined && self.startedAtTick < battle.tick) {
+            if (self !== undefined && self.execution.startedAtTick < battle.tick) {
                 battle = advanceAction(battle, reference);
             }
         }
@@ -58,7 +58,7 @@ export function advance(battle: BattleState): BattleState {
         const current = units.get(battle, reference)!;
         const selected = current.definition.action.select?.(battle, current) ?? {
             state: battle,
-            value: current.definition.action.definitions.keys().toArray(),
+            value: current.action.actions.keys().toArray(),
         };
         battle = selected.state;
 
@@ -69,9 +69,9 @@ export function advance(battle: BattleState): BattleState {
                 break;
             }
 
-            const started = latest.definition.action.definitions.read(
+            const started = latest.action.actions.read(
                 id,
-                (definition) => actions.start(battle, reference, definition).state,
+                (self) => actions.start(battle, reference, self.definition).state,
             );
 
             if (started === undefined) {

@@ -126,7 +126,7 @@ function projectionFacts(state) {
         definitions: unit.definition.action.definitions.values().toArray().map(definitionFacts),
       } },
       ...(unit.action === undefined ? {} : { action: { ...unit.action,
-        states: new Map(unit.action.states.values().map(current => [current.definition.id, {
+        actions: new Map(unit.action.actions.values().map(current => [current.definition.id, {
           ...current, definition: definitionFacts(current.definition),
         }])),
       } }),

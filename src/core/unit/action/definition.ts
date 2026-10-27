@@ -2,8 +2,7 @@ import type { Ref } from "../../common/ref.js";
 import type { State as BattleState, Result } from "../../battle/state.js";
 import type { Unit } from "../unit.js";
 import type { Action as ActionCapability } from "../capability/action/capability.js";
-import type { Action } from "./action.js";
-import type { State } from "./state.js";
+import type { Action, Executing } from "./action.js";
 
 export type Id = string;
 
@@ -21,8 +20,17 @@ export interface Definition<P extends object = object, E extends object = object
     readonly start: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability>,
-        self: State<P, E>,
+        self: Action<P, E>,
     ) => Result<E | null>;
-    readonly step: (battle: BattleState, self: Action<P, E>) => Result<boolean>;
-    readonly onEnd?: (battle: BattleState, self: Action<P, E>, end: End) => BattleState;
+    readonly step: (
+        battle: BattleState,
+        source: Ref<Unit & ActionCapability>,
+        self: Executing<P, E>,
+    ) => Result<boolean>;
+    readonly onEnd?: (
+        battle: BattleState,
+        source: Ref<Unit & ActionCapability>,
+        self: Executing<P, E>,
+        end: End,
+    ) => BattleState;
 }

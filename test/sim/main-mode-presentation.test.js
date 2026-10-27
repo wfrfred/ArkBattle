@@ -6,6 +6,8 @@ import { initialize } from "../helpers/unit.js";
 import { fixtureBattlefieldState } from "../helpers/battlefield.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { Projectiles } from "../../dist/core/projectile/projectiles.js";
+import { Actions } from "../../dist/core/unit/action/actions.js";
+import { Definitions } from "../../dist/core/unit/action/definitions.js";
 
 const data = { lookup() {} };
 
@@ -22,6 +24,26 @@ const unit = (id, definitionId, side = 'ALLY', skill, fields = {}) => initialize
 const stateFixture = (units, { tick = 1, projectiles = Projectiles.empty() } = {}) => {
   const battle = createBattleState(fixtureBattlefieldState(units), undefined, tick);
   return { ...battle, battlefield: { ...battle.battlefield, projectiles } };
+};
+
+const withAction = (actor, execution = { id: 0, startedAtTick: 0, status: 'RUNNING', state: {} }) => {
+  const definition = {
+    id: 'presentation-attack', intervalTicks: 10, speed: 100,
+    initialize: state => ({ state, value: {} }),
+    start: state => ({ state, value: {} }),
+    step: state => ({ state, value: false }),
+  };
+  return {
+    ...actor,
+    definition: { ...actor.definition, action: { definitions: Definitions.empty().add(definition) } },
+    action: {
+      actions: Actions.empty().add({
+        definition, state: {}, cooldown: { periodTicks: 10, readyAtTick: 0 }, execution,
+      }),
+      nextExecutionId: execution === null ? 0 : 1,
+      interval: [], speed: [], rules: [], beforeRelease: [], released: [],
+    },
+  };
 };
 
 const metadata = new Map([
@@ -56,10 +78,7 @@ test('death tombstones preserve main-mode metadata after the unit leaves the bat
 
 test('resumable attacks animate once on release and preserve each AoE damage event', () => {
   const view = presentation();
-  const during = stateFixture([{ ...unit(0, 'char_208_melan'),
-    definition: { ...unit(0, 'char_208_melan').definition, action: {} },
-    action: { instances: { size: 1 } },
-  }]);
+  const during = stateFixture([withAction(unit(0, 'char_208_melan'))]);
   assert.deepEqual(view.advance(during, [
     { type: 'ACTION', sourceUnitId: 0, targetUnitId: 2, tick: 0 },
   ]), []);
@@ -94,7 +113,8 @@ test('projectile releases use their trace target and contacts do not repeat the 
 
 test('immediate melee actions do not wait for a release marker they never produce', () => {
   const view = presentation();
-  assert.deepEqual(view.advance(stateFixture([]), [
+  const after = stateFixture([withAction(unit(0, 'char_208_melan'), null)]);
+  assert.deepEqual(view.advance(after, [
     { type: 'ACTION', sourceUnitId: 0, targetUnitId: 2, tick: 0 },
     { type: 'DAMAGE', targetUnitId: 2, amount: 100, damageType: 'PHYSICAL', tick: 0 },
     { type: 'ACTION_FINISHED', sourceUnitId: 0, tick: 0 },
@@ -172,10 +192,7 @@ test('walk animation follows position changes rather than stored steering veloci
   const movingSnapshot = stateFixture([walked], { tick: 2 });
   assert.equal(view.units(movingSnapshot)[0].tuple[8], 1);
   assert.equal(view.units(movingSnapshot)[0].tuple[8], 1);
-  const waiting = stateFixture([{ ...walked,
-    definition: { ...walked.definition, action: {} },
-    action: { instances: { size: 1 } },
-  }], { tick: 3 });
+  const waiting = stateFixture([withAction(walked)], { tick: 3 });
   assert.equal(view.units(waiting)[0].tuple[8], 0);
   assert.deepEqual(walked.locomotion.velocity, [0.02, 0]);
   assert.deepEqual(before.battlefield.units.get(3).position, crossbowman.position);

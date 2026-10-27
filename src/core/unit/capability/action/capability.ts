@@ -3,7 +3,6 @@ import type { Unit, Definition as UnitDefinition } from "../../unit.js";
 import type { Id as DefinitionId } from "../../action/definition.js";
 import type { Definitions } from "../../action/definitions.js";
 import { Actions } from "../../action/actions.js";
-import { States } from "../../action/states.js";
 import * as cooldown from "../../action/cooldown.js";
 import * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
@@ -30,8 +29,8 @@ export type Input =
     | ((battle: BattleState, self: Unit & Action) => readonly attribute.Modifier[]);
 
 export interface State {
-    readonly states: States;
-    readonly instances: Actions;
+    readonly actions: Actions;
+    readonly nextExecutionId: number;
     readonly interval: readonly contribution.Contribution<Input>[];
     readonly speed: readonly contribution.Contribution<Input>[];
     readonly rules: readonly Rule[];
@@ -59,15 +58,16 @@ export function createDefinition(definition: Definition): Definition {
 }
 
 export function initialize(battle: BattleState, definition: Definition): Result<State> {
-    let states = States.empty();
+    let actions = Actions.empty();
 
     for (const id of definition.definitions.keys()) {
         definition.definitions.read(id, (configured) => {
             const initialized = configured.initialize(battle);
             battle = initialized.state;
-            states = states.add({
+            actions = actions.add({
                 definition: configured,
-                data: initialized.value,
+                state: initialized.value,
+                execution: null,
                 cooldown: cooldown.initialize(
                     period(configured.intervalTicks, configured.speed),
                     battle.tick,
@@ -79,8 +79,8 @@ export function initialize(battle: BattleState, definition: Definition): Result<
     return {
         state: battle,
         value: {
-            states,
-            instances: Actions.empty(),
+            actions,
+            nextExecutionId: 0,
             interval: [],
             speed: [],
             rules: [],

@@ -38,12 +38,12 @@ export function create(definition: Definition): Attack<object, State> {
                 },
             };
         },
-        afterOutput(battle, self) {
-            battle = afterOutput?.(battle, self) ?? battle;
-            const current = getAction(battle, actionRef(self));
-            const activation = current?.state.data.activation;
+        afterOutput(battle, source, self) {
+            battle = afterOutput?.(battle, source, self) ?? battle;
+            const current = getAction(battle, actionRef(source, self));
+            const activation = current?.execution.state.data.activation;
 
-            if (current?.status !== "RUNNING" || activation == null) {
+            if (current?.execution.status !== "RUNNING" || activation == null) {
                 return battle;
             }
 

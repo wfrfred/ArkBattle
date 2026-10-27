@@ -333,7 +333,10 @@ export class TacticalDemoPresentation {
 
         if (this.#projectileActions) {
             for (const unit of units.all(after)) {
-                if (hasAction(unit) && unit.action.instances.size > 0) {
+                if (
+                    hasAction(unit) &&
+                    unit.action.actions.values().some((action) => action.execution !== null)
+                ) {
                     resumableSources.add(unit.id);
                 }
             }

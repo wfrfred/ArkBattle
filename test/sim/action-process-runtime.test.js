@@ -1,3 +1,4 @@
+import { ref as unitReference } from "../../dist/core/unit/query.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
@@ -77,20 +78,20 @@ const program = (id, extra = {}) => ({
 
 test("action runtime: a newly registered instance first executes once and retained snapshots stay immutable", () => {
     const definition = program("progress", {
-        step(state, self) {
-            state = actions.update(state, actionRef(self), currentState => ({ count: currentState.count + 1 }));
+        step(state, source, self) {
+            state = actions.update(state, actionRef(source, self), currentState => ({ count: currentState.count + 1 }));
             return { state, value: false };
         },
     });
     let runtime = initializeBattle(spec([unit(0, { action: definition }), unit(1)]));
     runtime = stepBattle(runtime, []);
     const first = runtime,
-        retained = unitQueries.all(first).toArray().find(unit => unit.id === 0).action.instances.values().toArray()[0];
-    assert.equal(retained.state.count, 1);
+        retained = unitQueries.all(first).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0];
+    assert.equal(retained.execution.state.count, 1);
     assert.equal(retained.definition, definition);
     runtime = stepBattle(runtime, []);
-    assert.equal(unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.instances.values().toArray()[0].state.count, 2);
-    assert.equal(retained.state.count, 1);
+    assert.equal(unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0].execution.state.count, 2);
+    assert.equal(retained.execution.state.count, 1);
 });
 
 test("action runtime: an immediately finished definition starts once in one automatic scheduling pass", () => {
@@ -109,7 +110,7 @@ test("action runtime: an immediately finished definition starts once in one auto
         1,
     );
     assert.equal(starts, 1);
-    assert.equal(unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.instances.values().toArray().length, 0);
+    assert.equal(unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 0);
     runtime = stepBattle(runtime, []);
     assert.equal(starts, 2);
 });
@@ -117,8 +118,8 @@ test("action runtime: an immediately finished definition starts once in one auto
 test("action runtime: cancellation commands complete before a delayed release without disturbing its peer", () => {
     const definition = program("delayed", {
         start: (state) => ({ state, value: { releaseAtTick: state.tick + 1 } }),
-        step(state, self) {
-            if (state.tick < self.state.releaseAtTick) return { state, value: false };
+        step(state, source, self) {
+            if (state.tick < self.execution.state.releaseAtTick) return { state, value: false };
             state = updateUnit(state, [{
                 ...getUnit(state, 2),
                 vitality: { ...getUnit(state, 2).vitality, hp: getUnit(state, 2).vitality.hp - 7 },
@@ -134,9 +135,9 @@ test("action runtime: cancellation commands complete before a delayed release wi
     runtime = stepBattle(runtime, []);
     const first = runtime;
     assert.deepEqual(unitQueries.all(first).toArray().filter(unit => unit.action !== undefined)
-        .map(unit => unit.action.instances.values().toArray()[0].id), [0, 0]);
+        .map(unit => unit.action.actions.values().filter(self => self.execution !== null).toArray()[0].execution.id), [0, 0]);
     const cancelled = (runtime = stepBattle(runtime, [
-        { type: "CANCEL_ACTION_EXECUTION", ref: actionRef(unitQueries.all(first).toArray().find(unit => unit.id === 0).action.instances.values().toArray()[0]) },
+        { type: "CANCEL_ACTION_EXECUTION", ref: actionRef(unitReference(unitQueries.all(first).toArray().find(unit => unit.id === 0)), unitQueries.all(first).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0]) },
     ]));
     assert.deepEqual(cancelled.events.filter(event => event.type === "ACTION_CANCELLED")
         .map(event => [event.sourceUnitId, event.executionId]), [[0, 0]]);
@@ -149,10 +150,10 @@ test("action runtime: cancellation commands complete before a delayed release wi
 test("action runtime: nested departure removes a later candidate before its next step", () => {
     const trace = [];
     const definition = program("nested", {
-        step(state, self) {
+        step(state, source, self) {
             if (state.tick === 0) return { state, value: false };
-            trace.push(self.host.id);
-            if (self.host.id === 0)
+            trace.push(source.id);
+            if (source.id === 0)
                 state = remove(state, 1, "SCRIPT");
             return { state, value: false };
         },
@@ -175,10 +176,10 @@ test("action runtime: host order advances old instances before selection and def
     const trace = [];
     let child;
     const old = program("old", {
-        step(state, self) {
+        step(state, source, self) {
             if (state.tick > 0) {
-                trace.push(`old/${self.host.id}`);
-                if (self.host.id === 0) {
+                trace.push(`old/${source.id}`);
+                if (source.id === 0) {
                     state = actions.start(state, unitRef(getUnit(state, 1)), child).state;
                 }
             }
@@ -186,8 +187,8 @@ test("action runtime: host order advances old instances before selection and def
         },
     });
     child = program("child", {
-        step(state, self) {
-            trace.push(`child/${self.host.id}`);
+        step(state, source, self) {
+            trace.push(`child/${source.id}`);
             return { state, value: false };
         },
     });
@@ -204,16 +205,16 @@ test("action runtime: host order advances old instances before selection and def
     assert.deepEqual(trace, ["old/0", "child/1", "select/0", "old/1", "select/1"]);
     const first = unitQueries.all(runtime).toArray().find(unit => unit.id === 0);
     const second = unitQueries.all(runtime).toArray().find(unit => unit.id === 1);
-    assert.deepEqual(first.action.instances.values().toArray().map(self => self.id), [0]);
-    assert.deepEqual(second.action.instances.values().toArray().map(self => self.id), [0, 1]);
+    assert.deepEqual(first.action.actions.values().filter(self => self.execution !== null).toArray().map(self => self.execution.id), [0]);
+    assert.deepEqual(second.action.actions.values().filter(self => self.execution !== null).toArray().map(self => self.execution.id), [0, 1]);
 });
 
 test("action runtime: a late exception publishes neither progressed action state nor domain changes", () => {
     const failure = new Error("continuation failed");
     const definition = program("failure", {
-        step(state, self) {
+        step(state, source, self) {
             if (state.tick === 0) return { state, value: false };
-            state = actions.update(state, actionRef(self), () => ({ count: 9 }));
+            state = actions.update(state, actionRef(source, self), () => ({ count: 9 }));
             state = updateUnit(state, [{ ...getUnit(state, 1), position: [3, 0] }]);
             throw failure;
         },
@@ -226,7 +227,7 @@ test("action runtime: a late exception publishes neither progressed action state
         (error) => error === failure,
     );
     assert.deepEqual(runtime, before);
-    assert.equal(unitQueries.all(before).toArray().find(unit => unit.id === 0).action.instances.values().toArray()[0].state.count, 0);
+    assert.equal(unitQueries.all(before).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0].execution.state.count, 0);
 });
 
 test("action runtime: dependency cleanup can finish nested host death before a thrown end callback", () => {
@@ -236,16 +237,18 @@ test("action runtime: dependency cleanup can finish nested host death before a t
         id: "terminal-dependency",
         initialize: () => ({}),
         onEnd(state, self) {
-            state = dealDamage(state, { source: { id: 0 }, target: { id: self.host.id }, parameters: parameters(100, "TRUE") }).state;
-            observedDeparture = getUnit(state, self.host.id) === undefined;
+            assert.equal(self.host.id, 1);
+            state = dealDamage(state, { source: { id: 0 }, target: self.host, parameters: parameters(100, "TRUE") }).state;
+            observedDeparture = getUnit(state, 1) === undefined;
+            assert.notEqual(getUnit(state, 0), undefined);
             throw failure;
         },
     };
     const definition = program("terminal", {
-        step(state, self) {
+        step(state, source, self) {
             if (state.tick === 0)
                 state = effects.install(state, unitRef(getUnit(state, 1)), dependency, {
-                    scopes: [{ type: "ACTION", ref: actionRef(self) }],
+                    scopes: [{ type: "ACTION", ref: actionRef(source, self) }],
                 }).state;
             return { state, value: state.tick > 0 };
         },
@@ -260,4 +263,27 @@ test("action runtime: dependency cleanup can finish nested host death before a t
     assert.equal(observedDeparture, true);
     assert.deepEqual(runtime, before);
     assert.equal(unitQueries.all(before).toArray().find((value) => value.id === 1).vitality.hp, 100);
+});
+
+test("action runtime preserves execution start order when selection reverses configuration order", () => {
+    const advanced = [], ended = [];
+    const make = id => program(id, {
+        step(state, source, self) { advanced.push([state.tick, self.definition.id]); return { state, value: false }; },
+        onEnd(state, source, self) { ended.push(self.definition.id); return state; },
+    });
+    const first = make("first"), second = make("second");
+    const actor = unit(0, { action: {
+        definitions: Definitions.empty().add(first).add(second),
+        select: state => ({ state, value: ["second", "first"] }),
+    } });
+    let state = initializeBattle(spec([actor, unit(1)]));
+    state = stepBattle(state, []);
+    const source = unitRef(getUnit(state, 0));
+    assert.deepEqual(getUnit(state, 0).action.actions.keys().toArray(), ["first", "second"]);
+    assert.deepEqual(actions.forUnit(state, source).map(ref => ref.id), [0, 1]);
+    state = stepBattle(state, []);
+    assert.deepEqual(advanced, [[0, "second"], [0, "first"], [1, "second"], [1, "first"]]);
+    state = actions.cancelForUnit(state, source, "TEST");
+    assert.deepEqual(ended, ["second", "first"]);
+    assert.equal(actions.forUnit(state, source).length, 0);
 });

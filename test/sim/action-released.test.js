@@ -46,7 +46,7 @@ test("a successful attack notifies released after its release event, restores AC
         assert.equal(current.events.at(-1).type, "ACTION_RELEASED");
         assert.equal(current.events.some(({ type }) => type === "DAMAGE"), false);
         assert.equal(source.skill.sp.value, 2);
-        assert.equal(actions.get(current, reference).status, "RUNNING");
+        assert.equal(actions.get(current, reference).execution.status, "RUNNING");
         seen.push(reference.id);
         return { state: current, value: undefined };
     })));
@@ -121,9 +121,9 @@ test("default attack output reads bindings replaced by a released Hook from the 
     const f = fixture({ targets: 2 });
     const state = changeAction(f.state, (action) => setReleasedHook(action, hook("rebind", (current, context) => {
         const reference = context.action;
-        const self = getUnit(current, reference.host.id).action.instances.get(reference.id, f.definition);
-        assert.equal(self.state.bindings.primary[0].id, 1);
-        return { state: actions.update(current, actionRef(self), currentState => ({ ...currentState,
+        const self = actions.get(current, reference);
+        assert.equal(self.execution.state.bindings.primary[0].id, 1);
+        return { state: actions.update(current, actionRef(reference.host, self), currentState => ({ ...currentState,
             bindings: { ...currentState.bindings, primary: [unitRef(getUnit(current, 2))] },
         })), value: undefined };
     })));
@@ -190,5 +190,5 @@ test("release observers stop after their Action ends and retain the completed ob
     assert.equal(fixed.source.id, f.ref.id);
     assert.equal(actions.get(next, fixed.action), undefined);
     assert.equal(next.events.at(-1).type, "ACTION_CANCELLED");
-    assert.equal(actions.get(started.state, started.value.ref).status, "RUNNING");
+    assert.equal(actions.get(started.state, started.value.ref).execution.status, "RUNNING");
 });

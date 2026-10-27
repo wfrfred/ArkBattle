@@ -138,7 +138,7 @@ Tick 的执行顺序在 step() 中直接可读。领域函数负责各自的纯�
 | Unit／Capability                   | HP、控制状态、行动就绪、技能状态、路线、各自 Hook 与 Contribution 集合   |
 | Unit.effects                       | Effects 容器保存实例身份、Definition、私有 data、生效状态、来源与 scopes |
 | Schedule                           | 波次、片段、出生与完成账本                                               |
-| Unit.action.instances              | 宿主内已接受行动的身份、Definition、私有执行进度及生命周期事实           |
+| Unit.action.actions                | 按配置 ID 聚合 Definition、持久 state、Cooldown 和当前 Execution；执行身份进度由 Capability.nextExecutionId 保存 |
 | PredefinedPresence                 | 预置 Definition 到实际实例的绑定                                         |
 | Execution                          | RNG 和全局 ID／请求分配进度；宿主内 Effect ID 仍归对应 Effect 集合       |
 | Battle.mechanisms：非空间 Mechanism | 共享额度、共享生命、周期、一次性锁和来源过程进度                         |
@@ -218,11 +218,11 @@ candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定�
 
 Unit 持有不可变 Effects 容器，容器内部使用私有 Store 保存完整实例及 ID 进度。普通 `get(id)`／`values()` 只承诺公共 View 的身份、参与状态、来源、scopes 和定义元数据，不暴露私有 data 或完整回调。`values()`／`keys()` 返回绑定容器版本的 Query。精确 Ref 查询保留已有类型证明；`get(id, definition)` 检查 Definition 对象身份；通用生命周期操作通过 `read(id, reader)` 在同一组泛型下访问完整实例与 Definition。
 
-容器不接收战斗状态，也不决定生命周期阶段。添加只接受当前 nextId，替换保持身份与 Definition 对象，删除保留 ID 进度；完整实例的 replace 由 Core 用于提交已经配对的值。普通内容通过 `effects.update(battle, ref, current => next)` 更新私有 data，Action 执行 state 使用同样的 update 形式。两者均从传入 battle 读取当前载荷，缺失时不调用 transform，返回相同载荷引用时不生成新的 battle。Action 在 ENDING 时不更新；Effect 在 ENDING 中仍可更新私有数据以完成清理。
+容器不接收战斗状态，也不决定生命周期阶段；完整 replace 由 Core 提交已经配对的值。Effect 容器保存宿主内 ID 进度，Action 的 nextExecutionId 保存于 Capability；Actions 按配置 ID 保存聚合条目，本轮终结只清空 execution。普通内容通过 `effects.update(battle, ref, current => next)` 更新私有 data，Action 的 update 使用同样形式更新 execution.state，updateState／updateCooldown 分别更新持久 state／Cooldown。操作从最新 battle 读取当前载荷，缺失时不调用 transform，返回相同载荷引用时不生成新 battle。Action 的 execution 为 ENDING 时不允许普通执行更新；持久字段和 Effect 的结束清理仍按各自协议更新。
 
 Projectile 的异构容器归 projectile/projectiles.ts，状态仍由 Battlefield 持有，完整 battle/projectile.ts 操作直接替换容器。Projectile 使用同样的 latest-state 更新原则，但其 transform 直接读取完整只读实例，并返回 position／state 的局部更新；Core 只提取允许字段，ACTIVE 与 ENDING 均可写。Runtime 在整个 Step 的阶段回调开始前固定候选 Ref，逐项读取最新 ACTIVE 实例，本次新建实例不参与正常推进。
 
-transform 是纯局部值转换，不修改输入或执行战斗操作；固定实例字段与生命周期由所属领域操作维护。`NoInfer` 限制新值参与泛型推导；调用者必须保留实例与 Definition 的原始私有类型关联。Ref 可协变查询，但借预先弱化的完整 Ref 写入不兼容数据属于调用契约错误，不增加运行时形状校验。Action／Effect 容器的 toJSON 诊断保存私有载荷与 ID 进度，不反过来扩大普通 View，也不作为 Definition、回调或容器的恢复协议。
+transform 是纯局部值转换，不修改输入或执行战斗操作；固定实例字段与生命周期由所属领域操作维护。`NoInfer` 限制新值参与泛型推导；调用者必须保留实例与 Definition 的原始私有类型关联。Ref 可协变查询，但借预先弱化的完整 Ref 写入不兼容数据属于调用契约错误，不增加运行时形状校验。Action 容器的 toJSON 诊断保存聚合条目与私有载荷，执行 ID 进度另由 Capability 保存；Effect 容器诊断同时保存私有载荷和自身 ID 进度。诊断不扩大普通 View，也不作为 Definition、回调或容器的恢复协议。
 
 self 是输入版本的值。嵌套调用返回后，遵守 [状态接续后的读取与续执行](#状态接续后的读取与续执行)：实时事实从返回 State 重新查询，明确采样与历史载荷保留。不使用动态 getter 偷偷追踪一个可变工作对象，也不以旧整份 Unit 覆盖新版本。
 

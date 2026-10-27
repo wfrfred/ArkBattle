@@ -1,5 +1,6 @@
 import { update as updateUnit } from "../../battle/unit.js";
 import type { Ref } from "../../common/ref.js";
+import { sort } from "../../common/collection.js";
 import { type State as BattleState, type Result } from "../../battle/state.js";
 import * as units from "../query.js";
 import type { Unit } from "../unit.js";
@@ -7,39 +8,64 @@ import { hasAction, type Action as ActionCapability } from "../capability/action
 import { isSpatiallyPresent } from "../capability/presence/capability.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import { resolveInterval } from "../capability/action/timing.js";
-import { ref, type Action, type View } from "./action.js";
+import { ref, type Action, type Executing, type ExecutingView } from "./action.js";
 import type { Definition, Id as DefinitionId } from "./definition.js";
-import type { State } from "./state.js";
 import * as cooldown from "./cooldown.js";
 import { advance } from "./advance.js";
 import { end } from "./internal/end.js";
 
 export type StartOutcome<P extends object, E extends object> =
-    | { readonly type: "STARTED"; readonly ref: Ref<Action<P, E>> }
+    | { readonly type: "STARTED"; readonly ref: Ref<Executing<P, E>> }
     | {
           readonly type: "REJECTED";
           readonly reason: "SOURCE_UNAVAILABLE" | "RULE" | "COOLDOWN" | "CASTING" | "CONDITION";
       };
 
-export function all(battle: BattleState): readonly Ref<View>[] {
-    return [
-        ...units
-            .all(battle)
-            .filter(hasAction)
-            .flatMap((host) => host.action.instances.values().map(ref)),
-    ];
+export function all(battle: BattleState): readonly Ref<ExecutingView>[] {
+    return units
+        .all(battle)
+        .filter(hasAction)
+        .flatMap((host) =>
+            sort(
+                host.action.actions
+                    .values()
+                    .filter((self): self is ExecutingView => self.execution !== null)
+                    .map((self) => ref(units.ref(host), self)),
+                (left, right) => left.id - right.id,
+            ),
+        )
+        .toArray();
 }
 
-export function forUnit(battle: BattleState, source: Ref<Unit>): readonly Ref<View>[] {
+export function forUnit(battle: BattleState, source: Ref<Unit>): readonly Ref<ExecutingView>[] {
     const unit = units.get(battle, source);
 
     return unit !== undefined && hasAction(unit)
-        ? unit.action.instances.values().map(ref).toArray()
+        ? sort(
+              unit.action.actions
+                  .values()
+                  .filter((self): self is ExecutingView => self.execution !== null)
+                  .map((self) => ref(units.ref(unit), self)),
+              (left, right) => left.id - right.id,
+          )
         : [];
 }
 
-export function get<A extends View>(battle: BattleState, reference: Ref<A>): A | undefined {
-    return units.get(battle, reference.host)?.action.instances.get(reference);
+export function get<A extends ExecutingView>(
+    battle: BattleState,
+    reference: Ref<A>,
+): A | undefined {
+    return units
+        .get(battle, reference.host)
+        ?.action.actions.readExecution(reference.id, (self) => self as unknown as A);
+}
+
+export function getAction<P extends object, E extends object>(
+    battle: BattleState,
+    source: Ref<Unit & ActionCapability>,
+    definition: Definition<P, E>,
+): Action<P, E> | undefined {
+    return units.get(battle, source)?.action.actions.get(definition.id, definition);
 }
 
 export function isCasting(
@@ -52,35 +78,81 @@ export function isCasting(
     return (
         unit !== undefined &&
         hasAction(unit) &&
-        unit.action.instances
-            .values()
-            .some((self) => definitionId === undefined || self.definition.id === definitionId)
+        (definitionId === undefined
+            ? unit.action.actions.values().some((self) => self.execution !== null)
+            : unit.action.actions.get(definitionId)?.execution != null)
     );
 }
 
-export function getState<P extends object, E extends object>(
+export function updateState<P extends object, E extends object>(
     battle: BattleState,
     source: Ref<Unit & ActionCapability>,
     definition: Definition<P, E>,
-): State<P, E> | undefined {
-    return units.get(battle, source)?.action.states.get(definition.id, definition);
-}
-
-export function replaceState<P extends object, E extends object>(
-    battle: BattleState,
-    source: Ref<Unit & ActionCapability>,
-    self: State<P, E>,
+    transform: (current: NoInfer<P>) => NoInfer<P>,
 ): BattleState {
     const unit = units.get(battle, source);
-    const current = unit?.action.states.get(self.definition.id);
 
-    if (unit === undefined || current?.definition !== self.definition || current === self) {
-        return battle;
+    if (unit === undefined) {
+        throw new RangeError(`unknown unit: ${source.id}`);
     }
 
-    const states = unit.action.states.replace(self.definition, self);
+    const current = unit.action.actions.get(definition.id, definition);
 
-    return updateUnit(battle, [{ ...unit, action: { ...unit.action, states } }]);
+    if (current === undefined) {
+        throw new TypeError("action definition is not configured for its source");
+    }
+
+    const state = transform(current.state);
+
+    return state === current.state
+        ? battle
+        : updateUnit(battle, [
+              {
+                  ...unit,
+                  action: {
+                      ...unit.action,
+                      actions: unit.action.actions.replace(definition, { ...current, state }),
+                  },
+              },
+          ]);
+}
+
+export function updateCooldown(
+    battle: BattleState,
+    source: Ref<Unit & ActionCapability>,
+    definitionId: DefinitionId,
+    transform: (current: cooldown.State) => cooldown.State,
+): BattleState {
+    const unit = units.get(battle, source);
+
+    if (unit === undefined) {
+        throw new RangeError(`unknown unit: ${source.id}`);
+    }
+
+    const updated = unit.action.actions.read(definitionId, (self) => {
+        const next = transform(self.cooldown);
+
+        return next === self.cooldown
+            ? battle
+            : updateUnit(battle, [
+                  {
+                      ...unit,
+                      action: {
+                          ...unit.action,
+                          actions: unit.action.actions.replace(self.definition, {
+                              ...self,
+                              cooldown: next,
+                          }),
+                      },
+                  },
+              ]);
+    });
+
+    if (updated === undefined) {
+        throw new RangeError(`unknown configured action ${definitionId}`);
+    }
+
+    return updated;
 }
 
 export function start<P extends object, E extends object>(
@@ -100,10 +172,13 @@ export function start<P extends object, E extends object>(
     ) {
         return reject("SOURCE_UNAVAILABLE");
     }
-    if (unit.definition.action.definitions.get(definition.id) !== definition) {
+
+    const current = unit.action.actions.get(definition.id, definition);
+
+    if (current === undefined) {
         throw new TypeError("action definition is not configured for its source");
     }
-    if (isCasting(battle, source, definition.id)) {
+    if (current.execution !== null) {
         return reject("CASTING");
     }
     if (!unit.action.rules.every((rule) => rule.allows(battle, unit, definition.id))) {
@@ -111,7 +186,6 @@ export function start<P extends object, E extends object>(
     }
 
     const period = resolveInterval(battle, source, definition)!;
-    const current = getState(battle, source, definition)!;
     const resized = cooldown.resizeKeepingProgress(current.cooldown, period, battle.tick);
 
     if (cooldown.remaining(resized, battle.tick) > 0) {
@@ -134,7 +208,10 @@ export function start<P extends object, E extends object>(
     ) {
         return reject("SOURCE_UNAVAILABLE");
     }
-    if (isCasting(battle, source, definition.id)) {
+
+    const latestAction = latest.action.actions.get(definition.id, definition)!;
+
+    if (latestAction.execution !== null) {
         return reject("CASTING");
     }
     if (!latest.action.rules.every((rule) => rule.allows(battle, latest, definition.id))) {
@@ -142,9 +219,8 @@ export function start<P extends object, E extends object>(
     }
 
     const latestPeriod = resolveInterval(battle, source, definition)!;
-    const latestState = getState(battle, source, definition)!;
     const acceptedCooldown = cooldown.resizeKeepingProgress(
-        latestState.cooldown,
+        latestAction.cooldown,
         latestPeriod,
         battle.tick,
     );
@@ -153,67 +229,70 @@ export function start<P extends object, E extends object>(
         return reject("COOLDOWN");
     }
 
-    const self: Action<P, E> = {
-        id: latest.action.instances.nextId,
-        host: source,
-        definition,
-        startedAtTick: battle.tick,
-        status: "RUNNING",
-        state: initialized.value,
-    };
-    const states = latest.action.states.replace(definition, {
-        ...latestState,
+    const self: Executing<P, E> = {
+        ...latestAction,
         cooldown: cooldown.reset(acceptedCooldown, battle.tick),
-    });
+        execution: {
+            id: latest.action.nextExecutionId,
+            startedAtTick: battle.tick,
+            status: "RUNNING",
+            state: initialized.value,
+        },
+    };
     battle = updateUnit(battle, [
         {
             ...latest,
-            action: { ...latest.action, states, instances: latest.action.instances.add(self) },
+            action: {
+                ...latest.action,
+                actions: latest.action.actions.replace(definition, self),
+                nextExecutionId: latest.action.nextExecutionId + 1,
+            },
         },
     ]);
-    const reference = ref(self);
+    const reference = ref(source, self);
 
     return { state: advance(battle, reference), value: { type: "STARTED", ref: reference } };
 }
 
 export function update<P extends object, E extends object>(
     battle: BattleState,
-    reference: Ref<Action<P, E>>,
+    reference: Ref<Executing<P, E>>,
     transform: (current: NoInfer<E>) => NoInfer<E>,
 ): BattleState {
     const unit = units.get(battle, reference.host);
-    const current = unit?.action.instances.get(reference);
+    const current = get(battle, reference);
 
     if (unit === undefined) {
         throw new RangeError(`unknown unit: ${reference.host.id}`);
     }
     if (current === undefined) {
-        throw new RangeError(`unknown action: ${reference.id}`);
+        throw new RangeError(`unknown action execution: ${reference.id}`);
     }
-    if (current.status === "ENDING") {
+    if (current.execution.status === "ENDING") {
         throw new TypeError("cannot update an ending action");
     }
 
-    const state = transform(current.state);
+    const state = transform(current.execution.state);
 
-    if (state === current.state) {
-        return battle;
-    }
-
-    return updateUnit(battle, [
-        {
-            ...unit,
-            action: {
-                ...unit.action,
-                instances: unit.action.instances.replace(reference, { ...current, state }),
-            },
-        },
-    ]);
+    return state === current.execution.state
+        ? battle
+        : updateUnit(battle, [
+              {
+                  ...unit,
+                  action: {
+                      ...unit.action,
+                      actions: unit.action.actions.replace(current.definition, {
+                          ...current,
+                          execution: { ...current.execution, state },
+                      }),
+                  },
+              },
+          ]);
 }
 
 export function cancel(
     battle: BattleState,
-    reference: Ref<View>,
+    reference: Ref<ExecutingView>,
     reason = "CANCELLED",
 ): BattleState {
     return end(battle, reference, { type: "CANCELLED", reason });
@@ -244,51 +323,22 @@ export function refreshCooldowns(
         return battle;
     }
 
-    let states = unit.action.states;
+    let actions = unit.action.actions;
 
-    for (const definition of unit.definition.action.definitions.values()) {
-        const period = resolveInterval(battle, source, definition)!;
-        states =
-            states.read(definition.id, (previous) => {
-                const next = cooldown.resizeKeepingProgress(previous.cooldown, period, battle.tick);
+    for (const id of actions.keys()) {
+        actions.read(id, (self) => {
+            const period = resolveInterval(battle, source, self.definition)!;
+            const next = cooldown.resizeKeepingProgress(self.cooldown, period, battle.tick);
 
-                return next === previous.cooldown
-                    ? states
-                    : states.replace(previous.definition, { ...previous, cooldown: next });
-            }) ?? states;
+            if (next !== self.cooldown) {
+                actions = actions.replace(self.definition, { ...self, cooldown: next });
+            }
+        });
     }
 
-    return states === unit.action.states
+    return actions === unit.action.actions
         ? battle
-        : updateUnit(battle, [{ ...unit, action: { ...unit.action, states } }]);
-}
-
-function changeCooldown(
-    battle: BattleState,
-    source: Ref<Unit & ActionCapability>,
-    definitionId: DefinitionId,
-    change: (state: cooldown.State, tick: number) => cooldown.State,
-): BattleState {
-    const unit = units.get(battle, source);
-
-    if (unit === undefined) {
-        return battle;
-    }
-    if (unit.definition.action.definitions.get(definitionId) === undefined) {
-        throw new RangeError("unknown configured action definition");
-    }
-
-    battle = refreshCooldowns(battle, source);
-
-    return (
-        units.get(battle, source)?.action.states.read(definitionId, (current) => {
-            const next = change(current.cooldown, battle.tick);
-
-            return current.cooldown === next
-                ? battle
-                : replaceState(battle, source, { ...current, cooldown: next });
-        }) ?? battle
-    );
+        : updateUnit(battle, [{ ...unit, action: { ...unit.action, actions } }]);
 }
 
 export function resetCooldown(
@@ -296,7 +346,11 @@ export function resetCooldown(
     source: Ref<Unit & ActionCapability>,
     definitionId: DefinitionId,
 ): BattleState {
-    return changeCooldown(battle, source, definitionId, cooldown.reset);
+    battle = refreshCooldowns(battle, source);
+
+    return updateCooldown(battle, source, definitionId, (current) =>
+        cooldown.reset(current, battle.tick),
+    );
 }
 
 export function clearCooldown(
@@ -304,5 +358,9 @@ export function clearCooldown(
     source: Ref<Unit & ActionCapability>,
     definitionId: DefinitionId,
 ): BattleState {
-    return changeCooldown(battle, source, definitionId, cooldown.clear);
+    battle = refreshCooldowns(battle, source);
+
+    return updateCooldown(battle, source, definitionId, (current) =>
+        cooldown.clear(current, battle.tick),
+    );
 }

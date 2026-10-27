@@ -37,9 +37,9 @@ test("Action ENDING content rejects new lifetime dependencies while independent 
         initialize: state => ({ state, value: {} }),
         start: state => ({ state, value: {} }),
         step: state => ({ state, value: false }),
-        onEnd(state, self) {
-            assert.equal(actions.get(state, actionRef(self)).status, "ENDING");
-            return verifyAdmission(state, { type: "ACTION", ref: actionRef(self) }, retained);
+        onEnd(state, source, self) {
+            assert.equal(actions.get(state, actionRef(source, self)).execution.status, "ENDING");
+            return verifyAdmission(state, { type: "ACTION", ref: actionRef(source, self) }, retained);
         },
     };
     const initial = battle(unit(0, { action: definition }), unit(1));

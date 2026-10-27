@@ -1,3 +1,4 @@
+import { ref as unitReference } from "../../dist/core/unit/query.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { damage as damageTargeting, healing as healingTargeting } from "../helpers/targeting.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
@@ -79,7 +80,7 @@ function scenario({ ammo = 1, targets = 1, interrupt = false, windupTicks = 0, o
       canTargetAir: true, includeBlockingRelations: false, preferBlockingRelations: false,
       ignoreTargetFree: false, ignoreInvisible: false, maxTargets: targets,
     }), operations: [{ type: "DAMAGE", power: 1, damageType: "TRUE", powerSource: "SOURCE_ATTACK" }] }],
-    ...(output === undefined ? {} : { output: (state, self) => output(state, self, shell) }),
+    ...(output === undefined ? {} : { output: (state, source, self) => output(state, source, self, shell) }),
   });
   const action = actionProgram === undefined ? normal : actionProgram(normal);
   const definition = { hooks: [],
@@ -194,12 +195,12 @@ test("ammo runtime: hiding the source after damage still pays for the sampled ac
 test("ammo runtime: cancellation during windup spends no ammunition", () => {
   let runtime = scenario({ ammo: 3, windupTicks: 2 });
   runtime = stepBattle(runtime, [{ type: "ACTIVATE_SKILL", unitId: 0 }]);
-  const ref = actionRef(unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.instances.values().toArray()[0]);
+  const ref = actionRef(unitReference(unitQueries.all(runtime).toArray().find(unit => unit.id === 0)), unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0]);
   const cancelled = (runtime = stepBattle(runtime, [{ type: "CANCEL_ACTION_EXECUTION", ref }]));
   assert.deepEqual(cancelled.events.filter(({ type }) => type === "ACTION_CANCELLED").map(({ reason }) => reason), ["CANCELLED"]);
   assert.deepEqual(damageEvents(cancelled), []);
   assert.equal(source(runtime).skill.active.sustain.remaining, 3);
-  assert.deepEqual(unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.instances.values().toArray(), []);
+  assert.deepEqual(unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray(), []);
   assert.equal((runtime = stepBattle(runtime, [])).events.some(({ type }) => type === "ACTION_RELEASED"), false);
   assert.equal(source(runtime).skill.active.sustain.remaining, 3);
 });
@@ -213,8 +214,8 @@ test("ammo runtime: release interruption cancels windup without spending ammunit
   assert.equal(interrupted.events.some(({ type }) => type === "ACTION_RELEASED"), false);
   assert.deepEqual(damageEvents(interrupted), []);
   assert.equal(source(runtime).skill.active.sustain.remaining, 3);
-  assert.ok(source(runtime).action.states.get("normal").cooldown.readyAtTick >= 17);
-  assert.deepEqual(unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.instances.values().toArray(), []);
+  assert.ok(source(runtime).action.actions.get("normal").cooldown.readyAtTick >= 17);
+  assert.deepEqual(unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray(), []);
 });
 
 test("ammo runtime: a content-defined follow-up preserves one ammunition payment across ticks", () => {
@@ -224,15 +225,15 @@ test("ammo runtime: a content-defined follow-up preserves one ammunition payment
       const initialized = normal.start(state, source, persistent);
       return { state: initialized.state, value: initialized.value === null ? null : { ...initialized.value, finishAtTick: state.tick + 1, emitted: 0 } };
     },
-    step(state, self) {
-      if (self.state.emitted === 0) {
-        state = normal.step(state, self).state;
-        const current = actions.get(state, actionRef(self));
+    step(state, source, self) {
+      if (self.execution.state.emitted === 0) {
+        state = normal.step(state, source, self).state;
+        const current = actions.get(state, actionRef(source, self));
         if (current === undefined) return { state, value: true };
-        return { state: actions.update(state, actionRef(current), currentState => ({ ...currentState, emitted: 1 })), value: false };
+        return { state: actions.update(state, actionRef(source, current), currentState => ({ ...currentState, emitted: 1 })), value: false };
       }
-      for (const target of self.state.bindings.main) {
-        state = dealDamage(state, { source: { id: self.host.id }, target: { id: target.id }, parameters: parameters(resolveAttack(state, self.host), "TRUE") }).state;
+      for (const target of self.execution.state.bindings.main) {
+        state = dealDamage(state, { source: { id: source.id }, target: { id: target.id }, parameters: parameters(resolveAttack(state, source), "TRUE") }).state;
       }
       return { state, value: true };
     },
@@ -244,13 +245,13 @@ test("ammo runtime: a content-defined follow-up preserves one ammunition payment
   assert.deepEqual(damageEvents(followUp).map(({ amount }) => amount), [200, 200]);
   assert.equal(source(runtime).skill.active.sustain.remaining, 2);
   assert.equal(followUp.events.filter(({ type }) => type === "ACTION_FINISHED").length, 1);
-  assert.deepEqual(unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.instances.values().toArray(), []);
+  assert.deepEqual(unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray(), []);
 });
 
 test("ammo runtime: the last released projectile survives skill completion and retains buffed attack", () => {
-  let runtime = scenario({ output: (state, self, shell) => {
-    const actor = getUnit(state, self.host.id);
-    const targetUnitId = self.state.bindings.main[0].id;
+  let runtime = scenario({ output: (state, source, self, shell) => {
+    const actor = getUnit(state, source.id);
+    const targetUnitId = self.execution.state.bindings.main[0].id;
     const target = getUnit(state, targetUnitId);
     return createProjectile(state, shell, {
       position: actor.position,

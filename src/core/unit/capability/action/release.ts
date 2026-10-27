@@ -1,7 +1,7 @@
 import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import type { View as ActionView } from "../../action/action.js";
+import type { ExecutingView as ActionView } from "../../action/action.js";
 import * as actions from "../../action/operations.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
@@ -27,7 +27,7 @@ export function beforeRelease(battle: BattleState, ref: Ref<ActionView>): Result
         return { state: battle, value: { type: "CONTINUE" } };
     }
 
-    const context: Context = { action: ref, source: action.host };
+    const context: Context = { action: ref, source: ref.host };
     const result = hook.dispatch<Context, Directive>(
         battle,
         context,
@@ -58,7 +58,7 @@ export function released(battle: BattleState, ref: Ref<ActionView>): BattleState
         return battle;
     }
 
-    const context: Context = { action: ref, source: action.host };
+    const context: Context = { action: ref, source: ref.host };
 
     return hook.dispatch(battle, context, undefined, {
         candidates: (current) =>
@@ -71,7 +71,7 @@ export function released(battle: BattleState, ref: Ref<ActionView>): BattleState
 
 function running(battle: BattleState, context: Context): boolean {
     return (
-        actions.get(battle, context.action)?.status === "RUNNING" &&
+        actions.get(battle, context.action)?.execution.status === "RUNNING" &&
         units.get(battle, context.source)?.lifecycle === "PRESENT"
     );
 }

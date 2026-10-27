@@ -42,9 +42,9 @@ for (const reason of ["DEATH", "RETREAT", "SCRIPT"]) {
       initialize: state => ({ state, value: {} }),
       start: state => ({ state, value: { activation: activationRef(getUnit(state, 0).skill.active) } }),
       step: state => ({ state, value: false }),
-      onEnd(state, self) {
+      onEnd(state, source, self) {
         actionEnds++;
-        return finish(state, self.state.activation);
+        return finish(state, self.execution.state.activation);
       },
     };
     let state = createBattleState(fixtureBattlefield([

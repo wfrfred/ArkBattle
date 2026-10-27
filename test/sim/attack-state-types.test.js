@@ -15,7 +15,7 @@ test("Attack persistent and execution data keep separate types and typed activat
 import type { Ref } from ${source("core/common/ref")};
 import type { State as BattleState, Result } from ${source("core/battle/state")};
 import { ref as actionRef } from ${source("core/unit/action/action")};
-import { update, getState, replaceState } from ${source("core/unit/action/operations")};
+import { update, getAction, updateState } from ${source("core/unit/action/operations")};
 import type { Activation } from ${source("core/unit/capability/skill/activation")};
 import { get as getActivation } from ${source("core/unit/capability/skill/query")};
 import { consume, check } from ${source("core/unit/capability/skill/ammo")};
@@ -32,23 +32,23 @@ declare const activation: Ref<Activation<Active>>;
 const counted = createWithState({
     ...configuration,
     initialize: current => ({ state: current, value: { count: 0 } }),
-    start: (current, source, self): Result<{ sampled: number }> => ({ state: current, value: { sampled: self.data.count } }),
-    output(current, self) {
-        const persistent = getState(current, self.host, self.definition)!;
-        const count: number = persistent.data.count;
-        current = replaceState(current, self.host, { ...persistent, data: { count: count + 1 } });
-        return update(current, actionRef(self), state => ({ ...state, data: { sampled: count } }));
+    start: (current, source, self): Result<{ sampled: number }> => ({ state: current, value: { sampled: self.state.count } }),
+    output(current, source, self) {
+        const persistent = getAction(current, source, self.definition)!;
+        const count: number = persistent.state.count;
+        current = updateState(current, source, self.definition, state => ({ count: state.count + 1 }));
+        return update(current, actionRef(source, self), state => ({ ...state, data: { sampled: count } }));
     },
-    afterOutput(current, self) {
-        const sampled: number = self.state.data.sampled;
+    afterOutput(current, source, self) {
+        const sampled: number = self.execution.state.data.sampled;
         // @ts-expect-error
-        self.state.data.missing;
+        self.execution.state.data.missing;
         // @ts-expect-error
-        self.state.data.count;
+        self.execution.state.data.count;
         return current;
     },
-    onEnd(current, self) {
-        const count: number = getState(current, self.host, self.definition)!.data.count;
+    onEnd(current, source, self) {
+        const count: number = getAction(current, source, self.definition)!.state.count;
         return current;
     },
 });
@@ -57,8 +57,8 @@ const preciseAmmo = createWithState({
     ...configuration,
     initialize: current => ({ state: current, value: {} }),
     start: (current): { state: BattleState; value: { activation: Ref<Activation<Active>> | null } } => ({ state: current, value: { activation } }),
-    afterOutput(current, self) {
-        const sampled = self.state.data.activation;
+    afterOutput(current, source, self) {
+        const sampled = self.execution.state.data.activation;
         type Sampled = Assert<Equal<typeof sampled, Ref<Activation<Active>> | null>>;
         if (sampled === null) return current;
         const latest = getActivation(current, sampled);
@@ -73,8 +73,8 @@ type PreciseAmmo = Assert<Equal<typeof preciseAmmo, Attack<{}, { activation: Ref
 const genericAmmo = createSkillAttack({
     ...configuration,
     ammoPerAction: 2,
-    output(current, self) {
-        const sampled: Ref<Activation> | null = self.state.data.activation;
+    output(current, source, self) {
+        const sampled: Ref<Activation> | null = self.execution.state.data.activation;
         if (sampled !== null) {
             const latest: Activation | undefined = getActivation(current, sampled);
             // @ts-expect-error

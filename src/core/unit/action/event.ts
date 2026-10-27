@@ -1,5 +1,5 @@
 import type { Id as UnitId } from "../unit.js";
-import type { Id } from "./action.js";
+import type { Id } from "./execution.js";
 
 export type Signal = {
     readonly executionId: Id;

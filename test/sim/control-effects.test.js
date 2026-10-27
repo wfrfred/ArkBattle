@@ -116,5 +116,5 @@ test("stun interrupts a running Action through its complete cancellation operati
     assert.equal(actions.get(stunned, started.value.ref), undefined);
     assert.equal(endings, 1);
     assert.deepEqual(stunned.events.filter(event => event.type === "ACTION_CANCELLED").map(event => event.reason), ["INTERRUPTED"]);
-    assert.equal(actions.get(started.state, started.value.ref).status, "RUNNING");
+    assert.equal(actions.get(started.state, started.value.ref).execution.status, "RUNNING");
 });

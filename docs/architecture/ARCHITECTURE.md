@@ -83,7 +83,7 @@ Definition 保存不可变基础值、参数和行为描述。Capability State �
 
 Content 直接组合 Unit Definition 与所需的 Catalog Definitions，不经过干员或敌人 Archetype 工厂；必要的领域校验放在 initialize。静态内容可用 satisfies 声明具体能力；动态加载结果使用标准 Definition，并在需要可选能力时通过守卫缩窄。
 
-Capability.initialize(battle, definition) 返回 Result<State>，Unit.initialize(battle, input) 返回 Result<Unit & Product<D>>；逐个接续 battle，在登记前组合完整 Unit。Product<D> 由 Catalog 从 initializer 字典推导，只组合明确选择的能力的标准 Definition／State，不保留整个输入 D 或额外内容字段。通用创建不接受预制能力状态或独立当前 tick，路线与部署等在明确的业务创建流程中设置。Skill／Action Capability 非泛型，领域内部 read 保持具体程序与私有状态的类型配对；Action 每个配置项的持久状态在 Unit 初始化时建立，每次启动只创建执行状态。详见 [Capability 初始化与装配](capability.md#初始化与装配)。标签归属仍待整理，现有 Profile 依赖见 [后续整理记录](capability.md#待整理单位标签与-profile-依赖)。
+Capability.initialize(battle, definition) 返回 Result<State>，Unit.initialize(battle, input) 返回 Result<Unit & Product<D>>；逐个接续 battle，在登记前组合完整 Unit。Product<D> 由 Catalog 从 initializer 字典推导，只组合明确选择的能力的标准 Definition／State，不保留整个输入 D 或额外内容字段。通用创建不接受预制能力状态或独立当前 tick，路线与部署等在明确的业务创建流程中设置。Skill／Action Capability 非泛型，领域内部 read 保持具体程序与私有状态的类型配对；Action 每个配置项在 Unit 初始化时建立聚合条目，保存 Definition、持久 state、Cooldown 和可空的 Execution；每次启动创建新执行身份，终结只清空 execution。详见 [Capability 初始化与装配](capability.md#初始化与装配)。标签归属仍待整理，现有 Profile 依赖见 [后续整理记录](capability.md#待整理单位标签与-profile-依赖)。
 
 Effect 是附着于 Unit 的实例；`Unit.effects` 持有实例集合。`unit/effect/`、`unit/contribution/` 与 `unit/capability/` 平级；通用 Hook 位于 core/hook.ts，unit/hook.ts 只定义 Unit 的阶段类型。Capability 保存本领域的 Hook 和 Contribution；具体 Effect Definition 组合这些公开操作，抽象 Effect 只管理实例与生命周期。
 
@@ -100,7 +100,7 @@ Effect 是附着于 Unit 的实例；`Unit.effects` 持有实例集合。`unit/e
 | 领域               | 拥有的语义                                     | 主要事实与边界                                                                    |
 | ------------------ | ---------------------------------------------- | --------------------------------------------------------------------------------- |
 | Schedule           | 出生、波次、分支、等待与完成统计               | 定义和进度在创建及后续调用链保持关联                                              |
-| Action             | 启动周期、运行实例、推进、取消与完成 | Definition 保存基础间隔、速度与程序；Unit 的能力保存贡献、Cooldown、规则与运行实例集合；实例保存本次进度 |
+| Action             | 启动周期、运行实例、推进、取消与完成 | Definition 保存基础间隔、速度与程序；Unit.action.actions 按配置 ID 保存持久 state、Cooldown 与当前 Execution；nextExecutionId、贡献与 Rule 归 Capability |
 | Skill              | SP 获取与支付、激活许可、持续、结束和弹药消耗  | Skill 能力保存 SP、恢复进度与激活身份；附带 Effect 通过 SKILL Scope 关联          |
 | Targeting          | 候选、查询资格、优先级与确定性选择             | 读取当前事实；比较器纯函数并追加确定性 tie-break                                  |
 | Damage             | 公式、输出、有序接收、普通扣血及死亡       | 流程在 battle/damage；Offense／Vitality／Elemental 提供属性，Vitality 保存 HP 与 Hook／规则登记。特殊生命保护尚待设计 |
@@ -113,7 +113,7 @@ Effect 是附着于 Unit 的实例；`Unit.effects` 持有实例集合。`unit/e
 | Locomotion         | 按速度与运动规则执行自主移动、避障及目的格反射 | 保存历史速度、移速贡献与规则；消费 Route 已准备好的世界坐标目标和当前模式 |
 | Blocking / Support | 建立、保留和解除领域关系                       | 资格规则与依赖复用判断共享领域事实提取                                            |
 
-Action 程序在实际业务位置调用伤害、治疗等领域操作；Effect 表示有生命周期的附着实例。Action 实例存在所属 Unit.action.instances，Ref 携带 host 与宿主内 id；Projectile 独立存于 Battlefield，不因 Action 结束自动终结，显式生命周期依赖由内容结算。Aura 用宿主 Unit 上的 Effect 表示，目标登记与刷新进度保存在其私有 State，接收 Effect 存在各自 Unit 上。
+Action 程序在实际业务位置调用伤害、治疗等领域操作；Effect 表示有生命周期的附着实例。Action 聚合条目存在所属 Unit.action.actions，当前 Execution 的 Ref 携带 host 与宿主内执行 id；Projectile 独立存于 Battlefield，不因 Action 结束自动终结，显式生命周期依赖由内容结算。Aura 用宿主 Unit 上的 Effect 表示，目标登记与刷新进度保存在其私有 State，接收 Effect 存在各自 Unit 上。
 
 阻挡几何、目标命中几何、攻击覆盖几何和物理运动体分别建模。Blocking capacity 的消耗也独立于推拉重量和物理质量。Movement 在 Route 推进后读取当前阻挡关系，决定是否推进自主移动；Locomotion 继续消费自身 Rule。Blocking 不再同步登记／撤销专用禁移 Rule，见 [Blocking 设计](blocking.md)。运动避障半宽与命中几何独立配置。
 

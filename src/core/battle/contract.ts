@@ -16,7 +16,7 @@ import type {
 } from "./deployment/operations.js";
 import type { Ref } from "../common/ref.js";
 import type { Signal as ActionSignal } from "../unit/action/event.js";
-import type { View as ActionView } from "../unit/action/action.js";
+import type { ExecutingView as ActionView } from "../unit/action/action.js";
 import type { Id as ProjectileId } from "../projectile/projectile.js";
 import type { Signal as ProjectileSignal } from "../projectile/event.js";
 import type { Signal as ElementalSignal } from "../unit/capability/elemental/operations.js";

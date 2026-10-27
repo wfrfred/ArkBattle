@@ -99,9 +99,9 @@ export function create(
     const arrow = projectile.definition;
     const action = createAttack({
         ...ground.attack.attack,
-        output: (state, self) => {
-            const source = units.get(state, self.host);
-            const target = units.get(state, self.state.target);
+        output: (state, host, self) => {
+            const source = units.get(state, host);
+            const target = units.get(state, self.execution.state.target);
 
             if (source === undefined || target === undefined || !hasVitality(target)) {
                 return state;

@@ -52,10 +52,10 @@ test("Action update transforms the latest private state rather than an earlier i
         return { ...current, count: current.count + 1 };
     });
 
-    assert.strictEqual(received, firstInstance.state);
-    assert.equal(actions.get(second, reference).state.count, 2);
-    assert.equal(actions.get(first, reference).state.count, 1);
-    assert.equal(actions.get(fixture.battle, reference).state.count, 0);
+    assert.strictEqual(received, firstInstance.execution.state);
+    assert.equal(actions.get(second, reference).execution.state.count, 2);
+    assert.equal(actions.get(first, reference).execution.state.count, 1);
+    assert.equal(actions.get(fixture.battle, reference).execution.state.count, 0);
     assert.strictEqual(actions.get(fixture.battle, reference), original);
 });
 
@@ -69,15 +69,16 @@ test("Action update preserves identity, program, lifecycle and unrelated host st
     const next = actions.get(changed, reference);
     const nextHost = units.get(changed, fixture.source);
 
-    assert.equal(next.state.count, 7);
-    assert.equal(next.id, original.id);
-    assert.strictEqual(next.host, original.host);
+    assert.equal(next.execution.state.count, 7);
+    assert.equal(next.execution.id, original.execution.id);
+    assert.strictEqual(reference.host, fixture.source);
     assert.strictEqual(next.definition, original.definition);
-    assert.equal(next.startedAtTick, original.startedAtTick);
-    assert.equal(next.status, original.status);
+    assert.equal(next.execution.startedAtTick, original.execution.startedAtTick);
+    assert.equal(next.execution.status, original.execution.status);
     assert.strictEqual(actions.get(changed, siblingRef), sibling);
-    assert.equal(nextHost.action.instances.nextId, originalHost.action.instances.nextId);
-    assert.strictEqual(nextHost.action.states, originalHost.action.states);
+    assert.equal(nextHost.action.nextExecutionId, originalHost.action.nextExecutionId);
+    assert.strictEqual(next.state, original.state);
+    assert.strictEqual(next.cooldown, original.cooldown);
     assert.strictEqual(nextHost.effects, originalHost.effects);
     assert.strictEqual(nextHost.position, originalHost.position);
     assert.deepEqual(changed.events, fixture.battle.events);
@@ -90,7 +91,7 @@ test("Action update returning the current private state keeps the complete Battl
     let calls = 0;
     const result = actions.update(fixture.battle, reference, current => {
         calls++;
-        assert.strictEqual(current, original.state);
+        assert.strictEqual(current, original.execution.state);
         return current;
     });
 
@@ -106,20 +107,20 @@ test("Action update does not invoke transforms for removed instances or missing 
     const absentHost = removeUnit(fixture.battle, fixture.source.id, "SCRIPT");
     const forbidden = () => assert.fail("an absent Action must not execute its state transform");
 
-    assert.throws(() => actions.update(removed, reference, forbidden), /unknown action: 0/);
+    assert.throws(() => actions.update(removed, reference, forbidden), /unknown action execution: 0/);
     assert.throws(() => actions.update(absentHost, reference, forbidden), /unknown unit: 0/);
     assert.equal(actions.get(removed, reference), undefined);
     assert.equal(actions.get(absentHost, reference), undefined);
-    assert.equal(actions.get(fixture.battle, reference).state.count, 0);
+    assert.equal(actions.get(fixture.battle, reference).execution.state.count, 0);
 });
 
 test("Action update rejects ENDING instances during synchronous termination callbacks", () => {
     let attempts = 0;
     let observed;
     const configured = program("ending", { count: 3 }, {
-        onEnd(battle, self) {
-            observed = actions.get(battle, ref(self));
-            assert.throws(() => actions.update(battle, ref(self), () => {
+        onEnd(battle, source, self) {
+            observed = actions.get(battle, ref(source, self));
+            assert.throws(() => actions.update(battle, ref(source, self), () => {
                 attempts++;
                 return { count: 100 };
             }), /cannot update an ending action/);
@@ -131,10 +132,10 @@ test("Action update rejects ENDING instances during synchronous termination call
     const cancelled = actions.cancel(fixture.battle, reference, "TEST");
 
     assert.equal(attempts, 0);
-    assert.equal(observed.status, "ENDING");
-    assert.equal(observed.state.count, 3);
+    assert.equal(observed.execution.status, "ENDING");
+    assert.equal(observed.execution.state.count, 3);
     assert.equal(actions.get(cancelled, reference), undefined);
-    assert.equal(actions.get(fixture.battle, reference).state.count, 3);
+    assert.equal(actions.get(fixture.battle, reference).execution.state.count, 3);
 });
 
 test("Action update distinguishes identical local execution IDs on different hosts", () => {
@@ -155,8 +156,8 @@ test("Action update distinguishes identical local execution IDs on different hos
     const changed = actions.update(started.state, secondRef, current => ({ ...current, count: 8 }));
 
     assert.strictEqual(actions.get(changed, firstRef), first);
-    assert.equal(actions.get(changed, secondRef).state.count, 8);
-    assert.equal(actions.get(started.state, secondRef).state.count, 0);
+    assert.equal(actions.get(changed, secondRef).execution.state.count, 8);
+    assert.equal(actions.get(started.state, secondRef).execution.state.count, 0);
 });
 
 test("A throwing Action transform cannot modify any already published instance", () => {
@@ -169,6 +170,6 @@ test("A throwing Action transform cannot modify any already published instance",
         throw new Error("transform failed");
     }), /transform failed/);
     assert.strictEqual(actions.get(changed, reference), prior);
-    assert.equal(actions.get(changed, reference).state.count, 1);
-    assert.equal(actions.get(fixture.battle, reference).state.count, 0);
+    assert.equal(actions.get(changed, reference).execution.state.count, 1);
+    assert.equal(actions.get(fixture.battle, reference).execution.state.count, 0);
 });

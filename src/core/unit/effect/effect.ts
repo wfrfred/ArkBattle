@@ -1,5 +1,5 @@
 import type { Id as UnitId, Unit } from "../unit.js";
-import type { View as ActionView } from "../action/action.js";
+import type { ExecutingView as ActionView } from "../action/action.js";
 import type { Burst } from "../capability/elemental/burst.js";
 import type { Activation as SkillActivation } from "../capability/skill/activation.js";
 import type { Definition } from "./definition.js";

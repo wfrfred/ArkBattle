@@ -44,7 +44,7 @@ const startSingleAction = (source, definition, context) => {
   battleState = actionState;
   return { units: [...battleState.battlefield.units.values()],
     removedUnitIds: battleState.removedUnits.map(value => value.unitId),
-    events: battleState.events, execution: battleState.execution, state: getUnit(actionState, source.id).action.instances };
+    events: battleState.events, execution: battleState.execution, state: getUnit(actionState, source.id).action };
 };
 
 
@@ -68,7 +68,7 @@ function coreCombatRoute(startPosition = [1, 8], overrides = {}) {
 function unitFacts(unit) {
   return unit.action === undefined ? unit : {
     ...unit,
-    action: { ...unit.action, states: new Map(unit.action.states.values().map(state => {
+    action: { ...unit.action, actions: new Map(unit.action.actions.values().map(state => {
       const id = state.definition.id;
       const { initialize, start, step, onEnd, ...definition } = state.definition;
       if (definition.attack !== undefined) {
@@ -94,11 +94,11 @@ function combatFacts(state) {
     combatants: [...state.battlefield.units.values()].map(unit => ({
       id: unit.id, position: unit.position, hp: unit.vitality?.hp,
       action: unit.action === undefined ? undefined : {
-        cooldowns: unit.action.states.values().map(current => ({
+        cooldowns: unit.action.actions.values().map(current => ({
           id: current.definition.id, cooldown: current.cooldown,
         })).toArray(),
-        instances: unit.action.instances.values().map(current => ({
-          id: current.id, lifecycle: current.lifecycle, state: current.state,
+        instances: unit.action.actions.values().filter(self => self.execution !== null).map(current => ({
+          id: current.execution.id, status: current.execution.status, state: current.execution.state,
         })).toArray(),
       },
     })),
@@ -315,7 +315,7 @@ test('core combat: immutable updates preserve earlier combat state', () => {
   const snapshot = battle;
   const operator = snapshot.battlefield.units.get(0);
   const actionId = operator.definition.action.definitions.values().toArray()[0].id;
-  const readyAtTick = operator.action.states.get(actionId).cooldown.readyAtTick;
+  const readyAtTick = operator.action.actions.get(actionId).cooldown.readyAtTick;
   const hp = operator.vitality.hp;
   assert.deepEqual(blockingQueries.relations(snapshot).map(({ blocker, blocked }) => [blocker.id, blocked.id]), [[0, 1]]);
 
@@ -323,7 +323,7 @@ test('core combat: immutable updates preserve earlier combat state', () => {
   const previous = snapshot;
   const changed = {
     ...operator,
-    action: { ...operator.action, states: operator.action.states.read(actionId, current => operator.action.states.replace(current.definition, { ...current, cooldown: { ...current.cooldown, readyAtTick: 999999 } })) },
+    action: { ...operator.action, actions: operator.action.actions.read(actionId, current => operator.action.actions.replace(current.definition, { ...current, cooldown: { ...current.cooldown, readyAtTick: 999999 } })) },
     allegiance: { ...operator.allegiance, side: 'ENEMY' },
     layer: { ...operator.layer, type: 'AIR' },
     targetable: setRestriction(operator.targetable,
@@ -337,14 +337,14 @@ test('core combat: immutable updates preserve earlier combat state', () => {
   assert.equal(unitQueries.get(draft, { id: 0 }).definition, changed.definition);
   assert.deepEqual(unitQueries.get(draft, { id: 0 }).blocker.blocked, []);
   assert.deepEqual(blockingQueries.relations(draft).map(({ blocker, blocked }) => ([blocker.id, blocked.id])), []);
-  assert.equal(unitQueries.get(draft, { id: 0 }).action.states.get(actionId).cooldown.readyAtTick, 999999);
+  assert.equal(unitQueries.get(draft, { id: 0 }).action.actions.get(actionId).cooldown.readyAtTick, 999999);
   const targetingRequest = { source: unitRef(snapshot.battlefield.units.get(1)),
     ...operator.definition.action.definitions.values().toArray()[0].attack.targetGroups[0].targeting };
   assert.equal(allowsRestrictions({ battlefield }, targetingRequest, unitQueries.get(draft, { id: 0 })), false);
 
   assert.equal(unitQueries.get(previous, { id: 0 }), operator);
   assert.deepEqual(blockingQueries.relations(previous).map(({ blocker, blocked }) => ([blocker.id, blocked.id])), [[0, 1]]);
-  assert.equal(operator.action.states.get(actionId).cooldown.readyAtTick, readyAtTick);
+  assert.equal(operator.action.actions.get(actionId).cooldown.readyAtTick, readyAtTick);
   assert.equal(operator.allegiance.side, 'ALLY');
   assert.equal(operator.layer.type, 'GROUND');
   assert.equal(operator.definition.hitbox.shape.radius, 0.25);
@@ -732,7 +732,7 @@ test('core action: explicitly declared query purposes gate mixed outputs while s
   assert.equal(stepped.events.find(event => event.type === 'DAMAGE').hp, 70);
   assert.equal(stepped.events.find(event => event.type === 'HEAL').amount, 15);
   assert.equal(stepped.units.find(unit => unit.id === 0).vitality.hp, 75);
-  assert.equal(stepped.units.find(unit => unit.id === 0).action.states.get('normal').cooldown.readyAtTick, 3);
+  assert.equal(stepped.units.find(unit => unit.id === 0).action.actions.get('normal').cooldown.readyAtTick, 3);
 });
 
 
@@ -748,8 +748,8 @@ test('core action: secondary target groups cannot trigger the action and use ind
   assert.deepEqual(noEnemy.units.map(unit => unit.id), [source.id, friend.id]);
   assert.deepEqual(noEnemy.removedUnitIds, []);
   assert.deepEqual(noEnemy.events, []);
-  assert.equal(noEnemy.state.nextId, 0);
-  assert.equal(noEnemy.state.size, 0);
+  assert.equal(noEnemy.state.nextExecutionId, 0);
+  assert.equal(noEnemy.state.actions.values().some(action => action.execution !== null), false);
 
   const enemy = actionUnit(1, 'ENEMY', [1, 0], { hp: 80, effects: [healFree] });
   const stepped = startSingleAction(source, compiled, { battlefield: fixtureBattlefieldState([source, friend, enemy]), tick: 0 });
@@ -765,9 +765,10 @@ test('core action: secondary target groups cannot trigger the action and use ind
 
 test('core combat: healing sees earlier phase damage and replays the same combat facts', () => {
   const base = createLegacyCombatSpec({ rows: 1, columns: 4, operators: [], enemies: [], maxTicks: 2 });
-  const attacker = actionUnit(0, 'ENEMY', [0, 0], { action: attackDefinition([
-    { id: 'attack', targeting: damageTargeting(), operations: [damageEffect(20)] },
-  ]) });
+  const attacker = actionUnit(0, 'ENEMY', [0, 0], { action: createAttack({
+    id: 'normal', intervalTicks: 3, speed: 100, triggerBindingId: 'attack', recoveryTicks: 2,
+    targetGroups: [{ id: 'attack', targeting: damageTargeting(), operations: [damageEffect(20)] }],
+  }) });
   const friend = actionUnit(1, 'ALLY', [1, 0]);
   const medic = actionUnit(2, 'ALLY', [3, 0], { action: attackDefinition([
     { id: 'heal', targeting: healingTargeting(), operations: [healEffect(10)] },
@@ -782,7 +783,11 @@ test('core combat: healing sees earlier phase damage and replays the same combat
     assert.equal(snapshot.battlefield.units.get(1).vitality.hp, 90);
     assert.deepEqual(step.events.filter(event => event.type === 'HEAL')
       .map(event => [event.sourceUnitId, event.targetUnitId, event.amount]), [[2, 1, 10]]);
-    return { events: step.events.map(eventFacts), facts: combatFacts(snapshot) };
+    const facts = combatFacts(snapshot);
+    assert.deepEqual(facts.combatants.find(unit => unit.id === 0).action.instances
+      .map(({ id, status, state }) => [id, status, state.released, state.target.id]),
+      [[0, 'RUNNING', true, 1]]);
+    return { events: step.events.map(eventFacts), facts };
   };
   assert.deepEqual(run(), run());
 });

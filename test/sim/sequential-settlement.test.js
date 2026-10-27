@@ -28,10 +28,10 @@ for (const nested of ["cancel", "advance", "advance complete", "advance waiting"
             id: "second", intervalTicks: 10, speed: 100,
             initialize: state => ({ state, value: {} }),
             start: state => ({ state, value: { finishAtTick: 100 } }),
-            step(state, self) {
+            step(state, source, self) {
                 if (armed) executions++;
                 return { state, value: armed && (nested === "advance complete" ||
-                    nested === "advance waiting" && state.tick >= self.state.finishAtTick) };
+                    nested === "advance waiting" && state.tick >= self.execution.state.finishAtTick) };
             },
         };
         let state = battle(unit(0, { action: { definitions: Definitions.empty().add(first).add(second) } }), unit(1));

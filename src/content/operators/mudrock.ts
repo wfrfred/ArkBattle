@@ -368,8 +368,8 @@ export function create(
     const action = createSkillAttack({
         ...activeConfiguration,
         markerId: "mudrock/s2",
-        output(state, self) {
-            const source = getCurrentUnit(state, self.host);
+        output(state, host, self) {
+            const source = getCurrentUnit(state, host);
 
             if (source === undefined || !hasSkill(source) || source.skill.active === null) {
                 return state;
@@ -378,12 +378,12 @@ export function create(
             const power = hasOffense(source) ? resolveAttack(state, unitRef(source))! : 0;
             state = healSelf(state, source.id, healRatio);
 
-            for (const targetRef of self.state.bindings.primary ?? []) {
-                if (getAction(state, actionRef(self))?.status !== "RUNNING") {
+            for (const targetRef of self.execution.state.bindings.primary ?? []) {
+                if (getAction(state, actionRef(host, self))?.execution.status !== "RUNNING") {
                     return state;
                 }
 
-                const currentSource = getCurrentUnit(state, self.host);
+                const currentSource = getCurrentUnit(state, host);
                 const target = getCurrentUnit(state, targetRef);
 
                 if (currentSource?.lifecycle !== "PRESENT") {
@@ -428,10 +428,10 @@ export function create(
 
             return state;
         },
-        onEnd(state, self) {
-            return self.state.data.activation === null
+        onEnd(state, _host, self) {
+            return self.execution.state.data.activation === null
                 ? state
-                : finish(state, self.state.data.activation);
+                : finish(state, self.execution.state.data.activation);
         },
     });
     const skill: SkillDefinition = {

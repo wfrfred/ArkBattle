@@ -1,18 +1,16 @@
 import { Store } from "../../common/collection/store.js";
 import type { Query } from "../../common/query.js";
-import type { Ref } from "../../common/ref.js";
-import type { Action, Id, Snapshot, View } from "./action.js";
-import type { Definition } from "./definition.js";
+import type { Action, Executing, Snapshot, View } from "./action.js";
+import type { Id as ExecutionId } from "./execution.js";
+import type { Definition, Id } from "./definition.js";
 
 export class Actions {
-    static readonly #empty = new Actions(Store.empty<Id, View>(), 0);
+    static readonly #empty = new Actions(Store.empty<Id, View>());
 
     readonly #store: Store<Id, View>;
-    readonly nextId: Id;
 
-    private constructor(store: Store<Id, View>, nextId: Id) {
+    private constructor(store: Store<Id, View>) {
         this.#store = store;
-        this.nextId = nextId;
     }
 
     static empty(): Actions {
@@ -24,47 +22,39 @@ export class Actions {
     }
 
     get(id: Id): View | undefined;
-    get<A extends View>(reference: Ref<A>): A | undefined;
     get<P extends object, E extends object>(
         id: Id,
         definition: Definition<P, E>,
     ): Action<P, E> | undefined;
-    get<P extends object, E extends object, A extends View>(
-        reference: Id | Ref<A>,
+    get<P extends object, E extends object>(
+        id: Id,
         definition?: Definition<P, E>,
-    ): View | Action<P, E> | A | undefined {
-        const id = typeof reference === "number" ? reference : reference.id;
-        const action = this.#store.get(id);
-
-        if (
-            action !== undefined &&
-            typeof reference !== "number" &&
-            action.host.id !== reference.host.id
-        ) {
-            return undefined;
-        }
-
-        if (typeof reference !== "number") {
-            return action;
-        }
+    ): View | Action<P, E> | undefined {
+        const self = this.#store.get(id);
 
         if (definition === undefined) {
-            return action;
+            return self;
         }
 
-        const restored: Action<P, E> | undefined =
-            action?.definition === definition ? (action as Action<P, E>) : undefined;
-
-        return restored;
+        return self?.definition === definition ? self : undefined;
     }
 
     read<R>(
         id: Id,
-        reader: <P extends object, E extends object>(action: Action<P, E>) => R,
+        reader: <P extends object, E extends object>(self: Action<P, E>) => R,
     ): R | undefined {
-        const action = this.#store.get(id);
+        const self = this.#store.get(id);
 
-        return action === undefined ? undefined : reader(action as Action);
+        return self === undefined ? undefined : reader(self as Action);
+    }
+
+    readExecution<R>(
+        id: ExecutionId,
+        reader: <P extends object, E extends object>(self: Executing<P, E>) => R,
+    ): R | undefined {
+        const self = this.values().find((entry) => entry.execution?.id === id);
+
+        return self === undefined ? undefined : reader(self as Executing);
     }
 
     values(): Query<View> {
@@ -75,42 +65,22 @@ export class Actions {
         return this.#store.keys();
     }
 
-    add<P extends object, E extends object>(action: Action<P, E>): Actions {
-        const nextId = this.nextId + 1;
-
-        return new Actions(this.#store.add(action.id, action), nextId);
+    add<P extends object, E extends object>(self: Action<P, E>): Actions {
+        return new Actions(this.#store.add(self.definition.id, self));
     }
 
     replace<P extends object, E extends object>(
-        reference: Ref<Action<P, E>>,
-        action: NoInfer<Action<P, E>>,
+        definition: Definition<P, E>,
+        self: NoInfer<Action<P, E>>,
     ): Actions {
-        const previous = this.get(reference);
+        const store = this.#store.replace(definition.id, self);
 
-        if (previous === undefined) {
-            return this;
-        }
-        if (previous === action) {
-            return this;
-        }
-
-        return new Actions(this.#store.replace(reference.id, action), this.nextId);
+        return store === this.#store ? this : new Actions(store);
     }
 
-    remove(id: Id): Actions {
-        if (this.#store.get(id) === undefined) {
-            return this;
-        }
-
-        return new Actions(this.#store.remove(id), this.nextId);
-    }
-
-    toJSON(): { readonly instances: readonly Snapshot[]; readonly nextId: Id } {
-        return {
-            instances: this.values()
-                .map(({ id }) => this.read<Snapshot>(id, (self) => self)!)
-                .toArray(),
-            nextId: this.nextId,
-        };
+    toJSON(): readonly Snapshot[] {
+        return this.values()
+            .map(({ definition }) => this.read<Snapshot>(definition.id, (self) => self)!)
+            .toArray();
     }
 }

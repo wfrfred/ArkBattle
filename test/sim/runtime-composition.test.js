@@ -255,7 +255,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
                 );
                 assert.equal(getUnit(state, 1).vitality.hp, 83);
                 assert.equal(marked(getUnit(state, 1)), true);
-                assert.equal(getUnit(state, 2).action.states.get("launch").cooldown.readyAtTick, 101);
+                assert.equal(getUnit(state, 2).action.actions.get("launch").cooldown.readyAtTick, 101);
                 throw new Error("late composition failure");
             }
             return state;
@@ -269,20 +269,20 @@ function scenario({ failure = null, cancelled = false } = {}) {
         id: "launch", intervalTicks: 100, speed: 100,
         initialize: state => ({ state, value: {} }),
         start: state => ({ state, value: { emitted: 0 } }),
-        step(state, self) {
-            if (self.state.emitted === 0) {
-                state = actions.update(state, actionRef(self), () => ({ emitted: 1 }));
-                self = actions.get(state, actionRef(self));
-                state = installation(state, self, scoped);
-                state = launch(state, self, primary ? 1 : 3);
+        step(state, source, self) {
+            if (self.execution.state.emitted === 0) {
+                state = actions.update(state, actionRef(source, self), () => ({ emitted: 1 }));
+                self = actions.get(state, actionRef(source, self));
+                state = installation(state, source, self, scoped);
+                state = launch(state, source, self, primary ? 1 : 3);
             }
-            if (primary && self.state.emitted === 1 && state.tick > self.startedAtTick) {
-                state = actions.update(state, actionRef(self), () => ({ emitted: 2 }));
-                self = actions.get(state, actionRef(self));
-                state = installation(state, self, pulse);
-                state = launch(state, self, 3);
+            if (primary && self.execution.state.emitted === 1 && state.tick > self.execution.startedAtTick) {
+                state = actions.update(state, actionRef(source, self), () => ({ emitted: 2 }));
+                self = actions.get(state, actionRef(source, self));
+                state = installation(state, source, self, pulse);
+                state = launch(state, source, self, 3);
             }
-            return { state, value: state.tick >= self.startedAtTick + (primary ? 3 : 4) };
+            return { state, value: state.tick >= self.execution.startedAtTick + (primary ? 3 : 4) };
         },
     });
     const primary = actor("primary-launcher", program(true));
@@ -290,7 +290,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
     const siblingAction = initializeActionState(fixtureBattle(0), sibling.action).value;
     const delayedSiblingAction = {
         ...siblingAction,
-        states: siblingAction.states.read("launch", current => siblingAction.states.replace(current.definition, {
+        actions: siblingAction.actions.read("launch", current => siblingAction.actions.replace(current.definition, {
             ...current,
             cooldown: { periodTicks: 100, readyAtTick: 1 },
         })),
@@ -317,18 +317,18 @@ function scenario({ failure = null, cancelled = false } = {}) {
         visitEveryNodeCenter: false,
         visitEveryCheckPoint: true,
     });
-    const installation = (state, context, program) =>
+    const installation = (state, host, context, program) =>
         installEffect(
             state,
-            unitRef(getUnit(state, context.host.id)),
+            unitRef(getUnit(state, host.id)),
             program,
             {
-                source: context.host.id,
-                scopes: [{ type: "ACTION", ref: actionRef(context) }],
+                source: host.id,
+                scopes: [{ type: "ACTION", ref: actionRef(host, context) }],
             },
         ).state;
-    const launch = (state, context, targetUnitId) => {
-        const source = getUnit(state, context.host.id);
+    const launch = (state, host, context, targetUnitId) => {
+        const source = getUnit(state, host.id);
         const target = getUnit(state, targetUnitId);
         const launched = createProjectile(state, shell, {
             position: source.position,
@@ -340,7 +340,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
                 hitAttempted: false, launchedAtTick: state.tick, contacts: 0,
             },
         });
-        launches.push({ id: launched.value.id, hostId: context.host.id, executionId: context.id, targetUnitId });
+        launches.push({ id: launched.value.id, hostId: host.id, executionId: context.execution.id, targetUnitId });
         return launched.state;
     };
     const runtime = initializeBattle({
@@ -414,7 +414,7 @@ test("runtime composition: late exceptions and invalid settlement propagate with
         failed.runtime = stepBattle(failed.runtime, []);
         const before = failed.runtime;
         const maps = failed.runtime.battlefield.navigation;
-        assert.equal(unitQueries.all(before).toArray().find(unit => unit.id === 0).action.instances.nextId, 1);
+        assert.equal(unitQueries.all(before).toArray().find(unit => unit.id === 0).action.nextExecutionId, 1);
         assert.equal(before.execution.nextProjectileId, 1);
         assert.equal(before.execution.nextUnitId, 3);
         assert.equal(before.schedule.spawnedCount, 0);
@@ -473,8 +473,8 @@ test("runtime composition: a successful battle preserves identities, snapshots a
     assert.equal(after.schedule.cursor, 1);
     assert.equal(after.schedule.spawnedCount, 1);
     assert.deepEqual(after.schedule.managedFinalUnitIds, [3]);
-    assert.equal(unitQueries.all(after).toArray().find(unit => unit.id === 2).action.instances.nextId, 1);
-    assert.equal(unitQueries.all(after).toArray().find(unit => unit.id === 0).action.instances.values().toArray()[0].state.emitted, 2);
+    assert.equal(unitQueries.all(after).toArray().find(unit => unit.id === 2).action.nextExecutionId, 1);
+    assert.equal(unitQueries.all(after).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0].execution.state.emitted, 2);
     assert.equal(after.execution.nextProjectileId, 3);
     assert.deepEqual(
         allProjectiles(after).map(self => self.id).toArray(),
@@ -610,7 +610,7 @@ test("runtime composition: content conditions skip installation while cancelled 
     assert.equal(after.tick, 2);
     assert.equal(after.execution.nextUnitId, 4);
     assert.equal(after.schedule.spawnedCount, 1);
-    assert.equal(unitQueries.all(after).toArray().find(unit => unit.id === 2).action.instances.nextId, 1);
+    assert.equal(unitQueries.all(after).toArray().find(unit => unit.id === 2).action.nextExecutionId, 1);
     assert.equal(after.execution.nextProjectileId, 3);
     assert.equal(effect(after, 0, run.aura).data.remaining, 2);
     assert.equal(effect(after, 0, run.aura).data.consumed, 1);

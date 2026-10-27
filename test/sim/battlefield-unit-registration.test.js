@@ -113,7 +113,7 @@ test("battlefield replacement preserves configured capability composition on upd
     runtime = [unit, bare].reduce((field, unit) => addUnit(field, unit), runtime);
     const updated = {
         ...unit,
-        action: { ...unit.action, states: unit.action.states.read("normal", current => unit.action.states.replace(current.definition, { ...current, cooldown: { periodTicks: 3, readyAtTick: 7 } })) },
+        action: { ...unit.action, actions: unit.action.actions.read("normal", current => unit.action.actions.replace(current.definition, { ...current, cooldown: { periodTicks: 3, readyAtTick: 7 } })) },
         spatialPresence: { present: false },
         occupancy: { tile: null },
     };

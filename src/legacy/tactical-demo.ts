@@ -555,7 +555,16 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
             activeActionCount: units
                 .all(state)
                 .reduce(
-                    (total, unit) => total + (hasAction(unit) ? unit.action.instances.size : 0),
+                    (total, unit) =>
+                        total +
+                        (hasAction(unit)
+                            ? unit.action.actions
+                                  .values()
+                                  .reduce(
+                                      (count, action) => count + Number(action.execution !== null),
+                                      0,
+                                  )
+                            : 0),
                     0,
                 ),
             projectileCount: state.battlefield.projectiles.size,

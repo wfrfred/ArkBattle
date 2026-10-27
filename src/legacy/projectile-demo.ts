@@ -135,9 +135,9 @@ export function createTacticalProjectileDemo(
                     windupTicks: 6,
                     recoveryTicks: 6,
                     markerId: "demo-shell",
-                    output: (state, self) => {
-                        const source = getCurrentUnit(state, self.host);
-                        const targetId = self.state.target.id;
+                    output: (state, host, self) => {
+                        const source = getCurrentUnit(state, host);
+                        const targetId = self.execution.state.target.id;
                         const target = state.battlefield.units.get(targetId);
 
                         if (source === undefined || target === undefined || !hasVitality(target)) {

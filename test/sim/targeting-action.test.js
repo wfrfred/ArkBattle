@@ -44,10 +44,10 @@ test("attack target groups and start callbacks receive the RNG state produced by
 
     assert.equal(started.value.type, "STARTED");
     const running = actions.get(started.state, started.value.ref);
-    assert.deepEqual(running.state.bindings, { primary: first.value, secondary: second.value });
+    assert.deepEqual(running.execution.state.bindings, { primary: first.value, secondary: second.value });
     assert.equal(started.state.execution.rngState, second.state.execution.rngState);
     assert.equal(observed, second.state.execution.rngState);
-    assert.equal(running.state.data.selectedAt, observed);
+    assert.equal(running.execution.state.data.selectedAt, observed);
     assert.equal(seeded.execution.rngState, 73);
 });
 
@@ -65,7 +65,7 @@ test("an attack rejected for an empty trigger binding retains completed target-s
     assert.notEqual(selected.state.execution.rngState, initial.execution.rngState);
     assert.deepEqual(started.value, { type: "REJECTED", reason: "CONDITION" });
     assert.equal(started.state.execution.rngState, selected.state.execution.rngState);
-    assert.equal(getUnit(started.state, 0).action.instances.size, 0);
+    assert.equal(getUnit(started.state, 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 0);
 });
 
 test("standard damage and healing filters exclude departing and spatially absent candidates explicitly", () => {

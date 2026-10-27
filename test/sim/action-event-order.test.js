@@ -10,9 +10,9 @@ import { at } from "../../dist/core/battlefield/occupancy.js";
 test("action event order: lethal output completes platform onLeave content before action completion", () => {
     const trace = [];
     const attack = actionDefinition(10, { markerId: "damage" });
-    const definition = { ...attack, onEnd(current, self, reason) {
+    const definition = { ...attack, onEnd(current, source, self, reason) {
         trace.push("action ended");
-        return attack.onEnd?.(current, self, reason) ?? current;
+        return attack.onEnd?.(current, source, self, reason) ?? current;
     } };
     const source = unit(0, { action: definition });
     const support = {

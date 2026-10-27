@@ -3,12 +3,12 @@ import type { Ref } from "../../../common/ref.js";
 import { closeLifetime } from "../../../battle/execution/lifetime.js";
 import { appendEvents, type State as BattleState } from "../../../battle/state.js";
 import * as units from "../../query.js";
-import { ref, type View } from "../action.js";
+import type { Executing, ExecutingView } from "../action.js";
 import type { End } from "../definition.js";
 
 export function end(
     battle: BattleState,
-    reference: Ref<View>,
+    reference: Ref<ExecutingView>,
     result: End,
     lifetimeReason = result.type === "FINISHED" ? "ACTION_FINISHED" : result.reason,
 ): BattleState {
@@ -19,41 +19,53 @@ export function end(
     }
 
     return (
-        host.action.instances.read(reference.id, (self) => {
-            if (self.status === "ENDING") {
+        host.action.actions.readExecution(reference.id, (self) => {
+            if (self.execution.status === "ENDING") {
                 return battle;
             }
 
-            const ending = { ...self, status: "ENDING" as const };
+            const ending: Executing<typeof self.state, typeof self.execution.state> = {
+                ...self,
+                execution: { ...self.execution, status: "ENDING" },
+            };
             battle = updateUnit(battle, [
                 {
                     ...host,
                     action: {
                         ...host.action,
-                        instances: host.action.instances.replace(ref(self), ending),
+                        actions: host.action.actions.replace(self.definition, ending),
                     },
                 },
             ]);
-            battle = closeLifetime(battle, { type: "ACTION", ref: ref(ending) }, lifetimeReason);
+            battle = closeLifetime(battle, { type: "ACTION", ref: reference }, lifetimeReason);
 
             if (self.definition.onEnd !== undefined) {
-                battle = self.definition.onEnd(
-                    battle,
-                    units.get(battle, self.host)?.action.instances.get(self.id, self.definition) ??
-                        ending,
-                    result,
-                );
+                const current = units
+                    .get(battle, reference.host)
+                    ?.action.actions.get(self.definition.id, self.definition);
+                const latest =
+                    current?.execution?.id === reference.id
+                        ? { ...current, execution: current.execution }
+                        : ending;
+                battle = self.definition.onEnd(battle, reference.host, latest, result);
             }
 
-            const latest = units.get(battle, self.host);
+            const latestHost = units.get(battle, reference.host);
+            const latestAction = latestHost?.action.actions.get(
+                self.definition.id,
+                self.definition,
+            );
 
-            if (latest !== undefined) {
+            if (latestHost !== undefined && latestAction?.execution?.id === reference.id) {
                 battle = updateUnit(battle, [
                     {
-                        ...latest,
+                        ...latestHost,
                         action: {
-                            ...latest.action,
-                            instances: latest.action.instances.remove(self.id),
+                            ...latestHost.action,
+                            actions: latestHost.action.actions.replace(self.definition, {
+                                ...latestAction,
+                                execution: null,
+                            }),
                         },
                     },
                 ]);
@@ -61,8 +73,8 @@ export function end(
 
             return appendEvents(battle, [
                 {
-                    executionId: self.id,
-                    sourceUnitId: self.host.id,
+                    executionId: self.execution.id,
+                    sourceUnitId: reference.host.id,
                     tick: battle.tick,
                     ...(result.type === "FINISHED"
                         ? { type: "ACTION_FINISHED" as const }

@@ -205,7 +205,7 @@ test('core unit initialization pairs every declared capability with its initiali
   assert.equal(initialized.state, battle);
   assert.equal(unit.definition, definition);
   assert.equal(unit.vitality.hp, 100);
-  assert.equal(unit.action.states.size, definition.action.definitions.size);
+  assert.equal(unit.action.actions.size, definition.action.definitions.size);
   assert.equal(hasRoute(unit), true);
   assert.equal(unit.route.main.definition, definition.route);
   assert.equal(unit.spatialPresence.present, true);
@@ -613,7 +613,7 @@ initializeOffenseState(battleState, { attack: 1 }).value.attack;
 initializeVitalityState(battleState, { maxHp: 100, defense: 1, resistance: 0 }).value.defense;
 initializeLocomotionState(battleState, enemyDefinition.locomotion).value.velocity;
 declare const actionDefinition: Parameters<typeof initializeActionState>[1];
-initializeActionState(battleState, actionDefinition).value.states;
+initializeActionState(battleState, actionDefinition).value.actions;
 // @ts-expect-error capability initialization requires the current BattleState.
 initializeOffenseState({ attack: 1 });
 // @ts-expect-error capability initialization requires the current BattleState.

@@ -33,14 +33,12 @@ test("ordinary attack: phase correction samples the cooldown returned by its sta
     });
     let initial = { ...battle(unit(0, { action: definition }), unit(1)), tick: 10 };
     const source = unitRef(getUnit(initial, 0));
-    const current = actions.getState(initial, source, definition);
-    initial = actions.replaceState(initial, source, {
-        ...current, cooldown: { ...current.cooldown, readyAtTick: 9.75 },
-    });
+    const current = actions.getAction(initial, source, definition);
+    initial = actions.updateCooldown(initial, source, definition.id, cooldown => ({ ...cooldown, readyAtTick: 9.75 }));
     const started = start(initial, definition);
     assert.equal(started.value.type, "STARTED");
-    assert.equal(actions.getState(started.state, source, definition).cooldown.readyAtTick, 20);
-    assert.equal(actions.getState(initial, source, definition).cooldown.readyAtTick, 9.75);
+    assert.equal(actions.getAction(started.state, source, definition).cooldown.readyAtTick, 20);
+    assert.equal(actions.getAction(initial, source, definition).cooldown.readyAtTick, 9.75);
     assert.equal(getUnit(started.state, 1).vitality.hp, 93);
 });
 
@@ -185,7 +183,7 @@ test("ordinary attack: no target rejects startup without an instance or a consum
     assert.deepEqual(result.value, { type: "REJECTED", reason: "CONDITION" });
     assert.equal(result.state, initial);
     assert.equal(actions.all(result.state).length, 0);
-    const cooldown = getUnit(result.state, 0).action.states.get(definition.id).cooldown;
+    const cooldown = getUnit(result.state, 0).action.actions.get(definition.id).cooldown;
     assert.ok(cooldown.readyAtTick <= initial.tick);
 });
 
@@ -195,10 +193,10 @@ test("ordinary attack: a configured definition is shared while accepted progress
     const started = start(initial, definition),
         self = actions.get(started.state, started.value.ref);
     assert.equal(self.definition, definition);
-    assert.equal(self.state.released, false);
+    assert.equal(self.execution.state.released, false);
     const released = advance({ ...started.state, tick: 2 }, started.value.ref);
     assert.equal(getUnit(released, 1).vitality.hp, 93);
-    assert.equal(self.state.released, false);
+    assert.equal(self.execution.state.released, false);
     assert.equal(getUnit(started.state, 1).vitality.hp, 100);
 });
 
@@ -256,7 +254,7 @@ test("ACTION recovery callbacks may cancel the releasing attack before its outpu
     const result = start(original, attack);
     assert.equal(getUnit(result.state, 0).skill.sp.value, 1);
     assert.equal(getUnit(result.state, 1).vitality.hp, 100);
-    assert.equal(getUnit(result.state, 0).action.instances.size, 0);
+    assert.equal(getUnit(result.state, 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 0);
     assert.equal(result.state.events.filter(event => event.type === "ACTION_RELEASED").length, 1);
     assert.equal(getUnit(original, 0).skill.sp.value, 0);
 });

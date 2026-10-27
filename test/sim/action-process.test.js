@@ -28,9 +28,9 @@ function accepted(definition, state = battle(unit(0, { action: definition }), un
 }
 const ownedEffect = { id: "action-owned", initialize: () => ({}) };
 
-function installOwned(state, self, definition = ownedEffect) {
+function installOwned(state, source, self, definition = ownedEffect) {
     return effects.install(state, unitRef(getUnit(state, 1)), definition, {
-        scopes: [{ type: "ACTION", ref: actionRef(self) }],
+        scopes: [{ type: "ACTION", ref: actionRef(source, self) }],
     }).state;
 }
 
@@ -44,12 +44,12 @@ test("action: private progress and sampled values survive immutable branches wit
                 releaseAtTick: state.tick + 2,
             },
         }),
-        step(state, self) {
-            if (state.tick < self.state.releaseAtTick) return { state, value: false };
-            state = actions.update(state, actionRef(self), currentState => ({ ...currentState, released: true }));
+        step(state, source, self) {
+            if (state.tick < self.execution.state.releaseAtTick) return { state, value: false };
+            state = actions.update(state, actionRef(source, self), currentState => ({ ...currentState, released: true }));
             state = updateUnit(state, [{
                 ...getUnit(state, 1),
-                vitality: { ...getUnit(state, 1).vitality, hp: self.state.power - 7 },
+                vitality: { ...getUnit(state, 1).vitality, hp: self.execution.state.power - 7 },
             }]);
             return { state, value: true };
         },
@@ -60,7 +60,7 @@ test("action: private progress and sampled values survive immutable branches wit
     const completed = advance({ ...started.state, tick: 2 }, started.value.ref);
     assert.equal(getUnit(completed, 1).vitality.hp, 93);
     assert.equal(actions.get(completed, started.value.ref), undefined);
-    assert.equal(retained.state.released, false);
+    assert.equal(retained.execution.state.released, false);
     assert.equal(getUnit(initial, 1).vitality.hp, 100);
     assert.deepEqual(advance({ ...started.state, tick: 2 }, started.value.ref), completed);
 });
@@ -75,8 +75,8 @@ test("action: cancellation closes its dependencies once and retains preceding bu
         },
     };
     const definition = program("owned", {
-        step(state, self) {
-            state = installOwned(state, self, dependency);
+        step(state, source, self) {
+            state = installOwned(state, source, self, dependency);
             state = updateUnit(state, [{ ...getUnit(state, 1), position: [3, 0] }]);
             return { state, value: false };
         },
@@ -94,9 +94,9 @@ test("action: cancellation closes its dependencies once and retains preceding bu
 test("action: different definitions share a source while their state and effects remain independent", () => {
     const create = (id) =>
         program(id, {
-            step(state, self) {
-                if (self.state.progress === 0) state = installOwned(state, self);
-                state = actions.update(state, actionRef(self), currentState => ({ progress: currentState.progress + 1 }));
+            step(state, source, self) {
+                if (self.execution.state.progress === 0) state = installOwned(state, source, self);
+                state = actions.update(state, actionRef(source, self), currentState => ({ progress: currentState.progress + 1 }));
                 return { state, value: false };
             },
         });
@@ -110,21 +110,21 @@ test("action: different definitions share a source while their state and effects
         b = accepted(second, a.state);
     const cancelled = actions.cancel(b.state, a.value.ref, "SCRIPT");
     assert.equal(actions.get(cancelled, a.value.ref), undefined);
-    assert.equal(actions.get(cancelled, b.value.ref).state.progress, 1);
+    assert.equal(actions.get(cancelled, b.value.ref).execution.state.progress, 1);
     assert.equal(getUnit(cancelled, 1).effects.values().toArray().length, 1);
     assert.equal(getUnit(b.state, 1).effects.values().toArray().length, 2);
 });
 
 test("action: equal local identities on different hosts keep progress and lifetime dependencies independent", () => {
     const definition = program("shared", {
-        step(state, self) {
-            if (self.state.progress === 0) {
+        step(state, source, self) {
+            if (self.execution.state.progress === 0) {
                 state = effects.install(state, unitRef(getUnit(state, 2)), ownedEffect, {
-                    scopes: [{ type: "ACTION", ref: actionRef(self) }],
+                    scopes: [{ type: "ACTION", ref: actionRef(source, self) }],
                 }).state;
             }
             return {
-                state: actions.update(state, actionRef(self), currentState => ({ progress: currentState.progress + 1 })),
+                state: actions.update(state, actionRef(source, self), currentState => ({ progress: currentState.progress + 1 })),
                 value: false,
             };
         },
@@ -141,17 +141,17 @@ test("action: equal local identities on different hosts keep progress and lifeti
     assert.deepEqual(actions.all(second.state), [first.value.ref, second.value.ref]);
     assert.deepEqual(actions.forUnit(second.state, second.value.ref.host), [second.value.ref]);
     const progressed = advance({ ...second.state, tick: 1 }, second.value.ref);
-    assert.equal(actions.get(progressed, first.value.ref).state.progress, 1);
-    assert.equal(actions.get(progressed, second.value.ref).state.progress, 2);
+    assert.equal(actions.get(progressed, first.value.ref).execution.state.progress, 1);
+    assert.equal(actions.get(progressed, second.value.ref).execution.state.progress, 2);
 
     const cancelled = actions.cancel(progressed, first.value.ref, "SCRIPT");
     assert.equal(actions.get(cancelled, first.value.ref), undefined);
-    assert.equal(actions.get(cancelled, second.value.ref).state.progress, 2);
+    assert.equal(actions.get(cancelled, second.value.ref).execution.state.progress, 2);
     assert.deepEqual(getUnit(cancelled, 2).effects.values().toArray().map(effect => effect.id), [1]);
     assert.equal(getUnit(second.state, 2).effects.values().toArray().length, 2);
-    assert.equal(getUnit(initial, 0).action.instances.nextId, 0);
-    assert.equal(getUnit(cancelled, 0).action.instances.nextId, 1);
-    assert.equal(getUnit(cancelled, 1).action.instances.nextId, 1);
+    assert.equal(getUnit(initial, 0).action.nextExecutionId, 0);
+    assert.equal(getUnit(cancelled, 0).action.nextExecutionId, 1);
+    assert.equal(getUnit(cancelled, 1).action.nextExecutionId, 1);
 
     const ended = actions.cancel(cancelled, second.value.ref, "SCRIPT");
     assert.deepEqual(getUnit(ended, 2).effects.values().toArray(), []);
@@ -162,22 +162,22 @@ test("action: equal local identities on different hosts keep progress and lifeti
 test("action: dependency cleanup may remove its ending host before one terminal callback without resurrection", () => {
     const trace = [];
     const definition = program("ending-host", {
-        step(state, self) {
-            if (self.state.progress > 0) return { state, value: true };
-            state = installOwned(state, self, {
+        step(state, source, self) {
+            if (self.execution.state.progress > 0) return { state, value: true };
+            state = installOwned(state, source, self, {
                 ...ownedEffect,
                 onEnd(state) {
                     trace.push("dependency");
-                    return remove(state, self.host.id, "SCRIPT");
+                    return remove(state, source.id, "SCRIPT");
                 },
             });
-            return { state: actions.update(state, actionRef(self), () => ({ progress: 1 })), value: false };
+            return { state: actions.update(state, actionRef(source, self), () => ({ progress: 1 })), value: false };
         },
-        onEnd(state, self, outcome) {
+        onEnd(state, source, self, outcome) {
             trace.push(outcome.type);
-            assert.equal(getUnit(state, self.host.id), undefined);
-            assert.equal(actions.get(state, actionRef(self)), undefined);
-            assert.throws(() => actions.update(state, actionRef(self), () => ({ progress: 9 })), /unknown unit: 0/);
+            assert.equal(getUnit(state, source.id), undefined);
+            assert.equal(actions.get(state, actionRef(source, self)), undefined);
+            assert.throws(() => actions.update(state, actionRef(source, self), () => ({ progress: 9 })), /unknown unit: 0/);
             return state;
         },
     });
@@ -189,7 +189,7 @@ test("action: dependency cleanup may remove its ending host before one terminal 
     assert.equal(actions.get(completed, started.value.ref), undefined);
     assert.equal(completed.events.filter(event => event.type === "ACTION_FINISHED").length, 1);
     assert.equal(completed.events.some(event => event.type === "ACTION_CANCELLED"), false);
-    assert.equal(getUnit(started.state, 0).action.instances.size, 1);
+    assert.equal(getUnit(started.state, 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 1);
 });
 
 test("action: private progress is visible to nested callbacks before their business executes", () => {
@@ -197,16 +197,16 @@ test("action: private progress is visible to nested callbacks before their busin
     const dependency = {
         ...ownedEffect,
         onInstall(state) {
-            observed = actions.get(state, currentRef).state.progress;
+            observed = actions.get(state, currentRef).execution.state.progress;
             return state;
         },
     };
     let currentRef;
     const definition = program("visible", {
-        step(state, self) {
-            currentRef = actionRef(self);
-            state = actions.update(state, actionRef(self), () => ({ progress: 1 }));
-            return { state: installOwned(state, self, dependency), value: true };
+        step(state, source, self) {
+            currentRef = actionRef(source, self);
+            state = actions.update(state, actionRef(source, self), () => ({ progress: 1 }));
+            return { state: installOwned(state, source, self, dependency), value: true };
         },
     });
     accepted(definition);
@@ -224,11 +224,11 @@ test("action: normal finish and cancellation close dependencies before one termi
             },
         };
         const definition = program(`terminal-${finish}`, {
-            step: (state, self) => ({
-                state: installOwned(state, self, dependency),
+            step: (state, source, self) => ({
+                state: installOwned(state, source, self, dependency),
                 value: finish,
             }),
-            onEnd(state, self, end) {
+            onEnd(state, source, self, end) {
                 trace.push(end.type);
                 return state;
             },
@@ -251,11 +251,11 @@ test("action: normal finish and cancellation close dependencies before one termi
 test("action: ENDING occupies the definition and repeated cancellation cannot reenter onEnd", () => {
     let count = 0;
     const definition = program("ending", {
-        onEnd(state, self) {
+        onEnd(state, source, self) {
             count++;
-            assert.equal(actions.get(state, actionRef(self)).status, "ENDING");
-            state = actions.cancel(state, actionRef(self), "REENTER");
-            const attempted = actions.start(state, self.host, definition);
+            assert.equal(actions.get(state, actionRef(source, self)).execution.status, "ENDING");
+            state = actions.cancel(state, actionRef(source, self), "REENTER");
+            const attempted = actions.start(state, source, definition);
             assert.deepEqual(attempted.value, { type: "REJECTED", reason: "CASTING" });
             return attempted.state;
         },
@@ -269,19 +269,19 @@ test("action: ENDING occupies the definition and repeated cancellation cannot re
 test("action: source departure completes nested cleanup while entered content continues", () => {
     const trace = [];
     const definition = program("depart", {
-        step(state, self) {
-            state = installOwned(state, self, {
+        step(state, source, self) {
+            state = installOwned(state, source, self, {
                 ...ownedEffect,
                 onEnd: (state) => {
                     trace.push("dependency");
                     return state;
                 },
             });
-            state = remove(state, self.host.id, "SCRIPT");
-            assert.equal(actions.get(state, actionRef(self)), undefined);
+            state = remove(state, source.id, "SCRIPT");
+            assert.equal(actions.get(state, actionRef(source, self)), undefined);
             trace.push("returned");
             state = updateUnit(state, [{ ...getUnit(state, 1), position: [4, 0] }]);
-            assert.throws(() => actions.update(state, actionRef(self), () => ({ progress: 9 })), /unknown unit: 0/);
+            assert.throws(() => actions.update(state, actionRef(source, self), () => ({ progress: 9 })), /unknown unit: 0/);
             return { state, value: true };
         },
         onEnd: (state) => {
@@ -307,9 +307,9 @@ test("action: source departure completes nested cleanup while entered content co
 test("action: a throwing program leaves its input progress, instances and target untouched", () => {
     const failure = new Error("program failed");
     const definition = program("failure", {
-        step(state, self) {
+        step(state, source, self) {
             if (state.tick === 0) return { state, value: false };
-            state = actions.update(state, actionRef(self), () => ({ progress: 7 }));
+            state = actions.update(state, actionRef(source, self), () => ({ progress: 7 }));
             state = updateUnit(state, [{ ...getUnit(state, 1), position: [4, 0] }]);
             throw failure;
         },
@@ -320,6 +320,6 @@ test("action: a throwing program leaves its input progress, instances and target
         () => advance({ ...before, tick: 1 }, started.value.ref),
         (error) => error === failure,
     );
-    assert.equal(actions.get(before, started.value.ref).state.progress, 0);
+    assert.equal(actions.get(before, started.value.ref).execution.state.progress, 0);
     assert.deepEqual(getUnit(before, 1).position, [1, 0]);
 });
