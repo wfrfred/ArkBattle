@@ -17,7 +17,7 @@ import { activate as activateSkill, advance as advanceSkill, finish as finishSki
 import { resolveAttack } from '../../dist/core/unit/capability/offense/index.js';
 import { fixtureBattlefieldState } from '../helpers/battlefield.js';
 import { ref as unitRef } from '../../dist/core/unit/index.js';
-import { start as startAction } from '../../dist/core/unit/action/index.js';
+import { start as startAction, ref as actionRef } from '../../dist/core/unit/action/index.js';
 import { advance as advanceAction } from '../../dist/core/unit/action/index.js';
 import { select } from '../../dist/core/battle/targeting/index.js';
 import { invisibleRestriction, camouflageRestriction, untargetableRestriction } from '../../dist/content/effects/visibility.js';
@@ -89,7 +89,7 @@ test('ordinary attacks read current talent and skill contributions instead of ca
   let state = add(createBattleState(fixtureBattlefieldState([receiver])), source);
   state = updateUnit(state, [{ ...getUnit(state, 0), skill: { ...getUnit(state, 0).skill, sp: { ...getUnit(state, 0).skill.sp, value: 40 } } }]);
   state = activateSkill({ ...state, tick: 0  }, unitRef(getUnit(state, 0))).state;
-  const started = startAction(state, unitRef(getUnit(state, 0)), attack);
+  const started = startAction(state, actionRef(unitRef(getUnit(state, 0)), attack));
   state = advanceAction(started.state, started.value.ref);
   const amount = state.events.find(event => event.type === 'DAMAGE').amount;
   assert.ok(Math.abs(amount - (738 + 25 + 65) * 1.58) < 1e-6);
@@ -123,7 +123,7 @@ test('Melantha still checks active targeting restrictions on enemies she is bloc
 
     assert.deepEqual(blockingQueries.relations(state).map(({ blocker, blocked }) => ({ blockerUnitId: blocker.id, blockedUnitId: blocked.id })), [{ blockerUnitId: 0, blockedUnitId: 1 }]);
     assert.deepEqual(select(state, { ...attack.attack.targetGroups[0].targeting, source: unitRef(source) }).value, []);
-    const started = startAction(state, unitRef(source), attack);
+    const started = startAction(state, actionRef(unitRef(source), attack));
     assert.deepEqual(started.value, { type: 'REJECTED', reason: 'CONDITION' });
     assert.equal(getUnit(started.state, 1).vitality.hp, 1000);
   }

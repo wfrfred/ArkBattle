@@ -35,9 +35,9 @@ for (const nested of ["cancel", "advance", "advance complete", "advance waiting"
             },
         };
         let state = battle(unit(0, { action: actionCapability(first, second) }), unit(1));
-        const acceptedFirst = actions.start(state, unitRef(getUnit(state, 0)), first);
+        const acceptedFirst = actions.start(state, actions.ref(unitRef(getUnit(state, 0)), first));
         const firstRef = acceptedFirst.value.ref;
-        const acceptedSecond = actions.start(acceptedFirst.state, unitRef(getUnit(state, 0)), second);
+        const acceptedSecond = actions.start(acceptedFirst.state, actions.ref(unitRef(getUnit(state, 0)), second));
         const secondRef = acceptedSecond.value.ref;
         state = acceptedSecond.state;
         armed = true;

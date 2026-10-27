@@ -17,7 +17,7 @@ import { add as addUnit } from '../../dist/core/battle/unit.js';
 import { getUnit } from '../helpers/unit.js';
 import { create as createBattlefield } from '../../dist/core/battlefield/state.js';
 import { create as createMap } from '../../dist/core/battlefield/map/map.js';
-import { start as startAction } from '../../dist/core/unit/action/index.js';
+import { start as startAction, ref as actionRef } from '../../dist/core/unit/action/index.js';
 import { ref as unitRef } from '../../dist/core/unit/index.js';
 import { select } from '../../dist/core/battle/targeting/index.js';
 import { allowsRestrictions } from '../../dist/core/unit/capability/targetable/capability.js';
@@ -106,7 +106,7 @@ test('hound factory composes capabilities and attacks its retained blocker with 
   const damaged = damageElement(before, unitRef(hound), { source: null, type: 'BURN', power: 100 });
   assert.equal(getUnit(damaged.state, 1).elemental.ep.BURN, 900);
   assert.equal(getUnit(damaged.state, 1).vitality.hp, 820);
-  const started = startAction(before, unitRef(hound), attack);
+  const started = startAction(before, actionRef(unitRef(hound), attack));
   const after = advanceAction(started.state, started.value.ref);
   assert.equal(getUnit(after, 0).vitality.hp, 850);
   assert.equal(getUnit(before, 0).vitality.hp, 1000);
@@ -128,7 +128,7 @@ test('a blocked hound selects its blocker directly despite normal targeting rest
     assert.deepEqual(blockingQueries.relations(before).map(({ blocker, blocked }) => ({ blockerUnitId: blocker.id, blockedUnitId: blocked.id })), [{ blockerUnitId: 0, blockedUnitId: 1 }]);
     assert.equal(allowsRestrictions(before, request, getUnit(before, 0)), false);
     assert.deepEqual(select(before, request).value.map(ref => ref.id), [0]);
-    const started = startAction(before, unitRef(hound), action);
+    const started = startAction(before, actionRef(unitRef(hound), action));
     assert.equal(started.value.type, 'STARTED');
     const advanced = advanceAction(started.state, started.value.ref);
     assert.ok(getUnit(advanced, 0).vitality.hp < 1000);
@@ -179,7 +179,7 @@ test('directly selecting an invincible blocker still preserves damage reception 
   } };
   const hound = initialize({ id: 1, position: [2, 2.5], definition });
   const state = advanceBlocking(addUnit(addUnit(emptyBattle(), blocker), hound));
-  const started = startAction(state, unitRef(hound), action);
+  const started = startAction(state, actionRef(unitRef(hound), action));
 
   assert.equal(started.value.type, 'STARTED');
   const advanced = advanceAction(started.state, started.value.ref);
@@ -197,7 +197,7 @@ test('crossbow uses explicit windup and arrow speed, then settles damage on cont
 
   const bow = initialize({ id: 1, position: [2, 3.5], definition });
   const before = addUnit(addUnit(emptyBattle(), guard(0, [2, 2], 0)), bow);
-  const started = startAction(before, unitRef(bow), attack);
+  const started = startAction(before, actionRef(unitRef(bow), attack));
   let state = started.state;
   assert.equal(state.battlefield.projectiles.size, 0);
   assert.equal(getUnit(state, 0).vitality.hp, 1000);

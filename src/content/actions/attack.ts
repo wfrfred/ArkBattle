@@ -14,8 +14,9 @@ import type { Unit } from "../../core/unit/index.js";
 
 import {
     ref,
+    executionRef,
     type Action,
-    type Executing,
+    type Execution,
     type Definition as ActionDefinition,
 } from "../../core/unit/action/index.js";
 import * as actions from "../../core/unit/action/index.js";
@@ -92,12 +93,12 @@ export interface Definition<
     readonly output?: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability>,
-        self: Executing<P, State<E>>,
+        self: Execution<P, State<E>>,
     ) => BattleState;
     readonly afterOutput?: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability>,
-        self: Executing<P, State<E>>,
+        self: Execution<P, State<E>>,
     ) => BattleState;
     readonly onEnd?: ActionDefinition<P, State<E>>["onEnd"];
 }
@@ -307,7 +308,7 @@ export function createWithState<P extends object, E extends object>(
 
             const releaseAtTick = battle.tick + (definition.windupTicks ?? 0);
             const initialized = definition.prepare(battle, source, self);
-            const current = actions.getAction(initialized.state, source, self.definition);
+            const current = actions.getAction(initialized.state, ref(source, self.definition));
 
             return {
                 state: initialized.state,
@@ -324,7 +325,7 @@ export function createWithState<P extends object, E extends object>(
             };
         },
         onTick(battle, source, self) {
-            const identity = ref(source, self);
+            const identity = executionRef(source, self);
 
             if (!self.execution.state.cooldownAdjusted) {
                 const overdue =
@@ -333,8 +334,7 @@ export function createWithState<P extends object, E extends object>(
                 if (overdue >= 0 && overdue < 1) {
                     battle = actions.updateCooldown(
                         battle,
-                        source,
-                        self.definition.id,
+                        ref(source, self.definition),
                         (current) => ({
                             ...current,
                             readyAtTick:
@@ -343,11 +343,11 @@ export function createWithState<P extends object, E extends object>(
                     );
                 }
 
-                battle = actions.update(battle, identity, (current) => ({
+                battle = actions.updateExecution(battle, identity, (current) => ({
                     ...current,
                     cooldownAdjusted: true,
                 }));
-                self = actions.get(battle, identity) ?? self;
+                self = actions.getExecution(battle, identity) ?? self;
                 battle = appendEvents(battle, [
                     {
                         type: "ACTION",
@@ -362,13 +362,13 @@ export function createWithState<P extends object, E extends object>(
                 !self.execution.state.released &&
                 battle.tick >= self.execution.state.releaseAtTick
             ) {
-                battle = actions.update(battle, identity, (current) => ({
+                battle = actions.updateExecution(battle, identity, (current) => ({
                     ...current,
                     released: true,
                 }));
                 const permission = beforeRelease(battle, identity);
                 battle = permission.state;
-                const current = actions.get(battle, identity);
+                const current = actions.getExecution(battle, identity);
 
                 if (current?.execution.status !== "RUNNING" || !sourcePresent(battle, source)) {
                     return {
@@ -380,8 +380,7 @@ export function createWithState<P extends object, E extends object>(
                     const recoveryTicks = permission.value.recoveryTicks;
                     battle = actions.updateCooldown(
                         battle,
-                        source,
-                        self.definition.id,
+                        ref(source, self.definition),
                         (current) => ({
                             ...current,
                             readyAtTick: Math.max(current.readyAtTick, battle.tick + recoveryTicks),
@@ -403,7 +402,7 @@ export function createWithState<P extends object, E extends object>(
 
                 battle = released(battle, identity);
 
-                const output = actions.get(battle, identity);
+                const output = actions.getExecution(battle, identity);
 
                 if (output?.execution.status !== "RUNNING" || !sourcePresent(battle, source)) {
                     return {
@@ -418,7 +417,10 @@ export function createWithState<P extends object, E extends object>(
                     for (const group of definition.targetGroups) {
                         for (const operation of group.operations) {
                             for (const target of output.execution.state.bindings[group.id] ?? []) {
-                                if (actions.get(battle, identity)?.execution.status !== "RUNNING") {
+                                if (
+                                    actions.getExecution(battle, identity)?.execution.status !==
+                                    "RUNNING"
+                                ) {
                                     return { state: battle, value: true };
                                 }
 
@@ -431,7 +433,10 @@ export function createWithState<P extends object, E extends object>(
                             ? [source]
                             : (output.execution.state.bindings[followUp.receiver.bindingId] ??
                               [])) {
-                            if (actions.get(battle, identity)?.execution.status !== "RUNNING") {
+                            if (
+                                actions.getExecution(battle, identity)?.execution.status !==
+                                "RUNNING"
+                            ) {
                                 return { state: battle, value: true };
                             }
 
@@ -440,7 +445,7 @@ export function createWithState<P extends object, E extends object>(
                     }
                 }
 
-                const completed = actions.get(battle, identity);
+                const completed = actions.getExecution(battle, identity);
 
                 if (completed?.execution.status !== "RUNNING") {
                     return { state: battle, value: true };
@@ -451,7 +456,7 @@ export function createWithState<P extends object, E extends object>(
                 }
             }
 
-            const current = actions.get(battle, identity);
+            const current = actions.getExecution(battle, identity);
 
             return {
                 state: battle,

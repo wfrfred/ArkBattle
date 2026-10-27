@@ -1,7 +1,7 @@
 import { assertPositiveSafeInteger } from "../../core/common/assert.js";
 import type { Ref } from "../../core/common/ref.js";
 
-import { ref as actionRef, get as getAction } from "../../core/unit/action/index.js";
+import { executionRef, getExecution } from "../../core/unit/action/index.js";
 import {
     ref,
     type Activation,
@@ -44,7 +44,7 @@ export function create(definition: Definition): Attack<object, State> {
         },
         afterOutput(battle, source, self) {
             battle = afterOutput?.(battle, source, self) ?? battle;
-            const current = getAction(battle, actionRef(source, self));
+            const current = getExecution(battle, executionRef(source, self));
             const activation = current?.execution.state.data.activation;
 
             if (current?.execution.status !== "RUNNING" || activation == null) {

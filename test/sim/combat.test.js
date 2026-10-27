@@ -19,7 +19,7 @@ import { initialize as initializeBattle, step as advanceBattle } from "../../dis
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "../helpers/tiles.js";
 import { initialize } from "../helpers/unit.js";
-import { start as startAction } from "../../dist/core/unit/action/index.js";
+import { start as startAction, ref as actionRef } from "../../dist/core/unit/action/index.js";
 import { advance as advanceAction } from "../../dist/core/unit/action/index.js";
 import { damage as damageFixture, healing as healingFixture } from "../helpers/targeting.js";
 import { topK } from "../../dist/core/common/collection.js";
@@ -41,7 +41,7 @@ import { getUnit } from "../helpers/unit.js";
 const executeSingleAction = (source, definition, context) => {
   let battleState = createBattleState(context.battlefield);
   battleState = updateUnit({ ...battleState, tick: context.tick }, [source]);
-  const started = startAction(battleState, unitRef(source), definition);
+  const started = startAction(battleState, actionRef(unitRef(source), definition));
   battleState = started.value.type === 'STARTED'
     ? advanceAction(started.state, started.value.ref)
     : started.state;

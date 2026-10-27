@@ -40,10 +40,10 @@ test("attack target groups and start callbacks receive the RNG state produced by
     const seeded = { ...initial, execution: { ...initial.execution, rngState: 73 } };
     const first = select(seeded, { ...primary.targeting, source: ref(source) });
     const second = select(first.state, { ...secondary.targeting, source: ref(source) });
-    const started = actions.start(seeded, ref(source), action);
+    const started = actions.start(seeded, actions.ref(ref(source), action));
 
     assert.equal(started.value.type, "STARTED");
-    const running = actions.get(started.state, started.value.ref);
+    const running = actions.getExecution(started.state, started.value.ref);
     assert.deepEqual(running.execution.state.bindings, { primary: first.value, secondary: second.value });
     assert.equal(started.state.execution.rngState, second.state.execution.rngState);
     assert.equal(observed, second.state.execution.rngState);
@@ -58,7 +58,7 @@ test("an attack rejected for an empty trigger binding retains completed target-s
     const source = unit(0, { action });
     const initial = battle(source, unit(1), unit(2));
     const selected = chooseTargets(initial, ref(source), action.attack);
-    const started = actions.start(initial, ref(source), action);
+    const started = actions.start(initial, actions.ref(ref(source), action));
 
     assert.deepEqual(selected.value.primary, []);
     assert.equal(selected.value.secondary.length, 1);

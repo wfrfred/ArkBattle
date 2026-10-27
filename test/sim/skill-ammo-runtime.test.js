@@ -17,7 +17,7 @@ import * as tracking from "../../dist/content/projectiles/tracking.js";
 
 import { create as createAttack } from "../../dist/content/actions/skill.js";
 import { actionCapability } from "../helpers/actions.js";
-import { ref as actionRef } from "../../dist/core/unit/action/index.js";
+import { executionRef } from "../../dist/core/unit/action/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { advance as advanceAction } from "../../dist/core/unit/action/index.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
@@ -147,7 +147,7 @@ test("skill attack snapshots its output callback and ammunition cost when create
   state = activate(state, unitRef(actor)).state;
   configuration.afterOutput = current => { trace.push("replacement"); return current; };
   configuration.ammoPerAction = 3;
-  const started = actions.start(state, unitRef(actor), attack);
+  const started = actions.start(state, actions.ref(unitRef(actor), attack));
   state = advanceAction(started.state, started.value.ref);
   assert.deepEqual(trace, ["original"]);
   assert.equal(getUnit(state, 1).vitality.hp, 93);
@@ -197,7 +197,7 @@ test("ammo runtime: hiding the source after damage still pays for the sampled ac
 test("ammo runtime: cancellation during windup spends no ammunition", () => {
   let runtime = scenario({ ammo: 3, windupTicks: 2 });
   runtime = stepBattle(runtime, [{ type: "ACTIVATE_SKILL", unitId: 0 }]);
-  const ref = actionRef(unitReference(unitQueries.all(runtime).toArray().find(unit => unit.id === 0)), unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0]);
+  const ref = executionRef(unitReference(unitQueries.all(runtime).toArray().find(unit => unit.id === 0)), unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0]);
   const cancelled = (runtime = stepBattle(runtime, [{ type: "CANCEL_ACTION_EXECUTION", ref }]));
   assert.deepEqual(cancelled.events.filter(({ type }) => type === "ACTION_CANCELLED").map(({ reason }) => reason), ["CANCELLED"]);
   assert.deepEqual(damageEvents(cancelled), []);
@@ -230,9 +230,9 @@ test("ammo runtime: a content-defined follow-up preserves one ammunition payment
     onTick(state, source, self) {
       if (self.execution.state.emitted === 0) {
         state = normal.onTick(state, source, self).state;
-        const current = actions.get(state, actionRef(source, self));
+        const current = actions.getExecution(state, executionRef(source, self));
         if (current === undefined) return { state, value: true };
-        return { state: actions.update(state, actionRef(source, current), currentState => ({ ...currentState, emitted: 1 })), value: false };
+        return { state: actions.updateExecution(state, executionRef(source, current), currentState => ({ ...currentState, emitted: 1 })), value: false };
       }
       for (const target of self.execution.state.bindings.main) {
         state = dealDamage(state, { source: { id: source.id }, target: { id: target.id }, parameters: parameters(resolveAttack(state, source), "TRUE") }).state;

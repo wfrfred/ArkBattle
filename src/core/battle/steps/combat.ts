@@ -1,6 +1,7 @@
 import * as actions from "../../unit/action/operations.js";
 import { forUnit } from "../../unit/action/query.js";
 import { advance as advanceAction } from "../../unit/action/advance.js";
+import { ref as actionRef } from "../../unit/action/action.js";
 import * as units from "../../unit/query.js";
 import { hasAction } from "../../unit/capability/action/capability.js";
 import { isSpatiallyPresent } from "../../unit/capability/presence/capability.js";
@@ -67,7 +68,7 @@ export function advance(battle: BattleState): BattleState {
             }
 
             const advanced = latest.action.actions.read(id, (self) => {
-                const started = actions.start(battle, reference, self.definition);
+                const started = actions.start(battle, actionRef(reference, self.definition));
 
                 return started.value.type === "STARTED"
                     ? advanceAction(started.state, started.value.ref)

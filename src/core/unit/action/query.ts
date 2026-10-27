@@ -3,11 +3,12 @@ import { sort } from "../../common/collection.js";
 import type { Ref } from "../../common/ref.js";
 import * as units from "../query.js";
 import type { Unit } from "../unit.js";
-import { hasAction, type Action as ActionCapability } from "../capability/action/capability.js";
-import { ref, type Action, type ExecutingView } from "./action.js";
-import type { Definition, Id as DefinitionId } from "./definition.js";
+import { hasAction } from "../capability/action/capability.js";
+import type { Action } from "./action.js";
+import { ref, type View as ExecutionView } from "./execution.js";
+import type { Id as DefinitionId } from "./definition.js";
 
-export function all(battle: BattleState): readonly Ref<ExecutingView>[] {
+export function all(battle: BattleState): readonly Ref<ExecutionView>[] {
     return units
         .all(battle)
         .filter(hasAction)
@@ -15,7 +16,7 @@ export function all(battle: BattleState): readonly Ref<ExecutingView>[] {
             sort(
                 host.action.actions
                     .values()
-                    .filter((self): self is ExecutingView => self.execution !== null)
+                    .filter((self): self is ExecutionView => self.execution !== null)
                     .map((self) => ref(units.ref(host), self)),
                 (left, right) => left.id - right.id,
             ),
@@ -23,35 +24,36 @@ export function all(battle: BattleState): readonly Ref<ExecutingView>[] {
         .toArray();
 }
 
-export function forUnit(battle: BattleState, source: Ref<Unit>): readonly Ref<ExecutingView>[] {
+export function forUnit(battle: BattleState, source: Ref<Unit>): readonly Ref<ExecutionView>[] {
     const unit = units.get(battle, source);
 
     return unit !== undefined && hasAction(unit)
         ? sort(
               unit.action.actions
                   .values()
-                  .filter((self): self is ExecutingView => self.execution !== null)
+                  .filter((self): self is ExecutionView => self.execution !== null)
                   .map((self) => ref(units.ref(unit), self)),
               (left, right) => left.id - right.id,
           )
         : [];
 }
 
-export function get<A extends ExecutingView>(
+export function getExecution<X extends ExecutionView>(
     battle: BattleState,
-    reference: Ref<A>,
-): A | undefined {
+    reference: Ref<X>,
+): X | undefined {
     return units
         .get(battle, reference.host)
-        ?.action.actions.readExecution(reference.id, (self) => self as unknown as A);
+        ?.action.actions.readExecution(reference.id, (self) => self as unknown as X);
 }
 
 export function getAction<P extends object, E extends object>(
     battle: BattleState,
-    source: Ref<Unit & ActionCapability>,
-    definition: Definition<P, E>,
+    reference: Ref<Action<P, E>>,
 ): Action<P, E> | undefined {
-    return units.get(battle, source)?.action.actions.get(definition.id, definition);
+    return units
+        .get(battle, reference.host)
+        ?.action.actions.get(reference.definition.id, reference.definition);
 }
 
 export function isCasting(

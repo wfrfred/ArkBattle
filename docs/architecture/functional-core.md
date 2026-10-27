@@ -89,12 +89,14 @@ calculateHealing(battle, request) → Result<CalculatedHealing | undefined>
 applyHealing(request, calculation) → Result<HealingOutcome>
 install(battle, hostRef, definition, initial) → Result<Ref<Effect<S, H>> | undefined>
 effects.update(battle, effectRef, current => nextData) → BattleState
-actions.update(battle, actionRef, current => nextState) → BattleState
+actions.start(battle, actionRef) → Result<StartOutcome<P, E>>
+actions.updateState(battle, actionRef, current => nextState) → BattleState
+actions.updateExecution(battle, executionRef, current => nextState) → BattleState
 end(battle, ref, reason?) → BattleState
-advanceAction(battle, actionRef) → BattleState
+actions.advance(battle, executionRef) → BattleState
 ```
 
-`BattleState` 是不可变数据值。只需要返回状态的操作可以直接返回 BattleState；报告和 outcome 按各领域的真实需求决定。完整接口分类见[接口约定](api-conventions.md)；上面的 advanceAction 只由 Runtime 调度。Action.start 完成执行登记和冷却重置；Runtime 推进入口快照中的执行，并在自动选择启动成功后显式首次推进。内容直接或嵌套启动的执行按登记相对调度快照的时点，等待本次或后续调度推进。
+`BattleState` 是不可变数据值。只需要返回状态的操作可以直接返回 BattleState；报告和 outcome 按各领域的真实需求决定。完整接口分类见[接口约定](api-conventions.md)；上面的 actions.advance 只由 Runtime 调度。Action.start 完成执行登记和冷却重置；Runtime 推进入口快照中的执行，并在自动选择启动成功后显式首次推进。内容直接或嵌套启动的执行按登记相对调度快照的时点，等待本次或后续调度推进。
 
 Hook、生命周期和具体装备／技能程序同样遵守显式状态返回。它们可以调用 Damage、Healing、Effect、Skill 等纯结算函数，但不通过 setter、全局变量或捕获的旧执行上下文写回。
 
@@ -218,7 +220,7 @@ candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定�
 
 Unit 持有不可变 Effects 容器，容器内部使用私有 Store 保存完整实例及 ID 进度。普通 `get(id)`／`values()` 只承诺公共 View 的身份、参与状态、来源、scopes 和定义元数据，不暴露私有 data 或完整回调。`values()`／`keys()` 返回绑定容器版本的 Query。精确 Ref 查询保留已有类型证明；`get(id, definition)` 检查 Definition 对象身份；通用生命周期操作通过 `read(id, reader)` 在同一组泛型下访问完整实例与 Definition。
 
-容器不接收战斗状态，也不决定生命周期阶段；完整 replace 由 Core 提交已经配对的值。Effect 容器保存宿主内 ID 进度，Action 的 nextExecutionId 保存于 Capability；Actions 按配置 ID 保存聚合条目，本轮终结只清空 execution。普通内容通过 `effects.update(battle, ref, current => next)` 更新私有 data，Action 的 update 使用同样形式更新 execution.state，updateState／updateCooldown 分别更新持久 state／Cooldown。操作从最新 battle 读取当前载荷，缺失时不调用 transform，返回相同载荷引用时不生成新 battle。Action 的 execution 为 ENDING 时不允许普通执行更新；持久字段和 Effect 的结束清理仍按各自协议更新。
+容器不接收战斗状态，也不决定生命周期阶段；完整 replace 由 Core 提交已经配对的值。Effect 容器保存宿主内 ID 进度，Action 的 nextExecutionId 保存于 Capability；Actions 按配置 ID 保存聚合条目，本轮终结只清空 execution。普通内容通过 `effects.update(battle, ref, current => next)` 更新私有 data，Action 的 updateExecution 通过本轮 Execution Ref 使用同样形式更新 execution.state，updateState／updateCooldown 通过持久 Action Ref 分别更新持久 state／Cooldown。Action Ref 由 host 与 Definition 定位，保留私有类型配对；Execution Ref 仍由 host 与本轮 execution.id 定位。两种引用读取同一聚合条目，不增加运行容器或 ID 分配。操作从最新 battle 读取当前载荷，缺失时不调用 transform，返回相同载荷引用时不生成新 battle。Action 的 execution 为 ENDING 时不允许普通执行更新；持久字段和 Effect 的结束清理仍按各自协议更新。
 
 Projectile 的异构容器归 projectile/projectiles.ts，状态仍由 Battlefield 持有，完整 battle/projectile.ts 操作直接替换容器。Projectile 使用同样的 latest-state 更新原则，但其 transform 直接读取完整只读实例，并返回 position／state 的局部更新；Core 只提取允许字段，ACTIVE 与 ENDING 均可写。Runtime 在整个 Step 的阶段回调开始前固定候选 Ref，逐项读取最新 ACTIVE 实例，本次新建实例不参与正常推进。
 

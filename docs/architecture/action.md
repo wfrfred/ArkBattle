@@ -16,7 +16,8 @@ Action 负责行为程序的选择、启动、推进与完整终止。具体内�
 | Unit Action Capability Definition | 创建本 Unit 行动的 initialize 程序和可选 select 程序 |
 | Unit Action Capability State | 单一 Actions 容器、宿主内 nextExecutionId、interval／speed 贡献、启动 Rule、释放前拦截与成功释放通知 |
 | Action | 一种配置行动在某 Unit 上的 Definition、持久 state、Cooldown 和当前 execution |
-| Execution | 本次执行的 id、startedAtTick、status 和私有 state |
+| Execution | 以本轮执行身份读取同一聚合条目的完整视图，execution 确定非空 |
+| execution.State | 聚合条目内本次执行的 id、startedAtTick、status 和私有 state |
 | Runtime | 固定候选、逐项推进与启动、接续状态，成功后发布整 Tick |
 
 Cooldown 表达同种行动何时可以再次启动；execution 非空表示本轮尚未完成终止。同 Unit 同配置 Definition 同时最多有一个 Execution，RUNNING／ENDING 均占用该启动位置。不同 Definition 可以同时执行；互斥、抢占与等待由内容选择、启动 Rule 和明确取消表达。
@@ -31,10 +32,10 @@ Rule 只负责启动准入，不自动中断现有执行。眩晕等需要中断
 
 | 职责 | 导出 |
 | --- | --- |
-| 身份与类型 | ref；Action、Executing、ExecutingView、Definition、Signal、StartOutcome |
+| 身份与类型 | ref、executionRef；Action、Execution、ExecutionView、Definition、Signal、StartOutcome |
 | 创建 | create、createActions |
-| 查询 | all、forUnit、get、getAction、isCasting |
-| 业务操作 | start、update、updateState、updateCooldown、cancel、cancelForUnit、refreshCooldowns、resetCooldown、clearCooldown |
+| 查询 | all、forUnit、getExecution、getAction、isCasting |
+| 业务操作 | start、updateExecution、updateState、updateCooldown、cancel、cancelForUnit、refreshCooldowns、resetCooldown、clearCooldown |
 | 调度协作 | advance，仅由调度器主动调用 |
 
 五个查询实现在 [query.ts](../../src/core/unit/action/query.ts)；完整启动、写回与终止统一由 [operations.ts](../../src/core/unit/action/operations.ts) 实现。[advance.ts](../../src/core/unit/action/advance.ts) 派发执行程序，直接从 operations.ts 取得域内共享的 end，不经过公共入口。end 的内部导出不使其成为公共 API；advance 的公共协作入口也不扩大 Content 的调用权限。
@@ -42,19 +43,22 @@ Rule 只负责启动准入，不自动中断现有执行。眩晕等需要中断
 ```typescript
 import {
     ref,
+    executionRef,
     type Definition as ActionDefinition,
     type Action,
-    type Executing,
+    type Execution,
 } from "./action/index.js";
 import type { Action as ActionCapability } from "./capability/action/index.js";
 import * as actions from "./action/index.js";
 ```
 
-消费侧按实际角色选择具名导入、命名空间或别名。Actions 运行时类不从 index 导出；内部模型、容器、Execution 类型和局部 Cooldown 计算仍可按职责从实现文件深导。Core 调度与协作可以精确导入依赖，不要求领域内部经由 index。
+消费侧按实际角色选择具名导入、命名空间或别名。Actions 运行时类不从 index 导出；内部容器、执行数据和局部 Cooldown 计算仍可按职责从实现文件深导。Core 调度与协作可以精确导入依赖，不要求领域内部经由 index。
 
 ## 3. Definition、Action 与 Execution
 
 ```typescript
+import type { State as ExecutionState } from "./execution.js";
+
 export type End =
     | { readonly type: "FINISHED" }
     | { readonly type: "CANCELLED"; readonly reason: string };
@@ -72,12 +76,12 @@ export interface Definition<P extends object, E extends object> {
     readonly onTick: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability>,
-        self: Executing<P, E>,
+        self: Execution<P, E>,
     ) => Result<boolean>;
     readonly onEnd?: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability>,
-        self: Executing<P, E>,
+        self: Execution<P, E>,
         end: End,
     ) => BattleState;
 }
@@ -86,18 +90,18 @@ export interface Action<P extends object, E extends object> {
     readonly definition: Definition<P, E>;
     readonly state: P;
     readonly cooldown: CooldownState;
-    readonly execution: Execution<E> | null;
+    readonly execution: ExecutionState<E> | null;
 }
 
-export interface Execution<E extends object> {
-    readonly id: number;
-    readonly startedAtTick: number;
-    readonly status: "RUNNING" | "ENDING";
-    readonly state: E;
+export interface Execution<P extends object, E extends object> {
+    readonly definition: Definition<P, E>;
+    readonly state: P;
+    readonly cooldown: CooldownState;
+    readonly execution: ExecutionState<E>;
 }
 ```
 
-Executing<P, E> 是 execution 非空的 Action 类型收窄，不是另一份运行对象。onTick／onEnd 直接读取 self.execution.state，持久数据读取 self.state。宿主引用由回调的 source 参数提供，Action 与 Execution 不重复保存 host。
+Action<P, E> 表达持久行动，Execution<P, E> 表达其中某一轮执行的完整视图；两者读取同一个聚合条目，但声明不同的引用身份。Execution 的 execution 确定非空，onTick／onEnd 直接读取 self.execution.state，持久数据读取 self.state。内部 execution.State<E> 仍只保存 id、startedAtTick、status 和 E，不从公共 index 导出。宿主引用由回调的 source 参数提供，聚合条目不重复保存 host。
 
 具体内容将 Definition<P, E> 交给公共入口的 create，得到创建行动的初始化函数；其实现位于 [initialize.ts](../../src/core/unit/action/initialize.ts)，类型配对在这个具体创建位置建立。Unit 的 Action Capability.initialize 调用内容提供的 initialize，内容使用 createActions 按顺序执行这些函数，接续每项 Result.state，并将完整聚合条目加入 Actions。
 
@@ -105,9 +109,9 @@ Executing<P, E> 是 execution 非空的 Action 类型收窄，不是另一份运
 
 prepare 取得当前已配对的 Action，只检查本次内容条件、初始化 E 和必要采样；null 表示未启动。已发生的状态更新接续返回，普通无变更拒绝返回输入 battle。伤害、召唤、绑定本次执行的 Effect 及可能同步重入的业务，在 execution 登记后由 onTick 执行。prepare 阶段不递归启动自己或改变来源配置。
 
-onTick.value 表达是否完成。本轮私有进度通过 `update(battle, ref(source, self), current => next)` 写回；transform 取得当前 execution.state，只返回新的 E。需要被嵌套观察的进度先写回，再进入外部业务；callback 返回时不会自动用旧 self 覆盖当前 Action。
+onTick.value 表达是否完成。本轮私有进度通过 `updateExecution(battle, executionRef(source, self), current => next)` 写回；transform 取得当前 execution.state，只返回新的 E。需要被嵌套观察的进度先写回，再进入外部业务；callback 返回时不会自动用旧 self 覆盖当前 Action。
 
-## 4. 异构容器与执行身份
+## 4. 异构容器与两种引用身份
 
 Unit.action.actions 是该宿主唯一运行容器，按 definition.id 保存 Action。Capability 配置只保存 initialize 与可选 select，不保留静态定义集合。具体内容负责组合自己的创建程序；默认候选、启动派发、冷却刷新从运行时 Actions 条目进入，由条目取得 Definition。
 
@@ -132,22 +136,33 @@ values()／keys() 返回绑定容器版本的 Query，并保留配置登记顺�
 
 nextExecutionId 保存在 Capability State，从 0 开始；每次成功启动后递增，完成或取消不回收。不同宿主可以具有同号执行，完整执行身份为 host 与 execution.id。
 
-`ref(source, self)` 由宿主引用和当前 self.execution.id 生成 Ref<Executing<P, E>>。Executing 的 Identified 类型声明该地址，Ref 的 Phantom 保留 P／E 关联，不要求 Action 本身保存 host 或执行 id 字段。引用绑定这一轮执行，不是长期配置项的身份；本轮结束或后续执行 ID 不匹配时，旧 Ref 查询返回 undefined。
+`ref(source, definition)` 生成持久 Ref<Action<P, E>>，其地址保存 host 与 Definition 对象。Definition 同时保留 P／E 配对，查询按 definition.id 定位并确认同一个 Definition。该引用跨多轮执行有效，getAction、start、updateState、updateCooldown、resetCooldown 和 clearCooldown 均以它指定目标行动。
+
+`executionRef(source, self)` 由宿主引用和当前 self.execution.id 生成 Ref<Execution<P, E>>，地址仍为 host 与执行 id。它只绑定本轮执行；本轮结束或后续执行 ID 不匹配时，getExecution 返回 undefined。执行查询、推进、取消、执行状态更新及 ACTION Lifetime 均使用这种引用。
+
+两种类型的 Identified 声明各自地址，Ref 的 Phantom 保留 P／E 关联。构造引用不读取 battle，也不缓存 Action 或 Cooldown；各操作从接续的最新 BattleState 读取当前条目。引用变化不增加配置 ID、执行 ID、存储集合或运行对象。
 
 ```typescript
-export declare function all(battle: BattleState): readonly Ref<ExecutingView>[];
+export declare function ref<P extends object, E extends object>(
+    host: Ref<Unit & ActionCapability>,
+    definition: Definition<P, E>,
+): Ref<Action<P, E>>;
+export declare function executionRef<X extends ExecutionView>(
+    host: Ref<Unit & ActionCapability>,
+    self: X,
+): Ref<X>;
+export declare function all(battle: BattleState): readonly Ref<ExecutionView>[];
 export declare function forUnit(
     battle: BattleState,
     source: Ref<Unit>,
-): readonly Ref<ExecutingView>[];
-export declare function get<A extends ExecutingView>(
+): readonly Ref<ExecutionView>[];
+export declare function getExecution<X extends ExecutionView>(
     battle: BattleState,
-    ref: Ref<A>,
-): A | undefined;
+    ref: Ref<X>,
+): X | undefined;
 export declare function getAction<P extends object, E extends object>(
     battle: BattleState,
-    source: Ref<Unit & ActionCapability>,
-    definition: Definition<P, E>,
+    ref: Ref<Action<P, E>>,
 ): Action<P, E> | undefined;
 export declare function isCasting(
     battle: BattleState,
@@ -156,7 +171,7 @@ export declare function isCasting(
 ): boolean;
 ```
 
-ExecutingView 是公共 View 的非空执行收窄，仍隐藏私有 P／E。all／forUnit 返回本次已经物化的执行 Ref 候选，包含 ENDING；isCasting 同样保留 ENDING 占位，直到 execution 被清空。
+ExecutionView 只公开本轮执行视图的 Definition 元数据、Cooldown 和非空 execution 元数据，仍隐藏私有 P／E。all／forUnit 返回本次已经物化的执行 Ref 候选，包含 ENDING；isCasting 同样保留 ENDING 占位，直到 execution 被清空。
 
 Actions.toJSON 返回聚合条目的诊断 Snapshot 数组，包含不解释类型的持久 state 和 execution.state。nextExecutionId 由 Capability State 单独保存。诊断表示不扩大普通 View，也不承担恢复 Definition、回调或容器的协议。
 
@@ -204,36 +219,41 @@ Cooldown 保存 periodTicks／readyAtTick；reset 从当前时点开始完整周
 
 ```typescript
 export type StartOutcome<P extends object, E extends object> =
-    | { readonly type: "STARTED"; readonly ref: Ref<Executing<P, E>> }
+    | { readonly type: "STARTED"; readonly ref: Ref<Execution<P, E>> }
     | { readonly type: "REJECTED"; readonly reason:
         "SOURCE_UNAVAILABLE" | "RULE" | "COOLDOWN" | "CASTING" | "CONDITION" };
 
 export declare function start<P extends object, E extends object>(
     battle: BattleState,
-    source: Ref<Unit & ActionCapability>,
-    definition: Definition<P, E>,
+    ref: Ref<Action<P, E>>,
 ): Result<StartOutcome<P, E>>;
 export declare function cancel(
     battle: BattleState,
-    ref: Ref<ExecutingView>,
+    ref: Ref<ExecutionView>,
     reason?: string,
 ): BattleState;
-export declare function update<P extends object, E extends object>(
+export declare function updateExecution<P extends object, E extends object>(
     battle: BattleState,
-    ref: Ref<Executing<P, E>>,
+    ref: Ref<Execution<P, E>>,
     transform: (current: NoInfer<E>) => NoInfer<E>,
 ): BattleState;
 export declare function updateState<P extends object, E extends object>(
     battle: BattleState,
-    source: Ref<Unit & ActionCapability>,
-    definition: Definition<P, E>,
+    ref: Ref<Action<P, E>>,
     transform: (current: NoInfer<P>) => NoInfer<P>,
 ): BattleState;
-export declare function updateCooldown(
+export declare function updateCooldown<P extends object, E extends object>(
     battle: BattleState,
-    source: Ref<Unit & ActionCapability>,
-    definitionId: string,
+    ref: Ref<Action<P, E>>,
     transform: (current: CooldownState) => CooldownState,
+): BattleState;
+export declare function resetCooldown<P extends object, E extends object>(
+    battle: BattleState,
+    ref: Ref<Action<P, E>>,
+): BattleState;
+export declare function clearCooldown<P extends object, E extends object>(
+    battle: BattleState,
+    ref: Ref<Action<P, E>>,
 ): BattleState;
 ```
 
@@ -241,9 +261,9 @@ start 从当前 Action 检查配置对象身份、来源资格、execution 占�
 
 start 内的局部 check 复用同一套准入规则，在 prepare 前检查，并在 prepare 成功后从接续的 BattleState 重新读取宿主与聚合条目，按最新周期再次确认准入，再以其结果登记。prepare 返回 null 时直接返回 CONDITION。回调使自身进入冷却时返回 COOLDOWN，保留已经发生的修改。仍可启动时才基于最新宿主一次写回该 Action 的新 Cooldown、Execution 和 nextExecutionId，保留持久 state、兄弟行动及其他能力的修改。
 
-三类写入均从传入的最新 BattleState 读取当前值。update 只修改 execution.state；updateState 只修改持久 state；updateCooldown 只修改 Cooldown。它们不接收整份 Action，不允许内容顺带改写 Definition、执行身份或生命周期。transform 是纯局部值转换，不修改输入、不消费 RNG，也不执行嵌套领域操作；返回当前值引用时返回原 BattleState。
+三类写入均从传入的最新 BattleState 读取当前值。updateExecution 以 Execution Ref 指定本轮，只修改 execution.state；updateState 与 updateCooldown 以 Action Ref 指定持久行动，分别只修改持久 state 与 Cooldown。它们不接收整份 Action，不允许内容顺带改写 Definition、执行身份或生命周期。transform 是纯局部值转换，不修改输入、不消费 RNG，也不执行嵌套领域操作；返回当前值引用时返回原 BattleState。
 
-宿主、指定执行或按 ID 指定的行动条目缺失时，写入操作抛出 RangeError；updateState 所给 Definition 未配置或对象身份不匹配时抛出 TypeError。均不调用 transform。update 在 execution 为 ENDING 时抛出 TypeError；updateState／updateCooldown 可以在结束程序中更新持久事实。需要累加或保留其他字段时从 transform 的 current 构造结果，不捕获旧 self.state／self.execution.state 覆盖当前数据。`NoInfer` 限制变换结果参与泛型推导；精确 Ref 和 Definition 保持 P／E 关联，预先弱化类型后写入不兼容数据属于调用契约错误，不增加运行时形状校验。
+宿主或指定执行缺失时，写入操作抛出 RangeError；Action Ref 所给 Definition 未配置或对象身份不匹配时抛出 TypeError。均不调用 transform。updateExecution 在 execution 为 ENDING 时抛出 TypeError；updateState／updateCooldown 可以在结束程序中更新持久事实。需要累加或保留其他字段时从 transform 的 current 构造结果，不捕获旧 self.state／self.execution.state 覆盖当前数据。`NoInfer` 限制变换结果参与泛型推导；精确 Ref 保持 P／E 关联，预先弱化类型后写入不兼容数据属于调用契约错误，不增加运行时形状校验。
 
 单个 Action 的完整写回由文件私有 replaceAction 统一，通过底层 Actions.replace(definition, next) 提交已配对条目，信任已有宿主、Definition 与执行身份。start 仍将新 Cooldown、Execution 和 nextExecutionId 一次写回；refreshCooldowns 仍批量构造后一次提交，不改为逐条写回。生命周期变更由完整领域操作管理，内容只调用对应字段的更新操作。
 
@@ -269,7 +289,7 @@ advance(battle, ref) 实现在专用推进模块，并由公共入口导出供�
 
 ## 8. 普通攻击、释放 Hook 与移动
 
-可复用普通攻击程序位于 content/actions/attack.ts，直接调用 Damage、Healing 与 Elemental 的公开操作。它在 prepare 绑定目标并保存 releaseAtTick／finishAtTick、released 等执行进度；到点执行输出并在恢复结束后完成。create 提供空持久／执行数据的入口；createWithState<P, E> 明确区分 initialize(battle) → Result<P> 与 prepare(battle, source, self) → Result<E>。output／afterOutput／onEnd 接收显式 source 与 execution 非空的 Executing<P, State<E>>，模板私有数据位于 self.execution.state.data。
+可复用普通攻击程序位于 content/actions/attack.ts，直接调用 Damage、Healing 与 Elemental 的公开操作。它在 prepare 绑定目标并保存 releaseAtTick／finishAtTick、released 等执行进度；到点执行输出并在恢复结束后完成。create 提供空持久／执行数据的入口；createWithState<P, E> 明确区分 initialize(battle) → Result<P> 与 prepare(battle, source, self) → Result<E>。output／afterOutput／onEnd 接收显式 source 与 execution 非空的 Execution<P, State<E>>，模板私有数据位于 self.execution.state.data。
 
 Attack 模板统一校验前后摇、操作数值和绑定关系，上层内容不重复校验原样传入的同一字段。只读配置直接共享，公开 attack 配置只投影配置字段，不携带程序私有回调，也不额外复制、冻结其子对象。
 
@@ -277,7 +297,7 @@ Skill 弹药行动在 prepare 采样当前 Activation Ref，不能提前到 Unit
 
 需要首次起手或连续会话的内容，可以在具体 Unit 扩展状态中保存跨轮事实，由 Unit 的 tick Hook 或相关业务 Hook 维护，成功登记后的 onTick 消费；失败启动不消费。通用 Action 不制造另一套共享起手阶段机。
 
-beforeRelease(battle, actionRef) 返回 CONTINUE 或 INTERRUPT／recoveryTicks。Hook 使用公共 Hook<Context, Directive>，Context 固定 source 与本轮执行的 typed Ref，accepts／invoke 接收 battle、context、current 并返回统一 Result。候选 ID 固定，逐项重读最新登记；stop 在执行结束、宿主离场或首个中断时停止。恢复信息交给具体程序，不写通用 Unit recoveryUntilTick。
+beforeRelease(battle, executionRef) 返回 CONTINUE 或 INTERRUPT／recoveryTicks。Hook 使用公共 Hook<Context, Directive>，Context 固定 source 与本轮执行的 typed Ref，accepts／invoke 接收 battle、context、current 并返回统一 Result。候选 ID 固定，逐项重读最新登记；stop 在执行结束、宿主离场或首个中断时停止。恢复信息交给具体程序，不写通用 Unit recoveryUntilTick。
 
 释放 Hook 返回后，普通攻击进入输出前重新确认本轮 execution.RUNNING 及宿主在场资格；已经完成输出后的消耗按实际业务和采样身份处理。不能把所有跨领域调用后的检查都机械化为同一个存活门槛。
 
@@ -293,4 +313,4 @@ afterOutput 是模板中本轮执行的后继程序，进入前检查对应执�
 
 玩法依据见[行动与弹道](../research/cases/02-action-and-projectile-phases.md)、[计时与动画](../research/cases/07-action-timing-and-animation.md)、[启动与中断](../research/cases/08-action-eligibility-and-interruption.md)。弩手近战与远程的独立冷却要求每种配置各自保存 Cooldown；冷却就绪与执行占用是不同事实。跨轮事实和本轮多段进度分别保存在 P 与 E，按实际内容确定重置边界；研究不要求运行时使用多个独立集合。敌人技能施放期间暂停的触发冷却，与通用 Action 周期分开表达。
 
-Effect 的 ACTION Scope 绑定本轮 Ref<ExecutingView>，不绑定长期存在的 Action 配置项；Execution 进入 ENDING 后不能安装新的该轮依赖。Action、Effect 与 [Projectile](projectile.md) 的异构容器均在内部保持实例和 Definition 的类型配对。Hook 的固定事件 Context 不进入 Action、BattleState 或全局容器。
+Effect 的 ACTION Scope 绑定本轮 Ref<ExecutionView>，不绑定长期存在的 Action 配置项；Execution 进入 ENDING 后不能安装新的该轮依赖。Action、Effect 与 [Projectile](projectile.md) 的异构容器均在内部保持实例和 Definition 的类型配对。Hook 的固定事件 Context 不进入 Action、BattleState 或全局容器。

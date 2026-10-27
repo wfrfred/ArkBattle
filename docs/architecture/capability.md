@@ -72,7 +72,7 @@ Unit 装配实现在 unit/initialize.ts，由 [unit/index.ts](../../src/core/uni
 
 Action Capability 的 Definition 保存 initialize(battle) → Result<Actions> 和可选 select。具体内容在类型明确处创建行动初始化函数，再以 createActions 顺序组合；Capability 接续返回的 BattleState，将 Actions 放入公共 State，并建立执行 ID 计数、贡献、规则和 Hook 的初值。配置不另存静态 Definition 集合，也不让调度器恢复具体内容类型。
 
-每个行动创建程序生成配对的 Definition、持久 state、初始就绪的 Cooldown 和 execution: null；即使尚未启动也已经存在。每次 start 只创建当前 Execution，宿主内 nextExecutionId 独立递增；Typed Ref 携带 host 与本轮 execution.id。onTick／onEnd 通过 Executing 类型取得非空执行，宿主引用由回调参数提供。完成或取消只清空 execution，保留最新持久 state 与 Cooldown。Skill 的持久私有数据同样随 Unit 初始化建立，本次激活数据在 activate 时创建。
+每个行动创建程序生成配对的 Definition、持久 state、初始就绪的 Cooldown 和 execution: null；即使尚未启动也已经存在。持久 Action Ref 由宿主与 Definition 定位，跨多轮有效；每次 start 接收该引用，只创建本轮执行数据，宿主内 nextExecutionId 独立递增，返回携带 host 与本轮 execution.id 的 Execution Ref。onTick／onEnd 通过 Execution<P, E> 取得本轮完整视图，持久 state 与 execution.state 保持各自类型，宿主引用由回调参数提供。完成或取消只清空 execution，保留最新持久 state 与 Cooldown。Skill 的持久私有数据同样随 Unit 初始化建立，本次激活数据在 activate 时创建。
 
 路线、部署占格和 Card 归属等属于具体实例的创建业务。Placement 接收可选 tile，提供登记地块时要求 Unit 已声明 Occupancy，登记 Slot 来自该 Capability 的 Definition；状态与双槽反向表见 [Occupancy 与 Support](occupancy.md)；部署在通用初始化结果上设置本次费用与 Card 等字段。带路线的 Unit 由 battle/creation/routed-unit.ts 的 initialize(battle, input) 创建，公开 Input／Initialization，结果字段为 unit；它先规范化路线并采样总偏移，将最终 Route Definition 与初始位置交给 Unit 初始化。输出 Definition 保留原 D 的内容字段和各联合分支元数据，仅将 route 字段替换为规范化的 Route.Definition，不把原 Definition 收窄为通用能力配置。Route 与 Locomotion 通过 Catalog 独立装配，见 [Navigation、Route 与 Locomotion 设计](navigation.md)。
 

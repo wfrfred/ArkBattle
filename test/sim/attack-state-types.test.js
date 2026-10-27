@@ -14,8 +14,8 @@ test("Attack persistent and execution data keep separate types and typed activat
         writeFileSync(path, `
 import type { Ref } from ${source("core/common/ref")};
 import type { State as BattleState, Result } from ${source("core/battle/state")};
-import { ref as actionRef } from ${source("core/unit/action/index")};
-import { update, getAction, updateState } from ${source("core/unit/action/index")};
+import { executionRef, ref as actionRef } from ${source("core/unit/action/index")};
+import { updateExecution, getAction, updateState } from ${source("core/unit/action/index")};
 import type { Activation } from ${source("core/unit/capability/skill/activation")};
 import { get as getActivation } from ${source("core/unit/capability/skill/index")};
 import { consume, check } from ${source("core/unit/capability/skill/ammo")};
@@ -34,10 +34,10 @@ const counted = createWithState({
     initialize: current => ({ state: current, value: { count: 0 } }),
     prepare: (current, source, self): Result<{ sampled: number }> => ({ state: current, value: { sampled: self.state.count } }),
     output(current, source, self) {
-        const persistent = getAction(current, source, self.definition)!;
+        const persistent = getAction(current, actionRef(source, self.definition))!;
         const count: number = persistent.state.count;
-        current = updateState(current, source, self.definition, state => ({ count: state.count + 1 }));
-        return update(current, actionRef(source, self), state => ({ ...state, data: { sampled: count } }));
+        current = updateState(current, actionRef(source, self.definition), state => ({ count: state.count + 1 }));
+        return updateExecution(current, executionRef(source, self), state => ({ ...state, data: { sampled: count } }));
     },
     afterOutput(current, source, self) {
         const sampled: number = self.execution.state.data.sampled;
@@ -48,7 +48,7 @@ const counted = createWithState({
         return current;
     },
     onEnd(current, source, self) {
-        const count: number = getAction(current, source, self.definition)!.state.count;
+        const count: number = getAction(current, actionRef(source, self.definition))!.state.count;
         return current;
     },
 });

@@ -133,7 +133,7 @@ Ref 与静态 Definition 不同。Definition 相同可以有多个实例；实�
 ```typescript
 type Lifetime =
     | { readonly type: "UNIT"; readonly ref: Ref<Unit> }
-    | { readonly type: "ACTION"; readonly ref: Ref<ExecutingView> }
+    | { readonly type: "ACTION"; readonly ref: Ref<ExecutionView> }
     | { readonly type: "SKILL"; readonly ref: Ref<SkillActivation> }
     | { readonly type: "ELEMENTAL_BURST"; readonly ref: Ref<Burst> }
     | { readonly type: "EFFECT"; readonly ref: Ref<View> };

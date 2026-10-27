@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { battle, unit, actionDefinition } from "../helpers/action-fixture.js";
 import { getUnit } from "../helpers/unit.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { start } from "../../dist/core/unit/action/index.js";
+import { start, ref as actionRef } from "../../dist/core/unit/action/index.js";
 import { advance } from "../../dist/core/unit/action/index.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import { at } from "../../dist/core/battlefield/occupancy.js";
@@ -49,7 +49,7 @@ test("action event order: lethal output completes platform onLeave content befor
         occupancy: { ...(unit(2, { hooks: [{ id: "test/leave", stage: "leave", invoke(current) { trace.push("occupant left"); return { state: current, value: undefined }; } }] })).occupancy, tile: [0, 1] },
     };
     const state = battle(source, support, recipient);
-    const result = start(state, unitRef(getUnit(state, 0)), definition);
+    const result = start(state, actionRef(unitRef(getUnit(state, 0)), definition));
     const completed = advance(result.state, result.value.ref);
     const types = completed.events.map((event) => event.type);
     assert.ok(types.indexOf("DAMAGE") < types.indexOf("ACTION_FINISHED"));

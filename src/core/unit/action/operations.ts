@@ -8,13 +8,14 @@ import type { Action as ActionCapability } from "../capability/action/capability
 import { isSpatiallyPresent } from "../capability/presence/capability.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import { resolveInterval } from "../capability/action/timing.js";
-import { ref, type Action, type Executing, type ExecutingView } from "./action.js";
-import type { Definition, Id as DefinitionId, End } from "./definition.js";
+import type { Action } from "./action.js";
+import { ref, type Execution, type View as ExecutionView } from "./execution.js";
+import type { End } from "./definition.js";
 import * as cooldown from "./cooldown.js";
 import { forUnit } from "./query.js";
 
 export type StartOutcome<P extends object, E extends object> =
-    | { readonly type: "STARTED"; readonly ref: Ref<Executing<P, E>> }
+    | { readonly type: "STARTED"; readonly ref: Ref<Execution<P, E>> }
     | {
           readonly type: "REJECTED";
           readonly reason: "SOURCE_UNAVAILABLE" | "RULE" | "COOLDOWN" | "CASTING" | "CONDITION";
@@ -22,10 +23,10 @@ export type StartOutcome<P extends object, E extends object> =
 
 export function updateState<P extends object, E extends object>(
     battle: BattleState,
-    source: Ref<Unit & ActionCapability>,
-    definition: Definition<P, E>,
+    reference: Ref<Action<P, E>>,
     transform: (current: NoInfer<P>) => NoInfer<P>,
 ): BattleState {
+    const { host: source, definition } = reference;
     const unit = units.get(battle, source);
 
     if (unit === undefined) {
@@ -43,38 +44,36 @@ export function updateState<P extends object, E extends object>(
     return state === current.state ? battle : replaceAction(battle, unit, { ...current, state });
 }
 
-export function updateCooldown(
+export function updateCooldown<P extends object, E extends object>(
     battle: BattleState,
-    source: Ref<Unit & ActionCapability>,
-    definitionId: DefinitionId,
+    reference: Ref<Action<P, E>>,
     transform: (current: cooldown.State) => cooldown.State,
 ): BattleState {
+    const { host: source, definition } = reference;
     const unit = units.get(battle, source);
 
     if (unit === undefined) {
         throw new RangeError(`unknown unit: ${source.id}`);
     }
 
-    const updated = unit.action.actions.read(definitionId, (self) => {
-        const next = transform(self.cooldown);
+    const current = unit.action.actions.get(definition.id, definition);
 
-        return next === self.cooldown
-            ? battle
-            : replaceAction(battle, unit, { ...self, cooldown: next });
-    });
-
-    if (updated === undefined) {
-        throw new RangeError(`unknown configured action ${definitionId}`);
+    if (current === undefined) {
+        throw new TypeError("action definition is not configured for its source");
     }
 
-    return updated;
+    const next = transform(current.cooldown);
+
+    return next === current.cooldown
+        ? battle
+        : replaceAction(battle, unit, { ...current, cooldown: next });
 }
 
 export function start<P extends object, E extends object>(
     battle: BattleState,
-    source: Ref<Unit & ActionCapability>,
-    definition: Definition<P, E>,
+    reference: Ref<Action<P, E>>,
 ): Result<StartOutcome<P, E>> {
+    const { host: source, definition } = reference;
     const reject = (reason: Extract<StartOutcome<P, E>, { type: "REJECTED" }>["reason"]) => ({
         type: "REJECTED" as const,
         reason,
@@ -133,8 +132,9 @@ export function start<P extends object, E extends object>(
     }
 
     const { unit, action, cooldown: acceptedCooldown } = latest;
-    const self: Executing<P, E> = {
-        ...action,
+    const self: Execution<P, E> = {
+        definition: action.definition,
+        state: action.state,
         cooldown: cooldown.reset(acceptedCooldown, battle.tick),
         execution: {
             id: unit.action.nextExecutionId,
@@ -153,14 +153,14 @@ export function start<P extends object, E extends object>(
             },
         },
     ]);
-    const reference = ref(source, self);
+    const execution = ref(source, self);
 
-    return { state: battle, value: { type: "STARTED", ref: reference } };
+    return { state: battle, value: { type: "STARTED", ref: execution } };
 }
 
-export function update<P extends object, E extends object>(
+export function updateExecution<P extends object, E extends object>(
     battle: BattleState,
-    reference: Ref<Executing<P, E>>,
+    reference: Ref<Execution<P, E>>,
     transform: (current: NoInfer<E>) => NoInfer<E>,
 ): BattleState {
     const unit = units.get(battle, reference.host);
@@ -171,7 +171,7 @@ export function update<P extends object, E extends object>(
 
     const current = unit.action.actions.readExecution(
         reference.id,
-        (self) => self as unknown as Executing<P, E>,
+        (self) => self as unknown as Execution<P, E>,
     );
 
     if (current === undefined) {
@@ -193,7 +193,7 @@ export function update<P extends object, E extends object>(
 
 export function end(
     battle: BattleState,
-    reference: Ref<ExecutingView>,
+    reference: Ref<ExecutionView>,
     result: End,
     lifetimeReason = result.type === "FINISHED" ? "ACTION_FINISHED" : result.reason,
 ): BattleState {
@@ -209,7 +209,7 @@ export function end(
                 return battle;
             }
 
-            const ending: Executing<typeof self.state, typeof self.execution.state> = {
+            const ending: Execution<typeof self.state, typeof self.execution.state> = {
                 ...self,
                 execution: { ...self.execution, status: "ENDING" },
             };
@@ -222,7 +222,12 @@ export function end(
                     ?.action.actions.get(self.definition.id, self.definition);
                 const latest =
                     current?.execution?.id === reference.id
-                        ? { ...current, execution: current.execution }
+                        ? {
+                              definition: current.definition,
+                              state: current.state,
+                              cooldown: current.cooldown,
+                              execution: current.execution,
+                          }
                         : ending;
                 battle = self.definition.onEnd(battle, reference.host, latest, result);
             }
@@ -256,7 +261,7 @@ export function end(
 
 export function cancel(
     battle: BattleState,
-    reference: Ref<ExecutingView>,
+    reference: Ref<ExecutionView>,
     reason = "CANCELLED",
 ): BattleState {
     return end(battle, reference, { type: "CANCELLED", reason });
@@ -305,34 +310,28 @@ export function refreshCooldowns(
         : updateUnit(battle, [{ ...unit, action: { ...unit.action, actions } }]);
 }
 
-export function resetCooldown(
+export function resetCooldown<P extends object, E extends object>(
     battle: BattleState,
-    source: Ref<Unit & ActionCapability>,
-    definitionId: DefinitionId,
+    reference: Ref<Action<P, E>>,
 ): BattleState {
-    battle = refreshCooldowns(battle, source);
+    battle = refreshCooldowns(battle, reference.host);
 
-    return updateCooldown(battle, source, definitionId, (current) =>
-        cooldown.reset(current, battle.tick),
-    );
+    return updateCooldown(battle, reference, (current) => cooldown.reset(current, battle.tick));
 }
 
-export function clearCooldown(
+export function clearCooldown<P extends object, E extends object>(
     battle: BattleState,
-    source: Ref<Unit & ActionCapability>,
-    definitionId: DefinitionId,
+    reference: Ref<Action<P, E>>,
 ): BattleState {
-    battle = refreshCooldowns(battle, source);
+    battle = refreshCooldowns(battle, reference.host);
 
-    return updateCooldown(battle, source, definitionId, (current) =>
-        cooldown.clear(current, battle.tick),
-    );
+    return updateCooldown(battle, reference, (current) => cooldown.clear(current, battle.tick));
 }
 
 function replaceAction<P extends object, E extends object>(
     battle: BattleState,
     unit: Unit & ActionCapability,
-    self: Action<P, E>,
+    self: Action<P, E> | Execution<P, E>,
 ): BattleState {
     return updateUnit(battle, [
         {

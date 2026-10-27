@@ -24,7 +24,7 @@ const program = {
 };
 function initial() {
     const state = battle(unit(0, { action: program }));
-    return actions.start(state, unitRef(getUnit(state, 0)), program);
+    return actions.start(state, actions.ref(unitRef(getUnit(state, 0)), program));
 }
 function releaseEffect(id, data, invoke) {
     const definition = {
@@ -78,7 +78,7 @@ test("action release: hiding the source in a continuing hook cancels before rele
         })),
         value: CONTINUE,
     })));
-    const started = actions.start(installed.state, unitRef(getUnit(installed.state, 0)), attack);
+    const started = actions.start(installed.state, actions.ref(unitRef(getUnit(installed.state, 0)), attack));
 
     assert.equal(started.value.type, "STARTED");
     const cancelled = advance(started.state, started.value.ref);

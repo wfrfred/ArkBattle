@@ -258,7 +258,7 @@ test("platform onLeave uses its historical occupancy tile after removal and comp
     });
     let battle = fixture([provider, occupant]);
     for (const [id, definition] of [[10, providerAction], [20, occupantAction]]) {
-        battle = actions.start(battle, { id }, definition).state;
+        battle = actions.start(battle, actions.ref({ id }, definition)).state;
         battle = effects.install(battle, { id }, {
             id: `effect-${id}`, initialize: () => ({}),
             onEnd: current => { trace.push(`${id} effect ended`); return current; },

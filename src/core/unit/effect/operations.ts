@@ -3,7 +3,7 @@ import { type State as BattleState, type Result } from "../../battle/state.js";
 import type { Unit, Id } from "../unit.js";
 import type { Ref } from "../../common/ref.js";
 import * as units from "../query.js";
-import { get as getAction } from "../action/query.js";
+import { getExecution } from "../action/query.js";
 import { get as getBurst } from "../capability/elemental/query.js";
 import { get as getActivation } from "../capability/skill/query.js";
 import type { Definition } from "./definition.js";
@@ -264,7 +264,7 @@ function available(battle: BattleState, lifetime: Lifetime): boolean {
             return units.get(battle, lifetime.ref)?.lifecycle === "PRESENT";
 
         case "ACTION":
-            return getAction(battle, lifetime.ref)?.execution.status === "RUNNING";
+            return getExecution(battle, lifetime.ref)?.execution.status === "RUNNING";
 
         case "SKILL": {
             return getActivation(battle, lifetime.ref)?.status === "ACTIVE";

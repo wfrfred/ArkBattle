@@ -21,25 +21,25 @@ import { activate, enter as enterSkill } from "../../dist/core/unit/capability/s
 
 const targeting = damageTargeting({ geometry, canTargetAir: true });
 const group = (operations) => ({ id: "primary", targeting, operations });
-const start = (state, definition) => actions.start(state, unitRef(getUnit(state, 0)), definition);
+const start = (state, definition) => actions.start(state, actions.ref(unitRef(getUnit(state, 0)), definition));
 
 test("ordinary attack: phase correction samples the cooldown returned by its startup callback", () => {
     const definition = createWithState({
         ...actionDefinition().attack,
         initialize: state => ({ state, value: {} }),
         prepare(state, source, self) {
-            return { state: actions.clearCooldown(state, source, self.definition.id), value: {} };
+            return { state: actions.clearCooldown(state, actions.ref(source, self.definition)), value: {} };
         },
     });
     let initial = { ...battle(unit(0, { action: definition }), unit(1)), tick: 10 };
     const source = unitRef(getUnit(initial, 0));
-    const current = actions.getAction(initial, source, definition);
-    initial = actions.updateCooldown(initial, source, definition.id, cooldown => ({ ...cooldown, readyAtTick: 9.75 }));
+    const current = actions.getAction(initial, actions.ref(source, definition));
+    initial = actions.updateCooldown(initial, actions.ref(source, definition), cooldown => ({ ...cooldown, readyAtTick: 9.75 }));
     const started = start(initial, definition);
     const advanced = advance(started.state, started.value.ref);
     assert.equal(started.value.type, "STARTED");
-    assert.equal(actions.getAction(advanced, source, definition).cooldown.readyAtTick, 20);
-    assert.equal(actions.getAction(initial, source, definition).cooldown.readyAtTick, 9.75);
+    assert.equal(actions.getAction(advanced, actions.ref(source, definition)).cooldown.readyAtTick, 20);
+    assert.equal(actions.getAction(initial, actions.ref(source, definition)).cooldown.readyAtTick, 9.75);
     assert.equal(getUnit(advanced, 1).vitality.hp, 93);
 });
 
@@ -180,7 +180,7 @@ test("ordinary attack: lethal retaliation invalidates a later unsampled source a
     const advanced = advance(result.state, result.value.ref);
     assert.equal(getUnit(advanced, 0), undefined);
     assert.equal(getUnit(advanced, 1).vitality.hp, 90);
-    assert.equal(actions.get(advanced, result.value.ref), undefined);
+    assert.equal(actions.getExecution(advanced, result.value.ref), undefined);
 });
 
 test("ordinary attack: no target rejects startup without an instance or a consumed cooldown", () => {
@@ -198,7 +198,7 @@ test("ordinary attack: a configured definition is shared while accepted progress
     const definition = actionDefinition(7, { windupTicks: 2 });
     const initial = battle(unit(0, { action: definition }), unit(1));
     const started = start(initial, definition),
-        self = actions.get(started.state, started.value.ref);
+        self = actions.getExecution(started.state, started.value.ref);
     assert.equal(self.definition, definition);
     assert.equal(self.execution.state.released, false);
     const released = advance({ ...started.state, tick: 2 }, started.value.ref);

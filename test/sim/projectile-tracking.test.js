@@ -11,7 +11,7 @@ import { createArrow } from '../../dist/content/enemies/crossbowman/action.js';
 import * as tracking from '../../dist/content/projectiles/tracking.js';
 import { unit as actionUnit } from '../helpers/action-fixture.js';
 import { createTacticalProjectileDemo } from '../../dist/legacy/projectile-demo.js';
-import { start as startAction } from '../../dist/core/unit/action/index.js';
+import { start as startAction, ref as actionRef } from '../../dist/core/unit/action/index.js';
 import { advance as advanceAction } from '../../dist/core/unit/action/index.js';
 
 function setup(sourceCapabilities = {}) {
@@ -149,7 +149,7 @@ test('demo projectile damage clears removed sources for both live and cached att
     const source = initialize({ id: 0, ...input.initialUnits[0] });
     const target = actionUnit(1);
     const battle = addUnit(addUnit(fixtureBattle(), source), target);
-    const started = source.action.actions.read('primary', self => startAction(battle, ref(source), self.definition));
+    const started = source.action.actions.read('primary', self => startAction(battle, actionRef(ref(source), self.definition)));
     assert.equal(started.value.type, 'STARTED');
     const launched = advanceAction({ ...started.state, tick: 6 }, started.value.ref);
     const self = projectilesQuery.all(launched).toArray()[0];

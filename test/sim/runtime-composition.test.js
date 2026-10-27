@@ -24,7 +24,7 @@ import { effectFixtureWork } from "../helpers/effects.js";
 import { seededPlacement } from "../helpers/aura.js";
 import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
 import { actionCapability } from "../helpers/actions.js";
-import { ref as actionRef } from "../../dist/core/unit/action/index.js";
+import { executionRef } from "../../dist/core/unit/action/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { install as installEffect, update as updateEffect, end as endEffect } from "../../dist/core/unit/effect/index.js";
 import * as modifier from "../../dist/core/unit/contribution/attribute.js";
@@ -271,14 +271,14 @@ function scenario({ failure = null, cancelled = false } = {}) {
         prepare: state => ({ state, value: { emitted: 0 } }),
         onTick(state, source, self) {
             if (self.execution.state.emitted === 0) {
-                state = actions.update(state, actionRef(source, self), () => ({ emitted: 1 }));
-                self = actions.get(state, actionRef(source, self));
+                state = actions.updateExecution(state, executionRef(source, self), () => ({ emitted: 1 }));
+                self = actions.getExecution(state, executionRef(source, self));
                 state = installation(state, source, self, scoped);
                 state = launch(state, source, self, primary ? 1 : 3);
             }
             if (primary && self.execution.state.emitted === 1 && state.tick > self.execution.startedAtTick) {
-                state = actions.update(state, actionRef(source, self), () => ({ emitted: 2 }));
-                self = actions.get(state, actionRef(source, self));
+                state = actions.updateExecution(state, executionRef(source, self), () => ({ emitted: 2 }));
+                self = actions.getExecution(state, executionRef(source, self));
                 state = installation(state, source, self, pulse);
                 state = launch(state, source, self, 3);
             }
@@ -324,7 +324,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
             program,
             {
                 source: host.id,
-                scopes: [{ type: "ACTION", ref: actionRef(host, context) }],
+                scopes: [{ type: "ACTION", ref: executionRef(host, context) }],
             },
         ).state;
     const launch = (state, host, context, targetUnitId) => {

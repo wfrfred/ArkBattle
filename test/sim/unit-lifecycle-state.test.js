@@ -64,7 +64,7 @@ for (const reason of ["DEATH", "RETREAT", "SCRIPT"]) {
     }) }]);
     const activated = activate(state, unitRef(source));
     state = activated.state;
-    const started = actions.start(state, unitRef(getUnit(state, 0)), action);
+    const started = actions.start(state, actions.ref(unitRef(getUnit(state, 0)), action));
     assert.equal(started.value.type, "STARTED");
     state = started.state;
     for (const [id, host, scopes] of [
@@ -90,7 +90,7 @@ for (const reason of ["DEATH", "RETREAT", "SCRIPT"]) {
     assert.deepEqual(new Map(effectEnds), new Map([["skill-dependent", reason], ["host-dependent", reason]]));
     assert.equal(getUnit(state, 0), undefined);
     assert.deepEqual(getUnit(state, 1).effects.values().toArray(), []);
-    assert.equal(actions.get(state, started.value.ref), undefined);
+    assert.equal(actions.getExecution(state, started.value.ref), undefined);
     assert.equal(remove(state, 0, reason), state);
     assert.equal(finish(state, activated.value.ref), state);
     assert.equal(getUnit(before, 0).skill.active.status, "ACTIVE");

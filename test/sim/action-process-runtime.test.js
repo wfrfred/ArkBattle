@@ -3,7 +3,7 @@ import * as unitQueries from "../../dist/core/unit/query.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
-import { ref as actionRef } from "../../dist/core/unit/action/index.js";
+import { executionRef } from "../../dist/core/unit/action/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { unit } from "../helpers/action-fixture.js";
@@ -79,7 +79,7 @@ const program = (id, extra = {}) => ({
 test("action runtime: a newly registered instance first executes once and retained snapshots stay immutable", () => {
     const definition = program("progress", {
         onTick(state, source, self) {
-            state = actions.update(state, actionRef(source, self), currentState => ({ count: currentState.count + 1 }));
+            state = actions.updateExecution(state, executionRef(source, self), currentState => ({ count: currentState.count + 1 }));
             return { state, value: false };
         },
     });
@@ -100,19 +100,19 @@ test("action runtime: an execution registered before the same-tick scan is advan
         onTick(state, source, self) {
             ticks.push(state.tick);
             return {
-                state: actions.update(state, actionRef(source, self), current => ({ count: current.count + 1 })),
+                state: actions.updateExecution(state, executionRef(source, self), current => ({ count: current.count + 1 })),
                 value: false,
             };
         },
     });
     const initial = initializeBattle(spec([unit(0, { action: definition }), unit(1)]));
     const source = unitRef(getUnit(initial, 0));
-    const started = actions.start(initial, source, definition);
+    const started = actions.start(initial, actions.ref(source, definition));
     assert.deepEqual(ticks, []);
     const stepped = stepBattle(started.state, []);
     assert.deepEqual(ticks, [0]);
-    assert.equal(actions.get(stepped, started.value.ref).execution.state.count, 1);
-    assert.equal(actions.get(started.state, started.value.ref).execution.state.count, 0);
+    assert.equal(actions.getExecution(stepped, started.value.ref).execution.state.count, 1);
+    assert.equal(actions.getExecution(started.state, started.value.ref).execution.state.count, 0);
 });
 
 test("action runtime: an immediately finished definition starts once in one automatic scheduling pass", () => {
@@ -158,7 +158,7 @@ test("action runtime: cancellation commands complete before a delayed release wi
     assert.deepEqual(unitQueries.all(first).toArray().filter(unit => unit.action !== undefined)
         .map(unit => unit.action.actions.values().filter(self => self.execution !== null).toArray()[0].execution.id), [0, 0]);
     const cancelled = (runtime = stepBattle(runtime, [
-        { type: "CANCEL_ACTION_EXECUTION", ref: actionRef(unitReference(unitQueries.all(first).toArray().find(unit => unit.id === 0)), unitQueries.all(first).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0]) },
+        { type: "CANCEL_ACTION_EXECUTION", ref: executionRef(unitReference(unitQueries.all(first).toArray().find(unit => unit.id === 0)), unitQueries.all(first).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0]) },
     ]));
     assert.deepEqual(cancelled.events.filter(event => event.type === "ACTION_CANCELLED")
         .map(event => [event.sourceUnitId, event.executionId]), [[0, 0]]);
@@ -201,7 +201,7 @@ test("action runtime: host order advances old instances before selection and def
             if (state.tick > 0) {
                 trace.push(`old/${source.id}`);
                 if (source.id === 0) {
-                    state = actions.start(state, unitRef(getUnit(state, 1)), child).state;
+                    state = actions.start(state, actions.ref(unitRef(getUnit(state, 1)), child)).state;
                 }
             }
             return { state, value: false };
@@ -239,7 +239,7 @@ test("action runtime: a late exception publishes neither progressed action state
     const definition = program("failure", {
         onTick(state, source, self) {
             if (state.tick === 0) return { state, value: false };
-            state = actions.update(state, actionRef(source, self), () => ({ count: 9 }));
+            state = actions.updateExecution(state, executionRef(source, self), () => ({ count: 9 }));
             state = updateUnit(state, [{ ...getUnit(state, 1), position: [3, 0] }]);
             throw failure;
         },
@@ -273,7 +273,7 @@ test("action runtime: dependency cleanup can finish nested host death before a t
         onTick(state, source, self) {
             if (state.tick === 0)
                 state = effects.install(state, unitRef(getUnit(state, 1)), dependency, {
-                    scopes: [{ type: "ACTION", ref: actionRef(source, self) }],
+                    scopes: [{ type: "ACTION", ref: executionRef(source, self) }],
                 }).state;
             return { state, value: state.tick > 0 };
         },

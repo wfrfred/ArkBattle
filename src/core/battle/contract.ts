@@ -16,7 +16,7 @@ import type {
 } from "./deployment/operations.js";
 import type { Ref } from "../common/ref.js";
 import type { Signal as ActionSignal } from "../unit/action/event.js";
-import type { ExecutingView as ActionView } from "../unit/action/action.js";
+import type { View as ExecutionView } from "../unit/action/execution.js";
 import type { Id as ProjectileId } from "../projectile/projectile.js";
 import type { Signal as ProjectileSignal } from "../projectile/event.js";
 import type { Signal as ElementalSignal } from "../unit/capability/elemental/operations.js";
@@ -45,7 +45,7 @@ export type Command =
     | { readonly type: "FINISH_SKILL"; readonly unitId: Id }
     | {
           readonly type: "CANCEL_ACTION_EXECUTION";
-          readonly ref: Ref<ActionView>;
+          readonly ref: Ref<ExecutionView>;
       }
     | { readonly type: "STOP_PROJECTILE"; readonly projectileId: ProjectileId }
     | { readonly type: "TRIGGER_BRANCH"; readonly branchId: string; readonly isLoop: boolean };

@@ -103,7 +103,7 @@ test("Action initialization, start and termination retain one persistent aggrega
     const configured = {
         ...definition("program", { starts: 0 }, { remaining: 2 }),
         prepare(battle, source, self) {
-            return { state: operations.updateState(battle, source, self.definition, current => ({ starts: current.starts + 1 })), value: { remaining: 2 } };
+            return { state: operations.updateState(battle, operations.ref(source, self.definition), current => ({ starts: current.starts + 1 })), value: { remaining: 2 } };
         },
         onEnd(battle, source, self, end) {
             ended.push([self.execution.status, self.execution.state.remaining, end]);
@@ -112,17 +112,17 @@ test("Action initialization, start and termination retain one persistent aggrega
     };
     const created = initialize(fixtureBattle(), { id: 0, position: [0, 0], definition: { hooks: [], id: "program-host", action: actionCapability(configured) } });
     const before = addUnit(created.state, created.value), source = units.ref(created.value);
-    const started = operations.start(before, source, configured);
+    const started = operations.start(before, operations.ref(source, configured));
     assert.equal(started.value.type, "STARTED");
-    assert.deepEqual(operations.getAction(before, source, configured).state, { starts: 0 });
-    assert.deepEqual(operations.getAction(started.state, source, configured).state, { starts: 1 });
-    assert.deepEqual(operations.get(started.state, started.value.ref).execution.state, { remaining: 2 });
+    assert.deepEqual(operations.getAction(before, operations.ref(source, configured)).state, { starts: 0 });
+    assert.deepEqual(operations.getAction(started.state, operations.ref(source, configured)).state, { starts: 1 });
+    assert.deepEqual(operations.getExecution(started.state, started.value.ref).execution.state, { remaining: 2 });
     const stopped = operations.cancel(started.state, started.value.ref, "TEST");
-    assert.equal(operations.get(stopped, started.value.ref), undefined);
-    assert.deepEqual(operations.getAction(stopped, source, configured).state, { starts: 1 });
-    assert.equal(operations.getAction(stopped, source, configured).execution, null);
+    assert.equal(operations.getExecution(stopped, started.value.ref), undefined);
+    assert.deepEqual(operations.getAction(stopped, operations.ref(source, configured)).state, { starts: 1 });
+    assert.equal(operations.getAction(stopped, operations.ref(source, configured)).execution, null);
     assert.deepEqual(ended, [["ENDING", 2, { type: "CANCELLED", reason: "TEST" }]]);
-    assert.deepEqual(operations.get(started.state, started.value.ref).execution.state, { remaining: 2 });
+    assert.deepEqual(operations.getExecution(started.state, started.value.ref).execution.state, { remaining: 2 });
 });
 
 test("Action public Views hide private state and generic read retains persistent/execution pairing", async () => {
@@ -139,27 +139,27 @@ import type { Unit } from ${source("unit/unit")};
 import type { Action as ActionCapability } from ${source("unit/capability/action/capability")};
 import type { Definition } from ${source("unit/action/index")};
 import type { View } from ${source("unit/action/action")};
-import { ref, type Action, type Executing, type ExecutingView } from ${source("unit/action/index")};
+import { executionRef, type Action, type Execution, type ExecutionView } from ${source("unit/action/index")};
 import { Actions } from ${source("unit/action/actions")};
 import * as operations from ${source("unit/action/index")};
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
 type Assert<T extends true> = T;
 declare const battle: BattleState;
 declare const source: Ref<Unit & ActionCapability>;
-declare const precise: Executing<{ readonly count: number }, { readonly remaining: number }>;
+declare const precise: Execution<{ readonly count: number }, { readonly remaining: number }>;
 declare const publicAction: View;
-declare const publicExecution: ExecutingView;
+declare const publicExecution: ExecutionView;
 declare const configured: Definition<{ readonly count: number }, { readonly remaining: number }>;
-const preciseRef = ref(source, precise);
-const publicRef: Ref<ExecutingView> = preciseRef;
+const preciseRef = executionRef(source, precise);
+const publicRef: Ref<ExecutionView> = preciseRef;
 const values = Actions.empty().values();
 type Values = Assert<Equal<typeof values, Query<View>>>;
 const known = Actions.empty().get(configured.id, configured);
 type Known = Assert<Equal<typeof known, Action<{ readonly count: number }, { readonly remaining: number }> | undefined>>;
-const current = operations.get(battle, preciseRef);
+const current = operations.getExecution(battle, preciseRef);
 type Current = Assert<Equal<typeof current, typeof precise | undefined>>;
-const unknown = operations.get(battle, publicRef);
-type Unknown = Assert<Equal<typeof unknown, ExecutingView | undefined>>;
+const unknown = operations.getExecution(battle, publicRef);
+type Unknown = Assert<Equal<typeof unknown, ExecutionView | undefined>>;
 // @ts-expect-error Public aggregates hide persistent data.
 publicAction.state;
 // @ts-expect-error Public execution views hide content data.
@@ -171,9 +171,9 @@ Actions.empty().replace(configured, { ...precise, state: { unrelated: true } });
 // @ts-expect-error Definition fixes execution data.
 Actions.empty().replace(configured, { ...precise, execution: { ...precise.execution, state: { unrelated: true } } });
 // @ts-expect-error An idle aggregate cannot identify an execution.
-ref(source, publicAction);
+executionRef(source, publicAction);
 // @ts-expect-error An erased reference cannot update private execution data.
-operations.update(battle, publicRef, state => state);
+operations.updateExecution(battle, publicRef, state => state);
 Actions.empty().read(configured.id, self => { self.definition.prepare(battle, source, self); });
 Actions.empty().readExecution(0, self => self.definition.onTick(battle, source, self));
 `);

@@ -252,7 +252,7 @@ test("effect terminal callback can retire its host and settle remote Action and 
     ];
     let battle = createBattleState(fixtureBattlefield(units));
     battle = activate(battle, unitRef(getUnit(battle, 0))).state;
-    const started = actions.start(battle, unitRef(getUnit(battle, 0)), action);
+    const started = actions.start(battle, actions.ref(unitRef(getUnit(battle, 0)), action));
     battle = started.state;
     assert.equal(started.value.type, "STARTED");
     const actionDependent = definition(
@@ -291,7 +291,7 @@ test("effect terminal callback can retire its host and settle remote Action and 
                 state = dealDamage({ ...state, tick: 1 }, { source: null, target: { id: 0 }, parameters: parameters(100, "TRUE") }).state;
                 trace.push("after-damage");
                 assert.equal(getUnit(state, 0), undefined);
-                assert.equal(actions.get(state, started.value.ref), undefined);
+                assert.equal(actions.getExecution(state, started.value.ref), undefined);
                 return state;
             },
         },

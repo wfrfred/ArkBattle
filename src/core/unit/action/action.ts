@@ -1,40 +1,30 @@
-import type { Identified, Identity, Ref } from "../../common/ref.js";
+import type { Identified, Ref } from "../../common/ref.js";
 import type { Unit } from "../unit.js";
 import type { Action as ActionCapability } from "../capability/action/capability.js";
 import type { Definition, View as DefinitionView } from "./definition.js";
 import type * as cooldown from "./cooldown.js";
 import type {
-    Execution,
-    Id,
-    View as ExecutionView,
+    State as ExecutionState,
+    StateView as ExecutionStateView,
     Snapshot as ExecutionSnapshot,
 } from "./execution.js";
 
 export interface View {
     readonly definition: DefinitionView;
     readonly cooldown: cooldown.State;
-    readonly execution: ExecutionView | null;
+    readonly execution: ExecutionStateView | null;
 }
 
-export interface Action<P extends object = object, E extends object = object> extends View {
-    readonly definition: Definition<P, E>;
-    readonly state: P;
-    readonly execution: Execution<E> | null;
-}
-
-export interface ExecutingView
+export interface Action<P extends object = object, E extends object = object>
     extends
         View,
         Identified<{
             readonly host: Ref<Unit & ActionCapability>;
-            readonly id: Id;
+            readonly definition: Definition<P, E>;
         }> {
-    readonly execution: ExecutionView;
-}
-
-export interface Executing<P extends object = object, E extends object = object>
-    extends Action<P, E>, Identified<Identity<ExecutingView>> {
-    readonly execution: Execution<E>;
+    readonly definition: Definition<P, E>;
+    readonly state: P;
+    readonly execution: ExecutionState<E> | null;
 }
 
 export interface Snapshot extends View {
@@ -42,6 +32,9 @@ export interface Snapshot extends View {
     readonly execution: ExecutionSnapshot | null;
 }
 
-export function ref<A extends ExecutingView>(host: Ref<Unit & ActionCapability>, self: A): Ref<A> {
-    return { host, id: self.execution.id } as Ref<A>;
+export function ref<P extends object, E extends object>(
+    host: Ref<Unit & ActionCapability>,
+    definition: Definition<P, E>,
+): Ref<Action<P, E>> {
+    return { host, definition } as Ref<Action<P, E>>;
 }

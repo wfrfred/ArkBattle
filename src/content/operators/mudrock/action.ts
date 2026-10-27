@@ -7,7 +7,7 @@ import {
     create as createSkillAttack,
     type State as SkillAttackState,
 } from "../../actions/skill.js";
-import { get as getAction, ref as actionRef } from "../../../core/unit/action/index.js";
+import { getExecution, executionRef } from "../../../core/unit/action/index.js";
 import { get as getCurrentUnit, ref as unitRef } from "../../../core/unit/index.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
 import { hasOffense, resolveAttack } from "../../../core/unit/capability/offense/index.js";
@@ -114,7 +114,7 @@ export function createSkill(
             state = healSelf(state, source.id, healRatio);
 
             for (const targetRef of self.execution.state.bindings.primary ?? []) {
-                if (getAction(state, actionRef(host, self))?.execution.status !== "RUNNING") {
+                if (getExecution(state, executionRef(host, self))?.execution.status !== "RUNNING") {
                     return state;
                 }
 

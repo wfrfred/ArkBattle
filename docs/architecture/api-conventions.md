@@ -42,7 +42,7 @@ Action 的准备程序为 prepare，推进与结束回调为 onTick／onEnd；Pr
 | 依赖战场的查询 | 动态 Contribution 可以依赖战场事实，公开入口使用 `(battle, ref, ...)`，读取当前对象后直接以 `(battle, self)` 求值；不包装 Unit 与 BattlefieldView，也不把战斗事实藏进通用 Context。 |
 | 纯值转换带业务结果 | 返回本领域的下一值及结果，例如 SP 获得量、拒绝原因。这里的 state 是局部 State，不套固定为 BattleState 的 `battle.Result<T>`。 |
 | 创建操作与创建回调 | 对象尚不存在，接收宿主身份、Definition 和创建输入，返回创建身份或初始化结果；不要求传入不存在的 self / ref。 |
-| 内容状态更新 | Action.update 只转换 execution.state，updateState／updateCooldown 分别转换持久 state／Cooldown；Effect.update 只转换 data。Projectile 的 transform 接收完整只读实例，返回 position／state 的局部更新。Core 均先读取最新值；transform 只转换值，不执行其他 BattleState 操作。 |
+| 内容状态更新 | Action.updateExecution 只转换 execution.state，updateState／updateCooldown 分别转换持久 state／Cooldown；Effect.update 只转换 data。Projectile 的 transform 接收完整只读实例，返回 position／state 的局部更新。Core 均先读取最新值；transform 只转换值，不执行其他 BattleState 操作。 |
 | 完整实例写回 | Action 容器 `replace(definition, next)` 提交聚合条目，Effect／Projectile 容器按各自身份提交完整实例；均由 Core 内部使用。身份、Definition、执行进度与生命周期按对应领域契约维护。 |
 | 程序回调有额外结果 | 可以返回 `Result<T>`；例如 Action Definition.prepare 的准备结果、onTick 的完成指示和 Hook 的业务指令。 |
 | Damage／Healing 两阶段接续 | `applyDamage(request, calculation: Result<CalculatedDamage \| undefined>)` 与 `applyHealing(request, calculation: Result<CalculatedHealing \| undefined>)` 通过计算 Result 显式接续 state 和数值，分别返回领域 Outcome。插入其他操作时调用者须更新其中 state。 |
@@ -53,7 +53,7 @@ Action 的准备程序为 prepare，推进与结束回调为 onTick／onEnd；Pr
 2. 一个领域需要从多个实现文件提供公共 API 时，以 index.ts 显式列出公开的值与类型，不使用 export *。只有一个清晰入口的小领域不强制增加 index；公共入口直接重导出现有实现，不增加运行时包装。
 3. Content、Legacy 等上层消费侧默认从领域 index 导入，领域内部直接导入所属实现。Core 内部可以直接依赖明确的查询、模型或操作文件，以控制实际依赖方向；这是正常的依赖管理方式，不要求全部导入经过 index。不得为了 barrel 搬动 Unit／Projectile 的模型与完整 Battle 操作边界。
 4. 调用权限由业务契约决定，不由是否出现在 index 决定。公共入口可以包含供 Core 协作或调度的接口；例如 Action.advance 仍只由调度器主动调用，Content 不能借公共导出主动推进。
-5. 实现文件的 export 可以用于领域内部共享，不自动构成公共 API。内部模型、容器、Execution 类型与配对读写协议按实际需要深导；不为覆盖全部内部导出扩大 index，也不为公共入口复制另一套类型。
+5. 实现文件的 export 可以用于领域内部共享，不自动构成公共 API。内部模型、容器与配对读写协议按实际需要深导；不为覆盖全部内部导出扩大 index，也不为公共入口复制另一套类型。
 6. 按实际用途整理各领域，不套统一拆分模板，不增加只缩短路径的转发层，不保留重复类型；仅调整公共导出与导入路径时不新增测试，不借入口整理扩张业务语义或无关实现。
 
 ### Core 领域入口与保留边界
@@ -64,7 +64,7 @@ Action 的准备程序为 prepare，推进与结束回调为 onTick／onEnd；Pr
 | --- | --- | --- |
 | 战斗运行 | [battle/index.ts](../../src/core/battle/index.ts) | 仅 initialize／step／simulateBattle、战斗契约类型、State／OperationResult 与 appendEvents；不聚合 Unit、Projectile、Creation 等独立操作。 |
 | Unit | [unit/index.ts](../../src/core/unit/index.ts) | 模型、Hook 类型、initialize 与 ref／all／get；完整登记、更新、离场和推进仍归 battle/unit.ts，Field 的纯存储操作仍归 battlefield/unit.ts。 |
-| Action | [unit/action/index.ts](../../src/core/unit/action/index.ts) | 创建、查询、字段更新、业务操作与调度协作；Actions、Execution、Cooldown 和共享 end 按职责深导，不扩大内容写回或推进权限。 |
+| Action | [unit/action/index.ts](../../src/core/unit/action/index.ts) | 创建、查询、字段更新、业务操作与调度协作；Actions、execution.State、Cooldown 和共享 end 按职责深导，不扩大内容写回或推进权限。 |
 | Effect | [unit/effect/index.ts](../../src/core/unit/effect/index.ts) | 类型、ref、get 与生命周期操作；get 实现在 query.ts，Effects 容器和依赖索引保持内部职责。 |
 | Projectile | [projectile/index.ts](../../src/core/projectile/index.ts) | 类型与 ref／all／get；完整 create／update／stop／advance 保留 battle/projectile.ts，容器仍由 Battlefield 持有。 |
 | Blocking | [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) | 关系查询、公开操作与 Hook 类型；整批更新准备、差分、通知与维护继续在 operations.ts 内有序结算，内部阶段接口不从 index 导出。 |
@@ -93,7 +93,7 @@ Action 的准备程序为 prepare，推进与结束回调为 onTick／onEnd；Pr
 
 嵌套调用返回后，battle 接续新版本；self 仍是本次进入时的值。后续实时事实从新 battle 查询，已明确采样的数据继续使用，遵守 [状态接续约定](functional-core.md#状态接续后的读取与续执行)。终止回调的对象可能已经移除，self 可以是明确的终止快照，不能要求它始终能在 battle 中查到。
 
-实例身份根据实际存储确定。Projectile 的 Typed Ref 以全场唯一的实例 ID 定位；Action 的本轮 Execution、Effect、Skill Activation 与 Elemental Burst 的实例 ID 仅在宿主内唯一，Ref 同时携带 host 与 id。Action 的 ref(source, self) 从显式宿主和当前 execution.id 生成 Ref<Executing<P, E>>，不要求聚合条目保存 host。
+实例身份根据实际存储确定。Projectile 的 Typed Ref 以全场唯一的实例 ID 定位；Action 的本轮 Execution、Effect、Skill Activation 与 Elemental Burst 的实例 ID 仅在宿主内唯一，Ref 同时携带 host 与 id。Action 的 ref(source, definition) 生成跨多轮有效的 Ref<Action<P, E>>，地址为 host 与 Definition 对象，保留 P／E 配对；executionRef(source, self) 从显式宿主和当前 execution.id 生成只绑定本轮的 Ref<Execution<P, E>>。两种引用共享现有聚合条目，不要求条目保存 host，不增加存储或 ID 分配。
 
 ### 统一 Typed Ref 与类型恢复
 
@@ -203,7 +203,7 @@ Offense、Action、Locomotion、Vitality 的动态 Input 均为 `(battle, self: 
 
 Tactical 的导出函数、Definition 回调与容器公共方法遵循五类约定。Hook 的固定事件 Context、MovementContext 业务输入、创建时的宿主身份、容器内部数字键、私有状态 transform、纯 Geometry／Navigation／Card／Cooldown 计算均有明确职责，不能机械升级为 Battle 操作。battle/deployment/query.ts 的 evaluateDeployment(field, request) 是 Deployment 的纯资格计算，读取 Battlefield 提供的当前地块与占格事实；归属按业务职责划分，参数按实际数据需求收窄，不因位于 Battle 目录就要求完整 BattleState。
 
-Skill 的完整实例写回归 instance.ts：replaceHost 与 replaceActivation 是从 query.ts 迁出的内部协议，连同配对 Instance 的 replace 均不从公共 index 导出。Elemental 的完整宿主写回是 operations.ts 中的私有 replaceHost；query.ts 只保留查询。两者均不向内容推广完整实例写回。Action 按 Definition 聚合持久 state、Cooldown 和当前 Execution；内容分别用 updateState、updateCooldown、update 变换对应字段，不提交完整旧条目。Unit 的 leave Hook 以 Departure 为固定终止历史载荷，保留开始离场时的 Unit 与 reason。
+Skill 的完整实例写回归 instance.ts：replaceHost 与 replaceActivation 是从 query.ts 迁出的内部协议，连同配对 Instance 的 replace 均不从公共 index 导出。Elemental 的完整宿主写回是 operations.ts 中的私有 replaceHost；query.ts 只保留查询。两者均不向内容推广完整实例写回。Action 按 Definition 聚合持久 state、Cooldown 和当前 Execution；内容分别用 updateState、updateCooldown、updateExecution 变换对应字段，不提交完整旧条目。Unit 的 leave Hook 以 Departure 为固定终止历史载荷，保留开始离场时的 Unit 与 reason。
 
 Card.advance 与 Action 的局部 Cooldown 计算只处理显式传入的局部值，保留必要的 tick 参数。Projectile 的发射时点、到期时点等历史事实也继续保存。
 
@@ -236,11 +236,11 @@ Effect 实例保存 `host: Ref<Unit & H>`。安装入口使用 `Ref<Unit & NoInf
 
 `effect.ref(self)` 从已知实例保留完整类型，`effects.get(battle, ref)` 恢复 S / H；`units.get(battle, self.host)` 返回 `(Unit & H) | undefined`。同地址的不同 Ref 值可以使用。内容通过 `effects.update(battle, ref, data => next)` 更新最新私有数据，不能借此改变身份、Definition、scopes 或生命周期；ENDING 中仍可完成私有清理。
 
-Action 的 `update(battle, ref, state => next)` 只转换本轮 execution.state，缺失时抛出 RangeError，execution 为 ENDING 时抛出 TypeError，均不执行 transform。updateState 和 updateCooldown 按 source 与配置身份变换最新持久 state／Cooldown，允许结束程序更新这些持久事实。各操作在字段引用未变时返回原 BattleState；完整聚合替换由 Core 内部完成。
+Action 的 `updateExecution(battle, ref, state => next)` 通过 Execution Ref 只转换本轮 execution.state，缺失时抛出 RangeError，execution 为 ENDING 时抛出 TypeError，均不执行 transform。getAction、start、updateState、updateCooldown、resetCooldown 和 clearCooldown 使用持久 Action Ref；updateState 和 updateCooldown 变换最新持久 state／Cooldown，允许结束程序更新这些持久事实。getExecution、advance 和 cancel 使用本轮 Execution Ref；refreshCooldowns 仍按宿主批量刷新。各操作在字段引用未变时返回原 BattleState；完整聚合替换由 Core 内部完成。
 
 `NoInfer` 阻止变换结果参与泛型推导。私有更新必须保留实例与 Definition 对应的原始类型关联；Ref 可协变用于公共查询，但不得借预先弱化的完整实例 Ref 写入不兼容的私有数据。后者属于调用契约错误，不为此增加运行时数据形状校验。公共 `Ref<View>` 不能调用私有 update。
 
 Projectile 的 update 同样从最新 battle 读取实例，transform 接收完整只读 Projectile，只返回 position／state 的局部更新。Core 只提取这两个允许字段，缺失实例抛出 RangeError 且不调用 transform，未提供字段保留原值，两个字段均未变化时返回原 BattleState。ACTIVE 与 ENDING 均可更新；stop 只需 `Ref<View>`，按 ACTIVE → ENDING → 终结事件 → onEnd → 注销完成同步结算。Runtime 在整个 Step 任何阶段回调之前固定候选 Ref，逐项读取最新 ACTIVE 实例；本次新建实例下次才正常推进，不保存 lastAdvancedTick。
 
-Effect Lifetime 使用 `{ type: "EFFECT", ref }`。Action Lifetime 保存本轮 Ref<ExecutingView>；Skill／Elemental Burst Lifetime 保存对应 typed 实例 Ref，Unit Lifetime 使用 `{ type: "UNIT", ref: Ref<Unit> }`。Effect 的 onInstall／onEnable／onDisable／onTick 直接接收 `(battle, self: Effect<S, H>)`，onEnd 额外接收独立 reason。self 自身保存 typed 宿主身份，ref(self) 生成 `Ref<Effect<S, H>>`；宿主与当前实例从最新 battle 查询，不再包装 Context／EndContext。
+Effect Lifetime 使用 `{ type: "EFFECT", ref }`。Action Lifetime 保存本轮 Ref<ExecutionView>；Skill／Elemental Burst Lifetime 保存对应 typed 实例 Ref，Unit Lifetime 使用 `{ type: "UNIT", ref: Ref<Unit> }`。Effect 的 onInstall／onEnable／onDisable／onTick 直接接收 `(battle, self: Effect<S, H>)`，onEnd 额外接收独立 reason。self 自身保存 typed 宿主身份，ref(self) 生成 `Ref<Effect<S, H>>`；宿主与当前实例从最新 battle 查询，不再包装 Context／EndContext。
 

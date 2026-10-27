@@ -6,6 +6,7 @@ import {
     create as createAction,
     createActions,
     clearCooldown,
+    ref as actionRef,
 } from "../../../core/unit/action/index.js";
 import type { Attack } from "../../actions/attack.js";
 import type { State as SkillAttackState } from "../../actions/skill.js";
@@ -294,8 +295,8 @@ export function create(
                     return state;
                 }
 
-                state = clearCooldown(state, unitRef(unit), normalAttack.id);
-                state = clearCooldown(state, unitRef(unit), action.id);
+                state = clearCooldown(state, actionRef(unitRef(unit), normalAttack));
+                state = clearCooldown(state, actionRef(unitRef(unit), action));
 
                 return state;
             },

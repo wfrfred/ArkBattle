@@ -1,7 +1,7 @@
 import { Store } from "../../common/collection/store.js";
 import type { Query } from "../../common/query.js";
-import type { Action, Executing, Snapshot, View } from "./action.js";
-import type { Id as ExecutionId } from "./execution.js";
+import type { Action, Snapshot, View } from "./action.js";
+import type { Execution, Id as ExecutionId } from "./execution.js";
 import type { Definition, Id } from "./definition.js";
 
 export class Actions {
@@ -50,11 +50,11 @@ export class Actions {
 
     readExecution<R>(
         id: ExecutionId,
-        reader: <P extends object, E extends object>(self: Executing<P, E>) => R,
+        reader: <P extends object, E extends object>(self: Execution<P, E>) => R,
     ): R | undefined {
         const self = this.values().find((entry) => entry.execution?.id === id);
 
-        return self === undefined ? undefined : reader(self as Executing);
+        return self === undefined ? undefined : reader(self as Execution);
     }
 
     values(): Query<View> {
@@ -65,13 +65,13 @@ export class Actions {
         return this.#store.keys();
     }
 
-    add<P extends object, E extends object>(self: Action<P, E>): Actions {
+    add<P extends object, E extends object>(self: Action<P, E> | Execution<P, E>): Actions {
         return new Actions(this.#store.add(self.definition.id, self));
     }
 
     replace<P extends object, E extends object>(
         definition: Definition<P, E>,
-        self: NoInfer<Action<P, E>>,
+        self: NoInfer<Action<P, E> | Execution<P, E>>,
     ): Actions {
         const store = this.#store.replace(definition.id, self);
 

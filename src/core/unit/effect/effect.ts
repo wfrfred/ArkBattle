@@ -1,5 +1,5 @@
 import type { Id as UnitId, Unit } from "../unit.js";
-import type { ExecutingView as ActionView } from "../action/action.js";
+import type { View as ExecutionView } from "../action/execution.js";
 import type { Burst } from "../capability/elemental/burst.js";
 import type { Activation as SkillActivation } from "../capability/skill/activation.js";
 import type { Definition } from "./definition.js";
@@ -10,7 +10,7 @@ export type Id = number;
 
 export type Lifetime =
     | { readonly type: "UNIT"; readonly ref: Ref<Unit> }
-    | { readonly type: "ACTION"; readonly ref: Ref<ActionView> }
+    | { readonly type: "ACTION"; readonly ref: Ref<ExecutionView> }
     | { readonly type: "SKILL"; readonly ref: Ref<SkillActivation> }
     | { readonly type: "ELEMENTAL_BURST"; readonly ref: Ref<Burst> }
     | { readonly type: "EFFECT"; readonly ref: Ref<View> };

@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { battle, unit } from "../helpers/action-fixture.js";
 import { getUnit } from "../helpers/unit.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { ref as actionRef } from "../../dist/core/unit/action/index.js";
+import { executionRef } from "../../dist/core/unit/action/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/operations.js";
@@ -38,16 +38,16 @@ test("Action ENDING content rejects new lifetime dependencies while independent 
         prepare: state => ({ state, value: {} }),
         onTick: state => ({ state, value: false }),
         onEnd(state, source, self) {
-            assert.equal(actions.get(state, actionRef(source, self)).execution.status, "ENDING");
-            return verifyAdmission(state, { type: "ACTION", ref: actionRef(source, self) }, retained);
+            assert.equal(actions.getExecution(state, executionRef(source, self)).execution.status, "ENDING");
+            return verifyAdmission(state, { type: "ACTION", ref: executionRef(source, self) }, retained);
         },
     };
     const initial = battle(unit(0, { action: definition }), unit(1));
-    const started = actions.start(initial, unitRef(getUnit(initial, 0)), definition);
+    const started = actions.start(initial, actions.ref(unitRef(getUnit(initial, 0)), definition));
     assert.equal(started.value.type, "STARTED");
     const ended = actions.cancel(started.state, started.value.ref, "EXPLICIT");
     assert.equal(retained.length, 1);
-    assert.equal(actions.get(ended, started.value.ref), undefined);
+    assert.equal(actions.getExecution(ended, started.value.ref), undefined);
     assert.equal(effects.get(ended, retained[0]).status, "ACTIVE");
     assert.equal(getUnit(ended, 0).lifecycle, "PRESENT");
 });

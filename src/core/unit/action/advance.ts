@@ -2,10 +2,10 @@ import type { Ref } from "../../common/ref.js";
 import type { State as BattleState } from "../../battle/state.js";
 import { get as getUnit } from "../query.js";
 import { isSpatiallyPresent } from "../capability/presence/capability.js";
-import type { ExecutingView } from "./action.js";
+import type { View as ExecutionView } from "./execution.js";
 import { end } from "./operations.js";
 
-export function advance(battle: BattleState, reference: Ref<ExecutingView>): BattleState {
+export function advance(battle: BattleState, reference: Ref<ExecutionView>): BattleState {
     const source = getUnit(battle, reference.host);
 
     if (source === undefined) {

@@ -1,4 +1,4 @@
-import { ref as actionRef } from "../../dist/core/unit/action/index.js";
+import { executionRef } from "../../dist/core/unit/action/index.js";
 import { setRule } from "../../dist/core/unit/capability/action/capability.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -30,17 +30,17 @@ test("action start registers execution without invoking its first onTick", () =>
     });
     const initial = battle(unit(0, { action: definition }));
     const source = unitRef(getUnit(initial, 0));
-    const started = actions.start(initial, source, definition);
+    const started = actions.start(initial, actions.ref(source, definition));
     assert.equal(started.value.type, "STARTED");
     assert.deepEqual(steps, []);
-    assert.equal(actions.get(started.state, started.value.ref).execution.state.count, 0);
-    assert.equal(actions.getAction(started.state, source, definition).cooldown.readyAtTick, 10);
+    assert.equal(actions.getExecution(started.state, started.value.ref).execution.state.count, 0);
+    assert.equal(actions.getAction(started.state, actions.ref(source, definition)).cooldown.readyAtTick, 10);
     assert.equal(getUnit(started.state, 0).action.nextExecutionId, 1);
     assert.equal(started.state.events.some(event => event.type === "ACTION_FINISHED"), false);
     const finished = advance(started.state, started.value.ref);
     assert.deepEqual(steps, [[0, 0]]);
-    assert.equal(actions.get(finished, started.value.ref), undefined);
-    assert.equal(actions.getAction(initial, source, definition).execution, null);
+    assert.equal(actions.getExecution(finished, started.value.ref), undefined);
+    assert.equal(actions.getAction(initial, actions.ref(source, definition)).execution, null);
 });
 
 test("action storage: heterogeneous definitions retain their private state and callback pairing", () => {
@@ -50,12 +50,12 @@ test("action storage: heterogeneous definitions retain their private state and c
         unit(0, { action: actionCapability(first, second) }),
     );
     const source = unitRef(getUnit(initial, 0));
-    const a = actions.start(initial, source, first),
-        b = actions.start(a.state, source, second);
-    assert.equal(actions.get(b.state, a.value.ref).definition, first);
-    assert.deepEqual(actions.get(b.state, a.value.ref).execution.state, { count: 3 });
-    assert.equal(actions.get(b.state, b.value.ref).definition, second);
-    assert.deepEqual(actions.get(b.state, b.value.ref).execution.state, { message: "ready" });
+    const a = actions.start(initial, actions.ref(source, first)),
+        b = actions.start(a.state, actions.ref(source, second));
+    assert.equal(actions.getExecution(b.state, a.value.ref).definition, first);
+    assert.deepEqual(actions.getExecution(b.state, a.value.ref).execution.state, { count: 3 });
+    assert.equal(actions.getExecution(b.state, b.value.ref).definition, second);
+    assert.deepEqual(actions.getExecution(b.state, b.value.ref).execution.state, { message: "ready" });
     assert.equal(actions.forUnit(b.state, source).length, 2);
     assert.equal(actions.all(initial).length, 0);
 });
@@ -67,46 +67,46 @@ test("action storage: same-definition reentry is rejected while another definiti
         unit(0, { action: actionCapability(first, second) }),
     );
     const source = unitRef(getUnit(initial, 0));
-    const a = actions.start(initial, source, first);
-    const retry = actions.start({ ...a.state, tick: 20 }, source, first);
+    const a = actions.start(initial, actions.ref(source, first));
+    const retry = actions.start({ ...a.state, tick: 20 }, actions.ref(source, first));
     assert.deepEqual(retry.value, { type: "REJECTED", reason: "CASTING" });
-    assert.equal(actions.start(retry.state, source, second).value.type, "STARTED");
+    assert.equal(actions.start(retry.state, actions.ref(source, second)).value.type, "STARTED");
 });
 
 test("action storage: replacements preserve earlier instances and never recreate an ended identity", () => {
     const definition = program("branch");
     const initial = battle(unit(0, { action: definition })),
         source = unitRef(getUnit(initial, 0));
-    const started = actions.start(initial, source, definition),
-        self = actions.get(started.state, started.value.ref);
-    const changed = actions.update(started.state, actionRef(started.value.ref.host, self), () => ({ count: 1 }));
-    assert.equal(actions.get(changed, started.value.ref).execution.state.count, 1);
-    assert.equal(actions.get(started.state, started.value.ref).execution.state.count, 0);
+    const started = actions.start(initial, actions.ref(source, definition)),
+        self = actions.getExecution(started.state, started.value.ref);
+    const changed = actions.updateExecution(started.state, executionRef(started.value.ref.host, self), () => ({ count: 1 }));
+    assert.equal(actions.getExecution(changed, started.value.ref).execution.state.count, 1);
+    assert.equal(actions.getExecution(started.state, started.value.ref).execution.state.count, 0);
     const cancelled = actions.cancel(changed, started.value.ref, "SCRIPT");
-    assert.throws(() => actions.update(cancelled, actionRef(started.value.ref.host, self), () => {
+    assert.throws(() => actions.updateExecution(cancelled, executionRef(started.value.ref.host, self), () => {
         assert.fail("ended Action updated");
     }), /unknown action execution: 0/);
-    const restarted = actions.start({ ...cancelled, tick: 10 }, source, definition);
+    const restarted = actions.start({ ...cancelled, tick: 10 }, actions.ref(source, definition));
     assert.equal(restarted.value.type, "STARTED");
     assert.notEqual(restarted.value.ref.id, started.value.ref.id);
-    assert.equal(actions.get(restarted.state, started.value.ref), undefined);
+    assert.equal(actions.getExecution(restarted.state, started.value.ref), undefined);
 });
 
 test("action storage: private state updates cannot change the fixed definition association", () => {
     const definition = program("fixed"),
         other = program("fixed");
     const initial = battle(unit(0, { action: definition }));
-    const started = actions.start(initial, unitRef(getUnit(initial, 0)), definition);
-    const self = actions.get(started.state, started.value.ref);
-    const changed = actions.update(started.state, actionRef(started.value.ref.host, self), current => ({ ...current, definition: other }));
-    assert.equal(actions.get(changed, started.value.ref).definition, definition);
-    assert.equal(actions.get(changed, started.value.ref).execution.state.definition, other);
-    assert.equal(actions.get(started.state, started.value.ref), self);
+    const started = actions.start(initial, actions.ref(unitRef(getUnit(initial, 0)), definition));
+    const self = actions.getExecution(started.state, started.value.ref);
+    const changed = actions.updateExecution(started.state, executionRef(started.value.ref.host, self), current => ({ ...current, definition: other }));
+    assert.equal(actions.getExecution(changed, started.value.ref).definition, definition);
+    assert.equal(actions.getExecution(changed, started.value.ref).execution.state.definition, other);
+    assert.equal(actions.getExecution(started.state, started.value.ref), self);
 });
 
 test("action storage: a throwing later instance cannot mutate earlier published progress", () => {
     const advanceCount = (state, source, self) => ({
-        state: actions.update(state, actionRef(source, self), currentState => ({ count: currentState.count + 1 })),
+        state: actions.updateExecution(state, executionRef(source, self), currentState => ({ count: currentState.count + 1 })),
         value: false,
     });
     const first = program("first", { onTick: advanceCount });
@@ -120,22 +120,22 @@ test("action storage: a throwing later instance cannot mutate earlier published 
         unit(0, { action: actionCapability(first, second) }),
     );
     const source = unitRef(getUnit(initial, 0)),
-        a = actions.start(initial, source, first),
-        b = actions.start(a.state, source, second);
+        a = actions.start(initial, actions.ref(source, first)),
+        b = actions.start(a.state, actions.ref(source, second));
     const before = advance(advance(b.state, a.value.ref), b.value.ref);
     assert.throws(() => {
         const next = advance({ ...before, tick: 1 }, a.value.ref);
         advance(next, b.value.ref);
     }, /later failure/);
-    assert.equal(actions.get(before, a.value.ref).execution.state.count, 1);
-    assert.equal(actions.get(before, b.value.ref).execution.state.count, 1);
+    assert.equal(actions.getExecution(before, a.value.ref).execution.state.count, 1);
+    assert.equal(actions.getExecution(before, b.value.ref).execution.state.count, 1);
 });
 
 test("action: startup rules prohibit new instances while an accepted program keeps its own continuation", () => {
     const first = program("running", {
         onTick(state, source, self) {
             return {
-                state: actions.update(state, actionRef(source, self), currentState => ({ count: currentState.count + 1 })),
+                state: actions.updateExecution(state, executionRef(source, self), currentState => ({ count: currentState.count + 1 })),
                 value: state.tick >= 1,
             };
         },
@@ -145,7 +145,7 @@ test("action: startup rules prohibit new instances while an accepted program kee
         unit(0, { action: actionCapability(first, second) }),
     );
     const source = unitRef(getUnit(initial, 0)),
-        started = actions.start(initial, source, first);
+        started = actions.start(initial, actions.ref(source, first));
     const current = getUnit(started.state, 0);
     const prohibited = updateUnit(
         { ...started.state, tick: 1 },
@@ -154,12 +154,12 @@ test("action: startup rules prohibit new instances while an accepted program kee
             action: setRule(current.action, { id: "prohibit-start", allows: () => false }),
         }],
     );
-    assert.deepEqual(actions.start(prohibited, source, second).value, {
+    assert.deepEqual(actions.start(prohibited, actions.ref(source, second)).value, {
         type: "REJECTED",
         reason: "RULE",
     });
     const finished = advance(prohibited, started.value.ref);
-    assert.equal(actions.get(finished, started.value.ref), undefined);
+    assert.equal(actions.getExecution(finished, started.value.ref), undefined);
     assert.equal(
         finished.events.some((event) => event.type === "ACTION_FINISHED"),
         true,
@@ -174,15 +174,15 @@ test("action: cancellation preserves the accepted cooldown instead of resetting 
     const definition = program("cooldown"),
         initial = battle(unit(0, { action: definition }));
     const source = unitRef(getUnit(initial, 0)),
-        started = actions.start(initial, source, definition);
+        started = actions.start(initial, actions.ref(source, definition));
     const cancelled = actions.cancel({ ...started.state, tick: 1 }, started.value.ref, "SCRIPT");
     assert.equal(getUnit(cancelled, 0).action.actions.get(definition.id).cooldown.readyAtTick, 10);
-    assert.deepEqual(actions.start(cancelled, source, definition).value, {
+    assert.deepEqual(actions.start(cancelled, actions.ref(source, definition)).value, {
         type: "REJECTED",
         reason: "COOLDOWN",
     });
     assert.equal(
-        actions.start({ ...cancelled, tick: 10 }, source, definition).value.type,
+        actions.start({ ...cancelled, tick: 10 }, actions.ref(source, definition)).value.type,
         "STARTED",
     );
 });

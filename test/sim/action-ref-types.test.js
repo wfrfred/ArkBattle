@@ -21,82 +21,82 @@ import type { State as BattleState } from ${source("battle/state")};
 import type { Unit } from ${source("unit/unit")};
 import type { Action as ActionCapability } from ${source("unit/capability/action/capability")};
 import type { View } from ${source("unit/action/action")};
-import type { Action, Executing, ExecutingView } from ${source("unit/action/index")};
-import { ref } from ${source("unit/action/index")};
+import type { Action, Execution, ExecutionView } from ${source("unit/action/index")};
+import { executionRef, ref as actionRef } from ${source("unit/action/index")};
 import { Actions } from ${source("unit/action/actions")};
 import { create as createAction, createActions } from ${source("unit/action/index")};
 import type { Definition } from ${source("unit/action/index")};
-import { all, start, get, cancel, update, getAction, updateState } from ${source("unit/action/index")};
+import { all, start, getExecution, cancel, updateExecution, getAction, updateState, updateCooldown, resetCooldown, clearCooldown } from ${source("unit/action/index")};
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
 type Assert<T extends true> = T;
 declare const battle: BattleState;
 declare const source: Ref<Unit & ActionCapability>;
-declare const action: Executing<object, { count: number }>;
-declare const specialized: Ref<Executing<object, { count: number }> & { readonly marker: 17 }>;
+declare const action: Execution<object, { count: number }>;
+declare const specialized: Ref<Execution<object, { count: number }> & { readonly marker: 17 }>;
 const definition: Definition<object, { count: number }> = {
     id: "count", intervalTicks: 10, speed: 100,
     initialize: current => ({ state: current, value: {} }),
     prepare: current => ({ state: current, value: { count: 0 } }),
-    onTick: (current, host, self) => ({ state: update(current, ref(host, self), state => ({ count: state.count + 1 })), value: false }),
+    onTick: (current, host, self) => ({ state: updateExecution(current, executionRef(host, self), state => ({ count: state.count + 1 })), value: false }),
 };
-const started = start(battle, source, definition);
+const started = start(battle, actionRef(source, definition));
 if (started.value.type === "STARTED") {
-    const current = get(started.state, started.value.ref);
-    type Current = Assert<Equal<typeof current, Executing<object, { count: number }> | undefined>>;
+    const current = getExecution(started.state, started.value.ref);
+    type Current = Assert<Equal<typeof current, Execution<object, { count: number }> | undefined>>;
 }
-const known = ref(source, action);
+const known = executionRef(source, action);
 const host: Ref<Unit & ActionCapability> = known.host;
 type Host = Assert<Equal<typeof known.host, Ref<Unit & ActionCapability>>>;
 // @ts-expect-error A reference needs its host as well as the per-host execution id.
 const hostless: Pick<typeof known, "host" | "id"> = { id: 0 };
-type Known = Assert<Equal<typeof known, Ref<Executing<object, { count: number }>>>>;
-const weaker: Ref<Executing<object, { count: number }>> = specialized;
-const erased: Ref<ExecutingView> = weaker;
+type Known = Assert<Equal<typeof known, Ref<Execution<object, { count: number }>>>>;
+const weaker: Ref<Execution<object, { count: number }>> = specialized;
+const erased: Ref<ExecutionView> = weaker;
 const candidates = all(battle);
-type Candidates = Assert<Equal<typeof candidates, readonly Ref<ExecutingView>[]>>;
+type Candidates = Assert<Equal<typeof candidates, readonly Ref<ExecutionView>[]>>;
 const entries = Actions.empty().add(action);
 const publicEntries: Query<View> = entries.values();
 const exactEntry = entries.get(definition.id, definition);
 type ExactEntry = Assert<Equal<typeof exactEntry, Action<object, { count: number }> | undefined>>;
 entries.replace(definition, { ...action, execution: { ...action.execution, state: { count: 1 } } });
 // @ts-expect-error Public views cannot be inserted as complete aggregates.
-entries.add(get(battle, erased)!);
+entries.add(getExecution(battle, erased)!);
 // @ts-expect-error A typed Definition fixes execution state inference.
 entries.replace(definition, { ...action, execution: { ...action.execution, state: { count: "wrong" } } });
 cancel(battle, erased, "SCRIPT");
 // @ts-expect-error Phantom identity cannot be manufactured.
-const forged: Ref<Executing<object, { count: number }>> = { id: 0 };
+const forged: Ref<Execution<object, { count: number }>> = { id: 0 };
 // @ts-expect-error
-const stronger: Ref<Executing<object, { count: number }> & { readonly marker: 17 }> = weaker;
+const stronger: Ref<Execution<object, { count: number }> & { readonly marker: 17 }> = weaker;
 // @ts-expect-error
-const mismatched: Ref<Executing<object, { label: string }>> = weaker;
+const mismatched: Ref<Execution<object, { label: string }>> = weaker;
 // @ts-expect-error
-get(battle, source);
+getExecution(battle, source);
 // @ts-expect-error
-get(battle, 0);
+getExecution(battle, 0);
 // @ts-expect-error
-get(battle, action);
+getExecution(battle, action);
 // @ts-expect-error
-get(battle, erased)!.definition.onTick;
+getExecution(battle, erased)!.definition.onTick;
 // @ts-expect-error Public execution views hide E.
-get(battle, erased)!.execution.state.count;
+getExecution(battle, erased)!.execution.state.count;
 // @ts-expect-error Public aggregate views hide P.
-get(battle, erased)!.state;
-update(battle, known, current => { const count: number = current.count; return { count: count + 1 }; });
+getExecution(battle, erased)!.state;
+updateExecution(battle, known, current => { const count: number = current.count; return { count: count + 1 }; });
 // @ts-expect-error The execution reference fixes E.
-update(battle, known, () => ({ count: "invalid" }));
+updateExecution(battle, known, () => ({ count: "invalid" }));
 // @ts-expect-error Public references do not prove private state.
-update(battle, erased, current => current);
+updateExecution(battle, erased, current => current);
 // @ts-expect-error A Unit reference cannot identify an execution.
-update(battle, source, () => ({ count: 1 }));
+updateExecution(battle, source, () => ({ count: 1 }));
 // @ts-expect-error Updates require references rather than snapshots.
-update(battle, action, () => ({ count: 1 }));
+updateExecution(battle, action, () => ({ count: 1 }));
 const persistent: Definition<{ uses: number }, { target: string }> = {
     id: "persistent", intervalTicks: 10, speed: 100,
     initialize: current => ({ state: current, value: { uses: 0 } }),
-    prepare: (current, host, self) => ({ state: updateState(current, host, self.definition, value => ({ uses: value.uses + 1 })), value: { target: "sampled" } }),
+    prepare: (current, host, self) => ({ state: updateState(current, actionRef(host, self.definition), value => ({ uses: value.uses + 1 })), value: { target: "sampled" } }),
     onTick: (current, host, self) => {
-        const stored = getAction(current, host, self.definition)!;
+        const stored = getAction(current, actionRef(host, self.definition))!;
         const uses: number = stored.state.uses;
         const target: string = self.execution.state.target;
         // @ts-expect-error
@@ -104,10 +104,44 @@ const persistent: Definition<{ uses: number }, { target: string }> = {
         // @ts-expect-error
         const wrongExecution: number = self.execution.state.target;
         // @ts-expect-error Definition fixes P for transforms.
-        updateState(current, host, self.definition, () => ({ uses: "invalid" }));
+        updateState(current, actionRef(host, self.definition), () => ({ uses: "invalid" }));
         return { state: current, value: false };
     },
 };
+const persistentReference = actionRef(source, persistent);
+type PersistentReference = Assert<Equal<typeof persistentReference, Ref<Action<{ uses: number }, { target: string }>>>>;
+const persistentCurrent = getAction(battle, persistentReference);
+type PersistentCurrent = Assert<Equal<typeof persistentCurrent, Action<{ uses: number }, { target: string }> | undefined>>;
+updateState(battle, persistentReference, current => ({ uses: current.uses + 1 }));
+updateCooldown(battle, persistentReference, current => ({ ...current, readyAtTick: 20 }));
+resetCooldown(battle, persistentReference);
+clearCooldown(battle, persistentReference);
+const persistentStart = start(battle, persistentReference);
+if (persistentStart.value.type === "STARTED") {
+    type Started = Assert<Equal<typeof persistentStart.value.ref, Ref<Execution<{ uses: number }, { target: string }>>>>;
+}
+// @ts-expect-error A persistent reference retains its P type.
+const wrongPersistentReference: Ref<Action<{ uses: string }, { target: string }>> = persistentReference;
+// @ts-expect-error A persistent reference also retains its E type.
+const wrongPersistentExecution: Ref<Action<{ uses: number }, { target: number }>> = persistentReference;
+// @ts-expect-error A persistent Action and one of its executions have different identities.
+const actionAsExecution: Ref<Execution<{ uses: number }, { target: string }>> = persistentReference;
+// @ts-expect-error An execution reference cannot stand in for the persistent Action.
+const executionAsAction: Ref<Action<object, { count: number }>> = known;
+// @ts-expect-error Persistent lookup requires an Action reference.
+getAction(battle, known);
+// @ts-expect-error Execution lookup requires an Execution reference.
+getExecution(battle, persistentReference);
+// @ts-expect-error Starting uses the persistent Action identity.
+start(battle, known);
+// @ts-expect-error Cancellation targets a particular execution.
+cancel(battle, persistentReference);
+// @ts-expect-error Persistent state cannot be updated through an execution reference.
+updateState(battle, known, current => current);
+// @ts-expect-error Execution state cannot be updated through a persistent reference.
+updateExecution(battle, persistentReference, current => current);
+// @ts-expect-error Cooldown belongs to the persistent Action.
+updateCooldown(battle, known, current => current);
 const configuration: ActionCapability["definition"]["action"] = {
     initialize: current => createActions(current, createAction(definition), createAction(persistent)),
 };
@@ -125,10 +159,10 @@ actionHost.action.actions.replace(persistent, { ...persistentEntry, state: { use
 // @ts-expect-error
  actionHost.action.actions.replace(persistent, { ...persistentEntry, state: { uses: "wrong" } });
 actionHost.action.actions.read("persistent", self => {
-    const stored = getAction(battle, source, self.definition)!;
+    const stored = getAction(battle, actionRef(source, self.definition))!;
     // @ts-expect-error Unknown configuration keeps its private type abstract.
     stored.state.uses;
-    return updateState(battle, source, self.definition, current => current);
+    return updateState(battle, actionRef(source, self.definition), current => current);
 });
 `,
         );

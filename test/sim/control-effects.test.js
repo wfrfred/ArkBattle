@@ -110,11 +110,11 @@ test("stun interrupts a running Action through its complete cancellation operati
         onEnd: state => { endings++; return state; },
     };
     const configured = actor(program);
-    const started = actions.start(battle(configured), unitRef(configured), program);
+    const started = actions.start(battle(configured), actions.ref(unitRef(configured), program));
     assert.equal(started.value.type, "STARTED");
     const stunned = effects.install(started.state, unitRef(configured), stun).state;
-    assert.equal(actions.get(stunned, started.value.ref), undefined);
+    assert.equal(actions.getExecution(stunned, started.value.ref), undefined);
     assert.equal(endings, 1);
     assert.deepEqual(stunned.events.filter(event => event.type === "ACTION_CANCELLED").map(event => event.reason), ["INTERRUPTED"]);
-    assert.equal(actions.get(started.state, started.value.ref).execution.status, "RUNNING");
+    assert.equal(actions.getExecution(started.state, started.value.ref).execution.status, "RUNNING");
 });

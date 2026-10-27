@@ -1,4 +1,4 @@
-import { ref as actionRef } from "../../dist/core/unit/action/index.js";
+import { executionRef } from "../../dist/core/unit/action/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, unit } from "../helpers/action-fixture.js";
@@ -91,7 +91,7 @@ test("action timing: complete cooldown refresh preserves progress at the contrib
     const definition = program(),
         initial = battle(unit(0, { action: definition }));
     const source = unitRef(getUnit(initial, 0));
-    const started = actions.start(initial, source, definition);
+    const started = actions.start(initial, actions.ref(source, definition));
     const changed = actions.refreshCooldowns(
         contribute({ ...started.state, tick: 15 }, "speed", { addition: 100 }),
         source,
@@ -105,14 +105,14 @@ test("action timing: starting uses contributions and cooldowns from the returned
     const definition = program("changed-on-start", {
         prepare(state, source) {
             state = contribute(state, "speed", { addition: 100 });
-            state = actions.resetCooldown(state, source, sibling.id);
+            state = actions.resetCooldown(state, actions.ref(source, sibling));
             return { state, value: {} };
         },
     });
     const initial = battle(unit(0, {
         action: actionCapability(definition, sibling),
     }));
-    const started = actions.start(initial, unitRef(getUnit(initial, 0)), definition);
+    const started = actions.start(initial, actions.ref(unitRef(getUnit(initial, 0)), definition));
     assert.equal(started.value.type, "STARTED");
     const current = getUnit(started.state, 0);
     assert.deepEqual(current.action.actions.get(definition.id).cooldown, { periodTicks: 15, readyAtTick: 15 });
@@ -125,22 +125,22 @@ test("action timing: startup rejects a cooldown introduced by its callback and r
     const definition = program("blocked-on-start", {
         initialize: state => ({ state, value: { attempts: 0 } }),
         prepare(state, source, self) {
-            state = actions.updateState(state, source, self.definition, current => ({ attempts: current.attempts + 1 }));
-            state = actions.updateCooldown(state, source, self.definition.id, current => ({ ...current, readyAtTick: 100 }));
+            state = actions.updateState(state, actions.ref(source, self.definition), current => ({ attempts: current.attempts + 1 }));
+            state = actions.updateCooldown(state, actions.ref(source, self.definition), current => ({ ...current, readyAtTick: 100 }));
             return { state, value: {} };
         },
         onTick: () => assert.fail("a rejected startup cannot advance"),
     });
     const initial = battle(unit(0, { action: definition }));
     const source = unitRef(getUnit(initial, 0));
-    const rejected = actions.start(initial, source, definition);
+    const rejected = actions.start(initial, actions.ref(source, definition));
     assert.deepEqual(rejected.value, { type: "REJECTED", reason: "COOLDOWN" });
     assert.equal(getUnit(rejected.state, 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 0);
     assert.equal(getUnit(rejected.state, 0).action.nextExecutionId, getUnit(initial, 0).action.nextExecutionId);
-    assert.equal(actions.getAction(rejected.state, source, definition).cooldown.readyAtTick, 100);
-    assert.deepEqual(actions.getAction(rejected.state, source, definition).state, { attempts: 1 });
-    assert.equal(actions.getAction(initial, source, definition).cooldown.readyAtTick, 0);
-    assert.deepEqual(actions.getAction(initial, source, definition).state, { attempts: 0 });
+    assert.equal(actions.getAction(rejected.state, actions.ref(source, definition)).cooldown.readyAtTick, 100);
+    assert.deepEqual(actions.getAction(rejected.state, actions.ref(source, definition)).state, { attempts: 1 });
+    assert.equal(actions.getAction(initial, actions.ref(source, definition)).cooldown.readyAtTick, 0);
+    assert.deepEqual(actions.getAction(initial, actions.ref(source, definition)).state, { attempts: 0 });
 });
 
 test("action timing: a period change does not rescale an accepted private casting budget", () => {
@@ -149,27 +149,27 @@ test("action timing: a period change does not rescale an accepted private castin
         onTick(state, source, self) {
             if (state.tick >= self.execution.state.finishAtTick) return { state, value: true };
             return {
-                state: actions.update(state, actionRef(source, self), currentState => ({ ...currentState, observed: currentState.observed + 1 })),
+                state: actions.updateExecution(state, executionRef(source, self), currentState => ({ ...currentState, observed: currentState.observed + 1 })),
                 value: false,
             };
         },
     });
     const initial = battle(unit(0, { action: definition })),
         source = unitRef(getUnit(initial, 0));
-    const started = actions.start(initial, source, definition);
+    const started = actions.start(initial, actions.ref(source, definition));
     const changed = actions.refreshCooldowns(
         contribute({ ...started.state, tick: 10 }, "interval", { finalScaler: 0.5 }),
         source,
     );
     assert.equal(getUnit(changed, 0).action.actions.get(definition.id).cooldown.readyAtTick, 20);
-    assert.equal(actions.get(changed, started.value.ref).execution.state.finishAtTick, 20);
+    assert.equal(actions.getExecution(changed, started.value.ref).execution.state.finishAtTick, 20);
     assert.equal(
-        actions.get(advance({ ...changed, tick: 19 }, started.value.ref), started.value.ref).execution.state
+        actions.getExecution(advance({ ...changed, tick: 19 }, started.value.ref), started.value.ref).execution.state
             .finishAtTick,
         20,
     );
     assert.equal(
-        actions.get(advance({ ...changed, tick: 20 }, started.value.ref), started.value.ref),
+        actions.getExecution(advance({ ...changed, tick: 20 }, started.value.ref), started.value.ref),
         undefined,
     );
 });
@@ -181,11 +181,11 @@ test("action timing: each configured definition retains its own cooldown", () =>
         unit(0, { action: actionCapability(first, second) }),
     );
     const source = unitRef(getUnit(initial, 0));
-    const a = actions.start(initial, source, first),
-        b = actions.start(a.state, source, second);
+    const a = actions.start(initial, actions.ref(source, first)),
+        b = actions.start(a.state, actions.ref(source, second));
     assert.equal(getUnit(b.state, 0).action.actions.get(first.id).cooldown.readyAtTick, 10);
     assert.equal(getUnit(b.state, 0).action.actions.get(second.id).cooldown.readyAtTick, 30);
-    const cleared = actions.clearCooldown(b.state, source, first.id);
+    const cleared = actions.clearCooldown(b.state, actions.ref(source, first));
     assert.equal(getUnit(cleared, 0).action.actions.get(first.id).cooldown.readyAtTick, 0);
     assert.equal(getUnit(cleared, 0).action.actions.get(second.id).cooldown.readyAtTick, 30);
 });
