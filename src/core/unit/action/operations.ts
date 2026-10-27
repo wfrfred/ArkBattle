@@ -1,17 +1,17 @@
 import { update as updateUnit } from "../../battle/unit.js";
 import { closeLifetime } from "../../battle/execution/lifetime.js";
 import type { Ref } from "../../common/ref.js";
-import { sort } from "../../common/collection.js";
 import { appendEvents, type State as BattleState, type Result } from "../../battle/state.js";
 import * as units from "../query.js";
 import type { Unit } from "../unit.js";
-import { hasAction, type Action as ActionCapability } from "../capability/action/capability.js";
+import type { Action as ActionCapability } from "../capability/action/capability.js";
 import { isSpatiallyPresent } from "../capability/presence/capability.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import { resolveInterval } from "../capability/action/timing.js";
-import { ref, type Action, type Executing, type ExecutingView } from "./action.js";
+import { ref, type Executing, type ExecutingView } from "./action.js";
 import type { Definition, Id as DefinitionId, End } from "./definition.js";
 import * as cooldown from "./cooldown.js";
+import { forUnit } from "./query.js";
 
 export type StartOutcome<P extends object, E extends object> =
     | { readonly type: "STARTED"; readonly ref: Ref<Executing<P, E>> }
@@ -19,69 +19,6 @@ export type StartOutcome<P extends object, E extends object> =
           readonly type: "REJECTED";
           readonly reason: "SOURCE_UNAVAILABLE" | "RULE" | "COOLDOWN" | "CASTING" | "CONDITION";
       };
-
-export function all(battle: BattleState): readonly Ref<ExecutingView>[] {
-    return units
-        .all(battle)
-        .filter(hasAction)
-        .flatMap((host) =>
-            sort(
-                host.action.actions
-                    .values()
-                    .filter((self): self is ExecutingView => self.execution !== null)
-                    .map((self) => ref(units.ref(host), self)),
-                (left, right) => left.id - right.id,
-            ),
-        )
-        .toArray();
-}
-
-export function forUnit(battle: BattleState, source: Ref<Unit>): readonly Ref<ExecutingView>[] {
-    const unit = units.get(battle, source);
-
-    return unit !== undefined && hasAction(unit)
-        ? sort(
-              unit.action.actions
-                  .values()
-                  .filter((self): self is ExecutingView => self.execution !== null)
-                  .map((self) => ref(units.ref(unit), self)),
-              (left, right) => left.id - right.id,
-          )
-        : [];
-}
-
-export function get<A extends ExecutingView>(
-    battle: BattleState,
-    reference: Ref<A>,
-): A | undefined {
-    return units
-        .get(battle, reference.host)
-        ?.action.actions.readExecution(reference.id, (self) => self as unknown as A);
-}
-
-export function getAction<P extends object, E extends object>(
-    battle: BattleState,
-    source: Ref<Unit & ActionCapability>,
-    definition: Definition<P, E>,
-): Action<P, E> | undefined {
-    return units.get(battle, source)?.action.actions.get(definition.id, definition);
-}
-
-export function isCasting(
-    battle: BattleState,
-    source: Ref<Unit>,
-    definitionId?: DefinitionId,
-): boolean {
-    const unit = units.get(battle, source);
-
-    return (
-        unit !== undefined &&
-        hasAction(unit) &&
-        (definitionId === undefined
-            ? unit.action.actions.values().some((self) => self.execution !== null)
-            : unit.action.actions.get(definitionId)?.execution != null)
-    );
-}
 
 export function updateState<P extends object, E extends object>(
     battle: BattleState,

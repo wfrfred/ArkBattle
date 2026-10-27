@@ -45,6 +45,17 @@ Action 的准备程序为 prepare，推进与结束回调为 onTick／onEnd；Pr
 | 程序回调有额外结果 | 可以返回 `Result<T>`；例如 Action Definition.prepare 的准备结果、onTick 的完成指示和 Hook 的业务指令。 |
 | Damage／Healing 两阶段接续 | `applyDamage(request, calculation: Result<CalculatedDamage \| undefined>)` 与 `applyHealing(request, calculation: Result<CalculatedHealing \| undefined>)` 通过计算 Result 显式接续 state 和数值，分别返回领域 Outcome。插入其他操作时调用者须更新其中 state。 |
 
+### 模块与公共入口
+
+1. 按领域组织目录，按职责组织文件。query.ts 只负责只读查询，operations.ts 负责完整业务结算，局部状态变换归所属数据或 Capability 模块，Tick 调度归 Runtime。内部辅助步骤保持业务内聚，文件长度与函数名本身不决定拆分。
+2. 一个领域需要从多个实现文件提供公共 API 时，以 index.ts 显式列出公开的值与类型，不使用 export *。只有一个清晰入口的小领域不强制增加 index；公共入口直接重导出现有实现，不增加运行时包装。
+3. Content、Legacy 等上层消费侧默认从领域 index 导入，领域内部直接导入所属实现。Core 内部可以直接依赖明确的查询、模型或操作文件，以控制实际依赖方向；这是正常的依赖管理方式，不要求全部导入经过 index。不得为了 barrel 搬动 Unit／Projectile 的模型与完整 Battle 操作边界。
+4. 调用权限由业务契约决定，不由是否出现在 index 决定。公共入口可以包含供 Core 协作或调度的接口；例如 Action.advance 仍只由调度器主动调用，Content 不能借公共导出主动推进。
+5. 实现文件的 export 可以用于领域内部共享，不自动构成公共 API。内部模型、容器、Execution 类型与配对读写协议按实际需要深导；不为覆盖全部内部导出扩大 index，也不为公共入口复制另一套类型。
+6. 按实际用途整理各领域，不套统一拆分模板，不增加只缩短路径的转发层，不保留重复类型；仅调整公共导出与导入路径时不新增测试，不借入口整理扩张业务语义或无关实现。
+
+首轮公共入口整理落在 [Action](action.md#2-模块与导入)，其他领域按各自现有契约与实际需要处理。
+
 ## 2. 参数与职责
 
 完整操作的主要对象身份置于 battle 之后；其余参数是业务输入。指定 Unit 使用 `Ref<U>`，指定 Effect 使用它的组合 Ref；Action / Projectile 使用各自领域的 Typed Ref，不套用 Unit Ref。伤害、治疗、元素积累的主要对象为接收 Unit，来源身份等仍是业务输入，不要求把所有 ID 都拆成位置参数。

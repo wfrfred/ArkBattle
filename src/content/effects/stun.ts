@@ -6,7 +6,7 @@ import * as blocker from "../../core/unit/capability/blocking/blocker.js";
 import * as locomotion from "../../core/unit/capability/locomotion/capability.js";
 import * as movement from "../../core/unit/capability/locomotion/operations.js";
 import * as skill from "../../core/unit/capability/skill/capability.js";
-import { cancelForUnit } from "../../core/unit/action/operations.js";
+import { cancelForUnit } from "../../core/unit/action/index.js";
 import * as units from "../../core/unit/query.js";
 
 export const stun: Definition<object> = {

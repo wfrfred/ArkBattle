@@ -5,7 +5,7 @@ import { select } from "../../dist/core/battle/targeting/select.js";
 import { random } from "../../dist/core/battle/targeting/selector.js";
 import { getUnit } from "../helpers/unit.js";
 import { ref } from "../../dist/core/unit/query.js";
-import * as actions from "../../dist/core/unit/action/operations.js";
+import * as actions from "../../dist/core/unit/action/index.js";
 import { and, damage, healing, range } from "../../dist/core/battle/targeting/filter.js";
 import { unit, battle } from "../helpers/action-fixture.js";
 

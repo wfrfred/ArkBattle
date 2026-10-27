@@ -3,8 +3,8 @@ import { test } from "node:test";
 import { battle, unit, actionDefinition } from "../helpers/action-fixture.js";
 import { getUnit } from "../helpers/unit.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { start } from "../../dist/core/unit/action/operations.js";
-import { advance } from "../../dist/core/unit/action/advance.js";
+import { start } from "../../dist/core/unit/action/index.js";
+import { advance } from "../../dist/core/unit/action/index.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import { at } from "../../dist/core/battlefield/occupancy.js";
 

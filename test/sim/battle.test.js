@@ -36,8 +36,8 @@ import { add as addUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { initialize } from "../helpers/unit.js";
 import { actionCapability } from "../helpers/actions.js";
-import { ref as actionRef } from "../../dist/core/unit/action/action.js";
-import { update as updateAction } from "../../dist/core/unit/action/operations.js";
+import { ref as actionRef } from "../../dist/core/unit/action/index.js";
+import { update as updateAction } from "../../dist/core/unit/action/index.js";
 import { install as installEffect } from "../../dist/core/unit/effect/operations.js";
 
 const navigationMap = (state, mode = 'WALK') => applyOverlays(state.baseline[mode], state.overlays[mode]);

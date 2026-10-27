@@ -1,4 +1,4 @@
-import { create, createActions } from "../../dist/core/unit/action/initialize.js";
+import { create, createActions } from "../../dist/core/unit/action/index.js";
 
 export function actionCapability(...definitions) {
     const initializers = definitions.map(create);

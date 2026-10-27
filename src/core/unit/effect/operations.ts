@@ -3,7 +3,7 @@ import { type State as BattleState, type Result } from "../../battle/state.js";
 import type { Unit, Id } from "../unit.js";
 import type { Ref } from "../../common/ref.js";
 import * as units from "../query.js";
-import { get as getAction } from "../action/operations.js";
+import { get as getAction } from "../action/query.js";
 import { get as getBurst } from "../capability/elemental/query.js";
 import { get as getActivation } from "../capability/skill/query.js";
 import type { Definition } from "./definition.js";

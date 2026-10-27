@@ -11,8 +11,8 @@ import { createArrow } from '../../dist/content/enemies/crossbowman/action.js';
 import * as tracking from '../../dist/content/projectiles/tracking.js';
 import { unit as actionUnit } from '../helpers/action-fixture.js';
 import { createTacticalProjectileDemo } from '../../dist/legacy/projectile-demo.js';
-import { start as startAction } from '../../dist/core/unit/action/operations.js';
-import { advance as advanceAction } from '../../dist/core/unit/action/advance.js';
+import { start as startAction } from '../../dist/core/unit/action/index.js';
+import { advance as advanceAction } from '../../dist/core/unit/action/index.js';
 
 function setup(sourceCapabilities = {}) {
   const source = initialize({ id: 0, position: [0, 0], definition: { hooks: [],

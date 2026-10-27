@@ -17,8 +17,8 @@ import { activate as activateSkill, advance as advanceSkill, finish as finishSki
 import { resolveAttack } from '../../dist/core/unit/capability/offense/query.js';
 import { fixtureBattlefieldState } from '../helpers/battlefield.js';
 import { ref as unitRef } from '../../dist/core/unit/query.js';
-import { start as startAction } from '../../dist/core/unit/action/operations.js';
-import { advance as advanceAction } from '../../dist/core/unit/action/advance.js';
+import { start as startAction } from '../../dist/core/unit/action/index.js';
+import { advance as advanceAction } from '../../dist/core/unit/action/index.js';
 import { select } from '../../dist/core/battle/targeting/select.js';
 import { invisibleRestriction, camouflageRestriction, untargetableRestriction } from '../../dist/content/effects/visibility.js';
 

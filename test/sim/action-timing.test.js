@@ -1,9 +1,9 @@
-import { ref as actionRef } from "../../dist/core/unit/action/action.js";
+import { ref as actionRef } from "../../dist/core/unit/action/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, unit } from "../helpers/action-fixture.js";
 import * as cooldown from "../../dist/core/unit/action/cooldown.js";
-import * as actions from "../../dist/core/unit/action/operations.js";
+import * as actions from "../../dist/core/unit/action/index.js";
 import { actionCapability } from "../helpers/actions.js";
 import {
     resolveInterval,
@@ -18,7 +18,7 @@ import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
-import { advance } from "../../dist/core/unit/action/advance.js";
+import { advance } from "../../dist/core/unit/action/index.js";
 
 const program = (id = "timed", extra = {}) => ({
     id,

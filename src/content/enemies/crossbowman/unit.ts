@@ -5,8 +5,11 @@ import type {
     Definitions as CapabilityDefinitions,
     Product,
 } from "../../../core/unit/capability/catalog.js";
-import { create as createAction, createActions } from "../../../core/unit/action/initialize.js";
-import { isCasting } from "../../../core/unit/action/operations.js";
+import {
+    create as createAction,
+    createActions,
+    isCasting,
+} from "../../../core/unit/action/index.js";
 import { ref } from "../../../core/unit/query.js";
 import { hasBlockable } from "../../../core/unit/capability/blocking/blockable.js";
 import {

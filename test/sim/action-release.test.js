@@ -9,8 +9,8 @@ import {
     removeBeforeReleaseHook,
 } from "../../dist/core/unit/capability/action/capability.js";
 import { beforeRelease } from "../../dist/core/unit/capability/action/release.js";
-import * as actions from "../../dist/core/unit/action/operations.js";
-import { advance } from "../../dist/core/unit/action/advance.js";
+import * as actions from "../../dist/core/unit/action/index.js";
+import { advance } from "../../dist/core/unit/action/index.js";
 import * as effects from "../../dist/core/unit/effect/operations.js";
 
 const CONTINUE = { type: "CONTINUE" };

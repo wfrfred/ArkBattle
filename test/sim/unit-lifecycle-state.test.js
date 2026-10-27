@@ -14,7 +14,7 @@ import { createDefinition as createSkillDefinition, setEndedHook } from "../../d
 import { activate, finish } from "../../dist/core/unit/capability/skill/operations.js";
 import { ref as activationRef } from "../../dist/core/unit/capability/skill/activation.js";
 import { actionCapability } from "../helpers/actions.js";
-import * as actions from "../../dist/core/unit/action/operations.js";
+import * as actions from "../../dist/core/unit/action/index.js";
 import { fixtureBattlefieldState as fixtureBattlefield } from "../helpers/battlefield.js";
 
 const unit = (id, extra = {}) => initialize({ id, position: [0, id], definition: { hooks: [], id: `lifecycle-unit-${id}`, vitality: { maxHp: 100, defense: 0, resistance: 0 }, ...extra } });

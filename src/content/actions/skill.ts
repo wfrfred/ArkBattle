@@ -1,8 +1,7 @@
 import { assertPositiveSafeInteger } from "../../core/common/assert.js";
 import type { Ref } from "../../core/common/ref.js";
 
-import { ref as actionRef } from "../../core/unit/action/action.js";
-import { get as getAction } from "../../core/unit/action/operations.js";
+import { ref as actionRef, get as getAction } from "../../core/unit/action/index.js";
 import { ref, type Activation } from "../../core/unit/capability/skill/activation.js";
 import { consume, check } from "../../core/unit/capability/skill/ammo.js";
 import { hasSkill } from "../../core/unit/capability/skill/capability.js";

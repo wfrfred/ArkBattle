@@ -3,7 +3,7 @@ import * as unitQueries from "../../dist/core/unit/query.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import * as effects from "../../dist/core/unit/effect/operations.js";
-import { ref as actionRef } from "../../dist/core/unit/action/action.js";
+import { ref as actionRef } from "../../dist/core/unit/action/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { unit } from "../helpers/action-fixture.js";
@@ -15,7 +15,7 @@ import { createInput as createRouteDefinition } from "../../dist/core/battle/cre
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { remove } from "../../dist/core/battle/unit.js";
-import * as actions from "../../dist/core/unit/action/operations.js";
+import * as actions from "../../dist/core/unit/action/index.js";
 import { actionCapability } from "../helpers/actions.js";
 
 function spec(initialUnits) {

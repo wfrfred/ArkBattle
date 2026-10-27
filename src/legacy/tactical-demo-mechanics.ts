@@ -1,4 +1,4 @@
-import { create as createAction, createActions } from "../core/unit/action/initialize.js";
+import { create as createAction, createActions } from "../core/unit/action/index.js";
 import { create as createAttack } from "../content/actions/attack.js";
 import type { Input } from "../core/battle/contract.js";
 

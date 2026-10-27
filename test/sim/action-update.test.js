@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import * as actions from "../../dist/core/unit/action/operations.js";
-import { ref } from "../../dist/core/unit/action/action.js";
+import * as actions from "../../dist/core/unit/action/index.js";
+import { ref } from "../../dist/core/unit/action/index.js";
 import { actionCapability } from "../helpers/actions.js";
 import { initialize } from "../../dist/core/unit/initialize.js";
 import * as units from "../../dist/core/unit/query.js";

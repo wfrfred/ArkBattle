@@ -17,9 +17,9 @@ import * as tracking from "../../dist/content/projectiles/tracking.js";
 
 import { create as createAttack } from "../../dist/content/actions/skill.js";
 import { actionCapability } from "../helpers/actions.js";
-import { ref as actionRef } from "../../dist/core/unit/action/action.js";
-import * as actions from "../../dist/core/unit/action/operations.js";
-import { advance as advanceAction } from "../../dist/core/unit/action/advance.js";
+import { ref as actionRef } from "../../dist/core/unit/action/index.js";
+import * as actions from "../../dist/core/unit/action/index.js";
+import { advance as advanceAction } from "../../dist/core/unit/action/index.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
 import { createDefinition as createSkillDefinition } from "../../dist/core/unit/capability/skill/capability.js";
 import { ref as activationRef } from "../../dist/core/unit/capability/skill/activation.js";

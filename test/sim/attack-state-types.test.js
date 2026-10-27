@@ -14,8 +14,8 @@ test("Attack persistent and execution data keep separate types and typed activat
         writeFileSync(path, `
 import type { Ref } from ${source("core/common/ref")};
 import type { State as BattleState, Result } from ${source("core/battle/state")};
-import { ref as actionRef } from ${source("core/unit/action/action")};
-import { update, getAction, updateState } from ${source("core/unit/action/operations")};
+import { ref as actionRef } from ${source("core/unit/action/index")};
+import { update, getAction, updateState } from ${source("core/unit/action/index")};
 import type { Activation } from ${source("core/unit/capability/skill/activation")};
 import { get as getActivation } from ${source("core/unit/capability/skill/query")};
 import { consume, check } from ${source("core/unit/capability/skill/ammo")};

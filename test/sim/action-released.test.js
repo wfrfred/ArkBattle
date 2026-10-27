@@ -1,12 +1,12 @@
-import { ref as actionRef } from "../../dist/core/unit/action/action.js";
+import { ref as actionRef } from "../../dist/core/unit/action/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import * as actions from "../../dist/core/unit/action/operations.js";
-import { advance } from "../../dist/core/unit/action/advance.js";
+import * as actions from "../../dist/core/unit/action/index.js";
+import { advance } from "../../dist/core/unit/action/index.js";
 import { setBeforeReleaseHook, setReleasedHook } from "../../dist/core/unit/capability/action/capability.js";
 import { released } from "../../dist/core/unit/capability/action/release.js";
 import { createDefinition as createSkillDefinition, setSpRecoveredHook } from "../../dist/core/unit/capability/skill/capability.js";

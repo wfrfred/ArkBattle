@@ -1,5 +1,5 @@
 import { createArknightsElementalDefinition } from "../data/arknights/elemental.js";
-import { create as createAction, createActions } from "../core/unit/action/initialize.js";
+import { create as createAction, createActions } from "../core/unit/action/index.js";
 import { create as createAttack, type Attack } from "../content/actions/attack.js";
 import * as filters from "../core/battle/targeting/filter.js";
 import * as compare from "../core/battle/targeting/compare.js";

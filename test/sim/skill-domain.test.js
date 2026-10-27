@@ -11,8 +11,8 @@ import { initialize } from "../helpers/unit.js";
 import { get as getHookHost, ref } from "../../dist/core/unit/query.js";
 import { effectFixtureWork } from "../helpers/effects.js";
 import { actionCapability } from "../helpers/actions.js";
-import { start as startAction } from "../../dist/core/unit/action/operations.js";
-import { advance as advanceAction } from "../../dist/core/unit/action/advance.js";
+import { start as startAction } from "../../dist/core/unit/action/index.js";
+import { advance as advanceAction } from "../../dist/core/unit/action/index.js";
 import { fixture, definition, at, change, currentRef } from "../helpers/skill.js";
 import * as effects from "../../dist/core/unit/effect/operations.js";
 

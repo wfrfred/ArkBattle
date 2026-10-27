@@ -7,9 +7,13 @@ import {
 import { appendEvents, type State as BattleState, type Result } from "../../core/battle/state.js";
 import type { Unit } from "../../core/unit/unit.js";
 import * as units from "../../core/unit/query.js";
-import { ref, type Action, type Executing } from "../../core/unit/action/action.js";
-import type { Definition as ActionDefinition } from "../../core/unit/action/definition.js";
-import * as actions from "../../core/unit/action/operations.js";
+import {
+    ref,
+    type Action,
+    type Executing,
+    type Definition as ActionDefinition,
+} from "../../core/unit/action/index.js";
+import * as actions from "../../core/unit/action/index.js";
 import type { Action as ActionCapability } from "../../core/unit/capability/action/capability.js";
 import { isSpatiallyPresent } from "../../core/unit/capability/presence/capability.js";
 import { beforeRelease, released } from "../../core/unit/capability/action/release.js";

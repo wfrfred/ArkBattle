@@ -2,8 +2,11 @@ import { normal as normalSite } from "../../terrain/condition.js";
 import { update as updateUnit } from "../../../core/battle/unit.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
 import { createArknightsElementalDefinition } from "../../../data/arknights/elemental.js";
-import { create as createAction, createActions } from "../../../core/unit/action/initialize.js";
-import { clearCooldown } from "../../../core/unit/action/operations.js";
+import {
+    create as createAction,
+    createActions,
+    clearCooldown,
+} from "../../../core/unit/action/index.js";
 import type { Attack } from "../../actions/attack.js";
 import type { State as SkillAttackState } from "../../actions/skill.js";
 import { hasCandidate } from "../../../core/battle/targeting/select.js";

@@ -1,4 +1,5 @@
 import * as actions from "../../unit/action/operations.js";
+import { forUnit } from "../../unit/action/query.js";
 import { advance as advanceAction } from "../../unit/action/advance.js";
 import * as units from "../../unit/query.js";
 import { hasAction } from "../../unit/capability/action/capability.js";
@@ -23,7 +24,7 @@ export function advance(battle: BattleState): BattleState {
     const candidates = sort(
         units.all(battle).map(units.ref),
         (left, right) => left.id - right.id,
-    ).map((source) => ({ source, instances: actions.forUnit(battle, source) }));
+    ).map((source) => ({ source, instances: forUnit(battle, source) }));
 
     for (const { source } of candidates) {
         const unit = units.get(battle, source);

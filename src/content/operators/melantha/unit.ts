@@ -1,7 +1,7 @@
 import { normal as normalSite } from "../../terrain/condition.js";
 import { update as updateUnit } from "../../../core/battle/unit.js";
 import { createArknightsElementalDefinition } from "../../../data/arknights/elemental.js";
-import { create as createAction, createActions } from "../../../core/unit/action/initialize.js";
+import { create as createAction, createActions } from "../../../core/unit/action/index.js";
 import { get as getCurrentUnit, ref as unitRef } from "../../../core/unit/query.js";
 import type { Profile } from "../../../data/arknights/operator.js";
 

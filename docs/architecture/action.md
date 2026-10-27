@@ -25,19 +25,32 @@ Rule 只负责启动准入，不自动中断现有执行。眩晕等需要中断
 
 ## 2. 模块与导入
 
-聚合类型、Execution、Definition、创建程序、容器、Cooldown 和生命周期操作位于 unit/action/；Capability 配置、贡献、Rule、周期属性与释放 Hook 位于 unit/capability/action/。领域内使用 Definition、Action、Execution、Id 等局部名字，不建立仅缩短路径的转发层。
+聚合类型、Execution、Definition、创建程序、容器、Cooldown 和生命周期操作位于 unit/action/；Capability 配置、贡献、Rule、周期属性与释放 Hook 位于 unit/capability/action/。模块组织遵守[公共入口约定](api-conventions.md#模块与公共入口)，领域内使用 Definition、Action、Execution、Id 等局部名字。
 
-完整启动、写回与终止统一由 unit/action/operations.ts 实现；unit/action/advance.ts 派发执行程序，并复用同一终止入口。
+[unit/action/index.ts](../../src/core/unit/action/index.ts) 显式提供公共 API，上层默认从该入口导入。初始公开范围为：
+
+| 职责 | 导出 |
+| --- | --- |
+| 身份与类型 | ref；Action、Executing、ExecutingView、Definition、Signal、StartOutcome |
+| 创建 | create、createActions |
+| 查询 | all、forUnit、get、getAction、isCasting |
+| 业务操作 | start、update、updateState、updateCooldown、cancel、cancelForUnit、refreshCooldowns、resetCooldown、clearCooldown |
+| 调度协作 | advance，仅由调度器主动调用 |
+
+五个查询实现在 [query.ts](../../src/core/unit/action/query.ts)；完整启动、写回与终止统一由 [operations.ts](../../src/core/unit/action/operations.ts) 实现。[advance.ts](../../src/core/unit/action/advance.ts) 派发执行程序，直接从 operations.ts 取得域内共享的 end，不经过公共入口。end 的内部导出不使其成为公共 API；advance 的公共协作入口也不扩大 Content 的调用权限。
 
 ```typescript
-import type { Definition as ActionDefinition } from "./action/definition.js";
-import { ref, type Action, type Executing } from "./action/action.js";
-import type { Execution } from "./action/execution.js";
+import {
+    ref,
+    type Definition as ActionDefinition,
+    type Action,
+    type Executing,
+} from "./action/index.js";
 import type { Action as ActionCapability } from "./capability/action/capability.js";
-import * as actions from "./action/operations.js";
+import * as actions from "./action/index.js";
 ```
 
-消费侧按实际角色选择具名导入、命名空间或别名，不机械要求 definition.Definition。
+消费侧按实际角色选择具名导入、命名空间或别名。Actions 运行时类不从 index 导出；内部模型、容器、Execution 类型和局部 Cooldown 计算仍可按职责从实现文件深导。Core 调度与协作可以精确导入依赖，不要求领域内部经由 index。
 
 ## 3. Definition、Action 与 Execution
 
@@ -86,7 +99,7 @@ export interface Execution<E extends object> {
 
 Executing<P, E> 是 execution 非空的 Action 类型收窄，不是另一份运行对象。onTick／onEnd 直接读取 self.execution.state，持久数据读取 self.state。宿主引用由回调的 source 参数提供，Action 与 Execution 不重复保存 host。
 
-具体内容将 Definition<P, E> 交给 unit/action/initialize.ts 的 create，得到创建行动的初始化函数；类型配对在这个具体创建位置建立。Unit 的 Action Capability.initialize 调用内容提供的 initialize，内容使用 createActions 按顺序执行这些函数，接续每项 Result.state，并将完整聚合条目加入 Actions。
+具体内容将 Definition<P, E> 交给公共入口的 create，得到创建行动的初始化函数；其实现位于 [initialize.ts](../../src/core/unit/action/initialize.ts)，类型配对在这个具体创建位置建立。Unit 的 Action Capability.initialize 调用内容提供的 initialize，内容使用 createActions 按顺序执行这些函数，接续每项 Result.state，并将完整聚合条目加入 Actions。
 
 每项创建程序调用自己的 Definition.initialize，建立 P、初始就绪的 Cooldown 和 execution: null。即使从未启动，该聚合条目也已经存在。共享 Definition 的不同 Unit 分别初始化，私有状态随各次创建产生。此时宿主尚未登记，不能从战场查询自己或假设兄弟能力已经可用。start 不补建缺失的配置条目。
 
@@ -99,7 +112,7 @@ onTick.value 表达是否完成。本轮私有进度通过 `update(battle, ref(s
 Unit.action.actions 是该宿主唯一运行容器，按 definition.id 保存 Action。Capability 配置只保存 initialize 与可选 select，不保留静态定义集合。具体内容负责组合自己的创建程序；默认候选、启动派发、冷却刷新从运行时 Actions 条目进入，由条目取得 Definition。
 
 ```typescript
-import { create as createAction, createActions } from "./action/initialize.js";
+import { create as createAction, createActions } from "./action/index.js";
 
 const attack = createAction(attackDefinition);
 const skillAttack = createAction(skillAttackDefinition);
@@ -252,7 +265,7 @@ Runtime 采用以下候选政策：
 6. 本轮自动候选只尝试一次，不按“仍然就绪”循环重启即时完成的同一行动。
 7. 内容直接 start 或回调内嵌套 start 只登记执行，等待调度器推进。调度入口前已登记的执行可以在本次调度中推进；调度内嵌套登记的执行不在已固定快照中，等待后续调度。
 
-advance(battle, ref) 位于专用推进模块，仅由调度器主动调用；start 不隐式推进。它通过同一 Actions 容器的 readExecution 派发非空执行，并显式传入宿主引用。首次推进中的即时完成或同步取消按通常终止流程结算；内容不主动推进执行，不保存实例级同 Tick 去重字段。
+advance(battle, ref) 实现在专用推进模块，并由公共入口导出供调度协作；仍仅由调度器主动调用，start 不隐式推进。它通过同一 Actions 容器的 readExecution 派发非空执行，并显式传入宿主引用。首次推进中的即时完成或同步取消按通常终止流程结算；内容不主动推进执行，不保存实例级同 Tick 去重字段。
 
 ## 8. 普通攻击、释放 Hook 与移动
 

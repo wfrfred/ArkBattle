@@ -7,8 +7,7 @@ import {
     create as createSkillAttack,
     type State as SkillAttackState,
 } from "../../actions/skill.js";
-import { get as getAction } from "../../../core/unit/action/operations.js";
-import { ref as actionRef } from "../../../core/unit/action/action.js";
+import { get as getAction, ref as actionRef } from "../../../core/unit/action/index.js";
 import { get as getCurrentUnit, ref as unitRef } from "../../../core/unit/query.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
 import { hasOffense } from "../../../core/unit/capability/offense/capability.js";

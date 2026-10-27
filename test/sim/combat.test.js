@@ -19,8 +19,8 @@ import { initialize as initializeBattle, step as advanceBattle } from "../../dis
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "../helpers/tiles.js";
 import { initialize } from "../helpers/unit.js";
-import { start as startAction } from "../../dist/core/unit/action/operations.js";
-import { advance as advanceAction } from "../../dist/core/unit/action/advance.js";
+import { start as startAction } from "../../dist/core/unit/action/index.js";
+import { advance as advanceAction } from "../../dist/core/unit/action/index.js";
 import { damage as damageFixture, healing as healingFixture } from "../helpers/targeting.js";
 import { topK } from "../../dist/core/common/collection.js";
 import { setMaxHpContribution } from "../../dist/core/unit/capability/vitality/capability.js";

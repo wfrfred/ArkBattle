@@ -2,7 +2,7 @@ import { update as updateUnit } from "../core/battle/unit.js";
 import type { Input } from "../core/battle/contract.js";
 import type { FragmentDefinition } from "../core/battle/schedule/definition.js";
 import type { Definition as UnitDefinition } from "../core/unit/unit.js";
-import { create as createAction, createActions } from "../core/unit/action/initialize.js";
+import { create as createAction, createActions } from "../core/unit/action/index.js";
 import { hasActionDefinition } from "../core/unit/capability/action/capability.js";
 import { create as createAttack, isAttack } from "../content/actions/attack.js";
 import { calculateDamage } from "../core/battle/damage/calculate.js";

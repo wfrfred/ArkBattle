@@ -6,7 +6,7 @@ import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { fixtureBattlefieldState as fixtureBattlefield } from "../helpers/battlefield.js";
 import { actionCapability } from "../helpers/actions.js";
-import * as actions from "../../dist/core/unit/action/operations.js";
+import * as actions from "../../dist/core/unit/action/index.js";
 import { create as createBattlefield } from "../../dist/core/battlefield/state.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createDefinition as createDeployableDefinition } from "../helpers/deployable.js";

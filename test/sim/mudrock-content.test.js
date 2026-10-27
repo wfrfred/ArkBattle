@@ -22,8 +22,8 @@ import { add } from "../../dist/core/battle/unit.js";
 import { advance, end, get, install, update as updateEffect } from "../../dist/core/unit/effect/operations.js";
 import { setHook, removeHook } from "../../dist/core/battle/damage/hook.js";
 import { activate as activateSkill, advance as advanceSkill, finish as finishSkill } from "../../dist/core/unit/capability/skill/operations.js";
-import { start, cancel } from "../../dist/core/unit/action/operations.js";
-import { advance as advanceAction } from "../../dist/core/unit/action/advance.js";
+import { start, cancel } from "../../dist/core/unit/action/index.js";
+import { advance as advanceAction } from "../../dist/core/unit/action/index.js";
 import { advance as advanceLocomotion } from "../../dist/core/unit/capability/locomotion/operations.js";
 const canMove = (battle, unit) => {
     const goal = [unit.position[0] + 0.05, unit.position[1]];

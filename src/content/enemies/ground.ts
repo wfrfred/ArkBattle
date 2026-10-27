@@ -2,7 +2,7 @@ import { update as updateUnit } from "../../core/battle/unit.js";
 import { createArknightsElementalDefinition } from "../../data/arknights/elemental.js";
 
 import { ref as unitRef } from "../../core/unit/query.js";
-import { isCasting } from "../../core/unit/action/operations.js";
+import { isCasting } from "../../core/unit/action/index.js";
 import { hasLocomotion } from "../../core/unit/capability/locomotion/capability.js";
 import { setRule } from "../../core/unit/capability/locomotion/operations.js";
 import type { Profile } from "../../data/arknights/enemy.js";
