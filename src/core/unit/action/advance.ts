@@ -21,7 +21,7 @@ export function advance(battle: BattleState, reference: Ref<ExecutingView>): Bat
                 return end(battle, reference, { type: "CANCELLED", reason: "SOURCE_ABSENT" });
             }
 
-            const advanced = self.definition.step(battle, reference.host, self);
+            const advanced = self.definition.onTick(battle, reference.host, self);
 
             return advanced.value
                 ? end(advanced.state, reference, { type: "FINISHED" })

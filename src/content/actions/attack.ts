@@ -84,7 +84,7 @@ export interface Definition<
 
 export interface StatefulDefinition<P extends object, E extends object> extends Definition<P, E> {
     readonly initialize: (battle: BattleState) => Result<P>;
-    readonly start: (
+    readonly prepare: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability>,
         self: Action<P, State<E>>,
@@ -218,7 +218,7 @@ export function create(definition: Definition): Attack {
     return createWithState({
         ...definition,
         initialize: (battle) => ({ state: battle, value: {} }),
-        start: (battle) => ({ state: battle, value: {} }),
+        prepare: (battle) => ({ state: battle, value: {} }),
     });
 }
 
@@ -274,7 +274,7 @@ export function createWithState<P extends object, E extends object>(
         speed: definition.speed ?? 100,
         attack: configuration,
         initialize: definition.initialize,
-        start(battle, source, self) {
+        prepare(battle, source, self) {
             const selected = chooseTargets(battle, source, definition);
             battle = selected.state;
             const unit = units.get(battle, source);
@@ -286,7 +286,7 @@ export function createWithState<P extends object, E extends object>(
             }
 
             const releaseAtTick = battle.tick + (definition.windupTicks ?? 0);
-            const initialized = definition.start(battle, source, self);
+            const initialized = definition.prepare(battle, source, self);
             const current = actions.getAction(initialized.state, source, self.definition);
 
             return {
@@ -303,7 +303,7 @@ export function createWithState<P extends object, E extends object>(
                 },
             };
         },
-        step(battle, source, self) {
+        onTick(battle, source, self) {
             const identity = ref(source, self);
 
             if (!self.execution.state.cooldownAdjusted) {

@@ -35,8 +35,8 @@ test("Action ENDING content rejects new lifetime dependencies while independent 
     const definition = {
         id: "ending-action", intervalTicks: 10, speed: 100,
         initialize: state => ({ state, value: {} }),
-        start: state => ({ state, value: {} }),
-        step: state => ({ state, value: false }),
+        prepare: state => ({ state, value: {} }),
+        onTick: state => ({ state, value: false }),
         onEnd(state, source, self) {
             assert.equal(actions.get(state, actionRef(source, self)).execution.status, "ENDING");
             return verifyAdmission(state, { type: "ACTION", ref: actionRef(source, self) }, retained);

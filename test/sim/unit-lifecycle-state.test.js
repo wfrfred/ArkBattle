@@ -40,8 +40,8 @@ for (const reason of ["DEATH", "RETREAT", "SCRIPT"]) {
     const action = {
       id: "skill-completing-action", intervalTicks: 1, speed: 100,
       initialize: state => ({ state, value: {} }),
-      start: state => ({ state, value: { activation: activationRef(getUnit(state, 0).skill.active) } }),
-      step: state => ({ state, value: false }),
+      prepare: state => ({ state, value: { activation: activationRef(getUnit(state, 0).skill.active) } }),
+      onTick: state => ({ state, value: false }),
       onEnd(state, source, self) {
         actionEnds++;
         return finish(state, self.execution.state.activation);

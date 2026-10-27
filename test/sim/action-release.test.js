@@ -19,8 +19,8 @@ const program = {
     intervalTicks: 10,
     speed: 100,
     initialize: (state) => ({ state, value: {} }),
-    start: (state) => ({ state, value: {} }),
-    step: (state) => ({ state, value: false }),
+    prepare: (state) => ({ state, value: {} }),
+    onTick: (state) => ({ state, value: false }),
 };
 function initial() {
     const state = battle(unit(0, { action: program }));

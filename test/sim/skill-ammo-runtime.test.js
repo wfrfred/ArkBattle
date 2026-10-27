@@ -96,11 +96,11 @@ function scenario({ ammo = 1, targets = 1, interrupt = false, windupTicks = 0, o
   };
   const shell = {
     id: "runtime-ammo-shell", tracking: true,
-    onAdvance: (state, self) => tracking.advance(state, self, (state, self) =>
+    onTick: (state, self) => tracking.advance(state, self, (state, self) =>
       tracking.hit(state, self, (state, self, target) =>
         dealDamage(state, { source: self.state.source, target: unitRef(target),
           parameters: parameters(self.state.cachedAtk, "TRUE") }).state)),
-    onTerminate: (state, self, reason) => reason === "DISPEL" ? state :
+    onEnd: (state, self, reason) => reason === "DISPEL" ? state :
       tracking.hit(state, self, (state, self, target) =>
         dealDamage(state, { source: self.state.source, target: unitRef(target),
           parameters: parameters(self.state.cachedAtk, "TRUE") }).state),
@@ -223,13 +223,13 @@ test("ammo runtime: release interruption cancels windup without spending ammunit
 test("ammo runtime: a content-defined follow-up preserves one ammunition payment across ticks", () => {
   let runtime = scenario({ ammo: 3, targets: 2, actionProgram: (normal) => ({
     ...normal,
-    start(state, source, persistent) {
-      const initialized = normal.start(state, source, persistent);
+    prepare(state, source, persistent) {
+      const initialized = normal.prepare(state, source, persistent);
       return { state: initialized.state, value: initialized.value === null ? null : { ...initialized.value, finishAtTick: state.tick + 1, emitted: 0 } };
     },
-    step(state, source, self) {
+    onTick(state, source, self) {
       if (self.execution.state.emitted === 0) {
-        state = normal.step(state, source, self).state;
+        state = normal.onTick(state, source, self).state;
         const current = actions.get(state, actionRef(source, self));
         if (current === undefined) return { state, value: true };
         return { state: actions.update(state, actionRef(source, current), currentState => ({ ...currentState, emitted: 1 })), value: false };

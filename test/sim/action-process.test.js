@@ -17,8 +17,8 @@ const program = (id = "program", overrides = {}) => ({
     intervalTicks: 10,
     speed: 100,
     initialize: (state) => ({ state, value: {} }),
-    start: (state) => ({ state, value: { progress: 0 } }),
-    step: (state) => ({ state, value: false }),
+    prepare: (state) => ({ state, value: { progress: 0 } }),
+    onTick: (state) => ({ state, value: false }),
     ...overrides,
 });
 function accepted(definition, state = battle(unit(0, { action: definition }), unit(1))) {
@@ -36,7 +36,7 @@ function installOwned(state, source, self, definition = ownedEffect) {
 
 test("action: private progress and sampled values survive immutable branches without replay", () => {
     const definition = program("sample", {
-        start: (state) => ({
+        prepare: (state) => ({
             state,
             value: {
                 released: false,
@@ -44,7 +44,7 @@ test("action: private progress and sampled values survive immutable branches wit
                 releaseAtTick: state.tick + 2,
             },
         }),
-        step(state, source, self) {
+        onTick(state, source, self) {
             if (state.tick < self.execution.state.releaseAtTick) return { state, value: false };
             state = actions.update(state, actionRef(source, self), currentState => ({ ...currentState, released: true }));
             state = updateUnit(state, [{
@@ -75,7 +75,7 @@ test("action: cancellation closes its dependencies once and retains preceding bu
         },
     };
     const definition = program("owned", {
-        step(state, source, self) {
+        onTick(state, source, self) {
             state = installOwned(state, source, self, dependency);
             state = updateUnit(state, [{ ...getUnit(state, 1), position: [3, 0] }]);
             return { state, value: false };
@@ -95,7 +95,7 @@ test("action: cancellation closes its dependencies once and retains preceding bu
 test("action: different definitions share a source while their state and effects remain independent", () => {
     const create = (id) =>
         program(id, {
-            step(state, source, self) {
+            onTick(state, source, self) {
                 if (self.execution.state.progress === 0) state = installOwned(state, source, self);
                 state = actions.update(state, actionRef(source, self), currentState => ({ progress: currentState.progress + 1 }));
                 return { state, value: false };
@@ -120,7 +120,7 @@ test("action: different definitions share a source while their state and effects
 
 test("action: equal local identities on different hosts keep progress and lifetime dependencies independent", () => {
     const definition = program("shared", {
-        step(state, source, self) {
+        onTick(state, source, self) {
             if (self.execution.state.progress === 0) {
                 state = effects.install(state, unitRef(getUnit(state, 2)), ownedEffect, {
                     scopes: [{ type: "ACTION", ref: actionRef(source, self) }],
@@ -167,7 +167,7 @@ test("action: equal local identities on different hosts keep progress and lifeti
 test("action: dependency cleanup may remove its ending host before one terminal callback without resurrection", () => {
     const trace = [];
     const definition = program("ending-host", {
-        step(state, source, self) {
+        onTick(state, source, self) {
             if (self.execution.state.progress > 0) return { state, value: true };
             state = installOwned(state, source, self, {
                 ...ownedEffect,
@@ -209,7 +209,7 @@ test("action: private progress is visible to nested callbacks before their busin
     };
     let currentRef;
     const definition = program("visible", {
-        step(state, source, self) {
+        onTick(state, source, self) {
             currentRef = actionRef(source, self);
             state = actions.update(state, actionRef(source, self), () => ({ progress: 1 }));
             return { state: installOwned(state, source, self, dependency), value: true };
@@ -231,7 +231,7 @@ test("action: normal finish and cancellation close dependencies before one termi
             },
         };
         const definition = program(`terminal-${finish}`, {
-            step: (state, source, self) => ({
+            onTick: (state, source, self) => ({
                 state: installOwned(state, source, self, dependency),
                 value: finish,
             }),
@@ -277,7 +277,7 @@ test("action: ENDING occupies the definition and repeated cancellation cannot re
 test("action: source departure completes nested cleanup while entered content continues", () => {
     const trace = [];
     const definition = program("depart", {
-        step(state, source, self) {
+        onTick(state, source, self) {
             state = installOwned(state, source, self, {
                 ...ownedEffect,
                 onEnd: (state) => {
@@ -316,7 +316,7 @@ test("action: source departure completes nested cleanup while entered content co
 test("action: a throwing program leaves its input progress, instances and target untouched", () => {
     const failure = new Error("program failed");
     const definition = program("failure", {
-        step(state, source, self) {
+        onTick(state, source, self) {
             if (state.tick === 0) return { state, value: false };
             state = actions.update(state, actionRef(source, self), () => ({ progress: 7 }));
             state = updateUnit(state, [{ ...getUnit(state, 1), position: [4, 0] }]);

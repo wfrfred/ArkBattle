@@ -701,10 +701,10 @@ battleState.battlefield.projectiles.replace(projectileRef(typedProjectile), type
     assert.deepEqual(positive, []);
 
     for (const [name, source] of [
-      ['projectile-wrong-callback', `battleState.battlefield.projectiles.add({ ...typedProjectile, definition: { id: 'fake', onAdvance: (battle: BattleState, self: Projectile<{ label: string }>) => battle } });`],
+      ['projectile-wrong-callback', `battleState.battlefield.projectiles.add({ ...typedProjectile, definition: { id: 'fake', onTick: (battle: BattleState, self: Projectile<{ label: string }>) => battle } });`],
       ['projectile-wrong-initial-state', `createProjectile(battleState, projectileDefinition, { ...projectileInput, state: { charges: 'wrong' } });`],
       ['projectile-wrong-state-pairing', `battleState.battlefield.projectiles.replace(projectileRef(typedProjectile), { ...typedProjectile, state: { charges: 'wrong' } });`],
-      ['projectile-untyped-callback', `getProjectile(battleState, 0)!.definition.onAdvance;`],
+      ['projectile-untyped-callback', `getProjectile(battleState, 0)!.definition.onTick;`],
       ['projectile-as-unit', `addUnit(createBattlefieldState(battlefieldMap), typedProjectile);`],
       ['unit-removal-raw-id', `removeUnit(createBattlefieldState(battlefieldMap), 0);`],
       ['unit-removal-projectile-ref', `removeUnit(createBattlefieldState(battlefieldMap), projectileRef(typedProjectile));`],

@@ -235,8 +235,8 @@ test("effect terminal callback can retire its host and settle remote Action and 
     const action = {
         id: "owned-action", intervalTicks: 1, speed: 100,
         initialize: state => ({ state, value: {} }),
-        start: state => ({ state, value: {} }),
-        step: state => ({ state, value: false }),
+        prepare: state => ({ state, value: {} }),
+        onTick: state => ({ state, value: false }),
     };
     const units = [
         initialize({

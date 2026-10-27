@@ -52,8 +52,8 @@ export function createArrow(): tracking.Definition {
     return {
         id: "main-mode-crossbow-arrow",
         tracking: true,
-        onAdvance: (battle, self) => tracking.advance(battle, self, hit),
-        onTerminate: (battle, self, reason) => (reason === "DISPEL" ? battle : hit(battle, self)),
+        onTick: (battle, self) => tracking.advance(battle, self, hit),
+        onEnd: (battle, self, reason) => (reason === "DISPEL" ? battle : hit(battle, self)),
     };
 }
 

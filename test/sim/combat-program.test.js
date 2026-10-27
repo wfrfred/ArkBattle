@@ -27,7 +27,7 @@ test("ordinary attack: phase correction samples the cooldown returned by its sta
     const definition = createWithState({
         ...actionDefinition().attack,
         initialize: state => ({ state, value: {} }),
-        start(state, source, self) {
+        prepare(state, source, self) {
             return { state: actions.clearCooldown(state, source, self.definition.id), value: {} };
         },
     });
@@ -226,8 +226,8 @@ test("action: generic non-attack programs do not earn attack SP or consume skill
         intervalTicks: 10,
         speed: 100,
         initialize: state => ({ state, value: {} }),
-        start: (state) => ({ state, value: {} }),
-        step: (state) => ({ state, value: true }),
+        prepare: (state) => ({ state, value: {} }),
+        onTick: (state) => ({ state, value: true }),
     };
     const skill = createSkillDefinition({
         id: "unrelated-skill",

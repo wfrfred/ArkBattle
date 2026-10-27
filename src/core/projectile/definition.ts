@@ -5,11 +5,7 @@ export type StopReason = "ARRIVED" | "EXPIRED" | "EXPLICIT" | "SOURCE_UNAVAILABL
 
 export interface Definition<S extends object> {
     readonly id: string;
-    readonly onCreate?: (battle: BattleState, self: Projectile<S>) => BattleState;
-    readonly onAdvance?: (battle: BattleState, self: Projectile<S>) => BattleState;
-    readonly onTerminate?: (
-        battle: BattleState,
-        self: Projectile<S>,
-        reason: StopReason,
-    ) => BattleState;
+    readonly onStart?: (battle: BattleState, self: Projectile<S>) => BattleState;
+    readonly onTick?: (battle: BattleState, self: Projectile<S>) => BattleState;
+    readonly onEnd?: (battle: BattleState, self: Projectile<S>, reason: StopReason) => BattleState;
 }

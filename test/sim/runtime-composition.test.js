@@ -262,14 +262,14 @@ function scenario({ failure = null, cancelled = false } = {}) {
     });
     const shell = {
         id: "combined-shell", tracking: true,
-        onAdvance: (state, self) => tracking.advance(state, self, hitShell),
-        onTerminate: (state, self, reason) => reason === "DISPEL" ? state : hitShell(state, self),
+        onTick: (state, self) => tracking.advance(state, self, hitShell),
+        onEnd: (state, self, reason) => reason === "DISPEL" ? state : hitShell(state, self),
     };
     const program = primary => ({
         id: "launch", intervalTicks: 100, speed: 100,
         initialize: state => ({ state, value: {} }),
-        start: state => ({ state, value: { emitted: 0 } }),
-        step(state, source, self) {
+        prepare: state => ({ state, value: { emitted: 0 } }),
+        onTick(state, source, self) {
             if (self.execution.state.emitted === 0) {
                 state = actions.update(state, actionRef(source, self), () => ({ emitted: 1 }));
                 self = actions.get(state, actionRef(source, self));

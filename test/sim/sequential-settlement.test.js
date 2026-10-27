@@ -21,14 +21,14 @@ for (const nested of ["cancel", "advance", "advance complete", "advance waiting"
         const first = {
             id: "first", intervalTicks: 10, speed: 100,
             initialize: state => ({ state, value: {} }),
-            start: state => ({ state, value: {} }),
-            step: state => ({ state, value: false }),
+            prepare: state => ({ state, value: {} }),
+            onTick: state => ({ state, value: false }),
         };
         const second = {
             id: "second", intervalTicks: 10, speed: 100,
             initialize: state => ({ state, value: {} }),
-            start: state => ({ state, value: { finishAtTick: 100 } }),
-            step(state, source, self) {
+            prepare: state => ({ state, value: { finishAtTick: 100 } }),
+            onTick(state, source, self) {
                 if (armed) executions++;
                 return { state, value: armed && (nested === "advance complete" ||
                     nested === "advance waiting" && state.tick >= self.execution.state.finishAtTick) };

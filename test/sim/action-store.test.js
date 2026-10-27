@@ -17,8 +17,8 @@ import { fixtureBattle } from "../helpers/unit.js";
 const definition = (id, data = {}, execution = {}) => ({
     id, intervalTicks: 10, speed: 100,
     initialize: state => ({ state, value: data }),
-    start: state => ({ state, value: execution }),
-    step: state => ({ state, value: false }),
+    prepare: state => ({ state, value: execution }),
+    onTick: state => ({ state, value: false }),
 });
 const aggregate = (configured, state, execution = null) => ({ definition: configured, state, cooldown: { periodTicks: 10, readyAtTick: 0 }, execution });
 
@@ -102,7 +102,7 @@ test("Action initialization, start and termination retain one persistent aggrega
     const ended = [];
     const configured = {
         ...definition("program", { starts: 0 }, { remaining: 2 }),
-        start(battle, source, self) {
+        prepare(battle, source, self) {
             return { state: operations.updateState(battle, source, self.definition, current => ({ starts: current.starts + 1 })), value: { remaining: 2 } };
         },
         onEnd(battle, source, self, end) {
@@ -173,8 +173,8 @@ Actions.empty().replace(configured, { ...precise, execution: { ...precise.execut
 ref(source, publicAction);
 // @ts-expect-error An erased reference cannot update private execution data.
 operations.update(battle, publicRef, state => state);
-Actions.empty().read(configured.id, self => { self.definition.start(battle, source, self); });
-Actions.empty().readExecution(0, self => self.definition.step(battle, source, self));
+Actions.empty().read(configured.id, self => { self.definition.prepare(battle, source, self); });
+Actions.empty().readExecution(0, self => self.definition.onTick(battle, source, self));
 `);
         const program = ts.createProgram([path], { noEmit: true, strict: true, exactOptionalPropertyTypes: true, noUncheckedIndexedAccess: true, target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.NodeNext, moduleResolution: ts.ModuleResolutionKind.NodeNext, skipLibCheck: true, types: [] });
         assert.deepEqual(ts.getPreEmitDiagnostics(program).map(diagnostic => ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n")), []);

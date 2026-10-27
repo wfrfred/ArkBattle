@@ -25,7 +25,7 @@ export function create(definition: Definition): Attack<object, State> {
     return createWithState<object, State>({
         ...definition,
         initialize: (battle) => ({ state: battle, value: {} }),
-        start(battle, source) {
+        prepare(battle, source) {
             const host = units.get(battle, source);
 
             return {

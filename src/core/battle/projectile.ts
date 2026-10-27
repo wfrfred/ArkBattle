@@ -34,7 +34,7 @@ export function create<S extends object>(
     };
 
     return {
-        state: definition.onCreate?.(battle, self) ?? battle,
+        state: definition.onStart?.(battle, self) ?? battle,
         value: reference,
     };
 }
@@ -105,7 +105,7 @@ export function stop(
                     reason,
                 },
             ]);
-            battle = self.definition.onTerminate?.(battle, self, reason) ?? battle;
+            battle = self.definition.onEnd?.(battle, self, reason) ?? battle;
 
             return {
                 ...battle,
@@ -123,7 +123,7 @@ export function advance(battle: BattleState, candidates: readonly Ref<View>[]): 
         battle =
             battle.battlefield.projectiles.read(reference.id, (self) =>
                 self.lifecycle === "ACTIVE"
-                    ? (self.definition.onAdvance?.(battle, self) ?? battle)
+                    ? (self.definition.onTick?.(battle, self) ?? battle)
                     : battle,
             ) ?? battle;
     }

@@ -232,8 +232,8 @@ test("platform onLeave uses its historical occupancy tile after removal and comp
     const action = name => ({
         id: name, intervalTicks: 30, speed: 100,
         initialize: battle => ({ state: battle, value: {} }),
-        start: battle => ({ state: battle, value: {} }),
-        step: battle => ({ state: battle, value: false }),
+        prepare: battle => ({ state: battle, value: {} }),
+        onTick: battle => ({ state: battle, value: false }),
         onEnd: battle => { trace.push(`${name} ended`); return battle; },
     });
     const providerAction = action("platform action");

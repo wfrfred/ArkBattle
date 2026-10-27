@@ -105,8 +105,8 @@ test("stun interrupts a running Action through its complete cancellation operati
     const program = {
         id: "held", intervalTicks: 30, speed: 100,
         initialize: state => ({ state, value: {} }),
-        start: state => ({ state, value: {} }),
-        step: state => ({ state, value: false }),
+        prepare: state => ({ state, value: {} }),
+        onTick: state => ({ state, value: false }),
         onEnd: state => { endings++; return state; },
     };
     const configured = actor(program);

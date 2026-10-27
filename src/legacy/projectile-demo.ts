@@ -111,8 +111,8 @@ export function createTacticalProjectileDemo(
     const shell: tracking.Definition = {
         id: cachedOnly ? "cached-atk-shell" : "live-atk-shell",
         tracking: true,
-        onAdvance: (battle, self) => tracking.advance(battle, self, hit),
-        onTerminate: (battle, self, reason) => (reason === "DISPEL" ? battle : hit(battle, self)),
+        onTick: (battle, self) => tracking.advance(battle, self, hit),
+        onEnd: (battle, self, reason) => (reason === "DISPEL" ? battle : hit(battle, self)),
     };
 
     function transform<D extends UnitDefinition>(definition: D): D {

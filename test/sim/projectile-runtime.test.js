@@ -43,25 +43,25 @@ function hitOriginal(battle, reference) {
 
 const arrow = {
     id: "original-target-arrow",
-    onAdvance(battle, self) {
+    onTick(battle, self) {
         battle = projectiles.update(battle, projectilesQuery.ref(self), () => ({ position: [1, 0] }));
         battle = hitOriginal(battle, projectilesQuery.ref(self));
         return projectiles.stop(battle, projectilesQuery.ref(self), "ARRIVED");
     },
-    onTerminate(battle, self, reason) {
+    onEnd(battle, self, reason) {
         return reason === "DISPEL" ? battle : hitOriginal(battle, projectilesQuery.ref(self));
     },
 };
 const arrowState = { source: { id: 0 }, target: 1, power: 10, hit: false };
 
-test("Projectile creation registers before onCreate and nested creation allocates independent identities", () => {
+test("Projectile creation registers before onStart and nested creation allocates independent identities", () => {
     const observed = [];
-    const child = { id: "child", onCreate(battle, self) {
+    const child = { id: "child", onStart(battle, self) {
         observed.push(["child", self.id, battle.execution.nextProjectileId]);
         assert.strictEqual(projectilesQuery.get(battle, projectilesQuery.ref(self)), self);
         return battle;
     } };
-    const parent = { id: "parent", onCreate(battle, self) {
+    const parent = { id: "parent", onStart(battle, self) {
         observed.push(["parent", self.id, battle.execution.nextProjectileId]);
         assert.strictEqual(projectilesQuery.get(battle, projectilesQuery.ref(self)), self);
         return create(battle, child, { child: true }).state;
@@ -77,12 +77,12 @@ test("Projectile creation registers before onCreate and nested creation allocate
     assert.deepEqual(instances(initial), []);
 });
 
-test("onCreate may synchronously stop its own instance while create still returns the allocated Ref", () => {
+test("onStart may synchronously stop its own instance while create still returns the allocated Ref", () => {
     const observed = [];
     const definition = {
         id: "instant",
-        onCreate: (battle, self) => projectiles.stop(battle, projectilesQuery.ref(self)),
-        onTerminate(battle, self, reason) {
+        onStart: (battle, self) => projectiles.stop(battle, projectilesQuery.ref(self)),
+        onEnd(battle, self, reason) {
             observed.push([self.lifecycle, reason]);
             return battle;
         },
@@ -115,7 +115,7 @@ test("Projectile creation shares caller-provided immutable state and does not in
 
 test("Projectile stop publishes ENDING and its event before cleanup, and repeated stop is a no-op", () => {
     const observed = [];
-    const definition = { id: "ending", onAdvance() { assert.fail("ENDING instances must not normally advance"); }, onTerminate(battle, self, reason) {
+    const definition = { id: "ending", onTick() { assert.fail("ENDING instances must not normally advance"); }, onEnd(battle, self, reason) {
         observed.push([self.lifecycle, reason, battle.events.at(-1).type]);
         assert.strictEqual(projectilesQuery.get(battle, projectilesQuery.ref(self)), self);
         assert.strictEqual(projectiles.stop(battle, projectilesQuery.ref(self), "DISPEL"), battle);
@@ -137,7 +137,7 @@ test("Projectile stop publishes ENDING and its event before cleanup, and repeate
 test("Stop callbacks can create children and terminate peers without losing their updates", () => {
     const observed = [];
     const child = { id: "child" };
-    const parent = { id: "parent", onTerminate(battle, self) {
+    const parent = { id: "parent", onEnd(battle, self) {
         observed.push(self.id);
         if (self.id !== 0) return battle;
         battle = create(battle, child, { label: "survivor" }).state;
@@ -159,8 +159,8 @@ test("Projectile advance fixes candidates and re-reads the latest instance and l
     const observed = [];
     let laterRef;
     let stoppedRef;
-    const spawned = { id: "spawned", onAdvance(battle) { observed.push("spawned"); return battle; } };
-    const definition = { id: "same-name", onAdvance(battle, self) {
+    const spawned = { id: "spawned", onTick(battle) { observed.push("spawned"); return battle; } };
+    const definition = { id: "same-name", onTick(battle, self) {
         observed.push([self.id, self.state.count]);
         if (self.id !== 0) return battle;
         battle = projectiles.update(battle, laterRef, current => ({ state: { count: current.state.count + 4 } }));
@@ -181,11 +181,11 @@ test("Projectile advance fixes candidates and re-reads the latest instance and l
 
 test("Projectile advance allows heterogeneous programs with equal names to keep their private state pairing", () => {
     const observed = [];
-    const charges = { id: "same", onAdvance(battle, self) {
+    const charges = { id: "same", onTick(battle, self) {
         observed.push(self.state.charges);
         return projectiles.update(battle, projectilesQuery.ref(self), current => ({ state: { charges: current.state.charges - 1 } }));
     } };
-    const label = { id: "same", onAdvance(battle, self) { observed.push(self.state.label); return battle; } };
+    const label = { id: "same", onTick(battle, self) { observed.push(self.state.label); return battle; } };
     const first = create(battle(), charges, { charges: 2 });
     const second = create(first.state, label, { label: "arrow" });
     const progressed = advance(second.state, candidates(second.state));
@@ -197,7 +197,7 @@ test("Projectile advance allows heterogeneous programs with equal names to keep 
 });
 
 test("A stationary Projectile remains ACTIVE and can continue periodic output after arrival", () => {
-    const pulse = { id: "stationary-pulse", onAdvance(battle, self) {
+    const pulse = { id: "stationary-pulse", onTick(battle, self) {
         if (!self.state.arrived) {
             return projectiles.update(battle, projectilesQuery.ref(self), () => ({
                 position: [1, 0], state: { arrived: true, nextPulseTick: battle.tick + 1 },
@@ -234,7 +234,7 @@ test("Ordinary stop may hit the saved original target while DISPEL omits that co
 
 test("Original-target hit progress recorded before business prevents synchronous Stop fallback from repeating it", () => {
     let reference;
-    const definition = { ...arrow, id: "reentrant-hit", onAdvance(battle, self) {
+    const definition = { ...arrow, id: "reentrant-hit", onTick(battle, self) {
         battle = projectiles.update(battle, projectilesQuery.ref(self), current => ({ state: { ...current.state, hit: true } }));
         battle = projectiles.stop(battle, reference);
         return dealDamage(battle, { source: self.state.source, target: { id: self.state.target }, parameters: parameters(self.state.power, "TRUE") }).state;
@@ -262,10 +262,10 @@ test("Source departure does not terminate independent projectiles or erase sampl
 
 test("Battle commands stop in order before survivors advance and ignore duplicate or missing IDs", () => {
     const observed = [];
-    const definition = { id: "command", onAdvance(battle, self) {
+    const definition = { id: "command", onTick(battle, self) {
         observed.push(["advance", self.id]);
         return projectiles.update(battle, projectilesQuery.ref(self), () => ({ position: [1, 0] }));
-    }, onTerminate(battle, self) { observed.push(["stop", self.id]); return battle; } };
+    }, onEnd(battle, self) { observed.push(["stop", self.id]); return battle; } };
     let initial = battle();
     for (let index = 0; index < 4; index++) initial = create(initial, definition).state;
     const progressed = advanceProjectiles(initial, candidates(initial), [2, 2, 999, 0].map(projectileId => ({ type: "STOP_PROJECTILE", projectileId })));
@@ -278,12 +278,12 @@ test("Battle commands stop in order before survivors advance and ignore duplicat
 
 test("Runtime freezes Projectile candidates before Unit callbacks, Action output and nested advances", () => {
     const observed = [];
-    const grandchild = { id: "grandchild", onAdvance(battle, self) { observed.push([self.definition.id, battle.tick]); return battle; } };
-    const fromUnit = { id: "unit-child", onCreate(battle) { observed.push(["unit-create", battle.tick]); return battle; }, onAdvance(battle, self) {
+    const grandchild = { id: "grandchild", onTick(battle, self) { observed.push([self.definition.id, battle.tick]); return battle; } };
+    const fromUnit = { id: "unit-child", onStart(battle) { observed.push(["unit-create", battle.tick]); return battle; }, onTick(battle, self) {
         observed.push([self.definition.id, battle.tick]);
         return self.state.spawned ? battle : create(projectiles.update(battle, projectilesQuery.ref(self), () => ({ state: { spawned: true } })), grandchild).state;
     } };
-    const fromAction = { id: "action-child", onCreate(battle) { observed.push(["action-create", battle.tick]); return battle; }, onAdvance(battle, self) { observed.push([self.definition.id, battle.tick]); return battle; } };
+    const fromAction = { id: "action-child", onStart(battle) { observed.push(["action-create", battle.tick]); return battle; }, onTick(battle, self) { observed.push([self.definition.id, battle.tick]); return battle; } };
     const source = unit(0, { hooks: [{ id: "test/tick", stage: "tick", invoke(battle) {
         return { state: battle.tick === 0 ? create(battle, fromUnit, { spawned: false }).state : battle, value: undefined };
     } }], action: actionDefinition(0, { output: battle => create(battle, fromAction).state }) });
@@ -301,9 +301,9 @@ test("Runtime freezes Projectile candidates before Unit callbacks, Action output
 
 test("battle execution can stop a same-Tick creation explicitly without normally advancing it", () => {
     const observed = [];
-    const definition = { id: "same-step", onCreate(battle) { observed.push("create"); return battle; },
-        onAdvance(battle) { observed.push("advance"); return battle; },
-        onTerminate(battle, _self, reason) { observed.push(reason); return battle; } };
+    const definition = { id: "same-step", onStart(battle) { observed.push("create"); return battle; },
+        onTick(battle) { observed.push("advance"); return battle; },
+        onEnd(battle, _self, reason) { observed.push(reason); return battle; } };
     let rt = runtime([unit(0, { hooks: [{ id: "test/tick", stage: "tick", invoke(battle) { return { state: create(battle, definition).state, value: undefined }; } }] })]);
     const result = (rt = stepBattle(rt, [{ type: "STOP_PROJECTILE", projectileId: 0 }]));
 
@@ -313,7 +313,7 @@ test("battle execution can stop a same-Tick creation explicitly without normally
 });
 
 test("a throwing termination callback leaves the caller's BattleState unchanged", () => {
-    const definition = { id: "throwing", onTerminate(battle) {
+    const definition = { id: "throwing", onEnd(battle) {
         battle = dealDamage(battle, { source: null, target: { id: 1 }, parameters: parameters(9, "TRUE") }).state;
         throw new Error("termination failed");
     } };
@@ -330,7 +330,7 @@ test("a throwing termination callback leaves the caller's BattleState unchanged"
 test("a terminal battle leaves outstanding projectiles frozen without termination callbacks", () => {
     let stops = 0;
     let advances = 0;
-    const definition = { id: "frozen", onAdvance(battle) { advances++; return battle; }, onTerminate(battle) { stops++; return battle; } };
+    const definition = { id: "frozen", onTick(battle) { advances++; return battle; }, onEnd(battle) { stops++; return battle; } };
     let rt = runtime([unit(0, { hooks: [{ id: "test/tick", stage: "tick", invoke(battle) { return { state: create(battle, definition).state, value: undefined }; } }] })], 1);
     rt = stepBattle(rt, []);
     const snapshot = rt;
@@ -341,9 +341,9 @@ test("a terminal battle leaves outstanding projectiles frozen without terminatio
     assert.strictEqual((rt = stepBattle(rt, [])), snapshot);
 });
 
-test("A throwing onCreate or onTerminate leaves the caller's immutable branch intact", () => {
+test("A throwing onStart or onEnd leaves the caller's immutable branch intact", () => {
     const initial = battle(unit(1));
-    const throwingCreate = { id: "throw-create", onCreate(battle) {
+    const throwingCreate = { id: "throw-create", onStart(battle) {
         battle = create(battle, { id: "nested" }).state;
         throw new Error("create failed");
     } };
@@ -351,7 +351,7 @@ test("A throwing onCreate or onTerminate leaves the caller's immutable branch in
     assert.equal(initial.execution.nextProjectileId, 0);
     assert.deepEqual(instances(initial), []);
 
-    const created = create(initial, { id: "throw-stop", onTerminate(battle) {
+    const created = create(initial, { id: "throw-stop", onEnd(battle) {
         battle = dealDamage(battle, { source: null, target: { id: 1 }, parameters: parameters(10, "TRUE") }).state;
         throw new Error("stop failed");
     } });

@@ -32,7 +32,7 @@ declare const activation: Ref<Activation<Active>>;
 const counted = createWithState({
     ...configuration,
     initialize: current => ({ state: current, value: { count: 0 } }),
-    start: (current, source, self): Result<{ sampled: number }> => ({ state: current, value: { sampled: self.state.count } }),
+    prepare: (current, source, self): Result<{ sampled: number }> => ({ state: current, value: { sampled: self.state.count } }),
     output(current, source, self) {
         const persistent = getAction(current, source, self.definition)!;
         const count: number = persistent.state.count;
@@ -56,7 +56,7 @@ type Counted = Assert<Equal<typeof counted, Attack<Persistent, { sampled: number
 const preciseAmmo = createWithState({
     ...configuration,
     initialize: current => ({ state: current, value: {} }),
-    start: (current): { state: BattleState; value: { activation: Ref<Activation<Active>> | null } } => ({ state: current, value: { activation } }),
+    prepare: (current): { state: BattleState; value: { activation: Ref<Activation<Active>> | null } } => ({ state: current, value: { activation } }),
     afterOutput(current, source, self) {
         const sampled = self.execution.state.data.activation;
         type Sampled = Assert<Equal<typeof sampled, Ref<Activation<Active>> | null>>;
@@ -99,7 +99,7 @@ const raw: SkillAttackState = { activation: { host: { id: 0 }, id: 0 } };
 if (isAttack(unknownDefinition)) {
     const identity: string = unknownDefinition.id;
     // @ts-expect-error
-    unknownDefinition.step;
+    unknownDefinition.onTick;
     // @ts-expect-error
     unknownDefinition.attack.output;
 }

@@ -17,12 +17,12 @@ export interface View {
 
 export interface Definition<P extends object = object, E extends object = object> extends View {
     readonly initialize: (battle: BattleState) => Result<P>;
-    readonly start: (
+    readonly prepare: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability>,
         self: Action<P, E>,
     ) => Result<E | null>;
-    readonly step: (
+    readonly onTick: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability>,
         self: Executing<P, E>,

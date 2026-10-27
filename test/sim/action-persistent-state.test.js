@@ -12,8 +12,8 @@ import { getUnit, fixtureBattle } from "../helpers/unit.js";
 const program = (id, configuration = {}) => ({
     id, intervalTicks: 10, speed: 100,
     initialize: state => ({ state, value: { count: 0 } }),
-    start: (state, source, self) => ({ state, value: { sampledCount: self.state.count } }),
-    step: state => ({ state, value: false }),
+    prepare: (state, source, self) => ({ state, value: { sampledCount: self.state.count } }),
+    onTick: state => ({ state, value: false }),
     ...configuration,
 });
 
@@ -54,7 +54,7 @@ test("Action completion and cancellation clear execution while preserving persis
     let initialized = 0;
     const definition = program("history", {
         initialize(state) { initialized++; return { state, value: { count: 0 } }; },
-        step(state, source, self) {
+        onTick(state, source, self) {
             const count = self.state.count;
             return { state: actions.updateState(state, source, self.definition, current => ({ count: current.count + 1 })), value: count === 0 };
         },
@@ -82,7 +82,7 @@ test("Action completion and cancellation clear execution while preserving persis
 test("Action startup commits cooldown using the latest aggregate after callbacks", () => {
     const sibling = program("sibling");
     const definition = program("nested", {
-        start(state, source, self) {
+        prepare(state, source, self) {
             state = actions.updateState(state, source, self.definition, () => ({ count: 7 }));
             state = actions.updateState(state, source, sibling, () => ({ count: 9 }));
             state = actions.resetCooldown(state, source, sibling.id);

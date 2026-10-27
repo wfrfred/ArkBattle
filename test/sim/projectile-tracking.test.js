@@ -77,8 +77,8 @@ test('tracking commits its hit attempt before content can synchronously stop the
   });
   const definition = {
     id: 'reentrant-arrow', tracking: true,
-    onAdvance: (battle, self) => tracking.advance(battle, self, hit),
-    onTerminate: (battle, self, reason) => reason === 'DISPEL' ? battle : hit(battle, self),
+    onTick: (battle, self) => tracking.advance(battle, self, hit),
+    onEnd: (battle, self, reason) => reason === 'DISPEL' ? battle : hit(battle, self),
   };
   const launched = projectiles.create(fixture.battle, definition, { position: [0, 0], state: fixture.state });
   const after = step(launched.state, 1);

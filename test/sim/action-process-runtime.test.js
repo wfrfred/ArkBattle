@@ -71,14 +71,14 @@ const program = (id, extra = {}) => ({
     intervalTicks: 10,
     speed: 100,
     initialize: (state) => ({ state, value: {} }),
-    start: (state) => ({ state, value: { count: 0 } }),
-    step: (state) => ({ state, value: false }),
+    prepare: (state) => ({ state, value: { count: 0 } }),
+    onTick: (state) => ({ state, value: false }),
     ...extra,
 });
 
 test("action runtime: a newly registered instance first executes once and retained snapshots stay immutable", () => {
     const definition = program("progress", {
-        step(state, source, self) {
+        onTick(state, source, self) {
             state = actions.update(state, actionRef(source, self), currentState => ({ count: currentState.count + 1 }));
             return { state, value: false };
         },
@@ -97,7 +97,7 @@ test("action runtime: a newly registered instance first executes once and retain
 test("action runtime: an execution registered before the same-tick scan is advanced once", () => {
     const ticks = [];
     const definition = program("before-scan", {
-        step(state, source, self) {
+        onTick(state, source, self) {
             ticks.push(state.tick);
             return {
                 state: actions.update(state, actionRef(source, self), current => ({ count: current.count + 1 })),
@@ -119,11 +119,11 @@ test("action runtime: an immediately finished definition starts once in one auto
     let starts = 0;
     const definition = program("instant", {
         intervalTicks: 1,
-        start(state) {
+        prepare(state) {
             starts++;
             return { state, value: {} };
         },
-        step: (state) => ({ state, value: true }),
+        onTick: (state) => ({ state, value: true }),
     });
     let runtime = initializeBattle(spec([unit(0, { action: definition }), unit(1)]));
     assert.equal(
@@ -138,8 +138,8 @@ test("action runtime: an immediately finished definition starts once in one auto
 
 test("action runtime: cancellation commands complete before a delayed release without disturbing its peer", () => {
     const definition = program("delayed", {
-        start: (state) => ({ state, value: { releaseAtTick: state.tick + 1 } }),
-        step(state, source, self) {
+        prepare: (state) => ({ state, value: { releaseAtTick: state.tick + 1 } }),
+        onTick(state, source, self) {
             if (state.tick < self.execution.state.releaseAtTick) return { state, value: false };
             state = updateUnit(state, [{
                 ...getUnit(state, 2),
@@ -168,10 +168,10 @@ test("action runtime: cancellation commands complete before a delayed release wi
     assert.equal(unitQueries.all(first).toArray().find((value) => value.id === 2).vitality.hp, 100);
 });
 
-test("action runtime: nested departure removes a later candidate before its next step", () => {
+test("action runtime: nested departure removes a later candidate before its next onTick", () => {
     const trace = [];
     const definition = program("nested", {
-        step(state, source, self) {
+        onTick(state, source, self) {
             if (state.tick === 0) return { state, value: false };
             trace.push(source.id);
             if (source.id === 0)
@@ -197,7 +197,7 @@ test("action runtime: host order advances old instances before selection and def
     const trace = [];
     let child;
     const old = program("old", {
-        step(state, source, self) {
+        onTick(state, source, self) {
             if (state.tick > 0) {
                 trace.push(`old/${source.id}`);
                 if (source.id === 0) {
@@ -208,7 +208,7 @@ test("action runtime: host order advances old instances before selection and def
         },
     });
     child = program("child", {
-        step(state, source, self) {
+        onTick(state, source, self) {
             trace.push(`child/${source.id}`);
             return { state, value: false };
         },
@@ -237,7 +237,7 @@ test("action runtime: host order advances old instances before selection and def
 test("action runtime: a late exception publishes neither progressed action state nor domain changes", () => {
     const failure = new Error("continuation failed");
     const definition = program("failure", {
-        step(state, source, self) {
+        onTick(state, source, self) {
             if (state.tick === 0) return { state, value: false };
             state = actions.update(state, actionRef(source, self), () => ({ count: 9 }));
             state = updateUnit(state, [{ ...getUnit(state, 1), position: [3, 0] }]);
@@ -270,7 +270,7 @@ test("action runtime: dependency cleanup can finish nested host death before a t
         },
     };
     const definition = program("terminal", {
-        step(state, source, self) {
+        onTick(state, source, self) {
             if (state.tick === 0)
                 state = effects.install(state, unitRef(getUnit(state, 1)), dependency, {
                     scopes: [{ type: "ACTION", ref: actionRef(source, self) }],
@@ -293,7 +293,7 @@ test("action runtime: dependency cleanup can finish nested host death before a t
 test("action runtime preserves execution start order when selection reverses configuration order", () => {
     const advanced = [], ended = [];
     const make = id => program(id, {
-        step(state, source, self) { advanced.push([state.tick, self.definition.id]); return { state, value: false }; },
+        onTick(state, source, self) { advanced.push([state.tick, self.definition.id]); return { state, value: false }; },
         onEnd(state, source, self) { ended.push(self.definition.id); return state; },
     });
     const first = make("first"), second = make("second");

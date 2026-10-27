@@ -445,8 +445,8 @@ test("a deployment passive can have a finite TIME duration without natural react
 test("generic Action scheduling does not itself award ACTION SP", () => {
     const action = { id: "reload-like", intervalTicks: 30, speed: 100,
         initialize: battle => ({ state: battle, value: {} }),
-        start: (battle) => ({ state: battle, value: {} }),
-        step: (battle) => ({ state: battle, value: true }),
+        prepare: (battle) => ({ state: battle, value: {} }),
+        onTick: (battle) => ({ state: battle, value: true }),
     };
     const unit = initialize({ id: 1, position: [0, 0], definition: {
         id: "actor", skill: definition({ sp: resource({ recovery: { type: "ACTION", amount: 1 } }) }),

@@ -30,14 +30,14 @@ declare const projectile: Projectile<{ charges: number }>;
 declare const specialized: Ref<Projectile<{ charges: number }> & { readonly marker: 17 }>;
 const definition: Definition<{ charges: number }> = {
     id: "charges",
-    onCreate(current, self) {
+    onStart(current, self) {
         const charges: number = self.state.charges;
         return update(current, ref(self), latest => ({ state: { charges: latest.state.charges + charges } }));
     },
-    onAdvance(current, self) {
+    onTick(current, self) {
         return update(current, ref(self), latest => ({ position: [latest.position[0] + 1, 0] }));
     },
-    onTerminate(current, self, reason) {
+    onEnd(current, self, reason) {
         const charges: number = self.state.charges;
         const ending: "ACTIVE" | "ENDING" = self.lifecycle;
         if (reason === "DISPEL") return current;
@@ -65,9 +65,9 @@ type Candidates = Assert<Equal<typeof candidates, readonly Ref<View>[]>>;
 advance(battle, candidates);
 entries.replace(known, projectile);
 entries.read(known.id, self => {
-    self.definition.onCreate?.(battle, self);
-    self.definition.onAdvance?.(battle, self);
-    self.definition.onTerminate?.(battle, self, "EXPLICIT");
+    self.definition.onStart?.(battle, self);
+    self.definition.onTick?.(battle, self);
+    self.definition.onEnd?.(battle, self, "EXPLICIT");
     update(battle, ref(self), latest => ({ state: latest.state, position: latest.position }));
 });
 update(battle, known, latest => {
@@ -111,7 +111,7 @@ stop(battle, 0);
 // @ts-expect-error
 ref(0);
 // @ts-expect-error
-get(battle, erased)!.definition.onAdvance;
+get(battle, erased)!.definition.onTick;
 // @ts-expect-error
 get(battle, erased)!.state;
 // @ts-expect-error

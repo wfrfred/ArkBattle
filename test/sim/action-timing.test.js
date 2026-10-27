@@ -25,8 +25,8 @@ const program = (id = "timed", extra = {}) => ({
     intervalTicks: 30,
     speed: 100,
     initialize: (state) => ({ state, value: {} }),
-    start: (state) => ({ state, value: {} }),
-    step: (state) => ({ state, value: false }),
+    prepare: (state) => ({ state, value: {} }),
+    onTick: (state) => ({ state, value: false }),
     ...extra,
 });
 const close = (actual, expected) =>
@@ -103,7 +103,7 @@ test("action timing: complete cooldown refresh preserves progress at the contrib
 test("action timing: starting uses contributions and cooldowns from the returned battle", () => {
     const sibling = program("sibling");
     const definition = program("changed-on-start", {
-        start(state, source) {
+        prepare(state, source) {
             state = contribute(state, "speed", { addition: 100 });
             state = actions.resetCooldown(state, source, sibling.id);
             return { state, value: {} };
@@ -124,12 +124,12 @@ test("action timing: starting uses contributions and cooldowns from the returned
 test("action timing: startup rejects a cooldown introduced by its callback and retains its settled changes", () => {
     const definition = program("blocked-on-start", {
         initialize: state => ({ state, value: { attempts: 0 } }),
-        start(state, source, self) {
+        prepare(state, source, self) {
             state = actions.updateState(state, source, self.definition, current => ({ attempts: current.attempts + 1 }));
             state = actions.updateCooldown(state, source, self.definition.id, current => ({ ...current, readyAtTick: 100 }));
             return { state, value: {} };
         },
-        step: () => assert.fail("a rejected startup cannot advance"),
+        onTick: () => assert.fail("a rejected startup cannot advance"),
     });
     const initial = battle(unit(0, { action: definition }));
     const source = unitRef(getUnit(initial, 0));
@@ -145,8 +145,8 @@ test("action timing: startup rejects a cooldown introduced by its callback and r
 
 test("action timing: a period change does not rescale an accepted private casting budget", () => {
     const definition = program("casting", {
-        start: (state) => ({ state, value: { finishAtTick: state.tick + 20, observed: 0 } }),
-        step(state, source, self) {
+        prepare: (state) => ({ state, value: { finishAtTick: state.tick + 20, observed: 0 } }),
+        onTick(state, source, self) {
             if (state.tick >= self.execution.state.finishAtTick) return { state, value: true };
             return {
                 state: actions.update(state, actionRef(source, self), currentState => ({ ...currentState, observed: currentState.observed + 1 })),

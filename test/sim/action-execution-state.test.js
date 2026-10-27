@@ -15,15 +15,15 @@ const program = (id, extra = {}) => ({
     intervalTicks: 10,
     speed: 100,
     initialize: (state) => ({ state, value: {} }),
-    start: (state) => ({ state, value: { count: 0 } }),
-    step: (state) => ({ state, value: false }),
+    prepare: (state) => ({ state, value: { count: 0 } }),
+    onTick: (state) => ({ state, value: false }),
     ...extra,
 });
 
-test("action start registers execution without invoking its first step", () => {
+test("action start registers execution without invoking its first onTick", () => {
     const steps = [];
     const definition = program("registered", {
-        step(state, source, self) {
+        onTick(state, source, self) {
             steps.push([state.tick, self.execution.state.count]);
             return { state, value: true };
         },
@@ -44,8 +44,8 @@ test("action start registers execution without invoking its first step", () => {
 });
 
 test("action storage: heterogeneous definitions retain their private state and callback pairing", () => {
-    const first = program("number", { start: (state) => ({ state, value: { count: 3 } }) });
-    const second = program("text", { start: (state) => ({ state, value: { message: "ready" } }) });
+    const first = program("number", { prepare: (state) => ({ state, value: { count: 3 } }) });
+    const second = program("text", { prepare: (state) => ({ state, value: { message: "ready" } }) });
     const initial = battle(
         unit(0, { action: actionCapability(first, second) }),
     );
@@ -109,9 +109,9 @@ test("action storage: a throwing later instance cannot mutate earlier published 
         state: actions.update(state, actionRef(source, self), currentState => ({ count: currentState.count + 1 })),
         value: false,
     });
-    const first = program("first", { step: advanceCount });
+    const first = program("first", { onTick: advanceCount });
     const second = program("second", {
-        step(state, source, self) {
+        onTick(state, source, self) {
             if (state.tick > 0) throw new Error("later failure");
             return advanceCount(state, source, self);
         },
@@ -133,7 +133,7 @@ test("action storage: a throwing later instance cannot mutate earlier published 
 
 test("action: startup rules prohibit new instances while an accepted program keeps its own continuation", () => {
     const first = program("running", {
-        step(state, source, self) {
+        onTick(state, source, self) {
             return {
                 state: actions.update(state, actionRef(source, self), currentState => ({ count: currentState.count + 1 })),
                 value: state.tick >= 1,

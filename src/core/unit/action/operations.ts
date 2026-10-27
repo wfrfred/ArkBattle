@@ -191,7 +191,7 @@ export function start<P extends object, E extends object>(
         return reject("COOLDOWN");
     }
 
-    const initialized = definition.start(battle, source, current);
+    const initialized = definition.prepare(battle, source, current);
     battle = initialized.state;
 
     if (initialized.value === null) {

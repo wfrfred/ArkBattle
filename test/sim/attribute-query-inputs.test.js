@@ -15,8 +15,8 @@ import { add as addUnit } from "../../dist/core/battle/unit.js";
 const program = {
     id: "timing", intervalTicks: 10, speed: 100,
     initialize: battle => ({ state: battle, value: {} }),
-    start: battle => ({ state: battle, value: {} }),
-    step: battle => ({ state: battle, value: false }),
+    prepare: battle => ({ state: battle, value: {} }),
+    onTick: battle => ({ state: battle, value: false }),
 };
 
 function fixture(tick = 0) {

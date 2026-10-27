@@ -35,8 +35,8 @@ declare const specialized: Ref<Executing<object, { count: number }> & { readonly
 const definition: Definition<object, { count: number }> = {
     id: "count", intervalTicks: 10, speed: 100,
     initialize: current => ({ state: current, value: {} }),
-    start: current => ({ state: current, value: { count: 0 } }),
-    step: (current, host, self) => ({ state: update(current, ref(host, self), state => ({ count: state.count + 1 })), value: false }),
+    prepare: current => ({ state: current, value: { count: 0 } }),
+    onTick: (current, host, self) => ({ state: update(current, ref(host, self), state => ({ count: state.count + 1 })), value: false }),
 };
 const started = start(battle, source, definition);
 if (started.value.type === "STARTED") {
@@ -76,7 +76,7 @@ get(battle, 0);
 // @ts-expect-error
 get(battle, action);
 // @ts-expect-error
-get(battle, erased)!.definition.step;
+get(battle, erased)!.definition.onTick;
 // @ts-expect-error Public execution views hide E.
 get(battle, erased)!.execution.state.count;
 // @ts-expect-error Public aggregate views hide P.
@@ -93,8 +93,8 @@ update(battle, action, () => ({ count: 1 }));
 const persistent: Definition<{ uses: number }, { target: string }> = {
     id: "persistent", intervalTicks: 10, speed: 100,
     initialize: current => ({ state: current, value: { uses: 0 } }),
-    start: (current, host, self) => ({ state: updateState(current, host, self.definition, value => ({ uses: value.uses + 1 })), value: { target: "sampled" } }),
-    step: (current, host, self) => {
+    prepare: (current, host, self) => ({ state: updateState(current, host, self.definition, value => ({ uses: value.uses + 1 })), value: { target: "sampled" } }),
+    onTick: (current, host, self) => {
         const stored = getAction(current, host, self.definition)!;
         const uses: number = stored.state.uses;
         const target: string = self.execution.state.target;

@@ -65,17 +65,17 @@ export type StopReason =
 export interface Definition<S extends object> {
     readonly id: string;
 
-    readonly onCreate?: (
+    readonly onStart?: (
         battle: BattleState,
         self: Projectile<S>,
     ) => BattleState;
 
-    readonly onAdvance?: (
+    readonly onTick?: (
         battle: BattleState,
         self: Projectile<S>,
     ) => BattleState;
 
-    readonly onTerminate?: (
+    readonly onEnd?: (
         battle: BattleState,
         self: Projectile<S>,
         reason: StopReason,
@@ -168,12 +168,12 @@ ref 保留已知实例类型；get 只读取传入 battle 的版本，不隐含 
 ```text
 分配身份，更新身份计数器并登记 ACTIVE 实例
     ↓
-onCreate(battle, self)
+onStart(battle, self)
     ↓
 返回最新 BattleState 与创建时分配的 Ref
 ```
 
-身份计数器与实例登记均在 onCreate 前生效；嵌套 create 不复用身份。onCreate 可以同步终结自己，因此返回 Ref 不保证返回时实例仍存在；外层不得在回调之后重新写回旧实例。
+身份计数器与实例登记均在 onStart 前生效；嵌套 create 不复用身份。onStart 可以同步终结自己，因此返回 Ref 不保证返回时实例仍存在；外层不得在回调之后重新写回旧实例。
 
 update 先从传入 battle 读取最新实例。缺失时抛出 RangeError，不调用 transform。transform 接收当前完整只读实例，使位置与私有状态能在一次纯转换中共同计算；只返回允许更新的 position 和 state，不执行其他 BattleState 操作。
 
@@ -189,7 +189,7 @@ Runtime 在整个 Battle Step 开始、任何可能创建或终结弹道的阶�
 
 正常时间推进只有 Runtime 调度的入口，不允许内容推进其他实例。同 Tick 重复调度属于调度器错误，不保存 lastAdvancedTick，也不用创建 Tick 替代候选边界。
 
-onAdvance 可以移动、报告到达、命中、等待、切换运动方式或发起终结。到达后不再移动的实例仍可以保持 ACTIVE 并执行周期业务。职责分离不要求全场先统一运动、再统一命中、最后统一终结；具体过程可以同步调用并立即接续返回状态。
+onTick 可以移动、报告到达、命中、等待、切换运动方式或发起终结。到达后不再移动的实例仍可以保持 ACTIVE 并执行周期业务。职责分离不要求全场先统一运动、再统一命中、最后统一终结；具体过程可以同步调用并立即接续返回状态。
 
 ## 6. 同步终结与事件
 
@@ -202,14 +202,14 @@ onAdvance 可以移动、报告到达、命中、等待、切换运动方式或�
     ↓
 记录 PROJECTILE_STOPPED，保留本次 StopReason
     ↓
-onTerminate(battle, self, reason)
+onEnd(battle, self, reason)
     ↓
 从回调返回的最新 battle 注销实例
 ```
 
 缺失或已经 ENDING 的实例 stop 返回原 BattleState，不重复事件与回调，也不把正在执行的普通停止改成另一次消除。ENDING 阻止后续正常推进，不无差别拒绝终结程序中的命中、位置／私有状态更新和 Effect 清理。
 
-普通停止可以执行该内容的原目标保底、停止爆炸及其他收尾；DISPEL 是否跳过命中、执行什么专属业务由 Definition 确定。两者共用相同的生命周期保护与注销过程，清理可在同一个 onTerminate 中完成。
+普通停止可以执行该内容的原目标保底、停止爆炸及其他收尾；DISPEL 是否跳过命中、执行什么专属业务由 Definition 确定。两者共用相同的生命周期保护与注销过程，清理可在同一个 onEnd 中完成。
 
 注销使用最新容器，保留回调中新建或修改的其他实例。注销后不保存长期驻留的 STOPPED／DESTROYED 状态，不增加 onDestroy 回调。PROJECTILE_STOPPED 记录进入终结的事实，因此收尾中仍可能记录命中事件；它不代表收尾已经全部完成。
 

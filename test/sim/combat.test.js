@@ -70,7 +70,7 @@ function coreCombatRoute(startPosition = [1, 8], overrides = {}) {
 
 function unitFacts(unit) {
   if (unit.action === undefined) return unit;
-  const actionDefinitionFacts = ({ initialize, start, step, onEnd, ...definition }) => {
+  const actionDefinitionFacts = ({ initialize, prepare, onTick, onEnd, ...definition }) => {
     if (definition.attack !== undefined) {
       definition.attack = { ...definition.attack, targetGroups: definition.attack.targetGroups.map(group => {
         const { filter, selector, ...targeting } = group.targeting;

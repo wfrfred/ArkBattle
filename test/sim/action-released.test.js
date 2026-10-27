@@ -160,12 +160,12 @@ test("release dispatch reads replacements for selected IDs and defers newly regi
     assert.equal(state.events.some(({ type }) => type === "DAMAGE"), false);
 });
 
-test("generic Action start and step do not implicitly emit a release or grant ACTION SP", () => {
+test("generic Action start and onTick do not implicitly emit a release or grant ACTION SP", () => {
     const definition = {
         id: "store-energy", intervalTicks: 30, speed: 100,
         initialize: (state) => ({ state, value: {} }),
-        start: (state) => ({ state, value: {} }),
-        step: (state) => ({ state, value: true }),
+        prepare: (state) => ({ state, value: {} }),
+        onTick: (state) => ({ state, value: true }),
     };
     const f = fixture({ action: definition });
     const state = changeAction(f.state, (action) => setReleasedHook(action, hook("unreleased", () => assert.fail("generic scheduling does not emit a release"))));

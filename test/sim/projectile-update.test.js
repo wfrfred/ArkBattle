@@ -91,7 +91,7 @@ test("Projectile update permits ENDING callbacks to publish cleanup and hit prog
     let observed;
     const definition = {
         id: "ending-update",
-        onTerminate(battle, self) {
+        onEnd(battle, self) {
             assert.equal(self.lifecycle, "ENDING");
             const changed = projectiles.update(battle, projectilesQuery.ref(self), current => ({
                 position: [2, 0], state: { count: current.state.count + 1 },

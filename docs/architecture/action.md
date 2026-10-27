@@ -12,7 +12,7 @@ Action 负责行为程序的选择、启动、推进与完整终止。具体内�
 
 | 对象 | 职责 |
 | --- | --- |
-| unit/action/Definition | 行动身份、基础 intervalTicks／speed、持久 initialize、start／step 与可选 onEnd |
+| unit/action/Definition | 行动身份、基础 intervalTicks／speed、持久 initialize、prepare／onTick 与可选 onEnd |
 | Unit Action Capability Definition | 创建本 Unit 行动的 initialize 程序和可选 select 程序 |
 | Unit Action Capability State | 单一 Actions 容器、宿主内 nextExecutionId、interval／speed 贡献、启动 Rule、释放前拦截与成功释放通知 |
 | Action | 一种配置行动在某 Unit 上的 Definition、持久 state、Cooldown 和当前 execution |
@@ -51,12 +51,12 @@ export interface Definition<P extends object, E extends object> {
     readonly intervalTicks: number;
     readonly speed: number;
     readonly initialize: (battle: BattleState) => Result<P>;
-    readonly start: (
+    readonly prepare: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability>,
         self: Action<P, E>,
     ) => Result<E | null>;
-    readonly step: (
+    readonly onTick: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability>,
         self: Executing<P, E>,
@@ -84,15 +84,15 @@ export interface Execution<E extends object> {
 }
 ```
 
-Executing<P, E> 是 execution 非空的 Action 类型收窄，不是另一份运行对象。step／onEnd 直接读取 self.execution.state，持久数据读取 self.state。宿主引用由回调的 source 参数提供，Action 与 Execution 不重复保存 host。
+Executing<P, E> 是 execution 非空的 Action 类型收窄，不是另一份运行对象。onTick／onEnd 直接读取 self.execution.state，持久数据读取 self.state。宿主引用由回调的 source 参数提供，Action 与 Execution 不重复保存 host。
 
 具体内容将 Definition<P, E> 交给 unit/action/initialize.ts 的 create，得到创建行动的初始化函数；类型配对在这个具体创建位置建立。Unit 的 Action Capability.initialize 调用内容提供的 initialize，内容使用 createActions 按顺序执行这些函数，接续每项 Result.state，并将完整聚合条目加入 Actions。
 
 每项创建程序调用自己的 Definition.initialize，建立 P、初始就绪的 Cooldown 和 execution: null。即使从未启动，该聚合条目也已经存在。共享 Definition 的不同 Unit 分别初始化，私有状态随各次创建产生。此时宿主尚未登记，不能从战场查询自己或假设兄弟能力已经可用。start 不补建缺失的配置条目。
 
-start 取得当前已配对的 Action，只检查本次内容条件、初始化 E 和必要采样；null 表示未启动。已发生的状态更新接续返回，普通无变更拒绝返回输入 battle。伤害、召唤、绑定本次执行的 Effect 及可能同步重入的业务，在 execution 登记后由 step 执行。start 初始化阶段不递归启动自己或改变来源配置。
+prepare 取得当前已配对的 Action，只检查本次内容条件、初始化 E 和必要采样；null 表示未启动。已发生的状态更新接续返回，普通无变更拒绝返回输入 battle。伤害、召唤、绑定本次执行的 Effect 及可能同步重入的业务，在 execution 登记后由 onTick 执行。prepare 阶段不递归启动自己或改变来源配置。
 
-step.value 表达是否完成。本轮私有进度通过 `update(battle, ref(source, self), current => next)` 写回；transform 取得当前 execution.state，只返回新的 E。需要被嵌套观察的进度先写回，再进入外部业务；callback 返回时不会自动用旧 self 覆盖当前 Action。
+onTick.value 表达是否完成。本轮私有进度通过 `update(battle, ref(source, self), current => next)` 写回；transform 取得当前 execution.state，只返回新的 E。需要被嵌套观察的进度先写回，再进入外部业务；callback 返回时不会自动用旧 self 覆盖当前 Action。
 
 ## 4. 异构容器与执行身份
 
@@ -185,7 +185,7 @@ Cooldown 保存 periodTicks／readyAtTick；reset 从当前时点开始完整周
 
 成功启动开始周期；结束和取消不默认重置或清空。refreshCooldowns 从 Actions 逐项读取对应 Definition 和当前 Cooldown；resetCooldown／clearCooldown 先刷新周期，再明确控制指定配置行动。updateCooldown 只变换指定条目的当前 Cooldown，不隐式刷新全部行动。
 
-普通攻击不足一 Tick 余量的节奏政策由具体攻击程序处理，不进入通用 reset；修正所用的先前到期时间在内容 start 返回的最新 BattleState 中采样，不能沿用回调前的冷却快照覆盖本次修改。周期变化不自动缩放已经采样的执行等待。
+普通攻击不足一 Tick 余量的节奏政策由具体攻击程序处理，不进入通用 reset；修正所用的先前到期时间在内容 prepare 返回的最新 BattleState 中采样，不能沿用回调前的冷却快照覆盖本次修改。周期变化不自动缩放已经采样的执行等待。
 
 ## 6. 完整启动、写回与终止
 
@@ -224,9 +224,9 @@ export declare function updateCooldown(
 ): BattleState;
 ```
 
-start 从当前 Action 检查配置对象身份、来源资格、execution 占用、Rule、Cooldown 和内容条件。未配置 Definition 属于调用／配置错误；普通拒绝不分配执行 ID 或开始周期。STARTED 表示已受理：start 构造 E、登记本轮 Execution 并重置 Cooldown，首次 step 由独立的 advance 入口执行。返回的 Ref 标识本轮执行，使用时仍从最新 BattleState 确认其状态。
+start 从当前 Action 检查配置对象身份、来源资格、execution 占用、Rule、Cooldown 和内容条件。未配置 Definition 属于调用／配置错误；普通拒绝不分配执行 ID 或开始周期。STARTED 表示已受理：start 通过 prepare 构造 E、登记本轮 Execution 并重置 Cooldown，首次 onTick 由独立的 advance 入口执行。返回的 Ref 标识本轮执行，使用时仍从最新 BattleState 确认其状态。
 
-start 回调返回后重新读取当前宿主与聚合条目，按最新周期再次确认准入。回调使自身进入冷却时返回 COOLDOWN，保留已经发生的修改。仍可启动时才基于最新宿主一次写回该 Action 的新 Cooldown、Execution 和 nextExecutionId，保留持久 state、兄弟行动及其他能力的修改。
+prepare 回调返回后重新读取当前宿主与聚合条目，按最新周期再次确认准入。回调使自身进入冷却时返回 COOLDOWN，保留已经发生的修改。仍可启动时才基于最新宿主一次写回该 Action 的新 Cooldown、Execution 和 nextExecutionId，保留持久 state、兄弟行动及其他能力的修改。
 
 三类写入均从传入的最新 BattleState 读取当前值。update 只修改 execution.state；updateState 只修改持久 state；updateCooldown 只修改 Cooldown。它们不接收整份 Action，不允许内容顺带改写 Definition、执行身份或生命周期。transform 是纯局部值转换，不修改输入、不消费 RNG，也不执行嵌套领域操作；返回当前值引用时返回原 BattleState。
 
@@ -238,7 +238,7 @@ start 回调返回后重新读取当前宿主与聚合条目，按最新周期�
 
 onEnd 可以在宿主已因嵌套离场而消失时凭捕获的 ending 值执行。返回后只在最新仍存在、且 execution.id 仍对应本轮的 Action 上清空 execution，保留结束程序和依赖清理修改过的持久 state 与 Cooldown；不删除配置条目，不重新插入 Unit，也不清理另一轮执行。持久状态随宿主生命周期结束，不隐含跨部署保存。
 
-终止不等待已经进入的 step 退出。外层代码继续普通控制流，并按后续业务需要重新确认当前执行资格；异常由 Runtime 整 Tick 发布边界处理。cancelForUnit 固定当前执行 Ref，再逐项完成取消；Unit 离场使用该完整入口。Action 取消原因 SOURCE_ABSENT 与依赖 Effect 的原离场原因分别保留。
+终止不等待已经进入的 onTick 退出。外层代码继续普通控制流，并按后续业务需要重新确认当前执行资格；异常由 Runtime 整 Tick 发布边界处理。cancelForUnit 固定当前执行 Ref，再逐项完成取消；Unit 离场使用该完整入口。Action 取消原因 SOURCE_ABSENT 与依赖 Effect 的原离场原因分别保留。
 
 ## 7. 调度
 
@@ -256,13 +256,13 @@ advance(battle, ref) 位于专用推进模块，仅由调度器主动调用；st
 
 ## 8. 普通攻击、释放 Hook 与移动
 
-可复用普通攻击程序位于 content/actions/attack.ts，直接调用 Damage、Healing 与 Elemental 的公开操作。它在 start 绑定目标并保存 releaseAtTick／finishAtTick、released 等执行进度；到点执行输出并在恢复结束后完成。create 提供空持久／执行数据的入口；createWithState<P, E> 明确区分 initialize(battle) → Result<P> 与 start(battle, source, self) → Result<E>。output／afterOutput／onEnd 接收显式 source 与 execution 非空的 Executing<P, State<E>>，模板私有数据位于 self.execution.state.data。
+可复用普通攻击程序位于 content/actions/attack.ts，直接调用 Damage、Healing 与 Elemental 的公开操作。它在 prepare 绑定目标并保存 releaseAtTick／finishAtTick、released 等执行进度；到点执行输出并在恢复结束后完成。create 提供空持久／执行数据的入口；createWithState<P, E> 明确区分 initialize(battle) → Result<P> 与 prepare(battle, source, self) → Result<E>。output／afterOutput／onEnd 接收显式 source 与 execution 非空的 Executing<P, State<E>>，模板私有数据位于 self.execution.state.data。
 
 Attack 模板统一校验前后摇、操作数值和绑定关系，上层内容不重复校验原样传入的同一字段。只读配置直接共享，公开 attack 配置只投影配置字段，不携带程序私有回调，也不额外复制、冻结其子对象。
 
-Skill 弹药行动在 start 采样当前 Activation Ref，不能提前到 Unit 初始化时采样。isAttack 只恢复纯配置元数据，不恢复未知程序的私有状态。特殊程序需要实时响应速度时自行查询。
+Skill 弹药行动在 prepare 采样当前 Activation Ref，不能提前到 Unit 初始化时采样。isAttack 只恢复纯配置元数据，不恢复未知程序的私有状态。特殊程序需要实时响应速度时自行查询。
 
-需要首次起手或连续会话的内容，可以在具体 Unit 扩展状态中保存跨轮事实，由 Unit 的 tick Hook 或相关业务 Hook 维护，成功登记后的 step 消费；失败启动不消费。通用 Action 不制造另一套共享起手阶段机。
+需要首次起手或连续会话的内容，可以在具体 Unit 扩展状态中保存跨轮事实，由 Unit 的 tick Hook 或相关业务 Hook 维护，成功登记后的 onTick 消费；失败启动不消费。通用 Action 不制造另一套共享起手阶段机。
 
 beforeRelease(battle, actionRef) 返回 CONTINUE 或 INTERRUPT／recoveryTicks。Hook 使用公共 Hook<Context, Directive>，Context 固定 source 与本轮执行的 typed Ref，accepts／invoke 接收 battle、context、current 并返回统一 Result。候选 ID 固定，逐项重读最新登记；stop 在执行结束、宿主离场或首个中断时停止。恢复信息交给具体程序，不写通用 Unit recoveryUntilTick。
 

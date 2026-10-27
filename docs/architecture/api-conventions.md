@@ -28,6 +28,10 @@ field.map 持有当前地块。battlefield/tile.update 是运行态地块变更�
 
 分类按职责划分，不按函数名、返回值或是否带一个对象参数机械判断。`currentTarget(progress)` 这类局部查询直接读取输入值，不要求传入 battle 或 ref。完整伤害结算可以返回报告；`card.advance(card, tick)` 仍是局部值转换，不是调度入口。
 
+命名按实际调用时点区分：初始化使用 initialize，执行前准备使用 prepare；生命周期回调使用 onXxx，主动领域操作保留 start、advance、cancel、stop 等动词。initialize 构造初始私有数据，prepare 准备一次执行并允许拒绝，两者均不要求运行实例已登记。onStart 在成功登记后执行启动业务，onTick 表示一次由调度器安排的执行机会，onEnd 用于正常完成和取消的收尾。
+
+Action 的准备程序为 prepare，推进与结束回调为 onTick／onEnd；Projectile 的登记后启动、推进与结束回调为 onStart／onTick／onEnd。onEnter／onLeave、onEnable／onDisable 与 onInstall 保留各自的场景、参与状态及安装语义，不因命名统一而合并或增加生命周期阶段，也不改变返回协议或调度职责。
+
 以下情况按同一职责分类处理：
 
 | 情况 | 形状或规则 |
@@ -38,7 +42,7 @@ field.map 持有当前地块。battlefield/tile.update 是运行态地块变更�
 | 创建操作与创建回调 | 对象尚不存在，接收宿主身份、Definition 和创建输入，返回创建身份或初始化结果；不要求传入不存在的 self / ref。 |
 | 内容状态更新 | Action.update 只转换 execution.state，updateState／updateCooldown 分别转换持久 state／Cooldown；Effect.update 只转换 data。Projectile 的 transform 接收完整只读实例，返回 position／state 的局部更新。Core 均先读取最新值；transform 只转换值，不执行其他 BattleState 操作。 |
 | 完整实例写回 | Action 容器 `replace(definition, next)` 提交聚合条目，Effect／Projectile 容器按各自身份提交完整实例；均由 Core 内部使用。身份、Definition、执行进度与生命周期按对应领域契约维护。 |
-| 程序回调有额外结果 | 可以返回 `Result<T>`；例如 Action.start 的初始化结果、Action.step 的完成指示和 Hook 的业务指令。 |
+| 程序回调有额外结果 | 可以返回 `Result<T>`；例如 Action Definition.prepare 的准备结果、onTick 的完成指示和 Hook 的业务指令。 |
 | Damage／Healing 两阶段接续 | `applyDamage(request, calculation: Result<CalculatedDamage \| undefined>)` 与 `applyHealing(request, calculation: Result<CalculatedHealing \| undefined>)` 通过计算 Result 显式接续 state 和数值，分别返回领域 Outcome。插入其他操作时调用者须更新其中 state。 |
 
 ## 2. 参数与职责
@@ -200,7 +204,7 @@ Action 的 `update(battle, ref, state => next)` 只转换本轮 execution.state�
 
 `NoInfer` 阻止变换结果参与泛型推导。私有更新必须保留实例与 Definition 对应的原始类型关联；Ref 可协变用于公共查询，但不得借预先弱化的完整实例 Ref 写入不兼容的私有数据。后者属于调用契约错误，不为此增加运行时数据形状校验。公共 `Ref<View>` 不能调用私有 update。
 
-Projectile 的 update 同样从最新 battle 读取实例，transform 接收完整只读 Projectile，只返回 position／state 的局部更新。Core 只提取这两个允许字段，缺失实例抛出 RangeError 且不调用 transform，未提供字段保留原值，两个字段均未变化时返回原 BattleState。ACTIVE 与 ENDING 均可更新；stop 只需 `Ref<View>`，按 ACTIVE → ENDING → 终结事件 → onTerminate → 注销完成同步结算。Runtime 在整个 Step 任何阶段回调之前固定候选 Ref，逐项读取最新 ACTIVE 实例；本次新建实例下次才正常推进，不保存 lastAdvancedTick。
+Projectile 的 update 同样从最新 battle 读取实例，transform 接收完整只读 Projectile，只返回 position／state 的局部更新。Core 只提取这两个允许字段，缺失实例抛出 RangeError 且不调用 transform，未提供字段保留原值，两个字段均未变化时返回原 BattleState。ACTIVE 与 ENDING 均可更新；stop 只需 `Ref<View>`，按 ACTIVE → ENDING → 终结事件 → onEnd → 注销完成同步结算。Runtime 在整个 Step 任何阶段回调之前固定候选 Ref，逐项读取最新 ACTIVE 实例；本次新建实例下次才正常推进，不保存 lastAdvancedTick。
 
 Effect Lifetime 使用 `{ type: "EFFECT", ref }`。Action Lifetime 保存本轮 Ref<ExecutingView>；Skill／Elemental Burst Lifetime 保存对应 typed 实例 Ref，Unit Lifetime 使用 `{ type: "UNIT", ref: Ref<Unit> }`。Effect 的 onInstall／onEnable／onDisable／onTick 直接接收 `(battle, self: Effect<S, H>)`，onEnd 额外接收独立 reason。self 自身保存 typed 宿主身份，ref(self) 生成 `Ref<Effect<S, H>>`；宿主与当前实例从最新 battle 查询，不再包装 Context／EndContext。
 

@@ -30,8 +30,8 @@ const withAction = (actor, execution = { id: 0, startedAtTick: 0, status: 'RUNNI
   const definition = {
     id: 'presentation-attack', intervalTicks: 10, speed: 100,
     initialize: state => ({ state, value: {} }),
-    start: state => ({ state, value: {} }),
-    step: state => ({ state, value: false }),
+    prepare: state => ({ state, value: {} }),
+    onTick: state => ({ state, value: false }),
   };
   return {
     ...actor,

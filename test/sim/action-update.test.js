@@ -13,8 +13,8 @@ const program = (id = "primary", state = { count: 0 }, extra = {}) => ({
     intervalTicks: 10,
     speed: 100,
     initialize: battle => ({ state: battle, value: {} }),
-    start: battle => ({ state: battle, value: { ...state } }),
-    step: battle => ({ state: battle, value: false }),
+    prepare: battle => ({ state: battle, value: { ...state } }),
+    onTick: battle => ({ state: battle, value: false }),
     ...extra,
 });
 
