@@ -54,7 +54,7 @@ export function hasActionDefinition(
 }
 
 export function createDefinition(definition: Definition): Definition {
-    return Object.freeze({ ...definition });
+    return definition;
 }
 
 export function initialize(battle: BattleState, definition: Definition): Result<State> {

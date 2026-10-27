@@ -229,54 +229,45 @@ export function createWithState<P extends object, E extends object>(
     assertNonnegativeSafeInteger(definition.windupTicks ?? 0, "attack windup");
     assertNonnegativeSafeInteger(definition.recoveryTicks ?? 0, "attack recovery");
 
-    function copyOperation(operation: Operation): Operation {
-        assertNonnegativeNumber(operation.power, "attack operation power");
-
-        return Object.freeze({ ...operation });
+    for (const group of definition.targetGroups) {
+        for (const operation of group.operations) {
+            assertNonnegativeNumber(operation.power, "attack operation power");
+        }
     }
 
-    const groups = definition.targetGroups.map((group) =>
-        Object.freeze({
-            id: group.id,
-            targeting: group.targeting,
-            operations: Object.freeze(group.operations.map(copyOperation)),
-        }),
-    );
-    const ids = new Set(groups.map((group) => group.id));
+    const ids = new Set(definition.targetGroups.map((group) => group.id));
 
-    if (ids.has("") || ids.size !== groups.length || !ids.has(definition.triggerBindingId)) {
+    if (
+        ids.has("") ||
+        ids.size !== definition.targetGroups.length ||
+        !ids.has(definition.triggerBindingId)
+    ) {
         throw new TypeError("attack target bindings must be unique and include its trigger");
     }
 
-    const followUps = (definition.followUps ?? []).map((followUp) => {
+    const followUps = definition.followUps ?? [];
+
+    for (const followUp of followUps) {
         if (followUp.receiver.type === "BINDING" && !ids.has(followUp.receiver.bindingId)) {
             throw new TypeError("attack follow-up references an unknown target binding");
         }
 
-        return Object.freeze({
-            receiver: Object.freeze({ ...followUp.receiver }),
-            operation: copyOperation(followUp.operation),
-        });
-    });
-    definition = Object.freeze({
-        ...definition,
-        targetGroups: Object.freeze(groups) as Definition["targetGroups"],
-        followUps: Object.freeze(followUps),
-    });
+        assertNonnegativeNumber(followUp.operation.power, "attack operation power");
+    }
 
-    const configuration: Configuration = Object.freeze({
+    const configuration: Configuration = {
         id: definition.id,
         intervalTicks: definition.intervalTicks,
         triggerBindingId: definition.triggerBindingId,
         targetGroups: definition.targetGroups,
-        followUps: Object.freeze(followUps),
+        followUps,
         ...(definition.speed === undefined ? {} : { speed: definition.speed }),
         ...(definition.windupTicks === undefined ? {} : { windupTicks: definition.windupTicks }),
         ...(definition.recoveryTicks === undefined
             ? {}
             : { recoveryTicks: definition.recoveryTicks }),
         ...(definition.markerId === undefined ? {} : { markerId: definition.markerId }),
-    });
+    };
     const attack: Attack<P, E> = {
         id: definition.id,
         intervalTicks: definition.intervalTicks,
@@ -316,11 +307,10 @@ export function createWithState<P extends object, E extends object>(
             const identity = ref(source, self);
 
             if (!self.execution.state.cooldownAdjusted) {
-                const persistent = actions.getAction(battle, source, self.definition);
                 const overdue =
                     self.execution.startedAtTick - self.execution.state.previousReadyAtTick;
 
-                if (persistent !== undefined && overdue >= 0 && overdue < 1) {
+                if (overdue >= 0 && overdue < 1) {
                     battle = actions.updateCooldown(
                         battle,
                         source,
@@ -367,23 +357,16 @@ export function createWithState<P extends object, E extends object>(
                     };
                 }
                 if (permission.value.type === "INTERRUPT") {
-                    const persistent = actions.getAction(battle, source, self.definition);
-
-                    if (persistent !== undefined) {
-                        const recoveryTicks = permission.value.recoveryTicks;
-                        battle = actions.updateCooldown(
-                            battle,
-                            source,
-                            self.definition.id,
-                            (current) => ({
-                                ...current,
-                                readyAtTick: Math.max(
-                                    current.readyAtTick,
-                                    battle.tick + recoveryTicks,
-                                ),
-                            }),
-                        );
-                    }
+                    const recoveryTicks = permission.value.recoveryTicks;
+                    battle = actions.updateCooldown(
+                        battle,
+                        source,
+                        self.definition.id,
+                        (current) => ({
+                            ...current,
+                            readyAtTick: Math.max(current.readyAtTick, battle.tick + recoveryTicks),
+                        }),
+                    );
 
                     return { state: actions.cancel(battle, identity, "INTERRUPTED"), value: true };
                 }
@@ -458,5 +441,5 @@ export function createWithState<P extends object, E extends object>(
         ...(definition.onEnd === undefined ? {} : { onEnd: definition.onEnd }),
     };
 
-    return Object.freeze(attack);
+    return attack;
 }

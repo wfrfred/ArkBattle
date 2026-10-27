@@ -9,7 +9,7 @@ import { Definitions } from "../../core/unit/action/definitions.js";
 import { create as createAttack, type Attack } from "../actions/attack.js";
 import type { Profile } from "../../data/arknights/enemy.js";
 import { perSecondToPerTick, secondsToTicks } from "../../data/arknights/tick.js";
-import { assertNonnegativeSafeInteger, assertPositiveNumber } from "../../core/common/assert.js";
+import { assertPositiveNumber } from "../../core/common/assert.js";
 import type { Definition as UnitDefinition } from "../../core/unit/unit.js";
 import type { Definitions as CapabilityDefinitions } from "../../core/unit/capability/catalog.js";
 import type { Range } from "../../core/geometry/range.js";
@@ -60,8 +60,6 @@ export function createDefinition(
         throw new TypeError("this enemy content requires a blockable ground unit");
     }
 
-    assertNonnegativeSafeInteger(timing.windupTicks, "enemy attack windup");
-    assertNonnegativeSafeInteger(timing.recoveryTicks, "enemy attack recovery");
     assertPositiveNumber(timing.hitRadius, "enemy hit radius");
 
     const combat = filters.and(filters.present, filters.alive, filters.hostile, filters.blocker);

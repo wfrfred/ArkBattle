@@ -260,11 +260,16 @@ export function update<P extends object, E extends object>(
     transform: (current: NoInfer<E>) => NoInfer<E>,
 ): BattleState {
     const unit = units.get(battle, reference.host);
-    const current = get(battle, reference);
 
     if (unit === undefined) {
         throw new RangeError(`unknown unit: ${reference.host.id}`);
     }
+
+    const current = unit.action.actions.readExecution(
+        reference.id,
+        (self) => self as unknown as Executing<P, E>,
+    );
+
     if (current === undefined) {
         throw new RangeError(`unknown action execution: ${reference.id}`);
     }

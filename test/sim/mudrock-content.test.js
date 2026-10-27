@@ -308,7 +308,7 @@ test("Mudrock content explicitly rejects unsupported module Y, another character
 
     assert.throws(() => create(profile({ module: { id: "uniequip_003_mudrok", level: 3 } })), /only module X/);
     assert.throws(() => create({ ...profile(), id: "char_208_melan" }), /second skill/);
-    assert.throws(() => create(profile(), { recoveryTicks: -1 }), /nonnegative integer/);
+    assert.throws(() => create(profile(), { recoveryTicks: -1 }), RangeError);
 });
 
 test("an old S2 recovery cannot close a newer skill activation", () => {

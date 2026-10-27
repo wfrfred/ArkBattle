@@ -353,10 +353,6 @@ export function create(
     const direction = options.direction ?? "RIGHT";
     const recoveryTicks = options.recoveryTicks ?? 0;
 
-    if (!Number.isSafeInteger(recoveryTicks) || recoveryTicks < 0) {
-        throw new RangeError("Mudrock recoveryTicks must be a nonnegative integer");
-    }
-
     const shield = shieldEffect(profile);
     const activeConfiguration = attackDefinition(profile, direction, true, recoveryTicks);
     const normalAttack = createAttack(attackDefinition(profile, direction, false, recoveryTicks));

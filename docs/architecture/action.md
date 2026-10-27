@@ -96,6 +96,8 @@ Unit.action.actions 是该宿主唯一运行容器，按 definition.id 保存 Ac
 
 Actions 以私有 Store<DefinitionId, View> 保存完整聚合对象。get(id)／values() 只公开 Definition 元数据、Cooldown 与可空的 Execution 元数据，隐藏 P、E 及完整程序回调。get(id, definition) 以 Definition 对象身份恢复具体 Action<P, E>；read(id, reader) 在未知条目上保持 P／E 配对。readExecution(id, reader) 在同一容器中找到当前执行，再以 execution 非空的配对类型派发，不维护第二份执行集合或索引。
 
+同一 BattleState 内的连续只读求值复用已取得的宿主和条目；完整操作返回后仍按状态接续约定重新读取。释放派发在每项 Hook 前从当前版本检查执行与宿主资格，不缓存入口时的资格。
+
 values()／keys() 返回绑定容器版本的 Query，并保留配置登记顺序。替换不改变顺序；Actions.size 表示已配置行动数量，当前执行数量由 execution 非空的条目决定。配置条目随 Unit 存在，不因本轮完成而删除。
 
 nextExecutionId 保存在 Capability State，从 0 开始；每次成功启动后递增，完成或取消不回收。不同宿主可以具有同号执行，完整执行身份为 host 与 execution.id。
@@ -159,6 +161,8 @@ interface State {
 局部 setIntervalContribution／setSpeedContribution 只返回局部 State；完整操作在贡献实际改变的时点调用 refreshCooldowns(battle, source)，按完成比例换算旧周期。动态查询采用 resolveBaseInterval／resolveSpeed／resolveInterval(battle, source, definition)。需要从战场读取的 Contribution 继续取得当前版本的只读事实。
 
 普通攻击周期依据 [PRTS 攻速公式](https://prts.wiki/w/游戏数据基础#攻速公式)：修正间隔 × 100 / 限制后的速度。速度属性下限为 20，周期计算速度上限为 600，有效周期至少为 1 Tick。纯 Cooldown 支持非负连续周期，不在纯值函数中强加攻击的量化限制。
+
+基础数值在配置入口校验，周期计算信任已建立的数值约束，按游戏尺度直接计算；不在结果上追加极端浮点溢出检查。
 
 Cooldown 保存 periodTicks／readyAtTick；reset 从当前时点开始完整周期，clear 立即就绪。resizeKeepingProgress 保留完成比例，resizeKeepingElapsed 保留绝对已过时间，二者明确分开。
 
@@ -235,6 +239,8 @@ advance(battle, ref) 位于专用推进模块，仅由调度器及启动后的�
 ## 8. 普通攻击、释放 Hook 与移动
 
 可复用普通攻击程序位于 content/actions/attack.ts，直接调用 Damage、Healing 与 Elemental 的公开操作。它在 start 绑定目标并保存 releaseAtTick／finishAtTick、released 等执行进度；到点执行输出并在恢复结束后完成。create 提供空持久／执行数据的入口；createWithState<P, E> 明确区分 initialize(battle) → Result<P> 与 start(battle, source, self) → Result<E>。output／afterOutput／onEnd 接收显式 source 与 execution 非空的 Executing<P, State<E>>，模板私有数据位于 self.execution.state.data。
+
+Attack 模板统一校验前后摇、操作数值和绑定关系，上层内容不重复校验原样传入的同一字段。只读配置直接共享，公开 attack 配置只投影配置字段，不携带程序私有回调，也不额外复制、冻结其子对象。
 
 Skill 弹药行动在 start 采样当前 Activation Ref，不能提前到 Unit 初始化时采样。isAttack 只恢复纯配置元数据，不恢复未知程序的私有状态。特殊程序需要实时响应速度时自行查询。
 
