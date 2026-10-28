@@ -46,7 +46,7 @@ export function createTiming(timing: Timing): Timing {
     assertNonnegativeSafeInteger(timing.waveStartedAtTick, "waveStartedAtTick");
     assertNonnegativeSafeInteger(timing.fragmentStartedAtTick, "fragmentStartedAtTick");
 
-    return Object.freeze({ ...timing });
+    return { ...timing };
 }
 
 export function createInput(input: Input): Input {
@@ -174,13 +174,13 @@ export function normalize(
         }
     }
 
-    return Object.freeze({
+    return {
         pathMotionMode: input.pathMotionMode,
         startPosition: input.startPosition,
         endPosition: input.endPosition,
         offset,
-        checkpoints: Object.freeze(checkpoints.map((checkpoint) => Object.freeze(checkpoint))),
+        checkpoints: checkpoints.map((checkpoint) => checkpoint),
         requireAllCheckpoints: input.visitEveryCheckPoint,
         alwaysCheckCurrentPoint,
-    });
+    };
 }

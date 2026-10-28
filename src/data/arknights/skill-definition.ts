@@ -1,8 +1,5 @@
-import {
-    createDefinition as createSkillDefinition,
-    type Definition as SkillDefinition,
-    type Recovery,
-} from "../../core/unit/skill/index.js";
+import type { Definition as SkillDefinition, Recovery } from "../../core/unit/skill/index.js";
+import { assertNonnegativeSafeInteger } from "../../core/common/assert.js";
 
 import { TICKS_PER_SECOND } from "../../core/tick.js";
 import { parseBlackboard, type ArknightsBlackboardEntry } from "./blackboard.js";
@@ -132,6 +129,7 @@ export function parseArknightsSkillLevel(
     let sustain: NonNullable<SkillDefinition["activation"]>["sustain"];
 
     if (ammo !== undefined) {
+        assertNonnegativeSafeInteger(ammo, "skill ammunition");
         sustain = { type: "AMMO", amount: ammo };
     } else if (duration === -1) {
         sustain = { type: "INFINITE" };
@@ -139,8 +137,8 @@ export function parseArknightsSkillLevel(
         sustain = { type: "TIME", durationTicks: secondsToTicks(duration, "skill duration") };
     }
 
-    return Object.freeze({
-        definition: createSkillDefinition({
+    return {
+        definition: {
             id: skill.skillId,
             initialize: (battle) => ({ state: battle, value: {} }),
             sp: {
@@ -156,8 +154,8 @@ export function parseArknightsSkillLevel(
                 initialize: () => ({}),
                 sustain,
             },
-        }),
+        },
         level,
         blackboard: parseBlackboard(selected.blackboard, "skill blackboard"),
-    });
+    };
 }

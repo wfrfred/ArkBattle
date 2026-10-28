@@ -119,7 +119,7 @@ export function parseEnemyMovementPrefab(value: unknown): EnemyMovementPrefab {
     const enemy = component(source, "_alwaysCheckCurrentPoint");
     const movement = component(source, "_steeringFactor");
 
-    return Object.freeze({
+    return {
         prefabKey: source.prefabKey,
         alwaysCheckCurrentPoint: boolean(
             enemy._alwaysCheckCurrentPoint,
@@ -139,7 +139,7 @@ export function parseEnemyMovementPrefab(value: unknown): EnemyMovementPrefab {
                 TICKS_PER_SECOND ** 2,
         }),
         halfBodyWidth: nonnegative(movement._halfBodyWidth, "movement _halfBodyWidth"),
-    });
+    };
 }
 
 export function parseTileDeploymentPrefab(value: unknown): TileDeploymentPrefab {
@@ -154,7 +154,7 @@ export function parseTileDeploymentPrefab(value: unknown): TileDeploymentPrefab 
         throw new TypeError(`unsupported tile deployment profile ${source.prefabKey}`);
     }
 
-    return Object.freeze({ prefabKey: source.prefabKey, siteCondition });
+    return { prefabKey: source.prefabKey, siteCondition };
 }
 
 function buffKeys(source: PrefabExtraction): ReadonlySet<string> {
@@ -211,7 +211,7 @@ function tileChanges(
         throw new TypeError("unsupported token mode passable mask");
     }
 
-    return Object.freeze({
+    return {
         ...(boolean(mode._keepCurrentPassableMask, "token mode _keepCurrentPassableMask")
             ? {}
             : {
@@ -235,7 +235,7 @@ function tileChanges(
                   ),
               }
             : {}),
-    });
+    };
 }
 
 function elevation(value: unknown): TileState["elevation"] {
@@ -290,13 +290,13 @@ function deployable(
         throw new TypeError("unsupported token serialized deployment condition");
     }
 
-    return Object.freeze({
+    return {
         placement: ({ 1: "MELEE", 2: "RANGED", 3: "ALL" } as const)[buildableType],
         allowedSiteConditions: parseAllowedSiteConditions(
             condition.advancedBuildableMask,
             "token deployment advancedBuildableMask",
         ),
-    });
+    };
 }
 
 export function parsePredefinedPrefab(value: unknown, skillValue?: unknown): PredefinedPrefab {
@@ -314,12 +314,12 @@ export function parsePredefinedPrefab(value: unknown, skillValue?: unknown): Pre
             throw new TypeError(`unsupported spatial token profile ${source.prefabKey}`);
         }
 
-        return Object.freeze({
+        return {
             type: "UNIT",
             prefabKey: source.prefabKey,
             tileChanges: tileChanges(mode, options),
             deployable: deployable(token),
-        });
+        };
     }
     if (token._disableUIHub !== true || token._withdrawable !== false || token._category !== 2) {
         throw new TypeError(`unsupported token mechanism profile ${source.prefabKey}`);
@@ -336,10 +336,10 @@ export function parsePredefinedPrefab(value: unknown, skillValue?: unknown): Pre
         throw new TypeError(`unsupported mechanism profile ${source.prefabKey}`);
     }
 
-    return Object.freeze({
+    return {
         type: "MECHANISM",
         prefabKey: source.prefabKey,
         skillPrefabKey: skill.prefabKey,
         terrain: mire ? "MIRE" : "DEEPSEA",
-    });
+    };
 }

@@ -66,8 +66,6 @@ test("attribute modifiers: serialized enum names and numbers normalize only supp
     const compiled = compileAttributeModifiers(parsed);
     raw[0].value = 100;
     assert.equal(compiled[0].sample(context()).multiplier, 0.5);
-    assert.ok(Object.isFrozen(parsed[0]));
-    assert.ok(Object.isFrozen(compiled));
     assert.throws(() => parseAttributeModifiers(Array(1)), /invalid attribute modifier/);
     assert.throws(
         () => parseAttributeModifiers([description("MULTIPLIER", 1, { attributeType: "COST" })]),

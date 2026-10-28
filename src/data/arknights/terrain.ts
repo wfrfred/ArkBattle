@@ -59,13 +59,13 @@ export function resolveTerrainControllers(
             assertNonnegativeNumber(massThreshold, "mire weight threshold");
             assertPositiveSafeInteger(maxStacks, "mire maximum stacks");
 
-            options.mire = Object.freeze({
+            options.mire = {
                 stackIntervalTicks: TICKS_PER_SECOND,
                 massThreshold,
                 attackSpeedPerStack: parameter("attack_speed"),
                 moveSpeedRatioPerStack: parameter("move_speed"),
                 maxStacks,
-            });
+            };
         } else {
             if (options.deepsea !== undefined) {
                 throw new TypeError("multiple deepsea controllers are not supported");
@@ -77,22 +77,22 @@ export function resolveTerrainControllers(
                 throw new RangeError("deepsea damage and speed must be nonnegative");
             }
 
-            options.deepsea = Object.freeze({
+            options.deepsea = {
                 damage,
                 attackSpeedModifier: parameter("sea_drown[enemy].attack_speed"),
                 moveSpeedMultiplier: speed,
-            });
+            };
         }
 
         for (const entry of skill.blackboard) {
             if (!consumed.has(entry.key.toLowerCase())) {
-                unappliedBlackboard.push(Object.freeze({ controllerIndex, entry }));
+                unappliedBlackboard.push({ controllerIndex, entry });
             }
         }
     }
 
-    return Object.freeze({
-        mapOptions: Object.freeze(options),
-        unappliedBlackboard: Object.freeze(unappliedBlackboard),
-    });
+    return {
+        mapOptions: options,
+        unappliedBlackboard: unappliedBlackboard,
+    };
 }

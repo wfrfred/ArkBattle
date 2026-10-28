@@ -8,7 +8,7 @@ Skill 负责 SP、发动、持续预算、主动操作和完整终止。Action �
 
 | 模块 | 职责 |
 | --- | --- |
-| `unit/skill/definition.ts` | 完整泛型 Definition 与 createDefinition |
+| `unit/skill/definition.ts` | 完整泛型 Definition |
 | `unit/skill/skill.ts`、`activation.ts` | 单槽聚合 Skill、同一聚合的非空 Activation 视图与两种 Ref |
 | `unit/skill/initialize.ts` | create 接续 Definition.initialize，创建聚合初态 |
 | `unit/skill/query.ts`、`operations.ts` | 查询、字段写回、发动、主动操作、推进、结束与 lifetime |
@@ -16,7 +16,7 @@ Skill 负责 SP、发动、持续预算、主动操作和完整终止。Action �
 | `unit/capability/skill/capability.ts` | 初始化工厂 Definition、Skill Capability、公共 State、结构守卫与局部登记 |
 | `unit/capability/skill/rule.ts`、`hook.ts` | 能力 Rule、Hook 类型与事件契约 |
 
-领域 index 提供 create／createDefinition、Skill／Activation、ref／activationRef、getSkill／getActivation、字段写回及 SP／Ammo／激活业务，不转发能力守卫、Rule／Hook 登记和持续预算贡献 setter。Capability index 提供对应能力 API。内部 getCurrent 在受信边界取得已擦除参数的完整聚合，不解释私有 data；不公开内部写回，不使用泛型 reader。
+领域 index 提供 create、Skill／Activation、ref／activationRef、getSkill／getActivation、字段写回及 SP／Ammo／激活业务，不转发能力守卫、Rule／Hook 登记和持续预算贡献 setter。Capability index 提供对应能力 API。内部 getCurrent 在受信边界取得已擦除参数的完整聚合，不解释私有 data；不公开内部写回，不使用泛型 reader。
 
 SP 的 setContribution／removeContribution 仍在 sp.ts，经领域入口以 setSpContribution／removeSpContribution 导出；它们与 SP State／Input 保持同一模块，不增加 Capability 转发函数。
 
@@ -45,7 +45,7 @@ skill: {
 }
 ```
 
-Definition.initialize(battle) 返回 Result<S>；create 接续其 state，建立 definition、data、初始 SP 和 activation: null，返回 Result<Skill<S, A>>。静态 SP 与持续预算配置在 createDefinition 入口校验，sp.initialize 只建立初态，信任已校验的 Definition 和当前战斗 Tick。Capability.initialize 接续工厂结果，并补 nextActivationId、贡献、规则与 Hook 初态。Capability 工厂以 Result<Skill<any, any>> 接纳不同私有 S／A 的完整创建结果，公共 State 继承的 Skill 默认参数仍是 object；该创建组合边界不增加运行时形状校验。共享程序不保存私有运行进度，Unit 尚未登记时不能查询自己或假设兄弟能力已经存在。
+Definition.initialize(battle) 返回 Result<S>；create 接续其 state，建立 definition、data、初始 SP 和 activation: null，返回 Result<Skill<S, A>>。静态身份、SP 与持续预算配置在 create(battle, definition) 入口校验，校验通过后才调用私有初始化程序，sp.initialize 只建立初态，信任已校验的 Definition 和当前战斗 Tick。Capability.initialize 接续工厂结果，并补 nextActivationId、贡献、规则与 Hook 初态。Capability 工厂以 Result<Skill<any, any>> 接纳不同私有 S／A 的完整创建结果，公共 State 继承的 Skill 默认参数仍是 object；该创建组合边界不增加运行时形状校验。共享程序不保存私有运行进度，Unit 尚未登记时不能查询自己或假设兄弟能力已经存在。
 
 ### 引用、查询与写回
 

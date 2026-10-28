@@ -1,13 +1,13 @@
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "./unit.js";
-import { createDefinition, ref as skillRef } from "../../dist/core/unit/skill/index.js";
+import { ref as skillRef } from "../../dist/core/unit/skill/index.js";
 import { ref as activationRef } from "../../dist/core/unit/skill/activation.js";
 import { initialize } from "./unit.js";
 import { ref as unitRef } from "../../dist/core/unit/index.js";
 import { effectFixtureWork } from "./effects.js";
 
 export function definition(input = {}) {
-    return createDefinition({
+    return ({
         id: "skill-fixture",
         initialize: battle => ({ state: battle, value: {} }),
         sp: {

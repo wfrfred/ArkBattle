@@ -17,7 +17,7 @@ import type { State as BattleState } from ${source("battle/state")};
 import type { Unit } from ${source("unit/unit")};
 import { initialize } from ${source("unit/initialize")};
 import * as units from ${source("unit/query")};
-import { createDefinition, type Definition } from ${source("unit/skill/definition")};
+import { type Definition } from ${source("unit/skill/definition")};
 import { initialize as initializeSkill, hasSkill, type Skill as SkillCapability, type State } from ${source("unit/capability/skill/capability")};
 import { create, ref, activationRef, getSkill, getActivation, activate, cancel, setData, setActivationData, type Skill, type Activation, lifetime as skillLife } from ${source("unit/skill/index")};
 import { getCurrent } from ${source("unit/skill/query")};
@@ -30,7 +30,7 @@ declare const battle: BattleState;
 declare const sourceRef: Ref<Unit & SkillCapability>;
 declare const self: Activation<Persistent, Active>;
 declare const specialized: Ref<Activation<Persistent, Active> & { readonly marker: 17 }>;
-const definition: Definition<Persistent, Active> = createDefinition({
+const definition: Definition<Persistent, Active> = ({
     id: "typed-skill", initialize: current => ({ state: current, value: { count: 0 } }), sp: null,
     onEnter(current, source, program) {
         const count: number = program.data.count;

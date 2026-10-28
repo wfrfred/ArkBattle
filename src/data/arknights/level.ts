@@ -186,7 +186,7 @@ function array<T>(
         result.push(parse(value[index], `${name}[${index}]`));
     }
 
-    return Object.freeze(result);
+    return result;
 }
 
 function string(value: unknown, name: string): string {
@@ -247,7 +247,7 @@ function emptyArray(value: unknown, name: string): readonly never[] {
         throw new TypeError(`${name} is not supported unless empty`);
     }
 
-    return Object.freeze([]);
+    return [];
 }
 
 function nullableEmptyArray(value: unknown, name: string): readonly never[] | null {
@@ -274,13 +274,11 @@ function json(value: unknown, name: string, ancestors = new Set<object>()): Arkn
     if (Array.isArray(value)) {
         result = array(value, name, (item, path) => json(item, path, ancestors));
     } else {
-        result = Object.freeze(
-            Object.fromEntries(
-                Object.entries(value).map(([key, item]) => [
-                    key,
-                    json(item, `${name}.${key}`, ancestors),
-                ]),
-            ),
+        result = Object.fromEntries(
+            Object.entries(value).map(([key, item]) => [
+                key,
+                json(item, `${name}.${key}`, ancestors),
+            ]),
         );
     }
 
@@ -315,7 +313,7 @@ function options(value: unknown): ArknightsLevelOptions {
         "configBlackBoard",
     ]);
 
-    return Object.freeze({
+    return {
         characterLimit: integer(source.characterLimit, "level.options.characterLimit"),
         maxLifePoint: integer(source.maxLifePoint, "level.options.maxLifePoint"),
         initialCost: number(source.initialCost, "level.options.initialCost", 0),
@@ -339,7 +337,7 @@ function options(value: unknown): ArknightsLevelOptions {
             "level.options.functionDisableMask",
         ),
         configBlackBoard: blackboard(source.configBlackBoard, "level.options.configBlackBoard"),
-    });
+    };
 }
 
 function enemyDbRef(
@@ -374,20 +372,18 @@ function enemyDbRef(
             "spData",
         ]);
         overwrittenData = json(source.overwrittenData, `${name}.overwrittenData`);
-        unresolved.push(
-            Object.freeze({
-                path: `${name}.overwrittenData`,
-                reason: "enemy attribute overrides require a content resolver",
-            }),
-        );
+        unresolved.push({
+            path: `${name}.overwrittenData`,
+            reason: "enemy attribute overrides require a content resolver",
+        });
     }
 
-    return Object.freeze({
+    return {
         useDb: true,
         id: identifier(source.id, `${name}.id`),
         level: integer(source.level, `${name}.level`),
         overwrittenData,
-    });
+    };
 }
 
 function action(
@@ -431,7 +427,7 @@ function action(
         throw new RangeError(`${name} references missing enemy ${key}`);
     }
 
-    return Object.freeze({
+    return {
         actionType: "SPAWN",
         managedByScheduler: boolean(source.managedByScheduler, `${name}.managedByScheduler`),
         key,
@@ -463,7 +459,7 @@ function action(
             source.forceBlockWaveInBranch,
             `${name}.forceBlockWaveInBranch`,
         ),
-    });
+    };
 }
 
 function fragment(
@@ -474,12 +470,12 @@ function fragment(
 ): ArknightsFragment {
     const source = object(value, name, ["preDelay", "actions"]);
 
-    return Object.freeze({
+    return {
         preDelay: number(source.preDelay, `${name}.preDelay`, 0),
         actions: array(source.actions, `${name}.actions`, (item, path) =>
             action(item, path, routeCount, enemyIds),
         ),
-    });
+    };
 }
 
 function predefinedInstance(
@@ -523,16 +519,14 @@ function predefinedInstance(
     for (const key of ["uniEquipIds", "masterInfos", "overrideTalents"] as const) {
         const value = source[key];
         if (value !== null && (!Array.isArray(value) || value.length !== 0)) {
-            unresolved.push(
-                Object.freeze({
-                    path: `${name}.${key}`,
-                    reason: "predefined content configuration requires a content resolver",
-                }),
-            );
+            unresolved.push({
+                path: `${name}.${key}`,
+                reason: "predefined content configuration requires a content resolver",
+            });
         }
     }
 
-    return Object.freeze({
+    return {
         position: position(source.position, `${name}.position`),
         direction,
         hidden: boolean(source.hidden, `${name}.hidden`),
@@ -540,13 +534,13 @@ function predefinedInstance(
         uniEquipIds: json(source.uniEquipIds, `${name}.uniEquipIds`),
         showSpIllust: boolean(source.showSpIllust, `${name}.showSpIllust`),
         masterInfos: json(source.masterInfos, `${name}.masterInfos`),
-        inst: Object.freeze({
+        inst: {
             characterKey: identifier(inst.characterKey, `${name}.inst.characterKey`),
             level: integer(inst.level, `${name}.inst.level`, 1),
             phase,
             favorPoint: integer(inst.favorPoint, `${name}.inst.favorPoint`),
             potentialRank: integer(inst.potentialRank, `${name}.inst.potentialRank`),
-        }),
+        },
         skillIndex: integer(source.skillIndex, `${name}.skillIndex`, -1),
         mainSkillLvl: integer(source.mainSkillLvl, `${name}.mainSkillLvl`, 1),
         skinId: nullableString(source.skinId, `${name}.skinId`),
@@ -556,7 +550,7 @@ function predefinedInstance(
             `${name}.overrideSkillBlackboard`,
         ),
         overrideTalents: json(source.overrideTalents, `${name}.overrideTalents`),
-    });
+    };
 }
 
 function predefines(
@@ -571,7 +565,7 @@ function predefines(
         "tokenCards",
     ]);
 
-    return Object.freeze({
+    return {
         characterInsts: array(source.characterInsts, `${name}.characterInsts`, (item, path) =>
             predefinedInstance(item, path, unresolved),
         ),
@@ -580,7 +574,7 @@ function predefines(
         ),
         characterCards: emptyArray(source.characterCards, `${name}.characterCards`),
         tokenCards: emptyArray(source.tokenCards, `${name}.tokenCards`),
-    });
+    };
 }
 
 export function parseLevelContent(value: unknown): ArknightsLevelContent {
@@ -644,7 +638,7 @@ export function parseLevelContent(value: unknown): ArknightsLevelContent {
             throw new RangeError(`${path}.maxTimeWaitingForNextWave must be -1 or non-negative`);
         }
 
-        return Object.freeze({
+        return {
             preDelay: number(wave.preDelay, `${path}.preDelay`, 0),
             postDelay: number(wave.postDelay, `${path}.postDelay`, 0),
             maxTimeWaitingForNextWave,
@@ -652,7 +646,7 @@ export function parseLevelContent(value: unknown): ArknightsLevelContent {
                 fragment(part, name, routes.length, enemyIds),
             ),
             advancedWaveTag: nullableString(wave.advancedWaveTag, `${path}.advancedWaveTag`),
-        });
+        };
     });
 
     const branchEntries = Object.entries(
@@ -664,14 +658,14 @@ export function parseLevelContent(value: unknown): ArknightsLevelContent {
 
         return [
             key,
-            Object.freeze({
+            {
                 phases: array(branch.phases, `${path}.phases`, (part, name) =>
                     fragment(part, name, extraRoutes.length, enemyIds),
                 ),
-            }),
+            },
         ];
     });
-    const branches = Object.freeze(Object.fromEntries(branchEntries));
+    const branches = Object.fromEntries(branchEntries);
 
     const predefined = predefines(source.predefines, "level.predefines", unresolved);
     const hardPredefined = predefines(source.hardPredefines, "level.hardPredefines", unresolved);
@@ -682,7 +676,7 @@ export function parseLevelContent(value: unknown): ArknightsLevelContent {
         throw new RangeError("level.randomSeed must be a signed 32-bit integer");
     }
 
-    return Object.freeze({
+    return {
         mapData: json(source.mapData, "level.mapData"),
         routes,
         extraRoutes,
@@ -706,16 +700,16 @@ export function parseLevelContent(value: unknown): ArknightsLevelContent {
                 ? null
                 : array(source.excludeCharIdList, "level.excludeCharIdList", string),
         randomSeed,
-        metadata: Object.freeze({
+        metadata: {
             levelId: nullableString(source.levelId, "level.levelId"),
             mapId: nullableString(source.mapId, "level.mapId"),
             bgmEvent: nullableString(source.bgmEvent, "level.bgmEvent"),
             environmentSe: nullableString(source.environmentSe, "level.environmentSe"),
             operaConfig: json(source.operaConfig, "level.operaConfig"),
             cameraPlugin: nullableString(source.cameraPlugin, "level.cameraPlugin"),
-        }),
-        unresolvedRules: Object.freeze(unresolved),
-    });
+        },
+        unresolvedRules: unresolved,
+    };
 }
 
 export function createLevelDefinition(
@@ -724,7 +718,7 @@ export function createLevelDefinition(
 ): ArknightsLevelDefinition {
     const { mapData, ...level } = content;
 
-    return Object.freeze({ ...level, map: parseBattlefieldMap(mapData, mapOptions) });
+    return { ...level, map: parseBattlefieldMap(mapData, mapOptions) };
 }
 
 export function parseLevelDefinition(

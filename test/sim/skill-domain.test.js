@@ -4,6 +4,7 @@ import { test } from "node:test";
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
 
 import * as skills from "../../dist/core/unit/skill/operations.js";
+import { create } from "../../dist/core/unit/skill/initialize.js";
 import * as sp from "../../dist/core/unit/skill/sp.js";
 import { initialize as initializeSkill, removeRule, setDurationContribution, removeDurationContribution } from "../../dist/core/unit/capability/skill/capability.js";
 import { create as value } from "../../dist/core/unit/contribution/attribute.js";
@@ -151,8 +152,8 @@ test("skill definitions are shared and deployments initialize independent privat
     assert.notEqual(another.data, f.unit.skill.data);
     assert.equal(another.sp.value, 1);
     assert.equal(another.sp.lastTick, 90);
-    assert.throws(() => definition({ sp: resource({ initial: 7 }) }), /capacity/);
-    assert.throws(() => definition({ sp: resource({ initial: 0.5 }) }), /integer/);
+    assert.throws(() => create(f.state, definition({ sp: resource({ initial: 7 }) })), /capacity/);
+    assert.throws(() => create(f.state, definition({ sp: resource({ initial: 0.5 }) })), /integer/);
 });
 
 for (const source of ["TIME", "ACTION", "HIT"]) {

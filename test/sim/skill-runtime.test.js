@@ -13,7 +13,6 @@ import { test } from 'node:test';
 import { initialize as initializeBattle, step as stepBattle } from '../../dist/core/battle/index.js';
 import { createLegacyCombatSpec } from '../../dist/legacy/combat.js';
 
-import { createDefinition as createSkillDefinition } from '../../dist/core/unit/skill/index.js';
 import * as skills from '../../dist/core/unit/skill/index.js';
 import { ref as activationRef } from '../../dist/core/unit/skill/activation.js';
 import { create as createAttack } from '../../dist/content/actions/attack.js';
@@ -55,7 +54,7 @@ function target() {
 function scenario(skill, { targets = 1, attackTargets = 1, windupTicks = 0, content, activeAction } = {}) {
   const buff = attackBuff('skill/attack', 100);
   const fault = { enabled: false };
-  skill = createSkillDefinition({ ...skill, activation: { ...skill.activation,
+  skill = ({ ...skill, activation: { ...skill.activation,
     onStart: content ?? ((state, source, self) => {
       const installed = effects.install(state, source, buff, {
         source, scopes: [lifetimeScope(skillLifetime, activationRef(source, self))],
@@ -84,7 +83,7 @@ function scenario(skill, { targets = 1, attackTargets = 1, windupTicks = 0, cont
   return { runtime, fault };
 }
 function skill({ trigger = 'MANUAL', recovery = { type: 'TIME', intervalTicks: 30 }, initial = 2, cost = 2, durationTicks = 3 } = {}) {
-  return createSkillDefinition({ id: 'test-skill', initialize: battle => ({ state: battle, value: ({}) }),
+  return ({ id: 'test-skill', initialize: battle => ({ state: battle, value: ({}) }),
     sp: { initial, capacity: cost, requirement: cost, cost, recovery },
     activation: { trigger, sustain: { type: 'TIME', durationTicks }, initialize: () => ({}) },
   });

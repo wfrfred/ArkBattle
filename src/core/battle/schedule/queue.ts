@@ -31,12 +31,12 @@ export function createScheduleSpawn({
     readonly timing: Timing;
     readonly management: ScheduleSpawn["schedule"];
 }): ScheduleSpawn {
-    return Object.freeze({
+    return {
         ...spawn,
         tick,
         timing,
-        schedule: Object.freeze({ ...management }),
-    });
+        schedule: { ...management },
+    };
 }
 
 export function createQueue(
@@ -46,7 +46,6 @@ export function createQueue(
     fromBranch: boolean,
 ): SpawnQueueState {
     const spawns: QueuedSpawn[] = [];
-    const source = Object.freeze(timingSource);
     const origin = addScheduleTicks(startedAtTick, fragment.preDelayTicks);
 
     for (const action of fragment.actions) {
@@ -55,15 +54,13 @@ export function createQueue(
             managedFinal && !action.dontBlockWave && (!fromBranch || action.forceBlockWaveInBranch);
 
         for (const offset of action.offsetsTicks) {
-            spawns.push(
-                Object.freeze({
-                    spawn: action.spawn,
-                    tick: addScheduleTicks(origin, offset),
-                    timingSource: source,
-                    managedFinal,
-                    managedWave,
-                }),
-            );
+            spawns.push({
+                spawn: action.spawn,
+                tick: addScheduleTicks(origin, offset),
+                timingSource,
+                managedFinal,
+                managedWave,
+            });
         }
     }
 

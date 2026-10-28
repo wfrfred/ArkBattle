@@ -26,11 +26,11 @@ export function createUnitPlacementDefinition<P extends UnitPlacementDefinition>
 export function createUnitPlacementDefinition(
     placement: UnitPlacementDefinition,
 ): NormalizedUnitPlacement<UnitPlacementDefinition> {
-    return Object.freeze({
+    return {
         definition: placement.definition,
         ...(placement.tile === undefined ? {} : { tile: placement.tile }),
         position: placement.position,
-    });
+    };
 }
 
 function nextIdentity(value: number, name: string): number {

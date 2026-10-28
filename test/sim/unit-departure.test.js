@@ -25,7 +25,6 @@ import {
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { getUnit, replaceUnit } from "../helpers/unit.js";
 import { initialize } from "../helpers/unit.js";
-import { createDefinition as createSkillDefinition } from "../../dist/core/unit/skill/definition.js";
 import { activate } from "../../dist/core/unit/skill/operations.js";
 import { ref as activationRef } from "../../dist/core/unit/skill/activation.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
@@ -37,7 +36,7 @@ import {
 } from "../../dist/core/battle/damage/hook.js";
 
 function fixture() {
-    const skill = createSkillDefinition({
+    const skill = ({
         id: "departing-counter-skill",
         initialize: battle => ({ state: battle, value: ({}) }),
         sp: null,
@@ -223,7 +222,7 @@ for (const domain of ["deployment", "predefined"]) {
 
 test("effect terminal callback requests host retirement and outer settlement finalizes its dependencies", () => {
     const trace = [];
-    const skill = createSkillDefinition({
+    const skill = ({
         id: "nested-skill",
         initialize: battle => ({ state: battle, value: ({}) }),
         sp: null,

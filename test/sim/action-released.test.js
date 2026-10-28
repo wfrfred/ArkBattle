@@ -9,7 +9,6 @@ import * as actions from "../../dist/core/unit/action/index.js";
 import { advance } from "../../dist/core/unit/action/index.js";
 import { setBeforeReleaseHook, setReleasedHook } from "../../dist/core/unit/capability/action/capability.js";
 import { released } from "../../dist/core/unit/capability/action/release.js";
-import { createDefinition as createSkillDefinition } from "../../dist/core/unit/skill/definition.js";
 import { setHook } from "../../dist/core/unit/capability/skill/capability.js";
 import { enter } from "../../dist/core/unit/skill/operations.js";
 import { actionDefinition, unit, battle } from "../helpers/action-fixture.js";
@@ -18,7 +17,7 @@ const hook = (id, invoke) => ({ id, invoke });
 
 function fixture({ windupTicks = 0, recoveryAmount = 1, action, withSkill = true, targets = 1 } = {}) {
     const definition = action ?? actionDefinition(7, { windupTicks });
-    const skill = createSkillDefinition({
+    const skill = ({
         id: "action-recovery", initialize: battle => ({ state: battle, value: ({}) }), activation: null,
         sp: { initial: 0, capacity: 10, requirement: 10, recovery: { type: "ACTION", amount: recoveryAmount } },
     });

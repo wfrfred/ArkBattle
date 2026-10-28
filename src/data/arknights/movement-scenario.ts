@@ -137,12 +137,10 @@ function loadPredefines(selected: readonly LocatedPredefined[], catalog: Arknigh
             controllers.push({ profile, skill, path });
         } else {
             for (const entry of skill.blackboard) {
-                unsupportedRules.push(
-                    Object.freeze({
-                        path: `level.${path}.skill.blackboard.${entry.key}`,
-                        reason: "predefined unit skill blackboard is not applied by movement scenarios",
-                    }),
-                );
+                unsupportedRules.push({
+                    path: `level.${path}.skill.blackboard.${entry.key}`,
+                    reason: "predefined unit skill blackboard is not applied by movement scenarios",
+                });
             }
         }
 
@@ -175,7 +173,7 @@ function createMovementLevel(
                 throw new TypeError(`invalid movement-external tile flag ${entry.key}`);
             }
 
-            unappliedTileBlackboard.push(Object.freeze({ context, entry }));
+            unappliedTileBlackboard.push({ context, entry });
 
             return true;
         },
@@ -233,30 +231,24 @@ export function loadMovementScenario(
 
         return enemy;
     });
-    const unappliedLevelBlackboard = level.options.configBlackBoard ?? Object.freeze([]);
+    const unappliedLevelBlackboard = level.options.configBlackBoard ?? [];
     const unsupportedRules: ArknightsContentIssue[] = [
         ...loaded.unsupportedRules,
-        ...terrain.unappliedBlackboard.map(({ controllerIndex, entry }) =>
-            Object.freeze({
-                path: `level.${loaded.controllers[controllerIndex]!.path}.skill.blackboard.${entry.key}`,
-                reason: "terrain controller blackboard is not applied by movement scenarios",
-            }),
-        ),
-        ...unappliedLevelBlackboard.map((entry, index) =>
-            Object.freeze({
-                path: `level.options.configBlackBoard[${index}]`,
-                reason: `level blackboard ${entry.key} is not applied by movement scenarios`,
-            }),
-        ),
-        ...unappliedTileBlackboard.map(({ context, entry }) =>
-            Object.freeze({
-                path: `level.map[${context.position[0]}][${context.position[1]}].blackboard.${entry.key}`,
-                reason: "tile blackboard flag is not applied by movement scenarios",
-            }),
-        ),
+        ...terrain.unappliedBlackboard.map(({ controllerIndex, entry }) => ({
+            path: `level.${loaded.controllers[controllerIndex]!.path}.skill.blackboard.${entry.key}`,
+            reason: "terrain controller blackboard is not applied by movement scenarios",
+        })),
+        ...unappliedLevelBlackboard.map((entry, index) => ({
+            path: `level.options.configBlackBoard[${index}]`,
+            reason: `level blackboard ${entry.key} is not applied by movement scenarios`,
+        })),
+        ...unappliedTileBlackboard.map(({ context, entry }) => ({
+            path: `level.map[${context.position[0]}][${context.position[1]}].blackboard.${entry.key}`,
+            reason: "tile blackboard flag is not applied by movement scenarios",
+        })),
     ];
 
-    return Object.freeze({
+    return {
         level,
         spec: {
             map: level.map,
@@ -268,11 +260,11 @@ export function loadMovementScenario(
             routeMoveMultiplier: level.options.moveMultiplier,
             rngState,
         } satisfies Input,
-        omittedActions: Object.freeze(compiled.omittedActions),
-        inactiveBranches: Object.freeze(compiled.inactiveBranches),
-        omittedPredefines: Object.freeze(predefinedSelection.omitted),
-        unsupportedRules: Object.freeze(unsupportedRules),
+        omittedActions: compiled.omittedActions,
+        inactiveBranches: compiled.inactiveBranches,
+        omittedPredefines: predefinedSelection.omitted,
+        unsupportedRules: unsupportedRules,
         unappliedLevelBlackboard,
-        unappliedTileBlackboard: Object.freeze(unappliedTileBlackboard),
-    });
+        unappliedTileBlackboard: unappliedTileBlackboard,
+    };
 }

@@ -13,7 +13,7 @@ import type { Burst, Definition as BurstDefinition } from "./burst.js";
 import type { DamageHook, Events, Hook, Key } from "./hook.js";
 import type { Rule } from "./rule.js";
 
-export const ELEMENT_TYPES = Object.freeze(["NEURAL", "EROSION", "BURN", "NECROSIS"] as const);
+export const ELEMENT_TYPES = ["NEURAL", "EROSION", "BURN", "NECROSIS"] as const;
 
 export type Type = (typeof ELEMENT_TYPES)[number];
 
@@ -69,7 +69,7 @@ export function hasElementalDefinition(
 }
 
 export function elementValues(value: number): Values {
-    return Object.freeze({ NEURAL: value, EROSION: value, BURN: value, NECROSIS: value });
+    return { NEURAL: value, EROSION: value, BURN: value, NECROSIS: value };
 }
 
 export function createDefinition(
@@ -95,14 +95,14 @@ export function createDefinition(
         assertNonnegativeSafeInteger(bursts[type].durationTicks, "element burst duration");
     }
 
-    return Object.freeze({
+    return {
         maxEp,
         recoveryPerSecond,
         elementResistance,
         damageResistance,
         burstRecoverySpeed,
-        bursts: Object.freeze({ ...bursts }),
-    });
+        bursts: { ...bursts },
+    };
 }
 
 export function initialize(battle: BattleState, definition: Definition): Result<State> {

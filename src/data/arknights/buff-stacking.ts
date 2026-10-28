@@ -53,9 +53,9 @@ export interface CompiledBuffStacking {
     ) => BuffExpiryPlan;
 }
 
-const install = Object.freeze({ type: "INSTALL" } as const);
-const reject = Object.freeze({ type: "REJECT" } as const);
-const finish = Object.freeze({ type: "FINISH" } as const);
+const install = { type: "INSTALL" } as const;
+const reject = { type: "REJECT" } as const;
+const finish = { type: "FINISH" } as const;
 
 function overrideType(value: unknown): BuffOverrideType {
     for (const key in overrideTypes) {
@@ -93,14 +93,14 @@ export function parseBuffStacking(value: unknown): BuffStacking {
         throw new TypeError("buff stacking refresh and snapshot flags must be boolean");
     }
 
-    return Object.freeze({
+    return {
         overrideType: overrideType(source.overrideType),
         maxStackCnt: stackLimit(source.maxStackCnt, "maxStackCnt"),
         maxValidStackCnt: stackLimit(source.maxValidStackCnt, "maxValidStackCnt"),
         refreshRemainingTimeWhenStackMax,
         clearAllStackCntWhenTimeUp,
         takeSnapshotWhenExtend,
-    });
+    };
 }
 
 function validateApplication(application: BuffApplication, name: string): void {
@@ -146,13 +146,13 @@ function refresh(
     takeSnapshot: boolean,
     reloadModifiers: boolean,
 ): BuffStackingPlan {
-    return Object.freeze({
+    return {
         type: "REFRESH",
         stackCount,
         expiresAtTick,
         takeSnapshot,
         reloadModifiers,
-    });
+    };
 }
 
 export function compileBuffStacking(definition: BuffStacking): CompiledBuffStacking {
@@ -161,7 +161,7 @@ export function compileBuffStacking(definition: BuffStacking): CompiledBuffStack
     const reloadModifiers = (count: number) =>
         rule.maxValidStackCnt < 0 || count <= rule.maxValidStackCnt;
 
-    return Object.freeze({
+    return {
         validStackCount: (count: number) => {
             assertNonnegativeSafeInteger(count, "buff stack count");
 
@@ -244,12 +244,12 @@ export function compileBuffStacking(definition: BuffStacking): CompiledBuffStack
             const stackCount = current.stackCount - 1;
             const expiresAtTick = lifetimeTicks === null ? null : tick + Math.max(1, lifetimeTicks);
 
-            return Object.freeze({
+            return {
                 type: "REFRESH",
                 stackCount,
                 expiresAtTick,
                 reloadModifiers: reloadModifiers(stackCount),
-            });
+            };
         },
-    });
+    };
 }

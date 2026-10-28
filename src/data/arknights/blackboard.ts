@@ -63,8 +63,8 @@ export function parseBlackboard(
             throw new TypeError(`${path}.valueStr must be a string or null`);
         }
 
-        entries.push(Object.freeze({ key, value: number, valueStr }));
+        entries.push({ key, value: number, valueStr });
     }
 
-    return Object.freeze(entries);
+    return entries;
 }

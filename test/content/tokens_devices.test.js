@@ -214,7 +214,6 @@ test('core raw level parsing owns map data before explicit controller parameters
   const content = parseLevelContent(raw);
   assert.equal('map' in content, false);
   assert.deepEqual(content.mapData, raw.mapData);
-  assert.ok(Object.isFrozen(content.mapData.tiles));
   const consumeTileBlackboard = (_, entry) => ['isValidHand', 'previewNotAlloed'].includes(entry.key);
   assert.throws(() => createLevelDefinition(content, { consumeTileBlackboard }),
     /deepsea controller parameters must be supplied explicitly/);
@@ -289,7 +288,6 @@ test('core movement scenario reports omitted definitions and movement-external b
   assert.deepEqual(scenario.inactiveBranches, Object.keys(rawLevel.branches ?? {}));
   assert.equal(scenario.unsupportedRules.filter(rule => rule.path.startsWith('level.options.configBlackBoard[')).length, 32);
   assert.equal(scenario.unsupportedRules.filter(rule => rule.reason === 'tile blackboard flag is not applied by movement scenarios').length, 37);
-  assert.ok(Object.isFrozen(scenario.unsupportedRules));
   const invalid = structuredClone(rawLevel);
   const tile = invalid.mapData.tiles.find(tile => tile.blackboard?.some(entry => entry.key === 'isValidHand'));
   const entry = tile.blackboard.find(entry => entry.key === 'isValidHand');

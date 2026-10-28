@@ -295,7 +295,7 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
         ...(profile.blocksSpRecovery ? [blockSpRecovery] : []),
     ];
 
-    return Object.freeze({
+    return {
         durationTicks: profile.durationTicks,
         onStart: (battle: BattleState, self: Burst): BattleState => {
             const ref = burstRef(self);
@@ -364,7 +364,7 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
 
             return profile.burstDamage === null ? battle : hurt(battle, ref, profile.burstDamage);
         },
-    });
+    };
 }
 
 function activeHost(battle: BattleState, ref: Ref<Burst>) {

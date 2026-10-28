@@ -9,6 +9,28 @@ import * as sp from "../../dist/core/unit/skill/sp.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import { fixture, definition, at } from "../helpers/skill.js";
 
+test("Skill creation validates direct Definitions before running their initializer", () => {
+    const battle = fixtureBattle(0);
+    let initialized = false;
+    const program = definition({
+        initialize: state => {
+            initialized = true;
+            return { state, value: {} };
+        },
+    });
+    const invalid = [
+        { ...program, id: "" },
+        { ...program, sp: { ...program.sp, initial: -1 } },
+        { ...program, sp: { ...program.sp, initial: program.sp.capacity + 1 } },
+        { ...program, activation: { ...program.activation, sustain: { type: "TIME", durationTicks: -1 } } },
+        { ...program, activation: { ...program.activation, sustain: { type: "AMMO", amount: 0.5 } } },
+    ];
+    for (const candidate of invalid) {
+        assert.throws(() => create(battle, candidate));
+        assert.equal(initialized, false);
+    }
+});
+
 test("Skill creation threads its initialization battle through capability and Unit creation before starting SP clocks", () => {
     const battle = fixtureBattle(11);
     const program = definition({

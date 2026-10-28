@@ -131,7 +131,7 @@ export function compileLevelMovementFragment(
         }
     }
 
-    return Object.freeze({
+    return {
         spec: {
             map: level.map,
             schedule: createSpawnScheduleDefinition({ type: "TIMELINE", spawns }),
@@ -142,11 +142,11 @@ export function compileLevelMovementFragment(
             routeMoveMultiplier: level.options.moveMultiplier,
             rngState: options.rngState,
         } satisfies Input,
-        selection: Object.freeze({
+        selection: {
             ...selection,
-            actionIndices: Object.freeze([...selected].sort((left, right) => left - right)),
-        }),
-        omittedActions: Object.freeze(omittedActions),
-        inactiveBranches: Object.freeze(Object.keys(level.branches)),
-    });
+            actionIndices: [...selected].sort((left, right) => left - right),
+        },
+        omittedActions: omittedActions,
+        inactiveBranches: Object.keys(level.branches),
+    };
 }

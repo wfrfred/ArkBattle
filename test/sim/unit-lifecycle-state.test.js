@@ -14,7 +14,6 @@ import { initialize } from "../helpers/unit.js";
 
 import * as mechanisms from "../../dist/core/battle/mechanism.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
-import { createDefinition as createSkillDefinition } from "../../dist/core/unit/skill/definition.js";
 import { setHook } from "../../dist/core/unit/capability/skill/capability.js";
 import { activate, finish } from "../../dist/core/unit/skill/operations.js";
 import { ref as activationRef } from "../../dist/core/unit/skill/activation.js";
@@ -30,7 +29,7 @@ for (const reason of ["DEATH", "RETREAT", "SCRIPT"]) {
     const observedEnds = [];
     const effectEnds = [];
     let actionEnds = 0;
-    const skill = createSkillDefinition({
+    const skill = ({
       id: "action-dependent-skill", initialize: battle => ({ state: battle, value: ({}) }), sp: null,
       activation: {
         trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}),
@@ -104,7 +103,7 @@ for (const reason of ["DEATH", "RETREAT", "SCRIPT"]) {
 }
 
 test("departure callbacks observe LEAVING while old snapshots remain PRESENT", () => {
-  const skill = createSkillDefinition({
+  const skill = ({
     id: "observe-departure", initialize: battle => ({ state: battle, value: ({}) }), sp: null,
     activation: {
       trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}),
@@ -141,7 +140,7 @@ test("departure callbacks observe LEAVING while old snapshots remain PRESENT", (
 });
 
 test("skill finish sees LEAVING and cannot install dependencies on its departing source", () => {
-  const skill = createSkillDefinition({
+  const skill = ({
     id: "departing-skill", initialize: battle => ({ state: battle, value: ({}) }),
     sp: { initial: 1, capacity: 1, requirement: 1, recovery: { type: "NONE" } },
     activation: {
@@ -173,7 +172,7 @@ test("skill finish sees LEAVING and cannot install dependencies on its departing
 });
 
 test("departure callbacks cannot start a new skill activation", () => {
-  const skill = createSkillDefinition({
+  const skill = ({
     id: "closed-host-activation", initialize: battle => ({ state: battle, value: ({}) }), sp: null,
     activation: {
       trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}),
@@ -202,7 +201,7 @@ test("departure callbacks cannot start a new skill activation", () => {
 
 test("onLeave reads the pre-cleanup Unit after removal and passes its changes to mechanisms", () => {
   const trace = [];
-  const skill = createSkillDefinition({
+  const skill = ({
     id: "leave-with-sp", initialize: battle => ({ state: battle, value: ({}) }),
     sp: { initial: 3, capacity: 3, requirement: 1, recovery: { type: "NONE" } },
     activation: {

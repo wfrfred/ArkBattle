@@ -1,5 +1,3 @@
-export { createDefinition } from "./definition.js";
-
 export type { Definition } from "./definition.js";
 
 export { ref } from "./skill.js";

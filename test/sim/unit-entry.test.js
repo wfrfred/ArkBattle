@@ -12,7 +12,6 @@ import { initialize as initializeBattle, step as stepBattle } from '../../dist/c
 import { add, update as updateUnit, remove } from '../../dist/core/battle/unit.js';
 import { getUnit, initialize, fixtureBattle } from '../helpers/unit.js';
 import { instantiateUnitPlacement } from '../../dist/core/battle/creation/placement.js';
-import { createDefinition as createSkillDefinition } from '../../dist/core/unit/skill/definition.js';
 import { advancePredefined } from '../../dist/core/battle/steps/predefined.js';
 import { resolveScheduleUnits } from '../../dist/core/battle/schedule/index.js';
 import { create as createMap } from '../../dist/core/battlefield/map/map.js';
@@ -47,7 +46,7 @@ const markEntered = (trace, id) => ({
 
 test('enter registers one complete Unit before Skill entry and passes its latest state to Unit entry', () => {
   const trace = [];
-  const skill = createSkillDefinition({
+  const skill = ({
     id: 'entry-program', initialize: battle => ({ state: battle, value: ({}) }), sp: null, activation: null,
     onEnter(battle, source, self) {
       const host = unitQueries.get(battle, source);
@@ -75,7 +74,7 @@ test('enter registers one complete Unit before Skill entry and passes its latest
 });
 
 test('Skill entry can synchronously remove its host before the Unit entry callback', () => {
-  const skill = createSkillDefinition({
+  const skill = ({
     id: 'depart-on-entry', initialize: battle => ({ state: battle, value: ({}) }), sp: null, activation: null,
     onEnter: (battle, source, self) => remove(battle, source.id, 'SCRIPT'),
   });

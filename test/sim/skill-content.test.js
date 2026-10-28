@@ -18,7 +18,6 @@ import * as skills from "../../dist/core/unit/skill/operations.js";
 import { initialize } from "../helpers/unit.js";
 import { compileArknightsAttackBuffSkill } from "../../dist/data/arknights/skill-buff.js";
 import { parseArknightsSkillLevel } from "../../dist/data/arknights/skill-definition.js";
-import { createDefinition as createSkillDefinition } from "../../dist/core/unit/skill/definition.js";
 import * as sp from "../../dist/core/unit/skill/sp.js";
 import { effectFixtureWork } from "../helpers/effects.js";
 import { initialize as initializeBattle, step as stepBattle } from "../../dist/core/battle/runtime.js";
@@ -159,7 +158,7 @@ test("native ammunition data requires an explicit budget and never creates a TIM
 function instantDamageFixture(automatic = false, withTarget = true) {
   const parsed = parseArknightsSkillLevel(unsheathe);
   const reports = [];
-  const definition = createSkillDefinition({ ...parsed.definition, activation: {
+  const definition = ({ ...parsed.definition, activation: {
     ...parsed.definition.activation,
     trigger: automatic ? "AUTO" : "MANUAL",
     accepts: (battle) => (getUnit(battle, 2)?.vitality.hp ?? 0) > 0,
@@ -201,7 +200,7 @@ test("AUTO instant content keeps full SP when its required target is absent", ()
 
 test("instant healing uses the current activation tick and returns the applied healing outcome", () => {
   let report;
-  const definition = createSkillDefinition({ id: "instant-heal-port", initialize: battle => ({ state: battle, value: ({}) }), sp: null,
+  const definition = ({ id: "instant-heal-port", initialize: battle => ({ state: battle, value: ({}) }), sp: null,
     activation: { trigger: "MANUAL", sustain: { type: "TIME", durationTicks: 0 }, initialize: () => ({}),
       onStart: (battle, source, self) => {
         const healed = healing(battle, { source: source, target: source,

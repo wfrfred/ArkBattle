@@ -86,13 +86,13 @@ export function resolvePredefinedSkillBlackboard(
     }
 
     for (const entry of instance.overrideSkillBlackboard ?? []) {
-        blackboard.set(entry.key.toLowerCase(), Object.freeze({ ...entry }));
+        blackboard.set(entry.key.toLowerCase(), { ...entry });
     }
 
-    return Object.freeze({
+    return {
         skillId,
         prefabKey,
         level,
-        blackboard: Object.freeze([...blackboard.values()]),
-    });
+        blackboard: [...blackboard.values()],
+    };
 }

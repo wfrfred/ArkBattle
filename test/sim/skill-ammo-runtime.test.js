@@ -24,7 +24,6 @@ import { executionRef } from "../../dist/core/unit/action/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { advance as advanceAction } from "../../dist/core/unit/action/index.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
-import { createDefinition as createSkillDefinition } from "../../dist/core/unit/skill/definition.js";
 import { ref as activationRef } from "../../dist/core/unit/skill/activation.js";
 import { createLegacyCombatSpec } from "../../dist/legacy/combat.js";
 import { setHook, removeHook } from "../../dist/core/battle/damage/hook.js";
@@ -77,7 +76,7 @@ function scenario({ ammo = 1, targets = 1, interrupt = false, windupTicks = 0, o
       return state;
     },
   });
-  const skill = createSkillDefinition({
+  const skill = ({
     id: "runtime-ammo-skill", initialize: battle => ({ state: battle, value: ({}) }),
     sp: { initial: 1, capacity: 1, requirement: 1, recovery: { type: "TIME", intervalTicks: 30 } },
     activation: { trigger: "MANUAL", sustain: { type: "AMMO", amount: ammo }, initialize: () => ({}),

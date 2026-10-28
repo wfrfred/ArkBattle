@@ -69,7 +69,6 @@ test('Elemental owns immutable bars and initializes its clock without a recovery
   assert.equal(state.burst, null);
   assert.equal(definition.recoveryPerSecond, 0);
   assert.equal(definition.burstRecoverySpeed, 1);
-  assert.equal(Object.isFrozen(definition.bursts), true);
   const f = fixture();
   assert.equal(hasElemental(get(f.battle, f.target)), true);
   const result = elemental.damage(f.battle, f.target, request());
@@ -485,7 +484,6 @@ test('standard burst profiles distinguish receiver class, boss threshold, ordina
   assert.equal(enemy[3].attackReductionRatio, 0.5);
   assert.equal(holder({ receiver: 'ENEMY', boss: true }).definition.elemental.maxEp, 2000);
   assert.equal(holder({ receiver: 'CHARACTER', boss: true }).definition.elemental.maxEp, 1000);
-  assert.ok(Object.isFrozen(enemy[0].burstDamage));
   assert.throws(() => createElementalDefinition({
     maxEp: 0, bursts: simpleBursts(),
   }), RangeError);

@@ -55,18 +55,18 @@ export function createPredefinedDefinition(definition: PredefinedDefinition): Pr
 
     const creation = definition.creation;
 
-    return Object.freeze({
+    return {
         id: definition.id,
         alias: definition.alias,
         initiallyPresent: definition.initiallyPresent,
         creation:
             creation.type === "UNIT"
-                ? Object.freeze({
+                ? {
                       type: creation.type,
                       ...createUnitPlacementDefinition(creation),
-                  })
-                : Object.freeze({ ...creation }),
-    });
+                  }
+                : { ...creation },
+    };
 }
 
 export function predefinedIdsForAlias(

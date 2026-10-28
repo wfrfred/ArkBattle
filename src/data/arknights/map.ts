@@ -120,7 +120,7 @@ function requireEmpty(value: unknown, name: string): void {
 
 function tileBlackboard(value: unknown): readonly ArknightsBlackboardEntry[] {
     if (value === null || value === undefined) {
-        return Object.freeze([]);
+        return [];
     }
 
     return parseBlackboard(value, "tile blackboard", {

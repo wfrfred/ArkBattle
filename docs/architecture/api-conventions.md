@@ -2,6 +2,8 @@
 
 按操作职责组织参数和返回值。各领域文档定义具体业务契约；本文保留通用规则及尚未完成的接口整理。
 
+发布后的领域状态、Definition、Ref、事件和集合遵守不可变值约定，通过各层 readonly 数据声明和只读集合接口表达；不依赖 Object.freeze，不为强制该约定新增递归只读类型包装。局部构建过程可使用可变对象和容器。
+
 接口实现遵守以下边界：数据在实际入口校验一次，内部计算信任已经建立的约束。格子坐标在真正接收 unknown 的数据边界使用 Tile.is 建立安全整数元组约束，连续坐标使用 Vec2.is 建立有限数元组约束。已明确分量的创建和解析入口按需要使用现有 assert 工具，内部直接使用元组与通用 Vec2 运算，不再设坐标工厂或顶层守卫。内部消费 typed 坐标时直接信任，不重复断言。格式错误在创建／解析入口抛出 RangeError，地图越界由对应业务契约处理。不要在每个内部查询或辅助函数重复验证相同数据。
 
 外部可变数据转入领域时完成必要转换；领域内部的 readonly 对象、数组和坐标直接共享，不以“快照”或假设调用方违约修改为理由重复复制、冻结。新状态只创建实际改变的部分。不得为推测的低概率并发或安全场景增加复杂度；确有必要时先说明并通知用户。只用一次的逻辑直接放在所属操作内，不提前包装；异常直接抛出，不使用 try/catch 或静默容错掩盖非法输入。
@@ -69,7 +71,7 @@ Action 的准备程序为 prepare，推进与结束回调为 onTick／onEnd；Pr
 | 战斗运行 | [battle/index.ts](../../src/core/battle/index.ts) | 仅 initialize／step／simulateBattle、战斗契约类型、State／OperationResult 与 appendEvents；不聚合 Unit、Projectile、Creation 等独立操作。 |
 | Unit | [unit/index.ts](../../src/core/unit/index.ts) | 模型、Hook 类型、initialize 与 ref／all／get；完整登记、更新、离场、推进与 Unit lifetime 仍归 battle/unit.ts，Field 的纯存储操作仍归 battlefield/unit.ts。 |
 | Action | [unit/action/index.ts](../../src/core/unit/action/index.ts) | 创建、查询、字段更新、lifetime、业务操作与调度协作；advance 由 operations.ts 实现，经 index 导出且仅由调度器调用，end 是文件私有辅助步骤。Actions、execution.State 与 Cooldown 按职责深导，不扩大内容写回或推进权限。 |
-| Skill | [unit/skill/index.ts](../../src/core/unit/skill/index.ts) | create／createDefinition、Skill／Activation、两种 Ref 与 getSkill／getActivation、字段写回、资源与激活业务、lifetime；不转发 Capability guards 或局部 Rule／Hook／持续预算贡献 setter。 |
+| Skill | [unit/skill/index.ts](../../src/core/unit/skill/index.ts) | create、Skill／Activation、两种 Ref 与 getSkill／getActivation、字段写回、资源与激活业务、lifetime；不转发 Capability guards 或局部 Rule／Hook／持续预算贡献 setter。 |
 | Effect | [unit/effect/index.ts](../../src/core/unit/effect/index.ts) | 类型、ref、get、lifetime 与生命周期操作；get 归 query.ts，Effects 容器保持内部职责。 |
 | Lifetime | [lifetime/index.ts](../../src/core/lifetime/index.ts) | create／scope／getRef／available 和公开类型；request／drain、Pending、异构配对擦除与索引修改保持内部职责。 |
 | Projectile | [projectile/index.ts](../../src/core/projectile/index.ts) | 类型与 ref／all／get；完整 create／update／stop／advance 及 lifetime 保留 battle/projectile.ts，容器仍由 Battlefield 持有。 |

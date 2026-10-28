@@ -46,7 +46,7 @@ function profile(
     input: Partial<ArknightsElementalBurstProfile> &
         Pick<ArknightsElementalBurstProfile, "durationTicks">,
 ): ArknightsElementalBurstProfile {
-    return Object.freeze({
+    return {
         burstDamage: null,
         damagePerSecond: null,
         defReduction: 0,
@@ -58,18 +58,14 @@ function profile(
         blocksSpRecovery: false,
         attackReductionRatio: 0,
         ...input,
-        ...(input.burstDamage == null
-            ? {}
-            : { burstDamage: Object.freeze({ ...input.burstDamage }) }),
-        ...(input.damagePerSecond == null
-            ? {}
-            : { damagePerSecond: Object.freeze({ ...input.damagePerSecond }) }),
-    });
+        ...(input.burstDamage == null ? {} : { burstDamage: { ...input.burstDamage } }),
+        ...(input.damagePerSecond == null ? {} : { damagePerSecond: { ...input.damagePerSecond } }),
+    };
 }
 
 const profiles: Readonly<Record<Receiver, Readonly<Record<Type, ArknightsElementalBurstProfile>>>> =
-    Object.freeze({
-        CHARACTER: Object.freeze({
+    {
+        CHARACTER: {
             NEURAL: profile({
                 durationTicks: secondsToTicks(10),
                 burstDamage: { type: "TRUE", power: 1000 },
@@ -92,8 +88,8 @@ const profiles: Readonly<Record<Receiver, Readonly<Record<Type, ArknightsElement
                 blocksSkill: true,
                 blocksSpRecovery: true,
             }),
-        }),
-        ENEMY: Object.freeze({
+        },
+        ENEMY: {
             NEURAL: profile({
                 durationTicks: secondsToTicks(10),
                 burstDamage: { type: "ELEMENTAL", power: 6000 },
@@ -114,24 +110,24 @@ const profiles: Readonly<Record<Receiver, Readonly<Record<Type, ArknightsElement
                 damagePerSecond: { type: "ELEMENTAL", power: 800 },
                 attackReductionRatio: 0.5,
             }),
-        }),
-    });
+        },
+    };
 
 function createBursts(receiver: Receiver): Readonly<Record<Type, BurstDefinition>> {
     const selected = profiles[receiver];
 
-    return Object.freeze({
+    return {
         NEURAL: createBurstDefinition(`elemental/${receiver}/NEURAL`, selected.NEURAL),
         EROSION: createBurstDefinition(`elemental/${receiver}/EROSION`, selected.EROSION),
         BURN: createBurstDefinition(`elemental/${receiver}/BURN`, selected.BURN),
         NECROSIS: createBurstDefinition(`elemental/${receiver}/NECROSIS`, selected.NECROSIS),
-    });
+    };
 }
 
-const bursts = Object.freeze({
+const bursts = {
     CHARACTER: createBursts("CHARACTER"),
     ENEMY: createBursts("ENEMY"),
-});
+};
 
 export function parseElementType(value: unknown): Type {
     for (const [index, key] of Object.keys(elements).entries()) {

@@ -94,18 +94,16 @@ export function parseAttributeModifiers(value: unknown): readonly AttributeModif
             throw new TypeError("modifier loading flags must be boolean");
         }
 
-        definitions.push(
-            Object.freeze({
-                attributeType: enumKey(source.attributeType, attributes, "attributeType"),
-                formulaItem: enumKey(source.formulaItem, formulas, "formulaItem"),
-                value: source.value,
-                loadFromBlackboard: source.loadFromBlackboard,
-                fetchBaseValueFromSourceEntity: source.fetchBaseValueFromSourceEntity,
-            }),
-        );
+        definitions.push({
+            attributeType: enumKey(source.attributeType, attributes, "attributeType"),
+            formulaItem: enumKey(source.formulaItem, formulas, "formulaItem"),
+            value: source.value,
+            loadFromBlackboard: source.loadFromBlackboard,
+            fetchBaseValueFromSourceEntity: source.fetchBaseValueFromSourceEntity,
+        });
     }
 
-    return Object.freeze(definitions);
+    return definitions;
 }
 
 function finalScaler(value: number): number {
@@ -176,29 +174,24 @@ function normalizeValue(
 export function compileAttributeModifiers(
     definitions: readonly AttributeModifier[],
 ): readonly CompiledAttributeModifier[] {
-    return Object.freeze(
-        definitions.map((input) => {
-            const definition = Object.freeze({ ...input });
+    return definitions.map((input) => {
+        const definition = { ...input };
 
-            return Object.freeze({
-                attributeType: definition.attributeType,
-                sample: (context: ModifierInput) => {
-                    assertNonnegativeSafeInteger(
-                        context.stackCount,
-                        "effective modifier stack count",
-                    );
+        return {
+            attributeType: definition.attributeType,
+            sample: (context: ModifierInput) => {
+                assertNonnegativeSafeInteger(context.stackCount, "effective modifier stack count");
 
-                    if (context.stackCount === 0) {
-                        return undefined;
-                    }
+                if (context.stackCount === 0) {
+                    return undefined;
+                }
 
-                    const value = sampleValue(definition, context);
+                const value = sampleValue(definition, context);
 
-                    return value === undefined
-                        ? undefined
-                        : normalizeValue(definition.attributeType, value);
-                },
-            });
-        }),
-    );
+                return value === undefined
+                    ? undefined
+                    : normalizeValue(definition.attributeType, value);
+            },
+        };
+    });
 }

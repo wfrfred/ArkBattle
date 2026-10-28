@@ -19,7 +19,6 @@ test("buff stacking: complete native descriptors normalize numeric and named pol
         const parsed = parseBuffStacking(raw);
         const numeric = ["DEFAULT", "STACK", "UNIQUE", "EXTEND", "EXTEND_TIME"].indexOf(raw.overrideType);
         assert.deepEqual(parsed, parseBuffStacking({ ...raw, overrideType: numeric }));
-        assert.ok(Object.isFrozen(parsed));
         assert.deepEqual(Object.keys(parsed).sort(), ["maxStackCnt", "maxValidStackCnt", "overrideType", "refreshRemainingTimeWhenStackMax", "clearAllStackCntWhenTimeUp", "takeSnapshotWhenExtend"].sort());
     }
     assert.equal(parseBuffStacking({ ...description("STACK"), unrelatedNativeField: { value: "owned elsewhere" } }).overrideType, "STACK");
@@ -189,8 +188,6 @@ test("buff stacking: compiled rules own their definition and planning leaves all
     const incoming = Object.freeze(application(8, 30));
     const result = rule.plan(current, incoming, 10);
     assert.deepEqual(result, refresh(2, 30, false, true));
-    assert.ok(Object.isFrozen(result));
-    assert.ok(Object.isFrozen(rule));
     assert.deepEqual(current, application(1, 20));
     assert.deepEqual(incoming, application(8, 30));
 });

@@ -13,7 +13,7 @@ export function createSteeringParameters(parameters: SteeringParameters): Steeri
     assertNonnegativeNumber(steeringFactor, "steeringFactor");
     assertNonnegativeNumber(maxSteeringForce, "maxSteeringForce");
 
-    return Object.freeze({ steeringFactor, maxSteeringForce });
+    return { steeringFactor, maxSteeringForce };
 }
 
 export function integrate(

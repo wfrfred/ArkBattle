@@ -61,12 +61,12 @@ export function addScheduleTicks(left: number, right: number): number {
 }
 
 function copySpawnDefinition(spawn: EnemySpawnDefinition): EnemySpawnDefinition {
-    return Object.freeze({
+    return {
         definition: spawn.definition,
         route: spawn.route,
         alwaysCheckCurrentPoint: spawn.alwaysCheckCurrentPoint,
         notCountInTotal: spawn.notCountInTotal,
-    });
+    };
 }
 
 function copyFragment(fragment: FragmentDefinition): FragmentDefinition {
@@ -91,18 +91,16 @@ function copyFragment(fragment: FragmentDefinition): FragmentDefinition {
             addScheduleTicks(preDelayTicks, offset);
         }
 
-        actions.push(
-            Object.freeze({
-                spawn: copySpawnDefinition(action.spawn),
-                offsetsTicks: Object.freeze(offsetsTicks),
-                managedByScheduler: action.managedByScheduler,
-                dontBlockWave: action.dontBlockWave,
-                forceBlockWaveInBranch: action.forceBlockWaveInBranch,
-            }),
-        );
+        actions.push({
+            spawn: copySpawnDefinition(action.spawn),
+            offsetsTicks: offsetsTicks,
+            managedByScheduler: action.managedByScheduler,
+            dontBlockWave: action.dontBlockWave,
+            forceBlockWaveInBranch: action.forceBlockWaveInBranch,
+        });
     }
 
-    return Object.freeze({ preDelayTicks, actions: Object.freeze(actions) });
+    return { preDelayTicks, actions: actions };
 }
 
 export function countFragmentSpawns(fragment: FragmentDefinition): number {
@@ -130,18 +128,16 @@ export function createSpawnScheduleDefinition(
 
             assertNonnegativeSafeInteger(spawn.tick, "spawn.tick");
 
-            spawns.push(
-                Object.freeze({
-                    ...copySpawnDefinition(spawn),
-                    tick: spawn.tick,
-                    timing: createTiming(spawn.timing),
-                }),
-            );
+            spawns.push({
+                ...copySpawnDefinition(spawn),
+                tick: spawn.tick,
+                timing: createTiming(spawn.timing),
+            });
         }
 
         spawns.sort((left, right) => left.tick - right.tick);
 
-        return Object.freeze({ type: "TIMELINE", spawns: Object.freeze(spawns) });
+        return { type: "TIMELINE", spawns: spawns };
     }
 
     let count = 0;
@@ -172,14 +168,12 @@ export function createSpawnScheduleDefinition(
             assertNonnegativeSafeInteger(wave.maxWaitingTicks, "wave.maxWaitingTicks");
         }
 
-        waves.push(
-            Object.freeze({
-                preDelayTicks: wave.preDelayTicks,
-                postDelayTicks: wave.postDelayTicks,
-                maxWaitingTicks: wave.maxWaitingTicks,
-                fragments: Object.freeze(fragments),
-            }),
-        );
+        waves.push({
+            preDelayTicks: wave.preDelayTicks,
+            postDelayTicks: wave.postDelayTicks,
+            maxWaitingTicks: wave.maxWaitingTicks,
+            fragments: fragments,
+        });
     }
 
     const branches: [string, BranchDefinition][] = [];
@@ -197,12 +191,12 @@ export function createSpawnScheduleDefinition(
             phases.push(copied);
         }
 
-        branches.push([id, Object.freeze({ phases: Object.freeze(phases) })]);
+        branches.push([id, { phases: phases }]);
     }
 
-    return Object.freeze({
+    return {
         type: "WAVES",
-        waves: Object.freeze(waves),
-        branches: Object.freeze(Object.fromEntries(branches)),
-    });
+        waves: waves,
+        branches: Object.fromEntries(branches),
+    };
 }

@@ -55,7 +55,6 @@ test("buff expiry: a native STACK descriptor peels one layer and resets the call
     assert.deepEqual(rule.expire(application(2, 60), 30, 60), refresh(1, 90, true));
     assert.deepEqual(rule.expire(application(1, 90), 30, 90), { type: "FINISH" });
     assert.deepEqual(current, application(3));
-    assert.ok(Object.isFrozen(rule.expire(current, 30, 30)));
     assert.deepEqual(rule.expire(application(4), 30, 300), refresh(3, 330, true));
     assert.deepEqual(rule.expire(current, null, 30), refresh(2, null, true));
 });

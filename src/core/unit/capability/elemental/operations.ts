@@ -136,7 +136,7 @@ export function damage(
 
     const ep =
         burst === null
-            ? Object.freeze({ ...normalizedEp(currentSelf, maximum), [request.type]: current })
+            ? { ...normalizedEp(currentSelf, maximum), [request.type]: current }
             : elementValues(0);
     battle = replaceHost(battle, {
         ...currentSelf,
@@ -220,8 +220,8 @@ export function heal(
     const event: Healed = {
         request,
         previous,
-        current: Object.freeze(current),
-        amounts: Object.freeze(amounts),
+        current: current,
+        amounts: amounts,
     };
     battle = replaceHost(battle, {
         ...self,
@@ -337,7 +337,7 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
             }
         }
 
-        next.ep = Object.freeze(ep);
+        next.ep = ep;
     }
 
     battle = replaceHost(battle, { ...self, elemental: next });
@@ -348,12 +348,12 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
 }
 
 function normalizedEp(self: Unit & Elemental, maximum: number): Values {
-    return Object.freeze({
+    return {
         NEURAL: Math.min(maximum, Math.max(0, self.elemental.ep.NEURAL)),
         EROSION: Math.min(maximum, Math.max(0, self.elemental.ep.EROSION)),
         BURN: Math.min(maximum, Math.max(0, self.elemental.ep.BURN)),
         NECROSIS: Math.min(maximum, Math.max(0, self.elemental.ep.NECROSIS)),
-    });
+    };
 }
 
 function replaceHost(battle: BattleState, self: Unit & Elemental): BattleState {

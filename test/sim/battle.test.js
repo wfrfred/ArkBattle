@@ -983,7 +983,6 @@ test('raw levels preserve predefined configuration and keep unsupported inputs o
   assert.equal(predefined.inst.level, 1);
   assert.equal(predefined.overrideSkillBlackboard[0].value, -0.05);
   assert.deepEqual(parsed.routes[0].endPosition, [9, 2]);
-  assert.throws(() => { predefined.overrideSkillBlackboard[0].value = 1; }, TypeError);
   assert.throws(() => slimeMovementFragment(raw), /predefined instances/);
   for (const mutate of [
     raw => { raw.waves[0].fragments[0].actions[0].routeIndex = 3; },

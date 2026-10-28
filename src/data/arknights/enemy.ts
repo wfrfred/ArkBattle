@@ -201,14 +201,14 @@ export function resolveEnemyMovementValues(
         throw new TypeError("enemy prefabKey requires a defined value");
     }
 
-    return Object.freeze({
+    return {
         id: source.Key,
         maxHp,
         moveSpeed,
         prefabKey,
         notCountInTotal:
             overridden.notCountInTotal ?? selected.notCountInTotal ?? base.notCountInTotal ?? false,
-    });
+    };
 }
 
 export function createEnemyMovementContent(
@@ -233,13 +233,13 @@ export function createEnemyMovementContent(
         },
     } satisfies MovementDefinition;
 
-    return Object.freeze({
+    return {
         definition,
         alwaysCheckCurrentPoint: profile.alwaysCheckCurrentPoint,
         notCountInTotal,
         delayToBornTicks: profile.delayToBornTicks,
         onlyDelayToBornOnTileStart: profile.onlyDelayToBornOnTileStart,
-    });
+    };
 }
 
 export function parseEnemyMovementContent(
