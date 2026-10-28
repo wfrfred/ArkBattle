@@ -155,7 +155,7 @@ for (const ref of candidates) {
 
 Core 直接公开完整实体，Action／Execution、Skill／Activation、Effect、Projectile、Mechanism、Tile／Terrain 的默认私有参数均为 object，不另设元数据实体或兼容别名。普通查询返回完整的默认类型，具体字段形状只由已知 Definition／精确 Ref 证明；实际诊断 Snapshot 与 Presentation 保留各自用途，不作为另一套运行模型。
 
-异构存储、内部完整读取、创建组合边界及接纳不同私有类型的泛型上界可使用 any。ref／get 等泛型函数在上界擦除后仍返回原 T，普通公开返回不把默认值改为 any。字段 setter 以 Ref<T> 绑定对象，NoInfer<T[字段]> 只约束已经证明的字段载荷；创建操作继续由 Definition 配对泛型，不为这一类型边界增加运行时校验。
+Core 的异构存储、内部完整读取、创建组合边界及接纳不同私有类型的泛型上界可使用 any。ESLint 默认启用 no-explicit-any，仅在 src/core 下放宽；Content、Data、Legacy 保持该规则，使用具体类型或保留私有参数的泛型。ref／get 等泛型函数在上界擦除后仍返回原 T，普通公开返回不把默认值改为 any。字段 setter 以 Ref<T> 绑定对象，NoInfer<T[字段]> 只约束已经证明的字段载荷；创建操作继续由 Definition 配对泛型，不为这一类型边界增加运行时校验。
 
 all 绑定创建查询时的不可变状态版本，返回 Unit 对象，保留逻辑登记顺序，不隐含生命周期、HP、空间存在、阵营或 Targetable 条件。get 只解析传入版本中的身份，LEAVING 对象在注销前仍可读取；对象已移除则返回 undefined。更新已有单位不改变登记顺序，删除后重新登记排在末尾；需要 ID 或其他优先级的业务显式排序。
 

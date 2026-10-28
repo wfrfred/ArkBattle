@@ -203,7 +203,7 @@ export function loadMovementScenario(
         terrain.mapOptions,
         catalog,
     );
-    const terrainDefinitions = new Set<TerrainDefinition<any>>(
+    const terrainDefinitions = new Set<Pick<TerrainDefinition, "id">>(
         level.map.tiles.values().map((tile) => tile.definition.terrain.definition),
     );
     terrainDefinitions.delete(normal);

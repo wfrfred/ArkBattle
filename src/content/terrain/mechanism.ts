@@ -47,7 +47,7 @@ interface Behaviour<P extends object> {
         unit: Unit,
         params: P,
         scopes: readonly LifetimeScope[],
-    ) => Result<Ref<Effect<any, any>> | undefined>;
+    ) => Result<Ref<Effect> | undefined>;
 }
 
 function onGround(unit: Unit): boolean {
@@ -237,7 +237,7 @@ function create<P extends object>(
 }
 
 export function createTerrainMechanism(
-    definition: TerrainDefinition<any>,
+    definition: Pick<TerrainDefinition, "id">,
     indices?: readonly number[],
 ): MechanismDefinition<ContactState> {
     if (definition === terrain.infection) {

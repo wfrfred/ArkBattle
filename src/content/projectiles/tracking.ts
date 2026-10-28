@@ -41,9 +41,9 @@ export interface Presentation {
     readonly launchedAtTick: number;
 }
 
-export function project<P extends Projectile<any>>(
+export function project<S extends object>(
     battle: BattleState,
-    reference: Ref<P>,
+    reference: Ref<Projectile<S>>,
 ): Presentation | undefined {
     const self = projectiles.get(battle, reference);
     if (
@@ -53,15 +53,15 @@ export function project<P extends Projectile<any>>(
         return undefined;
     }
 
-    const tracking = self as Projectile<State>;
+    const state = self.state as State;
 
     return {
-        id: tracking.id,
-        source: tracking.state.source?.id ?? null,
-        traceTarget: tracking.state.target.id,
-        position: tracking.position,
-        destination: tracking.state.destination,
-        launchedAtTick: tracking.state.launchedAtTick,
+        id: self.id,
+        source: state.source?.id ?? null,
+        traceTarget: state.target.id,
+        position: self.position,
+        destination: state.destination,
+        launchedAtTick: state.launchedAtTick,
     };
 }
 
