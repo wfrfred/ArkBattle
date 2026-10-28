@@ -55,7 +55,7 @@ export function initialize(battle: BattleState, definition: Definition): Result<
         rules: [
             {
                 id: "@skill/active-recovery",
-                allowsRecovery: allowsInactiveRecovery,
+                allowsRecovery: (_battle, self) => self.skill.activation === null,
             },
         ],
         spRecovered: [],
@@ -68,10 +68,6 @@ export function initialize(battle: BattleState, definition: Definition): Result<
     };
 
     return { state: initialized.state, value };
-}
-
-function allowsInactiveRecovery(_battle: BattleState, self: Unit & Skill): boolean {
-    return self.skill.activation === null;
 }
 
 export function setRule(state: State, rule: Rule): State {

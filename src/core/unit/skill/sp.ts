@@ -136,9 +136,6 @@ export function validateDefinition(definition: Definition): void {
 }
 
 export function initialize(definition: Definition, tick = 0): State {
-    validateDefinition(definition);
-    assertNonnegativeSafeInteger(tick, "skill SP initialization tick");
-
     return {
         value: definition.initial,
         recovery:

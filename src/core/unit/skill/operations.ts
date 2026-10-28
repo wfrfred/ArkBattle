@@ -308,10 +308,7 @@ export function operate<X extends Activation<any, any>>(
         return reject("UNAVAILABLE");
     }
 
-    const definition = self.definition.activation;
-    if (definition === null) {
-        return reject("UNAVAILABLE");
-    }
+    const definition = self.definition.activation!;
     if (
         !unit.skill.rules.every((rule) => rule.allowsOperation?.(battle, unit, operation) ?? true)
     ) {
@@ -331,23 +328,21 @@ export function operate<X extends Activation<any, any>>(
 export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>): BattleState {
     battle = sp.advance(battle, host);
     let unit = units.get(battle, host);
-    let self = query.getCurrent(battle, host);
-    if (unit?.lifecycle === "PRESENT" && self?.definition.onTick !== undefined) {
-        battle = self.definition.onTick(battle, host, self);
+    if (unit?.lifecycle === "PRESENT" && unit.skill.definition.onTick !== undefined) {
+        battle = unit.skill.definition.onTick(battle, host, unit.skill);
     }
 
     unit = units.get(battle, host);
-    self = query.getCurrent(battle, host);
 
-    if (unit?.lifecycle === "PRESENT" && self?.activation?.status === "ACTIVE") {
-        const active = self as Omit<Activation, keyof Identified<object>>;
+    if (unit?.lifecycle === "PRESENT" && unit.skill.activation?.status === "ACTIVE") {
+        const active = unit.skill as Omit<Activation, keyof Identified<object>>;
         if (
             active.activation.sustain.type === "TIME" &&
             active.activation.sustain.endsAtTick <= battle.tick
         ) {
             battle = finish(battle, activationRef<Activation>(host, active));
         } else {
-            battle = active.definition.activation?.onTick?.(battle, host, active) ?? battle;
+            battle = active.definition.activation!.onTick?.(battle, host, active) ?? battle;
         }
     }
 
@@ -358,50 +353,40 @@ export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>):
         current.skill.activation === null &&
         (trigger === "AUTO" || trigger === "PASSIVE")
     ) {
-        const skill = query.getCurrent(battle, host)!;
-        battle = activate(battle, skillRef(host, skill.definition), trigger).state;
+        battle = activate(battle, skillRef(host, current.skill.definition), trigger).state;
     }
 
     return battle;
 }
 
 export function enter(battle: BattleState, host: Ref<Unit & SkillCapability>): BattleState {
-    const unit = units.get(battle, host);
-    if (unit?.lifecycle === "PRESENT") {
-        const self = query.getCurrent(battle, host)!;
-        if (hasVitality(unit) && self.definition.sp?.recovery.type === "HIT") {
-            const updated = { ...unit, vitality: setDamageHook(unit.vitality, hitRecovery) };
-            battle = updateUnit(battle, [updated]);
-        }
-
-        const current = units.get(battle, host);
-        if (
-            current !== undefined &&
-            hasAction(current) &&
-            self.definition.sp?.recovery.type === "ACTION"
-        ) {
-            const updated = {
-                ...current,
-                action: setReleasedHook(current.action, actionRecovery),
-            };
-            battle = updateUnit(battle, [updated]);
-        }
-
-        const entered = query.getCurrent(battle, host);
-        if (entered !== undefined && self.definition.onEnter !== undefined) {
-            battle = self.definition.onEnter(battle, host, entered);
-        }
+    let unit = units.get(battle, host);
+    if (unit?.lifecycle !== "PRESENT") {
+        return battle;
     }
 
-    const current = units.get(battle, host);
+    const definition = unit.skill.definition;
+    if (hasVitality(unit) && definition.sp?.recovery.type === "HIT") {
+        const updated = { ...unit, vitality: setDamageHook(unit.vitality, hitRecovery) };
+        battle = updateUnit(battle, [updated]);
+    } else if (hasAction(unit) && definition.sp?.recovery.type === "ACTION") {
+        const updated = {
+            ...unit,
+            action: setReleasedHook(unit.action, actionRecovery),
+        };
+        battle = updateUnit(battle, [updated]);
+    }
 
-    if (
-        current?.lifecycle === "PRESENT" &&
-        current.skill.definition.activation?.trigger === "PASSIVE"
-    ) {
-        const skill = query.getCurrent(battle, host)!;
+    unit = units.get(battle, host);
 
-        return activate(battle, skillRef(host, skill.definition), "PASSIVE").state;
+    if (unit !== undefined && definition.onEnter !== undefined) {
+        battle = definition.onEnter(battle, host, unit.skill);
+    }
+
+    unit = units.get(battle, host);
+
+    if (unit?.lifecycle === "PRESENT" && unit.skill.definition.activation?.trigger === "PASSIVE") {
+        return activate(battle, skillRef(host, unit.skill.definition), "PASSIVE").state;
     }
 
     return battle;
