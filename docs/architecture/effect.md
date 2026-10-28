@@ -81,7 +81,7 @@ S 是实例私有数据的类型，例如护盾层数、周期进度或 Aura 的
 
 `View<H>` 保留 id、`Ref<Unit & H>` 宿主、source、scopes、enabled、status，以及 Definition 的 id／group 元数据，不暴露 data 或生命周期回调。Definition 元数据仍指向原 Definition 对象，不复制成另一份对象。完整 `Effect<S, H>` 扩展 `View<H>`，再提供成对的 `Definition<S, H>` 与 data。
 
-`Effect<object, object>` 不是任意 `Effect<S, H>` 的安全替代类型。某个 Definition 可能只接受护盾数据和 Vitality 宿主，不能因为存进异构集合就把它当作接受任意 object 的行为。需要具体数据与行为时，使用下面两种类型化读取。
+具体内容需要恢复 S／H 时，使用精确 Ref 或 Definition 对象身份查询。Core 只需把未知实例交给它自身 Definition 的程序，完整读取由容器的内部 getter 提供，不恢复某个具体内容类型。
 
 | 存储操作                      | 含义                                                      |
 | ----------------------------- | --------------------------------------------------------- |
@@ -90,7 +90,7 @@ S 是实例私有数据的类型，例如护盾层数、周期进度或 Aura 的
 | `effects.get(id)`             | 按实例 ID 取得 View，不暴露私有数据和 Definition 回调     |
 | `effects.get(ref)`            | 根据精确 Ref 恢复对应实例，并检查宿主与局部 ID          |
 | `effects.get(id, definition)` | 同时检查 Definition 身份，取得对应 `Effect<S, H>`         |
-| `effects.read(id, reader)`    | 将完整条目交给泛型 reader，使 Definition 与 data 保持配对 |
+| `effects.getEffect(id)`       | Core 内部取得完整 Effect，默认擦除具体 data／H 形状       |
 | `effects.values()`            | 返回绑定当前版本的 `Query<View>`                         |
 | `effects.keys()`              | 返回绑定当前版本的 `Query<Id>`                           |
 | `effects.add(effect)`         | 仅接受 `effect.id === nextId`，返回新容器并将 nextId 加一 |
@@ -99,22 +99,19 @@ S 是实例私有数据的类型，例如护盾层数、周期进度或 Aura 的
 
 具体内容已知 Definition 时，用 `get(id, definition)` 同时检查实例 ID 和 Definition 对象身份，再读取完整的 `Effect<S, H>`。仅字符串 ID 相同的另一个 Definition 不匹配。已持有精确 Ref 时直接使用 `get(ref)`，更新私有数据则调用领域 `setData()`。
 
-通用生命周期操作不知道实例的具体 S、H，却需要保持 Definition 与 self 私有数据的类型配对。存储接口因此提供：
+通用生命周期操作直接读取当前完整实例：
 
 ```typescript
-read<R>(
-    id: Id,
-    reader: <S extends object, H extends object>(effect: Effect<S, H>) => R,
-): R | undefined;
+getEffect(id: Id): Effect | undefined;
 ```
 
-reader 对任意 S、H 都成立，不将未知条目断言为某个具体业务类型。它可以在同一组泛型下组合实例与其 Definition；生命周期阶段、回调实参与状态接续由 operations 决定。`read()` 只负责读取完整条目并返回 reader 的结果，不成为生命周期执行器。
+getEffect 返回默认使用 object／object 的完整 Effect，容器内以 as Effect 恢复，作为受信的类型边界。Core 只调用该实例自身 Definition 的程序，不解释私有 data 的结构或宿主能力 H，保留实例与 Definition 的配对。生命周期阶段、回调实参与状态接续仍由 operations 决定；getter 只返回当前容器版本的实例，不执行内容程序，也不扩大普通 get／values 的 View。
 
 异构存储需要的擦除与恢复集中在容器内部，不另设业务代码需要理解的 Instance 类型。`add()` 使用当前 nextId，不接受跳号或重用旧 ID。`replace()` 检查 Ref 与替换对象的宿主、局部 ID 一致，并保留原 Definition 对象身份；即使字符串 ID 相同，也不能改用另一个 Definition。缺失实例的 replace／remove 返回原容器，删除不回收已经分配的 ID。
 
 Effects 的完整替换属于 Core 存储接口。它不接收 BattleState，不选择或执行生命周期回调，不决定覆写赢家、不检查宿主生命周期，也不结束 Scope。Core 通过它提交已完成的领域结算；内容私有数据更新使用 `setData()`，许可与生命周期变化使用相应完整操作。
 
-不可变 State 直接共享这个容器。容器的 `toJSON()` 返回 `{ instances, nextId }`，其中 instances 是显式物化的诊断 Snapshot 数组；该类型在 View 之外保存 `data: unknown`，让 JSON 诊断包含私有数据与 ID 进度。诊断表示独立于普通 Query，不承担恢复 Definition、回调或运行容器的职责。
+不可变 State 直接共享这个容器。容器的 `toJSON()` 通过内部 getEffect 读取完整实例，返回 `{ instances, nextId }`，其中 instances 是显式物化的诊断 Snapshot 数组；该类型在 View 之外保存 `data: unknown`，让 JSON 诊断包含私有数据与 ID 进度。诊断表示独立于普通 Query，不承担恢复 Definition、回调或运行容器的职责。
 
 ```typescript
 type Ref<T> = Identity<T> & Phantom<T>;

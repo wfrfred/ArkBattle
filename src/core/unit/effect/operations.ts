@@ -131,51 +131,47 @@ export function bindLifetime(
 }
 
 export function end(battle: BattleState, ref: Ref<View>, reason = "EXPLICIT"): BattleState {
-    const instance = get(battle, ref);
+    const instance = units.get(battle, ref.host)?.effects.getEffect(ref.id);
     if (instance === undefined || instance.status === "ENDING") {
         return battle;
     }
 
     const children = dependents(battle.effect.dependency, { type: "EFFECT", ref });
-    const host = units.get(battle, ref.host)!;
+    const definition = instance.definition;
+    const reference = effectRef(instance);
+    const ending = { ...instance, status: "ENDING" as const };
+    battle = change(battle, ref, { status: "ENDING" });
+    let ended = get(battle, reference) ?? ending;
 
-    return host.effects.read(ref.id, (instance) => {
-        const definition = instance.definition;
-        const reference = effectRef(instance);
-        const ending = { ...instance, status: "ENDING" as const };
-        battle = change(battle, ref, { status: "ENDING" });
-        let ended = get(battle, reference) ?? ending;
+    if (instance.status === "ACTIVE" && definition.onDisable !== undefined) {
+        battle = definition.onDisable(battle, ended);
+        ended = get(battle, reference) ?? ended;
+    }
 
-        if (instance.status === "ACTIVE" && definition.onDisable !== undefined) {
-            battle = definition.onDisable(battle, ended);
-            ended = get(battle, reference) ?? ended;
-        }
+    for (const child of children) {
+        battle = end(battle, child, reason);
+        ended = get(battle, reference) ?? ended;
+    }
 
-        for (const child of children) {
-            battle = end(battle, child, reason);
-            ended = get(battle, reference) ?? ended;
-        }
+    if (definition.onEnd !== undefined) {
+        battle = definition.onEnd(battle, ended, reason);
+    }
 
-        if (definition.onEnd !== undefined) {
-            battle = definition.onEnd(battle, ended, reason);
-        }
+    const current = units.get(battle, ref.host);
+    if (current !== undefined) {
+        battle = updateUnit(battle, [
+            {
+                ...current,
+                effects: current.effects.remove(ref.id),
+            },
+        ]);
+    }
 
-        const current = units.get(battle, ref.host);
-        if (current !== undefined) {
-            battle = updateUnit(battle, [
-                {
-                    ...current,
-                    effects: current.effects.remove(ref.id),
-                },
-            ]);
-        }
+    if (definition.group !== undefined) {
+        battle = reconcileGroupActivity(battle, ref.host.id, definition.group.id);
+    }
 
-        if (definition.group !== undefined) {
-            battle = reconcileGroupActivity(battle, ref.host.id, definition.group.id);
-        }
-
-        return battle;
-    })!;
+    return battle;
 }
 
 export function endDependents(
@@ -208,14 +204,10 @@ export function advance(battle: BattleState): BattleState {
         .toArray();
 
     for (const ref of candidates) {
-        battle =
-            units.get(battle, ref.host)?.effects.read(ref.id, (instance) => {
-                if (instance.status !== "ACTIVE" || instance.definition.onTick === undefined) {
-                    return battle;
-                }
-
-                return instance.definition.onTick(battle, instance);
-            }) ?? battle;
+        const instance = units.get(battle, ref.host)?.effects.getEffect(ref.id);
+        if (instance?.status === "ACTIVE" && instance.definition.onTick !== undefined) {
+            battle = instance.definition.onTick(battle, instance);
+        }
 
         const current = get(battle, ref);
         const expires = current === undefined ? null : deadline(current);
@@ -285,16 +277,18 @@ function change(
         return battle;
     }
 
-    const next = unit.effects.read(ref.id, (instance) => {
-        const effects = unit.effects.replace(effectRef(instance), {
-            ...instance,
-            ...changes,
-        });
+    const instance = unit.effects.getEffect(ref.id);
+    if (instance === undefined) {
+        return battle;
+    }
 
-        return effects === unit.effects ? unit : { ...unit, effects };
+    const effects = unit.effects.replace(effectRef(instance), {
+        ...instance,
+        ...changes,
     });
+    const next = effects === unit.effects ? unit : { ...unit, effects };
 
-    return next === undefined ? battle : updateUnit(battle, [next]);
+    return updateUnit(battle, [next]);
 }
 
 function shouldBeActive(battle: BattleState, instance: View, unit: Unit): boolean {
@@ -326,7 +320,7 @@ function shouldBeActive(battle: BattleState, instance: View, unit: Unit): boolea
 
 function updateStatus(battle: BattleState, ref: Ref<View>): BattleState {
     const unit = units.get(battle, ref.host);
-    const instance = get(battle, ref);
+    const instance = unit?.effects.get(ref);
     if (
         unit === undefined ||
         instance === undefined ||
@@ -343,17 +337,14 @@ function updateStatus(battle: BattleState, ref: Ref<View>): BattleState {
 
     battle = change(battle, ref, { status: active ? "ACTIVE" : "INACTIVE" });
 
-    return (
-        units.get(battle, ref.host)?.effects.read(ref.id, (current) => {
-            if (current.status !== (active ? "ACTIVE" : "INACTIVE")) {
-                return battle;
-            }
+    const current = units.get(battle, ref.host)?.effects.getEffect(ref.id);
+    if (current?.status !== (active ? "ACTIVE" : "INACTIVE")) {
+        return battle;
+    }
 
-            const callback = active ? current.definition.onEnable : current.definition.onDisable;
+    const callback = active ? current.definition.onEnable : current.definition.onDisable;
 
-            return callback === undefined ? battle : callback(battle, current);
-        }) ?? battle
-    );
+    return callback === undefined ? battle : callback(battle, current);
 }
 
 function reconcileGroupActivity(battle: BattleState, unitId: Id, groupId: string): BattleState {

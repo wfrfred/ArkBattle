@@ -97,8 +97,8 @@ test("Effect Store restores precise reads only for the matching host and Definit
     assert.strictEqual(original.get(first.id).definition, definition);
     assert.equal(original.get(first.id, { ...definition }), undefined);
     assert.equal(original.get({ ...ref(first), host: { id: 1 } }), undefined);
-    assert.equal(original.read(first.id, self => self.data.count), 1);
-    assert.equal(original.read(9, () => { throw new Error("missing Effect reader called"); }), undefined);
+    assert.equal(original.getEffect(first.id).data.count, 1);
+    assert.equal(original.getEffect(9), undefined);
 });
 
 test("Effect lifetime indexes follow Store versions without rebuilding unchanged containers", () => {

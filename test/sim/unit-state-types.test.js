@@ -38,6 +38,8 @@ import { Effects } from ${module("unit/effect/effects")};
 import type { Contribution } from ${module("unit/contribution/contribution")};
 import type { Modifier } from ${module("unit/contribution/attribute")};
 import { ref as unitRef, get as getUnit } from ${module("unit/index")};
+type Equal<A,B>=(<T>()=>T extends A?1:2) extends (<T>()=>T extends B?1:2)?true:false;
+type Assert<T extends true>=T;
 const host=initialize(battle, {id:1,position:[0,0],definition:{hooks: [], id:'host',vitality: { maxHp: 100, defense: 0, resistance: 0 }}}).value;
 const content: Definition<{charges:number},Vitality> = {
  id:'shield',initialize:()=>({charges:2}),
@@ -72,13 +74,21 @@ if(ref!==undefined) {
 declare const shield:Effect<{charges:number},Vitality>;
 declare const poison:Effect<{damage:number}>;
 const mixed=Effects.empty().add(shield).add(poison);
-const readState:BattleState|undefined=mixed.read(shield.id,effect=>
- effect.definition.onTick?.(battle,effect)??battle,
-);
-// @ts-expect-error a polymorphic reader cannot invent concrete private data and host requirements.
-const leakedEffect:Effect<{charges:number},Vitality>|undefined=mixed.read(shield.id,effect=>effect);
-// @ts-expect-error a polymorphic reader cannot invent a concrete Definition association.
-const leakedDefinition:Definition<{charges:number},Vitality>|undefined=mixed.read(shield.id,effect=>effect.definition);
+const opaqueEffect=mixed.getEffect(shield.id);
+type OpaqueEffect=Assert<Equal<typeof opaqueEffect,Effect|undefined>>;
+if(opaqueEffect!==undefined){
+ const readState:BattleState=opaqueEffect.definition.onTick?.(battle,opaqueEffect)??battle;
+ const endedState:BattleState=opaqueEffect.definition.onEnd?.(battle,opaqueEffect,"TEST")??battle;
+ // @ts-expect-error an erased getter cannot infer concrete private fields.
+ opaqueEffect.data.charges;
+ const opaqueHost=getUnit(battle,opaqueEffect.host);
+ // @ts-expect-error an erased getter cannot infer host capabilities.
+ opaqueHost?.vitality.hp;
+}
+// @ts-expect-error an erased getter cannot invent concrete private data and host requirements.
+const leakedEffect:Effect<{charges:number},Vitality>|undefined=opaqueEffect;
+// @ts-expect-error an erased getter cannot invent a concrete Definition association.
+const leakedDefinition:Definition<{charges:number},Vitality>|undefined=opaqueEffect?.definition;
 const restored=mixed.get(shield.id,content);
 if(restored!==undefined){
  const charges:number=restored.data.charges;

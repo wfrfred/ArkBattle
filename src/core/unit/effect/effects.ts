@@ -47,13 +47,8 @@ export class Effects {
         return restored;
     }
 
-    read<R>(
-        id: Id,
-        reader: <S extends object, H extends object>(effect: Effect<S, H>) => R,
-    ): R | undefined {
-        const effect = this.#entries.get(id);
-
-        return effect === undefined ? undefined : reader(effect as Effect);
+    getEffect(id: Id): Effect | undefined {
+        return this.#entries.get(id) as Effect | undefined;
     }
 
     values(): Query<View> {
@@ -112,7 +107,7 @@ export class Effects {
         return {
             instances: this.#entries
                 .keys()
-                .map((id) => this.read(id, (effect): Snapshot => effect)!)
+                .map((id) => this.getEffect(id)!)
                 .toArray(),
             nextId: this.nextId,
         };
