@@ -2,7 +2,7 @@ export { createDefinition } from "./definition.js";
 
 export type { Definition } from "./definition.js";
 
-export { ref, setData as setActivationData } from "./activation.js";
+export { ref } from "./activation.js";
 
 export type {
     Operation,
@@ -18,6 +18,8 @@ export type { Instance } from "./instance.js";
 
 export {
     lifetime,
+    setData,
+    setActivationData,
     activate,
     finish,
     cancel,

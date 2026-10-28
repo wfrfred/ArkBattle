@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as skills from "../../dist/core/unit/skill/index.js";
-import { setEndedHook } from "../../dist/core/unit/capability/skill/index.js";
+import { setHook } from "../../dist/core/unit/capability/skill/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { available, scope } from "../../dist/core/lifetime/index.js";
 import { key } from "../../dist/core/lifetime/dependency.js";
@@ -56,7 +56,7 @@ test("a removed Activation still delays its owner until the entire ended Hook re
         return { state: battle, value: undefined };
     } }] });
     let battle = effectFixtureWork(host);
-    battle = update(battle, [{ ...host, skill: setEndedHook(host.skill, {
+    battle = update(battle, [{ ...host, skill: setHook(host.skill, "ended", {
         id: "remove-owner-after-slot-clear",
         invoke(current, { host, event }) {
             assert.equal(skills.get(current, skills.ref(event.activation)), undefined);

@@ -1,4 +1,4 @@
-import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
+import { assertFiniteNumber } from "../../../common/assert.js";
 import type { Definition as UnitDefinition, Unit } from "../../unit.js";
 import * as registry from "../../../hook.js";
 import * as contribution from "../../contribution/contribution.js";
@@ -102,62 +102,6 @@ export function removeHook(state: State, key: Key, id: string): State {
     return hooks === state[key] ? state : { ...state, [key]: hooks };
 }
 
-export function setSpRecoveredHook(state: State, hook: Hook<Events["spRecovered"]>): State {
-    return setHook(state, "spRecovered", hook);
-}
-
-export function removeSpRecoveredHook(state: State, id: string): State {
-    return removeHook(state, "spRecovered", id);
-}
-
-export function setSpPaidHook(state: State, hook: Hook<Events["spPaid"]>): State {
-    return setHook(state, "spPaid", hook);
-}
-
-export function removeSpPaidHook(state: State, id: string): State {
-    return removeHook(state, "spPaid", id);
-}
-
-export function setSpModifiedHook(state: State, hook: Hook<Events["spModified"]>): State {
-    return setHook(state, "spModified", hook);
-}
-
-export function removeSpModifiedHook(state: State, id: string): State {
-    return removeHook(state, "spModified", id);
-}
-
-export function setAmmoConsumedHook(state: State, hook: Hook<Events["ammoConsumed"]>): State {
-    return setHook(state, "ammoConsumed", hook);
-}
-
-export function removeAmmoConsumedHook(state: State, id: string): State {
-    return removeHook(state, "ammoConsumed", id);
-}
-
-export function setAmmoReplenishedHook(state: State, hook: Hook<Events["ammoReplenished"]>): State {
-    return setHook(state, "ammoReplenished", hook);
-}
-
-export function removeAmmoReplenishedHook(state: State, id: string): State {
-    return removeHook(state, "ammoReplenished", id);
-}
-
-export function setActivatedHook(state: State, hook: Hook<Events["activated"]>): State {
-    return setHook(state, "activated", hook);
-}
-
-export function removeActivatedHook(state: State, id: string): State {
-    return removeHook(state, "activated", id);
-}
-
-export function setEndedHook(state: State, hook: Hook<Events["ended"]>): State {
-    return setHook(state, "ended", hook);
-}
-
-export function removeEndedHook(state: State, id: string): State {
-    return removeHook(state, "ended", id);
-}
-
 export function setAmmoContribution(
     state: State,
     entry: contribution.Contribution<AmmoInput>,
@@ -192,6 +136,7 @@ export function setDurationContribution(
         return state;
     }
 
+    assertFiniteNumber(entry.value.priority, "skill modifier priority");
     const duration = contribution.set(current.duration, entry);
 
     return duration === current.duration ? state : { ...state, sustain: { ...current, duration } };
@@ -206,25 +151,4 @@ export function removeDurationContribution(state: State, id: string): State {
     const duration = contribution.remove(current.duration, id);
 
     return duration === current.duration ? state : { ...state, sustain: { ...current, duration } };
-}
-
-export function validateState(state: State): void {
-    assertNonnegativeSafeInteger(state.nextActivationId, "skill activation allocation progress");
-
-    if (state.sp !== null) {
-        assertNonnegativeSafeInteger(state.sp.value, "skill SP");
-    }
-    if (state.active !== null) {
-        assertNonnegativeSafeInteger(state.active.id, "skill activation identity");
-
-        if (state.active.id >= state.nextActivationId) {
-            throw new TypeError("skill allocation progress must exceed its active identity");
-        }
-        if (
-            state.active.sustain.type === "AMMO" &&
-            !Number.isSafeInteger(state.active.sustain.remaining)
-        ) {
-            throw new TypeError("skill ammunition must be a safe integer");
-        }
-    }
 }

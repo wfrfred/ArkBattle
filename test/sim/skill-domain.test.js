@@ -483,3 +483,37 @@ test("generic Action scheduling does not itself award ACTION SP", () => {
     const battle = advanceAction(started.state, started.value.ref);
     assert.equal(read(battle).sp.value, 0);
 });
+
+
+test("non-TIME recovery does not evaluate natural speed or publish tick-only Unit updates", () => {
+    for (const type of ["ACTION", "HIT", "NONE"]) {
+        const recovery = type === "NONE" ? { type } : { type, amount: 1 };
+        const f = fixture({ sp: resource({ recovery }) });
+        const current = read(f.state);
+        const skill = { ...current, sp: sp.setContribution(current.sp, "recoverySpeed", {
+            id: "unexpected-natural-speed",
+            value: () => assert.fail(`${type} must not resolve natural recovery speed`),
+        }) };
+        const state = at(setSkill(f.state, skill), 90);
+        assert.equal(sp.advance(state, f.ref), state);
+        assert.equal(read(state), skill);
+        assert.equal(read(state).sp.lastTick, 0);
+        assert.equal(read(state).sp.recovery, null);
+    }
+});
+
+test("Skill modifier registration validates priority while evaluation validates program output", () => {
+    const f = fixture({ sp: resource() });
+    const before = read(f.state);
+    const invalid = { id: "bad-priority", value: { priority: NaN, apply: () => 1 } };
+    for (const key of ["capacity", "requirement", "cost"]) {
+        assert.throws(() => sp.setContribution(before.sp, key, invalid), /modifier priority/);
+    }
+    assert.throws(() => setDurationContribution(before, invalid), /modifier priority/);
+    const withBadOutput = { ...before, sp: sp.setContribution(before.sp, "capacity", {
+        id: "bad-output", value: { priority: 0, apply: () => NaN },
+    }) };
+    const state = setSkill(f.state, withBadOutput);
+    assert.throws(() => sp.resolveCapacity(state, f.ref), /modified parameter/);
+    assert.equal(read(f.state), before);
+});

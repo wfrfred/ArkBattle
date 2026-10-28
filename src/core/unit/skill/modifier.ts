@@ -14,10 +14,6 @@ export function apply(
     base: number,
     modifiers: readonly Modifier[],
 ): number {
-    for (const modifier of modifiers) {
-        assertFiniteNumber(modifier.priority, "skill modifier priority");
-    }
-
     let value = base;
 
     for (const modifier of [...modifiers].sort((left, right) => left.priority - right.priority)) {

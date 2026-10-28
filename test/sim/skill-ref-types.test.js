@@ -19,9 +19,9 @@ import { initialize } from ${source("unit/initialize")};
 import * as units from ${source("unit/query")};
 import { createDefinition, type Definition } from ${source("unit/skill/definition")};
 import { initialize as initializeSkill, hasSkill, type Skill, type State } from ${source("unit/capability/skill/capability")};
-import { ref, setData, type Activation } from ${source("unit/skill/activation")};
-import { get as getInstance, replace, replaceActivation, setData as setPersistentData } from ${source("unit/skill/instance")};
-import { activate, cancel } from ${source("unit/skill/operations")};
+import { ref, type Activation } from ${source("unit/skill/activation")};
+import { get as getInstance } from ${source("unit/skill/instance")};
+import { activate, cancel, setData as setPersistentData, setActivationData } from ${source("unit/skill/operations")};
 import { get } from ${source("unit/skill/index")};
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
 type Assert<T extends true> = T;
@@ -35,8 +35,8 @@ const definition: Definition<Persistent, Active> = createDefinition({
     onEnter: (current, program) => {
         const count: number = program.state.data.count;
         // @ts-expect-error Persistent data is supplied as a value rather than a transform.
-        setPersistentData(program, () => ({ count: count + 1 }));
-        return replace(current, setPersistentData(program, { count: count + 1 }));
+        setPersistentData(current, program, () => ({ count: count + 1 }));
+        return setPersistentData(current, program, { count: count + 1 });
     },
     activation: { trigger: "MANUAL", sustain: { type: "INFINITE" },
         initialize: (_battle, program) => ({ mode: program.state.data.count === 0 ? "FIRST" : "SECOND" }),
@@ -47,9 +47,9 @@ const definition: Definition<Persistent, Active> = createDefinition({
             const program = getInstance(current, activation.host, definition);
             if (program === undefined) return current;
             const count: number = program.state.data.count;
-            return replace(current, setPersistentData(program, { count: count + 1 }));
+            return setPersistentData(current, program, { count: count + 1 });
         },
-        onTick: (current, activation) => replaceActivation(current, ref(activation), setData(activation, { mode: "SECOND" })),
+        onTick: (current, activation) => setActivationData(current, ref(activation), { mode: "SECOND" }),
     },
 });
 const initialized = initialize(battle, { id: 0, position: [0, 0], definition: { hooks: [], id: "typed-host", skill: definition } }).value;
@@ -63,8 +63,16 @@ state.data.count;
 initialize(battle, { id: 1, position: [0, 0], definition: { hooks: [], id: "invalid", skill: { id: "invalid", initialize: () => ({}), sp: null, activation: { trigger: "MANUAL", sustain: { type: "INFINITE" } } } } });
 const knownProgram = getInstance(battle, units.ref(initialized), definition);
 const knownCount: number | undefined = knownProgram?.state.data.count;
-// @ts-expect-error restoring a private program requires its Definition token.
-getInstance(battle, units.ref(initialized));
+const erasedProgram = getInstance(battle, units.ref(initialized));
+// @ts-expect-error an internal current read does not restore private persistent fields.
+erasedProgram?.state.data.count;
+// @ts-expect-error restoring chosen private types still requires a Definition token.
+getInstance<Persistent, Active>(battle, units.ref(initialized));
+if (knownProgram !== undefined) {
+    setPersistentData(battle, knownProgram, { count: 1 });
+    // @ts-expect-error the result value cannot widen the Instance's proven data type.
+    setPersistentData(battle, knownProgram, { count: "wrong" });
+}
 const started = activate(battle, units.ref(initialized));
 if (started.value.type === "ACTIVATED") {
     const current = get(started.state, started.value.ref);
@@ -104,11 +112,14 @@ get(battle, self);
 // @ts-expect-error
 get(battle, erased)!.data.mode;
 // @ts-expect-error
-setData(self, { mode: "INVALID" });
+setActivationData(battle, known, { mode: "INVALID" });
 // @ts-expect-error Activation data is supplied as a value rather than a transform.
-setData(self, () => ({ mode: "SECOND" }));
-// @ts-expect-error writeback cannot infer a different private state from the replacement value.
-replaceActivation(battle, known, { ...self, data: { mode: "INVALID" } });
+setActivationData(battle, known, () => ({ mode: "SECOND" }));
+setActivationData(battle, known, { mode: "SECOND" });
+// @ts-expect-error a Unit reference cannot identify an Activation.
+setActivationData(battle, units.ref(initialized), { mode: "SECOND" });
+// @ts-expect-error data writes are complete operations requiring BattleState and identity.
+setActivationData(self, { mode: "SECOND" });
 `);
         const program = ts.createProgram([path], {
             noEmit: true, strict: true, exactOptionalPropertyTypes: true,

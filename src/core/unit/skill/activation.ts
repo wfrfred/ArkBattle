@@ -43,7 +43,3 @@ export interface Activation<A extends object = object> extends Identified<{
 export function ref<T extends Activation>(self: T): Ref<T> {
     return { host: self.host, id: self.id } as Ref<T>;
 }
-
-export function setData<A extends object>(self: Activation<A>, data: NoInfer<A>): Activation<A> {
-    return data === self.data ? self : { ...self, data };
-}

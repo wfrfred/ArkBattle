@@ -1,4 +1,5 @@
 import {
+    assertFiniteNumber,
     assertNonnegativeSafeInteger,
     assertPositiveNumber,
     assertSafeInteger,
@@ -102,6 +103,7 @@ export function setContribution(...[state, key, entry]: Setting): State {
         return updated === state[key] ? state : { ...state, [key]: updated };
     }
 
+    assertFiniteNumber(entry.value.priority, "skill modifier priority");
     const updated = contribution.set(state[key], entry);
 
     return updated === state[key] ? state : { ...state, [key]: updated };
@@ -337,6 +339,9 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
 
     const state = self.skill.sp;
     const definition = self.definition.skill.sp;
+    if (definition?.recovery.type !== "TIME") {
+        return battle;
+    }
 
     if (battle.tick < state.lastTick) {
         throw new RangeError("skill SP cannot advance to an earlier tick");
@@ -347,7 +352,7 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
     let recovery: Timer | null = null;
     let pulses = 0;
 
-    if (definition?.recovery.type === "TIME" && rate > 0) {
+    if (rate > 0) {
         const periodTicks = TICKS_PER_SECOND / rate;
         assertPositiveNumber(periodTicks, "skill effective SP recovery interval");
         const previous = state.recovery;

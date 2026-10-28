@@ -15,7 +15,7 @@ interface Vitality {
 
 Definition 保存静态参数与行为描述，State 保存本领域当前事实。结构相同的配置与初态可以共享引用；更新当前状态创建新值，不修改配置。Unit 可以不选择某项能力；一旦选择，对应 Definition 和 State 必须同时存在。SpatialPresence 使用空 Definition，Hitbox 使用空 State；空定义和空状态均使用 interface {}。Occupancy Definition 声明 Slot，State 记录当前登记地块。Targetable 的 Definition 使用必填 restrictions 数组声明固有限制，初始化复制贡献容器建立 State；空数组表示没有固有限制，详见 [Targeting 与 Targetable 类型](targeting.md)。Skill.active 为 null 等领域内部业务状态不受此配对约定限制。
 
-基础 Unit 是非泛型接口，保留运行时实例 ID 与 definition.id 对应的静态内容身份。通用工厂返回 Unit 基础结构与明确选择的能力的标准 Definition／State 组合。Skill／Action Capability 本身非泛型，不把具体程序的私有类型传播到宿主 Unit、SP、Rule、Hook 或 Contribution。Skill 的内部配对读取位于 unit/skill/internal/read.ts，继续维护 Definition 与私有状态关联；已知 Definition 或具体实例建立的 Typed Ref 保留相应私有类型。需要某项能力的业务通过 Unit 与对应 Capability 的交叉类型声明依赖。
+基础 Unit 是非泛型接口，保留运行时实例 ID 与 definition.id 对应的静态内容身份。通用工厂返回 Unit 基础结构与明确选择的能力的标准 Definition／State 组合。Skill／Action Capability 本身非泛型，不把具体程序的私有类型传播到宿主 Unit、SP、Rule、Hook 或 Contribution。Skill 的内部 instance.get 普通查询集中恢复 Definition 与私有状态配对；已知 Definition 或具体实例建立的 Typed Ref 保留相应私有类型。需要某项能力的业务通过 Unit 与对应 Capability 的交叉类型声明依赖。
 
 各领域保留 hasVitality／hasSkill 等结构守卫。它们可以使用泛型保留调用者已知结构，因为守卫不更新值。普通状态变换不承诺保留任意输入字面量类型，也不使用 StableUnit／widenUnit。Core 遵守 readonly 与约定式不可变，无需所有权接管与反复复制。
 
@@ -151,7 +151,7 @@ Skill 激活先一次性提交支付与新 Activation，再记录 SKILL_ACTIVATE
 
 ## 文件职责
 
-Skill 的程序定义、Activation、SP／Ammo 与完整业务位于 [unit/skill](../../src/core/unit/skill/index.ts)；[capability/skill](../../src/core/unit/capability/skill/index.ts) 保留 Skill／State、守卫、initialize、原 validateState 及局部 Rule／Hook／Ammo／时长贡献 setter。Definition／createDefinition 与 Declaration 归 unit/skill/definition.ts，Capability 使用该声明关联配置，不复制一套定义。两个 index 分别提供领域和能力 API，不相互转发整套入口；validateState 和领域 read 仍属内部协议。SP 的局部 setContribution／removeContribution 继续归领域 sp.ts，与资源类型同处，不增加 Capability 包装；read 与 validateState 的算法不因文件归位改变。
+Skill 的程序定义、Activation、SP／Ammo 与完整业务位于 [unit/skill](../../src/core/unit/skill/index.ts)；[capability/skill](../../src/core/unit/capability/skill/index.ts) 保留 Skill／State、守卫、initialize 及局部 Rule／Hook／Ammo／时长贡献 setter。Definition／createDefinition 与 Declaration 归 unit/skill/definition.ts，Capability 使用该声明关联配置，不复制一套定义。两个 index 分别提供领域和能力 API，不相互转发整套入口。Skill 的 Hook 只用 setHook／removeHook 按 Key 登记，保留事件类型配对，不提供同义专名 setter。SP 的局部 setContribution／removeContribution 继续归领域 sp.ts，与资源类型同处，不增加 Capability 包装；Skill 静态 Modifier.priority 在 SP／时长贡献登记入口校验，每次 apply 仍校验动态程序输出。
 
 文件按真实领域职责和代码规模划分。完整结算也是纯函数，纯度和参数大小都不能单独决定拆文件。小型内部步骤可以与完整操作同处；具有独立使用与理解价值的规则才单独组织。删除只转发的跳转层，保留 Unit 离场等确有业务顺序的分阶段操作。
 

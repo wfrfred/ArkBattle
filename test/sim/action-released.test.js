@@ -10,7 +10,7 @@ import { advance } from "../../dist/core/unit/action/index.js";
 import { setBeforeReleaseHook, setReleasedHook } from "../../dist/core/unit/capability/action/capability.js";
 import { released } from "../../dist/core/unit/capability/action/release.js";
 import { createDefinition as createSkillDefinition } from "../../dist/core/unit/skill/definition.js";
-import { setSpRecoveredHook } from "../../dist/core/unit/capability/skill/capability.js";
+import { setHook } from "../../dist/core/unit/capability/skill/capability.js";
 import { enter } from "../../dist/core/unit/skill/operations.js";
 import { actionDefinition, unit, battle } from "../helpers/action-fixture.js";
 
@@ -94,7 +94,7 @@ test("beforeRelease interruption prevents the public release notification and AC
 test("ACTION recovery can synchronously cancel the released Action before its old output executes", () => {
     const f = fixture();
     const currentSkill = getUnit(f.state, 0).skill;
-    const state = setSkill(f.state, setSpRecoveredHook(currentSkill, hook("cancel-release", (current, context) => {
+    const state = setSkill(f.state, setHook(currentSkill, "spRecovered", hook("cancel-release", (current, context) => {
         const source = getUnit(current, context.host.id);
         assert.equal(context.event.source, "ACTION");
         const reference = actions.forUnit(current, unitRef(source))[0];
@@ -114,7 +114,7 @@ test("ACTION recovery can remove its host without continuing the released Action
     let recovered;
     const f = fixture();
     const currentSkill2 = getUnit(f.state, 0).skill;
-    const state = setSkill(f.state, setSpRecoveredHook(currentSkill2, hook("depart", (current, context) => {
+    const state = setSkill(f.state, setHook(currentSkill2, "spRecovered", hook("depart", (current, context) => {
         recovered = context.event;
         return { state: remove(current, context.host.id, "SCRIPT"), value: undefined };
     })));

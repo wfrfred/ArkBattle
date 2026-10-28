@@ -7,7 +7,7 @@ import type { Activation } from "./activation.js";
 import type { State, Skill } from "../capability/skill/capability.js";
 import type { Definition } from "./definition.js";
 
-export interface Instance<S extends object, A extends object> {
+export interface Instance<S extends object = object, A extends object = object> {
     readonly host: Ref<Unit & Skill>;
     readonly definition: Definition<S, A>;
     readonly state: Omit<State, "data" | "active"> & {
@@ -16,53 +16,28 @@ export interface Instance<S extends object, A extends object> {
     };
 }
 
+export function get(battle: BattleState, reference: Ref<Unit & Skill>): Instance | undefined;
 export function get<S extends object, A extends object>(
     battle: BattleState,
     reference: Ref<Unit & Skill>,
     definition: Definition<S, A>,
+): Instance<S, A> | undefined;
+export function get<S extends object, A extends object>(
+    battle: BattleState,
+    reference: Ref<Unit & Skill>,
+    definition?: Definition<S, A>,
 ): Instance<S, A> | undefined {
     const host = units.get(battle, reference);
+    if (host === undefined || (definition !== undefined && host.definition.skill !== definition)) {
+        return undefined;
+    }
 
-    return host?.definition.skill === definition
-        ? { host: reference, definition, state: host.skill as Instance<S, A>["state"] }
-        : undefined;
-}
-
-export function replace<S extends object, A extends object>(
-    battle: BattleState,
-    self: Instance<S, A>,
-): BattleState {
-    const host = units.get(battle, self.host);
-
-    return host === undefined ? battle : updateUnit(battle, [{ ...host, skill: self.state }]);
-}
-
-export function setData<S extends object, A extends object>(
-    self: Instance<S, A>,
-    data: NoInfer<S>,
-): Instance<S, A> {
-    return data === self.state.data ? self : { ...self, state: { ...self.state, data } };
+    return { host: reference, definition: host.definition.skill, state: host.skill } as Instance<
+        S,
+        A
+    >;
 }
 
 export function replaceHost(battle: BattleState, self: Unit & Skill): BattleState {
     return updateUnit(battle, [self]);
-}
-
-export function replaceActivation<A extends object>(
-    battle: BattleState,
-    reference: Ref<Activation<A>>,
-    self: NoInfer<Activation<A>>,
-): BattleState {
-    const host = units.get(battle, reference.host);
-    if (host?.skill.active?.id !== reference.id || host.skill.active.status === "ENDING") {
-        return battle;
-    }
-    if (self.status !== host.skill.active.status) {
-        throw new TypeError("skill activation status requires a lifecycle operation");
-    }
-    if (host.skill.active.startedAtTick !== self.startedAtTick) {
-        throw new TypeError("skill activation start tick cannot change");
-    }
-
-    return replaceHost(battle, { ...host, skill: { ...host.skill, active: self } });
 }

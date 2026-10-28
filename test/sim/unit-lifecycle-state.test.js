@@ -14,7 +14,7 @@ import { initialize } from "../helpers/unit.js";
 import * as mechanisms from "../../dist/core/battle/mechanism.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { createDefinition as createSkillDefinition } from "../../dist/core/unit/skill/definition.js";
-import { setEndedHook } from "../../dist/core/unit/capability/skill/capability.js";
+import { setHook } from "../../dist/core/unit/capability/skill/capability.js";
 import { activate, finish } from "../../dist/core/unit/skill/operations.js";
 import { ref as activationRef } from "../../dist/core/unit/skill/activation.js";
 import { actionCapability } from "../helpers/actions.js";
@@ -56,7 +56,7 @@ for (const reason of ["DEATH", "RETREAT", "SCRIPT"]) {
       unit(1),
     ]));
     const source = getUnit(state, 0);
-    state = updateUnit(state, [{ ...source, skill: setEndedHook(source.skill, {
+    state = updateUnit(state, [{ ...source, skill: setHook(source.skill, "ended", {
       id: "observe-cancellation",
       invoke(state, { host, event }) {
         const self = getUnit(state, host.id);

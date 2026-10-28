@@ -85,7 +85,7 @@ Definition 保存不可变基础值、参数和行为描述。Capability State �
 
 Content 直接组合 Unit Definition 与所需的 Catalog Definitions，不经过干员或敌人 Archetype 工厂；必要的领域校验放在 initialize。静态内容可用 satisfies 声明具体能力；动态加载结果使用标准 Definition，并在需要可选能力时通过守卫缩窄。
 
-Capability.initialize(battle, definition) 返回 Result<State>，Unit.initialize(battle, input) 返回 Result<Unit & Product<D>>；逐个接续 battle，在登记前组合完整 Unit。Product<D> 由 Catalog 从 initializer 字典推导，只组合明确选择的能力的标准 Definition／State，不保留整个输入 D 或额外内容字段。通用创建不接受预制能力状态或独立当前 tick，路线与部署等在明确的业务创建流程中设置。Skill／Action Capability 非泛型，领域内部 read 保持具体程序与私有状态的类型配对；Action 每个配置项在 Unit 初始化时建立聚合条目，保存 Definition、持久 state、Cooldown 和可空的 Execution；每次启动创建新执行身份，终结只清空 execution。详见 [Capability 初始化与装配](capability.md#初始化与装配)。标签归属仍待整理，现有 Profile 依赖见 [后续整理记录](capability.md#待整理单位标签与-profile-依赖)。
+Capability.initialize(battle, definition) 返回 Result<State>，Unit.initialize(battle, input) 返回 Result<Unit & Product<D>>；逐个接续 battle，在登记前组合完整 Unit。Product<D> 由 Catalog 从 initializer 字典推导，只组合明确选择的能力的标准 Definition／State，不保留整个输入 D 或额外内容字段。通用创建不接受预制能力状态或独立当前 tick，路线与部署等在明确的业务创建流程中设置。Skill／Action Capability 非泛型，内部普通查询集中恢复具体程序与私有状态的类型配对；Action 每个配置项在 Unit 初始化时建立聚合条目，保存 Definition、持久 state、Cooldown 和可空的 Execution；每次启动创建新执行身份，终结只清空 execution。详见 [Capability 初始化与装配](capability.md#初始化与装配)。标签归属仍待整理，现有 Profile 依赖见 [后续整理记录](capability.md#待整理单位标签与-profile-依赖)。
 
 Effect 是附着于 Unit 的实例；`Unit.effects` 持有实例集合。`unit/effect/`、`unit/contribution/` 与 `unit/capability/` 平级；通用 Hook 位于 core/hook.ts，unit/hook.ts 只定义 Unit 的阶段类型。Capability 保存本领域的 Hook 和 Contribution；具体 Effect Definition 组合这些公开操作，抽象 Effect 只管理实例与生命周期。
 
