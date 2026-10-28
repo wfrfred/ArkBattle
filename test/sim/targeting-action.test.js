@@ -9,7 +9,7 @@ import * as actions from "../../dist/core/unit/action/index.js";
 import { and, damage, healing, range } from "../../dist/core/battle/targeting/filter.js";
 import { unit, battle } from "../helpers/action-fixture.js";
 
-function definition(groups, start = state => ({ state, value: {} })) {
+function definition(groups, prepare = state => ({ state, value: {} })) {
     return createWithState({
         id: "random-attack",
         intervalTicks: 10,
@@ -17,7 +17,7 @@ function definition(groups, start = state => ({ state, value: {} })) {
         triggerBindingId: "primary",
         targetGroups: groups,
         initialize: state => ({ state, value: {} }),
-        start,
+        prepare,
     });
 }
 
@@ -27,7 +27,7 @@ const group = (id, selector = random(1), filter = (_battle, request, target) => 
     operations: [{ type: "DAMAGE", power: 7, damageType: "TRUE" }],
 });
 
-test("attack target groups and start callbacks receive the RNG state produced by earlier selections", () => {
+test("attack target groups and prepare callbacks receive the RNG state produced by earlier selections", () => {
     let observed;
     const primary = group("primary");
     const secondary = group("secondary", random(2));

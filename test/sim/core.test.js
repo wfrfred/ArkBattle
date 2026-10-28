@@ -669,7 +669,7 @@ const requiredPlacement = createUnitPlacementDefinition({
 const requiredPlaced = instantiateUnitPlacement(battleState, requiredPlacement).value;
 requiredPlaced.occupancy.tile;
 const requiredOccupancy: Occupancy = requiredPlaced;
-type NormalizedPlacementFields = Assert<Equal<keyof typeof requiredPlacement, 'definition' | 'position' | 'tile' | 'effects'>>;
+type NormalizedPlacementFields = Assert<Equal<keyof typeof requiredPlacement, 'definition' | 'position' | 'tile'>>;
 const ordinaryLocomotion: LocomotionState = enemy.locomotion;
 declare const guarded: Unit & {
   readonly definition: ImmutableData<EnemyProbe>;
