@@ -356,7 +356,7 @@ Unit 请求：LEAVING → 返费
 Unit Finalize：注销 → Card 回收 → leave Hook → 机制响应
 ```
 
-owned 子候选按上述顺序，Action 内按 executionId、Effect 内按 effectId 数值排序；scoped 在 owned 后，显式依赖 Effect 按 hostId／effectId 数值排序。兄弟可以都先成为 ENDING，前一个兄弟的结束程序不能假设后一个仍在运行。同一依赖者被多个目标请求时复用首次 Pending，End 与传播原因不被后续请求覆盖。
+owned 子候选按上述顺序，Action 内仍按 executionId 数值排序，Effect 使用容器已有 ID 登记顺序，不重复排序；scoped 在 owned 后，显式依赖 Effect 按 hostId／effectId 数值排序。兄弟可以都先成为 ENDING，前一个兄弟的结束程序不能假设后一个仍在运行。同一依赖者被多个目标请求时复用首次 Pending，End 与传播原因不被后续请求覆盖。
 
 Pending 在整个 Finalize 返回前存在。子实例已注销但仍在派发末尾 Hook 时，其 parents 仍让 Unit 等待；不能用对象已从容器消失推断其结束内容全部完成。Unit 的物理删除仍由所属领域 Finalize 执行，公开 Battlefield.remove 只承担纯存储职责。
 

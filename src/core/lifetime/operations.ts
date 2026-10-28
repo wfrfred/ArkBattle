@@ -111,7 +111,6 @@ function request(
             endings: new Map(battle.lifetime.endings).set(identity, {
                 target,
                 end,
-                dependencyReason,
                 parents,
                 phase: "PREPARING",
             }),

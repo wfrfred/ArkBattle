@@ -70,11 +70,11 @@ finalize 只接收 Ref 和 E，从当前存储读取实例。完整 owner 边保
 end(battle, ref, end, dependencyReason?): BattleState;
 ```
 
-业务 End 与依赖传播原因分别保留；默认传播原因取 reason(end)。例如 Unit 死亡使 Action 取消时，Action.onEnd 与事件记录 SOURCE_ABSENT，依赖 Effect 接收 DEATH。fromDependency 将上游原因映射为本领域 End，只在实际允许成为依赖者的领域提供；Unit 本轮没有任意上游绑定。
+业务 End 与依赖传播原因是两条通道；默认传播原因取 reason(end)。Pending 保留本次业务 End，不保存 dependencyReason；传播原因由 end／request 参数沿同步请求传递，在 Prepare 返回后通过 fromDependency 展开子请求。重复请求不重新 Prepare 或展开依赖，因此首次原因仍不被覆盖。例如 Unit 死亡时，Action.onEnd 与事件记录 SOURCE_ABSENT，依赖 Effect 接收 DEATH。fromDependency 只在实际允许成为依赖者的领域提供，Unit 本轮没有任意上游绑定。
 
 ## 状态归属与关系权威
 
-`BattleState.lifetime` 保存 dependencies、endings 和 settling。dependencies 是派生关系索引；endings 是本次结算的未完成工作；settling 表示已有最外层结算器。正常对外稳定状态的 endings 为空，settling 为 false。
+`BattleState.lifetime` 保存 dependencies、endings 和 settling。dependencies 是派生关系索引；endings 是本次结算的未完成工作，Pending 仅含 target、end、parents、phase；settling 表示已有最外层结算器。正常对外稳定状态的 endings 为空，settling 为 false。
 
 权威关系来自实际存储：Unit 持有 Execution、Activation、Burst 和 Effects；额外 Scope 来自 Effect.scopes。索引同时支持 child→parents 和 parent→owned／scoped，不保存第二份实例、Definition 或生命周期状态。
 
@@ -96,7 +96,7 @@ ENDING 对象在物理移除前仍保留关系。关闭资格由 Pending 与原�
 4. 执行本实例 Prepare，接续返回状态。
 5. 按确定顺序请求直接依赖者，接续每项状态，再把当前节点置为 READY。
 
-Prepare 先于自动请求普通依赖者。它主动请求子项时可以确定该子项的首次原因，后续传播不覆盖。请求顺序为 owned 在前、scoped 在后；Unit 的 owned 顺序为 Skill、Action（executionId 数值顺序）、Burst、Effect（effectId 数值顺序），scoped Effect 按数值 hostId／effectId 排序。同一实例同时 owned／scoped 于一个目标时，只请求一次，所有权组优先。
+Prepare 先于自动请求普通依赖者。它主动请求子项时可以确定该子项的首次原因，后续传播不覆盖。请求顺序为 owned 在前、scoped 在后；Unit 的 owned 顺序为 Skill、Action（executionId 数值顺序）、Burst、Effect（容器现有 ID 登记顺序，不重复排序），scoped Effect 按数值 hostId／effectId 排序。同一实例同时 owned／scoped 于一个目标时，只请求一次，所有权组优先。
 
 首次嵌套请求返回保证自身 Prepare 已完成，不保证 Finalize 已执行；重复请求 PREPARING 节点不等待原 Prepare。Prepare 是多步完整操作，不是原子业务事务：发布 ENDING 触发的 Hook 可能先于清理完成。需要随标记原子失效的具体事实必须一起纯提交，不能把任意 Content 回调宣称为原子执行。
 

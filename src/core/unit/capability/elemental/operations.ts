@@ -1,5 +1,5 @@
 import { update as updateUnit } from "../../../battle/unit.js";
-import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../../common/assert.js";
+import { assertNonnegativeNumber } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
@@ -133,7 +133,6 @@ export function damage(
                   remainingTicks: definition.durationTicks,
               };
     const nextBurstId = currentSelf.elemental.nextBurstId + (burst === null ? 0 : 1);
-    assertNonnegativeSafeInteger(nextBurstId, "element burst allocation progress");
 
     const ep =
         burst === null

@@ -66,24 +66,6 @@ function create<P extends object>(
     indices: readonly number[] | undefined,
     behaviour: Behaviour<P>,
 ): MechanismDefinition<ContactState> {
-    const clear: NonNullable<MechanismDefinition<ContactState>["onEnd"]> = (battle, self) => {
-        const owned = [...self.state.contacts.values()];
-        battle = mechanisms.setState(battle, mechanisms.ref(self), {
-            ...self.state,
-            contacts: new Map(),
-        });
-
-        if (!behaviour.retainOnLeave && self.status !== "ENDING") {
-            for (const contact of owned) {
-                if (contact.effect !== undefined) {
-                    battle = effects.end(battle, contact.effect, "TERRAIN_UNAVAILABLE");
-                }
-            }
-        }
-
-        return battle;
-    };
-
     return {
         id: behaviour.id,
         initialize: () => ({ indices: indices ?? null, scanTick: 0, contacts: new Map() }),
@@ -237,7 +219,23 @@ function create<P extends object>(
 
             return mechanisms.setState(battle, mechanisms.ref(self), { ...self.state, contacts });
         },
-        onDisable: clear,
+        onDisable(battle, self) {
+            const owned = [...self.state.contacts.values()];
+            battle = mechanisms.setState(battle, mechanisms.ref(self), {
+                ...self.state,
+                contacts: new Map(),
+            });
+
+            if (!behaviour.retainOnLeave && self.status !== "ENDING") {
+                for (const contact of owned) {
+                    if (contact.effect !== undefined) {
+                        battle = effects.end(battle, contact.effect, "TERRAIN_UNAVAILABLE");
+                    }
+                }
+            }
+
+            return battle;
+        },
     };
 }
 

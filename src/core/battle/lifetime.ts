@@ -50,7 +50,7 @@ export function projectUnit(unit: Unit | undefined): readonly Entry[] {
     if (hasElemental(unit) && unit.elemental.burst !== null) {
         add(scope(burstLifetime, burstRef(unit.elemental.burst)));
     }
-    for (const self of [...unit.effects.values()].sort((left, right) => left.id - right.id)) {
+    for (const self of unit.effects.values()) {
         add(
             scope(effectLifetime, effectRef(self)),
             self.scopes.filter((scope) => scope.type !== "TICK"),

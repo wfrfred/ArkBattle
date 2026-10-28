@@ -38,7 +38,6 @@ export interface Lifetime<V extends Identified<object>, E> {
 export interface Pending {
     readonly target: Scope;
     readonly end: unknown;
-    readonly dependencyReason: string;
     readonly parents: readonly Scope[];
     readonly phase: "PREPARING" | "READY" | "FINALIZING";
 }

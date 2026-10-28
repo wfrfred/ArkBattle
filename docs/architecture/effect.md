@@ -144,7 +144,7 @@ type Scope = LifetimeScope | { readonly type: "TICK"; readonly tick: number };
 
 Unit 对 Effect 的拥有关系与 Effect.scopes 都是权威事实；BattleState.lifetime.dependencies 只保存派生反向关系。图约束针对所有权与显式 Scope 的合并图。install 校验本次 TICK 与 Scope 可用性，bindLifetime 检查当前实例、目标资格与闭环；setDeadline 只校验期限并保留其他 Scope。内部写回不重复执行入口校验，战斗初始化不扫描预装实例。
 
-关系索引由 core/lifetime/dependency.ts 维护。完整 Unit 登记、更新、移除在业务通知前对已知变更作局部投影；不枚举全场，也不让 Effect setter 双写关系。直接子候选为 owned 在前、scoped 在后；显式依赖 Effect 按数值 hostId／effectId 排序，同一实例按运行身份去重。
+关系索引由 core/lifetime/dependency.ts 维护。完整 Unit 登记、更新、移除在业务通知前对已知变更作局部投影；宿主持有的 Effect 直接使用容器现有 ID 登记顺序，不重复排序。不枚举全场，也不让 Effect setter 双写关系。直接子候选为 owned 在前、scoped 在后；显式依赖 Effect 按数值 hostId／effectId 排序，同一实例按运行身份去重。
 
 ENDING 时保留关系，物理移除后活索引可以撤销，但未完成 Pending.parents 保留到整个 Finalize 返回。查询依赖者同时合并这两种来源，避免子 Effect 注销后的结束通知中请求宿主退场时漏掉等待。Pending 表示工作进度，不是第二份生命周期或实例表。
 

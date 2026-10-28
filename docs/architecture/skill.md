@@ -38,7 +38,7 @@ SP 的 setContribution／removeContribution 仍是 `unit/skill/sp.ts` 的局部�
 
 `Skill` Capability 与公共 `State` 均不携带内容泛型，宿主身份始终为 `Ref<Unit & Skill>`。Catalog 仍调用 `unit/capability/skill` 的 initialize(battle, definition)，只返回公共 State，不另设 Stored Capability，也不通过直接初始化恢复私有类型。SP、Rule、Hook、Contribution 只依赖这个公共能力。
 
-内容程序的 `Definition<S, A>` 保留持久状态 S 与激活状态 A。Definition 的回调接收配对的 `Instance<S, A>`：`host` 定位宿主，`definition` 保存具体程序，`state` 保存同一程序的私有数据和当前激活。领域内部 `internal/read` 在统一边界恢复这组配对；调用者不能自行选择 S／A 宣称宿主类型。领域内部需要恢复持久 S 时，通过 instance.ts 的 get(battle, host, definition) 按当前配置 Definition 的对象身份确认配对；get、setData 和配对写回协议不从公共入口导出。跨领域回调后继续执行时，仍须从当前 battle 重新读取。
+内容程序的 `Definition<S, A>` 保留持久状态 S 与激活状态 A。Definition 的回调接收配对的 `Instance<S, A>`：`host` 定位宿主，`definition` 保存具体程序，`state` 保存同一程序的私有数据和当前激活。需要配对 Instance 的流程仍通过 `internal/read` 恢复这组关联；调用者不能自行选择 S／A 宣称宿主类型。领域内部需要恢复持久 S 时，通过 instance.ts 的 get(battle, host, definition) 按当前配置 Definition 的对象身份确认配对；get、setData 和配对写回协议不从公共入口导出。跨领域回调后继续执行时，仍须从当前 battle 重新读取。
 
 `Activation<A>` 保存 `host: Ref<Unit & Skill>`、id、startedAtTick、ACTIVE／ENDING、Sustain 和 data。私有类型 A 的证明来自具体 Definition 的内容回调，通过公共 `ref(self)` 保留；也可以向 `get(battle, ref, definition)` 传入具体 Definition，由运行时对象身份比对确认当前配置程序后恢复 A。仅凭普通宿主 Ref 调用 `activate` 返回公共 Activation，不能指定或推导私有类型。typed Activation Ref 不意味着宿主私有状态 S 可被恢复，过期激活身份不能读取、消费或结束新激活。
 
@@ -98,7 +98,7 @@ AMMO 描述资源和耗尽结束政策，不代表所有“弹药类技能”加
 
 ## 4. Rule、程序与 Hook
 
-Rule 只有 allowsActivation、allowsOperation、allowsRecovery。它们提供额外业务许可；内部完成、到期结束及宿主离场清理不受主动操作 Rule 否决。
+Operation（STOP／RETRIGGER）归领域 activation.ts，由 unit/skill/index.ts 导出；Capability 的 rule.ts 只引用该类型。Rule 只有 allowsActivation、allowsOperation、allowsRecovery。它们提供额外业务许可；内部完成、到期结束及宿主离场清理不受主动操作 Rule 否决。
 
 Definition 的 onEnter／onTick 与 Activation Definition 的 initialize／accepts／cost 接收 battle 与配对的 Instance。Activation 的 onStart／onTick／onOperation／onEnd 接收 battle 与当前 Activation 实例；initialize 仅构造数据。STOP 与 RETRIGGER 交给内容程序处理，STOP 请求不预设一定立即结束；未提供自定义操作程序时，STOP 默认正常结束。
 
@@ -124,7 +124,7 @@ HIT 回复由 Skill.enter 在 Damage 的 receivingStarted 扩展点登记，发�
 
 activated 表达实例已经创建，不承诺 onStart 效果已经安装。它的派发先于可能终止激活的支付与启动程序。没有活动 Lifetime 结算时，前一个 activated Hook 的结束操作可以在后续 activated 候选前完成 ended；已有结算时，嵌套结束只同步执行请求／Prepare，ended 等待 Finalize。后续候选始终处理原创建事实，不因终止重写报告。
 
-Skill 的公共 lifetime 描述符绑定本轮 Activation，Effect 使用 scope(skillLifetime, activationRef) 建立依赖。请求先登记 Pending 并发布 ENDING，再展开依赖；最外层结算器等依赖者完整 Finalize 后调用当前 Activation 的 onEnd、清空本轮、记录事件和派发 ended。整个 Finalize 返回后才解除 owner 等待，Unit 在此期间保留原 Definition 与当前状态，不需要通用历史回退。
+Skill 的公共 lifetime 描述符绑定本轮 Activation，Effect 使用 scope(skillLifetime, activationRef) 建立依赖。请求先登记 Pending 并发布 ENDING，再展开依赖；最外层结算器等待依赖者完整完成后进入 Finalize。Finalize 直接从所有权保护的当前 Unit 取得配对 Definition 与 Activation，线性执行 onEnd、重读宿主、清空本轮、事件与 ended，不经过 read 包装；其他 Skill 流程暂保留内部 read。整个 Finalize 返回后才解除 owner 等待，Unit 在此期间保留原 Definition 与当前状态，不需要通用历史回退。
 
 ENDING 期间继续占用 Skill。嵌套 finish／cancel 首次请求返回只保证 Prepare，不保证本轮已清空或 ended 已派发；需要下一次激活的业务放在槽位释放后的 ended 时点，已有结算范围中不能强行 drain。重复 PREPARING 请求也不等待原 Prepare。
 

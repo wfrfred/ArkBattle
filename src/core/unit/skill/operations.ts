@@ -24,6 +24,7 @@ import * as query from "./query.js";
 import * as instance from "./instance.js";
 import { read } from "./internal/read.js";
 import type { Instance } from "./instance.js";
+import type { Definition } from "./definition.js";
 import * as sp from "./sp.js";
 import { resolveCapacity as resolveAmmoCapacity } from "./ammo.js";
 import * as modifier from "./modifier.js";
@@ -205,32 +206,28 @@ export const lifetime = lifetimes.create<Activation, Activation, End>({
         return instance.replaceHost(battle, { ...host, skill: { ...host.skill, active: next } });
     },
     finalize(battle, reference, ending) {
-        return read(battle, reference.host, (self) => {
-            const active = self.state.active!;
-            const definition = self.definition.activation!;
+        const unit = units.get(battle, reference.host)!;
+        const definition = unit.definition.skill as Definition;
+        const active = unit.skill.active!;
+        battle = definition.activation!.onEnd?.(battle, active, ending) ?? battle;
 
-            if (definition.onEnd !== undefined) {
-                battle = definition.onEnd(battle, active, ending);
-            }
+        const host = units.get(battle, reference.host)!;
+        battle = instance.replaceHost(battle, {
+            ...host,
+            skill: { ...host.skill, active: null },
+        });
+        battle = appendEvents(battle, [
+            {
+                type: "SKILL_FINISHED",
+                unitId: reference.host.id,
+                skillId: definition.id,
+                activationId: active.id,
+                tick: battle.tick,
+                end: ending,
+            },
+        ]);
 
-            const host = units.get(battle, reference.host)!;
-            battle = instance.replaceHost(battle, {
-                ...host,
-                skill: { ...host.skill, active: null },
-            });
-            battle = appendEvents(battle, [
-                {
-                    type: "SKILL_FINISHED",
-                    unitId: self.host.id,
-                    skillId: self.definition.id,
-                    activationId: active.id,
-                    tick: battle.tick,
-                    end: ending,
-                },
-            ]);
-
-            return dispatch(battle, active.host, "ended", { activation: active, end: ending });
-        })!;
+        return dispatch(battle, active.host, "ended", { activation: active, end: ending });
     },
     reason: (ending) => (ending.type === "FINISHED" ? "SKILL_FINISHED" : ending.reason),
     fromDependency: (reason) => ({ type: "CANCELLED", reason }),

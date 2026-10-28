@@ -52,7 +52,7 @@ Runtime 顺序为 `Movement → Mechanism → Blocking → RouteCompletion`。�
 - 活性源石按进入格子的参数安装持续 Effect，离格后保留；duration 从附加时开始计时，首次伤害等待一秒。
 - 烟雾的索敌限制随接触建立和撤销。
 - 沼泽、深水分开保存控制器扫描进度与宿主 Effect 的周期进度，不在每次轮询重建 Effect 或重置周期。
-- 非 retainOnLeave Effect 显式绑定控制器 Mechanism 的 lifetime，终止时由 DAG 清理并等待；控制器 Prepare 的 onDisable 在 ENDING 中只清 Contact，不再手工结束这些 Effect，也不在 onEnd 重复 clear。离格、换地形和可逆 Mechanism disable 继续按 Contact 业务请求结束。retainOnLeave 的活性源石等效果不自动建立绑定，避免错误缩短持续期。
+- 非 retainOnLeave Effect 显式绑定控制器 Mechanism 的 lifetime，终止时由 DAG 清理并等待；控制器的 Contact 清理直接归 onDisable；Prepare 以 ENDING 调用它时只清 Contact，不手工结束这些 Effect，也不在 onEnd 重复清理。离格、换地形和可逆 Mechanism disable 继续按 Contact 业务请求结束。retainOnLeave 的活性源石等效果不自动建立绑定，避免错误缩短持续期。
 - 地穴由 Content 判断坠落资格，并通过完整 Unit 离场操作完成逻辑结算。
 
 本机沼泽模板的周期为一秒，黑板 value 是重量门槛；PRTS 的三秒描述仍有版本或热更新差异。参数应分别表达周期和重量，不把同一原始字段解释成两种职责。
