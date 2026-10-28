@@ -68,25 +68,6 @@ test("Effect Store retains its missing-update no-op policy and never reuses allo
     assert.equal(removed.add(instance(1, definition)).nextId, 2);
 });
 
-test("Effect Store rejects redirected replacement identities and changed Definitions", () => {
-    const definition = { id: "effect", initialize: () => ({ count: 1 }) };
-    const first = instance(0, definition);
-    const original = Effects.empty().add(first);
-    const identity = ref(first);
-    const moved = { ...first, host: { id: 1 } };
-
-    assert.throws(() => original.replace(identity, { ...first, id: 1 }), TypeError);
-    assert.throws(() => original.replace(identity, moved), TypeError);
-    assert.throws(() => original.replace(ref(moved), moved), TypeError);
-    assert.throws(() => original.replace(identity, {
-        ...first,
-        definition: { ...definition },
-    }), TypeError);
-    assert.strictEqual(original.get(identity), first);
-    assert.deepEqual(original.keys().toArray(), [0]);
-    assert.equal(original.nextId, 1);
-});
-
 test("Effect Store restores precise reads only for the matching host and Definition identity", () => {
     const definition = { id: "effect", initialize: () => ({ count: 1 }) };
     const first = instance(0, definition);

@@ -69,23 +69,6 @@ test("Effects rejects duplicate, skipped and reused identities without changing 
     assert.equal(removed.add(instance(1, definition, { charges: 1 })).nextId, 2);
 });
 
-test("Effects replacement preserves the installed Definition object", () => {
-    const definition = { id: "shield", initialize: () => ({ charges: 2 }) };
-    const differentDefinition = { id: "shield", initialize: () => ({ charges: 10 }) };
-    const effect = instance(0, definition, definition.initialize());
-    const effects = Effects.empty().add(effect);
-    const entries = effects.values().toArray();
-
-    assert.throws(
-        () => effects.replace(ref(effect), { ...effect, definition: differentDefinition }),
-        TypeError,
-    );
-    assert.deepEqual(effects.values().toArray(), entries);
-    assert.equal(effects.get(0, definition), effect);
-    assert.equal(effects.get(0, differentDefinition), undefined);
-    assert.equal(effects.nextId, 1);
-});
-
 test("Effects only stores instances, while JSON preserves their data and allocation progress", () => {
     const forbidden = () => { throw new Error("storage must not execute lifecycle callbacks"); };
     const definition = {

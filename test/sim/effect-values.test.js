@@ -23,7 +23,6 @@ test("effect values: local no-ops and replacements retain the input version", ()
     assert.equal(get(state, ref).data.charges, 2);
     assert.equal(get(changed, ref).data.charges, 1);
     assert.equal(getUnit(state, 0), unit);
-    assert.throws(() => unit.effects.replace({ ...ref, id: 9 }, self), TypeError);
     assert.throws(() => setData(state, { ...ref, id: 9 }, { charges: 1 }), /unknown effect: 9/);
 });
 

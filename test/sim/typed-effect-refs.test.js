@@ -58,10 +58,6 @@ test("Effect writes preserve both the host and local instance identity", () => {
     const content = { id: "identity", initialize: () => ({ charges: 2 }) };
     const installed = effects.install(effectFixtureWork(host(1), host(2)), units.ref(host(1)), content);
     const self = effects.get(installed.state, installed.value);
-    const moved = { ...self, host: units.ref(host(2)) };
-
-    const container = units.get(installed.state, self.host).effects;
-    assert.throws(() => container.replace(installed.value, moved), TypeError);
     assert.equal(effects.get(installed.state, installed.value), self);
     const currentData = effects.get(installed.state, installed.value).data;
     const replaced = effects.setData(installed.state, installed.value, { ...currentData, charges: 1 });

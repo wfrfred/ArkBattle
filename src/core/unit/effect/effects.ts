@@ -64,37 +64,19 @@ export class Effects {
             throw new RangeError("invalid effect identity");
         }
 
-        const nextId = this.nextId + 1;
-        if (!Number.isSafeInteger(nextId)) {
-            throw new RangeError("effect identity overflow");
-        }
-
-        return new Effects(this.#entries.add(effect.id, effect), nextId);
+        return new Effects(this.#entries.add(effect.id, effect), this.nextId + 1);
     }
 
     replace<S extends object, H extends object>(
         reference: Ref<Effect<S, H>>,
         effect: NoInfer<Effect<S, H>>,
     ): Effects {
-        if (reference.id !== effect.id || reference.host.id !== effect.host.id) {
-            throw new TypeError("effect identity mismatch");
-        }
-
         const previous = this.#entries.get(reference.id);
-        if (previous === undefined) {
-            return this;
-        }
-        if (previous.definition !== effect.definition) {
-            throw new TypeError("effect definition cannot change");
-        }
-        if (previous.host.id !== effect.host.id) {
-            throw new TypeError("effect host cannot change");
-        }
-        if (previous === effect) {
+        if (previous === undefined || previous === effect) {
             return this;
         }
 
-        return new Effects(this.#entries.replace(effect.id, effect), this.nextId);
+        return new Effects(this.#entries.replace(reference.id, effect), this.nextId);
     }
 
     remove(id: Id): Effects {
