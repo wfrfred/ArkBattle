@@ -254,7 +254,7 @@ export function refreshCooldowns(
     let actions = unit.action.actions;
 
     for (const id of actions.keys()) {
-        const self = actions.getAction(id)!;
+        const self = actions.get(id)!;
         const period = resolveInterval(battle, source, self.definition)!;
         const next = cooldown.resizeKeepingProgress(self.cooldown, period, battle.tick);
         if (next !== self.cooldown) {

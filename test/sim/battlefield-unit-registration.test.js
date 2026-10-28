@@ -111,7 +111,7 @@ test("battlefield replacement preserves configured capability composition on upd
     const unit = initialize({ id: 1, definition: definition(), position: [0, 0] });
     const bare = initialize({ id: 2, definition: { hooks: [], id: "bare" }, position: [2, 0] });
     runtime = [unit, bare].reduce((field, unit) => addUnit(field, unit), runtime);
-    const currentAction = unit.action.actions.getAction("normal");
+    const currentAction = unit.action.actions.get("normal");
     const updated = {
         ...unit,
         action: { ...unit.action, actions: unit.action.actions.replace(currentAction.definition, { ...currentAction, cooldown: { periodTicks: 3, readyAtTick: 7 } }) },

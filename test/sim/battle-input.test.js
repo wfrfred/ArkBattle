@@ -274,7 +274,7 @@ test("runtime allocates initial IDs, resolves creation references, and never reu
         { type: "APPEAR_PREDEFINED", definitionId: 103 },
     ]);
     const appeared = runtime;
-    const appearedEffect = unitQueries.get(appeared, { id: 3 }).effects.getEffect(0);
+    const appearedEffect = unitQueries.get(appeared, { id: 3 }).effects.get(0);
     assert.deepEqual(appearedEffect.host, unitQueries.ref(unitQueries.get(appeared, { id: 3 })));
     assert.deepEqual(appearedEffect.source, appearedEffect.host);
     assert.deepEqual(lifecycle, [["install", 1, 1], ["enable", 1, 1], ["install", 3, 3], ["enable", 3, 3]]);
@@ -302,7 +302,7 @@ test("runtime allocates initial IDs, resolves creation references, and never reu
         { type: "APPEAR_PREDEFINED", definitionId: 103 },
     ]);
     const replaced = runtime;
-    const replacedEffect = unitQueries.get(replaced, { id: 4 }).effects.getEffect(0);
+    const replacedEffect = unitQueries.get(replaced, { id: 4 }).effects.get(0);
     assert.deepEqual(replacedEffect.host, unitQueries.ref(unitQueries.get(replaced, { id: 4 })));
     assert.deepEqual(replacedEffect.source, replacedEffect.host);
     assert.deepEqual(lifecycle.slice(-2), [["install", 4, 4], ["enable", 4, 4]]);

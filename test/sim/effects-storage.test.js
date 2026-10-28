@@ -85,7 +85,7 @@ test("Effects only stores instances, while JSON preserves their data and allocat
     const disabled = stored.replace(ref(effect), { ...effect, enabled: false });
     const projected = JSON.parse(JSON.stringify({ effects: disabled }));
 
-    assert.equal(disabled.getEffect(0).definition.id, "stored-only");
+    assert.equal(disabled.get(0).definition.id, "stored-only");
     assert.deepEqual(projected.effects, {
         instances: [{
             id: 0,

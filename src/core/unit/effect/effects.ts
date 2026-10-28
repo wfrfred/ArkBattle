@@ -44,10 +44,6 @@ export class Effects {
         return effect?.definition === definition ? effect : undefined;
     }
 
-    getEffect(id: Id): Effect<any, any> | undefined {
-        return this.#entries.get(id);
-    }
-
     values(): Query<Effect> {
         return this.#entries.values() as Query<Effect>;
     }

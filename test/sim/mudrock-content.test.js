@@ -249,7 +249,7 @@ test("S2 immediately overrides normal attack and recovery cooldown, heals once, 
     ready = save(ready, {
         action: { ...getUnit(ready, 0).action, actions: getUnit(ready, 0).action.actions.keys().reduce(
             (states, id) => {
-                const current = states.getAction(id);
+                const current = states.get(id);
                 return states.replace(current.definition, {
                     ...current, cooldown: { readyAtTick: 10000, periodTicks: 60 },
                 });

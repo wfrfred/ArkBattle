@@ -40,10 +40,6 @@ export class Actions {
         return self?.definition === definition ? self : undefined;
     }
 
-    getAction(id: Id): Action | undefined {
-        return this.#store.get(id);
-    }
-
     getExecution(id: ExecutionId): Execution | undefined {
         const self = this.values().find((entry) => entry.execution?.id === id);
 

@@ -77,6 +77,6 @@ test("Effect Store restores precise reads only for the matching host and Definit
     assert.strictEqual(original.get(first.id).definition, definition);
     assert.equal(original.get(first.id, { ...definition }), undefined);
     assert.equal(original.get({ ...ref(first), host: { id: 1 } }), undefined);
-    assert.equal(original.getEffect(first.id).data.count, 1);
-    assert.equal(original.getEffect(9), undefined);
+    assert.equal(original.get(first.id).data.count, 1);
+    assert.equal(original.get(9), undefined);
 });

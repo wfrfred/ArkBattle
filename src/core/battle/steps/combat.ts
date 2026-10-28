@@ -67,7 +67,7 @@ export function advance(battle: BattleState): BattleState {
                 break;
             }
 
-            const self = latest.action.actions.getAction(id);
+            const self = latest.action.actions.get(id);
             if (self === undefined) {
                 throw new RangeError(`unknown selected action definition ${id}`);
             }

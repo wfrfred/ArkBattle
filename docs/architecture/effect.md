@@ -87,7 +87,7 @@ Unit 初始化始终建立空 Effects，不接收预装容器。初始 Buff、�
 
 Effect<S, H> 直接保存完整 Definition<S, H> 与 data，以及 id、宿主、来源、scopes 和参与状态。宿主类型同时保留 Ref<Unit> 与 Ref<Unit & H>，内部 H 擦除为 any 时仍有 Unit 地址与身份。普通读取不增加另一套实体类型，具体私有读写继续使用原配对证明。
 
-具体内容需要恢复 S／H 时，使用精确 Ref 或 Definition 对象身份查询。Core 只需把未知实例交给它自身 Definition 的程序，完整读取由容器的内部 getter 提供，不恢复某个具体内容类型。
+具体内容需要恢复 S／H 时，使用精确 Ref 或 Definition 对象身份查询。Core 只需把未知实例交给它自身 Definition 的程序，直接使用 get(id) 的完整 Effect<object, object> 即可，不恢复某个具体内容类型。
 
 | 存储操作                      | 含义                                                      |
 | ----------------------------- | --------------------------------------------------------- |
@@ -96,7 +96,6 @@ Effect<S, H> 直接保存完整 Definition<S, H> 与 data，以及 id、宿主�
 | `effects.get(id)`             | 按实例 ID 取得默认 object 的完整 Effect     |
 | `effects.get(ref)`            | 根据精确 Ref 恢复对应实例，并检查宿主与局部 ID          |
 | `effects.get(id, definition)` | 同时检查 Definition 身份，取得对应 `Effect<S, H>`         |
-| `effects.getEffect(id)`       | Core 内部取得完整 Effect，默认擦除具体 data／H 形状       |
 | `effects.values()`            | 返回绑定当前版本的 `Query<Effect>`                         |
 | `effects.keys()`              | 返回绑定当前版本的 `Query<Id>`                           |
 | `effects.add(effect)`         | 仅接受 `effect.id === nextId`，返回新容器并将 nextId 加一 |
@@ -108,10 +107,10 @@ Effect<S, H> 直接保存完整 Definition<S, H> 与 data，以及 id、宿主�
 通用生命周期操作直接读取当前完整实例：
 
 ```typescript
-getEffect(id: Id): Effect<any, any> | undefined;
+get(id: Id): Effect | undefined;
 ```
 
-getEffect 在 Core 内部返回已擦除参数的完整 Effect<any, any>。Core 只调用该实例自身 Definition 的程序，不解释私有 data 或 H；生命周期与状态接续仍由 operations 决定。普通 get／values 保持默认 object，内部擦除不成为 Content 的具体私有类型证明。
+Core 与 Content 统一使用 get(id) 取得默认 object 参数的完整 Effect。Core 可直接调用该实例自身 Definition 的程序，不解释私有 data 或 H；生命周期与状态接续仍由 operations 决定。any 只用于容器内部存储和泛型上界，不另设返回 any 私有数据的查询出口。
 
 异构存储需要的擦除与恢复集中在容器内部，不另设业务代码需要理解的 Instance 类型。`add()` 保留 effect.id === nextId 的登记约束，随后直接递增 nextId；按游戏尺度计算，不追加安全整数上界或理论溢出检查。`replace()` 信任 Core 提供已经配对的 Ref 与完整 Effect，宿主、局部 ID 和 Definition 的稳定性由 Core 保证，容器不重复执行这些运行时校验。缺失实例的 replace／remove 返回原容器，替换值与当前实例引用相同时保留原容器；删除不回收已经分配的 ID。get(ref) 的宿主识别与 get(id, definition) 的 Definition 对象身份查询仍负责类型恢复。
 

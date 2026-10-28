@@ -173,7 +173,7 @@ U 表示该身份存续期间稳定的结构 / Capability 约束。类型守卫�
 
 Query.filter 的结构守卫负责建立证明，ref 保留类型；get 内部从异构 Unit 存储恢复 U，依赖上述身份与稳定结构契约。TypeScript 不会自行证明 Map.get 返回 U，恢复集中在 Unit 查询模块，不要求业务调用方断言或重复筛选。
 
-Effect.install 返回 Ref<Effect<S, H>>；精确引用与 Definition 查询保留已有 S／H。普通 get(id)／values() 返回完整 Effect<object, object>，内部存储与 getEffect 允许 Effect<any, any> 擦除异构参数；Core 只调用同一实例自身 Definition，不解释私有 data 或 H，不把内部 any 当作内容写回证明。
+Effect.install 返回 Ref<Effect<S, H>>；精确引用与 Definition 查询保留已有 S／H。普通 get(id)／values() 返回完整 Effect<object, object>，内部存储使用 Effect<any, any> 擦除异构参数；Core 统一通过 get(id) 取得默认 object 的完整实例并调用自身 Definition，不解释私有 data 或 H，不把内部 any 当作内容写回证明。
 
 Projectile 使用 `create(battle, definition, { position, state }) → Result<Ref<Projectile<S>>>`；ref 保留已知实例类型，get 按引用读取当前对象。projectile/projectiles.ts 中的 Projectiles 以私有 Store 保存完整实例，Battlefield 持有容器状态，battle/projectile.ts 直接完成容器替换，普通查询返回默认 object 的完整 Projectile；精确 Ref 和 Definition 对象身份查询保留已有类型，内部擦除的完整实例用于自身程序派发，见 [Projectile 设计](projectile.md#3-异构集合与类型恢复)。
 

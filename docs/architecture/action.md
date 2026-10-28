@@ -128,7 +128,7 @@ const action = {
 
 create 在接收具体 Definition 时校验非空 ID、基础间隔与速度一次，返回的函数负责创建并登记自己的 Action；重复 ID 由 Actions.add 拒绝。createActions 只从空 Actions 开始逐项接续 BattleState 和容器，不解释内容私有 P／E，也不读取底层 Store。内容通过具名的具体 Definition 或 typed Ref 读写私有状态。
 
-Actions 以私有 Store<DefinitionId, Action<any, any>> 保存异构完整聚合。普通 get(id)／values() 返回默认 object／object 的 Action，包含完整 Definition、state、Cooldown 和可空 Execution；get(id, definition) 按 Definition 对象身份恢复 P／E。内部 getAction／getExecution 从同一容器读取完整条目，不另维护执行集合或索引。any 留在异构存储及必要的泛型上界，普通查询不把 any 作为默认结果。
+Actions 以私有 Store<DefinitionId, Action<any, any>> 保存异构完整聚合。普通 get(id)／values() 返回默认 object／object 的 Action，包含完整 Definition、state、Cooldown 和可空 Execution；get(id, definition) 按 Definition 对象身份恢复 P／E。容器按配置 ID 统一使用 get(id)，getExecution(id) 则按本轮 Execution ID 读取完整条目，不另维护执行集合或索引；领域 getAction(battle, ref) 继续提供持久 Typed Ref 查询。any 留在异构存储及必要的泛型上界，普通查询不把 any 作为默认结果。
 
 Core 的选择、冷却刷新、推进与终止直接读取内部完整条目，保持条目与其自身 Definition 的配对，不解释私有 P／E 的形状，也不通过高阶 reader 传递具体泛型。内容查询仍由精确 Typed Ref 恢复 P／E，字段 setter 保留 NoInfer；普通查询直接返回完整对象，私有形状仍只由精确 Ref／Definition 证明，底层 Store 不公开。
 
@@ -282,7 +282,7 @@ Runtime 采用以下候选政策：
 1. 固定本轮 Unit 候选及每个宿主当时的执行 Ref，Unit 按 ID 排序。宿主离场由完整离场操作终止其执行，不保存脱离宿主的孤立 Execution。
 2. 对每个 Unit，先推进原有执行，再刷新 Cooldown；刷新返回后重新读取来源，仍为 PRESENT 且空间在场时才运行 select，已经离场或隐藏则跳过。
 3. select 返回本轮候选 Definition ID 及接续状态，可以表达优先级、随机选择和具体模式政策；未提供时从 Actions.keys() 取得全部配置项。
-4. 候选去重后逐一通过内部 Actions.getAction 取得条目及其 Definition，再构造持久 Action Ref 调用 start，每次读取最新来源与配置。列表顺序不代表引擎赋予的业务优先级。
+4. 候选去重后逐一通过 Actions.get(id) 取得条目及其 Definition，再构造持久 Action Ref 调用 start，每次读取最新来源与配置。列表顺序不代表引擎赋予的业务优先级。
 5. 调度器扫描入口固定的执行 Ref，每项读取最新状态并推进一次。自动候选的 start 返回 STARTED 后，Combat 显式调用 advance 推进该 Ref，保持自动动作在同 Tick 首次执行。
 6. 本轮自动候选只尝试一次，不按“仍然就绪”循环重启即时完成的同一行动。
 7. 内容直接 start 或回调内嵌套 start 只登记执行，等待调度器推进。调度入口前已登记的执行可以在本次调度中推进；调度内嵌套登记的执行不在已固定快照中，等待后续调度。

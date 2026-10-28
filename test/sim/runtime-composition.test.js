@@ -292,7 +292,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
     const primary = actor("primary-launcher", program(true));
     const sibling = actor("later-launcher", program(false));
     const siblingAction = initializeActionState(fixtureBattle(0), sibling.action).value;
-    const currentAction = siblingAction.actions.getAction("launch");
+    const currentAction = siblingAction.actions.get("launch");
     const delayedSiblingAction = {
         ...siblingAction,
         actions: siblingAction.actions.replace(currentAction.definition, {

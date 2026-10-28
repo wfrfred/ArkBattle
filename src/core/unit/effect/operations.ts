@@ -102,7 +102,7 @@ export function setDeadline<T extends Effect<any, any>>(
         throw new RangeError(`unknown unit: ${ref.host.id}`);
     }
 
-    const self = unit.effects.getEffect(ref.id);
+    const self = unit.effects.get(ref.id);
     if (self === undefined) {
         throw new RangeError(`unknown effect: ${ref.id}`);
     }
@@ -130,7 +130,7 @@ export function setEnabled<T extends Effect<any, any>>(
     enabled: boolean,
 ): BattleState {
     const unit = units.get<Unit>(battle, ref.host);
-    const instance = unit?.effects.getEffect(ref.id);
+    const instance = unit?.effects.get(ref.id);
     if (instance === undefined || instance.status === "ENDING" || instance.enabled === enabled) {
         return battle;
     }
@@ -146,7 +146,7 @@ export function bindLifetime<T extends Effect<any, any>>(
     parent: LifetimeScope,
 ): Result<boolean> {
     const unit = units.get<Unit>(battle, ref.host);
-    const instance = unit?.effects.getEffect(ref.id);
+    const instance = unit?.effects.get(ref.id);
     if (instance === undefined || instance.status === "ENDING" || !available(battle, parent)) {
         return { state: battle, value: false };
     }
@@ -167,15 +167,14 @@ export function bindLifetime<T extends Effect<any, any>>(
 export const lifetime = create<Effect, Effect<any, any>, string>({
     kind: "EFFECT",
     address: (reference) => [reference.host.id, reference.id],
-    get: (battle, reference) =>
-        units.get<Unit>(battle, reference.host)?.effects.getEffect(reference.id),
+    get: (battle, reference) => units.get<Unit>(battle, reference.host)?.effects.get(reference.id),
     isEnding: (self) => self.status === "ENDING",
     begin: (self) => ({ ...self, status: "ENDING" }),
     replace: (battle, reference, next) =>
         replaceEffect(battle, units.get<Unit>(battle, reference.host)!, next),
     prepare(battle, reference, initial) {
         if (initial.status === "ACTIVE" && initial.definition.onDisable !== undefined) {
-            const self = units.get<Unit>(battle, reference.host)!.effects.getEffect(reference.id)!;
+            const self = units.get<Unit>(battle, reference.host)!.effects.get(reference.id)!;
             battle = initial.definition.onDisable(battle, self);
         }
 
@@ -184,7 +183,7 @@ export const lifetime = create<Effect, Effect<any, any>, string>({
             : reconcileGroupActivity(battle, reference.host.id, initial.definition.group.id);
     },
     finalize(battle, reference, reason) {
-        const self = units.get<Unit>(battle, reference.host)!.effects.getEffect(reference.id)!;
+        const self = units.get<Unit>(battle, reference.host)!.effects.get(reference.id)!;
         battle = self.definition.onEnd?.(battle, self, reason) ?? battle;
         const unit = units.get<Unit>(battle, reference.host)!;
 
@@ -209,7 +208,7 @@ export function advance(battle: BattleState): BattleState {
         .toArray();
 
     for (const ref of candidates) {
-        const instance = units.get(battle, ref.host)?.effects.getEffect(ref.id);
+        const instance = units.get(battle, ref.host)?.effects.get(ref.id);
         if (instance?.status === "ACTIVE" && instance.definition.onTick !== undefined) {
             battle = instance.definition.onTick(battle, instance);
         }
@@ -234,7 +233,7 @@ function replaceEffect<S extends object, H extends object>(
 
 function updateStatus<T extends Effect<any, any>>(battle: BattleState, ref: Ref<T>): BattleState {
     const unit = units.get<Unit>(battle, ref.host);
-    const instance = unit?.effects.getEffect(ref.id);
+    const instance = unit?.effects.get(ref.id);
     if (
         unit === undefined ||
         instance === undefined ||
@@ -269,7 +268,7 @@ function updateStatus<T extends Effect<any, any>>(battle: BattleState, ref: Ref<
         status: active ? "ACTIVE" : "INACTIVE",
     });
 
-    const current = units.get<Unit>(battle, ref.host)?.effects.getEffect(ref.id);
+    const current = units.get<Unit>(battle, ref.host)?.effects.get(ref.id);
     if (current?.status !== (active ? "ACTIVE" : "INACTIVE")) {
         return battle;
     }

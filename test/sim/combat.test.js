@@ -331,7 +331,7 @@ test('core combat: immutable updates preserve earlier combat state', () => {
 
   const battlefield = snapshot.battlefield;
   const previous = snapshot;
-  const currentAction = operator.action.actions.getAction(actionId);
+  const currentAction = operator.action.actions.get(actionId);
   const changed = {
     ...operator,
     action: { ...operator.action, actions: operator.action.actions.replace(currentAction.definition, { ...currentAction, cooldown: { ...currentAction.cooldown, readyAtTick: 999999 } }) },

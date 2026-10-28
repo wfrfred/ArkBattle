@@ -72,9 +72,9 @@ test("Actions stores one aggregate per definition and preserves paired private t
     assert.equal(original.get(first.id, { ...first }), undefined);
     assert.equal(original.get("missing"), undefined);
     assert.deepEqual(original.keys().toArray(), ["first", "second"]);
-    assert.strictEqual(original.getAction(first.id), one);
-    assert.deepEqual(original.getAction(first.id).state, { count: 1 });
-    assert.equal(original.getAction("missing"), undefined);
+    assert.strictEqual(original.get(first.id), one);
+    assert.deepEqual(original.get(first.id).state, { count: 1 });
+    assert.equal(original.get("missing"), undefined);
     assert.strictEqual(original.getExecution(0), two);
     assert.deepEqual(original.getExecution(0).execution.state, { message: "flying" });
     assert.equal(original.getExecution(9), undefined);
@@ -177,7 +177,7 @@ Actions.empty().replace(configured, { ...precise, execution: { ...precise.execut
 // @ts-expect-error An idle aggregate cannot identify an execution.
 executionRef(source, publicAction);
 operations.setExecutionState(battle, publicRef, {});
-const action = Actions.empty().getAction(configured.id);
+const action = Actions.empty().get(configured.id);
 type ErasedAction = Assert<Equal<typeof action, Action | undefined>>;
 if (action !== undefined) {
     action.definition.prepare(battle, source, action);

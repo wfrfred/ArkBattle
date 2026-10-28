@@ -87,7 +87,8 @@ getExecution(battle, erased)!.execution.state.count;
 // @ts-expect-error Default aggregate data has no inferred P fields.
 getExecution(battle, erased)!.state.count;
 type DefaultExecution = Assert<Equal<NonNullable<ReturnType<typeof entries.getExecution>>,Execution>>;
-type DefaultPersistent = Assert<Equal<ReturnType<typeof entries.getAction>,Action|undefined>>;
+const defaultPersistent = entries.get("persistent");
+type DefaultPersistent = Assert<Equal<typeof defaultPersistent,Action|undefined>>;
 const defaultAction = entries.get(definition.id)!;
 type DefaultState = Assert<Equal<typeof defaultAction.state,object>>;
 defaultAction.definition.prepare(battle,source,defaultAction);
@@ -174,7 +175,7 @@ const usage: number = persistentEntry.state.uses;
 actionHost.action.actions.replace(persistent, { ...persistentEntry, state: { uses: 2 } });
 // @ts-expect-error
  actionHost.action.actions.replace(persistent, { ...persistentEntry, state: { uses: "wrong" } });
-const opaqueEntry = actionHost.action.actions.getAction("persistent")!;
+const opaqueEntry = actionHost.action.actions.get("persistent")!;
 const opaqueStored = getAction(battle, actionRef(source, opaqueEntry.definition))!;
 // @ts-expect-error Unknown configuration does not expose concrete private fields.
 opaqueStored.state.uses;
