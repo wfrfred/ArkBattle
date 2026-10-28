@@ -2,11 +2,10 @@ import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { ref as unitRef } from "../../dist/core/unit/index.js";
 import { select } from "../../dist/core/battle/targeting/index.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/index.js";
-import { initializers } from "../../dist/core/unit/capability/catalog.js";
-import { initialize as initializeUnit, placement } from "./unit.js";
+import { initialize as initializeUnit } from "./unit.js";
 import { getUnit } from "./unit.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
-import { definition, attackBuff, effectFixtureWork } from "./effects.js";
+import { definition, attackBuff } from "./effects.js";
 
 export const effectProgram = (id, initialize = () => ({})) => ({ id, initialize });
 export function auraUnit(id, position = [0, 0], extra = {}) {
@@ -130,18 +129,20 @@ export function auraEffect(
     );
 }
 
-export function seededPlacement(effect, unit = auraUnit(0), scopes = []) {
-    const installed = effects.install(effectFixtureWork(unit), unitRef(unit), effect, {
-        source: unitRef(unit),
-        scopes,
-    });
-    const seeded = getUnit(installed.state, unit.id);
-    return placement({
-        definition: seeded.definition,
-        position: seeded.position,
-        effects: seeded.effects,
-        states: Object.fromEntries(Object.keys(initializers).filter(key => key in seeded).map(key => [key, seeded[key]])),
-    });
+export function effectPlacement(effect, unit = auraUnit(0), scopes = []) {
+    return {
+        definition: {
+            ...unit.definition,
+            hooks: [{
+                id: "fixture/initial-effect", stage: "enter",
+                invoke(battle, self) {
+                    const host = unitRef(self);
+                    return { state: effects.install(battle, host, effect, { source: host, scopes }).state, value: undefined };
+                },
+            }, ...unit.definition.hooks],
+        },
+        position: unit.position,
+    };
 }
 
 export function attackAt(battle, unitId) {

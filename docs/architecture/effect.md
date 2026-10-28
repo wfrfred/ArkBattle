@@ -75,6 +75,8 @@ S 是实例私有数据的类型，例如护盾层数、周期进度或 Aura 的
 
 覆写组与固定优先级属于 Definition，实例直接读取 `definition.group`。每次安装的初始属性使用 `Initial<S>`：`source`、`scopes`、`data` 和 `enabled`。其中 source 的类型为 `Ref<Unit> | null`，省略时为 null。这些值表达本次施加的来源、具体生命周期、采样数据与初始许可，不覆写 Definition 的规则。
 
+Unit 初始化始终建立空 Effects，不接收预装容器。初始 Buff、护盾等由 Unit Definition 中 `stage: "enter"` 的 Hook 在宿主登记后调用 install，按正常安装流程执行 onInstall、生效协调与依赖登记。
+
 ### 不可变 Effects 容器
 
 `Unit.effects: Effects` 以私有 `Store<Id, View>` 持有异构 Effect 集合与宿主内的 `nextId`。容器是不可变值：增删改返回新容器，原容器与其中的旧实例仍可读取；查询返回共享的不可变引用。
@@ -146,7 +148,7 @@ type Scope = Lifetime | { readonly type: "TICK"; readonly tick: number };
 
 父子生命周期通过 EFFECT Scope 表示。Effect 之间的依赖必须是 DAG，绑定时维护这个领域约束。Scope 在实例中是权威关系，反向索引是从这些关系派生的依赖者查询结构。
 
-install 在入口校验本次 TICK 期限与 Scope 可用性；bindLifetime 检查当前实例和目标生命周期资格，并拒绝形成 Effect 依赖环。战斗初始化对输入中已有 Effect 的初始 Scopes 继续校验。这些输入与领域约束不由内部写回 helper 重复执行。
+install 在入口校验本次 TICK 期限与 Scope 可用性；bindLifetime 检查当前实例和目标生命周期资格，并拒绝形成 Effect 依赖环。所有实例通过安装与绑定入口建立这些约束，战斗初始化不再全场扫描预装 Effect 的 Scopes；内部写回 helper 也不重复执行这些输入与领域校验。
 
 依赖索引由 BattleState.effect.dependency 持有，不属于 Battlefield 或其 View。纯索引实现位于 unit/effect/dependency.ts：UNIT 按 Unit ID 定位，其余分支分别按宿主 ID、实例 ID 定位，生命周期类型以不同字段分隔，均使用数字 Map。
 
@@ -166,7 +168,7 @@ Bucket 保存该生命周期的直接依赖者，按宿主 ID、Effect ID 升序
 
 相同 Scope 按生命周期类型与实例身份去重，TICK 不进入依赖索引；Effect 进入 ENDING 时即移除其登记的依赖。无依赖变化时保留原索引，未受影响的 Map 与 Bucket 继续共享，空 Bucket 和宿主分支删除。
 
-Battle 初始化时从已有 Unit 的 Effect 构建索引；完整 Unit 登记、更新、移除和整版 Field 接续在业务回调前维护它。单个 Unit 操作直接提供已知变更，不为普通更新全量枚举所有 Unit。同步嵌套操作必须接续最新依赖状态，不能在外层返回时写回旧索引。
+Unit 从空 Effects 开始，登场 Hook 的 install 通过完整 Unit 更新建立依赖索引。完整 Unit 登记、更新、移除和整版 Field 接续在业务回调前维护索引；单个 Unit 操作直接提供已知变更，不为普通更新全量枚举所有 Unit。同步嵌套操作必须接续最新依赖状态，不能在外层返回时写回旧索引。
 
 结束途径统一为：
 

@@ -89,6 +89,8 @@ Capability.initialize(battle, definition) 返回 Result<State>，Unit.initialize
 
 Effect 是附着于 Unit 的实例；`Unit.effects` 持有实例集合。`unit/effect/`、`unit/contribution/` 与 `unit/capability/` 平级；通用 Hook 位于 core/hook.ts，unit/hook.ts 只定义 Unit 的阶段类型。Capability 保存本领域的 Hook 和 Contribution；具体 Effect Definition 组合这些公开操作，抽象 Effect 只管理实例与生命周期。
 
+Unit 初始化始终建立空 Effects，不接受预装实例输入。初始护盾、Buff 等通过现有 Unit Definition 的 `stage: "enter"` Hook 在登记后调用 Effect.install，接续正常安装与生效结算。
+
 眩晕、无敌、治疗不可选中等由具体 Effect 组合各领域规则；领域查询读取当前能力事实。沉默与静默、免疫与反制等尚未完成的机制见 [目标语义与实现缺口](tactical-semantics.md)。
 
 阵营、当前玩家归属、创建者和来源分别表达，按需求存在。Unit 的生命周期状态与战场成员关系共同表达它是否仍可参与新的生命周期绑定。

@@ -7,6 +7,8 @@ import { getUnit } from "../helpers/unit.js";
 import { createDefinition as elementalDefinition } from "../../dist/core/unit/capability/elemental/capability.js";
 import { definition as skillDefinition } from "../helpers/skill.js";
 import { fixtureBattle } from "../helpers/unit.js";
+import { Effects } from "../../dist/core/unit/effect/effects.js";
+import { createUnitPlacementDefinition } from "../../dist/core/battle/creation/placement.js";
 
 const bursts = Object.fromEntries(["NEURAL", "EROSION", "BURN", "NECROSIS"].map(type => [type, {
     durationTicks: 300, onStart: battle => battle,
@@ -84,11 +86,19 @@ test("Unit initialization threads each capability result through the next initia
 test("generic Unit initialization cannot inject prepared states or override the battle clock", () => {
     const battle = fixtureBattle(19);
     const definition = { hooks: [], id: "no-prepared-state", vitality: { maxHp: 100, defense: 0, resistance: 0 }, elemental: elementalDefinition({ maxEp: 1000, bursts }) };
+    const effects = Effects.empty().add({
+        id: 0, host: { id: 1 }, definition: { id: "unsupported-preload", initialize: () => ({}) },
+        data: {}, source: null, scopes: [], enabled: true, status: "ACTIVE",
+    });
     const result = initialize(battle, {         id: 1, definition, position: [0, 0], tick: 900,
+        effects,
         states: { vitality: { hp: 1 }, occupancy: { tile: [0, 0] } },
     });
     assert.equal(result.value.vitality.hp, 100);
     assert.equal(result.value.elemental.lastAdvancedTick, 19);
     assert.equal(Object.hasOwn(result.value, "occupancy"), false);
+    assert.equal(result.value.effects.size, 0);
+    const placement = createUnitPlacementDefinition({ definition, position: [0, 0], effects });
+    assert.equal(Object.hasOwn(placement, "effects"), false);
     assert.equal(result.state, battle);
 });

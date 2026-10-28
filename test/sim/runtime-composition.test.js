@@ -21,7 +21,7 @@ import { initialize as initializeBattle, step as stepBattle } from "../../dist/c
 import { createLegacyCombatSpec } from "../../dist/legacy/combat.js";
 import { initialize, placement } from "../helpers/unit.js";
 import { effectFixtureWork } from "../helpers/effects.js";
-import { seededPlacement } from "../helpers/aura.js";
+import { effectPlacement } from "../helpers/aura.js";
 import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
 import { actionCapability } from "../helpers/actions.js";
 import { executionRef } from "../../dist/core/unit/action/index.js";
@@ -355,7 +355,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
                 seed: 17,
             }),
             initialUnits: [
-                seededPlacement(
+                effectPlacement(
                     aura,
                     initialize({ id: 0, definition: primary, position: [0, 0] }),
                 ),

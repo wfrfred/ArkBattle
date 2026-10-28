@@ -8,7 +8,6 @@ export interface Input<D extends Definition & Partial<Definitions> = Definition>
     readonly id: Id;
     readonly definition: D;
     readonly position: WorldPosition;
-    readonly effects?: Effects;
 }
 
 export function initialize<D extends Definition & Partial<Definitions>>(
@@ -39,7 +38,7 @@ export function initialize(
             lifecycle: "PRESENT",
             definition: input.definition,
             position: input.position,
-            effects: input.effects ?? Effects.empty(),
+            effects: Effects.empty(),
             ...states,
         },
     };

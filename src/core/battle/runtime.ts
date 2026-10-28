@@ -1,5 +1,5 @@
 import { createBattleState, type State } from "./state.js";
-import { advance as advanceEffects, validateScopes } from "../unit/effect/operations.js";
+import { advance as advanceEffects } from "../unit/effect/operations.js";
 import { assert, assertNonnegativeNumber, assertPositiveSafeInteger } from "../common/assert.js";
 import { create as createBattlefield } from "../battlefield/state.js";
 import * as units from "../unit/query.js";
@@ -73,10 +73,7 @@ export function initialize(input: Input): State {
         initial = addCard(initial, definition).state;
     }
 
-    const initialized = initializeBattlefield(initial, input);
-    validateScopes(initialized);
-
-    return initialized;
+    return initializeBattlefield(initial, input);
 }
 
 export function step(battle: State, commands: readonly Command[]): State {

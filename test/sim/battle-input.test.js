@@ -12,7 +12,7 @@ import { initialize as initializeBattle, step as stepBattle } from "../../dist/c
 
 import { definition } from "../helpers/effects.js";
 import { initialize } from "../helpers/unit.js";
-import { seededPlacement } from "../helpers/aura.js";
+import { effectPlacement } from "../helpers/aura.js";
 import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
 
 test("runtime accepts the battle contract Input directly with structural maps and creation references", async () => {
@@ -127,7 +127,18 @@ function fixture({ spawnTick = 100 } = {}) {
         blockEdges: [],
     };
 
-    const initial = definition("initial-state", { quota: { remaining: 3 }, marks: [1, 2] });
+    const lifecycle = [];
+    const initial = definition("initial-state", { quota: { remaining: 3 }, marks: [1, 2] }, {
+        onInstall(state, self) {
+            assert.equal(unitQueries.get(state, self.host).effects.get(self.id), self);
+            lifecycle.push(["install", self.host.id, self.source.id]);
+            return state;
+        },
+        onEnable(state, self) {
+            lifecycle.push(["enable", self.host.id, self.source.id]);
+            return state;
+        },
+    });
     const enemy = { hooks: [],
         spatialPresence: {},
         id: "scheduled-enemy",
@@ -166,7 +177,7 @@ function fixture({ spawnTick = 100 } = {}) {
         },
         initialUnits: [
             placement("placed-a", 0),
-            seededPlacement(initial, initialize({ id: 1, ...placement("placed-b", 1) })),
+            effectPlacement(initial, initialize({ id: 1, ...placement("placed-b", 1) })),
         ],
         initialMechanisms: [
             { definition: { id: "first-mechanism", initialize: () => ({}) } },
@@ -209,7 +220,7 @@ function fixture({ spawnTick = 100 } = {}) {
                 initiallyPresent: false,
                 creation: {
                     type: "UNIT",
-                    ...placement("later-unit", 3),
+                    ...effectPlacement(initial, initialize({ id: 103, ...placement("later-unit", 3) })),
                 },
             },
         ],
@@ -217,11 +228,11 @@ function fixture({ spawnTick = 100 } = {}) {
         routeMoveMultiplier: 1,
         rngState: 17,
     };
-    return { fields, effectDefinition: initial };
+    return { fields, effectDefinition: initial, lifecycle };
 }
 
 test("runtime allocates initial IDs, resolves creation references, and never reuses predefined instance IDs", () => {
-    const { fields, effectDefinition } = fixture();
+    const { fields, effectDefinition, lifecycle } = fixture();
     const input = fields;
     let runtime = initializeBattle(input);
     const initial = runtime;
@@ -256,12 +267,17 @@ test("runtime allocates initial IDs, resolves creation references, and never reu
         quota: { remaining: 3 },
         marks: [1, 2],
     });
+    assert.deepEqual(lifecycle, [["install", 1, 1], ["enable", 1, 1]]);
 
     runtime = stepBattle(runtime, [
         { type: "APPEAR_PREDEFINED", definitionId: 102 },
         { type: "APPEAR_PREDEFINED", definitionId: 103 },
     ]);
     const appeared = runtime;
+    const appearedEffect = unitQueries.get(appeared, { id: 3 }).effects.getEffect(0);
+    assert.deepEqual(appearedEffect.host, unitQueries.ref(unitQueries.get(appeared, { id: 3 })));
+    assert.deepEqual(appearedEffect.source, appearedEffect.host);
+    assert.deepEqual(lifecycle, [["install", 1, 1], ["enable", 1, 1], ["install", 3, 3], ["enable", 3, 3]]);
     assert.deepEqual(
         unitQueries.all(appeared).toArray().map((unit) => unit.id),
         [0, 1, 2, 3],
@@ -286,6 +302,11 @@ test("runtime allocates initial IDs, resolves creation references, and never reu
         { type: "APPEAR_PREDEFINED", definitionId: 103 },
     ]);
     const replaced = runtime;
+    const replacedEffect = unitQueries.get(replaced, { id: 4 }).effects.getEffect(0);
+    assert.deepEqual(replacedEffect.host, unitQueries.ref(unitQueries.get(replaced, { id: 4 })));
+    assert.deepEqual(replacedEffect.source, replacedEffect.host);
+    assert.deepEqual(lifecycle.slice(-2), [["install", 4, 4], ["enable", 4, 4]]);
+    assert.deepEqual(appearedEffect.host, { id: 3 });
     assert.deepEqual(
         unitQueries.all(replaced).toArray().map((unit) => unit.id),
         [0, 1, 2, 4],

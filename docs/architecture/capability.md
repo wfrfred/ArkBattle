@@ -66,7 +66,7 @@ export type Product<D> = {
 
 Product<D>.definition 直接保留 D，包含内容自有字段、字面量与联合分支信息；各 Capability 的运行 State 则使用 initializer 派生的标准 States 类型。SelectedKeys 的条件以 [D] 包裹，只有联合 Definition 的所有分支都明确要求某项能力时才承诺对应 State；可选能力也不提供存在保证。Unit 基础身份与生命周期 Hook 契约归 Unit 模块。类型推导与运行时装配共用 initializers，不另建能力映射表。Definition 与内部状态按项目契约保持不可变，不额外套深只读包装、复制或冻结。
 
-Unit 装配实现在 unit/initialize.ts，由 [unit/index.ts](../../src/core/unit/index.ts) 公开 initialize(battle, input) → Result<Unit & Product<D>> 及模型、Hook 类型和查询；完整登记与离场操作仍直接归 battle/unit.ts。Input 的 id、definition、position 为必填，effects 可选；已有 Effects 容器直接沿用，未提供时使用 Effects.empty()。实现签名接收 Input<Definition & Partial<Definitions>>，按配置键是否存在选择能力，并直接读取 definition[key]；不使用 Reflect，也不重复检查内部能力配置是否为 undefined 或 null。已知能力的 Definition 受 Catalog 派生类型约束；通用装配结果只承诺 Definition 中明确选择的能力。Skill.initialize 返回完整的非泛型 Capability State，程序私有类型由领域内部恢复。
+Unit 装配实现在 unit/initialize.ts，由 [unit/index.ts](../../src/core/unit/index.ts) 公开 initialize(battle, input) → Result<Unit & Product<D>> 及模型、Hook 类型和查询；完整登记与离场操作仍直接归 battle/unit.ts。Input 的 id、definition、position 为必填，不接收 effects；每个 Unit 始终以 Effects.empty() 初始化。初始 Effect 由 Unit Definition 中 `stage: "enter"` 的 Hook 在登记后调用 install，正常执行安装、生效与依赖结算。实现签名接收 Input<Definition & Partial<Definitions>>，按配置键是否存在选择能力，并直接读取 definition[key]；不使用 Reflect，也不重复检查内部能力配置是否为 undefined 或 null。已知能力的 Definition 受 Catalog 派生类型约束；通用装配结果只承诺 Definition 中明确选择的能力。Skill.initialize 返回完整的非泛型 Capability State，程序私有类型由领域内部恢复。
 
 装配按登记次序调用所选 initializer，逐个接续返回的 battle，再组合完整 Unit。初始化可以读取当前战场或按所属流程消费 RNG；后续初始化与创建流程使用返回版本，不能重新接回旧 battle。这个阶段 Unit 尚未登记，初始化不能假设自己或兄弟能力已经可从战场取得。登记、Skill 入场及 Unit 的 enter Hook 等登场结算由创建流程负责。
 

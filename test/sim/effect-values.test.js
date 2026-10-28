@@ -2,10 +2,9 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { setDeadline, deadline } from "../../dist/core/unit/effect/effect.js";
 import { get, setData } from "../../dist/core/unit/effect/index.js";
-import { validateScopes } from "../../dist/core/unit/effect/operations.js";
 import { getUnit } from "../helpers/unit.js";
 import { initialize } from "../helpers/unit.js";
-import { definition, effectFixtureWork, install, replaceEffectFixture } from "../helpers/effects.js";
+import { definition, effectFixtureWork, install } from "../helpers/effects.js";
 
 const host = () => initialize({ id: 0, position: [0, 0], definition: { hooks: [], id: "values" } });
 
@@ -67,11 +66,4 @@ test("effect deadlines: invalid initial time is rejected before initialization o
     }
     assert.deepEqual(trace, []);
     assert.equal(getUnit(state, 0).effects.values().toArray().length, 0);
-    const installed = install(state, definition("initial"));
-    const self = get(installed.state, installed.value);
-    const invalid = replaceEffectFixture(installed.state, installed.value, {
-        ...self,
-        scopes: [{ type: "TICK", tick: -1 }],
-    });
-    assert.throws(() => validateScopes(invalid), RangeError);
 });

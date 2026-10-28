@@ -14,13 +14,12 @@ import { createTile } from "../helpers/tiles.js";
 import { createDefinition as createDeployableDefinition } from "../helpers/deployable.js";
 import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
-import { effectFixtureWork } from "../helpers/effects.js";
 import {
     attackEffect,
     auraUnit,
     effectProgram,
     auraEffect,
-    seededPlacement,
+    effectPlacement,
     attackAt,
 } from "../helpers/aura.js";
 
@@ -81,18 +80,17 @@ function input(host, overrides = {}) {
     };
 }
 
-test("aura runtime: a restored aura refreshes on its first tick without creating a source mechanism", () => {
+test("aura runtime: an aura installed on enter refreshes on its first tick without creating a source mechanism", () => {
 
     const receiver = attackEffect("initial-aura-receiver");
     const aura = auraEffect(receiver);
-    const host = seededPlacement(aura);
+    const host = effectPlacement(aura);
     let runtime = initializeBattle(input(host));
     const initial = runtime;
     assert.deepEqual([...initial.mechanisms.values()], []);
     assert.equal(unitQueries.all(initial).toArray()[0].effects.values().toArray()[0].definition, aura);
     assert.deepEqual(unitQueries.all(initial).toArray()[0].effects.values().toArray()[0].data.bindings, []);
     assert.equal(attackAt(initial, 1), 100);
-    assert.deepEqual(host.effects.values().toArray()[0].data.bindings, []);
     runtime = stepBattle(runtime, []);
     const after = runtime;
     assert.deepEqual(
@@ -101,6 +99,7 @@ test("aura runtime: a restored aura refreshes on its first tick without creating
     );
     assert.equal(attackAt(after, 1), 120);
     assert.equal(unitQueries.all(after).toArray()[1].effects.nextId, 1);
+    assert.deepEqual(getUnit(initial, 0).effects.values().toArray()[0].data.bindings, []);
     assert.equal(attackAt(initial, 1), 100);
 });
 
@@ -127,14 +126,22 @@ test("aura runtime: predefined, deployment and spawning join before the same tic
             return state;
         },
     };
-    let hostState = effectFixtureWork(auraUnit(0));
-    for (const effect of [observer, aura])
-        hostState = effects.install(hostState, unitRef(getUnit(hostState, 0)), effect, { source: unitRef(getUnit(hostState, 0)) }).state;
-    const hostUnit = getUnit(hostState, 0);
+    const hostUnit = auraUnit(0);
     const host = {
-        definition: hostUnit.definition,
+        definition: {
+            ...hostUnit.definition,
+            hooks: [{
+                id: "fixture/initial-effects", stage: "enter",
+                invoke(state, self) {
+                    const host = unitRef(self);
+                    for (const effect of [observer, aura]) {
+                        state = effects.install(state, host, effect, { source: host }).state;
+                    }
+                    return { state, value: undefined };
+                },
+            }, ...hostUnit.definition.hooks],
+        },
         position: hostUnit.position,
-        effects: hostUnit.effects,
     };
     const predefined = {
         id: 7,
@@ -203,7 +210,7 @@ test("aura runtime: movement departure is observed at the next aura tick", () =>
         },
     });
     const aura = auraEffect(receiver, { accepts: (target) => target.position[0] <= 4.1 });
-    const host = seededPlacement(aura);
+    const host = effectPlacement(aura);
     let runtime = initializeBattle(input(host, {
             schedule: { type: "TIMELINE", spawns: [spawn({ tick: 0, speed: 1, wait: false })] },
         }));
@@ -254,7 +261,7 @@ test("aura runtime: callback failure propagates the original error without publi
         },
     });
     const aura = auraEffect(receiver);
-    let runtime = initializeBattle(input(seededPlacement(aura)));
+    let runtime = initializeBattle(input(effectPlacement(aura)));
     runtime = stepBattle(runtime, []);
     runtime = stepBattle(runtime, []);
     const before = runtime;
@@ -270,7 +277,7 @@ test("aura runtime: source retirement ends remote bound buffs within the same st
 
     const receiver = attackEffect("retired-aura-receiver");
     const aura = auraEffect(receiver);
-    let runtime = initializeBattle(input(seededPlacement(aura)));
+    let runtime = initializeBattle(input(effectPlacement(aura)));
     runtime = stepBattle(runtime, []);
     const before = runtime;
     runtime = stepBattle(runtime, [{ type: "RETREAT_UNIT", unitId: 0 }]);

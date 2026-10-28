@@ -224,27 +224,6 @@ export function advance(battle: BattleState): BattleState {
     return battle;
 }
 
-export function validateScopes(battle: BattleState): void {
-    for (const unit of units.all(battle)) {
-        for (const instance of unit.effects.values()) {
-            const ref = effectRef(instance);
-
-            for (const scope of instance.scopes) {
-                if (scope.type === "TICK") {
-                    assertNonnegativeSafeInteger(scope.tick, "effect deadline");
-                    continue;
-                }
-                if (!available(battle, scope)) {
-                    throw new TypeError(`unavailable effect scope ${key(scope)}`);
-                }
-                if (wouldCycle(battle, ref, scope)) {
-                    throw new TypeError("effect scopes cannot form a cycle");
-                }
-            }
-        }
-    }
-}
-
 function available(battle: BattleState, lifetime: Lifetime): boolean {
     switch (lifetime.type) {
         case "UNIT":

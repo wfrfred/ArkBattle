@@ -375,7 +375,7 @@ Unit 生命周期 Hook 与部署 Hook 遵循通用 accepts／invoke 契约，inv
 
 下列示例说明职责分工；各角色的原生相对触发顺序仍需按具体内容核对。
 
-- 泥岩的初始盾与持续充能由登场内容接入 Effect；是否有需要后于其他部署业务的动作，按具体内容安排，而非把所有自身动作强制放在一个时点。
+- 泥岩的初始盾通过 Unit Definition 的 `stage: "enter"` Hook 调用 Effect.install，持续充能由该 Effect 推进；Unit 初始化只建立空 Effects。是否有需要后于其他部署业务的动作，按具体内容安排，而非把所有自身动作强制放在一个时点。
 - [焰尾 X 模组](https://m.prts.wiki/w/焰尾#天赋)需要观察其他卡西米尔干员的部署，可以在天赋 Effect 中登记 DeployedHook。
 - [玛露西尔](https://prts.wiki/w/玛露西尔#天赋)需要入场／退场转换魔力与技力。Unit 的 enter Hook 读取持续资源；Unit 的 leave Hook 读取 departure.unit 的清理前 SP，再写入当前 Card。场下资源推进仍属于对应领域。
 - [伊内丝](https://m.prts.wiki/w/伊内丝#天赋)的离场生成物可在 Unit 的 leave Hook 创建，原位置已释放。技能对影哨生成的影响读取离场事实与内容状态，不因存在统一回调就忽略技能规则。

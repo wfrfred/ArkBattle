@@ -220,7 +220,7 @@ candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定�
 
 Unit 持有不可变 Effects 容器，容器内部使用私有 Store 保存完整实例及 ID 进度。普通 `get(id)`／`values()` 只承诺公共 View 的身份、参与状态、来源、scopes 和定义元数据，不暴露私有 data 或完整回调。`values()`／`keys()` 返回绑定容器版本的 Query。精确 Ref 查询保留已有类型证明；`get(id, definition)` 检查 Definition 对象身份；内部 `getEffect(id)` 返回默认 object／object 的完整 Effect，容器集中恢复这个受信类型。Core 不解释私有 data 或宿主能力 H，只将实例交给它自身 Definition 的程序；跨完整操作后仍从最新 battle 读取当前实例，终止历史载荷按原有 fallback 规则保留。
 
-Effect.source 仅以 `Ref<Unit> | null` 表达施加者，来源存活与生命周期 Scope 分开，来源离场本身不终结 Effect。
+Unit.initialize 始终创建空 Effects；初始内容在宿主登记后，通过既有 `stage: "enter"` 的 Unit Hook 调用 install。实例由正常安装与绑定入口建立生命周期约束，不从预装容器输入，也不在 Runtime 初始化末尾重复扫描 Scopes。Effect.source 仅以 `Ref<Unit> | null` 表达施加者，来源存活与生命周期 Scope 分开，来源离场本身不终结 Effect。
 
 容器不接收战斗状态，也不决定生命周期阶段；完整 replace 由 Core 提交已经配对的值。Effect 容器保存宿主内 ID 进度，Action 的 nextExecutionId 保存于 Capability；Actions 按配置 ID 保存聚合条目，本轮终结只清空 execution。普通内容通过 `effects.setData(battle, ref, nextData)` 提交私有 data，Action 的 setExecutionState 通过本轮 Execution Ref 使用同样形式设置 execution.state，setState／setCooldown 通过持久 Action Ref 分别设置持久 state／Cooldown。Action Ref 由 host 与 Definition 定位，保留私有类型配对；Execution Ref 仍由 host 与本轮 execution.id 定位。两种引用读取同一聚合条目，不增加运行容器或 ID 分配。操作从最新 battle 读取当前实例，只替换指定字段；给定载荷与当前字段引用相同时不生成新 battle。Action 的 execution 为 ENDING 时不允许普通执行写入；持久字段和 Effect 的结束清理仍按各自协议更新。
 

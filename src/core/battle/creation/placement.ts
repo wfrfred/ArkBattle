@@ -3,7 +3,6 @@ import * as initialization from "../../unit/initialize.js";
 import type { Product } from "../../unit/capability/catalog.js";
 import type { Unit, Definition } from "../../unit/unit.js";
 import type { ImmutableData } from "../../common/immutable-data.js";
-import type { Effects } from "../../unit/effect/effects.js";
 import { hasOccupancy, type Occupancy } from "../../unit/capability/occupancy/capability.js";
 import type { Result, State as BattleState } from "../state.js";
 
@@ -11,14 +10,12 @@ export interface UnitPlacementDefinition<D extends Definition = Definition> {
     readonly definition: D;
     readonly position: WorldPosition;
     readonly tile?: TilePosition | null;
-    readonly effects?: Effects;
 }
 
 type NormalizedUnitPlacement<P extends UnitPlacementDefinition> = P extends unknown
     ? {
           readonly definition: ImmutableData<P["definition"]>;
           readonly position: WorldPosition;
-          readonly effects?: Effects;
           readonly tile?: TilePosition | null;
       }
     : never;
@@ -33,7 +30,6 @@ export function createUnitPlacementDefinition(
         definition: placement.definition,
         ...(placement.tile === undefined ? {} : { tile: placement.tile }),
         position: placement.position,
-        ...(placement.effects === undefined ? {} : { effects: placement.effects }),
     });
 }
 
@@ -61,7 +57,6 @@ export function instantiateUnitPlacement(
         id,
         definition: placement.definition,
         position: placement.position,
-        ...(placement.effects === undefined ? {} : { effects: placement.effects }),
     });
     battle = initialized.state;
     let unit: Unit = initialized.value;

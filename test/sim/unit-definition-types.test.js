@@ -14,6 +14,8 @@ test('Unit initialization derives capability pairs directly from the supplied de
 import type { Unit, Definition as UnitDefinition } from ${source('unit/index')};
 import type { Definitions, Product } from ${source('unit/capability/catalog')};
 import { initialize } from ${source('unit/index')};
+import type { Input as UnitInput } from ${source('unit/initialize')};
+import { createUnitPlacementDefinition, type UnitPlacementDefinition } from ${source('battle/creation/placement')};
 import { hasOffense, type Offense } from ${source('unit/capability/offense/index')};
 import { hasSkill, type Definition as SkillDefinition, type Skill } from ${source('unit/capability/skill/index')};
 import type { Vitality } from ${source('unit/capability/vitality/index')};
@@ -36,6 +38,15 @@ declare const elemental: Definitions['elemental'];
 declare const battle: BattleState;
 declare const route: RouteDefinition;
 declare const routeInput: RouteInput;
+declare const preparedEffects: Unit['effects'];
+type NoInitialEffects = Assert<Equal<Extract<keyof UnitInput, 'effects'>, never>>;
+type NoPlacementEffects = Assert<Equal<Extract<keyof UnitPlacementDefinition, 'effects'>, never>>;
+// @ts-expect-error Unit initialization cannot import an Effect container.
+initialize(battle, { id: 11, definition: configuration, position: [0, 0], effects: preparedEffects });
+// @ts-expect-error A placement does not carry an Effect container.
+const preloaded: UnitPlacementDefinition = { definition: configuration, position: [0, 0], effects: preparedEffects };
+const normalized = createUnitPlacementDefinition({ definition: configuration, position: [0, 0], effects: preparedEffects });
+type NoNormalizedEffects = Assert<Equal<Extract<keyof typeof normalized, 'effects'>, never>>;
 const selected = { ...configuration, offense: { attack: 10 }, skill, elemental } satisfies Configuration;
 const plain = initialize(battle, { id: 0, definition: configuration, position: [0, 0] }).value;
 const complete = initialize(battle, { id: 1, definition: selected, position: [0, 0] }).value;
