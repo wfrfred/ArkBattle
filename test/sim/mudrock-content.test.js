@@ -247,9 +247,12 @@ test("S2 immediately overrides normal attack and recovery cooldown, heals once, 
     let ready = sp(hp(fixture.state, 1000), 5);
     ready = save(ready, {
         action: { ...getUnit(ready, 0).action, actions: getUnit(ready, 0).action.actions.keys().reduce(
-            (states, id) => states.read(id, current => states.replace(current.definition, {
-                ...current, cooldown: { readyAtTick: 10000, periodTicks: 60 },
-            })),
+            (states, id) => {
+                const current = states.getAction(id);
+                return states.replace(current.definition, {
+                    ...current, cooldown: { readyAtTick: 10000, periodTicks: 60 },
+                });
+            },
             getUnit(ready, 0).action.actions,
         ) },
         offense: setAttackContribution(getUnit(ready, 0).offense, { id: "test/attack", value: [modifier({ addition: 100 })] }),
