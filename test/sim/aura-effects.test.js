@@ -1,7 +1,9 @@
+import { getRef } from "../../dist/core/lifetime/index.js";
+import { lifetime as effectLifetime } from "../../dist/core/unit/effect/operations.js";
+import { remove as endUnit } from "../../dist/core/battle/unit.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { closeLifetime } from "../../dist/core/battle/execution/lifetime.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { getUnit, replaceUnit } from "../helpers/unit.js";
@@ -67,14 +69,14 @@ test("host lifetime closes remote children only when explicitly bound", () => {
         let ref;
         ({ state: battle, value: ref } = install(battle, aura, 0));
         const child = get(battle, ref).data.bindings[0].refs[0];
-        battle = closeLifetime(battle, { type: "UNIT", ref: unitRef(getUnit(battle, 0)) }, "RETREAT");
+        battle = endUnit(battle, (unitRef(getUnit(battle, 0))).id, "RETREAT");
         assert.equal(get(battle, ref), undefined);
         assert.equal(get(battle, child) === undefined, bindLifetime);
         assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 1))), bindLifetime ? 100 : 120);
     }
 });
 
-test("ordinary end policies decide each receiver against current state", () => {
+test("nested end policies request all receivers before their Finalize callbacks", () => {
     const trace = [];
     const marker = definition("retention-marker");
     const receiver = attackEffect("retention", {
@@ -124,11 +126,12 @@ test("ordinary end policies decide each receiver against current state", () => {
     battle = effects.end(battle, ref);
     assert.deepEqual(trace, [
         ["decide", 1, false],
+        ["decide", 2, false],
         ["end", 1],
-        ["decide", 2, true],
+        ["end", 2],
     ]);
     assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 1))), 100);
-    assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 2))), 120);
+    assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 2))), 100);
 });
 
 test("group suppression preserves aura members and child identities", () => {
@@ -189,7 +192,7 @@ test("nested installation can disable an aura before later receivers enter", () 
     const receiver = attackEffect("nested-stop", {
         onInstall(state, self) {
             starts.push(self.host.id);
-            return effects.setEnabled(state, self.scopes[0].ref, false);
+            return effects.setEnabled(state, getRef(self.scopes[0], effectLifetime), false);
         },
     });
     let battle = effectFixtureWork(auraUnit(0), auraUnit(1), auraUnit(2));
@@ -206,7 +209,7 @@ test("nested child installation ending the aura does not revive parent or child"
     const receiver = attackEffect("nested-end", {
         onInstall(state, self) {
             starts.push(self.host.id);
-            return effects.end(state, self.scopes[0].ref, "EXPLICIT");
+            return effects.end(state, getRef(self.scopes[0], effectLifetime), "EXPLICIT");
         },
     });
     let battle = effectFixtureWork(auraUnit(0), auraUnit(1), auraUnit(2));

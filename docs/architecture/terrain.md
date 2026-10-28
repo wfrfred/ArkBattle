@@ -26,16 +26,18 @@ Mechanism 使用全场唯一的 Typed Ref，私有 State 与 Definition 在容�
 - `get(battle, ref)` 查询当前实例。
 - `setState(battle, ref, state)` 接收已经计算好的私有 State，只替换该字段；当前实例的其他事实由 Core 保留，相同 State 引用返回原 BattleState。
 - `setActive(battle, ref, active)` 切换运行资格，停用时同步执行内容清理。
-- `remove(battle, ref)` 先进入 ENDING，再同步清理并注销。
+- `remove(battle, ref)` 委托静态 lifetime，先同步请求并发布 ENDING，最外层结算器在依赖者完整完成后执行 Finalize 与注销。
 - `advance(battle)` 固定本轮候选，逐项读取最新 ACTIVE 实例并执行 `onTick(battle, self)`。
 
-`onUnitLeave(battle, self, departure)` 接收已经完成的 Unit 离场事实，不表示离开地块。回调可以重入；后续需要当前实例时从返回的最新 BattleState 读取，不写回旧状态。
+`onUnitLeave(battle, self, departure)` 接收 Unit Finalize 内已注销并完成 Card 回收后的历史离场事实，不表示离开地块；Unit 的 Pending 到该通知整个返回后才解除等待。回调可以重入，后续实时事实从返回的最新 BattleState 读取，不写回旧状态。
+
+Mechanism 的 lifetime 由现有操作模块导出，公共请求／析构协议见 [Lifetime](lifetime.md)。INACTIVE 仍是存在的生命周期，可接受显式 Scope；disable 是可逆参与变化，不等于 remove。ACTIVE remove 的 Prepare 用当前 ENDING self 调用已有 onDisable，INACTIVE remove 不重复 disable；Finalize 调用 onEnd 后注销。嵌套 remove 首次返回只保证 Prepare，不保证 onEnd 或注销；重复 PREPARING 请求不等待原 Prepare，首次原因不覆盖。
 
 ## 地形接触与调度
 
 Runtime 顺序为 `Movement → Mechanism → Blocking → RouteCompletion`。地形 Mechanism 按 Unit 当前世界坐标计算接触，要求生命周期 PRESENT 且空间存在，不用 Occupancy 代替接触。
 
-轮询维护进入、离开和持续接触。保持接触时仍重判动态资格，例如飞行单位在地穴上落地。轮询不捕获同 Tick 所有中间位置，也不复刻 Unity 对象顺序；安装与结束 Effect 等已经触发的领域操作仍同步完成。
+轮询维护进入、离开和持续接触。保持接触时仍重判动态资格，例如飞行单位在地穴上落地。轮询不捕获同 Tick 所有中间位置，也不复刻 Unity 对象顺序。安装与结束请求继续显式接续状态；已有 Lifetime 结算时，嵌套 Effect.end 不保证最终注销已完成。
 
 机制按实际地形配置装配，同一实例可以处理参数不同的多个格子。已由预置控制器管理的沼泽、深水不再重复注册静态机制。预置的出现、隐藏与移除使用同一个 Mechanism 生命周期。
 
@@ -50,6 +52,7 @@ Runtime 顺序为 `Movement → Mechanism → Blocking → RouteCompletion`。�
 - 活性源石按进入格子的参数安装持续 Effect，离格后保留；duration 从附加时开始计时，首次伤害等待一秒。
 - 烟雾的索敌限制随接触建立和撤销。
 - 沼泽、深水分开保存控制器扫描进度与宿主 Effect 的周期进度，不在每次轮询重建 Effect 或重置周期。
+- 非 retainOnLeave Effect 显式绑定控制器 Mechanism 的 lifetime，终止时由 DAG 清理并等待；控制器 Prepare 的 onDisable 在 ENDING 中只清 Contact，不再手工结束这些 Effect，也不在 onEnd 重复 clear。离格、换地形和可逆 Mechanism disable 继续按 Contact 业务请求结束。retainOnLeave 的活性源石等效果不自动建立绑定，避免错误缩短持续期。
 - 地穴由 Content 判断坠落资格，并通过完整 Unit 离场操作完成逻辑结算。
 
 本机沼泽模板的周期为一秒，黑板 value 是重量门槛；PRTS 的三秒描述仍有版本或热更新差异。参数应分别表达周期和重量，不把同一原始字段解释成两种职责。

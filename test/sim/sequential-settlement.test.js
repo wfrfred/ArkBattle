@@ -1,3 +1,5 @@
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as actionLifetime } from "../../dist/core/unit/action/operations.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -53,7 +55,7 @@ for (const nested of ["cancel", "advance", "advance complete", "advance waiting"
                         : advanceAction(state, secondRef);
                 },
             },
-            { scopes: [{ type: "ACTION", ref: firstRef }] },
+            { scopes: [lifetimeScope(actionLifetime, firstRef)] },
         ).state;
         const before = state;
         state = remove(state, 0, "RETREAT");

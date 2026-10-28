@@ -1,3 +1,5 @@
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as effectLifetime } from "../../dist/core/unit/effect/operations.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { ref as unitRef } from "../../dist/core/unit/index.js";
 import { select } from "../../dist/core/battle/targeting/index.js";
@@ -75,7 +77,7 @@ export function auraEffect(
                 receiver,
                 {
                     source: self.host,
-                    scopes: bindLifetime ? [{ type: "EFFECT", ref: effectRef(self) }] : [],
+                    scopes: bindLifetime ? [lifetimeScope(effectLifetime, effectRef(self))] : [],
                     ...(value === undefined ? {} : { data: value }),
                 },
             );

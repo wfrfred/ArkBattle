@@ -1,3 +1,5 @@
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as effectLifetime } from "../../dist/core/unit/effect/operations.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import * as effects from "../../dist/core/unit/effect/index.js";
@@ -89,26 +91,29 @@ test("Effect onEnd receives private data updated by disable and dependent cleanu
             const currentData = effects.get(battle, parent).data;
             return effects.setData(battle, parent, { count: currentData.count + 10 });
         },
-    }, { scopes: [{ type: "EFFECT", ref: parent }] });
+    }, { scopes: [lifetimeScope(effectLifetime, parent)] });
     const battle = effects.end(child.state, parent, "PARENT_END");
     assert.deepEqual(seen, [[11, "PARENT_END"]]);
     assert.equal(effects.get(battle, parent), undefined);
     assert.equal(effects.get(battle, child.value), undefined);
 });
 
-test("Effect terminal self survives nested host removal and still cleans independent resources once", () => {
+test("Effect Finalize retains its current owner and cleans a preexisting independent resource once", () => {
     const ended = [];
-    let owned;
-    const installed = effects.install(fixture(), { id: 1 }, {
+    const created = projectiles.create(fixture(), { id: "owned-resource" }, {
+        position: [0, 0], state: {},
+    });
+    const owned = created.value;
+    const installed = effects.install(created.state, { id: 1 }, {
         id: "resource-owner",
-        initialize: () => ({ cleaned: false, resource: null }),
+        initialize: () => ({ cleaned: false, resource: owned }),
         onDisable: (battle, self) => {
             const currentData = effects.get(battle, ref(self)).data;
             return effects.setData(battle, ref(self), { ...currentData, cleaned: true });
         },
         onEnd(battle, self, reason) {
-            assert.equal(units.get(battle, self.host), undefined);
-            assert.equal(effects.get(battle, ref(self)), undefined);
+            assert.equal(units.get(battle, self.host).lifecycle, "LEAVING");
+            assert.equal(effects.get(battle, ref(self)), self);
             assert.equal(self.status, "ENDING");
             assert.equal(self.data.cleaned, true);
             assert.equal(self.data.resource, owned);
@@ -116,28 +121,20 @@ test("Effect terminal self survives nested host removal and still cleans indepen
             return projectiles.stop(battle, self.data.resource);
         },
     });
-    const producer = effects.install(installed.state, { id: 2 }, {
-        id: "creates-resource-during-cleanup",
-        initialize: () => ({}),
-        onEnd(battle) {
-            const created = projectiles.create(battle, { id: "owned-resource" }, {
-                position: [0, 0], state: {},
-            });
-            owned = created.value;
-            const currentData = effects.get(created.state, installed.value).data;
-            return effects.setData(created.state, installed.value, { ...currentData, resource: owned });
-        },
-    }, { scopes: [{ type: "EFFECT", ref: installed.value }] });
-    const child = effects.install(producer.state, { id: 2 }, {
+    const child = effects.install(installed.state, { id: 2 }, {
         id: "removes-parent-host",
         initialize: () => ({}),
-        onEnd: battle => remove(battle, 1, "SCRIPT"),
-    }, { scopes: [{ type: "EFFECT", ref: installed.value }] });
+        onEnd(battle) {
+            battle = remove(battle, 1, "SCRIPT");
+            assert.equal(units.get(battle, { id: 1 }).lifecycle, "LEAVING");
+            assert.equal(effects.get(battle, installed.value).status, "ENDING");
+            return battle;
+        },
+    }, { scopes: [lifetimeScope(effectLifetime, installed.value)] });
     const battle = effects.end(child.state, installed.value, "OUTER_END");
     assert.deepEqual(ended, ["OUTER_END"]);
     assert.equal(units.get(battle, { id: 1 }), undefined);
     assert.equal(projectilesQuery.get(battle, owned), undefined);
-    assert.equal(effects.get(battle, producer.value), undefined);
     assert.equal(effects.get(battle, child.value), undefined);
     assert.equal(battle.events.filter(event => event.type === "PROJECTILE_STOPPED").length, 1);
     assert.equal(effects.end(battle, installed.value), battle);

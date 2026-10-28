@@ -20,7 +20,7 @@
 
 例如 Action 的一次攻击触发反击，反击又导致来源离场：嵌套结算返回后，已经发生的伤害与采样仍保留；后续步骤若要求原 Action 仍在执行，就从最新版本查询并决定是否继续。两次状态推进之间可以使用一次取得的当前对象完成连续局部计算，不要求每次读取字段都重新查询。
 
-终止不等待已经进入调用栈的程序退出。Action.onTick 或 Effect.onEnd 中的同步重入可以完成自己或宿主的终止，返回后原函数按自身控制流继续，并为后续依赖当前生命周期的业务重新确认条件。这是允许同步重入及终结外层对象的直接结果，不为避免检查而增加统一延迟删除、回调退出屏障或跨领域调用上下文。离场只要求[已确定的清理偏序](deployment.md#离场清理的偏序)，其余沿用当前确定顺序。
+终止使用 [Lifetime 请求与 DAG 析构](lifetime.md)。首次请求同步登记 Pending、发布 ENDING／LEAVING、执行 Prepare 并请求依赖者；只有最外层结算器执行 Finalize。嵌套 end／cancel／stop／remove 返回不保证对象已注销、槽位已释放或最终通知已派发；重复请求 PREPARING 节点也不等待原 Prepare。真实 owner 与显式 Scope 保护依赖者，父实例等待其整个 Finalize 返回；普通业务调用不生成等待边，也不等待所有无关 JavaScript 调用栈退出。
 
 ## 1. 范围与依据
 
@@ -75,7 +75,7 @@ Targeting 的 Filter 与 Comparator 属于只读查询。完整选择由 Selecto
 
 ### 3.2 领域结算与具体内容程序
 
-需要组合多个事实的操作接收当前战斗状态，返回下一版本及实际结果。同步嵌套直接调用普通函数。
+需要组合多个事实的操作接收当前战斗状态，返回下一版本及实际结果。同步嵌套直接调用普通函数。生命周期结束的嵌套返回保证以请求／Prepare 为界，完整 Finalize 在最外层 Lifetime 结算范围返回前完成；领域报告仍表达本次业务事实。
 
 ```typescript
 interface Result<A> {
@@ -145,6 +145,7 @@ Tick 的执行顺序在 step() 中直接可读。领域函数负责各自的纯�
 | Execution                          | RNG 和全局 ID／请求分配进度；宿主内 Effect ID 仍归对应 Effect 集合       |
 | Battle.mechanisms：非空间 Mechanism | 共享额度、共享生命、周期、一次性锁和来源过程进度                         |
 | Battle                             | Tick、统计、结果，以及本 Tick 产生的不可变事件和变更事实                 |
+| Battle.lifetime                    | 从所有权／Scope 派生的 dependencies，以及本次结算的 endings／settling |
 
 战斗状态组合这些值，没有第二份 Unit 覆盖层，也不复制 Battlefield 的索引维护职责。全局规则只有需要独立状态时才创建 Mechanism；不把所有特殊技能归成一种通用机制对象。
 
@@ -156,6 +157,7 @@ Tick 的执行顺序在 step() 中直接可读。领域函数负责各自的纯�
 
 - Definition、编译后的内容、地图及静态规则可以共享引用。
 - 当前事件参数、PendingDamage、候选身份范围属于本次调用。
+- Lifetime 的 Pending 与结算标记通过当前 BattleState 显式接续，最外层成功返回前清空；不保存模块级 busy、共享可变工作队列或同步调用栈。
 - 跨 Tick 的计时、次数、RNG、绑定、执行游标不能放在资源或闭包里。
 - 缓存只保存可重建结果，内部可变缓存不得改变领域结果；跨 Tick 的权威进度保存在 State。Navigation 的缓存契约见 [Navigation 设计](navigation.md#职责与状态归属)。
 
@@ -174,13 +176,13 @@ unit.remove(battle, id, reason) → nextBattle
 unit.advance(battle) → nextBattle
 ```
 
-battlefield/unit.ts 的 add／update／remove 只完成纯状态转换；完整 Unit 业务统一位于 battle/unit.ts，提供 add／update／remove／advance。remove 在入口建立 LEAVING，清理操作返回后重新读取当前 Unit，再直接注销并记录移除事实，不另设重复保证生命周期的 unregister 步骤。add 负责登记和入场，remove 负责生命周期清理和注销，调用方不再拼接两段操作。BattleState 不另提供 Unit 登记或注销入口。
+battlefield/unit.ts 的 add／update／remove 只完成纯状态转换；完整 Unit 业务统一位于 battle/unit.ts，提供 add／update／remove／advance。remove 委托 Unit Lifetime，在请求阶段进入 LEAVING 并执行本次返费；所有权与 Scope 依赖者完整 Finalize 后，Unit Finalize 从当前状态注销并记录移除事实、回收 Card 和派发 leave。调用方不拼接这些内部步骤，BattleState 不另提供 Unit 登记或注销入口。
 
 add 拒绝重复身份，update 要求身份已存在且 Definition 不变；替换保持登记顺序。删除使用 Typed Ref。Unit 的 update 要求目标均已登记；任一目标缺失时抛出 RangeError，在任何业务通知前拒绝整批更新。空批次或所有对象引用均未变化时返回原状态。Unit 更新显式传递受影响身份集合，Occupancy 按整批最终状态统一维护，不为已知变更全量比较集合。Unit 的所属格在查询时读取 position 与 SpatialPresence，不另存位置索引或空间依赖分类。
 
 部署和空间出现等跨字段操作，由所属领域构造新的不可变 Unit，通过 update 的 Unit 数组维护登记。普通操作传入 [unit]；只有确实要求同时提交最终状态时才使用多元素数组，不把本来逐次完成的独立领域操作合并以减少调用。battlefield/unit.ts 的私有 Change 记录 ADD 的 next、UPDATE 的 previous/next 或 REMOVE 的 previous。私有 applyChanges(field, changes) 统一写入 Unit 容器，并依据登记值的变化维护 Occupancy，不重新扫描完整 Unit 集合计算差分；Effect 依赖索引由 Battle 层接续。接口不返回需要另行执行的指令、闭包或提交计划，也不要求操作返回后再调用 settle。
 
-Battle 层通过 unit.update 接续一组最终 Unit，统一维护 Battlefield 和本批 Effect 依赖索引；消费方直接从当前 Occupancy 双槽查询平台与乘员，所需属性由消费方读取；受影响登记格按承载差分向 SUPPORT 的 occupantAdded／occupantRemoved Hook 同步通知，不提供额外的 SUPPORT_LOST 事件。平台离场的后继业务由其 leave Hook 组合公开操作，普通单单位操作调用 update(battle, [unit])。Blocking 在纯准备阶段合并本批关系两侧，所有 Unit、Occupancy 与 Effect 依赖就绪后才派发关系通知，之后不得写回旧 Unit。承载不另存权威关系表，见 [Occupancy 与 Support](occupancy.md)。注册者已经知道本次创建的实例；UnitRemoval 是实际删除时采样的独立业务记录，不从通用变更日志恢复。删除记录与离场开始时的 Departure 历史快照分别表达各自时点。
+Battle 层通过 unit.update 接续一组最终 Unit，统一维护 Battlefield 和本批生命周期派生依赖索引；消费方直接从当前 Occupancy 双槽查询平台与乘员，所需属性由消费方读取；受影响登记格按承载差分向 SUPPORT 的 occupantAdded／occupantRemoved Hook 同步通知，不提供额外的 SUPPORT_LOST 事件。平台离场的后继业务由其 leave Hook 组合公开操作，普通单单位操作调用 update(battle, [unit])。Blocking 在纯准备阶段合并本批关系两侧，所有 Unit、Occupancy 与生命周期依赖索引就绪后才派发关系通知，之后不得写回旧 Unit。承载不另存权威关系表，见 [Occupancy 与 Support](occupancy.md)。注册者已经知道本次创建的实例；UnitRemoval 是实际删除时采样的独立业务记录，不从通用变更日志恢复。删除记录与离场开始时的 Departure 历史快照分别表达各自时点。
 
 初始化、刷怪和预定义出现逐个完成创建、登记与入场，接续 Hook 返回的最新 BattleState 后才处理下一个对象，不预先分配后续实例身份。刷怪按当前实例逐个登记调度归属和出生事件后再执行 enter Hook；待生成数量随实际生成递减。纯集合批量写入不定义批量入场语义。Field 状态转换不执行阻挡业务；完整 Battle 操作承接必要维护。
 
@@ -218,7 +220,7 @@ candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定�
 
 公共 API 为 set、remove、dispatch；set/remove 按 ID 登记、替换与撤销，保留结构共享。领域持有登记集合，定义节点、排序、资格与停止条件。Effect 与 [Projectile](projectile.md) 的 Definition 回调直接接收 self；Effect 的 Core 操作通过内部 getEffect 取得完整实例并调用其自身 Definition，Projectile 的未知私有类型与 Definition 仍由容器 read 保持配对。Definition 程序与本次 Hook 派发的固定 Context 分别定义。
 
-Unit 持有不可变 Effects 容器，容器内部使用私有 Store 保存完整实例及 ID 进度。普通 `get(id)`／`values()` 只承诺公共 View 的身份、参与状态、来源、scopes 和定义元数据，不暴露私有 data 或完整回调。`values()`／`keys()` 返回绑定容器版本的 Query。精确 Ref 查询保留已有类型证明；`get(id, definition)` 检查 Definition 对象身份；内部 `getEffect(id)` 返回默认 object／object 的完整 Effect，容器集中恢复这个受信类型。Core 不解释私有 data 或宿主能力 H，只将实例交给它自身 Definition 的程序；跨完整操作后仍从最新 battle 读取当前实例，终止历史载荷按原有 fallback 规则保留。
+Unit 持有不可变 Effects 容器，容器内部使用私有 Store 保存完整实例及 ID 进度。普通 `get(id)`／`values()` 只承诺公共 View 的身份、参与状态、来源、scopes 和定义元数据，不暴露私有 data 或完整回调。`values()`／`keys()` 返回绑定容器版本的 Query。精确 Ref 查询保留已有类型证明；`get(id, definition)` 检查 Definition 对象身份；内部 `getEffect(id)` 返回默认 object／object 的完整 Effect，容器集中恢复这个受信类型。Core 不解释私有 data 或宿主能力 H，只将实例交给它自身 Definition 的程序；跨完整操作后仍从最新 battle 读取当前实例。真实所有权保护结束中的宿主与存储，不保留通用终止 fallback；Departure 等明确历史载荷按本领域业务输入保存。
 
 Unit.initialize 始终创建空 Effects；初始内容在宿主登记后，通过既有 `stage: "enter"` 的 Unit Hook 调用 install。实例由正常安装与绑定入口建立生命周期约束，不从预装容器输入，也不在 Runtime 初始化末尾重复扫描 Scopes。Effect.source 仅以 `Ref<Unit> | null` 表达施加者，来源存活与生命周期 Scope 分开，来源离场本身不终结 Effect。
 
@@ -232,9 +234,9 @@ Projectile 的异构容器归 projectile/projectiles.ts，状态仍由 Battlefie
 
 self 是输入版本的值。嵌套调用返回后，遵守 [状态接续后的读取与续执行](#状态接续后的读取与续执行)：实时事实从返回 State 重新查询，明确采样与历史载荷保留。不使用动态 getter 偷偷追踪一个可变工作对象，也不以旧整份 Unit 覆盖新版本。
 
-安装先登记 INSTALLING，执行安装程序，接续其返回值；仍存在且安装完成的实例再决定是否 ACTIVE。结束先进入 ENDING、撤销输出，按生命周期关系结束依赖，执行结束程序后移除。依赖保持 DAG；source 是来源，不隐含随来源结束。
+安装先登记 INSTALLING，执行安装程序，接续其返回值；仍存在且安装完成的实例再决定是否 ACTIVE。结束请求发布 ENDING，Prepare 撤销输出、协调 Group 并展开依赖请求；Finalize 等全部真实依赖者完整完成，再调用结束程序与移除。关系权威来自存储所有权和 scopes，合并图保持 DAG；source 只表达来源。
 
-已经进入的内容程序按自身控制流继续。结束自身后仍需使用的载荷可以保留为本次函数的局部值；需要终态结果时由结束操作明确返回。不得为所有操作增加全局延迟删除、恢复调度或最后载荷表。
+已经进入的内容程序按自身控制流继续，明确采样载荷可保留为本次函数局部值。需要槽位释放或最终通知的后继业务使用领域完成时点，不能从嵌套 end 返回推断 Finalize 已完成。Pending 只保存当前同步结算工作，不保存通用最后载荷表、恢复调度或跨 Tick 删除队列。
 
 普通私有 data 转换不自动刷新 Contribution。静态、周期采样、状态响应更新和实时只读求值分别由具体内容与 Capability 表达。Effect 覆写、Contribution 分组、Hook 执行顺序和本次业务条件仍是四件事。
 
@@ -268,7 +270,7 @@ self 是输入版本的值。嵌套调用返回后，遵守 [状态接续后的�
 
 `effects.setData` 只写私有 data，不自动刷新 Contribution；需要修改已登记贡献的内容显式执行对应刷新。安装／启停／绑定／结束仍由生命周期操作完成，不通过私有数据转换绕过这些规则。
 
-Healing 中若嵌套 Damage，Damage 必须把冷却消耗、HP、致死裁决、实际退场和 Effect 后继形成的新状态返回给 Healing，再返回外层盾程序。每层报告描述本次操作，不用最终 HP 净变化反推本次伤害／治疗量。
+Healing 中若嵌套 Damage，Damage 必须把冷却消耗、HP、致死裁决与已执行的退场请求／Effect Prepare 返回给 Healing，再返回外层盾程序。若当前已有 Lifetime 结算范围，Damage.completed 不保证目标的离场 Finalize 已完成；最外层结算器随后完成这些工作。每层报告描述本次操作，不用最终 HP 净变化反推本次伤害／治疗量。
 
 同样的组合可以表达治疗后给其他 Unit 装盾、灼痕死亡爆炸、技能结束补 SP、共享复活额度消耗。普通函数调用、if 和 for 足够，不要求通用指令解释器。
 
@@ -317,6 +319,6 @@ Meta／Data 提供具体战斗配置、Definition、规则程序及其初始参�
 
 ## 13. 尚未确定的内容语义
 
-特殊覆写、动态优先级、父子结束回调的原生时点及具体内容约束、复活／死亡通知时点、吸血的数值基线、再生与 Healing 的统计范围、盟约变化后刷新时点、特殊位移等仍按真实内容补证或明确项目政策。Effect 的简单同步递归默认顺序见 [Effect 结束流程](effect.md#结束流程)，不将它当作原生行为证据。
+特殊覆写、动态优先级、父子结束回调的原生时点及具体内容约束、复活／死亡通知时点、吸血的数值基线、再生与 Healing 的统计范围、盟约变化后刷新时点、特殊位移等仍按真实内容补证或明确项目政策。请求与依赖完成顺序见 [Lifetime](lifetime.md) 和 [Effect 结束流程](effect.md#结束流程)，不将项目的 DAG 析构政策当作原生行为证据。
 
 这些事项影响某个领域或内容的规则，不阻止确定纯状态输入／输出、同步接续、唯一 Battlefield 转换与外层发布。未证实的行为不写成官方规则；项目采用的简单约定明确标注，出现具体内容依赖时再验证。

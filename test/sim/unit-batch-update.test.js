@@ -1,3 +1,6 @@
+import { lifetime as effectLifetime } from "../../dist/core/unit/effect/operations.js";
+import { scope as lifetimeScope, getRef as lifetimeRef } from "../../dist/core/lifetime/index.js";
+import { lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { update } from "../../dist/core/battle/unit.js";
@@ -5,7 +8,7 @@ import * as blocking from "../../dist/core/battle/blocking/operations.js";
 import { at } from "../../dist/core/battlefield/occupancy.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
-import { dependents } from "../../dist/core/unit/effect/dependency.js";
+import { dependents } from "../../dist/core/lifetime/dependency.js";
 import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
 import * as attribute from "../../dist/core/unit/contribution/attribute.js";
 import * as presence from "../../dist/core/unit/capability/presence/operations.js";
@@ -46,7 +49,7 @@ test("complete batch updates exchange occupied tiles using one final occupancy s
 });
 
 test("the first acquired Hook sees every batch Unit and all Effect dependencies", () => {
-    const lifetime = { type: "UNIT", ref: { id: 40 } };
+    const lifetime = lifetimeScope(unitLifetime, { id: 40 });
     let calls = 0;
     let battle = fixture([holder(), target(), target(40, { position: [8, 1] })]);
     const owner = getUnit(battle, 10);
@@ -58,7 +61,7 @@ test("the first acquired Hook sees every batch Unit and all Effect dependencies"
             assert.deepEqual(blockedIds(current), [20]);
             assert.equal(getUnit(current, 10).blocker.blocked[0], relation.blocked);
             assert.equal(getUnit(current, 40).vitality.hp, 37);
-            assert.deepEqual(dependents(current.effect.dependency, lifetime), [
+            assert.deepEqual(dependents(current.lifetime.dependencies, lifetime).map(target => lifetimeRef(target, effectLifetime)), [
                 effectRef(ownerEffect), effectRef(targetEffect),
             ]);
             return current;
@@ -80,7 +83,7 @@ test("the first acquired Hook sees every batch Unit and all Effect dependencies"
 
     assert.equal(calls, 1);
     assert.deepEqual(blockedIds(battle), [20]);
-    assert.deepEqual(dependents(before.effect.dependency, lifetime), []);
+    assert.deepEqual(dependents(before.lifetime.dependencies, lifetime).map(target => lifetimeRef(target, effectLifetime)), []);
     assert.deepEqual(blockedIds(before), []);
     assert.equal(getUnit(before, 40).vitality.hp, 100);
 });
@@ -256,7 +259,7 @@ test("a missing batch target rejects before any Blocking notification", () => {
     }) };
     const missing = target(99);
     const field = battle.battlefield;
-    const dependency = battle.effect.dependency;
+    const dependency = battle.lifetime.dependencies;
     const events = battle.events;
 
     for (const updates of [[changed, missing], [missing, changed]]) {
@@ -264,7 +267,7 @@ test("a missing batch target rejects before any Blocking notification", () => {
     }
     assert.equal(calls, 0);
     assert.equal(battle.battlefield, field);
-    assert.equal(battle.effect.dependency, dependency);
+    assert.equal(battle.lifetime.dependencies, dependency);
     assert.equal(battle.events, events);
     assert.deepEqual(blockedIds(battle), [20]);
 });

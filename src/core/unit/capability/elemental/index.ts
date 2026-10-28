@@ -27,7 +27,7 @@ export type {
     Burst,
 } from "./burst.js";
 
-export { damage, heal, finish, cancel, advance } from "./operations.js";
+export { lifetime, damage, heal, finish, cancel, advance } from "./operations.js";
 
 export type {
     DamageRequest,

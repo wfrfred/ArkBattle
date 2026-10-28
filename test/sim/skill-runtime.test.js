@@ -1,3 +1,5 @@
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as skillLifetime } from "../../dist/core/unit/capability/skill/operations.js";
 import * as unitQueries from "../../dist/core/unit/index.js";
 import { damage as damageTargeting, healing as healingTargeting } from "../helpers/targeting.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
@@ -55,7 +57,7 @@ function scenario(skill, { targets = 1, attackTargets = 1, windupTicks = 0, cont
   skill = createSkillDefinition({ ...skill, activation: { ...skill.activation,
     onStart: content ?? ((state, self) => {
       const installed = effects.install(state, self.host, buff, {
-        source: self.host, scopes: [{ type: 'SKILL', ref: activationRef(self) }],
+        source: self.host, scopes: [lifetimeScope(skillLifetime, activationRef(self))],
       });
       if (fault.enabled) throw new Error('skill fault');
       assert.ok(installed.value);

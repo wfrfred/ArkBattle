@@ -1,4 +1,5 @@
 import type { Ref } from "../../core/common/ref.js";
+import { scope, type Scope as LifetimeScope } from "../../core/lifetime/index.js";
 import type { State as BattleState, OperationResult as Result } from "../../core/battle/index.js";
 import * as mechanisms from "../../core/battle/mechanism.js";
 import type { MechanismDefinition } from "../../core/battle/mechanism.js";
@@ -48,6 +49,7 @@ interface Behaviour<P extends object> {
         battle: BattleState,
         unit: Unit,
         params: P,
+        scopes: readonly LifetimeScope[],
     ) => Result<Ref<EffectView> | undefined>;
 }
 
@@ -71,7 +73,7 @@ function create<P extends object>(
             contacts: new Map(),
         });
 
-        if (!behaviour.retainOnLeave) {
+        if (!behaviour.retainOnLeave && self.status !== "ENDING") {
             for (const contact of owned) {
                 if (contact.effect !== undefined) {
                     battle = effects.end(battle, contact.effect, "TERRAIN_UNAVAILABLE");
@@ -167,9 +169,11 @@ function create<P extends object>(
                 const tile = map.tiles.get(index, definition)!;
 
                 if (previous !== undefined) {
-                    const effectExists =
-                        previous.effect !== undefined &&
-                        effects.get(battle, previous.effect) !== undefined;
+                    const effect =
+                        previous.effect === undefined
+                            ? undefined
+                            : effects.get(battle, previous.effect);
+                    const effectExists = effect !== undefined && effect.status !== "ENDING";
                     if (previous.index === index && effectExists) {
                         continue;
                     }
@@ -199,7 +203,12 @@ function create<P extends object>(
                     continue;
                 }
 
-                const installed = behaviour.enter(battle, latest, tile.definition.terrain.params);
+                const installed = behaviour.enter(
+                    battle,
+                    latest,
+                    tile.definition.terrain.params,
+                    behaviour.retainOnLeave ? [] : [scope(mechanisms.lifetime, reference)],
+                );
                 battle = installed.state;
 
                 if (mechanisms.get(battle, reference)?.status !== "ACTIVE") {
@@ -229,7 +238,6 @@ function create<P extends object>(
             return mechanisms.setState(battle, mechanisms.ref(self), { ...self.state, contacts });
         },
         onDisable: clear,
-        onEnd: clear,
     };
 }
 
@@ -266,8 +274,9 @@ export function createTerrainMechanism(
             id: "terrain/mire",
             intervalTicks: 3,
             // Current native content uses one second; the older PRTS three-second report differs.
-            enter: (battle, unit, params) =>
+            enter: (battle, unit, params, scopes) =>
                 effects.install(battle, units.ref(unit), createMireEffect(params), {
+                    scopes,
                     data: { nextTick: battle.tick, stacks: 0 },
                 }),
         });
@@ -277,8 +286,9 @@ export function createTerrainMechanism(
             id: "terrain/deepsea",
             intervalTicks: 6,
             accepts: (unit) => hasAllegiance(unit) && unit.allegiance.side === "ENEMY",
-            enter: (battle, unit, params) =>
+            enter: (battle, unit, params, scopes) =>
                 effects.install(battle, units.ref(unit), createDeepseaEffect(params), {
+                    scopes,
                     data: { nextTick: battle.tick },
                 }),
         });
@@ -289,9 +299,9 @@ export function createTerrainMechanism(
             intervalTicks: 1,
             accepts: (unit) =>
                 hasAllegiance(unit) && unit.allegiance.side === "ALLY" && hasTargetable(unit),
-            enter: (battle, unit) =>
+            enter: (battle, unit, _params, scopes) =>
                 hasTargetable(unit)
-                    ? effects.install(battle, units.ref(unit), smogEffect)
+                    ? effects.install(battle, units.ref(unit), smogEffect, { scopes })
                     : { state: battle, value: undefined },
         });
     }

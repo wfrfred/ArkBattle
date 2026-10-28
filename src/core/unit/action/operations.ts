@@ -1,7 +1,7 @@
 import { update as updateUnit } from "../../battle/unit.js";
-import { closeLifetime } from "../../battle/execution/lifetime.js";
 import type { Ref } from "../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../battle/state.js";
+import * as lifetimes from "../../lifetime/index.js";
 import * as units from "../query.js";
 import type { Unit } from "../unit.js";
 import type { Action as ActionCapability } from "../capability/action/capability.js";
@@ -153,64 +153,48 @@ export function setExecutionState<P extends object, E extends object>(
           });
 }
 
+export const lifetime = lifetimes.create<ExecutionView, Execution, End>({
+    kind: "ACTION",
+    address: (reference) => [reference.host.id, reference.id],
+    get: (battle, reference) =>
+        units.get(battle, reference.host)?.action.actions.getExecution(reference.id),
+    isEnding: (self) => self.execution.status === "ENDING",
+    begin: (self) => ({ ...self, execution: { ...self.execution, status: "ENDING" } }),
+    replace: (battle, reference, next) =>
+        replaceAction(battle, units.get(battle, reference.host)!, next),
+    finalize(battle, reference, result) {
+        const self = units.get(battle, reference.host)!.action.actions.getExecution(reference.id)!;
+
+        if (self.definition.onEnd !== undefined) {
+            battle = self.definition.onEnd(battle, reference.host, self, result);
+        }
+
+        const host = units.get(battle, reference.host)!;
+        const action = host.action.actions.get(self.definition.id, self.definition)!;
+        battle = replaceAction(battle, host, { ...action, execution: null });
+
+        return appendEvents(battle, [
+            {
+                executionId: self.execution.id,
+                sourceUnitId: reference.host.id,
+                tick: battle.tick,
+                ...(result.type === "FINISHED"
+                    ? { type: "ACTION_FINISHED" as const }
+                    : { type: "ACTION_CANCELLED" as const, reason: result.reason }),
+            },
+        ]);
+    },
+    reason: (result) => (result.type === "FINISHED" ? "ACTION_FINISHED" : result.reason),
+    fromDependency: () => ({ type: "CANCELLED", reason: "SOURCE_ABSENT" }),
+});
+
 export function end(
     battle: BattleState,
     reference: Ref<ExecutionView>,
     result: End,
-    lifetimeReason = result.type === "FINISHED" ? "ACTION_FINISHED" : result.reason,
+    lifetimeReason?: string,
 ): BattleState {
-    const host = units.get(battle, reference.host);
-    if (host === undefined) {
-        return battle;
-    }
-
-    const self = host.action.actions.getExecution(reference.id);
-    if (self === undefined || self.execution.status === "ENDING") {
-        return battle;
-    }
-
-    const ending: Execution = {
-        ...self,
-        execution: { ...self.execution, status: "ENDING" },
-    };
-    battle = replaceAction(battle, host, ending);
-    battle = closeLifetime(battle, { type: "ACTION", ref: reference }, lifetimeReason);
-
-    if (self.definition.onEnd !== undefined) {
-        const current = units
-            .get(battle, reference.host)
-            ?.action.actions.get(self.definition.id, self.definition);
-        const latest =
-            current?.execution?.id === reference.id
-                ? {
-                      definition: current.definition,
-                      state: current.state,
-                      cooldown: current.cooldown,
-                      execution: current.execution,
-                  }
-                : ending;
-        battle = self.definition.onEnd(battle, reference.host, latest, result);
-    }
-
-    const latestHost = units.get(battle, reference.host);
-    const latestAction = latestHost?.action.actions.get(self.definition.id, self.definition);
-    if (latestHost !== undefined && latestAction?.execution?.id === reference.id) {
-        battle = replaceAction(battle, latestHost, {
-            ...latestAction,
-            execution: null,
-        });
-    }
-
-    return appendEvents(battle, [
-        {
-            executionId: self.execution.id,
-            sourceUnitId: reference.host.id,
-            tick: battle.tick,
-            ...(result.type === "FINISHED"
-                ? { type: "ACTION_FINISHED" as const }
-                : { type: "ACTION_CANCELLED" as const, reason: result.reason }),
-        },
-    ]);
+    return lifetime.end(battle, reference, result, lifetimeReason);
 }
 
 export function cancel(

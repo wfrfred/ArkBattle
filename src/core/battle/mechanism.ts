@@ -1,4 +1,5 @@
 import type { Identified, Ref } from "../common/ref.js";
+import { create as createLifetime } from "../lifetime/operations.js";
 import type { Query } from "../common/query.js";
 import type { Departure } from "../unit/unit.js";
 import { instantiateMechanismPlacement } from "./creation/mechanism.js";
@@ -99,23 +100,34 @@ export function setActive(battle: BattleState, reference: Ref<View>, active: boo
     );
 }
 
+export const lifetime = createLifetime<View, Mechanism, string>({
+    kind: "MECHANISM",
+    address: (ref) => [ref.id],
+    get: (battle, reference) => get(battle, reference) as Mechanism | undefined,
+    isEnding: (self) => self.status === "ENDING",
+    begin: (self) => ({ ...self, status: "ENDING" }),
+    replace: (battle, _ref, next) => ({
+        ...battle,
+        mechanisms: battle.mechanisms.replace(ref(next), next),
+    }),
+    prepare: (battle, reference, initial) => {
+        const self = get(battle, reference) as Mechanism;
+
+        return initial.status === "ACTIVE"
+            ? (self.definition.onDisable?.(battle, self) ?? battle)
+            : battle;
+    },
+    finalize: (battle, reference) => {
+        const self = get(battle, reference) as Mechanism;
+        battle = self.definition.onEnd?.(battle, self) ?? battle;
+
+        return { ...battle, mechanisms: battle.mechanisms.remove(reference.id) };
+    },
+    reason: (reason) => reason,
+});
+
 export function remove(battle: BattleState, reference: Ref<View>): BattleState {
-    return (
-        battle.mechanisms.read(reference.id, (self) => {
-            if (self.status === "ENDING") {
-                return battle;
-            }
-
-            const ending = { ...self, status: "ENDING" as const };
-            battle = { ...battle, mechanisms: battle.mechanisms.replace(ref(self), ending) };
-
-            if (ending.definition.onEnd !== undefined) {
-                battle = ending.definition.onEnd(battle, ending);
-            }
-
-            return { ...battle, mechanisms: battle.mechanisms.remove(reference.id) };
-        }) ?? battle
-    );
+    return lifetime.end(battle, reference, "EXPLICIT");
 }
 
 export function advance(battle: BattleState): BattleState {

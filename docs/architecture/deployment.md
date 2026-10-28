@@ -318,54 +318,55 @@ Deployed 是已发生部署的输入事实，unit 取自本次登记完成时的
 
 Unit 的 enter Hook 可以同步触发退场，部署通知仍表示此前已发生的部署，不因回调返回时当前 Unit 已不存在就丢失。通知本身也可以触发退场；后续 Hook 接续实际返回版本。拒绝的部署没有 Unit 的 enter Hook 或部署通知。
 
-真实离场的顺序是：
+真实离场委托 [Unit Lifetime](lifetime.md)，分成同步请求与最终析构：
 
 ```text
-接受真实离场，捕获旧 Unit 与所需结算数值
-→ 标记 LEAVING
-→ 按原因执行本次应有的返费
-→ 关闭 Action／Skill／Unit 生命周期，执行相应结束内容
-→ 从 Battlefield 删除 Unit，维护场上关系
-→ 若有关联，完成 Card 回收／库存／冷却／费用进度结算
-→ Unit 的 leave Hook（使用开始离场时捕获的 Departure）
+首次接受离场，捕获 Departure 与明确采样数值
+→ 登记 PREPARING，发布 LEAVING 与必要关系
+→ Prepare 按本次原因及标记发布／Blocking Hook 返回后的最新 Unit 返费
+→ 按 Skill、Action、Burst、Effect 的所有权顺序请求子项
+→ 等待全部真实依赖者整个 Finalize 返回
+→ Unit Finalize 从当前状态注销、记录移除事实并维护场上关系
+→ 关联 Card 的回收／库存／冷却／费用进度结算
+→ Unit 的 leave Hook（初始 Departure）
 → 模式 Mechanism 的离场响应
-→ 返回离场结果
+→ 整个 Unit Finalize 返回，移除 Pending，完成本次离场工作
 ```
 
-返费依据和数值在撤销贡献前确定，返费在 Card 费用进度更新之前发生。Action、Skill、Elemental Burst、Effect 如何结束由所属领域管理；生命周期入口接续它们的返回版本，不重建第二套结束算法。
+Departure.unit 保存开始离场时、尚未清理 Skill／Effect 的不可变 Unit，作为本次业务结束输入随 Pending 保留；它不是通用 Context 或最后可得实例回退。动态属性若需要离场前的全场采样，应在清理前按业务明确取得。注销和移除记录使用清理后最新 Unit，不能用 Departure.unit 覆盖当前状态。返费在标记发布及 Blocking Hook 后从最新 Unit 求值，在 Card 费用进度更新之前发生，不把 Departure.unit 当作实时退款依据。
+
+Unit 不再手工依次调用各领域 cancel 或 Effect 递归清理。所有权边来自 Unit 当前 Execution、Activation、Burst 和 Effects；显式 Scope 关系与它们共同决定完成顺序。每个领域仍负责自己的结束内容、数据写回和事件，公共运行器不解释其私有状态。
 
 ### 离场清理的偏序
 
-离场固定以下偏序；Action、Skill、Elemental Burst 之间不规定通用业务优先级：
+请求顺序和完成顺序分别确定：
 
 ```text
-Unit 进入 LEAVING
+Unit 请求：LEAVING → 返费
         │
-        ├── 终止 Action 及其依赖
-        ├── 终止 Skill 及其依赖
-        ├── 终止 Elemental Burst 及其依赖
-        └── 终止剩余 Effect
-        │
-        ▼
-Unit 从 Battlefield 移除
+        ├── 请求 Skill 及依赖
+        ├── 请求 Action 及依赖
+        ├── 请求 Burst 及依赖
+        └── 请求 Effect 与外部显式依赖者
         │
         ▼
-Unit 的 leave Hook
+各子项完成整个 Finalize（含 onEnd、槽位结算、末尾通知）
+        │
+        ▼
+Unit Finalize：注销 → Card 回收 → leave Hook → 机制响应
 ```
 
-remove 入口负责进入 LEAVING；清理后重新读取的实例用于注销与移除记录，私有步骤不重复设置生命周期。公开 Battlefield.remove 仍独立检查身份存在性。
+owned 子候选按上述顺序，Action 内按 executionId、Effect 内按 effectId 数值排序；scoped 在 owned 后，显式依赖 Effect 按 hostId／effectId 数值排序。兄弟可以都先成为 ENDING，前一个兄弟的结束程序不能假设后一个仍在运行。同一依赖者被多个目标请求时复用首次 Pending，End 与传播原因不被后续请求覆盖。
 
-图中的四个分支是清理职责，不表示并行执行，也不要求一个分支必须完全退出后才能同步进入另一分支。各领域负责自己的完整终止、依赖关闭和结束内容；开始终止先形成相应生命周期事实，重复请求不重复收尾。Effect 同时绑定 Action 和 Skill 时，任一依赖关闭即可结束它，另一分支再次遇到它时跳过。
+Pending 在整个 Finalize 返回前存在。子实例已注销但仍在派发末尾 Hook 时，其 parents 仍让 Unit 等待；不能用对象已从容器消失推断其结束内容全部完成。Unit 的物理删除仍由所属领域 Finalize 执行，公开 Battlefield.remove 只承担纯存储职责。
 
-任何跨领域操作返回后，外层若还需要依赖宿主或自身的当前生命周期，就从最新 BattleState 查询并确认。同步回调允许重入，重入可以结束外层正在执行的对象；Typed Ref 保留身份与类型，不保证它仍在运行。这是既定执行模型的正常续执行要求。
+Effect.onEnd 内请求宿主离场，嵌套 remove 会标记 LEAVING、同步执行首次 Prepare 并返回；宿主等待该 Effect 完整 Finalize 后才注销。等待来自实际 Effect→Unit 关系，调用 remove 不反向建立 Effect 等待 Unit 的边。普通函数继续控制流，后续实时事实从返回 battle 查询；不等待无关调用栈退出。
 
-终止不等待已经进入调用栈的回调退出。例如 Effect.onEnd 内造成宿主死亡，离场可在该嵌套调用返回前完成；原 onEnd 随后继续，使用已采样载荷或依据最新事实判断后继。图中的清理边界不承诺所有已进入的 JavaScript 函数都已返回，不为此延迟移除 Unit 或恢复已经结束的实例。
+无活动结算时 remove 在本次调用内 drain 完再返回；已有结算时，返回不保证占格释放、Card 回收或 leave 通知已发生。Damage.completed 同样不保证目标的离场 Finalize 完成，需要完成事实的业务应使用既有最终通知，不在嵌套调用中强行 drain。
 
-`LEAVING` 宿主及已关闭的生命周期不能接受新的依赖安装。其他 Unit 上仅记录来源、没有绑定已关闭生命周期的独立效果仍可保留。结束内容触发的伤害、治疗、安装和其他单位离场逐项接续最新状态，不回滚已完成的前缀。
+LEAVING 宿主与 Pending／ENDING 目标不能接受新的真正依赖；空间查询和普通业务资格不能只检查 get 非空。其他 Unit 上只有 source、未绑定生命周期的独立效果仍可保留。结束中的合法清理字段仍按各自 API 写入，跨完整操作后接续最新状态；异常直接传播，不补做剩余 Finalize。
 
-当前离场实现先取消 Skill，再取消 Action，避免 Action.onEnd 重入 finish 把离场取消记为正常完成；这是该流程的固定执行顺序，各兄弟领域之间仍只要求上述必要偏序。各领域自行管理 ENDING、依赖关闭、结束程序、实例移除和领域事件。
-
-模式观察可由 Mechanism Definition 提供 `onUnitLeave(state, mechanismId, departure) → state`，无需另建生命周期容器或事件总线。模式响应位于该 Unit 的 leave Hook 之后，自动再登场因此能读取完成跨部署资源转换的 Card。模式若有更早就必须成立的倒地／资格约束，应在对应业务步骤显式维护，不能把正确性寄托于末尾观察通知。正常模式响应仍可继续产生后续业务。
+模式观察可由 Mechanism Definition 提供 `onUnitLeave(battle, self, departure) → BattleState`，无需另建生命周期容器或事件总线。模式响应位于该 Unit 的 leave Hook 之后，自动再登场因此能读取完成跨部署资源转换的 Card。模式若有更早就必须成立的倒地／资格约束，应在对应业务步骤显式维护，不能把正确性寄托于末尾观察通知。正常模式响应仍可继续产生后续业务。
 
 HP 归零、复活与真实离场分别处理；成功复活不执行 Unit 的 leave Hook。直接更新位置不重新执行 Unit 的 enter Hook，也不广播部署。特殊撤退—再部署与其原因、状态继承和通知政策尚待实际内容实现，本轮不预设一套移动流程。
 

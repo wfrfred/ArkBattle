@@ -1,3 +1,6 @@
+import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as actionLifetime } from "../../dist/core/unit/action/operations.js";
 import { ref as unitReference } from "../../dist/core/unit/query.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
@@ -309,7 +312,7 @@ test("action runtime: a late exception publishes neither progressed action state
     assert.equal(unitQueries.all(before).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0].execution.state.count, 0);
 });
 
-test("action runtime: dependency cleanup can finish nested host death before a thrown end callback", () => {
+test("action runtime: dependency cleanup requests host death without completing destruction before a thrown callback", () => {
     const failure = new Error("terminal finish failed");
     let observedDeparture = false;
     const dependency = {
@@ -318,7 +321,8 @@ test("action runtime: dependency cleanup can finish nested host death before a t
         onEnd(state, self) {
             assert.equal(self.host.id, 1);
             state = dealDamage(state, { source: { id: 0 }, target: self.host, parameters: parameters(100, "TRUE") }).state;
-            observedDeparture = getUnit(state, 1) === undefined;
+            observedDeparture = getUnit(state, 1).lifecycle === "LEAVING";
+            assert.equal(effects.get(state, effectRef(self)), self);
             assert.notEqual(getUnit(state, 0), undefined);
             throw failure;
         },
@@ -327,7 +331,7 @@ test("action runtime: dependency cleanup can finish nested host death before a t
         onTick(state, source, self) {
             if (state.tick === 0)
                 state = effects.install(state, unitRef(getUnit(state, 1)), dependency, {
-                    scopes: [{ type: "ACTION", ref: executionRef(source, self) }],
+                    scopes: [lifetimeScope(actionLifetime, executionRef(source, self))],
                 }).state;
             return { state, value: state.tick > 0 };
         },

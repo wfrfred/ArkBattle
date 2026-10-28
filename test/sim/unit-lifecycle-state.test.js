@@ -1,3 +1,6 @@
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as skillLifetime } from "../../dist/core/unit/capability/skill/operations.js";
+import { lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
@@ -68,7 +71,7 @@ for (const reason of ["DEATH", "RETREAT", "SCRIPT"]) {
     assert.equal(started.value.type, "STARTED");
     state = started.state;
     for (const [id, host, scopes] of [
-      ["skill-dependent", 1, [{ type: "SKILL", ref: activated.value.ref }]],
+      ["skill-dependent", 1, [lifetimeScope(skillLifetime, activated.value.ref)]],
       ["host-dependent", 0, []],
     ]) {
       state = effects.install(state, unitRef(getUnit(state, host)), {
@@ -144,7 +147,7 @@ test("skill finish sees LEAVING and cannot install dependencies on its departing
       onEnd(state) {
         statuses.push(getUnit(state, 0).lifecycle);
         state = remove(state, 0, "DEATH");
-        const rejected = effects.install(state, unitRef(getUnit(state, 1)), { id: "late-dependency", initialize: () => ({}), onInstall(state) { installations++; return state; } }, { scopes: [{ type: "UNIT", ref: { id: 0 } }] });
+        const rejected = effects.install(state, unitRef(getUnit(state, 1)), { id: "late-dependency", initialize: () => ({}), onInstall(state) { installations++; return state; } }, { scopes: [lifetimeScope(unitLifetime, { id: 0 })] });
         assert.equal(rejected.value, undefined);
         return rejected.state;
       },

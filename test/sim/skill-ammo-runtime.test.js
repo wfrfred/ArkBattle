@@ -1,3 +1,5 @@
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as skillLifetime } from "../../dist/core/unit/capability/skill/operations.js";
 import { ref as unitReference } from "../../dist/core/unit/query.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { damage as damageTargeting, healing as healingTargeting } from "../helpers/targeting.js";
@@ -80,7 +82,7 @@ function scenario({ ammo = 1, targets = 1, interrupt = false, windupTicks = 0, o
     activation: { trigger: "MANUAL", sustain: { type: "AMMO", amount: ammo }, initialize: () => ({}),
       onStart: (state, self) => {
         const installed = effects.install(state, self.host, buff, {
-          source: self.host, scopes: [{ type: "SKILL", ref: activationRef(self) }],
+          source: self.host, scopes: [lifetimeScope(skillLifetime, activationRef(self))],
         });
         assert.ok(installed.value);
         return installed.state;

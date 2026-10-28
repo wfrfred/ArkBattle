@@ -15,6 +15,7 @@ export { create, createActions } from "./initialize.js";
 export { all, forUnit, getAction, getExecution, isCasting } from "./query.js";
 
 export {
+    lifetime,
     start,
     setExecutionState,
     setState,

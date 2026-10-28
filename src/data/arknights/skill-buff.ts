@@ -1,5 +1,6 @@
 import { update as updateUnit } from "../../core/battle/unit.js";
 import { get as getUnit, ref as unitRef } from "../../core/unit/index.js";
+import { scope } from "../../core/lifetime/index.js";
 
 import * as attribute from "../../core/unit/contribution/attribute.js";
 import { type Definition, install } from "../../core/unit/effect/index.js";
@@ -13,6 +14,7 @@ import {
 import {
     type Definition as SkillDefinition,
     ref as activationRef,
+    lifetime as skillLifetime,
 } from "../../core/unit/capability/skill/index.js";
 
 import { parseArknightsSkillLevel } from "./skill-definition.js";
@@ -80,12 +82,7 @@ export function compileArknightsAttackBuffSkill(value: unknown, level: number): 
 
                 const installed = install(state, unitRef(unit), buff, {
                     source: unitRef(unit),
-                    scopes: [
-                        {
-                            type: "SKILL",
-                            ref: activationRef(self),
-                        },
-                    ],
+                    scopes: [scope(skillLifetime, activationRef(self))],
                 });
 
                 return installed.state;

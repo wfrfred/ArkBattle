@@ -1,3 +1,6 @@
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as actionLifetime } from "../../dist/core/unit/action/operations.js";
+import { lifetime as burstLifetime } from "../../dist/core/unit/capability/elemental/operations.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, unit } from "../helpers/action-fixture.js";
@@ -39,7 +42,7 @@ test("Action ENDING content rejects new lifetime dependencies while independent 
         onTick: state => ({ state, value: false }),
         onEnd(state, source, self) {
             assert.equal(actions.getExecution(state, executionRef(source, self)).execution.status, "ENDING");
-            return verifyAdmission(state, { type: "ACTION", ref: executionRef(source, self) }, retained);
+            return verifyAdmission(state, lifetimeScope(actionLifetime, executionRef(source, self)), retained);
         },
     };
     const initial = battle(unit(0, { action: definition }), unit(1));
@@ -61,7 +64,7 @@ test("Burst ENDING content rejects new lifetime dependencies while independent b
             onStart: state => state,
             onEnd(state, self) {
                 assert.equal(getUnit(state, self.host.id).elemental.burst.status, "ENDING");
-                return verifyAdmission(state, { type: "ELEMENTAL_BURST", ref: burstRef(self) }, retained);
+                return verifyAdmission(state, lifetimeScope(burstLifetime, burstRef(self)), retained);
             },
         }])),
     });

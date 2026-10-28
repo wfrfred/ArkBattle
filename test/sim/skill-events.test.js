@@ -1,3 +1,5 @@
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as skillLifetime } from "../../dist/core/unit/capability/skill/operations.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { getUnit } from "../helpers/unit.js";
@@ -20,7 +22,7 @@ test("zero-duration activation completes lifecycle callbacks and records each li
         trigger: "MANUAL", sustain: { type: "TIME", durationTicks: 0 }, initialize: () => ({}),
         onStart(battle, self) {
             trace.push("start");
-            return effects.install(battle, self.host, dependent, { scopes: [{ type: "SKILL", ref: activationRef(self) }] }).state;
+            return effects.install(battle, self.host, dependent, { scopes: [lifetimeScope(skillLifetime, activationRef(self))] }).state;
         },
         onEnd(battle, self) {
             assert.equal(getUnit(battle, 1).skill.active.status, "ENDING");

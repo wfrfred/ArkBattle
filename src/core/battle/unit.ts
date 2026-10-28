@@ -1,22 +1,19 @@
 import * as battlefield from "../battlefield/unit.js";
 import type { State as BattlefieldState } from "../battlefield/state.js";
-import type { Id, LeaveReason, Unit } from "../unit/unit.js";
+import type { Id, LeaveReason, Unit, Departure } from "../unit/unit.js";
 import * as units from "../unit/query.js";
 import * as skills from "../unit/capability/skill/operations.js";
-import { ref as activationRef } from "../unit/capability/skill/activation.js";
 import { hasSkill } from "../unit/capability/skill/capability.js";
-import { cancel as cancelBurst } from "../unit/capability/elemental/operations.js";
-import { ref as burstRef } from "../unit/capability/elemental/burst.js";
-import { hasElemental } from "../unit/capability/elemental/capability.js";
-import { cancelForUnit } from "../unit/action/operations.js";
 import * as blocking from "./blocking/operations.js";
-import { closeLifetime } from "./execution/lifetime.js";
-import * as dependency from "../unit/effect/dependency.js";
 import type { State as BattleState } from "./state.js";
 import { notifyUnitLeave } from "./mechanism.js";
 import { recordUnitDeployment, refundUnit, recycleUnitCard } from "./deployment/lifecycle.js";
 import * as occupancy from "./occupancy.js";
 import * as hooks from "../hook.js";
+import { create as createLifetime } from "../lifetime/operations.js";
+import type { Ref } from "../common/ref.js";
+import * as dependency from "../lifetime/dependency.js";
+import { projectUnit, type UnitTransition } from "./lifetime.js";
 
 /* eslint-disable @typescript-eslint/no-unnecessary-type-parameters -- Accept capability-bearing object literals while returning only BattleState. */
 export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
@@ -97,38 +94,18 @@ export function update<U extends Unit>(battle: BattleState, updates: readonly U[
 }
 /* eslint-enable @typescript-eslint/no-unnecessary-type-parameters */
 
-export function remove(battle: BattleState, unitId: Id, reason: LeaveReason): BattleState {
-    const unit = battle.battlefield.units.get(unitId);
-    if (unit === undefined || unit.lifecycle === "LEAVING") {
-        return battle;
-    }
-
-    const reference = units.ref(unit);
-    const lifetime = { type: "UNIT" as const, ref: reference };
-    battle = update(battle, [{ ...unit, lifecycle: "LEAVING" }]);
-    const leaving = units.get(battle, reference);
-    if (leaving !== undefined) {
-        battle = refundUnit(battle, leaving, reason, battle.tick);
-
-        if (hasSkill(leaving) && leaving.skill.active !== null) {
-            battle = skills.cancel(battle, activationRef(leaving.skill.active), reason);
-        }
-    }
-
-    battle = cancelForUnit(battle, reference, "SOURCE_ABSENT", reason);
-    const elementalHost = units.get(battle, reference);
-    if (
-        elementalHost !== undefined &&
-        hasElemental(elementalHost) &&
-        elementalHost.elemental.burst !== null
-    ) {
-        battle = cancelBurst(battle, burstRef(elementalHost.elemental.burst), reason);
-    }
-
-    battle = closeLifetime(battle, lifetime, reason);
-
-    const departing = units.get(battle, reference);
-    if (departing !== undefined) {
+export const lifetime = createLifetime<Unit, Unit, Departure>({
+    kind: "UNIT",
+    address: (ref) => [ref.id],
+    get: units.get,
+    isEnding: (self) => self.lifecycle === "LEAVING",
+    begin: (self) => ({ ...self, lifecycle: "LEAVING" }),
+    replace: (battle, _ref, next) => update(battle, [next]),
+    prepare: (battle, reference, _initial, departure) =>
+        refundUnit(battle, units.get(battle, reference)!, departure.reason, battle.tick),
+    finalize: (battle, reference, departure) => {
+        const departing = units.get(battle, reference)!;
+        const { reason } = departure;
         const previous = battle.battlefield;
         const next = battlefield.remove(previous, reference);
         battle = publishBattlefield(battle, next, [
@@ -136,21 +113,33 @@ export function remove(battle: BattleState, unitId: Id, reason: LeaveReason): Ba
         ]);
         battle = blocking.maintain({
             ...battle,
-            removedUnits: [...battle.removedUnits, { unitId, reason, unit: departing }],
+            removedUnits: [
+                ...battle.removedUnits,
+                { unitId: reference.id, reason, unit: departing },
+            ],
         });
-        battle = occupancy.notify(battle, previous, next, [unitId]);
+        battle = occupancy.notify(battle, previous, next, [reference.id]);
         battle = recycleUnitCard(battle, departing, reason, battle.tick);
+
+        const entries = departure.unit.definition.hooks.filter((entry) => entry.stage === "leave");
+        battle = hooks.dispatch(battle, departure, undefined, {
+            candidates: () => entries.map(({ id }) => id),
+            find: (_current, id) => entries.find((entry) => entry.id === id),
+        }).state;
+
+        return notifyUnitLeave(battle, departure);
+    },
+    reason: (departure) => departure.reason,
+});
+
+export function remove(battle: BattleState, unitId: Id, reason: LeaveReason): BattleState {
+    const reference = { id: unitId } as Ref<Unit>;
+    const unit = units.get(battle, reference);
+    if (unit === undefined) {
+        return battle;
     }
 
-    const departure = { unit, reason };
-
-    const entries = unit.definition.hooks.filter((entry) => entry.stage === "leave");
-    battle = hooks.dispatch(battle, departure, undefined, {
-        candidates: () => entries.map(({ id }) => id),
-        find: (_current, id) => entries.find((entry) => entry.id === id),
-    }).state;
-
-    return notifyUnitLeave(battle, departure);
+    return lifetime.end(battle, reference, { unit, reason });
 }
 
 export function advance(battle: BattleState): BattleState {
@@ -175,23 +164,39 @@ export function advance(battle: BattleState): BattleState {
 function publishBattlefield(
     state: BattleState,
     next: BattlefieldState,
-    transitions: readonly dependency.UnitTransition[],
+    transitions: readonly UnitTransition[],
 ): BattleState {
     if (next === state.battlefield) {
         return state;
     }
 
-    const nextDependency =
-        state.battlefield.units === next.units
-            ? state.effect.dependency
-            : dependency.derive(state.effect.dependency, transitions);
+    const dependencies = dependency.derive(
+        state.lifetime.dependencies,
+        transitions.flatMap(({ previousUnit, nextUnit }) => {
+            const previous = new Map(
+                projectUnit(previousUnit).map((entry) => [dependency.key(entry.target), entry]),
+            );
+            const changes: dependency.Transition[] = [];
+
+            for (const entry of projectUnit(nextUnit)) {
+                const identity = dependency.key(entry.target);
+                changes.push({ previous: previous.get(identity), next: entry });
+                previous.delete(identity);
+            }
+            for (const entry of previous.values()) {
+                changes.push({ previous: entry, next: undefined });
+            }
+
+            return changes;
+        }),
+    );
 
     return {
         ...state,
         battlefield: next,
-        effect:
-            nextDependency === state.effect.dependency
-                ? state.effect
-                : { ...state.effect, dependency: nextDependency },
+        lifetime:
+            dependencies === state.lifetime.dependencies
+                ? state.lifetime
+                : { ...state.lifetime, dependencies },
     };
 }

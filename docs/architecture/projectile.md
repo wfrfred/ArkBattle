@@ -190,23 +190,27 @@ Runtime 在整个 Battle Step 开始、任何可能创建或终结弹道的阶�
 
 onTick 可以移动、报告到达、命中、等待、切换运动方式或发起终结。到达后不再移动的实例仍可以保持 ACTIVE 并执行周期业务。职责分离不要求全场先统一运动、再统一命中、最后统一终结；具体过程可以同步调用并立即接续返回状态。
 
-## 6. 同步终结与事件
+## 6. 终止请求、Finalize 与事件
 
-停止操作接收 StopReason，完整生命周期顺序为：
+停止操作接收 StopReason，委托 Projectile 的静态 lifetime。请求阶段与 Finalize 分开：
 
 ```text
 从最新 battle 确认 ACTIVE
     ↓
-写入 ENDING
+登记 Pending，发布 ENDING
     ↓
-记录 PROJECTILE_STOPPED，保留本次 StopReason
+Prepare 记录 PROJECTILE_STOPPED，保留首次 StopReason
     ↓
-onEnd(battle, self, reason)
+请求依赖者；最外层结算器等待其完整 Finalize
     ↓
-从回调返回的最新 battle 注销实例
+Finalize 从当前实例调用 onEnd(battle, self, reason)
+    ↓
+从回调返回的最新 battle 注销实例；整个返回后移除 Pending
 ```
 
-缺失或已经 ENDING 的实例 stop 返回原 BattleState，不重复事件与回调，也不把正在执行的普通停止改成另一次消除。ENDING 阻止后续正常推进，不无差别拒绝终结程序中的命中、位置／私有状态更新和 Effect 清理。
+重复请求先查 Pending，首次 StopReason 与传播原因不变，不重复事件与回调；缺失时不创建工作。ENDING 阻止后续正常推进，不无差别拒绝终结程序中的命中、位置／私有状态更新和 Effect 清理。
+
+无活动 Lifetime 结算时 stop 在本次调用内完成整批 Finalize；有活动结算时，首次嵌套 stop 只保证 Prepare，不保证实例已从 get／all 消失或 onEnd 已执行，重复 PREPARING 请求也不等待。Pending 在整个 Finalize 返回前保留，即使领域先物理注销、再执行末尾业务，真实依赖关系也仍能约束上游完成。独立 Projectile 不因来源 Unit／Action 结束而自动成为依赖者。
 
 普通停止可以执行该内容的原目标保底、停止爆炸及其他收尾；DISPEL 是否跳过命中、执行什么专属业务由 Definition 确定。两者共用相同的生命周期保护与注销过程，清理可在同一个 onEnd 中完成。
 

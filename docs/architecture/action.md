@@ -32,13 +32,13 @@ Rule 只负责启动准入，不自动中断现有执行。眩晕等需要中断
 
 | 职责 | 导出 |
 | --- | --- |
-| 身份与类型 | ref、executionRef；Action、Execution、ExecutionView、Definition、Signal、StartOutcome |
+| 身份与类型 | ref、executionRef、lifetime；Action、Execution、ExecutionView、Definition、Signal、StartOutcome |
 | 创建 | create、createActions |
 | 查询 | all、forUnit、getExecution、getAction、isCasting |
 | 业务操作 | start、setExecutionState、setState、setCooldown、cancel、cancelForUnit、refreshCooldowns、resetCooldown、clearCooldown |
 | 调度协作 | advance，仅由调度器主动调用 |
 
-五个查询实现在 [query.ts](../../src/core/unit/action/query.ts)；完整启动、写回与终止统一由 [operations.ts](../../src/core/unit/action/operations.ts) 实现。[advance.ts](../../src/core/unit/action/advance.ts) 派发执行程序，直接从 operations.ts 取得域内共享的 end，不经过公共入口。end 的内部导出不使其成为公共 API；advance 的公共协作入口也不扩大 Content 的调用权限。
+五个查询实现在 [query.ts](../../src/core/unit/action/query.ts)；完整启动、写回与终止适配统一由 [operations.ts](../../src/core/unit/action/operations.ts) 实现，执行请求和依赖调度归 [公共 Lifetime](lifetime.md)。[advance.ts](../../src/core/unit/action/advance.ts) 派发执行程序，并按完成结果请求本轮结束。lifetime 的公开协作不授予 Content 任意正常完成或推进权限；advance 仍仅由调度器调用。
 
 ```typescript
 import {
@@ -269,11 +269,11 @@ start 内的局部 check 复用同一套准入规则，在 prepare 前检查，�
 
 单个 Action 的完整写回由文件私有 replaceAction 统一，通过底层 Actions.replace(definition, next) 提交已配对条目，信任已有宿主、Definition 与执行身份。start 仍将新 Cooldown、Execution 和 nextExecutionId 一次写回；refreshCooldowns 仍批量构造后一次提交，不改为逐条写回。生命周期变更由完整领域操作管理，内容只调用对应字段的更新操作。
 
-终止顺序为：execution.RUNNING → 写入 execution.ENDING → 关闭本轮 ACTION lifetime 及依赖 → 读取最新配对条目进入可选 onEnd → 清空 execution → 登记结束事件。重复终止看到 ENDING 不重复收尾；收尾完成前仍占用同配置启动位置。
+终止通过 Action 的 lifetime 请求：登记 Pending、发布 execution.ENDING，再按关系请求本轮依赖者。所有依赖者完整 Finalize 后，从当前存储取得配对 Execution 执行可选 onEnd，接续返回状态，清空同一 execution 并登记结束事件。首次请求固定 End 与依赖传播原因，重复请求不覆盖或重复收尾；整个 Finalize 返回后才解除 owner 等待。
 
-onEnd 可以在宿主已因嵌套离场而消失时凭捕获的 ending 值执行。返回后只在最新仍存在、且 execution.id 仍对应本轮的 Action 上清空 execution，保留结束程序和依赖清理修改过的持久 state 与 Cooldown；不删除配置条目，不重新插入 Unit，也不清理另一轮执行。持久状态随宿主生命周期结束，不隐含跨部署保存。
+Unit 对 Execution 的所有权保护宿主到本轮整个 Finalize 返回。onEnd 内请求宿主离场会先使 Unit LEAVING，但 Unit 不会在该回调中途注销；不再保留宿主缺失时的通用 ending 回退。onEnd 返回后从最新状态读取配对 Action，再清空本轮 execution，保留回调修改的持久 state 与 Cooldown；不删除配置条目，也不清理后来执行。持久状态不隐含跨部署保存。
 
-终止不等待已经进入的 onTick 退出。外层代码继续普通控制流，并按后续业务需要重新确认当前执行资格；异常由 Runtime 整 Tick 发布边界处理。cancelForUnit 固定当前执行 Ref，再逐项完成取消；Unit 离场使用该完整入口。Action 取消原因 SOURCE_ABSENT 与依赖 Effect 的原离场原因分别保留。
+首次嵌套 cancel 同步完成请求与 Prepare，不保证 execution 已清空或结束事件已记录；同一结算范围内 cancel 后立即 start 同配置可能仍被占位拒绝。无活动结算时，结束入口在本次调用内 drain 完再返回。已经进入的 onTick 继续普通控制流，后继按需要重读当前资格；等待边不来自函数调用栈。cancelForUnit 固定执行 Ref，依次请求取消；Unit 退场改由所有权边传播，无须手工调用这套批量入口。Action.onEnd／事件的 SOURCE_ABSENT 与依赖者接收的原离场原因分别保留。
 
 ## 7. 调度
 
@@ -317,4 +317,4 @@ afterOutput 是模板中本轮执行的后继程序，进入前检查对应执�
 
 玩法依据见[行动与弹道](../research/cases/02-action-and-projectile-phases.md)、[计时与动画](../research/cases/07-action-timing-and-animation.md)、[启动与中断](../research/cases/08-action-eligibility-and-interruption.md)。弩手近战与远程的独立冷却要求每种配置各自保存 Cooldown；冷却就绪与执行占用是不同事实。跨轮事实和本轮多段进度分别保存在 P 与 E，按实际内容确定重置边界；研究不要求运行时使用多个独立集合。敌人技能施放期间暂停的触发冷却，与通用 Action 周期分开表达。
 
-Effect 的 ACTION Scope 绑定本轮 Ref<ExecutionView>，不绑定长期存在的 Action 配置项；Execution 进入 ENDING 后不能安装新的该轮依赖。Action、Effect 与 [Projectile](projectile.md) 的异构容器均在内部保持实例和 Definition 的类型配对。Hook 的固定事件 Context 不进入 Action、BattleState 或全局容器。
+Effect 通过 scope(actionLifetime, executionRef) 绑定本轮 Ref<ExecutionView>，不绑定长期存在的配置项；Pending／ENDING 后不能安装新的该轮依赖。Action、Effect 与 [Projectile](projectile.md) 的异构容器均在内部保持实例和 Definition 的类型配对。Hook 的固定事件 Context 不进入 Action、BattleState 或全局容器。

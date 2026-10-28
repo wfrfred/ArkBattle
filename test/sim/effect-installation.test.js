@@ -1,7 +1,7 @@
+import { remove as endUnit } from "../../dist/core/battle/unit.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { getUnit } from "../helpers/unit.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { closeLifetime } from "../../dist/core/battle/execution/lifetime.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize } from "../helpers/unit.js";
@@ -162,7 +162,7 @@ test("effect installation: closing the host from a nested installation never ena
         {},
         {
             onInstall(state, self) {
-                return closeLifetime(state, { type: "UNIT", ref: self.host }, "RETREAT");
+                return endUnit(state, (self.host).id, "RETREAT");
             },
         },
     );
@@ -187,5 +187,5 @@ test("effect installation: closing the host from a nested installation never ena
 
     assert.deepEqual(trace, ["end"]);
     assert.equal(get(battle, ref), undefined);
-    assert.equal(attack(battle), 100);
+    assert.equal(getUnit(battle, 0), undefined);
 });

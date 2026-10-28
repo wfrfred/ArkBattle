@@ -1,141 +1,91 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { Effects } from "../../dist/core/unit/effect/effects.js";
-import { ref } from "../../dist/core/unit/effect/effect.js";
-import { empty, project, derive, dependents } from "../../dist/core/unit/effect/dependency.js";
+import { scope } from "../../dist/core/lifetime/index.js";
+import { empty, derive, dependents, parents, wouldCycle, key } from "../../dist/core/lifetime/dependency.js";
+import { lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
+import { lifetime as actionLifetime } from "../../dist/core/unit/action/index.js";
+import { lifetime as skillLifetime } from "../../dist/core/unit/capability/skill/index.js";
+import { lifetime as burstLifetime } from "../../dist/core/unit/capability/elemental/index.js";
+import { lifetime as effectLifetime } from "../../dist/core/unit/effect/index.js";
 
-const definition = { id: "dependency-test", initialize: () => ({}) };
-const unitLifetime = id => ({ type: "UNIT", ref: { id } });
-const hostedLifetime = (type, host, id) => ({ type, ref: { host: { id: host }, id } });
+const unit = id => scope(unitLifetime, { id });
+const effect = (host, id = 0) => scope(effectLifetime, { host: { id: host }, id });
+const entry = (target, scopes = [], owner = null) => ({ target, owner, scopes });
+const identities = targets => targets.map(target => [target.kind, ...target.address]);
 
-function host(id, entries) {
-    let effects = Effects.empty();
-    for (const entry of entries) {
-        effects = effects.add({
-            id: effects.nextId,
-            host: { id },
-            definition,
-            data: {},
-            source: null,
-            scopes: entry.scopes,
-            enabled: entry.enabled ?? true,
-            status: entry.status ?? "ACTIVE",
-        });
-    }
-    return { id, effects };
-}
-
-function replaceEffect(host, effect) {
-    return { ...host, effects: host.effects.replace(ref(effect), effect) };
-}
-
-function identities(entries) {
-    return entries.map(entry => [entry.host.id, entry.id]);
-}
-
-test("empty dependency state separates lifetime domains and returns empty array buckets", () => {
-    const state = empty();
-    assert.deepEqual(Object.keys(state).sort(), ["action", "effect", "elementalBurst", "skill", "unit"]);
-    for (const partition of Object.values(state)) {
-        assert.equal(partition instanceof Map, true);
-        assert.equal(partition.size, 0);
-    }
-    for (const lifetime of [unitLifetime(1), ...["ACTION", "SKILL", "ELEMENTAL_BURST", "EFFECT"].map(type => hostedLifetime(type, 1, 0))]) {
-        assert.deepEqual(dependents(state, lifetime), []);
+test("dependency identity separates domains and equal local IDs on different hosts", () => {
+    const targets = [
+        unit(1),
+        scope(actionLifetime, { host: { id: 1 }, id: 0 }),
+        scope(actionLifetime, { host: { id: 2 }, id: 0 }),
+        scope(skillLifetime, { host: { id: 1 }, id: 0 }),
+        scope(burstLifetime, { host: { id: 1 }, id: 0 }),
+        effect(1),
+    ];
+    const initial = empty();
+    for (const target of targets) assert.deepEqual(dependents(initial, target), []);
+    assert.equal(new Set(targets.map(key)).size, targets.length);
+    const projected = derive(initial, targets.map((target, index) => ({
+        previous: undefined,
+        next: entry(effect(index + 10), [target]),
+    })));
+    for (const [index, target] of targets.entries()) {
+        assert.deepEqual(identities(dependents(projected, target)), [["EFFECT", index + 10, 0]]);
+        assert.deepEqual(identities(parents(projected, effect(index + 10))), identities([target]));
     }
 });
 
-test("project publishes sorted array buckets that queries return directly", () => {
-    const lifetime = unitLifetime(5);
-    const laterHost = host(9, [{ scopes: [lifetime] }, { scopes: [lifetime] }]);
-    const earlierHost = host(2, [{ scopes: [lifetime] }]);
-    const state = project([laterHost, earlierHost]);
-    const bucket = state.unit.get(5);
-    assert.equal(Array.isArray(bucket), true);
-    assert.deepEqual(identities(bucket), [[2, 0], [9, 0], [9, 1]]);
-    assert.equal(dependents(state, lifetime), bucket);
-    assert.equal(dependents(state, lifetime), bucket);
-
-    const appended = { ...earlierHost, effects: earlierHost.effects.add({
-        ...earlierHost.effects.get(0), id: 1,
-    }) };
-    const updated = derive(state, [{ previousUnit: earlierHost, nextUnit: appended }]);
-    assert.deepEqual(identities(dependents(updated, lifetime)), [[2, 0], [2, 1], [9, 0], [9, 1]]);
-    assert.deepEqual(identities(bucket), [[2, 0], [9, 0], [9, 1]]);
-});
-
-for (const [type, partition] of [["ACTION", "action"], ["SKILL", "skill"], ["ELEMENTAL_BURST", "elementalBurst"], ["EFFECT", "effect"]]) {
-    test(`${type} dependencies keep equal local IDs on different hosts independent`, () => {
-        const first = hostedLifetime(type, 1, 0);
-        const second = hostedLifetime(type, 2, 0);
-        const left = host(10, [{ scopes: [first] }]);
-        const right = host(11, [{ scopes: [second] }]);
-        const state = project([left, right]);
-        assert.deepEqual(identities(dependents(state, first)), [[10, 0]]);
-        assert.deepEqual(identities(dependents(state, second)), [[11, 0]]);
-        assert.equal(dependents(state, first), state[partition].get(1).get(0));
-        assert.equal(dependents(state, second), state[partition].get(2).get(0));
-
-        const changed = replaceEffect(left, { ...left.effects.get(0), status: "ENDING" });
-        const updated = derive(state, [{ previousUnit: left, nextUnit: changed }]);
-        assert.deepEqual(dependents(updated, first), []);
-        assert.equal(updated[partition].has(1), false);
-        assert.equal(updated[partition].get(2), state[partition].get(2));
-        assert.equal(dependents(updated, second), dependents(state, second));
-    });
-}
-
-test("the same numeric identity in different lifetime domains does not share a bucket", () => {
-    const lifetimes = [unitLifetime(1), ...["ACTION", "SKILL", "ELEMENTAL_BURST", "EFFECT"].map(type => hostedLifetime(type, 1, 0))];
-    const state = project(lifetimes.map((lifetime, index) => host(index + 10, [{ scopes: [lifetime] }])));
-    for (const [index, lifetime] of lifetimes.entries()) {
-        assert.deepEqual(identities(dependents(state, lifetime)), [[index + 10, 0]]);
-    }
-});
-
-test("incremental updates share untouched partitions, host branches and sibling buckets", () => {
-    const removed = hostedLifetime("ACTION", 1, 0);
-    const retained = hostedLifetime("SKILL", 3, 0);
-    const editedHost = host(10, [{ scopes: [removed, retained] }]);
-    const untouchedHost = host(11, [{ scopes: [
-        hostedLifetime("ACTION", 1, 1), hostedLifetime("ACTION", 2, 0),
-        hostedLifetime("ELEMENTAL_BURST", 4, 0), hostedLifetime("EFFECT", 5, 0), unitLifetime(7),
-    ] }]);
-    const state = project([editedHost, untouchedHost]);
-    const nextHost = replaceEffect(editedHost, { ...editedHost.effects.get(0), scopes: [retained] });
-    const updated = derive(state, [{ previousUnit: editedHost, nextUnit: nextHost }]);
-    assert.notEqual(updated, state);
-    assert.notEqual(updated.action, state.action);
-    assert.notEqual(updated.action.get(1), state.action.get(1));
-    assert.equal(updated.action.get(1).has(0), false);
-    assert.equal(updated.action.get(1).get(1), state.action.get(1).get(1));
-    assert.equal(updated.action.get(2), state.action.get(2));
-    for (const partition of ["unit", "skill", "elementalBurst", "effect"]) {
-        assert.equal(updated[partition], state[partition]);
-    }
-    assert.deepEqual(identities(dependents(state, removed)), [[10, 0]]);
-    assert.deepEqual(dependents(updated, removed), []);
-    assert.equal(derive(state, [{ previousUnit: editedHost, nextUnit: { ...editedHost, position: [8, 0] } }]), state);
-    const dataOnly = replaceEffect(editedHost, { ...editedHost.effects.get(0), data: { changed: true } });
-    assert.equal(derive(state, [{ previousUnit: editedHost, nextUnit: dataOnly }]), state);
-});
-
-test("duplicate scopes register once and ENDING removes only that Effect's dependencies", () => {
-    const lifetime = hostedLifetime("EFFECT", 3, 0);
-    const owner = host(10, [
-        { scopes: [lifetime, { ...lifetime, ref: { host: { id: 3 }, id: 0 } }, { type: "TICK", tick: 5 }] },
-        { scopes: [lifetime], status: "INACTIVE", enabled: false },
-        { scopes: [lifetime], status: "INSTALLING" },
-        { scopes: [lifetime], status: "ENDING" },
+test("direct dependents keep owned order before numeric scoped order and preserve captured snapshots", () => {
+    const target = unit(5);
+    const entries = [
+        entry(effect(9, 1), [target]),
+        entry(effect(10), [target]),
+        entry(effect(2), [target]),
+        entry(effect(5, 1), [], { target, order: 2 }),
+        entry(effect(5, 0), [], { target, order: 1 }),
+    ];
+    const initial = derive(empty(), entries.map(next => ({ previous: undefined, next })));
+    const captured = dependents(initial, target);
+    assert.deepEqual(identities(captured), [
+        ["EFFECT", 5, 0], ["EFFECT", 5, 1], ["EFFECT", 2, 0], ["EFFECT", 9, 1], ["EFFECT", 10, 0],
     ]);
-    const state = project([owner]);
-    assert.deepEqual(identities(dependents(state, lifetime)), [[10, 0], [10, 1], [10, 2]]);
-    const ending = replaceEffect(owner, { ...owner.effects.get(0), status: "ENDING" });
-    const updated = derive(state, [{ previousUnit: owner, nextUnit: ending }]);
-    assert.deepEqual(identities(dependents(updated, lifetime)), [[10, 1], [10, 2]]);
-    assert.deepEqual(identities(dependents(state, lifetime)), [[10, 0], [10, 1], [10, 2]]);
-    const absent = derive(updated, [{ previousUnit: ending, nextUnit: undefined }]);
-    assert.deepEqual(dependents(absent, lifetime), []);
-    assert.equal(absent.effect.size, 0);
-    assert.deepEqual(absent, empty());
+    const next = derive(initial, [{ previous: entries[0], next: undefined }]);
+    assert.deepEqual(identities(dependents(next, target)), [
+        ["EFFECT", 5, 0], ["EFFECT", 5, 1], ["EFFECT", 2, 0], ["EFFECT", 10, 0],
+    ]);
+    assert.deepEqual(identities(dependents(initial, target)), identities(captured));
+});
+
+test("owner and duplicate explicit scopes identify one dependency", () => {
+    const owner = unit(1);
+    const child = effect(1);
+    const relation = entry(child, [owner, unit(1), effect(2)], { target: owner, order: 0 });
+    const index = derive(empty(), [{ previous: undefined, next: relation }]);
+    assert.deepEqual(identities(dependents(index, owner)), identities([child]));
+    assert.deepEqual(identities(parents(index, child)), identities([owner, effect(2)]));
+    assert.equal(wouldCycle(index, effect(2), child), true);
+    assert.equal(wouldCycle(index, child, owner), false);
+});
+
+test("incremental relation updates retain immutable old graphs and ignore equivalent projections", () => {
+    const first = entry(effect(10), [unit(1)]);
+    const second = entry(effect(11), [unit(2)]);
+    const initial = derive(empty(), [first, second].map(next => ({ previous: undefined, next })));
+    assert.equal(derive(initial, [{ previous: first, next: { ...first, scopes: [unit(1)] } }]), initial);
+    const changed = { ...first, scopes: [unit(3)] };
+    const updated = derive(initial, [{ previous: first, next: changed }]);
+    assert.deepEqual(identities(dependents(initial, unit(1))), identities([first.target]));
+    assert.deepEqual(dependents(updated, unit(1)), []);
+    assert.deepEqual(identities(dependents(updated, unit(3))), identities([first.target]));
+    assert.deepEqual(identities(dependents(updated, unit(2))), identities([second.target]));
+    const removed = derive(updated, [changed, second].map(previous => ({ previous, next: undefined })));
+    assert.deepEqual(removed, empty());
+});
+
+test("binding checks follow transitive dependencies and reject a closed path", () => {
+    const a = effect(1), b = effect(2), c = effect(3);
+    const index = derive(empty(), [entry(b, [a]), entry(c, [b])].map(next => ({ previous: undefined, next })));
+    assert.equal(wouldCycle(index, a, c), true);
+    assert.equal(wouldCycle(index, c, a), false);
+    assert.equal(wouldCycle(index, b, b), true);
 });

@@ -198,7 +198,7 @@ Blocker／Blockable State 各自持有 acquired、released Hook 数组，使用 
 
 Runtime 执行 Movement → Mechanism.advance → Blocking.advance → resolveRouteCompletion。最后一步只检查路线是否已完成和能否离场，不再次推进 Route。消费侧通过 relations(battle) 从两端状态取得 Typed Ref 关系，按需生成输出；不保存额外的全局权威关系。移动限制由 Blockable 的归属事实参与 Locomotion Rule 判断。
 
-Core 的空间操作捕获旧条目，再写入新空间事实，通过 releaseCaptured 解除仍然存在的同一条目；普通位置更新仍不按距离解除旧关系。离场先写 LEAVING，必要维护与同步 Hook 完成后才移除 Unit。后续退款等实时业务重新读取宿主，不能使用 Release Hook 前的旧快照。
+Core 的空间操作捕获旧条目，再写入新空间事实，通过 releaseCaptured 解除仍然存在的同一条目；普通位置更新仍不按距离解除旧关系。Lifetime 请求发布 LEAVING 前已登记 Pending 和结算标记，必要维护及 released Hook 可以重入请求，但不能开启第二个 drain。Unit 等真实依赖者整个 Finalize 后才物理移除；后续实时业务重读宿主，Departure 保留离场入口历史，返费则在标记发布及这些 Hook 返回后从最新 Unit 求值。
 
 ## 地块阻挡资格
 

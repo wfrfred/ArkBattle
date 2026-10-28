@@ -101,10 +101,13 @@ import type { Unit } from ${source("unit/unit")};
 import * as units from ${source("unit/query")};
 import type { Vitality } from ${source("unit/capability/vitality/capability")};
 import type { Locomotion } from ${source("unit/capability/locomotion/capability")};
-import type { Effect, View, Lifetime } from ${source("unit/effect/effect")};
+import type { Effect, View } from ${source("unit/effect/effect")};
 import { ref } from ${source("unit/effect/effect")};
 import type { Definition } from ${source("unit/effect/definition")};
 import * as effects from ${source("unit/effect/index")};
+import { scope, getRef, type Scope } from ${source("lifetime/index")};
+import { lifetime as unitLife } from ${source("battle/unit")};
+import { lifetime as effectLife } from ${source("unit/effect/index")};
 
 declare const battle: BattleState;
 declare const host: Ref<Unit & Vitality & Locomotion>;
@@ -132,12 +135,17 @@ const identity: Identity<Effect<{ charges: number }, Vitality>> = {
 };
 const owner: Ref<Unit & Vitality> = retained.host;
 const weakerOwner: Ref<Unit> = owner;
-const unitLifetime: Lifetime = { type: "UNIT", ref: host };
+const unitLifetime: Scope = scope(unitLife, host);
+const unitReference: Ref<Unit> | undefined = getRef(unitLifetime, unitLife);
+// @ts-expect-error Lifetime.end requires its own domain reference.
+effectLife.end(battle, host, "EXPLICIT");
+// @ts-expect-error Unit ending requires a Departure value.
+unitLife.end(battle, host, "DEATH");
 effects.bindLifetime(battle, retained, unitLifetime);
 // @ts-expect-error Unit lifetimes require a typed reference rather than a bare Unit ID.
-const bareUnitLifetime: Lifetime = { type: "UNIT", unitId: host.id };
+const bareUnitLifetime: Scope = { type: "LIFETIME", unitId: host.id };
 // @ts-expect-error an untyped ID address does not prove a Unit reference.
-const untypedUnitLifetime: Lifetime = { type: "UNIT", ref: { id: host.id } };
+const untypedUnitLifetime = scope(unitLife, { id: host.id });
 
 function relay(reference: Ref<Effect<{ charges: number }, Vitality>>) {
     return effects.get(battle, reference);

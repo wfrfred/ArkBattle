@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { Effects } from "../../dist/core/unit/effect/effects.js";
 import { ref } from "../../dist/core/unit/effect/effect.js";
-import { project, derive, dependents } from "../../dist/core/unit/effect/dependency.js";
 
 function instance(id, definition, data = definition.initialize(), host = { id: 0 }) {
     return {
@@ -80,26 +79,4 @@ test("Effect Store restores precise reads only for the matching host and Definit
     assert.equal(original.get({ ...ref(first), host: { id: 1 } }), undefined);
     assert.equal(original.getEffect(first.id).data.count, 1);
     assert.equal(original.getEffect(9), undefined);
-});
-
-test("Effect lifetime indexes follow Store versions without rebuilding unchanged containers", () => {
-    const definition = { id: "scoped", initialize: () => ({ count: 1 }) };
-    const first = { ...instance(0, definition), scopes: [{ type: "UNIT", ref: { id: 3 } }] };
-    const host = { id: 0, effects: Effects.empty().add(first) };
-    const original = project([host]);
-    const changedEffect = { ...first, scopes: [{ type: "UNIT", ref: { id: 4 } }] };
-    const changedHost = {
-        ...host,
-        effects: host.effects.replace(ref(first), changedEffect),
-    };
-    const updated = derive(original, [{ previousUnit: host, nextUnit: changedHost }]);
-    const closedHost = { ...changedHost, effects: changedHost.effects.remove(first.id) };
-    const closed = derive(updated, [{ previousUnit: changedHost, nextUnit: closedHost }]);
-
-    assert.strictEqual(derive(original, [{ previousUnit: host, nextUnit: { ...host } }]), original);
-    assert.deepEqual(dependents(original, { type: "UNIT", ref: { id: 3 } }), [ref(first)]);
-    assert.deepEqual(dependents(updated, { type: "UNIT", ref: { id: 3 } }), []);
-    assert.deepEqual(dependents(updated, { type: "UNIT", ref: { id: 4 } }), [ref(first)]);
-    assert.deepEqual(dependents(closed, { type: "UNIT", ref: { id: 4 } }), []);
-    assert.deepEqual(dependents(updated, { type: "UNIT", ref: { id: 4 } }), [ref(first)]);
 });

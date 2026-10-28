@@ -2,7 +2,7 @@
 
 本文定义项目的目标架构：领域概念、状态归属、模块职责与执行契约。文件和类按这些职责组织。
 
-战斗的状态接续与执行契约见 [函数式内核](functional-core.md)，具体玩法目标与当前缺口见 [目标语义与实现缺口](tactical-semantics.md)。行动的类型、时间与调度契约见 [Action 设计](action.md)，技能资源与激活见 [Skill 设计](skill.md)，元素值与爆发见 [Elemental 设计](elemental.md)，附着实例的生命周期与内容接入见 [Effect 设计](effect.md)。研究文档提供玩法行为依据。
+战斗的状态接续与执行契约见 [函数式内核](functional-core.md)，具体玩法目标与当前缺口见 [目标语义与实现缺口](tactical-semantics.md)。行动的类型、时间与调度契约见 [Action 设计](action.md)，技能资源与激活见 [Skill 设计](skill.md)，元素值与爆发见 [Elemental 设计](elemental.md)，附着实例的生命周期与内容接入见 [Effect 设计](effect.md)，共享请求与析构协议见 [Lifetime 设计](lifetime.md)。研究文档提供玩法行为依据。
 
 Core 的公共入口与保留实现边界见[接口约定总表](api-conventions.md#core-领域入口与保留边界)。上层默认使用已有的领域显式 index，Core 内部按实际依赖直接导入；Runtime 入口不汇聚各个独立领域操作，也不以导出位置扩大内容调用权限。
 
@@ -49,7 +49,7 @@ initialize(input) / step(battle, commands)：创建与推进不可变状态
 └─ battle.State
    ├─ tick、调度、预置进度、统计与结果
    ├─ Deployment、RNG 与战斗级身份分配进度
-   ├─ effect.dependency（生命周期的直接依赖者索引）
+   ├─ lifetime（派生依赖索引、当前 endings 与 settling）
    ├─ Mechanisms
    ├─ 本 Tick 的事件与移除事实
    └─ Battlefield
@@ -61,7 +61,7 @@ initialize(input) / step(battle, commands)：创建与推进不可变状态
       └─ 派生投影与索引
 ```
 
-战斗领域使用完整的 battle.State；消费侧可将 State 导入为 BattleState。Schedule、统计和结果都保存在其中。
+战斗领域使用完整的 battle.State；消费侧可将 State 导入为 BattleState。Schedule、统计和结果都保存在其中。lifetime.dependencies 从存储所有权与 Effect.scopes 派生；endings／settling 只保留本次结算工作，正常稳定状态为空／false。
 
 runtime.initialize(input) 创建 BattleState；runtime.step(battle, commands) 直接按明确顺序调用纯领域操作，逐次接续并返回最终 State。commands 是必填只读数组，没有命令时传 []。本 Tick 的临时字段在开帧时通过新值清空或覆盖，未变的事实继续共享；不原地清空旧版本中的数组或集合。Schedule、Action 等跨 Tick 进度按所属领域保存为不可变值。行动的程序与调度契约见 [Action 设计](action.md)。
 
@@ -111,7 +111,8 @@ Unit 初始化始终建立空 Effects，不接受预装实例输入。初始护�
 | Healing            | 计算、输出、有序接收、普通恢复与通知           | 流程在 battle/healing；Vitality 保存 HP／MaxHP 与 Hook。治疗不可选中由 Targetable 表达，明确 Ref 的治疗只检查生命周期和接收 Hook |
 | Elemental          | 元素值、损伤与治疗、爆发身份及动态冷却预算 | Unit 直接关联 Definition，状态保存四型 EP 与当前 Burst；元素损伤抗性和元素 HP 伤害抗性分别表达 |
 | Effect             | 附着实例、私有状态、生效切换、覆写与结束       | Unit 持有实例；scopes 表达生命周期依赖；具体 Definition 登记 Hook 和 Contribution |
-| Projectile         | 独立空间执行实例、内容程序与同步终结 | 根实例保存身份、Definition、位置、ACTIVE／ENDING 与私有 state；运动、命中、采样和计时按内容组合，见 [Projectile 设计](projectile.md) |
+| Lifetime           | 结束幂等、依赖传播与完成调度 | 静态描述符配对 Typed Ref；关系索引派生；Pending 保存本次请求与阶段，owner 等全部依赖者完整 Finalize |
+| Projectile         | 独立空间执行实例、内容程序与终止请求／Finalize | 根实例保存身份、Definition、位置、ACTIVE／ENDING 与私有 state；运动、命中、采样和计时按内容组合，见 [Projectile 设计](projectile.md) |
 | Route              | 路线脚本、活动目标、等待和后继                 | 主／替代路线各自保存 Definition、当前 pathMotionMode 与 Phase；Spawn 规范化并采样偏移 |
 | Navigation         | 基础通行图、Overlay 与建议移动点查询           | Battlefield 持有 Navigation State；有效 Map 和 Field 在内部派生并缓存 |
 | Locomotion         | 按速度与运动规则执行自主移动、避障及目的格反射 | 保存历史速度、移速贡献与规则；消费 Route 已准备好的世界坐标目标和当前模式 |
@@ -129,7 +130,7 @@ Damage 和 Healing 分别在 battle/damage、battle/healing 维护 Calculate／A
 
 Skill 直接共享泛型 Definition，状态保存持久数据、SP 与本次 Activation；无需静态登记或编译程序查找。自然回复按 tick 进度产生 SP；ACTION 回复通过成功释放通知，HIT 回复通过 Damage 的接收 Hook，由 Skill 自己登记和结算。默认激活阻回由 Rule 表达，上限、门槛和支付分别求值。普通攻击不依赖 Skill，具体技能行动通过公开扩展点组合，不修改基础 Definition。
 
-技能结束和单位退场通过同一结束操作清理激活所拥有的效果，并在移除单位前完成结束内容。已经进入的激活程序可以完成同步步骤，但不能在返回时重建已结束的激活；晚返回的效果归属仍需收尾。
+技能结束与单位退场委托同一 Lifetime 请求／析构协议。Unit 的所有权边保护 Execution、Activation、Burst 和 Effects，全部子项完成 Finalize 后才能移除 Unit。已经进入的内容仍按普通控制流继续，后继按最新状态确认资格；不能重建已结束实例，新的真正依赖也不能绑定到 Pending／ENDING 对象。
 
 弹药消耗属于实际攻击输出，准备步骤与取消的前摇不消耗弹药；同一次攻击的多目标输出只消费一次。消耗与耗尽检查由内容在明确节点分别调用；普通弹药技能检查时点的内容对照见 [待完成机制](tactical-semantics.md)。已经释放的 Projectile 具有独立生命周期，技能结束或 Action 取消不会删除它。
 
@@ -169,7 +170,7 @@ MaxHP 的变化由 Vitality 按前后有效上限保持 HP 比例，独立于 He
 
 Locomotion 保存移速贡献，运动阶段读取当前有效速度后再乘运动上下文倍率。速度与其下限都规范化为每 tick 世界距离；真实数据的属性下限由适配层按相同单位换算，停止运动由运动许可或上下文表达。变速只改变本次位移预算，不重建主／临时 Route 的目标样本、等待或导航请求。实时 provider 读取运动阶段约定的事实视图。
 
-Blocker 的 Definition 保存基础容量，State 保存容量贡献。Blocking 在统一事实入口求值、限制为非负并按半值取偶数量化。unit.update 仅接收 Unit 数组，普通单单位操作传入 [unit]；批量更新按整批最终状态一次维护 Occupancy，并在首个关系 Hook 前同步全部 Effect 依赖。统一更新保留完整更新保证：Capability 继续纯地修改自身 State，完整提交同步完成必要的关系解除、容量裁撤和失效清理。归属与关联保存于 Blockable／Blocker State，不再要求独立的全局关系集合。取得先确定 Blockable 端的唯一归属，再按 Blocker、Blockable 顺序同步通知，后继接续最新 BattleState；关系两侧在同一批数据写入中完成，业务通知仍逐项接续最新状态。这些业务不放入只处理存储的一致性维护函数。Runtime 提交 Unit 修改使用 unit.update 或相应完整领域操作，不直接以 battlefield/unit.update 拼装业务更新。自主移动由 Movement 在 Route 推进后查询当前阻挡关系，再决定是否调用 Locomotion，不继续同步专用禁移 Rule。
+Blocker 的 Definition 保存基础容量，State 保存容量贡献。Blocking 在统一事实入口求值、限制为非负并按半值取偶数量化。unit.update 仅接收 Unit 数组，普通单单位操作传入 [unit]；批量更新按整批最终状态一次维护 Occupancy，并在首个关系 Hook 前同步完整生命周期投影的派生依赖索引。统一更新保留完整更新保证：Capability 继续纯地修改自身 State，完整提交同步完成必要的关系解除、容量裁撤和失效清理。归属与关联保存于 Blockable／Blocker State，不再要求独立的全局关系集合。取得先确定 Blockable 端的唯一归属，再按 Blocker、Blockable 顺序同步通知，后继接续最新 BattleState；关系两侧在同一批数据写入中完成，业务通知仍逐项接续最新状态。这些业务不放入只处理存储的一致性维护函数。Runtime 提交 Unit 修改使用 unit.update 或相应完整领域操作，不直接以 battlefield/unit.update 拼装业务更新。自主移动由 Movement 在 Route 推进后查询当前阻挡关系，再决定是否调用 Locomotion，不继续同步专用禁移 Rule。
 
 普通搜索每 Tick 在 Movement 后的固定 Blocking Step 中统一执行，不保存独立搜索周期，不因每次 Unit 更新全局搜索，不重构 Combat／Movement 模拟 Unity UID OnTick。显式立即搜索用于有真实需求的业务，不因本 Tick 已执行普通搜索而被拒绝。单次搜索固定开始时按距离、目标 ID 排序的候选 Ref 数组，逐项按最新资格、关系及容量尝试，不预选接敌名单或冻结起始预算；Hook 增容允许后续候选在本轮接敌，新单位不加入候选。该政策有意区别于原生预算预选，可能产生持续的关系分配差异。其余资格、容量及副作用按原生证据核对，固定阶段改变的接敌结果按对照测试评价；不以“只是一个 Tick”预先接受，也不为复刻内部调度引入全场多轮收敛。性能优化在语义稳定后进行。完整约定见 [Blocking 职责与调度政策](blocking.md#已确定的职责与调度政策)。Blockable 的阻挡消耗独立于容量、推拉重量和物理质量。
 
@@ -177,11 +178,11 @@ Blocker 的 Definition 保存基础容量，State 保存容量贡献。Blocking 
 
 Effect 直接持有 `Definition<S, H>` 与私有 State。S 描述实例状态，H 描述宿主需要的 Capability 结构。抽象 Effect 不依赖 Damage、Healing、Offense 等具体 Capability；具体 Definition 通过这些领域的公开操作登记与撤销输出。
 
-生命周期状态为 `INSTALLING`、`INACTIVE`、`ACTIVE`、`ENDING`，外部许可 `enabled` 独立保存。宿主实际退场必然结束其 Effect；额外 scopes 可以绑定 Unit、Action、Skill 激活、Elemental Burst 或另一个 Effect，任一依赖结束即结束实例。TICK scope 表达截止时点；source 使用 `Ref<Unit> | null` 记录施加者，不要求来源仍在场，也不隐含生命周期绑定。Effect 依赖保持 DAG。
+生命周期状态为 `INSTALLING`、`INACTIVE`、`ACTIVE`、`ENDING`，外部许可 `enabled` 独立保存。宿主实际退场必然结束其 Effect；额外 scopes 可以绑定 Unit、Action、Skill 激活、Elemental Burst 或另一个 Effect，任一依赖结束即结束实例。TICK scope 表达截止时点；source 使用 `Ref<Unit> | null` 记录施加者，不要求来源仍在场，也不隐含生命周期绑定。所有权与显式 Scope 的合并关系保持 DAG。
 
 同宿主覆写组先在未结束实例中选取最高优先级，同优先级保留较早取得的实例，再检查赢家的 enabled。禁用最强实例不会让弱者补位。Contribution 分组、Hook 调用顺序与具体业务条件分别由所属模块处理。
 
-生命周期由同步纯操作推进：安装执行 onInstall，生效切换执行 onEnable／onDisable，结束先形成 ENDING 状态并撤销输出，逐次结束依赖实例，执行 onEnd 后移除。每个回调接收当前输入版本并返回后继版本，安装返回时从后继版本判断实例仍存在且已完成安装。
+生命周期由纯状态操作推进：安装执行 onInstall，生效切换执行 onEnable／onDisable；结束请求登记 Pending、发布 ENDING、执行 Prepare，再请求依赖者。Effect 在 Prepare 撤销输出并按当前资格协调 Group；最外层结算器在依赖者完整 Finalize 后执行本实例 onEnd 与移除。嵌套结束返回不保证注销或最终通知已完成；每项业务继续接续最新 BattleState，安装返回时重读实例与安装状态。
 
 每 Tick 只执行一次 Effect 时间推进。开始时固定 Unit 与 Effect 身份列表，轮到实例时读取当前状态；仅 ACTIVE 实例执行 onTick，随后重新读取期限并检查到期。新实例下次参与推进；非生效实例仍会到期。周期进度和首次触发策略由具体 Definition 的私有 State 表达。
 
@@ -201,7 +202,7 @@ step(battle, commands) 直接展开领域操作的线性顺序。每次已完成
 
 可见性按领域协议确定：Unit 与 Effect 查询读取明确传入的版本，派发候选身份冻结；Blocking 完整操作返回时必要的解除、裁撤、清理及同步 Hook 已完成，普通新关系等待固定搜索阶段或显式请求；Navigation 按消费契约提供视图。并不存在一个适用于全部查询的统一实时或统一快照政策。
 
-需要同步结果的领域操作完整结算后返回。例如 Damage 可以同步触发 Effect，再调用 Healing 或 Damage，外层下一步看到已完成转换。
+领域操作逐项接续已经执行的状态转换。例如 Damage 可以触发 Effect，再调用 Healing 或 Damage；已有 Lifetime 结算时，嵌套结束只保证同步请求／Prepare，外层不能据此假定 Finalize、槽位释放或最终通知已完成。最外层结束入口在当前调用内清空 Pending。
 
 跨 tick 的等待保留 Action、Projectile 或 Route 的进度与必要样本。同步调用栈不持久化。
 

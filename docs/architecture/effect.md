@@ -18,10 +18,10 @@ Effect 用于表达属性增益、护盾、周期伤害与治疗、技能附带�
 | `unit/effect/effects.ts` | 不可变异构容器与宿主内 ID 进度 |
 | `unit/effect/query.ts` | 按精确 Ref 读取当前实例的 get |
 | `unit/effect/operations.ts` | 安装、私有数据与期限写回、启停、推进与完整结束 |
-| `battle/execution/lifetime.ts` | 关闭生命周期并结束依赖 Effect |
+| `core/lifetime/` | 共享结束请求、派生依赖索引与 DAG 析构 |
 | `content/effects/` | 护盾、异常、属性增益、Aura 等具体程序 |
 
-内容从 index 导入公开契约；get 已从 operations.ts 迁入 query.ts，领域操作直接依赖该查询。Effects 容器与 dependency.ts 的索引实现不从公共入口导出。Effect、Hook、Contribution 都在 Unit 域内，与 Capability 平级。Effect 集合是 Unit 的组成部分；具体能力负责自己的数值和事件。
+内容从 index 导入公开契约，包含 Effect 的静态 lifetime 描述符；get 归 query.ts，领域操作直接依赖该查询。Effects 容器保持内部职责；通用依赖索引归 core/lifetime，不再由 Effect 专属模块维护。Effect、Hook、Contribution 都在 Unit 域内，与 Capability 平级。Effect 集合是 Unit 的组成部分；具体能力负责自己的数值和事件。
 
 | 模块            | 负责什么                                          | 集合由谁持有                 |
 | --------------- | ------------------------------------------------- | ---------------------------- |
@@ -131,61 +131,26 @@ Ref 与静态 Definition 不同。Definition 相同可以有多个实例；实�
 
 ## 3. 生命周期约束
 
-宿主 Unit 退场必然结束其附着 Effect，这是存储关系自带的约束。`source: Ref<Unit> | null` 只标注施加者；安装不要求来源仍在场，来源也不自动成为 Scope。A 给 B 施加中毒，不因为 source 指向 A 就自动随 A 退场结束；确实需要随来源结束的内容显式绑定 A 的 UNIT Scope。
+宿主 Unit 退场必然结束其附着 Effect，这是存储关系自带的约束。`source: Ref<Unit> | null` 只标注施加者；安装不要求来源仍在场，来源也不自动成为 Scope。A 给 B 施加中毒，不因为 source 指向 A 就自动随 A 退场结束；确实需要随来源结束的内容通过 Unit 的 lifetime 描述符显式绑定 A。
 
-额外约束用 scopes 表达：
-
-```typescript
-type Lifetime =
-    | { readonly type: "UNIT"; readonly ref: Ref<Unit> }
-    | { readonly type: "ACTION"; readonly ref: Ref<ExecutionView> }
-    | { readonly type: "SKILL"; readonly ref: Ref<SkillActivation> }
-    | { readonly type: "ELEMENTAL_BURST"; readonly ref: Ref<Burst> }
-    | { readonly type: "EFFECT"; readonly ref: Ref<View> };
-
-type Scope = Lifetime | { readonly type: "TICK"; readonly tick: number };
-```
-
-实例可以同时声明多个 Scope。任一生命周期结束，或者到达最早的 TICK 截止时间，就结束 Effect；不是等所有 Scope 都结束。SKILL 绑定一次激活身份，ACTION 绑定一次执行身份，ELEMENTAL_BURST 绑定一次爆发身份，EFFECT 绑定一个精确实例。Burst 使用 host + id 定位，关闭后不能绑定新的 Effect；生命周期绑定不自动缩放 Effect 自身时钟，详见 [Elemental 设计](elemental.md)。
-
-父子生命周期通过 EFFECT Scope 表示。Effect 之间的依赖必须是 DAG，绑定时维护这个领域约束。Scope 在实例中是权威关系，反向索引是从这些关系派生的依赖者查询结构。
-
-install 在入口校验本次 TICK 期限与 Scope 可用性；bindLifetime 检查当前实例和目标生命周期资格，并拒绝形成 Effect 依赖环。setDeadline 在期限写回入口校验 TICK，保留其他 Scope。实例通过安装、绑定与期限写回入口建立这些约束，战斗初始化不再全场扫描预装 Effect 的 Scopes；内部写回 helper 也不重复执行这些输入与领域校验。
-
-依赖索引由 BattleState.effect.dependency 持有，不属于 Battlefield 或其 View。纯索引实现位于 unit/effect/dependency.ts：UNIT 按 Unit ID 定位，其余分支分别按宿主 ID、实例 ID 定位，生命周期类型以不同字段分隔，均使用数字 Map。
+额外约束用 scopes 表达，生命周期类型来自 [公共 Lifetime](lifetime.md)：
 
 ```typescript
-type Bucket = readonly Ref<View>[];
-
-interface State {
-    readonly unit: ReadonlyMap<number, Bucket>;
-    readonly action: ReadonlyMap<number, ReadonlyMap<number, Bucket>>;
-    readonly skill: ReadonlyMap<number, ReadonlyMap<number, Bucket>>;
-    readonly elementalBurst: ReadonlyMap<number, ReadonlyMap<number, Bucket>>;
-    readonly effect: ReadonlyMap<number, ReadonlyMap<number, Bucket>>;
-}
+import type { Scope as LifetimeScope } from "../../lifetime/index.js";
+type Scope = LifetimeScope | { readonly type: "TICK"; readonly tick: number };
 ```
 
-Bucket 保存该生命周期的直接依赖者，按宿主 ID、Effect ID 升序维护；查询直接返回该不可变数组，定位平均 O(1)，增删 O(k)。单个 Effect 的 Scope 较少不意味着直接依赖者数量也少，不设置人为的 Bucket 数量上限。
+内容使用 scope(领域 lifetime, ref) 建立静态配对，getRef 恢复对应 Ref。SKILL 绑定一次 Activation，ACTION 绑定一次 Execution，Burst 和 Effect 同样绑定精确运行身份；持久 Action 配置不是生命周期目标。任一目标请求结束，或到达最早 TICK 期限，就请求结束本 Effect，不等待所有目标都结束。绑定不共享时间轴，详见 [Elemental 设计](elemental.md)。
 
-相同 Scope 按生命周期类型与实例身份去重，TICK 不进入依赖索引；Effect 进入 ENDING 时即移除其登记的依赖。无依赖变化时保留原索引，未受影响的 Map 与 Bucket 继续共享，空 Bucket 和宿主分支删除。
+Unit 对 Effect 的拥有关系与 Effect.scopes 都是权威事实；BattleState.lifetime.dependencies 只保存派生反向关系。图约束针对所有权与显式 Scope 的合并图。install 校验本次 TICK 与 Scope 可用性，bindLifetime 检查当前实例、目标资格与闭环；setDeadline 只校验期限并保留其他 Scope。内部写回不重复执行入口校验，战斗初始化不扫描预装实例。
 
-Unit 从空 Effects 开始，登场 Hook 的 install 通过完整 Unit 更新建立依赖索引。完整 Unit 登记、更新、移除和整版 Field 接续在业务回调前维护索引；单个 Unit 操作直接提供已知变更，不为普通更新全量枚举所有 Unit。同步嵌套操作必须接续最新依赖状态，不能在外层返回时写回旧索引。
+关系索引由 core/lifetime/dependency.ts 维护。完整 Unit 登记、更新、移除在业务通知前对已知变更作局部投影；不枚举全场，也不让 Effect setter 双写关系。直接子候选为 owned 在前、scoped 在后；显式依赖 Effect 按数值 hostId／effectId 排序，同一实例按运行身份去重。
 
-结束途径统一为：
+ENDING 时保留关系，物理移除后活索引可以撤销，但未完成 Pending.parents 保留到整个 Finalize 返回。查询依赖者同时合并这两种来源，避免子 Effect 注销后的结束通知中请求宿主退场时漏掉等待。Pending 表示工作进度，不是第二份生命周期或实例表。
 
-```text
-宿主退场
-    或 TICK 到期
-    或 Scope 关闭
-    或显式 end
-        ↓
-    同一个 Effect 结束流程
-```
+Scope 资格同时看 Pending 与最新领域状态：Unit 为 PRESENT，Action 为 RUNNING，Skill／Burst 为 ACTIVE，Effect 只要存在且未 ENDING 即可，包含 INSTALLING／INACTIVE；Mechanism 的 INACTIVE 也可成为目标。不能把 HP 或空间存在附加为 Unit 生命周期资格。开始结束的目标不能接受新绑定。
 
-Action 的本轮执行身份为 host 与宿主内 execution.id，ACTION 生命周期键为 ACTION:host:id；长期配置条目保存于 Unit.action.actions，不是生命周期绑定目标。执行结束后旧 Ref 失效，同配置下一轮分配新 ID；不同宿主的同号执行互不影响。Action、Skill、Elemental、Unit 等领域在自己的生命周期结束位置调用 `closeLifetime()`。Effect 系统负责结束已确定的实例及其依赖者，不替各个业务决定哪些实例应该保留。
-
-生命周期资格以最新对象状态为准：Unit 为 PRESENT，Action 的当前 Execution 为 RUNNING，Skill Activation 与 Elemental Burst 为 ACTIVE，Effect 尚未进入 ENDING。所属领域先发布 ENDING／LEAVING，再清理依赖者和执行结束回调，因此同步重入时也不能为终结中的对象安装新依赖。Effect 自身先写 ENDING，再直接清理子依赖。closeLifetime 保留依赖清理职责，UNIT 入口同时确保宿主已进入 LEAVING。
+宿主退场、Scope 结束、TICK 到期和显式 end 都进入同一个 Effect lifetime 请求。各领域负责决定何时请求结束自己的实例，共享运行器负责依赖传播与完成调度；不再保留 closeLifetime 或 Effect 专属递归传播入口。
 
 ## 4. 生效状态与覆写
 
@@ -208,7 +173,7 @@ stateDiagram-v2
 | INSTALLING | 已登记，安装回调尚未完成 | 可以被查询和绑定；不执行 onEnable 或 onTick            |
 | ACTIVE     | 获准且当前生效           | 可以执行 onTick；Hook 资格与 Contribution 输出可以生效 |
 | INACTIVE   | 仍存在，当前被禁用或覆写 | 保存私有 data；不执行 onTick；仍会到期                 |
-| ENDING     | 已进入不可逆的结束结算   | 不再参与竞争或输出；onEnd 完成后移除                   |
+| ENDING     | 已进入不可逆的结束结算   | 停止正常参与；Prepare 撤销输出，Finalize 后移除        |
 
 同一个宿主、同一个 Effect group 的竞争规则是：先在所有未结束实例中选最高 priority，平局选较早安装的实例，再检查这个实例的 enabled。禁用最强实例仍占据组位置，弱者不会补位；最强实例结束后，仍存活的弱者可以重新生效。
 
@@ -237,7 +202,7 @@ Hook 的 accepts 读取 Effect 的覆写结果；伤害阶段与优先级由 Dam
 
 安装先形成包含 INSTALLING 实例的新状态，以此调用 onInstall，接续其返回值。回调返回后，仍然处于 INSTALLING 的实例转为 INACTIVE，再协调是否生效。生效切换先形成新 status，再运行回调并接续返回值；回调输入表达新状态。
 
-同一 battle 版本内，install 与 updateStatus 直接检查已经取得的 Unit.lifecycle，不为同一个宿主重复查询；updateStatus 先排除 INSTALLING／ENDING，再计算生效资格。完整 Unit 更新会同步执行维护与 Hook，返回后仍须重读宿主和实例：安装继续前确认当前仍为 INSTALLING，状态切换后确认当前仍为预期状态，再调用内容程序。onInstall、onDisable、依赖结束等完整操作后的实时重读与终止历史 fallback 均按状态接续约定保留。
+同一 battle 版本内，install 与 updateStatus 直接检查已经取得的 Unit.lifecycle，不为同一个宿主重复查询；updateStatus 先排除 INSTALLING／ENDING，再计算生效资格。完整 Unit 更新会同步执行维护与 Hook，返回后仍须重读宿主和实例：安装继续前确认当前仍为 INSTALLING，状态切换后确认当前仍为预期状态，再调用内容程序。onInstall、onDisable 等完整操作后仍按状态接续约定重读。结束中宿主由所有权边保护到本 Effect 完整 Finalize 返回，不再维护宿主提前消失时的通用 fallback。
 
 onInstall 完成前，实例不能执行 onEnable。安装期间的同步嵌套操作可以登记子实例、改变许可与私有 data，也可以结束自己或宿主。INSTALLING 和 ENDING 都由实例自身保存；结束的实例不在外层安装返回时恢复。INSTALLING 实例已经登记，可以成为子 Effect 的 Scope，也作为尚未结束的同组候选。
 
@@ -254,11 +219,11 @@ Contribution 的登记／撤销与 Hook 的开关是两种自然接入方式，�
 | `setData(battle, ref, data)`                 | 设置指定实例的私有 data，返回相应战斗版本               |
 | `setEnabled(battle, ref, enabled)`               | 返回完成许可、生效变化与回调后的状态                     |
 | `setDeadline(battle, ref, tickOrNull)`             | 写回当前实例的 TICK 期限，null 清除期限，返回 BattleState |
-| `bindLifetime(battle, ref, lifetime)`              | 检查真实生命周期和 DAG，返回新状态及绑定结果             |
-| `end(battle, ref, reason?)`                       | 返回完成同步结束后的战斗状态                             |
+| `bindLifetime(battle, ref, scope)`                 | 检查目标可用性与合并依赖图，返回新状态及绑定结果         |
+| `end(battle, ref, reason?)`                       | 同步执行结束请求；最外层调用完成整批 Finalize 后返回      |
 | `advance(battle)`                                | 由 Runtime 调度，返回一次 Effect 时间推进后的状态         |
 
-closeLifetime(battle, lifetime, reason?) 是 battle/execution/lifetime.ts 的 Core 生命周期协作，供所属领域在完整终止流程中调用，不从 Effect 公共入口导出。
+Effect 的 end 委托自身 lifetime 描述符。Scope 构造、类型恢复与资格查询使用 core/lifetime 的 scope／getRef／available；通用 request／drain 不向内容开放。
 
 ```typescript
 function setData<S extends object, H extends object>(
@@ -288,23 +253,25 @@ function setDeadline(
 
 ### 结束流程
 
-已确定要结束一个实例后：
+Effect 的 end 使用共享的请求／Finalize 协议：
 
-1. 形成 ENDING 状态，防止继续生效与重复结束。
-2. 若原来 ACTIVE，执行 onDisable，撤销该实例的输出。
-3. 逐次完成依赖 Effect 的结束；相关组竞争按状态变化协调。
-4. 执行该实例的 onEnd。
-5. 从宿主集合移除实例。
+1. 先登记 PREPARING 工作，发布 ENDING 及必要关系。
+2. Prepare 根据标记前是否 ACTIVE，调用 onDisable 撤销输出，然后协调 Group。
+3. 按确定顺序请求直接依赖者，接续各项状态，本实例进入 READY。
+4. 所有未完成依赖者完整 Finalize 后，从当前存储读取本实例，调用 onEnd。
+5. 接续 onEnd 返回状态，按同一身份移除实例；整个 Finalize 返回后解除 Pending.parents。
 
-项目采用简单的同步递归约定：父 onEnd 前完成依赖者的结束，子回调输入的版本中父已 ENDING。具体内容若依赖其他可观察顺序，应按玩法机制单独核对。每项回调和依赖结束都接续其返回版本，终态回调所需数据由本次调用保留。结束完成后移除实例，不再保存 ENDED 状态。
+Group 在 Prepare 即排除 ENDING 候选并协调弱者，早于本实例 onEnd。补位仍按最新宿主 PRESENT、enabled、Scope 资格及原竞争规则决定；Unit 已 LEAVING 时不会启用候补。onDisable 中的多步操作不是原子事务：发布 ENDING 引发的 Hook 可以先观察到尚未全部撤销的输出，需要随标记原子失效的具体事实必须一起提交。
 
-onDisable 与依赖结束返回后，onEnd 优先接收仍登记的最新实例；若宿主已在同步嵌套中移除，则使用结束流程最近取得的 ENDING 实例快照。结束回调仍然执行，不回退传入旧宿主。依赖当前宿主的写入须先查询是否存在；独立 Overlay、Projectile 等资源的清理不能因宿主缺失而跳过，也不能重新插入旧 Unit。
+父对象的 Prepare 先于依赖者 Prepare，父 Finalize 晚于全部依赖者完整 Finalize。兄弟可以都先成为 ENDING，前一个 onEnd 不保证其他兄弟仍在运行。首次请求固定业务原因与依赖传播原因，重复请求不覆盖，也不重复调用内容程序。
 
-Unit 自持有 `lifecycle: "PRESENT" | "LEAVING"`。实际离场入口先形成 LEAVING，再关闭其 Skill、Action、Elemental Burst 和 Unit 生命周期，完成附着实例与外部依赖的结束，最后移除 Unit。各步骤返回新版本；新 Effect 不能附着或绑定到 LEAVING 的 Unit 生命周期，嵌套离场不重复结算。HP 到零、倒地、复活与实际离场不能混同。时间到期调用 end，并将结束原因设为 EXPIRED。
+没有活动结算时，end 在本次调用内完成 request 与 drain，返回时 Pending 为空。有活动结算时，嵌套 end 只同步完成首次请求和 Prepare，不保证槽位释放、注销或最终通知；重复请求 PREPARING 对象也不等待原 Prepare。需要已完成事实的后继业务使用领域完成通知，不递归启动另一个 drain。
 
-Unit 离场只规定[必要偏序](deployment.md#离场清理的偏序)，其余按确定的调用顺序执行。已经进入的 onEnd 可以通过同步重入触发宿主或其他实例终止，并在该终止完成后继续；不等待所有旧回调退出才移除 Unit。每次跨领域操作后，后续若依赖 self 或宿主的当前生命周期，从最新 battle 重查；历史 self 与明确采样仍可使用。
+Unit 从 LEAVING 开始，通过真实所有权边请求 Skill、Action、Burst 和 Effect 结束；只有这些子项与显式依赖者都完整 Finalize 后才注销。Effect.onEnd 内请求宿主退场会先标记宿主，但宿主会等待本 Effect 整个 Finalize 返回，不会在回调中途消失。因此 onEnd 从当前存储取得 self，不再保存通用最后可得实例回退。
 
-业务仍可以逐接收者作决定：先读取当前状态判断 A 是否保留，结束 A，再判断 B。A 的结束业务产生的修改可以影响 B 的决定；Effect 核心不强迫业务提前收集整批根实例。
+每次可能执行内容的完整操作后，后续需要当前事实时仍重读最新 battle，不把旧 Unit 或 Effect 整体写回。等待只来自真实拥有关系和显式 Scope；Effect.onEnd 调用 Unit.remove 本身不生成反向调用等待边。
+
+逐接收者业务仍按普通控制流决定：先判断并请求结束 A，再判断 B。B 可以观察到 A 的同步 Prepare；若当前已有结算范围，不能把 A 的 Finalize 当作已完成。HP 到零、倒地、复活与实际离场分开；时间到期的原因仍为 EXPIRED。
 
 ## 6. 时间推进
 
@@ -378,13 +345,13 @@ Unit A
 
 Aura 本身是宿主上的 Effect。需要选择目标时复用 Targeting；私有 data 保存已经安装的子 Ref 及必要历史。接收者进入时安装普通 Effect，离开时按具体规则结束，刷新时按具体规则替换样本。
 
-如果子 Effect 必须随 Aura 结束，绑定 Aura 的 Ref 作为 EFFECT Scope。若子效果可以保留，则不绑定这个 Scope，结束策略由内容显式执行。Aura 暂时失效是否禁用子实例、恢复是否保留身份，也由这个 Definition 的生命周期回调表达。
+如果子 Effect 必须随 Aura 结束，使用 scope(effectLifetime, auraRef) 绑定该实例。若子效果可以保留，则不绑定这个 Scope，结束策略由内容显式执行。Aura 暂时失效是否禁用子实例、恢复是否保留身份，也由这个 Definition 的生命周期回调表达。
 
 普通光环与一次性分发都由具体 Effect Definition 表达。目标选择复用 Targeting，生命周期复用 Scope，刷新、保留与重装策略按内容需求决定。
 
 ## 9. 状态返回、可见性与不可变约定
 
-Effect 操作组合直接的不可变领域更新，由内部纯函数维护 Battlefield 一致性，返回已完成事实转换与领域响应的新状态。调用者接续这个返回值，后续读取才得到新事实。step 在全部领域操作与结果计算成功后返回最终 State。
+Effect 操作组合直接的不可变领域更新，由内部纯函数维护 Battlefield 与依赖索引一致性。调用者接续返回值；嵌套 end 返回只保证请求和首次 Prepare，不保证最终通知与移除已完成。最外层 Lifetime 结束入口清空 Pending 后返回，step 在全部领域操作与结果计算成功后返回最终 State。
 
 self 是本次回调输入版本中的不可变实例，不动态跟随另一份状态。嵌套调用返回后，需要后继事实就从新 State 查询，不能把嵌套前的整个 Unit 回填到新版本。
 
@@ -392,4 +359,4 @@ Unit、Effect、Hook、Contribution 与其嵌套状态一旦写入，就按不�
 
 回调输入不保存为异步运行句柄。跨 Tick 的业务进度保存在实例 data 中。step(battle, commands) 是外部同步入口；异常直接传播，输入 State 保持不变，不定义额外恢复协议。
 
-`closeLifetime` 调用 Effect.endDependents；后者负责结束宿主及依赖实例，不决定其他领域的生命周期何时结束。关闭资格以所属实例已提交的 ENDING／LEAVING 状态判断，不另存关闭标记。
+共享终止协议见 [Lifetime 与依赖析构](lifetime.md)。实例自身保存 ENDING／LEAVING；BattleState.lifetime.endings 保存未完成工作，不保存第二份存活状态。完整 Finalize 返回前保留 parents，宿主不能因子实例已物理移除而提前注销。

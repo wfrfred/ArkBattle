@@ -2,7 +2,7 @@
 
 这里定义项目的目标架构：模块应承担的职责、数据与 API、依赖方向及执行语义。实现以这些契约为依据，文件划分服务于职责与阅读顺序。
 
-**已定稿的同步结算契约：** [跨领域操作后的读取与续执行](functional-core.md#状态接续后的读取与续执行)、[每次派发独立选取 Hook 候选](functional-core.md#7-同步候选范围)、[离场清理的必要偏序](deployment.md#离场清理的偏序)。同步重入可以终结外层正在执行的对象；后继若依赖自己或宿主的当前生命周期，必须从最新 battle 查询并确认。
+**已定稿的同步结算契约：** [跨领域操作后的读取与续执行](functional-core.md#状态接续后的读取与续执行)、[每次派发独立选取 Hook 候选](functional-core.md#7-同步候选范围)、[Lifetime 请求与依赖析构](lifetime.md)、[离场清理的必要偏序](deployment.md#离场清理的偏序)。请求同步发布终止态并执行 Prepare；最外层结算器按 DAG 完成 Finalize，宿主等待真实依赖者完整返回。嵌套结束不保证槽位已释放或对象已注销，后继实时事实从最新 battle 查询。
 
 **已确定、待实施的 Blocking 政策：** [职责与调度](blocking.md#已确定的职责与调度政策)。保留 updateUnit() 完整更新；必要解除、容量裁撤与失效清理同步完成，关系 Hook 同步接续；普通接敌每 Tick 在 Movement 后统一执行，不保存各阻挡者的搜索周期。固定阶段造成的行为差异由对照测试评价。
 
@@ -15,6 +15,7 @@
 | [Tactical 目标语义与实现缺口](tactical-semantics.md) | 未完成的玩法机制、待核对问题与验收案例 |
 | [Capability API](capability.md) | 能力配对、统一初始化与装配、局部变换、完整结算、事件责任与模块命名 |
 | [接口约定](api-conventions.md) | 五类接口、Typed Ref、self、时间与尚未统一的接口 |
+| [Lifetime 与依赖析构](lifetime.md) | 静态描述符、Scope、派生关系、同步 Prepare、Pending DAG 与最外层 Finalize |
 | [Action 设计](action.md) | 基础间隔与速度、贡献、Cooldown／Casting、程序与实例、调度和 Hook 契约及待定项 |
 | [Skill 设计](skill.md) | 泛型 Definition／Activation、SP、持续预算、业务 Hook、完整终止与内容边界 |
 | [Elemental 设计](elemental.md) | 四型 EP、动态属性、稳定 Burst 身份、请求与损失通知、完整终止及内容边界 |
@@ -27,7 +28,7 @@
 | [Vitality / Damage 设计](vitality.md) | Calculate、请求与参数类型、Apply 五个时点、普通结果、暂缓的特殊生命语义，以及弱点伤害的项目规则 |
 | [Deployment 与 Unit 生命周期](deployment.md) | Card／场上实例、部署参数与 API、登场／离场职责及待定语义 |
 | [Effect 设计](effect.md)                  | Unit 附着实例、Definition 泛型、生命周期、Hook／Contribution 接入、Aura 与文件职责 |
-| [Projectile 设计](projectile.md) | 独立执行实例、View／Store／Query、内容回调与更新、Step 候选及同步终结 |
+| [Projectile 设计](projectile.md) | 独立执行实例、View／Store／Query、内容回调与更新、Step 候选及终止请求／Finalize |
 | [Tactical 内容接入](content.md) | 主模式配置、静态角色代码、登场内容与 Core 边界 |
 
 [Tactical 研究](../research/00-INDEX.md) 提供玩法行为依据。大语义遵从官方，小差异从简；项目选择自己的执行结构，设计取舍按以下已有分类处理：

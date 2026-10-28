@@ -1,3 +1,5 @@
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as burstLifetime } from "../../dist/core/unit/capability/elemental/operations.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { fixtureBattle } from "../helpers/unit.js";
 import assert from 'node:assert/strict';
@@ -335,7 +337,7 @@ test('burst onEnd observes ENDING and full cancellation reason; dependent Effect
     seen.push([self.status, end, elemental.damage(battle, self.host, request()).value.type]); return battle;
   } });
   const result = elemental.damage(f.battle, f.target, request('BURN', 1000));
-  const bound = effects.install(result.state, f.target, { id: 'bound', initialize: () => ({}) }, { scopes: [{ type: 'ELEMENTAL_BURST', ref: result.value.burst }] });
+  const bound = effects.install(result.state, f.target, { id: 'bound', initialize: () => ({}) }, { scopes: [lifetimeScope(burstLifetime, result.value.burst)] });
   const permanent = effects.install(bound.state, f.target, { id: 'permanent', initialize: () => ({}) });
   const ended = elemental.cancel(permanent.state, result.value.burst, 'CONTENT');
   assert.deepEqual(seen, [['ENDING', { type: 'CANCELLED', reason: 'CONTENT' }, 'REJECTED']]);

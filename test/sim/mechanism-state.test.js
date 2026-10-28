@@ -106,14 +106,14 @@ test("disable and end publish lifecycle before reentrant callbacks", () => {
     assert.equal(mechanisms.get(inactive, reference).status, "INACTIVE");
 });
 
-test("removing an active mechanism runs onEnd once without an extra disable callback", () => {
+test("removing an active mechanism disables output before its single Finalize", () => {
     const trace = [];
     const [battle, reference] = register(fixtureBattle(), counter("active-end", {
         onDisable: state => { trace.push("disable"); return state; },
         onEnd: state => { trace.push("end"); return state; },
     }));
     const removed = mechanisms.remove(battle, reference);
-    assert.deepEqual(trace, ["end"]);
+    assert.deepEqual(trace, ["disable", "end"]);
     assert.equal(mechanisms.get(removed, reference), undefined);
 });
 

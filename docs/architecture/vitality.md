@@ -229,9 +229,9 @@ Receiving 内不按“先所有闪避、再所有护盾、再所有减伤”建�
 
 HP 变化、死亡确定、Unit 仍存在和离场完成分别处理。已确定死亡时，普通治疗不能仅因 Unit 尚在集合中就获得执行资格；普通治疗与明确的免死、复活、形态转换也不共用这一推断。
 
-普通 Damage 在提交 HP 后派发 HP Applied，再根据最新 HP 确认死亡并完成离场，最后派发 Completed。伤害通知保留已经发生的历史事实；响应需要修改自身或宿主时，从最新 BattleState 读取并确认资格。特殊生命干预的通知顺序随第 3.2 节协议继续设计。
+普通 Damage 在提交 HP 后派发 HP Applied，再根据最新 HP 确认死亡并请求真实离场，最后派发 Completed。已有 Lifetime 结算时，remove 返回只保证请求／Prepare，Completed 不承诺目标全部离场 Finalize 已完成；没有活动结算时，remove 在当前调用内完成 drain。伤害通知保留本次已发生事实，响应按需要读取最新资格。特殊生命干预的通知顺序随第 3.2 节协议继续设计。
 
-真实离场沿用[既定清理偏序](deployment.md#离场清理的偏序)：进入 LEAVING，完整终止 Action／Skill／Elemental Burst 及剩余 Effect，移除 Unit，最后派发 Unit 的 leave Hook。成功保护、替身或复活是否进入真实离场由对应机制决定。
+真实离场沿用 [Lifetime 偏序](deployment.md#离场清理的偏序)：请求发布 LEAVING 并执行 Prepare，通过所有权与 Scope 请求子项；子项整个 Finalize 返回后才注销 Unit、回收 Card、派发 leave。成功保护、替身或复活是否进入真实离场由对应机制决定。
 
 ## 4. Healing 的两阶段契约
 
@@ -279,7 +279,7 @@ Apply 依次确认目标当前存在、PRESENT 且 HP 大于零，派发 Receivi
 
 ## 5. 未完成的机制设计
 
-- **死亡清理**：普通 Damage 同步确认死亡并离场；全场扫描的位置及绕过 Damage 的致死操作如何完成清理，尚未定案。扫描保留，不以此改变普通 Damage／Healing 时序。
+- **死亡清理**：普通 Damage 同步确认死亡并请求离场，Finalize 遵循 Lifetime 的最外层完成边界；全场扫描的位置及绕过 Damage 的致死操作如何完成清理，尚未定案。扫描保留，不以此改变普通 Damage／Healing 时序。
 - **特殊 HP 修改**：暂定绝大多数伤害进入 Damage，少数 Effect 可以直接修改 HP 以绕过普通受击，负责读取最新状态并遵守 HP 范围。暂不新增 HpTransition、setHp 或另一套通用管线；这项政策不决定死亡扫描与离场时点。
 - **伤害分类**：AttackType、ApplyWay 等描述本次伤害的固有分类，不能从目标状态或来源单位类型反推。具体字段尚未确定；是否需要表达以可观测游戏语义为准，不以现有消费者或客户端同名枚举为准。不预设 DamageAttributes、DamageAttribution、DamageMode 或通用 Flags。无视闪避、取消限制、非致命、生命流失的表达仍需对应机制审查；分担和特殊生命机制也不属于普通主路径。
 - **受伤与 HIT 回复资格**：毒性雾霾、血雾等需要受伤响应但不提供普通受击 SP。元素爆发默认周期配置的阻回规则有效；自定义周期配置在不阻回时抑制 HIT 回复的差异仍待处理。暂不为这些特例向 DamageRequest 增加 triggersHitRecovery／ignoreForSp 或替代调用上下文。

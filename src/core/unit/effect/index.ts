@@ -1,6 +1,6 @@
 export type { Definition, Group } from "./definition.js";
 
-export type { Effect, Id, Lifetime, Scope, Status, View } from "./effect.js";
+export type { Effect, Id, Scope, Status, View } from "./effect.js";
 
 export { ref } from "./effect.js";
 
@@ -14,6 +14,7 @@ export {
     setDeadline,
     setEnabled,
     bindLifetime,
+    lifetime,
     end,
     advance,
 } from "./operations.js";

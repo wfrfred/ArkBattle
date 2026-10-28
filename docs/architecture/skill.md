@@ -106,11 +106,13 @@ HIT 回复由 Skill.enter 在 Damage 的 receivingStarted 扩展点登记，发�
 
 发动先检查当前宿主、触发方式、许可、门槛与足额支付，采样数据与持续预算，再一次性写入扣费和新 Activation。随后依次记录 SKILL_ACTIVATED、派发 activated、通知 spPaid，再执行仍有资格的 onStart。支付 Hook 可以终止已创建的激活；后续启动程序必须重读同一身份、ACTIVE 状态和宿主当前资格，创建事实不会被撤销，支付报告保留已提交时的前后值。
 
-activated 表达实例已经创建，不承诺 onStart 效果已经安装。它的派发先于可能终止激活的支付与启动程序；同步重入仍允许前一个 activated Hook 结束激活，使 ended 嵌套发生在本轮后续 activated 候选之前。后续候选处理原创建事实，不通过队列或延迟清理强制所有观察者先创建后结束。
+activated 表达实例已经创建，不承诺 onStart 效果已经安装。它的派发先于可能终止激活的支付与启动程序。没有活动 Lifetime 结算时，前一个 activated Hook 的结束操作可以在后续 activated 候选前完成 ended；已有结算时，嵌套结束只同步执行请求／Prepare，ended 等待 Finalize。后续候选始终处理原创建事实，不因终止重写报告。
 
-结束先标记 ENDING，再关闭 typed Skill Lifetime 并完整清理依赖，执行结束程序，最后移除实例并通知 ended。ENDING 期间占用当前 Skill，重入结束不重复清理；ended 中可以启动下一次激活。已经进入的结束程序即使宿主被同步移除，也继续完成自己已经取得的终止责任，内容按需要重读当前宿主事实。
+Skill 的公共 lifetime 描述符绑定本轮 Activation，Effect 使用 scope(skillLifetime, activationRef) 建立依赖。请求先登记 Pending 并发布 ENDING，再展开依赖；最外层结算器等依赖者完整 Finalize 后调用当前 Activation 的 onEnd、清空本轮、记录事件和派发 ended。整个 Finalize 返回后才解除 owner 等待，Unit 在此期间保留原 Definition 与当前状态，不需要通用历史回退。
 
-Unit 离场编排只调用 Skill.cancel，不自行拆分状态、依赖清理和结束回调。先完整取消 Skill，再取消剩余 Action，避免 Action.onEnd 重入 finish 抢先把离场取消结算为正常完成。必要偏序仍是 LEAVING、各领域完整清理、移除 Unit、Unit 的 leave Hook。
+ENDING 期间继续占用 Skill。嵌套 finish／cancel 首次请求返回只保证 Prepare，不保证本轮已清空或 ended 已派发；需要下一次激活的业务放在槽位释放后的 ended 时点，已有结算范围中不能强行 drain。重复 PREPARING 请求也不等待原 Prepare。
+
+Unit 退场通过派生所有权关系自动请求 Skill、Action、Burst 与 Effects；Skill 请求先于 Action，兄弟可以都先进入 ENDING。首次原因不会被后续完成／取消覆盖；Unit Finalize 晚于这些子项的整个 Finalize。结束内容跨完整操作后仍按需要读取当前宿主与实例。
 
 ## 6. 待完成的机制覆盖
 

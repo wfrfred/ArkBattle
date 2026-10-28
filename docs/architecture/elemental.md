@@ -58,7 +58,7 @@ type End =
     | { readonly type: "CANCELLED"; readonly reason: string };
 ```
 
-内容按需创建 Effect。`{ type: "ELEMENTAL_BURST", ref }` 是稳定的 Lifetime，key 使用宿主 ID 与 Burst ID。只有 ACTIVE Burst 可以接受新依赖；结束时关闭 Lifetime 并完整清理依赖。依赖只表达终止关系，不自动共享时间轴。
+内容按需创建 Effect，使用 core/lifetime 的 scope(burstLifetime, ref) 绑定一次爆发；Burst 的静态 lifetime 由领域入口导出，地址仍为宿主 ID 与 Burst ID。只有当前 ACTIVE 且未 Pending 的 Burst 可以接受新依赖；getRef(scope, burstLifetime) 恢复对应 Ref，供周期 Effect 查询状态与恢复速率。绑定只表达终止关系，不共享时间轴。
 
 不是所有爆发产物都绑定 Burst。例如永久侵蚀减防、冷却结束后尚待消费的麻痹保留自己的生命周期。具体爆发程序位于 [data/arknights/elemental-burst.ts](../../src/data/arknights/elemental-burst.ts)。
 
@@ -113,28 +113,29 @@ Hook 采用公共协议 `(battle, fixedContext, current) => Result<T>`。事实�
 → 仍有资格才执行 Definition.onStart
 ```
 
-非爆发分支提交损伤后只派发 damaged。报告与 Hook 保留提交时的数值，不因同步嵌套结束而重算。started Hook 可以结束 Burst，随后仍可能派发原损伤事实；早先 started 候选也可以引发 ended 嵌套，后续 started 候选继续处理原创建事实。与 Skill 一样，不引入队列强制所有观察者先看到开始再看到结束。
+非爆发分支提交损伤后只派发 damaged。报告与 Hook 保留提交时的数值，不因同步嵌套结束而重算。started Hook 可以请求结束 Burst，随后仍可能派发原损伤事实。没有活动 Lifetime 结算时，早先 started 候选可以使 ended 嵌套完成；已有结算时，ended 等到 Finalize。后续 started 候选继续处理原创建事实，不改写已提交报告。
 
 任何跨领域操作之后，如果后续依赖自己或宿主的当前资格，都按[状态接续契约](functional-core.md#状态接续后的读取与续执行)重新读取。已明确采样的数值和已提交事实继续保留。
 
 ## 5. 完整结束与离场
 
-finish 和 cancel 共用完整结束流程：
+finish 和 cancel 委托 Burst 的 lifetime，先同步请求，再由最外层结算器完成 Finalize：
 
 ```text
-ACTIVE → ENDING
-→ 关闭 ELEMENTAL_BURST Lifetime，清理依赖
-→ Definition.onEnd(battle, self, end)
-→ 若宿主仍保存同一 Burst，四型 EP 重置到最新上限
+登记 Pending，ACTIVE → ENDING
+→ 请求依赖者，进入 READY
+→ 依赖者完整 Finalize 后开始本轮 Finalize
+→ 从当前实例与原 Definition 调用 onEnd(battle, self, end)
+→ 从最新宿主读取状态，四型 EP 重置到最新上限
 → 移除 Burst，lastAdvancedTick = battle.tick
 → 记录结束事件，派发 burstEnded
 ```
 
-ENDING 期间仍占用爆发槽位，重复终止不重复清理。onEnd 后续需要宿主时重新查询；宿主被嵌套移除后，已进入的程序仍完成自身已取得的终止责任。收尾只作用于同一 Burst，不覆盖后来实例。burstEnded 在槽位释放后可以引发新业务。
+ENDING 期间仍占用爆发槽位，重复请求不覆盖首次原因，也不重复 Prepare。嵌套 finish／cancel 返回不保证 EP 已重置、槽位已清空或 burstEnded 已派发。Unit 所有权保证宿主直到 Burst 整个 Finalize 返回才可注销，原 Definition 可从当前 Unit 取得，不使用通用 fallback。onEnd 后按最新同一 Burst 提交结算，burstEnded 在槽位释放后可以引发新业务。
 
 正常完成与取消都在宿主仍存在时重置 EP，显式在场取消也采用相同政策。重置属于结束操作，不派发 healed。ELEMENT_BURST_ENDED 保留完整 End；仅 FINISHED 另外记录 ELEMENT_RECOVERED，取消原因同时用于依赖清理与结束回调。
 
-Unit 离场在 LEAVING 后调用 Elemental.cancel，再清理剩余 Effect、移除 Unit、派发 Unit 的 leave Hook。完整操作的内部步骤由 Elemental 自己负责，离场编排不直接清空 burst 或依赖集合。
+Unit 请求离场发布 LEAVING 后，通过所有权边自动请求本轮 Burst 取消；取消与正常完成保留各自 End。Unit 等待 Burst 与其他依赖者整个 Finalize 后才注销和派发 leave；离场入口不手动调用 Elemental.cancel，也不清空 burst 或依赖集合。
 
 ## 6. 时间推进
 

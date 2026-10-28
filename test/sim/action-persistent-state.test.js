@@ -1,3 +1,5 @@
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as actionLifetime } from "../../dist/core/unit/action/operations.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize } from "../../dist/core/unit/initialize.js";
@@ -128,7 +130,7 @@ test("Action termination preserves persistent and cooldown updates from dependen
             return actions.setCooldown(state, actions.ref(fixture.source, definition), { ...currentCooldown, readyAtTick: 50 });
         },
     };
-    const installed = effects.install(started.state, fixture.source, dependency, { scopes: [{ type: "ACTION", ref: started.value.ref }] });
+    const installed = effects.install(started.state, fixture.source, dependency, { scopes: [lifetimeScope(actionLifetime, started.value.ref)] });
     const finished = actions.cancel(installed.state, started.value.ref, "TEST");
     const aggregate = actions.getAction(finished, actions.ref(fixture.source, definition));
     assert.deepEqual(trace, [["dependency"], ["end", "ENDING", 1, 50]]);

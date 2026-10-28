@@ -1,5 +1,6 @@
 import { normal as normalSite } from "../../terrain/condition.js";
 import { update as updateUnit } from "../../../core/battle/unit.js";
+import { scope } from "../../../core/lifetime/index.js";
 import { createArknightsElementalDefinition } from "../../../data/arknights/elemental.js";
 import { create as createAction, createActions } from "../../../core/unit/action/index.js";
 import {
@@ -13,6 +14,7 @@ import type { Definitions as CapabilityDefinitions } from "../../../core/unit/ca
 import {
     type Definition as SkillDefinition,
     ref as activationRef,
+    lifetime as skillLifetime,
 } from "../../../core/unit/capability/skill/index.js";
 
 import { createDefinition as createDeployableDefinition } from "../../../core/unit/capability/deployable/index.js";
@@ -111,7 +113,7 @@ export function create(profile: Profile, direction: Direction = "RIGHT"): Defini
 
                 const result = install(state, unitRef(unit), skillEffect, {
                     source: unitRef(unit),
-                    scopes: [{ type: "SKILL", ref: activationRef(self) }],
+                    scopes: [scope(skillLifetime, activationRef(self))],
                 });
 
                 return result.state;

@@ -1,3 +1,6 @@
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as actionLifetime } from "../../dist/core/unit/action/operations.js";
+import { lifetime as skillLifetime } from "../../dist/core/unit/capability/skill/operations.js";
 import { changeTile, tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import * as unitQueries from "../../dist/core/unit/query.js";
@@ -217,7 +220,7 @@ for (const domain of ["deployment", "predefined"]) {
     });
 }
 
-test("effect terminal callback can retire its host and settle remote Action and Skill dependencies immediately", () => {
+test("effect terminal callback requests host retirement and outer settlement finalizes its dependencies", () => {
     const trace = [];
     const skill = createSkillDefinition({
         id: "nested-skill",
@@ -278,10 +281,10 @@ test("effect terminal callback can retire its host and settle remote Action and 
         },
     );
     battle = effects.install(battle, unitRef(getUnit(battle, 1)), actionDependent, {
-        scopes: [{ type: "ACTION", ref: started.value.ref }],
+        scopes: [lifetimeScope(actionLifetime, started.value.ref)],
     }).state;
     battle = effects.install(battle, unitRef(getUnit(battle, 1)), skillDependent, {
-        scopes: [{ type: "SKILL", ref: activationRef(getUnit(battle, 0).skill.active) }],
+        scopes: [lifetimeScope(skillLifetime, activationRef(getUnit(battle, 0).skill.active))],
     }).state;
     const content = definition(
         "nested-death",
@@ -291,8 +294,8 @@ test("effect terminal callback can retire its host and settle remote Action and 
                 trace.push("effect");
                 state = dealDamage({ ...state, tick: 1 }, { source: null, target: { id: 0 }, parameters: parameters(100, "TRUE") }).state;
                 trace.push("after-damage");
-                assert.equal(getUnit(state, 0), undefined);
-                assert.equal(actions.getExecution(state, started.value.ref), undefined);
+                assert.equal(getUnit(state, 0).lifecycle, "LEAVING");
+                assert.equal(actions.getExecution(state, started.value.ref).execution.status, "ENDING");
                 return state;
             },
         },
@@ -301,9 +304,9 @@ test("effect terminal callback can retire its host and settle remote Action and 
     battle = effects.end(installed.state, installed.value);
     assert.equal(getUnit(battle, 0), undefined);
     assert.deepEqual(getUnit(battle, 1).effects.values().toArray(), []);
-    assert.ok(trace.indexOf("action-effect") < trace.indexOf("after-damage"));
-    assert.ok(trace.indexOf("skill-effect") < trace.indexOf("after-damage"));
-    assert.ok(trace.indexOf("skill") < trace.indexOf("after-damage"));
+    assert.ok(trace.indexOf("action-effect") > trace.indexOf("after-damage"));
+    assert.ok(trace.indexOf("skill-effect") > trace.indexOf("after-damage"));
+    assert.ok(trace.indexOf("skill") > trace.indexOf("after-damage"));
     assert.equal(battle.events.filter((event) => event.type === "ACTION_CANCELLED").length, 1);
     assert.equal(battle.events.filter((event) => event.type === "SKILL_FINISHED").length, 1);
 });

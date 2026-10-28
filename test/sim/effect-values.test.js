@@ -1,3 +1,5 @@
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { deadline } from "../../dist/core/unit/effect/effect.js";
@@ -27,7 +29,7 @@ test("effect values: local no-ops and replacements retain the input version", ()
 });
 
 test("effect values: deadline updates preserve lifetime constraints and reject invalid time", () => {
-    const lifetime = { type: "UNIT", ref: { id: 0 } };
+    const lifetime = lifetimeScope(unitLifetime, { id: 0 });
     const { state, value: ref } = install(effectFixtureWork(host()), definition("deadline"), 0, {
         scopes: [lifetime, { type: "TICK", tick: 3 }],
     });

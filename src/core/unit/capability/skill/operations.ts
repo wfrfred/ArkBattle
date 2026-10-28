@@ -1,7 +1,7 @@
 import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
-import { closeLifetime } from "../../../battle/execution/lifetime.js";
+import * as lifetimes from "../../../lifetime/index.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import * as contribution from "../../contribution/contribution.js";
@@ -191,52 +191,31 @@ export function activate(
     );
 }
 
-export function finish(battle: BattleState, reference: Ref<Activation>): BattleState {
-    return end(battle, reference, { type: "FINISHED" });
-}
+export const lifetime = lifetimes.create<Activation, Activation, End>({
+    kind: "SKILL",
+    address: (reference) => [reference.host.id, reference.id],
+    get: query.get,
+    isEnding: (self) => self.status === "ENDING",
+    begin: (self) => ({ ...self, status: "ENDING" }),
+    replace(battle, reference, next) {
+        const host = units.get(battle, reference.host)!;
 
-export function cancel(
-    battle: BattleState,
-    reference: Ref<Activation>,
-    reason = "CANCELLED",
-): BattleState {
-    return end(battle, reference, { type: "CANCELLED", reason });
-}
-
-function end(battle: BattleState, reference: Ref<Activation>, ending: End): BattleState {
-    return (
-        read(battle, reference.host, (self) => {
-            const active = self.state.active;
-            const definition = self.definition.activation;
-            if (active?.id !== reference.id || active.status !== "ACTIVE" || definition === null) {
-                return battle;
-            }
-
-            const closing = { ...active, status: "ENDING" as const };
-            battle = instance.replace(battle, {
-                ...self,
-                state: { ...self.state, active: closing },
-            });
-            battle = closeLifetime(
-                battle,
-                { type: "SKILL", ref: activationRef(closing) },
-                ending.type === "CANCELLED" ? ending.reason : "SKILL_FINISHED",
-            );
-            const current = instance.get(battle, self.host, self.definition)?.state.active;
-            const finished = current?.id === active.id ? current : closing;
+        return instance.replaceHost(battle, { ...host, skill: { ...host.skill, active: next } });
+    },
+    finalize(battle, reference, ending) {
+        return read(battle, reference.host, (self) => {
+            const active = self.state.active!;
+            const definition = self.definition.activation!;
 
             if (definition.onEnd !== undefined) {
-                battle = definition.onEnd(battle, finished, ending);
+                battle = definition.onEnd(battle, active, ending);
             }
 
-            const host = instance.get(battle, self.host, self.definition);
-            if (host?.state.active?.id === active.id) {
-                battle = instance.replace(battle, {
-                    ...host,
-                    state: { ...host.state, active: null },
-                });
-            }
-
+            const host = units.get(battle, reference.host)!;
+            battle = instance.replaceHost(battle, {
+                ...host,
+                skill: { ...host.skill, active: null },
+            });
             battle = appendEvents(battle, [
                 {
                     type: "SKILL_FINISHED",
@@ -248,9 +227,23 @@ function end(battle: BattleState, reference: Ref<Activation>, ending: End): Batt
                 },
             ]);
 
-            return dispatch(battle, active.host, "ended", { activation: finished, end: ending });
-        }) ?? battle
-    );
+            return dispatch(battle, active.host, "ended", { activation: active, end: ending });
+        })!;
+    },
+    reason: (ending) => (ending.type === "FINISHED" ? "SKILL_FINISHED" : ending.reason),
+    fromDependency: (reason) => ({ type: "CANCELLED", reason }),
+});
+
+export function finish(battle: BattleState, reference: Ref<Activation>): BattleState {
+    return lifetime.end(battle, reference, { type: "FINISHED" });
+}
+
+export function cancel(
+    battle: BattleState,
+    reference: Ref<Activation>,
+    reason = "CANCELLED",
+): BattleState {
+    return lifetime.end(battle, reference, { type: "CANCELLED", reason });
 }
 
 export function operate(

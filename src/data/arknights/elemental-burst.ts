@@ -1,6 +1,7 @@
 import { update as updateUnit } from "../../core/battle/unit.js";
 import type { Ref } from "../../core/common/ref.js";
 import type { State as BattleState } from "../../core/battle/index.js";
+import { getRef, scope } from "../../core/lifetime/index.js";
 import { TICKS_PER_SECOND } from "../../core/tick.js";
 import * as units from "../../core/unit/index.js";
 import * as effects from "../../core/unit/effect/index.js";
@@ -17,6 +18,7 @@ import {
     available,
     get as getBurst,
     resolveBurstRecoverySpeed,
+    lifetime as burstLifetime,
 } from "../../core/unit/capability/elemental/index.js";
 
 import {
@@ -212,13 +214,17 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
         },
         onTick: (battle, self) => {
             const ref = effectRef(self);
-            const scope = self.scopes.find((scope) => scope.type === "ELEMENTAL_BURST");
-            if (scope === undefined || getBurst(battle, scope.ref)?.status !== "ACTIVE") {
+            const burst = self.scopes
+                .flatMap((entry) =>
+                    entry.type === "LIFETIME" ? [getRef(entry, burstLifetime)] : [],
+                )
+                .find((reference) => reference !== undefined);
+            if (burst === undefined || getBurst(battle, burst)?.status !== "ACTIVE") {
                 return battle;
             }
 
             const rate =
-                activeHost(battle, scope.ref) === undefined
+                activeHost(battle, burst) === undefined
                     ? 0
                     : resolveBurstRecoverySpeed(battle, self.host)!;
             const elapsedTicks = Math.min(
@@ -234,7 +240,7 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
             });
 
             for (let second = previousSecond + 1; second <= currentSecond; second++) {
-                let unit = activeHost(battle, scope.ref);
+                let unit = activeHost(battle, burst);
                 if (unit === undefined || effects.get(battle, ref)?.status !== "ACTIVE") {
                     return battle;
                 }
@@ -242,16 +248,16 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
                     battle = modify(battle, units.ref(unit), -profile.spDrainPerSecond).state;
                 }
 
-                unit = activeHost(battle, scope.ref);
+                unit = activeHost(battle, burst);
 
                 if (unit === undefined || effects.get(battle, ref)?.status !== "ACTIVE") {
                     return battle;
                 }
                 if (profile.damagePerSecond !== null) {
-                    battle = hurt(battle, scope.ref, profile.damagePerSecond);
+                    battle = hurt(battle, burst, profile.damagePerSecond);
                 }
 
-                unit = activeHost(battle, scope.ref);
+                unit = activeHost(battle, burst);
                 const current = effects.get(battle, ref);
                 if (unit === undefined || current?.status !== "ACTIVE") {
                     return battle;
@@ -262,7 +268,7 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
                         1 -
                         profile.attackReductionRatio * Math.max(0, 1 - second / durationSeconds);
                     battle = effects.setData(battle, ref, { ...current.data, scaler });
-                    const host = activeHost(battle, scope.ref)!;
+                    const host = activeHost(battle, burst)!;
                     if (!hasOffense(host)) {
                         return battle;
                     }
@@ -292,7 +298,7 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
         durationTicks: profile.durationTicks,
         onStart: (battle: BattleState, self: Burst): BattleState => {
             const ref = burstRef(self);
-            const scopes = [{ type: "ELEMENTAL_BURST" as const, ref }];
+            const scopes = [scope(burstLifetime, ref)];
             let unit = activeHost(battle, ref);
             if (unit === undefined) {
                 return battle;

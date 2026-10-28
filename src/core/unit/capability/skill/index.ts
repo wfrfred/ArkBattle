@@ -37,7 +37,16 @@ export { get } from "./query.js";
 
 export type { Instance } from "./instance.js";
 
-export { activate, finish, cancel, operate, advance, enter, extendTime } from "./operations.js";
+export {
+    lifetime,
+    activate,
+    finish,
+    cancel,
+    operate,
+    advance,
+    enter,
+    extendTime,
+} from "./operations.js";
 
 export type { Outcome, Signal } from "./operations.js";
 

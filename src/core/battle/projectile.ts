@@ -3,6 +3,7 @@ import type { WorldPosition } from "../geometry/coordinate.js";
 import type { Definition, StopReason } from "../projectile/definition.js";
 import type { Projectile, View } from "../projectile/projectile.js";
 import { get, ref } from "../projectile/query.js";
+import { create as createLifetime } from "../lifetime/operations.js";
 import { appendEvents, type State as BattleState, type Result } from "./state.js";
 
 export interface CreateInput<S extends object> {
@@ -71,48 +72,53 @@ export function update<S extends object>(
     };
 }
 
+export const lifetime = createLifetime<View, Projectile<object>, StopReason>({
+    kind: "PROJECTILE",
+    address: (ref) => [ref.id],
+    get: (battle, reference) => get(battle, reference) as Projectile<object> | undefined,
+    isEnding: (self) => self.lifecycle === "ENDING",
+    begin: (self) => ({ ...self, lifecycle: "ENDING" }),
+    replace: (battle, _ref, next) => ({
+        ...battle,
+        battlefield: {
+            ...battle.battlefield,
+            projectiles: battle.battlefield.projectiles.replace(ref(next), next),
+        },
+    }),
+    prepare: (battle, reference, _initial, reason) => {
+        const self = get(battle, reference)!;
+
+        return appendEvents(battle, [
+            {
+                type: "PROJECTILE_STOPPED",
+                projectileId: self.id,
+                position: self.position,
+                tick: battle.tick,
+                reason,
+            },
+        ]);
+    },
+    finalize: (battle, reference, reason) => {
+        const self = get(battle, reference) as Projectile<object>;
+        battle = self.definition.onEnd?.(battle, self, reason) ?? battle;
+
+        return {
+            ...battle,
+            battlefield: {
+                ...battle.battlefield,
+                projectiles: battle.battlefield.projectiles.remove(reference.id),
+            },
+        };
+    },
+    reason: (reason) => reason,
+});
+
 export function stop(
     battle: BattleState,
     reference: Ref<View>,
     reason: StopReason = "EXPLICIT",
 ): BattleState {
-    return (
-        battle.battlefield.projectiles.read(reference.id, (current) => {
-            if (current.lifecycle !== "ACTIVE") {
-                return battle;
-            }
-
-            const self: Projectile<typeof current.state> = {
-                ...current,
-                lifecycle: "ENDING",
-            };
-            battle = {
-                ...battle,
-                battlefield: {
-                    ...battle.battlefield,
-                    projectiles: battle.battlefield.projectiles.replace(ref(self), self),
-                },
-            };
-            battle = appendEvents(battle, [
-                {
-                    type: "PROJECTILE_STOPPED",
-                    projectileId: self.id,
-                    position: self.position,
-                    tick: battle.tick,
-                    reason,
-                },
-            ]);
-            battle = self.definition.onEnd?.(battle, self, reason) ?? battle;
-
-            return {
-                ...battle,
-                battlefield: {
-                    ...battle.battlefield,
-                    projectiles: battle.battlefield.projectiles.remove(reference.id),
-                },
-            };
-        }) ?? battle
-    );
+    return lifetime.end(battle, reference, reason);
 }
 
 export function advance(battle: BattleState, candidates: readonly Ref<View>[]): BattleState {

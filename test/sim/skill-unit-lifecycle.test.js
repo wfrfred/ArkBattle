@@ -1,3 +1,6 @@
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
+import { lifetime as skillLifetime } from "../../dist/core/unit/capability/skill/operations.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { getUnit } from "../helpers/unit.js";
@@ -21,10 +24,10 @@ function fixture(callbacks = {}) {
         },
     });
     const installOwned = (battle, self, expected = true) => {
-        for (const extra of [[], [{ type: "UNIT", ref: unitRef(getUnit(battle, 1)) }]]) {
+        for (const extra of [[], [lifetimeScope(unitLifetime, unitRef(getUnit(battle, 1)))]]) {
             const installed = effects.install(battle, unitRef(getUnit(battle, 1)), owned, {
                 source: self.host,
-                scopes: [{ type: "SKILL", ref: activationRef(self) }, ...extra],
+                scopes: [lifetimeScope(skillLifetime, activationRef(self)), ...extra],
             });
             battle = installed.state;
             assert.equal(installed.value !== undefined, expected);
@@ -106,7 +109,7 @@ test("ending content may create independent remote effects while closed lifetime
     let installedRef;
     const f = fixture({ end(battle, self) {
         const host = unitRef(getUnit(battle, 1));
-        const bound = effects.install(battle, host, independent, { scopes: [{ type: "SKILL", ref: activationRef(self) }] });
+        const bound = effects.install(battle, host, independent, { scopes: [lifetimeScope(skillLifetime, activationRef(self))] });
         assert.equal(bound.value, undefined);
         const installed = effects.install(bound.state, host, independent);
         installedRef = installed.value;

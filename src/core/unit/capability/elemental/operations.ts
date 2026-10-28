@@ -3,7 +3,7 @@ import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../../
 import type { Ref } from "../../../common/ref.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
-import { closeLifetime } from "../../../battle/execution/lifetime.js";
+import * as lifetimes from "../../../lifetime/index.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import {
@@ -242,8 +242,62 @@ export function heal(
     return { state: battle, value: { type: "APPLIED", amounts: event.amounts } };
 }
 
+export const lifetime = lifetimes.create<Burst, Burst, End>({
+    kind: "ELEMENTAL_BURST",
+    address: (reference) => [reference.host.id, reference.id],
+    get: query.get,
+    isEnding: (self) => self.status === "ENDING",
+    begin: (self) => ({ ...self, status: "ENDING" }),
+    replace(battle, reference, next) {
+        const host = units.get(battle, reference.host)!;
+
+        return updateUnit(battle, [{ ...host, elemental: { ...host.elemental, burst: next } }]);
+    },
+    finalize(battle, reference, ending) {
+        const self = units.get(battle, reference.host)!;
+        const active = self.elemental.burst!;
+        const definition = self.definition.elemental.bursts[active.type];
+
+        if (definition.onEnd !== undefined) {
+            battle = definition.onEnd(battle, active, ending);
+        }
+
+        const host = units.get(battle, reference.host)!;
+        const maximum = query.resolveMaxEp(battle, reference.host)!;
+        battle = updateUnit(battle, [
+            {
+                ...host,
+                elemental: {
+                    ...host.elemental,
+                    ep: elementValues(maximum),
+                    burst: null,
+                    lastAdvancedTick: battle.tick,
+                },
+            },
+        ]);
+        battle = appendEvents(battle, [
+            { type: "ELEMENT_BURST_ENDED", burst: active, end: ending, tick: battle.tick },
+        ]);
+
+        if (ending.type === "FINISHED") {
+            battle = appendEvents(battle, [
+                {
+                    type: "ELEMENT_RECOVERED",
+                    unitId: reference.host.id,
+                    elementType: active.type,
+                    tick: battle.tick,
+                },
+            ]);
+        }
+
+        return dispatch(battle, reference.host, "burstEnded", { burst: active, end: ending });
+    },
+    reason: (ending) => (ending.type === "FINISHED" ? "ELEMENTAL_BURST_FINISHED" : ending.reason),
+    fromDependency: (reason) => ({ type: "CANCELLED", reason }),
+});
+
 export function finish(battle: BattleState, reference: Ref<Burst>): BattleState {
-    return end(battle, reference, { type: "FINISHED" });
+    return lifetime.end(battle, reference, { type: "FINISHED" });
 }
 
 export function cancel(
@@ -251,62 +305,7 @@ export function cancel(
     reference: Ref<Burst>,
     reason = "CANCELLED",
 ): BattleState {
-    return end(battle, reference, { type: "CANCELLED", reason });
-}
-
-function end(battle: BattleState, reference: Ref<Burst>, ending: End): BattleState {
-    const self = units.get(battle, reference.host);
-    const active = self?.elemental.burst;
-    if (self === undefined || active?.id !== reference.id || active.status !== "ACTIVE") {
-        return battle;
-    }
-
-    const definition = self.definition.elemental.bursts[active.type];
-    const closing: Burst = { ...active, status: "ENDING" };
-    battle = replaceHost(battle, { ...self, elemental: { ...self.elemental, burst: closing } });
-    battle = closeLifetime(
-        battle,
-        { type: "ELEMENTAL_BURST", ref: reference },
-        ending.type === "CANCELLED" ? ending.reason : "ELEMENTAL_BURST_FINISHED",
-    );
-
-    const current = query.get(battle, reference);
-    const finished = current ?? closing;
-
-    if (definition.onEnd !== undefined) {
-        battle = definition.onEnd(battle, finished, ending);
-    }
-
-    const host = units.get(battle, reference.host);
-    if (host?.elemental.burst?.id === reference.id) {
-        const maximum = query.resolveMaxEp(battle, reference.host)!;
-        battle = replaceHost(battle, {
-            ...host,
-            elemental: {
-                ...host.elemental,
-                ep: elementValues(maximum),
-                burst: null,
-                lastAdvancedTick: battle.tick,
-            },
-        });
-    }
-
-    battle = appendEvents(battle, [
-        { type: "ELEMENT_BURST_ENDED", burst: finished, end: ending, tick: battle.tick },
-    ]);
-
-    if (ending.type === "FINISHED") {
-        battle = appendEvents(battle, [
-            {
-                type: "ELEMENT_RECOVERED",
-                unitId: reference.host.id,
-                elementType: active.type,
-                tick: battle.tick,
-            },
-        ]);
-    }
-
-    return dispatch(battle, reference.host, "burstEnded", { burst: finished, end: ending });
+    return lifetime.end(battle, reference, { type: "CANCELLED", reason });
 }
 
 export function advance(battle: BattleState, host: Ref<Unit & Elemental>): BattleState {

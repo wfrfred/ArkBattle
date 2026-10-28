@@ -3,21 +3,11 @@ import { type State as BattleState, type Result } from "../../battle/state.js";
 import type { Unit, Id } from "../unit.js";
 import type { Ref } from "../../common/ref.js";
 import * as units from "../query.js";
-import { getExecution } from "../action/query.js";
-import { get as getBurst } from "../capability/elemental/query.js";
-import { get as getActivation } from "../capability/skill/query.js";
+import { available, create, scope, type Scope as LifetimeScope } from "../../lifetime/index.js";
+import { key, wouldCycle } from "../../lifetime/dependency.js";
 import type { Definition } from "./definition.js";
-import {
-    deadline,
-    key,
-    type Effect,
-    type Lifetime,
-    ref as effectRef,
-    type Scope,
-    type View,
-} from "./effect.js";
+import { deadline, type Effect, ref as effectRef, type Scope, type View } from "./effect.js";
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
-import { dependents } from "./dependency.js";
 import { get } from "./query.js";
 
 export interface Initial<S extends object> {
@@ -145,93 +135,58 @@ export function setEnabled(battle: BattleState, ref: Ref<View>, enabled: boolean
 export function bindLifetime(
     battle: BattleState,
     ref: Ref<View>,
-    lifetime: Lifetime,
+    parent: LifetimeScope,
 ): Result<boolean> {
     const unit = units.get(battle, ref.host);
     const instance = unit?.effects.getEffect(ref.id);
-    if (instance === undefined || instance.status === "ENDING" || !available(battle, lifetime)) {
+    if (instance === undefined || instance.status === "ENDING" || !available(battle, parent)) {
         return { state: battle, value: false };
     }
 
-    if (wouldCycle(battle, ref, lifetime)) {
+    if (wouldCycle(battle.lifetime.dependencies, scope(lifetime, ref), parent)) {
         throw new TypeError("effect scopes cannot form a cycle");
     }
-    if (!instance.scopes.some((scope) => key(scope) === key(lifetime))) {
+    if (!instance.scopes.some((entry) => entry.type === "LIFETIME" && key(entry) === key(parent))) {
         battle = replaceEffect(battle, unit!, {
             ...instance,
-            scopes: [...instance.scopes, lifetime],
+            scopes: [...instance.scopes, parent],
         });
     }
 
     return { state: battle, value: true };
 }
 
-export function end(battle: BattleState, ref: Ref<View>, reason = "EXPLICIT"): BattleState {
-    const unit = units.get(battle, ref.host);
-    const instance = unit?.effects.getEffect(ref.id);
-    if (instance === undefined || instance.status === "ENDING") {
-        return battle;
-    }
-
-    const children = dependents(battle.effect.dependency, { type: "EFFECT", ref });
-    const definition = instance.definition;
-    const reference = effectRef(instance);
-    const ending = { ...instance, status: "ENDING" as const };
-    battle = replaceEffect(battle, unit!, ending);
-    let ended = get(battle, reference) ?? ending;
-
-    if (instance.status === "ACTIVE" && definition.onDisable !== undefined) {
-        battle = definition.onDisable(battle, ended);
-        ended = get(battle, reference) ?? ended;
-    }
-
-    for (const child of children) {
-        battle = end(battle, child, reason);
-        ended = get(battle, reference) ?? ended;
-    }
-
-    if (definition.onEnd !== undefined) {
-        battle = definition.onEnd(battle, ended, reason);
-    }
-
-    const current = units.get(battle, ref.host);
-    if (current !== undefined) {
-        battle = updateUnit(battle, [
-            {
-                ...current,
-                effects: current.effects.remove(ref.id),
-            },
-        ]);
-    }
-
-    if (definition.group !== undefined) {
-        battle = reconcileGroupActivity(battle, ref.host.id, definition.group.id);
-    }
-
-    return battle;
-}
-
-export function endDependents(
-    battle: BattleState,
-    lifetime: Lifetime,
-    reason = "SCOPE_CLOSED",
-): BattleState {
-    const roots = dependents(battle.effect.dependency, lifetime);
-
-    if (lifetime.type === "UNIT") {
-        const hosted =
-            units.get(battle, lifetime.ref)?.effects.values().map(effectRef).toArray() ?? [];
-
-        for (const ref of hosted) {
-            battle = end(battle, ref, reason);
+export const lifetime = create<View, Effect, string>({
+    kind: "EFFECT",
+    address: (reference) => [reference.host.id, reference.id],
+    get: (battle, reference) => units.get(battle, reference.host)?.effects.getEffect(reference.id),
+    isEnding: (self) => self.status === "ENDING",
+    begin: (self) => ({ ...self, status: "ENDING" }),
+    replace: (battle, reference, next) =>
+        replaceEffect(battle, units.get(battle, reference.host)!, next),
+    prepare(battle, reference, initial) {
+        if (initial.status === "ACTIVE" && initial.definition.onDisable !== undefined) {
+            const self = units.get(battle, reference.host)!.effects.getEffect(reference.id)!;
+            battle = initial.definition.onDisable(battle, self);
         }
-    }
 
-    for (const ref of roots) {
-        battle = end(battle, ref, reason);
-    }
+        return initial.definition.group === undefined
+            ? battle
+            : reconcileGroupActivity(battle, reference.host.id, initial.definition.group.id);
+    },
+    finalize(battle, reference, reason) {
+        const self = units.get(battle, reference.host)!.effects.getEffect(reference.id)!;
+        battle = self.definition.onEnd?.(battle, self, reason) ?? battle;
+        const unit = units.get(battle, reference.host)!;
 
-    return battle;
+        return updateUnit(battle, [{ ...unit, effects: unit.effects.remove(reference.id) }]);
+    },
+    reason: (reason) => reason,
+    fromDependency: (reason) => reason,
+});
+
+export function end(battle: BattleState, ref: Ref<View>, reason = "EXPLICIT"): BattleState {
+    return lifetime.end(battle, ref, reason);
 }
 
 export function advance(battle: BattleState): BattleState {
@@ -254,29 +209,6 @@ export function advance(battle: BattleState): BattleState {
     }
 
     return battle;
-}
-
-function available(battle: BattleState, lifetime: Lifetime): boolean {
-    switch (lifetime.type) {
-        case "UNIT":
-            return units.get(battle, lifetime.ref)?.lifecycle === "PRESENT";
-
-        case "ACTION":
-            return getExecution(battle, lifetime.ref)?.execution.status === "RUNNING";
-
-        case "SKILL": {
-            return getActivation(battle, lifetime.ref)?.status === "ACTIVE";
-        }
-
-        case "ELEMENTAL_BURST":
-            return getBurst(battle, lifetime.ref)?.status === "ACTIVE";
-
-        case "EFFECT": {
-            const instance = get(battle, lifetime.ref);
-
-            return instance !== undefined && instance.status !== "ENDING";
-        }
-    }
 }
 
 function replaceEffect<S extends object, H extends object>(
@@ -355,36 +287,4 @@ function reconcileGroupActivity(battle: BattleState, unitId: Id, groupId: string
     }
 
     return battle;
-}
-
-function wouldCycle(battle: BattleState, ref: Ref<View>, lifetime: Lifetime): boolean {
-    if (lifetime.type !== "EFFECT") {
-        return false;
-    }
-
-    const pending: Ref<View>[] = [lifetime.ref];
-    const seen = new Set<string>();
-
-    while (pending.length > 0) {
-        const current = pending.pop()!;
-        const identity = key({ type: "EFFECT", ref: current });
-        if (identity === key({ type: "EFFECT", ref })) {
-            return true;
-        }
-        if (seen.has(identity)) {
-            continue;
-        }
-
-        seen.add(identity);
-        pending.push(
-            ...(get(battle, current)
-                ?.scopes.filter(
-                    (scope): scope is Extract<Lifetime, { type: "EFFECT" }> =>
-                        scope.type === "EFFECT",
-                )
-                .map((scope) => scope.ref) ?? []),
-        );
-    }
-
-    return false;
 }

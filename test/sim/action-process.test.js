@@ -1,3 +1,5 @@
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as actionLifetime } from "../../dist/core/unit/action/operations.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, unit } from "../helpers/action-fixture.js";
@@ -30,7 +32,7 @@ const ownedEffect = { id: "action-owned", initialize: () => ({}) };
 
 function installOwned(state, source, self, definition = ownedEffect) {
     return effects.install(state, unitRef(getUnit(state, 1)), definition, {
-        scopes: [{ type: "ACTION", ref: executionRef(source, self) }],
+        scopes: [lifetimeScope(actionLifetime, executionRef(source, self))],
     }).state;
 }
 
@@ -125,7 +127,7 @@ test("action: equal local identities on different hosts keep progress and lifeti
         onTick(state, source, self) {
             if (self.execution.state.progress === 0) {
                 state = effects.install(state, unitRef(getUnit(state, 2)), ownedEffect, {
-                    scopes: [{ type: "ACTION", ref: executionRef(source, self) }],
+                    scopes: [lifetimeScope(actionLifetime, executionRef(source, self))],
                 }).state;
             }
             const currentState2 = actions.getExecution(state, executionRef(source, self)).execution.state;
@@ -167,7 +169,7 @@ test("action: equal local identities on different hosts keep progress and lifeti
         .map(event => [event.sourceUnitId, event.executionId]), [[0, 0], [1, 0]]);
 });
 
-test("action: dependency cleanup may remove its ending host before one terminal callback without resurrection", () => {
+test("action: dependency cleanup requests host removal while its execution Finalize retains the owner", () => {
     const trace = [];
     const definition = program("ending-host", {
         onTick(state, source, self) {
@@ -183,9 +185,9 @@ test("action: dependency cleanup may remove its ending host before one terminal 
         },
         onEnd(state, source, self, outcome) {
             trace.push(outcome.type);
-            assert.equal(getUnit(state, source.id), undefined);
-            assert.equal(actions.getExecution(state, executionRef(source, self)), undefined);
-            assert.throws(() => actions.setExecutionState(state, executionRef(source, self), { progress: 9 }), /unknown unit: 0/);
+            assert.equal(getUnit(state, source.id).lifecycle, "LEAVING");
+            assert.equal(actions.getExecution(state, executionRef(source, self)), self);
+            assert.throws(() => actions.setExecutionState(state, executionRef(source, self), { progress: 9 }), /ending action/);
             return state;
         },
     });

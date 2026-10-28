@@ -1,20 +1,11 @@
 import type { Unit } from "../unit.js";
-import type { View as ExecutionView } from "../action/execution.js";
-import type { Burst } from "../capability/elemental/burst.js";
-import type { Activation as SkillActivation } from "../capability/skill/activation.js";
+import type { Scope as LifetimeScope } from "../../lifetime/index.js";
 import type { Definition } from "./definition.js";
 import type { Identified, Ref } from "../../common/ref.js";
 
 export type Id = number;
 
-export type Lifetime =
-    | { readonly type: "UNIT"; readonly ref: Ref<Unit> }
-    | { readonly type: "ACTION"; readonly ref: Ref<ExecutionView> }
-    | { readonly type: "SKILL"; readonly ref: Ref<SkillActivation> }
-    | { readonly type: "ELEMENTAL_BURST"; readonly ref: Ref<Burst> }
-    | { readonly type: "EFFECT"; readonly ref: Ref<View> };
-
-export type Scope = Lifetime | { readonly type: "TICK"; readonly tick: number };
+export type Scope = LifetimeScope | { readonly type: "TICK"; readonly tick: number };
 
 export type Status = "INSTALLING" | "INACTIVE" | "ACTIVE" | "ENDING";
 
@@ -42,28 +33,6 @@ export interface Snapshot extends View {
 
 export function ref<E extends View>(effect: E): Ref<E> {
     return { host: effect.host, id: effect.id } as Ref<E>;
-}
-
-export function key(scope: Scope): string {
-    switch (scope.type) {
-        case "UNIT":
-            return `UNIT:${scope.ref.id}`;
-
-        case "ACTION":
-            return `ACTION:${scope.ref.host.id}:${scope.ref.id}`;
-
-        case "SKILL":
-            return `SKILL:${scope.ref.host.id}:${scope.ref.id}`;
-
-        case "ELEMENTAL_BURST":
-            return `ELEMENTAL_BURST:${scope.ref.host.id}:${scope.ref.id}`;
-
-        case "EFFECT":
-            return `EFFECT:${scope.ref.host.id}:${scope.ref.id}`;
-
-        case "TICK":
-            return `TICK:${scope.tick}`;
-    }
 }
 
 export function deadline(instance: { readonly scopes: readonly Scope[] }): number | null {

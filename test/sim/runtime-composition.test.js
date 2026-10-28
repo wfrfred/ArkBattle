@@ -1,3 +1,6 @@
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as effectLifetime } from "../../dist/core/unit/effect/operations.js";
+import { lifetime as actionLifetime } from "../../dist/core/unit/action/operations.js";
 import * as unitQueries from "../../dist/core/unit/index.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
@@ -156,7 +159,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
                                 marker,
                                 {
                                     source: auraAddress.host,
-                                    scopes: [{ type: "EFFECT", ref }],
+                                    scopes: [lifetimeScope(effectLifetime, ref)],
                                 },
                             );
                             assert.ok(installed.value);
@@ -215,7 +218,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
                     receiver,
                     {
                         source: effectSelf.host,
-                        scopes: [{ type: "EFFECT", ref: effectRef(effectSelf) }],
+                        scopes: [lifetimeScope(effectLifetime, effectRef(effectSelf))],
                     },
                                     );
                 state = installed.state;
@@ -326,7 +329,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
             program,
             {
                 source: host,
-                scopes: [{ type: "ACTION", ref: executionRef(host, context) }],
+                scopes: [lifetimeScope(actionLifetime, executionRef(host, context))],
             },
         ).state;
     const launch = (state, host, context, targetUnitId) => {
@@ -497,7 +500,7 @@ test("runtime composition: a successful battle preserves identities, snapshots a
     assert.deepEqual(effect(after, 1, run.receiver).data, { starts: 1, enables: 1, uses: 1 });
     assert.equal(effect(after, 1, run.marker).id, 1);
     assert.deepEqual(effect(after, 1, run.marker).scopes, [
-        { type: "EFFECT", ref: { host: { id: 1 }, id: 0 } },
+        lifetimeScope(effectLifetime, { host: { id: 1 }, id: 0 }),
     ]);
     assert.equal(unitQueries.all(after).toArray().find((unit) => unit.id === 1).effects.nextId, 2);
     assert.equal(unitQueries.all(before).toArray().find((unit) => unit.id === 1).effects.nextId, 1);

@@ -1,8 +1,11 @@
+import { remove as endUnit } from "../../dist/core/battle/unit.js";
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as effectLifetime } from "../../dist/core/unit/effect/operations.js";
+import { lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
 import { get as unitQueryGet } from "../../dist/core/unit/query.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { closeLifetime } from "../../dist/core/battle/execution/lifetime.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize } from "../helpers/unit.js";
@@ -47,17 +50,17 @@ test("effect lifetimes: parent ending cascades across Units and shared descendan
     let b;
     ({ state: battle, value: b } = install(battle, value, 1, {
         data: { name: "left" },
-        scopes: [{ type: "EFFECT", ref: a }],
+        scopes: [lifetimeScope(effectLifetime, a)],
     }));
     let c;
     ({ state: battle, value: c } = install(battle, value, 2, {
         data: { name: "right" },
-        scopes: [{ type: "EFFECT", ref: a }],
+        scopes: [lifetimeScope(effectLifetime, a)],
     }));
     let d;
     ({ state: battle, value: d } = install(battle, value, 2, {
         data: { name: "shared" },
-        scopes: [{ type: "EFFECT", ref: b }, { type: "EFFECT", ref: c }],
+        scopes: [lifetimeScope(effectLifetime, b), lifetimeScope(effectLifetime, c)],
     }));
     battle = effect.end(battle, a, "DISPELLED");
     assert.deepEqual(new Set(trace), new Set(["parent", "left", "right", "shared"]));
@@ -78,13 +81,13 @@ test("effect lifetimes: provenance does not imply dependence on the source Unit"
     let bound;
     ({ state: battle, value: bound } = install(battle, definition("aura-child"), 1, {
         source,
-        scopes: [{ type: "UNIT", ref: { id: 0 } }],
+        scopes: [lifetimeScope(unitLifetime, { id: 0 })],
     }));
-    battle = closeLifetime(battle, { type: "UNIT", ref: unitRef(getUnit(battle, 0)) }, "RETREAT");
+    battle = endUnit(battle, (unitRef(getUnit(battle, 0))).id, "RETREAT");
     assert.ok(get(battle, independent));
     assert.equal(get(battle, independent).source, source);
     assert.equal(get(battle, bound), undefined);
-    battle = closeLifetime(battle, { type: "UNIT", ref: unitRef(getUnit(battle, 1)) }, "DEATH");
+    battle = endUnit(battle, (unitRef(getUnit(battle, 1))).id, "DEATH");
     assert.equal(get(battle, independent), undefined);
 });
 
@@ -114,7 +117,7 @@ test("effect lifetimes: a closing host rejects a new dependent before its instal
     );
     let battle = effectFixtureWork(unit(0));
     battle = install(battle, parent).state;
-    battle = closeLifetime(battle, { type: "UNIT", ref: unitRef(getUnit(battle, 0)) }, "DEATH");
+    battle = endUnit(battle, (unitRef(getUnit(battle, 0))).id, "DEATH");
     assert.equal(installed, undefined);
     assert.equal(attempts, 0);
 });
@@ -132,7 +135,7 @@ test("effect lifetimes: a closed parent cannot admit a remote dependent during t
                     unitRef(getUnit(state, 1)),
                     child,
                     {
-                        scopes: [{ type: "EFFECT", ref: effectRef(self) }],
+                        scopes: [lifetimeScope(effectLifetime, effectRef(self))],
                     },
                 );
                 accepted = result.value;
@@ -233,10 +236,10 @@ test("effect lifetimes: closing a host never reenables its suppressed effects", 
     battle = install(battle, strong).state;
     enabled.length = 0;
 
-    battle = closeLifetime(battle, { type: "UNIT", ref: unitRef(getUnit(battle, 0)) }, "RETREAT");
+    battle = endUnit(battle, (unitRef(getUnit(battle, 0))).id, "RETREAT");
 
     assert.deepEqual(enabled, []);
-    assert.deepEqual(getUnit(battle, 0).effects.values().toArray(), []);
+    assert.equal(getUnit(battle, 0), undefined);
 });
 
 test("effect lifetimes: terminal hook cleanup cannot recreate a host killed by a child's ending", () => {
@@ -279,7 +282,7 @@ test("effect lifetimes: terminal hook cleanup cannot recreate a host killed by a
     let battle = effectFixtureWork(unit(0), unit(1));
     let ref;
     ({ state: battle, value: ref } = install(battle, parent, 0));
-    battle = install(battle, child, 1, { scopes: [{ type: "EFFECT", ref }] }).state;
+    battle = install(battle, child, 1, { scopes: [lifetimeScope(effectLifetime, ref)] }).state;
 
     battle = effect.end(battle, ref);
 

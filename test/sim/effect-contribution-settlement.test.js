@@ -1,3 +1,5 @@
+import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { lifetime as effectLifetime } from "../../dist/core/unit/effect/operations.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { get as unitQueryGet } from "../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
@@ -37,7 +39,7 @@ test("sequential lifecycle callbacks observe each capability change immediately"
     });
     let parent;
     ({ state: battle, value: parent } = install(battle, content, 1));
-    battle = install(battle, content, 2, { scopes: [{ type: "EFFECT", ref: parent }] }).state;
+    battle = install(battle, content, 2, { scopes: [lifetimeScope(effectLifetime, parent)] }).state;
     const before = battle;
     battle = effects.end(battle, parent);
     assert.deepEqual(notices, [
