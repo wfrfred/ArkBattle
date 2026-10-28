@@ -1,13 +1,9 @@
-export interface Definition<P extends object> {
+export interface Definition<P extends object = object> {
     readonly id: symbol;
     readonly create: (params: P) => Terrain<P>;
 }
 
-export interface View {
-    readonly definition: Pick<Definition<object>, "id">;
-}
-
-export interface Terrain<P extends object> extends View {
+export interface Terrain<P extends object = object> {
     readonly definition: Definition<P>;
     readonly params: P;
 }

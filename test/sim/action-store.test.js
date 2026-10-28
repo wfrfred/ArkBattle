@@ -130,7 +130,7 @@ test("Action initialization, start and termination retain one persistent aggrega
     assert.deepEqual(operations.getExecution(started.state, started.value.ref).execution.state, { remaining: 2 });
 });
 
-test("Action public Views hide private state while erased execution lookup remains callable", async () => {
+test("Action default queries expose complete programs with object private state", async () => {
     const { default: ts } = await import("typescript");
     const directory = mkdtempSync(join(tmpdir(), "arkbattle-action-store-types-"));
     const source = name => JSON.stringify(fileURLToPath(new URL(`../../src/core/${name}.js`, import.meta.url)));
@@ -143,8 +143,7 @@ import type { State as BattleState } from ${source("battle/state")};
 import type { Unit } from ${source("unit/unit")};
 import type { Action as ActionCapability } from ${source("unit/capability/action/capability")};
 import type { Definition } from ${source("unit/action/index")};
-import type { View } from ${source("unit/action/action")};
-import { executionRef, type Action, type Execution, type ExecutionView } from ${source("unit/action/index")};
+import { executionRef, type Action, type Execution } from ${source("unit/action/index")};
 import { Actions } from ${source("unit/action/actions")};
 import * as operations from ${source("unit/action/index")};
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
@@ -152,32 +151,31 @@ type Assert<T extends true> = T;
 declare const battle: BattleState;
 declare const source: Ref<Unit & ActionCapability>;
 declare const precise: Execution<{ readonly count: number }, { readonly remaining: number }>;
-declare const publicAction: View;
-declare const publicExecution: ExecutionView;
+declare const publicAction: Action;
+declare const publicExecution: Execution;
 declare const configured: Definition<{ readonly count: number }, { readonly remaining: number }>;
 const preciseRef = executionRef(source, precise);
-const publicRef: Ref<ExecutionView> = preciseRef;
+const publicRef = executionRef(source, publicExecution);
 const values = Actions.empty().values();
-type Values = Assert<Equal<typeof values, Query<View>>>;
+type Values = Assert<Equal<typeof values, Query<Action>>>;
 const known = Actions.empty().get(configured.id, configured);
 type Known = Assert<Equal<typeof known, Action<{ readonly count: number }, { readonly remaining: number }> | undefined>>;
 const current = operations.getExecution(battle, preciseRef);
 type Current = Assert<Equal<typeof current, typeof precise | undefined>>;
 const unknown = operations.getExecution(battle, publicRef);
-type Unknown = Assert<Equal<typeof unknown, ExecutionView | undefined>>;
-// @ts-expect-error Public aggregates hide persistent data.
-publicAction.state;
-// @ts-expect-error Public execution views hide content data.
-publicExecution.execution.state;
-// @ts-expect-error Public values cannot be inserted as paired programs.
+type Unknown = Assert<Equal<typeof unknown, Execution | undefined>>;
+// @ts-expect-error Default aggregates do not infer persistent fields.
+publicAction.state.count;
+// @ts-expect-error Default executions do not infer execution fields.
+publicExecution.execution.state.remaining;
 Actions.empty().add(publicAction);
+publicAction.definition.prepare(battle, source, publicAction);
 // @ts-expect-error Definition fixes persistent data.
 Actions.empty().replace(configured, { ...precise, state: { unrelated: true } });
 // @ts-expect-error Definition fixes execution data.
 Actions.empty().replace(configured, { ...precise, execution: { ...precise.execution, state: { unrelated: true } } });
 // @ts-expect-error An idle aggregate cannot identify an execution.
 executionRef(source, publicAction);
-// @ts-expect-error An erased reference cannot update private execution data.
 operations.setExecutionState(battle, publicRef, {});
 const action = Actions.empty().getAction(configured.id);
 type ErasedAction = Assert<Equal<typeof action, Action | undefined>>;

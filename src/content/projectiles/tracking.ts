@@ -5,7 +5,6 @@ import * as projectiles from "../../core/projectile/index.js";
 import type {
     Definition as ProjectileDefinition,
     Projectile,
-    View,
 } from "../../core/projectile/index.js";
 
 import { stop, update } from "../../core/battle/projectile.js";
@@ -42,23 +41,28 @@ export interface Presentation {
     readonly launchedAtTick: number;
 }
 
-function isTracking(self: View): self is Projectile<State> {
-    return "tracking" in self.definition && self.definition.tracking === true;
-}
-
-export function project(battle: BattleState, reference: Ref<View>): Presentation | undefined {
+export function project<P extends Projectile<any>>(
+    battle: BattleState,
+    reference: Ref<P>,
+): Presentation | undefined {
     const self = projectiles.get(battle, reference);
+    if (
+        self === undefined ||
+        !("tracking" in self.definition && self.definition.tracking === true)
+    ) {
+        return undefined;
+    }
 
-    return self === undefined || !isTracking(self)
-        ? undefined
-        : {
-              id: self.id,
-              source: self.state.source?.id ?? null,
-              traceTarget: self.state.target.id,
-              position: self.position,
-              destination: self.state.destination,
-              launchedAtTick: self.state.launchedAtTick,
-          };
+    const tracking = self as Projectile<State>;
+
+    return {
+        id: tracking.id,
+        source: tracking.state.source?.id ?? null,
+        traceTarget: tracking.state.target.id,
+        position: tracking.position,
+        destination: tracking.state.destination,
+        launchedAtTick: tracking.state.launchedAtTick,
+    };
 }
 
 export function attackPower<S extends State>(battle: BattleState, self: Projectile<S>): number {

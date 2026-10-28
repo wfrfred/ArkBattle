@@ -466,8 +466,8 @@ test("runtime composition: a successful battle preserves identities, snapshots a
     assert.deepEqual(serialized(unitQueries.all(run.runtime).toArray()), serialized(unitQueries.all(replay.runtime).toArray()));
     assert.deepEqual(run.runtime.execution, replay.runtime.execution);
     assert.deepEqual(serialized(run.runtime.schedule), serialized(replay.runtime.schedule));
-    assert.deepEqual(serialized(allProjectiles(run.runtime).map(({ id }) => run.runtime.battlefield.projectiles.read(id, self => ({ id, position: self.position, state: self.state }))).toArray()),
-      serialized(allProjectiles(replay.runtime).map(({ id }) => replay.runtime.battlefield.projectiles.read(id, self => ({ id, position: self.position, state: self.state }))).toArray()));
+    assert.deepEqual(serialized(allProjectiles(run.runtime).map(self => ({ id: self.id, position: self.position, state: self.state })).toArray()),
+      serialized(allProjectiles(replay.runtime).map(self => ({ id: self.id, position: self.position, state: self.state })).toArray()));
     events.push(...second.events);
     const after = run.runtime;
     assert.equal(effect(before, 0, run.aura).definition, run.aura);
@@ -486,7 +486,7 @@ test("runtime composition: a successful battle preserves identities, snapshots a
         [1, 2],
     );
     assert.deepEqual(
-        allProjectiles(after).map(({ id }) => after.battlefield.projectiles.read(id, self => self.state.cachedAtk)).toArray(),
+        allProjectiles(after).map(self => self.state.cachedAtk).toArray(),
         [18, 17],
     );
     assert.equal(resolveAttack(after, unitRef(unitQueries.all(after).toArray().find((unit) => unit.id === 0))), 18);
@@ -531,8 +531,8 @@ test("runtime composition: a successful battle preserves identities, snapshots a
         assert.deepEqual(serialized(unitQueries.all(run.runtime).toArray()), serialized(unitQueries.all(replay.runtime).toArray()));
     assert.deepEqual(run.runtime.execution, replay.runtime.execution);
     assert.deepEqual(serialized(run.runtime.schedule), serialized(replay.runtime.schedule));
-    assert.deepEqual(serialized(allProjectiles(run.runtime).map(({ id }) => run.runtime.battlefield.projectiles.read(id, self => ({ id, position: self.position, state: self.state }))).toArray()),
-      serialized(allProjectiles(replay.runtime).map(({ id }) => replay.runtime.battlefield.projectiles.read(id, self => ({ id, position: self.position, state: self.state }))).toArray()));
+    assert.deepEqual(serialized(allProjectiles(run.runtime).map(self => ({ id: self.id, position: self.position, state: self.state })).toArray()),
+      serialized(allProjectiles(replay.runtime).map(self => ({ id: self.id, position: self.position, state: self.state })).toArray()));
         events.push(...actual.events);
         if (run.runtime.tick === 4) {
             const cleaned = run.runtime;

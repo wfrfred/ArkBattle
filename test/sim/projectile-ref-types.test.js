@@ -16,7 +16,7 @@ import type { Ref } from ${source("common/ref")};
 import type { Query } from ${source("common/query")};
 import type { State as BattleState } from ${source("battle/state")};
 import type { Unit } from ${source("unit/unit")};
-import type { Projectile, View } from ${source("projectile/projectile")};
+import type { Projectile } from ${source("projectile/projectile")};
 import { Projectiles } from ${source("projectile/projectiles")};
 import type { Definition } from ${source("projectile/definition")};
 import { all, ref, get } from ${source("projectile/query")};
@@ -51,25 +51,28 @@ type Current = Assert<Equal<typeof current, Projectile<{ charges: number }> | un
 const known = ref(projectile);
 type Known = Assert<Equal<typeof known, Ref<Projectile<{ charges: number }>>>>;
 const weaker: Ref<Projectile<{ charges: number }>> = specialized;
-const erased: Ref<View> = weaker;
+declare const erased: Ref<Projectile>;
 const entries = Projectiles.empty().add(projectile);
-const publicEntries: Query<View> = entries.values();
+const publicEntries: Query<Projectile> = entries.values();
 const battleEntries = all(battle);
-type BattleEntries = Assert<Equal<typeof battleEntries, Query<View>>>;
+type BattleEntries = Assert<Equal<typeof battleEntries, Query<Projectile>>>;
 const publicReferences = battleEntries.map(ref);
-type PublicReferences = Assert<Equal<typeof publicReferences, Query<Ref<View>>>>;
+type PublicReferences = Assert<Equal<typeof publicReferences, Query<Ref<Projectile>>>>;
 // @ts-expect-error public query results do not expose content private state.
-all(battle).toArray()[0]!.state;
+all(battle).toArray()[0]!.state.charges;
 const candidates = entries.values().map(ref).toArray();
-type Candidates = Assert<Equal<typeof candidates, readonly Ref<View>[]>>;
+type Candidates = Assert<Equal<typeof candidates, readonly Ref<Projectile>[]>>;
 advance(battle, candidates);
 entries.replace(known, projectile);
-entries.read(known.id, self => {
+const opaque = entries.get(known.id);
+if (opaque !== undefined) {
+    const self = opaque;
+    type DefaultState = Assert<Equal<typeof self.state,object>>;
     self.definition.onStart?.(battle, self);
     self.definition.onTick?.(battle, self);
     self.definition.onEnd?.(battle, self, "EXPLICIT");
     update(battle, ref(self), { state: self.state, position: self.position });
-});
+}
 const latest = get(battle, known)!;
 const charges: number = latest.state.charges;
 // @ts-expect-error queried snapshots are read-only.
@@ -85,7 +88,6 @@ update(battle, known, () => ({ state: { charges: 1 } }));
 entries.replace(known, { ...projectile, state: { charges: "wrong" } });
 // @ts-expect-error public references do not prove writable private state types.
 entries.replace(erased, projectile);
-// @ts-expect-error public views cannot be inserted as complete instances.
 entries.add(get(battle, erased)!);
 // @ts-expect-error public values do not provide writable private state proofs.
 entries.replace(known, entries.values().toArray()[0]!);
@@ -111,11 +113,9 @@ get(battle, weaker, definition);
 stop(battle, 0);
 // @ts-expect-error
 ref(0);
-// @ts-expect-error
-get(battle, erased)!.definition.onTick;
-// @ts-expect-error
-get(battle, erased)!.state;
-// @ts-expect-error
+get(battle, erased)!.definition.onTick?.(battle, get(battle, erased)!);
+// @ts-expect-error Default projectile data has no inferred private fields.
+get(battle, erased)!.state.charges;
 update(battle, erased, { state: {} });
 // @ts-expect-error
 update(battle, known, { state: { charges: "wrong" } });

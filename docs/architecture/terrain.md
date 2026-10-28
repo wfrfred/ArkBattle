@@ -8,7 +8,7 @@ Core 的 Terrain 只表达 `Definition<P>` 与 `params: P` 的配对，不列举
 
 Tile 的结构是 `{ definition: { terrain, initial }, state }`。`definition.terrain` 保存类型化地形与逐格参数，`definition.initial` 是初始 State；当前 State 包含 `elevation`、`placement`、`passability`、`walkCost`、`allowsBlocking` 与 `siteCondition`。tile.create 校验初始 walkCost；初始创建时 state 与 initial 共享引用，后续更新保留 definition。
 
-Map 的 Tiles 是稠密的不可变序列。`add(tile)` 接受完整泛型 Tile，普通 `get(index)` 和 `values()` 返回公共 View；`get(index, definition)` 通过原 Terrain Definition 对象身份恢复参数类型。`replace(index, state)` 只替换当前 State，保留原 Tile definition，更新通用属性不需要恢复参数类型；它信任上层确认的索引与 State，不重复校验索引存在性或 walkCost。State 引用未变时返回原容器，变更时返回新容器。容器内部集中处理类型擦除，业务不检查未知参数结构或断言具体 Params。
+Map 的 Tiles 是稠密的不可变序列。`add(tile)` 接受完整泛型 Tile，普通 get(index)／values() 返回完整 Tile<object>，其中 Terrain.params 默认是 object；`get(index, definition)` 通过原 Terrain Definition 对象身份恢复参数类型。`replace(index, state)` 只替换当前 State，保留原 Tile definition，更新通用属性不需要恢复参数类型；它信任上层确认的索引与 State，不重复校验索引存在性或 walkCost。State 引用未变时返回原容器，变更时返回新容器。容器内部以 Tile<any> 保存异构参数，普通公开结果仍使用 object；已知 Definition 的查询保留 P，业务不检查未知参数结构或自选具体 Params。
 
 `field.map` 保存当前 Tile，是地块属性的唯一事实来源，不另设 tileStates 或另一份当前 Tiles。Navigation baseline 从当前 `passability` 与 `walkCost` 投影：WALK 使用步行代价，FLY 的代价为 1。Core 不导入 Content 的地穴 Definition。
 
@@ -20,7 +20,7 @@ Map 的 Tiles 是稠密的不可变序列。`add(tile)` 接受完整泛型 Tile�
 
 ## Mechanism 操作
 
-Mechanism 使用全场唯一的 Typed Ref，私有 State 与 Definition 在容器内保持泛型关联，普通 View 不暴露私有 State 或回调。
+Mechanism 使用全场唯一的 Typed Ref，普通查询返回完整 Mechanism<object>；容器内部保持不同 State 与 Definition 的关联，精确 Ref 保留具体状态类型。
 
 - `create(battle, definition, options)` 初始化并登记实例，返回 Ref。
 - `get(battle, ref)` 查询当前实例。

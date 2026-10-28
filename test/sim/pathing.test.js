@@ -144,10 +144,10 @@ function projectionSnapshot(state) {
   const mapFacts = {
     rows: map.rows,
     columns: map.columns,
-    tiles: Array.from({ length: map.tiles.size }, (_, index) => map.tiles.read(index, tile => ({
-      ...tile,
-      terrain: { params: tile.definition.terrain.params },
-    }))),
+    tiles: Array.from({ length: map.tiles.size }, (_, index) => {
+      const tile = map.tiles.get(index);
+      return { ...tile, terrain: { params: tile.definition.terrain.params } };
+    }),
     markers: map.markers,
     blockEdges: map.blockEdges,
   };

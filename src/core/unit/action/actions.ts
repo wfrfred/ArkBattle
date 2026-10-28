@@ -1,15 +1,16 @@
 import { Store } from "../../common/collection/store.js";
 import type { Query } from "../../common/query.js";
-import type { Action, Snapshot, View } from "./action.js";
+import type { Action, Snapshot } from "./action.js";
 import type { Execution, Id as ExecutionId } from "./execution.js";
 import type { Definition, Id } from "./definition.js";
+import type { Identified } from "../../common/ref.js";
 
 export class Actions {
-    static readonly #empty = new Actions(Store.empty<Id, View>());
+    static readonly #empty = new Actions(Store.empty<Id, Action<any, any>>());
 
-    readonly #store: Store<Id, View>;
+    readonly #store: Store<Id, Action<any, any>>;
 
-    private constructor(store: Store<Id, View>) {
+    private constructor(store: Store<Id, Action<any, any>>) {
         this.#store = store;
     }
 
@@ -21,7 +22,7 @@ export class Actions {
         return this.#store.size;
     }
 
-    get(id: Id): View | undefined;
+    get(id: Id): Action | undefined;
     get<P extends object, E extends object>(
         id: Id,
         definition: Definition<P, E>,
@@ -29,7 +30,7 @@ export class Actions {
     get<P extends object, E extends object>(
         id: Id,
         definition?: Definition<P, E>,
-    ): View | Action<P, E> | undefined {
+    ): Action | Action<P, E> | undefined {
         const self = this.#store.get(id);
 
         if (definition === undefined) {
@@ -40,7 +41,7 @@ export class Actions {
     }
 
     getAction(id: Id): Action | undefined {
-        return this.#store.get(id) as Action | undefined;
+        return this.#store.get(id);
     }
 
     getExecution(id: ExecutionId): Execution | undefined {
@@ -49,8 +50,8 @@ export class Actions {
         return self as Execution | undefined;
     }
 
-    values(): Query<View> {
-        return this.#store.values();
+    values(): Query<Action> {
+        return this.#store.values() as Query<Action>;
     }
 
     keys(): Query<Id> {
@@ -58,21 +59,27 @@ export class Actions {
     }
 
     add<P extends object, E extends object>(self: Action<P, E> | Execution<P, E>): Actions {
-        return new Actions(this.#store.add(self.definition.id, self));
+        return new Actions(
+            this.#store.add(
+                self.definition.id,
+                self as Omit<Action<P, E>, keyof Identified<object>>,
+            ),
+        );
     }
 
     replace<P extends object, E extends object>(
         definition: Definition<P, E>,
         self: NoInfer<Action<P, E> | Execution<P, E>>,
     ): Actions {
-        const store = this.#store.replace(definition.id, self);
+        const store = this.#store.replace(
+            definition.id,
+            self as Omit<Action<P, E>, keyof Identified<object>>,
+        );
 
         return store === this.#store ? this : new Actions(store);
     }
 
     toJSON(): readonly Snapshot[] {
-        return this.values()
-            .map(({ definition }) => this.getAction(definition.id)!)
-            .toArray();
+        return this.#store.values().toArray();
     }
 }

@@ -72,7 +72,7 @@ Unit 装配实现在 unit/initialize.ts，由 [unit/index.ts](../../src/core/uni
 
 Action Capability 的 Definition 保存 initialize(battle) → Result<Actions> 和可选 select。具体内容在类型明确处创建行动初始化函数，再以 createActions 顺序组合；Capability 接续返回的 BattleState，将 Actions 放入公共 State，并建立执行 ID 计数、贡献、规则和 Hook 的初值。配置不另存静态 Definition 集合，也不让调度器恢复具体内容类型。
 
-每个行动创建程序生成配对的 Definition、持久 state、初始就绪的 Cooldown 和 execution: null；即使尚未启动也已经存在。持久 Action Ref 由宿主与 Definition 定位，跨多轮有效；每次 start 接收该引用，只创建本轮执行数据，宿主内 nextExecutionId 独立递增，返回携带 host 与本轮 execution.id 的 Execution Ref。onTick／onEnd 通过 Execution<P, E> 取得本轮完整视图，持久 state 与 execution.state 保持各自类型，宿主引用由回调参数提供。完成或取消只清空 execution，保留最新持久 state 与 Cooldown。Skill Capability 的 Definition 只保存 initialize 工厂，返回结果必须包含完整创建所需的数据与初始化程序；普通 SkillView 不能作为创建结果。内容调用 unit/skill.create(battle, programDefinition)，接续 Definition.initialize(battle) → Result<S>，创建定义、持久 data、SP 与 activation: null；Capability 接续结果补规则、贡献、Hook 与 nextActivationId，本轮 A 在 activate 时建立。
+每个行动创建程序生成配对的 Definition、持久 state、初始就绪的 Cooldown 和 execution: null；即使尚未启动也已经存在。持久 Action Ref 由宿主与 Definition 定位，跨多轮有效；每次 start 接收该引用，只创建本轮执行数据，宿主内 nextExecutionId 独立递增，返回携带 host 与本轮 execution.id 的 Execution Ref。onTick／onEnd 通过 Execution<P, E> 取得本轮完整视图，持久 state 与 execution.state 保持各自类型，宿主引用由回调参数提供。完成或取消只清空 execution，保留最新持久 state 与 Cooldown。Skill Capability 的 Definition 只保存 initialize 工厂，以 Result<Skill<any, any>> 接纳完整的不同私有类型聚合；State 扩展默认 Skill<object, object>，不建立另一套公开元数据类型。内容调用 unit/skill.create(battle, programDefinition)，接续 Definition.initialize(battle) → Result<S>，创建定义、持久 data、SP 与 activation: null；Capability 接续结果补规则、贡献、Hook 与 nextActivationId，本轮 A 在 activate 时建立。
 
 路线、部署占格和 Card 归属等属于具体实例的创建业务。Placement 接收可选 tile，提供登记地块时要求 Unit 已声明 Occupancy，登记 Slot 来自该 Capability 的 Definition；状态与双槽反向表见 [Occupancy 与 Support](occupancy.md)；部署在通用初始化结果上设置本次费用与 Card 等字段。带路线的 Unit 由 battle/creation/routed-unit.ts 的 initialize(battle, input) 创建，公开 Input／Initialization，结果字段为 unit；它先规范化路线并采样总偏移，将最终 Route Definition 与初始位置交给 Unit 初始化。输出 Definition 保留原 D 的内容字段和各联合分支元数据，仅将 route 字段替换为规范化的 Route.Definition，不把原 Definition 收窄为通用能力配置。Route 与 Locomotion 通过 Catalog 独立装配，见 [Navigation、Route 与 Locomotion 设计](navigation.md)。
 
@@ -107,7 +107,7 @@ MaxHP 只接收明确采样的属性修正，在贡献变更时协调当前 HP �
 
 ### Offense
 
-Offense Definition 保存基础 attack，State 保存 Contribution<Input>[]。Input 为静态 Modifier 数组，或只读的 `(battle, self: Unit & Offense) => readonly Modifier[]`。动态输入直接取得本次查询的 BattleState 与当前宿主，不依赖 Unit Query 的通用 Context 或 BattlefieldView。
+Offense Definition 保存基础 attack，State 保存 Contribution<Input>[]。Input 为静态 Modifier 数组，或只读的 `(battle, self: Unit & Offense) => readonly Modifier[]`。动态输入直接取得本次查询的 BattleState 与当前宿主，直接使用领域实体与战场事实，不依赖通用 Context 包装。
 
 initialize(battle, definition) 校验 attack 为有限非负数，返回空贡献状态；Definition 由内容直接构造。setAttackContribution／removeAttackContribution 是本领域 State 的局部值转换，沿用 Contribution 的 ID 替换与互斥组规则。
 
@@ -151,7 +151,7 @@ Skill 激活先一次性提交支付与新 Activation，再记录 SKILL_ACTIVATE
 
 ## 文件职责
 
-Skill 的程序定义、Activation、SP／Ammo 与完整业务位于 [unit/skill](../../src/core/unit/skill/index.ts)；[capability/skill](../../src/core/unit/capability/skill/index.ts) 保留 Skill／State、守卫、initialize 及局部 Rule／Hook／Ammo／时长贡献 setter。程序元数据与完整 Definition 归 unit/skill/definition.ts，聚合及其 SkillView 归 skill.ts。Capability Definition 仅提供 initialize 工厂，State 扩展 SkillView；程序由 unit.skill.definition 持有，不在 Unit Definition.skill 上重复保存。Catalog 继续从 Capability.initialize 签名推导工厂配置。两个 index 分别提供领域和能力 API，不相互转发整套入口。Skill 的 Hook 只用 setHook／removeHook 按 Key 登记，保留事件类型配对，不提供同义专名 setter。SP 的局部 setContribution／removeContribution 继续归领域 sp.ts，与资源类型同处，不增加 Capability 包装；Skill 静态 Modifier.priority 在 SP／时长贡献登记入口校验，每次 apply 仍校验动态程序输出。
+Skill 的程序定义、Activation、SP／Ammo 与完整业务位于 [unit/skill](../../src/core/unit/skill/index.ts)；[capability/skill](../../src/core/unit/capability/skill/index.ts) 保留 Skill／State、守卫、initialize 及局部 Rule／Hook／Ammo／时长贡献 setter。完整程序 Definition 归 unit/skill/definition.ts，聚合归 skill.ts。Capability Definition 仅提供 initialize 工厂，State 扩展默认 Skill；程序由 unit.skill.definition 持有，不在 Unit Definition.skill 上重复保存。Catalog 继续从 Capability.initialize 签名推导工厂配置。两个 index 分别提供领域和能力 API，不相互转发整套入口。Skill 的 Hook 只用 setHook／removeHook 按 Key 登记，保留事件类型配对，不提供同义专名 setter。SP 的局部 setContribution／removeContribution 继续归领域 sp.ts，与资源类型同处，不增加 Capability 包装；Skill 静态 Modifier.priority 在 SP／时长贡献登记入口校验，每次 apply 仍校验动态程序输出。
 
 文件按真实领域职责和代码规模划分。完整结算也是纯函数，纯度和参数大小都不能单独决定拆文件。小型内部步骤可以与完整操作同处；具有独立使用与理解价值的规则才单独组织。删除只转发的跳转层，保留 Unit 离场等确有业务顺序的分阶段操作。
 

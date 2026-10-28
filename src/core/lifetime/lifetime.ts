@@ -24,15 +24,15 @@ export interface Definition<V extends Identified<object>, S extends V, E> {
     readonly fromDependency?: (reason: string) => E;
 }
 
-export interface Lifetime<V extends Identified<object>, E> {
+export interface Lifetime<V extends Identified<object>, S extends V, E> {
     readonly kind: string;
-    readonly end: (
+    readonly end: <T extends S>(
         battle: BattleState,
-        ref: Ref<V>,
+        ref: Ref<T>,
         end: E,
         dependencyReason?: string,
     ) => BattleState;
-    readonly [paired]: unknown;
+    readonly [paired]: Definition<V, S, E>;
 }
 
 export interface Pending {

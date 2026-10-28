@@ -150,7 +150,7 @@ test("Stop callbacks can create children and terminate peers without losing thei
     const stopped = projectiles.stop(initial, first.value);
 
     assert.deepEqual(observed, [0, 1]);
-    assert.deepEqual(projectilesQuery.all(stopped).map(({ id }) => stopped.battlefield.projectiles.read(id, self => [self.id, self.state])).toArray(), [[2, { label: "survivor" }]]);
+    assert.deepEqual(projectilesQuery.all(stopped).map(self => [self.id, self.state]).toArray(), [[2, { label: "survivor" }]]);
     assert.strictEqual(instances(stopped)[0].definition, child);
     assert.equal(stopped.execution.nextProjectileId, 3);
     assert.deepEqual(instances(initial).map(self => self.id), [0, 1]);
@@ -178,7 +178,7 @@ test("Projectile advance fixes candidates and re-reads the latest instance and l
 
     assert.deepEqual(observed, [[0, 0], [1, 5]]);
     assert.deepEqual(instances(progressed).map(self => self.id), [0, 1, 3]);
-    assert.deepEqual(projectilesQuery.all(stopped.state).map(({ id }) => stopped.state.battlefield.projectiles.read(id, self => self.state.count)).toArray(), [0, 1, 2]);
+    assert.deepEqual(projectilesQuery.all(stopped.state).map(self => self.state.count).toArray(), [0, 1, 2]);
 });
 
 test("Projectile advance allows heterogeneous programs with equal names to keep their private state pairing", () => {

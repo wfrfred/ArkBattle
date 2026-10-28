@@ -288,7 +288,7 @@ test("ammo runtime: the last released projectile survives skill completion and r
   assert.equal(source(runtime).skill.activation, null);
   assert.equal(source(runtime).effects.values().toArray().length === 0, true);
   assert.equal(runtime.battlefield.projectiles.size, 1);
-  assert.equal(runtime.battlefield.projectiles.read(0, self => self.state.cachedAtk), 200);
+  assert.equal(runtime.battlefield.projectiles.get(0).state.cachedAtk, 200);
   assert.deepEqual(allProjectiles(runtime).toArray()[0].position, [0, 0]);
   runtime = stepBattle(runtime, []);
   assert.equal(runtime.battlefield.projectiles.size, 1);

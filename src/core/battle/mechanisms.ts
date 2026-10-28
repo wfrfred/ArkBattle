@@ -6,15 +6,14 @@ import type {
     Mechanism,
     MechanismDefinition,
     MechanismId,
-    View,
 } from "./mechanism.js";
 
 export class Mechanisms {
-    static readonly #empty = new Mechanisms(Store.empty<MechanismId, View>());
+    static readonly #empty = new Mechanisms(Store.empty<MechanismId, Mechanism<any>>());
 
-    readonly #entries: Store<MechanismId, View>;
+    readonly #entries: Store<MechanismId, Mechanism<any>>;
 
-    private constructor(entries: Store<MechanismId, View>) {
+    private constructor(entries: Store<MechanismId, Mechanism<any>>) {
         this.#entries = entries;
     }
 
@@ -26,16 +25,16 @@ export class Mechanisms {
         return this.#entries.size;
     }
 
-    get<M extends View>(reference: Ref<M>): M | undefined;
-    get(id: MechanismId): View | undefined;
+    get<M extends Mechanism<any>>(reference: Ref<M>): M | undefined;
+    get(id: MechanismId): Mechanism | undefined;
     get<S extends object>(
         id: MechanismId,
         definition: MechanismDefinition<S>,
     ): Mechanism<S> | undefined;
-    get<M extends View, S extends object>(
+    get<M extends Mechanism<any>, S extends object>(
         identity: MechanismId | Ref<M>,
         definition?: MechanismDefinition<S>,
-    ): View | M | Mechanism<S> | undefined {
+    ): Mechanism<any> | undefined {
         const self = this.#entries.get(typeof identity === "number" ? identity : identity.id);
 
         if (typeof identity !== "number") {
@@ -46,20 +45,11 @@ export class Mechanisms {
             return self;
         }
 
-        const restored: Mechanism<S> | undefined =
-            self?.definition === definition ? (self as Mechanism<S>) : undefined;
-
-        return restored;
+        return self?.definition === definition ? self : undefined;
     }
 
-    read<R>(id: MechanismId, reader: <S extends object>(self: Mechanism<S>) => R): R | undefined {
-        const self = this.#entries.get(id);
-
-        return self === undefined ? undefined : reader(self as Mechanism);
-    }
-
-    values(): Query<View> {
-        return this.#entries.values();
+    values(): Query<Mechanism> {
+        return this.#entries.values() as Query<Mechanism>;
     }
 
     keys(): Query<MechanismId> {
@@ -75,12 +65,12 @@ export class Mechanisms {
         id: MechanismId,
         definition: CreationDefinition,
         active: boolean,
-    ): { readonly mechanisms: Mechanisms; readonly reference: Ref<View> };
+    ): { readonly mechanisms: Mechanisms; readonly reference: Ref<Mechanism> };
     create(
         id: MechanismId,
         definition: CreationDefinition,
         active: boolean,
-    ): { readonly mechanisms: Mechanisms; readonly reference: Ref<View> } {
+    ): { readonly mechanisms: Mechanisms; readonly reference: Ref<Mechanism> } {
         // The trusted placement preserves one Definition's initialize/callback pairing.
         const restored = definition as MechanismDefinition;
         const self: Mechanism = {
@@ -92,14 +82,11 @@ export class Mechanisms {
 
         return {
             mechanisms: new Mechanisms(this.#entries.add(id, self)),
-            reference: { id } as Ref<View>,
+            reference: { id } as Ref<Mechanism>,
         };
     }
 
-    replace<S extends object>(
-        reference: Ref<Mechanism<S>>,
-        next: NoInfer<Mechanism<S>>,
-    ): Mechanisms {
+    replace<T extends Mechanism<any>>(reference: Ref<T>, next: NoInfer<T>): Mechanisms {
         const previous = this.get(reference);
         if (previous === undefined) {
             throw new RangeError(`unknown mechanism: ${reference.id}`);

@@ -32,7 +32,7 @@ Rule 只负责启动准入，不自动中断现有执行。眩晕等需要中断
 
 | 职责 | 导出 |
 | --- | --- |
-| 身份与类型 | ref、executionRef、lifetime；Action、Execution、ExecutionView、Definition、Signal、StartOutcome |
+| 身份与类型 | ref、executionRef、lifetime；Action、Execution、Definition、Signal、StartOutcome |
 | 创建 | create、createActions |
 | 查询 | all、forUnit、getExecution、getAction、isCasting |
 | 业务操作 | start、setExecutionState、setState、setCooldown、cancel、cancelForUnit、refreshCooldowns、resetCooldown、clearCooldown |
@@ -63,7 +63,7 @@ export type End =
     | { readonly type: "FINISHED" }
     | { readonly type: "CANCELLED"; readonly reason: string };
 
-export interface Definition<P extends object, E extends object> {
+export interface Definition<P extends object = object, E extends object = object> {
     readonly id: string;
     readonly intervalTicks: number;
     readonly speed: number;
@@ -86,14 +86,14 @@ export interface Definition<P extends object, E extends object> {
     ) => BattleState;
 }
 
-export interface Action<P extends object, E extends object> {
+export interface Action<P extends object = object, E extends object = object> {
     readonly definition: Definition<P, E>;
     readonly state: P;
     readonly cooldown: CooldownState;
     readonly execution: ExecutionState<E> | null;
 }
 
-export interface Execution<P extends object, E extends object> {
+export interface Execution<P extends object = object, E extends object = object> {
     readonly definition: Definition<P, E>;
     readonly state: P;
     readonly cooldown: CooldownState;
@@ -128,9 +128,9 @@ const action = {
 
 create 在接收具体 Definition 时校验非空 ID、基础间隔与速度一次，返回的函数负责创建并登记自己的 Action；重复 ID 由 Actions.add 拒绝。createActions 只从空 Actions 开始逐项接续 BattleState 和容器，不解释内容私有 P／E，也不读取底层 Store。内容通过具名的具体 Definition 或 typed Ref 读写私有状态。
 
-Actions 以私有 Store<DefinitionId, View> 保存完整聚合对象。get(id)／values() 只公开 Definition 元数据、Cooldown 与可空的 Execution 元数据，隐藏 P、E 及完整程序回调。get(id, definition) 以 Definition 对象身份恢复具体 Action<P, E>。内部 getAction(id) 与 getExecution(id) 分别返回 Action | undefined 与 Execution | undefined；两者默认使用 object／object，擦除具体私有数据形状，容器内以 as Action／as Execution 恢复完整条目，作为受信的类型边界。当前执行仍从同一容器查找，不维护第二份执行集合或索引。
+Actions 以私有 Store<DefinitionId, Action<any, any>> 保存异构完整聚合。普通 get(id)／values() 返回默认 object／object 的 Action，包含完整 Definition、state、Cooldown 和可空 Execution；get(id, definition) 按 Definition 对象身份恢复 P／E。内部 getAction／getExecution 从同一容器读取完整条目，不另维护执行集合或索引。any 留在异构存储及必要的泛型上界，普通查询不把 any 作为默认结果。
 
-Core 的选择、冷却刷新、推进与终止直接读取内部完整条目，保持条目与其自身 Definition 的配对，不解释私有 P／E 的形状，也不通过高阶 reader 传递具体泛型。内容查询仍由精确 Typed Ref 恢复 P／E，字段 setter 保留 NoInfer；内部完整读取不扩大普通 get／values 的公共 View，也不公开底层 Store。
+Core 的选择、冷却刷新、推进与终止直接读取内部完整条目，保持条目与其自身 Definition 的配对，不解释私有 P／E 的形状，也不通过高阶 reader 传递具体泛型。内容查询仍由精确 Typed Ref 恢复 P／E，字段 setter 保留 NoInfer；普通查询直接返回完整对象，私有形状仍只由精确 Ref／Definition 证明，底层 Store 不公开。
 
 同一 BattleState 内的连续只读求值复用已取得的宿主和条目；完整操作返回后仍按状态接续约定重新读取。释放派发在每项 Hook 前从当前版本检查执行与宿主资格，不缓存入口时的资格。
 
@@ -149,23 +149,23 @@ export declare function ref<P extends object, E extends object>(
     host: Ref<Unit & ActionCapability>,
     definition: Definition<P, E>,
 ): Ref<Action<P, E>>;
-export declare function executionRef<X extends ExecutionView>(
+export declare function executionRef<X extends Execution<any, any>>(
     host: Ref<Unit & ActionCapability>,
     self: X,
 ): Ref<X>;
-export declare function all(battle: BattleState): readonly Ref<ExecutionView>[];
+export declare function all(battle: BattleState): readonly Ref<Execution>[];
 export declare function forUnit(
     battle: BattleState,
     source: Ref<Unit>,
-): readonly Ref<ExecutionView>[];
-export declare function getExecution<X extends ExecutionView>(
+): readonly Ref<Execution>[];
+export declare function getExecution<X extends Execution<any, any>>(
     battle: BattleState,
     ref: Ref<X>,
 ): X | undefined;
-export declare function getAction<P extends object, E extends object>(
+export declare function getAction<T extends Action<any, any>>(
     battle: BattleState,
-    ref: Ref<Action<P, E>>,
-): Action<P, E> | undefined;
+    ref: Ref<T>,
+): T | undefined;
 export declare function isCasting(
     battle: BattleState,
     source: Ref<Unit>,
@@ -173,9 +173,9 @@ export declare function isCasting(
 ): boolean;
 ```
 
-ExecutionView 只公开本轮执行视图的 Definition 元数据、Cooldown 和非空 execution 元数据，仍隐藏私有 P／E。all／forUnit 返回本次已经物化的执行 Ref 候选，包含 ENDING；isCasting 同样保留 ENDING 占位，直到 execution 被清空。
+Execution 是按本轮身份读取的完整聚合，execution 确定非空；普通查询的 P／E 默认为 object，精确 Ref 保留具体类型。all／forUnit 返回本次已经物化的执行 Ref 候选，包含 ENDING；isCasting 同样保留 ENDING 占位，直到 execution 被清空。
 
-Actions.toJSON 通过内部 getAction 读取完整条目，返回诊断 Snapshot 数组，包含不解释类型的持久 state 和 execution.state。nextExecutionId 由 Capability State 单独保存。诊断表示不扩大普通 View，也不承担恢复 Definition、回调或容器的协议。
+Actions.toJSON 直接物化容器条目并返回诊断 Snapshot 数组，以 unknown 声明持久 state 与 execution.state，Definition 只承诺诊断字段。nextExecutionId 由 Capability State 单独保存。该真实诊断表示不替代完整 Action，也不承担恢复 Definition、回调或容器的协议。
 
 BattleState 不另存全场 Action 集合。all 按 Unit 集合顺序展平当前执行，各宿主内按 execution.id 升序枚举，保留本宿主的启动顺序；不承诺全场启动顺序。保留旧 BattleState 即保留旧聚合条目、执行进度及 nextExecutionId。Definition 直接共享；事件使用 sourceUnitId 与宿主内 executionId 标识一次执行。
 
@@ -229,33 +229,33 @@ export declare function start<P extends object, E extends object>(
     battle: BattleState,
     ref: Ref<Action<P, E>>,
 ): Result<StartOutcome<P, E>>;
-export declare function cancel(
+export declare function cancel<T extends Execution<any, any>>(
     battle: BattleState,
-    ref: Ref<ExecutionView>,
+    ref: Ref<T>,
     reason?: string,
 ): BattleState;
-export declare function setExecutionState<P extends object, E extends object>(
+export declare function setExecutionState<T extends Execution<any, any>>(
     battle: BattleState,
-    ref: Ref<Execution<P, E>>,
-    state: NoInfer<E>,
+    ref: Ref<T>,
+    state: NoInfer<T["execution"]["state"]>,
 ): BattleState;
-export declare function setState<P extends object, E extends object>(
+export declare function setState<T extends Action<any, any>>(
     battle: BattleState,
-    ref: Ref<Action<P, E>>,
-    state: NoInfer<P>,
+    ref: Ref<T>,
+    state: NoInfer<T["state"]>,
 ): BattleState;
-export declare function setCooldown<P extends object, E extends object>(
+export declare function setCooldown<T extends Action<any, any>>(
     battle: BattleState,
-    ref: Ref<Action<P, E>>,
+    ref: Ref<T>,
     cooldown: CooldownState,
 ): BattleState;
-export declare function resetCooldown<P extends object, E extends object>(
+export declare function resetCooldown<T extends Action<any, any>>(
     battle: BattleState,
-    ref: Ref<Action<P, E>>,
+    ref: Ref<T>,
 ): BattleState;
-export declare function clearCooldown<P extends object, E extends object>(
+export declare function clearCooldown<T extends Action<any, any>>(
     battle: BattleState,
-    ref: Ref<Action<P, E>>,
+    ref: Ref<T>,
 ): BattleState;
 ```
 
@@ -301,7 +301,7 @@ Skill 弹药行动在 prepare 采样当前 Activation Ref，不能提前到 Unit
 
 需要首次起手或连续会话的内容，可以在具体 Unit 扩展状态中保存跨轮事实，由 Unit 的 tick Hook 或相关业务 Hook 维护，成功登记后的 onTick 消费；失败启动不消费。通用 Action 不制造另一套共享起手阶段机。
 
-beforeRelease(battle, executionRef) 返回 CONTINUE 或 INTERRUPT／recoveryTicks。Hook 使用公共 Hook<Context, Directive>，Context 固定 source 与 execution: Ref<ExecutionView>，后者明确绑定本轮执行；released 通知使用同一 Context。accepts／invoke 接收 battle、context、current 并返回统一 Result。候选 ID 固定，逐项重读最新登记；stop 在执行结束、宿主离场或首个中断时停止。恢复信息交给具体程序，不写通用 Unit recoveryUntilTick。
+beforeRelease(battle, executionRef) 返回 CONTINUE 或 INTERRUPT／recoveryTicks。Hook 使用公共 Hook<Context, Directive>，Context 固定 source 与 execution: Ref<Execution>，后者明确绑定本轮执行；released 通知使用同一 Context。accepts／invoke 接收 battle、context、current 并返回统一 Result。候选 ID 固定，逐项重读最新登记；stop 在执行结束、宿主离场或首个中断时停止。恢复信息交给具体程序，不写通用 Unit recoveryUntilTick。
 
 释放 Hook 返回后，普通攻击进入输出前重新确认本轮 execution.RUNNING 及宿主在场资格；已经完成输出后的消耗按实际业务和采样身份处理。不能把所有跨领域调用后的检查都机械化为同一个存活门槛。
 
@@ -317,4 +317,4 @@ afterOutput 是模板中本轮执行的后继程序，进入前检查对应执�
 
 玩法依据见[行动与弹道](../research/cases/02-action-and-projectile-phases.md)、[计时与动画](../research/cases/07-action-timing-and-animation.md)、[启动与中断](../research/cases/08-action-eligibility-and-interruption.md)。弩手近战与远程的独立冷却要求每种配置各自保存 Cooldown；冷却就绪与执行占用是不同事实。跨轮事实和本轮多段进度分别保存在 P 与 E，按实际内容确定重置边界；研究不要求运行时使用多个独立集合。敌人技能施放期间暂停的触发冷却，与通用 Action 周期分开表达。
 
-Effect 通过 scope(actionLifetime, executionRef) 绑定本轮 Ref<ExecutionView>，不绑定长期存在的配置项；Pending／ENDING 后不能安装新的该轮依赖。Action、Effect 与 [Projectile](projectile.md) 的异构容器均在内部保持实例和 Definition 的类型配对。Hook 的固定事件 Context 不进入 Action、BattleState 或全局容器。
+Effect 通过 scope(actionLifetime, executionRef) 绑定本轮 Ref<Execution>，不绑定长期存在的配置项；Pending／ENDING 后不能安装新的该轮依赖。Action、Effect 与 [Projectile](projectile.md) 的异构容器均在内部保持实例和 Definition 的类型配对。Hook 的固定事件 Context 不进入 Action、BattleState 或全局容器。

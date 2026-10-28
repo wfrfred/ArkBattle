@@ -16,8 +16,8 @@ Projectile 是具有空间位置的独立执行实例，存于 Battlefield。框
 
 - [projectile/index.ts](../../src/core/projectile/index.ts) 是类型与 ref／all／get 的显式公共入口；完整 Battle 操作仍直接从 battle/projectile.ts 导入，不为入口汇聚搬动模型或操作。
 - `projectile/projectile.ts`、`definition.ts`、`event.ts` 定义实例、内容程序与事件类型。
-- `projectile/query.ts` 提供 `all`、`get` 和 `ref`，与 Unit 查询入口一致。all 返回绑定传入 BattleState 版本、按登记顺序惰性遍历的 Query<View>，不自动筛选生命周期或转换 Ref；get/ref 保留 Typed Ref 中的已知对象类型。
-- `projectile/projectiles.ts` 封装异构容器与 `read` 类型配对；不推进生命周期。
+- `projectile/query.ts` 提供 `all`、`get` 和 `ref`，与 Unit 查询入口一致。all 返回绑定传入 BattleState 版本、按登记顺序惰性遍历的 Query<Projectile>，不自动筛选生命周期或转换 Ref；get/ref 保留 Typed Ref 中的已知对象类型。
+- `projectile/projectiles.ts` 封装异构完整实例的存储与类型恢复，不推进生命周期。
 - `battle/projectile.ts` 提供完整 `create`、`update`、`stop` 和 `advance`，直接替换 Battlefield 中的不可变 Projectiles 容器，负责身份、回调、事件与终结；不另设 Battlefield 转发操作。
 - `battlefield/state.ts` 定义唯一公开 State 与 create；Unit 的纯 `add`、`update`、`remove` 位于 `battlefield/unit.ts`。
 
@@ -36,15 +36,11 @@ export type Id = number;
 
 export type Lifecycle = "ACTIVE" | "ENDING";
 
-export interface View extends Identified<{ readonly id: Id }> {
+export interface Projectile<S extends object = object> extends Identified<{ readonly id: Id }> {
     readonly id: Id;
-    readonly definition: Pick<Definition<object>, "id">;
+    readonly definition: Definition<S>;
     readonly lifecycle: Lifecycle;
     readonly position: WorldPosition;
-}
-
-export interface Projectile<S extends object> extends View {
-    readonly definition: Definition<S>;
     readonly state: S;
 }
 
@@ -63,7 +59,7 @@ export type StopReason =
     | "SOURCE_UNAVAILABLE"
     | "DISPEL";
 
-export interface Definition<S extends object> {
+export interface Definition<S extends object = object> {
     readonly id: string;
 
     readonly onStart?: (
@@ -86,7 +82,7 @@ export interface Definition<S extends object> {
 
 S 是内容私有的运行状态，可以包含运动进度、目标身份、记忆位置、命中历史、来源、数值样本和业务计时，也可以没有其中某些部分。根实例不强制保存来源、追踪目标、攻击力样本、速度、接触范围、停止期限或推进 Tick。
 
-View 只声明公开身份、定义标识、生命周期和位置，不暴露私有 state 或完整 Definition 回调。实例直接共享不可变 Definition；定义标识投影仍指向同一个对象，不另建注册表或复制定义。普通读取使用 values／get，成对的私有状态与 Definition 由 read 提供。追踪弹道的 tracking.project(battle, ref) 在内容层生成最小视觉投影，不将未知私有数据作为通用快照接口公开。
+普通查询直接返回完整 Projectile<object>，包含 state 与原 Definition；object 表示尚未证明具体私有形状，不另设元数据实体或复制定义。精确 Ref／Definition 查询保留具体 S，Core 从同一实例调用其自身 Definition 的程序。追踪弹道的 tracking.project(battle, ref) 仍在内容层生成实际需要的 Presentation 数值投影，不承担实例恢复。
 
 Definition 直接共享。三个回调都可选，派发方已经确定实例与 Definition 的泛型配对，直接传 self，不再要求回调先按 Ref 查询一次。self 表达进入该次回调时的实例值；跨领域操作返回后，需要当前状态或资格时，按 Ref 从最新 battle 重读，遵守[状态接续约定](functional-core.md#状态接续后的读取与续执行)。
 
@@ -94,32 +90,22 @@ StopReason 使用单层联合，DISPEL 是其中一种原因；不另套 STOP／
 
 ## 3. 异构集合与类型恢复
 
-Battlefield 持有不可变 Projectiles，容器内部以私有 `Store<Id, View>` 保存完整实例。Store 不理解 Ref、Definition、泛型关联或生命周期；关联由 Projectiles 的写入入口建立，擦除与恢复集中在容器内部。
+Battlefield 持有不可变 Projectiles，容器内部以私有 `Store<Id, Projectile<any>>` 保存完整实例。Store 不理解 Ref、Definition、泛型关联或生命周期；关联由 Projectiles 的写入入口建立，擦除与恢复集中在容器内部。
 
 | 容器接口 | 契约 |
 | --- | --- |
 | `Projectiles.empty()` | 空容器。 |
-| `get(id)` | 返回公共 View。 |
+| `get(id)` | 返回默认 object 的完整 Projectile。 |
 | `get(reference)` | 根据精确 Ref 恢复调用方已知的实例类型。 |
 | `get(id, definition)` | 检查 Definition 对象身份后返回对应 Projectile<S>；字符串 id 相同不等同于同一定义。 |
-| `read(id, reader)` | 在同一组泛型下把完整实例与 Definition 交给 reader。 |
 | `values()`／`keys()` | 返回绑定当前容器版本、保留登记顺序的 Query。 |
 | `add(self)` | 委托 Store.add 保存完整实例，重复键由 Store 拒绝。 |
 | `replace(reference, next)` | 按 reference.id 委托 Store.replace 写回；缺失键由 Store 拒绝，同一实例对象保留原容器。 |
 | `remove(id)` | 委托 Store.remove 移除身份，缺失键由 Store 拒绝。 |
 
-Projectiles 信任 Core 已构造的完整实例，不在 replace 重复检查 Ref 与实例 id、Definition 或缺失键，也不包装 Store 的异常。完整领域操作在构造更新值时保留 Definition；Typed Ref 与 read 的泛型关联仍由容器封装。
+Projectiles 信任 Core 已构造的完整实例，不在 replace 重复检查 Ref 与实例 id、Definition 或缺失键，也不包装 Store 的异常。完整领域操作在构造更新值时保留 Definition；Typed Ref 与 Definition 的类型恢复仍由容器封装；内部 any 只擦除异构参数，普通 get／values 返回 Projectile<object>，不把 any 作为公共默认值。
 
 身份计数器属于 Battle 执行状态，创建流程直接使用分配器产生的身份与调用方提供的 Definition，不重复校验身份数值、Definition.id 或理论计数溢出，也不增加 Definition 工厂。替换不改变登记位置，删除后新增排在末尾。查询惰性、可重复遍历；需要固定候选时显式提取 Ref 并物化。
-
-```typescript
-read<R>(
-    id: Id,
-    reader: <S extends object>(self: Projectile<S>) => R,
-): R | undefined;
-```
-
-reader 对任意 S 成立，通用生命周期操作无需知道业务私有状态的具体结构，也不把未知条目当作接受任意 object 的行为。read 只保持类型配对并返回结果，不自行接续 BattleState 或选择生命周期阶段。
 
 ## 4. 创建、查询与内容更新
 
@@ -129,9 +115,9 @@ export interface CreateInput<S extends object> {
     readonly state: S;
 }
 
-export function ref<P extends View>(self: P): Ref<P>;
+export function ref<P extends Projectile<any>>(self: P): Ref<P>;
 
-export function get<P extends View>(
+export function get<P extends Projectile<any>>(
     battle: BattleState,
     reference: Ref<P>,
 ): P | undefined;
@@ -142,18 +128,18 @@ export function create<S extends object>(
     input: CreateInput<NoInfer<S>>,
 ): Result<Ref<Projectile<S>>>;
 
-export function update<S extends object>(
+export function update<T extends Projectile<any>>(
     battle: BattleState,
-    reference: Ref<Projectile<S>>,
+    reference: Ref<T>,
     changes: {
         readonly position?: WorldPosition;
-        readonly state?: NoInfer<S>;
+        readonly state?: NoInfer<T["state"]>;
     },
 ): BattleState;
 
 export function stop(
     battle: BattleState,
-    reference: Ref<View>,
+    reference: Ref<Projectile<any>>,
     reason: StopReason = "EXPLICIT",
 ): BattleState;
 ```

@@ -7,13 +7,9 @@ import type { Unit } from "../unit.js";
 import type { Skill as SkillCapability } from "../capability/skill/capability.js";
 import * as sp from "./sp.js";
 
-export interface View {
+export interface Definition<S extends object = object, A extends object = object> {
     readonly id: string;
     readonly sp: sp.Definition | null;
-    readonly activation: Pick<ActivationDefinition<object, object>, "trigger" | "sustain"> | null;
-}
-
-export interface Definition<S extends object = object, A extends object = object> extends View {
     readonly initialize: (battle: BattleState) => Result<S>;
     readonly activation: ActivationDefinition<S, A> | null;
     readonly onEnter?: (

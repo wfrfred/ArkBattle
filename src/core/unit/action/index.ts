@@ -4,7 +4,7 @@ export type { Action } from "./action.js";
 
 export { ref as executionRef } from "./execution.js";
 
-export type { Execution, View as ExecutionView } from "./execution.js";
+export type { Execution } from "./execution.js";
 
 export type { Definition } from "./definition.js";
 

@@ -2,15 +2,15 @@ import { Store } from "../../common/collection/store.js";
 import type { Query } from "../../common/query.js";
 import type { Ref } from "../../common/ref.js";
 import type { Definition } from "./definition.js";
-import type { Effect, Id, Snapshot, View } from "./effect.js";
+import type { Effect, Id, Snapshot } from "./effect.js";
 
 export class Effects {
-    static readonly #empty = new Effects(Store.empty<Id, View>(), 0);
+    static readonly #empty = new Effects(Store.empty<Id, Effect<any, any>>(), 0);
 
-    readonly #entries: Store<Id, View>;
+    readonly #entries: Store<Id, Effect<any, any>>;
     readonly nextId: Id;
 
-    private constructor(entries: Store<Id, View>, nextId: Id) {
+    private constructor(entries: Store<Id, Effect<any, any>>, nextId: Id) {
         this.#entries = entries;
         this.nextId = nextId;
     }
@@ -23,16 +23,16 @@ export class Effects {
         return this.#entries.size;
     }
 
-    get(id: Id): View | undefined;
-    get<E extends View>(reference: Ref<E>): E | undefined;
+    get(id: Id): Effect | undefined;
+    get<E extends Effect<any, any>>(reference: Ref<E>): E | undefined;
     get<S extends object, H extends object>(
         id: Id,
         definition: Definition<S, H>,
     ): Effect<S, H> | undefined;
-    get<E extends View, S extends object, H extends object>(
+    get<E extends Effect<any, any>, S extends object, H extends object>(
         identity: Id | Ref<E>,
         definition?: Definition<S, H>,
-    ): View | E | Effect<S, H> | undefined {
+    ): Effect<any, any> | undefined {
         const effect = this.#entries.get(typeof identity === "number" ? identity : identity.id);
         if (typeof identity !== "number" && effect?.host.id !== identity.host.id) {
             return undefined;
@@ -41,18 +41,15 @@ export class Effects {
             return effect;
         }
 
-        const restored: Effect<S, H> | undefined =
-            effect?.definition === definition ? (effect as Effect<S, H>) : undefined;
-
-        return restored;
+        return effect?.definition === definition ? effect : undefined;
     }
 
-    getEffect(id: Id): Effect | undefined {
-        return this.#entries.get(id) as Effect | undefined;
+    getEffect(id: Id): Effect<any, any> | undefined {
+        return this.#entries.get(id);
     }
 
-    values(): Query<View> {
-        return this.#entries.values();
+    values(): Query<Effect> {
+        return this.#entries.values() as Query<Effect>;
     }
 
     keys(): Query<Id> {
@@ -67,10 +64,7 @@ export class Effects {
         return new Effects(this.#entries.add(effect.id, effect), this.nextId + 1);
     }
 
-    replace<S extends object, H extends object>(
-        reference: Ref<Effect<S, H>>,
-        effect: NoInfer<Effect<S, H>>,
-    ): Effects {
+    replace<T extends Effect<any, any>>(reference: Ref<T>, effect: NoInfer<T>): Effects {
         const previous = this.#entries.get(reference.id);
         if (previous === undefined || previous === effect) {
             return this;
@@ -87,7 +81,7 @@ export class Effects {
 
     toJSON(): { readonly instances: readonly Snapshot[]; readonly nextId: Id } {
         return {
-            instances: this.#entries.values().toArray() as readonly Snapshot[],
+            instances: this.#entries.values().toArray(),
             nextId: this.nextId,
         };
     }

@@ -229,7 +229,7 @@ test("runtime scans mechanisms after movement and before route completion", () =
     assert.deepEqual(before.battlefield.units.get(0).position, [0, 0]);
 });
 
-test("typed mechanism state survives placement erasure without leaking through public views", async () => {
+test("typed mechanism state survives placement erasure and default programs keep object state", async () => {
     const { default: ts } = await import("typescript");
     const directory = mkdtempSync(join(tmpdir(), "stronghold-mechanism-types-"));
     const module = path => JSON.stringify(fileURLToPath(new URL(
@@ -263,15 +263,17 @@ mechanisms.setState(created.state, created.value, { name: 'wrong' });
 // @ts-expect-error Mechanism state is supplied as a value rather than a transform.
 mechanisms.setState(created.state, created.value, state => ({ count: state.count + 1 }));
 const view = mechanisms.all(battle).find(() => true)!;
-// @ts-expect-error General views do not expose private state.
-view.state;
-// @ts-expect-error A view Ref cannot write private state.
+const defaultState: object = view.state;
+view.definition.onTick?.(battle, view);
+// @ts-expect-error Default Mechanism state cannot infer private fields.
+view.state.count;
 mechanisms.setState(battle, mechanisms.ref(view), {});
 // @ts-expect-error Public mechanism lookup takes a typed Ref.
 mechanisms.get(battle, 0);
 // @ts-expect-error Public removal takes a typed Ref.
 mechanisms.remove(battle, 0);
-battle.mechanisms.read(0, self => self.definition.onTick?.(battle, self) ?? battle);
+const currentMechanism = battle.mechanisms.get(0);
+if (currentMechanism !== undefined) currentMechanism.definition.onTick?.(battle, currentMechanism);
 `);
         const program = ts.createProgram([path], {
             noEmit: true, strict: true, exactOptionalPropertyTypes: true,

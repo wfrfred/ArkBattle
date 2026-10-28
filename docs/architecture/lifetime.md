@@ -31,7 +31,7 @@ const ref = getRef(binding, burstLifetime);
 const usable = available(battle, binding);
 ```
 
-Scope 公开 type: "LIFETIME"、kind 和只读数值 address，描述符／Ref 的配对保存在内部受信边界，不向内容暴露存储容器。scope 使用 NoInfer 保持领域 Ref 配对，不查询 battle。getRef 仅在描述符匹配时恢复对应 Ref；例如 Elemental 周期 Effect 从自身 scopes 取回 Burst 身份后读取当前 Burst。异构配对只在公共模块内部擦除，调用方不能把别的领域 Ref 配给描述符。
+Scope 公开 type: "LIFETIME"、kind 和只读数值 address，描述符／Ref 的配对保存在内部受信边界，不向内容暴露存储容器。scope 保持描述符与 Ref 的领域配对，不查询 battle。getRef 仅在描述符匹配时返回 Ref<V>，恢复描述符的公开完整类型而不推断 Scope 原始私有参数；例如 Elemental 周期 Effect 从自身 scopes 取回 Burst 身份后读取当前 Burst。异构配对只在公共模块内部擦除，调用方不能把别的领域 Ref 配给描述符。
 
 available 沿依赖图的父边检查目标自身及全部上游（实际 owner 与显式 Scope）：任一节点缺失、已 Pending 或结束中，目标均不可接纳新依赖。检查使用当前 BattleState；父对象已开始结束、子对象尚未收到结束请求的发布／Prepare 窗口也适用。Unit 要求 PRESENT，Action 要求 RUNNING，Skill／Burst 要求 ACTIVE；Effect 的 INSTALLING／INACTIVE 和 Mechanism 的 INACTIVE 仍可成为依赖目标。HP、空间在场和 source 是否存活不属于这项判断。
 
@@ -58,7 +58,7 @@ interface Definition<V extends Identified<object>, S extends V, E> {
 }
 ```
 
-V 是公共引用目标，S 是领域完整对象，E 是本次结束输入。begin 是纯值转换，只把原状态改为 ENDING／LEAVING。replace 接收已经算好的完整值，先同步实例与派生关系，再通知 Blocking、Occupancy 等业务。
+Lifetime<V, S, E> 的 V 是公开完整实体类型，通常使用默认 object 参数；S 是 Core 内部接纳不同私有形状的完整类型上界，E 是业务结束输入。例如 Effect 使用公开 Effect 与内部 Effect<any, any>，不再要求单独的元数据目标。描述符的内部 [paired] 保留真实 Definition<V, S, E>，维持参数推导；scope 与 end 接纳 T extends S 的精确 Ref，getRef 仅恢复公开 Ref<V>。begin 是纯值转换，只把原状态改为 ENDING／LEAVING。replace 接收已经算好的完整值，先同步实例与派生关系，再通知 Blocking、Occupancy 等业务。
 
 prepare／finalize 是 Core 的完整操作适配，不是 Content Definition 的生命周期回调。Content 继续接收已有 self。prepare 的 initial 是标记前的同一不可变对象，供 Effect 判断原先是否 ACTIVE 等业务使用；需要实时值时从当前 battle 查询，不把 initial 整体写回。
 

@@ -218,9 +218,9 @@ candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定�
 
 不需要操作值的通知使用 T=void，仍返回 Result<void>，C 也可为 void。需要终止后续通知时，领域定义自己的控制值，不把业务取消、停止派发和生命周期终结混为同一个布尔值。Vitality 的阶段控制只在本节点生效，不能成为后续业务事实的一部分。
 
-公共 API 为 set、remove、dispatch；set/remove 按 ID 登记、替换与撤销，保留结构共享。领域持有登记集合，定义节点、排序、资格与停止条件。Effect 与 [Projectile](projectile.md) 的 Definition 回调直接接收 self；Effect 的 Core 操作通过内部 getEffect 取得完整实例并调用其自身 Definition，Projectile 的未知私有类型与 Definition 仍由容器 read 保持配对。Definition 程序与本次 Hook 派发的固定 Context 分别定义。
+公共 API 为 set、remove、dispatch；set/remove 按 ID 登记、替换与撤销，保留结构共享。领域持有登记集合，定义节点、排序、资格与停止条件。Effect 与 [Projectile](projectile.md) 的 Definition 回调直接接收完整 self；异构容器内部擦除私有参数，Core 调用同一实例自身 Definition 的程序，不解释未知 data。Definition 程序与本次 Hook 派发的固定 Context 分别定义。
 
-Unit 持有不可变 Effects 容器，容器内部使用私有 Store 保存完整实例及 ID 进度。普通 `get(id)`／`values()` 只承诺公共 View 的身份、参与状态、来源、scopes 和定义元数据，不暴露私有 data 或完整回调。`values()`／`keys()` 返回绑定容器版本的 Query。精确 Ref 查询保留已有类型证明；`get(id, definition)` 检查 Definition 对象身份；内部 `getEffect(id)` 返回默认 object／object 的完整 Effect，容器集中恢复这个受信类型。Core 不解释私有 data 或宿主能力 H，只将实例交给它自身 Definition 的程序；跨完整操作后仍从最新 battle 读取当前实例。真实所有权保护结束中的宿主与存储，不保留通用终止 fallback；Departure 等明确历史载荷按本领域业务输入保存。
+Unit 持有不可变 Effects 容器，内部 Store<Id, Effect<any, any>> 保存异构完整实例及 ID 进度。普通 get(id)／values() 返回默认 object／object 的完整 Effect，包含 data 与原 Definition；精确 Ref／Definition 查询保留已有类型证明。values／keys 返回绑定容器版本的 Query，内部 getEffect 使用擦除参数的完整类型供 Core 调用自身 Definition。Core 不解释未知 data 或 H；跨完整操作后仍读取最新实例。真实所有权保护结束中的宿主与存储，不保留通用终止 fallback；Departure 等明确历史载荷按本领域业务输入保存。
 
 Unit.initialize 始终创建空 Effects；初始内容在宿主登记后，通过既有 `stage: "enter"` 的 Unit Hook 调用 install。实例由正常安装与绑定入口建立生命周期约束，不从预装容器输入，也不在 Runtime 初始化末尾重复扫描 Scopes。Effect.source 仅以 `Ref<Unit> | null` 表达施加者，来源存活与生命周期 Scope 分开，来源离场本身不终结 Effect。
 
@@ -228,9 +228,9 @@ Unit.initialize 始终创建空 Effects；初始内容在宿主登记后，通�
 
 Projectile 的异构容器归 projectile/projectiles.ts，状态仍由 Battlefield 持有，完整 battle/projectile.ts 操作直接替换容器。Projectile 的 update 接收已经计算好的 `{ position?, state? }`；Core 从当前实例保留未提供字段，只提取允许写入的 position／state，ACTIVE 与 ENDING 均可写。Runtime 在整个 Step 的阶段回调开始前固定候选 Ref，逐项读取最新 ACTIVE 实例，本次新建实例不参与正常推进。
 
-通用写回只接收结果值。调用方从当前 battle 查询并局部计算下一值，计算与提交之间不执行其他完整操作；跨领域调用后先接续 battle，再重读所需实时状态。Skill 的 setData(battle, skillRef, data) 与 setActivationData(battle, roundRef, data) 是完整字段写回，以持久 Skill Ref／本轮 Activation Ref 证明私有类型，从最新 battle 读取并保留其他字段；旧局部 data setter 不再提供，完整实例替换仍归 Core；SP setContribution 仍在同领域 sp.ts 内按资源值操作，不套 Capability 转发层；私有 Contribution 集合 setter 也只接收已经算好的集合。Hook、生命周期程序、容器 read 与动态 Contribution Input 保留各自的回调职责。固定实例字段与生命周期由所属领域操作维护。
+通用写回只接收结果值。调用方从当前 battle 查询并局部计算下一值，计算与提交之间不执行其他完整操作；跨领域调用后先接续 battle，再重读所需实时状态。Skill 的 setData(battle, skillRef, data) 与 setActivationData(battle, roundRef, data) 是完整字段写回，以持久 Skill Ref／本轮 Activation Ref 证明私有类型，从最新 battle 读取并保留其他字段；旧局部 data setter 不再提供，完整实例替换仍归 Core；SP setContribution 仍在同领域 sp.ts 内按资源值操作，不套 Capability 转发层；私有 Contribution 集合 setter 也只接收已经算好的集合。Hook、生命周期程序与动态 Contribution Input 保留各自的回调职责。固定实例字段与生命周期由所属领域操作维护。
 
-`NoInfer` 限制新值参与泛型推导；调用者必须保留实例与 Definition 的原始私有类型关联。Ref 可协变查询，但借预先弱化的完整 Ref 写入不兼容数据属于调用契约错误，不增加运行时形状校验。Action 容器的 toJSON 诊断保存聚合条目与私有载荷，执行 ID 进度另由 Capability 保存；Effect 容器诊断同时保存私有载荷和自身 ID 进度。诊断不扩大普通 View，也不作为 Definition、回调或容器的恢复协议。
+`NoInfer` 限制新值参与泛型推导；调用者必须保留实例与 Definition 的原始私有类型关联。Ref 可协变查询，但借预先弱化的完整 Ref 写入不兼容数据属于调用契约错误，不增加运行时形状校验。Action 容器的 toJSON 诊断保存聚合条目与私有载荷，执行 ID 进度另由 Capability 保存；Effect 容器诊断同时保存私有载荷和自身 ID 进度。Snapshot 只用于真实诊断投影，不替代完整实体，也不作为 Definition、回调或容器的恢复协议。
 
 self 是输入版本的值。嵌套调用返回后，遵守 [状态接续后的读取与续执行](#状态接续后的读取与续执行)：实时事实从返回 State 重新查询，明确采样与历史载荷保留。不使用动态 getter 偷偷追踪一个可变工作对象，也不以旧整份 Unit 覆盖新版本。
 
@@ -315,7 +315,7 @@ Meta／Data 提供具体战斗配置、Definition、规则程序及其初始参�
 | 路线／地图／阻挡             | 临时路线恢复不重抽目标；必要解除／裁撤同步，普通接敌每 Tick 在 Movement 后统一推进；时序差异以对照案例验收 |
 | Meta 接入                    | 外层规则可提供本场共享事实、限制与反馈；不写 Meta 对象、不重复应用同一收益           |
 
-验收检查目标结果、正常取消前缀、顺序可见性、确定性及旧输入／旧 View 不变。旧测试可以复用有依据的场景，不能仅为兼容中间实现而保留错误契约。
+验收检查目标结果、正常取消前缀、顺序可见性、确定性及旧输入／旧查询对象不变。旧测试可以复用有依据的场景，不能仅为兼容中间实现而保留错误契约。
 
 ## 13. 尚未确定的内容语义
 

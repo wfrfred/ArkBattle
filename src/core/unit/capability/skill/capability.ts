@@ -3,9 +3,7 @@ import type { Definition as UnitDefinition, Unit } from "../../unit.js";
 import * as registry from "../../../hook.js";
 import * as contribution from "../../contribution/contribution.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import type { Ref } from "../../../common/ref.js";
-import type { View as SkillView } from "../../skill/skill.js";
-import type { State as ActivationState } from "../../skill/activation.js";
+import type { Skill as SkillState } from "../../skill/skill.js";
 import type { Events, Hook, Key } from "./hook.js";
 import type { Input as AmmoInput } from "../../skill/ammo.js";
 import type { Modifier } from "../../skill/modifier.js";
@@ -13,25 +11,10 @@ import type { Rule } from "./rule.js";
 import * as sustain from "../../skill/sustain.js";
 
 export interface Definition {
-    readonly initialize: (battle: BattleState) => Result<
-        SkillView & {
-            readonly data: object;
-            readonly activation: ActivationState | null;
-            readonly definition: {
-                readonly initialize: (battle: BattleState) => Result<object>;
-                readonly activation: {
-                    readonly initialize: (
-                        battle: BattleState,
-                        source: Ref<Unit & Skill>,
-                        self: never,
-                    ) => object;
-                } | null;
-            };
-        }
-    >;
+    readonly initialize: (battle: BattleState) => Result<SkillState<any, any>>;
 }
 
-export interface State extends SkillView {
+export interface State extends SkillState {
     readonly nextActivationId: number;
     readonly sustain: sustain.Contributions | null;
     readonly rules: readonly Rule[];

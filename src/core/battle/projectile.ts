@@ -1,7 +1,7 @@
 import type { Ref } from "../common/ref.js";
 import type { WorldPosition } from "../geometry/coordinate.js";
 import type { Definition, StopReason } from "../projectile/definition.js";
-import type { Projectile, View } from "../projectile/projectile.js";
+import type { Projectile } from "../projectile/projectile.js";
 import { get, ref } from "../projectile/query.js";
 import { create as createLifetime } from "../lifetime/operations.js";
 import { appendEvents, type State as BattleState, type Result } from "./state.js";
@@ -40,12 +40,12 @@ export function create<S extends object>(
     };
 }
 
-export function update<S extends object>(
+export function update<T extends Projectile<any>>(
     battle: BattleState,
-    reference: Ref<Projectile<S>>,
+    reference: Ref<T>,
     changes: {
         readonly position?: WorldPosition;
-        readonly state?: NoInfer<S>;
+        readonly state?: NoInfer<T["state"]>;
     },
 ): BattleState {
     const current = get(battle, reference);
@@ -54,7 +54,7 @@ export function update<S extends object>(
     }
 
     const position = changes.position ?? current.position;
-    const state = changes.state ?? current.state;
+    const state = (changes.state ?? current.state) as T["state"];
     if (position === current.position && state === current.state) {
         return battle;
     }
@@ -72,10 +72,10 @@ export function update<S extends object>(
     };
 }
 
-export const lifetime = createLifetime<View, Projectile<object>, StopReason>({
+export const lifetime = createLifetime<Projectile, Projectile<any>, StopReason>({
     kind: "PROJECTILE",
     address: (ref) => [ref.id],
-    get: (battle, reference) => get(battle, reference) as Projectile<object> | undefined,
+    get,
     isEnding: (self) => self.lifecycle === "ENDING",
     begin: (self) => ({ ...self, lifecycle: "ENDING" }),
     replace: (battle, _ref, next) => ({
@@ -99,7 +99,7 @@ export const lifetime = createLifetime<View, Projectile<object>, StopReason>({
         ]);
     },
     finalize: (battle, reference, reason) => {
-        const self = get(battle, reference) as Projectile<object>;
+        const self = get(battle, reference)!;
         battle = self.definition.onEnd?.(battle, self, reason) ?? battle;
 
         return {
@@ -113,22 +113,23 @@ export const lifetime = createLifetime<View, Projectile<object>, StopReason>({
     reason: (reason) => reason,
 });
 
-export function stop(
+export function stop<P extends Projectile<any>>(
     battle: BattleState,
-    reference: Ref<View>,
+    reference: Ref<P>,
     reason: StopReason = "EXPLICIT",
 ): BattleState {
     return lifetime.end(battle, reference, reason);
 }
 
-export function advance(battle: BattleState, candidates: readonly Ref<View>[]): BattleState {
+export function advance<P extends Projectile<any>>(
+    battle: BattleState,
+    candidates: readonly Ref<P>[],
+): BattleState {
     for (const reference of candidates) {
-        battle =
-            battle.battlefield.projectiles.read(reference.id, (self) =>
-                self.lifecycle === "ACTIVE"
-                    ? (self.definition.onTick?.(battle, self) ?? battle)
-                    : battle,
-            ) ?? battle;
+        const self = get(battle, reference);
+        if (self?.lifecycle === "ACTIVE") {
+            battle = self.definition.onTick?.(battle, self) ?? battle;
+        }
     }
 
     return battle;

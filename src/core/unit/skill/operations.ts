@@ -1,6 +1,6 @@
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import { update as updateUnit } from "../../battle/unit.js";
-import type { Ref } from "../../common/ref.js";
+import type { Identified, Ref } from "../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../battle/state.js";
 import * as lifetimes from "../../lifetime/index.js";
 import * as units from "../query.js";
@@ -15,7 +15,6 @@ import { hasSkill, type Skill as SkillCapability } from "../capability/skill/cap
 import {
     ref as activationRef,
     type Activation,
-    type View as ActivationView,
     type Trigger,
     type End,
     type Operation,
@@ -23,7 +22,7 @@ import {
 import type { State as SustainState } from "./sustain.js";
 import { dispatch } from "../capability/skill/hook.js";
 import * as query from "./query.js";
-import { ref as skillRef, type Skill, type View as SkillView } from "./skill.js";
+import { ref as skillRef, type Skill } from "./skill.js";
 import * as sp from "./sp.js";
 import { resolveCapacity as resolveAmmoCapacity } from "./ammo.js";
 import * as modifier from "./modifier.js";
@@ -60,7 +59,7 @@ const actionRecovery: ReleasedHook = {
     },
 };
 
-export type Outcome<T extends ActivationView = Activation> =
+export type Outcome<T extends Activation<any, any> = Activation> =
     | { readonly type: "ACTIVATED"; readonly ref: Ref<T> }
     | { readonly type: "REJECTED"; readonly reason: string };
 
@@ -74,10 +73,10 @@ export type Signal = {
     | { readonly type: "SKILL_FINISHED"; readonly end: End }
 );
 
-export function setData<S extends object, A extends object>(
+export function setData<X extends Skill<any, any>>(
     battle: BattleState,
-    reference: Ref<Skill<S, A>>,
-    data: NoInfer<S>,
+    reference: Ref<X>,
+    data: NoInfer<X["data"]>,
 ): BattleState {
     const unit = units.get(battle, reference.host);
     if (unit === undefined) {
@@ -92,10 +91,10 @@ export function setData<S extends object, A extends object>(
     return data === self.data ? battle : replaceSkill(battle, unit, { ...self, data });
 }
 
-export function setActivationData<S extends object, A extends object>(
+export function setActivationData<X extends Activation<any, any>>(
     battle: BattleState,
-    reference: Ref<Activation<S, A>>,
-    data: NoInfer<A>,
+    reference: Ref<X>,
+    data: NoInfer<X["activation"]["data"]>,
 ): BattleState {
     const unit = units.get(battle, reference.host);
     if (unit === undefined) {
@@ -240,10 +239,10 @@ export function activate<S extends object, A extends object>(
     return { state: battle, value: { type: "ACTIVATED", ref: activatedRef } };
 }
 
-export const lifetime = lifetimes.create<ActivationView, Activation, End>({
+export const lifetime = lifetimes.create<Activation, Activation<any, any>, End>({
     kind: "SKILL",
     address: (reference) => [reference.host.id, reference.id],
-    get: (battle, reference) => query.getActivation(battle, reference) as Activation | undefined,
+    get: (battle, reference) => query.getActivation(battle, reference),
     isEnding: (self) => self.activation.status === "ENDING",
     begin: (self) => ({ ...self, activation: { ...self.activation, status: "ENDING" } }),
     replace(battle, reference, next) {
@@ -252,7 +251,7 @@ export const lifetime = lifetimes.create<ActivationView, Activation, End>({
         return replaceSkill(battle, host, next);
     },
     finalize(battle, reference, ending) {
-        const self = query.getActivation(battle, reference) as Activation;
+        const self = query.getActivation(battle, reference)!;
         battle =
             self.definition.activation!.onEnd?.(battle, reference.host, self, ending) ?? battle;
 
@@ -275,21 +274,24 @@ export const lifetime = lifetimes.create<ActivationView, Activation, End>({
     fromDependency: (reason) => ({ type: "CANCELLED", reason }),
 });
 
-export function finish(battle: BattleState, reference: Ref<ActivationView>): BattleState {
+export function finish<X extends Activation<any, any>>(
+    battle: BattleState,
+    reference: Ref<X>,
+): BattleState {
     return lifetime.end(battle, reference, { type: "FINISHED" });
 }
 
-export function cancel(
+export function cancel<X extends Activation<any, any>>(
     battle: BattleState,
-    reference: Ref<ActivationView>,
+    reference: Ref<X>,
     reason = "CANCELLED",
 ): BattleState {
     return lifetime.end(battle, reference, { type: "CANCELLED", reason });
 }
 
-export function operate(
+export function operate<X extends Activation<any, any>>(
     battle: BattleState,
-    reference: Ref<ActivationView>,
+    reference: Ref<X>,
     operation: Operation,
 ): Result<{ readonly type: "APPLIED" } | { readonly type: "REJECTED"; readonly reason: string }> {
     const unit = units.get(battle, reference.host);
@@ -301,7 +303,7 @@ export function operate(
         return reject("UNAVAILABLE");
     }
 
-    const self = query.getActivation(battle, reference) as Activation | undefined;
+    const self = query.getActivation(battle, reference);
     if (self?.activation.status !== "ACTIVE") {
         return reject("UNAVAILABLE");
     }
@@ -338,12 +340,12 @@ export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>):
     self = query.getCurrent(battle, host);
 
     if (unit?.lifecycle === "PRESENT" && self?.activation?.status === "ACTIVE") {
-        const active = self as SkillView as Activation;
+        const active = self as Omit<Activation, keyof Identified<object>>;
         if (
             active.activation.sustain.type === "TIME" &&
             active.activation.sustain.endsAtTick <= battle.tick
         ) {
-            battle = finish(battle, activationRef(host, active));
+            battle = finish(battle, activationRef<Activation>(host, active));
         } else {
             battle = active.definition.activation?.onTick?.(battle, host, active) ?? battle;
         }
@@ -405,9 +407,9 @@ export function enter(battle: BattleState, host: Ref<Unit & SkillCapability>): B
     return battle;
 }
 
-export function extendTime(
+export function extendTime<X extends Activation<any, any>>(
     battle: BattleState,
-    reference: Ref<ActivationView>,
+    reference: Ref<X>,
     ticks: number,
 ): BattleState {
     if (!Number.isSafeInteger(ticks)) {
@@ -443,7 +445,7 @@ export function extendTime(
 
 function initialSustain(
     battle: BattleState,
-    self: SkillView,
+    self: Skill,
     unit: Unit & SkillCapability,
 ): SustainState {
     const definition = self.definition.activation!.sustain;

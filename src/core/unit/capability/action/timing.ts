@@ -4,10 +4,10 @@ import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import * as contribution from "../../contribution/contribution.js";
 import * as attribute from "../../contribution/attribute.js";
-import type { View } from "../../action/definition.js";
+import type { Definition } from "../../action/definition.js";
 import type { Action } from "./capability.js";
 
-type Timing = Pick<View, "intervalTicks" | "speed">;
+type Timing = Pick<Definition, "intervalTicks" | "speed">;
 
 export function resolveSpeed(
     battle: BattleState,

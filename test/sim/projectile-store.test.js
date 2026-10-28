@@ -70,9 +70,9 @@ test("known references and Definition identities recover the same complete proje
     assert.equal(original.get(first.id, secondDefinition), undefined);
     assert.equal(original.get(first.id, definition("charges", { charges: 2 })), undefined);
     assert.equal(original.get(999), undefined);
-    assert.equal(original.read(999, () => assert.fail("missing reader invoked")), undefined);
-    assert.deepEqual(original.read(first.id, self => self.state), { charges: 2 });
-    assert.deepEqual(original.read(second.id, self => self.state), { label: "ready" });
+    assert.equal(original.get(999), undefined);
+    assert.deepEqual(original.get(first.id).state, { charges: 2 });
+    assert.deepEqual(original.get(second.id).state, { label: "ready" });
 
     const battle = fixtureBattle();
     const state = { ...battle, battlefield: { ...battle.battlefield, projectiles: original } };
@@ -85,7 +85,7 @@ test("projectile queries and reads retain the collection version's immutable val
     const first = projectile(0, definition("charges", payload), payload);
     const original = Projectiles.empty().add(first);
     const captured = original.values().toArray();
-    const capturedState = original.read(first.id, self => self.state);
+    const capturedState = original.get(first.id).state;
     const replacement = { ...first, state: { ...payload, charges: 1 }, position: [1, 0] };
     const changed = original.replace(ref(first), replacement);
 
@@ -93,7 +93,7 @@ test("projectile queries and reads retain the collection version's immutable val
     assert.strictEqual(capturedState, payload);
     assert.strictEqual(capturedState.nested, payload.nested);
     assert.deepEqual(capturedState, { charges: 2, nested: { value: 7 } });
-    assert.deepEqual(changed.read(first.id, self => self.state), { charges: 1, nested: { value: 7 } });
+    assert.deepEqual(changed.get(first.id).state, { charges: 1, nested: { value: 7 } });
     assert.strictEqual(changed.get(ref(replacement)), replacement);
     assert.equal(original.get(0).definition, first.definition);
 });

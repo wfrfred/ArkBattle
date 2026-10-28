@@ -268,7 +268,7 @@ TacticalHook 是 core/hook.ts 的通用 Hook<C, T>。该模块集中既有 Hook 
 
 enter 是本次场上实例的登场节点。battle/unit.add 在登记及战场关系维护后执行 Skill 入场操作，再读取最新 PRESENT Unit，筛选 Definition 中的 enter Hook 并直接调用通用 dispatch。advance 在阶段开始时固定 Unit 候选，轮到单位时读取最新 PRESENT 实例并派发 tick Hook；本轮新登场的单位下次参与。
 
-每次派发固定该阶段 Hook 的候选与 Context。enter／tick 的 Context 是开始派发时的 Unit，后续 Hook 仍接收同一对象；BattleState 则逐项接续最新版本。每项执行前检查宿主仍为 PRESENT，嵌套操作导致离场后停止剩余 enter／tick Hook。需要当前 Unit 属性时，从返回的最新 BattleState 查询，不将固定 Context 当作动态 View。
+每次派发固定该阶段 Hook 的候选与 Context。enter／tick 的 Context 是开始派发时的 Unit，后续 Hook 仍接收同一对象；BattleState 则逐项接续最新版本。每项执行前检查宿主仍为 PRESENT，嵌套操作导致离场后停止剩余 enter／tick Hook。需要当前 Unit 属性时，从返回的最新 BattleState 查询，不将固定 Context 当作持续更新的对象。
 
 leave Hook 在本次实例完成清理、注销和 Card 回收之后派发，顺序与原离场业务节点一致。固定 Context 是 Departure；Departure.unit 是开始离场、尚未清空 Skill／Effect 前捕获的不可变 Unit，不以清理后的 Unit 替换它，也不在注销后重新查询已不存在的宿主。内容可以读取原 SP 或位置，并修改当前 Card、生成新对象。这个旧值不复制，也不作为整个旧 Unit 持久存入 Card。leave 不以宿主仍在场作为派发资格。
 
@@ -295,7 +295,7 @@ setHook(state: DeployableState, hook: DeployedHook): DeployableState;
 removeHook(state: DeployableState, id: string): DeployableState;
 ```
 
-Deployed 是已发生部署的输入事实，unit 取自本次登记完成时的值；其中的 cardId 可以为 null。kind 表达本次方式，不是跳过费用／地形检查的权限开关。回调需要单位当前状态时，从传入 BattleState 查询，不把事实中的旧值当作动态 View。
+Deployed 是已发生部署的输入事实，unit 取自本次登记完成时的值；其中的 cardId 可以为 null。kind 表达本次方式，不是跳过费用／地形检查的权限开关。回调需要单位当前状态时，从传入 BattleState 查询，不把事实中的旧值当作持续更新的对象。
 
 调用遵守公共 Hook 的 accepts／invoke 契约。自身部署动作和其他单位的部署响应均可登记；业务自行判断事实中的实例是不是自身。Effect 通过当前输入版本查询自己的存在和生效状态，控制资格并在结束时撤销登记。
 

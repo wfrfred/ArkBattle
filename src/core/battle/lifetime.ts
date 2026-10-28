@@ -1,10 +1,11 @@
 import type { Unit } from "../unit/unit.js";
+import type { Identified } from "../common/ref.js";
 import { ref as unitRef } from "../unit/query.js";
 import { hasAction } from "../unit/capability/action/capability.js";
 import { hasSkill } from "../unit/capability/skill/capability.js";
 import { hasElemental } from "../unit/capability/elemental/capability.js";
-import { ref as executionRef, type View as ExecutionView } from "../unit/action/execution.js";
-import { ref as activationRef, type View as ActivationView } from "../unit/skill/activation.js";
+import { ref as executionRef, type Execution } from "../unit/action/execution.js";
+import { ref as activationRef, type Activation } from "../unit/skill/activation.js";
 import { ref as burstRef } from "../unit/capability/elemental/burst.js";
 import { ref as effectRef } from "../unit/effect/effect.js";
 import { lifetime as actionLifetime } from "../unit/action/operations.js";
@@ -34,17 +35,28 @@ export function projectUnit(unit: Unit | undefined): readonly Entry[] {
         entries.push({ target, owner: { target: owner, order: entries.length }, scopes });
     };
     if (hasSkill(unit) && unit.skill.activation !== null) {
-        add(scope(skillLifetime, activationRef(unitRef(unit), unit.skill as ActivationView)));
+        add(
+            scope(
+                skillLifetime,
+                activationRef<Activation>(
+                    unitRef(unit),
+                    unit.skill as Omit<Activation, keyof Identified<object>>,
+                ),
+            ),
+        );
     }
     if (hasAction(unit)) {
         const executions = [
             ...unit.action.actions
                 .values()
-                .filter((self): self is ExecutionView => self.execution !== null),
+                .filter(
+                    (self): self is Omit<Execution, keyof Identified<object>> =>
+                        self.execution !== null,
+                ),
         ].sort((left, right) => left.execution.id - right.execution.id);
 
         for (const self of executions) {
-            add(scope(actionLifetime, executionRef(unitRef(unit), self)));
+            add(scope(actionLifetime, executionRef<Execution>(unitRef(unit), self)));
         }
     }
     if (hasElemental(unit) && unit.elemental.burst !== null) {

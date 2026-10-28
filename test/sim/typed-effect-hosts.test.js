@@ -84,7 +84,7 @@ import { ref, get } from ${source("unit/query")};
 import type { Locomotion } from ${source("unit/capability/locomotion/capability")};
 import type { Vitality } from ${source("unit/capability/vitality/capability")};
 import type { Definition } from ${source("unit/effect/definition")};
-import { ref as effectRef, type Effect, type View } from ${source("unit/effect/effect")};
+import { ref as effectRef, type Effect } from ${source("unit/effect/effect")};
 import { Effects } from ${source("unit/effect/effects")};
 import { install, setData } from ${source("unit/effect/index")};
 declare const battle: BattleState;
@@ -131,21 +131,19 @@ const combined: Definition<object, Locomotion & Vitality> = {
 declare const effect: Effect<{ charges: number }, Locomotion & Vitality>;
 const reference = effectRef(effect);
 const typedHost: Ref<Unit & Locomotion & Vitality> = reference.host;
-const generic: Ref<View> = reference;
 const entries = Effects.empty().add(effect);
+const generic = effectRef(entries.get(effect.id)!);
 const restored: typeof effect | undefined = entries.get(reference);
 entries.replace(reference, { ...effect, data: { charges: 2 } });
 setData(battle, reference, { ...effect.data, charges: effect.data.charges + 1 });
-// @ts-expect-error public references do not prove the private data type.
 setData(battle, generic, { charges: 1 });
 // @ts-expect-error precise data fields retain their type through writes.
 setData(battle, reference, { ...effect.data, charges: "wrong" });
 // @ts-expect-error public effect identity does not retain arbitrary host capabilities.
 const inventedHost: Ref<Unit & Vitality> = generic.host;
-// @ts-expect-error public effect views hide private data.
-entries.get(generic)!.data;
-// @ts-expect-error public references do not prove writable private state types.
-entries.replace(generic, effect);
+// @ts-expect-error Default Effects do not infer private fields.
+entries.get(generic)!.data.charges;
+entries.replace(generic, entries.get(generic)!);
 // @ts-expect-error a precise reference fixes replacement data inference.
 entries.replace(reference, { ...effect, data: { charges: "wrong" } });
 install(battle, complete, vitality, { data: { charges: 2 } });

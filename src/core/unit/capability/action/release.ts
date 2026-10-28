@@ -1,7 +1,7 @@
 import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import type { View as ExecutionView } from "../../action/execution.js";
+import type { Execution } from "../../action/execution.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import * as hook from "../../../hook.js";
@@ -12,14 +12,17 @@ export type Directive =
 
 export interface Context {
     readonly source: Ref<Unit & Action>;
-    readonly execution: Ref<ExecutionView>;
+    readonly execution: Ref<Execution>;
 }
 
 export type Hook = hook.Hook<Context, Directive>;
 
 export type ReleasedHook = hook.Hook<Context, void>;
 
-export function beforeRelease(battle: BattleState, ref: Ref<ExecutionView>): Result<Directive> {
+export function beforeRelease<X extends Execution<any, any>>(
+    battle: BattleState,
+    ref: Ref<X>,
+): Result<Directive> {
     const context: Context = { execution: ref, source: ref.host };
     const result = hook.dispatch<Context, Directive>(
         battle,
@@ -43,7 +46,10 @@ export function beforeRelease(battle: BattleState, ref: Ref<ExecutionView>): Res
     return result;
 }
 
-export function released(battle: BattleState, ref: Ref<ExecutionView>): BattleState {
+export function released<X extends Execution<any, any>>(
+    battle: BattleState,
+    ref: Ref<X>,
+): BattleState {
     const context: Context = { execution: ref, source: ref.host };
 
     return hook.dispatch(battle, context, undefined, {

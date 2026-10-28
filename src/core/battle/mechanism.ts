@@ -26,18 +26,16 @@ export interface MechanismDefinition<S extends object = object> extends Creation
     readonly onEnd?: (battle: BattleState, self: Mechanism<S>) => BattleState;
 }
 
-export interface View extends Identified<{ readonly id: MechanismId }> {
+export interface Mechanism<S extends object = object> extends Identified<{
     readonly id: MechanismId;
-    readonly definition: { readonly id: string };
-    readonly status: Status;
-}
-
-export interface Mechanism<S extends object = object> extends View {
+}> {
+    readonly id: MechanismId;
     readonly definition: MechanismDefinition<S>;
+    readonly status: Status;
     readonly state: S;
 }
 
-export function ref<M extends View>(mechanism: M): Ref<M> {
+export function ref<M extends Mechanism<any>>(mechanism: M): Ref<M> {
     return { id: mechanism.id } as Ref<M>;
 }
 
@@ -59,18 +57,21 @@ export function create<S extends object>(
     return instantiateMechanismPlacement(battle, { definition, ...options });
 }
 
-export function get<M extends View>(battle: BattleState, reference: Ref<M>): M | undefined {
+export function get<M extends Mechanism<any>>(
+    battle: BattleState,
+    reference: Ref<M>,
+): M | undefined {
     return battle.mechanisms.get(reference);
 }
 
-export function all(battle: BattleState): Query<View> {
+export function all(battle: BattleState): Query<Mechanism> {
     return battle.mechanisms.values();
 }
 
-export function setState<S extends object>(
+export function setState<T extends Mechanism<any>>(
     battle: BattleState,
-    reference: Ref<Mechanism<S>>,
-    state: NoInfer<S>,
+    reference: Ref<T>,
+    state: NoInfer<T["state"]>,
 ): BattleState {
     const self = get(battle, reference);
     if (self === undefined) {
@@ -82,28 +83,29 @@ export function setState<S extends object>(
         : { ...battle, mechanisms: battle.mechanisms.replace(reference, { ...self, state }) };
 }
 
-export function setActive(battle: BattleState, reference: Ref<View>, active: boolean): BattleState {
-    return (
-        battle.mechanisms.read(reference.id, (self) => {
-            const status = active ? "ACTIVE" : "INACTIVE";
-            if (self.status === "ENDING" || self.status === status) {
-                return battle;
-            }
+export function setActive<M extends Mechanism<any>>(
+    battle: BattleState,
+    reference: Ref<M>,
+    active: boolean,
+): BattleState {
+    const self = get(battle, reference);
+    const status = active ? "ACTIVE" : "INACTIVE";
+    if (self === undefined || self.status === "ENDING" || self.status === status) {
+        return battle;
+    }
 
-            const next: typeof self = { ...self, status };
-            battle = { ...battle, mechanisms: battle.mechanisms.replace(ref(self), next) };
+    const next: M = { ...self, status };
+    battle = { ...battle, mechanisms: battle.mechanisms.replace(ref(self), next) };
 
-            return !active && next.definition.onDisable !== undefined
-                ? next.definition.onDisable(battle, next)
-                : battle;
-        }) ?? battle
-    );
+    return !active && next.definition.onDisable !== undefined
+        ? next.definition.onDisable(battle, next)
+        : battle;
 }
 
-export const lifetime = createLifetime<View, Mechanism, string>({
+export const lifetime = createLifetime<Mechanism, Mechanism<any>, string>({
     kind: "MECHANISM",
     address: (ref) => [ref.id],
-    get: (battle, reference) => get(battle, reference) as Mechanism | undefined,
+    get,
     isEnding: (self) => self.status === "ENDING",
     begin: (self) => ({ ...self, status: "ENDING" }),
     replace: (battle, _ref, next) => ({
@@ -111,14 +113,14 @@ export const lifetime = createLifetime<View, Mechanism, string>({
         mechanisms: battle.mechanisms.replace(ref(next), next),
     }),
     prepare: (battle, reference, initial) => {
-        const self = get(battle, reference) as Mechanism;
+        const self = get(battle, reference)!;
 
         return initial.status === "ACTIVE"
             ? (self.definition.onDisable?.(battle, self) ?? battle)
             : battle;
     },
     finalize: (battle, reference) => {
-        const self = get(battle, reference) as Mechanism;
+        const self = get(battle, reference)!;
         battle = self.definition.onEnd?.(battle, self) ?? battle;
 
         return { ...battle, mechanisms: battle.mechanisms.remove(reference.id) };
@@ -126,7 +128,10 @@ export const lifetime = createLifetime<View, Mechanism, string>({
     reason: (reason) => reason,
 });
 
-export function remove(battle: BattleState, reference: Ref<View>): BattleState {
+export function remove<M extends Mechanism<any>>(
+    battle: BattleState,
+    reference: Ref<M>,
+): BattleState {
     return lifetime.end(battle, reference, "EXPLICIT");
 }
 
@@ -134,12 +139,10 @@ export function advance(battle: BattleState): BattleState {
     const candidates = all(battle).map(ref).toArray();
 
     for (const reference of candidates) {
-        battle =
-            battle.mechanisms.read(reference.id, (self) =>
-                self.status === "ACTIVE" && self.definition.onTick !== undefined
-                    ? self.definition.onTick(battle, self)
-                    : battle,
-            ) ?? battle;
+        const self = get(battle, reference);
+        if (self?.status === "ACTIVE" && self.definition.onTick !== undefined) {
+            battle = self.definition.onTick(battle, self);
+        }
     }
 
     return battle;
@@ -149,12 +152,10 @@ export function notifyUnitLeave(battle: BattleState, departure: Departure): Batt
     const candidates = all(battle).map(ref).toArray();
 
     for (const reference of candidates) {
-        battle =
-            battle.mechanisms.read(reference.id, (self) =>
-                self.status === "ACTIVE" && self.definition.onUnitLeave !== undefined
-                    ? self.definition.onUnitLeave(battle, self, departure)
-                    : battle,
-            ) ?? battle;
+        const self = get(battle, reference);
+        if (self?.status === "ACTIVE" && self.definition.onUnitLeave !== undefined) {
+            battle = self.definition.onUnitLeave(battle, self, departure);
+        }
     }
 
     return battle;

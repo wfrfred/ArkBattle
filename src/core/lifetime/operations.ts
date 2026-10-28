@@ -11,8 +11,8 @@ interface Pair {
 
 export function create<V extends Identified<object>, S extends V, E>(
     definition: Definition<V, S, E>,
-): Lifetime<V, E> {
-    const lifetime: Lifetime<V, E> = {
+): Lifetime<V, S, E> {
+    const lifetime: Lifetime<V, S, E> = {
         kind: definition.kind,
         [paired]: definition,
         end(battle, ref, end, dependencyReason = definition.reason(end)) {
@@ -32,11 +32,11 @@ export function create<V extends Identified<object>, S extends V, E>(
     return lifetime;
 }
 
-export function scope<V extends Identified<object>, E>(
-    lifetime: Lifetime<V, E>,
-    ref: Ref<NoInfer<V>>,
+export function scope<V extends Identified<object>, S extends V, E, T extends S>(
+    lifetime: Lifetime<V, S, E>,
+    ref: Ref<T>,
 ): Scope {
-    const definition = lifetime[paired] as Definition<V, V, E>;
+    const definition = lifetime[paired];
 
     return {
         type: "LIFETIME",
@@ -46,13 +46,13 @@ export function scope<V extends Identified<object>, E>(
     };
 }
 
-export function getRef<V extends Identified<object>, E>(
+export function getRef<V extends Identified<object>, S extends V, E>(
     target: Scope,
-    lifetime: Lifetime<V, E>,
+    lifetime: Lifetime<V, S, E>,
 ): Ref<V> | undefined {
     const pair = target[paired] as Pair;
 
-    return pair.definition === lifetime[paired] ? (pair.ref as Ref<V>) : undefined;
+    return (pair.definition as object) === lifetime[paired] ? (pair.ref as Ref<V>) : undefined;
 }
 
 export function available(battle: BattleState, target: Scope): boolean {

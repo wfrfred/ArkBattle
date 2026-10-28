@@ -16,7 +16,7 @@ import type { Ref } from ${source("core/common/ref")};
 import type { State as BattleState, Result } from ${source("core/battle/state")};
 import { executionRef, ref as actionRef } from ${source("core/unit/action/index")};
 import { setExecutionState, getAction, getExecution, setState } from ${source("core/unit/action/index")};
-import type { Activation, View as ActivationView } from ${source("core/unit/skill/activation")};
+import type { Activation } from ${source("core/unit/skill/activation")};
 import { getActivation } from ${source("core/unit/skill/index")};
 import { consume, check } from ${source("core/unit/skill/ammo")};
 import { create, createWithState, isAttack, type Attack, type Configuration } from ${source("content/actions/attack")};
@@ -75,9 +75,9 @@ const genericAmmo = createSkillAttack({
     ...configuration,
     ammoPerAction: 2,
     output(current, source, self) {
-        const sampled: Ref<ActivationView> | null = self.execution.state.data.activation;
+        const sampled: Ref<Activation> | null = self.execution.state.data.activation;
         if (sampled !== null) {
-            const latest: ActivationView | undefined = getActivation(current, sampled);
+            const latest: Activation | undefined = getActivation(current, sampled);
             // @ts-expect-error
             latest!.activation.data.mode;
         }

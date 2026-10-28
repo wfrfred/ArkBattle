@@ -17,10 +17,11 @@ import type { State as BattleState } from ${source("battle/state")};
 import type { Unit } from ${source("unit/unit")};
 import { initialize } from ${source("unit/initialize")};
 import * as units from ${source("unit/query")};
-import { createDefinition, type Definition, type View as DefinitionView } from ${source("unit/skill/definition")};
+import { createDefinition, type Definition } from ${source("unit/skill/definition")};
 import { initialize as initializeSkill, hasSkill, type Skill as SkillCapability, type State } from ${source("unit/capability/skill/capability")};
-import { create, ref, activationRef, getSkill, getActivation, activate, cancel, setData, setActivationData, type Skill, type Activation } from ${source("unit/skill/index")};
+import { create, ref, activationRef, getSkill, getActivation, activate, cancel, setData, setActivationData, type Skill, type Activation, lifetime as skillLife } from ${source("unit/skill/index")};
 import { getCurrent } from ${source("unit/skill/query")};
+import { scope, getRef } from ${source("lifetime/index")};
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
 type Assert<T extends true> = T;
 type Persistent = { count: number };
@@ -52,29 +53,28 @@ const definition: Definition<Persistent, Active> = createDefinition({
 });
 const factory = { initialize: (current: BattleState) => create(current, definition) };
 const initialized = initialize(battle, { id: 0, position: [0, 0], definition: { hooks: [], id: "typed-host", skill: factory } }).value;
-const view: DefinitionView = definition;
 const publicHost: Unit & SkillCapability = initialized;
-const metadata: DefinitionView = publicHost.skill.definition;
-const trigger: "MANUAL" | "AUTO" | "PASSIVE" | undefined = metadata.activation?.trigger;
-// @ts-expect-error Definition views expose metadata, not initialization programs.
-view.initialize(battle);
-// @ts-expect-error activation metadata does not expose its private initializer.
-metadata.activation?.initialize;
-// @ts-expect-error callbacks belong to a proven complete program.
-metadata.onTick;
-// @ts-expect-error Unit configuration stores a factory rather than program metadata.
+const program: Definition = publicHost.skill.definition;
+const trigger: "MANUAL" | "AUTO" | "PASSIVE" | undefined = program.activation?.trigger;
+const genericData = program.initialize(battle).value;
+type GenericData = Assert<Equal<typeof genericData,object>>;
+// @ts-expect-error Complete default programs do not infer private persistent fields.
+genericData.count;
+program.onTick?.(battle, sourceRef, publicHost.skill);
+// @ts-expect-error Unit configuration stores a factory rather than a program.
 publicHost.definition.skill.id;
-// @ts-expect-error metadata does not prove an aggregate factory.
-initializeSkill(battle, view);
-// @ts-expect-error a metadata-only result is missing private data and creation programs.
-initializeSkill(battle, { initialize: current => ({ state: current, value: { definition: metadata, sp: null, activation: null } }) });
-// @ts-expect-error private data cannot replace the missing activation initialization program.
-initializeSkill(battle, { initialize: current => ({ state: current, value: { definition: { ...definition, activation: metadata.activation }, data: { count: 0 }, sp: null, activation: null } }) });
+// @ts-expect-error A program's private initializer is not a Skill aggregate factory.
+initializeSkill(battle, program);
+// @ts-expect-error A complete program does not replace the aggregate's required private data.
+initializeSkill(battle, { initialize: current => ({ state: current, value: { definition: program, sp: null, activation: null } }) });
+const incompleteActivation = { trigger: "MANUAL" as const, sustain: { type: "INFINITE" as const } };
+// @ts-expect-error Private data cannot replace a missing activation initialization program.
+initializeSkill(battle, { initialize: current => ({ state: current, value: { definition: { ...definition, activation: incompleteActivation }, data: { count: 0 }, sp: null, activation: null } }) });
 const state = initializeSkill(battle, factory).value;
 type CommonState = Assert<Equal<typeof state, State>>;
 // @ts-expect-error capability state does not expose a program's private data.
 initialized.skill.data.count;
-// @ts-expect-error capability initialization returns a common State view.
+// @ts-expect-error capability initialization returns default object private state.
 state.data.count;
 // @ts-expect-error an ordinary program is not a Unit capability factory.
 initialize(battle, { id: 1, position: [0, 0], definition: { hooks: [], id: "invalid", skill: definition } });
@@ -99,9 +99,15 @@ if (started.value.type === "ACTIVATED") {
     const count: number | undefined = current?.data.count;
 }
 const known = activationRef(sourceRef, self);
+const skillScope = scope(skillLife,known);
+skillLife.end(battle,known,{type:"FINISHED"});
+const restoredRound = getRef(skillScope,skillLife);
+type LifetimeRound = Assert<Equal<typeof restoredRound,Ref<Activation>|undefined>>;
+// @ts-expect-error The persistent Skill slot does not identify an activation lifetime.
+scope(skillLife,persistent);
 type Known = Assert<Equal<typeof known, Ref<Activation<Persistent, Active>>>>;
 const weaker: Ref<Activation<Persistent, Active>> = specialized;
-const erased: Ref<Activation> = weaker;
+declare const erased: Ref<Activation>;
 cancel(battle, erased, "SCRIPT");
 const candidates = units.all(battle).filter(hasSkill).map(units.ref).toArray();
 type Candidates = Assert<Equal<typeof candidates, readonly Ref<Unit & SkillCapability>[]>>;

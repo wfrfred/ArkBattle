@@ -2,14 +2,14 @@ import { Store } from "../common/collection/store.js";
 import type { Query } from "../common/query.js";
 import type { Ref } from "../common/ref.js";
 import type { Definition } from "./definition.js";
-import type { Projectile, Id, View } from "./projectile.js";
+import type { Projectile, Id } from "./projectile.js";
 
 export class Projectiles {
-    static readonly #empty = new Projectiles(Store.empty<Id, View>());
+    static readonly #empty = new Projectiles(Store.empty<Id, Projectile<any>>());
 
-    readonly #entries: Store<Id, View>;
+    readonly #entries: Store<Id, Projectile<any>>;
 
-    private constructor(entries: Store<Id, View>) {
+    private constructor(entries: Store<Id, Projectile<any>>) {
         this.#entries = entries;
     }
 
@@ -21,13 +21,13 @@ export class Projectiles {
         return this.#entries.size;
     }
 
-    get<P extends View>(reference: Ref<P>): P | undefined;
-    get(id: Id): View | undefined;
+    get<P extends Projectile<any>>(reference: Ref<P>): P | undefined;
+    get(id: Id): Projectile | undefined;
     get<S extends object>(id: Id, definition: Definition<S>): Projectile<S> | undefined;
-    get<S extends object, P extends View>(
+    get<S extends object, P extends Projectile<any>>(
         identity: Id | Ref<P>,
         definition?: Definition<S>,
-    ): View | Projectile<S> | P | undefined {
+    ): Projectile<any> | undefined {
         const id = typeof identity === "number" ? identity : identity.id;
         const projectile = this.#entries.get(id);
 
@@ -38,20 +38,11 @@ export class Projectiles {
             return projectile;
         }
 
-        const restored: Projectile<S> | undefined =
-            projectile?.definition === definition ? (projectile as Projectile<S>) : undefined;
-
-        return restored;
+        return projectile?.definition === definition ? projectile : undefined;
     }
 
-    read<R>(id: Id, reader: <S extends object>(projectile: Projectile<S>) => R): R | undefined {
-        const projectile = this.#entries.get(id);
-
-        return projectile === undefined ? undefined : reader(projectile as Projectile<object>);
-    }
-
-    values(): Query<View> {
-        return this.#entries.values();
+    values(): Query<Projectile> {
+        return this.#entries.values() as Query<Projectile>;
     }
 
     keys(): Query<Id> {
@@ -62,10 +53,7 @@ export class Projectiles {
         return new Projectiles(this.#entries.add(projectile.id, projectile));
     }
 
-    replace<S extends object>(
-        reference: Ref<Projectile<S>>,
-        projectile: NoInfer<Projectile<S>>,
-    ): Projectiles {
+    replace<T extends Projectile<any>>(reference: Ref<T>, projectile: NoInfer<T>): Projectiles {
         const entries = this.#entries.replace(reference.id, projectile);
 
         return entries === this.#entries ? this : new Projectiles(entries);

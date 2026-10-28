@@ -20,6 +20,8 @@ import { create, contains, get, type Map, type Marker, type BlockEdge } from ${s
 import { Tiles } from ${sourceModule('map/tiles')};
 import type { Tile } from ${sourceModule('map/tile')};
 import type { Definition } from ${sourceModule('map/terrain')};
+type Equal<A,B>=(<T>()=>T extends A?1:2) extends (<T>()=>T extends B?1:2)?true:false;
+type Assert<T extends true>=T;
 declare const fields: Pick<Map, 'rows' | 'columns' | 'tiles' | 'markers' | 'blockEdges'>;
 const structural: Map = fields;
 const shallowFrozen: Map = Object.freeze(fields);
@@ -47,10 +49,25 @@ entries.get(0, definition)?.definition.terrain.params.power;
 definition.create({ damage: 2 });
 // @ts-expect-error Typed retrieval preserves parameter field names.
 entries.get(0, definition)?.definition.terrain.params.damage;
-// @ts-expect-error General views do not expose erased parameters.
-entries.get(0)?.definition.terrain.params;
-// @ts-expect-error Generic readers cannot assume a particular parameter shape.
-entries.read(0, tile => tile.definition.terrain.params.power);
+const ordinary = entries.get(0);
+type DefaultTile = Assert<Equal<typeof ordinary,Tile|undefined>>;
+if (ordinary !== undefined) {
+  type DefaultParameters = Assert<Equal<typeof ordinary.definition.terrain.params,object>>;
+  // @ts-expect-error Default Tile parameters do not infer a content-specific field.
+  ordinary.definition.terrain.params.power;
+}
+for (const current of entries.values()) {
+  type ValueParameters = Assert<Equal<typeof current.definition.terrain.params,object>>;
+  // @ts-expect-error Ordinary collection values do not recover terrain parameter shapes.
+  current.definition.terrain.params.power;
+}
+const mapTile = get(map,[0,0]);
+type DefaultMapTile = Assert<Equal<typeof mapTile,Tile|undefined>>;
+// @ts-expect-error Ordinary Map queries do not infer terrain parameters.
+mapTile?.definition.terrain.params.power;
+const power:number|undefined = get(map,[0,0],definition)?.definition.terrain.params.power;
+// @ts-expect-error A Definition query preserves parameter field types.
+const wrongPower:string|undefined = get(map,[0,0],definition)?.definition.terrain.params.power;
 // @ts-expect-error Map fields stay readonly.
 structural.rows = 2;
 // @ts-expect-error Maps expose readonly nested collections.

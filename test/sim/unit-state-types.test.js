@@ -74,7 +74,7 @@ if(ref!==undefined) {
 declare const shield:Effect<{charges:number},Vitality>;
 declare const poison:Effect<{damage:number}>;
 const mixed=Effects.empty().add(shield).add(poison);
-const opaqueEffect=mixed.getEffect(shield.id);
+const opaqueEffect=mixed.get(shield.id);
 type OpaqueEffect=Assert<Equal<typeof opaqueEffect,Effect|undefined>>;
 if(opaqueEffect!==undefined){
  const readState:BattleState=opaqueEffect.definition.onTick?.(battle,opaqueEffect)??battle;
@@ -98,17 +98,17 @@ const untyped=mixed.get(shield.id);
 if(untyped!==undefined){
  // @ts-expect-error a bare ID returns generic data without a claimed shape.
  const charges:number=untyped.data.charges;
- // @ts-expect-error erased storage views do not claim a callable lifecycle definition.
- untyped.definition.onTick;
- // @ts-expect-error erased storage views do not claim a typed initializer.
- untyped.definition.initialize;
+ const returned:BattleState=untyped.definition.onTick?.(battle,untyped)??battle;
+ const initialized:object=untyped.definition.initialize();
+ type UntypedData=Assert<Equal<typeof untyped.data,object>>;
  const definitionId:string=untyped.definition.id;
 }
 for(const stored of mixed.values()){
- // @ts-expect-error heterogeneous collection traversal cannot invoke definition callbacks.
- stored.definition.onTick;
- // @ts-expect-error heterogeneous collection traversal cannot initialize generic Effect data.
- stored.definition.initialize;
+ const returned:BattleState=stored.definition.onTick?.(battle,stored)??battle;
+ const initialized:object=stored.definition.initialize();
+ type StoredData=Assert<Equal<typeof stored.data,object>>;
+ // @ts-expect-error Complete default programs do not infer private fields.
+ stored.data.charges;
  const definitionId:string=stored.definition.id;
 }
 // @ts-expect-error an ID alone cannot claim a private data type.

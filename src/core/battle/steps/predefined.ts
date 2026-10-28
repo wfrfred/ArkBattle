@@ -4,7 +4,7 @@ import {
     get as getMechanism,
     remove as removeMechanism,
     type CreationDefinition,
-    type View as MechanismView,
+    type Mechanism,
 } from "../mechanism.js";
 import type { Ref } from "../../common/ref.js";
 import {
@@ -28,7 +28,7 @@ export interface PredefinedMechanismCreation {
 
 export type Source =
     | { readonly type: "UNIT"; readonly unitId: number }
-    | { readonly type: "MECHANISM"; readonly ref: Ref<MechanismView> };
+    | { readonly type: "MECHANISM"; readonly ref: Ref<Mechanism> };
 
 export interface PredefinedDefinition {
     readonly id: number;

@@ -4,7 +4,7 @@ export type { Definition } from "./definition.js";
 
 export { ref } from "./skill.js";
 
-export type { Skill, View as SkillView } from "./skill.js";
+export type { Skill } from "./skill.js";
 
 export { ref as activationRef } from "./activation.js";
 
@@ -14,7 +14,6 @@ export type {
     End,
     Definition as ActivationDefinition,
     Activation,
-    View as ActivationView,
 } from "./activation.js";
 
 export { getSkill, getActivation } from "./query.js";

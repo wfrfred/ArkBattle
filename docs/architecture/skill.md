@@ -8,7 +8,7 @@ Skill 负责 SP、发动、持续预算、主动操作和完整终止。Action �
 
 | 模块 | 职责 |
 | --- | --- |
-| `unit/skill/definition.ts` | 程序元数据 View、完整泛型 Definition 与 createDefinition |
+| `unit/skill/definition.ts` | 完整泛型 Definition 与 createDefinition |
 | `unit/skill/skill.ts`、`activation.ts` | 单槽聚合 Skill、同一聚合的非空 Activation 视图与两种 Ref |
 | `unit/skill/initialize.ts` | create 接续 Definition.initialize，创建聚合初态 |
 | `unit/skill/query.ts`、`operations.ts` | 查询、字段写回、发动、主动操作、推进、结束与 lifetime |
@@ -16,7 +16,7 @@ Skill 负责 SP、发动、持续预算、主动操作和完整终止。Action �
 | `unit/capability/skill/capability.ts` | 初始化工厂 Definition、Skill Capability、公共 State、结构守卫与局部登记 |
 | `unit/capability/skill/rule.ts`、`hook.ts` | 能力 Rule、Hook 类型与事件契约 |
 
-领域 index 提供 create／createDefinition、Skill／Activation、ref／activationRef、getSkill／getActivation、字段写回及 SP／Ammo／激活业务，不转发能力守卫、Rule／Hook 登记和持续预算贡献 setter。Capability index 提供对应能力 API。内部 getCurrent 直接返回默认 object／object 的完整聚合，在普通查询边界恢复受信类型，不解释私有 data；不公开内部写回，不使用泛型 reader。
+领域 index 提供 create／createDefinition、Skill／Activation、ref／activationRef、getSkill／getActivation、字段写回及 SP／Ammo／激活业务，不转发能力守卫、Rule／Hook 登记和持续预算贡献 setter。Capability index 提供对应能力 API。内部 getCurrent 在受信边界取得已擦除参数的完整聚合，不解释私有 data；不公开内部写回，不使用泛型 reader。
 
 SP 的 setContribution／removeContribution 仍在 sp.ts，经领域入口以 setSpContribution／removeSpContribution 导出；它们与 SP State／Input 保持同一模块，不增加 Capability 转发函数。
 
@@ -35,9 +35,9 @@ SP 的 setContribution／removeContribution 仍在 sp.ts，经领域入口以 se
 
 Skill<S, A> 允许 activation 为 null；Activation<S, A> 是同一个聚合的非空运行视图，self.activation 确定存在。两者都通过 self.data 读取持久 S，本轮数据读取 self.activation.data。两个泛型均默认 object，只关心本轮 A 时使用 Activation<object, A>；具体私有类型由已知 Definition 或精确 Ref 保持。
 
-聚合不保存 host，内容程序显式接收 source。Capability State 扩展公开 SkillView，只承诺 Definition 元数据、SP 和可空 activation 元数据，隐藏私有 data 与完整回调；真实存储仍是同一个完整聚合。ActivationView 对同一公开视图作非空细化，不额外复制对象或执行容器。
+聚合不保存 host，内容程序显式接收 source。Capability State 扩展默认 Skill<object, object>，直接包含完整 Definition、data、SP 与可空 activation；object 不承诺某种具体私有形状。Activation 是同一完整聚合按本轮身份读取的非空细化，不增加元数据类型、对象复制或执行容器。
 
-Definition View 只公开 id、sp、activation 的 trigger／sustain；完整 Definition<S, A> 另有初始化与内容程序。Skill 程序与元数据从 unit.skill.definition 取得，Unit Definition.skill 只保存初始化工厂：
+Definition<S, A> 直接保存 id、SP 配置、初始化与完整内容程序。Skill 程序与元数据从 unit.skill.definition 取得，Unit Definition.skill 只保存初始化工厂：
 
 ```typescript
 skill: {
@@ -45,7 +45,7 @@ skill: {
 }
 ```
 
-Definition.initialize(battle) 返回 Result<S>；create 接续其 state，建立 definition、data、初始 SP 和 activation: null，返回 Result<Skill<S, A>>。Capability.initialize 接续工厂结果，并补 nextActivationId、贡献、规则与 Hook 初态。工厂返回类型在此创建边界要求私有数据和必需的初始化程序，普通 SkillView 不能充当创建结果；公共 State 仍只承诺视图，内部不重复校验。共享程序不保存私有运行进度，Unit 尚未登记时不能查询自己或假设兄弟能力已经存在。
+Definition.initialize(battle) 返回 Result<S>；create 接续其 state，建立 definition、data、初始 SP 和 activation: null，返回 Result<Skill<S, A>>。Capability.initialize 接续工厂结果，并补 nextActivationId、贡献、规则与 Hook 初态。Capability 工厂以 Result<Skill<any, any>> 接纳不同私有 S／A 的完整创建结果，公共 State 继承的 Skill 默认参数仍是 object；该创建组合边界不增加运行时形状校验。共享程序不保存私有运行进度，Unit 尚未登记时不能查询自己或假设兄弟能力已经存在。
 
 ### 引用、查询与写回
 
@@ -54,17 +54,17 @@ Definition.initialize(battle) 返回 Result<S>；create 接续其 state，建立
 | 持久 Skill Ref | ref(source, definition)，地址为 host＋Definition；getSkill、activate、setData 使用它，跨多轮有效 |
 | 本轮 Activation Ref | activationRef(source, self)，地址为 host＋self.activation.id；getActivation、finish、cancel、operate、extendTime、setActivationData 与 SKILL Scope 使用它 |
 
-getSkill(battle, skillRef) 确认当前聚合的 Definition 对象身份，恢复 S／A；getActivation(battle, roundRef) 确认本轮 ID，返回同一聚合的非空视图。activate 返回的本轮 Ref 保留原 Definition 的 S／A。公共 ActivationView Ref 只恢复公开视图，已知完整聚合形成的精确 Ref 才恢复完整类型。过期 Ref 不读取或操作后来一轮，生命周期资格仍从当前 battle 检查。
+getSkill(battle, skillRef) 确认当前聚合的 Definition 对象身份，恢复 S／A；getActivation(battle, roundRef) 确认本轮 ID，返回同一聚合的非空视图。activate 返回的本轮 Ref 保留原 Definition 的 S／A。普通查询返回默认 object 的完整实体，精确 Ref 保留已有 S／A；获取 Ref 的泛型上界使用 any 以接纳不同私有类型，结果保持原 T，不把默认参数改为 any。过期 Ref 不读取或操作后来一轮，生命周期资格仍从当前 battle 检查。
 
 字段级写回只接受结果值：
 
 ```typescript
-setData<S extends object, A extends object>(
-    battle: BattleState, ref: Ref<Skill<S, A>>, data: NoInfer<S>,
+setData<T extends Skill<any, any>>(
+    battle: BattleState, ref: Ref<T>, data: NoInfer<T["data"]>,
 ): BattleState;
 
-setActivationData<S extends object, A extends object>(
-    battle: BattleState, ref: Ref<Activation<S, A>>, data: NoInfer<A>,
+setActivationData<T extends Activation<any, any>>(
+    battle: BattleState, ref: Ref<T>, data: NoInfer<T["activation"]["data"]>,
 ): BattleState;
 ```
 

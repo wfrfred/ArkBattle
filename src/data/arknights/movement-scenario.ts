@@ -1,5 +1,6 @@
 import type { Seed } from "../../core/common/rng.js";
 import type { Input } from "../../core/battle/index.js";
+import type { Definition as TerrainDefinition } from "../../core/battlefield/map/terrain.js";
 import type { PredefinedDefinition } from "../../core/battle/steps/predefined.js";
 import type { ArknightsBlackboardEntry } from "./blackboard.js";
 import type { ArknightsMapOptions, ArknightsTileContext } from "./map.js";
@@ -202,7 +203,7 @@ export function loadMovementScenario(
         terrain.mapOptions,
         catalog,
     );
-    const terrainDefinitions = new Set(
+    const terrainDefinitions = new Set<TerrainDefinition<any>>(
         level.map.tiles.values().map((tile) => tile.definition.terrain.definition),
     );
     terrainDefinitions.delete(normal);

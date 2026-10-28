@@ -20,13 +20,13 @@ import type { Query } from ${source("common/query")};
 import type { State as BattleState } from ${source("battle/state")};
 import type { Unit } from ${source("unit/unit")};
 import type { Action as ActionCapability } from ${source("unit/capability/action/capability")};
-import type { View } from ${source("unit/action/action")};
-import type { Action, Execution, ExecutionView } from ${source("unit/action/index")};
-import { executionRef, ref as actionRef } from ${source("unit/action/index")};
+import type { Action, Execution } from ${source("unit/action/index")};
+import { executionRef, ref as actionRef, lifetime as actionLife } from ${source("unit/action/index")};
 import { Actions } from ${source("unit/action/actions")};
 import { create as createAction, createActions } from ${source("unit/action/index")};
 import type { Definition } from ${source("unit/action/index")};
 import { all, start, getExecution, cancel, setExecutionState, getAction, setState, setCooldown, resetCooldown, clearCooldown } from ${source("unit/action/index")};
+import { scope, getRef } from ${source("lifetime/index")};
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
 type Assert<T extends true> = T;
 declare const battle: BattleState;
@@ -45,21 +45,26 @@ if (started.value.type === "STARTED") {
     type Current = Assert<Equal<typeof current, Execution<object, { count: number }> | undefined>>;
 }
 const known = executionRef(source, action);
+const actionScope = scope(actionLife,known);
+actionLife.end(battle,known,{type:"FINISHED"});
+const defaultRound = getRef(actionScope,actionLife);
+type DefaultRound = Assert<Equal<typeof defaultRound,Ref<Execution>|undefined>>;
+// @ts-expect-error A persistent Action is not one execution's lifecycle identity.
+scope(actionLife,actionRef(source,definition));
 const host: Ref<Unit & ActionCapability> = known.host;
 type Host = Assert<Equal<typeof known.host, Ref<Unit & ActionCapability>>>;
 // @ts-expect-error A reference needs its host as well as the per-host execution id.
 const hostless: Pick<typeof known, "host" | "id"> = { id: 0 };
 type Known = Assert<Equal<typeof known, Ref<Execution<object, { count: number }>>>>;
 const weaker: Ref<Execution<object, { count: number }>> = specialized;
-const erased: Ref<ExecutionView> = weaker;
+declare const erased: Ref<Execution>;
 const candidates = all(battle);
-type Candidates = Assert<Equal<typeof candidates, readonly Ref<ExecutionView>[]>>;
+type Candidates = Assert<Equal<typeof candidates, readonly Ref<Execution>[]>>;
 const entries = Actions.empty().add(action);
-const publicEntries: Query<View> = entries.values();
+const publicEntries: Query<Action> = entries.values();
 const exactEntry = entries.get(definition.id, definition);
 type ExactEntry = Assert<Equal<typeof exactEntry, Action<object, { count: number }> | undefined>>;
 entries.replace(definition, { ...action, execution: { ...action.execution, state: { count: 1 } } });
-// @ts-expect-error Public views cannot be inserted as complete aggregates.
 entries.add(getExecution(battle, erased)!);
 // @ts-expect-error A typed Definition fixes execution state inference.
 entries.replace(definition, { ...action, execution: { ...action.execution, state: { count: "wrong" } } });
@@ -76,18 +81,21 @@ getExecution(battle, source);
 getExecution(battle, 0);
 // @ts-expect-error
 getExecution(battle, action);
-// @ts-expect-error
-getExecution(battle, erased)!.definition.onTick;
-// @ts-expect-error Public execution views hide E.
+getExecution(battle, erased)!.definition.onTick(battle, source, getExecution(battle, erased)!);
+// @ts-expect-error Default execution state does not infer E fields.
 getExecution(battle, erased)!.execution.state.count;
-// @ts-expect-error Public aggregate views hide P.
-getExecution(battle, erased)!.state;
+// @ts-expect-error Default aggregate data has no inferred P fields.
+getExecution(battle, erased)!.state.count;
+type DefaultExecution = Assert<Equal<NonNullable<ReturnType<typeof entries.getExecution>>,Execution>>;
+type DefaultPersistent = Assert<Equal<ReturnType<typeof entries.getAction>,Action|undefined>>;
+const defaultAction = entries.get(definition.id)!;
+type DefaultState = Assert<Equal<typeof defaultAction.state,object>>;
+defaultAction.definition.prepare(battle,source,defaultAction);
 const currentExecution = getExecution(battle, known)!;
 const currentCount: number = currentExecution.execution.state.count;
 setExecutionState(battle, known, { count: currentCount + 1 });
 // @ts-expect-error The execution reference fixes E.
 setExecutionState(battle, known, { count: "invalid" });
-// @ts-expect-error Public references do not prove private state.
 setExecutionState(battle, erased, {});
 // @ts-expect-error A Unit reference cannot identify an execution.
 setExecutionState(battle, source, { count: 1 });
@@ -155,12 +163,12 @@ const configuration: ActionCapability["definition"]["action"] = {
 };
 const initialized = configuration.initialize(battle);
 // @ts-expect-error Generic initialized entries hide persistent content state.
-initialized.value.get("persistent")!.state;
+initialized.value.get("persistent")!.state.uses;
 const initializedPersistent = initialized.value.get("persistent", persistent)!;
 const initializedUses: number = initializedPersistent.state.uses;
 declare const actionHost: Unit & ActionCapability;
 // @ts-expect-error Untyped queries hide persistent content state.
-actionHost.action.actions.get("persistent")!.state;
+actionHost.action.actions.get("persistent")!.state.uses;
 const persistentEntry = actionHost.action.actions.get("persistent", persistent)!;
 const usage: number = persistentEntry.state.uses;
 actionHost.action.actions.replace(persistent, { ...persistentEntry, state: { uses: 2 } });

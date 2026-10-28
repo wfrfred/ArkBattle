@@ -6,14 +6,10 @@ export type Id = number;
 
 export type Lifecycle = "ACTIVE" | "ENDING";
 
-export interface View extends Identified<{ readonly id: Id }> {
+export interface Projectile<S extends object = object> extends Identified<{ readonly id: Id }> {
     readonly id: Id;
-    readonly definition: Pick<Definition<object>, "id">;
+    readonly definition: Definition<S>;
     readonly lifecycle: Lifecycle;
     readonly position: WorldPosition;
-}
-
-export interface Projectile<S extends object> extends View {
-    readonly definition: Definition<S>;
     readonly state: S;
 }

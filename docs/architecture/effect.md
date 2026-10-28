@@ -43,7 +43,7 @@ Definition 是可共享的静态行为，Effect 是附着在一个 Unit 上的�
 BattleState 是 battle 模块的不可变 State 数据值：
 
 ```typescript
-interface Definition<S extends object, H extends object = object> {
+interface Definition<S extends object = object, H extends object = object> {
     readonly id: string;
     readonly group?: { readonly id: string; readonly priority: number };
     readonly initialize: () => S;
@@ -56,7 +56,7 @@ interface Definition<S extends object, H extends object = object> {
 
 interface Effect<S extends object = object, H extends object = object> {
     readonly id: number;
-    readonly host: Ref<Unit & H>;
+    readonly host: Ref<Unit> & Ref<Unit & H>;
     readonly definition: Definition<S, H>;
     readonly data: S;
     readonly source: Ref<Unit> | null;
@@ -81,11 +81,11 @@ Unit 初始化始终建立空 Effects，不接收预装容器。初始 Buff、�
 
 ### 不可变 Effects 容器
 
-`Unit.effects: Effects` 以私有 `Store<Id, View>` 持有异构 Effect 集合与宿主内的 `nextId`。容器是不可变值：增删改返回新容器，原容器与其中的旧实例仍可读取；查询返回共享的不可变引用。
+`Unit.effects: Effects` 以私有 `Store<Id, Effect<any, any>>` 持有异构 Effect 集合与宿主内的 `nextId`。容器是不可变值：增删改返回新容器，原容器与其中的旧实例仍可读取；查询返回共享的不可变引用。
 
-普通查询只需要实例身份、生命周期事实和 Definition 的标识／组信息。`get(id)` 返回稳定的 `View`，`values()` 返回绑定该容器版本的 `Query<View>`，`keys()` 返回 `Query<Id>`。Query 惰性求值、可重复遍历；需要固定身份名单或物化结果时显式调用 `toArray()`。
+普通 get(id) 返回完整 Effect<object, object>，values() 返回绑定容器版本的 Query<Effect>，keys() 返回 Query<Id>。实例的 data 和完整 Definition 都存在，默认 object 不声称某种私有形状。Query 惰性、可重复遍历，需要固定身份名单时显式 toArray。
 
-`View<H>` 保留 id、`Ref<Unit & H>` 宿主、source、scopes、enabled、status，以及 Definition 的 id／group 元数据，不暴露 data 或生命周期回调。Definition 元数据仍指向原 Definition 对象，不复制成另一份对象。完整 `Effect<S, H>` 扩展 `View<H>`，再提供成对的 `Definition<S, H>` 与 data。
+Effect<S, H> 直接保存完整 Definition<S, H> 与 data，以及 id、宿主、来源、scopes 和参与状态。宿主类型同时保留 Ref<Unit> 与 Ref<Unit & H>，内部 H 擦除为 any 时仍有 Unit 地址与身份。普通读取不增加另一套实体类型，具体私有读写继续使用原配对证明。
 
 具体内容需要恢复 S／H 时，使用精确 Ref 或 Definition 对象身份查询。Core 只需把未知实例交给它自身 Definition 的程序，完整读取由容器的内部 getter 提供，不恢复某个具体内容类型。
 
@@ -93,11 +93,11 @@ Unit 初始化始终建立空 Effects，不接收预装容器。初始 Buff、�
 | ----------------------------- | --------------------------------------------------------- |
 | `Effects.empty()`             | 取得空容器                                                |
 | `effects.nextId`              | 下一次安装可使用的宿主内实例 ID                           |
-| `effects.get(id)`             | 按实例 ID 取得 View，不暴露私有数据和 Definition 回调     |
+| `effects.get(id)`             | 按实例 ID 取得默认 object 的完整 Effect     |
 | `effects.get(ref)`            | 根据精确 Ref 恢复对应实例，并检查宿主与局部 ID          |
 | `effects.get(id, definition)` | 同时检查 Definition 身份，取得对应 `Effect<S, H>`         |
 | `effects.getEffect(id)`       | Core 内部取得完整 Effect，默认擦除具体 data／H 形状       |
-| `effects.values()`            | 返回绑定当前版本的 `Query<View>`                         |
+| `effects.values()`            | 返回绑定当前版本的 `Query<Effect>`                         |
 | `effects.keys()`              | 返回绑定当前版本的 `Query<Id>`                           |
 | `effects.add(effect)`         | 仅接受 `effect.id === nextId`，返回新容器并将 nextId 加一 |
 | `effects.replace(ref, next)`  | Core 完整替换；信任 Ref 与完整实例已经配对                  |
@@ -108,10 +108,10 @@ Unit 初始化始终建立空 Effects，不接收预装容器。初始 Buff、�
 通用生命周期操作直接读取当前完整实例：
 
 ```typescript
-getEffect(id: Id): Effect | undefined;
+getEffect(id: Id): Effect<any, any> | undefined;
 ```
 
-getEffect 返回默认使用 object／object 的完整 Effect，容器内以 as Effect 恢复，作为受信的类型边界。Core 只调用该实例自身 Definition 的程序，不解释私有 data 的结构或宿主能力 H，保留实例与 Definition 的配对。生命周期阶段、回调实参与状态接续仍由 operations 决定；getter 只返回当前容器版本的实例，不执行内容程序，也不扩大普通 get／values 的 View。
+getEffect 在 Core 内部返回已擦除参数的完整 Effect<any, any>。Core 只调用该实例自身 Definition 的程序，不解释私有 data 或 H；生命周期与状态接续仍由 operations 决定。普通 get／values 保持默认 object，内部擦除不成为 Content 的具体私有类型证明。
 
 异构存储需要的擦除与恢复集中在容器内部，不另设业务代码需要理解的 Instance 类型。`add()` 保留 effect.id === nextId 的登记约束，随后直接递增 nextId；按游戏尺度计算，不追加安全整数上界或理论溢出检查。`replace()` 信任 Core 提供已经配对的 Ref 与完整 Effect，宿主、局部 ID 和 Definition 的稳定性由 Core 保证，容器不重复执行这些运行时校验。缺失实例的 replace／remove 返回原容器，替换值与当前实例引用相同时保留原容器；删除不回收已经分配的 ID。get(ref) 的宿主识别与 get(id, definition) 的 Definition 对象身份查询仍负责类型恢复。
 
@@ -119,7 +119,7 @@ Effects 的完整替换属于 Core 存储接口。它不接收 BattleState，不
 
 operations.ts 的私有 replaceEffect(battle, unit, self) 提交已经配对的宿主与完整 Effect。调用方从当前 battle 取得对象并完成入口所需的缺失、ENDING、无变化等判断；helper 信任这些前提，不重复查找对象或校验存在性，直接通过 Effects.replace 与完整 Unit 更新提交。Effects.replace 读取当前槽位以保留缺失及同引用时的 no-op，配对和身份稳定性由 Core 保证；业务资格由所属入口负责。
 
-不可变 State 直接共享这个容器。容器的 `toJSON()` 直接物化底层 values，在序列化边界将结果断言为只读 Snapshot 数组，返回 `{ instances, nextId }`。Snapshot 在 View 之外保存 `data: unknown`，让 JSON 诊断包含私有数据与 ID 进度。实例、View 与诊断 Snapshot 的 source 均保留 `Ref<Unit> | null`；具体输出只需数值来源 ID 时在输出位置读取 source?.id。诊断表示独立于普通 Query，不承担恢复 Definition、回调或运行容器的职责。
+不可变 State 直接共享这个容器。容器的 `toJSON()` 直接物化底层 values，在序列化边界将结果断言为只读 Snapshot 数组，返回 `{ instances, nextId }`。Snapshot 用 unknown 表达诊断载荷并限制 Definition 的诊断字段，让 JSON 诊断包含数据与 ID 进度。实例与诊断 Snapshot 的 source 均保留 `Ref<Unit> | null`；具体输出只需数值来源 ID 时在输出位置读取 source?.id。诊断表示独立于普通 Query，不承担恢复 Definition、回调或运行容器的职责。
 
 ```typescript
 type Ref<T> = Identity<T> & Phantom<T>;
@@ -226,15 +226,15 @@ Contribution 的登记／撤销与 Hook 的开关是两种自然接入方式，�
 Effect 的 end 委托自身 lifetime 描述符。Scope 构造、类型恢复与资格查询使用 core/lifetime 的 scope／getRef／available；通用 request／drain 不向内容开放。
 
 ```typescript
-function setData<S extends object, H extends object>(
+function setData<T extends Effect<any, any>>(
     battle: BattleState,
-    ref: Ref<Effect<S, H>>,
-    data: NoInfer<S>,
+    ref: Ref<T>,
+    data: NoInfer<T["data"]>,
 ): BattleState;
 
 function setDeadline(
     battle: BattleState,
-    ref: Ref<View>,
+    ref: Ref<Effect<any, any>>,
     tick: number | null,
 ): BattleState;
 ```
@@ -247,7 +247,7 @@ function setDeadline(
 
 `NoInfer` 约束本次结果值的类型推导。私有更新必须保留实例与 Definition 对应的 S／H 类型关联；Ref 可协变查询，借预先弱化的完整 Ref 写入不兼容私有数据属于调用契约错误，不增加运行时数据形状检查。
 
-`setDeadline()` 是完整战斗写回操作，从当前 battle 按 `Ref<View>` 取得宿主与实例，保留所有非 TICK Scope，将 TICK 项替换为给定期限；null 清除所有 TICK 项。非 null 的 tick 在入口校验为非负安全整数，非法值抛出 RangeError；宿主或实例缺失也抛出 RangeError。当前已经只有一个相同期限的 TICK 项，或给定 null 且当前没有 TICK 项时，返回原 BattleState。
+`setDeadline()` 是完整战斗写回操作，从当前 battle 按 `Ref<Effect<any, any>>` 取得宿主与实例，保留所有非 TICK Scope，将 TICK 项替换为给定期限；null 清除所有 TICK 项。非 null 的 tick 在入口校验为非负安全整数，非法值抛出 RangeError；宿主或实例缺失也抛出 RangeError。当前已经只有一个相同期限的 TICK 项，或给定 null 且当前没有 TICK 项时，返回原 BattleState。
 
 期限写回保留当前 status，INSTALLING、INACTIVE、ACTIVE、ENDING 均可更新；ENDING 中设置期限不会恢复实例或阻止最终移除。该操作只提交期限，不额外推进或立即结束实例，即使新期限已经到达当前 tick，到期仍由正常 advance 在 onTick 后读取最新期限并结算。
 

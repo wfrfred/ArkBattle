@@ -1,33 +1,23 @@
 import type { Identified, Ref } from "../../common/ref.js";
 import type { Unit } from "../unit.js";
 import type { Action as ActionCapability } from "../capability/action/capability.js";
-import type { Definition, View as DefinitionView } from "./definition.js";
+import type { Definition } from "./definition.js";
 import type * as cooldown from "./cooldown.js";
-import type {
-    State as ExecutionState,
-    StateView as ExecutionStateView,
-    Snapshot as ExecutionSnapshot,
-} from "./execution.js";
+import type { State as ExecutionState, Snapshot as ExecutionSnapshot } from "./execution.js";
 
-export interface View {
-    readonly definition: DefinitionView;
-    readonly cooldown: cooldown.State;
-    readonly execution: ExecutionStateView | null;
-}
-
-export interface Action<P extends object = object, E extends object = object>
-    extends
-        View,
-        Identified<{
-            readonly host: Ref<Unit & ActionCapability>;
-            readonly definition: Definition<P, E>;
-        }> {
+export interface Action<P extends object = object, E extends object = object> extends Identified<{
+    readonly host: Ref<Unit & ActionCapability>;
+    readonly definition: Definition<P, E>;
+}> {
     readonly definition: Definition<P, E>;
     readonly state: P;
+    readonly cooldown: cooldown.State;
     readonly execution: ExecutionState<E> | null;
 }
 
-export interface Snapshot extends View {
+export interface Snapshot {
+    readonly definition: Pick<Definition, "id" | "intervalTicks" | "speed">;
+    readonly cooldown: cooldown.State;
     readonly state: unknown;
     readonly execution: ExecutionSnapshot | null;
 }

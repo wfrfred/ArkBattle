@@ -1,15 +1,21 @@
 import { assertPositiveSafeInteger } from "../../core/common/assert.js";
-import type { Ref } from "../../core/common/ref.js";
+import type { Identified, Ref } from "../../core/common/ref.js";
 
 import { executionRef, getExecution } from "../../core/unit/action/index.js";
-import { activationRef, type ActivationView, consume, check } from "../../core/unit/skill/index.js";
+import {
+    activationRef,
+    type Activation,
+    type Skill,
+    consume,
+    check,
+} from "../../core/unit/skill/index.js";
 import { hasSkill } from "../../core/unit/capability/skill/index.js";
 
 import * as units from "../../core/unit/index.js";
 import { createWithState, type Attack, type Definition as AttackDefinition } from "./attack.js";
 
 export interface State {
-    readonly activation: Ref<ActivationView> | null;
+    readonly activation: Ref<Activation> | null;
 }
 
 export interface Definition extends AttackDefinition<object, State> {
@@ -32,7 +38,10 @@ export function create(definition: Definition): Attack<object, State> {
                 value: {
                     activation:
                         host !== undefined && hasSkill(host) && host.skill.activation !== null
-                            ? activationRef(units.ref(host), host.skill as ActivationView)
+                            ? activationRef(
+                                  units.ref(host),
+                                  host.skill as Omit<Skill, keyof Identified<object>> as Activation,
+                              )
                             : null,
                 },
             };

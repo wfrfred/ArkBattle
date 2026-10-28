@@ -2,8 +2,7 @@ import type { Identified, Ref } from "../../common/ref.js";
 import type { State as BattleState } from "../../battle/state.js";
 import type { Unit } from "../unit.js";
 import type { Skill as SkillCapability } from "../capability/skill/capability.js";
-import type { Skill, View as SkillView } from "./skill.js";
-import type { Definition as SkillDefinition } from "./definition.js";
+import type { Skill } from "./skill.js";
 import type { Definition as SustainDefinition, State as SustainState } from "./sustain.js";
 
 export type Operation = "STOP" | "RETRIGGER";
@@ -55,33 +54,27 @@ export interface Definition<S extends object, A extends object> {
     ) => BattleState;
 }
 
-export interface StateView {
+export interface State<A extends object = object> {
     readonly id: number;
     readonly startedAtTick: number;
     readonly status: "ACTIVE" | "ENDING";
     readonly sustain: SustainState;
-}
-
-export interface State<A extends object = object> extends StateView {
     readonly data: A;
 }
 
-export interface View
+export interface Activation<S extends object = object, A extends object = object>
     extends
-        SkillView,
+        Omit<Skill<S, A>, keyof Identified<object>>,
         Identified<{
             readonly host: Ref<Unit & SkillCapability>;
             readonly id: number;
         }> {
-    readonly activation: StateView;
-}
-
-export interface Activation<S extends object = object, A extends object = object> extends View {
-    readonly definition: SkillDefinition<S, A>;
-    readonly data: S;
     readonly activation: State<A>;
 }
 
-export function ref<X extends View>(host: Ref<Unit & SkillCapability>, self: X): Ref<X> {
+export function ref<X extends Activation<any, any>>(
+    host: Ref<Unit & SkillCapability>,
+    self: X,
+): Ref<X> {
     return { host, id: self.activation.id } as Ref<X>;
 }

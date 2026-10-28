@@ -101,7 +101,7 @@ import type { Unit } from ${source("unit/unit")};
 import * as units from ${source("unit/query")};
 import type { Vitality } from ${source("unit/capability/vitality/capability")};
 import type { Locomotion } from ${source("unit/capability/locomotion/capability")};
-import type { Effect, View } from ${source("unit/effect/effect")};
+import type { Effect } from ${source("unit/effect/effect")};
 import { ref } from ${source("unit/effect/effect")};
 import type { Definition } from ${source("unit/effect/definition")};
 import * as effects from ${source("unit/effect/index")};
@@ -109,6 +109,8 @@ import { scope, getRef, type Scope } from ${source("lifetime/index")};
 import { lifetime as unitLife } from ${source("battle/unit")};
 import { lifetime as effectLife } from ${source("unit/effect/index")};
 
+type Equal<A,B>=(<T>()=>T extends A?1:2) extends (<T>()=>T extends B?1:2)?true:false;
+type Assert<T extends true>=T;
 declare const battle: BattleState;
 declare const host: Ref<Unit & Vitality & Locomotion>;
 declare const shield: Effect<{ charges: number }, Vitality>;
@@ -141,6 +143,23 @@ const unitReference: Ref<Unit> | undefined = getRef(unitLifetime, unitLife);
 effectLife.end(battle, host, "EXPLICIT");
 // @ts-expect-error Unit ending requires a Departure value.
 unitLife.end(battle, host, "DEATH");
+const effectScope: Scope = scope(effectLife, known);
+effectLife.end(battle, known, "EXPLICIT");
+const defaultReference = getRef(effectScope, effectLife);
+type RestoredLifetimeRef = Assert<Equal<typeof defaultReference,Ref<Effect>|undefined>>;
+if (defaultReference !== undefined) {
+    const current = effects.get(battle, defaultReference)!;
+    type LifetimeData = Assert<Equal<typeof current.data,object>>;
+    current.definition.onTick?.(battle,current);
+    // @ts-expect-error Lifetime restoration does not recover content-specific private data.
+    current.data.charges;
+    // @ts-expect-error Lifetime restoration does not invent host capabilities.
+    units.get(battle,current.host)!.vitality.hp;
+}
+// @ts-expect-error Scope construction keeps each lifetime paired with its reference family.
+scope(effectLife,host);
+// @ts-expect-error Lifetime ending inputs belong to their domain.
+effectLife.end(battle,known,{type:"FINISHED"});
 effects.bindLifetime(battle, retained, unitLifetime);
 // @ts-expect-error Unit lifetimes require a typed reference rather than a bare Unit ID.
 const bareUnitLifetime: Scope = { type: "LIFETIME", unitId: host.id };
@@ -160,12 +179,11 @@ if (restored !== undefined) {
     // @ts-expect-error private data retains the known field types.
     effects.setData(battle, retained, { ...restored.data, charges: "one" });
 }
-const publicRef: Ref<View> = retained;
+const publicRef = ref(units.get(battle, retained.host)!.effects.get(retained.id)!);
 const renewed: BattleState = effects.setDeadline(battle, publicRef, 30);
 effects.setDeadline(renewed, retained, null);
 // @ts-expect-error Unit references cannot identify an Effect deadline.
 effects.setDeadline(battle, host, 30);
-// @ts-expect-error public identities do not prove a private data type.
 effects.setData(battle, publicRef, { charges: 1 });
 effects.setData(battle, retained, { charges: 1 });
 // @ts-expect-error Effect data is supplied as a value rather than a transform.

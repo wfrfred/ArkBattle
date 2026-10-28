@@ -1,6 +1,6 @@
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import type { Ref } from "../../common/ref.js";
-import type { CreationDefinition, Mechanism, MechanismDefinition, View } from "../mechanism.js";
+import type { CreationDefinition, Mechanism, MechanismDefinition } from "../mechanism.js";
 import type { Result, State as BattleState } from "../state.js";
 
 export interface MechanismPlacementDefinition {
@@ -18,11 +18,11 @@ export function instantiateMechanismPlacement<S extends object>(
 export function instantiateMechanismPlacement(
     battle: BattleState,
     placement: MechanismPlacementDefinition,
-): Result<Ref<View>>;
+): Result<Ref<Mechanism>>;
 export function instantiateMechanismPlacement(
     battle: BattleState,
     placement: MechanismPlacementDefinition,
-): Result<Ref<View>> {
+): Result<Ref<Mechanism>> {
     const id = battle.execution.nextMechanismId;
     assertNonnegativeSafeInteger(id, "mechanism id");
     const nextMechanismId = id + 1;

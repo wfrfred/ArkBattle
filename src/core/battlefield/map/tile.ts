@@ -1,5 +1,5 @@
 import { assertPositiveSafeInteger } from "../../common/assert.js";
-import type { Terrain, View as TerrainView } from "./terrain.js";
+import type { Terrain } from "./terrain.js";
 
 export type Elevation = "LOWLAND" | "HIGHLAND";
 
@@ -18,21 +18,14 @@ export interface State {
     readonly siteCondition: SiteCondition | null;
 }
 
-export interface Definition<P extends object> {
+export interface Definition<P extends object = object> {
     readonly terrain: Terrain<P>;
     readonly initial: State;
 }
 
-export interface View {
-    readonly definition: {
-        readonly terrain: TerrainView;
-        readonly initial: State;
-    };
-    readonly state: State;
-}
-
-export interface Tile<P extends object> extends View {
+export interface Tile<P extends object = object> {
     readonly definition: Definition<P>;
+    readonly state: State;
 }
 
 export function create<P extends object>(definition: Definition<P>): Tile<P> {

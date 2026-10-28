@@ -1,4 +1,4 @@
-import type { Passability, Tile, View as TileView } from "./tile.js";
+import type { Passability, Tile } from "./tile.js";
 import type { Definition as TerrainDefinition } from "./terrain.js";
 import type { Tiles } from "./tiles.js";
 import { assertPositiveSafeInteger } from "../../common/assert.js";
@@ -30,17 +30,17 @@ export function contains(map: Map, position: TilePosition): boolean {
     return row >= 0 && row < map.rows && col >= 0 && col < map.columns;
 }
 
-export function get(map: Map, position: TilePosition): TileView | undefined;
+export function get(map: Map, position: TilePosition): Tile | undefined;
 export function get<P extends object>(
     map: Map,
     position: TilePosition,
     definition: TerrainDefinition<P>,
 ): Tile<P> | undefined;
-export function get<P extends object>(
+export function get(
     map: Map,
     position: TilePosition,
-    definition?: TerrainDefinition<P>,
-): TileView | Tile<P> | undefined {
+    definition?: TerrainDefinition<any>,
+): Tile<any> | undefined {
     if (!contains(map, position)) {
         return undefined;
     }

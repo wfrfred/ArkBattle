@@ -28,7 +28,7 @@
 | [Vitality / Damage 设计](vitality.md) | Calculate、请求与参数类型、Apply 五个时点、普通结果、暂缓的特殊生命语义，以及弱点伤害的项目规则 |
 | [Deployment 与 Unit 生命周期](deployment.md) | Card／场上实例、部署参数与 API、登场／离场职责及待定语义 |
 | [Effect 设计](effect.md)                  | Unit 附着实例、Definition 泛型、生命周期、Hook／Contribution 接入、Aura 与文件职责 |
-| [Projectile 设计](projectile.md) | 独立执行实例、View／Store／Query、内容回调与更新、Step 候选及终止请求／Finalize |
+| [Projectile 设计](projectile.md) | 独立完整实例、异构 Store／Query、内容回调与更新、Step 候选及终止请求／Finalize |
 | [Tactical 内容接入](content.md) | 主模式配置、静态角色代码、登场内容与 Core 边界 |
 
 [Tactical 研究](../research/00-INDEX.md) 提供玩法行为依据。大语义遵从官方，小差异从简；项目选择自己的执行结构，设计取舍按以下已有分类处理：

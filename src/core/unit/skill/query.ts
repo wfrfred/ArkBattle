@@ -4,25 +4,25 @@ import * as units from "../query.js";
 import type { Unit } from "../unit.js";
 import type { Skill as SkillCapability } from "../capability/skill/capability.js";
 import type { Skill } from "./skill.js";
-import type { View as ActivationView } from "./activation.js";
+import type { Activation } from "./activation.js";
 
 export function getCurrent(
     battle: BattleState,
     source: Ref<Unit & SkillCapability>,
 ): Skill | undefined {
-    return units.get(battle, source)?.skill as Skill | undefined;
+    return units.get(battle, source)?.skill;
 }
 
-export function getSkill<S extends object, A extends object>(
+export function getSkill<X extends Skill<any, any>>(
     battle: BattleState,
-    reference: Ref<Skill<S, A>>,
-): Skill<S, A> | undefined {
-    const skill = units.get(battle, reference.host)?.skill as Skill<S, A> | undefined;
+    reference: Ref<X>,
+): X | undefined {
+    const skill = units.get(battle, reference.host)?.skill;
 
-    return skill?.definition === reference.definition ? skill : undefined;
+    return (skill?.definition === reference.definition ? skill : undefined) as X | undefined;
 }
 
-export function getActivation<X extends ActivationView>(
+export function getActivation<X extends Activation<any, any>>(
     battle: BattleState,
     reference: Ref<X>,
 ): X | undefined {
