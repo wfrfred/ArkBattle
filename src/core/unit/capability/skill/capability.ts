@@ -4,7 +4,7 @@ import * as registry from "../../../hook.js";
 import * as contribution from "../../contribution/contribution.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Activation } from "../../skill/activation.js";
-import type { Declaration } from "../../skill/definition.js";
+import type { View as DefinitionView } from "../../skill/definition.js";
 import type { Events, Hook, Key } from "./hook.js";
 import type { Input as AmmoInput } from "../../skill/ammo.js";
 import type { Modifier } from "../../skill/modifier.js";
@@ -29,7 +29,7 @@ export interface State {
 }
 
 export interface Skill {
-    readonly definition: { readonly skill: Declaration };
+    readonly definition: { readonly skill: DefinitionView };
     readonly skill: State;
 }
 
@@ -45,7 +45,12 @@ export function hasSkillDefinition(
 
 export function initialize(
     battle: BattleState,
-    definition: Skill["definition"]["skill"],
+    definition: DefinitionView & {
+        readonly initialize: () => object;
+        readonly activation: {
+            readonly initialize: (battle: BattleState, self: never) => object;
+        } | null;
+    },
 ): Result<State> {
     const value: State = {
         data: definition.initialize(),

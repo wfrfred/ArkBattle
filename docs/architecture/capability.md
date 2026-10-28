@@ -151,7 +151,7 @@ Skill 激活先一次性提交支付与新 Activation，再记录 SKILL_ACTIVATE
 
 ## 文件职责
 
-Skill 的程序定义、Activation、SP／Ammo 与完整业务位于 [unit/skill](../../src/core/unit/skill/index.ts)；[capability/skill](../../src/core/unit/capability/skill/index.ts) 保留 Skill／State、守卫、initialize 及局部 Rule／Hook／Ammo／时长贡献 setter。Definition／createDefinition 与 Declaration 归 unit/skill/definition.ts，Capability 使用该声明关联配置，不复制一套定义。两个 index 分别提供领域和能力 API，不相互转发整套入口。Skill 的 Hook 只用 setHook／removeHook 按 Key 登记，保留事件类型配对，不提供同义专名 setter。SP 的局部 setContribution／removeContribution 继续归领域 sp.ts，与资源类型同处，不增加 Capability 包装；Skill 静态 Modifier.priority 在 SP／时长贡献登记入口校验，每次 apply 仍校验动态程序输出。
+Skill 的程序定义、Activation、SP／Ammo 与完整业务位于 [unit/skill](../../src/core/unit/skill/index.ts)；[capability/skill](../../src/core/unit/capability/skill/index.ts) 保留 Skill／State、守卫、initialize 及局部 Rule／Hook／Ammo／时长贡献 setter。View、Definition／createDefinition 归 unit/skill/definition.ts；Capability 以 DefinitionView 别名引用纯元数据 View，initialize 的输入用内联交叉类型补足顶层和 Activation 的初始化程序，不新建创建协议。Catalog 仍从该签名推导配置，运行时不变。两个 index 分别提供领域和能力 API，不相互转发整套入口。Skill 的 Hook 只用 setHook／removeHook 按 Key 登记，保留事件类型配对，不提供同义专名 setter。SP 的局部 setContribution／removeContribution 继续归领域 sp.ts，与资源类型同处，不增加 Capability 包装；Skill 静态 Modifier.priority 在 SP／时长贡献登记入口校验，每次 apply 仍校验动态程序输出。
 
 文件按真实领域职责和代码规模划分。完整结算也是纯函数，纯度和参数大小都不能单独决定拆文件。小型内部步骤可以与完整操作同处；具有独立使用与理解价值的规则才单独组织。删除只转发的跳转层，保留 Unit 离场等确有业务顺序的分阶段操作。
 

@@ -8,7 +8,7 @@ Skill 负责 SP、发动、持续预算、主动操作和完整终止。Action �
 
 | 模块 | 职责 |
 | --- | --- |
-| `unit/skill/definition.ts` | 泛型 Definition、Capability 配置声明 Declaration 与 createDefinition |
+| `unit/skill/definition.ts` | 元数据 View、完整泛型 Definition 与 createDefinition |
 | `unit/skill/activation.ts`、`instance.ts` | Activation、配对 Instance、普通内部查询与完整写回 |
 | `unit/skill/query.ts`、`operations.ts` | 当前 Activation 查询、字段写回、发动、主动操作、时间推进、结束与 lifetime |
 | `unit/skill/sp.ts`、`ammo.ts`、`sustain.ts`、`modifier.ts` | SP、Ammo、持续预算与领域数值规则 |
@@ -21,7 +21,7 @@ SP 的 setContribution／removeContribution 仍是 `unit/skill/sp.ts` 的局部�
 
 ## 1. Definition 与状态
 
-`unit/skill/definition.ts` 的 `Definition<S, A>` 直接保存在 Unit Definition 中，由所有部署实例共享。Capability 使用同一模块的 Declaration 表达公共配置，不另建一套程序定义。
+`unit/skill/definition.ts` 的 View 只提供 id、sp，以及 activation 的 trigger／sustain，不暴露 initializer 或生命周期回调。`Definition<S, A>` 扩展 View 并保留完整初始化与内容程序，运行时仍由部署实例共享同一对象；Capability.Skill.definition.skill 只承诺 View，不复制另一份定义。
 
 | 数据 | 职责 |
 | --- | --- |

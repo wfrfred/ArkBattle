@@ -17,7 +17,7 @@ import type { State as BattleState } from ${source("battle/state")};
 import type { Unit } from ${source("unit/unit")};
 import { initialize } from ${source("unit/initialize")};
 import * as units from ${source("unit/query")};
-import { createDefinition, type Definition } from ${source("unit/skill/definition")};
+import { createDefinition, type Definition, type View as DefinitionView } from ${source("unit/skill/definition")};
 import { initialize as initializeSkill, hasSkill, type Skill, type State } from ${source("unit/capability/skill/capability")};
 import { ref, type Activation } from ${source("unit/skill/activation")};
 import { get as getInstance } from ${source("unit/skill/instance")};
@@ -53,6 +53,18 @@ const definition: Definition<Persistent, Active> = createDefinition({
     },
 });
 const initialized = initialize(battle, { id: 0, position: [0, 0], definition: { hooks: [], id: "typed-host", skill: definition } }).value;
+const view: DefinitionView = definition;
+const publicHost: Unit & Skill = initialized;
+const metadata: DefinitionView = publicHost.definition.skill;
+const trigger: "MANUAL" | "AUTO" | "PASSIVE" | undefined = metadata.activation?.trigger;
+// @ts-expect-error Definition views expose metadata, not persistent initialization programs.
+view.initialize();
+// @ts-expect-error Activation metadata does not expose its private data initializer.
+metadata.activation?.initialize;
+// @ts-expect-error Definition callbacks belong to the full paired program.
+metadata.onTick;
+// @ts-expect-error A metadata view does not prove a complete creation input.
+initializeSkill(battle, view);
 const state = initializeSkill(battle, definition).value;
 type CommonState = Assert<Equal<typeof state, State>>;
 // @ts-expect-error Unit capability state does not expose a program's private data.

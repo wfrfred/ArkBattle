@@ -3,24 +3,19 @@ import type { State as BattleState } from "../../battle/state.js";
 import type { Definition as ActivationDefinition } from "./activation.js";
 import type { Instance } from "./instance.js";
 import * as sp from "./sp.js";
-import type * as sustain from "./sustain.js";
 
-export interface Definition<S extends object = object, A extends object = object> {
+export interface View {
     readonly id: string;
-    readonly initialize: () => S;
     readonly sp: sp.Definition | null;
+    readonly activation: Pick<ActivationDefinition<object, object>, "trigger" | "sustain"> | null;
+}
+
+export interface Definition<S extends object = object, A extends object = object> extends View {
+    readonly initialize: () => S;
     readonly activation: ActivationDefinition<S, A> | null;
     readonly onEnter?: (battle: BattleState, self: Instance<S, A>) => BattleState;
     readonly onTick?: (battle: BattleState, self: Instance<S, A>) => BattleState;
 }
-
-export type Declaration = Pick<Definition, "id" | "initialize" | "sp"> & {
-    readonly activation: {
-        readonly trigger: ActivationDefinition<object, object>["trigger"];
-        readonly sustain: sustain.Definition;
-        readonly initialize: (battle: BattleState, self: never) => object;
-    } | null;
-};
 
 export function createDefinition<S extends object, A extends object>(
     definition: Definition<S, A>,
