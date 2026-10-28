@@ -287,32 +287,6 @@ function replaceEffect<S extends object, H extends object>(
     return updateUnit(battle, [{ ...unit, effects: unit.effects.replace(effectRef(self), self) }]);
 }
 
-function shouldBeActive(battle: BattleState, instance: View, unit: Unit): boolean {
-    if (
-        !instance.enabled ||
-        unit.lifecycle !== "PRESENT" ||
-        instance.scopes.some((scope) => scope.type !== "TICK" && !available(battle, scope))
-    ) {
-        return false;
-    }
-
-    const group = instance.definition.group;
-
-    return (
-        group === undefined ||
-        !unit.effects
-            .values()
-            .some(
-                (other) =>
-                    other.status !== "ENDING" &&
-                    other.definition.group?.id === group.id &&
-                    (other.definition.group.priority > group.priority ||
-                        (other.definition.group.priority === group.priority &&
-                            other.id < instance.id)),
-            )
-    );
-}
-
 function updateStatus(battle: BattleState, ref: Ref<View>): BattleState {
     const unit = units.get(battle, ref.host);
     const instance = unit?.effects.getEffect(ref.id);
@@ -325,7 +299,22 @@ function updateStatus(battle: BattleState, ref: Ref<View>): BattleState {
         return battle;
     }
 
-    const active = shouldBeActive(battle, instance, unit);
+    const group = instance.definition.group;
+    const active =
+        instance.enabled &&
+        unit.lifecycle === "PRESENT" &&
+        !instance.scopes.some((scope) => scope.type !== "TICK" && !available(battle, scope)) &&
+        (group === undefined ||
+            !unit.effects
+                .values()
+                .some(
+                    (other) =>
+                        other.status !== "ENDING" &&
+                        other.definition.group?.id === group.id &&
+                        (other.definition.group.priority > group.priority ||
+                            (other.definition.group.priority === group.priority &&
+                                other.id < instance.id)),
+                ));
     if (active === (instance.status === "ACTIVE")) {
         return battle;
     }

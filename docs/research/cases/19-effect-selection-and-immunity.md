@@ -75,7 +75,7 @@ AdvancedSelector.OnPostFilter [74238]
 
 ## 4. 当前 Stronghold 的实际差距
 
-当前 `unit/effect/operations.ts` 的 install 检查宿主和 Scope 可用性；shouldBeActive 检查 enabled、状态、宿主、Scope 和互斥组。没有通用施加免疫或异常生效免疫机制。`content/enemies/ground.ts` 遇到 stunImmune 仍直接抛出“不支持”的错误。此前“Effect 已经有免疫”的假设不成立。
+当前 `unit/effect/operations.ts` 的 install 检查宿主和 Scope 可用性；updateStatus 检查 enabled、状态、宿主、Scope 和互斥组。没有通用施加免疫或异常生效免疫机制。`content/enemies/ground.ts` 遇到 stunImmune 仍直接抛出“不支持”的错误。此前“Effect 已经有免疫”的假设不成立。
 
 另一方面，当前 `targeting.Request` 的显式 Filter 已能表达上述内容需要的候选排除，无须增加第二份独立免疫状态。后续建立异常／效果资格查询时，特定 Filter 可以复用该查询；真正的施加或生效路径仍按当时事实维护资格，直接攻击附加控制不能依赖它此前经过过 Targeting。
 
