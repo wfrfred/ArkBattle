@@ -33,7 +33,7 @@ const usable = available(battle, binding);
 
 Scope 公开 type: "LIFETIME"、kind 和只读数值 address，描述符／Ref 的配对保存在内部受信边界，不向内容暴露存储容器。scope 使用 NoInfer 保持领域 Ref 配对，不查询 battle。getRef 仅在描述符匹配时恢复对应 Ref；例如 Elemental 周期 Effect 从自身 scopes 取回 Burst 身份后读取当前 Burst。异构配对只在公共模块内部擦除，调用方不能把别的领域 Ref 配给描述符。
 
-available 同时检查 Pending 和领域当前实例：缺失或结束中不可用。Unit 要求 PRESENT，Action 要求 RUNNING，Skill／Burst 要求 ACTIVE；Effect 的 INSTALLING／INACTIVE 和 Mechanism 的 INACTIVE 仍可成为依赖目标。HP、空间在场和 source 是否存活不属于这项判断。
+available 沿依赖图的父边检查目标自身及全部上游（实际 owner 与显式 Scope）：任一节点缺失、已 Pending 或结束中，目标均不可接纳新依赖。检查使用当前 BattleState；父对象已开始结束、子对象尚未收到结束请求的发布／Prepare 窗口也适用。Unit 要求 PRESENT，Action 要求 RUNNING，Skill／Burst 要求 ACTIVE；Effect 的 INSTALLING／INACTIVE 和 Mechanism 的 INACTIVE 仍可成为依赖目标。HP、空间在场和 source 是否存活不属于这项判断。
 
 Effect 的 Scope 为 Lifetime Scope 或 `{ type: "TICK", tick }`。TICK 是期限，不进入依赖图；source 和普通私有 Ref 不自动产生关系。额外 Scope 的安装／绑定入口检查目标可用性及合并图的闭环，内部派生与析构信任这些约束。
 
@@ -82,9 +82,11 @@ Unit add／update／remove 在业务通知前，对已知变更 Unit 的生命�
 
 ENDING 对象在物理移除前仍保留关系。关闭资格由 Pending 与原领域状态共同表达，不靠提前丢弃关系实现。物理移除可以撤去活索引，但 Pending.parents 一直保留到整个 Finalize 返回。查询直接依赖者合并活索引与未完成 Pending 的 parents 并按 Key 去重，覆盖子项已注销、末尾通知才请求 owner 的情况。
 
-图中 child→parent 表示 child 依赖 parent；parent 完成析构必须晚于 child。Scope 绑定入口针对所有权与显式 Scope 的合并图检查闭环，内部不反复校验整图。
+图中 child→parent 表示 child 依赖 parent；parent 完成析构必须晚于 child。Scope 绑定入口先检查目标及全部上游的可用性，再针对所有权与显式 Scope 的合并图检查闭环。available 信任已建立的 DAG，不在检查上游资格时重复检测环；request／drain 仍按已有关系执行结束，不重新验证整图。
 
 ## 请求与 Prepare
+
+父节点已 Pending 不代表每个子节点已收到结束请求。以下顺序中，发布 Hook 或 Prepare 显式先请求子节点结束，仍由该子节点首次有效请求确定 End 与传播原因；上游可用性限制新绑定，不拒绝结束请求或覆盖其原因。
 
 首次有效请求按以下顺序同步执行：
 

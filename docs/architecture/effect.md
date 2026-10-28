@@ -148,7 +148,7 @@ Unit 对 Effect 的拥有关系与 Effect.scopes 都是权威事实；BattleStat
 
 ENDING 时保留关系，物理移除后活索引可以撤销，但未完成 Pending.parents 保留到整个 Finalize 返回。查询依赖者同时合并这两种来源，避免子 Effect 注销后的结束通知中请求宿主退场时漏掉等待。Pending 表示工作进度，不是第二份生命周期或实例表。
 
-Scope 资格同时看 Pending 与最新领域状态：Unit 为 PRESENT，Action 为 RUNNING，Skill／Burst 为 ACTIVE，Effect 只要存在且未 ENDING 即可，包含 INSTALLING／INACTIVE；Mechanism 的 INACTIVE 也可成为目标。不能把 HP 或空间存在附加为 Unit 生命周期资格。开始结束的目标不能接受新绑定。
+Scope 资格沿实际 owner 和显式 Scope 父边，检查目标及全部上游的 Pending 与最新领域状态；任一上游缺失或结束中即拒绝新的安装／绑定，即使目标自身尚未收到结束请求。各节点的存活要求为：Unit 为 PRESENT，Action 为 RUNNING，Skill／Burst 为 ACTIVE，Effect 只要存在且未 ENDING 即可，包含 INSTALLING／INACTIVE；Mechanism 的 INACTIVE 也可成为目标。不能把 HP 或空间存在附加为 Unit 生命周期资格。开始结束的目标不能接受新绑定。
 
 宿主退场、Scope 结束、TICK 到期和显式 end 都进入同一个 Effect lifetime 请求。各领域负责决定何时请求结束自己的实例，共享运行器负责依赖传播与完成调度；不再保留 closeLifetime 或 Effect 专属递归传播入口。
 

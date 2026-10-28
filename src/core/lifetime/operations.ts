@@ -63,7 +63,13 @@ export function available(battle: BattleState, target: Scope): boolean {
     const { definition, ref } = target[paired] as Pair;
     const self = definition.get(battle, ref);
 
-    return self !== undefined && !definition.isEnding(self);
+    return (
+        self !== undefined &&
+        !definition.isEnding(self) &&
+        dependency
+            .parents(battle.lifetime.dependencies, target)
+            .every((parent) => available(battle, parent))
+    );
 }
 
 function request(

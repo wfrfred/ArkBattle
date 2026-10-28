@@ -2,13 +2,15 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as skills from "../../dist/core/unit/capability/skill/index.js";
-import { scope } from "../../dist/core/lifetime/index.js";
+import * as actions from "../../dist/core/unit/action/index.js";
+import { available, scope } from "../../dist/core/lifetime/index.js";
 import { key } from "../../dist/core/lifetime/dependency.js";
-import { remove, update } from "../../dist/core/battle/unit.js";
+import { remove, update, lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
 import { setHook as setBlockerHook, setRule } from "../../dist/core/unit/capability/blocking/blocker.js";
 import { initialize, getUnit } from "../helpers/unit.js";
 import { effectFixtureWork, definition } from "../helpers/effects.js";
 import { definition as skillDefinition } from "../helpers/skill.js";
+import { actionCapability } from "../helpers/actions.js";
 import { fixture as blockingFixture, holder, target, acquire, hook } from "../helpers/blocking.js";
 
 const unit = (id = 1, extra = {}) => initialize({
@@ -179,13 +181,17 @@ test("group fallback becomes ACTIVE in Prepare before dependent Prepare and the 
     settled(battle);
 });
 
-test("binding during Prepare still checks the path through an ENDING ancestor", () => {
+test("stable bindings reject cycles and Prepare rejects a target whose ancestor is ENDING", () => {
     let middle, leaf;
     const base = effects.install(effectFixtureWork(unit()), { id: 1 }, definition("base"));
     const parent = effects.install(base.state, { id: 1 }, definition("middle", {}, {
         onDisable(battle) {
             assert.equal(effects.get(battle, middle).status, "ENDING");
-            assert.throws(() => effects.bindLifetime(battle, base.value, scope(effects.lifetime, leaf)), /cycle/);
+            const scopes = effects.get(battle, base.value).scopes;
+            const rejected = effects.bindLifetime(battle, base.value, scope(effects.lifetime, leaf));
+            assert.equal(rejected.value, false);
+            assert.equal(rejected.state, battle);
+            assert.equal(effects.get(rejected.state, base.value).scopes, scopes);
             return battle;
         },
     }), { scopes: [scope(effects.lifetime, base.value)] });
@@ -194,9 +200,104 @@ test("binding during Prepare still checks the path through an ENDING ancestor", 
         scopes: [scope(effects.lifetime, middle)],
     });
     leaf = child.value;
+    assert.throws(() => effects.bindLifetime(child.state, base.value, scope(effects.lifetime, leaf)), /cycle/);
     const battle = effects.end(child.state, middle);
     assert.equal(effects.get(battle, base.value).status, "ACTIVE");
     assert.equal(effects.get(battle, leaf), undefined);
+    settled(battle);
+});
+
+test("Unit ENDING publication rejects remote dependencies on its still RUNNING Action", () => {
+    const content = {
+        id: "blocking-action", intervalTicks: 30, speed: 100,
+        initialize: battle => ({ state: battle, value: {} }),
+        prepare: battle => ({ state: battle, value: {} }),
+        onTick: battle => ({ state: battle, value: false }),
+    };
+    const initial = blockingFixture([
+        holder(10, { definition: { action: actionCapability(content) } }), target(), unit(),
+    ]);
+    const started = actions.start(initial, actions.ref({ id: 10 }, content));
+    assert.equal(started.value.type, "STARTED");
+    const active = acquire(started.state);
+    assert.equal(getUnit(active, 10).blocker.blocked.length, 1);
+    const reference = started.value.ref;
+    const actionScope = scope(actions.lifetime, reference);
+    const blockedCalls = [];
+    const attempted = {
+        id: "late-action-dependent",
+        initialize() { blockedCalls.push("initialize"); return {}; },
+        onInstall(battle) { blockedCalls.push("install"); return battle; },
+        onEnable(battle) { blockedCalls.push("enable"); return battle; },
+    };
+    const independent = effects.install(active, { id: 1 }, definition("independent"));
+    const owner = getUnit(independent.state, 10);
+    let calls = 0;
+    const battle = remove(update(independent.state, [{
+        ...owner,
+        blocker: setBlockerHook(owner.blocker, "released", hook("admit-during-unit-end", current => {
+            calls++;
+            assert.equal(getUnit(current, 10).lifecycle, "LEAVING");
+            assert.equal(current.lifetime.endings.get(key(scope(unitLifetime, { id: 10 }))).phase, "PREPARING");
+            assert.equal(actions.getExecution(current, reference).execution.status, "RUNNING");
+            assert.equal(current.lifetime.endings.has(key(actionScope)), false);
+            const nextId = getUnit(current, 1).effects.nextId;
+            const installed = effects.install(current, { id: 1 }, attempted, { scopes: [actionScope] });
+            const bound = effects.bindLifetime(installed.state, independent.value, actionScope);
+            const free = effects.install(bound.state, { id: 1 }, definition("free-during-unit-end"));
+            assert.deepEqual({
+                installed: installed.value !== undefined,
+                bound: bound.value,
+                blockedCalls,
+                independent: free.value !== undefined,
+            }, { installed: false, bound: false, blockedCalls: [], independent: true });
+            assert.equal(installed.state, current);
+            assert.equal(bound.state, current);
+            assert.equal(free.value.id, nextId);
+            return free.state;
+        })),
+    }]), 10, "DEATH");
+    assert.equal(calls, 1);
+    assert.equal(getUnit(battle, 10), undefined);
+    assert.equal(getUnit(battle, 1).effects.size, 2);
+    assert.deepEqual(effects.get(battle, independent.value).scopes, []);
+    settled(battle);
+});
+
+test("Prepare rejects transitive dependencies if any upstream parent is ending", () => {
+    let middle, leaf;
+    const root = effects.install(effectFixtureWork(unit(), unit(2)), { id: 1 }, definition("root", {}, {
+        onDisable(battle) {
+            assert.equal(effects.get(battle, middle).status, "ACTIVE");
+            assert.equal(effects.get(battle, leaf).status, "ACTIVE");
+            assert.equal(battle.lifetime.endings.has(key(scope(effects.lifetime, middle))), false);
+            assert.equal(battle.lifetime.endings.has(key(scope(effects.lifetime, leaf))), false);
+            assert.equal(available(battle, scope(effects.lifetime, open.value)), true);
+            const installed = effects.install(battle, { id: 2 }, definition("late-transitive"), {
+                scopes: [scope(effects.lifetime, leaf)],
+            });
+            const bound = effects.bindLifetime(installed.state, independent.value, scope(effects.lifetime, leaf));
+            assert.deepEqual({ installed: installed.value !== undefined, bound: bound.value }, {
+                installed: false, bound: false,
+            });
+            assert.equal(bound.state, battle);
+            return bound.state;
+        },
+    }));
+    const open = effects.install(root.state, { id: 1 }, definition("open-parent"));
+    const branch = effects.install(open.state, { id: 1 }, definition("middle"), {
+        scopes: [scope(effects.lifetime, root.value)],
+    });
+    middle = branch.value;
+    const child = effects.install(branch.state, { id: 1 }, definition("multi-parent-child"), {
+        scopes: [scope(effects.lifetime, open.value), scope(effects.lifetime, middle)],
+    });
+    leaf = child.value;
+    const independent = effects.install(child.state, { id: 2 }, definition("independent"));
+    const battle = effects.end(independent.state, root.value);
+    assert.equal(effects.get(battle, open.value).status, "ACTIVE");
+    assert.equal(effects.get(battle, leaf), undefined);
+    assert.deepEqual(effects.get(battle, independent.value).scopes, []);
     settled(battle);
 });
 
