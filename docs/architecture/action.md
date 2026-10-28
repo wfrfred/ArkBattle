@@ -38,7 +38,7 @@ Rule 只负责启动准入，不自动中断现有执行。眩晕等需要中断
 | 业务操作 | start、setExecutionState、setState、setCooldown、cancel、cancelForUnit、refreshCooldowns、resetCooldown、clearCooldown |
 | 调度协作 | advance，仅由调度器主动调用 |
 
-五个查询实现在 [query.ts](../../src/core/unit/action/query.ts)；完整启动、写回与终止适配统一由 [operations.ts](../../src/core/unit/action/operations.ts) 实现，执行请求和依赖调度归 [公共 Lifetime](lifetime.md)。[advance.ts](../../src/core/unit/action/advance.ts) 派发执行程序，并按完成结果请求本轮结束。lifetime 的公开协作不授予 Content 任意正常完成或推进权限；advance 仍仅由调度器调用。
+五个查询实现在 [query.ts](../../src/core/unit/action/query.ts)；启动、写回、advance 推进与终止适配统一由 [operations.ts](../../src/core/unit/action/operations.ts) 实现，执行请求和依赖调度归 [公共 Lifetime](lifetime.md)。advance 派发执行程序，并按完成结果请求本轮结束，由 index.ts 显式导出供调度器调用。lifetime 的公开协作不授予 Content 任意正常完成或推进权限。
 
 ```typescript
 import {
@@ -287,7 +287,7 @@ Runtime 采用以下候选政策：
 6. 本轮自动候选只尝试一次，不按“仍然就绪”循环重启即时完成的同一行动。
 7. 内容直接 start 或回调内嵌套 start 只登记执行，等待调度器推进。调度入口前已登记的执行可以在本次调度中推进；调度内嵌套登记的执行不在已固定快照中，等待后续调度。
 
-advance(battle, ref) 实现在专用推进模块，并由公共入口导出供调度协作；仍仅由调度器主动调用，start 不隐式推进。它通过同一 Actions 容器的 getExecution 直接取得当前执行，再调用该执行 Definition 的 onTick，并显式传入宿主引用；end 同样直接读取执行并调用其可选 onEnd，跨完整操作后的实时读取仍遵守状态接续约定。首次推进中的即时完成或同步取消按通常终止流程结算；内容不主动推进执行，不保存实例级同 Tick 去重字段。
+advance(battle, ref) 由 operations.ts 实现，index.ts 继续导出供调度协作；仍仅由调度器主动调用，start 不隐式推进。它通过同一 Actions 容器的 getExecution 直接取得当前执行，再调用该执行 Definition 的 onTick，并显式传入宿主引用；文件私有的 end 辅助步骤委托 Lifetime 请求结束，可选 onEnd 在 Finalize 中调用。跨完整操作后的实时读取仍遵守状态接续约定。首次推进中的即时完成或同步取消按通常终止流程结算；内容不主动推进执行，不保存实例级同 Tick 去重字段。
 
 ## 8. 普通攻击、释放 Hook 与移动
 

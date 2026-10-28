@@ -188,7 +188,7 @@ export const lifetime = lifetimes.create<ExecutionView, Execution, End>({
     fromDependency: () => ({ type: "CANCELLED", reason: "SOURCE_ABSENT" }),
 });
 
-export function end(
+function end(
     battle: BattleState,
     reference: Ref<ExecutionView>,
     result: End,
@@ -218,6 +218,25 @@ export function cancelForUnit(
     }
 
     return battle;
+}
+
+export function advance(battle: BattleState, reference: Ref<ExecutionView>): BattleState {
+    const source = units.get(battle, reference.host);
+    if (source === undefined) {
+        return battle;
+    }
+
+    const self = source.action.actions.getExecution(reference.id);
+    if (self?.execution.status !== "RUNNING") {
+        return battle;
+    }
+    if (source.lifecycle !== "PRESENT" || !isSpatiallyPresent(source)) {
+        return end(battle, reference, { type: "CANCELLED", reason: "SOURCE_ABSENT" });
+    }
+
+    const advanced = self.definition.onTick(battle, reference.host, self);
+
+    return advanced.value ? end(advanced.state, reference, { type: "FINISHED" }) : advanced.state;
 }
 
 export function refreshCooldowns(

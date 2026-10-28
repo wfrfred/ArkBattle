@@ -68,7 +68,7 @@ Action 的准备程序为 prepare，推进与结束回调为 onTick／onEnd；Pr
 | --- | --- | --- |
 | 战斗运行 | [battle/index.ts](../../src/core/battle/index.ts) | 仅 initialize／step／simulateBattle、战斗契约类型、State／OperationResult 与 appendEvents；不聚合 Unit、Projectile、Creation 等独立操作。 |
 | Unit | [unit/index.ts](../../src/core/unit/index.ts) | 模型、Hook 类型、initialize 与 ref／all／get；完整登记、更新、离场、推进与 Unit lifetime 仍归 battle/unit.ts，Field 的纯存储操作仍归 battlefield/unit.ts。 |
-| Action | [unit/action/index.ts](../../src/core/unit/action/index.ts) | 创建、查询、字段更新、lifetime、业务操作与调度协作；Actions、execution.State、Cooldown 和共享 end 按职责深导，不扩大内容写回或推进权限。 |
+| Action | [unit/action/index.ts](../../src/core/unit/action/index.ts) | 创建、查询、字段更新、lifetime、业务操作与调度协作；advance 由 operations.ts 实现，经 index 导出且仅由调度器调用，end 是文件私有辅助步骤。Actions、execution.State 与 Cooldown 按职责深导，不扩大内容写回或推进权限。 |
 | Effect | [unit/effect/index.ts](../../src/core/unit/effect/index.ts) | 类型、ref、get、lifetime 与生命周期操作；get 归 query.ts，Effects 容器保持内部职责。 |
 | Lifetime | [lifetime/index.ts](../../src/core/lifetime/index.ts) | create／scope／getRef／available 和公开类型；request／drain、Pending、异构配对擦除与索引修改保持内部职责。 |
 | Projectile | [projectile/index.ts](../../src/core/projectile/index.ts) | 类型与 ref／all／get；完整 create／update／stop／advance 及 lifetime 保留 battle/projectile.ts，容器仍由 Battlefield 持有。 |

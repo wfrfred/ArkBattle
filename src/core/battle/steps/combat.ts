@@ -1,6 +1,5 @@
 import * as actions from "../../unit/action/operations.js";
 import { forUnit } from "../../unit/action/query.js";
-import { advance as advanceAction } from "../../unit/action/advance.js";
 import { ref as actionRef } from "../../unit/action/action.js";
 import * as units from "../../unit/query.js";
 import { hasAction } from "../../unit/capability/action/capability.js";
@@ -36,7 +35,7 @@ export function advance(battle: BattleState): BattleState {
 
     for (const { source, instances } of candidates) {
         for (const reference of instances) {
-            battle = advanceAction(battle, reference);
+            battle = actions.advance(battle, reference);
         }
 
         const unit = units.get(battle, source);
@@ -76,7 +75,7 @@ export function advance(battle: BattleState): BattleState {
             const started = actions.start(battle, actionRef(reference, self.definition));
             battle =
                 started.value.type === "STARTED"
-                    ? advanceAction(started.state, started.value.ref)
+                    ? actions.advance(started.state, started.value.ref)
                     : started.state;
         }
     }
