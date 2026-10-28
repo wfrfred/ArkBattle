@@ -29,11 +29,11 @@ SP 的 setContribution／removeContribution 仍在 sp.ts，经领域入口以 se
 | self.definition | 完整 Skill Definition，与该聚合的 S／A 配对 |
 | self.data | 跨多次激活保留的私有 S |
 | self.sp | 当前 SP 或 null |
-| self.activation | 本轮 id、startedAtTick、status、Sustain、私有 data: A，或 null |
+| self.activation | 本轮 id、startedAtTick、status、Sustain、私有 state: A，或 null |
 | Capability.nextActivationId | 宿主内单调分配的轮次身份 |
 | Capability.sustain／rules／Hook | 持久登记的预算贡献、许可和通知 |
 
-Skill<S, A> 允许 activation 为 null；Activation<S, A> 是同一个聚合的非空运行视图，self.activation 确定存在。两者都通过 self.data 读取持久 S，本轮数据读取 self.activation.data。两个泛型均默认 object，只关心本轮 A 时使用 Activation<object, A>；具体私有类型由已知 Definition 或精确 Ref 保持。
+Skill<S, A> 允许 activation 为 null；Activation<S, A> 是同一个聚合的非空运行视图，self.activation 确定存在。两者都通过 self.data 读取持久 S，本轮状态读取 self.activation.state。两个泛型均默认 object，只关心本轮 A 时使用 Activation<object, A>；具体私有类型由已知 Definition 或精确 Ref 保持。
 
 聚合不保存 host，内容程序显式接收 source。Capability State 扩展默认 Skill<object, object>，直接包含完整 Definition、data、SP 与可空 activation；object 不承诺某种具体私有形状。Activation 是同一完整聚合按本轮身份读取的非空细化，不增加元数据类型、对象复制或执行容器。
 
@@ -52,7 +52,7 @@ Definition.initialize(battle) 返回 Result<S>；create 接续其 state，建立
 | 引用 | 构造与用途 |
 | --- | --- |
 | 持久 Skill Ref | ref(source, definition)，地址为 host＋Definition；getSkill、activate、setData 使用它，跨多轮有效 |
-| 本轮 Activation Ref | activationRef(source, self)，地址为 host＋self.activation.id；getActivation、finish、cancel、operate、extendTime、setActivationData 与 SKILL Scope 使用它 |
+| 本轮 Activation Ref | activationRef(source, self)，地址为 host＋self.activation.id；getActivation、finish、cancel、operate、extendTime、setActivationState 与 SKILL Scope 使用它 |
 
 getSkill(battle, skillRef) 确认当前聚合的 Definition 对象身份，恢复 S／A；getActivation(battle, roundRef) 确认本轮 ID，返回同一聚合的非空视图。activate 返回的本轮 Ref 保留原 Definition 的 S／A。普通查询返回默认 object 的完整实体，精确 Ref 保留已有 S／A；获取 Ref 的泛型上界使用 any 以接纳不同私有类型，结果保持原 T，不把默认参数改为 any。过期 Ref 不读取或操作后来一轮，生命周期资格仍从当前 battle 检查。
 
@@ -63,12 +63,12 @@ setData<T extends Skill<any, any>>(
     battle: BattleState, ref: Ref<T>, data: NoInfer<T["data"]>,
 ): BattleState;
 
-setActivationData<T extends Activation<any, any>>(
-    battle: BattleState, ref: Ref<T>, data: NoInfer<T["activation"]["data"]>,
+setActivationState<T extends Activation<any, any>>(
+    battle: BattleState, ref: Ref<T>, state: NoInfer<T["activation"]["state"]>,
 ): BattleState;
 ```
 
-setData 只更新当前 Skill 的 data，setActivationData 只更新当前本轮 activation.data，保留 Definition、SP、Sustain、规则、Hook、槽位和 ID 进度。宿主缺失时抛出 RangeError；持久 Ref 的 Definition 不匹配时抛出 TypeError，本轮 Ref 过期时抛出 RangeError。持久 data 允许在 LEAVING 或结束程序中更新；普通本轮数据写入在 ENDING 时抛出 TypeError。数据同引用时返回原 battle，不执行完整更新，不提供旧局部 setter 或回调双协议。
+setData 只更新当前 Skill 的 data，setActivationState 只更新当前本轮 activation.state，保留 Definition、SP、Sustain、规则、Hook、槽位和 ID 进度。宿主缺失时抛出 RangeError；持久 Ref 的 Definition 不匹配时抛出 TypeError，本轮 Ref 过期时抛出 RangeError。持久 data 允许在 LEAVING 或结束程序中更新；普通本轮状态写入在 ENDING 时抛出 TypeError。数据同引用时返回原 battle，不执行完整更新，不提供旧局部 setter 或回调双协议。
 
 计算与提交之间不执行其他完整操作；跨领域调用后先接续 battle 并重读私有数据。字段写回保留其他当前字段，但不替调用者合并陈旧 data。NoInfer 阻止结果值反向扩大私有类型，完整聚合写回仅归 Core。
 

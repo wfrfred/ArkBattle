@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-test("Skill capabilities erase private program types while activation Refs retain proven data", async () => {
+test("Skill capabilities erase private program types while activation Refs retain proven state", async () => {
     const { default: ts } = await import("typescript");
     const directory = mkdtempSync(join(tmpdir(), "stronghold-skill-ref-types-"));
     const source = (name) => JSON.stringify(fileURLToPath(new URL(`../../src/core/${name}.js`, import.meta.url)));
@@ -19,7 +19,7 @@ import { initialize } from ${source("unit/initialize")};
 import * as units from ${source("unit/query")};
 import { type Definition } from ${source("unit/skill/definition")};
 import { initialize as initializeSkill, hasSkill, type Skill as SkillCapability, type State } from ${source("unit/capability/skill/capability")};
-import { create, ref, activationRef, getSkill, getActivation, activate, cancel, setData, setActivationData, type Skill, type Activation, lifetime as skillLife } from ${source("unit/skill/index")};
+import { create, ref, activationRef, getSkill, getActivation, activate, cancel, setData, setActivationState, type Skill, type Activation, lifetime as skillLife } from ${source("unit/skill/index")};
 import { getCurrent } from ${source("unit/skill/query")};
 import { scope, getRef } from ${source("lifetime/index")};
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
@@ -44,11 +44,11 @@ const definition: Definition<Persistent, Active> = ({
         onStart(current, source, activation) {
             const proof = activationRef(source, activation);
             type Proof = Assert<Equal<typeof proof, Ref<Activation<Persistent, Active>>>>;
-            const mode: "FIRST" | "SECOND" | undefined = getActivation(current, proof)?.activation.data.mode;
+            const mode: "FIRST" | "SECOND" | undefined = getActivation(current, proof)?.activation.state.mode;
             const identity = ref(source, activation.definition);
             return setData(current, identity, { count: activation.data.count + 1 });
         },
-        onTick: (current, source, activation) => setActivationData(current, activationRef(source, activation), { mode: "SECOND" }),
+        onTick: (current, source, activation) => setActivationState(current, activationRef(source, activation), { mode: "SECOND" }),
     },
 });
 const factory = { initialize: (current: BattleState) => create(current, definition) };
@@ -95,7 +95,7 @@ const started = activate(battle, persistent);
 if (started.value.type === "ACTIVATED") {
     const current = getActivation(started.state, started.value.ref);
     type Current = Assert<Equal<typeof current, Activation<Persistent, Active> | undefined>>;
-    const mode: "FIRST" | "SECOND" | undefined = current?.activation.data.mode;
+    const mode: "FIRST" | "SECOND" | undefined = current?.activation.state.mode;
     const count: number | undefined = current?.data.count;
 }
 const known = activationRef(sourceRef, self);
@@ -123,17 +123,17 @@ activate(battle, known);
 cancel(battle, persistent);
 // @ts-expect-error persistent data writes use a persistent Ref.
 setData(battle, known, { count: 1 });
-// @ts-expect-error activation data writes use a round Ref.
-setActivationData(battle, persistent, { mode: "SECOND" });
+// @ts-expect-error activation state writes use a round Ref.
+setActivationState(battle, persistent, { mode: "SECOND" });
 // @ts-expect-error source and program must use their matching Ref kind.
 ref(known, definition);
-// @ts-expect-error private data is hidden after erasing the round proof.
-getActivation(battle, erased)!.activation.data.mode;
-// @ts-expect-error the round Ref fixes the activation data type.
-setActivationData(battle, known, { mode: "INVALID" });
-// @ts-expect-error activation data accepts a computed value.
-setActivationData(battle, known, () => ({ mode: "SECOND" }));
-setActivationData(battle, known, { mode: "SECOND" });
+// @ts-expect-error private state is hidden after erasing the round proof.
+getActivation(battle, erased)!.activation.state.mode;
+// @ts-expect-error the round Ref fixes the activation state type.
+setActivationState(battle, known, { mode: "INVALID" });
+// @ts-expect-error activation state accepts a computed value.
+setActivationState(battle, known, () => ({ mode: "SECOND" }));
+setActivationState(battle, known, { mode: "SECOND" });
 // @ts-expect-error getters no longer accept a second Definition token.
 getActivation(battle, known, definition);
 `);

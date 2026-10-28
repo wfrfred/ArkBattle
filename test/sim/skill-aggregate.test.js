@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { getUnit, fixtureBattle } from "../helpers/unit.js";
-import { create, getSkill, getActivation, setData, setActivationData, ref, activationRef } from "../../dist/core/unit/skill/index.js";
+import { create, getSkill, getActivation, setData, setActivationState, ref, activationRef } from "../../dist/core/unit/skill/index.js";
 import { initialize as initializeCapability } from "../../dist/core/unit/capability/skill/capability.js";
 import { initialize as initializeUnit } from "../../dist/core/unit/index.js";
 import * as operations from "../../dist/core/unit/skill/operations.js";
@@ -58,7 +58,7 @@ test("Skill creation threads its initialization battle through capability and Un
     assert.equal(battle.tick, 11);
 });
 
-test("Skill programs receive persistent and activation data in one aggregate with an explicit source", () => {
+test("Skill programs receive persistent data and activation state in one aggregate with an explicit source", () => {
     const observed = [];
     const f = fixture({
         sp: null,
@@ -75,7 +75,7 @@ test("Skill programs receive persistent and activation data in one aggregate wit
             trigger: "MANUAL", sustain: { type: "INFINITE" },
             initialize: (_battle, _source, self) => ({ sampled: self.data.count }),
             onStart(battle, source, self) {
-                observed.push([self.activation.id, self.activation.data.sampled]);
+                observed.push([self.activation.id, self.activation.state.sampled]);
                 assert.equal(getActivation(battle, activationRef(source, self)), getSkill(battle, f.skillRef));
                 return battle;
             },
@@ -115,26 +115,26 @@ test("a persistent Skill Ref requires its configured Definition and survives suc
     assert.deepEqual(getSkill(next.state, f.skillRef).data, { count: 3 });
 });
 
-test("Activation data writes preserve the latest duration and reject a previous identity", () => {
+test("Activation state writes preserve the latest duration and reject a previous identity", () => {
     const f = fixture({ sp: null });
     const first = operations.activate(f.state, f.skillRef);
     const active = getActivation(first.state, first.value.ref);
     const extended = operations.extendTime(first.state, first.value.ref, 15);
-    const updated = setActivationData(extended, first.value.ref, { count: 2 });
+    const updated = setActivationState(extended, first.value.ref, { count: 2 });
     const current = getActivation(updated, first.value.ref);
-    assert.deepEqual(current.activation.data, { count: 2 });
+    assert.deepEqual(current.activation.state, { count: 2 });
     assert.equal(current.activation.sustain, getActivation(extended, first.value.ref).activation.sustain);
     assert.equal(current.activation.sustain.endsAtTick, 45);
     assert.equal(current.activation.id, active.activation.id);
     assert.equal(current.activation.startedAtTick, active.activation.startedAtTick);
-    assert.equal(setActivationData(updated, first.value.ref, current.activation.data), updated);
-    assert.deepEqual(active.activation.data, {});
+    assert.equal(setActivationState(updated, first.value.ref, current.activation.state), updated);
+    assert.deepEqual(active.activation.state, {});
     assert.equal(active.activation.sustain.endsAtTick, 30);
     const finished = operations.finish(updated, first.value.ref);
     const second = operations.activate(finished, f.skillRef);
     assert.notEqual(first.value.ref.id, second.value.ref.id);
-    assert.throws(() => setActivationData(second.state, first.value.ref, { count: 9 }), /unknown skill activation/);
-    assert.deepEqual(getActivation(second.state, second.value.ref).activation.data, {});
+    assert.throws(() => setActivationState(second.state, first.value.ref, { count: 9 }), /unknown skill activation/);
+    assert.deepEqual(getActivation(second.state, second.value.ref).activation.state, {});
 });
 
 test("persistent data writes preserve fresh SP and Activation rather than restoring a sampled aggregate", () => {
@@ -169,7 +169,7 @@ test("ending callbacks may write persistent data while ordinary Activation write
             trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}),
             onEnd(battle, source, self) {
                 saved = ref(source, self.definition);
-                assert.throws(() => setActivationData(battle, activationRef(source, self), { count: 1 }), /ending skill activation/);
+                assert.throws(() => setActivationState(battle, activationRef(source, self), { count: 1 }), /ending skill activation/);
                 return setData(battle, saved, { count: self.data.count + 1 });
             },
         },
@@ -179,5 +179,5 @@ test("ending callbacks may write persistent data while ordinary Activation write
     assert.deepEqual(getUnit(finished, f.ref.id).skill.data, { count: 1 });
     const removed = remove(finished, f.ref.id, "SCRIPT");
     assert.throws(() => setData(removed, saved, { count: 2 }), /unknown unit/);
-    assert.throws(() => setActivationData(removed, started.value.ref, {}), /unknown unit/);
+    assert.throws(() => setActivationState(removed, started.value.ref, {}), /unknown unit/);
 });

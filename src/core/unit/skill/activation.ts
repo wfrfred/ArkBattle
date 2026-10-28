@@ -59,7 +59,7 @@ export interface State<A extends object = object> {
     readonly startedAtTick: number;
     readonly status: "ACTIVE" | "ENDING";
     readonly sustain: SustainState;
-    readonly data: A;
+    readonly state: A;
 }
 
 export interface Activation<S extends object = object, A extends object = object>

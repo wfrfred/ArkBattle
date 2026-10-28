@@ -65,7 +65,7 @@ const preciseAmmo = createWithState({
         const latest = getActivation(current, sampled);
         type Latest = Assert<Equal<typeof latest, Activation<object, Active> | undefined>>;
         if (latest === undefined) return current;
-        const mode: "FIRST" | "SECOND" = latest.activation.data.mode;
+        const mode: "FIRST" | "SECOND" = latest.activation.state.mode;
         current = consume(current, sampled, 2).state;
         return check(current, sampled);
     },
@@ -79,7 +79,7 @@ const genericAmmo = createSkillAttack({
         if (sampled !== null) {
             const latest: Activation | undefined = getActivation(current, sampled);
             // @ts-expect-error
-            latest!.activation.data.mode;
+            latest!.activation.state.mode;
         }
         return current;
     },

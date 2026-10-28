@@ -392,7 +392,7 @@ test("SP Hooks keep settled reports across nested payment and dispatch only thei
     assert.equal(read(state).sp.value, 0);
 });
 
-test("persistent data survives activations and activation data is initialized independently", () => {
+test("persistent data survives activations and activation state is initialized independently", () => {
     const f = fixture({ initialize: battle => ({ state: battle, value: ({ count: 0 }) }), sp: null,
         activation: { trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({ count: 0 }) },
     });
@@ -402,7 +402,7 @@ test("persistent data survives activations and activation data is initialized in
     state = skills.finish(state, currentRef(state));
     state = skills.activate(state, f.skillRef).state;
     assert.deepEqual(read(state).data, { count: 7 });
-    assert.deepEqual(read(state).activation.data, { count: 0 });
+    assert.deepEqual(read(state).activation.state, { count: 0 });
     assert.equal(read(state).activation.id, 1);
 });
 

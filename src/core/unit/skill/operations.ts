@@ -91,10 +91,10 @@ export function setData<X extends Skill<any, any>>(
     return data === self.data ? battle : replaceSkill(battle, unit, { ...self, data });
 }
 
-export function setActivationData<X extends Activation<any, any>>(
+export function setActivationState<X extends Activation<any, any>>(
     battle: BattleState,
     reference: Ref<X>,
-    data: NoInfer<X["activation"]["data"]>,
+    state: NoInfer<X["activation"]["state"]>,
 ): BattleState {
     const unit = units.get(battle, reference.host);
     if (unit === undefined) {
@@ -111,9 +111,9 @@ export function setActivationData<X extends Activation<any, any>>(
         throw new TypeError("cannot update an ending skill activation");
     }
 
-    return data === active.data
+    return state === active.state
         ? battle
-        : replaceSkill(battle, unit, { ...self, activation: { ...active, data } });
+        : replaceSkill(battle, unit, { ...self, activation: { ...active, state } });
 }
 
 export function activate<S extends object, A extends object>(
@@ -178,7 +178,7 @@ export function activate<S extends object, A extends object>(
             startedAtTick: battle.tick,
             status: "ACTIVE",
             sustain,
-            data: definition.initialize(battle, source, self),
+            state: definition.initialize(battle, source, self),
         },
     };
     const nextActivationId = active.activation.id + 1;

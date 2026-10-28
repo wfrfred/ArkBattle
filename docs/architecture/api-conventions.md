@@ -46,7 +46,7 @@ Action 的准备程序为 prepare，推进与结束回调为 onTick／onEnd；Pr
 | 依赖战场的查询 | 动态 Contribution 可以依赖战场事实，公开入口使用 `(battle, ref, ...)`，读取当前对象后直接以 `(battle, self)` 求值；直接使用实体与战场事实，不把它们藏进通用 Context。 |
 | 纯值转换带业务结果 | 返回本领域的下一值及结果，例如 SP 获得量、拒绝原因。这里的 state 是局部 State，不套固定为 BattleState 的 `battle.Result<T>`。 |
 | 创建操作与创建回调 | 对象尚不存在，接收宿主身份、Definition 和创建输入，返回创建身份或初始化结果；不要求传入不存在的 self / ref。 |
-| 内容状态写回 | 只接收已经计算好的结果值。Action.setExecutionState 设置 execution.state，setState／setCooldown 分别设置持久 state／Cooldown；Effect.setData 设置 data，Skill.setData／setActivationData 分别设置持久 data／本轮激活 data，Mechanism.setState 设置私有 state，Projectile.update 接收 `{ position?, state? }`。Core 读取当前实例，只替换允许字段并保留其他事实。 |
+| 内容状态写回 | 只接收已经计算好的结果值。Action.setExecutionState 设置 execution.state，setState／setCooldown 分别设置持久 state／Cooldown；Effect.setData 设置 data，Skill.setData／setActivationState 分别设置持久 data／本轮激活 state，Mechanism.setState 设置私有 state，Projectile.update 接收 `{ position?, state? }`。Core 读取当前实例，只替换允许字段并保留其他事实。 |
 | 完整实例写回 | Action 容器 `replace(definition, next)` 提交聚合条目，Effect／Projectile 容器按各自身份提交完整实例；均由 Core 内部使用。身份、Definition、执行进度与生命周期按对应领域契约维护。 |
 | 程序回调有额外结果 | 可以返回 `Result<T>`；例如 Action Definition.prepare 的准备结果、onTick 的完成指示和 Hook 的业务指令。 |
 | Damage／Healing 两阶段接续 | `applyDamage(request, calculation: Result<CalculatedDamage \| undefined>)` 与 `applyHealing(request, calculation: Result<CalculatedHealing \| undefined>)` 通过计算 Result 显式接续 state 和数值，分别返回领域 Outcome。插入其他操作时调用者须更新其中 state。 |
@@ -217,7 +217,7 @@ Tactical 的导出函数、Definition 回调与容器公共方法遵循五类约
 
 Skill 的程序、单槽 Skill<S, A> 聚合、非空 Activation<S, A> 视图、资源与完整业务归 unit/skill；capability/skill 只配置 initialize 工厂，State 扩展默认 Skill，并补规则、Hook、贡献和轮次 ID。完整程序与元数据从 unit.skill.definition 读取，Unit Definition.skill 不保存程序。内部 getCurrent 返回擦除参数后的完整聚合，getSkill／getActivation 通过精确 Ref 恢复类型，不提供 Instance 包装或泛型 reader。
 
-Skill 的 ref(source, definition) 返回持久 Ref<Skill<S, A>>，用于 getSkill／activate／setData；activationRef(source, self) 返回 host＋本轮 ID 的 Ref<Activation<S, A>>，用于查询与轮次操作。两者读取同一个 unit.skill，聚合不重复保存 host。setData 以 Ref<T> 绑定 Skill，接收 NoInfer<T["data"]>，只更新持久 data，允许 LEAVING／结束程序更新；setActivationData 以 Ref<T> 绑定 Activation，接收 NoInfer<T["activation"]["data"]>，只更新 activation.data，ENDING 抛出 TypeError。缺失宿主或过期轮次抛出 RangeError，持久 Definition 不匹配抛出 TypeError。两者从最新 battle 保留其他字段，同引用时返回原 battle，只接受结果值，不提交旧聚合或扩大生命周期权限。
+Skill 的 ref(source, definition) 返回持久 Ref<Skill<S, A>>，用于 getSkill／activate／setData；activationRef(source, self) 返回 host＋本轮 ID 的 Ref<Activation<S, A>>，用于查询与轮次操作。两者读取同一个 unit.skill，聚合不重复保存 host。setData 以 Ref<T> 绑定 Skill，接收 NoInfer<T["data"]>，只更新持久 data，允许 LEAVING／结束程序更新；setActivationState 以 Ref<T> 绑定 Activation，接收 NoInfer<T["activation"]["state"]>，只更新 activation.state，ENDING 抛出 TypeError。缺失宿主或过期轮次抛出 RangeError，持久 Definition 不匹配抛出 TypeError。两者从最新 battle 保留其他字段，同引用时返回原 battle，只接受结果值，不提交旧聚合或扩大生命周期权限。
 
 SP setContribution／removeContribution 仍是 unit/skill/sp.ts 的局部资源操作；静态 Skill Modifier.priority 在对应 SP／时长贡献登记入口校验，动态 apply 输出仍在每次求值时校验。非 TIME 的 sp.advance 直接 no-op，不更新 lastTick。Elemental 的完整宿主写回是 operations.ts 中的私有 replaceHost；query.ts 只保留查询。两者均不向内容推广完整实例写回。Action 按 Definition 聚合持久 state、Cooldown 和当前 Execution；内容分别用 setState、setCooldown、setExecutionState 设置对应字段，不提交完整旧条目。Unit 的 leave Hook 以 Departure 为固定终止历史载荷，保留开始离场时的 Unit 与 reason。
 
