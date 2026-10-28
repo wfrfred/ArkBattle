@@ -153,6 +153,10 @@ if (restored !== undefined) {
     effects.setData(battle, retained, { ...restored.data, charges: "one" });
 }
 const publicRef: Ref<View> = retained;
+const renewed: BattleState = effects.setDeadline(battle, publicRef, 30);
+effects.setDeadline(renewed, retained, null);
+// @ts-expect-error Unit references cannot identify an Effect deadline.
+effects.setDeadline(battle, host, 30);
 // @ts-expect-error public identities do not prove a private data type.
 effects.setData(battle, publicRef, { charges: 1 });
 effects.setData(battle, retained, { charges: 1 });

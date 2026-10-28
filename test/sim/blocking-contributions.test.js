@@ -6,7 +6,7 @@ import { test } from "node:test";
 import { fixtureBattle, initialize } from "../helpers/unit.js";
 import { fixture as blockingFixture, acquire, blockedIds } from "../helpers/blocking.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { deadline, setDeadline } from "../../dist/core/unit/effect/effect.js";
+import { deadline } from "../../dist/core/unit/effect/effect.js";
 import { add as addUnit, update as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { usedCapacity } from "../../dist/core/battle/blocking/query.js";
@@ -25,7 +25,7 @@ import * as modifier from "../../dist/core/unit/contribution/attribute.js";
 import { compileAttributeModifiers, parseAttributeModifiers } from "../../dist/data/arknights/modifier.js";
 import { compileBuffStacking, parseBuffStacking } from "../../dist/data/arknights/buff-stacking.js";
 import {
-    contributionEffect, refreshContribution, maxHpBuff, at, effectFixtureWork, replaceEffectFixture,
+    contributionEffect, refreshContribution, maxHpBuff, at, effectFixtureWork,
 } from "../helpers/effects.js";
 
 const fixtures = JSON.parse(
@@ -378,10 +378,10 @@ test("blocking capacity: native stack renewal and terminal cleanup update real b
                         ...currentData,
                         stackCount: plan.stackCount,
                     });
-                    state = replaceEffectFixture(
+                    state = effects.setDeadline(
                         state,
                         effectRef(self),
-                        setDeadline(effects.get(state, effectRef(self)), plan.expiresAtTick),
+                        plan.expiresAtTick,
                     );
                     return refreshContribution(state, effectRef(self), content, setting);
                 }

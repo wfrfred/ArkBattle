@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { setDeadline, deadline } from "../../dist/core/unit/effect/effect.js";
-import { get, setData } from "../../dist/core/unit/effect/index.js";
+import { deadline } from "../../dist/core/unit/effect/effect.js";
+import { end, get, setData, setDeadline } from "../../dist/core/unit/effect/index.js";
+import { remove as removeUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { initialize } from "../helpers/unit.js";
 import { definition, effectFixtureWork, install } from "../helpers/effects.js";
@@ -12,9 +13,8 @@ test("effect values: local no-ops and replacements retain the input version", ()
     const value = definition("identity", { charges: 2 });
     const installed = install(effectFixtureWork(host()), value);
     const { state, value: ref } = installed;
-    const self = get(state, ref);
     assert.equal(getUnit(state, ref.host.id).effects.get(ref.id, definition("identity")), undefined);
-    assert.equal(setDeadline(self, null), self);
+    assert.equal(setDeadline(state, ref, null), state);
     const currentData = get(state, ref).data;
     assert.equal(setData(state, ref, currentData), state);
     const unit = getUnit(state, 0);
@@ -32,15 +32,22 @@ test("effect values: deadline updates preserve lifetime constraints and reject i
         scopes: [lifetime, { type: "TICK", tick: 3 }],
     });
     const self = get(state, ref);
-    assert.equal(setDeadline(self, 3), self);
-    const renewed = setDeadline(self, 8);
-    assert.equal(deadline(renewed), 8);
-    assert.equal(renewed.scopes[0], lifetime);
-    assert.deepEqual(setDeadline(renewed, null).scopes, [lifetime]);
+    assert.equal(setDeadline(state, ref, 3), state);
+    const renewed = setDeadline(state, ref, 8);
+    assert.equal(deadline(get(renewed, ref)), 8);
+    assert.equal(get(renewed, ref).scopes[0], lifetime);
+    const cleared = setDeadline(renewed, ref, null);
+    assert.deepEqual(get(cleared, ref).scopes, [lifetime]);
+    assert.equal(setDeadline(cleared, ref, null), cleared);
     assert.equal(deadline(self), 3);
+    assert.equal(get(state, ref), self);
     for (const tick of [-1, 0.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
-        assert.throws(() => setDeadline(self, tick), RangeError);
+        assert.throws(() => setDeadline(state, ref, tick), RangeError);
     }
+    const ended = end(state, ref);
+    assert.throws(() => setDeadline(ended, ref, 8), /unknown effect: 0/);
+    const removed = removeUnit(state, ref.host.id, "RETREAT");
+    assert.throws(() => setDeadline(removed, ref, 8), /unknown unit: 0/);
 });
 
 test("effect deadlines: invalid initial time is rejected before initialization or callbacks", () => {

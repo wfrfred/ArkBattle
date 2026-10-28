@@ -1,7 +1,7 @@
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { resolveDefense } from "../../dist/core/unit/capability/vitality/query.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { deadline, setDeadline } from "../../dist/core/unit/effect/effect.js";
+import { deadline } from "../../dist/core/unit/effect/effect.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -27,7 +27,6 @@ import {
     refreshContribution,
     at,
     effectFixtureWork,
-    replaceEffectFixture,
 } from "../helpers/effects.js";
 
 const fixtures = JSON.parse(
@@ -95,7 +94,7 @@ test("Buff contribution integration: the native Astesia DEF facet merges layers,
             const address = { host: { id: 0 }, id: current.id };
             const currentData = effects.get(work, address).data;
             work = effects.setData(work, address, { ...currentData, stackCount: plan.stackCount });
-            work = replaceEffectFixture(work, address, setDeadline(effects.get(work, address), plan.expiresAtTick));
+            work = effects.setDeadline(work, address, plan.expiresAtTick);
             work = refreshContribution(work, address, program, output);
         }
         return plan;
@@ -205,7 +204,7 @@ test("Buff contribution integration: only effective layer growth resamples the r
             stackCount: plan.stackCount,
             sourceAttack: plan.reloadModifiers ? currentSourceAttack : currentData.sourceAttack,
         });
-        work = replaceEffectFixture(work, address, setDeadline(effects.get(work, address), plan.expiresAtTick));
+        work = effects.setDeadline(work, address, plan.expiresAtTick);
         work = refreshContribution(work, address, program, output);
         return plan;
     };

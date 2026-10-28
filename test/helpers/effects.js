@@ -44,13 +44,6 @@ export function at(state, tick) {
     return { ...state, tick };
 }
 
-export function replaceEffectFixture(state, reference, self) {
-    const unit = getUnit(state, reference.host.id);
-    if (unit === undefined) return state;
-    const next = unit.effects.replace(reference, self);
-    return next === unit.effects ? state : replaceUnit(state, { ...unit, effects: next });
-}
-
 export function attackBuff(id = "attack-buff", amount = 20, callbacks = {}) {
     return contributionBuff(
         id,

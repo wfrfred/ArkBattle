@@ -240,7 +240,9 @@ Effect 实例保存 `host: Ref<Unit & H>`。安装入口使用 `Ref<Unit & NoInf
 
 Unit 初始化不接收预装 Effects，始终建立空容器；初始内容在现有 `stage: "enter"` 的 Unit Hook 中调用 Effect.install。Effect 的 Initial.source、实例、View 与诊断 Snapshot 均使用 `Ref<Unit> | null` 标注施加者；来源不要求仍在场，也不隐含 Scope 或存活依赖，需要绑定时显式提供生命周期 Scope。
 
-Effect 的 install／bindLifetime 入口负责输入、宿主与实例资格、TICK、Scope 与 DAG 等实际约束，战斗初始化不再全场扫描预装实例。私有 replaceEffect(battle, unit, self) 信任已取得且配对的完整对象，只提交写回，不再次查找或验证存在性；同一 battle 中的宿主生命周期直接从已有 Unit 读取。Effects.replace 信任 Core 提供的 Ref／ID／host／Definition 配对，读取当前槽位以保留缺失实例及同引用时的 no-op，不重复校验身份。Effects.add 保留 id === nextId 的登记约束，身份直接递增；get(ref) 的宿主识别和 get(id, definition) 的类型查询继续保留。完整 Unit 更新或内容程序返回后，后继业务仍按最新 battle 重读；这与重复校验同一输入属于不同职责。
+Effect 的安装／绑定入口负责输入、宿主与实例资格、TICK、Scope 与 DAG 等实际约束，setDeadline 在期限写回入口校验 TICK；战斗初始化不再全场扫描预装实例。私有 replaceEffect(battle, unit, self) 信任已取得且配对的完整对象，只提交写回，不再次查找或验证存在性；同一 battle 中的宿主生命周期直接从已有 Unit 读取。Effects.replace 信任 Core 提供的 Ref／ID／host／Definition 配对，读取当前槽位以保留缺失实例及同引用时的 no-op，不重复校验身份。Effects.add 保留 id === nextId 的登记约束，身份直接递增；get(ref) 的宿主识别和 get(id, definition) 的类型查询继续保留。完整 Unit 更新或内容程序返回后，后继业务仍按最新 battle 重读；这与重复校验同一输入属于不同职责。
+
+`Effect.setDeadline(battle, ref: Ref<View>, tick: number | null)` 返回 BattleState，按当前实例替换或清除 TICK Scope，保留非 TICK Scope 和当前 status。tick 非 null 时须为非负安全整数；非法期限及缺失宿主／实例均抛出 RangeError。当前唯一 TICK 期限已经相同，或本来没有期限且清除时，返回原 BattleState。ENDING 可更新期限而不会复活；该操作不额外推进或立即结束实例，到期仍在正常 advance 的 onTick 后按最新期限判断。
 
 Action 的 `setExecutionState(battle, ref, nextState)` 通过 Execution Ref 只设置本轮 execution.state，缺失时抛出 RangeError，execution 为 ENDING 时抛出 TypeError。getAction、start、setState、setCooldown、resetCooldown 和 clearCooldown 使用持久 Action Ref；setState 和 setCooldown 分别设置持久 state／Cooldown，允许结束程序更新这些持久事实。getExecution、advance 和 cancel 使用本轮 Execution Ref；refreshCooldowns 仍按宿主批量刷新。各操作在字段引用未变时返回原 BattleState；完整聚合替换由 Core 内部完成。
 

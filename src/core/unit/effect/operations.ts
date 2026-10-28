@@ -98,6 +98,38 @@ export function setData<S extends object, H extends object>(
     return data === self.data ? battle : replaceEffect(battle, unit, { ...self, data });
 }
 
+export function setDeadline(battle: BattleState, ref: Ref<View>, tick: number | null): BattleState {
+    if (tick !== null) {
+        assertNonnegativeSafeInteger(tick, "effect deadline");
+    }
+
+    const unit = units.get(battle, ref.host);
+    if (unit === undefined) {
+        throw new RangeError(`unknown unit: ${ref.host.id}`);
+    }
+
+    const self = unit.effects.getEffect(ref.id);
+    if (self === undefined) {
+        throw new RangeError(`unknown effect: ${ref.id}`);
+    }
+
+    const deadlines = self.scopes.filter((scope) => scope.type === "TICK");
+    if (
+        (tick === null && deadlines.length === 0) ||
+        (deadlines.length === 1 && deadlines[0]!.tick === tick)
+    ) {
+        return battle;
+    }
+
+    return replaceEffect(battle, unit, {
+        ...self,
+        scopes: [
+            ...self.scopes.filter((scope) => scope.type !== "TICK"),
+            ...(tick === null ? [] : [{ type: "TICK" as const, tick }]),
+        ],
+    });
+}
+
 export function setEnabled(battle: BattleState, ref: Ref<View>, enabled: boolean): BattleState {
     const unit = units.get(battle, ref.host);
     const instance = unit?.effects.getEffect(ref.id);

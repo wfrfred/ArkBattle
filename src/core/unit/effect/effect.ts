@@ -4,7 +4,6 @@ import type { Burst } from "../capability/elemental/burst.js";
 import type { Activation as SkillActivation } from "../capability/skill/activation.js";
 import type { Definition } from "./definition.js";
 import type { Identified, Ref } from "../../common/ref.js";
-import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 
 export type Id = number;
 
@@ -43,31 +42,6 @@ export interface Snapshot extends View {
 
 export function ref<E extends View>(effect: E): Ref<E> {
     return { host: effect.host, id: effect.id } as Ref<E>;
-}
-
-export function setDeadline<S extends object, H extends object>(
-    effect: Effect<S, H>,
-    tick: number | null,
-): Effect<S, H> {
-    if (tick !== null) {
-        assertNonnegativeSafeInteger(tick, "effect deadline");
-    }
-
-    const deadlines = effect.scopes.filter((scope) => scope.type === "TICK");
-    if (
-        (tick === null && deadlines.length === 0) ||
-        (deadlines.length === 1 && deadlines[0]!.tick === tick)
-    ) {
-        return effect;
-    }
-
-    return {
-        ...effect,
-        scopes: [
-            ...effect.scopes.filter((scope) => scope.type !== "TICK"),
-            ...(tick === null ? [] : [{ type: "TICK" as const, tick }]),
-        ],
-    };
 }
 
 export function key(scope: Scope): string {

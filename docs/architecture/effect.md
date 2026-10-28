@@ -14,10 +14,10 @@ Effect 用于表达属性增益、护盾、周期伤害与治疗、技能附带�
 | --- | --- |
 | [unit/effect/index.ts](../../src/core/unit/effect/index.ts) | 显式公共类型、查询与生命周期操作 |
 | `unit/effect/definition.ts` | 共享 Definition 与生命周期回调 |
-| `unit/effect/effect.ts` | 实例、身份、Scope 与局部值转换 |
+| `unit/effect/effect.ts` | 实例、身份、Scope 与局部查询 |
 | `unit/effect/effects.ts` | 不可变异构容器与宿主内 ID 进度 |
 | `unit/effect/query.ts` | 按精确 Ref 读取当前实例的 get |
-| `unit/effect/operations.ts` | 安装、私有数据更新、启停、推进与完整结束 |
+| `unit/effect/operations.ts` | 安装、私有数据与期限写回、启停、推进与完整结束 |
 | `battle/execution/lifetime.ts` | 关闭生命周期并结束依赖 Effect |
 | `content/effects/` | 护盾、异常、属性增益、Aura 等具体程序 |
 
@@ -150,7 +150,7 @@ type Scope = Lifetime | { readonly type: "TICK"; readonly tick: number };
 
 父子生命周期通过 EFFECT Scope 表示。Effect 之间的依赖必须是 DAG，绑定时维护这个领域约束。Scope 在实例中是权威关系，反向索引是从这些关系派生的依赖者查询结构。
 
-install 在入口校验本次 TICK 期限与 Scope 可用性；bindLifetime 检查当前实例和目标生命周期资格，并拒绝形成 Effect 依赖环。所有实例通过安装与绑定入口建立这些约束，战斗初始化不再全场扫描预装 Effect 的 Scopes；内部写回 helper 也不重复执行这些输入与领域校验。
+install 在入口校验本次 TICK 期限与 Scope 可用性；bindLifetime 检查当前实例和目标生命周期资格，并拒绝形成 Effect 依赖环。setDeadline 在期限写回入口校验 TICK，保留其他 Scope。实例通过安装、绑定与期限写回入口建立这些约束，战斗初始化不再全场扫描预装 Effect 的 Scopes；内部写回 helper 也不重复执行这些输入与领域校验。
 
 依赖索引由 BattleState.effect.dependency 持有，不属于 Battlefield 或其 View。纯索引实现位于 unit/effect/dependency.ts：UNIT 按 Unit ID 定位，其余分支分别按宿主 ID、实例 ID 定位，生命周期类型以不同字段分隔，均使用数字 Map。
 
@@ -253,7 +253,7 @@ Contribution 的登记／撤销与 Hook 的开关是两种自然接入方式，�
 | `get(battle, ref)`                    | 从明确输入版本查一个实例，不转换事实                     |
 | `setData(battle, ref, data)`                 | 设置指定实例的私有 data，返回相应战斗版本               |
 | `setEnabled(battle, ref, enabled)`               | 返回完成许可、生效变化与回调后的状态                     |
-| `setDeadline(effect, tickOrNull)`                 | 局部值转换；不自动提交或推进战斗                         |
+| `setDeadline(battle, ref, tickOrNull)`             | 写回当前实例的 TICK 期限，null 清除期限，返回 BattleState |
 | `bindLifetime(battle, ref, lifetime)`              | 检查真实生命周期和 DAG，返回新状态及绑定结果             |
 | `end(battle, ref, reason?)`                       | 返回完成同步结束后的战斗状态                             |
 | `advance(battle)`                                | 由 Runtime 调度，返回一次 Effect 时间推进后的状态         |
@@ -266,6 +266,12 @@ function setData<S extends object, H extends object>(
     ref: Ref<Effect<S, H>>,
     data: NoInfer<S>,
 ): BattleState;
+
+function setDeadline(
+    battle: BattleState,
+    ref: Ref<View>,
+    tick: number | null,
+): BattleState;
 ```
 
 `setData()` 接收已经计算好的 data，从传入 BattleState 重新读取当前实例。宿主或实例缺失时抛出 RangeError；给定 data 与当前 data 引用相同时返回原 BattleState。提交只改变 data，保留当前身份、Definition、source、scopes、enabled、status 和编号进度。
@@ -275,6 +281,10 @@ function setData<S extends object, H extends object>(
 `setData()` 不自动重建静态 Contribution、刷新 Aura 或重新执行 onEnable。内容程序接续返回状态，需要刷新输出时明确调用对应 Capability 的操作。生命周期程序用公开函数形成并返回后继版本，self 只表示本次调用的输入实例。
 
 `NoInfer` 约束本次结果值的类型推导。私有更新必须保留实例与 Definition 对应的 S／H 类型关联；Ref 可协变查询，借预先弱化的完整 Ref 写入不兼容私有数据属于调用契约错误，不增加运行时数据形状检查。
+
+`setDeadline()` 是完整战斗写回操作，从当前 battle 按 `Ref<View>` 取得宿主与实例，保留所有非 TICK Scope，将 TICK 项替换为给定期限；null 清除所有 TICK 项。非 null 的 tick 在入口校验为非负安全整数，非法值抛出 RangeError；宿主或实例缺失也抛出 RangeError。当前已经只有一个相同期限的 TICK 项，或给定 null 且当前没有 TICK 项时，返回原 BattleState。
+
+期限写回保留当前 status，INSTALLING、INACTIVE、ACTIVE、ENDING 均可更新；ENDING 中设置期限不会恢复实例或阻止最终移除。该操作只提交期限，不额外推进或立即结束实例，即使新期限已经到达当前 tick，到期仍由正常 advance 在 onTick 后读取最新期限并结算。
 
 ### 结束流程
 
@@ -308,7 +318,7 @@ battle/runtime.step 每 Tick 调用一次 Effect advance，安排在 Spawning �
     └─ 重新读取实例和期限，到期则 end(EXPIRED)
 ```
 
-新装实例不进入已经固定的本轮候选；已经结束的候选跳过。onTick 先于到期检查，因此到期 Tick 仍可执行一次周期业务，也可以在回调中修改期限。这个顺序可能改变完整的一次伤害／治疗，属于明确的项目规则。
+新装实例不进入已经固定的本轮候选；已经结束的候选跳过。onTick 先于到期检查，因此到期 Tick 仍可执行一次周期业务。回调通过 setDeadline 提交续期或清除期限后，advance 接续返回的 battle，再读取最新期限决定是否 end(EXPIRED)；setDeadline 自身不追加推进或立即终止。这个顺序可能改变完整的一次伤害／治疗，属于明确的项目规则。
 
 持续期限与有效周期分开处理。实例 INACTIVE 时不会执行 onTick，周期进度保存在私有 data 中，恢复后继续累计；TICK 截止时间继续前进。周期计时应按有效推进次数或内容明确选择的方式表达，不能用绝对时间跳过来隐式补发暂停期间的业务。
 

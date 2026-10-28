@@ -1,11 +1,10 @@
-import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
-import { setDeadline } from "../../dist/core/unit/effect/effect.js";
+import { deadline, ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize } from "../helpers/unit.js";
 import * as effect from "../../dist/core/unit/effect/index.js";
 import { get } from "../../dist/core/unit/effect/index.js";
-import { effectFixtureWork, install, definition, at, replaceEffectFixture } from "../helpers/effects.js";
+import { effectFixtureWork, install, definition, at } from "../helpers/effects.js";
 
 const unit = () =>
     initialize({
@@ -14,34 +13,47 @@ const unit = () =>
         definition: { hooks: [], id: "expiry-unit", vitality: { maxHp: 100, defense: 0, resistance: 0 } },
     });
 
-test("effect deadlines: one time advance ticks the active Effect then ends it at the deadline", () => {
+test("effect deadlines: writes wait for advance and termination remains ENDING through cleanup", () => {
     const trace = [];
     const value = definition(
         "deadline",
         {},
         {
+            onInstall(state, self) {
+                const changed = effect.setDeadline(state, effectRef(self), 2);
+                assert.equal(get(changed, effectRef(self)).status, "INSTALLING");
+                return changed;
+            },
             onTick: (state, self) => {
                 trace.push(["tick", state.tick]);
                 return state;
             },
-            onDisable: (state) => {
+            onDisable: (state, self) => {
                 trace.push(["disable"]);
-                return state;
+                const changed = effect.setDeadline(state, effectRef(self), 8);
+                assert.equal(get(changed, effectRef(self)).status, "ENDING");
+                return changed;
             },
             onEnd: (state, self) => {
                 trace.push(["end", self.status]);
-                return state;
+                assert.equal(deadline(self), 8);
+                const changed = effect.setDeadline(state, effectRef(self), null);
+                assert.equal(get(changed, effectRef(self)).status, "ENDING");
+                assert.equal(deadline(get(changed, effectRef(self))), null);
+                return changed;
             },
         },
     );
     let battle = effectFixtureWork(unit());
     let ref;
-    ({ state: battle, value: ref } = install(battle, value, 0, {
-        scopes: [{ type: "TICK", tick: 2 }],
-    }));
+    ({ state: battle, value: ref } = install(battle, value));
+    assert.deepEqual(trace, []);
     battle = effect.advance(at(battle, 1));
     assert.ok(get(battle, ref));
-    battle = effect.advance(at(battle, 2));
+    battle = effect.setDeadline(at(battle, 2), ref, 1);
+    assert.equal(get(battle, ref).status, "ACTIVE");
+    assert.deepEqual(trace, [["tick", 1]]);
+    battle = effect.advance(battle);
     assert.equal(get(battle, ref), undefined);
     battle = effect.advance(at(battle, 3));
     assert.deepEqual(trace, [["tick", 1], ["tick", 2], ["disable"], ["end", "ENDING"]]);
@@ -61,11 +73,7 @@ test("effect deadlines: layered content renews the same identity and ends only a
                 const deadline = state.tick + 2;
                 const currentData = effect.get(state, effectRef(self)).data;
                 state = effect.setData(state, effectRef(self), { ...currentData, layers, deadline });
-                return replaceEffectFixture(
-                    state,
-                    effectRef(self),
-                    setDeadline(get(state, effectRef(self)), deadline),
-                );
+                return effect.setDeadline(state, effectRef(self), deadline);
             },
         },
     );
@@ -88,11 +96,7 @@ test("effect deadlines: current scopes are read after an earlier callback renews
         {},
         {
             onTick(state) {
-                return replaceEffectFixture(
-                    state,
-                    later,
-                    setDeadline(get(state, later), 10),
-                );
+                return effect.setDeadline(state, later, 10);
             },
         },
     );
@@ -111,7 +115,7 @@ test("effect deadlines: removing a deadline keeps an otherwise active instance a
     ({ state: battle, value: ref } = install(battle, definition("permanent"), 0, {
         scopes: [{ type: "TICK", tick: 1 }],
     }));
-    battle = replaceEffectFixture(battle, ref, setDeadline(get(battle, ref), null));
+    battle = effect.setDeadline(battle, ref, null);
     battle = effect.advance(at(battle, 100));
     assert.equal(get(battle, ref).status, "ACTIVE");
 });

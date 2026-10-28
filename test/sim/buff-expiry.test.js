@@ -1,6 +1,6 @@
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { deadline, setDeadline } from "../../dist/core/unit/effect/effect.js";
+import { deadline } from "../../dist/core/unit/effect/effect.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
@@ -22,7 +22,6 @@ import {
     refreshContribution,
     at,
     effectFixtureWork,
-    replaceEffectFixture,
 } from "../helpers/effects.js";
 
 const fixture = JSON.parse(
@@ -148,10 +147,10 @@ function harness({ stackCount = 3, maxValidStackCnt = -1 } = {}) {
                     stackCount: plan.stackCount,
                     sample: plan.reloadModifiers ? sample(plan.stackCount) : currentData.sample,
                 });
-                state = replaceEffectFixture(
+                state = effects.setDeadline(
                     state,
                     effectRef(self),
-                    setDeadline(effects.get(state, effectRef(self)), plan.expiresAtTick),
+                    plan.expiresAtTick,
                 );
                 return refreshContribution(state, effectRef(self), content, output);
             },
