@@ -84,14 +84,9 @@ export function readShield(
         return undefined;
     }
 
-    const { data } = unit.effects.getEffect(effect.id)!;
+    const { layers, timer } = unit.effects.getEffect(effect.id)!.data as ShieldState;
 
-    return "layers" in data &&
-        typeof data.layers === "number" &&
-        "timer" in data &&
-        typeof data.timer === "number"
-        ? { layers: data.layers, timer: data.timer }
-        : undefined;
+    return { layers, timer };
 }
 
 function hasSarkazTag(unit: Unit | undefined): boolean {

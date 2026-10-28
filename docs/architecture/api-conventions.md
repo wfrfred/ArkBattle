@@ -6,6 +6,8 @@
 
 外部可变数据转入领域时完成必要转换；领域内部的 readonly 对象、数组和坐标直接共享，不以“快照”或假设调用方违约修改为理由重复复制、冻结。新状态只创建实际改变的部分。不得为推测的低概率并发或安全场景增加复杂度；确有必要时先说明并通知用户。只用一次的逻辑直接放在所属操作内，不提前包装；异常直接抛出，不使用 try/catch 或静默容错掩盖非法输入。
 
+已知内容 Definition 建立的私有 State 在内容内部直接信任。例如已确认身份的护盾数据按 ShieldState 读取，不重新作为 unknown JSON 校验每个字段；外部 JSON 与配置仍在真正入口校验。
+
 数值按当前游戏尺度处理：数据和配置入口校验有限数、正负与整数等业务约束，内部信任这些约束。已校验数值的加减乘算、Tick 累加和身份递增不为极端浮点溢出或安全整数上界追加结果检查。游戏规定的范围、容量、舍入与普通浮点误差纠正仍按具体业务执行。
 
 Tile 的构造入口 tile.create 接收 `{ terrain, initial }` Definition，校验初始 walkCost，返回 `{ definition, state: definition.initial }`。只读 Definition、初始 State 与地形参数直接共享，不 freeze、不深拷贝、不规范化负零，也不由 Core 补充 Content 的部署条件。具体参数由 Content 的 Terrain Definition.create 校验；原始地图解析通过泛型入口加入 Tiles，内部不重复检查具体地形参数。
@@ -235,6 +237,8 @@ battlefield/unit.ts 提供纯 add／update／remove。Field 的 update 信任 Ba
 Effect 实例保存 `host: Ref<Unit & H>`。安装入口使用 `Ref<Unit & NoInfer<H>>`，从最新 battle 读取宿主，并原样保存身份；H 由 Definition 决定，不能通过双方共同推导削弱能力要求。返回的 `Ref<Effect<S, H>>` 以 host + id 定位。
 
 `effect.ref(self)` 从已知实例保留完整类型，`effects.get(battle, ref)` 恢复 S / H；`units.get(battle, self.host)` 返回 `(Unit & H) | undefined`。同地址的不同 Ref 值可以使用。内容通过 `effects.setData(battle, ref, nextData)` 提交私有数据结果值，Core 保留当前身份、Definition、scopes 和生命周期；ENDING 中仍可完成私有清理。
+
+Effect 入口负责输入、宿主与实例资格、DAG 和初始 Scopes 等实际约束。私有 replaceEffect(battle, unit, self) 信任已取得且配对的完整对象，只提交写回，不再次查找或重复验证存在性；同一 battle 中的宿主生命周期直接从已有 Unit 读取。Effects.replace 的 Ref／实例身份、宿主及 Definition 检查保留在明确的存储修改边界。完整 Unit 更新或内容程序返回后，后继业务仍按最新 battle 重读；这与重复校验同一输入属于不同职责。
 
 Action 的 `setExecutionState(battle, ref, nextState)` 通过 Execution Ref 只设置本轮 execution.state，缺失时抛出 RangeError，execution 为 ENDING 时抛出 TypeError。getAction、start、setState、setCooldown、resetCooldown 和 clearCooldown 使用持久 Action Ref；setState 和 setCooldown 分别设置持久 state／Cooldown，允许结束程序更新这些持久事实。getExecution、advance 和 cancel 使用本轮 Execution Ref；refreshCooldowns 仍按宿主批量刷新。各操作在字段引用未变时返回原 BattleState；完整聚合替换由 Core 内部完成。
 

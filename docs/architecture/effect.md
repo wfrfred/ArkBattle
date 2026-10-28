@@ -69,6 +69,8 @@ interface Effect<S extends object = object, H extends object = object> {
 
 S 是实例私有数据的类型，例如护盾层数、周期进度或 Aura 的目标登记，值保存在 `effect.data`。H 是宿主需要的 Capability 结构，例如 Offense 或 Vitality；回调通过 `units.get(battle, self.host)` 取得 `(Unit & H) | undefined`。H 不要求抽象 Effect 导入所有 Capability。
 
+具体 Definition 已经建立的私有数据约束由内容内部信任。例如确认泥岩护盾的内容身份后，直接按 ShieldState 读取 layers／timer，不将已知实例数据重新当作外部 JSON 逐字段校验；真正的解析与配置入口仍负责输入校验。
+
 安装入口接收 `Ref<Unit & NoInfer<H>>`，通过 units.get 取得最新宿主。创建与内容入口保证宿主能力组合，类型表达所需结构。Definition 中的函数是静态行为，self 是这次回调输入版本中的类型化实例。当前时间读取 battle.tick，实例身份通过 ref(self) 取得。嵌套返回后需要后继事实时，从新 BattleState 查询，不靠动态 getter 接续。
 
 覆写组与固定优先级属于 Definition，实例直接读取 `definition.group`。每次安装的初始属性使用 `Initial<S>`：`source`、`scopes`、`data` 和 `enabled`。这些值表达本次施加的来源、具体生命周期、采样数据与初始许可，不覆写 Definition 的规则。
@@ -107,9 +109,11 @@ getEffect(id: Id): Effect | undefined;
 
 getEffect 返回默认使用 object／object 的完整 Effect，容器内以 as Effect 恢复，作为受信的类型边界。Core 只调用该实例自身 Definition 的程序，不解释私有 data 的结构或宿主能力 H，保留实例与 Definition 的配对。生命周期阶段、回调实参与状态接续仍由 operations 决定；getter 只返回当前容器版本的实例，不执行内容程序，也不扩大普通 get／values 的 View。
 
-异构存储需要的擦除与恢复集中在容器内部，不另设业务代码需要理解的 Instance 类型。`add()` 使用当前 nextId，不接受跳号或重用旧 ID。`replace()` 检查 Ref 与替换对象的宿主、局部 ID 一致，并保留原 Definition 对象身份；即使字符串 ID 相同，也不能改用另一个 Definition。缺失实例的 replace／remove 返回原容器，删除不回收已经分配的 ID。
+异构存储需要的擦除与恢复集中在容器内部，不另设业务代码需要理解的 Instance 类型。`add()` 使用当前 nextId，不接受跳号或重用旧 ID。`replace()` 检查 Ref 与替换对象的宿主、局部 ID 一致，并保留原 Definition 对象身份；即使字符串 ID 相同，也不能改用另一个 Definition。这些检查集中在存储修改边界，维持实例身份与私有类型配对。缺失实例的 replace／remove 返回原容器，删除不回收已经分配的 ID。
 
 Effects 的完整替换属于 Core 存储接口。它不接收 BattleState，不选择或执行生命周期回调，不决定覆写赢家、不检查宿主生命周期，也不结束 Scope。Core 通过它提交已完成的领域结算；内容私有数据更新使用 `setData()`，许可与生命周期变化使用相应完整操作。
+
+operations.ts 的私有 replaceEffect(battle, unit, self) 提交已经配对的宿主与完整 Effect。调用方从当前 battle 取得对象并完成入口所需的缺失、ENDING、无变化等判断；helper 信任这些前提，不重复查找对象或校验存在性，直接通过 Effects.replace 与完整 Unit 更新提交。容器的存储身份检查仍保留，业务资格由所属入口负责。
 
 不可变 State 直接共享这个容器。容器的 `toJSON()` 通过内部 getEffect 读取完整实例，返回 `{ instances, nextId }`，其中 instances 是显式物化的诊断 Snapshot 数组；该类型在 View 之外保存 `data: unknown`，让 JSON 诊断包含私有数据与 ID 进度。诊断表示独立于普通 Query，不承担恢复 Definition、回调或运行容器的职责。
 
@@ -141,6 +145,8 @@ type Scope = Lifetime | { readonly type: "TICK"; readonly tick: number };
 实例可以同时声明多个 Scope。任一生命周期结束，或者到达最早的 TICK 截止时间，就结束 Effect；不是等所有 Scope 都结束。SKILL 绑定一次激活身份，ACTION 绑定一次执行身份，ELEMENTAL_BURST 绑定一次爆发身份，EFFECT 绑定一个精确实例。Burst 使用 host + id 定位，关闭后不能绑定新的 Effect；生命周期绑定不自动缩放 Effect 自身时钟，详见 [Elemental 设计](elemental.md)。
 
 父子生命周期通过 EFFECT Scope 表示。Effect 之间的依赖必须是 DAG，绑定时维护这个领域约束。Scope 在实例中是权威关系，反向索引是从这些关系派生的依赖者查询结构。
+
+install 在入口校验本次 TICK 期限与 Scope 可用性；bindLifetime 检查当前实例和目标生命周期资格，并拒绝形成 Effect 依赖环。战斗初始化对输入中已有 Effect 的初始 Scopes 继续校验。这些输入与领域约束不由内部写回 helper 重复执行。
 
 依赖索引由 BattleState.effect.dependency 持有，不属于 Battlefield 或其 View。纯索引实现位于 unit/effect/dependency.ts：UNIT 按 Unit ID 定位，其余分支分别按宿主 ID、实例 ID 定位，生命周期类型以不同字段分隔，均使用数字 Map。
 
@@ -226,6 +232,8 @@ Hook 的 accepts 读取 Effect 的覆写结果；伤害阶段与优先级由 Dam
 | onEnd     | 实例已结束，依赖结束完成后，一次 | 移除稳定 Hook，执行结束业务         |
 
 安装先形成包含 INSTALLING 实例的新状态，以此调用 onInstall，接续其返回值。回调返回后，仍然处于 INSTALLING 的实例转为 INACTIVE，再协调是否生效。生效切换先形成新 status，再运行回调并接续返回值；回调输入表达新状态。
+
+同一 battle 版本内，install 与 shouldBeActive 直接检查已经取得的 Unit.lifecycle，不为同一个宿主重复查询；updateStatus 已排除 INSTALLING／ENDING 后，内部资格计算信任这个前提。完整 Unit 更新会同步执行维护与 Hook，返回后仍须重读宿主和实例：安装继续前确认当前仍为 INSTALLING，状态切换后确认当前仍为预期状态，再调用内容程序。onInstall、onDisable、依赖结束等完整操作后的实时重读与终止历史 fallback 均按状态接续约定保留。
 
 onInstall 完成前，实例不能执行 onEnable。安装期间的同步嵌套操作可以登记子实例、改变许可与私有 data，也可以结束自己或宿主。INSTALLING 和 ENDING 都由实例自身保存；结束的实例不在外层安装返回时恢复。INSTALLING 实例已经登记，可以成为子 Effect 的 Scope，也作为尚未结束的同组候选。
 

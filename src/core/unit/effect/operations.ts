@@ -14,7 +14,6 @@ import {
     type Lifetime,
     ref as effectRef,
     type Scope,
-    type Status,
     type View,
 } from "./effect.js";
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
@@ -44,8 +43,7 @@ export function install<S extends object, H extends object>(
     }
 
     if (
-        unit === undefined ||
-        !available(battle, { type: "UNIT", ref: host }) ||
+        unit?.lifecycle !== "PRESENT" ||
         scopes.some((scope) => scope.type !== "TICK" && !available(battle, scope))
     ) {
         return { state: battle, value: undefined };
@@ -64,12 +62,15 @@ export function install<S extends object, H extends object>(
     const ref = effectRef(instance);
     battle = updateUnit(battle, [{ ...unit, effects: unit.effects.add(instance) }]);
 
-    const installed = get(battle, ref);
+    let currentUnit = units.get(battle, host);
+    let installed = currentUnit?.effects.get(ref);
     if (installed?.status === "INSTALLING" && definition.onInstall !== undefined) {
         battle = definition.onInstall(battle, installed);
+        currentUnit = units.get(battle, host);
+        installed = currentUnit?.effects.get(ref);
     }
-    if (get(battle, ref)?.status === "INSTALLING") {
-        battle = change(battle, ref, { status: "INACTIVE" });
+    if (installed?.status === "INSTALLING") {
+        battle = replaceEffect(battle, currentUnit!, { ...installed, status: "INACTIVE" });
         battle =
             definition.group === undefined
                 ? updateStatus(battle, ref)
@@ -94,18 +95,17 @@ export function setData<S extends object, H extends object>(
         throw new RangeError(`unknown effect: ${ref.id}`);
     }
 
-    return data === self.data
-        ? battle
-        : updateUnit(battle, [{ ...unit, effects: unit.effects.replace(ref, { ...self, data }) }]);
+    return data === self.data ? battle : replaceEffect(battle, unit, { ...self, data });
 }
 
 export function setEnabled(battle: BattleState, ref: Ref<View>, enabled: boolean): BattleState {
-    const instance = get(battle, ref);
+    const unit = units.get(battle, ref.host);
+    const instance = unit?.effects.getEffect(ref.id);
     if (instance === undefined || instance.status === "ENDING" || instance.enabled === enabled) {
         return battle;
     }
 
-    battle = change(battle, ref, { enabled });
+    battle = replaceEffect(battle, unit!, { ...instance, enabled });
 
     return updateStatus(battle, ref);
 }
@@ -115,7 +115,8 @@ export function bindLifetime(
     ref: Ref<View>,
     lifetime: Lifetime,
 ): Result<boolean> {
-    const instance = get(battle, ref);
+    const unit = units.get(battle, ref.host);
+    const instance = unit?.effects.getEffect(ref.id);
     if (instance === undefined || instance.status === "ENDING" || !available(battle, lifetime)) {
         return { state: battle, value: false };
     }
@@ -124,14 +125,18 @@ export function bindLifetime(
         throw new TypeError("effect scopes cannot form a cycle");
     }
     if (!instance.scopes.some((scope) => key(scope) === key(lifetime))) {
-        battle = change(battle, ref, { scopes: [...instance.scopes, lifetime] });
+        battle = replaceEffect(battle, unit!, {
+            ...instance,
+            scopes: [...instance.scopes, lifetime],
+        });
     }
 
     return { state: battle, value: true };
 }
 
 export function end(battle: BattleState, ref: Ref<View>, reason = "EXPLICIT"): BattleState {
-    const instance = units.get(battle, ref.host)?.effects.getEffect(ref.id);
+    const unit = units.get(battle, ref.host);
+    const instance = unit?.effects.getEffect(ref.id);
     if (instance === undefined || instance.status === "ENDING") {
         return battle;
     }
@@ -140,7 +145,7 @@ export function end(battle: BattleState, ref: Ref<View>, reason = "EXPLICIT"): B
     const definition = instance.definition;
     const reference = effectRef(instance);
     const ending = { ...instance, status: "ENDING" as const };
-    battle = change(battle, ref, { status: "ENDING" });
+    battle = replaceEffect(battle, unit!, ending);
     let ended = get(battle, reference) ?? ending;
 
     if (instance.status === "ACTIVE" && definition.onDisable !== undefined) {
@@ -263,39 +268,18 @@ function available(battle: BattleState, lifetime: Lifetime): boolean {
     }
 }
 
-function change(
+function replaceEffect<S extends object, H extends object>(
     battle: BattleState,
-    ref: Ref<View>,
-    changes: {
-        readonly status?: Status;
-        readonly enabled?: boolean;
-        readonly scopes?: readonly Scope[];
-    },
+    unit: Unit,
+    self: Effect<S, H>,
 ): BattleState {
-    const unit = units.get(battle, ref.host);
-    if (unit === undefined) {
-        return battle;
-    }
-
-    const instance = unit.effects.getEffect(ref.id);
-    if (instance === undefined) {
-        return battle;
-    }
-
-    const effects = unit.effects.replace(effectRef(instance), {
-        ...instance,
-        ...changes,
-    });
-    const next = effects === unit.effects ? unit : { ...unit, effects };
-
-    return updateUnit(battle, [next]);
+    return updateUnit(battle, [{ ...unit, effects: unit.effects.replace(effectRef(self), self) }]);
 }
 
 function shouldBeActive(battle: BattleState, instance: View, unit: Unit): boolean {
     if (
         !instance.enabled ||
-        instance.status === "ENDING" ||
-        !available(battle, { type: "UNIT", ref: units.ref(unit) }) ||
+        unit.lifecycle !== "PRESENT" ||
         instance.scopes.some((scope) => scope.type !== "TICK" && !available(battle, scope))
     ) {
         return false;
@@ -320,7 +304,7 @@ function shouldBeActive(battle: BattleState, instance: View, unit: Unit): boolea
 
 function updateStatus(battle: BattleState, ref: Ref<View>): BattleState {
     const unit = units.get(battle, ref.host);
-    const instance = unit?.effects.get(ref);
+    const instance = unit?.effects.getEffect(ref.id);
     if (
         unit === undefined ||
         instance === undefined ||
@@ -335,7 +319,10 @@ function updateStatus(battle: BattleState, ref: Ref<View>): BattleState {
         return battle;
     }
 
-    battle = change(battle, ref, { status: active ? "ACTIVE" : "INACTIVE" });
+    battle = replaceEffect(battle, unit, {
+        ...instance,
+        status: active ? "ACTIVE" : "INACTIVE",
+    });
 
     const current = units.get(battle, ref.host)?.effects.getEffect(ref.id);
     if (current?.status !== (active ? "ACTIVE" : "INACTIVE")) {
