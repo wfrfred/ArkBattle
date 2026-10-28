@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { setHook, removeHook } from "../../dist/core/unit/capability/skill/capability.js";
-import * as sp from "../../dist/core/unit/capability/skill/sp.js";
+import * as sp from "../../dist/core/unit/skill/sp.js";
 import { get as getHookHost, ref } from "../../dist/core/unit/query.js";
 import { fixture, setSkill } from "../helpers/skill.js";
 import { getUnit } from "../helpers/unit.js";

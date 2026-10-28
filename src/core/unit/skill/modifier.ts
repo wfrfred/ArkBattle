@@ -1,7 +1,7 @@
-import { assertFiniteNumber } from "../../../common/assert.js";
-import type { State as BattleState } from "../../../battle/state.js";
-import type { Unit } from "../../unit.js";
-import type { Skill } from "./capability.js";
+import { assertFiniteNumber } from "../../common/assert.js";
+import type { State as BattleState } from "../../battle/state.js";
+import type { Unit } from "../unit.js";
+import type { Skill } from "../capability/skill/capability.js";
 
 export interface Modifier {
     readonly priority: number;

@@ -149,7 +149,7 @@ Tick 的执行顺序在 step() 中直接可读。领域函数负责各自的纯�
 
 战斗状态组合这些值，没有第二份 Unit 覆盖层，也不复制 Battlefield 的索引维护职责。全局规则只有需要独立状态时才创建 Mechanism；不把所有特殊技能归成一种通用机制对象。
 
-实例直接共享不可变 Definition，异构条目的类型配对与恢复由所属集合封装。Typed Ref 与生命周期地址表达运行身份；跨进程恢复在序列化入口重新关联定义。Skill 的类型与行为见 [Skill 设计](skill.md)。
+实例直接共享不可变 Definition，异构条目的类型配对与恢复由所属集合封装。Typed Ref 与生命周期地址表达运行身份；跨进程恢复在序列化入口重新关联定义。Skill 的 Definition、Activation、Instance、SP／Ammo 与完整业务归 unit/skill，能力状态、初始化和局部 Rule／Hook／持续预算贡献登记归 capability/skill；状态仍存于 Unit.skill。类型与行为见 [Skill 设计](skill.md)。
 
 事件与注册／移除记录可以在 Tick 工作值中按顺序累积，step() 返回时形成输出。它们是结果数据，不是随后重放的修改指令。纯函数可以内部使用本次新建的数组／Map 构建结果，不能修改输入版本或已经返回的共享值。
 
@@ -228,7 +228,7 @@ Unit.initialize 始终创建空 Effects；初始内容在宿主登记后，通�
 
 Projectile 的异构容器归 projectile/projectiles.ts，状态仍由 Battlefield 持有，完整 battle/projectile.ts 操作直接替换容器。Projectile 的 update 接收已经计算好的 `{ position?, state? }`；Core 从当前实例保留未提供字段，只提取允许写入的 position／state，ACTIVE 与 ENDING 均可写。Runtime 在整个 Step 的阶段回调开始前固定候选 Ref，逐项读取最新 ACTIVE 实例，本次新建实例不参与正常推进。
 
-通用写回只接收结果值。调用方从当前 battle 查询并局部计算下一值，计算与提交之间不执行其他完整操作；跨领域调用后先接续 battle，再重读所需实时状态。Skill Instance／Activation 的 setData 仍是局部对象操作，内部 replace 负责向战斗提交；私有 Contribution 集合 setter 也只接收已经算好的集合。Hook、生命周期程序、容器 read 与动态 Contribution Input 保留各自的回调职责。固定实例字段与生命周期由所属领域操作维护。
+通用写回只接收结果值。调用方从当前 battle 查询并局部计算下一值，计算与提交之间不执行其他完整操作；跨领域调用后先接续 battle，再重读所需实时状态。unit/skill 的 Instance／Activation.setData 仍是局部对象操作，内部 instance.replace 负责向战斗提交；SP setContribution 仍在同领域 sp.ts 内按资源值操作，不套 Capability 转发层；私有 Contribution 集合 setter 也只接收已经算好的集合。Hook、生命周期程序、容器 read 与动态 Contribution Input 保留各自的回调职责。固定实例字段与生命周期由所属领域操作维护。
 
 `NoInfer` 限制新值参与泛型推导；调用者必须保留实例与 Definition 的原始私有类型关联。Ref 可协变查询，但借预先弱化的完整 Ref 写入不兼容数据属于调用契约错误，不增加运行时形状校验。Action 容器的 toJSON 诊断保存聚合条目与私有载荷，执行 ID 进度另由 Capability 保存；Effect 容器诊断同时保存私有载荷和自身 ID 进度。诊断不扩大普通 View，也不作为 Definition、回调或容器的恢复协议。
 

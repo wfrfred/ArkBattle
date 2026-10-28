@@ -1,7 +1,7 @@
 import * as conditions from "../../dist/content/terrain/condition.js";
 import * as blockingQueries from "../../dist/core/battle/blocking/index.js";
 import { advance as advanceBlocking } from "../../dist/core/battle/blocking/index.js";
-import { ref as activationRef } from "../../dist/core/unit/capability/skill/activation.js";
+import { ref as activationRef } from "../../dist/core/unit/skill/activation.js";
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
@@ -13,7 +13,7 @@ import { createBattleState } from '../../dist/core/battle/state.js';
 import { update as updateUnit } from '../../dist/core/battle/unit.js';
 import { getUnit } from '../helpers/unit.js';
 import { add } from '../../dist/core/battle/unit.js';
-import { activate as activateSkill, advance as advanceSkill, finish as finishSkill } from '../../dist/core/unit/capability/skill/index.js';
+import { activate as activateSkill, advance as advanceSkill, finish as finishSkill } from '../../dist/core/unit/skill/index.js';
 import { resolveAttack } from '../../dist/core/unit/capability/offense/index.js';
 import { fixtureBattlefieldState } from '../helpers/battlefield.js';
 import { ref as unitRef } from '../../dist/core/unit/index.js';

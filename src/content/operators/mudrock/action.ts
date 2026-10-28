@@ -12,7 +12,8 @@ import { get as getCurrentUnit, ref as unitRef } from "../../../core/unit/index.
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
 import { hasOffense, resolveAttack } from "../../../core/unit/capability/offense/index.js";
 
-import { hasSkill, finish } from "../../../core/unit/capability/skill/index.js";
+import { finish } from "../../../core/unit/skill/index.js";
+import { hasSkill } from "../../../core/unit/capability/skill/index.js";
 
 import { hasVitality } from "../../../core/unit/capability/vitality/index.js";
 import {

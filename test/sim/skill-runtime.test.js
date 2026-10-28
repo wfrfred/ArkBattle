@@ -1,5 +1,5 @@
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
-import { lifetime as skillLifetime } from "../../dist/core/unit/capability/skill/operations.js";
+import { lifetime as skillLifetime } from "../../dist/core/unit/skill/operations.js";
 import * as unitQueries from "../../dist/core/unit/index.js";
 import { damage as damageTargeting, healing as healingTargeting } from "../helpers/targeting.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
@@ -12,9 +12,9 @@ import { test } from 'node:test';
 import { initialize as initializeBattle, step as stepBattle } from '../../dist/core/battle/index.js';
 import { createLegacyCombatSpec } from '../../dist/legacy/combat.js';
 
-import { createDefinition as createSkillDefinition } from '../../dist/core/unit/capability/skill/index.js';
-import * as skills from '../../dist/core/unit/capability/skill/index.js';
-import { ref as activationRef } from '../../dist/core/unit/capability/skill/activation.js';
+import { createDefinition as createSkillDefinition } from '../../dist/core/unit/skill/index.js';
+import * as skills from '../../dist/core/unit/skill/index.js';
+import { ref as activationRef } from '../../dist/core/unit/skill/activation.js';
 import { create as createAttack } from '../../dist/content/actions/attack.js';
 import { actionCapability } from "../helpers/actions.js";
 import { initialize } from "../helpers/unit.js";

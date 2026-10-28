@@ -17,7 +17,7 @@ import { setAttackContribution } from "../../dist/core/unit/capability/offense/c
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
 import { definition as createSkillDefinition } from "../helpers/skill.js";
-import { activate, enter as enterSkill } from "../../dist/core/unit/capability/skill/operations.js";
+import { activate, enter as enterSkill } from "../../dist/core/unit/skill/operations.js";
 
 const targeting = damageTargeting({ geometry, canTargetAir: true });
 const group = (operations) => ({ id: "primary", targeting, operations });

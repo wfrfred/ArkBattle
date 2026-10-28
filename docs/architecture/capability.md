@@ -1,6 +1,6 @@
 # Capability 的数据与操作契约
 
-Capability 按领域组织静态规则、当前状态和操作。每项 Capability 都提供 Definition、State、同时配对两者的能力接口，以及统一的 initialize。没有静态配置或运行事实的一侧使用空实现，不使用 null 或省略字段代替。
+Capability 按领域组织静态规则、当前状态和操作。每项 Capability 都具有配对的静态配置、State、能力接口和统一的 initialize；程序配置可由对应独立领域提供，例如 Skill Definition 归 unit/skill。没有静态配置或运行事实的一侧使用空实现，不使用 null 或省略字段代替。
 
 ## 数据与类型
 
@@ -15,7 +15,7 @@ interface Vitality {
 
 Definition 保存静态参数与行为描述，State 保存本领域当前事实。结构相同的配置与初态可以共享引用；更新当前状态创建新值，不修改配置。Unit 可以不选择某项能力；一旦选择，对应 Definition 和 State 必须同时存在。SpatialPresence 使用空 Definition，Hitbox 使用空 State；空定义和空状态均使用 interface {}。Occupancy Definition 声明 Slot，State 记录当前登记地块。Targetable 的 Definition 使用必填 restrictions 数组声明固有限制，初始化复制贡献容器建立 State；空数组表示没有固有限制，详见 [Targeting 与 Targetable 类型](targeting.md)。Skill.active 为 null 等领域内部业务状态不受此配对约定限制。
 
-基础 Unit 是非泛型接口，保留运行时实例 ID 与 definition.id 对应的静态内容身份。通用工厂返回 Unit 基础结构与明确选择的能力的标准 Definition／State 组合。Skill／Action Capability 本身非泛型，不把具体程序的私有类型传播到宿主 Unit、SP、Rule、Hook 或 Contribution。领域内部 read 维护 Definition 与私有状态的类型配对；已知 Definition 或具体实例建立的 Typed Ref 保留相应私有类型。需要某项能力的业务通过 Unit 与对应 Capability 的交叉类型声明依赖。
+基础 Unit 是非泛型接口，保留运行时实例 ID 与 definition.id 对应的静态内容身份。通用工厂返回 Unit 基础结构与明确选择的能力的标准 Definition／State 组合。Skill／Action Capability 本身非泛型，不把具体程序的私有类型传播到宿主 Unit、SP、Rule、Hook 或 Contribution。Skill 的内部配对读取位于 unit/skill/internal/read.ts，继续维护 Definition 与私有状态关联；已知 Definition 或具体实例建立的 Typed Ref 保留相应私有类型。需要某项能力的业务通过 Unit 与对应 Capability 的交叉类型声明依赖。
 
 各领域保留 hasVitality／hasSkill 等结构守卫。它们可以使用泛型保留调用者已知结构，因为守卫不更新值。普通状态变换不承诺保留任意输入字面量类型，也不使用 StableUnit／widenUnit。Core 遵守 readonly 与约定式不可变，无需所有权接管与反复复制。
 
@@ -66,7 +66,7 @@ export type Product<D> = {
 
 Product<D>.definition 直接保留 D，包含内容自有字段、字面量与联合分支信息；各 Capability 的运行 State 则使用 initializer 派生的标准 States 类型。SelectedKeys 的条件以 [D] 包裹，只有联合 Definition 的所有分支都明确要求某项能力时才承诺对应 State；可选能力也不提供存在保证。Unit 基础身份与生命周期 Hook 契约归 Unit 模块。类型推导与运行时装配共用 initializers，不另建能力映射表。Definition 与内部状态按项目契约保持不可变，不额外套深只读包装、复制或冻结。
 
-Unit 装配实现在 unit/initialize.ts，由 [unit/index.ts](../../src/core/unit/index.ts) 公开 initialize(battle, input) → Result<Unit & Product<D>> 及模型、Hook 类型和查询；完整登记与离场操作仍直接归 battle/unit.ts。Input 的 id、definition、position 为必填，不接收 effects；每个 Unit 始终以 Effects.empty() 初始化。初始 Effect 由 Unit Definition 中 `stage: "enter"` 的 Hook 在登记后调用 install，正常执行安装、生效与依赖结算。实现签名接收 Input<Definition & Partial<Definitions>>，按配置键是否存在选择能力，并直接读取 definition[key]；不使用 Reflect，也不重复检查内部能力配置是否为 undefined 或 null。已知能力的 Definition 受 Catalog 派生类型约束；通用装配结果只承诺 Definition 中明确选择的能力。Skill.initialize 返回完整的非泛型 Capability State，程序私有类型由领域内部恢复。
+Unit 装配实现在 unit/initialize.ts，由 [unit/index.ts](../../src/core/unit/index.ts) 公开 initialize(battle, input) → Result<Unit & Product<D>> 及模型、Hook 类型和查询；完整登记与离场操作仍直接归 battle/unit.ts。Input 的 id、definition、position 为必填，不接收 effects；每个 Unit 始终以 Effects.empty() 初始化。初始 Effect 由 Unit Definition 中 `stage: "enter"` 的 Hook 在登记后调用 install，正常执行安装、生效与依赖结算。实现签名接收 Input<Definition & Partial<Definitions>>，按配置键是否存在选择能力，并直接读取 definition[key]；不使用 Reflect，也不重复检查内部能力配置是否为 undefined 或 null。已知能力的 Definition 受 Catalog 派生类型约束；通用装配结果只承诺 Definition 中明确选择的能力。capability/skill.initialize 返回完整的非泛型 Capability State，Catalog 的装配入口不变；程序私有类型由 unit/skill 内部恢复。
 
 装配按登记次序调用所选 initializer，逐个接续返回的 battle，再组合完整 Unit。初始化可以读取当前战场或按所属流程消费 RNG；后续初始化与创建流程使用返回版本，不能重新接回旧 battle。这个阶段 Unit 尚未登记，初始化不能假设自己或兄弟能力已经可从战场取得。登记、Skill 入场及 Unit 的 enter Hook 等登场结算由创建流程负责。
 
@@ -150,6 +150,8 @@ Skill 激活先一次性提交支付与新 Activation，再记录 SKILL_ACTIVATE
 已进入的同步内容与未来执行进度有各自的结束边界，具体后继资格由所属规则判断。官方普通原生依据见 [Skill 研究](../research/cases/05-skill-start-and-finish.md)。项目报告顺序是明确的工程约定，不冒充官方同名事件协议。
 
 ## 文件职责
+
+Skill 的程序定义、Activation、SP／Ammo 与完整业务位于 [unit/skill](../../src/core/unit/skill/index.ts)；[capability/skill](../../src/core/unit/capability/skill/index.ts) 保留 Skill／State、守卫、initialize、原 validateState 及局部 Rule／Hook／Ammo／时长贡献 setter。Definition／createDefinition 与 Declaration 归 unit/skill/definition.ts，Capability 使用该声明关联配置，不复制一套定义。两个 index 分别提供领域和能力 API，不相互转发整套入口；validateState 和领域 read 仍属内部协议。SP 的局部 setContribution／removeContribution 继续归领域 sp.ts，与资源类型同处，不增加 Capability 包装；read 与 validateState 的算法不因文件归位改变。
 
 文件按真实领域职责和代码规模划分。完整结算也是纯函数，纯度和参数大小都不能单独决定拆文件。小型内部步骤可以与完整操作同处；具有独立使用与理解价值的规则才单独组织。删除只转发的跳转层，保留 Unit 离场等确有业务顺序的分阶段操作。
 

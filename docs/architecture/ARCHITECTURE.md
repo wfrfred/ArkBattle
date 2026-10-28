@@ -105,7 +105,7 @@ Unit 初始化始终建立空 Effects，不接受预装实例输入。初始护�
 | ------------------ | ---------------------------------------------- | --------------------------------------------------------------------------------- |
 | Schedule           | 出生、波次、分支、等待与完成统计               | 定义和进度在创建及后续调用链保持关联                                              |
 | Action             | 启动周期、运行实例、推进、取消与完成 | Definition 保存基础间隔、速度与程序；Unit.action.actions 按配置 ID 保存持久 state、Cooldown 与当前 Execution；nextExecutionId、贡献与 Rule 归 Capability |
-| Skill              | SP 获取与支付、激活许可、持续、结束和弹药消耗  | Skill 能力保存 SP、恢复进度与激活身份；附带 Effect 通过 SKILL Scope 关联          |
+| Skill              | SP 获取与支付、激活许可、持续、结束和弹药消耗  | unit/skill 保存领域程序与资源操作；capability/skill 定义宿主能力与局部登记，事实仍存于 Unit.skill；Effect 通过本轮 Skill Lifetime 关联 |
 | Targeting          | 候选、查询资格、优先级与确定性选择             | 读取当前事实；比较器纯函数并追加确定性 tie-break                                  |
 | Damage             | 公式、输出、有序接收、普通扣血及死亡       | 流程在 battle/damage；Offense／Vitality／Elemental 提供属性，Vitality 保存 HP 与 Hook／规则登记。特殊生命保护尚待设计 |
 | Healing            | 计算、输出、有序接收、普通恢复与通知           | 流程在 battle/healing；Vitality 保存 HP／MaxHP 与 Hook。治疗不可选中由 Targetable 表达，明确 Ref 的治疗只检查生命周期和接收 Hook |
@@ -128,7 +128,7 @@ Targetable 通过 Definition 中的必填 restrictions 声明固有限制，初�
 
 Damage 和 Healing 分别在 battle/damage、battle/healing 维护 Calculate／Apply 协议；Targeting 位于 battle/targeting，select 返回 Result 接续选取状态，hasCandidate 提供不调用 Selector 的只读候选检查。领域 Hook 读取当前输入版本，通过公开的纯 Damage、Healing、Effect 等操作执行同步嵌套结算，再把返回版本交给外层。取消保留已完成的消耗、回复与后继；普通死亡和治疗使用各自完整操作；倒地复活、特殊生命机制、再生与生命复原仍待设计与接入。治疗不可选中不等于接收免疫，已选中后仍可直接治疗，不设置通用禁疗绕过或跳事件开关。
 
-Skill 直接共享泛型 Definition，状态保存持久数据、SP 与本次 Activation；无需静态登记或编译程序查找。自然回复按 tick 进度产生 SP；ACTION 回复通过成功释放通知，HIT 回复通过 Damage 的接收 Hook，由 Skill 自己登记和结算。默认激活阻回由 Rule 表达，上限、门槛和支付分别求值。普通攻击不依赖 Skill，具体技能行动通过公开扩展点组合，不修改基础 Definition。
+Skill 的 Definition／createDefinition、Activation、Instance、查询、资源与完整操作位于 unit/skill；unit/capability/skill 只保留宿主能力、守卫、初始化及局部规则／Hook／持续预算贡献登记。两个 index 分别提供领域和能力契约，不通过旧能力入口转发完整领域 API。SP 贡献的局部值操作仍在 unit/skill/sp.ts。Skill 直接共享泛型 Definition，Unit.skill 保存持久数据、SP 与本次 Activation；无需静态登记或编译程序查找。自然回复按 tick 进度产生 SP；ACTION 回复通过成功释放通知，HIT 回复通过 Damage 的接收 Hook，由 Skill 自己登记和结算。默认激活阻回由 Rule 表达，上限、门槛和支付分别求值。普通攻击不依赖 Skill，具体技能行动通过公开扩展点组合，不修改基础 Definition。
 
 技能结束与单位退场委托同一 Lifetime 请求／析构协议。Unit 的所有权边保护 Execution、Activation、Burst 和 Effects，全部子项完成 Finalize 后才能移除 Unit。已经进入的内容仍按普通控制流继续，后继按最新状态确认资格；不能重建已结束实例，新的真正依赖也不能绑定到 Pending／ENDING 对象。
 

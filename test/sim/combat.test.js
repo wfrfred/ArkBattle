@@ -4,7 +4,7 @@ import * as unitQueries from "../../dist/core/unit/query.js";
 import { calculateDamage } from "../../dist/core/battle/damage/calculate.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { definition as skillDefinition } from "../helpers/skill.js";
-import { enter as enterSkill } from "../../dist/core/unit/capability/skill/operations.js";
+import { enter as enterSkill } from "../../dist/core/unit/skill/operations.js";
 import { actionCapability } from "../helpers/actions.js";
 import { create as createAttack } from "../../dist/content/actions/attack.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";

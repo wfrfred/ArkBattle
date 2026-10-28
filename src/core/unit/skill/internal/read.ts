@@ -1,8 +1,8 @@
-import type { Ref } from "../../../../common/ref.js";
-import type { State as BattleState } from "../../../../battle/state.js";
-import type { Unit } from "../../../unit.js";
-import * as units from "../../../query.js";
-import type { Skill } from "../capability.js";
+import type { Ref } from "../../../common/ref.js";
+import type { State as BattleState } from "../../../battle/state.js";
+import type { Unit } from "../../unit.js";
+import * as units from "../../query.js";
+import type { Skill } from "../../capability/skill/capability.js";
 import type { Instance } from "../instance.js";
 
 export function read<R>(

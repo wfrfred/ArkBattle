@@ -20,7 +20,7 @@ import type { View as ExecutionView } from "../unit/action/execution.js";
 import type { Id as ProjectileId } from "../projectile/projectile.js";
 import type { Signal as ProjectileSignal } from "../projectile/event.js";
 import type { Signal as ElementalSignal } from "../unit/capability/elemental/operations.js";
-import type { Signal as SkillSignal } from "../unit/capability/skill/operations.js";
+import type { Signal as SkillSignal } from "../unit/skill/operations.js";
 
 export interface Definition {
     readonly predefines: readonly PredefinedDefinition[];

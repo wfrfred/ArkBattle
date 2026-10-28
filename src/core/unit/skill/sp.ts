@@ -2,19 +2,19 @@ import {
     assertNonnegativeSafeInteger,
     assertPositiveNumber,
     assertSafeInteger,
-} from "../../../common/assert.js";
-import type { Ref } from "../../../common/ref.js";
-import type { Result, State as BattleState } from "../../../battle/state.js";
-import { TICKS_PER_SECOND } from "../../../tick.js";
-import type { Unit } from "../../unit.js";
-import * as units from "../../query.js";
-import * as contribution from "../../contribution/contribution.js";
-import * as attribute from "../../contribution/attribute.js";
-import { hasVitality } from "../vitality/capability.js";
-import type { Skill } from "./capability.js";
+} from "../../common/assert.js";
+import type { Ref } from "../../common/ref.js";
+import type { Result, State as BattleState } from "../../battle/state.js";
+import { TICKS_PER_SECOND } from "../../tick.js";
+import type { Unit } from "../unit.js";
+import * as units from "../query.js";
+import * as contribution from "../contribution/contribution.js";
+import * as attribute from "../contribution/attribute.js";
+import { hasVitality } from "../capability/vitality/capability.js";
+import type { Skill } from "../capability/skill/capability.js";
 import * as modifier from "./modifier.js";
 import { replaceHost } from "./instance.js";
-import { dispatch } from "./hook.js";
+import { dispatch } from "../capability/skill/hook.js";
 
 export type Source = "TIME" | "ACTION" | "HIT" | "EXTERNAL";
 

@@ -18,8 +18,8 @@ const canMove = (battle, unit) => {
     return getUnit(moved, unit.id).position !== unit.position;
 };
 import { definition as skillDefinition } from "../helpers/skill.js";
-import { activate, advance } from "../../dist/core/unit/capability/skill/operations.js";
-import { recover } from "../../dist/core/unit/capability/skill/sp.js";
+import { activate, advance } from "../../dist/core/unit/skill/operations.js";
+import { recover } from "../../dist/core/unit/skill/sp.js";
 
 const activationAllowed = (state) => {
     const unit = getUnit(state, 0);

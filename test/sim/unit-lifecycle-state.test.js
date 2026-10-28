@@ -1,5 +1,5 @@
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
-import { lifetime as skillLifetime } from "../../dist/core/unit/capability/skill/operations.js";
+import { lifetime as skillLifetime } from "../../dist/core/unit/skill/operations.js";
 import { lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
@@ -13,9 +13,10 @@ import { initialize } from "../helpers/unit.js";
 
 import * as mechanisms from "../../dist/core/battle/mechanism.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
-import { createDefinition as createSkillDefinition, setEndedHook } from "../../dist/core/unit/capability/skill/capability.js";
-import { activate, finish } from "../../dist/core/unit/capability/skill/operations.js";
-import { ref as activationRef } from "../../dist/core/unit/capability/skill/activation.js";
+import { createDefinition as createSkillDefinition } from "../../dist/core/unit/skill/definition.js";
+import { setEndedHook } from "../../dist/core/unit/capability/skill/capability.js";
+import { activate, finish } from "../../dist/core/unit/skill/operations.js";
+import { ref as activationRef } from "../../dist/core/unit/skill/activation.js";
 import { actionCapability } from "../helpers/actions.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { fixtureBattlefieldState as fixtureBattlefield } from "../helpers/battlefield.js";

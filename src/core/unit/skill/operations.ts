@@ -1,23 +1,25 @@
-import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
-import type { Ref } from "../../../common/ref.js";
-import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
-import * as lifetimes from "../../../lifetime/index.js";
-import * as units from "../../query.js";
-import type { Unit } from "../../unit.js";
-import * as contribution from "../../contribution/contribution.js";
-import { isSpatiallyPresent } from "../presence/capability.js";
-import { hasVitality } from "../vitality/capability.js";
-import { hasAction, setReleasedHook } from "../action/capability.js";
-import type { ReleasedHook } from "../action/release.js";
+import { assertNonnegativeSafeInteger } from "../../common/assert.js";
+import type { Ref } from "../../common/ref.js";
+import { appendEvents, type State as BattleState, type Result } from "../../battle/state.js";
+import * as lifetimes from "../../lifetime/index.js";
+import * as units from "../query.js";
+import type { Unit } from "../unit.js";
+import * as contribution from "../contribution/contribution.js";
+import { isSpatiallyPresent } from "../capability/presence/capability.js";
+import { hasVitality } from "../capability/vitality/capability.js";
+import { hasAction, setReleasedHook } from "../capability/action/capability.js";
+import type { ReleasedHook } from "../capability/action/release.js";
+import { setHook as setDamageHook, type ReceivingStartedHook } from "../../battle/damage/hook.js";
+import { hasSkill, type Skill } from "../capability/skill/capability.js";
 import {
-    setHook as setDamageHook,
-    type ReceivingStartedHook,
-} from "../../../battle/damage/hook.js";
-import { hasSkill, type Skill } from "./capability.js";
-import { ref as activationRef, type Activation, type Trigger, type End } from "./activation.js";
-import type { Operation } from "./rule.js";
+    ref as activationRef,
+    type Activation,
+    type Trigger,
+    type End,
+    type Operation,
+} from "./activation.js";
 import type { State as SustainState } from "./sustain.js";
-import { dispatch } from "./hook.js";
+import { dispatch } from "../capability/skill/hook.js";
 import * as query from "./query.js";
 import * as instance from "./instance.js";
 import { read } from "./internal/read.js";

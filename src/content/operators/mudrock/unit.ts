@@ -21,11 +21,8 @@ import { blocked } from "../../../core/battle/blocking/index.js";
 import { hasBlocker } from "../../../core/unit/capability/blocking/index.js";
 import type { Profile } from "../../../data/arknights/operator.js";
 import { secondsToTicks } from "../../../data/arknights/tick.js";
-import {
-    modify,
-    hasSkill,
-    type Definition as SkillDefinition,
-} from "../../../core/unit/capability/skill/index.js";
+import { modify, type Definition as SkillDefinition } from "../../../core/unit/skill/index.js";
+import { hasSkill } from "../../../core/unit/capability/skill/index.js";
 import type { Direction } from "../../../core/geometry/direction.js";
 
 import type { Definitions as CapabilityDefinitions } from "../../../core/unit/capability/catalog.js";

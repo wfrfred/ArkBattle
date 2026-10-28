@@ -3,23 +3,14 @@ import type { Definition as UnitDefinition, Unit } from "../../unit.js";
 import * as registry from "../../../hook.js";
 import * as contribution from "../../contribution/contribution.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import type { Activation, Definition as ActivationDefinition } from "./activation.js";
+import type { Activation } from "../../skill/activation.js";
+import type { Declaration } from "../../skill/definition.js";
 import type { Events, Hook, Key } from "./hook.js";
-import type { Input as AmmoInput } from "./ammo.js";
-import type { Modifier } from "./modifier.js";
+import type { Input as AmmoInput } from "../../skill/ammo.js";
+import type { Modifier } from "../../skill/modifier.js";
 import type { Rule } from "./rule.js";
-import type { Instance } from "./instance.js";
-import * as sp from "./sp.js";
-import * as sustain from "./sustain.js";
-
-export interface Definition<S extends object = object, A extends object = object> {
-    readonly id: string;
-    readonly initialize: () => S;
-    readonly sp: sp.Definition | null;
-    readonly activation: ActivationDefinition<S, A> | null;
-    readonly onEnter?: (battle: BattleState, self: Instance<S, A>) => BattleState;
-    readonly onTick?: (battle: BattleState, self: Instance<S, A>) => BattleState;
-}
+import * as sp from "../../skill/sp.js";
+import * as sustain from "../../skill/sustain.js";
 
 export interface State {
     readonly data: object;
@@ -37,14 +28,6 @@ export interface State {
     readonly ended: readonly Hook<Events["ended"]>[];
 }
 
-type Declaration = Pick<Definition, "id" | "initialize" | "sp"> & {
-    readonly activation: {
-        readonly trigger: ActivationDefinition<object, object>["trigger"];
-        readonly sustain: sustain.Definition;
-        readonly initialize: (battle: BattleState, self: never) => object;
-    } | null;
-};
-
 export interface Skill {
     readonly definition: { readonly skill: Declaration };
     readonly skill: State;
@@ -58,26 +41,6 @@ export function hasSkillDefinition(
     definition: UnitDefinition,
 ): definition is UnitDefinition & Skill["definition"] {
     return "skill" in definition;
-}
-
-export function createDefinition<S extends object, A extends object>(
-    definition: Definition<S, A>,
-): Definition<S, A> {
-    if (definition.id.length === 0) {
-        throw new TypeError("skill identity must be nonempty");
-    }
-    if (definition.sp !== null) {
-        sp.validateDefinition(definition.sp);
-    }
-
-    const policy = definition.activation?.sustain;
-    if (policy?.type === "TIME") {
-        assertNonnegativeSafeInteger(policy.durationTicks, "skill duration ticks");
-    } else if (policy?.type === "AMMO") {
-        assertNonnegativeSafeInteger(policy.amount, "skill ammunition");
-    }
-
-    return Object.freeze({ ...definition });
 }
 
 export function initialize(

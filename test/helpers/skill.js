@@ -1,7 +1,7 @@
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "./unit.js";
-import { createDefinition } from "../../dist/core/unit/capability/skill/index.js";
-import { ref as activationRef } from "../../dist/core/unit/capability/skill/activation.js";
+import { createDefinition } from "../../dist/core/unit/skill/index.js";
+import { ref as activationRef } from "../../dist/core/unit/skill/activation.js";
 import { initialize } from "./unit.js";
 import { ref } from "../../dist/core/unit/index.js";
 import { effectFixtureWork } from "./effects.js";

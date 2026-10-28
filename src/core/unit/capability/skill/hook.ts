@@ -3,10 +3,10 @@ import type { State as BattleState } from "../../../battle/state.js";
 import * as units from "../../query.js";
 import * as hooks from "../../../hook.js";
 import type { Unit } from "../../unit.js";
-import type { Activation, End } from "./activation.js";
-import type { Consumed, Replenished } from "./ammo.js";
+import type { Activation, End } from "../../skill/activation.js";
+import type { Consumed, Replenished } from "../../skill/ammo.js";
 import type { Skill } from "./capability.js";
-import type { Recovered, Paid, Modified } from "./sp.js";
+import type { Recovered, Paid, Modified } from "../../skill/sp.js";
 
 export interface Events {
     readonly spRecovered: Recovered;

@@ -3,14 +3,14 @@ import {
     assertNonnegativeSafeInteger,
     assertPositiveSafeInteger,
     assertSafeInteger,
-} from "../../../common/assert.js";
-import type { Ref } from "../../../common/ref.js";
-import type { State as BattleState, Result } from "../../../battle/state.js";
-import type { Unit } from "../../unit.js";
-import * as units from "../../query.js";
+} from "../../common/assert.js";
+import type { Ref } from "../../common/ref.js";
+import type { State as BattleState, Result } from "../../battle/state.js";
+import type { Unit } from "../unit.js";
+import * as units from "../query.js";
 import { ref as activationRef, type Activation } from "./activation.js";
-import type { Skill } from "./capability.js";
-import { dispatch } from "./hook.js";
+import type { Skill } from "../capability/skill/capability.js";
+import { dispatch } from "../capability/skill/hook.js";
 import { finish } from "./operations.js";
 import * as query from "./query.js";
 import { replaceHost } from "./instance.js";

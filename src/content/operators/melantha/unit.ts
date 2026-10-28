@@ -15,7 +15,7 @@ import {
     type Definition as SkillDefinition,
     ref as activationRef,
     lifetime as skillLifetime,
-} from "../../../core/unit/capability/skill/index.js";
+} from "../../../core/unit/skill/index.js";
 
 import { createDefinition as createDeployableDefinition } from "../../../core/unit/capability/deployable/index.js";
 import {

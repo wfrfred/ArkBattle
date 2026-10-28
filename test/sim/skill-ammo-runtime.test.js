@@ -1,5 +1,5 @@
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
-import { lifetime as skillLifetime } from "../../dist/core/unit/capability/skill/operations.js";
+import { lifetime as skillLifetime } from "../../dist/core/unit/skill/operations.js";
 import { ref as unitReference } from "../../dist/core/unit/query.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { damage as damageTargeting, healing as healingTargeting } from "../helpers/targeting.js";
@@ -23,13 +23,13 @@ import { executionRef } from "../../dist/core/unit/action/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { advance as advanceAction } from "../../dist/core/unit/action/index.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
-import { createDefinition as createSkillDefinition } from "../../dist/core/unit/capability/skill/capability.js";
-import { ref as activationRef } from "../../dist/core/unit/capability/skill/activation.js";
+import { createDefinition as createSkillDefinition } from "../../dist/core/unit/skill/definition.js";
+import { ref as activationRef } from "../../dist/core/unit/skill/activation.js";
 import { createLegacyCombatSpec } from "../../dist/legacy/combat.js";
 import { setHook, removeHook } from "../../dist/core/battle/damage/hook.js";
 import { unit as fixtureUnit, battle as fixtureBattle, actionDefinition } from "../helpers/action-fixture.js";
 import { definition as skillDefinition } from "../helpers/skill.js";
-import { activate } from "../../dist/core/unit/capability/skill/operations.js";
+import { activate } from "../../dist/core/unit/skill/operations.js";
 
 const hit = { type: "CIRCLE", offset: [0, 0], radius: 0.1 };
 const range = [{ type: "CIRCLE", offset: [0, 0], radius: 8 }];

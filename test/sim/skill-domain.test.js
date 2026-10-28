@@ -3,8 +3,8 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
 
-import * as skills from "../../dist/core/unit/capability/skill/operations.js";
-import * as sp from "../../dist/core/unit/capability/skill/sp.js";
+import * as skills from "../../dist/core/unit/skill/operations.js";
+import * as sp from "../../dist/core/unit/skill/sp.js";
 import { initialize as initializeSkill, removeRule, setDurationContribution, removeDurationContribution } from "../../dist/core/unit/capability/skill/capability.js";
 import { create as value } from "../../dist/core/unit/contribution/attribute.js";
 

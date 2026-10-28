@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { getUnit } from "../helpers/unit.js";
-import { get } from "../../dist/core/unit/capability/skill/index.js";
-import { get as getInstance, replace, replaceActivation, setData } from "../../dist/core/unit/capability/skill/instance.js";
-import * as operations from "../../dist/core/unit/capability/skill/operations.js";
-import { ref } from "../../dist/core/unit/capability/skill/activation.js";
+import { get } from "../../dist/core/unit/skill/index.js";
+import { get as getInstance, replace, replaceActivation, setData } from "../../dist/core/unit/skill/instance.js";
+import * as operations from "../../dist/core/unit/skill/operations.js";
+import { ref } from "../../dist/core/unit/skill/activation.js";
 import { fixture, definition, at } from "../helpers/skill.js";
 
 test("Skill programs receive paired private state without specializing their host capability", () => {

@@ -1,10 +1,11 @@
-import type { Identified, Ref } from "../../../common/ref.js";
-import type { State as BattleState } from "../../../battle/state.js";
-import type { Unit } from "../../unit.js";
-import type { Skill } from "./capability.js";
+import type { Identified, Ref } from "../../common/ref.js";
+import type { State as BattleState } from "../../battle/state.js";
+import type { Unit } from "../unit.js";
+import type { Skill } from "../capability/skill/capability.js";
 import type { Instance } from "./instance.js";
-import type { Operation } from "./rule.js";
 import type { Definition as SustainDefinition, State as SustainState } from "./sustain.js";
+
+export type Operation = "STOP" | "RETRIGGER";
 
 export type Trigger = "MANUAL" | "AUTO" | "PASSIVE";
 

@@ -1,13 +1,13 @@
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
-import { lifetime as skillLifetime } from "../../dist/core/unit/capability/skill/operations.js";
+import { lifetime as skillLifetime } from "../../dist/core/unit/skill/operations.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { getUnit } from "../helpers/unit.js";
 import { remove } from "../../dist/core/battle/unit.js";
-import * as skills from "../../dist/core/unit/capability/skill/operations.js";
-import * as sp from "../../dist/core/unit/capability/skill/sp.js";
-import { ref as activationRef } from "../../dist/core/unit/capability/skill/activation.js";
-import { get as getActivation } from "../../dist/core/unit/capability/skill/index.js";
+import * as skills from "../../dist/core/unit/skill/operations.js";
+import * as sp from "../../dist/core/unit/skill/sp.js";
+import { ref as activationRef } from "../../dist/core/unit/skill/activation.js";
+import { get as getActivation } from "../../dist/core/unit/skill/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { get as getHookHost, ref as unitRef } from "../../dist/core/unit/query.js";
 import { fixture, setSkill } from "../helpers/skill.js";

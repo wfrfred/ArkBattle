@@ -1,4 +1,4 @@
-import type { Contribution } from "../../contribution/contribution.js";
+import type { Contribution } from "../contribution/contribution.js";
 import type { Input as AmmoInput } from "./ammo.js";
 import type { Modifier } from "./modifier.js";
 

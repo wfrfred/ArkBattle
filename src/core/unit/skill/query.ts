@@ -1,7 +1,8 @@
-import type { Ref } from "../../../common/ref.js";
-import { type State as BattleState } from "../../../battle/state.js";
-import * as units from "../../query.js";
-import type { Definition, Skill } from "./capability.js";
+import type { Ref } from "../../common/ref.js";
+import { type State as BattleState } from "../../battle/state.js";
+import * as units from "../query.js";
+import type { Skill } from "../capability/skill/capability.js";
+import type { Definition } from "./definition.js";
 import type { Activation } from "./activation.js";
 
 export function get<T extends Activation>(battle: BattleState, reference: Ref<T>): T | undefined;

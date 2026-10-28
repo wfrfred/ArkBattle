@@ -12,7 +12,7 @@ import { initialize as initializeBattle, step as stepBattle } from '../../dist/c
 import { add, update as updateUnit, remove } from '../../dist/core/battle/unit.js';
 import { getUnit, initialize, fixtureBattle } from '../helpers/unit.js';
 import { instantiateUnitPlacement } from '../../dist/core/battle/creation/placement.js';
-import { createDefinition as createSkillDefinition } from '../../dist/core/unit/capability/skill/capability.js';
+import { createDefinition as createSkillDefinition } from '../../dist/core/unit/skill/definition.js';
 import { advancePredefined } from '../../dist/core/battle/steps/predefined.js';
 import { resolveScheduleUnits } from '../../dist/core/battle/schedule/index.js';
 import { create as createMap } from '../../dist/core/battlefield/map/map.js';

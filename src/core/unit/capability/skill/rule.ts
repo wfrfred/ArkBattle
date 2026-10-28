@@ -1,9 +1,9 @@
 import type { State as BattleState } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
 import type { Skill } from "./capability.js";
-import type { Source } from "./sp.js";
+import type { Source } from "../../skill/sp.js";
 
-export type Operation = "STOP" | "RETRIGGER";
+import type { Operation } from "../../skill/activation.js";
 
 export interface Rule {
     readonly id: string;

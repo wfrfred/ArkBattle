@@ -40,7 +40,8 @@ import {
     setAttackContribution,
     removeAttackContribution,
 } from "../../core/unit/capability/offense/index.js";
-import { hasSkill, modify } from "../../core/unit/capability/skill/index.js";
+import { modify } from "../../core/unit/skill/index.js";
+import { hasSkill } from "../../core/unit/capability/skill/index.js";
 
 import {
     type DamageRequest,

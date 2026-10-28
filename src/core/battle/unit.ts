@@ -2,7 +2,7 @@ import * as battlefield from "../battlefield/unit.js";
 import type { State as BattlefieldState } from "../battlefield/state.js";
 import type { Id, LeaveReason, Unit, Departure } from "../unit/unit.js";
 import * as units from "../unit/query.js";
-import * as skills from "../unit/capability/skill/operations.js";
+import * as skills from "../unit/skill/operations.js";
 import { hasSkill } from "../unit/capability/skill/capability.js";
 import * as blocking from "./blocking/operations.js";
 import type { State as BattleState } from "./state.js";

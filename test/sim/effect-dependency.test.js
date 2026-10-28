@@ -4,7 +4,7 @@ import { scope } from "../../dist/core/lifetime/index.js";
 import { empty, derive, dependents, parents, wouldCycle, key } from "../../dist/core/lifetime/dependency.js";
 import { lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
 import { lifetime as actionLifetime } from "../../dist/core/unit/action/index.js";
-import { lifetime as skillLifetime } from "../../dist/core/unit/capability/skill/index.js";
+import { lifetime as skillLifetime } from "../../dist/core/unit/skill/index.js";
 import { lifetime as burstLifetime } from "../../dist/core/unit/capability/elemental/index.js";
 import { lifetime as effectLifetime } from "../../dist/core/unit/effect/index.js";
 

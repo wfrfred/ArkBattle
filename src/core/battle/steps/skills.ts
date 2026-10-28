@@ -1,5 +1,5 @@
-import { activate, advance, operate } from "../../unit/capability/skill/operations.js";
-import { ref as activationRef } from "../../unit/capability/skill/activation.js";
+import { activate, advance, operate } from "../../unit/skill/operations.js";
+import { ref as activationRef } from "../../unit/skill/activation.js";
 import { hasSkill } from "../../unit/capability/skill/capability.js";
 import * as units from "../../unit/query.js";
 import type { Command } from "../contract.js";

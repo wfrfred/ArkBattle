@@ -1,6 +1,6 @@
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
 import { lifetime as actionLifetime } from "../../dist/core/unit/action/operations.js";
-import { lifetime as skillLifetime } from "../../dist/core/unit/capability/skill/operations.js";
+import { lifetime as skillLifetime } from "../../dist/core/unit/skill/operations.js";
 import { changeTile, tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import * as unitQueries from "../../dist/core/unit/query.js";
@@ -24,9 +24,9 @@ import {
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { getUnit, replaceUnit } from "../helpers/unit.js";
 import { initialize } from "../helpers/unit.js";
-import { createDefinition as createSkillDefinition } from "../../dist/core/unit/capability/skill/capability.js";
-import { activate } from "../../dist/core/unit/capability/skill/operations.js";
-import { ref as activationRef } from "../../dist/core/unit/capability/skill/activation.js";
+import { createDefinition as createSkillDefinition } from "../../dist/core/unit/skill/definition.js";
+import { activate } from "../../dist/core/unit/skill/operations.js";
+import { ref as activationRef } from "../../dist/core/unit/skill/activation.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { get } from "../../dist/core/unit/effect/index.js";
 import { definition } from "../helpers/effects.js";

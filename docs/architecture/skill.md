@@ -2,11 +2,27 @@
 
 Skill 负责 SP、发动、持续预算、主动操作和完整终止。Action 负责行为程序，Effect 负责附着影响及依赖清理；具体内容组合这些领域的公开接口。
 
-内容从 [skill/index.ts](../../src/core/unit/capability/skill/index.ts) 导入公开契约；query.ts 负责 Activation 查询，instance.ts 负责配对 Instance 的读取与局部变换。Core 的完整实例写回保持内部协议，不随公共入口公开。
+领域 API 从 [unit/skill/index.ts](../../src/core/unit/skill/index.ts) 导入；能力守卫、初始化和局部登记从 [capability/skill/index.ts](../../src/core/unit/capability/skill/index.ts) 导入。两个入口按职责选择导出，不相互转发整套 API。
+
+## 模块与入口
+
+| 模块 | 职责 |
+| --- | --- |
+| `unit/skill/definition.ts` | 泛型 Definition、Capability 配置声明 Declaration 与 createDefinition |
+| `unit/skill/activation.ts`、`instance.ts` | Activation、配对 Instance、局部 data 变换与内部完整写回 |
+| `unit/skill/query.ts`、`operations.ts` | 当前 Activation 查询、发动、主动操作、时间推进、结束与 lifetime |
+| `unit/skill/sp.ts`、`ammo.ts`、`sustain.ts`、`modifier.ts` | SP、Ammo、持续预算与领域数值规则 |
+| `unit/skill/internal/read.ts` | 现有 Definition／私有状态的内部配对读取，不从公共入口导出 |
+| `unit/capability/skill/capability.ts` | Skill、公共 State、结构守卫、initialize、validateState 与局部登记 |
+| `unit/capability/skill/rule.ts`、`hook.ts` | 能力 Rule、Hook 类型与事件契约 |
+
+领域 index 提供 Definition／createDefinition、Activation、查询及 SP／Ammo／激活业务，不转发能力守卫、Rule／Hook 登记和持续预算贡献 setter。Capability index 提供对应能力 API，不再聚合领域程序、资源结算或 Activation 业务。Core 的配对读取与完整写回继续按实际职责深导。
+
+SP 的 setContribution／removeContribution 仍是 `unit/skill/sp.ts` 的局部资源操作，经领域入口以 setSpContribution／removeSpContribution 导出；它们与 SP State／Input 保持同一模块，不因目录分开增加 Capability 转发函数。内部 read 与 validateState 保留原有配对和校验算法。
 
 ## 1. Definition 与状态
 
-`capability.Definition<S, A>` 直接保存在 Unit Definition 中，由所有部署实例共享。
+`unit/skill/definition.ts` 的 `Definition<S, A>` 直接保存在 Unit Definition 中，由所有部署实例共享。Capability 使用同一模块的 Declaration 表达公共配置，不另建一套程序定义。
 
 | 数据 | 职责 |
 | --- | --- |
@@ -20,13 +36,13 @@ Skill 负责 SP、发动、持续预算、主动操作和完整终止。Action �
 
 一个 Unit 至多持有一个 Skill，一个 Skill 同时至多有一个 Activation。私有状态在 Unit 生命周期内保留，不隐含跨部署保存。
 
-`Skill` Capability 与公共 `State` 均不携带内容泛型，宿主身份始终为 `Ref<Unit & Skill>`。Catalog 和 `skill.initialize(battle, definition)` 都只返回公共 State，不另设 Stored Capability，也不通过直接初始化恢复私有类型。SP、Rule、Hook、Contribution 只依赖这个公共能力。
+`Skill` Capability 与公共 `State` 均不携带内容泛型，宿主身份始终为 `Ref<Unit & Skill>`。Catalog 仍调用 `unit/capability/skill` 的 initialize(battle, definition)，只返回公共 State，不另设 Stored Capability，也不通过直接初始化恢复私有类型。SP、Rule、Hook、Contribution 只依赖这个公共能力。
 
 内容程序的 `Definition<S, A>` 保留持久状态 S 与激活状态 A。Definition 的回调接收配对的 `Instance<S, A>`：`host` 定位宿主，`definition` 保存具体程序，`state` 保存同一程序的私有数据和当前激活。领域内部 `internal/read` 在统一边界恢复这组配对；调用者不能自行选择 S／A 宣称宿主类型。领域内部需要恢复持久 S 时，通过 instance.ts 的 get(battle, host, definition) 按当前配置 Definition 的对象身份确认配对；get、setData 和配对写回协议不从公共入口导出。跨领域回调后继续执行时，仍须从当前 battle 重新读取。
 
 `Activation<A>` 保存 `host: Ref<Unit & Skill>`、id、startedAtTick、ACTIVE／ENDING、Sustain 和 data。私有类型 A 的证明来自具体 Definition 的内容回调，通过公共 `ref(self)` 保留；也可以向 `get(battle, ref, definition)` 传入具体 Definition，由运行时对象身份比对确认当前配置程序后恢复 A。仅凭普通宿主 Ref 调用 `activate` 返回公共 Activation，不能指定或推导私有类型。typed Activation Ref 不意味着宿主私有状态 S 可被恢复，过期激活身份不能读取、消费或结束新激活。
 
-原 query.ts 的完整宿主写回与激活写回分别归入 instance.ts 的 replaceHost／replaceActivation，与配对 Instance 的 replace 一同供 Core 内部使用，不从 index 导出。replaceActivation 仍由 typed Ref 确定私有 A，待写回值使用 NoInfer，不能通过替换数据反向扩大类型；生命周期变化仍由完整业务操作负责。
+完整宿主写回与激活写回归 unit/skill/instance.ts 的 replaceHost／replaceActivation，与配对 Instance 的 replace 一同供 Core 内部使用，不从 index 导出。replaceActivation 仍由 typed Ref 确定私有 A，待写回值使用 NoInfer，不能通过替换数据反向扩大类型；生命周期变化仍由完整业务操作负责。
 
 instance.setData(self, data) 与 activation.setData(self, data) 只接收已经计算好的私有数据，分别返回更新 S 的 Instance 与更新 A 的 Activation；数据引用未变时返回原对象。两者是局部值操作，不读取或提交 BattleState。activation.setData 以 setActivationData 从公共入口导出；完整实例提交仍由 Core 内部的 replace／replaceActivation 负责。调用方计算结果值前按所需版本取得当前对象，跨完整操作后先接续 battle 并重读，局部 setter 不隐式恢复最新状态。
 

@@ -2,7 +2,7 @@ import {
     createDefinition as createSkillDefinition,
     type Definition as SkillDefinition,
     type Recovery,
-} from "../../core/unit/capability/skill/index.js";
+} from "../../core/unit/skill/index.js";
 
 import { TICKS_PER_SECOND } from "../../core/tick.js";
 import { parseBlackboard, type ArknightsBlackboardEntry } from "./blackboard.js";
