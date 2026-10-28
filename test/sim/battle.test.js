@@ -663,7 +663,7 @@ test('core battle propagates nested settlement errors without publishing battlef
       state = addUnit(state, unit);
       state = { ...state, execution: { ...state.execution, nextUnitId: unit.id + 1 } };
       state = appendEvents(state, [{ type: 'UNIT_DEPLOYED', unitId: unit.id, position: unit.position, tick: state.tick }]);
-      state = installEffect(state, unitRef(getUnit(state, 1)), effect, { source: 0 }).state;
+      state = installEffect(state, unitRef(getUnit(state, 1)), effect, { source: unitRef(getUnit(state, 0)) }).state;
       return { state, value: false };
     },
   };

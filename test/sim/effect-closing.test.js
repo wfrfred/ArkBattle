@@ -70,17 +70,19 @@ test("effect lifetimes: parent ending cascades across Units and shared descendan
 
 test("effect lifetimes: provenance does not imply dependence on the source Unit", () => {
     let battle = effectFixtureWork(unit(0), unit(1));
+    const source = unitRef(getUnit(battle, 0));
     let independent;
     ({ state: battle, value: independent } = install(battle, definition("poison"), 1, {
-        source: 0,
+        source,
     }));
     let bound;
     ({ state: battle, value: bound } = install(battle, definition("aura-child"), 1, {
-        source: 0,
+        source,
         scopes: [{ type: "UNIT", ref: { id: 0 } }],
     }));
     battle = closeLifetime(battle, { type: "UNIT", ref: unitRef(getUnit(battle, 0)) }, "RETREAT");
     assert.ok(get(battle, independent));
+    assert.equal(get(battle, independent).source, source);
     assert.equal(get(battle, bound), undefined);
     battle = closeLifetime(battle, { type: "UNIT", ref: unitRef(getUnit(battle, 1)) }, "DEATH");
     assert.equal(get(battle, independent), undefined);

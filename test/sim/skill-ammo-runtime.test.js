@@ -80,7 +80,7 @@ function scenario({ ammo = 1, targets = 1, interrupt = false, windupTicks = 0, o
     activation: { trigger: "MANUAL", sustain: { type: "AMMO", amount: ammo }, initialize: () => ({}),
       onStart: (state, self) => {
         const installed = effects.install(state, self.host, buff, {
-          source: self.host.id, scopes: [{ type: "SKILL", ref: activationRef(self) }],
+          source: self.host, scopes: [{ type: "SKILL", ref: activationRef(self) }],
         });
         assert.ok(installed.value);
         return installed.state;

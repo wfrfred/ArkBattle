@@ -155,7 +155,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
                                 unitRef(getUnit(state, ref.host.id)),
                                 marker,
                                 {
-                                    source: 0,
+                                    source: auraAddress.host,
                                     scopes: [{ type: "EFFECT", ref }],
                                 },
                             );
@@ -214,7 +214,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
                     unitRef(getUnit(state, unitId)),
                     receiver,
                     {
-                        source: effectSelf.host.id,
+                        source: effectSelf.host,
                         scopes: [{ type: "EFFECT", ref: effectRef(effectSelf) }],
                     },
                                     );
@@ -325,7 +325,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
             unitRef(getUnit(state, host.id)),
             program,
             {
-                source: host.id,
+                source: host,
                 scopes: [{ type: "ACTION", ref: executionRef(host, context) }],
             },
         ).state;

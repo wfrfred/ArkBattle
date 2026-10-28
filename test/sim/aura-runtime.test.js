@@ -129,7 +129,7 @@ test("aura runtime: predefined, deployment and spawning join before the same tic
     };
     let hostState = effectFixtureWork(auraUnit(0));
     for (const effect of [observer, aura])
-        hostState = effects.install(hostState, unitRef(getUnit(hostState, 0)), effect, { source: 0 }).state;
+        hostState = effects.install(hostState, unitRef(getUnit(hostState, 0)), effect, { source: unitRef(getUnit(hostState, 0)) }).state;
     const hostUnit = getUnit(hostState, 0);
     const host = {
         definition: hostUnit.definition,

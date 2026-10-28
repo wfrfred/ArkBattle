@@ -75,7 +75,7 @@ export function auraEffect(
                 unitRef(getUnit(state, unitId)),
                 receiver,
                 {
-                    source: self.host.id,
+                    source: self.host,
                     scopes: bindLifetime ? [{ type: "EFFECT", ref: effectRef(self) }] : [],
                     ...(value === undefined ? {} : { data: value }),
                 },
@@ -132,7 +132,7 @@ export function auraEffect(
 
 export function seededPlacement(effect, unit = auraUnit(0), scopes = []) {
     const installed = effects.install(effectFixtureWork(unit), unitRef(unit), effect, {
-        source: unit.id,
+        source: unitRef(unit),
         scopes,
     });
     const seeded = getUnit(installed.state, unit.id);

@@ -64,7 +64,9 @@ const output = (value) => ({
 });
 const install = (work, effect, expiresAtTick = null) =>
     effects.install(work, unitRef(getUnit(work, 0)), effect, {
-        source: 7,
+        source: unitRef(initialize({
+            id: 7, position: [0, 0], definition: { id: "blocking-buff-source" },
+        })),
         scopes: expiresAtTick === null ? [] : [{ type: "TICK", tick: expiresAtTick }],
     });
 const change = (work, effect, next, setting) => {

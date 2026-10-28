@@ -336,7 +336,7 @@ test("attribute modifiers: inspiration samples belong to the Effect input and re
     let work = effectFixtureWork(source, receiver);
     const sampleInput = (work) => ({ sourceAttack: resolveAttack(work, unitRef(source)), ratio: 0.6 });
     const installed = effects.install(work, unitRef(getUnit(work, 1)), program, {
-        source: 0,
+        source: unitRef(source),
         data: sampleInput(work),
     });
     work = installed.state;

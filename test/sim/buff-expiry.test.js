@@ -165,7 +165,9 @@ function harness({ stackCount = 3, maxValidStackCnt = -1 } = {}) {
         }),
     );
     const installed = effects.install(work, unitRef(getUnit(work, 0)), content, {
-        source: 10,
+        source: unitRef(initialize({
+            id: 10, position: [0, 0], definition: { id: "buff-source" },
+        })),
         scopes: [{ type: "TICK", tick: 30 }],
     });
     work = installed.state;

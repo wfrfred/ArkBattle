@@ -175,7 +175,7 @@ Blocker 的 Definition 保存基础容量，State 保存容量贡献。Blocking 
 
 Effect 直接持有 `Definition<S, H>` 与私有 State。S 描述实例状态，H 描述宿主需要的 Capability 结构。抽象 Effect 不依赖 Damage、Healing、Offense 等具体 Capability；具体 Definition 通过这些领域的公开操作登记与撤销输出。
 
-生命周期状态为 `INSTALLING`、`INACTIVE`、`ACTIVE`、`ENDING`，外部许可 `enabled` 独立保存。宿主实际退场必然结束其 Effect；额外 scopes 可以绑定 Unit、Action、Skill 激活、Elemental Burst 或另一个 Effect，任一依赖结束即结束实例。TICK scope 表达截止时点；source 只记录来源，不隐含生命周期绑定。Effect 依赖保持 DAG。
+生命周期状态为 `INSTALLING`、`INACTIVE`、`ACTIVE`、`ENDING`，外部许可 `enabled` 独立保存。宿主实际退场必然结束其 Effect；额外 scopes 可以绑定 Unit、Action、Skill 激活、Elemental Burst 或另一个 Effect，任一依赖结束即结束实例。TICK scope 表达截止时点；source 使用 `Ref<Unit> | null` 记录施加者，不要求来源仍在场，也不隐含生命周期绑定。Effect 依赖保持 DAG。
 
 同宿主覆写组先在未结束实例中选取最高优先级，同优先级保留较早取得的实例，再检查赢家的 enabled。禁用最强实例不会让弱者补位。Contribution 分组、Hook 调用顺序与具体业务条件分别由所属模块处理。
 

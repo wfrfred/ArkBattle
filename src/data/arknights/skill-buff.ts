@@ -79,7 +79,7 @@ export function compileArknightsAttackBuffSkill(value: unknown, level: number): 
                 }
 
                 const installed = install(state, unitRef(unit), buff, {
-                    source: unit.id,
+                    source: unitRef(unit),
                     scopes: [
                         {
                             type: "SKILL",

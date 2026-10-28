@@ -110,7 +110,7 @@ export function create(profile: Profile, direction: Direction = "RIGHT"): Defini
                 }
 
                 const result = install(state, unitRef(unit), skillEffect, {
-                    source: unit.id,
+                    source: unitRef(unit),
                     scopes: [{ type: "SKILL", ref: activationRef(self) }],
                 });
 

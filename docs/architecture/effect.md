@@ -59,7 +59,7 @@ interface Effect<S extends object = object, H extends object = object> {
     readonly host: Ref<Unit & H>;
     readonly definition: Definition<S, H>;
     readonly data: S;
-    readonly source: UnitId | null;
+    readonly source: Ref<Unit> | null;
     readonly scopes: readonly Scope[];
     readonly enabled: boolean;
     readonly status: "INSTALLING" | "INACTIVE" | "ACTIVE" | "ENDING";
@@ -73,7 +73,7 @@ S 是实例私有数据的类型，例如护盾层数、周期进度或 Aura 的
 
 安装入口接收 `Ref<Unit & NoInfer<H>>`，通过 units.get 取得最新宿主。创建与内容入口保证宿主能力组合，类型表达所需结构。Definition 中的函数是静态行为，self 是这次回调输入版本中的类型化实例。当前时间读取 battle.tick，实例身份通过 ref(self) 取得。嵌套返回后需要后继事实时，从新 BattleState 查询，不靠动态 getter 接续。
 
-覆写组与固定优先级属于 Definition，实例直接读取 `definition.group`。每次安装的初始属性使用 `Initial<S>`：`source`、`scopes`、`data` 和 `enabled`。这些值表达本次施加的来源、具体生命周期、采样数据与初始许可，不覆写 Definition 的规则。
+覆写组与固定优先级属于 Definition，实例直接读取 `definition.group`。每次安装的初始属性使用 `Initial<S>`：`source`、`scopes`、`data` 和 `enabled`。其中 source 的类型为 `Ref<Unit> | null`，省略时为 null。这些值表达本次施加的来源、具体生命周期、采样数据与初始许可，不覆写 Definition 的规则。
 
 ### 不可变 Effects 容器
 
@@ -115,7 +115,7 @@ Effects 的完整替换属于 Core 存储接口。它不接收 BattleState，不
 
 operations.ts 的私有 replaceEffect(battle, unit, self) 提交已经配对的宿主与完整 Effect。调用方从当前 battle 取得对象并完成入口所需的缺失、ENDING、无变化等判断；helper 信任这些前提，不重复查找对象或校验存在性，直接通过 Effects.replace 与完整 Unit 更新提交。容器的存储身份检查仍保留，业务资格由所属入口负责。
 
-不可变 State 直接共享这个容器。容器的 `toJSON()` 通过内部 getEffect 读取完整实例，返回 `{ instances, nextId }`，其中 instances 是显式物化的诊断 Snapshot 数组；该类型在 View 之外保存 `data: unknown`，让 JSON 诊断包含私有数据与 ID 进度。诊断表示独立于普通 Query，不承担恢复 Definition、回调或运行容器的职责。
+不可变 State 直接共享这个容器。容器的 `toJSON()` 通过内部 getEffect 读取完整实例，返回 `{ instances, nextId }`，其中 instances 是显式物化的诊断 Snapshot 数组；该类型在 View 之外保存 `data: unknown`，让 JSON 诊断包含私有数据与 ID 进度。实例、View 与诊断 Snapshot 的 source 均保留 `Ref<Unit> | null`；具体输出只需数值来源 ID 时在输出位置读取 source?.id。诊断表示独立于普通 Query，不承担恢复 Definition、回调或运行容器的职责。
 
 ```typescript
 type Ref<T> = Identity<T> & Phantom<T>;
@@ -127,7 +127,7 @@ Ref 与静态 Definition 不同。Definition 相同可以有多个实例；实�
 
 ## 3. 生命周期约束
 
-宿主 Unit 退场必然结束其附着 Effect，这是存储关系自带的约束。`source` 只表示来源：A 给 B 施加中毒，不因为 source 为 A 就自动随 A 退场结束。
+宿主 Unit 退场必然结束其附着 Effect，这是存储关系自带的约束。`source: Ref<Unit> | null` 只标注施加者；安装不要求来源仍在场，来源也不自动成为 Scope。A 给 B 施加中毒，不因为 source 指向 A 就自动随 A 退场结束；确实需要随来源结束的内容显式绑定 A 的 UNIT Scope。
 
 额外约束用 scopes 表达：
 

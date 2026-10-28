@@ -21,7 +21,7 @@ import { dependents } from "./dependency.js";
 import { get } from "./query.js";
 
 export interface Initial<S extends object> {
-    readonly source?: Id | null;
+    readonly source?: Ref<Unit> | null;
     readonly scopes?: readonly Scope[];
     readonly data?: S;
     readonly enabled?: boolean;

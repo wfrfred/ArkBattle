@@ -138,7 +138,7 @@ Tick 的执行顺序在 step() 中直接可读。领域函数负责各自的纯�
 | Battlefield                        | Units、Navigation、Projectiles、占位／承载与派生索引      |
 | Unit.blocker／Unit.blockable | 当前唯一阻挡归属与有序关联；接敌、解除及必要维护由 Blocking 领域执行 |
 | Unit／Capability                   | HP、控制状态、行动就绪、技能状态、路线、各自 Hook 与 Contribution 集合   |
-| Unit.effects                       | Effects 容器保存实例身份、Definition、私有 data、生效状态、来源与 scopes |
+| Unit.effects                       | Effects 容器保存实例身份、Definition、私有 data、生效状态、来源 Ref 与 scopes |
 | Schedule                           | 波次、片段、出生与完成账本                                               |
 | Unit.action.actions                | 按配置 ID 聚合 Definition、持久 state、Cooldown 和当前 Execution；执行身份进度由 Capability.nextExecutionId 保存 |
 | PredefinedPresence                 | 预置 Definition 到实际实例的绑定                                         |
@@ -219,6 +219,8 @@ candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定�
 公共 API 为 set、remove、dispatch；set/remove 按 ID 登记、替换与撤销，保留结构共享。领域持有登记集合，定义节点、排序、资格与停止条件。Effect 与 [Projectile](projectile.md) 的 Definition 回调直接接收 self；Effect 的 Core 操作通过内部 getEffect 取得完整实例并调用其自身 Definition，Projectile 的未知私有类型与 Definition 仍由容器 read 保持配对。Definition 程序与本次 Hook 派发的固定 Context 分别定义。
 
 Unit 持有不可变 Effects 容器，容器内部使用私有 Store 保存完整实例及 ID 进度。普通 `get(id)`／`values()` 只承诺公共 View 的身份、参与状态、来源、scopes 和定义元数据，不暴露私有 data 或完整回调。`values()`／`keys()` 返回绑定容器版本的 Query。精确 Ref 查询保留已有类型证明；`get(id, definition)` 检查 Definition 对象身份；内部 `getEffect(id)` 返回默认 object／object 的完整 Effect，容器集中恢复这个受信类型。Core 不解释私有 data 或宿主能力 H，只将实例交给它自身 Definition 的程序；跨完整操作后仍从最新 battle 读取当前实例，终止历史载荷按原有 fallback 规则保留。
+
+Effect.source 仅以 `Ref<Unit> | null` 表达施加者，来源存活与生命周期 Scope 分开，来源离场本身不终结 Effect。
 
 容器不接收战斗状态，也不决定生命周期阶段；完整 replace 由 Core 提交已经配对的值。Effect 容器保存宿主内 ID 进度，Action 的 nextExecutionId 保存于 Capability；Actions 按配置 ID 保存聚合条目，本轮终结只清空 execution。普通内容通过 `effects.setData(battle, ref, nextData)` 提交私有 data，Action 的 setExecutionState 通过本轮 Execution Ref 使用同样形式设置 execution.state，setState／setCooldown 通过持久 Action Ref 分别设置持久 state／Cooldown。Action Ref 由 host 与 Definition 定位，保留私有类型配对；Execution Ref 仍由 host 与本轮 execution.id 定位。两种引用读取同一聚合条目，不增加运行容器或 ID 分配。操作从最新 battle 读取当前实例，只替换指定字段；给定载荷与当前字段引用相同时不生成新 battle。Action 的 execution 为 ENDING 时不允许普通执行写入；持久字段和 Effect 的结束清理仍按各自协议更新。
 

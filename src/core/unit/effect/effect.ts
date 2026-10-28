@@ -1,4 +1,4 @@
-import type { Id as UnitId, Unit } from "../unit.js";
+import type { Unit } from "../unit.js";
 import type { View as ExecutionView } from "../action/execution.js";
 import type { Burst } from "../capability/elemental/burst.js";
 import type { Activation as SkillActivation } from "../capability/skill/activation.js";
@@ -26,7 +26,7 @@ export interface View<H extends object = object> extends Identified<{
     readonly id: Id;
     readonly host: Ref<Unit & H>;
     readonly definition: Pick<Definition<object>, "id" | "group">;
-    readonly source: UnitId | null;
+    readonly source: Ref<Unit> | null;
     readonly scopes: readonly Scope[];
     readonly enabled: boolean;
     readonly status: Status;

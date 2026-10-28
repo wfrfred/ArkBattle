@@ -9,6 +9,7 @@ import * as units from "../../dist/core/unit/query.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { ref } from "../../dist/core/unit/effect/effect.js";
 import { effectFixtureWork } from "../helpers/effects.js";
+import { remove as removeUnit } from "../../dist/core/battle/unit.js";
 
 const host = (id) => initialize({
     id,
@@ -71,6 +72,25 @@ test("Effect writes preserve both the host and local instance identity", () => {
     assert.equal(changed.data.charges, 1);
 });
 
+test("Effect sources retain Unit references as provenance without requiring presence", () => {
+    const receiver = host(1);
+    const departed = host(2);
+    const departedRef = units.ref(departed);
+    const absentRef = units.ref(host(3));
+    const definition = { id: "provenance", initialize: () => ({}) };
+    let battle = removeUnit(effectFixtureWork(receiver, departed), departed.id, "RETREAT");
+    const first = effects.install(battle, units.ref(receiver), definition, { source: departedRef });
+    battle = first.state;
+    const second = effects.install(battle, units.ref(receiver), definition, { source: absentRef });
+
+    assert.equal(units.get(second.state, departedRef), undefined);
+    assert.equal(units.get(second.state, absentRef), undefined);
+    assert.equal(effects.get(second.state, first.value).source, departedRef);
+    assert.equal(effects.get(second.state, second.value).source, absentRef);
+    assert.equal(effects.get(second.state, first.value).status, "ACTIVE");
+    assert.equal(effects.get(second.state, second.value).status, "ACTIVE");
+});
+
 test("Unified Effect references retain data and host types through queries and reject invalid writes", async () => {
     const { default: ts } = await import("typescript");
     const directory = mkdtempSync(join(tmpdir(), "stronghold-typed-effect-refs-"));
@@ -94,10 +114,20 @@ declare const battle: BattleState;
 declare const host: Ref<Unit & Vitality & Locomotion>;
 declare const shield: Effect<{ charges: number }, Vitality>;
 declare const poison: Effect<{ damage: number }, Vitality>;
+declare const attribution: Ref<Unit>;
 const definition: Definition<{ charges: number }, Vitality> = {
     id: "shield", initialize: () => ({ charges: 2 }),
 };
 const installed = effects.install(battle, host, definition);
+effects.install(battle, host, definition, { source: attribution });
+effects.install(battle, host, definition, { source: null });
+const sourceReference: Ref<Unit> | null = shield.source;
+// @ts-expect-error Effect attribution requires a Unit reference, not a numeric Unit ID.
+effects.install(battle, host, definition, { source: 42 });
+// @ts-expect-error An untyped Unit address does not prove an attribution reference.
+effects.install(battle, host, definition, { source: { id: 42 } });
+// @ts-expect-error Effect attribution is a Unit reference, not a numeric Unit ID.
+const numericSource: number | null = shield.source;
 const installedRef: Ref<Effect<{ charges: number }, Vitality>> | undefined = installed.value;
 const known = ref(shield);
 const retained: Ref<Effect<{ charges: number }, Vitality>> = known;

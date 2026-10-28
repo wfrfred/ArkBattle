@@ -21,10 +21,13 @@ function fixture(data, callbacks = {}, initial = {}) {
 
 test("Effect data writes preserve identity, Definition, lifecycle facts and earlier snapshots", () => {
     const nested = { sampled: 7 };
+    const source = unitRef(initialize({
+        id: 42, position: [0, 0], definition: { id: "effect-source" },
+    }));
     const initial = fixture(
         { count: 1, nested },
         { group: { id: "updatable-group", priority: 2 } },
-        { source: 42, enabled: false, scopes: [{ type: "TICK", tick: 100 }] },
+        { source, enabled: false, scopes: [{ type: "TICK", tick: 100 }] },
     );
     const original = effects.get(initial.state, initial.value);
     const first = effects.setData(initial.state, initial.value, { ...original.data, count: original.data.count + 4 });
@@ -40,7 +43,7 @@ test("Effect data writes preserve identity, Definition, lifecycle facts and earl
     assert.strictEqual(current.host, original.host);
     assert.strictEqual(current.definition, initial.definition);
     assert.strictEqual(current.scopes, original.scopes);
-    assert.equal(current.source, 42);
+    assert.equal(current.source, source);
     assert.equal(current.enabled, false);
     assert.equal(current.status, "INACTIVE");
     assert.equal(getUnit(second, 0).effects.nextId, getUnit(initial.state, 0).effects.nextId);

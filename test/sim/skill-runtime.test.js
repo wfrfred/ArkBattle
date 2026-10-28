@@ -55,7 +55,7 @@ function scenario(skill, { targets = 1, attackTargets = 1, windupTicks = 0, cont
   skill = createSkillDefinition({ ...skill, activation: { ...skill.activation,
     onStart: content ?? ((state, self) => {
       const installed = effects.install(state, self.host, buff, {
-        source: self.host.id, scopes: [{ type: 'SKILL', ref: activationRef(self) }],
+        source: self.host, scopes: [{ type: 'SKILL', ref: activationRef(self) }],
       });
       if (fault.enabled) throw new Error('skill fault');
       assert.ok(installed.value);

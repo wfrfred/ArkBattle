@@ -73,7 +73,7 @@ export function createTacticalProjectileDemo(
         tracking.hit(battle, self, (state, current, target) => {
             if (hasTargetable(target)) {
                 state = install(state, unitRef(target), marker, {
-                    source: current.state.source?.id ?? null,
+                    source: current.state.source,
                     scopes: [{ type: "TICK", tick: state.tick + 45 }],
                 }).state;
             }
@@ -157,7 +157,7 @@ export function createTacticalProjectileDemo(
                     },
                 });
                 state = install(launched.state, unitRef(source), boost, {
-                    source: source.id,
+                    source: unitRef(source),
                     scopes: [{ type: "TICK", tick: state.tick + 70 }],
                 }).state;
 

@@ -249,7 +249,7 @@ test("runtime allocates initial IDs, resolves creation references, and never reu
 
 
 
-    assert.equal(unitQueries.all(initial).toArray()[1].effects.values().toArray()[0].source, 1);
+    assert.deepEqual(unitQueries.all(initial).toArray()[1].effects.values().toArray()[0].source, unitQueries.ref(unitQueries.all(initial).toArray()[1]));
     assert.equal(unitQueries.all(initial).toArray()[1].effects.values().toArray()[0].definition, effectDefinition);
     assert.equal(unitQueries.all(initial).toArray()[1].effects.values().toArray()[0].status, "ACTIVE");
     assert.deepEqual(unitQueries.all(initial).toArray()[1].effects.values().toArray()[0].data, {

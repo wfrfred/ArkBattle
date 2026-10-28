@@ -36,6 +36,9 @@ const fixtures = JSON.parse(
 const raw = fixtures.fixtures.find((entry) => entry.templateKey === "astesi_t_1").buff;
 const close = (value, expected) =>
     assert.ok(Math.abs(value - expected) < 1e-9, `${value} ≈ ${expected}`);
+const sourceRef = (id) => unitRef(initialize({
+    id, position: [0, 0], definition: { id: `buff-source-${id}` },
+}));
 
 test("Buff contribution integration: the native Astesia DEF facet merges layers, preserves the first blackboard and source, and renews its instance", () => {
     const policy = compileBuffStacking(parseBuffStacking(raw));
@@ -84,7 +87,7 @@ test("Buff contribution integration: the native Astesia DEF facet merges layers,
         );
         if (plan.type === "INSTALL") {
             work = effects.install(at(work, tick), unitRef(getUnit(work, 0)), program, {
-                source,
+                source: sourceRef(source),
                 scopes: expiresAtTick === null ? [] : [{ type: "TICK", tick: expiresAtTick }],
                 data: { stackCount: 1, defenseRatio },
             }).state;
@@ -107,7 +110,7 @@ test("Buff contribution integration: the native Astesia DEF facet merges layers,
     apply(20, 0.9, 15, 1);
     close(effective(), 140);
     let instance = getUnit(work, 0).effects.values().toArray()[0];
-    assert.equal(instance.source, 10);
+    assert.deepEqual(instance.source, sourceRef(10));
     assert.equal(instance.data.defenseRatio, 0.2);
     assert.equal(instance.data.stackCount, 2);
     assert.equal(deadline(instance), 15);
@@ -181,7 +184,7 @@ test("Buff contribution integration: only effective layer growth resamples the r
         }),
     );
     const installed = effects.install(work, unitRef(getUnit(work, 0)), program, {
-        source: 10,
+        source: sourceRef(10),
         scopes: [{ type: "TICK", tick: 10 }],
     });
     work = installed.state;
@@ -216,5 +219,5 @@ test("Buff contribution integration: only effective layer growth resamples the r
     assert.equal(current.data.stackCount, 3);
     assert.equal(current.data.sourceAttack, 200);
     assert.equal(deadline(current), 40);
-    assert.equal(current.source, 10);
+    assert.deepEqual(current.source, sourceRef(10));
 });
