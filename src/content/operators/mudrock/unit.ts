@@ -37,6 +37,7 @@ import { hasVitality, type Vitality } from "../../../core/unit/capability/vitali
 import { removeHook, setHook } from "../../../core/battle/damage/index.js";
 import {
     type Definition as EffectDefinition,
+    type Effect,
     ref as effectRef,
     get,
     install,
@@ -84,7 +85,7 @@ export function readShield(
         return undefined;
     }
 
-    const { layers, timer } = unit.effects.getEffect(effect.id)!.data as ShieldState;
+    const { layers, timer } = (effect as Effect<ShieldState>).data;
 
     return { layers, timer };
 }

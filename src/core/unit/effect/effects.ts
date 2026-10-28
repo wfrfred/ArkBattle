@@ -87,10 +87,7 @@ export class Effects {
 
     toJSON(): { readonly instances: readonly Snapshot[]; readonly nextId: Id } {
         return {
-            instances: this.#entries
-                .keys()
-                .map((id) => this.getEffect(id)!)
-                .toArray(),
+            instances: this.#entries.values().toArray() as readonly Snapshot[],
             nextId: this.nextId,
         };
     }

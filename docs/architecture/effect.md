@@ -77,6 +77,8 @@ S 是实例私有数据的类型，例如护盾层数、周期进度或 Aura 的
 
 Unit 初始化始终建立空 Effects，不接收预装容器。初始 Buff、护盾等由 Unit Definition 中 `stage: "enter"` 的 Hook 在宿主登记后调用 install，按正常安装流程执行 onInstall、生效协调与依赖登记。
 
+当前 battle/unit.add 先登记宿主、完成 Blocking 维护与适用的部署记录，再执行 Skill.enter，随后执行 Unit 的 enter Hook；这些 Hook 中安装的初始 Effect 因而不参与此前的 Skill.enter。
+
 ### 不可变 Effects 容器
 
 `Unit.effects: Effects` 以私有 `Store<Id, View>` 持有异构 Effect 集合与宿主内的 `nextId`。容器是不可变值：增删改返回新容器，原容器与其中的旧实例仍可读取；查询返回共享的不可变引用。
@@ -117,7 +119,7 @@ Effects 的完整替换属于 Core 存储接口。它不接收 BattleState，不
 
 operations.ts 的私有 replaceEffect(battle, unit, self) 提交已经配对的宿主与完整 Effect。调用方从当前 battle 取得对象并完成入口所需的缺失、ENDING、无变化等判断；helper 信任这些前提，不重复查找对象或校验存在性，直接通过 Effects.replace 与完整 Unit 更新提交。Effects.replace 读取当前槽位以保留缺失及同引用时的 no-op，配对和身份稳定性由 Core 保证；业务资格由所属入口负责。
 
-不可变 State 直接共享这个容器。容器的 `toJSON()` 通过内部 getEffect 读取完整实例，返回 `{ instances, nextId }`，其中 instances 是显式物化的诊断 Snapshot 数组；该类型在 View 之外保存 `data: unknown`，让 JSON 诊断包含私有数据与 ID 进度。实例、View 与诊断 Snapshot 的 source 均保留 `Ref<Unit> | null`；具体输出只需数值来源 ID 时在输出位置读取 source?.id。诊断表示独立于普通 Query，不承担恢复 Definition、回调或运行容器的职责。
+不可变 State 直接共享这个容器。容器的 `toJSON()` 直接物化底层 values，在序列化边界将结果断言为只读 Snapshot 数组，返回 `{ instances, nextId }`。Snapshot 在 View 之外保存 `data: unknown`，让 JSON 诊断包含私有数据与 ID 进度。实例、View 与诊断 Snapshot 的 source 均保留 `Ref<Unit> | null`；具体输出只需数值来源 ID 时在输出位置读取 source?.id。诊断表示独立于普通 Query，不承担恢复 Definition、回调或运行容器的职责。
 
 ```typescript
 type Ref<T> = Identity<T> & Phantom<T>;
