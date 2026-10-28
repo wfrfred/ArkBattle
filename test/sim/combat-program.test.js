@@ -16,7 +16,7 @@ import { setHook as setHealingHook } from "../../dist/core/battle/healing/hook.j
 import { setAttackContribution } from "../../dist/core/unit/capability/offense/capability.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
-import { definition as createSkillDefinition } from "../helpers/skill.js";
+import { ref as skillRef, definition as createSkillDefinition } from "../helpers/skill.js";
 import { activate, enter as enterSkill } from "../../dist/core/unit/skill/operations.js";
 
 const targeting = damageTargeting({ geometry, canTargetAir: true });
@@ -236,10 +236,10 @@ test("action: generic non-attack programs do not earn attack SP or consume skill
         activation: { trigger: "MANUAL", sustain: { type: "AMMO", amount: 3 }, initialize: () => ({}) },
     });
     let state = battle(unit(0, { action: definition, skill }), unit(1));
-    state = activate(state, unitRef(getUnit(state, 0))).state;
+    state = activate(state, skillRef(getUnit(state, 0))).state;
     const result = start(state, definition);
     const advanced = advance(result.state, result.value.ref);
-    assert.equal(getUnit(advanced, 0).skill.active.sustain.remaining, 3);
+    assert.equal(getUnit(advanced, 0).skill.activation.sustain.remaining, 3);
     assert.equal(getUnit(advanced, 0).skill.sp.value, 0);
     assert.equal(resolveAttack(advanced, unitRef(getUnit(advanced, 0))), 10);
 });

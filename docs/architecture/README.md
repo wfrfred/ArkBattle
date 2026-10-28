@@ -17,7 +17,7 @@
 | [接口约定](api-conventions.md) | 五类接口、Typed Ref、self、时间与尚未统一的接口 |
 | [Lifetime 与依赖析构](lifetime.md) | 静态描述符、Scope、派生关系、同步 Prepare、Pending DAG 与最外层 Finalize |
 | [Action 设计](action.md) | 基础间隔与速度、贡献、Cooldown／Casting、程序与实例、调度和 Hook 契约及待定项 |
-| [Skill 设计](skill.md) | unit/skill 与 Capability 的入口边界、泛型 Definition／Activation、SP、持续预算、业务 Hook 与完整终止 |
+| [Skill 设计](skill.md) | 单槽 Skill／Activation 聚合、两种 Ref、Capability 工厂、SP、持续预算、业务 Hook 与完整终止 |
 | [Elemental 设计](elemental.md) | 四型 EP、动态属性、稳定 Burst 身份、请求与损失通知、完整终止及内容边界 |
 | [Targeting 与 Targetable 设计](targeting.md) | 显式请求与选择入口、只读 Filter／Comparator、支持随机的 Selector、固有与动态限制 API |
 | [Spatial Query](spatial.md) | 命中几何、离散／连续范围、形状扫掠及只读候选查询 |

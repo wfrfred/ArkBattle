@@ -10,7 +10,7 @@ import { remove, update, lifetime as unitLifetime } from "../../dist/core/battle
 import { setHook as setBlockerHook, setRule } from "../../dist/core/unit/capability/blocking/blocker.js";
 import { initialize, getUnit } from "../helpers/unit.js";
 import { effectFixtureWork, definition } from "../helpers/effects.js";
-import { definition as skillDefinition } from "../helpers/skill.js";
+import { ref as skillRef, definition as skillDefinition } from "../helpers/skill.js";
 import { actionCapability } from "../helpers/actions.js";
 import { fixture as blockingFixture, holder, target, acquire, hook } from "../helpers/blocking.js";
 
@@ -59,8 +59,8 @@ test("a removed Activation still delays its owner until the entire ended Hook re
     battle = update(battle, [{ ...host, skill: setHook(host.skill, "ended", {
         id: "remove-owner-after-slot-clear",
         invoke(current, { host, event }) {
-            assert.equal(skills.get(current, skills.ref(event.activation)), undefined);
-            assert.equal(getUnit(current, host.id).skill.active, null);
+            assert.equal(skills.getActivation(current, skills.activationRef(host, event.activation)), undefined);
+            assert.equal(getUnit(current, host.id).skill.activation, null);
             trace.push("ended:begin");
             current = remove(current, host.id, "SCRIPT");
             assert.equal(getUnit(current, host.id).lifecycle, "LEAVING");
@@ -69,7 +69,7 @@ test("a removed Activation still delays its owner until the entire ended Hook re
             return { state: current, value: undefined };
         },
     }) }]);
-    const started = skills.activate(battle, { id: 1 });
+    const started = skills.activate(battle, skillRef(getUnit(battle, 1)));
     assert.equal(started.value.type, "ACTIVATED");
     battle = skills.finish(started.state, started.value.ref);
     assert.deepEqual(trace, ["ended:begin", "ended:return", "owner:left"]);

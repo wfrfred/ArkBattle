@@ -8,58 +8,70 @@ Skill 负责 SP、发动、持续预算、主动操作和完整终止。Action �
 
 | 模块 | 职责 |
 | --- | --- |
-| `unit/skill/definition.ts` | 元数据 View、完整泛型 Definition 与 createDefinition |
-| `unit/skill/activation.ts`、`instance.ts` | Activation、配对 Instance、普通内部查询与完整写回 |
-| `unit/skill/query.ts`、`operations.ts` | 当前 Activation 查询、字段写回、发动、主动操作、时间推进、结束与 lifetime |
+| `unit/skill/definition.ts` | 程序元数据 View、完整泛型 Definition 与 createDefinition |
+| `unit/skill/skill.ts`、`activation.ts` | 单槽聚合 Skill、同一聚合的非空 Activation 视图与两种 Ref |
+| `unit/skill/initialize.ts` | create 接续 Definition.initialize，创建聚合初态 |
+| `unit/skill/query.ts`、`operations.ts` | 查询、字段写回、发动、主动操作、推进、结束与 lifetime |
 | `unit/skill/sp.ts`、`ammo.ts`、`sustain.ts`、`modifier.ts` | SP、Ammo、持续预算与领域数值规则 |
-| `unit/capability/skill/capability.ts` | Skill、公共 State、结构守卫、initialize 与局部登记 |
+| `unit/capability/skill/capability.ts` | 初始化工厂 Definition、Skill Capability、公共 State、结构守卫与局部登记 |
 | `unit/capability/skill/rule.ts`、`hook.ts` | 能力 Rule、Hook 类型与事件契约 |
 
-领域 index 提供 Definition／createDefinition、Activation、查询、setData／setActivationData 及 SP／Ammo／激活业务，不转发能力守卫、Rule／Hook 登记和持续预算贡献 setter。Capability index 提供对应能力 API，不再聚合领域程序、资源结算或 Activation 业务。Core 的配对读取与完整写回继续按实际职责深导。
+领域 index 提供 create／createDefinition、Skill／Activation、ref／activationRef、getSkill／getActivation、字段写回及 SP／Ammo／激活业务，不转发能力守卫、Rule／Hook 登记和持续预算贡献 setter。Capability index 提供对应能力 API。内部 getCurrent 直接返回默认 object／object 的完整聚合，在普通查询边界恢复受信类型，不解释私有 data；不公开内部写回，不使用泛型 reader。
 
-SP 的 setContribution／removeContribution 仍是 `unit/skill/sp.ts` 的局部资源操作，经领域入口以 setSpContribution／removeSpContribution 导出；它们与 SP State／Input 保持同一模块，不因目录分开增加 Capability 转发函数。内部配对读取归 instance.get，完整业务直接接续普通查询结果，不使用私有类型的泛型 reader。
+SP 的 setContribution／removeContribution 仍在 sp.ts，经领域入口以 setSpContribution／removeSpContribution 导出；它们与 SP State／Input 保持同一模块，不增加 Capability 转发函数。
 
-## 1. Definition 与状态
+## 1. 单槽聚合、Definition 与两种身份
 
-`unit/skill/definition.ts` 的 View 只提供 id、sp，以及 activation 的 trigger／sustain，不暴露 initializer 或生命周期回调。`Definition<S, A>` 扩展 View 并保留完整初始化与内容程序，运行时仍由部署实例共享同一对象；Capability.Skill.definition.skill 只承诺 View，不复制另一份定义。
+每个 Unit 的 unit.skill 直接保存一份 Skill 聚合，至多有一个当前 Activation，不使用集合或额外 Instance 包装：
 
 | 数据 | 职责 |
 | --- | --- |
-| `Definition.initialize()` | 创建本次 Unit 持有期间的私有状态 S |
-| `Definition.sp` | 基础 SP 容量、门槛、数值支付量与回复来源；无 SP 时为 null |
-| `Definition.activation` | 发动方式、持续政策、私有状态 A 的初始化及执行程序；不需要常规激活时为 null |
-| `skill.data` | 跨多次激活保留的 S |
-| `skill.active` | 当前 Activation，或 null |
-| `skill.nextActivationId` | 本宿主单调分配的激活身份 |
-| `skill.sustain` | 持久登记的持续预算贡献，每次发动时采样 |
+| self.definition | 完整 Skill Definition，与该聚合的 S／A 配对 |
+| self.data | 跨多次激活保留的私有 S |
+| self.sp | 当前 SP 或 null |
+| self.activation | 本轮 id、startedAtTick、status、Sustain、私有 data: A，或 null |
+| Capability.nextActivationId | 宿主内单调分配的轮次身份 |
+| Capability.sustain／rules／Hook | 持久登记的预算贡献、许可和通知 |
 
-一个 Unit 至多持有一个 Skill，一个 Skill 同时至多有一个 Activation。私有状态在 Unit 生命周期内保留，不隐含跨部署保存。
+Skill<S, A> 允许 activation 为 null；Activation<S, A> 是同一个聚合的非空运行视图，self.activation 确定存在。两者都通过 self.data 读取持久 S，本轮数据读取 self.activation.data。两个泛型均默认 object，只关心本轮 A 时使用 Activation<object, A>；具体私有类型由已知 Definition 或精确 Ref 保持。
 
-`Skill` Capability 与公共 `State` 均不携带内容泛型，宿主身份始终为 `Ref<Unit & Skill>`。Catalog 仍调用 `unit/capability/skill` 的 initialize(battle, definition)，只返回公共 State，不另设 Stored Capability，也不通过直接初始化恢复私有类型。SP、Rule、Hook、Contribution 只依赖这个公共能力。
+聚合不保存 host，内容程序显式接收 source。Capability State 扩展公开 SkillView，只承诺 Definition 元数据、SP 和可空 activation 元数据，隐藏私有 data 与完整回调；真实存储仍是同一个完整聚合。ActivationView 对同一公开视图作非空细化，不额外复制对象或执行容器。
 
-内容程序的 `Definition<S, A>` 保留持久状态 S 与激活状态 A。Definition 回调接收配对的 `Instance<S, A>`：host 定位宿主，definition 保存具体程序，state 保存同一程序的私有数据和当前激活。内部 instance.get(battle, host) 返回默认 object／object 的完整配对对象；传入具体 Definition 的 get(battle, host, definition) 按对象身份恢复 S／A，配置不匹配时返回 undefined。类型恢复集中在该普通查询边界，Core 不解释私有数据形状，也不把业务包进泛型 reader。instance.get 与完整实例替换不从领域 index 导出；跨完整操作后仍按所需实时事实重读。
+Definition View 只公开 id、sp、activation 的 trigger／sustain；完整 Definition<S, A> 另有初始化与内容程序。Skill 程序与元数据从 unit.skill.definition 取得，Unit Definition.skill 只保存初始化工厂：
 
-`Activation<A>` 保存 `host: Ref<Unit & Skill>`、id、startedAtTick、ACTIVE／ENDING、Sustain 和 data。私有类型 A 的证明来自具体 Definition 的内容回调，通过公共 `ref(self)` 保留；也可以向 `get(battle, ref, definition)` 传入具体 Definition，由运行时对象身份比对确认当前配置程序后恢复 A。仅凭普通宿主 Ref 调用 `activate` 返回公共 Activation，不能指定或推导私有类型。typed Activation Ref 不意味着宿主私有状态 S 可被恢复，过期激活身份不能读取、消费或结束新激活。
+```typescript
+skill: {
+    initialize: (battle) => skills.create(battle, programDefinition),
+}
+```
 
-unit/skill/instance.ts 的 replaceHost 只供 Core 内部完整宿主写回，不从领域 index 导出。内容通过公开字段 setter 更新私有数据，不提交整份 Activation；生命周期变化仍由完整业务操作负责。
+Definition.initialize(battle) 返回 Result<S>；create 接续其 state，建立 definition、data、初始 SP 和 activation: null，返回 Result<Skill<S, A>>。Capability.initialize 接续工厂结果，并补 nextActivationId、贡献、规则与 Hook 初态。工厂返回类型在此创建边界要求私有数据和必需的初始化程序，普通 SkillView 不能充当创建结果；公共 State 仍只承诺视图，内部不重复校验。共享程序不保存私有运行进度，Unit 尚未登记时不能查询自己或假设兄弟能力已经存在。
 
-领域入口提供两个字段级写回：
+### 引用、查询与写回
+
+| 引用 | 构造与用途 |
+| --- | --- |
+| 持久 Skill Ref | ref(source, definition)，地址为 host＋Definition；getSkill、activate、setData 使用它，跨多轮有效 |
+| 本轮 Activation Ref | activationRef(source, self)，地址为 host＋self.activation.id；getActivation、finish、cancel、operate、extendTime、setActivationData 与 SKILL Scope 使用它 |
+
+getSkill(battle, skillRef) 确认当前聚合的 Definition 对象身份，恢复 S／A；getActivation(battle, roundRef) 确认本轮 ID，返回同一聚合的非空视图。activate 返回的本轮 Ref 保留原 Definition 的 S／A。公共 ActivationView Ref 只恢复公开视图，已知完整聚合形成的精确 Ref 才恢复完整类型。过期 Ref 不读取或操作后来一轮，生命周期资格仍从当前 battle 检查。
+
+字段级写回只接受结果值：
 
 ```typescript
 setData<S extends object, A extends object>(
-    battle: BattleState, self: Instance<S, A>, data: NoInfer<S>,
+    battle: BattleState, ref: Ref<Skill<S, A>>, data: NoInfer<S>,
 ): BattleState;
 
-setActivationData<A extends object>(
-    battle: BattleState, ref: Ref<Activation<A>>, data: NoInfer<A>,
+setActivationData<S extends object, A extends object>(
+    battle: BattleState, ref: Ref<Activation<S, A>>, data: NoInfer<A>,
 ): BattleState;
 ```
 
-两者从最新 battle 读取当前对象，只替换持久 state.data 或本轮 active.data，保留 SP、Sustain、规则、Hook、激活槽位与 ID 进度。setData 的 self 证明宿主、Definition 与 S／A 的配对，不作为待提交整份 Skill State；Activation Ref 只绑定本轮，不另建持久 Skill 身份。旧局部 data setter 不再提供另一套协议；两个公开写回统一由 operations.ts 实现并从领域 index 导出。
+setData 只更新当前 Skill 的 data，setActivationData 只更新当前本轮 activation.data，保留 Definition、SP、Sustain、规则、Hook、槽位和 ID 进度。宿主缺失时抛出 RangeError；持久 Ref 的 Definition 不匹配时抛出 TypeError，本轮 Ref 过期时抛出 RangeError。持久 data 允许在 LEAVING 或结束程序中更新；普通本轮数据写入在 ENDING 时抛出 TypeError。数据同引用时返回原 battle，不执行完整更新，不提供旧局部 setter 或回调双协议。
 
-setData 在宿主缺失时抛出 RangeError，允许 LEAVING 或结束程序更新持久 data。setActivationData 要求最新宿主存在且 active.id 对应精确本轮，缺失宿主或过期激活抛出 RangeError；本轮为 ENDING 时抛出 TypeError，保持普通执行数据写入限制。给定 data 与当前字段同引用时返回原 battle，不触发完整更新。两者只接受结果值，不接受转换回调。
+计算与提交之间不执行其他完整操作；跨领域调用后先接续 battle 并重读私有数据。字段写回保留其他当前字段，但不替调用者合并陈旧 data。NoInfer 阻止结果值反向扩大私有类型，完整聚合写回仅归 Core。
 
-调用方从当前事实计算 data，计算与提交之间不执行其他完整操作；跨领域操作后先接续 battle 并重读私有数据。字段级写回保留其他当前字段，但不替调用者合并已经陈旧的 data。NoInfer 阻止结果值反向扩大私有类型。
 
 ## 2. SP
 
@@ -119,7 +131,7 @@ activate 要求宿主 PRESENT、空间在场，具有 Vitality 时 HP 大于零�
 
 Hook 登记仅使用 capability/skill 的 setHook(state, key, hook)／removeHook(state, key, id)，Key 与事件载荷保持类型配对，不再为每个事件提供同义专名 setter。
 
-Definition 的 onEnter／onTick 与 Activation Definition 的 initialize／accepts／cost 接收 battle 与配对的 Instance。Activation 的 onStart／onTick／onOperation／onEnd 接收 battle 与当前 Activation 实例；initialize 仅构造数据。STOP 与 RETRIGGER 交给内容程序处理，STOP 请求不预设一定立即结束；未提供自定义操作程序时，STOP 默认正常结束。
+除持久初始化外，Definition 与 Activation Definition 的内容回调都显式接收 source 为第二参、聚合 self 为第三参。Definition.onEnter／onTick 和 Activation Definition.initialize／accepts／cost 接收 Skill<S, A>；onStart／onTick／onOperation／onEnd 接收 activation 非空的 Activation<S, A>，Operation 或 End 为第四参。Activation.initialize 只构造本轮 A；持久 Definition.initialize 则接续 Result<S>。STOP 与 RETRIGGER 交给内容程序处理，未提供 onOperation 时 STOP 默认正常结束。
 
 | Hook | 事实 |
 | --- | --- |
@@ -131,7 +143,7 @@ Definition 的 onEnter／onTick 与 Activation Definition 的 initialize／accep
 | activated | 本次 Activation 已成功创建 |
 | ended | 本次 Activation 完整结束 |
 
-Hook 使用公共 Hook<Context<E>, void>；Context 固定 host 与本次 event，accepts 只读，invoke 返回 Result<void>。每次派发固定候选 ID，逐项读取最新登记；Activation 结束或被替换后，后续观察者仍收到原始事件，当前状态另从最新 battle 查询。
+Hook 使用公共 Hook<Context<E>, void>；Context 固定 host 与本次 event。activated 载荷为非空聚合视图，ended 的 activation 字段也保存该视图；视图内部的 activation 才是本轮元数据。accepts 只读，invoke 返回 Result<void>。每次派发固定候选 ID，逐项读取最新登记；Activation 结束或被替换后，后续观察者仍收到原始事件，当前状态另从最新 battle 查询。
 
 不提供通用 changed、阈值注册表或充能状态机。资源事件携带本次结算前后事实；阈值观察者订阅相关业务 Hook。每次派发独立固定候选 ID，逐项按 ID 读取最新登记并执行最新 accepts／invoke；同 ID 替换在本轮使用新版本，新 ID 等待下次派发，嵌套报告不会重写外层事实。
 
@@ -143,9 +155,9 @@ HIT 回复由 Skill.enter 在 Damage 的 receivingStarted 扩展点登记，发�
 
 activated 表达实例已经创建，不承诺 onStart 效果已经安装。它的派发先于可能终止激活的支付与启动程序。没有活动 Lifetime 结算时，前一个 activated Hook 的结束操作可以在后续 activated 候选前完成 ended；已有结算时，嵌套结束只同步执行请求／Prepare，ended 等待 Finalize。后续候选始终处理原创建事实，不因终止重写报告。
 
-Skill 的公共 lifetime 描述符绑定本轮 Activation，Effect 使用 scope(skillLifetime, activationRef) 建立依赖。请求先登记 Pending 并发布 ENDING，再展开依赖；最外层结算器等待依赖者完整完成后进入 Finalize。Finalize 从所有权保护的当前 Unit 取得配对 Definition 与 Activation，依次执行 onEnd、重读宿主、清空本轮、事件与 ended；其他完整操作同样通过普通查询线性接续，不经过泛型 reader。整个 Finalize 返回后才解除 owner 等待，Unit 在此期间保留原 Definition 与当前状态，不需要通用历史回退。
+Skill 的公共 lifetime 描述符绑定本轮 Activation，Effect 使用 scope(skillLifetime, activationRef) 建立依赖。请求先登记 Pending 并发布 ENDING，再展开依赖；最外层结算器等待依赖者完整完成后进入 Finalize。Finalize 从所有权保护的当前 unit.skill 取得同一轮完整聚合，以显式 source 调用 onEnd，再重读宿主并只清空 activation，保留最新持久 data／SP，记录事件与派发 ended；其他完整操作同样通过普通查询线性接续，不经过泛型 reader。整个 Finalize 返回后才解除 owner 等待，Unit 在此期间保留原 Definition 与当前状态，不需要通用历史回退。
 
-ENDING 期间继续占用 Skill。嵌套 finish／cancel 首次请求返回只保证 Prepare，不保证本轮已清空或 ended 已派发；需要下一次激活的业务放在槽位释放后的 ended 时点，已有结算范围中不能强行 drain。重复 PREPARING 请求也不等待原 Prepare。
+ENDING 期间继续占用同一激活槽位，持久 Skill 聚合始终保留。嵌套 finish／cancel 首次请求返回只保证 Prepare，不保证本轮已清空或 ended 已派发；需要下一次激活的业务放在槽位释放后的 ended 时点，已有结算范围中不能强行 drain。重复 PREPARING 请求也不等待原 Prepare。
 
 Unit 退场通过派生所有权关系自动请求 Skill、Action、Burst 与 Effects；Skill 请求先于 Action，兄弟可以都先进入 ENDING。首次原因不会被后续完成／取消覆盖；Unit Finalize 晚于这些子项的整个 Finalize。结束内容跨完整操作后仍按需要读取当前宿主与实例。
 

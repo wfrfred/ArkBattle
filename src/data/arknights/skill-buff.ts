@@ -13,7 +13,7 @@ import {
 } from "../../core/unit/capability/offense/index.js";
 import {
     type Definition as SkillDefinition,
-    ref as activationRef,
+    activationRef,
     lifetime as skillLifetime,
 } from "../../core/unit/skill/index.js";
 
@@ -69,20 +69,20 @@ export function compileArknightsAttackBuffSkill(value: unknown, level: number): 
         ...parsed.definition,
         activation: {
             ...parsed.definition.activation!,
-            accepts: (battle, self) => {
-                const host = getUnit(battle, self.host);
+            accepts: (battle, source) => {
+                const host = getUnit(battle, source);
 
                 return host !== undefined && hasOffense(host);
             },
-            onStart: (state, self) => {
-                const unit = getUnit(state, self.host);
+            onStart: (state, source, self) => {
+                const unit = getUnit(state, source);
                 if (unit === undefined || !hasOffense(unit)) {
                     return state;
                 }
 
                 const installed = install(state, unitRef(unit), buff, {
                     source: unitRef(unit),
-                    scopes: [scope(skillLifetime, activationRef(self))],
+                    scopes: [scope(skillLifetime, activationRef(source, self))],
                 });
 
                 return installed.state;

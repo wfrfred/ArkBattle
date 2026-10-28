@@ -8,12 +8,12 @@ import type { Ref } from "../../common/ref.js";
 import type { State as BattleState, Result } from "../../battle/state.js";
 import type { Unit } from "../unit.js";
 import * as units from "../query.js";
-import { ref as activationRef, type Activation } from "./activation.js";
+import type { View as ActivationView } from "./activation.js";
 import type { Skill } from "../capability/skill/capability.js";
 import { dispatch } from "../capability/skill/hook.js";
 import { finish } from "./operations.js";
 import * as query from "./query.js";
-import { replaceHost } from "./instance.js";
+import { update as updateUnit } from "../../battle/unit.js";
 import type { Ammo } from "./sustain.js";
 
 export interface Modifier {
@@ -44,14 +44,14 @@ export function resolveCapacity(base: number, modifiers: Iterable<Modifier>): nu
 }
 
 export interface Consumed {
-    readonly ref: Ref<Activation>;
+    readonly ref: Ref<ActivationView>;
     readonly amount: number;
     readonly previous: Ammo;
     readonly current: Ammo;
 }
 
 export interface Replenished {
-    readonly ref: Ref<Activation>;
+    readonly ref: Ref<ActivationView>;
     readonly requested: number;
     readonly amount: number;
     readonly previous: Ammo;
@@ -64,7 +64,7 @@ export type Outcome =
 
 export function consume(
     battle: BattleState,
-    reference: Ref<Activation>,
+    reference: Ref<ActivationView>,
     amount = 1,
 ): Result<Outcome> {
     assertPositiveSafeInteger(amount, "skill ammunition consumption");
@@ -74,7 +74,7 @@ export function consume(
         return rejected(battle, "UNAVAILABLE");
     }
 
-    const active = self.skill.active;
+    const active = self.skill.activation;
     if (self.lifecycle !== "PRESENT" || active?.id !== reference.id || active.status !== "ACTIVE") {
         return rejected(battle, "UNAVAILABLE");
     }
@@ -85,12 +85,14 @@ export function consume(
     const previous = active.sustain;
     const current = { ...previous, remaining: previous.remaining - amount };
 
-    battle = replaceHost(battle, {
-        ...self,
-        skill: { ...self.skill, active: { ...active, sustain: current } },
-    });
+    battle = updateUnit(battle, [
+        {
+            ...self,
+            skill: { ...self.skill, activation: { ...active, sustain: current } },
+        },
+    ]);
     battle = dispatch(battle, units.ref(self), "ammoConsumed", {
-        ref: activationRef(active),
+        ref: reference,
         amount,
         previous,
         current,
@@ -104,7 +106,7 @@ export function consume(
 
 export function replenish(
     battle: BattleState,
-    reference: Ref<Activation>,
+    reference: Ref<ActivationView>,
     amount = 1,
 ): Result<Outcome> {
     return add(battle, reference, amount, true);
@@ -112,14 +114,14 @@ export function replenish(
 
 export function grant(
     battle: BattleState,
-    reference: Ref<Activation>,
+    reference: Ref<ActivationView>,
     amount = 1,
 ): Result<Outcome> {
     return add(battle, reference, amount, false);
 }
 
-export function check(battle: BattleState, reference: Ref<Activation>): BattleState {
-    const active = query.get(battle, reference);
+export function check(battle: BattleState, reference: Ref<ActivationView>): BattleState {
+    const active = query.getActivation(battle, reference)?.activation;
 
     return active?.status === "ACTIVE" &&
         active.sustain.type === "AMMO" &&
@@ -130,7 +132,7 @@ export function check(battle: BattleState, reference: Ref<Activation>): BattleSt
 
 function add(
     battle: BattleState,
-    reference: Ref<Activation>,
+    reference: Ref<ActivationView>,
     requested: number,
     replenishing: boolean,
 ): Result<Outcome> {
@@ -141,7 +143,7 @@ function add(
         return rejected(battle, "UNAVAILABLE");
     }
 
-    const active = self.skill.active;
+    const active = self.skill.activation;
     if (self.lifecycle !== "PRESENT" || active?.id !== reference.id || active.status !== "ACTIVE") {
         return rejected(battle, "UNAVAILABLE");
     }
@@ -170,14 +172,16 @@ function add(
         remaining: previous.remaining + amount,
         replenished: previous.replenished + (replenishing ? amount : 0),
     };
-    battle = replaceHost(battle, {
-        ...self,
-        skill: { ...self.skill, active: { ...active, sustain: current } },
-    });
+    battle = updateUnit(battle, [
+        {
+            ...self,
+            skill: { ...self.skill, activation: { ...active, sustain: current } },
+        },
+    ]);
 
     if (replenishing) {
         battle = dispatch(battle, units.ref(self), "ammoReplenished", {
-            ref: activationRef(active),
+            ref: reference,
             requested,
             amount,
             previous,

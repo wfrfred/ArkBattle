@@ -4,7 +4,7 @@ import { hasAction } from "../unit/capability/action/capability.js";
 import { hasSkill } from "../unit/capability/skill/capability.js";
 import { hasElemental } from "../unit/capability/elemental/capability.js";
 import { ref as executionRef, type View as ExecutionView } from "../unit/action/execution.js";
-import { ref as activationRef } from "../unit/skill/activation.js";
+import { ref as activationRef, type View as ActivationView } from "../unit/skill/activation.js";
 import { ref as burstRef } from "../unit/capability/elemental/burst.js";
 import { ref as effectRef } from "../unit/effect/effect.js";
 import { lifetime as actionLifetime } from "../unit/action/operations.js";
@@ -33,8 +33,8 @@ export function projectUnit(unit: Unit | undefined): readonly Entry[] {
     const add = (target: Scope, scopes: readonly Scope[] = []): void => {
         entries.push({ target, owner: { target: owner, order: entries.length }, scopes });
     };
-    if (hasSkill(unit) && unit.skill.active !== null) {
-        add(scope(skillLifetime, activationRef(unit.skill.active)));
+    if (hasSkill(unit) && unit.skill.activation !== null) {
+        add(scope(skillLifetime, activationRef(unitRef(unit), unit.skill as ActivationView)));
     }
     if (hasAction(unit)) {
         const executions = [

@@ -2,7 +2,11 @@ export { createDefinition } from "./definition.js";
 
 export type { Definition } from "./definition.js";
 
-export { ref } from "./activation.js";
+export { ref } from "./skill.js";
+
+export type { Skill, View as SkillView } from "./skill.js";
+
+export { ref as activationRef } from "./activation.js";
 
 export type {
     Operation,
@@ -10,11 +14,12 @@ export type {
     End,
     Definition as ActivationDefinition,
     Activation,
+    View as ActivationView,
 } from "./activation.js";
 
-export { get } from "./query.js";
+export { getSkill, getActivation } from "./query.js";
 
-export type { Instance } from "./instance.js";
+export { create } from "./initialize.js";
 
 export {
     lifetime,

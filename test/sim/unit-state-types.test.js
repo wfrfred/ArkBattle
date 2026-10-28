@@ -174,7 +174,7 @@ const actionInput:Contribution<ActionInput>={id:'action',value:(current,self)=>{
  const count:number=self.action.speed.length;
  self.definition.action.initialize;
  // @ts-expect-error action input does not prove another capability.
- self.skill.active;
+ self.skill.activation;
  return [];
 }};
 setActionSpeedContribution(capabilityHost.action,actionInput);

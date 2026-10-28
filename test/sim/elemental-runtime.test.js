@@ -22,7 +22,7 @@ import { start, ref as actionRef } from '../../dist/core/unit/action/index.js';
 import { advance as advanceAction } from '../../dist/core/unit/action/index.js';
 import { ref as unitRef } from '../../dist/core/unit/index.js';
 import { createInput as createRouteDefinition } from '../../dist/core/battle/creation/route.js';
-import { definition as createSkillDefinition } from '../helpers/skill.js';
+import { ref as skillRef, definition as createSkillDefinition } from '../helpers/skill.js';
 import { activate as activateSkill, advance as advanceSkill } from '../../dist/core/unit/skill/index.js';
 import { recover } from '../../dist/core/unit/skill/sp.js';
 import { setHook as setHealingHook } from '../../dist/core/battle/healing/index.js';
@@ -139,7 +139,7 @@ test('elemental execution: character necrosis settles fifteen magical pulses, dr
   let work = effectFixtureWork(unit('CHARACTER', { skill }));
   work = element(work, 'NECROSIS').state;
   assert.equal(getUnit(work, 1).vitality.hp, 100000);
-  assert.equal(activateSkill(work, unitRef(getUnit(work, 1))).value.type, 'REJECTED');
+  assert.equal(activateSkill(work, skillRef(getUnit(work, 1))).value.type, 'REJECTED');
   work = recover(work, unitRef(getUnit(work, 1)), 'TIME', 3).state;
   assert.equal(getUnit(work, 1).skill.sp.value, 20);
   work = advance(work, 30);

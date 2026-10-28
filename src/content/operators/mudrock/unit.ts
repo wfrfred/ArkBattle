@@ -21,7 +21,11 @@ import { blocked } from "../../../core/battle/blocking/index.js";
 import { hasBlocker } from "../../../core/unit/capability/blocking/index.js";
 import type { Profile } from "../../../data/arknights/operator.js";
 import { secondsToTicks } from "../../../data/arknights/tick.js";
-import { modify, type Definition as SkillDefinition } from "../../../core/unit/skill/index.js";
+import {
+    create as createSkill,
+    modify,
+    type Definition as SkillDefinition,
+} from "../../../core/unit/skill/index.js";
 import { hasSkill } from "../../../core/unit/capability/skill/index.js";
 import type { Direction } from "../../../core/geometry/direction.js";
 
@@ -41,7 +45,7 @@ import {
     setData,
 } from "../../../core/unit/effect/index.js";
 
-import { createNormal, createSkill } from "./action.js";
+import { createNormal, createSkill as createSkillAction } from "./action.js";
 import { value, healSelf } from "./common.js";
 
 export interface Definition
@@ -259,23 +263,23 @@ export function create(
 
     const shield = shieldEffect(profile);
     const normalAttack = createNormal(profile, direction, recoveryTicks);
-    const action = createSkill(profile, direction, recoveryTicks);
+    const action = createSkillAction(profile, direction, recoveryTicks);
     const targeting = action.attack.targetGroups[0].targeting;
     const skill: SkillDefinition = {
         ...profile.skill.definition,
         activation: {
             ...profile.skill.definition.activation!,
             sustain: { type: "INFINITE" },
-            accepts(battle, self) {
-                const source = getCurrentUnit(battle, self.host);
+            accepts(battle, sourceRef) {
+                const source = getCurrentUnit(battle, sourceRef);
 
                 return (
                     source !== undefined &&
                     hasCandidate(battle, { ...targeting, source: unitRef(source) })
                 );
             },
-            onStart(state, self) {
-                const unit = getCurrentUnit(state, self.host);
+            onStart(state, source) {
+                const unit = getCurrentUnit(state, source);
                 if (unit === undefined || !hasAction(unit)) {
                     return state;
                 }
@@ -322,10 +326,12 @@ export function create(
             initialize: (battle) => createActions(battle, initializeNormalAttack, initializeAction),
             select: (battle, self) => ({
                 state: battle,
-                value: [hasSkill(self) && self.skill.active !== null ? action.id : normalAttack.id],
+                value: [
+                    hasSkill(self) && self.skill.activation !== null ? action.id : normalAttack.id,
+                ],
             }),
         },
-        skill,
+        skill: { initialize: (battle) => createSkill(battle, skill) },
         hooks: [
             {
                 id: "mudrock/install-initial-effects",

@@ -106,7 +106,7 @@ export function createSkill(
         markerId: "mudrock/s2",
         output(state, host, self) {
             const source = getCurrentUnit(state, host);
-            if (source === undefined || !hasSkill(source) || source.skill.active === null) {
+            if (source === undefined || !hasSkill(source) || source.skill.activation === null) {
                 return state;
             }
 

@@ -48,9 +48,9 @@ const markEntered = (trace, id) => ({
 test('enter registers one complete Unit before Skill entry and passes its latest state to Unit entry', () => {
   const trace = [];
   const skill = createSkillDefinition({
-    id: 'entry-program', initialize: () => ({}), sp: null, activation: null,
-    onEnter(battle, self) {
-      const host = unitQueries.get(battle, self.host);
+    id: 'entry-program', initialize: battle => ({ state: battle, value: ({}) }), sp: null, activation: null,
+    onEnter(battle, source, self) {
+      const host = unitQueries.get(battle, source);
       trace.push(['skill', host.id, host.vitality.hp]);
       return updateUnit(battle, [{ ...host, vitality: { ...host.vitality, hp: 63 } }]);
     },
@@ -76,8 +76,8 @@ test('enter registers one complete Unit before Skill entry and passes its latest
 
 test('Skill entry can synchronously remove its host before the Unit entry callback', () => {
   const skill = createSkillDefinition({
-    id: 'depart-on-entry', initialize: () => ({}), sp: null, activation: null,
-    onEnter: (battle, self) => remove(battle, self.host.id, 'SCRIPT'),
+    id: 'depart-on-entry', initialize: battle => ({ state: battle, value: ({}) }), sp: null, activation: null,
+    onEnter: (battle, source, self) => remove(battle, source.id, 'SCRIPT'),
   });
   const unit = initialize({ id: 3, position: [1, 0], definition: {
     id: 'departing-entry', skill,

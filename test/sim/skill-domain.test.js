@@ -13,7 +13,7 @@ import { effectFixtureWork } from "../helpers/effects.js";
 import { actionCapability } from "../helpers/actions.js";
 import { start as startAction, ref as actionRef } from "../../dist/core/unit/action/index.js";
 import { advance as advanceAction } from "../../dist/core/unit/action/index.js";
-import { fixture, definition, at, setSkill, currentRef } from "../helpers/skill.js";
+import { ref as skillRef, fixture, definition, at, setSkill, currentRef } from "../helpers/skill.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 
 const resource = (overrides = {}) => ({
@@ -49,11 +49,11 @@ function parameterEffect(id, modifiers) {
 test("SP capacity can be replaced during activation and restored by ending its owning Effect", () => {
     const f = fixture({ sp: resource({ initial: 10, capacity: 10, requirement: 10, cost: 10 }) });
     const effect = parameterEffect("coin-capacity", {
-        capacity: { priority: 0, apply: (_battle, self, current) => self.skill.active === null ? current : 20 },
+        capacity: { priority: 0, apply: (_battle, self, current) => self.skill.activation === null ? current : 20 },
     });
     const installed = effects.install(f.state, f.ref, effect);
     assert.equal(sp.resolveCapacity(installed.state, f.ref), 10);
-    let state = skills.activate(installed.state, f.ref).state;
+    let state = skills.activate(installed.state, f.skillRef).state;
     assert.equal(read(state).sp.value, 0);
     assert.equal(sp.resolveCapacity(state, f.ref), 20);
     state = effects.end(state, installed.value, "REMOVED");
@@ -67,9 +67,9 @@ test("a Fever-style Effect independently removes the SP requirement and payment 
         requirement: { priority: 0, apply: () => 0 },
         cost: { priority: 0, apply: () => 0 },
     });
-    assert.equal(skills.activate(f.state, f.ref).value.type, "REJECTED");
+    assert.equal(skills.activate(f.state, f.skillRef).value.type, "REJECTED");
     const installed = effects.install(f.state, f.ref, effect);
-    const started = skills.activate(installed.state, f.ref);
+    const started = skills.activate(installed.state, f.skillRef);
     assert.equal(started.value.type, "ACTIVATED");
     assert.equal(read(started.state).sp.value, 0);
     assert.equal(sp.resolveCapacity(started.state, f.ref), 10);
@@ -77,7 +77,7 @@ test("a Fever-style Effect independently removes the SP requirement and payment 
     state = effects.end(state, installed.value, "REMOVED");
     assert.equal(sp.resolveRequirement(state, f.ref), 10);
     assert.equal(sp.resolveCost(state, f.ref), 10);
-    assert.equal(skills.activate(state, f.ref).value.type, "REJECTED");
+    assert.equal(skills.activate(state, f.skillRef).value.type, "REJECTED");
 });
 
 test("SP parameter programs use explicit order and exclusive sources while default payment follows requirement", () => {
@@ -119,34 +119,34 @@ test("a charged duration program samples all prepayment charges when the activat
         sp: resource({ initial: 10, capacity: 10, requirement: 2, cost: undefined }),
         activation: {
             trigger: "MANUAL", sustain: { type: "TIME", durationTicks: 120 }, initialize: () => ({}),
-            onStart: (battle, self) => sp.modify(battle, self.host, -getUnit(battle, self.host.id).skill.sp.value).state,
+            onStart: (battle, source, self) => sp.modify(battle, source, -getUnit(battle, source.id).skill.sp.value).state,
         },
     });
     const entry = {
         id: "charged-duration",
         value: { priority: 0, apply: (_battle, self, current) =>
-            current * (1 + Math.floor(self.skill.sp.value / self.definition.skill.sp.requirement) * 0.4) },
+            current * (1 + Math.floor(self.skill.sp.value / self.skill.definition.sp.requirement) * 0.4) },
     };
     const currentBattle = at(f.state, 7);
     const currentSkill7 = getUnit(currentBattle, 1).skill;
     let state = setSkill(currentBattle, setDurationContribution(currentSkill7, entry));
-    const started = skills.activate(state, f.ref);
+    const started = skills.activate(state, f.skillRef);
     assert.equal(started.value.type, "ACTIVATED");
     assert.equal(read(started.state).sp.value, 0);
-    assert.equal(read(started.state).active.sustain.endsAtTick, 367);
+    assert.equal(read(started.state).activation.sustain.endsAtTick, 367);
     const currentSkill8 = getUnit(started.state, 1).skill;
     state = setSkill(started.state, removeDurationContribution(currentSkill8, entry.id));
-    assert.equal(read(state).active.sustain.endsAtTick, 367);
+    assert.equal(read(state).activation.sustain.endsAtTick, 367);
     state = skills.finish(state, started.value.ref);
     state = sp.modify(state, f.ref, 10).state;
-    state = skills.activate(state, f.ref).state;
-    assert.equal(read(state).active.sustain.endsAtTick, 127);
+    state = skills.activate(state, f.skillRef).state;
+    assert.equal(read(state).activation.sustain.endsAtTick, 127);
 });
 
 test("skill definitions are shared and deployments initialize independent private state", () => {
-    const f = fixture({ initialize: () => ({ count: 0 }), sp: resource({ initial: 1 }) });
-    assert.equal(f.unit.definition.skill, f.definition);
-    const another = initializeSkill(fixtureBattle(90), f.definition).value;
+    const f = fixture({ initialize: battle => ({ state: battle, value: ({ count: 0 }) }), sp: resource({ initial: 1 }) });
+    assert.equal(f.unit.skill.definition, f.definition);
+    const another = initializeSkill(fixtureBattle(90), f.unit.definition.skill).value;
     assert.deepEqual(another.data, { count: 0 });
     assert.notEqual(another.data, f.unit.skill.data);
     assert.equal(another.sp.value, 1);
@@ -174,7 +174,7 @@ for (const source of ["TIME", "ACTION", "HIT"]) {
 
 test("capacity, activation requirement and payment are separate numeric facts", () => {
     const f = fixture({ sp: resource({ initial: 5, capacity: 10, requirement: 5, cost: 2 }) });
-    const activated = skills.activate(f.state, f.ref);
+    const activated = skills.activate(f.state, f.skillRef);
     assert.equal(activated.value.type, "ACTIVATED");
     assert.equal(read(activated.state).sp.value, 3);
     assert.equal(read(f.state).sp.value, 5);
@@ -188,7 +188,7 @@ test("payment needs no Activation and ignores recovery and activation Rules", ()
     }] });
     state = sp.pay(state, f.ref, 3).state;
     assert.equal(read(state).sp.value, 2);
-    assert.equal(read(state).active, null);
+    assert.equal(read(state).activation, null);
     assert.equal(read(state).nextActivationId, 0);
 });
 
@@ -206,7 +206,7 @@ test("recovery Rules block ordinary positive modification, but not drains, payme
 
 test("active recovery is a removable default Rule and payment remains legal during activation", () => {
     const f = fixture({ sp: resource({ initial: 6 }) });
-    let state = skills.activate(f.state, f.ref).state;
+    let state = skills.activate(f.state, f.skillRef).state;
     assert.equal(read(state).sp.value, 3);
     assert.equal(sp.recover(state, f.ref, "TIME", 1).value.type, "REJECTED");
     state = sp.pay(state, f.ref, 1).state;
@@ -215,7 +215,7 @@ test("active recovery is a removable default Rule and payment remains legal duri
     state = setSkill(state, removeRule(currentSkill11, "@skill/active-recovery"));
     state = sp.recover(state, f.ref, "TIME", 1).state;
     assert.equal(read(state).sp.value, 3);
-    assert.equal(read(state).active.status, "ACTIVE");
+    assert.equal(read(state).activation.status, "ACTIVE");
 });
 
 test("natural SP pauses while full and resumes the saved remainder without a backlog", () => {
@@ -392,26 +392,26 @@ test("SP Hooks keep settled reports across nested payment and dispatch only thei
 });
 
 test("persistent data survives activations and activation data is initialized independently", () => {
-    const f = fixture({ initialize: () => ({ count: 0 }), sp: null,
+    const f = fixture({ initialize: battle => ({ state: battle, value: ({ count: 0 }) }), sp: null,
         activation: { trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({ count: 0 }) },
     });
-    let state = skills.activate(f.state, f.ref).state;
+    let state = skills.activate(f.state, f.skillRef).state;
     const currentSkill21 = getUnit(state, 1).skill;
     state = setSkill(state, { ...currentSkill21, data: { count: 7 } });
     state = skills.finish(state, currentRef(state));
-    state = skills.activate(state, f.ref).state;
+    state = skills.activate(state, f.skillRef).state;
     assert.deepEqual(read(state).data, { count: 7 });
-    assert.deepEqual(read(state).active.data, { count: 0 });
-    assert.equal(read(state).active.id, 1);
+    assert.deepEqual(read(state).activation.data, { count: 0 });
+    assert.equal(read(state).activation.id, 1);
 });
 
 test("normal activation refusal allocates no identity and preserves the input state", () => {
     const f = fixture({ sp: resource() });
-    const rejected = skills.activate(f.state, f.ref);
+    const rejected = skills.activate(f.state, f.skillRef);
     assert.equal(rejected.value.type, "REJECTED");
     assert.equal(rejected.state, f.state);
     assert.equal(read(rejected.state).nextActivationId, 0);
-    assert.equal(skills.activate(f.state, f.ref, "AUTO").value.type, "REJECTED");
+    assert.equal(skills.activate(f.state, f.skillRef, "AUTO").value.type, "REJECTED");
 });
 
 test("definition admission rejects before payment and activation allocation", () => {
@@ -419,7 +419,7 @@ test("definition admission rejects before payment and activation allocation", ()
         trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}),
         accepts: () => false, onStart: () => assert.fail("rejected content must not run"),
     } });
-    const rejected = skills.activate(f.state, f.ref);
+    const rejected = skills.activate(f.state, f.skillRef);
     assert.equal(rejected.value.type, "REJECTED");
     assert.equal(rejected.state, f.state);
     assert.equal(read(rejected.state).sp.value, 2);
@@ -434,26 +434,26 @@ test("dead and leaving hosts cannot activate or recover natural SP", () => {
         { ...initial, lifecycle: "LEAVING" },
     ]) {
         const state = effectFixtureWork(unit);
-        assert.equal(skills.activate(state, ref(unit)).value.type, "REJECTED");
+        assert.equal(skills.activate(state, skillRef(unit)).value.type, "REJECTED");
         assert.equal(read(skills.advance(at(state, 300), ref(unit))).sp.value, 0);
     }
 });
 
 test("TIME ends at its deadline and INFINITE requires an explicit end", () => {
     const f = fixture();
-    let state = skills.activate(f.state, f.ref).state;
-    assert.deepEqual(read(state).active.sustain, { type: "TIME", endsAtTick: 30 });
+    let state = skills.activate(f.state, f.skillRef).state;
+    assert.deepEqual(read(state).activation.sustain, { type: "TIME", endsAtTick: 30 });
     state = skills.advance(at(state, 29), f.ref);
-    assert.ok(read(state).active);
+    assert.ok(read(state).activation);
     state = skills.advance(at(state, 30), f.ref);
-    assert.equal(read(state).active, null);
+    assert.equal(read(state).activation, null);
     const infinite = fixture({ activation: {
         trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}),
     } });
-    state = skills.activate(infinite.state, infinite.ref).state;
+    state = skills.activate(infinite.state, infinite.skillRef).state;
     state = skills.advance(at(state, 1000), infinite.ref);
-    assert.equal(read(state).active.sustain.type, "INFINITE");
-    assert.equal(read(skills.finish(state, currentRef(state))).active, null);
+    assert.equal(read(state).activation.sustain.type, "INFINITE");
+    assert.equal(read(skills.finish(state, currentRef(state))).activation, null);
 });
 
 test("a deployment passive can have a finite TIME duration without natural reactivation", () => {
@@ -461,11 +461,11 @@ test("a deployment passive can have a finite TIME duration without natural react
         trigger: "PASSIVE", sustain: { type: "TIME", durationTicks: 3 }, initialize: () => ({}),
     } });
     let state = skills.enter(f.state, f.ref);
-    assert.equal(read(state).active.sustain.endsAtTick, 3);
+    assert.equal(read(state).activation.sustain.endsAtTick, 3);
     state = skills.advance(at(state, 3), f.ref);
-    assert.equal(read(state).active, null);
+    assert.equal(read(state).activation, null);
     state = skills.advance(at(state, 30), f.ref);
-    assert.equal(read(state).active, null);
+    assert.equal(read(state).activation, null);
     assert.equal(read(state).nextActivationId, 1);
 });
 

@@ -1,5 +1,7 @@
 import { activate, advance, operate } from "../../unit/skill/operations.js";
-import { ref as activationRef } from "../../unit/skill/activation.js";
+import { ref as activationRef, type View as ActivationView } from "../../unit/skill/activation.js";
+import { ref as skillRef } from "../../unit/skill/skill.js";
+import { getCurrent } from "../../unit/skill/query.js";
 import { hasSkill } from "../../unit/capability/skill/capability.js";
 import * as units from "../../unit/query.js";
 import type { Command } from "../contract.js";
@@ -23,9 +25,16 @@ export function advanceSkills(state: BattleState, commands: readonly Command[]):
         }
 
         if (command.type === "ACTIVATE_SKILL") {
-            state = activate(state, units.ref(unit)).state;
-        } else if (unit.skill.active !== null) {
-            state = operate(state, activationRef(unit.skill.active), "STOP").state;
+            state = activate(
+                state,
+                skillRef(units.ref(unit), getCurrent(state, units.ref(unit))!.definition),
+            ).state;
+        } else if (unit.skill.activation !== null) {
+            state = operate(
+                state,
+                activationRef(units.ref(unit), unit.skill as ActivationView),
+                "STOP",
+            ).state;
         }
     }
 

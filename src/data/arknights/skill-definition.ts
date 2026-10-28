@@ -142,7 +142,7 @@ export function parseArknightsSkillLevel(
     return Object.freeze({
         definition: createSkillDefinition({
             id: skill.skillId,
-            initialize: () => ({}),
+            initialize: (battle) => ({ state: battle, value: {} }),
             sp: {
                 initial: number(sp.initSp, "skill initial SP"),
                 capacity:

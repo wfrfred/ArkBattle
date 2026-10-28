@@ -3,19 +3,35 @@ import type { Definition as UnitDefinition, Unit } from "../../unit.js";
 import * as registry from "../../../hook.js";
 import * as contribution from "../../contribution/contribution.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import type { Activation } from "../../skill/activation.js";
-import type { View as DefinitionView } from "../../skill/definition.js";
+import type { Ref } from "../../../common/ref.js";
+import type { View as SkillView } from "../../skill/skill.js";
+import type { State as ActivationState } from "../../skill/activation.js";
 import type { Events, Hook, Key } from "./hook.js";
 import type { Input as AmmoInput } from "../../skill/ammo.js";
 import type { Modifier } from "../../skill/modifier.js";
 import type { Rule } from "./rule.js";
-import * as sp from "../../skill/sp.js";
 import * as sustain from "../../skill/sustain.js";
 
-export interface State {
-    readonly data: object;
-    readonly sp: sp.State | null;
-    readonly active: Activation | null;
+export interface Definition {
+    readonly initialize: (battle: BattleState) => Result<
+        SkillView & {
+            readonly data: object;
+            readonly activation: ActivationState | null;
+            readonly definition: {
+                readonly initialize: (battle: BattleState) => Result<object>;
+                readonly activation: {
+                    readonly initialize: (
+                        battle: BattleState,
+                        source: Ref<Unit & Skill>,
+                        self: never,
+                    ) => object;
+                } | null;
+            };
+        }
+    >;
+}
+
+export interface State extends SkillView {
     readonly nextActivationId: number;
     readonly sustain: sustain.Contributions | null;
     readonly rules: readonly Rule[];
@@ -29,7 +45,7 @@ export interface State {
 }
 
 export interface Skill {
-    readonly definition: { readonly skill: DefinitionView };
+    readonly definition: { readonly skill: Definition };
     readonly skill: State;
 }
 
@@ -43,24 +59,16 @@ export function hasSkillDefinition(
     return "skill" in definition;
 }
 
-export function initialize(
-    battle: BattleState,
-    definition: DefinitionView & {
-        readonly initialize: () => object;
-        readonly activation: {
-            readonly initialize: (battle: BattleState, self: never) => object;
-        } | null;
-    },
-): Result<State> {
+export function initialize(battle: BattleState, definition: Definition): Result<State> {
+    const initialized = definition.initialize(battle);
+    const skill = initialized.value;
     const value: State = {
-        data: definition.initialize(),
-        sp: definition.sp === null ? null : sp.initialize(definition.sp, battle.tick),
-        active: null,
+        ...skill,
         nextActivationId: 0,
         sustain:
-            definition.activation === null
+            skill.definition.activation === null
                 ? null
-                : sustain.initialize(definition.activation.sustain),
+                : sustain.initialize(skill.definition.activation.sustain),
         rules: [
             {
                 id: "@skill/active-recovery",
@@ -76,11 +84,11 @@ export function initialize(
         ended: [],
     };
 
-    return { state: battle, value };
+    return { state: initialized.state, value };
 }
 
 function allowsInactiveRecovery(_battle: BattleState, self: Unit & Skill): boolean {
-    return self.skill.active === null;
+    return self.skill.activation === null;
 }
 
 export function setRule(state: State, rule: Rule): State {

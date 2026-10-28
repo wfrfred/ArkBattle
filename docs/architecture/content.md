@@ -12,7 +12,7 @@ Meta 可以选择配置或提供关卡输入。卫戍的普通／金色等政策
 
 ## 内容目录与共享规则
 
-具体内容按角色目录组织，例如 `enemies/hound/`、`enemies/crossbowman/`、`operators/melantha/`、`operators/mudrock/`。action.ts 描述该角色的具体行动、目标条件、私有状态和输出程序；unit.ts 组装属性、Capability、天赋与行动选择策略。Unit 的 action.initialize 用 createActions 接续各项具体创建程序，运行时只维护 Actions，不另建静态定义注册表。
+具体内容按角色目录组织，例如 `enemies/hound/`、`enemies/crossbowman/`、`operators/melantha/`、`operators/mudrock/`。action.ts 描述该角色的具体行动、目标条件、私有状态和输出程序；unit.ts 组装属性、Capability、天赋与行动选择策略。Unit 的 action.initialize 用 createActions 接续各项具体创建程序，运行时只维护 Actions，不另建静态定义注册表。Skill 只需一个聚合，Unit 的 skill.initialize 调用 skills.create(battle, programDefinition)；完整程序与元数据保存在当前 unit.skill.definition，Skill 回调使用显式 source 与聚合 self。
 
 弩手的 action.ts 分别定义 melee 与 ranged，两者有各自的冷却和执行状态。unit.ts 按当前阻挡关系选择近战或远程，在已有主动作执行期间不并发启动另一主动作；选择和互斥属于内容策略。场景选择敌人和配置波次，不通过一个带敌人 ID 分支的中央工厂构造所有内容。确实共用的地面属性与能力装配由普通函数提供，具体攻击程序归各自内容。
 

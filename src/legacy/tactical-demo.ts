@@ -450,8 +450,8 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
         }
 
         const { skill } = source;
-        const spCost = source.definition.skill.sp?.requirement ?? 0;
-        const active = skill.active;
+        const spCost = source.skill.definition.sp?.requirement ?? 0;
+        const active = skill.activation;
 
         return {
             sp: skill.sp?.value ?? 0,
@@ -470,7 +470,7 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
         return units
             .all(state)
             .filter(hasSkill)
-            .find((unit) => unit.definition.skill.activation?.trigger === "MANUAL");
+            .find((unit) => unit.skill.definition.activation?.trigger === "MANUAL");
     }
 
     function contentStats() {
@@ -490,7 +490,7 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
                 hp: unit.vitality.hp,
                 maxHp: resolveMaxHp(unit.vitality, unit.definition.vitality),
                 sp: unit.skill.sp?.value ?? 0,
-                maxSp: unit.definition.skill.sp?.requirement ?? 0,
+                maxSp: unit.skill.definition.sp?.requirement ?? 0,
                 ...(shield === undefined
                     ? {}
                     : { shieldLayers: shield.layers, shieldTimerTicks: shield.timer }),

@@ -1,3 +1,4 @@
+import { ref as skillRef } from "../helpers/skill.js";
 import * as conditions from "../../dist/content/terrain/condition.js";
 import * as blockingQueries from "../../dist/core/battle/blocking/index.js";
 import { advance as advanceBlocking } from "../../dist/core/battle/blocking/index.js";
@@ -50,7 +51,7 @@ test('Melantha uses main-mode level, potential, trust and talent, then a scoped 
   assert.equal(getUnit(untouched, 0), undefined);
   assert.equal(unit.effects.values().toArray().length, 0);
   state = updateUnit(state, [{ ...getUnit(state, 0), skill: { ...getUnit(state, 0).skill, sp: { ...getUnit(state, 0).skill.sp, value: 40 } } }]);
-  const activation = activateSkill({ ...state, tick: 0  }, unitRef(getUnit(state, 0)));
+  const activation = activateSkill({ ...state, tick: 0  }, skillRef(getUnit(state, 0)));
   state = activation.state;
   assert.equal(activation.value.type, 'ACTIVATED');
   assert.equal(resolveAttack(state, unitRef(getUnit(state, 0))), (738 + 25 + 65) * 1.58);
@@ -59,8 +60,8 @@ test('Melantha uses main-mode level, potential, trust and talent, then a scoped 
   const active = state;
   state = advanceSkill({ ...state, tick: 600 }, unitRef(getUnit(state, 0)));
   assert.equal(resolveAttack(state, unitRef(getUnit(state, 0))), base);
-  assert.equal(getUnit(state, 0).skill.active, null);
-  assert.equal(getUnit(active, 0).skill.active.sustain.endsAtTick, 600);
+  assert.equal(getUnit(state, 0).skill.activation, null);
+  assert.equal(getUnit(active, 0).skill.activation.sustain.endsAtTick, 600);
   assert.deepEqual(state.events.filter(e => e.type.startsWith('SKILL_')).map(e => e.type), ['SKILL_ACTIVATED', 'SKILL_FINISHED']);
 });
 
@@ -71,8 +72,8 @@ test('explicit skill finish removes only skill output, preserving Melantha talen
   let state = add(createBattleState(fixtureBattlefieldState([])), unit);
   const before = resolveAttack(state, unitRef(getUnit(state, 0)));
   state = updateUnit(state, [{ ...getUnit(state, 0), skill: { ...getUnit(state, 0).skill, sp: { ...getUnit(state, 0).skill.sp, value: 40 } } }]);
-  state = activateSkill({ ...state, tick: 0  }, unitRef(getUnit(state, 0))).state;
-  state = finishSkill({ ...state, tick: 1 }, activationRef(getUnit(state, 0).skill.active));
+  state = activateSkill({ ...state, tick: 0  }, skillRef(getUnit(state, 0))).state;
+  state = finishSkill({ ...state, tick: 1 }, activationRef(unitRef(getUnit(state, 0)), getUnit(state, 0).skill));
   assert.equal(resolveAttack(state, unitRef(getUnit(state, 0))), before);
   assert.equal(getUnit(state, 0).effects.values().toArray().length, 1);
 });
@@ -88,7 +89,7 @@ test('ordinary attacks read current talent and skill contributions instead of ca
   const attack = source.action.actions.getAction('normal-attack').definition;
   let state = add(createBattleState(fixtureBattlefieldState([receiver])), source);
   state = updateUnit(state, [{ ...getUnit(state, 0), skill: { ...getUnit(state, 0).skill, sp: { ...getUnit(state, 0).skill.sp, value: 40 } } }]);
-  state = activateSkill({ ...state, tick: 0  }, unitRef(getUnit(state, 0))).state;
+  state = activateSkill({ ...state, tick: 0  }, skillRef(getUnit(state, 0))).state;
   const started = startAction(state, actionRef(unitRef(getUnit(state, 0)), attack));
   state = advanceAction(started.state, started.value.ref);
   const amount = state.events.find(event => event.type === 'DAMAGE').amount;

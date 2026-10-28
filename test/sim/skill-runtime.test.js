@@ -1,3 +1,4 @@
+import { create as createSkill } from "../../dist/core/unit/skill/index.js";
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
 import { lifetime as skillLifetime } from "../../dist/core/unit/skill/operations.js";
 import * as unitQueries from "../../dist/core/unit/index.js";
@@ -45,7 +46,7 @@ function actor(skill, { attackTargets = 1, windupTicks = 0, activeAction } = {})
     id: 'skill-actor', vitality: { maxHp: 100000, defense: 0, resistance: 0 }, offense: { attack: 100 },
     allegiance: { side: 'ALLY' },
     layer: { type: 'GROUND' }, hitbox: { shape: hit },
-    blocker: { capacity: 0, geometry: { radius: 0.1 } }, action: { ...capability, select: (battle, self) => ({ state: battle, value: [self.skill.active !== null ? activeAction ?? 'normal' : 'normal'] }) }, skill,
+    blocker: { capacity: 0, geometry: { radius: 0.1 } }, action: { ...capability, select: (battle, self) => ({ state: battle, value: [self.skill.activation !== null ? activeAction ?? 'normal' : 'normal'] }) }, skill: { initialize: battle => createSkill(battle, skill) },
   };
 }
 function target() {
@@ -55,9 +56,9 @@ function scenario(skill, { targets = 1, attackTargets = 1, windupTicks = 0, cont
   const buff = attackBuff('skill/attack', 100);
   const fault = { enabled: false };
   skill = createSkillDefinition({ ...skill, activation: { ...skill.activation,
-    onStart: content ?? ((state, self) => {
-      const installed = effects.install(state, self.host, buff, {
-        source: self.host, scopes: [lifetimeScope(skillLifetime, activationRef(self))],
+    onStart: content ?? ((state, source, self) => {
+      const installed = effects.install(state, source, buff, {
+        source, scopes: [lifetimeScope(skillLifetime, activationRef(source, self))],
       });
       if (fault.enabled) throw new Error('skill fault');
       assert.ok(installed.value);
@@ -83,7 +84,7 @@ function scenario(skill, { targets = 1, attackTargets = 1, windupTicks = 0, cont
   return { runtime, fault };
 }
 function skill({ trigger = 'MANUAL', recovery = { type: 'TIME', intervalTicks: 30 }, initial = 2, cost = 2, durationTicks = 3 } = {}) {
-  return createSkillDefinition({ id: 'test-skill', initialize: () => ({}),
+  return createSkillDefinition({ id: 'test-skill', initialize: battle => ({ state: battle, value: ({}) }),
     sp: { initial, capacity: cost, requirement: cost, cost, recovery },
     activation: { trigger, sustain: { type: 'TIME', durationTicks }, initialize: () => ({}) },
   });
@@ -101,7 +102,7 @@ test('skill runtime: manual buff affects current attacks, locks SP and restores 
   const ended = (runtime = stepBattle(runtime, []));
   assert.equal(ended.events.find(({ type }) => type === 'DAMAGE').amount, 100);
   assert.equal(ended.events.filter(({ type }) => type === 'SKILL_FINISHED').length, 1);
-  assert.equal(source(runtime).skill.active, null);
+  assert.equal(source(runtime).skill.activation, null);
   assert.equal(source(runtime).skill.sp.value, 0);
 });
 

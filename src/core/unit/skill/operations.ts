@@ -1,4 +1,5 @@
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
+import { update as updateUnit } from "../../battle/unit.js";
 import type { Ref } from "../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../battle/state.js";
 import * as lifetimes from "../../lifetime/index.js";
@@ -10,10 +11,11 @@ import { hasVitality } from "../capability/vitality/capability.js";
 import { hasAction, setReleasedHook } from "../capability/action/capability.js";
 import type { ReleasedHook } from "../capability/action/release.js";
 import { setHook as setDamageHook, type ReceivingStartedHook } from "../../battle/damage/hook.js";
-import { hasSkill, type Skill } from "../capability/skill/capability.js";
+import { hasSkill, type Skill as SkillCapability } from "../capability/skill/capability.js";
 import {
     ref as activationRef,
     type Activation,
+    type View as ActivationView,
     type Trigger,
     type End,
     type Operation,
@@ -21,8 +23,7 @@ import {
 import type { State as SustainState } from "./sustain.js";
 import { dispatch } from "../capability/skill/hook.js";
 import * as query from "./query.js";
-import * as instance from "./instance.js";
-import type { Instance } from "./instance.js";
+import { ref as skillRef, type Skill, type View as SkillView } from "./skill.js";
 import * as sp from "./sp.js";
 import { resolveCapacity as resolveAmmoCapacity } from "./ammo.js";
 import * as modifier from "./modifier.js";
@@ -59,7 +60,7 @@ const actionRecovery: ReleasedHook = {
     },
 };
 
-export type Outcome<T extends Activation = Activation> =
+export type Outcome<T extends ActivationView = Activation> =
     | { readonly type: "ACTIVATED"; readonly ref: Ref<T> }
     | { readonly type: "REJECTED"; readonly reason: string };
 
@@ -75,22 +76,25 @@ export type Signal = {
 
 export function setData<S extends object, A extends object>(
     battle: BattleState,
-    self: Instance<S, A>,
+    reference: Ref<Skill<S, A>>,
     data: NoInfer<S>,
 ): BattleState {
-    const unit = units.get(battle, self.host);
+    const unit = units.get(battle, reference.host);
     if (unit === undefined) {
-        throw new RangeError(`unknown unit: ${self.host.id}`);
+        throw new RangeError(`unknown unit: ${reference.host.id}`);
     }
 
-    return data === unit.skill.data
-        ? battle
-        : instance.replaceHost(battle, { ...unit, skill: { ...unit.skill, data } });
+    const self = query.getSkill(battle, reference);
+    if (self === undefined) {
+        throw new TypeError("skill definition is not configured for its source");
+    }
+
+    return data === self.data ? battle : replaceSkill(battle, unit, { ...self, data });
 }
 
-export function setActivationData<A extends object>(
+export function setActivationData<S extends object, A extends object>(
     battle: BattleState,
-    reference: Ref<Activation<A>>,
+    reference: Ref<Activation<S, A>>,
     data: NoInfer<A>,
 ): BattleState {
     const unit = units.get(battle, reference.host);
@@ -98,29 +102,29 @@ export function setActivationData<A extends object>(
         throw new RangeError(`unknown unit: ${reference.host.id}`);
     }
 
-    const active = unit.skill.active;
-    if (active?.id !== reference.id) {
+    const self = query.getActivation(battle, reference);
+    if (self === undefined) {
         throw new RangeError(`unknown skill activation: ${reference.id}`);
     }
+
+    const active = self.activation;
     if (active.status === "ENDING") {
         throw new TypeError("cannot update an ending skill activation");
     }
 
     return data === active.data
         ? battle
-        : instance.replaceHost(battle, {
-              ...unit,
-              skill: { ...unit.skill, active: { ...active, data } },
-          });
+        : replaceSkill(battle, unit, { ...self, activation: { ...active, data } });
 }
 
-export function activate(
+export function activate<S extends object, A extends object>(
     battle: BattleState,
-    host: Ref<Unit & Skill>,
+    reference: Ref<Skill<S, A>>,
     trigger: Trigger = "MANUAL",
-): Result<Outcome> {
-    const unit = units.get(battle, host);
-    const reject = (reason: string): Result<Outcome> => ({
+): Result<Outcome<Activation<S, A>>> {
+    const source = reference.host;
+    const unit = units.get(battle, source);
+    const reject = (reason: string): Result<Outcome<Activation<S, A>>> => ({
         state: battle,
         value: { type: "REJECTED", reason },
     });
@@ -132,147 +136,152 @@ export function activate(
         return reject("UNAVAILABLE");
     }
 
-    const self = instance.get(battle, host)!;
+    const self = query.getSkill(battle, reference);
+    if (self === undefined) {
+        throw new TypeError("skill definition is not configured for its source");
+    }
+
     const definition = self.definition.activation;
     if (definition === null) {
         return reject("NO_ACTIVATION");
     }
-    if (self.state.active !== null) {
+    if (self.activation !== null) {
         return reject("ACTIVE");
     }
     if (definition.trigger !== trigger) {
         return reject("WRONG_TRIGGER");
     }
-    if (trigger === "PASSIVE" && self.state.nextActivationId !== 0) {
+    if (trigger === "PASSIVE" && unit.skill.nextActivationId !== 0) {
         return reject("ALREADY_ACTIVATED");
     }
     if (
-        !self.state.rules.every((rule) => rule.allowsActivation?.(battle, unit) ?? true) ||
-        !(definition.accepts?.(battle, self) ?? true)
+        !unit.skill.rules.every((rule) => rule.allowsActivation?.(battle, unit) ?? true) ||
+        !(definition.accepts?.(battle, source, self) ?? true)
     ) {
         return reject("CONDITION");
     }
 
-    const identity = self.host;
-    const requirement = sp.resolveRequirement(battle, identity) ?? 0;
-    const cost = definition.cost?.(battle, self) ?? sp.resolveCost(battle, identity) ?? 0;
+    const requirement = sp.resolveRequirement(battle, source) ?? 0;
+    const cost = definition.cost?.(battle, source, self) ?? sp.resolveCost(battle, source) ?? 0;
     assertNonnegativeSafeInteger(cost, "skill activation SP cost");
-    const previousSp = self.state.sp;
+    const previousSp = self.sp;
     if ((previousSp?.value ?? 0) < requirement || (previousSp?.value ?? 0) < cost) {
         return reject("INSUFFICIENT_SP");
     }
 
     const sustain = initialSustain(battle, self, unit);
-    const active = {
-        host: identity,
-        id: self.state.nextActivationId,
-        startedAtTick: battle.tick,
-        status: "ACTIVE" as const,
-        sustain,
-        data: definition.initialize(battle, self),
-    };
-    const nextActivationId = active.id + 1;
-
-    battle = instance.replaceHost(battle, {
-        ...unit,
-        skill: {
-            ...unit.skill,
-            sp: previousSp === null ? null : { ...previousSp, value: previousSp.value - cost },
-            nextActivationId,
-            active,
+    const active: Activation<S, A> = {
+        definition: self.definition,
+        data: self.data,
+        sp: previousSp === null ? null : { ...previousSp, value: previousSp.value - cost },
+        activation: {
+            id: unit.skill.nextActivationId,
+            startedAtTick: battle.tick,
+            status: "ACTIVE",
+            sustain,
+            data: definition.initialize(battle, source, self),
         },
-    });
-    const reference = activationRef(active);
+    };
+    const nextActivationId = active.activation.id + 1;
+
+    battle = updateUnit(battle, [
+        {
+            ...unit,
+            skill: {
+                ...unit.skill,
+                sp: active.sp,
+                nextActivationId,
+                activation: active.activation,
+            },
+        },
+    ]);
+    const activatedRef = activationRef(source, active);
     battle = appendEvents(battle, [
         {
             type: "SKILL_ACTIVATED",
-            unitId: self.host.id,
+            unitId: source.id,
             skillId: self.definition.id,
-            activationId: active.id,
+            activationId: active.activation.id,
             tick: battle.tick,
             endsAtTick: sustain.type === "TIME" ? sustain.endsAtTick : null,
         },
     ]);
-    battle = dispatch(battle, identity, "activated", active);
+    battle = dispatch(battle, source, "activated", active);
 
     if (previousSp !== null) {
-        battle = dispatch(battle, identity, "spPaid", {
+        battle = dispatch(battle, source, "spPaid", {
             amount: cost,
             previous: previousSp.value,
             current: previousSp.value - cost,
         });
     }
 
-    const current = instance.get(battle, self.host, self.definition);
-    const currentUnit = units.get(battle, identity);
+    const current = query.getActivation(battle, activatedRef);
+    const currentUnit = units.get(battle, source);
     if (
         currentUnit?.lifecycle === "PRESENT" &&
         isSpatiallyPresent(currentUnit) &&
         (!hasVitality(currentUnit) || currentUnit.vitality.hp > 0) &&
-        current?.state.active?.id === active.id &&
-        current.state.active.status === "ACTIVE" &&
+        current?.activation.status === "ACTIVE" &&
         definition.onStart !== undefined
     ) {
-        battle = definition.onStart(battle, current.state.active);
+        battle = definition.onStart(battle, source, current);
     }
 
-    const after = query.get(battle, reference);
+    const after = query.getActivation(battle, activatedRef);
     if (
-        after?.status === "ACTIVE" &&
-        after.sustain.type === "TIME" &&
-        after.sustain.endsAtTick <= battle.tick
+        after?.activation.status === "ACTIVE" &&
+        after.activation.sustain.type === "TIME" &&
+        after.activation.sustain.endsAtTick <= battle.tick
     ) {
-        battle = finish(battle, reference);
+        battle = finish(battle, activatedRef);
     }
 
-    return { state: battle, value: { type: "ACTIVATED", ref: reference } };
+    return { state: battle, value: { type: "ACTIVATED", ref: activatedRef } };
 }
 
-export const lifetime = lifetimes.create<Activation, Activation, End>({
+export const lifetime = lifetimes.create<ActivationView, Activation, End>({
     kind: "SKILL",
     address: (reference) => [reference.host.id, reference.id],
-    get: query.get,
-    isEnding: (self) => self.status === "ENDING",
-    begin: (self) => ({ ...self, status: "ENDING" }),
+    get: (battle, reference) => query.getActivation(battle, reference) as Activation | undefined,
+    isEnding: (self) => self.activation.status === "ENDING",
+    begin: (self) => ({ ...self, activation: { ...self.activation, status: "ENDING" } }),
     replace(battle, reference, next) {
         const host = units.get(battle, reference.host)!;
 
-        return instance.replaceHost(battle, { ...host, skill: { ...host.skill, active: next } });
+        return replaceSkill(battle, host, next);
     },
     finalize(battle, reference, ending) {
-        const self = instance.get(battle, reference.host)!;
-        const active = self.state.active!;
-        battle = self.definition.activation!.onEnd?.(battle, active, ending) ?? battle;
+        const self = query.getActivation(battle, reference) as Activation;
+        battle =
+            self.definition.activation!.onEnd?.(battle, reference.host, self, ending) ?? battle;
 
         const host = units.get(battle, reference.host)!;
-        battle = instance.replaceHost(battle, {
-            ...host,
-            skill: { ...host.skill, active: null },
-        });
+        battle = updateUnit(battle, [{ ...host, skill: { ...host.skill, activation: null } }]);
         battle = appendEvents(battle, [
             {
                 type: "SKILL_FINISHED",
                 unitId: reference.host.id,
                 skillId: self.definition.id,
-                activationId: active.id,
+                activationId: self.activation.id,
                 tick: battle.tick,
                 end: ending,
             },
         ]);
 
-        return dispatch(battle, active.host, "ended", { activation: active, end: ending });
+        return dispatch(battle, reference.host, "ended", { activation: self, end: ending });
     },
     reason: (ending) => (ending.type === "FINISHED" ? "SKILL_FINISHED" : ending.reason),
     fromDependency: (reason) => ({ type: "CANCELLED", reason }),
 });
 
-export function finish(battle: BattleState, reference: Ref<Activation>): BattleState {
+export function finish(battle: BattleState, reference: Ref<ActivationView>): BattleState {
     return lifetime.end(battle, reference, { type: "FINISHED" });
 }
 
 export function cancel(
     battle: BattleState,
-    reference: Ref<Activation>,
+    reference: Ref<ActivationView>,
     reason = "CANCELLED",
 ): BattleState {
     return lifetime.end(battle, reference, { type: "CANCELLED", reason });
@@ -280,7 +289,7 @@ export function cancel(
 
 export function operate(
     battle: BattleState,
-    reference: Ref<Activation>,
+    reference: Ref<ActivationView>,
     operation: Operation,
 ): Result<{ readonly type: "APPLIED" } | { readonly type: "REJECTED"; readonly reason: string }> {
     const unit = units.get(battle, reference.host);
@@ -292,19 +301,22 @@ export function operate(
         return reject("UNAVAILABLE");
     }
 
-    const self = instance.get(battle, reference.host)!;
-    const active = self.state.active;
+    const self = query.getActivation(battle, reference) as Activation | undefined;
+    if (self?.activation.status !== "ACTIVE") {
+        return reject("UNAVAILABLE");
+    }
+
     const definition = self.definition.activation;
-    if (active?.id !== reference.id || active.status !== "ACTIVE" || definition === null) {
+    if (definition === null) {
         return reject("UNAVAILABLE");
     }
     if (
-        !self.state.rules.every((rule) => rule.allowsOperation?.(battle, unit, operation) ?? true)
+        !unit.skill.rules.every((rule) => rule.allowsOperation?.(battle, unit, operation) ?? true)
     ) {
         return reject("CONDITION");
     }
     if (definition.onOperation !== undefined) {
-        battle = definition.onOperation(battle, active, operation);
+        battle = definition.onOperation(battle, reference.host, self, operation);
     } else if (operation === "STOP") {
         battle = finish(battle, reference);
     } else {
@@ -314,48 +326,53 @@ export function operate(
     return { state: battle, value: { type: "APPLIED" as const } };
 }
 
-export function advance(battle: BattleState, host: Ref<Unit & Skill>): BattleState {
+export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>): BattleState {
     battle = sp.advance(battle, host);
     let unit = units.get(battle, host);
-    let self = instance.get(battle, host);
+    let self = query.getCurrent(battle, host);
     if (unit?.lifecycle === "PRESENT" && self?.definition.onTick !== undefined) {
-        battle = self.definition.onTick(battle, self);
+        battle = self.definition.onTick(battle, host, self);
     }
 
     unit = units.get(battle, host);
-    self = instance.get(battle, host);
-    const active = self?.state.active;
-    if (unit?.lifecycle === "PRESENT" && active?.status === "ACTIVE") {
-        if (active.sustain.type === "TIME" && active.sustain.endsAtTick <= battle.tick) {
-            battle = finish(battle, activationRef(active));
+    self = query.getCurrent(battle, host);
+
+    if (unit?.lifecycle === "PRESENT" && self?.activation?.status === "ACTIVE") {
+        const active = self as SkillView as Activation;
+        if (
+            active.activation.sustain.type === "TIME" &&
+            active.activation.sustain.endsAtTick <= battle.tick
+        ) {
+            battle = finish(battle, activationRef(host, active));
         } else {
-            battle = self!.definition.activation?.onTick?.(battle, active) ?? battle;
+            battle = active.definition.activation?.onTick?.(battle, host, active) ?? battle;
         }
     }
 
     const current = units.get(battle, host);
-    const trigger = current?.definition.skill.activation?.trigger;
+    const trigger = current?.skill.definition.activation?.trigger;
     if (
         current?.lifecycle === "PRESENT" &&
-        current.skill.active === null &&
+        current.skill.activation === null &&
         (trigger === "AUTO" || trigger === "PASSIVE")
     ) {
-        battle = activate(battle, host, trigger).state;
+        const skill = query.getCurrent(battle, host)!;
+        battle = activate(battle, skillRef(host, skill.definition), trigger).state;
     }
 
     return battle;
 }
 
-export function enter(battle: BattleState, host: Ref<Unit & Skill>): BattleState {
+export function enter(battle: BattleState, host: Ref<Unit & SkillCapability>): BattleState {
     const unit = units.get(battle, host);
     if (unit?.lifecycle === "PRESENT") {
-        const self = instance.get(battle, host)!;
+        const self = query.getCurrent(battle, host)!;
         if (hasVitality(unit) && self.definition.sp?.recovery.type === "HIT") {
             const updated = { ...unit, vitality: setDamageHook(unit.vitality, hitRecovery) };
-            battle = instance.replaceHost(battle, updated);
+            battle = updateUnit(battle, [updated]);
         }
 
-        const current = units.get(battle, self.host);
+        const current = units.get(battle, host);
         if (
             current !== undefined &&
             hasAction(current) &&
@@ -365,26 +382,32 @@ export function enter(battle: BattleState, host: Ref<Unit & Skill>): BattleState
                 ...current,
                 action: setReleasedHook(current.action, actionRecovery),
             };
-            battle = instance.replaceHost(battle, updated);
+            battle = updateUnit(battle, [updated]);
         }
 
-        const entered = instance.get(battle, self.host, self.definition);
+        const entered = query.getCurrent(battle, host);
         if (entered !== undefined && self.definition.onEnter !== undefined) {
-            battle = self.definition.onEnter(battle, entered);
+            battle = self.definition.onEnter(battle, host, entered);
         }
     }
 
     const current = units.get(battle, host);
 
-    return current?.lifecycle === "PRESENT" &&
-        current.definition.skill.activation?.trigger === "PASSIVE"
-        ? activate(battle, host, "PASSIVE").state
-        : battle;
+    if (
+        current?.lifecycle === "PRESENT" &&
+        current.skill.definition.activation?.trigger === "PASSIVE"
+    ) {
+        const skill = query.getCurrent(battle, host)!;
+
+        return activate(battle, skillRef(host, skill.definition), "PASSIVE").state;
+    }
+
+    return battle;
 }
 
 export function extendTime(
     battle: BattleState,
-    reference: Ref<Activation>,
+    reference: Ref<ActivationView>,
     ticks: number,
 ): BattleState {
     if (!Number.isSafeInteger(ticks)) {
@@ -396,7 +419,7 @@ export function extendTime(
         return battle;
     }
 
-    const active = unit.skill.active;
+    const active = unit.skill.activation;
     if (
         active?.id !== reference.id ||
         active.status !== "ACTIVE" ||
@@ -407,18 +430,24 @@ export function extendTime(
 
     const endsAtTick = Math.max(battle.tick, active.sustain.endsAtTick + ticks);
 
-    return instance.replaceHost(battle, {
-        ...unit,
-        skill: {
-            ...unit.skill,
-            active: { ...active, sustain: { type: "TIME", endsAtTick } },
+    return updateUnit(battle, [
+        {
+            ...unit,
+            skill: {
+                ...unit.skill,
+                activation: { ...active, sustain: { type: "TIME", endsAtTick } },
+            },
         },
-    });
+    ]);
 }
 
-function initialSustain(battle: BattleState, self: Instance, unit: Unit & Skill): SustainState {
+function initialSustain(
+    battle: BattleState,
+    self: SkillView,
+    unit: Unit & SkillCapability,
+): SustainState {
     const definition = self.definition.activation!.sustain;
-    const contributions = self.state.sustain;
+    const contributions = unit.skill.sustain;
 
     if (definition.type === "INFINITE") {
         return { type: "INFINITE" };
@@ -446,4 +475,23 @@ function initialSustain(battle: BattleState, self: Instance, unit: Unit & Skill)
     const endsAtTick = battle.tick + budget;
 
     return { type: "TIME", endsAtTick };
+}
+
+function replaceSkill<S extends object, A extends object>(
+    battle: BattleState,
+    unit: Unit & SkillCapability,
+    self: Skill<S, A> | Activation<S, A>,
+): BattleState {
+    return updateUnit(battle, [
+        {
+            ...unit,
+            skill: {
+                ...unit.skill,
+                definition: self.definition,
+                data: self.data,
+                sp: self.sp,
+                activation: self.activation,
+            },
+        },
+    ]);
 }

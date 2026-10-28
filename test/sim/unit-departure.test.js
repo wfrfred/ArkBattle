@@ -1,3 +1,4 @@
+import { ref as skillRef } from "../helpers/skill.js";
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
 import { lifetime as actionLifetime } from "../../dist/core/unit/action/operations.js";
 import { lifetime as skillLifetime } from "../../dist/core/unit/skill/operations.js";
@@ -38,7 +39,7 @@ import {
 function fixture() {
     const skill = createSkillDefinition({
         id: "departing-counter-skill",
-        initialize: () => ({}),
+        initialize: battle => ({ state: battle, value: ({}) }),
         sp: null,
         activation: {
             trigger: "MANUAL",
@@ -85,7 +86,7 @@ function fixture() {
         }),
     );
     let work = createBattleState(fixtureBattlefield(units), undefined);
-    for (const id of [0, 1]) work = activate(work, unitRef(getUnit(work, id))).state;
+    for (const id of [0, 1]) work = activate(work, skillRef(getUnit(work, id))).state;
     work = effects.install(work, unitRef(getUnit(work, 2)), counter).state;
     return { battlefield: work.battlefield, execution: work.execution };
 }
@@ -224,7 +225,7 @@ test("effect terminal callback requests host retirement and outer settlement fin
     const trace = [];
     const skill = createSkillDefinition({
         id: "nested-skill",
-        initialize: () => ({}),
+        initialize: battle => ({ state: battle, value: ({}) }),
         sp: null,
         activation: {
             trigger: "MANUAL",
@@ -255,7 +256,7 @@ test("effect terminal callback requests host retirement and outer settlement fin
         }),
     ];
     let battle = createBattleState(fixtureBattlefield(units));
-    battle = activate(battle, unitRef(getUnit(battle, 0))).state;
+    battle = activate(battle, skillRef(getUnit(battle, 0))).state;
     const started = actions.start(battle, actions.ref(unitRef(getUnit(battle, 0)), action));
     battle = started.state;
     assert.equal(started.value.type, "STARTED");
@@ -284,7 +285,7 @@ test("effect terminal callback requests host retirement and outer settlement fin
         scopes: [lifetimeScope(actionLifetime, started.value.ref)],
     }).state;
     battle = effects.install(battle, unitRef(getUnit(battle, 1)), skillDependent, {
-        scopes: [lifetimeScope(skillLifetime, activationRef(getUnit(battle, 0).skill.active))],
+        scopes: [lifetimeScope(skillLifetime, activationRef(unitRef(getUnit(battle, 0)), getUnit(battle, 0).skill))],
     }).state;
     const content = definition(
         "nested-death",

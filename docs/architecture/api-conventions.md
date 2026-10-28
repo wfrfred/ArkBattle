@@ -26,7 +26,7 @@ field.map 持有当前地块。battlefield/tile.update 是运行态地块变更�
 | 战斗查询 | `f(battle, ref / ...) => 查询结果` | 读取当前战斗事实，不推进状态。 |
 | 领域操作 | `f(battle, ref, ...) => BattleState / Result<T>` | 从最新 battle 定位对象，检查本领域资格并接续结算；嵌套终止的返回保证以 Lifetime 请求／Prepare 为界。 |
 | 时间推进 | `f(battle, ref) => BattleState` | 推进战斗中的运行实例，由 Runtime 调度。 |
-| Definition 回调 | `f(battle, self, ...) => BattleState / Result<T>` | 派发方已确定实例与 Definition 的类型配对，执行内容程序；Action 回调显式接收 `(battle, source, self, ...)`。 |
+| Definition 回调 | `f(battle, self, ...) => BattleState / Result<T>` | 派发方已确定实例与 Definition 的类型配对，执行内容程序；Action 与 Skill 回调显式接收 `(battle, source, self, ...)`。 |
 
 分类按职责划分，不按函数名、返回值或是否带一个对象参数机械判断。`currentTarget(progress)` 这类局部查询直接读取输入值，不要求传入 battle 或 ref。完整伤害结算可以返回报告；`card.advance(card, tick)` 仍是局部值转换，不是调度入口。
 
@@ -69,7 +69,7 @@ Action 的准备程序为 prepare，推进与结束回调为 onTick／onEnd；Pr
 | 战斗运行 | [battle/index.ts](../../src/core/battle/index.ts) | 仅 initialize／step／simulateBattle、战斗契约类型、State／OperationResult 与 appendEvents；不聚合 Unit、Projectile、Creation 等独立操作。 |
 | Unit | [unit/index.ts](../../src/core/unit/index.ts) | 模型、Hook 类型、initialize 与 ref／all／get；完整登记、更新、离场、推进与 Unit lifetime 仍归 battle/unit.ts，Field 的纯存储操作仍归 battlefield/unit.ts。 |
 | Action | [unit/action/index.ts](../../src/core/unit/action/index.ts) | 创建、查询、字段更新、lifetime、业务操作与调度协作；advance 由 operations.ts 实现，经 index 导出且仅由调度器调用，end 是文件私有辅助步骤。Actions、execution.State 与 Cooldown 按职责深导，不扩大内容写回或推进权限。 |
-| Skill | [unit/skill/index.ts](../../src/core/unit/skill/index.ts) | Definition／createDefinition、Activation、查询、字段级 setData／setActivationData、SP／Ammo 与激活业务、lifetime；不转发 Capability guards 或局部 Rule／Hook／持续预算贡献 setter。 |
+| Skill | [unit/skill/index.ts](../../src/core/unit/skill/index.ts) | create／createDefinition、Skill／Activation、两种 Ref 与 getSkill／getActivation、字段写回、资源与激活业务、lifetime；不转发 Capability guards 或局部 Rule／Hook／持续预算贡献 setter。 |
 | Effect | [unit/effect/index.ts](../../src/core/unit/effect/index.ts) | 类型、ref、get、lifetime 与生命周期操作；get 归 query.ts，Effects 容器保持内部职责。 |
 | Lifetime | [lifetime/index.ts](../../src/core/lifetime/index.ts) | create／scope／getRef／available 和公开类型；request／drain、Pending、异构配对擦除与索引修改保持内部职责。 |
 | Projectile | [projectile/index.ts](../../src/core/projectile/index.ts) | 类型与 ref／all／get；完整 create／update／stop／advance 及 lifetime 保留 battle/projectile.ts，容器仍由 Battlefield 持有。 |
@@ -78,7 +78,7 @@ Action 的准备程序为 prepare，推进与结束回调为 onTick／onEnd；Pr
 | Targeting | [battle/targeting/index.ts](../../src/core/battle/targeting/index.ts) | Filter／Comparator／Selector、hasCandidate 与 select；只读 hasCandidate 归 query.ts，可能消费 RNG 的选择保留 select.ts。 |
 | Deployment | [battle/deployment/index.ts](../../src/core/battle/deployment/index.ts) | 模型、查询、资源维护、部署命令与生命周期协作；resources.ts 的完整 Card 写回 updateCard 不公开，lifecycle.ts 不依赖完整 Unit 操作。 |
 | Schedule | [battle/schedule/index.ts](../../src/core/battle/schedule/index.ts) | 配置、执行状态、创建、推进、登记／结算与统计查询；isSpawnScheduleCompleted／getSpawnedCount／getSpawnScheduleCounts／getUnspawnedCount 归 query.ts，队列算法与辅助计算保持内部依赖。 |
-| 多文件 Capability | unit/capability/ 下 action、blocking、deployable、elemental、locomotion、occupancy、offense、presence、route、skill、vitality 各自的 index.ts | 十一个入口按能力职责选择导出；Skill 入口只提供 Skill／State、守卫、初始化及局部 Rule／Hook／Ammo／时长贡献登记，不再导出领域 Definition、资源结算或 Activation 业务。完整实例写回、阶段派发和具体运动算法不因共享导出成为内容 API。 |
+| 多文件 Capability | unit/capability/ 下 action、blocking、deployable、elemental、locomotion、occupancy、offense、presence、route、skill、vitality 各自的 index.ts | 十一个入口按能力职责选择导出；Skill 入口只提供工厂 Definition、Skill Capability／State、守卫、初始化及局部 Rule／Hook／Ammo／时长贡献登记，不再导出领域 Definition、资源结算或 Activation 业务。完整实例写回、阶段派发和具体运动算法不因共享导出成为内容 API。 |
 | 小 Capability 与 Catalog | allegiance／hitbox／layer／targetable 的 capability.ts；unit/capability/catalog.ts | 单文件能力保留自然入口；Catalog 只维护初始化字典与派生类型，不增加模板 index 或另一套能力映射。 |
 | Contribution、Hook 与 Tick | unit/contribution/contribution.ts、attribute.ts；core/hook.ts、tick.ts | 各自保留明确的数据／计算／派发入口，不设全 Core 聚合层。 |
 | Common 与 Geometry | common/、geometry/ 下现有功能模块 | Ref、Query、集合、数值、坐标与几何按用途直接导入；私有 Store 不经公共入口公开。 |
@@ -209,9 +209,9 @@ Offense、Action、Locomotion、Vitality 的动态 Input 均为 `(battle, self: 
 
 Tactical 的导出函数、Definition 回调与容器公共方法遵循五类约定。Hook 的固定事件 Context、MovementContext 业务输入、创建时的宿主身份、容器内部数字键、私有状态结果值、纯 Geometry／Navigation／Card／Cooldown 计算均有明确职责，不能机械升级为 Battle 操作。battle/deployment/query.ts 的 evaluateDeployment(field, request) 是 Deployment 的纯资格计算，读取 Battlefield 提供的当前地块与占格事实；归属按业务职责划分，参数按实际数据需求收窄，不因位于 Battle 目录就要求完整 BattleState。
 
-Skill 的 Definition、Activation、资源与完整业务归 unit/skill；capability/skill 保留能力状态、守卫、初始化与局部规则／Hook／持续预算贡献登记，Hook 只使用 setHook／removeHook。内部 instance.get 无 Definition 时返回默认 object／object 的配对 Instance，传入 Definition 时按对象身份恢复精确类型；业务直接线性执行，不使用私有类型泛型 reader。完整实例写回保持 Core 内部协议。
+Skill 的程序、单槽 Skill<S, A> 聚合、非空 Activation<S, A> 视图、资源与完整业务归 unit/skill；capability/skill 只配置 initialize 工厂，State 在 SkillView 上补规则、Hook、贡献和轮次 ID。完整程序与元数据从 unit.skill.definition 读取，Unit Definition.skill 不保存程序。内部 getCurrent 返回默认 object／object 的完整聚合，getSkill／getActivation 通过精确 Ref 恢复类型，不提供 Instance 包装或泛型 reader。
 
-Skill 的 setData(battle, self: Instance<S, A>, data: NoInfer<S>) 只用 self 保留类型配对，从最新宿主设置持久 data；不提交旧 self.state，宿主缺失抛出 RangeError，允许 LEAVING／结束程序更新。setActivationData(battle, ref: Ref<Activation<A>>, data: NoInfer<A>) 只设置当前本轮 data，缺失宿主或过期身份抛出 RangeError，ENDING 抛出 TypeError。两者 data 同引用时返回原 battle，只接受结果值，不保留旧局部 setter 或回调协议；不因写回私有数据扩大生命周期权限。
+Skill 的 ref(source, definition) 返回持久 Ref<Skill<S, A>>，用于 getSkill／activate／setData；activationRef(source, self) 返回 host＋本轮 ID 的 Ref<Activation<S, A>>，用于查询与轮次操作。两者读取同一个 unit.skill，聚合不重复保存 host。setData(battle, skillRef, data: NoInfer<S>) 只更新持久 data，允许 LEAVING／结束程序更新；setActivationData(battle, roundRef, data: NoInfer<A>) 只更新 activation.data，ENDING 抛出 TypeError。缺失宿主或过期轮次抛出 RangeError，持久 Definition 不匹配抛出 TypeError。两者从最新 battle 保留其他字段，同引用时返回原 battle，只接受结果值，不提交旧聚合或扩大生命周期权限。
 
 SP setContribution／removeContribution 仍是 unit/skill/sp.ts 的局部资源操作；静态 Skill Modifier.priority 在对应 SP／时长贡献登记入口校验，动态 apply 输出仍在每次求值时校验。非 TIME 的 sp.advance 直接 no-op，不更新 lastTick。Elemental 的完整宿主写回是 operations.ts 中的私有 replaceHost；query.ts 只保留查询。两者均不向内容推广完整实例写回。Action 按 Definition 聚合持久 state、Cooldown 和当前 Execution；内容分别用 setState、setCooldown、setExecutionState 设置对应字段，不提交完整旧条目。Unit 的 leave Hook 以 Departure 为固定终止历史载荷，保留开始离场时的 Unit 与 reason。
 

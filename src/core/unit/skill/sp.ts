@@ -14,7 +14,7 @@ import * as attribute from "../contribution/attribute.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import type { Skill } from "../capability/skill/capability.js";
 import * as modifier from "./modifier.js";
-import { replaceHost } from "./instance.js";
+import { update as updateUnit } from "../../battle/unit.js";
 import { dispatch } from "../capability/skill/hook.js";
 
 export type Source = "TIME" | "ACTION" | "HIT" | "EXTERNAL";
@@ -212,7 +212,7 @@ export function recover(
     }
 
     const state = self.skill.sp;
-    const definition = self.definition.skill.sp;
+    const definition = self.skill.definition.sp;
     if (state === null || definition === null) {
         return rejected(battle, "NO_SP");
     }
@@ -243,10 +243,12 @@ export function recover(
         previous: state.value,
         current: state.value + gained,
     };
-    battle = replaceHost(battle, {
-        ...self,
-        skill: { ...self.skill, sp: { ...state, value: event.current } },
-    });
+    battle = updateUnit(battle, [
+        {
+            ...self,
+            skill: { ...self.skill, sp: { ...state, value: event.current } },
+        },
+    ]);
 
     return applied(dispatch(battle, units.ref(self), "spRecovered", event), gained);
 }
@@ -266,7 +268,7 @@ export function pay(battle: BattleState, ref: Ref<Unit & Skill>, amount?: number
     }
 
     const state = self.skill.sp;
-    if (state === null || self.definition.skill.sp === null) {
+    if (state === null || self.skill.definition.sp === null) {
         return rejected(battle, "NO_SP");
     }
 
@@ -280,10 +282,12 @@ export function pay(battle: BattleState, ref: Ref<Unit & Skill>, amount?: number
         previous: state.value,
         current: state.value - cost,
     };
-    battle = replaceHost(battle, {
-        ...self,
-        skill: { ...self.skill, sp: { ...state, value: event.current } },
-    });
+    battle = updateUnit(battle, [
+        {
+            ...self,
+            skill: { ...self.skill, sp: { ...state, value: event.current } },
+        },
+    ]);
 
     return applied(dispatch(battle, units.ref(self), "spPaid", event), cost);
 }
@@ -306,7 +310,7 @@ export function modify(
     }
 
     const state = self.skill.sp;
-    if (state === null || self.definition.skill.sp === null) {
+    if (state === null || self.skill.definition.sp === null) {
         return rejected(battle, "NO_SP");
     }
     if (delta > 0 && !forced && !allowsRecovery(battle, self, "EXTERNAL")) {
@@ -320,10 +324,12 @@ export function modify(
     }
 
     const event: Modified = { delta, amount, forced, previous: state.value, current };
-    battle = replaceHost(battle, {
-        ...self,
-        skill: { ...self.skill, sp: { ...state, value: current } },
-    });
+    battle = updateUnit(battle, [
+        {
+            ...self,
+            skill: { ...self.skill, sp: { ...state, value: current } },
+        },
+    ]);
 
     return applied(dispatch(battle, units.ref(self), "spModified", event), amount);
 }
@@ -338,7 +344,7 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
     }
 
     const state = self.skill.sp;
-    const definition = self.definition.skill.sp;
+    const definition = self.skill.definition.sp;
     if (definition?.recovery.type !== "TIME") {
         return battle;
     }
@@ -386,13 +392,13 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
     }
 
     const next = { ...state, recovery, lastTick: battle.tick };
-    battle = replaceHost(battle, { ...self, skill: { ...self.skill, sp: next } });
+    battle = updateUnit(battle, [{ ...self, skill: { ...self.skill, sp: next } }]);
 
     return pulses === 0 ? battle : recover(battle, ref, "TIME", pulses).state;
 }
 
 function resolve(battle: BattleState, self: Unit & Skill, key: Parameter): number | undefined {
-    const definition = self.definition.skill.sp;
+    const definition = self.skill.definition.sp;
     const state = self.skill.sp;
     if (definition === null || state === null) {
         return undefined;

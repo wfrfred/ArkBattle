@@ -145,7 +145,7 @@ test('an attack skill projects one skill attack without a toggle that interrupts
   ]), [['atk', 0, 2, 'none']]);
 
   const active = { ...mudrock, skill: { ...mudrock.skill,
-    active: { host: { id: 0 }, id: 0, startedAtTick: 0, status: "ACTIVE", sustain: { type: "INFINITE" }, data: {} }, nextActivationId: 1,
+    activation: { id: 0, startedAtTick: 0, status: "ACTIVE", sustain: { type: "INFINITE" }, data: {} }, nextActivationId: 1,
   } };
   const presented = view.units(stateFixture([active], { tick: 2 }))[0];
   assert.equal(presented.info.skillActive, false);
@@ -160,7 +160,7 @@ test('a buff skill keeps its status but only actual actions project attack event
   });
   const melantha = unit(1, 'char_208_melan', 'ALLY', 'skcom_atk_up[1]');
   const active = { ...melantha, skill: { ...melantha.skill,
-    active: { host: { id: 1 }, id: 0, startedAtTick: 0, status: "ACTIVE", sustain: { type: "TIME", endsAtTick: 30 }, data: {} }, nextActivationId: 1,
+    activation: { id: 0, startedAtTick: 0, status: "ACTIVE", sustain: { type: "TIME", endsAtTick: 30 }, data: {} }, nextActivationId: 1,
   } };
   const after = stateFixture([active]);
   assert.deepEqual(view.advance(after, [

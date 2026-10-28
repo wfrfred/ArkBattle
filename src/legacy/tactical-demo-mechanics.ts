@@ -1,4 +1,6 @@
 import { create as createAction, createActions } from "../core/unit/action/index.js";
+import { create as createSkill } from "../core/unit/skill/index.js";
+import type { Definitions as CapabilityDefinitions } from "../core/unit/capability/catalog.js";
 import { create as createAttack } from "../content/actions/attack.js";
 import type { Input } from "../core/battle/index.js";
 
@@ -46,11 +48,15 @@ export function createTacticalMechanicsDemo(
     const action = sourceDefinition.attack.attack;
     const group = action.targetGroups[0];
     let definition: typeof sourceDefinition & {
-        readonly skill?: ReturnType<typeof compileArknightsAttackBuffSkill>;
+        readonly skill?: CapabilityDefinitions["skill"];
     };
 
     if (scenario === "SKILL") {
-        definition = { ...sourceDefinition, skill: compileArknightsAttackBuffSkill(rawSkill, 4) };
+        const skill = compileArknightsAttackBuffSkill(rawSkill, 4);
+        definition = {
+            ...sourceDefinition,
+            skill: { initialize: (battle) => createSkill(battle, skill) },
+        };
     } else {
         const attack = createAttack({
             ...action,

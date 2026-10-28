@@ -1,3 +1,5 @@
+import { create as createSkill } from "../../dist/core/unit/skill/index.js";
+import { ref as skillRef } from "../helpers/skill.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { damage as damageTargeting, healing as healingTargeting } from "../helpers/targeting.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
@@ -41,19 +43,19 @@ test("native Attack Enhancement Alpha level 1 charges, buffs attack for 20 secon
     definition: { hooks: [], id: "real-skill-fixture", skill: compiled, offense: { attack: 100 } },
   });
   let work = effectFixtureWork(unit);
-  assert.equal(skills.activate(work, unitRef(getUnit(work, 1))).value.reason, "INSUFFICIENT_SP");
+  assert.equal(skills.activate(work, skillRef(getUnit(work, 1))).value.reason, "INSUFFICIENT_SP");
   work = skills.advance({ ...work, tick: 1500 }, unitRef(getUnit(work, 1)));
   assert.equal(getUnit(work, 1).skill.sp.value, 50);
-  const active = skills.activate(work, unitRef(getUnit(work, 1)));
+  const active = skills.activate(work, skillRef(getUnit(work, 1)));
   work = active.state;
   assert.equal(active.value.type, "ACTIVATED");
-  assert.equal(getUnit(work, 1).skill.active.sustain.endsAtTick, 2100);
+  assert.equal(getUnit(work, 1).skill.activation.sustain.endsAtTick, 2100);
   assert.equal(Math.round(resolveAttack(work, unitRef(getUnit(work, 1)))), 110);
   work = skills.advance({ ...work, tick: 2099 }, unitRef(getUnit(work, 1)));
   assert.equal(getUnit(work, 1).skill.sp.value, 0);
   work = skills.advance({ ...work, tick: 2100 }, unitRef(getUnit(work, 1)));
   assert.equal(resolveAttack(work, unitRef(getUnit(work, 1))), 100);
-  assert.equal(getUnit(work, 1).skill.active, null);
+  assert.equal(getUnit(work, 1).skill.activation, null);
   work = skills.advance({ ...work, tick: 2130 }, unitRef(getUnit(work, 1)));
   assert.equal(getUnit(work, 1).skill.sp.value, 1);
 });
@@ -64,7 +66,7 @@ test("native attack buff data builds a shared Definition and changes attacks thr
   const geometry = [shape];
   const actor = { hooks: [],
     id: "native-skill-actor", vitality: { maxHp: 1000, defense: 0, resistance: 0 }, offense: { attack: 100 },
-    allegiance: { side: "ALLY" }, layer: { type: "GROUND" }, skill: compiled,
+    allegiance: { side: "ALLY" }, layer: { type: "GROUND" }, skill: { initialize: battle => createSkill(battle, compiled) },
     action: actionCapability(createAttack({ id: "normal",
       triggerBindingId: "target", intervalTicks: 30, recoveryTicks: 0, followUps: [],
       targetGroups: [{ id: "target", targeting: damageTargeting({
@@ -93,12 +95,12 @@ test("native attack buff data builds a shared Definition and changes attacks thr
   for (let tick = 0; tick < 1500; tick++) { runtime = stepBattle(runtime, []); }
   assert.equal(current().skill.sp.value, 49);
   const activated = (runtime = stepBattle(runtime, [{ type: "ACTIVATE_SKILL", unitId: 0 }]));
-  assert.equal(current().skill.active.sustain.endsAtTick, 2100);
+  assert.equal(current().skill.activation.sustain.endsAtTick, 2100);
   assert.equal(Math.round(activated.events.find(event => event.type === "DAMAGE").amount), 110);
   for (let tick = 1501; tick < 2100; tick++) { runtime = stepBattle(runtime, []); }
   const ended = (runtime = stepBattle(runtime, []));
   assert.equal(ended.events.find(event => event.type === "DAMAGE").amount, 100);
-  assert.equal(current().skill.active, null);
+  assert.equal(current().skill.activation, null);
 });
 
 test("native SP enums and timing values decode without interpreting unrelated terrain skill blackboards", () => {
@@ -161,9 +163,9 @@ function instantDamageFixture(automatic = false, withTarget = true) {
     ...parsed.definition.activation,
     trigger: automatic ? "AUTO" : "MANUAL",
     accepts: (battle) => (getUnit(battle, 2)?.vitality.hp ?? 0) > 0,
-    onStart: (battle, self) => {
+    onStart: (battle, source, self) => {
       for (const damageType of ["PHYSICAL", "ARTS"]) {
-        const settled = dealDamage(battle, { source: { id: self.host.id }, target: { id: 2 }, parameters: parameters(330, damageType) });
+        const settled = dealDamage(battle, { source: { id: source.id }, target: { id: 2 }, parameters: parameters(330, damageType) });
         battle = settled.state;
         reports.push(settled.value);
       }
@@ -179,11 +181,11 @@ function instantDamageFixture(automatic = false, withTarget = true) {
 
 test("native Unsheathe level 1 metadata supports synchronous physical and arts damage through a one-target content fixture", () => {
   const f = instantDamageFixture();
-  const activated = skills.activate(f.work, unitRef(getUnit(f.work, 1)));
+  const activated = skills.activate(f.work, skillRef(getUnit(f.work, 1)));
   f.work = activated.state;
   assert.equal(activated.value.type, "ACTIVATED");
   assert.equal(getUnit(f.work, 2).vitality.hp, 340);
-  assert.equal(getUnit(f.work, 1).skill.active, null);
+  assert.equal(getUnit(f.work, 1).skill.activation, null);
   assert.equal(f.reports.length, 2);
   assert.ok(f.reports.every((report) => report.kind === "APPLIED" && report.application.hpLoss === 330));
 });
@@ -199,10 +201,10 @@ test("AUTO instant content keeps full SP when its required target is absent", ()
 
 test("instant healing uses the current activation tick and returns the applied healing outcome", () => {
   let report;
-  const definition = createSkillDefinition({ id: "instant-heal-port", initialize: () => ({}), sp: null,
+  const definition = createSkillDefinition({ id: "instant-heal-port", initialize: battle => ({ state: battle, value: ({}) }), sp: null,
     activation: { trigger: "MANUAL", sustain: { type: "TIME", durationTicks: 0 }, initialize: () => ({}),
-      onStart: (battle, self) => {
-        const healed = healing(battle, { source: self.host, target: self.host,
+      onStart: (battle, source, self) => {
+        const healed = healing(battle, { source: source, target: source,
           parameters: { power: 30, multiplier: 1 } });
         report = healed.value;
         return healed.state;
@@ -211,7 +213,7 @@ test("instant healing uses the current activation tick and returns the applied h
   });
   const unit = initialize({ id: 1, position: [0, 0], definition: { hooks: [], id: "heal-caster", skill: definition, vitality: { maxHp: 100, defense: 0, resistance: 0 } }, states: { vitality: { ...initializeVitality(fixtureBattle(0), { maxHp: 100, defense: 0, resistance: 0 }).value, hp: 50 } } });
   let activatedState = effectFixtureWork(unit);
-  activatedState = skills.activate({ ...activatedState, tick: 3 }, unitRef(getUnit(activatedState, 1))).state;
+  activatedState = skills.activate({ ...activatedState, tick: 3 }, skillRef(getUnit(activatedState, 1))).state;
   assert.equal(getUnit(activatedState, 1).vitality.hp, 80);
   assert.equal(report.kind, "APPLIED");
   assert.equal(report.application.hpGain, 30);

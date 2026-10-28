@@ -7,6 +7,7 @@ import { create } from "../../dist/core/battlefield/state.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "./tiles.js";
 import { actionCapability } from "./actions.js";
+import { create as createSkill } from "../../dist/core/unit/skill/index.js";
 
 const tile = createTile({
     heightType: "LOWLAND", meleeBlockable: true, buildableType: "ALL", passableMask: "ALL",
@@ -42,14 +43,16 @@ export function initialize({ states = {}, tick = 0, definition, ...input }) {
         key => key in states && !(key in definition),
     );
     const defaultHooks = !("hooks" in definition);
+    const skillFactory = definition.skill !== undefined && "id" in definition.skill;
     let paired = definition;
-    if (additional.length || defaultHooks) {
+    if (additional.length || defaultHooks || skillFactory) {
         let versions = definitions.get(definition);
         if (versions === undefined) definitions.set(definition, versions = new Map());
         const key = [...additional, defaultHooks ? "hooks" : ""].join(":");
         paired = versions.get(key);
         if (paired === undefined) {
             paired = { ...definition, ...(defaultHooks ? { hooks: [] } : {}),
+                ...(skillFactory ? { skill: { initialize: battle => createSkill(battle, definition.skill) } } : {}),
                 ...Object.fromEntries(additional.map(key => [key, fixtureDefinition(key)])) };
             versions.set(key, paired);
         }
@@ -66,6 +69,8 @@ export function placement({ states = {}, definition, ...input }) {
         ...input,
         definition: {
             ...definition,
+            ...(definition.skill !== undefined && "id" in definition.skill
+                ? { skill: { initialize: battle => createSkill(battle, definition.skill) } } : {}),
             hooks: [{
                 id: "fixture/prepared-state", stage: "enter",
                 invoke(battle, self) {

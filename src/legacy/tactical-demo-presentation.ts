@@ -166,9 +166,9 @@ function skillActive(unit: Unit, animation?: LegacyUnitAnimation["skill"]): bool
     return (
         animation !== "ATTACK" &&
         hasSkill(unit) &&
-        unit.definition.skill.activation?.trigger !== "PASSIVE" &&
+        unit.skill.definition.activation?.trigger !== "PASSIVE" &&
         (!hasVitality(unit) || unit.vitality.hp > 0) &&
-        unit.skill.active !== null
+        unit.skill.activation !== null
     );
 }
 
@@ -184,7 +184,7 @@ function unitInfo(unit: Unit, data: LegacyData, supplied?: LegacyUnitMetadata): 
     const skills = Array.isArray(metadata.skills)
         ? metadata.skills.map(record)
         : [record(metadata.skill)];
-    const skillId = hasSkill(unit) ? unit.definition.skill.id : undefined;
+    const skillId = hasSkill(unit) ? unit.skill.definition.id : undefined;
     const skillIndex =
         supplied?.skillIndex ?? skills.find((skill) => skill.skillId === skillId)?.index;
     const direction = "direction" in unit.definition ? unit.definition.direction : undefined;
@@ -265,8 +265,8 @@ function unitTuple(
     let spMax = 0;
 
     if (!dead && hasSkill(unit)) {
-        const definition = unit.definition.skill;
-        const active = unit.skill.active;
+        const definition = unit.skill.definition;
+        const active = unit.skill.activation;
         sp = unit.skill.sp?.value ?? 0;
         spMax = definition.sp?.requirement ?? 0;
 
@@ -425,7 +425,7 @@ export class TacticalDemoPresentation {
                     if (
                         unit !== undefined &&
                         hasSkill(unit) &&
-                        unit.definition.skill.activation?.trigger === "PASSIVE"
+                        unit.skill.definition.activation?.trigger === "PASSIVE"
                     ) {
                         break;
                     }

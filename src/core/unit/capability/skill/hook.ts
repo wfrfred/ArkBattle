@@ -3,7 +3,7 @@ import type { State as BattleState } from "../../../battle/state.js";
 import * as units from "../../query.js";
 import * as hooks from "../../../hook.js";
 import type { Unit } from "../../unit.js";
-import type { Activation, End } from "../../skill/activation.js";
+import type { View as ActivationView, End } from "../../skill/activation.js";
 import type { Consumed, Replenished } from "../../skill/ammo.js";
 import type { Skill } from "./capability.js";
 import type { Recovered, Paid, Modified } from "../../skill/sp.js";
@@ -14,8 +14,8 @@ export interface Events {
     readonly spModified: Modified;
     readonly ammoConsumed: Consumed;
     readonly ammoReplenished: Replenished;
-    readonly activated: Activation;
-    readonly ended: { readonly activation: Activation; readonly end: End };
+    readonly activated: ActivationView;
+    readonly ended: { readonly activation: ActivationView; readonly end: End };
 }
 
 export type Key = keyof Events;

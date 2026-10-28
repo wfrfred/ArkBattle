@@ -25,16 +25,16 @@ declare const uncertainKey: "capacity" | "recoverySpeed";
 const program: Modifier = { priority: 0, apply: (battle, self, current) => {
     const fact: BattleState = battle;
     const host: Unit & Skill = self;
-    return host.skill.active === null ? current : fact.tick;
+    return host.skill.activation === null ? current : fact.tick;
 } };
 sp.setContribution(resource, "capacity", { id: "capacity", value: program });
 sp.setContribution(resource, "requirement", { id: "requirement", value: program });
 sp.setContribution(resource, "cost", { id: "cost", value: program });
 sp.setContribution(resource, "recoverySpeed", { id: "speed", value: [attribute.create({ addition: 1 })] });
-sp.setContribution(resource, "recoveryMultiplier", { id: "ratio", value: (battle, self) => [attribute.create({ finalScaler: self.skill.active === null ? 1 : battle.tick })] });
+sp.setContribution(resource, "recoveryMultiplier", { id: "ratio", value: (battle, self) => [attribute.create({ finalScaler: self.skill.activation === null ? 1 : battle.tick })] });
 setDurationContribution(state, { id: "duration", value: program });
 setAmmoContribution(state, { id: "ammo", value: { addition: 2, ratio: 0.5 } });
-setAmmoContribution(state, { id: "live-ammo", value: (battle, self) => ({ addition: battle.tick, ratio: self.skill.active === null ? 0 : 0.5 }) });
+setAmmoContribution(state, { id: "live-ammo", value: (battle, self) => ({ addition: battle.tick, ratio: self.skill.activation === null ? 0 : 0.5 }) });
 // @ts-expect-error SP mechanism parameters use programs rather than attribute modifiers.
 sp.setContribution(resource, "capacity", { id: "wrong", value: [attribute.create()] });
 // @ts-expect-error recovery attributes do not accept mechanism parameter programs.

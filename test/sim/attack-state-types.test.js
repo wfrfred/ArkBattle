@@ -16,8 +16,8 @@ import type { Ref } from ${source("core/common/ref")};
 import type { State as BattleState, Result } from ${source("core/battle/state")};
 import { executionRef, ref as actionRef } from ${source("core/unit/action/index")};
 import { setExecutionState, getAction, getExecution, setState } from ${source("core/unit/action/index")};
-import type { Activation } from ${source("core/unit/skill/activation")};
-import { get as getActivation } from ${source("core/unit/skill/index")};
+import type { Activation, View as ActivationView } from ${source("core/unit/skill/activation")};
+import { getActivation } from ${source("core/unit/skill/index")};
 import { consume, check } from ${source("core/unit/skill/ammo")};
 import { create, createWithState, isAttack, type Attack, type Configuration } from ${source("content/actions/attack")};
 import { create as createSkillAttack, type State as SkillAttackState } from ${source("content/actions/skill")};
@@ -28,7 +28,7 @@ declare const battle: BattleState;
 declare const unknownDefinition: unknown;
 type Persistent = { count: number };
 type Active = { mode: "FIRST" | "SECOND" };
-declare const activation: Ref<Activation<Active>>;
+declare const activation: Ref<Activation<object, Active>>;
 const counted = createWithState({
     ...configuration,
     initialize: current => ({ state: current, value: { count: 0 } }),
@@ -57,29 +57,29 @@ type Counted = Assert<Equal<typeof counted, Attack<Persistent, { sampled: number
 const preciseAmmo = createWithState({
     ...configuration,
     initialize: current => ({ state: current, value: {} }),
-    prepare: (current): { state: BattleState; value: { activation: Ref<Activation<Active>> | null } } => ({ state: current, value: { activation } }),
+    prepare: (current): { state: BattleState; value: { activation: Ref<Activation<object, Active>> | null } } => ({ state: current, value: { activation } }),
     afterOutput(current, source, self) {
         const sampled = self.execution.state.data.activation;
-        type Sampled = Assert<Equal<typeof sampled, Ref<Activation<Active>> | null>>;
+        type Sampled = Assert<Equal<typeof sampled, Ref<Activation<object, Active>> | null>>;
         if (sampled === null) return current;
         const latest = getActivation(current, sampled);
-        type Latest = Assert<Equal<typeof latest, Activation<Active> | undefined>>;
+        type Latest = Assert<Equal<typeof latest, Activation<object, Active> | undefined>>;
         if (latest === undefined) return current;
-        const mode: "FIRST" | "SECOND" = latest.data.mode;
+        const mode: "FIRST" | "SECOND" = latest.activation.data.mode;
         current = consume(current, sampled, 2).state;
         return check(current, sampled);
     },
 });
-type PreciseAmmo = Assert<Equal<typeof preciseAmmo, Attack<{}, { activation: Ref<Activation<Active>> | null }>>>;
+type PreciseAmmo = Assert<Equal<typeof preciseAmmo, Attack<{}, { activation: Ref<Activation<object, Active>> | null }>>>;
 const genericAmmo = createSkillAttack({
     ...configuration,
     ammoPerAction: 2,
     output(current, source, self) {
-        const sampled: Ref<Activation> | null = self.execution.state.data.activation;
+        const sampled: Ref<ActivationView> | null = self.execution.state.data.activation;
         if (sampled !== null) {
-            const latest: Activation | undefined = getActivation(current, sampled);
+            const latest: ActivationView | undefined = getActivation(current, sampled);
             // @ts-expect-error
-            latest!.data.mode;
+            latest!.activation.data.mode;
         }
         return current;
     },

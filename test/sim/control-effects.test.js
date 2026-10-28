@@ -17,14 +17,14 @@ const canMove = (battle, unit) => {
     const moved = advanceLocomotion(battle, unitRef(unit), { nextPoint: goal, goal }, { mode: "WALK", speedMultiplier: 1 });
     return getUnit(moved, unit.id).position !== unit.position;
 };
-import { definition as skillDefinition } from "../helpers/skill.js";
+import { ref as skillRef, definition as skillDefinition } from "../helpers/skill.js";
 import { activate, advance } from "../../dist/core/unit/skill/operations.js";
 import { recover } from "../../dist/core/unit/skill/sp.js";
 
 const activationAllowed = (state) => {
     const unit = getUnit(state, 0);
     const ready = updateUnit(state, [{ ...unit, skill: { ...unit.skill, sp: { ...unit.skill.sp, value: 10 } } }]);
-    return activate(ready, unitRef(unit)).value.type === "ACTIVATED";
+    return activate(ready, skillRef(unit)).value.type === "ACTIVATED";
 };
 const recoveryAllowed = (state) => recover(state, unitRef(getUnit(state, 0)), "TIME", 0).value.type === "APPLIED";
 const actionAllowed = (battle, self) => self.action.rules.every(rule => rule.allows(battle, self, "normal"));

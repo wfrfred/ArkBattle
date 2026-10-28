@@ -1,3 +1,4 @@
+import { create as createSkill } from "../../dist/core/unit/skill/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize } from "../../dist/core/unit/initialize.js";
@@ -39,9 +40,9 @@ test("Unit initialization pairs every declared capability, including empty defin
 
 test("Skill and Elemental initialize from the current battle tick and keep shared definitions", () => {
     const battle = fixtureBattle(37);
-    const skill = skillDefinition({ initialize: () => ({ count: 3 }) });
+    const skill = skillDefinition({ initialize: battle => ({ state: battle, value: ({ count: 3 }) }) });
     const elemental = elementalDefinition({ maxEp: 1000, bursts });
-    const definition = { hooks: [], id: "clocks", skill, elemental };
+    const definition = { hooks: [], id: "clocks", skill: { initialize: current => createSkill(current, skill) }, elemental };
     const first = initialize(battle, { id: 1, definition, position: [0, 0] }).value;
     const second = initialize(battle, { id: 2, definition, position: [1, 0] }).value;
     assert.equal(first.skill.sp.lastTick, 37);

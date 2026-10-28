@@ -62,7 +62,7 @@ V 是公共引用目标，S 是领域完整对象，E 是本次结束输入。be
 
 prepare／finalize 是 Core 的完整操作适配，不是 Content Definition 的生命周期回调。Content 继续接收已有 self。prepare 的 initial 是标记前的同一不可变对象，供 Effect 判断原先是否 ACTIVE 等业务使用；需要实时值时从当前 battle 查询，不把 initial 整体写回。
 
-finalize 只接收 Ref 和 E，从当前存储读取实例。完整 owner 边保护了宿主，Skill／Burst 可从仍存在的 Unit 取得原 Definition，不需要通用 fallback self 或最后可得快照。领域在自己注销后仍要通知时，可以使用 Finalize 内明确取得的历史值。Unit 的 Departure.unit 则是离场开始时的业务事实，由 remove 入口构造一次并随 E 保留。
+finalize 只接收 Ref 和 E，从当前存储读取实例。完整 owner 边保护了宿主，Skill 可从当前 unit.skill.definition、Burst 可从仍存在的 Unit 取得原 Definition，不需要通用 fallback self 或最后可得快照。领域在自己注销后仍要通知时，可以使用 Finalize 内明确取得的历史值。Unit 的 Departure.unit 则是离场开始时的业务事实，由 remove 入口构造一次并随 E 保留。
 
 描述符提供的结束操作为：
 

@@ -17,7 +17,7 @@ import { initialize } from ${source('unit/index')};
 import type { Input as UnitInput } from ${source('unit/initialize')};
 import { createUnitPlacementDefinition, type UnitPlacementDefinition } from ${source('battle/creation/placement')};
 import { hasOffense, type Offense } from ${source('unit/capability/offense/index')};
-import type { Definition as SkillDefinition } from ${source('unit/skill/index')};
+import { create as createSkill, type Definition as SkillDefinition } from ${source('unit/skill/index')};
 import { hasSkill, type Skill } from ${source('unit/capability/skill/index')};
 import type { Vitality } from ${source('unit/capability/vitality/index')};
 import type { Route, Definition as RouteDefinition } from ${source('unit/capability/route/index')};
@@ -48,7 +48,7 @@ initialize(battle, { id: 11, definition: configuration, position: [0, 0], effect
 const preloaded: UnitPlacementDefinition = { definition: configuration, position: [0, 0], effects: preparedEffects };
 const normalized = createUnitPlacementDefinition({ definition: configuration, position: [0, 0], effects: preparedEffects });
 type NoNormalizedEffects = Assert<Equal<Extract<keyof typeof normalized, 'effects'>, never>>;
-const selected = { ...configuration, offense: { attack: 10 }, skill, elemental } satisfies Configuration;
+const selected = { ...configuration, offense: { attack: 10 }, skill: { initialize: (current: BattleState) => createSkill(current, skill) }, elemental } satisfies Configuration;
 const plain = initialize(battle, { id: 0, definition: configuration, position: [0, 0] }).value;
 const complete = initialize(battle, { id: 1, definition: selected, position: [0, 0] }).value;
 const bare = initialize(battle, { id: 2, definition: { hooks: [], id: 'bare' }, position: [0, 0] }).value;
@@ -135,7 +135,7 @@ const healthAttack: EffectDefinition<{ bonus: number }, Vitality & Offense> = {
 install(battle, ref(complete), healthAttack);
 if (hasOffense(plain)) install(battle, ref(plain), healthAttack);
 if (hasSkill(plain)) {
-  const id: string = plain.definition.skill.id;
+  const id: string = plain.skill.definition.id;
   const sp: number = plain.skill.sp?.value ?? 0;
 }
 // @ts-expect-error optional configuration is not proof of an installed Capability.

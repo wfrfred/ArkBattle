@@ -29,7 +29,7 @@ test('main-mode content runs deterministic shield, skill, blocking and projectil
   let triggeredMelantha = false;
   while (first.result === null) {
     const guard = unitQueries.all(first).toArray().find(unit => unit.id === 1);
-    const commands = !triggeredMelantha && (guard?.skill.sp?.value ?? 0) >= (guard?.definition.skill.sp?.requirement ?? Infinity)
+    const commands = !triggeredMelantha && (guard?.skill.sp?.value ?? 0) >= (guard?.skill.definition.sp?.requirement ?? Infinity)
       ? [{ type: 'ACTIVATE_SKILL', unitId: 1 }] : [];
     if (commands.length) triggeredMelantha = true;
     const step = (first = stepBattle(first, commands));
@@ -54,7 +54,7 @@ test('main-mode content runs deterministic shield, skill, blocking and projectil
   assert.equal(unitQueries.all(before).toArray().length, 2);
   assert.equal(unitQueries.all(before).toArray()[0].vitality.hp, unitQueries.all(before).toArray()[0].definition.vitality.maxHp);
   assert.equal(readShield(unitQueries.all(before).toArray()[0]).layers, 1);
-  assert.equal(unitQueries.all(before).toArray()[1].skill.active, null);
+  assert.equal(unitQueries.all(before).toArray()[1].skill.activation, null);
 });
 
 test('main-mode preparation rejects an unavailable configuration before constructing battle', () => {

@@ -1,3 +1,4 @@
+import { ref as skillRef } from "../helpers/skill.js";
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
 import { lifetime as skillLifetime } from "../../dist/core/unit/skill/operations.js";
 import { lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
@@ -30,13 +31,13 @@ for (const reason of ["DEATH", "RETREAT", "SCRIPT"]) {
     const effectEnds = [];
     let actionEnds = 0;
     const skill = createSkillDefinition({
-      id: "action-dependent-skill", initialize: () => ({}), sp: null,
+      id: "action-dependent-skill", initialize: battle => ({ state: battle, value: ({}) }), sp: null,
       activation: {
         trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}),
-        onEnd(state, self, end) {
+        onEnd(state, source, self, end) {
           programEnds.push(end);
-          assert.equal(getUnit(state, self.host.id).lifecycle, "LEAVING");
-          assert.equal(getUnit(state, self.host.id).skill.active.status, "ENDING");
+          assert.equal(getUnit(state, source.id).lifecycle, "LEAVING");
+          assert.equal(getUnit(state, source.id).skill.activation.status, "ENDING");
           return state;
         },
       },
@@ -44,7 +45,7 @@ for (const reason of ["DEATH", "RETREAT", "SCRIPT"]) {
     const action = {
       id: "skill-completing-action", intervalTicks: 1, speed: 100,
       initialize: state => ({ state, value: {} }),
-      prepare: state => ({ state, value: { activation: activationRef(getUnit(state, 0).skill.active) } }),
+      prepare: state => ({ state, value: { activation: activationRef(unitRef(getUnit(state, 0)), getUnit(state, 0).skill) } }),
       onTick: state => ({ state, value: false }),
       onEnd(state, source, self) {
         actionEnds++;
@@ -62,11 +63,11 @@ for (const reason of ["DEATH", "RETREAT", "SCRIPT"]) {
         const self = getUnit(state, host.id);
         observedEnds.push(event.end);
         assert.equal(self.lifecycle, "LEAVING");
-        assert.equal(self.skill.active, null);
-        return { state: finish(state, activationRef(event.activation)), value: undefined };
+        assert.equal(self.skill.activation, null);
+        return { state: finish(state, activationRef(host, event.activation)), value: undefined };
       },
     }) }]);
-    const activated = activate(state, unitRef(source));
+    const activated = activate(state, skillRef(source));
     state = activated.state;
     const started = actions.start(state, actions.ref(unitRef(getUnit(state, 0)), action));
     assert.equal(started.value.type, "STARTED");
@@ -97,14 +98,14 @@ for (const reason of ["DEATH", "RETREAT", "SCRIPT"]) {
     assert.equal(actions.getExecution(state, started.value.ref), undefined);
     assert.equal(remove(state, 0, reason), state);
     assert.equal(finish(state, activated.value.ref), state);
-    assert.equal(getUnit(before, 0).skill.active.status, "ACTIVE");
+    assert.equal(getUnit(before, 0).skill.activation.status, "ACTIVE");
     assert.equal(getUnit(before, 1).effects.values().toArray().length, 1);
   });
 }
 
 test("departure callbacks observe LEAVING while old snapshots remain PRESENT", () => {
   const skill = createSkillDefinition({
-    id: "observe-departure", initialize: () => ({}), sp: null,
+    id: "observe-departure", initialize: battle => ({ state: battle, value: ({}) }), sp: null,
     activation: {
       trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}),
       onEnd: state => observe(state, "finish skill"),
@@ -121,7 +122,7 @@ test("departure callbacks observe LEAVING while old snapshots remain PRESENT", (
     assert.equal(getUnit(nested, 0), current);
     return nested;
   };
-  state = activate(state, unitRef(getUnit(state, 0))).state;
+  state = activate(state, skillRef(getUnit(state, 0))).state;
   state = effects.install(state, unitRef(getUnit(state, 0)), {
     id: "departure-observer", initialize: () => ({}),
     onDisable: state => observe(state, "disable effect"),
@@ -141,7 +142,7 @@ test("departure callbacks observe LEAVING while old snapshots remain PRESENT", (
 
 test("skill finish sees LEAVING and cannot install dependencies on its departing source", () => {
   const skill = createSkillDefinition({
-    id: "departing-skill", initialize: () => ({}),
+    id: "departing-skill", initialize: battle => ({ state: battle, value: ({}) }),
     sp: { initial: 1, capacity: 1, requirement: 1, recovery: { type: "NONE" } },
     activation: {
       trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}),
@@ -157,14 +158,14 @@ test("skill finish sees LEAVING and cannot install dependencies on its departing
   let state = createBattleState(fixtureBattlefield([unit(0, { skill }), unit(1)]));
   const statuses = [];
   let installations = 0;
-  state = activate(state, unitRef(getUnit(state, 0))).state;
+  state = activate(state, skillRef(getUnit(state, 0))).state;
   const before = state;
   state = remove({ ...state, tick: 1 }, 0, "SCRIPT");
   assert.deepEqual(statuses, ["LEAVING"]);
   assert.equal(installations, 0);
   assert.equal(getUnit(state, 1).effects.nextId, 0);
   assert.equal(unitQueries.get(before, { id: 0 }).lifecycle, "PRESENT");
-  assert.ok(unitQueries.get(before, { id: 0 }).skill.active);
+  assert.ok(unitQueries.get(before, { id: 0 }).skill.activation);
   assert.equal(getUnit(state, 0), undefined);
   assert.equal(state.events.filter(({ type }) => type === "SKILL_FINISHED").length, 1);
   assert.deepEqual(state.events.find(({ type }) => type === "SKILL_FINISHED").end, { type: "CANCELLED", reason: "SCRIPT" });
@@ -173,7 +174,7 @@ test("skill finish sees LEAVING and cannot install dependencies on its departing
 
 test("departure callbacks cannot start a new skill activation", () => {
   const skill = createSkillDefinition({
-    id: "closed-host-activation", initialize: () => ({}), sp: null,
+    id: "closed-host-activation", initialize: battle => ({ state: battle, value: ({}) }), sp: null,
     activation: {
       trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}),
       onStart(state) { activations++; return state; },
@@ -185,9 +186,9 @@ test("departure callbacks cannot start a new skill activation", () => {
   const installed = effects.install(original, unitRef(getUnit(original, 0)), {
     id: "activation-on-departure", initialize: () => ({}),
     onEnd(state) {
-      attempted = activate(state, unitRef(getUnit(state, 0)));
+      attempted = activate(state, skillRef(getUnit(state, 0)));
       assert.equal(attempted.state, state);
-      assert.equal(getUnit(attempted.state, 0).skill.active, null);
+      assert.equal(getUnit(attempted.state, 0).skill.activation, null);
       return attempted.state;
     },
   });
@@ -202,7 +203,7 @@ test("departure callbacks cannot start a new skill activation", () => {
 test("onLeave reads the pre-cleanup Unit after removal and passes its changes to mechanisms", () => {
   const trace = [];
   const skill = createSkillDefinition({
-    id: "leave-with-sp", initialize: () => ({}),
+    id: "leave-with-sp", initialize: battle => ({ state: battle, value: ({}) }),
     sp: { initial: 3, capacity: 3, requirement: 1, recovery: { type: "NONE" } },
     activation: {
       trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}),
@@ -210,7 +211,7 @@ test("onLeave reads the pre-cleanup Unit after removal and passes its changes to
         trace.push("skill finish");
         const current = getUnit(state, 0);
         assert.equal(current.lifecycle, "LEAVING");
-        assert.equal(current.skill.active.status, "ENDING");
+        assert.equal(current.skill.activation.status, "ENDING");
         return updateUnit(state, [{ ...current, skill: { ...current.skill, sp: { ...current.skill.sp, value: 0 } } }]);
       },
     },
@@ -231,7 +232,7 @@ test("onLeave reads the pre-cleanup Unit after removal and passes its changes to
       assert.equal(departure.reason, "RETREAT");
       assert.equal(departure.unit.lifecycle, "PRESENT");
       assert.equal(departure.unit.skill.sp.value, 2);
-      assert.equal(departure.unit.skill.active.id, 0);
+      assert.equal(departure.unit.skill.activation.id, 0);
       assert.equal(departure.unit.effects.values().toArray()[0].status, "ACTIVE");
       const other = getUnit(state, 1);
       state = updateUnit(state, [{ ...other, vitality: { ...other.vitality, hp: 77 } }]);
@@ -253,7 +254,7 @@ test("onLeave reads the pre-cleanup Unit after removal and passes its changes to
       },
   };
   let state = mechanisms.create(createBattleState(fixtureBattlefield([host, unit(1)])), mechanism).state;
-  state = activate(state, unitRef(getUnit(state, 0))).state;
+  state = activate(state, skillRef(getUnit(state, 0))).state;
   state = effects.install(state, unitRef(getUnit(state, 0)), {
     id: "leave-effect", initialize: () => ({}),
     onDisable(state) { trace.push("effect disable"); return state; },
@@ -273,7 +274,7 @@ test("onLeave reads the pre-cleanup Unit after removal and passes its changes to
   const removed = state.removedUnits.find(({ unitId }) => unitId === 0).unit;
   assert.equal(removed.lifecycle, "LEAVING");
   assert.equal(removed.skill.sp.value, 0);
-  assert.equal(removed.skill.active, null);
+  assert.equal(removed.skill.activation, null);
   assert.equal(removed.effects.size, 0);
   assert.equal(getUnit(before, 0), departing);
   assert.equal(getUnit(before, 1).vitality.hp, 100);

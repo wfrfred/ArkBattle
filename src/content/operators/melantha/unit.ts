@@ -13,7 +13,8 @@ import type { Profile } from "../../../data/arknights/operator.js";
 import type { Definitions as CapabilityDefinitions } from "../../../core/unit/capability/catalog.js";
 import {
     type Definition as SkillDefinition,
-    ref as activationRef,
+    create as createSkill,
+    activationRef,
     lifetime as skillLifetime,
 } from "../../../core/unit/skill/index.js";
 
@@ -105,15 +106,15 @@ export function create(profile: Profile, direction: Direction = "RIGHT"): Defini
         ...profile.skill.definition,
         activation: {
             ...profile.skill.definition.activation!,
-            onStart(state, self) {
-                const unit = getCurrentUnit(state, self.host);
+            onStart(state, source, self) {
+                const unit = getCurrentUnit(state, source);
                 if (unit === undefined || !hasOffense(unit)) {
                     return state;
                 }
 
                 const result = install(state, unitRef(unit), skillEffect, {
                     source: unitRef(unit),
-                    scopes: [scope(skillLifetime, activationRef(self))],
+                    scopes: [scope(skillLifetime, activationRef(source, self))],
                 });
 
                 return result.state;
@@ -155,7 +156,7 @@ export function create(profile: Profile, direction: Direction = "RIGHT"): Defini
         action: {
             initialize: (battle) => createActions(battle, initializeAttack),
         },
-        skill,
+        skill: { initialize: (battle) => createSkill(battle, skill) },
         hooks: [
             {
                 id: "melantha/install-talent",
