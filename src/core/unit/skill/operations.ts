@@ -205,7 +205,9 @@ export function activate<S extends object, A extends object>(
             endsAtTick: sustain.type === "TIME" ? sustain.endsAtTick : null,
         },
     ]);
-    battle = dispatch(battle, source, "activated", active);
+    battle = dispatch(battle, source, "activationStarted", {
+        ref: activationRef<Activation<any, any>>(source, active),
+    });
 
     if (previousSp !== null) {
         battle = dispatch(battle, source, "spPaid", {
@@ -268,7 +270,10 @@ export const lifetime = lifetimes.create<Activation, Activation<any, any>, End>(
             },
         ]);
 
-        return dispatch(battle, reference.host, "ended", { activation: self, end: ending });
+        return dispatch(battle, reference.host, "activationEnded", {
+            ref: reference,
+            end: ending,
+        });
     },
     reason: (ending) => (ending.type === "FINISHED" ? "SKILL_FINISHED" : ending.reason),
     fromDependency: (reason) => ({ type: "CANCELLED", reason }),

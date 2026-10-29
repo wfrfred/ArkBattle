@@ -5,7 +5,7 @@ import type { Actions } from "../../action/actions.js";
 import * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
 import * as hook from "../../../hook.js";
-import type { Hook as ReleaseHook, ReleasedHook } from "./release.js";
+import type { BeforeReleaseHook, ReleasedHook } from "./release.js";
 
 export interface Definition {
     readonly initialize: (battle: BattleState) => Result<Actions>;
@@ -29,7 +29,7 @@ export interface State {
     readonly interval: readonly contribution.Contribution<Input>[];
     readonly speed: readonly contribution.Contribution<Input>[];
     readonly rules: readonly Rule[];
-    readonly beforeRelease: readonly ReleaseHook[];
+    readonly beforeRelease: readonly BeforeReleaseHook[];
     readonly released: readonly ReleasedHook[];
 }
 
@@ -81,7 +81,7 @@ export function removeRule(state: State, id: string): State {
     return rules === state.rules ? state : { ...state, rules };
 }
 
-export function setBeforeReleaseHook(state: State, entry: ReleaseHook): State {
+export function setBeforeReleaseHook(state: State, entry: BeforeReleaseHook): State {
     const beforeRelease = hook.set(state.beforeRelease, entry);
 
     return beforeRelease === state.beforeRelease ? state : { ...state, beforeRelease };

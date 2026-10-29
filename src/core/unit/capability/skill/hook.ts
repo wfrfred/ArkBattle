@@ -8,14 +8,23 @@ import type { Consumed, Replenished } from "../../skill/ammo.js";
 import type { Skill } from "./capability.js";
 import type { Recovered, Paid, Modified } from "../../skill/sp.js";
 
+export interface ActivationStarted {
+    readonly ref: Ref<Activation>;
+}
+
+export interface ActivationEnded {
+    readonly ref: Ref<Activation>;
+    readonly end: End;
+}
+
 export interface Events {
     readonly spRecovered: Recovered;
     readonly spPaid: Paid;
     readonly spModified: Modified;
     readonly ammoConsumed: Consumed;
     readonly ammoReplenished: Replenished;
-    readonly activated: Activation;
-    readonly ended: { readonly activation: Activation; readonly end: End };
+    readonly activationStarted: ActivationStarted;
+    readonly activationEnded: ActivationEnded;
 }
 
 export type Key = keyof Events;

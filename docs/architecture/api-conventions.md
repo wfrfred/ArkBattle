@@ -36,6 +36,19 @@ field.map 持有当前地块。battlefield/tile.update 是运行态地块变更�
 
 Action 的准备程序为 prepare，推进与结束回调为 onTick／onEnd；Projectile 的登记后启动、推进与结束回调为 onStart／onTick／onEnd。onEnter／onLeave、onEnable／onDisable 与 onInstall 保留各自的场景、参与状态及安装语义，不因命名统一而合并或增加生命周期阶段，也不改变返回协议或调度职责。
 
+Hook 与领域操作按执行语义命名：
+
+| 类别 | 命名与含义 |
+| --- | --- |
+| 实例自身程序 | onStart／onTick／onEnd，由所属领域调用已配对的 Definition 程序。 |
+| 公共生命周期通知 | 对象名＋Started／Ended，如 activationStarted／activationEnded、burstStarted／burstEnded。 |
+| 业务事实通知 | 对象名＋过去分词，如 spPaid、ammoConsumed；completed 表示一次业务结算完成，不表示实例终止。 |
+| 前置干预 | beforeXxx，如 beforeRelease；与已经发生的 released 事实分开。 |
+| 具体 Hook 类型 | 对应通知或干预名＋Hook，如 BeforeReleaseHook、ReleasedHook；通用协议仍为 Hook<C, T>。 |
+| 主动生命周期操作 | start／end 表示实例开始／结束，finish 表示正常完成，cancel 表示取消；activate 等已有领域业务动词保持原义。 |
+
+公共通知只携带观察者所需的公开事实，不把完整 Definition 或私有 state 当作事件协议。Skill 的 ActivationStarted 为 `{ ref: Ref<Activation> }`，ActivationEnded 为 `{ ref: Ref<Activation>, end: End }`；Context.host 已提供宿主。本次载荷固定，实时事实另从最新 battle 查询；activationEnded 在清槽后派发，不能据其中的 Ref 假定本轮仍可查询。命名统一不改变通知时点、activate 操作或 SKILL_ACTIVATED 日志名，不为形式一致合并不同阶段。
+
 同一语义复用已有动词。函数内部的辅助函数可以依靠上下文使用 check 等短名；提升为模块级辅助函数时应补充用途，例如 checkStart。共享写回沿用 replace，并按实际对象区分 replaceAction、replaceHost，不为同类操作另造动词。公共接口结合所属领域与具体职责命名。
 
 以下情况按同一职责分类处理：
@@ -71,7 +84,7 @@ Action 的准备程序为 prepare，推进与结束回调为 onTick／onEnd；Pr
 | 战斗运行 | [battle/index.ts](../../src/core/battle/index.ts) | 仅 initialize／step／simulateBattle、战斗契约类型、State／OperationResult 与 appendEvents；不聚合 Unit、Projectile、Creation 等独立操作。 |
 | Unit | [unit/index.ts](../../src/core/unit/index.ts) | 模型、Hook 类型、initialize 与 ref／all／get；完整登记、更新、离场、推进与 Unit lifetime 仍归 battle/unit.ts，Field 的纯存储操作仍归 battlefield/unit.ts。 |
 | Action | [unit/action/index.ts](../../src/core/unit/action/index.ts) | 创建、查询、字段更新、lifetime、业务操作与调度协作；advance 由 operations.ts 实现，经 index 导出且仅由调度器调用，end 是文件私有辅助步骤。Actions、execution.State 与 Cooldown 按职责深导，不扩大内容写回或推进权限。 |
-| Skill | [unit/skill/index.ts](../../src/core/unit/skill/index.ts) | create、Skill／Activation、两种 Ref 与 getSkill／getActivation、setState／setActivationState、资源与激活业务、lifetime；不转发 Capability guards 或局部 Rule／Hook／持续预算贡献 setter。 |
+| Skill | [unit/skill/index.ts](../../src/core/unit/skill/index.ts) | create、Skill／Activation、两种 Ref 与 getSkill／getActivation、setState／setActivationState、资源与激活业务、lifetime；不转发 Capability guards 或局部 Rule／Hook／Ammo 贡献 setter。 |
 | Effect | [unit/effect/index.ts](../../src/core/unit/effect/index.ts) | 类型、ref、get、lifetime 与生命周期操作；get 归 query.ts，Effects 容器保持内部职责。 |
 | Lifetime | [lifetime/index.ts](../../src/core/lifetime/index.ts) | create／scope／getRef／available 和公开类型；request／drain、Pending、异构配对擦除与索引修改保持内部职责。 |
 | Projectile | [projectile/index.ts](../../src/core/projectile/index.ts) | 类型与 ref／all／get；完整 create／update／stop／advance 及 lifetime 保留 battle/projectile.ts，容器仍由 Battlefield 持有。 |

@@ -145,7 +145,7 @@ canBlock 接收 Unit & Blocker，canBeBlocked 接收 Unit & Blockable；各自 R
 
 完整结算登记自身已发生的领域事件。调用方只接续返回状态，无需补写 Signals；公开 value 只保留业务结果。局部步骤可以报告尚未提交的事实或信号，由负责完整结算的领域消费。Tick 收尾允许根据 Removal Facts 等生成输出投影。
 
-Skill 激活先一次性提交支付与新 Activation，再记录 SKILL_ACTIVATED，派发 activated Hook、spPaid Hook，重读同一身份及宿主资格后执行仍有资格的 onStart。activated 表示创建事实，后续嵌套终止不撤销创建或支付报告；无活动 Lifetime 结算时，先前 activated 候选可以触发 ended 嵌套；已有结算时，嵌套结束只同步完成请求与 Prepare。后续候选仍处理原创建事实。正常零持续期也先创建与通知，再请求结束。请求发布 ENDING，最外层结算器等真实依赖者完整 Finalize 后调用结束程序、清空本轮、记录事件并派发 ended；Unit 所有权保护原 Definition 和宿主到整个 Finalize 返回。详见 [Skill 设计](skill.md#5-发动与完整结束)。
+Skill 激活先一次性提交支付与新 Activation，再记录 SKILL_ACTIVATED，派发 activationStarted Hook、spPaid Hook，重读同一身份及宿主资格后执行仍有资格的 onStart。activationStarted 表示创建事实，后续嵌套终止不撤销创建或支付报告；无活动 Lifetime 结算时，先前 activationStarted 候选可以触发 activationEnded 嵌套；已有结算时，嵌套结束只同步完成请求与 Prepare。后续候选仍处理原创建事实。正常零持续期也先创建与通知，再请求结束。请求发布 ENDING，最外层结算器等真实依赖者完整 Finalize 后调用结束程序、清空本轮、记录事件并派发 activationEnded；Unit 所有权保护原 Definition 和宿主到整个 Finalize 返回。两项公共报告分别为 ActivationStarted `{ ref }` 与 ActivationEnded `{ ref, end }`，不携带 Definition 或私有 state；Context.host 已提供宿主，结束报告中的 Ref 不保证本轮仍可查询。详见 [Skill 设计](skill.md#5-发动与完整结束)。
 
 已进入的同步内容与未来执行进度有各自的结束边界，具体后继资格由所属规则判断。官方普通原生依据见 [Skill 研究](../research/cases/05-skill-start-and-finish.md)。项目报告顺序是明确的工程约定，不冒充官方同名事件协议。
 

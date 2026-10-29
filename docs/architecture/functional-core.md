@@ -149,7 +149,7 @@ Tick 的执行顺序在 step() 中直接可读。领域函数负责各自的纯�
 
 战斗状态组合这些值，没有第二份 Unit 覆盖层，也不复制 Battlefield 的索引维护职责。全局规则只有需要独立状态时才创建 Mechanism；不把所有特殊技能归成一种通用机制对象。
 
-实例直接共享不可变 Definition，异构条目的类型配对与恢复由所属集合封装。Typed Ref 与生命周期地址表达运行身份；跨进程恢复在序列化入口重新关联定义。Skill 的 Definition、单槽 Skill 聚合、非空 Activation 视图、SP／Ammo 与完整业务归 unit/skill，能力状态、初始化和局部 Rule／Hook／持续预算贡献登记归 capability/skill；状态仍存于 Unit.skill。类型与行为见 [Skill 设计](skill.md)。
+实例直接共享不可变 Definition，异构条目的类型配对与恢复由所属集合封装。Typed Ref 与生命周期地址表达运行身份；跨进程恢复在序列化入口重新关联定义。Skill 的 Definition、单槽 Skill 聚合、非空 Activation 视图、SP／Ammo 与完整业务归 unit/skill，能力状态、初始化和局部 Rule／Hook／Ammo 贡献登记归 capability/skill；状态仍存于 Unit.skill。类型与行为见 [Skill 设计](skill.md)。
 
 事件与注册／移除记录可以在 Tick 工作值中按顺序累积，step() 返回时形成输出。它们是结果数据，不是随后重放的修改指令。纯函数可以内部使用本次新建的数组／Map 构建结果，不能修改输入版本或已经返回的共享值。
 
@@ -196,6 +196,8 @@ Blocking 保留 unit.update(battle, [unit]) 的完整更新保证：Capability �
 
 Hook 使用统一的泛型状态转换与动态派发协议，登记仍由所属领域持有。公共层只依赖 BattleState、Result 和字符串登记身份，不认识具体 Capability。
 
+实例自身的 Definition 程序使用 onStart／onTick／onEnd；公共生命周期通知使用对象名＋Started／Ended，业务事实使用对象名＋过去分词，前置干预使用 beforeXxx。具体 Hook 类型使用对应名称＋Hook，通用 Hook<C, T> 协议不变。start／end、finish、cancel 分别表达生命周期、正常完成与取消，completed 只表达一次业务结算完成；不同语义阶段不为名称一致而合并。完整约定见 [接口命名规则](api-conventions.md#1-基本分类)。
+
 ```typescript
 interface Hook<C, T> {
     readonly id: string;
@@ -213,6 +215,8 @@ dispatch(battle, fixedContext, initialValue, options): Result<T>;
 ```
 
 三个通道分别是固定 Context、动态 Battle、可接续 current。Context 保留本次事件身份、历史事实和明确采样值，不因实例结束或替换而改写。实时状态从最新 Battle 按身份查询；Context 内的历史对象不被当成持续最新的对象。需要当前 Effect 私有数据的程序通过捕获的 typed Ref 查询，不捕获可变运行进度。
+
+公开事件只提供该业务需要的事实。Skill 的 activationStarted／activationEnded 分别携带 `{ ref }`／`{ ref, end }`，不暴露完整 Definition 或私有 state；宿主由 Context.host 提供。activationEnded 清空槽位后通知，Ref 保留已结束轮次的身份，不保证还能查询对象。具体私有数据由自身已配对的 Definition 程序解释，观察者保存自己的计数、首次标记与其他玩法 state。
 
 candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定。每项依次检查 stop、find、accepts，再 invoke；三个查询只读，不消费 RNG。find 重新读取最新登记并确认节点／阶段资格。accepts 缺省为允许，返回 false 则跳过；stop 结束整次派发，保留已完成的状态和值，不自动取消业务或回滚。嵌套派发独立取得 Context、current 和候选；返回后接续其 Battle，外层 Context 不变，外层 current 由当前 Hook 返回值决定。
 

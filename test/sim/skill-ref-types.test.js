@@ -19,6 +19,7 @@ import { initialize } from ${source("unit/initialize")};
 import * as units from ${source("unit/query")};
 import { type Definition } from ${source("unit/skill/definition")};
 import { initialize as initializeSkill, hasSkill, type Skill as SkillCapability, type State } from ${source("unit/capability/skill/capability")};
+import { setHook, type ActivationStarted, type ActivationEnded } from ${source("unit/capability/skill/index")};
 import { create, ref, activationRef, getSkill, getActivation, activate, cancel, setState, setActivationState, type Skill, type Activation, lifetime as skillLife } from ${source("unit/skill/index")};
 import { getCurrent } from ${source("unit/skill/query")};
 import { scope, getRef } from ${source("lifetime/index")};
@@ -26,6 +27,8 @@ type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B 
 type Assert<T extends true> = T;
 type Persistent = { count: number };
 type Active = { mode: "FIRST" | "SECOND" };
+type StartedRef = Assert<Equal<ActivationStarted["ref"], Ref<Activation>>>;
+type EndedRef = Assert<Equal<ActivationEnded["ref"], Ref<Activation>>>;
 declare const battle: BattleState;
 declare const sourceRef: Ref<Unit & SkillCapability>;
 declare const self: Activation<Persistent, Active>;
@@ -49,6 +52,11 @@ const definition: Definition<Persistent, Active> = ({
             return setState(current, identity, { count: activation.state.count + 1 });
         },
         onTick: (current, source, activation) => setActivationState(current, activationRef(source, activation), { mode: "SECOND" }),
+        onEnd(current, _source, activation) {
+            const count: number = activation.state.count;
+            const mode: "FIRST" | "SECOND" = activation.activation.state.mode;
+            return current;
+        },
     },
 });
 const factory = { initialize: (current: BattleState) => create(current, definition) };
@@ -72,6 +80,33 @@ const incompleteActivation = { trigger: "MANUAL" as const, sustain: { type: "INF
 initializeSkill(battle, { initialize: current => ({ state: current, value: { definition: { ...definition, activation: incompleteActivation }, state: { count: 0 }, sp: null, activation: null } }) });
 const state = initializeSkill(battle, factory).value;
 type CommonState = Assert<Equal<typeof state, State>>;
+setHook(state, "activationStarted", {
+    id: "public-start-report",
+    invoke(current, { event }) {
+        type Report = Assert<Equal<typeof event, ActivationStarted>>;
+        const active = getActivation(current, event.ref);
+        type PublicActivation = Assert<Equal<typeof active, Activation | undefined>>;
+        // @ts-expect-error a public report does not carry the skill's program.
+        event.definition;
+        // @ts-expect-error a public report does not carry private persistent state.
+        event.state;
+        // @ts-expect-error the public reference cannot reveal private activation state.
+        active?.activation.state.mode;
+        return { state: current, value: undefined };
+    },
+});
+setHook(state, "activationEnded", {
+    id: "public-end-report",
+    invoke(current, { event }) {
+        type Report = Assert<Equal<typeof event, ActivationEnded>>;
+        const reason: "FINISHED" | "CANCELLED" = event.end.type;
+        // @ts-expect-error ended reports retain identity rather than an activation snapshot.
+        event.activation;
+        // @ts-expect-error current or historical sustain is not duplicated in reports.
+        event.sustain;
+        return { state: current, value: undefined };
+    },
+});
 // @ts-expect-error capability state does not expose a program's private state.
 initialized.skill.state.count;
 // @ts-expect-error capability initialization returns default object private state.
@@ -147,4 +182,24 @@ getActivation(battle, known, definition);
     } finally {
         rmSync(directory, { recursive: true, force: true });
     }
+});
+
+test("Skill operations typecheck when their semantic diagnostics are requested before other project files", async () => {
+    const { default: ts } = await import("typescript");
+    const root = fileURLToPath(new URL("../../", import.meta.url));
+    const configPath = fileURLToPath(new URL("../../tsconfig.json", import.meta.url));
+    const config = ts.readConfigFile(configPath, ts.sys.readFile);
+    assert.equal(config.error, undefined);
+    const parsed = ts.parseJsonConfigFileContent(config.config, ts.sys, root, { noEmit: true });
+    assert.deepEqual(parsed.errors, []);
+    const program = ts.createProgram(parsed.fileNames, parsed.options);
+    const operationsPath = fileURLToPath(new URL("../../src/core/unit/skill/operations.ts", import.meta.url));
+    const operations = program.getSourceFile(operationsPath);
+    assert.ok(operations);
+
+    const diagnostics = program.getSemanticDiagnostics(operations);
+    assert.deepEqual(diagnostics.map((diagnostic) => ({
+        code: diagnostic.code,
+        message: ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"),
+    })), []);
 });

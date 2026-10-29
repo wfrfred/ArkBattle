@@ -56,14 +56,14 @@ for (const reason of ["DEATH", "RETREAT", "SCRIPT"]) {
       unit(1),
     ]));
     const source = getUnit(state, 0);
-    state = updateUnit(state, [{ ...source, skill: setHook(source.skill, "ended", {
+    state = updateUnit(state, [{ ...source, skill: setHook(source.skill, "activationEnded", {
       id: "observe-cancellation",
       invoke(state, { host, event }) {
         const self = getUnit(state, host.id);
         observedEnds.push(event.end);
         assert.equal(self.lifecycle, "LEAVING");
         assert.equal(self.skill.activation, null);
-        return { state: finish(state, activationRef(host, event.activation)), value: undefined };
+        return { state: finish(state, event.ref), value: undefined };
       },
     }) }]);
     const activated = activate(state, skillRef(source));

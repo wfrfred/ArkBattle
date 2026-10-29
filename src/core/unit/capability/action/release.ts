@@ -15,7 +15,7 @@ export interface Context {
     readonly execution: Ref<Execution>;
 }
 
-export type Hook = hook.Hook<Context, Directive>;
+export type BeforeReleaseHook = hook.Hook<Context, Directive>;
 
 export type ReleasedHook = hook.Hook<Context, void>;
 

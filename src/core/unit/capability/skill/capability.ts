@@ -20,8 +20,8 @@ export interface State extends SkillState {
     readonly spModified: readonly Hook<Events["spModified"]>[];
     readonly ammoConsumed: readonly Hook<Events["ammoConsumed"]>[];
     readonly ammoReplenished: readonly Hook<Events["ammoReplenished"]>[];
-    readonly activated: readonly Hook<Events["activated"]>[];
-    readonly ended: readonly Hook<Events["ended"]>[];
+    readonly activationStarted: readonly Hook<Events["activationStarted"]>[];
+    readonly activationEnded: readonly Hook<Events["activationEnded"]>[];
 }
 
 export interface Skill {
@@ -57,8 +57,8 @@ export function initialize(battle: BattleState, definition: Definition): Result<
         spModified: [],
         ammoConsumed: [],
         ammoReplenished: [],
-        activated: [],
-        ended: [],
+        activationStarted: [],
+        activationEnded: [],
     };
 
     return { state: initialized.state, value };

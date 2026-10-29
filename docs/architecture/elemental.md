@@ -113,7 +113,7 @@ Hook 采用公共协议 `(battle, fixedContext, current) => Result<T>`。事实�
 → 仍有资格才执行 Definition.onStart
 ```
 
-非爆发分支提交损伤后只派发 damaged。报告与 Hook 保留提交时的数值，不因同步嵌套结束而重算。started Hook 可以请求结束 Burst，随后仍可能派发原损伤事实。没有活动 Lifetime 结算时，早先 started 候选可以使 ended 嵌套完成；已有结算时，ended 等到 Finalize。后续 started 候选继续处理原创建事实，不改写已提交报告。
+非爆发分支提交损伤后只派发 damaged。报告与 Hook 保留提交时的数值，不因同步嵌套结束而重算。burstStarted Hook 可以请求结束 Burst，随后仍可能派发原损伤事实。没有活动 Lifetime 结算时，早先 burstStarted 候选可以使 burstEnded 嵌套完成；已有结算时，burstEnded 等到 Finalize。后续 burstStarted 候选继续处理原创建事实，不改写已提交报告。
 
 任何跨领域操作之后，如果后续依赖自己或宿主的当前资格，都按[状态接续契约](functional-core.md#状态接续后的读取与续执行)重新读取。已明确采样的数值和已提交事实继续保留。
 

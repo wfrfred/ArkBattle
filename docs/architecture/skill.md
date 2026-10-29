@@ -144,10 +144,23 @@ Hook 登记仅使用 capability/skill 的 setHook(state, key, hook)／removeHook
 | spModified | 直接修改 SP |
 | ammoConsumed | 指定弹药消费已经结算 |
 | ammoReplenished | 普通补弹已经结算 |
-| activated | 本次 Activation 已成功创建 |
-| ended | 本次 Activation 完整结束 |
+| activationStarted | 本次 Activation 已成功创建 |
+| activationEnded | 本次 Activation 完整结束 |
 
-Hook 使用公共 Hook<Context<E>, void>；Context 固定 host 与本次 event。activated 载荷为非空聚合视图，ended 的 activation 字段也保存该视图；视图内部的 activation 才是本轮元数据。accepts 只读，invoke 返回 Result<void>。每次派发固定候选 ID，逐项读取最新登记；Activation 结束或被替换后，后续观察者仍收到原始事件，当前状态另从最新 battle 查询。
+Hook 使用公共 Hook<Context<E>, void>；Context 固定 host 与本次 event，宿主不在事件中重复保存。公共生命周期报告只保留身份与结束原因：
+
+```typescript
+interface ActivationStarted {
+    readonly ref: Ref<Activation>;
+}
+
+interface ActivationEnded {
+    readonly ref: Ref<Activation>;
+    readonly end: End;
+}
+```
+
+报告不携带完整 Definition 或私有 state，Ref 使用默认 object 泛型；具体 S／A 由自身配对的 Definition 程序解释。accepts 只读，invoke 返回 Result<void>。每次派发固定候选 ID，逐项读取最新登记；后续观察者始终收到同一本次事实，当前状态另从最新 battle 查询。activationEnded 在清空槽位后通知，其中 Ref 不保证仍可查询到对象，也不能据它取得后来一轮。
 
 不提供通用 changed、阈值注册表或充能状态机。资源事件携带本次结算前后事实；阈值观察者订阅相关业务 Hook。每次派发独立固定候选 ID，逐项按 ID 读取最新登记并执行最新 accepts／invoke；同 ID 替换在本轮使用新版本，新 ID 等待下次派发，嵌套报告不会重写外层事实。
 
@@ -155,15 +168,15 @@ HIT 回复由 Skill.enter 在 Damage 的 receivingStarted 扩展点登记，发�
 
 ## 5. 发动与完整结束
 
-发动先检查当前宿主、触发方式、许可、门槛与足额支付，采样数据与持续预算，再一次性写入扣费和新 Activation。随后依次记录 SKILL_ACTIVATED、派发 activated、通知 spPaid，再执行仍有资格的 onStart。支付 Hook 可以终止已创建的激活；后续启动程序必须重读同一身份、ACTIVE 状态和宿主当前资格，创建事实不会被撤销，支付报告保留已提交时的前后值。
+发动先检查当前宿主、触发方式、许可、门槛与足额支付，采样数据与持续预算，再一次性写入扣费和新 Activation。随后依次记录 SKILL_ACTIVATED、派发 activationStarted、通知 spPaid，再执行仍有资格的 onStart。支付 Hook 可以终止已创建的激活；后续启动程序必须重读同一身份、ACTIVE 状态和宿主当前资格，创建事实不会被撤销，支付报告保留已提交时的前后值。
 
 accepts、门槛与本次支付在 Activation 创建之前确定，不能依赖尚未建立的本轮私有 state。需要本轮身份的业务放在已登记后的程序中；不能为了前置判断提前复制一套激活状态。
 
-activated 表达实例已经创建，不承诺 onStart 效果已经安装。它的派发先于可能终止激活的支付与启动程序。没有活动 Lifetime 结算时，前一个 activated Hook 的结束操作可以在后续 activated 候选前完成 ended；已有结算时，嵌套结束只同步执行请求／Prepare，ended 等待 Finalize。后续候选始终处理原创建事实，不因终止重写报告。
+activationStarted 表达实例已经创建，不承诺 onStart 效果已经安装。它的派发先于可能终止激活的支付与启动程序。没有活动 Lifetime 结算时，前一个 activationStarted Hook 的结束操作可以在后续 activationStarted 候选前完成 activationEnded；已有结算时，嵌套结束只同步执行请求／Prepare，activationEnded 等待 Finalize。后续候选始终处理原创建事实，不因终止重写报告。
 
-Skill 的公共 lifetime 描述符绑定本轮 Activation，Effect 使用 scope(skillLifetime, activationRef) 建立依赖。请求先登记 Pending 并发布 ENDING，再展开依赖；最外层结算器等待依赖者完整完成后进入 Finalize。Finalize 从所有权保护的当前 unit.skill 取得同一轮完整聚合，以显式 source 调用 onEnd，再重读宿主并只清空 activation，保留最新持久 state／SP，记录事件与派发 ended；其他完整操作同样通过普通查询线性接续，不经过泛型 reader。整个 Finalize 返回后才解除 owner 等待，Unit 在此期间保留原 Definition 与当前状态，不需要通用历史回退。
+Skill 的公共 lifetime 描述符绑定本轮 Activation，Effect 使用 scope(skillLifetime, activationRef) 建立依赖。请求先登记 Pending 并发布 ENDING，再展开依赖；最外层结算器等待依赖者完整完成后进入 Finalize。Finalize 从所有权保护的当前 unit.skill 取得同一轮完整聚合，以显式 source 调用 onEnd，再重读宿主并只清空 activation，保留最新持久 state／SP，记录事件与派发 activationEnded；其他完整操作同样通过普通查询线性接续，不经过泛型 reader。整个 Finalize 返回后才解除 owner 等待，Unit 在此期间保留原 Definition 与当前状态，不需要通用历史回退。
 
-ENDING 期间继续占用同一激活槽位，持久 Skill 聚合始终保留。嵌套 finish／cancel 首次请求返回只保证 Prepare，不保证本轮已清空或 ended 已派发；需要下一次激活的业务放在槽位释放后的 ended 时点，已有结算范围中不能强行 drain。重复 PREPARING 请求也不等待原 Prepare。
+ENDING 期间继续占用同一激活槽位，持久 Skill 聚合始终保留。嵌套 finish／cancel 首次请求返回只保证 Prepare，不保证本轮已清空或 activationEnded 已派发；需要下一次激活的业务放在槽位释放后的 activationEnded 时点，已有结算范围中不能强行 drain。重复 PREPARING 请求也不等待原 Prepare。
 
 Unit 退场通过派生所有权关系自动请求 Skill、Action、Burst 与 Effects；Skill 请求先于 Action，兄弟可以都先进入 ENDING。首次原因不会被后续完成／取消覆盖；Unit Finalize 晚于这些子项的整个 Finalize。结束内容跨完整操作后仍按需要读取当前宿主与实例。
 

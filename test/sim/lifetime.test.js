@@ -46,7 +46,7 @@ test("a child Finalize can request its owner while the owner survives until the 
     settled(battle);
 });
 
-test("a removed Activation still delays its owner until the entire ended Hook returns", () => {
+test("a removed Activation still delays its owner until the entire activationEnded Hook returns", () => {
     const trace = [];
     const skill = skillDefinition({ sp: null, activation: {
         trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}),
@@ -56,23 +56,23 @@ test("a removed Activation still delays its owner until the entire ended Hook re
         return { state: battle, value: undefined };
     } }] });
     let battle = effectFixtureWork(host);
-    battle = update(battle, [{ ...host, skill: setHook(host.skill, "ended", {
+    battle = update(battle, [{ ...host, skill: setHook(host.skill, "activationEnded", {
         id: "remove-owner-after-slot-clear",
         invoke(current, { host, event }) {
-            assert.equal(skills.getActivation(current, skills.activationRef(host, event.activation)), undefined);
+            assert.equal(skills.getActivation(current, event.ref), undefined);
             assert.equal(getUnit(current, host.id).skill.activation, null);
-            trace.push("ended:begin");
+            trace.push("activationEnded:begin");
             current = remove(current, host.id, "SCRIPT");
             assert.equal(getUnit(current, host.id).lifecycle, "LEAVING");
-            assert.deepEqual(trace, ["ended:begin"]);
-            trace.push("ended:return");
+            assert.deepEqual(trace, ["activationEnded:begin"]);
+            trace.push("activationEnded:return");
             return { state: current, value: undefined };
         },
     }) }]);
     const started = skills.activate(battle, skillRef(getUnit(battle, 1)));
     assert.equal(started.value.type, "ACTIVATED");
     battle = skills.finish(started.state, started.value.ref);
-    assert.deepEqual(trace, ["ended:begin", "ended:return", "owner:left"]);
+    assert.deepEqual(trace, ["activationEnded:begin", "activationEnded:return", "owner:left"]);
     assert.equal(getUnit(battle, 1), undefined);
     settled(battle);
 });

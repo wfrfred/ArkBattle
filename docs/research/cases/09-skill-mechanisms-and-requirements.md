@@ -304,7 +304,7 @@ Skill 结束后的输出不自动证明宿主离场后也继续。例如蕾缪�
 
 ### 3.1 资源事件的接口评审要求
 
-仅有资源数值变化、`activated`、`ended` 无法清晰表达上表中的业务观察者。接口按已结算的业务事实收窄，不保留 `spChanged`、`ammoChanged` 一类兜底通知：
+仅有资源数值变化、`activationStarted`、`activationEnded` 无法清晰表达上表中的业务观察者。接口按已结算的业务事实收窄，不保留 `spChanged`、`ammoChanged` 一类兜底通知：
 
 | Hook | 对应事实 |
 | --- | --- |
@@ -313,8 +313,8 @@ Skill 结束后的输出不自动证明宿主离场后也继续。例如蕾缪�
 | `spModified` | 直接 MODIFY 操作实际改变 SP；不额外接收 RECOVER 或 PAY 的通知。 |
 | `ammoConsumed` | 实际消费指定数额的弹药，包括允许负余量的消费。 |
 | `ammoReplenished` | 普通补弹操作实际补入弹药；对应补弹累计额度政策。 |
-| `activated` | 成功创建本次 Activation。 |
-| `ended` | 本次 Activation 结束。 |
+| `activationStarted` | 成功创建本次 Activation。 |
+| `activationEnded` | 本次 Activation 结束。 |
 
 一次资源结算派发其对应的具体 Hook，不再追加兜底变化事件。载荷按该项业务定义类型，保留实际数额、前后值及所需来源，而不要求每个观察者重新从通用请求联合中筛选业务。其他直接弹药增加的操作及通知名称随其业务接口确定，不能混入普通补弹累计额度或消费。增加资源操作也不自动要求添加没有观察者的 Hook。
 
@@ -324,7 +324,7 @@ Skill 结束后的输出不自动证明宿主离场后也继续。例如蕾缪�
 
 其他单位可以通过公开 Hook 登记接口观察目标的具体弹药业务，不要求 Skill 识别具体观察者或增加中央事件转发。消费通知保留数额，不要求公共层为每一发拆成一次独立数值提交；具体多次响应的时序仍按真实可观察业务确定。
 
-弹药阈值可以从已结算的报告判断，暂不增加通用 `ammoExhausted` 或阈值注册表。TIME 的自然流逝通过 battle.tick 查询，到期通过 `ended` 观察；没有实际观察者时，不为每个 Tick 或每次持续预算修正预置新的 Hook。
+弹药阈值可以从已结算的报告判断，暂不增加通用 `ammoExhausted` 或阈值注册表。TIME 的自然流逝通过 battle.tick 查询，到期通过 `activationEnded` 观察；没有实际观察者时，不为每个 Tick 或每次持续预算修正预置新的 Hook。
 
 ## 4. 调度与范围
 
@@ -383,3 +383,21 @@ Skill 结束后的输出不自动证明宿主离场后也继续。例如蕾缪�
 Action 侧还需在 Operations 设计中确定普通行动的准备、实际释放与完成等公开业务点；不能将现有 `beforeRelease` 当作它们的统一替代。Skill 程序负责在这些业务点组合公开接口，Action 核心不据此了解具体技能。
 
 这些未知限制具体策略的定稿，不妨碍先分开已经证明不同的概念。下一步 API 设计应以本页需求和代表性轨迹验收。
+
+## 8. 本季技能观察者与公共事件载荷补查
+
+2026-10-29 检查 `src/content`／`src/data`，尚无生产内容消费 Skill 的公共生命周期 Hook。本轮同时扫描了[本地 activity_table 镜像](/tmp/stronghold-player-side-data-20261026/activity_table.json)的 `activity.AUTOCHESS_SEASON.act2autochess`：361 项效果、23 项盟约、40 项策略、320 项特质、266 项棋子配置。镜像来源、指纹及版本关联限制见[持久来源登记](../evidence/skill-modifier-20261029/content.json)的 `sources.mirrorActivityTable`。数量分别对应 effectInfoDataDict、bondInfoDict、bandDataListDict、garrisonDataDict、charChessDataDict；同一效果的配置与 Buff 信息不重复计数。这是本季配置扫描范围，不代表已核实全部原生执行链。
+
+代表性外部观察需求如下；效果描述另与 [PRTS 本季盟约记录](https://prts.wiki/w/卫戍协议：盟约_下半/PRTS盟约记录)及[本季策略记录](https://prts.wiki/w/卫戍协议：盟约_下半)交叉核对。
+
+| 代表内容 | 需要观察的公开事实与内容自身状态 |
+| --- | --- |
+| 炎国短刀 | 观察技能开启，装备效果保存自己的叠层数与上限。 |
+| 黄沙罗盘 | 观察首次技能结束及组合装备的开启触发；效果保存自己的首次标记。 |
+| 萨尔贡盟约 | 观察盟约成员开启技能；盟约内容管理受益者与各层期限。 |
+| 迅捷盟约 | 观察技能结束后按自身层数与概率规则回复 SP。 |
+| 休谟斯「回收利用」 | 观察地面干员技能结束，按公开位置选择受益者并回复 SP。 |
+
+这些需求可以由实例身份、宿主公共事实与观察者自己的 state 表达，没有显示外部观察者需要取得被观察技能的任意私有 S／A。具体技能的数据仍由自身 Definition 程序解释。由此收窄项目协议：activationStarted 使用 ActivationStarted `{ ref: Ref<Activation> }`，activationEnded 使用 ActivationEnded `{ ref: Ref<Activation>, end: End }`；宿主由 Context.host 提供，不附带完整 Definition、私有 state 或没有消费者的元数据快照。载荷表示固定的本次事实；结束时先清槽，Ref 不承诺仍可查询。
+
+本节依据是配置文本、镜像描述与 PRTS 记录，不是对原生回调签名或派发时序的反编译证明；具体原生消费／计时链仍以 2.7 的独立证据为准。现有人工测试只验证项目契约，不证明游戏必须采用相同载荷。公开名称依照[接口约定](../../architecture/api-conventions.md#1-基本分类)改为 activationStarted／activationEnded；activate 操作、SKILL_ACTIVATED 日志及已确定的提交／通知顺序保持原义。

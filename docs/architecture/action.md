@@ -200,7 +200,7 @@ interface State {
     readonly interval: readonly Contribution<Input>[];
     readonly speed: readonly Contribution<Input>[];
     readonly rules: readonly Rule[];
-    readonly beforeRelease: readonly ReleaseHook[];
+    readonly beforeRelease: readonly BeforeReleaseHook[];
     readonly released: readonly ReleasedHook[];
 }
 ```
@@ -301,7 +301,7 @@ Skill 弹药行动在 prepare 采样当前 Activation Ref，不能提前到 Unit
 
 需要首次起手或连续会话的内容，可以在具体 Unit 扩展状态中保存跨轮事实，由 Unit 的 tick Hook 或相关业务 Hook 维护，成功登记后的 onTick 消费；失败启动不消费。通用 Action 不制造另一套共享起手阶段机。
 
-beforeRelease(battle, executionRef) 返回 CONTINUE 或 INTERRUPT／recoveryTicks。Hook 使用公共 Hook<Context, Directive>，Context 固定 source 与 execution: Ref<Execution>，后者明确绑定本轮执行；released 通知使用同一 Context。accepts／invoke 接收 battle、context、current 并返回统一 Result。候选 ID 固定，逐项重读最新登记；stop 在执行结束、宿主离场或首个中断时停止。恢复信息交给具体程序，不写通用 Unit recoveryUntilTick。
+beforeRelease(battle, executionRef) 返回 CONTINUE 或 INTERRUPT／recoveryTicks。前置干预类型为 BeforeReleaseHook，使用公共 Hook<Context, Directive>；业务事实通知类型为 ReleasedHook，使用 Hook<Context, void>。Context 固定 source 与 execution: Ref<Execution>，后者明确绑定本轮执行。accepts／invoke 接收 battle、context、current 并返回统一 Result。候选 ID 固定，逐项重读最新登记；stop 在执行结束、宿主离场或首个中断时停止。恢复信息交给具体程序，不写通用 Unit recoveryUntilTick。
 
 释放 Hook 返回后，普通攻击进入输出前重新确认本轮 execution.RUNNING 及宿主在场资格；已经完成输出后的消耗按实际业务和采样身份处理。不能把所有跨领域调用后的检查都机械化为同一个存活门槛。
 
