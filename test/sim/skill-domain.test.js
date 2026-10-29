@@ -47,10 +47,10 @@ function parameterEffect(id, modifiers) {
     };
 }
 
-test("SP capacity can be replaced during activation and restored by ending its owning Effect", () => {
+test("a dynamic SP capacity addition applies during activation and is removed with its owning Effect", () => {
     const f = fixture({ sp: resource({ initial: 10, capacity: 10, requirement: 10, cost: 10 }) });
-    const effect = parameterEffect("coin-capacity", {
-        capacity: { priority: 0, apply: (_battle, self, current) => self.skill.activation === null ? current : 20 },
+    const effect = parameterEffect("active-capacity", {
+        capacity: (_battle, self) => self.skill.activation === null ? [] : [value({ addition: 10 })],
     });
     const installed = effects.install(f.state, f.ref, effect);
     assert.equal(sp.resolveCapacity(installed.state, f.ref), 10);
@@ -65,8 +65,8 @@ test("SP capacity can be replaced during activation and restored by ending its o
 test("a Fever-style Effect independently removes the SP requirement and payment and restores both", () => {
     const f = fixture({ sp: resource({ initial: 0, capacity: 10, requirement: 10, cost: 10 }) });
     const effect = parameterEffect("fever-permission", {
-        requirement: { priority: 0, apply: () => 0 },
-        cost: { priority: 0, apply: () => 0 },
+        requirement: [value({ finalScaler: 0 })],
+        cost: [value({ finalScaler: 0 })],
     });
     assert.equal(skills.activate(f.state, f.skillRef).value.type, "REJECTED");
     const installed = effects.install(f.state, f.ref, effect);
@@ -81,32 +81,36 @@ test("a Fever-style Effect independently removes the SP requirement and payment 
     assert.equal(skills.activate(state, f.skillRef).value.type, "REJECTED");
 });
 
-test("SP parameter programs use explicit order and exclusive sources while default payment follows requirement", () => {
+test("SP parameters combine independent data sources and exclusive groups while default payment follows requirement", () => {
     const f = fixture({ sp: resource({ capacity: 10, cost: undefined }) });
     const currentSkill3 = getUnit(f.state, 1).skill;
-    let state = setSkill(f.state, { ...currentSkill3, sp: sp.setContribution(
-        sp.setContribution(currentSkill3.sp, "capacity", {
-            id: "z-add", value: { priority: 0, apply: (_battle, _self, current) => current + 2 },
-        }), "capacity", {
-            id: "a-scale", value: { priority: 1, apply: (_battle, _self, current) => current * 2 },
-        },
-    ) });
-    assert.equal(sp.resolveCapacity(state, f.ref), 24);
+    let state = f.state;
+    for (const entries of [
+        [{ id: "z-add", value: [value({ addition: 2 })] },
+         { id: "a-scale", value: [value({ finalScaler: 2 })] }],
+        [{ id: "z-scale", value: [value({ finalScaler: 2 })] },
+         { id: "a-add", value: [value({ addition: 2 })] }],
+    ]) {
+        state = setSkill(f.state, { ...currentSkill3, sp: entries.reduce(
+            (resource, entry) => sp.setContribution(resource, "capacity", entry), currentSkill3.sp,
+        ) });
+        assert.equal(sp.resolveCapacity(state, f.ref), 24);
+    }
     const currentSkill4 = getUnit(state, 1).skill;
     state = setSkill(state, { ...currentSkill4, sp: sp.setContribution(
         sp.setContribution(currentSkill4.sp, "requirement", {
             id: "weak", group: { id: "requirement", priority: 1 },
-            value: { priority: 0, apply: () => 4 },
+            value: [value({ addition: 1 })],
         }), "requirement", {
             id: "strong", group: { id: "requirement", priority: 2 },
-            value: { priority: 0, apply: () => 5 },
+            value: [value({ addition: 2 })],
         },
     ) });
     assert.equal(sp.resolveRequirement(state, f.ref), 5);
     assert.equal(sp.resolveCost(state, f.ref), 5);
     const currentSkill5 = getUnit(state, 1).skill;
     state = setSkill(state, { ...currentSkill5, sp: sp.setContribution(currentSkill5.sp, "cost", {
-        id: "discount", value: { priority: 0, apply: (_battle, _self, current) => current / 2 },
+        id: "discount", value: [value({ finalScaler: 0.5 })],
     }) });
     assert.equal(sp.resolveCost(state, f.ref), 3);
     const currentSkill6 = getUnit(state, 1).skill;
@@ -115,7 +119,7 @@ test("SP parameter programs use explicit order and exclusive sources while defau
     assert.equal(sp.resolveCost(state, f.ref), 2);
 });
 
-test("a charged duration program samples all prepayment charges when the activation begins", () => {
+test("a dynamic duration multiplier samples all prepayment charges when the activation begins", () => {
     const f = fixture({
         sp: resource({ initial: 10, capacity: 10, requirement: 2, cost: undefined }),
         activation: {
@@ -125,8 +129,9 @@ test("a charged duration program samples all prepayment charges when the activat
     });
     const entry = {
         id: "charged-duration",
-        value: { priority: 0, apply: (_battle, self, current) =>
-            current * (1 + Math.floor(self.skill.sp.value / self.skill.definition.sp.requirement) * 0.4) },
+        value: (_battle, self) => [value({
+            finalScaler: 1 + Math.floor(self.skill.sp.value / self.skill.definition.sp.requirement) * 0.4,
+        })],
     };
     const currentBattle = at(f.state, 7);
     const currentSkill7 = getUnit(currentBattle, 1).skill;
@@ -503,18 +508,20 @@ test("non-TIME recovery does not evaluate natural speed or publish tick-only Uni
     }
 });
 
-test("Skill modifier registration validates priority while evaluation validates program output", () => {
+test("SP and TIME budgets reject non-finite dynamic contribution output", () => {
     const f = fixture({ sp: resource() });
     const before = read(f.state);
-    const invalid = { id: "bad-priority", value: { priority: NaN, apply: () => 1 } };
-    for (const key of ["capacity", "requirement", "cost"]) {
-        assert.throws(() => sp.setContribution(before.sp, key, invalid), /modifier priority/);
+    const invalid = { id: "bad-output", value: () => [value({ addition: NaN })] };
+    for (const [key, resolve] of [
+        ["capacity", sp.resolveCapacity],
+        ["requirement", sp.resolveRequirement],
+        ["cost", sp.resolveCost],
+    ]) {
+        const state = setSkill(f.state, { ...before, sp: sp.setContribution(before.sp, key, invalid) });
+        assert.throws(() => resolve(state, f.ref), /resolved SP/);
     }
-    assert.throws(() => setDurationContribution(before, invalid), /modifier priority/);
-    const withBadOutput = { ...before, sp: sp.setContribution(before.sp, "capacity", {
-        id: "bad-output", value: { priority: 0, apply: () => NaN },
-    }) };
-    const state = setSkill(f.state, withBadOutput);
-    assert.throws(() => sp.resolveCapacity(state, f.ref), /modified parameter/);
+    const durationFixture = fixture();
+    const durationState = setSkill(durationFixture.state, setDurationContribution(read(durationFixture.state), invalid));
+    assert.throws(() => skills.activate(durationState, durationFixture.skillRef), /duration|budget/);
     assert.equal(read(f.state), before);
 });

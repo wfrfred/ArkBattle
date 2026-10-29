@@ -1,5 +1,4 @@
 import {
-    assertFiniteNumber,
     assertNonnegativeSafeInteger,
     assertPositiveNumber,
     assertSafeInteger,
@@ -13,22 +12,19 @@ import * as contribution from "../contribution/contribution.js";
 import * as attribute from "../contribution/attribute.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import type { Skill } from "../capability/skill/capability.js";
-import * as modifier from "./modifier.js";
 import { update as updateUnit } from "../../battle/unit.js";
 import { dispatch } from "../capability/skill/hook.js";
 
 export type Source = "TIME" | "ACTION" | "HIT" | "EXTERNAL";
 
-export type Input =
-    | readonly attribute.Modifier[]
-    | ((battle: BattleState, self: Unit & Skill) => readonly attribute.Modifier[]);
+export type Input = contribution.Input<attribute.Modifier, Unit & Skill>;
 
-export type { Modifier } from "./modifier.js";
+export type { Modifier } from "../contribution/attribute.js";
 
 export interface Inputs {
-    readonly capacity: modifier.Modifier;
-    readonly requirement: modifier.Modifier;
-    readonly cost: modifier.Modifier;
+    readonly capacity: Input;
+    readonly requirement: Input;
+    readonly cost: Input;
     readonly recoverySpeed: Input;
     readonly recoveryMultiplier: Input;
 }
@@ -92,18 +88,11 @@ export type Outcome =
 
 export type Parameter = keyof Inputs;
 
-type Setting = {
-    [K in Parameter]: [state: State, key: K, entry: contribution.Contribution<Inputs[K]>];
-}[Parameter];
-
-export function setContribution(...[state, key, entry]: Setting): State {
-    if (key === "recoverySpeed" || key === "recoveryMultiplier") {
-        const updated = contribution.set(state[key], entry);
-
-        return updated === state[key] ? state : { ...state, [key]: updated };
-    }
-
-    assertFiniteNumber(entry.value.priority, "skill modifier priority");
+export function setContribution(
+    state: State,
+    key: Parameter,
+    entry: contribution.Contribution<Input>,
+): State {
     const updated = contribution.set(state[key], entry);
 
     return updated === state[key] ? state : { ...state, [key]: updated };
@@ -424,26 +413,23 @@ function resolve(battle: BattleState, self: Unit & Skill, key: Parameter): numbe
             base = definition[key];
     }
 
+    const value = Math.max(
+        0,
+        attribute.apply(
+            base,
+            contribution
+                .resolve(state[key])
+                .flatMap((input) => (typeof input === "function" ? input(battle, self) : input)),
+        ),
+    );
     if (key === "recoverySpeed" || key === "recoveryMultiplier") {
-        return Math.max(
-            0,
-            attribute.apply(
-                base,
-                contribution
-                    .resolve(state[key])
-                    .flatMap((input) =>
-                        typeof input === "function" ? input(battle, self) : input,
-                    ),
-            ),
-        );
+        return value;
     }
 
-    const value = Math.ceil(
-        Math.max(0, modifier.apply(battle, self, base, contribution.resolve(state[key]))),
-    );
-    assertNonnegativeSafeInteger(value, `skill resolved SP ${key}`);
+    const amount = Math.ceil(value);
+    assertNonnegativeSafeInteger(amount, `skill resolved SP ${key}`);
 
-    return value;
+    return amount;
 }
 
 function allowsRecovery(battle: BattleState, self: Unit & Skill, source: Source): boolean {

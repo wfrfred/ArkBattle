@@ -8,9 +8,7 @@ export interface Definition {
     readonly attack: number;
 }
 
-export type Input =
-    | readonly attribute.Modifier[]
-    | ((battle: BattleState, self: Unit & Offense) => readonly attribute.Modifier[]);
+export type Input = contribution.Input<attribute.Modifier, Unit & Offense>;
 
 export interface State {
     readonly attack: readonly contribution.Contribution<Input>[];

@@ -336,7 +336,7 @@ export interface Definition {
     readonly halfBodyWidth: number;
 }
 
-export type Input = readonly attribute.Modifier[] | ((battle: BattleState, self: Unit & Locomotion) => readonly attribute.Modifier[]);
+export type Input = contribution.Input<attribute.Modifier, Unit & Locomotion>;
 
 export interface State {
     readonly velocity: WorldPosition;

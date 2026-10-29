@@ -77,9 +77,11 @@ setState 只更新当前 Skill 的 state，setActivationState 只更新当前本
 
 SP Definition 保存 initial、capacity、requirement、可选数值 cost 和 Recovery。cost 未指定时以有效 requirement 为基础，再结算 cost 贡献。特殊发动可在同一输入版本中查询本次 cost 并初始化形态数据。
 
-SP 容量、门槛与支付贡献使用 Skill 自己的 Modifier：`{ priority, apply(battle, self, current) => number }`。先由 Contribution 选择互斥胜者，再按程序 priority 升序执行，同优先级沿候选 ID 顺序；这是显式数值变换，不是 Attribute 四段叠加。SP 容量／门槛／支付以及 TIME 时长的静态 Modifier.priority 在对应贡献登记入口校验为有限数；每次 apply 的结果仍在程序输出边界校验。两项回复属性继续使用 attribute.Modifier，setContribution 的 key 决定并约束对应载荷。
+SP 各参数贡献统一使用 `contribution.Input<attribute.Modifier, Unit & SkillCapability>`：静态值为修正数据列表，动态函数根据当前 battle 与宿主返回同类列表。先由 Contribution 选择互斥胜者，再求值并展平数据，按 Attribute 固定公式 `((base + Σaddition) × max(0, 1 + Σmultiplier) + ΣfinalAddition) × ΠfinalScaler` 归并。容量／门槛／支付最后非负裁剪并向上取整，输出边界检查有效整数；回复速度／倍率保留连续值。没有内容自选的变换 priority 或接收累计 current 的回调。
 
-实际需求包括：琳琅诗怀雅的金币容量覆写、玛露西尔的容量／最低门槛／逐次支付分离，以及 Fever 期间门槛与支付的变化。这些干员的完整内容接入仍需逐项完成。容量变化时的额外 SP 清空等行为由明确资源操作完成，不在纯查询中偷偷结算。
+这条固定归并是项目对纯数值贡献采用的共同约定，不宣称官方所有技能参数都使用该公式。客户端 Rune／遗物的逐来源取整属于创建前预处理，配置替换、清空 SP 与事件支付属于明确操作；它们不能用实时贡献查询代替。证据及边界见 [Skill 修正协议调研](../research/cases/09-skill-mechanisms-and-requirements.md#25-数值修正协议补核动态输入不等于有序变换)。
+
+实际需求包括：琳琅诗怀雅的金币配置切换、玛露西尔的容量／最低门槛／逐次支付分离，以及 Fever 的发动政策。这些干员的完整内容接入仍需逐项完成。容量切换时的 SP 清空等行为由明确资源操作完成，不在纯查询中偷偷结算；加算贡献也不意味着可以压制其他来源、绝对覆写最终容量。
 
 Recovery 为 TIME、ACTION、HIT 或 NONE。EXTERNAL 是资源操作的来源，普通 Action 的启动、推进和结束不会自动授予 SP。具体普通行动在成功释放点调用 Action.released，Skill.enter 登记相应监听并调用自己的 recover；被拦截或取消的释放不产生通知。
 
@@ -109,9 +111,9 @@ TIME 实例仅保存 endsAtTick。AMMO 保存 initial、remaining、replenished�
 
 持续时间、耗弹量及贡献输入在实际入口校验。内部预算、到期 Tick、剩余弹药与激活身份按游戏尺度直接计算，不重复检查算术结果是否超过安全整数范围。
 
-TIME 的 setDurationContribution 使用 Skill 领域 Modifier，可在发动输入版本中读取 SP 决定预算。雷狼龙S空爆按消耗充能延长持续时间，既可在此采样预算，也可由启动程序按原生流程消费并延时；该案例不证明通用属性叠加。哈蒂娅的运行中条件延长由 extendTime 表达。
+TIME 的 setDurationContribution 使用 `contribution.Input<attribute.Modifier, Unit & SkillCapability>`，与 SP 纯数值贡献采用相同固定归并，最终预算非负裁剪、向上取整并检查有限数。动态输入可在发动输入版本中读取 SP 决定预算。雷狼龙S空爆按消耗充能延长持续时间，既可在此采样预算，也可由启动程序按原生流程消费并延时；该案例本身不证明通用属性叠加。哈蒂娅的运行中条件延长由 extendTime 表达。
 
-AMMO 的 setAmmoContribution 使用 ammo.Modifier `{ addition, ratio }`，归并公式为 `max(1, base + Σaddition + RoundToEven(base × Σratio))`。固定追加不参与比例乘算。TIME 与 AMMO 使用各自的贡献载荷和 setter。
+AMMO 的 setAmmoContribution 使用 `contribution.Input<ammo.Modifier, Unit & SkillCapability>`，同样只接受静态列表或返回列表的动态函数。ammo.Modifier 为 `{ addition, ratio }`，仍保留独立公式 `max(1, base + Σaddition + RoundToEven(base × Σratio))`，固定追加不参与比例乘算。TIME 与 AMMO 使用各自的贡献载荷和 setter。
 
 弹药消费按完整指定数额结算，允许负余量。`consume` 不自动结束，`check` 独立检查最新同一 Activation 的余量并结束。具体行动决定调用耗尽检查的业务节点。
 

@@ -77,6 +77,11 @@ export type {
     Outcome as AmmoOutcome,
 } from "./ammo.js";
 
-export type { Modifier } from "./modifier.js";
+export type { Modifier } from "../contribution/attribute.js";
 
-export type { Definition as SustainDefinition, Ammo, State as SustainState } from "./sustain.js";
+export type {
+    Definition as SustainDefinition,
+    Input as DurationInput,
+    Ammo,
+    State as SustainState,
+} from "./sustain.js";

@@ -1,0 +1,1540 @@
+{
+  "checkedOn": "2026-10-29",
+  "scope": "Read-only static type-tree decoding of selected installed official-client Unity AssetBundles. Selected exact field and action-node projections, not complete templates, execution traces, or runtime XLua validation.",
+  "clientManifest": {
+    "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/hot_update_list.json",
+    "manifestVersion": "V078",
+    "versionId": "26-09-13-15-28-10-30688348",
+    "limitation": "Manifest identity is not proof that every loaded runtime resource or XLua replacement matches these static assets."
+  },
+  "sources": {
+    "skills": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+      "sha256": "14306a31b1856f61b25812a69a2a057b7c4634561fb2c2bccc42fb37ee41a27e",
+      "bytes": 1343313
+    },
+    "buffTemplates": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+      "sha256": "12419ad8d1ea9f670cca214e525240c691cdf3796b82acc8050698d66c202a37",
+      "bytes": 2022247
+    },
+    "feverEnvironment": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]envsystems.ab",
+      "sha256": "8a6aab5189b6d4e396219b42341820da2576eccef6500cef5c57d63a37f5ea40",
+      "bytes": 172381
+    },
+    "mirrorActivityTable": {
+      "path": "/tmp/stronghold-player-side-data-20261026/activity_table.json",
+      "sha256": "6c2a3f5881de85959c5aa60514bbb683855f8fce04746be5fcca0b6dcc6c15b7",
+      "gitBlobSha1": "881d115a579069f71dd1ab7d19766dc1a0fc58ec",
+      "bytes": 14131174,
+      "sourceClassification": "Third-party mirror of serialized client data; not an official documentation source.",
+      "repository": "Kengxxiao/ArknightsGameData",
+      "repositoryPath": "zh_CN/gamedata/excel/activity_table.json",
+      "associatedSnapshotCommit": "bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d",
+      "associatedSnapshotUrl": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/excel/activity_table.json",
+      "provenanceLimit": "The retained local audit /tmp/stronghold-player-side-data-20261026/evidence.json associates its data collection with this commit. This extraction freshly hashes the local activity table but does not independently verify this table Git blob against that remote commit or bind it to the installed client build."
+    },
+    "nativeDll": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+      "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+      "bytes": 218523112
+    },
+    "nativeMetadata": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+      "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+      "bytes": 45805368
+    }
+  },
+  "extraction": {
+    "decoder": "/tmp/stronghold-target-sort-20261020/steward/decode_prefab.py",
+    "bundleReader": "/tmp/stronghold_interaction_assets.py",
+    "method": "Decode UnityFS blocks and serialized object type trees; parse selected eventToActions SerializedState JSON strings. No client execution.",
+    "objectIdEncoding": "Unity object IDs and PPtr m_PathID values are decimal strings to preserve 64-bit identity.",
+    "projections": "fields are selected exact serialized fields; absent fields are not claims of absence. actionPointer is a JSON Pointer into the decoded SerializedState action array; eventId remains the raw integer without assigning an event name.",
+    "decoderLimitation": "The existing decoder has incomplete common-string names for some unrelated Unity fields. Selected named MonoBehaviour fields and resource action JSON were decoded without object-size discrepancies. AssetBundle container entries below normalize their string key and asset PPtr."
+  },
+  "skillPrefabAssets": [
+    {
+      "assetPath": "dyn/battle/prefabs/[uc]skills/skchr_marcil_1.prefab",
+      "asset": {
+        "m_FileID": 0,
+        "m_PathID": "5922566497473454935"
+      }
+    },
+    {
+      "assetPath": "dyn/battle/prefabs/[uc]skills/skchr_marcil_2.prefab",
+      "asset": {
+        "m_FileID": 0,
+        "m_PathID": "5082186103673240525"
+      }
+    },
+    {
+      "assetPath": "dyn/battle/prefabs/[uc]skills/skchr_marcil_3.prefab",
+      "asset": {
+        "m_FileID": 0,
+        "m_PathID": "9090381740889473465"
+      }
+    },
+    {
+      "assetPath": "dyn/battle/prefabs/[uc]skills/skchr_swire2_1.prefab",
+      "asset": {
+        "m_FileID": 0,
+        "m_PathID": "2175994795202261760"
+      }
+    },
+    {
+      "assetPath": "dyn/battle/prefabs/[uc]skills/skchr_swire2_2.prefab",
+      "asset": {
+        "m_FileID": 0,
+        "m_PathID": "-8524169521253233361"
+      }
+    },
+    {
+      "assetPath": "dyn/battle/prefabs/[uc]skills/skchr_swire2_3.prefab",
+      "asset": {
+        "m_FileID": 0,
+        "m_PathID": "-4593468031792708400"
+      }
+    }
+  ],
+  "skillPrefabFields": [
+    {
+      "source": "skills",
+      "prefabName": "skchr_marcil_3",
+      "gameObjectId": "9090381740889473465",
+      "cab": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "componentId": "-7137456302563982919",
+      "componentOffset": 1540904,
+      "componentBytes": 304,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "6851783972288338031"
+      },
+      "fields": {
+        "_allowSpRecoveryWhenAffecting": 0,
+        "_showSpAsBulletMode": 0,
+        "_showSpRatioAsProgress": 1,
+        "_canCastWithNoSp": 1
+      }
+    },
+    {
+      "source": "skills",
+      "prefabName": "skchr_swire2_1",
+      "gameObjectId": "2175994795202261760",
+      "cab": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "componentId": "-6113116743026855168",
+      "componentOffset": 1670448,
+      "componentBytes": 48,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-3274901815170231993"
+      },
+      "fields": {
+        "_spCost": 0,
+        "_modifySpType": 0,
+        "_spType": 0,
+        "_resetWhenSkillEnd": 1
+      }
+    },
+    {
+      "source": "skills",
+      "prefabName": "skchr_swire2_3",
+      "gameObjectId": "-4593468031792708400",
+      "cab": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "componentId": "346512971752146128",
+      "componentOffset": 2857464,
+      "componentBytes": 48,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-3274901815170231993"
+      },
+      "fields": {
+        "_spCost": 0,
+        "_modifySpType": 0,
+        "_spType": 0,
+        "_resetWhenSkillEnd": 1
+      }
+    },
+    {
+      "source": "skills",
+      "prefabName": "skchr_marcil_1",
+      "gameObjectId": "5922566497473454935",
+      "cab": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "componentId": "478083744964993879",
+      "componentOffset": 2875296,
+      "componentBytes": 300,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-8629646727638121362"
+      },
+      "fields": {
+        "_allowSpRecoveryWhenAffecting": 0,
+        "_showSpAsBulletMode": 0,
+        "_showSpRatioAsProgress": 1,
+        "_canCastWithNoSp": 1
+      }
+    },
+    {
+      "source": "skills",
+      "prefabName": "skchr_swire2_1",
+      "gameObjectId": "2175994795202261760",
+      "cab": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "componentId": "2034481018859434752",
+      "componentOffset": 3095352,
+      "componentBytes": 204,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "2822254928132392630"
+      },
+      "fields": {
+        "_allowSpRecoveryWhenAffecting": 0,
+        "_showSpAsBulletMode": 1,
+        "_showSpRatioAsProgress": 0,
+        "_canCastWithNoSp": 1
+      }
+    },
+    {
+      "source": "skills",
+      "prefabName": "skchr_swire2_2",
+      "gameObjectId": "-8524169521253233361",
+      "cab": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "componentId": "2167122448082029871",
+      "componentOffset": 3105112,
+      "componentBytes": 216,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "2822254928132392630"
+      },
+      "fields": {
+        "_allowSpRecoveryWhenAffecting": 0,
+        "_showSpAsBulletMode": 1,
+        "_showSpRatioAsProgress": 0,
+        "_canCastWithNoSp": 1
+      }
+    },
+    {
+      "source": "skills",
+      "prefabName": "skchr_swire2_2",
+      "gameObjectId": "-8524169521253233361",
+      "cab": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "componentId": "2256008581636246831",
+      "componentOffset": 3117368,
+      "componentBytes": 48,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-3274901815170231993"
+      },
+      "fields": {
+        "_spCost": 0,
+        "_modifySpType": 0,
+        "_spType": 0,
+        "_resetWhenSkillEnd": 1
+      }
+    },
+    {
+      "source": "skills",
+      "prefabName": "skchr_marcil_2",
+      "gameObjectId": "5082186103673240525",
+      "cab": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "componentId": "2321002891159124941",
+      "componentOffset": 3125968,
+      "componentBytes": 300,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-8629646727638121362"
+      },
+      "fields": {
+        "_allowSpRecoveryWhenAffecting": 0,
+        "_showSpAsBulletMode": 0,
+        "_showSpRatioAsProgress": 1,
+        "_canCastWithNoSp": 1
+      }
+    },
+    {
+      "source": "skills",
+      "prefabName": "skchr_swire2_3",
+      "gameObjectId": "-4593468031792708400",
+      "cab": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "componentId": "3980421150686643408",
+      "componentOffset": 3347048,
+      "componentBytes": 316,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-8629646727638121362"
+      },
+      "fields": {
+        "_allowSpRecoveryWhenAffecting": 0,
+        "_showSpAsBulletMode": 1,
+        "_showSpRatioAsProgress": 0,
+        "_canCastWithNoSp": 0
+      }
+    }
+  ],
+  "resourceActionTemplates": [
+    {
+      "source": "buffTemplates",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "componentId": "6070581171229484677",
+      "componentOffset": 4352,
+      "componentBytes": 16308456,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-2939251915153334317"
+      },
+      "templateKey": "hadiya_s_2[extand_time]",
+      "templateIndex": 4222,
+      "events": [
+        {
+          "eventId": 0,
+          "eventIndex": 0,
+          "nodes": [
+            {
+              "actionPointer": "/0",
+              "node": {
+                "_ownerType": "BUFF_OWNER",
+                "_abilityName": "S2Ability",
+                "_extendTimeKey": "duration",
+                "_waitFirstPeriod": false,
+                "_keepPassedTime": true,
+                "$type": "Torappu.Battle.Action.Nodes+ExtendAbilityCooldown"
+              }
+            }
+          ]
+        },
+        {
+          "eventId": 1,
+          "eventIndex": 1,
+          "nodes": [
+            {
+              "actionPointer": "/0",
+              "node": {
+                "_ownerType": "BUFF_OWNER",
+                "_abilityName": "S2Ability",
+                "_loadFromBlackboard": false,
+                "_coolDownKey": "",
+                "_useNewPeriod": true,
+                "_newPeriod": 0.0,
+                "_loadAbilityFromBlackboard": false,
+                "_waitFirstPeriod": false,
+                "_useAbilityBlackboard": false,
+                "_keepPassedTime": true,
+                "_useOriginalCooldown": true,
+                "$type": "Torappu.Battle.Action.Nodes+UpdateAbilityCoolDown"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "buffTemplates",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "componentId": "6070581171229484677",
+      "componentOffset": 4352,
+      "componentBytes": 16308456,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-2939251915153334317"
+      },
+      "templateKey": "swire2_s_3[end]",
+      "templateIndex": 4461,
+      "events": [
+        {
+          "eventId": 1,
+          "eventIndex": 1,
+          "nodes": [
+            {
+              "actionPointer": "/0",
+              "node": {
+                "_forceFlag": true,
+                "_charFrom": "BUFF_OWNER",
+                "$type": "Torappu.Battle.Action.Nodes+ClearCharacterSp"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "buffTemplates",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "componentId": "6070581171229484677",
+      "componentOffset": 4352,
+      "componentBytes": 16308456,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-2939251915153334317"
+      },
+      "templateKey": "swire2_skill_3",
+      "templateIndex": 4462,
+      "events": [
+        {
+          "eventId": 1,
+          "eventIndex": 1,
+          "nodes": [
+            {
+              "actionPointer": "/0",
+              "node": {
+                "_targetType": "BUFF_OWNER",
+                "_blackboardKey": "times",
+                "_isRatio": false,
+                "_useProgressToFull": false,
+                "_useProgressToReady": false,
+                "_useProgressLayer": false,
+                "$type": "Torappu.Battle.Action.Nodes+AssignCurSpToBB"
+              }
+            },
+            {
+              "actionPointer": "/4",
+              "node": {
+                "_forceFlag": true,
+                "_charFrom": "BUFF_OWNER",
+                "$type": "Torappu.Battle.Action.Nodes+ClearCharacterSp"
+              }
+            }
+          ]
+        },
+        {
+          "eventId": 9,
+          "eventIndex": 2,
+          "nodes": [
+            {
+              "actionPointer": "/0",
+              "node": {
+                "_targetType": "BUFF_OWNER",
+                "_modifyByRatio": false,
+                "_modifyRatio": 0.0,
+                "_modifyByRatioBasedOnCurSP": false,
+                "_modifyBySpCost": false,
+                "_dontCheckSpType": true,
+                "_spMask": "ALL",
+                "_forceFlag": true,
+                "_dontShowSpUI": true,
+                "_modifyValue": 1,
+                "_spString": "sp",
+                "_isMinis": false,
+                "_customModifierKey": "swire2_add_coin",
+                "$type": "Torappu.Battle.Action.Nodes+ModifySp"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "buffTemplates",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "componentId": "6070581171229484677",
+      "componentOffset": 4352,
+      "componentBytes": 16308456,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-2939251915153334317"
+      },
+      "templateKey": "swire2_t_1",
+      "templateIndex": 4465,
+      "events": [
+        {
+          "eventId": 65,
+          "eventIndex": 0,
+          "nodes": [
+            {
+              "actionPointer": "/0",
+              "node": {
+                "_forceFlag": true,
+                "_charFrom": "BUFF_OWNER",
+                "$type": "Torappu.Battle.Action.Nodes+ClearCharacterSp"
+              }
+            },
+            {
+              "actionPointer": "/1",
+              "node": {
+                "_targetType": "BUFF_OWNER",
+                "_modifyByRatio": false,
+                "_modifyRatio": 0.0,
+                "_modifyByRatioBasedOnCurSP": false,
+                "_modifyBySpCost": false,
+                "_dontCheckSpType": true,
+                "_spMask": "ALL",
+                "_forceFlag": true,
+                "_dontShowSpUI": true,
+                "_modifyValue": 0,
+                "_spString": "sp",
+                "_isMinis": false,
+                "_customModifierKey": "",
+                "$type": "Torappu.Battle.Action.Nodes+ModifySp"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "buffTemplates",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "componentId": "6070581171229484677",
+      "componentOffset": 4352,
+      "componentBytes": 16308456,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-2939251915153334317"
+      },
+      "templateKey": "swire2_tr",
+      "templateIndex": 4466,
+      "events": [
+        {
+          "eventId": 2,
+          "eventIndex": 0,
+          "nodes": [
+            {
+              "actionPointer": "/1/_succeedNodes/2",
+              "node": {
+                "_targetType": "BUFF_OWNER",
+                "_modifyByRatio": false,
+                "_modifyRatio": 0.0,
+                "_modifyByRatioBasedOnCurSP": false,
+                "_modifyBySpCost": false,
+                "_dontCheckSpType": true,
+                "_spMask": "ALL",
+                "_forceFlag": true,
+                "_dontShowSpUI": true,
+                "_modifyValue": 0,
+                "_spString": "sp",
+                "_isMinis": false,
+                "_customModifierKey": "swire2_add_coin",
+                "$type": "Torappu.Battle.Action.Nodes+ModifySp"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "buffTemplates",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "componentId": "6070581171229484677",
+      "componentOffset": 4352,
+      "componentBytes": 16308456,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-2939251915153334317"
+      },
+      "templateKey": "marcil_s_3[boom]",
+      "templateIndex": 5281,
+      "events": [
+        {
+          "eventId": 0,
+          "eventIndex": 0,
+          "nodes": [
+            {
+              "actionPointer": "/1",
+              "node": {
+                "_targetType": "TARGET",
+                "_modifyByRatio": false,
+                "_modifyRatio": 0.0,
+                "_modifyByRatioBasedOnCurSP": false,
+                "_modifyBySpCost": false,
+                "_dontCheckSpType": true,
+                "_spMask": "ALL",
+                "_forceFlag": true,
+                "_dontShowSpUI": true,
+                "_modifyValue": 0,
+                "_spString": "skill_cost_min_sp",
+                "_isMinis": true,
+                "_customModifierKey": "",
+                "$type": "Torappu.Battle.Action.Nodes+ModifySp"
+              }
+            }
+          ]
+        },
+        {
+          "eventId": 2,
+          "eventIndex": 1,
+          "nodes": [
+            {
+              "actionPointer": "/0/_succeedNodes/1",
+              "node": {
+                "_targetType": "TARGET",
+                "_modifyByRatio": false,
+                "_modifyRatio": 0.0,
+                "_modifyByRatioBasedOnCurSP": false,
+                "_modifyBySpCost": false,
+                "_dontCheckSpType": true,
+                "_spMask": "ALL",
+                "_forceFlag": true,
+                "_dontShowSpUI": true,
+                "_modifyValue": 0,
+                "_spString": "sp_cost_extra",
+                "_isMinis": true,
+                "_customModifierKey": "",
+                "$type": "Torappu.Battle.Action.Nodes+ModifySp"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "buffTemplates",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "componentId": "6070581171229484677",
+      "componentOffset": 4352,
+      "componentBytes": 16308456,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-2939251915153334317"
+      },
+      "templateKey": "marcil_s_2",
+      "templateIndex": 5284,
+      "events": [
+        {
+          "eventId": 32,
+          "eventIndex": 0,
+          "nodes": [
+            {
+              "actionPointer": "/0",
+              "node": {
+                "_targetType": "TARGET",
+                "_modifyByRatio": false,
+                "_modifyRatio": 0.0,
+                "_modifyByRatioBasedOnCurSP": false,
+                "_modifyBySpCost": false,
+                "_dontCheckSpType": true,
+                "_spMask": "ALL",
+                "_forceFlag": true,
+                "_dontShowSpUI": true,
+                "_modifyValue": 0,
+                "_spString": "skill_cost_min_sp",
+                "_isMinis": true,
+                "_customModifierKey": "",
+                "$type": "Torappu.Battle.Action.Nodes+ModifySp"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "buffTemplates",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "componentId": "6070581171229484677",
+      "componentOffset": 4352,
+      "componentBytes": 16308456,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-2939251915153334317"
+      },
+      "templateKey": "marcil_s_1",
+      "templateIndex": 5285,
+      "events": [
+        {
+          "eventId": 22,
+          "eventIndex": 0,
+          "nodes": [
+            {
+              "actionPointer": "/0",
+              "node": {
+                "_targetType": "TARGET",
+                "_modifyByRatio": false,
+                "_modifyRatio": 0.0,
+                "_modifyByRatioBasedOnCurSP": false,
+                "_modifyBySpCost": false,
+                "_dontCheckSpType": true,
+                "_spMask": "ALL",
+                "_forceFlag": true,
+                "_dontShowSpUI": true,
+                "_modifyValue": 0,
+                "_spString": "sp_cost",
+                "_isMinis": true,
+                "_customModifierKey": "",
+                "$type": "Torappu.Battle.Action.Nodes+ModifySp"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "buffTemplates",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "componentId": "6070581171229484677",
+      "componentOffset": 4352,
+      "componentBytes": 16308456,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-2939251915153334317"
+      },
+      "templateKey": "marcil_t",
+      "templateIndex": 5286,
+      "events": [
+        {
+          "eventId": 12,
+          "eventIndex": 0,
+          "nodes": [
+            {
+              "actionPointer": "/0",
+              "node": {
+                "_target": "TARGET",
+                "_blackboardKey": "mana",
+                "_copyToSharedBlackboard": false,
+                "$type": "Torappu.Battle.Action.Nodes+CopyCharacterSharedBlackboard"
+              }
+            },
+            {
+              "actionPointer": "/1",
+              "node": {
+                "_forceFlag": false,
+                "_charFrom": "BUFF_OWNER",
+                "$type": "Torappu.Battle.Action.Nodes+ClearCharacterSp"
+              }
+            },
+            {
+              "actionPointer": "/3",
+              "node": {
+                "_targetType": "TARGET",
+                "_spCostString": "mana_max",
+                "_onlyUpdateSpCost": true,
+                "_updateSkillSpCostMin": false,
+                "_assignOldValueKey": null,
+                "_updateSpCostViaMaxRatioKey": null,
+                "$type": "Torappu.Battle.Action.Nodes+ModifySpData"
+              }
+            },
+            {
+              "actionPointer": "/4",
+              "node": {
+                "_targetType": "BUFF_OWNER",
+                "_modifyByRatio": false,
+                "_modifyRatio": 0.0,
+                "_modifyByRatioBasedOnCurSP": false,
+                "_modifyBySpCost": false,
+                "_dontCheckSpType": true,
+                "_spMask": "ALL",
+                "_forceFlag": true,
+                "_dontShowSpUI": true,
+                "_modifyValue": 0,
+                "_spString": "mana",
+                "_isMinis": false,
+                "_customModifierKey": "",
+                "$type": "Torappu.Battle.Action.Nodes+ModifySp"
+              }
+            }
+          ]
+        },
+        {
+          "eventId": 4,
+          "eventIndex": 1,
+          "nodes": [
+            {
+              "actionPointer": "/0/_succeedNodes/0",
+              "node": {
+                "_targetType": "TARGET",
+                "_blackboardKey": "mana",
+                "_isRatio": false,
+                "_useProgressToFull": false,
+                "_useProgressToReady": false,
+                "_useProgressLayer": false,
+                "$type": "Torappu.Battle.Action.Nodes+AssignCurSpToBB"
+              }
+            },
+            {
+              "actionPointer": "/2",
+              "node": {
+                "_target": "TARGET",
+                "_blackboardKey": "mana",
+                "_copyToSharedBlackboard": true,
+                "$type": "Torappu.Battle.Action.Nodes+CopyCharacterSharedBlackboard"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "buffTemplates",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "componentId": "6070581171229484677",
+      "componentOffset": 4352,
+      "componentBytes": 16308456,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-2939251915153334317"
+      },
+      "templateKey": "sandbox_v3_difficult_5",
+      "templateIndex": 8478,
+      "events": [
+        {
+          "eventId": 0,
+          "eventIndex": 0,
+          "nodes": [
+            {
+              "actionPointer": "/0/_succeedNodes/0",
+              "node": {
+                "_targetType": "TARGET",
+                "_spCostString": null,
+                "_onlyUpdateSpCost": true,
+                "_updateSkillSpCostMin": false,
+                "_assignOldValueKey": null,
+                "_updateSpCostViaMaxRatioKey": "sp_ratio",
+                "$type": "Torappu.Battle.Action.Nodes+ModifySpData"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "buffTemplates",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "componentId": "6070581171229484677",
+      "componentOffset": 4352,
+      "componentBytes": 16308456,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-2939251915153334317"
+      },
+      "templateKey": "sandbox_v3_food_1",
+      "templateIndex": 8484,
+      "events": [
+        {
+          "eventId": 0,
+          "eventIndex": 0,
+          "nodes": [
+            {
+              "actionPointer": "/0",
+              "node": {
+                "_targetType": "BUFF_OWNER",
+                "_spCostString": null,
+                "_onlyUpdateSpCost": true,
+                "_updateSkillSpCostMin": false,
+                "_assignOldValueKey": "skill_sp_base",
+                "_updateSpCostViaMaxRatioKey": "sp_ratio",
+                "$type": "Torappu.Battle.Action.Nodes+ModifySpData"
+              }
+            }
+          ]
+        },
+        {
+          "eventId": 1,
+          "eventIndex": 1,
+          "nodes": [
+            {
+              "actionPointer": "/0",
+              "node": {
+                "_targetType": "BUFF_OWNER",
+                "_spCostString": "skill_sp_base",
+                "_onlyUpdateSpCost": true,
+                "_updateSkillSpCostMin": false,
+                "_assignOldValueKey": null,
+                "_updateSpCostViaMaxRatioKey": null,
+                "$type": "Torappu.Battle.Action.Nodes+ModifySpData"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "buffTemplates",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "componentId": "6070581171229484677",
+      "componentOffset": 4352,
+      "componentBytes": 16308456,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-2939251915153334317"
+      },
+      "templateKey": "sandbox_v3_aesthetics_trap_skill_sp_down",
+      "templateIndex": 8503,
+      "events": [
+        {
+          "eventId": 0,
+          "eventIndex": 0,
+          "nodes": [
+            {
+              "actionPointer": "/0/_succeedNodes/0",
+              "node": {
+                "_target": "BUFF_OWNER",
+                "_bbKey": "sp_cost_origin",
+                "$type": "Torappu.Battle.Action.Nodes+AssignSpCostToBB"
+              }
+            },
+            {
+              "actionPointer": "/0/_succeedNodes/1",
+              "node": {
+                "_inputKey": "sp_cost_origin",
+                "_outputKey": "sp_cost_final",
+                "_multiplyParamKey": "sp_cost_multi",
+                "_dividedParamKey": null,
+                "_useRemainder": false,
+                "_addParamKey": null,
+                "_minusParamKey": null,
+                "_minValueKey": null,
+                "_maxValueKey": null,
+                "_finalAbs": true,
+                "_finalCeil": false,
+                "_finalFloor": false,
+                "_finalRound": false,
+                "_useAbilityBlackboard": false,
+                "_abilityName": "",
+                "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+              }
+            },
+            {
+              "actionPointer": "/0/_succeedNodes/2",
+              "node": {
+                "_targetType": "TARGET",
+                "_spCostString": "sp_cost_final",
+                "_onlyUpdateSpCost": true,
+                "_updateSkillSpCostMin": false,
+                "_assignOldValueKey": "",
+                "_updateSpCostViaMaxRatioKey": null,
+                "$type": "Torappu.Battle.Action.Nodes+ModifySpData"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "buffTemplates",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "componentId": "6070581171229484677",
+      "componentOffset": 4352,
+      "componentBytes": 16308456,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-2939251915153334317"
+      },
+      "templateKey": "sandbox_v3_relic[skill_cost_up]",
+      "templateIndex": 8520,
+      "events": [
+        {
+          "eventId": 0,
+          "eventIndex": 0,
+          "nodes": [
+            {
+              "actionPointer": "/0",
+              "node": {
+                "_target": "BUFF_OWNER",
+                "_bbKey": "old_sp",
+                "$type": "Torappu.Battle.Action.Nodes+AssignSpCostToBB"
+              }
+            },
+            {
+              "actionPointer": "/1",
+              "node": {
+                "_inputKey": "one",
+                "_outputKey": "sp_multi",
+                "_multiplyParamKey": null,
+                "_dividedParamKey": null,
+                "_useRemainder": false,
+                "_addParamKey": "sp_cost_up",
+                "_minusParamKey": "",
+                "_minValueKey": null,
+                "_maxValueKey": null,
+                "_finalAbs": true,
+                "_finalCeil": false,
+                "_finalFloor": false,
+                "_finalRound": false,
+                "_useAbilityBlackboard": false,
+                "_abilityName": "",
+                "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+              }
+            },
+            {
+              "actionPointer": "/2",
+              "node": {
+                "_inputKey": "old_sp",
+                "_outputKey": "new_sp",
+                "_multiplyParamKey": "sp_multi",
+                "_dividedParamKey": null,
+                "_useRemainder": false,
+                "_addParamKey": null,
+                "_minusParamKey": null,
+                "_minValueKey": null,
+                "_maxValueKey": null,
+                "_finalAbs": true,
+                "_finalCeil": true,
+                "_finalFloor": false,
+                "_finalRound": false,
+                "_useAbilityBlackboard": false,
+                "_abilityName": "",
+                "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+              }
+            },
+            {
+              "actionPointer": "/3",
+              "node": {
+                "_targetType": "BUFF_OWNER",
+                "_spCostString": "new_sp",
+                "_onlyUpdateSpCost": true,
+                "_updateSkillSpCostMin": false,
+                "_assignOldValueKey": null,
+                "_updateSpCostViaMaxRatioKey": null,
+                "$type": "Torappu.Battle.Action.Nodes+ModifySpData"
+              }
+            }
+          ]
+        },
+        {
+          "eventId": 1,
+          "eventIndex": 1,
+          "nodes": [
+            {
+              "actionPointer": "/0",
+              "node": {
+                "_targetType": "BUFF_OWNER",
+                "_spCostString": "old_sp",
+                "_onlyUpdateSpCost": true,
+                "_updateSkillSpCostMin": false,
+                "_assignOldValueKey": null,
+                "_updateSpCostViaMaxRatioKey": null,
+                "$type": "Torappu.Battle.Action.Nodes+ModifySpData"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "buffTemplates",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "componentId": "6070581171229484677",
+      "componentOffset": 4352,
+      "componentBytes": 16308456,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-2939251915153334317"
+      },
+      "templateKey": "sandbox_v3_relic[skill_cost_down]",
+      "templateIndex": 8521,
+      "events": [
+        {
+          "eventId": 0,
+          "eventIndex": 0,
+          "nodes": [
+            {
+              "actionPointer": "/0",
+              "node": {
+                "_target": "BUFF_OWNER",
+                "_bbKey": "old_sp",
+                "$type": "Torappu.Battle.Action.Nodes+AssignSpCostToBB"
+              }
+            },
+            {
+              "actionPointer": "/1",
+              "node": {
+                "_inputKey": "one",
+                "_outputKey": "sp_multi",
+                "_multiplyParamKey": null,
+                "_dividedParamKey": null,
+                "_useRemainder": false,
+                "_addParamKey": null,
+                "_minusParamKey": "sp_cost_down",
+                "_minValueKey": null,
+                "_maxValueKey": null,
+                "_finalAbs": true,
+                "_finalCeil": false,
+                "_finalFloor": false,
+                "_finalRound": false,
+                "_useAbilityBlackboard": false,
+                "_abilityName": "",
+                "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+              }
+            },
+            {
+              "actionPointer": "/2",
+              "node": {
+                "_inputKey": "old_sp",
+                "_outputKey": "new_sp",
+                "_multiplyParamKey": "sp_multi",
+                "_dividedParamKey": null,
+                "_useRemainder": false,
+                "_addParamKey": null,
+                "_minusParamKey": null,
+                "_minValueKey": null,
+                "_maxValueKey": null,
+                "_finalAbs": true,
+                "_finalCeil": true,
+                "_finalFloor": false,
+                "_finalRound": false,
+                "_useAbilityBlackboard": false,
+                "_abilityName": "",
+                "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+              }
+            },
+            {
+              "actionPointer": "/3",
+              "node": {
+                "_targetType": "BUFF_OWNER",
+                "_spCostString": "new_sp",
+                "_onlyUpdateSpCost": true,
+                "_updateSkillSpCostMin": false,
+                "_assignOldValueKey": null,
+                "_updateSpCostViaMaxRatioKey": null,
+                "$type": "Torappu.Battle.Action.Nodes+ModifySpData"
+              }
+            }
+          ]
+        },
+        {
+          "eventId": 1,
+          "eventIndex": 1,
+          "nodes": [
+            {
+              "actionPointer": "/0",
+              "node": {
+                "_targetType": "BUFF_OWNER",
+                "_spCostString": "old_sp",
+                "_onlyUpdateSpCost": true,
+                "_updateSkillSpCostMin": false,
+                "_assignOldValueKey": null,
+                "_updateSpCostViaMaxRatioKey": null,
+                "$type": "Torappu.Battle.Action.Nodes+ModifySpData"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "feverPrefabFields": [
+    {
+      "source": "feverEnvironment",
+      "prefabName": "env_033_fever",
+      "gameObjectId": "-7500646189824050863",
+      "cab": "CAB-63d3144cebdd9c7c80a7d0b4f965ca02",
+      "componentId": "-4718516842088203951",
+      "componentOffset": 477472,
+      "componentBytes": 56,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-2081027859263501444"
+      },
+      "fields": {
+        "_sideType": 1,
+        "_blackboard": [],
+        "_lifeTimeSetting": {
+          "allowAutoLoad": 1,
+          "autoReleaseBehaviour": {
+            "m_FileID": 0,
+            "m_PathID": "0"
+          }
+        }
+      }
+    },
+    {
+      "source": "feverEnvironment",
+      "prefabName": "env_033_fever",
+      "gameObjectId": "-7500646189824050863",
+      "cab": "CAB-63d3144cebdd9c7c80a7d0b4f965ca02",
+      "componentId": "94084988182100305",
+      "componentOffset": 541280,
+      "componentBytes": 132,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "1385712592894329818"
+      },
+      "fields": {
+        "_feverStartEvent": "fever_start",
+        "_feverCharacterJoinEvent": "join",
+        "_feverCharacterLeaveEvent": "leave",
+        "_feverSteps": [
+          {
+            "feverCharacterCount": 5,
+            "feverStepEvent": "fever_full"
+          },
+          {
+            "feverCharacterCount": 1,
+            "feverStepEvent": "fever_mid"
+          },
+          {
+            "feverCharacterCount": 0,
+            "feverStepEvent": "fever_stop"
+          }
+        ]
+      }
+    },
+    {
+      "source": "feverEnvironment",
+      "prefabName": "env_033_fever",
+      "gameObjectId": "-7500646189824050863",
+      "cab": "CAB-63d3144cebdd9c7c80a7d0b4f965ca02",
+      "componentId": "1358104555100666193",
+      "componentOffset": 551688,
+      "componentBytes": 108,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-6977048220203649249"
+      },
+      "fields": {
+        "_pluginName": "HudPlugins/char_fever_prepare_slider",
+        "_characterClassOnly": 1,
+        "_enemyClassOnly": 0,
+        "_filterById": 0,
+        "_entityIds": [],
+        "_filterByGroupTag": 1,
+        "_groupTags": [
+          "mujica"
+        ]
+      }
+    },
+    {
+      "source": "feverEnvironment",
+      "prefabName": "env_033_fever",
+      "gameObjectId": "-7500646189824050863",
+      "cab": "CAB-63d3144cebdd9c7c80a7d0b4f965ca02",
+      "componentId": "1465498937994279249",
+      "componentOffset": 552344,
+      "componentBytes": 168,
+      "script": {
+        "m_FileID": 1,
+        "m_PathID": "-5906996371569650117"
+      },
+      "fields": {
+        "_allowNotAliveTarget": 0,
+        "_mainDucking": {
+          "status": "fever_mid",
+          "bankName": "fever_mid"
+        },
+        "_subDucking": {
+          "status": "fever_full",
+          "bankName": "fever_full"
+        },
+        "_mainStatus": "fever_mid",
+        "_subStatus": "fever_full",
+        "_stopStatus": "fever_stop",
+        "_startStatus": "fever_start",
+        "_maxPlayingTime": 22.0
+      }
+    }
+  ],
+  "observations": [
+    {
+      "case": "Swire Alter",
+      "evidence": "All three selected skill prefabs contain the same small SP-changing component with _spCost=0 and _resetWhenSkillEnd=1. swire2_t_1 serializes explicit ClearCharacterSp followed by ModifySp; swire2_skill_3 samples SP into times and clears SP on its selected end event.",
+      "limit": "The extra component script is identified by its PPtr and fields here; this content file does not independently label its native class or derive its execution semantics. These resource operations are not evidence for ordering multiple independent numeric-query contributions."
+    },
+    {
+      "case": "Marcille",
+      "evidence": "marcil_t selected event 12 copies mana, clears SP, calls ModifySpData using mana_max with onlyUpdateSpCost=true and updateSkillSpCostMin=false, then force-adds mana. Selected skill prefabs set _canCastWithNoSp=1. Skill templates serialize separate forced negative SP modifications using sp_cost, skill_cost_min_sp, and sp_cost_extra at their own event locations.",
+      "limit": "The data separates resource setup and payments. Native interpretation of ModifySpData and event names belongs to the companion native evidence; these nodes do not establish a numeric contribution fold."
+    },
+    {
+      "case": "Hadiya",
+      "evidence": "hadiya_s_2[extand_time] explicitly extends S2Ability cooldown using duration while keeping passed time, then has a separate update restoring original cooldown configuration.",
+      "limit": "This is an explicit ability-timing operation; the snippets do not prove arbitrary serial initial-duration modifiers."
+    },
+    {
+      "case": "Fever",
+      "evidence": "The installed env_033_fever prefab has a dedicated system component, a mujica group-filtered HUD component, and Fever audio event configuration.",
+      "limit": "The complete primary activation, payment, and pause/resume execution paths were not closed in this content extraction. These prefab fields alone do not prove those behaviors or a numeric aggregation order."
+    }
+  ],
+  "conclusionBoundary": "The retained projections support distinct setup, resource-payment, and timing operations. They do not establish a rule requiring multiple independent numerical modifiers to run according to content-chosen serial priorities, and they do not prove that no such exception exists elsewhere in the game.",
+  "notIncluded": "No secondary Wiki excerpts are included. Catap2 SP-dependent duration was not independently closed as a primary execution chain in this extraction.",
+  "runeSourceRecords": [
+    {
+      "source": "mirrorActivityTable",
+      "jsonPointer": "/activity/BOSS_RUSH/act5bossrush/relicLevelInfoDataMap/act5bossrush_relic_04/levelInfos/1/runeData/runes/3",
+      "key": "char_skill_cd_mul",
+      "selector": {
+        "professionMask": 639,
+        "buildableMask": "ALL",
+        "playerSideMask": "ALL",
+        "sideType": "ALL",
+        "heightTypeMask": "ALL"
+      },
+      "selectorProjection": "Only null-valued selector fields are omitted.",
+      "blackboard": [
+        {
+          "key": "scale",
+          "value": 0.9,
+          "valueStr": null
+        }
+      ]
+    },
+    {
+      "source": "mirrorActivityTable",
+      "jsonPointer": "/activity/BOSS_RUSH/act5bossrush/relicLevelInfoDataMap/act5bossrush_relic_04/levelInfos/2/runeData/runes/3",
+      "key": "char_skill_cd_mul",
+      "selector": {
+        "professionMask": 639,
+        "buildableMask": "ALL",
+        "playerSideMask": "ALL",
+        "sideType": "ALL",
+        "heightTypeMask": "ALL"
+      },
+      "selectorProjection": "Only null-valued selector fields are omitted.",
+      "blackboard": [
+        {
+          "key": "scale",
+          "value": 0.85,
+          "valueStr": null
+        }
+      ]
+    },
+    {
+      "source": "mirrorActivityTable",
+      "jsonPointer": "/activity/BOSS_RUSH/act5bossrush/relicLevelInfoDataMap/act5bossrush_relic_04/levelInfos/3/runeData/runes/3",
+      "key": "char_skill_cd_mul",
+      "selector": {
+        "professionMask": 639,
+        "buildableMask": "ALL",
+        "playerSideMask": "ALL",
+        "sideType": "ALL",
+        "heightTypeMask": "ALL"
+      },
+      "selectorProjection": "Only null-valued selector fields are omitted.",
+      "blackboard": [
+        {
+          "key": "scale",
+          "value": 0.8,
+          "valueStr": null
+        }
+      ]
+    },
+    {
+      "source": "mirrorActivityTable",
+      "jsonPointer": "/activity/BOSS_RUSH/act1bossrush/relicLevelInfoDataMap/act1bossrush_relic_03/levelInfos/2/runeData/runes/1",
+      "key": "char_skill_cd_mul",
+      "selector": {
+        "professionMask": 639,
+        "buildableMask": "ALL",
+        "playerSideMask": "ALL",
+        "sideType": "ALL",
+        "heightTypeMask": "ALL"
+      },
+      "selectorProjection": "Only null-valued selector fields are omitted.",
+      "blackboard": [
+        {
+          "key": "scale",
+          "value": 0.9,
+          "valueStr": null
+        }
+      ]
+    },
+    {
+      "source": "mirrorActivityTable",
+      "jsonPointer": "/activity/BOSS_RUSH/act1bossrush/relicLevelInfoDataMap/act1bossrush_relic_03/levelInfos/3/runeData/runes/2",
+      "key": "char_skill_cd_mul",
+      "selector": {
+        "professionMask": 639,
+        "buildableMask": "ALL",
+        "playerSideMask": "ALL",
+        "sideType": "ALL",
+        "heightTypeMask": "ALL"
+      },
+      "selectorProjection": "Only null-valued selector fields are omitted.",
+      "blackboard": [
+        {
+          "key": "scale",
+          "value": 0.8,
+          "valueStr": null
+        }
+      ]
+    },
+    {
+      "source": "mirrorActivityTable",
+      "jsonPointer": "/activity/VEC_BREAK_V2/act2break/battleBuffDict/act2break_rune01/runeData/runes/1",
+      "key": "char_skill_cd_mul",
+      "selector": {
+        "professionMask": "TRAP",
+        "buildableMask": "ALL",
+        "playerSideMask": "ALL",
+        "sideType": "ALL",
+        "heightTypeMask": "ALL"
+      },
+      "selectorProjection": "Only null-valued selector fields are omitted.",
+      "blackboard": [
+        {
+          "key": "scale",
+          "value": 0.5,
+          "valueStr": null
+        },
+        {
+          "key": "char",
+          "value": 0.0,
+          "valueStr": "trap_048_neonlamp|trap_328_newlamp"
+        }
+      ]
+    },
+    {
+      "source": "mirrorActivityTable",
+      "jsonPointer": "/carData/runeDataDict/durcar_soft_2_1/runes/0",
+      "key": "char_skill_cd_mul",
+      "selector": {
+        "professionMask": "TRAP",
+        "buildableMask": "NONE",
+        "playerSideMask": "ALL",
+        "sideType": "ALL",
+        "heightTypeMask": "ALL"
+      },
+      "selectorProjection": "Only null-valued selector fields are omitted.",
+      "blackboard": [
+        {
+          "key": "char",
+          "value": 0.0,
+          "valueStr": "trap_080_garage"
+        },
+        {
+          "key": "scale",
+          "value": 0.8,
+          "valueStr": null
+        }
+      ]
+    },
+    {
+      "source": "mirrorActivityTable",
+      "jsonPointer": "/carData/runeDataDict/durcar_soft_2_2a/runes/0",
+      "key": "char_skill_cd_mul",
+      "selector": {
+        "professionMask": "TRAP",
+        "buildableMask": "NONE",
+        "playerSideMask": "ALL",
+        "sideType": "ALL",
+        "heightTypeMask": "ALL"
+      },
+      "selectorProjection": "Only null-valued selector fields are omitted.",
+      "blackboard": [
+        {
+          "key": "char",
+          "value": 0.0,
+          "valueStr": "trap_080_garage"
+        },
+        {
+          "key": "scale",
+          "value": 0.5,
+          "valueStr": null
+        }
+      ]
+    },
+    {
+      "source": "mirrorActivityTable",
+      "jsonPointer": "/carData/runeDataDict/durcar_soft_2_2b/runes/0",
+      "key": "char_skill_cd_mul",
+      "selector": {
+        "professionMask": "TRAP",
+        "buildableMask": "NONE",
+        "playerSideMask": "ALL",
+        "sideType": "ALL",
+        "heightTypeMask": "ALL"
+      },
+      "selectorProjection": "Only null-valued selector fields are omitted.",
+      "blackboard": [
+        {
+          "key": "char",
+          "value": 0.0,
+          "valueStr": "trap_080_garage"
+        },
+        {
+          "key": "scale",
+          "value": 2.0,
+          "valueStr": null
+        }
+      ]
+    }
+  ],
+  "runeClassRegistration": {
+    "sources": [
+      "nativeDll",
+      "nativeMetadata"
+    ],
+    "method": "Torappu.Battle.Runes.RuneManager._RegisterRuneClasses",
+    "methodIndex": 85097,
+    "methodAddress": "0x180ce6330",
+    "registrationCallAddress": "0x180ce71f1",
+    "runeKey": "char_skill_cd_mul",
+    "genericMethodInfoIndex": 300034,
+    "metadataRegistrationAddress": "0x187c26040",
+    "methodSpecsAddress": "0x1873a88a0",
+    "methodSpec": {
+      "methodDefinitionIndex": 85098,
+      "method": "Torappu.Battle.Runes.RuneManager._Register",
+      "classInstantiationIndex": -1,
+      "methodInstantiationIndex": 31597
+    },
+    "methodInstantiation": {
+      "typeArgumentCount": 1,
+      "typeArgumentDefinitionIndex": 12375,
+      "typeArgumentName": "Torappu.Battle.Runes.Internal.CSkillCdMul"
+    },
+    "interpretation": "The actual Rune key is char_skill_cd_mul. The registration resolves its native generic type parameter to CSkillCdMul, rather than inferring the class from similar names.",
+    "limit": "Ordinary native registration only; runtime XLua registration/replacement is not verified. The companion native evidence records instruction-level preprocessing and ordering; this object does not define a runtime contribution formula."
+  },
+  "autochessSuntSource": {
+    "source": "mirrorActivityTable",
+    "jsonPointer": "/activity/AUTOCHESS_SEASON/act2autochess/effectBuffInfoDataDict/bondeffect_sunt",
+    "effectDescription": "<在场<@ba.vup>2</>名精锐状态的干员>精锐状态的干员攻击力<@ba.vup>+30%</>\n<在场<@ba.vup>5</>名精锐状态的干员>精锐状态的干员技力消耗<@ba.vup>-30%</>\n<@ba.acrem>（所有干员的精锐状态均可激活本盟约）</>",
+    "buffs": [
+      {
+        "key": "env_gbuff_new",
+        "blackboard": [
+          {
+            "key": "key",
+            "value": 0.0,
+            "valueStr": "act2autochess_bond_eff_sunt"
+          },
+          {
+            "key": "power_char_cnt",
+            "value": 2.0,
+            "valueStr": null
+          },
+          {
+            "key": "ex_char_cnt",
+            "value": 5.0,
+            "valueStr": null
+          },
+          {
+            "key": "power_atk",
+            "value": 0.3,
+            "valueStr": null
+          },
+          {
+            "key": "sp_ratio",
+            "value": 0.7,
+            "valueStr": null
+          }
+        ],
+        "countType": "NONE"
+      }
+    ],
+    "primaryLookup": {
+      "sources": [
+        "buffTemplates"
+      ],
+      "additionalBundle": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]globalbuffs.ab",
+        "sha256": "9d6cc538b7a75703bb0f49c5a3374d39649b6740103d6fefb5ad9718364e4fee"
+      },
+      "checks": [
+        "No template key containing sunt was found in the decoded installed buff_template_holder templates.",
+        "No named object containing sunt or autochess was found in the decoded installed [uc]globalbuffs bundle."
+      ],
+      "limit": "This is a bounded lookup of these installed asset collections; it does not prove the effect is absent from runtime Lua, dynamically built data, or other resources."
+    },
+    "unclosed": "The table proves env_gbuff_new selects act2autochess_bond_eff_sunt with sp_ratio=0.7 and its documented eligibility. This extraction does not determine whether that runtime effect uses ModifySpData, SetCastSkillCost, or another operation; which SP-cost layer it reads; or how simultaneous sources combine."
+  },
+  "additionalScope": "Selected mirror table Rune records and additional installed primary SP-cost action templates were inspected on 2026-10-29. These projections are distinct from the project policy for numerical contributions.",
+  "additionalObservations": [
+    {
+      "case": "Rune actual source entries",
+      "evidence": "The retained activity table contains nine char_skill_cd_mul records: Boss Rush relic levels with scale 0.9/0.85/0.8 or 0.9/0.8, the city-neon buff scale 0.5, and car-garage settings scale 0.8/0.5/2.0. The records and selectors are retained above.",
+      "limit": "Different levels or records alone do not prove simultaneous application. This extraction found no pair of same-key sources established as simultaneously active on one host."
+    },
+    {
+      "case": "Rune co-occurrence in one configuration",
+      "source": "mirrorActivityTable",
+      "jsonPointer": "/activity/VEC_BREAK_V2/act2break/battleBuffDict/act2break_rune01/runeData/runes",
+      "evidence": "The same city-neon configuration contains char_skill_blackb_mul with blackboard cost=0.5 and char_skill_cd_mul with scale=0.5 and char=\"trap_048_neonlamp|trap_328_newlamp\". The description distinguishes SP cost and skill activation currency cost.",
+      "limit": "These are different calculation inputs, not two SP multipliers or a same-key aggregation witness."
+    },
+    {
+      "case": "Sandbox explicit SP-cost rewrites",
+      "evidence": "The relic up/down templates sample old_sp through AssignSpCostToBB, calculate sp_multi as one plus sp_cost_up or one minus sp_cost_down, calculate new_sp from old_sp times sp_multi with finalAbs=true and finalCeil=true, then ModifySpData(new_sp). Their finish events restore old_sp. Food/difficulty templates explicitly use ModifySpData with updateSpCostViaMaxRatioKey=sp_ratio; food stores/restores skill_sp_base.",
+      "limit": "The template nodes establish ordered event operations. The native meaning of the selected SP layer, content reachability, same-host coexistence, and the ordering of independent installations require separate evidence; no arbitrary numeric-priority fold follows from these snippets."
+    }
+  ]
+}

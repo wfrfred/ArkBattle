@@ -20,9 +20,7 @@ export interface Rule {
     readonly allows: (battle: BattleState, self: Unit & Locomotion) => boolean;
 }
 
-export type Input =
-    | readonly attribute.Modifier[]
-    | ((battle: BattleState, self: Unit & Locomotion) => readonly attribute.Modifier[]);
+export type Input = contribution.Input<attribute.Modifier, Unit & Locomotion>;
 
 export interface State {
     readonly velocity: WorldPosition;

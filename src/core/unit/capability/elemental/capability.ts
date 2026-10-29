@@ -8,7 +8,7 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Unit, Definition as UnitDefinition } from "../../unit.js";
 import * as registry from "../../../hook.js";
 import * as contribution from "../../contribution/contribution.js";
-import type { Modifier } from "../../contribution/attribute.js";
+import type * as attribute from "../../contribution/attribute.js";
 import type { Burst, Definition as BurstDefinition } from "./burst.js";
 import type { DamageHook, Events, Hook, Key } from "./hook.js";
 import type { Rule } from "./rule.js";
@@ -19,8 +19,7 @@ export type Type = (typeof ELEMENT_TYPES)[number];
 
 export type Values = Readonly<Record<Type, number>>;
 
-export type Input =
-    readonly Modifier[] | ((battle: BattleState, self: Unit & Elemental) => readonly Modifier[]);
+export type Input = contribution.Input<attribute.Modifier, Unit & Elemental>;
 
 export interface Definition {
     readonly maxEp: number;

@@ -132,7 +132,7 @@ test("ammunition capacity contributions are sampled for each new activation", ()
     const f = loaded(3);
     const currentSkill4 = getUnit(f.state, 1).skill;
     let state = setSkill(f.state, setAmmoContribution(currentSkill4, {
-        id: "bonus", value: { addition: 2, ratio: 0 },
+        id: "bonus", value: [{ addition: 2, ratio: 0 }],
     }));
     assert.equal(remaining(state), 3);
     assert.equal(query.getActivation(state, f.activation).activation.sustain.initial, 3);
@@ -161,9 +161,12 @@ test("ammunition capacity adds fixed counts after rounding only the original pro
 test("ammunition modifiers resolve live inputs and exclusive sources only when the next activation starts", () => {
     const f = loaded(10);
     const weak = { id: "weak", group: { id: "capacity", priority: 1 },
-        value: { addition: 0, ratio: 0.2 } };
+        value: [{ addition: 0, ratio: 0.2 }] };
     const strong = { id: "strong", group: { id: "capacity", priority: 2 },
-        value: (battle) => ({ addition: battle.tick, ratio: 0.5 }) };
+        value: (battle) => [
+            { addition: battle.tick, ratio: 0 },
+            { addition: 0, ratio: 0.5 },
+        ] };
     const currentSkill5 = getUnit(f.state, 1).skill;
     let state = setSkill(f.state, setAmmoContribution(setAmmoContribution(currentSkill5, weak), strong));
     state = at(state, 2);

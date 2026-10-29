@@ -1,4 +1,3 @@
-import { assertFiniteNumber } from "../../../common/assert.js";
 import type { Definition as UnitDefinition, Unit } from "../../unit.js";
 import * as registry from "../../../hook.js";
 import * as contribution from "../../contribution/contribution.js";
@@ -6,7 +5,6 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Skill as SkillState } from "../../skill/skill.js";
 import type { Events, Hook, Key } from "./hook.js";
 import type { Input as AmmoInput } from "../../skill/ammo.js";
-import type { Modifier } from "../../skill/modifier.js";
 import type { Rule } from "./rule.js";
 import * as sustain from "../../skill/sustain.js";
 
@@ -121,14 +119,13 @@ export function removeAmmoContribution(state: State, id: string): State {
 
 export function setDurationContribution(
     state: State,
-    entry: contribution.Contribution<Modifier>,
+    entry: contribution.Contribution<sustain.Input>,
 ): State {
     const current = state.sustain;
     if (current?.type !== "TIME") {
         return state;
     }
 
-    assertFiniteNumber(entry.value.priority, "skill modifier priority");
     const duration = contribution.set(current.duration, entry);
 
     return duration === current.duration ? state : { ...state, sustain: { ...current, duration } };

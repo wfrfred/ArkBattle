@@ -21,9 +21,7 @@ export interface DefenseValues {
     readonly resistance: number;
 }
 
-export type Input =
-    | readonly attribute.Modifier[]
-    | ((battle: BattleState, self: Unit & Vitality) => readonly attribute.Modifier[]);
+export type Input = contribution.Input<attribute.Modifier, Unit & Vitality>;
 
 export interface State {
     readonly hp: number;

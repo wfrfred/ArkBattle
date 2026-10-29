@@ -1,6 +1,6 @@
 # Skill 机制与需求核对
 
-核查日期：2026-10-15。本文先确定业务机制和需求，不固定 Definition、实例、Hook 或 API 的最终形状，不修改源码。案例用于检验协议表达能力；具体内容接入范围仍按项目已有约定处理。
+核查日期：2026-10-15；2026-10-29 补核数值修正协议，见 2.5。本文先确定业务机制和需求，不固定 Definition、实例、Hook 或 API 的最终形状，不修改源码。案例用于检验协议表达能力；具体内容接入范围仍按项目已有约定处理。
 
 ## 1. 来源与证据边界
 
@@ -106,6 +106,81 @@ PRTS 的[异常效果](https://prts.wiki/w/异常效果)与该区分一致。[�
 
 特殊达标历史仍是实际需求：如薇薇安娜 S1 达标后改变攻击范围，SP 下降不自动退出直到下一次技能结束。这类内容用持久私有状态 S 记录事实并管理相应 Effect；不能将所有内容仅按发动时的当前 SP 重建。Activation 的 ACTIVE／ENDING 属于终止重入契约，与是否充能无关。
 
+### 2.5 数值修正协议补核：动态输入不等于有序变换
+
+2026-10-29，项目审查基线为 `9d2cc22`。本节区分客户端直接证据、项目现状和据此采纳的输入设计。客户端 DLL／metadata 的 SHA256 与 2.1 一致；新增完整方法指令、字段偏移与输入指纹见 [native.json](../evidence/skill-modifier-20261029/native.json)，实际资源片段与 Bundle 指纹见 [content.json](../evidence/skill-modifier-20261029/content.json)。未运行官方战斗，也未验证运行时 XLua 覆盖。
+
+**本轮结论：已核对案例需要动态数值、不同参数公式和明确业务操作，但未找到要求多个独立数值贡献按内容自选优先级串行处理前一个结果的组合。** 这不证明全游戏不存在顺序特例，也不证明 SP 容量、门槛、支付和 TIME 时长都采用 Attribute 四段公式。
+
+#### 原生证据
+
+| 方法 | 本轮直接核对的普通原生分支 | 能确定的边界 |
+| --- | --- | --- |
+| `BasicSkill._ApplyModifierToData` 72708，`0x18095e5e0` | 合并 `Delta.blackboard`，并按输入替换范围 ID。 | 名称中的 Modifier 不是本项目的数值 `apply(current)` 协议。 |
+| `BasicSkill.PostprocessData` 72709，`0x18095d990` | 遍历 `m_behaviours` 并调用 Behaviour 的后处理；本轮定位的原生覆盖为 `SkillSubTalents.PostprocessData`，负责分配子天赋。 | 存在内容程序列表，不自动证明参数贡献按数值优先级组合。 |
+| `BasicSkill.ModifyCostMinSp` 72712，`0x18095aec0` | 直接设置 `m_costMinSp`。 | 最低门槛可以独立修改；该操作没有贡献归并。 |
+| `SpController.UpdateSpData` 66747，`0x18070a4f0`；`Entity.UpdateSpData` 66606，`0x1806feff0` | 提交已经选定的 SP 配置；`onlyUpdateSpCost` 决定是否同时替换类型、increments 并维护回复计时。Entity 还按 `SpData.maxSp` 设置容量。 | 这是配置写入及其业务维护，不是数值查询时依次调用贡献程序。 |
+| `Skills.ModifySpDataAfterSkillCast` 84877／84878／84880 | 发动时保存旧 cost，设置配置的 cost；按 `_resetWhenSkillEnd` 在结束时恢复。 | 状态切换需要明确采样、写入和恢复操作。 |
+| `Skills.SpScaleAfterSkillCast._ScaleSpCost` 84998，`0x180cef770` | 将现有 `SpData.spCost` 乘以配置的 `_spScale`，再调用 `Entity.UpdateSpData`。 | 施放后费用变化是按实际事件执行的业务，不等于每次查询都重新归并的贡献。 |
+| `UnitDataFlowConfig.Modifier.Execute` 77853；`_ModifyBlackboard` 77852 | 使用有限的操作数据：赋值 `v`、加法 `b + v`、乘法 `b × v`、`1 + (b - 1) × v` 或字符串赋值。`b` 来自显式输入黑板或已采样的第二操作数；结果写入 Delta。其字段没有 priority。 | 支持以数据描述修正。本方法内部没有任意优先级排序；上游多个修改的调用次序仍不能仅据此判定。 |
+
+自然回复速度与倍率仍以 2.1 的原生 Attribute 证据为准：两项属性各自按固定公式计算后相乘。项目可由提供者动态返回各公式项，再由领域归并；动态程序不必取得前一贡献算出的累计数值。
+
+#### 实际案例及其证明范围
+
+| 案例 | 本轮资源／既有机制证据 | 对设计的要求 |
+| --- | --- | --- |
+| 琳琅诗怀雅 | `skchr_swire2_1/2/3` 的附加组件配置 `_spCost = 0`、`_resetWhenSkillEnd = 1`；`swire2_t_1` 明列清空 SP 后修改 SP 的节点，S3 结束路径另行采样并清空。 | 金币模式涉及配置切换、资源结算与恢复。容量查询的纯修正不能隐含清空 SP。 |
+| 玛露西尔 | `marcil_t` 事件 12 明列 `ClearCharacterSp → ModifySpData(mana_max, onlyUpdateSpCost = true, updateSkillSpCostMin = false) → forced ModifySp(mana)`；技能 Prefab 允许无 SP 发动，具体技能在内容事件中以负 `ModifySp` 支付。 | 容量、发动许可、最低门槛与途中支付分开。不能把付款时点归约为一个参数公式。 |
+| 雷狼龙 S 空爆 | 既有技能机制要求按消耗充能增加本轮持续预算；本轮未新增其完整原生链。 | 可以在发动输入采样预算，或消费后执行延时；不证明初始时长贡献需要任意串行优先级。 |
+| 哈蒂娅 | `hadiya_s_2[extand_time]` 明列 `ExtendAbilityCooldown`，目标为 `S2Ability`，时长键为 `duration`，`_keepPassedTime = true`。 | 运行中延时由明确业务操作表达，不应借初始预算贡献偷偷结算。 |
+| Fever | 既有行为资料区分发动许可、免付 SP、持续计时暂停／恢复；本轮只核对了专用环境 Prefab，未闭合修改发动参数的全部原生链。 | 不能把这些机制当成已证明的数值归并公式，更不能据此证明有序变换协议。 |
+
+上述资源配置是内容证据，不代表已执行其全部路径。跨部署魔力、Fever 热更新政策及未闭合的具体调用仍保持各自未决范围。
+
+#### 项目现状与必要性判断
+
+截至本次审查基线 `9d2cc22`，原 `src/core/unit/skill/modifier.ts` 使用 `{ priority, apply(battle, self, current) }`，每项可以读取并任意变换前一项的结果。`src/content`、`src/data` 未发现对 SP 参数／TIME 时长贡献的生产使用。当时的顺序测试人为构造容量 `10 → +2 → ×2 = 24`，验证了已有协议能执行，不能作为玩法需要该协议的证据。后续实现已删除这套程序协议；[现有测试](../../../test/sim/skill-domain.test.js)验证数据归并、互斥选择与采样时点。
+
+两类 priority 必须区分：`Contribution.group.priority` 在互斥组中选择胜者，继续保留；原 `Skill.Modifier.priority` 对选出后的所有程序排列执行顺序，已随程序协议移除。本轮缺少实际组合依据的是后者，旧架构文档对它的描述也不是独立的客户端证据。
+
+#### 采纳的输入设计方向
+
+修正输入统一表达为静态数据列表或根据当前事实动态生成的数据列表：
+
+```typescript
+export type Input<M, H> =
+    | readonly M[]
+    | ((battle: BattleState, self: H) => readonly M[]);
+```
+
+- `M` 是所属领域的修正数据类型，`H` 是该领域要求的宿主类型；不要求不同领域共用同一个 Modifier 或同一公式。
+- 动态输入是只读求值，使用当前 `battle` 与 `self` 返回零项、一项或多项数据；不接收前一个贡献的累计结果，也不在求值中支付资源、修改 BattleState 或推进时间。
+- 先由 Contribution 选择互斥胜者，再对保留的 Input 在同一输入版本求值并展开列表，最后由所属领域按明确公式归并。数组次序本身不授予内容选择公式阶段或变换顺序的能力。
+- Input 规定数据的提供形式；具体求值与采样时点由所属查询或操作确定：实时参数按查询读取，初始持续预算按发动输入采样；运行中资源变化和延时仍是明确业务操作。
+- 这一形式复用当前 Action、Offense、Locomotion 及 SP 回复属性已有的输入结构，公共类型归 `unit/contribution/contribution.ts`。Ammo 及其调用方也已迁移为列表，不保留单值／列表双协议。
+
+实现对 SP／TIME 的纯贡献复用项目既有的 Attribute 数据及固定归并，不再新设任意变换程序。SP 容量／门槛／支付最后非负裁剪、向上取整；cost 缺省仍以有效 requirement 为基础。TIME 仍在支付前采样，之后贡献变化不改写当前预算，运行中延时仍走明确操作。Ammo 保留自己的加数／比例公式。此为项目对可撤销纯贡献的统一约定，不是“所有官方技能参数均按 Attribute 四段公式计算”的调研结论；绝对配置替换也不能伪装成一个保证压制其他来源的加数。
+
+### 2.6 继续补核：费用预处理、配置操作与持续预算
+
+为确定 2.5 的边界，随后沿客户端 Rune、遗物及实际资源节点继续核查。新增完整指令与字段见 [parameter-operations.json](../evidence/skill-modifier-20261029/parameter-operations.json)，资源片段补充于 [content.json](../evidence/skill-modifier-20261029/content.json)。以下普通原生分支不能推广为运行时 XLua 或全内容组合的结论。
+
+| 路径 | 直接核对的规则 | 所属阶段 |
+| --- | --- | --- |
+| 普通 SP 容量 | `SpData.get_maxSp` 32849：`spCost × maxChargeTime`。 | 根据明确配置派生容量。 |
+| 启动门槛 | `BasicSkill.get_spEnough` 72632：配置了 `m_costMinSp` 时比较该门槛，否则使用 `data.spCost`，另有无 SP 发动许可。 | 发动资格，不查询任意数值变换列表。 |
+| Rune 费用修改 | `CSkillCdAdd` 85329：`cost = RoundEven(cost + value)`；`CSkillCdMul` 85326：`cost = RoundEven(cost × scale)`。固定队列值分别为 500、501，因此先加后乘；每个来源都写回并取整。 | 角色创建前的配置预处理。 |
+| Roguelike 遗物费用倍率 | `RoguelikeBattleManager.PreProcessCharacter` 85519 逐项遍历遗物，`CSkillCostMul` 85835 对当时的 cost 乘倍率并 RoundEven 写回。 | 逐项配置预处理，不是一次合并倍率后取整。 |
+| 运行中 SP 配置变化 | `Nodes.ModifySpData.Execute` 96563：设置黑板提供的整数，或 `ceil(oldCost × ratio)`，提交 `Entity.UpdateSpData`；按配置另行更新最低门槛。 | 明确资源配置操作。 |
+| Sandbox 费用倍率 | `SandboxV3RelicSpModify._ModifySpCost` 89161 及实际模板读取现有费用、按配置计算、向上取整并提交；部分模板在退出时恢复旧值。 | 安装／退出等内容事件，不是纯参数查询。 |
+| 普通持续预算 | `ActiveBuffAbility.SetLifeTime` 90969 读取黑板 duration，并结合所附 Buff 时长求最大值；相关配置另可使其为无限期。 | 初始化具体 Ability 的持续事实，不能直接推导任意时长贡献都相加或相乘。 |
+| 运行中延时 | `ExtendAbilityCooldown.Execute` 99674 取得当前 Ability 周期与黑板延长量，再调用明确修改入口。 | 实例已开始后的业务操作。 |
+
+这里确实存在来源顺序和逐来源舍入，但不是可据此保留任意公共 `priority + apply(current)` 的理由。以说明用数值为例，逐项 `RoundEven(RoundEven(5 × 0.5) × 1.5) = 3`，统一合并后 `RoundEven(5 × 0.5 × 1.5) = 4`。不能把原生预处理不加区分地翻译成查询时的 Attribute 归并，也不能反过来宣称项目的纯贡献政策复刻了这些预处理结果。后续接入对应玩法时，应按其真实阶段组织有限数据与明确操作。
+
+实际卫戍表中的 `act2autochess_bond_eff_sunt` 带有 `sp_ratio = 0.7`，但本机资源尚未闭合它到具体原生操作的绑定；不得仅按键名认定其倍率、取整、叠加和恢复规则。多来源配置覆写、实际时长组合与各内容特殊支付仍按具体链路核实，不以统一 Input 类型替代这些调查。
+
 ## 3. 触发、持续与输出
 
 | 代表机制 | 已确认行为 | 对模型的要求 |
@@ -175,6 +250,7 @@ Skill 结束后的输出不自动证明宿主离场后也继续。例如蕾缪�
 - 断罪者等具体强力击何帧扣 SP，以及前摇中目标失效／中断时是否返还，尚不能统一归纳。冬时 S1 有索敌失败返还的特殊处理，不能推广。 [冬时](https://m.prts.wiki/w/冬时#技能)
 - 攻击回复与释放、未命中、失效弹道、多目标的完整组合，及受击回复在闪避／屏障／抵挡后的准确资格，需要相关链路证据。
 - 动态改变 SP 需求时的现有 SP 换算、容量裁剪与自然回复进度变更算法，尚未完成客户端核对。
+- SP／TIME 的纯贡献采用 2.5 的项目固定归并；官方不同内容的多来源配置覆写、持续预算和特殊支付仍需逐例核对。2.6 已确认的 Rune／遗物逐来源舍入不能推广成全部技能参数的共同公式。
 - 来源退场后，具体持续／延迟技能输出的退出规则要逐例确认。
 
 ## 7. 当前目标设计的代表技能覆盖性

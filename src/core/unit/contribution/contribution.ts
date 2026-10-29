@@ -1,3 +1,7 @@
+import type { State as BattleState } from "../../battle/state.js";
+
+export type Input<M, H> = readonly M[] | ((battle: BattleState, self: H) => readonly M[]);
+
 export interface Group {
     readonly id: string;
     readonly priority: number;

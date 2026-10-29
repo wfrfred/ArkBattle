@@ -1,4 +1,4 @@
-import { assertNonnegativeSafeInteger } from "../../common/assert.js";
+import { assertFiniteNumber, assertNonnegativeSafeInteger } from "../../common/assert.js";
 import { update as updateUnit } from "../../battle/unit.js";
 import type { Identified, Ref } from "../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../battle/state.js";
@@ -6,6 +6,7 @@ import * as lifetimes from "../../lifetime/index.js";
 import * as units from "../query.js";
 import type { Unit } from "../unit.js";
 import * as contribution from "../contribution/contribution.js";
+import * as attribute from "../contribution/attribute.js";
 import { isSpatiallyPresent } from "../capability/presence/capability.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import { hasAction, setReleasedHook } from "../capability/action/capability.js";
@@ -25,7 +26,6 @@ import * as query from "./query.js";
 import { ref as skillRef, type Skill } from "./skill.js";
 import * as sp from "./sp.js";
 import { resolveCapacity as resolveAmmoCapacity } from "./ammo.js";
-import * as modifier from "./modifier.js";
 
 const hitRecovery: ReceivingStartedHook = {
     id: "@skill/hit-recovery",
@@ -446,7 +446,7 @@ function initialSustain(
             definition.amount,
             contribution
                 .resolve(entries)
-                .map((input) => (typeof input === "function" ? input(battle, unit) : input)),
+                .flatMap((input) => (typeof input === "function" ? input(battle, unit) : input)),
         );
 
         return { type: "AMMO", initial: budget, remaining: budget, replenished: 0 };
@@ -456,9 +456,17 @@ function initialSustain(
     const budget = Math.ceil(
         Math.max(
             0,
-            modifier.apply(battle, unit, definition.durationTicks, contribution.resolve(entries)),
+            attribute.apply(
+                definition.durationTicks,
+                contribution
+                    .resolve(entries)
+                    .flatMap((input) =>
+                        typeof input === "function" ? input(battle, unit) : input,
+                    ),
+            ),
         ),
     );
+    assertFiniteNumber(budget, "skill duration budget");
     const endsAtTick = battle.tick + budget;
 
     return { type: "TIME", endsAtTick };

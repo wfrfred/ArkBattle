@@ -192,7 +192,7 @@ interface Rule {
     readonly allows: (battle: BattleState, self: Unit & ActionCapability, definitionId: string) => boolean;
 }
 
-type Input = readonly Modifier[] | ((battle: BattleState, self: Unit & ActionCapability) => readonly Modifier[]);
+type Input = contribution.Input<Modifier, Unit & ActionCapability>;
 
 interface State {
     readonly actions: Actions;

@@ -21,9 +21,7 @@ export interface Rule {
     ) => boolean;
 }
 
-export type Input =
-    | readonly attribute.Modifier[]
-    | ((battle: BattleState, self: Unit & Action) => readonly attribute.Modifier[]);
+export type Input = contribution.Input<attribute.Modifier, Unit & Action>;
 
 export interface State {
     readonly actions: Actions;

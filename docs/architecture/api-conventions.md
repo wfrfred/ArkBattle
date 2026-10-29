@@ -214,7 +214,17 @@ Hook<C,T> 是 `(battle, context, current) => Result<T>`。C 是本次派发固�
 | --- | --- | --- |
 | [Mechanism.onUnitLeave](../../src/core/battle/mechanism.ts) | `(battle, mechanismId, departure)` | 回调已知 Mechanism，应传 self，再传离场业务载荷。 |
 
-Offense、Action、Locomotion、Vitality 的动态 Input 均为 `(battle, self: Unit & 对应Capability) => readonly Modifier[]`；公开属性查询从最新 BattleState 按 Ref 读取宿主，属性公式模块只保留 Modifier、create、apply。互斥组先选择，再求值。
+数值贡献的静态／动态输入统一复用 `unit/contribution/contribution.ts` 中的泛型类型：
+
+```typescript
+export type Input<M, H> =
+    | readonly M[]
+    | ((battle: BattleState, self: H) => readonly M[]);
+```
+
+`M` 由所属领域定义修正数据，`H` 保留对应宿主能力。各领域的 Input 别名使用这个共享类型；互斥组先选择，再对保留输入在同一 BattleState 中只读求值并展开列表，由领域公式归并。输入函数不接收累计结果，也不执行支付或写回操作；具体求值与采样时点由所属查询或操作决定。
+
+Offense、Action、Locomotion、Vitality、Elemental 的公开属性查询从最新 BattleState 按 Ref 读取宿主，属性公式模块只保留 Modifier、create、apply。
 
 战场查询直接归所属领域，返回完整实体或确有用途的关系投影。Unit 使用 all／get，Blocking 使用 blockerOf／blocked／usedCapacity／relations，Projectile 使用 get 及容器查询。Occupancy.at(field, tile) 返回 occupant／support 双槽登记，消费方直接读取并按需取得当前 Unit；map 与 navigation 可直接读取 Field 的只读字段。战斗入口为 initialize(input) 与 step(battle, commands)，直接返回不可变 BattleState，commands 是必填数组；消费侧按所需语义形成局部输出，不提供第二套完整 Snapshot 或 Runtime 对象。
 
@@ -224,7 +234,7 @@ Skill 的程序、单槽 Skill<S, A> 聚合、非空 Activation<S, A> 视图、�
 
 Skill 的 ref(source, definition) 返回持久 Ref<Skill<S, A>>，用于 getSkill／activate／setState；activationRef(source, self) 返回 host＋本轮 ID 的 Ref<Activation<S, A>>，用于查询与轮次操作。两者读取同一个 unit.skill，聚合不重复保存 host。setState 以 Ref<T> 绑定 Skill，接收 NoInfer<T["state"]>，只更新持久 state，允许 LEAVING／结束程序更新；setActivationState 以 Ref<T> 绑定 Activation，接收 NoInfer<T["activation"]["state"]>，只更新 activation.state，ENDING 抛出 TypeError。缺失宿主或过期轮次抛出 RangeError，持久 Definition 不匹配抛出 TypeError。两者从最新 battle 保留其他字段，同引用时返回原 battle，只接受结果值，不提交旧聚合或扩大生命周期权限。
 
-SP setContribution／removeContribution 仍是 unit/skill/sp.ts 的局部资源操作；静态 Skill Modifier.priority 在对应 SP／时长贡献登记入口校验，动态 apply 输出仍在每次求值时校验。非 TIME 的 sp.advance 直接 no-op，不更新 lastTick。Elemental 的完整宿主写回是 operations.ts 中的私有 replaceHost；query.ts 只保留查询。两者均不向内容推广完整实例写回。Action 按 Definition 聚合持久 state、Cooldown 和当前 Execution；内容分别用 setState、setCooldown、setExecutionState 设置对应字段，不提交完整旧条目。Unit 的 leave Hook 以 Departure 为固定终止历史载荷，保留开始离场时的 Unit 与 reason。
+SP setContribution／removeContribution 仍是 unit/skill/sp.ts 的局部资源操作。SP／TIME 的 Input 使用 Attribute 修正数据与固定归并，这是项目的纯贡献约定；Ammo 的 Input 使用自己的 Modifier 和公式。贡献登记不再保存或校验程序 priority，最终 SP 数值和时长预算在消费边界校验；Contribution.group.priority 只负责互斥选择。非 TIME 的 sp.advance 直接 no-op，不更新 lastTick。Elemental 的完整宿主写回是 operations.ts 中的私有 replaceHost；query.ts 只保留查询。两者均不向内容推广完整实例写回。Action 按 Definition 聚合持久 state、Cooldown 和当前 Execution；内容分别用 setState、setCooldown、setExecutionState 设置对应字段，不提交完整旧条目。Unit 的 leave Hook 以 Departure 为固定终止历史载荷，保留开始离场时的 Unit 与 reason。
 
 Card.advance 与 Action 的局部 Cooldown 计算只处理显式传入的局部值，保留必要的 tick 参数。Projectile 的发射时点、到期时点等历史事实也继续保存。
 

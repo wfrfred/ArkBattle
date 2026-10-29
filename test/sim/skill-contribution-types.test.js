@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-test("Skill contributions keep attribute recovery, parameter programs and ammunition values distinct", async () => {
+test("Skill contributions share typed data-list inputs while ammunition keeps its own modifier data", async () => {
     const { default: ts } = await import("typescript");
     const directory = mkdtempSync(join(tmpdir(), "stronghold-skill-contributions-"));
     const source = (name) => JSON.stringify(fileURLToPath(new URL(`../../src/core/${name}.js`, import.meta.url)));
@@ -13,41 +13,60 @@ test("Skill contributions keep attribute recovery, parameter programs and ammuni
     try {
         writeFileSync(path, `
 import * as attribute from ${source("unit/contribution/attribute")};
+import type { Input } from ${source("unit/contribution/contribution")};
 import type { State as BattleState } from ${source("battle/state")};
 import type { Unit } from ${source("unit/unit")};
 import type { Skill, State } from ${source("unit/capability/skill/capability")};
+import type { Offense } from ${source("unit/capability/offense/capability")};
 import { setAmmoContribution, setDurationContribution } from ${source("unit/capability/skill/capability")};
 import * as sp from ${source("unit/skill/sp")};
-import type { Modifier } from ${source("unit/skill/modifier")};
+import type { Modifier as AmmoModifier } from ${source("unit/skill/ammo")};
 declare const state: State;
 declare const resource: sp.State;
 declare const uncertainKey: "capacity" | "recoverySpeed";
-const program: Modifier = { priority: 0, apply: (battle, self, current) => {
+const dynamic: Input<attribute.Modifier, Unit & Skill> = (battle, self) => {
     const fact: BattleState = battle;
     const host: Unit & Skill = self;
-    return host.skill.activation === null ? current : fact.tick;
-} };
-sp.setContribution(resource, "capacity", { id: "capacity", value: program });
-sp.setContribution(resource, "requirement", { id: "requirement", value: program });
-sp.setContribution(resource, "cost", { id: "cost", value: program });
+    return host.skill.activation === null ? [] : [attribute.create({ addition: fact.tick })];
+};
+const fixed: Input<attribute.Modifier, Unit & Skill> = [attribute.create({ addition: 2 })];
+const ammunition: readonly AmmoModifier[] = [{ addition: 2, ratio: 0.5 }];
+const legacyProgram = { priority: 0, apply: (_battle: BattleState, _self: Unit & Skill, current: number) => current };
+declare const wrongHost: (battle: BattleState, self: Unit & Offense) => readonly attribute.Modifier[];
+declare const wrongAmmoHost: (battle: BattleState, self: Unit & Offense) => readonly AmmoModifier[];
+sp.setContribution(resource, "capacity", { id: "capacity", value: dynamic });
+sp.setContribution(resource, "requirement", { id: "requirement", value: fixed });
+sp.setContribution(resource, "cost", { id: "cost", value: dynamic });
 sp.setContribution(resource, "recoverySpeed", { id: "speed", value: [attribute.create({ addition: 1 })] });
 sp.setContribution(resource, "recoveryMultiplier", { id: "ratio", value: (battle, self) => [attribute.create({ finalScaler: self.skill.activation === null ? 1 : battle.tick })] });
-setDurationContribution(state, { id: "duration", value: program });
-setAmmoContribution(state, { id: "ammo", value: { addition: 2, ratio: 0.5 } });
-setAmmoContribution(state, { id: "live-ammo", value: (battle, self) => ({ addition: battle.tick, ratio: self.skill.activation === null ? 0 : 0.5 }) });
-// @ts-expect-error SP mechanism parameters use programs rather than attribute modifiers.
-sp.setContribution(resource, "capacity", { id: "wrong", value: [attribute.create()] });
-// @ts-expect-error recovery attributes do not accept mechanism parameter programs.
-sp.setContribution(resource, "recoverySpeed", { id: "wrong", value: program });
-// @ts-expect-error a key spanning incompatible payload families does not prove their pairing.
-sp.setContribution(resource, uncertainKey, { id: "wrong", value: program });
-// @ts-expect-error duration is a parameter program rather than an attribute value array.
-setDurationContribution(state, { id: "wrong", value: [attribute.create()] });
-// @ts-expect-error ammunition does not use parameter programs.
-setAmmoContribution(state, { id: "wrong", value: program });
-// @ts-expect-error an attribute Modifier is not an ammunition Modifier.
-setAmmoContribution(state, { id: "wrong", value: attribute.create({ finalAddition: 2 }) });
-// @ts-expect-error ammunition does not accept attribute modifier arrays.
+sp.setContribution(resource, uncertainKey, { id: "shared-input", value: dynamic });
+setDurationContribution(state, { id: "duration", value: dynamic });
+setDurationContribution(state, { id: "fixed-duration", value: fixed });
+setAmmoContribution(state, { id: "ammo", value: ammunition });
+setAmmoContribution(state, { id: "live-ammo", value: (battle, self) => [{ addition: battle.tick, ratio: self.skill.activation === null ? 0 : 0.5 }] });
+// @ts-expect-error SP inputs require lists rather than a single modifier.
+sp.setContribution(resource, "capacity", { id: "wrong", value: attribute.create() });
+// @ts-expect-error TIME inputs require lists rather than a single modifier.
+setDurationContribution(state, { id: "wrong", value: attribute.create() });
+// @ts-expect-error ammunition inputs require lists rather than a single modifier.
+setAmmoContribution(state, { id: "wrong", value: { addition: 2, ratio: 0.5 } });
+// @ts-expect-error SP data inputs do not accept the old ordered parameter program.
+sp.setContribution(resource, "cost", { id: "wrong", value: legacyProgram });
+// @ts-expect-error TIME data inputs do not accept the old ordered parameter program.
+setDurationContribution(state, { id: "wrong", value: legacyProgram });
+// @ts-expect-error ammunition data inputs do not accept ordered parameter programs.
+setAmmoContribution(state, { id: "wrong", value: legacyProgram });
+// @ts-expect-error a callback cannot require an Offense host when only Skill is guaranteed.
+sp.setContribution(resource, "requirement", { id: "wrong", value: wrongHost });
+// @ts-expect-error TIME callbacks receive Skill hosts rather than Offense hosts.
+setDurationContribution(state, { id: "wrong", value: wrongHost });
+// @ts-expect-error ammunition callbacks receive Skill hosts rather than Offense hosts.
+setAmmoContribution(state, { id: "wrong", value: wrongAmmoHost });
+// @ts-expect-error ammunition modifier data cannot be used for an SP parameter.
+sp.setContribution(resource, "cost", { id: "wrong", value: ammunition });
+// @ts-expect-error ammunition modifier data cannot be used for TIME duration.
+setDurationContribution(state, { id: "wrong", value: ammunition });
+// @ts-expect-error ammunition does not accept attribute modifier data.
 setAmmoContribution(state, { id: "wrong", value: [attribute.create()] });
 // @ts-expect-error ammunition payloads cannot be applied as attribute modifiers.
 attribute.apply(10, [{ addition: 2, ratio: 0.5 }]);
