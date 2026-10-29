@@ -48,10 +48,6 @@ export function hasActionDefinition(
     return "action" in definition;
 }
 
-export function createDefinition(definition: Definition): Definition {
-    return definition;
-}
-
 export function initialize(battle: BattleState, definition: Definition): Result<State> {
     const initialized = definition.initialize(battle);
 

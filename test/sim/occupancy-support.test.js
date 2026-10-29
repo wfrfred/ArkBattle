@@ -15,7 +15,6 @@ import { remove } from "../../dist/core/battle/unit.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { actionCapability } from "../helpers/actions.js";
-import { createDefinition as actionDefinition } from "../../dist/core/unit/capability/action/capability.js";
 import { initialize } from "../helpers/unit.js";
 
 const map = createMap(2, 3, tileEntries(Array.from({ length: 6 }, () => createTile({
@@ -250,10 +249,10 @@ test("platform onLeave uses its historical occupancy tile after removal and comp
         trace.push("platform left");
         return { state: leaveOccupant(battle, departure), value: undefined };
     } }, [0, 0], {
-        action: actionDefinition(actionCapability(providerAction)),
+        action: actionCapability(providerAction),
     });
     const occupant = unit(20, [0, 0], "OCCUPANT", {
-        action: actionDefinition(actionCapability(occupantAction)),
+        action: actionCapability(occupantAction),
         hooks: [{ id: "test/leave", stage: "leave", invoke(battle) { trace.push("occupant left"); return { state: battle, value: undefined }; } }],
     });
     let battle = fixture([provider, occupant]);

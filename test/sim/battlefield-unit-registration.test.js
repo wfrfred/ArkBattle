@@ -17,7 +17,6 @@ import { add as addUnit, update as updateUnit } from '../../dist/core/battlefiel
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "../helpers/tiles.js";
 import { initialize } from "../helpers/unit.js";
-import { createDefinition as createActionCapabilityDefinition } from "../../dist/core/unit/capability/action/capability.js";
 
 const map = () =>
     createMap(
@@ -46,7 +45,7 @@ const definition = () => ({ hooks: [],
     },
     vitality: { maxHp: 100, defense: 20, resistance: 10 },
     offense: { attack: 10 },
-    action: createActionCapabilityDefinition(actionCapability(createAttack({ id: 'normal', speed: 100,
+    action: actionCapability(createAttack({ id: 'normal', speed: 100,
             triggerBindingId: "primary",
             intervalTicks: 3,
             recoveryTicks: 0,
@@ -70,7 +69,7 @@ const definition = () => ({ hooks: [],
                     }),
                 },
             ],
-         }))),
+         })),
     elemental: {
         maxEp: 1000,
         recoveryPerSecond: 0,

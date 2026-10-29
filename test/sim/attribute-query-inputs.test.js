@@ -24,7 +24,7 @@ function fixture(tick = 0) {
         id: 1, position: [0, 0], definition: { hooks: [],
             id: "dynamic-attributes",
             vitality: { maxHp: 100, defense: 100, resistance: 20 },
-            action: action.createDefinition(actionCapability(program)),
+            action: actionCapability(program),
             locomotion: {
                 speed: 0.5, minSpeed: 0, halfBodyWidth: 0,
                 steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 },

@@ -1,7 +1,6 @@
 export {
     hasAction,
     hasActionDefinition,
-    createDefinition,
     initialize,
     setRule,
     removeRule,

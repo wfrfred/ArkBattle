@@ -28,7 +28,7 @@ import { hasSpatialPresence, isSpatiallyPresent } from "../../dist/core/unit/cap
 import { initialize } from "../helpers/unit.js";
 import { initialize as initializeUnit } from "../../dist/core/unit/initialize.js";
 import { hasVitality, initialize as initializeVitalityState } from "../../dist/core/unit/capability/vitality/capability.js";
-import { createDefinition as createActionCapabilityDefinition, hasAction } from "../../dist/core/unit/capability/action/capability.js";
+import { hasAction } from "../../dist/core/unit/capability/action/capability.js";
 import { areHostile, hasAllegiance } from "../../dist/core/unit/capability/allegiance/capability.js";
 import { hasBlocker, resolveCapacity } from "../../dist/core/unit/capability/blocking/blocker.js";
 import { hasBlockable } from "../../dist/core/unit/capability/blocking/blockable.js";
@@ -170,7 +170,7 @@ const catalogDefinition = () => Object.freeze({
     steeringParameters: Object.freeze({ steeringFactor: 1, maxSteeringForce: 100 }),
   }),
   allegiance: Object.freeze({ side: 'ALLY' }),
-  action: createActionCapabilityDefinition(actionCapability(createAttack({ id: 'normal', speed: 100,
+  action: actionCapability(createAttack({ id: 'normal', speed: 100,
     triggerBindingId: 'primary',
     intervalTicks: 3, recoveryTicks: 0, followUps: [],
     targetGroups: [{ id: 'primary',
@@ -180,7 +180,7 @@ const catalogDefinition = () => Object.freeze({
       ] }, canTargetAir: false, includeBlockingRelations: false, preferBlockingRelations: false,
         ignoreTargetFree: false, ignoreInvisible: false, maxTargets: 1 }),
     }],
-   }))),
+   })),
   layer: Object.freeze({ type: 'GROUND' }),
   hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.25 } },
   blocker: { capacity: 2, geometry: { radius: 0.7 } },
