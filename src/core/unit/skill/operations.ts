@@ -1,4 +1,4 @@
-import { assertFiniteNumber, assertNonnegativeSafeInteger } from "../../common/assert.js";
+import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import { update as updateUnit } from "../../battle/unit.js";
 import type { Identified, Ref } from "../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../battle/state.js";
@@ -6,7 +6,6 @@ import * as lifetimes from "../../lifetime/index.js";
 import * as units from "../query.js";
 import type { Unit } from "../unit.js";
 import * as contribution from "../contribution/contribution.js";
-import * as attribute from "../contribution/attribute.js";
 import { isSpatiallyPresent } from "../capability/presence/capability.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import { hasAction, setReleasedHook } from "../capability/action/capability.js";
@@ -160,15 +159,16 @@ export function activate<S extends object, A extends object>(
         return reject("CONDITION");
     }
 
-    const requirement = sp.resolveRequirement(battle, source) ?? 0;
-    const cost = definition.cost?.(battle, source, self) ?? sp.resolveCost(battle, source) ?? 0;
+    const resource = self.definition.sp;
+    const requirement = resource?.requirement ?? 0;
+    const cost = definition.cost?.(battle, source, self) ?? resource?.cost ?? requirement;
     assertNonnegativeSafeInteger(cost, "skill activation SP cost");
     const previousSp = self.sp;
     if ((previousSp?.value ?? 0) < requirement || (previousSp?.value ?? 0) < cost) {
         return reject("INSUFFICIENT_SP");
     }
 
-    const sustain = initialSustain(battle, self, unit);
+    const sustain = initialSustain(battle, unit);
     const active: Activation<S, A> = {
         definition: self.definition,
         state: self.state,
@@ -428,48 +428,25 @@ export function extendTime<X extends Activation<any, any>>(
     ]);
 }
 
-function initialSustain(
-    battle: BattleState,
-    self: Skill,
-    unit: Unit & SkillCapability,
-): SustainState {
-    const definition = self.definition.activation!.sustain;
-    const contributions = unit.skill.sustain;
+function initialSustain(battle: BattleState, unit: Unit & SkillCapability): SustainState {
+    const definition = unit.skill.definition.activation!.sustain;
 
     if (definition.type === "INFINITE") {
         return { type: "INFINITE" };
     }
 
     if (definition.type === "AMMO") {
-        const entries = contributions?.type === "AMMO" ? contributions.ammo : [];
         const budget = resolveAmmoCapacity(
             definition.amount,
             contribution
-                .resolve(entries)
+                .resolve(unit.skill.ammo)
                 .flatMap((input) => (typeof input === "function" ? input(battle, unit) : input)),
         );
 
         return { type: "AMMO", initial: budget, remaining: budget, replenished: 0 };
     }
 
-    const entries = contributions?.type === "TIME" ? contributions.duration : [];
-    const budget = Math.ceil(
-        Math.max(
-            0,
-            attribute.apply(
-                definition.durationTicks,
-                contribution
-                    .resolve(entries)
-                    .flatMap((input) =>
-                        typeof input === "function" ? input(battle, unit) : input,
-                    ),
-            ),
-        ),
-    );
-    assertFiniteNumber(budget, "skill duration budget");
-    const endsAtTick = battle.tick + budget;
-
-    return { type: "TIME", endsAtTick };
+    return { type: "TIME", endsAtTick: battle.tick + definition.durationTicks };
 }
 
 function replaceSkill<S extends object, A extends object>(

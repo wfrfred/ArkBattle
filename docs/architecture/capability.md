@@ -151,7 +151,7 @@ Skill 激活先一次性提交支付与新 Activation，再记录 SKILL_ACTIVATE
 
 ## 文件职责
 
-Skill 的程序定义、Activation、SP／Ammo 与完整业务位于 [unit/skill](../../src/core/unit/skill/index.ts)；[capability/skill](../../src/core/unit/capability/skill/index.ts) 保留 Skill／State、守卫、initialize 及局部 Rule／Hook／Ammo／时长贡献 setter。完整程序 Definition 归 unit/skill/definition.ts，聚合归 skill.ts。Capability Definition 仅提供 initialize 工厂，State 扩展默认 Skill；程序由 unit.skill.definition 持有，不在 Unit Definition.skill 上重复保存。Catalog 继续从 Capability.initialize 签名推导工厂配置。两个 index 分别提供领域和能力 API，不相互转发整套入口。Skill 的 Hook 只用 setHook／removeHook 按 Key 登记，保留事件类型配对，不提供同义专名 setter。SP 的局部 setContribution／removeContribution 继续归领域 sp.ts，与资源类型同处，不增加 Capability 包装。数值输入复用 `contribution.Input<M, H>`：SP／TIME 使用 Attribute 数据，Ammo 使用独立数据与公式；互斥组先选择，再求值，SP 数值和时长预算在最终消费边界检查结果。
+Skill 的程序定义、Activation、SP／Ammo 与完整业务位于 [unit/skill](../../src/core/unit/skill/index.ts)；[capability/skill](../../src/core/unit/capability/skill/index.ts) 保留 Skill／State、守卫、initialize 及局部 Rule／Hook／Ammo 贡献 setter。完整程序 Definition 归 unit/skill/definition.ts，聚合归 skill.ts。Capability Definition 仅提供 initialize 工厂，State 扩展默认 Skill；程序由 unit.skill.definition 持有，不在 Unit Definition.skill 上重复保存。Catalog 继续从 Capability.initialize 签名推导工厂配置。两个 index 分别提供领域和能力 API，不相互转发整套入口。Skill 的 Hook 只用 setHook／removeHook 按 Key 登记，保留事件类型配对，不提供同义专名 setter。SP 的局部 setContribution／removeContribution 继续归领域 sp.ts，只登记 recoverySpeed／recoveryMultiplier，与资源类型同处，不增加 Capability 包装。数值输入复用 `contribution.Input<M, H>`：SP 自然回复属性使用 Attribute 数据，Capability.ammo 直接保存 Ammo 容量来源，Ammo 使用独立数据与公式；互斥组先选择，再求值。SP 配置切换、资源消费与当前 Activation 的时间调整不通过贡献登记，TIME 也没有持久时长贡献列表。
 
 文件按真实领域职责和代码规模划分。完整结算也是纯函数，纯度和参数大小都不能单独决定拆文件。小型内部步骤可以与完整操作同处；具有独立使用与理解价值的规则才单独组织。删除只转发的跳转层，保留 Unit 离场等确有业务顺序的分阶段操作。
 

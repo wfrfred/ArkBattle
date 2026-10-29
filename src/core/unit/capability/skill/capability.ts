@@ -6,7 +6,6 @@ import type { Skill as SkillState } from "../../skill/skill.js";
 import type { Events, Hook, Key } from "./hook.js";
 import type { Input as AmmoInput } from "../../skill/ammo.js";
 import type { Rule } from "./rule.js";
-import * as sustain from "../../skill/sustain.js";
 
 export interface Definition {
     readonly initialize: (battle: BattleState) => Result<SkillState<any, any>>;
@@ -14,7 +13,7 @@ export interface Definition {
 
 export interface State extends SkillState {
     readonly nextActivationId: number;
-    readonly sustain: sustain.Contributions | null;
+    readonly ammo: readonly contribution.Contribution<AmmoInput>[];
     readonly rules: readonly Rule[];
     readonly spRecovered: readonly Hook<Events["spRecovered"]>[];
     readonly spPaid: readonly Hook<Events["spPaid"]>[];
@@ -46,10 +45,7 @@ export function initialize(battle: BattleState, definition: Definition): Result<
     const value: State = {
         ...skill,
         nextActivationId: 0,
-        sustain:
-            skill.definition.activation === null
-                ? null
-                : sustain.initialize(skill.definition.activation.sustain),
+        ammo: [],
         rules: [
             {
                 id: "@skill/active-recovery",
@@ -96,48 +92,21 @@ export function setAmmoContribution(
     state: State,
     entry: contribution.Contribution<AmmoInput>,
 ): State {
-    const current = state.sustain;
-    if (current?.type !== "AMMO") {
+    if (state.definition.activation?.sustain.type !== "AMMO") {
         return state;
     }
 
-    const ammo = contribution.set(current.ammo, entry);
+    const ammo = contribution.set(state.ammo, entry);
 
-    return ammo === current.ammo ? state : { ...state, sustain: { ...current, ammo } };
+    return ammo === state.ammo ? state : { ...state, ammo };
 }
 
 export function removeAmmoContribution(state: State, id: string): State {
-    const current = state.sustain;
-    if (current?.type !== "AMMO") {
+    if (state.definition.activation?.sustain.type !== "AMMO") {
         return state;
     }
 
-    const ammo = contribution.remove(current.ammo, id);
+    const ammo = contribution.remove(state.ammo, id);
 
-    return ammo === current.ammo ? state : { ...state, sustain: { ...current, ammo } };
-}
-
-export function setDurationContribution(
-    state: State,
-    entry: contribution.Contribution<sustain.Input>,
-): State {
-    const current = state.sustain;
-    if (current?.type !== "TIME") {
-        return state;
-    }
-
-    const duration = contribution.set(current.duration, entry);
-
-    return duration === current.duration ? state : { ...state, sustain: { ...current, duration } };
-}
-
-export function removeDurationContribution(state: State, id: string): State {
-    const current = state.sustain;
-    if (current?.type !== "TIME") {
-        return state;
-    }
-
-    const duration = contribution.remove(current.duration, id);
-
-    return duration === current.duration ? state : { ...state, sustain: { ...current, duration } };
+    return ammo === state.ammo ? state : { ...state, ammo };
 }

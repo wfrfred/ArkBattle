@@ -12,13 +12,13 @@ Skill 负责 SP、发动、持续预算、主动操作和完整终止。Action �
 | `unit/skill/skill.ts`、`activation.ts` | 单槽聚合 Skill、同一聚合的非空 Activation 视图与两种 Ref |
 | `unit/skill/initialize.ts` | create 接续 Definition.initialize，创建聚合初态 |
 | `unit/skill/query.ts`、`operations.ts` | 查询、字段写回、发动、主动操作、推进、结束与 lifetime |
-| `unit/skill/sp.ts`、`ammo.ts`、`sustain.ts`、`modifier.ts` | SP、Ammo、持续预算与领域数值规则 |
+| `unit/skill/sp.ts`、`ammo.ts`、`sustain.ts` | SP、Ammo 资源操作、弹药容量公式与持续状态模型 |
 | `unit/capability/skill/capability.ts` | 初始化工厂 Definition、Skill Capability、公共 State、结构守卫与局部登记 |
 | `unit/capability/skill/rule.ts`、`hook.ts` | 能力 Rule、Hook 类型与事件契约 |
 
-领域 index 提供 create、Skill／Activation、ref／activationRef、getSkill／getActivation、字段写回及 SP／Ammo／激活业务，不转发能力守卫、Rule／Hook 登记和持续预算贡献 setter。Capability index 提供对应能力 API。内部 getCurrent 在受信边界取得已擦除参数的完整聚合，不解释私有 state；不公开内部写回，不使用泛型 reader。
+领域 index 提供 create、Skill／Activation、ref／activationRef、getSkill／getActivation、字段写回及 SP／Ammo／激活业务，不转发能力守卫、Rule／Hook 与 Ammo 贡献登记。Capability index 提供对应能力 API。内部 getCurrent 在受信边界取得已擦除参数的完整聚合，不解释私有 state；不公开内部写回，不使用泛型 reader。
 
-SP 的 setContribution／removeContribution 仍在 sp.ts，经领域入口以 setSpContribution／removeSpContribution 导出；它们与 SP State／Input 保持同一模块，不增加 Capability 转发函数。
+SP 的 setContribution／removeContribution 仅登记 recoverySpeed／recoveryMultiplier，经领域入口以 setSpContribution／removeSpContribution 导出；它们与 SP State／Input 保持同一模块，不增加 Capability 转发函数。容量、门槛、支付和 TIME 时长没有通用 Contribution 注册表。
 
 ## 1. 单槽聚合、Definition 与两种身份
 
@@ -31,9 +31,11 @@ SP 的 setContribution／removeContribution 仍在 sp.ts，经领域入口以 se
 | self.sp | 当前 SP 或 null |
 | self.activation | 本轮 id、startedAtTick、status、Sustain、私有 state: A，或 null |
 | Capability.nextActivationId | 宿主内单调分配的轮次身份 |
-| Capability.sustain／rules／Hook | 持久登记的预算贡献、许可和通知 |
+| Capability.ammo／rules／Hook | 持久登记的 Ammo 容量贡献、许可和通知 |
 
 Skill<S, A> 允许 activation 为 null；Activation<S, A> 是同一个聚合的非空运行视图，self.activation 确定存在。两者都通过 self.state 读取持久 S，本轮状态读取 self.activation.state。两个泛型均默认 object，只关心本轮 A 时使用 Activation<object, A>；具体私有类型由已知 Definition 或精确 Ref 保持。
+
+Skill.state 保存跨次激活的玩法事实，Activation.state 保存仅属于本轮的事实。如果某个模式恰好等于本轮 Activation 存在，就直接使用槽位事实，不另存一份 mode／isActive。Definition 程序解释这些私有数据，SP Core 不读取具体字段，也不在私有 state 中重复保存 SP.value。
 
 聚合不保存 host，内容程序显式接收 source。Capability State 扩展默认 Skill<object, object>，直接包含完整 Definition、state、SP 与可空 activation；object 不承诺某种具体私有形状。Activation 是同一完整聚合按本轮身份读取的非空细化，不增加元数据类型、对象复制或执行容器。
 
@@ -75,13 +77,13 @@ setState 只更新当前 Skill 的 state，setActivationState 只更新当前本
 
 ## 2. SP
 
-SP Definition 保存 initial、capacity、requirement、可选数值 cost 和 Recovery。cost 未指定时以有效 requirement 为基础，再结算 cost 贡献。特殊发动可在同一输入版本中查询本次 cost 并初始化形态数据。
+SP Definition 保存 initial、capacity、requirement、可选数值 cost 和 Recovery。capacity 表示容量，requirement 表示发动门槛，cost 表示默认发动支付量；cost 未指定时取 requirement。三者读取已校验的静态配置，不接受通用数值贡献。特殊发动可通过 Activation.cost 在本次输入版本中选择实际支付数额；运行中的逐次消费仍调用明确资源操作。
 
-SP 各参数贡献统一使用 `contribution.Input<attribute.Modifier, Unit & SkillCapability>`：静态值为修正数据列表，动态函数根据当前 battle 与宿主返回同类列表。先由 Contribution 选择互斥胜者，再求值并展平数据，按 Attribute 固定公式 `((base + Σaddition) × max(0, 1 + Σmultiplier) + ΣfinalAddition) × ΠfinalScaler` 归并。容量／门槛／支付最后非负裁剪并向上取整，输出边界检查有效整数；回复速度／倍率保留连续值。没有内容自选的变换 priority 或接收累计 current 的回调。
+只有 recoverySpeed／recoveryMultiplier 使用 `contribution.Input<attribute.Modifier, Unit & SkillCapability>`：静态值为修正数据列表，动态函数根据当前 battle 与宿主返回同类列表。先由 Contribution 选择互斥胜者，再求值并展平数据；两项属性分别按 Attribute 固定公式 `((base + Σaddition) × max(0, 1 + Σmultiplier) + ΣfinalAddition) × ΠfinalScaler` 归并、限制下限为零，再相乘得到自然回复速度。两项保留连续值，不取整。
 
-这条固定归并是项目对纯数值贡献采用的共同约定，不宣称官方所有技能参数都使用该公式。客户端 Rune／遗物的逐来源取整属于创建前预处理，配置替换、清空 SP 与事件支付属于明确操作；它们不能用实时贡献查询代替。证据及边界见 [Skill 修正协议调研](../research/cases/09-skill-mechanisms-and-requirements.md#25-数值修正协议补核动态输入不等于有序变换)。
+Contribution 提供参与计算的数值影响，不结算配置切换、清空 SP、支付或当前 Activation 的时间变化。客户端 Rune／遗物的逐来源取整属于创建前预处理；运行中配置替换也有明确提交入口。它们不能用属性贡献查询代替。证据及边界见 [Skill 原生公式调研](../research/cases/09-skill-mechanisms-and-requirements.md#27-原生公式复核ammo-sp-与具体持续时间操作)。
 
-实际需求包括：琳琅诗怀雅的金币配置切换、玛露西尔的容量／最低门槛／逐次支付分离，以及 Fever 的发动政策。这些干员的完整内容接入仍需逐项完成。容量切换时的 SP 清空等行为由明确资源操作完成，不在纯查询中偷偷结算；加算贡献也不意味着可以压制其他来源、绝对覆写最终容量。
+实际需求包括：琳琅诗怀雅的金币配置切换、玛露西尔的容量／最低门槛／逐次支付分离，以及 Fever 的发动政策。这些干员的完整内容接入仍需逐项完成。本轮不新增运行时 SP 配置切换 API、独立配置状态机或 Definition 回调。后续确需动态查询有效容量等参数时，由类型化 Definition 的领域回调解释已有玩法 state；跨次事实归 Skill.state，本轮事实归 Activation.state，不更换共享 Definition 对象以免破坏 Skill Ref 身份。容量变化时如何处理余额、获取许可与退出恢复仍由明确操作结算，不在纯查询中偷偷写入，也不另存一份 SP.value。
 
 Recovery 为 TIME、ACTION、HIT 或 NONE。EXTERNAL 是资源操作的来源，普通 Action 的启动、推进和结束不会自动授予 SP。具体普通行动在成功释放点调用 Action.released，Skill.enter 登记相应监听并调用自己的 recover；被拦截或取消的释放不产生通知。
 
@@ -107,13 +109,13 @@ sp.advance 对 ACTION／HIT／NONE 回复直接返回原 battle，不更新 last
 
 TIME 实例仅保存 endsAtTick。AMMO 保存 initial、remaining、replenished；INFINITE 由内容调用完整结束操作。
 
-持续时间与初始弹药贡献在发动、支付 SP 之前采样。之后的贡献变化影响后续发动；本次时长可通过 extendTime 明确调整。
+TIME 的基础 durationTicks 在创建 Activation 时形成 endsAtTick。初始弹药贡献在发动、支付 SP 之前采样，之后贡献变化只影响后续发动。本次时长由 extendTime 明确调整，不修改下一次发动的基础时长。
 
 持续时间、耗弹量及贡献输入在实际入口校验。内部预算、到期 Tick、剩余弹药与激活身份按游戏尺度直接计算，不重复检查算术结果是否超过安全整数范围。
 
-TIME 的 setDurationContribution 使用 `contribution.Input<attribute.Modifier, Unit & SkillCapability>`，与 SP 纯数值贡献采用相同固定归并，最终预算非负裁剪、向上取整并检查有限数。动态输入可在发动输入版本中读取 SP 决定预算。雷狼龙S空爆按消耗充能延长持续时间，既可在此采样预算，也可由启动程序按原生流程消费并延时；该案例本身不证明通用属性叠加。哈蒂娅的运行中条件延长由 extendTime 表达。
+TIME 不保留 Duration Contribution，也不新增通用的初始时长回调。雷狼龙S空爆由现有发动过程先支付默认单层费用，再由 onStart 读取本轮剩余 SP、计算实际消费层数、消费剩余 SP 并调用 extendTime；这与已核实的具体消费／延时链一致。哈蒂娅的运行中条件延长同样由 extendTime 表达。SKILL_ACTIVATED 保留 onStart 前已创建实例的初始 endsAtTick，后续延时不重写该历史创建事件；当前截止时间从同一 Activation 查询。
 
-AMMO 的 setAmmoContribution 使用 `contribution.Input<ammo.Modifier, Unit & SkillCapability>`，同样只接受静态列表或返回列表的动态函数。ammo.Modifier 为 `{ addition, ratio }`，仍保留独立公式 `max(1, base + Σaddition + RoundToEven(base × Σratio))`，固定追加不参与比例乘算。TIME 与 AMMO 使用各自的贡献载荷和 setter。
+AMMO 的 setAmmoContribution 使用 `contribution.Input<ammo.Modifier, Unit & SkillCapability>`，只接受静态列表或返回列表的动态函数。持久来源登记在 Capability.ammo，与当前 Activation 的 Sustain 分开。ammo.Modifier 为 `{ addition, ratio }`，使用独立公式 `max(1, base + Σaddition + RoundToEven(base × Σratio))`，固定追加不参与比例乘算。原生一般式区分当前基础上限 M 和原始上限 B；项目目前覆盖普通初始化时 M = B 的情况，一个 base 已足够，不为未接入的基础上限变化另存一份状态。
 
 弹药消费按完整指定数额结算，允许负余量。`consume` 不自动结束，`check` 独立检查最新同一 Activation 的余量并结束。具体行动决定调用耗尽检查的业务节点。
 
@@ -154,6 +156,8 @@ HIT 回复由 Skill.enter 在 Damage 的 receivingStarted 扩展点登记，发�
 ## 5. 发动与完整结束
 
 发动先检查当前宿主、触发方式、许可、门槛与足额支付，采样数据与持续预算，再一次性写入扣费和新 Activation。随后依次记录 SKILL_ACTIVATED、派发 activated、通知 spPaid，再执行仍有资格的 onStart。支付 Hook 可以终止已创建的激活；后续启动程序必须重读同一身份、ACTIVE 状态和宿主当前资格，创建事实不会被撤销，支付报告保留已提交时的前后值。
+
+accepts、门槛与本次支付在 Activation 创建之前确定，不能依赖尚未建立的本轮私有 state。需要本轮身份的业务放在已登记后的程序中；不能为了前置判断提前复制一套激活状态。
 
 activated 表达实例已经创建，不承诺 onStart 效果已经安装。它的派发先于可能终止激活的支付与启动程序。没有活动 Lifetime 结算时，前一个 activated Hook 的结束操作可以在后续 activated 候选前完成 ended；已有结算时，嵌套结束只同步执行请求／Prepare，ended 等待 Finalize。后续候选始终处理原创建事实，不因终止重写报告。
 

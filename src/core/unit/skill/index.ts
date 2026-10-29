@@ -49,7 +49,6 @@ export {
 export type {
     Source as SpSource,
     Input as SpInput,
-    Inputs as SpInputs,
     Recovery,
     Definition as SpDefinition,
     Timer as SpTimer,
@@ -77,11 +76,4 @@ export type {
     Outcome as AmmoOutcome,
 } from "./ammo.js";
 
-export type { Modifier } from "../contribution/attribute.js";
-
-export type {
-    Definition as SustainDefinition,
-    Input as DurationInput,
-    Ammo,
-    State as SustainState,
-} from "./sustain.js";
+export type { Definition as SustainDefinition, Ammo, State as SustainState } from "./sustain.js";

@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-test("Skill contributions share typed data-list inputs while ammunition keeps its own modifier data", async () => {
+test("Skill contributions cover recovery attributes and ammunition while resource configuration stays separate", async () => {
     const { default: ts } = await import("typescript");
     const directory = mkdtempSync(join(tmpdir(), "stronghold-skill-contributions-"));
     const source = (name) => JSON.stringify(fileURLToPath(new URL(`../../src/core/${name}.js`, import.meta.url)));
@@ -18,7 +18,8 @@ import type { State as BattleState } from ${source("battle/state")};
 import type { Unit } from ${source("unit/unit")};
 import type { Skill, State } from ${source("unit/capability/skill/capability")};
 import type { Offense } from ${source("unit/capability/offense/capability")};
-import { setAmmoContribution, setDurationContribution } from ${source("unit/capability/skill/capability")};
+import * as capability from ${source("unit/capability/skill/capability")};
+import { setAmmoContribution } from ${source("unit/capability/skill/capability")};
 import * as sp from ${source("unit/skill/sp")};
 import type { Modifier as AmmoModifier } from ${source("unit/skill/ammo")};
 declare const state: State;
@@ -34,38 +35,45 @@ const ammunition: readonly AmmoModifier[] = [{ addition: 2, ratio: 0.5 }];
 const legacyProgram = { priority: 0, apply: (_battle: BattleState, _self: Unit & Skill, current: number) => current };
 declare const wrongHost: (battle: BattleState, self: Unit & Offense) => readonly attribute.Modifier[];
 declare const wrongAmmoHost: (battle: BattleState, self: Unit & Offense) => readonly AmmoModifier[];
-sp.setContribution(resource, "capacity", { id: "capacity", value: dynamic });
-sp.setContribution(resource, "requirement", { id: "requirement", value: fixed });
-sp.setContribution(resource, "cost", { id: "cost", value: dynamic });
-sp.setContribution(resource, "recoverySpeed", { id: "speed", value: [attribute.create({ addition: 1 })] });
+sp.setContribution(resource, "recoverySpeed", { id: "speed", value: dynamic });
+sp.setContribution(resource, "recoveryMultiplier", { id: "fixed", value: fixed });
 sp.setContribution(resource, "recoveryMultiplier", { id: "ratio", value: (battle, self) => [attribute.create({ finalScaler: self.skill.activation === null ? 1 : battle.tick })] });
-sp.setContribution(resource, uncertainKey, { id: "shared-input", value: dynamic });
-setDurationContribution(state, { id: "duration", value: dynamic });
-setDurationContribution(state, { id: "fixed-duration", value: fixed });
 setAmmoContribution(state, { id: "ammo", value: ammunition });
 setAmmoContribution(state, { id: "live-ammo", value: (battle, self) => [{ addition: battle.tick, ratio: self.skill.activation === null ? 0 : 0.5 }] });
-// @ts-expect-error SP inputs require lists rather than a single modifier.
-sp.setContribution(resource, "capacity", { id: "wrong", value: attribute.create() });
-// @ts-expect-error TIME inputs require lists rather than a single modifier.
-setDurationContribution(state, { id: "wrong", value: attribute.create() });
+// @ts-expect-error resource capacity is configuration, not a contribution parameter.
+sp.setContribution(resource, "capacity", { id: "wrong", value: dynamic });
+// @ts-expect-error activation requirement is configuration, not a contribution parameter.
+sp.setContribution(resource, "requirement", { id: "wrong", value: fixed });
+// @ts-expect-error activation payment is configuration, not a contribution parameter.
+sp.setContribution(resource, "cost", { id: "wrong", value: dynamic });
+// @ts-expect-error a key must prove it is one of the two recovery attributes.
+sp.setContribution(resource, uncertainKey, { id: "wrong", value: dynamic });
+// @ts-expect-error removed configuration parameters cannot be removed from a contribution registry.
+sp.removeContribution(resource, "capacity", "wrong");
+// @ts-expect-error SP state has no capacity contribution registry.
+resource.capacity;
+// @ts-expect-error SP state has no requirement contribution registry.
+resource.requirement;
+// @ts-expect-error SP state has no payment contribution registry.
+resource.cost;
+// @ts-expect-error TIME budgets no longer have a persistent contribution setter.
+capability.setDurationContribution(state, { id: "wrong", value: dynamic });
+// @ts-expect-error TIME budgets no longer have a persistent contribution remover.
+capability.removeDurationContribution(state, "wrong");
+// @ts-expect-error recovery inputs require lists rather than a single modifier.
+sp.setContribution(resource, "recoverySpeed", { id: "wrong", value: attribute.create() });
 // @ts-expect-error ammunition inputs require lists rather than a single modifier.
 setAmmoContribution(state, { id: "wrong", value: { addition: 2, ratio: 0.5 } });
-// @ts-expect-error SP data inputs do not accept the old ordered parameter program.
-sp.setContribution(resource, "cost", { id: "wrong", value: legacyProgram });
-// @ts-expect-error TIME data inputs do not accept the old ordered parameter program.
-setDurationContribution(state, { id: "wrong", value: legacyProgram });
+// @ts-expect-error recovery data inputs do not accept ordered parameter programs.
+sp.setContribution(resource, "recoveryMultiplier", { id: "wrong", value: legacyProgram });
 // @ts-expect-error ammunition data inputs do not accept ordered parameter programs.
 setAmmoContribution(state, { id: "wrong", value: legacyProgram });
-// @ts-expect-error a callback cannot require an Offense host when only Skill is guaranteed.
-sp.setContribution(resource, "requirement", { id: "wrong", value: wrongHost });
-// @ts-expect-error TIME callbacks receive Skill hosts rather than Offense hosts.
-setDurationContribution(state, { id: "wrong", value: wrongHost });
+// @ts-expect-error recovery callbacks cannot require an Offense host when only Skill is guaranteed.
+sp.setContribution(resource, "recoverySpeed", { id: "wrong", value: wrongHost });
 // @ts-expect-error ammunition callbacks receive Skill hosts rather than Offense hosts.
 setAmmoContribution(state, { id: "wrong", value: wrongAmmoHost });
-// @ts-expect-error ammunition modifier data cannot be used for an SP parameter.
-sp.setContribution(resource, "cost", { id: "wrong", value: ammunition });
-// @ts-expect-error ammunition modifier data cannot be used for TIME duration.
-setDurationContribution(state, { id: "wrong", value: ammunition });
+// @ts-expect-error ammunition modifier data cannot be used for a recovery attribute.
+sp.setContribution(resource, "recoveryMultiplier", { id: "wrong", value: ammunition });
 // @ts-expect-error ammunition does not accept attribute modifier data.
 setAmmoContribution(state, { id: "wrong", value: [attribute.create()] });
 // @ts-expect-error ammunition payloads cannot be applied as attribute modifiers.

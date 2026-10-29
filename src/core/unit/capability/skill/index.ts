@@ -8,8 +8,6 @@ export {
     removeHook,
     setAmmoContribution,
     removeAmmoContribution,
-    setDurationContribution,
-    removeDurationContribution,
 } from "./capability.js";
 
 export type { Definition, State, Skill } from "./capability.js";

@@ -19,19 +19,7 @@ export type Source = "TIME" | "ACTION" | "HIT" | "EXTERNAL";
 
 export type Input = contribution.Input<attribute.Modifier, Unit & Skill>;
 
-export type { Modifier } from "../contribution/attribute.js";
-
-export interface Inputs {
-    readonly capacity: Input;
-    readonly requirement: Input;
-    readonly cost: Input;
-    readonly recoverySpeed: Input;
-    readonly recoveryMultiplier: Input;
-}
-
-type Contributions = {
-    readonly [K in keyof Inputs]: readonly contribution.Contribution<Inputs[K]>[];
-};
+export type Parameter = "recoverySpeed" | "recoveryMultiplier";
 
 export type Recovery =
     | { readonly type: "TIME"; readonly intervalTicks: number }
@@ -51,10 +39,12 @@ export interface Timer {
     readonly remainingTicks: number;
 }
 
-export interface State extends Contributions {
+export interface State {
     readonly value: number;
     readonly recovery: Timer | null;
     readonly lastTick: number;
+    readonly recoverySpeed: readonly contribution.Contribution<Input>[];
+    readonly recoveryMultiplier: readonly contribution.Contribution<Input>[];
 }
 
 export interface Recovered {
@@ -86,8 +76,6 @@ export type Outcome =
               "UNAVAILABLE" | "NO_SP" | "RULE" | "WRONG_SOURCE" | "FULL" | "INSUFFICIENT_SP";
       };
 
-export type Parameter = keyof Inputs;
-
 export function setContribution(
     state: State,
     key: Parameter,
@@ -99,7 +87,7 @@ export function setContribution(
 }
 
 export function removeContribution(state: State, key: Parameter, id: string): State {
-    const updated = contribution.remove<Inputs[Parameter]>(state[key], id);
+    const updated = contribution.remove(state[key], id);
 
     return updated === state[key] ? state : { ...state, [key]: updated };
 }
@@ -135,31 +123,24 @@ export function initialize(definition: Definition, tick = 0): State {
                   }
                 : null,
         lastTick: tick,
-        capacity: [],
-        requirement: [],
-        cost: [],
         recoverySpeed: [],
         recoveryMultiplier: [],
     };
 }
 
 export function resolveCapacity(battle: BattleState, ref: Ref<Unit & Skill>): number | undefined {
-    const self = units.get(battle, ref);
-
-    return self === undefined ? undefined : resolve(battle, self, "capacity");
+    return units.get(battle, ref)?.skill.definition.sp?.capacity;
 }
 export function resolveRequirement(
     battle: BattleState,
     ref: Ref<Unit & Skill>,
 ): number | undefined {
-    const self = units.get(battle, ref);
-
-    return self === undefined ? undefined : resolve(battle, self, "requirement");
+    return units.get(battle, ref)?.skill.definition.sp?.requirement;
 }
 export function resolveCost(battle: BattleState, ref: Ref<Unit & Skill>): number | undefined {
-    const self = units.get(battle, ref);
+    const definition = units.get(battle, ref)?.skill.definition.sp;
 
-    return self === undefined ? undefined : resolve(battle, self, "cost");
+    return definition?.cost ?? definition?.requirement;
 }
 export function resolveRecoverySpeed(
     battle: BattleState,
@@ -214,7 +195,7 @@ export function recover(
         ((source === "ACTION" || source === "HIT") && definition.recovery.type === source
             ? definition.recovery.amount
             : 1);
-    const capacity = resolve(battle, self, "capacity")!;
+    const capacity = definition.capacity;
     const gained = Math.min(requested, Math.max(0, capacity - state.value));
     if (gained === 0 && requested !== 0) {
         return rejected(battle, "FULL");
@@ -254,11 +235,12 @@ export function pay(battle: BattleState, ref: Ref<Unit & Skill>, amount?: number
     }
 
     const state = self.skill.sp;
-    if (state === null || self.skill.definition.sp === null) {
+    const definition = self.skill.definition.sp;
+    if (state === null || definition === null) {
         return rejected(battle, "NO_SP");
     }
 
-    const cost = amount ?? resolve(battle, self, "cost")!;
+    const cost = amount ?? definition.cost ?? definition.requirement;
     if (state.value < cost) {
         return rejected(battle, "INSUFFICIENT_SP");
     }
@@ -296,14 +278,15 @@ export function modify(
     }
 
     const state = self.skill.sp;
-    if (state === null || self.skill.definition.sp === null) {
+    const definition = self.skill.definition.sp;
+    if (state === null || definition === null) {
         return rejected(battle, "NO_SP");
     }
     if (delta > 0 && !forced && !allowsRecovery(battle, self, "EXTERNAL")) {
         return rejected(battle, "RULE");
     }
 
-    const current = Math.min(resolve(battle, self, "capacity")!, Math.max(0, state.value + delta));
+    const current = Math.min(definition.capacity, Math.max(0, state.value + delta));
     const amount = current - state.value;
     if (amount === 0) {
         return applied(battle, 0);
@@ -353,7 +336,7 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
                 ? periodTicks
                 : Math.max(0, periodTicks - (previous.periodTicks - previous.remainingTicks));
 
-        const capacity = resolve(battle, self, "capacity")!;
+        const capacity = definition.capacity;
         if (
             previous !== null &&
             available(self) &&
@@ -390,30 +373,15 @@ function resolve(battle: BattleState, self: Unit & Skill, key: Parameter): numbe
         return undefined;
     }
 
-    let base: number;
-
-    switch (key) {
-        case "recoverySpeed":
-            base =
-                definition.recovery.type === "TIME"
-                    ? TICKS_PER_SECOND / definition.recovery.intervalTicks
-                    : 0;
-            break;
-
-        case "recoveryMultiplier":
-            base = 1;
-            break;
-
-        case "cost":
-            base = definition.cost ?? resolve(battle, self, "requirement")!;
-            break;
-
-        case "capacity":
-        case "requirement":
-            base = definition[key];
+    let base = 1;
+    if (key === "recoverySpeed") {
+        base =
+            definition.recovery.type === "TIME"
+                ? TICKS_PER_SECOND / definition.recovery.intervalTicks
+                : 0;
     }
 
-    const value = Math.max(
+    return Math.max(
         0,
         attribute.apply(
             base,
@@ -422,14 +390,6 @@ function resolve(battle: BattleState, self: Unit & Skill, key: Parameter): numbe
                 .flatMap((input) => (typeof input === "function" ? input(battle, self) : input)),
         ),
     );
-    if (key === "recoverySpeed" || key === "recoveryMultiplier") {
-        return value;
-    }
-
-    const amount = Math.ceil(value);
-    assertNonnegativeSafeInteger(amount, `skill resolved SP ${key}`);
-
-    return amount;
 }
 
 function allowsRecovery(battle: BattleState, self: Unit & Skill, source: Source): boolean {

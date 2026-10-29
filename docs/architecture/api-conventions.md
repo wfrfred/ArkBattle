@@ -80,7 +80,7 @@ Action 的准备程序为 prepare，推进与结束回调为 onTick／onEnd；Pr
 | Targeting | [battle/targeting/index.ts](../../src/core/battle/targeting/index.ts) | Filter／Comparator／Selector、hasCandidate 与 select；只读 hasCandidate 归 query.ts，可能消费 RNG 的选择保留 select.ts。 |
 | Deployment | [battle/deployment/index.ts](../../src/core/battle/deployment/index.ts) | 模型、查询、资源维护、部署命令与生命周期协作；resources.ts 的完整 Card 写回 updateCard 不公开，lifecycle.ts 不依赖完整 Unit 操作。 |
 | Schedule | [battle/schedule/index.ts](../../src/core/battle/schedule/index.ts) | 配置、执行状态、创建、推进、登记／结算与统计查询；isSpawnScheduleCompleted／getSpawnedCount／getSpawnScheduleCounts／getUnspawnedCount 归 query.ts，队列算法与辅助计算保持内部依赖。 |
-| 多文件 Capability | unit/capability/ 下 action、blocking、deployable、elemental、locomotion、occupancy、offense、presence、route、skill、vitality 各自的 index.ts | 十一个入口按能力职责选择导出；Skill 入口只提供工厂 Definition、Skill Capability／State、守卫、初始化及局部 Rule／Hook／Ammo／时长贡献登记，不再导出领域 Definition、资源结算或 Activation 业务。完整实例写回、阶段派发和具体运动算法不因共享导出成为内容 API。 |
+| 多文件 Capability | unit/capability/ 下 action、blocking、deployable、elemental、locomotion、occupancy、offense、presence、route、skill、vitality 各自的 index.ts | 十一个入口按能力职责选择导出；Skill 入口只提供工厂 Definition、Skill Capability／State、守卫、初始化及局部 Rule／Hook／Ammo 贡献登记，不再导出领域 Definition、资源结算或 Activation 业务。完整实例写回、阶段派发和具体运动算法不因共享导出成为内容 API。 |
 | 小 Capability 与 Catalog | allegiance／hitbox／layer／targetable 的 capability.ts；unit/capability/catalog.ts | 单文件能力保留自然入口；Catalog 只维护初始化字典与派生类型，不增加模板 index 或另一套能力映射。 |
 | Contribution、Hook 与 Tick | unit/contribution/contribution.ts、attribute.ts；core/hook.ts、tick.ts | 各自保留明确的数据／计算／派发入口，不设全 Core 聚合层。 |
 | Common 与 Geometry | common/、geometry/ 下现有功能模块 | Ref、Query、集合、数值、坐标与几何按用途直接导入；私有 Store 不经公共入口公开。 |
@@ -234,7 +234,9 @@ Skill 的程序、单槽 Skill<S, A> 聚合、非空 Activation<S, A> 视图、�
 
 Skill 的 ref(source, definition) 返回持久 Ref<Skill<S, A>>，用于 getSkill／activate／setState；activationRef(source, self) 返回 host＋本轮 ID 的 Ref<Activation<S, A>>，用于查询与轮次操作。两者读取同一个 unit.skill，聚合不重复保存 host。setState 以 Ref<T> 绑定 Skill，接收 NoInfer<T["state"]>，只更新持久 state，允许 LEAVING／结束程序更新；setActivationState 以 Ref<T> 绑定 Activation，接收 NoInfer<T["activation"]["state"]>，只更新 activation.state，ENDING 抛出 TypeError。缺失宿主或过期轮次抛出 RangeError，持久 Definition 不匹配抛出 TypeError。两者从最新 battle 保留其他字段，同引用时返回原 battle，只接受结果值，不提交旧聚合或扩大生命周期权限。
 
-SP setContribution／removeContribution 仍是 unit/skill/sp.ts 的局部资源操作。SP／TIME 的 Input 使用 Attribute 修正数据与固定归并，这是项目的纯贡献约定；Ammo 的 Input 使用自己的 Modifier 和公式。贡献登记不再保存或校验程序 priority，最终 SP 数值和时长预算在消费边界校验；Contribution.group.priority 只负责互斥选择。非 TIME 的 sp.advance 直接 no-op，不更新 lastTick。Elemental 的完整宿主写回是 operations.ts 中的私有 replaceHost；query.ts 只保留查询。两者均不向内容推广完整实例写回。Action 按 Definition 聚合持久 state、Cooldown 和当前 Execution；内容分别用 setState、setCooldown、setExecutionState 设置对应字段，不提交完整旧条目。Unit 的 leave Hook 以 Departure 为固定终止历史载荷，保留开始离场时的 Unit 与 reason。
+Skill.state 保存跨次玩法事实，Activation.state 保存本轮事实，由 Definition 程序解释；若模式就是激活存在，不重复保存 mode。SP Core 不解释私有字段，私有 state 不重复保存 SP.value。将来确需动态有效参数时，领域通过类型化 Definition 回调取值，本轮不新增该接口或独立配置状态机。发动资格和支付早于 Activation 创建，不能读取尚未建立的本轮 state。
+
+SP setContribution／removeContribution 仍是 unit/skill/sp.ts 的局部资源操作，只接受 recoverySpeed／recoveryMultiplier 两项属性；它们使用 Attribute 修正数据与公式。Ammo 的 Input 使用独立 Modifier 和已核实的容量公式，来源直接登记在 Capability.ammo。capacity／requirement／cost 与 TIME duration 没有通用 Contribution 接口；配置切换、消费与当前轮次延时属于明确操作。共享 Input<M, H> 只统一数据提供形式，不决定这些操作或其公式。Contribution.group.priority 只负责互斥选择。非 TIME 的 sp.advance 直接 no-op，不更新 lastTick。Elemental 的完整宿主写回是 operations.ts 中的私有 replaceHost；query.ts 只保留查询。两者均不向内容推广完整实例写回。Action 按 Definition 聚合持久 state、Cooldown 和当前 Execution；内容分别用 setState、setCooldown、setExecutionState 设置对应字段，不提交完整旧条目。Unit 的 leave Hook 以 Departure 为固定终止历史载荷，保留开始离场时的 Unit 与 reason。
 
 Card.advance 与 Action 的局部 Cooldown 计算只处理显式传入的局部值，保留必要的 tick 参数。Projectile 的发射时点、到期时点等历史事实也继续保存。
 
