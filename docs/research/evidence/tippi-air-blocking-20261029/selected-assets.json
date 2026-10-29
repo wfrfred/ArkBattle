@@ -1,0 +1,1151 @@
+{
+  "date": "2026-10-29",
+  "scope": "Selected Tippi initial controller, default/transition mode programs, fly/ground Buff nodes and graphic-height nodes only. Static official-resource decoding; no client execution or active XLua audit.",
+  "sources": [
+    {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4191_tippi.ab",
+      "sha256": "a8217414023acafe84711c18c2bb94bcbf2d39afd632c950953330d0a1323968",
+      "bytes": 28994
+    },
+    {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+      "sha256": "12419ad8d1ea9f670cca214e525240c691cdf3796b82acc8050698d66c202a37",
+      "bytes": 2022247
+    }
+  ],
+  "extraction": {
+    "decoder": "/tmp/stronghold-target-sort-20261020/steward/decode_prefab.py",
+    "bundleReader": "/tmp/stronghold_interaction_assets.py",
+    "scriptLabelMap": "/tmp/stronghold-gianttrap-20261024/scripts.json",
+    "scriptLabelBoundary": "Existing same-client MonoScript labels; selected script PathIDs are retained.",
+    "selectedFieldBoundary": "Only listed fields are projected. Omitted fields are not evidence of absence. Embedded Buff program nodes are decoded from the retained exact SerializedState field paths; event IDs remain serialized integers without guessing event names.",
+    "pathIdEncoding": "Unity PathIDs are decimal strings, including PPtr.m_PathID."
+  },
+  "characterModeOrder": [
+    {
+      "index": 0,
+      "pathId": "-8076219666339084084",
+      "gameObjectName": "Default"
+    },
+    {
+      "index": 1,
+      "pathId": "-1542134104530761524",
+      "gameObjectName": "S1_TakeOff"
+    },
+    {
+      "index": 2,
+      "pathId": "-532089343271188276",
+      "gameObjectName": "S1"
+    },
+    {
+      "index": 3,
+      "pathId": "2280332995425913036",
+      "gameObjectName": "S1_Landing"
+    },
+    {
+      "index": 4,
+      "pathId": "-7988449341415175988",
+      "gameObjectName": "S2_TakeOff"
+    },
+    {
+      "index": 5,
+      "pathId": "-2759495796870690612",
+      "gameObjectName": "S2"
+    },
+    {
+      "index": 6,
+      "pathId": "2879590015001872588",
+      "gameObjectName": "S2_Landing"
+    }
+  ],
+  "characterComponents": [
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "6874620698869221580",
+      "gameObjectPathId": "2718386379219192012",
+      "gameObjectName": "char_4191_tippi",
+      "scriptPathId": "-1297314214590689040",
+      "scriptType": "Character",
+      "fields": {
+        "_motionMode": 0,
+        "_blockMode": 0,
+        "_ignoreBlockMode": 0,
+        "_modes": [
+          {
+            "m_FileID": 0,
+            "m_PathID": "-8076219666339084084"
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": "-1542134104530761524"
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": "-532089343271188276"
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": "2280332995425913036"
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": "-7988449341415175988"
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": "-2759495796870690612"
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": "2879590015001872588"
+          }
+        ],
+        "_commonAbilities": [],
+        "_traitAbility": {
+          "m_FileID": 0,
+          "m_PathID": "0"
+        }
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "-8076219666339084084",
+      "gameObjectPathId": "-8765931268574885684",
+      "gameObjectName": "Default",
+      "scriptPathId": "5390319429299248724",
+      "scriptType": "UnitMode",
+      "fields": {
+        "_attack": {
+          "m_FileID": 0,
+          "m_PathID": "2918187792270149836"
+        },
+        "_attackTrigger": {
+          "m_FileID": 0,
+          "m_PathID": "-4779869159478867764"
+        },
+        "_generalAbilities": [
+          {
+            "m_FileID": 0,
+            "m_PathID": "-4467076335004235572"
+          }
+        ]
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "-1542134104530761524",
+      "gameObjectPathId": "8658093862874630348",
+      "gameObjectName": "S1_TakeOff",
+      "scriptPathId": "5390319429299248724",
+      "scriptType": "UnitMode",
+      "fields": {
+        "_attack": {
+          "m_FileID": 0,
+          "m_PathID": "-2684470789976962868"
+        },
+        "_attackTrigger": {
+          "m_FileID": 0,
+          "m_PathID": "531852298526705868"
+        },
+        "_generalAbilities": [
+          {
+            "m_FileID": 0,
+            "m_PathID": "6024331005898115276"
+          }
+        ]
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "2280332995425913036",
+      "gameObjectPathId": "-6672665773961590580",
+      "gameObjectName": "S1_Landing",
+      "scriptPathId": "5390319429299248724",
+      "scriptType": "UnitMode",
+      "fields": {
+        "_attack": {
+          "m_FileID": 0,
+          "m_PathID": "1084765514846816460"
+        },
+        "_attackTrigger": {
+          "m_FileID": 0,
+          "m_PathID": "604420137050032332"
+        },
+        "_generalAbilities": [
+          {
+            "m_FileID": 0,
+            "m_PathID": "-1826470875906651956"
+          }
+        ]
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "-7988449341415175988",
+      "gameObjectPathId": "-5180941052197812020",
+      "gameObjectName": "S2_TakeOff",
+      "scriptPathId": "5390319429299248724",
+      "scriptType": "UnitMode",
+      "fields": {
+        "_attack": {
+          "m_FileID": 0,
+          "m_PathID": "7276397324429019340"
+        },
+        "_attackTrigger": {
+          "m_FileID": 0,
+          "m_PathID": "-7398543180441663284"
+        },
+        "_generalAbilities": [
+          {
+            "m_FileID": 0,
+            "m_PathID": "-1826831586006218548"
+          }
+        ]
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "2879590015001872588",
+      "gameObjectPathId": "-5058218861527840564",
+      "gameObjectName": "S2_Landing",
+      "scriptPathId": "5390319429299248724",
+      "scriptType": "UnitMode",
+      "fields": {
+        "_attack": {
+          "m_FileID": 0,
+          "m_PathID": "8514689488649439436"
+        },
+        "_attackTrigger": {
+          "m_FileID": 0,
+          "m_PathID": "-194459517021337396"
+        },
+        "_generalAbilities": [
+          {
+            "m_FileID": 0,
+            "m_PathID": "8192144196105652428"
+          }
+        ]
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "-4467076335004235572",
+      "gameObjectPathId": "1559774150171478220",
+      "gameObjectName": "ClearFlyState",
+      "scriptPathId": "3800760148018415462",
+      "scriptType": "PassiveBuffAbility",
+      "fields": {
+        "_metadata": {
+          "namedAsAlias": "ClearFlyState",
+          "blackboardPrefix": ""
+        },
+        "_buffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "tippi_tr[ground]",
+            "templateKey": "tippi_tr[ground]",
+            "lifeTimeType": 0,
+            "lifeTime": 0.0,
+            "blackboard": [],
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0
+          }
+        ]
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "-2684470789976962868",
+      "gameObjectPathId": "-918509933652817716",
+      "gameObjectName": "Attack",
+      "scriptPathId": "8145049199648393782",
+      "scriptType": "EmptyAnimatedAbility",
+      "fields": {
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_animKey": "Skill_Begin",
+        "_endAnimKey": "",
+        "_activeBuffs": []
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "1084765514846816460",
+      "gameObjectPathId": "1690038299658864844",
+      "gameObjectName": "Attack",
+      "scriptPathId": "8145049199648393782",
+      "scriptType": "EmptyAnimatedAbility",
+      "fields": {
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_animKey": "Skill_End",
+        "_endAnimKey": "",
+        "_activeBuffs": []
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "7276397324429019340",
+      "gameObjectPathId": "5491656440319035596",
+      "gameObjectName": "Attack",
+      "scriptPathId": "8145049199648393782",
+      "scriptType": "EmptyAnimatedAbility",
+      "fields": {
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_animKey": "Skill_2_Begin",
+        "_endAnimKey": "",
+        "_activeBuffs": []
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "8514689488649439436",
+      "gameObjectPathId": "-4132369529534363444",
+      "gameObjectName": "Attack",
+      "scriptPathId": "8145049199648393782",
+      "scriptType": "EmptyAnimatedAbility",
+      "fields": {
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_animKey": "Skill_2_End",
+        "_endAnimKey": "",
+        "_activeBuffs": []
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "-5286946074861975348",
+      "gameObjectPathId": "-918509933652817716",
+      "gameObjectName": "Attack",
+      "scriptPathId": "-8109327635834973011",
+      "scriptType": "BuffToOwner",
+      "fields": {
+        "_runActionOnEvent": 3,
+        "_buffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "tippi_height_ctrl[finish]",
+            "templateKey": "tippi_height_ctrl[finish]",
+            "lifeTimeType": 0,
+            "lifeTime": 0.0,
+            "blackboard": [
+              {
+                "key": "height_duration",
+                "value": 0.0,
+                "valueStr": ""
+              },
+              {
+                "key": "mode",
+                "value": 2.0,
+                "valueStr": ""
+              }
+            ],
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0
+          }
+        ],
+        "_onlyRunOnce": 0
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "1806966562910685388",
+      "gameObjectPathId": "-918509933652817716",
+      "gameObjectName": "Attack",
+      "scriptPathId": "-8109327635834973011",
+      "scriptType": "BuffToOwner",
+      "fields": {
+        "_runActionOnEvent": 2,
+        "_buffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "tippi_tr[fly]",
+            "templateKey": "tippi_tr[fly]",
+            "lifeTimeType": 0,
+            "lifeTime": 0.0,
+            "blackboard": [],
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0
+          }
+        ],
+        "_onlyRunOnce": 0
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "7774619782407702732",
+      "gameObjectPathId": "-918509933652817716",
+      "gameObjectName": "Attack",
+      "scriptPathId": "-8109327635834973011",
+      "scriptType": "BuffToOwner",
+      "fields": {
+        "_runActionOnEvent": 2,
+        "_buffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "tippi_height_ctrl[tween]",
+            "templateKey": "tippi_height_ctrl[tween]",
+            "lifeTimeType": 0,
+            "lifeTime": 0.0,
+            "blackboard": [
+              {
+                "key": "height_duration",
+                "value": 0.833299994468689,
+                "valueStr": ""
+              }
+            ],
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0
+          }
+        ],
+        "_onlyRunOnce": 0
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "-4209556767392347956",
+      "gameObjectPathId": "1690038299658864844",
+      "gameObjectName": "Attack",
+      "scriptPathId": "-8109327635834973011",
+      "scriptType": "BuffToOwner",
+      "fields": {
+        "_runActionOnEvent": 2,
+        "_buffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "tippi_height_ctrl[tween]",
+            "templateKey": "tippi_height_ctrl[tween]",
+            "lifeTimeType": 0,
+            "lifeTime": 0.0,
+            "blackboard": [
+              {
+                "key": "height_duration",
+                "value": 0.833299994468689,
+                "valueStr": ""
+              },
+              {
+                "key": "height_offset",
+                "value": 0.0,
+                "valueStr": ""
+              }
+            ],
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0
+          }
+        ],
+        "_onlyRunOnce": 0
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "6745160411387513036",
+      "gameObjectPathId": "1690038299658864844",
+      "gameObjectName": "Attack",
+      "scriptPathId": "-8109327635834973011",
+      "scriptType": "BuffToOwner",
+      "fields": {
+        "_runActionOnEvent": 3,
+        "_buffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "tippi_height_ctrl[finish_s1_land]",
+            "templateKey": "tippi_height_ctrl[finish_s1_land]",
+            "lifeTimeType": 0,
+            "lifeTime": 0.0,
+            "blackboard": [
+              {
+                "key": "height_duration",
+                "value": 0.0,
+                "valueStr": ""
+              },
+              {
+                "key": "height_offset",
+                "value": 0.0,
+                "valueStr": ""
+              },
+              {
+                "key": "mode",
+                "value": 0.0,
+                "valueStr": ""
+              }
+            ],
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0
+          }
+        ],
+        "_onlyRunOnce": 0
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "1487613838500677836",
+      "gameObjectPathId": "5491656440319035596",
+      "gameObjectName": "Attack",
+      "scriptPathId": "-8109327635834973011",
+      "scriptType": "BuffToOwner",
+      "fields": {
+        "_runActionOnEvent": 2,
+        "_buffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "tippi_height_ctrl[tween]",
+            "templateKey": "tippi_height_ctrl[tween]",
+            "lifeTimeType": 0,
+            "lifeTime": 0.0,
+            "blackboard": [
+              {
+                "key": "height_duration",
+                "value": 0.833299994468689,
+                "valueStr": ""
+              }
+            ],
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0
+          }
+        ],
+        "_onlyRunOnce": 0
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "6916671386739919052",
+      "gameObjectPathId": "5491656440319035596",
+      "gameObjectName": "Attack",
+      "scriptPathId": "-8109327635834973011",
+      "scriptType": "BuffToOwner",
+      "fields": {
+        "_runActionOnEvent": 2,
+        "_buffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "tippi_tr[fly]",
+            "templateKey": "tippi_tr[fly]",
+            "lifeTimeType": 0,
+            "lifeTime": 0.0,
+            "blackboard": [],
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0
+          }
+        ],
+        "_onlyRunOnce": 0
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "8305585456265873612",
+      "gameObjectPathId": "5491656440319035596",
+      "gameObjectName": "Attack",
+      "scriptPathId": "-8109327635834973011",
+      "scriptType": "BuffToOwner",
+      "fields": {
+        "_runActionOnEvent": 3,
+        "_buffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "tippi_height_ctrl[finish]",
+            "templateKey": "tippi_height_ctrl[finish]",
+            "lifeTimeType": 0,
+            "lifeTime": 0.0,
+            "blackboard": [
+              {
+                "key": "height_duration",
+                "value": 0.0,
+                "valueStr": ""
+              },
+              {
+                "key": "mode",
+                "value": 5.0,
+                "valueStr": ""
+              }
+            ],
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0
+          }
+        ],
+        "_onlyRunOnce": 0
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "1166548165557143756",
+      "gameObjectPathId": "-4132369529534363444",
+      "gameObjectName": "Attack",
+      "scriptPathId": "-8109327635834973011",
+      "scriptType": "BuffToOwner",
+      "fields": {
+        "_runActionOnEvent": 3,
+        "_buffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "tippi_height_ctrl[finish_s2_land]",
+            "templateKey": "tippi_height_ctrl[finish_s2_land]",
+            "lifeTimeType": 0,
+            "lifeTime": 0.0,
+            "blackboard": [
+              {
+                "key": "height_duration",
+                "value": 0.0,
+                "valueStr": ""
+              },
+              {
+                "key": "height_offset",
+                "value": 0.0,
+                "valueStr": ""
+              },
+              {
+                "key": "mode",
+                "value": 0.0,
+                "valueStr": ""
+              }
+            ],
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0
+          }
+        ],
+        "_onlyRunOnce": 0
+      }
+    },
+    {
+      "cab": "CAB-c92a2d05fc3f3f9835dd9ee9dfa3c429",
+      "pathId": "2610153678973749452",
+      "gameObjectPathId": "-4132369529534363444",
+      "gameObjectName": "Attack",
+      "scriptPathId": "-8109327635834973011",
+      "scriptType": "BuffToOwner",
+      "fields": {
+        "_runActionOnEvent": 2,
+        "_buffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "tippi_height_ctrl[tween]",
+            "templateKey": "tippi_height_ctrl[tween]",
+            "lifeTimeType": 0,
+            "lifeTime": 0.0,
+            "blackboard": [
+              {
+                "key": "height_duration",
+                "value": 0.833299994468689,
+                "valueStr": ""
+              },
+              {
+                "key": "height_offset",
+                "value": 0.0,
+                "valueStr": ""
+              }
+            ],
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0
+          }
+        ],
+        "_onlyRunOnce": 0
+      }
+    }
+  ],
+  "templates": [
+    {
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderPathId": "6070581171229484677",
+      "templateIndex": 5497,
+      "templateKey": "tippi_height_ctrl[finish_s2_land]",
+      "events": [
+        {
+          "eventKey": 0,
+          "fieldPath": "/_templates/5497/eventToActions/_items/0/value/SerializedState",
+          "nodes": [
+            {
+              "_ownerType": "BUFF_OWNER",
+              "$type": "Torappu.Battle.Action.Nodes+CheckUnitAlive"
+            },
+            {
+              "_target": "BUFF_OWNER",
+              "_offset": 0.0,
+              "_OffsetKey": "height_offset",
+              "_duration": 0.0,
+              "_durationKey": "height_duration",
+              "_audioSignalOnStop": "",
+              "_useGlobalPos": false,
+              "$type": "Torappu.Battle.Action.Nodes+ModifyGraphicHolderHeight"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+AlwaysNext"
+            },
+            {
+              "_targetType": "BUFF_OWNER",
+              "_buffKeys": [
+                "tippi_s_2[mark]"
+              ],
+              "isAND": true,
+              "_loadFromBlackboard": false,
+              "_checkBuffSource": false,
+              "_buffSourceType": "BUFF_SOURCE",
+              "_checkSourceHost": false,
+              "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+IfNot"
+            },
+            {
+              "_modeIndex": 0,
+              "_loadModeFromBlackboard": true,
+              "_restoreDefault": false,
+              "_restartFSM": true,
+              "_targetType": "BUFF_OWNER",
+              "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderPathId": "6070581171229484677",
+      "templateIndex": 5498,
+      "templateKey": "tippi_s_2[switch_mode]",
+      "events": [
+        {
+          "eventKey": 0,
+          "fieldPath": "/_templates/5498/eventToActions/_items/0/value/SerializedState",
+          "nodes": [
+            {
+              "_modeIndex": 4,
+              "_loadModeFromBlackboard": false,
+              "_restoreDefault": false,
+              "_restartFSM": true,
+              "_targetType": "BUFF_OWNER",
+              "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+            }
+          ]
+        },
+        {
+          "eventKey": 1,
+          "fieldPath": "/_templates/5498/eventToActions/_items/1/value/SerializedState",
+          "nodes": [
+            {
+              "_modeIndex": 6,
+              "_loadModeFromBlackboard": false,
+              "_restoreDefault": false,
+              "_restartFSM": true,
+              "_targetType": "BUFF_OWNER",
+              "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderPathId": "6070581171229484677",
+      "templateIndex": 5500,
+      "templateKey": "tippi_tr[fly_core]",
+      "events": [
+        {
+          "eventKey": 0,
+          "fieldPath": "/_templates/5500/eventToActions/_items/0/value/SerializedState",
+          "nodes": [
+            {
+              "_target": "TARGET",
+              "_resetToDefault": false,
+              "_blockMode": "FLY",
+              "$type": "Torappu.Battle.Action.Nodes+ChangeCharBlockMode"
+            }
+          ]
+        },
+        {
+          "eventKey": 1,
+          "fieldPath": "/_templates/5500/eventToActions/_items/1/value/SerializedState",
+          "nodes": [
+            {
+              "_target": "TARGET",
+              "_resetToDefault": true,
+              "_blockMode": "E_NUM",
+              "$type": "Torappu.Battle.Action.Nodes+ChangeCharBlockMode"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderPathId": "6070581171229484677",
+      "templateIndex": 5501,
+      "templateKey": "tippi_tr[fly]",
+      "events": [
+        {
+          "eventKey": 0,
+          "fieldPath": "/_templates/5501/eventToActions/_items/0/value/SerializedState",
+          "nodes": [
+            {
+              "_targetType": "BUFF_OWNER",
+              "_buffKeys": [
+                "tippi_tr[fly_core]"
+              ],
+              "isAND": true,
+              "_loadFromBlackboard": false,
+              "_checkBuffSource": false,
+              "_buffSourceType": "BUFF_SOURCE",
+              "_checkSourceHost": false,
+              "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+IfNot"
+            },
+            {
+              "_buff": {
+                "attributes": {
+                  "abnormalFlags": [
+                    "MOTION_TARGET_FREE"
+                  ],
+                  "abnormalImmunes": [],
+                  "abnormalAntis": [],
+                  "abnormalCombos": [],
+                  "abnormalComboImmunes": [],
+                  "attributeModifiers": []
+                },
+                "buffKey": "tippi_tr[fly_core]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": "AUTOMATIC",
+                "templateKey": "tippi_tr[fly_core]",
+                "disableOverride": false,
+                "overrideKey": null,
+                "overrideType": "DEFAULT",
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": null,
+                "overrideOnEventPriority": false,
+                "onEventPriority": "DEFAULT",
+                "audioSignal": null,
+                "lifeTimeType": "INFINITY",
+                "takeSnapshotWhenExtend": false,
+                "durationKey": null,
+                "remainingTimeKey": null,
+                "lifeTime": 0.0,
+                "triggerLifeType": "IMMEDIATELY",
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": [],
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": [],
+                "enableInitDirectionFromSource": false
+              },
+              "_buffOwner": "BUFF_OWNER",
+              "_useSpecialBuffSource": false,
+              "_specialBuffSource": "BUFF_SOURCE",
+              "_isDerivedBuff": false,
+              "_finishDerivedBuffIfParentFinish": false,
+              "_inherateSourceProjectileFromParentBuff": false,
+              "_hookEffectKeyFromSourceProjectile": false,
+              "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderPathId": "6070581171229484677",
+      "templateIndex": 5502,
+      "templateKey": "tippi_height_ctrl[finish_s1_land]",
+      "events": [
+        {
+          "eventKey": 0,
+          "fieldPath": "/_templates/5502/eventToActions/_items/0/value/SerializedState",
+          "nodes": [
+            {
+              "_ownerType": "BUFF_OWNER",
+              "$type": "Torappu.Battle.Action.Nodes+CheckUnitAlive"
+            },
+            {
+              "_target": "BUFF_OWNER",
+              "_offset": 0.0,
+              "_OffsetKey": "height_offset",
+              "_duration": 0.0,
+              "_durationKey": "height_duration",
+              "_audioSignalOnStop": "",
+              "_useGlobalPos": false,
+              "$type": "Torappu.Battle.Action.Nodes+ModifyGraphicHolderHeight"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+AlwaysNext"
+            },
+            {
+              "_targetType": "BUFF_OWNER",
+              "_buffKeys": [
+                "tippi_s_1[mark]"
+              ],
+              "isAND": true,
+              "_loadFromBlackboard": false,
+              "_checkBuffSource": false,
+              "_buffSourceType": "BUFF_SOURCE",
+              "_checkSourceHost": false,
+              "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+IfNot"
+            },
+            {
+              "_modeIndex": 0,
+              "_loadModeFromBlackboard": true,
+              "_restoreDefault": false,
+              "_restartFSM": true,
+              "_targetType": "BUFF_OWNER",
+              "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderPathId": "6070581171229484677",
+      "templateIndex": 5503,
+      "templateKey": "tippi_height_ctrl[finish]",
+      "events": [
+        {
+          "eventKey": 0,
+          "fieldPath": "/_templates/5503/eventToActions/_items/0/value/SerializedState",
+          "nodes": [
+            {
+              "_ownerType": "BUFF_OWNER",
+              "$type": "Torappu.Battle.Action.Nodes+CheckUnitAlive"
+            },
+            {
+              "_target": "BUFF_OWNER",
+              "_offset": 0.0,
+              "_OffsetKey": "height_offset",
+              "_duration": 0.0,
+              "_durationKey": "height_duration",
+              "_audioSignalOnStop": "",
+              "_useGlobalPos": false,
+              "$type": "Torappu.Battle.Action.Nodes+ModifyGraphicHolderHeight"
+            },
+            {
+              "_modeIndex": 0,
+              "_loadModeFromBlackboard": true,
+              "_restoreDefault": false,
+              "_restartFSM": true,
+              "_targetType": "BUFF_OWNER",
+              "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderPathId": "6070581171229484677",
+      "templateIndex": 5504,
+      "templateKey": "tippi_height_ctrl[tween]",
+      "events": [
+        {
+          "eventKey": 0,
+          "fieldPath": "/_templates/5504/eventToActions/_items/0/value/SerializedState",
+          "nodes": [
+            {
+              "_target": "BUFF_OWNER",
+              "_offset": 0.0,
+              "_OffsetKey": "height_offset",
+              "_duration": 0.0,
+              "_durationKey": "height_duration",
+              "_audioSignalOnStop": "",
+              "_useGlobalPos": false,
+              "$type": "Torappu.Battle.Action.Nodes+ModifyGraphicHolderHeight"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderPathId": "6070581171229484677",
+      "templateIndex": 5505,
+      "templateKey": "tippi_s_1[swtich_mode]",
+      "events": [
+        {
+          "eventKey": 0,
+          "fieldPath": "/_templates/5505/eventToActions/_items/0/value/SerializedState",
+          "nodes": [
+            {
+              "_modeIndex": 1,
+              "_loadModeFromBlackboard": false,
+              "_restoreDefault": false,
+              "_restartFSM": true,
+              "_targetType": "BUFF_OWNER",
+              "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+            }
+          ]
+        },
+        {
+          "eventKey": 1,
+          "fieldPath": "/_templates/5505/eventToActions/_items/1/value/SerializedState",
+          "nodes": [
+            {
+              "_modeIndex": 3,
+              "_loadModeFromBlackboard": false,
+              "_restoreDefault": false,
+              "_restartFSM": true,
+              "_targetType": "BUFF_OWNER",
+              "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderPathId": "6070581171229484677",
+      "templateIndex": 5506,
+      "templateKey": "tippi_tr[ground]",
+      "events": [
+        {
+          "eventKey": 0,
+          "fieldPath": "/_templates/5506/eventToActions/_items/0/value/SerializedState",
+          "nodes": [
+            {
+              "_buffKey": "tippi_tr[fly_core]",
+              "_loadFromBlackboard": false,
+              "_decCntIfStack": false,
+              "_updateOverrideMap": true,
+              "_targetType": "BUFF_OWNER",
+              "_checkBuffSource": false,
+              "_sourceType": "BUFF_SOURCE",
+              "_alsoClearNullSource": false,
+              "_finishHostBuff": false,
+              "_excludeThisBuff": false,
+              "_decCntKey": null,
+              "_decCnt": 1,
+              "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "decodeCheck": "Before projection, every decoded selected source object consumed exactly its serialized objectSize.",
+  "limits": [
+    "Initial controller values and ordinary node paths do not establish that live XLua or external Buffs never change motion or blocking.",
+    "Default ClearFlyState and the inspected Tippi-specific programs contain no BLOCK_FREE installation; this does not audit every external or global initial effect.",
+    "MOTION_TARGET_FREE is distinct from BLOCK_FREE. The selected native Character check uses blockMode versus a sourceMotionMode parameter; the full caller path deriving that argument from a source selector or source entity was not traced here.",
+    "Graphic-holder height is a separate node path; no inference that visual height alone changes world position, targeting motion, route mode or block mode."
+  ]
+}
