@@ -335,7 +335,7 @@ export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>):
     unit = units.get(battle, host);
 
     if (unit?.lifecycle === "PRESENT" && unit.skill.activation?.status === "ACTIVE") {
-        const active = unit.skill as Omit<Activation, keyof Identified<object>>;
+        const active = unit.skill as Identified<never, typeof unit.skill> as Activation;
         if (
             active.activation.sustain.type === "TIME" &&
             active.activation.sustain.endsAtTick <= battle.tick

@@ -18,13 +18,13 @@ export interface Snapshot extends Omit<State, "state"> {
     readonly state: unknown;
 }
 
-export interface Execution<P extends object = object, E extends object = object>
-    extends
-        Omit<Action<P, E>, keyof Identified<object>>,
-        Identified<{
-            readonly host: Ref<Unit & ActionCapability>;
-            readonly id: Id;
-        }> {
+export interface Execution<P extends object = object, E extends object = object> extends Identified<
+    {
+        readonly host: Ref<Unit & ActionCapability>;
+        readonly id: Id;
+    },
+    Action<P, E>
+> {
     readonly execution: State<E>;
 }
 

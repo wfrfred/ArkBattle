@@ -111,10 +111,11 @@ Unit 查询返回绑定某个不可变状态版本的 Unit 对象序列。类型
 // core/common/ref.ts
 declare const identity: unique symbol;
 declare const referent: unique symbol;
-export interface Identified<out I extends object> {
-    readonly [identity]?: I;
-}
-export type Identity<T> = T extends Identified<infer I> ? I : never;
+export type Identified<I extends object, T extends object = object> =
+    Omit<T, typeof identity> & object & { readonly [identity]?: I };
+export type Identity<T> = typeof identity extends keyof T
+    ? T extends { readonly [identity]?: infer I extends object } ? I : never
+    : never;
 export interface Phantom<out T> {
     readonly [referent]: T;
 }
@@ -154,6 +155,10 @@ for (const ref of candidates) {
 ```
 
 公共 Ref 由定位数据与只读类型证明组成。各领域通过可选 unique-symbol 的 Identified 协议声明地址类型，不增加运行时字段，也不使用集中列举所有领域的条件映射。Unit 查询层和实例创建 / ref(self) 入口产生引用；业务代码不能凭裸 ID 任意指定对象类型。定位数据与 Phantom 不增加运行时字段；完整实体本身仍保留 Definition、私有数据与类型关联。
+
+`Identified<I, T>` 保留 T 的业务字段，先移除已有 identity 声明，再将身份替换为 I；省略 T 时默认 object。Execution 与 Activation 分别以 `Identified<本轮地址, Action<P, E>>`、`Identified<本轮地址, Skill<S, A>>` 保留完整聚合字段并声明本轮身份，不通过交叉类型合并持久身份与本轮身份。临时擦除身份使用 `Identified<never, T>`，业务字段仍保留，但其 Identity 与 Ref 均为 never；这些声明都不要求实例保存 symbol 字段。
+
+Identity 先用 `typeof identity extends keyof T` 确认协议键存在，因此 `{}`、object、unknown 及普通业务结构均不能仅凭可选属性匹配得到身份。所有成员均声明协议的联合类型按成员提取身份；联合中只要有成员缺少该键，整个 Identity 与 Ref 就为 never，不从部分成员恢复可用身份。
 
 Core 直接公开完整实体，Action／Execution、Skill／Activation、Effect、Projectile、Mechanism、Tile／Terrain 的默认私有参数均为 object，不另设元数据实体或兼容别名。普通查询返回完整的默认类型，具体字段形状只由已知 Definition／精确 Ref 证明；实际诊断 Snapshot 与 Presentation 保留各自用途，不作为另一套运行模型。
 

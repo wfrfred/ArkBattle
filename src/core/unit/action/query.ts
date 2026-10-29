@@ -16,10 +16,7 @@ export function all(battle: BattleState): readonly Ref<Execution>[] {
             sort(
                 host.action.actions
                     .values()
-                    .filter(
-                        (self): self is Omit<Execution, keyof Identified<object>> =>
-                            self.execution !== null,
-                    )
+                    .filter((self): self is Identified<never, Execution> => self.execution !== null)
                     .map((self) => ref<Execution>(units.ref(host), self)),
                 (left, right) => left.id - right.id,
             ),
@@ -34,10 +31,7 @@ export function forUnit(battle: BattleState, source: Ref<Unit>): readonly Ref<Ex
         ? sort(
               unit.action.actions
                   .values()
-                  .filter(
-                      (self): self is Omit<Execution, keyof Identified<object>> =>
-                          self.execution !== null,
-                  )
+                  .filter((self): self is Identified<never, Execution> => self.execution !== null)
                   .map((self) => ref<Execution>(units.ref(unit), self)),
               (left, right) => left.id - right.id,
           )

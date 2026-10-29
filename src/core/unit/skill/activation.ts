@@ -62,13 +62,16 @@ export interface State<A extends object = object> {
     readonly state: A;
 }
 
-export interface Activation<S extends object = object, A extends object = object>
-    extends
-        Omit<Skill<S, A>, keyof Identified<object>>,
-        Identified<{
-            readonly host: Ref<Unit & SkillCapability>;
-            readonly id: number;
-        }> {
+export interface Activation<
+    S extends object = object,
+    A extends object = object,
+> extends Identified<
+    {
+        readonly host: Ref<Unit & SkillCapability>;
+        readonly id: number;
+    },
+    Skill<S, A>
+> {
     readonly activation: State<A>;
 }
 

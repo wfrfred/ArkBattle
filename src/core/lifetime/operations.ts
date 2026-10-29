@@ -41,7 +41,7 @@ export function scope<V extends Identified<object>, S extends V, E, T extends S>
     return {
         type: "LIFETIME",
         kind: lifetime.kind,
-        address: definition.address(ref),
+        address: definition.address(ref as object as Ref<V>),
         [paired]: { definition, ref },
     };
 }

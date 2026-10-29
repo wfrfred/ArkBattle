@@ -35,7 +35,7 @@ export function advanceSkills(state: BattleState, commands: readonly Command[]):
                 state,
                 activationRef<Activation>(
                     units.ref(unit),
-                    unit.skill as Omit<Activation, keyof Identified<object>>,
+                    unit.skill as Identified<never, typeof unit.skill> as Activation,
                 ),
                 "STOP",
             ).state;

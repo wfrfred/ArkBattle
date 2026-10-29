@@ -40,7 +40,7 @@ export function projectUnit(unit: Unit | undefined): readonly Entry[] {
                 skillLifetime,
                 activationRef<Activation>(
                     unitRef(unit),
-                    unit.skill as Omit<Activation, keyof Identified<object>>,
+                    unit.skill as Identified<never, typeof unit.skill> as Activation,
                 ),
             ),
         );
@@ -49,10 +49,7 @@ export function projectUnit(unit: Unit | undefined): readonly Entry[] {
         const executions = [
             ...unit.action.actions
                 .values()
-                .filter(
-                    (self): self is Omit<Execution, keyof Identified<object>> =>
-                        self.execution !== null,
-                ),
+                .filter((self): self is Identified<never, Execution> => self.execution !== null),
         ].sort((left, right) => left.execution.id - right.execution.id);
 
         for (const self of executions) {

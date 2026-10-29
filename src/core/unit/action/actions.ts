@@ -56,10 +56,7 @@ export class Actions {
 
     add<P extends object, E extends object>(self: Action<P, E> | Execution<P, E>): Actions {
         return new Actions(
-            this.#store.add(
-                self.definition.id,
-                self as Omit<Action<P, E>, keyof Identified<object>>,
-            ),
+            this.#store.add(self.definition.id, self as Identified<never, Action<P, E>>),
         );
     }
 
@@ -67,10 +64,7 @@ export class Actions {
         definition: Definition<P, E>,
         self: NoInfer<Action<P, E> | Execution<P, E>>,
     ): Actions {
-        const store = this.#store.replace(
-            definition.id,
-            self as Omit<Action<P, E>, keyof Identified<object>>,
-        );
+        const store = this.#store.replace(definition.id, self as Identified<never, Action<P, E>>);
 
         return store === this.#store ? this : new Actions(store);
     }

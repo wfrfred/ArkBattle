@@ -1,11 +1,14 @@
 declare const identity: unique symbol;
 declare const referent: unique symbol;
 
-export interface Identified<out I extends object> {
-    readonly [identity]?: I;
-}
+export type Identified<I extends object, T extends object = object> = Omit<T, typeof identity> &
+    object & { readonly [identity]?: I };
 
-export type Identity<T> = T extends Identified<infer I> ? I : never;
+export type Identity<T> = typeof identity extends keyof T
+    ? T extends { readonly [identity]?: infer I extends object }
+        ? I
+        : never
+    : never;
 
 export interface Phantom<out T> {
     readonly [referent]: T;
