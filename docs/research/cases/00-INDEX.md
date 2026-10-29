@@ -29,6 +29,7 @@
 | [17 Projectile 停止与终结](17-projectile-stop-and-termination.md) | StopMe / TryEliminate / 回收原生分支，逻各斯清弹、维什戴尔、慑砂与承曦格雷伊实际配置 | 普通停止与消除、Hit / Stop / Destroy 顺序、同步终结重入和到达后活动等待 |
 | [18 Projectile 来源与目标生命周期](18-projectile-source-and-target-lifecycles.md) | Entity 死亡／撤退／路线消失、ObjectPtr / MountPoint、普通 ApplyDamage、暗索套索及维什戴尔实际配置 | 身份与存活／空间资格、继续追踪与保底命中、来源数值回退与归属、可选生命周期依赖 |
 | [19 Effect 索敌与异常免疫](19-effect-selection-and-immunity.md) | 爱丽丝／卡夫卡睡眠选择、鼓舞光环与标记、Buff 安装及异常 Anti／Immune 原生分支 | 免疫者是否占目标名额、选择与施加／生效的区别、EFFECT Purpose 的必要性及当前项目缺失 |
+| [20 诺伯特平民的阵营与阻挡](20-norport-civilian-allegiance-and-blocking.md) | 本机平民／寻路密探 Prefab、SideTypeIndex 与既有阻挡原生证据；游戏教学和 PRTS 机制说明 | 友好标签与实际阵营的区别、无敌禁选与免伤、鉴定完成后的禁挡，以及定向阻挡资格的边界 |
 
 ## 每个案例的记录方式
 

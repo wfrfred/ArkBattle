@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-29",
+  "scope": "Initial Enemy prefab allegiance and blocking fields; selected native enum/accessor/mapping witnesses. No live XLua audit or runtime experiment.",
+  "sources": {
+    "bundle": {
+      "path": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_13.ab",
+      "sha256": "c0f4e5e2dfa18a89eff91480e03e71cf74945edb8924c46844b9fded46142b12",
+      "cab": "CAB-d5a5ebb06b9b5c15f66b6f736b421497"
+    },
+    "assembly": {
+      "path": "GameAssembly.dll",
+      "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5"
+    },
+    "metadata": {
+      "path": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+      "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f"
+    }
+  },
+  "prefabs": [
+    {
+      "name": "enemy_1313_wdfmr",
+      "gameObjectPathId": "7412990192458094182",
+      "controllerPathId": "-7899771076343933338"
+    },
+    {
+      "name": "enemy_1313_wdfmr_2",
+      "gameObjectPathId": "-1050975705080545665",
+      "controllerPathId": "5370392097402502783"
+    },
+    {
+      "name": "enemy_1314_wdnjd",
+      "gameObjectPathId": "3550913917277192787",
+      "controllerPathId": "7701741916315664979"
+    }
+  ],
+  "sharedControllerFields": {
+    "m_ScriptPathId": "-6629209555389654693",
+    "scriptType": "Enemy",
+    "_sideTypeIndex": 1,
+    "_blockVolume": 1,
+    "_specificBlockMask": 0,
+    "_ignoreBlockMode": 0,
+    "_specialBlockCondition": {
+      "_type": 0,
+      "_buffKeyPairs": [],
+      "_filterTags": []
+    }
+  },
+  "civilianBaseMode": {
+    "pathId": "-7545378189383608730",
+    "_generalAbilities": [],
+    "combatAbility": {
+      "pathId": "-6484645968455707034",
+      "type": "EmptyActiveAbility"
+    },
+    "attackAbility": {
+      "pathId": "-5660633408766781850",
+      "type": "EmptyActiveAbility"
+    },
+    "trigger": {
+      "pathId": "-2374000782901094810",
+      "type": "NeverTrigger"
+    }
+  },
+  "sideTypeIndex": {
+    "type": "Torappu.Battle.SideTypeIndex",
+    "metadataTypeIndex": 9849,
+    "encoding": "IL2CPP compressed signed integer, decoded values are not four-byte raw integers",
+    "members": [
+      { "name": "ALLY", "fieldIndex": 67919, "metadataBlobOffset": 21928496, "byteHex": "00", "value": 0 },
+      { "name": "ENEMY", "fieldIndex": 67920, "metadataBlobOffset": 21928497, "byteHex": "02", "value": 1 },
+      { "name": "NEUTRAL", "fieldIndex": 67921, "metadataBlobOffset": 21928498, "byteHex": "04", "value": 2 }
+    ]
+  },
+  "nativeWitnesses": [
+    {
+      "method": "Enemy.get_sideTypeIndex",
+      "methodIndex": 76377,
+      "address": "0x180a7fd50",
+      "ordinaryReadAddress": "0x180a7fda7",
+      "ordinaryRead": "mov eax, [rbx+0x2c8]",
+      "hotfixBranchAddress": "0x180a7fdbe",
+      "hotfixDelegate": "XLua.DelegateBridge.__Gen_Delegate_Imp3643",
+      "hotfixDelegateMethodIndex": 6298
+    },
+    {
+      "method": "SideTypes..cctor",
+      "metadataTypeIndex": 11533,
+      "methodIndex": 78269,
+      "address": "0x180b06970",
+      "field": "SAME_SIDES (+0x20)",
+      "writes": [
+        { "address": "0x180b06a7c", "index": 0, "constant": "ALLY_TO_SAME", "sideTypeValue": 1 },
+        { "address": "0x180b06a9c", "index": 1, "constant": "ENEMY_TO_SAME", "sideTypeValue": 2 },
+        { "address": "0x180b06abc", "index": 2, "constant": "NEUTRAL_TO_SAME", "sideTypeValue": 4 }
+      ]
+    }
+  ],
+  "existingBlockingEvidence": "../blocking-native-20261023/modes/report.txt",
+  "decodeCheck": "Selected GameObjects, controllers, modes and abilities consumed exactly their serialized objectSize; no _decodeSize mismatch.",
+  "limits": [
+    "These are initial prefab fields and ordinary native branches, not proof that runtime side never changes.",
+    "Identification progress, color, invincibility and unblockability were cross-checked against gameplay documentation; their full content/Lua implementation was not traced here.",
+    "No independent hostile or identification field was found in the selected controllers, modes, MoveControllers and abilities; this does not establish its absence from other content or hotfixes."
+  ]
+}
