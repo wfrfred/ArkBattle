@@ -133,9 +133,9 @@ Blocker 的 capacity 表示可用阻挡数，Blockable 的 volume 表示占用�
 
 两端 Definition 保存基础数值，State 保存按来源登记的静态 Contribution 与 Rule。Blocker 另保存当前 geometry。capacity／volume 由 resolveCapacity／resolveVolume 求值。capacity 使用 attribute.Modifier 的四段属性公式及 ties-to-even 整数化；volume 使用 Contribution<number>，筛选互斥胜者后累加整数追加量，不复用属性公式。项目约定 capacity 下限为 0，volume 下限为 1，volume 的基础值要求正整数；贡献将占用数降到 0 或负值时仍占用 1，不借零占用表达不可被阻挡。
 
-canBlock 接收 Unit & Blocker，canBeBlocked 接收 Unit & Blockable；各自 Rule 的 allows 接收相同的能力交叉类型。Capability State 不维护第二个 enabled 开关，多个禁止效果按独立 ID 登记与撤销。Battlefield Facts 中的 enabled 是从当前 Rule 求值得到的只读结果。
+两端共享 unit/capability/blocking/rule.ts 的 Rule，经 capability/blocking/index.ts 导出。唯一签名为 `allows(battle, blocker, blockable)`，参数分别是 BattleState、完整的 Unit & Blocker 和 Unit & Blockable；规则可以查询双方其他能力，不执行状态写入。两端 rules 只表达登记所有者，Blocking 的 canRetain 按相同参数顺序检查双方规则，不提供一元资格查询或各端同义 Rule 类型。Capability 不维护第二个 enabled 开关，Battlefield 也不保存从二元资格投影出的单体 enabled；多个限制按独立 ID 登记与撤销。完整签名及取得、保留与容量的边界见 [关系资格与 Rule](blocking.md#关系资格与-rule)。
 
-阻挡事实读取当前贡献与规则。统一更新保留 Capability 的纯 State 修改方式和 unit.update() 的完整更新保证：完整提交同步完成必要的旧关系解除、容量裁撤、失效清理及 Hook，普通新关系搜索每 Tick 在 Movement 后的固定阶段统一执行，不保存各阻挡者的搜索周期；不为 Contribution 增加特殊完整更新 API。替换贡献但有效值不变时，不必重建阻挡投影。Blocker／Blockable 不提供 createDefinition，初始化负责基础数值与半径的不变量检查，内容负责提供几何值。职责与回调契约见[Blocking 政策](blocking.md#已确定的职责与调度政策)。
+阻挡事实读取当前贡献与双方规则。canSearch 只筛选不依赖目标的基础资格，canRetain 统一处理新旧关系的双方资格与 Rule；距离和无归属要求只在取得时检查，容量溢出由独立裁撤处理。统一更新保留 Capability 的纯 State 修改方式和 unit.update() 的完整更新保证：完整提交同步完成必要的旧关系解除、容量裁撤、失效清理及 Hook，普通新关系搜索每 Tick 在 Movement 后的固定阶段统一执行，不保存各阻挡者的搜索周期；不为 Contribution 增加特殊完整更新 API。Blocker／Blockable 不提供 createDefinition，初始化负责基础数值与半径的不变量检查，内容负责提供几何值。职责与回调契约见[Blocking 政策](blocking.md#已确定的职责与调度政策)。
 
 关系归属与关联由两端 State 保存。Blockable 的 blocker 保存 Ref<Unit & Blocker> 或 null，先确定排他归属；Blocker 的 blocked 保存按建立顺序维护的 Ref<Unit & Blockable>[]。unit.update 根据归属变化增量补齐对侧关联与索引，补齐阶段不执行关系业务 Hook，通知仍按 Blocker 先、Blockable 后派发。归属是否变化按 Unit ID 比较，同一次关系的身份由正向列表中保留的 Ref 条目对象承担；重新建立创建新条目，同归属普通更新保留条目。不支持直接 A → B 换归属，使用完整 Release 和新的 Acquire。归属通知与后续容量维护的相对顺序见 [Blocking 更新顺序](blocking.md#通知与后续维护的顺序)。
 

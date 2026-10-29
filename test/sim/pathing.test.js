@@ -118,7 +118,6 @@ const battlefieldUnit = (id, position) => ({ hooks: [],
 
 function projectionFacts(state) {
   const definitionFacts = ({ initialize, prepare, onTick, onEnd, ...definition }) => definition;
-  const ruleFacts = (unit, rules) => rules.map(rule => ({ id: rule.id, allows: rule.allows(unit) }));
   return { ...state, navigation: { ...state.navigation, baseline: { WALK: { ...state.navigation.baseline.WALK }, FLY: { ...state.navigation.baseline.FLY } } }, projectiles: state.projectiles.values().toArray(), units: new Map([...state.units].map(([id, unit]) => [
     id, { ...unit, effects: unit.effects.toJSON(), definition: unit.definition.action === undefined
       ? unit.definition
@@ -129,10 +128,10 @@ function projectionFacts(state) {
         }])),
       } }),
       ...(unit.blocker === undefined ? {} : { blocker: { ...unit.blocker,
-        rules: ruleFacts(unit, unit.blocker.rules),
+        rules: unit.blocker.rules.map(({ id }) => id),
       } }),
       ...(unit.blockable === undefined ? {} : { blockable: { ...unit.blockable,
-        rules: ruleFacts(unit, unit.blockable.rules),
+        rules: unit.blockable.rules.map(({ id }) => id),
       } }),
     },
   ])) };

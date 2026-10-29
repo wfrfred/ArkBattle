@@ -97,7 +97,7 @@ test("ENDING publication exposes Pending before a real Blocking Hook requests th
     const host = getUnit(battle, 10);
     let blocker = setRule(host.blocker, {
         id: "release-on-ending",
-        allows: self => !self.effects.values().some(effect =>
+        allows: (_battle, self) => !self.effects.values().some(effect =>
             effect.definition === content && effect.status === "ENDING"),
     });
     blocker = setBlockerHook(blocker, "released", hook("reenter-publication", current => {

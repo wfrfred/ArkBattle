@@ -62,6 +62,34 @@ search() 的执行规则已经确定：固定候选数组，逐个 tryAcquire()�
 
 例如初始剩余容量为 1、E1 和 E2 都在候选中，取得 E1 的 Hook 将容量提高到 2 后，E2 可以在同一次 search() 中接敌。若 Hook 已提前阻挡 E2，外层尝试跳过它；新创建的 E3 不加入本次候选。
 
+## 关系资格与 Rule
+
+两端使用同一个 [Rule](../../src/core/unit/capability/blocking/rule.ts)，从 [Capability 入口](../../src/core/unit/capability/blocking/index.ts) 导入：
+
+```typescript
+export interface Rule {
+    readonly id: string;
+    readonly allows: (
+        battle: BattleState,
+        blocker: Unit & Blocker,
+        blockable: Unit & Blockable,
+    ) => boolean;
+}
+```
+
+Rule 是针对当前双方的纯查询，可以读取完整 Unit 的其他能力及 BattleState，不执行状态写入。`blocker.rules` 与 `blockable.rules` 只表示规则的登记所有者；两边都按相同参数顺序调用，不把 Blockable 侧的参数反转，也不另定义各自的 Rule 类型。多个限制按独立 ID 登记与撤销。
+
+Blocking 将资格与其他取得条件分开处理：
+
+| 阶段 | 检查内容 |
+| --- | --- |
+| `canSearch` | 不依赖具体目标的基础资格，包括阻挡者在场、存活、空间存在、阵营能力及当前根格的阻挡许可；不提前求值二元 Rule。 |
+| `canRetain` | 双方当前基础资格、目标空地身份和敌对关系，以及两端所有 `Rule.allows(battle, blocker, blockable)`；新取得和旧关系维护共用这一判断。 |
+| 新关系取得 | 在关系资格之外，确认目标尚无归属、双方在接敌距离内，且当前占用加目标 volume 不超过 capacity。 |
+| 容量裁撤 | 独立比较当前总占用与容量，超出时从既有有序关联末尾逐项解除；每项通知后接续最新状态。 |
+
+距离只约束新取得，普通移动超出起始半径不使旧关系失效。目标是否已有归属在取得入口检查，不属于 `canRetain`；当前容量已满也不使每条既有关系分别变成不合格。Capability 不保存第二个 enabled 状态，也不将二元 Rule 压成单个 Unit 的 enabled 投影。
+
 ## 已确定的操作接口
 
 ```typescript
@@ -208,7 +236,7 @@ Blocking 只选一个当前根格：有非空 `occupancy.tile` 时使用登记�
 
 `Tile.get_isMeleeBlockable`（70673，`0x1808c6070`）先读黑板 `tile_blockable`，有值直接返回，未配置才取 `!isHighland`。`Tile.get_isHighland`（70670，`0x1808c5f10`）默认读取 TileData 的原始高度；它与读取当前 Options 的 `get_heightType` 不是同一字段语义。因此普通高地的显式阻挡许可不能被当前 elevation 的硬判断覆盖。
 
-射击台另有内容规则。本机 `trap_1106_achplat` 的 `trap_1106_achplat_passive` 在 `ON_OWNER_OVERLAPPED` 向乘员创建 `highland_common[block]`；后者对 WALK 阻挡模式施加带 `BLOCK_FREE` 的派生 Buff，并随阻挡模式变化维护。`Tile.RegisterCharacter`（70726，`0x1808c1eb0`）通知 `BuffContainer.OnOwnerOverlapped`（65410，`0x1806764e0`），`SearchBlockee` 再通过 `Entity.isBlockFree`（66511，`0x180705590`）拒绝接敌。这证明平台禁阻挡来自具体内容，不是所有高地的通用规则。当前项目只覆盖地面关系，射击台 Content 通过 Occupancy 的 SUPPORT occupantAdded Hook 给当前乘员登记自身的 Blocker.Rule；occupantRemoved Hook 同步移除该平台规则，不改变地块 `allowsBlocking`。尚未复刻按 WALK／空中阻挡模式切换的完整 Buff 行为。
+射击台另有内容规则。本机 `trap_1106_achplat` 的 `trap_1106_achplat_passive` 在 `ON_OWNER_OVERLAPPED` 向乘员创建 `highland_common[block]`；后者对 WALK 阻挡模式施加带 `BLOCK_FREE` 的派生 Buff，并随阻挡模式变化维护。`Tile.RegisterCharacter`（70726，`0x1808c1eb0`）通知 `BuffContainer.OnOwnerOverlapped`（65410，`0x1806764e0`），`SearchBlockee` 再通过 `Entity.isBlockFree`（66511，`0x180705590`）拒绝接敌。这证明平台禁阻挡来自具体内容，不是所有高地的通用规则。当前项目只覆盖地面关系，射击台 Content 通过 Occupancy 的 SUPPORT occupantAdded Hook 在当前乘员的 blocker.rules 登记平台自己的 Rule，禁止其与任何目标建立或保留阻挡；occupantRemoved Hook 同步移除该平台规则，不改变地块 `allowsBlocking`。尚未复刻按 WALK／空中阻挡模式切换的完整 Buff 行为。
 
 ## 未完成的原生机制
 

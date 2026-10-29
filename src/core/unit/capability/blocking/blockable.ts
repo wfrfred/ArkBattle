@@ -6,14 +6,10 @@ import type { Unit } from "../../unit.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Blocker } from "./blocker.js";
 import type { Hook, Key } from "../../../battle/blocking/hook.js";
+import type { Rule } from "./rule.js";
 
 export interface Definition {
     readonly volume: number;
-}
-
-export interface Rule {
-    readonly id: string;
-    readonly allows: (unit: Unit & Blockable) => boolean;
 }
 
 export interface State {
@@ -66,10 +62,6 @@ export function removeRule(state: State, id: string): State {
     const rules = registry.remove(state.rules, id);
 
     return rules === state.rules ? state : { ...state, rules };
-}
-
-export function canBeBlocked(unit: Unit & Blockable): boolean {
-    return unit.blockable.rules.every((rule) => rule.allows(unit));
 }
 
 export function setVolumeContribution(

@@ -5,13 +5,11 @@ import { World } from "../../geometry/coordinate.js";
 import { get as getTile } from "../../battlefield/map/map.js";
 import { areHostile, hasAllegiance } from "../../unit/capability/allegiance/capability.js";
 import {
-    canBlock,
     hasBlocker,
     resolveCapacity,
     type Blocker,
 } from "../../unit/capability/blocking/blocker.js";
 import {
-    canBeBlocked,
     hasBlockable,
     resolveVolume,
     type Blockable,
@@ -36,7 +34,7 @@ function isActive(unit: Unit): boolean {
 }
 
 function canSearch(battle: BattleState, unit: Unit & Blocker): boolean {
-    if (!isActive(unit) || !hasAllegiance(unit) || !canBlock(unit)) {
+    if (!isActive(unit) || !hasAllegiance(unit)) {
         return false;
     }
 
@@ -58,10 +56,11 @@ function canRetain(
         canSearch(battle, blocker) &&
         hasAllegiance(blocker) &&
         isActive(target) &&
-        canBeBlocked(target) &&
         (!hasLayer(target) || target.layer.type === "GROUND") &&
         hasAllegiance(target) &&
-        areHostile(blocker, target)
+        areHostile(blocker, target) &&
+        blocker.blocker.rules.every((rule) => rule.allows(battle, blocker, target)) &&
+        target.blockable.rules.every((rule) => rule.allows(battle, blocker, target))
     );
 }
 

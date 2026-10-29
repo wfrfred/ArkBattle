@@ -7,15 +7,11 @@ import type { Unit } from "../../unit.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Blockable } from "./blockable.js";
 import type { Hook, Key } from "../../../battle/blocking/hook.js";
+import type { Rule } from "./rule.js";
 
 export interface Definition {
     readonly capacity: number;
     readonly geometry: { readonly radius: number };
-}
-
-export interface Rule {
-    readonly id: string;
-    readonly allows: (unit: Unit & Blocker) => boolean;
 }
 
 export interface State {
@@ -77,10 +73,6 @@ export function removeRule(state: State, id: string): State {
     const rules = registry.remove(state.rules, id);
 
     return rules === state.rules ? state : { ...state, rules };
-}
-
-export function canBlock(unit: Unit & Blocker): boolean {
-    return unit.blocker.rules.every((rule) => rule.allows(unit));
 }
 
 function setCapacityContributions(state: State, capacity: State["capacity"]): State {

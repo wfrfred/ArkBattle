@@ -10,7 +10,7 @@ import { get as getTile } from "../../dist/core/battlefield/map/map.js";
 import { at as occupancyAt } from "../../dist/core/battlefield/occupancy.js";
 import { Tile } from "../../dist/core/geometry/coordinate.js";
 import { createDefinition as createDeployable } from "../../dist/core/unit/capability/deployable/index.js";
-import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
+import { setHook } from "../../dist/core/unit/capability/blocking/blocker.js";
 import { fixture, holder, target, acquire, ownerId, hook } from "../helpers/blocking.js";
 import { getUnit, initialize } from "../helpers/unit.js";
 
@@ -50,14 +50,12 @@ function platform(id = 30, tile = first) {
 
 function assertSuppressed(battle, id) {
     const unit = getUnit(battle, id);
-    assert.equal(blocker.canBlock(unit), false);
     assert.equal(unit.blocker.rules.length, 1);
     assert.deepEqual(unit.blocker.blocked, []);
 }
 
 function assertEligible(battle, id) {
     const unit = getUnit(battle, id);
-    assert.equal(blocker.canBlock(unit), true);
     assert.deepEqual(unit.blocker.rules, []);
 }
 
@@ -183,7 +181,7 @@ for (const nested of ["remove passenger", "remove platform"]) {
         let calls = 0;
         battle = update(battle, [{
             ...unit,
-            blocker: blocker.setHook(unit.blocker, "released", hook("nested-platform-change", state => {
+            blocker: setHook(unit.blocker, "released", hook("nested-platform-change", state => {
                 calls++;
                 return remove(state, nested === "remove passenger" ? 10 : 30, "SCRIPT");
             })),

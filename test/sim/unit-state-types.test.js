@@ -24,8 +24,9 @@ import type { Vitality, Input as VitalityInput } from ${module("unit/capability/
 import { resolveDefense } from ${module("unit/capability/vitality/index")};
 import { setDefenseContribution, setMaxHpContribution } from ${module("unit/capability/vitality/index")};
 import { setAttackContribution, type Input as AttackInput, type Offense } from ${module("unit/capability/offense/index")};
-import { setCapacityContribution, canBlock, setHook as setBlockerHook, type Rule as BlockerRule, type Blocker } from ${module("unit/capability/blocking/blocker")};
-import { setVolumeContribution, canBeBlocked, setHook as setBlockableHook, type Rule as BlockableRule, type Blockable } from ${module("unit/capability/blocking/blockable")};
+import { setCapacityContribution, setHook as setBlockerHook, type Blocker } from ${module("unit/capability/blocking/blocker")};
+import { setVolumeContribution, setHook as setBlockableHook, type Blockable } from ${module("unit/capability/blocking/blockable")};
+import { setBlockerRule, setBlockableRule, type Rule as BlockingRule } from ${module("unit/capability/blocking/index")};
 import { blockerOf, blocked, usedCapacity } from ${module("battle/blocking/query")};
 import type { Locomotion, Input as MovementInput } from ${module("unit/capability/locomotion/index")};
 import { setSpeedContribution as setActionSpeedContribution, type Action, type Input as ActionInput } from ${module("unit/capability/action/index")};
@@ -114,10 +115,18 @@ for(const stored of mixed.values()){
 // @ts-expect-error an ID alone cannot claim a private data type.
 host.effects.get<{charges:number},Vitality>(0);
 declare const capabilityHost:Unit & Vitality & Offense & Blocker & Blockable & Locomotion & Route & Action;
-const blockerRule:BlockerRule={id:'blocker',allows:self=>self.blocker.capacity.length===0};
-const blockableRule:BlockableRule={id:'blockable',allows:self=>self.blockable.volume.length===0};
-canBlock(capabilityHost);
-canBeBlocked(capabilityHost);
+const blockingRule:BlockingRule={id:'pair',allows(current,blocker,blockable){
+ const state:BattleState=current;
+ const capacity:readonly Contribution<readonly Modifier[]>[]=blocker.blocker.capacity;
+ const volume:readonly Contribution<number>[]=blockable.blockable.volume;
+ // @ts-expect-error the blocking endpoint does not prove a Blockable capability.
+ blocker.blockable;
+ // @ts-expect-error the blocked endpoint does not prove a Blocker capability.
+ blockable.blocker;
+ return capacity.length===0&&volume.length===0&&state.tick>=0;
+}};
+setBlockerRule(capabilityHost.blocker,blockingRule);
+setBlockableRule(capabilityHost.blockable,blockingRule);
 const blockedRefs:readonly Ref<Unit & Blockable>[]=capabilityHost.blocker.blocked;
 const blockerRef:Ref<Unit & Blocker>|null=capabilityHost.blockable.blocker;
 const owner:Ref<Unit & Blocker>|undefined=blockerOf(battle,unitRef(capabilityHost));
@@ -144,10 +153,6 @@ setBlockableHook(capabilityHost.blockable,'released',{
 blockerOf(battle,unitRef(bare));
 // @ts-expect-error reverse blocking queries require Blocker identity.
 blocked(battle,unitRef(bare));
-// @ts-expect-error blocking queries require the capability at the call boundary.
-canBlock(bare);
-// @ts-expect-error blockable queries require the capability at the call boundary.
-canBeBlocked(bare);
 // @ts-expect-error eligibility is expressed through Rules.
 capabilityHost.blocker.enabled;
 // @ts-expect-error eligibility is expressed through Rules.

@@ -243,7 +243,7 @@ for (const { checkpoint, operation } of [
             }),
             blocker: setBlockerHook(setBlockerRule(current.blocker, {
                 id: "blocking-during-attack",
-                allows(host) {
+                allows(_battle, host) {
                     const action = host.action.actions.get(attack.id, attack);
                     return action.execution === null || (checkpoint === "cooldown"
                         ? action.cooldown.readyAtTick !== 10.5

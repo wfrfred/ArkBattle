@@ -10,7 +10,6 @@ import * as effects from "../../dist/core/unit/effect/index.js";
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import * as actions from "../../dist/core/unit/action/index.js";
-import { canBlock } from "../../dist/core/unit/capability/blocking/blocker.js";
 import { advance as advanceLocomotion } from "../../dist/core/unit/capability/locomotion/index.js";
 const canMove = (battle, unit) => {
     const goal = [unit.position[0] + 0.05, unit.position[1]];
@@ -46,7 +45,7 @@ test("stun composes four capabilities and overlapping instances withdraw only th
 
     assert.equal(actionAllowed(second.state, host), false);
     assert.equal(canMove(second.state, host), false);
-    assert.equal(canBlock(host), false);
+    assert.equal(blockingQueries.blockerOf(advanceBlocking(second.state), { id: 1 }), undefined);
     assert.equal(activationAllowed(second.state), false);
     assert.equal(recoveryAllowed(second.state), true);
     assert.equal(blockingQueries.blockerOf(second.state, { id: 1 })?.id, undefined);
@@ -56,16 +55,14 @@ test("stun composes four capabilities and overlapping instances withdraw only th
     state = effects.end(state, second.value, "EXPLICIT");
     assert.equal(actionAllowed(state, getUnit(state, 0)), true);
     assert.equal(canMove(state, getUnit(state, 0)), true);
-    assert.equal(canBlock(getUnit(state, 0)), true);
     assert.equal(activationAllowed(state), true);
     assert.equal(blockingQueries.blockerOf(state, { id: 1 })?.id, undefined);
     state = advanceBlocking(state);
     assert.equal(blockingQueries.blockerOf(state, { id: 1 })?.id, 0);
 
     state = effects.setEnabled(state, first.value, true);
-    assert.equal(canBlock(getUnit(state, 0)), false);
+    assert.equal(blockingQueries.blockerOf(state, { id: 1 }), undefined);
     state = effects.advance({ ...state, tick: 5 });
-    assert.equal(canBlock(getUnit(state, 0)), true);
     assert.equal(blockingQueries.blockerOf(state, { id: 1 })?.id, undefined);
     state = advanceBlocking(state);
     assert.equal(blockingQueries.blockerOf(state, { id: 1 })?.id, 0);
@@ -82,7 +79,7 @@ test("silence and SP prevention are separate rules, and prohibited time does not
     assert.equal(activationAllowed(state), false);
     assert.equal(actionAllowed(state, getUnit(state, 0)), true);
     assert.equal(canMove(state, getUnit(state, 0)), true);
-    assert.equal(canBlock(getUnit(state, 0)), true);
+    assert.deepEqual(getUnit(state, 0).blocker.rules, []);
     assert.equal(recoveryAllowed(state), false);
     assert.equal(recover(state, unitRef(getUnit(state, 0)), "EXTERNAL", 1).state, state);
     state = advance({ ...state, tick: 60 }, unitRef(getUnit(state, 0)));

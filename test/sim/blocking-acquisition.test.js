@@ -11,6 +11,51 @@ const assign = (battle, unit = getUnit(battle, 20)) => updateUnit(battle, [{
     blockable: { ...unit.blockable, blocker: { id: 10 } },
 }]);
 
+test("both endpoint Rules receive the same pair and changes release an incompatible existing relation", () => {
+    const owner = holder(10, { capacity: 3 });
+    const candidate = target(21);
+    let battle = { ...fixture([
+        { ...owner, blocker: blocker.setRule(owner.blocker, {
+            id: "skip-first",
+            allows(current, blocker, blockable) {
+                assert.equal(current.tick, 7);
+                assert.equal(getUnit(current, blocker.id), blocker);
+                assert.equal(getUnit(current, blockable.id), blockable);
+                assert.equal(blocker.id, 10);
+                return blockable.id !== 20;
+            },
+        }) },
+        holder(11, { capacity: 3 }), target(20),
+        { ...candidate, blockable: blockable.setRule(candidate.blockable, {
+            id: "second-owner-only",
+            allows(current, blocker, blockable) {
+                assert.equal(current.tick, 7);
+                assert.equal(getUnit(current, blocker.id), blocker);
+                assert.equal(getUnit(current, blockable.id), blockable);
+                assert.equal(blockable.id, 21);
+                return blocker.id === 11;
+            },
+        }) },
+        target(22),
+    ]), tick: 7 };
+
+    battle = acquire(battle, 10);
+    assert.deepEqual(blockedIds(battle, 10), [22]);
+    battle = acquire(battle, 11);
+    assert.deepEqual(blockedIds(battle, 11), [20, 21]);
+
+    const blocked = getUnit(battle, 22);
+    battle = replaceUnit(battle, { ...blocked, blockable: blockable.setRule(blocked.blockable, {
+        id: "second-owner-only",
+        allows: (_current, blocker, blockable) => blocker.id === 11 && blockable.id === 22,
+    }) });
+    assert.equal(ownerId(battle, 22), undefined);
+    assert.deepEqual(blockedIds(battle, 10), []);
+    assert.deepEqual(blockedIds(battle, 11), [20, 21]);
+    battle = acquire(battle, 11);
+    assert.equal(ownerId(battle, 22), 11);
+});
+
 const denied = [
     ["outside acquisition radius", () => [holder(), target(20, { position: [6, 1] })]],
     ["insufficient capacity", () => [holder(10, { capacity: 0 }), target()]],

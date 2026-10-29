@@ -45,7 +45,7 @@ Runtime 顺序为 `Movement → Mechanism → Blocking → RouteCompletion`。�
 
 平台等 Content 按 Occupancy 登记格改写当前 Tile，而不是以身体世界位置代替登记。当前预置装置离场时，仅将自己改写的字段恢复为 `definition.initial` 对应值，保留其它当前字段。恢复政策由内容确定，没有通用撤销栈。TileBinding 和 tile-cost Effect 已移除，部署、阻挡与导航统一消费当前 Tile 属性。
 
-射击台 Content 通过 Occupancy 的 SUPPORT Hook 同步为当前乘员安装平台实例独占的 Blocker.Rule，禁止其阻挡；occupantAdded 安装，occupantRemoved 只清除该平台规则，不覆写地块 `allowsBlocking`。处理旧关系事实时仍重查当前承载，避免删除重入后重新建立的规则，详见 [Occupancy 同步通知](occupancy.md#同步登记通知)。原生平台向乘员施加 WALK 条件下的 `highland_common[block_core]`／`BLOCK_FREE`，详见 [Blocking 的原生对照](blocking.md#地块阻挡资格)。
+射击台 Content 通过 Occupancy 的 SUPPORT Hook，在当前乘员的 blocker.rules 登记平台实例独占的共享二元 Rule，禁止其与任何目标建立或保留阻挡；occupantAdded 安装，occupantRemoved 只清除该平台规则，不覆写地块 `allowsBlocking`。处理旧关系事实时仍重查当前承载，避免删除重入后重新建立的规则，详见 [Occupancy 同步通知](occupancy.md#同步登记通知)。原生平台向乘员施加 WALK 条件下的 `highland_common[block_core]`／`BLOCK_FREE`，详见 [Blocking 的原生对照](blocking.md#地块阻挡资格)。
 
 `walkCost` 保存最终有效步行代价，不是可任意累加或取最大值的基础代价。原生普通 `Tile.get_moveCost`（70678，`0x1808adc40`）按 `overrideObstacleLikeMoveCost` 返回 1000 或 1；`HoleTile.get_moveCost`（70580，`0x1808addd0`）直接返回 1,000,000，不受该标记降低。当前装置 Content 的 apply 对普通地形赋 1000，对真实地穴保留定义中的固定代价 1,000,000；不把这些结果泛化成 `max(任意当前代价, 1000)`。完整地穴身份由 Terrain Definition 表达，不能仅凭“hole-like”状态推断固定代价。
 

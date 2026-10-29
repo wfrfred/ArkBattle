@@ -293,7 +293,7 @@ advance(battle, ref) 由 operations.ts 实现，index.ts 继续导出供调度�
 
 可复用普通攻击程序位于 content/actions/attack.ts，直接调用 Damage、Healing 与 Elemental 的公开操作。它在 prepare 绑定目标并保存 releaseAtTick／finishAtTick、released 等执行进度；到点执行输出并在恢复结束后完成。create 提供空持久／执行数据的入口；createWithState<P, E> 明确区分 initialize(battle) → Result<P> 与 prepare(battle, source, self) → Result<E>。output／afterOutput／onEnd 接收显式 source 与 execution 非空的 Execution<P, State<E>>，模板私有数据位于 self.execution.state.data。
 
-CD 补偿、cooldownAdjusted 与 released 写回都通过完整 Unit 更新结算。Blocking 的 Rule 接收当前 Unit，可以按 Action 状态决定阻挡资格；关系失效时，维护流程同步派发 Blocking 的 released Hook，该 Hook 可以取消执行或使来源离场、隐藏。因此这三处写回返回后，Attack 都按同一 Execution Ref 重新读取，确认本轮仍为 RUNNING，且来源仍为 PRESENT、空间在场，再使用最新 self 继续；不满足时取消本轮或直接退出，不沿用写回前的 self。Combat 的 Cooldown 刷新同样可能触发这条维护链，刷新后的 select 使用重新确认的来源。
+CD 补偿、cooldownAdjusted 与 released 写回都通过完整 Unit 更新结算。Blocking 的 Rule 接收 BattleState 和当前双方完整 Unit，可以按任一方的 Action 状态决定这对单位的阻挡资格；关系失效时，维护流程同步派发 Blocking 的 released Hook，该 Hook 可以取消执行或使来源离场、隐藏。因此这三处写回返回后，Attack 都按同一 Execution Ref 重新读取，确认本轮仍为 RUNNING，且来源仍为 PRESENT、空间在场，再使用最新 self 继续；不满足时取消本轮或直接退出，不沿用写回前的 self。Combat 的 Cooldown 刷新同样可能触发这条维护链，刷新后的 select 使用重新确认的来源。
 
 Attack 模板统一校验前后摇、操作数值和绑定关系，上层内容不重复校验原样传入的同一字段。只读配置直接共享，公开 attack 配置只投影配置字段，不携带程序私有回调，也不额外复制、冻结其子对象。
 

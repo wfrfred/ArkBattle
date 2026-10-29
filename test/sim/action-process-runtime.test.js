@@ -108,7 +108,7 @@ test("Combat skips selection when cooldown refresh removes its host through a Bl
         }),
         blocker: setBlockerHook(setBlockerRule(current.blocker, {
             id: "blocking-during-long-period",
-            allows: host => host.action.actions.get(definition.id).cooldown.periodTicks >= 10,
+            allows: (_battle, host) => host.action.actions.get(definition.id).cooldown.periodTicks >= 10,
         }), "released", {
             id: "remove-on-release",
             invoke(state, context) {

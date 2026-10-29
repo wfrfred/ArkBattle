@@ -17,7 +17,7 @@ import {
     removeCapacityContribution,
 } from "../../dist/core/unit/capability/blocking/blocker.js";
 import {
-    canBeBlocked, resolveVolume, setVolumeContribution, removeVolumeContribution, setRule, removeRule,
+    resolveVolume, setVolumeContribution, removeVolumeContribution, setRule, removeRule,
 } from "../../dist/core/unit/capability/blocking/blockable.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as contribution from "../../dist/core/unit/contribution/contribution.js";
@@ -278,7 +278,6 @@ test("blocking volume: negative additions still consume one capacity while Rules
         }].map(unit => [unit.id, unit])]) });
         const current = h.state.units.get(1);
         assert.equal(resolveVolume(current.definition.blockable, current.blockable), 1);
-        assert.equal(canBeBlocked(current), true);
         h.search();
         assert.deepEqual(h.blocked(), [1]);
         assert.equal(usedCapacity(h.work(), { id: 0 }), 1);
@@ -289,7 +288,6 @@ test("blocking volume: negative additions still consume one capacity while Rules
     h.commit({ ...h.state, units: new Map([...h.state.units, ...[{
         ...unit, blockable: setRule(unit.blockable, { id: "unblockable", allows: () => false }),
     }].map(unit => [unit.id, unit])]) });
-    assert.equal(canBeBlocked(h.state.units.get(1)), false);
     assert.deepEqual(h.blocked(), []);
     h.search();
     assert.deepEqual(h.blocked(), [2]);
@@ -308,10 +306,10 @@ test("blocking eligibility: overlapping rules release and reacquire targets inde
     assert.deepEqual(h.blocked(), [2]);
     setBlockable(setRule(h.state.units.get(1).blockable, second));
     setBlockable(removeRule(h.state.units.get(1).blockable, first.id));
-    assert.equal(canBeBlocked(h.state.units.get(1)), false);
+    assert.deepEqual(h.state.units.get(1).blockable.rules.map(({ id }) => id), ["second"]);
     assert.deepEqual(h.blocked(), [2]);
     setBlockable(removeRule(h.state.units.get(1).blockable, second.id));
-    assert.equal(canBeBlocked(h.state.units.get(1)), true);
+    assert.deepEqual(h.state.units.get(1).blockable.rules, []);
     assert.deepEqual(h.blocked(), [2]);
     h.search();
     assert.deepEqual(h.blocked(), [2, 1]);
