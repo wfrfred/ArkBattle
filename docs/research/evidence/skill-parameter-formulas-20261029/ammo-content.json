@@ -1,0 +1,1696 @@
+{
+  "schemaVersion": 1,
+  "checkedOn": "2026-10-29",
+  "scope": "Static decoding of selected current official-client AssetBundles. Exact field/node projections; no client execution, combat observation, or runtime XLua override audit. Numerical aggregation is independently recorded in ammo-native.json; these content projections do not establish the formula by themselves.",
+  "clientManifest": {
+    "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/hot_update_list.json",
+    "sha256": "d7bd8e1e7037d9148e47921a8210ad763d05398dfbfd28837ee0078fcbe442ee",
+    "manifestVersion": "V078",
+    "versionId": "26-09-13-15-28-10-30688348"
+  },
+  "sources": {
+    "config/buff_template_holder.ab": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+      "bytes": 2022247,
+      "sha256": "12419ad8d1ea9f670cca214e525240c691cdf3796b82acc8050698d66c202a37",
+      "classification": "installed official client asset"
+    },
+    "battle/prefabs/[uc]skills.ab": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+      "bytes": 1343313,
+      "sha256": "14306a31b1856f61b25812a69a2a057b7c4634561fb2c2bccc42fb37ee41a27e",
+      "classification": "installed official client asset"
+    },
+    "charpack/char_498_inside.ab": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_498_inside.ab",
+      "bytes": 25850,
+      "sha256": "c335e0c2015c6a54b93fadc38f128dc049c8ba8cece7b4ca0549af6fdab4a8f6",
+      "classification": "installed official client asset"
+    },
+    "charpack/char_4193_lemuen.ab": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4193_lemuen.ab",
+      "bytes": 43021,
+      "sha256": "7d6acc296160f877662e95fd69ed5b713fb2d3ff1b2dff2ebbad31b20ca3d47a",
+      "classification": "installed official client asset"
+    },
+    "charpack/char_1041_angel2.ab": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1041_angel2.ab",
+      "bytes": 54604,
+      "sha256": "328c177aac59fd614c548892e78102250fa74dcbe334db97920ef3cdb3fcfa57",
+      "classification": "installed official client asset"
+    },
+    "anon/88b3c3ecaaefa6003de730686dd5ac53.bin": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/88b3c3ecaaefa6003de730686dd5ac53.bin",
+      "bytes": 466646,
+      "sha256": "eb1f2d8339c466192624c42dbb0ab986efa38517e8aca22fd54b5737d78908f3",
+      "classification": "installed official client asset"
+    }
+  },
+  "extraction": {
+    "decoder": "/tmp/stronghold-target-sort-20261020/steward/decode_prefab.py",
+    "bundleReader": "/tmp/stronghold_interaction_assets.py",
+    "method": "Decode UnityFS blocks and serialized type trees; parse selected eventToActions SerializedState JSON; retain JSON Pointer and raw event IDs. All 64-bit Unity object identities are decimal strings.",
+    "projectionBoundary": "Absent fields are not claims of absence. Event IDs remain serialized integers, without assigning event names from guesswork. Type-tree decoder has incomplete names for some unrelated Unity common strings; retained selected fields have resolved names and matching decoded object lengths."
+  },
+  "freshMonoScriptBindings": [
+    {
+      "source": "anon/88b3c3ecaaefa6003de730686dd5ac53.bin",
+      "cab": "CAB-658d74aab777086fc32b93f385be999a",
+      "id": "-8109327635834973011",
+      "name": "BuffToOwner",
+      "cl": "BuffToOwner",
+      "ns": "Torappu.Battle.Abilities",
+      "asm": "Assembly-CSharp.dll"
+    },
+    {
+      "source": "anon/88b3c3ecaaefa6003de730686dd5ac53.bin",
+      "cab": "CAB-658d74aab777086fc32b93f385be999a",
+      "id": "-5069939156920748499",
+      "name": "FilterSkillDurationTypeTargetValidator",
+      "cl": "FilterSkillDurationTypeTargetValidator",
+      "ns": "Torappu.Battle",
+      "asm": "Assembly-CSharp.dll"
+    },
+    {
+      "source": "anon/88b3c3ecaaefa6003de730686dd5ac53.bin",
+      "cab": "CAB-658d74aab777086fc32b93f385be999a",
+      "id": "-4193039724881536599",
+      "name": "FilterGroupTagTargetValidator",
+      "cl": "FilterGroupTagTargetValidator",
+      "ns": "Torappu.Battle",
+      "asm": "Assembly-CSharp.dll"
+    },
+    {
+      "source": "anon/88b3c3ecaaefa6003de730686dd5ac53.bin",
+      "cab": "CAB-658d74aab777086fc32b93f385be999a",
+      "id": "-123704873734712737",
+      "name": "MultiTargetValidator",
+      "cl": "MultiTargetValidator",
+      "ns": "Torappu.Battle",
+      "asm": "Assembly-CSharp.dll"
+    },
+    {
+      "source": "anon/88b3c3ecaaefa6003de730686dd5ac53.bin",
+      "cab": "CAB-658d74aab777086fc32b93f385be999a",
+      "id": "3800760148018415462",
+      "name": "PassiveBuffAbility",
+      "cl": "PassiveBuffAbility",
+      "ns": "Torappu.Battle.Abilities",
+      "asm": "Assembly-CSharp.dll"
+    },
+    {
+      "source": "anon/88b3c3ecaaefa6003de730686dd5ac53.bin",
+      "cab": "CAB-658d74aab777086fc32b93f385be999a",
+      "id": "7941707067095186750",
+      "name": "CastSkillWithLimitTimes",
+      "cl": "CastSkillWithLimitTimes",
+      "ns": "Torappu.Battle",
+      "asm": "Assembly-CSharp.dll"
+    },
+    {
+      "source": "anon/88b3c3ecaaefa6003de730686dd5ac53.bin",
+      "cab": "CAB-658d74aab777086fc32b93f385be999a",
+      "id": "8084394630010996064",
+      "name": "RandomAuraAbility",
+      "cl": "RandomAuraAbility",
+      "ns": "Torappu.Battle.Abilities",
+      "asm": "Assembly-CSharp.dll"
+    }
+  ],
+  "maxCountActionScan": {
+    "source": "config/buff_template_holder.ab",
+    "decodedTemplateCount": 8659,
+    "allAmmoSkillCountModifierNodes": 22,
+    "maxCountModifierNodes": 12,
+    "percentTrueNodes": 0,
+    "boundary": "A zero count of percentage nodes is limited to this template bundle. It does not imply the native percentage branch is unimplemented or unreachable through other data or XLua."
+  },
+  "maxCountActionNodes": [
+    {
+      "source": "config/buff_template_holder.ab",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderObjectId": "6070581171229484677",
+      "templateIndex": 2621,
+      "templateKey": "act4bossrush_team2_buff",
+      "eventIndex": 0,
+      "eventId": 0,
+      "actionPointer": "/0/_succeedNodes/0",
+      "node": {
+        "_targetType": "BUFF_OWNER",
+        "_modifyMaxCount": true,
+        "_restoreMaxCount": false,
+        "_addCountBBKey": "ammo_add",
+        "_addCount": 0,
+        "_addCountUsePercent": false,
+        "_recoverEventCount": false,
+        "_recoverCountBBKey": null,
+        "_recoverCount": 0,
+        "_recoverCountUsePercent": false,
+        "_recoverSkipLimitCheck": false,
+        "_consumeEventCount": false,
+        "_consumeCountBBKey": null,
+        "_consumeCount": 0,
+        "_discardRemainingCount": false,
+        "_discardSoft": false,
+        "_triggerConsumeEvent": false,
+        "_useEvtRetAsReturnValue": false,
+        "$type": "Torappu.Battle.Action.Nodes+AmmoSkillCountModifier"
+      }
+    },
+    {
+      "source": "config/buff_template_holder.ab",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderObjectId": "6070581171229484677",
+      "templateIndex": 2621,
+      "templateKey": "act4bossrush_team2_buff",
+      "eventIndex": 1,
+      "eventId": 1,
+      "actionPointer": "/1",
+      "node": {
+        "_targetType": "BUFF_OWNER",
+        "_modifyMaxCount": true,
+        "_restoreMaxCount": true,
+        "_addCountBBKey": "ally_ammo",
+        "_addCount": 0,
+        "_addCountUsePercent": false,
+        "_recoverEventCount": false,
+        "_recoverCountBBKey": null,
+        "_recoverCount": 0,
+        "_recoverCountUsePercent": false,
+        "_recoverSkipLimitCheck": false,
+        "_consumeEventCount": false,
+        "_consumeCountBBKey": null,
+        "_consumeCount": 0,
+        "_discardRemainingCount": false,
+        "_discardSoft": false,
+        "_triggerConsumeEvent": false,
+        "_useEvtRetAsReturnValue": false,
+        "$type": "Torappu.Battle.Action.Nodes+AmmoSkillCountModifier"
+      }
+    },
+    {
+      "source": "config/buff_template_holder.ab",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderObjectId": "6070581171229484677",
+      "templateIndex": 4310,
+      "templateKey": "inside_t_1",
+      "eventIndex": 0,
+      "eventId": 1,
+      "actionPointer": "/0",
+      "node": {
+        "_targetType": "BUFF_OWNER",
+        "_modifyMaxCount": true,
+        "_restoreMaxCount": false,
+        "_addCountBBKey": "self_ammo",
+        "_addCount": 0,
+        "_addCountUsePercent": false,
+        "_recoverEventCount": false,
+        "_recoverCountBBKey": null,
+        "_recoverCount": 0,
+        "_recoverCountUsePercent": false,
+        "_recoverSkipLimitCheck": false,
+        "_consumeEventCount": false,
+        "_consumeCountBBKey": null,
+        "_consumeCount": 0,
+        "_discardRemainingCount": false,
+        "_discardSoft": false,
+        "_triggerConsumeEvent": false,
+        "_useEvtRetAsReturnValue": false,
+        "$type": "Torappu.Battle.Action.Nodes+AmmoSkillCountModifier"
+      }
+    },
+    {
+      "source": "config/buff_template_holder.ab",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderObjectId": "6070581171229484677",
+      "templateIndex": 4311,
+      "templateKey": "inside_t_1[active]",
+      "eventIndex": 0,
+      "eventId": 0,
+      "actionPointer": "/0",
+      "node": {
+        "_targetType": "BUFF_OWNER",
+        "_modifyMaxCount": true,
+        "_restoreMaxCount": false,
+        "_addCountBBKey": "ally_ammo",
+        "_addCount": 0,
+        "_addCountUsePercent": false,
+        "_recoverEventCount": false,
+        "_recoverCountBBKey": null,
+        "_recoverCount": 0,
+        "_recoverCountUsePercent": false,
+        "_recoverSkipLimitCheck": false,
+        "_consumeEventCount": false,
+        "_consumeCountBBKey": null,
+        "_consumeCount": 0,
+        "_discardRemainingCount": false,
+        "_discardSoft": false,
+        "_triggerConsumeEvent": false,
+        "_useEvtRetAsReturnValue": false,
+        "$type": "Torappu.Battle.Action.Nodes+AmmoSkillCountModifier"
+      }
+    },
+    {
+      "source": "config/buff_template_holder.ab",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderObjectId": "6070581171229484677",
+      "templateIndex": 4311,
+      "templateKey": "inside_t_1[active]",
+      "eventIndex": 1,
+      "eventId": 1,
+      "actionPointer": "/0",
+      "node": {
+        "_targetType": "BUFF_OWNER",
+        "_modifyMaxCount": true,
+        "_restoreMaxCount": true,
+        "_addCountBBKey": "ally_ammo",
+        "_addCount": 0,
+        "_addCountUsePercent": false,
+        "_recoverEventCount": false,
+        "_recoverCountBBKey": null,
+        "_recoverCount": 0,
+        "_recoverCountUsePercent": false,
+        "_recoverSkipLimitCheck": false,
+        "_consumeEventCount": false,
+        "_consumeCountBBKey": null,
+        "_consumeCount": 0,
+        "_discardRemainingCount": false,
+        "_discardSoft": false,
+        "_triggerConsumeEvent": false,
+        "_useEvtRetAsReturnValue": false,
+        "$type": "Torappu.Battle.Action.Nodes+AmmoSkillCountModifier"
+      }
+    },
+    {
+      "source": "config/buff_template_holder.ab",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderObjectId": "6070581171229484677",
+      "templateIndex": 4447,
+      "templateKey": "excu2_t_2[mark]",
+      "eventIndex": 0,
+      "eventId": 33,
+      "actionPointer": "/3",
+      "node": {
+        "_targetType": "BUFF_OWNER",
+        "_modifyMaxCount": true,
+        "_restoreMaxCount": false,
+        "_addCountBBKey": "add_stack",
+        "_addCount": 0,
+        "_addCountUsePercent": false,
+        "_recoverEventCount": false,
+        "_recoverCountBBKey": null,
+        "_recoverCount": 0,
+        "_recoverCountUsePercent": false,
+        "_recoverSkipLimitCheck": false,
+        "_consumeEventCount": false,
+        "_consumeCountBBKey": null,
+        "_consumeCount": 0,
+        "_discardRemainingCount": false,
+        "_discardSoft": false,
+        "_triggerConsumeEvent": false,
+        "_useEvtRetAsReturnValue": false,
+        "$type": "Torappu.Battle.Action.Nodes+AmmoSkillCountModifier"
+      }
+    },
+    {
+      "source": "config/buff_template_holder.ab",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderObjectId": "6070581171229484677",
+      "templateIndex": 4447,
+      "templateKey": "excu2_t_2[mark]",
+      "eventIndex": 1,
+      "eventId": 1,
+      "actionPointer": "/0",
+      "node": {
+        "_targetType": "BUFF_OWNER",
+        "_modifyMaxCount": true,
+        "_restoreMaxCount": true,
+        "_addCountBBKey": "",
+        "_addCount": 0,
+        "_addCountUsePercent": false,
+        "_recoverEventCount": false,
+        "_recoverCountBBKey": null,
+        "_recoverCount": 0,
+        "_recoverCountUsePercent": false,
+        "_recoverSkipLimitCheck": false,
+        "_consumeEventCount": false,
+        "_consumeCountBBKey": null,
+        "_consumeCount": 0,
+        "_discardRemainingCount": false,
+        "_discardSoft": false,
+        "_triggerConsumeEvent": false,
+        "_useEvtRetAsReturnValue": false,
+        "$type": "Torappu.Battle.Action.Nodes+AmmoSkillCountModifier"
+      }
+    },
+    {
+      "source": "config/buff_template_holder.ab",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderObjectId": "6070581171229484677",
+      "templateIndex": 4558,
+      "templateKey": "angel2_s_2[select_target]",
+      "eventIndex": 0,
+      "eventId": 0,
+      "actionPointer": "/0",
+      "node": {
+        "_targetType": "BUFF_SOURCE",
+        "_modifyMaxCount": true,
+        "_restoreMaxCount": false,
+        "_addCountBBKey": "recover_each_cnt",
+        "_addCount": 3,
+        "_addCountUsePercent": false,
+        "_recoverEventCount": false,
+        "_recoverCountBBKey": "recover_each_cnt",
+        "_recoverCount": 0,
+        "_recoverCountUsePercent": false,
+        "_recoverSkipLimitCheck": false,
+        "_consumeEventCount": false,
+        "_consumeCountBBKey": null,
+        "_consumeCount": 0,
+        "_discardRemainingCount": false,
+        "_discardSoft": false,
+        "_triggerConsumeEvent": false,
+        "_useEvtRetAsReturnValue": false,
+        "$type": "Torappu.Battle.Action.Nodes+AmmoSkillCountModifier"
+      }
+    },
+    {
+      "source": "config/buff_template_holder.ab",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderObjectId": "6070581171229484677",
+      "templateIndex": 4558,
+      "templateKey": "angel2_s_2[select_target]",
+      "eventIndex": 1,
+      "eventId": 1,
+      "actionPointer": "/0",
+      "node": {
+        "_targetType": "BUFF_SOURCE",
+        "_modifyMaxCount": true,
+        "_restoreMaxCount": true,
+        "_addCountBBKey": "recover_each_cnt",
+        "_addCount": 3,
+        "_addCountUsePercent": false,
+        "_recoverEventCount": false,
+        "_recoverCountBBKey": "recover_each_cnt",
+        "_recoverCount": 0,
+        "_recoverCountUsePercent": false,
+        "_recoverSkipLimitCheck": false,
+        "_consumeEventCount": false,
+        "_consumeCountBBKey": null,
+        "_consumeCount": 0,
+        "_discardRemainingCount": false,
+        "_discardSoft": false,
+        "_triggerConsumeEvent": false,
+        "_useEvtRetAsReturnValue": false,
+        "$type": "Torappu.Battle.Action.Nodes+AmmoSkillCountModifier"
+      }
+    },
+    {
+      "source": "config/buff_template_holder.ab",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderObjectId": "6070581171229484677",
+      "templateIndex": 5517,
+      "templateKey": "lemuen_t_2",
+      "eventIndex": 0,
+      "eventId": 2,
+      "actionPointer": "/1",
+      "node": {
+        "_targetType": "BUFF_OWNER",
+        "_modifyMaxCount": true,
+        "_restoreMaxCount": false,
+        "_addCountBBKey": "add_count",
+        "_addCount": 0,
+        "_addCountUsePercent": false,
+        "_recoverEventCount": false,
+        "_recoverCountBBKey": null,
+        "_recoverCount": 0,
+        "_recoverCountUsePercent": false,
+        "_recoverSkipLimitCheck": false,
+        "_consumeEventCount": false,
+        "_consumeCountBBKey": null,
+        "_consumeCount": 0,
+        "_discardRemainingCount": false,
+        "_discardSoft": false,
+        "_triggerConsumeEvent": false,
+        "_useEvtRetAsReturnValue": false,
+        "$type": "Torappu.Battle.Action.Nodes+AmmoSkillCountModifier"
+      }
+    },
+    {
+      "source": "config/buff_template_holder.ab",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderObjectId": "6070581171229484677",
+      "templateIndex": 5518,
+      "templateKey": "lemuen_t_2_global",
+      "eventIndex": 0,
+      "eventId": 0,
+      "actionPointer": "/0",
+      "node": {
+        "_targetType": "BUFF_OWNER",
+        "_modifyMaxCount": true,
+        "_restoreMaxCount": false,
+        "_addCountBBKey": "ex_add_count",
+        "_addCount": 0,
+        "_addCountUsePercent": false,
+        "_recoverEventCount": false,
+        "_recoverCountBBKey": null,
+        "_recoverCount": 0,
+        "_recoverCountUsePercent": false,
+        "_recoverSkipLimitCheck": false,
+        "_consumeEventCount": false,
+        "_consumeCountBBKey": null,
+        "_consumeCount": 0,
+        "_discardRemainingCount": false,
+        "_discardSoft": false,
+        "_triggerConsumeEvent": false,
+        "_useEvtRetAsReturnValue": false,
+        "$type": "Torappu.Battle.Action.Nodes+AmmoSkillCountModifier"
+      }
+    },
+    {
+      "source": "config/buff_template_holder.ab",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderObjectId": "6070581171229484677",
+      "templateIndex": 5518,
+      "templateKey": "lemuen_t_2_global",
+      "eventIndex": 1,
+      "eventId": 1,
+      "actionPointer": "/0",
+      "node": {
+        "_targetType": "BUFF_OWNER",
+        "_modifyMaxCount": true,
+        "_restoreMaxCount": false,
+        "_addCountBBKey": "none",
+        "_addCount": 0,
+        "_addCountUsePercent": false,
+        "_recoverEventCount": false,
+        "_recoverCountBBKey": null,
+        "_recoverCount": 0,
+        "_recoverCountUsePercent": false,
+        "_recoverSkipLimitCheck": false,
+        "_consumeEventCount": false,
+        "_consumeCountBBKey": null,
+        "_consumeCount": 0,
+        "_discardRemainingCount": false,
+        "_discardSoft": false,
+        "_triggerConsumeEvent": false,
+        "_useEvtRetAsReturnValue": false,
+        "$type": "Torappu.Battle.Action.Nodes+AmmoSkillCountModifier"
+      }
+    }
+  ],
+  "relatedTriggerNodes": [
+    {
+      "source": "config/buff_template_holder.ab",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderObjectId": "6070581171229484677",
+      "templateIndex": 4310,
+      "templateKey": "inside_t_1",
+      "eventIndex": 0,
+      "eventId": 1,
+      "actionPointer": "/2",
+      "node": {
+        "_ownerType": "BUFF_OWNER",
+        "_targetType": "BUFF_OWNER",
+        "_abilityName": "AddAmmoWrapper",
+        "_checkCanUseAblityFlag": false,
+        "_castDirectly": true,
+        "_useFirstActiveAbility": false,
+        "_useCastResult": false,
+        "_triggerHostAbility": false,
+        "_notInterruptAbilityIfCasting": false,
+        "$type": "Torappu.Battle.Action.Nodes+TriggerAbility"
+      }
+    },
+    {
+      "source": "config/buff_template_holder.ab",
+      "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "holderObjectId": "6070581171229484677",
+      "templateIndex": 5517,
+      "templateKey": "lemuen_t_2",
+      "eventIndex": 0,
+      "eventId": 2,
+      "actionPointer": "/2",
+      "node": {
+        "_ownerType": "BUFF_OWNER",
+        "_targetType": "BUFF_OWNER",
+        "_abilityName": "t2global",
+        "_checkCanUseAblityFlag": false,
+        "_castDirectly": true,
+        "_useFirstActiveAbility": false,
+        "_useCastResult": false,
+        "_triggerHostAbility": false,
+        "_notInterruptAbilityIfCasting": false,
+        "$type": "Torappu.Battle.Action.Nodes+TriggerAbility"
+      }
+    }
+  ],
+  "characterPrefabProjections": [
+    {
+      "source": "charpack/char_498_inside.ab",
+      "cab": "CAB-c75cb0a51c0b2251a8e79623d9b8c30d",
+      "componentId": "-9044766189154137248",
+      "componentOffset": 71968,
+      "componentBytes": 120,
+      "gameObjectName": "SubTargetValidator",
+      "scriptClass": "Torappu.Battle.FilterSkillDurationTypeTargetValidator",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": "3058157780434750304"
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": "-5069939156920748499"
+        },
+        "_targetOptions": {
+          "targetSide": 1,
+          "targetMotion": 3,
+          "targetCategory": 1,
+          "enableAdvancedOptions": 1,
+          "ignoreTargetFree": 0,
+          "ignoreAllyTargetFree": 0,
+          "ignoreHealFree": 0,
+          "ignoreMotionMode": 0,
+          "ignoreTargetSide": 0,
+          "excludeSomeAbnormalFlags": 0,
+          "containSomeAbnormalFlags": 0,
+          "excludeAbnormalFlag": 0,
+          "containAbnormalFlag": 0,
+          "purposeMask": 0,
+          "professionMask": 0,
+          "checkUnitType": 0,
+          "unitTypeMask": 0,
+          "onlyIgnoreSomeOfTargetFreeCase": 0,
+          "abnormalFlag": 0,
+          "abnormalCombo": 0
+        },
+        "_checkTypes": [
+          1
+        ]
+      },
+      "decodeSizeMismatch": null
+    },
+    {
+      "source": "charpack/char_498_inside.ab",
+      "cab": "CAB-c75cb0a51c0b2251a8e79623d9b8c30d",
+      "componentId": "-7925208886547510432",
+      "componentOffset": 73000,
+      "componentBytes": 284,
+      "gameObjectName": "1",
+      "scriptClass": "Torappu.Battle.Abilities.PassiveBuffAbility",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": "6251709786924321632"
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": "3800760148018415462"
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_buffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "inside_t_1",
+            "loadFromDB": 0,
+            "isDurableBuff": 0,
+            "isDamageMissable": 0,
+            "isSilenceable": 0,
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0,
+            "statusResistable": 2,
+            "templateKey": "inside_t_1",
+            "disableOverride": 0,
+            "overrideKey": "",
+            "overrideType": 0,
+            "maxStackCnt": 1,
+            "refreshRemainingTimeWhenStackMax": 0,
+            "clearAllStackCntWhenTimeUp": 0,
+            "maxValidStackCnt": -1,
+            "independentCharacterSource": 0,
+            "overrideEffectKey": "",
+            "overrideOnEventPriority": 0,
+            "onEventPriority": 0,
+            "audioSignal": "",
+            "lifeTimeType": 1,
+            "takeSnapshotWhenExtend": 0,
+            "durationKey": "duration",
+            "remainingTimeKey": "",
+            "lifeTime": 0.0,
+            "triggerLifeType": 0,
+            "triggerCnt": 0,
+            "triggerInterval": -1.0,
+            "waitFirstTriggerInterval": 1,
+            "firstTriggerInterval": -1.0,
+            "priority": -1,
+            "priorityBBKeys": [],
+            "stripBlackboardParamsWithBuffKey": 0,
+            "blackboard": [],
+            "enableInitDirectionFromSource": 0
+          }
+        ]
+      },
+      "decodeSizeMismatch": null
+    },
+    {
+      "source": "charpack/char_498_inside.ab",
+      "cab": "CAB-c75cb0a51c0b2251a8e79623d9b8c30d",
+      "componentId": "-4193319560054109344",
+      "componentOffset": 74152,
+      "componentBytes": 148,
+      "gameObjectName": "AddAmmo",
+      "scriptClass": "Torappu.Battle.MultiTargetValidator",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": "1911173630505716576"
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": "-123704873734712737"
+        },
+        "_targetOptions": {
+          "targetSide": 1,
+          "targetMotion": 3,
+          "targetCategory": 1,
+          "enableAdvancedOptions": 1,
+          "ignoreTargetFree": 0,
+          "ignoreAllyTargetFree": 0,
+          "ignoreHealFree": 0,
+          "ignoreMotionMode": 0,
+          "ignoreTargetSide": 0,
+          "excludeSomeAbnormalFlags": 0,
+          "containSomeAbnormalFlags": 0,
+          "excludeAbnormalFlag": 0,
+          "containAbnormalFlag": 0,
+          "purposeMask": 0,
+          "professionMask": 0,
+          "checkUnitType": 0,
+          "unitTypeMask": 0,
+          "onlyIgnoreSomeOfTargetFreeCase": 0,
+          "abnormalFlag": 0,
+          "abnormalCombo": 0
+        },
+        "_isAnd": 1,
+        "_validators": [
+          {
+            "m_FileID": 0,
+            "m_PathID": "-2143768775311488160"
+          },
+          {
+            "m_FileID": 0,
+            "m_PathID": "-9044766189154137248"
+          }
+        ],
+        "_invertedValidators": []
+      },
+      "decodeSizeMismatch": null
+    },
+    {
+      "source": "charpack/char_498_inside.ab",
+      "cab": "CAB-c75cb0a51c0b2251a8e79623d9b8c30d",
+      "componentId": "-3725846163061404832",
+      "componentOffset": 74672,
+      "componentBytes": 368,
+      "gameObjectName": "AddAmmo",
+      "scriptClass": "Torappu.Battle.Abilities.RandomAuraAbility",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": "1911173630505716576"
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": "8084394630010996064"
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_buffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "inside_t_1[active]",
+            "loadFromDB": 0,
+            "isDurableBuff": 0,
+            "isDamageMissable": 0,
+            "isSilenceable": 0,
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0,
+            "statusResistable": 2,
+            "templateKey": "inside_t_1[active]",
+            "disableOverride": 0,
+            "overrideKey": "",
+            "overrideType": 0,
+            "maxStackCnt": 1,
+            "refreshRemainingTimeWhenStackMax": 0,
+            "clearAllStackCntWhenTimeUp": 0,
+            "maxValidStackCnt": -1,
+            "independentCharacterSource": 0,
+            "overrideEffectKey": "inside_buff_01_start",
+            "overrideOnEventPriority": 0,
+            "onEventPriority": 0,
+            "audioSignal": "",
+            "lifeTimeType": 2,
+            "takeSnapshotWhenExtend": 0,
+            "durationKey": "duration",
+            "remainingTimeKey": "",
+            "lifeTime": 0.0,
+            "triggerLifeType": 0,
+            "triggerCnt": 0,
+            "triggerInterval": -1.0,
+            "waitFirstTriggerInterval": 1,
+            "firstTriggerInterval": -1.0,
+            "priority": -1,
+            "priorityBBKeys": [],
+            "stripBlackboardParamsWithBuffKey": 0,
+            "blackboard": [],
+            "enableInitDirectionFromSource": 0
+          }
+        ],
+        "_selfOption": 2,
+        "_removeBuffWhenTargetLeave": 1,
+        "_removeBuffWhenAbilityDetached": 1,
+        "_onlyAddBuffOnceForEachTarget": 0,
+        "_targetValidator": {
+          "m_FileID": 0,
+          "m_PathID": "-4193319560054109344"
+        },
+        "_maxNum": 1
+      },
+      "decodeSizeMismatch": null
+    },
+    {
+      "source": "charpack/char_498_inside.ab",
+      "cab": "CAB-c75cb0a51c0b2251a8e79623d9b8c30d",
+      "componentId": "-2143768775311488160",
+      "componentOffset": 75768,
+      "componentBytes": 128,
+      "gameObjectName": "SubTargetValidator",
+      "scriptClass": "Torappu.Battle.FilterGroupTagTargetValidator",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": "3058157780434750304"
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": "-4193039724881536599"
+        },
+        "_targetOptions": {
+          "targetSide": 1,
+          "targetMotion": 3,
+          "targetCategory": 1,
+          "enableAdvancedOptions": 1,
+          "ignoreTargetFree": 0,
+          "ignoreAllyTargetFree": 0,
+          "ignoreHealFree": 0,
+          "ignoreMotionMode": 0,
+          "ignoreTargetSide": 0,
+          "excludeSomeAbnormalFlags": 0,
+          "containSomeAbnormalFlags": 0,
+          "excludeAbnormalFlag": 0,
+          "containAbnormalFlag": 0,
+          "purposeMask": 0,
+          "professionMask": 0,
+          "checkUnitType": 0,
+          "unitTypeMask": 0,
+          "onlyIgnoreSomeOfTargetFreeCase": 0,
+          "abnormalFlag": 0,
+          "abnormalCombo": 0
+        },
+        "_tags": [
+          "laterano"
+        ]
+      },
+      "decodeSizeMismatch": null
+    },
+    {
+      "source": "charpack/char_4193_lemuen.ab",
+      "cab": "CAB-1aefcb3da2cf3b8764b3964e531716cb",
+      "componentId": "-8447161655440516581",
+      "componentOffset": 118560,
+      "componentBytes": 268,
+      "gameObjectName": "2",
+      "scriptClass": "Torappu.Battle.Abilities.BuffToOwner",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": "4660627815547460123"
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": "-8109327635834973011"
+        },
+        "_extraConditionTiming": 4,
+        "_buffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "lemuen_t_2",
+            "loadFromDB": 0,
+            "isDurableBuff": 0,
+            "isDamageMissable": 0,
+            "isSilenceable": 0,
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0,
+            "statusResistable": 2,
+            "templateKey": "lemuen_t_2",
+            "disableOverride": 0,
+            "overrideKey": "",
+            "overrideType": 0,
+            "maxStackCnt": 1,
+            "refreshRemainingTimeWhenStackMax": 0,
+            "clearAllStackCntWhenTimeUp": 0,
+            "maxValidStackCnt": -1,
+            "independentCharacterSource": 0,
+            "overrideEffectKey": "",
+            "overrideOnEventPriority": 0,
+            "onEventPriority": 0,
+            "audioSignal": "",
+            "lifeTimeType": 2,
+            "takeSnapshotWhenExtend": 0,
+            "durationKey": "duration",
+            "remainingTimeKey": "",
+            "lifeTime": 0.0,
+            "triggerLifeType": 1,
+            "triggerCnt": 1,
+            "triggerInterval": -1.0,
+            "waitFirstTriggerInterval": 1,
+            "firstTriggerInterval": -1.0,
+            "priority": -1,
+            "priorityBBKeys": [],
+            "stripBlackboardParamsWithBuffKey": 0,
+            "blackboard": [],
+            "enableInitDirectionFromSource": 0
+          }
+        ],
+        "_onlyRunOnce": 0
+      },
+      "decodeSizeMismatch": null
+    },
+    {
+      "source": "charpack/char_4193_lemuen.ab",
+      "cab": "CAB-1aefcb3da2cf3b8764b3964e531716cb",
+      "componentId": "-799412921811084773",
+      "componentOffset": 129032,
+      "componentBytes": 128,
+      "gameObjectName": "global",
+      "scriptClass": "Torappu.Battle.FilterGroupTagTargetValidator",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": "7051823476684806683"
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": "-4193039724881536599"
+        },
+        "_targetOptions": {
+          "targetSide": 1,
+          "targetMotion": 3,
+          "targetCategory": 1,
+          "enableAdvancedOptions": 0,
+          "ignoreTargetFree": 0,
+          "ignoreAllyTargetFree": 0,
+          "ignoreHealFree": 0,
+          "ignoreMotionMode": 0,
+          "ignoreTargetSide": 0,
+          "excludeSomeAbnormalFlags": 0,
+          "containSomeAbnormalFlags": 0,
+          "excludeAbnormalFlag": 0,
+          "containAbnormalFlag": 0,
+          "purposeMask": 0,
+          "professionMask": 0,
+          "checkUnitType": 0,
+          "unitTypeMask": 0,
+          "onlyIgnoreSomeOfTargetFreeCase": 0,
+          "abnormalFlag": 0,
+          "abnormalCombo": 0
+        },
+        "_tags": [
+          "laterano"
+        ]
+      },
+      "decodeSizeMismatch": null
+    },
+    {
+      "source": "charpack/char_4193_lemuen.ab",
+      "cab": "CAB-1aefcb3da2cf3b8764b3964e531716cb",
+      "componentId": "4184742018468665883",
+      "componentOffset": 138712,
+      "componentBytes": 372,
+      "gameObjectName": "global",
+      "scriptClass": null,
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": "7051823476684806683"
+        },
+        "m_Enabled": 1,
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": "-5793748974791823428"
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_targetValidator": {
+          "m_FileID": 0,
+          "m_PathID": "-799412921811084773"
+        },
+        "_buffs": [
+          {
+            "attributes": {
+              "abnormalFlags": [],
+              "abnormalImmunes": [],
+              "abnormalAntis": [],
+              "abnormalCombos": [],
+              "abnormalComboImmunes": [],
+              "attributeModifiers": []
+            },
+            "buffKey": "lemuen_t_2_global",
+            "loadFromDB": 0,
+            "isDurableBuff": 0,
+            "isDamageMissable": 0,
+            "isSilenceable": 0,
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0,
+            "statusResistable": 2,
+            "templateKey": "lemuen_t_2_global",
+            "disableOverride": 0,
+            "overrideKey": "",
+            "overrideType": 0,
+            "maxStackCnt": 1,
+            "refreshRemainingTimeWhenStackMax": 0,
+            "clearAllStackCntWhenTimeUp": 0,
+            "maxValidStackCnt": -1,
+            "independentCharacterSource": 0,
+            "overrideEffectKey": "",
+            "overrideOnEventPriority": 0,
+            "onEventPriority": 0,
+            "audioSignal": "",
+            "lifeTimeType": 2,
+            "takeSnapshotWhenExtend": 0,
+            "durationKey": "duration",
+            "remainingTimeKey": "",
+            "lifeTime": 0.0,
+            "triggerLifeType": 0,
+            "triggerCnt": 0,
+            "triggerInterval": -1.0,
+            "waitFirstTriggerInterval": 1,
+            "firstTriggerInterval": -1.0,
+            "priority": -1,
+            "priorityBBKeys": [],
+            "stripBlackboardParamsWithBuffKey": 0,
+            "blackboard": [],
+            "enableInitDirectionFromSource": 0
+          }
+        ],
+        "_selfOption": 2,
+        "_removeBuffWhenAbilityDetached": 1
+      },
+      "decodeSizeMismatch": null
+    }
+  ],
+  "skillPrefabBindings": [
+    {
+      "source": "battle/prefabs/[uc]skills.ab",
+      "cab": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "prefabName": "skchr_angel2_2",
+      "gameObjectId": "-6872737502751956707",
+      "componentId": "4940864640131916061",
+      "scriptClass": "Torappu.Battle.CastSkillWithLimitTimes",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": "-6872737502751956707"
+        },
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": "7941707067095186750"
+        },
+        "_allowSpRecoveryWhenAffecting": 0,
+        "_canCastWithNoSp": 0,
+        "_canDiscardRemainingCount": 1
+      }
+    },
+    {
+      "source": "battle/prefabs/[uc]skills.ab",
+      "cab": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "prefabName": "skchr_inside_1",
+      "gameObjectId": "-1348433477072567551",
+      "componentId": "-169080877347093759",
+      "scriptClass": "Torappu.Battle.CastSkillWithLimitTimes",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": "-1348433477072567551"
+        },
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": "7941707067095186750"
+        },
+        "_allowSpRecoveryWhenAffecting": 0,
+        "_canCastWithNoSp": 0,
+        "_canDiscardRemainingCount": 1
+      }
+    },
+    {
+      "source": "battle/prefabs/[uc]skills.ab",
+      "cab": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "prefabName": "skchr_lemuen_3",
+      "gameObjectId": "1952903921925636446",
+      "componentId": "-3281144585389129378",
+      "scriptClass": "Torappu.Battle.CastSkillWithLimitTimes",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": "1952903921925636446"
+        },
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": "7941707067095186750"
+        },
+        "_allowSpRecoveryWhenAffecting": 0,
+        "_canCastWithNoSp": 0,
+        "_canDiscardRemainingCount": 1
+      }
+    },
+    {
+      "source": "battle/prefabs/[uc]skills.ab",
+      "cab": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "prefabName": "skchr_lemuen_2",
+      "gameObjectId": "4009086156776834752",
+      "componentId": "-7874779650039904576",
+      "scriptClass": "Torappu.Battle.CastSkillWithLimitTimes",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": "4009086156776834752"
+        },
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": "7941707067095186750"
+        },
+        "_allowSpRecoveryWhenAffecting": 0,
+        "_canCastWithNoSp": 0,
+        "_canDiscardRemainingCount": 1
+      }
+    },
+    {
+      "source": "battle/prefabs/[uc]skills.ab",
+      "cab": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "prefabName": "skchr_inside_2",
+      "gameObjectId": "5098799177502388016",
+      "componentId": "2519876611605884720",
+      "scriptClass": "Torappu.Battle.CastSkillWithLimitTimes",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": "5098799177502388016"
+        },
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": "7941707067095186750"
+        },
+        "_allowSpRecoveryWhenAffecting": 0,
+        "_canCastWithNoSp": 0,
+        "_canDiscardRemainingCount": 1
+      }
+    },
+    {
+      "source": "battle/prefabs/[uc]skills.ab",
+      "cab": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "prefabName": "skchr_lemuen_1",
+      "gameObjectId": "5179054416530656722",
+      "componentId": "-8869155622810923566",
+      "scriptClass": "Torappu.Battle.CastSkillWithLimitTimes",
+      "fields": {
+        "m_GameObject": {
+          "m_FileID": 0,
+          "m_PathID": "5179054416530656722"
+        },
+        "m_Script": {
+          "m_FileID": 1,
+          "m_PathID": "7941707067095186750"
+        },
+        "_allowSpRecoveryWhenAffecting": 0,
+        "_canCastWithNoSp": 0,
+        "_canDiscardRemainingCount": 1
+      }
+    }
+  ],
+  "skillDurationTypeEnum": {
+    "source": "current official global-metadata.dat at native source identity in ammo-native.json",
+    "typeIndex": 38191,
+    "name": "Torappu.SkillDurationType",
+    "encoding": "IL2CPP compressed signed Int32, one-byte records decoded as (u >> 1) ^ -(u & 1), not fixed-width int32.",
+    "fields": [
+      {
+        "fieldIndex": 316499,
+        "name": "NONE",
+        "defaultDataIndex": 265913,
+        "metadataOffset": 22030689,
+        "encodedByte": "00",
+        "value": 0
+      },
+      {
+        "fieldIndex": 316500,
+        "name": "AMMO",
+        "defaultDataIndex": 265914,
+        "metadataOffset": 22030690,
+        "encodedByte": "02",
+        "value": 1
+      }
+    ]
+  },
+  "secondaryCharacterLabelCrosscheck": {
+    "path": "/tmp/stronghold-gianttrap-20261024/character_table.json",
+    "sha256": "e8f42a2dd5c5e72ec3fc7282ee7c0d06aadb5ccdfb2c0b63dd6da55de6c17ba5",
+    "classification": "Existing local third-party mirror of serialized character data, not independently bound to the installed client build. Used only for character labels and talent text/blackboard values; the engine formula is supported independently by native evidence.",
+    "characters": [
+      {
+        "id": "char_498_inside",
+        "name": "隐现",
+        "skills": [
+          "skchr_inside_1",
+          "skchr_inside_2"
+        ],
+        "talents": [
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "火力支援",
+                "description": "在场停留20秒后，自身弹药类技能弹药上限+2",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "self_ammo",
+                    "value": 2.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "duration",
+                    "value": 20.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "火力支援",
+                "description": "在场停留20秒后，自身弹药类技能弹药上限+3，其他随机一名【拉特兰】干员的弹药类技能弹药上限+1",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "self_ammo",
+                    "value": 3.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "duration",
+                    "value": 20.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "ally_ammo",
+                    "value": 1.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "char_4193_lemuen",
+        "name": "蕾缪安",
+        "skills": [
+          "skchr_lemuen_1",
+          "skchr_lemuen_2",
+          "skchr_lemuen_3"
+        ],
+        "talents": [
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "跨境追缉许可",
+                "description": "精英或领袖敌人在拉特兰干员的攻击范围内停留超过10秒后被通缉，蕾缪安可以攻击到所有被通缉的目标",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "interval",
+                    "value": 10.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "damage_scale",
+                    "value": 1.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "1",
+                "name": "跨境追缉许可",
+                "description": "精英或领袖敌人在拉特兰干员的攻击范围内停留超过8<@ba.talpu>（-2）</>秒后被通缉，蕾缪安可以攻击到所有被通缉的目标",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "interval",
+                    "value": 8.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "damage_scale",
+                    "value": 1.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "跨境追缉许可",
+                "description": "精英或领袖敌人在拉特兰干员的攻击范围内停留超过8秒后被通缉，受到拉特兰干员的攻击时伤害提升15%，蕾缪安可以攻击到所有被通缉的目标",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "interval",
+                    "value": 8.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "damage_scale",
+                    "value": 1.15,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "1",
+                "name": "跨境追缉许可",
+                "description": "精英或领袖敌人在拉特兰干员的攻击范围内停留超过6<@ba.talpu>（-2）</>秒后被通缉，受到拉特兰干员的攻击时伤害提升18%<@ba.talpu>（+3%）</>，蕾缪安可以攻击到所有被通缉的目标",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "interval",
+                    "value": 6.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "damage_scale",
+                    "value": 1.18,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          },
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "2",
+                "name": "逃犯引渡手续",
+                "description": "在场20秒后，攻击力+10%，自身弹药类技能弹药上限+1",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "interval",
+                    "value": 20.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "atk",
+                    "value": 0.1,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "add_count",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "ex_add_count",
+                    "value": 0.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "char_1041_angel2",
+        "name": "新约能天使",
+        "skills": [
+          "skchr_angel2_1",
+          "skchr_angel2_2",
+          "skchr_angel2_3"
+        ],
+        "talents": [
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_0",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "火力电台",
+                "description": "在场时，每当有友方干员的弹药被消耗就会回复自身6%生命值，并有20%概率立即对该干员攻击范围的敌人召唤一次轰炸，造成相当于自身攻击力105%的物理溅射伤害",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "hp_ratio",
+                    "value": 0.06,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "aoe_atk_scale",
+                    "value": 1.05,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "prob",
+                    "value": 0.2,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "damage_scale",
+                    "value": 1.05,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_0",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "1",
+                "name": "火力电台",
+                "description": "在场时，每当有友方干员的弹药被消耗就会回复自身6%生命值，并有20%概率立即对该干员攻击范围的敌人召唤一次轰炸，造成相当于自身攻击力120%<@ba.talpu>（+15%）</>的物理溅射伤害",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "hp_ratio",
+                    "value": 0.06,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "aoe_atk_scale",
+                    "value": 1.2,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "prob",
+                    "value": 0.2,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "damage_scale",
+                    "value": 1.2,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "火力电台",
+                "description": "在场时，每当有友方干员的弹药被消耗就会回复自身6%生命值，并有25%概率立即对该干员攻击范围的敌人召唤一次轰炸，造成相当于自身攻击力150%的物理溅射伤害",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "hp_ratio",
+                    "value": 0.06,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "aoe_atk_scale",
+                    "value": 1.5,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "prob",
+                    "value": 0.25,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "damage_scale",
+                    "value": 1.5,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "1",
+                "name": "火力电台",
+                "description": "在场时，每当有友方干员的弹药被消耗就会回复自身6%生命值，并有25%概率立即对该干员攻击范围的敌人召唤一次轰炸，造成相当于自身攻击力165%<@ba.talpu>（+15%）</>的物理溅射伤害",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "hp_ratio",
+                    "value": 0.06,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "aoe_atk_scale",
+                    "value": 1.65,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "prob",
+                    "value": 0.25,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "damage_scale",
+                    "value": 1.65,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          },
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "2",
+                "name": "铳弹协约",
+                "description": "在场时，携带弹药类技能的干员攻击力+9%，对【拉特兰】干员的效果翻倍",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "atk",
+                    "value": 0.09,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "mult",
+                    "value": 2.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 2,
+                "prefabKey": "2",
+                "name": "铳弹协约",
+                "description": "在场时，携带弹药类技能的干员攻击力+13%<@ba.talpu>（+4%）</>，对【拉特兰】干员的效果翻倍",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "atk",
+                    "value": 0.13,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "mult",
+                    "value": 2.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          },
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_0",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "4",
+                "name": null,
+                "description": null,
+                "rangeId": null,
+                "blackboard": [],
+                "tokenKey": null,
+                "isHideTalent": true
+              }
+            ]
+          },
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_0",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "3",
+                "name": null,
+                "description": null,
+                "rangeId": null,
+                "blackboard": [],
+                "tokenKey": null,
+                "isHideTalent": true
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "confirmedContentObservations": [
+    "Current official templates contain fixed max-count additions from separate named Buff keys. inside_t_1 uses self_ammo; inside_t_1[active] uses ally_ammo and removes its entry through restoreMaxCount on another event.",
+    "Official Inside character Prefab supplies the active ally buff through RandomAuraAbility. Its target validator is MultiTargetValidator AND of laterano group tag and SkillDurationType AMMO(1). The serialized self option is retained as raw 2; no enum label is inferred here.",
+    "Official Lemuen character Prefab supplies a separate own buff lemuen_t_2 with a max-count addition add_count. Lemuen skill Prefabs bind CastSkillWithLimitTimes. These configurations support a candidate receiving distinct source contributions; actual simultaneous combat execution and random-target choice were not run.",
+    "angel2 is 新约能天使 and lemuen is 蕾缪安 according to the separately classified local character-data label crosscheck; they are not the same operator.",
+    "No percentage max-count action was found among the retained template bundle scan. Native percentage aggregation can be established directly from the stored code even without a percentage-using content witness in this bundle."
+  ],
+  "limitations": [
+    "No game/client execution or runtime XLua coverage validation.",
+    "Resource snippets are field projections, not full templates or an exhaustive client content scan.",
+    "Whether a source action is reachable in a specific mode still depends on its full trigger and deployment chain.",
+    "Different Buff keys and compatible target filters demonstrate configuration-level coexistence eligibility, not an observed execution trace."
+  ]
+}

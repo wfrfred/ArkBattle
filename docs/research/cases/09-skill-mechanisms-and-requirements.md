@@ -110,6 +110,8 @@ PRTS 的[异常效果](https://prts.wiki/w/异常效果)与该区分一致。[�
 
 2026-10-29，项目审查基线为 `9d2cc22`。本节区分客户端直接证据、项目现状和据此采纳的输入设计。客户端 DLL／metadata 的 SHA256 与 2.1 一致；新增完整方法指令、字段偏移与输入指纹见 [native.json](../evidence/skill-modifier-20261029/native.json)，实际资源片段与 Bundle 指纹见 [content.json](../evidence/skill-modifier-20261029/content.json)。未运行官方战斗，也未验证运行时 XLua 覆盖。
 
+后续复查状态：`437eb4e` 将 SP 容量／门槛／支付与 TIME 贡献改成 Attribute 归并，属于实现者自行选择，缺少原生机制依据，不作为有效的公式结论。下文关于该提交的描述仅保留实现历史；2.7 记录随后直接从原生指令核实的公式。本轮只更新调研和证据，不修改实现。
+
 **本轮结论：已核对案例需要动态数值、不同参数公式和明确业务操作，但未找到要求多个独立数值贡献按内容自选优先级串行处理前一个结果的组合。** 这不证明全游戏不存在顺序特例，也不证明 SP 容量、门槛、支付和 TIME 时长都采用 Attribute 四段公式。
 
 #### 原生证据
@@ -180,6 +182,83 @@ export type Input<M, H> =
 这里确实存在来源顺序和逐来源舍入，但不是可据此保留任意公共 `priority + apply(current)` 的理由。以说明用数值为例，逐项 `RoundEven(RoundEven(5 × 0.5) × 1.5) = 3`，统一合并后 `RoundEven(5 × 0.5 × 1.5) = 4`。不能把原生预处理不加区分地翻译成查询时的 Attribute 归并，也不能反过来宣称项目的纯贡献政策复刻了这些预处理结果。后续接入对应玩法时，应按其真实阶段组织有限数据与明确操作。
 
 实际卫戍表中的 `act2autochess_bond_eff_sunt` 带有 `sp_ratio = 0.7`，但本机资源尚未闭合它到具体原生操作的绑定；不得仅按键名认定其倍率、取整、叠加和恢复规则。多来源配置覆写、实际时长组合与各内容特殊支付仍按具体链路核实，不以统一 Input 类型替代这些调查。
+
+### 2.7 原生公式复核：Ammo、SP 与具体持续时间操作
+
+本节不从项目现有实现或测试反推游戏规则。重新核对后的 DLL 与 metadata 指纹仍与 2.1 一致；普通原生分支、实际内容绑定与数学推导分别记录。完整证据分别为 [Ammo 指令与类型](../evidence/skill-parameter-formulas-20261029/ammo-native.json)、[Ammo 实际内容](../evidence/skill-parameter-formulas-20261029/ammo-content.json)、[SP 配置与支付](../evidence/skill-parameter-formulas-20261029/sp-native.json)和[具体时长链路](../evidence/skill-parameter-formulas-20261029/duration-native.json)。未运行客户端，未验证运行时 XLua 覆盖。
+
+#### Ammo 上限：固定追加与比例确有独立原生归并
+
+`CastSkillWithLimitTimes._UpdateMaxAdditionCount` 72966（`0x180966d70`）有两份不同的字典：`Dictionary<uint, int>` 保存固定追加，`Dictionary<uint, float>` 保存比例追加。原生先分别求和，然后读取 `AbilityEventCounter.originalMaxCount`，只对比例部分取整，最后加入固定追加。
+
+```text
+B = 计数器原始上限 m_originalMaxCount
+M = 计数器当前基础上限 m_maxCount（不是当前剩余弹药）
+A = Σ 固定追加
+P = Σ 比例追加
+
+maxCount = max(1, M + A + RoundEven(B × P))
+```
+
+`AbilityEventCounter.SetData` 94243 从黑板的 `trigger_time` 或 `another_trigger_time` 初始化 M，并复制到 B；在这条普通初始化路径上 M = B，因此简化为 `max(1, B + Σaddition + RoundEven(B × Σratio))`。一般式与初始化特例分别成立，不能仅从本次路径声称 M 与 B 在所有内容中永远相等。
+
+关键指令与辅助函数：
+
+- 72966 的 `0x180966f21` 逐项累加固定追加，`0x180966fe2` 用 `addss` 累加比例；`0x1809670f8` 将原始 B 乘总比例，`0x180967120` 调用 `MathUtil.RoundToInt`，`0x18096712a` 在舍入后加入固定追加。
+- `MathUtil.RoundToInt` 220338（`0x1866e6620`）调用 `FP.Round` 220463（`0x1866fc8d0`）；后者精确比较 FP 小数位 `0x80000000`，半数时按整数奇偶取舍，确为四舍六入五成双。
+- `AbilityEventCounter.get_maxCount` 94230（`0x180f73b10`）最后执行至少为 1 的裁剪。
+
+以下是指令公式的说明用数值，并非运行官方战斗所得：B = M = 10、固定追加 2、比例 0.5，结果为 17；把固定追加也乘比例则会得到 18。比例来源先求和、只取整一次，也不同于每来源独立取整或将多个倍率相乘。原生比例求和与乘法使用 float32，再转为 FP 后舍入；上式是数学表达，不隐去实际数值类型。
+
+来源与采样同样已核实：
+
+- 两个字典均按 Buff UID 登记；同 UID 再次登记覆盖该项，不是新增另一份累计来源。
+- `AmmoSkillCountModifier` 的恢复路径提交零值；它不证明物理删除了字典条目。
+- `SetMaxAdditionCount` 72982、`SetMaxAdditionCountPercent` 72983 在 Skill 已 affecting 时不立即重算当前 Counter。`_FetchCounterSource` 72965 在原引用缺失／失效后重新取得或绑定 Counter 时调用归并；已存在有效 Counter 时直接返回。因此不能描述为每 Tick 无条件重新计算当前弹药预算，也不能仅据此保证重新绑定的是全新实例身份。
+- 实际隐现与蕾缪安等技能已通过当前 MonoScript 绑定到 `CastSkillWithLimitTimes`。隐现的友方光环候选要求拉特兰标签及 AMMO 持续类型；其 Buff 与蕾缪安自身追加使用不同键，配置支持不同来源参与，未执行实机共存验证。
+- 本次扫描 `buff_template_holder.ab` 的全部 8,659 个模板：22 个 Ammo 计数节点中，12 个修改上限，均为固定追加；没有找到 `_addCountUsePercent = true` 的模板。这限定实际内容样例范围，不否定已由原生指令证实的比例入口和公式，也不证明其他脚本或 XLua 不会调用它。
+
+因此，Ammo 的独立公式已取得直接原生证据；此前只能追到项目旧实现的证据缺口在此闭合。它的固定追加位置、比例来源求和及取整阶段都不能由普通 Attribute 四段公式替代。
+
+#### SP：余额、配置、资格与支付分别有规则
+
+| 路径 | 核实的普通原生规则 | 不能由此推导的内容 |
+| --- | --- | --- |
+| 自然回复 | 2.1 已证实两个 Attribute 分别归并后相乘。 | 普通 SP 增减、容量或支付也使用相同属性公式。 |
+| 普通容量 | `SpData.get_maxSp` 32849：`spCost × maxChargeTime`。 | 任意容量贡献的通用归并。 |
+| 发动门槛 | `BasicSkill.get_spEnough` 72632：`m_costMinSp >= 0` 时比较该值，否则允许按无 SP 发动政策跳过，或比较 `SkillData.spCost`。比较使用 `MathUtil.GE`。 | 门槛恒等于实际支付，或费用为零就自动获得发动许可。 |
+| 实际支付 | `ReduceSp` 72702 接收本次整数费用，普通支付构造 `NewSp(-cost)`；零费用、无 SP 发动或具体虚拟政策可以跳过扣除。 | 一个通用 cost Modifier 自动覆盖所有特殊付款时点。 |
+| 支付时点 | `CastSkill.DoCast` 72895 在 CastDirectly 成功后扣费；`CastSkillWithCost.DoCast` 72943 则先扣费，成功才调用 CastDirectly。 | 基类顺序适用于所有具体技能；内容真实脚本绑定决定所走路径。 |
+| 余额写入 | `SetSpInternal` 66628／`DoSetSpInternal` 66631 在允许写入的普通分支执行 `clamp(value, 0, maxSp)`。 | 修改配置时就必然发生同一次余额写入。 |
+| 配置提交 | `Entity.UpdateSpData` 66606 更新派生容量和 SP Controller 配置；已核对的普通分支不调用余额写入来清零或按比例换算 SP。 | 所有调用方也不处理余额；具体内容仍可显式清空、补入或消费。 |
+| 费用倍率与替换 | 2.6 已证实 Rune／遗物逐来源取整及 `ModifySpData` 的明确配置提交。 | 将不同阶段折成统一四段贡献公式。 |
+
+#### TIME：先写清本次具体运算及其发生时点
+
+雷狼龙 S 空爆的 `catap2_s1[trigger]`／`catap2_s2[trigger]` 原始模板明确执行以下数据流：
+
+```text
+读取天赋的每层倍率 r
+读取触发时当前 SP 为 S，以及单层费用 C
+L = floor(abs(S / C)) + 1
+Δ = abs(黑板 duration × r × L)
+清空当前 SP
+对 S1Ability／S2Ability 执行 ExtendAbilityCooldown(Δ, keepPassedTime = true)
+```
+
+这里的 `+1` 不能靠方法名猜测。当前原始 MonoScript 绑定显示，S1 使用 `CastSkillWithCost`，S2 使用 `RetriggerableCastSkillWithCost`；后者委托前者。72943 已证实先扣除一层费用，再开始对应 Ability，随后 BeginAttack 子 Ability 的 `BuffToOwner` 在 ON_CAST_START 安装触发模板。因此 S 是首层扣除后的 SP，`+1` 补计刚刚已支付的一层；不能直接把模板里的 S 当作发动前余额。原生执行的是具体技能启动过程中的消费和延时，不是对一个通用 duration 贡献列表求值。
+
+哈蒂娅的 `hadiya_s_2[extand_time]` 则明确使用 `ExtendAbilityCooldown`，并要求保留已过时间。99674 读取当前周期 P 和黑板延长量 Δ，计算 `P' = P + Δ`，再调用 `UpdateCooldown`。`keepPassedTime = true` 对有效计时器使用 `ResetButKeepPastTime`；若原剩余时间为 R，则保留 `e = P - R`，得到：
+
+```text
+R' = max(0, P' - e) = max(0, R + Δ)
+```
+
+该式描述本轮已经运行的计时器，不表示下次发动的基础时长也增加。总周期 `P + Δ` 与用于计算追加量的黑板 duration 应分别记录；不能在未核对二者相等前将所有内容简写为一条基础时长乘倍率公式。具体模板在退出时还可恢复原周期，详见原始动作摘录。
+
+周期 P 自身也有具体组合规则：`AbilitySequenceGroup._UpdateCooldownFromSubAbilities` 91734 只处理 Category 含 ACTIVE 的子 Ability；`_useLongestAbilityCooldown = false` 时累加其 cooldown，为 true 时取最大值。`ActiveBuffAbility.SetLifeTime` 90969 则按配置读取黑板 duration，并与所附 Buff 的有限时长取最大值；非忽略的无限 Buff 另走无限分支。这些是具体 Ability 的初始化规则，不能统一解释成 Attribute 四段归并。
+
+本节确认了 Ammo 的专用聚合、SP 的不同状态／配置运算，以及具体技能的消费和延时链。它没有建立全部技能参数共享的“原生 Modifier 公式”，也不以统一 `Input<M, H>` 推导任何未证实的数值算法。
 
 ## 3. 触发、持续与输出
 
