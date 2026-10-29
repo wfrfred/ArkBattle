@@ -1,0 +1,171 @@
+{
+  "date": "2026-10-29",
+  "scope": "Ordinary Character/Enemy block-radius defaults, current attribute multiplier and Trap/GiantTrap exceptions. Reuses existing Blocking instruction artifacts and adds bounded constant/schema witnesses. No client execution, live XLua audit or gameplay-wide census.",
+  "sources": {
+    "dll": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+      "bytes": 218523112,
+      "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5"
+    },
+    "metadata": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+      "bytes": 45805368,
+      "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f"
+    }
+  },
+  "floatConstants": [
+    {
+      "name": "characterDefaultBlockRadiusScale",
+      "address": "0x186e3fbe0",
+      "byteHex": "0000803f",
+      "float32": 1.0,
+      "use": "Character.get_defaultBlockRadiusScale[75927] movss at0x180a39fe8; Enemy corresponding getter reads same address"
+    },
+    {
+      "name": "walkRadius",
+      "address": "0x186e41b90",
+      "byteHex": "8104353f",
+      "float32": 0.707099974155426,
+      "use": "Character.get__blockRadius default WALK path"
+    },
+    {
+      "name": "flyRadius",
+      "address": "0x186e41c08",
+      "byteHex": "66f7643f",
+      "float32": 0.8944000005722046,
+      "use": "Character.get__blockRadius default FLY path and BlockRadiusManager multiplication operand"
+    },
+    {
+      "name": "walkRadiusSquare",
+      "address": "0x186e41c00",
+      "byteHex": "bdfeff3e",
+      "float32": 0.4999903738498688,
+      "use": "Character.get_blockRadiusSquare default WALK path"
+    },
+    {
+      "name": "flyRadiusSquare",
+      "address": "0x186e41c04",
+      "byteHex": "9dc94c3f",
+      "float32": 0.7999513745307922,
+      "use": "Character.get_blockRadiusSquare default FLY path"
+    }
+  ],
+  "metadataFields": [
+    {
+      "declaringType": "Torappu.AttributesData",
+      "metadataTypeIndex": 4132,
+      "field": {
+        "index": 23233,
+        "name": "blockRadiusScale",
+        "type": 63123,
+        "typeName": "CodeStage.AntiCheat.ObscuredTypes.ObscuredFloat",
+        "attrs": 1,
+        "static": false,
+        "offset": 760,
+        "boxedOffset": null,
+        "unboxedOffset": null,
+        "token": 67132098
+      }
+    },
+    {
+      "declaringType": "Torappu.AttributeType",
+      "metadataTypeIndex": 38168,
+      "field": {
+        "index": 316353,
+        "name": "BLOCK_RADIUS_SCALE",
+        "type": 42797,
+        "typeName": "Torappu.AttributeType",
+        "attrs": 32854,
+        "static": true,
+        "offset": 0,
+        "boxedOffset": null,
+        "unboxedOffset": null,
+        "token": 67109297
+      },
+      "constant": {
+        "metadataOffset": 22030562,
+        "byteHex": "4a",
+        "decodedValue": 37,
+        "encoding": "IL2CPP compressed signed integer"
+      }
+    },
+    {
+      "declaringType": "Torappu.Battle.Trap",
+      "metadataTypeIndex": 11448,
+      "field": {
+        "index": 87412,
+        "name": "_blockRadiusSquare",
+        "type": 75037,
+        "typeName": "float",
+        "attrs": 1,
+        "static": false,
+        "offset": 1404,
+        "boxedOffset": null,
+        "unboxedOffset": null,
+        "token": 67196277
+      }
+    }
+  ],
+  "reusedEvidence": [
+    {
+      "path": "../blocking-native-20261023/modes/75890.asm",
+      "sha256": "c8582de6767023141847af4dc5720e1cf7fa7a3bff307bcd51d300610ca41264"
+    },
+    {
+      "path": "../blocking-native-20261023/modes/75892.asm",
+      "sha256": "b1d852f0925b75904490c3a0c12559ef2c10a821002c87a89975fff721ff9fe2"
+    },
+    {
+      "path": "../blocking-native-20261023/modes/75927.asm",
+      "sha256": "43cde0f5163234d1f338fe8379c6baa2f86a67549f59238971fd5e2ffc4b1971"
+    },
+    {
+      "path": "../blocking-native-20261023/modes/76558.asm",
+      "sha256": "feb66ab21c295f3c9021f0b19b080c3bf80f8f2cdcbd5522d4d1cb5a19e88de4"
+    },
+    {
+      "path": "../blocking-native-20261023/modes/77168.asm",
+      "sha256": "f7474e2d32a53dcad3466e426241b08cf574906e39bc86f8cfabebe861a985e5"
+    },
+    {
+      "path": "../blocking-native-20261023/modes/77169.asm",
+      "sha256": "09d0111030de1814f6d8e38d0fa2fb853fdcc17fd96f05a87b5421fe9b08d965"
+    },
+    {
+      "path": "../blocking-native-20261023/modes/77516.asm",
+      "sha256": "7281c96a55b7f1f7031113a1c58e0261f644fc7ba86460462c03e5d19aca7eb2"
+    },
+    {
+      "path": "../blocking-native-20261023/modes/77103.asm",
+      "sha256": "7c66e2dea743c6448b0b0af31dae10f0218cf710d2b10b0661b043d14f0be72c"
+    },
+    {
+      "path": "../blocking-native-20261023/modes/77113.asm",
+      "sha256": "d454feb95cb23f75c73e158c78caed796a115a71712ef6fd828d9bd05f449c5f"
+    },
+    {
+      "path": "../blocking-native-20261023/modes/report.txt",
+      "sha256": "407c3ebc05f52e9fb5b30539a33f30e69c7d021c95e8242ea881fae9fe9fdacf"
+    }
+  ],
+  "conclusions": {
+    "ordinaryCharacterDefaults": {
+      "WALK": 0.7071,
+      "FLY": 0.8944,
+      "defaultBlockRadiusScale": 1.0,
+      "defaultSource": "DLL constants in ordinary Character and Enemy getters, not a per-character prefab radius field"
+    },
+    "currentScalePath": "For FLY only, HookBlockRadius reads current Attributes.GetValue(BLOCK_RADIUS_SCALE=37), compares with defaultBlockRadiusScale, and GetBlockRadius multiplies 0.8944 by the current value when hooked. WALK uses the fixed ordinary WALK radius.",
+    "dataSchema": "AttributesData contains a separate blockRadiusScale ObscuredFloat field. This is an attribute-data field, distinct from a directly configured final radius.",
+    "exceptions": [
+      "Trap.get_blockRadiusSquare reads the instance float field _blockRadiusSquare(+0x57c).",
+      "GiantTrap.get_blockRadiusSquare returns the ordinary WALK square constant, while CheckInBlockRange checks multiple stored position origins."
+    ]
+  },
+  "limits": [
+    "The DLL/metadata fingerprints match the referenced existing native instruction evidence; active XLua replacements and actual runtime effects were not audited.",
+    "Presence of AttributesData.blockRadiusScale establishes the native data item; this extraction does not inventory per-unit serialized values, modules, buffs, or their actual gameplay use.",
+    "No claim that every blocker shares Character defaults, that every character independently configures a radius, or that a specific Core/Content field design follows automatically from these native facts.",
+    "This package does not re-evaluate the previously noted uncertainty in FLY old-relation revalidation after attribute changes."
+  ]
+}

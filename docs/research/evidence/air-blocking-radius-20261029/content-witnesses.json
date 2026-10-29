@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-29",
+  "scope": "Non-Skyranger airborne blocking examples. Selected client-table records retained in existing third-party mirrors, cross-checked with gameplay documentation; not freshly extracted installed bundles or a full census.",
+  "sources": [
+    {
+      "id": "stages",
+      "path": "/tmp/stronghold-player-side-data-20261026/stage_table.json",
+      "sha256": "099c225f7d49746b30b593ae903ecbedc7daee4a3dec64ffc3d27da2e948d7b5"
+    },
+    {
+      "id": "activities",
+      "path": "/tmp/stronghold-player-side-data-20261026/activity_table.json",
+      "sha256": "6c2a3f5881de85959c5aa60514bbb683855f8fce04746be5fcca0b6dcc6c15b7"
+    },
+    {
+      "id": "characters",
+      "path": "/tmp/stronghold-gianttrap-20261024/character_table.json",
+      "sha256": "e8f42a2dd5c5e72ec3fc7282ee7c0d06aadb5ccdfb2c0b63dd6da55de6c17ba5"
+    }
+  ],
+  "records": [
+    {
+      "source": "stages",
+      "jsonPointer": "/stages/act47side_04",
+      "stageId": "act47side_04",
+      "code": "UR-4",
+      "name": "晴空湍流",
+      "descriptionExcerpt": "置于其中的单位可以在浮空时阻挡空中敌人",
+      "mechanism": "The stage description assigns this ability to units on the levitatable zone while it is floating; it is not restricted to the Skyranger subclass.",
+      "crossCheck": "https://prts.wiki/w/UR-4_晴空湍流"
+    },
+    {
+      "source": "activities",
+      "jsonPointer": "/basicInfo/act47side",
+      "id": "act47side",
+      "name": "未许之地"
+    },
+    {
+      "source": "characters",
+      "jsonPointer": "/char_4222_taraxa",
+      "id": "char_4222_taraxa",
+      "name": "风絮",
+      "profession": "MEDIC",
+      "subProfessionId": "watchman",
+      "description": "恢复友方单位生命，并且可以<$ba.liftoff>起飞</>",
+      "phaseAttributeKeyFrameBlockCnt": [[1, 1], [1, 1], [1, 1]],
+      "crossCheck": "https://prts.wiki/w/风絮",
+      "limit": "Table identity, trait and base block count are verified here. The Watchman-specific takeoff implementation was not traced; its airborne blocking behavior is cross-checked against gameplay documentation."
+    }
+  ],
+  "limits": [
+    "The levitatable-zone record is not a complete trace from its specific prefab to Tile.charBlockMotionMode.",
+    "A generic dynamic-height code path, ignoreBlockMode, visually flying, or attacking aerial targets alone is not counted as another actual content example.",
+    "Base blockCnt does not include talents or runtime modifiers."
+  ]
+}
