@@ -73,10 +73,10 @@ export type Signal = {
     | { readonly type: "SKILL_FINISHED"; readonly end: End }
 );
 
-export function setData<X extends Skill<any, any>>(
+export function setState<X extends Skill<any, any>>(
     battle: BattleState,
     reference: Ref<X>,
-    data: NoInfer<X["data"]>,
+    state: NoInfer<X["state"]>,
 ): BattleState {
     const unit = units.get(battle, reference.host);
     if (unit === undefined) {
@@ -88,7 +88,7 @@ export function setData<X extends Skill<any, any>>(
         throw new TypeError("skill definition is not configured for its source");
     }
 
-    return data === self.data ? battle : replaceSkill(battle, unit, { ...self, data });
+    return state === self.state ? battle : replaceSkill(battle, unit, { ...self, state });
 }
 
 export function setActivationState<X extends Activation<any, any>>(
@@ -171,7 +171,7 @@ export function activate<S extends object, A extends object>(
     const sustain = initialSustain(battle, self, unit);
     const active: Activation<S, A> = {
         definition: self.definition,
-        data: self.data,
+        state: self.state,
         sp: previousSp === null ? null : { ...previousSp, value: previousSp.value - cost },
         activation: {
             id: unit.skill.nextActivationId,
@@ -475,7 +475,7 @@ function replaceSkill<S extends object, A extends object>(
             skill: {
                 ...unit.skill,
                 definition: self.definition,
-                data: self.data,
+                state: self.state,
                 sp: self.sp,
                 activation: self.activation,
             },

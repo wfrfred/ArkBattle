@@ -19,7 +19,7 @@ import { initialize } from ${source("unit/initialize")};
 import * as units from ${source("unit/query")};
 import { type Definition } from ${source("unit/skill/definition")};
 import { initialize as initializeSkill, hasSkill, type Skill as SkillCapability, type State } from ${source("unit/capability/skill/capability")};
-import { create, ref, activationRef, getSkill, getActivation, activate, cancel, setData, setActivationState, type Skill, type Activation, lifetime as skillLife } from ${source("unit/skill/index")};
+import { create, ref, activationRef, getSkill, getActivation, activate, cancel, setState, setActivationState, type Skill, type Activation, lifetime as skillLife } from ${source("unit/skill/index")};
 import { getCurrent } from ${source("unit/skill/query")};
 import { scope, getRef } from ${source("lifetime/index")};
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
@@ -33,20 +33,20 @@ declare const specialized: Ref<Activation<Persistent, Active> & { readonly marke
 const definition: Definition<Persistent, Active> = ({
     id: "typed-skill", initialize: current => ({ state: current, value: { count: 0 } }), sp: null,
     onEnter(current, source, program) {
-        const count: number = program.data.count;
+        const count: number = program.state.count;
         const identity = ref(source, program.definition);
-        // @ts-expect-error persistent data is supplied as a value rather than a transform.
-        setData(current, identity, () => ({ count: count + 1 }));
-        return setData(current, identity, { count: count + 1 });
+        // @ts-expect-error persistent state is supplied as a value rather than a transform.
+        setState(current, identity, () => ({ count: count + 1 }));
+        return setState(current, identity, { count: count + 1 });
     },
     activation: { trigger: "MANUAL", sustain: { type: "INFINITE" },
-        initialize: (_battle, _source, program) => ({ mode: program.data.count === 0 ? "FIRST" : "SECOND" }),
+        initialize: (_battle, _source, program) => ({ mode: program.state.count === 0 ? "FIRST" : "SECOND" }),
         onStart(current, source, activation) {
             const proof = activationRef(source, activation);
             type Proof = Assert<Equal<typeof proof, Ref<Activation<Persistent, Active>>>>;
             const mode: "FIRST" | "SECOND" | undefined = getActivation(current, proof)?.activation.state.mode;
             const identity = ref(source, activation.definition);
-            return setData(current, identity, { count: activation.data.count + 1 });
+            return setState(current, identity, { count: activation.state.count + 1 });
         },
         onTick: (current, source, activation) => setActivationState(current, activationRef(source, activation), { mode: "SECOND" }),
     },
@@ -56,47 +56,47 @@ const initialized = initialize(battle, { id: 0, position: [0, 0], definition: { 
 const publicHost: Unit & SkillCapability = initialized;
 const program: Definition = publicHost.skill.definition;
 const trigger: "MANUAL" | "AUTO" | "PASSIVE" | undefined = program.activation?.trigger;
-const genericData = program.initialize(battle).value;
-type GenericData = Assert<Equal<typeof genericData,object>>;
+const genericState = program.initialize(battle).value;
+type GenericState = Assert<Equal<typeof genericState,object>>;
 // @ts-expect-error Complete default programs do not infer private persistent fields.
-genericData.count;
+genericState.count;
 program.onTick?.(battle, sourceRef, publicHost.skill);
 // @ts-expect-error Unit configuration stores a factory rather than a program.
 publicHost.definition.skill.id;
 // @ts-expect-error A program's private initializer is not a Skill aggregate factory.
 initializeSkill(battle, program);
-// @ts-expect-error A complete program does not replace the aggregate's required private data.
+// @ts-expect-error A complete program does not replace the aggregate's required private state.
 initializeSkill(battle, { initialize: current => ({ state: current, value: { definition: program, sp: null, activation: null } }) });
 const incompleteActivation = { trigger: "MANUAL" as const, sustain: { type: "INFINITE" as const } };
-// @ts-expect-error Private data cannot replace a missing activation initialization program.
-initializeSkill(battle, { initialize: current => ({ state: current, value: { definition: { ...definition, activation: incompleteActivation }, data: { count: 0 }, sp: null, activation: null } }) });
+// @ts-expect-error Private state cannot replace a missing activation initialization program.
+initializeSkill(battle, { initialize: current => ({ state: current, value: { definition: { ...definition, activation: incompleteActivation }, state: { count: 0 }, sp: null, activation: null } }) });
 const state = initializeSkill(battle, factory).value;
 type CommonState = Assert<Equal<typeof state, State>>;
-// @ts-expect-error capability state does not expose a program's private data.
-initialized.skill.data.count;
+// @ts-expect-error capability state does not expose a program's private state.
+initialized.skill.state.count;
 // @ts-expect-error capability initialization returns default object private state.
-state.data.count;
+state.state.count;
 // @ts-expect-error an ordinary program is not a Unit capability factory.
 initialize(battle, { id: 1, position: [0, 0], definition: { hooks: [], id: "invalid", skill: definition } });
 const persistent = ref(units.ref(initialized), definition);
 type PersistentRef = Assert<Equal<typeof persistent, Ref<Skill<Persistent, Active>>>>;
 const knownProgram = getSkill(battle, persistent);
-const knownCount: number | undefined = knownProgram?.data.count;
+const knownCount: number | undefined = knownProgram?.state.count;
 const opaque = getCurrent(battle, units.ref(initialized));
 // @ts-expect-error the internal current read cannot recover chosen private fields.
-opaque?.data.count;
+opaque?.state.count;
 // @ts-expect-error getCurrent does not accept invented private generics.
 getCurrent<Persistent, Active>(battle, units.ref(initialized));
 if (opaque !== undefined) opaque.definition.onTick?.(battle, sourceRef, opaque);
-setData(battle, persistent, { count: 1 });
+setState(battle, persistent, { count: 1 });
 // @ts-expect-error the result value cannot widen the Ref's proven persistent type.
-setData(battle, persistent, { count: "wrong" });
+setState(battle, persistent, { count: "wrong" });
 const started = activate(battle, persistent);
 if (started.value.type === "ACTIVATED") {
     const current = getActivation(started.state, started.value.ref);
     type Current = Assert<Equal<typeof current, Activation<Persistent, Active> | undefined>>;
     const mode: "FIRST" | "SECOND" | undefined = current?.activation.state.mode;
-    const count: number | undefined = current?.data.count;
+    const count: number | undefined = current?.state.count;
 }
 const known = activationRef(sourceRef, self);
 const skillScope = scope(skillLife,known);
@@ -121,8 +121,8 @@ activate(battle, sourceRef);
 activate(battle, known);
 // @ts-expect-error persistent references do not identify a round.
 cancel(battle, persistent);
-// @ts-expect-error persistent data writes use a persistent Ref.
-setData(battle, known, { count: 1 });
+// @ts-expect-error persistent state writes use a persistent Ref.
+setState(battle, known, { count: 1 });
 // @ts-expect-error activation state writes use a round Ref.
 setActivationState(battle, persistent, { mode: "SECOND" });
 // @ts-expect-error source and program must use their matching Ref kind.

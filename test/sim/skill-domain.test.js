@@ -148,8 +148,8 @@ test("skill definitions are shared and deployments initialize independent privat
     const f = fixture({ initialize: battle => ({ state: battle, value: ({ count: 0 }) }), sp: resource({ initial: 1 }) });
     assert.equal(f.unit.skill.definition, f.definition);
     const another = initializeSkill(fixtureBattle(90), f.unit.definition.skill).value;
-    assert.deepEqual(another.data, { count: 0 });
-    assert.notEqual(another.data, f.unit.skill.data);
+    assert.deepEqual(another.state, { count: 0 });
+    assert.notEqual(another.state, f.unit.skill.state);
     assert.equal(another.sp.value, 1);
     assert.equal(another.sp.lastTick, 90);
     assert.throws(() => create(f.state, definition({ sp: resource({ initial: 7 }) })), /capacity/);
@@ -392,16 +392,16 @@ test("SP Hooks keep settled reports across nested payment and dispatch only thei
     assert.equal(read(state).sp.value, 0);
 });
 
-test("persistent data survives activations and activation state is initialized independently", () => {
+test("persistent state survives activations and activation state is initialized independently", () => {
     const f = fixture({ initialize: battle => ({ state: battle, value: ({ count: 0 }) }), sp: null,
         activation: { trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({ count: 0 }) },
     });
     let state = skills.activate(f.state, f.skillRef).state;
     const currentSkill21 = getUnit(state, 1).skill;
-    state = setSkill(state, { ...currentSkill21, data: { count: 7 } });
+    state = setSkill(state, { ...currentSkill21, state: { count: 7 } });
     state = skills.finish(state, currentRef(state));
     state = skills.activate(state, f.skillRef).state;
-    assert.deepEqual(read(state).data, { count: 7 });
+    assert.deepEqual(read(state).state, { count: 7 });
     assert.deepEqual(read(state).activation.state, { count: 0 });
     assert.equal(read(state).activation.id, 1);
 });

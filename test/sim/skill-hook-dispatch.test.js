@@ -16,7 +16,7 @@ for (const accepts of [true, false]) {
         const replacement = hook("B", (battle) => { seen.push("new B"); return { state: battle, value: undefined }; }, (battle, { host, event }) => {
             const self = getHookHost(battle, host);
 
-            seen.push(["new accepts", self.skill.data.ready, self.skill.sp.value, event.current]);
+            seen.push(["new accepts", self.skill.state.ready, self.skill.sp.value, event.current]);
             return accepts;
         });
         const currentSkill = getUnit(f.state, 1).skill;
@@ -24,7 +24,7 @@ for (const accepts of [true, false]) {
             hook("A", (battle) => {
                 seen.push("A");
                 const currentSkill2 = getUnit(battle, 1).skill;
-                return { state: setSkill(battle, setHook({ ...currentSkill2, data: { ready: true } }, "spRecovered", replacement)), value: undefined };
+                return { state: setSkill(battle, setHook({ ...currentSkill2, state: { ready: true } }, "spRecovered", replacement)), value: undefined };
             }),
             hook("B", (battle) => { seen.push("old B"); return { state: battle, value: undefined }; }, () => {
                 seen.push("old accepts");

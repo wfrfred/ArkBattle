@@ -20,7 +20,7 @@ export { create } from "./initialize.js";
 
 export {
     lifetime,
-    setData,
+    setState,
     setActivationState,
     activate,
     finish,

@@ -10,7 +10,7 @@ export interface Skill<S extends object = object, A extends object = object> ext
     readonly definition: Definition<S, A>;
 }> {
     readonly definition: Definition<S, A>;
-    readonly data: S;
+    readonly state: S;
     readonly sp: SpState | null;
     readonly activation: State<A> | null;
 }

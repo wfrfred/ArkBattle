@@ -28,7 +28,7 @@ export function create<S extends object, A extends object>(
         state: initialized.state,
         value: {
             definition,
-            data: initialized.value,
+            state: initialized.value,
             sp:
                 definition.sp === null
                     ? null

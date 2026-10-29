@@ -47,11 +47,11 @@ test("Skill and Elemental initialize from the current battle tick and keep share
     const second = initialize(battle, { id: 2, definition, position: [1, 0] }).value;
     assert.equal(first.skill.sp.lastTick, 37);
     assert.equal(first.elemental.lastAdvancedTick, 37);
-    assert.deepEqual(first.skill.data, { count: 3 });
+    assert.deepEqual(first.skill.state, { count: 3 });
     assert.equal(first.definition, definition);
     assert.equal(second.definition, definition);
     assert.notEqual(first.skill, second.skill);
-    assert.notEqual(first.skill.data, second.skill.data);
+    assert.notEqual(first.skill.state, second.skill.state);
     assert.notEqual(first.elemental, second.elemental);
 });
 
