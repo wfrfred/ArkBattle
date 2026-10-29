@@ -3,12 +3,8 @@ import type { State as BattleState } from "../state.js";
 import type { Unit } from "../../unit/unit.js";
 import * as units from "../../unit/query.js";
 import { hasBlocker, type Blocker } from "../../unit/capability/blocking/blocker.js";
-import {
-    hasBlockable,
-    resolveVolume,
-    type Blockable,
-} from "../../unit/capability/blocking/blockable.js";
-import type { Relation } from "./contract.js";
+import { resolveVolume, type Blockable } from "../../unit/capability/blocking/blockable.js";
+import type { Relation } from "../../unit/capability/blocking/contract.js";
 
 export function blockerOf(
     battle: BattleState,
@@ -50,10 +46,8 @@ export function hasRelation(battle: BattleState, relation: Relation): boolean {
 
     return (
         owner !== undefined &&
-        hasBlocker(owner) &&
         owner.blocker.blocked.includes(relation.blocked) &&
         target !== undefined &&
-        hasBlockable(target) &&
         target.blockable.blocker?.id === owner.id
     );
 }

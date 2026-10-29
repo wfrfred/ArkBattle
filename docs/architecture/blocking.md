@@ -4,7 +4,7 @@ Blocking 负责阻挡关系的建立、解除及必要维护。本文描述两�
 
 Blocker／Blockable 的数值与局部 State 接口见 [Capability API](capability.md#blocking)。状态归属与同步返回契约见 [函数式内核](functional-core.md)。
 
-关系查询与公开结算从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入，两端 Capability 的类型与局部变换从 [unit/capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入。整批更新的准备、差分、通知及维护继续在 operations.ts 内保持有序内聚，Core 按需精确依赖这些阶段接口，不将它们扩为内容 API。
+关系查询与公开结算从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入，两端 Capability 的类型与局部变换从 [unit/capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入。公共 Relation、Context、Hook、Key 定义在 [Capability contract.ts](../../src/core/unit/capability/blocking/contract.ts)，由 Capability 入口导出；Battle 入口只提供查询与操作，不重复转发这些类型。[battle/blocking/hook.ts](../../src/core/battle/blocking/hook.ts) 只实现派发。整批更新的准备、差分、通知及维护在 operations.ts 内保持有序内聚，Change 是该文件内未导出的变更类型；Core 按需精确依赖阶段接口，不将它们扩为内容 API。
 
 ## 已确定的职责与调度政策
 
@@ -130,6 +130,8 @@ return battle;
 
 release 只解除关系，不自动接敌。固定旧关联条目的内部解除按对象身份确认，已经消失的旧条目直接跳过。release(battle, reference) 捕获该 Unit 作为 Blocker 或 Blockable 的旧关联，逐项解除；Hook 中新建立的条目不属于该次候选。
 
+旧关系是否仍存在统一在 releaseUpdates 的入口确认；releaseRelation 直接接续其准备结果提交，不在两者之间重复查询同一关系。
+
 ## 要求解除旧阻挡的空间操作
 
 对于明确要求解除旧阻挡的空间操作，采用以下顺序：
@@ -155,6 +157,8 @@ Hook 合法重建的关系使用新的列表 Ref 条目，不属于外层旧候�
 沿用项目已有领域操作契约：每次 unit.update() 返回时，当前状态所要求的关系失效清理、容量裁撤及对应同步 Hook 都已完成。嵌套调用与最外层调用具有同样的完整性保证，不增加 Blocking 特有的延迟维护或最外层统一收尾协议。
 
 `unit.update()` 的任一目标不存在时抛出 RangeError；数组为空或所有元素都是当前 Unit 对象时返回原 BattleState；没有本次事实变更，不借无效更新触发关系维护。提交不同 Unit 对象的更新仍完整执行必要维护。
+
+prepareUpdates 信任 unit.update 已确认的目标存在与 Definition 身份一致，并依赖同一 Definition 保持能力结构的既有契约，不重复验证这些前提。新写入关系所引用的端点仍须存在并具有相应能力，归属与双端关联仍须一致；这些是本次关系输入的校验，不能由更新目标合法性代替。
 
 领域操作可以改变多个对象和领域事实。调用者必须接续返回的 BattleState；回调之后需要继续使用 Unit、关联条目、容量或资格时，从最新状态重新读取，不能依赖调用前的对象或剩余额度。
 
@@ -220,7 +224,7 @@ Blocking 保证每个 ACQUIRED Hook 开始时原关联 Ref 条目仍然有效。
 
 ## 查询、Hook 与 Runtime 接入
 
-battle/blocking/query.ts 提供 blockerOf(battle, ref)、blocked(battle, ref)、usedCapacity(battle, ref)；输入保留相应 Capability 的 Typed Ref。relations 只生成当前条目的只读投影，hasRelation 使用列表中保存的 Ref 对象判断具体旧关联是否仍有效。不存在独立的持久 Relation 实例。
+battle/blocking/query.ts 提供 blockerOf(battle, ref)、blocked(battle, ref)、usedCapacity(battle, ref)；输入保留相应 Capability 的 Typed Ref。按 Ref 读取后检查对象是否仍存在，不重复检查 Ref 已证明的稳定能力。relations 只生成当前条目的只读投影，hasRelation 使用列表中保存的 Ref 对象判断具体旧关联是否仍有效；这一对象身份检查区分解除后重建的同双方关系，不属于重复能力校验。不存在独立的持久 Relation 实例。
 
 Blocker／Blockable State 各自持有 acquired、released Hook 数组，使用 setHook(state, key, hook) 与 removeHook(state, key, id) 登记。同一次关系变化在第一个业务回调之前同时固定两侧候选 ID，逐项恢复最新同 ID 登记并检查 accepts；新增 ID 不参加本次通知，同 ID 替换使用最新登记。先 Blocker，后 Blockable；Context 固定原关系事实，BattleState 每项接续最新版本。ACQUIRED 每项执行前通过原关联 Ref 条目身份确认关系仍存在，RELEASED 不要求旧关系仍存在。BLOCKING_ACQUIRED／BLOCKING_RELEASED 事件在对应通知开始前记录。
 

@@ -6,7 +6,7 @@ import * as attribute from "../../contribution/attribute.js";
 import type { Unit } from "../../unit.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Blockable } from "./blockable.js";
-import type { Hook, Key } from "../../../battle/blocking/hook.js";
+import type { Hook, Key } from "./contract.js";
 import type { Rule } from "./rule.js";
 
 export interface Definition {

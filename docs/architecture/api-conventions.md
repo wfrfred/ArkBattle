@@ -88,7 +88,7 @@ Hook 与领域操作按执行语义命名：
 | Effect | [unit/effect/index.ts](../../src/core/unit/effect/index.ts) | 类型、ref、get、lifetime 与生命周期操作；get 归 query.ts，Effects 容器保持内部职责。 |
 | Lifetime | [lifetime/index.ts](../../src/core/lifetime/index.ts) | create／scope／getRef／available 和公开类型；request／drain、Pending、异构配对擦除与索引修改保持内部职责。 |
 | Projectile | [projectile/index.ts](../../src/core/projectile/index.ts) | 类型与 ref／all／get；完整 create／update／stop／advance 及 lifetime 保留 battle/projectile.ts，容器仍由 Battlefield 持有。 |
-| Blocking | [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) | 关系查询、公开操作与 Hook 类型；整批更新准备、差分、通知与维护继续在 operations.ts 内有序结算，内部阶段接口不从 index 导出。 |
+| Blocking | [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts)、[capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) | Battle 入口仅提供关系查询与公开操作；公共 Relation／Context／Hook／Key 定义于 Capability 的 contract.ts，由 Capability 入口连同能力类型、Rule 与局部登记接口导出。整批更新准备、差分、通知与维护在 operations.ts 内有序结算，Change 留在该文件内，内部阶段接口不从 index 导出。 |
 | Damage／Healing | [damage/index.ts](../../src/core/battle/damage/index.ts)、[healing/index.ts](../../src/core/battle/healing/index.ts) | 各自的 Calculate／Apply 两阶段、请求／报告及 Hook 登记；阶段派发保持内部实现，不合并结算协议。 |
 | Targeting | [battle/targeting/index.ts](../../src/core/battle/targeting/index.ts) | Filter／Comparator／Selector、hasCandidate 与 select；只读 hasCandidate 归 query.ts，可能消费 RNG 的选择保留 select.ts。 |
 | Deployment | [battle/deployment/index.ts](../../src/core/battle/deployment/index.ts) | 模型、查询、资源维护、部署命令与生命周期协作；resources.ts 的完整 Card 写回 updateCard 不公开，lifecycle.ts 不依赖完整 Unit 操作。 |
