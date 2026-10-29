@@ -9,16 +9,29 @@ import type { Blockable } from "./blockable.js";
 import type { Hook, Key } from "./contract.js";
 import type { Rule } from "./rule.js";
 
+export type Layer = "GROUND" | "AIR";
+
+export interface Geometry {
+    readonly radius: number;
+}
+
+export const DEFAULT_GEOMETRY: Readonly<Record<Layer, Geometry>> = {
+    GROUND: { radius: 0.7071 },
+    AIR: { radius: 0.8944 },
+};
+
 export interface Definition {
     readonly capacity: number;
-    readonly geometry: { readonly radius: number };
-    readonly rules?: readonly Rule[];
+    readonly layer: Layer;
+    readonly geometry?: Geometry;
+    readonly rules: readonly Rule[];
 }
 
 export interface State {
     readonly blocked: readonly Ref<Unit & Blockable>[];
     readonly capacity: readonly contribution.Contribution<readonly attribute.Modifier[]>[];
-    readonly geometry: { readonly radius: number };
+    readonly layer: Layer;
+    readonly geometry: Geometry;
     readonly rules: readonly Rule[];
     readonly acquired: readonly Hook<Unit & Blocker>[];
     readonly released: readonly Hook<Unit & Blocker>[];
@@ -36,16 +49,18 @@ export function hasBlocker<U extends Unit>(unit: U): unit is U & Blocker {
 }
 
 export function initialize(battle: BattleState, definition: Definition): Result<State> {
+    const geometry = definition.geometry ?? DEFAULT_GEOMETRY[definition.layer];
     assertNonnegativeSafeInteger(definition.capacity, "blocking capacity");
-    assertNonnegativeNumber(definition.geometry.radius, "block radius");
+    assertNonnegativeNumber(geometry.radius, "block radius");
 
     return {
         state: battle,
         value: {
             blocked: [],
             capacity: [],
-            geometry: definition.geometry,
-            rules: definition.rules ?? [],
+            layer: definition.layer,
+            geometry,
+            rules: definition.rules,
             acquired: [],
             released: [],
         },

@@ -31,7 +31,7 @@ const actionAllowed = (battle, self) => self.action.rules.every(rule => rule.all
 function actor(action = true) {
     return unit(0, {
         action,
-        blocker: { capacity: 1, geometry: { radius: 2 } },
+        blocker: { layer: "GROUND", rules: [], capacity: 1, geometry: { radius: 2 } },
         locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 1, steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 } },
         skill: skillDefinition({ id: "control-test", sp: { initial: 0, capacity: 10, requirement: 10, recovery: { type: "TIME", intervalTicks: 30 } } }),
     });

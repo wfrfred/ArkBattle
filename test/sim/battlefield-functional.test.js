@@ -64,7 +64,7 @@ test('pure transitions preserve input states and retained versions while allowin
 
 test('pure field updates expose current tile queries without acquiring blocking relations', () => {
   const blocker = (id, column) => unit(id, [column, 0], {
-    allegiance: { side: 'ALLY' }, blocker: { capacity: 1, geometry: { radius: 1 } },
+    allegiance: { side: 'ALLY' }, blocker: { layer: "GROUND", rules: [], capacity: 1, geometry: { radius: 1 } },
   });
   const enemy = unit(20, [1.25, 0], {
     allegiance: { side: 'ENEMY' }, blockable: { volume: 1 }, layer: { type: 'GROUND' },

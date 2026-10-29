@@ -347,7 +347,7 @@ test("an initially occupied candidate can be acquired after an earlier Hook rele
 test("a Unit can independently be blocked and block other Units", () => {
     let battle = fixture([
         holder(),
-        target(20, { definition: { blocker: { capacity: 1, geometry: { radius: 1 } } } }),
+        target(20, { definition: { blocker: { layer: "GROUND", rules: [], capacity: 1, geometry: { radius: 1 } } } }),
         target(30, { position: [2.5, 1], side: "ALLY" }),
     ]);
     battle = acquire(acquire(battle), 20);

@@ -45,7 +45,7 @@ function actor(skill, { attackTargets = 1, windupTicks = 0, activeAction } = {})
     id: 'skill-actor', vitality: { maxHp: 100000, defense: 0, resistance: 0 }, offense: { attack: 100 },
     allegiance: { side: 'ALLY' },
     layer: { type: 'GROUND' }, hitbox: { shape: hit },
-    blocker: { capacity: 0, geometry: { radius: 0.1 } }, action: { ...capability, select: (battle, self) => ({ state: battle, value: [self.skill.activation !== null ? activeAction ?? 'normal' : 'normal'] }) }, skill: { initialize: battle => createSkill(battle, skill) },
+    blocker: { layer: "GROUND", rules: [], capacity: 0, geometry: { radius: 0.1 } }, action: { ...capability, select: (battle, self) => ({ state: battle, value: [self.skill.activation !== null ? activeAction ?? 'normal' : 'normal'] }) }, skill: { initialize: battle => createSkill(battle, skill) },
   };
 }
 function target() {

@@ -30,7 +30,7 @@
 | [18 Projectile 来源与目标生命周期](18-projectile-source-and-target-lifecycles.md) | Entity 死亡／撤退／路线消失、ObjectPtr / MountPoint、普通 ApplyDamage、暗索套索及维什戴尔实际配置 | 身份与存活／空间资格、继续追踪与保底命中、来源数值回退与归属、可选生命周期依赖 |
 | [19 Effect 索敌与异常免疫](19-effect-selection-and-immunity.md) | 爱丽丝／卡夫卡睡眠选择、鼓舞光环与标记、Buff 安装及异常 Anti／Immune 原生分支 | 免疫者是否占目标名额、选择与施加／生效的区别、EFFECT Purpose 的必要性及当前项目缺失 |
 | [20 诺伯特平民的阵营与阻挡](20-norport-civilian-allegiance-and-blocking.md) | 本机平民／寻路密探 Prefab、SideTypeIndex 与既有阻挡原生证据；游戏教学和 PRTS 机制说明 | 友好标签与实际阵营的区别、无敌禁选与免伤、鉴定完成后的禁挡，以及定向阻挡资格的边界 |
-| [21 蒂比与空中阻挡](21-tippi-air-blocking.md) | 蒂比实际起飞／落地 Buff 与原生对地规避分支，复用 Blocking 模式调查；补核风絮、可浮空区块及半径默认／倍率／覆盖 | 自身运动身份与阻挡策略分离、切换清理、飞行目标停走及当前三个硬限制；半径配置与 Core／Content 边界 |
+| [21 蒂比与空中阻挡](21-tippi-air-blocking.md) | 蒂比实际起飞／落地 Buff 与原生对地规避分支，复用 Blocking 模式调查；补核风絮、可浮空区块及半径默认／倍率／覆盖 | 自身运动身份与阻挡层分离、切换清理、飞行目标停走；2026-10-30 通用 Blocking.layer／setLayer 接入与未实现内容的边界 |
 
 ## 每个案例的记录方式
 

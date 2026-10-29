@@ -56,7 +56,7 @@ function actor(id, program) {
     return {
         ...passive(id),
         allegiance: { side: "ALLY" },
-        blocker: { capacity: 0, geometry: { radius: 0.1 } },
+        blocker: { layer: "GROUND", rules: [], capacity: 0, geometry: { radius: 0.1 } },
         action: actionCapability(program),
     };
 }

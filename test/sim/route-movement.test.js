@@ -75,7 +75,7 @@ test("Main completion stops motion while blocked and produces one event only whe
     const blocker = initialize(state, { id: 1, position: [0, 0], definition: { hooks: [],
         id: "route-movement-blocker", spatialPresence: {},
         allegiance: { side: "ALLY" }, layer: { type: "GROUND" },
-        blocker: { capacity: 1, geometry: { radius: 1 } },
+        blocker: { layer: "GROUND", rules: [], capacity: 1, geometry: { radius: 1 } },
     } }).value;
     const enemy = unit(state, 2, {
         route: route({ endPosition: [0, 0] }), allegiance: { side: "ENEMY" },

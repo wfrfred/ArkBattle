@@ -95,7 +95,7 @@ test("Combat skips selection when cooldown refresh removes its host through a Bl
             return { state, value: [definition.id] };
         },
     };
-    const source = unit(0, { action: capability, blocker: { capacity: 1, geometry: { radius: 2 } } });
+    const source = unit(0, { action: capability, blocker: { layer: "GROUND", rules: [], capacity: 1, geometry: { radius: 2 } } });
     const target = unit(1, { blockable: { volume: 1 } });
     const reference = unitRef(source);
     let initial = battle(source, target);

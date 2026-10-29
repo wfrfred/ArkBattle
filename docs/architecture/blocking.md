@@ -4,14 +4,14 @@ Blocking 负责阻挡关系的建立、解除及必要维护。本文描述两�
 
 Blocker／Blockable 的数值与局部 State 接口见 [Capability API](capability.md#blocking)。状态归属与同步返回契约见 [函数式内核](functional-core.md)。
 
-关系查询与公开结算从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入，两端 Capability 的类型与局部变换从 [unit/capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入。公共 Relation、Context、Hook、Key 定义在 [Capability contract.ts](../../src/core/unit/capability/blocking/contract.ts)，由 Capability 入口导出；Battle 入口只提供查询与操作，不重复转发这些类型。[battle/blocking/hook.ts](../../src/core/battle/blocking/hook.ts) 只实现派发。整批更新的准备、差分、通知及维护在 operations.ts 内保持有序内聚，Change 是该文件内未导出的变更类型；Core 按需精确依赖阶段接口，不将它们扩为内容 API。
+关系查询与公开结算从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入，两端 Capability 的类型与局部变换从 [unit/capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入。Blocking 自己定义 Layer；公共 Layer、Geometry、Relation、Context、Hook、Key 由 Capability 入口导出，Battle 入口只提供查询与操作，不重复转发这些类型。[battle/blocking/hook.ts](../../src/core/battle/blocking/hook.ts) 只实现派发。整批更新的准备、差分、通知及维护在 operations.ts 内保持有序内聚，Change 是该文件内未导出的变更类型；Core 按需精确依赖阶段接口，不将它们扩为内容 API。
 
 ## 已确定的职责与调度政策
 
 以下政策已实现。阻挡资格、容量裁撤和业务副作用按原生证据核对；搜索候选与容量接续采用下述明确的项目政策。普通接敌采用项目固定阶段，不重构 Combat／Movement 来模拟 Unity 按 UID 逐对象 OnTick。
 
 1. **Battlefield 负责不可变状态与索引一致性。** 阻挡归属与关联由 Unit 的 Blockable／Blocker State 保存，不再要求 BattleState.blocking.relations 的全局权威集合。底层存储转换不派发需要完整 BattleState 的业务 Hook；Runtime 组织调度，Blocking 完整操作负责有时序语义的关系变更。状态存于 Unit 不意味着 Battlefield 存储层负责解释阻挡业务。
-2. **保留 unit.update() 的完整更新保证。** Capability 的 set／remove 等接口继续只转换自身 State；调用方以普通方式提交新 Unit。unit.update(battle, [unit]) 在 Battle 层接续存储、索引和必要的同步阻挡维护，返回维护及其 Hook 完成后的最新 BattleState，不为 Contribution 另设一套完整更新 API。这个保证适用于每一层同步嵌套调用，不只适用于最外层操作；不因已有 Blocking 维护正在执行而延迟必要维护。Runtime 提交 Unit 修改统一使用 unit.update 或相应完整领域操作，不直接选择 battlefield/unit.update 绕过完整结算。
+2. **保留 unit.update() 的完整更新保证。** Capability 的局部 set／remove 等接口继续只转换自身 State；调用方以普通方式提交新 Unit。unit.update(battle, [unit]) 在 Battle 层接续存储、索引和必要的同步阻挡维护，返回维护及其 Hook 完成后的最新 BattleState，不为 Contribution 另设一套完整更新 API。已有完整领域操作的修改通过该操作执行：阻挡层切换使用 blocking.setLayer，不直接写 blocker.layer 并期待 unit.update 根据字段差异猜测切换业务。这个保证适用于每一层同步嵌套调用，不只适用于最外层操作；不因已有 Blocking 维护正在执行而延迟必要维护。Runtime 提交 Unit 修改统一使用 unit.update 或相应完整领域操作，不直接选择 battlefield/unit.update 绕过完整结算。
 3. **普通搜索每 Tick 在 Movement 后的固定 Blocking Step 统一执行。** advance() 在本阶段开始时固定 Blocker 候选 Ref，按枚举顺序逐个调用 search()，每项接续最新 BattleState 并检查当前资格。不保存独立搜索周期或周期计数；阶段内新建的 Blocker 等待下一 Tick 的普通搜索。一次普通阶段不反复全场搜索到关系稳定。
 4. **Release、容量裁撤和失效清理同步完成。** 相关事实变化后，必要的既有关系维护必须在完整操作返回前完成，不能等待普通搜索阶段。释放关系不自动附带普通 Acquire；有空余容量且附近仍有未接敌目标，可以是合法的返回状态。
 5. **阻挡变化同步通知，后继读取最新状态。** 取得关系先确定 Blockable 端的唯一归属，再分别通知双方；字段写入顺序与 Hook 顺序分别定义，不要求双端在所有内部阶段同时更新。普通自主移动由 Movement 在 Route 推进后查询当前关系决定是否执行，不继续同步 Blocking 专用 Locomotion Rule；阻挡不停止 Route 等待及即时指令，也不禁止强制位移。每次回调返回后接续其 BattleState；后续依赖阻挡者、目标、关系、资格或容量时重新读取，不用旧 Unit、旧关系或旧 remaining 覆盖嵌套修改。Hook 可同步解除关系、改变容量或使单位离场。
@@ -29,7 +29,28 @@ Blocker／Blockable 的数值与局部 State 接口见 [Capability API](capabili
 
 每次取得都读取最新 Blockable 归属，已有归属就不能由另一 Blocker 重复取得；不以正向列表尚未更新作为重新取得的理由。允许已确定归属、另一侧尚未推进的阶段状态，不再要求通过一次原子写入同时修改双方。
 
-两端字段的类型基线如下；这里只列关系字段，其他容量、占用与 Rule 字段保持各自职责：
+Blocker 的配置与当前状态明确区分：
+
+```typescript
+export type Layer = "GROUND" | "AIR";
+
+export interface Geometry {
+    readonly radius: number;
+}
+
+interface Definition {
+    readonly capacity: number;
+    readonly layer: Layer;
+    readonly geometry?: Geometry;
+    readonly rules: readonly Rule[];
+}
+```
+
+layer 表示该 Blocker 能阻挡的目标层，与宿主自身的 Unit Layer 分开，类型由 Blocking 自己定义，不依赖 Unit Layer Capability。Definition.layer 和 rules 都必填；没有额外规则时明确写 rules: []。State.layer 与 State.geometry 保存当前阻挡层及实际几何值，不保存另一份派生层或通过查询临时恢复半径。
+
+Core 提供 GROUND 半径 0.7071、AIR 半径 0.8944。初始化和 setLayer 切换时均选择 definition.geometry ?? DEFAULT_GEOMETRY[layer]；Definition 显式提供的 geometry 始终覆盖默认值，切层不改变该覆盖。默认 Geometry 是内部共享常量，不经过公共入口导出。普通干员省略 geometry；特殊对象按需声明明确半径。
+
+两端关系字段如下；其他容量、占用与 Rule 字段保持各自职责：
 
 ```typescript
 interface BlockableState {
@@ -37,6 +58,8 @@ interface BlockableState {
 }
 
 interface BlockerState {
+    readonly layer: Layer;
+    readonly geometry: Geometry;
     readonly blocked: readonly Ref<Unit & Blockable>[];
 }
 ```
@@ -87,12 +110,12 @@ export function sides(...sides: readonly Side[]): Rule;
 
 它以 `blocking/sides` 为 ID，仅检查目标当前具有 Allegiance 且其 `allegiance.side` 在指定集合内，不要求阻挡者具有 Allegiance。多个阵营可在同一规则内声明，例如 `sides("ALLY", "NEUTRAL")`。`setBlockerRule(state, sides(...))` 替换现有阵营策略；仍由完整 Unit 更新维护旧关系。未选择该规则时，没有隐含的阵营限制。
 
-Blocker Definition 的可选 `rules` 在初始化时进入当前 State，之后只读取当前 `blocker.rules`。普通干员和 Legacy 干员适配显式声明：
+Blocker Definition 的必填 `rules` 在初始化时进入当前 State，之后只读取当前 `blocker.rules`。普通干员和 Legacy 干员适配显式声明：
 
 ```typescript
 blocker: {
     capacity,
-    geometry: { radius: 0.70709997 },
+    layer: "GROUND",
     rules: [sides("ENEMY")],
 }
 ```
@@ -103,12 +126,14 @@ Blocking 将资格与其他取得条件分开处理：
 
 | 阶段 | 检查内容 |
 | --- | --- |
-| `canSearch` | 不依赖具体目标的基础资格，包括阻挡者在场、存活、空间存在及当前根格的阻挡许可；不提前求值二元 Rule。 |
-| `canRetain` | 双方是不同实例、当前基础资格、目标空地身份，以及两端所有 `Rule.allows(battle, blocker, blockable)`；阵营策略由显式 Rule 决定，新取得和旧关系维护共用这一判断。 |
-| 新关系取得 | 在关系资格之外，确认目标尚无归属、双方在接敌距离内，且当前占用加目标 volume 不超过 capacity。 |
+| `canSearch` | 不依赖具体目标的基础资格，包括阻挡者在场、存活、空间存在；GROUND 另要求当前根格的阻挡许可，AIR 跳过该地块条件；不提前求值二元 Rule。 |
+| `canRetain` | 双方是不同实例、当前基础资格、阻挡层与目标空地身份匹配，以及两端所有 `Rule.allows(battle, blocker, blockable)`；GROUND 还要求当前根格允许阻挡，AIR 豁免。保持资格按自身语义判断，不直接继承全部搜索条件。 |
+| 新关系取得 | 在搜索和关系资格之外，确认目标尚无归属、双方在接敌距离内，且当前占用加目标 volume 不超过 capacity。 |
 | 容量裁撤 | 独立比较当前总占用与容量，超出时从既有有序关联末尾逐项解除；每项通知后接续最新状态。 |
 
 距离只约束新取得，普通移动超出起始半径不使旧关系失效。目标是否已有归属在取得入口检查，不属于 `canRetain`；当前容量已满也不使每条既有关系分别变成不合格。Capability 不保存第二个 enabled 状态，也不将二元 Rule 压成单个 Unit 的 enabled 投影。
+
+正常空地匹配要求目标实际具有 Unit Layer，且 blocker.layer === target.layer.type；没有 Layer 的 Blockable 不参与正常阻挡，不隐式视为 GROUND。生产敌人装配均提供该身份，测试参与关系的对象也应明确配置；Blockable 自身的类型与构造不因此强制依赖 Layer Capability。
 
 ## 已确定的操作接口
 
@@ -123,6 +148,12 @@ export function release(
 export function search(
     battle: BattleState,
     blockerRef: Ref<Unit & Blocker>,
+): BattleState;
+
+export function setLayer(
+    battle: BattleState,
+    reference: Ref<Unit & Blocker>,
+    layer: Layer,
 ): BattleState;
 ```
 
@@ -151,6 +182,10 @@ return battle;
 release 只解除关系，不自动接敌。固定旧关联条目的内部解除按对象身份确认，已经消失的旧条目直接跳过。release(battle, reference) 捕获该 Unit 作为 Blocker 或 Blockable 的旧关联，逐项解除；Hook 中新建立的条目不属于该次候选。
 
 旧关系是否仍存在统一在 releaseUpdates 的入口确认；releaseRelation 直接接续其准备结果提交，不在两者之间重复查询同一关系。
+
+setLayer 是显式的完整领域操作。实例缺失或层未变化时返回原 BattleState；它不额外拒绝仍在存储中的 LEAVING 宿主，以允许析构回调完成已有业务。变化时确定新 layer 和 geometry，捕获该 Blocker 的全部旧出向关系，纯准备新 Blocker State 及关系双端的解除结果，再通过现有 unit.update 完整提交。第一个 RELEASED Hook 开始前，新层、新半径及全部旧关系的解除已可见；通知仍按既有关系顺序及两侧顺序接续最新 BattleState。该操作不因关系在新层下仍可能合法而保留旧关系，也不解除宿主作为 Blockable 被其他单位阻挡的关系。
+
+setLayer 不自动执行 search，也不新增 layerChanged Hook。起飞和落地内容由对应 Effect 生命周期程序调用 setLayer；不将它机械绑定到所有 Skill 的开始或结束。自身 Layer、Targetable 限制及图形表现分别由对应领域或内容处理。
 
 ## 要求解除旧阻挡的空间操作
 
@@ -248,21 +283,23 @@ battle/blocking/query.ts 提供 blockerOf(battle, ref)、blocked(battle, ref)、
 
 Blocker／Blockable State 各自持有 acquired、released Hook 数组，使用 setHook(state, key, hook) 与 removeHook(state, key, id) 登记。同一次关系变化在第一个业务回调之前同时固定两侧候选 ID，逐项恢复最新同 ID 登记并检查 accepts；新增 ID 不参加本次通知，同 ID 替换使用最新登记。先 Blocker，后 Blockable；Context 固定原关系事实，BattleState 每项接续最新版本。ACQUIRED 每项执行前通过原关联 Ref 条目身份确认关系仍存在，RELEASED 不要求旧关系仍存在。BLOCKING_ACQUIRED／BLOCKING_RELEASED 事件在对应通知开始前记录。
 
-Runtime 执行 Movement → Mechanism.advance → Blocking.advance → resolveRouteCompletion。最后一步只检查路线是否已完成和能否离场，不再次推进 Route。消费侧通过 relations(battle) 从两端状态取得 Typed Ref 关系，按需生成输出；不保存额外的全局权威关系。移动限制由 Blockable 的归属事实参与 Locomotion Rule 判断。
+Runtime 执行 Movement → Mechanism.advance → Blocking.advance → resolveRouteCompletion。最后一步只检查路线是否已完成和能否离场，不再次推进 Route。消费侧通过 relations(battle) 从两端状态取得 Typed Ref 关系，按需生成输出；不保存额外的全局权威关系。Movement 根据 Blockable 的当前归属决定是否推进自主 Locomotion。
 
 Core 的空间操作捕获旧条目，再写入新空间事实，通过 releaseCaptured 解除仍然存在的同一条目；普通位置更新仍不按距离解除旧关系。Lifetime 请求发布 LEAVING 前已登记 Pending 和结算标记，必要维护及 released Hook 可以重入请求，但不能开启第二个 drain。Unit 等真实依赖者整个 Finalize 后才物理移除；后续实时业务重读宿主，Departure 保留离场入口历史，返费则在标记发布及这些 Hook 返回后从最新 Unit 求值。
 
 ## 地块阻挡资格
 
-Blocking 只选一个当前根格：有非空 `occupancy.tile` 时使用登记格；没有登记格时，以 `World.toTile(unit.position)` 回退到身体所在格。随后读取该格的 `state.allowsBlocking`。不额外以登记格的 `elevation === "HIGHLAND"` 拒绝，也不把登记格高度与另一身体格的阻挡许可拼成两条条件。显式配置的 `allowsBlocking: true` 在高地上仍然有效。
+GROUND 搜索只选一个当前根格：有非空 `occupancy.tile` 时使用登记格；没有登记格时，以 `World.toTile(unit.position)` 回退到身体所在格。随后读取该格的 `state.allowsBlocking`。不额外以登记格的 `elevation === "HIGHLAND"` 拒绝，也不把登记格高度与另一身体格的阻挡许可拼成两条条件。显式配置的 `allowsBlocking: true` 在高地上仍然有效。AIR 搜索绕过这项地块资格，不修改 Tile，也不让同格的 GROUND 阻挡者获得豁免。
+
+既有项目政策继续要求 GROUND 丢失当前根格阻挡许可时同步解除旧关系，AIR 保持关系同样豁免。搜索和保持资格分别组合这一只读地块事实，不通过 canRetain 调用 canSearch 共享整套条件。原生调查直接证明的是搜索入口的地块检查，没有证明旧关系每次都重查地块；此处同步解除是项目已有选择，不冒充额外的原生结论。
 
 原生 `Character._SearchBlockee`（76016，`0x180a38200`）进入 `BlockManager.SearchBlockee`（77190，`0x180aa09e0`）；普通地面分支通过 Entity.rootTile 读取 `Tile.isMeleeBlockable`。`Character.get_rootTile`（75833，`0x180a3c1d0`）返回保存的 `m_rootTile`，不是每次由世界位置重新取格。项目以 Occupancy 表达已登记角色的根格；无登记对象的身体格回退是项目的统一查询政策。
 
 `Tile.get_isMeleeBlockable`（70673，`0x1808c6070`）先读黑板 `tile_blockable`，有值直接返回，未配置才取 `!isHighland`。`Tile.get_isHighland`（70670，`0x1808c5f10`）默认读取 TileData 的原始高度；它与读取当前 Options 的 `get_heightType` 不是同一字段语义。因此普通高地的显式阻挡许可不能被当前 elevation 的硬判断覆盖。
 
-射击台另有内容规则。本机 `trap_1106_achplat` 的 `trap_1106_achplat_passive` 在 `ON_OWNER_OVERLAPPED` 向乘员创建 `highland_common[block]`；后者对 WALK 阻挡模式施加带 `BLOCK_FREE` 的派生 Buff，并随阻挡模式变化维护。`Tile.RegisterCharacter`（70726，`0x1808c1eb0`）通知 `BuffContainer.OnOwnerOverlapped`（65410，`0x1806764e0`），`SearchBlockee` 再通过 `Entity.isBlockFree`（66511，`0x180705590`）拒绝接敌。这证明平台禁阻挡来自具体内容，不是所有高地的通用规则。当前项目只覆盖地面关系，射击台 Content 通过 Occupancy 的 SUPPORT occupantAdded Hook 在当前乘员的 blocker.rules 登记平台自己的 Rule，禁止其与任何目标建立或保留阻挡；occupantRemoved Hook 同步移除该平台规则，不改变地块 `allowsBlocking`。尚未复刻按 WALK／空中阻挡模式切换的完整 Buff 行为。
+射击台另有内容规则。本机 `trap_1106_achplat` 的 `trap_1106_achplat_passive` 在 `ON_OWNER_OVERLAPPED` 向乘员创建 `highland_common[block]`；后者对 WALK 阻挡模式施加带 `BLOCK_FREE` 的派生 Buff，并随阻挡模式变化维护。`Tile.RegisterCharacter`（70726，`0x1808c1eb0`）通知 `BuffContainer.OnOwnerOverlapped`（65410，`0x1806764e0`），`SearchBlockee` 再通过 `Entity.isBlockFree`（66511，`0x180705590`）拒绝接敌。这证明平台禁阻挡来自具体内容，不是所有高地的通用规则。射击台 Content 通过 Occupancy 的 SUPPORT occupantAdded Hook 在当前乘员的 blocker.rules 登记平台自己的 Rule，只禁止 GROUND 阻挡；该纯规则直接读取当前 blocker.layer，AIR 可通过。occupantRemoved Hook 同步移除该平台规则，不改变地块 allowsBlocking，也不需要新的层变化通知。
 
-## 阻挡模式的表达边界
+## 阻挡层与其他领域的边界
 
 [原生模式调查](../research/evidence/blocking-native-20261023/modes/report.txt) 已确认阻挡者的 `blockMode` 与目标的 `changeableMotionMode` 需要匹配，`ignoreBlockMode` 可豁免；`pathMotionMode` 只负责寻路，`BlockFree` 是独立的禁挡状态。当前各事实的归属如下：
 
@@ -270,22 +307,21 @@ Blocking 只选一个当前根格：有非空 `occupancy.tile` 时使用登记�
 | --- | --- |
 | 目标当前运动身份 `changeableMotionMode` | 现有 `Layer.state.type` 的 GROUND／AIR 可表达目标当前空地身份，不需另存一份 Blockable motion。 |
 | 寻路模式 `pathMotionMode` | Route 的 Progress 已独立保存，并有 `setPathMotionMode`；不得用它代替阻挡资格。Locomotion 消费此模式处理运动，但不保存第二份身份。 |
-| 阻挡者 `blockMode` | 表示允许阻挡的目标运动模式，是关系资格，不是“被阻挡后停止移动”。不能从阻挡者自身 Layer 推导，但可以用二元 Rule 按目标 Layer 表达策略，不因原生存在该字段就要求新增共享状态。 |
+| 阻挡者 `blockMode` | 项目以 blocker.layer 表示能够阻挡的目标层，并由 blocking.setLayer 执行切换；不从宿主自身 Layer 推导，也不把原生名称引入项目状态。 |
 | `BlockFree` 等禁挡状态 | 现有双端二元 Rule 可表达，不需要第三个模式或新的 enabled 字段。 |
 
 “被阻挡后停止自主移动”已经由 Movement 根据 `blockable.blocker !== null` 跳过 Locomotion 推进实现，不安装另一条禁移动 Rule，也不新增 blocked 状态或 BlockMode。
 
-当前接入的阻挡者均使用地面阻挡，`canRetain` 的目标 GROUND 限制只是该支持范围，不是完整模式匹配。当前也没有随原生 FLY 阻挡实现地块资格豁免、独立半径、忽略模式或模式切换时清除旧关系；射击台现有规则只覆盖已接入的地面阻挡者。
+本轮通用 Blocking 支持 GROUND／AIR 目标匹配、Core 默认半径、AIR 地块豁免，以及切层时清除全部旧出向关系。规则仍处理阵营和其他资格；禁挡不增加第三个层值或新的状态机。具体干员的起降程序继续由 Content 实现。
 
-这些是尚未覆盖的行为，不直接证明缺少某个共享字段。本轮不新增模式类型或状态；以后接入空中阻挡或实际模式切换时，先用现有 Layer、Rule 和内容状态表达资格，再落实相应地块、半径及关系维护语义。只有实际多处消费同一个独立事实时，再决定共享状态的归属；不要复制三个原生字段，也不要把禁挡写成 NONE 模式。
+[蒂比案例调研](../research/cases/21-tippi-air-blocking.md) 已用实际 Prefab／Buff 闭合起飞与落地：本人仍为 WALK，起飞切换阻挡层并独立施加对地规避；默认半径变为 0.8944、获得近战地块条件豁免，切换时清理旧关系。通用接口承接这些 Blocking 行为，但本轮不实现蒂比内容。普通关系已经足以停止飞行目标自主移动，不需要新的移动禁止机制。
 
-[蒂比案例调研](../research/cases/21-tippi-air-blocking.md) 已用实际 Prefab／Buff 闭合起飞与落地：本人仍为 WALK，起飞切换阻挡模式并独立施加对地规避；默认半径变为 0.8944、获得近战地块条件豁免，切换时清理旧关系。当前目标 GROUND 硬限制、无条件地块许可及射击台恒 false Rule 是接入空中阻挡的实际障碍；普通关系已经足以停止飞行目标自主移动，不需要新的移动禁止机制。本轮仅补充研究依据，尚未修改这些资格或实现蒂比内容。
-
-[补核](../research/cases/21-tippi-air-blocking.md#6-补核非巡空者实例与半径归属) 确认空中阻挡不限定巡空者：守望者风絮和《未许之地》可浮空区块均有实际内容依据。普通 Character 的 0.8944 是统一空中基准，运行时另有倍率，特殊装置可覆盖；项目由 Content 提供标准半径配置，Core 通过现有 `blocker.geometry.radius` 承载有效值并结算关系，不硬编码这项默认值。
+[补核](../research/cases/21-tippi-air-blocking.md#6-补核非巡空者实例与半径机制) 确认空中阻挡不限定巡空者：守望者风絮和《未许之地》可浮空区块均有实际内容依据。普通 Character 的 0.8944 是统一空中基准，运行时另有倍率，特殊装置可覆盖。
 
 ## 未完成的原生机制
 
-- **阻挡模式与完整资格。** 当前地面阻挡消费当前根格的 `Tile.state.allowsBlocking`，阵营及特殊资格由显式 Rule 表达。地图适配按 `tile_blockable ?? (初始高度为LOWLAND)` 生成初值，不从可通行性或可部署性推断。独立空中阻挡及完整特殊资格组合尚未覆盖，具体表达边界见上节。
+- **特殊资格与几何。** 特殊目标层豁免、BLOCK_RADIUS_SCALE 运行时修正及 Trap／GiantTrap 特殊几何仍按实际内容需求接入，不扩大本轮接口。原生研究保留在案例和证据中。
+- **浮空区块。** 可浮空区块仍是未实现的 Content 机制，不增加 Tile 阻挡层覆盖字段，也不引入 Layer Contribution 或多来源覆盖协议。
 - **阻挡站位修正。** 原生接敌会影响实际位置，不能只交给表现层；当前关系模型没有加入位移插值状态。
 - **特殊关系增容。** 大君之触／大君之赐等内容与满阻挡边界仍待实现，见下节。
 

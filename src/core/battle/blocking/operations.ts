@@ -6,7 +6,9 @@ import { get as getTile } from "../../battlefield/map/map.js";
 import {
     hasBlocker,
     resolveCapacity,
+    DEFAULT_GEOMETRY,
     type Blocker,
+    type Layer,
 } from "../../unit/capability/blocking/blocker.js";
 import {
     hasBlockable,
@@ -37,9 +39,9 @@ function isActive(unit: Unit): boolean {
     );
 }
 
-function canSearch(battle: BattleState, unit: Unit & Blocker): boolean {
-    if (!isActive(unit)) {
-        return false;
+function allowsTile(battle: BattleState, unit: Unit & Blocker): boolean {
+    if (unit.blocker.layer === "AIR") {
+        return true;
     }
 
     const position =
@@ -51,6 +53,10 @@ function canSearch(battle: BattleState, unit: Unit & Blocker): boolean {
     return tile?.state.allowsBlocking === true;
 }
 
+function canSearch(battle: BattleState, unit: Unit & Blocker): boolean {
+    return isActive(unit) && allowsTile(battle, unit);
+}
+
 function canRetain(
     battle: BattleState,
     blocker: Unit & Blocker,
@@ -58,9 +64,11 @@ function canRetain(
 ): boolean {
     return (
         blocker.id !== target.id &&
-        canSearch(battle, blocker) &&
+        isActive(blocker) &&
         isActive(target) &&
-        (!hasLayer(target) || target.layer.type === "GROUND") &&
+        allowsTile(battle, blocker) &&
+        hasLayer(target) &&
+        blocker.blocker.layer === target.layer.type &&
         blocker.blocker.rules.every((rule) => rule.allows(battle, blocker, target)) &&
         target.blockable.rules.every((rule) => rule.allows(battle, blocker, target))
     );
@@ -316,6 +324,29 @@ export function releaseCaptured(battle: BattleState, captured: readonly Relation
 
 export function release(battle: BattleState, reference: Ref<Unit>): BattleState {
     return releaseCaptured(battle, capture(battle, reference));
+}
+
+export function setLayer(
+    battle: BattleState,
+    reference: Ref<Unit & Blocker>,
+    layer: Layer,
+): BattleState {
+    const unit = units.get(battle, reference);
+    if (unit === undefined || unit.blocker.layer === layer) {
+        return battle;
+    }
+
+    const captured = unit.blocker.blocked.map((blocked) => ({ blocker: reference, blocked }));
+    const next: Unit & Blocker = {
+        ...unit,
+        blocker: {
+            ...unit.blocker,
+            layer,
+            geometry: unit.definition.blocker.geometry ?? DEFAULT_GEOMETRY[layer],
+        },
+    };
+
+    return update(battle, releaseUpdates(battle, captured, [next]));
 }
 
 function pendingMaintenance(battle: BattleState): Relation | undefined {

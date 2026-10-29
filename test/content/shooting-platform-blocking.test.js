@@ -12,6 +12,7 @@ import { Tile } from "../../dist/core/geometry/coordinate.js";
 import { createDefinition as createDeployable } from "../../dist/core/unit/capability/deployable/index.js";
 import { setHook } from "../../dist/core/unit/capability/blocking/blocker.js";
 import { sides } from "../../dist/core/unit/capability/blocking/index.js";
+import { setLayer } from "../../dist/core/battle/blocking/index.js";
 import { fixture, holder, target, acquire, ownerId, hook } from "../helpers/blocking.js";
 import { getUnit, initialize } from "../helpers/unit.js";
 
@@ -26,7 +27,7 @@ function passengerDefinition(extra = {}) {
     return { hooks: [],
         id: "platform-passenger", occupancy: { slot: "OCCUPANT" }, spatialPresence: {},
         allegiance: { side: "ALLY" }, vitality: { maxHp: 100, defense: 0, resistance: 0 },
-        blocker: { capacity: 1, geometry: { radius: 1 }, rules: [sides("ENEMY")] }, deployable: profile,
+        blocker: { layer: "GROUND", capacity: 1, geometry: { radius: 1 }, rules: [sides("ENEMY")] }, deployable: profile,
         ...extra,
     };
 }
@@ -88,6 +89,30 @@ test("platform entry suppresses its existing passenger synchronously without cha
 
     battle = acquire(battle, 11);
     assert.equal(ownerId(battle), 11, "the platform must not disable the tile for an unrelated blocker");
+});
+
+test("an AIR passenger can block from a platform and landing releases its airborne target", () => {
+    const airborne = passenger(10, first, {
+        blocker: { capacity: 1, layer: "AIR", rules: [sides("ENEMY")] },
+    });
+    let battle = fixture([platform(), airborne, target(20, { layer: "AIR" }), target(21)]);
+    const ruleIds = getUnit(battle, 10).blocker.rules.map(rule => rule.id);
+    assert.equal(ruleIds.length, 2, "the platform keeps its own conditional restriction registered");
+    battle = acquire(battle);
+    assert.equal(ownerId(battle, 20), 10);
+    assert.equal(ownerId(battle, 21), undefined);
+
+    battle = setLayer(battle, { id: 10 }, "GROUND");
+    assert.equal(ownerId(battle, 20), undefined);
+    assert.deepEqual(getUnit(battle, 10).blocker.rules.map(rule => rule.id), ruleIds);
+    battle = acquire(battle);
+    assert.equal(ownerId(battle, 21), undefined, "the same platform restriction prevents ground blocking");
+
+    battle = setLayer(battle, { id: 10 }, "AIR");
+    assert.equal(ownerId(battle, 20), undefined, "takeoff does not acquire before a search");
+    battle = acquire(battle);
+    assert.equal(ownerId(battle, 20), 10);
+    assert.deepEqual(getUnit(battle, 10).blocker.rules.map(rule => rule.id), ruleIds);
 });
 
 for (const entry of ["initial", "script", "manual"]) {

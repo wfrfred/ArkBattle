@@ -27,6 +27,7 @@ import { initialize as initializeRoutedUnit } from "../../dist/core/battle/creat
 import { initialize } from "../helpers/unit.js";
 import * as blockable from "../../dist/core/unit/capability/blocking/blockable.js";
 import { setRule as setBlockerRule } from "../../dist/core/unit/capability/blocking/blocker.js";
+import { sides } from "../../dist/core/unit/capability/blocking/index.js";
 import { build } from "../../dist/core/battlefield/navigation/field.js";
 import * as contribution from "../../dist/core/unit/contribution/contribution.js";
 import * as modifier from "../../dist/core/unit/contribution/attribute.js";
@@ -242,7 +243,7 @@ test('complete battle updates retain or release blocking from the tile blocking 
   const map = createMap(1, 8, tileEntries([true, false].flatMap(meleeBlockable =>
     passableMasks.map(passableMask => coreGround({ meleeBlockable, passableMask })))));
   const blocker = projectionUnit(10, [0, 0], {
-    vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ALLY' }, blocker: { capacity: 1, geometry: { radius: 1 } },
+    vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ALLY' }, blocker: { layer: "GROUND", rules: [], capacity: 1, geometry: { radius: 1 } },
   });
   const enemy = projectionUnit(11, [0.1, 0], {
     vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ENEMY' }, blockable: { volume: 1 },
@@ -293,7 +294,7 @@ test('selective and full field projection derive current occupancy independently
 
 test('complete battle updates preserve relation history and release on current eligibility changes', () => {
   const blocker = projectionUnit(10, [1, 0], {
-    vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ALLY' }, blocker: { capacity: 2, geometry: { radius: 1 } },
+    vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ALLY' }, blocker: { layer: "GROUND", rules: [sides("ENEMY")], capacity: 2, geometry: { radius: 1 } },
   });
   const enemy = projectionUnit(11, [1.1, 0], {
     vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ENEMY' }, blockable: { volume: 1 }, layer: { type: 'GROUND' },

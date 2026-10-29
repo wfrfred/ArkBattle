@@ -69,7 +69,8 @@ export function create(configuration: Configuration): Definition {
                                               ...occupant,
                                               blocker: setRule(occupant.blocker, {
                                                   id: ruleId,
-                                                  allows: () => false,
+                                                  allows: (_battle, blocker) =>
+                                                      blocker.blocker.layer === "AIR",
                                               }),
                                           },
                                       ]),

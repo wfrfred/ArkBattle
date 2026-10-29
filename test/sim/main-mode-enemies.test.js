@@ -45,7 +45,7 @@ function guard(id, position, blockCapacity = 1, restrictions = []) {
   return initialize({ id, position, definition: { hooks: [],
     id: 'test-guard', targetable: { restrictions }, vitality: { maxHp: 1000, defense: 40, resistance: 0 }, allegiance: { side: 'ALLY' }, layer: { type: 'GROUND' },
     hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.2 } },
-    blocker: { capacity: blockCapacity, geometry: { radius: 0.70709997 } },
+    blocker: { layer: "GROUND", rules: [], capacity: blockCapacity, geometry: { radius: 0.70709997 } },
   } });
 }
 

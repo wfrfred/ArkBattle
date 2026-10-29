@@ -152,7 +152,7 @@ export function create(profile: Profile, direction: Direction = "RIGHT"): Defini
         hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.25 } },
         blocker: {
             capacity: profile.attributes.blockCapacity,
-            geometry: { radius: 0.70709997 },
+            layer: "GROUND",
             rules: [sides("ENEMY")],
         },
         action: {

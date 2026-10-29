@@ -160,7 +160,7 @@ test("Unit initialization preserves tick hooks across independent capability com
     } };
     const base = combatUnit(0, { action: true }).definition;
     const definitions = [
-        { ...base, hooks: [tickHook], blocker: { capacity: 1, geometry: { radius: 0.5 } } },
+        { ...base, hooks: [tickHook], blocker: { layer: "GROUND", rules: [], capacity: 1, geometry: { radius: 0.5 } } },
         { spatialPresence: {}, ...base, hooks: [tickHook], locomotion, blockable: { volume: 1 } },
         { id: "scripted", hooks: [tickHook] },
     ];

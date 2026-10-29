@@ -10,7 +10,13 @@ export {
     resolveCapacity,
 } from "./blocker.js";
 
-export type { Definition as BlockerDefinition, State as BlockerState, Blocker } from "./blocker.js";
+export type {
+    Definition as BlockerDefinition,
+    State as BlockerState,
+    Blocker,
+    Layer,
+    Geometry,
+} from "./blocker.js";
 
 export {
     hasBlockable,

@@ -23,28 +23,28 @@ export function fixture(units = [], { rows = 3, columns = 12 } = {}) {
     return battle;
 }
 
-export function holder(id = 10, { position = [2, 1], capacity = 1, radius = 1, side = "ALLY", definition = {}, states = {} } = {}) {
+export function holder(id = 10, { position = [2, 1], capacity = 1, radius = 1, layer = "GROUND", side = "ALLY", definition = {}, states = {} } = {}) {
     return initialize({
         id, position,
         definition: {
             id: `blocking-holder-${id}`,
             ...(side === undefined ? {} : { allegiance: { side } }),
             spatialPresence: {}, vitality: { maxHp: 100, defense: 0, resistance: 0 },
-            blocker: { capacity, geometry: { radius }, rules: [blocker.sides("ENEMY")] },
+            blocker: { layer, capacity, geometry: { radius }, rules: [blocker.sides("ENEMY")] },
             ...definition,
         },
         states,
     });
 }
 
-export function target(id = 20, { position = [2.25, 1], volume = 1, side = "ENEMY", definition = {}, states = {} } = {}) {
+export function target(id = 20, { position = [2.25, 1], volume = 1, layer = "GROUND", side = "ENEMY", definition = {}, states = {} } = {}) {
     return initialize({
         id, position,
         definition: {
             id: `blocking-target-${id}`,
             ...(side === undefined ? {} : { allegiance: { side } }),
             spatialPresence: {}, vitality: { maxHp: 100, defense: 0, resistance: 0 },
-            layer: { type: "GROUND" }, blockable: { volume },
+            layer: { type: layer }, blockable: { volume },
             ...definition,
         },
         states,

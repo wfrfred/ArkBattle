@@ -1,6 +1,6 @@
 # 蒂比：空中阻挡与起飞的边界
 
-研究日期：2026-10-29；项目对照 `a0bc26b`。本轮以蒂比 `char_4191_tippi` 的实际 Prefab 和 Buff 程序核对空中阻挡，不实现蒂比，也不增加 Core 字段或 API。
+研究日期：2026-10-29；原始项目对照 `a0bc26b`。取证以蒂比 `char_4191_tippi` 的实际 Prefab 和 Buff 程序核对空中阻挡；2026-10-30 的通用 Blocking 接入在第 5 节单独更新，不改变原生取证结论，也不实现蒂比内容。
 
 新取证见 [selected-assets.json](../evidence/tippi-air-blocking-20261029/selected-assets.json) 和 [selected-native.json](../evidence/tippi-air-blocking-20261029/selected-native.json)；模式兼容、地块、半径和切换清理复用 [Blocking 原生模式调查](../evidence/blocking-native-20261023/modes/report.txt)。证据是已安装客户端的静态资产与普通原生分支，未执行实战采样或核实活跃 XLua 替换。Wiki 说明单独标注，不能代替客户端指令。
 
@@ -72,23 +72,19 @@ S1／S2 起飞模式 Attack 对象上的 BuffToOwner
 
 当前项目的 Movement 在 Route 推进后检查 `blockable.blocker`：非空则跳过 Locomotion 推进，路线完成离场也受该关系约束。这条判断不依赖 GROUND／AIR。飞行目标取得普通阻挡关系后，已经会停止自主移动；无需新增空中专用关系、禁移动 Rule 或 blocked 状态。被挡住也不意味着要修改目标的 Layer 或寻路模式。
 
-## 5. 当前项目需要修改什么，不需要增加什么
+## 5. 项目接入更新（2026-10-30）
 
-现有二元 Rule、Targetable 限制、Blocker 半径、关系和 Movement 已能承载大部分行为。蒂比的起飞事实应由实际起飞模式 Buff 的取得／失效驱动，不直接绑定 Skill 开始／结束，也不据原生字段复制一个通用 BlockMode 状态。
+原始基线有三项实际限制：canRetain 固定拒绝 AIR 目标、canSearch 无条件要求根格 allowsBlocking、射击台乘员 Rule 恒为 false。新通用接口以 Blocking 自己定义的 Layer = GROUND | AIR 表达能够阻挡的目标层，与宿主自身 Layer 分开，不将原生 BlockMode 命名引入项目。
 
-实际硬限制有三处：
+Blocker Definition 的 layer、rules 必填，geometry 可选；State 保存当前 layer 和实际 geometry。Core 在未显式覆盖时提供 GROUND 半径 0.7071、AIR 半径 0.8944；显式 Definition.geometry 在初始化和切层时都保持覆盖。空地匹配与 AIR 地块豁免由通用 Blocking 解释，阵营和其他特殊资格仍通过双方二元 Rule 判断。射击台 Rule 只禁止当前 GROUND 阻挡，AIR 可通过。
 
-1. `blocking.canRetain` 固定拒绝 AIR 目标，AIR 放行 Rule 也无法越过；没有 Layer 的目标则仍可通过此项条件。
-2. `blocking.canSearch` 无条件要求根格 `allowsBlocking`，没有表达空中阻挡的地块豁免。
-3. 射击台现有乘员 Rule 恒为 false，会一并否决空中阻挡；再添加一个返回 true 的 Rule 无法覆盖已有否决。
+起飞／落地 Blocking 业务通过 blocking.setLayer(battle, ref, layer) 完成。层改变时，新 layer、实际半径和全部旧出向关系的双端解除在第一个 RELEASED Hook 前一起提交；Hook 接续最新 BattleState，不误删嵌套新建的关系，不自动搜索新目标。普通 unit.update 的关系维护不根据字段差异推断完整切换事件，Content 不能直接改 blocker.layer 绕过该操作。关系保持和搜索资格的项目政策详见 [Blocking 设计](../../architecture/blocking.md#关系资格与-rule)。
 
-后续应把这些资格整理为可组合的明确策略。普通地面策略仍须明确选择地面目标和相应地块条件，不能只删除限制而把所有地面干员同时变成空中阻挡者。这不要求现在确定新的公共字段或照搬原生掩码。
+蒂比仍应由实际起飞 Buff 的取得／失效调用相应操作，不直接绑定通用 Skill 开始／结束事件。Targetable 对地规避及表现高度继续独立处理；本轮不实现蒂比，也不修改她自身的空地身份。
 
-内容提交起飞／落地变化时，相关规则、半径和 Targetable 限制应在同一个新 Unit 中提交。蒂比切换时需要结束全部旧关系；如果新 Rule 已使所有旧目标不再合格，现有完整更新维护就能完成这些释放，不必重复调用释放操作。需要独立结束旧关系时已有明确的释放操作可用；不能把“仅释放不合格关系”泛化为所有模式切换的清空协议，也不能靠缩半径冒充释放。现有保持逻辑不因普通半径缩小而释放旧关系。
+这次接入不引入新的 Blocking 状态机、layerChanged Hook、Layer Contribution 或任意模式覆盖协议。浮空区块、特殊目标层豁免、BLOCK_RADIUS_SCALE 运行时修正及 Trap／GiantTrap 特殊几何继续作为未接入内容或证据保留，按实际需求推进。
 
-本轮只记录已证实差异和实际实现缺口，不修改源码，不增加模式状态机或新的回归测试。
-
-## 6. 补核：非巡空者实例与半径归属
+## 6. 补核：非巡空者实例与半径机制
 
 同日针对 `4b59185` 补核，空中阻挡不是巡空者专属，已有两类明确内容：
 
@@ -106,5 +102,3 @@ S1／S2 起飞模式 Attack 对象上的 BuffToOwner
 | 特殊对象覆盖 | Trap getter 读取实例 `_blockRadiusSquare`；GiantTrap 使用自己的固定平方半径并遍历多个原点 | 不能把普通 Character 默认值宣称为所有装置的强制常量。 |
 
 常量地址、倍率字段、方法和旧证据指纹见 [selected-witnesses.json](../evidence/air-blocking-radius-20261029/selected-witnesses.json)。这证明倍率通道存在，没有调查每项内容是否实际修正它，也不根据可写 schema 虚构某个干员的特殊倍率。
-
-按本轮要求的项目边界，**标准地面／空中半径由 Content 提供共享配置或策略，Core 保留有效半径的数据承载与关系结算**。当前 `blocker.geometry.radius` 已能承载结果和特殊覆盖，不需要把 0.8944 写死进 Blocking Core，也不因每个对象都有 radius 槽位就把统一默认值误称为逐单位配置。倍率的表达和公式另按真实需求接入，不在本次调研中提前增加系统。

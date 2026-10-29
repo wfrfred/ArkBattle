@@ -42,7 +42,7 @@ const blocker = (capacity = 3) =>
             id: "capacity-holder",
             allegiance: { side: "ALLY" },
             vitality: { maxHp: 100, defense: 0, resistance: 0 },
-            blocker: { capacity, geometry: { radius: 1 } },
+            blocker: { layer: "GROUND", rules: [], capacity, geometry: { radius: 1 } },
         },
     });
 const enemy = (id, volume = 1) =>
@@ -52,6 +52,7 @@ const enemy = (id, volume = 1) =>
         definition: {
             id: `blocked-${id}`,
             allegiance: { side: "ENEMY" },
+            layer: { type: "GROUND" },
             blockable: { volume },
         },
     });
@@ -78,16 +79,16 @@ const entry = (id, value) => ({ id, value: [value] });
 
 test("blocking initialization accepts plain definitions and validates them through unit initialization", () => {
     const geometry = { radius: 1 };
-    const definition = { hooks: [], id: "both", blocker: { capacity: 3, geometry }, blockable: { volume: 2 } };
+    const definition = { hooks: [], id: "both", blocker: { layer: "GROUND", rules: [], capacity: 3, geometry }, blockable: { volume: 2 } };
     const unit = initialize({ id: 0, position: [0, 0], definition });
     assert.equal(unit.definition, definition);
     assert.equal(unit.blocker.geometry, geometry);
-    assert.deepEqual(unit.blocker, { capacity: [], geometry, rules: [], blocked: [], acquired: [], released: [] });
+    assert.deepEqual(unit.blocker, { layer: "GROUND", capacity: [], geometry, rules: [], blocked: [], acquired: [], released: [] });
     assert.deepEqual(unit.blockable, { volume: [], rules: [], blocker: null, acquired: [], released: [] });
     for (const [capability, invalid] of [
-        ["blocker", { capacity: -1, geometry }],
-        ["blocker", { capacity: 1.5, geometry }],
-        ["blocker", { capacity: 1, geometry: { radius: -1 } }],
+        ["blocker", { layer: "GROUND", rules: [], capacity: -1, geometry }],
+        ["blocker", { layer: "GROUND", rules: [], capacity: 1.5, geometry }],
+        ["blocker", { layer: "GROUND", rules: [], capacity: 1, geometry: { radius: -1 } }],
         ["blockable", { volume: 0 }],
         ["blockable", { volume: 1.5 }],
     ]) {
@@ -98,7 +99,7 @@ test("blocking initialization accepts plain definitions and validates them throu
 });
 
 test("blocking capacity: immutable updates retain sampled contributions and resolve ties to even after clamping", () => {
-    const definition = { capacity: 3, geometry: { radius: 1 } };
+    const definition = { layer: "GROUND", rules: [], capacity: 3, geometry: { radius: 1 } };
     const state = initializeBlockerState(fixtureBattle(0), definition).value;
     assert.equal(definition.capacity, 3);
     assert.deepEqual(state.capacity, []);

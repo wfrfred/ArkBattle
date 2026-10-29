@@ -183,7 +183,7 @@ const catalogDefinition = () => Object.freeze({
    })),
   layer: Object.freeze({ type: 'GROUND' }),
   hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.25 } },
-  blocker: { capacity: 2, geometry: { radius: 0.7 } },
+  blocker: { layer: "GROUND", rules: [], capacity: 2, geometry: { radius: 0.7 } },
   blockable: Object.freeze({ volume: 1 }),
 });
 
@@ -212,7 +212,7 @@ test('core unit initialization pairs every declared capability with its initiali
   assert.equal(unit.occupancy.tile, null);
   assert.deepEqual(unit.targetable.restrictions, []);
 
-  assert.deepEqual(unit.blocker, { capacity: [], geometry: { radius: 0.7 }, rules: [], blocked: [], acquired: [], released: [] });
+  assert.deepEqual(unit.blocker, { layer: "GROUND", capacity: [], geometry: { radius: 0.7 }, rules: [], blocked: [], acquired: [], released: [] });
   assert.equal(resolveCapacity(unit.definition.blocker, unit.blocker), 2);
   assert.deepEqual(unit.blockable, { volume: [], rules: [], blocker: null, acquired: [], released: [] });
 
@@ -489,7 +489,7 @@ test('core domain rules compose independently and preserve earlier unit states',
 test('core blocking uses current state radius and includes center-distance equality', () => {
   const map = createMap(1, 3, tileEntries(Array.from({ length: 3 }, () => deploymentTile())));
   const blocker = initialize({ id: 1, definition: Object.freeze({ hooks: [], id: 'radius_blocker',
-    allegiance: { side: 'ALLY' }, blocker: { capacity: 1, geometry: { radius: 0.5 } },
+    allegiance: { side: 'ALLY' }, blocker: { layer: "GROUND", rules: [], capacity: 1, geometry: { radius: 0.5 } },
   }), position: [0, 0] });
   const blocked = initialize({ id: 2, definition: Object.freeze({ hooks: [], id: 'radius_enemy',
     allegiance: { side: 'ENEMY' }, blockable: { volume: 1 }, layer: { type: 'GROUND' },

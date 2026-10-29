@@ -213,7 +213,7 @@ function operatorDefinition(value: unknown, direction: Direction) {
 
         blocker: {
             capacity: numberField(stats.blockCnt, "block capacity"),
-            geometry: { radius: 0.70709997 },
+            layer: "GROUND",
             rules: [sides("ENEMY")],
         },
         attack,

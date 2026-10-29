@@ -36,7 +36,7 @@ test('deployable state is initialized before deployment associates a Card', () =
 test('Unit initialization preserves deployable alongside independent capabilities', () => {
   const operator = {
     ...actionUnit(0, { action: true }).definition,
-    blocker: { capacity: 0, geometry: { radius: 0.1 } },
+    blocker: { layer: "GROUND", rules: [], capacity: 0, geometry: { radius: 0.1 } },
     deployable: definition.deployable,
   };
   const created = initialize({ id: 0, position: [0, 0], definition: operator });

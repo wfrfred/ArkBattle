@@ -156,7 +156,7 @@ test('Field unit updates preserve spatial queries without acquiring or owning bl
   const h = projectionHarness();
   const blocker = unit(1, [1, 0], {
     vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ALLY' },
-    blocker: { capacity: 1, geometry: { radius: 1 } },
+    blocker: { layer: "GROUND", rules: [], capacity: 1, geometry: { radius: 1 } },
   }, { spatialPresence: { present: true } });
   const target = unit(2, [2, 0], {
     vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ENEMY' },

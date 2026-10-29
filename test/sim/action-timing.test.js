@@ -225,7 +225,7 @@ for (const { checkpoint, operation } of [
 ]) {
     test(`attack stops when ${checkpoint} writeback triggers a Blocking Hook to ${operation} its source or execution`, () => {
         const attack = actionDefinition(7);
-        const source = unit(0, { action: attack, blocker: { capacity: 1, geometry: { radius: 2 } } });
+        const source = unit(0, { action: attack, blocker: { layer: "GROUND", rules: [], capacity: 1, geometry: { radius: 2 } } });
         const target = unit(1, { blockable: { volume: 1 } });
         const reference = unitRef(source);
         const callbacks = [];

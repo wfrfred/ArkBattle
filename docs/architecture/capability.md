@@ -131,13 +131,17 @@ Battlefield 的通用空间查询领域使用 battlefield/spatial/ 命名，与�
 
 Blocker 的 capacity 表示可用阻挡数，Blockable 的 volume 表示占用阻挡数；重量等级来自 massLevel，与阻挡占用分开。Data 的敌人 Profile 对应字段为 blockVolume，Capability 内不重复领域前缀。
 
-两端 Definition 保存基础数值，State 保存按来源登记的静态 Contribution 与 Rule。Blocker 另保存当前 geometry。capacity／volume 由 resolveCapacity／resolveVolume 求值。capacity 使用 attribute.Modifier 的四段属性公式及 ties-to-even 整数化；volume 使用 Contribution<number>，筛选互斥胜者后累加整数追加量，不复用属性公式。项目约定 capacity 下限为 0，volume 下限为 1，volume 的基础值要求正整数；贡献将占用数降到 0 或负值时仍占用 1，不借零占用表达不可被阻挡。
+两端 Definition 保存基础数值，State 保存按来源登记的静态 Contribution 与 Rule。Blocker 自己定义 Layer = GROUND | AIR，表示能够阻挡的目标层，不依赖宿主自身的 Layer Capability。Blocker Definition 的 layer、rules 必填；无规则时明确写 []。geometry 可选，省略时 Core 为 GROUND 提供半径 0.7071、为 AIR 提供 0.8944；State 保存当前 layer 与实际 geometry。初始化和切层均采用 definition.geometry ?? DEFAULT_GEOMETRY[layer]，显式 Geometry 覆盖在切层后仍保持。普通 Content 不再重复配置标准半径，内部默认 Geometry 不作为公共配置导出。
+
+capacity／volume 由 resolveCapacity／resolveVolume 求值。capacity 使用 attribute.Modifier 的四段属性公式及 ties-to-even 整数化；volume 使用 Contribution<number>，筛选互斥胜者后累加整数追加量，不复用属性公式。项目约定 capacity 下限为 0，volume 下限为 1，volume 的基础值要求正整数；贡献将占用数降到 0 或负值时仍占用 1，不借零占用表达不可被阻挡。
 
 公共 Relation、Context、Hook、Key 归 unit/capability/blocking/contract.ts，与能力类型、局部登记接口一起由 capability/blocking/index.ts 导出。battle/blocking/index.ts 仅提供关系查询与完整操作；派发实现归 battle/blocking/hook.ts，内部 Change 留在 operations.ts，不扩为公共变更协议。
 
 两端共享 unit/capability/blocking/rule.ts 的 Rule，经 capability/blocking/index.ts 导出。唯一签名为 `allows(battle, blocker, blockable)`，参数分别是 BattleState、完整的 Unit & Blocker 和 Unit & Blockable；规则可以查询双方其他能力，不执行状态写入。两端 rules 只表达登记所有者，Blocking 的 canRetain 按相同参数顺序检查双方规则，不提供一元资格查询或各端同义 Rule 类型。Capability 不维护第二个 enabled 开关，Battlefield 也不保存从二元资格投影出的单体 enabled；多个限制按独立 ID 登记与撤销。完整签名及取得、保留与容量的边界见 [关系资格与 Rule](blocking.md#关系资格与-rule)。
 
-阻挡事实读取当前贡献与双方规则。canSearch 只筛选不依赖目标的基础资格，canRetain 统一处理新旧关系的双方资格与 Rule；距离和无归属要求只在取得时检查，容量溢出由独立裁撤处理。统一更新保留 Capability 的纯 State 修改方式和 unit.update() 的完整更新保证：完整提交同步完成必要的旧关系解除、容量裁撤、失效清理及 Hook，普通新关系搜索每 Tick 在 Movement 后的固定阶段统一执行，不保存各阻挡者的搜索周期；不为 Contribution 增加特殊完整更新 API。Blocker／Blockable 不提供 createDefinition，初始化负责基础数值与半径的不变量检查，内容负责提供几何值。职责与回调契约见[Blocking 政策](blocking.md#已确定的职责与调度政策)。
+阻挡事实读取当前 layer、geometry、贡献与双方规则。canSearch 筛选不依赖目标的基础资格，GROUND 搜索要求根格 allowsBlocking，AIR 搜索跳过该项；canRetain 按保持关系的资格判断双方和 Rule，不直接继承全部搜索条件。项目继续要求 GROUND 丢失根格许可时同步解除旧关系，AIR 豁免；原生直接证据仅证明搜索入口的检查。正常目标必须具有 Unit Layer，并与 blocker.layer 匹配；无 Layer 的 Blockable 不隐式作为 GROUND 参与关系，但不为 Blockable 的类型和构造强制增加能力依赖。距离和无归属要求只在取得时检查，容量溢出由独立裁撤处理。统一更新保留 Capability 的纯 State 修改方式和 unit.update() 的完整更新保证：完整提交同步完成必要的旧关系解除、容量裁撤、失效清理及 Hook，普通新关系搜索每 Tick 在 Movement 后的固定阶段统一执行，不保存各阻挡者的搜索周期；不为 Contribution 增加特殊完整更新 API。Blocker／Blockable 不提供 createDefinition，初始化负责基础数值与显式半径的不变量检查。
+
+切换阻挡层使用完整操作 blocking.setLayer(battle, Ref<Unit & Blocker>, layer)，不是 Content 修改字段后自行提交。实例缺失或层未变化时返回原状态，不额外拒绝存储中的 LEAVING 宿主；变化时按 Definition 选择新实际半径，捕获全部旧出向关系，纯准备新 Blocker State 和关系双端解除值，通过 unit.update 一次发布，再同步通知 RELEASED。首个 Hook 已能读取新层、半径和完整解除后的关系，不自动搜索新目标；嵌套操作产生的新关系不被旧候选覆盖。该切换不修改单位自身 Layer，不新增 layerChanged Hook 或 Layer Contribution。职责与回调契约见[Blocking 政策](blocking.md#已确定的职责与调度政策)。
 
 关系归属与关联由两端 State 保存。Blockable 的 blocker 保存 Ref<Unit & Blocker> 或 null，先确定排他归属；Blocker 的 blocked 保存按建立顺序维护的 Ref<Unit & Blockable>[]。unit.update 根据归属变化增量补齐对侧关联与索引，补齐阶段不执行关系业务 Hook，通知仍按 Blocker 先、Blockable 后派发。归属是否变化按 Unit ID 比较，同一次关系的身份由正向列表中保留的 Ref 条目对象承担；重新建立创建新条目，同归属普通更新保留条目。不支持直接 A → B 换归属，使用完整 Release 和新的 Acquire。归属通知与后续容量维护的相对顺序见 [Blocking 更新顺序](blocking.md#通知与后续维护的顺序)。
 
