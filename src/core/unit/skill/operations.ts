@@ -384,7 +384,7 @@ export function enter(battle: BattleState, host: Ref<Unit & SkillCapability>): B
 
     unit = units.get(battle, host);
 
-    if (unit !== undefined && definition.onEnter !== undefined) {
+    if (unit?.lifecycle === "PRESENT" && definition.onEnter !== undefined) {
         battle = definition.onEnter(battle, host, unit.skill);
     }
 
