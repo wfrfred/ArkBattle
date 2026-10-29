@@ -7,6 +7,7 @@ import * as blocking from "../../dist/core/battle/blocking/operations.js";
 import * as query from "../../dist/core/battle/blocking/query.js";
 import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
 import * as blockable from "../../dist/core/unit/capability/blocking/blockable.js";
+import { sides } from "../../dist/core/unit/capability/blocking/index.js";
 import { fixture, holder, target, acquire, blockedIds, ownerId, capacity } from "../helpers/blocking.js";
 
 test("Field and Unit updates do not acquire blocking before an explicit search", () => {
@@ -37,23 +38,91 @@ test("advance searches blockers in registration order; each search sorts distanc
     assert.deepEqual(blockedIds(battle, 5), [23]);
 });
 
-test("blocking checks hostile sides and requires allegiance on both ends", () => {
-    for (const [left, right, expected] of [
-        ["ALLY", "NEUTRAL", false], ["ENEMY", "NEUTRAL", true],
-        ["NEUTRAL", "ENEMY", true], [null, "ENEMY", false], ["ALLY", null, false],
-    ]) {
-        const without = (unit, side) => {
-            if (side !== null) return unit;
-            const { allegiance: ignoredDefinition, ...definition } = unit.definition;
-            const { allegiance: ignoredState, ...remaining } = unit;
-            return { ...remaining, definition };
-        };
+test("without configured Rules, blocking does not depend on either endpoint's allegiance", () => {
+    for (const [left, right] of [["ALLY", "ALLY"], ["ALLY", "NEUTRAL"], [null, null]]) {
+        const owner = holder(10, { side: left ?? "ALLY", definition: {
+            blocker: { capacity: 1, geometry: { radius: 1 } },
+        } });
+        const candidate = target(20, { side: right ?? "ENEMY" });
         const battle = acquire(fixture([
-            without(holder(10, { side: left ?? "ALLY" }), left),
-            without(target(20, { side: right ?? "ENEMY" }), right),
+            left === null ? withoutAllegiance(owner) : owner,
+            right === null ? withoutAllegiance(candidate) : candidate,
+        ]));
+        assert.equal(ownerId(battle), 10, `${left} -> ${right}`);
+    }
+});
+
+function withoutAllegiance(unit) {
+    const { allegiance: ignoredDefinition, ...definition } = unit.definition;
+    const { allegiance: ignoredState, ...remaining } = unit;
+    return { ...remaining, definition };
+}
+
+test("a unit with both capabilities cannot block itself without a side restriction", () => {
+    const owner = holder(10, { definition: {
+        blocker: { capacity: 2, geometry: { radius: 1 } },
+        blockable: { volume: 1 },
+    } });
+    const battle = acquire(fixture([owner, target()]));
+    assert.deepEqual(blockedIds(battle), [20]);
+    assert.equal(ownerId(battle, 10), undefined);
+});
+
+test("the standard ENEMY policy selects target sides without requiring blocker allegiance", () => {
+    for (const [left, right, expected] of [
+        ["ALLY", "ENEMY", true], ["ALLY", "ALLY", false], ["ALLY", "NEUTRAL", false],
+        ["ALLY", null, false], [null, "ENEMY", true], ["ENEMY", "ENEMY", true],
+    ]) {
+        const owner = holder(10, { side: left ?? "ALLY" });
+        const candidate = target(20, { side: right ?? "ENEMY" });
+        const battle = acquire(fixture([
+            left === null ? withoutAllegiance(owner) : owner,
+            right === null ? withoutAllegiance(candidate) : candidate,
         ]));
         assert.equal(ownerId(battle), expected ? 10 : undefined, `${left} -> ${right}`);
     }
+});
+
+test("explicit ALLY and NEUTRAL policies allow those targets instead of ENEMY targets", () => {
+    for (const side of ["ALLY", "NEUTRAL"]) {
+        const battle = acquire(fixture([
+            holder(10, { definition: {
+                blocker: { capacity: 2, geometry: { radius: 1 }, rules: [sides(side)] },
+            } }),
+            target(20, { side }), target(21),
+        ]));
+        assert.deepEqual(blockedIds(battle), [20], side);
+        assert.equal(ownerId(battle, 21), undefined);
+    }
+});
+
+test("one side policy can admit both ALLY and NEUTRAL targets", () => {
+    const battle = acquire(fixture([
+        holder(10, { definition: {
+            blocker: { capacity: 3, geometry: { radius: 1 }, rules: [sides("ALLY", "NEUTRAL")] },
+        } }),
+        target(20, { side: "ALLY" }), target(21, { side: "NEUTRAL" }), target(22),
+    ]));
+    assert.deepEqual(blockedIds(battle), [20, 21]);
+});
+
+test("an owner side change preserves blocking while a target side change releases it synchronously", () => {
+    let battle = acquire(fixture([holder(), target()]));
+    const original = battle;
+    const owner = getUnit(battle, 10);
+    battle = replaceUnit(battle, { ...owner, allegiance: { side: "ENEMY" } });
+    assert.equal(ownerId(battle), 10);
+
+    const candidate = getUnit(battle, 20);
+    battle = replaceUnit(battle, { ...candidate, allegiance: { side: "NEUTRAL" } });
+    assert.equal(ownerId(battle), undefined);
+    assert.deepEqual(blockedIds(battle), []);
+
+    const current = getUnit(battle, 10);
+    battle = replaceUnit(battle, { ...current, blocker: blocker.setRule(current.blocker, sides("NEUTRAL")) });
+    assert.equal(ownerId(battle), undefined);
+    assert.equal(ownerId(acquire(battle)), 10);
+    assert.equal(ownerId(original), 10);
 });
 
 test("new blockers and restored eligibility wait for search; existing relations retain priority", () => {
@@ -80,7 +149,7 @@ for (const [name, transform] of [
     ["HP reaches zero", unit => ({ ...unit, vitality: { ...unit.vitality, hp: 0 } })],
     ["LEAVING begins", unit => ({ ...unit, lifecycle: "LEAVING" })],
     ["spatial presence disappears", unit => ({ ...unit, spatialPresence: { present: false } })],
-    ["allegiance ceases to be hostile", unit => ({ ...unit, allegiance: { side: "ENEMY" } })],
+    ["side policy stops allowing the target", unit => ({ ...unit, blocker: blocker.setRule(unit.blocker, sides("ALLY")) })],
 ]) {
     test(`updateUnit immediately releases invalid relations when blocker ${name}`, () => {
         let battle = acquire(fixture([holder(), holder(11, { position: [3, 1] }), target()]));

@@ -3,7 +3,6 @@ import { update } from "../unit.js";
 import type { Ref } from "../../common/ref.js";
 import { World } from "../../geometry/coordinate.js";
 import { get as getTile } from "../../battlefield/map/map.js";
-import { areHostile, hasAllegiance } from "../../unit/capability/allegiance/capability.js";
 import {
     hasBlocker,
     resolveCapacity,
@@ -39,7 +38,7 @@ function isActive(unit: Unit): boolean {
 }
 
 function canSearch(battle: BattleState, unit: Unit & Blocker): boolean {
-    if (!isActive(unit) || !hasAllegiance(unit)) {
+    if (!isActive(unit)) {
         return false;
     }
 
@@ -58,12 +57,10 @@ function canRetain(
     target: Unit & Blockable,
 ): boolean {
     return (
+        blocker.id !== target.id &&
         canSearch(battle, blocker) &&
-        hasAllegiance(blocker) &&
         isActive(target) &&
         (!hasLayer(target) || target.layer.type === "GROUND") &&
-        hasAllegiance(target) &&
-        areHostile(blocker, target) &&
         blocker.blocker.rules.every((rule) => rule.allows(battle, blocker, target)) &&
         target.blockable.rules.every((rule) => rule.allows(battle, blocker, target))
     );

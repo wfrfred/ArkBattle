@@ -19,6 +19,7 @@ import {
 } from "../../../core/unit/skill/index.js";
 
 import { createDefinition as createDeployableDefinition } from "../../../core/unit/capability/deployable/index.js";
+import { sides } from "../../../core/unit/capability/blocking/index.js";
 import {
     hasOffense,
     setAttackContribution,
@@ -152,6 +153,7 @@ export function create(profile: Profile, direction: Direction = "RIGHT"): Defini
         blocker: {
             capacity: profile.attributes.blockCapacity,
             geometry: { radius: 0.70709997 },
+            rules: [sides("ENEMY")],
         },
         action: {
             initialize: (battle) => createActions(battle, initializeAttack),

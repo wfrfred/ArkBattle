@@ -18,7 +18,7 @@ import {
     type Definition as UnitDefinition,
 } from "../../../core/unit/index.js";
 import { blocked } from "../../../core/battle/blocking/index.js";
-import { hasBlocker } from "../../../core/unit/capability/blocking/index.js";
+import { hasBlocker, sides } from "../../../core/unit/capability/blocking/index.js";
 import type { Profile } from "../../../data/arknights/operator.js";
 import { secondsToTicks } from "../../../data/arknights/tick.js";
 import {
@@ -321,6 +321,7 @@ export function create(
         blocker: {
             capacity: profile.attributes.blockCapacity,
             geometry: { radius: 0.70709997 },
+            rules: [sides("ENEMY")],
         },
         action: {
             initialize: (battle) => createActions(battle, initializeNormalAttack, initializeAction),

@@ -79,12 +79,32 @@ export interface Rule {
 
 Rule 是针对当前双方的纯查询，可以读取完整 Unit 的其他能力及 BattleState，不执行状态写入。`blocker.rules` 与 `blockable.rules` 只表示规则的登记所有者；两边都按相同参数顺序调用，不把 Blockable 侧的参数反转，也不另定义各自的 Rule 类型。多个限制按独立 ID 登记与撤销。
 
+Blocking 结算不要求双方具有 Allegiance，也不内置 `areHostile` 条件。原生的阵营资格是阻挡者允许哪些目标阵营，普通 Character 允许 ENEMY 是标准策略，不是关系本身的公理。Capability 入口提供可选的标准 Rule：
+
+```typescript
+export function sides(...sides: readonly Side[]): Rule;
+```
+
+它以 `blocking/sides` 为 ID，仅检查目标当前具有 Allegiance 且其 `allegiance.side` 在指定集合内，不要求阻挡者具有 Allegiance。多个阵营可在同一规则内声明，例如 `sides("ALLY", "NEUTRAL")`。`setBlockerRule(state, sides(...))` 替换现有阵营策略；仍由完整 Unit 更新维护旧关系。未选择该规则时，没有隐含的阵营限制。
+
+Blocker Definition 的可选 `rules` 在初始化时进入当前 State，之后只读取当前 `blocker.rules`。普通干员和 Legacy 干员适配显式声明：
+
+```typescript
+blocker: {
+    capacity,
+    geometry: { radius: 0.70709997 },
+    rules: [sides("ENEMY")],
+}
+```
+
+Content 也可直接提供同一二元 Rule 类型的其他策略，不增加位掩码、另一套授权协议或强制 Capability 组合。
+
 Blocking 将资格与其他取得条件分开处理：
 
 | 阶段 | 检查内容 |
 | --- | --- |
-| `canSearch` | 不依赖具体目标的基础资格，包括阻挡者在场、存活、空间存在、阵营能力及当前根格的阻挡许可；不提前求值二元 Rule。 |
-| `canRetain` | 双方当前基础资格、目标空地身份和敌对关系，以及两端所有 `Rule.allows(battle, blocker, blockable)`；新取得和旧关系维护共用这一判断。 |
+| `canSearch` | 不依赖具体目标的基础资格，包括阻挡者在场、存活、空间存在及当前根格的阻挡许可；不提前求值二元 Rule。 |
+| `canRetain` | 双方是不同实例、当前基础资格、目标空地身份，以及两端所有 `Rule.allows(battle, blocker, blockable)`；阵营策略由显式 Rule 决定，新取得和旧关系维护共用这一判断。 |
 | 新关系取得 | 在关系资格之外，确认目标尚无归属、双方在接敌距离内，且当前占用加目标 volume 不超过 capacity。 |
 | 容量裁撤 | 独立比较当前总占用与容量，超出时从既有有序关联末尾逐项解除；每项通知后接续最新状态。 |
 
@@ -242,9 +262,26 @@ Blocking 只选一个当前根格：有非空 `occupancy.tile` 时使用登记�
 
 射击台另有内容规则。本机 `trap_1106_achplat` 的 `trap_1106_achplat_passive` 在 `ON_OWNER_OVERLAPPED` 向乘员创建 `highland_common[block]`；后者对 WALK 阻挡模式施加带 `BLOCK_FREE` 的派生 Buff，并随阻挡模式变化维护。`Tile.RegisterCharacter`（70726，`0x1808c1eb0`）通知 `BuffContainer.OnOwnerOverlapped`（65410，`0x1806764e0`），`SearchBlockee` 再通过 `Entity.isBlockFree`（66511，`0x180705590`）拒绝接敌。这证明平台禁阻挡来自具体内容，不是所有高地的通用规则。当前项目只覆盖地面关系，射击台 Content 通过 Occupancy 的 SUPPORT occupantAdded Hook 在当前乘员的 blocker.rules 登记平台自己的 Rule，禁止其与任何目标建立或保留阻挡；occupantRemoved Hook 同步移除该平台规则，不改变地块 `allowsBlocking`。尚未复刻按 WALK／空中阻挡模式切换的完整 Buff 行为。
 
+## 阻挡模式的表达边界
+
+[原生模式调查](../research/evidence/blocking-native-20261023/modes/report.txt) 已确认阻挡者的 `blockMode` 与目标的 `changeableMotionMode` 需要匹配，`ignoreBlockMode` 可豁免；`pathMotionMode` 只负责寻路，`BlockFree` 是独立的禁挡状态。当前各事实的归属如下：
+
+| 原生事实 | 当前表达能力 |
+| --- | --- |
+| 目标当前运动身份 `changeableMotionMode` | 现有 `Layer.state.type` 的 GROUND／AIR 可表达目标当前空地身份，不需另存一份 Blockable motion。 |
+| 寻路模式 `pathMotionMode` | Route 的 Progress 已独立保存，并有 `setPathMotionMode`；不得用它代替阻挡资格。Locomotion 消费此模式处理运动，但不保存第二份身份。 |
+| 阻挡者 `blockMode` | 表示允许阻挡的目标运动模式，是关系资格，不是“被阻挡后停止移动”。不能从阻挡者自身 Layer 推导，但可以用二元 Rule 按目标 Layer 表达策略，不因原生存在该字段就要求新增共享状态。 |
+| `BlockFree` 等禁挡状态 | 现有双端二元 Rule 可表达，不需要第三个模式或新的 enabled 字段。 |
+
+“被阻挡后停止自主移动”已经由 Movement 根据 `blockable.blocker !== null` 跳过 Locomotion 推进实现，不安装另一条禁移动 Rule，也不新增 blocked 状态或 BlockMode。
+
+当前接入的阻挡者均使用地面阻挡，`canRetain` 的目标 GROUND 限制只是该支持范围，不是完整模式匹配。当前也没有随原生 FLY 阻挡实现地块资格豁免、独立半径、忽略模式或模式切换时清除旧关系；射击台现有规则只覆盖已接入的地面阻挡者。
+
+这些是尚未覆盖的行为，不直接证明缺少某个共享字段。本轮不新增模式类型或状态；以后接入空中阻挡或实际模式切换时，先用现有 Layer、Rule 和内容状态表达资格，再落实相应地块、半径及关系维护语义。只有实际多处消费同一个独立事实时，再决定共享状态的归属；不要复制三个原生字段，也不要把禁挡写成 NONE 模式。
+
 ## 未完成的原生机制
 
-- **阻挡模式与完整资格。** 当前地面阻挡消费当前根格的 `Tile.state.allowsBlocking`，并保留阵营及 Rule 资格。地图适配按 `tile_blockable ?? (初始高度为LOWLAND)` 生成初值，不从可通行性或可部署性推断。独立空中阻挡及完整特殊资格组合尚未覆盖。
+- **阻挡模式与完整资格。** 当前地面阻挡消费当前根格的 `Tile.state.allowsBlocking`，阵营及特殊资格由显式 Rule 表达。地图适配按 `tile_blockable ?? (初始高度为LOWLAND)` 生成初值，不从可通行性或可部署性推断。独立空中阻挡及完整特殊资格组合尚未覆盖，具体表达边界见上节。
 - **阻挡站位修正。** 原生接敌会影响实际位置，不能只交给表现层；当前关系模型没有加入位移插值状态。
 - **特殊关系增容。** 大君之触／大君之赐等内容与满阻挡边界仍待实现，见下节。
 

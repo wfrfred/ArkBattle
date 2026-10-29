@@ -18,6 +18,7 @@ import { fromTiles } from "../core/geometry/range.js";
 import type { Input as RouteInput } from "../core/battle/creation/route.js";
 import { TICKS_PER_SECOND } from "../core/tick.js";
 import type { Definitions as CapabilityDefinitions } from "../core/unit/capability/catalog.js";
+import { sides } from "../core/unit/capability/blocking/index.js";
 import type { Definition as UnitDefinition } from "../core/unit/index.js";
 
 interface LegacyCombatContent {
@@ -213,6 +214,7 @@ function operatorDefinition(value: unknown, direction: Direction) {
         blocker: {
             capacity: numberField(stats.blockCnt, "block capacity"),
             geometry: { radius: 0.70709997 },
+            rules: [sides("ENEMY")],
         },
         attack,
         action: {

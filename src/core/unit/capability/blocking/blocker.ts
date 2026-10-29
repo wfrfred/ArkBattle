@@ -12,6 +12,7 @@ import type { Rule } from "./rule.js";
 export interface Definition {
     readonly capacity: number;
     readonly geometry: { readonly radius: number };
+    readonly rules?: readonly Rule[];
 }
 
 export interface State {
@@ -44,7 +45,7 @@ export function initialize(battle: BattleState, definition: Definition): Result<
             blocked: [],
             capacity: [],
             geometry: definition.geometry,
-            rules: [],
+            rules: definition.rules ?? [],
             acquired: [],
             released: [],
         },

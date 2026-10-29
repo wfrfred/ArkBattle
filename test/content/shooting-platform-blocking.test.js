@@ -11,6 +11,7 @@ import { at as occupancyAt } from "../../dist/core/battlefield/occupancy.js";
 import { Tile } from "../../dist/core/geometry/coordinate.js";
 import { createDefinition as createDeployable } from "../../dist/core/unit/capability/deployable/index.js";
 import { setHook } from "../../dist/core/unit/capability/blocking/blocker.js";
+import { sides } from "../../dist/core/unit/capability/blocking/index.js";
 import { fixture, holder, target, acquire, ownerId, hook } from "../helpers/blocking.js";
 import { getUnit, initialize } from "../helpers/unit.js";
 
@@ -25,7 +26,7 @@ function passengerDefinition(extra = {}) {
     return { hooks: [],
         id: "platform-passenger", occupancy: { slot: "OCCUPANT" }, spatialPresence: {},
         allegiance: { side: "ALLY" }, vitality: { maxHp: 100, defense: 0, resistance: 0 },
-        blocker: { capacity: 1, geometry: { radius: 1 } }, deployable: profile,
+        blocker: { capacity: 1, geometry: { radius: 1 }, rules: [sides("ENEMY")] }, deployable: profile,
         ...extra,
     };
 }
@@ -50,13 +51,14 @@ function platform(id = 30, tile = first) {
 
 function assertSuppressed(battle, id) {
     const unit = getUnit(battle, id);
-    assert.equal(unit.blocker.rules.length, 1);
+    assert.equal(unit.blocker.rules.length, 2);
+    assert.equal(unit.blocker.rules[0].id, "blocking/sides");
     assert.deepEqual(unit.blocker.blocked, []);
 }
 
 function assertEligible(battle, id) {
     const unit = getUnit(battle, id);
-    assert.deepEqual(unit.blocker.rules, []);
+    assert.deepEqual(unit.blocker.rules.map(rule => rule.id), ["blocking/sides"]);
 }
 
 function move(unit, tile) {
@@ -82,7 +84,7 @@ test("platform entry suppresses its existing passenger synchronously without cha
     assert.equal(getTile(battle.battlefield.map, first).state.allowsBlocking, originalTile.state.allowsBlocking);
     assert.equal(getTile(battle.battlefield.map, second).state.allowsBlocking, true);
     assert.equal(ownerId(before), 10);
-    assert.deepEqual(getUnit(before, 10).blocker.rules, []);
+    assertEligible(before, 10);
 
     battle = acquire(battle, 11);
     assert.equal(ownerId(battle), 11, "the platform must not disable the tile for an unrelated blocker");

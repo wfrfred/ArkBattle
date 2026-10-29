@@ -30,6 +30,6 @@ export type {
     Blockable,
 } from "./blockable.js";
 
-export type { Rule } from "./rule.js";
+export { sides, type Rule } from "./rule.js";
 
 export type { Relation, Context, Hook, Key } from "./contract.js";
