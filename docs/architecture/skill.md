@@ -16,7 +16,7 @@ Skill 负责 SP、发动、持续预算、主动操作和完整终止。Action �
 | `unit/capability/skill/capability.ts` | 初始化工厂 Definition、Skill Capability、公共 State、结构守卫与局部登记 |
 | `unit/capability/skill/rule.ts`、`hook.ts` | 能力 Rule、Hook 类型与事件契约 |
 
-领域 index 提供 create、Skill／Activation、ref／activationRef、getSkill／getActivation、字段写回及 SP／Ammo／激活业务，不转发能力守卫、Rule／Hook 与 Ammo 贡献登记。Capability index 提供对应能力 API。内部 getCurrent 在受信边界取得已擦除参数的完整聚合，不解释私有 state；不公开内部写回，不使用泛型 reader。
+领域 index 提供 create、Skill／Activation、ref／activationRef、getSkill／getActivation、字段写回及 SP／Ammo／激活业务，不转发能力守卫、Rule／Hook 与 Ammo 贡献登记。Capability index 提供对应能力 API。Core 已取得当前宿主时直接读取 unit.skill，不解释私有 state；不公开内部写回，不使用泛型 reader。
 
 SP 的 setContribution／removeContribution 仅登记 recoverySpeed／recoveryMultiplier，经领域入口以 setSpContribution／removeSpContribution 导出；它们与 SP State／Input 保持同一模块，不增加 Capability 转发函数。容量、门槛、支付和 TIME 时长没有通用 Contribution 注册表。
 

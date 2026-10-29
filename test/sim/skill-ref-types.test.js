@@ -21,7 +21,6 @@ import { type Definition } from ${source("unit/skill/definition")};
 import { initialize as initializeSkill, hasSkill, type Skill as SkillCapability, type State } from ${source("unit/capability/skill/capability")};
 import { setHook, type ActivationStarted, type ActivationEnded } from ${source("unit/capability/skill/index")};
 import { create, ref, activationRef, getSkill, getActivation, activate, cancel, setState, setActivationState, type Skill, type Activation, lifetime as skillLife } from ${source("unit/skill/index")};
-import { getCurrent } from ${source("unit/skill/query")};
 import { scope, getRef } from ${source("lifetime/index")};
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
 type Assert<T extends true> = T;
@@ -117,11 +116,9 @@ const persistent = ref(units.ref(initialized), definition);
 type PersistentRef = Assert<Equal<typeof persistent, Ref<Skill<Persistent, Active>>>>;
 const knownProgram = getSkill(battle, persistent);
 const knownCount: number | undefined = knownProgram?.state.count;
-const opaque = getCurrent(battle, units.ref(initialized));
-// @ts-expect-error the internal current read cannot recover chosen private fields.
+const opaque = units.get(battle, sourceRef)?.skill;
+// @ts-expect-error reading a Unit's skill cannot recover chosen private fields.
 opaque?.state.count;
-// @ts-expect-error getCurrent does not accept invented private generics.
-getCurrent<Persistent, Active>(battle, units.ref(initialized));
 if (opaque !== undefined) opaque.definition.onTick?.(battle, sourceRef, opaque);
 setState(battle, persistent, { count: 1 });
 // @ts-expect-error the result value cannot widen the Ref's proven persistent type.

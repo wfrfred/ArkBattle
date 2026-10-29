@@ -243,7 +243,7 @@ Offense、Action、Locomotion、Vitality、Elemental 的公开属性查询从最
 
 Tactical 的导出函数、Definition 回调与容器公共方法遵循五类约定。Hook 的固定事件 Context、MovementContext 业务输入、创建时的宿主身份、容器内部数字键、私有状态结果值、纯 Geometry／Navigation／Card／Cooldown 计算均有明确职责，不能机械升级为 Battle 操作。battle/deployment/query.ts 的 evaluateDeployment(field, request) 是 Deployment 的纯资格计算，读取 Battlefield 提供的当前地块与占格事实；归属按业务职责划分，参数按实际数据需求收窄，不因位于 Battle 目录就要求完整 BattleState。
 
-Skill 的程序、单槽 Skill<S, A> 聚合、非空 Activation<S, A> 视图、资源与完整业务归 unit/skill；capability/skill 只配置 initialize 工厂，State 扩展默认 Skill，并补规则、Hook、贡献和轮次 ID。完整程序与元数据从 unit.skill.definition 读取，Unit Definition.skill 不保存程序。内部 getCurrent 返回擦除参数后的完整聚合，getSkill／getActivation 通过精确 Ref 恢复类型，不提供 Instance 包装或泛型 reader。
+Skill 的程序、单槽 Skill<S, A> 聚合、非空 Activation<S, A> 视图、资源与完整业务归 unit/skill；capability/skill 只配置 initialize 工厂，State 扩展默认 Skill，并补规则、Hook、贡献和轮次 ID。完整程序与元数据从 unit.skill.definition 读取，Unit Definition.skill 不保存程序。通用读取直接使用当前 unit.skill，getSkill／getActivation 通过精确 Ref 恢复类型，不提供 Instance 包装或泛型 reader。
 
 Skill 的 ref(source, definition) 返回持久 Ref<Skill<S, A>>，用于 getSkill／activate／setState；activationRef(source, self) 返回 host＋本轮 ID 的 Ref<Activation<S, A>>，用于查询与轮次操作。两者读取同一个 unit.skill，聚合不重复保存 host。setState 以 Ref<T> 绑定 Skill，接收 NoInfer<T["state"]>，只更新持久 state，允许 LEAVING／结束程序更新；setActivationState 以 Ref<T> 绑定 Activation，接收 NoInfer<T["activation"]["state"]>，只更新 activation.state，ENDING 抛出 TypeError。缺失宿主或过期轮次抛出 RangeError，持久 Definition 不匹配抛出 TypeError。两者从最新 battle 保留其他字段，同引用时返回原 battle，只接受结果值，不提交旧聚合或扩大生命周期权限。
 
