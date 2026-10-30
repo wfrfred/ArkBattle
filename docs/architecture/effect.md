@@ -201,7 +201,7 @@ Hook 的 accepts 读取 Effect 的覆写结果；伤害阶段与优先级由 Dam
 
 安装先形成包含 INSTALLING 实例的新状态，以此调用 onInstall，接续其返回值。回调返回后，仍然处于 INSTALLING 的实例转为 INACTIVE，再协调是否生效。生效切换先形成新 status，再运行回调并接续返回值；回调输入表达新状态。
 
-同一 battle 版本内，install 与 updateStatus 直接检查已经取得的 Unit.lifecycle，不为同一个宿主重复查询；updateStatus 先排除 INSTALLING／ENDING，再计算生效资格。完整 Unit 更新会同步执行维护与 Hook，返回后仍须重读宿主和实例：安装继续前确认当前仍为 INSTALLING，状态切换后确认当前仍为预期状态，再调用内容程序。onInstall、onDisable 等完整操作后仍按状态接续约定重读。结束中宿主由所有权边保护到本 Effect 完整 Finalize 返回，不再维护宿主提前消失时的通用 fallback。
+同一 battle 版本内，install 与 updateStatus 直接检查已经取得的 Unit.lifecycle，不为同一个宿主重复查询；updateStatus 先排除 INSTALLING／ENDING，再计算生效资格。replaceEffect 经内部 replaceUnits 只发布数据和派生索引，不执行内容回调：初次登记后直接将新实例传给 onInstall，状态切换发布后直接将新实例传给 onEnable／onDisable，不重复查询或检查刚写入的状态。onInstall、onDisable 等内容程序或完整业务操作返回后，仍按状态接续约定重读后续需要的事实；安装继续前确认当前仍为 INSTALLING。结束中宿主由所有权边保护到本 Effect 完整 Finalize 返回，不再维护宿主提前消失时的通用 fallback。
 
 onInstall 完成前，实例不能执行 onEnable。安装期间的同步嵌套操作可以登记子实例、改变许可与私有 data，也可以结束自己或宿主。INSTALLING 和 ENDING 都由实例自身保存；结束的实例不在外层安装返回时恢复。INSTALLING 实例已经登记，可以成为子 Effect 的 Scope，也作为尚未结束的同组候选。
 

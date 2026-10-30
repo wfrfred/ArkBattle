@@ -188,21 +188,12 @@ export const lifetime = lifetimes.create<Execution, Execution<any, any>, End>({
     fromDependency: () => ({ type: "CANCELLED", reason: "SOURCE_ABSENT" }),
 });
 
-function end<X extends Execution<any, any>>(
-    battle: BattleState,
-    reference: Ref<X>,
-    result: End,
-    lifetimeReason?: string,
-): BattleState {
-    return lifetime.end(battle, reference, result, lifetimeReason);
-}
-
 export function cancel<X extends Execution<any, any>>(
     battle: BattleState,
     reference: Ref<X>,
     reason = "CANCELLED",
 ): BattleState {
-    return end(battle, reference, { type: "CANCELLED", reason });
+    return lifetime.end(battle, reference, { type: "CANCELLED", reason });
 }
 
 export function cancelForUnit(
@@ -214,7 +205,7 @@ export function cancelForUnit(
     const candidates = forUnit(battle, source);
 
     for (const reference of candidates) {
-        battle = end(battle, reference, { type: "CANCELLED", reason }, lifetimeReason);
+        battle = lifetime.end(battle, reference, { type: "CANCELLED", reason }, lifetimeReason);
     }
 
     return battle;
@@ -234,12 +225,14 @@ export function advance<X extends Execution<any, any>>(
         return battle;
     }
     if (source.lifecycle !== "PRESENT" || !isSpatiallyPresent(source)) {
-        return end(battle, reference, { type: "CANCELLED", reason: "SOURCE_ABSENT" });
+        return lifetime.end(battle, reference, { type: "CANCELLED", reason: "SOURCE_ABSENT" });
     }
 
     const advanced = self.definition.onTick(battle, reference.host, self);
 
-    return advanced.value ? end(advanced.state, reference, { type: "FINISHED" }) : advanced.state;
+    return advanced.value
+        ? lifetime.end(advanced.state, reference, { type: "FINISHED" })
+        : advanced.state;
 }
 
 export function refreshCooldowns(

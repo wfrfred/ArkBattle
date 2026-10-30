@@ -352,7 +352,6 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
 
     if (rate > 0) {
         const periodTicks = TICKS_PER_SECOND / rate;
-        assertPositiveNumber(periodTicks, "skill effective SP recovery interval");
         const previous = state.recovery;
         let remainingTicks =
             previous === null
@@ -372,7 +371,6 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
                 const available = Math.floor((-remainingTicks + 1e-8) / periodTicks) + 1;
                 const capacityRemaining = capacity - state.value;
                 pulses = Math.min(available, capacityRemaining);
-                assertNonnegativeSafeInteger(pulses, "skill SP recovery pulses");
                 remainingTicks =
                     pulses === capacityRemaining
                         ? periodTicks

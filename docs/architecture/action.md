@@ -287,7 +287,7 @@ Runtime 采用以下候选政策：
 6. 本轮自动候选只尝试一次，不按“仍然就绪”循环重启即时完成的同一行动。
 7. 内容直接 start 或回调内嵌套 start 只登记执行，等待调度器推进。调度入口前已登记的执行可以在本次调度中推进；调度内嵌套登记的执行不在已固定快照中，等待后续调度。
 
-advance(battle, ref) 由 operations.ts 实现，index.ts 继续导出供调度协作；仍仅由调度器主动调用，start 不隐式推进。它通过同一 Actions 容器的 getExecution 直接取得当前执行，再调用该执行 Definition 的 onTick，并显式传入宿主引用；文件私有的 end 辅助步骤委托 Lifetime 请求结束，可选 onEnd 在 Finalize 中调用。跨完整操作后的实时读取仍遵守状态接续约定。首次推进中的即时完成或同步取消按通常终止流程结算；内容不主动推进执行，不保存实例级同 Tick 去重字段。
+advance(battle, ref) 由 operations.ts 实现，index.ts 继续导出供调度协作；仍仅由调度器主动调用，start 不隐式推进。它通过同一 Actions 容器的 getExecution 直接取得当前执行，再调用该执行 Definition 的 onTick，并显式传入宿主引用；完成与取消直接调用 lifetime.end 请求结束，可选 onEnd 在 Finalize 中调用。跨完整操作后的实时读取仍遵守状态接续约定。首次推进中的即时完成或同步取消按通常终止流程结算；内容不主动推进执行，不保存实例级同 Tick 去重字段。
 
 ## 8. 普通攻击、释放 Hook 与移动
 
@@ -301,7 +301,7 @@ Skill 弹药行动在 prepare 采样当前 Activation Ref，不能提前到 Unit
 
 需要首次起手或连续会话的内容，可以在具体 Unit 扩展状态中保存跨轮事实，由 Unit 的 tick Hook 或相关业务 Hook 维护，成功登记后的 onTick 消费；失败启动不消费。通用 Action 不制造另一套共享起手阶段机。
 
-beforeRelease(battle, executionRef) 返回 CONTINUE 或 INTERRUPT／recoveryTicks。前置干预类型为 BeforeReleaseHook，使用公共 Hook<Context, Directive>；业务事实通知类型为 ReleasedHook，使用 Hook<Context, void>。Context 固定 source 与 execution: Ref<Execution>，后者明确绑定本轮执行。accepts／invoke 接收 battle、context、current 并返回统一 Result。候选 ID 固定，逐项重读最新登记；stop 在执行结束、宿主离场或首个中断时停止。恢复信息交给具体程序，不写通用 Unit recoveryUntilTick。
+beforeRelease(battle, executionRef) 返回 CONTINUE 或 INTERRUPT／recoveryTicks。前置干预类型为 BeforeReleaseHook，使用公共 Hook<Context, Directive>；业务事实通知类型为 ReleasedHook，使用 Hook<Context, void>。Context 固定 source 与 execution: Ref<Execution>，后者明确绑定本轮执行。accepts／invoke 接收 battle、context、current 并返回统一 Result。候选 ID 固定，逐项重读最新登记；stop 在执行结束、宿主离场或首个中断时停止。Hook 程序负责返回合法的 recoveryTicks，派发器直接信任其 Directive，不重复校验恢复时长；来自配置的数值仍在相应创建入口校验。恢复信息交给具体程序，不写通用 Unit recoveryUntilTick。
 
 释放 Hook 返回后，普通攻击进入输出前重新确认本轮 execution.RUNNING 及宿主在场资格；已经完成输出后的消耗按实际业务和采样身份处理。不能把所有跨领域调用后的检查都机械化为同一个存活门槛。
 

@@ -50,12 +50,12 @@ export function install<S extends object, H extends object>(
         status: "INSTALLING",
     };
     const ref = effectRef(instance);
-    battle = replaceUnits(battle, [{ ...unit, effects: unit.effects.add(instance) }]);
+    let currentUnit: Unit | undefined = { ...unit, effects: unit.effects.add(instance) };
+    let installed: Effect<S, H> | undefined = instance;
+    battle = replaceUnits(battle, [currentUnit]);
 
-    let currentUnit = units.get(battle, host);
-    let installed = currentUnit?.effects.get(ref);
-    if (installed?.status === "INSTALLING" && definition.onInstall !== undefined) {
-        battle = definition.onInstall(battle, installed);
+    if (definition.onInstall !== undefined) {
+        battle = definition.onInstall(battle, instance);
         currentUnit = units.get(battle, host);
         installed = currentUnit?.effects.get(ref);
     }
@@ -265,19 +265,15 @@ function updateStatus<T extends Effect<any, any>>(battle: BattleState, ref: Ref<
         return battle;
     }
 
-    battle = replaceEffect(battle, unit, {
+    const next: Effect = {
         ...instance,
         status: active ? "ACTIVE" : "INACTIVE",
-    });
+    };
+    battle = replaceEffect(battle, unit, next);
 
-    const current = units.get<Unit>(battle, ref.host)?.effects.get(ref.id);
-    if (current?.status !== (active ? "ACTIVE" : "INACTIVE")) {
-        return battle;
-    }
+    const callback = active ? next.definition.onEnable : next.definition.onDisable;
 
-    const callback = active ? current.definition.onEnable : current.definition.onDisable;
-
-    return callback === undefined ? battle : callback(battle, current);
+    return callback === undefined ? battle : callback(battle, next);
 }
 
 function reconcileGroupActivity(battle: BattleState, unitId: Id, groupId: string): BattleState {

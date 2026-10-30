@@ -1,6 +1,5 @@
 import {
     assertFiniteNumber,
-    assertNonnegativeSafeInteger,
     assertPositiveSafeInteger,
     assertSafeInteger,
 } from "../../common/assert.js";
@@ -25,7 +24,6 @@ export interface Modifier {
 export type Input = contribution.Input<Modifier, Unit & Skill>;
 
 export function resolveCapacity(base: number, modifiers: Iterable<Modifier>): number {
-    assertNonnegativeSafeInteger(base, "skill base ammunition capacity");
     let addition = 0;
     let ratio = 0;
 

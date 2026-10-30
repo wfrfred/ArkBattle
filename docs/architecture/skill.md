@@ -103,6 +103,8 @@ sp.advance 对 ACTION／HIT／NONE 回复直接返回原 battle，不更新 last
 - 速度变为零使计时无效，恢复正速度后从完整周期开始。
 - 多 Tick 推进达到满槽后即暂停余下时间。
 
+SP 自然回复在正速度分支直接计算周期，并按当前剩余容量限制回复脉冲数，不为这些内部结果追加极端算术断言。
+
 默认激活期间阻回由 `@skill/active-recovery` Rule 表达，可通过绑定 Skill Capability Ref 的 removeRule Change 移除；SP 操作没有“active 必然禁止回复或支付”的硬编码。
 
 ## 3. Sustain 与弹药
@@ -111,7 +113,7 @@ TIME 实例仅保存 endsAtTick。AMMO 保存 initial、remaining、replenished�
 
 TIME 的基础 durationTicks 在创建 Activation 时形成 endsAtTick。初始弹药贡献在发动、支付 SP 之前采样，之后贡献变化只影响后续发动。本次时长由 extendTime 明确调整，不修改下一次发动的基础时长。
 
-持续时间、耗弹量及贡献输入在实际入口校验。内部预算、到期 Tick、剩余弹药与激活身份按游戏尺度直接计算，不重复检查算术结果是否超过安全整数范围。
+持续时间、耗弹量及贡献输入在实际入口校验。基础弹药 amount 已由 Skill 创建入口校验，发动时的 resolveCapacity 不重复检查该静态值；动态 Modifier 的 addition 整数与 ratio 有限性仍在发动求值入口检查。内部预算、到期 Tick、剩余弹药与激活身份按游戏尺度直接计算，不重复检查算术结果是否超过安全整数范围。
 
 TIME 不保留 Duration Contribution，也不新增通用的初始时长回调。雷狼龙S空爆由现有发动过程先支付默认单层费用，再由 onStart 读取本轮剩余 SP、计算实际消费层数、消费剩余 SP 并调用 extendTime；这与已核实的具体消费／延时链一致。哈蒂娅的运行中条件延长同样由 extendTime 表达。SKILL_ACTIVATED 保留 onStart 前已创建实例的初始 endsAtTick，后续延时不重写该历史创建事件；当前截止时间从同一 Activation 查询。
 

@@ -1,4 +1,3 @@
-import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Execution } from "../../action/execution.js";
@@ -24,7 +23,8 @@ export function beforeRelease<X extends Execution<any, any>>(
     ref: Ref<X>,
 ): Result<Directive> {
     const context: Context = { execution: ref, source: ref.host };
-    const result = hook.dispatch<Context, Directive>(
+
+    return hook.dispatch<Context, Directive>(
         battle,
         context,
         { type: "CONTINUE" },
@@ -39,11 +39,6 @@ export function beforeRelease<X extends Execution<any, any>>(
                 directive.type === "INTERRUPT" || !running(current, context),
         },
     );
-    if (result.value.type === "INTERRUPT") {
-        assertNonnegativeSafeInteger(result.value.recoveryTicks, "action release recovery");
-    }
-
-    return result;
 }
 
 export function released<X extends Execution<any, any>>(
