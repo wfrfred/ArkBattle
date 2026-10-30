@@ -1,10 +1,12 @@
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { calculateDamage } from "../../dist/core/battle/damage/calculate.js";
 import { applyDamage } from "../../dist/core/battle/damage/apply.js";
 import { setHook, removeHook } from "../../dist/core/battle/damage/hook.js";
 import { healing } from "../helpers/vitality.js";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+import { replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { initialize } from "../helpers/unit.js";
 import { effectFixtureWork } from "../helpers/effects.js";
@@ -37,7 +39,7 @@ for (const enabled of [true, false]) {
             hook("A", battle => {
                 seen.push("A");
                 battle = healing(battle, { source: null, target: { id: 0 }, parameters: { power: 10, multiplier: 1 } }).state;
-                return { state: setVitality(battle, setHook(getUnit(battle, 0).vitality, replacement)), value: undefined };
+                return { state: applyUnitChanges(battle, [setHook({ id: 0 }, replacement)]), value: undefined };
             }),
             hook("B", battle => { seen.push("old B"); return { state: battle, value: undefined }; }, () => {
                 seen.push("old enabled");
@@ -56,10 +58,10 @@ test("receivingStarted dispatch skips removed IDs and replacements moved to anot
     const state = fixture([
         hook("A", battle => {
             seen.push("A");
-            return { state: setVitality(battle, setHook(removeHook(getUnit(battle, 0).vitality, "B"), {
+            return { state: applyUnitChanges(battle, [removeHook({ id: 0 }, "B"), setHook({ id: 0 }, {
                 id: "C", stage: "completed", priority: 0, accepts: () => false,
                 invoke: () => { throw new Error("inactive replacement must not run"); },
-            })), value: undefined };
+            })]), value: undefined };
         }),
         hook("B", battle => { seen.push("B"); return { state: battle, value: undefined }; }),
         hook("C", battle => { seen.push("old C"); return { state: battle, value: undefined }; }),
@@ -73,7 +75,7 @@ test("receivingStarted dispatch defers newly registered IDs until a later dispat
     const seen = [];
     const added = hook("C", battle => { seen.push("C"); return { state: battle, value: undefined }; });
     let state = fixture([
-        hook("A", battle => { seen.push("A"); return { state: setVitality(battle, setHook(getUnit(battle, 0).vitality, added)), value: undefined }; }),
+        hook("A", battle => { seen.push("A"); return { state: applyUnitChanges(battle, [setHook({ id: 0 }, added)]), value: undefined }; }),
         hook("B", battle => { seen.push("B"); return { state: battle, value: undefined }; }),
     ]);
     state = damage(state);
@@ -89,7 +91,7 @@ test("nested receivingStarted dispatch independently selects current IDs", () =>
         hook("A", (battle, { calculated }) => {
             seen.push(["A", calculated.amount]);
             if (calculated.amount !== 1) return { state: battle, value: undefined };
-            battle = setVitality(battle, setHook(getUnit(battle, 0).vitality, added));
+            battle = applyUnitChanges(battle, [setHook({ id: 0 }, added)]);
             return { state: damage(battle, 2), value: undefined };
         }),
         hook("B", (battle, { calculated }) => { seen.push(["B", calculated.amount]); return { state: battle, value: undefined }; }),

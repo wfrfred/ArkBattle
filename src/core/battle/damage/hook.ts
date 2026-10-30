@@ -3,7 +3,8 @@ import type { State as BattleState, Result } from "../state.js";
 import type { Unit } from "../../unit/unit.js";
 import * as units from "../../unit/query.js";
 import * as hooks from "../../hook.js";
-import { hasVitality, type State } from "../../unit/capability/vitality/capability.js";
+import { hasVitality, type Vitality } from "../../unit/capability/vitality/capability.js";
+import { createChange, type Change } from "../../unit/change.js";
 import type {
     ApplicationResult,
     CalculatedDamage,
@@ -76,16 +77,24 @@ export interface ReceptionRule {
     readonly allows: (battle: BattleState, context: ReceivingContext) => boolean;
 }
 
-export function setHook(state: State, entry: Hook): State {
-    const damageHooks = hooks.set(state.damageHooks, entry);
+export function setHook(reference: Ref<Unit & Vitality>, entry: Hook): Change {
+    return createChange(reference, (self) => {
+        const damageHooks = hooks.set(self.vitality.damageHooks, entry);
 
-    return damageHooks === state.damageHooks ? state : { ...state, damageHooks };
+        return damageHooks === self.vitality.damageHooks
+            ? self
+            : { ...self, vitality: { ...self.vitality, damageHooks } };
+    });
 }
 
-export function removeHook(state: State, id: string): State {
-    const damageHooks = hooks.remove(state.damageHooks, id);
+export function removeHook(reference: Ref<Unit & Vitality>, id: string): Change {
+    return createChange(reference, (self) => {
+        const damageHooks = hooks.remove(self.vitality.damageHooks, id);
 
-    return damageHooks === state.damageHooks ? state : { ...state, damageHooks };
+        return damageHooks === self.vitality.damageHooks
+            ? self
+            : { ...self, vitality: { ...self.vitality, damageHooks } };
+    });
 }
 
 export function dispatch<C, T>(

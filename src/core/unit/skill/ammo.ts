@@ -14,7 +14,7 @@ import type { Skill } from "../capability/skill/capability.js";
 import { dispatch } from "../capability/skill/hook.js";
 import { finish } from "./operations.js";
 import * as query from "./query.js";
-import { update as updateUnit } from "../../battle/unit.js";
+import { replace as replaceUnits } from "../../battle/unit.js";
 import type { Ammo } from "./sustain.js";
 
 export interface Modifier {
@@ -86,7 +86,7 @@ export function consume<X extends Activation<any, any>>(
     const previous = active.sustain;
     const current = { ...previous, remaining: previous.remaining - amount };
 
-    battle = updateUnit(battle, [
+    battle = replaceUnits(battle, [
         {
             ...self,
             skill: { ...self.skill, activation: { ...active, sustain: current } },
@@ -176,7 +176,7 @@ function add<X extends Activation<any, any>>(
         remaining: previous.remaining + amount,
         replenished: previous.replenished + (replenishing ? amount : 0),
     };
-    battle = updateUnit(battle, [
+    battle = replaceUnits(battle, [
         {
             ...self,
             skill: { ...self.skill, activation: { ...active, sustain: current } },

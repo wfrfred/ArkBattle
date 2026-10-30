@@ -1,3 +1,4 @@
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { getUnit } from "../helpers/unit.js";
@@ -131,9 +132,9 @@ test("content ammunition grants respect current capacity without consuming ordin
 test("ammunition capacity contributions are sampled for each new activation", () => {
     const f = loaded(3);
     const currentSkill4 = getUnit(f.state, 1).skill;
-    let state = setSkill(f.state, setAmmoContribution(currentSkill4, {
+    let state = applyUnitChanges(f.state, [setAmmoContribution({ id: 1 }, {
         id: "bonus", value: [{ addition: 2, ratio: 0 }],
-    }));
+    })]);
     assert.equal(remaining(state), 3);
     assert.equal(query.getActivation(state, f.activation).activation.sustain.initial, 3);
     state = skills.finish(state, f.activation);
@@ -168,20 +169,20 @@ test("ammunition modifiers resolve live inputs and exclusive sources only when t
             { addition: 0, ratio: 0.5 },
         ] };
     const currentSkill5 = getUnit(f.state, 1).skill;
-    let state = setSkill(f.state, setAmmoContribution(setAmmoContribution(currentSkill5, weak), strong));
+    let state = applyUnitChanges(f.state, [setAmmoContribution({ id: 1 }, weak), setAmmoContribution({ id: 1 }, strong)]);
     state = at(state, 2);
     assert.equal(remaining(state), 10);
     state = skills.activate(skills.finish(state, f.activation), f.skillRef).state;
     assert.equal(remaining(state), 17);
     const current = currentRef(state);
     const currentSkill6 = getUnit(state, 1).skill;
-    state = setSkill(state, removeAmmoContribution(currentSkill6, "strong"));
+    state = applyUnitChanges(state, [removeAmmoContribution({ id: 1 }, "strong")]);
     assert.equal(remaining(state), 17);
     state = skills.activate(skills.finish(state, current), f.skillRef).state;
     assert.equal(remaining(state), 12);
     const before = getUnit(state, 1).skill;
-    assert.equal(removeAmmoContribution(before, "missing"), before);
-    assert.equal(setAmmoContribution(before, weak), before);
+    assert.equal(applyUnitChanges(state, [removeAmmoContribution({id:1}, "missing")]), state);
+    assert.equal(applyUnitChanges(state, [setAmmoContribution({id:1}, weak)]), state);
 });
 
 test("consumption Hooks report the complete consumed amount and settled negative remainder", () => {

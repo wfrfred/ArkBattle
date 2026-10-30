@@ -1,5 +1,5 @@
 import type { State as BattleState } from "../../core/battle/index.js";
-import { remove as removeUnit } from "../../core/battle/unit.js";
+import { remove as removeUnit, update } from "../../core/battle/unit.js";
 import { at as occupancyAt } from "../../core/battlefield/occupancy.js";
 import type { TilePosition } from "../../core/geometry/coordinate.js";
 import { hasOccupancy } from "../../core/unit/capability/occupancy/index.js";
@@ -64,11 +64,13 @@ export function create(configuration: Configuration): Definition {
                                 occupant === undefined ||
                                 occupant.blocker.rules.some((rule) => rule.id === ruleId)
                                     ? battle
-                                    : setRule(battle, unitRef(occupant), {
-                                          id: ruleId,
-                                          allows: (_battle, blocker) =>
-                                              blocker.blocker.layer === "AIR",
-                                      }),
+                                    : update(battle, [
+                                          setRule(unitRef(occupant), {
+                                              id: ruleId,
+                                              allows: (_battle, blocker) =>
+                                                  blocker.blocker.layer === "AIR",
+                                          }),
+                                      ]),
                             value: undefined,
                         };
                     },
@@ -83,11 +85,12 @@ export function create(configuration: Configuration): Definition {
                             hasBlocker(current) &&
                             currentOccupant(battle, support.id)?.id !== current.id
                         ) {
-                            battle = removeRule(
-                                battle,
-                                unitRef(current),
-                                `shooting-platform/${support.id}/block-free`,
-                            );
+                            battle = update(battle, [
+                                removeRule(
+                                    unitRef(current),
+                                    `shooting-platform/${support.id}/block-free`,
+                                ),
+                            ]);
                         }
 
                         return { state: battle, value: undefined };

@@ -1,6 +1,8 @@
 import type { Unit } from "../../unit.js";
 import * as hook from "../../../hook.js";
-import type { Deployable, State } from "./capability.js";
+import type { Ref } from "../../../common/ref.js";
+import { createChange, type Change } from "../../change.js";
+import type { Deployable } from "./capability.js";
 
 export interface Deployed {
     readonly unit: Unit & Deployable;
@@ -9,14 +11,22 @@ export interface Deployed {
 
 export type DeployedHook = hook.Hook<Deployed, void>;
 
-export function setHook(state: State, entry: DeployedHook): State {
-    const deployedHooks = hook.set(state.deployedHooks, entry);
+export function setHook(reference: Ref<Unit & Deployable>, entry: DeployedHook): Change {
+    return createChange(reference, (self) => {
+        const deployedHooks = hook.set(self.deployable.deployedHooks, entry);
 
-    return deployedHooks === state.deployedHooks ? state : { ...state, deployedHooks };
+        return deployedHooks === self.deployable.deployedHooks
+            ? self
+            : { ...self, deployable: { ...self.deployable, deployedHooks } };
+    });
 }
 
-export function removeHook(state: State, id: string): State {
-    const deployedHooks = hook.remove(state.deployedHooks, id);
+export function removeHook(reference: Ref<Unit & Deployable>, id: string): Change {
+    return createChange(reference, (self) => {
+        const deployedHooks = hook.remove(self.deployable.deployedHooks, id);
 
-    return deployedHooks === state.deployedHooks ? state : { ...state, deployedHooks };
+        return deployedHooks === self.deployable.deployedHooks
+            ? self
+            : { ...self, deployable: { ...self.deployable, deployedHooks } };
+    });
 }

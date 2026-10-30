@@ -17,6 +17,7 @@ test("direct Effect definitions type host capabilities, private state and immuta
         path,
         `
 import { initialize } from ${module("unit/index")};
+import { update } from ${module("battle/unit")};
 import type { Unit } from ${module("unit/index")};
 import type { Ref } from ${module("common/ref")};
 import type { State as BattleState } from ${module("battle/state")};
@@ -24,9 +25,9 @@ import type { Vitality, Input as VitalityInput } from ${module("unit/capability/
 import { resolveDefense } from ${module("unit/capability/vitality/index")};
 import { setDefenseContribution, setMaxHpContribution } from ${module("unit/capability/vitality/index")};
 import { setAttackContribution, type Input as AttackInput, type Offense } from ${module("unit/capability/offense/index")};
-import { setHook as setBlockerHook, type Blocker, type Modifier as BlockingModifier } from ${module("unit/capability/blocking/blocker")};
+import { setBlockerHook, type Blocker, type Modifier as BlockingModifier } from ${module("unit/capability/blocking/index")};
 import { setCapacityContribution } from ${module("unit/capability/blocking/blocker-operations")};
-import { setHook as setBlockableHook, type Blockable } from ${module("unit/capability/blocking/blockable")};
+import { setBlockableHook, type Blockable } from ${module("unit/capability/blocking/index")};
 import { setVolumeContribution } from ${module("unit/capability/blocking/blockable-operations")};
 import { setBlockerRule, setBlockableRule, type Rule as BlockingRule } from ${module("unit/capability/blocking/index")};
 import { blockerOf, blocked, usedCapacity } from ${module("battle/blocking/query")};
@@ -133,15 +134,15 @@ const blockingRule:BlockingRule={id:'pair',allows(current,blocker,blockable){
  blockable.blocker;
  return capacity.length===0&&volume.length===0&&state.tick>=0;
 }};
-setBlockerRule(battle,unitRef(capabilityHost),blockingRule);
-setBlockableRule(battle,unitRef(capabilityHost),blockingRule);
-// @ts-expect-error Blocking writes require BattleState and a typed host Ref.
+setBlockerRule(unitRef(capabilityHost),blockingRule);
+setBlockableRule(unitRef(capabilityHost),blockingRule);
+// @ts-expect-error Blocking Changes require a typed host Ref rather than local state.
 setBlockerRule(capabilityHost.blocker,blockingRule);
 const blockedRefs:readonly Ref<Unit & Blockable>[]=capabilityHost.blocker.blocked;
 const blockerRef:Ref<Unit & Blocker>|null=capabilityHost.blockable.blocker;
 const owner:Ref<Unit & Blocker>|undefined=blockerOf(battle,unitRef(capabilityHost));
 const targets:readonly Ref<Unit & Blockable>[]=blocked(battle,unitRef(capabilityHost));
-setBlockerHook(capabilityHost.blocker,'acquired',{
+setBlockerHook(unitRef(capabilityHost),'acquired',{
  id:'blocker-host',
  invoke(current,context){
   const capacity:number=usedCapacity(current,context.host);
@@ -150,7 +151,7 @@ setBlockerHook(capabilityHost.blocker,'acquired',{
   return {state:current,value:undefined};
  },
 });
-setBlockableHook(capabilityHost.blockable,'released',{
+setBlockableHook(unitRef(capabilityHost),'released',{
  id:'blockable-host',
  invoke(current,context){
   const blocker:Ref<Unit & Blocker>|undefined=blockerOf(current,context.host);
@@ -169,9 +170,9 @@ capabilityHost.blocker.enabled;
 capabilityHost.blockable.enabled;
 const fixed:Contribution<readonly Modifier[]>={id:'fixed',value:[]};
 const blockingFixed:Contribution<readonly BlockingModifier[]>={id:'blocking-fixed',value:[{type:'ADD',value:1},{type:'ZERO'}]};
-setCapacityContribution(battle,unitRef(capabilityHost),blockingFixed);
+setCapacityContribution(unitRef(capabilityHost),blockingFixed);
 // @ts-expect-error blocking capacity uses ADD/ZERO rather than Attribute modifiers.
-setCapacityContribution(battle,unitRef(capabilityHost),fixed);
+setCapacityContribution(unitRef(capabilityHost),fixed);
 const dynamic:Contribution<MovementInput>={id:'dynamic',value:(current,self)=>{
  const state:BattleState=current;
  const speed:number=self.definition.locomotion.speed;
@@ -196,8 +197,8 @@ const actionInput:Contribution<ActionInput>={id:'action',value:(current,self)=>{
  self.skill.activation;
  return [];
 }};
-setActionSpeedContribution(capabilityHost.action,actionInput);
-setDefenseContribution(capabilityHost.vitality,defenseInput);
+setActionSpeedContribution(unitRef(capabilityHost),actionInput);
+setDefenseContribution(unitRef(capabilityHost),defenseInput);
 const resolvedDefense:number|undefined=resolveDefense(battle,unitRef(capabilityHost))?.defense;
 // @ts-expect-error defense queries require a Vitality identity.
 resolveDefense(battle,unitRef(bare));
@@ -207,25 +208,22 @@ const legacyMovement:MovementInput=({unit}:{unit:Unit & Locomotion})=>[];
 const legacyDefense:VitalityInput=({unit}:{unit:Unit & Vitality})=>[];
 // @ts-expect-error action inputs receive BattleState and self instead of a Context wrapper.
 const legacyAction:ActionInput=({unit}:{unit:Unit & Action})=>[];
-setVolumeContribution(battle,unitRef(capabilityHost),{id:'volume',value:1});
+setVolumeContribution(unitRef(capabilityHost),{id:'volume',value:1});
 // @ts-expect-error blocking volume requires settled static values.
-setVolumeContribution(battle,unitRef(capabilityHost),dynamic);
-const vitality=setMaxHpContribution(capabilityHost.vitality,capabilityHost.definition.vitality,fixed);
-const changed={...capabilityHost,vitality};
+setVolumeContribution(unitRef(capabilityHost),dynamic);
+const vitality=setMaxHpContribution(unitRef(capabilityHost),fixed);
+const changed=getUnit(update(battle,[vitality]),unitRef(capabilityHost))!;
 const hp:number=changed.vitality.hp;
 const attack:number=changed.definition.offense.attack;
 const maxHp:number=changed.definition.vitality.maxHp;
 const retainedRoute:Progress=changed.route.main;
 const dynamicAttack:Contribution<AttackInput>={id:'dynamic',value:(_battle,self)=>[]};
-setAttackContribution(capabilityHost.offense,dynamicAttack);
+setAttackContribution(unitRef(capabilityHost),dynamicAttack);
 // @ts-expect-error MaxHP cannot coordinate HP from a query-time closure.
-setMaxHpContribution(capabilityHost.vitality,capabilityHost.definition.vitality,dynamic);
+setMaxHpContribution(unitRef(capabilityHost),dynamic);
 // @ts-expect-error blocking capacity requires settled static values.
-setCapacityContribution(battle,unitRef(capabilityHost),dynamic);
-const movement={
- ...capabilityHost,
- locomotion:setSpeedContribution(capabilityHost.locomotion,dynamic),
-};
+setCapacityContribution(unitRef(capabilityHost),dynamic);
+const movement=getUnit(update(battle,[setSpeedContribution(unitRef(capabilityHost),dynamic)]),unitRef(capabilityHost))!;
 const mainRoute:Progress=movement.route.main;
 const crossCapability:Definition<{bonus:number},Vitality & Offense>={
  id:'low-hp-attack',initialize:()=>({bonus:10}),
@@ -234,9 +232,9 @@ const crossCapability:Definition<{bonus:number},Vitality & Offense>={
   const hp:number=unit.vitality.hp;
   const maxHp:number=unit.definition.vitality.maxHp;
   const attack:number=unit.definition.offense.attack;
-  const offense=setAttackContribution(unit.offense,fixed);
-  const host:Unit & Vitality & Offense={...unit,offense};
-  return state;
+  const offense=setAttackContribution(unitRef(unit),fixed);
+  const host:Unit & Vitality & Offense=unit;
+  return update(state,[offense]);
  },
 };
 const combined=initialize(battle, {id:3,position:[0,0],definition:{hooks: [], id:'combined',vitality: { maxHp: 100, defense: 0, resistance: 0 },offense:{attack:20}}}).value;

@@ -6,7 +6,7 @@ import {
 } from "../../dist/core/unit/capability/route/capability.js";
 import * as route from "../../dist/core/unit/capability/route/index.js";
 import { Effects } from "../../dist/core/unit/effect/effects.js";
-import { add as addUnit, update as updateUnit } from "../../dist/core/battle/unit.js";
+import { add as addUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { setOverlay } from "../../dist/core/battlefield/navigation/state.js";
 import { fixtureBattle } from "../helpers/unit.js";

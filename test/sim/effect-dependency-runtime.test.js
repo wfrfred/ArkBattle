@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { add as addUnit, remove, update as updateUnit, lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
+import { add as addUnit, remove, replace as updateUnit, lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { available, scope, getRef } from "../../dist/core/lifetime/index.js";
 import { dependents } from "../../dist/core/lifetime/dependency.js";

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { fixtureBattle, initialize } from '../helpers/unit.js';
-import { add as addUnit, remove as removeUnit, update as updateUnit } from '../../dist/core/battle/unit.js';
+import { add as addUnit, remove as removeUnit, replace as updateUnit } from '../../dist/core/battle/unit.js';
 import { getUnit } from '../helpers/unit.js';
 import * as projectiles from '../../dist/core/battle/projectile.js';
 import * as projectilesQuery from '../../dist/core/projectile/query.js';

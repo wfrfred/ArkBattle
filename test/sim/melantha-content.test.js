@@ -11,7 +11,7 @@ import { create } from '../../dist/content/operators/melantha/unit.js';
 
 import { initialize } from "../helpers/unit.js";
 import { createBattleState } from '../../dist/core/battle/state.js';
-import { update as updateUnit } from '../../dist/core/battle/unit.js';
+import { replace as updateUnit } from '../../dist/core/battle/unit.js';
 import { getUnit } from '../helpers/unit.js';
 import { add } from '../../dist/core/battle/unit.js';
 import { activate as activateSkill, advance as advanceSkill, finish as finishSkill } from '../../dist/core/unit/skill/index.js';

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import * as targetable from "../../dist/core/unit/capability/targetable/capability.js";
 import * as units from "../../dist/core/unit/query.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
@@ -72,33 +73,39 @@ test("Targetable initialization rejects a repeated reference to the same contrib
 });
 
 test("restriction registration shares ID replacement and no-change semantics with Contribution", () => {
-    const initial = { restrictions: [] };
+    const original = owner();
+    const reference = units.ref(original);
+    const initial = effectFixtureWork(original);
     const entry = { id: "limit", value: restriction(Symbol("first")) };
-    const installed = targetable.setRestriction(initial, entry);
+    const installed = applyUnitChanges(initial, [targetable.setRestriction(reference, entry)]);
 
-    assert.strictEqual(targetable.setRestriction(installed, entry), installed);
-    assert.strictEqual(targetable.removeRestriction(installed, "absent"), installed);
-    assert.deepEqual(initial.restrictions, []);
+    assert.strictEqual(applyUnitChanges(installed, [targetable.setRestriction(reference, entry)]), installed);
+    assert.strictEqual(applyUnitChanges(installed, [targetable.removeRestriction(reference, "absent")]), installed);
+    assert.deepEqual(original.targetable.restrictions, []);
 
     const replacement = { id: entry.id, value: restriction(Symbol("second"), () => true) };
-    const replaced = targetable.setRestriction(installed, replacement);
-    assert.deepEqual(replaced.restrictions, [replacement]);
-    assert.deepEqual(installed.restrictions, [entry]);
-    const copied = targetable.setRestriction(replaced, { ...replacement });
+    const replaced = applyUnitChanges(installed, [targetable.setRestriction(reference, replacement)]);
+    assert.deepEqual(units.get(replaced, reference).targetable.restrictions, [replacement]);
+    assert.deepEqual(units.get(installed, reference).targetable.restrictions, [entry]);
+    const copied = applyUnitChanges(replaced, [targetable.setRestriction(reference, { ...replacement })]);
     assert.notStrictEqual(copied, replaced);
-    assert.deepEqual(targetable.removeRestriction(replaced, entry.id), initial);
+    const removed = applyUnitChanges(replaced, [targetable.removeRestriction(reference, entry.id)]);
+    assert.deepEqual(units.get(removed, reference).targetable, original.targetable);
 });
 
 test("a same-ID dynamic replacement does not restore the original definition entry when removed", () => {
     const original = { id: "shared", value: invisibleRestriction };
-    const initialized = targetable.initialize(fixtureBattle(), { restrictions: [original] }).value;
-    const replaced = targetable.setRestriction(initialized, {
+    const unit = owner(2, "ENEMY", [original]);
+    const initialized = effectFixtureWork(unit);
+    const reference = units.ref(unit);
+    const replaced = applyUnitChanges(initialized, [targetable.setRestriction(reference, {
         id: "shared",
         value: untargetableRestriction,
-    });
+    })]);
 
-    assert.deepEqual(targetable.removeRestriction(replaced, "shared").restrictions, []);
-    assert.deepEqual(initialized.restrictions, [original]);
+    const removed = applyUnitChanges(replaced, [targetable.removeRestriction(reference, "shared")]);
+    assert.deepEqual(units.get(removed, reference).targetable.restrictions, []);
+    assert.deepEqual(unit.targetable.restrictions, [original]);
 });
 
 test("query exemption applies after exclusive group resolution without reviving the suppressed limit", () => {
@@ -125,15 +132,13 @@ test("exempting a mechanism ignores all of its instances but preserves independe
         { id: "effect-a", value: invisibleRestriction },
         { id: "effect-b", value: invisibleRestriction },
     ]);
-    const battle = effectFixtureWork(source, target);
+    let battle = effectFixtureWork(source, target);
     const input = request(source);
 
     assert.equal(targetable.allowsRestrictions(battle, input, target, kind => kind === invisibilityKind), true);
     assert.equal(targetable.allowsRestrictions(battle, input, target), false);
-    target = {
-        ...target,
-        targetable: targetable.setRestriction(target.targetable, { id: "other", value: untargetableRestriction }),
-    };
+    battle = applyUnitChanges(battle, [targetable.setRestriction(units.ref(target), { id: "other", value: untargetableRestriction })]);
+    target = units.get(battle, units.ref(target));
     assert.equal(targetable.allowsRestrictions(battle, input, target, kind => kind === invisibilityKind), false);
 });
 

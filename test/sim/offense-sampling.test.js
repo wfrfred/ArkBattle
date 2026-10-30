@@ -1,3 +1,5 @@
+import { set as setFixtureEntry } from "../../dist/core/hook.js";
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, unit, actionDefinition, geometry } from "../helpers/action-fixture.js";
@@ -5,8 +7,8 @@ import { damage } from "../helpers/targeting.js";
 import * as units from "../../dist/core/unit/query.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { advance } from "../../dist/core/unit/action/index.js";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
-import { setHook } from "../../dist/core/battle/damage/hook.js";
+
+
 import { setAttackContribution } from "../../dist/core/unit/capability/offense/capability.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 
@@ -24,21 +26,18 @@ test("source attack samples current Offense separately for each target after nes
     const second = unit(2);
     const initial = battle(source, {
         ...first,
-        vitality: setHook(first.vitality, {
+        vitality: { ...first.vitality, damageHooks: setFixtureEntry(first.vitality.damageHooks, {
             id: "boost-next-target", stage: "hpApplied", priority: 0,
             invoke(state) {
                 const current = units.get(state, sourceRef);
                 return {
-                    state: updateUnit(state, [{
-                        ...current,
-                        offense: setAttackContribution(current.offense, {
+                    state: applyUnitChanges(state, [setAttackContribution({ id: current.id }, {
                             id: "reaction", value: [modifier({ addition: 15 })],
-                        }),
-                    }]),
+                        })]),
                     value: undefined,
                 };
             },
-        }),
+        }) },
     }, second);
     const result = actions.start(initial, actions.ref(sourceRef, definition));
     const advanced = advance(result.state, result.value.ref);

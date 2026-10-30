@@ -9,7 +9,7 @@ import { at } from "../../dist/core/battlefield/occupancy.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "../helpers/tiles.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
-import { add, update as updateUnit } from "../../dist/core/battle/unit.js";
+import { add, replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import * as effects from "../../dist/core/unit/effect/index.js";

@@ -1,105 +1,128 @@
-import type { State as BattleState } from "../../../battle/state.js";
-import { update } from "../../../battle/unit.js";
 import * as blocking from "../../../battle/blocking/operations.js";
-import * as units from "../../query.js";
 import * as registry from "../../../hook.js";
 import * as contribution from "../../contribution/contribution.js";
+import { createChange, type Change } from "../../change.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
+import type { Hook, Key } from "./contract.js";
 import type { Rule } from "./rule.js";
-import { DEFAULT_RADIUS, type Blocker, type State, type Layer, type Modifier } from "./blocker.js";
+import { DEFAULT_RADIUS, type Blocker, type Layer, type Modifier } from "./blocker.js";
 
-export function setRule(
-    battle: BattleState,
-    reference: Ref<Unit & Blocker>,
-    rule: Rule,
-): BattleState {
-    const unit = units.get(battle, reference);
-    if (unit === undefined) {
-        throw new RangeError(`unknown unit: ${reference.id}`);
-    }
+export function setRule(reference: Ref<Unit & Blocker>, rule: Rule): Change {
+    return createChange(
+        reference,
+        (self) => {
+            const rules = registry.set(self.blocker.rules, rule);
 
-    const rules = registry.set(unit.blocker.rules, rule);
-
-    return rules === unit.blocker.rules
-        ? battle
-        : replace(battle, unit, { ...unit.blocker, rules });
+            return rules === self.blocker.rules
+                ? self
+                : { ...self, blocker: { ...self.blocker, rules } };
+        },
+        (battle, previous) =>
+            !previous.blocker.rules.includes(rule)
+                ? blocking.maintainBlocker(battle, reference)
+                : battle,
+    );
 }
 
-export function removeRule(
-    battle: BattleState,
-    reference: Ref<Unit & Blocker>,
-    id: string,
-): BattleState {
-    const unit = units.get(battle, reference);
-    if (unit === undefined) {
-        throw new RangeError(`unknown unit: ${reference.id}`);
-    }
+export function removeRule(reference: Ref<Unit & Blocker>, id: string): Change {
+    return createChange(
+        reference,
+        (self) => {
+            const rules = registry.remove(self.blocker.rules, id);
 
-    const rules = registry.remove(unit.blocker.rules, id);
-
-    return rules === unit.blocker.rules
-        ? battle
-        : replace(battle, unit, { ...unit.blocker, rules });
+            return rules === self.blocker.rules
+                ? self
+                : { ...self, blocker: { ...self.blocker, rules } };
+        },
+        (battle, previous) =>
+            previous.blocker.rules.some((entry) => entry.id === id)
+                ? blocking.maintainBlocker(battle, reference)
+                : battle,
+    );
 }
 
 export function setCapacityContribution(
-    battle: BattleState,
     reference: Ref<Unit & Blocker>,
     entry: contribution.Contribution<readonly Modifier[]>,
-): BattleState {
-    const unit = units.get(battle, reference);
-    if (unit === undefined) {
-        throw new RangeError(`unknown unit: ${reference.id}`);
-    }
+): Change {
+    return createChange(
+        reference,
+        (self) => {
+            const capacity = contribution.set(self.blocker.capacity, entry);
 
-    const capacity = contribution.set(unit.blocker.capacity, entry);
-
-    return capacity === unit.blocker.capacity
-        ? battle
-        : replace(battle, unit, { ...unit.blocker, capacity });
-}
-
-export function removeCapacityContribution(
-    battle: BattleState,
-    reference: Ref<Unit & Blocker>,
-    id: string,
-): BattleState {
-    const unit = units.get(battle, reference);
-    if (unit === undefined) {
-        throw new RangeError(`unknown unit: ${reference.id}`);
-    }
-
-    const capacity = contribution.remove(unit.blocker.capacity, id);
-
-    return capacity === unit.blocker.capacity
-        ? battle
-        : replace(battle, unit, { ...unit.blocker, capacity });
-}
-
-export function setLayer(
-    battle: BattleState,
-    reference: Ref<Unit & Blocker>,
-    layer: Layer,
-): BattleState {
-    const unit = units.get(battle, reference);
-    if (unit === undefined || unit.blocker.layer === layer) {
-        return battle;
-    }
-
-    const captured = unit.blocker.blocked.map((blocked) => ({ blocker: reference, blocked }));
-    const next: Unit & Blocker = {
-        ...unit,
-        blocker: {
-            ...unit.blocker,
-            layer,
-            radius: unit.definition.blocker.radius ?? DEFAULT_RADIUS[layer],
+            return capacity === self.blocker.capacity
+                ? self
+                : { ...self, blocker: { ...self.blocker, capacity } };
         },
-    };
-
-    return blocking.releaseAll(battle, captured, [next]);
+        (battle, previous) =>
+            !previous.blocker.capacity.includes(entry)
+                ? blocking.maintainBlocker(battle, reference)
+                : battle,
+    );
 }
 
-function replace(battle: BattleState, unit: Unit & Blocker, next: State): BattleState {
-    return blocking.maintain(update(battle, [{ ...unit, blocker: next }]));
+export function removeCapacityContribution(reference: Ref<Unit & Blocker>, id: string): Change {
+    return createChange(
+        reference,
+        (self) => {
+            const capacity = contribution.remove(self.blocker.capacity, id);
+
+            return capacity === self.blocker.capacity
+                ? self
+                : { ...self, blocker: { ...self.blocker, capacity } };
+        },
+        (battle, previous) =>
+            previous.blocker.capacity.some((entry) => entry.id === id)
+                ? blocking.maintainBlocker(battle, reference)
+                : battle,
+    );
+}
+
+export function setLayer(reference: Ref<Unit & Blocker>, layer: Layer): Change {
+    return createChange(
+        reference,
+        (self) =>
+            self.blocker.layer === layer
+                ? self
+                : {
+                      ...self,
+                      blocker: {
+                          ...self.blocker,
+                          layer,
+                          radius: self.definition.blocker.radius ?? DEFAULT_RADIUS[layer],
+                      },
+                  },
+        (battle, previous) =>
+            previous.blocker.layer === layer
+                ? battle
+                : blocking.releaseAll(
+                      battle,
+                      previous.blocker.blocked.map((blocked) => ({ blocker: reference, blocked })),
+                  ),
+    );
+}
+
+export function setHook(
+    reference: Ref<Unit & Blocker>,
+    key: Key,
+    hook: Hook<Unit & Blocker>,
+): Change {
+    return createChange(reference, (self) => {
+        const entries = registry.set(self.blocker[key], hook);
+
+        return entries === self.blocker[key]
+            ? self
+            : { ...self, blocker: { ...self.blocker, [key]: entries } };
+    });
+}
+
+export function removeHook(reference: Ref<Unit & Blocker>, key: Key, id: string): Change {
+    return createChange(reference, (self) => {
+        const entries = registry.remove(self.blocker[key], id);
+
+        return entries === self.blocker[key]
+            ? self
+            : { ...self, blocker: { ...self.blocker, [key]: entries } };
+    });
 }

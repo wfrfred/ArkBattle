@@ -205,7 +205,7 @@ interface State {
 }
 ```
 
-局部 setIntervalContribution／setSpeedContribution 只返回局部 State；完整操作在贡献实际改变的时点调用 refreshCooldowns(battle, source)，按完成比例换算旧周期。动态查询采用 resolveBaseInterval／resolveSpeed／resolveInterval(battle, source, definition)。需要从战场读取的 Contribution 继续取得当前版本的只读事实。
+setIntervalContribution／setSpeedContribution 及对应 remove 绑定 Ref<Unit & ActionCapability> 返回 Change，实现在 capability/action/operations.ts。transform 只修改贡献集合，实际变化的 settle 从最新 battle 调用 refreshCooldowns，按全批最终周期及当前完成比例换算冷却；Content 不补一次手工刷新。Rule／释放 Hook 登记也返回 Change，但不附带冷却或 Blocking 后继。动态查询继续使用 resolveBaseInterval／resolveSpeed／resolveInterval(battle, source, definition)。
 
 普通攻击周期依据 [PRTS 攻速公式](https://prts.wiki/w/游戏数据基础#攻速公式)：修正间隔 × 100 / 限制后的速度。速度属性下限为 20，周期计算速度上限为 600，有效周期至少为 1 Tick。纯 Cooldown 支持非负连续周期，不在纯值函数中强加攻击的量化限制。
 
@@ -293,7 +293,7 @@ advance(battle, ref) 由 operations.ts 实现，index.ts 继续导出供调度�
 
 可复用普通攻击程序位于 content/actions/attack.ts，直接调用 Damage、Healing 与 Elemental 的公开操作。它在 prepare 绑定目标并保存 releaseAtTick／finishAtTick、released 等执行进度；到点执行输出并在恢复结束后完成。create 提供空持久／执行数据的入口；createWithState<P, E> 明确区分 initialize(battle) → Result<P> 与 prepare(battle, source, self) → Result<E>。output／afterOutput／onEnd 接收显式 source 与 execution 非空的 Execution<P, State<E>>，模板私有数据位于 self.execution.state.data。
 
-CD 补偿、cooldownAdjusted 与 released 写回通过 Unit 更新发布；Unit 发布不构造、校验或通知 Blocking 关系，普通私有执行状态或 Cooldown 修改不隐式触发维护。Blocking 的 Rule 虽可读取双方 Action 状态，改变资格的内容仍须在对应完整业务流程中显式维护关系。Attack 在领域操作后按同一 Execution Ref 恢复当前执行，后续依赖本轮与来源资格时确认 RUNNING、PRESENT 和空间在场；释放 Hook、伤害输出等真正执行内容回调的步骤仍可同步取消执行或使来源离场，不能沿用它们之前的 self。Combat 的 select 使用 Cooldown 刷新后重新取得的来源，不把普通刷新本身描述为隐式阻挡调度。
+CD 补偿、cooldownAdjusted 与 released 的私有字段写回继续由完整 Action 操作经内部 replace 发布，不改为公开 Change，也不隐式触发 Blocking。Rule 可读取双方 Action 状态不表示自动订阅其所有字段；改变阻挡资格的内容在对应业务流程中显式复核关系。Attack 在真正执行 Hook、伤害等领域操作后按同一 Execution Ref 恢复当前 RUNNING 执行，并确认宿主 PRESENT 与空间存在；不把原始发布本身当成内容回调。Combat 的 select 使用冷却刷新后当前来源。
 
 Attack 模板统一校验前后摇、操作数值和绑定关系，上层内容不重复校验原样传入的同一字段。只读配置直接共享，公开 attack 配置只投影配置字段，不携带程序私有回调，也不额外复制、冻结其子对象。
 

@@ -140,71 +140,66 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
             const ref = effectRef(self);
 
             return updateUnit(state, [
-                {
-                    ...unit,
-                    vitality: setHook(unit.vitality, {
-                        id: `${SHIELD_ID}/${self.id}`,
-                        stage: "receiving",
-                        priority: 100,
-                        accepts: () => true,
-                        invoke(state, context, pending) {
-                            const shield = get(state, ref);
-                            const host = getCurrentUnit(state, self.host);
-                            if (
-                                pending.cancellation !== null ||
-                                pending.amount <= 0 ||
-                                shield?.status !== "ACTIVE" ||
-                                host === undefined
-                            ) {
-                                return { state, value: pending };
+                setHook(unitRef(unit), {
+                    id: `${SHIELD_ID}/${self.id}`,
+                    stage: "receiving",
+                    priority: 100,
+                    accepts: () => true,
+                    invoke(state, context, pending) {
+                        const shield = get(state, ref);
+                        const host = getCurrentUnit(state, self.host);
+                        if (
+                            pending.cancellation !== null ||
+                            pending.amount <= 0 ||
+                            shield?.status !== "ACTIVE" ||
+                            host === undefined
+                        ) {
+                            return { state, value: pending };
+                        }
+                        if (shield.data.layers > 0) {
+                            state = setData(state, ref, {
+                                ...shield.data,
+                                layers: shield.data.layers - 1,
+                            });
+                            state = healSelf(state, self.host.id, healRatio);
+                            const current = getCurrentUnit(state, self.host);
+                            if (current !== undefined && hasSkill(current)) {
+                                state = modify(state, unitRef(current), extraSp).state;
                             }
-                            if (shield.data.layers > 0) {
-                                state = setData(state, ref, {
-                                    ...shield.data,
-                                    layers: shield.data.layers - 1,
-                                });
-                                state = healSelf(state, self.host.id, healRatio);
-                                const current = getCurrentUnit(state, self.host);
-                                if (current !== undefined && hasSkill(current)) {
-                                    state = modify(state, unitRef(current), extraSp).state;
-                                }
-
-                                return {
-                                    state,
-                                    value: {
-                                        ...pending,
-                                        cancellation: {
-                                            reason: "MUDROCK_SHIELD",
-                                        },
-                                    },
-                                };
-                            }
-
-                            const sourceId = context.request.source?.id ?? null;
-                            const sarkazScale = hasSarkazTag(
-                                sourceId === null
-                                    ? undefined
-                                    : state.battlefield.units.get(sourceId),
-                            )
-                                ? 1 - sarkazResistance
-                                : 1;
-                            const blockingScale =
-                                sourceId !== null &&
-                                hasBlocker(host) &&
-                                blocked(state, unitRef(host)).some((ref) => ref.id === sourceId)
-                                    ? blockedDamageScale
-                                    : 1;
 
                             return {
                                 state,
                                 value: {
                                     ...pending,
-                                    amount: pending.amount * sarkazScale * blockingScale,
+                                    cancellation: {
+                                        reason: "MUDROCK_SHIELD",
+                                    },
                                 },
                             };
-                        },
-                    }),
-                },
+                        }
+
+                        const sourceId = context.request.source?.id ?? null;
+                        const sarkazScale = hasSarkazTag(
+                            sourceId === null ? undefined : state.battlefield.units.get(sourceId),
+                        )
+                            ? 1 - sarkazResistance
+                            : 1;
+                        const blockingScale =
+                            sourceId !== null &&
+                            hasBlocker(host) &&
+                            blocked(state, unitRef(host)).some((ref) => ref.id === sourceId)
+                                ? blockedDamageScale
+                                : 1;
+
+                        return {
+                            state,
+                            value: {
+                                ...pending,
+                                amount: pending.amount * sarkazScale * blockingScale,
+                            },
+                        };
+                    },
+                }),
             ]);
         },
         onDisable: (state, self) => {
@@ -212,12 +207,7 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
 
             return unit === undefined
                 ? state
-                : updateUnit(state, [
-                      {
-                          ...unit,
-                          vitality: removeHook(unit.vitality, `${SHIELD_ID}/${self.id}`),
-                      },
-                  ]);
+                : updateUnit(state, [removeHook(unitRef(unit), `${SHIELD_ID}/${self.id}`)]);
         },
         onTick(state, self) {
             const elapsed = state.tick - self.data.lastTick;

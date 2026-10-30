@@ -1,3 +1,5 @@
+import { setState, ref as skillRef } from "../../dist/core/unit/skill/index.js";
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { setHook, removeHook } from "../../dist/core/unit/capability/skill/capability.js";
@@ -24,7 +26,8 @@ for (const accepts of [true, false]) {
             hook("A", (battle) => {
                 seen.push("A");
                 const currentSkill2 = getUnit(battle, 1).skill;
-                return { state: setSkill(battle, setHook({ ...currentSkill2, state: { ready: true } }, "spRecovered", replacement)), value: undefined };
+                battle = setState(battle, skillRef({id:1}, currentSkill2.definition), { ready:true });
+                return { state: applyUnitChanges(battle, [setHook({ id: 1 }, "spRecovered", replacement)]), value: undefined };
             }),
             hook("B", (battle) => { seen.push("old B"); return { state: battle, value: undefined }; }, () => {
                 seen.push("old accepts");
@@ -44,7 +47,7 @@ test("Skill dispatch skips a removed candidate and continues with surviving IDs"
         hook("A", (battle) => {
             seen.push("A");
             const currentSkill4 = getUnit(battle, 1).skill;
-            return { state: setSkill(battle, removeHook(currentSkill4, "spRecovered", "B")), value: undefined };
+            return { state: applyUnitChanges(battle, [removeHook({ id: 1 }, "spRecovered", "B")]), value: undefined };
         }),
         hook("B", (battle) => { seen.push("B"); return { state: battle, value: undefined }; }),
         hook("C", (battle) => { seen.push("C"); return { state: battle, value: undefined }; }),
@@ -62,7 +65,7 @@ test("Skill dispatch defers a newly registered ID until a later dispatch", () =>
         hook("A", (battle) => {
             seen.push("A");
             const currentSkill6 = getUnit(battle, 1).skill;
-            return { state: setSkill(battle, setHook(currentSkill6, "spRecovered", added)), value: undefined };
+            return { state: applyUnitChanges(battle, [setHook({ id: 1 }, "spRecovered", added)]), value: undefined };
         }),
         hook("B", (battle) => { seen.push("B"); return { state: battle, value: undefined }; }),
     ] });
@@ -87,7 +90,7 @@ test("nested Skill dispatch independently selects current IDs and retains separa
             seen.push(["A", event.previous, event.current]);
             if (event.previous !== 0) return { state: battle, value: undefined };
             const currentSkill8 = getUnit(battle, 1).skill;
-            battle = setSkill(battle, setHook(currentSkill8, "spRecovered", added));
+            battle = applyUnitChanges(battle, [setHook({ id: 1 }, "spRecovered", added)]);
             return { state: sp.recover(battle, ref(self), "EXTERNAL", 1).state, value: undefined };
         }),
         hook("B", (battle, { event }) => {

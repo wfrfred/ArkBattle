@@ -175,7 +175,8 @@ test('base Unit has common fields while concrete content and guards provide capa
   const path = join(directory, 'content.mts');
   writeFileSync(path, `
 import type { Unit } from ${source('core/unit/index')};
-import { initialize } from ${source('core/unit/index')};
+import { initialize, ref } from ${source('core/unit/index')};
+import { setDefenseContribution } from ${source('core/unit/capability/vitality/index')};
 import type { State as BattleState } from ${source('core/battle/state')};
 import { update as updateUnit } from ${source('core/battle/unit')};
 import { hasVitality, type Vitality } from ${source('core/unit/capability/vitality/index')};
@@ -196,7 +197,10 @@ const hound = initialize(battle, { id: 2, position: [0, 0], definition: houndDef
 const crossbowman = initialize(battle, { id: 3, position: [0, 0], definition: crossbowmanDefinition }).value;
 const armed: readonly (Unit & Vitality & Offense)[] = [mudrock, melantha, hound, crossbowman];
 const next = { ...mudrock, vitality: { ...mudrock.vitality, hp: mudrock.vitality.hp - 1 } };
+updateUnit(battle, [setDefenseContribution(ref(mudrock), { id: 'typed', value: [] })]);
+// @ts-expect-error public updates only accept domain Changes, not complete Units.
 updateUnit(battle, [next]);
+// @ts-expect-error arbitrary capability fields cannot be submitted as Changes.
 updateUnit(battle, [{ ...mudrock, vitality: next.vitality }]);
 const captured = mudrock;
 const paired: Unit & Vitality & Offense = captured;

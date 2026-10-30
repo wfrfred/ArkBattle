@@ -1,3 +1,6 @@
+import * as blockerOperations from "../../dist/core/unit/capability/blocking/blocker-operations.js";
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { add as addUnit } from "../../dist/core/battle/unit.js";
@@ -12,15 +15,11 @@ import { fixture, holder, target, acquire, blockedIds, ownerId, capacity, hook }
 
 const onBlocker = (battle, id, key, entry) => {
     const currentUnit = getUnit(battle, id);
-    return replaceUnit(battle, {
-    ...currentUnit, blocker: blocker.setHook(currentUnit.blocker, key, entry),
-});
+    return applyUnitChanges(battle, [blockerOperations.setHook({ id: currentUnit.id }, key, entry)]);
 };
 const onBlockable = (battle, id, key, entry) => {
     const currentUnit2 = getUnit(battle, id);
-    return replaceUnit(battle, {
-    ...currentUnit2, blockable: blockable.setHook(currentUnit2.blockable, key, entry),
-});
+    return applyUnitChanges(battle, [blockableOperations.setHook({ id: currentUnit2.id }, key, entry)]);
 };
 
 test("a failed acquire does not create transient relations or notifications", () => {
@@ -79,7 +78,7 @@ test("later candidates are checked against live eligibility and live ownership",
     let battle = fixture([holder(10, { capacity: 3 }), holder(11, { capacity: 3 }), target(20), target(21), target(22)]);
     battle = onBlocker(battle, 10, "acquired", hook("alter-candidates", (state, { relation }) => {
         if (relation.blocked.id !== 20) return state;
-        state = blockableOperations.setRule(state, { id: 21 }, { id: "disabled", allows: () => false });
+        state = applyUnitChanges(state, [blockableOperations.setRule({ id: 21 }, { id: "disabled", allows: () => false })]);
         return acquire(state, 11);
     }));
     battle = acquire(battle);
@@ -190,11 +189,11 @@ test("a nested release stops the old relation's acquired Hooks without leaving c
     battle = onBlockable(battle, 20, "released", hook("released", (state, { relation }) => {
         order.push("blockable released");
         assert.equal(relation.blocked, acquiredRelation.blocked);
-        return blockableOperations.removeVolumeContribution(state, { id: 20 }, "relation-volume");
+        return applyUnitChanges(state, [blockableOperations.removeVolumeContribution({ id: 20 }, "relation-volume")]);
     }));
     battle = onBlockable(battle, 20, "acquired", hook("install-contribution", state => {
         order.push("blockable acquired");
-        return blockableOperations.setVolumeContribution(state, { id: 20 }, { id: "relation-volume", value: 1 });
+        return applyUnitChanges(state, [blockableOperations.setVolumeContribution({ id: 20 }, { id: "relation-volume", value: 1 })]);
     }));
     battle = acquire(battle);
     assert.deepEqual(order, ["blocker acquired", "blocker released", "blockable released"]);

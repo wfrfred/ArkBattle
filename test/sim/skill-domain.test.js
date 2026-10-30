@@ -1,7 +1,8 @@
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { fixtureBattle, getUnit, initialize } from "../helpers/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+import { replace as updateUnit } from "../../dist/core/battle/unit.js";
 
 import * as skills from "../../dist/core/unit/skill/operations.js";
 import { create } from "../../dist/core/unit/skill/initialize.js";
@@ -166,7 +167,7 @@ test("active recovery is a removable default Rule and payment remains legal duri
     state = sp.pay(state, f.ref, 1).state;
     assert.equal(read(state).sp.value, 2);
     const currentSkill11 = getUnit(state, 1).skill;
-    state = setSkill(state, removeRule(currentSkill11, "@skill/active-recovery"));
+    state = applyUnitChanges(state, [removeRule({ id: 1 }, "@skill/active-recovery")]);
     state = sp.recover(state, f.ref, "TIME", 1).state;
     assert.equal(read(state).sp.value, 3);
     assert.equal(read(state).activation.status, "ACTIVE");
@@ -236,22 +237,19 @@ test("a paused zero-HP host still applies natural speed changes and zero-rate in
     let state = sp.advance(at(effectFixtureWork(unit), 12), reference);
     const current = getUnit(state, 1);
     state = updateUnit(state, [{ ...current, vitality: { ...current.vitality, hp: 0 } }]);
-    const currentSkill14 = getUnit(state, 1).skill;
-    state = setSkill(state, { ...currentSkill14, sp: sp.setContribution(currentSkill14.sp, "recoverySpeed", {
+    state = applyUnitChanges(state, [sp.setContribution(reference, "recoverySpeed", {
         id: "double", value: [value({ finalScaler: 2 })],
-    }) });
+    })]);
     state = sp.advance(at(state, 100), reference);
     assert.deepEqual(read(state).sp.recovery, { periodTicks: 15, remainingTicks: 3 });
     assert.equal(read(state).sp.lastTick, 100);
-    const currentSkill15 = getUnit(state, 1).skill;
-    state = setSkill(state, { ...currentSkill15, sp: sp.setContribution(currentSkill15.sp, "recoveryMultiplier", {
+    state = applyUnitChanges(state, [sp.setContribution(reference, "recoveryMultiplier", {
         id: "zero", value: [value({ finalScaler: 0 })],
-    }) });
+    })]);
     state = sp.advance(at(state, 200), reference);
     assert.equal(read(state).sp.recovery, null);
     assert.equal(read(state).sp.lastTick, 200);
-    const currentSkill16 = getUnit(state, 1).skill;
-    state = setSkill(state, { ...currentSkill16, sp: sp.removeContribution(currentSkill16.sp, "recoveryMultiplier", "zero") });
+    state = applyUnitChanges(state, [sp.removeContribution(reference, "recoveryMultiplier", "zero")]);
     state = sp.advance(at(state, 300), reference);
     assert.deepEqual(read(state).sp.recovery, { periodTicks: 15, remainingTicks: 15 });
     assert.equal(read(state).sp.value, 0);
@@ -286,10 +284,9 @@ test("a long natural advance stops its timer when the first pulse fills SP", () 
 test("natural speed changes preserve absolute elapsed time instead of a completion fraction", () => {
     const f = fixture({ sp: resource() });
     let state = skills.advance(at(f.state, 12), f.ref);
-    const currentSkill17 = getUnit(state, 1).skill;
-    state = setSkill(state, { ...currentSkill17, sp: { ...currentSkill17.sp, recoverySpeed: [
-        { id: "double", value: [value({ finalScaler: 2 })] },
-    ] } });
+    state = applyUnitChanges(state, [sp.setContribution(f.ref, "recoverySpeed", {
+        id: "double", value: [value({ finalScaler: 2 })],
+    })]);
     state = skills.advance(state, f.ref);
     assert.equal(read(state).sp.recovery.periodTicks, 15);
     assert.equal(read(state).sp.recovery.remainingTicks, 3);
@@ -300,15 +297,13 @@ test("natural speed changes preserve absolute elapsed time instead of a completi
 test("zero natural speed invalidates the timer and resumption starts a full period", () => {
     const f = fixture({ sp: resource() });
     let state = skills.advance(at(f.state, 12), f.ref);
-    const currentSkill18 = getUnit(state, 1).skill;
-    state = setSkill(state, { ...currentSkill18, sp: { ...currentSkill18.sp, recoveryMultiplier: [
-        { id: "zero", value: [value({ finalScaler: 0 })] },
-    ] } });
+    state = applyUnitChanges(state, [sp.setContribution(f.ref, "recoveryMultiplier", {
+        id: "zero", value: [value({ finalScaler: 0 })],
+    })]);
     state = skills.advance(state, f.ref);
     assert.equal(read(state).sp.recovery, null);
     const currentBattle2 = at(state, 100);
-    const currentSkill19 = getUnit(currentBattle2, 1).skill;
-    state = setSkill(currentBattle2, { ...currentSkill19, sp: { ...currentSkill19.sp, recoveryMultiplier: [] } });
+    state = applyUnitChanges(currentBattle2, [sp.removeContribution(f.ref, "recoveryMultiplier", "zero")]);
     state = skills.advance(state, f.ref);
     assert.equal(read(state).sp.recovery.remainingTicks, 30);
     state = skills.advance(at(state, 129), f.ref);
@@ -443,12 +438,12 @@ test("non-TIME recovery does not evaluate natural speed or publish tick-only Uni
     for (const type of ["ACTION", "HIT", "NONE"]) {
         const recovery = type === "NONE" ? { type } : { type, amount: 1 };
         const f = fixture({ sp: resource({ recovery }) });
-        const current = read(f.state);
-        const skill = { ...current, sp: sp.setContribution(current.sp, "recoverySpeed", {
+        const updated = applyUnitChanges(f.state, [sp.setContribution(f.ref, "recoverySpeed", {
             id: "unexpected-natural-speed",
             value: () => assert.fail(`${type} must not resolve natural recovery speed`),
-        }) };
-        const state = at(setSkill(f.state, skill), 90);
+        })]);
+        const skill = read(updated);
+        const state = at(updated, 90);
         assert.equal(sp.advance(state, f.ref), state);
         assert.equal(read(state), skill);
         assert.equal(read(state).sp.lastTick, 0);

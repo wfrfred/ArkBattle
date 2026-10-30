@@ -1,3 +1,5 @@
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
 import { lifetime as actionLifetime } from "../../dist/core/unit/action/operations.js";
@@ -15,16 +17,16 @@ import { initialize as initializeBattle, step as stepBattle } from "../../dist/c
 import { createLegacyCombatSpec } from "../../dist/legacy/combat.js";
 
 import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+import { replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { actionCapability } from "../helpers/actions.js";
 import { advance as advanceCombat } from "../../dist/core/battle/steps/combat.js";
 import { search as acquireBlocking, maintain as maintainBlocking } from "../../dist/core/battle/blocking/index.js";
-import { setHook as setBlockerHook } from "../../dist/core/unit/capability/blocking/blocker.js";
+import { setHook as setBlockerHook } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import { setRule as setBlockerRule } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
-import { setSpeedContribution } from "../../dist/core/unit/capability/action/capability.js";
+import { setSpeedContribution } from "../../dist/core/unit/capability/action/index.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 
 function spec(initialUnits) {
@@ -100,25 +102,21 @@ test("cooldown refresh leaves Blocking maintenance explicit instead of treating 
     const target = unit(1, { blockable: { volume: 1 } });
     const reference = unitRef(source);
     let initial = battle(source, target);
-    initial = setBlockerRule(initial, reference, {
+    initial = applyUnitChanges(initial, [setBlockerRule(reference, {
         id: "blocking-during-long-period",
         allows: (_battle, host) => host.action.actions.get(definition.id).cooldown.periodTicks >= 10,
-    });
+    })]);
     const current = getUnit(initial, source.id);
-    initial = updateUnit(initial, [{
-        ...current,
-        action: setSpeedContribution(current.action, {
+    initial = applyUnitChanges(initial, [setSpeedContribution({ id: current.id }, {
             id: "tick-speed",
             value: state => [modifier({ addition: state.tick >= 11 ? 100 : 0 })],
-        }),
-        blocker: setBlockerHook(current.blocker, "released", {
+        }), setBlockerHook({ id: current.id }, "released", {
             id: "remove-on-release",
             invoke(state, context) {
                 periods.push(actions.getAction(state, actions.ref(context.host, definition)).cooldown.periodTicks);
                 return { state: remove(state, context.host.id, "SCRIPT"), value: undefined };
             },
-        }),
-    }]);
+        })]);
     initial = acquireBlocking(initial, reference);
     assert.deepEqual(getUnit(initial, source.id).blocker.blocked.map(ref => ref.id), [target.id]);
 

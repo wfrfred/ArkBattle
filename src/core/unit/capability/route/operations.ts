@@ -1,6 +1,6 @@
 import { Vec2 } from "../../../common/vector.js";
-import { update as updateUnit } from "../../../battle/unit.js";
-import { maintain } from "../../../battle/blocking/operations.js";
+import { replace as replaceUnit } from "../../../battle/unit.js";
+import { maintainRelations } from "../../../battle/blocking/operations.js";
 import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState } from "../../../battle/state.js";
@@ -42,7 +42,7 @@ export function setPathMotionMode(
 
     return progress.pathMotionMode === mode
         ? battle
-        : updateUnit(battle, [
+        : replaceUnit(battle, [
               {
                   ...self,
                   route: { ...self.route, [slot]: { ...progress, pathMotionMode: mode } },
@@ -62,7 +62,7 @@ export function setAlternative(
 
     const initialized = initialize(battle, definition);
 
-    return updateUnit(initialized.state, [
+    return replaceUnit(initialized.state, [
         {
             ...self,
             route: { ...self.route, alternative: initialized.value.main },
@@ -75,7 +75,7 @@ export function clearAlternative(battle: BattleState, ref: Ref<Unit & Route>): B
 
     return self?.lifecycle !== "PRESENT" || self.route.alternative === null
         ? battle
-        : updateUnit(battle, [{ ...self, route: { ...self.route, alternative: null } }]);
+        : replaceUnit(battle, [{ ...self, route: { ...self.route, alternative: null } }]);
 }
 
 function atEnd(self: Unit, progress: Progress): boolean {
@@ -104,7 +104,7 @@ function replace(
 ): BattleState {
     const slot = self.route.alternative === progress ? "alternative" : "main";
 
-    return updateUnit(battle, [
+    return replaceUnit(battle, [
         {
             ...self,
             route: { ...self.route, [slot]: { ...progress, phase } },
@@ -207,7 +207,10 @@ export function advance(battle: BattleState, ref: Ref<Unit & Route>): BattleStat
                 signal = { type: "APPEAR_AT_POS", position };
                 battle = hasSpatialPresence(self)
                     ? presence.appear(battle, units.ref(self), position)
-                    : maintain(updateUnit(battle, [{ ...units.get(battle, ref)!, position }]));
+                    : maintainRelations(
+                          replaceUnit(battle, [{ ...units.get(battle, ref)!, position }]),
+                          ref,
+                      );
             } else {
                 signal = checkpoint;
             }

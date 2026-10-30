@@ -1,3 +1,5 @@
+import { set as setFixtureEntry } from "../../dist/core/hook.js";
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { tiles as tileEntries } from "../helpers/tiles.js";
 import * as blockingQueries from "../../dist/core/battle/blocking/query.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
@@ -25,17 +27,17 @@ import { damage as damageFixture, healing as healingFixture } from "../helpers/t
 import { topK } from "../../dist/core/common/collection.js";
 import { setMaxHpContribution } from "../../dist/core/unit/capability/vitality/capability.js";
 import { select as selectTargets } from "../../dist/core/battle/targeting/index.js";
-import { setRestriction, allowsRestrictions } from "../../dist/core/unit/capability/targetable/capability.js";
+import { allowsRestrictions } from "../../dist/core/unit/capability/targetable/capability.js";
 import { invincible, healFree } from "../../dist/content/effects/protection.js";
 import { invisible, camouflage, untargetable, allyUntargetable } from "../../dist/content/effects/visibility.js";
 import { installFixtureEffect } from "../helpers/effects.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { healing } from "../helpers/vitality.js";
-import { setHook as setDamageHook } from "../../dist/core/battle/damage/hook.js";
+
 import { setCapacityContribution } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import * as modifier from "../../dist/core/unit/contribution/attribute.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+import { replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 
 const executeSingleAction = (source, definition, context) => {
@@ -337,14 +339,13 @@ test('core combat: immutable updates preserve earlier combat state', () => {
     action: { ...operator.action, actions: operator.action.actions.replace(currentAction.definition, { ...currentAction, cooldown: { ...currentAction.cooldown, readyAtTick: 999999 } }) },
     allegiance: { ...operator.allegiance, side: 'ENEMY' },
     layer: { ...operator.layer, type: 'AIR' },
-    targetable: setRestriction(operator.targetable,
-      { id: 'changed-targeting', value: { kind: Symbol('changed-targeting'), allows: () => false } }),
+    targetable: { ...operator.targetable, restrictions: setFixtureEntry(operator.targetable.restrictions, { id: 'changed-targeting', value: { kind: Symbol('changed-targeting'), allows: () => false } }) },
     vitality: { ...operator.vitality, hp: 0 },
   };
   const updated = updateUnit(previous, [changed]);
-  const draft = setCapacityContribution(updated, unitRef(changed), {
+  const draft = applyUnitChanges(updated, [setCapacityContribution(unitRef(changed), {
     id: 'disabled-capacity', value: [{ type: 'ZERO' }],
-  });
+  })]);
   assert.equal(unitQueries.get(draft, { id: 0 }).definition, changed.definition);
   assert.deepEqual(unitQueries.get(draft, { id: 0 }).blocker.blocked, []);
   assert.deepEqual(blockingQueries.relations(draft).map(({ blocker, blocked }) => ([blocker.id, blocked.id])), []);
@@ -536,13 +537,13 @@ test('core vitality: invincibility rejects receiving before HIT SP and removing 
     id: 'hit-sp', sp: { initial: 0, capacity: 10, requirement: 10, recovery: { type: 'HIT', amount: 1 } },
     activation: { trigger: 'MANUAL', sustain: { type: 'INFINITE' }, initialize: () => ({}) },
   }) });
-  const target = { ...protectedTarget, vitality: setDamageHook(protectedTarget.vitality, {
+  const target = { ...protectedTarget, vitality: { ...protectedTarget.vitality, damageHooks: setFixtureEntry(protectedTarget.vitality.damageHooks, {
     id: 'observe-reception', stage: 'receiving', priority: 0,
     invoke(state, context, pending) {
       observed.push(getUnit(state, context.request.target.id).skill.sp.value);
       return { state, value: pending };
     },
-  }) };
+  }) } };
   const state = enterSkill(createBattleState(fixtureBattlefieldState([target])), unitRef(target));
   const request = { source: null, target: unitRef(target), parameters: parameters(10, 'TRUE') };
   const blocked = dealDamage(state, request);
@@ -566,7 +567,7 @@ test('core vitality: nested direct healing ignores target selection restrictions
     const original = actionUnit(1, 'ENEMY', [1, 0], {
       hp: 40, effects: installedInitially ? [healFree] : [],
     });
-    const target = { ...original, vitality: setDamageHook(original.vitality, {
+    const target = { ...original, vitality: { ...original.vitality, damageHooks: setFixtureEntry(original.vitality.damageHooks, {
       id: 'change-healing-restriction', stage: 'receiving', priority: 0,
       invoke(state, context, pending) {
         if (installedInitially) {
@@ -579,7 +580,7 @@ test('core vitality: nested direct healing ignores target selection restrictions
           parameters: { power: 30, multiplier: 1 } }).state;
         return { state, value: pending };
       },
-    }) };
+    }) } };
     const state = createBattleState(fixtureBattlefieldState([target]));
     const resolved = dealDamage(state, { source: null, target: unitRef(target), parameters: parameters(60, 'TRUE') });
 
@@ -632,11 +633,11 @@ test('core targeting uses static definition hitboxes and current layer', () => {
 test('core targeting: default healing eligibility and ordering use effective MaxHP', () => {
   const source = actionUnit(0, 'ALLY', [0, 0]);
   const base = actionUnit(1, 'ALLY', [1, 0]);
-  const enlarged = { ...base, vitality: {
-    ...setMaxHpContribution(base.vitality, base.definition.vitality, {
-      id: 'equipment', value: [modifier.create({ finalAddition: 300 })],
-    }), hp: 100,
-  } };
+  const enlargedState = applyUnitChanges(createBattleState(fixtureBattlefieldState([base])), [setMaxHpContribution(unitRef(base), {
+    id: 'equipment', value: [modifier.create({ finalAddition: 300 })],
+  })]);
+  const enlargedValue = unitQueries.get(enlargedState, unitRef(base));
+  const enlarged = { ...enlargedValue, vitality: { ...enlargedValue.vitality, hp:100 } };
   const ordinary = actionUnit(2, 'ALLY', [2, 0], { hp: 40 });
   const flooredBase = actionUnit(3, 'ALLY', [3, 0]);
   const floored = initialize({ id: 3, position: flooredBase.position, definition: {

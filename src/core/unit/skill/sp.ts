@@ -12,8 +12,9 @@ import * as contribution from "../contribution/contribution.js";
 import * as attribute from "../contribution/attribute.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import type { Skill } from "../capability/skill/capability.js";
-import { update as updateUnit } from "../../battle/unit.js";
+import { replace as replaceUnits } from "../../battle/unit.js";
 import { dispatch } from "../capability/skill/hook.js";
+import { createChange, type Change } from "../change.js";
 
 export type Source = "TIME" | "ACTION" | "HIT" | "EXTERNAL";
 
@@ -77,19 +78,41 @@ export type Outcome =
       };
 
 export function setContribution(
-    state: State,
+    reference: Ref<Unit & Skill>,
     key: Parameter,
     entry: contribution.Contribution<Input>,
-): State {
-    const updated = contribution.set(state[key], entry);
+): Change {
+    return createChange(reference, (self) => {
+        const sp = self.skill.sp;
+        if (sp === null) {
+            return self;
+        }
 
-    return updated === state[key] ? state : { ...state, [key]: updated };
+        const updated = contribution.set(sp[key], entry);
+
+        return updated === sp[key]
+            ? self
+            : { ...self, skill: { ...self.skill, sp: { ...sp, [key]: updated } } };
+    });
 }
 
-export function removeContribution(state: State, key: Parameter, id: string): State {
-    const updated = contribution.remove(state[key], id);
+export function removeContribution(
+    reference: Ref<Unit & Skill>,
+    key: Parameter,
+    id: string,
+): Change {
+    return createChange(reference, (self) => {
+        const sp = self.skill.sp;
+        if (sp === null) {
+            return self;
+        }
 
-    return updated === state[key] ? state : { ...state, [key]: updated };
+        const updated = contribution.remove(sp[key], id);
+
+        return updated === sp[key]
+            ? self
+            : { ...self, skill: { ...self.skill, sp: { ...sp, [key]: updated } } };
+    });
 }
 
 export function validateDefinition(definition: Definition): void {
@@ -210,7 +233,7 @@ export function recover(
         previous: state.value,
         current: state.value + gained,
     };
-    battle = updateUnit(battle, [
+    battle = replaceUnits(battle, [
         {
             ...self,
             skill: { ...self.skill, sp: { ...state, value: event.current } },
@@ -250,7 +273,7 @@ export function pay(battle: BattleState, ref: Ref<Unit & Skill>, amount?: number
         previous: state.value,
         current: state.value - cost,
     };
-    battle = updateUnit(battle, [
+    battle = replaceUnits(battle, [
         {
             ...self,
             skill: { ...self.skill, sp: { ...state, value: event.current } },
@@ -293,7 +316,7 @@ export function modify(
     }
 
     const event: Modified = { delta, amount, forced, previous: state.value, current };
-    battle = updateUnit(battle, [
+    battle = replaceUnits(battle, [
         {
             ...self,
             skill: { ...self.skill, sp: { ...state, value: current } },
@@ -361,7 +384,7 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
     }
 
     const next = { ...state, recovery, lastTick: battle.tick };
-    battle = updateUnit(battle, [{ ...self, skill: { ...self.skill, sp: next } }]);
+    battle = replaceUnits(battle, [{ ...self, skill: { ...self.skill, sp: next } }]);
 
     return pulses === 0 ? battle : recover(battle, ref, "TIME", pulses).state;
 }

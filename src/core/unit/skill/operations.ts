@@ -1,5 +1,5 @@
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
-import { update as updateUnit } from "../../battle/unit.js";
+import { replace as replaceUnits, update } from "../../battle/unit.js";
 import type { Identified, Ref } from "../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../battle/state.js";
 import * as lifetimes from "../../lifetime/index.js";
@@ -183,7 +183,7 @@ export function activate<S extends object, A extends object>(
     };
     const nextActivationId = active.activation.id + 1;
 
-    battle = updateUnit(battle, [
+    battle = replaceUnits(battle, [
         {
             ...unit,
             skill: {
@@ -258,7 +258,7 @@ export const lifetime = lifetimes.create<Activation, Activation<any, any>, End>(
             self.definition.activation!.onEnd?.(battle, reference.host, self, ending) ?? battle;
 
         const host = units.get(battle, reference.host)!;
-        battle = updateUnit(battle, [{ ...host, skill: { ...host.skill, activation: null } }]);
+        battle = replaceUnits(battle, [{ ...host, skill: { ...host.skill, activation: null } }]);
         battle = appendEvents(battle, [
             {
                 type: "SKILL_FINISHED",
@@ -372,14 +372,9 @@ export function enter(battle: BattleState, host: Ref<Unit & SkillCapability>): B
 
     const definition = unit.skill.definition;
     if (hasVitality(unit) && definition.sp?.recovery.type === "HIT") {
-        const updated = { ...unit, vitality: setDamageHook(unit.vitality, hitRecovery) };
-        battle = updateUnit(battle, [updated]);
+        battle = update(battle, [setDamageHook(units.ref(unit), hitRecovery)]);
     } else if (hasAction(unit) && definition.sp?.recovery.type === "ACTION") {
-        const updated = {
-            ...unit,
-            action: setReleasedHook(unit.action, actionRecovery),
-        };
-        battle = updateUnit(battle, [updated]);
+        battle = update(battle, [setReleasedHook(units.ref(unit), actionRecovery)]);
     }
 
     unit = units.get(battle, host);
@@ -422,7 +417,7 @@ export function extendTime<X extends Activation<any, any>>(
 
     const endsAtTick = Math.max(battle.tick, active.sustain.endsAtTick + ticks);
 
-    return updateUnit(battle, [
+    return replaceUnits(battle, [
         {
             ...unit,
             skill: {
@@ -459,7 +454,7 @@ function replaceSkill<S extends object, A extends object>(
     unit: Unit & SkillCapability,
     self: Skill<S, A> | Activation<S, A>,
 ): BattleState {
-    return updateUnit(battle, [
+    return replaceUnits(battle, [
         {
             ...unit,
             skill: {

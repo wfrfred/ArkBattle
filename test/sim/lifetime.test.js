@@ -1,3 +1,6 @@
+import { set as setFixtureEntry } from "../../dist/core/hook.js";
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import * as effects from "../../dist/core/unit/effect/index.js";
@@ -6,8 +9,8 @@ import { setHook } from "../../dist/core/unit/capability/skill/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { available, scope } from "../../dist/core/lifetime/index.js";
 import { key } from "../../dist/core/lifetime/dependency.js";
-import { remove, update, lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
-import { setHook as setBlockerHook } from "../../dist/core/unit/capability/blocking/blocker.js";
+import { remove, replace as update, lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
+import { setHook as setBlockerHook } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import { setRule } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import { initialize, getUnit } from "../helpers/unit.js";
 import { effectFixtureWork, definition } from "../helpers/effects.js";
@@ -57,7 +60,7 @@ test("a removed Activation still delays its owner until the entire activationEnd
         return { state: battle, value: undefined };
     } }] });
     let battle = effectFixtureWork(host);
-    battle = update(battle, [{ ...host, skill: setHook(host.skill, "activationEnded", {
+    battle = applyUnitChanges(battle, [setHook({ id: host.id }, "activationEnded", {
         id: "remove-owner-after-slot-clear",
         invoke(current, { host, event }) {
             assert.equal(skills.getActivation(current, event.ref), undefined);
@@ -69,7 +72,7 @@ test("a removed Activation still delays its owner until the entire activationEnd
             trace.push("activationEnded:return");
             return { state: current, value: undefined };
         },
-    }) }]);
+    })]);
     const started = skills.activate(battle, skillRef(getUnit(battle, 1)));
     assert.equal(started.value.type, "ACTIVATED");
     battle = skills.finish(started.state, started.value.ref);
@@ -84,7 +87,7 @@ test("explicit Effect cleanup exposes Pending before a Blocking Hook requests th
     const content = definition("blocking-lifetime", {}, {
         onDisable(battle, self) {
             trace.push("prepare");
-            return setRule(battle, self.host, { id: "release-on-ending", allows: () => false });
+            return applyUnitChanges(battle, [setRule(self.host, { id: "release-on-ending", allows: () => false })]);
         },
         onEnd(battle) {
             assert.equal(getUnit(battle, 10).lifecycle, "LEAVING");
@@ -99,7 +102,7 @@ test("explicit Effect cleanup exposes Pending before a Blocking Hook requests th
         },
     }] } }), target()]);
     const host = getUnit(battle, 10);
-    const blocker = setBlockerHook(host.blocker, "released", hook("reenter-publication", current => {
+    const blocker = { ...host.blocker, released: setFixtureEntry(host.blocker.released, hook("reenter-publication", current => {
         trace.push("publish");
         assert.equal(current.lifetime.settling, true);
         assert.equal(current.lifetime.endings.get(key(scope(effects.lifetime, reference))).phase, "PREPARING");
@@ -110,7 +113,7 @@ test("explicit Effect cleanup exposes Pending before a Blocking Hook requests th
         assert.equal(getUnit(current, 10).lifecycle, "LEAVING");
         assert.deepEqual(trace, ["prepare", "publish"]);
         return current;
-    }));
+    })) };
     battle = acquire(update(battle, [{ ...host, blocker }]));
     assert.equal(getUnit(battle, 10).blocker.blocked.length, 1);
     const installed = effects.install(battle, { id: 10 }, content);
@@ -233,9 +236,7 @@ test("Unit ENDING publication rejects remote dependencies on its still RUNNING A
     const independent = effects.install(active, { id: 1 }, definition("independent"));
     const owner = getUnit(independent.state, 10);
     let calls = 0;
-    const battle = remove(update(independent.state, [{
-        ...owner,
-        blocker: setBlockerHook(owner.blocker, "released", hook("admit-during-unit-end", current => {
+    const battle = remove(applyUnitChanges(independent.state, [setBlockerHook({ id: owner.id }, "released", hook("admit-during-unit-end", current => {
             calls++;
             assert.equal(getUnit(current, 10).lifecycle, "LEAVING");
             assert.equal(current.lifetime.endings.get(key(scope(unitLifetime, { id: 10 }))).phase, "PREPARING");
@@ -255,8 +256,7 @@ test("Unit ENDING publication rejects remote dependencies on its still RUNNING A
             assert.equal(bound.state, current);
             assert.equal(free.value.id, nextId);
             return free.state;
-        })),
-    }]), 10, "DEATH");
+        }))]), 10, "DEATH");
     assert.equal(calls, 1);
     assert.equal(getUnit(battle, 10), undefined);
     assert.equal(getUnit(battle, 1).effects.size, 2);

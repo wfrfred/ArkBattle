@@ -1,3 +1,5 @@
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { remove as endUnit } from "../../dist/core/battle/unit.js";
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
 import { lifetime as effectLifetime } from "../../dist/core/unit/effect/operations.js";
@@ -9,7 +11,7 @@ import { ref as unitRef } from "../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize } from "../helpers/unit.js";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+import { replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 
 import {
@@ -249,9 +251,7 @@ test("effect lifetimes: terminal hook cleanup cannot recreate a host killed by a
         {},
         {
             onInstall(state, self) {
-                return updateUnit(
-                    state,
-                    [({ ...unitQueryGet(state, self.host), vitality: setHook(unitQueryGet(state, self.host).vitality, {
+                return applyUnitChanges(state, [setHook({ id: unitQueryGet(state, self.host).id }, {
                         id: "parent-hook",
                         stage: "completed",
                         priority: 0,
@@ -259,14 +259,13 @@ test("effect lifetimes: terminal hook cleanup cannot recreate a host killed by a
                         invoke(state) {
                             return { state, value: undefined };
                         },
-                    }) })],
-                );
+                    })]);
             },
             onEnd(state, self) {
                 const host = getUnit(state, self.host.id);
                 return host === undefined
                     ? state
-                    : updateUnit(state, [({ ...host, vitality: removeHook(host.vitality, "parent-hook") })]);
+                    : applyUnitChanges(state, [removeHook({ id: host.id }, "parent-hook")]);
             },
         },
     );

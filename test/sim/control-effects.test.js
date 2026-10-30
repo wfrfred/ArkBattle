@@ -7,7 +7,7 @@ import { unit, battle } from "../helpers/action-fixture.js";
 import { stun } from "../../dist/content/effects/stun.js";
 import { silence, blockSpRecovery } from "../../dist/content/effects/control.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+import { replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { advance as advanceLocomotion } from "../../dist/core/unit/capability/locomotion/index.js";

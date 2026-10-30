@@ -1,6 +1,7 @@
+import { notify } from "../../dist/core/battle/occupancy.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { add, remove, update } from "../../dist/core/battle/unit.js";
+import { add, remove, replace as update } from "../../dist/core/battle/unit.js";
 import { at } from "../../dist/core/battlefield/occupancy.js";
 import { fixtureBattle, getUnit, initialize } from "../helpers/unit.js";
 
@@ -88,7 +89,10 @@ test("support entry and withdrawal notify an occupant that remains in place", ()
     let battle = add(fixtureBattle(), occupant());
     battle = add(battle, provider);
     originalSupport = getUnit(battle, 10);
+    const previous = battle.battlefield;
     battle = update(battle, [{ ...originalSupport, occupancy: { tile: null } }]);
+    assert.deepEqual(calls, [["added", 10, 20]], "raw publication does not dispatch support notifications");
+    battle = notify(battle, previous, battle.battlefield, [10]);
     assert.deepEqual(calls, [["added", 10, 20], ["removed", 10, 20]]);
     assert.equal(at(battle.battlefield, tile).occupant.id, 20);
 });
@@ -110,10 +114,13 @@ test("replacing a support dispatches the old removal before the new addition", (
     let battle = add(fixtureBattle(), occupant());
     battle = add(battle, provider);
     battle = add(battle, replacement);
+    const previous = battle.battlefield;
     battle = update(battle, [
         { ...getUnit(battle, 10), occupancy: { tile: null } },
         { ...getUnit(battle, 11), occupancy: { tile } },
     ]);
+    assert.deepEqual(calls, [], "publication and occupancy notification are separate Core steps");
+    battle = notify(battle, previous, battle.battlefield, [10,11]);
     assert.deepEqual(calls, [["removed", 10, 20], ["added", 11, 20]]);
     assert.equal(getUnit(battle, 20).lifecycle, "PRESENT");
 });

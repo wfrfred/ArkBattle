@@ -4,7 +4,7 @@ Elemental 负责元素值、元素损伤与治疗、一次爆发的身份和冷�
 
 Unit Definition 直接关联共享的 Elemental Definition，Content 提供爆发程序。
 
-公开类型、查询和业务操作从 [elemental/index.ts](../../src/core/unit/capability/elemental/index.ts) 导入，包括供内容读取基础在场资格的 available。下文 operations／query 表示实现职责；完整宿主写回已从 query.ts 移入 operations.ts 的私有 replaceHost，不作为公共内容操作。
+公开类型、查询和业务操作从 [elemental/index.ts](../../src/core/unit/capability/elemental/index.ts) 导入，包括只读的 available。Capability 的 Rule、Hook 与属性贡献 set／remove 绑定 Ref<Unit & Elemental> 返回 Change，交给 Unit.update 登记，不由 Content 重建 Unit。爆发、损伤与恢复等完整操作保持 BattleState 协议；operations.ts 的私有 replaceHost 通过内部 Unit.replace 写回，不作为公开内容接口，query.ts 只负责查询。
 
 ## 1. 能力与定义
 

@@ -1,3 +1,5 @@
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import * as damage from "../../dist/core/battle/damage/hook.js";
@@ -6,7 +8,7 @@ import { calculateDamage } from "../../dist/core/battle/damage/calculate.js";
 import { applyDamage } from "../../dist/core/battle/damage/apply.js";
 import { calculateHealing } from "../../dist/core/battle/healing/calculate.js";
 import { applyHealing } from "../../dist/core/battle/healing/apply.js";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+import { replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { initialize } from "../helpers/unit.js";
 import { effectFixtureWork } from "../helpers/effects.js";
@@ -44,7 +46,7 @@ for (const [domain, registry] of [["damage", damage], ["healing", healing]]) {
                     seen.push("A");
                     state = domain === "damage" ? heal(state, healingRequest(10)).state
                         : setVitality(state, { ...getUnit(state, 0).vitality, hp: 60 });
-                    return { state: setVitality(state, registry.setHook(getUnit(state, 0).vitality, replacement)), value: current };
+                    return { state: applyUnitChanges(state, [registry.setHook({id:0}, replacement)]), value: current };
                 }, 10, () => true, stage),
                 hook("B", (state, _context, current) => { seen.push("old B"); return { state, value: current }; }, 1,
                     () => { seen.push("old enabled"); return !enabled; }, stage),
@@ -63,7 +65,7 @@ for (const [domain, registry] of [["damage", damage], ["healing", healing]]) {
             () => assert.fail("a replacement in another stage cannot check enabled"), "output");
         const original = fixture(domain, [
             hook("A", (state, _context, current) => {
-                seen.push("A"); return { state: setVitality(state, registry.setHook(getUnit(state, 0).vitality, replacement)), value: current };
+                seen.push("A"); return { state: applyUnitChanges(state, [registry.setHook({id:0}, replacement)]), value: current };
             }, 10, () => true, stage),
             hook("B", () => assert.fail("the replaced program cannot run"), 1, () => true, stage),
             hook("C", (state, _context, current) => { seen.push("C"); return { state, value: current }; }, 0, () => true, stage),
@@ -176,7 +178,7 @@ test("healing dispatch fixes candidate IDs while newly registered entries join t
     const initial = fixture("healing", [
         hook("first", (battle, _context, current) => {
             calls.push("first");
-            return { state: setVitality(battle, healing.setHook(getUnit(battle, 0).vitality, later)), value: current };
+            return { state: applyUnitChanges(battle, [healing.setHook({ id: 0 }, later)]), value: current };
         }),
         hook("second", (battle, _context, current) => {
             calls.push("second"); return { state: battle, value: current };

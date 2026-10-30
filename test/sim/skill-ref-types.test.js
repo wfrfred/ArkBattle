@@ -79,7 +79,7 @@ const incompleteActivation = { trigger: "MANUAL" as const, sustain: { type: "INF
 initializeSkill(battle, { initialize: current => ({ state: current, value: { definition: { ...definition, activation: incompleteActivation }, state: { count: 0 }, sp: null, activation: null } }) });
 const state = initializeSkill(battle, factory).value;
 type CommonState = Assert<Equal<typeof state, State>>;
-setHook(state, "activationStarted", {
+setHook(sourceRef, "activationStarted", {
     id: "public-start-report",
     invoke(current, { event }) {
         type Report = Assert<Equal<typeof event, ActivationStarted>>;
@@ -94,7 +94,7 @@ setHook(state, "activationStarted", {
         return { state: current, value: undefined };
     },
 });
-setHook(state, "activationEnded", {
+setHook(sourceRef, "activationEnded", {
     id: "public-end-report",
     invoke(current, { event }) {
         type Report = Assert<Equal<typeof event, ActivationEnded>>;

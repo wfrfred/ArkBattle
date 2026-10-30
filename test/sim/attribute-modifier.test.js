@@ -1,4 +1,5 @@
-import { damage as damageTargeting, healing as healingTargeting } from "../helpers/targeting.js";
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
+import { damage as damageTargeting } from "../helpers/targeting.js";
 import { actionCapability } from "../helpers/actions.js";
 import { create as createAttack } from '../../dist/content/actions/attack.js';
 import { ref as unitRef } from "../../dist/core/unit/query.js";
@@ -10,7 +11,7 @@ import {
     compileAttributeModifiers,
 } from "../../dist/data/arknights/modifier.js";
 import { remove as removeUnit } from "../../dist/core/battle/unit.js";
-import { getUnit, replaceUnit } from "../helpers/unit.js";
+import { getUnit } from "../helpers/unit.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import {
     setAttackContribution,
@@ -20,7 +21,7 @@ import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js"
 import {
     setSpeedContribution,
     removeSpeedContribution,
-} from "../../dist/core/unit/capability/action/capability.js";
+} from "../../dist/core/unit/capability/action/index.js";
 import { resolveSpeed } from "../../dist/core/unit/capability/action/timing.js";
 import {
     setSpeedContribution as setMoveSpeedContribution,
@@ -220,26 +221,18 @@ test("attribute modifiers: native Mire percentages affect existing ASPD and norm
             onEnable(state, self) {
                 const id = `${self.id}`;
                 const currentUnit = getUnit(state, self.host.id);
-                return replaceUnit(state, ({
-                    ...currentUnit,
-                    action: setSpeedContribution(currentUnit.action, {
+                return applyUnitChanges(state, [setSpeedContribution({ id: currentUnit.id }, {
                         id,
                         value: [sampled.get("ATTACK_SPEED")],
-                    }),
-                    locomotion: setMoveSpeedContribution(currentUnit.locomotion, {
+                    }), setMoveSpeedContribution({ id: currentUnit.id }, {
                         id,
                         value: [sampled.get("MOVE_SPEED")],
-                    }),
-                }));
+                    })]);
             },
             onDisable(state, self) {
                 const id = `${self.id}`;
                 const currentUnit1 = getUnit(state, self.host.id);
-                return replaceUnit(state, ({
-                    ...currentUnit1,
-                    action: removeSpeedContribution(currentUnit1.action, id),
-                    locomotion: removeMoveSpeedContribution(currentUnit1.locomotion, id),
-                }));
+                return applyUnitChanges(state, [removeSpeedContribution({ id: currentUnit1.id }, id), removeMoveSpeedContribution({ id: currentUnit1.id }, id)]);
             },
         },
     );

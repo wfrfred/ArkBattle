@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { initialize } from "../helpers/unit.js";
 import * as units from "../../dist/core/unit/query.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
-import { remove as removeUnit, update as updateUnit } from "../../dist/core/battle/unit.js";
+import { remove as removeUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { effectFixtureWork } from "../helpers/effects.js";
 

@@ -1,3 +1,4 @@
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
 import { lifetime as effectLifetime } from "../../dist/core/unit/effect/operations.js";
 import { lifetime as actionLifetime } from "../../dist/core/unit/action/operations.js";
@@ -23,7 +24,7 @@ import { initialize as initializeBattle, step as stepBattle } from "../../dist/c
 
 import { createLegacyCombatSpec } from "../../dist/legacy/combat.js";
 import { initialize, placement } from "../helpers/unit.js";
-import { effectFixtureWork } from "../helpers/effects.js";
+
 import { effectPlacement } from "../helpers/aura.js";
 import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
 import { actionCapability } from "../helpers/actions.js";
@@ -33,7 +34,7 @@ import { install as installEffect, setData as setEffectData, end as endEffect } 
 import * as modifier from "../../dist/core/unit/contribution/attribute.js";
 import { initialize as initializeVitalityState } from "../../dist/core/unit/capability/vitality/index.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/index.js";
-import { getUnit, replaceUnit } from "../helpers/unit.js";
+import { getUnit } from "../helpers/unit.js";
 import * as tracking from "../../dist/content/projectiles/tracking.js";
 import { all as allProjectiles, get as getProjectile, ref as projectileRef } from "../../dist/core/projectile/index.js";
 import { create as createProjectile, update as updateProjectile, stop as stopProjectile } from "../../dist/core/battle/projectile.js";
@@ -96,15 +97,15 @@ function scenario({ failure = null, cancelled = false } = {}) {
                 });
             const id = `effect:${self.id}`;
             const currentUnit = getUnit(state, self.host.id);
-            return replaceUnit(state, ({ ...currentUnit, offense: setAttackContribution(currentUnit.offense, {
+            return applyUnitChanges(state, [setAttackContribution({ id: currentUnit.id }, {
                     id,
                     value: [modifier.create({ finalAddition: addition })],
-                }) }));
+                })]);
         },
         onDisable(state, self) {
             const id = `effect:${self.id}`;
             const currentUnit1 = getUnit(state, self.host.id);
-            return replaceUnit(state, ({ ...currentUnit1, offense: removeAttackContribution(currentUnit1.offense, id) }));
+            return applyUnitChanges(state, [removeAttackContribution({ id: currentUnit1.id }, id)]);
         },
     });
     const marker = registerBuff("receiver-mark", 3);
@@ -121,7 +122,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
             state = receiverOutput.onInstall(state, self);
             const ref = effectRef(self);
             const currentUnit2 = getUnit(state, ref.host.id);
-            return replaceUnit(state, ({ ...currentUnit2, vitality: setDamageHook(currentUnit2.vitality, {
+            return applyUnitChanges(state, [setDamageHook({ id: currentUnit2.id }, {
                     id: `receiver:${ref.id}`,
                     stage: "receiving",
                     priority: 0,
@@ -185,11 +186,11 @@ function scenario({ failure = null, cancelled = false } = {}) {
                                 },
                         };
                     },
-                }) }));
+                })]);
         },
         onEnd(state, self) {
             const currentUnit3 = getUnit(state, self.host.id);
-            return replaceUnit(state, ({ ...currentUnit3, vitality: removeDamageHook(currentUnit3.vitality, `receiver:${self.id}`) }));
+            return applyUnitChanges(state, [removeDamageHook({ id: currentUnit3.id }, `receiver:${self.id}`)]);
         },
     };
     aura = {

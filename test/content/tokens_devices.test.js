@@ -18,7 +18,7 @@ import { parsePredefinedPrefab, parseTileDeploymentPrefab } from "../../dist/dat
 import { evaluateDeployment } from "../../dist/core/battle/deployment/index.js";
 import { parseBattlefieldMap } from "../../dist/data/arknights/map.js";
 import { initialize as initializeUnit } from "../../dist/core/unit/index.js";
-import { add as addBattleUnit, update as updateBattleUnit } from "../../dist/core/battle/unit.js";
+import { add as addBattleUnit, replace as updateBattleUnit } from "../../dist/core/battle/unit.js";
 import { update as updateBattleTile } from "../../dist/core/battle/tile.js";
 import { get as getMapTile } from "../../dist/core/battlefield/map/map.js";
 

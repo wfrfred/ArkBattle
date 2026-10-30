@@ -1,10 +1,12 @@
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { changeTile } from "../helpers/tiles.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { add, update } from "../../dist/core/battle/unit.js";
+import { add, replace as update } from "../../dist/core/battle/unit.js";
 import { addCard, notifyDeployed } from "../../dist/core/battle/deployment/index.js";
 import { deploy } from "../../dist/core/battle/deployment/operations.js";
-import { setHook as setBlockingHook } from "../../dist/core/unit/capability/blocking/blocker.js";
+import { setHook as setBlockingHook } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import { createDefinition as createDeployable } from "../helpers/deployable.js";
 import { setHook as setDeployedHook } from "../../dist/core/unit/capability/deployable/hook.js";
 import * as occupancy from "../../dist/core/battlefield/occupancy.js";
@@ -20,9 +22,7 @@ test("tile changes during entry release blocking before deployment observers", (
     });
     let battle = fixture([blocker, target()]);
     const current = getUnit(battle, blocker.id);
-    battle = update(battle, [{
-        ...current,
-        blocker: setBlockingHook(current.blocker, "released", hook("observe-entry-maintenance", state => {
+    battle = applyUnitChanges(battle, [setBlockingHook({ id: current.id }, "released", hook("observe-entry-maintenance", state => {
             calls.push("released");
             assert.equal(state.events.some(event => event.type === "UNIT_DEPLOYED"), true);
             assert.deepEqual(occupancy.at(state.battlefield, [1, 2]), {
@@ -30,8 +30,7 @@ test("tile changes during entry release blocking before deployment observers", (
             });
             assert.equal(ownerId(state), undefined);
             return state;
-        })),
-        deployable: setDeployedHook(current.deployable, {
+        })), setDeployedHook({ id: current.id }, {
             id: "observe-completed-entry",
             invoke(state, fact) {
                 calls.push("deployed");
@@ -41,8 +40,7 @@ test("tile changes during entry release blocking before deployment observers", (
                 assert.deepEqual(calls, ["entered", "released", "deployed"]);
                 return { state, value: undefined };
             },
-        }),
-    }]);
+        })]);
     battle = acquire(battle);
     const before = battle;
     assert.equal(ownerId(before), blocker.id);
@@ -92,9 +90,7 @@ test("manual deployment records its event before entry and notifies observers af
     const observer = holder(10, { definition: { deployable: profile } });
     let battle = fixture([observer]);
     const current = getUnit(battle, observer.id);
-    battle = update(battle, [{
-        ...current,
-        deployable: setDeployedHook(current.deployable, {
+    battle = applyUnitChanges(battle, [setDeployedHook({ id: current.id }, {
             id: "observe-manual-entry",
             invoke(state, fact) {
                 calls.push("deployed");
@@ -103,8 +99,7 @@ test("manual deployment records its event before entry and notifies observers af
                 assert.deepEqual(calls, ["entered", "deployed"]);
                 return { state, value: undefined };
             },
-        }),
-    }]);
+        })]);
     const definition = {
         id: "manual-entry-order-platform",
         occupancy: { slot: "SUPPORT", hooks: [] },

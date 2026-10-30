@@ -1,14 +1,13 @@
-import { fixtureBattle, fixtureDefinition, getUnit } from "../helpers/unit.js";
+import { fixtureBattle, fixtureDefinition, getUnit, initialize } from "../helpers/unit.js";
 import { fixture, holder, target } from "../helpers/blocking.js";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+import { add as addUnit, update as applyUnitChanges, replace as updateUnit } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import * as offense from "../../dist/core/unit/capability/offense/capability.js";
 import * as blockerOperations from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import * as blockableOperations from "../../dist/core/unit/capability/blocking/blockable-operations.js";
-import * as locomotion from "../../dist/core/unit/capability/locomotion/capability.js";
 import * as movement from "../../dist/core/unit/capability/locomotion/index.js";
-import * as action from "../../dist/core/unit/capability/action/capability.js";
+import * as action from "../../dist/core/unit/capability/action/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/capability.js";
 import * as damage from "../../dist/core/battle/damage/hook.js";
 import * as healing from "../../dist/core/battle/healing/hook.js";
@@ -16,58 +15,64 @@ import { create } from "../../dist/core/unit/contribution/attribute.js";
 
 const entries = [
     [
-        offense.initialize(fixtureBattle(0), fixtureDefinition("offense")).value,
+        "offense",
         "attack",
         offense.setAttackContribution,
         offense.removeAttackContribution,
     ],
     [
-        vitality.initialize(fixtureBattle(0), fixtureDefinition("vitality")).value,
+        "vitality",
         "defense",
         vitality.setDefenseContribution,
         vitality.removeDefenseContribution,
     ],
     [
-        vitality.initialize(fixtureBattle(0), fixtureDefinition("vitality")).value,
+        "vitality",
         "resistance",
         vitality.setResistanceContribution,
         vitality.removeResistanceContribution,
     ],
     [
-        locomotion.initialize(fixtureBattle(0), fixtureDefinition("locomotion")).value,
+        "locomotion",
         "speed",
         movement.setSpeedContribution,
         movement.removeSpeedContribution,
     ],
     [
-        action.initialize(fixtureBattle(0), fixtureDefinition("action")).value,
+        "action",
         "speed",
         action.setSpeedContribution,
         action.removeSpeedContribution,
     ],
     [
-        action.initialize(fixtureBattle(0), fixtureDefinition("action")).value,
+        "action",
         "interval",
         action.setIntervalContribution,
         action.removeIntervalContribution,
     ],
 ];
 
-test("local contribution updates share untouched state and leave earlier versions stable", () => {
-    for (const [initial, field, set, remove] of entries) {
+test("contribution Changes share untouched state and leave earlier versions stable", () => {
+    for (const [capability, field, set, remove] of entries) {
+        const unit = initialize({ id: 1, position: [0, 0], definition: {
+            id: `${capability}-${field}`, [capability]: fixtureDefinition(capability),
+        } });
+        const initial = addUnit(fixtureBattle(), unit);
+        const reference = { id: unit.id };
         const value = [create({ addition: 10 })];
         const entry = { id: "bonus", value };
-        const added = set(initial, entry);
-        assert.equal(initial[field].length, 0, field);
-        assert.equal(added[field][0], entry, field);
-        assert.equal(set(added, entry), added, field);
-        assert.equal(remove(added, "missing"), added, field);
-        for (const key of Object.keys(initial).filter((key) => key !== field)) {
-            assert.equal(added[key], initial[key], `${field}: ${key}`);
+        const added = applyUnitChanges(initial, [set(reference, entry)]);
+        const current = getUnit(added, unit.id)[capability];
+        assert.equal(unit[capability][field].length, 0, field);
+        assert.equal(current[field][0], entry, field);
+        assert.equal(applyUnitChanges(added, [set(reference, entry)]), added, field);
+        assert.equal(applyUnitChanges(added, [remove(reference, "missing")]), added, field);
+        for (const key of Object.keys(unit[capability]).filter((key) => key !== field)) {
+            assert.equal(current[key], unit[capability][key], `${field}: ${key}`);
         }
-        const removed = remove(added, entry.id);
-        assert.equal(removed[field].length, 0, field);
-        assert.equal(added[field][0], entry, field);
+        const removed = applyUnitChanges(added, [remove(reference, entry.id)]);
+        assert.equal(getUnit(removed, unit.id)[capability][field].length, 0, field);
+        assert.equal(current[field][0], entry, field);
     }
 });
 
@@ -85,34 +90,34 @@ for (const [name, id, capability, field, set, remove, entry] of [
         const initial = fixture([holder(), target()]);
         const before = getUnit(initial, id);
         const reference = { id };
-        const added = set(initial, reference, entry);
+        const added = applyUnitChanges(initial, [set(reference, entry)]);
         const current = getUnit(added, id);
         assert.equal(current[capability][field].find(item => item.id === entry.id), entry);
         assert.equal(before[capability][field].some(item => item.id === entry.id), false);
-        assert.equal(set(added, reference, entry), added);
-        assert.equal(remove(added, reference, "missing"), added);
+        assert.equal(applyUnitChanges(added, [set(reference, entry)]), added);
+        assert.equal(applyUnitChanges(added, [remove(reference, "missing")]), added);
         for (const key of Object.keys(before[capability]).filter(key => key !== field)) {
             assert.equal(current[capability][key], before[capability][key], key);
         }
-        const removed = remove(added, reference, entry.id);
+        const removed = applyUnitChanges(added, [remove(reference, entry.id)]);
         assert.deepEqual(getUnit(removed, id)[capability][field], before[capability][field]);
         assert.equal(getUnit(added, id)[capability][field].find(item => item.id === entry.id), entry);
     });
 
     test(`complete Blocking ${name} writes reject a missing host and allow LEAVING cleanup`, () => {
         const missing = fixture();
-        assert.throws(() => set(missing, { id }, entry), RangeError);
-        assert.throws(() => remove(missing, { id }, entry.id), RangeError);
-        const added = set(fixture([holder(), target()]), { id }, entry);
+        assert.throws(() => applyUnitChanges(missing, [set({ id }, entry)]), RangeError);
+        assert.throws(() => applyUnitChanges(missing, [remove({ id }, entry.id)]), RangeError);
+        const added = applyUnitChanges(fixture([holder(), target()]), [set({ id }, entry)]);
         const self = getUnit(added, id);
         const leaving = updateUnit(added, [{ ...self, lifecycle: "LEAVING" }]);
-        const removed = remove(leaving, { id }, entry.id);
+        const removed = applyUnitChanges(leaving, [remove({ id }, entry.id)]);
         assert.equal(getUnit(removed, id).lifecycle, "LEAVING");
         assert.equal(getUnit(removed, id)[capability][field].some(item => item.id === entry.id), false);
     });
 }
 
-test("local hook registration retains progress and changes only its registration collection", () => {
+test("Hook Changes retain progress and change only their registration collection", () => {
     const hook = {
         id: "hook",
         stage: "receiving",
@@ -122,41 +127,47 @@ test("local hook registration retains progress and changes only its registration
     };
     const registrations = [
         [
-            vitality.initialize(fixtureBattle(0), { maxHp: 100, defense: 0, resistance: 0 }).value,
+            "vitality",
             "damageHooks",
             damage.setHook,
             damage.removeHook,
         ],
         [
-            vitality.initialize(fixtureBattle(0), { maxHp: 100, defense: 0, resistance: 0 }).value,
+            "vitality",
             "healingHooks",
             healing.setHook,
             healing.removeHook,
         ],
         [
-            action.initialize(fixtureBattle(0), fixtureDefinition("action")).value,
+            "action",
             "beforeRelease",
             action.setBeforeReleaseHook,
             action.removeBeforeReleaseHook,
         ],
         [
-            action.initialize(fixtureBattle(0), fixtureDefinition("action")).value,
+            "action",
             "released",
             action.setReleasedHook,
             action.removeReleasedHook,
         ],
     ];
-    for (const [initial, field, set, remove] of registrations) {
+    for (const [capability, field, set, remove] of registrations) {
+        const unit = initialize({ id: 1, position: [0, 0], definition: {
+            id: `${capability}-${field}`, [capability]: fixtureDefinition(capability),
+        } });
+        const initial = addUnit(fixtureBattle(), unit);
+        const reference = { id: unit.id };
         const entry = hook;
-        const added = set(initial, entry);
-        assert.equal(added[field][0], entry, field);
-        assert.equal(initial[field].length, 0, field);
-        assert.equal(set(added, entry), added, field);
-        assert.equal(remove(added, "missing"), added, field);
-        for (const key of Object.keys(initial).filter((key) => key !== field)) {
-            assert.equal(added[key], initial[key], `${field}: ${key}`);
+        const added = applyUnitChanges(initial, [set(reference, entry)]);
+        const current = getUnit(added, unit.id)[capability];
+        assert.equal(current[field][0], entry, field);
+        assert.equal(unit[capability][field].length, 0, field);
+        assert.equal(applyUnitChanges(added, [set(reference, entry)]), added, field);
+        assert.equal(applyUnitChanges(added, [remove(reference, "missing")]), added, field);
+        for (const key of Object.keys(unit[capability]).filter((key) => key !== field)) {
+            assert.equal(current[key], unit[capability][key], `${field}: ${key}`);
         }
-        assert.equal(remove(added, hook.id)[field].length, 0, field);
-        assert.equal(added[field][0], entry, field);
+        assert.equal(getUnit(applyUnitChanges(added, [remove(reference, hook.id)]), unit.id)[capability][field].length, 0, field);
+        assert.equal(current[field][0], entry, field);
     }
 });

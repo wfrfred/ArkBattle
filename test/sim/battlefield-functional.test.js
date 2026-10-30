@@ -13,7 +13,7 @@ import { setOverlay, nextPoint } from '../../dist/core/battlefield/navigation/st
 import { initialize } from "../helpers/unit.js";
 import { ref } from '../../dist/core/unit/query.js';
 import { createBattleState } from '../../dist/core/battle/state.js';
-import { add as addBattleUnit, update as updateBattleUnit, remove as removeBattleUnit } from '../../dist/core/battle/unit.js';
+import { add as addBattleUnit, replace as updateBattleUnit, remove as removeBattleUnit } from '../../dist/core/battle/unit.js';
 import { finishBattleEvents } from '../../dist/core/battle/events.js';
 import { update as updateTile } from '../../dist/core/battlefield/tile.js';
 import { get as getTile } from '../../dist/core/battlefield/map/map.js';

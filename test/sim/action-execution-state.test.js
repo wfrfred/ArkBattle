@@ -1,11 +1,12 @@
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { executionRef } from "../../dist/core/unit/action/index.js";
-import { setRule } from "../../dist/core/unit/capability/action/capability.js";
+import { setRule } from "../../dist/core/unit/capability/action/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, unit } from "../helpers/action-fixture.js";
 import { actionCapability } from "../helpers/actions.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+
 import { getUnit } from "../helpers/unit.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { advance } from "../../dist/core/unit/action/index.js";
@@ -150,13 +151,7 @@ test("action: startup rules prohibit new instances while an accepted program kee
     const source = unitRef(getUnit(initial, 0)),
         started = actions.start(initial, actions.ref(source, first));
     const current = getUnit(started.state, 0);
-    const prohibited = updateUnit(
-        { ...started.state, tick: 1 },
-        [{
-            ...current,
-            action: setRule(current.action, { id: "prohibit-start", allows: () => false }),
-        }],
-    );
+    const prohibited = applyUnitChanges({ ...started.state, tick: 1 }, [setRule({ id: current.id }, { id: "prohibit-start", allows: () => false })]);
     assert.deepEqual(actions.start(prohibited, actions.ref(source, second)).value, {
         type: "REJECTED",
         reason: "RULE",

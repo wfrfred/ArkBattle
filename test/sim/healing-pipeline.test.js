@@ -1,9 +1,10 @@
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { unit, workFor, attach, healingEffect, damage } from "../helpers/vitality.js";
 import { calculateHealing } from "../../dist/core/battle/healing/calculate.js";
 import { applyHealing } from "../../dist/core/battle/healing/apply.js";
-import { getUnit, replaceUnit } from "../helpers/unit.js";
+import { getUnit } from "../helpers/unit.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import { setMaxHpContribution } from "../../dist/core/unit/capability/vitality/capability.js";
 import * as attribute from "../../dist/core/unit/contribution/attribute.js";
@@ -117,12 +118,9 @@ test("healing pipeline: Receiving MaxHP changes are applied before calculating a
     const resize = healingEffect("resize", {}, [entry("receiving", (state, _context, _self, pending) => {
         const current = getUnit(state, 2);
         return {
-            state: replaceUnit(state, {
-                ...current,
-                vitality: setMaxHpContribution(current.vitality, current.definition.vitality, {
+            state: applyUnitChanges(state, [setMaxHpContribution({ id: current.id }, {
                     id: "double-hp", value: [attribute.create({ multiplier: 1 })],
-                }),
-            }),
+                })]),
             value: pending,
         };
     })]);

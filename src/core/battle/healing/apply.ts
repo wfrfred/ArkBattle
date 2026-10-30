@@ -1,4 +1,4 @@
-import { update as updateUnit } from "../unit.js";
+import { replace as replaceUnits } from "../unit.js";
 import { assertNonnegativeNumber } from "../../common/assert.js";
 import type { Ref } from "../../common/ref.js";
 import type { Unit } from "../../unit/unit.js";
@@ -60,7 +60,9 @@ export function applyHealing(
     const application: ApplicationResult = { hpBefore, hpAfter, hpGain: hpAfter - hpBefore };
 
     if (hpAfter !== hpBefore) {
-        battle = updateUnit(battle, [{ ...target, vitality: { ...target.vitality, hp: hpAfter } }]);
+        battle = replaceUnits(battle, [
+            { ...target, vitality: { ...target.vitality, hp: hpAfter } },
+        ]);
     }
 
     battle = appendEvents(battle, [

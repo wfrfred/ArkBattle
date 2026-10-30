@@ -58,14 +58,10 @@ export function createDefinition(
                         state: !hasLocomotion(self)
                             ? battle
                             : updateUnit(battle, [
-                                  {
-                                      ...self,
-                                      locomotion: setRule(self.locomotion, {
-                                          id: "attack-casting",
-                                          allows: (current, self) =>
-                                              !isCasting(current, unitRef(self)),
-                                      }),
-                                  },
+                                  setRule(unitRef(self), {
+                                      id: "attack-casting",
+                                      allows: (current, self) => !isCasting(current, unitRef(self)),
+                                  }),
                               ]),
                         value: undefined,
                     };

@@ -1,5 +1,5 @@
 import { Vec2 } from "../../common/vector.js";
-import { update } from "../unit.js";
+import { replace } from "../unit.js";
 import type { Ref } from "../../common/ref.js";
 import { World } from "../../geometry/coordinate.js";
 import { get as getTile } from "../../battlefield/map/map.js";
@@ -145,7 +145,7 @@ function releaseRelation(battle: BattleState, relation: Relation): BattleState {
         return battle;
     }
 
-    battle = update(battle, releaseUpdates(battle, [relation]));
+    battle = replace(battle, releaseUpdates(battle, [relation]));
 
     return notify(battle, "RELEASED", relation);
 }
@@ -156,7 +156,7 @@ export function releaseAll(
     updates: readonly Unit[] = [],
 ): BattleState {
     const released = captured.filter((relation) => hasRelation(battle, relation));
-    const next = update(battle, releaseUpdates(battle, released, updates));
+    const next = replace(battle, releaseUpdates(battle, released, updates));
     if (next === battle) {
         return battle;
     }
@@ -167,13 +167,19 @@ export function releaseAll(
         battle = notify(battle, "RELEASED", relation);
     }
 
-    return maintain(battle);
+    const owners = new Map(released.map((relation) => [relation.blocker.id, relation.blocker]));
+
+    for (const reference of owners.values()) {
+        battle = maintainBlocker(battle, reference);
+    }
+
+    return battle;
 }
 
 export function releaseCaptured(battle: BattleState, captured: readonly Relation[]): BattleState {
     for (const relation of captured) {
         const next = releaseRelation(battle, relation);
-        battle = next === battle ? battle : maintain(next);
+        battle = next === battle ? battle : maintainBlocker(next, relation.blocker);
     }
 
     return battle;
@@ -181,6 +187,83 @@ export function releaseCaptured(battle: BattleState, captured: readonly Relation
 
 export function release(battle: BattleState, reference: Ref<Unit>): BattleState {
     return releaseCaptured(battle, capture(battle, reference));
+}
+
+export function maintainBlocker(battle: BattleState, reference: Ref<Unit & Blocker>): BattleState {
+    while (true) {
+        const blocker = units.get(battle, reference);
+        if (blocker === undefined) {
+            return battle;
+        }
+
+        const invalid = blocker.blocker.blocked.find(
+            (blocked) => !canRetain(battle, blocker, units.get(battle, blocked)!),
+        );
+        const blocked =
+            invalid ??
+            (usedCapacity(battle, reference) >
+            resolveCapacity(blocker.definition.blocker, blocker.blocker)
+                ? blocker.blocker.blocked.at(-1)
+                : undefined);
+        if (blocked === undefined) {
+            return battle;
+        }
+
+        battle = releaseRelation(battle, { blocker: reference, blocked });
+    }
+}
+
+export function maintainBlockableRule(
+    battle: BattleState,
+    reference: Ref<Unit & Blockable>,
+): BattleState {
+    const target = units.get(battle, reference);
+    if (target?.blockable.blocker == null) {
+        return battle;
+    }
+
+    const owner = target.blockable.blocker;
+    const blocker = units.get(battle, owner)!;
+    if (canRetain(battle, blocker, target)) {
+        return battle;
+    }
+
+    const blocked = blocker.blocker.blocked.find((entry) => entry.id === reference.id)!;
+    battle = releaseRelation(battle, { blocker: owner, blocked });
+
+    return maintainBlocker(battle, owner);
+}
+
+export function maintainBlockable(
+    battle: BattleState,
+    reference: Ref<Unit & Blockable>,
+): BattleState {
+    let owner = units.get(battle, reference)?.blockable.blocker;
+
+    while (owner !== undefined && owner !== null) {
+        battle = maintainBlocker(battle, owner);
+
+        const current = units.get(battle, reference)?.blockable.blocker;
+        if (current?.id === owner.id) {
+            return battle;
+        }
+
+        owner = current;
+    }
+
+    return battle;
+}
+
+export function maintainRelations(battle: BattleState, reference: Ref<Unit>): BattleState {
+    let unit = units.get(battle, reference);
+    if (unit !== undefined && hasBlockable(unit)) {
+        battle = maintainBlockableRule(battle, units.ref(unit));
+        unit = units.get(battle, reference);
+    }
+
+    return unit !== undefined && hasBlocker(unit)
+        ? maintainBlocker(battle, units.ref(unit))
+        : battle;
 }
 
 function pendingMaintenance(battle: BattleState): Relation | undefined {
@@ -236,7 +319,7 @@ export function acquire(
 
     const reference = units.ref(target);
 
-    battle = update(battle, [
+    battle = replace(battle, [
         {
             ...blocker,
             blocker: { ...blocker.blocker, blocked: [...blocker.blocker.blocked, reference] },
@@ -245,7 +328,7 @@ export function acquire(
     ]);
     battle = notify(battle, "ACQUIRED", { blocker: blockerRef, blocked: reference });
 
-    return maintain(battle);
+    return maintainBlocker(battle, blockerRef);
 }
 
 export function search(battle: BattleState, reference: Ref<Unit & Blocker>): BattleState {

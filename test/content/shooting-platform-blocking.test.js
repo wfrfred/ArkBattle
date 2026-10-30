@@ -1,8 +1,10 @@
+import { notify } from "../../dist/core/battle/occupancy.js";
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { create as createPlatform } from "../../dist/content/devices/shooting-platform.js";
 import * as conditions from "../../dist/content/terrain/condition.js";
-import { add, remove, update } from "../../dist/core/battle/unit.js";
+import { add, remove, replace as update } from "../../dist/core/battle/unit.js";
 import { addCard } from "../../dist/core/battle/deployment/index.js";
 import { deploy } from "../../dist/core/battle/deployment/index.js";
 import { initialize as initializeBattle } from "../../dist/core/battle/index.js";
@@ -10,7 +12,7 @@ import { get as getTile } from "../../dist/core/battlefield/map/map.js";
 import { at as occupancyAt } from "../../dist/core/battlefield/occupancy.js";
 import { Tile } from "../../dist/core/geometry/coordinate.js";
 import { createDefinition as createDeployable } from "../../dist/core/unit/capability/deployable/index.js";
-import { setHook } from "../../dist/core/unit/capability/blocking/blocker.js";
+import { setHook } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import { sides, setLayer } from "../../dist/core/unit/capability/blocking/index.js";
 import { fixture, holder, target, acquire, ownerId, hook } from "../helpers/blocking.js";
 import { getUnit, initialize } from "../helpers/unit.js";
@@ -101,13 +103,13 @@ test("an AIR passenger can block from a platform and landing releases its airbor
     assert.equal(ownerId(battle, 20), 10);
     assert.equal(ownerId(battle, 21), undefined);
 
-    battle = setLayer(battle, { id: 10 }, "GROUND");
+    battle = applyUnitChanges(battle, [setLayer({ id: 10 }, "GROUND")]);
     assert.equal(ownerId(battle, 20), undefined);
     assert.deepEqual(getUnit(battle, 10).blocker.rules.map(rule => rule.id), ruleIds);
     battle = acquire(battle);
     assert.equal(ownerId(battle, 21), undefined, "the same platform restriction prevents ground blocking");
 
-    battle = setLayer(battle, { id: 10 }, "AIR");
+    battle = applyUnitChanges(battle, [setLayer({ id: 10 }, "AIR")]);
     assert.equal(ownerId(battle, 20), undefined, "takeoff does not acquire before a search");
     battle = acquire(battle);
     assert.equal(ownerId(battle, 20), 10);
@@ -150,7 +152,9 @@ for (const entry of ["initial", "script", "manual"]) {
 test("one update exchanges passengers and synchronizes rules against the final occupancy", () => {
     let battle = fixture([platform(), passenger(), passenger(11, second)]);
     const before = battle;
+    const previousPassengerField = battle.battlefield;
     battle = update(battle, [move(getUnit(battle, 10), second), move(getUnit(battle, 11), first)]);
+    battle = notify(battle, previousPassengerField, battle.battlefield, [10,11]);
 
     assertEligible(battle, 10);
     assertSuppressed(battle, 11);
@@ -169,7 +173,9 @@ test("one update exchanges supports beneath stationary passengers and releases t
     battle = acquire(battle, 11);
     assert.equal(ownerId(battle, 21), 11);
 
+    const previousSupportField = battle.battlefield;
     battle = update(battle, [move(getUnit(battle, 30), second), move(getUnit(battle, 31), first)]);
+    battle = notify(battle, previousSupportField, battle.battlefield, [30,31]);
 
     assertEligible(battle, 10);
     assertSuppressed(battle, 11);
@@ -205,13 +211,10 @@ for (const nested of ["remove passenger", "remove platform"]) {
         battle = acquire(battle);
         const unit = getUnit(battle, 10);
         let calls = 0;
-        battle = update(battle, [{
-            ...unit,
-            blocker: setHook(unit.blocker, "released", hook("nested-platform-change", state => {
+        battle = applyUnitChanges(battle, [setHook({ id: unit.id }, "released", hook("nested-platform-change", state => {
                 calls++;
                 return remove(state, nested === "remove passenger" ? 10 : 30, "SCRIPT");
-            })),
-        }]);
+            }))]);
 
         battle = add(battle, platform());
 

@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize as initializeBattle, step as stepBattle } from "../../dist/core/battle/runtime.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
-import { add as addUnit, remove as removeUnit, update as updateUnit } from "../../dist/core/battle/unit.js";
+import { add as addUnit, remove as removeUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { advance } from "../../dist/core/battle/unit.js";
 import { initialize } from "../helpers/unit.js";

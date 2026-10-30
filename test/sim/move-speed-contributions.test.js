@@ -1,3 +1,5 @@
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { search as searchBlocking } from "../../dist/core/battle/blocking/operations.js";
 import { advanceMovement } from "../../dist/core/battle/steps/movement.js";
 import assert from "node:assert/strict";
@@ -7,7 +9,7 @@ import { fixtureBattle } from "../helpers/unit.js";
 import { contributionEffect, refreshContribution } from "../helpers/effects.js";
 import { initialize } from "../../dist/core/unit/initialize.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { add as addUnit, update as updateUnit } from "../../dist/core/battle/unit.js";
+import { add as addUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import {
     setSpeedContribution,
@@ -90,14 +92,9 @@ test("move speed: minimum, arithmetic and movement permission are separate", () 
     h.work = install(h.work, program).state;
     close(speed(h.work), 0.1 / 30);
     assert.deepEqual(h.step(0, [20, 0], 0).position, [0, 0]);
-    h.work = updateUnit(h.work, [{
-        ...h.unit,
-        locomotion: setRule(h.unit.locomotion, { id: "stop", allows: () => false }),
-    }]);
+    h.work = applyUnitChanges(h.work, [setRule({ id: h.unit.id }, { id: "stop", allows: () => false })]);
     assert.deepEqual(h.step(1).position, [0, 0]);
-    h.work = updateUnit(h.work, [{
-        ...h.unit, locomotion: removeRule(h.unit.locomotion, "stop"),
-    }]);
+    h.work = applyUnitChanges(h.work, [removeRule({ id: h.unit.id }, "stop")]);
     close(h.step(2, [20, 0], 0.5).position[0], 0.1 / 60);
     h.work = setSpeed(h.work, program, {
         ...effects.get(h.work, address).data,

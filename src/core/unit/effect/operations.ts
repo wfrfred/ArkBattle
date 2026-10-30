@@ -1,4 +1,4 @@
-import { update as updateUnit } from "../../battle/unit.js";
+import { replace as replaceUnits } from "../../battle/unit.js";
 import { type State as BattleState, type Result } from "../../battle/state.js";
 import type { Unit, Id } from "../unit.js";
 import type { Ref } from "../../common/ref.js";
@@ -50,7 +50,7 @@ export function install<S extends object, H extends object>(
         status: "INSTALLING",
     };
     const ref = effectRef(instance);
-    battle = updateUnit(battle, [{ ...unit, effects: unit.effects.add(instance) }]);
+    battle = replaceUnits(battle, [{ ...unit, effects: unit.effects.add(instance) }]);
 
     let currentUnit = units.get(battle, host);
     let installed = currentUnit?.effects.get(ref);
@@ -187,7 +187,7 @@ export const lifetime = create<Effect, Effect<any, any>, string>({
         battle = self.definition.onEnd?.(battle, self, reason) ?? battle;
         const unit = units.get<Unit>(battle, reference.host)!;
 
-        return updateUnit(battle, [{ ...unit, effects: unit.effects.remove(reference.id) }]);
+        return replaceUnits(battle, [{ ...unit, effects: unit.effects.remove(reference.id) }]);
     },
     reason: (reason) => reason,
     fromDependency: (reason) => reason,
@@ -228,7 +228,9 @@ function replaceEffect<S extends object, H extends object>(
     unit: Unit,
     self: Effect<S, H>,
 ): BattleState {
-    return updateUnit(battle, [{ ...unit, effects: unit.effects.replace(effectRef(self), self) }]);
+    return replaceUnits(battle, [
+        { ...unit, effects: unit.effects.replace(effectRef(self), self) },
+    ]);
 }
 
 function updateStatus<T extends Effect<any, any>>(battle: BattleState, ref: Ref<T>): BattleState {

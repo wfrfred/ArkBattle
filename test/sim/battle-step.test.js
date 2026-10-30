@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize, step } from "../../dist/core/battle/runtime.js";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+import { replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import * as units from "../../dist/core/unit/query.js";
 import { fixtureBattle } from "../helpers/unit.js";

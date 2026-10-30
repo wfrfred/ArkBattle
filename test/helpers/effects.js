@@ -1,8 +1,9 @@
+import { update } from "../../dist/core/battle/unit.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { ref as unitRef } from "../../dist/core/unit/index.js";
 import { fixtureBattlefieldState as fixtureBattlefield } from "./battlefield.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
-import { getUnit, replaceUnit } from "./unit.js";
+import { getUnit } from "./unit.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { get } from "../../dist/core/unit/effect/index.js";
 import {
@@ -48,8 +49,8 @@ export function attackBuff(id = "attack-buff", amount = 20, callbacks = {}) {
     return contributionBuff(
         id,
         amount,
-        (unit, entry) => ({ ...unit, offense: setAttackContribution(unit.offense, entry) }),
-        (unit, entryId) => ({ ...unit, offense: removeAttackContribution(unit.offense, entryId) }),
+        setAttackContribution,
+        removeAttackContribution,
         callbacks,
     );
 }
@@ -58,14 +59,8 @@ export function maxHpBuff(id = "max-hp-buff", amount = 100, callbacks = {}) {
     return contributionBuff(
         id,
         amount,
-        (unit, entry) => ({
-            ...unit,
-            vitality: setMaxHpContribution(unit.vitality, unit.definition.vitality, entry),
-        }),
-        (unit, entryId) => ({
-            ...unit,
-            vitality: removeMaxHpContribution(unit.vitality, unit.definition.vitality, entryId),
-        }),
+        setMaxHpContribution,
+        removeMaxHpContribution,
         callbacks,
     );
 }
@@ -79,17 +74,17 @@ function contributionBuff(id, amount, set, remove, callbacks) {
             onEnable(state, self) {
                 const unit = getUnit(state, self.host.id);
                 if (unit !== undefined) {
-                    state = replaceUnit(state, set(unit, {
+                    state = update(state, [set(self.host, {
                         id: `${self.host.id}:${self.id}`,
                         value: [modifier({ finalAddition: self.data.amount })],
-                    }));
+                    })]);
                 }
                 return callbacks.onEnable ? callbacks.onEnable(state, self) : state;
             },
             onDisable(state, self) {
                 const unit = getUnit(state, self.host.id);
                 if (unit !== undefined) {
-                    state = replaceUnit(state, remove(unit, `${self.host.id}:${self.id}`));
+                    state = update(state, [remove(self.host, `${self.host.id}:${self.id}`)]);
                 }
                 return callbacks.onDisable ? callbacks.onDisable(state, self) : state;
             },
@@ -102,13 +97,10 @@ export function refreshAttack(state, ref) {
     if (instance?.status !== "ACTIVE") return state;
     const unit = getUnit(state, ref.host.id);
     if (unit === undefined) return state;
-    return replaceUnit(state, {
-        ...unit,
-        offense: setAttackContribution(unit.offense, {
+    return update(state, [setAttackContribution(ref.host, {
             id: `${ref.host.id}:${ref.id}`,
             value: [modifier({ finalAddition: instance.data.amount })],
-        }),
-    });
+        })]);
 }
 
 export function contributionEffect(
@@ -122,9 +114,7 @@ export function contributionEffect(
     const publish = (state, self) => {
         const unit = getUnit(state, self.host.id);
         if (unit === undefined) return state;
-        return replaceUnit(state, {
-            ...unit,
-            [capability]: set(unit[capability], {
+        return update(state, [set(self.host, {
                 id: key(effectRef(self)),
                 ...(group === undefined
                     ? {}
@@ -135,8 +125,7 @@ export function contributionEffect(
                           return current === undefined ? [] : value(current, battle, host);
                       }
                     : value(self, state, unit),
-            }),
-        });
+            })]);
     };
     content = definition(id, initial, {
         ...callbacks,
@@ -147,10 +136,7 @@ export function contributionEffect(
         onDisable(state, self) {
             const unit = getUnit(state, self.host.id);
             if (unit !== undefined) {
-                state = replaceUnit(state, {
-                    ...unit,
-                    [capability]: remove(unit[capability], key(effectRef(self))),
-                });
+                state = update(state, [remove(self.host, key(effectRef(self)))]);
             }
             return callbacks.onDisable ? callbacks.onDisable(state, self) : state;
         },
@@ -163,14 +149,11 @@ export function refreshContribution(state, ref, content, { capability, set, valu
     if (current?.status !== "ACTIVE") return state;
     const unit = getUnit(state, ref.host.id);
     if (unit === undefined) return state;
-    return replaceUnit(state, {
-        ...unit,
-        [capability]: set(unit[capability], {
+    return update(state, [set(ref.host, {
             id: `${ref.host.id}:${ref.id}`,
             ...(group === undefined
                 ? {}
                 : { group: typeof group === "function" ? group(current) : group }),
             value: value(current, state, unit),
-        }),
-    });
+        })]);
 }

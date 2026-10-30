@@ -1,7 +1,7 @@
 import { create as createSkill } from "../../dist/core/unit/skill/index.js";
 import { ref as skillRef } from "../helpers/skill.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
-import { damage as damageTargeting, healing as healingTargeting } from "../helpers/targeting.js";
+import { damage as damageTargeting } from "../helpers/targeting.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { fixtureBattle } from "../helpers/unit.js";
 import { actionCapability } from "../helpers/actions.js";
@@ -10,7 +10,7 @@ import { healing } from "../helpers/vitality.js";
 import { initialize as initializeVitality } from "../../dist/core/unit/capability/vitality/capability.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+
 import { getUnit } from "../helpers/unit.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";

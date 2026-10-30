@@ -3,7 +3,8 @@ import type { State as BattleState, Result } from "../state.js";
 import type { Unit } from "../../unit/unit.js";
 import * as units from "../../unit/query.js";
 import * as hooks from "../../hook.js";
-import { hasVitality, type State } from "../../unit/capability/vitality/capability.js";
+import { hasVitality, type Vitality } from "../../unit/capability/vitality/capability.js";
+import { createChange, type Change } from "../../unit/change.js";
 import type {
     ApplicationResult,
     CalculatedHealing,
@@ -69,16 +70,24 @@ export type Hook =
     | HpAppliedHook
     | CompletedHook;
 
-export function setHook(state: State, entry: Hook): State {
-    const healingHooks = hooks.set(state.healingHooks, entry);
+export function setHook(reference: Ref<Unit & Vitality>, entry: Hook): Change {
+    return createChange(reference, (self) => {
+        const healingHooks = hooks.set(self.vitality.healingHooks, entry);
 
-    return healingHooks === state.healingHooks ? state : { ...state, healingHooks };
+        return healingHooks === self.vitality.healingHooks
+            ? self
+            : { ...self, vitality: { ...self.vitality, healingHooks } };
+    });
 }
 
-export function removeHook(state: State, id: string): State {
-    const healingHooks = hooks.remove(state.healingHooks, id);
+export function removeHook(reference: Ref<Unit & Vitality>, id: string): Change {
+    return createChange(reference, (self) => {
+        const healingHooks = hooks.remove(self.vitality.healingHooks, id);
 
-    return healingHooks === state.healingHooks ? state : { ...state, healingHooks };
+        return healingHooks === self.vitality.healingHooks
+            ? self
+            : { ...self, vitality: { ...self.vitality, healingHooks } };
+    });
 }
 
 export function dispatch<C, T>(

@@ -1,6 +1,8 @@
+import { createChange } from "../../dist/core/unit/change.js";
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+import { replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { release, acquire as acquirePair } from "../../dist/core/battle/blocking/index.js";
 import { getUnit, replaceUnit } from "../helpers/unit.js";
 import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
@@ -14,7 +16,7 @@ test("both endpoint Rules receive the same pair and changes release an incompati
     let battle = { ...fixture([
         owner, holder(11, { capacity: 3 }), target(20), candidate, target(22),
     ]), tick: 7 };
-    battle = blockerOperations.setRule(battle, { id: 10 }, {
+    battle = applyUnitChanges(battle, [blockerOperations.setRule({ id: 10 }, {
         id: "skip-first",
         allows(current, blocker, blockable) {
             assert.equal(current.tick, 7);
@@ -23,8 +25,8 @@ test("both endpoint Rules receive the same pair and changes release an incompati
             assert.equal(blocker.id, 10);
             return blockable.id !== 20;
         },
-    });
-    battle = blockableOperations.setRule(battle, { id: 21 }, {
+    })]);
+    battle = applyUnitChanges(battle, [blockableOperations.setRule({ id: 21 }, {
         id: "second-owner-only",
         allows(current, blocker, blockable) {
             assert.equal(current.tick, 7);
@@ -33,17 +35,17 @@ test("both endpoint Rules receive the same pair and changes release an incompati
             assert.equal(blockable.id, 21);
             return blocker.id === 11;
         },
-    });
+    })]);
 
     battle = acquire(battle, 10);
     assert.deepEqual(blockedIds(battle, 10), [22]);
     battle = acquire(battle, 11);
     assert.deepEqual(blockedIds(battle, 11), [20, 21]);
 
-    battle = blockableOperations.setRule(battle, { id: 22 }, {
+    battle = applyUnitChanges(battle, [blockableOperations.setRule({ id: 22 }, {
         id: "second-owner-only",
         allows: (_current, blocker, blockable) => blocker.id === 11 && blockable.id === 22,
-    });
+    })]);
     assert.equal(ownerId(battle, 22), undefined);
     assert.deepEqual(blockedIds(battle, 10), []);
     assert.deepEqual(blockedIds(battle, 11), [20, 21]);
@@ -53,12 +55,12 @@ test("both endpoint Rules receive the same pair and changes release an incompati
 
 test("successful acquisition settles Rules affected by its own blocking relation change", () => {
     let battle = fixture([holder(10, { capacity: 2 }), target(20), target(21, { position: [2.5, 1] })]);
-    battle = blockerOperations.setRule(battle, { id: 10 }, {
+    battle = applyUnitChanges(battle, [blockerOperations.setRule({ id: 10 }, {
         id: "twenty-excludes-twenty-one",
         allows(_battle, owner, candidate) {
             return candidate.id !== 20 || !owner.blocker.blocked.some(reference => reference.id === 21);
         },
-    });
+    })]);
 
     battle = acquire(battle);
 
@@ -72,12 +74,12 @@ test("successful acquisition settles Rules affected by its own blocking relation
 
 test("release settles remaining Rules affected by removal of its own blocking relation", () => {
     let battle = fixture([holder(10, { capacity: 2 }), target(20), target(21, { position: [2.1, 1] })]);
-    battle = blockerOperations.setRule(battle, { id: 10 }, {
+    battle = applyUnitChanges(battle, [blockerOperations.setRule({ id: 10 }, {
         id: "twenty-requires-twenty-one",
         allows(_battle, owner, candidate) {
             return candidate.id !== 20 || owner.blocker.blocked.some(reference => reference.id === 21);
         },
-    });
+    })]);
     battle = acquire(battle);
     battle = acquire(battle);
     assert.deepEqual(blockedIds(battle), [21, 20]);
@@ -125,13 +127,10 @@ for (const [name, create] of denied) {
         const calls = [];
         for (const key of ["acquired", "released"]) {
             const currentUnit = getUnit(battle, 10);
-            battle = replaceUnit(battle, {
-                ...currentUnit,
-                blocker: blocker.setHook(currentUnit.blocker, key, hook(key, state => {
+            battle = applyUnitChanges(battle, [blockerOperations.setHook({ id: currentUnit.id }, key, hook(key, state => {
                     calls.push(key);
                     return state;
-                })),
-            });
+                }))]);
         }
         const initialOwner = getUnit(battle, 10);
         const initialTarget = getUnit(battle, 20);
@@ -149,7 +148,7 @@ for (const [name, create] of denied) {
 
 test("acquire reads the latest volume instead of an earlier Unit snapshot", () => {
     const initial = fixture([holder(), target()]);
-    const battle = blockableOperations.setVolumeContribution(initial, { id: 20 }, { id: "larger", value: 1 });
+    const battle = applyUnitChanges(initial, [blockableOperations.setVolumeContribution({ id: 20 }, { id: "larger", value: 1 })]);
     assert.equal(acquirePair(battle, { id: 10 }, { id: 20 }), battle);
     assert.equal(ownerId(battle), undefined);
     assert.equal(getUnit(initial, 20).blockable.volume.length, 0);
@@ -159,13 +158,10 @@ test("acquire reads the latest volume instead of an earlier Unit snapshot", () =
 test("a qualified acquire preserves subsequent Hook changes", () => {
     let battle = fixture([holder(), target()]);
     const currentUnit2 = getUnit(battle, 10);
-    battle = replaceUnit(battle, {
-        ...currentUnit2,
-        blocker: blocker.setHook(currentUnit2.blocker, "acquired", hook("update-target", state => {
+    battle = applyUnitChanges(battle, [blockerOperations.setHook({ id: currentUnit2.id }, "acquired", hook("update-target", state => {
             const currentUnit3 = getUnit(state, 20);
             return replaceUnit(state, { ...currentUnit3, vitality: { ...currentUnit3.vitality, hp: 75 } });
-        })),
-    });
+        }))]);
     const initial = battle;
 
     battle = acquirePair(battle, { id: 10 }, { id: 20 });
@@ -185,20 +181,17 @@ for (const [name, candidate, expectedError] of [
     let battle = fixture([holder(10, { capacity: 3 }), target(20), target(21), target(22)]);
     const released = [];
     const currentUnit4 = getUnit(battle, 10);
-    battle = replaceUnit(battle, {
-        ...currentUnit4,
-        blocker: blocker.setHook(currentUnit4.blocker, "released", hook("restore-capacity", (state, { relation }) => {
+    battle = applyUnitChanges(battle, [blockerOperations.setHook({ id: currentUnit4.id }, "released", hook("restore-capacity", (state, { relation }) => {
             released.push(relation.blocked.id);
             if (relation.blocked.id !== 22) return state;
             assert.deepEqual(blockedIds(state), [20, 21]);
             if (expectedError === undefined) {
                 assert.equal(updateUnit(state, [candidate(state)]), state);
             } else {
-                assert.throws(() => updateUnit(state, [candidate(state)]), expectedError);
+                assert.throws(() => applyUnitChanges(state, [createChange({id:candidate(state).id}, unit=>unit)]), expectedError);
             }
             return capacity(state, 10, 2);
-        })),
-    });
+        }))]);
 
     battle = capacity(acquire(battle), 10, 1);
 

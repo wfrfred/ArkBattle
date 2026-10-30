@@ -1,10 +1,11 @@
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
     unit, workFor, attach, request, parameters, damageEffect, setSelf, stateOf,
 } from "../helpers/vitality.js";
 import { createRng } from "../../dist/core/common/rng.js";
-import { getUnit, replaceUnit } from "../helpers/unit.js";
+import { getUnit } from "../helpers/unit.js";
 import { calculateDamage } from "../../dist/core/battle/damage/calculate.js";
 import { applyDamage } from "../../dist/core/battle/damage/apply.js";
 import { remove } from "../../dist/core/battle/unit.js";
@@ -118,12 +119,9 @@ test("damage calculation: the formula reads defense changed synchronously by a F
         stage: "targetFormula", invoke(state, context, _self, current) {
             const currentUnit = getUnit(state, context.target.id);
             return {
-                state: replaceUnit(state, {
-                    ...currentUnit,
-                    vitality: setDefenseContribution(currentUnit.vitality, {
+                state: applyUnitChanges(state, [setDefenseContribution({ id: currentUnit.id }, {
                         id: "formula-defense", value: [modifier({ finalAddition: 80 })],
-                    }),
-                }),
+                    })]),
                 value: current,
             };
         },

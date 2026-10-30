@@ -1,11 +1,10 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import { assertPositiveSafeInteger } from "../../../common/assert.js";
-import * as registry from "../../../hook.js";
 import * as contribution from "../../contribution/contribution.js";
 import type { Unit } from "../../unit.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Blocker } from "./blocker.js";
-import type { Hook, Key } from "./contract.js";
+import type { Hook } from "./contract.js";
 import type { Rule } from "./rule.js";
 
 export interface Definition {
@@ -38,18 +37,6 @@ export function initialize(battle: BattleState, definition: Definition): Result<
         state: battle,
         value: { blocker: null, volume: [], rules: [], acquired: [], released: [] },
     };
-}
-
-export function setHook(state: State, key: Key, hook: Hook<Unit & Blockable>): State {
-    const entries = registry.set(state[key], hook);
-
-    return entries === state[key] ? state : { ...state, [key]: entries };
-}
-
-export function removeHook(state: State, key: Key, id: string): State {
-    const entries = registry.remove(state[key], id);
-
-    return entries === state[key] ? state : { ...state, [key]: entries };
 }
 
 export function resolveVolume(definition: Definition, state: State): number {

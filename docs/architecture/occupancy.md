@@ -49,7 +49,7 @@ battlefield/unit.ts 的 add、update、remove 经私有 applyChanges(field, chan
 - 非空 occupancy.tile 与反向表双向对应；槽位中的 Ref 指向当前已登记的 Unit。
 - update 仅接收 readonly Unit[]。applyChanges 先写入 Unit，再从原 Change 数组筛选登记值发生变化的条目；先统一撤销这些条目的旧登记，再校验并写入新占格。筛选保留原 Change 引用，不构造另一套登记变更对象；支持交换占格与循环换位，不逐条执行完整更新。
 - Slot 来自不可变 Definition，登记变化只比较地块坐标值。相同值保留旧表、条目和 Ref，Unit 的其他字段正常更新。空批次和所有对象均未改变时返回原 Field。
-- 完整 battle/unit.update 在同一入口统一校验同批 ID 不重复、目标存在及 Definition 对象身份不变。Field 信任这些已确认的输入，不重复校验；add 信任创建阶段建立的合法 Unit ID，保留重复登记约束。
+- 公开 battle/unit.update 接收 Change 数组，可对同一 Unit 顺序应用多项转换；准备时统一确认目标存在。Core 内部 replace／Field.update 信任领域构造的身份、Definition 与能力配对，不重复验证；add 保留重复登记约束。
 - Field 维护最终布局的地图范围与同槽唯一性；最终越界或冲突时拒绝更新，输入状态不变。替换已有 Unit 保持登记顺序。
 - 搬格、解除登记和移除从当前登记撤销旧项，建立合法的新项；冲突抛出 RangeError，输入版本保持不变。
 - 槽位登记只维护结构。部署类型、阵营、费用、地形许可等由 Deployment 判断。
@@ -62,7 +62,7 @@ occupancy.at(field, tile) 直接返回同格的 occupant 和 support。需要对
 
 ## 同步登记通知
 
-完整 battle/unit.add、update、remove 通过 battle/occupancy.notify 同步通知承载关系变化。通知只派发给 SUPPORT 的静态 Hook，不在 Unit Definition 添加 Occupancy 专属回调，也不向 OCCUPANT 广播。只查询本批变更涉及的原／新登记格，不扫描全场。
+当前生产只有完整 battle/unit.add／remove 在原时点显式调用 battle/occupancy.notify：add 在入场程序后，remove 在物理注销后、leave Hook 前。通用 update／replace 只维护 Occupancy 双槽数据，不派发承载 Hook。当前没有生产中的搬格 Change，也不为测试或潜在需求新增；将来实际登记变更操作应自己定义通知时点。通知只向 SUPPORT 的静态 Hook 派发，不在 Unit Definition 添加专属回调，也不向 OCCUPANT 广播；只查询本次原／新登记格。
 
 unit/capability/occupancy/hook.ts 定义 Context 与 SupportHook。Context 保存本次关系的 support、occupant 两个 Unit & Occupancy 及 tile；OccupantAddedHook 和 OccupantRemovedHook 分别以 occupantAdded、occupantRemoved 阶段复用已有 Hook<Context, void>。该文件仅定义领域类型，不新增派发框架或 Hook 登记操作。
 
@@ -76,7 +76,7 @@ Added／Removed 表示相对于该 Support 的承载关系变化，不表示乘�
 | A 不变，Support 从 P 换成 Q | P：occupantRemoved(A)，Q：occupantAdded(A) |
 | 更新前后仍是同一 Support 和乘员 | 不通知 |
 
-add 在 enter Hook 完成后通知，update 在本批数据和 Lifetime／Occupancy 发布后通知，remove 在物理注销后、leave Hook 前通知。Unit.update 不再准备或派发 Blocking 通知；显式 Blocking 操作在 Unit 发布返回后自行通知其关系事实。先完成 Occupancy 数据维护，再固定本次承载事件与 Hook 候选，交给通用 Hook dispatcher 执行。Removed 使用旧 Support、旧乘员事实，已移除的 Support 仍能完成本次清理；Added 每项执行前确认当前登记仍是对应的 Support／乘员组合，嵌套操作使组合失效后停止其剩余响应。Context 是历史事实，不能代替后续当前查询，Hook 重入后必须接续最新 BattleState。只修改 blocker.rules 等非登记字段会共享原 occupancy Map，不再次触发通知。低层 battlefield/unit 仍不执行内容 Hook。
+占格登记先同步完成，所属完整领域操作再按自身契约固定本次承载事件与 Hook 候选，通过通用派发器通知。Removed 使用旧 Support、旧乘员事实，已移除 Support 仍可完成清理；Added 每项前确认当前登记仍是对应组合，嵌套操作使组合失效时停止其余响应。Context 是历史事实，Hook 重入后需要当前对象时重读 battle。普通 Rule、Contribution 或私有 state 更新不产生 Occupancy 通知；低层 Field 和内部 replace 都不执行内容 Hook。
 
 射击台 Content 使用平台实例独占的 Rule ID，在当前 PRESENT 乘员的 blocker.rules 登记共享二元 Rule，禁止其与任何目标建立或保留阻挡，不修改地块 allowsBlocking。乘员离开时只清除该平台的 Rule，保留眩晕等其他规则；旧通知执行时若乘员已重新由同一平台承载，就保留已建立的规则。安装前重查当前平台的生命周期、SUPPORT 登记及反向表和当前乘员，已有自身 Rule 时不重复更新。
 

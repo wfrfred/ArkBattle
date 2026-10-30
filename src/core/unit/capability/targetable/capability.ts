@@ -3,6 +3,8 @@ import type { Contribution } from "../../contribution/contribution.js";
 import type { Unit } from "../../unit.js";
 import type { Request } from "../../../battle/targeting/contract.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
+import type { Ref } from "../../../common/ref.js";
+import { createChange, type Change } from "../../change.js";
 
 export interface Definition {
     readonly restrictions: readonly Contribution<Restriction>[];
@@ -40,16 +42,27 @@ export function initialize(battle: BattleState, definition: Definition): Result<
     return { state: battle, value: { restrictions: [...definition.restrictions] } };
 }
 
-export function setRestriction(state: State, entry: Contribution<Restriction>): State {
-    const restrictions = contribution.set(state.restrictions, entry);
+export function setRestriction(
+    reference: Ref<Unit & Targetable>,
+    entry: Contribution<Restriction>,
+): Change {
+    return createChange(reference, (self) => {
+        const restrictions = contribution.set(self.targetable.restrictions, entry);
 
-    return restrictions === state.restrictions ? state : { restrictions };
+        return restrictions === self.targetable.restrictions
+            ? self
+            : { ...self, targetable: { ...self.targetable, restrictions } };
+    });
 }
 
-export function removeRestriction(state: State, id: string): State {
-    const restrictions = contribution.remove(state.restrictions, id);
+export function removeRestriction(reference: Ref<Unit & Targetable>, id: string): Change {
+    return createChange(reference, (self) => {
+        const restrictions = contribution.remove(self.targetable.restrictions, id);
 
-    return restrictions === state.restrictions ? state : { restrictions };
+        return restrictions === self.targetable.restrictions
+            ? self
+            : { ...self, targetable: { ...self.targetable, restrictions } };
+    });
 }
 
 export function allowsRestrictions(

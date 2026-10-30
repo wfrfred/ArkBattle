@@ -1,3 +1,4 @@
+import { createChange } from "../../dist/core/unit/change.js";
 import * as conditions from "../../dist/content/terrain/condition.js";
 import { changeFieldTile } from "../helpers/tiles.js";
 import { createTile } from "../helpers/tiles.js";
@@ -8,7 +9,7 @@ import { relations as blockingRelations } from "../../dist/core/battle/blocking/
 import { unitsAt } from "../helpers/battlefield.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { damage as damageTargeting } from "../helpers/targeting.js";
-import { fixtureBattle, fixtureDefinition } from "../helpers/unit.js";
+import { fixtureBattle, fixtureDefinition, getUnit } from "../helpers/unit.js";
 import { actionCapability } from "../helpers/actions.js";
 import { create as createAttack } from "../../dist/content/actions/attack.js";
 import { Effects } from "../../dist/core/unit/effect/effects.js";
@@ -23,7 +24,7 @@ import { create as createFieldState } from "../../dist/core/battlefield/state.js
 import { add as addUnit, update as updateUnit } from "../../dist/core/battlefield/unit.js";
 import { addUnits } from "../helpers/battlefield.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
-import { update as updateBattleUnit, remove as removeBattleUnit } from "../../dist/core/battle/unit.js";
+import { add as addBattleUnit, update as applyUnitChanges, replace as updateBattleUnit, remove as removeBattleUnit } from "../../dist/core/battle/unit.js";
 import { hasSpatialPresence, isSpatiallyPresent } from "../../dist/core/unit/capability/presence/capability.js";
 import { initialize } from "../helpers/unit.js";
 import { initialize as initializeUnit } from "../../dist/core/unit/initialize.js";
@@ -438,50 +439,51 @@ test('core domain rules compose independently and preserve earlier unit states',
   const second = initialize({ id: 2, definition, position: [0, 0],
     states: { targetable: initializeTargetableState(fixtureBattle(0), fixtureDefinition("targetable")).value } });
   const source = { id: 3, definition: { hooks: [], id: 'query_source' }, position: [0, 0] };
-  const battle = fixtureBattle();
+  const battle = addBattleUnit(addBattleUnit(fixtureBattle(), first), second);
   const request = { source: unitRef(source), purposes: ['HEAL'], filter: () => true,
     selector: (state, _request, candidates) => ({ state, value: candidates.map(unitRef) }) };
   const restrictSource = { id: 'source-a', value: { kind: Symbol('source'),
     allows: (_battle, current) => current.source.id !== source.id } };
   const restrictPurpose = { id: 'source-b', value: { kind: Symbol('purpose'),
     allows: (_battle, current) => current.purposes.includes('DAMAGE') } };
-  const one = setRestriction(first.targetable, restrictSource);
-  const both = setRestriction(one, restrictPurpose);
-  const afterOne = removeRestriction(both, 'source-a');
-  const afterBoth = removeRestriction(afterOne, 'source-b');
+  const reference = unitRef(first);
+  const one = applyUnitChanges(battle, [setRestriction(reference, restrictSource)]);
+  const both = applyUnitChanges(one, [setRestriction(reference, restrictPurpose)]);
+  const afterOne = applyUnitChanges(both, [removeRestriction(reference, 'source-a')]);
+  const afterBoth = applyUnitChanges(afterOne, [removeRestriction(reference, 'source-b')]);
 
   assert.equal(hasTargetable(first), true);
   assert.equal(hasTargetable({ id: 4, definition, position: [0, 0] }), false);
-  assert.equal(one.restrictions[0], restrictSource);
-  assert.equal(both.restrictions[0], one.restrictions[0]);
-  assert.equal(setRestriction(both, restrictSource), both);
-  assert.equal(removeRestriction(both, 'missing'), both);
-  assert.equal(allowsRestrictions(battle, request, { ...first, targetable: both }), false);
-  assert.equal(allowsRestrictions(battle, request, { ...first, targetable: afterOne }), false);
-  assert.equal(allowsRestrictions(battle, request, { ...first, targetable: afterBoth }), true);
+  assert.equal(getUnit(one, first.id).targetable.restrictions[0], restrictSource);
+  assert.equal(getUnit(both, first.id).targetable.restrictions[0], getUnit(one, first.id).targetable.restrictions[0]);
+  assert.equal(applyUnitChanges(both, [setRestriction(reference, restrictSource)]), both);
+  assert.equal(applyUnitChanges(both, [removeRestriction(reference, 'missing')]), both);
+  assert.equal(allowsRestrictions(both, request, getUnit(both, first.id)), false);
+  assert.equal(allowsRestrictions(afterOne, request, getUnit(afterOne, first.id)), false);
+  assert.equal(allowsRestrictions(afterBoth, request, getUnit(afterBoth, first.id)), true);
   assert.equal(allowsRestrictions(battle, request, first), true);
   assert.equal(allowsRestrictions(battle, request, second), true);
   assert.equal(first.definition, second.definition);
   assert.deepEqual(first.targetable.restrictions, []);
-  assert.equal(both.restrictions.length, 2);
+  assert.equal(getUnit(both, first.id).targetable.restrictions.length, 2);
 
   const denyHealing = id => ({ id, stage: 'receiving', priority: 0,
     invoke: (state, _context, pending) => ({ state,
       value: { ...pending, cancellation: { reason: 'CONTENT_REJECTS_HEALING' } } }) });
   const healingA = denyHealing('healer-a');
   const healingB = denyHealing('healer-b');
-  const vitalityOne = setHealingHook(first.vitality, healingA);
-  const vitalityBoth = setHealingHook(vitalityOne, healingB);
-  const withdrawnOne = removeHealingHook(vitalityBoth, 'healer-a');
-  const withdrawnBoth = removeHealingHook(withdrawnOne, 'healer-b');
+  const vitalityOne = applyUnitChanges(battle, [setHealingHook(reference, healingA)]);
+  const vitalityBoth = applyUnitChanges(vitalityOne, [setHealingHook(reference, healingB)]);
+  const withdrawnOne = applyUnitChanges(vitalityBoth, [removeHealingHook(reference, 'healer-a')]);
+  const withdrawnBoth = applyUnitChanges(withdrawnOne, [removeHealingHook(reference, 'healer-b')]);
 
-  assert.deepEqual(vitalityBoth.healingHooks, [healingA, healingB]);
-  assert.deepEqual(withdrawnOne.healingHooks, [healingB]);
-  assert.deepEqual(withdrawnBoth.healingHooks, []);
-  assert.equal(vitalityBoth.healingHooks[0], vitalityOne.healingHooks[0]);
-  assert.equal(setHealingHook(vitalityBoth, healingB), vitalityBoth);
-  assert.equal(removeHealingHook(vitalityBoth, 'missing'), vitalityBoth);
-  assert.equal(vitalityBoth.healingHooks.length, 2);
+  assert.deepEqual(getUnit(vitalityBoth, first.id).vitality.healingHooks, [healingA, healingB]);
+  assert.deepEqual(getUnit(withdrawnOne, first.id).vitality.healingHooks, [healingB]);
+  assert.deepEqual(getUnit(withdrawnBoth, first.id).vitality.healingHooks, []);
+  assert.equal(getUnit(vitalityBoth, first.id).vitality.healingHooks[0], getUnit(vitalityOne, first.id).vitality.healingHooks[0]);
+  assert.equal(applyUnitChanges(vitalityBoth, [setHealingHook(reference, healingB)]), vitalityBoth);
+  assert.equal(applyUnitChanges(vitalityBoth, [removeHealingHook(reference, 'missing')]), vitalityBoth);
+  assert.equal(getUnit(vitalityBoth, first.id).vitality.healingHooks.length, 2);
   assert.deepEqual(second.vitality.healingHooks, []);
 });
 
@@ -507,23 +509,17 @@ test('core blocking uses current state radius and includes center-distance equal
 });
 
 
-test('core unit updates preserve definition identity and fail atomically while presence stays dynamic', () => {
+test('core Unit Changes preserve Definition and prior position while presence stays dynamic', () => {
   let runtime = presenceBattlefield();
   const unit = initialize({ id: 1, definition: catalogDefinition(), position: [2, 0] });
   runtime = addUnit(runtime, unit);
   const maps = runtime.navigation;
-  assert.throws(() => updateBattleUnit(createBattleState(runtime), [{
-    ...unit, position: [3, 0], definition: { ...unit.definition },
-  }]), /unit definition cannot change/);
+  const changed = applyUnitChanges(createBattleState(runtime), [createChange(unitRef(unit), self => ({...self,position:[3,0]}))]);
+  assert.equal(getUnit(changed,1).definition,unit.definition);
+  assert.deepEqual(getUnit(changed,1).position,[3,0]);
   assert.deepEqual(runtime.units.get(1).position, [2, 0]);
   assert.deepEqual(unitsAt(runtime, [0, 2]).map(value => value.id), [1]);
   assert.equal(runtime.navigation, maps);
-
-  const bare = initialize({ id: 2, definition: Object.freeze({ hooks: [], id: 'bare' }), position: [0, 0] });
-  runtime = addUnit(runtime, bare);
-  assert.throws(() => updateBattleUnit(createBattleState(runtime), [{
-    ...bare, definition: Object.freeze({ ...bare.definition, vitality: { maxHp: 1, defense: 0, resistance: 0 } }), vitality: initializeVitalityState(fixtureBattle(0), { maxHp: 1, defense: 0, resistance: 0 }).value,
-  }]));
 
   const hidden = { ...runtime.units.get(1), spatialPresence: { present: false } };
   runtime = updateUnit(runtime, [hidden]);

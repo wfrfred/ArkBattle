@@ -1,3 +1,5 @@
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { snapshot } from "../helpers/snapshot.js";
 import { tiles as tileEntries } from "../helpers/tiles.js";
 import { normal, hole, infection, mire as mireTerrain } from "../../dist/content/terrain/definition.js";
@@ -6,7 +8,7 @@ import * as route from "../../dist/core/unit/capability/route/index.js";
 import * as locomotion from "../../dist/core/unit/capability/locomotion/index.js";
 import * as units from "../../dist/core/unit/query.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
-import { add as addUnit, update as updateUnit } from "../../dist/core/battle/unit.js";
+import { add as addUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { create as createField } from "../../dist/core/battlefield/state.js";
 import * as blocking from "../../dist/core/battle/blocking/operations.js";
 import { blockedIds, fixture as blockingFixture } from "../helpers/blocking.js";
@@ -18,7 +20,7 @@ import { readFileSync } from "node:fs";
 import { create as createMap, get } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "../helpers/tiles.js";
 import { create as projectStaticNavigationMap } from "../../dist/core/battlefield/map/navigation.js";
-import { applyUnitChanges, maintainFully } from "../helpers/battlefield-projection.js";
+import { applyUnitChanges as applyFieldChanges, maintainFully } from "../helpers/battlefield-projection.js";
 import { Map as NavigationMap } from "../../dist/core/battlefield/navigation/map.js";
 import { create as createNavigation, setOverlay, removeOverlay } from "../../dist/core/battlefield/navigation/state.js";
 import { parseBattlefieldMap } from "../../dist/data/arknights/map.js";
@@ -163,7 +165,7 @@ function assertProjectionSnapshot(state, snapshot) {
 
 function battlefieldProjectionHarness(rows = 2, columns = 5,
   map = createMap(rows, columns, tileEntries(Array.from({ length: rows * columns }, () => coreGround())))) {
-  const branches = [applyUnitChanges, maintainFully].map(settle => {
+  const branches = [applyFieldChanges, maintainFully].map(settle => {
     const baseline = Object.freeze({
       WALK: projectStaticNavigationMap(map, 'WALK', 0),
       FLY: projectStaticNavigationMap(map, 'FLY', 0),
@@ -310,8 +312,8 @@ test('explicit Blocking settlement preserves relation history and releases curre
   const mutations = [
     battle => blocking.maintain(updateUnit(battle, [{ ...units.get(battle, { id: 11 }), allegiance: { side: 'ALLY' } }])),
     battle => blocking.maintain(updateUnit(battle, [{ ...units.get(battle, { id: 11 }), layer: { type: 'AIR' } }])),
-    battle => blockableOperations.setVolumeContribution(battle, { id: 11 }, { id: 'larger', value: 2 }),
-    battle => blockableOperations.setRule(battle, { id: 11 }, { id: 'unblockable', allows: () => false }),
+    battle => applyUnitChanges(battle, [blockableOperations.setVolumeContribution({ id: 11 }, { id: 'larger', value: 2 })]),
+    battle => applyUnitChanges(battle, [blockableOperations.setRule({ id: 11 }, { id: 'unblockable', allows: () => false })]),
   ];
   for (const mutate of mutations) {
     const changed = mutate(acquired);
@@ -319,8 +321,8 @@ test('explicit Blocking settlement preserves relation history and releases curre
     assert.deepEqual(blockedIds(acquired), [11]);
   }
   for (const change of [
-    battle => setCapacityContribution(battle, { id: 10 }, { id: 'capacity-zero', value: [{ type: 'ZERO' }] }),
-    battle => setBlockerRule(battle, { id: 10 }, { id: 'cannot-block', allows: () => false }),
+    battle => applyUnitChanges(battle, [setCapacityContribution({ id: 10 }, { id: 'capacity-zero', value: [{ type: 'ZERO' }] })]),
+    battle => applyUnitChanges(battle, [setBlockerRule({ id: 10 }, { id: 'cannot-block', allows: () => false })]),
   ]) {
     assert.deepEqual(blockedIds(change(acquired)), []);
   }

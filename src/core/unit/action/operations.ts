@@ -1,4 +1,4 @@
-import { update as updateUnit } from "../../battle/unit.js";
+import { replace as replaceUnits } from "../../battle/unit.js";
 import type { Ref } from "../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../battle/state.js";
 import * as lifetimes from "../../lifetime/index.js";
@@ -112,7 +112,7 @@ export function start<P extends object, E extends object>(
             state: initialized.value,
         },
     };
-    battle = updateUnit(battle, [
+    battle = replaceUnits(battle, [
         {
             ...unit,
             action: {
@@ -264,7 +264,7 @@ export function refreshCooldowns(
 
     return actions === unit.action.actions
         ? battle
-        : updateUnit(battle, [{ ...unit, action: { ...unit.action, actions } }]);
+        : replaceUnits(battle, [{ ...unit, action: { ...unit.action, actions } }]);
 }
 
 export function resetCooldown<X extends Action<any, any>>(
@@ -314,7 +314,7 @@ function replaceAction<P extends object, E extends object>(
     unit: Unit & ActionCapability,
     self: Action<P, E> | Execution<P, E>,
 ): BattleState {
-    return updateUnit(battle, [
+    return replaceUnits(battle, [
         {
             ...unit,
             action: {

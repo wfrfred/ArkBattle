@@ -1,6 +1,6 @@
 import { Vec2 } from "../../../common/vector.js";
-import { update as updateUnit } from "../../../battle/unit.js";
-import { maintain } from "../../../battle/blocking/operations.js";
+import { replace } from "../../../battle/unit.js";
+import { maintainRelations } from "../../../battle/blocking/operations.js";
 import { assertNonnegativeNumber } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { type State as BattleState } from "../../../battle/state.js";
@@ -90,18 +90,20 @@ export function advance(
         velocity = self.locomotion.velocity;
     }
 
-    return position === self.position && velocity === self.locomotion.velocity
-        ? battle
-        : maintain(
-              updateUnit(battle, [
-                  {
-                      ...self,
-                      position,
-                      locomotion:
-                          velocity === self.locomotion.velocity
-                              ? self.locomotion
-                              : { ...self.locomotion, velocity },
-                  },
-              ]),
-          );
+    if (position === self.position && velocity === self.locomotion.velocity) {
+        return battle;
+    }
+
+    battle = replace(battle, [
+        {
+            ...self,
+            position,
+            locomotion:
+                velocity === self.locomotion.velocity
+                    ? self.locomotion
+                    : { ...self.locomotion, velocity },
+        },
+    ]);
+
+    return position === self.position ? battle : maintainRelations(battle, ref);
 }

@@ -1,3 +1,5 @@
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { ref as skillRef } from "../helpers/skill.js";
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
 import { lifetime as skillLifetime } from "../../dist/core/unit/skill/operations.js";
@@ -7,9 +9,9 @@ import { ref as unitRef } from "../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { createBattleState } from "../../dist/core/battle/state.js";
-import { add as addUnit, update as updateUnit } from "../../dist/core/battle/unit.js";
+import { add as addUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
-import { add, remove } from "../../dist/core/battle/unit.js";
+import { remove } from "../../dist/core/battle/unit.js";
 import { initialize } from "../helpers/unit.js";
 
 import * as mechanisms from "../../dist/core/battle/mechanism.js";
@@ -56,7 +58,7 @@ for (const reason of ["DEATH", "RETREAT", "SCRIPT"]) {
       unit(1),
     ]));
     const source = getUnit(state, 0);
-    state = updateUnit(state, [{ ...source, skill: setHook(source.skill, "activationEnded", {
+    state = applyUnitChanges(state, [setHook({ id: source.id }, "activationEnded", {
       id: "observe-cancellation",
       invoke(state, { host, event }) {
         const self = getUnit(state, host.id);
@@ -65,7 +67,7 @@ for (const reason of ["DEATH", "RETREAT", "SCRIPT"]) {
         assert.equal(self.skill.activation, null);
         return { state: finish(state, event.ref), value: undefined };
       },
-    }) }]);
+    })]);
     const activated = activate(state, skillRef(source));
     state = activated.state;
     const started = actions.start(state, actions.ref(unitRef(getUnit(state, 0)), action));

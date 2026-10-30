@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { add, advance, remove, update } from "../../dist/core/battle/unit.js";
+import { add, advance, remove, replace as update } from "../../dist/core/battle/unit.js";
 import { fixtureBattle, getUnit, initialize } from "../helpers/unit.js";
 
 test("Unit entry hooks retain their context while passing the latest BattleState", () => {

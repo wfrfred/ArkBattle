@@ -14,6 +14,7 @@ import { create as createLifetime } from "../lifetime/operations.js";
 import type { Ref } from "../common/ref.js";
 import * as dependency from "../lifetime/dependency.js";
 import { projectUnit, type UnitTransition } from "./lifetime.js";
+import type { Change, Transformation, Settlement } from "../unit/change.js";
 
 /* eslint-disable @typescript-eslint/no-unnecessary-type-parameters -- Accept capability-bearing object literals while returning only BattleState. */
 export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
@@ -41,48 +42,46 @@ export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
     return occupancy.notify(battle, previous, next, [unit.id]);
 }
 
-export function update<U extends Unit>(battle: BattleState, updates: readonly U[]): BattleState {
-    const ids = new Set<Id>();
-    const changed: Unit[] = [];
+export function update(battle: BattleState, changes: readonly Change[]): BattleState {
+    const prepared = new Map<Id, Unit>();
+    const settlements: ((state: BattleState) => BattleState)[] = [];
 
-    for (const unit of updates) {
-        if (ids.has(unit.id)) {
-            throw new RangeError(`duplicate unit update: ${unit.id}`);
-        }
-
-        ids.add(unit.id);
-        const previous = battle.battlefield.units.get(unit.id);
+    for (const change of changes) {
+        // Construction pairs the reference and its programs before their types are erased.
+        const { ref, transform, settle } = change as Change & {
+            readonly ref: Ref<Unit>;
+            readonly transform: Transformation<Unit>;
+            readonly settle: Settlement<Unit> | undefined;
+        };
+        const previous = prepared.get(ref.id) ?? units.get(battle, ref);
         if (previous === undefined) {
-            throw new RangeError(`unknown unit: ${unit.id}`);
+            throw new RangeError(`unknown unit: ${ref.id}`);
         }
 
-        if (previous.definition !== unit.definition) {
-            throw new RangeError("unit definition cannot change during update");
-        }
+        prepared.set(ref.id, transform(previous));
 
-        if (previous !== unit) {
-            changed.push(unit);
+        if (settle !== undefined) {
+            settlements.push((state) => settle(state, previous));
         }
     }
 
-    if (changed.length === 0) {
-        return battle;
+    battle = replace(battle, [...prepared.values()]);
+
+    for (const settle of settlements) {
+        battle = settle(battle);
     }
 
-    const published = publishBattlefield(
+    return battle;
+}
+
+export function replace<U extends Unit>(battle: BattleState, updates: readonly U[]): BattleState {
+    return publishBattlefield(
         battle,
-        battlefield.update(battle.battlefield, changed),
-        changed.map((unit) => ({
+        battlefield.update(battle.battlefield, updates),
+        updates.map((unit) => ({
             previousUnit: battle.battlefield.units.get(unit.id),
             nextUnit: unit,
         })),
-    );
-
-    return occupancy.notify(
-        published,
-        battle.battlefield,
-        published.battlefield,
-        changed.map((unit) => unit.id),
     );
 }
 /* eslint-enable @typescript-eslint/no-unnecessary-type-parameters */
@@ -93,7 +92,7 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
     get: units.get,
     isEnding: (self) => self.lifecycle === "LEAVING",
     begin: (self) => ({ ...self, lifecycle: "LEAVING" }),
-    replace: (battle, reference, next) => blocking.release(update(battle, [next]), reference),
+    replace: (battle, reference, next) => blocking.release(replace(battle, [next]), reference),
     prepare: (battle, reference, _initial, departure) =>
         refundUnit(battle, units.get(battle, reference)!, departure.reason, battle.tick),
     finalize: (battle, reference, departure) => {

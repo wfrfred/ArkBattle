@@ -73,24 +73,26 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
                 return battle;
             }
 
-            let vitality = unit.vitality;
+            const changes: units.Change[] = [];
 
             if (self.data.defense !== 0) {
-                vitality = setDefenseContribution(vitality, {
-                    id: `@effect/${self.id}/defense`,
-                    value: [attribute.create({ addition: -self.data.defense })],
-                });
+                changes.push(
+                    setDefenseContribution(units.ref(unit), {
+                        id: `@effect/${self.id}/defense`,
+                        value: [attribute.create({ addition: -self.data.defense })],
+                    }),
+                );
             }
             if (self.data.resistance !== 0) {
-                vitality = setResistanceContribution(vitality, {
-                    id: `@effect/${self.id}/resistance`,
-                    value: [attribute.create({ addition: -self.data.resistance })],
-                });
+                changes.push(
+                    setResistanceContribution(units.ref(unit), {
+                        id: `@effect/${self.id}/resistance`,
+                        value: [attribute.create({ addition: -self.data.resistance })],
+                    }),
+                );
             }
 
-            return vitality === unit.vitality
-                ? battle
-                : updateUnit(battle, [{ ...unit, vitality }]);
+            return updateUnit(battle, changes);
         },
         onDisable: (battle, self) => {
             const unit = units.get(battle, self.host);
@@ -98,14 +100,10 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
                 return battle;
             }
 
-            const vitality = removeResistanceContribution(
-                removeDefenseContribution(unit.vitality, `@effect/${self.id}/defense`),
-                `@effect/${self.id}/resistance`,
-            );
-
-            return vitality === unit.vitality
-                ? battle
-                : updateUnit(battle, [{ ...unit, vitality }]);
+            return updateUnit(battle, [
+                removeDefenseContribution(units.ref(unit), `@effect/${self.id}/defense`),
+                removeResistanceContribution(units.ref(unit), `@effect/${self.id}/resistance`),
+            ]);
         },
     };
     const paralysis: EffectDefinition<{ remaining: number }, Action> = {
@@ -120,44 +118,41 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
             const effectId = self.id;
 
             return updateUnit(battle, [
-                {
-                    ...unit,
-                    action: setBeforeReleaseHook(unit.action, {
-                        id: `@effect/${effectId}/paralysis`,
-                        accepts: (battle, context) => {
-                            const current = units
-                                .get(battle, context.source)
-                                ?.effects.get(effectId, paralysis);
+                setBeforeReleaseHook(units.ref(unit), {
+                    id: `@effect/${effectId}/paralysis`,
+                    accepts: (battle, context) => {
+                        const current = units
+                            .get(battle, context.source)
+                            ?.effects.get(effectId, paralysis);
 
-                            return current?.status === "ACTIVE" && current.data.remaining > 0;
-                        },
-                        invoke: (battle, context) => {
-                            const self = units
-                                .get(battle, context.source)!
-                                .effects.get(effectId, paralysis)!;
-                            const ref = effectRef(self);
-                            const remaining = self.data.remaining - 1;
-                            battle = effects.setData(battle, ref, {
-                                ...self.data,
-                                remaining,
-                            });
+                        return current?.status === "ACTIVE" && current.data.remaining > 0;
+                    },
+                    invoke: (battle, context) => {
+                        const self = units
+                            .get(battle, context.source)!
+                            .effects.get(effectId, paralysis)!;
+                        const ref = effectRef(self);
+                        const remaining = self.data.remaining - 1;
+                        battle = effects.setData(battle, ref, {
+                            ...self.data,
+                            remaining,
+                        });
 
-                            if (remaining === 0) {
-                                battle = effects.end(battle, ref, "EXPLICIT");
-                            }
+                        if (remaining === 0) {
+                            battle = effects.end(battle, ref, "EXPLICIT");
+                        }
 
-                            const recoveryTicks = TICKS_PER_SECOND / 2;
-                            const current = units.get(battle, self.host);
-                            if (current?.lifecycle === "PRESENT") {
-                                battle = effects.install(battle, self.host, stun, {
-                                    scopes: [{ type: "TICK", tick: battle.tick + recoveryTicks }],
-                                }).state;
-                            }
+                        const recoveryTicks = TICKS_PER_SECOND / 2;
+                        const current = units.get(battle, self.host);
+                        if (current?.lifecycle === "PRESENT") {
+                            battle = effects.install(battle, self.host, stun, {
+                                scopes: [{ type: "TICK", tick: battle.tick + recoveryTicks }],
+                            }).state;
+                        }
 
-                            return { state: battle, value: { type: "INTERRUPT", recoveryTicks } };
-                        },
-                    }),
-                },
+                        return { state: battle, value: { type: "INTERRUPT", recoveryTicks } };
+                    },
+                }),
             ]);
         },
         onEnd: (battle, self) => {
@@ -166,13 +161,7 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
             return unit === undefined
                 ? battle
                 : updateUnit(battle, [
-                      {
-                          ...unit,
-                          action: removeBeforeReleaseHook(
-                              unit.action,
-                              `@effect/${self.id}/paralysis`,
-                          ),
-                      },
+                      removeBeforeReleaseHook(units.ref(unit), `@effect/${self.id}/paralysis`),
                   ]);
         },
     };
@@ -188,13 +177,10 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
 
             return unit !== undefined && profile.attackReductionRatio > 0 && hasOffense(unit)
                 ? updateUnit(battle, [
-                      {
-                          ...unit,
-                          offense: setAttackContribution(unit.offense, {
-                              id: `@effect/${self.id}/attack`,
-                              value: [attribute.create({ finalScaler: self.data.scaler })],
-                          }),
-                      },
+                      setAttackContribution(units.ref(unit), {
+                          id: `@effect/${self.id}/attack`,
+                          value: [attribute.create({ finalScaler: self.data.scaler })],
+                      }),
                   ])
                 : battle;
         },
@@ -203,13 +189,7 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
 
             return unit !== undefined && profile.attackReductionRatio > 0 && hasOffense(unit)
                 ? updateUnit(battle, [
-                      {
-                          ...unit,
-                          offense: removeAttackContribution(
-                              unit.offense,
-                              `@effect/${self.id}/attack`,
-                          ),
-                      },
+                      removeAttackContribution(units.ref(unit), `@effect/${self.id}/attack`),
                   ])
                 : battle;
         },
@@ -275,13 +255,10 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
                     }
 
                     battle = updateUnit(battle, [
-                        {
-                            ...host,
-                            offense: setAttackContribution(host.offense, {
-                                id: `@effect/${self.id}/attack`,
-                                value: [attribute.create({ finalScaler: scaler })],
-                            }),
-                        },
+                        setAttackContribution(units.ref(host), {
+                            id: `@effect/${self.id}/attack`,
+                            value: [attribute.create({ finalScaler: scaler })],
+                        }),
                     ]);
                 }
             }

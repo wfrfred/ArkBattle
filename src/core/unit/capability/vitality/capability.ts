@@ -9,6 +9,8 @@ import type {
 } from "../../../battle/damage/hook.js";
 import type { Hook as HealingHook } from "../../../battle/healing/hook.js";
 import * as registry from "../../../hook.js";
+import type { Ref } from "../../../common/ref.js";
+import { createChange, type Change } from "../../change.js";
 
 export interface Definition {
     readonly maxHp: number;
@@ -69,20 +71,27 @@ export function initialize(battle: BattleState, definition: Definition): Result<
     };
 }
 
-export function setDamageReceptionRule(state: State, rule: DamageReceptionRule): State {
-    const damageReceptionRules = registry.set(state.damageReceptionRules, rule);
+export function setDamageReceptionRule(
+    reference: Ref<Unit & Vitality>,
+    rule: DamageReceptionRule,
+): Change {
+    return createChange(reference, (self) => {
+        const damageReceptionRules = registry.set(self.vitality.damageReceptionRules, rule);
 
-    return damageReceptionRules === state.damageReceptionRules
-        ? state
-        : { ...state, damageReceptionRules };
+        return damageReceptionRules === self.vitality.damageReceptionRules
+            ? self
+            : { ...self, vitality: { ...self.vitality, damageReceptionRules } };
+    });
 }
 
-export function removeDamageReceptionRule(state: State, id: string): State {
-    const damageReceptionRules = registry.remove(state.damageReceptionRules, id);
+export function removeDamageReceptionRule(reference: Ref<Unit & Vitality>, id: string): Change {
+    return createChange(reference, (self) => {
+        const damageReceptionRules = registry.remove(self.vitality.damageReceptionRules, id);
 
-    return damageReceptionRules === state.damageReceptionRules
-        ? state
-        : { ...state, damageReceptionRules };
+        return damageReceptionRules === self.vitality.damageReceptionRules
+            ? self
+            : { ...self, vitality: { ...self.vitality, damageReceptionRules } };
+    });
 }
 
 function setMaxHpContributions(state: State, definition: Definition, maxHp: State["maxHp"]): State {
@@ -101,15 +110,30 @@ function setMaxHpContributions(state: State, definition: Definition, maxHp: Stat
 }
 
 export function setMaxHpContribution(
-    state: State,
-    definition: Definition,
+    reference: Ref<Unit & Vitality>,
     entry: contribution.Contribution<readonly attribute.Modifier[]>,
-): State {
-    return setMaxHpContributions(state, definition, contribution.set(state.maxHp, entry));
+): Change {
+    return createChange(reference, (self) => {
+        const vitality = setMaxHpContributions(
+            self.vitality,
+            self.definition.vitality,
+            contribution.set(self.vitality.maxHp, entry),
+        );
+
+        return vitality === self.vitality ? self : { ...self, vitality };
+    });
 }
 
-export function removeMaxHpContribution(state: State, definition: Definition, id: string): State {
-    return setMaxHpContributions(state, definition, contribution.remove(state.maxHp, id));
+export function removeMaxHpContribution(reference: Ref<Unit & Vitality>, id: string): Change {
+    return createChange(reference, (self) => {
+        const vitality = setMaxHpContributions(
+            self.vitality,
+            self.definition.vitality,
+            contribution.remove(self.vitality.maxHp, id),
+        );
+
+        return vitality === self.vitality ? self : { ...self, vitality };
+    });
 }
 
 export function resolveMaxHp(state: State, definition: Definition): number {
@@ -125,23 +149,55 @@ function setContributions(
 }
 
 export function setDefenseContribution(
-    state: State,
+    reference: Ref<Unit & Vitality>,
     entry: contribution.Contribution<Input>,
-): State {
-    return setContributions(state, "defense", contribution.set(state.defense, entry));
+): Change {
+    return createChange(reference, (self) => {
+        const vitality = setContributions(
+            self.vitality,
+            "defense",
+            contribution.set(self.vitality.defense, entry),
+        );
+
+        return vitality === self.vitality ? self : { ...self, vitality };
+    });
 }
 
-export function removeDefenseContribution(state: State, id: string): State {
-    return setContributions(state, "defense", contribution.remove(state.defense, id));
+export function removeDefenseContribution(reference: Ref<Unit & Vitality>, id: string): Change {
+    return createChange(reference, (self) => {
+        const vitality = setContributions(
+            self.vitality,
+            "defense",
+            contribution.remove(self.vitality.defense, id),
+        );
+
+        return vitality === self.vitality ? self : { ...self, vitality };
+    });
 }
 
 export function setResistanceContribution(
-    state: State,
+    reference: Ref<Unit & Vitality>,
     entry: contribution.Contribution<Input>,
-): State {
-    return setContributions(state, "resistance", contribution.set(state.resistance, entry));
+): Change {
+    return createChange(reference, (self) => {
+        const vitality = setContributions(
+            self.vitality,
+            "resistance",
+            contribution.set(self.vitality.resistance, entry),
+        );
+
+        return vitality === self.vitality ? self : { ...self, vitality };
+    });
 }
 
-export function removeResistanceContribution(state: State, id: string): State {
-    return setContributions(state, "resistance", contribution.remove(state.resistance, id));
+export function removeResistanceContribution(reference: Ref<Unit & Vitality>, id: string): Change {
+    return createChange(reference, (self) => {
+        const vitality = setContributions(
+            self.vitality,
+            "resistance",
+            contribution.remove(self.vitality.resistance, id),
+        );
+
+        return vitality === self.vitality ? self : { ...self, vitality };
+    });
 }

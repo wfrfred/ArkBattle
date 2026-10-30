@@ -53,11 +53,9 @@ export const smogEffect: Definition<SmogState, targetable.Targetable> = {
             return battle;
         }
 
-        const next = targetable.removeRestriction(unit.targetable, `terrain/${self.id}`);
-
-        return next === unit.targetable
-            ? battle
-            : updateUnit(battle, [{ ...unit, targetable: next }]);
+        return updateUnit(battle, [
+            targetable.removeRestriction(units.ref(unit), `terrain/${self.id}`),
+        ]);
     },
 };
 
@@ -97,12 +95,9 @@ function reconcileSmog(
     }
 
     return updateUnit(battle, [
-        {
-            ...unit,
-            targetable: active
-                ? targetable.setRestriction(unit.targetable, { id, value: invisibleRestriction })
-                : targetable.removeRestriction(unit.targetable, id),
-        },
+        active
+            ? targetable.setRestriction(units.ref(unit), { id, value: invisibleRestriction })
+            : targetable.removeRestriction(units.ref(unit), id),
     ]);
 }
 
@@ -118,42 +113,36 @@ function changeModifiers(
     }
 
     return updateUnit(battle, [
-        {
-            ...unit,
-            ...(offense.hasOffense(unit)
-                ? {
-                      offense:
-                          modifiers?.attack === undefined
-                              ? offense.removeAttackContribution(unit.offense, id)
-                              : offense.setAttackContribution(unit.offense, {
-                                    id,
-                                    value: [modifiers.attack],
-                                }),
-                  }
-                : {}),
-            ...(action.hasAction(unit)
-                ? {
-                      action:
-                          modifiers?.attackSpeed === undefined
-                              ? action.removeSpeedContribution(unit.action, id)
-                              : action.setSpeedContribution(unit.action, {
-                                    id,
-                                    value: [modifiers.attackSpeed],
-                                }),
-                  }
-                : {}),
-            ...(hasLocomotion(unit)
-                ? {
-                      locomotion:
-                          modifiers?.movementSpeed === undefined
-                              ? locomotion.removeSpeedContribution(unit.locomotion, id)
-                              : locomotion.setSpeedContribution(unit.locomotion, {
-                                    id,
-                                    value: [modifiers.movementSpeed],
-                                }),
-                  }
-                : {}),
-        },
+        ...(offense.hasOffense(unit)
+            ? [
+                  modifiers?.attack === undefined
+                      ? offense.removeAttackContribution(units.ref(unit), id)
+                      : offense.setAttackContribution(units.ref(unit), {
+                            id,
+                            value: [modifiers.attack],
+                        }),
+              ]
+            : []),
+        ...(action.hasAction(unit)
+            ? [
+                  modifiers?.attackSpeed === undefined
+                      ? action.removeSpeedContribution(units.ref(unit), id)
+                      : action.setSpeedContribution(units.ref(unit), {
+                            id,
+                            value: [modifiers.attackSpeed],
+                        }),
+              ]
+            : []),
+        ...(hasLocomotion(unit)
+            ? [
+                  modifiers?.movementSpeed === undefined
+                      ? locomotion.removeSpeedContribution(units.ref(unit), id)
+                      : locomotion.setSpeedContribution(units.ref(unit), {
+                            id,
+                            value: [modifiers.movementSpeed],
+                        }),
+              ]
+            : []),
     ]);
 }
 

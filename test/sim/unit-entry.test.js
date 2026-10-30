@@ -9,7 +9,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { initialize as initializeBattle, step as stepBattle } from '../../dist/core/battle/runtime.js';
-import { add, update as updateUnit, remove } from '../../dist/core/battle/unit.js';
+import { add, replace as updateUnit, remove } from '../../dist/core/battle/unit.js';
 import { getUnit, initialize, fixtureBattle } from '../helpers/unit.js';
 import { instantiateUnitPlacement } from '../../dist/core/battle/creation/placement.js';
 import { advancePredefined } from '../../dist/core/battle/steps/predefined.js';
@@ -248,6 +248,8 @@ import { initialize } from ${module};
 import type { EnterHook } from ${JSON.stringify(fileURLToPath(new URL('../../src/core/unit/hook.js', import.meta.url)))};
 import type { Unit } from ${JSON.stringify(fileURLToPath(new URL('../../src/core/unit/unit.js', import.meta.url)))};
 import * as operations from ${JSON.stringify(fileURLToPath(new URL('../../src/core/battle/unit.js', import.meta.url)))};
+import { createChange } from ${JSON.stringify(fileURLToPath(new URL('../../src/core/unit/change.js', import.meta.url)))};
+import { ref } from ${JSON.stringify(fileURLToPath(new URL('../../src/core/unit/query.js', import.meta.url)))};
 import * as state from ${JSON.stringify(fileURLToPath(new URL('../../src/core/battle/state.js', import.meta.url)))};
 declare const battle: import(${JSON.stringify(fileURLToPath(new URL('../../src/core/battle/state.js', import.meta.url)))}).State;
 const enter: EnterHook = {
@@ -262,7 +264,7 @@ enter.invoke(battle, unit, undefined);
 enter.invoke(battle, unit.id, undefined);
 const hp: number = unit.vitality.hp;
 const entered = operations.add(battle, unit);
-const updated = operations.update(entered, [{ ...unit, vitality: { ...unit.vitality, hp: 75 } }]);
+const updated = operations.update(entered, [createChange(ref(unit), self => ({ ...self, vitality: { ...self.vitality, hp: 75 } }))]);
 const departed = operations.remove(updated, unit.id, "SCRIPT");
 const advanced: state.State = operations.advance(departed);
 // @ts-expect-error entry accepts a complete Unit, not an already registered identity.

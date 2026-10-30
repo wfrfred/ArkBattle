@@ -1,9 +1,10 @@
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { unitsAt } from "../helpers/battlefield.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { fixtureBattle, initialize } from "../helpers/unit.js";
+import { initialize } from "../helpers/unit.js";
 import { fixture as blockingFixture, acquire, blockedIds } from "../helpers/blocking.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { deadline } from "../../dist/core/unit/effect/effect.js";
@@ -81,13 +82,13 @@ function contributionEffect(id, initial, setting, callbacks = {}) {
         initialize: () => initial,
         ...callbacks,
         onEnable(battle, self) {
-            battle = setting.set(battle, self.host, {
+            battle = applyUnitChanges(battle, [setting.set(self.host, {
                 id: `${self.host.id}:${self.id}`, value: setting.value(self),
-            });
+            })]);
             return callbacks.onEnable ? callbacks.onEnable(battle, self) : battle;
         },
         onDisable(battle, self) {
-            battle = setting.remove(battle, self.host, `${self.host.id}:${self.id}`);
+            battle = applyUnitChanges(battle, [setting.remove(self.host, `${self.host.id}:${self.id}`)]);
             return callbacks.onDisable ? callbacks.onDisable(battle, self) : battle;
         },
     };
@@ -96,9 +97,9 @@ function contributionEffect(id, initial, setting, callbacks = {}) {
 function refreshContribution(battle, reference, setting) {
     const self = effects.get(battle, reference);
     if (self?.status !== "ACTIVE") return battle;
-    return setting.set(battle, self.host, {
+    return applyUnitChanges(battle, [setting.set(self.host, {
         id: `${self.host.id}:${self.id}`, value: setting.value(self),
-    });
+    })]);
 }
 
 test("blocking initialization accepts plain definitions and validates them through unit initialization", () => {
@@ -125,12 +126,12 @@ test("blocking initialization accepts plain definitions and validates them throu
 test("blocking capacity: immutable additions resolve ties to even after clamping", () => {
     const original = effectFixtureWork(blocker());
     assert.equal(capacity(original), 3);
-    const first = setCapacityContribution(original, { id: 0 }, entry("first", { type: "ADD", value: 1.5 }));
-    const modified = setCapacityContribution(first, { id: 0 }, entry("second", { type: "ADD", value: 2.5 }));
+    const first = applyUnitChanges(original, [setCapacityContribution({ id: 0 }, entry("first", { type: "ADD", value: 1.5 }))]);
+    const modified = applyUnitChanges(first, [setCapacityContribution({ id: 0 }, entry("second", { type: "ADD", value: 2.5 }))]);
     assert.equal(capacity(modified), 7);
-    const reduced = removeCapacityContribution(modified, { id: 0 }, "first");
+    const reduced = applyUnitChanges(modified, [removeCapacityContribution({ id: 0 }, "first")]);
     assert.equal(capacity(reduced), 6);
-    const restored = removeCapacityContribution(reduced, { id: 0 }, "second");
+    const restored = applyUnitChanges(reduced, [removeCapacityContribution({ id: 0 }, "second")]);
     assert.deepEqual(getUnit(restored, 0).blocker.capacity, []);
     assert.equal(capacity(restored), 3);
     assert.deepEqual(getUnit(original, 0).blocker.capacity, []);
@@ -139,43 +140,43 @@ test("blocking capacity: immutable additions resolve ties to even after clamping
         [-3, 0], [-0.5, 0], [0.49, 0], [0.5, 0], [0.51, 1],
         [1.5, 2], [2.5, 2], [3.5, 4],
     ]) {
-        const result = setCapacityContribution(original, { id: 0 }, entry("rounding", { type: "ADD", value: value - 3 }));
+        const result = applyUnitChanges(original, [setCapacityContribution({ id: 0 }, entry("rounding", { type: "ADD", value: value - 3 }))]);
         assert.equal(capacity(result), expected, `resolved ${value}`);
     }
 });
 
 test("blocking capacity: ZERO overrides additions from every source and removing it restores them", () => {
     let battle = effectFixtureWork(blocker());
-    battle = setCapacityContribution(battle, { id: 0 }, {
+    battle = applyUnitChanges(battle, [setCapacityContribution({ id: 0 }, {
         id: "a-additions", value: [{ type: "ADD", value: 10 }, { type: "ADD", value: -1 }],
-    });
-    battle = setCapacityContribution(battle, { id: 0 }, {
+    })]);
+    battle = applyUnitChanges(battle, [setCapacityContribution({ id: 0 }, {
         id: "z-additions", value: [{ type: "ADD", value: 20 }],
-    });
+    })]);
     assert.equal(capacity(battle), 32);
     for (const zeroId of ["0-zero", "m-zero", "zz-zero"]) {
-        const zeroed = setCapacityContribution(battle, { id: 0 }, {
+        const zeroed = applyUnitChanges(battle, [setCapacityContribution({ id: 0 }, {
             id: zeroId, value: [{ type: "ADD", value: 100 }, { type: "ZERO" }, { type: "ADD", value: 100 }],
-        });
+        })]);
         assert.equal(capacity(zeroed), 0, zeroId);
-        assert.equal(capacity(removeCapacityContribution(zeroed, { id: 0 }, zeroId)), 32);
+        assert.equal(capacity(applyUnitChanges(zeroed, [removeCapacityContribution({ id: 0 }, zeroId)])), 32);
     }
     assert.equal(capacity(battle), 32);
 });
 
 test("blocking capacity: exclusive group selection happens before ZERO is applied", () => {
     const battle = effectFixtureWork(blocker());
-    const zeroed = setCapacityContribution(battle, { id: 0 }, {
+    const zeroed = applyUnitChanges(battle, [setCapacityContribution({ id: 0 }, {
         id: "zero", value: [{ type: "ZERO" }], group: { id: "capacity-rule", priority: 1 },
-    });
-    const selected = setCapacityContribution(zeroed, { id: 0 }, {
+    })]);
+    const selected = applyUnitChanges(zeroed, [setCapacityContribution({ id: 0 }, {
         id: "addition", value: [{ type: "ADD", value: 2 }], group: { id: "capacity-rule", priority: 2 },
-    });
+    })]);
     assert.equal(capacity(selected), 5);
-    const fallback = removeCapacityContribution(selected, { id: 0 }, "addition");
+    const fallback = applyUnitChanges(selected, [removeCapacityContribution({ id: 0 }, "addition")]);
     assert.equal(capacity(fallback), 0);
-    assert.equal(capacity(removeCapacityContribution(fallback, { id: 0 }, "zero")), 3);
-    const independent = setCapacityContribution(selected, { id: 0 }, { id: "independent", value: [{ type: "ZERO" }] });
+    assert.equal(capacity(applyUnitChanges(fallback, [removeCapacityContribution({ id: 0 }, "zero")])), 3);
+    const independent = applyUnitChanges(selected, [setCapacityContribution({ id: 0 }, { id: "independent", value: [{ type: "ZERO" }] })]);
     assert.equal(capacity(independent), 0);
 });
 
@@ -257,33 +258,33 @@ test("blocking volume: independent Effect contributions release targets and clea
 test("blocking volume: integer additions honor exclusive groups and restore the remaining candidate", () => {
     const h = battlefield([blocker(4), enemy(1), enemy(2)]);
     const original = h.state.units.get(1);
-    h.publish(setVolumeContribution(h.work(), { id: 1 }, { id: "independent", value: 1 }));
-    h.publish(setVolumeContribution(h.work(), { id: 1 }, {
+    h.publish(applyUnitChanges(h.work(), [setVolumeContribution({ id: 1 }, { id: "independent", value: 1 })]));
+    h.publish(applyUnitChanges(h.work(), [setVolumeContribution({ id: 1 }, {
         id: "lower", value: 1, group: { id: "size", priority: 1 },
-    }));
-    h.publish(setVolumeContribution(h.work(), { id: 1 }, {
+    })]));
+    h.publish(applyUnitChanges(h.work(), [setVolumeContribution({ id: 1 }, {
         id: "higher", value: 2, group: { id: "size", priority: 2 },
-    }));
+    })]));
     const expanded = h.state.units.get(1);
     assert.equal(resolveVolume(expanded.definition.blockable, expanded.blockable), 4);
     assert.deepEqual(h.blocked(), [1]);
-    h.publish(removeVolumeContribution(h.work(), { id: 1 }, "higher"));
+    h.publish(applyUnitChanges(h.work(), [removeVolumeContribution({ id: 1 }, "higher")]));
     assert.equal(resolveVolume(original.definition.blockable, h.state.units.get(1).blockable), 3);
     assert.deepEqual(h.blocked(), [1]);
     h.search();
     assert.deepEqual(h.blocked(), [1, 2]);
     assert.equal(resolveVolume(original.definition.blockable, expanded.blockable), 4);
     assert.equal(resolveVolume(original.definition.blockable, original.blockable), 1);
-    h.publish(removeVolumeContribution(h.work(), { id: 1 }, "lower"));
+    h.publish(applyUnitChanges(h.work(), [removeVolumeContribution({ id: 1 }, "lower")]));
     assert.equal(resolveVolume(original.definition.blockable, h.state.units.get(1).blockable), 2);
 });
 
 test("blocking volume: only integer additions are accepted", () => {
     const battle = effectFixtureWork(enemy(1, 2));
     for (const value of [0.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
-        assert.throws(() => setVolumeContribution(battle, { id: 1 }, { id: "invalid", value }), RangeError);
+        assert.throws(() => applyUnitChanges(battle, [setVolumeContribution({ id: 1 }, { id: "invalid", value })]), RangeError);
     }
-    const changed = setVolumeContribution(battle, { id: 1 }, { id: "zero", value: 0 });
+    const changed = applyUnitChanges(battle, [setVolumeContribution({ id: 1 }, { id: "zero", value: 0 })]);
     assert.equal(resolveVolume({ volume: 2 }, getUnit(changed, 1).blockable), 2);
 });
 
@@ -291,7 +292,7 @@ test("blocking volume: negative additions still consume one capacity while Rules
     const h = battlefield([blocker(1), enemy(1, 2)]);
     assert.deepEqual(h.blocked(), []);
     for (const value of [-2, -10]) {
-        h.publish(setVolumeContribution(h.work(), { id: 1 }, { id: "reduced", value }));
+        h.publish(applyUnitChanges(h.work(), [setVolumeContribution({ id: 1 }, { id: "reduced", value })]));
         const current = h.state.units.get(1);
         assert.equal(resolveVolume(current.definition.blockable, current.blockable), 1);
         h.search();
@@ -300,7 +301,7 @@ test("blocking volume: negative additions still consume one capacity while Rules
     }
     h.publish(addUnit(h.work(), enemy(2)));
     assert.deepEqual(h.blocked(), [1]);
-    h.publish(setRule(h.work(), { id: 1 }, { id: "unblockable", allows: () => false }));
+    h.publish(applyUnitChanges(h.work(), [setRule({ id: 1 }, { id: "unblockable", allows: () => false })]));
     assert.deepEqual(h.blocked(), []);
     h.search();
     assert.deepEqual(h.blocked(), [2]);
@@ -311,13 +312,13 @@ test("blocking eligibility: overlapping rules release and reacquire targets inde
     const original = h.state.units.get(1);
     const first = { id: "first", allows: () => false };
     const second = { id: "second", allows: () => false };
-    h.publish(setRule(h.work(), { id: 1 }, first));
+    h.publish(applyUnitChanges(h.work(), [setRule({ id: 1 }, first)]));
     assert.deepEqual(h.blocked(), [2]);
-    h.publish(setRule(h.work(), { id: 1 }, second));
-    h.publish(removeRule(h.work(), { id: 1 }, first.id));
+    h.publish(applyUnitChanges(h.work(), [setRule({ id: 1 }, second)]));
+    h.publish(applyUnitChanges(h.work(), [removeRule({ id: 1 }, first.id)]));
     assert.deepEqual(h.state.units.get(1).blockable.rules.map(({ id }) => id), ["second"]);
     assert.deepEqual(h.blocked(), [2]);
-    h.publish(removeRule(h.work(), { id: 1 }, second.id));
+    h.publish(applyUnitChanges(h.work(), [removeRule({ id: 1 }, second.id)]));
     assert.deepEqual(h.state.units.get(1).blockable.rules, []);
     assert.deepEqual(h.blocked(), [2]);
     h.search();
@@ -329,8 +330,8 @@ test("blocking eligibility: overlapping rules release and reacquire targets inde
 test("blocking volume: equivalent contribution changes leave the blocking projection clean", () => {
     const h = battlefield([blocker(), enemy(1)]);
     const before = h.state;
-    h.publish(setVolumeContribution(h.work(), { id: 1 }, { id: "positive", value: 1 }));
-    h.publish(setVolumeContribution(h.work(), { id: 1 }, { id: "negative", value: -1 }));
+    h.publish(applyUnitChanges(h.work(), [setVolumeContribution({ id: 1 }, { id: "positive", value: 1 })]));
+    h.publish(applyUnitChanges(h.work(), [setVolumeContribution({ id: 1 }, { id: "negative", value: -1 })]));
     assert.equal(h.state.units.get(0).blocker.blocked, before.units.get(0).blocker.blocked);
     assert.equal(h.state.occupancy, before.occupancy);
     assert.deepEqual(unitsAt(h.state, [0, 0]).map(unit => unit.id), unitsAt(before, [0, 0]).map(unit => unit.id));
@@ -458,8 +459,8 @@ test("blocking capacity: replacing contribution entries without changing the res
     const h = battlefield([blocker(), enemy(1)]);
     const before = h.state;
     const owner = before.units.get(0);
-    h.publish(setCapacityContribution(h.work(), { id: 0 }, entry("positive", { type: "ADD", value: 1 })));
-    h.publish(setCapacityContribution(h.work(), { id: 0 }, entry("negative", { type: "ADD", value: -1 })));
+    h.publish(applyUnitChanges(h.work(), [setCapacityContribution({ id: 0 }, entry("positive", { type: "ADD", value: 1 }))]));
+    h.publish(applyUnitChanges(h.work(), [setCapacityContribution({ id: 0 }, entry("negative", { type: "ADD", value: -1 }))]));
     const changed = h.state.units.get(0);
     assert.notEqual(changed.blocker.capacity, owner.blocker.capacity);
     assert.equal(capacityOf(changed), capacityOf(owner));
@@ -467,7 +468,7 @@ test("blocking capacity: replacing contribution entries without changing the res
     assert.equal(h.state.occupancy, before.occupancy);
     assert.deepEqual(unitsAt(h.state, [0, 0]).map(unit => unit.id), unitsAt(before, [0, 0]).map(unit => unit.id));
     assert.equal(h.state.navigation, before.navigation);
-    h.publish(setCapacityContribution(h.work(), { id: 0 }, entry("positive", { type: "ADD", value: 1.1 })));
+    h.publish(applyUnitChanges(h.work(), [setCapacityContribution({ id: 0 }, entry("positive", { type: "ADD", value: 1.1 }))]));
     assert.equal(capacityOf(h.state.units.get(0)), 3);
     assert.equal(h.state.units.get(0).blocker.blocked, before.units.get(0).blocker.blocked);
 });

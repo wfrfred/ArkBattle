@@ -7,6 +7,8 @@ import * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
 import type { SteeringParameters } from "./steering.js";
 import * as registry from "../../../hook.js";
+import type { Ref } from "../../../common/ref.js";
+import { createChange, type Change } from "../../change.js";
 
 export interface Definition {
     readonly speed: number;
@@ -60,26 +62,45 @@ export function initialize(battle: BattleState, definition: Definition): Result<
     };
 }
 
-export function setRule(state: State, rule: Rule): State {
-    const rules = registry.set(state.rules, rule);
+export function setRule(reference: Ref<Unit & Locomotion>, rule: Rule): Change {
+    return createChange(reference, (self) => {
+        const rules = registry.set(self.locomotion.rules, rule);
 
-    return rules === state.rules ? state : { ...state, rules };
+        return rules === self.locomotion.rules
+            ? self
+            : { ...self, locomotion: { ...self.locomotion, rules } };
+    });
 }
 
-export function removeRule(state: State, id: string): State {
-    const rules = registry.remove(state.rules, id);
+export function removeRule(reference: Ref<Unit & Locomotion>, id: string): Change {
+    return createChange(reference, (self) => {
+        const rules = registry.remove(self.locomotion.rules, id);
 
-    return rules === state.rules ? state : { ...state, rules };
+        return rules === self.locomotion.rules
+            ? self
+            : { ...self, locomotion: { ...self.locomotion, rules } };
+    });
 }
 
-export function setSpeedContribution(state: State, entry: contribution.Contribution<Input>): State {
-    const speed = contribution.set(state.speed, entry);
+export function setSpeedContribution(
+    reference: Ref<Unit & Locomotion>,
+    entry: contribution.Contribution<Input>,
+): Change {
+    return createChange(reference, (self) => {
+        const speed = contribution.set(self.locomotion.speed, entry);
 
-    return speed === state.speed ? state : { ...state, speed };
+        return speed === self.locomotion.speed
+            ? self
+            : { ...self, locomotion: { ...self.locomotion, speed } };
+    });
 }
 
-export function removeSpeedContribution(state: State, id: string): State {
-    const speed = contribution.remove(state.speed, id);
+export function removeSpeedContribution(reference: Ref<Unit & Locomotion>, id: string): Change {
+    return createChange(reference, (self) => {
+        const speed = contribution.remove(self.locomotion.speed, id);
 
-    return speed === state.speed ? state : { ...state, speed };
+        return speed === self.locomotion.speed
+            ? self
+            : { ...self, locomotion: { ...self.locomotion, speed } };
+    });
 }

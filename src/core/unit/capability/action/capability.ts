@@ -2,10 +2,12 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Unit, Definition as UnitDefinition } from "../../unit.js";
 import type { Id as DefinitionId } from "../../action/definition.js";
 import type { Actions } from "../../action/actions.js";
-import * as contribution from "../../contribution/contribution.js";
+import type * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
 import * as hook from "../../../hook.js";
 import type { BeforeReleaseHook, ReleasedHook } from "./release.js";
+import type { Ref } from "../../../common/ref.js";
+import { createChange, type Change } from "../../change.js";
 
 export interface Definition {
     readonly initialize: (battle: BattleState) => Result<Actions>;
@@ -65,65 +67,61 @@ export function initialize(battle: BattleState, definition: Definition): Result<
     };
 }
 
-export function setRule(state: State, rule: Rule): State {
-    const rules = hook.set(state.rules, rule);
+export function setRule(reference: Ref<Unit & Action>, rule: Rule): Change {
+    return createChange(reference, (self) => {
+        const rules = hook.set(self.action.rules, rule);
 
-    return rules === state.rules ? state : { ...state, rules };
+        return rules === self.action.rules ? self : { ...self, action: { ...self.action, rules } };
+    });
 }
 
-export function removeRule(state: State, id: string): State {
-    const rules = hook.remove(state.rules, id);
+export function removeRule(reference: Ref<Unit & Action>, id: string): Change {
+    return createChange(reference, (self) => {
+        const rules = hook.remove(self.action.rules, id);
 
-    return rules === state.rules ? state : { ...state, rules };
+        return rules === self.action.rules ? self : { ...self, action: { ...self.action, rules } };
+    });
 }
 
-export function setBeforeReleaseHook(state: State, entry: BeforeReleaseHook): State {
-    const beforeRelease = hook.set(state.beforeRelease, entry);
+export function setBeforeReleaseHook(
+    reference: Ref<Unit & Action>,
+    entry: BeforeReleaseHook,
+): Change {
+    return createChange(reference, (self) => {
+        const beforeRelease = hook.set(self.action.beforeRelease, entry);
 
-    return beforeRelease === state.beforeRelease ? state : { ...state, beforeRelease };
+        return beforeRelease === self.action.beforeRelease
+            ? self
+            : { ...self, action: { ...self.action, beforeRelease } };
+    });
 }
 
-export function removeBeforeReleaseHook(state: State, id: string): State {
-    const beforeRelease = hook.remove(state.beforeRelease, id);
+export function removeBeforeReleaseHook(reference: Ref<Unit & Action>, id: string): Change {
+    return createChange(reference, (self) => {
+        const beforeRelease = hook.remove(self.action.beforeRelease, id);
 
-    return beforeRelease === state.beforeRelease ? state : { ...state, beforeRelease };
+        return beforeRelease === self.action.beforeRelease
+            ? self
+            : { ...self, action: { ...self.action, beforeRelease } };
+    });
 }
 
-export function setReleasedHook(state: State, entry: ReleasedHook): State {
-    const released = hook.set(state.released, entry);
+export function setReleasedHook(reference: Ref<Unit & Action>, entry: ReleasedHook): Change {
+    return createChange(reference, (self) => {
+        const released = hook.set(self.action.released, entry);
 
-    return released === state.released ? state : { ...state, released };
+        return released === self.action.released
+            ? self
+            : { ...self, action: { ...self.action, released } };
+    });
 }
 
-export function removeReleasedHook(state: State, id: string): State {
-    const released = hook.remove(state.released, id);
+export function removeReleasedHook(reference: Ref<Unit & Action>, id: string): Change {
+    return createChange(reference, (self) => {
+        const released = hook.remove(self.action.released, id);
 
-    return released === state.released ? state : { ...state, released };
-}
-
-function setContributions(
-    state: State,
-    key: "interval" | "speed",
-    entries: State["interval"],
-): State {
-    return entries === state[key] ? state : { ...state, [key]: entries };
-}
-
-export function setIntervalContribution(
-    state: State,
-    entry: contribution.Contribution<Input>,
-): State {
-    return setContributions(state, "interval", contribution.set(state.interval, entry));
-}
-
-export function removeIntervalContribution(state: State, id: string): State {
-    return setContributions(state, "interval", contribution.remove(state.interval, id));
-}
-
-export function setSpeedContribution(state: State, entry: contribution.Contribution<Input>): State {
-    return setContributions(state, "speed", contribution.set(state.speed, entry));
-}
-
-export function removeSpeedContribution(state: State, id: string): State {
-    return setContributions(state, "speed", contribution.remove(state.speed, id));
+        return released === self.action.released
+            ? self
+            : { ...self, action: { ...self.action, released } };
+    });
 }

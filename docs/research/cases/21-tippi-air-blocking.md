@@ -78,7 +78,7 @@ S1／S2 起飞模式 Attack 对象上的 BuffToOwner
 
 Blocker Definition 的 layer、rules 必填，radius 可选；State 保存当前 layer 和实际 radius。Core 在未显式覆盖时提供 GROUND 半径 0.7071、AIR 半径 0.8944；显式 Definition.radius 在初始化和切层时都保持覆盖。空地匹配与 AIR 地块豁免由通用 Blocking 解释，阵营和其他特殊资格仍通过双方二元 Rule 判断。射击台 Rule 只禁止当前 GROUND 阻挡，AIR 可通过。
 
-起飞／落地 Blocking 业务通过 capability/blocking 入口的 setLayer(battle, ref, layer) 完成，实现在 blocker-operations.ts，并委托内部 releaseAll 完成批量发布与通知。层改变时，新 layer、实际半径和全部旧出向关系的双端解除在第一个 RELEASED Hook 前一起提交；Hook 接续最新 BattleState，不误删嵌套新建的关系，随后显式维护，不自动搜索新目标。普通 unit.update 只发布 Unit 数据、Lifetime 与 Occupancy，不做 Blocking 准备、校验、补齐、差分或通知；关系业务由明确 acquire／release 和内部批量操作承担。Content 不能直接改 blocker.layer 或关系字段绕过领域操作。关系保持和搜索资格的项目政策详见 [Blocking 设计](../../architecture/blocking.md#关系资格与-rule)。
+起飞／落地通过 capability/blocking 的 `setLayer(ref, layer): Change` 描述，由 Unit.update 先发布全批纯转换，再按顺序结算。该项 transform 只改 layer／radius；settle 从本项 previous 的 blocked 捕获旧 Ref，由内部 releaseAll 批量解除仍存在的旧身份，再通知并局部维护，不自动搜索。它自己的首个 Released 前本次仍有效的捕获关系已全部解除；混合批次中较早后继可以先按自己的逐项政策处理部分关系，不承诺全批首个通知已有切层清理结果。后继接续最新 BattleState，不回填旧 Unit 或误删重建的新 Ref。普通 update 不推断或通知 Blocking；Content 通过工厂或明确关系操作接入。以上为项目实施契约，不改写前述原生事实；资格政策见 [Blocking](../../architecture/blocking.md#关系资格与-rule)。
 
 蒂比仍应由实际起飞 Buff 的取得／失效调用相应操作，不直接绑定通用 Skill 开始／结束事件。Targetable 对地规避及表现高度继续独立处理；本轮不实现蒂比，也不修改她自身的空地身份。
 

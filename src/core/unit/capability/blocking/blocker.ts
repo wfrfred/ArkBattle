@@ -1,11 +1,10 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import * as registry from "../../../hook.js";
 import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import * as contribution from "../../contribution/contribution.js";
 import type { Unit } from "../../unit.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Blockable } from "./blockable.js";
-import type { Hook, Key } from "./contract.js";
+import type { Hook } from "./contract.js";
 import type { Rule } from "./rule.js";
 
 export type Layer = "GROUND" | "AIR";
@@ -62,18 +61,6 @@ export function initialize(battle: BattleState, definition: Definition): Result<
             released: [],
         },
     };
-}
-
-export function setHook(state: State, key: Key, hook: Hook<Unit & Blocker>): State {
-    const entries = registry.set(state[key], hook);
-
-    return entries === state[key] ? state : { ...state, [key]: entries };
-}
-
-export function removeHook(state: State, key: Key, id: string): State {
-    const entries = registry.remove(state[key], id);
-
-    return entries === state[key] ? state : { ...state, [key]: entries };
 }
 
 export function resolveCapacity(definition: Definition, state: State): number {

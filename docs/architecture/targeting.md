@@ -136,11 +136,11 @@ export function initialize(
 ): Result<State>;
 
 export function setRestriction(
-    state: State,
+    ref: Ref<Unit & Targetable>,
     entry: Contribution<Restriction>,
-): State;
+): Change;
 
-export function removeRestriction(state: State, id: string): State;
+export function removeRestriction(ref: Ref<Unit & Targetable>, id: string): Change;
 
 export function allowsRestrictions(
     battle: BattleState,
@@ -150,7 +150,7 @@ export function allowsRestrictions(
 ): boolean;
 ```
 
-setRestriction 与 removeRestriction 是局部 State 转换，沿用 Contribution 的 ID 与引用复用规则。同一个 entry 对象重复登记、删除不存在的 ID 返回原 State；相同 ID 的新对象执行替换，不尝试比较回调的业务等价性。固有与动态限制共用 ID 空间，替换后删除不会恢复 Definition 的旧项；临时压制并在撤销后恢复的机制使用独立 ID 与互斥组。
+setRestriction／removeRestriction 绑定 Ref<Unit & Targetable> 返回 Change，经 Unit.update 登记，无附加结算。Contribution 的 ID 与引用规则保持不变：同对象或删除缺失 ID 的 transform 返回原 Unit，相同 ID 新对象替换，不比较回调业务等价性。固有与动态限制共用 ID 空间，替换后删除不恢复 Definition 旧项；需临时压制恢复时用独立 ID 与互斥组。
 
 allowsRestrictions 先 resolve，再按本次 ignore 豁免 kind，要求剩余限制全部允许。空限制集合返回 true。ignore 只读且只影响这次查询，不修改 State，也不使被互斥规则压制的贡献重新参与。查询只处理已登记限制，不额外判断存活、射程或阵营；owner 已具备 Targetable 并来自调用者选定的状态版本。
 

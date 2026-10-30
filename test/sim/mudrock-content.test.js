@@ -1,3 +1,6 @@
+
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { ref as skillRef } from "../helpers/skill.js";
 import * as conditions from "../../dist/content/terrain/condition.js";
 import * as blockingQueries from "../../dist/core/battle/blocking/index.js";
@@ -17,7 +20,7 @@ import { create, readShield } from "../../dist/content/operators/mudrock/unit.js
 
 import { initialize } from "../helpers/unit.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+import { replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { add } from "../../dist/core/battle/unit.js";
 import { advance, end, get, install, setData as setEffectData } from "../../dist/core/unit/effect/index.js";
@@ -126,9 +129,7 @@ test("an earlier barrier exhausts its budget without consuming Mudrock's shield 
         onEnable: (state, self) => {
             const unit = unitQueryGet(state, self.host);
             const ref = effectRef(self);
-            return updateUnit(state, [{
-            ...unit,
-            vitality: setHook(unit.vitality, {
+            return applyUnitChanges(state, [setHook({ id: unit.id }, {
                 id: `barrier/${self.id}`,
                 stage: "receiving",
                 priority: 200,
@@ -141,14 +142,11 @@ test("an earlier barrier exhausts its budget without consuming Mudrock's shield 
                     if (remaining === 0) state = end(state, ref);
                     return { state, value: { ...pending, amount: pending.amount - absorbed } };
                 },
-            }),
-            }]);
+            })]);
         },
         onDisable: (state, self) => {
             const unit = unitQueryGet(state, self.host);
-            return updateUnit(state, [{
-                ...unit, vitality: removeHook(unit.vitality, `barrier/${self.id}`),
-            }]);
+            return applyUnitChanges(state, [removeHook({ id: unit.id }, `barrier/${self.id}`)]);
         },
     };
     const wounded = hp(fixture.state, 1000);
@@ -201,9 +199,9 @@ test("shield recharge keeps its periodic clock while capped and zero layers rema
 test("module X healing and bonus SP use the selected talent and dynamic max HP", () => {
     const fixture = setup({ potential: 6, module: { id: moduleX, level: 3 } }, [enemy(1, [0.6, 0], { blockable: { volume: 1 } })]);
     let state = hp(fixture.state, 1000);
-    state = save(state, { vitality: setMaxHpContribution(getUnit(state, 0).vitality, getUnit(state, 0).definition.vitality, {
+    state = applyUnitChanges(state, [setMaxHpContribution({id:0}, {
         id: "test/max-hp", value: [modifier({ addition: 1000 })],
-    }) });
+    })]);
     state = hp(state, 1000);
     const result = hit(state);
     approximate(getUnit(result.state, 0).vitality.hp, 1000 + (fixture.prepared.attributes.maxHp + 1000) * 0.25);
@@ -229,9 +227,9 @@ test("Sarkaz resistance and module blocked-source reduction compose only for the
 
 test("S2 does not consume SP without an eligible ground target in its range", () => {
     for (const receiver of [enemy(1, [5, 0]), enemy(1, [1, 0], { layer: { type: "AIR" } }),
-        { ...enemy(1, [1, 0]), targetable: setRestriction(initializeTargetable(fixtureBattle(0), fixtureDefinition("targetable")).value, {
+        { ...enemy(1, [1, 0]), targetable: {restrictions:[{
             id: "not-selectable", value: { kind: Symbol("not-selectable"), allows: () => false },
-        }) }]) {
+        }]} }]) {
         const fixture = setup({}, [receiver]);
         const ready = sp(fixture.state, 5);
         const result = activateSkill({ ...ready, tick: 0 }, skillRef(getUnit(ready, 0)), "AUTO" );
@@ -256,8 +254,8 @@ test("S2 immediately overrides normal attack and recovery cooldown, heals once, 
             },
             getUnit(ready, 0).action.actions,
         ) },
-        offense: setAttackContribution(getUnit(ready, 0).offense, { id: "test/attack", value: [modifier({ addition: 100 })] }),
     });
+    ready = applyUnitChanges(ready, [setAttackContribution({id:0}, { id: "test/attack", value: [modifier({addition:100})] })]);
     const active = advanceSkill({ ...ready, tick: 0 }, unitRef(getUnit(ready, 0)));
     assert.equal(getUnit(active, 0).skill.activation.sustain.type, "INFINITE");
     assert.equal(getUnit(active, 0).action.actions.get("normal-attack").cooldown.readyAtTick, 0);

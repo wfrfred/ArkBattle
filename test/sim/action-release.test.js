@@ -1,3 +1,5 @@
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -7,7 +9,7 @@ import { ref as unitRef } from "../../dist/core/unit/query.js";
 import {
     setBeforeReleaseHook,
     removeBeforeReleaseHook,
-} from "../../dist/core/unit/capability/action/capability.js";
+} from "../../dist/core/unit/capability/action/index.js";
 import { beforeRelease } from "../../dist/core/unit/capability/action/release.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { advance } from "../../dist/core/unit/action/index.js";
@@ -33,23 +35,17 @@ function releaseEffect(id, data, invoke) {
         onInstall(state, self) {
             const ref = effectRef(self);
             const currentUnit = getUnit(state, ref.host.id);
-            return replaceUnit(state, ({
-                ...currentUnit,
-                action: setBeforeReleaseHook(currentUnit.action, {
+            return applyUnitChanges(state, [setBeforeReleaseHook({ id: currentUnit.id }, {
                     id: `release/${ref.id}`,
                     accepts: (battle) => effects.get(battle, ref)?.status === "ACTIVE",
                     invoke: (battle, context, current) =>
                         invoke(battle, { unit: getUnit(battle, context.source.id), execution: context.execution }, effects.get(battle, ref), ref, current),
-                }),
-            }));
+                })]);
         },
         onEnd: (state, self) =>
             {
                 const currentUnit1 = getUnit(state, self.host.id);
-                return replaceUnit(state, ({
-                ...currentUnit1,
-                action: removeBeforeReleaseHook(currentUnit1.action, `release/${self.id}`),
-            }));
+                return applyUnitChanges(state, [removeBeforeReleaseHook({ id: currentUnit1.id }, `release/${self.id}`)]);
             },
     };
     return definition;
@@ -235,20 +231,16 @@ test("action release: selected IDs invoke their current replacement while new ID
             if (!registered) {
                 registered = true;
                 const currentUnit3 = getUnit(state, 0);
-                state = replaceUnit(state, ({ ...currentUnit3,
-                    action: setBeforeReleaseHook(setBeforeReleaseHook(currentUnit3.action, replacement), later),
-                }));
+                state = applyUnitChanges(state, [setBeforeReleaseHook({ id: currentUnit3.id }, replacement), setBeforeReleaseHook({ id: currentUnit3.id }, later)]);
             }
             return { state, value: CONTINUE };
         },
     };
     const currentUnit4 = getUnit(started.state, 0);
-    const state = replaceUnit(started.state, ({ ...currentUnit4,
-        action: setBeforeReleaseHook(setBeforeReleaseHook(currentUnit4.action, first), {
+    const state = applyUnitChanges(started.state, [setBeforeReleaseHook({ id: currentUnit4.id }, first), setBeforeReleaseHook({ id: currentUnit4.id }, {
             id: "version", accepts: () => true,
             invoke: () => assert.fail("the selected registration has a new version"),
-        }),
-    }));
+        })]);
     const dispatched = beforeRelease(state, started.value.ref);
     assert.deepEqual(dispatched.value, CONTINUE);
     assert.deepEqual(seen, ["first", "replacement"]);
@@ -262,8 +254,7 @@ test("action release: hooks share fixed identities and receive the preceding sta
     let fixed;
     const directive = { type: "CONTINUE" };
     const currentUnit6 = getUnit(started.state, 0);
-    let state = replaceUnit(started.state, ({ ...currentUnit6,
-        action: setBeforeReleaseHook(currentUnit6.action, {
+    let state = applyUnitChanges(started.state, [setBeforeReleaseHook({ id: currentUnit6.id }, {
             id: "first",
             invoke(state, context, current) {
                 fixed = context;
@@ -274,11 +265,9 @@ test("action release: hooks share fixed identities and receive the preceding sta
                     vitality: { ...currentUnit5.vitality, hp: 75 },
                 })), value: directive };
             },
-        }),
-    }));
+        })]);
     const currentUnit7 = getUnit(state, 0);
-    state = replaceUnit(state, ({ ...currentUnit7,
-        action: setBeforeReleaseHook(currentUnit7.action, {
+    state = applyUnitChanges(state, [setBeforeReleaseHook({ id: currentUnit7.id }, {
             id: "second",
             accepts(state, context, current) {
                 assert.equal(context, fixed);
@@ -291,8 +280,7 @@ test("action release: hooks share fixed identities and receive the preceding sta
                 assert.equal(current, directive);
                 return { state, value: { type: "INTERRUPT", recoveryTicks: 2 } };
             },
-        }),
-    }));
+        })]);
     const result = beforeRelease(state, started.value.ref);
     assert.deepEqual(result.value, { type: "INTERRUPT", recoveryTicks: 2 });
     assert.equal(getUnit(result.state, 0).vitality.hp, 75);

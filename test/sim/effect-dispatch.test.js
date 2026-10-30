@@ -1,3 +1,5 @@
+import { set as setFixtureEntry } from "../../dist/core/hook.js";
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { invincible, healFree } from "../../dist/content/effects/protection.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -16,7 +18,7 @@ const damageHook = (id, stage, invoke, priority = 0, accepts = () => true) => ({
 const healingHook = (id, stage, invoke, priority = 0, accepts = () => true) => ({ id, stage, priority, accepts, invoke });
 const healRequest = (power = 10, overrides = {}) => ({ source: { id: 1 }, target: { id: 2 }, parameters: { power, multiplier: 1 }, ...overrides });
 const heal = (battle, input) => applyHealing(input, calculateHealing(battle, input));
-const withDamage = (unit, ...entries) => ({ ...unit, vitality: entries.reduce((state, entry) => damage.setHook(state, entry), unit.vitality) });
+const withDamage = (unit, ...entries) => ({ ...unit, vitality: {...unit.vitality, damageHooks:entries.reduce((entries, entry) => setFixtureEntry(entries, entry), unit.vitality.damageHooks)} });
 
 test("hook dispatch checks each Effect against its current status immediately before invocation", () => {
     const calls = [];
@@ -74,7 +76,7 @@ test("selected Hook IDs use current replacements while nested damage selects its
         if (!changed) {
             changed = true;
             const currentUnit = getUnit(state, 1);
-            state = replaceUnit(state, withDamage({ ...currentUnit, vitality: damage.removeHook(currentUnit.vitality, "second") }, replacement, added));
+            state = applyUnitChanges(state, [damage.removeHook({id:1}, "second"), damage.setHook({id:1}, replacement), damage.setHook({id:1}, added)]);
             nested = true;
             state = settle(state, request(10)).state;
             nested = false;
@@ -104,13 +106,13 @@ test("nested healing independently selects its latest receiver candidates", () =
         if (!changed) {
             changed = true;
             const currentUnit2 = getUnit(state, 2);
-            state = replaceUnit(state, { ...currentUnit2, vitality: healing.setHook(healing.removeHook(currentUnit2.vitality, "original"), newHealing) });
+            state = applyUnitChanges(state, [healing.removeHook({ id: currentUnit2.id }, "original"), healing.setHook({ id: currentUnit2.id }, newHealing)]);
             state = heal(state, healRequest()).state;
         }
         return { state, value: pending };
     });
     const value = withDamage(unit(2, { hp: 500, maxHp: 1000 }), first);
-    const receiver = { ...value, vitality: healing.setHook(value.vitality, originalHealing) };
+    const receiver = { ...value, vitality: { ...value.vitality, healingHooks: setFixtureEntry(value.vitality.healingHooks, originalHealing) } };
     let battle = settle(workFor(unit(1), receiver), request(100)).state;
     assert.deepEqual(calls, ["damage", "new-healing"]);
     assert.equal(getUnit(battle, 2).vitality.hp, 410);
@@ -134,7 +136,7 @@ test("nested damage admits hooks registered before its own dispatch", () => {
         return { state, value: pending };
     });
     const value = unit(2, { hp: 500, maxHp: 1000 });
-    let battle = workFor(unit(1), { ...value, vitality: healing.setHook(value.vitality, first) });
+    let battle = workFor(unit(1), { ...value, vitality: { ...value.vitality, healingHooks: setFixtureEntry(value.vitality.healingHooks, first) } });
     battle = heal(battle, healRequest(20)).state;
     assert.deepEqual(calls, ["healing", "late-damage"]);
     assert.equal(getUnit(battle, 2).vitality.hp, 510);

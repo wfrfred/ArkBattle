@@ -78,7 +78,7 @@ end(battle, ref, end, dependencyReason?): BattleState;
 
 权威关系来自实际存储：Unit 持有 Execution、Activation、Burst 和 Effects；额外 Scope 来自 Effect.scopes。索引同时支持 child→parents 和 parent→owned／scoped，不保存第二份实例、Definition 或生命周期状态。
 
-Unit add／update／remove 在业务通知前，对已知变更 Unit 的生命周期投影增量 derive。当前 Projectile／Mechanism 没有自身 owner 或可写上游 Scope，作为目标的关系由 Unit Effect 投影维护，不对其空投影额外 derive。公共 Lifetime 不导入具体领域，不全场扫描，也不要求 Effect setter 手工双写关系。
+Unit add／内部 replace／remove 在业务通知前，对已知变更 Unit 的生命周期投影增量 derive；公开 Change update 完成全批纯转换后，只投影批前到最终状态，不登记暂存中间值。当前 Projectile／Mechanism 没有自身 owner 或可写上游 Scope，作为目标的关系由 Unit Effect 投影维护，不对空投影额外 derive。公共 Lifetime 不导入具体领域、不全场扫描，也不要求 Effect setter 手工双写关系。
 
 ENDING 对象在物理移除前仍保留关系。关闭资格由 Pending 与原领域状态共同表达，不靠提前丢弃关系实现。物理移除可以撤去活索引，但 Pending.parents 一直保留到整个 Finalize 返回。查询直接依赖者合并活索引与未完成 Pending 的 parents 并按 Key 去重，覆盖子项已注销、末尾通知才请求 owner 的情况。
 

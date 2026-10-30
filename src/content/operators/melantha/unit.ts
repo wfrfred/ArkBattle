@@ -65,13 +65,10 @@ function attackBonus(id: string, amount: number): EffectDefinition<object, Offen
             return unit === undefined
                 ? state
                 : updateUnit(state, [
-                      {
-                          ...unit,
-                          offense: setAttackContribution(unit.offense, {
-                              id: `effect/${self.id}/attack`,
-                              value: [attribute.create({ multiplier: amount })],
-                          }),
-                      },
+                      setAttackContribution(unitRef(unit), {
+                          id: `effect/${self.id}/attack`,
+                          value: [attribute.create({ multiplier: amount })],
+                      }),
                   ]);
         },
         onDisable: (state, self) => {
@@ -80,13 +77,7 @@ function attackBonus(id: string, amount: number): EffectDefinition<object, Offen
             return unit === undefined
                 ? state
                 : updateUnit(state, [
-                      {
-                          ...unit,
-                          offense: removeAttackContribution(
-                              unit.offense,
-                              `effect/${self.id}/attack`,
-                          ),
-                      },
+                      removeAttackContribution(unitRef(unit), `effect/${self.id}/attack`),
                   ]);
         },
     };

@@ -291,8 +291,8 @@ export interface Deployed {
 
 export type DeployedHook = Hook<Deployed, void>;
 
-setHook(state: DeployableState, hook: DeployedHook): DeployableState;
-removeHook(state: DeployableState, id: string): DeployableState;
+setHook(ref: Ref<Unit & Deployable>, hook: DeployedHook): Change;
+removeHook(ref: Ref<Unit & Deployable>, id: string): Change;
 ```
 
 Deployed 是已发生部署的输入事实，unit 取自本次登记完成时的值；其中的 cardId 可以为 null。kind 表达本次方式，不是跳过费用／地形检查的权限开关。回调需要单位当前状态时，从传入 BattleState 查询，不把事实中的旧值当作持续更新的对象。

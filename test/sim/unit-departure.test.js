@@ -1,3 +1,4 @@
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { ref as skillRef } from "../helpers/skill.js";
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
 import { lifetime as actionLifetime } from "../../dist/core/unit/action/operations.js";
@@ -23,7 +24,7 @@ import {
     createPredefinedDefinition,
 } from "../../dist/core/battle/steps/predefined.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
-import { getUnit, replaceUnit } from "../helpers/unit.js";
+import { getUnit } from "../helpers/unit.js";
 import { initialize } from "../helpers/unit.js";
 import { activate } from "../../dist/core/unit/skill/operations.js";
 import { ref as activationRef } from "../../dist/core/unit/skill/activation.js";
@@ -54,7 +55,7 @@ function fixture() {
             onInstall(state, self) {
                 const ref = effectRef(self);
                 const currentUnit = getUnit(state, ref.host.id);
-                return replaceUnit(state, ({ ...currentUnit, vitality: setHook(currentUnit.vitality, {
+                return applyUnitChanges(state, [setHook({ id: currentUnit.id }, {
                         id: "consume",
                         stage: "receiving",
                         priority: 0,
@@ -65,11 +66,11 @@ function fixture() {
                             state = effects.setData(state, ref, { consumed: currentData.consumed + 1 });
                             return { state, value };
                         },
-                    }) }));
+                    })]);
             },
             onEnd(state, self) {
                 const currentUnit1 = getUnit(state, self.host.id);
-                return replaceUnit(state, ({ ...currentUnit1, vitality: removeHook(currentUnit1.vitality, "consume") }));
+                return applyUnitChanges(state, [removeHook({ id: currentUnit1.id }, "consume")]);
             },
         },
     );

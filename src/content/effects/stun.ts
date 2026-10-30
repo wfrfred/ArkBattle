@@ -21,22 +21,21 @@ export const stun: Definition<object> = {
         const id = `@effect/${self.id}/stun`;
         const rule = { id, allows: () => false };
 
-        state = updateUnit(state, [
-            {
-                ...unit,
-                ...(action.hasAction(unit) ? { action: action.setRule(unit.action, rule) } : {}),
-                ...(locomotion.hasLocomotion(unit)
-                    ? { locomotion: locomotion.setRule(unit.locomotion, rule) }
-                    : {}),
-                ...(skill.hasSkill(unit)
-                    ? { skill: skill.setRule(unit.skill, { id, allowsActivation: () => false }) }
-                    : {}),
-            },
-        ]);
-
-        if (blocking.hasBlocker(unit)) {
-            state = blocking.setBlockerRule(state, units.ref(unit), rule);
+        const changes: units.Change[] = [];
+        if (action.hasAction(unit)) {
+            changes.push(action.setRule(units.ref(unit), rule));
         }
+        if (locomotion.hasLocomotion(unit)) {
+            changes.push(locomotion.setRule(units.ref(unit), rule));
+        }
+        if (skill.hasSkill(unit)) {
+            changes.push(skill.setRule(units.ref(unit), { id, allowsActivation: () => false }));
+        }
+        if (blocking.hasBlocker(unit)) {
+            changes.push(blocking.setBlockerRule(units.ref(unit), rule));
+        }
+
+        state = updateUnit(state, changes);
 
         return cancelForUnit(state, self.host, "INTERRUPTED");
     },
@@ -48,19 +47,20 @@ export const stun: Definition<object> = {
 
         const id = `@effect/${self.id}/stun`;
 
-        state = updateUnit(state, [
-            {
-                ...unit,
-                ...(action.hasAction(unit) ? { action: action.removeRule(unit.action, id) } : {}),
-                ...(locomotion.hasLocomotion(unit)
-                    ? { locomotion: locomotion.removeRule(unit.locomotion, id) }
-                    : {}),
-                ...(skill.hasSkill(unit) ? { skill: skill.removeRule(unit.skill, id) } : {}),
-            },
-        ]);
+        const changes: units.Change[] = [];
+        if (action.hasAction(unit)) {
+            changes.push(action.removeRule(units.ref(unit), id));
+        }
+        if (locomotion.hasLocomotion(unit)) {
+            changes.push(locomotion.removeRule(units.ref(unit), id));
+        }
+        if (skill.hasSkill(unit)) {
+            changes.push(skill.removeRule(units.ref(unit), id));
+        }
+        if (blocking.hasBlocker(unit)) {
+            changes.push(blocking.removeBlockerRule(units.ref(unit), id));
+        }
 
-        return blocking.hasBlocker(unit)
-            ? blocking.removeBlockerRule(state, units.ref(unit), id)
-            : state;
+        return updateUnit(state, changes);
     },
 };

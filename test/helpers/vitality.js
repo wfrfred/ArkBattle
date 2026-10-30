@@ -1,6 +1,7 @@
+import { update } from "../../dist/core/battle/unit.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { initialize } from "./unit.js";
-import { replaceUnit, getUnit } from "./unit.js";
+import { getUnit } from "./unit.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as damageHooks from "../../dist/core/battle/damage/index.js";
 import * as healingHooks from "../../dist/core/battle/healing/index.js";
@@ -75,12 +76,8 @@ function hookEffect(domain, id, initial, entries, callbacks = {}) {
     content = definition(id, initial, {
         ...callbacks,
         onInstall(state, self) {
-            const unit = getUnit(state, self.host.id);
-            state = replaceUnit(state,
-                entries.reduce(
-                    (unit, entry, index) => ({
-                        ...unit,
-                        vitality: domain.setHook(unit.vitality, {
+            state = update(state,
+                entries.map((entry, index) => domain.setHook(self.host, {
                             id: `${self.host.id}:${self.id}:${index}`,
                             stage: entry.stage,
                             priority: entry.priority ?? 0,
@@ -101,27 +98,13 @@ function hookEffect(domain, id, initial, entries, callbacks = {}) {
                                     input,
                                 );
                             },
-                        }),
-                    }),
-                    unit,
-                ),
+                        })),
             );
             return callbacks.onInstall ? callbacks.onInstall(state, self) : state;
         },
         onEnd(state, self, reason) {
-            const unit = getUnit(state, self.host.id);
-            state = replaceUnit(state,
-                entries.reduce(
-                    (unit, _entry, index) => ({
-                        ...unit,
-                        vitality: domain.removeHook(
-                            unit.vitality,
-                            `${self.host.id}:${self.id}:${index}`,
-                        ),
-                    }),
-                    unit,
-                ),
-            );
+            state = update(state, entries.map((_entry, index) =>
+                domain.removeHook(self.host, `${self.host.id}:${self.id}:${index}`)));
             return callbacks.onEnd ? callbacks.onEnd(state, self, reason) : state;
         },
     });

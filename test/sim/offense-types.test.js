@@ -58,8 +58,8 @@ const dynamic: Input = (current, self) => {
     return [attribute.create({ finalAddition: self.definition.offense.attack })];
 };
 const staticInput: Input = [attribute.create({ multiplier: 0.5 })] as const;
-setAttackContribution(state, { id: "dynamic", value: dynamic });
-setAttackContribution(state, { id: "static", value: staticInput });
+setAttackContribution(strong, { id: "dynamic", value: dynamic });
+setAttackContribution(strong, { id: "static", value: staticInput });
 // @ts-expect-error Contributions no longer receive a unit/query Context wrapper.
 const legacy: Input = ({ unit }: { unit: Unit }) => [];
 // @ts-expect-error Dynamic inputs return modifiers rather than a BattleState transition.

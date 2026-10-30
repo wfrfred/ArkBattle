@@ -6,6 +6,8 @@ import type { Skill as SkillState } from "../../skill/skill.js";
 import type { Events, Hook, Key } from "./hook.js";
 import type { Input as AmmoInput } from "../../skill/ammo.js";
 import type { Rule } from "./rule.js";
+import type { Ref } from "../../../common/ref.js";
+import { createChange, type Change } from "../../change.js";
 
 export interface Definition {
     readonly initialize: (battle: BattleState) => Result<SkillState<any, any>>;
@@ -64,49 +66,69 @@ export function initialize(battle: BattleState, definition: Definition): Result<
     return { state: initialized.state, value };
 }
 
-export function setRule(state: State, rule: Rule): State {
-    const rules = registry.set(state.rules, rule);
+export function setRule(reference: Ref<Unit & Skill>, rule: Rule): Change {
+    return createChange(reference, (self) => {
+        const rules = registry.set(self.skill.rules, rule);
 
-    return rules === state.rules ? state : { ...state, rules };
+        return rules === self.skill.rules ? self : { ...self, skill: { ...self.skill, rules } };
+    });
 }
 
-export function removeRule(state: State, id: string): State {
-    const rules = registry.remove(state.rules, id);
+export function removeRule(reference: Ref<Unit & Skill>, id: string): Change {
+    return createChange(reference, (self) => {
+        const rules = registry.remove(self.skill.rules, id);
 
-    return rules === state.rules ? state : { ...state, rules };
+        return rules === self.skill.rules ? self : { ...self, skill: { ...self.skill, rules } };
+    });
 }
 
-export function setHook<K extends Key>(state: State, key: K, hook: Hook<Events[K]>): State {
-    const hooks = registry.set(state[key] as readonly Hook<Events[K]>[], hook);
+export function setHook<K extends Key>(
+    reference: Ref<Unit & Skill>,
+    key: K,
+    hook: Hook<Events[K]>,
+): Change {
+    return createChange(reference, (self) => {
+        const hooks = registry.set(self.skill[key] as readonly Hook<Events[K]>[], hook);
 
-    return hooks === state[key] ? state : { ...state, [key]: hooks };
+        return hooks === self.skill[key]
+            ? self
+            : { ...self, skill: { ...self.skill, [key]: hooks } };
+    });
 }
 
-export function removeHook(state: State, key: Key, id: string): State {
-    const hooks = registry.remove<State[Key][number]>(state[key], id);
+export function removeHook(reference: Ref<Unit & Skill>, key: Key, id: string): Change {
+    return createChange(reference, (self) => {
+        const hooks = registry.remove<State[Key][number]>(self.skill[key], id);
 
-    return hooks === state[key] ? state : { ...state, [key]: hooks };
+        return hooks === self.skill[key]
+            ? self
+            : { ...self, skill: { ...self.skill, [key]: hooks } };
+    });
 }
 
 export function setAmmoContribution(
-    state: State,
+    reference: Ref<Unit & Skill>,
     entry: contribution.Contribution<AmmoInput>,
-): State {
-    if (state.definition.activation?.sustain.type !== "AMMO") {
-        return state;
-    }
+): Change {
+    return createChange(reference, (self) => {
+        if (self.skill.definition.activation?.sustain.type !== "AMMO") {
+            return self;
+        }
 
-    const ammo = contribution.set(state.ammo, entry);
+        const ammo = contribution.set(self.skill.ammo, entry);
 
-    return ammo === state.ammo ? state : { ...state, ammo };
+        return ammo === self.skill.ammo ? self : { ...self, skill: { ...self.skill, ammo } };
+    });
 }
 
-export function removeAmmoContribution(state: State, id: string): State {
-    if (state.definition.activation?.sustain.type !== "AMMO") {
-        return state;
-    }
+export function removeAmmoContribution(reference: Ref<Unit & Skill>, id: string): Change {
+    return createChange(reference, (self) => {
+        if (self.skill.definition.activation?.sustain.type !== "AMMO") {
+            return self;
+        }
 
-    const ammo = contribution.remove(state.ammo, id);
+        const ammo = contribution.remove(self.skill.ammo, id);
 
-    return ammo === state.ammo ? state : { ...state, ammo };
+        return ammo === self.skill.ammo ? self : { ...self, skill: { ...self.skill, ammo } };
+    });
 }

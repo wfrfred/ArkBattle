@@ -1,3 +1,5 @@
+import { set as setFixtureEntry } from "../../dist/core/hook.js";
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { damage as damageTargeting } from "../helpers/targeting.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import assert from "node:assert/strict";
@@ -8,11 +10,11 @@ import { createWithState } from "../../dist/content/actions/attack.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { advance } from "../../dist/core/unit/action/index.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+
 import { getUnit } from "../helpers/unit.js";
 
-import { setHook } from "../../dist/core/battle/damage/hook.js";
-import { setHook as setHealingHook } from "../../dist/core/battle/healing/hook.js";
+
+
 import { setAttackContribution } from "../../dist/core/unit/capability/offense/capability.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
@@ -72,7 +74,7 @@ test("ordinary attack: domain settlements observe each preceding returned battle
     const initial = battle(
         {
             ...source,
-            vitality: setHealingHook(source.vitality, {
+            vitality: { ...source.vitality, healingHooks: setFixtureEntry(source.vitality.healingHooks, {
                 id: "observe-heal",
                 stage: "receiving",
                 priority: 0,
@@ -84,11 +86,11 @@ test("ordinary attack: domain settlements observe each preceding returned battle
                     });
                     return { state, value: pending };
                 },
-            }),
+            }) },
         },
         {
             ...target,
-            vitality: setHook(target.vitality, {
+            vitality: { ...target.vitality, damageHooks: setFixtureEntry(target.vitality.damageHooks, {
                 id: "observe-damage",
                 stage: "receiving",
                 priority: 0,
@@ -97,7 +99,7 @@ test("ordinary attack: domain settlements observe each preceding returned battle
                     observed.push({ request: context.request, tick: state.tick });
                     return { state, value: pending };
                 },
-            }),
+            }) },
         },
     );
     const result = start({ ...initial, tick: 7 }, definition);
@@ -134,13 +136,10 @@ test("ordinary attack: live source attack reads current contributions and fixed 
     const fixed = actionDefinition(5, { id: "fixed" });
     const source = unit(0, { action: actionCapability(live, fixed) });
     const initial = battle(source, unit(1));
-    const boosted = updateUnit(initial, [{
-        ...source,
-        offense: setAttackContribution(source.offense, {
+    const boosted = applyUnitChanges(initial, [setAttackContribution({ id: source.id }, {
             id: "bonus",
             value: [modifier({ addition: 15 })],
-        }),
-    }]);
+        })]);
     const first = start(boosted, live);
     const firstState = advance(first.state, first.value.ref);
     const second = start(firstState, fixed);
@@ -166,7 +165,7 @@ test("ordinary attack: lethal retaliation invalidates a later unsampled source a
     const target = unit(1);
     const initial = battle(unit(0, { hp: 10, action: definition }), {
         ...target,
-        vitality: setHook(target.vitality, {
+        vitality: { ...target.vitality, damageHooks: setFixtureEntry(target.vitality.damageHooks, {
             id: "retaliation",
             stage: "hpApplied",
             priority: 0,
@@ -175,7 +174,7 @@ test("ordinary attack: lethal retaliation invalidates a later unsampled source a
                 state = dealDamage(state, { source: { id: 1 }, target: { id: 0 }, parameters: parameters(10, "TRUE") }).state;
                 return { state, value: undefined };
             },
-        }),
+        }) },
     });
     const result = start(initial, definition);
     const advanced = advance(result.state, result.value.ref);

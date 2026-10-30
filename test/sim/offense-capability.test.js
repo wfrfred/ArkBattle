@@ -1,3 +1,4 @@
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
@@ -7,7 +8,7 @@ import {
 } from "../../dist/core/unit/capability/offense/capability.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
 import { initialize as initializeUnit } from "../../dist/core/unit/initialize.js";
-import { add as addUnit, remove as removeUnit, update as updateUnit } from "../../dist/core/battle/unit.js";
+import { add as addUnit, remove as removeUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
 import * as units from "../../dist/core/unit/query.js";
 import * as attribute from "../../dist/core/unit/contribution/attribute.js";
 import { fixtureBattle } from "../helpers/unit.js";
@@ -35,20 +36,22 @@ test("Offense initialization validates its base attribute through both construct
 });
 
 test("Offense contribution replacement and removal preserve prior states and no-op identity", () => {
-    const battle = fixtureBattle();
-    const initial = initialize(battle, { attack: 100 }).value;
+    const unit = createUnit(fixtureBattle(), 0, 100);
+    const initial = addUnit(fixtureBattle(), unit);
+    const reference = units.ref(unit);
     const first = { id: "bonus", value: [attribute.create({ addition: 20 })] };
     const replaced = { id: "bonus", value: [attribute.create({ multiplier: 0.5 })] };
-    const added = setAttackContribution(initial, first);
-    const updated = setAttackContribution(added, replaced);
+    const added = applyUnitChanges(initial, [setAttackContribution(reference, first)]);
+    const updated = applyUnitChanges(added, [setAttackContribution(reference, replaced)]);
 
-    assert.deepEqual(initial.attack, []);
-    assert.deepEqual(added.attack, [first]);
-    assert.deepEqual(updated.attack, [replaced]);
-    assert.strictEqual(setAttackContribution(updated, replaced), updated);
-    assert.strictEqual(removeAttackContribution(updated, "absent"), updated);
-    assert.deepEqual(removeAttackContribution(updated, "bonus"), initial);
-    assert.notStrictEqual(removeAttackContribution(updated, "bonus"), updated);
+    assert.deepEqual(units.get(initial, reference).offense.attack, []);
+    assert.deepEqual(units.get(added, reference).offense.attack, [first]);
+    assert.deepEqual(units.get(updated, reference).offense.attack, [replaced]);
+    assert.strictEqual(applyUnitChanges(updated, [setAttackContribution(reference, replaced)]), updated);
+    assert.strictEqual(applyUnitChanges(updated, [removeAttackContribution(reference, "absent")]), updated);
+    const removed = applyUnitChanges(updated, [removeAttackContribution(reference, "bonus")]);
+    assert.deepEqual(units.get(removed, reference).offense, unit.offense);
+    assert.notStrictEqual(removed, updated);
 });
 
 test("Offense dynamic contributions receive the queried battle and its current typed owner", () => {
@@ -56,9 +59,8 @@ test("Offense dynamic contributions receive the queried battle and its current t
     const source = createUnit(battle, 0, 40);
     const sourceRef = units.ref(source);
     const original = createUnit(battle, 1, 10);
-    const receiver = {
-        ...original,
-        offense: setAttackContribution(original.offense, {
+    battle = addUnit(addUnit(battle, source), original);
+    battle = applyUnitChanges(battle, [setAttackContribution(units.ref(original), {
             id: "dynamic",
             value: (current, self) => {
                 assert.strictEqual(units.get(current, units.ref(self)), self);
@@ -66,20 +68,16 @@ test("Offense dynamic contributions receive the queried battle and its current t
                     finalAddition: resolveAttack(current, sourceRef) + self.position[0] + current.tick,
                 })];
             },
-        }),
-    };
-    battle = addUnit(addUnit(battle, source), receiver);
+        })]);
+    const receiver = units.get(battle, units.ref(original));
     const initial = battle;
     const reference = units.ref(receiver);
     assert.equal(resolveAttack(initial, reference), 53);
 
-    battle = updateUnit(battle, [{
-        ...source,
-        offense: setAttackContribution(source.offense, {
+    battle = applyUnitChanges(battle, [setAttackContribution({ id: source.id }, {
             id: "source-bonus",
             value: [attribute.create({ addition: 25 })],
-        }),
-    }]);
+        })]);
     battle = updateUnit({ ...battle, tick: 4 }, [{ ...receiver, position: [3, 0] }]);
 
     assert.equal(resolveAttack(battle, reference), 82);
@@ -105,19 +103,15 @@ test("Offense resolves exclusive contribution winners before evaluating dynamic 
         group: { id: "inspiration", priority: 2 },
         value: (_battle, self) => [attribute.create({ finalAddition: self.definition.offense.attack / 2 })],
     };
-    const unit = {
-        ...original,
-        offense: setAttackContribution(setAttackContribution(original.offense, weaker), stronger),
-    };
-    const battle = addUnit(initial, unit);
-    const reference = units.ref(unit);
+    const reference = units.ref(original);
+    const battle = applyUnitChanges(addUnit(initial, original), [
+        setAttackContribution(reference, weaker),
+        setAttackContribution(reference, stronger),
+    ]);
 
     assert.equal(resolveAttack(battle, reference), 150);
     assert.equal(weakerEvaluations, 0);
-    const current = updateUnit(battle, [{
-        ...unit,
-        offense: removeAttackContribution(unit.offense, stronger.id),
-    }]);
+    const current = applyUnitChanges(battle, [removeAttackContribution(reference, stronger.id)]);
     assert.equal(resolveAttack(current, reference), 600);
     assert.equal(weakerEvaluations, 1);
     assert.equal(resolveAttack(battle, reference), 150);
@@ -128,20 +122,16 @@ test("Offense queries stop evaluating contributions after the referenced Unit is
     const initial = fixtureBattle();
     const original = createUnit(initial, 0, 100);
     let evaluations = 0;
-    const unit = {
-        ...original,
-        offense: setAttackContribution(original.offense, {
+    const reference = units.ref(original);
+    const battle = applyUnitChanges(addUnit(initial, original), [setAttackContribution(reference, {
             id: "observed",
             value: () => {
                 evaluations++;
                 return [];
             },
-        }),
-    };
-    const battle = addUnit(initial, unit);
-    const reference = units.ref(unit);
+        })]);
     assert.equal(resolveAttack(battle, reference), 100);
-    const removed = removeUnit(battle, unit.id, "SCRIPT");
+    const removed = removeUnit(battle, original.id, "SCRIPT");
 
     assert.equal(resolveAttack(removed, reference), undefined);
     assert.equal(evaluations, 1);
@@ -168,24 +158,17 @@ test("Offense attribute queries do not impose lifecycle, HP or spatial qualifica
 test("Offense retains fractional attribute values and applies only its nonnegative bound", () => {
     const initial = fixtureBattle();
     const original = createUnit(initial, 0, 100.25);
-    const unit = {
-        ...original,
-        offense: setAttackContribution(original.offense, {
+    const reference = units.ref(original);
+    const battle = applyUnitChanges(addUnit(initial, original), [setAttackContribution(reference, {
             id: "four-terms",
             value: [attribute.create({ addition: 0.25, multiplier: 0.5, finalAddition: 0.75, finalScaler: 1.2 })],
-        }),
-    };
-    const battle = addUnit(initial, unit);
-    const reference = units.ref(unit);
+        })]);
     assert.ok(Math.abs(resolveAttack(battle, reference) - 181.8) < 1e-9);
 
-    const clamped = updateUnit(battle, [{
-        ...unit,
-        offense: setAttackContribution(unit.offense, {
+    const clamped = applyUnitChanges(battle, [setAttackContribution(reference, {
             id: "four-terms",
             value: [attribute.create({ finalAddition: -101 })],
-        }),
-    }]);
+        })]);
     assert.equal(resolveAttack(clamped, reference), 0);
     assert.ok(Math.abs(resolveAttack(battle, reference) - 181.8) < 1e-9);
 });

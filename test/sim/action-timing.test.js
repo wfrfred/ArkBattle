@@ -1,7 +1,9 @@
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { executionRef } from "../../dist/core/unit/action/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { actionDefinition, battle, unit } from "../helpers/action-fixture.js";
+import { battle, unit } from "../helpers/action-fixture.js";
 import * as cooldown from "../../dist/core/unit/action/cooldown.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { actionCapability } from "../helpers/actions.js";
@@ -13,9 +15,9 @@ import {
 import {
     setSpeedContribution,
     setIntervalContribution,
-} from "../../dist/core/unit/capability/action/capability.js";
+} from "../../dist/core/unit/capability/action/index.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+import { replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { advance } from "../../dist/core/unit/action/index.js";
@@ -34,10 +36,9 @@ const close = (actual, expected) =>
 function contribute(state, key, value) {
     const current = getUnit(state, 0);
     const setter = key === "speed" ? setSpeedContribution : setIntervalContribution;
-    return updateUnit(state, [{
-        ...current,
-        action: setter(current.action, { id: `timing/${key}`, value: [modifier(value)] }),
-    }]);
+    return applyUnitChanges(state, [
+        setter(unitRef(current), { id: `timing/${key}`, value: [modifier(value)] }),
+    ]);
 }
 
 test("cooldown: initial readiness, resetting and clearing are immutable value operations", () => {
@@ -92,10 +93,7 @@ test("action timing: complete cooldown refresh preserves progress at the contrib
         initial = battle(unit(0, { action: definition }));
     const source = unitRef(getUnit(initial, 0));
     const started = actions.start(initial, actions.ref(source, definition));
-    const changed = actions.refreshCooldowns(
-        contribute({ ...started.state, tick: 15 }, "speed", { addition: 100 }),
-        source,
-    );
+    const changed = contribute({ ...started.state, tick: 15 }, "speed", { addition: 100 });
     close(getUnit(changed, 0).action.actions.get(definition.id).cooldown.readyAtTick, 22.5);
     assert.equal(getUnit(started.state, 0).action.actions.get(definition.id).cooldown.readyAtTick, 30);
 });
@@ -160,10 +158,7 @@ test("action timing: a period change does not rescale an accepted private castin
     const initial = battle(unit(0, { action: definition })),
         source = unitRef(getUnit(initial, 0));
     const started = actions.start(initial, actions.ref(source, definition));
-    const changed = actions.refreshCooldowns(
-        contribute({ ...started.state, tick: 10 }, "interval", { finalScaler: 0.5 }),
-        source,
-    );
+    const changed = contribute({ ...started.state, tick: 10 }, "interval", { finalScaler: 0.5 });
     assert.equal(getUnit(changed, 0).action.actions.get(definition.id).cooldown.readyAtTick, 20);
     assert.equal(actions.getExecution(changed, started.value.ref).execution.state.finishAtTick, 20);
     assert.equal(
@@ -198,13 +193,10 @@ test("action timing: live contributions read the battle version provided by the 
         initial = battle(unit(0, { action: definition }));
     const current = getUnit(initial, 0),
         source = unitRef(current);
-    const installed = updateUnit(initial, [{
-        ...current,
-        action: setSpeedContribution(current.action, {
+    const installed = applyUnitChanges(initial, [setSpeedContribution({ id: current.id }, {
             id: "live",
             value: (_battle, self) => [modifier({ addition: self.vitality.hp })],
-        }),
-    }]);
+        })]);
     const next = updateUnit(installed, [{
         ...getUnit(installed, 0),
         vitality: { ...current.vitality, hp: 50 },

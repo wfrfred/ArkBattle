@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { within, overlap, sweep } from "../../dist/core/battlefield/spatial/query.js";
 import { fromTiles } from "../../dist/core/geometry/range.js";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+import { replace as updateUnit } from "../../dist/core/battle/unit.js";
 import * as units from "../../dist/core/unit/query.js";
 import { initialize } from "../helpers/unit.js";
 import { battle } from "../helpers/action-fixture.js";

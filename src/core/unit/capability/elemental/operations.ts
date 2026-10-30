@@ -1,4 +1,4 @@
-import { update as updateUnit } from "../../../battle/unit.js";
+import { replace as replaceUnits } from "../../../battle/unit.js";
 import { assertNonnegativeNumber } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
@@ -250,7 +250,7 @@ export const lifetime = lifetimes.create<Burst, Burst, End>({
     replace(battle, reference, next) {
         const host = units.get(battle, reference.host)!;
 
-        return updateUnit(battle, [{ ...host, elemental: { ...host.elemental, burst: next } }]);
+        return replaceUnits(battle, [{ ...host, elemental: { ...host.elemental, burst: next } }]);
     },
     finalize(battle, reference, ending) {
         const self = units.get(battle, reference.host)!;
@@ -263,7 +263,7 @@ export const lifetime = lifetimes.create<Burst, Burst, End>({
 
         const host = units.get(battle, reference.host)!;
         const maximum = query.resolveMaxEp(battle, reference.host)!;
-        battle = updateUnit(battle, [
+        battle = replaceUnits(battle, [
             {
                 ...host,
                 elemental: {
@@ -360,6 +360,6 @@ function replaceHost(battle: BattleState, self: Unit & Elemental): BattleState {
     const current = units.get(battle, units.ref(self));
 
     return current?.definition.elemental === self.definition.elemental
-        ? updateUnit(battle, [self])
+        ? replaceUnits(battle, [self])
         : battle;
 }

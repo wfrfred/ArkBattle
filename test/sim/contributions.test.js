@@ -1,3 +1,6 @@
+import { set as setFixtureEntry } from "../../dist/core/hook.js";
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { resolveDefense } from "../../dist/core/unit/capability/vitality/query.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { effectFixtureWork as workFor } from "../helpers/effects.js";
@@ -11,11 +14,9 @@ import {
     removeAttackContribution,
 } from "../../dist/core/unit/capability/offense/capability.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
-import {
-    setResistanceContribution,
-} from "../../dist/core/unit/capability/vitality/capability.js";
-import { createBattleState } from "../../dist/core/battle/state.js";
-import { add as addUnit, remove as removeUnit } from "../../dist/core/battle/unit.js";
+
+
+
 
 
 const unit = (id, attack = 100) =>
@@ -123,29 +124,29 @@ test("contributions: selection preserves domain payloads without interpreting or
 test("contributions: capability set, remove and replacement preserve prior snapshots", () => {
     const initial = unit(1);
     const sample = { id: "inspiration", value: [value(150)] };
-    const sampled = ({ ...initial, offense: setAttackContribution(initial.offense, sample) });
+    const sampled = ({ ...initial, offense: { ...initial.offense, attack: setFixtureEntry(initial.offense.attack, sample) } });
     let work = workFor(sampled);
     assert.equal(resolveAttack(work, unitRef(getUnit(work, 1))), 250);
     const currentUnit = getUnit(work, 1);
-    work = replaceUnit(work, { ...currentUnit, offense: removeAttackContribution(currentUnit.offense, "inspiration") });
+    work = applyUnitChanges(work, [removeAttackContribution({ id: currentUnit.id }, "inspiration")]);
     assert.equal(resolveAttack(work, unitRef(getUnit(work, 1))), 100);
     const currentUnit2 = getUnit(work, 1);
-    work = replaceUnit(work, { ...currentUnit2, offense: setAttackContribution(currentUnit2.offense, sample) });
+    work = applyUnitChanges(work, [setAttackContribution({ id: currentUnit2.id }, sample)]);
     assert.equal(resolveAttack(work, unitRef(getUnit(work, 1))), 250);
     const copied = getUnit(work, 1);
     assert.equal(copied.offense.attack, getUnit(work, 1).offense.attack);
     const resumedSnapshot = work;
     const currentUnit3 = getUnit(work, 1);
-    work = replaceUnit(work, { ...currentUnit3, offense: setAttackContribution(currentUnit3.offense, { id: "inspiration", value: [value(200)] }) });
+    work = applyUnitChanges(work, [setAttackContribution({ id: currentUnit3.id }, { id: "inspiration", value: [value(200)] })]);
     assert.equal(resolveAttack(work, unitRef(getUnit(work, 1))), 300);
     assert.equal(resolveAttack(resumedSnapshot, unitRef(getUnit(resumedSnapshot, 1))), 250);
 });
 
 test("contributions: direct capability closures read current facts and retain previous snapshots", () => {
-    const initial = ({ ...unit(1), offense: setAttackContribution(unit(1).offense, {
+    const initial = ({ ...unit(1), offense: { ...unit(1).offense, attack: setFixtureEntry((unit(1).offense)["attack"], {
         id: "dynamic",
         value: (_battle, self) => [value(self.vitality.hp < 50 ? 100 : 0)],
-    }) });
+    }) } });
     let work = workFor(initial);
     const original = work;
     assert.equal(resolveAttack(original, unitRef(getUnit(original, 1))), 100);
@@ -174,7 +175,7 @@ test("contributions: sampled and dynamic defense values resolve without mutating
             });
             const modifiers = [value(amount)];
             const entry = { id: "resistance", value: dynamic ? () => modifiers : modifiers };
-            const current = ({ ...base, vitality: setResistanceContribution(base.vitality, entry) });
+            const current = ({ ...base, vitality: { ...base.vitality, resistance: setFixtureEntry(base.vitality.resistance, entry) } });
             const battle = workFor(current);
             assert.deepEqual(resolveDefense(battle, unitRef(current)), { defense: 200, resistance: expected });
             assert.equal(current.vitality.resistance[0], entry);

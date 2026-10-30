@@ -1,3 +1,5 @@
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import * as unitQueries from "../../dist/core/unit/query.js";
@@ -13,7 +15,7 @@ import {
 } from "../../dist/core/battle/deployment/index.js";
 import { setHook, removeHook } from "../../dist/core/unit/capability/deployable/hook.js";
 import { createDefinition as createDeployable } from "../helpers/deployable.js";
-import { remove, update as updateUnit } from "../../dist/core/battle/unit.js";
+import { remove, replace as updateUnit } from "../../dist/core/battle/unit.js";
 
 
 
@@ -68,15 +70,11 @@ const record = (id, invoke, accepts) => ({
 });
 const addHook = (state, unitId, entry) => {
     const currentUnit = getUnit(state, unitId);
-    return replaceUnit(state, {
-    ...currentUnit, deployable: setHook(currentUnit.deployable, entry),
-});
+    return applyUnitChanges(state, [setHook({ id: currentUnit.id }, entry)]);
 };
 const deleteHook = (state, unitId, id) => {
     const currentUnit2 = getUnit(state, unitId);
-    return replaceUnit(state, {
-    ...currentUnit2, deployable: removeHook(currentUnit2.deployable, id),
-});
+    return applyUnitChanges(state, [removeHook({ id: currentUnit2.id }, id)]);
 };
 
 test("deployment observers consume preceding state and recheck registration and eligibility", () => {

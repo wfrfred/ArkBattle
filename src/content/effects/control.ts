@@ -12,13 +12,10 @@ export const silence: Definition<object> = {
 
         return unit !== undefined && skill.hasSkill(unit)
             ? updateUnit(state, [
-                  {
-                      ...unit,
-                      skill: skill.setRule(unit.skill, {
-                          id: `@effect/${self.id}/silence`,
-                          allowsActivation: () => false,
-                      }),
-                  },
+                  skill.setRule(units.ref(unit), {
+                      id: `@effect/${self.id}/silence`,
+                      allowsActivation: () => false,
+                  }),
               ])
             : state;
     },
@@ -26,12 +23,7 @@ export const silence: Definition<object> = {
         const unit = units.get(state, self.host);
 
         return unit !== undefined && skill.hasSkill(unit)
-            ? updateUnit(state, [
-                  {
-                      ...unit,
-                      skill: skill.removeRule(unit.skill, `@effect/${self.id}/silence`),
-                  },
-              ])
+            ? updateUnit(state, [skill.removeRule(units.ref(unit), `@effect/${self.id}/silence`)])
             : state;
     },
 };
@@ -44,13 +36,10 @@ export const blockSpRecovery: Definition<object> = {
 
         return unit !== undefined && skill.hasSkill(unit)
             ? updateUnit(state, [
-                  {
-                      ...unit,
-                      skill: skill.setRule(unit.skill, {
-                          id: `@effect/${self.id}/sp-recovery`,
-                          allowsRecovery: () => false,
-                      }),
-                  },
+                  skill.setRule(units.ref(unit), {
+                      id: `@effect/${self.id}/sp-recovery`,
+                      allowsRecovery: () => false,
+                  }),
               ])
             : state;
     },
@@ -59,10 +48,7 @@ export const blockSpRecovery: Definition<object> = {
 
         return unit !== undefined && skill.hasSkill(unit)
             ? updateUnit(state, [
-                  {
-                      ...unit,
-                      skill: skill.removeRule(unit.skill, `@effect/${self.id}/sp-recovery`),
-                  },
+                  skill.removeRule(units.ref(unit), `@effect/${self.id}/sp-recovery`),
               ])
             : state;
     },

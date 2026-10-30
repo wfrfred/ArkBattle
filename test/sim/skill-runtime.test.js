@@ -1,8 +1,9 @@
+import { set as setFixtureEntry } from "../../dist/core/hook.js";
 import { create as createSkill } from "../../dist/core/unit/skill/index.js";
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
 import { lifetime as skillLifetime } from "../../dist/core/unit/skill/operations.js";
 import * as unitQueries from "../../dist/core/unit/index.js";
-import { damage as damageTargeting, healing as healingTargeting } from "../helpers/targeting.js";
+import { damage as damageTargeting } from "../helpers/targeting.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { ref as unitRef } from "../../dist/core/unit/index.js";
 import { attackBuff } from "../helpers/effects.js";
@@ -20,8 +21,8 @@ import { actionCapability } from "../helpers/actions.js";
 import { initialize } from "../helpers/unit.js";
 import { createBattleState } from '../../dist/core/battle/state.js';
 import { getUnit } from '../helpers/unit.js';
-import { setDamageReceptionRule } from '../../dist/core/unit/capability/vitality/index.js';
-import { setHook } from '../../dist/core/battle/damage/index.js';
+
+
 
 const geometry = [{ type: 'CIRCLE', offset: [0, 0], radius: 5 }];
 const hit = { type: 'CIRCLE', offset: [0, 0], radius: 0.1 };
@@ -146,9 +147,9 @@ test('skill runtime: HIT SP requires positive damage and an eligible receiver', 
   for (const [power, cancelReception, expected] of [[0, false, 0], [10, false, 1], [10, true, 0]]) {
     const definition = actor(skill({ recovery: { type: 'HIT', amount: 1 }, initial: 0 }));
     let receiver = initialize({ id: 0, definition, position: [0, 0] });
-    if (cancelReception) receiver = { ...receiver, vitality: setDamageReceptionRule(receiver.vitality, {
+    if (cancelReception) receiver = { ...receiver, vitality: { ...receiver.vitality, damageReceptionRules: setFixtureEntry(receiver.vitality.damageReceptionRules, {
       id: 'test-cancel-reception', allows: () => false,
-    }) };
+    }) } };
     let work = createBattleState(fixtureBattlefield([receiver]));
     work = skills.enter(work, unitRef(receiver));
     const result = dealDamage(work, { source: null, target: unitRef(receiver), parameters: parameters(power, 'TRUE') });
@@ -169,13 +170,13 @@ test('skill runtime: failed activation propagates without publishing contributio
 test('skill runtime: HIT recovery precedes reception Hooks even when they subsequently cancel damage', () => {
   const definition = actor(skill({ recovery: { type: 'HIT', amount: 2 }, initial: 0, cost: 10 }));
   let receiver = initialize({ id: 0, definition, position: [0, 0] });
-  receiver = { ...receiver, vitality: setHook(receiver.vitality, {
+  receiver = { ...receiver, vitality: { ...receiver.vitality, damageHooks: setFixtureEntry(receiver.vitality.damageHooks, {
     id: 'late-shield', stage: 'receiving', priority: 0, accepts: () => true,
     invoke(battle, context, pending) {
       assert.equal(getUnit(battle, context.request.target.id).skill.sp.value, 2);
       return { state: battle, value: { ...pending, cancellation: { reason: 'SHIELD' } } };
     },
-  }) };
+  }) } };
   let battle = createBattleState(fixtureBattlefield([receiver]));
   battle = skills.enter(battle, unitRef(receiver));
   battle = dealDamage(battle, { source: null, target: { id: 0 }, parameters: parameters(10, 'TRUE') }).state;
@@ -185,13 +186,13 @@ test('skill runtime: HIT recovery precedes reception Hooks even when they subseq
 
 test('skill runtime: each nested positive reception independently earns HIT SP', () => {
   let receiver = initialize({ id: 0, position: [0, 0], definition: actor(skill({ recovery: { type: 'HIT', amount: 2 }, initial: 0, cost: 10 })) });
-  receiver = { ...receiver, vitality: setHook(receiver.vitality, {
+  receiver = { ...receiver, vitality: { ...receiver.vitality, damageHooks: setFixtureEntry(receiver.vitality.damageHooks, {
     id: 'nested-hit', stage: 'receiving', priority: 0,
     accepts: (_battle, context) => context.request.parameters.attack.power === 10,
     invoke(battle, context, pending) {
       return { state: dealDamage(battle, { source: null, target: context.request.target, parameters: parameters(1, 'TRUE') }).state, value: pending };
     },
-  }) };
+  }) } };
   let battle = createBattleState(fixtureBattlefield([receiver]));
   battle = skills.enter(battle, unitRef(receiver));
   battle = dealDamage(battle, { source: null, target: unitRef(receiver), parameters: parameters(10, 'TRUE') }).state;

@@ -1,6 +1,8 @@
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { add as addUnit, update as updateUnit, remove as removeUnit } from "../../dist/core/battle/unit.js";
+import { add as addUnit, replace as updateUnit, remove as removeUnit } from "../../dist/core/battle/unit.js";
 import { getUnit, replaceUnit } from "../helpers/unit.js";
 import { update as updateFieldUnit } from "../../dist/core/battlefield/unit.js";
 import * as blocking from "../../dist/core/battle/blocking/operations.js";
@@ -119,7 +121,7 @@ test("an owner side change preserves blocking while a target side change release
     assert.equal(ownerId(battle), undefined);
     assert.deepEqual(blockedIds(battle), []);
 
-    battle = blockerOperations.setRule(battle, { id: 10 }, sides("NEUTRAL"));
+    battle = applyUnitChanges(battle, [blockerOperations.setRule({ id: 10 }, sides("NEUTRAL"))]);
     assert.equal(ownerId(battle), undefined);
     assert.equal(ownerId(acquire(battle)), 10);
     assert.equal(ownerId(original), 10);
@@ -131,10 +133,10 @@ test("new blockers and restored eligibility wait for search; existing relations 
     battle = addUnit(battle, holder(5, { position: [2.125, 1] }));
     battle = blocking.advance(battle);
     assert.equal(ownerId(battle), 10);
-    battle = blockerOperations.setRule(battle, { id: 10 }, { id: "disabled", allows: () => false });
+    battle = applyUnitChanges(battle, [blockerOperations.setRule({ id: 10 }, { id: "disabled", allows: () => false })]);
     assert.equal(ownerId(battle), undefined);
     assert.deepEqual(blockedIds(battle, 10), []);
-    battle = blockerOperations.removeRule(battle, { id: 10 }, "disabled");
+    battle = applyUnitChanges(battle, [blockerOperations.removeRule({ id: 10 }, "disabled")]);
     assert.equal(ownerId(battle), undefined);
     battle = acquire(battle);
     assert.equal(ownerId(battle), 10);
@@ -144,7 +146,7 @@ test("new blockers and restored eligibility wait for search; existing relations 
 for (const [name, change] of [
     ["LEAVING begins", (battle, unit) => blocking.maintain(replaceUnit(battle, { ...unit, lifecycle: "LEAVING" }))],
     ["spatial presence disappears", (battle, unit) => blocking.maintain(replaceUnit(battle, { ...unit, spatialPresence: { present: false } }))],
-    ["side policy stops allowing the target", battle => blockerOperations.setRule(battle, { id: 10 }, sides("ALLY"))],
+    ["side policy stops allowing the target", battle => applyUnitChanges(battle, [blockerOperations.setRule({ id: 10 }, sides("ALLY"))])],
 ]) {
     test(`complete settlement releases invalid relations when blocker ${name}`, () => {
         let battle = acquire(fixture([holder(), holder(11, { position: [3, 1] }), target()]));
@@ -179,7 +181,7 @@ test("capacity shrinking removes the ordered tail until the remaining prefix fit
     assert.deepEqual(blockedIds(battle), []);
     battle = acquire(battle);
     assert.deepEqual(blockedIds(battle), [20, 21]);
-    battle = blockableOperations.setVolumeContribution(battle, { id: 20 }, { id: "larger", value: 2 });
+    battle = applyUnitChanges(battle, [blockableOperations.setVolumeContribution({ id: 20 }, { id: "larger", value: 2 })]);
     assert.deepEqual(blockedIds(battle), []);
     assert.equal(query.usedCapacity(battle, { id: 10 }), 0);
 });

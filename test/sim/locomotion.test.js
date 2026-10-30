@@ -1,8 +1,10 @@
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { fixtureBattle } from "../helpers/unit.js";
 import { initialize } from "../../dist/core/unit/initialize.js";
-import { add as addUnit, update as updateUnit } from "../../dist/core/battle/unit.js";
+import { add as addUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { Map } from "../../dist/core/battlefield/navigation/map.js";
 import * as navigation from "../../dist/core/battlefield/navigation/state.js";
@@ -65,9 +67,9 @@ test("Locomotion predicts arrival at goal, preserves velocity, and does not snap
 test("Locomotion preserves velocity and state identity when permission or effective speed prevents movement", () => {
     const battle = fixture({ velocity: [0.1, -0.1] });
     const self = getUnit(battle, 1);
-    const denied = updateUnit(battle, [{ ...self, locomotion: locomotion.setRule(self.locomotion, {
+    const denied = applyUnitChanges(battle, [locomotion.setRule({ id: self.id }, {
         id: "immobile", allows: () => false,
-    }) }]);
+    })]);
     assert.equal(locomotion.advance(denied, ref, target, context), denied);
     assert.equal(locomotion.advance(battle, ref, target, { ...context, speedMultiplier: 0 }), battle);
     const hidden = updateUnit(battle, [{ ...self, spatialPresence: { present: false } }]);

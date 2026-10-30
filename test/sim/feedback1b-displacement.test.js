@@ -5,7 +5,7 @@ import { Map as NavigationMap } from "../../dist/core/battlefield/navigation/map
 import { create as createNavigation } from "../../dist/core/battlefield/navigation/state.js";
 import { createInput, createTiming } from "../../dist/core/battle/creation/route.js";
 import { initialize as initializeRoutedUnit } from "../../dist/core/battle/creation/routed-unit.js";
-import { add as addUnit, update as updateUnit } from "../../dist/core/battle/unit.js";
+import { add as addUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { ref, get } from "../../dist/core/unit/query.js";
 import * as route from "../../dist/core/unit/capability/route/index.js";
 import { advance as advanceLocomotion } from "../../dist/core/unit/capability/locomotion/index.js";

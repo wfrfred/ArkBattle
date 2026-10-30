@@ -2,7 +2,7 @@
 
 Skill 负责 SP、发动、持续预算、主动操作和完整终止。Action 负责行为程序，Effect 负责附着影响及依赖清理；具体内容组合这些领域的公开接口。
 
-领域 API 从 [unit/skill/index.ts](../../src/core/unit/skill/index.ts) 导入；能力守卫、初始化和局部登记从 [capability/skill/index.ts](../../src/core/unit/capability/skill/index.ts) 导入。两个入口按职责选择导出，不相互转发整套 API。
+领域 API 从 [unit/skill/index.ts](../../src/core/unit/skill/index.ts) 导入；能力守卫、初始化和 Change 工厂从 [capability/skill/index.ts](../../src/core/unit/capability/skill/index.ts) 导入。两个入口按职责选择导出，不相互转发整套 API。
 
 ## 模块与入口
 
@@ -13,12 +13,12 @@ Skill 负责 SP、发动、持续预算、主动操作和完整终止。Action �
 | `unit/skill/initialize.ts` | create 接续 Definition.initialize，创建聚合初态 |
 | `unit/skill/query.ts`、`operations.ts` | 查询、字段写回、发动、主动操作、推进、结束与 lifetime |
 | `unit/skill/sp.ts`、`ammo.ts`、`sustain.ts` | SP、Ammo 资源操作、弹药容量公式与持续状态模型 |
-| `unit/capability/skill/capability.ts` | 初始化工厂 Definition、Skill Capability、公共 State、结构守卫与局部登记 |
+| `unit/capability/skill/capability.ts` | 初始化工厂 Definition、Skill Capability、公共 State、结构守卫与 Change 工厂 |
 | `unit/capability/skill/rule.ts`、`hook.ts` | 能力 Rule、Hook 类型与事件契约 |
 
 领域 index 提供 create、Skill／Activation、ref／activationRef、getSkill／getActivation、字段写回及 SP／Ammo／激活业务，不转发能力守卫、Rule／Hook 与 Ammo 贡献登记。Capability index 提供对应能力 API。Core 已取得当前宿主时直接读取 unit.skill，不解释私有 state；不公开内部写回，不使用泛型 reader。
 
-SP 的 setContribution／removeContribution 仅登记 recoverySpeed／recoveryMultiplier，经领域入口以 setSpContribution／removeSpContribution 导出；它们与 SP State／Input 保持同一模块，不增加 Capability 转发函数。容量、门槛、支付和 TIME 时长没有通用 Contribution 注册表。
+SP 的 setContribution／removeContribution 仅登记 recoverySpeed／recoveryMultiplier，绑定 Ref<Unit & SkillCapability> 返回 Change，经领域入口以 setSpContribution／removeSpContribution 导出。它们与 SP State／Input 保持同一模块，不增加 Capability 转发，不附带资源支付或延时。容量、门槛、支付和 TIME 时长没有通用 Contribution 注册表。
 
 ## 1. 单槽聚合、Definition 与两种身份
 
@@ -103,7 +103,7 @@ sp.advance 对 ACTION／HIT／NONE 回复直接返回原 battle，不更新 last
 - 速度变为零使计时无效，恢复正速度后从完整周期开始。
 - 多 Tick 推进达到满槽后即暂停余下时间。
 
-默认激活期间阻回由 `@skill/active-recovery` Rule 表达，可通过公开局部操作移除；SP 操作没有“active 必然禁止回复或支付”的硬编码。
+默认激活期间阻回由 `@skill/active-recovery` Rule 表达，可通过绑定 Skill Capability Ref 的 removeRule Change 移除；SP 操作没有“active 必然禁止回复或支付”的硬编码。
 
 ## 3. Sustain 与弹药
 
@@ -133,7 +133,7 @@ Operation（STOP／RETRIGGER）归领域 activation.ts，由 unit/skill/index.ts
 
 activate 要求宿主 PRESENT、空间在场，具有 Vitality 时 HP 大于零；operate 则保留 PRESENT、同一 Activation ACTIVE 与 Rule 准入，不附加空间或 HP 条件。当前 Activation 已存在时，内部信任对应 Activation Definition 已配置。Skill.enter 在登记回复 Hook 的完整操作后，重新确认宿主仍为 PRESENT 才执行 onEnter。持久 Skill.onTick 按 PRESENT 推进，Activation.onTick 另要求本轮 ACTIVE；它们不自动采用自然 SP 回复的暂停条件。已有技能的 STOP／RETRIGGER、计时或内部进度可以在不具备新发动资格时继续，这是各入口明确的规则选择，不合并为通用 available。
 
-Hook 登记仅使用 capability/skill 的 setHook(state, key, hook)／removeHook(state, key, id)，Key 与事件载荷保持类型配对，不再为每个事件提供同义专名 setter。
+Hook 登记仅使用 capability/skill 的 `setHook(reference, key, hook): Change`／`removeHook(reference, key, id): Change`，Key 与事件载荷保持类型配对；由 Unit.update 登记，不再返回局部 State 或为每个事件提供同义专名 setter。Rule 和 Ammo 贡献同样绑定 Skill Capability Ref 返回 Change；精确私有 state 写回、SP 消费、激活与结束操作维持原协议。
 
 除持久初始化外，Definition 与 Activation Definition 的内容回调都显式接收 source 为第二参、聚合 self 为第三参。Definition.onEnter／onTick 和 Activation Definition.initialize／accepts／cost 接收 Skill<S, A>；onStart／onTick／onOperation／onEnd 接收 activation 非空的 Activation<S, A>，Operation 或 End 为第四参。Activation.initialize 只构造本轮 A；持久 Definition.initialize 则接续 Result<S>。STOP 与 RETRIGGER 交给内容程序处理，未提供 onOperation 时 STOP 默认正常结束。
 

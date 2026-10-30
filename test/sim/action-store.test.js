@@ -6,7 +6,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Actions } from "../../dist/core/unit/action/actions.js";
 import { create as createAction, createActions } from "../../dist/core/unit/action/initialize.js";
-import { initialize as initializeActions } from "../../dist/core/unit/capability/action/capability.js";
+import { initialize as initializeActions } from "../../dist/core/unit/capability/action/index.js";
 import { actionCapability } from "../helpers/actions.js";
 import * as operations from "../../dist/core/unit/action/index.js";
 import { initialize } from "../../dist/core/unit/initialize.js";

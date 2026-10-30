@@ -1,3 +1,5 @@
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
 import { lifetime as burstLifetime } from "../../dist/core/unit/capability/elemental/operations.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
@@ -129,7 +131,7 @@ test('elemental healing applies the full amount independently to every bar and r
   battle = elemental.damage(battle, f.target, request('EROSION', 80)).state;
   battle = elemental.damage(battle, f.target, request('NECROSIS', 300)).state;
   let report;
-  battle = setElemental(battle, f.target, setHook(get(battle, f.target).elemental, 'healed', hook('observe', (current, { event }) => { report = event; return { state: current, value: undefined }; })));
+  battle = applyUnitChanges(battle, [setHook(f.target, 'healed', hook('observe', (current, { event }) => { report = event; return { state: current, value: undefined }; }))]);
   const result = elemental.heal(battle, f.target, { source: null, power: 150 });
   assert.equal(result.value.type, 'APPLIED');
   assert.deepEqual(result.value.amounts, { NEURAL: 150, EROSION: 80, BURN: 0, NECROSIS: 150 });
@@ -141,10 +143,10 @@ test('receiving an immune request is observable while actual damage is absent an
   const f = fixture();
   const seen = [];
   let battle = elemental.damage(f.battle, f.target, request('BURN', 100)).state;
-  battle = setElemental(battle, f.target, setRule(get(battle, f.target).elemental, { id: 'immune', allowsDamage: () => false }));
-  battle = setElemental(battle, f.target, setHook(setHook(get(battle, f.target).elemental, 'received', hook('received', (current, { event }) => {
+  battle = applyUnitChanges(battle, [setRule(f.target, { id: 'immune', allowsDamage: () => false })]);
+  battle = applyUnitChanges(battle, [setHook(f.target, 'received', hook('received', (current, { event }) => {
     seen.push(['received', event.request.power]); return { state: current, value: undefined };
-  })), 'damaged', hook('damaged', (current) => { seen.push('damaged'); return { state: current, value: undefined }; })));
+  })), setHook(f.target, 'damaged', hook('damaged', (current) => { seen.push('damaged'); return { state: current, value: undefined }; }))]);
   const denied = elemental.damage(battle, f.target, request());
   assert.equal(denied.value.type, 'REJECTED');
   assert.deepEqual(seen, [['received', 100]]);
@@ -157,10 +159,10 @@ test('receiving an immune request is observable while actual damage is absent an
 test('received Hook may remove the host before settlement without publishing damage from a stale Unit', () => {
   const f = fixture();
   let damaged = false;
-  let battle = setElemental(f.battle, f.target, setHook(get(f.battle, f.target).elemental, 'received', hook('remove-host', (current, { host }) => {
+  let battle = applyUnitChanges(f.battle, [setHook(f.target, 'received', hook('remove-host', (current, { host }) => {
       const self = get(current, host);
-return { state: remove(current, self.id, "DEATH"), value: undefined }; })));
-  battle = setElemental(battle, f.target, setHook(get(battle, f.target).elemental, 'damaged', hook('observe', (current) => { damaged = true; return { state: current, value: undefined }; })));
+return { state: remove(current, self.id, "DEATH"), value: undefined }; }))]);
+  battle = applyUnitChanges(battle, [setHook(f.target, 'damaged', hook('observe', (current) => { damaged = true; return { state: current, value: undefined }; }))]);
   const result = elemental.damage(battle, f.target, request('BURN', 1000));
   assert.equal(result.value.type, 'REJECTED');
   assert.equal(get(result.state, f.target), undefined);
@@ -170,11 +172,11 @@ return { state: remove(current, self.id, "DEATH"), value: undefined }; })));
 
 test('request-specific damage Hooks can reduce one element without changing common resistance', () => {
   const f = fixture();
-  const battle = setElemental(f.battle, f.target, setDamageHook(get(f.battle, f.target).elemental, {
+  const battle = applyUnitChanges(f.battle, [setDamageHook(f.target, {
     id: 'erosion-reduction',
     accepts: () => true,
     invoke: (current, { request }, amount) => ({ state: current, value: amount * (request.type === 'EROSION' ? 0.5 : 1) }),
-  }));
+  })]);
   assert.equal(elemental.damage(battle, f.target, request('EROSION')).value.amount, 50);
   assert.equal(elemental.damage(battle, f.target, request('BURN')).value.amount, 100);
 });
@@ -184,7 +186,7 @@ const epShield = (id, budget) => ({
   initialize: () => ({ remaining: budget }),
   onEnable(battle, effectSelf) {
     const address = effectRef(effectSelf);
-    return setElemental(battle, address.host, setDamageHook(get(battle, address.host).elemental, {
+    return applyUnitChanges(battle, [setDamageHook(address.host, {
       id: `shield/${address.id}`,
       accepts: current => {
         const self = effects.get(current, address);
@@ -199,11 +201,11 @@ const epShield = (id, budget) => ({
         });
         return { state: current, value: amount - blocked };
       },
-    }));
+    })]);
   },
   onDisable(battle, self) {
     const unit = get(battle, self.host);
-    return unit === undefined ? battle : setElemental(battle, self.host, removeDamageHook(unit.elemental, `shield/${self.id}`));
+    return unit === undefined ? battle : applyUnitChanges(battle, [removeDamageHook(self.host, `shield/${self.id}`)]);
   },
 });
 
@@ -230,7 +232,7 @@ test('Effects compose EP shields after resistance, retain their own budgets and 
 
 test('nested EP damage consumes a shared Effect shield before the outer reception continues', () => {
   const f = fixture();
-  const prepared = setElemental(f.battle, f.target, setDamageHook(get(f.battle, f.target).elemental, {
+  const prepared = applyUnitChanges(f.battle, [setDamageHook(f.target, {
     id: 'nested-damage',
     accepts: () => true,
     invoke(battle, { host, request: incoming }, amount) {
@@ -239,7 +241,7 @@ test('nested EP damage consumes a shared Effect shield before the outer receptio
       }
       return { state: battle, value: amount };
     },
-  }));
+  })]);
   const installed = effects.install(prepared, f.target, epShield('shared-shield', 100));
   const result = elemental.damage(installed.state, f.target, request());
   assert.equal(result.value.amount, 60);
@@ -259,23 +261,23 @@ test('EP reception rereads Hook registrations and nested damage uses fresh candi
       return { state: battle, value: amount / 2 };
     },
   });
-  let battle = setElemental(f.battle, f.target, setDamageHook(get(f.battle, f.target).elemental, {
+  let battle = applyUnitChanges(f.battle, [setDamageHook(f.target, {
     id: 'first',
     accepts: () => true,
     invoke(current, { host, request: incoming }, amount) {
       seen.push(['first', incoming.power]);
       if (incoming.power === 100) {
-        current = setElemental(current, host, setDamageHook(setDamageHook(get(current, host).elemental, reduction('second')), reduction('third')));
+        current = applyUnitChanges(current, [setDamageHook(host, reduction('second')), setDamageHook(host, reduction('third'))]);
         current = elemental.damage(current, host, request('BURN', 10)).state;
       }
       return { state: current, value: amount };
     },
-  }));
-  battle = setElemental(battle, f.target, setDamageHook(get(battle, f.target).elemental, {
+  })]);
+  battle = applyUnitChanges(battle, [setDamageHook(f.target, {
     id: 'second',
     accepts: () => false,
     invoke: () => { throw new Error('stale Hook'); },
-  }));
+  })]);
   const result = elemental.damage(battle, f.target, request());
   assert.deepEqual(seen, [['first', 100], ['first', 10], ['second', 10], ['third', 10], ['second', 100]]);
   assert.equal(result.value.amount, 50);
@@ -284,16 +286,16 @@ test('EP reception rereads Hook registrations and nested damage uses fresh candi
 
 test('EP reception stops when a damage Hook removes the host', () => {
   const f = fixture();
-  let battle = setElemental(f.battle, f.target, setDamageHook(get(f.battle, f.target).elemental, {
+  let battle = applyUnitChanges(f.battle, [setDamageHook(f.target, {
     id: 'leave',
     accepts: () => true,
     invoke: (current, { host }, amount) => ({ state: remove(current, host.id, "DEATH"), value: amount }),
-  }));
-  battle = setElemental(battle, f.target, setDamageHook(get(battle, f.target).elemental, {
+  })]);
+  battle = applyUnitChanges(battle, [setDamageHook(f.target, {
     id: 'unreachable',
     accepts: () => true,
     invoke: () => { throw new Error('removed host'); },
-  }));
+  })]);
   const result = elemental.damage(battle, f.target, request());
   assert.equal(result.value.type, 'REJECTED');
   assert.equal(get(result.state, f.target), undefined);
@@ -303,15 +305,15 @@ test('EP reception stops when a damage Hook removes the host', () => {
 test('burstStarted precedes damage observers and onStart rereads after nested cancellation', () => {
   const seen = [];
   const f = fixture({}, { onStart: battle => { seen.push('program'); return battle; } });
-  let battle = setElemental(f.battle, f.target, setHook(get(f.battle, f.target).elemental, 'burstStarted', hook('start', (current, { event: burst }) => {
+  let battle = applyUnitChanges(f.battle, [setHook(f.target, 'burstStarted', hook('start', (current, { event: burst }) => {
     seen.push('started'); return { state: elemental.cancel(current, burst, 'NESTED'), value: undefined };
-  })));
-  battle = setElemental(battle, f.target, setHook(get(battle, f.target).elemental, 'burstEnded', hook('end', (current, { event }) => {
+  }))]);
+  battle = applyUnitChanges(battle, [setHook(f.target, 'burstEnded', hook('end', (current, { event }) => {
     seen.push(['ended', event.end]); return { state: current, value: undefined };
-  })));
-  battle = setElemental(battle, f.target, setHook(get(battle, f.target).elemental, 'damaged', hook('damage', (current, { event }) => {
+  }))]);
+  battle = applyUnitChanges(battle, [setHook(f.target, 'damaged', hook('damage', (current, { event }) => {
     seen.push(['damaged', event.amount]); return { state: current, value: undefined };
-  })));
+  }))]);
   elemental.damage(battle, f.target, request('BURN', 1000));
   assert.deepEqual(seen, ['started', ['ended', { type: 'CANCELLED', reason: 'NESTED' }], ['damaged', 1000]]);
 });
@@ -319,11 +321,11 @@ test('burstStarted precedes damage observers and onStart rereads after nested ca
 test('reentrant replacement Burst does not authorize the previous Burst startup program', () => {
   const started = [];
   const f = fixture({}, { onStart: (battle, self) => { started.push(self.type); return battle; } });
-  const battle = setElemental(f.battle, f.target, setHook(get(f.battle, f.target).elemental, 'burstStarted', hook('replace', (current, { event: burst }) => {
+  const battle = applyUnitChanges(f.battle, [setHook(f.target, 'burstStarted', hook('replace', (current, { event: burst }) => {
     if (burst.type !== 'BURN') return { state: current, value: undefined };
     current = elemental.cancel(current, burst, 'REPLACED');
     return { state: elemental.damage(current, f.target, request('NEURAL', 1000)).state, value: undefined };
-  })));
+  }))]);
   const result = elemental.damage(battle, f.target, request('BURN', 1000));
   assert.deepEqual(started, ['NEURAL']);
   assert.equal(getBurst(result.state, result.value.burst), undefined);
@@ -372,11 +374,11 @@ test('dynamic burst speed preserves elapsed budget and zero speed does not accum
   const result = elemental.damage(f.battle, f.target, request('BURN', 1000));
   let battle = elemental.advance(at(result.state, 60), f.target);
   assert.equal(getBurst(battle, result.value.burst).remainingTicks, 240);
-  battle = setElemental(battle, f.target, setContribution(get(battle, f.target).elemental, 'burstRecoverySpeed', { id: 'speed', value: [modifier({ finalScaler: 0 })] }));
+  battle = applyUnitChanges(battle, [setContribution(f.target, 'burstRecoverySpeed', { id: 'speed', value: [modifier({ finalScaler: 0 })] })]);
   battle = elemental.advance(at(battle, 1000), f.target);
   assert.equal(getBurst(battle, result.value.burst).remainingTicks, 240);
   assert.equal(get(battle, f.target).elemental.lastAdvancedTick, 1000);
-  battle = setElemental(battle, f.target, setContribution(get(battle, f.target).elemental, 'burstRecoverySpeed', { id: 'speed', value: [modifier({ finalScaler: 2 })] }));
+  battle = applyUnitChanges(battle, [setContribution(f.target, 'burstRecoverySpeed', { id: 'speed', value: [modifier({ finalScaler: 2 })] })]);
   assert.equal(resolveBurstRecoverySpeed(battle, f.target), 2);
   battle = elemental.advance(at(battle, 1060), f.target);
   assert.equal(getBurst(battle, result.value.burst).remainingTicks, 120);
@@ -412,10 +414,10 @@ for (const accepts of [true, false]) {
     const f = fixture();
     const seen = [];
     const replacement = hook('B', (battle) => { seen.push('new B'); return { state: battle, value: undefined }; }, () => accepts);
-    let battle = setElemental(f.battle, f.target, setHook(get(f.battle, f.target).elemental, 'damaged', hook('A', (current) => {
-      seen.push('A'); return { state: setElemental(current, f.target, setHook(get(current, f.target).elemental, 'damaged', replacement)), value: undefined };
-    })));
-    battle = setElemental(battle, f.target, setHook(get(battle, f.target).elemental, 'damaged', hook('B', (current) => { seen.push('old B'); return { state: current, value: undefined }; })));
+    let battle = applyUnitChanges(f.battle, [setHook(f.target, 'damaged', hook('A', (current) => {
+      seen.push('A'); return { state: applyUnitChanges(current, [setHook(f.target, 'damaged', replacement)]), value: undefined };
+    }))]);
+    battle = applyUnitChanges(battle, [setHook(f.target, 'damaged', hook('B', (current) => { seen.push('old B'); return { state: current, value: undefined }; }))]);
     elemental.damage(battle, f.target, request());
     assert.deepEqual(seen, ['A', ...(accepts ? ['new B'] : [])]);
   });
@@ -425,15 +427,15 @@ test('nested elemental dispatch selects current IDs while outer facts and candid
   const f = fixture();
   const seen = [];
   const added = hook('C', (battle, { event }) => { seen.push(['C', event.previous, event.current]); return { state: battle, value: undefined }; });
-  let battle = setElemental(f.battle, f.target, setHook(get(f.battle, f.target).elemental, 'damaged', hook('A', (current, { host, event }) => {
+  let battle = applyUnitChanges(f.battle, [setHook(f.target, 'damaged', hook('A', (current, { host, event }) => {
       const self = get(current, host);
 
     seen.push(['A', event.previous, event.current]);
     if (event.previous !== 1000) return { state: current, value: undefined };
-    current = setElemental(current, f.target, setHook(self.elemental, 'damaged', added));
+    current = applyUnitChanges(current, [setHook(f.target, 'damaged', added)]);
     return { state: elemental.damage(current, ref(self), request('BURN', 100)).state, value: undefined };
-  })));
-  battle = setElemental(battle, f.target, setHook(get(battle, f.target).elemental, 'damaged', hook('B', (current, { event }) => { seen.push(['B', event.previous, event.current]); return { state: current, value: undefined }; })));
+  }))]);
+  battle = applyUnitChanges(battle, [setHook(f.target, 'damaged', hook('B', (current, { event }) => { seen.push(['B', event.previous, event.current]); return { state: current, value: undefined }; }))]);
   elemental.damage(battle, f.target, request());
   assert.deepEqual(seen, [['A', 1000, 900], ['A', 900, 800], ['B', 900, 800], ['C', 900, 800], ['B', 1000, 900]]);
 });
@@ -441,10 +443,10 @@ test('nested elemental dispatch selects current IDs while outer facts and candid
 test('elemental dispatch skips removed candidate IDs', () => {
   const f = fixture();
   const seen = [];
-  let battle = setElemental(f.battle, f.target, setHook(get(f.battle, f.target).elemental, 'damaged', hook('A', (current) => {
-    seen.push('A'); return { state: setElemental(current, f.target, removeHook(get(current, f.target).elemental, 'damaged', 'B')), value: undefined };
-  })));
-  battle = setElemental(battle, f.target, setHook(get(battle, f.target).elemental, 'damaged', hook('B', (current) => { seen.push('B'); return { state: current, value: undefined }; })));
+  let battle = applyUnitChanges(f.battle, [setHook(f.target, 'damaged', hook('A', (current) => {
+    seen.push('A'); return { state: applyUnitChanges(current, [removeHook(f.target, 'damaged', 'B')]), value: undefined };
+  }))]);
+  battle = applyUnitChanges(battle, [setHook(f.target, 'damaged', hook('B', (current) => { seen.push('B'); return { state: current, value: undefined }; }))]);
   elemental.damage(battle, f.target, request());
   assert.deepEqual(seen, ['A']);
 });
@@ -531,7 +533,7 @@ test('burst replacement preserves the original notification context for remainin
   const f = fixture();
   const seen = [];
   let original;
-  let battle = setElemental(f.battle, f.target, setHook(get(f.battle, f.target).elemental, 'burstStarted', {
+  let battle = applyUnitChanges(f.battle, [setHook(f.target, 'burstStarted', {
     id: 'replace',
     invoke(current, context) {
       if (context.event.type === 'BURN') {
@@ -541,8 +543,8 @@ test('burst replacement preserves the original notification context for remainin
       }
       return { state: current, value: undefined };
     },
-  }));
-  battle = setElemental(battle, f.target, setHook(get(battle, f.target).elemental, 'burstStarted', {
+  })]);
+  battle = applyUnitChanges(battle, [setHook(f.target, 'burstStarted', {
     id: 'observe',
     invoke(current, context) {
       if (context.event.type === 'BURN') assert.equal(context, original);
@@ -550,7 +552,7 @@ test('burst replacement preserves the original notification context for remainin
       seen.push([context.event.type, context.event.status, active.type]);
       return { state: current, value: undefined };
     },
-  }));
+  })]);
   elemental.damage(battle, f.target, request('BURN', 1000));
   assert.deepEqual(seen, [['NEURAL', 'ACTIVE', 'NEURAL'], ['BURN', 'ACTIVE', 'NEURAL']]);
 });
@@ -559,15 +561,15 @@ test('EP damage hooks pass the latest battle and amount while retaining their fi
   const f = fixture();
   const incoming = request();
   let original;
-  let battle = setElemental(f.battle, f.target, setDamageHook(get(f.battle, f.target).elemental, {
+  let battle = applyUnitChanges(f.battle, [setDamageHook(f.target, {
     id: 'first',
     invoke(current, context, amount) {
       original = context;
       assert.equal(context.request, incoming);
       return { state: at(current, 1), value: amount - 30 };
     },
-  }));
-  battle = setElemental(battle, f.target, setDamageHook(get(battle, f.target).elemental, {
+  })]);
+  battle = applyUnitChanges(battle, [setDamageHook(f.target, {
     id: 'second',
     accepts(current, context, amount) {
       assert.equal(context, original);
@@ -580,7 +582,7 @@ test('EP damage hooks pass the latest battle and amount while retaining their fi
       assert.equal(current.tick, 1);
       return { state: at(current, 2), value: amount / 2 };
     },
-  }));
+  })]);
   const result = elemental.damage(battle, f.target, incoming);
   assert.equal(result.state.tick, 2);
   assert.equal(result.value.amount, 35);

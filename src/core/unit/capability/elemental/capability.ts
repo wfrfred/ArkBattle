@@ -12,6 +12,8 @@ import type * as attribute from "../../contribution/attribute.js";
 import type { Burst, Definition as BurstDefinition } from "./burst.js";
 import type { DamageHook, Events, Hook, Key } from "./hook.js";
 import type { Rule } from "./rule.js";
+import type { Ref } from "../../../common/ref.js";
+import { createChange, type Change } from "../../change.js";
 
 export const ELEMENT_TYPES = ["NEURAL", "EROSION", "BURN", "NECROSIS"] as const;
 
@@ -129,53 +131,93 @@ export function initialize(battle: BattleState, definition: Definition): Result<
 }
 
 export function setContribution(
-    state: State,
+    reference: Ref<Unit & Elemental>,
     key: Parameter,
     entry: contribution.Contribution<Input>,
-): State {
-    const entries = contribution.set(state[key], entry);
+): Change {
+    return createChange(reference, (self) => {
+        const entries = contribution.set(self.elemental[key], entry);
 
-    return entries === state[key] ? state : { ...state, [key]: entries };
+        return entries === self.elemental[key]
+            ? self
+            : { ...self, elemental: { ...self.elemental, [key]: entries } };
+    });
 }
 
-export function removeContribution(state: State, key: Parameter, id: string): State {
-    const entries = contribution.remove(state[key], id);
+export function removeContribution(
+    reference: Ref<Unit & Elemental>,
+    key: Parameter,
+    id: string,
+): Change {
+    return createChange(reference, (self) => {
+        const entries = contribution.remove(self.elemental[key], id);
 
-    return entries === state[key] ? state : { ...state, [key]: entries };
+        return entries === self.elemental[key]
+            ? self
+            : { ...self, elemental: { ...self.elemental, [key]: entries } };
+    });
 }
 
-export function setDamageHook(state: State, hook: DamageHook): State {
-    const receiving = registry.set(state.receiving, hook);
+export function setDamageHook(reference: Ref<Unit & Elemental>, hook: DamageHook): Change {
+    return createChange(reference, (self) => {
+        const receiving = registry.set(self.elemental.receiving, hook);
 
-    return receiving === state.receiving ? state : { ...state, receiving };
+        return receiving === self.elemental.receiving
+            ? self
+            : { ...self, elemental: { ...self.elemental, receiving } };
+    });
 }
 
-export function removeDamageHook(state: State, id: string): State {
-    const receiving = registry.remove(state.receiving, id);
+export function removeDamageHook(reference: Ref<Unit & Elemental>, id: string): Change {
+    return createChange(reference, (self) => {
+        const receiving = registry.remove(self.elemental.receiving, id);
 
-    return receiving === state.receiving ? state : { ...state, receiving };
+        return receiving === self.elemental.receiving
+            ? self
+            : { ...self, elemental: { ...self.elemental, receiving } };
+    });
 }
 
-export function setRule(state: State, rule: Rule): State {
-    const rules = registry.set(state.rules, rule);
+export function setRule(reference: Ref<Unit & Elemental>, rule: Rule): Change {
+    return createChange(reference, (self) => {
+        const rules = registry.set(self.elemental.rules, rule);
 
-    return rules === state.rules ? state : { ...state, rules };
+        return rules === self.elemental.rules
+            ? self
+            : { ...self, elemental: { ...self.elemental, rules } };
+    });
 }
 
-export function removeRule(state: State, id: string): State {
-    const rules = registry.remove(state.rules, id);
+export function removeRule(reference: Ref<Unit & Elemental>, id: string): Change {
+    return createChange(reference, (self) => {
+        const rules = registry.remove(self.elemental.rules, id);
 
-    return rules === state.rules ? state : { ...state, rules };
+        return rules === self.elemental.rules
+            ? self
+            : { ...self, elemental: { ...self.elemental, rules } };
+    });
 }
 
-export function setHook<K extends Key>(state: State, key: K, hook: Hook<Events[K]>): State {
-    const hooks = registry.set(state[key] as readonly Hook<Events[K]>[], hook);
+export function setHook<K extends Key>(
+    reference: Ref<Unit & Elemental>,
+    key: K,
+    hook: Hook<Events[K]>,
+): Change {
+    return createChange(reference, (self) => {
+        const hooks = registry.set(self.elemental[key] as readonly Hook<Events[K]>[], hook);
 
-    return hooks === state[key] ? state : { ...state, [key]: hooks };
+        return hooks === self.elemental[key]
+            ? self
+            : { ...self, elemental: { ...self.elemental, [key]: hooks } };
+    });
 }
 
-export function removeHook(state: State, key: Key, id: string): State {
-    const hooks = registry.remove<State[Key][number]>(state[key], id);
+export function removeHook(reference: Ref<Unit & Elemental>, key: Key, id: string): Change {
+    return createChange(reference, (self) => {
+        const hooks = registry.remove<State[Key][number]>(self.elemental[key], id);
 
-    return hooks === state[key] ? state : { ...state, [key]: hooks };
+        return hooks === self.elemental[key]
+            ? self
+            : { ...self, elemental: { ...self.elemental, [key]: hooks } };
+    });
 }

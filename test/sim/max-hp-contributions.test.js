@@ -1,3 +1,4 @@
+import { update } from "../../dist/core/battle/unit.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
@@ -26,31 +27,19 @@ const pair = (battle) => {
     return [unit.vitality.hp, resolveMaxHp(unit.vitality, unit.definition.vitality)];
 };
 test("MaxHP: direct capability changes coordinate HP independently of Effects", () => {
-    const initial = receiver();
-    const installed = {
-        ...initial,
-        vitality: setMaxHpContribution(initial.vitality, initial.definition.vitality, { id: "equipment", value: [bonus(100)] }),
-    };
-    assert.deepEqual(pair(effectFixtureWork(installed)), [100, 200]);
-    const replaced = {
-        ...installed,
-        vitality: setMaxHpContribution(installed.vitality, installed.definition.vitality, { id: "equipment", value: [bonus(200)] }),
-    };
-    assert.deepEqual(pair(effectFixtureWork(replaced)), [150, 300]);
-    assert.equal(replaced.vitality.maxHp.length, 1);
-    const removed = {
-        ...replaced,
-        vitality: removeMaxHpContribution(replaced.vitality, replaced.definition.vitality, "equipment"),
-    };
-    assert.deepEqual(pair(effectFixtureWork(removed)), [50, 100]);
-    assert.equal(removeMaxHpContribution(removed.vitality, removed.definition.vitality, "missing"), removed.vitality);
-    assert.deepEqual(pair(effectFixtureWork(initial)), [50, 100]);
-    const originalDead = receiver(0);
-    const dead = {
-        ...originalDead,
-        vitality: setMaxHpContribution(originalDead.vitality, originalDead.definition.vitality, { id: "equipment", value: [bonus(100)] }),
-    };
-    assert.deepEqual(pair(effectFixtureWork(dead)), [0, 200]);
+    const initial = effectFixtureWork(receiver());
+    const installed = update(initial, [setMaxHpContribution({id:1}, { id: "equipment", value: [bonus(100)] })]);
+    assert.deepEqual(pair(installed), [100, 200]);
+    const replaced = update(installed, [setMaxHpContribution({id:1}, { id: "equipment", value: [bonus(200)] })]);
+    assert.deepEqual(pair(replaced), [150, 300]);
+    assert.equal(getUnit(replaced,1).vitality.maxHp.length, 1);
+    const removed = update(replaced, [removeMaxHpContribution({id:1}, "equipment")]);
+    assert.deepEqual(pair(removed), [50, 100]);
+    assert.equal(update(removed, [removeMaxHpContribution({id:1}, "missing")]), removed);
+    assert.deepEqual(pair(initial), [50, 100]);
+    const originalDead = effectFixtureWork(receiver(0));
+    const dead = update(originalDead, [setMaxHpContribution({id:1}, { id: "equipment", value: [bonus(100)] })]);
+    assert.deepEqual(pair(dead), [0, 200]);
 });
 
 test("MaxHP outputs coordinate each setter before its lifecycle callback", () => {

@@ -1,9 +1,11 @@
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+import { replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { acquire as acquirePair } from "../../dist/core/battle/blocking/index.js";
 import { setHook as setDamageHook } from "../../dist/core/battle/damage/index.js";
-import { setHook as setBlockerHook } from "../../dist/core/unit/capability/blocking/blocker.js";
+import { setHook as setBlockerHook } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import { setCapacityContribution } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import { damage, parameters } from "../helpers/vitality.js";
 import { getUnit } from "../helpers/unit.js";
@@ -35,9 +37,7 @@ for (const [role, victimId] of [["Blocker", 10], ["Blockable", 20]]) {
         const originalOwner = getUnit(battle, 20).blockable.blocker;
         const victim = getUnit(battle, victimId);
         let applied = 0;
-        battle = updateUnit(battle, [{
-            ...victim,
-            vitality: setDamageHook(victim.vitality, {
+        battle = applyUnitChanges(battle, [setDamageHook({ id: victim.id }, {
                 id: "rescue-after-hp-application", stage: "hpApplied", priority: 0,
                 invoke(state) {
                     applied++;
@@ -46,9 +46,9 @@ for (const [role, victimId] of [["Blocker", 10], ["Blockable", 20]]) {
                     assert.equal(current.lifecycle, "PRESENT");
                     assert.equal(getUnit(state, 10).blocker.blocked[0], originalEntry);
                     assert.equal(getUnit(state, 20).blockable.blocker, originalOwner);
-                    state = setCapacityContribution(state, { id: 10 }, {
+                    state = applyUnitChanges(state, [setCapacityContribution({ id: 10 }, {
                         id: "observed-during-hpApplied", value: [{ type: "ADD", value: 0 }],
-                    });
+                    })]);
                     assert.equal(getUnit(state, 10).blocker.blocked[0], originalEntry,
                         "another complete Blocking operation must retain a relationship at transient HP zero");
                     const surviving = getUnit(state, victimId);
@@ -57,8 +57,7 @@ for (const [role, victimId] of [["Blocker", 10], ["Blockable", 20]]) {
                         value: undefined,
                     };
                 },
-            }),
-        }]);
+            })]);
         const before = battle;
         const result = damage(battle, { source: null, target: { id: victimId }, parameters: parameters(200, "TRUE") });
 
@@ -92,9 +91,7 @@ for (const [role, victimId] of [["Blocker", 10], ["Blockable", 20]]) {
         ]));
         const originalEntry = getUnit(battle, 10).blocker.blocked[0];
         const victim = getUnit(battle, victimId);
-        battle = updateUnit(battle, [{
-            ...victim,
-            vitality: setDamageHook(victim.vitality, {
+        battle = applyUnitChanges(battle, [setDamageHook({ id: victim.id }, {
                 id: "observe-lethal-application", stage: "hpApplied", priority: 0,
                 invoke(state) {
                     trace.push("hpApplied");
@@ -104,12 +101,9 @@ for (const [role, victimId] of [["Blocker", 10], ["Blockable", 20]]) {
                     assert.equal(ownerId(state), 10);
                     return { state, value: undefined };
                 },
-            }),
-        }]);
+            })]);
         const owner = getUnit(battle, 10);
-        battle = updateUnit(battle, [{
-            ...owner,
-            blocker: setBlockerHook(owner.blocker, "released", hook("observe-death-release", (state, { relation }) => {
+        battle = applyUnitChanges(battle, [setBlockerHook({ id: owner.id }, "released", hook("observe-death-release", (state, { relation }) => {
                 trace.push("released");
                 assert.deepEqual(trace, ["hpApplied", "released"]);
                 assert.equal(getUnit(state, victimId).lifecycle, "LEAVING");
@@ -117,8 +111,7 @@ for (const [role, victimId] of [["Blocker", 10], ["Blockable", 20]]) {
                 assert.deepEqual(blockedIds(state), []);
                 assert.equal(ownerId(state), undefined);
                 return state;
-            })),
-        }]);
+            }))]);
         const result = damage(battle, { source: null, target: { id: victimId }, parameters: parameters(200, "TRUE") });
 
         assert.deepEqual(trace, ["hpApplied", "released", "left"]);

@@ -1,13 +1,14 @@
+
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { executionRef } from "../../dist/core/unit/action/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { advance } from "../../dist/core/unit/action/index.js";
-import { setBeforeReleaseHook, setReleasedHook } from "../../dist/core/unit/capability/action/capability.js";
+import { setBeforeReleaseHook, setReleasedHook } from "../../dist/core/unit/capability/action/index.js";
 import { released } from "../../dist/core/unit/capability/action/release.js";
 import { setHook } from "../../dist/core/unit/capability/skill/capability.js";
 import { enter } from "../../dist/core/unit/skill/operations.js";
@@ -27,21 +28,10 @@ function fixture({ windupTicks = 0, recoveryAmount = 1, action, withSkill = true
     return { definition, ref: reference, state: withSkill ? enter(initial, reference) : initial };
 }
 
-function setAction(state, action) {
-    const source = getUnit(state, 0);
-    return updateUnit(state, [{ ...source, action }]);
-}
-
-function setSkill(state, skill) {
-    const source = getUnit(state, 0);
-    return updateUnit(state, [{ ...source, skill }]);
-}
-
 test("a successful attack notifies released after its release event, restores ACTION SP and then outputs", () => {
     const seen = [];
     const f = fixture({ recoveryAmount: 2 });
-    const currentAction = getUnit(f.state, 0).action;
-    const state = setAction(f.state, setReleasedHook(currentAction, hook("observe", (current, context) => {
+    const state = applyUnitChanges(f.state, [setReleasedHook({ id: 0 }, hook("observe", (current, context) => {
         const source = getUnit(current, context.source.id);
         const reference = context.execution;
         assert.equal(current.events.at(-1).type, "ACTION_RELEASED");
@@ -50,7 +40,7 @@ test("a successful attack notifies released after its release event, restores AC
         assert.equal(actions.getExecution(current, reference).execution.status, "RUNNING");
         seen.push(reference.id);
         return { state: current, value: undefined };
-    })));
+    }))]);
     const started = actions.start(state, actions.ref(f.ref, f.definition));
     const advanced = advance(started.state, started.value.ref);
     assert.equal(started.value.type, "STARTED");
@@ -63,8 +53,7 @@ test("a successful attack notifies released after its release event, restores AC
 
 test("cancelling windup produces no release notification or ACTION SP", () => {
     const f = fixture({ windupTicks: 2 });
-    const currentAction2 = getUnit(f.state, 0).action;
-    const state = setAction(f.state, setReleasedHook(currentAction2, hook("unreleased", () => assert.fail("cancelled windup did not release"))));
+    const state = applyUnitChanges(f.state, [setReleasedHook({ id: 0 }, hook("unreleased", () => assert.fail("cancelled windup did not release")))]);
     const started = actions.start(state, actions.ref(f.ref, f.definition));
     let current = actions.cancel(started.state, started.value.ref, "CANCELLED");
     current = advance({ ...current, tick: 2 }, started.value.ref);
@@ -75,13 +64,11 @@ test("cancelling windup produces no release notification or ACTION SP", () => {
 
 test("beforeRelease interruption prevents the public release notification and ACTION recovery", () => {
     const f = fixture();
-    const currentAction3 = getUnit(f.state, 0).action;
-    let state = setAction(f.state, setBeforeReleaseHook(currentAction3, {
+    let state = applyUnitChanges(f.state, [setBeforeReleaseHook({ id: 0 }, {
         id: "interrupt", accepts: () => true,
         invoke: (current) => ({ state: current, value: { type: "INTERRUPT", recoveryTicks: 15 } }),
-    }));
-    const currentAction4 = getUnit(state, 0).action;
-    state = setAction(state, setReleasedHook(currentAction4, hook("unreleased", () => assert.fail("intercepted action did not release"))));
+    })]);
+    state = applyUnitChanges(state, [setReleasedHook({ id: 0 }, hook("unreleased", () => assert.fail("intercepted action did not release")))]);
     const started = actions.start(state, actions.ref(f.ref, f.definition));
     const advanced = advance(started.state, started.value.ref);
     assert.equal(getUnit(advanced, 0).skill.sp.value, 0);
@@ -92,13 +79,12 @@ test("beforeRelease interruption prevents the public release notification and AC
 
 test("ACTION recovery can synchronously cancel the released Action before its old output executes", () => {
     const f = fixture();
-    const currentSkill = getUnit(f.state, 0).skill;
-    const state = setSkill(f.state, setHook(currentSkill, "spRecovered", hook("cancel-release", (current, context) => {
+    const state = applyUnitChanges(f.state, [setHook({ id: 0 }, "spRecovered", hook("cancel-release", (current, context) => {
         const source = getUnit(current, context.host.id);
         assert.equal(context.event.source, "ACTION");
         const reference = actions.forUnit(current, unitRef(source))[0];
         return { state: actions.cancel(current, reference, "RECOVERY_CALLBACK"), value: undefined };
-    })));
+    }))]);
     const started = actions.start(state, actions.ref(f.ref, f.definition));
     const advanced = advance(started.state, started.value.ref);
     assert.equal(getUnit(advanced, 0).skill.sp.value, 1);
@@ -112,11 +98,10 @@ test("ACTION recovery can synchronously cancel the released Action before its ol
 test("ACTION recovery can remove its host without continuing the released Action's old output", () => {
     let recovered;
     const f = fixture();
-    const currentSkill2 = getUnit(f.state, 0).skill;
-    const state = setSkill(f.state, setHook(currentSkill2, "spRecovered", hook("depart", (current, context) => {
+    const state = applyUnitChanges(f.state, [setHook({ id: 0 }, "spRecovered", hook("depart", (current, context) => {
         recovered = context.event;
         return { state: remove(current, context.host.id, "SCRIPT"), value: undefined };
-    })));
+    }))]);
     const started = actions.start(state, actions.ref(f.ref, f.definition));
     const advanced = advance(started.state, started.value.ref);
     assert.deepEqual(recovered, { source: "ACTION", amount: 1, previous: 0, current: 1 });
@@ -129,8 +114,7 @@ test("ACTION recovery can remove its host without continuing the released Action
 
 test("default attack output reads bindings replaced by a released Hook from the latest Action", () => {
     const f = fixture({ targets: 2 });
-    const currentAction5 = getUnit(f.state, 0).action;
-    const state = setAction(f.state, setReleasedHook(currentAction5, hook("rebind", (current, context) => {
+    const state = applyUnitChanges(f.state, [setReleasedHook({ id: 0 }, hook("rebind", (current, context) => {
         const reference = context.execution;
         const self = actions.getExecution(current, reference);
         assert.equal(self.execution.state.bindings.primary[0].id, 1);
@@ -138,7 +122,7 @@ test("default attack output reads bindings replaced by a released Hook from the 
         return { state: actions.setExecutionState(current, executionRef(reference.host, self), { ...currentState2,
             bindings: { ...currentState2.bindings, primary: [unitRef(getUnit(current, 2))] },
         }), value: undefined };
-    })));
+    }))]);
     const started = actions.start(state, actions.ref(f.ref, f.definition));
     const advanced = advance(started.state, started.value.ref);
     assert.equal(getUnit(advanced, 1).vitality.hp, 100);
@@ -152,18 +136,17 @@ test("release dispatch reads replacements for selected IDs and defers newly regi
     const replacement = hook("version", (current) => { seen.push("new-version"); return { state: current, value: undefined }; });
     const late = hook("late", (current) => { seen.push("late"); return { state: current, value: undefined }; });
     const f = fixture({ windupTicks: 10, withSkill: false });
-    const currentAction6 = getUnit(f.state, 0).action;
-    let state = setAction(f.state, setReleasedHook(currentAction6, hook("register", (current) => {
+    let state = applyUnitChanges(f.state, [setReleasedHook({ id: 0 }, hook("register", (current) => {
         seen.push("register");
         if (registered) return { state: current, value: undefined };
         registered = true;
-        const currentAction7 = getUnit(current, 0).action;
-        return { state: setAction(current, setReleasedHook(setReleasedHook(currentAction7, replacement), late)), value: undefined };
-    })));
-    const currentAction8 = getUnit(state, 0).action;
-    state = setAction(state, setReleasedHook(currentAction8, hook("stable", (current) => { seen.push("stable"); return { state: current, value: undefined }; })));
-    const currentAction9 = getUnit(state, 0).action;
-    state = setAction(state, setReleasedHook(currentAction9, hook("version", () => assert.fail("the selected old version was replaced"))));
+        return { state: applyUnitChanges(current, [
+            setReleasedHook({ id: 0 }, replacement),
+            setReleasedHook({ id: 0 }, late),
+        ]), value: undefined };
+    }))]);
+    state = applyUnitChanges(state, [setReleasedHook({ id: 0 }, hook("stable", (current) => { seen.push("stable"); return { state: current, value: undefined }; }))]);
+    state = applyUnitChanges(state, [setReleasedHook({ id: 0 }, hook("version", () => assert.fail("the selected old version was replaced")))]);
     const started = actions.start(state, actions.ref(f.ref, f.definition));
     state = released(started.state, started.value.ref);
     assert.deepEqual(seen, ["register", "stable", "new-version"]);
@@ -180,8 +163,7 @@ test("generic Action start and onTick do not implicitly emit a release or grant 
         onTick: (state) => ({ state, value: true }),
     };
     const f = fixture({ action: definition });
-    const currentAction10 = getUnit(f.state, 0).action;
-    const state = setAction(f.state, setReleasedHook(currentAction10, hook("unreleased", () => assert.fail("generic scheduling does not emit a release"))));
+    const state = applyUnitChanges(f.state, [setReleasedHook({ id: 0 }, hook("unreleased", () => assert.fail("generic scheduling does not emit a release")))]);
     const started = actions.start(state, actions.ref(f.ref, f.definition));
     const advanced = advance(started.state, started.value.ref);
     assert.equal(getUnit(advanced, 0).skill.sp.value, 0);
@@ -192,19 +174,17 @@ test("generic Action start and onTick do not implicitly emit a release or grant 
 test("release observers stop after their Action ends and retain the completed observer's state", () => {
     const f = fixture({ windupTicks: 10, withSkill: false });
     let fixed;
-    const currentAction11 = getUnit(f.state, 0).action;
-    let state = setAction(f.state, setReleasedHook(currentAction11, {
+    let state = applyUnitChanges(f.state, [setReleasedHook({ id: 0 }, {
         id: "finish",
         invoke(state, context) {
             fixed = context;
             return { state: actions.cancel(state, context.execution, "HOOK_CANCELLED"), value: undefined };
         },
-    }));
-    const currentAction12 = getUnit(state, 0).action;
-    state = setAction(state, setReleasedHook(currentAction12, {
+    })]);
+    state = applyUnitChanges(state, [setReleasedHook({ id: 0 }, {
         id: "later",
         invoke: () => assert.fail("the released Action already ended"),
-    }));
+    })]);
     const started = actions.start(state, actions.ref(f.ref, f.definition));
     const next = released(started.state, started.value.ref);
     assert.equal(fixed.execution, started.value.ref);

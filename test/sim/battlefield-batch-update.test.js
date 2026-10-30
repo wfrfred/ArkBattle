@@ -9,7 +9,9 @@ import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "../helpers/tiles.js";
 import { initialize } from "../helpers/unit.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
-import { update as updateBattleUnits } from "../../dist/core/battle/unit.js";
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
+import { createChange } from "../../dist/core/unit/change.js";
+import { ref as unitRef } from "../../dist/core/unit/query.js";
 
 const map = createMap(1, 4, tileEntries(Array.from({ length: 4 }, () => createTile({
     heightType: "LOWLAND", meleeBlockable: true, buildableType: "ALL", passableMask: "ALL",
@@ -112,25 +114,24 @@ test("batch update rejects a final occupancy conflict without changing the input
     assert.equal(at(before, [0, 1]).occupant.id, 2);
 });
 
-test("battle batch update validates definitions and identities before applying the batch", () => {
+test("a missing Change target rejects before any batch publication or settlement", () => {
     const first = unit(1, 0), second = unit(2, 1);
     const before = createBattleState(fixture(first, second));
-    const valid = { ...first, vitality: { ...first.vitality, hp: 50 } };
-    const invalid = [
-        [valid, { ...second, definition: { ...second.definition } }],
-        [valid, { ...second, definition: { ...second.definition, occupancy: { slot: "SUPPORT", hooks: [] } } }],
-        [valid, unit(99, 2)],
-        [valid, valid],
-    ];
+    let settlements = 0;
+    const valid = createChange(unitRef(first),
+        self => ({ ...self, vitality: { ...self.vitality, hp: 50 } }),
+        state => { settlements++; return state; });
+    const missing = createChange({ id: 99 }, self => self);
 
-    for (const updates of invalid) {
-        assert.throws(() => updateBattleUnits(before, updates), RangeError);
+    for (const changes of [[valid, missing], [missing, valid]]) {
+        assert.throws(() => applyUnitChanges(before, changes), /unknown unit: 99/);
         assert.equal(before.battlefield.units.get(first.id), first);
         assert.equal(before.battlefield.units.get(second.id), second);
         assert.equal(before.battlefield.units.get(first.id).vitality.hp, 100);
         assert.deepEqual([...before.battlefield.units.keys()], [1, 2]);
         assert.equal(before.battlefield.occupancy.size, 2);
     }
+    assert.equal(settlements, 0);
 });
 
 test("field batch update rejects occupancy outside the map without publishing partial updates", () => {

@@ -4,7 +4,8 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { fixtureBattlefieldState } from "../helpers/battlefield.js";
 import { appendEvents, createBattleState } from "../../dist/core/battle/state.js";
-import { add as addUnit, remove as removeUnit, update as updateUnit } from "../../dist/core/battle/unit.js";
+import { add as addUnit, remove as removeUnit, replace as updateUnit, update as applyUnitChanges } from "../../dist/core/battle/unit.js";
+import { createChange } from "../../dist/core/unit/change.js";
 import { getUnit } from "../helpers/unit.js";
 
 const unit = (id, position = [0, 0]) =>
@@ -74,16 +75,16 @@ test("battle state: facts, event prefixes and execution progress travel through 
     assert.equal(initial.execution.rngState, 0);
 });
 
-test("battle state: unit updates do not register missing units", () => {
+test("battle state: public Changes do not register missing units", () => {
     const first = unit(1),
         second = unit(2);
     const initial = fixture(first, second);
     const snapshot = initial;
     const moved = { ...first, position: [3, 0] },
         spawned = unit(8);
-    const movedState = updateUnit(initial, [moved]);
-    assert.equal(updateUnit(movedState, [second]), movedState);
-    assert.throws(() => updateUnit(movedState, [spawned]), /unknown unit: 8/);
+    const movedState = applyUnitChanges(initial, [createChange(unitQueries.ref(first), () => moved)]);
+    assert.equal(applyUnitChanges(movedState, [createChange(unitQueries.ref(second), self => self)]), movedState);
+    assert.throws(() => applyUnitChanges(movedState, [createChange(unitQueries.ref(spawned), self => self)]), /unknown unit: 8/);
     const changed = addUnit(movedState, spawned);
     assert.equal(getUnit(changed, 1), moved);
     assert.equal(getUnit(changed, 8), spawned);

@@ -1,16 +1,18 @@
+import { createChange } from "../../dist/core/unit/change.js";
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { lifetime as effectLifetime } from "../../dist/core/unit/effect/operations.js";
 import { scope as lifetimeScope, getRef as lifetimeRef } from "../../dist/core/lifetime/index.js";
 import { lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { update } from "../../dist/core/battle/unit.js";
+import { replace as update } from "../../dist/core/battle/unit.js";
 import * as blocking from "../../dist/core/battle/blocking/operations.js";
 import { at } from "../../dist/core/battlefield/occupancy.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { dependents } from "../../dist/core/lifetime/dependency.js";
 import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
-import { setHook as setBlockableHook } from "../../dist/core/unit/capability/blocking/blockable.js";
+import { setHook as setBlockableHook } from "../../dist/core/unit/capability/blocking/blockable-operations.js";
 import * as blockerOperations from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import * as presence from "../../dist/core/unit/capability/presence/operations.js";
 import { fixture, holder, target, acquire, blockedIds, ownerId, hook } from "../helpers/blocking.js";
@@ -54,9 +56,7 @@ test("the first acquired Hook sees every batch Unit and all Effect dependencies"
     let calls = 0;
     let battle = fixture([holder(), target(), target(40, { position: [8, 1] })]);
     const owner = getUnit(battle, 10);
-    battle = update(battle, [{
-        ...owner,
-        blocker: blocker.setHook(owner.blocker, "acquired", hook("observe-final-batch", (current, { relation }) => {
+    battle = applyUnitChanges(battle, [blockerOperations.setHook({ id: owner.id }, "acquired", hook("observe-final-batch", (current, { relation }) => {
             calls++;
             assert.equal(ownerId(current), 10);
             assert.deepEqual(blockedIds(current), [20]);
@@ -66,8 +66,7 @@ test("the first acquired Hook sees every batch Unit and all Effect dependencies"
                 effectRef(ownerEffect), effectRef(targetEffect),
             ]);
             return current;
-        })),
-    }]);
+        }))]);
     const currentOwner = getUnit(battle, 10);
     const currentTarget = getUnit(battle, 20);
     const ownerEffect = preparedEffect(currentOwner, lifetime);
@@ -90,9 +89,9 @@ test("the first acquired Hook sees every batch Unit and all Effect dependencies"
 
 test("explicit acquisitions use committed capacity and retain other submitted owner state", () => {
     const initial = fixture([holder(), target(20), target(21)]);
-    const expanded = blockerOperations.setCapacityContribution(initial, { id: 10 }, {
+    const expanded = applyUnitChanges(initial, [blockerOperations.setCapacityContribution({ id: 10 }, {
         id: "batch-expansion", value: [{ type: "ADD", value: 1 }],
-    });
+    })]);
     const owner = getUnit(expanded, 10);
     let battle = update(expanded, [{ ...owner, vitality: { ...owner.vitality, hp: 51 } }]);
     battle = blocking.acquire(battle, { id: 10 }, { id: 20 });
@@ -125,9 +124,7 @@ test("acquisition Hooks can update a later search candidate before its own attem
     const calls = [];
     let battle = fixture([holder(10, { capacity: 2 }), target(20), target(21)]);
     const owner = getUnit(battle, 10);
-    battle = update(battle, [{
-        ...owner,
-        blocker: blocker.setHook(owner.blocker, "acquired", hook("change-later-target", (current, { relation }) => {
+    battle = applyUnitChanges(battle, [blockerOperations.setHook({ id: owner.id }, "acquired", hook("change-later-target", (current, { relation }) => {
             calls.push(relation.blocked.id);
             if (relation.blocked.id !== 20) return current;
             current = blocking.release(current, { id: 21 });
@@ -135,8 +132,7 @@ test("acquisition Hooks can update a later search candidate before its own attem
             return update(current, [{
                 ...released, position: [7, 1], vitality: { ...released.vitality, hp: 17 },
             }]);
-        })),
-    }]);
+        }))]);
     const before = battle;
     battle = blocking.search(battle, { id: 10 });
 
@@ -153,9 +149,9 @@ test("acquisition Hooks can update a later search candidate before its own attem
 test("a complete capacity reduction releases the required relations without relying on Hooks", () => {
     let battle = acquire(fixture([holder(10, { capacity: 2 }), target(20), target(21)]));
     const before = battle;
-    battle = blockerOperations.setCapacityContribution(battle, { id: 10 }, {
+    battle = applyUnitChanges(battle, [blockerOperations.setCapacityContribution({ id: 10 }, {
         id: "capacity-zero", value: [{ type: "ADD", value: -2 }],
-    });
+    })]);
 
     assert.deepEqual(blockedIds(battle), []);
     assert.equal(ownerId(battle, 20), undefined);
@@ -190,19 +186,17 @@ test("ordinary Unit updates neither reconcile Blocking fields nor dispatch relat
 });
 
 
-test("empty and unchanged updates preserve state while missing and duplicate identities reject", () => {
+test("empty and unchanged Changes preserve state while repeated targets compose in order", () => {
     const first = target(20);
     const battle = fixture([first]);
-    const missing = target(99);
-    assert.equal(update(battle, []), battle);
-    assert.equal(update(battle, [getUnit(battle, 20)]), battle);
-    assert.throws(() => update(battle, [missing]), /unknown unit: 99/);
-    assert.throws(() => update(battle, [first, first]), RangeError);
-    assert.throws(() => update(battle, [missing, missing]), RangeError);
-    const changed = { ...first, vitality: { ...first.vitality, hp: 25 } };
-    for (const updates of [[missing, changed], [changed, missing]]) {
-        assert.throws(() => update(battle, updates), /unknown unit: 99/);
-    }
+    const reference = unitRef(first);
+    assert.equal(applyUnitChanges(battle, []), battle);
+    assert.equal(applyUnitChanges(battle, [createChange(reference, self => self)]), battle);
+    const changed = applyUnitChanges(battle, [
+        createChange(reference, self => ({ ...self, vitality: { ...self.vitality, hp: self.vitality.hp / 2 } })),
+        createChange(reference, self => ({ ...self, vitality: { ...self.vitality, hp: self.vitality.hp / 2 } })),
+    ]);
+    assert.equal(getUnit(changed, 20).vitality.hp, 25);
     assert.equal(getUnit(battle, 20), first);
     assert.equal(getUnit(battle, 99), undefined);
     assert.equal(getUnit(battle, 20).vitality.hp, 100);
@@ -212,22 +206,20 @@ test("a missing batch target rejects before any Blocking notification", () => {
     let calls = 0;
     let battle = acquire(fixture([holder(), target()]));
     const owner = getUnit(battle, 10);
-    battle = update(battle, [{
-        ...owner,
-        blocker: blocker.setHook(owner.blocker, "released", hook("must-not-release", current => {
+    battle = applyUnitChanges(battle, [blockerOperations.setHook({ id: owner.id }, "released", hook("must-not-release", current => {
             calls++;
             return current;
-        })),
-    }]);
-    const current = getUnit(battle, 10);
-    const changed = { ...current, vitality: { ...current.vitality, hp: 37 } };
-    const missing = target(99);
+        }))]);
+    const changed = blockerOperations.setCapacityContribution(unitRef(owner), {
+        id: "pending-reduction", value: [{ type: "ZERO" }],
+    });
+    const missing = createChange({ id: 99 }, self => self);
     const field = battle.battlefield;
     const dependency = battle.lifetime.dependencies;
     const events = battle.events;
 
-    for (const updates of [[changed, missing], [missing, changed]]) {
-        assert.throws(() => update(battle, updates), /unknown unit: 99/);
+    for (const changes of [[changed, missing], [missing, changed]]) {
+        assert.throws(() => applyUnitChanges(battle, changes), /unknown unit: 99/);
     }
     assert.equal(calls, 0);
     assert.equal(battle.battlefield, field);
@@ -241,9 +233,7 @@ test("spatial updates clear the captured batch before Hooks and preserve newly a
     const owner = getUnit(battle, 10);
     const released = [];
     let captured;
-    battle = update(battle, [{
-        ...owner,
-        blocker: blocker.setHook(owner.blocker, "released", hook("reacquire-after-spatial-update", (current, { relation }) => {
+    battle = applyUnitChanges(battle, [blockerOperations.setHook({ id: owner.id }, "released", hook("reacquire-after-spatial-update", (current, { relation }) => {
             released.push(relation.blocked);
             if (relation.blocked === captured[0].blocked) {
                 assert.deepEqual(blockedIds(current), []);
@@ -254,8 +244,7 @@ test("spatial updates clear the captured batch before Hooks and preserve newly a
             }
             assert.deepEqual(blockedIds(current), [20, 21]);
             return current;
-        })),
-    }]);
+        }))]);
     battle = acquire(battle);
     captured = blocking.capture(battle, unitRef(getUnit(battle, 10)));
     const before = battle;
@@ -295,21 +284,7 @@ test("disappearing a dual-capability Unit publishes both releases before notifyi
     const owner = getUnit(battle, 10);
     const candidate = getUnit(battle, 20);
     const blockerUnit = getUnit(battle, 30);
-    battle = update(battle, [
-        {
-            ...owner,
-            blocker: blocker.setHook(owner.blocker, "released", hook("outgoing-owner", record("blocker"))),
-            blockable: setBlockableHook(owner.blockable, "released", hook("incoming-target", record("blockable"))),
-        },
-        {
-            ...candidate,
-            blockable: setBlockableHook(candidate.blockable, "released", hook("outgoing-target", record("blockable"))),
-        },
-        {
-            ...blockerUnit,
-            blocker: blocker.setHook(blockerUnit.blocker, "released", hook("incoming-owner", record("blocker"))),
-        },
-    ]);
+    battle = applyUnitChanges(battle, [blockerOperations.setHook({ id: owner.id }, "released", hook("outgoing-owner", record("blocker"))), setBlockableHook({ id: owner.id }, "released", hook("incoming-target", record("blockable"))), setBlockableHook({ id: candidate.id }, "released", hook("outgoing-target", record("blockable"))), blockerOperations.setHook({ id: blockerUnit.id }, "released", hook("incoming-owner", record("blocker")))]);
     battle = blocking.acquire(battle, { id: 10 }, { id: 20 });
     battle = blocking.acquire(battle, { id: 30 }, { id: 10 });
     assert.deepEqual(blocking.capture(battle, { id: 10 }).map(relation => [relation.blocker.id, relation.blocked.id]), [

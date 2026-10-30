@@ -1,15 +1,16 @@
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { create as createSkill } from "../../dist/core/unit/skill/index.js";
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
 import { lifetime as skillLifetime } from "../../dist/core/unit/skill/operations.js";
 import { ref as unitReference } from "../../dist/core/unit/query.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
-import { damage as damageTargeting, healing as healingTargeting } from "../helpers/targeting.js";
+import { damage as damageTargeting } from "../helpers/targeting.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { create as createProjectile } from "../../dist/core/battle/projectile.js";
 import { all as allProjectiles } from "../../dist/core/projectile/query.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { replaceUnit } from "../helpers/unit.js";
-import { setBeforeReleaseHook, removeBeforeReleaseHook } from "../../dist/core/unit/capability/action/capability.js";
+import { setBeforeReleaseHook, removeBeforeReleaseHook } from "../../dist/core/unit/capability/action/index.js";
 import { attackBuff } from "../helpers/effects.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import assert from "node:assert/strict";
@@ -39,8 +40,7 @@ function scenario({ ammo = 1, targets = 1, interrupt = false, windupTicks = 0, o
     onInstall: (state, self) => {
       if (hideAfterDamage) {
           const currentUnit1 = getUnit(state, self.host.id);
-          state = replaceUnit(state, ({
-        ...currentUnit1, vitality: setHook(currentUnit1.vitality, {
+          state = applyUnitChanges(state, [setHook({ id: currentUnit1.id }, {
           id: "hide-after-damage", stage: "hpApplied", priority: 0,
           accepts: (_state, event) => event.request.source?.id === self.host.id,
           invoke: (state, context, current) => {
@@ -50,28 +50,25 @@ function scenario({ ammo = 1, targets = 1, interrupt = false, windupTicks = 0, o
               ...currentUnit, spatialPresence: { present: false },
             })), value: current };
           },
-        }),
-      }));
+        })]);
       }
       if (interrupt) {
           const currentUnit2 = getUnit(state, self.host.id);
-          state = replaceUnit(state, ({ ...currentUnit2, action: setBeforeReleaseHook(currentUnit2.action, {
+          state = applyUnitChanges(state, [setBeforeReleaseHook({ id: currentUnit2.id }, {
         id: "ammo-interrupt", accepts: () => true,
         invoke: state => ({ state, value: { type: "INTERRUPT", recoveryTicks: 15 } }),
-      }) }));
+      })]);
       }
       return state;
     },
     onEnd: (state, self) => {
       if (hideAfterDamage) {
           const currentUnit3 = getUnit(state, self.host.id);
-          state = replaceUnit(state, ({
-        ...currentUnit3, vitality: removeHook(currentUnit3.vitality, "hide-after-damage"),
-      }));
+          state = applyUnitChanges(state, [removeHook({ id: currentUnit3.id }, "hide-after-damage")]);
       }
       if (interrupt) {
           const currentUnit4 = getUnit(state, self.host.id);
-          state = replaceUnit(state, ({ ...currentUnit4, action: removeBeforeReleaseHook(currentUnit4.action, "ammo-interrupt") }));
+          state = applyUnitChanges(state, [removeBeforeReleaseHook({ id: currentUnit4.id }, "ammo-interrupt")]);
       }
       return state;
     },

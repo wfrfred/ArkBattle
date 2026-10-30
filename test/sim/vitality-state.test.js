@@ -1,4 +1,5 @@
 import { ref as unitRef } from "../../dist/core/unit/query.js";
+import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { resolveDefense } from "../../dist/core/unit/capability/vitality/query.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -48,23 +49,34 @@ test("Vitality initialization rejects invalid base attributes at the shared cons
 test("MaxHP transitions preserve fractional HP ratios and the effective minimum", () => {
     const battle = fixtureBattle();
     const definition = { maxHp: 100.5, defense: 0, resistance: 0 };
-    const initial = { ...initialize(battle, definition).value, hp: 25.125 };
-    const increased = setMaxHpContribution(initial, definition, {
-        id: "equipment", value: [create({ finalAddition: 100.5 })],
+    const unit = initializeUnit({ id: 1, position: [0, 0],
+        definition: { id: "fractional-max-hp", vitality: definition },
+        states: { vitality: { ...initialize(battle, definition).value, hp: 25.125 } },
     });
+    const initialBattle = effectFixtureWork(unit);
+    const initial = unit.vitality;
+    const increasedBattle = applyUnitChanges(initialBattle, [setMaxHpContribution(unitRef(unit), {
+        id: "equipment", value: [create({ finalAddition: 100.5 })],
+    })]);
+    const increased = getUnit(increasedBattle, unit.id).vitality;
     assert.equal(increased.hp, 50.25);
     assert.equal(resolveMaxHp(increased, definition), 201);
-    const restored = removeMaxHpContribution(increased, definition, "equipment");
+    const restoredBattle = applyUnitChanges(increasedBattle, [removeMaxHpContribution(unitRef(unit), "equipment")]);
+    const restored = getUnit(restoredBattle, unit.id).vitality;
     assert.equal(restored.hp, 25.125);
     assert.equal(resolveMaxHp(restored, definition), 100.5);
     assert.equal(initial.hp, 25.125);
     assert.equal(increased.hp, 50.25);
 
     const floorDefinition = { maxHp: 0.5, defense: 0, resistance: 0 };
-    const atFloor = { ...initialize(battle, floorDefinition).value, hp: 0.25 };
-    const reduced = setMaxHpContribution(atFloor, floorDefinition, {
-        id: "penalty", value: [create({ finalAddition: -10 })],
+    const floorUnit = initializeUnit({ id: 2, position: [0, 0],
+        definition: { id: "floor-max-hp", vitality: floorDefinition },
+        states: { vitality: { ...initialize(battle, floorDefinition).value, hp: 0.25 } },
     });
+    const reducedBattle = applyUnitChanges(effectFixtureWork(floorUnit), [setMaxHpContribution(unitRef(floorUnit), {
+        id: "penalty", value: [create({ finalAddition: -10 })],
+    })]);
+    const reduced = getUnit(reducedBattle, floorUnit.id).vitality;
     assert.equal(resolveMaxHp(reduced, floorDefinition), 1);
     assert.equal(reduced.hp, 0.25);
 });
@@ -80,17 +92,17 @@ test("dynamic DEF and RES contributions use current Unit and battlefield facts w
         position: [1, 0],
         definition: { hooks: [], id: "source", vitality: { maxHp: 100, defense: 0, resistance: 0 } },
     });
-    const modified = {
-        ...target,
-        vitality: setResistanceContribution(setDefenseContribution(target.vitality, {
+    const initial = applyUnitChanges(effectFixtureWork(target, source), [
+        setDefenseContribution(unitRef(target), {
             id: "conditional-defense",
             value: (_battle, self) => [create({ finalAddition: self.vitality.hp < 50 ? -100 : 5.25 })],
-        }), {
+        }),
+        setResistanceContribution(unitRef(target), {
             id: "source-resistance",
             value: battle => [create({ finalAddition: getUnit(battle, 2).vitality.hp })],
         }),
-    };
-    const initial = effectFixtureWork(modified, source);
+    ]);
+    const modified = getUnit(initial, target.id);
     const currentUnit = getUnit(initial, 1);
     const currentBattle = replaceUnit(initial, {
         ...currentUnit, vitality: { ...currentUnit.vitality, hp: 25 },

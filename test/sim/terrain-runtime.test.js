@@ -11,7 +11,7 @@ import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { create as createField } from "../../dist/core/battlefield/state.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { initialize as initializeUnit } from "../../dist/core/unit/initialize.js";
-import { add, update } from "../../dist/core/battle/unit.js";
+import { add, replace as update } from "../../dist/core/battle/unit.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { actionCapability } from "../helpers/actions.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";

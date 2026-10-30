@@ -19,13 +19,10 @@ function restriction(
             }
 
             return updateUnit(state, [
-                {
-                    ...unit,
-                    targetable: targetable.setRestriction(unit.targetable, {
-                        id: `@effect/${self.id}/targeting`,
-                        value,
-                    }),
-                },
+                targetable.setRestriction(units.ref(unit), {
+                    id: `@effect/${self.id}/targeting`,
+                    value,
+                }),
             ]);
         },
         onDisable(state, self) {
@@ -35,13 +32,7 @@ function restriction(
             }
 
             return updateUnit(state, [
-                {
-                    ...unit,
-                    targetable: targetable.removeRestriction(
-                        unit.targetable,
-                        `@effect/${self.id}/targeting`,
-                    ),
-                },
+                targetable.removeRestriction(units.ref(unit), `@effect/${self.id}/targeting`),
             ]);
         },
     };

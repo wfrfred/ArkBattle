@@ -1,4 +1,4 @@
-import { update as updateUnit } from "../../dist/core/battle/unit.js";
+import { replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "./unit.js";
 import { ref as skillRef } from "../../dist/core/unit/skill/index.js";
 import { ref as activationRef } from "../../dist/core/unit/skill/activation.js";

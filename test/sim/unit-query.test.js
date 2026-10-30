@@ -5,7 +5,7 @@ import { initialize } from "../helpers/unit.js";
 import { hasLocomotion } from "../../dist/core/unit/capability/locomotion/capability.js";
 import { hasVitality } from "../../dist/core/unit/capability/vitality/capability.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
-import { add as addUnit, remove as removeUnit, update as updateUnit } from "../../dist/core/battle/unit.js";
+import { add as addUnit, remove as removeUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { fixtureBattlefieldState } from "../helpers/battlefield.js";
 
 const locomotion = {

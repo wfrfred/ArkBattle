@@ -12,6 +12,8 @@ export type { Hook, EnterHook, TickHook, LeaveHook } from "./hook.js";
 
 export type { Input } from "./initialize.js";
 
+export type { Change } from "./change.js";
+
 export { initialize } from "./initialize.js";
 
 export { ref, all, get } from "./query.js";

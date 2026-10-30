@@ -8,7 +8,7 @@ Vitality 保存 HP、MaxHP、DEF、RES，以及伤害与治疗的 Hook 登记和
 
 ## 0. Vitality Capability
 
-`vitality/capability.ts` 提供定义、初始化和局部属性转换，`vitality/query.ts` 提供依赖战场的防御查询；DEF／RES 属于 Vitality，不构成独立 Capability。
+`vitality/capability.ts` 提供定义、初始化和属性 Change 工厂，`vitality/query.ts` 提供依赖战场的防御查询；DEF／RES 属于 Vitality，不构成独立 Capability。
 
 ```typescript
 interface Definition {
@@ -18,19 +18,19 @@ interface Definition {
 }
 
 initialize(battle, definition): Result<State>;
-setMaxHpContribution(state, definition, entry): State;
-removeMaxHpContribution(state, definition, id): State;
+setMaxHpContribution(ref: Ref<Unit & Vitality>, entry): Change;
+removeMaxHpContribution(ref: Ref<Unit & Vitality>, id): Change;
 resolveMaxHp(state, definition): number;
-setDefenseContribution(state, entry): State;
-removeDefenseContribution(state, id): State;
-setResistanceContribution(state, entry): State;
-removeResistanceContribution(state, id): State;
+setDefenseContribution(ref: Ref<Unit & Vitality>, entry): Change;
+removeDefenseContribution(ref: Ref<Unit & Vitality>, id): Change;
+setResistanceContribution(ref: Ref<Unit & Vitality>, entry): Change;
+removeResistanceContribution(ref: Ref<Unit & Vitality>, id): Change;
 resolveDefense(battle, ref: Ref<Unit & Vitality>): DefenseValues | undefined;
 ```
 
 基础 MaxHP、DEF、RES 全部必填，由 initialize 校验为有限非负数，可以是小数。初始 HP 为 `Math.max(1, definition.maxHp)`，有效 MaxHP 的下限为 1。基础 RES 可以超过 100，有效值在属性修正后限制到 0～100；有效 DEF 的下限为 0。普通 HP 使用 0～有效 MaxHP 的范围，不在每次计算后取整。
 
-MaxHP 保留静态 Modifier[]，在 Contribution 设置、替换或移除时同步维持 HP 比例，零 HP 不因属性变化复活；DEF／RES 的 Input 为静态修正或 `(battle, self: Unit & Vitality) => readonly Modifier[]`。resolveDefense 从最新 battle 按 Ref 读取对象，消失时返回 undefined，不附加 HP 或生命周期政策。Damage 在 Formula Hook 后调用该查询，不提前缓存，也不把穿透纳入属性解析。
+MaxHP 保留静态 Modifier[]，set／remove 工厂返回 Change，在纯 transform 中同步维持 HP 比例，零 HP 不因属性变化复活；不附带治疗通知或 Blocking 后继。DEF／RES 的 Input 为静态修正或 `(battle, self: Unit & Vitality) => readonly Modifier[]`，对应工厂也绑定 Ref 返回 Change。resolveDefense 从最新 battle 读取对象，缺失返回 undefined；Damage 在 Formula Hook 后读取，不提前缓存或混入穿透。
 
 HP、Contribution、Hook 与 Rule 共存于同一 Vitality State。DEF／RES 的修改保留其他字段；属性变化不派发普通治疗 Hook。治疗索敌默认 provider 与显式注入 provider 均读取有效 MaxHP，避免把基础值或未计修正的上限用于缺血判定和比例排序。
 

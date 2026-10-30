@@ -34,7 +34,7 @@ battle/unit.add 在 Skill 入场后读取最新 PRESENT Unit 并直接派发 ent
 
 低层 Battlefield 变换不执行角色程序。伤害、治疗、Skill 和 Effect 等完整结算继续使用显式的纯状态传递；Runtime 承担外部推进和 Tick 发布。
 
-完整 battle/unit.add、update、remove 根据受影响登记格的承载差分，只向对应 SUPPORT 派发 occupantAdded／occupantRemoved Hook。候选和关系 Context 在通知时固定；Removed 可以携带已移除对象的历史值，Added 每项确认当前组合仍然有效。具体当前资格始终从最新 battle 查询，不将历史通知重新写成当前状态。通知不轮询，也不因仅更新乘员 Rule 而重复派发，完整契约见 [Occupancy](occupancy.md#同步登记通知)。
+完整 battle/unit.add／remove 在各自原有时点，按受影响登记格的承载差分向 SUPPORT 派发 occupantAdded／occupantRemoved Hook。通用 Change update 和内部 replace 仅维护双槽登记，不派发通知；当前生产没有任意搬格工厂。候选和 Context 固定，Removed 可携带已移除对象历史，Added 每项确认当前组合仍有效；具体契约见 [Occupancy](occupancy.md#同步登记通知)。
 
 ## 语义证据与项目政策
 
@@ -59,4 +59,4 @@ battle/unit.add 在 Skill 入场后读取最新 PRESENT Unit 并直接派发 ent
 
 基础 Unit 只声明身份、生命周期、Definition、位置和 Effects。每个 Capability 同时声明自身的配置与运行状态；业务通过 `Unit & Vitality & Offense` 等组合表达需要的能力。初始化工厂由具体 Definition 推导所创建的标准状态，异构战场查询则通过 `hasX` 收窄为实际需要的能力。能力集合用于装配和快照投影，不作为基础 Unit 的可选字段聚合。
 
-局部更新返回新的 Capability State；完整 Unit 写入接受具体的 Unit 组合，只返回结算后的 BattleState，不承诺任意输入子类型在更新后仍成立。统一构造入口建立能力配对，登记后能力组成保持稳定，内部操作遵守这一契约。类型系统无需枚举所有能力组合，也不通过所有权品牌或防御复制证明内部调用者的不可变约定。
+Content 通过绑定 Typed Ref 的 Rule／Hook／Contribution／Blocker.layer 工厂构造 Change，再调用 battle/unit.update(battle, changes)。一批 Change 的全部字段先发布，再按原顺序结算后继；Content 不手工重建 Unit、不传任意 Unit 转换回调，也不调用 Core 内部 replace。精确私有 state 写回与完整生命周期操作维持原接口。统一构造入口建立能力配对，登记后能力组成稳定，不为约束内部调用者增加所有权框架或防御复制。

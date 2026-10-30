@@ -1,10 +1,4 @@
-export {
-    hasBlocker,
-    initialize as initializeBlocker,
-    setHook as setBlockerHook,
-    removeHook as removeBlockerHook,
-    resolveCapacity,
-} from "./blocker.js";
+export { hasBlocker, initialize as initializeBlocker, resolveCapacity } from "./blocker.js";
 
 export type {
     Definition as BlockerDefinition,
@@ -14,13 +8,7 @@ export type {
     Modifier,
 } from "./blocker.js";
 
-export {
-    hasBlockable,
-    initialize as initializeBlockable,
-    setHook as setBlockableHook,
-    removeHook as removeBlockableHook,
-    resolveVolume,
-} from "./blockable.js";
+export { hasBlockable, initialize as initializeBlockable, resolveVolume } from "./blockable.js";
 
 export type {
     Definition as BlockableDefinition,
@@ -35,6 +23,8 @@ export type { Relation, Context, Hook, Key } from "./contract.js";
 export {
     setRule as setBlockerRule,
     removeRule as removeBlockerRule,
+    setHook as setBlockerHook,
+    removeHook as removeBlockerHook,
     setCapacityContribution,
     removeCapacityContribution,
     setLayer,
@@ -43,6 +33,8 @@ export {
 export {
     setRule as setBlockableRule,
     removeRule as removeBlockableRule,
+    setHook as setBlockableHook,
+    removeHook as removeBlockableHook,
     setVolumeContribution,
     removeVolumeContribution,
 } from "./blockable-operations.js";

@@ -95,7 +95,7 @@ Unit 初始化始终建立空 Effects，不接受预装实例输入。初始护�
 
 阵营、当前玩家归属、创建者和来源分别表达，按需求存在。Unit 的生命周期状态与战场成员关系共同表达它是否仍可参与新的生命周期绑定。
 
-局部更新函数接受并返回本领域的标准 State；需要基础参数时同时接收 Definition，例如 MaxHP 修改在返回 VitalityState 前完成 HP 响应。调用层重建 Unit，未修改的能力共享原引用。核心不提供 StableUnit 或 widenUnit，不承诺保留任意输入的字面量细化。真正的跨领域内容通过 Unit 与所需 Capability 的交叉类型声明依赖；同步结算仍显式接续 BattleState。Route 与 Locomotion 独立装配，目标、运动与空间约束的接口见 [Navigation 设计](navigation.md)。
+Rule、Hook、Contribution 与 Blocker.layer 的公开写入绑定 Typed Ref，返回 opaque Change；Content 通过 battle/unit.update 组合，不重建完整 Unit。Core 内部 transform 从 Ref 确定能力，全部纯转换完成后一次发布 Field 和 Lifetime，再按原 Change 顺序执行同步 settle；MaxHP 比例响应属于纯转换。内部 replace 只发布合法完整对象，不执行内容 Hook。纯数值／几何计算仍直接接收值，精确私有 state 写回与完整生命周期操作维持原协议。Route 与 Locomotion 的独立职责见 [Navigation](navigation.md)。
 
 ## Subsystem 的责任与调用
 
@@ -105,7 +105,7 @@ Unit 初始化始终建立空 Effects，不接受预装实例输入。初始护�
 | ------------------ | ---------------------------------------------- | --------------------------------------------------------------------------------- |
 | Schedule           | 出生、波次、分支、等待与完成统计               | 定义和进度在创建及后续调用链保持关联                                              |
 | Action             | 启动周期、运行实例、推进、取消与完成 | Definition 保存基础间隔、速度与程序；Unit.action.actions 按配置 ID 保存持久 state、Cooldown 与当前 Execution；nextExecutionId、贡献与 Rule 归 Capability |
-| Skill              | SP 获取与支付、激活许可、持续、结束和弹药消耗  | unit/skill 保存领域程序与资源操作；capability/skill 定义宿主能力与局部登记，事实仍存于 Unit.skill；Effect 通过本轮 Skill Lifetime 关联 |
+| Skill              | SP 获取与支付、激活许可、持续、结束和弹药消耗  | unit/skill 保存领域程序与资源操作；capability/skill 定义宿主能力与 Change 工厂，事实仍存于 Unit.skill；Effect 通过本轮 Skill Lifetime 关联 |
 | Targeting          | 候选、查询资格、优先级与确定性选择             | 读取当前事实；比较器纯函数并追加确定性 tie-break                                  |
 | Damage             | 公式、输出、有序接收、普通扣血及死亡       | 流程在 battle/damage；Offense／Vitality／Elemental 提供属性，Vitality 保存 HP 与 Hook／规则登记。特殊生命保护尚待设计 |
 | Healing            | 计算、输出、有序接收、普通恢复与通知           | 流程在 battle/healing；Vitality 保存 HP／MaxHP 与 Hook。治疗不可选中由 Targetable 表达，明确 Ref 的治疗只检查生命周期和接收 Hook |
@@ -128,7 +128,7 @@ Targetable 通过 Definition 中的必填 restrictions 声明固有限制，初�
 
 Damage 和 Healing 分别在 battle/damage、battle/healing 维护 Calculate／Apply 协议；Targeting 位于 battle/targeting，select 返回 Result 接续选取状态，hasCandidate 提供不调用 Selector 的只读候选检查。领域 Hook 读取当前输入版本，通过公开的纯 Damage、Healing、Effect 等操作执行同步嵌套结算，再把返回版本交给外层。取消保留已完成的消耗、回复与后继；普通死亡和治疗使用各自完整操作；倒地复活、特殊生命机制、再生与生命复原仍待设计与接入。治疗不可选中不等于接收免疫，已选中后仍可直接治疗，不设置通用禁疗绕过或跳事件开关。
 
-Skill 的 Definition／create、单槽聚合、Activation 非空视图、查询、资源与完整操作位于 unit/skill；unit/capability/skill 保留初始化工厂、能力状态、守卫及局部规则／Hook／预算贡献登记。Unit Definition.skill.initialize 调用 create，接续持久数据初始化与 SP 初态；unit.skill 直接保存程序 Definition、state、SP 和可空 activation，能力状态再补规则等字段，不建 Instance 包装或集合。程序元数据从 unit.skill.definition 取得，两种 Ref 分别绑定持久 Skill 与本轮 Activation，宿主由回调第二参 source 提供。两个 index 按职责提供契约，SP 的局部贡献操作仍在领域 sp.ts。自然回复按 tick 进度产生 SP；ACTION 回复通过成功释放通知，HIT 回复通过 Damage 的接收 Hook，由 Skill 自己登记和结算。默认激活阻回由 Rule 表达，上限、门槛和支付分别求值。普通攻击不依赖 Skill，具体技能行动通过公开扩展点组合，不修改基础 Definition。
+Skill 的 Definition／create、单槽聚合、Activation 非空视图、查询、资源与完整操作位于 unit/skill；unit/capability/skill 保留初始化工厂、能力状态、守卫及规则／Hook／预算贡献 Change 工厂。Unit Definition.skill.initialize 调用 create，接续持久数据初始化与 SP 初态；unit.skill 直接保存程序 Definition、state、SP 和可空 activation，能力状态再补规则等字段，不建 Instance 包装或集合。程序元数据从 unit.skill.definition 取得，两种 Ref 分别绑定持久 Skill 与本轮 Activation，宿主由回调第二参 source 提供。两个 index 按职责提供契约，SP 的贡献 Change 工厂仍在领域 sp.ts。自然回复按 tick 进度产生 SP；ACTION 回复通过成功释放通知，HIT 回复通过 Damage 的接收 Hook，由 Skill 自己登记和结算。默认激活阻回由 Rule 表达，上限、门槛和支付分别求值。普通攻击不依赖 Skill，具体技能行动通过公开扩展点组合，不修改基础 Definition。
 
 技能结束与单位退场委托同一 Lifetime 请求／析构协议。Unit 的所有权边保护 Execution、Activation、Burst 和 Effects，全部子项完成 Finalize 后才能移除 Unit。已经进入的内容仍按普通控制流继续，后继按最新状态确认资格；不能重建已结束实例，新的真正依赖也不能绑定到 Pending／ENDING 对象。
 
@@ -170,7 +170,7 @@ MaxHP 的变化由 Vitality 按前后有效上限保持 HP 比例，独立于 He
 
 Locomotion 保存移速贡献，运动阶段读取当前有效速度后再乘运动上下文倍率。速度与其下限都规范化为每 tick 世界距离；真实数据的属性下限由适配层按相同单位换算，停止运动由运动许可或上下文表达。变速只改变本次位移预算，不重建主／临时 Route 的目标样本、等待或导航请求。实时 provider 读取运动阶段约定的事实视图。
 
-Blocker 的 Definition 保存基础容量，State 保存 ADD／ZERO 容量贡献。Blocking 在统一事实入口求值、限制为非负并按半值取偶数量化。Capability 可以提供完整操作：Blocker 的 setLayer、Rule 和容量修改，以及 Blockable 的 Rule 和 volume 修改均接收 battle 与 Typed Ref，自行完成必要清理与维护；没有业务后继的 Hook 登记仍是局部 State 转换。归属与关联保存于 Blockable／Blocker State，由明确 acquire／release 构造双端状态、发布后自行通知，Unit 更新不准备、校验、补齐或推断关系。内部 releaseAll 为切层和 SpatialPresence 组合整批新事实与旧关系解除，通知前整批状态已可见。maintain 自己循环，在每次关系解除与通知后读取最新状态。unit.update 仅接收 Unit 数组，完成通用身份校验后发布数据、Lifetime 与 Occupancy；本轮保留字段类型，领域构造由调用方负责。新取得要求双方存活，旧关系的默认保持资格不因临时 HP 为 0 失效。普通 Damage 完成 HP Applied 响应后仍满足死亡条件时才进入 Unit.remove；Unit 先发布 LEAVING，再明确释放自己的全部关系，add 与 Finalize 不扫描全场阻挡。Locomotion、Route 和地块完整操作仍承接其空间事实改变所需的维护。Runtime 通过所属完整领域操作修改业务事实；自主移动由 Movement 在 Route 推进后查询当前阻挡关系，再决定是否调用 Locomotion，不继续同步专用禁移 Rule。
+Blocker Definition 保存基础容量，State 保存 ADD／ZERO 容量贡献，由 Blocking 按领域公式求值。能力写入统一返回 Change，层／Rule／容量／volume 的结算按作用范围维护关系；Hook Change 没有关系后继。Unit.update 只接收 Change[]，先纯转换全批、一次发布数据与 Lifetime／Occupancy，再按原顺序结算；内部 replace 信任 Core 完整对象，不从字段差异构造、校验或通知 Blocking。setLayer 的 transform 改 layer／radius，settle 只解除 previous 中仍存在的旧出向 Ref，不回填旧 Unit。关系操作局部维护受影响 owner，移动只复核本 Unit，显式 Tile 更新保留全场维护；嵌套局部操作不裁撤无关 Blocker，真实同 owner 交叠使用最新事实。新取得要求存活，旧关系不因临时 HP 为 0 失效；Damage 在 HP Applied 后仍应死亡才请求 Unit.remove。离场先发布 LEAVING、显式释放自身关系，add／Finalize 不全场扫描。
 
 普通搜索每 Tick 在 Movement 后的固定 Blocking Step 中统一执行，不保存独立搜索周期，不因每次 Unit 更新全局搜索，不重构 Combat／Movement 模拟 Unity UID OnTick。显式立即搜索用于有真实需求的业务，不因本 Tick 已执行普通搜索而被拒绝。单次搜索固定开始时按距离、目标 ID 排序的候选 Ref 数组，逐项按最新资格、关系及容量尝试，不预选接敌名单或冻结起始预算；Hook 增容允许后续候选在本轮接敌，新单位不加入候选。该政策有意区别于原生预算预选，可能产生持续的关系分配差异。其余资格、容量及副作用按原生证据核对，固定阶段改变的接敌结果按对照测试评价；不以“只是一个 Tick”预先接受，也不为复刻内部调度引入全场多轮收敛。性能优化在语义稳定后进行。完整约定见 [Blocking 职责与调度政策](blocking.md#已确定的职责与调度政策)。Blockable 的阻挡消耗独立于容量、推拉重量和物理质量。
 

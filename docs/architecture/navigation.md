@@ -371,18 +371,18 @@ export function advance(
     context: MovementContext,
 ): BattleState;
 
-export function setRule(state: State, rule: Rule): State;
-export function removeRule(state: State, id: string): State;
+export function setRule(ref: Ref<Unit & Locomotion>, rule: Rule): Change;
+export function removeRule(ref: Ref<Unit & Locomotion>, id: string): Change;
 export function setSpeedContribution(
-    state: State,
+    ref: Ref<Unit & Locomotion>,
     entry: Contribution<Input>,
-): State;
-export function removeSpeedContribution(state: State, id: string): State;
+): Change;
+export function removeSpeedContribution(ref: Ref<Unit & Locomotion>, id: string): Change;
 ```
 
-类型、初始化、类型守卫及 Rule／速度贡献的局部登记变换统一位于 locomotion/capability.ts；operations.ts 只提供完整推进，不再转发局部 setter。canMove 与 resolveSpeed 是内部辅助函数。初始化验证速度、下限、几何半宽和转向参数非负，不要求基础速度已经大于 minSpeed。
+类型、初始化、守卫及 Rule／速度贡献 Change 工厂位于 locomotion/capability.ts；工厂绑定 Ref<Unit & Locomotion>，由 Unit.update 组合发布，不附带 Blocking 后继。operations.ts 提供完整推进，不转发工厂。初始化验证速度、下限、几何半宽和转向参数非负，不要求基础速度大于 minSpeed。
 
-推进读取最新 Unit，要求生命周期 PRESENT、空间存在且所有 Rule 允许。Movement 在 Route 推进后查询当前关系，只有自主移动受阻挡门禁约束；Locomotion 在实际位置提交后显式调用 Blocking.maintain，保留历史 velocity，不依赖 unit.update 自动检查或处理关系。SpatialPresence 的空间操作通过 Core 内部 releaseAll 一起发布新事实与全部旧关系解除，再由 Blocking 通知与维护；Route 无 Presence 分支的显式位置变化仍由对应操作主动维护。Blocking 不再同步专用禁移 Rule，见 [Blocking 设计](blocking.md)。有效速度为 `max(minSpeed, attribute.apply(speed, contributions)) * speedMultiplier`。无目标时 Runtime 不调用 advance；速度为零或不允许移动时返回原 BattleState，保留 velocity。
+推进读取最新 PRESENT、空间存在且 Rule 允许的 Unit。Movement 在 Route 推进后读取当前关系，只限制自主移动；Locomotion 实际位置变化经内部 replace 提交后，仅复核本 Unit 的当前入向和出向关系，纯 velocity 改变不启动 Blocking。SpatialPresence 用 releaseAll 一次发布新事实与全部旧关系解除，再局部通知维护；Route 无 Presence 分支的位置变化也只复核自身。Blocking 不同步专用禁移 Rule，见 [Blocking](blocking.md)。有效速度为 `max(minSpeed, attribute.apply(speed, contributions)) * speedMultiplier`；无目标不调 advance，速度为零或不可移动返回原 battle 并保留 velocity。
 
 如果当前位置到 goal 的距离不超过本 Tick 预算，直接设置位置为 goal，保留 velocity，跳过 Steering、避障及目的格反射。nextPoint 仅用于计算 Steering 方向，不因接近中间导航节点而吸附。
 
