@@ -18,10 +18,7 @@ export function setRule(reference: Ref<Unit & Blocker>, rule: Rule): Change {
                 ? self
                 : { ...self, blocker: { ...self.blocker, rules } };
         },
-        (battle, previous) =>
-            !previous.blocker.rules.includes(rule)
-                ? blocking.maintainBlocker(battle, reference)
-                : battle,
+        (battle) => blocking.maintainBlocker(battle, reference),
     );
 }
 
@@ -35,10 +32,7 @@ export function removeRule(reference: Ref<Unit & Blocker>, id: string): Change {
                 ? self
                 : { ...self, blocker: { ...self.blocker, rules } };
         },
-        (battle, previous) =>
-            previous.blocker.rules.some((entry) => entry.id === id)
-                ? blocking.maintainBlocker(battle, reference)
-                : battle,
+        (battle) => blocking.maintainBlocker(battle, reference),
     );
 }
 
@@ -55,10 +49,7 @@ export function setCapacityContribution(
                 ? self
                 : { ...self, blocker: { ...self.blocker, capacity } };
         },
-        (battle, previous) =>
-            !previous.blocker.capacity.includes(entry)
-                ? blocking.maintainBlocker(battle, reference)
-                : battle,
+        (battle) => blocking.maintainBlocker(battle, reference),
     );
 }
 
@@ -72,10 +63,7 @@ export function removeCapacityContribution(reference: Ref<Unit & Blocker>, id: s
                 ? self
                 : { ...self, blocker: { ...self.blocker, capacity } };
         },
-        (battle, previous) =>
-            previous.blocker.capacity.some((entry) => entry.id === id)
-                ? blocking.maintainBlocker(battle, reference)
-                : battle,
+        (battle) => blocking.maintainBlocker(battle, reference),
     );
 }
 
@@ -94,12 +82,10 @@ export function setLayer(reference: Ref<Unit & Blocker>, layer: Layer): Change {
                       },
                   },
         (battle, previous) =>
-            previous.blocker.layer === layer
-                ? battle
-                : blocking.releaseAll(
-                      battle,
-                      previous.blocker.blocked.map((blocked) => ({ blocker: reference, blocked })),
-                  ),
+            blocking.releaseAll(
+                battle,
+                previous.blocker.blocked.map((blocked) => ({ blocker: reference, blocked })),
+            ),
     );
 }
 

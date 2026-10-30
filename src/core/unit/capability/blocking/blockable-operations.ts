@@ -19,10 +19,7 @@ export function setRule(reference: Ref<Unit & Blockable>, rule: Rule): Change {
                 ? self
                 : { ...self, blockable: { ...self.blockable, rules } };
         },
-        (battle, previous) =>
-            !previous.blockable.rules.includes(rule)
-                ? blocking.maintainBlockableRule(battle, reference)
-                : battle,
+        (battle) => blocking.maintainBlockableRule(battle, reference),
     );
 }
 
@@ -36,10 +33,7 @@ export function removeRule(reference: Ref<Unit & Blockable>, id: string): Change
                 ? self
                 : { ...self, blockable: { ...self.blockable, rules } };
         },
-        (battle, previous) =>
-            previous.blockable.rules.some((entry) => entry.id === id)
-                ? blocking.maintainBlockableRule(battle, reference)
-                : battle,
+        (battle) => blocking.maintainBlockableRule(battle, reference),
     );
 }
 
@@ -58,10 +52,7 @@ export function setVolumeContribution(
                 ? self
                 : { ...self, blockable: { ...self.blockable, volume } };
         },
-        (battle, previous) =>
-            !previous.blockable.volume.includes(entry)
-                ? blocking.maintainBlockable(battle, reference)
-                : battle,
+        (battle) => blocking.maintainBlockable(battle, reference),
     );
 }
 
@@ -75,10 +66,7 @@ export function removeVolumeContribution(reference: Ref<Unit & Blockable>, id: s
                 ? self
                 : { ...self, blockable: { ...self.blockable, volume } };
         },
-        (battle, previous) =>
-            previous.blockable.volume.some((entry) => entry.id === id)
-                ? blocking.maintainBlockable(battle, reference)
-                : battle,
+        (battle) => blocking.maintainBlockable(battle, reference),
     );
 }
 

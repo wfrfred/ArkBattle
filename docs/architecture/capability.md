@@ -145,7 +145,7 @@ volume 使用 Contribution<number>，筛选互斥胜者后累加整数追加量�
 
 阻挡事实读取当前 layer、radius、贡献与双方 Rule。canSearch 判断基础搜索资格，GROUND 要求根格 allowsBlocking，AIR 豁免；canRetain 检查双方 PRESENT、空间存在、层匹配和 Rule，旧关系不因临时 HP 为 0 失效；新 acquire 仍要求双方有 Vitality 时 HP 大于 0。无 Unit Layer 的 Blockable 不隐式作为 GROUND，但不强制跨能力构造依赖。距离和无归属只限制新取得；容量超额另行裁撤。Change 后继仅维护本 Blocker 或关联，volume 使用执行时当前 owner；每次 Hook 后读取最新事实，嵌套同 owner 修改可停止后续裁撤，不扫描无关 Blocker。显式地块完整操作保留全场维护。普通新关系仍每 Tick 在 Movement 后统一搜索。
 
-切换阻挡层使用 `setLayer(Ref<Unit & Blocker>, layer): Change`。transform 只更新 layer／radius；settle 按本项 previous.layer 判断是否实际切换，以 previous.blocked 捕获旧出向 Ref，交给 releaseAll 批量解除仍存在的旧身份。后继不重做 transform、不写回旧 Unit；清理在自身首个 RELEASED 前全部发布，通知后仅维护受影响 owner。混合批次中较早的其他后继可能先处理部分旧关系，不能把切层自身的批量可见性扩为全批首个 RELEASED 的保证。切换不改变自身 Layer、不自动搜索、不增加 Hook 或 Contribution；细节见 [Blocking 批次契约](blocking.md#显式关系操作与同步维护)。
+切换阻挡层使用 `setLayer(Ref<Unit & Blocker>, layer): Change`。transform 只更新 layer／radius；同层请求返回原 Unit，由 update 统一跳过后继；实际变化的 settle 以 previous.blocked 捕获旧出向 Ref，交给 releaseAll 批量解除仍存在的旧身份。后继不重做 transform、不写回旧 Unit；清理在自身首个 RELEASED 前全部发布，通知后仅维护受影响 owner。混合批次中较早的其他后继可能先处理部分旧关系，不能把切层自身的批量可见性扩为全批首个 RELEASED 的保证。切换不改变自身 Layer、不自动搜索、不增加 Hook 或 Contribution；细节见 [Blocking 批次契约](blocking.md#显式关系操作与同步维护)。
 
 关系归属与关联由两端 State 保存：Blockable.blocker 是唯一 owner 或 null，Blocker.blocked 是按建立顺序保留的目标 Ref 数组。acquire／release 以内部 replace 一起发布双端，再按 Blocker、Blockable 顺序通知；通用发布不补齐或比较关系。同一次关系的身份由正向列表中的 Ref 条目对象承担，重建必须创建新条目，普通字段更新共享既有引用。转移使用完整 Release 和新 Acquire。
 

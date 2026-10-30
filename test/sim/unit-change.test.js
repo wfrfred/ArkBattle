@@ -65,17 +65,55 @@ test("a batch applies repeated targets in order and publishes every result befor
     assert.equal(getUnit(initial, 20).vitality.hp, 100);
 });
 
-test("settlements use the latest returned battle and may run without a Unit transformation", () => {
+test("unchanged transformations skip their settlements without discarding changed items", () => {
+    const initial = fixture([target(20)]);
+    const original = getUnit(initial, 20);
+    const unchanged = createChange(
+        { id: 20 },
+        (self) => self,
+        () => assert.fail("an unchanged item must not settle"),
+    );
+    assert.equal(update(initial, [unchanged]), initial);
+
+    const previous = [];
+    const updated = update(initial, [
+        unchanged,
+        createChange(
+            { id: 20 },
+            (self) => ({ ...self, vitality: { ...self.vitality, hp: 90 } }),
+            (battle, self) => {
+                previous.push(self);
+                return battle;
+            },
+        ),
+        unchanged,
+        createChange(
+            { id: 20 },
+            () => original,
+            (battle, self) => {
+                previous.push(self);
+                return battle;
+            },
+        ),
+    ]);
+
+    assert.equal(updated, initial, "the batch may restore the original published Unit");
+    assert.equal(previous.length, 2);
+    assert.equal(previous[0], original);
+    assert.equal(previous[1].vitality.hp, 90);
+});
+
+test("settlements use their sampled previous Unit and the latest returned battle", () => {
     const initial = fixture([target(20)]);
     const previous = getUnit(initial, 20);
     const trace = [];
     const updated = update(initial, [
         createChange(
             { id: 20 },
-            (self) => self,
+            (self) => ({ ...self, vitality: { ...self.vitality, hp: 90 } }),
             (battle, self) => {
                 assert.equal(self, previous);
-                assert.equal(getUnit(battle, 20), previous);
+                assert.equal(getUnit(battle, 20).vitality.hp, 80);
                 trace.push("first");
                 return update(battle, [
                     createChange({ id: 20 }, (unit) => ({
@@ -87,9 +125,9 @@ test("settlements use the latest returned battle and may run without a Unit tran
         ),
         createChange(
             { id: 20 },
-            (self) => self,
+            (self) => ({ ...self, vitality: { ...self.vitality, hp: 80 } }),
             (battle, self) => {
-                assert.equal(self, previous);
+                assert.equal(self.vitality.hp, 90);
                 trace.push(getUnit(battle, 20).vitality.hp);
                 return { ...battle, tick: 7 };
             },
@@ -231,24 +269,27 @@ test("volume settlement follows the target's current owner after an earlier sett
                 {
                     id: "observe-volume-owner",
                     allows(battle, owner) {
-                        if (battle.tick === 1) visited.push(owner.id);
+                        visited.push(owner.id);
                         return true;
                     },
                 },
             ),
         ]);
     initial = blocking.acquire(initial, { id: 10 }, { id: 20 });
-    const updated = update(initial, [
-        createChange(
-            { id: 20 },
-            (self) => self,
-            (battle) => {
-                battle = blocking.release(battle, { id: 20 });
+    initial = update(initial, [
+        blockers.setHook(
+            { id: 10 },
+            "released",
+            hook("transfer-before-volume-settlement", (battle) => {
                 battle = blocking.acquire(battle, { id: 11 }, { id: 20 });
                 assert.equal(ownerId(battle), 11);
-                return { ...battle, tick: 1 };
-            },
+                visited.length = 0;
+                return battle;
+            }),
         ),
+    ]);
+    const updated = update(initial, [
+        blockers.setLayer({ id: 10 }, "AIR"),
         setVolumeContribution({ id: 20 }, { id: "larger", value: 1 }),
     ]);
     assert.deepEqual(visited, [11]);

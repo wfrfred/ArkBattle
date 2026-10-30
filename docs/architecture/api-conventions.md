@@ -280,17 +280,17 @@ Change 是带必需品牌的 opaque 描述；构造实现 `createChange(ref, tra
 
 update 按以下顺序处理整批，允许同一 Unit 多个 Change，也允许跨多个 Unit：
 
-1. 按 Change 顺序从本批暂存的最新 Unit 执行全部 transform；首次触及的目标必须已登记，缺失时抛出 RangeError。此阶段不执行 Hook 或完整领域操作。
+1. 按 Change 顺序从本批暂存的最新 Unit 执行全部 transform；首次触及的目标必须已登记，缺失时抛出 RangeError。每项返回值与其输入 Unit 引用相同时，update 统一跳过该项发布和 settle；无变化的 Transformation 必须返回原 Unit，不做字段深比较。此阶段不执行 Hook 或完整领域操作。
 2. 一次发布所有最终 Unit；Field 维护 Unit 存储和 Occupancy 双槽，Lifetime 只比较批前值与最终值，不投影中间状态。
-3. 按原 Change 顺序执行各项 settle，每次接续最新 BattleState。previous 固定为该项 transform 前的暂存 Unit，只表示有意采样的旧事实；实时对象必须重新查询，不整体回填 previous。
+3. 按原 Change 顺序执行实际发生变换的各项 settle，每次接续最新 BattleState。previous 固定为该项 transform 前的暂存 Unit，只表示有意采样的旧事实；实时对象必须重新查询，不整体回填 previous。
 
-先完成所有纯转换，再执行任何结算。较早结算的 Hook 能看到全批最终字段，也能看到较晚结算尚未清理的关系。批内先降容量再恢复只按最终容量裁撤；跨两次 update 则先完成第一次的解除。批内 GROUND→AIR→GROUND 仍保留两次真实切层对应的旧关系清理，不能因为最终字段值等于批前值而省略已有结算。工厂对自身同条目或缺失 ID 的无变化输入不追加实际业务；空批次或全部 transform 复用原 Unit 且 settle 不改状态时返回原 battle，不做字段深比较。
+先完成所有纯转换，再执行任何结算。较早结算的 Hook 能看到全批最终字段，也能看到较晚结算尚未清理的关系。批内先降容量再恢复只按最终容量裁撤；跨两次 update 则先完成第一次的解除。批内 GROUND→AIR→GROUND 仍保留两次真实切层对应的旧关系清理，不能因为最终字段值等于批前值而省略已有结算。相同条目或缺失 ID 等无变化输入由 transform 返回原 Unit，update 统一省略该项后继，Settlement 不重复判断。空批次或全部 transform 复用原 Unit 时返回原 battle。该判断针对每项暂存输入，不比较整批最终值来丢弃此前已登记的结算。
 
 每次嵌套 update 独立准备与结算自己的 Change 列表，不调度外层尚未执行的项，不保存全局 pending、updating 或隐式事务。领域后继还必须限制作用范围：Blocking 的容量只维护本 Blocker，volume 读取执行时当前 owner，Rule 复核自身关联；关系操作只维护受影响 owner。嵌套操作确实修改同一对象或关联时，双方接续同一最新事实，不承诺隔离。显式全场操作如地块更新的 maintain 按其公开范围执行，不伪装成局部操作。
 
 Core 内部 `replace(battle, readonly Unit[])` 仅发布已合法构造的完整对象与派生索引，信任身份、Definition 和能力配对，不重复校验或派发内容 Hook。它不是公开原始 Unit 写回协议；生命周期、精确私有 state 写回及关系双端构造继续由各领域使用。Field 保留地图边界与最终双槽冲突校验。通用 update／replace 均不派发 Occupancy 或 Blocking 通知；当前生产中只有 add／remove 明确改变占格登记，仍在各自既定时点通知 SUPPORT，不为尚无内容需求的搬格创建新工厂。
 
-Action.interval／speed Change 的 settle 调用 refreshCooldowns，按最终贡献重算当前冷却；Blocker.layer 的 transform 只改 layer／radius，settle 以 previous.layer 与请求值确认本项是否实际切层，再按 previous.blocked 中的旧 Ref 批量解除，不能重新调用 setLayer 或写回旧 Unit。MaxHP 的比例响应属于纯 transform，不附带治疗通知。Stun 先通过一批 Change 发布各能力限制，再由 Blocking 后继清理关系，update 返回后才取消 Action。
+Action.interval／speed Change 的 settle 调用 refreshCooldowns，按最终贡献重算当前冷却；Blocker.layer 的 transform 只改 layer／radius，update 根据该项 transform 的引用变化决定是否执行 settle，再由 settle 按 previous.blocked 中的旧 Ref 批量解除，不能重新调用 setLayer 或写回旧 Unit。MaxHP 的比例响应属于纯 transform，不附带治疗通知。Stun 先通过一批 Change 发布各能力限制，再由 Blocking 后继清理关系，update 返回后才取消 Action。
 
 add 接收创建方已经完成 Capability 初始化、部署信息及路线初态的完整 Unit，负责登记、Skill 入场、enter Hook 和原时点的 Occupancy 通知，不扫描全场 Blocking。创建方逐个完成 add 再处理下一对象。Unit Definition 的 hooks 必填，无监听传 []；实例不增加另一份生命周期 Hook。Deployment 的卡消费与 DP 扣除在 add 前完成，登记后记录 UNIT_DEPLOYED，再执行 Skill 与 Unit 入场；部署通知仍由 Deployment 在 add 返回后派发。
 

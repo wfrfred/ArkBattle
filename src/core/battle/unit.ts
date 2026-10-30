@@ -58,7 +58,12 @@ export function update(battle: BattleState, changes: readonly Change[]): BattleS
             throw new RangeError(`unknown unit: ${ref.id}`);
         }
 
-        prepared.set(ref.id, transform(previous));
+        const next = transform(previous);
+        if (next === previous) {
+            continue;
+        }
+
+        prepared.set(ref.id, next);
 
         if (settle !== undefined) {
             settlements.push((state) => settle(state, previous));

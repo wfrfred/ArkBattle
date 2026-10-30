@@ -205,7 +205,7 @@ interface State {
 }
 ```
 
-setIntervalContribution／setSpeedContribution 及对应 remove 绑定 Ref<Unit & ActionCapability> 返回 Change，实现在 capability/action/operations.ts。transform 只修改贡献集合，实际变化的 settle 从最新 battle 调用 refreshCooldowns，按全批最终周期及当前完成比例换算冷却；Content 不补一次手工刷新。Rule／释放 Hook 登记也返回 Change，但不附带冷却或 Blocking 后继。动态查询继续使用 resolveBaseInterval／resolveSpeed／resolveInterval(battle, source, definition)。
+setIntervalContribution／setSpeedContribution 及对应 remove 绑定 Ref<Unit & ActionCapability> 返回 Change，实现在 capability/action/operations.ts。transform 只修改贡献集合，无变化时返回原 Unit，由 update 统一跳过 settle；实际变化的 settle 从最新 battle 调用 refreshCooldowns，按全批最终周期及当前完成比例换算冷却；Content 不补一次手工刷新。Rule／释放 Hook 登记也返回 Change，但不附带冷却或 Blocking 后继。动态查询继续使用 resolveBaseInterval／resolveSpeed／resolveInterval(battle, source, definition)。
 
 普通攻击周期依据 [PRTS 攻速公式](https://prts.wiki/w/游戏数据基础#攻速公式)：修正间隔 × 100 / 限制后的速度。速度属性下限为 20，周期计算速度上限为 600，有效周期至少为 1 Tick。纯 Cooldown 支持非负连续周期，不在纯值函数中强加攻击的量化限制。
 

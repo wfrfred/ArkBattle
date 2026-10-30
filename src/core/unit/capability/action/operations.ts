@@ -12,8 +12,7 @@ export function setIntervalContribution(
     return createChange(
         reference,
         (self) => setContributions(self, "interval", contribution.set(self.action.interval, entry)),
-        (battle, previous) =>
-            previous.action.interval.includes(entry) ? battle : refreshCooldowns(battle, reference),
+        (battle) => refreshCooldowns(battle, reference),
     );
 }
 
@@ -21,10 +20,7 @@ export function removeIntervalContribution(reference: Ref<Unit & Action>, id: st
     return createChange(
         reference,
         (self) => setContributions(self, "interval", contribution.remove(self.action.interval, id)),
-        (battle, previous) =>
-            previous.action.interval.some((entry) => entry.id === id)
-                ? refreshCooldowns(battle, reference)
-                : battle,
+        (battle) => refreshCooldowns(battle, reference),
     );
 }
 
@@ -35,8 +31,7 @@ export function setSpeedContribution(
     return createChange(
         reference,
         (self) => setContributions(self, "speed", contribution.set(self.action.speed, entry)),
-        (battle, previous) =>
-            previous.action.speed.includes(entry) ? battle : refreshCooldowns(battle, reference),
+        (battle) => refreshCooldowns(battle, reference),
     );
 }
 
@@ -44,10 +39,7 @@ export function removeSpeedContribution(reference: Ref<Unit & Action>, id: strin
     return createChange(
         reference,
         (self) => setContributions(self, "speed", contribution.remove(self.action.speed, id)),
-        (battle, previous) =>
-            previous.action.speed.some((entry) => entry.id === id)
-                ? refreshCooldowns(battle, reference)
-                : battle,
+        (battle) => refreshCooldowns(battle, reference),
     );
 }
 

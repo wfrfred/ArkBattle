@@ -8,6 +8,7 @@ export interface Change {
     readonly [Brand]: true;
 }
 
+/** Return the original Unit when unchanged so update skips the corresponding Settlement. */
 export type Transformation<U extends Unit> = (unit: U) => U;
 
 export type Settlement<U extends Unit> = (battle: BattleState, previous: U) => BattleState;

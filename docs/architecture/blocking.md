@@ -204,11 +204,11 @@ release 只解除关系，不自动接敌。固定旧关联条目的内部解除
 | setBlockerHook／removeBlockerHook | `(Ref<Unit & Blocker>, Key, Hook / id): Change` |
 | setBlockableHook／removeBlockableHook | `(Ref<Unit & Blockable>, Key, Hook / id): Change` |
 
-工厂绑定 Ref，不接收 battle，也不自行提交。Unit.update 在整批准备时确认宿主存在，缺失时抛出 RangeError；存储中的 LEAVING 宿主仍可清理。Rule、容量和 volume 附带各自的局部后继，Hook Change 只登记集合。相同条目或移除不存在 ID 的本项转换没有业务变化，不借无变化输入触发裁撤。
+工厂绑定 Ref，不接收 battle，也不自行提交。Unit.update 在整批准备时确认宿主存在，缺失时抛出 RangeError；存储中的 LEAVING 宿主仍可清理。Rule、容量和 volume 附带各自的局部后继，Hook Change 只登记集合。相同条目或移除不存在 ID 的本项转换返回原 Unit，由 update 统一跳过 Settlement，不借无变化输入触发裁撤。
 
 工厂实现在 [blocker-operations.ts](../../src/core/unit/capability/blocking/blocker-operations.ts) 和 [blockable-operations.ts](../../src/core/unit/capability/blocking/blockable-operations.ts)。blocker.ts／blockable.ts 保留模型、初始化、守卫和数值查询，Catalog 与只读查询可精确依赖模型。公共入口直接导出工厂，不增加包装。
 
-setLayer 的 transform 只设置 layer 与实际 radius，不修改关系。其 settle 根据本项转换前的 previous.layer 和请求 layer 确认是否真实切层；同层请求无后继。真实切层从 previous.blocked 捕获全部旧出向 Ref，releaseAll 按当前 BattleState 确认同一次关系后批量清除两端，再逐项通知。后继不重调 setLayer，也不把 previous 整体发布；本批其他字段和嵌套操作的新值因此保留。
+setLayer 的 transform 只设置 layer 与实际 radius，不修改关系。同层请求由 transform 返回原 Unit，update 统一跳过其 settle。真实切层的 settle 从 previous.blocked 捕获全部旧出向 Ref，releaseAll 按当前 BattleState 确认同一次关系后批量清除两端，再逐项通知。后继不重调 setLayer，也不把 previous 整体发布；本批其他字段和嵌套操作的新值因此保留。
 
 setLayer 不因旧关系在最终层下仍合法而保留它，也不主动解除宿主作为 Blockable 的入向关系。新建立的同 ID 关系有新的 Ref 条目，不属于旧候选；真实不合格或超额的新关系仍可由本 owner 的局部维护解除。它不自动 search、不新增 layerChanged Hook、不改变自身 Unit Layer。内容在对应 Effect 生命周期程序中提交该 Change，不机械绑定所有 Skill 开始或结束。
 
