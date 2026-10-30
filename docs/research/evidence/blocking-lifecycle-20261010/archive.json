@@ -1,0 +1,309 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-10"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "records.json#/client/GameAssembly.dll"
+        ],
+        "bytes": 218523112
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "records.json#/client/Arknights_Data~1il2cpp_data~1Metadata~1global-metadata.dat"
+        ],
+        "bytes": 45805368
+      }
+    },
+    "sourceRecords": [
+      "records.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "records.json",
+        "kind": "record",
+        "bytes": 41858,
+        "sha256": "6f8279f965b617c49214bf0e2dfb8720cd2647ee8bb213cd3ebb3044995f2c46"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 25960,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/5"
+          ],
+          "fullname": ".ctor",
+          "address": "0x181e043f0"
+        },
+        {
+          "index": 25963,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/6"
+          ],
+          "fullname": "Torappu.PeriodicTicker.Tick",
+          "address": "0x181e043d0"
+        },
+        {
+          "index": 25964,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/7"
+          ],
+          "fullname": "Torappu.PeriodicTicker.Next",
+          "address": "0x181e04370"
+        },
+        {
+          "index": 64825,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/0"
+          ],
+          "fullname": "Torappu.Battle.BattleController.OnTick",
+          "address": "0x18062c440"
+        },
+        {
+          "index": 71077,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/1"
+          ],
+          "fullname": "Torappu.Battle.ObjectManager.OnFixedUpdate",
+          "address": "0x1808d5300"
+        },
+        {
+          "index": 75955,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/19"
+          ],
+          "fullname": "Torappu.Battle.Character.SearchBlockeeImmediate",
+          "address": "0x180a31400"
+        },
+        {
+          "index": 75970,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/25"
+          ],
+          "fullname": "Torappu.Battle.Character.OnBlockModeChanged",
+          "address": "0x180a2d0e0"
+        },
+        {
+          "index": 76016,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Character._SearchBlockee",
+          "address": "0x180a38200"
+        },
+        {
+          "index": 76022,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Character.OnTick",
+          "address": "0x180a2ec90"
+        },
+        {
+          "index": 76033,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/14"
+          ],
+          "fullname": "Torappu.Battle.Character.OnFinish",
+          "address": "0x180a2d9f0"
+        },
+        {
+          "index": 76035,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/18"
+          ],
+          "fullname": "Torappu.Battle.Character.OnAttributeDirty",
+          "address": "0x180a2c850"
+        },
+        {
+          "index": 76171,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/13"
+          ],
+          "fullname": "Torappu.Battle.Character+States+DeadState.OnEnter",
+          "address": "0x180a67490"
+        },
+        {
+          "index": 76185,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/12"
+          ],
+          "fullname": "Torappu.Battle.Character+States+DyingState.OnEnter",
+          "address": "0x180a69720"
+        },
+        {
+          "index": 76428,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/10"
+          ],
+          "fullname": "Torappu.Battle.Enemy.CheckBlockable",
+          "address": "0x180a6bb70"
+        },
+        {
+          "index": 76429,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/11"
+          ],
+          "fullname": "Torappu.Battle.Enemy.CheckBlockableWithoutCheckRange",
+          "address": "0x180a6b980"
+        },
+        {
+          "index": 76432,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/23"
+          ],
+          "fullname": "Torappu.Battle.Enemy.RegisterBlocker",
+          "address": "0x180a73e00"
+        },
+        {
+          "index": 76433,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/16"
+          ],
+          "fullname": "Torappu.Battle.Enemy.UnregisterBlocker",
+          "address": "0x180a76b50"
+        },
+        {
+          "index": 76452,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/26"
+          ],
+          "fullname": "Torappu.Battle.Enemy.ForceSetPositionByWorldCoords",
+          "address": "0x180a6d990"
+        },
+        {
+          "index": 76515,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/24"
+          ],
+          "fullname": "Torappu.Battle.Enemy._MoveToBlockPosition",
+          "address": "0x180a799d0"
+        },
+        {
+          "index": 77190,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/8"
+          ],
+          "fullname": "Torappu.Battle.BlockManager.SearchBlockee",
+          "address": "0x180aa09e0"
+        },
+        {
+          "index": 77191,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/22"
+          ],
+          "fullname": "Torappu.Battle.BlockManager.AddBlockee",
+          "address": "0x180aa0430"
+        },
+        {
+          "index": 77192,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/17"
+          ],
+          "fullname": "Torappu.Battle.BlockManager.UpdateBlockees",
+          "address": "0x180aa1170"
+        },
+        {
+          "index": 77194,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/9"
+          ],
+          "fullname": "Torappu.Battle.BlockManager._CheckBlockable",
+          "address": "0x180aa1430"
+        },
+        {
+          "index": 77196,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/15"
+          ],
+          "fullname": "Torappu.Battle.BlockManager.ClearAllBlockees",
+          "address": "0x180aa0660"
+        },
+        {
+          "index": 77205,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/4"
+          ],
+          "fullname": ".ctor",
+          "address": "0x180aa17a0"
+        },
+        {
+          "index": 86413,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/20"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.OnProjectileStop",
+          "address": "0x180d42ae0"
+        },
+        {
+          "index": 99962,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/21"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes+CharSearchBlockeeImmediate.Execute",
+          "address": "0x181162e20"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

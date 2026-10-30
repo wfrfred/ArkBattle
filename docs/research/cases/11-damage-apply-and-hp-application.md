@@ -6,7 +6,7 @@
 
 | 标记 | 依据 | 可证明的范围 |
 | --- | --- | --- |
-| N | [damage-apply-20261017.json](../evidence/damage-apply-20261017.json) 与补充的 [hp-application-combinations-20261017.json](../evidence/hp-application-combinations-20261017.json) 中的本机原生方法与匹配 Buff 模板 | 所选普通原生分支的调用、判断及模板动作顺序；没有运行游戏或验证 XLua 热更新。 |
+| N | [damage-apply-20261017.json](../evidence/damage-apply-20261017/records.json) 与补充的 [hp-application-combinations-20261017.json](../evidence/hp-application-combinations-20261017/records.json) 中的本机原生方法与匹配 Buff 模板 | 所选普通原生分支的调用、判断及模板动作顺序；没有运行游戏或验证 XLua 热更新。 |
 | W | 下文直接链接的 PRTS 机制或角色说明 | Wiki 所述的行为与时点；本轮未核对相应角色模板／原生分支的项目不标为 N。 |
 | P | 用户已确认的 [Vitality 设计](../../architecture/vitality.md)、[公共 Hook 契约](../../architecture/functional-core.md#6-hook-和生命周期的纯契约)与[离场契约](../../architecture/deployment.md#离场清理的偏序) | Stronghold 选择的语义；不作为客户端事实。 |
 | 未定 | 尚缺足以判断的证据或尚未选择项目政策 | 不由当前测试、方法名或其他效果的类似描述补足。 |

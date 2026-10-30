@@ -1,0 +1,136 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-13"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "records.json#/client"
+        ]
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "records.json#/client"
+        ]
+      }
+    },
+    "sourceRecords": [
+      "records.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "records.json",
+        "kind": "record",
+        "bytes": 67735,
+        "sha256": "8a69aea793b6a1168d3863635f30846279ba08a4337c53c191dd1f769d8862f8"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 63078,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Ability.CleanupForNextCast",
+          "address": "0x1805d4bd0"
+        },
+        {
+          "index": 63098,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Ability.FinishIfNot",
+          "address": "0x1805d5910"
+        },
+        {
+          "index": 63104,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Ability.StartCastingInternal",
+          "address": "0x1805d6d20"
+        },
+        {
+          "index": 63141,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/3"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.CastDirectly",
+          "address": "0x1805ce650"
+        },
+        {
+          "index": 72666,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/4"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnSkillStart",
+          "address": "0x18095ca00"
+        },
+        {
+          "index": 72679,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/5"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+          "address": "0x18095c0f0"
+        },
+        {
+          "index": 100608,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/6"
+          ],
+          "fullname": "Torappu.Battle.Action.ActionUtil.RunActions",
+          "address": "0x181190690"
+        },
+        {
+          "index": 100609,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/7"
+          ],
+          "fullname": "Torappu.Battle.Action.ActionUtil.RunActions",
+          "address": "0x1811903e0"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

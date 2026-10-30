@@ -1,0 +1,274 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-07"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "6edbc00b11e016c8935bbc45f158d5363f63d35038b0a69f8297612235e533ce",
+        "records": [
+          "records.json#/clientFiles/0"
+        ],
+        "bytes": 214586344
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "ee7f1239e1cff67620a7964d651189dbb5c98e13699169096be2a907fd541118",
+        "records": [
+          "records.json#/clientFiles/1"
+        ],
+        "bytes": 45263956
+      }
+    },
+    "sourceRecords": [
+      "records.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "records.json",
+        "kind": "record",
+        "bytes": 17339,
+        "sha256": "579cc3233368ce83f4d00dec89814bdedd013a974c86df0ef35ccf2ee940a1a5"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 63722,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/0"
+          ],
+          "fullname": "Torappu.Battle.Attributes._CalculateAttributeValue",
+          "address": "0x180656f40"
+        },
+        {
+          "index": 64099,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/11"
+          ],
+          "fullname": "Torappu.Battle.BattleController.RegisterUnit",
+          "address": "0x18063dd80"
+        },
+        {
+          "index": 64217,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/12"
+          ],
+          "fullname": "Torappu.Battle.BattleController.CreateAndInitGlobalBuff",
+          "address": "0x18062ca20"
+        },
+        {
+          "index": 64218,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/13"
+          ],
+          "fullname": "Torappu.Battle.BattleController.CreateAndAttachAllUnitGlobalBuff",
+          "address": "0x18062c720"
+        },
+        {
+          "index": 66773,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/14"
+          ],
+          "fullname": "Torappu.Battle.GlobalBuff.TryAddBuff",
+          "address": "0x18073e280"
+        },
+        {
+          "index": 66775,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/15"
+          ],
+          "fullname": "Torappu.Battle.GlobalBuff.OnRemoved",
+          "address": "0x18073dfc0"
+        },
+        {
+          "index": 67105,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/16"
+          ],
+          "fullname": "Torappu.Battle.GlobalEnvSystem.OnInit",
+          "address": "0x180768070"
+        },
+        {
+          "index": 67173,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/17"
+          ],
+          "fullname": "Torappu.Battle.GlobalEnvSystemController.Tick",
+          "address": "0x180765e40"
+        },
+        {
+          "index": 70602,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/1"
+          ],
+          "fullname": "Torappu.Battle.Projectile+ActionController.OnHitTarget",
+          "address": "0x1808b3990"
+        },
+        {
+          "index": 84345,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/18"
+          ],
+          "fullname": "Torappu.Battle.Runes.Internal.CAttributesMul.DoPreprocessChar",
+          "address": "0x180cbcff0"
+        },
+        {
+          "index": 85485,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/2"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.ScaleableHitBehaviour.OnBeforeHitTarget",
+          "address": "0x180d29300"
+        },
+        {
+          "index": 90904,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/5"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AuraAbility.DealTargetTouched",
+          "address": "0x180ecaca0"
+        },
+        {
+          "index": 90905,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/6"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AuraAbility.DealTargetLeft",
+          "address": "0x180ecabd0"
+        },
+        {
+          "index": 90907,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/7"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AuraAbility._DoTargetCheckAndEnter",
+          "address": "0x180eccc40"
+        },
+        {
+          "index": 91073,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/10"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility._ClearBuffs",
+          "address": "0x180ee0a30"
+        },
+        {
+          "index": 91076,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/8"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.DealTarget",
+          "address": "0x180edf0f0"
+        },
+        {
+          "index": 91077,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/9"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility._OnUnitBornOrRallyPointReborn",
+          "address": "0x180ee1d10"
+        },
+        {
+          "index": 96937,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/4"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes+Dice.Execute",
+          "address": "0x181070530"
+        },
+        {
+          "index": 99407,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/3"
+          ],
+          "fullname": "Torappu.Battle.Action.ActionUtil.RunActions",
+          "address": "0x181155c10"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Abilities.AuraAbility",
+          "records": [
+            "records.json#/auraAndGlobalFieldProjections/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.AuraAbility+TargetMeta",
+          "records": [
+            "records.json#/auraAndGlobalFieldProjections/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.GlobalAuraAbility",
+          "records": [
+            "records.json#/auraAndGlobalFieldProjections/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BattleController",
+          "records": [
+            "records.json#/auraAndGlobalFieldProjections/4"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.GlobalBuff",
+          "records": [
+            "records.json#/auraAndGlobalFieldProjections/3"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.GlobalEnvSystem",
+          "records": [
+            "records.json#/auraAndGlobalFieldProjections/5"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

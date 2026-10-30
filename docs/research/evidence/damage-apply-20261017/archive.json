@@ -1,0 +1,190 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-17"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "records.json#/files"
+        ]
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "records.json#/files"
+        ]
+      }
+    },
+    "sourceRecords": [
+      "records.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "records.json",
+        "kind": "record",
+        "bytes": 48117,
+        "sha256": "45007a0fa028af7f5223bc27466f9f33f23c087c12bde15973657320137a2c61"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 65428,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/11"
+          ],
+          "fullname": "BuffContainer.OnBeforeTrySetHpZero",
+          "address": "0x18066eb40"
+        },
+        {
+          "index": 66625,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetHpInternal",
+          "address": "0x1806fd230"
+        },
+        {
+          "index": 66665,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Entity.ApplyModifier",
+          "address": "0x1806efd80"
+        },
+        {
+          "index": 66669,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnAppliedModifier",
+          "address": "0x1806f68c0"
+        },
+        {
+          "index": 66683,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Entity.DoApplyModifier",
+          "address": "0x1806f1c00"
+        },
+        {
+          "index": 66709,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnTakeDamage",
+          "address": "0x1806fa4c0"
+        },
+        {
+          "index": 70957,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/5"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isCancelled",
+          "address": "0x1808b4060"
+        },
+        {
+          "index": 70984,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/6"
+          ],
+          "fullname": "Torappu.Battle.Modifier.Cancel",
+          "address": "0x1808b0a70"
+        },
+        {
+          "index": 70985,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/7"
+          ],
+          "fullname": "Torappu.Battle.Modifier.CheckIgnoreCancel",
+          "address": "0x1808b0d50"
+        },
+        {
+          "index": 70986,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/12"
+          ],
+          "fullname": "Torappu.Battle.Modifier._CheckIgnoreMiss",
+          "address": "0x1808b3260"
+        },
+        {
+          "index": 96593,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/8"
+          ],
+          "fullname": "Evade.Execute",
+          "address": "0x18103d340"
+        },
+        {
+          "index": 96906,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/13"
+          ],
+          "fullname": "InverseDamage.Execute",
+          "address": "0x181058ed0"
+        },
+        {
+          "index": 96938,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/9"
+          ],
+          "fullname": "BlockDamage.Execute",
+          "address": "0x18104c1a0"
+        },
+        {
+          "index": 96963,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/10"
+          ],
+          "fullname": "DamageSplit.Execute",
+          "address": "0x1810540b0"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

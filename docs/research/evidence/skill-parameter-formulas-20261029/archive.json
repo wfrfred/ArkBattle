@@ -1,0 +1,741 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-29"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "ammo-native.json#/client",
+          "duration-native.json#/client",
+          "sp-native.json#/client"
+        ]
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "ammo-native.json#/client",
+          "duration-native.json#/client",
+          "sp-native.json#/client"
+        ]
+      }
+    },
+    "sourceRecords": [
+      "ammo-content.json",
+      "ammo-native.json",
+      "duration-native.json",
+      "sp-native.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "ammo-content.json",
+        "kind": "record",
+        "bytes": 58805,
+        "sha256": "54d5d9128d87a42912cf676f12486ca190abd6f8ae150020915dda20dfd400d4"
+      },
+      {
+        "path": "ammo-native.json",
+        "kind": "record",
+        "bytes": 144276,
+        "sha256": "d46cdabdff032ad40f372d2598df85cfddaee4271b97d456de0e9d4046261f50"
+      },
+      {
+        "path": "duration-native.json",
+        "kind": "record",
+        "bytes": 326033,
+        "sha256": "6c03a9cb40b1e1687855f0d00352500b89f12065e78ed09adcc95bfad10128ea"
+      },
+      {
+        "path": "sp-native.json",
+        "kind": "record",
+        "bytes": 123855,
+        "sha256": "2cda848b64c4b47c21bb95f07fab66d7041ff59c139dc2f023ee10edd1dd94ba"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 25974,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/5"
+          ],
+          "fullname": "Torappu.PeriodicTimer.ResetButKeepPastTime",
+          "address": "0x181e044e0"
+        },
+        {
+          "index": 32849,
+          "mode": "disasm",
+          "records": [
+            "sp-native.json#/methods/0"
+          ],
+          "fullname": "Torappu.SpData.get_maxSp",
+          "address": "0x18252b820"
+        },
+        {
+          "index": 63030,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_periodTime",
+          "address": "0x1805d8390"
+        },
+        {
+          "index": 63071,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Ability.UpdateCooldown",
+          "address": "0x1805d73e0"
+        },
+        {
+          "index": 66442,
+          "mode": "disasm",
+          "records": [
+            "sp-native.json#/methods/7"
+          ],
+          "fullname": "Torappu.Battle.Entity.set_maxSp",
+          "address": "0x180709a60"
+        },
+        {
+          "index": 66606,
+          "mode": "disasm",
+          "records": [
+            "sp-native.json#/methods/8"
+          ],
+          "fullname": "Torappu.Battle.Entity.UpdateSpData",
+          "address": "0x1806feff0"
+        },
+        {
+          "index": 66628,
+          "mode": "disasm",
+          "records": [
+            "sp-native.json#/methods/9"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetSpInternal",
+          "address": "0x1806fdbe0"
+        },
+        {
+          "index": 66631,
+          "mode": "disasm",
+          "records": [
+            "sp-native.json#/methods/10"
+          ],
+          "fullname": "Torappu.Battle.Entity.DoSetSpInternal",
+          "address": "0x1806f23c0"
+        },
+        {
+          "index": 66742,
+          "mode": "disasm",
+          "records": [
+            "sp-native.json#/methods/11"
+          ],
+          "fullname": "Torappu.Battle.Entity.SpController.get_spCost",
+          "address": "0x18070b260"
+        },
+        {
+          "index": 72608,
+          "mode": "metadata",
+          "records": [
+            "ammo-native.json#/confirmedSourceProtocol/affectingMethodMetadata"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_isAffecting",
+          "address": "0x18095fc50"
+        },
+        {
+          "index": 72631,
+          "mode": "disasm",
+          "records": [
+            "sp-native.json#/methods/1"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_canCastWithNoSp",
+          "address": "0x18095f390"
+        },
+        {
+          "index": 72632,
+          "mode": "disasm",
+          "records": [
+            "sp-native.json#/methods/2"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_spEnough",
+          "address": "0x1809617c0"
+        },
+        {
+          "index": 72633,
+          "mode": "disasm",
+          "records": [
+            "sp-native.json#/methods/3"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_canSkipReduceSp",
+          "address": "0x180956050"
+        },
+        {
+          "index": 72702,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/9",
+            "sp-native.json#/methods/4"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.ReduceSp",
+          "address": "0x18095dad0"
+        },
+        {
+          "index": 72797,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/21"
+          ],
+          "fullname": "Torappu.Battle.FeverCommonBehaviour.OnAfterJoinFever",
+          "address": "0x18096c600"
+        },
+        {
+          "index": 72798,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/22"
+          ],
+          "fullname": "Torappu.Battle.FeverCommonBehaviour.OnBeforeLeaveFever",
+          "address": "0x18096ce00"
+        },
+        {
+          "index": 72799,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/23"
+          ],
+          "fullname": "Torappu.Battle.FeverCommonBehaviour.OnAfterLeaveFever",
+          "address": "0x18096ca80"
+        },
+        {
+          "index": 72895,
+          "mode": "disasm",
+          "records": [
+            "sp-native.json#/methods/5"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.DoCast",
+          "address": "0x1809683a0"
+        },
+        {
+          "index": 72943,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/7",
+            "sp-native.json#/methods/6"
+          ],
+          "fullname": "Torappu.Battle.CastSkillWithCost.DoCast",
+          "address": "0x1809645e0"
+        },
+        {
+          "index": 72962,
+          "mode": "disasm",
+          "records": [
+            "ammo-native.json#/methods/0"
+          ],
+          "fullname": "Torappu.Battle.CastSkillWithLimitTimes.OnInit",
+          "address": "0x180965890"
+        },
+        {
+          "index": 72963,
+          "mode": "disasm",
+          "records": [
+            "ammo-native.json#/methods/1"
+          ],
+          "fullname": "Torappu.Battle.CastSkillWithLimitTimes.AssignData",
+          "address": "0x180964f10"
+        },
+        {
+          "index": 72965,
+          "mode": "disasm",
+          "records": [
+            "ammo-native.json#/methods/2"
+          ],
+          "fullname": "Torappu.Battle.CastSkillWithLimitTimes._FetchCounterSource",
+          "address": "0x1809661a0"
+        },
+        {
+          "index": 72966,
+          "mode": "disasm",
+          "records": [
+            "ammo-native.json#/methods/3"
+          ],
+          "fullname": "Torappu.Battle.CastSkillWithLimitTimes._UpdateMaxAdditionCount",
+          "address": "0x180966d70"
+        },
+        {
+          "index": 72971,
+          "mode": "disasm",
+          "records": [
+            "ammo-native.json#/methods/4"
+          ],
+          "fullname": "Torappu.Battle.CastSkillWithLimitTimes.OnTick",
+          "address": "0x180965980"
+        },
+        {
+          "index": 72982,
+          "mode": "disasm",
+          "records": [
+            "ammo-native.json#/methods/5"
+          ],
+          "fullname": "Torappu.Battle.CastSkillWithLimitTimes.SetMaxAdditionCount",
+          "address": "0x180965d90"
+        },
+        {
+          "index": 72983,
+          "mode": "disasm",
+          "records": [
+            "ammo-native.json#/methods/6"
+          ],
+          "fullname": "Torappu.Battle.CastSkillWithLimitTimes.SetMaxAdditionCountPercent",
+          "address": "0x180965c40"
+        },
+        {
+          "index": 73154,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/8"
+          ],
+          "fullname": "Torappu.Battle.RetriggerableCastSkillWithCost.DoCast",
+          "address": "0x180983450"
+        },
+        {
+          "index": 90965,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ActiveBuffAbility.DoSetData",
+          "address": "0x180eb28a0"
+        },
+        {
+          "index": 90967,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ActiveBuffAbility.GetDuration",
+          "address": "0x180eb29c0"
+        },
+        {
+          "index": 90969,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ActiveBuffAbility.SetLifeTime",
+          "address": "0x180eb2eb0"
+        },
+        {
+          "index": 91705,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/14"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbilitySequenceGroup.get_cooldown",
+          "address": "0x180efee20"
+        },
+        {
+          "index": 91718,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/13"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbilitySequenceGroup.DoSetData",
+          "address": "0x180efd2d0"
+        },
+        {
+          "index": 91720,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/12"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbilitySequenceGroup.CastDirectly",
+          "address": "0x180efcae0"
+        },
+        {
+          "index": 91734,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/15"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbilitySequenceGroup._UpdateCooldownFromSubAbilities",
+          "address": "0x180efe920"
+        },
+        {
+          "index": 94165,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/10"
+          ],
+          "fullname": "Torappu.Battle.Abilities.BuffToOwner.OnEvent",
+          "address": "0x180f783f0"
+        },
+        {
+          "index": 94166,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/11"
+          ],
+          "fullname": "Torappu.Battle.Abilities.BuffToOwner._AddBuffs",
+          "address": "0x180f786e0"
+        },
+        {
+          "index": 94230,
+          "mode": "disasm",
+          "records": [
+            "ammo-native.json#/methods/7"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbilityEventCounter.get_maxCount",
+          "address": "0x180f73b10"
+        },
+        {
+          "index": 94241,
+          "mode": "disasm",
+          "records": [
+            "ammo-native.json#/methods/8"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbilityEventCounter.get_originalMaxCount",
+          "address": "0x180f73be0"
+        },
+        {
+          "index": 94243,
+          "mode": "disasm",
+          "records": [
+            "ammo-native.json#/methods/9"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbilityEventCounter.SetData",
+          "address": "0x180f73100"
+        },
+        {
+          "index": 94265,
+          "mode": "disasm",
+          "records": [
+            "ammo-native.json#/methods/10"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbilityEventCounter.SetMaxAdditionCount",
+          "address": "0x180f73300"
+        },
+        {
+          "index": 95854,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/16"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.CalculateBlackboardValueViaParams.Execute",
+          "address": "0x181016cf0"
+        },
+        {
+          "index": 95859,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/19"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.BlackboardAdd.Execute",
+          "address": "0x181016480"
+        },
+        {
+          "index": 95909,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/17"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.AssignCurSpToBB.Execute",
+          "address": "0x18100d0f0"
+        },
+        {
+          "index": 96025,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/18"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.AssignCharacterSkillSpCostToBB.Execute",
+          "address": "0x18100cb00"
+        },
+        {
+          "index": 96563,
+          "mode": "disasm",
+          "records": [
+            "sp-native.json#/methods/12"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.ModifySpData.Execute",
+          "address": "0x1810417b0"
+        },
+        {
+          "index": 98621,
+          "mode": "disasm",
+          "records": [
+            "ammo-native.json#/methods/11"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.AmmoSkillCountModifier.get_addMaxCount",
+          "address": "0x1810bb160"
+        },
+        {
+          "index": 98623,
+          "mode": "disasm",
+          "records": [
+            "ammo-native.json#/methods/12"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.AmmoSkillCountModifier.Execute",
+          "address": "0x1810bac90"
+        },
+        {
+          "index": 99674,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/6"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.ExtendAbilityCooldown.Execute",
+          "address": "0x181154370"
+        },
+        {
+          "index": 99790,
+          "mode": "disasm",
+          "records": [
+            "duration-native.json#/methods/20"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.ClearCharacterSp.Execute",
+          "address": "0x181151400"
+        },
+        {
+          "index": 220338,
+          "mode": "disasm",
+          "records": [
+            "ammo-native.json#/methods/13"
+          ],
+          "fullname": "Torappu.MathUtil.RoundToInt",
+          "address": "0x1866e6620"
+        },
+        {
+          "index": 220463,
+          "mode": "disasm",
+          "records": [
+            "ammo-native.json#/methods/14"
+          ],
+          "fullname": "Torappu.FP.Round",
+          "address": "0x1866fc8d0"
+        },
+        {
+          "index": 220498,
+          "mode": "disasm",
+          "records": [
+            "ammo-native.json#/methods/15"
+          ],
+          "fullname": "Torappu.FP.op_Implicit",
+          "address": "0x1866fdad0"
+        },
+        {
+          "index": 220506,
+          "mode": "disasm",
+          "records": [
+            "ammo-native.json#/methods/16"
+          ],
+          "fullname": "Torappu.FP.AsInt",
+          "address": "0x1866fae80"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Abilities.AbilityEventCounter",
+          "records": [
+            "ammo-native.json#/types/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.AbilitySequenceGroup",
+          "records": [
+            "duration-native.json#/types/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.ActiveBuffAbility",
+          "records": [
+            "duration-native.json#/types/4"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.BuffToOwner",
+          "records": [
+            "duration-native.json#/types/3"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Ability",
+          "records": [
+            "duration-native.json#/types/7"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Action.Nodes.AmmoSkillCountModifier",
+          "records": [
+            "ammo-native.json#/types/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Action.Nodes.ExtendAbilityCooldown",
+          "records": [
+            "duration-native.json#/types/9"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BasicSkill",
+          "records": [
+            "sp-native.json#/types/3"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.CastSkillWithCost",
+          "records": [
+            "duration-native.json#/types/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.CastSkillWithLimitTimes",
+          "records": [
+            "ammo-native.json#/types/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Entity",
+          "records": [
+            "sp-native.json#/types/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Entity.SpController",
+          "records": [
+            "sp-native.json#/types/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.FeverBehaviour",
+          "records": [
+            "duration-native.json#/types/6"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.FeverCommonBehaviour",
+          "records": [
+            "duration-native.json#/types/5"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.RetriggerableCastSkillWithCost",
+          "records": [
+            "duration-native.json#/types/1"
+          ]
+        },
+        {
+          "name": "Torappu.PeriodicTimer",
+          "records": [
+            "duration-native.json#/types/8"
+          ]
+        },
+        {
+          "name": "Torappu.SkillDurationType",
+          "records": [
+            "ammo-content.json#/skillDurationTypeEnum"
+          ]
+        },
+        {
+          "name": "Torappu.SpData",
+          "records": [
+            "sp-native.json#/types/0"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "12419ad8d1ea9f670cca214e525240c691cdf3796b82acc8050698d66c202a37",
+          "records": [
+            "ammo-content.json#/sources/config~1buff_template_holder.ab",
+            "duration-native.json#/sources/buffTemplates"
+          ],
+          "bytes": 2022247
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "14306a31b1856f61b25812a69a2a057b7c4634561fb2c2bccc42fb37ee41a27e",
+          "records": [
+            "ammo-content.json#/sources/battle~1prefabs~1[uc]skills.ab",
+            "duration-native.json#/sources/skills"
+          ],
+          "bytes": 1343313
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_498_inside.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_498_inside.ab",
+          "sha256": "c335e0c2015c6a54b93fadc38f128dc049c8ba8cece7b4ca0549af6fdab4a8f6",
+          "records": [
+            "ammo-content.json#/sources/charpack~1char_498_inside.ab"
+          ],
+          "bytes": 25850
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4193_lemuen.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4193_lemuen.ab",
+          "sha256": "7d6acc296160f877662e95fd69ed5b713fb2d3ff1b2dff2ebbad31b20ca3d47a",
+          "records": [
+            "ammo-content.json#/sources/charpack~1char_4193_lemuen.ab"
+          ],
+          "bytes": 43021
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1041_angel2.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1041_angel2.ab",
+          "sha256": "328c177aac59fd614c548892e78102250fa74dcbe334db97920ef3cdb3fcfa57",
+          "records": [
+            "ammo-content.json#/sources/charpack~1char_1041_angel2.ab"
+          ],
+          "bytes": 54604
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/88b3c3ecaaefa6003de730686dd5ac53.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/88b3c3ecaaefa6003de730686dd5ac53.bin",
+          "sha256": "eb1f2d8339c466192624c42dbb0ab986efa38517e8aca22fd54b5737d78908f3",
+          "records": [
+            "ammo-content.json#/sources/anon~188b3c3ecaaefa6003de730686dd5ac53.bin",
+            "duration-native.json#/sources/monoScripts"
+          ],
+          "bytes": 466646
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

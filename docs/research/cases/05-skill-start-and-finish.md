@@ -6,7 +6,7 @@
 
 GameAssembly.dll SHA256：`583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5`。metadata SHA256：`d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f`。IL2CPP v29；Assembly-CSharp CodeGenModule `0x1872593c0`，methodPointers `0x1885d6f80`，数量 219703，按当前 metadata token RID−1 定位。不可混用旧客户端方法索引。
 
-关键指令持久摘录见 [skill-lifecycle.json](../evidence/skill-lifecycle.json)。临时完整转储：`/tmp/stronghold-skill-native-disassembly.txt`；提取脚本：`/tmp/stronghold-skill-native-inspect.py`；完整有界报告：`/tmp/stronghold-skill-native-findings.md`。
+关键指令持久摘录见 [skill-lifecycle.json](../evidence/skill-lifecycle-20261013/records.json)，当前复查入口及覆盖范围见[批次说明](../evidence/skill-lifecycle-20261013/README.md)。当时完整转储、专用提取脚本和有界报告没有归档；不能把当前工具的重提取标为当时脚本的原始输出。
 
 ## 已核对的业务顺序
 

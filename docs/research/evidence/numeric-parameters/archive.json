@@ -1,0 +1,154 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [],
+    "collectionDateSource": "not recorded",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": null,
+      "metadata": null
+    },
+    "sourceRecords": [
+      "attribute-meta-evidence.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "63697-OverrideDataRange.asm",
+        "kind": "instructions",
+        "bytes": 4492,
+        "sha256": "5af9322e6fbfae9332e9ad10c92eae779a2450b4511248759c3038e35e836715"
+      },
+      {
+        "path": "63717-MarkAttributeDirty.asm",
+        "kind": "instructions",
+        "bytes": 2425,
+        "sha256": "173576f06cc3811cd964e66f2b9410a0913c1ee76d414475898a7a57be76e585"
+      },
+      {
+        "path": "63722-_CalculateAttributeValue.asm",
+        "kind": "instructions",
+        "bytes": 13802,
+        "sha256": "cb446e358448e673fd3994a0fa2f4ccfd250bbab91c3ea25c6a4332a92934ce1"
+      },
+      {
+        "path": "64540-GetValue.asm",
+        "kind": "instructions",
+        "bytes": 4075,
+        "sha256": "9fb272383ca6bbfed396049894b8d4fe5089af1fe388d796767eadbff67a362f"
+      },
+      {
+        "path": "66039-SetHpInternal.asm",
+        "kind": "instructions",
+        "bytes": 22258,
+        "sha256": "6c84e870a12cd71c466347456b2057a55217f90e5d85e1df1386363ba07c40fd"
+      },
+      {
+        "path": "66111-OnAttributeDirty.asm",
+        "kind": "instructions",
+        "bytes": 18439,
+        "sha256": "3bf7826d93dfe5f08a8b181c2751806e01559fdb5116db2035854408e9c97aa2"
+      },
+      {
+        "path": "attribute-meta-evidence.json",
+        "kind": "record",
+        "bytes": 1578,
+        "sha256": "cd56683bcd9d42c11e71f0f3d9c8db48e1086f806bfad2b7f1cd51919f2fcbc2"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 30408,
+          "mode": "metadata",
+          "records": [
+            "attribute-meta-evidence.json#/0/constructor"
+          ],
+          "fullname": ".ctor",
+          "address": "0x18230abb0"
+        },
+        {
+          "index": 30409,
+          "mode": "metadata",
+          "records": [
+            "attribute-meta-evidence.json#/1/constructor"
+          ],
+          "fullname": ".ctor",
+          "address": "0x18230ab10"
+        },
+        {
+          "index": 63697,
+          "mode": "disasm",
+          "records": [
+            "63697-OverrideDataRange.asm"
+          ],
+          "fullname": "Torappu.Battle.Attributes.OverrideDataRange",
+          "address": "0x180655df0"
+        },
+        {
+          "index": 63717,
+          "mode": "disasm",
+          "records": [
+            "63717-MarkAttributeDirty.asm"
+          ],
+          "fullname": "Torappu.Battle.Attributes.MarkAttributeDirty",
+          "address": "0x180655c20"
+        },
+        {
+          "index": 63722,
+          "mode": "disasm",
+          "records": [
+            "63722-_CalculateAttributeValue.asm"
+          ],
+          "fullname": "Torappu.Battle.Attributes._CalculateAttributeValue",
+          "address": "0x180656f40"
+        },
+        {
+          "index": 64540,
+          "mode": "disasm",
+          "records": [
+            "64540-GetValue.asm"
+          ],
+          "fullname": "Torappu.Battle.Buff.GetValue",
+          "address": "0x18068de80"
+        },
+        {
+          "index": 66039,
+          "mode": "disasm",
+          "records": [
+            "66039-SetHpInternal.asm"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetHpInternal",
+          "address": "0x18070a350"
+        },
+        {
+          "index": 66111,
+          "mode": "disasm",
+          "records": [
+            "66111-OnAttributeDirty.asm"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnAttributeDirty",
+          "address": "0x1807044e0"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

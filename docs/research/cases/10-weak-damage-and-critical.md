@@ -2,7 +2,7 @@
 
 核查日期：2026-10-16。直接读取本机官方 Windows 客户端的 IL2CPP metadata、GameAssembly.dll 与 Buff 模板；未运行游戏或验证运行中的 XLua 替换。本篇记录客户端事实，不覆盖已确定的[项目伤害规则](../../architecture/vitality.md)。
 
-持久证据：[weak-damage-20261016.json](../evidence/weak-damage-20261016.json)。客户端 manifest 为 V078／`26-09-13-15-28-10-30688348`，DLL SHA256 为 `583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5`，metadata SHA256 为 `d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f`。证据包含当前方法表索引、地址、指令、字段及模板投影；不混用旧方法索引。
+持久证据：[weak-damage-20261016.json](../evidence/weak-damage-20261016/records.json)。客户端 manifest 为 V078／`26-09-13-15-28-10-30688348`，DLL SHA256 为 `583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5`，metadata SHA256 为 `d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f`。证据包含当前方法表索引、地址、指令、字段及模板投影；不混用旧方法索引。
 
 ## 1. 弱点试算读取已有倍率，不重新派发事件
 

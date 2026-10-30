@@ -51,7 +51,7 @@
 
 **证实**：深水的部署限制不能从 ALL 或 DEEPSEA 名称直接决定。**未核对**：外部 MonoScript 的完整类绑定、全部动态豁免和模式切换生命周期。
 
-稳定证据见 [deepsea prefab fixture](../../test/fixtures/arknights/prefab_tile_deepsea.json)；对象与 native 调用闭环见 [部署审计报告](/tmp/stronghold-6b-deployment-report.md)。
+稳定证据见 [deepsea prefab fixture](../../test/fixtures/arknights/prefab_tile_deepsea.json)及本节保留的对象／native 调用摘录；当时部署审计报告全文没有归档，来源范围见[初始客户端批次](evidence/client-excerpts-20261007/README.md)。
 
 ### 红蓝门与传送门是位置角色
 
@@ -152,11 +152,11 @@ START／END 不能自行创建敌人或判断路线完成。TELEPORT_IN／OUT �
 
 物理对照已取得真实 root prefab：slime 为 Dynamic／mass 1，yokai 为 Kinematic／mass 1，acloon 为 Dynamic／mass 1；后两者均为 FLY。原始 massLevel 又分别为 0、0、10。
 
-**证实**：FLY 不等于静态刚体，重量等级也不等于物理质量。详见 [位移审计](/tmp/stronghold-6b-displacement-report.md)；推拉入口免疫、失衡和碰撞是后续独立规则。
+**证实**：FLY 不等于静态刚体，重量等级也不等于物理质量。上述旧审计的完整转储没有归档；后续物理／运动的所选证据见 [Locomotion 批次](evidence/locomotion-native-20261019/README.md)，两轮的索引和覆盖范围分别成立；推拉入口免疫、失衡和碰撞是后续独立规则。
 
 ### 6.1 阻挡关系的维持、释放与重新获取（2026-10-10 补查）
 
-这一补查使用当前安装客户端的普通原生分支，而非将项目既有测试视为官方规则。客户端清单为 V078／`26-09-13-15-28-10-30688348`；GameAssembly.dll SHA256 为 `583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5`，metadata SHA256 为 `d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f`。本小节的方法索引属于这份 metadata，不能与本节前面的旧客户端索引混用。地址、关键指令及项目复现结果见 [补查证据](evidence/blocking-lifecycle.json)。未验证运行中的 XLua 替换分支或完整实机战斗。
+这一补查使用当前安装客户端的普通原生分支，而非将项目既有测试视为官方规则。客户端清单为 V078／`26-09-13-15-28-10-30688348`；GameAssembly.dll SHA256 为 `583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5`，metadata SHA256 为 `d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f`。本小节的方法索引属于这份 metadata，不能与本节前面的旧客户端索引混用。地址、关键指令及项目复现结果见 [补查证据](evidence/blocking-lifecycle-20261010/records.json)。未验证运行中的 XLua 替换分支或完整实机战斗。
 
 **证实：普通搜索属于阻挡者自身的更新。** `Character.OnTick`（76022）先调用 `Unit.OnTick`，处理阻挡模式和状态，再推进自身 `BlockManager.Tick` 并调用 `_SearchBlockee(false)`。`BlockManager` 的构造函数（77205）创建 `PeriodicTicker(3, false)`；Ticker 每次 Tick 将剩余次数减一，普通 `SearchBlockee`（77190）仅在 ready 时执行。这里的 3 是逻辑更新次数，不是 3 秒。`ObjectManager.OnFixedUpdate`（71077）冻结本轮对象名单并逐对象更新；`BattleController.OnTick`（64825）在这一遍历之后才调用 `ActionExecutorManager.Tick`。没有查到与项目 `Blocking → Combat → Projectile → Movement → Blocking` 等价的两个全场搜索入口。
 
@@ -236,7 +236,7 @@ Route 描述路线脚本，Navigation 回答当前移动意图如何经过有效
 
 当前 mainRoute／alternativeRoute 已保留独立执行上下文和主路线意图，显式 SET／CLEAR 可以演示接管恢复；实际 Buff 来源、候选生成、优先级、到达重选、到期移除及官方数值尚未接入。
 
-详见 [连续运动核查](/tmp/stronghold-motion-audit-20261006.md)和[路线核查](/tmp/stronghold-route-audit-20261006.md)。两份旧记录含已实施或范围外项目，不作为当前缺口清单。
+初始连续运动／路线核查只留下本文摘录，完整旧报告没有归档；其项目实施或范围外建议不作为当前缺口清单。后续独立证据见[导航批次](evidence/navigation-native-20261018/README.md)、[路线时序批次](evidence/route-movement-20261018/README.md)和[Locomotion 批次](evidence/locomotion-native-20261019/README.md)，不可混用原生索引。
 
 ## 9. 非空间机制与范围贡献
 
@@ -310,11 +310,11 @@ Effect 实例负责自身生命周期和安装关联；接收端 Capability 保�
 
 ## 11. 可复查证据入口
 
-- 真实场景：[m01](../../test/fixtures/arknights/level_act1autochess_m01.json)、[m02](../../test/fixtures/arknights/level_act1autochess_m02.json)、[act2 m02](../../test/fixtures/arknights/level_act2autochess_m02.json)、[act2 m04](../../test/fixtures/arknights/level_act2autochess_m04.json)。原始全表位于本地 `/tmp/stronghold-original-*.json`。
+- 真实场景：[m01](../../test/fixtures/arknights/level_act1autochess_m01.json)、[m02](../../test/fixtures/arknights/level_act1autochess_m02.json)、[act2 m02](../../test/fixtures/arknights/level_act2autochess_m02.json)、[act2 m04](../../test/fixtures/arknights/level_act2autochess_m04.json)。当时读取的原始全表没有完整归档；这些 fixture 仅代表所选样本。
 - 引用绑定：[工事 prefab](../../test/fixtures/arknights/prefab_trap_1105_accrate.json)、[平台 prefab](../../test/fixtures/arknights/prefab_trap_1106_achplat.json)、[地形 skill fixtures](../../test/fixtures/arknights/prefab_sktok_mire.json)与[sktok_tidectrl_3](../../test/fixtures/arknights/prefab_sktok_tidectrl_3.json)。
-- 创建与控制器：[预置／prefab 报告](/tmp/stronghold-batch4-predefined-report.md)、[部署／深水报告](/tmp/stronghold-6b-deployment-report.md)。
-- 原生几何与资格：`/tmp/stronghold-blocking-targeting-native/`、`/tmp/stronghold-target-eligibility-native/`，含方法、字段、枚举和 Unity overlap 绑定。
-- 路线、导航和运动：[pathfinding 报告](/tmp/stronghold-official-pathfinding/REPORT.md)、[地图审计](/tmp/stronghold-map-audit-20261006.md)、[运动审计](/tmp/stronghold-motion-audit-20261006.md)、[路线审计](/tmp/stronghold-route-audit-20261006.md)。船运／WORD 等历史段落明确不纳入本文范围。
-- 受击与物理区别：[位移报告](/tmp/stronghold-6b-displacement-report.md)，实际 yokai 根组件、bodyType／mass、免疫、失衡与地图碰撞调用记录分别可查。
-- 光环与全局分发：`/tmp/stronghold-aura-research/`、`/tmp/stronghold-global-effect-audit/`；关键方法、调用与字段投影已保存于[持久证据](evidence/client-excerpts.json)。
+- 创建与控制器：本文及[初始客户端批次](evidence/client-excerpts-20261007/README.md)保存所选 prefab／调用摘录；当时预置、部署与深水报告的完整文本未归档。
+- 原生几何与资格：本文保留方法／字段及 Unity overlap 摘录；原始完整转储未归档。后续所选资格分支见[Blocking 批次](evidence/blocking-native-20261023/README.md)和[Effect 选择／免疫批次](evidence/effect-immunity-20261021/README.md)，不代表穷尽原来的几何调查。
+- 路线、导航和运动：[导航算法](cases/12-navigation-native-algorithm.md)、[路线时序](cases/13-route-and-movement-timing.md)、[Locomotion](cases/15-locomotion-native-semantics.md)各自链接对应取证批次；旧地图／运动／路线报告全文未归档，船运／WORD 等历史范围不纳入本文。
+- 受击与物理区别：本文保留 yokai 根组件及 bodyType／mass 的初始摘录；免疫、失衡与地图碰撞的后续独立证据见[Locomotion 案例](cases/15-locomotion-native-semantics.md)，原位移报告全文未归档。
+- 光环与全局分发：关键方法、调用与字段投影保存在[持久证据](evidence/client-excerpts-20261007/records.json)，来源与复查范围见[批次说明](evidence/client-excerpts-20261007/README.md)；完整旧报告没有归档。
 - 当前源码边界：[navigation-effect.ts](../../src/core/battlefield/navigation/effect.ts)、[mechanism.ts](../../src/core/battlefield/mechanism.ts)、[blocking.ts](../../src/core/battlefield/blocking/relations.ts)、[shape.ts](../../src/core/geometry/shape.ts)、[targeting.ts](../../src/core/unit/targeting/compile.ts)、[locomotion](../../src/core/unit/capability/locomotion/capability.ts)。

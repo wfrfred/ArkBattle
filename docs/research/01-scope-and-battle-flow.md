@@ -22,11 +22,11 @@
 既有调研写作“2.7.71”时，应保留其原始记录，不用资源清单日期替它补证。
 大量方法先检查 `XLua.DelegateBridge`；本次没有执行客户端或确认全部 Lua 覆盖。
 
-可重复定位的本地报告：
+持久证据与复查入口：
 
-- `/tmp/stronghold-client-logic/report.txt`、`/tmp/stronghold-client-logical-frames.txt`：逻辑帧、定点时间及步进控制。
-- `/tmp/stronghold-batch4-scheduler/report.txt`：波次、片段、出生队列与阻塞账本。
-- `/tmp/stronghold-6b-deployment-report.md`：工事、平台与深水许可的实际 prefab 绑定。
+- [初始客户端摘录](evidence/client-excerpts-20261007/README.md)：保留逻辑推进的所选方法及初始输入记录；Scheduler、出生账本等其余锚点见本文，当时完整报告没有归档。
+- [Blocking 推进时序批次](evidence/blocking-timing-native-20261023/README.md)：后续客户端的 BattleController／对象推进指令；索引只适用于该批次指纹。
+- 工事、平台与深水的引用及摘录见 [空间研究第 11 节](03-space-units-and-mechanisms.md#11-可复查证据入口)。旧部署报告未入仓，不能将当前客户端重提结果冒充原报告。
 - [旧波次调研](../../external/upstream/docs/research/08-waves-official.md)、[限伤调研](../../external/upstream/docs/research/11-limits-official.md)：内容生成与特殊玩法边界。
 
 ## 2. 整理数据的实际规模

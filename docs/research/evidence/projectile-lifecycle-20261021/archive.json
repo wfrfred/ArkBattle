@@ -1,0 +1,1070 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-21"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "manifest.json#"
+        ]
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "manifest.json#"
+        ]
+      }
+    },
+    "sourceRecords": [
+      "manifest.json",
+      "presence/abnormal-enum.json",
+      "presence/disappear-fields.json",
+      "source-binding/char_1035_wisdel.ab.compact.json",
+      "source-binding/rope-skills.compact.json",
+      "source-binding/witness-projectile-configs.json",
+      "source-damage/enm-base-decoded-cache-witness.json",
+      "source-damage/wisdel-character-cache-witness.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "manifest.json",
+        "kind": "record",
+        "bytes": 12040,
+        "sha256": "ced1987148560d7f8ce8afb37d2480ed29ddd7308eed6517c851cba963d6303c"
+      },
+      {
+        "path": "presence/33269-get_isRunning.asm",
+        "kind": "instructions",
+        "bytes": 1689,
+        "sha256": "ff2699f052af77456f26f4af436fce8dcdd35c6cf59e8cdf95ac75b50a9552e5"
+      },
+      {
+        "path": "presence/65019-get_validAndBorned.asm",
+        "kind": "instructions",
+        "bytes": 796,
+        "sha256": "c407b3b1bf23783b3e1f8d6eb978a1e3847ce3f3cac0244af1bb76678ead58ea"
+      },
+      {
+        "path": "presence/65043-OnDisappearChanged.asm",
+        "kind": "instructions",
+        "bytes": 817,
+        "sha256": "4c8a615260ed9b70b105456083e9b44dce03981439b53a698dd623be29d584d7"
+      },
+      {
+        "path": "presence/66501-get_isTargetFree.asm",
+        "kind": "instructions",
+        "bytes": 2169,
+        "sha256": "65c9c5a470aef26ad930191813edc62368968318be840cca885338b88d5b033f"
+      },
+      {
+        "path": "presence/66507-IsStillTargetFreeWithImmuneFlag.asm",
+        "kind": "instructions",
+        "bytes": 2729,
+        "sha256": "bd6ebb5edda5318415f5dc5d340061aad9913455c090713878df803f92a83d91"
+      },
+      {
+        "path": "presence/70207-OnBegin.asm",
+        "kind": "instructions",
+        "bytes": 850,
+        "sha256": "934312c1450c14335877b0ea6f97392ed6ebf18f285303ab93e1757aebd77d32"
+      },
+      {
+        "path": "presence/70216-OnBegin.asm",
+        "kind": "instructions",
+        "bytes": 1759,
+        "sha256": "66511967898fd17216aa736f181817737e66ca1fb73bf946ea15257c0ed3c273"
+      },
+      {
+        "path": "presence/71040-get_mapPositionV3.asm",
+        "kind": "instructions",
+        "bytes": 2304,
+        "sha256": "6d222c1bb461059418d78c83be2b3383d92feb8bef918924307118ec4757adc3"
+      },
+      {
+        "path": "presence/76771-get_abnormalFlagMask.asm",
+        "kind": "instructions",
+        "bytes": 1472,
+        "sha256": "e47aa1233826341822e9bc0c7838c42d2083e185408da00419fd24f4df57e8de"
+      },
+      {
+        "path": "presence/76776-GetValue.asm",
+        "kind": "instructions",
+        "bytes": 2876,
+        "sha256": "8bb227c198f6c4edcd473a154e63fe515eb797675e2f6e5894d17342b0fd6ffd"
+      },
+      {
+        "path": "presence/76777-OnEnter.asm",
+        "kind": "instructions",
+        "bytes": 6197,
+        "sha256": "96ec6dfdc324e6fa079f0a08b9d9b1e1229645faec2d7e281f9b2cda5e3c4045"
+      },
+      {
+        "path": "presence/76778-OnExit.asm",
+        "kind": "instructions",
+        "bytes": 5336,
+        "sha256": "8b255c3c333b636fdfc7428800bad0009b4f3bb43d5b81241d7f3be1bcbb08f3"
+      },
+      {
+        "path": "presence/76779-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 2988,
+        "sha256": "0f4dc6291530236ed000ca56f644475825398a66d82de12243d8a0081060a050"
+      },
+      {
+        "path": "presence/76781-_DoAppear.asm",
+        "kind": "instructions",
+        "bytes": 17836,
+        "sha256": "cad1c665616187e9d40435b06969408a511a958bf74a814da0577418427650ae"
+      },
+      {
+        "path": "presence/76795-MoveNext.asm",
+        "kind": "instructions",
+        "bytes": 15094,
+        "sha256": "cfb5ba910ce1c5230bb70743b9680f2fede8b386b361246fbced4663bd13740c"
+      },
+      {
+        "path": "presence/REPORT.md",
+        "kind": "historical-report",
+        "bytes": 4943,
+        "sha256": "06cde4464d81240821595d45143aa39dfa6f825fe26a089079b3a566d17a4c4c"
+      },
+      {
+        "path": "presence/abnormal-enum.json",
+        "kind": "record",
+        "bytes": 3957,
+        "sha256": "c48de1c786e84ed5474cf27cca093113a458fba92bee37f77c0d23c1cf0a5a9d"
+      },
+      {
+        "path": "presence/disappear-fields.json",
+        "kind": "record",
+        "bytes": 4801,
+        "sha256": "4b82cb636c59574cc1c56f2d3af66e5e719f4b27f96d7e09149a52cd30b206ff"
+      },
+      {
+        "path": "source-binding/71113-OnProjectileStop.asm",
+        "kind": "instructions",
+        "bytes": 8146,
+        "sha256": "9168fa2ca179484c2707b22d74567c7b5111fa37b6dac66aec98ea1f27c00067"
+      },
+      {
+        "path": "source-binding/71125-MoveNext.asm",
+        "kind": "instructions",
+        "bytes": 23097,
+        "sha256": "e441af39cad3f60994f31bfd24511b62dd8fd20bf86243ad3a89e9a56c12cac3"
+      },
+      {
+        "path": "source-binding/71169-get_stopWhenSourceInvalid.asm",
+        "kind": "instructions",
+        "bytes": 1519,
+        "sha256": "3750edac5cdb50f499f5f173c1546c6cf1b92b105bc8b75aca0934ad10711ae0"
+      },
+      {
+        "path": "source-binding/71344-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 12711,
+        "sha256": "eb647e82f03056a9dd1d59da4285674ee81b19cff2153d946cd5ad482ac75285"
+      },
+      {
+        "path": "source-binding/71472-get_stopWhenSourceInvalid.asm",
+        "kind": "instructions",
+        "bytes": 1407,
+        "sha256": "8d84781203240d8d8d57acec78bd1949312a6b71a8464f1214448c485c461dd2"
+      },
+      {
+        "path": "source-binding/75984-ClearAbilities.asm",
+        "kind": "instructions",
+        "bytes": 4709,
+        "sha256": "2dcb880e06021a95aae59fec601be1d44f5e6a2328b315ed16efc20edcf7e3fa"
+      },
+      {
+        "path": "source-binding/78227-ValidAndAlive-closed-285168.asm",
+        "kind": "instructions",
+        "bytes": 4779,
+        "sha256": "f7edc90ff72c1fc7c71682a0e57f7c48b384ddf5eed55c76540e00bfabf01811"
+      },
+      {
+        "path": "source-binding/90822-OnCastEnd.asm",
+        "kind": "instructions",
+        "bytes": 2604,
+        "sha256": "415bd946b634d0d0bc70d7c2f101d3a1675eb69a29babfeeee5f3837a1070fe3"
+      },
+      {
+        "path": "source-binding/90823-ClearProjectile.asm",
+        "kind": "instructions",
+        "bytes": 4872,
+        "sha256": "7d120eb7848373a4508b59911012acb79d3b90084e5f14815c79f1207670af0a"
+      },
+      {
+        "path": "source-binding/98048-Execute.asm",
+        "kind": "instructions",
+        "bytes": 8803,
+        "sha256": "ee7cf76258f5be74eb14cbf180fe8a486d3418510a0510e58ecc48602b948ba8"
+      },
+      {
+        "path": "source-binding/REPORT.md",
+        "kind": "historical-report",
+        "bytes": 11658,
+        "sha256": "5b0ff2e6241a0e5edee7b65526b75912123f1e452dd4be4d39655fa7a44f8375"
+      },
+      {
+        "path": "source-binding/char_1035_wisdel.ab.compact.json",
+        "kind": "record",
+        "bytes": 29438,
+        "sha256": "336fafcd904ca045329a5c0625d345e9776ecc943267530518f166f1319ce8e2"
+      },
+      {
+        "path": "source-binding/rope-skills.compact.json",
+        "kind": "record",
+        "bytes": 5069,
+        "sha256": "5e32d90180ef2b9380a54e973b26fdc97e7392cde7ba91d3c61a34773de23114"
+      },
+      {
+        "path": "source-binding/witness-projectile-configs.json",
+        "kind": "record",
+        "bytes": 47620,
+        "sha256": "8d1b4b46d180296bf05991bdea6ff854e62b43885b13103a124c80e2fd5cc91f"
+      },
+      {
+        "path": "source-damage/64918-CalculateDamage.asm",
+        "kind": "instructions",
+        "bytes": 6359,
+        "sha256": "7826b8505390ad2447ebfb45f7b7cea2fc38f3902547745ad6eabf62254a4b95"
+      },
+      {
+        "path": "source-damage/64919-CalculateDamageNoEvent.asm",
+        "kind": "instructions",
+        "bytes": 10494,
+        "sha256": "34b50dbe6d5a0da3853be657ab510b302c697539ff97af01ae1dc12a0147e1c7"
+      },
+      {
+        "path": "source-damage/66669-OnAppliedModifier.asm",
+        "kind": "instructions",
+        "bytes": 18231,
+        "sha256": "e180df9bffac8a6bea5dd4068c6e3207b7971dfe5bd4eeedeb5649a3effa0a85"
+      },
+      {
+        "path": "source-damage/66981-LogModifier.asm",
+        "kind": "instructions",
+        "bytes": 17121,
+        "sha256": "8716cf99f857f8fa6ea35525d7f8aff40c6b79737177c45c870b6a65bfd3e0bf"
+      },
+      {
+        "path": "source-damage/66995-LogExtraBattleInfoAddCount.asm",
+        "kind": "instructions",
+        "bytes": 8011,
+        "sha256": "b8cb41d6592880a0850bde9f62283630daf4cd3408c4c5326bb89a40541c7d10"
+      },
+      {
+        "path": "source-damage/71000-.ctor.asm",
+        "kind": "instructions",
+        "bytes": 8314,
+        "sha256": "73a91d17d7f45fd39e4d44e82e4d93cc1db5a92c80ff04db86c1fbf8a4e70bdd"
+      },
+      {
+        "path": "source-damage/71293-get_source.asm",
+        "kind": "instructions",
+        "bytes": 1410,
+        "sha256": "c60f1b902248ec8bf184e401c4b2b6b0749e37d52e499fb58365f340251d1e58"
+      },
+      {
+        "path": "source-damage/71331-Init.asm",
+        "kind": "instructions",
+        "bytes": 24299,
+        "sha256": "d4103575391cdea65c692138cd1d5ccf1118fcac0ac91bdc0ff4b30fa7139040"
+      },
+      {
+        "path": "source-damage/71360-OnProjectileBorn.asm",
+        "kind": "instructions",
+        "bytes": 9283,
+        "sha256": "4922079293a949a6a1cd67c8f96d3b0a15bc5ea503aced073e14dbad5f404466"
+      },
+      {
+        "path": "source-damage/71449-_RunActions.asm",
+        "kind": "instructions",
+        "bytes": 8306,
+        "sha256": "4cbce7e05a906ed4d7598ae676042c64dd300ad52730fb87afc5bd35524968c6"
+      },
+      {
+        "path": "source-damage/78242-CalculateDamageBySource.asm",
+        "kind": "instructions",
+        "bytes": 8176,
+        "sha256": "419c81fadbfb1785ab30cb4c5ef28e22a49d0587256739db8aacce7dca69b2cc"
+      },
+      {
+        "path": "source-damage/78243-CalculateDamageByAtkNoSource.asm",
+        "kind": "instructions",
+        "bytes": 6109,
+        "sha256": "9494b9184a6c591e1b1444c5fa22afaa19808d1978b00e514ceead70b59f6336"
+      },
+      {
+        "path": "source-damage/78244-CalculateCachedAtkDamageFromProjectile.asm",
+        "kind": "instructions",
+        "bytes": 7593,
+        "sha256": "bb7f9885fc3982bc4ec1a09f1345b7c09ef24b44fd3b4cb0ea82f8a2debe4155"
+      },
+      {
+        "path": "source-damage/90824-NewDamageNode.asm",
+        "kind": "instructions",
+        "bytes": 4898,
+        "sha256": "4fe1b791d660276104bb9d96ca2df5c9d74b90afe2cf42428459aff9795ca68e"
+      },
+      {
+        "path": "source-damage/96823-Execute.asm",
+        "kind": "instructions",
+        "bytes": 8323,
+        "sha256": "79aae817d6e4ff0338ffafb36a0aeda2960f7648f3982bf90ddfef4485b872b4"
+      },
+      {
+        "path": "source-damage/96826-CreateDamageModifier.asm",
+        "kind": "instructions",
+        "bytes": 8953,
+        "sha256": "f43b6686df85b19d0fd1429694a8bd72427b6220cfcb2a75b6c4b30832490226"
+      },
+      {
+        "path": "source-damage/96830-PreprocessForProjectile.asm",
+        "kind": "instructions",
+        "bytes": 3236,
+        "sha256": "e7f3f0cd5de81c5895da382c19362c2716736ea301fc15cdcb851a9698f11476"
+      },
+      {
+        "path": "source-damage/ObjectPtr-Lock.asm",
+        "kind": "instructions",
+        "bytes": 1223,
+        "sha256": "0a30f9f688eb6fc57e84aeeffbb63816db00f0b0a8f1168a026b3395dfb1c402"
+      },
+      {
+        "path": "source-damage/ObjectPtr-isValid-body.asm",
+        "kind": "instructions",
+        "bytes": 3268,
+        "sha256": "5ca8159e961116d04d9284ce0510c688203cb05257d39d7ccd681736dc0c353c"
+      },
+      {
+        "path": "source-damage/REPORT.md",
+        "kind": "historical-report",
+        "bytes": 13467,
+        "sha256": "061fdc54b5dd1b587bd52bc8dbb52050e817262b006a527db70e77cafc9dc481"
+      },
+      {
+        "path": "source-damage/enm-base-decoded-cache-witness.json",
+        "kind": "record",
+        "bytes": 5383,
+        "sha256": "36d5ac7879e86b7428ea3018274fbe1936c25719428e8ec88cb6c8a82213ba5e"
+      },
+      {
+        "path": "source-damage/wisdel-character-cache-witness.json",
+        "kind": "record",
+        "bytes": 4500,
+        "sha256": "26435f5791d8fdc841bb0066eb808f4b482af24a261fa41adfd052f3dd5fdba1"
+      },
+      {
+        "path": "target/33273-Stop.asm",
+        "kind": "instructions",
+        "bytes": 301,
+        "sha256": "33959c48e89d59209c4e0e3966e720b2b2a8c09ffdfb457460aa38a602eb21c1"
+      },
+      {
+        "path": "target/65018-get_isValid.asm",
+        "kind": "instructions",
+        "bytes": 440,
+        "sha256": "d2e261b3bb5e98e18ba31541b37156bb197436bef7c160d6f0c34aa20bac953a"
+      },
+      {
+        "path": "target/65027-SetDisappeared.asm",
+        "kind": "instructions",
+        "bytes": 1818,
+        "sha256": "02a586db09b7092bf8a1581f464c4c84baa1a4b66619d7cc245424115a70eadd"
+      },
+      {
+        "path": "target/65035-OnRecycle.asm",
+        "kind": "instructions",
+        "bytes": 1378,
+        "sha256": "fcfbae5ba99720e4021a97a23e4489d426d84f4d1cb6b44f013652a5eb35107a"
+      },
+      {
+        "path": "target/66349-get_alive.asm",
+        "kind": "instructions",
+        "bytes": 3377,
+        "sha256": "3084f29523fc316c0556c71d03e5d6d5f0ef2933974d3e4c9fcc729e88cc6de6"
+      },
+      {
+        "path": "target/66633-FinishMe.asm",
+        "kind": "instructions",
+        "bytes": 8659,
+        "sha256": "b7bec1662228b67ce6588963d2fd598b6aeecdfe92756cea3ba668729ca8c843"
+      },
+      {
+        "path": "target/66634-RecycleSelfImmediately.asm",
+        "kind": "instructions",
+        "bytes": 1803,
+        "sha256": "f0c5febca6865144a060d5d4825d34509f82424d62aea2cdcc46c1d6e7c1c251"
+      },
+      {
+        "path": "target/66635-RecycleSelfWithDelay.asm",
+        "kind": "instructions",
+        "bytes": 1970,
+        "sha256": "8e92a58b3ade8bbdd2945fa88d5896c90fb4180079e59707349a7ff956dab795"
+      },
+      {
+        "path": "target/71036-get_isValid.asm",
+        "kind": "instructions",
+        "bytes": 914,
+        "sha256": "ffcbc90e1718da82f33d41d8ad7b9bbeaf2d27169d25c48568e0a0ac4f2ca854"
+      },
+      {
+        "path": "target/71040-get_mapPositionV3.asm",
+        "kind": "instructions",
+        "bytes": 2304,
+        "sha256": "6d222c1bb461059418d78c83be2b3383d92feb8bef918924307118ec4757adc3"
+      },
+      {
+        "path": "target/71223-GetTraceTargetMapPosition.asm",
+        "kind": "instructions",
+        "bytes": 3446,
+        "sha256": "0a87d24839e4ac503596f8062ef73d0da7fca0510cab328018364eac614f9af7"
+      },
+      {
+        "path": "target/71375-_DealHitTraceTarget.asm",
+        "kind": "instructions",
+        "bytes": 2662,
+        "sha256": "b7a0a1d4af6b9d0c80169a8db0e1ae39568c52525fa5fae31cbc6c7274300341"
+      },
+      {
+        "path": "target/75822-get_alive.asm",
+        "kind": "instructions",
+        "bytes": 2619,
+        "sha256": "e9c7db9ee6bbd5290412c5fe1e35dfe867f7101be34871b911d8e39c843ca0af"
+      },
+      {
+        "path": "target/75944-Withdraw.asm",
+        "kind": "instructions",
+        "bytes": 12912,
+        "sha256": "52aac420e272bc89e6ee4d0102aafb832201b13e86d37f61b307b47757cb28b6"
+      },
+      {
+        "path": "target/75971-FinishMe.asm",
+        "kind": "instructions",
+        "bytes": 7505,
+        "sha256": "35a4c322a0041ac1cb6cfbb6c59261c9fca6054eecfe033fb40db39ae95b062b"
+      },
+      {
+        "path": "target/76479-OnDisappearChanged.asm",
+        "kind": "instructions",
+        "bytes": 5287,
+        "sha256": "c8304283ec7e59715f507b0f01f9acc428237be55d6f32b6295c7330c1e732f1"
+      },
+      {
+        "path": "target/82233-DestroyEntity.asm",
+        "kind": "instructions",
+        "bytes": 3274,
+        "sha256": "9cf971f5a87485c526947098b9f37702554cee2bafe7d939cfb29d3d89f1ca4e"
+      },
+      {
+        "path": "target/ObjectPtr-instanceUid-call.asm",
+        "kind": "instructions",
+        "bytes": 7541,
+        "sha256": "aa274ce5570c3983fcd78d46e1b5605b6c469e980c508bc271af8f316cf1b41c"
+      },
+      {
+        "path": "target/ObjectPtr_IsValid.asm",
+        "kind": "instructions",
+        "bytes": 1704,
+        "sha256": "7ae48e38bb0f3f6b81b7a7e6da1f72c931847f5ef59d29185a9f5499d57f3ed6"
+      },
+      {
+        "path": "target/REPORT.md",
+        "kind": "historical-report",
+        "bytes": 8300,
+        "sha256": "36988ceebb6bce078643666bd816fa4f3cb02ce6dbc6db8c5bb68ed8af3660de"
+      },
+      {
+        "path": "target/ValidAndAlive.asm",
+        "kind": "instructions",
+        "bytes": 4236,
+        "sha256": "148a30e85f6d2970f36ae065401afe4b60b974692798ff5ab1132594b2c50ae4"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 33269,
+          "mode": "disasm",
+          "records": [
+            "presence/33269-get_isRunning.asm"
+          ],
+          "fullname": "Torappu.StateMachine.get_isRunning",
+          "address": "0x182648a50"
+        },
+        {
+          "index": 33273,
+          "mode": "disasm",
+          "records": [
+            "target/33273-Stop.asm"
+          ],
+          "fullname": "Torappu.StateMachine.Stop",
+          "address": "0x1826483c0"
+        },
+        {
+          "index": 64918,
+          "mode": "disasm",
+          "records": [
+            "source-damage/64918-CalculateDamage.asm"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateDamage",
+          "address": "0x1806573c0"
+        },
+        {
+          "index": 64919,
+          "mode": "disasm",
+          "records": [
+            "source-damage/64919-CalculateDamageNoEvent.asm"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateDamageNoEvent",
+          "address": "0x180657050"
+        },
+        {
+          "index": 65018,
+          "mode": "disasm",
+          "records": [
+            "target/65018-get_isValid.asm"
+          ],
+          "fullname": "Torappu.Battle.BObject.get_isValid",
+          "address": "0x180663060"
+        },
+        {
+          "index": 65019,
+          "mode": "disasm",
+          "records": [
+            "presence/65019-get_validAndBorned.asm"
+          ],
+          "fullname": "Torappu.Battle.BObject.get_validAndBorned",
+          "address": "0x180663080"
+        },
+        {
+          "index": 65027,
+          "mode": "disasm",
+          "records": [
+            "target/65027-SetDisappeared.asm"
+          ],
+          "fullname": "Torappu.Battle.BObject.SetDisappeared",
+          "address": "0x180662be0"
+        },
+        {
+          "index": 65035,
+          "mode": "disasm",
+          "records": [
+            "target/65035-OnRecycle.asm"
+          ],
+          "fullname": "Torappu.Battle.BObject.OnRecycle",
+          "address": "0x1806629d0"
+        },
+        {
+          "index": 65043,
+          "mode": "disasm",
+          "records": [
+            "presence/65043-OnDisappearChanged.asm"
+          ],
+          "fullname": "Torappu.Battle.BObject.OnDisappearChanged",
+          "address": "0x1806629a0"
+        },
+        {
+          "index": 66349,
+          "mode": "disasm",
+          "records": [
+            "target/66349-get_alive.asm"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_alive",
+          "address": "0x180701920"
+        },
+        {
+          "index": 66501,
+          "mode": "disasm",
+          "records": [
+            "presence/66501-get_isTargetFree.asm"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_isTargetFree",
+          "address": "0x180706b40"
+        },
+        {
+          "index": 66507,
+          "mode": "disasm",
+          "records": [
+            "presence/66507-IsStillTargetFreeWithImmuneFlag.asm"
+          ],
+          "fullname": "Torappu.Battle.Entity.IsStillTargetFreeWithImmuneFlag",
+          "address": "0x1806f5ea0"
+        },
+        {
+          "index": 66633,
+          "mode": "disasm",
+          "records": [
+            "target/66633-FinishMe.asm"
+          ],
+          "fullname": "Torappu.Battle.Entity.FinishMe",
+          "address": "0x1806f3360"
+        },
+        {
+          "index": 66634,
+          "mode": "disasm",
+          "records": [
+            "target/66634-RecycleSelfImmediately.asm"
+          ],
+          "fullname": "Torappu.Battle.Entity.RecycleSelfImmediately",
+          "address": "0x1806fb210"
+        },
+        {
+          "index": 66635,
+          "mode": "disasm",
+          "records": [
+            "target/66635-RecycleSelfWithDelay.asm"
+          ],
+          "fullname": "Torappu.Battle.Entity.RecycleSelfWithDelay",
+          "address": "0x1806fb290"
+        },
+        {
+          "index": 66669,
+          "mode": "disasm",
+          "records": [
+            "source-damage/66669-OnAppliedModifier.asm"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnAppliedModifier",
+          "address": "0x1806f68c0"
+        },
+        {
+          "index": 66981,
+          "mode": "disasm",
+          "records": [
+            "source-damage/66981-LogModifier.asm"
+          ],
+          "fullname": "Torappu.Battle.BattleLogger.LogModifier",
+          "address": "0x1807114b0"
+        },
+        {
+          "index": 66995,
+          "mode": "disasm",
+          "records": [
+            "source-damage/66995-LogExtraBattleInfoAddCount.asm"
+          ],
+          "fullname": "Torappu.Battle.BattleLogger.LogExtraBattleInfoAddCount",
+          "address": "0x180710440"
+        },
+        {
+          "index": 70207,
+          "mode": "disasm",
+          "records": [
+            "presence/70207-OnBegin.asm"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor.DisappearCheckpoint.OnBegin",
+          "address": "0x180898ac0"
+        },
+        {
+          "index": 70216,
+          "mode": "disasm",
+          "records": [
+            "presence/70216-OnBegin.asm"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor.AppearAtPosCheckpoint.OnBegin",
+          "address": "0x18088ff90"
+        },
+        {
+          "index": 71000,
+          "mode": "disasm",
+          "records": [
+            "source-damage/71000-.ctor.asm"
+          ],
+          "fullname": "Torappu.Battle.Modifier..ctor",
+          "address": "0x1808b3660"
+        },
+        {
+          "index": 71036,
+          "mode": "disasm",
+          "records": [
+            "target/71036-get_isValid.asm"
+          ],
+          "fullname": "Torappu.Battle.MountPoint.get_isValid",
+          "address": "0x1808b5ca0"
+        },
+        {
+          "index": 71040,
+          "mode": "disasm",
+          "records": [
+            "presence/71040-get_mapPositionV3.asm",
+            "target/71040-get_mapPositionV3.asm"
+          ],
+          "fullname": "Torappu.Battle.MountPoint.get_mapPositionV3",
+          "address": "0x1808b5ce0"
+        },
+        {
+          "index": 71113,
+          "mode": "disasm",
+          "records": [
+            "source-binding/71113-OnProjectileStop.asm"
+          ],
+          "fullname": "Torappu.Battle.HarpoonProjectile.OnProjectileStop",
+          "address": "0x1808d1150"
+        },
+        {
+          "index": 71125,
+          "mode": "disasm",
+          "records": [
+            "source-binding/71125-MoveNext.asm"
+          ],
+          "fullname": "Torappu.Battle.HarpoonProjectile.<DoLink>d__19.MoveNext",
+          "address": "0x1808e3890"
+        },
+        {
+          "index": 71169,
+          "mode": "disasm",
+          "records": [
+            "source-binding/71169-get_stopWhenSourceInvalid.asm"
+          ],
+          "fullname": "Torappu.Battle.LinkProjectile.get_stopWhenSourceInvalid",
+          "address": "0x1808d3560"
+        },
+        {
+          "index": 71223,
+          "mode": "disasm",
+          "records": [
+            "target/71223-GetTraceTargetMapPosition.asm"
+          ],
+          "fullname": "Torappu.Battle.BasicMovement.GetTraceTargetMapPosition",
+          "address": "0x1808cafa0"
+        },
+        {
+          "index": 71293,
+          "mode": "disasm",
+          "records": [
+            "source-damage/71293-get_source.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile.get_source",
+          "address": "0x1808dd7b0"
+        },
+        {
+          "index": 71331,
+          "mode": "disasm",
+          "records": [
+            "source-damage/71331-Init.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile.Init",
+          "address": "0x1808d7560"
+        },
+        {
+          "index": 71344,
+          "mode": "disasm",
+          "records": [
+            "source-binding/71344-OnTick.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile.OnTick",
+          "address": "0x1808d9af0"
+        },
+        {
+          "index": 71360,
+          "mode": "disasm",
+          "records": [
+            "source-damage/71360-OnProjectileBorn.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile.OnProjectileBorn",
+          "address": "0x1808d93a0"
+        },
+        {
+          "index": 71375,
+          "mode": "disasm",
+          "records": [
+            "target/71375-_DealHitTraceTarget.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile._DealHitTraceTarget",
+          "address": "0x1808db940"
+        },
+        {
+          "index": 71449,
+          "mode": "disasm",
+          "records": [
+            "source-damage/71449-_RunActions.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile.ActionController._RunActions",
+          "address": "0x1808ca1f0"
+        },
+        {
+          "index": 71472,
+          "mode": "disasm",
+          "records": [
+            "source-binding/71472-get_stopWhenSourceInvalid.asm"
+          ],
+          "fullname": "Torappu.Battle.SimpleProjectile.get_stopWhenSourceInvalid",
+          "address": "0x1808e35f0"
+        },
+        {
+          "index": 75822,
+          "mode": "disasm",
+          "records": [
+            "target/75822-get_alive.asm"
+          ],
+          "fullname": "Torappu.Battle.Character.get_alive",
+          "address": "0x180a38df0"
+        },
+        {
+          "index": 75944,
+          "mode": "disasm",
+          "records": [
+            "target/75944-Withdraw.asm"
+          ],
+          "fullname": "Torappu.Battle.Character.Withdraw",
+          "address": "0x180a33970"
+        },
+        {
+          "index": 75971,
+          "mode": "disasm",
+          "records": [
+            "target/75971-FinishMe.asm"
+          ],
+          "fullname": "Torappu.Battle.Character.FinishMe",
+          "address": "0x180a29710"
+        },
+        {
+          "index": 75984,
+          "mode": "disasm",
+          "records": [
+            "source-binding/75984-ClearAbilities.asm"
+          ],
+          "fullname": "Torappu.Battle.Character.ClearAbilities",
+          "address": "0x180a28870"
+        },
+        {
+          "index": 76479,
+          "mode": "disasm",
+          "records": [
+            "target/76479-OnDisappearChanged.asm"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnDisappearChanged",
+          "address": "0x180a70650"
+        },
+        {
+          "index": 76771,
+          "mode": "disasm",
+          "records": [
+            "presence/76771-get_abnormalFlagMask.asm"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.DisappearState.get_abnormalFlagMask",
+          "address": "0x180a8dda0"
+        },
+        {
+          "index": 76776,
+          "mode": "disasm",
+          "records": [
+            "presence/76776-GetValue.asm"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.DisappearState.GetValue",
+          "address": "0x180a8cf50"
+        },
+        {
+          "index": 76777,
+          "mode": "disasm",
+          "records": [
+            "presence/76777-OnEnter.asm"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.DisappearState.OnEnter",
+          "address": "0x180a8d030"
+        },
+        {
+          "index": 76778,
+          "mode": "disasm",
+          "records": [
+            "presence/76778-OnExit.asm"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.DisappearState.OnExit",
+          "address": "0x180a8d1f0"
+        },
+        {
+          "index": 76779,
+          "mode": "disasm",
+          "records": [
+            "presence/76779-OnTick.asm"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.DisappearState.OnTick",
+          "address": "0x180a8d370"
+        },
+        {
+          "index": 76781,
+          "mode": "disasm",
+          "records": [
+            "presence/76781-_DoAppear.asm"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.DisappearState._DoAppear",
+          "address": "0x180a8d440"
+        },
+        {
+          "index": 76795,
+          "mode": "disasm",
+          "records": [
+            "presence/76795-MoveNext.asm"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.DisappearState.<_DoDisappear>d__21.MoveNext",
+          "address": "0x180a9da10"
+        },
+        {
+          "index": 78227,
+          "mode": "disasm",
+          "records": [
+            "source-binding/78227-ValidAndAlive-closed-285168.asm"
+          ],
+          "fullname": "Torappu.Battle.BattleUtil.ValidAndAlive",
+          "address": "0x18449ab40"
+        },
+        {
+          "index": 78242,
+          "mode": "disasm",
+          "records": [
+            "source-damage/78242-CalculateDamageBySource.asm"
+          ],
+          "fullname": "Torappu.Battle.BattleUtil.CalculateDamageBySource",
+          "address": "0x180adf370"
+        },
+        {
+          "index": 78243,
+          "mode": "disasm",
+          "records": [
+            "source-damage/78243-CalculateDamageByAtkNoSource.asm"
+          ],
+          "fullname": "Torappu.Battle.BattleUtil.CalculateDamageByAtkNoSource",
+          "address": "0x180aded30"
+        },
+        {
+          "index": 78244,
+          "mode": "disasm",
+          "records": [
+            "source-damage/78244-CalculateCachedAtkDamageFromProjectile.asm"
+          ],
+          "fullname": "Torappu.Battle.BattleUtil.CalculateCachedAtkDamageFromProjectile",
+          "address": "0x180adea80"
+        },
+        {
+          "index": 82233,
+          "mode": "disasm",
+          "records": [
+            "target/82233-DestroyEntity.asm"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory.DefaultGameMode.DestroyEntity",
+          "address": "0x180c18e70"
+        },
+        {
+          "index": 90822,
+          "mode": "disasm",
+          "records": [
+            "source-binding/90822-OnCastEnd.asm"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RangedAttack.OnCastEnd",
+          "address": "0x180ec3fd0"
+        },
+        {
+          "index": 90823,
+          "mode": "disasm",
+          "records": [
+            "source-binding/90823-ClearProjectile.asm"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RangedAttack.ClearProjectile",
+          "address": "0x180ec2f00"
+        },
+        {
+          "index": 90824,
+          "mode": "disasm",
+          "records": [
+            "source-damage/90824-NewDamageNode.asm"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RangedAttack.NewDamageNode",
+          "address": "0x180ec3ca0"
+        },
+        {
+          "index": 96823,
+          "mode": "disasm",
+          "records": [
+            "source-damage/96823-Execute.asm"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.ApplyDamage.Execute",
+          "address": "0x18104a780"
+        },
+        {
+          "index": 96826,
+          "mode": "disasm",
+          "records": [
+            "source-damage/96826-CreateDamageModifier.asm"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.ApplyDamage.CreateDamageModifier",
+          "address": "0x18104a3d0"
+        },
+        {
+          "index": 96830,
+          "mode": "disasm",
+          "records": [
+            "source-damage/96830-PreprocessForProjectile.asm"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.ApplyDamage.PreprocessForProjectile",
+          "address": "0x18104aa40"
+        },
+        {
+          "index": 98048,
+          "mode": "disasm",
+          "records": [
+            "source-binding/98048-Execute.asm"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.FinishManagedProjectiles.Execute",
+          "address": "0x1810ae7f0"
+        }
+      ],
+      "blocks": [
+        {
+          "address": "0x180bfec30",
+          "records": [
+            "target/ObjectPtr-instanceUid-call.asm"
+          ]
+        },
+        {
+          "address": "0x18449ab40",
+          "records": [
+            "target/ValidAndAlive.asm"
+          ]
+        },
+        {
+          "address": "0x185159d80",
+          "records": [
+            "source-damage/ObjectPtr-Lock.asm"
+          ]
+        },
+        {
+          "address": "0x185159fc0",
+          "records": [
+            "source-damage/ObjectPtr-isValid-body.asm",
+            "target/ObjectPtr_IsValid.asm"
+          ]
+        }
+      ],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

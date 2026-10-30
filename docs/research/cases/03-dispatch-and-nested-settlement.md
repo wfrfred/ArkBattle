@@ -22,8 +22,7 @@
 被动 Buff 组件 PathID 为 `4005481957556965552`；角色初始化与技能选择的完整动态流程不是本例的研究范围。
 模板来自 `config/buff_template_holder.ab`，动作列表已解码 `SerializedState`，不是按节点名称猜测行为。
 
-本轮新摘录保存在 `/tmp/stronghold-case-dispatch/`：`methods.json`、`enums.txt`、`case-template-excerpts.json`、角色组件 JSON 和各方法反汇编。
-目录中的 `audit.py`／`generic.py`／`buffer-extra.py` 记录提取方式；下文保留关键方法与 VA，临时文件不作为长期唯一依据。
+持久证据为下文保留的关键方法／VA、模板动作与轨迹，输入版本登记见[初始客户端批次](../evidence/client-excerpts-20261007/README.md)。当时 `methods.json`、`enums.txt`、模板／角色组件的完整解码和 `audit.py`／`generic.py`／`buffer-extra.py` 专用提取脚本没有归档；这些未保存产物不作为当前可执行入口。
 
 ## 3. 候选集合锁定，执行资格实时检查
 

@@ -1,0 +1,245 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-19"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "../navigation-native-20261018/manifest.json#/inputs/0"
+        ],
+        "bytes": 218523112
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "../navigation-native-20261018/manifest.json#/inputs/1"
+        ],
+        "bytes": 45805368
+      }
+    },
+    "sourceRecords": [
+      "manifest.json",
+      "summary.json",
+      "visit-checkpoints-case.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "22393-RandomVector2.asm",
+        "kind": "instructions",
+        "bytes": 4290,
+        "sha256": "c8663cd5ccca1aad73b81c4e4df7d2cbc0dd0b90ade5d7d4878de3395b4e7881"
+      },
+      {
+        "path": "70270-DirectionCursor-Initialize.asm",
+        "kind": "instructions",
+        "bytes": 5440,
+        "sha256": "5d57ac374df9eabde2eb7aba857fdab6dbdb80f78fa8980a673387673e491879"
+      },
+      {
+        "path": "70273-DirectionCursor-Predict.asm",
+        "kind": "instructions",
+        "bytes": 4631,
+        "sha256": "90eeefca70866a84c5850f5e975933624164658b1b39d67de01448af205f5fbc"
+      },
+      {
+        "path": "70291-DirectionCursor-Locator.asm",
+        "kind": "instructions",
+        "bytes": 1882,
+        "sha256": "5f0cc3f7c0adfe570b8c49c4b9273e8ecde7a7849c7f2657c8f500eff3096516"
+      },
+      {
+        "path": "70358-Route-TotalDistance.asm",
+        "kind": "instructions",
+        "bytes": 3195,
+        "sha256": "8af1c5b9311c54030e67425926be99fd0b98e5768d5683c3b8bb1b9abab4e6ba"
+      },
+      {
+        "path": "70367-Route-SpawnPosition.asm",
+        "kind": "instructions",
+        "bytes": 1367,
+        "sha256": "82f622663fc0444fc15ef19a7b215ac4385c185e241fc1c96560044aa5401cfa"
+      },
+      {
+        "path": "70368-Route-SpawnOffset.asm",
+        "kind": "instructions",
+        "bytes": 1717,
+        "sha256": "86e463f33f1f282be6f305d106f1df67c3bbf4717fd43d22e886c1a42c0027df"
+      },
+      {
+        "path": "70373-Route-Reachable.asm",
+        "kind": "instructions",
+        "bytes": 6231,
+        "sha256": "aea9c056a6ddf7b42c2e9a54cef509811f62f66cff9f22bd93bb1baa060549d3"
+      },
+      {
+        "path": "76469-Enemy-Init.asm",
+        "kind": "instructions",
+        "bytes": 14795,
+        "sha256": "94aa28d0541780e677f12eeb37398664c5b92a6e043754cbdf25716ea4d09ff2"
+      },
+      {
+        "path": "76895-Fear-Cursor.asm",
+        "kind": "instructions",
+        "bytes": 9703,
+        "sha256": "4dede78648dc0062f3b8b9a8e19c9fcb7954276ebd497838ee07167a7371ae4c"
+      },
+      {
+        "path": "76905-Attract-Cursor.asm",
+        "kind": "instructions",
+        "bytes": 11597,
+        "sha256": "76a12c8bd0647cd55292f6db628243a5cd94281528c1507055586a2db8f084a0"
+      },
+      {
+        "path": "manifest.json",
+        "kind": "record",
+        "bytes": 2429,
+        "sha256": "a749981fa71839800fd810d18d247cb6fe1074b1158f4514cefe0d1019f3a720"
+      },
+      {
+        "path": "summary.json",
+        "kind": "record",
+        "bytes": 20096,
+        "sha256": "cd20cded3a65c9823dccad998c72bb64b35dcc514ac9eaef97442b757dfa0afc"
+      },
+      {
+        "path": "visit-checkpoints-case.json",
+        "kind": "record",
+        "bytes": 2096,
+        "sha256": "7d09d2b530b8c548e10e74f976f148b229726a657c1db91952e23bf8f4918603"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 22393,
+          "mode": "disasm",
+          "records": [
+            "22393-RandomVector2.asm"
+          ],
+          "fullname": "Torappu.RandomExtensions.RandomVector2",
+          "address": "0x181a96a20"
+        },
+        {
+          "index": 70270,
+          "mode": "disasm",
+          "records": [
+            "70270-DirectionCursor-Initialize.asm"
+          ],
+          "fullname": "Torappu.Battle.DirectionCursor..ctor",
+          "address": "0x180897ef0"
+        },
+        {
+          "index": 70273,
+          "mode": "disasm",
+          "records": [
+            "70273-DirectionCursor-Predict.asm"
+          ],
+          "fullname": "Torappu.Battle.DirectionCursor.PredictReached",
+          "address": "0x180896590"
+        },
+        {
+          "index": 70291,
+          "mode": "disasm",
+          "records": [
+            "70291-DirectionCursor-Locator.asm"
+          ],
+          "fullname": "Torappu.Battle.DirectionCursor.GetLocatorPosition",
+          "address": "0x180894ed0"
+        },
+        {
+          "index": 70358,
+          "mode": "disasm",
+          "records": [
+            "70358-Route-TotalDistance.asm"
+          ],
+          "fullname": "Torappu.Battle.Route.GetDistToFinal",
+          "address": "0x1808a25d0"
+        },
+        {
+          "index": 70367,
+          "mode": "disasm",
+          "records": [
+            "70367-Route-SpawnPosition.asm"
+          ],
+          "fullname": "Torappu.Battle.Route.GetSpawnPosition",
+          "address": "0x1808a2d00"
+        },
+        {
+          "index": 70368,
+          "mode": "disasm",
+          "records": [
+            "70368-Route-SpawnOffset.asm"
+          ],
+          "fullname": "Torappu.Battle.Route.GetSpawnOffset",
+          "address": "0x1808a2c80"
+        },
+        {
+          "index": 70373,
+          "mode": "disasm",
+          "records": [
+            "70373-Route-Reachable.asm"
+          ],
+          "fullname": "Torappu.Battle.Route.CheckReachable",
+          "address": "0x1808a1d10"
+        },
+        {
+          "index": 76469,
+          "mode": "disasm",
+          "records": [
+            "76469-Enemy-Init.asm"
+          ],
+          "fullname": "Torappu.Battle.Enemy.Init",
+          "address": "0x180a6e450"
+        },
+        {
+          "index": 76895,
+          "mode": "disasm",
+          "records": [
+            "76895-Fear-Cursor.asm"
+          ],
+          "fullname": "Torappu.Battle.Enemy.FearController.UpdateFearCursor",
+          "address": "0x180a91730"
+        },
+        {
+          "index": 76905,
+          "mode": "disasm",
+          "records": [
+            "76905-Attract-Cursor.asm"
+          ],
+          "fullname": "Torappu.Battle.Enemy.AttractController.UpdateAttractCursor",
+          "address": "0x180a87190"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

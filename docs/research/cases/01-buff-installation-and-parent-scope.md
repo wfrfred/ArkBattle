@@ -4,7 +4,7 @@
 
 **范围**：维什戴尔残影是用户此前提出的协议压力样例；当前 `data/chess.json` 未包含该干员，不能据此增加本季角色支持承诺。鼓舞对照采用本季 `chess_char_6_04_a/b → char_1012_skadi2 → skchr_skadi2_3`；S2 不作为本季默认技能证据。
 
-**证据**：客户端版本与哈希沿用 [05](../05-evidence-and-open-questions.md)。以下“证实”指本机常规原生分支与真实模板；未运行客户端，也未排除 Lua 覆盖。“推断”是据此得到的项目约束，“待核对”是尚未闭合的行为。完整新增摘录保存在 `/tmp/stronghold-case-a/`，关键短摘录保留在本文。
+**证据**：客户端版本与哈希沿用 [05](../05-evidence-and-open-questions.md)。以下“证实”指本机常规原生分支与真实模板；未运行客户端，也未排除 Lua 覆盖。“推断”是据此得到的项目约束，“待核对”是尚未闭合的行为。关键短摘录保留在本文及[初始客户端批次](../evidence/client-excerpts-20261007/README.md)；当时完整新增转储与专用解码脚本未归档。
 
 ## 1. 本案需要区分的事实
 
@@ -224,6 +224,6 @@ CreateBuff 的 modifier 描述为 `ATK / FINAL_SCALER / fetchBaseValueFromSource
 | 覆盖与结束 | _DoAddInternal 64720；MarkFinish 64548；_FinishAndRemoveBuff 64787；_FinishBuff 64788；_CheckFinishedBuffs 64780 |
 | 父子联系 | AddDerivedBuffSafe 64560；AddDerivedBuff 64572；ClearDerivedBuffsIfNot 64696；AttachAsDerivedBuffById.Execute 95198 |
 | 鼓舞刷新 | CheckBuffAttributeModifierChanged.Execute 95594；FinishDerivedBuff.Execute 95001；CreateBuff.Execute 95014；_LoadAttributesModifier 64674；OnTrigger 64569 |
-| 持久模板摘录 | [client-excerpts.json](../evidence/client-excerpts.json) 中的残影开始动作；本篇保留鼓舞动作与 S3 组件 ID／周期配置 |
+| 持久模板摘录 | [client-excerpts.json](../evidence/client-excerpts-20261007/records.json) 中的残影开始动作；本篇保留鼓舞动作与 S3 组件 ID／周期配置 |
 
-完整模板来源：`/tmp/stronghold-wisadel-research/templates.json`、`char_1035_wisdel.json`；`/tmp/stronghold-damage-research-prefab/buff_template_holder.json`、`[uc]skills.json`。新增方法、字段与鼓舞投影位于 `/tmp/stronghold-case-a/`；第三方数据镜像与客户端清单不是已证明相同版本。
+模板来源为本机 `char_1035_wisdel`、`buff_template_holder` 与 skills 资源的当时解码。持久摘录及输入见[初始客户端批次](../evidence/client-excerpts-20261007/README.md)；完整模板、追加方法转储和鼓舞专用解码脚本未归档，本文仅保留已列出的字段／动作投影。第三方数据镜像与客户端清单不是已证明相同版本。

@@ -10,7 +10,7 @@
 
 ### 本轮官方客户端复查
 
-本轮持久证据见 [skill-mechanisms-20261015.json](../evidence/skill-mechanisms-20261015.json)。DLL SHA256 为 `583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5`，metadata SHA256 为 `d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f`，与 10-13／14 证据相同。独立解析 metadata v29、方法指针和字段偏移，对既有反汇编中的 109 条直接调用核查当前 DLL 的 E8 指令及相对位移，全部匹配。
+本轮持久证据见 [skill-mechanisms-20261015.json](../evidence/skill-mechanisms-20261015/records.json)。DLL SHA256 为 `583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5`，metadata SHA256 为 `d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f`，与 10-13／14 证据相同。独立解析 metadata v29、方法指针和字段偏移，对既有反汇编中的 109 条直接调用核查当前 DLL 的 E8 指令及相对位移，全部匹配。
 
 这使既有普通分支证据继续适用：Ability 开始先登记 casting；结束先清理 casting／协程，再执行结束业务；BasicSkill 的宿主结束会中断 Ability；已经进入的同步行为列表没有通用逐项存活检查。
 
@@ -24,7 +24,7 @@
 | SP 时间、攻击／治疗输出和受击有独立入口 | `SpController.OnTakeDamage` 66748，`OnOutputAttackOrHeal` 66749，`UpdateSpRecoveryPerSec` 66750，`OnTick` 66751 |
 | 生效期间回复不是仅由一个 active 布尔值说明的概念 | BasicSkill 具有 `_allowSpRecoveryWhenAffecting` 配置字段；具体启用内容及规则仍需引用链证明 |
 
-上述首次复查没有重新完整解码所有方法。随后针对 SP 公式、计时器与阻回完成了新的原生反汇编，见下文及 [SP 原生证据](../evidence/sp-calculation-20261015.json)。负弹药等未在此次原生范围内的机制仍依据注明的 PRTS 来源。早先的 `/tmp/stronghold-skill-native-20261015.py`、`/tmp/stronghold-skill-native-review-20261015.py` 已不在本机；首次复查的持久 JSON 仍保存当时输入与调用核对结果。
+上述首次复查没有重新完整解码所有方法。随后针对 SP 公式、计时器与阻回完成了新的原生反汇编，见下文及 [SP 原生证据](../evidence/sp-calculation-20261015/records.json)。负弹药等未在此次原生范围内的机制仍依据注明的 PRTS 来源。首次复查的两份专用提取／复核脚本没有归档，持久 JSON 仍保存当时输入与调用核对结果；当前可复查范围和命令见[Skill 机制批次](../evidence/skill-mechanisms-20261015/README.md)。
 
 ## 2. SP 机制
 
@@ -42,7 +42,7 @@
 
 ### 2.1 SP 公式与计时器：新的客户端原生核对
 
-DLL 与 metadata 的 SHA256 仍与上文一致。此次安装 Capstone 到 `/tmp`，重新解析 metadata v29、Assembly-CSharp／Torappu.Common 方法表与字段偏移，直接读取本机 DLL 的指令；不运行客户端，也不将普通原生分支等同于已验证的运行时 XLua 覆盖。指纹、工具来源及 31 个相关方法的指令见 [sp-calculation-20261015.json](../evidence/sp-calculation-20261015.json)。
+DLL 与 metadata 的 SHA256 仍与上文一致。此次使用 Capstone 重新解析 metadata v29、Assembly-CSharp／Torappu.Common 方法表与字段偏移，直接读取本机 DLL 的指令；不运行客户端，也不将普通原生分支等同于已验证的运行时 XLua 覆盖。指纹、工具来源及 31 个相关方法的指令见 [sp-calculation-20261015.json](../evidence/sp-calculation-20261015/records.json)。
 
 `Entity.get_spRecoveryPerSec`（`0x180708750`）分别读取属性 14 `SP_RECOVERY_PER_SEC` 与属性 30 `SP_RECOVER_RATIO`，通过 `FP.op_Multiply` 相乘。两个属性各自按通用属性计算并应用范围：
 
@@ -386,7 +386,7 @@ Action 侧还需在 Operations 设计中确定普通行动的准备、实际释�
 
 ## 8. 本季技能观察者与公共事件载荷补查
 
-2026-10-29 检查 `src/content`／`src/data`，尚无生产内容消费 Skill 的公共生命周期 Hook。本轮同时扫描了[本地 activity_table 镜像](/tmp/stronghold-player-side-data-20261026/activity_table.json)的 `activity.AUTOCHESS_SEASON.act2autochess`：361 项效果、23 项盟约、40 项策略、320 项特质、266 项棋子配置。镜像来源、指纹及版本关联限制见[持久来源登记](../evidence/skill-modifier-20261029/content.json)的 `sources.mirrorActivityTable`。数量分别对应 effectInfoDataDict、bondInfoDict、bandDataListDict、garrisonDataDict、charChessDataDict；同一效果的配置与 Buff 信息不重复计数。这是本季配置扫描范围，不代表已核实全部原生执行链。
+2026-10-29 检查 `src/content`／`src/data`，尚无生产内容消费 Skill 的公共生命周期 Hook。本轮同时扫描了[来源登记中的 activity_table 镜像](../evidence/skill-modifier-20261029/content.json)的 `activity.AUTOCHESS_SEASON.act2autochess`：361 项效果、23 项盟约、40 项策略、320 项特质、266 项棋子配置。镜像来源、指纹及版本关联限制见[持久来源登记](../evidence/skill-modifier-20261029/content.json)的 `sources.mirrorActivityTable`。数量分别对应 effectInfoDataDict、bondInfoDict、bandDataListDict、garrisonDataDict、charChessDataDict；同一效果的配置与 Buff 信息不重复计数。这是本季配置扫描范围，不代表已核实全部原生执行链。
 
 代表性外部观察需求如下；效果描述另与 [PRTS 本季盟约记录](https://prts.wiki/w/卫戍协议：盟约_下半/PRTS盟约记录)及[本季策略记录](https://prts.wiki/w/卫戍协议：盟约_下半)交叉核对。
 

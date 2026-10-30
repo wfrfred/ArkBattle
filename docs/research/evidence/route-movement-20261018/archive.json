@@ -1,0 +1,441 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-18"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "../navigation-native-20261018/manifest.json#/inputs/0"
+        ],
+        "bytes": 218523112
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "../navigation-native-20261018/manifest.json#/inputs/1"
+        ],
+        "bytes": 45805368
+      }
+    },
+    "sourceRecords": [
+      "fields.json",
+      "manifest.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "33274.asm",
+        "kind": "instructions",
+        "bytes": 1301,
+        "sha256": "67141444ad96f0cf15974d9ba075fb66c03b4cb1afec36e2c2ddab532506d2ce"
+      },
+      {
+        "path": "33282.asm",
+        "kind": "instructions",
+        "bytes": 4744,
+        "sha256": "9b8117ad84b4efdd1d9a21a87f1bf7246a5be666348f2720a0f35115c32b9ae1"
+      },
+      {
+        "path": "66697.asm",
+        "kind": "instructions",
+        "bytes": 8925,
+        "sha256": "8339270e3590d420d0d693cf5f5f9695b12184236f8df48547e3450e6e197118"
+      },
+      {
+        "path": "70163.asm",
+        "kind": "instructions",
+        "bytes": 11878,
+        "sha256": "44f5636c969658ab692c0187dbec2b1ef8d7d9e68b5776bcaebf91aca95508a2"
+      },
+      {
+        "path": "70190.asm",
+        "kind": "instructions",
+        "bytes": 7732,
+        "sha256": "4b07de4bbacccb64ba6808bd0a5ca48b1e7ea6d3d455df0e677a112dee9bda82"
+      },
+      {
+        "path": "70193.asm",
+        "kind": "instructions",
+        "bytes": 5827,
+        "sha256": "a6695bfed09e9fff7b81b11491c9c74adf739e0eeb8b54ab74df08d7514b062d"
+      },
+      {
+        "path": "70197.asm",
+        "kind": "instructions",
+        "bytes": 2064,
+        "sha256": "d16d77aa82ee1d9020061abe9fc25d7c72bc744ead2f9b6f8efac89f7278f595"
+      },
+      {
+        "path": "70217.asm",
+        "kind": "instructions",
+        "bytes": 1368,
+        "sha256": "1f40162db13d39fdef87216d7c6be2d8c45aabde7822eb9a7e2ee87b257c519c"
+      },
+      {
+        "path": "70223.asm",
+        "kind": "instructions",
+        "bytes": 1517,
+        "sha256": "35d896f38ba871c66d0382052b162b26e44a83100bb2eb64067bf8bac203890c"
+      },
+      {
+        "path": "70224.asm",
+        "kind": "instructions",
+        "bytes": 2378,
+        "sha256": "743189c73d3f3635152c75a4efffc85b32618c6f7a0175a5e59f9db5b4ffbabf"
+      },
+      {
+        "path": "70226.asm",
+        "kind": "instructions",
+        "bytes": 2361,
+        "sha256": "e0e26e0f57fa43756fe0e5ec52802b0286d5f11c33a1be051fe0f7b5dd0246a0"
+      },
+      {
+        "path": "70232.asm",
+        "kind": "instructions",
+        "bytes": 3089,
+        "sha256": "2456ebdf9eae35c308f113d0d7ba2d83edb02965b2ed64902ff0cb4914046bc4"
+      },
+      {
+        "path": "70238.asm",
+        "kind": "instructions",
+        "bytes": 3093,
+        "sha256": "e7678267dfec160dbb891197dd60e121a32a14ba0ca586e349f0585b2c529627"
+      },
+      {
+        "path": "70272.asm",
+        "kind": "instructions",
+        "bytes": 2808,
+        "sha256": "f1c1c3bbb4ab4232fd06decbf7d42fba66ac1e17352c8b70d58e8bf015365679"
+      },
+      {
+        "path": "70277.asm",
+        "kind": "instructions",
+        "bytes": 21373,
+        "sha256": "60ebccea478ffe91cdbe40520eefca97e36334511f1c540c5640e024011ddd9c"
+      },
+      {
+        "path": "70287.asm",
+        "kind": "instructions",
+        "bytes": 4210,
+        "sha256": "a92de6a25e70695a65f19a84d5a78c6422658f225373f9a92123d6915fdb32db"
+      },
+      {
+        "path": "76397.asm",
+        "kind": "instructions",
+        "bytes": 1776,
+        "sha256": "b981520ecfb1e35701e64e6f8f1bfbb64b0346c9edf727464c68667e54a708b7"
+      },
+      {
+        "path": "76487.asm",
+        "kind": "instructions",
+        "bytes": 2690,
+        "sha256": "0f023c8d15c49fd8fd36a980248ea2f649d373486f016eaf8481559ff14b5e48"
+      },
+      {
+        "path": "76491.asm",
+        "kind": "instructions",
+        "bytes": 21027,
+        "sha256": "e0be3b5efdbda64301ed5b753486155c231304df47a022574d06768b2f87af4d"
+      },
+      {
+        "path": "76531.asm",
+        "kind": "instructions",
+        "bytes": 25949,
+        "sha256": "01d7c7e8c5a457bde822b641d1dcfbee3030543cf6b47e928629883631d6b713"
+      },
+      {
+        "path": "76640.asm",
+        "kind": "instructions",
+        "bytes": 3048,
+        "sha256": "c6ba3e3e097cb2c24416a3acd66a35f26c6dc3c6fabcc34d913c83247598b594"
+      },
+      {
+        "path": "76658.asm",
+        "kind": "instructions",
+        "bytes": 14384,
+        "sha256": "663391b1075b30b3b8b609883192fccdf731fdf9e8b9d3704185a1797a38e098"
+      },
+      {
+        "path": "77699.asm",
+        "kind": "instructions",
+        "bytes": 2982,
+        "sha256": "b8cb1e6e4aad5e667c9885e23c2df808011697d28c9007677d491000a87e1ec9"
+      },
+      {
+        "path": "fields.json",
+        "kind": "record",
+        "bytes": 20778,
+        "sha256": "a282be1adb66f256f456b81e39d5785cad4400353540034adf146b0efdf26e15"
+      },
+      {
+        "path": "manifest.json",
+        "kind": "record",
+        "bytes": 10097,
+        "sha256": "92243a03ed4e8ee0fc0280852d65429b3abb778068740eaf5286c6132820b6df"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 33274,
+          "mode": "disasm",
+          "records": [
+            "33274.asm",
+            "manifest.json#/methods/0"
+          ],
+          "fullname": "Torappu.StateMachine.Tick",
+          "address": "0x1826483e0"
+        },
+        {
+          "index": 33282,
+          "mode": "disasm",
+          "records": [
+            "33282.asm",
+            "manifest.json#/methods/1"
+          ],
+          "fullname": "Torappu.StateMachine.OnTick",
+          "address": "0x182647fd0"
+        },
+        {
+          "index": 66697,
+          "mode": "disasm",
+          "records": [
+            "66697.asm",
+            "manifest.json#/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnTick",
+          "address": "0x1806fadf0"
+        },
+        {
+          "index": 70163,
+          "mode": "disasm",
+          "records": [
+            "70163.asm",
+            "manifest.json#/methods/10"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor._MoveNext",
+          "address": "0x180876920"
+        },
+        {
+          "index": 70190,
+          "mode": "disasm",
+          "records": [
+            "70190.asm",
+            "manifest.json#/methods/20"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor.MoveCheckpoint.GetNextDirection",
+          "address": "0x1808a0200"
+        },
+        {
+          "index": 70193,
+          "mode": "disasm",
+          "records": [
+            "70193.asm",
+            "manifest.json#/methods/11"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor.MoveCheckpoint.CheckReached",
+          "address": "0x18089fdb0"
+        },
+        {
+          "index": 70197,
+          "mode": "disasm",
+          "records": [
+            "70197.asm",
+            "manifest.json#/methods/21"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor.MoveCheckpoint.OnBegin",
+          "address": "0x1808a0590"
+        },
+        {
+          "index": 70217,
+          "mode": "disasm",
+          "records": [
+            "70217.asm",
+            "manifest.json#/methods/12"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor.WaitForSecondsCheckpoint.get_isReached",
+          "address": "0x1808a89c0"
+        },
+        {
+          "index": 70223,
+          "mode": "disasm",
+          "records": [
+            "70223.asm",
+            "manifest.json#/methods/13"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor.WaitForSecondsCheckpoint.OnBegin",
+          "address": "0x1808a8a20"
+        },
+        {
+          "index": 70224,
+          "mode": "disasm",
+          "records": [
+            "70224.asm",
+            "manifest.json#/methods/14"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor.WaitForSecondsCheckpoint.OnTick",
+          "address": "0x1808a8a90"
+        },
+        {
+          "index": 70226,
+          "mode": "disasm",
+          "records": [
+            "70226.asm",
+            "manifest.json#/methods/15"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor.WaitForPlayTimeCheckpoint.get_isReached",
+          "address": "0x1808a8910"
+        },
+        {
+          "index": 70232,
+          "mode": "disasm",
+          "records": [
+            "70232.asm",
+            "manifest.json#/methods/16"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor.WaitCurrentWaveTimeCheckpoint.get_isReached",
+          "address": "0x1808a8820"
+        },
+        {
+          "index": 70238,
+          "mode": "disasm",
+          "records": [
+            "70238.asm",
+            "manifest.json#/methods/17"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor.WaitCurrentFragmentTimeCheckpoint.get_isReached",
+          "address": "0x1808a8730"
+        },
+        {
+          "index": 70272,
+          "mode": "disasm",
+          "records": [
+            "70272.asm",
+            "manifest.json#/methods/18"
+          ],
+          "fullname": "Torappu.Battle.DirectionCursor.CheckReached",
+          "address": "0x180894d60"
+        },
+        {
+          "index": 70277,
+          "mode": "disasm",
+          "records": [
+            "70277.asm",
+            "manifest.json#/methods/19"
+          ],
+          "fullname": "Torappu.Battle.DirectionCursor.GetNextDirection",
+          "address": "0x180894f60"
+        },
+        {
+          "index": 70287,
+          "mode": "disasm",
+          "records": [
+            "70287.asm",
+            "manifest.json#/methods/9"
+          ],
+          "fullname": "Torappu.Battle.DirectionCursor.OnTick",
+          "address": "0x180895d70"
+        },
+        {
+          "index": 76397,
+          "mode": "disasm",
+          "records": [
+            "76397.asm",
+            "manifest.json#/methods/22"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_cursor",
+          "address": "0x180a7bf80"
+        },
+        {
+          "index": 76487,
+          "mode": "disasm",
+          "records": [
+            "76487.asm",
+            "manifest.json#/methods/7"
+          ],
+          "fullname": "Torappu.Battle.Enemy._MoveByRoute",
+          "address": "0x180a796f0"
+        },
+        {
+          "index": 76491,
+          "mode": "disasm",
+          "records": [
+            "76491.asm",
+            "manifest.json#/methods/8"
+          ],
+          "fullname": "Torappu.Battle.Enemy._MoveByCursor",
+          "address": "0x180a78fc0"
+        },
+        {
+          "index": 76531,
+          "mode": "disasm",
+          "records": [
+            "76531.asm",
+            "manifest.json#/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnTick",
+          "address": "0x180a72340"
+        },
+        {
+          "index": 76640,
+          "mode": "disasm",
+          "records": [
+            "76640.asm",
+            "manifest.json#/methods/5"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.EnemyStateMachine.OnTick",
+          "address": "0x180a908b0"
+        },
+        {
+          "index": 76658,
+          "mode": "disasm",
+          "records": [
+            "76658.asm",
+            "manifest.json#/methods/6"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.MoveState.OnTick",
+          "address": "0x180a977d0"
+        },
+        {
+          "index": 77699,
+          "mode": "disasm",
+          "records": [
+            "77699.asm",
+            "manifest.json#/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Unit.OnTick",
+          "address": "0x180acbdb0"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

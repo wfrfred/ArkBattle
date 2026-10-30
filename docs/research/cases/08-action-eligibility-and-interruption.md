@@ -10,7 +10,7 @@
 - metadata：`d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f`。
 - `[uc]skills.ab`：`14306a31b1856f61b25812a69a2a057b7c4634561fb2c2bccc42fb37ee41a27e`。
 
-方法地址、完整普通分支、字段／虚表映射和泥岩 Prefab 对应保存在 [证据包](../evidence/action-eligibility-and-interruption.json)。未执行 XLua hotfix，也未运行官方战斗；不将本机静态分支推广成所有版本和所有内容的实机结论。
+方法地址、完整普通分支、字段／虚表映射和泥岩 Prefab 对应保存在 [证据包](../evidence/action-eligibility-and-interruption-20261014/records.json)。未执行 XLua hotfix，也未运行官方战斗；不将本机静态分支推广成所有版本和所有内容的实机结论。
 
 ## 1. 排他性发生在哪一层
 

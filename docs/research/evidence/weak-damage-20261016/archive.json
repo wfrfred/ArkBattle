@@ -1,0 +1,173 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-16"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "records.json#/client"
+        ]
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "records.json#/client"
+        ]
+      }
+    },
+    "sourceRecords": [
+      "records.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "records.json",
+        "kind": "record",
+        "bytes": 106842,
+        "sha256": "7be6e4f602907ed2542aa02e35d9c5f66eadea09be09a7752b2140e8aad24c17"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 64918,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/0"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateDamage",
+          "address": "0x1806573c0"
+        },
+        {
+          "index": 64919,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/1"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateDamageNoEvent",
+          "address": "0x180657050"
+        },
+        {
+          "index": 64937,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/2"
+          ],
+          "fullname": ".ctor",
+          "address": "0x180648380"
+        },
+        {
+          "index": 64939,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/3"
+          ],
+          "fullname": "AttackInfo.GetFinalAtk",
+          "address": "0x180648250"
+        },
+        {
+          "index": 65168,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnCalculateDamage",
+          "address": "0x180684080"
+        },
+        {
+          "index": 73493,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/5"
+          ],
+          "fullname": "Torappu.Battle.ProbAdditionNextAtkTalent.OnBeforeAttack",
+          "address": "0x180994e20"
+        },
+        {
+          "index": 96910,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/6"
+          ],
+          "fullname": "AtkScaleUp.Execute",
+          "address": "0x18104b320"
+        },
+        {
+          "index": 97080,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/7"
+          ],
+          "fullname": "WeakDamage.Execute",
+          "address": "0x181075370"
+        },
+        {
+          "index": 97081,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/8"
+          ],
+          "fullname": "WeakDamage.TryGetWeakDamage",
+          "address": "0x1810754b0"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "12419ad8d1ea9f670cca214e525240c691cdf3796b82acc8050698d66c202a37",
+          "records": [
+            "records.json#/client/assets/config~1buff_template_holder.ab"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_264_f12yin.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_264_f12yin.ab",
+          "sha256": "247c79c429917bad2c04da11a637faa6810b4f8977ed5fe9ddd2ac746e8efb65",
+          "records": [
+            "records.json#/client/assets/charpack~1char_264_f12yin.ab"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_1050_chen3.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1050_chen3.ab",
+          "sha256": "14d11466bc786aa69328b3ec69c28eff413839b904b3b16ff4d30eacf9f6f8c5",
+          "records": [
+            "records.json#/client/assets/charpack~1char_1050_chen3.ab"
+          ]
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

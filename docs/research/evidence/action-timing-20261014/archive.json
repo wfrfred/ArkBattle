@@ -1,0 +1,3185 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-14"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "records.json#/source",
+          "records.json#/cooldownFinishFindings",
+          "records.json#/frameOrderFindings"
+        ]
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "records.json#/source",
+          "records.json#/cooldownFinishFindings",
+          "records.json#/frameOrderFindings"
+        ]
+      }
+    },
+    "sourceRecords": [
+      "records.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "records.json",
+        "kind": "record",
+        "bytes": 1249656,
+        "sha256": "23ef4428645c740aa4f6fb0859bc254920c5f93dcca688f49f099fef3fbfb664"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 25966,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/0/vtable/4"
+          ],
+          "fullname": "Torappu.PeriodicTimer.get_isReady",
+          "address": "0x181e04cf0"
+        },
+        {
+          "index": 25969,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/0"
+          ],
+          "fullname": "Torappu.PeriodicTimer.get_progress",
+          "address": "0x181e04dd0"
+        },
+        {
+          "index": 25972,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/1"
+          ],
+          "fullname": "Torappu.PeriodicTimer.Reset",
+          "address": "0x181e04840"
+        },
+        {
+          "index": 25974,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/2"
+          ],
+          "fullname": "Torappu.PeriodicTimer.ResetButKeepPastTime",
+          "address": "0x181e044e0"
+        },
+        {
+          "index": 25975,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/3"
+          ],
+          "fullname": "Torappu.PeriodicTimer.ResetButKeepProgress",
+          "address": "0x181e045b0"
+        },
+        {
+          "index": 25977,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/4"
+          ],
+          "fullname": "Torappu.PeriodicTimer.SetProgress",
+          "address": "0x181e048b0"
+        },
+        {
+          "index": 25979,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/0/vtable/5"
+          ],
+          "fullname": "Torappu.PeriodicTimer.Update",
+          "address": "0x181e04b10"
+        },
+        {
+          "index": 25980,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/0/vtable/6"
+          ],
+          "fullname": "Torappu.PeriodicTimer.Update",
+          "address": "0x181e049e0"
+        },
+        {
+          "index": 25981,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/0/vtable/7"
+          ],
+          "fullname": "Torappu.PeriodicTimer.Next",
+          "address": "0x181e04490"
+        },
+        {
+          "index": 62958,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/5"
+          ],
+          "fullname": ".cctor",
+          "address": "0x1805e7500"
+        },
+        {
+          "index": 63010,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/13",
+            "records.json#/fieldsAndVtables/2/vtable/13",
+            "records.json#/fieldsAndVtables/6/vtable/13"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_affectedBySlowDown",
+          "address": "0x1805d7780"
+        },
+        {
+          "index": 63011,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/8",
+            "records.json#/fieldsAndVtables/2/vtable/8",
+            "records.json#/fieldsAndVtables/4/vtable/8",
+            "records.json#/fieldsAndVtables/5/vtable/8",
+            "records.json#/fieldsAndVtables/6/vtable/8"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_instanceUid",
+          "address": "0x1805d7c60"
+        },
+        {
+          "index": 63025,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/15",
+            "records.json#/fieldsAndVtables/2/vtable/15",
+            "records.json#/fieldsAndVtables/4/vtable/15",
+            "records.json#/fieldsAndVtables/5/vtable/15",
+            "records.json#/fieldsAndVtables/6/vtable/15"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_selector",
+          "address": "0x1805d86c0"
+        },
+        {
+          "index": 63026,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/16",
+            "records.json#/fieldsAndVtables/2/vtable/16",
+            "records.json#/fieldsAndVtables/4/vtable/16",
+            "records.json#/fieldsAndVtables/5/vtable/16",
+            "records.json#/fieldsAndVtables/6/vtable/16"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_rangeToShow",
+          "address": "0x1805d8570"
+        },
+        {
+          "index": 63033,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/19",
+            "records.json#/fieldsAndVtables/2/vtable/19",
+            "records.json#/fieldsAndVtables/4/vtable/19",
+            "records.json#/fieldsAndVtables/5/vtable/19",
+            "records.json#/fieldsAndVtables/6/vtable/19",
+            "records.json#/nativeMethods/6"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_isReady",
+          "address": "0x1805d8040"
+        },
+        {
+          "index": 63036,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/20",
+            "records.json#/fieldsAndVtables/2/vtable/20",
+            "records.json#/fieldsAndVtables/4/vtable/20",
+            "records.json#/fieldsAndVtables/5/vtable/20",
+            "records.json#/fieldsAndVtables/6/vtable/20",
+            "records.json#/nativeMethods/7"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_isAffecting",
+          "address": "0x1805d7cc0"
+        },
+        {
+          "index": 63041,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/21",
+            "records.json#/fieldsAndVtables/2/vtable/21",
+            "records.json#/fieldsAndVtables/6/vtable/21"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_canSelectCamouflageTarget",
+          "address": "0x1805d78a0"
+        },
+        {
+          "index": 63043,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/22",
+            "records.json#/fieldsAndVtables/2/vtable/22",
+            "records.json#/fieldsAndVtables/6/vtable/22"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_escapeTime",
+          "address": "0x1805d7a50"
+        },
+        {
+          "index": 63044,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/23",
+            "records.json#/fieldsAndVtables/2/vtable/23",
+            "records.json#/fieldsAndVtables/5/vtable/23",
+            "records.json#/fieldsAndVtables/6/vtable/23"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_applyWay",
+          "address": "0x1805d77e0"
+        },
+        {
+          "index": 63048,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/25"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_isPredelay",
+          "address": "0x1805d32c0"
+        },
+        {
+          "index": 63053,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/26",
+            "records.json#/fieldsAndVtables/2/vtable/26",
+            "records.json#/fieldsAndVtables/6/vtable/26"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_ignorePalsyInterrupt",
+          "address": "0x1805d7c00"
+        },
+        {
+          "index": 63055,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/27"
+          ],
+          "fullname": "Torappu.Battle.Ability.DoSetData",
+          "address": "0x1805d5540"
+        },
+        {
+          "index": 63056,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/28",
+            "records.json#/fieldsAndVtables/2/vtable/28",
+            "records.json#/fieldsAndVtables/4/vtable/28",
+            "records.json#/fieldsAndVtables/5/vtable/28",
+            "records.json#/fieldsAndVtables/6/vtable/28"
+          ],
+          "fullname": "Torappu.Battle.Ability.UpdateBlackboard",
+          "address": "0x1805d6f80"
+        },
+        {
+          "index": 63057,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/29",
+            "records.json#/fieldsAndVtables/2/vtable/29",
+            "records.json#/fieldsAndVtables/4/vtable/29",
+            "records.json#/fieldsAndVtables/5/vtable/29",
+            "records.json#/fieldsAndVtables/6/vtable/29"
+          ],
+          "fullname": "Torappu.Battle.Ability.UpdateSelector",
+          "address": "0x1805d74a0"
+        },
+        {
+          "index": 63061,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/30",
+            "records.json#/fieldsAndVtables/2/vtable/30",
+            "records.json#/fieldsAndVtables/6/vtable/30"
+          ],
+          "fullname": "Torappu.Battle.Ability.DoAttach",
+          "address": "0x1805d4f00"
+        },
+        {
+          "index": 63062,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/31",
+            "records.json#/fieldsAndVtables/2/vtable/31",
+            "records.json#/fieldsAndVtables/4/vtable/31",
+            "records.json#/fieldsAndVtables/5/vtable/31",
+            "records.json#/fieldsAndVtables/6/vtable/31"
+          ],
+          "fullname": "Torappu.Battle.Ability.DoDetach",
+          "address": "0x1805d5180"
+        },
+        {
+          "index": 63063,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/32",
+            "records.json#/fieldsAndVtables/2/vtable/32",
+            "records.json#/fieldsAndVtables/4/vtable/32",
+            "records.json#/fieldsAndVtables/5/vtable/32",
+            "records.json#/fieldsAndVtables/6/vtable/32"
+          ],
+          "fullname": "Torappu.Battle.Ability.OnOwnerLocated",
+          "address": "0x1805d64b0"
+        },
+        {
+          "index": 63067,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/36",
+            "records.json#/fieldsAndVtables/2/vtable/36",
+            "records.json#/fieldsAndVtables/4/vtable/36",
+            "records.json#/fieldsAndVtables/5/vtable/36",
+            "records.json#/fieldsAndVtables/6/vtable/36",
+            "records.json#/nativeMethods/8",
+            "records.json#/cooldownFinishFindings/methods/interrupt"
+          ],
+          "fullname": "Ability.InterruptIfNot",
+          "address": "0x1805d6090"
+        },
+        {
+          "index": 63068,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/37",
+            "records.json#/fieldsAndVtables/2/vtable/37",
+            "records.json#/fieldsAndVtables/4/vtable/37",
+            "records.json#/fieldsAndVtables/5/vtable/37",
+            "records.json#/fieldsAndVtables/6/vtable/37",
+            "records.json#/nativeMethods/9"
+          ],
+          "fullname": "Torappu.Battle.Ability.DoFinish",
+          "address": "0x1805d5400"
+        },
+        {
+          "index": 63069,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/38",
+            "records.json#/fieldsAndVtables/2/vtable/38",
+            "records.json#/fieldsAndVtables/4/vtable/38",
+            "records.json#/fieldsAndVtables/5/vtable/38",
+            "records.json#/fieldsAndVtables/6/vtable/38",
+            "records.json#/nativeMethods/10"
+          ],
+          "fullname": "Torappu.Battle.Ability.ResetCooldown",
+          "address": "0x1805d6960"
+        },
+        {
+          "index": 63071,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/39",
+            "records.json#/fieldsAndVtables/2/vtable/39",
+            "records.json#/fieldsAndVtables/5/vtable/39",
+            "records.json#/fieldsAndVtables/6/vtable/39",
+            "records.json#/nativeMethods/11"
+          ],
+          "fullname": "Torappu.Battle.Ability.UpdateCooldown",
+          "address": "0x1805d73e0"
+        },
+        {
+          "index": 63072,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/40",
+            "records.json#/fieldsAndVtables/2/vtable/40",
+            "records.json#/fieldsAndVtables/4/vtable/40",
+            "records.json#/fieldsAndVtables/5/vtable/40",
+            "records.json#/fieldsAndVtables/6/vtable/40"
+          ],
+          "fullname": "Torappu.Battle.Ability.TrySetCooldownRemainingProgress",
+          "address": "0x1805d6e50"
+        },
+        {
+          "index": 63074,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/41"
+          ],
+          "fullname": "Torappu.Battle.Ability.StopAffect",
+          "address": "0x1805d6dd0"
+        },
+        {
+          "index": 63075,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/12",
+            "records.json#/cooldownFinishFindings/methods/finishPolicyStandalone"
+          ],
+          "fullname": "Ability.UpdateCooldownWhenFinish",
+          "address": "0x1805d7220"
+        },
+        {
+          "index": 63076,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/13"
+          ],
+          "fullname": "Torappu.Battle.Ability.IsOnFirstCastFrame",
+          "address": "0x1805d6120"
+        },
+        {
+          "index": 63077,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/42",
+            "records.json#/fieldsAndVtables/2/vtable/42",
+            "records.json#/fieldsAndVtables/4/vtable/42",
+            "records.json#/fieldsAndVtables/5/vtable/42",
+            "records.json#/fieldsAndVtables/6/vtable/42"
+          ],
+          "fullname": "Torappu.Battle.Ability.Reset",
+          "address": "0x1805d6a50"
+        },
+        {
+          "index": 63078,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/43"
+          ],
+          "fullname": "Torappu.Battle.Ability.CleanupForNextCast",
+          "address": "0x1805d4bd0"
+        },
+        {
+          "index": 63082,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/47",
+            "records.json#/fieldsAndVtables/2/vtable/47",
+            "records.json#/fieldsAndVtables/4/vtable/47",
+            "records.json#/fieldsAndVtables/5/vtable/47",
+            "records.json#/fieldsAndVtables/6/vtable/47"
+          ],
+          "fullname": "Torappu.Battle.Ability.GetAbilityAttachments",
+          "address": "0x1805d5d00"
+        },
+        {
+          "index": 63083,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/4",
+            "records.json#/fieldsAndVtables/1/vtable/48"
+          ],
+          "fullname": "Torappu.Battle.Ability.GatherEffects",
+          "address": "0x1805d5c80"
+        },
+        {
+          "index": 63084,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/5",
+            "records.json#/fieldsAndVtables/1/vtable/49"
+          ],
+          "fullname": "Torappu.Battle.Ability.GatherProjectiles",
+          "address": "0x1805d31c0"
+        },
+        {
+          "index": 63085,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/6"
+          ],
+          "fullname": "Torappu.Battle.Ability.GatherActionNodes"
+        },
+        {
+          "index": 63086,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/7",
+            "records.json#/fieldsAndVtables/1/vtable/51"
+          ],
+          "fullname": "Torappu.Battle.Ability.GatherBuffs",
+          "address": "0x1805d5b70"
+        },
+        {
+          "index": 63087,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/52"
+          ],
+          "fullname": "Torappu.Battle.Ability.OnCastStart",
+          "address": "0x1805d6430"
+        },
+        {
+          "index": 63091,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/56",
+            "records.json#/nativeMethods/14"
+          ],
+          "fullname": "Torappu.Battle.Ability.OnTick",
+          "address": "0x1805d6570"
+        },
+        {
+          "index": 63092,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/57"
+          ],
+          "fullname": "Torappu.Battle.Ability.OnOverload",
+          "address": "0x1805d3230"
+        },
+        {
+          "index": 63093,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/58",
+            "records.json#/fieldsAndVtables/2/vtable/58",
+            "records.json#/fieldsAndVtables/6/vtable/58"
+          ],
+          "fullname": "Torappu.Battle.Ability.OnAttackTimeChanged",
+          "address": "0x1805d63d0"
+        },
+        {
+          "index": 63094,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/59",
+            "records.json#/fieldsAndVtables/2/vtable/59",
+            "records.json#/fieldsAndVtables/6/vtable/59"
+          ],
+          "fullname": "Torappu.Battle.Ability.OnSlowDownChanged",
+          "address": "0x1805d6510"
+        },
+        {
+          "index": 63095,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/60",
+            "records.json#/fieldsAndVtables/2/vtable/60",
+            "records.json#/fieldsAndVtables/4/vtable/60",
+            "records.json#/fieldsAndVtables/5/vtable/60",
+            "records.json#/fieldsAndVtables/6/vtable/60"
+          ],
+          "fullname": "Torappu.Battle.Ability.OnAbilityExtendUpdated",
+          "address": "0x1805d6290"
+        },
+        {
+          "index": 63096,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/9",
+            "records.json#/fieldsAndVtables/1/vtable/61"
+          ],
+          "fullname": "Torappu.Battle.Ability.PreloadSpecialAudioSignals",
+          "address": "0x1805d6620"
+        },
+        {
+          "index": 63097,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/62"
+          ],
+          "fullname": "Torappu.Battle.Ability.CheckAtPreCastPhase",
+          "address": "0x1805d3100"
+        },
+        {
+          "index": 63098,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/63",
+            "records.json#/fieldsAndVtables/2/vtable/63",
+            "records.json#/fieldsAndVtables/4/vtable/63",
+            "records.json#/fieldsAndVtables/5/vtable/63",
+            "records.json#/fieldsAndVtables/6/vtable/63",
+            "records.json#/nativeMethods/15",
+            "records.json#/cooldownFinishFindings/methods/finish"
+          ],
+          "fullname": "Ability.FinishIfNot",
+          "address": "0x1805d5910"
+        },
+        {
+          "index": 63099,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/64",
+            "records.json#/fieldsAndVtables/2/vtable/64",
+            "records.json#/fieldsAndVtables/4/vtable/64",
+            "records.json#/fieldsAndVtables/5/vtable/64",
+            "records.json#/fieldsAndVtables/6/vtable/64"
+          ],
+          "fullname": "Torappu.Battle.Ability.AddPassiveBuffs",
+          "address": "0x1805d47c0"
+        },
+        {
+          "index": 63100,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/65",
+            "records.json#/fieldsAndVtables/2/vtable/65",
+            "records.json#/fieldsAndVtables/4/vtable/65",
+            "records.json#/fieldsAndVtables/5/vtable/65",
+            "records.json#/fieldsAndVtables/6/vtable/65"
+          ],
+          "fullname": "Torappu.Battle.Ability.ClearPassiveBuffs",
+          "address": "0x1805d4cf0"
+        },
+        {
+          "index": 63101,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/66",
+            "records.json#/fieldsAndVtables/2/vtable/66",
+            "records.json#/fieldsAndVtables/4/vtable/66",
+            "records.json#/fieldsAndVtables/5/vtable/66",
+            "records.json#/fieldsAndVtables/6/vtable/66"
+          ],
+          "fullname": "Torappu.Battle.Ability.PreprocessActionsForProjectile",
+          "address": "0x1805d66b0"
+        },
+        {
+          "index": 63105,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/67",
+            "records.json#/fieldsAndVtables/2/vtable/67",
+            "records.json#/fieldsAndVtables/4/vtable/67",
+            "records.json#/fieldsAndVtables/5/vtable/67",
+            "records.json#/fieldsAndVtables/6/vtable/67"
+          ],
+          "fullname": "Torappu.Battle.Ability.ClearProjectile",
+          "address": "0x1805d4dd0"
+        },
+        {
+          "index": 63106,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/10",
+            "records.json#/fieldsAndVtables/2/vtable/10",
+            "records.json#/fieldsAndVtables/4/vtable/10",
+            "records.json#/fieldsAndVtables/5/vtable/10",
+            "records.json#/fieldsAndVtables/6/vtable/10"
+          ],
+          "fullname": "Torappu.Battle.Ability.GetPRDEntityHash",
+          "address": "0x1805d5e90"
+        },
+        {
+          "index": 63107,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/11",
+            "records.json#/fieldsAndVtables/2/vtable/11",
+            "records.json#/fieldsAndVtables/4/vtable/11",
+            "records.json#/fieldsAndVtables/5/vtable/11",
+            "records.json#/fieldsAndVtables/6/vtable/11"
+          ],
+          "fullname": "Torappu.Battle.Ability.AllocatePRDEntitySubHash",
+          "address": "0x1805d4a50"
+        },
+        {
+          "index": 63108,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/12",
+            "records.json#/fieldsAndVtables/2/vtable/12",
+            "records.json#/fieldsAndVtables/4/vtable/12",
+            "records.json#/fieldsAndVtables/5/vtable/12",
+            "records.json#/fieldsAndVtables/6/vtable/12"
+          ],
+          "fullname": "Torappu.Battle.Ability.ResetPRDEntity",
+          "address": "0x1805d69f0"
+        },
+        {
+          "index": 63123,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/69",
+            "records.json#/fieldsAndVtables/6/vtable/69"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.get_selectTargetTiming",
+          "address": "0x1805d4540"
+        },
+        {
+          "index": 63127,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/18",
+            "records.json#/fieldsAndVtables/6/vtable/18"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.get_allowNoTarget",
+          "address": "0x1805d4130"
+        },
+        {
+          "index": 63128,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/71",
+            "records.json#/fieldsAndVtables/5/vtable/71",
+            "records.json#/fieldsAndVtables/6/vtable/71"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.get_onlyTrigAudioSignalForFirstSpell",
+          "address": "0x1805d4420"
+        },
+        {
+          "index": 63129,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/72",
+            "records.json#/fieldsAndVtables/4/vtable/72",
+            "records.json#/fieldsAndVtables/5/vtable/72",
+            "records.json#/fieldsAndVtables/6/vtable/72"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.get_onlyTrigAudioSignalForFirstHit",
+          "address": "0x1805d43c0"
+        },
+        {
+          "index": 63134,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/24",
+            "records.json#/fieldsAndVtables/4/vtable/24",
+            "records.json#/fieldsAndVtables/5/vtable/24",
+            "records.json#/fieldsAndVtables/6/vtable/24"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.get_purposeMask",
+          "address": "0x1805d44e0"
+        },
+        {
+          "index": 63137,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/25",
+            "records.json#/fieldsAndVtables/4/vtable/25",
+            "records.json#/fieldsAndVtables/5/vtable/25",
+            "records.json#/fieldsAndVtables/6/vtable/25"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.get_isPredelay",
+          "address": "0x1805d4360"
+        },
+        {
+          "index": 63138,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/27",
+            "records.json#/fieldsAndVtables/5/vtable/27",
+            "records.json#/fieldsAndVtables/6/vtable/27"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.DoSetData",
+          "address": "0x1805cfd90"
+        },
+        {
+          "index": 63140,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/33",
+            "records.json#/fieldsAndVtables/4/vtable/33",
+            "records.json#/fieldsAndVtables/5/vtable/33",
+            "records.json#/fieldsAndVtables/6/vtable/33",
+            "records.json#/nativeMethods/16"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.CastToTarget",
+          "address": "0x1805cebf0"
+        },
+        {
+          "index": 63141,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/34",
+            "records.json#/fieldsAndVtables/4/vtable/34",
+            "records.json#/fieldsAndVtables/5/vtable/34",
+            "records.json#/fieldsAndVtables/6/vtable/34"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.CastDirectly",
+          "address": "0x1805ce650"
+        },
+        {
+          "index": 63142,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/35",
+            "records.json#/fieldsAndVtables/4/vtable/35",
+            "records.json#/fieldsAndVtables/5/vtable/35",
+            "records.json#/fieldsAndVtables/6/vtable/35"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.CastToInputPosition",
+          "address": "0x1805ce940"
+        },
+        {
+          "index": 63143,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/73",
+            "records.json#/fieldsAndVtables/4/vtable/73",
+            "records.json#/fieldsAndVtables/5/vtable/73",
+            "records.json#/fieldsAndVtables/6/vtable/73"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.GetCastDirectlyMapPosition",
+          "address": "0x1805d0710"
+        },
+        {
+          "index": 63144,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/41",
+            "records.json#/fieldsAndVtables/4/vtable/41",
+            "records.json#/fieldsAndVtables/5/vtable/41",
+            "records.json#/fieldsAndVtables/6/vtable/41"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.StopAffect",
+          "address": "0x1805d2ff0"
+        },
+        {
+          "index": 63145,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/62",
+            "records.json#/fieldsAndVtables/4/vtable/62",
+            "records.json#/fieldsAndVtables/5/vtable/62",
+            "records.json#/fieldsAndVtables/6/vtable/62"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.CheckAtPreCastPhase",
+          "address": "0x1805cf060"
+        },
+        {
+          "index": 63147,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/43",
+            "records.json#/fieldsAndVtables/4/vtable/43",
+            "records.json#/fieldsAndVtables/5/vtable/43",
+            "records.json#/fieldsAndVtables/6/vtable/43"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.CleanupForNextCast",
+          "address": "0x1805cf2b0"
+        },
+        {
+          "index": 63148,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/74",
+            "records.json#/fieldsAndVtables/4/vtable/74",
+            "records.json#/fieldsAndVtables/5/vtable/74",
+            "records.json#/fieldsAndVtables/6/vtable/74"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnEvent",
+          "address": "0x1805d1c90"
+        },
+        {
+          "index": 63150,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/7",
+            "records.json#/fieldsAndVtables/2/vtable/51",
+            "records.json#/fieldsAndVtables/4/vtable/7",
+            "records.json#/fieldsAndVtables/4/vtable/51",
+            "records.json#/fieldsAndVtables/5/vtable/7",
+            "records.json#/fieldsAndVtables/5/vtable/51",
+            "records.json#/fieldsAndVtables/6/vtable/7",
+            "records.json#/fieldsAndVtables/6/vtable/51"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.GatherBuffs",
+          "address": "0x1805d02a0"
+        },
+        {
+          "index": 63151,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/4",
+            "records.json#/fieldsAndVtables/2/vtable/48",
+            "records.json#/fieldsAndVtables/4/vtable/4",
+            "records.json#/fieldsAndVtables/4/vtable/48",
+            "records.json#/fieldsAndVtables/5/vtable/4",
+            "records.json#/fieldsAndVtables/5/vtable/48",
+            "records.json#/fieldsAndVtables/6/vtable/4",
+            "records.json#/fieldsAndVtables/6/vtable/48"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.GatherEffects",
+          "address": "0x1805d03c0"
+        },
+        {
+          "index": 63152,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/5",
+            "records.json#/fieldsAndVtables/2/vtable/49",
+            "records.json#/fieldsAndVtables/4/vtable/5",
+            "records.json#/fieldsAndVtables/4/vtable/49",
+            "records.json#/fieldsAndVtables/5/vtable/5",
+            "records.json#/fieldsAndVtables/5/vtable/49",
+            "records.json#/fieldsAndVtables/6/vtable/5",
+            "records.json#/fieldsAndVtables/6/vtable/49"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.GatherProjectiles",
+          "address": "0x1805d04e0"
+        },
+        {
+          "index": 63153,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/6",
+            "records.json#/fieldsAndVtables/2/vtable/50",
+            "records.json#/fieldsAndVtables/4/vtable/6",
+            "records.json#/fieldsAndVtables/4/vtable/50",
+            "records.json#/fieldsAndVtables/5/vtable/6",
+            "records.json#/fieldsAndVtables/5/vtable/50",
+            "records.json#/fieldsAndVtables/6/vtable/6",
+            "records.json#/fieldsAndVtables/6/vtable/50"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.GatherActionNodes",
+          "address": "0x1805d0180"
+        },
+        {
+          "index": 63155,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/76",
+            "records.json#/fieldsAndVtables/4/vtable/76",
+            "records.json#/fieldsAndVtables/5/vtable/76",
+            "records.json#/fieldsAndVtables/6/vtable/76"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnCastOnTarget",
+          "address": "0x1805d0fd0"
+        },
+        {
+          "index": 63156,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/77",
+            "records.json#/fieldsAndVtables/4/vtable/77",
+            "records.json#/fieldsAndVtables/5/vtable/77",
+            "records.json#/fieldsAndVtables/6/vtable/77"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.DoApplyActionsOnTarget",
+          "address": "0x1805cf360"
+        },
+        {
+          "index": 63159,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/80",
+            "records.json#/fieldsAndVtables/5/vtable/80",
+            "records.json#/fieldsAndVtables/6/vtable/80"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnWaitForTriggerDelta",
+          "address": "0x1805d2c10"
+        },
+        {
+          "index": 63160,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/81",
+            "records.json#/fieldsAndVtables/4/vtable/81",
+            "records.json#/fieldsAndVtables/5/vtable/81",
+            "records.json#/fieldsAndVtables/6/vtable/81"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnSpellStart",
+          "address": "0x1805d2360"
+        },
+        {
+          "index": 63161,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/82",
+            "records.json#/fieldsAndVtables/4/vtable/82",
+            "records.json#/fieldsAndVtables/5/vtable/82",
+            "records.json#/fieldsAndVtables/6/vtable/82"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.DoOnHasNoTarget",
+          "address": "0x1805cfb50"
+        },
+        {
+          "index": 63162,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/52"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnCastStart",
+          "address": "0x1805d16b0"
+        },
+        {
+          "index": 63163,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/53",
+            "records.json#/nativeMethods/17"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnCastEnd",
+          "address": "0x1805d0ae0"
+        },
+        {
+          "index": 63164,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/54",
+            "records.json#/fieldsAndVtables/4/vtable/54",
+            "records.json#/fieldsAndVtables/5/vtable/54",
+            "records.json#/fieldsAndVtables/6/vtable/54"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnAttached",
+          "address": "0x1805d07a0"
+        },
+        {
+          "index": 63165,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/57",
+            "records.json#/fieldsAndVtables/4/vtable/57",
+            "records.json#/fieldsAndVtables/5/vtable/57",
+            "records.json#/fieldsAndVtables/6/vtable/57"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnOverload",
+          "address": "0x1805d22b0"
+        },
+        {
+          "index": 63166,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/55",
+            "records.json#/fieldsAndVtables/4/vtable/55",
+            "records.json#/fieldsAndVtables/5/vtable/55",
+            "records.json#/fieldsAndVtables/6/vtable/55"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnDetached",
+          "address": "0x1805d19e0"
+        },
+        {
+          "index": 63167,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/83",
+            "records.json#/fieldsAndVtables/4/vtable/83",
+            "records.json#/fieldsAndVtables/5/vtable/83",
+            "records.json#/fieldsAndVtables/6/vtable/83",
+            "records.json#/nativeMethods/18"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnAttackFinished",
+          "address": "0x1805d0840"
+        },
+        {
+          "index": 63168,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/84",
+            "records.json#/fieldsAndVtables/4/vtable/84",
+            "records.json#/fieldsAndVtables/5/vtable/84",
+            "records.json#/fieldsAndVtables/6/vtable/84"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnStunnedChanged",
+          "address": "0x1805d2a20"
+        },
+        {
+          "index": 63169,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/85",
+            "records.json#/fieldsAndVtables/4/vtable/85",
+            "records.json#/fieldsAndVtables/5/vtable/85",
+            "records.json#/fieldsAndVtables/6/vtable/85"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnFrozenChanged",
+          "address": "0x1805d1f90"
+        },
+        {
+          "index": 63170,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/86",
+            "records.json#/fieldsAndVtables/4/vtable/86",
+            "records.json#/fieldsAndVtables/5/vtable/86",
+            "records.json#/fieldsAndVtables/6/vtable/86"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnLevitateChanged",
+          "address": "0x1805d2050"
+        },
+        {
+          "index": 63171,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/56",
+            "records.json#/fieldsAndVtables/4/vtable/56",
+            "records.json#/fieldsAndVtables/5/vtable/56",
+            "records.json#/fieldsAndVtables/6/vtable/56"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnTick",
+          "address": "0x1805d2ae0"
+        },
+        {
+          "index": 63172,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/87",
+            "records.json#/fieldsAndVtables/5/vtable/87",
+            "records.json#/fieldsAndVtables/6/vtable/87"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.CheckActiveBuffs",
+          "address": "0x1805cef60"
+        },
+        {
+          "index": 63173,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/88",
+            "records.json#/fieldsAndVtables/4/vtable/88",
+            "records.json#/fieldsAndVtables/5/vtable/88",
+            "records.json#/fieldsAndVtables/6/vtable/88"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.DoCastOnTargets",
+          "address": "0x1805cf450"
+        },
+        {
+          "index": 63175,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/89",
+            "records.json#/fieldsAndVtables/5/vtable/89",
+            "records.json#/fieldsAndVtables/6/vtable/89"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.UpdateTargets",
+          "address": "0x1805d33b0"
+        },
+        {
+          "index": 63176,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/90",
+            "records.json#/fieldsAndVtables/5/vtable/90",
+            "records.json#/fieldsAndVtables/6/vtable/90"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.CheckAnotherSpell",
+          "address": "0x1805ceff0"
+        },
+        {
+          "index": 63178,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/19"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.DoUpdatePlaybackSpeed",
+          "address": "0x1805cff60"
+        },
+        {
+          "index": 63179,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/91",
+            "records.json#/fieldsAndVtables/6/vtable/91"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.UpdatePlaybackSpeed",
+          "address": "0x1805d3320"
+        },
+        {
+          "index": 63180,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/92",
+            "records.json#/fieldsAndVtables/5/vtable/92",
+            "records.json#/fieldsAndVtables/6/vtable/92"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.CheckIsDamageOrHealSource",
+          "address": "0x1805cf210"
+        },
+        {
+          "index": 63181,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/93",
+            "records.json#/fieldsAndVtables/5/vtable/93",
+            "records.json#/fieldsAndVtables/6/vtable/93"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.GeneratePurposeMask",
+          "address": "0x1805d0630"
+        },
+        {
+          "index": 63182,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/94",
+            "records.json#/fieldsAndVtables/4/vtable/94",
+            "records.json#/fieldsAndVtables/5/vtable/94",
+            "records.json#/fieldsAndVtables/6/vtable/94"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.DoEmitAudioSignalForSpellOn",
+          "address": "0x1805cfa30"
+        },
+        {
+          "index": 63183,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/95",
+            "records.json#/fieldsAndVtables/4/vtable/95",
+            "records.json#/fieldsAndVtables/5/vtable/95",
+            "records.json#/fieldsAndVtables/6/vtable/95"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.DoEmitAudioSignalForCastStart",
+          "address": "0x1805cf6a0"
+        },
+        {
+          "index": 63184,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/96",
+            "records.json#/fieldsAndVtables/4/vtable/96",
+            "records.json#/fieldsAndVtables/5/vtable/96",
+            "records.json#/fieldsAndVtables/6/vtable/96"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.DoEmitAudioSignalForHit",
+          "address": "0x1805cf890"
+        },
+        {
+          "index": 63185,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/9",
+            "records.json#/fieldsAndVtables/2/vtable/61",
+            "records.json#/fieldsAndVtables/4/vtable/9",
+            "records.json#/fieldsAndVtables/4/vtable/61",
+            "records.json#/fieldsAndVtables/5/vtable/9",
+            "records.json#/fieldsAndVtables/5/vtable/61",
+            "records.json#/fieldsAndVtables/6/vtable/9",
+            "records.json#/fieldsAndVtables/6/vtable/61"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.PreloadSpecialAudioSignals",
+          "address": "0x1805d2ea0"
+        },
+        {
+          "index": 63186,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/97",
+            "records.json#/fieldsAndVtables/4/vtable/97",
+            "records.json#/fieldsAndVtables/5/vtable/97",
+            "records.json#/fieldsAndVtables/6/vtable/97"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnOutputAttackOrHeal",
+          "address": "0x1805d21e0"
+        },
+        {
+          "index": 63187,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/98",
+            "records.json#/fieldsAndVtables/4/vtable/98",
+            "records.json#/fieldsAndVtables/5/vtable/98",
+            "records.json#/fieldsAndVtables/6/vtable/98"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnOutputAttackOrHealEachSpell",
+          "address": "0x1805d2110"
+        },
+        {
+          "index": 63188,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/2/vtable/99",
+            "records.json#/fieldsAndVtables/4/vtable/99",
+            "records.json#/fieldsAndVtables/5/vtable/99",
+            "records.json#/fieldsAndVtables/6/vtable/99"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.Awake",
+          "address": "0x1805ce520"
+        },
+        {
+          "index": 63207,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/7/vtable/4",
+            "records.json#/fieldsAndVtables/8/vtable/4"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard+Behaviour.get_playbackSpeed",
+          "address": "0x1805dbf30"
+        },
+        {
+          "index": 63211,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/7/vtable/5"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard+Behaviour.Init",
+          "address": "0x1805db5e0"
+        },
+        {
+          "index": 63212,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/7/vtable/6",
+            "records.json#/fieldsAndVtables/8/vtable/6"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard+Behaviour.SetData",
+          "address": "0x1805db960"
+        },
+        {
+          "index": 63214,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/7/vtable/8",
+            "records.json#/fieldsAndVtables/8/vtable/8"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard+Behaviour.OnAttackTimeChanged",
+          "address": "0x1805db690"
+        },
+        {
+          "index": 63217,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/7/vtable/11",
+            "records.json#/fieldsAndVtables/8/vtable/11"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard+Behaviour.OnCastOnTarget",
+          "address": "0x1805db750"
+        },
+        {
+          "index": 63218,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/7/vtable/12",
+            "records.json#/fieldsAndVtables/8/vtable/12"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard+Behaviour.OnStopAffect",
+          "address": "0x1805db810"
+        },
+        {
+          "index": 63219,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/7/vtable/13",
+            "records.json#/fieldsAndVtables/8/vtable/13"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard+Behaviour.OnTick",
+          "address": "0x1805db870"
+        },
+        {
+          "index": 63221,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/7/vtable/15",
+            "records.json#/fieldsAndVtables/8/vtable/15"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard+Behaviour.PreloadSpecialAudioSignals",
+          "address": "0x1805db8d0"
+        },
+        {
+          "index": 63231,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/20",
+            "records.json#/cooldownFinishFindings/methods/normalFinish"
+          ],
+          "fullname": "AbilityStandard.<_DoCast>d__85.MoveNext",
+          "address": "0x1805e3dd0"
+        },
+        {
+          "index": 63793,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/5"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.get_color",
+          "address": "0x180613af0"
+        },
+        {
+          "index": 63794,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/6"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.set_color",
+          "address": "0x180613ed0"
+        },
+        {
+          "index": 63798,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/22"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.get_skinHooker",
+          "address": "0x180613c60"
+        },
+        {
+          "index": 63807,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/55"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.get_useNewSpineFormat",
+          "address": "0x180613df0"
+        },
+        {
+          "index": 63809,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/23"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.Init",
+          "address": "0x18060ddb0"
+        },
+        {
+          "index": 63815,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/25"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.Stop",
+          "address": "0x1806102b0"
+        },
+        {
+          "index": 63816,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/47"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.DoResetColor",
+          "address": "0x18060c570"
+        },
+        {
+          "index": 63817,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/28"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.OnReset",
+          "address": "0x18060e490"
+        },
+        {
+          "index": 63818,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/42"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.GetCurrentAniState",
+          "address": "0x18060d1e0"
+        },
+        {
+          "index": 63820,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/27"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.UpdateTimeScale",
+          "address": "0x180611b40"
+        },
+        {
+          "index": 63821,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/43"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.PlayAnimationInternal",
+          "address": "0x18060f030"
+        },
+        {
+          "index": 63822,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/44"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.ContainsAnimationInternal",
+          "address": "0x18060c470"
+        },
+        {
+          "index": 63823,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/45"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.GetAnimationTimeInternal",
+          "address": "0x18060cf70"
+        },
+        {
+          "index": 63824,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/46",
+            "records.json#/nativeMethods/21"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.GetAnimationTimeInternal",
+          "address": "0x18060d050"
+        },
+        {
+          "index": 63825,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/35"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.OnTakeDamage",
+          "address": "0x18060e7f0"
+        },
+        {
+          "index": 63826,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/29"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.OnFinish",
+          "address": "0x18060e2e0"
+        },
+        {
+          "index": 63827,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/30",
+            "records.json#/nativeMethods/22",
+            "records.json#/frameOrderFindings/confirmedOrder/5"
+          ],
+          "fullname": "SpineAnimator.OnTick",
+          "address": "0x18060ec30"
+        },
+        {
+          "index": 63828,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/23",
+            "records.json#/frameOrderFindings/confirmedOrder/5/steps/1",
+            "records.json#/frameOrderFindings/confirmedOrder/6"
+          ],
+          "fullname": "SpineAnimator._TickSpineManually",
+          "address": "0x1806131a0"
+        },
+        {
+          "index": 63831,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/31"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.OnUnitPostInit",
+          "address": "0x18060eda0"
+        },
+        {
+          "index": 63832,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/38"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.TryHookEffect",
+          "address": "0x180610f20"
+        },
+        {
+          "index": 63833,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/40"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.TryHookAudio",
+          "address": "0x180610ce0"
+        },
+        {
+          "index": 63834,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/41"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.TryHookProjectile",
+          "address": "0x180611040"
+        },
+        {
+          "index": 63835,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/4"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.GatherEffects",
+          "address": "0x18060ca00"
+        },
+        {
+          "index": 63837,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/50"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.GatherProjectiles",
+          "address": "0x18060cb30"
+        },
+        {
+          "index": 63838,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/49"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.Awake",
+          "address": "0x18060c2e0"
+        },
+        {
+          "index": 63839,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/51"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.OnPrefabUpdated",
+          "address": "0x18060e430"
+        },
+        {
+          "index": 63840,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/24"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.PlayAnimation",
+          "address": "0x18060f200"
+        },
+        {
+          "index": 63842,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/59"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.SetSpineSkinInternal",
+          "address": "0x180610000"
+        },
+        {
+          "index": 63843,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/60"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.GetAnimationData",
+          "address": "0x18060ce90"
+        },
+        {
+          "index": 63846,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/61"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.InitAnimationDataIfNot",
+          "address": "0x18060d860"
+        },
+        {
+          "index": 63847,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/62"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.UpdateAnimationData",
+          "address": "0x1806114a0"
+        },
+        {
+          "index": 63848,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/63"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.UpdateSpineSkinData",
+          "address": "0x1806118d0"
+        },
+        {
+          "index": 63852,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/64"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.InitShaders",
+          "address": "0x18060db10"
+        },
+        {
+          "index": 63853,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/65"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.ReplaceShader",
+          "address": "0x180609740"
+        },
+        {
+          "index": 63856,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/66"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.UpdateBaseline",
+          "address": "0x180611770"
+        },
+        {
+          "index": 63857,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/67"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.GetBakeMountPoint",
+          "address": "0x18060d130"
+        },
+        {
+          "index": 63858,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/68"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.InitSkeletonAnimation",
+          "address": "0x18060dbc0"
+        },
+        {
+          "index": 63862,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/48"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.DoUpdateFaceSign",
+          "address": "0x18060c650"
+        },
+        {
+          "index": 63866,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/25"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator._OnEvent",
+          "address": "0x180612690"
+        },
+        {
+          "index": 63870,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/71"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.TryGetSpinePrefix",
+          "address": "0x180610c60"
+        },
+        {
+          "index": 63872,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/72"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.ReplaceAnimNameForActiveFace",
+          "address": "0x18060f670"
+        },
+        {
+          "index": 63873,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/73"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.GetAnimNameForFace",
+          "address": "0x18060ccc0"
+        },
+        {
+          "index": 63874,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/74"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.GetSyncTargetAnimName",
+          "address": "0x18060d7f0"
+        },
+        {
+          "index": 63895,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/9/vtable/3"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator+AnimationData.ToString",
+          "address": "0x180600b00"
+        },
+        {
+          "index": 64014,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/7"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.get_emissionColor",
+          "address": "0x1806190d0"
+        },
+        {
+          "index": 64015,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/8"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.set_emissionColor",
+          "address": "0x180619460"
+        },
+        {
+          "index": 64016,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/9"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.get_faceSign",
+          "address": "0x180609800"
+        },
+        {
+          "index": 64017,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/10"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.get_faceToBack",
+          "address": "0x1806191e0"
+        },
+        {
+          "index": 64018,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/11"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.get_faceToDown",
+          "address": "0x180616300"
+        },
+        {
+          "index": 64019,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/12"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.get_faceLOrR",
+          "address": "0x180619150"
+        },
+        {
+          "index": 64020,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/13"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.get_meshRenderer",
+          "address": "0x1806098c0"
+        },
+        {
+          "index": 64021,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/14"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.get_meshFilter",
+          "address": "0x180609860"
+        },
+        {
+          "index": 64026,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/18"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.get_graphicFootTransform",
+          "address": "0x180619240"
+        },
+        {
+          "index": 64035,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/24"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.EnableVisualPart",
+          "address": "0x180617c10"
+        },
+        {
+          "index": 64037,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/26"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.SyncFrom",
+          "address": "0x1806097a0"
+        },
+        {
+          "index": 64042,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/26",
+            "records.json#/frameOrderFindings/confirmedOrder/5/steps/0"
+          ],
+          "fullname": "UnitAnimator.OnTick",
+          "address": "0x1806188c0"
+        },
+        {
+          "index": 64044,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/32"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.OnGameOver",
+          "address": "0x180618690"
+        },
+        {
+          "index": 64050,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/33"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.TryLoadEffectOverrideMap",
+          "address": "0x180618ff0"
+        },
+        {
+          "index": 64053,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/36"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.ApplyDummyRenderState",
+          "address": "0x180607a10"
+        },
+        {
+          "index": 64054,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/37"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.GetMountPoint",
+          "address": "0x1806096d0"
+        },
+        {
+          "index": 64056,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/3/vtable/39"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.TryIgnoreEffect",
+          "address": "0x180618f80"
+        },
+        {
+          "index": 64149,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/27"
+          ],
+          "fullname": "Torappu.Battle.AsyncUtil+<WaitForFixedSeconds>d__0.MoveNext",
+          "address": "0x180661350"
+        },
+        {
+          "index": 64179,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/28"
+          ],
+          "fullname": "Torappu.Battle.AsyncUtil+<WaitForFixedSeconds>d__5.MoveNext",
+          "address": "0x1806614a0"
+        },
+        {
+          "index": 64230,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/29",
+            "records.json#/frameOrderFindings/confirmedOrder/0/steps/1"
+          ],
+          "fullname": "CoroutineSimulator.SimulateTick",
+          "address": "0x18065d0a0"
+        },
+        {
+          "index": 64232,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/30"
+          ],
+          "fullname": "Torappu.Battle.CoroutineSimulator.StartCoroutine",
+          "address": "0x18065d200"
+        },
+        {
+          "index": 64245,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/31"
+          ],
+          "fullname": "Torappu.Battle.CoroutineSimulator+RuntimeHandler.MoveNext",
+          "address": "0x18065ff70"
+        },
+        {
+          "index": 64441,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/32"
+          ],
+          "fullname": "Torappu.Battle.BattleController.get_isDeterministic",
+          "address": "0x180642080"
+        },
+        {
+          "index": 64442,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/33"
+          ],
+          "fullname": "Torappu.Battle.BattleController.set_isDeterministic",
+          "address": "0x180644c20"
+        },
+        {
+          "index": 64743,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/34",
+            "records.json#/frameOrderFindings/coroutineDispatch/start"
+          ],
+          "fullname": "BattleController.StartBattleCoroutine",
+          "address": "0x180633110"
+        },
+        {
+          "index": 64825,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/35",
+            "records.json#/frameOrderFindings/confirmedOrder/0"
+          ],
+          "fullname": "BattleController.OnTick",
+          "address": "0x18062c440"
+        },
+        {
+          "index": 64834,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/36"
+          ],
+          "fullname": ".cctor",
+          "address": "0x18063ef40"
+        },
+        {
+          "index": 64927,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/37"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateAttackInterval",
+          "address": "0x180656a50"
+        },
+        {
+          "index": 66697,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/38",
+            "records.json#/frameOrderFindings/confirmedOrder/2"
+          ],
+          "fullname": "Entity.OnTick",
+          "address": "0x1806fadf0"
+        },
+        {
+          "index": 71077,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/39",
+            "records.json#/frameOrderFindings/confirmedOrder/0/steps/0",
+            "records.json#/frameOrderFindings/confirmedOrder/1"
+          ],
+          "fullname": "ObjectManager.OnFixedUpdate",
+          "address": "0x1808d5300"
+        },
+        {
+          "index": 71078,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/40",
+            "records.json#/frameOrderFindings/confirmedOrder/0/steps/2",
+            "records.json#/frameOrderFindings/confirmedOrder/3"
+          ],
+          "fullname": "ObjectManager.OnLateFixedUpdate",
+          "address": "0x1808d54d0"
+        },
+        {
+          "index": 76035,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/41"
+          ],
+          "fullname": "Torappu.Battle.Character.OnAttributeDirty",
+          "address": "0x180a2c850"
+        },
+        {
+          "index": 76192,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/42"
+          ],
+          "fullname": "Torappu.Battle.Character+States+AttackState.OnEnter",
+          "address": "0x180a64d30"
+        },
+        {
+          "index": 76195,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/43"
+          ],
+          "fullname": "Torappu.Battle.Character+States+AttackState._NextAttackOrExit",
+          "address": "0x180a65870"
+        },
+        {
+          "index": 76482,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/44"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnAttributeDirty",
+          "address": "0x180a6f7f0"
+        },
+        {
+          "index": 76662,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/45"
+          ],
+          "fullname": "Torappu.Battle.Enemy+States+AttackState.OnTick",
+          "address": "0x180a85990"
+        },
+        {
+          "index": 76663,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/46"
+          ],
+          "fullname": "Torappu.Battle.Enemy+States+AttackState.OnExit",
+          "address": "0x180a85850"
+        },
+        {
+          "index": 76699,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/47"
+          ],
+          "fullname": "Torappu.Battle.Enemy+States+CombatState.OnTick",
+          "address": "0x180a89650"
+        },
+        {
+          "index": 76878,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/48"
+          ],
+          "fullname": "Torappu.Battle.Enemy+CombatWrapper.NextCombatOrExit",
+          "address": "0x180a8a090"
+        },
+        {
+          "index": 76880,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/49"
+          ],
+          "fullname": "Torappu.Battle.Enemy+CombatWrapper.CombatFinishCallback",
+          "address": "0x180a89d40"
+        },
+        {
+          "index": 77642,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/50"
+          ],
+          "fullname": "Torappu.Battle.Unit.UpdateAnimPlaybackSpeed",
+          "address": "0x180acea30"
+        },
+        {
+          "index": 77700,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/51",
+            "records.json#/frameOrderFindings/confirmedOrder/4"
+          ],
+          "fullname": "Unit.OnLateTick",
+          "address": "0x180acacf0"
+        },
+        {
+          "index": 77706,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/52"
+          ],
+          "fullname": "Torappu.Battle.Unit.OnAttributeDirty",
+          "address": "0x180ac9c50"
+        },
+        {
+          "index": 90301,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/103"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_attackType",
+          "address": "0x180e9b430"
+        },
+        {
+          "index": 90302,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/104"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_useDynamicAttackType",
+          "address": "0x180e9b5c0"
+        },
+        {
+          "index": 90310,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/92"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.CheckIsDamageOrHealSource",
+          "address": "0x180e9a5a0"
+        },
+        {
+          "index": 90311,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/93"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.GeneratePurposeMask",
+          "address": "0x180e9add0"
+        },
+        {
+          "index": 90313,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/53"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.OnCastEnd",
+          "address": "0x180e9ae30"
+        },
+        {
+          "index": 90322,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/17"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ChannelingMeleeAttack.get_cooldown",
+          "address": "0x180e9ef70"
+        },
+        {
+          "index": 90323,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/71"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ChannelingMeleeAttack.get_onlyTrigAudioSignalForFirstSpell",
+          "address": "0x180e9efd0"
+        },
+        {
+          "index": 90324,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/27",
+            "records.json#/nativeMethods/53"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ChannelingMeleeAttack.DoSetData",
+          "address": "0x180e9ea20"
+        },
+        {
+          "index": 90325,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/90",
+            "records.json#/nativeMethods/54"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ChannelingMeleeAttack.CheckAnotherSpell",
+          "address": "0x180e9e8f0"
+        },
+        {
+          "index": 90326,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/80"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ChannelingMeleeAttack.OnWaitForTriggerDelta",
+          "address": "0x180e9ecd0"
+        },
+        {
+          "index": 90327,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/100"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ChannelingMeleeAttack.get_preDelay",
+          "address": "0x180e9f030"
+        },
+        {
+          "index": 90328,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/102",
+            "records.json#/nativeMethods/55"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ChannelingMeleeAttack.GetDuration",
+          "address": "0x180e9ebe0"
+        },
+        {
+          "index": 90329,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/52",
+            "records.json#/nativeMethods/56"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ChannelingMeleeAttack.OnCastStart",
+          "address": "0x180e9ec40"
+        },
+        {
+          "index": 90330,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/39"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ChannelingMeleeAttack.UpdateCooldown",
+          "address": "0x180e9ee30"
+        },
+        {
+          "index": 90343,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/57"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ChannelingMeleeAttack+<OnWaitForTriggerDelta>d__14.MoveNext",
+          "address": "0x180eb1d50"
+        },
+        {
+          "index": 90347,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/23"
+          ],
+          "fullname": "Torappu.Battle.Abilities.MeleeAttack.get_applyWay",
+          "address": "0x180eac120"
+        },
+        {
+          "index": 90348,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/112"
+          ],
+          "fullname": "Torappu.Battle.Abilities.MeleeAttack.get_damageType",
+          "address": "0x180eac180"
+        },
+        {
+          "index": 90349,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/113"
+          ],
+          "fullname": "Torappu.Battle.Abilities.MeleeAttack.get_extraDamageType",
+          "address": "0x180eac1e0"
+        },
+        {
+          "index": 90350,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/75"
+          ],
+          "fullname": "Torappu.Battle.Abilities.MeleeAttack.GetEventActions",
+          "address": "0x180eabbd0"
+        },
+        {
+          "index": 90351,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/87"
+          ],
+          "fullname": "Torappu.Battle.Abilities.MeleeAttack.CheckActiveBuffs",
+          "address": "0x180eab8e0"
+        },
+        {
+          "index": 90352,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/46"
+          ],
+          "fullname": "Torappu.Battle.Abilities.MeleeAttack.GetProjectileActions",
+          "address": "0x180eabc50"
+        },
+        {
+          "index": 90354,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/89"
+          ],
+          "fullname": "Torappu.Battle.Abilities.MeleeAttack.UpdateTargets",
+          "address": "0x180eabd10"
+        },
+        {
+          "index": 90703,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/58"
+          ],
+          "fullname": "Torappu.Battle.Abilities.MultiRangedAttack.DoSetData",
+          "address": "0x180ebd340"
+        },
+        {
+          "index": 90753,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/59"
+          ],
+          "fullname": "Torappu.Battle.Abilities.MultiRangedAttack+<OnWaitForTriggerDelta>d__53.MoveNext",
+          "address": "0x180ec7090"
+        },
+        {
+          "index": 91763,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/13",
+            "records.json#/fieldsAndVtables/5/vtable/13"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.get_affectedBySlowDown",
+          "address": "0x180f00d50"
+        },
+        {
+          "index": 91769,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/5/vtable/103"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.get_attackType",
+          "address": "0x180f00ee0"
+        },
+        {
+          "index": 91770,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/5/vtable/104"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.get_useDynamicAttackType",
+          "address": "0x180f016c0"
+        },
+        {
+          "index": 91771,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/21",
+            "records.json#/fieldsAndVtables/5/vtable/21"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.get_canSelectCamouflageTarget",
+          "address": "0x180f00f40"
+        },
+        {
+          "index": 91772,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/68",
+            "records.json#/fieldsAndVtables/5/vtable/68"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.get_selectTargetSource",
+          "address": "0x180f01540"
+        },
+        {
+          "index": 91773,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/69",
+            "records.json#/fieldsAndVtables/5/vtable/69"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.get_selectTargetTiming",
+          "address": "0x180f015a0"
+        },
+        {
+          "index": 91774,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/70",
+            "records.json#/fieldsAndVtables/5/vtable/70"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.get_alwaysIncludeTarget",
+          "address": "0x180f00e20"
+        },
+        {
+          "index": 91776,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/18",
+            "records.json#/fieldsAndVtables/5/vtable/18"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.get_allowNoTarget",
+          "address": "0x180f00db0"
+        },
+        {
+          "index": 91777,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/5/vtable/100"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.get_preDelay",
+          "address": "0x180f014e0"
+        },
+        {
+          "index": 91778,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/22",
+            "records.json#/fieldsAndVtables/5/vtable/22"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.get_escapeTime",
+          "address": "0x180f012d0"
+        },
+        {
+          "index": 91779,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/14",
+            "records.json#/fieldsAndVtables/5/vtable/14"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.get_category",
+          "address": "0x180f00ff0"
+        },
+        {
+          "index": 91780,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/5/vtable/17",
+            "records.json#/nativeMethods/60"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.get_cooldown",
+          "address": "0x180f01050"
+        },
+        {
+          "index": 91781,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/26",
+            "records.json#/fieldsAndVtables/5/vtable/26"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.get_ignorePalsyInterrupt",
+          "address": "0x180f013c0"
+        },
+        {
+          "index": 91782,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/58",
+            "records.json#/fieldsAndVtables/5/vtable/58",
+            "records.json#/nativeMethods/61"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.OnAttackTimeChanged",
+          "address": "0x180f00070"
+        },
+        {
+          "index": 91783,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/59",
+            "records.json#/fieldsAndVtables/5/vtable/59"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.OnSlowDownChanged",
+          "address": "0x180f006b0"
+        },
+        {
+          "index": 91784,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/62"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.ApplyAttackTime",
+          "address": "0x180eff130"
+        },
+        {
+          "index": 91785,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/45",
+            "records.json#/fieldsAndVtables/5/vtable/45"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.GetActiveBuffs",
+          "address": "0x180effa80"
+        },
+        {
+          "index": 91786,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/44",
+            "records.json#/fieldsAndVtables/5/vtable/44"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.GetPassiveBuffs",
+          "address": "0x180effc40"
+        },
+        {
+          "index": 91787,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/30",
+            "records.json#/fieldsAndVtables/5/vtable/30"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.DoAttach",
+          "address": "0x180eff930"
+        },
+        {
+          "index": 91788,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/5/vtable/52",
+            "records.json#/nativeMethods/63"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.OnCastStart",
+          "address": "0x180f00580"
+        },
+        {
+          "index": 91789,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/105",
+            "records.json#/fieldsAndVtables/5/vtable/105"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.DealWithFaceDirection",
+          "address": "0x180eff660"
+        },
+        {
+          "index": 91790,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/5/vtable/53",
+            "records.json#/nativeMethods/64"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.OnCastEnd",
+          "address": "0x180f001f0"
+        },
+        {
+          "index": 91791,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/106",
+            "records.json#/fieldsAndVtables/5/vtable/106"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.CreateDamageNode",
+          "address": "0x180eff450"
+        },
+        {
+          "index": 91792,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/107",
+            "records.json#/fieldsAndVtables/5/vtable/107"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.NewDamageNode",
+          "address": "0x180effe20"
+        },
+        {
+          "index": 91793,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/108",
+            "records.json#/fieldsAndVtables/5/vtable/108"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.CreateElementDamageNode",
+          "address": "0x180eff520"
+        },
+        {
+          "index": 91797,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/5/vtable/102",
+            "records.json#/nativeMethods/65"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.GetDuration",
+          "address": "0x180effbe0"
+        },
+        {
+          "index": 91798,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/91",
+            "records.json#/fieldsAndVtables/5/vtable/91",
+            "records.json#/nativeMethods/66"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.UpdatePlaybackSpeed",
+          "address": "0x180f00820"
+        },
+        {
+          "index": 91799,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/109",
+            "records.json#/fieldsAndVtables/5/vtable/109"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.GetAnimKey",
+          "address": "0x180effae0"
+        },
+        {
+          "index": 91800,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/110",
+            "records.json#/fieldsAndVtables/5/vtable/110"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.CheckDownAttack",
+          "address": "0x180eff290"
+        },
+        {
+          "index": 91801,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/111",
+            "records.json#/fieldsAndVtables/5/vtable/111"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.CheckUpAttack",
+          "address": "0x180eff390"
+        },
+        {
+          "index": 91845,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/101",
+            "records.json#/fieldsAndVtables/5/vtable/101",
+            "records.json#/fieldsAndVtables/6/vtable/101",
+            "records.json#/nativeMethods/67"
+          ],
+          "fullname": "Torappu.Battle.Abilities.EasyToStartAbility.get_postDelay",
+          "address": "0x180f0c300"
+        },
+        {
+          "index": 91846,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/6/vtable/52",
+            "records.json#/nativeMethods/68"
+          ],
+          "fullname": "Torappu.Battle.Abilities.EasyToStartAbility.OnCastStart",
+          "address": "0x180f0bba0"
+        },
+        {
+          "index": 91847,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/6/vtable/53",
+            "records.json#/nativeMethods/69"
+          ],
+          "fullname": "Torappu.Battle.Abilities.EasyToStartAbility.OnCastEnd",
+          "address": "0x180f0bb00"
+        },
+        {
+          "index": 91849,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/78",
+            "records.json#/fieldsAndVtables/5/vtable/78",
+            "records.json#/fieldsAndVtables/6/vtable/78"
+          ],
+          "fullname": "Torappu.Battle.Abilities.EasyToStartAbility.OnWaitForPreDelay",
+          "address": "0x180f0bce0"
+        },
+        {
+          "index": 91850,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/4/vtable/79",
+            "records.json#/fieldsAndVtables/5/vtable/79",
+            "records.json#/fieldsAndVtables/6/vtable/79"
+          ],
+          "fullname": "Torappu.Battle.Abilities.EasyToStartAbility.OnWaitForPostDelay",
+          "address": "0x180f0bc30"
+        },
+        {
+          "index": 91852,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/70",
+            "records.json#/cooldownFinishFindings/methods/frameCorrection"
+          ],
+          "fullname": "EasyToStartAbility._CheckNeedResetCooldown",
+          "address": "0x180f0bee0"
+        },
+        {
+          "index": 91862,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/71"
+          ],
+          "fullname": "Torappu.Battle.Abilities.EasyToStartAbility+<WaitForNextEvent>d__15.MoveNext",
+          "address": "0x180f0f6b0"
+        },
+        {
+          "index": 91868,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/72"
+          ],
+          "fullname": "Torappu.Battle.Abilities.EasyToStartAbility+<OnWaitForPreDelay>d__16.MoveNext",
+          "address": "0x180f0eee0"
+        },
+        {
+          "index": 91874,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/73"
+          ],
+          "fullname": "Torappu.Battle.Abilities.EasyToStartAbility+<OnWaitForPostDelay>d__17.MoveNext",
+          "address": "0x180f0e870"
+        },
+        {
+          "index": 94049,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/7/vtable/10"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ThreePartChannelingAnimation.OnEvent",
+          "address": "0x180f807c0"
+        },
+        {
+          "index": 94050,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/7/vtable/7"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ThreePartChannelingAnimation.OnCastStart",
+          "address": "0x180f804c0"
+        },
+        {
+          "index": 94054,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/7/vtable/9"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ThreePartChannelingAnimation.OnCastFinish",
+          "address": "0x180f802b0"
+        },
+        {
+          "index": 94055,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/7/vtable/14",
+            "records.json#/nativeMethods/74"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ThreePartChannelingAnimation.UpdatePlaybackSpeed",
+          "address": "0x180f80860"
+        },
+        {
+          "index": 94068,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/75"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ThreePartChannelingAnimation+<DoPlayAnimation>d__43.MoveNext",
+          "address": "0x180f82700"
+        },
+        {
+          "index": 94072,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/8/vtable/5"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ThreePartOneshotAnimation.Init",
+          "address": "0x180f81710"
+        },
+        {
+          "index": 94073,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/8/vtable/10"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ThreePartOneshotAnimation.OnEvent",
+          "address": "0x180f81b70"
+        },
+        {
+          "index": 94074,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/8/vtable/7",
+            "records.json#/nativeMethods/76"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ThreePartOneshotAnimation.OnCastStart",
+          "address": "0x180f81880"
+        },
+        {
+          "index": 94075,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/8/vtable/9",
+            "records.json#/nativeMethods/77"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ThreePartOneshotAnimation.OnCastFinish",
+          "address": "0x180f81800"
+        },
+        {
+          "index": 94076,
+          "mode": "disasm",
+          "records": [
+            "records.json#/fieldsAndVtables/8/vtable/14",
+            "records.json#/nativeMethods/78"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ThreePartOneshotAnimation.UpdatePlaybackSpeed",
+          "address": "0x180f81c00"
+        },
+        {
+          "index": 94078,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/79"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ThreePartOneshotAnimation.InitAnimation",
+          "address": "0x180f81460"
+        },
+        {
+          "index": 94090,
+          "mode": "disasm",
+          "records": [
+            "records.json#/nativeMethods/80"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ThreePartOneshotAnimation+<DoPlayAnimation>d__21.MoveNext",
+          "address": "0x180f824e0"
+        },
+        {
+          "index": 242634,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/0/vtable/0",
+            "records.json#/fieldsAndVtables/9/vtable/0"
+          ],
+          "fullname": "System.Object.Equals"
+        },
+        {
+          "index": 242637,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/0/vtable/1",
+            "records.json#/fieldsAndVtables/1/vtable/1",
+            "records.json#/fieldsAndVtables/2/vtable/1",
+            "records.json#/fieldsAndVtables/3/vtable/1",
+            "records.json#/fieldsAndVtables/4/vtable/1",
+            "records.json#/fieldsAndVtables/5/vtable/1",
+            "records.json#/fieldsAndVtables/6/vtable/1",
+            "records.json#/fieldsAndVtables/7/vtable/1",
+            "records.json#/fieldsAndVtables/8/vtable/1",
+            "records.json#/fieldsAndVtables/9/vtable/1"
+          ],
+          "fullname": "System.Object.Finalize"
+        },
+        {
+          "index": 242638,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/0/vtable/2",
+            "records.json#/fieldsAndVtables/9/vtable/2"
+          ],
+          "fullname": "System.Object.GetHashCode"
+        },
+        {
+          "index": 242641,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/0/vtable/3"
+          ],
+          "fullname": "System.Object.ToString"
+        },
+        {
+          "index": 282923,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/2",
+            "records.json#/fieldsAndVtables/2/vtable/2",
+            "records.json#/fieldsAndVtables/3/vtable/2",
+            "records.json#/fieldsAndVtables/4/vtable/2",
+            "records.json#/fieldsAndVtables/5/vtable/2",
+            "records.json#/fieldsAndVtables/6/vtable/2",
+            "records.json#/fieldsAndVtables/7/vtable/2",
+            "records.json#/fieldsAndVtables/8/vtable/2"
+          ],
+          "fullname": "UnityEngine.Object.GetHashCode"
+        },
+        {
+          "index": 282924,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/0",
+            "records.json#/fieldsAndVtables/2/vtable/0",
+            "records.json#/fieldsAndVtables/3/vtable/0",
+            "records.json#/fieldsAndVtables/4/vtable/0",
+            "records.json#/fieldsAndVtables/5/vtable/0",
+            "records.json#/fieldsAndVtables/6/vtable/0",
+            "records.json#/fieldsAndVtables/7/vtable/0",
+            "records.json#/fieldsAndVtables/8/vtable/0"
+          ],
+          "fullname": "UnityEngine.Object.Equals"
+        },
+        {
+          "index": 282975,
+          "mode": "metadata",
+          "records": [
+            "records.json#/fieldsAndVtables/1/vtable/3",
+            "records.json#/fieldsAndVtables/2/vtable/3",
+            "records.json#/fieldsAndVtables/3/vtable/3",
+            "records.json#/fieldsAndVtables/4/vtable/3",
+            "records.json#/fieldsAndVtables/5/vtable/3",
+            "records.json#/fieldsAndVtables/6/vtable/3",
+            "records.json#/fieldsAndVtables/7/vtable/3",
+            "records.json#/fieldsAndVtables/8/vtable/3"
+          ],
+          "fullname": "UnityEngine.Object.ToString"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Abilities.AbstractAnimatedAbility",
+          "records": [
+            "records.json#/fieldsAndVtables/5"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.ChannelingMeleeAttack",
+          "records": [
+            "records.json#/fieldsAndVtables/4"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.EasyToStartAbility",
+          "records": [
+            "records.json#/fieldsAndVtables/6"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.ThreePartChannelingAnimation",
+          "records": [
+            "records.json#/fieldsAndVtables/7"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.ThreePartOneshotAnimation",
+          "records": [
+            "records.json#/fieldsAndVtables/8"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Ability",
+          "records": [
+            "records.json#/fieldsAndVtables/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.AbilityStandard",
+          "records": [
+            "records.json#/fieldsAndVtables/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.SpineAnimator",
+          "records": [
+            "records.json#/fieldsAndVtables/3"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.SpineAnimator+AnimationData",
+          "records": [
+            "records.json#/fieldsAndVtables/9"
+          ]
+        },
+        {
+          "name": "Torappu.PeriodicTimer",
+          "records": [
+            "records.json#/fieldsAndVtables/0"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_103_angel.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_103_angel.ab",
+          "sha256": "52757dbf52cd1f3ffe29e03ea146955af7da3788fa97bdcfaf35187c2c906adb",
+          "records": [
+            "records.json#/prefabComponents/0",
+            "records.json#/prefabComponents/1",
+            "records.json#/prefabComponents/2",
+            "records.json#/prefabComponents/3"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_208_melan.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_208_melan.ab",
+          "sha256": "32446ee23b658ceb09d4c0747f8b27957524c45a5ba5e36836bbbd2acc2c854d",
+          "records": [
+            "records.json#/prefabComponents/4",
+            "records.json#/prefabComponents/5",
+            "records.json#/prefabComponents/6"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_213_mostma.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_213_mostma.ab",
+          "sha256": "421afe8c34437a2bf9457c468eef40dac8117dbd226bc090614b4b7492027bc6",
+          "records": [
+            "records.json#/prefabComponents/7",
+            "records.json#/prefabComponents/8",
+            "records.json#/prefabComponents/9",
+            "records.json#/prefabComponents/10"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_291_aglina.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_291_aglina.ab",
+          "sha256": "5228ba7a2293a9a5c5767921453a851bbd2394deb5571e79803c337fc2945ec6",
+          "records": [
+            "records.json#/prefabComponents/11",
+            "records.json#/prefabComponents/12",
+            "records.json#/prefabComponents/13",
+            "records.json#/prefabComponents/14",
+            "records.json#/prefabComponents/15",
+            "records.json#/prefabComponents/16",
+            "records.json#/prefabComponents/17",
+            "records.json#/prefabComponents/18",
+            "records.json#/prefabComponents/19",
+            "records.json#/prefabComponents/20"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_311_mudrok.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_311_mudrok.ab",
+          "sha256": "e7b4cce4588800b5a467fc4db9f38fefb6aeedc0ebc8c9f23d66f3f1f213a55f",
+          "records": [
+            "records.json#/prefabComponents/21",
+            "records.json#/prefabComponents/22",
+            "records.json#/prefabComponents/23",
+            "records.json#/prefabComponents/24"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "14306a31b1856f61b25812a69a2a057b7c4634561fb2c2bccc42fb37ee41a27e",
+          "records": [
+            "records.json#/prefabComponents/25",
+            "records.json#/prefabComponents/26",
+            "records.json#/prefabComponents/27",
+            "records.json#/prefabComponents/28",
+            "records.json#/prefabComponents/29",
+            "records.json#/prefabComponents/30",
+            "records.json#/prefabComponents/31",
+            "records.json#/prefabComponents/32",
+            "records.json#/prefabComponents/33",
+            "records.json#/prefabComponents/34",
+            "records.json#/prefabComponents/35",
+            "records.json#/prefabComponents/36",
+            "records.json#/prefabComponents/37",
+            "records.json#/prefabComponents/38",
+            "records.json#/prefabComponents/39",
+            "records.json#/prefabComponents/40",
+            "records.json#/prefabComponents/41",
+            "records.json#/prefabComponents/42",
+            "records.json#/prefabComponents/43",
+            "records.json#/prefabComponents/44",
+            "records.json#/prefabComponents/45",
+            "records.json#/prefabComponents/46",
+            "records.json#/prefabComponents/47",
+            "records.json#/prefabComponents/48",
+            "records.json#/prefabComponents/49",
+            "records.json#/prefabComponents/50",
+            "records.json#/prefabComponents/51",
+            "records.json#/prefabComponents/52"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "sha256": "da7e5c5fd620eac9b7020f143423285b87eea861a0b6cf6534142db7dcf06b5b",
+          "records": [
+            "records.json#/enemyComponents"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/88b3c3ecaaefa6003de730686dd5ac53.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/88b3c3ecaaefa6003de730686dd5ac53.bin",
+          "sha256": "eb1f2d8339c466192624c42dbb0ab986efa38517e8aca22fd54b5737d78908f3",
+          "records": [
+            "records.json#/monoScriptMapping"
+          ]
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

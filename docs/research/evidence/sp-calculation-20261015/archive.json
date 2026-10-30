@@ -1,0 +1,350 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-15"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "records.json#/client"
+        ]
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "records.json#/client"
+        ]
+      }
+    },
+    "sourceRecords": [
+      "records.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "records.json",
+        "kind": "record",
+        "bytes": 275151,
+        "sha256": "71bef31d860a6add1d37129c2e473d660e3df91250ea8e6d0f81dabed9610541"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 25972,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/0"
+          ],
+          "fullname": "Torappu.PeriodicTimer.Reset",
+          "address": "0x181e04840"
+        },
+        {
+          "index": 25973,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/1"
+          ],
+          "fullname": "Torappu.PeriodicTimer.Reset",
+          "address": "0x181e04750"
+        },
+        {
+          "index": 25974,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/2"
+          ],
+          "fullname": "Torappu.PeriodicTimer.ResetButKeepPastTime",
+          "address": "0x181e044e0"
+        },
+        {
+          "index": 25976,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/3"
+          ],
+          "fullname": "Torappu.PeriodicTimer.MarkInvalid",
+          "address": "0x181e04430"
+        },
+        {
+          "index": 25987,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/4"
+          ],
+          "fullname": "Torappu.PrecisePeriodicTimer.UpdateMultiple",
+          "address": "0x181e056c0"
+        },
+        {
+          "index": 63186,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/5"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnOutputAttackOrHeal",
+          "address": "0x1805d21e0"
+        },
+        {
+          "index": 63187,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/6"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnOutputAttackOrHealEachSpell",
+          "address": "0x1805d2110"
+        },
+        {
+          "index": 64276,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/7"
+          ],
+          "fullname": "Torappu.Battle.Attributes.GetValue",
+          "address": "0x1806499a0"
+        },
+        {
+          "index": 64295,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/8"
+          ],
+          "fullname": "Torappu.Battle.Attributes._CalculateAttributeValue",
+          "address": "0x18064ad80"
+        },
+        {
+          "index": 66409,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/9"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_canRecoverSp",
+          "address": "0x180702490"
+        },
+        {
+          "index": 66477,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/10"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_spRecoveryPerSec",
+          "address": "0x180708750"
+        },
+        {
+          "index": 66497,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/11"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_spRecoverStopped",
+          "address": "0x1807086b0"
+        },
+        {
+          "index": 66498,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/12"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_spModifyStopped",
+          "address": "0x180708470"
+        },
+        {
+          "index": 66500,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/13"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_spRecoverRatio",
+          "address": "0x180708610"
+        },
+        {
+          "index": 66628,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/14"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetSpInternal",
+          "address": "0x1806fdbe0"
+        },
+        {
+          "index": 66681,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/15"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnOutputAttackOrHeal",
+          "address": "0x1806f97b0"
+        },
+        {
+          "index": 66682,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/16"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnOutputAttackOrHealEachSpell",
+          "address": "0x1806f9700"
+        },
+        {
+          "index": 66683,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/17"
+          ],
+          "fullname": "Torappu.Battle.Entity.DoApplyModifier",
+          "address": "0x1806f1c00"
+        },
+        {
+          "index": 66699,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/18"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnAttributeDirty",
+          "address": "0x1806f7100"
+        },
+        {
+          "index": 66735,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/19"
+          ],
+          "fullname": "SpController.get_isFull",
+          "address": "0x18070aa00"
+        },
+        {
+          "index": 66744,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/20"
+          ],
+          "fullname": "SpController.MarkInvalid",
+          "address": "0x180709f20"
+        },
+        {
+          "index": 66749,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/21"
+          ],
+          "fullname": "SpController.OnOutputAttackOrHeal",
+          "address": "0x180709f90"
+        },
+        {
+          "index": 66750,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/22"
+          ],
+          "fullname": "SpController.UpdateSpRecoveryPerSec",
+          "address": "0x18070a670"
+        },
+        {
+          "index": 66751,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/23"
+          ],
+          "fullname": "SpController.OnTick",
+          "address": "0x18070a1c0"
+        },
+        {
+          "index": 66752,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/24"
+          ],
+          "fullname": "SpController._RecoverMp",
+          "address": "0x18070a830"
+        },
+        {
+          "index": 96560,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/25"
+          ],
+          "fullname": "ModifySp.Execute",
+          "address": "0x181041ca0"
+        },
+        {
+          "index": 220467,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/26"
+          ],
+          "fullname": "Torappu.FP.op_Subtraction",
+          "address": "0x1866fba10"
+        },
+        {
+          "index": 220471,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/27"
+          ],
+          "fullname": "Torappu.FP.op_Multiply",
+          "address": "0x1866fb870"
+        },
+        {
+          "index": 220475,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/28"
+          ],
+          "fullname": "Torappu.FP.op_Division",
+          "address": "0x1866fd730"
+        },
+        {
+          "index": 220529,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/29"
+          ],
+          "fullname": "Torappu.TSMath.Max",
+          "address": "0x1866ff750"
+        },
+        {
+          "index": 220531,
+          "mode": "disasm",
+          "records": [
+            "records.json#/methods/30"
+          ],
+          "fullname": "Torappu.TSMath.Max",
+          "address": "0x1866ff7b0"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.PeriodicTimer",
+          "records": [
+            "records.json#/types/1"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

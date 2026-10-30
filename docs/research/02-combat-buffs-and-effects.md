@@ -8,7 +8,7 @@
 
 主要来源是本机官方 Windows 客户端的 `GameAssembly.dll`、IL2CPP metadata、实际 AssetBundle 中的 prefab 与 `buff_template_holder`。资源 manifest 为 `V077`，`versionId=26-08-16-14-00-43_415873`。这是资源版本，不是客户端可执行文件的版本号。
 
-[持久化客户端摘录](evidence/client-excerpts.json)记录 manifest、二进制文件 SHA-256、部分方法索引及维什戴尔模板字段。下面另外保留属性、减伤、生命流失的短字段摘录，因此主要结论不依赖 `/tmp` 是否保留。方法索引只对所记录二进制成立。
+[持久化客户端摘录](evidence/client-excerpts-20261007/records.json)记录 manifest、二进制文件 SHA-256、部分方法索引及维什戴尔模板字段。下面另外保留属性、减伤、生命流失的短字段摘录，相关批次的输入与复现范围见[归档说明](evidence/client-excerpts-20261007/README.md)。方法索引只对所记录二进制成立。
 
 证据强度分为：
 

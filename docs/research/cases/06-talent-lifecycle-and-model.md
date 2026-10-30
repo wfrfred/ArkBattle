@@ -12,8 +12,8 @@
 
 ## 来源与版本
 
-- **本机官方客户端原生静态证据**：[本轮证据包](../evidence/talent-lifecycle-2026-10-13.json)。输入为当前安装客户端，metadata 29。GameAssembly.dll SHA-256 为 `583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5`；metadata 为 `d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f`。它们与旧 `client-excerpts.json` 不同，本案不混用旧方法索引／地址。未执行客户端或确认 XLua 现场覆盖。
-- **客户端表镜像**：本机 `/tmp/stronghold-main-mode-data/character_table.json` 与 `battle_equip_table.json`；仓库 main-mode fixture 的来源声明指向 [Kengxxiao 镜像 commit 17759cc8](https://github.com/Kengxxiao/ArknightsGameData/tree/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel)。本案未独立核验临时完整表与该 commit 的完整哈希，也不将表镜像与当前安装客户端绑定为同一版本。
+- **本机官方客户端原生静态证据**：[本轮证据包](../evidence/talent-lifecycle-20261013/records.json)。输入为当前安装客户端，metadata 29。GameAssembly.dll SHA-256 为 `583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5`；metadata 为 `d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f`。它们与旧 `client-excerpts.json` 不同，本案不混用旧方法索引／地址。未执行客户端或确认 XLua 现场覆盖。
+- **客户端表镜像**：当时本机 `character_table.json` 与 `battle_equip_table.json` 的读取，来源定位见[批次说明](../evidence/talent-lifecycle-20261013/README.md)；仓库 main-mode fixture 的来源声明指向 [Kengxxiao 镜像 commit 17759cc8](https://github.com/Kengxxiao/ArknightsGameData/tree/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel)。本案未独立核验临时完整表与该 commit 的完整哈希，也不将表镜像与当前安装客户端绑定为同一版本。
 - **PRTS 玩法资料**：用于核对具体天赋的作用对象、条件和持续方式，是社区资料，不替代原生调用链。[生效条件汇总](https://prts.wiki/w/天赋生效条件一览) 是案例入口，具体行为以各干员页面备注互证。
 
 ## 已确认的官方共同外壳

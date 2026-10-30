@@ -1,0 +1,92 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-29"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "selected-witnesses.json#/sources/assembly"
+        ]
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "selected-witnesses.json#/sources/metadata"
+        ]
+      }
+    },
+    "sourceRecords": [
+      "selected-witnesses.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "selected-witnesses.json",
+        "kind": "record",
+        "bytes": 4113,
+        "sha256": "8c5078defc743c9311bf5d27ef56e92b47a17a5b3fc64a5daae668c9cc6e1995"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 76377,
+          "mode": "metadata",
+          "records": [
+            "selected-witnesses.json#/nativeWitnesses/0"
+          ],
+          "fullname": "Enemy.get_sideTypeIndex",
+          "address": "0x180a7fd50"
+        },
+        {
+          "index": 78269,
+          "mode": "metadata",
+          "records": [
+            "selected-witnesses.json#/nativeWitnesses/1"
+          ],
+          "fullname": "SideTypes..cctor",
+          "address": "0x180b06970"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_13.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_13.ab",
+          "sha256": "c0f4e5e2dfa18a89eff91480e03e71cf74945edb8924c46844b9fded46142b12",
+          "records": [
+            "selected-witnesses.json#/sources/bundle"
+          ]
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

@@ -1,26 +1,37 @@
-# 空中阻挡半径：默认值、属性与覆盖
+# 空中阻挡半径与非巡空者内容取证
 
-2026-10-29。复用 Blocking 原生模式调查，仅增量读取同一客户端的相关 float 常量和属性字段元数据。没有运行客户端、修改实现、清点全游戏内容或审计活跃 XLua。
+## 调查问题与范围
 
-[selected-witnesses.json](selected-witnesses.json) 保存 DLL／metadata 指纹、常量地址与原始字节、字段定位及既有指令文件的哈希引用，不复制整套反汇编。
+取证日期：2026-10-29。2026-10-31 按统一归档规范整理；整理本身不代表重新取证。
 
-## 已证事实
+区分普通 Character／Enemy 的阻挡默认常量、当前属性倍率与 Trap／GiantTrap 覆盖；补查非巡空者内容中的空中阻挡。原生方法复用此前 Blocking 证据，本批次保存增量常量、字段及实际内容描述投影。
 
-| 对象或路径 | 半径来源 |
+## 来源与指纹
+
+[selected-witnesses.json](selected-witnesses.json) 的 `sources` 保存 DLL／metadata 指纹，`reusedEvidence` 定位复用指令及校验值。[content-witnesses.json](content-witnesses.json) 的 `sources` 单独记录第三方客户端表镜像路径与指纹，并在每条内容中给出 JSON Pointer 和交叉资料；镜像未证明与安装客户端同版。
+
+## 文件用途
+
+| 文件或分组 | 用途 |
 | --- | --- |
-| 普通 Character，WALK | 默认半径约 0.7071，由 Character getter 的 DLL 常量提供。 |
-| 普通 Character，FLY | 默认半径约 0.8944，同样来自 Character getter 的 DLL 常量。 |
-| FLY 属性修正路径 | 读取该实例当前 `Attributes[BLOCK_RADIUS_SCALE]`，使用 `0.8944 × 当前倍率`；WALK 不走这项修正。 |
-| `defaultBlockRadiusScale` | Character 与 Enemy 的普通 getter 都读取同一个 1.0 常量，不读取每个角色的 Prefab 半径字段。 |
-| Trap | getter 直接读取实例 float `_blockRadiusSquare`，属于配置覆盖，字段保存的是半径平方。 |
-| GiantTrap | getter 使用 WALK 默认平方常量；距离检查另遍历多个位置原点，不能统一当作单个中心圆。 |
+| [selected-witnesses.json](selected-witnesses.json) | float32 常量的 VA、原始字节和数值，字段布局、枚举编码及复用指令定位。 |
+| [content-witnesses.json](content-witnesses.json) | UR-4 可浮空区块、风絮等配置／描述投影及 Wiki 交叉来源。 |
+| [archive.json](archive.json) | 统一来源和当前可重提取的原生／资源范围。 |
 
-`HookBlockRadius` 只在 FLY 模式比较当前 `BLOCK_RADIUS_SCALE` 与默认倍率；普通默认路径与属性修正路径因此需要区分。`defaultBlockRadiusScale=1` 不代表当前倍率永远是 1，也不代表每个单位分别配置了自己的最终半径。
+## 复现入口
 
-`Torappu.AttributesData` 确实具有 `blockRadiusScale` 数据字段，`AttributeType.BLOCK_RADIUS_SCALE` 的枚举值为 37。这说明倍率属于原生属性数据，而不是蒂比专属参数；实际半径还由所属对象的 getter 与当前模式解释。字段存在本身不证明本轮已经找到了某个具体干员、模组或 Buff 使用非默认倍率。
+从仓库根目录执行；先按 [archive.json](archive.json) 的输入记录准备匹配客户端：
 
-## 结论边界
+```sh
+uv run --locked .agents/skills/arkbattle-native-research/scripts/replay.py docs/research/evidence/air-blocking-radius-20261029 --out .cache/native-research/air-blocking-radius-20261029
+```
 
-可确认的是“普通角色有共享默认常量，FLY 另消费当前属性倍率，特殊对象可覆盖半径或距离原点”。不能将其缩成“所有空中阻挡半径永远相同”，也不能说“所有单位都必须单独配置一个半径”。
+当前入口按 `archive.json.result.replay` 列明的范围生成新输出，写入 `--out`，不覆盖历史材料。它不代表已恢复当时的完整工具环境、专用解码或运行现场；原始记录没有保留的工具提交、版本或命令不作补造。
 
-这里只记录原生事实，不据此直接决定项目字段归 Core 还是 Content。实际内容如何提供倍率、角色是否具有其他覆盖、热更新行为，以及此前记录的 FLY 旧关系距离重验疑点，均未在本轮扩展调查。
+## 未决项与限制
+
+不是全游戏空中阻挡清点，没有运行客户端或审计活跃 XLua；字段存在不证明某个具体 Buff 使用非默认倍率。第三方镜像的内容投影不能由当前本机 bundle 索引直接重建，原专用提取脚本和逐页查阅时间未完整记录。
+
+## 关联案例
+
+- [蒂比、空中阻挡及半径边界](../../cases/21-tippi-air-blocking.md)。

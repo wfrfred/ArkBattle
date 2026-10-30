@@ -8,11 +8,11 @@
 
 **范围限制**：当前 `data/chess.json` 没有 `charId=char_1035_wisdel`。维什戴尔是此前用户讨论中选定的协议压力样例，不构成本季卫戍协议可达角色证明，也不自动扩展支持名单。仓库确有能天使 `chess_char_3_01_a/b → char_103_angel`，但本案没有进一步核对其能力 prefab，不能把同为远程职业当成同一引用链。
 
-客户端与资源版本身份见 [持久化证据](../evidence/client-excerpts.json)。本案读了真实 prefab、IL2CPP metadata 与对应原生方法，没有执行 Lua/hotfix、战斗注入或实战录制。
+客户端与资源版本身份见 [持久化证据](../evidence/client-excerpts-20261007/records.json)。本案读了真实 prefab、IL2CPP metadata 与对应原生方法，没有执行 Lua/hotfix、战斗注入或实战录制。
 
 下文区分三类结论：**证实**是实际字段及已经展开的分支；**推导**是这些证据要求项目保留的语义区别；**未核对**是没有补齐的外层调度、对象退场和动画路径。项目协议选择另行标明。
 
-临时材料主要位于 `/tmp/stronghold-wisadel-research`；本案追加展开的主 coroutine 和取值方法位于 `/tmp/stronghold-official-pathfinding`。本文保留对象 ID、方法 index、地址及关键顺序，避免只依赖临时报告。
+本案的对象 ID、方法 index、地址及关键顺序保留在本文，原始配置投影见[初始客户端批次](../evidence/client-excerpts-20261007/README.md)。当时追加展开的主 coroutine／取值方法完整转储和专用解码脚本未归档，不能将后续版本的方法提取冒充这一批次的完整复现。
 
 ## 2. 实际引用链
 

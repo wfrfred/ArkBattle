@@ -1,0 +1,108 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-29"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "selected-witnesses.json#/sources/dll"
+        ],
+        "bytes": 218523112
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "selected-witnesses.json#/sources/metadata"
+        ],
+        "bytes": 45805368
+      }
+    },
+    "sourceRecords": [
+      "content-witnesses.json",
+      "selected-witnesses.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "content-witnesses.json",
+        "kind": "record",
+        "bytes": 2501,
+        "sha256": "7a20d920e0a6889fc0c43d9d0c952a863122be50c48e1be62fc317a084bf8e5c"
+      },
+      {
+        "path": "selected-witnesses.json",
+        "kind": "record",
+        "bytes": 6689,
+        "sha256": "e080326705cf7fe29e0dd70df6d036b7607f3ea88675c57639d771ff513f75e5"
+      }
+    ],
+    "replay": {
+      "methods": [],
+      "blocks": [],
+      "types": [],
+      "constants": [
+        {
+          "address": "0x186e3fbe0",
+          "format": "<f",
+          "records": [
+            "selected-witnesses.json#/floatConstants/0"
+          ]
+        },
+        {
+          "address": "0x186e41b90",
+          "format": "<f",
+          "records": [
+            "selected-witnesses.json#/floatConstants/1"
+          ]
+        },
+        {
+          "address": "0x186e41c00",
+          "format": "<f",
+          "records": [
+            "selected-witnesses.json#/floatConstants/3"
+          ]
+        },
+        {
+          "address": "0x186e41c04",
+          "format": "<f",
+          "records": [
+            "selected-witnesses.json#/floatConstants/4"
+          ]
+        },
+        {
+          "address": "0x186e41c08",
+          "format": "<f",
+          "records": [
+            "selected-witnesses.json#/floatConstants/2"
+          ]
+        }
+      ],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

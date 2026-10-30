@@ -13,7 +13,7 @@
 - 资源版本：`26-09-13-15-28-10-30688348`，manifest `074c396967a291d157f01a3e40c79119.idx`，`V078`。
 - IL2CPPClass vtable 起点为 `0x140`；TypeDefinition stride 为 92。这些位置不能与旧客户端证据混用。
 
-可复核的原生指令、方法与字段对应、Prefab 组件引用、Spine 映射和事件时间保存在 [action-timing.json](../evidence/action-timing.json)。资源以 `UnitMode._attack/_combat` 和具体 PPtr 建立归属，不能仅根据 GameObject 名称推断技能编号。
+可复核的原生指令、方法与字段对应、Prefab 组件引用、Spine 映射和事件时间保存在 [action-timing.json](../evidence/action-timing-20261014/records.json)。资源以 `UnitMode._attack/_combat` 和具体 PPtr 建立归属，不能仅根据 GameObject 名称推断技能编号。
 
 ## 1. 必须区分的时间事实
 

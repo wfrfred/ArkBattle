@@ -25,7 +25,7 @@ Stronghold 当前的 rawNext 确实有消费者，但它服务于项目自己的
 
 原文件路径、方法 token／参数、字段布局和反汇编校验值见 [manifest](../evidence/navigation-native-20261018/manifest.json)。地址均为 VA，image base 为 `0x180000000`。IL2CPP 值类型字段偏移表含 boxed header；下文 Node 偏移已减去 `0x10`，对应数组元素的实际数据。
 
-本轮使用的临时分析工具位于 `/tmp/stronghold-navigation-native-20261018/`。Capstone 与 Unicorn 仅解包到该目录，没有修改项目依赖或系统安装。持久证据不依赖 `/tmp` 中的大型方法索引。
+本轮使用 Capstone 与 Unicorn 的临时隔离环境，没有修改项目依赖或系统安装。已保存的输入、指令及仿真结果与当前复查范围见[批次说明](../evidence/navigation-native-20261018/README.md)；当时的共享解析器和隔离仿真脚本未随批次归档，现有工具重提 native 方法不等于重建原仿真环境。
 
 ## 2. 实际执行顺序
 

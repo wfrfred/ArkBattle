@@ -1,0 +1,791 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-21"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "manifest.json#"
+        ]
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "manifest.json#"
+        ]
+      }
+    },
+    "sourceRecords": [
+      "delay/asset-provenance.json",
+      "delay/delay-witnesses.json",
+      "delay/greyy2-s2-emitter.json",
+      "delay/ongoing-hit-witnesses.json",
+      "delay/sesa-emitter.json",
+      "delay/wisdel-delay-witnesses.json",
+      "delay/wisdel-emitter.json",
+      "entries/logos-elimination-components.json",
+      "manifest.json",
+      "order/manager-generic-names.json",
+      "order/projectile-derived-overrides.json",
+      "order/projectile-events.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "delay/71216-OnProjectileStop.asm",
+        "kind": "instructions",
+        "bytes": 4768,
+        "sha256": "641fb20a5c88a343dc4abc62b6e5eeb0045742ee010f6383756ec64794526873"
+      },
+      {
+        "path": "delay/71220-DealReached.asm",
+        "kind": "instructions",
+        "bytes": 10506,
+        "sha256": "b078e3293551449c0c02fda433ae2f28b7bf8d264d66a829bd385e58d38cdf54"
+      },
+      {
+        "path": "delay/71221-CheckReached.asm",
+        "kind": "instructions",
+        "bytes": 3804,
+        "sha256": "4a9bdb5acfbd524148d4bce7adcb4ff7365770df79093a73b3ddec862b41b37d"
+      },
+      {
+        "path": "delay/71349-EnsureLifeTime.asm",
+        "kind": "instructions",
+        "bytes": 3423,
+        "sha256": "1cfa66b9f7ccac1aa35d07387b4130b29514572d2ad6b7ce4b97b3be6532fa2f"
+      },
+      {
+        "path": "delay/86494-get_checkHitWhenTick.asm",
+        "kind": "instructions",
+        "bytes": 1783,
+        "sha256": "f4ad752ce9a9b0c6b18d795f8852252c68ad9da3d8aa9567c4bcf8b33532f5ea"
+      },
+      {
+        "path": "delay/86499-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 9127,
+        "sha256": "44a752fe2ebfff177b54d0bc5f78a953a03d07e9af22ebfa0b685e769b2fb20d"
+      },
+      {
+        "path": "delay/86735-DoCheckReached.asm",
+        "kind": "instructions",
+        "bytes": 5145,
+        "sha256": "576ba291dff8808ad698226bb38dd2778f85aa81e1c06f848d7655bf655baf5e"
+      },
+      {
+        "path": "delay/86737-_ScheduleDeferredStop.asm",
+        "kind": "instructions",
+        "bytes": 4268,
+        "sha256": "6ef5dc4c7dc4f55057aaf6970df6adfe74faeacc0d7bf9cc9204e44fc26e2e4c"
+      },
+      {
+        "path": "delay/86740-OnHitTarget.asm",
+        "kind": "instructions",
+        "bytes": 5135,
+        "sha256": "caaf84ecd24922c342328e56a64889f937af7f675cec480552c925fc1ba974e9"
+      },
+      {
+        "path": "delay/86746-CheckStartTick.asm",
+        "kind": "instructions",
+        "bytes": 3326,
+        "sha256": "b4071692fe7cf5d0b7bec919c4c3eb529a181fdf720f5b666befc8083fe0c4fc"
+      },
+      {
+        "path": "delay/86756-<_ScheduleDeferredStop>b__82_0.asm",
+        "kind": "instructions",
+        "bytes": 1833,
+        "sha256": "b27d438eeb786396b06363de7fdc435889ea907a8ff88d56ef492f88c3b97a6b"
+      },
+      {
+        "path": "delay/87125-DoCheckReached.asm",
+        "kind": "instructions",
+        "bytes": 5369,
+        "sha256": "4c8fe44dc7adbb4a47fc4bf26fa94aa48026857cf1ee08de73669070ea52fbab"
+      },
+      {
+        "path": "delay/87126-_UpdateAfterReach.asm",
+        "kind": "instructions",
+        "bytes": 3322,
+        "sha256": "da118be7118ac4f6d80344641914894cc076ebfaf5060d1985e586773dd03f3d"
+      },
+      {
+        "path": "delay/87131-<_UpdateAfterReach>b__40_0.asm",
+        "kind": "instructions",
+        "bytes": 589,
+        "sha256": "00f14b2488735efe487ee71c558ece4ee3049fc995c5a6d9b693508b15eb42e9"
+      },
+      {
+        "path": "delay/REPORT.md",
+        "kind": "historical-report",
+        "bytes": 14312,
+        "sha256": "f3036add3babe086bc8392250c495c9eed3f2d97132080d6986fb7b7c1f623ec"
+      },
+      {
+        "path": "delay/asset-provenance.json",
+        "kind": "record",
+        "bytes": 1194,
+        "sha256": "0de36d1d83d40039a291e0cc569ab0e7816e45309b6264fe33bdebada8f7f66f"
+      },
+      {
+        "path": "delay/delay-witnesses.json",
+        "kind": "record",
+        "bytes": 45452,
+        "sha256": "88ca78691d16d4e970991eec7877b2737f2fec23f5adebd8d0bc1f30471a3034"
+      },
+      {
+        "path": "delay/greyy2-s2-emitter.json",
+        "kind": "record",
+        "bytes": 4265,
+        "sha256": "f98f05283171feff8dc433aecdab9b601f4e9c3af1d5194fc208f86d06a87075"
+      },
+      {
+        "path": "delay/ongoing-hit-witnesses.json",
+        "kind": "record",
+        "bytes": 18249,
+        "sha256": "7c63c843fc37b1667604b7254b9a081d6b1a38d7af52338c34811c723df992f5"
+      },
+      {
+        "path": "delay/sesa-emitter.json",
+        "kind": "record",
+        "bytes": 419,
+        "sha256": "c48e9470fa7cb2a492f13aa14f0ee0eb57f09137b8a33f368fff0c02f95e0ee7"
+      },
+      {
+        "path": "delay/wisdel-delay-witnesses.json",
+        "kind": "record",
+        "bytes": 68771,
+        "sha256": "0d064e6ce85d123e111a4f8aa11c9d26b9a060ff159a9c1e6540d6e3bf65d042"
+      },
+      {
+        "path": "delay/wisdel-emitter.json",
+        "kind": "record",
+        "bytes": 1349,
+        "sha256": "10ef64923afc7e8a83323b82bfa3dc21468183b30531b3881c7cd698ecf413d4"
+      },
+      {
+        "path": "entries/64795-_ClearResourcesInHolder.asm",
+        "kind": "instructions",
+        "bytes": 7014,
+        "sha256": "ae6860d1aa087ee1a30ca4b773edbde5102d291c9f8f82b617983f18e65ea6f8"
+      },
+      {
+        "path": "entries/71338-Interrupt.asm",
+        "kind": "instructions",
+        "bytes": 1305,
+        "sha256": "f8f61a630f0cf7a9e10ef92faa0bc4970a954ae4879ad22d7e793b9244a0f09d"
+      },
+      {
+        "path": "entries/71340-TryEliminate.asm",
+        "kind": "instructions",
+        "bytes": 2495,
+        "sha256": "e001d2ac017475fbf465360b5eb06d97eb772ef3059decac1cdad7784aa447b8"
+      },
+      {
+        "path": "entries/71346-ExtraCheckToFinish.asm",
+        "kind": "instructions",
+        "bytes": 1417,
+        "sha256": "2d1a10e88a9d38057714f45dbd664168a1dd996ac360014a7591dfbc0c94e7a7"
+      },
+      {
+        "path": "entries/71374-RecycleSelfImmediately.asm",
+        "kind": "instructions",
+        "bytes": 1318,
+        "sha256": "5888cc890155fc1f83c5d534eac625f8af67944fd44722dd24ab7681217349e5"
+      },
+      {
+        "path": "entries/90823-ClearProjectile.asm",
+        "kind": "instructions",
+        "bytes": 4872,
+        "sha256": "7d120eb7848373a4508b59911012acb79d3b90084e5f14815c79f1207670af0a"
+      },
+      {
+        "path": "entries/91088-OnCastOnProjectile.asm",
+        "kind": "instructions",
+        "bytes": 2497,
+        "sha256": "fa4578829d505f67e72f9363c06950e5d1b5180f2d06c8630025cb794203af6a"
+      },
+      {
+        "path": "entries/REPORT.md",
+        "kind": "historical-report",
+        "bytes": 8149,
+        "sha256": "c8d47142284a5bb1d7681dea8eb4558cd35c8a5a287456bc44d470deb235cc46"
+      },
+      {
+        "path": "entries/logos-elimination-components.json",
+        "kind": "record",
+        "bytes": 4006,
+        "sha256": "0acebe6b53d5c185c4718c7898e719bc67ebaed72ad15a3ee9c737a3d3023e2b"
+      },
+      {
+        "path": "manifest.json",
+        "kind": "record",
+        "bytes": 7268,
+        "sha256": "7e5b59bc3feabaec768457171e52fd7c8368e8d3c62bad7a580235c082dd7f79"
+      },
+      {
+        "path": "order/65032-DestroyMe.asm",
+        "kind": "instructions",
+        "bytes": 1174,
+        "sha256": "6fd9b16bf6f4e9718f6d4eda5cb79b064bd7b757d0dfe4d6af240c7589dced8a"
+      },
+      {
+        "path": "order/65033-DestroyMe.asm",
+        "kind": "instructions",
+        "bytes": 2490,
+        "sha256": "0e3c5a17bce5f4dfc4622a749bdb4420a2709a15d8128d35aa416f59c31076c7"
+      },
+      {
+        "path": "order/65035-OnRecycle.asm",
+        "kind": "instructions",
+        "bytes": 1378,
+        "sha256": "fcfbae5ba99720e4021a97a23e4489d426d84f4d1cb6b44f013652a5eb35107a"
+      },
+      {
+        "path": "order/71075-Unregister.asm",
+        "kind": "instructions",
+        "bytes": 3614,
+        "sha256": "72ff7129c10b53d56489d640c4818bd2d016ab78c174bfee97a37f6565103e01"
+      },
+      {
+        "path": "order/71285-get_isAlive.asm",
+        "kind": "instructions",
+        "bytes": 1488,
+        "sha256": "f4cc3cddaaf0bd09f518e11bba1312af2f9e211a2600bb7aec42808e7b7b72b9"
+      },
+      {
+        "path": "order/71344-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 12711,
+        "sha256": "eb647e82f03056a9dd1d59da4285674ee81b19cff2153d946cd5ad482ac75285"
+      },
+      {
+        "path": "order/71347-DealHitTarget.asm",
+        "kind": "instructions",
+        "bytes": 4261,
+        "sha256": "da88ce28d2fe7f704156ddd2a057e2cbf94257b2aabd0591ecde90a33a1165f4"
+      },
+      {
+        "path": "order/71361-OnProjectileStop.asm",
+        "kind": "instructions",
+        "bytes": 9291,
+        "sha256": "18c805df09a46bcd5355be95731d2b1ed7d51688da3c4db6b9ea87d61435770c"
+      },
+      {
+        "path": "order/71366-DealProjectileReached.asm",
+        "kind": "instructions",
+        "bytes": 7840,
+        "sha256": "f7c8fdc8235d1998991346b2ae1d3c96ff91a6018fcedea26e9e147b56ad3541"
+      },
+      {
+        "path": "order/71373-StopMe.asm",
+        "kind": "instructions",
+        "bytes": 2093,
+        "sha256": "eb2a0521193b9e38cd505f1b0cd052ee1a415cafa77ba6c52e030779047f59dd"
+      },
+      {
+        "path": "order/71443-OnProjectileStop.asm",
+        "kind": "instructions",
+        "bytes": 11468,
+        "sha256": "191e037bc6696c42502cd7ff14c23f8119a9f291d6661570190c393eb734f511"
+      },
+      {
+        "path": "order/86265-OnProjectileStop.asm",
+        "kind": "instructions",
+        "bytes": 14066,
+        "sha256": "34c1523ae426f5f502cdca937a68afa841c54c8dddc200b72fcf37e36119579a"
+      },
+      {
+        "path": "order/REPORT.md",
+        "kind": "historical-report",
+        "bytes": 11407,
+        "sha256": "dec64466316f07c2cae9ed8d4c6b10d8b69fe09ab5fda59f713fe0a708b4c0a1"
+      },
+      {
+        "path": "order/manager-generic-names.json",
+        "kind": "record",
+        "bytes": 1092,
+        "sha256": "3574ca9a36a9b43eb5809493535e7ff32bd6294151a541479c5e560f16636218"
+      },
+      {
+        "path": "order/projectile-derived-overrides.json",
+        "kind": "record",
+        "bytes": 2579,
+        "sha256": "f940f632c3191af4f3a4272473620baed25cc166ce1f831c36d2888b85f04759"
+      },
+      {
+        "path": "order/projectile-events.json",
+        "kind": "record",
+        "bytes": 696,
+        "sha256": "bf89b323bfe7f824e141eb8a0ccf4bcf328fb023c7f796654f054d01a8857f68"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 64795,
+          "mode": "disasm",
+          "records": [
+            "entries/64795-_ClearResourcesInHolder.asm"
+          ],
+          "fullname": "Torappu.Battle.BattleController._ClearResourcesInHolder",
+          "address": "0x180635bc0"
+        },
+        {
+          "index": 65032,
+          "mode": "disasm",
+          "records": [
+            "order/65032-DestroyMe.asm"
+          ],
+          "fullname": "Torappu.Battle.BObject.DestroyMe",
+          "address": "0x1806627c0"
+        },
+        {
+          "index": 65033,
+          "mode": "disasm",
+          "records": [
+            "order/65033-DestroyMe.asm"
+          ],
+          "fullname": "Torappu.Battle.BObject.DestroyMe",
+          "address": "0x180662710"
+        },
+        {
+          "index": 65035,
+          "mode": "disasm",
+          "records": [
+            "order/65035-OnRecycle.asm"
+          ],
+          "fullname": "Torappu.Battle.BObject.OnRecycle",
+          "address": "0x1806629d0"
+        },
+        {
+          "index": 71075,
+          "mode": "disasm",
+          "records": [
+            "order/71075-Unregister.asm"
+          ],
+          "fullname": "Torappu.Battle.ObjectManager.Unregister",
+          "address": "0x1808d57c0"
+        },
+        {
+          "index": 71113,
+          "mode": "metadata",
+          "records": [
+            "order/projectile-derived-overrides.json#/1/methods/0"
+          ],
+          "address": "0x1808d1150"
+        },
+        {
+          "index": 71132,
+          "mode": "metadata",
+          "records": [
+            "order/projectile-derived-overrides.json#/2/methods/0"
+          ],
+          "address": "0x1808d18d0"
+        },
+        {
+          "index": 71147,
+          "mode": "metadata",
+          "records": [
+            "order/projectile-derived-overrides.json#/3/methods/0"
+          ],
+          "address": "0x1808d1c80"
+        },
+        {
+          "index": 71148,
+          "mode": "metadata",
+          "records": [
+            "order/projectile-derived-overrides.json#/3/methods/1"
+          ],
+          "address": "0x1808d1df0"
+        },
+        {
+          "index": 71178,
+          "mode": "metadata",
+          "records": [
+            "order/projectile-derived-overrides.json#/4/methods/0"
+          ],
+          "address": "0x1808d2e20"
+        },
+        {
+          "index": 71180,
+          "mode": "metadata",
+          "records": [
+            "order/projectile-derived-overrides.json#/4/methods/1"
+          ],
+          "address": "0x1808d2740"
+        },
+        {
+          "index": 71216,
+          "mode": "disasm",
+          "records": [
+            "delay/71216-OnProjectileStop.asm"
+          ],
+          "fullname": "Torappu.Battle.BasicMovement.OnProjectileStop",
+          "address": "0x1808cbab0"
+        },
+        {
+          "index": 71220,
+          "mode": "disasm",
+          "records": [
+            "delay/71220-DealReached.asm"
+          ],
+          "fullname": "Torappu.Battle.BasicMovement.DealReached",
+          "address": "0x1808ca720"
+        },
+        {
+          "index": 71221,
+          "mode": "disasm",
+          "records": [
+            "delay/71221-CheckReached.asm"
+          ],
+          "fullname": "Torappu.Battle.BasicMovement.CheckReached",
+          "address": "0x1808ca5f0"
+        },
+        {
+          "index": 71246,
+          "mode": "metadata",
+          "records": [
+            "order/projectile-derived-overrides.json#/5/methods/0"
+          ],
+          "address": "0x1808d4480"
+        },
+        {
+          "index": 71254,
+          "mode": "metadata",
+          "records": [
+            "order/projectile-derived-overrides.json#/5/methods/1"
+          ],
+          "address": "0x1808d46c0"
+        },
+        {
+          "index": 71285,
+          "mode": "disasm",
+          "records": [
+            "order/71285-get_isAlive.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile.get_isAlive",
+          "address": "0x1808dd160"
+        },
+        {
+          "index": 71338,
+          "mode": "disasm",
+          "records": [
+            "entries/71338-Interrupt.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile.Interrupt",
+          "address": "0x1808d8ab0"
+        },
+        {
+          "index": 71340,
+          "mode": "disasm",
+          "records": [
+            "entries/71340-TryEliminate.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile.TryEliminate",
+          "address": "0x1808db100"
+        },
+        {
+          "index": 71344,
+          "mode": "disasm",
+          "records": [
+            "order/71344-OnTick.asm",
+            "order/projectile-derived-overrides.json#/6/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Projectile.OnTick",
+          "address": "0x1808d9af0"
+        },
+        {
+          "index": 71346,
+          "mode": "disasm",
+          "records": [
+            "entries/71346-ExtraCheckToFinish.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile.ExtraCheckToFinish",
+          "address": "0x1808d4d70"
+        },
+        {
+          "index": 71347,
+          "mode": "disasm",
+          "records": [
+            "order/71347-DealHitTarget.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile.DealHitTarget",
+          "address": "0x1808d6c40"
+        },
+        {
+          "index": 71349,
+          "mode": "disasm",
+          "records": [
+            "delay/71349-EnsureLifeTime.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile.EnsureLifeTime",
+          "address": "0x1808d7050"
+        },
+        {
+          "index": 71361,
+          "mode": "disasm",
+          "records": [
+            "order/71361-OnProjectileStop.asm",
+            "order/projectile-derived-overrides.json#/6/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Projectile.OnProjectileStop",
+          "address": "0x1808d97d0"
+        },
+        {
+          "index": 71362,
+          "mode": "metadata",
+          "records": [
+            "order/projectile-derived-overrides.json#/6/methods/2"
+          ],
+          "address": "0x1808d9090"
+        },
+        {
+          "index": 71365,
+          "mode": "metadata",
+          "records": [
+            "order/projectile-derived-overrides.json#/6/methods/3"
+          ],
+          "address": "0x1808d96b0"
+        },
+        {
+          "index": 71366,
+          "mode": "disasm",
+          "records": [
+            "order/71366-DealProjectileReached.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile.DealProjectileReached",
+          "address": "0x1808d6db0"
+        },
+        {
+          "index": 71373,
+          "mode": "disasm",
+          "records": [
+            "order/71373-StopMe.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile.StopMe",
+          "address": "0x1808daf40"
+        },
+        {
+          "index": 71374,
+          "mode": "disasm",
+          "records": [
+            "entries/71374-RecycleSelfImmediately.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile.RecycleSelfImmediately",
+          "address": "0x1808da060"
+        },
+        {
+          "index": 71443,
+          "mode": "disasm",
+          "records": [
+            "order/71443-OnProjectileStop.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile.ActionController.OnProjectileStop",
+          "address": "0x1808c8b30"
+        },
+        {
+          "index": 86265,
+          "mode": "disasm",
+          "records": [
+            "order/86265-OnProjectileStop.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.HitBehaviour.OnProjectileStop",
+          "address": "0x180d35410"
+        },
+        {
+          "index": 86494,
+          "mode": "disasm",
+          "records": [
+            "delay/86494-get_checkHitWhenTick.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.SelectorHitBehaviour.get_checkHitWhenTick",
+          "address": "0x180d4a2d0"
+        },
+        {
+          "index": 86499,
+          "mode": "disasm",
+          "records": [
+            "delay/86499-OnTick.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.SelectorHitBehaviour.OnTick",
+          "address": "0x180d49a40"
+        },
+        {
+          "index": 86735,
+          "mode": "disasm",
+          "records": [
+            "delay/86735-DoCheckReached.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.AdvancedMovement.DoCheckReached",
+          "address": "0x180d522b0"
+        },
+        {
+          "index": 86737,
+          "mode": "disasm",
+          "records": [
+            "delay/86737-_ScheduleDeferredStop.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.AdvancedMovement._ScheduleDeferredStop",
+          "address": "0x180d548d0"
+        },
+        {
+          "index": 86740,
+          "mode": "disasm",
+          "records": [
+            "delay/86740-OnHitTarget.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.AdvancedMovement.OnHitTarget",
+          "address": "0x180d52810"
+        },
+        {
+          "index": 86746,
+          "mode": "disasm",
+          "records": [
+            "delay/86746-CheckStartTick.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.AdvancedMovement.CheckStartTick",
+          "address": "0x180d519f0"
+        },
+        {
+          "index": 86756,
+          "mode": "disasm",
+          "records": [
+            "delay/86756-<_ScheduleDeferredStop>b__82_0.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.AdvancedMovement.<_ScheduleDeferredStop>b__82_0",
+          "address": "0x180d53e00"
+        },
+        {
+          "index": 87125,
+          "mode": "disasm",
+          "records": [
+            "delay/87125-DoCheckReached.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.ParacurveMovement.DoCheckReached",
+          "address": "0x180d77aa0"
+        },
+        {
+          "index": 87126,
+          "mode": "disasm",
+          "records": [
+            "delay/87126-_UpdateAfterReach.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.ParacurveMovement._UpdateAfterReach",
+          "address": "0x180d788b0"
+        },
+        {
+          "index": 87131,
+          "mode": "disasm",
+          "records": [
+            "delay/87131-<_UpdateAfterReach>b__40_0.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.ParacurveMovement.<_UpdateAfterReach>b__40_0",
+          "address": "0x180d782f0"
+        },
+        {
+          "index": 90823,
+          "mode": "disasm",
+          "records": [
+            "entries/90823-ClearProjectile.asm"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RangedAttack.ClearProjectile",
+          "address": "0x180ec2f00"
+        },
+        {
+          "index": 91088,
+          "mode": "disasm",
+          "records": [
+            "entries/91088-OnCastOnProjectile.asm"
+          ],
+          "fullname": "Torappu.Battle.Abilities.EliminateProjectileAbility.OnCastOnProjectile",
+          "address": "0x180eb8840"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+          "sha256": "bfd637cca7e39e239534da33a580bc6a02d8f160a24708466028dee5e32d7b73",
+          "records": [
+            "delay/asset-provenance.json#/0"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "14306a31b1856f61b25812a69a2a057b7c4634561fb2c2bccc42fb37ee41a27e",
+          "records": [
+            "delay/asset-provenance.json#/1"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1035_wisdel.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1035_wisdel.ab",
+          "sha256": "dab9e0c52a280e2f8042e78cd2b71dcdabb373d92bab2a687f9a7fd57ae03d44",
+          "records": [
+            "delay/asset-provenance.json#/2"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_379_sesa.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_379_sesa.ab",
+          "sha256": "ecfb7da3ff39ed19c3c558430b17884eee720276cefd1f00fe16d1f3d296f40e",
+          "records": [
+            "delay/asset-provenance.json#/3"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1027_greyy2.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1027_greyy2.ab",
+          "sha256": "2d5a4a14ace0979572f88d8cde1f7531a3e3bd414421f077dc3c05f004925c68",
+          "records": [
+            "delay/asset-provenance.json#/4"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4133_logos.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4133_logos.ab",
+          "sha256": "4b39500dd0c4ae3a0c2db17e09b942f7686b94fa9504ea654a20effb2ac3574b",
+          "records": [
+            "entries/logos-elimination-components.json#/0"
+          ]
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

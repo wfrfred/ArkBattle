@@ -1,0 +1,758 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-29"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "content.json#/sources/nativeDll",
+          "native.json#/client",
+          "parameter-operations.json#/client"
+        ],
+        "bytes": 218523112
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "content.json#/sources/nativeMetadata",
+          "native.json#/client",
+          "parameter-operations.json#/client"
+        ],
+        "bytes": 45805368
+      }
+    },
+    "sourceRecords": [
+      "content.json",
+      "native.json",
+      "parameter-operations.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "content.json",
+        "kind": "record",
+        "bytes": 53022,
+        "sha256": "b3e97c3984fe59887f56f5b5d280f65aacf0024933bd1ad1aab056b8e969c4b5"
+      },
+      {
+        "path": "native.json",
+        "kind": "record",
+        "bytes": 183210,
+        "sha256": "d597995424ad7da438a15846ae2eaadef3709dac9b387c0dd55a274fea8ab52e"
+      },
+      {
+        "path": "parameter-operations.json",
+        "kind": "record",
+        "bytes": 397821,
+        "sha256": "d180078e1bec73fa010a63e4ce884dd7f4ddcc3538cebc2c250189872ca76353"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 32849,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/12"
+          ],
+          "fullname": "Torappu.SpData.get_maxSp",
+          "address": "0x18252b820"
+        },
+        {
+          "index": 32852,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/13"
+          ],
+          "fullname": "Torappu.SpData.Init",
+          "address": "0x18252b300"
+        },
+        {
+          "index": 32861,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/14"
+          ],
+          "fullname": "Torappu.SkillData.get_spCost",
+          "address": "0x18252a950"
+        },
+        {
+          "index": 32862,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/15"
+          ],
+          "fullname": "Torappu.SkillData.get_maxSp",
+          "address": "0x18252a760"
+        },
+        {
+          "index": 66606,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/9"
+          ],
+          "fullname": "Torappu.Battle.Entity.UpdateSpData",
+          "address": "0x1806feff0"
+        },
+        {
+          "index": 66742,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/16"
+          ],
+          "fullname": "Torappu.Battle.Entity.SpController.get_spCost",
+          "address": "0x18070b260"
+        },
+        {
+          "index": 66747,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/13"
+          ],
+          "fullname": "Torappu.Battle.Entity.SpController.UpdateSpData",
+          "address": "0x18070a4f0"
+        },
+        {
+          "index": 72632,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/14"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_spEnough",
+          "address": "0x1809617c0"
+        },
+        {
+          "index": 72702,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/15"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.ReduceSp",
+          "address": "0x18095dad0"
+        },
+        {
+          "index": 72708,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/10"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill._ApplyModifierToData",
+          "address": "0x18095e5e0"
+        },
+        {
+          "index": 72709,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/11"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.PostprocessData",
+          "address": "0x18095d990"
+        },
+        {
+          "index": 72712,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/12"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.ModifyCostMinSp",
+          "address": "0x18095aec0"
+        },
+        {
+          "index": 72730,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/16"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.Behaviour.PostprocessData",
+          "address": "0x1809624a0"
+        },
+        {
+          "index": 77852,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/0"
+          ],
+          "fullname": "Torappu.Battle.UnitDataFlowConfig.Modifier._ModifyBlackboard",
+          "address": "0x180ac0020"
+        },
+        {
+          "index": 77853,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/1"
+          ],
+          "fullname": "Torappu.Battle.UnitDataFlowConfig.Modifier.Execute",
+          "address": "0x180abff60"
+        },
+        {
+          "index": 84876,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Skills.ModifySpDataAfterSkillCast.AssignData",
+          "address": "0x180cdecb0"
+        },
+        {
+          "index": 84877,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Skills.ModifySpDataAfterSkillCast.OnCastSucceed",
+          "address": "0x180cded60"
+        },
+        {
+          "index": 84878,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Skills.ModifySpDataAfterSkillCast.OnSkillEnd",
+          "address": "0x180cdee80"
+        },
+        {
+          "index": 84880,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/5"
+          ],
+          "fullname": "Torappu.Battle.Skills.ModifySpDataAfterSkillCast._ModifySpData",
+          "address": "0x180cdef00"
+        },
+        {
+          "index": 84985,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/17"
+          ],
+          "fullname": "Torappu.Battle.Skills.SkillSubTalents.PostprocessData",
+          "address": "0x180ceed80"
+        },
+        {
+          "index": 84996,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/6"
+          ],
+          "fullname": "Torappu.Battle.Skills.SpScaleAfterSkillCast.AssignData",
+          "address": "0x180cef4e0"
+        },
+        {
+          "index": 84997,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/7"
+          ],
+          "fullname": "Torappu.Battle.Skills.SpScaleAfterSkillCast.OnCastSucceed",
+          "address": "0x180cef590"
+        },
+        {
+          "index": 84998,
+          "mode": "disasm",
+          "records": [
+            "native.json#/methods/8"
+          ],
+          "fullname": "Torappu.Battle.Skills.SpScaleAfterSkillCast._ScaleSpCost",
+          "address": "0x180cef770"
+        },
+        {
+          "index": 85022,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Runes.Rune.get_priorityQueue",
+          "address": "0x180cec140"
+        },
+        {
+          "index": 85039,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Runes.Rune.CompareTo",
+          "address": "0x180ce95c0"
+        },
+        {
+          "index": 85062,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/26"
+          ],
+          "fullname": "Torappu.Battle.Runes.Rune.ApplyChangesToBlackboard",
+          "address": "0x180ce93b0"
+        },
+        {
+          "index": 85063,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/27"
+          ],
+          "fullname": "Torappu.Battle.Runes.Rune.ApplyChangesToBlackboardAdd",
+          "address": "0x180ce8c90"
+        },
+        {
+          "index": 85064,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/28"
+          ],
+          "fullname": "Torappu.Battle.Runes.Rune.ApplyChangesToBlackboardMul",
+          "address": "0x180ce9240"
+        },
+        {
+          "index": 85074,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/29"
+          ],
+          "fullname": "Torappu.Battle.Runes.Rune.<>c.<ApplyChangesToBlackboardAdd>b__62_0",
+          "address": "0x180cf19f0"
+        },
+        {
+          "index": 85075,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/30"
+          ],
+          "fullname": "Torappu.Battle.Runes.Rune.<>c.<ApplyChangesToBlackboardMul>b__63_0",
+          "address": "0x180cf1a70"
+        },
+        {
+          "index": 85082,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/5"
+          ],
+          "fullname": "Torappu.Battle.Runes.RuneManager.CreateRune",
+          "address": "0x180ce4510"
+        },
+        {
+          "index": 85091,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/6"
+          ],
+          "fullname": "Torappu.Battle.Runes.RuneManager.PreprocessCharacter",
+          "address": "0x180ce4b70"
+        },
+        {
+          "index": 85097,
+          "mode": "metadata",
+          "records": [
+            "content.json#/runeClassRegistration"
+          ],
+          "fullname": "Torappu.Battle.Runes.RuneManager._RegisterRuneClasses"
+        },
+        {
+          "index": 85285,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/7"
+          ],
+          "fullname": "Torappu.Battle.Runes.Internal.BasicCharacterRune.PreprocessCharacter",
+          "address": "0x180cf25a0"
+        },
+        {
+          "index": 85325,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Runes.Internal.CSkillCdMul.get_priorityQueue",
+          "address": "0x180cf71e0"
+        },
+        {
+          "index": 85326,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Runes.Internal.CSkillCdMul.DoPreprocessChar",
+          "address": "0x180cf6fb0"
+        },
+        {
+          "index": 85329,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Runes.Internal.CSkillCdAdd.DoPreprocessChar",
+          "address": "0x180cf6d80"
+        },
+        {
+          "index": 85331,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/24"
+          ],
+          "fullname": "Torappu.Battle.Runes.Internal.CSkillBlackboardAdd.DoPreprocessChar",
+          "address": "0x180cf6ac0"
+        },
+        {
+          "index": 85333,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/25"
+          ],
+          "fullname": "Torappu.Battle.Runes.Internal.CSkillBlackboardMul.DoPreprocessChar",
+          "address": "0x180cf6c20"
+        },
+        {
+          "index": 85519,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/9"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.PreProcessCharacter",
+          "address": "0x180d05230"
+        },
+        {
+          "index": 85570,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/11"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.BasicRelic.DoPreprocess",
+          "address": "0x180d0c450"
+        },
+        {
+          "index": 85586,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/10"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.BasicCharacterRelic.Preprocess",
+          "address": "0x180d0ae60"
+        },
+        {
+          "index": 85835,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/8"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.Internal.CSkillCostMul.DoPreProcess",
+          "address": "0x180d0f1a0"
+        },
+        {
+          "index": 89161,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/18"
+          ],
+          "fullname": "Torappu.Battle.SandboxV3.Relics.SandboxV3RelicSpModify._ModifySpCost",
+          "address": "0x180e3edc0"
+        },
+        {
+          "index": 90965,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/19"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ActiveBuffAbility.DoSetData",
+          "address": "0x180eb28a0"
+        },
+        {
+          "index": 90967,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/20"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ActiveBuffAbility.GetDuration",
+          "address": "0x180eb29c0"
+        },
+        {
+          "index": 90969,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/21"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ActiveBuffAbility.SetLifeTime",
+          "address": "0x180eb2eb0"
+        },
+        {
+          "index": 91797,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/22"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.GetDuration",
+          "address": "0x180effbe0"
+        },
+        {
+          "index": 96563,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/17"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.ModifySpData.Execute",
+          "address": "0x1810417b0"
+        },
+        {
+          "index": 99674,
+          "mode": "disasm",
+          "records": [
+            "parameter-operations.json#/methods/23"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.ExtendAbilityCooldown.Execute",
+          "address": "0x181154370"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Abilities.AbstractAnimatedAbility",
+          "records": [
+            "parameter-operations.json#/types/19"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.ActiveBuffAbility",
+          "records": [
+            "parameter-operations.json#/types/18"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Action.Nodes.ExtendAbilityCooldown",
+          "records": [
+            "parameter-operations.json#/types/21"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Action.Nodes.ModifySpData",
+          "records": [
+            "parameter-operations.json#/types/20"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BasicSkill",
+          "records": [
+            "native.json#/types/5",
+            "parameter-operations.json#/types/4"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BasicSkill.Behaviour",
+          "records": [
+            "native.json#/types/4"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Entity",
+          "records": [
+            "native.json#/types/3"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Entity.SpController",
+          "records": [
+            "native.json#/types/2",
+            "parameter-operations.json#/types/3"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Roguelike.BasicCharacterRelic",
+          "records": [
+            "parameter-operations.json#/types/15"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Roguelike.BasicRelic",
+          "records": [
+            "parameter-operations.json#/types/14"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Roguelike.Internal.CSkillCostMul",
+          "records": [
+            "parameter-operations.json#/types/16"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Roguelike.RoguelikeBattleManager",
+          "records": [
+            "parameter-operations.json#/types/13"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Runes.Internal.BasicCharacterRune",
+          "records": [
+            "parameter-operations.json#/types/8"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Runes.Internal.CSkillBlackboardAdd",
+          "records": [
+            "parameter-operations.json#/types/11"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Runes.Internal.CSkillBlackboardMul",
+          "records": [
+            "parameter-operations.json#/types/12"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Runes.Internal.CSkillCdAdd",
+          "records": [
+            "parameter-operations.json#/types/10"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Runes.Internal.CSkillCdMul",
+          "records": [
+            "parameter-operations.json#/types/9"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Runes.Rune",
+          "records": [
+            "parameter-operations.json#/types/6"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Runes.Rune.<>c",
+          "records": [
+            "parameter-operations.json#/types/5"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Runes.RuneManager",
+          "records": [
+            "parameter-operations.json#/types/7"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.SandboxV3.Relics.SandboxV3RelicSpModify",
+          "records": [
+            "parameter-operations.json#/types/17"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Skills.ModifySpDataAfterSkillCast",
+          "records": [
+            "native.json#/types/9"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Skills.SkillSubTalents",
+          "records": [
+            "native.json#/types/10"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Skills.SpScaleAfterSkillCast",
+          "records": [
+            "native.json#/types/11"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.UnitDataFlowConfig.Delta",
+          "records": [
+            "native.json#/types/7"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.UnitDataFlowConfig.Modifier",
+          "records": [
+            "native.json#/types/6"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.UnitDataFlowConfig.ModifierConfig",
+          "records": [
+            "native.json#/types/8"
+          ]
+        },
+        {
+          "name": "Torappu.LevelData.EnemyData.ESpData",
+          "records": [
+            "parameter-operations.json#/types/0"
+          ]
+        },
+        {
+          "name": "Torappu.SkillData",
+          "records": [
+            "native.json#/types/1",
+            "parameter-operations.json#/types/2"
+          ]
+        },
+        {
+          "name": "Torappu.SpData",
+          "records": [
+            "native.json#/types/0",
+            "parameter-operations.json#/types/1"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "14306a31b1856f61b25812a69a2a057b7c4634561fb2c2bccc42fb37ee41a27e",
+          "records": [
+            "content.json#/sources/skills"
+          ],
+          "bytes": 1343313
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "12419ad8d1ea9f670cca214e525240c691cdf3796b82acc8050698d66c202a37",
+          "records": [
+            "content.json#/sources/buffTemplates"
+          ],
+          "bytes": 2022247
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]envsystems.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]envsystems.ab",
+          "sha256": "8a6aab5189b6d4e396219b42341820da2576eccef6500cef5c57d63a37f5ea40",
+          "records": [
+            "content.json#/sources/feverEnvironment"
+          ],
+          "bytes": 172381
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]globalbuffs.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]globalbuffs.ab",
+          "sha256": "9d6cc538b7a75703bb0f49c5a3374d39649b6740103d6fefb5ad9718364e4fee",
+          "records": [
+            "content.json#/autochessSuntSource/primaryLookup/additionalBundle"
+          ]
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

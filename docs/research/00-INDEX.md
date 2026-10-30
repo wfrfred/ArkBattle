@@ -1,6 +1,6 @@
-# Tactical simulation 设计依据（临时研究）
+# Tactical simulation 机制调查
 
-研究日期：2026-10-07。当前实现基线：`3f35bfd` 及当前目录整理工作树。
+初始研究日期：2026-10-07；当时实现基线：`3f35bfd` 及该轮整理工作树。证据归档导航于 2026-10-31 整理，正文中的实现对照仍按各节注明的基线理解。
 
 这里整理机制事实与领域边界，不承接历史批次、目录方案或完成标记。[总体架构](../architecture/ARCHITECTURE.md) 根据已确认协议维护当前架构、实现审查与重构计划，不保存旧方案。官方行为结论以这里的证据与案例为依据；最终 API 随明确协议逐步落实。
 
@@ -13,6 +13,8 @@
 | [03 空间、单位与机制](03-space-units-and-mechanisms.md) | 地块、设备、空间贡献、阻挡、索敌与运动的职责；哪些对象不能简单等同 |
 | [04 领域边界与实现差距](04-domain-boundaries-and-gaps.md) | subsystem / effect / mechanism / hook / resource 各自是什么；当前实现的限制和真正不匹配点 |
 | [05 证据与待核对事项](05-evidence-and-open-questions.md) | 来源可信度、版本、复查入口，以及决定下一轮设计前还要调查什么 |
+
+取证材料按批次归档于[证据目录](evidence/README.md)，每批次的 README 记录输入、文件用途、复现入口及尚未保存的专用解码。归档格式整理不代表重新核实了全部历史结论。
 
 具体调用协议见[第一轮 case study](cases/00-INDEX.md)：用 Buff 安装／父作用域、Action／projectile、泥岩盾与嵌套结算验证上述边界，再归纳[协议结论](cases/04-protocol-conclusions.md)。案例记录读值、局部生效、后继可见性与退出条件；尚未闭合的分支回到 05 管理，不把整套客户端实现都变成前置要求。
 

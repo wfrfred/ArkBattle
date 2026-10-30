@@ -1,0 +1,3437 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-19"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "interactions/metadata.json#/source",
+          "motion/metadata.json#/inputs/0",
+          "space/metadata.json#/binary",
+          "states/metadata.json#/sources/0"
+        ],
+        "bytes": 218523112
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "interactions/metadata.json#/source",
+          "motion/metadata.json#/inputs/1",
+          "space/metadata.json#/metadata",
+          "states/metadata.json#/sources/1"
+        ],
+        "bytes": 45805368
+      }
+    },
+    "sourceRecords": [
+      "interactions/metadata.json",
+      "interactions/sampled-content.json",
+      "motion/arrival-support-metadata.json",
+      "motion/metadata.json",
+      "motion/support-metadata.json",
+      "space/metadata.json",
+      "states/metadata.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "SHA256SUMS",
+        "kind": "artifact",
+        "bytes": 22862,
+        "sha256": "9a7b9fec9437ab95abe3ea4ff560d56dad6f370a3bd2d4c4f0a01230951638f2"
+      },
+      {
+        "path": "interactions/223632-get_enableDynamicTree.asm",
+        "kind": "instructions",
+        "bytes": 1733,
+        "sha256": "efb0324dc3f2e7266019a90311cd867120d7ce7424e38b31b77f85a6ec0d1eca"
+      },
+      {
+        "path": "interactions/25962-Reset.asm",
+        "kind": "instructions",
+        "bytes": 374,
+        "sha256": "85b57131c43db2c091b1f08700c3b2e567251feab900780ea3e51d82480c1ffc"
+      },
+      {
+        "path": "interactions/25963-Tick.asm",
+        "kind": "instructions",
+        "bytes": 772,
+        "sha256": "a72062d9b6b260ef04b12f60ae2e9bf88c78ea0ff0e9263447000d790c53bb8a"
+      },
+      {
+        "path": "interactions/25964-Next.asm",
+        "kind": "instructions",
+        "bytes": 816,
+        "sha256": "87fe1f61bc11091379f706a96cf0b5210d92f013d8be2a70ad063374b9b10c7e"
+      },
+      {
+        "path": "interactions/70087-GetAdjacentTilesEnemies.asm",
+        "kind": "instructions",
+        "bytes": 6858,
+        "sha256": "a49e629081092f8481c300c01c652a7f1556bcc13a0766b882c0b1e3f9b4272a"
+      },
+      {
+        "path": "interactions/71054-Reset.asm",
+        "kind": "instructions",
+        "bytes": 4615,
+        "sha256": "d2b6883e1c58021de4e1ded3e0f69f92a7624624244f2d935cd9bf4c7c18d73d"
+      },
+      {
+        "path": "interactions/71055-OnStart.asm",
+        "kind": "instructions",
+        "bytes": 3863,
+        "sha256": "495c5d8196fb050fb29efadb199567aa5039e39bc970a4850190736ff471bfaa"
+      },
+      {
+        "path": "interactions/71059-CalculateIsHanging.asm",
+        "kind": "instructions",
+        "bytes": 8731,
+        "sha256": "b721e9dcd097512aa8197b57053bd63ab0df7cffb5a65caf1418d8ccb6d3e715"
+      },
+      {
+        "path": "interactions/71070-ctor.asm",
+        "kind": "instructions",
+        "bytes": 3086,
+        "sha256": "dcee4c993bb4861af4e91c945a3444266b72540a619139e3a6203a863a6e78d6"
+      },
+      {
+        "path": "interactions/72515-CalculateIsHanging.asm",
+        "kind": "instructions",
+        "bytes": 4947,
+        "sha256": "d1c776188cec0e347c2ac197bef7977b4033ae0fdfe6f851fbf2cc7a3268b25f"
+      },
+      {
+        "path": "interactions/72516-_CalculateSeparationForce.asm",
+        "kind": "instructions",
+        "bytes": 29868,
+        "sha256": "57c0bae1da30c89b2b4a2a2aa68ef8f222f2d6c0268cdb8adf14a8476d541485"
+      },
+      {
+        "path": "interactions/72517-ctor.asm",
+        "kind": "instructions",
+        "bytes": 2624,
+        "sha256": "a8ca88f0c84c192982589a9e18b397300b7497f91c1de85c6d0a8a519d3352f0"
+      },
+      {
+        "path": "interactions/76289-get_onlyCollideWhenUnbalance.asm",
+        "kind": "instructions",
+        "bytes": 1459,
+        "sha256": "ff225730b1c66630431f75a624f354466dab1d7a562ae1b1bdfd04b706d131c8"
+      },
+      {
+        "path": "interactions/76359-get_isMovingBySelf.asm",
+        "kind": "instructions",
+        "bytes": 2839,
+        "sha256": "b07dce6da0d2d53522dac8d4f32c0922fc3445343fbb75aa86dbabb681ca0621"
+      },
+      {
+        "path": "interactions/76384-get_rigidbody2D.asm",
+        "kind": "instructions",
+        "bytes": 1780,
+        "sha256": "a97f7516ae5b75477ffa1e4bd47315e3e5fe537267a0fe4241e43490d1363f8f"
+      },
+      {
+        "path": "interactions/76385-set_rigidbody2D.asm",
+        "kind": "instructions",
+        "bytes": 2048,
+        "sha256": "00616d4d912001f4b83ccc7f296712c26e56cd3c3fa4b668a909396a848ce19b"
+      },
+      {
+        "path": "interactions/76435-KnockBack.asm",
+        "kind": "instructions",
+        "bytes": 8064,
+        "sha256": "a68b3be8610ed95d91ff2702fb7077a77bff93bdfc8cbfd48606cf4dc5a29182"
+      },
+      {
+        "path": "interactions/76436-DisableCurrentStillPull.asm",
+        "kind": "instructions",
+        "bytes": 2825,
+        "sha256": "96bb5cde0fb1a51b06613091ceb8f1115b2ea423f4c0eaf67956bc3757113906"
+      },
+      {
+        "path": "interactions/76437-BeginPull.asm",
+        "kind": "instructions",
+        "bytes": 10057,
+        "sha256": "edad6c3133f53c51b03ca383c171919f7f9d25f19e7d614ed17e9296b132b20c"
+      },
+      {
+        "path": "interactions/76438-StillPull.asm",
+        "kind": "instructions",
+        "bytes": 5898,
+        "sha256": "d6d1f6d997ad5f333e8b0b3fa9d8b5ece76c6ebd08f3a998d54a7c5705b428b7"
+      },
+      {
+        "path": "interactions/76439-TryEarlyStopPull.asm",
+        "kind": "instructions",
+        "bytes": 5382,
+        "sha256": "432bab1b914573e4817617d4ae84dc3a0bf72abb145a9328107ce736051ed3aa"
+      },
+      {
+        "path": "interactions/76440-EndPull.asm",
+        "kind": "instructions",
+        "bytes": 8398,
+        "sha256": "8883bc39d71e18c3a5ea2278ac9d11d692b46655d827eecb8aed288fbbd1e13e"
+      },
+      {
+        "path": "interactions/76452-ForceSetPositionByWorldCoords.asm",
+        "kind": "instructions",
+        "bytes": 4541,
+        "sha256": "19158bf8f2e4b6427034df8976479f3826b00cdc03e51bcc4a9ab5fdc9e78e6e"
+      },
+      {
+        "path": "interactions/76493-_ResetPhysicsStatus.asm",
+        "kind": "instructions",
+        "bytes": 8392,
+        "sha256": "840c86b67435a8a102a0c71192760a95bbb8d91df37ec8ed7d508a4de6ba066b"
+      },
+      {
+        "path": "interactions/76539-_InitPhysics.asm",
+        "kind": "instructions",
+        "bytes": 10770,
+        "sha256": "b7cc3121bc5fd591e21eb51329adc4fd6d48f77097d95dfbe7995d22401ad7c2"
+      },
+      {
+        "path": "interactions/76656-OnEnter.asm",
+        "kind": "instructions",
+        "bytes": 6856,
+        "sha256": "73d0e1ae48c41024b0a519f35ee3122f88f4a34ea30827bfcdfd08f245eb8cdd"
+      },
+      {
+        "path": "interactions/76657-OnExit.asm",
+        "kind": "instructions",
+        "bytes": 2403,
+        "sha256": "f7930e3e054fb6d9aacdf181a0d8085055bf119d78ff335c57f87fb01a25270f"
+      },
+      {
+        "path": "interactions/76658-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 14293,
+        "sha256": "cff6277c7d70f5b3a10a0878c0603752f121428a6c78cadbc83994dd03e0752f"
+      },
+      {
+        "path": "interactions/76746-OnEnter.asm",
+        "kind": "instructions",
+        "bytes": 12532,
+        "sha256": "8a9e88b710b092f6c00d0a63314e8e7da7ecb2d50405c007d3d5ab8d0175b519"
+      },
+      {
+        "path": "interactions/76747-OnExit.asm",
+        "kind": "instructions",
+        "bytes": 6132,
+        "sha256": "77d7436cf4e9ba4040d497f434985b5832d200f8c30f5ea770c3497e0aa193b5"
+      },
+      {
+        "path": "interactions/76748-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 12980,
+        "sha256": "bbaab37df5d71f4c305caf4219ee71e0bf7c1a85792b8bb660ae1845dcd32faf"
+      },
+      {
+        "path": "interactions/76749-_CheckCollideWithHighLand.asm",
+        "kind": "instructions",
+        "bytes": 12898,
+        "sha256": "37c57a185c920fb4c5839418a1590ed1e83c084cc705906c47ccda67bab72296"
+      },
+      {
+        "path": "interactions/76750-_UpdateFriction.asm",
+        "kind": "instructions",
+        "bytes": 8712,
+        "sha256": "3922c1adbc02f9c042731847391b6b55952e50c2bc5ca005a33b5201fff9f2ca"
+      },
+      {
+        "path": "interactions/76751-_UpdatePullSources.asm",
+        "kind": "instructions",
+        "bytes": 2539,
+        "sha256": "9e759d3ab7336b4182a497c518c7cf4a3b3a60218db770b27c1b24c66cd56466"
+      },
+      {
+        "path": "interactions/76752-OnPhysicObjectInit.asm",
+        "kind": "instructions",
+        "bytes": 2164,
+        "sha256": "b9acb6aafbbe906b59bf8113a95f0087b02156b5ec431ad5682e58d3071e0dac"
+      },
+      {
+        "path": "interactions/76753-OnAfterPhysicSimulate.asm",
+        "kind": "instructions",
+        "bytes": 2919,
+        "sha256": "2fd2bc29c1f01b1f0fd5c1a238f6c27b0f9485765e702e2cc5b5ed6fe6d3aaf0"
+      },
+      {
+        "path": "interactions/76754-OnPhysicObjectRecycle.asm",
+        "kind": "instructions",
+        "bytes": 2170,
+        "sha256": "c3efe3f466c819bde17de6c79bc4fc5836fdcd33f5b8c62e494ab0fa99c5010d"
+      },
+      {
+        "path": "interactions/78700-QueryEnemy.asm",
+        "kind": "instructions",
+        "bytes": 1742,
+        "sha256": "718b315bdba1410412bf036ffe2a8e6d0a6c28bd32d49aec8cfea91ce27bd928"
+      },
+      {
+        "path": "interactions/controller-reset-xrefs.txt",
+        "kind": "historical-report",
+        "bytes": 512,
+        "sha256": "f21c0843f4a38bf90c5262c3efc7bb49d0da17bddf2c5086f2d55ab547e0b084"
+      },
+      {
+        "path": "interactions/enemy-trace-helper.asm",
+        "kind": "instructions",
+        "bytes": 905,
+        "sha256": "6cb0835c6c613813933fa3548d25d6728704ef165e28232c28188ee8ae4b0cd8"
+      },
+      {
+        "path": "interactions/metadata.json",
+        "kind": "record",
+        "bytes": 63785,
+        "sha256": "a28a711a16bd34ae7157aebd686a732cfd7f9ca3b8f27c748da80a39698d8024"
+      },
+      {
+        "path": "interactions/notes.md",
+        "kind": "historical-report",
+        "bytes": 14955,
+        "sha256": "314e4e954739587499c978b5c98081bae81ea3782009315a8c0237f5fd1b9596"
+      },
+      {
+        "path": "interactions/sampled-content.json",
+        "kind": "record",
+        "bytes": 6990,
+        "sha256": "8ed2287630a3d87fc146b994d8b9e89f90fb260f65b4353db83fd9074e4ab27f"
+      },
+      {
+        "path": "interactions/virtual-bool-helper.asm",
+        "kind": "instructions",
+        "bytes": 895,
+        "sha256": "6ad5cace8003f016eeb832595794bf09412d6ddd09e35a16dbabb7afd40d78fb"
+      },
+      {
+        "path": "legacy/read-sampled-unity-assets.py",
+        "kind": "historical-script",
+        "bytes": 3807,
+        "sha256": "a55e411b73a5b97ef1522d520efbbb4f62bfed7b1b7738148be8a3073f833da1"
+      },
+      {
+        "path": "motion/220344-Torappu_MathUtil-IsZero.asm",
+        "kind": "instructions",
+        "bytes": 2393,
+        "sha256": "991d55bf59d378a3950b88cb548a5e60b95c0651591a83db09cef14f04c9087d"
+      },
+      {
+        "path": "motion/220345-Torappu_MathUtil-IsZero.asm",
+        "kind": "instructions",
+        "bytes": 1869,
+        "sha256": "4cd2513a45fb7b9bbf956b63a57dd233eb3ca1c195d3f4728c6e799c7aaae9ea"
+      },
+      {
+        "path": "motion/220378-Torappu_MathUtil-IsZero.asm",
+        "kind": "instructions",
+        "bytes": 486,
+        "sha256": "c64bef5c193489d68609c8ddb419fbb2c78c2cd0e9dacc9a0cfcb277c687e729"
+      },
+      {
+        "path": "motion/220379-Torappu_MathUtil-IsZero.asm",
+        "kind": "instructions",
+        "bytes": 430,
+        "sha256": "724192f94f15ab78a439a041a4252a3ca3ff740454bcebf3f3f54af91fec3854"
+      },
+      {
+        "path": "motion/220411-Torappu_MathUtil-IsZero.asm",
+        "kind": "instructions",
+        "bytes": 2183,
+        "sha256": "b10c65a67ccea61a9a3a43505c6fef35cf56cc6c56c7627b8edf592acf26bab2"
+      },
+      {
+        "path": "motion/220412-Torappu_MathUtil-IsZero.asm",
+        "kind": "instructions",
+        "bytes": 3046,
+        "sha256": "2f7834a16d70d6b2cba45d05ed859fd96292620fce8561cc234507e129297a39"
+      },
+      {
+        "path": "motion/220423-Torappu_MathUtil-NormalizeDirectionSafely.asm",
+        "kind": "instructions",
+        "bytes": 2034,
+        "sha256": "12a56815920ee09a3b1f17e71bf768da7f13046fe3d52073b9946aefd58df86d"
+      },
+      {
+        "path": "motion/220424-Torappu_MathUtil-NormalizeDirectionSafely.asm",
+        "kind": "instructions",
+        "bytes": 6624,
+        "sha256": "c991e750a7956335e81466f701f133ddd8b92d97ea2c60ec10af6e56775a8e01"
+      },
+      {
+        "path": "motion/220699-ClampMagnitude.asm",
+        "kind": "instructions",
+        "bytes": 6033,
+        "sha256": "29aad34e51b0e6ecb585cfd5a21fde176ae96884d8ec99b40d9efd3ff094b6a0"
+      },
+      {
+        "path": "motion/282406-UnityEngine_Vector2-Normalize.asm",
+        "kind": "instructions",
+        "bytes": 3689,
+        "sha256": "efe272ac66c1e26a5bfa9c68ef2e297e0f5d04060f146035bd30db40ff1f76f0"
+      },
+      {
+        "path": "motion/282407-UnityEngine_Vector2-get_normalized.asm",
+        "kind": "instructions",
+        "bytes": 2728,
+        "sha256": "17406dc5d5809d3d1858da893829f4e5f116bc873de0d5e1daca397f68b53006"
+      },
+      {
+        "path": "motion/282422-UnityEngine_Vector2-ClampMagnitude.asm",
+        "kind": "instructions",
+        "bytes": 2593,
+        "sha256": "a6b57b31454c065a76aa4bd7f3b7b65a7f0b8ed46a2d6f110693cf9a4634e620"
+      },
+      {
+        "path": "motion/62950-Torappu_Battle_BattleOptions-_cctor.asm",
+        "kind": "instructions",
+        "bytes": 10982,
+        "sha256": "54e31e4af99c8b8fdb7b79c0535107033b048008d076fcf4276f2e3466139961"
+      },
+      {
+        "path": "motion/70273-PredictReached.asm",
+        "kind": "instructions",
+        "bytes": 4632,
+        "sha256": "f9b07ba5cb5f1b798c2215a6593bd115e4850f9398f49e26f46329361d15579c"
+      },
+      {
+        "path": "motion/70275-_GetNextTarget.asm",
+        "kind": "instructions",
+        "bytes": 17800,
+        "sha256": "b7ca27872fe93231f22247a08088a24e3c788e0600f4b58ac4baf3a6949e512f"
+      },
+      {
+        "path": "motion/71047-Torappu_Battle_MoveController-get_moveSpeed.asm",
+        "kind": "instructions",
+        "bytes": 4488,
+        "sha256": "0b0e37bfb32e1e1700b560a6edb8e07f9dbaf7e9aec7078fd0eb30b8b422a9e7"
+      },
+      {
+        "path": "motion/71048-Torappu_Battle_MoveController-get_velocity.asm",
+        "kind": "instructions",
+        "bytes": 1658,
+        "sha256": "22f68a644ce0ee4a1f15261a25e37ab982dae5441b9f9125da50b8b6999df4ab"
+      },
+      {
+        "path": "motion/71049-set_velocity.asm",
+        "kind": "instructions",
+        "bytes": 1442,
+        "sha256": "b54a8ac741653a08bd3a4927e3da424b2e48a36216d80dc71a842ae269e4e753"
+      },
+      {
+        "path": "motion/71050-get_steeringFactor.asm",
+        "kind": "instructions",
+        "bytes": 1452,
+        "sha256": "ef2c4847e2b74be70f2483f16c4ab7edf10419947cc8bc10252dbb4e26b3677e"
+      },
+      {
+        "path": "motion/71051-set_steeringFactor.asm",
+        "kind": "instructions",
+        "bytes": 1562,
+        "sha256": "a31b152231f7a4c77bd99324421570b0ecd05740b3a8daecbe031215d0e4b088"
+      },
+      {
+        "path": "motion/71052-get_footOffset.asm",
+        "kind": "instructions",
+        "bytes": 1663,
+        "sha256": "65ac76366b002f84dfe06494ebb14b8b27a2f28e86ce65c49f9190e7cc47ce8b"
+      },
+      {
+        "path": "motion/71053-get_halfBodyWidth.asm",
+        "kind": "instructions",
+        "bytes": 1451,
+        "sha256": "6d05f593cb8060727f941b70640440ee8fc847fbea3cf08753b8e44da9d29415"
+      },
+      {
+        "path": "motion/71054-Reset.asm",
+        "kind": "instructions",
+        "bytes": 4616,
+        "sha256": "23d55aab3a86528ce6f65292bda7f4586b093904132a56ac16332cf699241589"
+      },
+      {
+        "path": "motion/71055-OnStart.asm",
+        "kind": "instructions",
+        "bytes": 3864,
+        "sha256": "707f0a45e8a43c6bc36a9b869e257210b48215440c3ef1b64a1df53a84cf54dc"
+      },
+      {
+        "path": "motion/71056-CalculateMoveDelta.asm",
+        "kind": "instructions",
+        "bytes": 10755,
+        "sha256": "4622bd3e1546af147a16809b010ecfdd2d5ba9bbc50fe3f74d0c804d49defe83"
+      },
+      {
+        "path": "motion/71057-CalculateTotalForce.asm",
+        "kind": "instructions",
+        "bytes": 4827,
+        "sha256": "63e837da5bd44b51ef3d5393391da2fdec9b7ad3fe43dc1f590d6266dff7f91f"
+      },
+      {
+        "path": "motion/71058-_CalculateSteeringForce.asm",
+        "kind": "instructions",
+        "bytes": 5060,
+        "sha256": "185fb5647a777a8ac5618db3246f166e9762ee9f4ba0d34e9fe3a781b609c032"
+      },
+      {
+        "path": "motion/71070-_ctor.asm",
+        "kind": "instructions",
+        "bytes": 3087,
+        "sha256": "b379b99523899a61bfedd1d945292db4998bd5c8f843a4186d19c88c6e1cb488"
+      },
+      {
+        "path": "motion/76491-_MoveByCursor.asm",
+        "kind": "instructions",
+        "bytes": 20834,
+        "sha256": "5e5dcf54948b8037f0c271c7f7dc25e9e3b0318c394e2dd0793621669ced1d17"
+      },
+      {
+        "path": "motion/arrival-support-metadata.json",
+        "kind": "record",
+        "bytes": 1428,
+        "sha256": "cde3319790e0d341f7951bf5e08aeae834a43cd3b0e9a1f7ec6a0a1928340317"
+      },
+      {
+        "path": "motion/metadata.json",
+        "kind": "record",
+        "bytes": 24546,
+        "sha256": "40d47d3b095beaf771dacc854be6ed53ec6026fc4c8cccbf9bc44d4f90ad515b"
+      },
+      {
+        "path": "motion/raw-1805e7770-vector-clamp.asm",
+        "kind": "instructions",
+        "bytes": 2562,
+        "sha256": "8c47ac35cab1818965db55f52d2bd00e2f7dc2a67426a9742e46e5dda482ca53"
+      },
+      {
+        "path": "motion/support-metadata.json",
+        "kind": "record",
+        "bytes": 14456,
+        "sha256": "9759e8972226f86ef53bf0b483563152e3b8546866143fc2a4a4eb00bdf126a5"
+      },
+      {
+        "path": "space/0x180535480.asm",
+        "kind": "instructions",
+        "bytes": 1957,
+        "sha256": "6c7bc7385cfdf59d774d66695a25d55d1c4f4e8c908ccbb48d85d33192ca32f3"
+      },
+      {
+        "path": "space/0x18059e290.asm",
+        "kind": "instructions",
+        "bytes": 2884,
+        "sha256": "ac28c6c82ea2dbae1aa7adc162ad9a01b72ebb95fa11526ad456882fce4e8d8b"
+      },
+      {
+        "path": "space/0x1807b31e0.asm",
+        "kind": "instructions",
+        "bytes": 1171,
+        "sha256": "538ee43931bf42b8d4a8f9e1fa0926d2fd98d09ff1c3aa4b899bba86bfec6ebe"
+      },
+      {
+        "path": "space/0x1808a9010.asm",
+        "kind": "instructions",
+        "bytes": 2771,
+        "sha256": "554972919e93b6f70aad66e801f081f1249e304388aa71a2a0dd4e2c37d641f9"
+      },
+      {
+        "path": "space/0x1808a90b0.asm",
+        "kind": "instructions",
+        "bytes": 2050,
+        "sha256": "f34455d6543d0bd70ae72c02c20866901d0bb0434c002452d7c91eb8b2a7670a"
+      },
+      {
+        "path": "space/220066.asm",
+        "kind": "instructions",
+        "bytes": 22597,
+        "sha256": "ff6d9c2266286d3c4926ebbef6a69b014a84671fb7516e934ee2e1354041f2d1"
+      },
+      {
+        "path": "space/237392.asm",
+        "kind": "instructions",
+        "bytes": 969,
+        "sha256": "939130f06317f427990fc7ec9fda0afd56653837f9fb39e8b7de7cca82c34763"
+      },
+      {
+        "path": "space/25960.asm",
+        "kind": "instructions",
+        "bytes": 1278,
+        "sha256": "47c7124cf93bfcec27b484341785281fd9d5eb73bc2eb578a7b449321369b73e"
+      },
+      {
+        "path": "space/25961.asm",
+        "kind": "instructions",
+        "bytes": 995,
+        "sha256": "c78d139e2785b83a2510d9ad9b0367786c514e8b7d06831d7261a04a83c1b01b"
+      },
+      {
+        "path": "space/25962.asm",
+        "kind": "instructions",
+        "bytes": 375,
+        "sha256": "2db463de231af8140f5aece3aa82ee639836bcfc3f02320a4db127ad0c82c7e5"
+      },
+      {
+        "path": "space/25963.asm",
+        "kind": "instructions",
+        "bytes": 773,
+        "sha256": "54c66726ba5f06a4fd7db1cb1ed542509e8d4de7d521e0f34dac328cb72ba6ae"
+      },
+      {
+        "path": "space/25964.asm",
+        "kind": "instructions",
+        "bytes": 817,
+        "sha256": "bb9672ddf66861dbaa9ae1f224d387f09f9325145efaa080bcd30659aac841dc"
+      },
+      {
+        "path": "space/28039.asm",
+        "kind": "instructions",
+        "bytes": 618,
+        "sha256": "b9742fbe91f50e9c1da1f3be5ebd52f8cc774dd240f1c0f5e93869a1fd694b3d"
+      },
+      {
+        "path": "space/28047.asm",
+        "kind": "instructions",
+        "bytes": 1004,
+        "sha256": "b13f8a8ca055536c3746dbcd5f7f69646834718e0a91089fd7d20c5ed487681c"
+      },
+      {
+        "path": "space/28063.asm",
+        "kind": "instructions",
+        "bytes": 11713,
+        "sha256": "8a524f79ed9786d2cff592acf5dd245de6ca282eb95cb2ce6c91e032adf26f20"
+      },
+      {
+        "path": "space/62946.asm",
+        "kind": "instructions",
+        "bytes": 14857,
+        "sha256": "dc62e29e57da75e4cbc1cd6a7a3917abedd896522090867cfc927b23e8e3bce1"
+      },
+      {
+        "path": "space/62950.asm",
+        "kind": "instructions",
+        "bytes": 11607,
+        "sha256": "d4b99dc8cc2fbbe537c736cdf2ecd6de7f037c05b89ac3579905a5ae0618b739"
+      },
+      {
+        "path": "space/64811.asm",
+        "kind": "instructions",
+        "bytes": 75765,
+        "sha256": "4eb50ec463cf711b16c791136a09da497b18e8061a2d7b1de9927fcd2401d716"
+      },
+      {
+        "path": "space/66371.asm",
+        "kind": "instructions",
+        "bytes": 1815,
+        "sha256": "356759be6e3a422d9c24c79a41938b3badd6020124300a0bfbab04f37ae83221"
+      },
+      {
+        "path": "space/70010.asm",
+        "kind": "instructions",
+        "bytes": 2035,
+        "sha256": "25d3cfc921b49a660e08d88771701a438e63fa944c4b967ac5b73f50f914ed99"
+      },
+      {
+        "path": "space/70011.asm",
+        "kind": "instructions",
+        "bytes": 3461,
+        "sha256": "9641106c8adc95e2adc34d983b30c677ba41e6801f1a5086f873b82902f4f797"
+      },
+      {
+        "path": "space/70013.asm",
+        "kind": "instructions",
+        "bytes": 3772,
+        "sha256": "146987108f44fc08f2e29a8535620fa3a396b152e3400b8e297f69f5181e9d40"
+      },
+      {
+        "path": "space/70014.asm",
+        "kind": "instructions",
+        "bytes": 4338,
+        "sha256": "a1adcec24ff3fd072e0d403384c7390a40b047b08327c760b6f4ba8cf0b34b89"
+      },
+      {
+        "path": "space/70066.asm",
+        "kind": "instructions",
+        "bytes": 2574,
+        "sha256": "b353b9c598e55f36320a04df90ffd32ec170548684b2db3a3ca319b2dbb19dc3"
+      },
+      {
+        "path": "space/70085.asm",
+        "kind": "instructions",
+        "bytes": 7611,
+        "sha256": "ffc10a645a08633eff0c8212b593a1b63ba1f16f49b2dfc544d97131958225c7"
+      },
+      {
+        "path": "space/70662.asm",
+        "kind": "instructions",
+        "bytes": 1310,
+        "sha256": "f49ccae0f5252a9ecc133c23c7d46b87a64a732d2ead84c6c0ef5c2df4a77560"
+      },
+      {
+        "path": "space/70678.asm",
+        "kind": "instructions",
+        "bytes": 1465,
+        "sha256": "2905f94a11868fd8cb4231314b5022b493521a0fb21207e0d367d1c7bcc0c600"
+      },
+      {
+        "path": "space/70679.asm",
+        "kind": "instructions",
+        "bytes": 1958,
+        "sha256": "3f1b4a96978c204abc640b7a95a83a3d0e2ac45ff9ae9486d4a04c9790c604a1"
+      },
+      {
+        "path": "space/70705.asm",
+        "kind": "instructions",
+        "bytes": 2772,
+        "sha256": "f87da171277a0d4aabe65020fc79d438421ac35965c6f3fd528424d0b21fa835"
+      },
+      {
+        "path": "space/70711.asm",
+        "kind": "instructions",
+        "bytes": 1409,
+        "sha256": "68e02123e3a3e3b48e88c643f95f508d0c36912496bc7b3586bfac3101fe8b11"
+      },
+      {
+        "path": "space/70734.asm",
+        "kind": "instructions",
+        "bytes": 5919,
+        "sha256": "16ce21a33fb229c84a45caa9c3715934b3d96010f2433ff22f47416cc1c1afb2"
+      },
+      {
+        "path": "space/70739.asm",
+        "kind": "instructions",
+        "bytes": 6809,
+        "sha256": "7b6c755d0f40b9862a6c44de467c0677ac866c421e2843334567dde7a6ae8dd2"
+      },
+      {
+        "path": "space/70757.asm",
+        "kind": "instructions",
+        "bytes": 6610,
+        "sha256": "f9e7ea11eab258eb4aff555482ee41f48a1aa58d1a4112320436143598af191e"
+      },
+      {
+        "path": "space/70759.asm",
+        "kind": "instructions",
+        "bytes": 4220,
+        "sha256": "4d2504b72e4bcbfda04c04f145bfcbc9f6a5d6f325527b3b520d448e949c9521"
+      },
+      {
+        "path": "space/71054.asm",
+        "kind": "instructions",
+        "bytes": 4616,
+        "sha256": "23d55aab3a86528ce6f65292bda7f4586b093904132a56ac16332cf699241589"
+      },
+      {
+        "path": "space/71055.asm",
+        "kind": "instructions",
+        "bytes": 3864,
+        "sha256": "707f0a45e8a43c6bc36a9b869e257210b48215440c3ef1b64a1df53a84cf54dc"
+      },
+      {
+        "path": "space/71056.asm",
+        "kind": "instructions",
+        "bytes": 10856,
+        "sha256": "d7105ec96ab78079e34e55f6120d9986c05a7be1c683e5faeb8961a1bccb94e3"
+      },
+      {
+        "path": "space/71057.asm",
+        "kind": "instructions",
+        "bytes": 4897,
+        "sha256": "4176b53094d6b147aa4dcabacfb6483c6616c4a8ac1e7436aa34e9e6617b89fa"
+      },
+      {
+        "path": "space/71059.asm",
+        "kind": "instructions",
+        "bytes": 8732,
+        "sha256": "7fa9a8c746db81dd2eb3d345ec0fec156ede9c0b8f0db4725957400374771465"
+      },
+      {
+        "path": "space/71060.asm",
+        "kind": "instructions",
+        "bytes": 18292,
+        "sha256": "c0a4872ea68912311577885138ad5d2f3cd646aaed238766b7ce0ec32bbaa950"
+      },
+      {
+        "path": "space/71061.asm",
+        "kind": "instructions",
+        "bytes": 1911,
+        "sha256": "f85a1712ad77303cd19d92b580b48051d389b8b799481afc121059c998aa1d93"
+      },
+      {
+        "path": "space/71062.asm",
+        "kind": "instructions",
+        "bytes": 2802,
+        "sha256": "f2fdcede436590cd1a88ea413b3aa3629508fd84761b90453b89752af704fe36"
+      },
+      {
+        "path": "space/71070.asm",
+        "kind": "instructions",
+        "bytes": 3087,
+        "sha256": "b379b99523899a61bfedd1d945292db4998bd5c8f843a4186d19c88c6e1cb488"
+      },
+      {
+        "path": "space/76361.asm",
+        "kind": "instructions",
+        "bytes": 1970,
+        "sha256": "586592bf4ef7f59b660f33a535500a708ef033ab1d00cdd7dbc481b3396ff64e"
+      },
+      {
+        "path": "space/76362.asm",
+        "kind": "instructions",
+        "bytes": 3199,
+        "sha256": "9032c2481afe711c9a41f16c52bb13dafc791062cb5bcbc384b266ebebf2cdd8"
+      },
+      {
+        "path": "space/76491.asm",
+        "kind": "instructions",
+        "bytes": 21027,
+        "sha256": "e0be3b5efdbda64301ed5b753486155c231304df47a022574d06768b2f87af4d"
+      },
+      {
+        "path": "space/77866.asm",
+        "kind": "instructions",
+        "bytes": 852,
+        "sha256": "16b13f10a2df8a58485c34c8f41f1afa3cf75cd20e65dd56a4695f62308f0423"
+      },
+      {
+        "path": "space/77871.asm",
+        "kind": "instructions",
+        "bytes": 1981,
+        "sha256": "05e4e08a9defa65f6648324bb296d87ca8d0ce9e5b042e6b7637fac5cbc57d60"
+      },
+      {
+        "path": "space/77880.asm",
+        "kind": "instructions",
+        "bytes": 2017,
+        "sha256": "a3f61d835dd6ce0a445bb998aa16530e009bb0c5316fae05fbb59767098bedbb"
+      },
+      {
+        "path": "space/SHA256SUMS",
+        "kind": "artifact",
+        "bytes": 3836,
+        "sha256": "1dfc359855ff3feb28efc21c22d4f8eb02fa0178029e12c61861bf8cd82423f6"
+      },
+      {
+        "path": "space/metadata.json",
+        "kind": "record",
+        "bytes": 250842,
+        "sha256": "dbe7e938ecc58d75695021e338f6dc062e73b47ac0bf957790cda328195c381b"
+      },
+      {
+        "path": "space/notes.md",
+        "kind": "historical-report",
+        "bytes": 11178,
+        "sha256": "b2264f44a66e2c6bf546a65628d4372e038b1272026a6638aba481a3b646da52"
+      },
+      {
+        "path": "states/220498-Torappu-FP-op_Implicit.asm",
+        "kind": "instructions",
+        "bytes": 278,
+        "sha256": "81cf1893d55efab4394ad09de28bb4786ee46680a0439599185d5ee8da5b0848"
+      },
+      {
+        "path": "states/220505-Torappu-FP-AsFloat.asm",
+        "kind": "instructions",
+        "bytes": 1342,
+        "sha256": "ce8d7e1efa5aefced7608720fbb468c0743bce4e9443ccd0250761eb4949c489"
+      },
+      {
+        "path": "states/220532-Torappu-TSMath-Clamp.asm",
+        "kind": "instructions",
+        "bytes": 1519,
+        "sha256": "ef542602a4e482fe3d37a5cbe2ac7fb42a2a938c6caa202f6e7da787c01007f3"
+      },
+      {
+        "path": "states/28039-Torappu-GridPosition-get_asLocalPosition.asm",
+        "kind": "instructions",
+        "bytes": 618,
+        "sha256": "b9742fbe91f50e9c1da1f3be5ebd52f8cc774dd240f1c0f5e93869a1fd694b3d"
+      },
+      {
+        "path": "states/28047-Torappu-GridPosition-FromVectorPosition.asm",
+        "kind": "instructions",
+        "bytes": 1004,
+        "sha256": "b13f8a8ca055536c3746dbcd5f7f69646834718e0a91089fd7d20c5ed487681c"
+      },
+      {
+        "path": "states/30777-Torappu-AttributeMetaAttribute--ctor.asm",
+        "kind": "instructions",
+        "bytes": 1630,
+        "sha256": "fe0f84c4ac191dc64bc4d06c2b3c0ab74ecb47d2e4cf49ae862ba420bf115438"
+      },
+      {
+        "path": "states/30779-Torappu-AttributeMetaAttribute-GetMinAsFloat.asm",
+        "kind": "instructions",
+        "bytes": 480,
+        "sha256": "c6b4d1fdd024ab3b802ef679ffe899eadc3a5fad9e7cbd5fe7a00f63797def4c"
+      },
+      {
+        "path": "states/30780-Torappu-AttributeMetaAttribute-GetMaxAsFloat.asm",
+        "kind": "instructions",
+        "bytes": 480,
+        "sha256": "76bdb0fb20273a331efe8b0164023bcff05782eda9356c0f33c9661f762764f1"
+      },
+      {
+        "path": "states/30781-Torappu-AttributeMetaAttribute-GetRangeAsTVector2.asm",
+        "kind": "instructions",
+        "bytes": 3419,
+        "sha256": "c9888e9be247b4bcf909c0991866647a348ef565cf50917c5e845ffd082da83c"
+      },
+      {
+        "path": "states/30786-Torappu-AttributesData-get_fieldMetas.asm",
+        "kind": "instructions",
+        "bytes": 19086,
+        "sha256": "d6b4f1ca016730272263f096249aa52be29499fa8f60a1d509e0289edfb383ae"
+      },
+      {
+        "path": "states/30794-Torappu-AttributesData--cctor.asm",
+        "kind": "instructions",
+        "bytes": 17467,
+        "sha256": "9c06366727bd1c342e7f23f941f30e72f0906c0ff8a4a9956717373081184468"
+      },
+      {
+        "path": "states/318544-UnityEngine-Rigidbody2D-get_velocity.asm",
+        "kind": "instructions",
+        "bytes": 1187,
+        "sha256": "e3d3516e2e02e167136b566e6e91e708c5069926ca16efcc00a2787603bf67d0"
+      },
+      {
+        "path": "states/33274-Torappu-StateMachine-Tick.asm",
+        "kind": "instructions",
+        "bytes": 1301,
+        "sha256": "67141444ad96f0cf15974d9ba075fb66c03b4cb1afec36e2c2ddab532506d2ce"
+      },
+      {
+        "path": "states/33282-Torappu-StateMachine-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 4956,
+        "sha256": "98e1e2126f6eca3bbc34b898f639b4b47811c837c71093596b75b613f7d15036"
+      },
+      {
+        "path": "states/62950-BattleOptions--cctor.asm",
+        "kind": "instructions",
+        "bytes": 11607,
+        "sha256": "d4b99dc8cc2fbbe537c736cdf2ecd6de7f037c05b89ac3579905a5ae0618b739"
+      },
+      {
+        "path": "states/64266-Attributes--ctor.asm",
+        "kind": "instructions",
+        "bytes": 7909,
+        "sha256": "23d8e528eb9a711960dd89202e88e49809dd593f2b42eb701aba6bf3bfffaf73"
+      },
+      {
+        "path": "states/64267-Attributes--ctor.asm",
+        "kind": "instructions",
+        "bytes": 8384,
+        "sha256": "e8b023526fa0b9db4617ce6276835532cac28922122493c1e5662ad82fbee827"
+      },
+      {
+        "path": "states/64268-Attributes-Reset.asm",
+        "kind": "instructions",
+        "bytes": 19735,
+        "sha256": "b99635b396a9c5927d7dd54685d559411e5fe81a6304ca8a200b0f247cbeafb8"
+      },
+      {
+        "path": "states/64270-Attributes-OverrideDataRange.asm",
+        "kind": "instructions",
+        "bytes": 5957,
+        "sha256": "baa16727c200031ea4cf1fd54c59911061164bf9a72a0e6c086a2ffe24f25614"
+      },
+      {
+        "path": "states/64276-Attributes-GetValue.asm",
+        "kind": "instructions",
+        "bytes": 2950,
+        "sha256": "e6409407d76ceab42bf8fa2e50081b09ed9ab9a78a3c48018eecdd6e566ea109"
+      },
+      {
+        "path": "states/64279-Attributes-GetAbnormalFlag.asm",
+        "kind": "instructions",
+        "bytes": 3210,
+        "sha256": "65aaf369a5e37180802af2c2d19ac5a22e7576e66ac008f3c02eb9b3dc6a8e20"
+      },
+      {
+        "path": "states/64295-Attributes-_CalculateAttributeValue.asm",
+        "kind": "instructions",
+        "bytes": 18486,
+        "sha256": "ac255b14ca55283286de96de30e25036d59db8c03a35d67b2e687607a9f2045d"
+      },
+      {
+        "path": "states/64296-Attributes-GetMinValue.asm",
+        "kind": "instructions",
+        "bytes": 3282,
+        "sha256": "74e54c044aa8ccb99743e4d9b01ec07dbdf638498aa3b9593c9c6588fa6d4a80"
+      },
+      {
+        "path": "states/64297-Attributes-GetMaxValue.asm",
+        "kind": "instructions",
+        "bytes": 2891,
+        "sha256": "1ac598c9dabb18bd8649fe3b0cf9bb25ac0b3138e45e7eee31f15774d7c08b48"
+      },
+      {
+        "path": "states/66305-EnemySkill-CastToTarget.asm",
+        "kind": "instructions",
+        "bytes": 8088,
+        "sha256": "6157878cd51caff47be661b0222128a83401636499f08984a8c34f51c87ed6db"
+      },
+      {
+        "path": "states/66312-EnemySkill-Tick.asm",
+        "kind": "instructions",
+        "bytes": 9588,
+        "sha256": "a03320b54f8a5854586f90a9642d77577d81805337824cfdead385a14e4aaa9a"
+      },
+      {
+        "path": "states/66313-EnemySkill-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 5006,
+        "sha256": "a06276a2b53eca09bfa01986a88466b89c66151a513ee4c3ae589b258a93c610"
+      },
+      {
+        "path": "states/66318-EnemySkill-_OnCastStart.asm",
+        "kind": "instructions",
+        "bytes": 3585,
+        "sha256": "c55d049b2c428d935e34c362c5396a87c8eb388bf4784f0341e8ab0fd6ac17de"
+      },
+      {
+        "path": "states/66411-Entity-get_canUseAbility.asm",
+        "kind": "instructions",
+        "bytes": 4084,
+        "sha256": "99939e4120d7e8e6932ceda516491e88ea82c75377ce8322f3e8ac5ec9f5576c"
+      },
+      {
+        "path": "states/66412-Entity-get_canUseAtkOrCbt.asm",
+        "kind": "instructions",
+        "bytes": 8339,
+        "sha256": "2ca92db83b2a12b7321d62317fd43587d9c836edb75fb4bc5a4e90dd38bf3bcb"
+      },
+      {
+        "path": "states/66413-Entity-get_canMove.asm",
+        "kind": "instructions",
+        "bytes": 4440,
+        "sha256": "c1862836735152c5df76e5d37c1a35365f1be3e9c620c6cbda3d694983aba9a6"
+      },
+      {
+        "path": "states/66467-Entity-get_moveSpeed.asm",
+        "kind": "instructions",
+        "bytes": 4248,
+        "sha256": "fffb169fc3a58b240529d917de4c0712e541b8e0f47a116e5c11d27cec2d486f"
+      },
+      {
+        "path": "states/66486-Entity-get_isStunned.asm",
+        "kind": "instructions",
+        "bytes": 2691,
+        "sha256": "b1b8f27cbe31183d8b46db712c461036d20c93c2de9764398dd34e074dd80d57"
+      },
+      {
+        "path": "states/66488-Entity-get_isFrozen.asm",
+        "kind": "instructions",
+        "bytes": 2280,
+        "sha256": "b355be4b9ac58a7076977d283af530b1808fdd3f5ff8fb8dbc48bc91e9a7a812"
+      },
+      {
+        "path": "states/66489-Entity-get_isDoze.asm",
+        "kind": "instructions",
+        "bytes": 2278,
+        "sha256": "5505c21336bdf7fa81fed1bad770b4457c1528a9a4751c7dee4a29f36a77f874"
+      },
+      {
+        "path": "states/66490-Entity-get_isLevitate.asm",
+        "kind": "instructions",
+        "bytes": 2282,
+        "sha256": "efbe7b28749d4a6706515c75cbf3beea6ad834e8008e98546f79a1d6abba9a1d"
+      },
+      {
+        "path": "states/66491-Entity-get_isGroundBound.asm",
+        "kind": "instructions",
+        "bytes": 2285,
+        "sha256": "2fa52e33588bcea5384af27b53ce20cc24c96ddd7c290e8a52536899af30331c"
+      },
+      {
+        "path": "states/66492-Entity-get_isActuallyGroundBound.asm",
+        "kind": "instructions",
+        "bytes": 2455,
+        "sha256": "89da8b060484d67f5ffd137321441db542c5285de29206f2aecc5f069a5a4865"
+      },
+      {
+        "path": "states/66493-Entity-get_isActuallyLevitate.asm",
+        "kind": "instructions",
+        "bytes": 2452,
+        "sha256": "cd6f30f678c41ceb9c40c7320bf2627acb0b033ab6638a2860239cd4a315adfe"
+      },
+      {
+        "path": "states/66494-Entity-get_isUnmovable.asm",
+        "kind": "instructions",
+        "bytes": 2609,
+        "sha256": "b5cac17d0c5a9cc6179ea3f38b19e0d9df4a9402229787539c299ccfbb95e9b6"
+      },
+      {
+        "path": "states/66697-Entity-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 8925,
+        "sha256": "8339270e3590d420d0d693cf5f5f9695b12184236f8df48547e3450e6e197118"
+      },
+      {
+        "path": "states/66716-Entity-EmitEvent.asm",
+        "kind": "instructions",
+        "bytes": 2576,
+        "sha256": "ba0409d4f3f4cbd4d4d01ee692c0018fb713007da8f2fb6f0131986b901c8a55"
+      },
+      {
+        "path": "states/71047-MoveController-get_moveSpeed.asm",
+        "kind": "instructions",
+        "bytes": 4488,
+        "sha256": "0b0e37bfb32e1e1700b560a6edb8e07f9dbaf7e9aec7078fd0eb30b8b422a9e7"
+      },
+      {
+        "path": "states/71048-MoveController-get_velocity.asm",
+        "kind": "instructions",
+        "bytes": 1658,
+        "sha256": "22f68a644ce0ee4a1f15261a25e37ab982dae5441b9f9125da50b8b6999df4ab"
+      },
+      {
+        "path": "states/71049-MoveController-set_velocity.asm",
+        "kind": "instructions",
+        "bytes": 1442,
+        "sha256": "b54a8ac741653a08bd3a4927e3da424b2e48a36216d80dc71a842ae269e4e753"
+      },
+      {
+        "path": "states/71050-MoveController-get_steeringFactor.asm",
+        "kind": "instructions",
+        "bytes": 1452,
+        "sha256": "ef2c4847e2b74be70f2483f16c4ab7edf10419947cc8bc10252dbb4e26b3677e"
+      },
+      {
+        "path": "states/71054-MoveController-Reset.asm",
+        "kind": "instructions",
+        "bytes": 4616,
+        "sha256": "23d55aab3a86528ce6f65292bda7f4586b093904132a56ac16332cf699241589"
+      },
+      {
+        "path": "states/71055-MoveController-OnStart.asm",
+        "kind": "instructions",
+        "bytes": 3864,
+        "sha256": "707f0a45e8a43c6bc36a9b869e257210b48215440c3ef1b64a1df53a84cf54dc"
+      },
+      {
+        "path": "states/71063-MoveController-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 2091,
+        "sha256": "88baf6229076dfd52aa7b5b40b8a444b14bbe97cd698507d9cc1b066c4659365"
+      },
+      {
+        "path": "states/71064-MoveController-_ConveyorMove.asm",
+        "kind": "instructions",
+        "bytes": 15390,
+        "sha256": "45e38dd8ecc8167d42cb92d7fe7a13501a6ce00ea9013f2d6fc692838e55d005"
+      },
+      {
+        "path": "states/76273-Enemy-get_lastMoveDirection.asm",
+        "kind": "instructions",
+        "bytes": 2742,
+        "sha256": "0d19662a8f88e543480b4f881f305239b7c28464fc92aa2a85ecdc4021a4bbcc"
+      },
+      {
+        "path": "states/76274-Enemy-get_lastMoveDirVec.asm",
+        "kind": "instructions",
+        "bytes": 1970,
+        "sha256": "934fa481f3cf7372c69d506c613612b4be79cef64af4fcba49be09c477e96cef"
+      },
+      {
+        "path": "states/76319-Enemy-get_totalMoveDist.asm",
+        "kind": "instructions",
+        "bytes": 1754,
+        "sha256": "bf908cbb05d13fecb19c58cdc386e43bfbda53bfbd185ef5298cca80e1f7628c"
+      },
+      {
+        "path": "states/76359-Enemy-get_isMovingBySelf.asm",
+        "kind": "instructions",
+        "bytes": 2840,
+        "sha256": "c0e1f08905face87d489ad71af489d4c78787a8a1bf8c944259aec10f4ee1863"
+      },
+      {
+        "path": "states/76382-Enemy-get_velocity.asm",
+        "kind": "instructions",
+        "bytes": 1907,
+        "sha256": "e9449f5cd44ea7736f1967b3e42d0e7525e8b63335c2cf95d5d9e6f1f4ee5fb0"
+      },
+      {
+        "path": "states/76425-Enemy-TriggerEnemySkill.asm",
+        "kind": "instructions",
+        "bytes": 9326,
+        "sha256": "e9b85b182e168074518a5bf83aa85943c36e76e115772b19858a4f8068757942"
+      },
+      {
+        "path": "states/76444-Enemy-PlayMoveAnim.asm",
+        "kind": "instructions",
+        "bytes": 11422,
+        "sha256": "984655ee78ecb40b214e2ed6addf0aaeb3bd60270e69a8bce429e0475d5db757"
+      },
+      {
+        "path": "states/76469-Enemy-Init.asm",
+        "kind": "instructions",
+        "bytes": 14883,
+        "sha256": "73fd438d97cf5e64f1e65d624e5874b56241fdcdc5272ac8ada23fd4e014b7f8"
+      },
+      {
+        "path": "states/76495-Enemy-_SearchAttackTarget.asm",
+        "kind": "instructions",
+        "bytes": 2619,
+        "sha256": "c5ef685424e4d9723fe32e6cafcab1903f8a655c81d70c652a8fe545fabf6c52"
+      },
+      {
+        "path": "states/76531-Enemy-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 25949,
+        "sha256": "01d7c7e8c5a457bde822b641d1dcfbee3030543cf6b47e928629883631d6b713"
+      },
+      {
+        "path": "states/76640-Enemy-States-EnemyStateMachine-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 3048,
+        "sha256": "c6ba3e3e097cb2c24416a3acd66a35f26c6dc3c6fabcc34d913c83247598b594"
+      },
+      {
+        "path": "states/76654-Enemy-States-MoveState-get_isHanging.asm",
+        "kind": "instructions",
+        "bytes": 2398,
+        "sha256": "93fbfb30a27a3f47c8cdc6ec4a84e5ad94ce2f02095ff32a3e88393d522a828a"
+      },
+      {
+        "path": "states/76655-Enemy-States-MoveState-set_isHanging.asm",
+        "kind": "instructions",
+        "bytes": 6433,
+        "sha256": "b0a1abcd80ae509174e2b3ffb136ae1220c20a0dfb712cca9148aaed5301a74c"
+      },
+      {
+        "path": "states/76656-Enemy-States-MoveState-OnEnter.asm",
+        "kind": "instructions",
+        "bytes": 6917,
+        "sha256": "50b3b86ce4267ef1f53bd64b052ce02e26dc96ac92331a7a342a37199e38582f"
+      },
+      {
+        "path": "states/76657-Enemy-States-MoveState-OnExit.asm",
+        "kind": "instructions",
+        "bytes": 2404,
+        "sha256": "d0ae31195add667eaec04a513484e4d7b258a187f32c1e7ec55f150573758b7c"
+      },
+      {
+        "path": "states/76658-Enemy-States-MoveState-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 14384,
+        "sha256": "663391b1075b30b3b8b609883192fccdf731fdf9e8b9d3704185a1797a38e098"
+      },
+      {
+        "path": "states/76659-Enemy-States-MoveState-UpdateMoveAnimation.asm",
+        "kind": "instructions",
+        "bytes": 4777,
+        "sha256": "04cd81e675e186c3e2ee8288ac6a034aca7030402d6ebdbe4702e8a81a604ef7"
+      },
+      {
+        "path": "states/76661-Enemy-States-AttackState-OnEnter.asm",
+        "kind": "instructions",
+        "bytes": 6122,
+        "sha256": "b5f3f3a46b63ba4891031d8e95c8aa168ef32986295d0b995913eb592e57641f"
+      },
+      {
+        "path": "states/76662-Enemy-States-AttackState-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 5961,
+        "sha256": "e8263fe9b5425b031079cda511b1fc680f03278660654001144271208e55e2d8"
+      },
+      {
+        "path": "states/76663-Enemy-States-AttackState-OnExit.asm",
+        "kind": "instructions",
+        "bytes": 4028,
+        "sha256": "96df2097de7fe819e610ee13887c793058e231378af64160ec93986849f4b1ab"
+      },
+      {
+        "path": "states/76664-Enemy-States-AttackState-_AttackFinishCallback.asm",
+        "kind": "instructions",
+        "bytes": 2704,
+        "sha256": "18ce71bb316a01f29581c302359a2e30e97782182346270663f39f0a61635c65"
+      },
+      {
+        "path": "states/76698-Enemy-States-CombatState-OnEnter.asm",
+        "kind": "instructions",
+        "bytes": 6386,
+        "sha256": "acbf3e745f7403a6f2475e91240938291a3f1ee13ebbc2365c1cdf9a0d8936a9"
+      },
+      {
+        "path": "states/76699-Enemy-States-CombatState-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 11072,
+        "sha256": "386b1c009a3d580f88d8399e4941fb475230e19d7f50f7e6e7f37c55ff1f914f"
+      },
+      {
+        "path": "states/76700-Enemy-States-CombatState-OnExit.asm",
+        "kind": "instructions",
+        "bytes": 3566,
+        "sha256": "d445b638c2ca74253c351ed91b75e8aef0c695c9ffefb887b5c10dfc49aa667c"
+      },
+      {
+        "path": "states/76702-Enemy-States-StunState-OnEnter.asm",
+        "kind": "instructions",
+        "bytes": 4662,
+        "sha256": "16a0c2c33573cad16e51fa3700024423af112f31d35a383034c25a5b4ba05c50"
+      },
+      {
+        "path": "states/76703-Enemy-States-StunState-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 5009,
+        "sha256": "5e2a4d6922b78933176fec6c8deb1072b82844a87dfd2e363b35ec3aed5b11d7"
+      },
+      {
+        "path": "states/76704-Enemy-States-StunState-CheckSwitchOut.asm",
+        "kind": "instructions",
+        "bytes": 2652,
+        "sha256": "ba0eeb191fd94d5006f823a681a0b15a739c4477cdf30e0dab651ab25e56b5b1"
+      },
+      {
+        "path": "states/76708-Enemy-States-PalsyState-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 5093,
+        "sha256": "7a4a88a5ed19c315c7d6ab9d1aca3d49a46cdb592c675b57fd9549610ecb4b9e"
+      },
+      {
+        "path": "states/76709-Enemy-States-PalsyState-CheckSwitchOut.asm",
+        "kind": "instructions",
+        "bytes": 3172,
+        "sha256": "424e5772d1862e5576120cb9637aeb4ad3dd20b159bb914076276352c2438939"
+      },
+      {
+        "path": "states/76720-Enemy-States-FreezeState-OnEnter.asm",
+        "kind": "instructions",
+        "bytes": 6285,
+        "sha256": "ff4254d238a8bbcb2977e03038d756a8964fe47c0a1f853fe3735dc83f158b37"
+      },
+      {
+        "path": "states/76721-Enemy-States-FreezeState-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 5016,
+        "sha256": "cb9a98966dfbffe142425cdc1481e385b2d651531dedf9bca147213f46614bbc"
+      },
+      {
+        "path": "states/76722-Enemy-States-FreezeState-OnExit.asm",
+        "kind": "instructions",
+        "bytes": 5153,
+        "sha256": "d488aff4dc9ed5a9dc35bc75ec32e6d88b86be466cbf3ea6f18ac64b680b4f0a"
+      },
+      {
+        "path": "states/76723-Enemy-States-FreezeState-CheckSwitchOut.asm",
+        "kind": "instructions",
+        "bytes": 2657,
+        "sha256": "f02c828799d5d905cfce6a078557811c6f3bac5c36a8214c625084796577c077"
+      },
+      {
+        "path": "states/76732-Enemy-States-LevitateState-OnEnter.asm",
+        "kind": "instructions",
+        "bytes": 6515,
+        "sha256": "e3afe8e223f787acea75d4193998e7a44dc35af0a305efe6edacdd5207b630ff"
+      },
+      {
+        "path": "states/76734-Enemy-States-LevitateState-OnExit.asm",
+        "kind": "instructions",
+        "bytes": 6297,
+        "sha256": "1358961ec4ab1f46beb5f7831e29bb18c81bdbb7805e9917f4c54f15c3ce557c"
+      },
+      {
+        "path": "states/76861-Enemy-AttackWrapper-Cast.asm",
+        "kind": "instructions",
+        "bytes": 11570,
+        "sha256": "6fd3a5e32f74d796a9efee01434cc317f4a923c8b9ce07d8b027bfd9b8bc9814"
+      },
+      {
+        "path": "states/76883-Enemy-CombatWrapper-CastWithAssignedSkill.asm",
+        "kind": "instructions",
+        "bytes": 3304,
+        "sha256": "2df371bd90ce4d0bd62bbc3b0dccc47bd9cfd1ce355a4f667d23956fc7cf75cd"
+      },
+      {
+        "path": "states/77577-Unit-get_isMovingBySelf.asm",
+        "kind": "instructions",
+        "bytes": 1400,
+        "sha256": "97a341581788c1776af1d1cab0d21e9c14cde21094cf4818b4be081c26f37630"
+      },
+      {
+        "path": "states/77699-Unit-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 2982,
+        "sha256": "b8cb1e6e4aad5e667c9885e23c2df808011697d28c9007677d491000a87e1ec9"
+      },
+      {
+        "path": "states/95826-Action-Nodes-AssignEnemyMoveDistIntoBlackboard-Execute.asm",
+        "kind": "instructions",
+        "bytes": 5154,
+        "sha256": "21512a6331c933d57085205df076013334cf32731e5fd366b5883b7ecf9c5709"
+      },
+      {
+        "path": "states/99311-Action-Nodes-IfEnemyIsMoving-Execute.asm",
+        "kind": "instructions",
+        "bytes": 6001,
+        "sha256": "3ec2fa29695d3df9bd0a7772fba0b144c9ce3fd39af658bcddacdc8183a03bcd"
+      },
+      {
+        "path": "states/99314-Action-Nodes-IfEnemyIsMovingBySelf-Execute.asm",
+        "kind": "instructions",
+        "bytes": 4976,
+        "sha256": "d1b4eb02343be122fe8841871793426300212c7b0e3e51f3f62c02f3aa9009e4"
+      },
+      {
+        "path": "states/metadata.json",
+        "kind": "record",
+        "bytes": 535261,
+        "sha256": "4742cc2ee2a61f6a0ff23832136c947c696ad5668859ba13253617c81b237275"
+      },
+      {
+        "path": "states/notes.md",
+        "kind": "historical-report",
+        "bytes": 12502,
+        "sha256": "7aed75665dc27df460919dc2e66a395d8de68a9848c29bb44a3daa5dc94a7f88"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 25960,
+          "mode": "disasm",
+          "records": [
+            "space/25960.asm",
+            "space/metadata.json#/methods/29"
+          ],
+          "fullname": "Torappu.PeriodicTicker..ctor",
+          "address": "0x181e043f0"
+        },
+        {
+          "index": 25961,
+          "mode": "disasm",
+          "records": [
+            "space/25961.asm",
+            "space/metadata.json#/methods/30"
+          ],
+          "fullname": "Torappu.PeriodicTicker.Reset",
+          "address": "0x181e04390"
+        },
+        {
+          "index": 25962,
+          "mode": "disasm",
+          "records": [
+            "interactions/25962-Reset.asm",
+            "interactions/metadata.json#/methods/0",
+            "space/25962.asm",
+            "space/metadata.json#/methods/31"
+          ],
+          "fullname": "Torappu.PeriodicTicker.Reset",
+          "address": "0x181e043c0"
+        },
+        {
+          "index": 25963,
+          "mode": "disasm",
+          "records": [
+            "interactions/25963-Tick.asm",
+            "interactions/metadata.json#/methods/1",
+            "space/25963.asm",
+            "space/metadata.json#/methods/32"
+          ],
+          "fullname": "Torappu.PeriodicTicker.Tick",
+          "address": "0x181e043d0"
+        },
+        {
+          "index": 25964,
+          "mode": "disasm",
+          "records": [
+            "interactions/25964-Next.asm",
+            "interactions/metadata.json#/methods/2",
+            "space/25964.asm",
+            "space/metadata.json#/methods/33"
+          ],
+          "fullname": "Torappu.PeriodicTicker.Next",
+          "address": "0x181e04370"
+        },
+        {
+          "index": 28039,
+          "mode": "disasm",
+          "records": [
+            "space/28039.asm",
+            "space/metadata.json#/methods/38",
+            "states/28039-Torappu-GridPosition-get_asLocalPosition.asm",
+            "states/metadata.json#/methods/28039"
+          ],
+          "fullname": "Torappu.GridPosition.get_asLocalPosition",
+          "address": "0x182104010"
+        },
+        {
+          "index": 28047,
+          "mode": "disasm",
+          "records": [
+            "space/28047.asm",
+            "space/metadata.json#/methods/39",
+            "states/28047-Torappu-GridPosition-FromVectorPosition.asm",
+            "states/metadata.json#/methods/28047"
+          ],
+          "fullname": "Torappu.GridPosition.FromVectorPosition",
+          "address": "0x182103900"
+        },
+        {
+          "index": 28063,
+          "mode": "disasm",
+          "records": [
+            "space/28063.asm",
+            "space/metadata.json#/methods/11"
+          ],
+          "fullname": "Torappu.GridPosition..cctor",
+          "address": "0x182103c00"
+        },
+        {
+          "index": 30777,
+          "mode": "disasm",
+          "records": [
+            "states/30777-Torappu-AttributeMetaAttribute--ctor.asm",
+            "states/metadata.json#/methods/30777"
+          ],
+          "fullname": "Torappu.AttributeMetaAttribute..ctor",
+          "address": "0x182319a00"
+        },
+        {
+          "index": 30779,
+          "mode": "disasm",
+          "records": [
+            "states/30779-Torappu-AttributeMetaAttribute-GetMinAsFloat.asm",
+            "states/metadata.json#/methods/30779"
+          ],
+          "fullname": "Torappu.AttributeMetaAttribute.GetMinAsFloat",
+          "address": "0x180726980"
+        },
+        {
+          "index": 30780,
+          "mode": "disasm",
+          "records": [
+            "states/30780-Torappu-AttributeMetaAttribute-GetMaxAsFloat.asm",
+            "states/metadata.json#/methods/30780"
+          ],
+          "fullname": "Torappu.AttributeMetaAttribute.GetMaxAsFloat",
+          "address": "0x180726990"
+        },
+        {
+          "index": 30781,
+          "mode": "disasm",
+          "records": [
+            "states/30781-Torappu-AttributeMetaAttribute-GetRangeAsTVector2.asm",
+            "states/metadata.json#/methods/30781"
+          ],
+          "fullname": "Torappu.AttributeMetaAttribute.GetRangeAsTVector2",
+          "address": "0x182319850"
+        },
+        {
+          "index": 30786,
+          "mode": "disasm",
+          "records": [
+            "states/30786-Torappu-AttributesData-get_fieldMetas.asm",
+            "states/metadata.json#/methods/30786"
+          ],
+          "fullname": "Torappu.AttributesData.get_fieldMetas",
+          "address": "0x18231bb70"
+        },
+        {
+          "index": 30794,
+          "mode": "disasm",
+          "records": [
+            "states/30794-Torappu-AttributesData--cctor.asm",
+            "states/metadata.json#/methods/30794"
+          ],
+          "fullname": "Torappu.AttributesData..cctor",
+          "address": "0x18231b0f0"
+        },
+        {
+          "index": 33274,
+          "mode": "disasm",
+          "records": [
+            "states/33274-Torappu-StateMachine-Tick.asm",
+            "states/metadata.json#/methods/33274"
+          ],
+          "fullname": "Torappu.StateMachine.Tick",
+          "address": "0x1826483e0"
+        },
+        {
+          "index": 33282,
+          "mode": "disasm",
+          "records": [
+            "states/33282-Torappu-StateMachine-OnTick.asm",
+            "states/metadata.json#/methods/33282"
+          ],
+          "fullname": "Torappu.StateMachine.OnTick",
+          "address": "0x182647fd0"
+        },
+        {
+          "index": 62946,
+          "mode": "disasm",
+          "records": [
+            "space/62946.asm",
+            "space/metadata.json#/methods/40"
+          ],
+          "fullname": "Torappu.Battle.BattleOptions.LoadOptions",
+          "address": "0x1805da010"
+        },
+        {
+          "index": 62950,
+          "mode": "disasm",
+          "records": [
+            "motion/62950-Torappu_Battle_BattleOptions-_cctor.asm",
+            "motion/support-metadata.json#/methods/2",
+            "space/62950.asm",
+            "space/metadata.json#/methods/41",
+            "states/62950-BattleOptions--cctor.asm",
+            "states/metadata.json#/methods/62950"
+          ],
+          "fullname": "Torappu.Battle.BattleOptions..cctor",
+          "address": "0x1805da9c0"
+        },
+        {
+          "index": 64266,
+          "mode": "disasm",
+          "records": [
+            "states/64266-Attributes--ctor.asm",
+            "states/metadata.json#/methods/64266"
+          ],
+          "fullname": "Torappu.Battle.Attributes..ctor",
+          "address": "0x18064b450"
+        },
+        {
+          "index": 64267,
+          "mode": "disasm",
+          "records": [
+            "states/64267-Attributes--ctor.asm",
+            "states/metadata.json#/methods/64267"
+          ],
+          "fullname": "Torappu.Battle.Attributes..ctor",
+          "address": "0x18064b6e0"
+        },
+        {
+          "index": 64268,
+          "mode": "disasm",
+          "records": [
+            "states/64268-Attributes-Reset.asm",
+            "states/metadata.json#/methods/64268"
+          ],
+          "fullname": "Torappu.Battle.Attributes.Reset",
+          "address": "0x18064a480"
+        },
+        {
+          "index": 64270,
+          "mode": "disasm",
+          "records": [
+            "states/64270-Attributes-OverrideDataRange.asm",
+            "states/metadata.json#/methods/64270"
+          ],
+          "fullname": "Torappu.Battle.Attributes.OverrideDataRange",
+          "address": "0x180649c60"
+        },
+        {
+          "index": 64276,
+          "mode": "disasm",
+          "records": [
+            "states/64276-Attributes-GetValue.asm",
+            "states/metadata.json#/methods/64276"
+          ],
+          "fullname": "Torappu.Battle.Attributes.GetValue",
+          "address": "0x1806499a0"
+        },
+        {
+          "index": 64279,
+          "mode": "disasm",
+          "records": [
+            "states/64279-Attributes-GetAbnormalFlag.asm",
+            "states/metadata.json#/methods/64279"
+          ],
+          "fullname": "Torappu.Battle.Attributes.GetAbnormalFlag",
+          "address": "0x180649280"
+        },
+        {
+          "index": 64295,
+          "mode": "disasm",
+          "records": [
+            "states/64295-Attributes-_CalculateAttributeValue.asm",
+            "states/metadata.json#/methods/64295"
+          ],
+          "fullname": "Torappu.Battle.Attributes._CalculateAttributeValue",
+          "address": "0x18064ad80"
+        },
+        {
+          "index": 64296,
+          "mode": "disasm",
+          "records": [
+            "states/64296-Attributes-GetMinValue.asm",
+            "states/metadata.json#/methods/64296"
+          ],
+          "fullname": "Torappu.Battle.Attributes.GetMinValue",
+          "address": "0x1806497b0"
+        },
+        {
+          "index": 64297,
+          "mode": "disasm",
+          "records": [
+            "states/64297-Attributes-GetMaxValue.asm",
+            "states/metadata.json#/methods/64297"
+          ],
+          "fullname": "Torappu.Battle.Attributes.GetMaxValue",
+          "address": "0x1806496d0"
+        },
+        {
+          "index": 64811,
+          "mode": "disasm",
+          "records": [
+            "space/64811.asm",
+            "space/metadata.json#/methods/42"
+          ],
+          "fullname": "Torappu.Battle.BattleController.LoadGameWithRune",
+          "address": "0x180627330"
+        },
+        {
+          "index": 66305,
+          "mode": "disasm",
+          "records": [
+            "states/66305-EnemySkill-CastToTarget.asm",
+            "states/metadata.json#/methods/66305"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.CastToTarget",
+          "address": "0x1806dd2d0"
+        },
+        {
+          "index": 66312,
+          "mode": "disasm",
+          "records": [
+            "states/66312-EnemySkill-Tick.asm",
+            "states/metadata.json#/methods/66312"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.Tick",
+          "address": "0x1806de520"
+        },
+        {
+          "index": 66313,
+          "mode": "disasm",
+          "records": [
+            "states/66313-EnemySkill-OnTick.asm",
+            "states/metadata.json#/methods/66313"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.OnTick",
+          "address": "0x1806de0e0"
+        },
+        {
+          "index": 66318,
+          "mode": "disasm",
+          "records": [
+            "states/66318-EnemySkill-_OnCastStart.asm",
+            "states/metadata.json#/methods/66318"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill._OnCastStart",
+          "address": "0x1806dee20"
+        },
+        {
+          "index": 66371,
+          "mode": "disasm",
+          "records": [
+            "space/66371.asm",
+            "space/metadata.json#/methods/19"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_pathMotionMode",
+          "address": "0x180708040"
+        },
+        {
+          "index": 66411,
+          "mode": "disasm",
+          "records": [
+            "states/66411-Entity-get_canUseAbility.asm",
+            "states/metadata.json#/methods/66411"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_canUseAbility",
+          "address": "0x180702570"
+        },
+        {
+          "index": 66412,
+          "mode": "disasm",
+          "records": [
+            "states/66412-Entity-get_canUseAtkOrCbt.asm",
+            "states/metadata.json#/methods/66412"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_canUseAtkOrCbt",
+          "address": "0x1807026b0"
+        },
+        {
+          "index": 66413,
+          "mode": "disasm",
+          "records": [
+            "states/66413-Entity-get_canMove.asm",
+            "states/metadata.json#/methods/66413"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_canMove",
+          "address": "0x180702180"
+        },
+        {
+          "index": 66467,
+          "mode": "disasm",
+          "records": [
+            "states/66467-Entity-get_moveSpeed.asm",
+            "states/metadata.json#/methods/66467"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_moveSpeed",
+          "address": "0x180707aa0"
+        },
+        {
+          "index": 66486,
+          "mode": "disasm",
+          "records": [
+            "states/66486-Entity-get_isStunned.asm",
+            "states/metadata.json#/methods/66486"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_isStunned",
+          "address": "0x180706a00"
+        },
+        {
+          "index": 66488,
+          "mode": "disasm",
+          "records": [
+            "states/66488-Entity-get_isFrozen.asm",
+            "states/metadata.json#/methods/66488"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_isFrozen",
+          "address": "0x180705b50"
+        },
+        {
+          "index": 66489,
+          "mode": "disasm",
+          "records": [
+            "states/66489-Entity-get_isDoze.asm",
+            "states/metadata.json#/methods/66489"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_isDoze",
+          "address": "0x180705950"
+        },
+        {
+          "index": 66490,
+          "mode": "disasm",
+          "records": [
+            "states/66490-Entity-get_isLevitate.asm",
+            "states/metadata.json#/methods/66490"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_isLevitate",
+          "address": "0x1807060c0"
+        },
+        {
+          "index": 66491,
+          "mode": "disasm",
+          "records": [
+            "states/66491-Entity-get_isGroundBound.asm",
+            "states/metadata.json#/methods/66491"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_isGroundBound",
+          "address": "0x180705bf0"
+        },
+        {
+          "index": 66492,
+          "mode": "disasm",
+          "records": [
+            "states/66492-Entity-get_isActuallyGroundBound.asm",
+            "states/metadata.json#/methods/66492"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_isActuallyGroundBound",
+          "address": "0x180705270"
+        },
+        {
+          "index": 66493,
+          "mode": "disasm",
+          "records": [
+            "states/66493-Entity-get_isActuallyLevitate.asm",
+            "states/metadata.json#/methods/66493"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_isActuallyLevitate",
+          "address": "0x180705320"
+        },
+        {
+          "index": 66494,
+          "mode": "disasm",
+          "records": [
+            "states/66494-Entity-get_isUnmovable.asm",
+            "states/metadata.json#/methods/66494"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_isUnmovable",
+          "address": "0x180706d20"
+        },
+        {
+          "index": 66697,
+          "mode": "disasm",
+          "records": [
+            "states/66697-Entity-OnTick.asm",
+            "states/metadata.json#/methods/66697"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnTick",
+          "address": "0x1806fadf0"
+        },
+        {
+          "index": 66716,
+          "mode": "disasm",
+          "records": [
+            "states/66716-Entity-EmitEvent.asm",
+            "states/metadata.json#/methods/66716"
+          ],
+          "fullname": "Torappu.Battle.Entity.EmitEvent",
+          "address": "0x1806f2630"
+        },
+        {
+          "index": 70010,
+          "mode": "disasm",
+          "records": [
+            "space/70010.asm",
+            "space/metadata.json#/methods/15"
+          ],
+          "fullname": "Torappu.Battle.Map.GetPassableMap",
+          "address": "0x18087d1b0"
+        },
+        {
+          "index": 70011,
+          "mode": "disasm",
+          "records": [
+            "space/70011.asm",
+            "space/metadata.json#/methods/16"
+          ],
+          "fullname": "Torappu.Battle.Map.CheckPassable",
+          "address": "0x18087a650"
+        },
+        {
+          "index": 70013,
+          "mode": "disasm",
+          "records": [
+            "space/70013.asm",
+            "space/metadata.json#/methods/17"
+          ],
+          "fullname": "Torappu.Battle.Map.CheckObstacleLikeOrUnpassable",
+          "address": "0x18087a520"
+        },
+        {
+          "index": 70014,
+          "mode": "disasm",
+          "records": [
+            "space/70014.asm",
+            "space/metadata.json#/methods/10"
+          ],
+          "fullname": "Torappu.Battle.Map.UpdatePassableMap",
+          "address": "0x1808827b0"
+        },
+        {
+          "index": 70066,
+          "mode": "disasm",
+          "records": [
+            "space/70066.asm",
+            "space/metadata.json#/methods/18"
+          ],
+          "fullname": "Torappu.Battle.Map.CheckGridValid",
+          "address": "0x18087a3a0"
+        },
+        {
+          "index": 70085,
+          "mode": "disasm",
+          "records": [
+            "space/70085.asm",
+            "space/metadata.json#/methods/14"
+          ],
+          "fullname": "Torappu.Battle.Map.GetDirectionToGoBackFromInvalidPos",
+          "address": "0x18087c0d0"
+        },
+        {
+          "index": 70087,
+          "mode": "disasm",
+          "records": [
+            "interactions/70087-GetAdjacentTilesEnemies.asm",
+            "interactions/metadata.json#/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Map.GetAdjacentTilesEnemies",
+          "address": "0x18087bda0"
+        },
+        {
+          "index": 70273,
+          "mode": "disasm",
+          "records": [
+            "motion/70273-PredictReached.asm",
+            "motion/metadata.json#/methods/12"
+          ],
+          "fullname": "Torappu.Battle.DirectionCursor.PredictReached",
+          "address": "0x180896590"
+        },
+        {
+          "index": 70275,
+          "mode": "disasm",
+          "records": [
+            "motion/70275-_GetNextTarget.asm",
+            "motion/arrival-support-metadata.json#/methods/0"
+          ],
+          "fullname": "Torappu.Battle.DirectionCursor._GetNextTarget",
+          "address": "0x180897700"
+        },
+        {
+          "index": 70662,
+          "mode": "disasm",
+          "records": [
+            "space/70662.asm",
+            "space/metadata.json#/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Tile.get_passableMask",
+          "address": "0x1808c66f0"
+        },
+        {
+          "index": 70678,
+          "mode": "disasm",
+          "records": [
+            "space/70678.asm",
+            "space/metadata.json#/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Tile.get_moveCost",
+          "address": "0x1808adc40"
+        },
+        {
+          "index": 70679,
+          "mode": "disasm",
+          "records": [
+            "space/70679.asm",
+            "space/metadata.json#/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Tile.get_isObstacleLike",
+          "address": "0x1808adbb0"
+        },
+        {
+          "index": 70705,
+          "mode": "disasm",
+          "records": [
+            "space/70705.asm",
+            "space/metadata.json#/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Tile.IsPassable",
+          "address": "0x1808bfa60"
+        },
+        {
+          "index": 70711,
+          "mode": "disasm",
+          "records": [
+            "space/70711.asm",
+            "space/metadata.json#/methods/5"
+          ],
+          "fullname": "Torappu.Battle.Tile.OverwriteObstacleLikeMoveCost",
+          "address": "0x1808c1230"
+        },
+        {
+          "index": 70734,
+          "mode": "disasm",
+          "records": [
+            "space/70734.asm",
+            "space/metadata.json#/methods/6"
+          ],
+          "fullname": "Torappu.Battle.Tile.TryUpdateOptions",
+          "address": "0x1808c3820"
+        },
+        {
+          "index": 70739,
+          "mode": "disasm",
+          "records": [
+            "space/70739.asm",
+            "space/metadata.json#/methods/7"
+          ],
+          "fullname": "Torappu.Battle.Tile.RewriteOptions",
+          "address": "0x1808c2cd0"
+        },
+        {
+          "index": 70757,
+          "mode": "disasm",
+          "records": [
+            "space/70757.asm",
+            "space/metadata.json#/methods/8"
+          ],
+          "fullname": "Torappu.Battle.Tile.RefreshTileOptionsViaToken",
+          "address": "0x1808c1c90"
+        },
+        {
+          "index": 70759,
+          "mode": "disasm",
+          "records": [
+            "space/70759.asm",
+            "space/metadata.json#/methods/9"
+          ],
+          "fullname": "Torappu.Battle.Tile.RestoreOptionsOnlyViaToken",
+          "address": "0x1808c29f0"
+        },
+        {
+          "index": 71047,
+          "mode": "disasm",
+          "records": [
+            "motion/71047-Torappu_Battle_MoveController-get_moveSpeed.asm",
+            "motion/support-metadata.json#/methods/0",
+            "states/71047-MoveController-get_moveSpeed.asm",
+            "states/metadata.json#/methods/71047"
+          ],
+          "fullname": "Torappu.Battle.MoveController.get_moveSpeed",
+          "address": "0x1808b8750"
+        },
+        {
+          "index": 71048,
+          "mode": "disasm",
+          "records": [
+            "motion/71048-Torappu_Battle_MoveController-get_velocity.asm",
+            "motion/support-metadata.json#/methods/1",
+            "states/71048-MoveController-get_velocity.asm",
+            "states/metadata.json#/methods/71048"
+          ],
+          "fullname": "Torappu.Battle.MoveController.get_velocity",
+          "address": "0x1808b8910"
+        },
+        {
+          "index": 71049,
+          "mode": "disasm",
+          "records": [
+            "motion/71049-set_velocity.asm",
+            "motion/metadata.json#/methods/0",
+            "states/71049-MoveController-set_velocity.asm",
+            "states/metadata.json#/methods/71049"
+          ],
+          "fullname": "Torappu.Battle.MoveController.set_velocity",
+          "address": "0x1808b89f0"
+        },
+        {
+          "index": 71050,
+          "mode": "disasm",
+          "records": [
+            "motion/71050-get_steeringFactor.asm",
+            "motion/metadata.json#/methods/1",
+            "states/71050-MoveController-get_steeringFactor.asm",
+            "states/metadata.json#/methods/71050"
+          ],
+          "fullname": "Torappu.Battle.MoveController.get_steeringFactor",
+          "address": "0x1808b88b0"
+        },
+        {
+          "index": 71051,
+          "mode": "disasm",
+          "records": [
+            "motion/71051-set_steeringFactor.asm",
+            "motion/metadata.json#/methods/2"
+          ],
+          "fullname": "Torappu.Battle.MoveController.set_steeringFactor",
+          "address": "0x1808b8980"
+        },
+        {
+          "index": 71052,
+          "mode": "disasm",
+          "records": [
+            "motion/71052-get_footOffset.asm",
+            "motion/metadata.json#/methods/3"
+          ],
+          "fullname": "Torappu.Battle.MoveController.get_footOffset",
+          "address": "0x1808b8680"
+        },
+        {
+          "index": 71053,
+          "mode": "disasm",
+          "records": [
+            "motion/71053-get_halfBodyWidth.asm",
+            "motion/metadata.json#/methods/4"
+          ],
+          "fullname": "Torappu.Battle.MoveController.get_halfBodyWidth",
+          "address": "0x1808b86f0"
+        },
+        {
+          "index": 71054,
+          "mode": "disasm",
+          "records": [
+            "interactions/71054-Reset.asm",
+            "interactions/metadata.json#/methods/4",
+            "motion/71054-Reset.asm",
+            "motion/metadata.json#/methods/5",
+            "space/71054.asm",
+            "space/metadata.json#/methods/20",
+            "states/71054-MoveController-Reset.asm",
+            "states/metadata.json#/methods/71054"
+          ],
+          "fullname": "Torappu.Battle.MoveController.Reset",
+          "address": "0x1808b6980"
+        },
+        {
+          "index": 71055,
+          "mode": "disasm",
+          "records": [
+            "interactions/71055-OnStart.asm",
+            "interactions/metadata.json#/methods/5",
+            "motion/71055-OnStart.asm",
+            "motion/metadata.json#/methods/6",
+            "space/71055.asm",
+            "space/metadata.json#/methods/21",
+            "states/71055-MoveController-OnStart.asm",
+            "states/metadata.json#/methods/71055"
+          ],
+          "fullname": "Torappu.Battle.MoveController.OnStart",
+          "address": "0x1808b67c0"
+        },
+        {
+          "index": 71056,
+          "mode": "disasm",
+          "records": [
+            "motion/71056-CalculateMoveDelta.asm",
+            "motion/metadata.json#/methods/7",
+            "space/71056.asm",
+            "space/metadata.json#/methods/22"
+          ],
+          "fullname": "Torappu.Battle.MoveController.CalculateMoveDelta",
+          "address": "0x1808b6140"
+        },
+        {
+          "index": 71057,
+          "mode": "disasm",
+          "records": [
+            "motion/71057-CalculateTotalForce.asm",
+            "motion/metadata.json#/methods/8",
+            "space/71057.asm",
+            "space/metadata.json#/methods/23"
+          ],
+          "fullname": "Torappu.Battle.MoveController.CalculateTotalForce",
+          "address": "0x1808b6530"
+        },
+        {
+          "index": 71058,
+          "mode": "disasm",
+          "records": [
+            "motion/71058-_CalculateSteeringForce.asm",
+            "motion/metadata.json#/methods/9"
+          ],
+          "fullname": "Torappu.Battle.MoveController._CalculateSteeringForce",
+          "address": "0x1808b71d0"
+        },
+        {
+          "index": 71059,
+          "mode": "disasm",
+          "records": [
+            "interactions/71059-CalculateIsHanging.asm",
+            "interactions/metadata.json#/methods/6",
+            "space/71059.asm",
+            "space/metadata.json#/methods/24"
+          ],
+          "fullname": "Torappu.Battle.MoveController.CalculateIsHanging",
+          "address": "0x1808b5e60"
+        },
+        {
+          "index": 71060,
+          "mode": "disasm",
+          "records": [
+            "space/71060.asm",
+            "space/metadata.json#/methods/25"
+          ],
+          "fullname": "Torappu.Battle.MoveController._CalculateObstacleAvoidForce",
+          "address": "0x1808b6af0"
+        },
+        {
+          "index": 71061,
+          "mode": "disasm",
+          "records": [
+            "space/71061.asm",
+            "space/metadata.json#/methods/26"
+          ],
+          "fullname": "Torappu.Battle.MoveController._GetFootMapPosition",
+          "address": "0x1808b84f0"
+        },
+        {
+          "index": 71062,
+          "mode": "disasm",
+          "records": [
+            "space/71062.asm",
+            "space/metadata.json#/methods/27"
+          ],
+          "fullname": "Torappu.Battle.MoveController.GetBodyEdgeOffset",
+          "address": "0x1808b66e0"
+        },
+        {
+          "index": 71063,
+          "mode": "disasm",
+          "records": [
+            "states/71063-MoveController-OnTick.asm",
+            "states/metadata.json#/methods/71063"
+          ],
+          "fullname": "Torappu.Battle.MoveController.OnTick",
+          "address": "0x1808b68e0"
+        },
+        {
+          "index": 71064,
+          "mode": "disasm",
+          "records": [
+            "states/71064-MoveController-_ConveyorMove.asm",
+            "states/metadata.json#/methods/71064"
+          ],
+          "fullname": "Torappu.Battle.MoveController._ConveyorMove",
+          "address": "0x1808b7f60"
+        },
+        {
+          "index": 71070,
+          "mode": "disasm",
+          "records": [
+            "interactions/71070-ctor.asm",
+            "interactions/metadata.json#/methods/7",
+            "motion/71070-_ctor.asm",
+            "motion/metadata.json#/methods/10",
+            "space/71070.asm",
+            "space/metadata.json#/methods/28"
+          ],
+          "fullname": "Torappu.Battle.MoveController..ctor",
+          "address": "0x1808b8580"
+        },
+        {
+          "index": 72515,
+          "mode": "disasm",
+          "records": [
+            "interactions/72515-CalculateIsHanging.asm",
+            "interactions/metadata.json#/methods/8"
+          ],
+          "fullname": "Torappu.Battle.SeparateMoveController.CalculateIsHanging",
+          "address": "0x18094d440"
+        },
+        {
+          "index": 72516,
+          "mode": "disasm",
+          "records": [
+            "interactions/72516-_CalculateSeparationForce.asm",
+            "interactions/metadata.json#/methods/9"
+          ],
+          "fullname": "Torappu.Battle.SeparateMoveController._CalculateSeparationForce",
+          "address": "0x18094d5e0"
+        },
+        {
+          "index": 72517,
+          "mode": "disasm",
+          "records": [
+            "interactions/72517-ctor.asm",
+            "interactions/metadata.json#/methods/10"
+          ],
+          "fullname": ".ctor",
+          "address": "0x18094e090"
+        },
+        {
+          "index": 76273,
+          "mode": "disasm",
+          "records": [
+            "states/76273-Enemy-get_lastMoveDirection.asm",
+            "states/metadata.json#/methods/76273"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_lastMoveDirection",
+          "address": "0x180a7e6e0"
+        },
+        {
+          "index": 76274,
+          "mode": "disasm",
+          "records": [
+            "states/76274-Enemy-get_lastMoveDirVec.asm",
+            "states/metadata.json#/methods/76274"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_lastMoveDirVec",
+          "address": "0x180a7e650"
+        },
+        {
+          "index": 76289,
+          "mode": "disasm",
+          "records": [
+            "interactions/76289-get_onlyCollideWhenUnbalance.asm",
+            "interactions/metadata.json#/methods/11"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_onlyCollideWhenUnbalance",
+          "address": "0x180a7f4f0"
+        },
+        {
+          "index": 76319,
+          "mode": "disasm",
+          "records": [
+            "states/76319-Enemy-get_totalMoveDist.asm",
+            "states/metadata.json#/methods/76319"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_totalMoveDist",
+          "address": "0x180a801b0"
+        },
+        {
+          "index": 76359,
+          "mode": "disasm",
+          "records": [
+            "interactions/76359-get_isMovingBySelf.asm",
+            "interactions/metadata.json#/methods/12",
+            "states/76359-Enemy-get_isMovingBySelf.asm",
+            "states/metadata.json#/methods/76359"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_isMovingBySelf",
+          "address": "0x180a7e3a0"
+        },
+        {
+          "index": 76361,
+          "mode": "disasm",
+          "records": [
+            "space/76361.asm",
+            "space/metadata.json#/methods/12"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_footMapPosition",
+          "address": "0x180a7cf50"
+        },
+        {
+          "index": 76362,
+          "mode": "disasm",
+          "records": [
+            "space/76362.asm",
+            "space/metadata.json#/methods/34"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_offsetMapPosition",
+          "address": "0x180a7f380"
+        },
+        {
+          "index": 76382,
+          "mode": "disasm",
+          "records": [
+            "states/76382-Enemy-get_velocity.asm",
+            "states/metadata.json#/methods/76382"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_velocity",
+          "address": "0x180a80980"
+        },
+        {
+          "index": 76384,
+          "mode": "disasm",
+          "records": [
+            "interactions/76384-get_rigidbody2D.asm",
+            "interactions/metadata.json#/methods/13"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_rigidbody2D",
+          "address": "0x180a7f9d0"
+        },
+        {
+          "index": 76385,
+          "mode": "disasm",
+          "records": [
+            "interactions/76385-set_rigidbody2D.asm",
+            "interactions/metadata.json#/methods/14"
+          ],
+          "fullname": "Torappu.Battle.Enemy.set_rigidbody2D",
+          "address": "0x180a814f0"
+        },
+        {
+          "index": 76425,
+          "mode": "disasm",
+          "records": [
+            "states/76425-Enemy-TriggerEnemySkill.asm",
+            "states/metadata.json#/methods/76425"
+          ],
+          "fullname": "Torappu.Battle.Enemy.TriggerEnemySkill",
+          "address": "0x180a75770"
+        },
+        {
+          "index": 76435,
+          "mode": "disasm",
+          "records": [
+            "interactions/76435-KnockBack.asm",
+            "interactions/metadata.json#/methods/15"
+          ],
+          "fullname": "Torappu.Battle.Enemy.KnockBack",
+          "address": "0x180a6f120"
+        },
+        {
+          "index": 76436,
+          "mode": "disasm",
+          "records": [
+            "interactions/76436-DisableCurrentStillPull.asm",
+            "interactions/metadata.json#/methods/16"
+          ],
+          "fullname": "Torappu.Battle.Enemy.DisableCurrentStillPull",
+          "address": "0x180a6c480"
+        },
+        {
+          "index": 76437,
+          "mode": "disasm",
+          "records": [
+            "interactions/76437-BeginPull.asm",
+            "interactions/metadata.json#/methods/17"
+          ],
+          "fullname": "Torappu.Battle.Enemy.BeginPull",
+          "address": "0x180a69fe0"
+        },
+        {
+          "index": 76438,
+          "mode": "disasm",
+          "records": [
+            "interactions/76438-StillPull.asm",
+            "interactions/metadata.json#/methods/18"
+          ],
+          "fullname": "Torappu.Battle.Enemy.StillPull",
+          "address": "0x180a752d0"
+        },
+        {
+          "index": 76439,
+          "mode": "disasm",
+          "records": [
+            "interactions/76439-TryEarlyStopPull.asm",
+            "interactions/metadata.json#/methods/19"
+          ],
+          "fullname": "Torappu.Battle.Enemy.TryEarlyStopPull",
+          "address": "0x180a75a80"
+        },
+        {
+          "index": 76440,
+          "mode": "disasm",
+          "records": [
+            "interactions/76440-EndPull.asm",
+            "interactions/metadata.json#/methods/20"
+          ],
+          "fullname": "Torappu.Battle.Enemy.EndPull",
+          "address": "0x180a6c970"
+        },
+        {
+          "index": 76444,
+          "mode": "disasm",
+          "records": [
+            "states/76444-Enemy-PlayMoveAnim.asm",
+            "states/metadata.json#/methods/76444"
+          ],
+          "fullname": "Torappu.Battle.Enemy.PlayMoveAnim",
+          "address": "0x180a72f40"
+        },
+        {
+          "index": 76452,
+          "mode": "disasm",
+          "records": [
+            "interactions/76452-ForceSetPositionByWorldCoords.asm",
+            "interactions/metadata.json#/methods/21"
+          ],
+          "fullname": "Torappu.Battle.Enemy.ForceSetPositionByWorldCoords",
+          "address": "0x180a6d990"
+        },
+        {
+          "index": 76469,
+          "mode": "disasm",
+          "records": [
+            "states/76469-Enemy-Init.asm",
+            "states/metadata.json#/methods/76469"
+          ],
+          "fullname": "Torappu.Battle.Enemy.Init",
+          "address": "0x180a6e450"
+        },
+        {
+          "index": 76491,
+          "mode": "disasm",
+          "records": [
+            "motion/76491-_MoveByCursor.asm",
+            "motion/metadata.json#/methods/11",
+            "space/76491.asm",
+            "space/metadata.json#/methods/13"
+          ],
+          "fullname": "Torappu.Battle.Enemy._MoveByCursor",
+          "address": "0x180a78fc0"
+        },
+        {
+          "index": 76493,
+          "mode": "disasm",
+          "records": [
+            "interactions/76493-_ResetPhysicsStatus.asm",
+            "interactions/metadata.json#/methods/22"
+          ],
+          "fullname": "Torappu.Battle.Enemy._ResetPhysicsStatus",
+          "address": "0x180a7a1f0"
+        },
+        {
+          "index": 76495,
+          "mode": "disasm",
+          "records": [
+            "states/76495-Enemy-_SearchAttackTarget.asm",
+            "states/metadata.json#/methods/76495"
+          ],
+          "fullname": "Torappu.Battle.Enemy._SearchAttackTarget",
+          "address": "0x180a7a4a0"
+        },
+        {
+          "index": 76531,
+          "mode": "disasm",
+          "records": [
+            "states/76531-Enemy-OnTick.asm",
+            "states/metadata.json#/methods/76531"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnTick",
+          "address": "0x180a72340"
+        },
+        {
+          "index": 76539,
+          "mode": "disasm",
+          "records": [
+            "interactions/76539-_InitPhysics.asm",
+            "interactions/metadata.json#/methods/23"
+          ],
+          "fullname": "Torappu.Battle.Enemy._InitPhysics",
+          "address": "0x180a78c30"
+        },
+        {
+          "index": 76640,
+          "mode": "disasm",
+          "records": [
+            "states/76640-Enemy-States-EnemyStateMachine-OnTick.asm",
+            "states/metadata.json#/methods/76640"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.EnemyStateMachine.OnTick",
+          "address": "0x180a908b0"
+        },
+        {
+          "index": 76654,
+          "mode": "disasm",
+          "records": [
+            "states/76654-Enemy-States-MoveState-get_isHanging.asm",
+            "states/metadata.json#/methods/76654"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.MoveState.get_isHanging",
+          "address": "0x180a97eb0"
+        },
+        {
+          "index": 76655,
+          "mode": "disasm",
+          "records": [
+            "states/76655-Enemy-States-MoveState-set_isHanging.asm",
+            "states/metadata.json#/methods/76655"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.MoveState.set_isHanging",
+          "address": "0x180a97f60"
+        },
+        {
+          "index": 76656,
+          "mode": "disasm",
+          "records": [
+            "interactions/76656-OnEnter.asm",
+            "interactions/metadata.json#/methods/24",
+            "states/76656-Enemy-States-MoveState-OnEnter.asm",
+            "states/metadata.json#/methods/76656"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.MoveState.OnEnter",
+          "address": "0x180a97520"
+        },
+        {
+          "index": 76657,
+          "mode": "disasm",
+          "records": [
+            "interactions/76657-OnExit.asm",
+            "interactions/metadata.json#/methods/25",
+            "states/76657-Enemy-States-MoveState-OnExit.asm",
+            "states/metadata.json#/methods/76657"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.MoveState.OnExit",
+          "address": "0x180a97740"
+        },
+        {
+          "index": 76658,
+          "mode": "disasm",
+          "records": [
+            "interactions/76658-OnTick.asm",
+            "interactions/metadata.json#/methods/26",
+            "states/76658-Enemy-States-MoveState-OnTick.asm",
+            "states/metadata.json#/methods/76658"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.MoveState.OnTick",
+          "address": "0x180a977d0"
+        },
+        {
+          "index": 76659,
+          "mode": "disasm",
+          "records": [
+            "states/76659-Enemy-States-MoveState-UpdateMoveAnimation.asm",
+            "states/metadata.json#/methods/76659"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.MoveState.UpdateMoveAnimation",
+          "address": "0x180a97c90"
+        },
+        {
+          "index": 76661,
+          "mode": "disasm",
+          "records": [
+            "states/76661-Enemy-States-AttackState-OnEnter.asm",
+            "states/metadata.json#/methods/76661"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.AttackState.OnEnter",
+          "address": "0x180a85670"
+        },
+        {
+          "index": 76662,
+          "mode": "disasm",
+          "records": [
+            "states/76662-Enemy-States-AttackState-OnTick.asm",
+            "states/metadata.json#/methods/76662"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.AttackState.OnTick",
+          "address": "0x180a85990"
+        },
+        {
+          "index": 76663,
+          "mode": "disasm",
+          "records": [
+            "states/76663-Enemy-States-AttackState-OnExit.asm",
+            "states/metadata.json#/methods/76663"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.AttackState.OnExit",
+          "address": "0x180a85850"
+        },
+        {
+          "index": 76664,
+          "mode": "disasm",
+          "records": [
+            "states/76664-Enemy-States-AttackState-_AttackFinishCallback.asm",
+            "states/metadata.json#/methods/76664"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.AttackState._AttackFinishCallback",
+          "address": "0x180a85b80"
+        },
+        {
+          "index": 76698,
+          "mode": "disasm",
+          "records": [
+            "states/76698-Enemy-States-CombatState-OnEnter.asm",
+            "states/metadata.json#/methods/76698"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.CombatState.OnEnter",
+          "address": "0x180a89320"
+        },
+        {
+          "index": 76699,
+          "mode": "disasm",
+          "records": [
+            "states/76699-Enemy-States-CombatState-OnTick.asm",
+            "states/metadata.json#/methods/76699"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.CombatState.OnTick",
+          "address": "0x180a89650"
+        },
+        {
+          "index": 76700,
+          "mode": "disasm",
+          "records": [
+            "states/76700-Enemy-States-CombatState-OnExit.asm",
+            "states/metadata.json#/methods/76700"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.CombatState.OnExit",
+          "address": "0x180a89530"
+        },
+        {
+          "index": 76702,
+          "mode": "disasm",
+          "records": [
+            "states/76702-Enemy-States-StunState-OnEnter.asm",
+            "states/metadata.json#/methods/76702"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.StunState.OnEnter",
+          "address": "0x180a9c400"
+        },
+        {
+          "index": 76703,
+          "mode": "disasm",
+          "records": [
+            "states/76703-Enemy-States-StunState-OnTick.asm",
+            "states/metadata.json#/methods/76703"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.StunState.OnTick",
+          "address": "0x180a9c590"
+        },
+        {
+          "index": 76704,
+          "mode": "disasm",
+          "records": [
+            "states/76704-Enemy-States-StunState-CheckSwitchOut.asm",
+            "states/metadata.json#/methods/76704"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.StunState.CheckSwitchOut",
+          "address": "0x180a9c340"
+        },
+        {
+          "index": 76708,
+          "mode": "disasm",
+          "records": [
+            "states/76708-Enemy-States-PalsyState-OnTick.asm",
+            "states/metadata.json#/methods/76708"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.PalsyState.OnTick",
+          "address": "0x180a98500"
+        },
+        {
+          "index": 76709,
+          "mode": "disasm",
+          "records": [
+            "states/76709-Enemy-States-PalsyState-CheckSwitchOut.asm",
+            "states/metadata.json#/methods/76709"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.PalsyState.CheckSwitchOut",
+          "address": "0x180a98170"
+        },
+        {
+          "index": 76720,
+          "mode": "disasm",
+          "records": [
+            "states/76720-Enemy-States-FreezeState-OnEnter.asm",
+            "states/metadata.json#/methods/76720"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.FreezeState.OnEnter",
+          "address": "0x180a94f40"
+        },
+        {
+          "index": 76721,
+          "mode": "disasm",
+          "records": [
+            "states/76721-Enemy-States-FreezeState-OnTick.asm",
+            "states/metadata.json#/methods/76721"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.FreezeState.OnTick",
+          "address": "0x180a95300"
+        },
+        {
+          "index": 76722,
+          "mode": "disasm",
+          "records": [
+            "states/76722-Enemy-States-FreezeState-OnExit.asm",
+            "states/metadata.json#/methods/76722"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.FreezeState.OnExit",
+          "address": "0x180a95160"
+        },
+        {
+          "index": 76723,
+          "mode": "disasm",
+          "records": [
+            "states/76723-Enemy-States-FreezeState-CheckSwitchOut.asm",
+            "states/metadata.json#/methods/76723"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.FreezeState.CheckSwitchOut",
+          "address": "0x180a94da0"
+        },
+        {
+          "index": 76732,
+          "mode": "disasm",
+          "records": [
+            "states/76732-Enemy-States-LevitateState-OnEnter.asm",
+            "states/metadata.json#/methods/76732"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.LevitateState.OnEnter",
+          "address": "0x180a96920"
+        },
+        {
+          "index": 76734,
+          "mode": "disasm",
+          "records": [
+            "states/76734-Enemy-States-LevitateState-OnExit.asm",
+            "states/metadata.json#/methods/76734"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.LevitateState.OnExit",
+          "address": "0x180a96b30"
+        },
+        {
+          "index": 76746,
+          "mode": "disasm",
+          "records": [
+            "interactions/76746-OnEnter.asm",
+            "interactions/metadata.json#/methods/27"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.UnbalanceState.OnEnter",
+          "address": "0x180a9e7c0"
+        },
+        {
+          "index": 76747,
+          "mode": "disasm",
+          "records": [
+            "interactions/76747-OnExit.asm",
+            "interactions/metadata.json#/methods/28"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.UnbalanceState.OnExit",
+          "address": "0x180a9ec10"
+        },
+        {
+          "index": 76748,
+          "mode": "disasm",
+          "records": [
+            "interactions/76748-OnTick.asm",
+            "interactions/metadata.json#/methods/29"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.UnbalanceState.OnTick",
+          "address": "0x180a9ef10"
+        },
+        {
+          "index": 76749,
+          "mode": "disasm",
+          "records": [
+            "interactions/76749-_CheckCollideWithHighLand.asm",
+            "interactions/metadata.json#/methods/30"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.UnbalanceState._CheckCollideWithHighLand",
+          "address": "0x180a9f350"
+        },
+        {
+          "index": 76750,
+          "mode": "disasm",
+          "records": [
+            "interactions/76750-_UpdateFriction.asm",
+            "interactions/metadata.json#/methods/31"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.UnbalanceState._UpdateFriction",
+          "address": "0x180a9f810"
+        },
+        {
+          "index": 76751,
+          "mode": "disasm",
+          "records": [
+            "interactions/76751-_UpdatePullSources.asm",
+            "interactions/metadata.json#/methods/32"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.UnbalanceState._UpdatePullSources",
+          "address": "0x180a9fb00"
+        },
+        {
+          "index": 76752,
+          "mode": "disasm",
+          "records": [
+            "interactions/76752-OnPhysicObjectInit.asm",
+            "interactions/metadata.json#/methods/33"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.UnbalanceState.OnPhysicObjectInit",
+          "address": "0x180a9edf0"
+        },
+        {
+          "index": 76753,
+          "mode": "disasm",
+          "records": [
+            "interactions/76753-OnAfterPhysicSimulate.asm",
+            "interactions/metadata.json#/methods/34"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.UnbalanceState.OnAfterPhysicSimulate",
+          "address": "0x180a9e6f0"
+        },
+        {
+          "index": 76754,
+          "mode": "disasm",
+          "records": [
+            "interactions/76754-OnPhysicObjectRecycle.asm",
+            "interactions/metadata.json#/methods/35"
+          ],
+          "fullname": "Torappu.Battle.Enemy.States.UnbalanceState.OnPhysicObjectRecycle",
+          "address": "0x180a9ee80"
+        },
+        {
+          "index": 76861,
+          "mode": "disasm",
+          "records": [
+            "states/76861-Enemy-AttackWrapper-Cast.asm",
+            "states/metadata.json#/methods/76861"
+          ],
+          "fullname": "Torappu.Battle.Enemy.AttackWrapper.Cast",
+          "address": "0x180a85dc0"
+        },
+        {
+          "index": 76883,
+          "mode": "disasm",
+          "records": [
+            "states/76883-Enemy-CombatWrapper-CastWithAssignedSkill.asm",
+            "states/metadata.json#/methods/76883"
+          ],
+          "fullname": "Torappu.Battle.Enemy.CombatWrapper.CastWithAssignedSkill",
+          "address": "0x180a89c40"
+        },
+        {
+          "index": 77577,
+          "mode": "disasm",
+          "records": [
+            "states/77577-Unit-get_isMovingBySelf.asm",
+            "states/metadata.json#/methods/77577"
+          ],
+          "fullname": "Torappu.Battle.Unit.get_isMovingBySelf",
+          "address": "0x180ad2cf0"
+        },
+        {
+          "index": 77699,
+          "mode": "disasm",
+          "records": [
+            "states/77699-Unit-OnTick.asm",
+            "states/metadata.json#/methods/77699"
+          ],
+          "fullname": "Torappu.Battle.Unit.OnTick",
+          "address": "0x180acbdb0"
+        },
+        {
+          "index": 77866,
+          "mode": "disasm",
+          "records": [
+            "space/77866.asm",
+            "space/metadata.json#/methods/36"
+          ],
+          "fullname": "Torappu.Battle.VisualObject.get_mapPosition",
+          "address": "0x180ad4250"
+        },
+        {
+          "index": 77871,
+          "mode": "disasm",
+          "records": [
+            "space/77871.asm",
+            "space/metadata.json#/methods/35"
+          ],
+          "fullname": "Torappu.Battle.VisualObject.get_gridPosition",
+          "address": "0x180ad4090"
+        },
+        {
+          "index": 77880,
+          "mode": "disasm",
+          "records": [
+            "space/77880.asm",
+            "space/metadata.json#/methods/37"
+          ],
+          "fullname": "Torappu.Battle.VisualObject.SetPosition",
+          "address": "0x180ad3dc0"
+        },
+        {
+          "index": 78700,
+          "mode": "disasm",
+          "records": [
+            "interactions/78700-QueryEnemy.asm",
+            "interactions/metadata.json#/methods/36"
+          ],
+          "fullname": "Torappu.Battle.TPhysic2D.TPhysicManager.QueryEnemy",
+          "address": "0x180b231c0"
+        },
+        {
+          "index": 95826,
+          "mode": "disasm",
+          "records": [
+            "states/95826-Action-Nodes-AssignEnemyMoveDistIntoBlackboard-Execute.asm",
+            "states/metadata.json#/methods/95826"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.AssignEnemyMoveDistIntoBlackboard.Execute",
+          "address": "0x18100efa0"
+        },
+        {
+          "index": 99311,
+          "mode": "disasm",
+          "records": [
+            "states/99311-Action-Nodes-IfEnemyIsMoving-Execute.asm",
+            "states/metadata.json#/methods/99311"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.IfEnemyIsMoving.Execute",
+          "address": "0x181146030"
+        },
+        {
+          "index": 99314,
+          "mode": "disasm",
+          "records": [
+            "states/99314-Action-Nodes-IfEnemyIsMovingBySelf-Execute.asm",
+            "states/metadata.json#/methods/99314"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.IfEnemyIsMovingBySelf.Execute",
+          "address": "0x181145de0"
+        },
+        {
+          "index": 220066,
+          "mode": "disasm",
+          "records": [
+            "space/220066.asm",
+            "space/metadata.json#/methods/0"
+          ],
+          "fullname": "Torappu.SharedConsts..cctor",
+          "address": "0x1866ea8c0"
+        },
+        {
+          "index": 220344,
+          "mode": "disasm",
+          "records": [
+            "motion/220344-Torappu_MathUtil-IsZero.asm",
+            "motion/support-metadata.json#/methods/3"
+          ],
+          "fullname": "Torappu.MathUtil.IsZero",
+          "address": "0x1866e5420"
+        },
+        {
+          "index": 220345,
+          "mode": "disasm",
+          "records": [
+            "motion/220345-Torappu_MathUtil-IsZero.asm",
+            "motion/support-metadata.json#/methods/4"
+          ],
+          "fullname": "Torappu.MathUtil.IsZero",
+          "address": "0x1866e53a0"
+        },
+        {
+          "index": 220378,
+          "mode": "disasm",
+          "records": [
+            "motion/220378-Torappu_MathUtil-IsZero.asm",
+            "motion/support-metadata.json#/methods/5"
+          ],
+          "fullname": "Torappu.MathUtil.IsZero",
+          "address": "0x1866e54e0"
+        },
+        {
+          "index": 220379,
+          "mode": "disasm",
+          "records": [
+            "motion/220379-Torappu_MathUtil-IsZero.asm",
+            "motion/support-metadata.json#/methods/6"
+          ],
+          "fullname": "Torappu.MathUtil.IsZero",
+          "address": "0x1866e5600"
+        },
+        {
+          "index": 220411,
+          "mode": "disasm",
+          "records": [
+            "motion/220411-Torappu_MathUtil-IsZero.asm",
+            "motion/support-metadata.json#/methods/7"
+          ],
+          "fullname": "Torappu.MathUtil.IsZero",
+          "address": "0x1866e5620"
+        },
+        {
+          "index": 220412,
+          "mode": "disasm",
+          "records": [
+            "motion/220412-Torappu_MathUtil-IsZero.asm",
+            "motion/support-metadata.json#/methods/8"
+          ],
+          "fullname": "Torappu.MathUtil.IsZero",
+          "address": "0x1866e5500"
+        },
+        {
+          "index": 220423,
+          "mode": "disasm",
+          "records": [
+            "motion/220423-Torappu_MathUtil-NormalizeDirectionSafely.asm",
+            "motion/support-metadata.json#/methods/9"
+          ],
+          "fullname": "Torappu.MathUtil.NormalizeDirectionSafely",
+          "address": "0x1866e5e20"
+        },
+        {
+          "index": 220424,
+          "mode": "disasm",
+          "records": [
+            "motion/220424-Torappu_MathUtil-NormalizeDirectionSafely.asm",
+            "motion/support-metadata.json#/methods/10"
+          ],
+          "fullname": "Torappu.MathUtil.NormalizeDirectionSafely",
+          "address": "0x1866e5ec0"
+        },
+        {
+          "index": 220498,
+          "mode": "disasm",
+          "records": [
+            "states/220498-Torappu-FP-op_Implicit.asm",
+            "states/metadata.json#/methods/220498"
+          ],
+          "fullname": "Torappu.FP.op_Implicit",
+          "address": "0x1866fdad0"
+        },
+        {
+          "index": 220505,
+          "mode": "disasm",
+          "records": [
+            "states/220505-Torappu-FP-AsFloat.asm",
+            "states/metadata.json#/methods/220505"
+          ],
+          "fullname": "Torappu.FP.AsFloat",
+          "address": "0x1866fae20"
+        },
+        {
+          "index": 220532,
+          "mode": "disasm",
+          "records": [
+            "states/220532-Torappu-TSMath-Clamp.asm",
+            "states/metadata.json#/methods/220532"
+          ],
+          "fullname": "Torappu.TSMath.Clamp",
+          "address": "0x1866ff2e0"
+        },
+        {
+          "index": 220699,
+          "mode": "disasm",
+          "records": [
+            "motion/220699-ClampMagnitude.asm",
+            "motion/arrival-support-metadata.json#/methods/1"
+          ],
+          "fullname": "Torappu.TSVector2.ClampMagnitude",
+          "address": "0x18670b710"
+        },
+        {
+          "index": 223632,
+          "mode": "disasm",
+          "records": [
+            "interactions/223632-get_enableDynamicTree.asm",
+            "interactions/metadata.json#/methods/37"
+          ],
+          "fullname": "Torappu.Config.RemoteConfig.get_enableDynamicTree",
+          "address": "0x1867927a0"
+        },
+        {
+          "index": 237392,
+          "mode": "disasm",
+          "records": [
+            "space/237392.asm",
+            "space/metadata.json#/methods/43"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredFloat.op_Implicit",
+          "address": "0x18660a830"
+        },
+        {
+          "index": 282406,
+          "mode": "disasm",
+          "records": [
+            "motion/282406-UnityEngine_Vector2-Normalize.asm",
+            "motion/support-metadata.json#/methods/11"
+          ],
+          "fullname": "UnityEngine.Vector2.Normalize",
+          "address": "0x1805353f0"
+        },
+        {
+          "index": 282407,
+          "mode": "disasm",
+          "records": [
+            "motion/282407-UnityEngine_Vector2-get_normalized.asm",
+            "motion/support-metadata.json#/methods/12"
+          ],
+          "fullname": "UnityEngine.Vector2.get_normalized",
+          "address": "0x180535530"
+        },
+        {
+          "index": 282422,
+          "mode": "disasm",
+          "records": [
+            "motion/282422-UnityEngine_Vector2-ClampMagnitude.asm",
+            "motion/support-metadata.json#/methods/13"
+          ],
+          "fullname": "UnityEngine.Vector2.ClampMagnitude",
+          "address": "0x186b53e50"
+        },
+        {
+          "index": 318544,
+          "mode": "disasm",
+          "records": [
+            "states/318544-UnityEngine-Rigidbody2D-get_velocity.asm",
+            "states/metadata.json#/methods/318544"
+          ],
+          "fullname": "UnityEngine.Rigidbody2D.get_velocity",
+          "address": "0x186bc6f40"
+        }
+      ],
+      "blocks": [
+        {
+          "address": "0x180005610",
+          "records": [
+            "interactions/virtual-bool-helper.asm"
+          ]
+        },
+        {
+          "address": "0x180535480",
+          "records": [
+            "space/0x180535480.asm"
+          ]
+        },
+        {
+          "address": "0x18059e290",
+          "records": [
+            "space/0x18059e290.asm"
+          ]
+        },
+        {
+          "address": "0x1805e7770",
+          "records": [
+            "motion/raw-1805e7770-vector-clamp.asm"
+          ]
+        },
+        {
+          "address": "0x1807b31e0",
+          "records": [
+            "space/0x1807b31e0.asm"
+          ]
+        },
+        {
+          "address": "0x1808a9010",
+          "records": [
+            "space/0x1808a9010.asm"
+          ]
+        },
+        {
+          "address": "0x1808a90b0",
+          "records": [
+            "space/0x1808a90b0.asm"
+          ]
+        },
+        {
+          "address": "0x1809422d0",
+          "records": [
+            "interactions/enemy-trace-helper.asm"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "name": "Torappu.Battle.BObject",
+          "records": [
+            "interactions/metadata.json#/eligibilityFields/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BattleOptions",
+          "records": [
+            "space/metadata.json#/types/8"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Enemy.States.Blackboard",
+          "records": [
+            "interactions/metadata.json#/eligibilityFields/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Map",
+          "records": [
+            "space/metadata.json#/types/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.MoveController",
+          "records": [
+            "interactions/metadata.json#/types/0",
+            "space/metadata.json#/types/5"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.SeparateMoveController",
+          "records": [
+            "interactions/metadata.json#/types/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Tile",
+          "records": [
+            "space/metadata.json#/types/7"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Tile.Options",
+          "records": [
+            "space/metadata.json#/types/4"
+          ]
+        },
+        {
+          "name": "Torappu.GridPosition",
+          "records": [
+            "space/metadata.json#/types/6"
+          ]
+        },
+        {
+          "name": "Torappu.LevelData",
+          "records": [
+            "space/metadata.json#/types/10"
+          ]
+        },
+        {
+          "name": "Torappu.LevelData.Options",
+          "records": [
+            "space/metadata.json#/types/9"
+          ]
+        },
+        {
+          "name": "Torappu.MotionMode",
+          "records": [
+            "space/metadata.json#/types/3"
+          ]
+        },
+        {
+          "name": "Torappu.PeriodicTicker",
+          "records": [
+            "space/metadata.json#/types/1"
+          ]
+        },
+        {
+          "name": "Torappu.SharedConsts",
+          "records": [
+            "space/metadata.json#/types/0"
+          ]
+        }
+      ],
+      "constants": [
+        {
+          "address": "0x186e3fda4",
+          "format": "<f",
+          "records": [
+            "states/metadata.json#/constants/2"
+          ]
+        },
+        {
+          "address": "0x186e3ff14",
+          "format": "<f",
+          "records": [
+            "states/metadata.json#/constants/3"
+          ]
+        },
+        {
+          "address": "0x187101c50",
+          "format": "<f",
+          "records": [
+            "states/metadata.json#/constants/1"
+          ]
+        },
+        {
+          "address": "0x187101c84",
+          "format": "<f",
+          "records": [
+            "states/metadata.json#/constants/0"
+          ]
+        }
+      ],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/88b3c3ecaaefa6003de730686dd5ac53.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/88b3c3ecaaefa6003de730686dd5ac53.bin",
+          "sha256": "eb1f2d8339c466192624c42dbb0ab986efa38517e8aca22fd54b5737d78908f3",
+          "records": [
+            "interactions/sampled-content.json#/scriptBundle"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "sha256": "da7e5c5fd620eac9b7020f143423285b87eea861a0b6cf6534142db7dcf06b5b",
+          "records": [
+            "interactions/sampled-content.json#/baseControllerSample"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_22.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_22.ab",
+          "sha256": "9397b1f6f7570f1144b553be7d80af5c3d7f98c361eb4e229d6798b0437ea5bf",
+          "records": [
+            "interactions/sampled-content.json#/separateControllerSamples/0"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_34.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_34.ab",
+          "sha256": "10bfe513eabd460d5f2776fe25939ff5b1138f46c6fc69ee89f3f0a5b66eb799",
+          "records": [
+            "interactions/sampled-content.json#/separateControllerSamples/1"
+          ]
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

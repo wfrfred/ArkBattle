@@ -1,6 +1,6 @@
 # 证据登记与下一轮研究问题
 
-核查日期：2026-10-08。此文件记录来源和未决行为，不是实现批次清单。
+初始核查日期：2026-10-08；证据导航整理：2026-10-31。此文件记录来源和未决行为，不是实现批次清单；导航整理不等同于本次重新执行历史取证。
 
 研究遵循[模拟原则](00-INDEX.md)：保证项目自身确定性与重要玩法语义，不追求官方 RNG 消费轨迹、同 seed 结果或内部实现一致。帧率与微时序允许近似；每个待核对问题需要说明是否可能改变重要离散结果、产生可察觉差异或累积显著数值偏差。只有发生时点不同、没有上述影响的实现细节不列为设计前置。
 
@@ -19,6 +19,8 @@
 
 ## 2. 本机客户端定位信息
 
+本节保留初始客户端的定位信息；后续批次各自记录输入指纹和资源版本，不能将下表当作现行客户端版本声明。
+
 客户端根目录：`/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game`。
 
 | 材料 | 定位 |
@@ -30,32 +32,30 @@
 | 清单版本 | `versionId=26-08-16-14-00-43_415873`，`manifestVersion=V077` |
 | Unity | 已解码文件记录为 `2021.3.39f1` |
 
-清单版本不等于程序版本，也不证明 Lua 在运行现场未被替换。程序、metadata 与清单的 SHA-256 记录于 [持久证据摘录](evidence/client-excerpts.json)。
+清单版本不等于程序版本，也不证明 Lua 在运行现场未被替换。程序、metadata 与清单的 SHA-256 记录于 [持久证据摘录](evidence/client-excerpts-20261007/records.json)。
 
-2026-10-13 的[天赋调查](cases/06-talent-lifecycle-and-model.md)核对到当前 DLL／metadata 已与上述旧摘录的指纹不同。新方法定位和输入哈希单独保存在[本轮天赋证据](evidence/talent-lifecycle-2026-10-13.json)，不混用两轮的方法索引或地址。
+2026-10-13 的[天赋调查](cases/06-talent-lifecycle-and-model.md)核对到当前 DLL／metadata 已与上述旧摘录的指纹不同。新方法定位和输入哈希单独保存在[本轮天赋证据](evidence/talent-lifecycle-20261013/records.json)，不混用两轮的方法索引或地址。
 
-该 JSON 还保存了少量方法定位、残影 Buff 描述、有序动作摘录，以及 Aura／GlobalBuff 分发调用和字段投影。它是字段投影：未列字段不能理解为不存在；方法列表也不是完整反汇编。
+初始 `client-excerpts` 记录还保存了少量方法定位、残影 Buff 描述、有序动作摘录，以及 Aura／GlobalBuff 分发调用和字段投影。它是字段投影：未列字段不能理解为不存在；方法列表也不是完整反汇编。
 
-## 3. 复查入口
+## 3. 持久证据与复现入口
 
-| 主题 | 已定位材料 | 可复查锚点 |
+完整导航见[证据批次索引](evidence/README.md)。每批次的 README 说明输入指纹、文件用途、实际命令和可复现范围，`archive.json` 以 `provenance`／`result` 区分来源与归档内容。原始摘录保留原样，新的工具输出写到独立工作目录，不覆盖历史记录。
+
+| 主题 | 持久材料 | 复查范围与缺口 |
 | --- | --- | --- |
-| 时间与帧推进 | `/tmp/stronghold-client-logic/report.txt`、`/tmp/stronghold-client-control-dumps/report.txt` | BattleController.OnTick／FixedUpdate；GlobalConsts 初始化；AutoChessGameManager.StartBattle |
-| 波次、分支与出生 | `/tmp/stronghold-batch4-scheduler/report.txt` | Scheduler 的 `_DealWave`、`_DealFragment`、`_DoSpawn` 与完成回调 |
-| 伤害、属性、元素与 Buff | `/tmp/stronghold-damage-research-native/`、`/tmp/stronghold-damage-research-prefab/` | CalculateDamage、Entity.Hit、EPController、BuffContainer 与 AttributeModifier |
-| 内容程序顺序 | `/tmp/stronghold-wisadel-research/REPORT.md` 及同目录原始摘录 | `wisdel_t_1[bomb]`、`wisdel_t_1[projectile_shock]`、Projectile.ActionController.OnHitTarget |
-| Buff 安装／父作用域案例 | [Case A](cases/01-buff-installation-and-parent-scope.md)；`/tmp/stronghold-case-a/` | NewBuff 64730；MarkFinish 64548；AddDerivedBuffSafe 64560；本季斯卡蒂 S3 鼓舞配置与刷新模板 |
-| 行动／弹道案例 | [Case B](cases/02-action-and-projectile-phases.md)；`/tmp/stronghold-official-pathfinding/`；`/tmp/stronghold-projectile-content-impact/`；`/tmp/stronghold-projectile-phase-evidence/` | 主施法 coroutine 62708；ATK 95712／95716／95720；身份历史 70525／70532／70533；停止 70524／70536／70538；对象队列 70243／64450；本季地灵／妮芙／迷迭香 |
-| 派发／嵌套案例 | [Case C](cases/03-dispatch-and-nested-settlement.md)；`/tmp/stronghold-case-dispatch/` | BuffContainer.OnTakeDamage 64807；枚举器共享体 0x185714400；DamageSplit 95849；本季泥岩盾模板与角色组件 |
-| 空间资格／目标查询 | `/tmp/stronghold-blocking-targeting-methods.json`、`/tmp/stronghold-target-eligibility-methods.json` | BlockRadius、TargetOptions、医疗资格与范围相交 |
-| 光环／全局分发 | `/tmp/stronghold-aura-research/`、`/tmp/stronghold-global-effect-audit/`；[03](03-space-units-and-mechanisms.md)第 9 节 | Aura 90904／90905；GlobalAura 91076／91077；RegisterUnit 64099；GlobalBuff 66773／66775；创建入口 64217／64218 |
-| 设备与部署 | `/tmp/stronghold-6b-deployment-report.md`、`/tmp/stronghold-batch4-predefined-report.md` | crate／achplat 的 tile mode、keepPassable 与成本；控制器技能选择 |
-| Route／Navigation／运动 | `/tmp/stronghold-official-pathfinding/REPORT.md`、`/tmp/stronghold-motion-batch5-audit-20261006.md` | Route／DirectionCursor、SPFA、MoveController、Enemy._MoveByCursor |
-| 强制位移 | `/tmp/stronghold-6b-displacement-report.md` | KnockBack／Pull、刚体速度与 route steering 的区别 |
+| 时间与帧推进 | [初始客户端摘录](evidence/client-excerpts-20261007/README.md)、[Blocking 推进时序](evidence/blocking-timing-native-20261023/README.md) | 所选 BattleController／对象推进方法、逻辑时间与调用锚点；初始完整报告未归档，两轮方法索引不能混用。 |
+| 波次、分支与出生 | [初始客户端摘录](evidence/client-excerpts-20261007/README.md)、[范围与战斗流程](01-scope-and-battle-flow.md) | 初始批次登记输入，Scheduler 所选方法、出生队列与字段锚点保留在正文；没有保存当时所有原生转储及提取脚本。 |
+| 伤害、属性、元素与 Buff | [初始摘录](evidence/client-excerpts-20261007/README.md)、[Damage Apply](evidence/damage-apply-20261017/README.md)、[HP Application 组合](evidence/hp-application-combinations-20261017/README.md) | 所选公式、接收／HP 分支及模板；后续补查不能自动补证早期所有路径。 |
+| 内容程序顺序、安装与嵌套 | [初始摘录](evidence/client-excerpts-20261007/README.md)、[案例 A](cases/01-buff-installation-and-parent-scope.md)、[案例 B](cases/02-action-and-projectile-phases.md)、[案例 C](cases/03-dispatch-and-nested-settlement.md) | 模板 ID、组件 PathID、方法／VA 与短轨迹仍在；早期完整模板与一次性解码脚本未入仓。 |
+| Action 与 Skill | [行动时间](evidence/action-timing-20261014/README.md)、[启动与中断](evidence/action-eligibility-and-interruption-20261014/README.md)、[Skill 生命周期](evidence/skill-lifecycle-20261013/README.md)、[SP 公式](evidence/sp-calculation-20261015/README.md) | 所选元数据、指令、参数和样例；资源专用解码及运行时 XLua 的限制见各批次。 |
+| 阻挡与空间资格 | [Blocking 关系](evidence/blocking-lifecycle-20261010/README.md)、[Blocking 原生分支](evidence/blocking-native-20261023/README.md)、[Effect 索敌与免疫](evidence/effect-immunity-20261021/README.md) | 定向资格、关系取得／维持、模式／半径与选择／施加分支；没有穷尽全部 selector、Collider 和特化内容。 |
+| 光环与全局分发 | [初始客户端摘录](evidence/client-excerpts-20261007/README.md)、[空间研究第 9 节](03-space-units-and-mechanisms.md#9-非空间机制与范围贡献) | Aura／GlobalBuff 调用与字段投影；完整旧报告、全量可达内容和活跃热更新未归档／验证。 |
+| 设备与部署 | [空间研究第 11 节](03-space-units-and-mechanisms.md#11-可复查证据入口)、[初始客户端摘录](evidence/client-excerpts-20261007/README.md) | 现有 fixture 与正文保存工事、平台、深水的所选字段／引用；没有归档旧部署／预置报告全文。 |
+| Route／Navigation／运动 | [导航原生算法](evidence/navigation-native-20261018/README.md)、[路线时序](evidence/route-movement-20261018/README.md)、[路线字段](evidence/route-fields-20261019/README.md)、[Locomotion](evidence/locomotion-native-20261019/README.md) | 所选原生方法与仿真／配置结果；专用仿真的 stub 和完整外部输入能否重建，以各批次保存情况为准。 |
+| 投射物来源、运动与终止 | [运动与命中](evidence/projectile-boundaries-20261021/README.md)、[停止与终结](evidence/projectile-stop-20261021/README.md)、[来源与目标生命周期](evidence/projectile-lifecycle-20261021/README.md) | 原生路径、指针身份、内容投影与结束顺序；不代替运行时热更新或所有特化投射物验证。 |
 
-这些 `/tmp` 路径是本机复查入口，不是长期文档依赖。关键结论、方法名／索引、模板 ID 和小段事实已经整理到本目录；原反汇编与完整模板没有整体复制进仓库。若需要另一台机器独立复现，还应按清单对应客户端重新提取，补齐提取脚本与更完整的输入指纹。
-
-已有 `/tmp/stronghold-map-audit-20261006.md` 含船运扩展方案，是历史研究；其船运设计不适用于本轮支持范围。原始 sample 引用链已整理在 [01](01-scope-and-battle-flow.md) 与 [03](03-space-units-and-mechanisms.md)，不是整季所有 prefab 的穷尽扫描。
+历史的一次性报告和目录名称只说明当时分析环境，不能充当当前可执行入口。当前复查采用批次 README 的共享工具命令，先核对输入，再生成新的输出；指纹不符时不能照搬旧索引。早期船运扩展属于已排除范围，不能因旧地图报告提到它就恢复为本项目需求。
 
 ## 4. 已纠正的历史推断
 

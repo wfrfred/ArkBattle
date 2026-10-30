@@ -1,0 +1,406 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-13"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "records.json#/clientFiles/0"
+        ],
+        "bytes": 218523112
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "records.json#/clientFiles/1"
+        ],
+        "bytes": 45805368
+      }
+    },
+    "sourceRecords": [
+      "records.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "records.json",
+        "kind": "record",
+        "bytes": 43993,
+        "sha256": "5732a6c212ebb6892aebb4663e08c8a9694a8403efb3d06ddd7e01c3e4ea3c4f"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 66639,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/18"
+          ],
+          "fullname": "Torappu.Battle.Entity.ClearAbilities",
+          "address": "0x1806f10e0"
+        },
+        {
+          "index": 66653,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/17"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnFinish",
+          "address": "0x1806f8c40"
+        },
+        {
+          "index": 73269,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/31"
+          ],
+          "fullname": "Torappu.Battle.AppearTalent._OnBorn",
+          "address": "0x180971da0"
+        },
+        {
+          "index": 73270,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/32"
+          ],
+          "fullname": "Torappu.Battle.AppearTalent._OnLocate",
+          "address": "0x180971ea0"
+        },
+        {
+          "index": 73274,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/2"
+          ],
+          "fullname": "Torappu.Battle.BasicTalent.get_isValid",
+          "address": "0x180973df0"
+        },
+        {
+          "index": 73275,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/3"
+          ],
+          "fullname": "Torappu.Battle.BasicTalent.get_isAttached",
+          "address": "0x180973bc0"
+        },
+        {
+          "index": 73301,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/4"
+          ],
+          "fullname": "Torappu.Battle.BasicTalent.AssignData",
+          "address": "0x180972000"
+        },
+        {
+          "index": 73304,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/0"
+          ],
+          "fullname": "Torappu.Battle.BasicTalent.Attach",
+          "address": "0x1809724d0"
+        },
+        {
+          "index": 73305,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/1"
+          ],
+          "fullname": "Torappu.Battle.BasicTalent.Detach",
+          "address": "0x1809729c0"
+        },
+        {
+          "index": 73317,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/5"
+          ],
+          "fullname": "Torappu.Battle.BasicTalent.DoAttach",
+          "address": "0x1809716c0"
+        },
+        {
+          "index": 73318,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/6"
+          ],
+          "fullname": "Torappu.Battle.BasicTalent.DoDetach",
+          "address": "0x180971730"
+        },
+        {
+          "index": 73525,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/24"
+          ],
+          "fullname": "Torappu.Battle.RebornTalent.AssignData",
+          "address": "0x180996120"
+        },
+        {
+          "index": 73528,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/25"
+          ],
+          "fullname": "Torappu.Battle.RebornTalent.CheckReborn",
+          "address": "0x1809967f0"
+        },
+        {
+          "index": 73543,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/22"
+          ],
+          "fullname": "Torappu.Battle.SilenceableTalent._UpdateInternalAbilityAttachStatus",
+          "address": "0x180999530"
+        },
+        {
+          "index": 73544,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/23"
+          ],
+          "fullname": "Torappu.Battle.SilenceableTalent._OnAbnormalFlagPossiblyChanged",
+          "address": "0x1809994b0"
+        },
+        {
+          "index": 76025,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/10"
+          ],
+          "fullname": "Torappu.Battle.Character.OnInit",
+          "address": "0x180a2dd90"
+        },
+        {
+          "index": 76027,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/12"
+          ],
+          "fullname": "Torappu.Battle.Character.OnBorn",
+          "address": "0x180a2d260"
+        },
+        {
+          "index": 76033,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/11"
+          ],
+          "fullname": "Torappu.Battle.Character.OnFinish",
+          "address": "0x180a2d9f0"
+        },
+        {
+          "index": 76038,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/20"
+          ],
+          "fullname": "Torappu.Battle.Character.OnBeforeAttack",
+          "address": "0x180a2cc00"
+        },
+        {
+          "index": 76039,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/21"
+          ],
+          "fullname": "Torappu.Battle.Character.OnAfterAttack",
+          "address": "0x180a2c400"
+        },
+        {
+          "index": 76054,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/7"
+          ],
+          "fullname": "Torappu.Battle.Character._AssignData",
+          "address": "0x180a33dd0"
+        },
+        {
+          "index": 76062,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/8"
+          ],
+          "fullname": "Torappu.Battle.Character._AssignTalents",
+          "address": "0x180a34780"
+        },
+        {
+          "index": 76063,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/9"
+          ],
+          "fullname": "Torappu.Battle.Character.ReassignTalents",
+          "address": "0x180a2fe50"
+        },
+        {
+          "index": 77669,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/14"
+          ],
+          "fullname": "Torappu.Battle.Unit.InactiveMode",
+          "address": "0x180ac9020"
+        },
+        {
+          "index": 77683,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/27"
+          ],
+          "fullname": "Torappu.Battle.Unit.CheckReborn",
+          "address": "0x180ac68b0"
+        },
+        {
+          "index": 77689,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/16"
+          ],
+          "fullname": "Torappu.Battle.Unit.OnFinish",
+          "address": "0x180aca5b0"
+        },
+        {
+          "index": 77696,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/13"
+          ],
+          "fullname": "Torappu.Battle.Unit.OnBorn",
+          "address": "0x180aca090"
+        },
+        {
+          "index": 77698,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/19"
+          ],
+          "fullname": "Torappu.Battle.Unit.OnRecycle",
+          "address": "0x180acb160"
+        },
+        {
+          "index": 77702,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/28"
+          ],
+          "fullname": "Torappu.Battle.Unit.OnAwake",
+          "address": "0x180ac9da0"
+        },
+        {
+          "index": 77703,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/29"
+          ],
+          "fullname": "Torappu.Battle.Unit.RecollectTalents",
+          "address": "0x180accad0"
+        },
+        {
+          "index": 77704,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/26"
+          ],
+          "fullname": "Torappu.Battle.Unit.OnHpZero",
+          "address": "0x180aca920"
+        },
+        {
+          "index": 77836,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/15"
+          ],
+          "fullname": "Torappu.Battle.UnitMode.OnActivate",
+          "address": "0x180ac3ec0"
+        },
+        {
+          "index": 77844,
+          "mode": "metadata",
+          "records": [
+            "records.json#/nativeMethods/30"
+          ],
+          "fullname": "Torappu.Battle.UnitMode._InitTalents",
+          "address": "0x180ac4e60"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.BasicTalent",
+          "records": [
+            "records.json#/declaredFieldProjection/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Character",
+          "records": [
+            "records.json#/declaredFieldProjection/4"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.RebornTalent",
+          "records": [
+            "records.json#/declaredFieldProjection/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.SilenceableTalent",
+          "records": [
+            "records.json#/declaredFieldProjection/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Talent",
+          "records": [
+            "records.json#/declaredFieldProjection/3"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Unit",
+          "records": [
+            "records.json#/declaredFieldProjection/5"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.UnitMode",
+          "records": [
+            "records.json#/declaredFieldProjection/6"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

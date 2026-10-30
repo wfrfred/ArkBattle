@@ -1,0 +1,396 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-21"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "manifest.json#"
+        ]
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "manifest.json#"
+        ]
+      }
+    },
+    "sourceRecords": [
+      "examples/crsbow-emitter.json",
+      "examples/logical-examples.json",
+      "manifest.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "examples/REPORT.md",
+        "kind": "historical-report",
+        "bytes": 11041,
+        "sha256": "9a77df074afc0558af52ac7100dd093c5c537e59e12bb3b3dc4343f130ecfe60"
+      },
+      {
+        "path": "examples/crsbow-emitter.json",
+        "kind": "record",
+        "bytes": 12885,
+        "sha256": "79b5a9224a486d3337830cd1b711d864b4257e403e5fcb00635ebea42961a7bb"
+      },
+      {
+        "path": "examples/logical-examples.json",
+        "kind": "record",
+        "bytes": 36781,
+        "sha256": "7419d75379f3d15045ea51ce2fde7339c4e2e6b035e7326e5a75da565c145532"
+      },
+      {
+        "path": "hit/66349-get_alive.asm",
+        "kind": "instructions",
+        "bytes": 3377,
+        "sha256": "3084f29523fc316c0556c71d03e5d6d5f0ef2933974d3e4c9fcc729e88cc6de6"
+      },
+      {
+        "path": "hit/71347-DealHitTarget.asm",
+        "kind": "instructions",
+        "bytes": 4261,
+        "sha256": "da88ce28d2fe7f704156ddd2a057e2cbf94257b2aabd0591ecde90a33a1165f4"
+      },
+      {
+        "path": "hit/71375-_DealHitTraceTarget.asm",
+        "kind": "instructions",
+        "bytes": 2662,
+        "sha256": "b7a0a1d4af6b9d0c80169a8db0e1ae39568c52525fa5fae31cbc6c7274300341"
+      },
+      {
+        "path": "hit/75822-get_alive.asm",
+        "kind": "instructions",
+        "bytes": 2619,
+        "sha256": "e9c7db9ee6bbd5290412c5fe1e35dfe867f7101be34871b911d8e39c843ca0af"
+      },
+      {
+        "path": "hit/78227-ValidAndAlive-285168.asm",
+        "kind": "instructions",
+        "bytes": 4249,
+        "sha256": "2c7be30d94024cffb43063da9db1b1fc4025d8925d9dfceb885ceb4502c671d6"
+      },
+      {
+        "path": "hit/86264-OnProjectileReached.asm",
+        "kind": "instructions",
+        "bytes": 13063,
+        "sha256": "ef1b9852da20e7e057e42ea7d44de3de9d59bfe373e02fd794e7724635e42517"
+      },
+      {
+        "path": "hit/86266-DealHitTarget.asm",
+        "kind": "instructions",
+        "bytes": 6996,
+        "sha256": "68ef1fe3f9f254431b66622dc1d524b7c75c3255ceaf20c310d64da0fe3ecdff"
+      },
+      {
+        "path": "hit/86267-_DoTargetEnter.asm",
+        "kind": "instructions",
+        "bytes": 7286,
+        "sha256": "88aa07b423c9844733c5b4ac6ea88c44971004a768416cc097249b99d62bbd4f"
+      },
+      {
+        "path": "hit/86269-OnTriggerEnter2D.asm",
+        "kind": "instructions",
+        "bytes": 9360,
+        "sha256": "0ad4fcb212ba1d57db1f9ce27d3d2a8641294d62733fbd7898b341cfd6693b7f"
+      },
+      {
+        "path": "hit/86505-DoSelectTargetToHit.asm",
+        "kind": "instructions",
+        "bytes": 7718,
+        "sha256": "91f34f631ed7366764c3ad68598be92d0cbaf7eb79991c9852f6d7cb93e82278"
+      },
+      {
+        "path": "hit/86507-_FindTargets_DISPOSE.asm",
+        "kind": "instructions",
+        "bytes": 5213,
+        "sha256": "107b69dae7233e4f7e5ca229d09ad07447cb6b8a4b021294b02bbaad2e33d4df"
+      },
+      {
+        "path": "hit/REPORT.md",
+        "kind": "historical-report",
+        "bytes": 10768,
+        "sha256": "748e5ea719dc298ee97f54bdd6441402457b13dccb540556bfb19bb59a4207f1"
+      },
+      {
+        "path": "manifest.json",
+        "kind": "record",
+        "bytes": 4038,
+        "sha256": "098af919772f96e04ea0284158c3224fc1fe382af43048fccb24abded37441df"
+      },
+      {
+        "path": "movement/71209-Init.asm",
+        "kind": "instructions",
+        "bytes": 5712,
+        "sha256": "196b9aafd414ce39a3a9abc1bfe240b0b9ffde6cf3e40a3e4fc27109c605c378"
+      },
+      {
+        "path": "movement/71223-GetTraceTargetMapPosition.asm",
+        "kind": "instructions",
+        "bytes": 3446,
+        "sha256": "0a87d24839e4ac503596f8062ef73d0da7fca0510cab328018364eac614f9af7"
+      },
+      {
+        "path": "movement/71344-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 12711,
+        "sha256": "eb647e82f03056a9dd1d59da4285674ee81b19cff2153d946cd5ad482ac75285"
+      },
+      {
+        "path": "movement/71395-_InitBahavioursIfNot.asm",
+        "kind": "instructions",
+        "bytes": 2638,
+        "sha256": "bd125313fa01fda12e52ccefb8d9f62626b005670dc847327b32e37de959f7ba"
+      },
+      {
+        "path": "movement/86796-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 7981,
+        "sha256": "b872fffa3baba720b4f84fa198cc149b85f2220aa5384417d1345bb5f0aa79a2"
+      },
+      {
+        "path": "movement/86805-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 8422,
+        "sha256": "e3244e3860db43ea32a5bbdb5c5eae9e0149ad2dee13308cd83fc06a39bb96ff"
+      },
+      {
+        "path": "movement/86955-OnTick.asm",
+        "kind": "instructions",
+        "bytes": 2888,
+        "sha256": "5b4839aad74ec806a36a3cb0a1290cc2ffc6ae88fc466a0e82fce53322f5ef83"
+      },
+      {
+        "path": "movement/87001-SwitchMovementIndex.asm",
+        "kind": "instructions",
+        "bytes": 4598,
+        "sha256": "5037241f832b93ada9a050b67f925af77b7221dcd5c0bcd4e7a93e39abf9d641"
+      },
+      {
+        "path": "movement/87129-_CalculateNextPosition.asm",
+        "kind": "instructions",
+        "bytes": 16065,
+        "sha256": "40a614c81dac6b7eb5c564c32a539b411f3d024fc518261e115652fc14a84d6b"
+      },
+      {
+        "path": "movement/REPORT.md",
+        "kind": "historical-report",
+        "bytes": 14746,
+        "sha256": "0855c53f1037795d4dd61042ae3b3e428a1a30d048f9c5004ff39a02ab8fa121"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 66349,
+          "mode": "disasm",
+          "records": [
+            "hit/66349-get_alive.asm"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_alive",
+          "address": "0x180701920"
+        },
+        {
+          "index": 71209,
+          "mode": "disasm",
+          "records": [
+            "movement/71209-Init.asm"
+          ],
+          "fullname": "Torappu.Battle.BasicMovement.Init",
+          "address": "0x1808cb090"
+        },
+        {
+          "index": 71223,
+          "mode": "disasm",
+          "records": [
+            "movement/71223-GetTraceTargetMapPosition.asm"
+          ],
+          "fullname": "Torappu.Battle.BasicMovement.GetTraceTargetMapPosition",
+          "address": "0x1808cafa0"
+        },
+        {
+          "index": 71344,
+          "mode": "disasm",
+          "records": [
+            "movement/71344-OnTick.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile.OnTick",
+          "address": "0x1808d9af0"
+        },
+        {
+          "index": 71347,
+          "mode": "disasm",
+          "records": [
+            "hit/71347-DealHitTarget.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile.DealHitTarget",
+          "address": "0x1808d6c40"
+        },
+        {
+          "index": 71375,
+          "mode": "disasm",
+          "records": [
+            "hit/71375-_DealHitTraceTarget.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile._DealHitTraceTarget",
+          "address": "0x1808db940"
+        },
+        {
+          "index": 71395,
+          "mode": "disasm",
+          "records": [
+            "movement/71395-_InitBahavioursIfNot.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectile._InitBahavioursIfNot",
+          "address": "0x1808dbcd0"
+        },
+        {
+          "index": 75822,
+          "mode": "disasm",
+          "records": [
+            "hit/75822-get_alive.asm"
+          ],
+          "fullname": "Torappu.Battle.Character.get_alive",
+          "address": "0x180a38df0"
+        },
+        {
+          "index": 78227,
+          "mode": "disasm",
+          "records": [
+            "hit/78227-ValidAndAlive-285168.asm"
+          ],
+          "fullname": "Torappu.Battle.BattleUtil.ValidAndAlive",
+          "address": "0x18449ab40"
+        },
+        {
+          "index": 86264,
+          "mode": "disasm",
+          "records": [
+            "hit/86264-OnProjectileReached.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.HitBehaviour.OnProjectileReached",
+          "address": "0x180d34fc0"
+        },
+        {
+          "index": 86266,
+          "mode": "disasm",
+          "records": [
+            "hit/86266-DealHitTarget.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.HitBehaviour.DealHitTarget",
+          "address": "0x180d34840"
+        },
+        {
+          "index": 86267,
+          "mode": "disasm",
+          "records": [
+            "hit/86267-_DoTargetEnter.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.HitBehaviour._DoTargetEnter",
+          "address": "0x180d35da0"
+        },
+        {
+          "index": 86269,
+          "mode": "disasm",
+          "records": [
+            "hit/86269-OnTriggerEnter2D.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.HitBehaviour.OnTriggerEnter2D",
+          "address": "0x180d358a0"
+        },
+        {
+          "index": 86505,
+          "mode": "disasm",
+          "records": [
+            "hit/86505-DoSelectTargetToHit.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.SelectorHitBehaviour.DoSelectTargetToHit",
+          "address": "0x180d48e80"
+        },
+        {
+          "index": 86507,
+          "mode": "disasm",
+          "records": [
+            "hit/86507-_FindTargets_DISPOSE.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.SelectorHitBehaviour._FindTargets_DISPOSE",
+          "address": "0x180d49d20"
+        },
+        {
+          "index": 86796,
+          "mode": "disasm",
+          "records": [
+            "movement/86796-OnTick.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.AmiyaDefaultMovement.OnTick",
+          "address": "0x180d560f0"
+        },
+        {
+          "index": 86805,
+          "mode": "disasm",
+          "records": [
+            "movement/86805-OnTick.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.AmiyaS2Movement.OnTick",
+          "address": "0x180d56ab0"
+        },
+        {
+          "index": 86955,
+          "mode": "disasm",
+          "records": [
+            "movement/86955-OnTick.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.GroupedMovement.OnTick",
+          "address": "0x180d69e50"
+        },
+        {
+          "index": 87001,
+          "mode": "disasm",
+          "records": [
+            "movement/87001-SwitchMovementIndex.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.MovementSwitchController.SwitchMovementIndex",
+          "address": "0x180d72c30"
+        },
+        {
+          "index": 87129,
+          "mode": "disasm",
+          "records": [
+            "movement/87129-_CalculateNextPosition.asm"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.ParacurveMovement._CalculateNextPosition",
+          "address": "0x180d78310"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

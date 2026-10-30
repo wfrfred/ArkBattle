@@ -1,0 +1,128 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-29"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "selected-native.json#/sources/dll"
+        ]
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "selected-native.json#/sources/metadata"
+        ]
+      }
+    },
+    "sourceRecords": [
+      "selected-assets.json",
+      "selected-native.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12181,
+        "sha256": "e3a750499007fcd318f1568329f39bd06f64fe74bd66dc152272ca9382af3184"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "selected-assets.json",
+        "kind": "record",
+        "bytes": 36004,
+        "sha256": "0129113db321c0495d693cd83c625569651b4ec2d066ad922cd1cf199ef99d4f"
+      },
+      {
+        "path": "selected-native.json",
+        "kind": "record",
+        "bytes": 25359,
+        "sha256": "1aae09b1d8bfc1bb7603cf28f78633e78aa073811a966961dab65146a339fbf7"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 66499,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_isMotionTargetFree",
+          "address": "0x180706250"
+        },
+        {
+          "index": 66509,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Entity.isStillMotionTargetFreeWithImmuneFlag",
+          "address": "0x180709030"
+        },
+        {
+          "index": 66510,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Entity.isMotionTargetFreeWithImmuneFlag",
+          "address": "0x180708f60"
+        },
+        {
+          "index": 76014,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Character.isStillMotionTargetFreeWithImmuneFlag",
+          "address": "0x180a3cf00"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4191_tippi.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4191_tippi.ab",
+          "sha256": "a8217414023acafe84711c18c2bb94bcbf2d39afd632c950953330d0a1323968",
+          "records": [
+            "selected-assets.json#/sources/0"
+          ],
+          "bytes": 28994
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "12419ad8d1ea9f670cca214e525240c691cdf3796b82acc8050698d66c202a37",
+          "records": [
+            "selected-assets.json#/sources/1"
+          ],
+          "bytes": 2022247
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}
