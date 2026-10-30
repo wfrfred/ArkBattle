@@ -78,7 +78,7 @@ S1／S2 起飞模式 Attack 对象上的 BuffToOwner
 
 Blocker Definition 的 layer、rules 必填，radius 可选；State 保存当前 layer 和实际 radius。Core 在未显式覆盖时提供 GROUND 半径 0.7071、AIR 半径 0.8944；显式 Definition.radius 在初始化和切层时都保持覆盖。空地匹配与 AIR 地块豁免由通用 Blocking 解释，阵营和其他特殊资格仍通过双方二元 Rule 判断。射击台 Rule 只禁止当前 GROUND 阻挡，AIR 可通过。
 
-起飞／落地 Blocking 业务通过 blocking.setLayer(battle, ref, layer) 完成。层改变时，新 layer、实际半径和全部旧出向关系的双端解除在第一个 RELEASED Hook 前一起提交；Hook 接续最新 BattleState，不误删嵌套新建的关系，不自动搜索新目标。普通 unit.update 的关系维护不根据字段差异推断完整切换事件，Content 不能直接改 blocker.layer 绕过该操作。关系保持和搜索资格的项目政策详见 [Blocking 设计](../../architecture/blocking.md#关系资格与-rule)。
+起飞／落地 Blocking 业务通过 capability/blocking 入口的 setLayer(battle, ref, layer) 完成，实现在 blocker-operations.ts。层改变时，新 layer、实际半径和全部旧出向关系的双端解除在第一个 RELEASED Hook 前一起提交；Hook 接续最新 BattleState，不误删嵌套新建的关系，随后由该操作显式维护，不自动搜索新目标。普通 unit.update 发布数据、索引与显式关系差分，不根据任意字段写回触发全场维护或推断完整切换事件；Content 不能直接改 blocker.layer 绕过该操作。关系保持和搜索资格的项目政策详见 [Blocking 设计](../../architecture/blocking.md#关系资格与-rule)。
 
 蒂比仍应由实际起飞 Buff 的取得／失效调用相应操作，不直接绑定通用 Skill 开始／结束事件。Targetable 对地规避及表现高度继续独立处理；本轮不实现蒂比，也不修改她自身的空地身份。
 

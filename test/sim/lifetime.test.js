@@ -7,7 +7,8 @@ import * as actions from "../../dist/core/unit/action/index.js";
 import { available, scope } from "../../dist/core/lifetime/index.js";
 import { key } from "../../dist/core/lifetime/dependency.js";
 import { remove, update, lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
-import { setHook as setBlockerHook, setRule } from "../../dist/core/unit/capability/blocking/blocker.js";
+import { setHook as setBlockerHook } from "../../dist/core/unit/capability/blocking/blocker.js";
+import { setRule } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import { initialize, getUnit } from "../helpers/unit.js";
 import { effectFixtureWork, definition } from "../helpers/effects.js";
 import { ref as skillRef, definition as skillDefinition } from "../helpers/skill.js";
@@ -77,11 +78,14 @@ test("a removed Activation still delays its owner until the entire activationEnd
     settled(battle);
 });
 
-test("ENDING publication exposes Pending before a real Blocking Hook requests the same child and its owner", () => {
+test("explicit Effect cleanup exposes Pending before a Blocking Hook requests the same child and its owner", () => {
     const trace = [];
     let reference;
     const content = definition("blocking-lifetime", {}, {
-        onDisable(battle) { trace.push("prepare"); return battle; },
+        onDisable(battle, self) {
+            trace.push("prepare");
+            return setRule(battle, self.host, { id: "release-on-ending", allows: () => false });
+        },
         onEnd(battle) {
             assert.equal(getUnit(battle, 10).lifecycle, "LEAVING");
             trace.push("finalize");
@@ -95,21 +99,16 @@ test("ENDING publication exposes Pending before a real Blocking Hook requests th
         },
     }] } }), target()]);
     const host = getUnit(battle, 10);
-    let blocker = setRule(host.blocker, {
-        id: "release-on-ending",
-        allows: (_battle, self) => !self.effects.values().some(effect =>
-            effect.definition === content && effect.status === "ENDING"),
-    });
-    blocker = setBlockerHook(blocker, "released", hook("reenter-publication", current => {
+    const blocker = setBlockerHook(host.blocker, "released", hook("reenter-publication", current => {
         trace.push("publish");
         assert.equal(current.lifetime.settling, true);
         assert.equal(current.lifetime.endings.get(key(scope(effects.lifetime, reference))).phase, "PREPARING");
         assert.equal(effects.get(current, reference).status, "ENDING");
         assert.equal(effects.end(current, reference, "REENTERED"), current);
-        assert.deepEqual(trace, ["publish"]);
+        assert.deepEqual(trace, ["prepare", "publish"]);
         current = remove(current, 10, "SCRIPT");
         assert.equal(getUnit(current, 10).lifecycle, "LEAVING");
-        assert.deepEqual(trace, ["publish"]);
+        assert.deepEqual(trace, ["prepare", "publish"]);
         return current;
     }));
     battle = acquire(update(battle, [{ ...host, blocker }]));
@@ -117,7 +116,7 @@ test("ENDING publication exposes Pending before a real Blocking Hook requests th
     const installed = effects.install(battle, { id: 10 }, content);
     reference = installed.value;
     battle = effects.end(installed.state, reference, "FIRST");
-    assert.deepEqual(trace, ["publish", "prepare", "finalize", "owner:left"]);
+    assert.deepEqual(trace, ["prepare", "publish", "finalize", "owner:left"]);
     assert.equal(getUnit(battle, 10), undefined);
     settled(battle);
 });

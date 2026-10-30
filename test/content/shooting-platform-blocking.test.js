@@ -11,8 +11,7 @@ import { at as occupancyAt } from "../../dist/core/battlefield/occupancy.js";
 import { Tile } from "../../dist/core/geometry/coordinate.js";
 import { createDefinition as createDeployable } from "../../dist/core/unit/capability/deployable/index.js";
 import { setHook } from "../../dist/core/unit/capability/blocking/blocker.js";
-import { sides } from "../../dist/core/unit/capability/blocking/index.js";
-import { setLayer } from "../../dist/core/battle/blocking/index.js";
+import { sides, setLayer } from "../../dist/core/unit/capability/blocking/index.js";
 import { fixture, holder, target, acquire, ownerId, hook } from "../helpers/blocking.js";
 import { getUnit, initialize } from "../helpers/unit.js";
 

@@ -5,8 +5,8 @@ import { getUnit, replaceUnit } from "../helpers/unit.js";
 import { update as updateFieldUnit } from "../../dist/core/battlefield/unit.js";
 import * as blocking from "../../dist/core/battle/blocking/operations.js";
 import * as query from "../../dist/core/battle/blocking/query.js";
-import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
-import * as blockable from "../../dist/core/unit/capability/blocking/blockable.js";
+import * as blockerOperations from "../../dist/core/unit/capability/blocking/blocker-operations.js";
+import * as blockableOperations from "../../dist/core/unit/capability/blocking/blockable-operations.js";
 import { sides } from "../../dist/core/unit/capability/blocking/index.js";
 import { fixture, holder, target, acquire, blockedIds, ownerId, capacity } from "../helpers/blocking.js";
 
@@ -115,12 +115,11 @@ test("an owner side change preserves blocking while a target side change release
     assert.equal(ownerId(battle), 10);
 
     const candidate = getUnit(battle, 20);
-    battle = replaceUnit(battle, { ...candidate, allegiance: { side: "NEUTRAL" } });
+    battle = blocking.maintain(replaceUnit(battle, { ...candidate, allegiance: { side: "NEUTRAL" } }));
     assert.equal(ownerId(battle), undefined);
     assert.deepEqual(blockedIds(battle), []);
 
-    const current = getUnit(battle, 10);
-    battle = replaceUnit(battle, { ...current, blocker: blocker.setRule(current.blocker, sides("NEUTRAL")) });
+    battle = blockerOperations.setRule(battle, { id: 10 }, sides("NEUTRAL"));
     assert.equal(ownerId(battle), undefined);
     assert.equal(ownerId(acquire(battle)), 10);
     assert.equal(ownerId(original), 10);
@@ -132,37 +131,33 @@ test("new blockers and restored eligibility wait for search; existing relations 
     battle = addUnit(battle, holder(5, { position: [2.125, 1] }));
     battle = blocking.advance(battle);
     assert.equal(ownerId(battle), 10);
-    const currentUnit = getUnit(battle, 10);
-    battle = replaceUnit(battle, {
-        ...currentUnit, blocker: blocker.setRule(currentUnit.blocker, { id: "disabled", allows: () => false }),
-    });
+    battle = blockerOperations.setRule(battle, { id: 10 }, { id: "disabled", allows: () => false });
     assert.equal(ownerId(battle), undefined);
     assert.deepEqual(blockedIds(battle, 10), []);
-    const currentUnit2 = getUnit(battle, 10);
-    battle = replaceUnit(battle, { ...currentUnit2, blocker: blocker.removeRule(currentUnit2.blocker, "disabled") });
+    battle = blockerOperations.removeRule(battle, { id: 10 }, "disabled");
     assert.equal(ownerId(battle), undefined);
     battle = acquire(battle);
     assert.equal(ownerId(battle), 10);
     assert.equal(ownerId(previous), 10);
 });
 
-for (const [name, transform] of [
-    ["HP reaches zero", unit => ({ ...unit, vitality: { ...unit.vitality, hp: 0 } })],
-    ["LEAVING begins", unit => ({ ...unit, lifecycle: "LEAVING" })],
-    ["spatial presence disappears", unit => ({ ...unit, spatialPresence: { present: false } })],
-    ["side policy stops allowing the target", unit => ({ ...unit, blocker: blocker.setRule(unit.blocker, sides("ALLY")) })],
+for (const [name, change] of [
+    ["HP reaches zero", (battle, unit) => blocking.maintain(replaceUnit(battle, { ...unit, vitality: { ...unit.vitality, hp: 0 } }))],
+    ["LEAVING begins", (battle, unit) => blocking.maintain(replaceUnit(battle, { ...unit, lifecycle: "LEAVING" }))],
+    ["spatial presence disappears", (battle, unit) => blocking.maintain(replaceUnit(battle, { ...unit, spatialPresence: { present: false } }))],
+    ["side policy stops allowing the target", battle => blockerOperations.setRule(battle, { id: 10 }, sides("ALLY"))],
 ]) {
-    test(`updateUnit immediately releases invalid relations when blocker ${name}`, () => {
+    test(`complete settlement releases invalid relations when blocker ${name}`, () => {
         let battle = acquire(fixture([holder(), holder(11, { position: [3, 1] }), target()]));
         const before = battle;
-        const currentUnit3 = getUnit(battle, 10);
-        battle = replaceUnit(battle, transform(currentUnit3));
+        battle = change(battle, getUnit(battle, 10));
         assert.equal(ownerId(battle), undefined);
         assert.deepEqual(blockedIds(battle), []);
         assert.equal(ownerId(before), 10);
         assert.equal(ownerId(acquire(battle, 11)), 11);
     });
 }
+
 
 test("removing either endpoint releases its associations without acquiring a replacement", () => {
     let battle = acquire(fixture([holder(), holder(11, { position: [3, 1] }), target()]));
@@ -185,10 +180,7 @@ test("capacity shrinking removes the ordered tail until the remaining prefix fit
     assert.deepEqual(blockedIds(battle), []);
     battle = acquire(battle);
     assert.deepEqual(blockedIds(battle), [20, 21]);
-    const currentUnit4 = getUnit(battle, 20);
-    battle = replaceUnit(battle, {
-        ...currentUnit4, blockable: blockable.setVolumeContribution(currentUnit4.blockable, { id: "larger", value: 2 }),
-    });
+    battle = blockableOperations.setVolumeContribution(battle, { id: 20 }, { id: "larger", value: 2 });
     assert.deepEqual(blockedIds(battle), []);
     assert.equal(query.usedCapacity(battle, { id: 10 }), 0);
 });

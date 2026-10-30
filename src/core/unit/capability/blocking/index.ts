@@ -3,10 +3,6 @@ export {
     initialize as initializeBlocker,
     setHook as setBlockerHook,
     removeHook as removeBlockerHook,
-    setRule as setBlockerRule,
-    removeRule as removeBlockerRule,
-    setCapacityContribution,
-    removeCapacityContribution,
     resolveCapacity,
 } from "./blocker.js";
 
@@ -23,10 +19,6 @@ export {
     initialize as initializeBlockable,
     setHook as setBlockableHook,
     removeHook as removeBlockableHook,
-    setRule as setBlockableRule,
-    removeRule as removeBlockableRule,
-    setVolumeContribution,
-    removeVolumeContribution,
     resolveVolume,
 } from "./blockable.js";
 
@@ -39,3 +31,18 @@ export type {
 export { sides, type Rule } from "./rule.js";
 
 export type { Relation, Context, Hook, Key } from "./contract.js";
+
+export {
+    setRule as setBlockerRule,
+    removeRule as removeBlockerRule,
+    setCapacityContribution,
+    removeCapacityContribution,
+    setLayer,
+} from "./blocker-operations.js";
+
+export {
+    setRule as setBlockableRule,
+    removeRule as removeBlockableRule,
+    setVolumeContribution,
+    removeVolumeContribution,
+} from "./blockable-operations.js";

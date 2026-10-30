@@ -80,10 +80,11 @@ export function update<U extends Unit>(battle: BattleState, updates: readonly U[
         })),
     );
 
-    const settled = blocking.settleUpdates(
-        published,
-        blocking.changes(battle, published, prepared),
-    );
+    let settled = published;
+
+    for (const change of blocking.changes(battle, published, prepared)) {
+        settled = blocking.notify(settled, change);
+    }
 
     return occupancy.notify(
         settled,
@@ -100,7 +101,7 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
     get: units.get,
     isEnding: (self) => self.lifecycle === "LEAVING",
     begin: (self) => ({ ...self, lifecycle: "LEAVING" }),
-    replace: (battle, _ref, next) => update(battle, [next]),
+    replace: (battle, _ref, next) => blocking.maintain(update(battle, [next])),
     prepare: (battle, reference, _initial, departure) =>
         refundUnit(battle, units.get(battle, reference)!, departure.reason, battle.tick),
     finalize: (battle, reference, departure) => {

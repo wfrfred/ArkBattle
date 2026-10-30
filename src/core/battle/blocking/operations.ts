@@ -6,9 +6,7 @@ import { get as getTile } from "../../battlefield/map/map.js";
 import {
     hasBlocker,
     resolveCapacity,
-    DEFAULT_RADIUS,
     type Blocker,
-    type Layer,
 } from "../../unit/capability/blocking/blocker.js";
 import {
     hasBlockable,
@@ -243,18 +241,6 @@ export function changes(
     return changed;
 }
 
-export function settleUpdates(battle: BattleState, changes: readonly Change[]): BattleState {
-    const pending = pendingMaintenance(battle);
-
-    for (const change of changes) {
-        battle = notify(battle, change);
-    }
-
-    return pending !== undefined && requiresMaintenance(battle, pending)
-        ? releaseRelation(battle, pending)
-        : battle;
-}
-
 export function notify(battle: BattleState, change: Change): BattleState {
     const { relation } = change;
     if (change.type === "ACQUIRED" && !hasRelation(battle, relation)) {
@@ -316,7 +302,8 @@ function releaseRelation(battle: BattleState, relation: Relation): BattleState {
 
 export function releaseCaptured(battle: BattleState, captured: readonly Relation[]): BattleState {
     for (const relation of captured) {
-        battle = releaseRelation(battle, relation);
+        const next = releaseRelation(battle, relation);
+        battle = next === battle ? battle : maintain(next);
     }
 
     return battle;
@@ -324,29 +311,6 @@ export function releaseCaptured(battle: BattleState, captured: readonly Relation
 
 export function release(battle: BattleState, reference: Ref<Unit>): BattleState {
     return releaseCaptured(battle, capture(battle, reference));
-}
-
-export function setLayer(
-    battle: BattleState,
-    reference: Ref<Unit & Blocker>,
-    layer: Layer,
-): BattleState {
-    const unit = units.get(battle, reference);
-    if (unit === undefined || unit.blocker.layer === layer) {
-        return battle;
-    }
-
-    const captured = unit.blocker.blocked.map((blocked) => ({ blocker: reference, blocked }));
-    const next: Unit & Blocker = {
-        ...unit,
-        blocker: {
-            ...unit.blocker,
-            layer,
-            radius: unit.definition.blocker.radius ?? DEFAULT_RADIUS[layer],
-        },
-    };
-
-    return update(battle, releaseUpdates(battle, captured, [next]));
 }
 
 function pendingMaintenance(battle: BattleState): Relation | undefined {
@@ -374,26 +338,15 @@ function pendingMaintenance(battle: BattleState): Relation | undefined {
         : { blocker: units.ref(overflowing), blocked: overflowing.blocker.blocked.at(-1)! };
 }
 
-function requiresMaintenance(battle: BattleState, relation: Relation): boolean {
-    if (!hasRelation(battle, relation)) {
-        return false;
-    }
-
-    const owner = units.get(battle, relation.blocker)!;
-    const target = units.get(battle, relation.blocked)!;
-
-    return (
-        !canRetain(battle, owner, target) ||
-        (owner.blocker.blocked.at(-1) === relation.blocked &&
-            usedCapacity(battle, relation.blocker) >
-                resolveCapacity(owner.definition.blocker, owner.blocker))
-    );
-}
-
 export function maintain(battle: BattleState): BattleState {
-    const pending = pendingMaintenance(battle);
+    while (true) {
+        const pending = pendingMaintenance(battle);
+        if (pending === undefined) {
+            return battle;
+        }
 
-    return pending === undefined ? battle : releaseRelation(battle, pending);
+        battle = releaseRelation(battle, pending);
+    }
 }
 
 function tryAcquire(
@@ -413,13 +366,15 @@ function tryAcquire(
 
     const reference = units.ref(target);
 
-    return update(battle, [
-        {
-            ...blocker,
-            blocker: { ...blocker.blocker, blocked: [...blocker.blocker.blocked, reference] },
-        },
-        { ...target, blockable: { ...target.blockable, blocker: units.ref(blocker) } },
-    ]);
+    return maintain(
+        update(battle, [
+            {
+                ...blocker,
+                blocker: { ...blocker.blocker, blocked: [...blocker.blocker.blocked, reference] },
+            },
+            { ...target, blockable: { ...target.blockable, blocker: units.ref(blocker) } },
+        ]),
+    );
 }
 
 export function search(battle: BattleState, reference: Ref<Unit & Blocker>): BattleState {

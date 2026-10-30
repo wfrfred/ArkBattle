@@ -229,7 +229,7 @@ Receiving 内不按“先所有闪避、再所有护盾、再所有减伤”建�
 
 HP 变化、死亡确定、Unit 仍存在和离场完成分别处理。已确定死亡时，普通治疗不能仅因 Unit 尚在集合中就获得执行资格；普通治疗与明确的免死、复活、形态转换也不共用这一推断。
 
-普通 Damage 在提交 HP 后派发 HP Applied，再根据最新 HP 确认死亡并请求真实离场，最后派发 Completed。已有 Lifetime 结算时，remove 返回只保证请求／Prepare，Completed 不承诺目标全部离场 Finalize 已完成；没有活动结算时，remove 在当前调用内完成 drain。伤害通知保留本次已发生事实，响应按需要读取最新资格。特殊生命干预的通知顺序随第 3.2 节协议继续设计。
+普通 Damage 在提交 HP 并显式完成必要的 Blocking 维护后派发 HP Applied，再根据最新 HP 确认死亡并请求真实离场，最后派发 Completed。HP 提交的所属操作负责调用 maintain，不依赖 unit.update 对任意字段写回扫描全场关系；维护中的 Released Hook 仍可产生嵌套业务，后继读取返回的最新状态。已有 Lifetime 结算时，remove 返回只保证请求／Prepare，Completed 不承诺目标全部离场 Finalize 已完成；没有活动结算时，remove 在当前调用内完成 drain。伤害通知保留本次已发生事实，响应按需要读取最新资格。特殊生命干预的通知顺序随第 3.2 节协议继续设计。
 
 真实离场沿用 [Lifetime 偏序](deployment.md#离场清理的偏序)：请求发布 LEAVING 并执行 Prepare，通过所有权与 Scope 请求子项；子项整个 Finalize 返回后才注销 Unit、回收 Card、派发 leave。成功保护、替身或复活是否进入真实离场由对应机制决定。
 
@@ -259,7 +259,7 @@ applyHealing(request, calculation): Result<HealingOutcome>;
 
 Calculate 依次派发来源 Formula、目标 Formula，将当前 power 与 multiplier 相乘，再派发来源数值 Output。Request 始终表示初始事实，当前 Parameters 与 Output 数值逐项接续。初始负 power 按零处理；每个完成阶段的最终数值必须有限且非负。目标缺失、LEAVING 或 HP 为零时无法计算，已完成的状态前缀仍返回。
 
-Apply 依次确认目标当前存在、PRESENT 且 HP 大于零，派发 Receiving Started、有序 Receiving，重新确认生命周期与 HP，再读取最新 HP、MaxHP 截断恢复量并提交。随后按目标、来源顺序派发 HP Applied 与 Completed，同一宿主不重复通知。来源缺失或 LEAVING 时不运行其 Hook，但不因此取消仍可作用于有效目标的已采样治疗。
+Apply 依次确认目标当前存在、PRESENT 且 HP 大于零，派发 Receiving Started、有序 Receiving，重新确认生命周期与 HP，再读取最新 HP、MaxHP 截断恢复量并提交；实际 HP 提交后由 Healing 显式维护 Blocking。随后按目标、来源顺序派发 HP Applied 与 Completed，同一宿主不重复通知。来源缺失或 LEAVING 时不运行其 Hook，但不因此取消仍可作用于有效目标的已采样治疗。
 
 结果与 Damage 使用相同的 REJECTED、CANCELLED、UNAVAILABLE、APPLIED 区分。PendingHealing 保存 amount 与可空 cancellation；取消不停止剩余 Receiving Hook。ApplicationResult 保存 hpBefore、hpAfter、hpGain，后续嵌套业务不追溯修改这次恢复事实。Received amount 与实际 hpGain 分开；完整恢复量不在 Calculate 提前按缺失 HP 截断。
 

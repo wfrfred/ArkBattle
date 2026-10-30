@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
+import { release } from "../../dist/core/battle/blocking/index.js";
 import { getUnit, replaceUnit } from "../helpers/unit.js";
 import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
-import * as blockable from "../../dist/core/unit/capability/blocking/blockable.js";
+import * as blockerOperations from "../../dist/core/unit/capability/blocking/blocker-operations.js";
+import * as blockableOperations from "../../dist/core/unit/capability/blocking/blockable-operations.js";
 import { fixture, holder, target, acquire, blockedIds, ownerId, capacity, hook } from "../helpers/blocking.js";
 
 const assign = (battle, unit = getUnit(battle, 20)) => updateUnit(battle, [{
@@ -15,45 +17,85 @@ test("both endpoint Rules receive the same pair and changes release an incompati
     const owner = holder(10, { capacity: 3 });
     const candidate = target(21);
     let battle = { ...fixture([
-        { ...owner, blocker: blocker.setRule(owner.blocker, {
-            id: "skip-first",
-            allows(current, blocker, blockable) {
-                assert.equal(current.tick, 7);
-                assert.equal(getUnit(current, blocker.id), blocker);
-                assert.equal(getUnit(current, blockable.id), blockable);
-                assert.equal(blocker.id, 10);
-                return blockable.id !== 20;
-            },
-        }) },
-        holder(11, { capacity: 3 }), target(20),
-        { ...candidate, blockable: blockable.setRule(candidate.blockable, {
-            id: "second-owner-only",
-            allows(current, blocker, blockable) {
-                assert.equal(current.tick, 7);
-                assert.equal(getUnit(current, blocker.id), blocker);
-                assert.equal(getUnit(current, blockable.id), blockable);
-                assert.equal(blockable.id, 21);
-                return blocker.id === 11;
-            },
-        }) },
-        target(22),
+        owner, holder(11, { capacity: 3 }), target(20), candidate, target(22),
     ]), tick: 7 };
+    battle = blockerOperations.setRule(battle, { id: 10 }, {
+        id: "skip-first",
+        allows(current, blocker, blockable) {
+            assert.equal(current.tick, 7);
+            assert.equal(getUnit(current, blocker.id), blocker);
+            assert.equal(getUnit(current, blockable.id), blockable);
+            assert.equal(blocker.id, 10);
+            return blockable.id !== 20;
+        },
+    });
+    battle = blockableOperations.setRule(battle, { id: 21 }, {
+        id: "second-owner-only",
+        allows(current, blocker, blockable) {
+            assert.equal(current.tick, 7);
+            assert.equal(getUnit(current, blocker.id), blocker);
+            assert.equal(getUnit(current, blockable.id), blockable);
+            assert.equal(blockable.id, 21);
+            return blocker.id === 11;
+        },
+    });
 
     battle = acquire(battle, 10);
     assert.deepEqual(blockedIds(battle, 10), [22]);
     battle = acquire(battle, 11);
     assert.deepEqual(blockedIds(battle, 11), [20, 21]);
 
-    const blocked = getUnit(battle, 22);
-    battle = replaceUnit(battle, { ...blocked, blockable: blockable.setRule(blocked.blockable, {
+    battle = blockableOperations.setRule(battle, { id: 22 }, {
         id: "second-owner-only",
         allows: (_current, blocker, blockable) => blocker.id === 11 && blockable.id === 22,
-    }) });
+    });
     assert.equal(ownerId(battle, 22), undefined);
     assert.deepEqual(blockedIds(battle, 10), []);
     assert.deepEqual(blockedIds(battle, 11), [20, 21]);
     battle = acquire(battle, 11);
     assert.equal(ownerId(battle, 22), 11);
+});
+
+test("successful acquisition settles Rules affected by its own blocking relation change", () => {
+    let battle = fixture([holder(10, { capacity: 2 }), target(20), target(21, { position: [2.5, 1] })]);
+    battle = blockerOperations.setRule(battle, { id: 10 }, {
+        id: "twenty-excludes-twenty-one",
+        allows(_battle, owner, candidate) {
+            return candidate.id !== 20 || !owner.blocker.blocked.some(reference => reference.id === 21);
+        },
+    });
+
+    battle = acquire(battle);
+
+    assert.deepEqual(blockedIds(battle), [21]);
+    assert.equal(ownerId(battle, 20), undefined);
+    assert.equal(ownerId(battle, 21), 10);
+    assert.deepEqual(battle.events.map(event => [event.type, event.blockedUnitId]), [
+        ["BLOCKING_ACQUIRED", 20], ["BLOCKING_ACQUIRED", 21], ["BLOCKING_RELEASED", 20],
+    ]);
+});
+
+test("release settles remaining Rules affected by removal of its own blocking relation", () => {
+    let battle = fixture([holder(10, { capacity: 2 }), target(20), target(21, { position: [2.1, 1] })]);
+    battle = blockerOperations.setRule(battle, { id: 10 }, {
+        id: "twenty-requires-twenty-one",
+        allows(_battle, owner, candidate) {
+            return candidate.id !== 20 || owner.blocker.blocked.some(reference => reference.id === 21);
+        },
+    });
+    battle = acquire(battle);
+    battle = acquire(battle);
+    assert.deepEqual(blockedIds(battle), [21, 20]);
+
+    battle = release(battle, { id: 21 });
+
+    assert.deepEqual(blockedIds(battle), []);
+    assert.equal(ownerId(battle, 20), undefined);
+    assert.equal(ownerId(battle, 21), undefined);
+    assert.deepEqual(battle.events.map(event => [event.type, event.blockedUnitId]), [
+        ["BLOCKING_ACQUIRED", 21], ["BLOCKING_ACQUIRED", 20],
+        ["BLOCKING_RELEASED", 21], ["BLOCKING_RELEASED", 20],
+    ]);
 });
 
 const denied = [
@@ -62,11 +104,11 @@ const denied = [
     ["target volume exceeds capacity", () => [holder(), target(20, { volume: 2 })]],
     ["blocker Rule denies acquisition", () => {
         const unit = holder();
-        return [{ ...unit, blocker: blocker.setRule(unit.blocker, { id: "deny", allows: () => false }) }, target()];
+        return [{ ...unit, blocker: { ...unit.blocker, rules: [...unit.blocker.rules, { id: "deny", allows: () => false }] } }, target()];
     }],
     ["Blockable Rule denies acquisition", () => {
         const unit = target();
-        return [holder(), { ...unit, blockable: blockable.setRule(unit.blockable, { id: "deny", allows: () => false }) }];
+        return [holder(), { ...unit, blockable: { ...unit.blockable, rules: [{ id: "deny", allows: () => false }] } }];
     }],
     ["target has no HP", () => {
         const unit = target();
@@ -117,7 +159,7 @@ test("ownership validation uses the proposed Unit instead of its previous volume
     const unit = getUnit(battle, 20);
     const increased = {
         ...unit,
-        blockable: blockable.setVolumeContribution(unit.blockable, { id: "larger", value: 1 }),
+        blockable: { ...unit.blockable, volume: [{ id: "larger", value: 1 }] },
     };
 
     assert.throws(() => assign(battle, increased), /acquisition eligibility/);

@@ -1,5 +1,5 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import { assertPositiveSafeInteger, assertSafeInteger } from "../../../common/assert.js";
+import { assertPositiveSafeInteger } from "../../../common/assert.js";
 import * as registry from "../../../hook.js";
 import * as contribution from "../../contribution/contribution.js";
 import type { Unit } from "../../unit.js";
@@ -50,35 +50,6 @@ export function removeHook(state: State, key: Key, id: string): State {
     const entries = registry.remove(state[key], id);
 
     return entries === state[key] ? state : { ...state, [key]: entries };
-}
-
-export function setRule(state: State, rule: Rule): State {
-    const rules = registry.set(state.rules, rule);
-
-    return rules === state.rules ? state : { ...state, rules };
-}
-
-export function removeRule(state: State, id: string): State {
-    const rules = registry.remove(state.rules, id);
-
-    return rules === state.rules ? state : { ...state, rules };
-}
-
-export function setVolumeContribution(
-    state: State,
-    entry: contribution.Contribution<number>,
-): State {
-    assertSafeInteger(entry.value, "blocking volume addition");
-
-    const volume = contribution.set(state.volume, entry);
-
-    return volume === state.volume ? state : { ...state, volume };
-}
-
-export function removeVolumeContribution(state: State, id: string): State {
-    const volume = contribution.remove(state.volume, id);
-
-    return volume === state.volume ? state : { ...state, volume };
 }
 
 export function resolveVolume(definition: Definition, state: State): number {

@@ -24,8 +24,10 @@ import type { Vitality, Input as VitalityInput } from ${module("unit/capability/
 import { resolveDefense } from ${module("unit/capability/vitality/index")};
 import { setDefenseContribution, setMaxHpContribution } from ${module("unit/capability/vitality/index")};
 import { setAttackContribution, type Input as AttackInput, type Offense } from ${module("unit/capability/offense/index")};
-import { setCapacityContribution, setHook as setBlockerHook, type Blocker, type Modifier as BlockingModifier } from ${module("unit/capability/blocking/blocker")};
-import { setVolumeContribution, setHook as setBlockableHook, type Blockable } from ${module("unit/capability/blocking/blockable")};
+import { setHook as setBlockerHook, type Blocker, type Modifier as BlockingModifier } from ${module("unit/capability/blocking/blocker")};
+import { setCapacityContribution } from ${module("unit/capability/blocking/blocker-operations")};
+import { setHook as setBlockableHook, type Blockable } from ${module("unit/capability/blocking/blockable")};
+import { setVolumeContribution } from ${module("unit/capability/blocking/blockable-operations")};
 import { setBlockerRule, setBlockableRule, type Rule as BlockingRule } from ${module("unit/capability/blocking/index")};
 import { blockerOf, blocked, usedCapacity } from ${module("battle/blocking/query")};
 import type { Locomotion, Input as MovementInput } from ${module("unit/capability/locomotion/index")};
@@ -125,8 +127,10 @@ const blockingRule:BlockingRule={id:'pair',allows(current,blocker,blockable){
  blockable.blocker;
  return capacity.length===0&&volume.length===0&&state.tick>=0;
 }};
+setBlockerRule(battle,unitRef(capabilityHost),blockingRule);
+setBlockableRule(battle,unitRef(capabilityHost),blockingRule);
+// @ts-expect-error Blocking writes require BattleState and a typed host Ref.
 setBlockerRule(capabilityHost.blocker,blockingRule);
-setBlockableRule(capabilityHost.blockable,blockingRule);
 const blockedRefs:readonly Ref<Unit & Blockable>[]=capabilityHost.blocker.blocked;
 const blockerRef:Ref<Unit & Blocker>|null=capabilityHost.blockable.blocker;
 const owner:Ref<Unit & Blocker>|undefined=blockerOf(battle,unitRef(capabilityHost));
@@ -159,9 +163,9 @@ capabilityHost.blocker.enabled;
 capabilityHost.blockable.enabled;
 const fixed:Contribution<readonly Modifier[]>={id:'fixed',value:[]};
 const blockingFixed:Contribution<readonly BlockingModifier[]>={id:'blocking-fixed',value:[{type:'ADD',value:1},{type:'ZERO'}]};
-setCapacityContribution(capabilityHost.blocker,blockingFixed);
+setCapacityContribution(battle,unitRef(capabilityHost),blockingFixed);
 // @ts-expect-error blocking capacity uses ADD/ZERO rather than Attribute modifiers.
-setCapacityContribution(capabilityHost.blocker,fixed);
+setCapacityContribution(battle,unitRef(capabilityHost),fixed);
 const dynamic:Contribution<MovementInput>={id:'dynamic',value:(current,self)=>{
  const state:BattleState=current;
  const speed:number=self.definition.locomotion.speed;
@@ -197,9 +201,9 @@ const legacyMovement:MovementInput=({unit}:{unit:Unit & Locomotion})=>[];
 const legacyDefense:VitalityInput=({unit}:{unit:Unit & Vitality})=>[];
 // @ts-expect-error action inputs receive BattleState and self instead of a Context wrapper.
 const legacyAction:ActionInput=({unit}:{unit:Unit & Action})=>[];
-setVolumeContribution(capabilityHost.blockable,{id:'volume',value:1});
+setVolumeContribution(battle,unitRef(capabilityHost),{id:'volume',value:1});
 // @ts-expect-error blocking volume requires settled static values.
-setVolumeContribution(capabilityHost.blockable,dynamic);
+setVolumeContribution(battle,unitRef(capabilityHost),dynamic);
 const vitality=setMaxHpContribution(capabilityHost.vitality,capabilityHost.definition.vitality,fixed);
 const changed={...capabilityHost,vitality};
 const hp:number=changed.vitality.hp;
@@ -211,7 +215,7 @@ setAttackContribution(capabilityHost.offense,dynamicAttack);
 // @ts-expect-error MaxHP cannot coordinate HP from a query-time closure.
 setMaxHpContribution(capabilityHost.vitality,capabilityHost.definition.vitality,dynamic);
 // @ts-expect-error blocking capacity requires settled static values.
-setCapacityContribution(capabilityHost.blocker,dynamic);
+setCapacityContribution(battle,unitRef(capabilityHost),dynamic);
 const movement={
  ...capabilityHost,
  locomotion:setSpeedContribution(capabilityHost.locomotion,dynamic),

@@ -25,9 +25,6 @@ export const stun: Definition<object> = {
             {
                 ...unit,
                 ...(action.hasAction(unit) ? { action: action.setRule(unit.action, rule) } : {}),
-                ...(blocking.hasBlocker(unit)
-                    ? { blocker: blocking.setBlockerRule(unit.blocker, rule) }
-                    : {}),
                 ...(locomotion.hasLocomotion(unit)
                     ? { locomotion: locomotion.setRule(unit.locomotion, rule) }
                     : {}),
@@ -36,6 +33,10 @@ export const stun: Definition<object> = {
                     : {}),
             },
         ]);
+
+        if (blocking.hasBlocker(unit)) {
+            state = blocking.setBlockerRule(state, units.ref(unit), rule);
+        }
 
         return cancelForUnit(state, self.host, "INTERRUPTED");
     },
@@ -51,9 +52,6 @@ export const stun: Definition<object> = {
             {
                 ...unit,
                 ...(action.hasAction(unit) ? { action: action.removeRule(unit.action, id) } : {}),
-                ...(blocking.hasBlocker(unit)
-                    ? { blocker: blocking.removeBlockerRule(unit.blocker, id) }
-                    : {}),
                 ...(locomotion.hasLocomotion(unit)
                     ? { locomotion: locomotion.removeRule(unit.locomotion, id) }
                     : {}),
@@ -61,6 +59,8 @@ export const stun: Definition<object> = {
             },
         ]);
 
-        return state;
+        return blocking.hasBlocker(unit)
+            ? blocking.removeBlockerRule(state, units.ref(unit), id)
+            : state;
     },
 };

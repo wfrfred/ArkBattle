@@ -76,33 +76,6 @@ export function removeHook(state: State, key: Key, id: string): State {
     return entries === state[key] ? state : { ...state, [key]: entries };
 }
 
-export function setRule(state: State, rule: Rule): State {
-    const rules = registry.set(state.rules, rule);
-
-    return rules === state.rules ? state : { ...state, rules };
-}
-
-export function removeRule(state: State, id: string): State {
-    const rules = registry.remove(state.rules, id);
-
-    return rules === state.rules ? state : { ...state, rules };
-}
-
-export function setCapacityContribution(
-    state: State,
-    entry: contribution.Contribution<readonly Modifier[]>,
-): State {
-    const capacity = contribution.set(state.capacity, entry);
-
-    return capacity === state.capacity ? state : { ...state, capacity };
-}
-
-export function removeCapacityContribution(state: State, id: string): State {
-    const capacity = contribution.remove(state.capacity, id);
-
-    return capacity === state.capacity ? state : { ...state, capacity };
-}
-
 export function resolveCapacity(definition: Definition, state: State): number {
     let addition = 0;
 

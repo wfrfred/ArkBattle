@@ -1,5 +1,5 @@
 import type { State as BattleState } from "../../core/battle/index.js";
-import { remove as removeUnit, update as updateUnit } from "../../core/battle/unit.js";
+import { remove as removeUnit } from "../../core/battle/unit.js";
 import { at as occupancyAt } from "../../core/battlefield/occupancy.js";
 import type { TilePosition } from "../../core/geometry/coordinate.js";
 import { hasOccupancy } from "../../core/unit/capability/occupancy/index.js";
@@ -8,7 +8,7 @@ import {
     removeBlockerRule as removeRule,
     setBlockerRule as setRule,
 } from "../../core/unit/capability/blocking/index.js";
-import type { Id } from "../../core/unit/index.js";
+import { ref as unitRef, type Id } from "../../core/unit/index.js";
 import { apply, restore, type Configuration, type Definition } from "./tile.js";
 
 function clearOccupant(battle: BattleState, position: TilePosition): BattleState {
@@ -64,16 +64,11 @@ export function create(configuration: Configuration): Definition {
                                 occupant === undefined ||
                                 occupant.blocker.rules.some((rule) => rule.id === ruleId)
                                     ? battle
-                                    : updateUnit(battle, [
-                                          {
-                                              ...occupant,
-                                              blocker: setRule(occupant.blocker, {
-                                                  id: ruleId,
-                                                  allows: (_battle, blocker) =>
-                                                      blocker.blocker.layer === "AIR",
-                                              }),
-                                          },
-                                      ]),
+                                    : setRule(battle, unitRef(occupant), {
+                                          id: ruleId,
+                                          allows: (_battle, blocker) =>
+                                              blocker.blocker.layer === "AIR",
+                                      }),
                             value: undefined,
                         };
                     },
@@ -88,13 +83,11 @@ export function create(configuration: Configuration): Definition {
                             hasBlocker(current) &&
                             currentOccupant(battle, support.id)?.id !== current.id
                         ) {
-                            const blocker = removeRule(
-                                current.blocker,
+                            battle = removeRule(
+                                battle,
+                                unitRef(current),
                                 `shooting-platform/${support.id}/block-free`,
                             );
-                            if (blocker !== current.blocker) {
-                                battle = updateUnit(battle, [{ ...current, blocker }]);
-                            }
                         }
 
                         return { state: battle, value: undefined };

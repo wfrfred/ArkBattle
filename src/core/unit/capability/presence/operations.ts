@@ -36,5 +36,5 @@ export function appear(
 function changePresence(battle: BattleState, unit: Unit & SpatialPresence): BattleState {
     const previous = blocking.capture(battle, units.ref(unit));
 
-    return update(battle, blocking.releaseUpdates(battle, previous, [unit]));
+    return blocking.maintain(update(battle, blocking.releaseUpdates(battle, previous, [unit])));
 }

@@ -1,5 +1,6 @@
 import { Vec2 } from "../../../common/vector.js";
 import { update as updateUnit } from "../../../battle/unit.js";
+import { maintain } from "../../../battle/blocking/operations.js";
 import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState } from "../../../battle/state.js";
@@ -206,7 +207,7 @@ export function advance(battle: BattleState, ref: Ref<Unit & Route>): BattleStat
                 signal = { type: "APPEAR_AT_POS", position };
                 battle = hasSpatialPresence(self)
                     ? presence.appear(battle, units.ref(self), position)
-                    : updateUnit(battle, [{ ...units.get(battle, ref)!, position }]);
+                    : maintain(updateUnit(battle, [{ ...units.get(battle, ref)!, position }]));
             } else {
                 signal = checkpoint;
             }

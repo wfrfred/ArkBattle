@@ -25,11 +25,10 @@ import { parseBattlefieldMap } from "../../dist/data/arknights/map.js";
 import { parseRouteDefinition } from "../../dist/data/arknights/route.js";
 import { initialize as initializeRoutedUnit } from "../../dist/core/battle/creation/routed-unit.js";
 import { initialize } from "../helpers/unit.js";
-import * as blockable from "../../dist/core/unit/capability/blocking/blockable.js";
-import { setRule as setBlockerRule } from "../../dist/core/unit/capability/blocking/blocker.js";
+import * as blockableOperations from "../../dist/core/unit/capability/blocking/blockable-operations.js";
+import { setRule as setBlockerRule, setCapacityContribution } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import { sides } from "../../dist/core/unit/capability/blocking/index.js";
 import { build } from "../../dist/core/battlefield/navigation/field.js";
-import * as contribution from "../../dist/core/unit/contribution/contribution.js";
 
 const fieldCell = (overrides = {}) => ({
   passable: true, cost: 1, departures: { UP: true, RIGHT: true, DOWN: true, LEFT: true }, ...overrides,
@@ -237,7 +236,7 @@ test('core selective projection retains occupancy and route intent while queries
 });
 
 
-test('complete battle updates retain or release blocking from the tile blocking fact independently of passability', () => {
+test('explicit Blocking settlement retains or releases by tile permission independently of passability', () => {
   const passableMasks = ['ALL', 'FLY_ONLY', 'WALK_ONLY', 'NONE'];
   const map = createMap(1, 8, tileEntries([true, false].flatMap(meleeBlockable =>
     passableMasks.map(passableMask => coreGround({ meleeBlockable, passableMask })))));
@@ -253,18 +252,18 @@ test('complete battle updates retain or release blocking from the tile blocking 
   const entry = acquired.battlefield.units.get(10).blocker.blocked[0];
   assert.deepEqual(blockedIds(acquired), [11]);
   for (let column = 0; column < passableMasks.length; column++) {
-    const retained = updateUnit(acquired, [{ ...acquired.battlefield.units.get(10), position: [column, 0] }]);
+    const retained = blocking.maintain(updateUnit(acquired, [{ ...acquired.battlefield.units.get(10), position: [column, 0] }]));
     assert.equal(retained.battlefield.units.get(10).blocker.blocked[0], entry, passableMasks[column]);
   }
 
   for (const position of [[4, 0], [5, 0], [6, 0], [7, 0], [-1, 0]]) {
-    const changed = updateUnit(acquired, [{ ...acquired.battlefield.units.get(10), position }]);
+    const changed = blocking.maintain(updateUnit(acquired, [{ ...acquired.battlefield.units.get(10), position }]));
     assert.deepEqual(blockedIds(changed), []);
     assert.deepEqual(blockedIds(acquired), [11]);
   }
-  const hidden = updateUnit(acquired, [{
+  const hidden = blocking.maintain(updateUnit(acquired, [{
     ...acquired.battlefield.units.get(10), position: [1e30, 0], spatialPresence: { present: false },
-  }]);
+  }]));
   assert.deepEqual(blockedIds(hidden), []);
 });
 
@@ -291,7 +290,7 @@ test('selective and full field projection derive current occupancy independently
 });
 
 
-test('complete battle updates preserve relation history and release on current eligibility changes', () => {
+test('explicit Blocking settlement preserves relation history and releases current eligibility changes', () => {
   const blocker = projectionUnit(10, [1, 0], {
     vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ALLY' }, blocker: { layer: "GROUND", rules: [sides("ENEMY")], capacity: 2, radius: 1 },
   });
@@ -309,23 +308,22 @@ test('complete battle updates preserve relation history and release on current e
   assert.notEqual(reacquired.battlefield.units.get(10).blocker.blocked[0], first);
 
   const mutations = [
-    unit => ({ ...unit, vitality: { ...unit.vitality, hp: 0 } }),
-    unit => ({ ...unit, allegiance: { side: 'ALLY' } }),
-    unit => ({ ...unit, layer: { type: 'AIR' } }),
-    unit => ({ ...unit, blockable: blockable.setVolumeContribution(unit.blockable, { id: 'larger', value: 2 }) }),
-    unit => ({ ...unit, blockable: blockable.setRule(unit.blockable, { id: 'unblockable', allows: () => false }) }),
+    battle => blocking.maintain(updateUnit(battle, [{ ...units.get(battle, { id: 11 }), vitality: { ...units.get(battle, { id: 11 }).vitality, hp: 0 } }])),
+    battle => blocking.maintain(updateUnit(battle, [{ ...units.get(battle, { id: 11 }), allegiance: { side: 'ALLY' } }])),
+    battle => blocking.maintain(updateUnit(battle, [{ ...units.get(battle, { id: 11 }), layer: { type: 'AIR' } }])),
+    battle => blockableOperations.setVolumeContribution(battle, { id: 11 }, { id: 'larger', value: 2 }),
+    battle => blockableOperations.setRule(battle, { id: 11 }, { id: 'unblockable', allows: () => false }),
   ];
   for (const mutate of mutations) {
-    const changed = updateUnit(acquired, [mutate(acquired.battlefield.units.get(11))]);
+    const changed = mutate(acquired);
     assert.deepEqual(blockedIds(changed), []);
     assert.deepEqual(blockedIds(acquired), [11]);
   }
-  for (const blockerState of [
-    { ...acquired.battlefield.units.get(10).blocker, capacity: contribution.set([], { id: 'capacity-zero', value: [{ type: 'ZERO' }] }) },
-    setBlockerRule(acquired.battlefield.units.get(10).blocker, { id: 'cannot-block', allows: () => false }),
+  for (const change of [
+    battle => setCapacityContribution(battle, { id: 10 }, { id: 'capacity-zero', value: [{ type: 'ZERO' }] }),
+    battle => setBlockerRule(battle, { id: 10 }, { id: 'cannot-block', allows: () => false }),
   ]) {
-    const changed = updateUnit(acquired, [{ ...acquired.battlefield.units.get(10), blocker: blockerState }]);
-    assert.deepEqual(blockedIds(changed), []);
+    assert.deepEqual(blockedIds(change(acquired)), []);
   }
 });
 

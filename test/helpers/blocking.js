@@ -2,7 +2,7 @@ import { tiles as tileEntries } from './tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import { initialize } from "./unit.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
-import { add as addUnit, update as updateUnit } from "../../dist/core/battle/unit.js";
+import { add as addUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "./unit.js";
 import { create } from "../../dist/core/battlefield/state.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
@@ -64,12 +64,9 @@ export function ownerId(battle, id = 20) {
 
 export function capacity(battle, id, value) {
     const unit = getUnit(battle, id);
-    return updateUnit(battle, [{
-        ...unit,
-        blocker: blocker.setCapacityContribution(unit.blocker, {
-            id: "test-capacity", value: [{ type: "ADD", value: value - unit.definition.blocker.capacity }],
-        }),
-    }]);
+    return blocker.setCapacityContribution(battle, { id }, {
+        id: "test-capacity", value: [{ type: "ADD", value: value - unit.definition.blocker.capacity }],
+    });
 }
 
 export function hook(id, invoke, accepts) {

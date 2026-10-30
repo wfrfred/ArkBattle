@@ -10,6 +10,7 @@ import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { dependents } from "../../dist/core/lifetime/dependency.js";
 import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
+import * as blockerOperations from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import * as presence from "../../dist/core/unit/capability/presence/operations.js";
 import { fixture, holder, target, acquire, blockedIds, ownerId, hook } from "../helpers/blocking.js";
 import { getUnit, initialize } from "../helpers/unit.js";
@@ -92,9 +93,10 @@ test("batch acquisitions share final capacity and retain other submitted owner s
     const owner = getUnit(initial, 10);
     const first = getUnit(initial, 20);
     const second = getUnit(initial, 21);
-    const expanded = blocker.setCapacityContribution(owner.blocker, {
-        id: "batch-expansion", value: [{ type: "ADD", value: 1 }],
-    });
+    const expanded = {
+        ...owner.blocker,
+        capacity: [{ id: "batch-expansion", value: [{ type: "ADD", value: 1 }] }],
+    };
     const battle = update(initial, [
         { ...owner, vitality: { ...owner.vitality, hp: 51 },
             blocker: { ...expanded, blocked: [unitRef(first), unitRef(second)] } },
@@ -188,16 +190,12 @@ test("nested Hook updates remain current and can invalidate later acquisition no
     assert.equal(getUnit(before, 21).vitality.hp, 100);
 });
 
-test("a batch capacity reduction completes required releases without relying on Hooks", () => {
+test("a complete capacity reduction releases the required relations without relying on Hooks", () => {
     let battle = acquire(fixture([holder(10, { capacity: 2 }), target(20), target(21)]));
-    const owner = getUnit(battle, 10);
     const before = battle;
-    battle = update(battle, [{
-        ...owner,
-        blocker: blocker.setCapacityContribution(owner.blocker, {
-            id: "capacity-zero", value: [{ type: "ADD", value: -2 }],
-        }),
-    }]);
+    battle = blockerOperations.setCapacityContribution(battle, { id: 10 }, {
+        id: "capacity-zero", value: [{ type: "ADD", value: -2 }],
+    });
 
     assert.deepEqual(blockedIds(battle), []);
     assert.equal(ownerId(battle, 20), undefined);
@@ -253,9 +251,10 @@ test("a missing batch target rejects before any Blocking notification", () => {
         })),
     }]);
     const current = getUnit(battle, 10);
-    const changed = { ...current, blocker: blocker.setCapacityContribution(current.blocker, {
-        id: "zero-capacity", value: [{ type: "ZERO" }],
-    }) };
+    const changed = { ...current, blocker: {
+        ...current.blocker,
+        capacity: [{ id: "zero-capacity", value: [{ type: "ZERO" }] }],
+    } };
     const missing = target(99);
     const field = battle.battlefield;
     const dependency = battle.lifetime.dependencies;

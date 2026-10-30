@@ -7,6 +7,7 @@ import * as query from "../../dist/core/battle/blocking/query.js";
 import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
 import * as presence from "../../dist/core/unit/capability/presence/operations.js";
 import * as blockable from "../../dist/core/unit/capability/blocking/blockable.js";
+import * as blockableOperations from "../../dist/core/unit/capability/blocking/blockable-operations.js";
 import { fixture, holder, target, acquire, blockedIds, ownerId, capacity, hook } from "../helpers/blocking.js";
 
 const onBlocker = (battle, id, key, entry) => {
@@ -78,10 +79,7 @@ test("later candidates are checked against live eligibility and live ownership",
     let battle = fixture([holder(10, { capacity: 3 }), holder(11, { capacity: 3 }), target(20), target(21), target(22)]);
     battle = onBlocker(battle, 10, "acquired", hook("alter-candidates", (state, { relation }) => {
         if (relation.blocked.id !== 20) return state;
-        const currentUnit3 = getUnit(state, 21);
-        state = replaceUnit(state, {
-            ...currentUnit3, blockable: blockable.setRule(currentUnit3.blockable, { id: "disabled", allows: () => false }),
-        });
+        state = blockableOperations.setRule(state, { id: 21 }, { id: "disabled", allows: () => false });
         return acquire(state, 11);
     }));
     battle = acquire(battle);
@@ -143,7 +141,7 @@ test("tail release notification can restore capacity before the next relation is
     assert.equal(query.usedCapacity(battle, { id: 10 }), 2);
 });
 
-test("a nested unrelated update completes capacity maintenance before its caller restores capacity", () => {
+test("an unrelated Unit update leaves capacity maintenance to the enclosing Blocking operation", () => {
     let battle = fixture([holder(10, { capacity: 3 }), target(20), target(21), target(22), target(30, { position: [10, 1] })]);
     const removed = [];
     battle = onBlocker(battle, 10, "released", hook("nested-update", (state, { relation }) => {
@@ -151,12 +149,12 @@ test("a nested unrelated update completes capacity maintenance before its caller
         if (relation.blocked.id !== 22) return state;
         const currentUnit4 = getUnit(state, 30);
         state = replaceUnit(state, { ...currentUnit4, position: [10.25, 1] });
-        assert.deepEqual(blockedIds(state), [20], "each nested update must complete required maintenance");
+        assert.deepEqual(blockedIds(state), [20, 21], "ordinary Unit updates do not recursively trim Blocking relations");
         return capacity(state, 10, 2);
     }));
     battle = capacity(acquire(battle), 10, 1);
-    assert.deepEqual(removed, [22, 21]);
-    assert.deepEqual(blockedIds(battle), [20]);
+    assert.deepEqual(removed, [22]);
+    assert.deepEqual(blockedIds(battle), [20, 21]);
 });
 
 test("pure reverse-link maintenance does not trim the next relation before notifying this release", () => {
@@ -192,17 +190,11 @@ test("a nested release stops the old relation's acquired Hooks without leaving c
     battle = onBlockable(battle, 20, "released", hook("released", (state, { relation }) => {
         order.push("blockable released");
         assert.equal(relation.blocked, acquiredRelation.blocked);
-        const currentUnit5 = getUnit(state, 20);
-        return replaceUnit(state, {
-            ...currentUnit5, blockable: blockable.removeVolumeContribution(currentUnit5.blockable, "relation-volume"),
-        });
+        return blockableOperations.removeVolumeContribution(state, { id: 20 }, "relation-volume");
     }));
     battle = onBlockable(battle, 20, "acquired", hook("install-contribution", state => {
         order.push("blockable acquired");
-        const currentUnit6 = getUnit(state, 20);
-        return replaceUnit(state, {
-            ...currentUnit6, blockable: blockable.setVolumeContribution(currentUnit6.blockable, { id: "relation-volume", value: 1 }),
-        });
+        return blockableOperations.setVolumeContribution(state, { id: 20 }, { id: "relation-volume", value: 1 });
     }));
     battle = acquire(battle);
     assert.deepEqual(order, ["blocker acquired", "blocker released", "blockable released"]);

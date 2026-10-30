@@ -32,7 +32,7 @@ import { installFixtureEffect } from "../helpers/effects.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { healing } from "../helpers/vitality.js";
 import { setHook as setDamageHook } from "../../dist/core/battle/damage/hook.js";
-import * as contribution from "../../dist/core/unit/contribution/contribution.js";
+import { setCapacityContribution } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import * as modifier from "../../dist/core/unit/contribution/attribute.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
@@ -339,12 +339,12 @@ test('core combat: immutable updates preserve earlier combat state', () => {
     layer: { ...operator.layer, type: 'AIR' },
     targetable: setRestriction(operator.targetable,
       { id: 'changed-targeting', value: { kind: Symbol('changed-targeting'), allows: () => false } }),
-    blocker: { ...operator.blocker, capacity: contribution.set([], { id: 'disabled-capacity', value: [{ type: 'ZERO' }],
-    }) },
     vitality: { ...operator.vitality, hp: 0 },
   };
   const updated = updateUnit(previous, [changed]);
-  const draft = updated;
+  const draft = setCapacityContribution(updated, unitRef(changed), {
+    id: 'disabled-capacity', value: [{ type: 'ZERO' }],
+  });
   assert.equal(unitQueries.get(draft, { id: 0 }).definition, changed.definition);
   assert.deepEqual(unitQueries.get(draft, { id: 0 }).blocker.blocked, []);
   assert.deepEqual(blockingQueries.relations(draft).map(({ blocker, blocked }) => ([blocker.id, blocked.id])), []);

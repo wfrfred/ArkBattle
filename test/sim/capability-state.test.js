@@ -1,9 +1,11 @@
-import { fixtureBattle, fixtureDefinition } from "../helpers/unit.js";
+import { fixtureBattle, fixtureDefinition, getUnit } from "../helpers/unit.js";
+import { fixture, holder, target } from "../helpers/blocking.js";
+import { update as updateUnit } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import * as offense from "../../dist/core/unit/capability/offense/capability.js";
-import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
-import * as blockable from "../../dist/core/unit/capability/blocking/blockable.js";
+import * as blockerOperations from "../../dist/core/unit/capability/blocking/blocker-operations.js";
+import * as blockableOperations from "../../dist/core/unit/capability/blocking/blockable-operations.js";
 import * as locomotion from "../../dist/core/unit/capability/locomotion/capability.js";
 import * as movement from "../../dist/core/unit/capability/locomotion/index.js";
 import * as action from "../../dist/core/unit/capability/action/capability.js";
@@ -32,18 +34,6 @@ const entries = [
         vitality.removeResistanceContribution,
     ],
     [
-        blocker.initialize(fixtureBattle(0), { layer: "GROUND", rules: [], capacity: 2, radius: 0.5 }).value,
-        "capacity",
-        blocker.setCapacityContribution,
-        blocker.removeCapacityContribution,
-    ],
-    [
-        blockable.initialize(fixtureBattle(0), { volume: 1 }).value,
-        "volume",
-        blockable.setVolumeContribution,
-        blockable.removeVolumeContribution,
-    ],
-    [
         locomotion.initialize(fixtureBattle(0), fixtureDefinition("locomotion")).value,
         "speed",
         movement.setSpeedContribution,
@@ -65,9 +55,7 @@ const entries = [
 
 test("local contribution updates share untouched state and leave earlier versions stable", () => {
     for (const [initial, field, set, remove] of entries) {
-        const value = field === "volume" ? 10
-            : field === "capacity" ? [{ type: "ADD", value: 10 }]
-            : [create({ addition: 10 })];
+        const value = [create({ addition: 10 })];
         const entry = { id: "bonus", value };
         const added = set(initial, entry);
         assert.equal(initial[field].length, 0, field);
@@ -82,6 +70,47 @@ test("local contribution updates share untouched state and leave earlier version
         assert.equal(added[field][0], entry, field);
     }
 });
+
+for (const [name, id, capability, field, set, remove, entry] of [
+    ["capacity", 10, "blocker", "capacity", blockerOperations.setCapacityContribution, blockerOperations.removeCapacityContribution,
+        { id: "bonus", value: [{ type: "ADD", value: 1 }] }],
+    ["volume", 20, "blockable", "volume", blockableOperations.setVolumeContribution, blockableOperations.removeVolumeContribution,
+        { id: "bonus", value: 1 }],
+    ["Blocker Rule", 10, "blocker", "rules", blockerOperations.setRule, blockerOperations.removeRule,
+        { id: "restriction", allows: () => false }],
+    ["Blockable Rule", 20, "blockable", "rules", blockableOperations.setRule, blockableOperations.removeRule,
+        { id: "restriction", allows: () => false }],
+]) {
+    test(`complete Blocking ${name} writes preserve unchanged state and recognize no-ops`, () => {
+        const initial = fixture([holder(), target()]);
+        const before = getUnit(initial, id);
+        const reference = { id };
+        const added = set(initial, reference, entry);
+        const current = getUnit(added, id);
+        assert.equal(current[capability][field].find(item => item.id === entry.id), entry);
+        assert.equal(before[capability][field].some(item => item.id === entry.id), false);
+        assert.equal(set(added, reference, entry), added);
+        assert.equal(remove(added, reference, "missing"), added);
+        for (const key of Object.keys(before[capability]).filter(key => key !== field)) {
+            assert.equal(current[capability][key], before[capability][key], key);
+        }
+        const removed = remove(added, reference, entry.id);
+        assert.deepEqual(getUnit(removed, id)[capability][field], before[capability][field]);
+        assert.equal(getUnit(added, id)[capability][field].find(item => item.id === entry.id), entry);
+    });
+
+    test(`complete Blocking ${name} writes reject a missing host and allow LEAVING cleanup`, () => {
+        const missing = fixture();
+        assert.throws(() => set(missing, { id }, entry), RangeError);
+        assert.throws(() => remove(missing, { id }, entry.id), RangeError);
+        const added = set(fixture([holder(), target()]), { id }, entry);
+        const self = getUnit(added, id);
+        const leaving = updateUnit(added, [{ ...self, lifecycle: "LEAVING" }]);
+        const removed = remove(leaving, { id }, entry.id);
+        assert.equal(getUnit(removed, id).lifecycle, "LEAVING");
+        assert.equal(getUnit(removed, id)[capability][field].some(item => item.id === entry.id), false);
+    });
+}
 
 test("local hook registration retains progress and changes only its registration collection", () => {
     const hook = {

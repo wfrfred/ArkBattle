@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as capability from "../../dist/core/unit/capability/blocking/index.js";
 import { getUnit, initialize, replaceUnit } from "../helpers/unit.js";
 import { changeTile } from "../helpers/tiles.js";
@@ -39,13 +38,13 @@ for (const [layer, radius] of [["GROUND", 0.7071], ["AIR", 0.8944]]) {
 test("switching blocking layer replaces the standard radius and preserves Definition and own layer", () => {
     let battle = fixture([standardHolder()]);
     const definition = getUnit(battle, 10).definition;
-    battle = blocking.setLayer(battle, { id: 10 }, "AIR");
+    battle = capability.setLayer(battle, { id: 10 }, "AIR");
     assert.equal(getUnit(battle, 10).blocker.layer, "AIR");
     assert.equal(getUnit(battle, 10).blocker.radius, 0.8944);
     assert.equal(getUnit(battle, 10).layer.type, "GROUND");
     assert.equal(getUnit(battle, 10).definition, definition);
     assert.equal(definition.blocker.layer, "GROUND");
-    battle = blocking.setLayer(battle, { id: 10 }, "GROUND");
+    battle = capability.setLayer(battle, { id: 10 }, "GROUND");
     assert.equal(getUnit(battle, 10).blocker.radius, 0.7071);
 });
 
@@ -54,9 +53,9 @@ test("an explicit radius is retained by initialization and both layer transition
     const radius = unit.definition.blocker.radius;
     assert.equal(unit.blocker.radius, radius);
     let battle = fixture([unit]);
-    battle = blocking.setLayer(battle, { id: 10 }, "AIR");
+    battle = capability.setLayer(battle, { id: 10 }, "AIR");
     assert.equal(getUnit(battle, 10).blocker.radius, radius);
-    battle = blocking.setLayer(battle, { id: 10 }, "GROUND");
+    battle = capability.setLayer(battle, { id: 10 }, "GROUND");
     assert.equal(getUnit(battle, 10).blocker.radius, radius);
 });
 
@@ -82,10 +81,10 @@ test("search uses the larger AIR standard radius without inheriting it after lan
     ]);
     battle = acquire(battle);
     assert.deepEqual(blockedIds(battle), []);
-    battle = blocking.setLayer(battle, { id: 10 }, "AIR");
+    battle = capability.setLayer(battle, { id: 10 }, "AIR");
     battle = acquire(battle);
     assert.deepEqual(blockedIds(battle), [21]);
-    battle = blocking.setLayer(battle, { id: 10 }, "GROUND");
+    battle = capability.setLayer(battle, { id: 10 }, "GROUND");
     battle = acquire(battle);
     assert.deepEqual(blockedIds(battle), []);
 });
@@ -95,7 +94,7 @@ test("AIR search bypasses ground tile permission while GROUND search requires it
     battle = changeTile(battle, [1, 2], { allowsBlocking: false });
     battle = acquire(battle);
     assert.deepEqual(blockedIds(battle), []);
-    battle = blocking.setLayer(battle, { id: 10 }, "AIR");
+    battle = capability.setLayer(battle, { id: 10 }, "AIR");
     assert.deepEqual(blockedIds(battle), [], "switching layer does not perform a search");
     battle = acquire(battle);
     assert.deepEqual(blockedIds(battle), [21]);
@@ -131,12 +130,12 @@ for (const layer of ["GROUND", "AIR"]) {
 test("setting the current layer is a no-op and retains existing relations", () => {
     const battle = acquire(fixture([standardHolder(), target()]));
     assert.deepEqual(blockedIds(battle), [20]);
-    assert.equal(blocking.setLayer(battle, { id: 10 }, "GROUND"), battle);
+    assert.equal(capability.setLayer(battle, { id: 10 }, "GROUND"), battle);
 });
 
 test("a missing Blocker makes layer switching a no-op", () => {
     const battle = fixture();
-    assert.equal(blocking.setLayer(battle, { id: 10 }, "AIR"), battle);
+    assert.equal(capability.setLayer(battle, { id: 10 }, "AIR"), battle);
 });
 
 test("switching a Blocker preserves its independent ownership as a Blockable", () => {
@@ -159,7 +158,7 @@ test("switching a Blocker preserves its independent ownership as a Blockable", (
     battle = acquire(acquire(battle, 11));
     assert.equal(ownerId(battle, 10), 11);
     assert.equal(ownerId(battle, 20), 10);
-    battle = blocking.setLayer(battle, { id: 10 }, "AIR");
+    battle = capability.setLayer(battle, { id: 10 }, "AIR");
     assert.equal(ownerId(battle, 10), 11);
     assert.deepEqual(blockedIds(battle, 11), [10]);
     assert.equal(ownerId(battle, 20), undefined);
@@ -190,7 +189,7 @@ test("layer switching publishes all old releases and the new radius before order
     }
     battle = acquire(battle);
     const definition = getUnit(battle, 10).definition;
-    battle = blocking.setLayer(battle, { id: 10 }, "AIR");
+    battle = capability.setLayer(battle, { id: 10 }, "AIR");
     assert.deepEqual(observed, [
         ["blocker", 20], ["blockable", 20], ["blocker", 21], ["blockable", 21],
     ]);
@@ -211,7 +210,7 @@ test("a switch during an acquired Hook stops the stale acquisition notification"
         ...unit,
         blocker: capability.setBlockerHook(unit.blocker, "acquired", hook("switch", state => {
             observed.push("blocker acquired");
-            return blocking.setLayer(state, { id: 10 }, "AIR");
+            return capability.setLayer(state, { id: 10 }, "AIR");
         })),
     });
     unit = getUnit(battle, 20);
@@ -239,7 +238,7 @@ test("nested switches and searches retain their latest layer and rebuilt relatio
     battle = onReleased(battle, 10, "blocker", hook("rebuild", (state, { relation }) => {
         released.push(relation.blocked.id);
         if (relation.blocked.id !== 20) return state;
-        state = blocking.setLayer(state, { id: 10 }, "GROUND");
+        state = capability.setLayer(state, { id: 10 }, "GROUND");
         state = acquire(state);
         rebuilt = getUnit(state, 10).blocker.blocked;
         assert.deepEqual(blockedIds(state), [20, 21]);
@@ -247,7 +246,7 @@ test("nested switches and searches retain their latest layer and rebuilt relatio
     }));
     battle = acquire(battle);
     const original = getUnit(battle, 10).blocker.blocked;
-    battle = blocking.setLayer(battle, { id: 10 }, "AIR");
+    battle = capability.setLayer(battle, { id: 10 }, "AIR");
     assert.deepEqual(released, [20, 21]);
     assert.equal(getUnit(battle, 10).blocker.layer, "GROUND");
     assert.equal(getUnit(battle, 10).blocker.radius, 0.7071);
