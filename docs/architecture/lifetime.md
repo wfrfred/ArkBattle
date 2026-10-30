@@ -58,7 +58,7 @@ interface Definition<V extends Identified<object>, S extends V, E> {
 }
 ```
 
-Lifetime<V, S, E> 的 V 是公开完整实体类型，通常使用默认 object 参数；S 是 Core 内部接纳不同私有形状的完整类型上界，E 是业务结束输入。例如 Effect 使用公开 Effect 与内部 Effect<any, any>，不再要求单独的元数据目标。描述符的内部 [paired] 保留真实 Definition<V, S, E>，维持参数推导；scope 与 end 接纳 T extends S 的精确 Ref，getRef 仅恢复公开 Ref<V>。begin 是纯值转换，只把原状态改为 ENDING／LEAVING。replace 接收已经算好的完整值，先同步实例与派生关系，再通知 Blocking、Occupancy 等业务。
+Lifetime<V, S, E> 的 V 是公开完整实体类型，通常使用默认 object 参数；S 是 Core 内部接纳不同私有形状的完整类型上界，E 是业务结束输入。例如 Effect 使用公开 Effect 与内部 Effect<any, any>，不再要求单独的元数据目标。描述符的内部 [paired] 保留真实 Definition<V, S, E>，维持参数推导；scope 与 end 接纳 T extends S 的精确 Ref，getRef 仅恢复公开 Ref<V>。begin 是纯值转换，只把原状态改为 ENDING／LEAVING。replace 接收已经算好的完整值，由各领域适配器发布实例与必要派生索引；Unit 的适配器在发布 LEAVING 后明确调用 Blocking.release 释放自身全部关系，不让通用 Unit 更新推断或通知阻挡变化。
 
 prepare／finalize 是 Core 的完整操作适配，不是 Content Definition 的生命周期回调。Content 继续接收已有 self。prepare 的 initial 是标记前的同一不可变对象，供 Effect 判断原先是否 ACTIVE 等业务使用；需要实时值时从当前 battle 查询，不把 initial 整体写回。
 

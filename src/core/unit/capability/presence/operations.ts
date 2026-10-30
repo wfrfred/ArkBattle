@@ -1,6 +1,5 @@
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../../battle/state.js";
-import { update } from "../../../battle/unit.js";
 import * as blocking from "../../../battle/blocking/operations.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
 import type { Unit } from "../../unit.js";
@@ -35,6 +34,8 @@ export function appear(
 
 function changePresence(battle: BattleState, unit: Unit & SpatialPresence): BattleState {
     const previous = blocking.capture(battle, units.ref(unit));
+    const incoming = previous.filter((relation) => relation.blocked.id === unit.id);
+    const outgoing = previous.filter((relation) => relation.blocker.id === unit.id);
 
-    return blocking.maintain(update(battle, blocking.releaseUpdates(battle, previous, [unit])));
+    return blocking.releaseAll(battle, [...incoming, ...outgoing], [unit]);
 }

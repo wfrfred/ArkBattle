@@ -30,6 +30,7 @@ import { setHook as setBlockableHook, type Blockable } from ${module("unit/capab
 import { setVolumeContribution } from ${module("unit/capability/blocking/blockable-operations")};
 import { setBlockerRule, setBlockableRule, type Rule as BlockingRule } from ${module("unit/capability/blocking/index")};
 import { blockerOf, blocked, usedCapacity } from ${module("battle/blocking/query")};
+import { acquire as acquireRelation } from ${module("battle/blocking/index")};
 import type { Locomotion, Input as MovementInput } from ${module("unit/capability/locomotion/index")};
 import { setSpeedContribution as setActionSpeedContribution, type Action, type Input as ActionInput } from ${module("unit/capability/action/index")};
 import { setSpeedContribution } from ${module("unit/capability/locomotion/index")};
@@ -117,6 +118,11 @@ for(const stored of mixed.values()){
 // @ts-expect-error an ID alone cannot claim a private data type.
 host.effects.get<{charges:number},Vitality>(0);
 declare const capabilityHost:Unit & Vitality & Offense & Blocker & Blockable & Locomotion & Route & Action;
+const acquiredBattle:BattleState=acquireRelation(battle,unitRef(capabilityHost),unitRef(capabilityHost));
+// @ts-expect-error acquiring a relationship requires a Blocker identity.
+acquireRelation(battle,unitRef(bare),unitRef(capabilityHost));
+// @ts-expect-error acquiring a relationship requires a Blockable identity.
+acquireRelation(battle,unitRef(capabilityHost),unitRef(bare));
 const blockingRule:BlockingRule={id:'pair',allows(current,blocker,blockable){
  const state:BattleState=current;
  const capacity:readonly Contribution<readonly BlockingModifier[]>[]=blocker.blocker.capacity;

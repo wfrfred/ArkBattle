@@ -178,19 +178,19 @@ unit.remove(battle, id, reason) → nextBattle
 unit.advance(battle) → nextBattle
 ```
 
-battlefield/unit.ts 的 add／update／remove 只完成纯状态转换；完整 Unit 业务统一位于 battle/unit.ts，提供 add／update／remove／advance。remove 委托 Unit Lifetime，在请求阶段进入 LEAVING 并执行本次返费；所有权与 Scope 依赖者完整 Finalize 后，Unit Finalize 从当前状态注销并记录移除事实、回收 Card 和派发 leave。调用方不拼接这些内部步骤，BattleState 不另提供 Unit 登记或注销入口。
+battlefield/unit.ts 的 add／update／remove 只完成纯状态转换；完整 Unit 业务统一位于 battle/unit.ts，提供 add／update／remove／advance。remove 委托 Unit Lifetime，在请求阶段发布 LEAVING，明确释放本 Unit 的全部入向和出向 Blocking 关系，再执行本次返费；所有权与 Scope 依赖者完整 Finalize 后，Unit Finalize 从当前状态注销并记录移除事实、回收 Card 和派发 leave，不再用全场关系扫描补救领域清理。调用方不拼接这些内部步骤，BattleState 不另提供 Unit 登记或注销入口。
 
 add 拒绝重复身份，update 要求身份已存在且 Definition 不变；替换保持登记顺序。删除使用 Typed Ref。Unit 的 update 要求目标均已登记；任一目标缺失时抛出 RangeError，在任何业务通知前拒绝整批更新。空批次或所有对象引用均未变化时返回原状态。Unit 更新显式传递受影响身份集合，Occupancy 按整批最终状态统一维护，不为已知变更全量比较集合。Unit 的所属格在查询时读取 position 与 SpatialPresence，不另存位置索引或空间依赖分类。
 
 部署和空间出现等跨字段操作，由所属领域构造新的不可变 Unit，通过 update 的 Unit 数组维护登记。普通操作传入 [unit]；只有确实要求同时提交最终状态时才使用多元素数组，不把本来逐次完成的独立领域操作合并以减少调用。battlefield/unit.ts 的私有 Change 记录 ADD 的 next、UPDATE 的 previous/next 或 REMOVE 的 previous。私有 applyChanges(field, changes) 统一写入 Unit 容器，并依据登记值的变化维护 Occupancy，不重新扫描完整 Unit 集合计算差分；Effect 依赖索引由 Battle 层接续。接口不返回需要另行执行的指令、闭包或提交计划，也不要求操作返回后再调用 settle。
 
-Battle 层通过 unit.update 接续一组最终 Unit，统一维护 Battlefield 和本批生命周期派生依赖索引；消费方直接从当前 Occupancy 双槽查询平台与乘员，所需属性由消费方读取；受影响登记格按承载差分向 SUPPORT 的 occupantAdded／occupantRemoved Hook 同步通知，不提供额外的 SUPPORT_LOST 事件。平台离场的后继业务由其 leave Hook 组合公开操作，普通单单位操作调用 update(battle, [unit])。Blocking 在纯准备阶段合并本批关系两侧，所有 Unit、Occupancy 与生命周期依赖索引就绪后才派发关系通知，之后不得写回旧 Unit。承载不另存权威关系表，见 [Occupancy 与 Support](occupancy.md)。注册者已经知道本次创建的实例；UnitRemoval 是实际删除时采样的独立业务记录，不从通用变更日志恢复。删除记录与离场开始时的 Departure 历史快照分别表达各自时点。
+Battle 层通过 unit.update 接续一组最终 Unit，统一维护 Battlefield 和本批生命周期派生依赖索引；消费方直接从当前 Occupancy 双槽查询平台与乘员，所需属性由消费方读取；受影响登记格按承载差分向 SUPPORT 的 occupantAdded／occupantRemoved Hook 同步通知，不提供额外的 SUPPORT_LOST 事件。平台离场的后继业务由其 leave Hook 组合公开操作，普通单单位发布传入 [unit]。Blocking 操作在自身入口检查资格、明确构造关系两端，发布后自行通知；Unit 发布不参与关系准备、校验或差分。承载不另存权威关系表，见 [Occupancy 与 Support](occupancy.md)。注册者已经知道本次创建的实例；UnitRemoval 是实际删除时采样的独立业务记录，不从通用变更日志恢复。删除记录与离场开始时的 Departure 历史快照分别表达各自时点。
 
-初始化、刷怪和预定义出现逐个完成创建、登记与入场，接续 Hook 返回的最新 BattleState 后才处理下一个对象，不预先分配后续实例身份。刷怪按当前实例逐个登记调度归属和出生事件后再执行 enter Hook；待生成数量随实际生成递减。纯集合批量写入不定义批量入场语义。Field 状态转换不执行阻挡业务；完整 Battle 操作承接必要维护。
+初始化、刷怪和预定义出现逐个完成创建、登记与入场，接续 Hook 返回的最新 BattleState 后才处理下一个对象，不预先分配后续实例身份。刷怪按当前实例逐个登记调度归属和出生事件后再执行 enter Hook；待生成数量随实际生成递减。纯集合批量写入不定义批量入场语义。Unit.add 不扫描全场 Blocking；入场内容需要取得、搜索或修改资格时，调用明确的 Blocking 操作。
 
-unit.update 负责本批数据与索引发布，以及显式 Blocking 关系写入的双端准备、校验和通知，不无条件扫描全场关系。普通私有状态写回或 Hook 登记不隐式触发 Blocking 业务。Blocker／Blockable 的 Rule、容量与 volume 操作自行提交并调用 maintain；setLayer 也归 Blocker Capability，先批量发布新层、半径和全部旧出向关系解除，再通知并维护。Runtime 使用所属完整领域操作，内部数据发布仍通过 unit.update；battlefield/unit.update 不是绕过 Battle 层结构与通知契约的业务入口。
+unit.update 只负责本批 Unit 数据、Lifetime 与 Occupancy 发布，不补齐或校验 Blocking 两端、不推断 Acquire／Release、不派发关系通知。它保留通用身份入口校验，信任领域操作已完成合法构造；本轮不改变可写字段类型，后续类型收紧另行处理。acquire／release 明确检查、构造双端状态并自行通知和维护；Blocker／Blockable 的 Rule、容量与 volume 操作自行提交并调用 maintain。setLayer 通过内部 releaseAll 组合新层、半径和全部旧出向关系解除后通知，SpatialPresence 也复用该完整批量操作。Runtime 使用所属完整领域操作，内部统一经 Unit 发布层接续数据。
 
-改变其他阻挡事实的完整操作同样主动维护：Unit Lifetime 发布 LEAVING、Damage／Healing 提交实际 HP、Locomotion 提交位置、SpatialPresence 出现／消失，以及 Route 在无 Presence 分支显式改变位置之后，都由所属操作调用 maintain；地块完整更新保留既有维护。maintain 自己循环，在每次解除及同步 Hook 后接续最新状态，完成当前必要清理与容量裁撤；不依靠通用 Unit 更新递归调度，也不增加新的更新入口或事务框架。
+Locomotion 提交位置、Route 无 Presence 分支显式改变位置及地块完整更新继续主动维护其影响的资格。maintain 自己循环，在每次解除及同步 Hook 后接续最新状态，完成当前必要清理与容量裁撤，不依靠通用 Unit 更新递归调度。Damage／Healing 的实际 HP 写入不调用 Blocking；既有关系的默认保持资格不检查临时 HP 为 0，而新取得仍要求双方存活。普通 Damage 完成全部 HP Applied 响应后仍满足死亡条件，才进入 Unit.remove 的显式关系释放，允许保护响应恢复生命而保留原关系。这是项目同步业务契约，不新增原生机制结论或事务框架。
 
 普通搜索每 Tick 在 Movement 后的固定阶段统一执行，不保存独立搜索周期，不随每次 Unit 修改全局搜索。所属完整业务操作保证其修改要求的关系合法和移动约束一致，允许尚未取得的新关系等待下一次普通搜索；有真实业务要求时可显式立即搜索。归属与关联保存在 Blockable／Blocker State；关系两侧在同一批写入中就绪，再按 Blocker、Blockable 顺序同步通知。后续接续 Hook 返回的最新状态，不自动扩充名单或全场搜索至稳定。详见[职责与调度政策](blocking.md#已确定的职责与调度政策)。
 

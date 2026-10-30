@@ -4,18 +4,18 @@ Blocking 负责阻挡关系的建立、解除及必要维护。本文描述两�
 
 Blocker／Blockable 的数值、局部 Hook 登记与完整能力操作见 [Capability API](capability.md#blocking)。状态归属与同步返回契约见 [函数式内核](functional-core.md)。
 
-关系查询、取得、解除与维护从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入；setLayer、两端 Rule、容量及 volume 修改从 [unit/capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入。Blocking 自己定义 Layer 与容量 Modifier；公共 Layer、Modifier、Relation、Context、Hook、Key 也由 Capability 入口导出，Battle 入口不重复转发这些类型或能力操作。Capability 可以提供接收 BattleState 与 Typed Ref 的完整操作，并非只能转换局部 State。[battle/blocking/hook.ts](../../src/core/battle/blocking/hook.ts) 只实现派发。整批更新的准备、差分、通知及维护在 operations.ts 内保持有序内聚，Change 是该文件内未导出的变更类型；Core 按需精确依赖阶段接口，不将它们扩为内容 API。
+关系查询、acquire／release、搜索与维护从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入；setLayer、两端 Rule、容量及 volume 修改从 [unit/capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入。Blocking 自己定义 Layer 与容量 Modifier；公共 Layer、Modifier、Relation、Context、Hook、Key 也由 Capability 入口导出，Battle 入口不重复转发这些类型或能力操作。Capability 可以提供接收 BattleState 与 Typed Ref 的完整操作，并非只能转换局部 State。[battle/blocking/hook.ts](../../src/core/battle/blocking/hook.ts) 只实现派发。关系两端构造、业务通知与维护由 operations.ts 的明确操作组织；Core 内部 releaseAll 用于同时发布其他新事实和一批旧关系解除，不作为普通内容的额外入口。
 
 ## 已确定的职责与调度政策
 
 以下政策已实现。阻挡资格、容量裁撤和业务副作用按原生证据核对；搜索候选与容量接续采用下述明确的项目政策。普通接敌采用项目固定阶段，不重构 Combat／Movement 来模拟 Unity 按 UID 逐对象 OnTick。
 
 1. **Battlefield 负责不可变状态与索引一致性。** 阻挡归属与关联由 Unit 的 Blockable／Blocker State 保存，不再要求 BattleState.blocking.relations 的全局权威集合。底层存储转换不派发需要完整 BattleState 的业务 Hook；Runtime 组织调度，Blocking 完整操作负责有时序语义的关系变更。状态存于 Unit 不意味着 Battlefield 存储层负责解释阻挡业务。
-2. **修改事实的完整操作负责同步维护。** Blocker／Blockable 的层、Rule、容量及 volume 操作读取当前对象、提交变化，并显式调用 Blocking.maintain 完成必要解除、裁撤与通知。unit.update 负责发布数据、Lifetime／Occupancy 索引，以及本次显式关系写入的双端准备、校验和通知；普通私有状态或 Hook 登记不启动全场 Blocking 维护。Content 使用对应完整能力操作，不直接改这些字段再依赖通用更新猜测业务。每层完整能力操作都在返回前完成自己要求的维护，不以已有外层维护为由延迟；Runtime 不直接选择 battlefield/unit.update 绕过 Battle 层发布契约。
+2. **关系业务只由 Blocking 明确操作执行。** acquire／release 构造两端状态、发布后自行通知，并显式维护本次变化引起的后继；Blocker／Blockable 的层、Rule、容量及 volume 操作也自行维护。unit.update 只负责 Unit 数据及 Lifetime／Occupancy 发布，不补齐或校验 Blocking 双端、不推断关系差分、不派发取得或解除通知。它信任调用方已通过领域操作完成合法构造；普通私有状态或 Hook 登记不启动 Blocking 业务。本轮仍保留 unit.update 的现有字段类型，后续类型收紧另行实施。每层完整操作都同步完成自己要求的维护，不以已有外层维护为由延迟。
 3. **普通搜索每 Tick 在 Movement 后的固定 Blocking Step 统一执行。** advance() 在本阶段开始时固定 Blocker 候选 Ref，按枚举顺序逐个调用 search()，每项接续最新 BattleState 并检查当前资格。不保存独立搜索周期或周期计数；阶段内新建的 Blocker 等待下一 Tick 的普通搜索。一次普通阶段不反复全场搜索到关系稳定。
 4. **Release、容量裁撤和失效清理同步完成。** 相关事实变化后，必要的既有关系维护必须在完整操作返回前完成，不能等待普通搜索阶段。释放关系不自动附带普通 Acquire；有空余容量且附近仍有未接敌目标，可以是合法的返回状态。
 5. **阻挡变化同步通知，后继读取最新状态。** 取得关系先确定 Blockable 端的唯一归属，再分别通知双方；字段写入顺序与 Hook 顺序分别定义，不要求双端在所有内部阶段同时更新。普通自主移动由 Movement 在 Route 推进后查询当前关系决定是否执行，不继续同步 Blocking 专用 Locomotion Rule；阻挡不停止 Route 等待及即时指令，也不禁止强制位移。每次回调返回后接续其 BattleState；后续依赖阻挡者、目标、关系、资格或容量时重新读取，不用旧 Unit、旧关系或旧 remaining 覆盖嵌套修改。Hook 可同步解除关系、改变容量或使单位离场。
-6. **普通搜索与显式立即搜索分开。** 具体内容需要立即接敌时，执行明确的 Blocking 操作；不以每 Tick 去重吞掉合法的额外搜索。search() 只固定开始时按距离、目标 ID 排序的候选 Ref 数组，不按起始容量预选接敌名单或冻结容量预算。每次 tryAcquire() 从最新 BattleState 检查双方资格、目标当前阻挡关系及容量。Hook 增容可以使后续候选在本次搜索接敌，减容可以使后续尝试失败；新增单位不加入本次候选。关系变化以最新状态为准，不重复建立已被提前取得的关系，也不重新收集或重排候选。
+6. **普通搜索与显式取得分开。** 具体内容需要立即搜索时调用 search，需要尝试取得指定双方时调用 acquire；不以每 Tick 去重吞掉合法的额外操作。search() 只固定开始时按距离、目标 ID 排序的候选 Ref 数组，不按起始容量预选接敌名单或冻结容量预算。每次 acquire() 从最新 BattleState 检查双方资格、目标当前阻挡关系及容量。Hook 增容可以使后续候选在本次搜索接敌，减容可以使后续尝试失败；新增单位不加入本次候选。关系变化以最新状态为准，不重复建立已被提前取得的关系，也不重新收集或重排候选。
 7. **先稳定语义，再优化性能。** 不为提前减少复制、扫描或通知而改变以上结算与可见性契约。
 
 这里的“返回状态自洽”要求存储、索引、关系合法性和移动约束一致，不要求所有可能的新关系都已经建立。同步业务维护由完整 BattleState 操作承接，不把任意内容程序塞进只接收 BattlefieldState 的存储转换。
@@ -69,24 +69,24 @@ interface BlockerState {
 
 这项 ADD／ZERO 协议是项目对容量修正接口的收紧，不作为原生全体阻挡数公式的调查结论，也不改变其他领域的 Attribute 修正协议。Blockable 的 volume 仍使用整数追加量与下限 1。
 
-两端字段不具有对等写入语义。Blockable 的归属变化驱动 Blocker 有序关联的增量维护；Blocker 列表不是第二个接敌请求入口，普通 Content 不任意写入它。归属的建立和解除由 Blocking 完整操作发起，不能把直接写入 Ref 当作绕过资格检查的入口。`unit.update()` 对 null → A 复用取得资格、距离及容量检查；不合格的直接写入属于契约错误，在关系关联写入和业务通知之前抛出异常，不先通知取得再解除。
+两端字段不具有对等写入语义。Blockable 保存唯一归属，Blocker 保存本次取得创建的有序关联；二者都由 Blocking 完整操作明确构造。普通 Content 不直接写归属或列表，不能把提交 Ref 当作接敌请求。acquire 检查双方资格、距离、唯一归属与容量后准备两个完整对象，一起发布并自行派发取得通知；release 同样准备两端解除值并自行通知。unit.update 不再承担这些资格检查或结构修补，直接写出不一致关系属于调用方违反领域契约。
 
-| Blockable 归属变化 | Blocker 关联维护 |
+| Blocking 操作形成的归属变化 | 同次操作构造的 Blocker 关联 |
 | --- | --- |
 | null → A | 创建新的目标 Ref 对象，在 A 的列表末尾追加 |
 | A → null | 移除 A 列表中的本次关联条目，其余保序 |
-| A → A | 按 Unit ID 判断归属未变，保留列表顺序和既有条目对象 |
+| A → A | 已有归属时 acquire 不重建关系，保留列表顺序和既有条目对象 |
 | A → B | 不支持普通单次更新，先完整 Release，再执行新的 Acquire |
 
-Blocker 的 blocked[] 包含建立顺序这一历史事实，不能每次按 Unit 枚举顺序重新生成。补齐关联基于本批最终 Blocker 构造，只修改本次涉及的关系字段，不覆盖同批提交的其他字段。Blocking 的取得和解除先准备两侧新值，再统一调用 update；单条归属更新需要补齐时，也在纯准备阶段合并进同一批，不再写回第二版 Field。
+Blocker 的 blocked[] 包含建立顺序这一历史事实，不能每次按 Unit 枚举顺序重新生成。取得追加新条目，解除只移除对应旧条目，其余保序。Blocking 先基于当前对象准备两侧新值，再统一调用 update 发布，之后执行对应通知；通用发布层不扫描、补齐或重新构造关联。
 
 本次关系身份由 Blocker 列表中保存的目标 Ref 条目对象承担。固定旧候选时捕获所属 Blocker 与该条目；解除前在当前 Blocker 列表中通过 ===／includes 确认条目仍存在，不重新构造 Ref 来作对象比较。每次重新建立创建新条目，未解除的条目保留原对象。若 Hook 已解除旧关系并重建相同双方，外层旧候选跳过它；再次解除同一旧条目不重复通知。不增加全局关系集合、关系 ID 或独立 Relation 实例。
 
-归属是否变化按 Blocker 的 Unit ID 比较，本次关系是否仍存在按正向条目对象比较。普通更新仅将 blocker 换成另一个指向同一 Unit 的 Ref 对象，不创建新关系，也不更换正向条目。
+归属由 Blocker 的 Unit ID 定位，本次关系是否仍存在按正向条目对象比较。不涉及关系业务的普通更新共享既有关系字段，不创建新条目或产生关系通知。
 
 advance(battle) 由 Runtime 每 Tick 调度一次。search(battle, blocker) 指定 Blocker 立即搜索一次，显式调用不受普通阶段限制；release 解除关系，不隐式重新搜索。
 
-search() 的执行规则已经确定：固定候选数组，逐个 tryAcquire()，每项接续最新 BattleState。初始容量仅是开始时的当前事实，不是本轮预算；候选构造不按该容量提前预选或截断。
+search() 的执行规则已经确定：固定候选数组，逐个 acquire()，每项接续最新 BattleState。初始容量仅是开始时的当前事实，不是本轮预算；候选构造不按该容量提前预选或截断。
 
 例如初始剩余容量为 1、E1 和 E2 都在候选中，取得 E1 的 Hook 将容量提高到 2 后，E2 可以在同一次 search() 中接敌。若 Hook 已提前阻挡 E2，外层尝试跳过它；新创建的 E3 不加入本次候选。
 
@@ -132,18 +132,26 @@ Blocking 将资格与其他取得条件分开处理：
 | 阶段 | 检查内容 |
 | --- | --- |
 | `canSearch` | 不依赖具体目标的基础资格，包括阻挡者在场、存活、空间存在；GROUND 另要求当前根格的阻挡许可，AIR 跳过该地块条件；不提前求值二元 Rule。 |
-| `canRetain` | 双方是不同实例、当前基础资格、阻挡层与目标空地身份匹配，以及两端所有 `Rule.allows(battle, blocker, blockable)`；GROUND 还要求当前根格允许阻挡，AIR 豁免。保持资格按自身语义判断，不直接继承全部搜索条件。 |
-| 新关系取得 | 在搜索和关系资格之外，确认目标尚无归属、双方在接敌距离内，且当前占用加目标 volume 不超过 capacity。 |
+| `canRetain` | 双方是不同实例、PRESENT 且空间存在，阻挡层与目标空地身份匹配，以及两端所有 `Rule.allows(battle, blocker, blockable)`；GROUND 还要求当前根格允许阻挡，AIR 豁免。临时 HP 为 0 不作为默认保持资格的退出条件。 |
+| 新关系取得 | 在搜索和关系资格之外，双方有 Vitality 时 HP 必须大于 0，确认目标尚无归属、双方在接敌距离内，且当前占用加目标 volume 不超过 capacity。 |
 | 容量裁撤 | 独立比较当前总占用与容量，超出时从既有有序关联末尾逐项解除；每项通知后接续最新状态。 |
 
 距离只约束新取得，普通移动超出起始半径不使旧关系失效。目标是否已有归属在取得入口检查，不属于 `canRetain`；当前容量已满也不使每条既有关系分别变成不合格。Capability 不保存第二个 enabled 状态，也不将二元 Rule 压成单个 Unit 的 enabled 投影。
 
 正常空地匹配要求目标实际具有 Unit Layer，且 blocker.layer === target.layer.type；没有 Layer 的 Blockable 不参与正常阻挡，不隐式视为 GROUND。生产敌人装配均提供该身份，测试参与关系的对象也应明确配置；Blockable 自身的类型与构造不因此强制依赖 Layer Capability。
 
+普通伤害提交 HP 后先完成 HP Applied 响应；若响应恢复了生命，原有关系继续保留。全部响应后仍然 HP 不大于 0，Damage 才请求 Unit.remove，由离场操作发布 LEAVING 后明确释放该 Unit 的全部入向与出向关系。Damage／Healing 的 HP 写入不调用 Blocking.maintain，也不让临时 HP 为 0 提前触发解除。此处是项目同步结算边界，不追加原生调查结论。
+
 ## 已确定的操作接口
 
 ```typescript
 export function advance(battle: BattleState): BattleState;
+
+export function acquire(
+    battle: BattleState,
+    blockerRef: Ref<Unit & Blocker>,
+    targetRef: Ref<Unit & Blockable>,
+): BattleState;
 
 export function release(
     battle: BattleState,
@@ -158,7 +166,7 @@ export function search(
 
 advance() 在每 Tick 的统一 Blocking 阶段固定 Blocker 候选 Ref，按 Unit 登记顺序逐个调用 search()。每次调用接续最新 BattleState；本阶段中新建的 Blocker 不加入普通阶段候选，但可以通过明确业务调用 search()。
 
-search() 固定的是开始时的候选 Ref 数组及其距离／ID 顺序，执行方式如下。canSearch、findCandidates、tryAcquire 是内部职责的示意名称，不另建框架。
+search() 固定的是开始时的候选 Ref 数组及其距离／ID 顺序，执行方式如下。canSearch、findCandidates 是内部职责的示意名称，不另建框架；acquire 是同一公开取得操作。
 
 ```typescript
 const blocker = units.get(battle, blockerRef);
@@ -170,7 +178,7 @@ if (blocker === undefined || !canSearch(battle, blocker)) {
 const candidates = findCandidates(battle, blocker);
 
 for (const ref of candidates) {
-    battle = tryAcquire(battle, blockerRef, ref);
+    battle = acquire(battle, blockerRef, ref);
 }
 
 return battle;
@@ -178,9 +186,11 @@ return battle;
 
 每次尝试重新确认双方当前资格、目标是否已被阻挡及当前剩余容量。Hook 增容、减容、提前接敌或解除关系都以返回后的状态为准；初始数组以外的新单位不加入，候选不重新排序，不增加本轮预选名单或冻结预算。
 
-release 只解除关系，不自动接敌。固定旧关联条目的内部解除按对象身份确认，已经消失的旧条目直接跳过。release(battle, reference) 捕获该 Unit 作为 Blocker 或 Blockable 的旧关联，逐项解除；Hook 中新建立的条目不属于该次候选。
+acquire 失败时返回原 BattleState，不产生临时关系或通知。成功时在首次 Hook 前发布明确构造的双端状态，再按 Blocker、Blockable 顺序通知，最后显式维护。它不绕过任何普通取得条件。
 
-旧关系是否仍存在统一在 releaseUpdates 的入口确认；releaseRelation 直接接续其准备结果提交，不在两者之间重复查询同一关系。
+release 只解除关系，不自动接敌。固定旧关联条目的内部解除按对象身份确认，已经消失的旧条目直接跳过。release(battle, reference) 捕获该 Unit 作为 Blocker 或 Blockable 的旧关联，逐项构造并发布两端解除值，自行通知后维护；Hook 中新建立的条目不属于该次候选。没有实际解除时不借空调用触发维护。
+
+旧关系是否仍存在在完整解除入口按条目身份确认一次，内部纯构造信任该事实。releaseUpdates 仅作为文件内部的值准备步骤，不导出给其他领域拼接发布与通知。
 
 两端 Capability 的完整操作由 capability/blocking/index.ts 导出：
 
@@ -196,7 +206,7 @@ release 只解除关系，不自动接敌。固定旧关联条目的内部解除
 
 完整能力操作分别实现在 [blocker-operations.ts](../../src/core/unit/capability/blocking/blocker-operations.ts) 和 [blockable-operations.ts](../../src/core/unit/capability/blocking/blockable-operations.ts)。blocker.ts／blockable.ts 保留模型、初始化、数值查询及局部 Hook 登记，使 Catalog 和只读 Blocking 查询可以精确依赖模型，不引入完整 Battle 运行时。Capability 公共入口直接导出操作，不增加转发包装或新的类型。
 
-setLayer 保留实例缺失或层未变化时返回原 BattleState 的协议；它不额外拒绝仍在存储中的 LEAVING 宿主，以允许析构回调完成已有业务。变化时确定新 layer 和 radius，捕获该 Blocker 的全部旧出向关系，纯准备新 Blocker State 及关系双端的解除结果，再通过现有 unit.update 发布。第一个 RELEASED Hook 开始前，新层、新半径及全部旧关系的解除已可见；通知仍按既有关系顺序及两侧顺序接续最新 BattleState，随后显式 maintain 完成必要维护。该操作不因关系在新层下仍可能合法而保留旧关系，也不主动解除宿主作为 Blockable 被其他单位阻挡的关系。
+setLayer 保留实例缺失或层未变化时返回原 BattleState 的协议；它不额外拒绝仍在存储中的 LEAVING 宿主，以允许析构回调完成已有业务。变化时确定新 layer 和 radius，捕获该 Blocker 的全部旧出向关系，再委托 Core 内部 releaseAll 一起准备新 Blocker State 和关系双端的解除结果、经 unit.update 发布，并由 releaseAll 自行通知和维护。第一个 RELEASED Hook 开始前，新层、新半径及全部旧关系的解除已可见；通知仍按既有关系顺序及两侧顺序接续最新 BattleState。该操作不因关系在新层下仍可能合法而保留旧关系，也不主动解除宿主作为 Blockable 被其他单位阻挡的关系。
 
 setLayer 不自动执行 search，也不新增 layerChanged Hook。起飞和落地内容由对应 Effect 生命周期程序调用 setLayer；不将它机械绑定到所有 Skill 的开始或结束。自身 Layer、Targetable 限制及图形表现分别由对应领域或内容处理。
 
@@ -209,60 +219,46 @@ setLayer 不自动执行 search，也不新增 layerChanged Hook。起飞和落�
     ↓
 纯准备新空间事实和旧关系两侧的解除值
     ↓
-update 一次提交本批最终状态
+releaseAll 通过 unit.update 一次发布本批最终状态
     ↓
-逐项同步通知本批已发生的关系变化
+releaseAll 逐项同步通知已发生的关系变化并维护
 ```
 
 捕获发生在空间事实更新之前，纯准备按列表中保存的 Ref 条目对象身份确认旧关系。同批明确要求解除的关系在首个回调前已全部写好，Release Hook 同时读取新的位置／空间存在性和解除后的双侧字段。通知保留各条已经发生的解除事实，不在通知阶段再清一次旧关系。
+
+SpatialPresence 先通知该 Unit 作为被阻挡方的入向关系，再按既有 blocked 列表顺序通知其作为阻挡方的出向关系；setLayer 只处理出向关系，按既有列表顺序通知。两者都在首个 Hook 前发布全部双端解除值。
 
 Hook 合法重建的关系使用新的列表 Ref 条目，不属于外层旧候选，不被本次旧关系解除覆盖。每次回调后接续最新 BattleState，后续若仍需修改宿主或目标，重新读取当前对象与资格，不回填空间操作开始时的旧 Unit。
 
 该顺序仅用于明确要求解除旧阻挡的空间操作。普通移动不因超出起始接敌半径而自动解除已有关系。
 
-## 嵌套更新与完整结算
+## 显式关系操作与同步维护
 
-每次会改变 Blocking 资格或容量的完整能力操作返回时，其要求的关系失效清理、容量裁撤及对应同步 Hook 都已完成。maintain 自己循环选择当前需要维护的关系，每次释放并通知后接续最新 BattleState，再决定是否继续；维护不依赖 unit.update 的隐式递归。嵌套完整能力操作具有同样的同步保证，不增加延迟维护或最外层统一收尾协议。
+每次会改变 Blocking 资格或容量的完整操作返回时，其要求的关系失效清理、容量裁撤及对应同步 Hook 都已完成。maintain 自己循环选择当前需要维护的关系，每次释放并通知后接续最新 BattleState，再决定是否继续；维护不依赖 unit.update 的隐式递归。嵌套完整能力操作具有同样的同步保证，不增加延迟维护或最外层统一收尾协议。
 
-`unit.update()` 的任一目标不存在时抛出 RangeError；数组为空或所有元素都是当前 Unit 对象时返回原 BattleState。提交不同 Unit 对象时完成数据、索引和显式关系差分的发布及通知，不额外扫描全场阻挡；普通私有状态写回与 Hook 登记不承担隐式关系维护。
+unit.update 保留整批 ID 不重复、目标存在、Definition 身份不变的发布入口校验；空数组或所有对象均未变化时返回原 BattleState。通过校验后仅发布调用方提供的 Unit，并同步 Lifetime／Occupancy。它不检查 Blocking 两端是否一致，不补齐关联，不校验取得资格，不推断 ACQUIRED／RELEASED，也不维护全场关系。普通私有状态写回与 Hook 登记不包含 Blocking 业务。本轮未改变该入口的字段类型，关系字段必须由明确 Blocking 操作构造的要求先由领域契约约束。
 
-其他影响关系的事实由所属完整操作主动维护：Unit Lifetime 发布 LEAVING、Damage／Healing 提交实际 HP、Locomotion 提交位置、SpatialPresence 出现／消失，以及 Route 无 Presence 分支显式改变位置之后，都直接调用 maintain。地块完整更新保留既有维护，不让普通 Unit 字段写回成为通用业务调度器。
-
-prepareUpdates 信任 unit.update 已确认的目标存在与 Definition 身份一致，并依赖同一 Definition 保持能力结构的既有契约，不重复验证这些前提。新写入关系所引用的端点仍须存在并具有相应能力，归属与双端关联仍须一致；这些是本次关系输入的校验，不能由更新目标合法性代替。
-
-领域操作可以改变多个对象和领域事实。调用者必须接续返回的 BattleState；回调之后需要继续使用 Unit、关联条目、容量或资格时，从最新状态重新读取，不能依赖调用前的对象或剩余额度。
-
-例如容量从 3 降至 1，外层先解除 E3。E3 的 Release Hook 若先执行另一个确实改变 Rule 或容量的完整能力操作，其显式维护可能在返回前解除 E2；之后再增容到 2，不撤销已经发生的 E2 解除。若先增容，或只写回与阻挡无关的私有状态后再增容，则维护按新的容量决定是否继续。这个结果由实际完整业务操作的调用顺序决定。
-
-归属解除时随之移除反向关联，关系业务通知前先补齐结构；已解除的通知不表示旧归属仍有效。整轮维护尚在执行时，通知入口可能仍处于暂时超容量的过渡状态。它与“完整能力操作返回时必要维护已完成”是不同边界。后续裁撤继续读取最新关系与容量，不预先计算最终数组后覆盖嵌套结算。
-
-完整能力操作沿用已定义的业务阶段，不等于每个中间版本都要求双端镜像一致。不能仅因 Blocker 列表尚未更新就自动取消 Blockable 已取得的归属，也不以正在执行外层 Blocking 操作为由跳过嵌套完整操作明确要求的维护。
-
-unit.update 仅接收 readonly Unit[]，普通单单位操作传入 [unit]；必要维护可以涉及其他 Unit。批量输入表达一组最终状态，Blocking 先纯地合并所需对侧关联，Field 一次完成 Unit 与 Occupancy 写入，然后同步整批 Effect Dependency，再根据批前与批后关系确认变更。结构准备阶段不执行关系业务 Hook，也不递归调用完整更新。
-
-显式准备双方时，不重复追加 blocked 条目，不覆盖同批对 owner 的其他修改。新关系必须通过整批最终状态下的资格、距离和容量检查；目标已经包含于最终 blocked 列表时不再次加算 volume，多条新关系共用同一最终容量预算。原有关系身份仍按保存的 Ref 对象保持，未改变的关系不因重建 Ref 而产生新取得通知。
+acquire、release 和内部 releaseAll 从当前 BattleState 读取对象及旧关系身份，直接构造两端最终状态，然后发布并自行通知。内部纯值准备信任完整入口已确认的存在性、能力与关系身份，不在发布层重新建立另一套关系校验。普通单关系操作也准备两端完整对象，不通过单端写入请求存储层补齐另一端。
 
 ```text
-准备一组最终 Unit（包含本次关系两侧）
+Blocking 操作确认资格或捕获有效旧关系
     ↓
-一次更新 Battlefield 与 Occupancy
+明确构造本次两端最终 Unit
     ↓
-同步本批全部 Effect Dependency
+unit.update 发布数据、Lifetime 与 Occupancy
     ↓
-确认本批显式关系变化及其资格
+Blocking 操作自行派发本次取得或解除通知
     ↓
-逐项同步通知，接续最新 BattleState
-    ↓
-unit.update 返回最新 BattleState
-    ↓
-所属完整能力操作按需调用 maintain
+按返回的最新 BattleState 执行必要维护
 ```
 
-unit.update 在完成本批关系通知后不追加全场维护。Hook 发起的嵌套完整能力操作自行维护自己的修改；普通私有状态写回不启动 Blocking 业务。外层 maintain 从 Hook 返回的最新状态继续判断，不重写准备阶段的数据，也不回填旧 Unit。无 Hook 的容量或资格修改同样由所属完整能力操作调用 maintain。
+Core 内部 releaseAll 为 setLayer、SpatialPresence 等明确要求批量解除的操作组合新事实、全部旧关系解除、通知与维护。第一个 Released Hook 前整批解除已经生效，后续通知表达此前发生的历史事实，不重新移除 Hook 新建的关系。它替代外部拼接纯 releaseUpdates 与通用 Unit 发布的做法，不引入新的公共更新入口。
 
-维护循环先通知本次解除，再决定是否继续。例如 A 的容量从 3 降到 1，原列表为 E1、E2、E3：先解除并通知 E3，允许它的 Released Hook 将容量恢复为 2，再决定是否仍需解除 E2；不能在 E3 通知前先裁撤后续关系。
+例如容量从 3 降至 1，维护先解除并通知 E3。E3 的 Released Hook 可以把容量恢复为 2，使 E2 保留。若该 Hook 先执行另一项改变 Rule 或容量的完整操作，其同步维护可能先解除 E2；后续增容不撤销已经发生的解除。仅写回与阻挡无关的私有状态不启动第二轮 Blocking 维护。外层始终接续最新状态，不回填准备前的 Unit 或容量预算。
 
-本次解除写好归属、关联与索引后，unit.update 先同步通知 E3 的关系变化，返回后由外层 maintain 依据最新容量决定是否继续解除 E2。Hook 内明确调用的完整能力操作仍同步维护，不能用禁止重入或外层收尾标志代替该顺序。新 Acquire 不附带无关的全场维护；Acquired 派发每项执行前检查本次关系仍存在，Blocker Hook 内解除后，不再执行旧关系剩余的 Blocker 或 Blockable Acquired 响应。
+Unit 的真实离场明确结束自身关系：Lifetime 先发布 LEAVING，再调用 release 释放本 Unit 的全部入向和出向关系，Released Hook 完成后 Prepare 从最新 Unit 计算返费。Unit.add 不扫描全场关系，Unit Finalize 不再以全场扫描补救未完成的领域清理。临时 HP 为 0 不是默认保持关系的退出条件，HP Applied 后仍应离场时才进入上述显式清理。
+
+Locomotion 位置提交、Route 无 Presence 分支的显式位置变化及完整地块更新继续主动维护其改变的资格；SpatialPresence 通过 releaseAll 完成已有批量解除与后继维护。Damage／Healing 的实际 HP 写入不启动维护。maintain 仍只处理当前资格失效与容量超限，不搜索新目标，不替代这些领域的明确结束请求。
 
 ## 取得归属与通知时点
 
@@ -302,7 +298,7 @@ Blocker／Blockable State 各自持有 acquired、released Hook 数组，使用 
 
 Runtime 执行 Movement → Mechanism.advance → Blocking.advance → resolveRouteCompletion。最后一步只检查路线是否已完成和能否离场，不再次推进 Route。消费侧通过 relations(battle) 从两端状态取得 Typed Ref 关系，按需生成输出；不保存额外的全局权威关系。Movement 根据 Blockable 的当前归属决定是否推进自主 Locomotion。
 
-明确要求解除旧关系的空间操作捕获旧条目，纯准备新空间事实与关系双端解除值，经 unit.update 一起发布、通知，再由所属操作显式维护；普通位置更新仍不按距离解除旧关系。Lifetime 请求发布 LEAVING 前已登记 Pending 和结算标记，该发布操作主动维护 Blocking，released Hook 可以重入请求，但不能开启第二个 drain。Unit 等真实依赖者整个 Finalize 后才物理移除；后续实时业务重读宿主，Departure 保留离场入口历史，返费则在标记发布及这些 Hook 返回后从最新 Unit 求值。
+明确要求解除旧关系的空间操作捕获旧条目，由 releaseAll 组合新空间事实和关系双端解除值，经 unit.update 发布后自行通知与维护；普通位置更新仍不按距离解除旧关系。Lifetime 请求发布 LEAVING 前已登记 Pending 和结算标记，随后明确调用 release 释放本 Unit 的全部关系；released Hook 可以重入请求，但不能开启第二个 drain。Unit 等真实依赖者整个 Finalize 后才物理移除，不在 Finalize 追加全场 Blocking 扫描；后续实时业务重读宿主，Departure 保留离场入口历史，返费则在标记发布及这些 Hook 返回后从最新 Unit 求值。
 
 ## 地块阻挡资格
 
@@ -359,7 +355,8 @@ Movement 后的固定阶段会改变部分接敌归属、目标选择、已执�
 | Release、模式／资格失效、容量缩减发生在普通阶段前后 | 必要解除与裁撤立即可见，普通重接敌遵守每 Tick 的固定阶段，不把释放变成持续豁免 |
 | 关系 Hook 中离场、解除、改变容量、移动目标或触发另一关系操作 | 按已定义阶段读取当前归属；外层接续最新状态，不复活旧对象，不重复通知同一变更 |
 | A 的 ACQUIRED Hook 内，B 尝试取得同一 E | E 已明确归属 A，B 的尝试失败；通知仍按 A 先、E 后处理原关系事实 |
-| 写入目标归属并自动补齐正向关联 | 补齐阶段不执行关系业务 Hook；回调前有序关联与归属相符，容量统计和裁撤不遗漏新条目 |
+| 显式 acquire 构造目标归属与正向关联 | 取得入口检查资格并一次发布双端状态，Hook 前归属与有序关联相符；Unit 发布层不补齐或推断关系 |
+| HP Applied 恢复临时 HP 为 0 的目标，或响应结束后仍应死亡 | 恢复者保留旧关系；仍需离场者在发布 LEAVING 后明确释放自身全部关系；HP 为 0 的双方不能新取得关系 |
 | 每 Tick 统一搜索、阶段内新增 Blocker，以及同 Tick 普通与显式搜索 | 固定本阶段候选；新增 Blocker 下一 Tick 正常参与；合法立即搜索不被普通调度去重抹掉 |
 | 搜索中增容、减容、提前接敌及新增单位 | 固定候选，实时容量；增容允许后续候选本轮接敌，已被阻挡的候选跳过，新单位不加入 |
 | 解除旧关系的 Hook 提前解除另一旧候选，并重建相同双方的关系 | 按列表中 Ref 条目对象身份确认旧候选，新建关系不被外层旧候选误删，同一旧关系不重复通知 |

@@ -97,7 +97,7 @@ export function setLayer(
         },
     };
 
-    return blocking.maintain(update(battle, blocking.releaseUpdates(battle, captured, [next])));
+    return blocking.releaseAll(battle, captured, [next]);
 }
 
 function replace(battle: BattleState, unit: Unit & Blocker, next: State): BattleState {

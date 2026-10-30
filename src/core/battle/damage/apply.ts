@@ -1,5 +1,4 @@
 import { update as updateUnit, remove } from "../unit.js";
-import { maintain } from "../blocking/operations.js";
 import { assertNonnegativeNumber } from "../../common/assert.js";
 import type { Ref } from "../../common/ref.js";
 import type { Unit } from "../../unit/unit.js";
@@ -57,9 +56,7 @@ export function applyDamage(
     const application: ApplicationResult = { hpBefore, hpAfter, hpLoss: hpBefore - hpAfter };
 
     if (hpAfter !== hpBefore) {
-        battle = maintain(
-            updateUnit(battle, [{ ...target, vitality: { ...target.vitality, hp: hpAfter } }]),
-        );
+        battle = updateUnit(battle, [{ ...target, vitality: { ...target.vitality, hp: hpAfter } }]);
     }
 
     battle = appendEvents(battle, [

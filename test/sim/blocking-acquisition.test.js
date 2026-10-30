@@ -1,17 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { update as updateUnit } from "../../dist/core/battle/unit.js";
-import { release } from "../../dist/core/battle/blocking/index.js";
+import { release, acquire as acquirePair } from "../../dist/core/battle/blocking/index.js";
 import { getUnit, replaceUnit } from "../helpers/unit.js";
 import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
 import * as blockerOperations from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import * as blockableOperations from "../../dist/core/unit/capability/blocking/blockable-operations.js";
 import { fixture, holder, target, acquire, blockedIds, ownerId, capacity, hook } from "../helpers/blocking.js";
-
-const assign = (battle, unit = getUnit(battle, 20)) => updateUnit(battle, [{
-    ...unit,
-    blockable: { ...unit.blockable, blocker: { id: 10 } },
-}]);
 
 test("both endpoint Rules receive the same pair and changes release an incompatible existing relation", () => {
     const owner = holder(10, { capacity: 3 });
@@ -125,7 +120,7 @@ const denied = [
 ];
 
 for (const [name, create] of denied) {
-    test(`a direct ownership update rejects ${name} before notifications`, () => {
+    test(`acquire rejects ${name} without changing state or notifying`, () => {
         let battle = fixture(create());
         const calls = [];
         for (const key of ["acquired", "released"]) {
@@ -141,9 +136,7 @@ for (const [name, create] of denied) {
         const initialOwner = getUnit(battle, 10);
         const initialTarget = getUnit(battle, 20);
 
-        assert.throws(() => assign(battle), {
-            name: "RangeError", message: "blocking ownership requires acquisition eligibility",
-        });
+        assert.equal(acquirePair(battle, { id: 10 }, { id: 20 }), battle);
         assert.deepEqual(calls, []);
         assert.equal(getUnit(battle, 10), initialOwner);
         assert.equal(getUnit(battle, 20), initialTarget);
@@ -154,20 +147,16 @@ for (const [name, create] of denied) {
     });
 }
 
-test("ownership validation uses the proposed Unit instead of its previous volume", () => {
-    const battle = fixture([holder(), target()]);
-    const unit = getUnit(battle, 20);
-    const increased = {
-        ...unit,
-        blockable: { ...unit.blockable, volume: [{ id: "larger", value: 1 }] },
-    };
-
-    assert.throws(() => assign(battle, increased), /acquisition eligibility/);
-    assert.equal(getUnit(battle, 20), unit);
+test("acquire reads the latest volume instead of an earlier Unit snapshot", () => {
+    const initial = fixture([holder(), target()]);
+    const battle = blockableOperations.setVolumeContribution(initial, { id: 20 }, { id: "larger", value: 1 });
+    assert.equal(acquirePair(battle, { id: 10 }, { id: 20 }), battle);
     assert.equal(ownerId(battle), undefined);
+    assert.equal(getUnit(initial, 20).blockable.volume.length, 0);
 });
 
-test("a qualified ownership update preserves subsequent Hook changes", () => {
+
+test("a qualified acquire preserves subsequent Hook changes", () => {
     let battle = fixture([holder(), target()]);
     const currentUnit2 = getUnit(battle, 10);
     battle = replaceUnit(battle, {
@@ -179,7 +168,7 @@ test("a qualified ownership update preserves subsequent Hook changes", () => {
     });
     const initial = battle;
 
-    battle = assign(battle);
+    battle = acquirePair(battle, { id: 10 }, { id: 20 });
 
     assert.equal(ownerId(battle), 10);
     assert.deepEqual(blockedIds(battle), [20]);

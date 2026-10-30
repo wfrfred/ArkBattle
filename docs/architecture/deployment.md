@@ -11,7 +11,7 @@ Deployment 管理 Card、供给、部署经济和完整部署操作；Deployable
 | 概念 | 数据或规则归属 | 执行职责 |
 | --- | --- | --- |
 | 场上实例的身份、位置与生命周期状态 | Unit | 局部不可变变换形成新 Unit |
-| Unit 的集合与场上关系 | Battlefield | 直接不可变操作完成登记、删除，内部纯函数维护空间／阻挡／承载一致性 |
+| Unit 的集合与占格 | Battlefield | 直接不可变操作完成登记、删除及空间／承载结构维护；阻挡关系由 Blocking 操作构造 |
 | 登场、退场及其连锁结算 | Unit 生命周期领域 | 完整领域函数接续 BattleState，协调 Action、Skill、Effect 等规则 |
 | Card、库存、再部署进度及部署经济 | Deployment | 本领域转换维护场下记录和部署操作的后果 |
 | 倒地记录、自动再登场等模式规则 | 对应 Mechanism | 组合公开领域操作，保存模式事实 |
@@ -309,7 +309,7 @@ Deployed 是已发生部署的输入事实，unit 取自本次登记完成时的
 
 ```text
 接纳部署，完成本次应有的 Card／DP 消费与关联
-→ 初始化并登记 Unit，维护战场关系
+→ 初始化并登记 Unit，发布 Lifetime／Occupancy，不扫描全场 Blocking
 → 捕获本次 Deployed 事实
 → Unit 的 enter Hook：接入实例内容与规定的入场业务
 → 依次执行 deployedHooks
@@ -322,11 +322,12 @@ Unit 的 enter Hook 可以同步触发退场，部署通知仍表示此前已发
 
 ```text
 首次接受离场，捕获 Departure 与明确采样数值
-→ 登记 PREPARING，发布 LEAVING 与必要关系
+→ 登记 PREPARING，发布 LEAVING
+→ 明确调用 Blocking.release，释放本 Unit 的全部入向与出向关系并同步通知
 → Prepare 按本次原因及标记发布／Blocking Hook 返回后的最新 Unit 返费
 → 按 Skill、Action、Burst、Effect 的所有权顺序请求子项
 → 等待全部真实依赖者整个 Finalize 返回
-→ Unit Finalize 从当前状态注销、记录移除事实并维护场上关系
+→ Unit Finalize 从当前状态注销、记录移除事实，完成占格发布；不追加全场阻挡扫描
 → 关联 Card 的回收／库存／冷却／费用进度结算
 → Unit 的 leave Hook（初始 Departure）
 → 模式 Mechanism 的离场响应
@@ -342,7 +343,7 @@ Unit 不再手工依次调用各领域 cancel 或 Effect 递归清理。所有�
 请求顺序和完成顺序分别确定：
 
 ```text
-Unit 请求：LEAVING → 返费
+Unit 请求：LEAVING → 明确释放自身阻挡关系 → 返费
         │
         ├── 请求 Skill 及依赖
         ├── 请求 Action 及依赖

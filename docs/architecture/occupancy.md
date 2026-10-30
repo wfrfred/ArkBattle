@@ -76,7 +76,7 @@ Added／Removed 表示相对于该 Support 的承载关系变化，不表示乘�
 | A 不变，Support 从 P 换成 Q | P：occupantRemoved(A)，Q：occupantAdded(A) |
 | 更新前后仍是同一 Support 和乘员 | 不通知 |
 
-add 在 enter Hook 完成后通知，update 在已有 Blocking 通知完成后通知，remove 在物理注销后、leave Hook 前通知。先完成 Occupancy 数据维护，再固定本次关系事件与 Hook 候选，交给通用 Hook dispatcher 执行。Removed 使用旧 Support、旧乘员事实，已移除的 Support 仍能完成本次清理；Added 每项执行前确认当前登记仍是对应的 Support／乘员组合，嵌套操作使组合失效后停止其剩余响应。Context 是历史事实，不能代替后续当前查询，Hook 重入后必须接续最新 BattleState。只修改 blocker.rules 等非登记字段会共享原 occupancy Map，不再次触发通知。低层 battlefield/unit 仍不执行内容 Hook。
+add 在 enter Hook 完成后通知，update 在本批数据和 Lifetime／Occupancy 发布后通知，remove 在物理注销后、leave Hook 前通知。Unit.update 不再准备或派发 Blocking 通知；显式 Blocking 操作在 Unit 发布返回后自行通知其关系事实。先完成 Occupancy 数据维护，再固定本次承载事件与 Hook 候选，交给通用 Hook dispatcher 执行。Removed 使用旧 Support、旧乘员事实，已移除的 Support 仍能完成本次清理；Added 每项执行前确认当前登记仍是对应的 Support／乘员组合，嵌套操作使组合失效后停止其剩余响应。Context 是历史事实，不能代替后续当前查询，Hook 重入后必须接续最新 BattleState。只修改 blocker.rules 等非登记字段会共享原 occupancy Map，不再次触发通知。低层 battlefield/unit 仍不执行内容 Hook。
 
 射击台 Content 使用平台实例独占的 Rule ID，在当前 PRESENT 乘员的 blocker.rules 登记共享二元 Rule，禁止其与任何目标建立或保留阻挡，不修改地块 allowsBlocking。乘员离开时只清除该平台的 Rule，保留眩晕等其他规则；旧通知执行时若乘员已重新由同一平台承载，就保留已建立的规则。安装前重查当前平台的生命周期、SUPPORT 登记及反向表和当前乘员，已有自身 Rule 时不重复更新。
 

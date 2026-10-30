@@ -32,7 +32,7 @@ field.map 持有当前地块。battlefield/tile.update 是运行态地块变更�
 
 分类按职责划分，不按函数名、返回值或是否带一个对象参数机械判断。`currentTarget(progress)` 这类局部查询直接读取输入值，不要求传入 battle 或 ref。完整伤害结算可以返回报告；`card.advance(card, tick)` 仍是局部值转换，不是调度入口。
 
-Capability 可以提供完整领域操作。SpatialPresence.appear／disappear、Locomotion.advance 和 Blocker／Blockable 的层、Rule、容量与 volume 修改都接收 battle 与 Typed Ref，自行完成业务后继；Hook 登记等无业务后继的操作继续只转换局部 State。unit.update 统一发布数据、索引及显式关系差分，不为任意字段写回隐式执行全场 Blocking 维护。
+Capability 可以提供完整领域操作。SpatialPresence.appear／disappear、Locomotion.advance 和 Blocker／Blockable 的层、Rule、容量与 volume 修改都接收 battle 与 Typed Ref，自行完成业务后继；Hook 登记等无业务后继的操作继续只转换局部 State。unit.update 只发布 Unit 数据、Lifetime 与 Occupancy，不构造、校验或推断 Blocking 关系；取得、解除与通知由明确 Blocking 操作负责。
 
 命名按实际调用时点区分：初始化使用 initialize，执行前准备使用 prepare；生命周期回调使用 onXxx，主动领域操作保留 start、advance、cancel、stop 等动词。initialize 构造初始私有数据，prepare 准备一次执行并允许拒绝，两者均不要求运行实例已登记。onStart 在成功登记后执行启动业务，onTick 表示一次由调度器安排的执行机会，onEnd 用于正常完成和取消的收尾。
 
@@ -90,7 +90,7 @@ Hook 与领域操作按执行语义命名：
 | Effect | [unit/effect/index.ts](../../src/core/unit/effect/index.ts) | 类型、ref、get、lifetime 与生命周期操作；get 归 query.ts，Effects 容器保持内部职责。 |
 | Lifetime | [lifetime/index.ts](../../src/core/lifetime/index.ts) | create／scope／getRef／available 和公开类型；request／drain、Pending、异构配对擦除与索引修改保持内部职责。 |
 | Projectile | [projectile/index.ts](../../src/core/projectile/index.ts) | 类型与 ref／all／get；完整 create／update／stop／advance 及 lifetime 保留 battle/projectile.ts，容器仍由 Battlefield 持有。 |
-| Blocking | [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts)、[capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) | Battle 入口提供关系查询及 release／maintain／search／advance；Capability 入口直接导出 blocker-operations.ts／blockable-operations.ts 的 setLayer、两端 Rule／容量／volume 完整操作，以及模型、局部 Hook 登记和公共类型。完整能力操作接收 battle 与对应 Typed Ref，提交后显式维护关系；模型文件独立供 Catalog 与查询使用。容量贡献接收 Contribution<readonly Modifier[]>，Modifier 仅有 ADD／ZERO，由 Blocking 在来源互斥选择后计算。半径直接保存于 Definition.radius 和 State.radius。setLayer 完整发布新层、实际半径和全部旧出向关系解除，再通知并维护；不从 Battle 入口重复导出。内部 DEFAULT_RADIUS 及整批更新阶段接口不从 index 导出，Change 留在 operations.ts 内。 |
+| Blocking | [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts)、[capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) | Battle 入口提供关系查询及 acquire／release／maintain／search／advance，显式构造关系两端并自行通知；Capability 入口直接导出 blocker-operations.ts／blockable-operations.ts 的 setLayer、两端 Rule／容量／volume 完整操作，以及模型、局部 Hook 登记和公共类型。完整能力操作接收 battle 与对应 Typed Ref，提交后显式维护关系；模型文件独立供 Catalog 与查询使用。容量贡献接收 Contribution<readonly Modifier[]>，Modifier 仅有 ADD／ZERO，由 Blocking 在来源互斥选择后计算。半径直接保存于 Definition.radius 和 State.radius。setLayer 委托内部 releaseAll 一起发布新层、半径与旧出向关系解除，再由 Blocking 通知并维护；不从 Battle 入口重复导出。DEFAULT_RADIUS、releaseAll 和内部值准备不扩为内容 API。 |
 | Damage／Healing | [damage/index.ts](../../src/core/battle/damage/index.ts)、[healing/index.ts](../../src/core/battle/healing/index.ts) | 各自的 Calculate／Apply 两阶段、请求／报告及 Hook 登记；阶段派发保持内部实现，不合并结算协议。 |
 | Targeting | [battle/targeting/index.ts](../../src/core/battle/targeting/index.ts) | Filter／Comparator／Selector、hasCandidate 与 select；只读 hasCandidate 归 query.ts，可能消费 RNG 的选择保留 select.ts。 |
 | Deployment | [battle/deployment/index.ts](../../src/core/battle/deployment/index.ts) | 模型、查询、资源维护、部署命令与生命周期协作；resources.ts 的完整 Card 写回 updateCard 不公开，lifecycle.ts 不依赖完整 Unit 操作。 |
@@ -266,15 +266,15 @@ remove(battle: BattleState, unitId: Id, reason: LeaveReason): BattleState;
 advance(battle: BattleState): BattleState;
 ```
 
-add 接收创建方已经完成 Capability 初始化、部署信息及路线初态的完整 Unit，负责登记、必要维护、Skill 入场和 enter Hook。Skill 入场后读取最新 PRESENT Unit，直接使用 core/hook.ts 的 dispatch 派发 Definition 中该阶段的静态 Hook；Context 固定，每项前确认宿主仍为 PRESENT。leave Hook 在注销后以开始离场时捕获的 Departure 为固定 Context，不丢失清理前 SP 等事实。Unit Definition 的 hooks 必填，无监听传 []；Unit 实例不增加 Hook 数组或动态登记接口。add 不接收已登记 Unit 的 ID；重复登记由存储约束拒绝，创建方逐个完成 add 再继续下一对象。
+add 接收创建方已经完成 Capability 初始化、部署信息及路线初态的完整 Unit，负责登记、Skill 入场和 enter Hook，不扫描全场 Blocking。Skill 入场后读取最新 PRESENT Unit，直接使用 core/hook.ts 的 dispatch 派发 Definition 中该阶段的静态 Hook；Context 固定，每项前确认宿主仍为 PRESENT。leave Hook 在注销后以开始离场时捕获的 Departure 为固定 Context，不丢失清理前 SP 等事实。Unit Definition 的 hooks 必填，无监听传 []；Unit 实例不增加 Hook 数组或动态登记接口。add 不接收已登记 Unit 的 ID；重复登记由存储约束拒绝，创建方逐个完成 add 再继续下一对象。
 
-Battle 与 Battlefield 的 update 都只接收 readonly Unit[]，不提供单 Unit 重载或兼容接口。在 Battle 入口统一校验整批 ID 不重复、目标存在及 Definition 对象身份不变，任一违反时抛出 RangeError 并拒绝整批更新；随后同步完成整批数据、Lifetime／Occupancy 索引，以及本次显式 Blocking 关系写入的对侧关联、资格校验和 ACQUIRED／RELEASED 通知。空批次或全部未变时返回原 BattleState。普通私有状态写回或 Hook 登记不附带全场阻挡维护；改变阻挡资格、容量或空间事实的完整操作自行显式调用 maintain。Content 使用已有完整能力操作，不以手写 Unit 提交代替它；保留的局部值转换按其原有数据发布契约接续，不增加另一套通用更新入口。
+Battle 与 Battlefield 的 update 都只接收 readonly Unit[]，不提供单 Unit 重载或兼容接口。在 Battle 入口统一校验整批 ID 不重复、目标存在及 Definition 对象身份不变，任一违反时抛出 RangeError 并拒绝整批更新；随后只同步本批 Unit 数据、Lifetime 与 Occupancy。空批次或全部未变时返回原 BattleState。发布层信任调用方已经完成领域构造，不对 Blocking 做双端准备、资格校验、差分、通知或全场维护。acquire／release 自己检查、构造双端状态、发布后通知和维护；Content 使用这些明确操作，不以手写关系字段提交代替它。本轮保留 update 的现有字段类型，后续再通过类型收紧可写边界。
 
 完整领域操作以 update(battle, [unit]) 发布一次单单位修改，并自行执行所需的业务后继。只有业务要求多个单位以同一组最终状态提交时才传入多元素数组，例如交换占格、建立或解除阻挡两侧。不能为了减少调用次数而合并彼此独立的领域操作：逐次操作之间的关系通知、显式维护及其他 Hook 具有明确顺序，合并提交会改变它们观察到的事实。
 
-remove 按 Unit ID 请求 Unit Lifetime 结束，首次请求保留 Departure、发布 LEAVING，显式维护因此失效的 Blocking 关系，再执行返费。真实所有权边按 Skill、Action、Burst、Effect 顺序展开请求；所有子项与显式依赖者完整 Finalize 后才注销、回收 Card 和派发历史离场事实。嵌套 remove 只保证请求／Prepare，不保证 Unit 已物理移除。各完整操作后按需要读取最新状态。advance 固定候选 Ref，逐项读取最新 PRESENT Unit 并派发 tick Hook。
+remove 按 Unit ID 请求 Unit Lifetime 结束，首次请求保留 Departure、发布 LEAVING，明确调用 Blocking.release 释放本 Unit 的全部入向与出向关系，再执行返费。真实所有权边按 Skill、Action、Burst、Effect 顺序展开请求；所有子项与显式依赖者完整 Finalize 后才注销、回收 Card 和派发历史离场事实，Finalize 不追加全场 Blocking 扫描。嵌套 remove 只保证请求／Prepare，不保证 Unit 已物理移除。各完整操作后按需要读取最新状态。advance 固定候选 Ref，逐项读取最新 PRESENT Unit 并派发 tick Hook。
 
-Deployment 的卡消费与 DP 扣除在 add 前完成。add 登记及维护之后由 Deployment 记录卡归属单位的 UNIT_DEPLOYED，再执行 Skill 入场与 Unit 的 enter Hook；完整部署通知仍由 Deployment 在 add 返回后派发。此顺序保留登记维护中同步 Hook 与入场 Hook 各自可观察到的事件前缀，不增加分步入场或通用插点。
+Deployment 的卡消费与 DP 扣除在 add 前完成。add 登记之后由 Deployment 记录卡归属单位的 UNIT_DEPLOYED，再执行 Skill 入场与 Unit 的 enter Hook；完整部署通知仍由 Deployment 在 add 返回后派发。此顺序保留登记、入场 Hook 与内容明确关系操作各自可观察到的事件前缀，不增加分步入场或通用插点。
 
 battlefield/unit.ts 提供纯 add／update／remove。Field 的 update 信任 Battle 已确认的身份与 Definition，不重复校验；Field 仍负责地图范围、最终占格冲突等空间结构。add 信任创建阶段建立的合法 Unit ID，保留重复登记的存储约束。BattleState 不保留另一套 Unit CRUD／查询／转换入口，旧 execution/unit.ts 已合并并删除。通用 setBattlefield 已移除，Unit 修改必须提供明确的最终 Unit 数组；Field 更新与生命周期依赖索引同步仍由内部实现完成，不通过比较任意 Field 版本恢复修改意图。本轮不提供直接重定位操作；特殊撤退—再部署留待实际内容审查。
 

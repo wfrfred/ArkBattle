@@ -382,7 +382,7 @@ export function removeSpeedContribution(state: State, id: string): State;
 
 类型、初始化、类型守卫及 Rule／速度贡献的局部登记变换统一位于 locomotion/capability.ts；operations.ts 只提供完整推进，不再转发局部 setter。canMove 与 resolveSpeed 是内部辅助函数。初始化验证速度、下限、几何半宽和转向参数非负，不要求基础速度已经大于 minSpeed。
 
-推进读取最新 Unit，要求生命周期 PRESENT、空间存在且所有 Rule 允许。Movement 在 Route 推进后查询当前关系，只有自主移动受阻挡门禁约束；Locomotion 在实际位置提交后显式调用 Blocking.maintain，保留历史 velocity，不依赖 unit.update 自动扫描关系。SpatialPresence 的空间操作及 Route 无 Presence 分支的显式位置变化也由各自完整操作主动维护。Blocking 不再同步专用禁移 Rule，见 [Blocking 设计](blocking.md)。有效速度为 `max(minSpeed, attribute.apply(speed, contributions)) * speedMultiplier`。无目标时 Runtime 不调用 advance；速度为零或不允许移动时返回原 BattleState，保留 velocity。
+推进读取最新 Unit，要求生命周期 PRESENT、空间存在且所有 Rule 允许。Movement 在 Route 推进后查询当前关系，只有自主移动受阻挡门禁约束；Locomotion 在实际位置提交后显式调用 Blocking.maintain，保留历史 velocity，不依赖 unit.update 自动检查或处理关系。SpatialPresence 的空间操作通过 Core 内部 releaseAll 一起发布新事实与全部旧关系解除，再由 Blocking 通知与维护；Route 无 Presence 分支的显式位置变化仍由对应操作主动维护。Blocking 不再同步专用禁移 Rule，见 [Blocking 设计](blocking.md)。有效速度为 `max(minSpeed, attribute.apply(speed, contributions)) * speedMultiplier`。无目标时 Runtime 不调用 advance；速度为零或不允许移动时返回原 BattleState，保留 velocity。
 
 如果当前位置到 goal 的距离不超过本 Tick 预算，直接设置位置为 goal，保留 velocity，跳过 Steering、避障及目的格反射。nextPoint 仅用于计算 Steering 方向，不因接近中间导航节点而吸附。
 

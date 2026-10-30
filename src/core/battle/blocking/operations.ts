@@ -24,17 +24,8 @@ import type { Relation } from "../../unit/capability/blocking/contract.js";
 import * as hooks from "./hook.js";
 import { hasRelation, relations, usedCapacity } from "./query.js";
 
-interface Change {
-    readonly type: "ACQUIRED" | "RELEASED";
-    readonly relation: Relation;
-}
-
-function isActive(unit: Unit): boolean {
-    return (
-        unit.lifecycle === "PRESENT" &&
-        isSpatiallyPresent(unit) &&
-        (!hasVitality(unit) || unit.vitality.hp > 0)
-    );
+function isPresent(unit: Unit): boolean {
+    return unit.lifecycle === "PRESENT" && isSpatiallyPresent(unit);
 }
 
 function allowsTile(battle: BattleState, unit: Unit & Blocker): boolean {
@@ -52,7 +43,9 @@ function allowsTile(battle: BattleState, unit: Unit & Blocker): boolean {
 }
 
 function canSearch(battle: BattleState, unit: Unit & Blocker): boolean {
-    return isActive(unit) && allowsTile(battle, unit);
+    return (
+        isPresent(unit) && (!hasVitality(unit) || unit.vitality.hp > 0) && allowsTile(battle, unit)
+    );
 }
 
 function canRetain(
@@ -62,8 +55,8 @@ function canRetain(
 ): boolean {
     return (
         blocker.id !== target.id &&
-        isActive(blocker) &&
-        isActive(target) &&
+        isPresent(blocker) &&
+        isPresent(target) &&
         allowsTile(battle, blocker) &&
         hasLayer(target) &&
         blocker.blocker.layer === target.layer.type &&
@@ -77,7 +70,11 @@ function canAcquire(
     blocker: Unit & Blocker,
     target: Unit & Blockable,
 ): boolean {
-    if (!canRetain(battle, blocker, target)) {
+    if (
+        !canRetain(battle, blocker, target) ||
+        (hasVitality(blocker) && blocker.vitality.hp <= 0) ||
+        (hasVitality(target) && target.vitality.hp <= 0)
+    ) {
         return false;
     }
 
@@ -91,172 +88,25 @@ function canAcquire(
     );
 }
 
-export function prepareUpdates(battle: BattleState, updates: readonly Unit[]): readonly Unit[] {
-    const prepared = new Map(updates.map((unit) => [unit.id, unit]));
-    const current = (id: Id) => prepared.get(id) ?? battle.battlefield.units.get(id);
-
-    for (const unit of updates) {
-        if (!hasBlocker(unit)) {
-            continue;
-        }
-
-        const previous = battle.battlefield.units.get(unit.id) as Unit & Blocker;
-        const references = new Map(previous.blocker.blocked.map((entry) => [entry.id, entry]));
-        const blocked = unit.blocker.blocked.map((entry) => references.get(entry.id) ?? entry);
-        if (blocked.some((entry, index) => entry !== unit.blocker.blocked[index])) {
-            const updated: Unit & Blocker = { ...unit, blocker: { ...unit.blocker, blocked } };
-            prepared.set(unit.id, updated);
-        }
-    }
-
-    for (const unit of updates) {
-        if (!hasBlockable(unit)) {
-            continue;
-        }
-
-        const previousUnit = battle.battlefield.units.get(unit.id) as Unit & Blockable;
-        const nextUnit = current(unit.id) as Unit & Blockable;
-        const previous = previousUnit.blockable.blocker;
-        const next = nextUnit.blockable.blocker;
-        if (previous?.id === next?.id) {
-            continue;
-        }
-        if (previous !== null && next !== null) {
-            throw new RangeError("blocking ownership must be released before reassignment");
-        }
-
-        if (previous !== null) {
-            const owner = current(previous.id) as Unit & Blocker;
-            const blocked = owner.blocker.blocked.filter((entry) => entry.id !== unit.id);
-            if (blocked.length !== owner.blocker.blocked.length) {
-                const updated: Unit & Blocker = {
-                    ...owner,
-                    blocker: { ...owner.blocker, blocked },
-                };
-                prepared.set(owner.id, updated);
-            }
-        }
-
-        if (next !== null) {
-            const owner = current(next.id);
-            if (owner === undefined || !hasBlocker(owner)) {
-                throw new RangeError(`unknown blocker: ${next.id}`);
-            }
-
-            if (!owner.blocker.blocked.some((entry) => entry.id === nextUnit.id)) {
-                const blocked = [...owner.blocker.blocked, units.ref(nextUnit)];
-                const updated: Unit & Blocker = {
-                    ...owner,
-                    blocker: { ...owner.blocker, blocked },
-                };
-                prepared.set(owner.id, updated);
-            }
-        }
-    }
-
-    for (const unit of prepared.values()) {
-        if (hasBlocker(unit)) {
-            const ids = new Set<Id>();
-
-            for (const entry of unit.blocker.blocked) {
-                const target = current(entry.id);
-                if (
-                    ids.has(entry.id) ||
-                    target === undefined ||
-                    !hasBlockable(target) ||
-                    target.blockable.blocker?.id !== unit.id
-                ) {
-                    throw new RangeError("blocking relationship endpoints must agree");
-                }
-
-                ids.add(entry.id);
-            }
-
-            const previous = battle.battlefield.units.get(unit.id) as Unit & Blocker;
-
-            for (const entry of previous.blocker.blocked) {
-                const target = current(entry.id) as Unit & Blockable;
-                if (target.blockable.blocker?.id === unit.id && !ids.has(entry.id)) {
-                    throw new RangeError("blocking relationship endpoints must agree");
-                }
-            }
-        }
-
-        if (hasBlockable(unit) && unit.blockable.blocker !== null) {
-            const owner = current(unit.blockable.blocker.id) as Unit & Blocker;
-            if (!owner.blocker.blocked.some((entry) => entry.id === unit.id)) {
-                throw new RangeError("blocking relationship endpoints must agree");
-            }
-        }
-    }
-
-    return [...prepared.values()];
-}
-
-export function changes(
-    previous: BattleState,
-    next: BattleState,
-    updates: readonly Unit[],
-): readonly Change[] {
-    const changed: Change[] = [];
-
-    for (const unit of updates) {
-        const previousUnit = previous.battlefield.units.get(unit.id);
-        const nextUnit = next.battlefield.units.get(unit.id);
-        const before =
-            previousUnit !== undefined && hasBlockable(previousUnit)
-                ? previousUnit.blockable.blocker
-                : null;
-        const after =
-            nextUnit !== undefined && hasBlockable(nextUnit) ? nextUnit.blockable.blocker : null;
-        if (before?.id === after?.id) {
-            continue;
-        }
-
-        if (before !== null) {
-            const owner = units.get(previous, before);
-            const target = owner?.blocker.blocked.find((entry) => entry.id === unit.id);
-            if (target !== undefined) {
-                changed.push({ type: "RELEASED", relation: { blocker: before, blocked: target } });
-            }
-        }
-
-        if (after !== null && nextUnit !== undefined && hasBlockable(nextUnit)) {
-            const owner = units.get(next, after);
-            if (
-                owner === undefined ||
-                !canRetain(next, owner, nextUnit) ||
-                Vec2.distanceSquared(owner.position, nextUnit.position) >
-                    owner.blocker.radius * owner.blocker.radius ||
-                usedCapacity(next, after) > resolveCapacity(owner.definition.blocker, owner.blocker)
-            ) {
-                throw new RangeError("blocking ownership requires acquisition eligibility");
-            }
-
-            const target = owner.blocker.blocked.find((entry) => entry.id === unit.id)!;
-            changed.push({ type: "ACQUIRED", relation: { blocker: after, blocked: target } });
-        }
-    }
-
-    return changed;
-}
-
-export function notify(battle: BattleState, change: Change): BattleState {
-    const { relation } = change;
-    if (change.type === "ACQUIRED" && !hasRelation(battle, relation)) {
+function notify(
+    battle: BattleState,
+    type: "ACQUIRED" | "RELEASED",
+    relation: Relation,
+): BattleState {
+    if (type === "ACQUIRED" && !hasRelation(battle, relation)) {
         return battle;
     }
 
     battle = appendEvents(battle, [
         {
-            type: change.type === "ACQUIRED" ? "BLOCKING_ACQUIRED" : "BLOCKING_RELEASED",
+            type: type === "ACQUIRED" ? "BLOCKING_ACQUIRED" : "BLOCKING_RELEASED",
             blockerUnitId: relation.blocker.id,
             blockedUnitId: relation.blocked.id,
             tick: battle.tick,
         },
     ]);
 
-    return hooks.dispatch(battle, change.type === "ACQUIRED" ? "acquired" : "released", relation);
+    return hooks.dispatch(battle, type === "ACQUIRED" ? "acquired" : "released", relation);
 }
 
 export function capture(battle: BattleState, reference: Ref<Unit>): readonly Relation[] {
@@ -265,7 +115,7 @@ export function capture(battle: BattleState, reference: Ref<Unit>): readonly Rel
     );
 }
 
-export function releaseUpdates(
+function releaseUpdates(
     battle: BattleState,
     captured: readonly Relation[],
     updates: readonly Unit[] = [],
@@ -274,30 +124,50 @@ export function releaseUpdates(
     const current = (id: Id) => prepared.get(id) ?? battle.battlefield.units.get(id);
 
     for (const relation of captured) {
-        if (!hasRelation(battle, relation)) {
-            continue;
-        }
-
         const owner = current(relation.blocker.id) as Unit & Blocker;
         const blocked = owner.blocker.blocked.filter((entry) => entry.id !== relation.blocked.id);
         const updated: Unit & Blocker = { ...owner, blocker: { ...owner.blocker, blocked } };
         prepared.set(owner.id, updated);
 
         const latest = current(relation.blocked.id) as Unit & Blockable;
-        if (latest.blockable.blocker?.id === owner.id) {
-            const updated: Unit & Blockable = {
-                ...latest,
-                blockable: { ...latest.blockable, blocker: null },
-            };
-            prepared.set(latest.id, updated);
-        }
+        const cleared: Unit & Blockable = {
+            ...latest,
+            blockable: { ...latest.blockable, blocker: null },
+        };
+        prepared.set(latest.id, cleared);
     }
 
     return [...prepared.values()];
 }
 
 function releaseRelation(battle: BattleState, relation: Relation): BattleState {
-    return update(battle, releaseUpdates(battle, [relation]));
+    if (!hasRelation(battle, relation)) {
+        return battle;
+    }
+
+    battle = update(battle, releaseUpdates(battle, [relation]));
+
+    return notify(battle, "RELEASED", relation);
+}
+
+export function releaseAll(
+    battle: BattleState,
+    captured: readonly Relation[],
+    updates: readonly Unit[] = [],
+): BattleState {
+    const released = captured.filter((relation) => hasRelation(battle, relation));
+    const next = update(battle, releaseUpdates(battle, released, updates));
+    if (next === battle) {
+        return battle;
+    }
+
+    battle = next;
+
+    for (const relation of released) {
+        battle = notify(battle, "RELEASED", relation);
+    }
+
+    return maintain(battle);
 }
 
 export function releaseCaptured(battle: BattleState, captured: readonly Relation[]): BattleState {
@@ -349,7 +219,7 @@ export function maintain(battle: BattleState): BattleState {
     }
 }
 
-function tryAcquire(
+export function acquire(
     battle: BattleState,
     blockerRef: Ref<Unit & Blocker>,
     targetRef: Ref<Unit & Blockable>,
@@ -366,15 +236,16 @@ function tryAcquire(
 
     const reference = units.ref(target);
 
-    return maintain(
-        update(battle, [
-            {
-                ...blocker,
-                blocker: { ...blocker.blocker, blocked: [...blocker.blocker.blocked, reference] },
-            },
-            { ...target, blockable: { ...target.blockable, blocker: units.ref(blocker) } },
-        ]),
-    );
+    battle = update(battle, [
+        {
+            ...blocker,
+            blocker: { ...blocker.blocker, blocked: [...blocker.blocker.blocked, reference] },
+        },
+        { ...target, blockable: { ...target.blockable, blocker: units.ref(blocker) } },
+    ]);
+    battle = notify(battle, "ACQUIRED", { blocker: blockerRef, blocked: reference });
+
+    return maintain(battle);
 }
 
 export function search(battle: BattleState, reference: Ref<Unit & Blocker>): BattleState {
@@ -403,7 +274,7 @@ export function search(battle: BattleState, reference: Ref<Unit & Blocker>): Bat
     );
 
     for (const candidate of candidates) {
-        battle = tryAcquire(battle, reference, candidate.reference);
+        battle = acquire(battle, reference, candidate.reference);
     }
 
     return battle;

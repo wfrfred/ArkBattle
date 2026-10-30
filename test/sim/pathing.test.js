@@ -308,7 +308,6 @@ test('explicit Blocking settlement preserves relation history and releases curre
   assert.notEqual(reacquired.battlefield.units.get(10).blocker.blocked[0], first);
 
   const mutations = [
-    battle => blocking.maintain(updateUnit(battle, [{ ...units.get(battle, { id: 11 }), vitality: { ...units.get(battle, { id: 11 }).vitality, hp: 0 } }])),
     battle => blocking.maintain(updateUnit(battle, [{ ...units.get(battle, { id: 11 }), allegiance: { side: 'ALLY' } }])),
     battle => blocking.maintain(updateUnit(battle, [{ ...units.get(battle, { id: 11 }), layer: { type: 'AIR' } }])),
     battle => blockableOperations.setVolumeContribution(battle, { id: 11 }, { id: 'larger', value: 2 }),

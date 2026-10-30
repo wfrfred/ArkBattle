@@ -142,7 +142,6 @@ test("new blockers and restored eligibility wait for search; existing relations 
 });
 
 for (const [name, change] of [
-    ["HP reaches zero", (battle, unit) => blocking.maintain(replaceUnit(battle, { ...unit, vitality: { ...unit.vitality, hp: 0 } }))],
     ["LEAVING begins", (battle, unit) => blocking.maintain(replaceUnit(battle, { ...unit, lifecycle: "LEAVING" }))],
     ["spatial presence disappears", (battle, unit) => blocking.maintain(replaceUnit(battle, { ...unit, spatialPresence: { present: false } }))],
     ["side policy stops allowing the target", battle => blockerOperations.setRule(battle, { id: 10 }, sides("ALLY"))],
@@ -208,33 +207,29 @@ test("search uses inclusive radius and can acquire an out-of-map target", () => 
     }
 });
 
-test("ownership updates append and remove incrementally; an equivalent owner Ref preserves relation identity", () => {
+test("explicit acquisition and release preserve relationship order and identity", () => {
     let battle = fixture([holder(10, { capacity: 3 }), target(20), target(21), target(22)]);
-    const assign = (state, id, owner) => {
-        const currentUnit7 = getUnit(state, id);
-        return replaceUnit(state, { ...currentUnit7, blockable: { ...currentUnit7.blockable, blocker: owner } });
-    };
-    battle = assign(battle, 21, { id: 10 });
-    battle = assign(battle, 20, { id: 10 });
+    battle = blocking.acquire(battle, { id: 10 }, { id: 21 });
+    battle = blocking.acquire(battle, { id: 10 }, { id: 20 });
     const before = getUnit(battle, 10).blocker.blocked;
     assert.deepEqual(blockedIds(battle), [21, 20]);
-    battle = assign(battle, 21, { id: 10 });
-    assert.equal(getUnit(battle, 10).blocker.blocked, before);
-    battle = assign(battle, 21, null);
+    const unchanged = blocking.acquire(battle, { id: 10 }, { id: 21 });
+    assert.equal(unchanged, battle);
+    assert.equal(getUnit(unchanged, 10).blocker.blocked, before);
+    battle = blocking.release(battle, { id: 21 });
     assert.deepEqual(blockedIds(battle), [20]);
     assert.equal(getUnit(battle, 10).blocker.blocked[0], before[1]);
-    battle = assign(battle, 21, { id: 10 });
+    battle = blocking.acquire(battle, { id: 10 }, { id: 21 });
     assert.deepEqual(blockedIds(battle), [20, 21]);
     assert.notEqual(getUnit(battle, 10).blocker.blocked[1], before[0]);
 });
 
-test("a direct non-null ownership transfer is a contract error", () => {
-    const battle = acquire(fixture([holder(), holder(11), target()]));
-    assert.throws(() => {
-        const currentUnit8 = getUnit(battle, 20);
-        return replaceUnit(battle, {
-        ...currentUnit8, blockable: { ...currentUnit8.blockable, blocker: { id: 11 } },
-    });
-    }, /release|transfer|ownership|blocker/i);
+
+test("an occupied target must be released before another Blocker acquires it", () => {
+    let battle = acquire(fixture([holder(), holder(11), target()]));
+    assert.equal(blocking.acquire(battle, { id: 11 }, { id: 20 }), battle);
     assert.equal(ownerId(battle), 10);
+    battle = blocking.release(battle, { id: 20 });
+    battle = blocking.acquire(battle, { id: 11 }, { id: 20 });
+    assert.equal(ownerId(battle), 11);
 });

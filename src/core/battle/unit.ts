@@ -20,7 +20,6 @@ export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
     const previous = battle.battlefield;
     const next = battlefield.add(previous, unit);
     battle = publishBattlefield(battle, next, [{ previousUnit: undefined, nextUnit: unit }]);
-    battle = blocking.maintain(battle);
     battle = recordUnitDeployment(battle, unit);
     const reference = units.ref(unit);
     let current = units.get(battle, reference);
@@ -70,27 +69,20 @@ export function update<U extends Unit>(battle: BattleState, updates: readonly U[
         return battle;
     }
 
-    const prepared = blocking.prepareUpdates(battle, changed);
     const published = publishBattlefield(
         battle,
-        battlefield.update(battle.battlefield, prepared),
-        prepared.map((unit) => ({
+        battlefield.update(battle.battlefield, changed),
+        changed.map((unit) => ({
             previousUnit: battle.battlefield.units.get(unit.id),
             nextUnit: unit,
         })),
     );
 
-    let settled = published;
-
-    for (const change of blocking.changes(battle, published, prepared)) {
-        settled = blocking.notify(settled, change);
-    }
-
     return occupancy.notify(
-        settled,
+        published,
         battle.battlefield,
         published.battlefield,
-        prepared.map((unit) => unit.id),
+        changed.map((unit) => unit.id),
     );
 }
 /* eslint-enable @typescript-eslint/no-unnecessary-type-parameters */
@@ -101,7 +93,7 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
     get: units.get,
     isEnding: (self) => self.lifecycle === "LEAVING",
     begin: (self) => ({ ...self, lifecycle: "LEAVING" }),
-    replace: (battle, _ref, next) => blocking.maintain(update(battle, [next])),
+    replace: (battle, reference, next) => blocking.release(update(battle, [next]), reference),
     prepare: (battle, reference, _initial, departure) =>
         refundUnit(battle, units.get(battle, reference)!, departure.reason, battle.tick),
     finalize: (battle, reference, departure) => {
@@ -112,13 +104,13 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
         battle = publishBattlefield(battle, next, [
             { previousUnit: departing, nextUnit: undefined },
         ]);
-        battle = blocking.maintain({
+        battle = {
             ...battle,
             removedUnits: [
                 ...battle.removedUnits,
                 { unitId: reference.id, reason, unit: departing },
             ],
-        });
+        };
         battle = occupancy.notify(battle, previous, next, [reference.id]);
         battle = recycleUnitCard(battle, departing, reason, battle.tick);
 
