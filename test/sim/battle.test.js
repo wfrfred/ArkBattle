@@ -1542,7 +1542,7 @@ const deployableDefinition = (id = 'test_deployable') => Object.freeze({ hooks: 
   id, occupancy: { slot: 'OCCUPANT' }, deployable: createDeployableDefinition({ cost: 0, redeployTicks: 0, slots: 1, buildableType: 'ALL' }),
   vitality: Object.freeze({ maxHp: 100, defense: 0, resistance: 0 }), allegiance: Object.freeze({ side: 'ALLY' }),
   layer: Object.freeze({ type: 'GROUND' }),
-  blocker: Object.freeze({ layer: "GROUND", rules: [], capacity: 1, geometry: Object.freeze({ radius: 0.7 }) }),
+  blocker: Object.freeze({ layer: "GROUND", rules: [], capacity: 1, radius: 0.7 }),
 });
 
 

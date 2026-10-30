@@ -243,7 +243,7 @@ test('complete battle updates retain or release blocking from the tile blocking 
   const map = createMap(1, 8, tileEntries([true, false].flatMap(meleeBlockable =>
     passableMasks.map(passableMask => coreGround({ meleeBlockable, passableMask })))));
   const blocker = projectionUnit(10, [0, 0], {
-    vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ALLY' }, blocker: { layer: "GROUND", rules: [], capacity: 1, geometry: { radius: 1 } },
+    vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ALLY' }, blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 1 },
   });
   const enemy = projectionUnit(11, [0.1, 0], {
     vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ENEMY' }, blockable: { volume: 1 },
@@ -294,7 +294,7 @@ test('selective and full field projection derive current occupancy independently
 
 test('complete battle updates preserve relation history and release on current eligibility changes', () => {
   const blocker = projectionUnit(10, [1, 0], {
-    vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ALLY' }, blocker: { layer: "GROUND", rules: [sides("ENEMY")], capacity: 2, geometry: { radius: 1 } },
+    vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ALLY' }, blocker: { layer: "GROUND", rules: [sides("ENEMY")], capacity: 2, radius: 1 },
   });
   const enemy = projectionUnit(11, [1.1, 0], {
     vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ENEMY' }, blockable: { volume: 1 }, layer: { type: 'GROUND' },

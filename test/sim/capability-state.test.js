@@ -32,7 +32,7 @@ const entries = [
         vitality.removeResistanceContribution,
     ],
     [
-        blocker.initialize(fixtureBattle(0), { layer: "GROUND", rules: [], capacity: 2, geometry: { radius: 0.5 } }).value,
+        blocker.initialize(fixtureBattle(0), { layer: "GROUND", rules: [], capacity: 2, radius: 0.5 }).value,
         "capacity",
         blocker.setCapacityContribution,
         blocker.removeCapacityContribution,

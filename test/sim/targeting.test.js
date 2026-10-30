@@ -187,7 +187,7 @@ test("standard filters compose eligibility and source exclusion explicitly", () 
 
 test("blockedFirst preserves blocking relation order and then uses the next comparator", () => {
     const source = unit(0, {
-        allegiance: { side: "ALLY" }, blocker: { layer: "GROUND", rules: [], capacity: 2, geometry: { radius: 1 } },
+        allegiance: { side: "ALLY" }, blocker: { layer: "GROUND", rules: [], capacity: 2, radius: 1 },
     });
     const definition = {
         allegiance: { side: "ENEMY" }, blockable: { volume: 1 }, layer: { type: "GROUND" },

@@ -482,7 +482,7 @@ const attackDefinition = (targetGroups, followUps = []) => createAttack({
 function actionUnit(id, side, position, { hp = 100, effects: initialEffects = [], action, skill } = {}) {
   const definition = { hooks: [],
     id: `action_unit_${id}`, targetable: { restrictions: [] }, vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side },
-    layer: { type: 'GROUND' }, hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.1 } }, blocker: { layer: "GROUND", rules: [], capacity: 0, geometry: { radius: 0 } },
+    layer: { type: 'GROUND' }, hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.1 } }, blocker: { layer: "GROUND", rules: [], capacity: 0, radius: 0 },
     ...(skill === undefined ? {} : { skill }),
     action: actionCapability(action ?? attackDefinition([
       { id: 'primary', targeting: damageTargeting(), operations: [damageEffect(0)] },

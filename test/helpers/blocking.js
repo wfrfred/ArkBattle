@@ -30,7 +30,7 @@ export function holder(id = 10, { position = [2, 1], capacity = 1, radius = 1, l
             id: `blocking-holder-${id}`,
             ...(side === undefined ? {} : { allegiance: { side } }),
             spatialPresence: {}, vitality: { maxHp: 100, defense: 0, resistance: 0 },
-            blocker: { layer, capacity, geometry: { radius }, rules: [blocker.sides("ENEMY")] },
+            blocker: { layer, capacity, radius, rules: [blocker.sides("ENEMY")] },
             ...definition,
         },
         states,

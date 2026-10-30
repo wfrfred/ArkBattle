@@ -50,7 +50,7 @@ S1／S2 起飞模式 Attack 对象上的 BuffToOwner
 
 `Enemy._CheckMotionModeBlockable` 比较目标的 `changeableMotionMode` 与阻挡者的 `blockMode`，不读目标的 `pathMotionMode`。因此寻路模式、目标空地身份和阻挡策略不能合并为一个值。
 
-半径来自 Character 普通原生路径；`BLOCK_RADIUS_SCALE` 的修正只作用于 FLY 半径。本轮蒂比配置没有证明需要新增一套半径贡献系统，当前项目的 `blocker.geometry.radius` 已能保存这两个实际半径。
+半径来自 Character 普通原生路径；`BLOCK_RADIUS_SCALE` 的修正只作用于 FLY 半径。本轮蒂比配置没有证明需要新增一套半径贡献系统，当前项目的 `blocker.radius` 已能保存这两个实际半径。
 
 地块豁免不是“飞起来就让整格允许阻挡”：地面阻挡者仍按自己的资格处理。射击台的原生 `highland_common[block]` 也按 WALK 阻挡模式施加 BlockFree，不能对所有乘员一律禁挡。相关平台证据已记录在 [Blocking 设计](../../architecture/blocking.md#地块阻挡资格)。
 
@@ -76,7 +76,7 @@ S1／S2 起飞模式 Attack 对象上的 BuffToOwner
 
 原始基线有三项实际限制：canRetain 固定拒绝 AIR 目标、canSearch 无条件要求根格 allowsBlocking、射击台乘员 Rule 恒为 false。新通用接口以 Blocking 自己定义的 Layer = GROUND | AIR 表达能够阻挡的目标层，与宿主自身 Layer 分开，不将原生 BlockMode 命名引入项目。
 
-Blocker Definition 的 layer、rules 必填，geometry 可选；State 保存当前 layer 和实际 geometry。Core 在未显式覆盖时提供 GROUND 半径 0.7071、AIR 半径 0.8944；显式 Definition.geometry 在初始化和切层时都保持覆盖。空地匹配与 AIR 地块豁免由通用 Blocking 解释，阵营和其他特殊资格仍通过双方二元 Rule 判断。射击台 Rule 只禁止当前 GROUND 阻挡，AIR 可通过。
+Blocker Definition 的 layer、rules 必填，radius 可选；State 保存当前 layer 和实际 radius。Core 在未显式覆盖时提供 GROUND 半径 0.7071、AIR 半径 0.8944；显式 Definition.radius 在初始化和切层时都保持覆盖。空地匹配与 AIR 地块豁免由通用 Blocking 解释，阵营和其他特殊资格仍通过双方二元 Rule 判断。射击台 Rule 只禁止当前 GROUND 阻挡，AIR 可通过。
 
 起飞／落地 Blocking 业务通过 blocking.setLayer(battle, ref, layer) 完成。层改变时，新 layer、实际半径和全部旧出向关系的双端解除在第一个 RELEASED Hook 前一起提交；Hook 接续最新 BattleState，不误删嵌套新建的关系，不自动搜索新目标。普通 unit.update 的关系维护不根据字段差异推断完整切换事件，Content 不能直接改 blocker.layer 绕过该操作。关系保持和搜索资格的项目政策详见 [Blocking 设计](../../architecture/blocking.md#关系资格与-rule)。
 

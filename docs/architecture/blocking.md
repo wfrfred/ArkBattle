@@ -4,7 +4,7 @@ Blocking 负责阻挡关系的建立、解除及必要维护。本文描述两�
 
 Blocker／Blockable 的数值与局部 State 接口见 [Capability API](capability.md#blocking)。状态归属与同步返回契约见 [函数式内核](functional-core.md)。
 
-关系查询与公开结算从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入，两端 Capability 的类型与局部变换从 [unit/capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入。Blocking 自己定义 Layer；公共 Layer、Geometry、Relation、Context、Hook、Key 由 Capability 入口导出，Battle 入口只提供查询与操作，不重复转发这些类型。[battle/blocking/hook.ts](../../src/core/battle/blocking/hook.ts) 只实现派发。整批更新的准备、差分、通知及维护在 operations.ts 内保持有序内聚，Change 是该文件内未导出的变更类型；Core 按需精确依赖阶段接口，不将它们扩为内容 API。
+关系查询与公开结算从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入，两端 Capability 的类型与局部变换从 [unit/capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入。Blocking 自己定义 Layer；公共 Layer、Relation、Context、Hook、Key 由 Capability 入口导出，Battle 入口只提供查询与操作，不重复转发这些类型。[battle/blocking/hook.ts](../../src/core/battle/blocking/hook.ts) 只实现派发。整批更新的准备、差分、通知及维护在 operations.ts 内保持有序内聚，Change 是该文件内未导出的变更类型；Core 按需精确依赖阶段接口，不将它们扩为内容 API。
 
 ## 已确定的职责与调度政策
 
@@ -34,21 +34,17 @@ Blocker 的配置与当前状态明确区分：
 ```typescript
 export type Layer = "GROUND" | "AIR";
 
-export interface Geometry {
-    readonly radius: number;
-}
-
 interface Definition {
     readonly capacity: number;
     readonly layer: Layer;
-    readonly geometry?: Geometry;
+    readonly radius?: number;
     readonly rules: readonly Rule[];
 }
 ```
 
-layer 表示该 Blocker 能阻挡的目标层，与宿主自身的 Unit Layer 分开，类型由 Blocking 自己定义，不依赖 Unit Layer Capability。Definition.layer 和 rules 都必填；没有额外规则时明确写 rules: []。State.layer 与 State.geometry 保存当前阻挡层及实际几何值，不保存另一份派生层或通过查询临时恢复半径。
+layer 表示该 Blocker 能阻挡的目标层，与宿主自身的 Unit Layer 分开，类型由 Blocking 自己定义，不依赖 Unit Layer Capability。Definition.layer 和 rules 都必填；没有额外规则时明确写 rules: []。State.layer 与 State.radius 保存当前阻挡层及实际半径，不保存另一份派生层或通过查询临时恢复半径。
 
-Core 提供 GROUND 半径 0.7071、AIR 半径 0.8944。初始化和 setLayer 切换时均选择 definition.geometry ?? DEFAULT_GEOMETRY[layer]；Definition 显式提供的 geometry 始终覆盖默认值，切层不改变该覆盖。默认 Geometry 是内部共享常量，不经过公共入口导出。普通干员省略 geometry；特殊对象按需声明明确半径。
+Core 提供 GROUND 半径 0.7071、AIR 半径 0.8944。初始化和 setLayer 切换时均选择 definition.radius ?? DEFAULT_RADIUS[layer]；Definition 显式提供的 radius 始终覆盖默认值，切层不改变该覆盖。DEFAULT_RADIUS 是类型为 Readonly<Record<Layer, number>> 的内部共享常量，不经过公共入口导出。普通干员省略 radius；特殊对象按需声明明确半径。
 
 两端关系字段如下；其他容量、占用与 Rule 字段保持各自职责：
 
@@ -59,7 +55,7 @@ interface BlockableState {
 
 interface BlockerState {
     readonly layer: Layer;
-    readonly geometry: Geometry;
+    readonly radius: number;
     readonly blocked: readonly Ref<Unit & Blockable>[];
 }
 ```
@@ -183,7 +179,7 @@ release 只解除关系，不自动接敌。固定旧关联条目的内部解除
 
 旧关系是否仍存在统一在 releaseUpdates 的入口确认；releaseRelation 直接接续其准备结果提交，不在两者之间重复查询同一关系。
 
-setLayer 是显式的完整领域操作。实例缺失或层未变化时返回原 BattleState；它不额外拒绝仍在存储中的 LEAVING 宿主，以允许析构回调完成已有业务。变化时确定新 layer 和 geometry，捕获该 Blocker 的全部旧出向关系，纯准备新 Blocker State 及关系双端的解除结果，再通过现有 unit.update 完整提交。第一个 RELEASED Hook 开始前，新层、新半径及全部旧关系的解除已可见；通知仍按既有关系顺序及两侧顺序接续最新 BattleState。该操作不因关系在新层下仍可能合法而保留旧关系，也不解除宿主作为 Blockable 被其他单位阻挡的关系。
+setLayer 是显式的完整领域操作。实例缺失或层未变化时返回原 BattleState；它不额外拒绝仍在存储中的 LEAVING 宿主，以允许析构回调完成已有业务。变化时确定新 layer 和 radius，捕获该 Blocker 的全部旧出向关系，纯准备新 Blocker State 及关系双端的解除结果，再通过现有 unit.update 完整提交。第一个 RELEASED Hook 开始前，新层、新半径及全部旧关系的解除已可见；通知仍按既有关系顺序及两侧顺序接续最新 BattleState。该操作不因关系在新层下仍可能合法而保留旧关系，也不解除宿主作为 Blockable 被其他单位阻挡的关系。
 
 setLayer 不自动执行 search，也不新增 layerChanged Hook。起飞和落地内容由对应 Effect 生命周期程序调用 setLayer；不将它机械绑定到所有 Skill 的开始或结束。自身 Layer、Targetable 限制及图形表现分别由对应领域或内容处理。
 

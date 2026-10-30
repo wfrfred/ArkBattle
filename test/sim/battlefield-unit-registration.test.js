@@ -85,7 +85,7 @@ const definition = () => ({ hooks: [],
     allegiance: { side: "ALLY" },
     layer: { type: "GROUND" },
     hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.25 } },
-    blocker: { layer: "GROUND", rules: [], capacity: 1, geometry: { radius: 0.5 } },
+    blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 0.5 },
     blockable: { volume: 1 },
     locomotion: {
         halfBodyWidth: 0, minSpeed: 0, speed: 0.1,

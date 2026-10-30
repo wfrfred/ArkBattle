@@ -6,7 +6,7 @@ import { get as getTile } from "../../battlefield/map/map.js";
 import {
     hasBlocker,
     resolveCapacity,
-    DEFAULT_GEOMETRY,
+    DEFAULT_RADIUS,
     type Blocker,
     type Layer,
 } from "../../unit/capability/blocking/blocker.js";
@@ -84,7 +84,7 @@ function canAcquire(
     }
 
     const distance = Vec2.distanceSquared(blocker.position, target.position);
-    const radius = blocker.blocker.geometry.radius;
+    const radius = blocker.blocker.radius;
     const capacity = resolveCapacity(blocker.definition.blocker, blocker.blocker);
     const volume = resolveVolume(target.definition.blockable, target.blockable);
 
@@ -229,7 +229,7 @@ export function changes(
                 owner === undefined ||
                 !canRetain(next, owner, nextUnit) ||
                 Vec2.distanceSquared(owner.position, nextUnit.position) >
-                    owner.blocker.geometry.radius * owner.blocker.geometry.radius ||
+                    owner.blocker.radius * owner.blocker.radius ||
                 usedCapacity(next, after) > resolveCapacity(owner.definition.blocker, owner.blocker)
             ) {
                 throw new RangeError("blocking ownership requires acquisition eligibility");
@@ -342,7 +342,7 @@ export function setLayer(
         blocker: {
             ...unit.blocker,
             layer,
-            geometry: unit.definition.blocker.geometry ?? DEFAULT_GEOMETRY[layer],
+            radius: unit.definition.blocker.radius ?? DEFAULT_RADIUS[layer],
         },
     };
 
@@ -428,7 +428,7 @@ export function search(battle: BattleState, reference: Ref<Unit & Blocker>): Bat
         return battle;
     }
 
-    const radius = blocker.blocker.geometry.radius;
+    const radius = blocker.blocker.radius;
     const candidates = [
         ...units
             .all(battle)

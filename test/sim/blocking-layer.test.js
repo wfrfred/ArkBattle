@@ -30,8 +30,8 @@ for (const [layer, radius] of [["GROUND", 0.7071], ["AIR", 0.8944]]) {
     test(`${layer} blocking initializes with the Core standard radius`, () => {
         const unit = standardHolder(layer);
         assert.equal(unit.blocker.layer, layer);
-        assert.equal(unit.blocker.geometry.radius, radius);
-        assert.equal(unit.definition.blocker.geometry, undefined);
+        assert.equal(unit.blocker.radius, radius);
+        assert.equal(unit.definition.blocker.radius, undefined);
         assert.equal(unit.layer.type, "GROUND", "blocking layer is independent of the unit's own layer");
     });
 }
@@ -41,23 +41,23 @@ test("switching blocking layer replaces the standard radius and preserves Defini
     const definition = getUnit(battle, 10).definition;
     battle = blocking.setLayer(battle, { id: 10 }, "AIR");
     assert.equal(getUnit(battle, 10).blocker.layer, "AIR");
-    assert.equal(getUnit(battle, 10).blocker.geometry.radius, 0.8944);
+    assert.equal(getUnit(battle, 10).blocker.radius, 0.8944);
     assert.equal(getUnit(battle, 10).layer.type, "GROUND");
     assert.equal(getUnit(battle, 10).definition, definition);
     assert.equal(definition.blocker.layer, "GROUND");
     battle = blocking.setLayer(battle, { id: 10 }, "GROUND");
-    assert.equal(getUnit(battle, 10).blocker.geometry.radius, 0.7071);
+    assert.equal(getUnit(battle, 10).blocker.radius, 0.7071);
 });
 
-test("an explicit geometry is retained by initialization and both layer transitions", () => {
+test("an explicit radius is retained by initialization and both layer transitions", () => {
     const unit = holder(10, { radius: 0.4472 });
-    const geometry = unit.definition.blocker.geometry;
-    assert.equal(unit.blocker.geometry, geometry);
+    const radius = unit.definition.blocker.radius;
+    assert.equal(unit.blocker.radius, radius);
     let battle = fixture([unit]);
     battle = blocking.setLayer(battle, { id: 10 }, "AIR");
-    assert.equal(getUnit(battle, 10).blocker.geometry, geometry);
+    assert.equal(getUnit(battle, 10).blocker.radius, radius);
     battle = blocking.setLayer(battle, { id: 10 }, "GROUND");
-    assert.equal(getUnit(battle, 10).blocker.geometry, geometry);
+    assert.equal(getUnit(battle, 10).blocker.radius, radius);
 });
 
 for (const [layer, expected] of [["GROUND", [20]], ["AIR", [21]]]) {
@@ -149,7 +149,7 @@ test("switching a Blocker preserves its independent ownership as a Blockable", (
     let battle = fixture([
         holder(11, { definition: {
             blocker: {
-                capacity: 1, layer: "GROUND", geometry: { radius: 1 },
+                capacity: 1, layer: "GROUND", radius: 1,
                 rules: [capability.sides("ALLY")],
             },
         } }),
@@ -166,7 +166,7 @@ test("switching a Blocker preserves its independent ownership as a Blockable", (
     assert.deepEqual(blockedIds(battle), []);
 });
 
-test("layer switching publishes all old releases and the new geometry before ordered notifications", () => {
+test("layer switching publishes all old releases and the new radius before ordered notifications", () => {
     let battle = fixture([
         standardHolder(), target(20), target(21), target(22, { layer: "AIR" }),
     ]);
@@ -174,7 +174,7 @@ test("layer switching publishes all old releases and the new geometry before ord
     battle = onReleased(battle, 10, "blocker", hook("inspect-switch", (state, { relation }) => {
         const current = getUnit(state, 10);
         assert.equal(current.blocker.layer, "AIR");
-        assert.equal(current.blocker.geometry.radius, 0.8944);
+        assert.equal(current.blocker.radius, 0.8944);
         assert.equal(current.layer.type, "GROUND");
         assert.deepEqual(blockedIds(state), []);
         assert.equal(ownerId(state, 20), undefined);
@@ -250,7 +250,7 @@ test("nested switches and searches retain their latest layer and rebuilt relatio
     battle = blocking.setLayer(battle, { id: 10 }, "AIR");
     assert.deepEqual(released, [20, 21]);
     assert.equal(getUnit(battle, 10).blocker.layer, "GROUND");
-    assert.equal(getUnit(battle, 10).blocker.geometry.radius, 0.7071);
+    assert.equal(getUnit(battle, 10).blocker.radius, 0.7071);
     assert.equal(getUnit(battle, 10).blocker.blocked, rebuilt);
     assert.deepEqual(blockedIds(battle), [20, 21]);
     assert.equal(ownerId(battle, 20), 10);

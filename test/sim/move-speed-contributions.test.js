@@ -201,7 +201,7 @@ test("locomotion: lifecycle and presence gate integration while Runtime gates bl
     h.work = updateUnit(h.work, [{ ...h.unit, spatialPresence: { present: true } }]);
     const blocker = initialize(h.work, { id: 1, position: [0, 0], definition: { hooks: [],
             id: "movement-blocker", allegiance: { side: "ALLY" },
-            blocker: { layer: "GROUND", rules: [], capacity: 1, geometry: { radius: 1 } },
+            blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 1 },
         },
     });
     h.work = searchBlocking(addUnit(blocker.state, blocker.value), { id: 1 });

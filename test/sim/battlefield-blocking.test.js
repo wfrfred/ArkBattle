@@ -41,7 +41,7 @@ test("advance searches blockers in registration order; each search sorts distanc
 test("without configured Rules, blocking does not depend on either endpoint's allegiance", () => {
     for (const [left, right] of [["ALLY", "ALLY"], ["ALLY", "NEUTRAL"], [null, null]]) {
         const owner = holder(10, { side: left ?? "ALLY", definition: {
-            blocker: { layer: "GROUND", rules: [], capacity: 1, geometry: { radius: 1 } },
+            blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 1 },
         } });
         const candidate = target(20, { side: right ?? "ENEMY" });
         const battle = acquire(fixture([
@@ -60,7 +60,7 @@ function withoutAllegiance(unit) {
 
 test("a unit with both capabilities cannot block itself without a side restriction", () => {
     const owner = holder(10, { definition: {
-        blocker: { layer: "GROUND", rules: [], capacity: 2, geometry: { radius: 1 } },
+        blocker: { layer: "GROUND", rules: [], capacity: 2, radius: 1 },
         layer: { type: "GROUND" },
         blockable: { volume: 1 },
     } });
@@ -88,7 +88,7 @@ test("explicit ALLY and NEUTRAL policies allow those targets instead of ENEMY ta
     for (const side of ["ALLY", "NEUTRAL"]) {
         const battle = acquire(fixture([
             holder(10, { definition: {
-                blocker: { layer: "GROUND", capacity: 2, geometry: { radius: 1 }, rules: [sides(side)] },
+                blocker: { layer: "GROUND", capacity: 2, radius: 1, rules: [sides(side)] },
             } }),
             target(20, { side }), target(21),
         ]));
@@ -100,7 +100,7 @@ test("explicit ALLY and NEUTRAL policies allow those targets instead of ENEMY ta
 test("one side policy can admit both ALLY and NEUTRAL targets", () => {
     const battle = acquire(fixture([
         holder(10, { definition: {
-            blocker: { layer: "GROUND", capacity: 3, geometry: { radius: 1 }, rules: [sides("ALLY", "NEUTRAL")] },
+            blocker: { layer: "GROUND", capacity: 3, radius: 1, rules: [sides("ALLY", "NEUTRAL")] },
         } }),
         target(20, { side: "ALLY" }), target(21, { side: "NEUTRAL" }), target(22),
     ]));
@@ -199,7 +199,7 @@ test("existing blocking is retained beyond acquisition distance and radius chang
     const currentUnit5 = getUnit(battle, 20);
     battle = replaceUnit(battle, { ...currentUnit5, position: [8, 1] });
     const currentUnit6 = getUnit(battle, 10);
-    battle = replaceUnit(battle, { ...currentUnit6, blocker: { ...currentUnit6.blocker, geometry: { radius: 0 } } });
+    battle = replaceUnit(battle, { ...currentUnit6, blocker: { ...currentUnit6.blocker, radius: 0 } });
     assert.equal(getUnit(battle, 10).blocker.blocked[0], stored);
     assert.equal(ownerId(battle), 10);
     battle = blocking.release(battle, { id: 20 });

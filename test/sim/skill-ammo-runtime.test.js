@@ -103,7 +103,7 @@ function scenario({ ammo = 1, targets = 1, interrupt = false, windupTicks = 0, o
     id: "ammo-actor", spatialPresence: {}, vitality: { maxHp: 10000, defense: 0, resistance: 0 }, offense: { attack: 100 },
     allegiance: { side: "ALLY" },
     layer: { type: "GROUND" }, hitbox: { shape: hit },
-    blocker: { layer: "GROUND", rules: [], capacity: 0, geometry: { radius: 0.1 } }, skill: { initialize: battle => createSkill(battle, skill) },
+    blocker: { layer: "GROUND", rules: [], capacity: 0, radius: 0.1 }, skill: { initialize: battle => createSkill(battle, skill) },
     action: actionCapability(action),
   };
   const receiver = { hooks: [],

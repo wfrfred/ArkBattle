@@ -193,7 +193,7 @@ test("hole removes eligible enemies while preserving allies and airborne units",
 
 test("smog loses invisibility while blocking and restores it three seconds after release", () => {
     const configured = setup([terrain.smog.create({}), terrain.normal.create({})], [
-        unit(0, 0, { blocker: { layer: "GROUND", rules: [], capacity: 1, geometry: { radius: 0.7 } } }),
+        unit(0, 0, { blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 0.7 } }),
         unit(1, 0, { allegiance: { side: "ENEMY" }, blockable: { volume: 1 } }),
     ], terrain.smog);
     let battle = at(configured.battle, 0);

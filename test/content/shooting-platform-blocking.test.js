@@ -27,7 +27,7 @@ function passengerDefinition(extra = {}) {
     return { hooks: [],
         id: "platform-passenger", occupancy: { slot: "OCCUPANT" }, spatialPresence: {},
         allegiance: { side: "ALLY" }, vitality: { maxHp: 100, defense: 0, resistance: 0 },
-        blocker: { layer: "GROUND", capacity: 1, geometry: { radius: 1 }, rules: [sides("ENEMY")] }, deployable: profile,
+        blocker: { layer: "GROUND", capacity: 1, radius: 1, rules: [sides("ENEMY")] }, deployable: profile,
         ...extra,
     };
 }

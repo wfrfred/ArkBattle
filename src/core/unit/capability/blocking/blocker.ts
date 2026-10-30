@@ -11,19 +11,15 @@ import type { Rule } from "./rule.js";
 
 export type Layer = "GROUND" | "AIR";
 
-export interface Geometry {
-    readonly radius: number;
-}
-
-export const DEFAULT_GEOMETRY: Readonly<Record<Layer, Geometry>> = {
-    GROUND: { radius: 0.7071 },
-    AIR: { radius: 0.8944 },
+export const DEFAULT_RADIUS: Readonly<Record<Layer, number>> = {
+    GROUND: 0.7071,
+    AIR: 0.8944,
 };
 
 export interface Definition {
     readonly capacity: number;
     readonly layer: Layer;
-    readonly geometry?: Geometry;
+    readonly radius?: number;
     readonly rules: readonly Rule[];
 }
 
@@ -31,7 +27,7 @@ export interface State {
     readonly blocked: readonly Ref<Unit & Blockable>[];
     readonly capacity: readonly contribution.Contribution<readonly attribute.Modifier[]>[];
     readonly layer: Layer;
-    readonly geometry: Geometry;
+    readonly radius: number;
     readonly rules: readonly Rule[];
     readonly acquired: readonly Hook<Unit & Blocker>[];
     readonly released: readonly Hook<Unit & Blocker>[];
@@ -49,9 +45,9 @@ export function hasBlocker<U extends Unit>(unit: U): unit is U & Blocker {
 }
 
 export function initialize(battle: BattleState, definition: Definition): Result<State> {
-    const geometry = definition.geometry ?? DEFAULT_GEOMETRY[definition.layer];
+    const radius = definition.radius ?? DEFAULT_RADIUS[definition.layer];
     assertNonnegativeSafeInteger(definition.capacity, "blocking capacity");
-    assertNonnegativeNumber(geometry.radius, "block radius");
+    assertNonnegativeNumber(radius, "block radius");
 
     return {
         state: battle,
@@ -59,7 +55,7 @@ export function initialize(battle: BattleState, definition: Definition): Result<
             blocked: [],
             capacity: [],
             layer: definition.layer,
-            geometry,
+            radius,
             rules: definition.rules,
             acquired: [],
             released: [],
@@ -91,19 +87,19 @@ export function removeRule(state: State, id: string): State {
     return rules === state.rules ? state : { ...state, rules };
 }
 
-function setCapacityContributions(state: State, capacity: State["capacity"]): State {
-    return capacity === state.capacity ? state : { ...state, capacity };
-}
-
 export function setCapacityContribution(
     state: State,
     entry: contribution.Contribution<readonly attribute.Modifier[]>,
 ): State {
-    return setCapacityContributions(state, contribution.set(state.capacity, entry));
+    const capacity = contribution.set(state.capacity, entry);
+
+    return capacity === state.capacity ? state : { ...state, capacity };
 }
 
 export function removeCapacityContribution(state: State, id: string): State {
-    return setCapacityContributions(state, contribution.remove(state.capacity, id));
+    const capacity = contribution.remove(state.capacity, id);
+
+    return capacity === state.capacity ? state : { ...state, capacity };
 }
 
 export function resolveCapacity(definition: Definition, state: State): number {

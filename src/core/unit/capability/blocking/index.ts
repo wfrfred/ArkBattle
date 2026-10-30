@@ -15,7 +15,6 @@ export type {
     State as BlockerState,
     Blocker,
     Layer,
-    Geometry,
 } from "./blocker.js";
 
 export {
