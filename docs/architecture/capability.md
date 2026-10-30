@@ -133,7 +133,9 @@ Blocker 的 capacity 表示可用阻挡数，Blockable 的 volume 表示占用�
 
 两端 Definition 保存基础数值，State 保存按来源登记的静态 Contribution 与 Rule。Blocker 自己定义 Layer = GROUND | AIR，表示能够阻挡的目标层，不依赖宿主自身的 Layer Capability。Blocker Definition 的 layer、rules 必填；无规则时明确写 []。radius 可选，省略时 Core 为 GROUND 提供半径 0.7071、为 AIR 提供 0.8944；State 保存当前 layer 与实际 radius。初始化和切层均采用 definition.radius ?? DEFAULT_RADIUS[layer]，显式半径覆盖在切层后仍保持。普通 Content 不再重复配置标准半径，内部默认半径常量不作为公共配置导出。
 
-capacity／volume 由 resolveCapacity／resolveVolume 求值。capacity 使用 attribute.Modifier 的四段属性公式及 ties-to-even 整数化；volume 使用 Contribution<number>，筛选互斥胜者后累加整数追加量，不复用属性公式。项目约定 capacity 下限为 0，volume 下限为 1，volume 的基础值要求正整数；贡献将占用数降到 0 或负值时仍占用 1，不借零占用表达不可被阻挡。
+capacity／volume 由 resolveCapacity／resolveVolume 求值。Blocking 的容量 Modifier 为 `{ type: "ADD", value: number } | { type: "ZERO" }`，State.capacity 与 setCapacityContribution 均使用 Contribution<readonly Modifier[]>。通用 Contribution 只选择生效来源，Blocking 再展平 Modifier 数组：任一有效 ZERO 使容量直接为 0，否则将全部 ADD 加到基础 capacity，沿用 ties-to-even 整数化及下限 0。互斥未胜出的 ZERO 不生效，撤销有效 ZERO 后重新按剩余贡献计算。这是项目容量接口的明确收紧，不将其表述为新核实的原生公式，其他领域的 Attribute 协议保持各自职责。
+
+volume 使用 Contribution<number>，筛选互斥胜者后累加整数追加量。项目约定 volume 下限为 1，基础值要求正整数；贡献将占用数降到 0 或负值时仍占用 1，不借零占用表达不可被阻挡。
 
 公共 Relation、Context、Hook、Key 归 unit/capability/blocking/contract.ts，与能力类型、局部登记接口一起由 capability/blocking/index.ts 导出。battle/blocking/index.ts 仅提供关系查询与完整操作；派发实现归 battle/blocking/hook.ts，内部 Change 留在 operations.ts，不扩为公共变更协议。
 

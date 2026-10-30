@@ -2,7 +2,6 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import * as registry from "../../../hook.js";
 import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import * as contribution from "../../contribution/contribution.js";
-import * as attribute from "../../contribution/attribute.js";
 import type { Unit } from "../../unit.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Blockable } from "./blockable.js";
@@ -10,6 +9,8 @@ import type { Hook, Key } from "./contract.js";
 import type { Rule } from "./rule.js";
 
 export type Layer = "GROUND" | "AIR";
+
+export type Modifier = { readonly type: "ADD"; readonly value: number } | { readonly type: "ZERO" };
 
 export const DEFAULT_RADIUS: Readonly<Record<Layer, number>> = {
     GROUND: 0.7071,
@@ -25,7 +26,7 @@ export interface Definition {
 
 export interface State {
     readonly blocked: readonly Ref<Unit & Blockable>[];
-    readonly capacity: readonly contribution.Contribution<readonly attribute.Modifier[]>[];
+    readonly capacity: readonly contribution.Contribution<readonly Modifier[]>[];
     readonly layer: Layer;
     readonly radius: number;
     readonly rules: readonly Rule[];
@@ -89,7 +90,7 @@ export function removeRule(state: State, id: string): State {
 
 export function setCapacityContribution(
     state: State,
-    entry: contribution.Contribution<readonly attribute.Modifier[]>,
+    entry: contribution.Contribution<readonly Modifier[]>,
 ): State {
     const capacity = contribution.set(state.capacity, entry);
 
@@ -103,10 +104,17 @@ export function removeCapacityContribution(state: State, id: string): State {
 }
 
 export function resolveCapacity(definition: Definition, state: State): number {
-    const value = Math.max(
-        0,
-        attribute.apply(definition.capacity, contribution.resolve(state.capacity).flat()),
-    );
+    let addition = 0;
+
+    for (const modifier of contribution.resolve(state.capacity).flat()) {
+        if (modifier.type === "ZERO") {
+            return 0;
+        }
+
+        addition += modifier.value;
+    }
+
+    const value = Math.max(0, definition.capacity + addition);
     const lower = Math.floor(value);
 
     return value - lower === 0.5 ? lower + (lower % 2) : Math.round(value);

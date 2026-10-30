@@ -4,7 +4,7 @@ Blocking 负责阻挡关系的建立、解除及必要维护。本文描述两�
 
 Blocker／Blockable 的数值与局部 State 接口见 [Capability API](capability.md#blocking)。状态归属与同步返回契约见 [函数式内核](functional-core.md)。
 
-关系查询与公开结算从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入，两端 Capability 的类型与局部变换从 [unit/capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入。Blocking 自己定义 Layer；公共 Layer、Relation、Context、Hook、Key 由 Capability 入口导出，Battle 入口只提供查询与操作，不重复转发这些类型。[battle/blocking/hook.ts](../../src/core/battle/blocking/hook.ts) 只实现派发。整批更新的准备、差分、通知及维护在 operations.ts 内保持有序内聚，Change 是该文件内未导出的变更类型；Core 按需精确依赖阶段接口，不将它们扩为内容 API。
+关系查询与公开结算从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入，两端 Capability 的类型与局部变换从 [unit/capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入。Blocking 自己定义 Layer 与容量 Modifier；公共 Layer、Modifier、Relation、Context、Hook、Key 由 Capability 入口导出，Battle 入口只提供查询与操作，不重复转发这些类型。[battle/blocking/hook.ts](../../src/core/battle/blocking/hook.ts) 只实现派发。整批更新的准备、差分、通知及维护在 operations.ts 内保持有序内聚，Change 是该文件内未导出的变更类型；Core 按需精确依赖阶段接口，不将它们扩为内容 API。
 
 ## 已确定的职责与调度政策
 
@@ -34,6 +34,10 @@ Blocker 的配置与当前状态明确区分：
 ```typescript
 export type Layer = "GROUND" | "AIR";
 
+export type Modifier =
+    | { readonly type: "ADD"; readonly value: number }
+    | { readonly type: "ZERO" };
+
 interface Definition {
     readonly capacity: number;
     readonly layer: Layer;
@@ -56,9 +60,14 @@ interface BlockableState {
 interface BlockerState {
     readonly layer: Layer;
     readonly radius: number;
+    readonly capacity: readonly Contribution<readonly Modifier[]>[];
     readonly blocked: readonly Ref<Unit & Blockable>[];
 }
 ```
+
+容量贡献使用 Blocking 自己的 Modifier：ADD 追加数值，ZERO 将最终容量置零。setCapacityContribution(state, entry) 接收 Contribution<readonly Modifier[]>，通用 Contribution 只负责按来源登记、替换、移除及互斥选择。Blocking 的 resolveCapacity 先选择生效来源，再展平其 Modifier 数组；出现任一有效 ZERO 时直接返回 0，否则在 Definition.capacity 上累加全部 ADD，再按既有 ties-to-even 整数化和下限 0 求值。未胜出来源里的 ZERO 不影响结果；撤销有效 ZERO 后按剩余生效贡献重新计算。
+
+这项 ADD／ZERO 协议是项目对容量修正接口的收紧，不作为原生全体阻挡数公式的调查结论，也不改变其他领域的 Attribute 修正协议。Blockable 的 volume 仍使用整数追加量与下限 1。
 
 两端字段不具有对等写入语义。Blockable 的归属变化驱动 Blocker 有序关联的增量维护；Blocker 列表不是第二个接敌请求入口，普通 Content 不任意写入它。归属的建立和解除由 Blocking 完整操作发起，不能把直接写入 Ref 当作绕过资格检查的入口。`unit.update()` 对 null → A 复用取得资格、距离及容量检查；不合格的直接写入属于契约错误，在关系关联写入和业务通知之前抛出异常，不先通知取得再解除。
 

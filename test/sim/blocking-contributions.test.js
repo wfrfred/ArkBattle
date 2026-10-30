@@ -21,7 +21,6 @@ import {
 } from "../../dist/core/unit/capability/blocking/blockable.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as contribution from "../../dist/core/unit/contribution/contribution.js";
-import * as modifier from "../../dist/core/unit/contribution/attribute.js";
 import { compileAttributeModifiers, parseAttributeModifiers } from "../../dist/data/arknights/modifier.js";
 import { compileBuffStacking, parseBuffStacking } from "../../dist/data/arknights/buff-stacking.js";
 import {
@@ -98,35 +97,24 @@ test("blocking initialization accepts plain definitions and validates them throu
     }
 });
 
-test("blocking capacity: immutable updates retain sampled contributions and resolve ties to even after clamping", () => {
+test("blocking capacity: immutable additions resolve ties to even after clamping", () => {
     const definition = { layer: "GROUND", rules: [], capacity: 3, radius: 1 };
     const state = initializeBlockerState(fixtureBattle(0), definition).value;
     assert.equal(definition.capacity, 3);
     assert.deepEqual(state.capacity, []);
     assert.equal(resolveCapacity(definition, state), 3);
-    const modified = {
-        ...state,
-        capacity: contribution.set(
-            [],
-            entry(
-                "arithmetic",
-                modifier.create({
-                    addition: 1,
-                    multiplier: 0.5,
-                    finalAddition: 1,
-                    finalScaler: 2,
-                }),
-            ),
-        ),
-    };
-    assert.equal(resolveCapacity(definition, modified), 14);
-    const disabled = {
-        ...modified,
-        capacity: contribution.remove(modified.capacity, "arithmetic"),
-    };
-    assert.deepEqual(disabled.capacity, []);
-    assert.equal(resolveCapacity(definition, disabled), 3);
-    assert.equal(resolveCapacity(definition, modified), 14);
+    const modified = setCapacityContribution(
+        setCapacityContribution(state, entry("first", { type: "ADD", value: 1.5 })),
+        entry("second", { type: "ADD", value: 2.5 }),
+    );
+    assert.equal(resolveCapacity(definition, modified), 7);
+    const reduced = removeCapacityContribution(modified, "first");
+    assert.equal(resolveCapacity(definition, reduced), 6);
+    const restored = removeCapacityContribution(reduced, "second");
+    assert.deepEqual(restored.capacity, []);
+    assert.equal(resolveCapacity(definition, restored), 3);
+    assert.deepEqual(state.capacity, []);
+    assert.equal(resolveCapacity(definition, modified), 7);
     for (const [value, expected] of [
         [-3, 0],
         [-0.5, 0],
@@ -141,15 +129,50 @@ test("blocking capacity: immutable updates retain sampled contributions and reso
             ...state,
             capacity: contribution.set(
                 [],
-                entry("rounding", modifier.create({ finalAddition: value - 3 })),
+                entry("rounding", { type: "ADD", value: value - 3 }),
             ),
         };
         assert.equal(resolveCapacity(definition, result), expected, `resolved ${value}`);
     }
 });
 
+test("blocking capacity: ZERO overrides additions from every source and removing it restores them", () => {
+    const owner = blocker();
+    let state = setCapacityContribution(owner.blocker, {
+        id: "a-additions", value: [{ type: "ADD", value: 10 }, { type: "ADD", value: -1 }],
+    });
+    state = setCapacityContribution(state, {
+        id: "z-additions", value: [{ type: "ADD", value: 20 }],
+    });
+    assert.equal(resolveCapacity(owner.definition.blocker, state), 32);
+    for (const zeroId of ["0-zero", "m-zero", "zz-zero"]) {
+        const zeroed = setCapacityContribution(state, {
+            id: zeroId, value: [{ type: "ADD", value: 100 }, { type: "ZERO" }, { type: "ADD", value: 100 }],
+        });
+        assert.equal(resolveCapacity(owner.definition.blocker, zeroed), 0, zeroId);
+        assert.equal(resolveCapacity(owner.definition.blocker, removeCapacityContribution(zeroed, zeroId)), 32);
+    }
+    assert.equal(resolveCapacity(owner.definition.blocker, state), 32);
+});
+
+test("blocking capacity: exclusive group selection happens before ZERO is applied", () => {
+    const owner = blocker();
+    const zeroed = setCapacityContribution(owner.blocker, {
+        id: "zero", value: [{ type: "ZERO" }], group: { id: "capacity-rule", priority: 1 },
+    });
+    const selected = setCapacityContribution(zeroed, {
+        id: "addition", value: [{ type: "ADD", value: 2 }], group: { id: "capacity-rule", priority: 2 },
+    });
+    assert.equal(resolveCapacity(owner.definition.blocker, selected), 5);
+    const fallback = removeCapacityContribution(selected, "addition");
+    assert.equal(resolveCapacity(owner.definition.blocker, fallback), 0);
+    assert.equal(resolveCapacity(owner.definition.blocker, removeCapacityContribution(fallback, "zero")), 3);
+    const independent = setCapacityContribution(selected, { id: "independent", value: [{ type: "ZERO" }] });
+    assert.equal(resolveCapacity(owner.definition.blocker, independent), 0);
+});
+
 test("blocking capacity: explicit refresh and lifecycle output changes preserve base capacity and unrelated HP", () => {
-    const setting = output((instance) => [modifier.create({ addition: instance.data.amount })]);
+    const setting = output((instance) => [{ type: "ADD", value: instance.data.amount }]);
     const effect = contributionEffect("capacity", { amount: -1 }, setting);
     const initialized = blocker();
     const owner = { ...initialized, vitality: { ...initialized.vitality, hp: 50 } };
@@ -349,13 +372,14 @@ test("blocking capacity: native stack renewal and terminal cleanup update real b
     const raw = fixture("enemy_mcnist_block_cnt_advance");
     const rule = compileBuffStacking(parseBuffStacking(raw.node._buff));
     const compiled = nativeModifier(raw);
-    const setting = output((instance) => [
-        compiled.sample({
+    const setting = output((instance) => {
+        const sampled = compiled.sample({
             blackboard: new Map([["block_cnt", -1]]),
             stackCount: rule.validStackCount(instance.data.stackCount),
             readSourceAttribute: () => undefined,
-        }),
-    ]);
+        });
+        return [{ type: "ADD", value: sampled.addition }];
+    });
     let content;
     content = contributionEffect(
         raw.node._buff.buffKey,
@@ -415,13 +439,15 @@ test("blocking capacity: native stack renewal and terminal cleanup update real b
 test("blocking capacity: native zero scaler releases weighted targets and restores capacity independently of their volume", () => {
     const raw = fixture("redace[taunt]");
     const compiled = nativeModifier(raw);
-    const setting = output(() => [
-        compiled.sample({
+    const setting = output(() => {
+        const sampled = compiled.sample({
             blackboard: new Map(),
             stackCount: 1,
             readSourceAttribute: () => undefined,
-        }),
-    ]);
+        });
+        assert.equal(sampled.finalScaler, 0);
+        return [{ type: "ZERO" }];
+    });
     const content = contributionEffect(raw.node._buff.buffKey, {}, setting);
     const h = battlefield([blocker(), enemy(1, 2), enemy(2), enemy(3, 4)]);
     assert.deepEqual(h.blocked(), [1, 2]);
@@ -458,8 +484,8 @@ test("blocking capacity: replacing contribution entries without changing the res
     const changed = {
         ...owner,
         blocker: setCapacityContribution(
-            setCapacityContribution(owner.blocker, entry("positive", modifier.create({ addition: 1 }))),
-            entry("negative", modifier.create({ addition: -1 })),
+            setCapacityContribution(owner.blocker, entry("positive", { type: "ADD", value: 1 })),
+            entry("negative", { type: "ADD", value: -1 }),
         ),
     };
     assert.notEqual(changed.blocker.capacity, owner.blocker.capacity);
@@ -469,7 +495,7 @@ test("blocking capacity: replacing contribution entries without changing the res
     assert.equal(h.state.occupancy, before.occupancy);
     assert.deepEqual(unitsAt(h.state, [0, 0]).map(unit => unit.id), unitsAt(before, [0, 0]).map(unit => unit.id));
     assert.equal(h.state.navigation, before.navigation);
-    const refreshed = ({ ...h.state.units.get(0), blocker: setCapacityContribution(h.state.units.get(0).blocker, entry("positive", modifier.create({ addition: 1.1 }))) });
+    const refreshed = ({ ...h.state.units.get(0), blocker: setCapacityContribution(h.state.units.get(0).blocker, entry("positive", { type: "ADD", value: 1.1 })) });
     assert.equal(capacityOf(refreshed), 3);
     h.commit({ ...h.state, units: new Map([...h.state.units, ...[refreshed].map(unit => [unit.id, unit])]) });
     assert.equal(h.state.units.get(0).blocker.blocked, before.units.get(0).blocker.blocked);

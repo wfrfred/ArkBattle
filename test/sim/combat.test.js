@@ -339,7 +339,7 @@ test('core combat: immutable updates preserve earlier combat state', () => {
     layer: { ...operator.layer, type: 'AIR' },
     targetable: setRestriction(operator.targetable,
       { id: 'changed-targeting', value: { kind: Symbol('changed-targeting'), allows: () => false } }),
-    blocker: { ...operator.blocker, capacity: contribution.set([], { id: 'disabled-capacity', value: [modifier.create({ finalScaler: 0 })],
+    blocker: { ...operator.blocker, capacity: contribution.set([], { id: 'disabled-capacity', value: [{ type: 'ZERO' }],
     }) },
     vitality: { ...operator.vitality, hp: 0 },
   };

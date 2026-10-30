@@ -10,7 +10,6 @@ import { createTile } from "./tiles.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as query from "../../dist/core/battle/blocking/index.js";
 import * as blocker from "../../dist/core/unit/capability/blocking/index.js";
-import * as attribute from "../../dist/core/unit/contribution/attribute.js";
 
 export function fixture(units = [], { rows = 3, columns = 12 } = {}) {
     const tile = createTile({
@@ -68,7 +67,7 @@ export function capacity(battle, id, value) {
     return updateUnit(battle, [{
         ...unit,
         blocker: blocker.setCapacityContribution(unit.blocker, {
-            id: "test-capacity", value: [attribute.create({ addition: value - unit.definition.blocker.capacity })],
+            id: "test-capacity", value: [{ type: "ADD", value: value - unit.definition.blocker.capacity }],
         }),
     }]);
 }

@@ -24,7 +24,7 @@ import type { Vitality, Input as VitalityInput } from ${module("unit/capability/
 import { resolveDefense } from ${module("unit/capability/vitality/index")};
 import { setDefenseContribution, setMaxHpContribution } from ${module("unit/capability/vitality/index")};
 import { setAttackContribution, type Input as AttackInput, type Offense } from ${module("unit/capability/offense/index")};
-import { setCapacityContribution, setHook as setBlockerHook, type Blocker } from ${module("unit/capability/blocking/blocker")};
+import { setCapacityContribution, setHook as setBlockerHook, type Blocker, type Modifier as BlockingModifier } from ${module("unit/capability/blocking/blocker")};
 import { setVolumeContribution, setHook as setBlockableHook, type Blockable } from ${module("unit/capability/blocking/blockable")};
 import { setBlockerRule, setBlockableRule, type Rule as BlockingRule } from ${module("unit/capability/blocking/index")};
 import { blockerOf, blocked, usedCapacity } from ${module("battle/blocking/query")};
@@ -117,7 +117,7 @@ host.effects.get<{charges:number},Vitality>(0);
 declare const capabilityHost:Unit & Vitality & Offense & Blocker & Blockable & Locomotion & Route & Action;
 const blockingRule:BlockingRule={id:'pair',allows(current,blocker,blockable){
  const state:BattleState=current;
- const capacity:readonly Contribution<readonly Modifier[]>[]=blocker.blocker.capacity;
+ const capacity:readonly Contribution<readonly BlockingModifier[]>[]=blocker.blocker.capacity;
  const volume:readonly Contribution<number>[]=blockable.blockable.volume;
  // @ts-expect-error the blocking endpoint does not prove a Blockable capability.
  blocker.blockable;
@@ -158,6 +158,10 @@ capabilityHost.blocker.enabled;
 // @ts-expect-error eligibility is expressed through Rules.
 capabilityHost.blockable.enabled;
 const fixed:Contribution<readonly Modifier[]>={id:'fixed',value:[]};
+const blockingFixed:Contribution<readonly BlockingModifier[]>={id:'blocking-fixed',value:[{type:'ADD',value:1},{type:'ZERO'}]};
+setCapacityContribution(capabilityHost.blocker,blockingFixed);
+// @ts-expect-error blocking capacity uses ADD/ZERO rather than Attribute modifiers.
+setCapacityContribution(capabilityHost.blocker,fixed);
 const dynamic:Contribution<MovementInput>={id:'dynamic',value:(current,self)=>{
  const state:BattleState=current;
  const speed:number=self.definition.locomotion.speed;

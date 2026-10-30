@@ -65,7 +65,10 @@ const entries = [
 
 test("local contribution updates share untouched state and leave earlier versions stable", () => {
     for (const [initial, field, set, remove] of entries) {
-        const entry = { id: "bonus", value: field === "volume" ? 10 : [create({ addition: 10 })] };
+        const value = field === "volume" ? 10
+            : field === "capacity" ? [{ type: "ADD", value: 10 }]
+            : [create({ addition: 10 })];
+        const entry = { id: "bonus", value };
         const added = set(initial, entry);
         assert.equal(initial[field].length, 0, field);
         assert.equal(added[field][0], entry, field);

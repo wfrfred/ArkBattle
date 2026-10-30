@@ -30,7 +30,6 @@ import { setRule as setBlockerRule } from "../../dist/core/unit/capability/block
 import { sides } from "../../dist/core/unit/capability/blocking/index.js";
 import { build } from "../../dist/core/battlefield/navigation/field.js";
 import * as contribution from "../../dist/core/unit/contribution/contribution.js";
-import * as modifier from "../../dist/core/unit/contribution/attribute.js";
 
 const fieldCell = (overrides = {}) => ({
   passable: true, cost: 1, departures: { UP: true, RIGHT: true, DOWN: true, LEFT: true }, ...overrides,
@@ -322,7 +321,7 @@ test('complete battle updates preserve relation history and release on current e
     assert.deepEqual(blockedIds(acquired), [11]);
   }
   for (const blockerState of [
-    { ...acquired.battlefield.units.get(10).blocker, capacity: contribution.set([], { id: 'capacity-zero', value: [modifier.create({ finalScaler: 0 })] }) },
+    { ...acquired.battlefield.units.get(10).blocker, capacity: contribution.set([], { id: 'capacity-zero', value: [{ type: 'ZERO' }] }) },
     setBlockerRule(acquired.battlefield.units.get(10).blocker, { id: 'cannot-block', allows: () => false }),
   ]) {
     const changed = updateUnit(acquired, [{ ...acquired.battlefield.units.get(10), blocker: blockerState }]);
