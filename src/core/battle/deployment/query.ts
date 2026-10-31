@@ -8,11 +8,6 @@ import { get as getTile } from "../../battlefield/map/map.js";
 import { at } from "../../battlefield/occupancy.js";
 import type { State as BattlefieldState } from "../../battlefield/state.js";
 import type { State as BattleState } from "../state.js";
-import type * as card from "./card.js";
-
-export function getCard(state: BattleState, id: card.Id): card.Card | undefined {
-    return state.deployment.cards.find((current) => current.id === id);
-}
 
 export function usedSlots(state: BattleState): number {
     let slots = 0;
@@ -27,7 +22,7 @@ export function usedSlots(state: BattleState): number {
 }
 
 export interface DeploymentRequest {
-    readonly profile: DeployableDefinition;
+    readonly profile: Pick<DeployableDefinition, "placement" | "allowedSiteConditions">;
     readonly tile: TilePosition;
     readonly slot?: Slot;
 }

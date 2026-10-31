@@ -1,41 +1,100 @@
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
+import type { Ref } from "../../common/ref.js";
 import type { State as BattleState, Result } from "../state.js";
-import * as card from "./card.js";
+import {
+    operatorSupply,
+    ref,
+    type Card,
+    type Definition,
+    type StatefulDefinition,
+    type Initial,
+} from "./card/card.js";
+import { get, all } from "./card/query.js";
+import * as card from "./card/state.js";
 import { changeDp } from "./deployment.js";
 
-export function updateCard(state: BattleState, value: card.Card): BattleState {
+export function replaceCard(state: BattleState, value: Card<any>): BattleState {
     const index = state.deployment.cards.findIndex((current) => current.id === value.id);
-    if (index < 0) {
-        throw new RangeError(`unknown deployment card ${value.id}`);
-    }
     if (state.deployment.cards[index] === value) {
         return state;
     }
 
     const cards = [...state.deployment.cards];
-    cards[index] = value;
+    cards[index] = value as Card;
 
     return { ...state, deployment: { ...state.deployment, cards } };
 }
 
-export function addCard(state: BattleState, definition: card.Input): Result<card.Id> {
-    const id = state.execution.nextCardId;
-    assertNonnegativeSafeInteger(id + 1, "deployment card allocation progress");
-    const value = card.create(id, definition);
+export function addCard<S extends object>(
+    battle: BattleState,
+    definition: StatefulDefinition<S>,
+    initial?: Initial,
+): Result<Ref<Card<S>>>;
+export function addCard(
+    battle: BattleState,
+    definition: Definition,
+    initial?: Initial,
+): Result<Ref<Card>>;
+export function addCard(
+    battle: BattleState,
+    definition: Definition<any>,
+    initial: Initial = {},
+): Result<Ref<Card<any>>> {
+    const supply = initial.supply ?? operatorSupply;
+    const stock = initial.stock === undefined ? supply.stockLimit : initial.stock;
+    if (supply.stockLimit !== null) {
+        assertNonnegativeSafeInteger(supply.stockLimit, "card stock limit");
+    }
+    if (supply.activeLimit !== null) {
+        assertNonnegativeSafeInteger(supply.activeLimit, "card active limit");
+    }
+    if (stock !== null) {
+        assertNonnegativeSafeInteger(stock, "card stock");
+    }
+    if (
+        (supply.stockLimit !== null && (stock === null || stock > supply.stockLimit)) ||
+        (supply.recharge === "QUEUED" && stock === null)
+    ) {
+        throw new RangeError("card stock does not match its supply");
+    }
+
+    const id = battle.execution.nextCardId;
+    battle = { ...battle, execution: { ...battle.execution, nextCardId: id + 1 } };
+    const initialized = definition.deployable.card?.initialize(battle) ?? {
+        state: battle,
+        value: {},
+    };
+    battle = initialized.state;
+    const value: Card<any> = {
+        id,
+        definition,
+        supply,
+        state: initialized.value as object,
+        stock,
+        cooldown: null,
+        pendingReturns: 0,
+        costStage: 0,
+        costContributions: [],
+        redeployTimeContributions: [],
+    };
 
     return {
         state: {
-            ...state,
-            execution: { ...state.execution, nextCardId: id + 1 },
-            deployment: { ...state.deployment, cards: [...state.deployment.cards, value] },
+            ...battle,
+            deployment: { ...battle.deployment, cards: [...battle.deployment.cards, value] },
         },
-        value: id,
+        value: ref(value),
     };
 }
 
 export function advance(state: BattleState, tick: number): BattleState {
-    for (const value of state.deployment.cards) {
-        state = updateCard(state, card.advance(value, tick));
+    const candidates = all(state);
+
+    for (const candidate of candidates) {
+        const reference = ref(candidate);
+        const self = card.advance(get(state, reference)!, tick);
+        state = replaceCard(state, self);
+        state = self.definition.deployable.card?.onTick?.(state, self) ?? state;
     }
 
     let deployment = state.deployment;

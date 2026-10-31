@@ -27,9 +27,9 @@ Unit 是不可变数据，不是自主推进的运行时对象。`lifecycle` 属
 - Card ID 标识本场战斗中持续存在的可部署记录；普通干员退出场上后，这个记录继续保存进度。
 - Unit ID 标识本次场上实例。场上实例退出与 Card 消失是不同的事实。
 
-普通再次部署调用 `deploy(cardId, ...)`。默认创建标准 Capability 初态；确需跨部署保留的资源单独保存并显式转换，不保存整个旧 Unit 作为下次初态。普通干员 Card 对应至多一个场上实例；召唤物的库存与同时在场数量可以不同。
+普通再次部署调用 `deploy(battle, { card, tilePosition })`，业务接口使用 `Ref<Card>`。默认创建标准 Capability 初态；确需跨部署保留的资源单独保存并显式转换，不保存整个旧 Unit 作为下次初态。普通干员 Card 对应至多一个场上实例；召唤物的库存与同时在场数量可以不同。
 
-`unit.deployable.cardId` 允许为 null。例如关卡直接预置的干员未必存在对应待部署记录。是否发生部署业务由执行该操作的领域明确决定，不能从 cardId 非空、阵营为 ALLY 或“新注册 Unit”推导。
+`unit.deployable.card: Ref<Card> | null` 关联本次实例的来源 Card。例如关卡直接预置的干员未必存在对应待部署记录。是否发生部署业务由执行该操作的领域明确决定，不能从 card 非空、阵营为 ALLY 或“新注册 Unit”推导。
 
 阵营、当前玩家归属与原始责任归属分别表达，不在 Deployable State 中统一塞入 `side`。旧多人模式的地块 `playerSideMask` 不在支持范围内，不进入 Tile 或部署请求。
 
@@ -45,19 +45,24 @@ unit/capability/deployable/
 
 battle/deployment/
 ├── index.ts            显式公共查询、资源、部署与生命周期协作
-├── card.ts             单个 Card 的数据与局部转换
+├── card/
+│   ├── index.ts        Card 公共类型、Typed Ref 查询与完整写回
+│   ├── card.ts         Program、Definition、Card 与 ref
+│   ├── state.ts        供给、费用与冷却的内部纯计算
+│   ├── query.ts        Typed Ref 的 get／all
+│   └── operations.ts   私有 state、贡献、库存与当前冷却写回
 ├── deployment.ts       Definition、Input、State、初始化与局部 DP 转换
-├── query.ts            Card、已用额度、当前地块与占格资格查询
-├── resources.ts        Card 登记／写回及 Card、DP 时间推进
+├── query.ts            部署额度与当前地块／占格资格查询
+├── resources.ts        Card 创建与 Card、DP 时间推进
 ├── lifecycle.ts        Deployable prepare／leave Hook 与部署通知
 └── operations.ts       完整部署、撤退与 Command 处理
 ```
 
-上层通过两个领域各自的 index 导入公共契约。Deployable.initialize 自行登记 lifecycle.ts 提供的 prepare／leave Hook，分别负责退款与回卡；Unit 不依赖 Deployment。实际部署由 operations.ts 记录 UNIT_DEPLOYED，并在 add 返回后派发部署通知，Unit.add 不推断是否发生部署。resources.ts 的 updateCard 是内部完整写回，不从公共 index 导出。
+上层通过两个领域各自的 index 导入公共契约。Deployable.initialize 自行登记 lifecycle.ts 提供的 prepare／leave Hook，分别负责退款与回卡；Unit 不依赖 Deployment。实际部署由 operations.ts 记录 UNIT_DEPLOYED，并在 add 返回后派发部署通知，Unit.add 不推断是否发生部署。Card 的完整替换仅供 Core 内部使用，Content 调用带 Typed Ref 的字段或资源操作。
 
 ```typescript
 // unit/capability/deployable/capability.ts
-export interface Definition {
+export interface Definition<S extends object = object> {
     readonly cost: number;
     readonly redeployTicks: number;
     readonly slots: number;
@@ -67,10 +72,11 @@ export interface Definition {
         readonly rate: number;
         readonly limit: "BASE_COST" | "DEPLOYMENT_COST";
     };
+    readonly card?: Program<S>;
 }
 
 export interface State {
-    readonly cardId: CardId | null;
+    readonly card: Ref<Card> | null;
     readonly cost: number;
     readonly refundLimit: number;
     readonly refundAllowed: boolean;
@@ -78,7 +84,7 @@ export interface State {
 }
 
 export interface Deployable {
-    readonly definition: { readonly deployable: Definition };
+    readonly definition: { readonly deployable: Omit<Definition, "card"> };
     readonly deployable: State;
 }
 ```
@@ -91,7 +97,8 @@ export interface Deployable {
 | placement | 通常可部署于近战、远程或两类地块 |
 | allowedSiteConditions | 必填的场地条件 symbol 数组；由内容装配明确提供 |
 | refund | 内容配置的撤退返费率与上限策略，普通干员为 50%／BASE_COST |
-| State.cardId | 本次场上实例关联的持续待部署记录；允许无记录的实例 |
+| Definition.card | 可选的 Card 私有程序；由 Deployment 创建 Card 时初始化，不由 Unit initializer 执行 |
+| State.card | 本次场上实例关联的 Card Typed Ref；允许无记录的实例 |
 | State.cost | 此实例的部署费用属性，不等同于实际扣款，也不随 Card 后续费用变化 |
 | refundLimit | 部署时确定的本实例返费上限数值 |
 | refundAllowed | 此次部署是否允许返费，由创建流程明确赋值 |
@@ -103,13 +110,18 @@ slots 采用静态参数。选定技能或模组后固定的差异由内容装�
 
 地块覆写直接更新当前 Tile.state，TileBinding 已移除。SUPPORT 登记本身不覆写部署许可；平台内容按登记格显式改写，详见 [Terrain 与 Mechanism](terrain.md)。Occupancy 的 Definition 声明 OCCUPANT／SUPPORT 槽位，State.tile 保存当前登记地块，Field 自动维护双槽反向表，见 [Occupancy 与 Support](occupancy.md)；SpatialPresence 表达是否参与空间事实；Layer 表达 GROUND／AIR，均不能替代 Deployable。
 
-本次部署的 COST 属性与实际扣除的 DP 必须区分，也不能在撤退时读取 Card 的当前费用代替旧实例的属性。允许返费时按 `floor(min(State.cost × refund.rate, State.refundLimit))` 结算。基础上限从本次基础费用计算；采用 DEPLOYMENT_COST 策略时以上场费用属性为限。返费资格由具体操作确定，免费投递不必然禁止返费；直接预放的初态默认不允许返费，但不能从 cardId 为 null 推断所有实例都不能返费。[PRTS 部署费用](https://prts.wiki/w/部署费用#撤退返费) 提供玩法依据。
+本次部署的 COST 属性与实际扣除的 DP 必须区分，也不能在撤退时读取 Card 的当前费用代替旧实例的属性。允许返费时按 `floor(min(State.cost × refund.rate, State.refundLimit))` 结算。基础上限从本次基础费用计算；采用 DEPLOYMENT_COST 策略时以上场费用属性为限。返费资格由具体操作确定，免费投递不必然禁止返费；直接预放的初态默认不允许返费，但不能从 card 为 null 推断所有实例都不能返费。[PRTS 部署费用](https://prts.wiki/w/部署费用#撤退返费) 提供玩法依据。
 
 ## Card 与部署子系统
 
-Card 保存持续的待部署事实，是不可变值。静态 Definition 保存 Unit Definition、供给规则和随实例建立的导航 Modifier 配置；不在 Command 中临时传入这些内容。
+Card 是本场战斗中跨部署存在的不可变实体，保存在 Deployment，不是 Unit 或部署按钮。Card<S>.definition 直接引用原 Unit Definition，不包一层 definition.unit，也不复制或改写共享定义；supply 独立保存本次供给政策。Card 的 Definition<S> 是带 Deployable／Occupancy 与相应 Card 程序的 Unit Definition 类型，不是第二份内容定义。
 
 ```typescript
+interface Program<S extends object = object> {
+    readonly initialize: (battle: BattleState) => Result<S>;
+    readonly onTick?: (battle: BattleState, self: Card<S>) => BattleState;
+}
+
 interface Supply {
     readonly stockLimit: number | null;
     readonly activeLimit: number | null;
@@ -122,101 +134,95 @@ interface Cooldown {
     readonly durationTicks: number;
 }
 
-interface Card {
+interface Card<S extends object = object> extends Identified<{ readonly id: CardId }> {
     readonly id: CardId;
-    readonly definition: {
-        readonly unit: UnitDefinition & Deployable["definition"];
-        readonly supply: Supply;
-        readonly navigationModifiers?: readonly UnitNavigationModifierPlacement[];
-    };
+    readonly definition: Definition<S>;
+    readonly supply: Supply;
+    readonly state: S;
     readonly stock: number | null;
     readonly cooldown: Cooldown | null;
     readonly pendingReturns: number;
     readonly costStage: number;
     readonly costContributions: readonly Contribution<readonly attribute.Modifier[]>[];
-    readonly redeployContributions: readonly Contribution<readonly attribute.Modifier[]>[];
+    readonly redeployTimeContributions: readonly Contribution<readonly attribute.Modifier[]>[];
 }
 ```
 
+需要场下私有逻辑的内容在 Unit Definition 的 deployable.card 提供 Program<S>，包括 initialize 与可选 onTick；普通干员省略该字段，创建时取得空 state，不必另外编写 Card 内容。Deployment 创建 Card 时接续 initialize 返回的 BattleState；Card 的身份与私有 state 不随一次 Unit 离场重建。普通查询返回默认 object 的完整 Card，精确 Ref 或匹配已知 Unit Definition 的查询保留 S；异构类型擦除留在内部存储边界，不向 Content 返回 any。Deployable 守卫只证明部署所需配置与状态，保留已知 Unit Definition 中 Card 程序的私有类型，不将其覆盖为 Program<object>。
+
+每次普通部署仍重新初始化 Unit 的全部 Capability。Card.state 负责跨部署事实，Unit 自身的 enter／leave Hook 通过 deployable.card 的 Ref 显式读取、转换和写回这些数据。例如魔力在入场时转换为当前 SP，离场时从 Departure 读取剩余 SP 再保存回 Card；不保存整个旧 Unit，也不自动继承 HP、Skill、Effect 等状态。部署附加复用 Unit enter，不增加 Entry 阶段或 Card 的 Effect 容器。
+
 | 内容 | 职责 |
 | --- | --- |
-| id、definition | Card 身份与本场静态配置；基础费用／冷却仍取自 Unit.deployable Definition |
-| stockLimit、activeLimit | 库存上限与同 Card 在场上限，null 分别表示无限库存／不限在场数 |
+| id、definition | Card 身份与原 Unit Definition；基础费用／冷却取自 definition.deployable |
+| state | 具体内容跨部署保存的私有状态 |
+| supply.stockLimit、supply.activeLimit | 库存上限与同 Card 在场上限，null 分别表示无限库存／不限在场数 |
 | stock | 当前可用数量；null 表示无限供给，0 表示没有可用库存 |
 | cooldown | 当前周期的截止 Tick 与启动时长；不等同于基础 redeployTicks |
 | pendingReturns | 排队补充中等待完成的回收数量，不能由库存或在场数量推算 |
 | costStage | 本 Card 的费用惩罚进度，普通撤退／死亡增加，最多两个阶段 |
 | costContributions | 对当前费用的修正候选 |
-| redeployContributions | 对以后启动的冷却周期时长的修正候选 |
+| redeployTimeContributions | 对以后启动的冷却周期时长的修正候选 |
 
-普通干员供给默认无限库存、至多一个场上实例、RETURN 冷却，并启用费用惩罚。默认策略不是所有召唤物的规则，具体内容明确配置自身供给。
+普通干员供给默认无限库存、至多一个场上实例、RETURN 冷却，并启用费用惩罚。默认策略不是所有召唤物的规则，具体创建配置明确自身供给。
 
 - DEPLOYMENT：消耗库存时启动冷却，周期结束解除冷却；不自动补回库存。
 - RETURN：离场启动冷却，周期结束补回一个库存。
 - QUEUED：离场登记待回收数量，按顺序完成补充；有库存时可继续部署，不因补充周期正在运行而禁止消耗。
 
-每次有效回收都必须保留其供给事实。只保存一个截止时间的 RETURN 仅用于不会同时存在多个待回收实例的合法组合；多实例来源采用已明确的供给政策。不能让后一次回收覆盖前一次而丢失库存。RETURN 的实际构造约束和更多并行／串行政策仍待实现核对，见 DEPLOY-06。
+每次有效回收都必须保留其供给事实。只保存一个截止时间的 RETURN 仅用于不会同时存在多个待回收实例的合法组合；多实例来源采用已明确的供给政策。RETURN 的实际构造约束和更多并行／串行政策仍待核对，见 DEPLOY-06；本轮不改变既有 Supply 政策。
 
-库存、库存上限和同时在场上限是三个独立事实，不能相互推算。场上 Unit 的 cardId 是关联的权威事实，查询当前实例从 Battlefield 取得，不另存一份 `card.deployed[]`。实际返费属于完整离场结算，Card 局部转换只负责自己的供给、计时及费用进度。
+库存、库存上限和同时在场上限是三个独立事实。场上 Unit 的 deployable.card 是关联的权威事实，查询当前实例从 Battlefield 取得，不另存 card.deployed[]。实际返费属于完整离场结算，Card 内部纯转换只处理自己的供给、计时及费用进度。
 
-启动周期后，其截止 Tick 不因新登记的时长 Contribution 自动缩放；新周期读取新的有效时长。明确的缩短冷却操作只改变当前周期，超过当前剩余时长的部分不传给下一周期。零时长周期可在当前 Tick 完成。普通一 Tick 的刷新差异采用简单、确定的约定，不引入额外计时框架。
+setRedeployTimeContribution／removeRedeployTimeContribution 只影响以后启动的冷却，不缩放正在运行的截止 Tick。reduceCooldown／clearCooldown 处理当前周期，并按 Supply 完成到期与补回；排队供给仍可继续下个周期，不把多余缩短量传给它。零时长周期可在当前 Tick 完成。Deployment 固定阶段入口的 Card 候选，逐项读取当前 Card，先发布到期结果再调用其 onTick；新建 Card 不加入本轮候选，回调后不写回旧整份对象。
 
-Deployment 子系统保存静态 `initialDp / maxDp / dpRecoveryTicks / slotLimit`，以及运行时 `cards / dp / nextDpRecoveryAtTick`。dpRecoveryTicks 为 null 表示不自然回复，slotLimit 为 null 表示不限制部署额度；额度查询读取场上 Deployable Definition。达到 DP 上限时停止自然回复计时，扣费后重新开始。
+Deployment 保存静态 initialDp／maxDp／dpRecoveryTicks／slotLimit 与运行时 cards／dp／nextDpRecoveryAtTick。dpRecoveryTicks 为 null 表示不自然回复，slotLimit 为 null 表示不限制部署额度；额度查询读取场上 Deployable Definition。达到 DP 上限时停止自然回复计时，扣费后重新开始。
 
-Card 集合和 Deployment State 由 BattleState 显式接续，并在 Tick 成功后一起发布。Card ID 由 nextCardId 分配，独立于 Unit ID；初始化 Card 不消耗 Unit ID。Card 在登场内容执行前可用，内容不依赖第二份待部署记录。
+Card ID 由 nextCardId 分配，独立于 Unit ID；addCard 返回精确 Ref<Card<S>>，初始化 Card 不消耗 Unit ID。Card 集合与 Deployment State 随 BattleState 显式接续，不另设待部署记录镜像。Contribution 可用于 Card，但其登记与结算由 Card 领域负责；不复制 Unit Change 或公开完整 Card replace。
 
-Contribution 是泛型不可变数值候选，不依赖 Unit，可以用于 Card。Card 所属领域负责施加、撤销、求值及计时响应；公共 Contribution 不增加 owner、生命周期或 Card 状态。目录位置不改变这个依赖方向。
-
-不增加 nextCostContributions／nextRedeployContributions。先使用普通贡献集合；“下次部署后撤销”由具体来源接入对应操作，不能误作“下次开始冷却时使用一次”。确有必要时才引入独立集合，并先明确消费边界。
+本轮保留现有数值算法和 Supply 政策。费用分阶段取整与独立上限已有取证，多来源归并与再部署修正仍有证据缺口；这些差异后续独立收敛。未确定的 Rule、Hook、共享机会与排序框架不在本轮新增。
 
 ## API 与 Commands
 
-局部 Card 操作返回新 Card；完整领域结算接收并返回 BattleState 或 Result，不直接写入 Runtime。以下按实现职责列出接口，包含 Core 内部使用的 Card 变换与写回，不表示所有函数都属于 index 的公开范围。
+Card 内容从 battle/deployment/card/index.ts 使用模型、ref、get／all、数值查询与完整写回。state.ts 的局部 Card→Card 计算和完整替换供 Core 内部使用，不要求 Content 自行查对象、调用局部 setter 后再补写回。
 
 ```typescript
-// card.ts
-create(id, input, stock?): Card;
+// card/index.ts：普通查询使用默认 object，精确 Ref／Definition 查询保留私有 S
+ref(self): Ref<Card<S>>;
+get(battle, ref): Card<S> | undefined;
+get(battle, ref, definition): Card<S> | undefined;
+all(battle): Query<Card>;
 resolveBaseCost(card): number;
 resolveCost(card): number;
 resolveRedeployTicks(card): number;
-consume(card, tick): Card;
-recycle(card, tick, reason): Card;
-advance(card, tick): Card;
-recharge(card, count): Card;
-reduceCooldown(card, ticks, tick): Card;
-setCostContribution(card, contribution): Card;
-removeCostContribution(card, id): Card;
-setRedeployContribution(card, contribution): Card;
-removeRedeployContribution(card, id): Card;
 
-// query.ts
-getCard(state, cardId): Card | undefined;
-usedSlots(state): number;
+setState(battle, ref, nextState): BattleState;
+recharge(battle, ref, count): BattleState;
+reduceCooldown(battle, ref, ticks): BattleState;
+clearCooldown(battle, ref): BattleState;
+setCostContribution(battle, ref, contribution): BattleState;
+removeCostContribution(battle, ref, id): BattleState;
+setRedeployTimeContribution(battle, ref, contribution): BattleState;
+removeRedeployTimeContribution(battle, ref, id): BattleState;
 
-// deployment.ts：局部 DP 状态转换
-changeDp(deployment, amount, tick): DeploymentState;
-
-// resources.ts
-addCard(state, input): Result<CardId>;
-advance(state, tick): BattleState;
-updateCard(state, card): BattleState; // Core 内部完整写回
-
-// operations.ts
-deploy(state, request): Result<DeployOutcome>;
-retreat(state, unitId): BattleState;
+// deployment/index.ts
+addCard(battle, definition, options?: { supply?: Supply; stock?: number | null }): Result<Ref<Card<S>>>;
+deploy<T extends Card<any>>(battle, request: DeployRequest<T>): Result<DeployOutcome>;
+retreat(battle, unitId): BattleState;
 ```
 
-recordUnitDeployment、refundUnit、recycleUnitCard 与 notifyDeployed 的实现统一位于 lifecycle.ts；它们接收各阶段明确取得的业务载荷，不重新拼接完整 Unit 登记或离场流程。
+setState 只接收已经计算好的 state，用 Typed Ref 与 NoInfer 保持私有类型配对；其余操作只允许修改对应字段或资源。Content 不提交完整 Card，不使用通用 transform 写回。写回目标缺失时抛出 RangeError；给定结果值与当前值相同时保留原状态，身份、共享 Definition、供给及无关字段由 Core 保持。
 
-战斗 Input 可配置 `deployment: { definition, cards }`。Card 输入包含 unit、可选 supply 和 navigationModifiers；供给缺省采用普通干员规则。不配置该部分时，场下 Card 集合为空、初始 DP 为 0。
+Deployable 的 prepare／leave Hook 与 notifyDeployed 位于 lifecycle.ts；它们消费相应节点的明确业务载荷，不重新拼接 Unit 登记或离场流程。
 
-正常部署请求标识 cardId、地块和本次朝向。Card 已在战斗输入／创建阶段建立，Command 不临时带入任意 Unit Definition。工厂从 Card Definition 和本次部署参数初始化 Unit；刷怪和直接生成对象使用自身流程。方向是本次实例的事实，影响范围和方向相关业务；当前代码尚未接入该参数，见 DEPLOY-03。
+战斗 Input 可配置 deployment: { definition, cards }，cards 中每项为 `{ definition: 原 Unit Definition, supply?, stock? }`。这些条目只配置本次 Card 的创建，内容程序仍属于原 Unit Definition。供给缺省使用普通干员规则；不配置 Deployment 时，Card 集合为空、初始 DP 为 0。
+
+业务 deploy 请求使用 Card Ref 与地块；外部 Command 仍携带 cardId 编号，由命令边界转换为 Card Ref。Card 已在战斗输入／创建阶段建立，Command 不临时带入任意 Unit Definition。部署直接使用 card.definition 初始化新 Unit；刷怪和直接生成对象使用自身流程。本次方向仍未接入，见 DEPLOY-03。
 
 ```typescript
 type DeploymentCommand =
     | { readonly type: "DEPLOY_UNIT"; readonly cardId: CardId;
-        readonly tilePosition: TilePosition;
-        readonly direction: Direction }
+        readonly tilePosition: TilePosition }
     | { readonly type: "RETREAT_UNIT"; readonly unitId: UnitId };
 ```
 
@@ -306,13 +312,13 @@ setHook(ref: Ref<Unit & Deployable>, hook: DeployedHook): Change;
 removeHook(ref: Ref<Unit & Deployable>, id: string): Change;
 ```
 
-Deployed 是已发生部署的输入事实，unit 取自本次登记完成时的值；其中的 cardId 可以为 null。kind 表达本次方式，不是跳过费用／地形检查的权限开关。回调需要单位当前状态时，从传入 BattleState 查询，不把事实中的旧值当作持续更新的对象。
+Deployed 是已发生部署的输入事实，unit 取自本次登记完成时的值；其中的 deployable.card 可以为 null。kind 表达本次方式，不是跳过费用／地形检查的权限开关。回调需要单位当前状态时，从传入 BattleState 查询，不把事实中的旧值当作持续更新的对象。
 
 调用遵守公共 Hook 的 accepts／invoke 契约。自身部署动作和其他单位的部署响应均可登记；业务自行判断事实中的实例是不是自身。Effect 通过当前输入版本查询自己的存在和生效状态，控制资格并在结束时撤销登记。
 
 通知开始时按 Unit 存储顺序及各 Unit 内 Hook 登记顺序固定候选身份；每项执行前从最新返回版本重查所属实例、登记与资格。本次通知中新登记的 Hook 不补进当前列表。较早进入战场的观察者通常先于新实例在 enter 节点登记的 Hook，但不规定所有自身战吼都发生在他人响应之后：需要早执行的自身内容属于 enter 节点，需要部署通知的内容属于对应 Hook。具体内容若存在显著顺序依赖，以官方业务证据确定，不能仅凭一个通用顺序替代规则。
 
-普通敌人出生只走登场流程，不自动广播部署事实。创建者必须明确这是否是部署；新 Unit、ALLY 阵营和 cardId 非空都不是充分条件。自己与他人的部署响应共用这个入口，不建立两套通知协议。
+普通敌人出生只走登场流程，不自动广播部署事实。创建者必须明确这是否是部署；新 Unit、ALLY 阵营和 card 非空都不是充分条件。自己与他人的部署响应共用这个入口，不建立两套通知协议。
 
 ### 完整顺序
 

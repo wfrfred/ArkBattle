@@ -57,6 +57,8 @@ battle/unit.add 读取已登记的 PRESENT Unit，直接派发实例 hooks 中�
 
 具体角色 Definition 必须声明实际依赖的 Capability，工厂输出保留标准状态与配置的对应关系。Effect 的 Host 泛型用于表达回调读取哪些能力。
 
+Card 私有程序可选声明于 Unit Definition 的 deployable.card，不要求内容再编写独立 Card Definition。Card 的 state 跨部署保存，Unit 每次部署重新初始化；需要继承的具体资源由 enter／leave 显式转换。Card 通过自身领域的 Typed Ref 操作写回，不调用内部完整 replace。
+
 基础 Unit 只声明身份、生命周期、Definition、位置和 Effects。每个 Capability 同时声明自身的配置与运行状态；业务通过 `Unit & Vitality & Offense` 等组合表达需要的能力。初始化工厂由具体 Definition 推导所创建的标准状态，异构战场查询则通过 `hasX` 收窄为实际需要的能力。能力集合用于装配和快照投影，不作为基础 Unit 的可选字段聚合。
 
 Content 通过绑定 Typed Ref 的 Rule／Hook／Contribution／Blocker.layer 工厂构造 Change，再调用 battle/unit.update(battle, changes)。一批 Change 的全部字段先发布，再按原顺序结算后继；Content 不手工重建 Unit、不传任意 Unit 转换回调，也不调用 Core 内部 replace。精确私有 state 写回与完整生命周期操作维持原接口。统一构造入口建立能力配对，登记后能力组成稳定，不为约束内部调用者增加所有权框架或防御复制。

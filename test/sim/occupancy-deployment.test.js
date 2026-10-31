@@ -15,9 +15,9 @@ for (const slot of ["OCCUPANT", "SUPPORT"]) {
         };
         const indexedSlot = slot === "OCCUPANT" ? "occupant" : "support";
         const otherSlot = slot === "OCCUPANT" ? "support" : "occupant";
-        const first = addCard(fixtureBattle(), { unit: definition });
-        const second = addCard(first.state, { unit: definition });
-        const request = { cardId: first.value, tilePosition: [0, 1] };
+        const first = addCard(fixtureBattle(), definition);
+        const second = addCard(first.state, definition);
+        const request = { card: first.value, tilePosition: [0, 1] };
         const deployed = deploy(second.state, request);
         assert.equal(deployed.value.type, "DEPLOYED");
         const id = deployed.value.unitId;
@@ -26,7 +26,7 @@ for (const slot of ["OCCUPANT", "SUPPORT"]) {
         assert.deepEqual(original.occupancy, { tile: [0, 1] });
         assert.equal(at(deployed.state.battlefield, [0, 1])[indexedSlot].id, id);
         assert.equal(at(deployed.state.battlefield, [0, 1])[otherSlot], null);
-        assert.deepEqual(deploy(deployed.state, { ...request, cardId: second.value }).value, {
+        assert.deepEqual(deploy(deployed.state, { ...request, card: second.value }).value, {
             type: "REJECTED", reason: "OCCUPIED",
         });
     });

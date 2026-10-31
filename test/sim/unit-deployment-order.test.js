@@ -60,11 +60,11 @@ test("tile changes during entry release blocking before deployment observers", (
             return { state: update(state, [{ ...unit, vitality: { ...unit.vitality, hp: 75 } }]), value: undefined };
         } }],
     };
-    const added = addCard(battle, { unit: definition });
+    const added = addCard(battle, definition);
     const deployed = deploy({
         ...added.state,
         execution: { ...added.state.execution, nextUnitId: 30 },
-    }, { cardId: added.value, tilePosition: [1, 2] });
+    }, { card: added.value, tilePosition: [1, 2] });
     assert.equal(deployed.value.type, "DEPLOYED");
     battle = deployed.state;
 
@@ -105,9 +105,9 @@ test("manual deployment records its event before entry and notifies observers af
             return { state: update(state, [{ ...self, vitality: { ...self.vitality, hp: 60 } }]), value: undefined };
         } }],
     };
-    const added = addCard(battle, { unit: definition });
+    const added = addCard(battle, definition);
     const result = deploy(added.state, {
-        cardId: added.value,
+        card: added.value,
         tilePosition: [0, 3],
     });
 

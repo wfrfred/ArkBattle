@@ -144,8 +144,8 @@ for (const entry of ["initial", "script", "manual"]) {
                 battle = add(battle, passenger());
                 id = 10;
             } else {
-                const card = addCard(battle, { unit: passengerDefinition() });
-                const result = deploy(card.state, { cardId: card.value, tilePosition: first });
+                const card = addCard(battle, passengerDefinition());
+                const result = deploy(card.state, { card: card.value, tilePosition: first });
                 assert.equal(result.value.type, "DEPLOYED");
                 battle = result.state;
                 id = result.value.unitId;

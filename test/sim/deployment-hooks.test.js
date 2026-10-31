@@ -53,7 +53,7 @@ const definition = (id, fields = {}) => ({ hooks: [], id, vitality: { maxHp: 100
 const unit = (id, fields = {}) => initialize({ id, definition: definition(`unit:${id}`, fields), position: [id, 0] });
 const deployment = (definitions) => ({
     definition: { initialDp: 0, maxDp: 99, dpRecoveryTicks: null, slotLimit: null },
-    cards: definitions.map((unit) => ({ unit })),
+    cards: definitions.map((definition) => ({ definition })),
 });
 const input = (fields = {}) => ({
     map, schedule: { type: "TIMELINE", spawns: [spawn(enemy(), 1000)] }, initialUnits: [], predefines: [],
@@ -145,7 +145,7 @@ test("entry precedes deployment observers; observer registrations survive succes
     const bootstrap = definition("bootstrap", { hooks: [{ id: "test/enter", stage: "enter", invoke(state) {
         return { state: addHook(state, 0, record("observer", (state, fact) => {
             calls.push(["observed", fact.unit.id, fact.kind]);
-            assert.equal(fact.unit.deployable.cardId, fact.unit.id - 1);
+            assert.equal(fact.unit.deployable.card?.id, fact.unit.id - 1);
             assert.equal(getUnit(state, fact.unit.id).vitality.hp, 75);
             return state;
         })), value: undefined };

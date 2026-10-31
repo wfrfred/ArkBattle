@@ -6,16 +6,17 @@ export type {
     Id as CardId,
     Supply,
     Input as CardInput,
-    Definition as CardDefinition,
     Cooldown as CardCooldown,
     Card,
-} from "./card.js";
+} from "./card/card.js";
 
-export { operatorSupply, resolveBaseCost, resolveCost, resolveRedeployTicks } from "./card.js";
+export { operatorSupply } from "./card/card.js";
+
+export { resolveBaseCost, resolveCost, resolveRedeployTicks } from "./card/state.js";
 
 export type { DeploymentRequest, DeploymentDecision } from "./query.js";
 
-export { getCard, usedSlots, evaluateDeployment } from "./query.js";
+export { usedSlots, evaluateDeployment } from "./query.js";
 
 export { addCard, advance } from "./resources.js";
 

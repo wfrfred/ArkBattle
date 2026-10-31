@@ -68,7 +68,7 @@ runtime.initialize(input) 创建 BattleState；runtime.step(battle, commands) �
 
 调用方用 `battle = step(battle, commands)` 接续状态，events 与 result 直接读取返回值。异常抛出时赋值未发生，原值保持不变；已结束战斗返回原 State，不产生新 Tick 或清空最后一帧事实。表现层直接接收 State 并使用领域查询生成所需的视觉数据，不复制 Unit、不展开核心容器，也不形成第二套完整 Snapshot 模型。
 
-State.definition 只保存推进需要的静态 predefines、maxTicks 与 routeMoveMultiplier；地图与 Schedule Definition 已由所属领域持有。完整 Input 的初始单位、初始机制、Card 配置与随机种子只在初始化时消费，不由另一个 Runtime 对象保存。
+State.definition 只保存推进需要的静态 predefines、maxTicks 与 routeMoveMultiplier；地图与 Schedule Definition 已由所属领域持有。完整 Input 的初始单位、初始机制、Card 创建配置与随机种子只在初始化时消费，不由另一个 Runtime 对象保存。Card 直接持有原 Unit Definition、独立 Supply 与跨部署私有 state；具体程序可选声明于 deployable.card，普通 Unit 每次部署仍从标准初态创建，特定资源由 enter／leave 显式转换。
 
 Battlefield 拥有不可变场上事实及关系，维护存储和索引一致性，提供值形式的 State 与纯转换。集合操作直接构造下一版本，内部纯函数集中维护一致性；有时序语义的 Blocking 操作与同步通知由完整 BattleState 操作承接，普通搜索由 step 固定阶段调度。领域不持有可变 Battlefield Runtime，不重放操作或业务回调。
 

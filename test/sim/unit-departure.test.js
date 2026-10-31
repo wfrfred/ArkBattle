@@ -161,8 +161,8 @@ for (const domain of ["deployment", "predefined"]) {
         const before = createBattleState(battlefield);
         let state = changeTile(before, [0, 0], { passability: "WALK_ONLY" });
         if (domain === "deployment") {
-            state = addCard(state, { unit: definition }).state;
-            state = addCard(state, { unit: definition }).state;
+            state = addCard(state, definition).state;
+            state = addCard(state, definition).state;
             state = resolveDeploymentCommands(
                 state,
                 [

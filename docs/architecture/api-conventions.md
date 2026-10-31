@@ -33,7 +33,7 @@ field.map 持有当前地块。battlefield/tile.update 是运行态地块变更�
 | 时间推进 | `f(battle, ref) => BattleState` | 推进战斗中的运行实例，由 Runtime 调度。 |
 | Definition 回调 | `f(battle, self, ...) => BattleState / Result<T>` | 派发方已确定实例与 Definition 的类型配对，执行内容程序；Action 与 Skill 回调显式接收 `(battle, source, self, ...)`。 |
 
-分类按职责划分，不按函数名、返回值或是否带一个对象参数机械判断。`currentTarget(progress)` 这类局部查询直接读取输入值，不要求传入 battle 或 ref。完整伤害结算可以返回报告；`card.advance(card, tick)` 仍是局部值转换，不是调度入口。
+分类按职责划分，不按函数名、返回值或是否带一个对象参数机械判断。`currentTarget(progress)` 这类局部查询直接读取输入值，不要求传入 battle 或 ref。完整伤害结算可以返回报告；`card/state.advance(card, tick)` 仍是内部局部值转换，不是调度入口。
 
 Capability 可以提供完整领域操作，例如 SpatialPresence.appear／disappear 与 Locomotion.advance。Rule、Hook、Contribution 与 Blocker.layer 的公开 set／remove 则统一为绑定 Typed Ref 的 Change 工厂，由 `battle/unit.update(battle, changes)` 完成整批纯转换、一次发布及顺序结算；是否附带结算由所属领域决定。无业务后继的 Hook 登记同样返回 Change，不再要求 Content 重建 Unit。取得、解除及通知仍由明确 Blocking 操作负责，通用发布不推断关系。
 
@@ -96,7 +96,8 @@ Hook 与领域操作按执行语义命名：
 | Blocking | [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts)、[capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) | Battle 入口提供关系查询及 acquire／release／maintain／maintainAll／search／advance；relations(battle, ref?) 局部直接读取原关联，release 接收 readonly Relation[]，批量解除、记录整批事件后顺序通知，不附加维护或搜索。maintain 接收单条 Relation，仅复核原身份的当前资格；maintainAll 固定入口关系并逐条复核一遍。Capability 入口导出 setLayer、两端 Rule／容量／volume／Hook 的 Change 工厂及模型类型，经 Unit.update 统一发布后结算；容量／volume 的裁撤由各自 Settlement 使用内部 settleCapacity 完成。容量仅用 ADD／ZERO，半径保存于 Definition.radius 和 State.radius。setLayer 以 previous.blocked 的旧 Ref 调用 release，不回填旧 Unit；DEFAULT_RADIUS 和 settleCapacity 保持内部。 |
 | Damage／Healing | [damage/index.ts](../../src/core/battle/damage/index.ts)、[healing/index.ts](../../src/core/battle/healing/index.ts) | 各自的 Calculate／Apply 两阶段、请求／报告及 Hook 登记；阶段派发保持内部实现，不合并结算协议。 |
 | Targeting | [battle/targeting/index.ts](../../src/core/battle/targeting/index.ts) | Filter／Comparator／Selector、hasCandidate 与 select；只读 hasCandidate 归 query.ts，可能消费 RNG 的选择保留 select.ts。 |
-| Deployment | [battle/deployment/index.ts](../../src/core/battle/deployment/index.ts) | 模型、查询、资源维护、部署命令与生命周期协作；resources.ts 的完整 Card 写回 updateCard 不公开，lifecycle.ts 不依赖完整 Unit 操作。 |
+| Deployment | [battle/deployment/index.ts](../../src/core/battle/deployment/index.ts) | 部署经济、addCard、部署命令与生命周期协作；addCard 接收原 Unit Definition 和独立 supply／stock 配置，返回 Card Typed Ref；deploy 使用 Card Ref，Command 在边界保留 cardId 编号。 |
+| Card | [battle/deployment/card/index.ts](../../src/core/battle/deployment/card/index.ts) | Card<S>、Program、原 Unit Definition 类型别名、ref、get／all、数值查询与私有 state／贡献／库存／当前冷却的完整写回；内部纯计算与完整替换不公开，不复制 Unit Change。 |
 | Schedule | [battle/schedule/index.ts](../../src/core/battle/schedule/index.ts) | 配置、执行状态、创建、推进、登记／结算与统计查询；isSpawnScheduleCompleted／getSpawnedCount／getSpawnScheduleCounts／getUnspawnedCount 归 query.ts，队列算法与辅助计算保持内部依赖。 |
 | 多文件 Capability | unit/capability/ 下 action、blocking、deployable、elemental、locomotion、occupancy、offense、presence、route、skill、vitality 各自的 index.ts | 十一个入口按能力职责选择导出；Skill 入口只提供工厂 Definition、Capability／State、守卫、初始化及 Rule／Hook／Ammo 贡献 Change 工厂，不导出领域程序、资源结算或 Activation 业务。完整实例写回、阶段派发和具体运动算法不因共享导出成为内容 API。 |
 | 小 Capability 与 Catalog | allegiance／hitbox／layer／targetable 的 capability.ts；unit/capability/catalog.ts | 单文件能力保留自然入口；Catalog 只维护初始化字典与派生类型，不增加模板 index 或另一套能力映射。 |
@@ -217,8 +218,7 @@ Hook<C,T> 是 `(battle, context, current) => Result<T>`。C 是本次派发固�
 
 | 接口 | 当前形状 | 待调整内容 |
 | --- | --- | --- |
-| [Deployment.retreat / deploy](../../src/core/battle/deployment/operations.ts) | retreat 按 unitId；deploy 接收 request | 目标为 `retreat(battle, ref)`；deploy 接收 Card 身份与部署输入，属于创建操作。 |
-| [refundUnit / recycleUnitCard](../../src/core/battle/deployment/lifecycle.ts) | `(battle, unit, reason, tick) => BattleState` | unit 是离场前明确取得的历史业务载荷，不应机械改成查询已移除 Unit；当前 tick 是 battle.tick 的重复来源，后续收口。 |
+| [Deployment.retreat](../../src/core/battle/deployment/operations.ts) | retreat 按 unitId | 目标为 `retreat(battle, ref)`；deploy 已使用 Card Ref 与部署输入，属于创建操作。 |
 | [Deployment.advance](../../src/core/battle/deployment/resources.ts)／[advanceSpawning](../../src/core/battle/steps/spawning.ts) | `(battle, tick)`／`(battle, commands, tick)` | 实际调用重复传入当前 battle.tick；保留 Card／Schedule 局部计算自己的时点参数。 |
 
 接口整理保留真实可接受输入：允许普通 Unit 并用报告表达缺少能力的操作，继续使用 `Ref<Unit>`；要求明确能力的推进使用 `Ref<Unit & H>`。命名遵循 ESM 惯例，不以转发层统一签名。
@@ -255,7 +255,7 @@ Skill.state 保存跨次玩法事实，Activation.state 保存本轮事实，由
 
 SP setContribution／removeContribution 仍归 unit/skill/sp.ts，只接受 recoverySpeed／recoveryMultiplier 两项属性，并绑定 Skill Capability Ref 返回 Change；它们使用 Attribute 修正数据与公式。Ammo 的 Input 使用独立 Modifier 和已核实的容量公式，来源直接登记在 Capability.ammo。capacity／requirement／cost 与 TIME duration 没有通用 Contribution 接口；配置切换、消费与当前轮次延时属于明确操作。共享 Input<M, H> 只统一数据提供形式，不决定这些操作或其公式。Contribution.group.priority 只负责互斥选择。非 TIME 的 sp.advance 直接 no-op，不更新 lastTick。Elemental 的完整宿主写回是 operations.ts 中的私有 replaceHost；query.ts 只保留查询。两者均不向内容推广完整实例写回。Action 按 Definition 聚合持久 state、Cooldown 和当前 Execution；内容分别用 setState、setCooldown、setExecutionState 设置对应字段，不提交完整旧条目。Unit 的 leave Hook 以 Departure 为固定终止历史载荷，保留开始离场时的 Unit 与 reason。
 
-Card.advance 与 Action 的局部 Cooldown 计算只处理显式传入的局部值，保留必要的 tick 参数。Projectile 的发射时点、到期时点等历史事实也继续保存。
+Card 的 state.ts 与 Action 的局部 Cooldown 计算只处理显式传入的局部值，保留必要的 tick 参数。Card 公共写回统一接收 BattleState 与 Card Typed Ref，setState 接收结果值，不公开完整替换或 transform；setRedeployTimeContribution 影响以后启动的冷却，reduceCooldown／clearCooldown 改当前周期。Projectile 的发射时点、到期时点等历史事实也继续保存。
 
 ### 5.1 Unit 完整操作与批量变更
 

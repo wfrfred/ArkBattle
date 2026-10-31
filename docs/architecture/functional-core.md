@@ -178,7 +178,7 @@ unit.remove(battle, id, reason) → nextBattle
 unit.advance(battle) → nextBattle
 ```
 
-battlefield/unit.ts 的 add／update／remove 只完成纯状态转换；完整 Unit 业务统一位于 battle/unit.ts，提供 add／update／remove／advance。Unit 初始化在入口建立 Blocker／Blockable 至多一种的约束，内部信任，不由角色推导阵营、Layer 或移动能力。remove 委托 Unit Lifetime，在请求阶段纯发布 LEAVING，取消自身的 Blockable 站位计划，再以局部 relations 查询结果调用 release；Blocker 的旧关系整批解除后才通知，原目标的计划保留。通知返回后执行本次返费；所有权与 Scope 依赖者完整 Finalize 后，Unit Finalize 从当前状态注销并记录移除事实、回收 Card 和派发 leave，不再用全场关系扫描补救领域清理。调用方不拼接这些内部步骤，BattleState 不另提供 Unit 登记或注销入口。
+battlefield/unit.ts 的 add／update／remove 只完成纯状态转换；完整 Unit 业务统一位于 battle/unit.ts，提供 add／update／remove／advance。Unit 初始化在入口建立 Blocker／Blockable 至多一种的约束，内部信任，不由角色推导阵营、Layer 或移动能力。remove 委托 Unit Lifetime，在请求阶段纯发布 LEAVING，再派发能力自行登记的 prepare Hook：Blocking 清理本 Unit 的关系与自身计划，Deployable 按最新 Unit 退款。已登记 owner 与 Scope 依赖者完整 Finalize 后，Unit 注销并记录移除事实、通知 registrationChanged，再执行本地 leave（含 Deployable 回卡）与全局 leave；Unit 不识别具体能力或全场扫描补救领域清理。调用方不拼接这些内部步骤，BattleState 不另提供 Unit 登记或注销入口。
 
 add 拒绝重复身份。公开 Unit.update 只接收 opaque Change 数组，在执行任何内容程序前确认每个目标已登记，缺失时抛出 RangeError；同一目标可在本批出现多次。各项 transform 按顺序读取暂存的最新 Unit；返回原 Unit 引用时由 update 统一跳过本项后继，Settlement 不重复判断 no-op。完成全部转换后一次发布 Field，再按原 Change 顺序执行实际变换项的 settle。Field 内部 update 仍接收完整 Unit 数组，信任 Core 构造的身份与 Definition，不重复校验；替换保持登记顺序。Unit 身体所属格由 position 与 SpatialPresence 查询，不另存位置索引或空间依赖分类。
 

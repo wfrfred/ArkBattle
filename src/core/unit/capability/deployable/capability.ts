@@ -4,10 +4,10 @@ import type { Unit, Definition as UnitDefinition } from "../../unit.js";
 import type { DeployedHook } from "./hook.js";
 import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import { prepare, leave } from "../../../battle/deployment/lifecycle.js";
+import type { Ref } from "../../../common/ref.js";
+import type { Card, Program } from "../../../battle/deployment/card/card.js";
 
-export type CardId = number;
-
-export interface Definition {
+export interface Definition<S extends object = object> {
     readonly cost: number;
     readonly redeployTicks: number;
     readonly slots: number;
@@ -17,10 +17,11 @@ export interface Definition {
         readonly rate: number;
         readonly limit: "BASE_COST" | "DEPLOYMENT_COST";
     };
+    readonly card?: Program<S>;
 }
 
 export interface State {
-    readonly cardId: CardId | null;
+    readonly card: Ref<Card> | null;
     readonly cost: number;
     readonly refundLimit: number;
     readonly refundAllowed: boolean;
@@ -28,14 +29,14 @@ export interface State {
 }
 
 export interface Deployable {
-    readonly definition: { readonly deployable: Definition };
+    // Narrow deployment fields without erasing a known Card program's private type.
+    readonly definition: { readonly deployable: Omit<Definition, "card"> };
     readonly deployable: State;
 }
 
-export function initialize<U extends Unit & Pick<Deployable, "definition">>(
-    battle: BattleState,
-    unit: U,
-): Result<U & Deployable> {
+export function initialize<
+    U extends Unit & { readonly definition: { readonly deployable: Definition<any> } },
+>(battle: BattleState, unit: U): Result<U & Deployable> {
     const definition = unit.definition.deployable;
 
     return {
@@ -44,7 +45,7 @@ export function initialize<U extends Unit & Pick<Deployable, "definition">>(
             ...unit,
             hooks: [...unit.hooks, prepare, leave],
             deployable: {
-                cardId: null,
+                card: null,
                 cost: definition.cost,
                 refundLimit: definition.cost,
                 refundAllowed: false,
@@ -54,7 +55,7 @@ export function initialize<U extends Unit & Pick<Deployable, "definition">>(
     };
 }
 
-export function resolveRefund(definition: Definition, state: State): number {
+export function resolveRefund(definition: Pick<Definition, "refund">, state: State): number {
     return state.refundAllowed
         ? Math.max(0, Math.floor(Math.min(state.cost * definition.refund.rate, state.refundLimit)))
         : 0;
@@ -70,11 +71,19 @@ export function hasDefinition(
     return "deployable" in definition;
 }
 
+type Input<S extends object = object> = Omit<Definition<S>, "refund"> & {
+    readonly refund?: Definition["refund"];
+};
+
+export function createDefinition<S extends object>(
+    definition: Input<S> & { readonly card: Program<S> },
+): Definition<S> & { readonly card: Program<S> };
+export function createDefinition(definition: Input): Definition;
 export function createDefinition(
-    definition: Omit<Definition, "refund"> & {
+    definition: Omit<Definition<any>, "refund"> & {
         readonly refund?: Definition["refund"];
     },
-): Definition {
+): Definition<any> {
     const refund = definition.refund ?? { rate: 0.5, limit: "BASE_COST" };
     assertNonnegativeNumber(definition.cost, "deployment cost");
     assertNonnegativeSafeInteger(definition.redeployTicks, "redeployment duration");
@@ -88,5 +97,6 @@ export function createDefinition(
         placement: definition.placement,
         allowedSiteConditions: definition.allowedSiteConditions,
         refund,
+        ...(definition.card === undefined ? {} : { card: definition.card }),
     };
 }

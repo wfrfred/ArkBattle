@@ -31,7 +31,7 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | Action / Skill | Action 保存行动过程；Skill 保存技力与激活进度。释放、耗弹、回复、结束分别在明确业务时点发生。 |
 | Locomotion / Route / Navigation | 分别处理运动、行动脚本和可通行路径；行动类型、寻路方式、阻挡模式不互相代替。 |
 | Projectile | 已发射后的独立过程，保存目标、样本、命中历史与飞行进度；内容决定接触和终止策略。 |
-| Deployment / Card | Deployment 管费用与部署操作；Card 管跨实例的供给、费用惩罚和冷却；Deployable 管场上部署属性。 |
+| Deployment / Card | Deployment 管费用与部署操作；Card 管跨实例的私有 state、供给、费用惩罚和冷却；Deployable 管场上部署属性。 |
 | Schedule / Predefined | 分别管理出兵／关卡动作进度，以及预置定义与运行实例的绑定。 |
 | Data / Content | Data 适配原始配置；Content 实现具体角色、技能、天赋、装备和模式规则，组合领域操作。 |
 | Meta / 模式规则 | 外层经营与回合生成战斗输入；本场即时规则显式接入 Tactical，结果与归属反馈回外层。 |
@@ -77,12 +77,12 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | MOVE-01 路线与普通运动 | 移动、等待、巡逻、消失／出现及临时路线保存明确进度；寻路不重抽已解析目标。见 [Navigation、Route 与 Locomotion 设计](navigation.md)。 | Navigation State／Overlay／nextPoint、独立 Route Capability 与 Locomotion 的职责拆分尚未实施；Route 的 GOTO、统一 Progress 和局部目标查询已定，完整推进接口及部分运动政策仍待审查。 | 设计与迁移待完成／P1 |
 | MOVE-02 位移与术语移动 | 推拉、浮空、传送和特殊撤退再部署分别表达；重建与继承规则由内容决定。[术语释义](https://prts.wiki/w/术语释义) | 路线传送可用；直接重定位部署对象的接口已删除，完整推拉及术语移动未接入。 | 部分实现／P1 |
 | PROJECTILE-01 飞行与命中 | 追踪、定时、沿途碰撞、附着、套索及到期处理按内容表达；已发射弹道不自动随 Action 结束。[弹道](https://prts.wiki/w/抛射物) | [最小执行内核](projectile.md) 已确定独立实例、三个回调及 Lifetime 请求／Finalize；异构集合与安全写入边界待定。当前仍为简单飞行、到达接触和终止，复杂运动与到达后周期业务待迁移接入。 | 设计部分确定，迁移待完成／P1 |
-| DEPLOY-02 关卡费用上限 | 实际部署费用按关卡上限裁定。[数值范围](https://prts.wiki/w/数值范围) | [card.ts:102](../../src/core/battle/deployment/card.ts#L102) 无上限，[operations.ts:113](../../src/core/battle/deployment/operations.ts#L113) 直接用于付款判断。 | 明确不一致／P1 |
+| DEPLOY-02 关卡费用上限 | 实际部署费用按关卡上限裁定。[数值范围](https://prts.wiki/w/数值范围) | [Card 数值计算](../../src/core/battle/deployment/card/state.ts) 无上限，[部署操作](../../src/core/battle/deployment/operations.ts) 直接用于付款判断。 | 明确不一致／P1 |
 | DEPLOY-03 部署方向 | 手动部署输入提供本次朝向，决定实例的方向相关范围与业务。[部署操作](https://prts.wiki/w/新人入门) | DeployRequest 无 direction；内容工厂把方向固定到 Definition，不能表达同一 Card 每次选择朝向。 | 部分实现／P0 |
 | DEPLOY-04 手动撤退资格 | 外部手动命令按可撤退性和调用方控制范围裁定；内容强退与实际离场使用各自入口。[异常效果](https://prts.wiki/w/异常效果) | [operations.ts:183](../../src/core/battle/deployment/operations.ts#L183) 只检查存在；尚未建立手动资格契约。控制者身份与网络授权仍属于外层。 | 部分实现／P1 |
 | DEPLOY-05 免费与特殊部署 | 实际扣账、场上费用属性、返费资格、部署种类分别决定。[可返费](https://prts.wiki/w/部署费用#可返费) | 数据字段已部分分开，完整 deploy 仍复用同一 cost 并固定 MANUAL。 | 部分实现／P1 |
-| DEPLOY-06 Card 多实例回收 | 每个有效回收都保留供给事实；不因后一次回收覆盖前一次计时而丢库存。不同来源采用明确供给政策。[待部署区](https://prts.wiki/w/待部署区) | [card.ts:164](../../src/core/battle/deployment/card.ts#L164) RETURN 覆盖唯一 deadline；允许有限库存、多实例 RETURN，最终只补一个。是项目自身的不变量缺陷，不是 PRTS 规定必须采用 QUEUED。 | 明确不一致／P1 |
-| DEPLOY-07 场下属性与冷却 | 跨部署进度由 Card 保存；修改当前周期与修改以后周期分别处理，内容可有特殊场下资源。[待部署区](https://prts.wiki/w/待部署区) | 持久 Card 与两种修改入口已有；更多真实召唤供给、场下资源及负费用政策未接入。 | 部分实现／P2 |
+| DEPLOY-06 Card 多实例回收 | 每个有效回收都保留供给事实；不因后一次回收覆盖前一次计时而丢库存。不同来源采用明确供给政策。[待部署区](https://prts.wiki/w/待部署区) | [Card 回收](../../src/core/battle/deployment/card/state.ts) RETURN 覆盖唯一 deadline；允许有限库存、多实例 RETURN，最终只补一个。是项目自身的不变量缺陷，不是 PRTS 规定必须采用 QUEUED。 | 明确不一致／P1 |
+| DEPLOY-07 场下属性与冷却 | 跨部署进度由 Card 保存；修改当前周期与修改以后周期分别处理，内容可有特殊场下资源。[待部署区](https://prts.wiki/w/待部署区) | Card<S> 与 deployable.card 可选程序、Typed Ref 写回已有；以后启动的冷却修正与当前周期操作分开。具体场下资源、更多真实召唤供给及负费用政策仍未接入。 | 部分实现／P2 |
 | SCHEDULE-01 波次与预置动作 | 出兵进度、存活等待、最终计数和关卡动作分别表达。[波次](https://prts.wiki/w/作战机制#扩展阅读：波次) | 波次／分支基础已有，预置可由命令操作；原始 ACTIVATE / WITHDRAW / BATTLE_EVENTS 等尚未全部接调度链。 | 部分实现／P1 |
 | RESULT-01 漏怪与结束 | 区分击杀、漏怪、非首要目标和模式结束条件；按所属目标／玩家反馈结果。[作战机制](https://prts.wiki/w/作战机制)、[卫戍帮助](https://prts.wiki/w/卫戍协议/帮助) | Runtime 主要按 SCHEDULE_COMPLETED / TIME_LIMIT 结束，无完整关卡生命与模式胜负结算。 | 部分实现／P0 |
 | CONTENT-01 干员与敌人接入 | 主模式等级、精英、潜能、信赖、模组与具体天赋／技能共同生成行为。[玫兰莎](https://prts.wiki/w/玫兰莎)、[泥岩](https://prts.wiki/w/泥岩) | Data 配置和四个代表内容已跑通；不能推定所有天赋、技能、敌人及分支模板已实现。 | 部分实现／P1 |

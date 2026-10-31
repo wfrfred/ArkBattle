@@ -27,10 +27,10 @@ test('deployable definitions initialize a paired capability without a Card', () 
 
 test('deployable state is initialized before deployment associates a Card', () => {
   const unit = initialize({ id: 0, definition, position: [0, 0] });
-  assert.equal(unit.deployable.cardId, null);
-  const deployed = { ...unit, deployable: { ...unit.deployable, cardId: 17 } };
-  assert.equal(deployed.deployable.cardId, 17);
-  assert.equal(unit.deployable.cardId, null);
+  assert.equal(unit.deployable.card, null);
+  const deployed = { ...unit, deployable: { ...unit.deployable, card: { id: 17 } } };
+  assert.equal(deployed.deployable.card.id, 17);
+  assert.equal(unit.deployable.card, null);
 });
 
 test('Unit initialization preserves deployable alongside independent capabilities', () => {
@@ -62,7 +62,7 @@ const definition = { id: 'typed-deployable', hooks: [], deployable: {
 } };
 declare const battle: import(${module('../../src/core/battle/state.js')}).State;
 const unit: Unit & Deployable = initialize(battle, { id: 0, definition, position: [0, 0] }).value;
-const cardId: number | null = unit.deployable.cardId;
+const card: import(${module('../../src/core/common/ref.js')}).Ref<import(${module('../../src/core/battle/deployment/card/index.js')}).Card> | null = unit.deployable.card;
 declare const unknownUnit: Unit & { readonly label: string };
 if (hasDeployable(unknownUnit)) {
   const guarded: Unit & Deployable = unknownUnit;

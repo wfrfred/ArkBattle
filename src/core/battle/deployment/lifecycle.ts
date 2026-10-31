@@ -9,10 +9,10 @@ import type { PrepareHook, LeaveHook } from "../../unit/hook.js";
 import type { State as BattleState } from "../state.js";
 import * as units from "../../unit/query.js";
 import * as hook from "../../hook.js";
-import * as card from "./card.js";
+import * as card from "./card/state.js";
 import { changeDp } from "./deployment.js";
-import { getCard } from "./query.js";
-import { updateCard } from "./resources.js";
+import { get as getCard } from "./card/query.js";
+import { replaceCard } from "./resources.js";
 
 export const prepare: PrepareHook = {
     id: "@deployable/prepare",
@@ -41,14 +41,14 @@ export const leave: LeaveHook = {
     stage: "leave",
     invoke: (battle, { unit: previous, reason }) => {
         const unit = previous as Unit & Deployable;
-        if (unit.deployable.cardId === null) {
+        if (unit.deployable.card === null) {
             return { state: battle, value: undefined };
         }
 
-        const value = getCard(battle, unit.deployable.cardId)!;
+        const value = getCard(battle, unit.deployable.card)!;
 
         return {
-            state: updateCard(
+            state: replaceCard(
                 battle,
                 card.advance(card.recycle(value, battle.tick, reason), battle.tick),
             ),

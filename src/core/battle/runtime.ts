@@ -73,8 +73,8 @@ export function initialize(input: Input): State {
 
     initial = setUnitHook(initial, "registrationChanged", registrationChanged);
 
-    for (const definition of input.deployment?.cards ?? []) {
-        initial = addCard(initial, definition).state;
+    for (const { definition, ...options } of input.deployment?.cards ?? []) {
+        initial = addCard(initial, definition, options).state;
     }
 
     return initializeBattlefield(initial, input);

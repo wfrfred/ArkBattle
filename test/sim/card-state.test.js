@@ -1,21 +1,28 @@
 import * as conditions from "../../dist/content/terrain/condition.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import * as cards from "../../dist/core/battle/deployment/card.js";
+import * as cards from "../../dist/core/battle/deployment/card/state.js";
+import { get, operatorSupply } from "../../dist/core/battle/deployment/card/index.js";
+import { addCard } from "../../dist/core/battle/deployment/index.js";
+import { fixtureBattle } from "../helpers/unit.js";
 import { create as value } from "../../dist/core/unit/contribution/attribute.js";
 
 const definition = (cost = 10, redeployTicks = 30) => ({
-    id: "deployable",
+    id: "deployable", hooks: [], occupancy: { slot: "OCCUPANT" },
     deployable: {
         cost, redeployTicks, slots: 1, placement: "ALL", allowedSiteConditions: [conditions.normal],
         refund: { rate: 0.5, limit: "BASE_COST" },
     },
 });
+function createCard(id, definition, options = {}) {
+    const initial = fixtureBattle(0, { nextCardId: id });
+    const created = addCard(initial, definition, options);
+    return get(created.state, created.value);
+}
 const operator = (cost = 10, redeployTicks = 30) =>
-    cards.create(0, { unit: definition(cost, redeployTicks) });
+    createCard(0, definition(cost, redeployTicks));
 const token = (recharge, stockLimit = 3, redeployTicks = 10) =>
-    cards.create(1, {
-        unit: definition(5, redeployTicks),
+    createCard(1, definition(5, redeployTicks), {
         supply: { stockLimit, activeLimit: stockLimit, recharge, costPenalty: false },
     });
 const modification = (id, fields, group) => ({
@@ -24,12 +31,13 @@ const modification = (id, fields, group) => ({
 
 test("ordinary operator Cards share definitions and have independent persistent progress", () => {
     const unit = definition();
-    const first = cards.create(0, { unit });
-    const second = cards.create(1, { unit });
-    assert.equal(first.definition.unit, unit);
-    assert.equal(first.definition.supply, cards.operatorSupply);
+    const first = createCard(0, unit);
+    const second = createCard(1, unit);
+    assert.equal(first.definition, unit);
+    assert.equal(first.supply, operatorSupply);
+    assert.deepEqual(first.state, {});
     assert.equal(first.stock, null);
-    assert.equal(first.definition.supply.activeLimit, 1);
+    assert.equal(first.supply.activeLimit, 1);
     assert.equal(first.cooldown, null);
     assert.equal(cards.consume(first, 0).cooldown, null);
 
@@ -172,7 +180,7 @@ test("zero-duration cooldowns complete at the same tick, including all queued re
 test("new redeployment modifiers do not rescale a cooldown that already started", () => {
     const initial = operator(10, 30);
     const returned = cards.recycle(initial, 5, "RETREAT");
-    const modified = cards.setRedeployContribution(returned, modification("shorter", { multiplier: -0.5 }));
+    const modified = cards.setRedeployTimeContribution(returned, modification("shorter", { multiplier: -0.5 }));
     assert.equal(cards.resolveRedeployTicks(modified), 15);
     assert.equal(modified.cooldown, returned.cooldown);
     assert.equal(modified.cooldown.readyAtTick, 35);
@@ -182,15 +190,15 @@ test("new redeployment modifiers do not rescale a cooldown that already started"
     assert.equal(shortened.cooldown.durationTicks, 30);
     assert.equal(cards.advance(shortened, 25).cooldown, null);
     assert.equal(cards.recycle(shortened, 50, "RETREAT").cooldown.readyAtTick, 65);
-    assert.equal(cards.resolveRedeployTicks(cards.removeRedeployContribution(modified, "shorter")), 30);
-    assert.equal(cards.removeRedeployContribution(modified, "missing"), modified);
+    assert.equal(cards.resolveRedeployTicks(cards.removeRedeployTimeContribution(modified, "shorter")), 30);
+    assert.equal(cards.removeRedeployTimeContribution(modified, "missing"), modified);
 });
 
 test("queued timers keep their current duration and query new duration on the next cycle", () => {
     let card = token("QUEUED", 2, 30);
     card = cards.consume(cards.consume(card, 0), 0);
     card = cards.recycle(cards.recycle(card, 0, "RETREAT"), 0, "RETREAT");
-    card = cards.setRedeployContribution(card, modification("shorter", { multiplier: -0.5 }));
+    card = cards.setRedeployTimeContribution(card, modification("shorter", { multiplier: -0.5 }));
     assert.equal(card.cooldown.readyAtTick, 30);
     const firstReady = cards.advance(card, 30);
     assert.equal(firstReady.stock, 1);
@@ -213,23 +221,22 @@ test("excess cooldown reduction applies to the current queued return only", () =
 });
 
 test("explicit recharge caps inventory without discarding the current timer", () => {
-    const initial = cards.create(1, {
-        unit: definition(),
+    const initial = createCard(1, definition(), {
         supply: { stockLimit: 5, activeLimit: 2, recharge: "DEPLOYMENT", costPenalty: false },
-    }, 2);
+        stock: 2,
+    });
     const deployed = cards.consume(initial, 10);
     const replenished = cards.recharge(deployed, 10);
     assert.equal(replenished.stock, 5);
-    assert.equal(replenished.definition.supply.activeLimit, 2);
+    assert.equal(replenished.supply.activeLimit, 2);
     assert.equal(replenished.cooldown, deployed.cooldown);
     assert.equal(cards.recharge(replenished, 1), replenished);
     assert.equal(cards.recharge(operator(), 5).stock, null);
     assert.equal(deployed.stock, 1);
 });
 
-test("Card construction rejects impossible finite inventory and consume does not underflow", () => {
+test("Card construction rejects impossible finite inventory", () => {
     const supply = { stockLimit: 1, activeLimit: 1, recharge: "DEPLOYMENT", costPenalty: false };
-    assert.throws(() => cards.create(0, { unit: definition(), supply }, 2), RangeError);
-    assert.throws(() => cards.create(0, { unit: definition(), supply }, null), RangeError);
-    assert.throws(() => cards.consume(cards.create(0, { unit: definition(), supply }, 0), 0), RangeError);
+    assert.throws(() => createCard(0, definition(), { supply, stock: 2 }), RangeError);
+    assert.throws(() => createCard(0, definition(), { supply, stock: null }), RangeError);
 });

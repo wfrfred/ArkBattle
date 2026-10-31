@@ -3,7 +3,7 @@ import {
     assertNonnegativeSafeInteger,
     assertPositiveSafeInteger,
 } from "../../common/assert.js";
-import type * as card from "./card.js";
+import type * as card from "./card/card.js";
 
 export interface Definition {
     readonly initialDp: number;
