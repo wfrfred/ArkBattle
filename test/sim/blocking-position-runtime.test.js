@@ -91,6 +91,23 @@ test("all initial position plans advance before the first autonomous movement Ru
     assert.deepEqual(observed, expected);
 });
 
+test("position-dependent Blocking Rules are rechecked in the Blocking phase after position adjustment", () => {
+    let battle = fixture([holder(), target()]);
+    battle = update(battle, [capability.setBlockerRule({ id: 10 }, {
+        id: "position-limit", allows: (_state, _owner, candidate) => candidate.position[0] < 2.3,
+    })]);
+    battle = blocking.search(battle, { id: 10 });
+
+    battle = advance({ ...battle, tick: 3 });
+    assert.deepEqual(getUnit(battle, 20).position, [2.375, 1]);
+    assert.deepEqual(blockedIds(battle), [20]);
+    assert.notEqual(getUnit(battle, 20).blockable.adjustment, null);
+
+    battle = blocking.advance(battle);
+    assert.deepEqual(blockedIds(battle), []);
+    assert.notEqual(getUnit(battle, 20).blockable.adjustment, null);
+});
+
 test("spatial changes cancel plans with new position and relation cleanup visible in the first Released Hook", () => {
     let battle = blocking.search(fixture([holder(), target()]), { id: 10 });
     let observed = false;

@@ -70,11 +70,11 @@ for (const first of ["capacity", "layer"]) {
 
         assert.deepEqual(
             observed.map((entry) => entry.released),
-            original,
+            first === "capacity" ? [...original].reverse() : original,
         );
         assert.deepEqual(
             observed.map((entry) => entry.remaining),
-            first === "capacity" ? [[21, 22], [22], []] : [[], [], []],
+            first === "capacity" ? [[20, 21], [20], []] : [[], [], []],
         );
         assert.deepEqual(blockedIds(updated), []);
         for (const id of [20, 21, 22]) assert.equal(ownerId(updated, id), undefined);

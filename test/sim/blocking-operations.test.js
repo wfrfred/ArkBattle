@@ -204,7 +204,7 @@ test("release affects only its supplied relationships without maintaining siblin
     assert.equal(ownerId(battle, 22), undefined);
     assert.deepEqual(battle.events.map(({ type, blockedUnitId }) => [type, blockedUnitId]), [["BLOCKING_RELEASED", 20]]);
 
-    battle = blocking.maintain(battle, { id: 10 });
+    battle = blocking.maintain(battle, blocking.relations(battle, { id: 21 })[0]);
     assert.deepEqual(blockedIds(battle), []);
     assert.equal(ownerId(battle, 22), undefined);
 });

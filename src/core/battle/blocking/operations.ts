@@ -23,7 +23,7 @@ import type { Id, Unit } from "../../unit/unit.js";
 import { appendEvents, type State as BattleState } from "../state.js";
 import type { Relation } from "../../unit/capability/blocking/contract.js";
 import * as hooks from "./hook.js";
-import { usedCapacity } from "./query.js";
+import { relations, usedCapacity } from "./query.js";
 import { calculate as calculatePosition } from "./position.js";
 
 function isPresent(unit: Unit): boolean {
@@ -139,80 +139,23 @@ export function release(battle: BattleState, relations: readonly Relation[]): Ba
     return battle;
 }
 
-function nextRelease(battle: BattleState, blocker: Unit & Blocker): Relation | undefined {
-    const invalid = blocker.blocker.blocked.find(
-        (blocked) => !canRetain(battle, blocker, units.get(battle, blocked)!),
-    );
-    if (invalid !== undefined) {
-        return { blocker: units.ref(blocker), blocked: invalid };
-    }
-
-    const reference = units.ref(blocker);
-    if (
-        usedCapacity(battle, reference) <=
-        resolveCapacity(blocker.definition.blocker, blocker.blocker)
-    ) {
-        return undefined;
-    }
-
-    return { blocker: reference, blocked: blocker.blocker.blocked.at(-1)! };
-}
-
-export function maintain(battle: BattleState, reference: Ref<Unit>): BattleState {
-    const unit = units.get(battle, reference);
-    if (unit === undefined) {
+export function maintain(battle: BattleState, relation: Relation): BattleState {
+    const blocker = units.get(battle, relation.blocker);
+    if (!blocker?.blocker.blocked.includes(relation.blocked)) {
         return battle;
     }
-    if (hasBlocker(unit)) {
-        const owner = units.ref(unit);
-        let current: (Unit & Blocker) | undefined = unit;
 
-        while (current !== undefined) {
-            const relation = nextRelease(battle, current);
-            if (relation === undefined) {
-                return battle;
-            }
+    const target = units.get(battle, relation.blocked)!;
 
-            battle = release(battle, [relation]);
-            current = units.get(battle, owner);
-        }
-
-        return battle;
-    }
-    if (hasBlockable(unit) && unit.blockable.blocker !== null) {
-        const owner = unit.blockable.blocker;
-        const blocker = units.get(battle, owner)!;
-        if (canRetain(battle, blocker, unit)) {
-            return battle;
-        }
-
-        const blocked = blocker.blocker.blocked.find((entry) => entry.id === unit.id)!;
-        battle = release(battle, [{ blocker: owner, blocked }]);
-
-        return maintain(battle, owner);
-    }
-
-    return battle;
+    return canRetain(battle, blocker, target) ? battle : release(battle, [relation]);
 }
 
 export function maintainAll(battle: BattleState): BattleState {
-    while (true) {
-        let pending: Relation | undefined;
-
-        for (const blocker of units.all(battle).filter(hasBlocker)) {
-            pending = nextRelease(battle, blocker);
-
-            if (pending !== undefined) {
-                break;
-            }
-        }
-
-        if (pending === undefined) {
-            return battle;
-        }
-
-        battle = release(battle, [pending]);
+    for (const relation of relations(battle)) {
+        battle = maintain(battle, relation);
     }
+
+    return battle;
 }
 
 export function acquire(
@@ -259,9 +202,10 @@ export function acquire(
             tick: battle.tick,
         },
     ]);
-    battle = hooks.dispatch(battle, "acquired", { blocker: blockerRef, blocked: reference });
+    const relation = { blocker: blockerRef, blocked: reference };
+    battle = hooks.dispatch(battle, "acquired", relation);
 
-    return maintain(battle, blockerRef);
+    return maintain(battle, relation);
 }
 
 export function search(battle: BattleState, reference: Ref<Unit & Blocker>): BattleState {
@@ -295,6 +239,7 @@ export function search(battle: BattleState, reference: Ref<Unit & Blocker>): Bat
 
 export function advance(battle: BattleState): BattleState {
     const candidates = units.all(battle).filter(hasBlocker);
+    battle = maintainAll(battle);
 
     for (const unit of candidates) {
         battle = search(battle, units.ref(unit));

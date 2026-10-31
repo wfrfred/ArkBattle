@@ -382,7 +382,7 @@ export function removeSpeedContribution(ref: Ref<Unit & Locomotion>, id: string)
 
 类型、初始化、守卫及 Rule／速度贡献 Change 工厂位于 locomotion/capability.ts；工厂绑定 Ref<Unit & Locomotion>，由 Unit.update 组合发布，不附带 Blocking 后继。operations.ts 提供完整推进，不转发工厂。初始化验证速度、下限、几何半宽和转向参数非负，不要求基础速度大于 minSpeed。
 
-推进读取最新 PRESENT、空间存在且 Rule 允许的 Unit。Movement 先推进全部 Blockable 位置修正，再推进 Route 并读取当前关系，只限制自主移动；独立位置计划存在或刚完成不自动禁止自主移动。Locomotion 实际位置变化经内部 replace 提交后，调用 Blocking.maintain(battle, ref) 复核本 Unit 的当前角色，纯 velocity 改变不启动维护。Blocker／Blockable 在 Unit 初始化时至多选择一种，但该约束不决定是否具有 Route、Locomotion 或何种自身 Layer。
+推进读取最新 PRESENT、空间存在且 Rule 允许的 Unit。Movement 先推进全部 Blockable 位置修正，再推进 Route 并读取当前关系，只限制自主移动；独立位置计划存在或刚完成不自动禁止自主移动。Locomotion 只经内部 replace 提交位置与速度，不依赖 Blocking 维护；Blockable 的偏移推进同样只发布位置与计划。依赖当前位置或其他 Battle 事实的阻挡 Rule 在后续 Blocking 检查点复核；明确要求解除旧关系的空间操作仍自行完成清理。Blocker／Blockable 在 Unit 初始化时至多选择一种，但该约束不决定是否具有 Route、Locomotion 或何种自身 Layer。
 
 SpatialPresence 先纯发布新空间事实并取消自身位置计划，再调用 release(battle, relations(battle, ref))；Route 无 Presence 分支的 APPEAR_AT_POS 同样先发布位置及计划取消，再解除局部关系。中间没有回调，首个 RELEASED Hook 已可见新位置、计划取消和整批双端解除结果；不需要把空间与关系值放入同一次 replace。release 不自动维护、搜索或取消目标计划，Blocker 的释放保留其原目标的偏移。Blocking 不同步专用禁移 Rule，见 [Blocking](blocking.md)。有效速度为 `max(minSpeed, attribute.apply(speed, contributions)) * speedMultiplier`；无目标不调 advance，速度为零或不可移动返回原 battle 并保留 velocity。
 

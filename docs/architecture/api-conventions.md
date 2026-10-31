@@ -18,7 +18,7 @@ Tile 的构造入口 tile.create 接收 `{ terrain, initial }` Definition，校�
 
 battlefield/map/map.ts 公开 Map、Marker、BlockEdge 和 create／contains／get，不引入品牌或 Fields 包装。create 校验正行列数、Tiles 数量、标记坐标与边的合法范围。Tiles 通过泛型 add 建立稠密序列，普通 get／values 返回完整 Tile<object>，内部 Tile<any> 保存异构参数，传入 Terrain Definition 时按对象身份恢复具体 Tile<P>。replace(index, state) 保留 Tile Definition，只更新通用 State，不要求调用方恢复地形参数类型；内部信任上层已经确认的索引与 State，不重复检查索引存在性或 walkCost。markers／blockEdges 空洞在读取属性时自然抛错，不另设防御分支。get 复用 contains 的边界判断，内部不重复校验坐标格式。
 
-field.map 持有当前地块。battlefield/tile.update 是运行态地块变更入口，确认目标地块并校验新 walkCost 后，同步当前 Tile 与 Navigation baseline，并保留 overlay；这与 tile.create 的初始值校验属于不同入口。battle/tile.update 是完整战斗操作，在此基础上维护 Blocking，不重复校验。内容调用完整入口，不直接写 Tiles 后遗漏派生投影或阻挡维护。
+field.map 持有当前地块。battlefield/tile.update 是运行态地块变更入口，确认目标地块并校验新 walkCost 后，同步当前 Tile 与 Navigation baseline，并保留 overlay；这与 tile.create 的初始值校验属于不同入口。battle/tile.update 是完整战斗操作，在此基础上同步复核已有 Blocking 关系资格，不裁撤容量或重复校验。内容调用完整入口，不直接写 Tiles 后遗漏派生投影或关系复核。
 
 ## 1. 基本分类
 
@@ -93,7 +93,7 @@ Hook 与领域操作按执行语义命名：
 | Effect | [unit/effect/index.ts](../../src/core/unit/effect/index.ts) | 类型、ref、get、lifetime 与生命周期操作；get 归 query.ts，Effects 容器保持内部职责。 |
 | Lifetime | [lifetime/index.ts](../../src/core/lifetime/index.ts) | create／scope／getRef／available 和公开类型；request／drain、Pending、异构配对擦除与索引修改保持内部职责。 |
 | Projectile | [projectile/index.ts](../../src/core/projectile/index.ts) | 类型与 ref／all／get；完整 create／update／stop／advance 及 lifetime 保留 battle/projectile.ts，容器仍由 Battlefield 持有。 |
-| Blocking | [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts)、[capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) | Battle 入口提供关系查询及 acquire／release／maintain／maintainAll／search／advance；relations(battle, ref?) 局部直接读取原关联，release 只接收 readonly Relation[]，批量解除、记录整批事件后顺序通知，不附加维护或搜索。maintain 按 Unit 当前角色局部处理，显式地块更新使用 maintainAll。Capability 入口导出 setLayer、两端 Rule／容量／volume／Hook 的 Change 工厂及模型类型，经 Unit.update 统一发布后结算。容量仅用 ADD／ZERO，半径保存于 Definition.radius 和 State.radius。setLayer 以 previous.blocked 的旧 Ref 调用 release，不回填旧 Unit；DEFAULT_RADIUS 保持内部。 |
+| Blocking | [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts)、[capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) | Battle 入口提供关系查询及 acquire／release／maintain／maintainAll／search／advance；relations(battle, ref?) 局部直接读取原关联，release 接收 readonly Relation[]，批量解除、记录整批事件后顺序通知，不附加维护或搜索。maintain 接收单条 Relation，仅复核原身份的当前资格；maintainAll 固定入口关系并逐条复核一遍。Capability 入口导出 setLayer、两端 Rule／容量／volume／Hook 的 Change 工厂及模型类型，经 Unit.update 统一发布后结算；容量／volume 的裁撤由各自 Settlement 使用内部 settleCapacity 完成。容量仅用 ADD／ZERO，半径保存于 Definition.radius 和 State.radius。setLayer 以 previous.blocked 的旧 Ref 调用 release，不回填旧 Unit；DEFAULT_RADIUS 和 settleCapacity 保持内部。 |
 | Damage／Healing | [damage/index.ts](../../src/core/battle/damage/index.ts)、[healing/index.ts](../../src/core/battle/healing/index.ts) | 各自的 Calculate／Apply 两阶段、请求／报告及 Hook 登记；阶段派发保持内部实现，不合并结算协议。 |
 | Targeting | [battle/targeting/index.ts](../../src/core/battle/targeting/index.ts) | Filter／Comparator／Selector、hasCandidate 与 select；只读 hasCandidate 归 query.ts，可能消费 RNG 的选择保留 select.ts。 |
 | Deployment | [battle/deployment/index.ts](../../src/core/battle/deployment/index.ts) | 模型、查询、资源维护、部署命令与生命周期协作；resources.ts 的完整 Card 写回 updateCard 不公开，lifecycle.ts 不依赖完整 Unit 操作。 |
@@ -287,7 +287,9 @@ update 按以下顺序处理整批，允许同一 Unit 多个 Change，也允许
 
 先完成所有纯转换，再执行任何结算。较早结算的 Hook 能看到全批最终字段，也能看到较晚结算尚未清理的关系。批内先降容量再恢复只按最终容量裁撤；跨两次 update 则先完成第一次的解除。批内 GROUND→AIR→GROUND 仍保留两次真实切层对应的旧关系清理，不能因为最终字段值等于批前值而省略已有结算。相同条目或缺失 ID 等无变化输入由 transform 返回原 Unit，update 统一省略该项后继，Settlement 不重复判断。空批次或全部 transform 复用原 Unit 时返回原 battle。该判断针对每项暂存输入，不比较整批最终值来丢弃此前已登记的结算。
 
-每次嵌套 update 独立准备与结算自己的 Change 列表，不调度外层尚未执行的项，不保存全局 pending、updating 或隐式事务。领域后继还必须限制作用范围：Blocking 的容量只 maintain 本 Blocker，volume 在 settle 读取当前 owner 并 maintain 该 owner，不追随 Hook 中的新归属；Rule 由 maintain 复核自身，Blockable 真正解除后才继续维护旧 owner。release 只执行给定旧集合，不自动维护。嵌套操作确实修改同一对象或关联时，双方接续同一最新事实，不承诺隔离。显式全场操作如地块更新使用 maintainAll，按 Unit 顺序找到首个待解除项，每条 Hook 后从头重查，不伪装成局部操作。
+每次嵌套 update 独立准备与结算自己的 Change 列表，不调度外层尚未执行的项，不保存全局 pending、updating 或隐式事务。领域后继还必须限制作用范围：Blocking 的容量 Settlement 只按最新容量从本 Blocker 列表末尾裁撤，volume 在 settle 读取当前 owner 并结算该阻挡组，不追随 Hook 中的新归属；两者共享内部 settleCapacity，完成每条解除的 Hook 后重读，不夹带资格扫描。Rule 后继固定自身关系列表，逐条 maintain 复核资格，不裁容量或维护其他关系。release 只执行给定旧集合，不自动维护。嵌套操作确实修改同一对象或关联时，双方接续同一最新事实，不承诺隔离。显式全场操作如地块更新使用 maintainAll，固定入口关系、按顺序各复核一次资格，不回头重扫或处理容量。
+
+Rule 可读取任意 Battle 事实，但读取范围不表示自动订阅每次字段写入。每 Tick 的 Blocking 阶段先固定阶段初 Blocker 候选，再 maintainAll 复核旧关系，最后搜索新关系；晚于某条复核才发生的间接条件变化留到下一检查点，需要同步生效的业务明确调用关系操作。acquire 的 Hook 返回后只复核本次新 Relation；Locomotion 与 Blockable 位置推进只提交位置／计划，不调用 Blocking 维护。
 
 Core 内部 `replace(battle, readonly Unit[])` 仅发布已合法构造的完整对象与派生索引，信任身份、Definition 和能力配对，不重复校验或派发内容 Hook。它不是公开原始 Unit 写回协议；生命周期、精确私有 state 写回及关系双端构造继续由各领域使用。Field 保留地图边界与最终双槽冲突校验。通用 update／replace 均不派发 Occupancy 或 Blocking 通知；当前生产中只有 add／remove 明确改变占格登记，仍在各自既定时点通知 SUPPORT，不为尚无内容需求的搬格创建新工厂。
 

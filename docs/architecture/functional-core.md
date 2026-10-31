@@ -28,7 +28,7 @@
 
 Meta 通过战斗输入、内容规则和结果接口接入。商店、经济、手牌、跨回合状态机归外层玩法。装备、盟约、策略的研究用于验证 Tactical 能否执行它们提供的战斗行为，不要求 Tactical 理解整个 Meta 数据模型。
 
-普通一 Tick 左右的差异按明确项目政策处理；重要离散结果、可察觉表现和显著累计数值偏差按具体内容验证。固定 30 Hz、线性的 Tick 顺序及 `Combat → Projectile → Movement → Blocking` 是项目选择；其中 Movement 后执行普通 Blocking 搜索，再检查路线完成与离场。固定阶段可能改变接敌归属与漏怪等结果，按[Blocking 对照验收](blocking.md#与原生的差异及对照验收)判断影响，不预先认定只是一个 Tick。客户端对象队列、无业务影响的 RNG 消费轨迹或 coroutine 实现不决定领域 API。
+普通一 Tick 左右的差异按明确项目政策处理；重要离散结果、可察觉表现和显著累计数值偏差按具体内容验证。固定 30 Hz、线性的 Tick 顺序及 `Combat → Projectile → Movement → Blocking` 是项目选择；其中 Movement 后先复核已有 Blocking 关系，再执行普通搜索，随后检查路线完成与离场。固定阶段可能改变接敌归属与漏怪等结果，按[Blocking 对照验收](blocking.md#与原生的差异及对照验收)判断影响，不预先认定只是一个 Tick。客户端对象队列、无业务影响的 RNG 消费轨迹或 coroutine 实现不决定领域 API。
 
 ## 2. 目标功能要求什么
 
@@ -44,7 +44,7 @@ Meta 通过战斗输入、内容规则和结果接口接入。商店、经济、
 | 技能 SP、Ammo、技能启动与结束后继            | 接入点由 Skill／Action 领域提供；耗弹、补弹、补 SP、强退等可以跨 Unit 接续状态             | [干员研究](../../external/upstream/docs/research/03-operators.md)流明、新约能天使、烛煌；[装备研究](../../external/upstream/docs/research/04-items.md)黄沙罗盘、骑士戒律                                                                                |
 | 前摇、释放、多段攻击、Projectile             | 同步程序直接调用；跨 Tick 保存游标、等待、绑定、样本、命中历史；行动和弹体生命周期独立     | [行动与弹道案例](../research/cases/02-action-and-projectile-phases.md)                                                                                                                     |
 | 恐惧、诱导、巡逻、等待与位移                 | 活动路线与主路线进度分开；重寻路不重抽已解析目标；等待推进和移动许可分别决定               | [空间研究](../research/03-space-units-and-mechanisms.md)路线与运动章节                                                                                                                     |
-| 部署、工事、平台、动态地图、阻挡             | Battlefield 维护存储与索引；完整操作同步维护必要关系并通知，普通接敌由固定阶段推进；后继读取返回版本 | [Blocking 结算政策](blocking.md#已确定的职责与调度政策)及[空间研究](../research/03-space-units-and-mechanisms.md)                                                                 |
+| 部署、工事、平台、动态地图、阻挡             | Battlefield 维护存储与索引；完整操作按所属范围同步结算并通知，固定 Blocking 阶段复核动态资格后搜索；后继读取返回版本 | [Blocking 结算政策](blocking.md#已确定的职责与调度政策)及[空间研究](../research/03-space-units-and-mechanisms.md)                                                                 |
 | 波次、片段、出生与完成等待                   | 出生动作完成、波次存活、最终完成和击杀／漏怪账本不混为敌人数                               | [范围研究](../research/01-scope-and-battle-flow.md)Scheduler 章节                                                                                                                          |
 | 全场复活额度、领袖共享生命、战斗规则计数     | 同一作用域只有一份权威事实；不能给每个 Unit 复制额度或共享 HP                              | [空间研究](../research/03-space-units-and-mechanisms.md)全局共享状态；[整局规则](../../external/upstream/docs/research/01-core-rules.md)领袖与策略                                                                   |
 | 盟约、装备、特质的战斗接入                   | 由外层提供内容；战斗期间需要的进度显式保存，收益／结果交回外层；不把全部行为冻结为初始数值 | [范围研究](../research/01-scope-and-battle-flow.md)战斗前中后；[盟约研究](../../external/upstream/docs/research/02-bonds.md)层数与战斗触发                                                                           |
@@ -123,7 +123,7 @@ step(battle, commands)
     ├─ Projectile → 接续状态
     ├─ Movement → 接续状态
     ├─ Mechanism → 地形接触与控制器扫描 → 接续状态
-    ├─ Blocking 每 Tick 统一搜索 → 接续状态
+    ├─ Blocking 固定候选 → 复核旧关系 → 统一搜索 → 接续状态
     ├─ 路线完成与离场检查 → 接续状态
     ├─ 判断结束，形成整体 State
     └─ 返回 State，由调用方接续
@@ -188,11 +188,11 @@ Capability 的 Rule、Hook、Contribution 与 Blocker.layer 工厂接收 Typed R
 
 初始化、刷怪和预定义出现逐个完成创建、登记与入场，接续 Hook 返回的最新 BattleState 后才处理下一个对象，不预先分配后续实例身份。刷怪按当前实例逐个登记调度归属和出生事件后再执行 enter Hook；待生成数量随实际生成递减。纯集合批量写入不定义批量入场语义。Unit.add 不扫描全场 Blocking；入场内容需要取得、搜索或修改资格时，调用明确的 Blocking 操作。
 
-unit.update 与内部 replace 不准备、校验或推断 Blocking 关系，也不派发 Blocking／Occupancy 通知。acquire／release 明确构造关系双端并发布，acquire 通知后维护本 Blocker；release 统一接收 Relation 数组，入口过滤旧身份与重复项，整批解除并记录全部 RELEASED 事件，再按输入顺序通知，不附加维护、搜索或计划取消。Capacity 后继只 maintain 本 Blocker；volume 在 settle 读取当前 owner 并 maintain 该 owner，不追随 Hook 中的新归属；Rule 的 maintain 在 Blockable 自身关系确实解除后继续维护旧 owner。setLayer 将本项 previous.blocked 中的原 Ref 交给 release，不回填旧 Unit。SpatialPresence 与 Route 的主动位置覆盖先纯发布新空间事实及自身计划取消，再以 relations(battle, ref) 的局部结果调用 release；两步间无回调，首个 Hook 已可见完整结果，不要求挤在同一次 replace。普通私有 state 写回与 Hook Change 没有 Blocking 后继。
+unit.update 与内部 replace 不准备、校验或推断 Blocking 关系，也不派发 Blocking／Occupancy 通知。acquire／release 明确构造关系双端并发布，acquire 通知后只复核本次新 Relation；release 统一接收 Relation 数组，入口过滤旧身份与重复项，整批解除并记录全部 RELEASED 事件，再按输入顺序通知，不附加维护、搜索或计划取消。Capacity 的 Settlement 只按当前容量从本 Blocker 的末尾裁撤；volume 在 settle 读取当前 owner，结算该阻挡组，不追随 Hook 中的新归属；两者共享内部 settleCapacity，每条通知后重新读取容量与占用，不夹带资格扫描。Rule 的 Settlement 固定自身相关关系，逐条 maintain 复核资格，不维护其他关系或裁容量。setLayer 将本项 previous.blocked 中的原 Ref 交给 release，不回填旧 Unit。SpatialPresence 与 Route 的主动位置覆盖先纯发布新空间事实及自身计划取消，再以 relations(battle, ref) 的局部结果调用 release；两步间无回调，首个 Hook 已可见完整结果，不要求挤在同一次 replace。普通私有 state 写回与 Hook Change 没有 Blocking 后继。
 
-Locomotion 和阻挡站位推进的实际位置变化仅调用 maintain 复核该 Unit 的当前角色，纯 velocity 写入不启动维护；Route 的 APPEAR_AT_POS 则是主动空间覆盖，明确解除当前关系。局部维护每次 release 一条，在同步 Hook 后重读受影响对象，不在末尾全场扫描。地块完整更新调用明确的 maintainAll：按 Unit 顺序找首个待解除项，每个 owner 内先不合格、再超额尾项，每条通知后从头查找；不采用全场不合格优先。Damage／Healing 的 HP 写入不启动 Blocking；旧关系不因临时 HP 为 0 失效，普通 Damage 在全部 HP Applied 响应后仍满足死亡条件才进入 Unit.remove 的显式释放。
+Locomotion 和阻挡站位推进只发布位置、速度或计划，不调用 Blocking 维护；依赖位置的 Rule 在关系检查点求值。Route 的 APPEAR_AT_POS 是主动空间覆盖，明确解除当前关系。地块完整更新调用 maintainAll，固定入口旧关系、按 Unit 及其 blocked 顺序各复核一次资格，不重新收集候选、回头重扫或裁容量。maintain 接收 Relation，确认原身份仍存在后读取最新双方并复核资格；失效时仅解除这一条。Damage／Healing 的 HP 写入不启动 Blocking；旧关系不因临时 HP 为 0 失效，普通 Damage 在全部 HP Applied 响应后仍满足死亡条件才进入 Unit.remove 的显式释放。
 
-普通搜索每 Tick 在 Movement 后的固定阶段统一执行，不保存独立搜索周期，不随每次 Unit 修改全局搜索。各领域操作按自己的范围完成业务：release 保证给定旧集合的双端解除，资格和容量维护由对应 Change 后继、maintain 或 maintainAll 明确承担，Content 无需补内部步骤。尚未取得的新关系允许等待下一次普通搜索，有真实业务要求时可显式立即搜索。归属与关联保存在 Blockable／Blocker State；关系两侧在同一批写入中就绪，再按 Blocker、Blockable 顺序同步通知。后续接续 Hook 返回的最新状态，不自动扩充名单或全场搜索至稳定。详见[职责与调度政策](blocking.md#已确定的职责与调度政策)。
+每 Tick 在 Movement 后的固定 Blocking 阶段先固定阶段初 Blocker 候选，再通过 maintainAll 复核旧关系，最后统一搜索；不保存独立搜索周期，不随每次 Unit 修改全局搜索。Rule 可以读取任意 Battle 事实，普通间接变化在该检查点反映；晚于已访问关系的后续 Hook 或搜索所产生的间接变化留到下一检查点，需要同步生效的业务明确调用关系操作。阶段不反复全场收敛，也不保证每次 Battle 写入后所有 Rule 都立即重算。各领域操作按自己的范围完成业务：release 保证给定旧集合的双端解除，maintain／maintainAll 负责关系资格，容量／volume 的 Settlement 负责裁撤，Content 无需补内部步骤。尚未取得的新关系允许等待下一次普通搜索，有真实业务要求时可显式立即搜索。归属与关联保存在 Blockable／Blocker State；关系两侧在同一批写入中就绪，再按 Blocker、Blockable 顺序同步通知。后续接续 Hook 返回的最新状态，不自动扩充名单。详见[职责与调度政策](blocking.md#已确定的职责与调度政策)。
 
 查询直接使用所属领域的接口：Unit 的 all／get、Blocking 的关系查询、Occupancy 的 at，以及 Projectile 的实例查询；map 与 navigation 直接从 Field 读取。relations(battle) 保留全场投影，relations(battle, ref) 直接从该 Unit 的唯一角色读取局部关联并保留原 Ref，不全场扫描后过滤。Navigation 的状态与查询接口见 [Navigation 设计](navigation.md)。HP 到零后的业务裁决、Effect 回调和 Meta 内容后继由相应领域负责，不能让 storage 一致性维护隐式执行任意游戏程序。
 
@@ -320,7 +320,7 @@ Meta／Data 提供具体战斗配置、Definition、规则程序及其初始参�
 | 共享额度                     | 第一次消耗后，嵌套第二次读取剩余额度；每个接收者不各有完整额度                       |
 | 技能／Ammo／SP               | 消耗、补充、技能结束与跨单位后继接续状态；不把所有技能视为耗时 Buff                  |
 | Action／Projectile           | 已释放弹体独立存在；命中历史先形成，再附着／伤害／停止；等待是可恢复数据             |
-| 路线／地图／阻挡             | 临时路线恢复不重抽目标；必要解除／裁撤同步，普通接敌每 Tick 在 Movement 后统一推进；时序差异以对照案例验收 |
+| 路线／地图／阻挡             | 临时路线恢复不重抽目标；局部后继同步结算，间接资格由 Blocking 检查点复核后再普通接敌；时序差异以对照案例验收 |
 | Meta 接入                    | 外层规则可提供本场共享事实、限制与反馈；不写 Meta 对象、不重复应用同一收益           |
 
 验收检查目标结果、正常取消前缀、顺序可见性、确定性及旧输入／旧查询对象不变。旧测试可以复用有依据的场景，不能仅为兼容中间实现而保留错误契约。

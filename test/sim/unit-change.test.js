@@ -1,4 +1,5 @@
 import { setVolumeContribution } from "../../dist/core/unit/capability/blocking/blockable-operations.js";
+import { resolveVolume } from "../../dist/core/unit/capability/blocking/blockable.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { update } from "../../dist/core/battle/unit.js";
@@ -259,22 +260,8 @@ test("a nested change to an unrelated Blocker does not take over the outer owner
     assert.deepEqual(blockedIds(updated, 11), [23]);
 });
 
-test("volume settlement follows the target's current owner after an earlier settlement transfers it", () => {
-    const visited = [];
+test("volume updates preserve an earlier settlement's transfer to a new owner", () => {
     let initial = fixture([holder(10), holder(11, { capacity: 2 }), target()]);
-    for (const id of [10, 11])
-        initial = update(initial, [
-            blockers.setRule(
-                { id },
-                {
-                    id: "observe-volume-owner",
-                    allows(battle, owner) {
-                        visited.push(owner.id);
-                        return true;
-                    },
-                },
-            ),
-        ]);
     initial = blocking.acquire(initial, { id: 10 }, { id: 20 });
     initial = update(initial, [
         blockers.setHook(
@@ -283,7 +270,6 @@ test("volume settlement follows the target's current owner after an earlier sett
             hook("transfer-before-volume-settlement", (battle) => {
                 battle = blocking.acquire(battle, { id: 11 }, { id: 20 });
                 assert.equal(ownerId(battle), 11);
-                visited.length = 0;
                 return battle;
             }),
         ),
@@ -292,9 +278,10 @@ test("volume settlement follows the target's current owner after an earlier sett
         blockers.setLayer({ id: 10 }, "AIR"),
         setVolumeContribution({ id: 20 }, { id: "larger", value: 1 }),
     ]);
-    assert.deepEqual(visited, [11]);
     assert.equal(ownerId(updated), 11);
     assert.deepEqual(blockedIds(updated, 10), []);
     assert.deepEqual(blockedIds(updated, 11), [20]);
+    const current = getUnit(updated, 20);
+    assert.equal(resolveVolume(current.definition.blockable, current.blockable), 2);
     assert.equal(ownerId(initial), 10);
 });

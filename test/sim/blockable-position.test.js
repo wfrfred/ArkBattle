@@ -110,7 +110,7 @@ test("position adjustment ignores autonomous movement Rules and preserves Locomo
     assert.equal(getUnit(advanced, 20).locomotion, self.locomotion);
 });
 
-test("position updates complete their blocking consequences using the published position", () => {
+test("position updates publish first and the Blocking checkpoint releases using the latest position", () => {
     let battle = fixture([holder(), target()]);
     battle = blocking.acquire(battle, { id: 10 }, { id: 20 });
     battle = plan(battle, 20, [2.5, 1]);
@@ -127,6 +127,11 @@ test("position updates complete their blocking consequences using the published 
     const adjustment = getUnit(battle, 20).blockable.adjustment;
 
     battle = blockable.advancePosition({ ...battle, tick: 4 }, { id: 20 });
+    assert.equal(ownerId(battle), 10);
+    assert.equal(observed, undefined);
+    assert.ok(getUnit(battle, 20).position[0] > 2.4);
+
+    battle = blocking.advance(battle);
     assert.equal(ownerId(battle), undefined);
     assert.equal(observed, getUnit(battle, 20).position);
     assert.ok(observed[0] > 2.4);

@@ -1,12 +1,48 @@
 import * as blocking from "../../../battle/blocking/operations.js";
+import { relations, usedCapacity } from "../../../battle/blocking/query.js";
+import type { State as BattleState } from "../../../battle/state.js";
 import * as registry from "../../../hook.js";
 import * as contribution from "../../contribution/contribution.js";
 import { createChange, type Change } from "../../change.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
+import * as units from "../../query.js";
 import type { Hook, Key } from "./contract.js";
 import type { Rule } from "./rule.js";
-import { DEFAULT_RADIUS, type Blocker, type Layer, type Modifier } from "./blocker.js";
+import {
+    DEFAULT_RADIUS,
+    resolveCapacity,
+    type Blocker,
+    type Layer,
+    type Modifier,
+} from "./blocker.js";
+
+function settleRules(battle: BattleState, reference: Ref<Unit & Blocker>): BattleState {
+    for (const relation of relations(battle, reference)) {
+        battle = blocking.maintain(battle, relation);
+    }
+
+    return battle;
+}
+
+export function settleCapacity(battle: BattleState, reference: Ref<Unit & Blocker>): BattleState {
+    let current = units.get(battle, reference);
+
+    while (current !== undefined) {
+        if (
+            usedCapacity(battle, reference) <=
+            resolveCapacity(current.definition.blocker, current.blocker)
+        ) {
+            return battle;
+        }
+
+        const blocked = current.blocker.blocked.at(-1)!;
+        battle = blocking.release(battle, [{ blocker: reference, blocked }]);
+        current = units.get(battle, reference);
+    }
+
+    return battle;
+}
 
 export function setRule(reference: Ref<Unit & Blocker>, rule: Rule): Change {
     return createChange(
@@ -18,7 +54,7 @@ export function setRule(reference: Ref<Unit & Blocker>, rule: Rule): Change {
                 ? self
                 : { ...self, blocker: { ...self.blocker, rules } };
         },
-        (battle) => blocking.maintain(battle, reference),
+        (battle) => settleRules(battle, reference),
     );
 }
 
@@ -32,7 +68,7 @@ export function removeRule(reference: Ref<Unit & Blocker>, id: string): Change {
                 ? self
                 : { ...self, blocker: { ...self.blocker, rules } };
         },
-        (battle) => blocking.maintain(battle, reference),
+        (battle) => settleRules(battle, reference),
     );
 }
 
@@ -49,7 +85,7 @@ export function setCapacityContribution(
                 ? self
                 : { ...self, blocker: { ...self.blocker, capacity } };
         },
-        (battle) => blocking.maintain(battle, reference),
+        (battle) => settleCapacity(battle, reference),
     );
 }
 
@@ -63,7 +99,7 @@ export function removeCapacityContribution(reference: Ref<Unit & Blocker>, id: s
                 ? self
                 : { ...self, blocker: { ...self.blocker, capacity } };
         },
-        (battle) => blocking.maintain(battle, reference),
+        (battle) => settleCapacity(battle, reference),
     );
 }
 

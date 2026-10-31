@@ -16,8 +16,17 @@ import * as units from "../../query.js";
 import { isSpatiallyPresent } from "../presence/capability.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
 import { Vec2 } from "../../../common/vector.js";
+import { settleCapacity } from "./blocker-operations.js";
 
 const POSITION_ADJUSTMENT_TICKS = 0.2 * TICKS_PER_SECOND;
+
+function settleRules(battle: BattleState, reference: Ref<Unit & Blockable>): BattleState {
+    for (const relation of relations(battle, reference)) {
+        battle = blocking.maintain(battle, relation);
+    }
+
+    return battle;
+}
 
 export function release(battle: BattleState, reference: Ref<Unit & Blockable>): BattleState {
     const self = units.get(battle, reference);
@@ -58,7 +67,7 @@ export function advancePosition(
         return battle;
     }
 
-    battle = replace(battle, [
+    return replace(battle, [
         {
             ...self,
             position,
@@ -68,8 +77,6 @@ export function advancePosition(
                     : { ...self.blockable, adjustment: nextAdjustment },
         },
     ]);
-
-    return position === self.position ? battle : blocking.maintain(battle, reference);
 }
 
 export function setRule(reference: Ref<Unit & Blockable>, rule: Rule): Change {
@@ -82,7 +89,7 @@ export function setRule(reference: Ref<Unit & Blockable>, rule: Rule): Change {
                 ? self
                 : { ...self, blockable: { ...self.blockable, rules } };
         },
-        (battle) => blocking.maintain(battle, reference),
+        (battle) => settleRules(battle, reference),
     );
 }
 
@@ -96,7 +103,7 @@ export function removeRule(reference: Ref<Unit & Blockable>, id: string): Change
                 ? self
                 : { ...self, blockable: { ...self.blockable, rules } };
         },
-        (battle) => blocking.maintain(battle, reference),
+        (battle) => settleRules(battle, reference),
     );
 }
 
@@ -118,7 +125,7 @@ export function setVolumeContribution(
         (battle) => {
             const owner = units.get(battle, reference)?.blockable.blocker;
 
-            return owner == null ? battle : blocking.maintain(battle, owner);
+            return owner == null ? battle : settleCapacity(battle, owner);
         },
     );
 }
@@ -136,7 +143,7 @@ export function removeVolumeContribution(reference: Ref<Unit & Blockable>, id: s
         (battle) => {
             const owner = units.get(battle, reference)?.blockable.blocker;
 
-            return owner == null ? battle : blocking.maintain(battle, owner);
+            return owner == null ? battle : settleCapacity(battle, owner);
         },
     );
 }
