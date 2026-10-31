@@ -26,11 +26,9 @@ export function blocked(
 
 export function usedCapacity(battle: BattleState, reference: Ref<Unit & Blocker>): number {
     return blocked(battle, reference).reduce((used, target) => {
-        const unit = units.get(battle, target);
+        const unit = units.get(battle, target)!;
 
-        return unit === undefined
-            ? used
-            : used + resolveVolume(unit.definition.blockable, unit.blockable);
+        return used + resolveVolume(unit.definition.blockable, unit.blockable);
     }, 0);
 }
 
