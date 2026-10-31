@@ -1464,7 +1464,7 @@ test('core blocked route waits can teleport away, release their blocker and resu
 test('core same-position alternative disappearance and appearance replace an existing blocking relation', () => {
   const route = createRouteDefinition({
     pathMotionMode: 'WALK', startPosition: [0, 1], endPosition: [0, 4],
-    spawnOffset: [0.4, 0], spawnRandomRange: [0, 0],
+    spawnOffset: [0.5, 0], spawnRandomRange: [0, 0],
     checkpoints: [{ type: 'WAIT_FOR_TICKS', durationTicks: 30 }],
     visitEveryCheckPoint: true,
   });
@@ -1497,7 +1497,7 @@ test('core same-position alternative disappearance and appearance replace an exi
   const hidden = normalizeRoute(createRouteDefinition({ ...route, checkpoints: [{ type: 'DISAPPEAR' }] }),
     { waveStartedAtTick: 0, fragmentStartedAtTick: 0 }, route.spawnOffset, true);
   const appeared = normalizeRoute(createRouteDefinition({ ...route, checkpoints: [
-    { type: 'APPEAR_AT_POS', position: [0, 1], reachOffset: [0.4, 0] },
+    { type: 'APPEAR_AT_POS', position: [0, 1], reachOffset: [0.5, 0] },
     { type: 'WAIT_FOR_TICKS', durationTicks: 30 },
   ] }), { waveStartedAtTick: 0, fragmentStartedAtTick: 0 }, route.spawnOffset, true);
   const disappeared = (runtime = advanceBattle(runtime, [
@@ -1505,12 +1505,12 @@ test('core same-position alternative disappearance and appearance replace an exi
     { type: 'SET_ALTERNATIVE_ROUTE', unitId: 1, route: hidden },
   ]));
   assert.deepEqual(disappeared.events.filter(event => event.type === 'ROUTE').map(event => [event.signal.type, event.position]), [
-    ['DISAPPEAR', [1.4, 0]],
+    ['DISAPPEAR', [1.5, 0]],
   ]);
   assert.deepEqual(blockingQueries.relations(runtime).map(({ blocker, blocked }) => [blocker.id, blocked.id]), []);
   const step = (runtime = advanceBattle(runtime, [{ type: 'SET_ALTERNATIVE_ROUTE', unitId: 1, route: appeared }]));
   assert.deepEqual(step.events.filter(event => event.type === 'ROUTE').map(event => [event.signal.type, event.position]), [
-    ['APPEAR_AT_POS', [1.4, 0]],
+    ['APPEAR_AT_POS', [1.5, 0]],
   ]);
   const after = runtime;
   assert.deepEqual(after.battlefield.units.get(1).position, before.battlefield.units.get(1).position);

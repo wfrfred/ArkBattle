@@ -382,7 +382,7 @@ export function removeSpeedContribution(ref: Ref<Unit & Locomotion>, id: string)
 
 类型、初始化、守卫及 Rule／速度贡献 Change 工厂位于 locomotion/capability.ts；工厂绑定 Ref<Unit & Locomotion>，由 Unit.update 组合发布，不附带 Blocking 后继。operations.ts 提供完整推进，不转发工厂。初始化验证速度、下限、几何半宽和转向参数非负，不要求基础速度大于 minSpeed。
 
-推进读取最新 PRESENT、空间存在且 Rule 允许的 Unit。Movement 在 Route 推进后读取当前关系，只限制自主移动；Locomotion 实际位置变化经内部 replace 提交后，仅复核本 Unit 的当前入向和出向关系，纯 velocity 改变不启动 Blocking。SpatialPresence 用 releaseAll 一次发布新事实与全部旧关系解除，再局部通知维护；Route 无 Presence 分支的位置变化也只复核自身。Blocking 不同步专用禁移 Rule，见 [Blocking](blocking.md)。有效速度为 `max(minSpeed, attribute.apply(speed, contributions)) * speedMultiplier`；无目标不调 advance，速度为零或不可移动返回原 battle 并保留 velocity。
+推进读取最新 PRESENT、空间存在且 Rule 允许的 Unit。Movement 先推进全部 Blockable 位置修正，再推进 Route 并读取当前关系，只限制自主移动；独立位置计划存在或刚完成不自动禁止自主移动。Locomotion 实际位置变化经内部 replace 提交后，仅复核本 Unit 的当前入向和出向关系，纯 velocity 改变不启动 Blocking。SpatialPresence 用 releaseAll 一次发布新空间事实、自身位置计划取消与全部旧关系解除，再局部通知维护；Route 无 Presence 分支的 APPEAR_AT_POS 同样明确取消计划并解除旧关系。Blocking 不同步专用禁移 Rule，见 [Blocking](blocking.md)。有效速度为 `max(minSpeed, attribute.apply(speed, contributions)) * speedMultiplier`；无目标不调 advance，速度为零或不可移动返回原 battle 并保留 velocity。
 
 如果当前位置到 goal 的距离不超过本 Tick 预算，直接设置位置为 goal，保留 velocity，跳过 Steering、避障及目的格反射。nextPoint 仅用于计算 Steering 方向，不因接近中间导航节点而吸附。
 

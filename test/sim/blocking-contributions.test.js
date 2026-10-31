@@ -109,7 +109,7 @@ test("blocking initialization accepts plain definitions and validates them throu
     assert.equal(unit.definition, definition);
     assert.equal(unit.blocker.radius, radius);
     assert.deepEqual(unit.blocker, { layer: "GROUND", capacity: [], radius, rules: [], blocked: [], acquired: [], released: [] });
-    assert.deepEqual(unit.blockable, { volume: [], rules: [], blocker: null, acquired: [], released: [] });
+    assert.deepEqual(unit.blockable, { volume: [], rules: [], blocker: null, adjustment: null, acquired: [], released: [] });
     for (const [capability, invalid] of [
         ["blocker", { layer: "GROUND", rules: [], capacity: -1, radius }],
         ["blocker", { layer: "GROUND", rules: [], capacity: 1.5, radius }],

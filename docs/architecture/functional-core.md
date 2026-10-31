@@ -129,7 +129,7 @@ step(battle, commands)
     └─ 返回 State，由调用方接续
 ```
 
-Tick 的执行顺序在 step() 中直接可读。Combat 保留入口 BattleState 与 Unit Query 快照，沿登记顺序遍历并始终从初始 BattleState 查询本轮 Execution Ref，不提前生成候选数组。实际操作逐项接续最新 BattleState，快照用于对象来源和静态能力证明，动态资格由完整操作读取当前状态。领域函数负责各自的纯结算；函数式契约不要求再建立一个完整的 Tick 入口或执行文件。
+Tick 的执行顺序在 step() 中直接可读。Combat、Movement 与路线完成检查沿 Unit Query 的登记顺序遍历入口快照，不为固定候选额外生成数组或 Ref 列表；Combat 的 Execution Ref 惰性查询始终使用保存的阶段初始 BattleState。实际操作逐项接续最新 BattleState，快照用于对象来源和静态能力证明，动态资格由完整操作读取当前状态。Movement 内先推进全体 Blockable 站位计划，再逐 Unit 推进 Route 与符合资格的 Locomotion；计划存在不排斥自主移动，完成当 Tick 也不额外停走。领域函数负责各自的纯结算；函数式契约不要求再建立一个完整的 Tick 入口或执行文件。
 
 函数内部用局部 `let state` 顺序接续，调用方用 `battle = step(battle, commands)` 保存结果，不重放操作或已执行的回调。函数抛出时输入值仍完整保留；没有额外提交、发布或回滚协议。
 
@@ -138,7 +138,7 @@ Tick 的执行顺序在 step() 中直接可读。Combat 保留入口 BattleState
 | 所属领域                           | 权威事实                                                                 |
 | ---------------------------------- | ------------------------------------------------------------------------ |
 | Battlefield                        | Units、Navigation、Projectiles、占位／承载与派生索引      |
-| Unit.blocker／Unit.blockable | 当前唯一阻挡归属与有序关联；接敌、解除及必要维护由 Blocking 领域执行 |
+| Unit.blocker／Unit.blockable | 当前唯一阻挡归属、有序关联与独立站位计划；接敌、解除及必要维护由 Blocking 领域执行，真实坐标仍只有 Unit.position |
 | Unit／Capability                   | HP、控制状态、行动就绪、技能状态、路线、各自 Hook 与 Contribution 集合   |
 | Unit.effects                       | Effects 容器保存实例身份、Definition、私有 data、生效状态、来源 Ref 与 scopes |
 | Schedule                           | 波次、片段、出生与完成账本                                               |
@@ -188,9 +188,9 @@ Capability 的 Rule、Hook、Contribution 与 Blocker.layer 工厂接收 Typed R
 
 初始化、刷怪和预定义出现逐个完成创建、登记与入场，接续 Hook 返回的最新 BattleState 后才处理下一个对象，不预先分配后续实例身份。刷怪按当前实例逐个登记调度归属和出生事件后再执行 enter Hook；待生成数量随实际生成递减。纯集合批量写入不定义批量入场语义。Unit.add 不扫描全场 Blocking；入场内容需要取得、搜索或修改资格时，调用明确的 Blocking 操作。
 
-unit.update 与内部 replace 不准备、校验或推断 Blocking 关系，也不派发 Blocking／Occupancy 通知。acquire／release 及内部 releaseAll 明确构造关系双端，通过 replace 发布后自行通知并局部维护。Capacity 后继只维护本 Blocker，volume 按执行时当前 owner，Rule 只复核自身关联；setLayer 的后继从本项 previous 中捕获旧出向 Ref，再批量解除仍存在的旧身份。SpatialPresence 仍一次发布新空间事实与全部解除结果。普通私有 state 写回与 Hook Change 没有 Blocking 后继。
+unit.update 与内部 replace 不准备、校验或推断 Blocking 关系，也不派发 Blocking／Occupancy 通知。acquire／release 及内部 releaseAll 明确构造关系双端，通过 replace 发布后自行通知并局部维护。Capacity 后继只维护本 Blocker，volume 按执行时当前 owner，Rule 只复核自身关联；setLayer 的后继从本项 previous 中捕获旧出向 Ref，再批量解除仍存在的旧身份。SpatialPresence 与 Route 的主动位置覆盖取消自身站位计划，一次发布新空间事实、计划取消与全部解除结果；Unit 自身离场同样取消自身计划，Blocker 侧释放关系不取消其他目标的计划。普通私有 state 写回与 Hook Change 没有 Blocking 后继。
 
-Locomotion 位置变化和 Route 无 Presence 分支的显式位置变化仅复核该 Unit 当前入向与出向关系，纯 velocity 写入不启动维护。局部维护在每次释放及同步 Hook 后重读受影响对象；关系操作不在末尾全场扫描，避免接管其他批次不相关的待结算事实。地块完整更新仍是明确的全场 maintain 操作。Damage／Healing 的 HP 写入不启动 Blocking；旧关系不因临时 HP 为 0 失效，普通 Damage 在全部 HP Applied 响应后仍满足死亡条件才进入 Unit.remove 的显式释放。
+Locomotion 和阻挡站位推进的实际位置变化仅复核该 Unit 当前入向与出向关系，纯 velocity 写入不启动维护；Route 的 APPEAR_AT_POS 则是主动空间覆盖，明确解除旧关系。局部维护在每次释放及同步 Hook 后重读受影响对象；关系操作不在末尾全场扫描，避免接管其他批次不相关的待结算事实。地块完整更新仍是明确的全场 maintain 操作。Damage／Healing 的 HP 写入不启动 Blocking；旧关系不因临时 HP 为 0 失效，普通 Damage 在全部 HP Applied 响应后仍满足死亡条件才进入 Unit.remove 的显式释放。
 
 普通搜索每 Tick 在 Movement 后的固定阶段统一执行，不保存独立搜索周期，不随每次 Unit 修改全局搜索。所属完整业务操作保证其修改要求的关系合法和移动约束一致，允许尚未取得的新关系等待下一次普通搜索；有真实业务要求时可显式立即搜索。归属与关联保存在 Blockable／Blocker State；关系两侧在同一批写入中就绪，再按 Blocker、Blockable 顺序同步通知。后续接续 Hook 返回的最新状态，不自动扩充名单或全场搜索至稳定。详见[职责与调度政策](blocking.md#已确定的职责与调度政策)。
 

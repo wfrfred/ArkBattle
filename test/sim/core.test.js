@@ -215,7 +215,7 @@ test('core unit initialization pairs every declared capability with its initiali
 
   assert.deepEqual(unit.blocker, { layer: "GROUND", capacity: [], radius: 0.7, rules: [], blocked: [], acquired: [], released: [] });
   assert.equal(resolveCapacity(unit.definition.blocker, unit.blocker), 2);
-  assert.deepEqual(unit.blockable, { volume: [], rules: [], blocker: null, acquired: [], released: [] });
+  assert.deepEqual(unit.blockable, { volume: [], rules: [], blocker: null, adjustment: null, acquired: [], released: [] });
 
   const next = initializeUnit(battle, { id: 2, definition, position: [0, 0] }).value;
   assert.notEqual(next.vitality, unit.vitality);

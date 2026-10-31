@@ -6,13 +6,21 @@ import type { Ref } from "../../../common/ref.js";
 import type { Blocker } from "./blocker.js";
 import type { Hook } from "./contract.js";
 import type { Rule } from "./rule.js";
+import type { WorldPosition } from "../../../geometry/coordinate.js";
 
 export interface Definition {
     readonly volume: number;
 }
 
+export interface PositionAdjustment {
+    readonly from: WorldPosition;
+    readonly to: WorldPosition;
+    readonly startTick: number;
+}
+
 export interface State {
     readonly blocker: Ref<Unit & Blocker> | null;
+    readonly adjustment: PositionAdjustment | null;
     readonly volume: readonly contribution.Contribution<number>[];
     readonly rules: readonly Rule[];
     readonly acquired: readonly Hook<Unit & Blockable>[];
@@ -35,8 +43,21 @@ export function initialize(battle: BattleState, definition: Definition): Result<
 
     return {
         state: battle,
-        value: { blocker: null, volume: [], rules: [], acquired: [], released: [] },
+        value: {
+            blocker: null,
+            adjustment: null,
+            volume: [],
+            rules: [],
+            acquired: [],
+            released: [],
+        },
     };
+}
+
+export function stableBlockPosition(unit: Unit & Blockable): WorldPosition {
+    return unit.blockable.blocker === null
+        ? unit.position
+        : (unit.blockable.adjustment?.to ?? unit.position);
 }
 
 export function resolveVolume(definition: Definition, state: State): number {

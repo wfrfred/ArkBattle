@@ -8,6 +8,82 @@ import type { Hook, Key } from "./contract.js";
 import type { Rule } from "./rule.js";
 import { assertSafeInteger } from "../../../common/assert.js";
 import type { Blockable } from "./blockable.js";
+import type { State as BattleState } from "../../../battle/state.js";
+import { replace } from "../../../battle/unit.js";
+import { TICKS_PER_SECOND } from "../../../tick.js";
+import * as units from "../../query.js";
+import { isSpatiallyPresent } from "../presence/capability.js";
+import type { WorldPosition } from "../../../geometry/coordinate.js";
+
+const POSITION_ADJUSTMENT_TICKS = 0.2 * TICKS_PER_SECOND;
+
+export function release(battle: BattleState, reference: Ref<Unit & Blockable>): BattleState {
+    const self = units.get(battle, reference);
+    if (
+        self === undefined ||
+        (self.blockable.blocker === null && self.blockable.adjustment === null)
+    ) {
+        return battle;
+    }
+
+    const captured = blocking
+        .capture(battle, reference)
+        .filter((relation) => relation.blocked.id === reference.id);
+    const updates =
+        self.blockable.adjustment === null
+            ? []
+            : [{ ...self, blockable: { ...self.blockable, adjustment: null } }];
+
+    return blocking.releaseAll(battle, captured, updates);
+}
+
+export function advancePosition(
+    battle: BattleState,
+    reference: Ref<Unit & Blockable>,
+): BattleState {
+    const self = units.get(battle, reference);
+    if (self?.lifecycle !== "PRESENT" || !isSpatiallyPresent(self)) {
+        return battle;
+    }
+
+    const adjustment = self.blockable.adjustment;
+    if (adjustment === null) {
+        return battle;
+    }
+
+    const progress = Math.max(
+        0,
+        Math.min(1, (battle.tick - adjustment.startTick) / POSITION_ADJUSTMENT_TICKS),
+    );
+    let position: WorldPosition =
+        progress === 1
+            ? adjustment.to
+            : [
+                  adjustment.from[0] + (adjustment.to[0] - adjustment.from[0]) * progress,
+                  adjustment.from[1] + (adjustment.to[1] - adjustment.from[1]) * progress,
+              ];
+    if (position[0] === self.position[0] && position[1] === self.position[1]) {
+        position = self.position;
+    }
+
+    const nextAdjustment = progress === 1 ? null : adjustment;
+    if (position === self.position && nextAdjustment === adjustment) {
+        return battle;
+    }
+
+    battle = replace(battle, [
+        {
+            ...self,
+            position,
+            blockable:
+                nextAdjustment === adjustment
+                    ? self.blockable
+                    : { ...self.blockable, adjustment: nextAdjustment },
+        },
+    ]);
+
+    return position === self.position ? battle : blocking.maintainRelations(battle, reference);
+}
 
 export function setRule(reference: Ref<Unit & Blockable>, rule: Rule): Change {
     return createChange(

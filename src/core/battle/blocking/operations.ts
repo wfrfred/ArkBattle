@@ -11,6 +11,7 @@ import {
 import {
     hasBlockable,
     resolveVolume,
+    stableBlockPosition,
     type Blockable,
 } from "../../unit/capability/blocking/blockable.js";
 import { hasLayer } from "../../unit/capability/layer/capability.js";
@@ -23,6 +24,7 @@ import { appendEvents, type State as BattleState } from "../state.js";
 import type { Relation } from "../../unit/capability/blocking/contract.js";
 import * as hooks from "./hook.js";
 import { hasRelation, relations, usedCapacity } from "./query.js";
+import { calculate as calculatePosition } from "./position.js";
 
 function isPresent(unit: Unit): boolean {
     return unit.lifecycle === "PRESENT" && isSpatiallyPresent(unit);
@@ -318,13 +320,25 @@ export function acquire(
     }
 
     const reference = units.ref(target);
+    const to = calculatePosition(
+        blocker.position,
+        target.position,
+        blocker.blocker.blocked.map((blocked) => stableBlockPosition(units.get(battle, blocked)!)),
+    );
 
     battle = replace(battle, [
         {
             ...blocker,
             blocker: { ...blocker.blocker, blocked: [...blocker.blocker.blocked, reference] },
         },
-        { ...target, blockable: { ...target.blockable, blocker: units.ref(blocker) } },
+        {
+            ...target,
+            blockable: {
+                ...target.blockable,
+                blocker: units.ref(blocker),
+                adjustment: { from: target.position, to, startTick: battle.tick },
+            },
+        },
     ]);
     battle = notify(battle, "ACQUIRED", { blocker: blockerRef, blocked: reference });
 
@@ -361,10 +375,10 @@ export function search(battle: BattleState, reference: Ref<Unit & Blocker>): Bat
 }
 
 export function advance(battle: BattleState): BattleState {
-    const candidates = units.all(battle).filter(hasBlocker).map(units.ref).toArray();
+    const candidates = units.all(battle).filter(hasBlocker);
 
-    for (const reference of candidates) {
-        battle = search(battle, reference);
+    for (const unit of candidates) {
+        battle = search(battle, units.ref(unit));
     }
 
     return battle;

@@ -8,12 +8,18 @@ export type {
     Modifier,
 } from "./blocker.js";
 
-export { hasBlockable, initialize as initializeBlockable, resolveVolume } from "./blockable.js";
+export {
+    hasBlockable,
+    initialize as initializeBlockable,
+    resolveVolume,
+    stableBlockPosition,
+} from "./blockable.js";
 
 export type {
     Definition as BlockableDefinition,
     State as BlockableState,
     Blockable,
+    PositionAdjustment,
 } from "./blockable.js";
 
 export { sides, type Rule } from "./rule.js";
@@ -37,4 +43,6 @@ export {
     removeHook as removeBlockableHook,
     setVolumeContribution,
     removeVolumeContribution,
+    release as releaseBlockable,
+    advancePosition,
 } from "./blockable-operations.js";

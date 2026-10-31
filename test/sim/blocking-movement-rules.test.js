@@ -85,19 +85,24 @@ test("blocking does not change independently registered Locomotion rules", () =>
     assertMoves(battle);
 });
 
-test("Route wait timers continue while blocking prevents position integration", () => {
+test("Route wait timers continue while only the blocking position plan moves the unit", () => {
     let battle = acquire(fixture([holder(), mover(20, { checkpoints: [{ type: "WAIT", tick: 2 }] })]));
-    const position = getUnit(battle, 20).position;
+    const adjustment = getUnit(battle, 20).blockable.adjustment;
+    assert.deepEqual(adjustment, { from: [2.25, 1], to: [2.5, 1], startTick: 0 });
     battle = step(battle);
+    assert.deepEqual(getUnit(battle, 20).position, adjustment.from);
     assert.deepEqual(getUnit(battle, 20).route.main.phase, {
         type: "CHECKPOINT", index: 0,
         checkpointState: { type: "WAITING", deadlineTick: 2 },
     });
     battle = step({ ...battle, tick: 1 });
     assert.equal(getUnit(battle, 20).route.main.phase.checkpointState.deadlineTick, 2);
+    assert.deepEqual(getUnit(battle, 20).position, [2.25 + 0.25 / 6, 1]);
     battle = step({ ...battle, tick: 2 });
     assert.equal(getUnit(battle, 20).route.main.phase.type, "END");
-    assert.deepEqual(getUnit(battle, 20).position, position);
+    assert.deepEqual(getUnit(battle, 20).position, [2.25 + 0.25 / 3, 1]);
+    assert.equal(getUnit(battle, 20).blockable.adjustment, adjustment);
+    assert.equal(ownerId(battle), 10);
     assert.deepEqual(getUnit(battle, 20).locomotion.velocity, [0.0625, 0]);
 });
 

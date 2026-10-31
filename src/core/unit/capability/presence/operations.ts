@@ -5,6 +5,7 @@ import type { WorldPosition } from "../../../geometry/coordinate.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import type { SpatialPresence } from "./capability.js";
+import { hasBlockable } from "../blocking/blockable.js";
 
 export function disappear(battle: BattleState, ref: Ref<Unit & SpatialPresence>): BattleState {
     const unit = units.get(battle, ref);
@@ -33,9 +34,13 @@ export function appear(
 }
 
 function changePresence(battle: BattleState, unit: Unit & SpatialPresence): BattleState {
+    const next =
+        hasBlockable(unit) && unit.blockable.adjustment !== null
+            ? { ...unit, blockable: { ...unit.blockable, adjustment: null } }
+            : unit;
     const previous = blocking.capture(battle, units.ref(unit));
     const incoming = previous.filter((relation) => relation.blocked.id === unit.id);
     const outgoing = previous.filter((relation) => relation.blocker.id === unit.id);
 
-    return blocking.releaseAll(battle, [...incoming, ...outgoing], [unit]);
+    return blocking.releaseAll(battle, [...incoming, ...outgoing], [next]);
 }

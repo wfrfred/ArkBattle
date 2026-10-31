@@ -112,7 +112,7 @@ test('core blocking: the first registered eligible blocker wins when both contac
 });
 
 
-test('core visibility: blocker death releases its enemy before movement in the same tick', () => {
+test('core visibility: blocker death preserves the offset and releases autonomous movement in the same tick', () => {
   let battle = coreBlockingBattle(
     [{ definition: chessRec({ id: FRONT, stats: { maxHp: 10, atk: 0, def: 0, blockCnt: 1 }, skill: null }), position: [1, 5] }],
     [{ definition: foe('core_killer', { atk: 1000 }), route: coreBlockingRoute([1, 6], { spawnOffset: [-0.6, 0] }) }],
@@ -120,16 +120,21 @@ test('core visibility: blocker death releases its enemy before movement in the s
   const acquired = (battle = stepBattle(battle, []));
   assert.equal(acquired.events.some(event => event.type === 'UNIT_REMOVED'), false);
   assert.deepEqual(coreBlockedBy(battle, 0), [1]);
-  const stopped = coreBlockingUnit(battle, 1).position;
+  const adjustment = coreBlockingUnit(battle, 1).blockable.adjustment;
+  const speed = coreBlockingUnit(battle, 1).definition.locomotion.speed;
   const death = (battle = stepBattle(battle, []));
   const resumed = coreBlockingUnit(battle, 1).position;
 
   assert.ok(death.events.some(event => event.type === 'UNIT_REMOVED' && event.unitId === 0 && event.reason === 'DEATH'));
   assert.deepEqual(blockingQueries.relations(battle).map(({ blocker, blocked }) => ({ blockerUnitId: blocker.id, blockedUnitId: blocked.id })), []);
-  assert.ok(resumed[0] < stopped[0]);
-  assert.ok(Math.abs(stopped[0] - resumed[0] - coreBlockingUnit(battle, 1).definition.locomotion.speed) < 1e-9);
+  assert.equal(coreBlockingUnit(battle, 1).blockable.adjustment, adjustment);
+  const offsetPosition = adjustment.from[0] + (adjustment.to[0] - adjustment.from[0]) / 6;
+  assert.ok(Math.abs(resumed[0] - (offsetPosition - speed)) < 1e-9);
+  assert.equal(resumed[1], 1);
   battle = stepBattle(battle, []);
-  assert.ok(coreBlockingUnit(battle, 1).position[0] < resumed[0]);
+  const nextOffsetPosition = adjustment.from[0] + (adjustment.to[0] - adjustment.from[0]) / 3;
+  assert.ok(Math.abs(coreBlockingUnit(battle, 1).position[0] - (nextOffsetPosition - speed)) < 1e-9);
+  assert.equal(coreBlockingUnit(battle, 1).blockable.adjustment, adjustment);
 });
 
 
@@ -148,14 +153,19 @@ test('core visibility: a freed front operator takes over after movement and hold
   assert.equal(acquired.events.some(event => event.type === 'UNIT_REMOVED'), false);
   assert.deepEqual(coreBlockedBy(battle, 0), [2]);
   assert.deepEqual(coreBlockedBy(battle, 1), [3]);
-  const stopped = coreBlockingUnit(battle, 3).position;
+  const adjustment = coreBlockingUnit(battle, 3).blockable.adjustment;
+  const speed = coreBlockingUnit(battle, 3).definition.locomotion.speed;
   const released = (battle = stepBattle(battle, []));
   const position = coreBlockingUnit(battle, 3).position;
 
   assert.deepEqual(released.events.filter(event => event.type === 'UNIT_REMOVED').map(event => event.unitId), [2, 1]);
-  assert.ok(Math.abs(stopped[0] - position[0] - coreBlockingUnit(battle, 3).definition.locomotion.speed) < 1e-9);
+  const offsetPosition = adjustment.from[0] + (adjustment.to[0] - adjustment.from[0]) / 6;
+  assert.ok(Math.abs(position[0] - (offsetPosition - speed)) < 1e-9);
   assert.equal(position[1], 1);
   assert.deepEqual(coreBlockedBy(battle, 0), [3]);
+  const replacement = coreBlockingUnit(battle, 3).blockable.adjustment;
+  assert.notEqual(replacement, adjustment);
+  assert.deepEqual(replacement, { from: position, to: position, startTick: 1 });
   battle = stepBattle(battle, []);
   assert.deepEqual(coreBlockedBy(battle, 0), [3]);
   assert.deepEqual(coreBlockingUnit(battle, 3).position, position);

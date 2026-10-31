@@ -9,6 +9,7 @@ import * as route from "../../unit/capability/route/operations.js";
 import { movementTarget } from "../../unit/capability/route/query.js";
 import { hasLocomotion, type Locomotion } from "../../unit/capability/locomotion/capability.js";
 import { hasBlockable } from "../../unit/capability/blocking/blockable.js";
+import * as blockable from "../../unit/capability/blocking/blockable-operations.js";
 import * as locomotion from "../../unit/capability/locomotion/operations.js";
 import * as units from "../../unit/query.js";
 import type { Id, Unit } from "../../unit/unit.js";
@@ -73,9 +74,14 @@ export function advanceMovement(
     battle: BattleState,
     { routeMoveMultiplier }: { readonly routeMoveMultiplier: number },
 ): BattleState {
-    const candidates = units.all(battle).filter(hasRoute).map(units.ref).toArray();
+    const candidates = units.all(battle);
 
-    for (const ref of candidates) {
+    for (const unit of candidates.filter(hasBlockable)) {
+        battle = blockable.advancePosition(battle, units.ref(unit));
+    }
+
+    for (const initial of candidates.filter(hasRoute)) {
+        const ref = units.ref(initial);
         battle = route.advance(battle, ref);
         const unit = units.get(battle, ref);
         if (unit?.lifecycle !== "PRESENT") {
@@ -94,9 +100,10 @@ export function advanceMovement(
 }
 
 export function resolveRouteCompletion(battle: BattleState): BattleState {
-    const candidates = units.all(battle).filter(hasRoute).map(units.ref).toArray();
+    const candidates = units.all(battle).filter(hasRoute);
 
-    for (const ref of candidates) {
+    for (const initial of candidates) {
+        const ref = units.ref(initial);
         const unit = units.get(battle, ref);
         if (
             unit?.lifecycle !== "PRESENT" ||

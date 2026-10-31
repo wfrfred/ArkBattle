@@ -1,6 +1,6 @@
 import { Vec2 } from "../../../common/vector.js";
 import { replace as replaceUnit } from "../../../battle/unit.js";
-import { maintainRelations } from "../../../battle/blocking/operations.js";
+import { capture, releaseAll } from "../../../battle/blocking/operations.js";
 import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState } from "../../../battle/state.js";
@@ -10,6 +10,7 @@ import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import * as presence from "../presence/operations.js";
 import { hasSpatialPresence } from "../presence/capability.js";
+import { hasBlockable } from "../blocking/blockable.js";
 import {
     initialize,
     type Definition,
@@ -205,12 +206,21 @@ export function advance(battle: BattleState, ref: Ref<Unit & Route>): BattleStat
             } else if (checkpoint.type === "APPEAR_AT_POS") {
                 const position = Vec2.add(Tile.center(checkpoint.position), checkpoint.offset);
                 signal = { type: "APPEAR_AT_POS", position };
-                battle = hasSpatialPresence(self)
-                    ? presence.appear(battle, units.ref(self), position)
-                    : maintainRelations(
-                          replaceUnit(battle, [{ ...units.get(battle, ref)!, position }]),
-                          ref,
-                      );
+
+                if (hasSpatialPresence(self)) {
+                    battle = presence.appear(battle, units.ref(self), position);
+                } else {
+                    const current = units.get(battle, ref)!;
+                    const next = hasBlockable(current)
+                        ? {
+                              ...current,
+                              position,
+                              blockable: { ...current.blockable, adjustment: null },
+                          }
+                        : { ...current, position };
+
+                    battle = releaseAll(battle, capture(battle, ref), [next]);
+                }
             } else {
                 signal = checkpoint;
             }

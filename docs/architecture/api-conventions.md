@@ -293,7 +293,7 @@ Action.interval／speed Change 的 settle 调用 refreshCooldowns，按最终贡
 
 add 接收创建方已经完成 Capability 初始化、部署信息及路线初态的完整 Unit，负责登记、Skill 入场、enter Hook 和原时点的 Occupancy 通知，不扫描全场 Blocking。创建方逐个完成 add 再处理下一对象。Unit Definition 的 hooks 必填，无监听传 []；实例不增加另一份生命周期 Hook。Deployment 的卡消费与 DP 扣除在 add 前完成，登记后记录 UNIT_DEPLOYED，再执行 Skill 与 Unit 入场；部署通知仍由 Deployment 在 add 返回后派发。
 
-remove 按 Unit ID 请求 Unit Lifetime 结束，首次请求保留 Departure、发布 LEAVING，明确调用 Blocking.release 释放自身全部入向和出向关系，再执行返费。真实所有权按 Skill、Action、Burst、Effect 顺序展开；依赖者完整 Finalize 后才注销、通知 Occupancy、回收 Card 和派发历史 leave，Finalize 不追加全场 Blocking 扫描。嵌套 remove 只保证请求／Prepare，不保证已物理移除。advance 保留入口 Unit Query 快照，在操作处生成 Ref，逐项读取最新 PRESENT Unit 并派发 tick Hook。
+remove 按 Unit ID 请求 Unit Lifetime 结束，首次请求保留 Departure、发布 LEAVING 并取消自身未完成的阻挡站位计划，明确调用 Blocking.release 释放自身全部入向和出向关系，再执行返费。真实所有权按 Skill、Action、Burst、Effect 顺序展开；依赖者完整 Finalize 后才注销、通知 Occupancy、回收 Card 和派发历史 leave，Finalize 不追加全场 Blocking 扫描。嵌套 remove 只保证请求／Prepare，不保证已物理移除。advance 保留入口 Unit Query 快照，在操作处生成 Ref，逐项读取最新 PRESENT Unit 并派发 tick Hook。
 
 battlefield/unit.ts 的 add／update／remove 仍是纯存储与索引转换，Field.update 接收完整 Unit 数组，不能与公开 Battle.update 的 Change 数组混用。BattleState 不保留另一套 Unit CRUD，通用 setBattlefield 已移除；特殊撤退—再部署留待实际内容审查。
 
