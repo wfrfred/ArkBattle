@@ -346,7 +346,7 @@ Movement 复用绑定阶段起始 BattleState 的 Unit Query，先过滤 Blockab
 | 偏移自然完成 | 不变 | 清除 |
 | 自身主动空间覆盖或 Unit 离场 | 按相应完整操作清理 | 取消自身计划 |
 
-Blockable.release 复用内部 releaseAll，将自身计划取消和当前入向关系解除在首次 RELEASED Hook 前一起发布。没有当前关系、只剩孤立计划时仍可取消；不向关系解除增加 reason 或 cancelAdjustment 开关。Blocker 的普通清理不接管其他目标的位置计划。
+Blockable.release 从当前唯一 Blocker 的 blocked[] 中取得原 Ref 条目，复用内部 releaseAll，将自身计划取消和当前入向关系解除在首次 RELEASED Hook 前一起发布，不扫描全场关系。没有当前关系、只剩孤立计划时直接取消，不查询关系；不向关系解除增加 reason 或 cancelAdjustment 开关。Blocker 的普通清理不接管其他目标的位置计划。
 
 ## 未完成的原生机制
 

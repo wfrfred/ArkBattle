@@ -26,9 +26,18 @@ export function release(battle: BattleState, reference: Ref<Unit & Blockable>): 
         return battle;
     }
 
-    const captured = blocking
-        .capture(battle, reference)
-        .filter((relation) => relation.blocked.id === reference.id);
+    const owner = self.blockable.blocker;
+    const captured =
+        owner === null
+            ? []
+            : [
+                  {
+                      blocker: owner,
+                      blocked: units
+                          .get(battle, owner)!
+                          .blocker.blocked.find((blocked) => blocked.id === self.id)!,
+                  },
+              ];
     const updates =
         self.blockable.adjustment === null
             ? []
@@ -51,10 +60,7 @@ export function advancePosition(
         return battle;
     }
 
-    const progress = Math.max(
-        0,
-        Math.min(1, (battle.tick - adjustment.startTick) / POSITION_ADJUSTMENT_TICKS),
-    );
+    const progress = Math.min(1, (battle.tick - adjustment.startTick) / POSITION_ADJUSTMENT_TICKS);
     let position: WorldPosition =
         progress === 1
             ? adjustment.to
