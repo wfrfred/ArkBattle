@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-31",
+  "scope": "Static instruction witness assertions, not native execution or gameplay simulation.",
+  "checks": {
+    "deterministic_scalar_lerp": true,
+    "release_calls_remove_before_kill": true,
+    "force_set_release_before_position": true,
+    "unregister_clears_pointer": true,
+    "dotween_default_ease_six": true,
+    "metadata_ease_values": true
+  },
+  "selectedNativeSha256": "a41ec630b5638f657e44256050922ce8df77da542e29b2714b237170ec6cd744"
+}

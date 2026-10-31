@@ -1,0 +1,840 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-31"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "scheduling/movement/field508-candidates.json#/provenance/client/dll",
+          "scheduling/movement/selected-movement.json#/provenance/client/dll",
+          "scheduling/tick/selected-native.json#/provenance/client/dll",
+          "selected-native.json#/provenance/client/dll"
+        ],
+        "bytes": 218523112
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "scheduling/movement/field508-candidates.json#/provenance/client/metadata",
+          "scheduling/movement/selected-movement.json#/provenance/client/metadata",
+          "scheduling/tick/selected-native.json#/provenance/client/metadata",
+          "selected-native.json#/provenance/client/metadata"
+        ],
+        "bytes": 45805368
+      }
+    },
+    "sourceRecords": [
+      "scheduling/movement/field508-candidates.json",
+      "scheduling/movement/selected-movement.json",
+      "scheduling/tick/selected-native.json",
+      "selected-native.json",
+      "verification.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12589,
+        "sha256": "1a85248a6a48d92d61c65f5ba044d079954866ff0c1672488b92f0cf1366af9a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 6731,
+        "sha256": "bbca61928932e39ad74723aef08a64133bcd2ba5a2c67205dfbe6e104386407e"
+      },
+      {
+        "path": "extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "scheduling/movement/extract.py",
+        "kind": "historical-script",
+        "bytes": 4476,
+        "sha256": "d33b8a20ca9d44045d56578b74559ff5902acceadd98fe3d9415181e7c778d1f"
+      },
+      {
+        "path": "scheduling/movement/extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "scheduling/movement/field508-candidates.json",
+        "kind": "record",
+        "bytes": 17820,
+        "sha256": "643efaff2aa36d7afda62686930f35ca9c5a600bb01b81738d51955f16198155"
+      },
+      {
+        "path": "scheduling/movement/selected-movement.json",
+        "kind": "record",
+        "bytes": 673117,
+        "sha256": "2214787170c3b962093f45d0cc0a84b354ccaa3a1115e79fb2300071ca9a9642"
+      },
+      {
+        "path": "scheduling/tick/extract.py",
+        "kind": "historical-script",
+        "bytes": 3342,
+        "sha256": "e9f4f1797f9d7baeaf7d4490e5c8c83a7077b0a050dd6ac6a059667a3666ede9"
+      },
+      {
+        "path": "scheduling/tick/extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "scheduling/tick/selected-native.json",
+        "kind": "record",
+        "bytes": 320182,
+        "sha256": "d9af919e79f60ec00fa2f59ffb20b25304f97d88fe4d09db490530665b981db1"
+      },
+      {
+        "path": "selected-native.json",
+        "kind": "record",
+        "bytes": 1159617,
+        "sha256": "a41ec630b5638f657e44256050922ce8df77da542e29b2714b237170ec6cd744"
+      },
+      {
+        "path": "verification.json",
+        "kind": "record",
+        "bytes": 480,
+        "sha256": "5bed145114f5668b23b37ec2a2c5fae3ca49b6c99f2a7b1a921839b124457650"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 22093,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/0",
+            "selected-native.json#/result/bodies/0",
+            "selected-native.json#/result/bodies/0/method"
+          ],
+          "fullname": "Torappu.DOTweenWrapper.Kill",
+          "address": "0x181987020"
+        },
+        {
+          "index": 22097,
+          "mode": "disasm",
+          "records": [
+            "scheduling/tick/selected-native.json#/result/methods/0",
+            "scheduling/tick/selected-native.json#/result/bodies/0",
+            "scheduling/tick/selected-native.json#/result/bodies/0/method",
+            "selected-native.json#/result/methods/1",
+            "selected-native.json#/result/bodies/1",
+            "selected-native.json#/result/bodies/1/method"
+          ],
+          "fullname": "Torappu.BattleTweenMgr.To",
+          "address": "0x1819869d0"
+        },
+        {
+          "index": 22098,
+          "mode": "disasm",
+          "records": [
+            "scheduling/tick/selected-native.json#/result/methods/1",
+            "scheduling/tick/selected-native.json#/result/bodies/3",
+            "scheduling/tick/selected-native.json#/result/bodies/3/method"
+          ],
+          "fullname": "Torappu.BattleTweenMgr.Tick",
+          "address": "0x181986890"
+        },
+        {
+          "index": 22106,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/2",
+            "selected-native.json#/result/bodies/4",
+            "selected-native.json#/result/bodies/4/method"
+          ],
+          "fullname": "Torappu.BattleTweenMgr/Tween.Init",
+          "address": "0x181996ac0"
+        },
+        {
+          "index": 22107,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/3",
+            "selected-native.json#/result/bodies/5",
+            "selected-native.json#/result/bodies/5/method"
+          ],
+          "fullname": "Torappu.BattleTweenMgr/Tween.Init",
+          "address": "0x181996b80"
+        },
+        {
+          "index": 22108,
+          "mode": "disasm",
+          "records": [
+            "scheduling/tick/selected-native.json#/result/methods/2",
+            "scheduling/tick/selected-native.json#/result/bodies/4",
+            "scheduling/tick/selected-native.json#/result/bodies/4/method",
+            "selected-native.json#/result/methods/4",
+            "selected-native.json#/result/bodies/6",
+            "selected-native.json#/result/bodies/6/method"
+          ],
+          "fullname": "Torappu.BattleTweenMgr/Tween.Tick",
+          "address": "0x181996ef0"
+        },
+        {
+          "index": 22109,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/5",
+            "selected-native.json#/result/bodies/16",
+            "selected-native.json#/result/bodies/16/method"
+          ],
+          "fullname": "Torappu.BattleTweenMgr/Tween.OnAllocate",
+          "address": "0x181996d90"
+        },
+        {
+          "index": 22112,
+          "mode": "disasm",
+          "records": [
+            "scheduling/tick/selected-native.json#/result/methods/3",
+            "scheduling/tick/selected-native.json#/result/bodies/14",
+            "scheduling/tick/selected-native.json#/result/bodies/14/method",
+            "selected-native.json#/result/methods/6",
+            "selected-native.json#/result/bodies/17",
+            "selected-native.json#/result/bodies/17/method"
+          ],
+          "fullname": "Torappu.BattleTweenMgr/Tween.Kill",
+          "address": "0x181996d20"
+        },
+        {
+          "index": 22113,
+          "mode": "disasm",
+          "records": [
+            "scheduling/tick/selected-native.json#/result/methods/4",
+            "scheduling/tick/selected-native.json#/result/bodies/15",
+            "scheduling/tick/selected-native.json#/result/bodies/15/method",
+            "selected-native.json#/result/methods/7",
+            "selected-native.json#/result/bodies/18",
+            "selected-native.json#/result/bodies/18/method"
+          ],
+          "fullname": "Torappu.BattleTweenMgr/Tween.Play",
+          "address": "0x181996e10"
+        },
+        {
+          "index": 22115,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/8",
+            "selected-native.json#/result/bodies/19",
+            "selected-native.json#/result/bodies/19/method"
+          ],
+          "fullname": "Torappu.BattleTweenMgr/Tween.SetEase",
+          "address": "0x181996eb0"
+        },
+        {
+          "index": 22116,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/9",
+            "selected-native.json#/result/bodies/20",
+            "selected-native.json#/result/bodies/20/method"
+          ],
+          "fullname": "Torappu.BattleTweenMgr/Tween.OnStop",
+          "address": "0x181996df0"
+        },
+        {
+          "index": 22117,
+          "mode": "disasm",
+          "records": [
+            "scheduling/tick/selected-native.json#/result/methods/5",
+            "scheduling/tick/selected-native.json#/result/bodies/16",
+            "scheduling/tick/selected-native.json#/result/bodies/16/method",
+            "selected-native.json#/result/methods/10",
+            "selected-native.json#/result/bodies/21",
+            "selected-native.json#/result/bodies/21/method"
+          ],
+          "fullname": "Torappu.BattleTweenMgr/Tween._OnComplete",
+          "address": "0x1819972f0"
+        },
+        {
+          "index": 22119,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/11",
+            "selected-native.json#/result/bodies/22",
+            "selected-native.json#/result/bodies/22/method"
+          ],
+          "fullname": "Torappu.BattleTweenMgr/Tween.<Init>b__24_0",
+          "address": "0x1819971e0"
+        },
+        {
+          "index": 63043,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/0",
+            "scheduling/movement/selected-movement.json#/result/bodies/0",
+            "scheduling/movement/selected-movement.json#/result/bodies/0/method"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_escapeTime",
+          "address": "0x1805d7a50"
+        },
+        {
+          "index": 64749,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/12",
+            "selected-native.json#/result/bodies/26",
+            "selected-native.json#/result/bodies/26/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.StartBattleTween",
+          "address": "0x180633440"
+        },
+        {
+          "index": 64825,
+          "mode": "disasm",
+          "records": [
+            "scheduling/tick/selected-native.json#/result/methods/6",
+            "scheduling/tick/selected-native.json#/result/bodies/17",
+            "scheduling/tick/selected-native.json#/result/bodies/17/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.OnTick",
+          "address": "0x18062c440"
+        },
+        {
+          "index": 66413,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/1",
+            "scheduling/movement/selected-movement.json#/result/bodies/1",
+            "scheduling/movement/selected-movement.json#/result/bodies/1/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_canMove",
+          "address": "0x180702180"
+        },
+        {
+          "index": 71056,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/2",
+            "scheduling/movement/selected-movement.json#/result/bodies/2",
+            "scheduling/movement/selected-movement.json#/result/bodies/2/method"
+          ],
+          "fullname": "Torappu.Battle.MoveController.CalculateMoveDelta",
+          "address": "0x1808b6140"
+        },
+        {
+          "index": 76320,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/3",
+            "scheduling/movement/selected-movement.json#/result/bodies/12",
+            "scheduling/movement/selected-movement.json#/result/bodies/12/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_blocker",
+          "address": "0x180a7bb20"
+        },
+        {
+          "index": 76341,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/4",
+            "scheduling/movement/selected-movement.json#/result/bodies/13",
+            "scheduling/movement/selected-movement.json#/result/bodies/13/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_isInMoveState",
+          "address": "0x180a7e200"
+        },
+        {
+          "index": 76358,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/5",
+            "scheduling/movement/selected-movement.json#/result/bodies/14",
+            "scheduling/movement/selected-movement.json#/result/bodies/14/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_isInCombat",
+          "address": "0x180a7dfe0"
+        },
+        {
+          "index": 76359,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/6",
+            "scheduling/movement/selected-movement.json#/result/bodies/19",
+            "scheduling/movement/selected-movement.json#/result/bodies/19/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_isMovingBySelf",
+          "address": "0x180a7e3a0"
+        },
+        {
+          "index": 76363,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/13",
+            "selected-native.json#/result/bodies/33",
+            "selected-native.json#/result/bodies/33/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_stableBlockPosition",
+          "address": "0x180a7fef0"
+        },
+        {
+          "index": 76429,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/14",
+            "selected-native.json#/result/bodies/38",
+            "selected-native.json#/result/bodies/38/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.CheckBlockableWithoutCheckRange",
+          "address": "0x180a6b980"
+        },
+        {
+          "index": 76432,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/7",
+            "scheduling/movement/selected-movement.json#/result/bodies/20",
+            "scheduling/movement/selected-movement.json#/result/bodies/20/method",
+            "selected-native.json#/result/methods/15",
+            "selected-native.json#/result/bodies/45",
+            "selected-native.json#/result/bodies/45/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.RegisterBlocker",
+          "address": "0x180a73e00"
+        },
+        {
+          "index": 76433,
+          "mode": "disasm",
+          "records": [
+            "scheduling/tick/selected-native.json#/result/methods/7",
+            "scheduling/tick/selected-native.json#/result/bodies/18",
+            "scheduling/tick/selected-native.json#/result/bodies/18/method",
+            "selected-native.json#/result/methods/16",
+            "selected-native.json#/result/bodies/53",
+            "selected-native.json#/result/bodies/53/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.UnregisterBlocker",
+          "address": "0x180a76b50"
+        },
+        {
+          "index": 76435,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/17",
+            "selected-native.json#/result/bodies/58",
+            "selected-native.json#/result/bodies/58/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.KnockBack",
+          "address": "0x180a6f120"
+        },
+        {
+          "index": 76437,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/18",
+            "selected-native.json#/result/bodies/65",
+            "selected-native.json#/result/bodies/65/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.BeginPull",
+          "address": "0x180a69fe0"
+        },
+        {
+          "index": 76438,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/19",
+            "selected-native.json#/result/bodies/74",
+            "selected-native.json#/result/bodies/74/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.StillPull",
+          "address": "0x180a752d0"
+        },
+        {
+          "index": 76448,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/20",
+            "selected-native.json#/result/bodies/81",
+            "selected-native.json#/result/bodies/81/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.Blink",
+          "address": "0x180a6a8c0"
+        },
+        {
+          "index": 76449,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/21",
+            "selected-native.json#/result/bodies/88",
+            "selected-native.json#/result/bodies/88/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.BlinkWithDirection",
+          "address": "0x180a6a4c0"
+        },
+        {
+          "index": 76450,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/22",
+            "selected-native.json#/result/bodies/89",
+            "selected-native.json#/result/bodies/89/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.Blink",
+          "address": "0x180a6ae10"
+        },
+        {
+          "index": 76452,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/23",
+            "selected-native.json#/result/bodies/100",
+            "selected-native.json#/result/bodies/100/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.ForceSetPositionByWorldCoords",
+          "address": "0x180a6d990"
+        },
+        {
+          "index": 76487,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/8",
+            "scheduling/movement/selected-movement.json#/result/bodies/28",
+            "scheduling/movement/selected-movement.json#/result/bodies/28/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy._MoveByRoute",
+          "address": "0x180a796f0"
+        },
+        {
+          "index": 76491,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/9",
+            "scheduling/movement/selected-movement.json#/result/bodies/29",
+            "scheduling/movement/selected-movement.json#/result/bodies/29/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy._MoveByCursor",
+          "address": "0x180a78fc0"
+        },
+        {
+          "index": 76492,
+          "mode": "disasm",
+          "records": [
+            "scheduling/tick/selected-native.json#/result/methods/8",
+            "scheduling/tick/selected-native.json#/result/bodies/23",
+            "scheduling/tick/selected-native.json#/result/bodies/23/method",
+            "selected-native.json#/result/methods/24",
+            "selected-native.json#/result/bodies/107",
+            "selected-native.json#/result/bodies/107/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.ReleaseFromBlocker",
+          "address": "0x180a741c0"
+        },
+        {
+          "index": 76515,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/25",
+            "selected-native.json#/result/bodies/112",
+            "selected-native.json#/result/bodies/112/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy._MoveToBlockPosition",
+          "address": "0x180a799d0"
+        },
+        {
+          "index": 76529,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/26",
+            "selected-native.json#/result/bodies/116",
+            "selected-native.json#/result/bodies/116/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnFinish",
+          "address": "0x180a70920"
+        },
+        {
+          "index": 76546,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/27",
+            "selected-native.json#/result/bodies/117",
+            "selected-native.json#/result/bodies/117/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.ReleaseBlock",
+          "address": "0x180a74110"
+        },
+        {
+          "index": 76562,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/10",
+            "scheduling/movement/selected-movement.json#/result/bodies/35",
+            "scheduling/movement/selected-movement.json#/result/bodies/35/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy..ctor",
+          "address": "0x180a7acc0"
+        },
+        {
+          "index": 76564,
+          "mode": "disasm",
+          "records": [
+            "scheduling/tick/selected-native.json#/result/methods/9",
+            "scheduling/tick/selected-native.json#/result/bodies/28",
+            "scheduling/tick/selected-native.json#/result/bodies/28/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.<_MoveToBlockPosition>b__473_0",
+          "address": "0x180a76b10"
+        },
+        {
+          "index": 76565,
+          "mode": "disasm",
+          "records": [
+            "scheduling/tick/selected-native.json#/result/methods/10",
+            "scheduling/tick/selected-native.json#/result/bodies/29",
+            "scheduling/tick/selected-native.json#/result/bodies/29/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.<_MoveToBlockPosition>b__473_1",
+          "address": "0x180a76b20"
+        },
+        {
+          "index": 76656,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/11",
+            "scheduling/movement/selected-movement.json#/result/bodies/37",
+            "scheduling/movement/selected-movement.json#/result/bodies/37/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/MoveState.OnEnter",
+          "address": "0x180a97520"
+        },
+        {
+          "index": 76658,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/12",
+            "scheduling/movement/selected-movement.json#/result/bodies/38",
+            "scheduling/movement/selected-movement.json#/result/bodies/38/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/MoveState.OnTick",
+          "address": "0x180a977d0"
+        },
+        {
+          "index": 76666,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/28",
+            "selected-native.json#/result/bodies/118",
+            "selected-native.json#/result/bodies/118/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/DeadState.OnEnter",
+          "address": "0x180a8b390"
+        },
+        {
+          "index": 76699,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/13",
+            "scheduling/movement/selected-movement.json#/result/bodies/52",
+            "scheduling/movement/selected-movement.json#/result/bodies/52/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/CombatState.OnTick",
+          "address": "0x180a89650"
+        },
+        {
+          "index": 76700,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/14",
+            "scheduling/movement/selected-movement.json#/result/bodies/64",
+            "scheduling/movement/selected-movement.json#/result/bodies/64/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/CombatState.OnExit",
+          "address": "0x180a89530"
+        },
+        {
+          "index": 76732,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/29",
+            "selected-native.json#/result/bodies/122",
+            "selected-native.json#/result/bodies/122/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/LevitateState.OnEnter",
+          "address": "0x180a96920"
+        },
+        {
+          "index": 76746,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/30",
+            "selected-native.json#/result/bodies/127",
+            "selected-native.json#/result/bodies/127/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/UnbalanceState.OnEnter",
+          "address": "0x180a9e7c0"
+        },
+        {
+          "index": 76877,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/15",
+            "scheduling/movement/selected-movement.json#/result/bodies/65",
+            "scheduling/movement/selected-movement.json#/result/bodies/65/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/CombatWrapper.GetTarget",
+          "address": "0x180a89f80"
+        },
+        {
+          "index": 76878,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/16",
+            "scheduling/movement/selected-movement.json#/result/bodies/70",
+            "scheduling/movement/selected-movement.json#/result/bodies/70/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/CombatWrapper.NextCombatOrExit",
+          "address": "0x180a8a090"
+        },
+        {
+          "index": 76879,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/17",
+            "scheduling/movement/selected-movement.json#/result/bodies/75",
+            "scheduling/movement/selected-movement.json#/result/bodies/75/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/CombatWrapper.StartCombat",
+          "address": "0x180a8a410"
+        },
+        {
+          "index": 76880,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/18",
+            "scheduling/movement/selected-movement.json#/result/bodies/79",
+            "scheduling/movement/selected-movement.json#/result/bodies/79/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/CombatWrapper.CombatFinishCallback",
+          "address": "0x180a89d40"
+        },
+        {
+          "index": 77191,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/31",
+            "selected-native.json#/result/bodies/137",
+            "selected-native.json#/result/bodies/137/method"
+          ],
+          "fullname": "Torappu.Battle.BlockManager.AddBlockee",
+          "address": "0x180aa0430"
+        },
+        {
+          "index": 77192,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/32",
+            "selected-native.json#/result/bodies/138",
+            "selected-native.json#/result/bodies/138/method"
+          ],
+          "fullname": "Torappu.Battle.BlockManager.UpdateBlockees",
+          "address": "0x180aa1170"
+        },
+        {
+          "index": 77193,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/33",
+            "selected-native.json#/result/bodies/139",
+            "selected-native.json#/result/bodies/139/method"
+          ],
+          "fullname": "Torappu.Battle.BlockManager.RemoveBlockee",
+          "address": "0x180aa08a0"
+        },
+        {
+          "index": 77196,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/34",
+            "selected-native.json#/result/bodies/140",
+            "selected-native.json#/result/bodies/140/method"
+          ],
+          "fullname": "Torappu.Battle.BlockManager.ClearAllBlockees",
+          "address": "0x180aa0660"
+        },
+        {
+          "index": 78250,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/35",
+            "selected-native.json#/result/bodies/141",
+            "selected-native.json#/result/bodies/141/method"
+          ],
+          "fullname": "Torappu.Battle.BattleUtil.Deprecated_PlayTweenInBattle",
+          "address": "0x180ae0a10"
+        },
+        {
+          "index": 91778,
+          "mode": "disasm",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/methods/19",
+            "scheduling/movement/selected-movement.json#/result/bodies/86",
+            "scheduling/movement/selected-movement.json#/result/bodies/86/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.get_escapeTime",
+          "address": "0x180f012d0"
+        },
+        {
+          "index": 305282,
+          "mode": "disasm",
+          "records": [
+            "selected-native.json#/result/methods/36",
+            "selected-native.json#/result/bodies/142",
+            "selected-native.json#/result/bodies/142/method"
+          ],
+          "fullname": "DG.Tweening.DOTween..cctor",
+          "address": "0x184250040"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Enemy",
+          "records": [
+            "scheduling/movement/selected-movement.json#/result/type"
+          ]
+        },
+        {
+          "name": "Torappu.BattleTweenMgr",
+          "records": [
+            "scheduling/tick/selected-native.json#/result/types/1"
+          ]
+        },
+        {
+          "name": "Torappu.BattleTweenMgr/Tween",
+          "records": [
+            "scheduling/tick/selected-native.json#/result/types/0",
+            "selected-native.json#/result/types/0"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

@@ -1,0 +1,612 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 218523112,
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 45805368,
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187c26040",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6562354112,
+          "methodPointers": 6582792064,
+          "count": 219703,
+          "fileBacked": true
+        },
+        "Torappu.Common.dll": {
+          "address": 6574817072,
+          "methodPointers": 6589373840,
+          "count": 5779,
+          "fileBacked": true
+        },
+        "ThirdPartyAssembly.dll": {
+          "address": 6574816416,
+          "methodPointers": 6589266064,
+          "count": 12660,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6574468432,
+          "methodPointers": 6588943392,
+          "count": 13986,
+          "fileBacked": true
+        },
+        "UnityEngine.UIElementsModule.dll": {
+          "address": 6575003392,
+          "methodPointers": 6589743728,
+          "count": 6132,
+          "fileBacked": true
+        },
+        "System.dll": {
+          "address": 6574732512,
+          "methodPointers": 6589207856,
+          "count": 7003,
+          "fileBacked": true
+        },
+        "Unity.InputSystem.dll": {
+          "address": 6574878656,
+          "methodPointers": 6589426496,
+          "count": 5703,
+          "fileBacked": true
+        },
+        "Unity.Mathematics.dll": {
+          "address": 6574941248,
+          "methodPointers": 6589491984,
+          "count": 9336,
+          "fileBacked": true
+        },
+        "UnityEngine.CoreModule.dll": {
+          "address": 6574989536,
+          "methodPointers": 6589676288,
+          "count": 4141,
+          "fileBacked": true
+        },
+        "System.Xml.dll": {
+          "address": 6574722560,
+          "methodPointers": 6589179600,
+          "count": 3283,
+          "fileBacked": true
+        },
+        "Newtonsoft.Json.dll": {
+          "address": 6574577504,
+          "methodPointers": 6589071392,
+          "count": 2998,
+          "fileBacked": true
+        },
+        "Unity.TextMeshPro.dll": {
+          "address": 6574954880,
+          "methodPointers": 6589645552,
+          "count": 1618,
+          "fileBacked": true
+        },
+        "Sirenix.Serialization.dll": {
+          "address": 6574634736,
+          "methodPointers": 6589121712,
+          "count": 1885,
+          "fileBacked": true
+        },
+        "spine-unity.dll": {
+          "address": 6574664368,
+          "methodPointers": 6589144704,
+          "count": 1982,
+          "fileBacked": true
+        },
+        "protobuf-net.Core.dll": {
+          "address": 6574579776,
+          "methodPointers": 6589097680,
+          "count": 1952,
+          "fileBacked": true
+        },
+        "CriMw.CriWare.Runtime.dll": {
+          "address": 6562382080,
+          "methodPointers": 6584601600,
+          "count": 2565,
+          "fileBacked": true
+        },
+        "UnityEngine.UI.dll": {
+          "address": 6575058128,
+          "methodPointers": 6589805824,
+          "count": 2033,
+          "fileBacked": true
+        },
+        "Cinemachine.dll": {
+          "address": 6562359280,
+          "methodPointers": 6584582208,
+          "count": 1160,
+          "fileBacked": true
+        },
+        "ICSharpCode.SharpZipLib.dll": {
+          "address": 6562403152,
+          "methodPointers": 6584645632,
+          "count": 1256,
+          "fileBacked": true
+        },
+        "DOTween.dll": {
+          "address": 6562390800,
+          "methodPointers": 6584625552,
+          "count": 1188,
+          "fileBacked": true
+        },
+        "System.Core.dll": {
+          "address": 6574706944,
+          "methodPointers": 6589167776,
+          "count": 1116,
+          "fileBacked": true
+        },
+        "UnityEngine.TextCoreTextEngineModule.dll": {
+          "address": 6575002464,
+          "methodPointers": 6589739648,
+          "count": 370,
+          "fileBacked": true
+        },
+        "Unity.Postprocessing.Runtime.dll": {
+          "address": 6574945776,
+          "methodPointers": 6589638704,
+          "count": 810,
+          "fileBacked": true
+        },
+        "Sirenix.Utilities.dll": {
+          "address": 6574653488,
+          "methodPointers": 6589136912,
+          "count": 968,
+          "fileBacked": true
+        },
+        "Mono.Security.dll": {
+          "address": 6574468272,
+          "methodPointers": 6588938896,
+          "count": 562,
+          "fileBacked": true
+        },
+        "UnityEngine.IMGUIModule.dll": {
+          "address": 6574993296,
+          "methodPointers": 6589718784,
+          "count": 724,
+          "fileBacked": true
+        },
+        "Unity.Timeline.dll": {
+          "address": 6574959152,
+          "methodPointers": 6589660256,
+          "count": 876,
+          "fileBacked": true
+        },
+        "Sirenix.OdinInspector.Attributes.dll": {
+          "address": 6574611456,
+          "methodPointers": 6589117728,
+          "count": 462,
+          "fileBacked": true
+        },
+        "System.Collections.Immutable.dll": {
+          "address": 6574688400,
+          "methodPointers": 6589160880,
+          "count": 825,
+          "fileBacked": true
+        },
+        "ConsolePro.dll": {
+          "address": 6562371344,
+          "methodPointers": 6584595088,
+          "count": 793,
+          "fileBacked": true
+        },
+        "Hypergryph.OneChannel.dll": {
+          "address": 6562397952,
+          "methodPointers": 6584639168,
+          "count": 747,
+          "fileBacked": true
+        },
+        "Assembly-CSharp-firstpass.dll": {
+          "address": 6561251856,
+          "methodPointers": 6582786048,
+          "count": 747,
+          "fileBacked": true
+        },
+        "P31RestKit.dll": {
+          "address": 6574579616,
+          "methodPointers": 6589095376,
+          "count": 287,
+          "fileBacked": true
+        },
+        "UnityEngine.ParticleSystemModule.dll": {
+          "address": 6574996400,
+          "methodPointers": 6589726224,
+          "count": 487,
+          "fileBacked": true
+        },
+        "clipper_library.dll": {
+          "address": 6562360304,
+          "methodPointers": 6584593104,
+          "count": 216,
+          "fileBacked": true
+        },
+        "torappu.CrashSight.Standalone.dll": {
+          "address": 6574867424,
+          "methodPointers": 6589423712,
+          "count": 280,
+          "fileBacked": true
+        },
+        "UnityEngine.AnimationModule.dll": {
+          "address": 6574963568,
+          "methodPointers": 6589671408,
+          "count": 364,
+          "fileBacked": true
+        },
+        "UnityEngine.AndroidJNIModule.dll": {
+          "address": 6574961792,
+          "methodPointers": 6589669392,
+          "count": 252,
+          "fileBacked": true
+        },
+        "UnityEngine.UIElementsNativeModule.dll": {
+          "address": 6575048000,
+          "methodPointers": 6589802848,
+          "count": 245,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestModule.dll": {
+          "address": 6575059120,
+          "methodPointers": 6589823376,
+          "count": 143,
+          "fileBacked": true
+        },
+        "DOTween.Modules.dll": {
+          "address": 6562383408,
+          "methodPointers": 6584623472,
+          "count": 235,
+          "fileBacked": true
+        },
+        "System.Xml.Linq.dll": {
+          "address": 6574709136,
+          "methodPointers": 6589177712,
+          "count": 210,
+          "fileBacked": true
+        },
+        "XNode.dll": {
+          "address": 6575062624,
+          "methodPointers": 6589826688,
+          "count": 199,
+          "fileBacked": true
+        },
+        "UnityEngine.PhysicsModule.dll": {
+          "address": 6574998160,
+          "methodPointers": 6589734624,
+          "count": 182,
+          "fileBacked": true
+        },
+        "UnityEngine.Physics2DModule.dll": {
+          "address": 6574997248,
+          "methodPointers": 6589732864,
+          "count": 168,
+          "fileBacked": true
+        },
+        "UnityEngine.TextCoreFontEngineModule.dll": {
+          "address": 6575000560,
+          "methodPointers": 6589737520,
+          "count": 121,
+          "fileBacked": true
+        },
+        "System.Numerics.dll": {
+          "address": 6574707424,
+          "methodPointers": 6589176752,
+          "count": 77,
+          "fileBacked": true
+        },
+        "UnityEngine.AIModule.dll": {
+          "address": 6574959936,
+          "methodPointers": 6589667808,
+          "count": 153,
+          "fileBacked": true
+        },
+        "UnityEngine.AudioModule.dll": {
+          "address": 6574964576,
+          "methodPointers": 6589675296,
+          "count": 96,
+          "fileBacked": true
+        },
+        "UnityEngine.UIModule.dll": {
+          "address": 6575048640,
+          "methodPointers": 6589804896,
+          "count": 116,
+          "fileBacked": true
+        },
+        "Hypergryph.Browser.dll": {
+          "address": 6562392176,
+          "methodPointers": 6584635456,
+          "count": 196,
+          "fileBacked": true
+        },
+        "UnityEngine.XRModule.dll": {
+          "address": 6575061072,
+          "methodPointers": 6589825408,
+          "count": 67,
+          "fileBacked": true
+        },
+        "Torappu.CETest.dll": {
+          "address": 6574816912,
+          "methodPointers": 6589373168,
+          "count": 84,
+          "fileBacked": true
+        },
+        "UnityEngine.TextRenderingModule.dll": {
+          "address": 6575002864,
+          "methodPointers": 6589742848,
+          "count": 49,
+          "fileBacked": true
+        },
+        "UnityEngine.InputLegacyModule.dll": {
+          "address": 6574993760,
+          "methodPointers": 6589725168,
+          "count": 71,
+          "fileBacked": true
+        },
+        "UnityEngine.TerrainModule.dll": {
+          "address": 6574999584,
+          "methodPointers": 6589737168,
+          "count": 41,
+          "fileBacked": true
+        },
+        "UnityEngine.SharedInternalsModule.dll": {
+          "address": 6574998608,
+          "methodPointers": 6589736400,
+          "count": 68,
+          "fileBacked": true
+        },
+        "UnityEngine.TilemapModule.dll": {
+          "address": 6575003216,
+          "methodPointers": 6589743296,
+          "count": 42,
+          "fileBacked": true
+        },
+        "UnityEngine.VFXModule.dll": {
+          "address": 6575059936,
+          "methodPointers": 6589824752,
+          "count": 33,
+          "fileBacked": true
+        },
+        "Sirenix.Serialization.Config.dll": {
+          "address": 6574611728,
+          "methodPointers": 6589121536,
+          "count": 22,
+          "fileBacked": true
+        },
+        "UnityEngine.AssetBundleModule.dll": {
+          "address": 6574964016,
+          "methodPointers": 6589675072,
+          "count": 28,
+          "fileBacked": true
+        },
+        "UnityEngine.SubsystemsModule.dll": {
+          "address": 6574999232,
+          "methodPointers": 6589736944,
+          "count": 28,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestWWWModule.dll": {
+          "address": 6575059600,
+          "methodPointers": 6589824624,
+          "count": 15,
+          "fileBacked": true
+        },
+        "UnityEngine.VideoModule.dll": {
+          "address": 6575060192,
+          "methodPointers": 6589825040,
+          "count": 18,
+          "fileBacked": true
+        },
+        "UnityEngine.DirectorModule.dll": {
+          "address": 6574989856,
+          "methodPointers": 6589718464,
+          "count": 34,
+          "fileBacked": true
+        },
+        "UnityEngine.InputModule.dll": {
+          "address": 6574994016,
+          "methodPointers": 6589726032,
+          "count": 17,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityAnalyticsModule.dll": {
+          "address": 6575058336,
+          "methodPointers": 6589823280,
+          "count": 12,
+          "fileBacked": true
+        },
+        "Hypergryph.EventLogSDK.dll": {
+          "address": 6562393072,
+          "methodPointers": 6584637024,
+          "count": 181,
+          "fileBacked": true
+        },
+        "UnityEngine.JSONSerializeModule.dll": {
+          "address": 6574994272,
+          "methodPointers": 6589726168,
+          "count": 7,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestTextureModule.dll": {
+          "address": 6575059344,
+          "methodPointers": 6589824528,
+          "count": 12,
+          "fileBacked": true
+        },
+        "UnityEngine.VRModule.dll": {
+          "address": 6575060400,
+          "methodPointers": 6589825216,
+          "count": 10,
+          "fileBacked": true
+        },
+        "Torappu.Sofdec.dll": {
+          "address": 6574867872,
+          "methodPointers": 6589425952,
+          "count": 66,
+          "fileBacked": true
+        },
+        "UnityEngine.ImageConversionModule.dll": {
+          "address": 6574990224,
+          "methodPointers": 6589718744,
+          "count": 4,
+          "fileBacked": true
+        },
+        "UnityEngine.WindModule.dll": {
+          "address": 6575060624,
+          "methodPointers": 6589825296,
+          "count": 13,
+          "fileBacked": true
+        },
+        "UnityEngine.GridModule.dll": {
+          "address": 6574990032,
+          "methodPointers": 6589718736,
+          "count": 1,
+          "fileBacked": true
+        },
+        "Hypergryph.GameUpdate.dll": {
+          "address": 6562393536,
+          "methodPointers": 6584638480,
+          "count": 71,
+          "fileBacked": true
+        },
+        "Unity.Profiling.Core.dll": {
+          "address": 6574946160,
+          "methodPointers": 6589645216,
+          "count": 41,
+          "fileBacked": true
+        },
+        "System.Configuration.dll": {
+          "address": 6574688720,
+          "methodPointers": 6589167488,
+          "count": 35,
+          "fileBacked": true
+        },
+        "System.Runtime.Serialization.dll": {
+          "address": 6574707808,
+          "methodPointers": 6589177664,
+          "count": 6,
+          "fileBacked": true
+        },
+        "System.Runtime.CompilerServices.Unsafe.dll": {
+          "address": 6574707600,
+          "methodPointers": 6589177648,
+          "count": 2,
+          "fileBacked": true
+        },
+        "Unity.MemoryProfiler.dll": {
+          "address": 6574941440,
+          "methodPointers": 6589638640,
+          "count": 8,
+          "fileBacked": true
+        },
+        "CriMw.CriWare.Vp9.Runtime.dll": {
+          "address": 6562382288,
+          "methodPointers": 6584623392,
+          "count": 10,
+          "fileBacked": true
+        },
+        "Hypergryph.Log.dll": {
+          "address": 6562393760,
+          "methodPointers": 6584639056,
+          "count": 14,
+          "fileBacked": true
+        },
+        "XNode.Groups.dll": {
+          "address": 6575061424,
+          "methodPointers": 6589826656,
+          "count": 3,
+          "fileBacked": true
+        },
+        "AntiSDK.dll": {
+          "address": 6561248016,
+          "methodPointers": 6582786016,
+          "count": 3,
+          "fileBacked": true
+        },
+        "Torappu.UICommonEditor.dll": {
+          "address": 6574868048,
+          "methodPointers": 6589426480,
+          "count": 2,
+          "fileBacked": true
+        },
+        "enum2int.dll": {
+          "address": 6562390960,
+          "methodPointers": 6590084544,
+          "count": 2,
+          "fileBacked": false
+        },
+        "__Generated": {
+          "address": 6575062800,
+          "methodPointers": 6589828280,
+          "count": 3,
+          "fileBacked": true
+        }
+      }
+    },
+    "extractionScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/block-scheduling-movement/extract.py",
+      "bytes": 4476,
+      "sha256": "d33b8a20ca9d44045d56578b74559ff5902acceadd98fe3d9415181e7c778d1f"
+    }
+  },
+  "result": [
+    {
+      "at": "0x180a73e6e",
+      "owners": [
+        {
+          "index": 76432,
+          "fullname": "Torappu.Battle.Enemy.RegisterBlocker"
+        }
+      ]
+    },
+    {
+      "at": "0x180a7b1b7",
+      "owners": [
+        {
+          "index": 76562,
+          "fullname": "Torappu.Battle.Enemy..ctor"
+        }
+      ]
+    },
+    {
+      "at": "0x180a898ab",
+      "owners": [
+        {
+          "index": 76699,
+          "fullname": "Torappu.Battle.Enemy/States/CombatState.OnTick"
+        }
+      ]
+    },
+    {
+      "at": "0x180a89ef6",
+      "owners": [
+        {
+          "index": 76880,
+          "fullname": "Torappu.Battle.Enemy/CombatWrapper.CombatFinishCallback"
+        }
+      ]
+    },
+    {
+      "at": "0x180a8a18b",
+      "owners": [
+        {
+          "index": 76878,
+          "fullname": "Torappu.Battle.Enemy/CombatWrapper.NextCombatOrExit"
+        }
+      ]
+    }
+  ]
+}

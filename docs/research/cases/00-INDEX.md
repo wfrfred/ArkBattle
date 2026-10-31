@@ -31,6 +31,7 @@
 | [19 Effect 索敌与异常免疫](19-effect-selection-and-immunity.md) | 爱丽丝／卡夫卡睡眠选择、鼓舞光环与标记、Buff 安装及异常 Anti／Immune 原生分支 | 免疫者是否占目标名额、选择与施加／生效的区别、EFFECT Purpose 的必要性及当前项目缺失 |
 | [20 诺伯特平民的阵营与阻挡](20-norport-civilian-allegiance-and-blocking.md) | 本机平民／寻路密探 Prefab、SideTypeIndex 与既有阻挡原生证据；游戏教学和 PRTS 机制说明 | 友好标签与实际阵营的区别、无敌禁选与免伤、鉴定完成后的禁挡，以及定向阻挡资格的边界 |
 | [21 蒂比与空中阻挡](21-tippi-air-blocking.md) | 蒂比实际起飞／落地 Buff 与原生对地规避分支，复用 Blocking 模式调查；补核风絮、可浮空区块及半径默认／倍率／覆盖 | 自身运动身份与阻挡层分离、切换清理、飞行目标停走；2026-10-30 通用 Blocking.layer／setLayer 接入与未实现内容的边界 |
+| [22 阻挡站位与中断](22-block-positioning-and-interruption.md) | 当前客户端的 BattleTween、解除／裁撤、离场、传送及失衡入口 | 确定性线性曲线、不同解除入口的取消语义、残留插值与自主移动调度，以及顺序重接敌与同步重入的区别 |
 
 证据文件及复现范围见[批次索引](../evidence/README.md)。案例负责维护问题、结论及适用条件、直接证据／调用链推断、未决项和项目关联；批次 README 负责版本、指纹、文件用途和实际复现入口。
 
