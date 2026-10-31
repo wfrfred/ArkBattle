@@ -1,6 +1,6 @@
 import { Vec2 } from "../../../common/vector.js";
 import { replace } from "../../../battle/unit.js";
-import { maintainRelations } from "../../../battle/blocking/operations.js";
+import { maintain } from "../../../battle/blocking/operations.js";
 import { assertNonnegativeNumber } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { type State as BattleState } from "../../../battle/state.js";
@@ -102,5 +102,5 @@ export function advance(
         },
     ]);
 
-    return position === self.position ? battle : maintainRelations(battle, ref);
+    return position === self.position ? battle : maintain(battle, ref);
 }

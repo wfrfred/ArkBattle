@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import * as blocking from "../../dist/core/battle/blocking/operations.js";
+import * as blocking from "../../dist/core/battle/blocking/index.js";
 import { advanceMovement } from "../../dist/core/battle/steps/movement.js";
 import { remove, update } from "../../dist/core/battle/unit.js";
 import * as capability from "../../dist/core/unit/capability/blocking/index.js";
@@ -54,7 +54,7 @@ test("later acquisitions use the earlier target's endpoint while both bodies are
 
 test("reacquisition replaces an orphaned position plan from the current position and tick", () => {
     let battle = blocking.search(fixture([holder(), target()]), { id: 10 });
-    battle = blocking.release(battle, { id: 10 });
+    battle = blocking.release(battle, blocking.relations(battle, { id: 10 }));
     battle = advance({ ...battle, tick: 3 });
     const previous = getUnit(battle, 20);
     battle = blocking.search(battle, { id: 10 });
@@ -68,7 +68,7 @@ test("reacquisition replaces an orphaned position plan from the current position
 test("released targets advance both an unfinished position plan and autonomous movement in the same tick", () => {
     const moving = target(20, { definition: { route: routeDefinition, locomotion: locomotionDefinition } });
     let battle = blocking.search(fixture([holder(), moving]), { id: 10 });
-    battle = blocking.release(battle, { id: 10 });
+    battle = blocking.release(battle, blocking.relations(battle, { id: 10 }));
     const halfway = advance({ ...battle, tick: 3 });
     assert.notEqual(getUnit(halfway, 20).blockable.adjustment, null);
     assert.ok(getUnit(halfway, 20).position[0] > 2.375);
@@ -86,7 +86,7 @@ test("all initial position plans advance before the first autonomous movement Ru
     battle = update(battle, [locomotion.setRule({ id: 20 }, {
         id: "observe-shift", allows(state) { observed = getUnit(state, 21).position; return false; },
     })]);
-    battle = blocking.release(battle, { id: 10 });
+    battle = blocking.release(battle, blocking.relations(battle, { id: 10 }));
     battle = advance({ ...battle, tick: 3 });
     assert.deepEqual(observed, expected);
 });

@@ -4,7 +4,7 @@ import { test } from "node:test";
 import { remove as removeUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { advanceMovement } from "../../dist/core/battle/steps/movement.js";
-import * as blocking from "../../dist/core/battle/blocking/operations.js";
+import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as locomotion from "../../dist/core/unit/capability/locomotion/capability.js";
 import * as presence from "../../dist/core/unit/capability/presence/operations.js";
 import { fixture, holder, target, acquire, ownerId, blockedIds } from "../helpers/blocking.js";
@@ -53,7 +53,7 @@ test("Runtime gates blocked autonomous movement without installing Locomotion ru
 test("release restores autonomous movement and preserves the controller velocity", () => {
     const blocked = acquire(fixture([holder(), mover()]));
     const velocity = getUnit(blocked, 20).locomotion.velocity;
-    const released = blocking.release(blocked, { id: 20 });
+    const released = blocking.release(blocked, blocking.relations(blocked, { id: 20 }));
     assert.equal(ownerId(released), undefined);
     assert.equal(getUnit(released, 20).locomotion.velocity, velocity);
     assertMoves(released);
@@ -76,7 +76,7 @@ test("blocking does not change independently registered Locomotion rules", () =>
     let battle = acquire(fixture([holder(), mover(20, { rules: [casting, allowed] })]));
     const rules = getUnit(battle, 20).locomotion.rules;
     assert.deepEqual(rules, [casting, allowed]);
-    battle = blocking.release(battle, { id: 20 });
+    battle = blocking.release(battle, blocking.relations(battle, { id: 20 }));
     assert.equal(getUnit(battle, 20).locomotion.rules, rules);
     assertStopped(battle);
     const currentUnit = getUnit(battle, 20);

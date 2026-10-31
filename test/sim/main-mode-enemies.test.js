@@ -257,7 +257,7 @@ test('crossbow switching between ranged and blocker melee preserves independent 
   assert.equal(cooldown(melee, actions.melee), period + 1);
   assert.equal(cooldown(melee, actions.ranged), period);
 
-  const unblocked = releaseBlocking({ ...melee, tick: 2 }, unitRef(getUnit(melee, 1)));
+  const unblocked = releaseBlocking({ ...melee, tick: 2 }, blockingQueries.relations(melee, unitRef(getUnit(melee, 1))));
   assert.equal(getUnit(advanceCombat(unblocked), 1).action.nextExecutionId, 2);
   const rangedAgain = advanceCombat({ ...unblocked, tick: period });
   assert.equal(rangedAgain.battlefield.projectiles.size, 2);

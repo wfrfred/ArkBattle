@@ -1,4 +1,5 @@
 import * as blocking from "../../../battle/blocking/operations.js";
+import { relations } from "../../../battle/blocking/query.js";
 import * as registry from "../../../hook.js";
 import * as contribution from "../../contribution/contribution.js";
 import { createChange, type Change } from "../../change.js";
@@ -19,24 +20,16 @@ import { Vec2 } from "../../../common/vector.js";
 const POSITION_ADJUSTMENT_TICKS = 0.2 * TICKS_PER_SECOND;
 
 export function release(battle: BattleState, reference: Ref<Unit & Blockable>): BattleState {
-    let self = units.get(battle, reference);
+    const self = units.get(battle, reference);
     if (self === undefined) {
         return battle;
     }
 
     if (self.blockable.adjustment !== null) {
-        self = { ...self, blockable: { ...self.blockable, adjustment: null } };
+        battle = replace(battle, [{ ...self, blockable: { ...self.blockable, adjustment: null } }]);
     }
 
-    const owner = self.blockable.blocker;
-    if (owner === null) {
-        return replace(battle, [self]);
-    }
-
-    const blocker = units.get(battle, owner)!;
-    const blocked = blocker.blocker.blocked.find((blocked) => blocked.id === self.id)!;
-
-    return blocking.releaseAll(battle, [{ blocker: owner, blocked }], [self]);
+    return blocking.release(battle, relations(battle, reference));
 }
 
 export function advancePosition(
@@ -76,7 +69,7 @@ export function advancePosition(
         },
     ]);
 
-    return position === self.position ? battle : blocking.maintainRelations(battle, reference);
+    return position === self.position ? battle : blocking.maintain(battle, reference);
 }
 
 export function setRule(reference: Ref<Unit & Blockable>, rule: Rule): Change {
@@ -89,7 +82,7 @@ export function setRule(reference: Ref<Unit & Blockable>, rule: Rule): Change {
                 ? self
                 : { ...self, blockable: { ...self.blockable, rules } };
         },
-        (battle) => blocking.maintainBlockableRule(battle, reference),
+        (battle) => blocking.maintain(battle, reference),
     );
 }
 
@@ -103,7 +96,7 @@ export function removeRule(reference: Ref<Unit & Blockable>, id: string): Change
                 ? self
                 : { ...self, blockable: { ...self.blockable, rules } };
         },
-        (battle) => blocking.maintainBlockableRule(battle, reference),
+        (battle) => blocking.maintain(battle, reference),
     );
 }
 
@@ -122,7 +115,11 @@ export function setVolumeContribution(
                 ? self
                 : { ...self, blockable: { ...self.blockable, volume } };
         },
-        (battle) => blocking.maintainBlockable(battle, reference),
+        (battle) => {
+            const owner = units.get(battle, reference)?.blockable.blocker;
+
+            return owner == null ? battle : blocking.maintain(battle, owner);
+        },
     );
 }
 
@@ -136,7 +133,11 @@ export function removeVolumeContribution(reference: Ref<Unit & Blockable>, id: s
                 ? self
                 : { ...self, blockable: { ...self.blockable, volume } };
         },
-        (battle) => blocking.maintainBlockable(battle, reference),
+        (battle) => {
+            const owner = units.get(battle, reference)?.blockable.blocker;
+
+            return owner == null ? battle : blocking.maintain(battle, owner);
+        },
     );
 }
 

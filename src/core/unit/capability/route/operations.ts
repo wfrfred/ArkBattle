@@ -1,6 +1,7 @@
 import { Vec2 } from "../../../common/vector.js";
 import { replace as replaceUnit } from "../../../battle/unit.js";
-import { capture, releaseAll } from "../../../battle/blocking/operations.js";
+import { release } from "../../../battle/blocking/operations.js";
+import { relations } from "../../../battle/blocking/query.js";
 import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState } from "../../../battle/state.js";
@@ -219,7 +220,8 @@ export function advance(battle: BattleState, ref: Ref<Unit & Route>): BattleStat
                           }
                         : { ...current, position };
 
-                    battle = releaseAll(battle, capture(battle, ref), [next]);
+                    battle = replaceUnit(battle, [next]);
+                    battle = release(battle, relations(battle, ref));
                 }
             } else {
                 signal = checkpoint;

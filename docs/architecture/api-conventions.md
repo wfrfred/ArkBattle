@@ -93,7 +93,7 @@ Hook 与领域操作按执行语义命名：
 | Effect | [unit/effect/index.ts](../../src/core/unit/effect/index.ts) | 类型、ref、get、lifetime 与生命周期操作；get 归 query.ts，Effects 容器保持内部职责。 |
 | Lifetime | [lifetime/index.ts](../../src/core/lifetime/index.ts) | create／scope／getRef／available 和公开类型；request／drain、Pending、异构配对擦除与索引修改保持内部职责。 |
 | Projectile | [projectile/index.ts](../../src/core/projectile/index.ts) | 类型与 ref／all／get；完整 create／update／stop／advance 及 lifetime 保留 battle/projectile.ts，容器仍由 Battlefield 持有。 |
-| Blocking | [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts)、[capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) | Battle 入口提供关系查询及 acquire／release／maintain／search／advance，构造关系双端并自行通知；Capability 入口直接导出 setLayer、两端 Rule／容量／volume／Hook 的 Change 工厂，以及模型和公共类型。工厂绑定对应 Typed Ref，由 Unit.update 一次发布后顺序结算；关系后继仅维护受影响 Blocker 或当前关联，显式地块更新仍可调用全场 maintain。容量仅用 ADD／ZERO，半径保存于 Definition.radius 和 State.radius。setLayer 从本项转换前的 blocked 捕获旧 Ref，只解除仍存在的旧身份，不回填旧 Unit；DEFAULT_RADIUS、releaseAll 和局部维护函数保持内部。 |
+| Blocking | [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts)、[capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) | Battle 入口提供关系查询及 acquire／release／maintain／maintainAll／search／advance；relations(battle, ref?) 局部直接读取原关联，release 只接收 readonly Relation[]，批量解除、记录整批事件后顺序通知，不附加维护或搜索。maintain 按 Unit 当前角色局部处理，显式地块更新使用 maintainAll。Capability 入口导出 setLayer、两端 Rule／容量／volume／Hook 的 Change 工厂及模型类型，经 Unit.update 统一发布后结算。容量仅用 ADD／ZERO，半径保存于 Definition.radius 和 State.radius。setLayer 以 previous.blocked 的旧 Ref 调用 release，不回填旧 Unit；DEFAULT_RADIUS 保持内部。 |
 | Damage／Healing | [damage/index.ts](../../src/core/battle/damage/index.ts)、[healing/index.ts](../../src/core/battle/healing/index.ts) | 各自的 Calculate／Apply 两阶段、请求／报告及 Hook 登记；阶段派发保持内部实现，不合并结算协议。 |
 | Targeting | [battle/targeting/index.ts](../../src/core/battle/targeting/index.ts) | Filter／Comparator／Selector、hasCandidate 与 select；只读 hasCandidate 归 query.ts，可能消费 RNG 的选择保留 select.ts。 |
 | Deployment | [battle/deployment/index.ts](../../src/core/battle/deployment/index.ts) | 模型、查询、资源维护、部署命令与生命周期协作；resources.ts 的完整 Card 写回 updateCard 不公开，lifecycle.ts 不依赖完整 Unit 操作。 |
@@ -243,7 +243,7 @@ export type Input<M, H> =
 
 Offense、Action、Locomotion、Vitality、Elemental 的公开属性查询从最新 BattleState 按 Ref 读取宿主，属性公式模块只保留 Modifier、create、apply。
 
-战场查询直接归所属领域，返回完整实体或确有用途的关系投影。Unit 使用 all／get，Blocking 使用 blockerOf／blocked／usedCapacity／relations，Projectile 使用 get 及容器查询。Occupancy.at(field, tile) 返回 occupant／support 双槽登记，消费方直接读取并按需取得当前 Unit；map 与 navigation 可直接读取 Field 的只读字段。战斗入口为 initialize(input) 与 step(battle, commands)，直接返回不可变 BattleState，commands 是必填数组；消费侧按所需语义形成局部输出，不提供第二套完整 Snapshot 或 Runtime 对象。
+战场查询直接归所属领域，返回完整实体或确有用途的关系投影。Unit 使用 all／get，Blocking 使用 blockerOf／blocked／usedCapacity／relations；relations(battle, ref?) 省略 Ref 时投影全场，提供 Ref 时直接读取局部关联并保留原 blocked Ref，不扫描全场后过滤。Projectile 使用 get 及容器查询。Occupancy.at(field, tile) 返回 occupant／support 双槽登记，消费方直接读取并按需取得当前 Unit；map 与 navigation 可直接读取 Field 的只读字段。战斗入口为 initialize(input) 与 step(battle, commands)，直接返回不可变 BattleState，commands 是必填数组；消费侧按所需语义形成局部输出，不提供第二套完整 Snapshot 或 Runtime 对象。
 
 Tactical 的导出函数、Definition 回调、Change 工厂与容器公共方法遵循上述职责分类。Hook 的固定事件 Context、MovementContext 业务输入、创建时的宿主身份、容器内部数字键、私有状态结果值、纯 Geometry／Navigation／Card／Cooldown 计算均有明确职责，不能机械升级为 Battle 操作。battle/deployment/query.ts 的 evaluateDeployment(field, request) 是 Deployment 的纯资格计算，读取 Battlefield 提供的当前地块与占格事实；归属按业务职责划分，参数按实际数据需求收窄，不因位于 Battle 目录就要求完整 BattleState。
 
@@ -287,15 +287,19 @@ update 按以下顺序处理整批，允许同一 Unit 多个 Change，也允许
 
 先完成所有纯转换，再执行任何结算。较早结算的 Hook 能看到全批最终字段，也能看到较晚结算尚未清理的关系。批内先降容量再恢复只按最终容量裁撤；跨两次 update 则先完成第一次的解除。批内 GROUND→AIR→GROUND 仍保留两次真实切层对应的旧关系清理，不能因为最终字段值等于批前值而省略已有结算。相同条目或缺失 ID 等无变化输入由 transform 返回原 Unit，update 统一省略该项后继，Settlement 不重复判断。空批次或全部 transform 复用原 Unit 时返回原 battle。该判断针对每项暂存输入，不比较整批最终值来丢弃此前已登记的结算。
 
-每次嵌套 update 独立准备与结算自己的 Change 列表，不调度外层尚未执行的项，不保存全局 pending、updating 或隐式事务。领域后继还必须限制作用范围：Blocking 的容量只维护本 Blocker，volume 读取执行时当前 owner，Rule 复核自身关联；关系操作只维护受影响 owner。嵌套操作确实修改同一对象或关联时，双方接续同一最新事实，不承诺隔离。显式全场操作如地块更新的 maintain 按其公开范围执行，不伪装成局部操作。
+每次嵌套 update 独立准备与结算自己的 Change 列表，不调度外层尚未执行的项，不保存全局 pending、updating 或隐式事务。领域后继还必须限制作用范围：Blocking 的容量只 maintain 本 Blocker，volume 在 settle 读取当前 owner 并 maintain 该 owner，不追随 Hook 中的新归属；Rule 由 maintain 复核自身，Blockable 真正解除后才继续维护旧 owner。release 只执行给定旧集合，不自动维护。嵌套操作确实修改同一对象或关联时，双方接续同一最新事实，不承诺隔离。显式全场操作如地块更新使用 maintainAll，按 Unit 顺序找到首个待解除项，每条 Hook 后从头重查，不伪装成局部操作。
 
 Core 内部 `replace(battle, readonly Unit[])` 仅发布已合法构造的完整对象与派生索引，信任身份、Definition 和能力配对，不重复校验或派发内容 Hook。它不是公开原始 Unit 写回协议；生命周期、精确私有 state 写回及关系双端构造继续由各领域使用。Field 保留地图边界与最终双槽冲突校验。通用 update／replace 均不派发 Occupancy 或 Blocking 通知；当前生产中只有 add／remove 明确改变占格登记，仍在各自既定时点通知 SUPPORT，不为尚无内容需求的搬格创建新工厂。
 
 Action.interval／speed Change 的 settle 调用 refreshCooldowns，按最终贡献重算当前冷却；Blocker.layer 的 transform 只改 layer／radius，update 根据该项 transform 的引用变化决定是否执行 settle，再由 settle 按 previous.blocked 中的旧 Ref 批量解除，不能重新调用 setLayer 或写回旧 Unit。MaxHP 的比例响应属于纯 transform，不附带治疗通知。Stun 先通过一批 Change 发布各能力限制，再由 Blocking 后继清理关系，update 返回后才取消 Action。
 
+Unit.initialize 将 Blocker／Blockable 的组合限制为至多一种，两者皆无合法；内部信任该构造约束及能力身份稳定，不在各操作重复检查。角色不决定阵营、宿主 Layer、Route 或 Locomotion，临时容量为 0 或禁挡也不改变角色。
+
+Blocking.release(battle, readonly Relation[]) 在入口过滤失效旧身份与重复项，先发布整批双端解除结果，再记录全部 BLOCKING_RELEASED，最后按首次输入顺序逐条派发 Hook。每条开始时同时固定两端候选 ID，后续读取最新登记；ACQUIRED 按旧身份失效停止，RELEASED 作为历史通知继续。release 不接受额外 Unit 更新值，不自动维护、搜索或取消偏移。空间业务先纯发布字段和自身计划取消，再调用 release(battle, relations(battle, ref))；两步间没有回调，首个通知已经可以读取完整结果。
+
 add 接收创建方已经完成 Capability 初始化、部署信息及路线初态的完整 Unit，负责登记、Skill 入场、enter Hook 和原时点的 Occupancy 通知，不扫描全场 Blocking。创建方逐个完成 add 再处理下一对象。Unit Definition 的 hooks 必填，无监听传 []；实例不增加另一份生命周期 Hook。Deployment 的卡消费与 DP 扣除在 add 前完成，登记后记录 UNIT_DEPLOYED，再执行 Skill 与 Unit 入场；部署通知仍由 Deployment 在 add 返回后派发。
 
-remove 按 Unit ID 请求 Unit Lifetime 结束，首次请求保留 Departure、发布 LEAVING 并取消自身未完成的阻挡站位计划，明确调用 Blocking.release 释放自身全部入向和出向关系，再执行返费。真实所有权按 Skill、Action、Burst、Effect 顺序展开；依赖者完整 Finalize 后才注销、通知 Occupancy、回收 Card 和派发历史 leave，Finalize 不追加全场 Blocking 扫描。嵌套 remove 只保证请求／Prepare，不保证已物理移除。advance 保留入口 Unit Query 快照，在操作处生成 Ref，逐项读取最新 PRESENT Unit 并派发 tick Hook。
+remove 按 Unit ID 请求 Unit Lifetime 结束，首次请求保留 Departure，先纯发布 LEAVING；若自身是 Blockable，则同时取消未完成的站位计划，再以 relations(battle, ref) 的局部结果调用 Blocking.release。Blocker 的全部旧关系整批解除并记录事件后才通知，保留其原目标的计划；通知返回后执行返费。真实所有权按 Skill、Action、Burst、Effect 顺序展开；依赖者完整 Finalize 后才注销、通知 Occupancy、回收 Card 和派发历史 leave，Finalize 不追加全场 Blocking 扫描。嵌套 remove 只保证请求／Prepare，不保证已物理移除。advance 保留入口 Unit Query 快照，在操作处生成 Ref，逐项读取最新 PRESENT Unit 并派发 tick Hook。
 
 battlefield/unit.ts 的 add／update／remove 仍是纯存储与索引转换，Field.update 接收完整 Unit 数组，不能与公开 Battle.update 的 Change 数组混用。BattleState 不保留另一套 Unit CRUD，通用 setBattlefield 已移除；特殊撤退—再部署留待实际内容审查。
 

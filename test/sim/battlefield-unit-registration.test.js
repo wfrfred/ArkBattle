@@ -86,7 +86,6 @@ const definition = () => ({ hooks: [],
     layer: { type: "GROUND" },
     hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.25 } },
     blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 0.5 },
-    blockable: { volume: 1 },
     locomotion: {
         halfBodyWidth: 0, minSpeed: 0, speed: 0.1,
         steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 },
@@ -103,6 +102,12 @@ test("battlefield registration retains initialized capabilities and shared defin
             .map((value) => value.id),
         [1],
     );
+    const candidate = initialize({
+        id: 2, position: [2, 0], definition: { hooks: [], id: "paired-blockable", blockable: { volume: 1 } },
+    });
+    runtime = addUnit(runtime, candidate);
+    assert.equal(runtime.units.get(2), candidate);
+    assert.equal(runtime.units.get(2).blockable, candidate.blockable);
 });
 
 test("battlefield replacement preserves configured capability composition on update", () => {

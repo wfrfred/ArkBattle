@@ -10,7 +10,7 @@ import * as units from "../../dist/core/unit/query.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { add as addUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { create as createField } from "../../dist/core/battlefield/state.js";
-import * as blocking from "../../dist/core/battle/blocking/operations.js";
+import * as blocking from "../../dist/core/battle/blocking/index.js";
 import { blockedIds, fixture as blockingFixture } from "../helpers/blocking.js";
 import { fixtureBattle } from "../helpers/unit.js";
 import { Effects } from "../../dist/core/unit/effect/effects.js";
@@ -254,16 +254,16 @@ test('explicit Blocking settlement retains or releases by tile permission indepe
   const entry = acquired.battlefield.units.get(10).blocker.blocked[0];
   assert.deepEqual(blockedIds(acquired), [11]);
   for (let column = 0; column < passableMasks.length; column++) {
-    const retained = blocking.maintain(updateUnit(acquired, [{ ...acquired.battlefield.units.get(10), position: [column, 0] }]));
+    const retained = blocking.maintainAll(updateUnit(acquired, [{ ...acquired.battlefield.units.get(10), position: [column, 0] }]));
     assert.equal(retained.battlefield.units.get(10).blocker.blocked[0], entry, passableMasks[column]);
   }
 
   for (const position of [[4, 0], [5, 0], [6, 0], [7, 0], [-1, 0]]) {
-    const changed = blocking.maintain(updateUnit(acquired, [{ ...acquired.battlefield.units.get(10), position }]));
+    const changed = blocking.maintainAll(updateUnit(acquired, [{ ...acquired.battlefield.units.get(10), position }]));
     assert.deepEqual(blockedIds(changed), []);
     assert.deepEqual(blockedIds(acquired), [11]);
   }
-  const hidden = blocking.maintain(updateUnit(acquired, [{
+  const hidden = blocking.maintainAll(updateUnit(acquired, [{
     ...acquired.battlefield.units.get(10), position: [1e30, 0], spatialPresence: { present: false },
   }]));
   assert.deepEqual(blockedIds(hidden), []);
@@ -303,15 +303,15 @@ test('explicit Blocking settlement preserves relation history and releases curre
   const first = acquired.battlefield.units.get(10).blocker.blocked[0];
   const moved = updateUnit(acquired, [{ ...acquired.battlefield.units.get(11), position: [4, 1] }]);
   assert.equal(moved.battlefield.units.get(10).blocker.blocked[0], first);
-  const released = blocking.release(acquired, units.ref(enemy));
+  const released = blocking.release(acquired, blocking.relations(acquired, units.ref(enemy)));
   assert.deepEqual(blockedIds(released), []);
   const reacquired = blocking.search(released, units.ref(blocker));
   assert.deepEqual(blockedIds(reacquired), [11]);
   assert.notEqual(reacquired.battlefield.units.get(10).blocker.blocked[0], first);
 
   const mutations = [
-    battle => blocking.maintain(updateUnit(battle, [{ ...units.get(battle, { id: 11 }), allegiance: { side: 'ALLY' } }])),
-    battle => blocking.maintain(updateUnit(battle, [{ ...units.get(battle, { id: 11 }), layer: { type: 'AIR' } }])),
+    battle => blocking.maintainAll(updateUnit(battle, [{ ...units.get(battle, { id: 11 }), allegiance: { side: 'ALLY' } }])),
+    battle => blocking.maintainAll(updateUnit(battle, [{ ...units.get(battle, { id: 11 }), layer: { type: 'AIR' } }])),
     battle => applyUnitChanges(battle, [blockableOperations.setVolumeContribution({ id: 11 }, { id: 'larger', value: 2 })]),
     battle => applyUnitChanges(battle, [blockableOperations.setRule({ id: 11 }, { id: 'unblockable', allows: () => false })]),
   ];

@@ -18,7 +18,7 @@ export function setRule(reference: Ref<Unit & Blocker>, rule: Rule): Change {
                 ? self
                 : { ...self, blocker: { ...self.blocker, rules } };
         },
-        (battle) => blocking.maintainBlocker(battle, reference),
+        (battle) => blocking.maintain(battle, reference),
     );
 }
 
@@ -32,7 +32,7 @@ export function removeRule(reference: Ref<Unit & Blocker>, id: string): Change {
                 ? self
                 : { ...self, blocker: { ...self.blocker, rules } };
         },
-        (battle) => blocking.maintainBlocker(battle, reference),
+        (battle) => blocking.maintain(battle, reference),
     );
 }
 
@@ -49,7 +49,7 @@ export function setCapacityContribution(
                 ? self
                 : { ...self, blocker: { ...self.blocker, capacity } };
         },
-        (battle) => blocking.maintainBlocker(battle, reference),
+        (battle) => blocking.maintain(battle, reference),
     );
 }
 
@@ -63,7 +63,7 @@ export function removeCapacityContribution(reference: Ref<Unit & Blocker>, id: s
                 ? self
                 : { ...self, blocker: { ...self.blocker, capacity } };
         },
-        (battle) => blocking.maintainBlocker(battle, reference),
+        (battle) => blocking.maintain(battle, reference),
     );
 }
 
@@ -82,7 +82,7 @@ export function setLayer(reference: Ref<Unit & Blocker>, layer: Layer): Change {
                       },
                   },
         (battle, previous) =>
-            blocking.releaseAll(
+            blocking.release(
                 battle,
                 previous.blocker.blocked.map((blocked) => ({ blocker: reference, blocked })),
             ),

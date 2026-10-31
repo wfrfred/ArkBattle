@@ -57,7 +57,7 @@ test("relationship release preserves and continues the remaining position adjust
     battle = plan(battle, 20, [2.5, 1]);
     const adjustment = getUnit(battle, 20).blockable.adjustment;
 
-    battle = blocking.release(battle, { id: 10 });
+    battle = blocking.release(battle, blocking.relations(battle, { id: 10 }));
     assert.equal(ownerId(battle), undefined);
     assert.equal(getUnit(battle, 20).blockable.adjustment, adjustment);
     battle = blockable.advancePosition({ ...battle, tick: 3 }, { id: 20 });
@@ -66,12 +66,9 @@ test("relationship release preserves and continues the remaining position adjust
 });
 
 test("Blockable release publishes cancellation and incoming relationship cleanup before notification", () => {
-    const both = target(20, {
-        definition: { blocker: { capacity: 1, radius: 1, layer: "GROUND", rules: [] } },
-    });
-    let battle = fixture([holder(), both, target(30, { position: [2.6, 1] })]);
+    let battle = fixture([holder(), target(), holder(11, { position: [7, 1] }), target(30, { position: [7.25, 1] })]);
     battle = blocking.acquire(battle, { id: 10 }, { id: 20 });
-    battle = blocking.acquire(battle, { id: 20 }, { id: 30 });
+    battle = blocking.acquire(battle, { id: 11 }, { id: 30 });
     battle = plan(battle, 20, [2.5, 1]);
     let notifications = 0;
     battle = update(battle, [capability.setBlockableHook({ id: 20 }, "released", hook("inspect", state => {
@@ -79,7 +76,7 @@ test("Blockable release publishes cancellation and incoming relationship cleanup
         assert.equal(getUnit(state, 20).blockable.adjustment, null);
         assert.equal(ownerId(state, 20), undefined);
         assert.deepEqual(blockedIds(state, 10), []);
-        assert.equal(ownerId(state, 30), 20);
+        assert.equal(ownerId(state, 30), 11);
         return state;
     }))]);
     const previous = getUnit(battle, 20);
@@ -88,7 +85,7 @@ test("Blockable release publishes cancellation and incoming relationship cleanup
     assert.equal(notifications, 1);
     assert.equal(getUnit(battle, 20).position, previous.position);
     assert.equal(getUnit(battle, 20).blockable.adjustment, null);
-    assert.deepEqual(blockedIds(battle, 20), [30]);
+    assert.deepEqual(blockedIds(battle, 11), [30]);
     assert.notEqual(previous.blockable.adjustment, null);
     assert.equal(blockable.release(battle, { id: 20 }), battle);
 });

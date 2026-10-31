@@ -118,10 +118,11 @@ for(const stored of mixed.values()){
 }
 // @ts-expect-error an ID alone cannot claim a private data type.
 host.effects.get<{charges:number},Vitality>(0);
-declare const capabilityHost:Unit & Vitality & Offense & Blocker & Blockable & Locomotion & Route & Action;
-const acquiredBattle:BattleState=acquireRelation(battle,unitRef(capabilityHost),unitRef(capabilityHost));
+declare const capabilityHost:Unit & Vitality & Offense & Blocker & Locomotion & Route & Action;
+declare const blockableHost:Unit & Blockable;
+const acquiredBattle:BattleState=acquireRelation(battle,unitRef(capabilityHost),unitRef(blockableHost));
 // @ts-expect-error acquiring a relationship requires a Blocker identity.
-acquireRelation(battle,unitRef(bare),unitRef(capabilityHost));
+acquireRelation(battle,unitRef(bare),unitRef(blockableHost));
 // @ts-expect-error acquiring a relationship requires a Blockable identity.
 acquireRelation(battle,unitRef(capabilityHost),unitRef(bare));
 const blockingRule:BlockingRule={id:'pair',allows(current,blocker,blockable){
@@ -135,12 +136,12 @@ const blockingRule:BlockingRule={id:'pair',allows(current,blocker,blockable){
  return capacity.length===0&&volume.length===0&&state.tick>=0;
 }};
 setBlockerRule(unitRef(capabilityHost),blockingRule);
-setBlockableRule(unitRef(capabilityHost),blockingRule);
+setBlockableRule(unitRef(blockableHost),blockingRule);
 // @ts-expect-error Blocking Changes require a typed host Ref rather than local state.
 setBlockerRule(capabilityHost.blocker,blockingRule);
 const blockedRefs:readonly Ref<Unit & Blockable>[]=capabilityHost.blocker.blocked;
-const blockerRef:Ref<Unit & Blocker>|null=capabilityHost.blockable.blocker;
-const owner:Ref<Unit & Blocker>|undefined=blockerOf(battle,unitRef(capabilityHost));
+const blockerRef:Ref<Unit & Blocker>|null=blockableHost.blockable.blocker;
+const owner:Ref<Unit & Blocker>|undefined=blockerOf(battle,unitRef(blockableHost));
 const targets:readonly Ref<Unit & Blockable>[]=blocked(battle,unitRef(capabilityHost));
 setBlockerHook(unitRef(capabilityHost),'acquired',{
  id:'blocker-host',
@@ -151,7 +152,7 @@ setBlockerHook(unitRef(capabilityHost),'acquired',{
   return {state:current,value:undefined};
  },
 });
-setBlockableHook(unitRef(capabilityHost),'released',{
+setBlockableHook(unitRef(blockableHost),'released',{
  id:'blockable-host',
  invoke(current,context){
   const blocker:Ref<Unit & Blocker>|undefined=blockerOf(current,context.host);
@@ -167,7 +168,7 @@ blocked(battle,unitRef(bare));
 // @ts-expect-error eligibility is expressed through Rules.
 capabilityHost.blocker.enabled;
 // @ts-expect-error eligibility is expressed through Rules.
-capabilityHost.blockable.enabled;
+blockableHost.blockable.enabled;
 const fixed:Contribution<readonly Modifier[]>={id:'fixed',value:[]};
 const blockingFixed:Contribution<readonly BlockingModifier[]>={id:'blocking-fixed',value:[{type:'ADD',value:1},{type:'ZERO'}]};
 setCapacityContribution(unitRef(capabilityHost),blockingFixed);
@@ -208,9 +209,9 @@ const legacyMovement:MovementInput=({unit}:{unit:Unit & Locomotion})=>[];
 const legacyDefense:VitalityInput=({unit}:{unit:Unit & Vitality})=>[];
 // @ts-expect-error action inputs receive BattleState and self instead of a Context wrapper.
 const legacyAction:ActionInput=({unit}:{unit:Unit & Action})=>[];
-setVolumeContribution(unitRef(capabilityHost),{id:'volume',value:1});
+setVolumeContribution(unitRef(blockableHost),{id:'volume',value:1});
 // @ts-expect-error blocking volume requires settled static values.
-setVolumeContribution(unitRef(capabilityHost),dynamic);
+setVolumeContribution(unitRef(blockableHost),dynamic);
 const vitality=setMaxHpContribution(unitRef(capabilityHost),fixed);
 const changed=getUnit(update(battle,[vitality]),unitRef(capabilityHost))!;
 const hp:number=changed.vitality.hp;

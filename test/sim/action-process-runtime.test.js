@@ -23,7 +23,7 @@ import { remove } from "../../dist/core/battle/unit.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { actionCapability } from "../helpers/actions.js";
 import { advance as advanceCombat } from "../../dist/core/battle/steps/combat.js";
-import { search as acquireBlocking, maintain as maintainBlocking } from "../../dist/core/battle/blocking/index.js";
+import { search as acquireBlocking, maintainAll as maintainBlocking } from "../../dist/core/battle/blocking/index.js";
 import { setHook as setBlockerHook } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import { setRule as setBlockerRule } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import { setSpeedContribution } from "../../dist/core/unit/capability/action/index.js";

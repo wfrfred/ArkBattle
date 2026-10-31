@@ -63,3 +63,22 @@ test("release hooks cannot reacquire a leaving target or restart its departure",
     assert.deepEqual(battle.events.map(({ type }) => type), ["BLOCKING_ACQUIRED", "BLOCKING_RELEASED"]);
     assert.equal(ownerId(before), 10);
 });
+
+test("Blocker departure clears every captured relationship before its first release Hook and preserves target plans", () => {
+    let battle = acquire(fixture([holder(10, { capacity: 2 }), target(20), target(21)]));
+    const adjustments = [20, 21].map(id => getUnit(battle, id).blockable.adjustment);
+    const released = [];
+    battle = applyUnitChanges(battle, [setHook({ id: 10 }, "released", hook("inspect-departure", (current, { relation }) => {
+        released.push(relation.blocked.id);
+        assert.equal(getUnit(current, 10).lifecycle, "LEAVING");
+        assert.deepEqual(blockedIds(current), []);
+        for (const [index, id] of [20, 21].entries()) {
+            assert.equal(ownerId(current, id), undefined);
+            assert.equal(getUnit(current, id).blockable.adjustment, adjustments[index]);
+        }
+        return current;
+    }))]);
+    battle = remove(battle, 10, "RETREAT");
+    assert.deepEqual(released, [20, 21]);
+    assert.equal(getUnit(battle, 10), undefined);
+});

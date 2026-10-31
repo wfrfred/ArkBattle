@@ -9,5 +9,5 @@ export function update(battle: State, position: TilePosition, state: TileState):
 
     return battlefield === battle.battlefield
         ? battle
-        : blocking.maintain({ ...battle, battlefield });
+        : blocking.maintainAll({ ...battle, battlefield });
 }

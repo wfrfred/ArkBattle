@@ -137,29 +137,21 @@ test("a missing Blocker rejects at the update entry", () => {
     assert.throws(() => applyUnitChanges(battle, [capability.setLayer({ id: 10 }, "AIR")]), /unknown unit: 10/);
 });
 
-test("switching a Blocker preserves its independent ownership as a Blockable", () => {
-    const original = standardHolder();
-    const both = initialize({
-        id: original.id,
-        position: original.position,
-        definition: { ...original.definition, blockable: { volume: 1 } },
-    });
+test("switching a Blocker leaves another Blocker's ownership unchanged", () => {
     let battle = fixture([
-        holder(11, { definition: {
-            blocker: {
-                capacity: 1, layer: "GROUND", radius: 1,
-                rules: [capability.sides("ALLY")],
-            },
-        } }),
-        both,
+        standardHolder(),
+        holder(11, { position: [7, 1] }),
         target(),
+        target(21, { position: [7.25, 1] }),
     ]);
     battle = acquire(acquire(battle, 11));
-    assert.equal(ownerId(battle, 10), 11);
+    const retained = getUnit(battle, 11).blocker.blocked[0];
+    assert.equal(ownerId(battle, 21), 11);
     assert.equal(ownerId(battle, 20), 10);
     battle = applyUnitChanges(battle, [capability.setLayer({ id: 10 }, "AIR")]);
-    assert.equal(ownerId(battle, 10), 11);
-    assert.deepEqual(blockedIds(battle, 11), [10]);
+    assert.equal(ownerId(battle, 21), 11);
+    assert.deepEqual(blockedIds(battle, 11), [21]);
+    assert.equal(getUnit(battle, 11).blocker.blocked[0], retained);
     assert.equal(ownerId(battle, 20), undefined);
     assert.deepEqual(blockedIds(battle), []);
 });

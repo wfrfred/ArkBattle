@@ -6,6 +6,7 @@ import * as skills from "../unit/skill/operations.js";
 import { hasSkill } from "../unit/capability/skill/capability.js";
 import { hasBlockable } from "../unit/capability/blocking/blockable.js";
 import * as blocking from "./blocking/operations.js";
+import { relations } from "./blocking/query.js";
 import type { State as BattleState } from "./state.js";
 import { notifyUnitLeave } from "./mechanism.js";
 import { recordUnitDeployment, refundUnit, recycleUnitCard } from "./deployment/lifecycle.js";
@@ -104,7 +105,9 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
                 ? { ...next, blockable: { ...next.blockable, adjustment: null } }
                 : next;
 
-        return blocking.release(replace(battle, [leaving]), reference);
+        battle = replace(battle, [leaving]);
+
+        return blocking.release(battle, relations(battle, reference));
     },
     prepare: (battle, reference, _initial, departure) =>
         refundUnit(battle, units.get(battle, reference)!, departure.reason, battle.tick),

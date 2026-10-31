@@ -18,6 +18,10 @@ export function initialize(
     battle: BattleState,
     input: Input<Definition & Partial<Definitions>>,
 ): Result<Unit> {
+    if ("blocker" in input.definition && "blockable" in input.definition) {
+        throw new TypeError("a unit cannot be both blocker and blockable");
+    }
+
     const states: Record<string, unknown> = {};
 
     for (const key of Object.keys(initializers) as (keyof typeof initializers)[]) {

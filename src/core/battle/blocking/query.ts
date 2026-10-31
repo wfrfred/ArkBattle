@@ -3,7 +3,11 @@ import type { State as BattleState } from "../state.js";
 import type { Unit } from "../../unit/unit.js";
 import * as units from "../../unit/query.js";
 import { hasBlocker, type Blocker } from "../../unit/capability/blocking/blocker.js";
-import { resolveVolume, type Blockable } from "../../unit/capability/blocking/blockable.js";
+import {
+    hasBlockable,
+    resolveVolume,
+    type Blockable,
+} from "../../unit/capability/blocking/blockable.js";
 import type { Relation } from "../../unit/capability/blocking/contract.js";
 
 export function blockerOf(
@@ -30,7 +34,29 @@ export function usedCapacity(battle: BattleState, reference: Ref<Unit & Blocker>
     }, 0);
 }
 
-export function relations(battle: BattleState): readonly Relation[] {
+export function relations(battle: BattleState, reference?: Ref<Unit>): readonly Relation[] {
+    if (reference !== undefined) {
+        const unit = units.get(battle, reference);
+        if (unit === undefined) {
+            return [];
+        }
+        if (hasBlocker(unit)) {
+            const blocker = units.ref(unit);
+
+            return unit.blocker.blocked.map((blocked) => ({ blocker, blocked }));
+        }
+        if (hasBlockable(unit) && unit.blockable.blocker !== null) {
+            const blocker = unit.blockable.blocker;
+            const blocked = units
+                .get(battle, blocker)!
+                .blocker.blocked.find((entry) => entry.id === unit.id)!;
+
+            return [{ blocker, blocked }];
+        }
+
+        return [];
+    }
+
     return units
         .all(battle)
         .filter(hasBlocker)

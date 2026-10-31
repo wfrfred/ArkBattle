@@ -17,7 +17,7 @@ import { actionCapability } from "../helpers/actions.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
 import { resolveSpeed } from "../../dist/core/unit/capability/action/timing.js";
 import { invisibilityKind } from "../../dist/content/effects/visibility.js";
-import * as blocking from "../../dist/core/battle/blocking/operations.js";
+import * as blocking from "../../dist/core/battle/blocking/index.js";
 
 const infectionParams = (damage = 80) => ({
     damage, attackBonusRatio: 0.2, attackSpeedBonus: 20, durationTicks: 65,
@@ -202,7 +202,7 @@ test("smog loses invisibility while blocking and restores it three seconds after
     assert.equal(current(battle).blocker.blocked.length, 1);
     battle = at(battle, 1);
     assert.equal(current(battle).targetable.restrictions.length, 0);
-    battle = blocking.release(battle, units.ref(current(battle, 1)));
+    battle = blocking.release(battle, blocking.relations(battle, units.ref(current(battle, 1))));
     battle = update(battle, [{ ...current(battle, 1), position: [1, 0] }]);
     battle = through(battle, 2, 91);
     assert.equal(current(battle).targetable.restrictions.length, 0);

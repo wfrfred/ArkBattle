@@ -185,7 +185,6 @@ const catalogDefinition = () => Object.freeze({
   layer: Object.freeze({ type: 'GROUND' }),
   hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.25 } },
   blocker: { layer: "GROUND", rules: [], capacity: 2, radius: 0.7 },
-  blockable: Object.freeze({ volume: 1 }),
 });
 
 
@@ -215,7 +214,10 @@ test('core unit initialization pairs every declared capability with its initiali
 
   assert.deepEqual(unit.blocker, { layer: "GROUND", capacity: [], radius: 0.7, rules: [], blocked: [], acquired: [], released: [] });
   assert.equal(resolveCapacity(unit.definition.blocker, unit.blocker), 2);
-  assert.deepEqual(unit.blockable, { volume: [], rules: [], blocker: null, adjustment: null, acquired: [], released: [] });
+  const candidate = initializeUnit(battle, {
+    id: 4, position: [0, 0], definition: { hooks: [], id: 'blockable', blockable: { volume: 1 } },
+  }).value;
+  assert.deepEqual(candidate.blockable, { volume: [], rules: [], blocker: null, adjustment: null, acquired: [], released: [] });
 
   const next = initializeUnit(battle, { id: 2, definition, position: [0, 0] }).value;
   assert.notEqual(next.vitality, unit.vitality);
@@ -290,13 +292,17 @@ test('core capability guards require both definition and state', () => {
     ['action', hasAction], ['layer', hasLayer], ['hitbox', hasHitbox], ['blocker', hasBlocker],
     ['blockable', hasBlockable],
   ]) {
-    const missingState = { ...unit };
+    const sample = key === 'blockable'
+      ? initialize({ id: 2, position: [0, 0], definition: { hooks: [], id: 'blockable', blockable: { volume: 1 } } })
+      : unit;
+    assert.equal(guard(sample), true, `${key}: the configured state supplies the capability`);
+    const missingState = { ...sample };
     delete missingState[key];
     assert.equal(guard(missingState), false, `${key}: configuration alone is not a runtime capability`);
 
-    const definition = { ...unit.definition };
+    const definition = { ...sample.definition };
     delete definition[key];
-    const missingConfiguration = { ...unit, definition };
+    const missingConfiguration = { ...sample, definition };
     assert.equal(guard(missingConfiguration), false, `${key}: state alone is not a configured capability`);
   }
 

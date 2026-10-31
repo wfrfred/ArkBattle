@@ -5,7 +5,7 @@ import { test } from "node:test";
 import { add as addUnit, replace as updateUnit, remove as removeUnit } from "../../dist/core/battle/unit.js";
 import { getUnit, replaceUnit } from "../helpers/unit.js";
 import { update as updateFieldUnit } from "../../dist/core/battlefield/unit.js";
-import * as blocking from "../../dist/core/battle/blocking/operations.js";
+import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as query from "../../dist/core/battle/blocking/query.js";
 import * as blockerOperations from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import * as blockableOperations from "../../dist/core/unit/capability/blocking/blockable-operations.js";
@@ -60,15 +60,14 @@ function withoutAllegiance(unit) {
     return { ...remaining, definition };
 }
 
-test("a unit with both capabilities cannot block itself without a side restriction", () => {
+test("a Blocker without a side restriction only considers separate Blockable Units", () => {
     const owner = holder(10, { definition: {
         blocker: { layer: "GROUND", rules: [], capacity: 2, radius: 1 },
         layer: { type: "GROUND" },
-        blockable: { volume: 1 },
     } });
     const battle = acquire(fixture([owner, target()]));
     assert.deepEqual(blockedIds(battle), [20]);
-    assert.equal(ownerId(battle, 10), undefined);
+    assert.equal("blockable" in owner, false);
 });
 
 test("the standard ENEMY policy selects target sides without requiring blocker allegiance", () => {
@@ -117,7 +116,7 @@ test("an owner side change preserves blocking while a target side change release
     assert.equal(ownerId(battle), 10);
 
     const candidate = getUnit(battle, 20);
-    battle = blocking.maintain(replaceUnit(battle, { ...candidate, allegiance: { side: "NEUTRAL" } }));
+    battle = blocking.maintainAll(replaceUnit(battle, { ...candidate, allegiance: { side: "NEUTRAL" } }));
     assert.equal(ownerId(battle), undefined);
     assert.deepEqual(blockedIds(battle), []);
 
@@ -144,8 +143,8 @@ test("new blockers and restored eligibility wait for search; existing relations 
 });
 
 for (const [name, change] of [
-    ["LEAVING begins", (battle, unit) => blocking.maintain(replaceUnit(battle, { ...unit, lifecycle: "LEAVING" }))],
-    ["spatial presence disappears", (battle, unit) => blocking.maintain(replaceUnit(battle, { ...unit, spatialPresence: { present: false } }))],
+    ["LEAVING begins", (battle, unit) => blocking.maintainAll(replaceUnit(battle, { ...unit, lifecycle: "LEAVING" }))],
+    ["spatial presence disappears", (battle, unit) => blocking.maintainAll(replaceUnit(battle, { ...unit, spatialPresence: { present: false } }))],
     ["side policy stops allowing the target", battle => applyUnitChanges(battle, [blockerOperations.setRule({ id: 10 }, sides("ALLY"))])],
 ]) {
     test(`complete settlement releases invalid relations when blocker ${name}`, () => {
@@ -195,7 +194,7 @@ test("existing blocking is retained beyond acquisition distance and radius chang
     battle = replaceUnit(battle, { ...currentUnit6, blocker: { ...currentUnit6.blocker, radius: 0 } });
     assert.equal(getUnit(battle, 10).blocker.blocked[0], stored);
     assert.equal(ownerId(battle), 10);
-    battle = blocking.release(battle, { id: 20 });
+    battle = blocking.release(battle, blocking.relations(battle, { id: 20 }));
     assert.equal(ownerId(acquire(battle)), undefined);
 });
 
@@ -218,7 +217,7 @@ test("explicit acquisition and release preserve relationship order and identity"
     const unchanged = blocking.acquire(battle, { id: 10 }, { id: 21 });
     assert.equal(unchanged, battle);
     assert.equal(getUnit(unchanged, 10).blocker.blocked, before);
-    battle = blocking.release(battle, { id: 21 });
+    battle = blocking.release(battle, blocking.relations(battle, { id: 21 }));
     assert.deepEqual(blockedIds(battle), [20]);
     assert.equal(getUnit(battle, 10).blocker.blocked[0], before[1]);
     battle = blocking.acquire(battle, { id: 10 }, { id: 21 });
@@ -231,7 +230,7 @@ test("an occupied target must be released before another Blocker acquires it", (
     let battle = acquire(fixture([holder(), holder(11), target()]));
     assert.equal(blocking.acquire(battle, { id: 11 }, { id: 20 }), battle);
     assert.equal(ownerId(battle), 10);
-    battle = blocking.release(battle, { id: 20 });
+    battle = blocking.release(battle, blocking.relations(battle, { id: 20 }));
     battle = blocking.acquire(battle, { id: 11 }, { id: 20 });
     assert.equal(ownerId(battle), 11);
 });

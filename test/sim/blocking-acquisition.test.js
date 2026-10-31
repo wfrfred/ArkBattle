@@ -3,7 +3,7 @@ import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { replace as updateUnit } from "../../dist/core/battle/unit.js";
-import { release, acquire as acquirePair } from "../../dist/core/battle/blocking/index.js";
+import { release, relations, maintain, acquire as acquirePair } from "../../dist/core/battle/blocking/index.js";
 import { getUnit, replaceUnit } from "../helpers/unit.js";
 import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
 import * as blockerOperations from "../../dist/core/unit/capability/blocking/blocker-operations.js";
@@ -72,7 +72,7 @@ test("successful acquisition settles Rules affected by its own blocking relation
     ]);
 });
 
-test("release settles remaining Rules affected by removal of its own blocking relation", () => {
+test("explicit maintenance settles remaining Rules after releasing their prerequisite relationship", () => {
     let battle = fixture([holder(10, { capacity: 2 }), target(20), target(21, { position: [2.1, 1] })]);
     battle = applyUnitChanges(battle, [blockerOperations.setRule({ id: 10 }, {
         id: "twenty-requires-twenty-one",
@@ -84,7 +84,9 @@ test("release settles remaining Rules affected by removal of its own blocking re
     battle = acquire(battle);
     assert.deepEqual(blockedIds(battle), [21, 20]);
 
-    battle = release(battle, { id: 21 });
+    battle = release(battle, relations(battle, { id: 21 }));
+    assert.deepEqual(blockedIds(battle), [20], "release only changes the supplied relationship");
+    battle = maintain(battle, { id: 10 });
 
     assert.deepEqual(blockedIds(battle), []);
     assert.equal(ownerId(battle, 20), undefined);

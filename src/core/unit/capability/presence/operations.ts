@@ -1,6 +1,8 @@
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import * as blocking from "../../../battle/blocking/operations.js";
+import { relations } from "../../../battle/blocking/query.js";
+import { replace } from "../../../battle/unit.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
@@ -38,9 +40,7 @@ function changePresence(battle: BattleState, unit: Unit & SpatialPresence): Batt
         hasBlockable(unit) && unit.blockable.adjustment !== null
             ? { ...unit, blockable: { ...unit.blockable, adjustment: null } }
             : unit;
-    const previous = blocking.capture(battle, units.ref(unit));
-    const incoming = previous.filter((relation) => relation.blocked.id === unit.id);
-    const outgoing = previous.filter((relation) => relation.blocker.id === unit.id);
+    battle = replace(battle, [next]);
 
-    return blocking.releaseAll(battle, [...incoming, ...outgoing], [next]);
+    return blocking.release(battle, relations(battle, units.ref(next)));
 }

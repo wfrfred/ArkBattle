@@ -104,12 +104,15 @@ function refreshContribution(battle, reference, setting) {
 
 test("blocking initialization accepts plain definitions and validates them through unit initialization", () => {
     const radius = 1;
-    const definition = { hooks: [], id: "both", blocker: { layer: "GROUND", rules: [], capacity: 3, radius }, blockable: { volume: 2 } };
+    const definition = { hooks: [], id: "blocker", blocker: { layer: "GROUND", rules: [], capacity: 3, radius } };
     const unit = initialize({ id: 0, position: [0, 0], definition });
     assert.equal(unit.definition, definition);
     assert.equal(unit.blocker.radius, radius);
     assert.deepEqual(unit.blocker, { layer: "GROUND", capacity: [], radius, rules: [], blocked: [], acquired: [], released: [] });
-    assert.deepEqual(unit.blockable, { volume: [], rules: [], blocker: null, adjustment: null, acquired: [], released: [] });
+    const targetDefinition = { hooks: [], id: "blockable", blockable: { volume: 2 } };
+    const target = initialize({ id: 1, position: [0, 0], definition: targetDefinition });
+    assert.equal(target.definition, targetDefinition);
+    assert.deepEqual(target.blockable, { volume: [], rules: [], blocker: null, adjustment: null, acquired: [], released: [] });
     for (const [capability, invalid] of [
         ["blocker", { layer: "GROUND", rules: [], capacity: -1, radius }],
         ["blocker", { layer: "GROUND", rules: [], capacity: 1.5, radius }],
@@ -121,6 +124,24 @@ test("blocking initialization accepts plain definitions and validates them throu
             id: 0, position: [0, 0], definition: { hooks: [], id: "invalid", [capability]: invalid },
         }), RangeError);
     }
+});
+
+test("unit initialization rejects simultaneous Blocking roles before invoking content initializers", () => {
+    let initialized = 0;
+    assert.throws(() => initialize({
+        id: 0,
+        position: [0, 0],
+        definition: {
+            id: "invalid-blocking-roles",
+            blocker: { layer: "GROUND", rules: [], capacity: 1 },
+            blockable: { volume: 1 },
+            action: { initialize() {
+                initialized++;
+                throw new Error("content initializer must not run");
+            } },
+        },
+    }), { name: "TypeError", message: /both blocker and blockable/ });
+    assert.equal(initialized, 0);
 });
 
 test("blocking capacity: immutable additions resolve ties to even after clamping", () => {
