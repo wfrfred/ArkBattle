@@ -59,7 +59,7 @@ function fixture() {
                         id: "consume",
                         stage: "receiving",
                         priority: 0,
-                        accepts: (battle, context) => getUnit(battle, context.request.target.id)?.effects.values().toArray().find(effect => effect.id === ref.id)?.status === "ACTIVE",
+                        accepts: (battle, context) => getUnit(battle, context.request.target.id)?.effects.values().find(effect => effect.id === ref.id)?.status === "ACTIVE",
                         invoke(state, context, value) {
                             const current = get(state, ref);
                             const currentData = effects.get(state, ref).data;

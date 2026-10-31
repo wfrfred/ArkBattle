@@ -83,7 +83,7 @@ Unit 初始化始终建立空 Effects，不接收预装容器。初始 Buff、�
 
 `Unit.effects: Effects` 以私有 `Store<Id, Effect<any, any>>` 持有异构 Effect 集合与宿主内的 `nextId`。容器是不可变值：增删改返回新容器，原容器与其中的旧实例仍可读取；查询返回共享的不可变引用。
 
-普通 get(id) 返回完整 Effect<object, object>，values() 返回绑定容器版本的 Query<Effect>，keys() 返回 Query<Id>。实例的 data 和完整 Definition 都存在，默认 object 不声称某种私有形状。Query 惰性、可重复遍历，需要固定身份名单时显式 toArray。
+普通 get(id) 返回完整 Effect<object, object>，values() 返回绑定容器版本的 Query<Effect>，keys() 返回 Query<Id>。实例的 data 和完整 Definition 都存在，默认 object 不声称某种私有形状。Query 惰性、可重复遍历，绑定的不可变容器版本已经固定枚举来源；在完整操作处生成 Ref，并从最新 BattleState 读取当前实例，不为固定身份额外生成数组。
 
 Effect<S, H> 直接保存完整 Definition<S, H> 与 data，以及 id、宿主、来源、scopes 和参与状态。宿主类型同时保留 Ref<Unit> 与 Ref<Unit & H>，内部 H 擦除为 any 时仍有 Unit 地址与身份。普通读取不增加另一套实体类型，具体私有读写继续使用原配对证明。
 

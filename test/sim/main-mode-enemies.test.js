@@ -205,7 +205,7 @@ test('crossbow uses explicit windup and arrow speed, then settles damage on cont
   assert.equal(state.battlefield.projectiles.size, 1);
   assert.equal(getUnit(state, 0).vitality.hp, 1000);
   for (let tick = 2; tick <= 10; tick++) {
-    state = advanceProjectiles({ ...state, tick }, projectilesQuery.all(state).map(projectilesQuery.ref).toArray());
+    state = advanceProjectiles({ ...state, tick }, projectilesQuery.all(state).map(projectilesQuery.ref));
   }
   assert.equal(getUnit(state, 0).vitality.hp, 800);
   assert.ok(state.events.some(event => event.type === 'PROJECTILE_HIT' && event.targetUnitId === 0));

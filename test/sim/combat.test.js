@@ -547,7 +547,7 @@ test('core vitality: invincibility rejects receiving before HIT SP and removing 
   const state = enterSkill(createBattleState(fixtureBattlefieldState([target])), unitRef(target));
   const request = { source: null, target: unitRef(target), parameters: parameters(10, 'TRUE') };
   const blocked = dealDamage(state, request);
-  const protection = getUnit(state, 1).effects.values().toArray().find(effect => effect.definition === invincible);
+  const protection = getUnit(state, 1).effects.values().find(effect => effect.definition === invincible);
   const unprotected = effects.end(state, { host: unitRef(target), id: protection.id });
   const allowed = dealDamage(unprotected, request);
 

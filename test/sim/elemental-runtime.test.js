@@ -113,7 +113,7 @@ test('elemental execution: erosion defense loss survives recovery and stacks on 
 
 test('elemental execution: repeated enemy neural bursts refresh the remaining three paralysis charges', () => {
   let work = element(effectFixtureWork(unit('ENEMY')), 'NEURAL').state;
-  const original = getUnit(work, 1).effects.values().toArray().find(effect => effect.definition.id.endsWith('/paralysis'));
+  const original = getUnit(work, 1).effects.values().find(effect => effect.definition.id.endsWith('/paralysis'));
   assert.equal(original.data.remaining, 3);
   work = advance(work, 300);
   assert.equal(getUnit(work, 1).effects.get(original.id).data.remaining, 3);
@@ -392,7 +392,7 @@ function battle(receiver, type, { moving = false, targetStates } = {}) {
   });
   return { runtime };
 }
-function victim(runtime) { return unitQueries.all(runtime).toArray().find(entry => entry.id === 1); }
+function victim(runtime) { return unitQueries.all(runtime).find(entry => entry.id === 1); }
 
 test('elemental runtime: character neural stun prevents ordinary attacks and route movement until recovery ends', () => {
   let { runtime } = battle('CHARACTER', 'NEURAL', { moving: true });

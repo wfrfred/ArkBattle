@@ -161,12 +161,9 @@ const locomotionRef: Ref<Unit & Locomotion> = complete;
 // 反向赋值不成立。
 
 const snapshot = battle;
-const candidates = units.all(snapshot)
-    .filter(hasLocomotion)
-    .map(units.ref)
-    .toArray();
-for (const ref of candidates) {
-    battle = locomotion.advance(battle, ref, target, movementContext);
+const candidates = units.all(snapshot).filter(hasLocomotion);
+for (const unit of candidates) {
+    battle = locomotion.advance(battle, units.ref(unit), target, movementContext);
 }
 ```
 
@@ -184,7 +181,7 @@ all 绑定创建查询时的不可变状态版本，返回 Unit 对象，保留�
 
 core/common/query.ts 的 Query 是可重复执行的同步遍历描述，每次 [Symbol.iterator]() 建立独立游标，不自动缓存。filter 保留元素表示并支持类型守卫收窄，map 改变表示，flatMap 展开子序列，take 取当前顺序的前若干项；some、find、reduce、toArray 才消费查询。take(0) 不访问源。提前结束和回调异常遵守 IteratorClose，flatMap 同时关闭内部游标。
 
-.map(units.ref) 才提取身份，.toArray() 才物化。查询绑定快照不依赖是否生成数组，重复遍历会重新执行只读回调；回调必须使用同一快照，不捕获随后改变的 battle 变量，不消费 RNG 或推进领域状态。完整操作由显式循环逐项接续最新 BattleState，不增加 Query.apply。
+Ref 在调用领域操作处按需生成，不要求预先 .map(units.ref)；.toArray() 只在数组返回契约、序列化或需要索引访问等边界物化。固定本轮对象来源依靠不可变 Query 快照，不依靠生成数组；重复遍历会重新执行只读回调。Combat 的初始 Execution 等派生身份同样从保存的阶段初始 BattleState 查询，不能随循环中的 battle 改变采样版本。查询回调必须使用同一快照，不捕获随后改变的 battle 变量，不消费 RNG 或推进领域状态。完整操作由显式循环逐项接续最新 BattleState，不增加 Query.apply。
 
 collection.sort 和 topK 接受 Iterable，返回只读数组。排序保持比较相等时的源顺序；topK 可遍历全部候选而只保存前 K 个。take 不能代替排序、TopK 或随机抽样。
 
@@ -296,7 +293,7 @@ Action.interval／speed Change 的 settle 调用 refreshCooldowns，按最终贡
 
 add 接收创建方已经完成 Capability 初始化、部署信息及路线初态的完整 Unit，负责登记、Skill 入场、enter Hook 和原时点的 Occupancy 通知，不扫描全场 Blocking。创建方逐个完成 add 再处理下一对象。Unit Definition 的 hooks 必填，无监听传 []；实例不增加另一份生命周期 Hook。Deployment 的卡消费与 DP 扣除在 add 前完成，登记后记录 UNIT_DEPLOYED，再执行 Skill 与 Unit 入场；部署通知仍由 Deployment 在 add 返回后派发。
 
-remove 按 Unit ID 请求 Unit Lifetime 结束，首次请求保留 Departure、发布 LEAVING，明确调用 Blocking.release 释放自身全部入向和出向关系，再执行返费。真实所有权按 Skill、Action、Burst、Effect 顺序展开；依赖者完整 Finalize 后才注销、通知 Occupancy、回收 Card 和派发历史 leave，Finalize 不追加全场 Blocking 扫描。嵌套 remove 只保证请求／Prepare，不保证已物理移除。advance 固定候选 Ref，逐项读取最新 PRESENT Unit 并派发 tick Hook。
+remove 按 Unit ID 请求 Unit Lifetime 结束，首次请求保留 Departure、发布 LEAVING，明确调用 Blocking.release 释放自身全部入向和出向关系，再执行返费。真实所有权按 Skill、Action、Burst、Effect 顺序展开；依赖者完整 Finalize 后才注销、通知 Occupancy、回收 Card 和派发历史 leave，Finalize 不追加全场 Blocking 扫描。嵌套 remove 只保证请求／Prepare，不保证已物理移除。advance 保留入口 Unit Query 快照，在操作处生成 Ref，逐项读取最新 PRESENT Unit 并派发 tick Hook。
 
 battlefield/unit.ts 的 add／update／remove 仍是纯存储与索引转换，Field.update 接收完整 Unit 数组，不能与公开 Battle.update 的 Change 数组混用。BattleState 不保留另一套 Unit CRUD，通用 setBattlefield 已移除；特殊撤退—再部署留待实际内容审查。
 
@@ -318,7 +315,7 @@ Action 的 `setExecutionState(battle, ref, nextState)` 通过 Execution Ref 只�
 
 `NoInfer` 阻止结果值参与泛型推导。私有写回必须保留实例与 Definition 对应的原始类型关联；Ref 可协变用于公共查询，但不得借预先弱化的完整实例 Ref 写入不兼容的私有数据。后者属于调用契约错误，不为此增加运行时数据形状校验。普通 object 结果不提供具体私有形状证明，读写须保留原始泛型关联。
 
-Projectile 的 update 接收 `{ position?, state? }` 结果值，并从最新 battle 读取实例。Core 只提取这两个允许字段，缺失实例抛出 RangeError，未提供字段保留当前值，两个字段均未变化时返回原 BattleState。ACTIVE 与 ENDING 均可更新；stop 接收 Projectile Ref，请求阶段发布 ENDING 并记录停止事实，Finalize 在依赖者完成后调用 onEnd、注销。嵌套 stop 不保证 Finalize 已完成。Runtime 在整个 Step 任何阶段回调之前固定候选 Ref，逐项读取最新 ACTIVE 实例；本次新建实例下次才正常推进，不保存 lastAdvancedTick。
+Projectile 的 update 接收 `{ position?, state? }` 结果值，并从最新 battle 读取实例。Core 只提取这两个允许字段，缺失实例抛出 RangeError，未提供字段保留当前值，两个字段均未变化时返回原 BattleState。ACTIVE 与 ENDING 均可更新；stop 接收 Projectile Ref，请求阶段发布 ENDING 并记录停止事实，Finalize 在依赖者完成后调用 onEnd、注销。嵌套 stop 不保证 Finalize 已完成。Runtime 在整个 Step 任何阶段回调之前保留 Projectile Query 快照，推进接口接收 Iterable<Ref<P>>，在操作处按需生成 Ref 并逐项读取最新 ACTIVE 实例；本次新建实例下次才正常推进，不保存 lastAdvancedTick。
 
 Lifetime 使用各领域共享静态描述符与 Ref 配对，scope(lifetime, ref) 不读取 battle；getRef 通过匹配描述符恢复对应 Ref，available 查询 Pending 和当前领域资格。Action 绑定本轮 Execution，Skill／Burst 绑定对应运行身份，不绑定持久配置。kind 与完整数值地址确定身份，不新增全局 ID 或动态注册器。所有权和 Effect.scopes 是关系权威，BattleState.lifetime.dependencies 只派生索引；ENDING 关系保留到物理移除，Pending.parents 保留到完整 Finalize 返回。
 

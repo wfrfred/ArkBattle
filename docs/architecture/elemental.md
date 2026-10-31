@@ -139,7 +139,7 @@ Unit 请求离场发布 LEAVING 后，通过所有权边自动请求本轮 Burst
 
 ## 6. 时间推进
 
-Runtime 通过 `units.all(snapshot).filter(hasElemental).map(units.ref).toArray()` 固定本轮宿主 Ref，逐项调用 advance 并读取当前对象。正常 EP 使用 `recoveryPerSecond × elapsedTicks / TICKS_PER_SECOND`；爆发预算使用 `remainingTicks - 当前 burstRecoverySpeed × elapsedTicks`，归零后正常完成。速度为零时暂停，后续变化作用于剩余预算，不改成启动时固定的 endsAtTick。
+Runtime 遍历绑定阶段入口状态的 `units.all(snapshot).filter(hasElemental)`，在调用 advance 时生成宿主 Ref 并读取当前对象，不为固定来源额外生成数组。正常 EP 使用 `recoveryPerSecond × elapsedTicks / TICKS_PER_SECOND`；爆发预算使用 `remainingTicks - 当前 burstRecoverySpeed × elapsedTicks`，归零后正常完成。速度为零时暂停，后续变化作用于剩余预算，不改成启动时固定的 endsAtTick。
 
 普通 damage／heal 保留 lastAdvancedTick；进入或退出 Burst 时重设时点，避免跨阶段补算。宿主仍在场但基本资格、回复 Rule 或速度使本轮无法推进时，仍更新时钟，不把暂停时间补回来。自然回复由 Runtime 更新 EP，不派发显式 heal 的 healed Hook。
 

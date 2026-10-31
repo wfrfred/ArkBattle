@@ -14,7 +14,7 @@ import { createLegacyCombatSpec } from "../../dist/legacy/combat.js";
 
 import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
 
-const candidates = battle => projectilesQuery.all(battle).map(projectilesQuery.ref).toArray();
+const candidates = battle => projectilesQuery.all(battle).map(projectilesQuery.ref);
 const instances = battle => projectilesQuery.all(battle).toArray();
 const damageEvents = battle => battle.events.filter(event => event.type === "DAMAGE");
 const create = (battle, definition, state = {}, position = [0, 0]) =>
@@ -328,7 +328,7 @@ test("a throwing termination callback leaves the caller's BattleState unchanged"
 
     assert.throws(() => (rt = stepBattle(rt, [{ type: "STOP_PROJECTILE", projectileId: 0 }])), /termination failed/);
     assert.deepEqual(rt, before);
-    assert.equal(unitQueries.all(before).toArray().find(self => self.id === 1).vitality.hp, 100);
+    assert.equal(unitQueries.all(before).find(self => self.id === 1).vitality.hp, 100);
     assert.equal(projectilesQuery.all(before).toArray()[0].lifecycle, "ACTIVE");
 });
 

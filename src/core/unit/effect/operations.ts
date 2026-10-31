@@ -202,12 +202,10 @@ export function end<T extends Effect<any, any>>(
 }
 
 export function advance(battle: BattleState): BattleState {
-    const candidates = units
-        .all(battle)
-        .flatMap((host) => host.effects.values().map(effectRef))
-        .toArray();
+    const candidates = units.all(battle).flatMap((host) => host.effects.values());
 
-    for (const ref of candidates) {
+    for (const candidate of candidates) {
+        const ref = effectRef(candidate);
         const instance = units.get(battle, ref.host)?.effects.get(ref.id);
         if (instance?.status === "ACTIVE" && instance.definition.onTick !== undefined) {
             battle = instance.definition.onTick(battle, instance);
@@ -277,20 +275,20 @@ function updateStatus<T extends Effect<any, any>>(battle: BattleState, ref: Ref<
 }
 
 function reconcileGroupActivity(battle: BattleState, unitId: Id, groupId: string): BattleState {
-    const refs =
+    const candidates =
         battle.battlefield.units
             .get(unitId)
             ?.effects.values()
-            .filter((instance) => instance.definition.group?.id === groupId)
-            .map(effectRef)
-            .toArray() ?? [];
+            .filter((instance) => instance.definition.group?.id === groupId) ?? [];
 
-    for (const ref of refs) {
+    for (const candidate of candidates) {
+        const ref = effectRef(candidate);
         if (get(battle, ref)?.status === "ACTIVE") {
             battle = updateStatus(battle, ref);
         }
     }
-    for (const ref of refs) {
+    for (const candidate of candidates) {
+        const ref = effectRef(candidate);
         if (get(battle, ref)?.status === "INACTIVE") {
             battle = updateStatus(battle, ref);
         }

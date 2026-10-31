@@ -232,9 +232,9 @@ test('predefined appearances and deployment initialize once', () => {
   runtime = stepBattle(runtime, [{ type: 'REMOVE_PREDEFINED', definitionId: 9, reason: 'SCRIPT' },
     { type: 'APPEAR_PREDEFINED', definitionId: 9 }]);
   assert.deepEqual(trace, [['predefined', 0, 100], ['deployed', 1, 100], ['predefined', 2, 100]]);
-  assert.equal(unitQueries.all(before).toArray().find(unit => unit.id === 1).vitality.hp, 75);
-  assert.deepEqual(unitQueries.all(before).toArray().find(unit => unit.id === 1).position, [0, 0]);
-  assert.deepEqual(unitQueries.all(runtime).toArray().find(unit => unit.id === 1).position, [0, 0]);
+  assert.equal(unitQueries.all(before).find(unit => unit.id === 1).vitality.hp, 75);
+  assert.deepEqual(unitQueries.all(before).find(unit => unit.id === 1).position, [0, 0]);
+  assert.deepEqual(unitQueries.all(runtime).find(unit => unit.id === 1).position, [0, 0]);
 });
 
 test('unit initialization exposes registered lifecycle hooks and selected capability state', async () => {

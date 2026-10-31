@@ -136,7 +136,7 @@ function scenario({ ammo = 1, targets = 1, interrupt = false, windupTicks = 0, o
 }
 
 function source(runtime) {
-  return unitQueries.all(runtime).toArray().find(({ id }) => id === 0);
+  return unitQueries.all(runtime).find(({ id }) => id === 0);
 }
 
 function damageEvents(step) {
@@ -209,12 +209,12 @@ test("ammo runtime: hiding the source after damage still pays for the sampled ac
 test("ammo runtime: cancellation during windup spends no ammunition", () => {
   let runtime = scenario({ ammo: 3, windupTicks: 2 });
   runtime = stepBattle(runtime, [{ type: "ACTIVATE_SKILL", unitId: 0 }]);
-  const ref = executionRef(unitReference(unitQueries.all(runtime).toArray().find(unit => unit.id === 0)), unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0]);
+  const ref = executionRef(unitReference(unitQueries.all(runtime).find(unit => unit.id === 0)), unitQueries.all(runtime).find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0]);
   const cancelled = (runtime = stepBattle(runtime, [{ type: "CANCEL_ACTION_EXECUTION", ref }]));
   assert.deepEqual(cancelled.events.filter(({ type }) => type === "ACTION_CANCELLED").map(({ reason }) => reason), ["CANCELLED"]);
   assert.deepEqual(damageEvents(cancelled), []);
   assert.equal(source(runtime).skill.activation.sustain.remaining, 3);
-  assert.deepEqual(unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray(), []);
+  assert.deepEqual(unitQueries.all(runtime).find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray(), []);
   assert.equal((runtime = stepBattle(runtime, [])).events.some(({ type }) => type === "ACTION_RELEASED"), false);
   assert.equal(source(runtime).skill.activation.sustain.remaining, 3);
 });
@@ -229,7 +229,7 @@ test("ammo runtime: release interruption cancels windup without spending ammunit
   assert.deepEqual(damageEvents(interrupted), []);
   assert.equal(source(runtime).skill.activation.sustain.remaining, 3);
   assert.ok(source(runtime).action.actions.get("normal").cooldown.readyAtTick >= 17);
-  assert.deepEqual(unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray(), []);
+  assert.deepEqual(unitQueries.all(runtime).find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray(), []);
 });
 
 test("ammo runtime: a content-defined follow-up preserves one ammunition payment across ticks", () => {
@@ -260,7 +260,7 @@ test("ammo runtime: a content-defined follow-up preserves one ammunition payment
   assert.deepEqual(damageEvents(followUp).map(({ amount }) => amount), [200, 200]);
   assert.equal(source(runtime).skill.activation.sustain.remaining, 2);
   assert.equal(followUp.events.filter(({ type }) => type === "ACTION_FINISHED").length, 1);
-  assert.deepEqual(unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray(), []);
+  assert.deepEqual(unitQueries.all(runtime).find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray(), []);
 });
 
 test("ammo runtime: the last released projectile survives skill completion and retains buffed attack", () => {
@@ -291,6 +291,6 @@ test("ammo runtime: the last released projectile survives skill completion and r
   runtime = stepBattle(runtime, []);
   const contacted = (runtime = stepBattle(runtime, []));
   assert.deepEqual(damageEvents(contacted).map(({ targetUnitId, amount }) => [targetUnitId, amount]), [[1, 200]]);
-  assert.equal(unitQueries.all(runtime).toArray().find(({ id }) => id === 1).vitality.hp, 9800);
+  assert.equal(unitQueries.all(runtime).find(({ id }) => id === 1).vitality.hp, 9800);
   assert.deepEqual(allProjectiles(runtime).toArray(), []);
 });

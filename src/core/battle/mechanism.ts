@@ -136,9 +136,10 @@ export function remove<M extends Mechanism<any>>(
 }
 
 export function advance(battle: BattleState): BattleState {
-    const candidates = all(battle).map(ref).toArray();
+    const candidates = all(battle);
 
-    for (const reference of candidates) {
+    for (const candidate of candidates) {
+        const reference = ref(candidate);
         const self = get(battle, reference);
         if (self?.status === "ACTIVE" && self.definition.onTick !== undefined) {
             battle = self.definition.onTick(battle, self);
@@ -149,9 +150,10 @@ export function advance(battle: BattleState): BattleState {
 }
 
 export function notifyUnitLeave(battle: BattleState, departure: Departure): BattleState {
-    const candidates = all(battle).map(ref).toArray();
+    const candidates = all(battle);
 
-    for (const reference of candidates) {
+    for (const candidate of candidates) {
+        const reference = ref(candidate);
         const self = get(battle, reference);
         if (self?.status === "ACTIVE" && self.definition.onUnitLeave !== undefined) {
             battle = self.definition.onUnitLeave(battle, self, departure);

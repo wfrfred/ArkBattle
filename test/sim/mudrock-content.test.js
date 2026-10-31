@@ -108,7 +108,7 @@ test("shield cancels damage, consumes a layer, self-heals and retains normal HIT
     approximate(getUnit(result.state, 0).vitality.hp, 1000 + fixture.prepared.attributes.maxHp * 0.2);
     assert.equal(getUnit(result.state, 0).skill.sp.value, 1);
     assert.deepEqual(readShield(getUnit(result.state, 0)), { layers: 0, timer: 270 });
-    assert.equal(getUnit(result.state, 0).effects.values().toArray().find(instance => instance.definition.id === "mudrock/shield").status, "ACTIVE");
+    assert.equal(getUnit(result.state, 0).effects.values().find(instance => instance.definition.id === "mudrock/shield").status, "ACTIVE");
     assert.equal(getUnit(before, 0).vitality.hp, 1000);
     assert.deepEqual(readShield(getUnit(before, 0)), { layers: 1, timer: 270 });
     const external = healing(result.state, {
@@ -173,7 +173,7 @@ test("invincible reception leaves shield untouched and removing its effect remov
     const canceled = hit(protectedState);
     assert.equal(canceled.value.kind, "REJECTED");
     assert.equal(readShield(getUnit(canceled.state, 0)).layers, 1);
-    const effect = getUnit(fixture.state, 0).effects.values().toArray().find(instance => instance.definition.id === "mudrock/shield");
+    const effect = getUnit(fixture.state, 0).effects.values().find(instance => instance.definition.id === "mudrock/shield");
     const removed = end(fixture.state, { host: { id: 0 }, id: effect.id });
     assert.equal(readShield(getUnit(removed, 0)), undefined);
     assert.equal(hit(removed).value.application.hpLoss, 100);

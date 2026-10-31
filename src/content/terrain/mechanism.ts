@@ -79,7 +79,7 @@ function create<P extends object>(
                     (index) => map.tiles.get(index, definition) !== undefined,
                 );
             const selectedSet = new Set(selected);
-            const candidates = units.all(battle).map(units.ref).toArray();
+            const candidates = units.all(battle);
             battle = mechanisms.setState(battle, reference, {
                 ...self.state,
                 indices: selected,
@@ -138,7 +138,8 @@ function create<P extends object>(
                     return battle;
                 }
 
-                const unit = units.get(battle, candidate);
+                const candidateRef = units.ref(candidate);
+                const unit = units.get(battle, candidateRef);
                 const index = unit === undefined ? undefined : indexOf(unit);
                 if (unit === undefined || index === undefined) {
                     continue;
@@ -173,7 +174,7 @@ function create<P extends object>(
                     }
                 }
 
-                const latest = units.get(battle, candidate);
+                const latest = units.get(battle, candidateRef);
                 if (
                     latest === undefined ||
                     indexOf(latest) !== index ||
@@ -196,7 +197,7 @@ function create<P extends object>(
                         : battle;
                 }
 
-                const current = units.get(battle, candidate);
+                const current = units.get(battle, candidateRef);
                 if (current !== undefined && indexOf(current) === index) {
                     battle = setContact(battle, unit.id, { index, effect: installed.value });
                 } else if (!behaviour.retainOnLeave && installed.value !== undefined) {

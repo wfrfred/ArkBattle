@@ -164,7 +164,7 @@ test("entry precedes deployment observers; observer registrations survive succes
     runtime = stepBattle(runtime, [deploy(1, 1)]);
     assert.deepEqual(calls, [["entered", 1], ["observed", 1, "MANUAL"], ["entered", 2], ["observed", 2, "MANUAL"]]);
     assert.equal(previous.deployment.cards[0].costStage, 0);
-    assert.equal(unitQueries.all(runtime).toArray().find((unit) => unit.id === 0).deployable.deployedHooks.length, 1);
+    assert.equal(unitQueries.all(runtime).find((unit) => unit.id === 0).deployable.deployedHooks.length, 1);
     assert.equal(unitQueries.all(previous).toArray().length, 1);
     assert.equal(unitQueries.all(first).toArray().length, 2);
 });
@@ -208,7 +208,7 @@ test("ordinary enemy entry does not broadcast deployment", () => {
     runtime = stepBattle(runtime, [deploy(0)]);
     assert.deepEqual(calls, [1]);
     assert.equal(entered, 1);
-    assert.deepEqual(unitQueries.all(runtime).toArray().find((unit) => unit.id === 1).position, [0, 0]);
+    assert.deepEqual(unitQueries.all(runtime).find((unit) => unit.id === 1).position, [0, 0]);
 });
 
 test("an Effect can own a deployment observer and remove it during source retirement", () => {
@@ -233,7 +233,7 @@ test("an Effect can own a deployment observer and remove it during source retire
     runtime = stepBattle(runtime, [deploy(0)]);
     runtime = stepBattle(runtime, [{ type: "RETREAT_UNIT", unitId: 0 }, deploy(1, 1)]);
     assert.deepEqual(calls, [1]);
-    assert.equal(unitQueries.all(runtime).toArray().find((unit) => unit.id === 0), undefined);
+    assert.equal(unitQueries.all(runtime).find((unit) => unit.id === 0), undefined);
     assert.equal(unitQueries.all(initial).toArray()[0].deployable.deployedHooks.length, 1);
     assert.equal(unitQueries.all(initial).toArray()[0].effects.values().toArray()[0].status, "ACTIVE");
 });

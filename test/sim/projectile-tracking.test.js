@@ -34,7 +34,7 @@ function setup(sourceCapabilities = {}) {
 }
 
 function step(battle, tick) {
-  return advance({ ...battle, tick }, projectilesQuery.all(battle).map(projectilesQuery.ref).toArray());
+  return advance({ ...battle, tick }, projectilesQuery.all(battle).map(projectilesQuery.ref));
 }
 
 test('locked arrow hit uses identity without requiring targetability, hitbox or spatial presence', () => {

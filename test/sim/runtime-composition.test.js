@@ -63,9 +63,9 @@ function actor(id, program) {
 }
 
 function effect(snapshot, unitId, ref) {
-    return unitQueries.all(snapshot).toArray()
+    return unitQueries.all(snapshot)
         .find((unit) => unit.id === unitId)
-        .effects.values().toArray().find((instance) => instance.definition.id === ref.id);
+        .effects.values().find((instance) => instance.definition.id === ref.id);
 }
 
 function scenario({ failure = null, cancelled = false } = {}) {
@@ -109,7 +109,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
         },
     });
     const marker = registerBuff("receiver-mark", 3);
-    const marked = (unit) => unit.effects.values().toArray().some(
+    const marked = (unit) => unit.effects.values().some(
         (instance) => instance.definition === marker && instance.status === "ACTIVE",
     );
     const scoped = registerBuff("execution-power", 2);
@@ -127,7 +127,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
                     stage: "receiving",
                     priority: 0,
                     accepts: (battle, invocation) =>
-                        getUnit(battle, ref.host.id)?.effects.values().toArray().find(
+                        getUnit(battle, ref.host.id)?.effects.values().find(
                             (instance) => instance.id === ref.id,
                         )?.status === "ACTIVE",
                     invoke(state, invocation, pending) {
@@ -204,7 +204,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
             if (state.tick >= 3) {
                 return endEffect(state, effectRef(effectSelf), "AURA_FINISHED");
             }
-            for (const unitId of unitQueries.all(state).map(unit => unit.id).toArray()) {
+            for (const unitId of unitQueries.all(state).map(unit => unit.id)) {
                 const self = getEffect(state, effectRef(effectSelf));
                 if (self === undefined || self.status === "ENDING") return state;
                 if (self.data.receivers.some((binding) => binding.unitId === unitId)) continue;
@@ -251,7 +251,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
                 "EXPLICIT",
                             );
             if (fault.enabled && failure === "late-projectile") {
-                const auraState = getUnit(state, 0).effects.values().toArray().find(
+                const auraState = getUnit(state, 0).effects.values().find(
                     (instance) => instance.definition === aura,
                 ).data;
                 assert.deepEqual(
@@ -420,12 +420,12 @@ test("runtime composition: late exceptions and invalid settlement propagate with
         failed.runtime = stepBattle(failed.runtime, []);
         const before = failed.runtime;
         const maps = failed.runtime.battlefield.navigation;
-        assert.equal(unitQueries.all(before).toArray().find(unit => unit.id === 0).action.nextExecutionId, 1);
+        assert.equal(unitQueries.all(before).find(unit => unit.id === 0).action.nextExecutionId, 1);
         assert.equal(before.execution.nextProjectileId, 1);
         assert.equal(before.execution.nextUnitId, 3);
         assert.equal(before.schedule.spawnedCount, 0);
         assert.equal(effect(before, 0, failed.scoped).data.starts, 1);
-        assert.equal(resolveAttack(before, unitRef(unitQueries.all(before).toArray().find((unit) => unit.id === 0))), 17);
+        assert.equal(resolveAttack(before, unitRef(unitQueries.all(before).find((unit) => unit.id === 0))), 17);
 
         assert.throws(
             () => (failed.runtime = stepBattle(failed.runtime, [])),
@@ -479,8 +479,8 @@ test("runtime composition: a successful battle preserves identities, snapshots a
     assert.equal(after.schedule.cursor, 1);
     assert.equal(after.schedule.spawnedCount, 1);
     assert.deepEqual(after.schedule.managedFinalUnitIds, [3]);
-    assert.equal(unitQueries.all(after).toArray().find(unit => unit.id === 2).action.nextExecutionId, 1);
-    assert.equal(unitQueries.all(after).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0].execution.state.emitted, 2);
+    assert.equal(unitQueries.all(after).find(unit => unit.id === 2).action.nextExecutionId, 1);
+    assert.equal(unitQueries.all(after).find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0].execution.state.emitted, 2);
     assert.equal(after.execution.nextProjectileId, 3);
     assert.deepEqual(
         allProjectiles(after).map(self => self.id).toArray(),
@@ -490,7 +490,7 @@ test("runtime composition: a successful battle preserves identities, snapshots a
         allProjectiles(after).map(self => self.state.cachedAtk).toArray(),
         [18, 17],
     );
-    assert.equal(resolveAttack(after, unitRef(unitQueries.all(after).toArray().find((unit) => unit.id === 0))), 18);
+    assert.equal(resolveAttack(after, unitRef(unitQueries.all(after).find((unit) => unit.id === 0))), 18);
     assert.equal(effect(after, 0, run.aura).data.remaining, 2);
     assert.equal(effect(after, 0, run.aura).data.consumed, 1);
     assert.deepEqual(
@@ -503,13 +503,13 @@ test("runtime composition: a successful battle preserves identities, snapshots a
     assert.deepEqual(effect(after, 1, run.marker).scopes, [
         lifetimeScope(effectLifetime, { host: { id: 1 }, id: 0 }),
     ]);
-    assert.equal(unitQueries.all(after).toArray().find((unit) => unit.id === 1).effects.nextId, 2);
-    assert.equal(unitQueries.all(before).toArray().find((unit) => unit.id === 1).effects.nextId, 1);
+    assert.equal(unitQueries.all(after).find((unit) => unit.id === 1).effects.nextId, 2);
+    assert.equal(unitQueries.all(before).find((unit) => unit.id === 1).effects.nextId, 1);
     assert.equal(
         effect(after, 1, run.marker)?.status === "ACTIVE",
         true,
     );
-    assert.equal(unitQueries.all(after).toArray().find((unit) => unit.id === 1).vitality.hp, 83);
+    assert.equal(unitQueries.all(after).find((unit) => unit.id === 1).vitality.hp, 83);
     assert.deepEqual(
         run.launches.map((launch) => launch.id),
         [0, 1, 2],
@@ -546,7 +546,7 @@ test("runtime composition: a successful battle preserves identities, snapshots a
                 effect(cleaned, 1, run.marker)?.status === "ACTIVE",
                 false,
             );
-            assert.equal(resolveAttack(cleaned, unitRef(unitQueries.all(cleaned).toArray().find((unit) => unit.id === 0))), 10);
+            assert.equal(resolveAttack(cleaned, unitRef(unitQueries.all(cleaned).find((unit) => unit.id === 0))), 10);
             assert.equal(effect(cleaned, 0, run.scoped), undefined);
             assert.equal(effect(cleaned, 0, run.pulse), undefined);
         }
@@ -616,7 +616,7 @@ test("runtime composition: content conditions skip installation while cancelled 
     assert.equal(after.tick, 2);
     assert.equal(after.execution.nextUnitId, 4);
     assert.equal(after.schedule.spawnedCount, 1);
-    assert.equal(unitQueries.all(after).toArray().find(unit => unit.id === 2).action.nextExecutionId, 1);
+    assert.equal(unitQueries.all(after).find(unit => unit.id === 2).action.nextExecutionId, 1);
     assert.equal(after.execution.nextProjectileId, 3);
     assert.equal(effect(after, 0, run.aura).data.remaining, 2);
     assert.equal(effect(after, 0, run.aura).data.consumed, 1);
@@ -626,15 +626,15 @@ test("runtime composition: content conditions skip installation while cancelled 
         effect(after, 1, run.marker)?.status === "ACTIVE",
         false,
     );
-    assert.equal(resolveAttack(after, unitRef(unitQueries.all(after).toArray().find((unit) => unit.id === 1))), 15);
-    assert.equal(unitQueries.all(after).toArray().find((unit) => unit.id === 1).effects.nextId, 1);
+    assert.equal(resolveAttack(after, unitRef(unitQueries.all(after).find((unit) => unit.id === 1))), 15);
+    assert.equal(unitQueries.all(after).find((unit) => unit.id === 1).effects.nextId, 1);
     while (run.runtime.result === null) run.runtime = stepBattle(run.runtime, []);
     const final = run.runtime;
     assert.equal(final.result.reason, "SCHEDULE_COMPLETED");
-    assert.equal(unitQueries.all(final).toArray().find((unit) => unit.id === 1).vitality.hp, 44);
+    assert.equal(unitQueries.all(final).find((unit) => unit.id === 1).vitality.hp, 44);
     assert.equal(
         effect(final, 1, run.marker)?.status === "ACTIVE",
         false,
     );
-    assert.equal(resolveAttack(final, unitRef(unitQueries.all(final).toArray().find((unit) => unit.id === 1))), 10);
+    assert.equal(resolveAttack(final, unitRef(unitQueries.all(final).find((unit) => unit.id === 1))), 10);
 });

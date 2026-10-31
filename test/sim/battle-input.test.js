@@ -340,7 +340,7 @@ test("one battle input replays allocations, seeded spawning and navigation deter
         assert.deepEqual(runtimes[0].battlefield.navigation, runtimes[1].battlefield.navigation);
     }
     const final = runtimes[0];
-    const spawned = unitQueries.all(final).toArray().find((unit) => unit.definition.id === "scheduled-enemy");
+    const spawned = unitQueries.all(final).find((unit) => unit.definition.id === "scheduled-enemy");
     assert.equal(spawned.id, 4);
     assert.notDeepEqual(spawned.position, [7, 0]);
     assert.notEqual(final.execution.rngState, input.rngState);

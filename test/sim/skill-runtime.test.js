@@ -89,7 +89,7 @@ function skill({ trigger = 'MANUAL', recovery = { type: 'TIME', intervalTicks: 3
     activation: { trigger, sustain: { type: 'TIME', durationTicks }, initialize: () => ({}) },
   });
 }
-function source(runtime) { return unitQueries.all(runtime).toArray().find(({ id }) => id === 0); }
+function source(runtime) { return unitQueries.all(runtime).find(({ id }) => id === 0); }
 
 test('skill runtime: manual buff affects current attacks, locks SP and restores facts at duration end', () => {
   let { runtime } = scenario(skill());

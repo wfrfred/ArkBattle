@@ -8,10 +8,10 @@ import type { Command } from "../contract.js";
 import { type State as BattleState } from "../state.js";
 
 export function advanceSkills(state: BattleState, commands: readonly Command[]): BattleState {
-    const candidates = units.all(state).filter(hasSkill).map(units.ref).toArray();
+    const candidates = units.all(state).filter(hasSkill);
 
-    for (const ref of candidates) {
-        state = advance(state, ref);
+    for (const unit of candidates) {
+        state = advance(state, units.ref(unit));
     }
 
     for (const command of commands) {

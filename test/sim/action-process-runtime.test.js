@@ -146,11 +146,11 @@ test("action runtime: a newly registered instance first executes once and retain
     let runtime = initializeBattle(spec([unit(0, { action: definition }), unit(1)]));
     runtime = stepBattle(runtime, []);
     const first = runtime,
-        retained = unitQueries.all(first).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0];
+        retained = unitQueries.all(first).find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0];
     assert.equal(retained.execution.state.count, 1);
     assert.equal(retained.definition, definition);
     runtime = stepBattle(runtime, []);
-    assert.equal(unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0].execution.state.count, 2);
+    assert.equal(unitQueries.all(runtime).find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0].execution.state.count, 2);
     assert.equal(retained.execution.state.count, 1);
 });
 
@@ -192,7 +192,7 @@ test("action runtime: an immediately finished definition starts once in one auto
         1,
     );
     assert.equal(starts, 1);
-    assert.equal(unitQueries.all(runtime).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 0);
+    assert.equal(unitQueries.all(runtime).find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 0);
     runtime = stepBattle(runtime, []);
     assert.equal(starts, 2);
 });
@@ -219,14 +219,14 @@ test("action runtime: cancellation commands complete before a delayed release wi
     assert.deepEqual(unitQueries.all(first).toArray().filter(unit => unit.action !== undefined)
         .map(unit => unit.action.actions.values().filter(self => self.execution !== null).toArray()[0].execution.id), [0, 0]);
     const cancelled = (runtime = stepBattle(runtime, [
-        { type: "CANCEL_ACTION_EXECUTION", ref: executionRef(unitReference(unitQueries.all(first).toArray().find(unit => unit.id === 0)), unitQueries.all(first).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0]) },
+        { type: "CANCEL_ACTION_EXECUTION", ref: executionRef(unitReference(unitQueries.all(first).find(unit => unit.id === 0)), unitQueries.all(first).find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0]) },
     ]));
     assert.deepEqual(cancelled.events.filter(event => event.type === "ACTION_CANCELLED")
         .map(event => [event.sourceUnitId, event.executionId]), [[0, 0]]);
     assert.deepEqual(cancelled.events.filter(event => event.type === "ACTION_FINISHED")
         .map(event => [event.sourceUnitId, event.executionId]), [[1, 0]]);
-    assert.equal(unitQueries.all(runtime).toArray().find((value) => value.id === 2).vitality.hp, 93);
-    assert.equal(unitQueries.all(first).toArray().find((value) => value.id === 2).vitality.hp, 100);
+    assert.equal(unitQueries.all(runtime).find((value) => value.id === 2).vitality.hp, 93);
+    assert.equal(unitQueries.all(first).find((value) => value.id === 2).vitality.hp, 100);
 });
 
 test("action runtime: nested departure removes a later candidate before its next onTick", () => {
@@ -249,7 +249,7 @@ test("action runtime: nested departure removes a later candidate before its next
     runtime = stepBattle(runtime, []);
     assert.deepEqual(trace, [0]);
     assert.equal(
-        unitQueries.all(runtime).toArray().some((value) => value.id === 1),
+        unitQueries.all(runtime).some((value) => value.id === 1),
         false,
     );
 });
@@ -285,8 +285,8 @@ test("action runtime: host order advances old instances before selection and def
     runtime = stepBattle(runtime, []);
     runtime = stepBattle(runtime, []);
     assert.deepEqual(trace, ["old/0", "select/0", "old/1", "select/1"]);
-    const first = unitQueries.all(runtime).toArray().find(unit => unit.id === 0);
-    const second = unitQueries.all(runtime).toArray().find(unit => unit.id === 1);
+    const first = unitQueries.all(runtime).find(unit => unit.id === 0);
+    const second = unitQueries.all(runtime).find(unit => unit.id === 1);
     assert.deepEqual(first.action.actions.values().filter(self => self.execution !== null).toArray().map(self => self.execution.id), [0]);
     assert.deepEqual(second.action.actions.values().filter(self => self.execution !== null).toArray().map(self => self.execution.id), [0, 1]);
     assert.equal(second.action.actions.get("child").execution.startedAtTick, 1);
@@ -313,7 +313,7 @@ test("action runtime: a late exception publishes neither progressed action state
         (error) => error === failure,
     );
     assert.deepEqual(runtime, before);
-    assert.equal(unitQueries.all(before).toArray().find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0].execution.state.count, 0);
+    assert.equal(unitQueries.all(before).find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0].execution.state.count, 0);
 });
 
 test("action runtime: dependency cleanup requests host death without completing destruction before a thrown callback", () => {
@@ -349,7 +349,7 @@ test("action runtime: dependency cleanup requests host death without completing 
     );
     assert.equal(observedDeparture, true);
     assert.deepEqual(runtime, before);
-    assert.equal(unitQueries.all(before).toArray().find((value) => value.id === 1).vitality.hp, 100);
+    assert.equal(unitQueries.all(before).find((value) => value.id === 1).vitality.hp, 100);
 });
 
 test("action runtime preserves execution start order when selection reverses configuration order", () => {

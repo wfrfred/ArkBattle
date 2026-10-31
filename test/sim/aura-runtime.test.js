@@ -120,7 +120,7 @@ test("aura runtime: predefined, deployment and spawning join before the same tic
             seen.push(
                 unitQueries.all(state).map(unit => [
                     unit.id,
-                    unit.effects.values().toArray().some((effect) => effect.definition === receiver),
+                    unit.effects.values().some((effect) => effect.definition === receiver),
                 ]).toArray(),
             );
             return state;
@@ -185,7 +185,7 @@ test("aura runtime: predefined, deployment and spawning join before the same tic
         ],
     ]);
     const after = runtime;
-    const auraInstance = unitQueries.all(after).toArray()[0].effects.values().toArray().find(
+    const auraInstance = unitQueries.all(after).toArray()[0].effects.values().find(
         (effect) => effect.definition === aura,
     );
     assert.deepEqual(
@@ -218,7 +218,7 @@ test("aura runtime: movement departure is observed at the next aura tick", () =>
     for (let tick = 0; tick < 8 && departed === undefined; tick++) {
         runtime = stepBattle(runtime, []);
         const after = runtime;
-        const moved = unitQueries.all(after).toArray().find((unit) => unit.id === 2);
+        const moved = unitQueries.all(after).find((unit) => unit.id === 2);
         if (moved && moved.position[0] > 4.1) departed = after;
     }
     assert.ok(before, "receiver entered the aura before departure");
@@ -283,7 +283,7 @@ test("aura runtime: source retirement ends remote bound buffs within the same st
     runtime = stepBattle(runtime, [{ type: "RETREAT_UNIT", unitId: 0 }]);
     const after = runtime;
     assert.equal(
-        unitQueries.all(after).toArray().some((unit) => unit.id === 0),
+        unitQueries.all(after).some((unit) => unit.id === 0),
         false,
     );
     assert.equal(attackAt(after, 1), 100);

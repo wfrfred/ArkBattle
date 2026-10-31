@@ -123,7 +123,7 @@ export function stop<P extends Projectile<any>>(
 
 export function advance<P extends Projectile<any>>(
     battle: BattleState,
-    candidates: readonly Ref<P>[],
+    candidates: Iterable<Ref<P>>,
 ): BattleState {
     for (const reference of candidates) {
         const self = get(battle, reference);

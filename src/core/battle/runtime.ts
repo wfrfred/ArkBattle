@@ -82,7 +82,7 @@ export function step(battle: State, commands: readonly Command[]): State {
     }
 
     const tick = battle.tick;
-    const projectileCandidates = projectiles.all(battle).map(projectiles.ref).toArray();
+    const projectileCandidates = projectiles.all(battle);
     let state: State = {
         ...battle,
         events: [],
@@ -110,7 +110,7 @@ export function step(battle: State, commands: readonly Command[]): State {
 
     state = advanceCombat(state);
 
-    state = advanceProjectiles(state, projectileCandidates, commands);
+    state = advanceProjectiles(state, projectileCandidates.map(projectiles.ref), commands);
 
     state = advanceMovement(state, {
         routeMoveMultiplier: battle.definition.routeMoveMultiplier,

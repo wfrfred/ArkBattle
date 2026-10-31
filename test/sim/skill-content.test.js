@@ -89,7 +89,7 @@ test("native attack buff data builds a shared Definition and changes attacks thr
       timing: { waveStartedAtTick: 0, fragmentStartedAtTick: 0 }, alwaysCheckCurrentPoint: true, notCountInTotal: false,
     }] },
   });
-  const current = () => unitQueries.all(runtime).toArray().find(unit => unit.id === 0);
+  const current = () => unitQueries.all(runtime).find(unit => unit.id === 0);
 
   for (let tick = 0; tick < 1500; tick++) { runtime = stepBattle(runtime, []); }
   assert.equal(current().skill.sp.value, 49);

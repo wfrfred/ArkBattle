@@ -7,7 +7,7 @@ import type { Command } from "../contract.js";
 
 export function advanceProjectiles<P extends Projectile<any>>(
     battle: BattleState,
-    candidates: readonly Ref<P>[],
+    candidates: Iterable<Ref<P>>,
     commands: readonly Command[] = [],
 ): BattleState {
     for (const command of commands) {

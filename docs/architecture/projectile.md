@@ -105,7 +105,7 @@ Battlefield 持有不可变 Projectiles，容器内部以私有 `Store<Id, Proje
 
 Projectiles 信任 Core 已构造的完整实例，不在 replace 重复检查 Ref 与实例 id、Definition 或缺失键，也不包装 Store 的异常。完整领域操作在构造更新值时保留 Definition；Typed Ref 与 Definition 的类型恢复仍由容器封装；内部 any 只擦除异构参数，普通 get／values 返回 Projectile<object>，不把 any 作为公共默认值。
 
-身份计数器属于 Battle 执行状态，创建流程直接使用分配器产生的身份与调用方提供的 Definition，不重复校验身份数值、Definition.id 或理论计数溢出，也不增加 Definition 工厂。替换不改变登记位置，删除后新增排在末尾。查询惰性、可重复遍历；需要固定候选时显式提取 Ref 并物化。
+身份计数器属于 Battle 执行状态，创建流程直接使用分配器产生的身份与调用方提供的 Definition，不重复校验身份数值、Definition.id 或理论计数溢出，也不增加 Definition 工厂。替换不改变登记位置，删除后新增排在末尾。查询惰性、可重复遍历，绑定入口不可变容器就已固定候选来源；推进接收 Iterable<Ref<P>>，在操作处生成 Ref，不要求预先物化数组。
 
 ## 4. 创建、查询与内容更新
 

@@ -110,7 +110,7 @@ test("nested end policies request all receivers before their Finalize callbacks"
             },
             onEnd(state, self) {
                 for (const binding of self.data.bindings) {
-                    const keep = getUnit(state, binding.unitId).effects.values().toArray().some(
+                    const keep = getUnit(state, binding.unitId).effects.values().some(
                         (value) => value.definition === marker,
                     );
                     trace.push(["decide", binding.unitId, keep]);

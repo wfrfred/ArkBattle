@@ -129,7 +129,7 @@ step(battle, commands)
     └─ 返回 State，由调用方接续
 ```
 
-Tick 的执行顺序在 step() 中直接可读。Combat、Movement 与路线完成检查沿 Unit Query 的登记顺序固定本轮候选；Combat 同时物化各宿主当时的 Execution Ref，随后逐项接续最新 BattleState，不把候选查询延迟到业务执行期间。领域函数负责各自的纯结算；函数式契约不要求再建立一个完整的 Tick 入口或执行文件。
+Tick 的执行顺序在 step() 中直接可读。Combat 保留入口 BattleState 与 Unit Query 快照，沿登记顺序遍历并始终从初始 BattleState 查询本轮 Execution Ref，不提前生成候选数组。实际操作逐项接续最新 BattleState，快照用于对象来源和静态能力证明，动态资格由完整操作读取当前状态。领域函数负责各自的纯结算；函数式契约不要求再建立一个完整的 Tick 入口或执行文件。
 
 函数内部用局部 `let state` 顺序接续，调用方用 `battle = step(battle, commands)` 保存结果，不重放操作或已执行的回调。函数抛出时输入值仍完整保留；没有额外提交、发布或回滚协议。
 
@@ -234,7 +234,7 @@ Unit.initialize 始终创建空 Effects；初始内容在宿主登记后，通�
 
 容器不接收战斗状态，也不决定生命周期阶段；完整 replace 由 Core 提交已经配对的值。Effect 容器保存宿主内 ID 进度，Action 的 nextExecutionId 保存于 Capability；Actions 按配置 ID 保存聚合条目，本轮终结只清空 execution。普通内容通过 `effects.setData(battle, ref, nextData)` 提交私有 data，Action 的 setExecutionState 通过本轮 Execution Ref 使用同样形式设置 execution.state，setState／setCooldown 通过持久 Action Ref 分别设置持久 state／Cooldown。Action Ref 由 host 与 Definition 定位，保留私有类型配对；Execution Ref 仍由 host 与本轮 execution.id 定位。两种引用读取同一聚合条目，不增加运行容器或 ID 分配。操作从最新 battle 读取当前实例，只替换指定字段；给定载荷与当前字段引用相同时不生成新 battle。Action 的 execution 为 ENDING 时不允许普通执行写入；持久字段和 Effect 的结束清理仍按各自协议更新。
 
-Projectile 的异构容器归 projectile/projectiles.ts，状态仍由 Battlefield 持有，完整 battle/projectile.ts 操作直接替换容器。Projectile 的 update 接收已经计算好的 `{ position?, state? }`；Core 从当前实例保留未提供字段，只提取允许写入的 position／state，ACTIVE 与 ENDING 均可写。Runtime 在整个 Step 的阶段回调开始前固定候选 Ref，逐项读取最新 ACTIVE 实例，本次新建实例不参与正常推进。
+Projectile 的异构容器归 projectile/projectiles.ts，状态仍由 Battlefield 持有，完整 battle/projectile.ts 操作直接替换容器。Projectile 的 update 接收已经计算好的 `{ position?, state? }`；Core 从当前实例保留未提供字段，只提取允许写入的 position／state，ACTIVE 与 ENDING 均可写。Runtime 在整个 Step 的阶段回调开始前保留 Projectile Query 快照，推进时按需生成 Ref 并逐项读取最新 ACTIVE 实例，本次新建实例不参与正常推进。
 
 私有字段写回只接收结果值：调用方从当前 battle 查询并计算下一值，计算与提交之间不执行其他完整操作，跨领域返回后重读。Skill.setState／setActivationState、Action 的三项字段写回和其他实例生命周期操作维持原契约，完整对象替换归 Core。Rule、Hook、Contribution 写入改为 Ref 绑定的 Change 工厂，SP 自然回复贡献也使用同一协议，但仍定义于 sp.ts；这不重新开放 `(current) => next` 通用写回。内部 transform、生命周期回调、Hook 和动态 Contribution Input 各有明确职责。
 

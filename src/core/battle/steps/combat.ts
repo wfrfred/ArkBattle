@@ -20,21 +20,21 @@ export function prepare(battle: BattleState, commands: readonly Command[]): Batt
 }
 
 export function advance(battle: BattleState): BattleState {
-    const candidates = units
-        .all(battle)
-        .map(units.ref)
-        .map((source) => ({ source, instances: forUnit(battle, source) }))
-        .toArray();
+    const initial = battle;
+    const candidates = units.all(initial);
 
-    for (const { source } of candidates) {
+    for (const candidate of candidates) {
+        const source = units.ref(candidate);
         const unit = units.get(battle, source);
         if (unit !== undefined && hasVitality(unit) && unit.vitality.hp <= 0) {
             battle = remove(battle, source.id, "DEATH");
         }
     }
 
-    for (const { source, instances } of candidates) {
-        for (const reference of instances) {
+    for (const candidate of candidates) {
+        const source = units.ref(candidate);
+
+        for (const reference of forUnit(initial, source)) {
             battle = actions.advance(battle, reference);
         }
 
@@ -57,7 +57,7 @@ export function advance(battle: BattleState): BattleState {
 
         const selected = current.definition.action.select?.(battle, current) ?? {
             state: battle,
-            value: current.action.actions.keys().toArray(),
+            value: current.action.actions.keys(),
         };
         battle = selected.state;
 

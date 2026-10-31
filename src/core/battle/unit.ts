@@ -140,9 +140,10 @@ export function remove(battle: BattleState, unitId: Id, reason: LeaveReason): Ba
 }
 
 export function advance(battle: BattleState): BattleState {
-    const candidates = units.all(battle).map(units.ref).toArray();
+    const candidates = units.all(battle);
 
-    for (const reference of candidates) {
+    for (const candidate of candidates) {
+        const reference = units.ref(candidate);
         const self = units.get(battle, reference);
         if (self?.lifecycle === "PRESENT") {
             const entries = self.definition.hooks.filter((entry) => entry.stage === "tick");

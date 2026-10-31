@@ -31,7 +31,7 @@ function coreBlockingBattle(operators, enemies) {
 
 
 function coreBlockingUnit(battle, id) {
-  return unitQueries.all(battle).toArray().find(unit => unit.id === id);
+  return unitQueries.all(battle).find(unit => unit.id === id);
 }
 
 
