@@ -23,7 +23,7 @@ export function calculate(
 
     for (const other of previous) {
         const delta = Vec2.sub(position, other);
-        const distanceSquared = delta[0] * delta[0] + delta[1] * delta[1];
+        const distanceSquared = Vec2.distanceSquared(position, other);
 
         if (distanceSquared < 0.01) {
             overlaps = true;
