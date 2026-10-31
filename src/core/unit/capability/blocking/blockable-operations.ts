@@ -19,32 +19,24 @@ import { Vec2 } from "../../../common/vector.js";
 const POSITION_ADJUSTMENT_TICKS = 0.2 * TICKS_PER_SECOND;
 
 export function release(battle: BattleState, reference: Ref<Unit & Blockable>): BattleState {
-    const self = units.get(battle, reference);
-    if (
-        self === undefined ||
-        (self.blockable.blocker === null && self.blockable.adjustment === null)
-    ) {
+    let self = units.get(battle, reference);
+    if (self === undefined) {
         return battle;
     }
 
-    const owner = self.blockable.blocker;
-    const captured =
-        owner === null
-            ? []
-            : [
-                  {
-                      blocker: owner,
-                      blocked: units
-                          .get(battle, owner)!
-                          .blocker.blocked.find((blocked) => blocked.id === self.id)!,
-                  },
-              ];
-    const updates =
-        self.blockable.adjustment === null
-            ? []
-            : [{ ...self, blockable: { ...self.blockable, adjustment: null } }];
+    if (self.blockable.adjustment !== null) {
+        self = { ...self, blockable: { ...self.blockable, adjustment: null } };
+    }
 
-    return blocking.releaseAll(battle, captured, updates);
+    const owner = self.blockable.blocker;
+    if (owner === null) {
+        return replace(battle, [self]);
+    }
+
+    const blocker = units.get(battle, owner)!;
+    const blocked = blocker.blocker.blocked.find((blocked) => blocked.id === self.id)!;
+
+    return blocking.releaseAll(battle, [{ blocker: owner, blocked }], [self]);
 }
 
 export function advancePosition(
