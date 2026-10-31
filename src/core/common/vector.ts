@@ -10,6 +10,10 @@ export const Vec2 = {
         );
     },
 
+    equal(a: Vec2, b: Vec2): boolean {
+        return a[0] === b[0] && a[1] === b[1];
+    },
+
     add(a: Vec2, b: Vec2): Vec2 {
         return [a[0] + b[0], a[1] + b[1]];
     },

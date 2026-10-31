@@ -1,5 +1,6 @@
 import type { Ref } from "../../common/ref.js";
 import { assertNonnegativeSafeInteger, assertPositiveSafeInteger } from "../../common/assert.js";
+import { Vec2 } from "../../common/vector.js";
 import { Tile, World, type WorldPosition } from "../../geometry/coordinate.js";
 import { effectiveMap, field } from "./cache.js";
 import type { Map } from "./map.js";
@@ -76,7 +77,5 @@ export function nextPoint(
 
     const next = node!.next;
 
-    return next === null || (next[0] === targetTile[0] && next[1] === targetTile[1])
-        ? target
-        : Tile.center(next);
+    return next === null || Vec2.equal(next, targetTile) ? target : Tile.center(next);
 }

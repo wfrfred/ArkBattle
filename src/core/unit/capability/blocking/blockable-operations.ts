@@ -64,7 +64,7 @@ export function advancePosition(
     const progress = Math.min(1, (battle.tick - adjustment.startTick) / POSITION_ADJUSTMENT_TICKS);
     let position: WorldPosition =
         progress === 1 ? adjustment.to : Vec2.lerp(adjustment.from, adjustment.to, progress);
-    if (position[0] === self.position[0] && position[1] === self.position[1]) {
+    if (Vec2.equal(position, self.position)) {
         position = self.position;
     }
 

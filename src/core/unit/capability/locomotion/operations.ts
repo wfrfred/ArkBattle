@@ -80,13 +80,10 @@ export function advance(
         position = reflect(position, Vec2.add(position, velocity), map);
     }
 
-    if (position[0] === self.position[0] && position[1] === self.position[1]) {
+    if (Vec2.equal(position, self.position)) {
         position = self.position;
     }
-    if (
-        velocity[0] === self.locomotion.velocity[0] &&
-        velocity[1] === self.locomotion.velocity[1]
-    ) {
+    if (Vec2.equal(velocity, self.locomotion.velocity)) {
         velocity = self.locomotion.velocity;
     }
 

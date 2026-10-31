@@ -13,10 +13,7 @@ export function reflect(
     }
 
     const destination = World.toTile(nextPosition);
-    if (
-        (destination[0] === origin[0] && destination[1] === origin[1]) ||
-        map.get(destination)?.passable === true
-    ) {
+    if (Vec2.equal(destination, origin) || map.get(destination)?.passable === true) {
         return nextPosition;
     }
 

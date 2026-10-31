@@ -1,3 +1,4 @@
+import { Vec2 } from "../common/vector.js";
 import type { WorldPosition } from "./coordinate.js";
 import type { Range } from "./range.js";
 import type { Shape } from "./shape.js";
@@ -144,7 +145,7 @@ export function sweep(
         return 0;
     }
 
-    if (from[0] === to[0] && from[1] === to[1]) {
+    if (Vec2.equal(from, to)) {
         return null;
     }
 
