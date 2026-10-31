@@ -58,7 +58,7 @@ type End =
     | { readonly type: "CANCELLED"; readonly reason: string };
 ```
 
-内容按需创建 Effect，使用 core/lifetime 的 scope(burstLifetime, ref) 绑定一次爆发；Burst 的静态 lifetime 由领域入口导出，地址仍为宿主 ID 与 Burst ID。只有当前 ACTIVE 且未 Pending 的 Burst 可以接受新依赖；getRef(scope, burstLifetime) 恢复对应 Ref，供周期 Effect 查询状态与恢复速率。绑定只表达终止关系，不共享时间轴。
+内容按需创建 Effect，使用 core/lifetime 的 scope(burstLifetime, ref) 绑定一次爆发；Burst 的静态 lifetime 由领域入口导出，地址仍为宿主 ID 与 Burst ID。只有当前 ACTIVE 且未 Pending 的 Burst 可以接受新依赖；周期 Effect 用 Lifetime.dependencies 查询显式依赖，再由 getRef(scope, burstLifetime) 恢复对应 Ref，以查询状态与恢复速率。绑定只表达终止关系，不共享时间轴。
 
 不是所有爆发产物都绑定 Burst。例如永久侵蚀减防、冷却结束后尚待消费的麻痹保留自己的生命周期。具体爆发程序位于 [data/arknights/elemental-burst.ts](../../src/data/arknights/elemental-burst.ts)。
 
@@ -82,7 +82,7 @@ type End =
 
 DamageOutcome 为 APPLIED `{ amount, burst: Ref<Burst> | null }` 或 REJECTED `{ reason }`；HealOutcome 为 APPLIED `{ amounts: Values }` 或 REJECTED `{ reason }`。零作用可以成功返回 APPLIED，不派发实际变化 Hook。操作接受普通 Unit Ref，目标不具有 Elemental 时返回 NO_ELEMENTAL。
 
-损伤先按当前 elementResistance 修正，再执行本次 DamageHook 管线。Hook 返回 Result<number>，接续新的 BattleState 和剩余数额；每次派发固定候选 ID，逐项读取最新登记，嵌套派发独立收集。返回后重查目标资格、当前上限及 EP，再提交数额，损失不超过当前 EP。Effect 可以保存护盾预算、在启停时登记和撤销 DamageHook，Hook 消耗当前 Effect 预算并返回剩余损伤；Elemental 不认识具体护盾。某型 EP 归零时，一次性把四条 EP 置零、登记新 Burst，并重设推进时点。治疗对每条 EP 各应用完整请求数额，分别限制到当前上限，不在四型之间分摊。动态上限变化不按比例重算 EP；后续实际写入 EP 的操作或 Runtime 推进将数值限制在当前上限内。
+损伤先按当前 elementResistance 修正，再执行本次 DamageHook 管线。Hook 返回 Result<number>，接续新的 BattleState 和剩余数额；每次派发固定候选 ID，逐项读取最新登记，嵌套派发独立收集。返回后重查目标资格、当前上限及 EP，再提交数额，损失不超过当前 EP。Effect 可以保存护盾预算、在启停时登记和撤销 DamageHook，Hook 消耗当前 Effect 预算并返回剩余损伤；Elemental 不认识具体护盾。某型 EP 归零时，一次性把四条 EP 置零、登记新 Burst，并重设推进时点；在内容回调前登记 Burst→Unit 的 Lifetime owner 关系。治疗对每条 EP 各应用完整请求数额，分别限制到当前上限，不在四型之间分摊。动态上限变化不按比例重算 EP；后续实际写入 EP 的操作或 Runtime 推进将数值限制在当前上限内。
 
 接收的基本资格为宿主在场、空间存在，具有 Vitality 时 HP 大于零。Burst 存在期间，包括 ENDING，拒绝损伤和治疗；中立阵营默认拒绝损伤。Rule 分开 allowsDamage 和 allowsHeal。元素免疫可以只限制损伤；HP 禁疗不隐式决定元素治疗。无敌内容向 Elemental 登记损伤拒绝 Rule，并在失效时移除，Core 不读取 Vitality 的内部接收规则。
 
@@ -127,7 +127,7 @@ finish 和 cancel 委托 Burst 的 lifetime，先同步请求，再由最外层�
 → 依赖者完整 Finalize 后开始本轮 Finalize
 → 从当前实例与原 Definition 调用 onEnd(battle, self, end)
 → 从最新宿主读取状态，四型 EP 重置到最新上限
-→ 移除 Burst，lastAdvancedTick = battle.tick
+→ 移除 Burst，lastAdvancedTick = battle.tick，注销本轮 Lifetime 关系
 → 记录结束事件，派发 burstEnded
 ```
 

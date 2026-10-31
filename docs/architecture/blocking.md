@@ -245,7 +245,7 @@ Blocker.layer 的 Change 先在全批发布时设置 layer／radius，等轮到�
 
 ## 显式关系操作与同步维护
 
-公开 Unit.update 的顺序为全部 transform → 一次 Field／Lifetime 发布 → 按 Change 顺序 settle；内部 replace 只发布 Core 已构造好的完整值，两者都不根据字段差异补齐关系或启动维护。Blocking 的 acquire、release 自己明确构造双端，通过 replace 发布后自行派发通知。release 执行明确解除，maintain 复核指定关系资格；容量裁撤属于对应 Contribution Change 的 Settlement。
+公开 Unit.update 的顺序为全部 transform → 一次 Field 发布 → 按 Change 顺序 settle；内部 replace 只发布 Core 已构造好的完整值，两者都不根据字段差异补齐关系或启动维护。Blocking 的 acquire、release 自己明确构造双端，通过 replace 发布后自行派发通知。release 执行明确解除，maintain 复核指定关系资格；容量裁撤属于对应 Contribution Change 的 Settlement。
 
 | 后继来源 | 作用范围 |
 | --- | --- |
@@ -268,7 +268,7 @@ Blocker.layer 的 Change 先在全批发布时设置 layer／radius，等轮到�
 
 嵌套 update 只执行自己的局部结算列表，不调度外层剩余项，不保存全局 pending 或更新锁。已经发布的同对象或同关联事实可以交叠，不能把局部队列误称为事务隔离。显式全场地块操作通过 maintainAll 复核已发布的资格事实；需要局部语义的工厂不能以全场复核代替自身后继。
 
-Unit 的真实离场由 Lifetime 先纯发布 LEAVING；若自身是 Blockable，则同时取消自身 adjustment，再以 relations 的局部查询结果调用 release。Blocker 离场将自己的全部旧关系批量解除后才通知，不取消其原目标的计划。Hook 返回后 Prepare 从最新 Unit 计算返费；Finalize 不扫描全场。Damage／Healing 写 HP 不启动 Blocking，临时 HP 为 0 不使旧关系失效，普通 Damage 完成 HP Applied 后仍应死亡才请求上述离场清理。普通私有 state 写回和 Hook Change 不启动 Blocking，Rule 能读取其他能力不代表系统自动订阅任意字段。
+Unit 的真实离场由 Lifetime 先纯发布 LEAVING，再派发统一 prepare Hook。Blocker／Blockable 在自己的 initializer 中将清理 Hook 放在序列前部：Blockable 取消自身 adjustment，再以局部 relations 调用 release；Blocker 将自己的全部旧关系批量解除后才通知，不取消其原目标的计划。Unit 不导入 Blocking，Deployable 的后继 prepare Hook 从最新 Unit 计算返费；Finalize 不扫描全场。Damage／Healing 写 HP 不启动 Blocking，临时 HP 为 0 不使旧关系失效，普通 Damage 完成 HP Applied 后仍应死亡才请求上述离场清理。普通私有 state 写回和 Hook Change 不启动 Blocking，Rule 能读取其他能力不代表系统自动订阅任意字段。
 
 ## 取得归属与通知时点
 
@@ -308,7 +308,7 @@ Blocker／Blockable State 各自持有 acquired、released Hook 数组，使用�
 
 Runtime 执行 Movement → Mechanism.advance → Blocking.advance → resolveRouteCompletion。最后一步只检查路线是否已完成和能否离场，不再次推进 Route。消费侧通过 relations(battle) 从两端状态取得 Typed Ref 关系，按需生成输出；不保存额外的全局权威关系。Movement 根据 Blockable 的当前归属决定是否推进自主 Locomotion。
 
-明确要求解除关系的空间操作先纯发布新空间事实及自身计划取消，再调用局部 relations 与 release；这两步之间没有回调，首个通知仍可见完整结果。切层 Change 则先发布全批 layer 字段，自己的 settle 再解除 previous 中的旧集合；普通位置更新仍不按距离解除旧关系。Lifetime 请求发布 LEAVING 前已登记 Pending 和结算标记，随后明确调用 release 批量释放本 Unit 的关系；released Hook 可以重入请求，但不能开启第二个 drain。Unit 等真实依赖者整个 Finalize 后才物理移除，不在 Finalize 追加全场 Blocking 扫描；后续实时业务重读宿主，Departure 保留离场入口历史，返费则在标记发布及这些 Hook 返回后从最新 Unit 求值。
+明确要求解除关系的空间操作先纯发布新空间事实及自身计划取消，再调用局部 relations 与 release；这两步之间没有回调，首个通知仍可见完整结果。切层 Change 则先发布全批 layer 字段，自己的 settle 再解除 previous 中的旧集合；普通位置更新仍不按距离解除旧关系。Lifetime 请求发布 LEAVING 前已登记 Pending 和结算标记，随后由 Blocking 自行登记的 prepare Hook 调用 release 批量释放本 Unit 的关系；released Hook 可以重入请求，但不能开启第二个 drain。Unit 等真实依赖者整个 Finalize 后才物理移除，不在 Finalize 追加全场 Blocking 扫描；后续实时业务重读宿主，Departure 保留离场入口历史，返费则在标记发布及这些 Hook 返回后从最新 Unit 求值。
 
 ## 地块阻挡资格
 

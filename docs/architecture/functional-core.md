@@ -180,13 +180,13 @@ unit.advance(battle) → nextBattle
 
 battlefield/unit.ts 的 add／update／remove 只完成纯状态转换；完整 Unit 业务统一位于 battle/unit.ts，提供 add／update／remove／advance。Unit 初始化在入口建立 Blocker／Blockable 至多一种的约束，内部信任，不由角色推导阵营、Layer 或移动能力。remove 委托 Unit Lifetime，在请求阶段纯发布 LEAVING，取消自身的 Blockable 站位计划，再以局部 relations 查询结果调用 release；Blocker 的旧关系整批解除后才通知，原目标的计划保留。通知返回后执行本次返费；所有权与 Scope 依赖者完整 Finalize 后，Unit Finalize 从当前状态注销并记录移除事实、回收 Card 和派发 leave，不再用全场关系扫描补救领域清理。调用方不拼接这些内部步骤，BattleState 不另提供 Unit 登记或注销入口。
 
-add 拒绝重复身份。公开 Unit.update 只接收 opaque Change 数组，在执行任何内容程序前确认每个目标已登记，缺失时抛出 RangeError；同一目标可在本批出现多次。各项 transform 按顺序读取暂存的最新 Unit；返回原 Unit 引用时由 update 统一跳过本项后继，Settlement 不重复判断 no-op。完成全部转换后一次发布 Field 和 Lifetime，再按原 Change 顺序执行实际变换项的 settle。Field 内部 update 仍接收完整 Unit 数组，信任 Core 构造的身份与 Definition，不重复校验；替换保持登记顺序。Unit 身体所属格由 position 与 SpatialPresence 查询，不另存位置索引或空间依赖分类。
+add 拒绝重复身份。公开 Unit.update 只接收 opaque Change 数组，在执行任何内容程序前确认每个目标已登记，缺失时抛出 RangeError；同一目标可在本批出现多次。各项 transform 按顺序读取暂存的最新 Unit；返回原 Unit 引用时由 update 统一跳过本项后继，Settlement 不重复判断 no-op。完成全部转换后一次发布 Field，再按原 Change 顺序执行实际变换项的 settle。Field 内部 update 仍接收完整 Unit 数组，信任 Core 构造的身份与 Definition，不重复校验；替换保持登记顺序。Unit 身体所属格由 position 与 SpatialPresence 查询，不另存位置索引或空间依赖分类。
 
-Capability 的 Rule、Hook、Contribution 与 Blocker.layer 工厂接收 Typed Ref 和业务输入，返回 Change；Content 将其交给 unit.update，不手工重建 Unit。纯转换不读取 battle、不调用业务程序，必要后继由所属领域附带 settle。previous 是本项转换前的暂存 Unit，Lifetime 只比较批前与最终值；settle 始终从最新 battle 继续，不能回填整份 previous。内部 replace 接收合法完整 Unit 数组，仅发布数据与派生索引，不执行内容 Hook。Field 的私有变更记录继续负责 Unit 存储与 Occupancy 双槽维护，与公开 Change 描述分别承担存储和业务职责。详细签名见 [Unit 批量变更](api-conventions.md#51-unit-完整操作与批量变更)。
+Capability 的 Rule、Hook、Contribution 与 Blocker.layer 工厂接收 Typed Ref 和业务输入，返回 Change；Content 将其交给 unit.update，不手工重建 Unit。纯转换不读取 battle、不调用业务程序，必要后继由所属领域附带 settle。previous 是本项转换前的暂存 Unit；settle 始终从最新 battle 继续，不能回填整份 previous。内部 replace 接收合法完整 Unit 数组，仅发布数据与派生索引，不执行内容 Hook。Field 的私有变更记录继续负责 Unit 存储与 Occupancy 双槽维护，与公开 Change 描述分别承担存储和业务职责。详细签名见 [Unit 批量变更](api-conventions.md#51-unit-完整操作与批量变更)。
 
 一次 update 可以组合多个 Unit 的 Change；所有最终字段先发布，之后原顺序结算。较早后继的 Hook 可见较晚 Change 的最终字段和未完成的清理，这属于明确的批次语义。嵌套 update 只有自己的局部队列，不调度外层剩余项；领域后继按受影响对象限定范围，同对象交叠则读取共同最新事实。本项 transform 返回原引用时不登记结算；整批最终恢复批前值或原对象时，仍保留此前真实变换已经登记的结算。Tick 成功后 Runtime 发布最终 BattleState，不需要调用方另行执行 settle。
 
-初始化、刷怪和预定义出现逐个完成创建、登记与入场，接续 Hook 返回的最新 BattleState 后才处理下一个对象，不预先分配后续实例身份。刷怪按当前实例逐个登记调度归属和出生事件后再执行 enter Hook；待生成数量随实际生成递减。纯集合批量写入不定义批量入场语义。Unit.add 不扫描全场 Blocking；入场内容需要取得、搜索或修改资格时，调用明确的 Blocking 操作。
+初始化、刷怪和预定义出现逐个完成创建、登记与入场，接续 Hook 返回的最新 BattleState 后才处理下一个对象，不预先分配后续实例身份。刷怪按当前实例逐个登记调度归属和出生事件后再执行 enter Hook；待生成数量随实际生成递减。纯集合批量写入不定义批量入场语义。Unit.add 只登记并派发统一 enter Hook，随后发出 registrationChanged，由 Runtime 登记的 Occupancy 观察者响应；它不识别具体能力或扫描全场 Blocking。入场内容需要取得、搜索或修改资格时，调用明确的 Blocking 操作。
 
 unit.update 与内部 replace 不准备、校验或推断 Blocking 关系，也不派发 Blocking／Occupancy 通知。acquire／release 明确构造关系双端并发布，acquire 通知后只复核本次新 Relation；release 统一接收 Relation 数组，入口过滤旧身份与重复项，整批解除并记录全部 RELEASED 事件，再按输入顺序通知，不附加维护、搜索或计划取消。Capacity 的 Settlement 只按当前容量从本 Blocker 的末尾裁撤；volume 在 settle 读取当前 owner，结算该阻挡组，不追随 Hook 中的新归属；两者共享内部 settleCapacity，每条通知后重新读取容量与占用，不夹带资格扫描。Rule 的 Settlement 固定自身相关关系，逐条 maintain 复核资格，不维护其他关系或裁容量。setLayer 将本项 previous.blocked 中的原 Ref 交给 release，不回填旧 Unit。SpatialPresence 与 Route 的主动位置覆盖先纯发布新空间事实及自身计划取消，再以 relations(battle, ref) 的局部结果调用 release；两步间无回调，首个 Hook 已可见完整结果，不要求挤在同一次 replace。普通私有 state 写回与 Hook Change 没有 Blocking 后继。
 
@@ -230,7 +230,7 @@ candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定�
 
 Unit 持有不可变 Effects 容器，内部 Store<Id, Effect<any, any>> 保存异构完整实例及 ID 进度。普通 get(id)／values() 返回默认 object／object 的完整 Effect，包含 data 与原 Definition；精确 Ref／Definition 查询保留已有类型证明。values／keys 返回绑定容器版本的 Query；Core 同样使用 get(id) 返回的默认 object 完整实例调用自身 Definition。Core 不解释未知 data 或 H；跨完整操作后仍读取最新实例。真实所有权保护结束中的宿主与存储，不保留通用终止 fallback；Departure 等明确历史载荷按本领域业务输入保存。
 
-Unit.initialize 始终创建空 Effects；初始内容在宿主登记后，通过既有 `stage: "enter"` 的 Unit Hook 调用 install。实例由正常安装与绑定入口建立生命周期约束，不从预装容器输入，也不在 Runtime 初始化末尾重复扫描 Scopes。Effect.source 仅以 `Ref<Unit> | null` 表达施加者，来源存活与生命周期 Scope 分开，来源离场本身不终结 Effect。
+Unit.initialize 始终创建空 Effects；初始内容在宿主登记后，通过既有 `stage: "enter"` 的 Unit Hook 调用 install。各领域在完整创建／启动与结束操作中登记／注销关系，不由普通 Unit update／replace 投影。createBattleState 建立空 Lifetime 图，不扫描预置 Unit；初始对象通过完整 add 入场。Effect.source 仅以 `Ref<Unit> | null` 表达施加者，来源存活与生命周期 Scope 分开，来源离场本身不终结 Effect。
 
 容器不接收战斗状态，也不决定生命周期阶段；完整 replace 由 Core 提交已经配对的值。Effect 容器保存宿主内 ID 进度，Action 的 nextExecutionId 保存于 Capability；Actions 按配置 ID 保存聚合条目，本轮终结只清空 execution。普通内容通过 `effects.setData(battle, ref, nextData)` 提交私有 data，Action 的 setExecutionState 通过本轮 Execution Ref 使用同样形式设置 execution.state，setState／setCooldown 通过持久 Action Ref 分别设置持久 state／Cooldown。Action Ref 由 host 与 Definition 定位，保留私有类型配对；Execution Ref 仍由 host 与本轮 execution.id 定位。两种引用读取同一聚合条目，不增加运行容器或 ID 分配。操作从最新 battle 读取当前实例，只替换指定字段；给定载荷与当前字段引用相同时不生成新 battle。Action 的 execution 为 ENDING 时不允许普通执行写入；持久字段和 Effect 的结束清理仍按各自协议更新。
 
@@ -242,7 +242,7 @@ Projectile 的异构容器归 projectile/projectiles.ts，状态仍由 Battlefie
 
 self 是输入版本的值。嵌套调用返回后，遵守 [状态接续后的读取与续执行](#状态接续后的读取与续执行)：实时事实从返回 State 重新查询，明确采样与历史载荷保留。不使用动态 getter 偷偷追踪一个可变工作对象，也不以旧整份 Unit 覆盖新版本。
 
-安装先登记 INSTALLING，执行安装程序，接续其返回值；仍存在且安装完成的实例再决定是否 ACTIVE。结束请求发布 ENDING，Prepare 撤销输出、协调 Group 并展开依赖请求；Finalize 等全部真实依赖者完整完成，再调用结束程序与移除。关系权威来自存储所有权和 scopes，合并图保持 DAG；source 只表达来源。
+安装先登记 INSTALLING，执行安装程序，接续其返回值；仍存在且安装完成的实例再决定是否 ACTIVE。结束请求发布 ENDING，Prepare 撤销输出、协调 Group 并展开依赖请求；Finalize 等全部真实依赖者完整完成，再调用结束程序与移除。关系权威归 Lifetime 图，包含各领域登记的 owner 与显式 scopes；Effect 独立保存 deadline，不重复保存依赖。合并图保持 DAG，兄弟按边登记顺序请求；source 只表达来源。
 
 已经进入的内容程序按自身控制流继续，明确采样载荷可保留为本次函数局部值。需要槽位释放或最终通知的后继业务使用领域完成时点，不能从嵌套 end 返回推断 Finalize 已完成。Pending 只保存当前同步结算工作，不保存通用最后载荷表、恢复调度或跨 Tick 删除队列。
 

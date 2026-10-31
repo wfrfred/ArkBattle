@@ -1,7 +1,8 @@
-import { replace as replaceUnits } from "../../battle/unit.js";
+import { lifetime as unitLifetime, replace as replaceUnits } from "../../battle/unit.js";
 import type { Ref } from "../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../battle/state.js";
 import * as lifetimes from "../../lifetime/index.js";
+import { register, unregister } from "../../lifetime/operations.js";
 import * as units from "../query.js";
 import type { Unit } from "../unit.js";
 import type { Action as ActionCapability } from "../capability/action/capability.js";
@@ -123,6 +124,11 @@ export function start<P extends object, E extends object>(
         },
     ]);
     const execution = ref(source, self);
+    battle = register(
+        battle,
+        lifetimes.scope(lifetime, execution),
+        lifetimes.scope(unitLifetime, source),
+    );
 
     return { state: battle, value: { type: "STARTED", ref: execution } };
 }
@@ -172,6 +178,7 @@ export const lifetime = lifetimes.create<Execution, Execution<any, any>, End>({
         const host = units.get(battle, reference.host)!;
         const action = host.action.actions.get(self.definition.id, self.definition)!;
         battle = replaceAction(battle, host, { ...action, execution: null });
+        battle = unregister(battle, lifetimes.scope(lifetime, reference));
 
         return appendEvents(battle, [
             {

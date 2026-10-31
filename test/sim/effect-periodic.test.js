@@ -51,7 +51,7 @@ test("effect time: inactive Effects do not tick, but their deadlines continue to
     let ref;
     ({ state: battle, value: ref } = install(battle, value, 0, {
         enabled: false,
-        scopes: [{ type: "TICK", tick: 2 }],
+        deadline: 2,
     }));
     battle = effect.advance(at(battle, 1));
     assert.equal(get(battle, ref).status, "INACTIVE");

@@ -5,6 +5,7 @@ import * as contribution from "../../contribution/contribution.js";
 import { createChange, type Change } from "../../change.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
+import type { PrepareHook } from "../../hook.js";
 import type { Hook, Key } from "./contract.js";
 import type { Rule } from "./rule.js";
 import { assertSafeInteger } from "../../../common/assert.js";
@@ -19,6 +20,15 @@ import { Vec2 } from "../../../common/vector.js";
 import { settleCapacity } from "./blocker-operations.js";
 
 const POSITION_ADJUSTMENT_TICKS = 0.2 * TICKS_PER_SECOND;
+
+export const prepare: PrepareHook = {
+    id: "@blockable/prepare",
+    stage: "prepare",
+    invoke: (battle, { unit }) => ({
+        state: release(battle, units.ref(unit as Unit & Blockable)),
+        value: undefined,
+    }),
+};
 
 function settleRules(battle: BattleState, reference: Ref<Unit & Blockable>): BattleState {
     for (const relation of relations(battle, reference)) {

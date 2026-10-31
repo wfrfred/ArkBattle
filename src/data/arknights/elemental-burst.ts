@@ -1,7 +1,7 @@
 import { update as updateUnit } from "../../core/battle/unit.js";
 import type { Ref } from "../../core/common/ref.js";
 import type { State as BattleState } from "../../core/battle/index.js";
-import { getRef, scope } from "../../core/lifetime/index.js";
+import { dependencies, getRef, scope } from "../../core/lifetime/index.js";
 import { TICKS_PER_SECOND } from "../../core/tick.js";
 import * as units from "../../core/unit/index.js";
 import * as effects from "../../core/unit/effect/index.js";
@@ -146,7 +146,7 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
                         const current = units.get(battle, self.host);
                         if (current?.lifecycle === "PRESENT") {
                             battle = effects.install(battle, self.host, stun, {
-                                scopes: [{ type: "TICK", tick: battle.tick + recoveryTicks }],
+                                deadline: battle.tick + recoveryTicks,
                             }).state;
                         }
 
@@ -195,10 +195,8 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
         },
         onTick: (battle, self) => {
             const ref = effectRef(self);
-            const burst = self.scopes
-                .flatMap((entry) =>
-                    entry.type === "LIFETIME" ? [getRef(entry, burstLifetime)] : [],
-                )
+            const burst = dependencies(battle, scope(effects.lifetime, ref))
+                .map((entry) => getRef(entry, burstLifetime))
                 .find((reference) => reference !== undefined);
             if (burst === undefined || getBurst(battle, burst)?.status !== "ACTIVE") {
                 return battle;

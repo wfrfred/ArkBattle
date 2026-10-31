@@ -1,5 +1,5 @@
 import { remove as endUnit } from "../../dist/core/battle/unit.js";
-import { scope as lifetimeScope, getRef as lifetimeRef } from "../../dist/core/lifetime/index.js";
+import { scope as lifetimeScope, getRef as lifetimeRef, bind } from "../../dist/core/lifetime/index.js";
 import { lifetime as effectLifetime } from "../../dist/core/unit/effect/operations.js";
 import { lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
@@ -21,7 +21,7 @@ test("scope index tracks remote dependencies and preserves captured indexes", ()
     let other;
     ({ state: battle, value: other } = install(battle, content, 2, { scopes: [lifetimeScope(effectLifetime, parent)] }));
     const captured = battle;
-    assert.deepEqual(dependents(battle.lifetime.dependencies, lifetimeScope(effectLifetime, parent)).map(target => lifetimeRef(target, effectLifetime)), [other, child]);
+    assert.deepEqual(dependents(battle.lifetime.dependencies, lifetimeScope(effectLifetime, parent)).map(target => lifetimeRef(target, effectLifetime)), [child, other]);
     battle = effects.end(battle, other);
     assert.deepEqual(dependents(battle.lifetime.dependencies, lifetimeScope(effectLifetime, parent)).map(target => lifetimeRef(target, effectLifetime)), [child]);
     assert.equal(dependents(captured.lifetime.dependencies, lifetimeScope(effectLifetime, parent)).map(target => lifetimeRef(target, effectLifetime)).length, 2);
@@ -41,8 +41,8 @@ test("binding rejects scope cycles while sharing independent scopes", () => {
     ({ state: battle, value: first } = install(battle, content, 1));
     let second;
     ({ state: battle, value: second } = install(battle, content, 2, { scopes: [lifetimeScope(effectLifetime, first)] }));
-    assert.throws(() => effects.bindLifetime(battle, first, lifetimeScope(effectLifetime, second)), /cycle/);
-    const bound = effects.bindLifetime(battle, second, lifetimeScope(unitLifetime, { id: 1 }));
+    assert.throws(() => bind(battle, lifetimeScope(effectLifetime, first), lifetimeScope(effectLifetime, second)), /cycle/);
+    const bound = bind(battle, lifetimeScope(effectLifetime, second), lifetimeScope(unitLifetime, { id: 1 }));
     battle = bound.state;
     assert.equal(bound.value, true);
     assert.deepEqual(

@@ -19,7 +19,7 @@ export { getCard, usedSlots, evaluateDeployment } from "./query.js";
 
 export { addCard, advance } from "./resources.js";
 
-export { recordUnitDeployment, refundUnit, recycleUnitCard, notifyDeployed } from "./lifecycle.js";
+export { notifyDeployed } from "./lifecycle.js";
 
 export type { DeployRequest, DeploymentCommand, Rejection, DeployOutcome } from "./operations.js";
 

@@ -6,6 +6,7 @@ import type { Ref } from "../../../common/ref.js";
 import type { Blockable } from "./blockable.js";
 import type { Hook } from "./contract.js";
 import type { Rule } from "./rule.js";
+import { prepare } from "./blocker-operations.js";
 
 export type Layer = "GROUND" | "AIR";
 
@@ -57,6 +58,7 @@ export function initialize<U extends Unit & Pick<Blocker, "definition">>(
         state: battle,
         value: {
             ...unit,
+            hooks: [prepare, ...unit.hooks],
             blocker: {
                 blocked: [],
                 capacity: [],

@@ -229,9 +229,9 @@ Receiving 内不按“先所有闪避、再所有护盾、再所有减伤”建�
 
 HP 变化、死亡确定、Unit 仍存在和离场完成分别处理。已确定死亡时，普通治疗不能仅因 Unit 尚在集合中就获得执行资格；普通治疗与明确的免死、复活、形态转换也不共用这一推断。
 
-普通 Damage 提交 HP 后不维护 Blocking，先按目标、来源顺序完成全部 HP Applied 响应，再读取当前目标：仍为 PRESENT 且 HP 不大于 0 时才请求 Unit.remove，最后派发 Completed。既有关系的默认保持资格不因临时 HP 为 0 失效，保护响应恢复生命后可以保留原阻挡；新关系取得仍要求双方存活。确实离场时，由 Unit Lifetime 先发布 LEAVING，再显式释放该 Unit 的全部入向与出向关系，而不是由 HP 写入或全场扫描提前推断死亡。已有 Lifetime 结算时，remove 返回只保证请求／Prepare，Completed 不承诺目标全部离场 Finalize 已完成；没有活动结算时，remove 在当前调用内完成 drain。伤害通知保留本次已发生事实，响应按需要读取最新资格。这是项目结算契约，不作为新原生调查结论；特殊生命干预的其余协议仍见第 3.2 节。
+普通 Damage 提交 HP 后不维护 Blocking，先按目标、来源顺序完成全部 HP Applied 响应，再读取当前目标：仍为 PRESENT 且 HP 不大于 0 时才请求 Unit.remove，最后派发 Completed。既有关系的默认保持资格不因临时 HP 为 0 失效，保护响应恢复生命后可以保留原阻挡；新关系取得仍要求双方存活。确实离场时，由 Unit Lifetime 先发布 LEAVING，再派发能力自行登记的 prepare Hook，由 Blocking 清理本 Unit 的关系，而不是由 HP 写入或全场扫描提前推断死亡。已有 Lifetime 结算时，remove 返回只保证请求／Prepare，Completed 不承诺目标全部离场 Finalize 已完成；没有活动结算时，remove 在当前调用内完成 drain。伤害通知保留本次已发生事实，响应按需要读取最新资格。这是项目结算契约，不作为新原生调查结论；特殊生命干预的其余协议仍见第 3.2 节。
 
-真实离场沿用 [Lifetime 偏序](deployment.md#离场清理的偏序)：请求发布 LEAVING，明确释放本 Unit 的 Blocking 关系后执行 Prepare，通过所有权与 Scope 请求子项；子项整个 Finalize 返回后才注销 Unit、回收 Card、派发 leave，不在 Finalize 兜底扫描全场关系。成功保护、替身或复活是否进入真实离场由对应机制决定。
+真实离场沿用 [Lifetime 偏序](deployment.md#离场清理的偏序)：请求发布 LEAVING，再派发 prepare Hook 完成 Blocking 清理与部署退款，通过 Lifetime 已登记的 owner 与 Scope 请求子项；子项整个 Finalize 返回后才注销 Unit、发出 registrationChanged，再执行本地 leave（含回卡）与全局 leave，不在 Finalize 兜底扫描全场关系。成功保护、替身或复活是否进入真实离场由对应机制决定。
 
 ## 4. Healing 的两阶段契约
 

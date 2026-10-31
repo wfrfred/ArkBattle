@@ -94,7 +94,7 @@ test("MaxHP tick deadline and callback successor use the latest HP ratio", () =>
     const content = maxHpBuff("expiring", 100, {
         onEnd: (state, self) => effects.install(state, unitRef(getUnit(state, self.host.id)), successor, {}).state,
     });
-    battle = install(battle, content, 1, { scopes: [{ type: "TICK", tick: 1 }] }).state;
+    battle = install(battle, content, 1, { deadline: 1 }).state;
     const currentUnit = getUnit(battle, 1);
     battle = replaceUnit(battle, ({ ...currentUnit, vitality: { ...currentUnit.vitality, hp: 40 } }));
     battle = effects.advance(at(battle, 1));

@@ -29,7 +29,7 @@ Mechanism 使用全场唯一的 Typed Ref，普通查询返回完整 Mechanism<o
 - `remove(battle, ref)` 委托静态 lifetime，先同步请求并发布 ENDING，最外层结算器在依赖者完整完成后执行 Finalize 与注销。
 - `advance(battle)` 固定本轮候选，逐项读取最新 ACTIVE 实例并执行 `onTick(battle, self)`。
 
-`onUnitLeave(battle, self, departure)` 接收 Unit Finalize 内已注销并完成 Card 回收后的历史离场事实，不表示离开地块；Unit 的 Pending 到该通知整个返回后才解除等待。回调可以重入，后续实时事实从返回的最新 BattleState 读取，不写回旧状态。
+Mechanism 创建时按 Definition.onUnitLeave 自行登记 Battle 全局 leave 观察 Hook，Finalize 移除时注销；派发时从最新状态确认实例仍为 ACTIVE，再调用该程序。`onUnitLeave(battle, self, departure)` 接收 Unit 本地 leave Hook 完成后的历史离场事实，包含注销与已完成的 Card 回收，不表示离开地块；Unit 的 Pending 到该通知整个返回后才解除等待。回调可以重入，后续实时事实从返回的最新 BattleState 读取，不写回旧状态。
 
 Mechanism 的 lifetime 由现有操作模块导出，公共请求／析构协议见 [Lifetime](lifetime.md)。INACTIVE 仍是存在的生命周期，可接受显式 Scope；disable 是可逆参与变化，不等于 remove。ACTIVE remove 的 Prepare 用当前 ENDING self 调用已有 onDisable，INACTIVE remove 不重复 disable；Finalize 调用 onEnd 后注销。嵌套 remove 首次返回只保证 Prepare，不保证 onEnd 或注销；重复 PREPARING 请求不等待原 Prepare，首次原因不覆盖。
 

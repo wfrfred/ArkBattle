@@ -6,6 +6,15 @@ import type { Context, SupportHook } from "../unit/capability/occupancy/hook.js"
 import type { Id, Unit } from "../unit/unit.js";
 import * as hooks from "../hook.js";
 import type { State } from "./state.js";
+import type { Events, Hook } from "./unit-hook.js";
+
+export const registrationChanged: Hook<Events["registrationChanged"]> = {
+    id: "@occupancy/registration-changed",
+    invoke: (battle, { previous, next, changed }) => ({
+        state: notify(battle, previous, next, changed),
+        value: undefined,
+    }),
+};
 
 export function notify(
     battle: State,

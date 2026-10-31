@@ -1,4 +1,4 @@
-import { notify } from "../../dist/core/battle/occupancy.js";
+import { notify, registrationChanged } from "../../dist/core/battle/occupancy.js";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -14,8 +14,15 @@ import { Tile } from "../../dist/core/geometry/coordinate.js";
 import { createDefinition as createDeployable } from "../../dist/core/unit/capability/deployable/index.js";
 import { setHook } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import { sides, setLayer } from "../../dist/core/unit/capability/blocking/index.js";
-import { fixture, holder, target, acquire, ownerId, hook } from "../helpers/blocking.js";
+import { fixture as blockingFixture, holder, target, acquire, ownerId, hook } from "../helpers/blocking.js";
 import { getUnit, initialize } from "../helpers/unit.js";
+import { setHook as setUnitHook } from "../../dist/core/battle/unit-hook.js";
+
+function fixture(units = [], options) {
+    let battle = setUnitHook(blockingFixture([], options), "registrationChanged", registrationChanged);
+    for (const unit of units) battle = add(battle, unit);
+    return battle;
+}
 
 const first = [1, 2];
 const second = [1, 5];

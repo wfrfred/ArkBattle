@@ -9,7 +9,7 @@ import { replace as update } from "../../dist/core/battle/unit.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
 import { at } from "../../dist/core/battlefield/occupancy.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
+import { install as installEffect } from "../../dist/core/unit/effect/index.js";
 import { dependents } from "../../dist/core/lifetime/dependency.js";
 import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
 import { setHook as setBlockableHook } from "../../dist/core/unit/capability/blocking/blockable-operations.js";
@@ -23,14 +23,6 @@ function occupant(id, column) {
         id, position: [column, 1], definition: { hooks: [], id: `batch-occupant-${id}`, occupancy: { slot: "OCCUPANT" } },
         states: { occupancy: { tile: [1, column] } },
     });
-}
-
-function preparedEffect(host, lifetime) {
-    return {
-        id: host.effects.nextId, host: unitRef(host),
-        definition: { id: `batch-effect-${host.id}`, initialize: () => ({}) },
-        data: {}, source: null, scopes: [lifetime], enabled: true, status: "ACTIVE",
-    };
 }
 
 test("complete batch updates exchange occupied tiles using one final occupancy state", () => {
@@ -51,7 +43,7 @@ test("complete batch updates exchange occupied tiles using one final occupancy s
     assert.deepEqual(updated.events, []);
 });
 
-test("the first acquired Hook sees every batch Unit and all Effect dependencies", () => {
+test("the first acquired Hook sees committed Unit data and registered Effect dependencies", () => {
     const lifetime = lifetimeScope(unitLifetime, { id: 40 });
     let calls = 0;
     let battle = fixture([holder(), target(), target(40, { position: [8, 1] })]);
@@ -63,18 +55,20 @@ test("the first acquired Hook sees every batch Unit and all Effect dependencies"
             assert.equal(getUnit(current, 10).blocker.blocked[0], relation.blocked);
             assert.equal(getUnit(current, 40).vitality.hp, 37);
             assert.deepEqual(dependents(current.lifetime.dependencies, lifetime).map(target => lifetimeRef(target, effectLifetime)), [
-                effectRef(ownerEffect), effectRef(targetEffect),
+                ownerEffect, targetEffect,
             ]);
             return current;
         }))]);
-    const currentOwner = getUnit(battle, 10);
-    const currentTarget = getUnit(battle, 20);
-    const ownerEffect = preparedEffect(currentOwner, lifetime);
-    const targetEffect = preparedEffect(currentTarget, lifetime);
     const before = battle;
+    let ownerEffect;
+    ({ state: battle, value: ownerEffect } = installEffect(battle, { id: 10 }, {
+        id: "batch-owner-effect", initialize: () => ({}),
+    }, { scopes: [lifetime] }));
+    let targetEffect;
+    ({ state: battle, value: targetEffect } = installEffect(battle, { id: 20 }, {
+        id: "batch-target-effect", initialize: () => ({}),
+    }, { scopes: [lifetime] }));
     battle = update(battle, [
-        { ...currentTarget, effects: currentTarget.effects.add(targetEffect) },
-        { ...currentOwner, effects: currentOwner.effects.add(ownerEffect) },
         { ...getUnit(battle, 40), vitality: { ...getUnit(battle, 40).vitality, hp: 37 } },
     ]);
 

@@ -62,7 +62,7 @@ occupancy.at(field, tile) 直接返回同格的 occupant 和 support。需要对
 
 ## 同步登记通知
 
-当前生产只有完整 battle/unit.add／remove 在原时点显式调用 battle/occupancy.notify：add 在入场程序后，remove 在物理注销后、leave Hook 前。通用 update／replace 只维护 Occupancy 双槽数据，不派发承载 Hook。当前没有生产中的搬格 Change，也不为测试或潜在需求新增；将来实际登记变更操作应自己定义通知时点。通知只向 SUPPORT 的静态 Hook 派发，不在 Unit Definition 添加专属回调，也不向 OCCUPANT 广播；只查询本次原／新登记格。
+Runtime 在 Battle 的 registrationChanged 全局 Hook 中登记 Occupancy 观察者。当前生产由完整 battle/unit.add／remove 发出通知：add 在 enter 后，remove 在物理注销后、本地 leave Hook 前；Unit 不导入 Occupancy 结算。观察者消费本次操作的 previous／next Field 与 changed IDs，并调用 battle/occupancy.notify。通用 update／replace 只维护 Occupancy 双槽数据，不派发承载 Hook。当前没有生产中的搬格 Change，也不为测试或潜在需求新增；将来实际登记变更操作应自己定义通知时点。通知只向 SUPPORT 的静态 Hook 派发，不在 Unit Definition 添加专属回调，也不向 OCCUPANT 广播；只查询本次原／新登记格。
 
 unit/capability/occupancy/hook.ts 定义 Context 与 SupportHook。Context 保存本次关系的 support、occupant 两个 Unit & Occupancy 及 tile；OccupantAddedHook 和 OccupantRemovedHook 分别以 occupantAdded、occupantRemoved 阶段复用已有 Hook<Context, void>。该文件仅定义领域类型，不新增派发框架或 Hook 登记操作。
 
@@ -84,7 +84,7 @@ Added／Removed 表示相对于该 Support 的承载关系变化，不表示乘�
 
 平台和乘员由当前 Occupancy 的双槽登记直接查询。承载关系变化通过 Support Hook 同步维护内容规则；Unit 的真实离场仍使用 leave Hook，不把两者合成同一种生命周期。
 
-如果具体平台要求离场时让格上单位一同离场，由它的 leave Hook 从固定 Departure.unit 读取旧登记格，再从最新 BattleState 查询当前 occupant，组合完整 Unit.remove。leave 执行时平台已经完成自身清理、注销和 Card 回收；历史 Unit 保留旧登记，不能直接删除乘员存储。因此平台移除记录先于内容引起的乘员移除记录。
+如果具体平台要求离场时让格上单位一同离场，由它的 leave Hook 从固定 Departure.unit 读取旧登记格，再从最新 BattleState 查询当前 occupant，组合完整 Unit.remove。内容 leave Hook 执行时平台已经完成自身清理、注销，以及先登记的 Deployable leave Hook 所负责的 Card 回收；历史 Unit 保留旧登记，不能直接删除乘员存储。因此平台移除记录先于内容引起的乘员移除记录。
 
 占格变化不等于 Unit 离场，不执行 leave Hook。登记交换等批量更新验证的是最终布局与通知的一致性，不代表允许任意搬动游戏对象。本轮删除了直接重定位流程；真实特殊撤退—再部署尚未实现。
 

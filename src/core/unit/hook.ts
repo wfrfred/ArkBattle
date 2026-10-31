@@ -13,4 +13,8 @@ export interface LeaveHook extends TacticalHook<Departure, void> {
     readonly stage: "leave";
 }
 
-export type Hook = EnterHook | TickHook | LeaveHook;
+export interface PrepareHook extends TacticalHook<Departure, void> {
+    readonly stage: "prepare";
+}
+
+export type Hook = EnterHook | TickHook | PrepareHook | LeaveHook;

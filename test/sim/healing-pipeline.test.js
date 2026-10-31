@@ -1,6 +1,7 @@
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { replaceUnit } from "../helpers/unit.js";
 import { unit, workFor, attach, healingEffect, damage } from "../helpers/vitality.js";
 import { calculateHealing } from "../../dist/core/battle/healing/calculate.js";
 import { applyHealing } from "../../dist/core/battle/healing/apply.js";
@@ -166,7 +167,9 @@ test("healing pipeline: a LEAVING source cannot run its Hooks but its previously
         entry("output", () => assert.fail("LEAVING source cannot run Output")),
         entry("completed", () => assert.fail("LEAVING source cannot observe Completed")),
     ]));
-    const result = heal(workFor({ ...source, lifecycle: "LEAVING" }, unit(2, { hp: 20, maxHp: 100 })));
+    const initial = workFor(source, unit(2, { hp: 20, maxHp: 100 }));
+    const leaving = getUnit(initial, 1);
+    const result = heal(replaceUnit(initial, { ...leaving, lifecycle: "LEAVING" }));
     assert.equal(result.value.application.hpGain, 20);
     assert.equal(hp(result.state), 40);
 });

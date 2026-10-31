@@ -1,10 +1,15 @@
-import { notify } from "../../dist/core/battle/occupancy.js";
+import { notify, registrationChanged } from "../../dist/core/battle/occupancy.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { add, remove, replace as update } from "../../dist/core/battle/unit.js";
 import { at } from "../../dist/core/battlefield/occupancy.js";
-import { fixtureBattle, getUnit, initialize } from "../helpers/unit.js";
+import { fixtureBattle as emptyFixtureBattle, getUnit, initialize } from "../helpers/unit.js";
 
+import { setHook } from "../../dist/core/battle/unit-hook.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
+import * as mechanisms from "../../dist/core/battle/mechanism.js";
+
+const fixtureBattle = () => setHook(emptyFixtureBattle(), "registrationChanged", registrationChanged);
 const tile = [0, 2];
 
 function occupant(id = 20) {
@@ -171,4 +176,48 @@ test("nested removal prevents later added hooks for the removed relationship", (
     assert.deepEqual(calls, ["first added", "removed"]);
     assert.equal(getUnit(battle, 20), undefined);
     assert.equal(at(battle.battlefield, tile).occupant, null);
+});
+
+test("departure prepares the Unit, closes its children, then notifies occupancy, content and mechanisms", () => {
+    const trace = [];
+    const provider = support(10, [hook("removed", "occupantRemoved", (battle, context) => {
+        assert.equal(getUnit(battle, context.occupant.id), undefined);
+        trace.push("occupancy");
+        return battle;
+    })]);
+    const prepared = occupant();
+    const host = { ...prepared, hooks: [...prepared.hooks, {
+        id: "test/prepare", stage: "prepare", invoke(battle, departure) {
+            assert.equal(departure.unit.lifecycle, "PRESENT");
+            assert.equal(getUnit(battle, 20).lifecycle, "LEAVING");
+            assert.equal(getUnit(battle, 20).effects.size, 1);
+            trace.push("prepare");
+            return { state: battle, value: undefined };
+        },
+    }, {
+        id: "test/leave", stage: "leave", invoke(battle) {
+            assert.equal(getUnit(battle, 20), undefined);
+            trace.push("leave");
+            return { state: battle, value: undefined };
+        },
+    }] };
+    let battle = add(add(fixtureBattle(), provider), host);
+    battle = effects.install(battle, { id: 20 }, {
+        id: "owned-child", initialize: () => ({}), onEnd(state) {
+            assert.equal(getUnit(state, 20).lifecycle, "LEAVING");
+            trace.push("child");
+            return state;
+        },
+    }).state;
+    battle = mechanisms.create(battle, {
+        id: "leave-observer", initialize: () => ({}), onUnitLeave(state) {
+            assert.equal(getUnit(state, 20), undefined);
+            trace.push("mechanism");
+            return state;
+        },
+    }).state;
+
+    battle = remove(battle, 20, "SCRIPT");
+    assert.deepEqual(trace, ["prepare", "child", "occupancy", "leave", "mechanism"]);
+    assert.equal(battle.lifetime.endings.size, 0);
 });

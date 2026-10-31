@@ -3,6 +3,7 @@ import type { Placement, SiteCondition } from "../../../battlefield/map/tile.js"
 import type { Unit, Definition as UnitDefinition } from "../../unit.js";
 import type { DeployedHook } from "./hook.js";
 import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../../common/assert.js";
+import { prepare, leave } from "../../../battle/deployment/lifecycle.js";
 
 export type CardId = number;
 
@@ -41,6 +42,7 @@ export function initialize<U extends Unit & Pick<Deployable, "definition">>(
         state: battle,
         value: {
             ...unit,
+            hooks: [...unit.hooks, prepare, leave],
             deployable: {
                 cardId: null,
                 cost: definition.cost,

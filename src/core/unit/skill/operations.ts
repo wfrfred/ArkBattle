@@ -1,8 +1,9 @@
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
-import { replace as replaceUnits, update } from "../../battle/unit.js";
+import { lifetime as unitLifetime, replace as replaceUnits, update } from "../../battle/unit.js";
 import type { Identified, Ref } from "../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../battle/state.js";
 import * as lifetimes from "../../lifetime/index.js";
+import { register, unregister } from "../../lifetime/operations.js";
 import * as units from "../query.js";
 import type { Unit } from "../unit.js";
 import type { EnterHook } from "../hook.js";
@@ -196,6 +197,11 @@ export function activate<S extends object, A extends object>(
         },
     ]);
     const activatedRef = activationRef(source, active);
+    battle = register(
+        battle,
+        lifetimes.scope(lifetime, activatedRef),
+        lifetimes.scope(unitLifetime, source),
+    );
     battle = appendEvents(battle, [
         {
             type: "SKILL_ACTIVATED",
@@ -260,6 +266,7 @@ export const lifetime = lifetimes.create<Activation, Activation<any, any>, End>(
 
         const host = units.get(battle, reference.host)!;
         battle = replaceUnits(battle, [{ ...host, skill: { ...host.skill, activation: null } }]);
+        battle = unregister(battle, lifetimes.scope(lifetime, reference));
         battle = appendEvents(battle, [
             {
                 type: "SKILL_FINISHED",

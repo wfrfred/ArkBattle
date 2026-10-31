@@ -88,14 +88,13 @@ function fixture() {
     let work = createBattleState(fixtureBattlefield(units), undefined);
     for (const id of [0, 1]) work = activate(work, skillRef(getUnit(work, id))).state;
     work = effects.install(work, unitRef(getUnit(work, 2)), counter).state;
-    return { battlefield: work.battlefield, execution: work.execution };
+    return work;
 }
 
 for (const domain of ["deployment", "predefined"]) {
     test(`${domain}: successive departures share effect updates from skill finish damage`, () => {
-        const { battlefield, execution } = fixture();
-        const before = createBattleState(battlefield);
-        let state = createBattleState(battlefield, execution, 1);
+        const before = fixture();
+        let state = { ...before, tick: 1 };
         if (domain === "deployment") {
             state = resolveDeploymentCommands(
                 state,

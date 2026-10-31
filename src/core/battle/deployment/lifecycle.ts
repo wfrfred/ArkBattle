@@ -1,7 +1,12 @@
-import { hasDeployable, resolveRefund } from "../../unit/capability/deployable/capability.js";
+import {
+    hasDeployable,
+    resolveRefund,
+    type Deployable,
+} from "../../unit/capability/deployable/capability.js";
 import type { Deployed } from "../../unit/capability/deployable/hook.js";
-import type { Unit, LeaveReason } from "../../unit/unit.js";
-import { appendEvents, type State as BattleState } from "../state.js";
+import type { Unit } from "../../unit/unit.js";
+import type { PrepareHook, LeaveHook } from "../../unit/hook.js";
+import type { State as BattleState } from "../state.js";
 import * as units from "../../unit/query.js";
 import * as hook from "../../hook.js";
 import * as card from "./card.js";
@@ -9,57 +14,48 @@ import { changeDp } from "./deployment.js";
 import { getCard } from "./query.js";
 import { updateCard } from "./resources.js";
 
-export function recordUnitDeployment(battle: BattleState, unit: Unit): BattleState {
-    if (!hasDeployable(unit) || unit.deployable.cardId === null) {
-        return battle;
-    }
+export const prepare: PrepareHook = {
+    id: "@deployable/prepare",
+    stage: "prepare",
+    invoke: (battle, { unit: initial, reason }) => {
+        if (reason !== "RETREAT") {
+            return { state: battle, value: undefined };
+        }
 
-    return appendEvents(battle, [
-        {
-            type: "UNIT_DEPLOYED",
-            unitId: unit.id,
-            position: unit.position,
-            tick: battle.tick,
-        },
-    ]);
-}
+        const unit = units.get(battle, units.ref(initial as Unit & Deployable))!;
+        const deployment = changeDp(
+            battle.deployment,
+            resolveRefund(unit.definition.deployable, unit.deployable),
+            battle.tick,
+        );
 
-export function refundUnit(
-    state: BattleState,
-    unit: Unit,
-    reason: LeaveReason,
-    tick: number,
-): BattleState {
-    if (reason !== "RETREAT" || !hasDeployable(unit)) {
-        return state;
-    }
+        return {
+            state: deployment === battle.deployment ? battle : { ...battle, deployment },
+            value: undefined,
+        };
+    },
+};
 
-    const deployment = changeDp(
-        state.deployment,
-        resolveRefund(unit.definition.deployable, unit.deployable),
-        tick,
-    );
+export const leave: LeaveHook = {
+    id: "@deployable/leave",
+    stage: "leave",
+    invoke: (battle, { unit: previous, reason }) => {
+        const unit = previous as Unit & Deployable;
+        if (unit.deployable.cardId === null) {
+            return { state: battle, value: undefined };
+        }
 
-    return deployment === state.deployment ? state : { ...state, deployment };
-}
+        const value = getCard(battle, unit.deployable.cardId)!;
 
-export function recycleUnitCard(
-    state: BattleState,
-    unit: Unit,
-    reason: LeaveReason,
-    tick: number,
-): BattleState {
-    if (!hasDeployable(unit) || unit.deployable.cardId === null) {
-        return state;
-    }
-
-    const value = getCard(state, unit.deployable.cardId);
-    if (value === undefined) {
-        throw new RangeError(`unknown deployment card ${unit.deployable.cardId}`);
-    }
-
-    return updateCard(state, card.advance(card.recycle(value, tick, reason), tick));
-}
+        return {
+            state: updateCard(
+                battle,
+                card.advance(card.recycle(value, battle.tick, reason), battle.tick),
+            ),
+            value: undefined,
+        };
+    },
+};
 
 export function notifyDeployed(state: BattleState, deployed: Deployed): BattleState {
     const candidates = new Map(

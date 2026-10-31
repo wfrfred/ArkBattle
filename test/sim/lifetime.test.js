@@ -3,11 +3,12 @@ import { set as setFixtureEntry } from "../../dist/core/hook.js";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { createBattleState } from "../../dist/core/battle/state.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as skills from "../../dist/core/unit/skill/index.js";
 import { setHook } from "../../dist/core/unit/capability/skill/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
-import { available, scope } from "../../dist/core/lifetime/index.js";
+import { available, scope, bind, dependencies, unbind } from "../../dist/core/lifetime/index.js";
 import { key } from "../../dist/core/lifetime/dependency.js";
 import { remove, replace as update, lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
 import { setHook as setBlockerHook } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
@@ -190,11 +191,11 @@ test("stable bindings reject cycles and Prepare rejects a target whose ancestor 
     const parent = effects.install(base.state, { id: 1 }, definition("middle", {}, {
         onDisable(battle) {
             assert.equal(effects.get(battle, middle).status, "ENDING");
-            const scopes = effects.get(battle, base.value).scopes;
-            const rejected = effects.bindLifetime(battle, base.value, scope(effects.lifetime, leaf));
+            const scopes = dependencies(battle, scope(effects.lifetime, base.value));
+            const rejected = bind(battle, scope(effects.lifetime, base.value), scope(effects.lifetime, leaf));
             assert.equal(rejected.value, false);
             assert.equal(rejected.state, battle);
-            assert.equal(effects.get(rejected.state, base.value).scopes, scopes);
+            assert.equal(dependencies(rejected.state, scope(effects.lifetime, base.value)), scopes);
             return battle;
         },
     }), { scopes: [scope(effects.lifetime, base.value)] });
@@ -203,7 +204,7 @@ test("stable bindings reject cycles and Prepare rejects a target whose ancestor 
         scopes: [scope(effects.lifetime, middle)],
     });
     leaf = child.value;
-    assert.throws(() => effects.bindLifetime(child.state, base.value, scope(effects.lifetime, leaf)), /cycle/);
+    assert.throws(() => bind(child.state, scope(effects.lifetime, base.value), scope(effects.lifetime, leaf)), /cycle/);
     const battle = effects.end(child.state, middle);
     assert.equal(effects.get(battle, base.value).status, "ACTIVE");
     assert.equal(effects.get(battle, leaf), undefined);
@@ -244,7 +245,7 @@ test("Unit ENDING publication rejects remote dependencies on its still RUNNING A
             assert.equal(current.lifetime.endings.has(key(actionScope)), false);
             const nextId = getUnit(current, 1).effects.nextId;
             const installed = effects.install(current, { id: 1 }, attempted, { scopes: [actionScope] });
-            const bound = effects.bindLifetime(installed.state, independent.value, actionScope);
+            const bound = bind(installed.state, scope(effects.lifetime, independent.value), actionScope);
             const free = effects.install(bound.state, { id: 1 }, definition("free-during-unit-end"));
             assert.deepEqual({
                 installed: installed.value !== undefined,
@@ -260,7 +261,7 @@ test("Unit ENDING publication rejects remote dependencies on its still RUNNING A
     assert.equal(calls, 1);
     assert.equal(getUnit(battle, 10), undefined);
     assert.equal(getUnit(battle, 1).effects.size, 2);
-    assert.deepEqual(effects.get(battle, independent.value).scopes, []);
+    assert.deepEqual(dependencies(battle, scope(effects.lifetime, independent.value)), []);
     settled(battle);
 });
 
@@ -276,7 +277,7 @@ test("Prepare rejects transitive dependencies if any upstream parent is ending",
             const installed = effects.install(battle, { id: 2 }, definition("late-transitive"), {
                 scopes: [scope(effects.lifetime, leaf)],
             });
-            const bound = effects.bindLifetime(installed.state, independent.value, scope(effects.lifetime, leaf));
+            const bound = bind(installed.state, scope(effects.lifetime, independent.value), scope(effects.lifetime, leaf));
             assert.deepEqual({ installed: installed.value !== undefined, bound: bound.value }, {
                 installed: false, bound: false,
             });
@@ -297,7 +298,7 @@ test("Prepare rejects transitive dependencies if any upstream parent is ending",
     const battle = effects.end(independent.state, root.value);
     assert.equal(effects.get(battle, open.value).status, "ACTIVE");
     assert.equal(effects.get(battle, leaf), undefined);
-    assert.deepEqual(effects.get(battle, independent.value).scopes, []);
+    assert.deepEqual(dependencies(battle, scope(effects.lifetime, independent.value)), []);
     settled(battle);
 });
 
@@ -316,4 +317,69 @@ test("Prepare exceptions propagate without mutating the input or forcing Finaliz
     assert.equal(effects.get(installed.state, installed.value).status, "ACTIVE");
     assert.deepEqual(effects.get(installed.state, installed.value).data, { value: 1 });
     settled(installed.state);
+});
+
+test("Battle construction and raw Unit publication never infer Lifetime relationships", () => {
+    const host = unit(1);
+    const initial = effectFixtureWork(host);
+    const installed = effects.install(initial, { id: 1 }, definition("registered-child"));
+    assert.equal(installed.state.lifetime.dependencies.entries.size, 1);
+    assert.equal(initial.lifetime.dependencies.entries.size, 0);
+    const recreated = createBattleState(installed.state.battlefield);
+    assert.equal(recreated.lifetime.dependencies.entries.size, 0);
+    assert.equal(recreated.lifetime.dependencies.children.size, 0);
+    const published = update(initial, [getUnit(installed.state, 1)]);
+    assert.equal(published.lifetime.dependencies, initial.lifetime.dependencies);
+});
+
+test("public Lifetime binding owns explicit dependencies without duplicating the Effect or owner", () => {
+    let battle = effectFixtureWork(unit(1), unit(2));
+    const installed = effects.install(battle, { id: 1 }, definition("bindable"));
+    battle = installed.state;
+    const target = scope(effects.lifetime, installed.value);
+    const parent = scope(unitLifetime, { id: 2 });
+    const original = effects.get(battle, installed.value);
+    const bound = bind(battle, target, parent);
+    assert.equal(bound.value, true);
+    assert.equal(effects.get(bound.state, installed.value), original);
+    assert.deepEqual(dependencies(bound.state, target), [parent]);
+    assert.equal(bind(bound.state, target, parent).state, bound.state);
+    const unbound = unbind(bound.state, target, parent);
+    assert.deepEqual(dependencies(unbound, target), []);
+    assert.equal(effects.get(unbound, installed.value), original);
+    assert.equal(effects.get(remove(unbound, 2, "SCRIPT"), installed.value), original);
+    assert.equal(effects.get(remove(unbound, 1, "SCRIPT"), installed.value), undefined);
+    assert.deepEqual(dependencies(bound.state, target), [parent]);
+});
+
+test("owner teardown follows relationship registration across domains and finishes dependencies first", () => {
+    const trace = [];
+    const action = {
+        id: "registered-second", intervalTicks: 1, speed: 100,
+        initialize: state => ({ state, value: {} }),
+        prepare: state => ({ state, value: {} }),
+        onTick: state => ({ state, value: false }),
+        onEnd(state) { trace.push("action"); return state; },
+    };
+    const skill = skillDefinition({ sp: null, activation: {
+        trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}),
+        onEnd(state) { trace.push("skill"); return state; },
+    } });
+    const host = unit(1, { action: actionCapability(action), skill });
+    let battle = effectFixtureWork(host, unit(2));
+    battle = effects.install(battle, { id: 1 }, definition("registered-first", {}, {
+        onEnd(state) { trace.push("effect"); return state; },
+    })).state;
+    const started = actions.start(battle, actions.ref({ id: 1 }, action));
+    assert.equal(started.value.type, "STARTED");
+    const activated = skills.activate(started.state, skillRef(getUnit(started.state, 1)));
+    battle = effects.install(activated.state, { id: 2 }, definition("skill-child", {}, {
+        onEnd(state) { trace.push("child"); return state; },
+    }), { scopes: [scope(skills.lifetime, activated.value.ref)] }).state;
+
+    battle = remove(battle, 1, "SCRIPT");
+    assert.deepEqual(trace, ["effect", "action", "child", "skill"]);
+    assert.equal(getUnit(battle, 1), undefined);
+    assert.equal(getUnit(battle, 2).effects.size, 0);
+    settled(battle);
 });

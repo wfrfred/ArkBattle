@@ -105,7 +105,7 @@ import type { Effect } from ${source("unit/effect/effect")};
 import { ref } from ${source("unit/effect/effect")};
 import type { Definition } from ${source("unit/effect/definition")};
 import * as effects from ${source("unit/effect/index")};
-import { scope, getRef, type Scope } from ${source("lifetime/index")};
+import { scope, getRef, bind, type Scope } from ${source("lifetime/index")};
 import { lifetime as unitLife } from ${source("battle/unit")};
 import { lifetime as effectLife } from ${source("unit/effect/index")};
 
@@ -160,7 +160,7 @@ if (defaultReference !== undefined) {
 scope(effectLife,host);
 // @ts-expect-error Lifetime ending inputs belong to their domain.
 effectLife.end(battle,known,{type:"FINISHED"});
-effects.bindLifetime(battle, retained, unitLifetime);
+bind(battle, scope(effectLife, retained), unitLifetime);
 // @ts-expect-error Unit lifetimes require a typed reference rather than a bare Unit ID.
 const bareUnitLifetime: Scope = { type: "LIFETIME", unitId: host.id };
 // @ts-expect-error an untyped ID address does not prove a Unit reference.

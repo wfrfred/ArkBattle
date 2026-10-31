@@ -20,12 +20,6 @@ export function effectFixtureWork(...units) {
     return createBattleState(fixtureBattlefield(units));
 }
 
-export function installFixtureEffect(unit, definition, initial = {}, tick = 0) {
-    const state = effectFixtureWork(unit);
-    const installed = effects.install({ ...state, tick }, unitRef(unit), definition, initial);
-    return getUnit(installed.state, unit.id);
-}
-
 export const definition = (id, initial = {}, callbacks = {}) => ({
     id,
     initialize: () => initial,

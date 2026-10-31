@@ -7,7 +7,6 @@ import { test } from "node:test";
 import { initialize } from "../helpers/unit.js";
 import { fixture as blockingFixture, acquire, blockedIds } from "../helpers/blocking.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { deadline } from "../../dist/core/unit/effect/effect.js";
 import { add as addUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { usedCapacity } from "../../dist/core/battle/blocking/query.js";
@@ -67,7 +66,7 @@ const install = (work, effect, expiresAtTick = null) =>
         source: unitRef(initialize({
             id: 7, position: [0, 0], definition: { id: "blocking-buff-source" },
         })),
-        scopes: expiresAtTick === null ? [] : [{ type: "TICK", tick: expiresAtTick }],
+        deadline: expiresAtTick,
     });
 const change = (work, next, setting) => {
     const currentData = effects.get(work, effectAddress).data;
@@ -386,9 +385,9 @@ test("blocking capacity: native stack renewal and terminal cleanup update real b
         setting,
         {
             onTick(state, self) {
-                if (state.tick < deadline(self)) return state;
+                if (state.tick < self.deadline) return state;
                 const plan = rule.expire(
-                    { stackCount: self.data.stackCount, expiresAtTick: deadline(self) },
+                    { stackCount: self.data.stackCount, expiresAtTick: self.deadline },
                     self.data.lifetimeTicks,
                     state.tick,
                 );

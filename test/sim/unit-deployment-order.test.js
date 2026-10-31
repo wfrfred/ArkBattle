@@ -3,22 +3,21 @@ import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { changeTile } from "../helpers/tiles.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { add, replace as update } from "../../dist/core/battle/unit.js";
-import { addCard, notifyDeployed } from "../../dist/core/battle/deployment/index.js";
+import { replace as update } from "../../dist/core/battle/unit.js";
+import { addCard } from "../../dist/core/battle/deployment/index.js";
 import { deploy } from "../../dist/core/battle/deployment/operations.js";
 import { setHook as setBlockingHook } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import { createDefinition as createDeployable } from "../helpers/deployable.js";
 import { setHook as setDeployedHook } from "../../dist/core/unit/capability/deployable/hook.js";
 import * as occupancy from "../../dist/core/battlefield/occupancy.js";
 import { acquire, blockedIds, fixture, holder, hook, ownerId, target } from "../helpers/blocking.js";
-import { getUnit, initialize } from "../helpers/unit.js";
+import { getUnit } from "../helpers/unit.js";
 
 test("tile changes during entry release blocking before deployment observers", () => {
     const calls = [];
     const profile = createDeployable({ cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" });
     const blocker = holder(10, {
-        definition: { occupancy: { slot: "OCCUPANT" }, deployable: profile },
-        states: { occupancy: { tile: [1, 2] } },
+        definition: { deployable: profile },
     });
     let battle = fixture([blocker, target()]);
     const current = getUnit(battle, blocker.id);
@@ -26,7 +25,7 @@ test("tile changes during entry release blocking before deployment observers", (
             calls.push("released");
             assert.equal(state.events.some(event => event.type === "UNIT_DEPLOYED"), true);
             assert.deepEqual(occupancy.at(state.battlefield, [1, 2]), {
-                occupant: { id: blocker.id }, support: { id: 30 },
+                occupant: null, support: { id: 30 },
             });
             assert.equal(ownerId(state), undefined);
             return state;
@@ -62,24 +61,17 @@ test("tile changes during entry release blocking before deployment observers", (
         } }],
     };
     const added = addCard(battle, { unit: definition });
-    const initialized = initialize({
-        id: 30,
-        position: [2, 1],
-        definition,
-        states: { occupancy: { tile: [1, 2] } },
-    });
-    const incoming = {
-        ...initialized,
-        deployable: { ...initialized.deployable, cardId: added.value },
-    };
-    battle = add(added.state, incoming);
+    const deployed = deploy({
+        ...added.state,
+        execution: { ...added.state.execution, nextUnitId: 30 },
+    }, { cardId: added.value, tilePosition: [1, 2] });
+    assert.equal(deployed.value.type, "DEPLOYED");
+    battle = deployed.state;
 
-    assert.deepEqual(calls, ["entered", "released"]);
     assert.deepEqual(blockedIds(battle), []);
     assert.equal(ownerId(before), blocker.id);
-    assert.equal(before.battlefield.units.has(incoming.id), false);
+    assert.equal(before.battlefield.units.has(30), false);
 
-    battle = notifyDeployed(battle, { unit: incoming, kind: "MANUAL" });
     assert.deepEqual(calls, ["entered", "released", "deployed"]);
     assert.equal(battle.events.filter(event => event.type === "UNIT_DEPLOYED").length, 1);
 });

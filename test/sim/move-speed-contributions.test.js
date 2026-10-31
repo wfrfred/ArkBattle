@@ -74,7 +74,7 @@ function movementEffect(value = modifier.create({ multiplier: -0.5 })) {
 }
 const install = (work, program, expiresAtTick = null) =>
     effects.install(work, unitRef(getUnit(work, 0)), program, {
-        scopes: expiresAtTick === null ? [] : [{ type: "TICK", tick: expiresAtTick }],
+        deadline: expiresAtTick,
     });
 const setSpeed = (work, program, data) => {
     work = effects.setData(work, address, data);

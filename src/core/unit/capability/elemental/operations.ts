@@ -1,9 +1,10 @@
-import { replace as replaceUnits } from "../../../battle/unit.js";
+import { lifetime as unitLifetime, replace as replaceUnits } from "../../../battle/unit.js";
 import { assertNonnegativeNumber } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
 import * as lifetimes from "../../../lifetime/index.js";
+import { register, unregister } from "../../../lifetime/operations.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import {
@@ -148,6 +149,15 @@ export function damage(
             lastAdvancedTick: burst === null ? currentSelf.elemental.lastAdvancedTick : battle.tick,
         },
     });
+    const reference = burst === null ? null : burstRef(burst);
+    if (reference !== null) {
+        battle = register(
+            battle,
+            lifetimes.scope(lifetime, reference),
+            lifetimes.scope(unitLifetime, identity),
+        );
+    }
+
     battle = appendEvents(battle, [
         {
             type: "ELEMENT_DAMAGE",
@@ -165,7 +175,6 @@ export function damage(
         battle = dispatch(battle, identity, "burstStarted", burst);
     }
 
-    const reference = burst === null ? null : burstRef(burst);
     const event: Damaged = { request, previous, current, amount, burst: reference };
     battle = dispatch(battle, identity, "damaged", event);
 
@@ -274,6 +283,7 @@ export const lifetime = lifetimes.create<Burst, Burst, End>({
                 },
             },
         ]);
+        battle = unregister(battle, lifetimes.scope(lifetime, reference));
         battle = appendEvents(battle, [
             { type: "ELEMENT_BURST_ENDED", burst: active, end: ending, tick: battle.tick },
         ]);

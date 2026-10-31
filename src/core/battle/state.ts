@@ -2,7 +2,7 @@ import type { State as BattlefieldState } from "../battlefield/state.js";
 import { Mechanisms } from "./mechanisms.js";
 import * as dependency from "../lifetime/dependency.js";
 import type { State as LifetimeState } from "../lifetime/lifetime.js";
-import { projectUnit } from "./lifetime.js";
+import type { State as UnitHooks } from "./unit-hook.js";
 import type { Definition, Event, UnitRemoval, Result as BattleResult } from "./contract.js";
 import type { BattleExecutionState } from "./execution/state.js";
 import type { PredefinedPresence } from "./steps/predefined.js";
@@ -36,6 +36,7 @@ export interface State {
     readonly execution: BattleExecutionState;
     readonly deployment: DeploymentState;
     readonly lifetime: LifetimeState;
+    readonly unitHooks: UnitHooks;
     readonly schedule: SpawnScheduleExecution;
     readonly predefinedPresence: readonly PredefinedPresence[];
     readonly completedRouteCount: number;
@@ -67,15 +68,11 @@ export function createBattleState(
         execution,
         deployment,
         lifetime: {
-            dependencies: dependency.derive(
-                dependency.empty(),
-                Array.from(battlefield.units.values()).flatMap((unit) =>
-                    projectUnit(unit).map((next) => ({ previous: undefined, next })),
-                ),
-            ),
+            dependencies: dependency.empty(),
             endings: new Map(),
             settling: false,
         },
+        unitHooks: { registrationChanged: [], leave: [] },
         schedule,
         predefinedPresence: [],
         completedRouteCount: 0,

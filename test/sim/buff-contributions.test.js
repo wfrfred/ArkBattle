@@ -1,7 +1,6 @@
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { resolveDefense } from "../../dist/core/unit/capability/vitality/query.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { deadline } from "../../dist/core/unit/effect/effect.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -80,14 +79,14 @@ test("Buff contribution integration: the native Astesia DEF facet merges layers,
         const plan = policy.plan(
             current === undefined
                 ? undefined
-                : { stackCount: current.data.stackCount, expiresAtTick: deadline(current) },
+                : { stackCount: current.data.stackCount, expiresAtTick: current.deadline },
             { stackCount: 1, expiresAtTick },
             tick,
         );
         if (plan.type === "INSTALL") {
             work = effects.install(at(work, tick), unitRef(getUnit(work, 0)), program, {
                 source: sourceRef(source),
-                scopes: expiresAtTick === null ? [] : [{ type: "TICK", tick: expiresAtTick }],
+                deadline: expiresAtTick,
                 data: { stackCount: 1, defenseRatio },
             }).state;
         } else if (plan.type === "REFRESH") {
@@ -112,7 +111,7 @@ test("Buff contribution integration: the native Astesia DEF facet merges layers,
     assert.deepEqual(instance.source, sourceRef(10));
     assert.equal(instance.data.defenseRatio, 0.2);
     assert.equal(instance.data.stackCount, 2);
-    assert.equal(deadline(instance), 15);
+    assert.equal(instance.deadline, 15);
     assert.equal(getUnit(work, 0).effects.values().toArray().length, 1);
     assert.equal(unitQueries.get(first, { id: 0 }).effects.values().toArray()[0].data.stackCount, 1);
     assert.equal(starts, 1);
@@ -184,7 +183,7 @@ test("Buff contribution integration: only effective layer growth resamples the r
     );
     const installed = effects.install(work, unitRef(getUnit(work, 0)), program, {
         source: sourceRef(10),
-        scopes: [{ type: "TICK", tick: 10 }],
+        deadline: 10,
     });
     work = installed.state;
     const address = installed.value;
@@ -193,7 +192,7 @@ test("Buff contribution integration: only effective layer growth resamples the r
     const apply = (currentSourceAttack, tick, expiresAtTick) => {
         const current = getUnit(work, 0).effects.values().toArray()[0];
         const plan = policy.plan(
-            { stackCount: current.data.stackCount, expiresAtTick: deadline(current) },
+            { stackCount: current.data.stackCount, expiresAtTick: current.deadline },
             { stackCount: 1, expiresAtTick },
             tick,
         );
@@ -217,6 +216,6 @@ test("Buff contribution integration: only effective layer growth resamples the r
     const current = getUnit(work, 0).effects.values().toArray()[0];
     assert.equal(current.data.stackCount, 3);
     assert.equal(current.data.sourceAttack, 200);
-    assert.equal(deadline(current), 40);
+    assert.equal(current.deadline, 40);
     assert.deepEqual(current.source, sourceRef(10));
 });

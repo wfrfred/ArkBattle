@@ -116,7 +116,7 @@ test("generic Unit initialization cannot inject prepared states or override the 
     const definition = { hooks: [], id: "no-prepared-state", vitality: { maxHp: 100, defense: 0, resistance: 0 }, elemental: elementalDefinition({ maxEp: 1000, bursts }) };
     const effects = Effects.empty().add({
         id: 0, host: { id: 1 }, definition: { id: "unsupported-preload", initialize: () => ({}) },
-        data: {}, source: null, scopes: [], enabled: true, status: "ACTIVE",
+        data: {}, source: null, deadline: null, enabled: true, status: "ACTIVE",
     });
     const result = initialize(battle, {         id: 1, definition, position: [0, 0], tick: 900,
         effects,

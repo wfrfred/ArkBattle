@@ -9,9 +9,25 @@ import { calculateHealing } from "../../dist/core/battle/healing/index.js";
 import { applyHealing } from "../../dist/core/battle/healing/index.js";
 import { calculateDamage } from "../../dist/core/battle/damage/index.js";
 import { applyDamage } from "../../dist/core/battle/damage/index.js";
-import { definition, effectFixtureWork, installFixtureEffect } from "./effects.js";
+import { definition, effectFixtureWork } from "./effects.js";
+import { ref as unitRef } from "../../dist/core/unit/index.js";
 
-export { effectFixtureWork as workFor, installFixtureEffect as attach };
+export function attach(fixture, effect) {
+    const prepared = "unit" in fixture ? fixture : { unit: fixture, effects: [] };
+    return { unit: prepared.unit, effects: [...prepared.effects, effect] };
+}
+
+export function workFor(...fixtures) {
+    let battle = effectFixtureWork(...fixtures.map(fixture => fixture.unit ?? fixture));
+    for (const fixture of fixtures) {
+        if ("unit" in fixture) {
+            for (const effect of fixture.effects) {
+                battle = effects.install(battle, unitRef(fixture.unit), effect).state;
+            }
+        }
+    }
+    return battle;
+}
 
 export function unit(
     id,

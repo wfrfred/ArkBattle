@@ -2,7 +2,7 @@ import type { Scope } from "./lifetime.js";
 
 export interface Entry {
     readonly target: Scope;
-    readonly owner: { readonly target: Scope; readonly order: number } | null;
+    readonly owner: Scope | null;
     readonly scopes: readonly Scope[];
 }
 
@@ -11,14 +11,9 @@ export interface Transition {
     readonly next: Entry | undefined;
 }
 
-interface Children {
-    readonly owned: readonly Entry[];
-    readonly scoped: readonly Scope[];
-}
-
 export interface Index {
     readonly entries: ReadonlyMap<string, Entry>;
-    readonly children: ReadonlyMap<string, Children>;
+    readonly children: ReadonlyMap<string, readonly Scope[]>;
 }
 
 export function empty(): Index {
@@ -38,7 +33,7 @@ export function parents(index: Index, target: Scope): readonly Scope[] {
 function relations(entry: Entry): readonly Scope[] {
     const unique = new Map<string, Scope>();
     if (entry.owner !== null) {
-        unique.set(key(entry.owner.target), entry.owner.target);
+        unique.set(key(entry.owner), entry.owner);
     }
     for (const scope of entry.scopes) {
         unique.set(key(scope), scope);
@@ -49,7 +44,7 @@ function relations(entry: Entry): readonly Scope[] {
 
 export function derive(index: Index, transitions: readonly Transition[]): Index {
     let entries: Map<string, Entry> | undefined;
-    let children: Map<string, Children> | undefined;
+    let children: Map<string, readonly Scope[]> | undefined;
 
     for (const { previous, next } of transitions) {
         if (same(previous, next)) {
@@ -61,15 +56,28 @@ export function derive(index: Index, transitions: readonly Transition[]): Index 
         entries ??= new Map(index.entries);
         children ??= new Map(index.children);
 
-        for (const parent of previous === undefined ? [] : relations(previous)) {
+        const previousParents = new Map(
+            (previous === undefined ? [] : relations(previous)).map((parent) => [
+                key(parent),
+                parent,
+            ]),
+        );
+        const nextParents = new Map(
+            (next === undefined ? [] : relations(next)).map((parent) => [key(parent), parent]),
+        );
+
+        for (const parent of previousParents.values()) {
             const parentKey = key(parent);
+            if (nextParents.has(parentKey)) {
+                continue;
+            }
+
             const bucket = children.get(parentKey)!;
-            const owned = bucket.owned.filter((entry) => key(entry.target) !== identity);
-            const scoped = bucket.scoped.filter((entry) => key(entry) !== identity);
-            if (owned.length === 0 && scoped.length === 0) {
+            const remaining = bucket.filter((entry) => key(entry) !== identity);
+            if (remaining.length === 0) {
                 children.delete(parentKey);
             } else {
-                children.set(parentKey, { owned, scoped });
+                children.set(parentKey, remaining);
             }
         }
 
@@ -78,18 +86,11 @@ export function derive(index: Index, transitions: readonly Transition[]): Index 
         } else {
             entries.set(identity, next);
 
-            for (const parent of relations(next)) {
+            for (const parent of nextParents.values()) {
                 const parentKey = key(parent);
-                const bucket = children.get(parentKey) ?? { owned: [], scoped: [] };
-                const owned = next.owner !== null && key(next.owner.target) === parentKey;
-                children.set(parentKey, {
-                    owned: owned
-                        ? [...bucket.owned, next].sort(
-                              (left, right) => left.owner!.order - right.owner!.order,
-                          )
-                        : bucket.owned,
-                    scoped: owned ? bucket.scoped : [...bucket.scoped, next.target].sort(compare),
-                });
+                if (!previousParents.has(parentKey)) {
+                    children.set(parentKey, [...(children.get(parentKey) ?? []), next.target]);
+                }
             }
         }
     }
@@ -110,30 +111,14 @@ function same(previous: Entry | undefined, next: Entry | undefined): boolean {
         (previous.owner === next.owner ||
             (previous.owner !== null &&
                 next.owner !== null &&
-                previous.owner.order === next.owner.order &&
-                key(previous.owner.target) === key(next.owner.target))) &&
+                key(previous.owner) === key(next.owner))) &&
         previous.scopes.length === next.scopes.length &&
         previous.scopes.every((scope, i) => key(scope) === key(next.scopes[i]!))
     );
 }
 
-export function compare(left: Scope, right: Scope): number {
-    for (let i = 0; i < Math.min(left.address.length, right.address.length); i++) {
-        const difference = left.address[i]! - right.address[i]!;
-        if (difference !== 0) {
-            return difference;
-        }
-    }
-
-    return left.address.length - right.address.length || left.kind.localeCompare(right.kind);
-}
-
 export function dependents(index: Index, target: Scope): readonly Scope[] {
-    const bucket = index.children.get(key(target));
-
-    return bucket === undefined
-        ? []
-        : [...bucket.owned.map((entry) => entry.target), ...bucket.scoped];
+    return index.children.get(key(target)) ?? [];
 }
 
 export function wouldCycle(index: Index, child: Scope, parent: Scope): boolean {

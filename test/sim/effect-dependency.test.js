@@ -35,23 +35,23 @@ test("dependency identity separates domains and equal local IDs on different hos
     }
 });
 
-test("direct dependents keep owned order before numeric scoped order and preserve captured snapshots", () => {
+test("direct dependents retain relationship registration order and preserve captured snapshots", () => {
     const target = unit(5);
     const entries = [
         entry(effect(9, 1), [target]),
         entry(effect(10), [target]),
         entry(effect(2), [target]),
-        entry(effect(5, 1), [], { target, order: 2 }),
-        entry(effect(5, 0), [], { target, order: 1 }),
+        entry(effect(5, 1), [], target),
+        entry(effect(5, 0), [], target),
     ];
     const initial = derive(empty(), entries.map(next => ({ previous: undefined, next })));
     const captured = dependents(initial, target);
     assert.deepEqual(identities(captured), [
-        ["EFFECT", 5, 0], ["EFFECT", 5, 1], ["EFFECT", 2, 0], ["EFFECT", 9, 1], ["EFFECT", 10, 0],
+        ["EFFECT", 9, 1], ["EFFECT", 10, 0], ["EFFECT", 2, 0], ["EFFECT", 5, 1], ["EFFECT", 5, 0],
     ]);
     const next = derive(initial, [{ previous: entries[0], next: undefined }]);
     assert.deepEqual(identities(dependents(next, target)), [
-        ["EFFECT", 5, 0], ["EFFECT", 5, 1], ["EFFECT", 2, 0], ["EFFECT", 10, 0],
+        ["EFFECT", 10, 0], ["EFFECT", 2, 0], ["EFFECT", 5, 1], ["EFFECT", 5, 0],
     ]);
     assert.deepEqual(identities(dependents(initial, target)), identities(captured));
 });
@@ -59,7 +59,7 @@ test("direct dependents keep owned order before numeric scoped order and preserv
 test("owner and duplicate explicit scopes identify one dependency", () => {
     const owner = unit(1);
     const child = effect(1);
-    const relation = entry(child, [owner, unit(1), effect(2)], { target: owner, order: 0 });
+    const relation = entry(child, [owner, unit(1), effect(2)], owner);
     const index = derive(empty(), [{ previous: undefined, next: relation }]);
     assert.deepEqual(identities(dependents(index, owner)), identities([child]));
     assert.deepEqual(identities(parents(index, child)), identities([owner, effect(2)]));
@@ -88,4 +88,19 @@ test("binding checks follow transitive dependencies and reject a closed path", (
     assert.equal(wouldCycle(index, a, c), true);
     assert.equal(wouldCycle(index, c, a), false);
     assert.equal(wouldCycle(index, b, b), true);
+});
+
+test("retained relationships keep their position while removing and rebinding appends", () => {
+    const owner = unit(1);
+    const a = entry(effect(3), [owner]);
+    const b = entry(effect(2), [owner]);
+    const original = derive(empty(), [a, b].map(next => ({ previous: undefined, next })));
+    const expanded = { ...a, scopes: [owner, unit(9)] };
+    const updated = derive(original, [{ previous: a, next: expanded }]);
+    assert.deepEqual(identities(dependents(updated, owner)), identities([a.target, b.target]));
+    const detached = { ...expanded, scopes: [unit(9)] };
+    const unbound = derive(updated, [{ previous: expanded, next: detached }]);
+    const rebound = derive(unbound, [{ previous: detached, next: expanded }]);
+    assert.deepEqual(identities(dependents(rebound, owner)), identities([b.target, a.target]));
+    assert.deepEqual(identities(dependents(original, owner)), identities([a.target, b.target]));
 });

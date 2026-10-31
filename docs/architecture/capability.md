@@ -75,7 +75,7 @@ Product<D>.definition 直接保留 D，包含内容自有字段、字面量与�
 
 Unit 装配实现在 unit/initialize.ts，由 [unit/index.ts](../../src/core/unit/index.ts) 公开 initialize(battle, input) → Result<Unit & Product<D>> 及模型、Hook 类型和查询；完整登记与离场操作仍直接归 battle/unit.ts。Input 的 id、definition、position 为必填，不接收 effects；基础 Unit 具有原始 Definition、位置、PRESENT、空 hooks 和 Effects.empty()。初始 Effect 仍由登记后的 enter Hook 调用 install，正常执行安装、生效与依赖结算。实现按 Definition 中的配置键选择 initializer，将当前 battle 与正在装配的 Unit 传给它；异构类型只在这一派发边界擦除。不使用 Reflect，不重复检查内部能力配置是否为 undefined 或 null，不维护额外状态字典或能力专属分支。已知能力的 Definition 受 Catalog 派生类型约束；公开装配结果只承诺明确选择的能力，Skill／Action 的私有类型仍由所属领域恢复。
 
-Unit.initialize 是对所选 initializer 列表的 fold：从基础 Unit 开始，按 Catalog 登记顺序逐个接续 Result 中的 battle 与 Unit，最后追加 Definition 的内容 Hook。每项 initializer 保留身份、Definition、已有能力及登记项，补充自身状态或 Hook；Skill 在自己的 initializer 中登记 enter Hook，通用初始化器不依赖 Skill。初始化可以读取当前战场或消费 RNG，但当前 Unit 尚未登记；本轮已有能力直接从输入 Unit 读取，不通过战场查询半成品。所有能力装配完成后才执行完整 add 与统一入场派发。
+Unit.initialize 是对所选 initializer 列表的 fold：从基础 Unit 开始，按 Catalog 登记顺序逐个接续 Result 中的 battle 与 Unit，最后追加 Definition 的内容 Hook。每项 initializer 保留身份、Definition、已有能力及登记项，补充自身状态或 Hook；Skill 在自己的 initializer 中登记 enter Hook，Deployable 登记 prepare／leave Hook；Blocker 或 Blockable 将清理 prepare Hook 放在序列前部。通用初始化器及 Unit 生命周期操作不依赖这些具体领域。初始化可以读取当前战场或消费 RNG，但当前 Unit 尚未登记；本轮已有能力直接从输入 Unit 读取，不通过战场查询半成品。所有能力装配完成后才执行完整 add 与统一入场派发。
 
 Action Capability 的 Definition 保存 initialize(battle) → Result<Actions> 和可选 select。具体内容在类型明确处创建行动初始化函数，再以 createActions 顺序组合；Capability 接续返回的 BattleState，将 Actions 放入公共 State，并建立执行 ID 计数、贡献、规则和 Hook 的初值。配置不另存静态 Definition 集合，也不让调度器恢复具体内容类型。
 

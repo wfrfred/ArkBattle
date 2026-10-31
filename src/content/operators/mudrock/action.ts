@@ -155,7 +155,7 @@ export function createSkill(
                 if (applyStun && survivor !== undefined) {
                     state = install(state, unitRef(survivor), stun, {
                         source: unitRef(source),
-                        scopes: [{ type: "TICK", tick: state.tick + stunTicks }],
+                        deadline: state.tick + stunTicks,
                     }).state;
                 }
             }

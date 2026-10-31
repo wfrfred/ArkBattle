@@ -2,26 +2,18 @@ import * as battlefield from "../battlefield/unit.js";
 import type { State as BattlefieldState } from "../battlefield/state.js";
 import type { Id, LeaveReason, Unit, Departure } from "../unit/unit.js";
 import * as units from "../unit/query.js";
-import { hasBlockable } from "../unit/capability/blocking/blockable.js";
-import * as blocking from "./blocking/operations.js";
-import { relations } from "./blocking/query.js";
 import type { State as BattleState } from "./state.js";
-import { notifyUnitLeave } from "./mechanism.js";
-import { recordUnitDeployment, refundUnit, recycleUnitCard } from "./deployment/lifecycle.js";
-import * as occupancy from "./occupancy.js";
 import * as hooks from "../hook.js";
 import { create as createLifetime } from "../lifetime/operations.js";
 import type { Ref } from "../common/ref.js";
-import * as dependency from "../lifetime/dependency.js";
-import { projectUnit, type UnitTransition } from "./lifetime.js";
+import { dispatch as dispatchObservers } from "./unit-hook.js";
 import type { Change, Transformation, Settlement } from "../unit/change.js";
 
 /* eslint-disable @typescript-eslint/no-unnecessary-type-parameters -- Accept capability-bearing object literals while returning only BattleState. */
 export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
     const previous = battle.battlefield;
     const next = battlefield.add(previous, unit);
-    battle = publishBattlefield(battle, next, [{ previousUnit: undefined, nextUnit: unit }]);
-    battle = recordUnitDeployment(battle, unit);
+    battle = publishBattlefield(battle, next);
     const reference = units.ref(unit);
     const current = units.get(battle, reference);
     if (current?.lifecycle === "PRESENT") {
@@ -34,7 +26,7 @@ export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
         }).state;
     }
 
-    return occupancy.notify(battle, previous, next, [unit.id]);
+    return dispatchObservers(battle, "registrationChanged", { previous, next, changed: [unit.id] });
 }
 
 export function update(battle: BattleState, changes: readonly Change[]): BattleState {
@@ -75,14 +67,7 @@ export function update(battle: BattleState, changes: readonly Change[]): BattleS
 }
 
 export function replace<U extends Unit>(battle: BattleState, updates: readonly U[]): BattleState {
-    return publishBattlefield(
-        battle,
-        battlefield.update(battle.battlefield, updates),
-        updates.map((unit) => ({
-            previousUnit: battle.battlefield.units.get(unit.id),
-            nextUnit: unit,
-        })),
-    );
+    return publishBattlefield(battle, battlefield.update(battle.battlefield, updates));
 }
 /* eslint-enable @typescript-eslint/no-unnecessary-type-parameters */
 
@@ -92,26 +77,21 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
     get: units.get,
     isEnding: (self) => self.lifecycle === "LEAVING",
     begin: (self) => ({ ...self, lifecycle: "LEAVING" }),
-    replace: (battle, reference, next) => {
-        const leaving =
-            hasBlockable(next) && next.blockable.adjustment !== null
-                ? { ...next, blockable: { ...next.blockable, adjustment: null } }
-                : next;
+    replace: (battle, _reference, next) => replace(battle, [next]),
+    prepare: (battle, _reference, _initial, departure) => {
+        const entries = departure.unit.hooks.filter((entry) => entry.stage === "prepare");
 
-        battle = replace(battle, [leaving]);
-
-        return blocking.release(battle, relations(battle, reference));
+        return hooks.dispatch(battle, departure, undefined, {
+            candidates: () => entries.map(({ id }) => id),
+            find: (_current, id) => entries.find((entry) => entry.id === id),
+        }).state;
     },
-    prepare: (battle, reference, _initial, departure) =>
-        refundUnit(battle, units.get(battle, reference)!, departure.reason, battle.tick),
     finalize: (battle, reference, departure) => {
         const departing = units.get(battle, reference)!;
         const { reason } = departure;
         const previous = battle.battlefield;
         const next = battlefield.remove(previous, reference);
-        battle = publishBattlefield(battle, next, [
-            { previousUnit: departing, nextUnit: undefined },
-        ]);
+        battle = publishBattlefield(battle, next);
         battle = {
             ...battle,
             removedUnits: [
@@ -119,8 +99,11 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
                 { unitId: reference.id, reason, unit: departing },
             ],
         };
-        battle = occupancy.notify(battle, previous, next, [reference.id]);
-        battle = recycleUnitCard(battle, departing, reason, battle.tick);
+        battle = dispatchObservers(battle, "registrationChanged", {
+            previous,
+            next,
+            changed: [reference.id],
+        });
 
         const entries = departure.unit.hooks.filter((entry) => entry.stage === "leave");
         battle = hooks.dispatch(battle, departure, undefined, {
@@ -128,7 +111,7 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
             find: (_current, id) => entries.find((entry) => entry.id === id),
         }).state;
 
-        return notifyUnitLeave(battle, departure);
+        return dispatchObservers(battle, "leave", departure);
     },
     reason: (departure) => departure.reason,
 });
@@ -163,42 +146,10 @@ export function advance(battle: BattleState): BattleState {
     return battle;
 }
 
-function publishBattlefield(
-    state: BattleState,
-    next: BattlefieldState,
-    transitions: readonly UnitTransition[],
-): BattleState {
+function publishBattlefield(state: BattleState, next: BattlefieldState): BattleState {
     if (next === state.battlefield) {
         return state;
     }
 
-    const dependencies = dependency.derive(
-        state.lifetime.dependencies,
-        transitions.flatMap(({ previousUnit, nextUnit }) => {
-            const previous = new Map(
-                projectUnit(previousUnit).map((entry) => [dependency.key(entry.target), entry]),
-            );
-            const changes: dependency.Transition[] = [];
-
-            for (const entry of projectUnit(nextUnit)) {
-                const identity = dependency.key(entry.target);
-                changes.push({ previous: previous.get(identity), next: entry });
-                previous.delete(identity);
-            }
-            for (const entry of previous.values()) {
-                changes.push({ previous: entry, next: undefined });
-            }
-
-            return changes;
-        }),
-    );
-
-    return {
-        ...state,
-        battlefield: next,
-        lifetime:
-            dependencies === state.lifetime.dependencies
-                ? state.lifetime
-                : { ...state.lifetime, dependencies },
-    };
+    return { ...state, battlefield: next };
 }

@@ -6,6 +6,7 @@ import * as contribution from "../../contribution/contribution.js";
 import { createChange, type Change } from "../../change.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
+import type { PrepareHook } from "../../hook.js";
 import * as units from "../../query.js";
 import type { Hook, Key } from "./contract.js";
 import type { Rule } from "./rule.js";
@@ -16,6 +17,15 @@ import {
     type Layer,
     type Modifier,
 } from "./blocker.js";
+
+export const prepare: PrepareHook = {
+    id: "@blocker/prepare",
+    stage: "prepare",
+    invoke: (battle, { unit }) => ({
+        state: blocking.release(battle, relations(battle, units.ref(unit as Unit & Blocker))),
+        value: undefined,
+    }),
+};
 
 function settleRules(battle: BattleState, reference: Ref<Unit & Blocker>): BattleState {
     for (const relation of relations(battle, reference)) {

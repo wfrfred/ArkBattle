@@ -53,7 +53,7 @@ test("damage pipeline: dynamic low HP attack reads current state and stable prio
     assert.equal(getUnit(damaged, 1).vitality.hp, 250);
     assert.equal(getUnit(battle, 1).vitality.hp, 650);
     assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 1))), 100);
-    assert.equal(source.vitality.hp, 750);
+    assert.equal(source.unit.vitality.hp, 750);
 });
 
 test("damage pipeline: formula parameter replacement and multiplication retain execution order", () => {
@@ -96,25 +96,27 @@ test("damage pipeline: barrier before doubling takes 400 HP; doubling before bar
     for (const [barrierPriority, scalePriority, expected] of [[100, 0, 400], [0, 100, 900]]) {
         const shield = barrier("barrier", 500, barrierPriority);
         const target = attach(attach(unit(2), shield), rule("fragile", "receiving", scaleReceived(2), scalePriority));
-        const result = settle(workFor(unit(1), target), request(700));
+        const initial = workFor(unit(1), target);
+        const result = settle(initial, request(700));
         assert.equal(result.value.kind, "APPLIED");
         assert.equal(result.value.received.amount, expected);
         assert.equal(result.value.application.hpLoss, expected);
         assert.equal(stateOf(result.state, 2, shield).remainingAmount, 0);
-        assert.equal(target.effects.values().toArray()[0].data.remainingAmount, 500);
+        assert.equal(stateOf(initial, 2, shield).remainingAmount, 500);
     }
 });
 
 test("damage pipeline: reduction and complete absorption consume barrier budget without cancellation", () => {
     const shield = barrier("barrier", 800);
     const target = attach(attach(unit(2), shield), rule("reduction", "receiving", (_context, pending) => ({ ...pending, amount: pending.amount - 100 }), 100));
-    const result = settle(workFor(unit(1), target), request(700));
+    const initial = workFor(unit(1), target);
+    const result = settle(initial, request(700));
     assert.equal(result.value.kind, "APPLIED");
     assert.equal(result.value.received.amount, 0);
     assert.equal(result.value.received.cancellation, null);
     assert.equal(result.value.application.hpLoss, 0);
     assert.equal(stateOf(result.state, 2, shield).remainingAmount, 200);
-    assert.equal(target.effects.values().toArray()[0].data.remainingAmount, 800);
+    assert.equal(stateOf(initial, 2, shield).remainingAmount, 800);
 });
 
 test("damage pipeline: Effect overwriting gates hooks while retaining suppressed instances", () => {

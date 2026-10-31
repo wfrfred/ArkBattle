@@ -1,18 +1,25 @@
-import { replace as replaceUnits } from "../../battle/unit.js";
+import { replace as replaceUnits, lifetime as unitLifetime } from "../../battle/unit.js";
 import { type State as BattleState, type Result } from "../../battle/state.js";
 import type { Unit, Id } from "../unit.js";
 import type { Ref } from "../../common/ref.js";
 import * as units from "../query.js";
-import { available, create, scope, type Scope as LifetimeScope } from "../../lifetime/index.js";
-import { key, wouldCycle } from "../../lifetime/dependency.js";
+import {
+    available,
+    create,
+    scope,
+    type Lifetime,
+    type Scope as LifetimeScope,
+} from "../../lifetime/index.js";
+import { register, unregister } from "../../lifetime/operations.js";
 import type { Definition } from "./definition.js";
-import { deadline, type Effect, ref as effectRef, type Scope } from "./effect.js";
+import { type Effect, ref as effectRef } from "./effect.js";
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import { get } from "./query.js";
 
 export interface Initial<S extends object> {
     readonly source?: Ref<Unit> | null;
-    readonly scopes?: readonly Scope[];
+    readonly scopes?: readonly LifetimeScope[];
+    readonly deadline?: number | null;
     readonly data?: S;
     readonly enabled?: boolean;
 }
@@ -25,17 +32,13 @@ export function install<S extends object, H extends object>(
 ): Result<Ref<Effect<S, H>> | undefined> {
     const unit = units.get(battle, host);
     const scopes = initial.scopes ?? [];
+    const deadline = initial.deadline ?? null;
 
-    for (const scope of scopes) {
-        if (scope.type === "TICK") {
-            assertNonnegativeSafeInteger(scope.tick, "effect deadline");
-        }
+    if (deadline !== null) {
+        assertNonnegativeSafeInteger(deadline, "effect deadline");
     }
 
-    if (
-        unit?.lifecycle !== "PRESENT" ||
-        scopes.some((scope) => scope.type !== "TICK" && !available(battle, scope))
-    ) {
+    if (unit?.lifecycle !== "PRESENT" || scopes.some((scope) => !available(battle, scope))) {
         return { state: battle, value: undefined };
     }
 
@@ -45,7 +48,7 @@ export function install<S extends object, H extends object>(
         definition,
         data: initial.data ?? definition.initialize(),
         source: initial.source ?? null,
-        scopes,
+        deadline,
         enabled: initial.enabled ?? true,
         status: "INSTALLING",
     };
@@ -53,6 +56,7 @@ export function install<S extends object, H extends object>(
     let currentUnit: Unit | undefined = { ...unit, effects: unit.effects.add(instance) };
     let installed: Effect<S, H> | undefined = instance;
     battle = replaceUnits(battle, [currentUnit]);
+    battle = register(battle, scope(lifetime, ref), scope(unitLifetime, host), scopes);
 
     if (definition.onInstall !== undefined) {
         battle = definition.onInstall(battle, instance);
@@ -107,21 +111,9 @@ export function setDeadline<T extends Effect<any, any>>(
         throw new RangeError(`unknown effect: ${ref.id}`);
     }
 
-    const deadlines = self.scopes.filter((scope) => scope.type === "TICK");
-    if (
-        (tick === null && deadlines.length === 0) ||
-        (deadlines.length === 1 && deadlines[0]!.tick === tick)
-    ) {
-        return battle;
-    }
-
-    return replaceEffect(battle, unit, {
-        ...self,
-        scopes: [
-            ...self.scopes.filter((scope) => scope.type !== "TICK"),
-            ...(tick === null ? [] : [{ type: "TICK" as const, tick }]),
-        ],
-    });
+    return self.deadline === tick
+        ? battle
+        : replaceEffect(battle, unit, { ...self, deadline: tick });
 }
 
 export function setEnabled<T extends Effect<any, any>>(
@@ -140,31 +132,7 @@ export function setEnabled<T extends Effect<any, any>>(
     return updateStatus(battle, ref);
 }
 
-export function bindLifetime<T extends Effect<any, any>>(
-    battle: BattleState,
-    ref: Ref<T>,
-    parent: LifetimeScope,
-): Result<boolean> {
-    const unit = units.get<Unit>(battle, ref.host);
-    const instance = unit?.effects.get(ref.id);
-    if (instance === undefined || instance.status === "ENDING" || !available(battle, parent)) {
-        return { state: battle, value: false };
-    }
-
-    if (wouldCycle(battle.lifetime.dependencies, scope(lifetime, ref), parent)) {
-        throw new TypeError("effect scopes cannot form a cycle");
-    }
-    if (!instance.scopes.some((entry) => entry.type === "LIFETIME" && key(entry) === key(parent))) {
-        battle = replaceEffect(battle, unit!, {
-            ...instance,
-            scopes: [...instance.scopes, parent],
-        });
-    }
-
-    return { state: battle, value: true };
-}
-
-export const lifetime = create<Effect, Effect<any, any>, string>({
+export const lifetime: Lifetime<Effect, Effect<any, any>, string> = create({
     kind: "EFFECT",
     address: (reference) => [reference.host.id, reference.id],
     get: (battle, reference) => units.get<Unit>(battle, reference.host)?.effects.get(reference.id),
@@ -187,7 +155,9 @@ export const lifetime = create<Effect, Effect<any, any>, string>({
         battle = self.definition.onEnd?.(battle, self, reason) ?? battle;
         const unit = units.get<Unit>(battle, reference.host)!;
 
-        return replaceUnits(battle, [{ ...unit, effects: unit.effects.remove(reference.id) }]);
+        battle = replaceUnits(battle, [{ ...unit, effects: unit.effects.remove(reference.id) }]);
+
+        return unregister(battle, scope(lifetime, reference));
     },
     reason: (reason) => reason,
     fromDependency: (reason) => reason,
@@ -212,7 +182,7 @@ export function advance(battle: BattleState): BattleState {
         }
 
         const current = get(battle, ref);
-        const expires = current === undefined ? null : deadline(current);
+        const expires = current?.deadline ?? null;
         if (expires !== null && expires <= battle.tick) {
             battle = end(battle, ref, "EXPIRED");
         }
@@ -246,8 +216,7 @@ function updateStatus<T extends Effect<any, any>>(battle: BattleState, ref: Ref<
     const group = instance.definition.group;
     const active =
         instance.enabled &&
-        unit.lifecycle === "PRESENT" &&
-        !instance.scopes.some((scope) => scope.type !== "TICK" && !available(battle, scope)) &&
+        available(battle, scope(lifetime, ref)) &&
         (group === undefined ||
             !unit.effects
                 .values()

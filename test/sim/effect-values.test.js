@@ -1,9 +1,8 @@
-import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { scope as lifetimeScope, dependencies } from "../../dist/core/lifetime/index.js";
 import { lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { deadline } from "../../dist/core/unit/effect/effect.js";
-import { end, get, setData, setDeadline } from "../../dist/core/unit/effect/index.js";
+import { end, get, setData, setDeadline, lifetime as effectLifetime } from "../../dist/core/unit/effect/index.js";
 import { remove as removeUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { initialize } from "../helpers/unit.js";
@@ -31,17 +30,17 @@ test("effect values: local no-ops and replacements retain the input version", ()
 test("effect values: deadline updates preserve lifetime constraints and reject invalid time", () => {
     const lifetime = lifetimeScope(unitLifetime, { id: 0 });
     const { state, value: ref } = install(effectFixtureWork(host()), definition("deadline"), 0, {
-        scopes: [lifetime, { type: "TICK", tick: 3 }],
+        scopes: [lifetime], deadline: 3,
     });
     const self = get(state, ref);
     assert.equal(setDeadline(state, ref, 3), state);
     const renewed = setDeadline(state, ref, 8);
-    assert.equal(deadline(get(renewed, ref)), 8);
-    assert.equal(get(renewed, ref).scopes[0], lifetime);
+    assert.equal(get(renewed, ref).deadline, 8);
+    assert.equal(dependencies(renewed, lifetimeScope(effectLifetime, ref))[0], lifetime);
     const cleared = setDeadline(renewed, ref, null);
-    assert.deepEqual(get(cleared, ref).scopes, [lifetime]);
+    assert.deepEqual(dependencies(cleared, lifetimeScope(effectLifetime, ref)), [lifetime]);
     assert.equal(setDeadline(cleared, ref, null), cleared);
-    assert.equal(deadline(self), 3);
+    assert.equal(self.deadline, 3);
     assert.equal(get(state, ref), self);
     for (const tick of [-1, 0.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
         assert.throws(() => setDeadline(state, ref, tick), RangeError);
@@ -68,7 +67,7 @@ test("effect deadlines: invalid initial time is rejected before initialization o
     };
     for (const tick of [-1, 0.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
         assert.throws(
-            () => install(state, value, 0, { scopes: [{ type: "TICK", tick }] }),
+            () => install(state, value, 0, { deadline: tick }),
             RangeError,
         );
     }

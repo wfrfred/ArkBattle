@@ -1,5 +1,5 @@
 import type { Identified, Ref } from "../common/ref.js";
-import type { State as BattleState } from "../battle/state.js";
+import type { State as BattleState, Result } from "../battle/state.js";
 import { paired, type Definition, type Lifetime, type Scope } from "./lifetime.js";
 import * as dependency from "./dependency.js";
 
@@ -70,6 +70,81 @@ export function available(battle: BattleState, target: Scope): boolean {
             .parents(battle.lifetime.dependencies, target)
             .every((parent) => available(battle, parent))
     );
+}
+
+export function dependencies(battle: BattleState, target: Scope): readonly Scope[] {
+    return battle.lifetime.dependencies.entries.get(dependency.key(target))?.scopes ?? [];
+}
+
+// Complete domain operations register their own instances before invoking content.
+export function register(
+    battle: BattleState,
+    target: Scope,
+    owner: Scope | null,
+    scopes: readonly Scope[] = [],
+): BattleState {
+    return change(battle, target, { target, owner, scopes });
+}
+
+export function unregister(battle: BattleState, target: Scope): BattleState {
+    return change(battle, target, undefined);
+}
+
+export function bind(battle: BattleState, target: Scope, parent: Scope): Result<boolean> {
+    const { definition } = target[paired] as Pair;
+    if (definition.fromDependency === undefined) {
+        throw new TypeError("this lifetime cannot depend on another lifetime");
+    }
+    if (!available(battle, target) || !available(battle, parent)) {
+        return { state: battle, value: false };
+    }
+    if (dependency.wouldCycle(battle.lifetime.dependencies, target, parent)) {
+        throw new TypeError("lifetime dependencies cannot form a cycle");
+    }
+
+    const entry = battle.lifetime.dependencies.entries.get(dependency.key(target));
+    const scopes = entry?.scopes ?? [];
+    if (scopes.some((current) => dependency.key(current) === dependency.key(parent))) {
+        return { state: battle, value: true };
+    }
+
+    return {
+        state: change(battle, target, {
+            target,
+            owner: entry?.owner ?? null,
+            scopes: [...scopes, parent],
+        }),
+        value: true,
+    };
+}
+
+export function unbind(battle: BattleState, target: Scope, parent: Scope): BattleState {
+    const entry = battle.lifetime.dependencies.entries.get(dependency.key(target));
+    if (entry === undefined) {
+        return battle;
+    }
+
+    const scopes = entry.scopes.filter(
+        (current) => dependency.key(current) !== dependency.key(parent),
+    );
+
+    return scopes.length === entry.scopes.length
+        ? battle
+        : change(battle, target, { ...entry, scopes });
+}
+
+function change(
+    battle: BattleState,
+    target: Scope,
+    next: dependency.Entry | undefined,
+): BattleState {
+    const index = battle.lifetime.dependencies;
+    const previous = index.entries.get(dependency.key(target));
+    const dependencies = dependency.derive(index, [{ previous, next }]);
+
+    return dependencies === index
+        ? battle
+        : { ...battle, lifetime: { ...battle.lifetime, dependencies } };
 }
 
 function request(

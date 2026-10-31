@@ -1,4 +1,4 @@
-import { deadline, ref as effectRef } from "../../dist/core/unit/effect/effect.js";
+import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize } from "../helpers/unit.js";
@@ -36,10 +36,10 @@ test("effect deadlines: writes wait for advance and termination remains ENDING t
             },
             onEnd: (state, self) => {
                 trace.push(["end", self.status]);
-                assert.equal(deadline(self), 8);
+                assert.equal(self.deadline, 8);
                 const changed = effect.setDeadline(state, effectRef(self), null);
                 assert.equal(get(changed, effectRef(self)).status, "ENDING");
-                assert.equal(deadline(get(changed, effectRef(self))), null);
+                assert.equal(get(changed, effectRef(self)).deadline, null);
                 return changed;
             },
         },
@@ -80,7 +80,7 @@ test("effect deadlines: layered content renews the same identity and ends only a
     let battle = effectFixtureWork(unit());
     let ref;
     ({ state: battle, value: ref } = install(battle, value, 0, {
-        scopes: [{ type: "TICK", tick: 2 }],
+        deadline: 2,
     }));
     for (let tick = 0; tick < 6; tick++) battle = effect.advance(at(battle, tick));
     assert.equal(get(battle, ref).data.layers, 1);
@@ -89,7 +89,7 @@ test("effect deadlines: layered content renews the same identity and ends only a
     assert.equal(get(battle, ref), undefined);
 });
 
-test("effect deadlines: current scopes are read after an earlier callback renews a later candidate", () => {
+test("effect deadlines: the current deadline is read after an earlier callback renews a later candidate", () => {
     let later;
     const early = definition(
         "renewer",
@@ -103,7 +103,7 @@ test("effect deadlines: current scopes are read after an earlier callback renews
     let battle = effectFixtureWork(unit());
     battle = install(battle, early).state;
     ({ state: battle, value: later } = install(battle, definition("later"), 0, {
-        scopes: [{ type: "TICK", tick: 2 }],
+        deadline: 2,
     }));
     battle = effect.advance(at(battle, 2));
     assert.ok(get(battle, later));
@@ -113,7 +113,7 @@ test("effect deadlines: removing a deadline keeps an otherwise active instance a
     let battle = effectFixtureWork(unit());
     let ref;
     ({ state: battle, value: ref } = install(battle, definition("permanent"), 0, {
-        scopes: [{ type: "TICK", tick: 1 }],
+        deadline: 1,
     }));
     battle = effect.setDeadline(battle, ref, null);
     battle = effect.advance(at(battle, 100));

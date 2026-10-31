@@ -1,4 +1,4 @@
-import { getRef } from "../../dist/core/lifetime/index.js";
+import { getRef, dependencies, scope } from "../../dist/core/lifetime/index.js";
 import { lifetime as effectLifetime } from "../../dist/core/unit/effect/operations.js";
 import { remove as endUnit } from "../../dist/core/battle/unit.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
@@ -192,7 +192,7 @@ test("nested installation can disable an aura before later receivers enter", () 
     const receiver = attackEffect("nested-stop", {
         onInstall(state, self) {
             starts.push(self.host.id);
-            return effects.setEnabled(state, getRef(self.scopes[0], effectLifetime), false);
+            return effects.setEnabled(state, getRef(dependencies(state, scope(effectLifetime, effectRef(self)))[0], effectLifetime), false);
         },
     });
     let battle = effectFixtureWork(auraUnit(0), auraUnit(1), auraUnit(2));
@@ -209,7 +209,7 @@ test("nested child installation ending the aura does not revive parent or child"
     const receiver = attackEffect("nested-end", {
         onInstall(state, self) {
             starts.push(self.host.id);
-            return effects.end(state, getRef(self.scopes[0], effectLifetime), "EXPLICIT");
+            return effects.end(state, getRef(dependencies(state, scope(effectLifetime, effectRef(self)))[0], effectLifetime), "EXPLICIT");
         },
     });
     let battle = effectFixtureWork(auraUnit(0), auraUnit(1), auraUnit(2));

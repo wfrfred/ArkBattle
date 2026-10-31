@@ -27,7 +27,7 @@ test("Effect data writes preserve identity, Definition, lifecycle facts and earl
     const initial = fixture(
         { count: 1, nested },
         { group: { id: "updatable-group", priority: 2 } },
-        { source, enabled: false, scopes: [{ type: "TICK", tick: 100 }] },
+        { source, enabled: false, deadline: 100 },
     );
     const original = effects.get(initial.state, initial.value);
     const first = effects.setData(initial.state, initial.value, { ...original.data, count: original.data.count + 4 });
@@ -42,7 +42,8 @@ test("Effect data writes preserve identity, Definition, lifecycle facts and earl
     assert.equal(current.id, original.id);
     assert.strictEqual(current.host, original.host);
     assert.strictEqual(current.definition, initial.definition);
-    assert.strictEqual(current.scopes, original.scopes);
+    assert.equal(current.deadline, original.deadline);
+    assert.equal(second.lifetime.dependencies, initial.state.lifetime.dependencies);
     assert.equal(current.source, source);
     assert.equal(current.enabled, false);
     assert.equal(current.status, "INACTIVE");

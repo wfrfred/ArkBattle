@@ -1,5 +1,5 @@
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
-import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { scope as lifetimeScope, dependencies } from "../../dist/core/lifetime/index.js";
 import { lifetime as effectLifetime } from "../../dist/core/unit/effect/operations.js";
 import { lifetime as actionLifetime } from "../../dist/core/unit/action/operations.js";
 import * as unitQueries from "../../dist/core/unit/index.js";
@@ -500,7 +500,7 @@ test("runtime composition: a successful battle preserves identities, snapshots a
     assert.deepEqual(effect(after, 3, run.receiver).data, { starts: 1, enables: 1, uses: 0 });
     assert.deepEqual(effect(after, 1, run.receiver).data, { starts: 1, enables: 1, uses: 1 });
     assert.equal(effect(after, 1, run.marker).id, 1);
-    assert.deepEqual(effect(after, 1, run.marker).scopes, [
+    assert.deepEqual(dependencies(after, lifetimeScope(effectLifetime, effectRef(effect(after, 1, run.marker)))), [
         lifetimeScope(effectLifetime, { host: { id: 1 }, id: 0 }),
     ]);
     assert.equal(unitQueries.all(after).find((unit) => unit.id === 1).effects.nextId, 2);

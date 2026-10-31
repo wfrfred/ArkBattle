@@ -1,4 +1,4 @@
-import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
+import { scope as lifetimeScope, bind, dependencies } from "../../dist/core/lifetime/index.js";
 import { lifetime as actionLifetime } from "../../dist/core/unit/action/operations.js";
 import { lifetime as burstLifetime } from "../../dist/core/unit/capability/elemental/operations.js";
 import assert from "node:assert/strict";
@@ -25,10 +25,10 @@ function verifyAdmission(state, lifetime, retained) {
     assert.equal(rejected.value, undefined);
     assert.equal(rejected.state, independent.state);
     assert.equal(getUnit(rejected.state, 1).effects.nextId, receiver.effects.nextId);
-    const bound = effects.bindLifetime(rejected.state, independent.value, lifetime);
+    const bound = bind(rejected.state, lifetimeScope(effects.lifetime, independent.value), lifetime);
     assert.equal(bound.value, false);
     assert.equal(bound.state, rejected.state);
-    assert.deepEqual(effects.get(bound.state, independent.value).scopes, []);
+    assert.deepEqual(dependencies(bound.state, lifetimeScope(effects.lifetime, independent.value)), []);
     retained.push(independent.value);
     return bound.state;
 }

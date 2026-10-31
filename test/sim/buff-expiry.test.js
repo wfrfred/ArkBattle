@@ -1,6 +1,5 @@
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { deadline } from "../../dist/core/unit/effect/effect.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
@@ -134,9 +133,9 @@ function harness({ stackCount = 3, maxValidStackCnt = -1 } = {}) {
         output,
         {
             onTick(state, self) {
-                if (state.tick < deadline(self)) return state;
+                if (state.tick < self.deadline) return state;
                 const plan = policy.expire(
-                    { stackCount: self.data.stackCount, expiresAtTick: deadline(self) },
+                    { stackCount: self.data.stackCount, expiresAtTick: self.deadline },
                     self.data.lifetimeTicks, state.tick,
                 );
                 if (plan.type === "FINISH") return effects.end(state, effectRef(self), "EXPIRED");
@@ -166,7 +165,7 @@ function harness({ stackCount = 3, maxValidStackCnt = -1 } = {}) {
         source: unitRef(initialize({
             id: 10, position: [0, 0], definition: { id: "buff-source" },
         })),
-        scopes: [{ type: "TICK", tick: 30 }],
+        deadline: 30,
     });
     work = installed.state;
     return {
@@ -189,7 +188,7 @@ test("buff expiry content renews private layers and refreshes static contributio
     assert.equal(power(buff.work), 250);
     buff.work = effects.advance(at(buff.work, 30));
     assert.equal(instance(buff.work).id, id);
-    assert.equal(deadline(instance(buff.work)), 60);
+    assert.equal(instance(buff.work).deadline, 60);
     assert.equal(power(buff.work), 200);
     buff.work = effects.advance(at(buff.work, 60));
     assert.equal(power(buff.work), 150);

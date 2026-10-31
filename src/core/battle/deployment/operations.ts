@@ -107,6 +107,14 @@ export function deploy(state: BattleState, request: DeployRequest): Result<Deplo
         ...state,
         deployment: changeDp(state.deployment, -cost, state.tick),
     };
+    state = appendEvents(state, [
+        {
+            type: "UNIT_DEPLOYED",
+            unitId: unit.id,
+            position: unit.position,
+            tick: state.tick,
+        },
+    ]);
     state = add(state, unit);
     state = notifyDeployed(state, { unit, kind: "MANUAL" });
 

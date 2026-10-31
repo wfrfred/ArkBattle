@@ -9,7 +9,7 @@ const instance = (id, definition, data) => ({
     definition,
     data,
     source: null,
-    scopes: [],
+    deadline: null,
     enabled: true,
     status: "INACTIVE",
 });
@@ -93,7 +93,7 @@ test("Effects only stores instances, while JSON preserves their data and allocat
             definition: { id: "stored-only" },
             data: { charges: 3 },
             source: null,
-            scopes: [],
+            deadline: null,
             enabled: false,
             status: "INACTIVE",
         }],

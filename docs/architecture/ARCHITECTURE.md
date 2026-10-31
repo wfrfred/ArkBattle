@@ -49,7 +49,8 @@ initialize(input) / step(battle, commands)：创建与推进不可变状态
 └─ battle.State
    ├─ tick、调度、预置进度、统计与结果
    ├─ Deployment、RNG 与战斗级身份分配进度
-   ├─ lifetime（派生依赖索引、当前 endings 与 settling）
+   ├─ lifetime（权威依赖图、当前 endings 与 settling）
+   ├─ unitHooks（登记变化与离场的全局观察）
    ├─ Mechanisms
    ├─ 本 Tick 的事件与移除事实
    └─ Battlefield
@@ -61,7 +62,7 @@ initialize(input) / step(battle, commands)：创建与推进不可变状态
       └─ 派生投影与索引
 ```
 
-战斗领域使用完整的 battle.State；消费侧可将 State 导入为 BattleState。Schedule、统计和结果都保存在其中。lifetime.dependencies 从存储所有权与 Effect.scopes 派生；endings／settling 只保留本次结算工作，正常稳定状态为空／false。
+战斗领域使用完整的 battle.State；消费侧可将 State 导入为 BattleState。Schedule、统计和结果都保存在其中。lifetime.dependencies 是 owner 与显式 Scope 的唯一关系权威，由各领域创建／结束操作登记／注销；Unit 不扫描能力槽位。createBattleState 建立空图，初始 Unit 经完整创建与 add 进入战场。endings／settling 只保留本次结算工作，正常稳定状态为空／false。
 
 runtime.initialize(input) 创建 BattleState；runtime.step(battle, commands) 直接按明确顺序调用纯领域操作，逐次接续并返回最终 State。commands 是必填只读数组，没有命令时传 []。本 Tick 的临时字段在开帧时通过新值清空或覆盖，未变的事实继续共享；不原地清空旧版本中的数组或集合。Schedule、Action 等跨 Tick 进度按所属领域保存为不可变值。行动的程序与调度契约见 [Action 设计](action.md)。
 
@@ -95,7 +96,7 @@ Unit 初始化始终建立空 Effects，不接受预装实例输入。初始护�
 
 阵营、当前玩家归属、创建者和来源分别表达，按需求存在。Unit 的生命周期状态与战场成员关系共同表达它是否仍可参与新的生命周期绑定。
 
-Rule、Hook、Contribution 与 Blocker.layer 的公开写入绑定 Typed Ref，返回 opaque Change；Content 通过 battle/unit.update 组合，不重建完整 Unit。Core 内部 transform 从 Ref 确定能力，全部纯转换完成后一次发布 Field 和 Lifetime，再按原 Change 顺序执行同步 settle；MaxHP 比例响应属于纯转换。内部 replace 只发布合法完整对象，不执行内容 Hook。纯数值／几何计算仍直接接收值，精确私有 state 写回与完整生命周期操作维持原协议。Route 与 Locomotion 的独立职责见 [Navigation](navigation.md)。
+Rule、Hook、Contribution 与 Blocker.layer 的公开写入绑定 Typed Ref，返回 opaque Change；Content 通过 battle/unit.update 组合，不重建完整 Unit。Core 内部 transform 从 Ref 确定能力，全部纯转换完成后一次发布 Field，再按原 Change 顺序执行同步 settle；MaxHP 比例响应属于纯转换。内部 replace 只发布合法完整对象，不执行内容 Hook。纯数值／几何计算仍直接接收值，精确私有 state 写回与完整生命周期操作维持原协议。Route 与 Locomotion 的独立职责见 [Navigation](navigation.md)。
 
 ## Subsystem 的责任与调用
 
@@ -110,8 +111,8 @@ Rule、Hook、Contribution 与 Blocker.layer 的公开写入绑定 Typed Ref，�
 | Damage             | 公式、输出、有序接收、普通扣血及死亡       | 流程在 battle/damage；Offense／Vitality／Elemental 提供属性，Vitality 保存 HP 与 Hook／规则登记。特殊生命保护尚待设计 |
 | Healing            | 计算、输出、有序接收、普通恢复与通知           | 流程在 battle/healing；Vitality 保存 HP／MaxHP 与 Hook。治疗不可选中由 Targetable 表达，明确 Ref 的治疗只检查生命周期和接收 Hook |
 | Elemental          | 元素值、损伤与治疗、爆发身份及动态冷却预算 | Unit 直接关联 Definition，状态保存四型 EP 与当前 Burst；元素损伤抗性和元素 HP 伤害抗性分别表达 |
-| Effect             | 附着实例、私有状态、生效切换、覆写与结束       | Unit 持有实例；scopes 表达生命周期依赖；具体 Definition 登记 Hook 和 Contribution |
-| Lifetime           | 结束幂等、依赖传播与完成调度 | 静态描述符配对 Typed Ref；关系索引派生；Pending 保存本次请求与阶段，owner 等全部依赖者完整 Finalize |
+| Effect             | 附着实例、私有状态、生效切换、覆写与结束       | Unit 持有实例与独立 deadline；依赖归 Lifetime；具体 Definition 登记 Hook 和 Contribution |
+| Lifetime           | 结束幂等、依赖传播与完成调度 | 静态描述符配对 Typed Ref；图保存 owner 与显式依赖；Pending 保存本次请求与阶段，owner 等全部依赖者完整 Finalize |
 | Projectile         | 独立空间执行实例、内容程序与终止请求／Finalize | 根实例保存身份、Definition、位置、ACTIVE／ENDING 与私有 state；运动、命中、采样和计时按内容组合，见 [Projectile 设计](projectile.md) |
 | Route              | 路线脚本、活动目标、等待和后继                 | 主／替代路线各自保存 Definition、当前 pathMotionMode 与 Phase；Spawn 规范化并采样偏移 |
 | Navigation         | 基础通行图、Overlay 与建议移动点查询           | Battlefield 持有 Navigation State；有效 Map 和 Field 在内部派生并缓存 |
@@ -170,7 +171,7 @@ MaxHP 的变化由 Vitality 按前后有效上限保持 HP 比例，独立于 He
 
 Locomotion 保存移速贡献，运动阶段读取当前有效速度后再乘运动上下文倍率。速度与其下限都规范化为每 tick 世界距离；真实数据的属性下限由适配层按相同单位换算，停止运动由运动许可或上下文表达。变速只改变本次位移预算，不重建主／临时 Route 的目标样本、等待或导航请求。实时 provider 读取运动阶段约定的事实视图。
 
-Blocker Definition 保存基础容量，State 保存 ADD／ZERO 容量贡献，由 Blocking 按领域公式求值。能力写入统一返回 Change，层／Rule／容量／volume 的结算按作用范围维护关系；Hook Change 没有关系后继。Unit.update 只接收 Change[]，先纯转换全批、一次发布数据与 Lifetime／Occupancy，再按原顺序结算；内部 replace 信任 Core 完整对象，不从字段差异构造、校验或通知 Blocking。setLayer 的 transform 改 layer／radius，settle 只解除 previous 中仍存在的旧出向 Ref，不回填旧 Unit。关系操作局部维护受影响 owner，移动只复核本 Unit，显式 Tile 更新保留全场维护；嵌套局部操作不裁撤无关 Blocker，真实同 owner 交叠使用最新事实。新取得要求存活，旧关系不因临时 HP 为 0 失效；Damage 在 HP Applied 后仍应死亡才请求 Unit.remove。离场先发布 LEAVING、显式释放自身关系，add／Finalize 不全场扫描。
+Blocker Definition 保存基础容量，State 保存 ADD／ZERO 容量贡献，由 Blocking 按领域公式求值。能力写入统一返回 Change，层／Rule／容量／volume 的结算按作用范围维护关系；Hook Change 没有关系后继。Unit.update 只接收 Change[]，先纯转换全批、一次发布数据与 Occupancy，再按原顺序结算；内部 replace 信任 Core 完整对象，不从字段差异构造、校验或通知 Blocking。setLayer 的 transform 改 layer／radius，settle 只解除 previous 中仍存在的旧出向 Ref，不回填旧 Unit。关系操作局部维护受影响 owner，移动只复核本 Unit，显式 Tile 更新保留全场维护；嵌套局部操作不裁撤无关 Blocker，真实同 owner 交叠使用最新事实。新取得要求存活，旧关系不因临时 HP 为 0 失效；Damage 在 HP Applied 后仍应死亡才请求 Unit.remove。离场先发布 LEAVING，再由能力自行登记的 prepare Hook 释放自身关系，add／Finalize 不全场扫描。
 
 普通搜索每 Tick 在 Movement 后的固定 Blocking Step 中统一执行，不保存独立搜索周期，不因每次 Unit 更新全局搜索，不重构 Combat／Movement 模拟 Unity UID OnTick。显式立即搜索用于有真实需求的业务，不因本 Tick 已执行普通搜索而被拒绝。单次搜索固定开始时按距离稳定排序的候选 Ref 数组，同距离保留 Unit 登记顺序，逐项按最新资格、关系及容量尝试，不预选接敌名单或冻结起始预算；Hook 增容允许后续候选在本轮接敌，新单位不加入候选。该政策有意区别于原生预算预选，可能产生持续的关系分配差异。其余资格、容量及副作用按原生证据核对，固定阶段改变的接敌结果按对照测试评价；不以“只是一个 Tick”预先接受，也不为复刻内部调度引入全场多轮收敛。性能优化在语义稳定后进行。完整约定见 [Blocking 职责与调度政策](blocking.md#已确定的职责与调度政策)。Blockable 的阻挡消耗独立于容量、推拉重量和物理质量。
 
@@ -178,7 +179,7 @@ Blocker Definition 保存基础容量，State 保存 ADD／ZERO 容量贡献，�
 
 Effect 直接持有 `Definition<S, H>` 与私有 State。S 描述实例状态，H 描述宿主需要的 Capability 结构。抽象 Effect 不依赖 Damage、Healing、Offense 等具体 Capability；具体 Definition 通过这些领域的公开操作登记与撤销输出。
 
-生命周期状态为 `INSTALLING`、`INACTIVE`、`ACTIVE`、`ENDING`，外部许可 `enabled` 独立保存。宿主实际退场必然结束其 Effect；额外 scopes 可以绑定 Unit、Action、Skill 激活、Elemental Burst 或另一个 Effect，任一依赖结束即结束实例。TICK scope 表达截止时点；source 使用 `Ref<Unit> | null` 记录施加者，不要求来源仍在场，也不隐含生命周期绑定。所有权与显式 Scope 的合并关系保持 DAG。
+生命周期状态为 `INSTALLING`、`INACTIVE`、`ACTIVE`、`ENDING`，外部许可 `enabled` 独立保存。宿主实际退场必然结束其 Effect；安装输入 scopes 可以绑定 Unit、Action、Skill 激活、Elemental Burst 或另一个 Effect，登记后关系只保存在 Lifetime 图中，任一依赖结束即结束实例。deadline 独立表达截止时点；source 使用 `Ref<Unit> | null` 记录施加者，不要求来源仍在场，也不隐含生命周期绑定。所有权与显式 Scope 的合并关系保持 DAG。
 
 同宿主覆写组先在未结束实例中选取最高优先级，同优先级保留较早取得的实例，再检查赢家的 enabled。禁用最强实例不会让弱者补位。Contribution 分组、Hook 调用顺序与具体业务条件分别由所属模块处理。
 
@@ -190,7 +191,7 @@ Hook 是函数与资格开关的不可变登记项，由对应领域或 Capabili
 
 Context 表达本次调用的数据与必要只读参数；Unit、Effect 和 State 都对应明确输入版本。内容先形成消耗后的新状态再进入同步嵌套，返回后从后继版本查询。候选范围属于调用期，不进入长期快照；Context 不通过可变 holder 或动态 getter 追踪当前世界。
 
-Aura 是宿主 Unit 上的 Effect，私有 State 保存目标登记与刷新进度，复用普通 Effect 的 onTick 与 scopes。目标选择、采样、离开与结束策略由具体 Definition 决定。完整 API 与案例见 [Effect 设计](effect.md)。
+Aura 是宿主 Unit 上的 Effect，私有 State 保存目标登记与刷新进度，复用普通 Effect 的 onTick 与 Lifetime 依赖。目标选择、采样、离开与结束策略由具体 Definition 决定。完整 API 与案例见 [Effect 设计](effect.md)。
 
 ## 工作事实、提交与时间
 

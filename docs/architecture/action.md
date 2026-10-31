@@ -261,7 +261,7 @@ export declare function clearCooldown<T extends Action<any, any>>(
 
 start 从当前 Action 检查配置对象身份、来源资格、execution 占用、Rule、Cooldown 和内容条件。未配置 Definition 属于调用／配置错误；普通拒绝不分配执行 ID 或开始周期。STARTED 表示已受理：start 通过 prepare 构造 E、登记本轮 Execution 并重置 Cooldown，首次 onTick 由独立的 advance 入口执行。返回的 Ref 标识本轮执行，使用时仍从最新 BattleState 确认其状态。
 
-start 内的局部 check 复用同一套准入规则，在 prepare 前检查，并在 prepare 成功后从接续的 BattleState 重新读取宿主与聚合条目，按最新周期再次确认准入，再以其结果登记。prepare 返回 null 时直接返回 CONDITION。回调使自身进入冷却时返回 COOLDOWN，保留已经发生的修改。仍可启动时才基于最新宿主一次写回该 Action 的新 Cooldown、Execution 和 nextExecutionId，保留持久 state、兄弟行动及其他能力的修改。
+start 内的局部 check 复用同一套准入规则，在 prepare 前检查，并在 prepare 成功后从接续的 BattleState 重新读取宿主与聚合条目，按最新周期再次确认准入，再以其结果登记。prepare 返回 null 时直接返回 CONDITION。回调使自身进入冷却时返回 COOLDOWN，保留已经发生的修改。仍可启动时才基于最新宿主一次写回该 Action 的新 Cooldown、Execution 和 nextExecutionId，保留持久 state、兄弟行动及其他能力的修改，并登记 Execution→Unit 的 Lifetime owner 关系。
 
 三类写入只接收已经计算好的结果值。setExecutionState 以 Execution Ref 指定本轮，只设置 execution.state；setState 与 setCooldown 以 Action Ref 指定持久行动，分别只设置持久 state 与 Cooldown。Core 从传入的最新 BattleState 读取当前聚合条目，只替换指定字段，保留其他字段、Definition、执行身份和生命周期；给定值与当前字段引用相同时返回原 BattleState。
 
@@ -269,7 +269,7 @@ start 内的局部 check 复用同一套准入规则，在 prepare 前检查，�
 
 单个 Action 的完整写回由文件私有 replaceAction 统一，通过底层 Actions.replace(definition, next) 提交已配对条目，信任已有宿主、Definition 与执行身份。start 仍将新 Cooldown、Execution 和 nextExecutionId 一次写回；refreshCooldowns 仍批量构造后一次提交，不改为逐条写回。生命周期变更由完整领域操作管理，内容只调用对应字段的更新操作。
 
-终止通过 Action 的 lifetime 请求：登记 Pending、发布 execution.ENDING，再按关系请求本轮依赖者。所有依赖者完整 Finalize 后，从当前存储取得配对 Execution 执行可选 onEnd，接续返回状态，清空同一 execution 并登记结束事件。首次请求固定 End 与依赖传播原因，重复请求不覆盖或重复收尾；整个 Finalize 返回后才解除 owner 等待。
+终止通过 Action 的 lifetime 请求：登记 Pending、发布 execution.ENDING，再按关系请求本轮依赖者。所有依赖者完整 Finalize 后，从当前存储取得配对 Execution 执行可选 onEnd，接续返回状态，清空同一 execution、注销本轮 Lifetime 关系并登记结束事件。首次请求固定 End 与依赖传播原因，重复请求不覆盖或重复收尾；整个 Finalize 返回后才解除 owner 等待。
 
 Unit 对 Execution 的所有权保护宿主到本轮整个 Finalize 返回。onEnd 内请求宿主离场会先使 Unit LEAVING，但 Unit 不会在该回调中途注销；不再保留宿主缺失时的通用 ending 回退。onEnd 返回后从最新状态读取配对 Action，再清空本轮 execution，保留回调修改的持久 state 与 Cooldown；不删除配置条目，也不清理后来执行。持久状态不隐含跨部署保存。
 

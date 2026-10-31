@@ -1,6 +1,6 @@
 # Deployment、Card 与 Unit 生命周期
 
-Deployment 管理 Card、供给、部署经济和完整部署操作；Deployable 保存场上实例的部署参数；Unit 生命周期操作协调登场、离场及领域清理。
+Deployment 管理 Card、供给、部署经济和完整部署操作；Deployable 保存场上实例的部署参数；Unit 生命周期操作派发生命周期节点，能力与领域自行接入清理。
 
 部署方向、手动资格、费用上限、特殊部署与卫戍接入仍有未完成设计，见相关段落及[待定事项](#后续需要定案的内容)。其目标接口不表示对应链路已经实现，逐项要求见 [Tactical 语义](tactical-semantics.md)。
 
@@ -12,7 +12,7 @@ Deployment 管理 Card、供给、部署经济和完整部署操作；Deployable
 | --- | --- | --- |
 | 场上实例的身份、位置与生命周期状态 | Unit | 局部不可变变换形成新 Unit |
 | Unit 的集合与占格 | Battlefield | 直接不可变操作完成登记、删除及空间／承载结构维护；阻挡关系由 Blocking 操作构造 |
-| 登场、退场及其连锁结算 | Unit 生命周期领域 | 完整领域函数接续 BattleState，协调 Action、Skill、Effect 等规则 |
+| 登场、退场及其连锁结算 | Unit 生命周期领域 | Unit 派发统一 Hook；能力自行接入，Lifetime 按已登记依赖完成析构 |
 | Card、库存、再部署进度及部署经济 | Deployment | 本领域转换维护场下记录和部署操作的后果 |
 | 倒地记录、自动再登场等模式规则 | 对应 Mechanism | 组合公开领域操作，保存模式事实 |
 | Tick 执行顺序 | battle/runtime.step | 直接调用领域操作并返回完整新 State |
@@ -49,11 +49,11 @@ battle/deployment/
 ├── deployment.ts       Definition、Input、State、初始化与局部 DP 转换
 ├── query.ts            Card、已用额度、当前地块与占格资格查询
 ├── resources.ts        Card 登记／写回及 Card、DP 时间推进
-├── lifecycle.ts        登记事件、退款、回卡与部署通知
+├── lifecycle.ts        Deployable prepare／leave Hook 与部署通知
 └── operations.ts       完整部署、撤退与 Command 处理
 ```
 
-上层通过两个领域各自的 index 导入公共契约。lifecycle.ts 不依赖 battle/unit.ts 或完整部署命令，Unit 生命周期可以直接调用登记、退款与回卡协作，部署操作可以在 add 返回后通知；现有事件与清理顺序保持不变。resources.ts 的 updateCard 是内部完整写回，不从公共 index 导出。
+上层通过两个领域各自的 index 导入公共契约。Deployable.initialize 自行登记 lifecycle.ts 提供的 prepare／leave Hook，分别负责退款与回卡；Unit 不依赖 Deployment。实际部署由 operations.ts 记录 UNIT_DEPLOYED，并在 add 返回后派发部署通知，Unit.add 不推断是否发生部署。resources.ts 的 updateCard 是内部完整写回，不从公共 index 导出。
 
 ```typescript
 // unit/capability/deployable/capability.ts
@@ -234,7 +234,7 @@ type DeploymentCommand =
 
 Unit 只保存 PRESENT／LEAVING；注册前和删除后通过战场中不存在该实例表达，不增加一组出生、死亡、回收中间状态。
 
-Unit Definition 必填 hooks 数组，没有生命周期程序时显式传入 []。Unit 实例的 hooks 保存本次装配后的统一序列，初始化先登记能力提供的 Hook，再按 Definition 中的原顺序登记内容 Hook；程序对象可以共享，原 Definition 的身份与 hooks 不变。目前 Skill 能力自动登记自己的 enter Hook，不增加另一套入场阶段或优先级协议。
+Unit Definition 必填 hooks 数组，没有生命周期程序时显式传入 []。Unit 实例的 hooks 保存本次装配后的统一序列，初始化先登记能力提供的 Hook，再按 Definition 中的原顺序登记内容 Hook；程序对象可以共享，原 Definition 的身份与 hooks 不变。能力初始化自行登记所需 Hook：Skill 接入 enter，Deployable 接入 prepare／leave，Blocker 或 Blockable 将自身 prepare 清理放在序列前部；随后追加内容 Hook。Unit 不枚举能力或调用其专属操作。
 
 ```typescript
 // unit/hook.ts：只声明 Unit 的阶段类型
@@ -246,11 +246,15 @@ export interface TickHook extends TacticalHook<Unit, void> {
     readonly stage: "tick";
 }
 
+export interface PrepareHook extends TacticalHook<Departure, void> {
+    readonly stage: "prepare";
+}
+
 export interface LeaveHook extends TacticalHook<Departure, void> {
     readonly stage: "leave";
 }
 
-export type Hook = EnterHook | TickHook | LeaveHook;
+export type Hook = EnterHook | TickHook | PrepareHook | LeaveHook;
 
 // unit/unit.ts
 export interface Definition {
@@ -271,11 +275,13 @@ export interface Departure {
 
 TacticalHook 是 core/hook.ts 的通用 Hook<C, T>。该模块集中既有 Hook 类型、dispatch 和 set／remove 数组操作；unit/hook.ts 仅声明阶段类型，battle/unit.ts 直接调用通用 dispatch。Effect、Skill、Mechanism 等领域自身的回调契约不因 Unit 的调整改变。
 
-enter 是本次场上实例的登场节点。battle/unit.add 完成登记与适用的部署记录后，筛选实例 hooks 中的 enter Hook，按登记顺序调用通用 dispatch；不单独识别 Skill。Skill 的 enter Hook 负责登记技力回复监听、执行 Skill Definition.onEnter，并尝试发动 PASSIVE 技能，属于同一次派发。advance 在阶段开始时固定 Unit 候选，轮到单位时读取最新 PRESENT 实例并派发实例 hooks 中的 tick Hook；本轮新登场的单位下次参与。
+enter 是本次场上实例的登场节点。battle/unit.add 完成登记后，筛选实例 hooks 中的 enter Hook，按登记顺序调用通用 dispatch；不单独识别 Skill。Skill 的 enter Hook 负责登记技力回复监听、执行 Skill Definition.onEnter，并尝试发动 PASSIVE 技能，属于同一次派发。advance 在阶段开始时固定 Unit 候选，轮到单位时读取最新 PRESENT 实例并派发实例 hooks 中的 tick Hook；本轮新登场的单位下次参与。
 
 每次派发固定该阶段 Hook 的候选与 Context。enter／tick 的 Context 是开始派发时的 Unit，后续 Hook 仍接收同一对象；BattleState 则逐项接续最新版本。每项执行前检查宿主仍为 PRESENT，嵌套操作导致离场后停止剩余 enter／tick Hook。需要当前 Unit 属性时，从返回的最新 BattleState 查询，不将固定 Context 当作持续更新的对象。
 
-leave Hook 在本次实例完成清理、注销和 Card 回收之后派发，顺序与原离场业务节点一致。固定 Context 是 Departure；Departure.unit 是开始离场、尚未清空 Skill／Effect 前捕获的不可变 Unit，不以清理后的 Unit 替换它，也不在注销后重新查询已不存在的宿主。内容可以读取原 SP 或位置，并修改当前 Card、生成新对象。这个旧值不复制，也不作为整个旧 Unit 持久存入 Card。leave 不以宿主仍在场作为派发资格。
+prepare 在 LEAVING 发布后、自动请求子依赖之前派发。Blocking Hook 先批量解除自身关系，Blockable 同时取消自己的 adjustment；Deployable Hook 随后按最新 Unit 与结束原因退款。prepare／leave 的固定 Context 均为 Departure，记录开始离场、尚未清理 Skill／Effect 的 Unit 与 reason；不把这个历史对象整体写回。
+
+leave 在全部子依赖完整析构、Unit 物理注销与登记变化通知后派发。Deployable 自身的 leave Hook 回收 Card，随后内容 Hook 可以读取 Departure 中的原 SP 或位置并修改当前 Card、生成新对象；不查询已删除的宿主，也不保存整个旧 Unit 作为 Card 初态。leave 不以宿主仍在场作为派发资格。
 
 旧 Unit 的静态／采样数据可直接读取；依赖当时全场的动态有效值须在清理前求出。不能将旧 Unit 与新 BattleState 混合后声称查到了离场前的动态属性。Effect 的结束业务仍在自己的 onDisable／onEnd 时点执行，不把全部退场业务搬进最后的 leave Hook。
 
@@ -283,7 +289,7 @@ leave Hook 在本次实例完成清理、注销和 Card 回收之后派发，顺
 
 ### Deployable：对实际部署的观察
 
-Deployable 复用 Unit 的 enter／leave 生命周期节点；实际部署通过 deployedHooks 通知观察者。
+Deployable 复用 Unit 的 prepare／leave 生命周期节点；实际部署通过 deployedHooks 通知观察者。
 
 动态部署观察保存在所属 Unit 的 deployable.deployedHooks 中。Deployable 提供接入点，具体 Effect／技能内容登记闭包；Deployment 结算负责通知，聚合 State 不另存全局 Hook 集合。
 
@@ -313,11 +319,12 @@ Deployed 是已发生部署的输入事实，unit 取自本次登记完成时的
 普通部署的顺序是：
 
 ```text
-接纳部署，完成本次应有的 Card／DP 消费与关联
-→ 初始化并登记 Unit，发布 Lifetime／Occupancy，不扫描全场 Blocking
-→ 捕获本次 Deployed 事实
-→ Unit 的 enter Hook：接入实例内容与规定的入场业务
-→ 依次执行 deployedHooks
+接纳部署，初始化本次 Unit 并附加 Card 关联
+→ 提交本次 Card／DP 消费，记录 UNIT_DEPLOYED
+→ 登记 Unit，发布 Occupancy，不扫描全场 Blocking 或能力槽位
+→ Unit 的 enter Hook：接入实例内容与规定的入场业务，各领域自行登记 Lifetime 关系
+→ registrationChanged 观察通知：Occupancy 处理承载变化
+→ Deployment 以本次 Unit 事实派发 deployedHooks
 → 返回部署结果
 ```
 
@@ -328,41 +335,38 @@ Unit 的 enter Hook 可以同步触发退场，部署通知仍表示此前已发
 ```text
 首次接受离场，捕获 Departure 与明确采样数值
 → 登记 PREPARING，发布 LEAVING
-→ 明确调用 Blocking.release，释放本 Unit 的全部入向与出向关系并同步通知
-→ Prepare 按本次原因及标记发布／Blocking Hook 返回后的最新 Unit 返费
-→ 按 Skill、Action、Burst、Effect 的所有权顺序请求子项
+→ 统一 prepare Hook：Blocking 先解除关系并通知，Deployable 随后按最新 Unit 返费
+→ 按关系登记顺序请求 owner／显式依赖子项
 → 等待全部真实依赖者整个 Finalize 返回
 → Unit Finalize 从当前状态注销、记录移除事实，完成占格发布；不追加全场阻挡扫描
-→ 关联 Card 的回收／库存／冷却／费用进度结算
-→ Unit 的 leave Hook（初始 Departure）
-→ 模式 Mechanism 的离场响应
+→ registrationChanged 观察通知：Occupancy 处理承载变化
+→ Unit 的 leave Hook：Deployable 回收 Card，再执行内容 Hook（初始 Departure）
+→ 全局 leave 观察通知：Mechanism 等自行登记的响应
 → 整个 Unit Finalize 返回，移除 Pending，完成本次离场工作
 ```
 
 Departure.unit 保存开始离场时、尚未清理 Skill／Effect 的不可变 Unit，作为本次业务结束输入随 Pending 保留；它不是通用 Context 或最后可得实例回退。动态属性若需要离场前的全场采样，应在清理前按业务明确取得。注销和移除记录使用清理后最新 Unit，不能用 Departure.unit 覆盖当前状态。返费在标记发布及 Blocking Hook 后从最新 Unit 求值，在 Card 费用进度更新之前发生，不把 Departure.unit 当作实时退款依据。
 
-Unit 不再手工依次调用各领域 cancel 或 Effect 递归清理。所有权边来自 Unit 当前 Execution、Activation、Burst 和 Effects；显式 Scope 关系与它们共同决定完成顺序。每个领域仍负责自己的结束内容、数据写回和事件，公共运行器不解释其私有状态。
+Unit 不点名 Blocking、Deployment、Skill、Action 或 Effect。能力通过统一 Hook 接入业务，拥有关系由各领域的完整创建／启动与结束操作登记／注销，Lifetime 图是唯一关系权威；Unit 不扫描能力槽位。每个领域负责自己的结束内容、数据写回和事件，公共运行器不解释其私有状态。
 
 ### 离场清理的偏序
 
 请求顺序和完成顺序分别确定：
 
 ```text
-Unit 请求：LEAVING → 明确释放自身阻挡关系 → 返费
+Unit 请求：LEAVING → prepare Hook（Blocking 清理 → Deployable 退款 → 内容）
         │
-        ├── 请求 Skill 及依赖
-        ├── 请求 Action 及依赖
-        ├── 请求 Burst 及依赖
-        └── 请求 Effect 与外部显式依赖者
+        ▼
+按关系登记顺序请求直接依赖者
         │
         ▼
 各子项完成整个 Finalize（含 onEnd、槽位结算、末尾通知）
         │
         ▼
-Unit Finalize：注销 → Card 回收 → leave Hook → 机制响应
+Unit Finalize：注销 → registrationChanged → leave Hook（含回卡）→ 全局 leave
 ```
 
-owned 子候选按上述顺序，Action 内仍按 executionId 数值排序，Effect 使用容器已有 ID 登记顺序，不重复排序；scoped 在 owned 后，显式依赖 Effect 按 hostId／effectId 数值排序。兄弟可以都先成为 ENDING，前一个兄弟的结束程序不能假设后一个仍在运行。同一依赖者被多个目标请求时复用首次 Pending，End 与传播原因不被后续请求覆盖。
+直接子候选按父子边的登记顺序，不区分能力种类或 owner／显式 Scope；更新已有边保序，解绑后重绑追加。真实依赖仍优先完成，不为无依赖兄弟设置能力优先级。兄弟可以都先成为 ENDING，前一个兄弟的结束程序不能假设后一个仍在运行。同一依赖者被多个目标请求时复用首次 Pending，End 与传播原因不被后续请求覆盖。
 
 Pending 在整个 Finalize 返回前存在。子实例已注销但仍在派发末尾 Hook 时，其 parents 仍让 Unit 等待；不能用对象已从容器消失推断其结束内容全部完成。Unit 的物理删除仍由所属领域 Finalize 执行，公开 Battlefield.remove 只承担纯存储职责。
 
@@ -372,7 +376,7 @@ Effect.onEnd 内请求宿主离场，嵌套 remove 会标记 LEAVING、同步执
 
 LEAVING 宿主与 Pending／ENDING 目标不能接受新的真正依赖；空间查询和普通业务资格不能只检查 get 非空。其他 Unit 上只有 source、未绑定生命周期的独立效果仍可保留。结束中的合法清理字段仍按各自 API 写入，跨完整操作后接续最新状态；异常直接传播，不补做剩余 Finalize。
 
-模式观察可由 Mechanism Definition 提供 `onUnitLeave(battle, self, departure) → BattleState`，无需另建生命周期容器或事件总线。模式响应位于该 Unit 的 leave Hook 之后，自动再登场因此能读取完成跨部署资源转换的 Card。模式若有更早就必须成立的倒地／资格约束，应在对应业务步骤显式维护，不能把正确性寄托于末尾观察通知。正常模式响应仍可继续产生后续业务。
+BattleState.unitHooks 保存 registrationChanged 与 leave 的全局观察登记，由 battle/unit-hook.ts 按通用 Hook 协议派发。Runtime 初始化时登记 Occupancy 的 registrationChanged 观察者；Mechanism 创建时为 onUnitLeave 登记 leave 观察者，结束时撤销，派发时确认当前 Mechanism 的 ACTIVE 资格。Unit 只发通用通知，不导入这些消费者。模式响应位于 Unit 的本地 leave Hook 之后，自动再登场可读取已完成跨部署资源转换的 Card。更早就必须成立的倒地／资格约束仍由对应业务步骤维护。
 
 HP 归零、复活与真实离场分别处理；成功复活不执行 Unit 的 leave Hook。直接更新位置不重新执行 Unit 的 enter Hook，也不广播部署。特殊撤退—再部署与其原因、状态继承和通知政策尚待实际内容实现，本轮不预设一套移动流程。
 

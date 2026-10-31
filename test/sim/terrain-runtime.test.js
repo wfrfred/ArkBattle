@@ -110,7 +110,7 @@ test("infection re-entry and crossing differently configured tiles keep the acti
     battle = at(battle, 2);
     assert.equal(effect(battle).id, installed.id);
     assert.equal(effect(battle).data.nextTick, 30);
-    assert.deepEqual(effect(battle).scopes, [{ type: "TICK", tick: 65 }]);
+    assert.equal(effect(battle).deadline, 65);
     battle = through(battle, 3, 30);
     assert.equal(current(battle).vitality.hp, 920, "existing infection retains its sampled damage");
 });

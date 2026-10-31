@@ -10,7 +10,7 @@ function instance(id, definition, data = definition.initialize(), host = { id: 0
         definition,
         data,
         source: null,
-        scopes: [],
+        deadline: null,
         enabled: true,
         status: "ACTIVE",
     };
