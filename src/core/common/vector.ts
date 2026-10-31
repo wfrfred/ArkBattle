@@ -26,6 +26,10 @@ export const Vec2 = {
         return [v[0] * factor, v[1] * factor];
     },
 
+    lerp(from: Vec2, to: Vec2, progress: number): Vec2 {
+        return [from[0] + (to[0] - from[0]) * progress, from[1] + (to[1] - from[1]) * progress];
+    },
+
     length(v: Vec2): number {
         return Math.hypot(v[0], v[1]);
     },

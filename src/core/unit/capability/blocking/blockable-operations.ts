@@ -14,6 +14,7 @@ import { TICKS_PER_SECOND } from "../../../tick.js";
 import * as units from "../../query.js";
 import { isSpatiallyPresent } from "../presence/capability.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
+import { Vec2 } from "../../../common/vector.js";
 
 const POSITION_ADJUSTMENT_TICKS = 0.2 * TICKS_PER_SECOND;
 
@@ -62,12 +63,7 @@ export function advancePosition(
 
     const progress = Math.min(1, (battle.tick - adjustment.startTick) / POSITION_ADJUSTMENT_TICKS);
     let position: WorldPosition =
-        progress === 1
-            ? adjustment.to
-            : [
-                  adjustment.from[0] + (adjustment.to[0] - adjustment.from[0]) * progress,
-                  adjustment.from[1] + (adjustment.to[1] - adjustment.from[1]) * progress,
-              ];
+        progress === 1 ? adjustment.to : Vec2.lerp(adjustment.from, adjustment.to, progress);
     if (position[0] === self.position[0] && position[1] === self.position[1]) {
         position = self.position;
     }
