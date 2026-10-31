@@ -104,16 +104,16 @@ test("query origins and swept shapes need no source unit and may lie outside the
     assert.deepEqual(contactIds(sweep(state.battlefield, box(0.2, 0.2), [-6, 0], [-2, 0])), [1]);
 });
 
-test("sweep returns first contact fractions ordered by distance then unit ID", () => {
+test("sweep orders contact fractions and retains registration order for equal contacts", () => {
     const far = target(9, [8, 0], { hitbox: { shape: circle(0.5) } });
     const nearHighId = target(7, [3, 0], { hitbox: { shape: circle(0.5) } });
     const nearLowId = target(2, [3, 0], { hitbox: { shape: circle(0.5) } });
     const state = battle(far, nearHighId, nearLowId);
     const contacts = sweep(state.battlefield, circle(0.5), [0, 0], [10, 0]);
 
-    assert.deepEqual(contactIds(contacts), [2, 7, 9]);
+    assert.deepEqual(contactIds(contacts), [7, 2, 9]);
     assert.deepEqual(contacts.map((contact) => contact.fraction), [0.2, 0.2, 0.7]);
-    assert.equal(units.get(state, contacts[0].target), nearLowId);
+    assert.equal(units.get(state, contacts[0].target), nearHighId);
 });
 
 test("sweep intersects the continuous path and includes tangency", () => {

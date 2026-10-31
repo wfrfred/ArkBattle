@@ -279,7 +279,7 @@ Unit 对 Execution 的所有权保护宿主到本轮整个 Finalize 返回。onE
 
 Runtime 采用以下候选政策：
 
-1. 固定本轮 Unit 候选及每个宿主当时的执行 Ref，Unit 按 ID 排序。宿主离场由完整离场操作终止其执行，不保存脱离宿主的孤立 Execution。
+1. 按 Unit 登记顺序一次物化本轮候选及每个宿主当时的执行 Ref，保留调度入口的完整快照。宿主离场由完整离场操作终止其执行，不保存脱离宿主的孤立 Execution。
 2. 对每个 Unit，先推进原有执行，再刷新 Cooldown；刷新返回后重新读取来源，仍为 PRESENT 且空间在场时才运行 select，已经离场或隐藏则跳过。
 3. select 返回本轮候选 Definition ID 及接续状态，可以表达优先级、随机选择和具体模式政策；未提供时从 Actions.keys() 取得全部配置项。
 4. 候选去重后逐一通过 Actions.get(id) 取得条目及其 Definition，再构造持久 Action Ref 调用 start，每次读取最新来源与配置。列表顺序不代表引擎赋予的业务优先级。

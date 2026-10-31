@@ -350,11 +350,8 @@ export function search(battle: BattleState, reference: Ref<Unit & Blocker>): Bat
             .map((target) => ({
                 reference: units.ref(target),
                 distance: Vec2.distanceSquared(blocker.position, target.position),
-            }))
-            .toArray(),
-    ].sort(
-        (left, right) => left.distance - right.distance || left.reference.id - right.reference.id,
-    );
+            })),
+    ].sort((left, right) => left.distance - right.distance);
 
     for (const candidate of candidates) {
         battle = acquire(battle, reference, candidate.reference);

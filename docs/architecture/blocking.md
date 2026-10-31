@@ -15,7 +15,7 @@ Blocker／Blockable 的数值与能力 Change 工厂见 [Capability API](capabil
 3. **普通搜索每 Tick 在 Movement 后的固定 Blocking Step 统一执行。** advance() 在本阶段开始时固定 Blocker 候选 Ref，按枚举顺序逐个调用 search()，每项接续最新 BattleState 并检查当前资格。不保存独立搜索周期或周期计数；阶段内新建的 Blocker 等待下一 Tick 的普通搜索。一次普通阶段不反复全场搜索到关系稳定。
 4. **Release、容量裁撤和失效清理同步完成。** 相关事实变化后，必要的既有关系维护必须在完整操作返回前完成，不能等待普通搜索阶段。释放关系不自动附带普通 Acquire；有空余容量且附近仍有未接敌目标，可以是合法的返回状态。
 5. **阻挡变化同步通知，后继读取最新状态。** 取得关系先确定 Blockable 端的唯一归属，再分别通知双方；字段写入顺序与 Hook 顺序分别定义，不要求双端在所有内部阶段同时更新。普通自主移动由 Movement 在 Route 推进后查询当前关系决定是否执行，不继续同步 Blocking 专用 Locomotion Rule；阻挡不停止 Route 等待及即时指令，也不禁止强制位移。每次回调返回后接续其 BattleState；后续依赖阻挡者、目标、关系、资格或容量时重新读取，不用旧 Unit、旧关系或旧 remaining 覆盖嵌套修改。Hook 可同步解除关系、改变容量或使单位离场。
-6. **普通搜索与显式取得分开。** 具体内容需要立即搜索时调用 search，需要尝试取得指定双方时调用 acquire；不以每 Tick 去重吞掉合法的额外操作。search() 只固定开始时按距离、目标 ID 排序的候选 Ref 数组，不按起始容量预选接敌名单或冻结容量预算。每次 acquire() 从最新 BattleState 检查双方资格、目标当前阻挡关系及容量。Hook 增容可以使后续候选在本次搜索接敌，减容可以使后续尝试失败；新增单位不加入本次候选。关系变化以最新状态为准，不重复建立已被提前取得的关系，也不重新收集或重排候选。
+6. **普通搜索与显式取得分开。** 具体内容需要立即搜索时调用 search，需要尝试取得指定双方时调用 acquire；不以每 Tick 去重吞掉合法的额外操作。search() 只固定开始时按距离稳定排序的候选 Ref 数组，同距离保留 Unit 登记顺序，不按起始容量预选接敌名单或冻结容量预算。每次 acquire() 从最新 BattleState 检查双方资格、目标当前阻挡关系及容量。Hook 增容可以使后续候选在本次搜索接敌，减容可以使后续尝试失败；新增单位不加入本次候选。关系变化以最新状态为准，不重复建立已被提前取得的关系，也不重新收集或重排候选。
 7. **先稳定语义，再优化性能。** 不为提前减少复制、扫描或通知而改变以上结算与可见性契约。
 
 这里的“返回状态自洽”要求存储、索引、关系合法性和移动约束一致，不要求所有可能的新关系都已经建立。同步业务维护由完整 BattleState 操作承接，不把任意内容程序塞进只接收 BattlefieldState 的存储转换。
@@ -166,7 +166,7 @@ export function search(
 
 advance() 在每 Tick 的统一 Blocking 阶段固定 Blocker 候选 Ref，按 Unit 登记顺序逐个调用 search()。每次调用接续最新 BattleState；本阶段中新建的 Blocker 不加入普通阶段候选，但可以通过明确业务调用 search()。
 
-search() 固定的是开始时的候选 Ref 数组及其距离／ID 顺序，执行方式如下。canSearch、findCandidates 是内部职责的示意名称，不另建框架；acquire 是同一公开取得操作。
+search() 固定的是开始时按距离稳定排序的候选 Ref 数组，同距离保留 Unit 登记顺序，执行方式如下。canSearch、findCandidates 是内部职责的示意名称，不另建框架；acquire 是同一公开取得操作。
 
 ```typescript
 const blocker = units.get(battle, blockerRef);

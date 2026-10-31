@@ -64,8 +64,5 @@ export function sweep(
         }))
         .filter((contact): contact is Contact => contact.fraction !== null);
 
-    return sort(
-        contacts,
-        (left, right) => left.fraction - right.fraction || left.target.id - right.target.id,
-    );
+    return sort(contacts, (left, right) => left.fraction - right.fraction);
 }

@@ -172,7 +172,7 @@ Locomotion 保存移速贡献，运动阶段读取当前有效速度后再乘运
 
 Blocker Definition 保存基础容量，State 保存 ADD／ZERO 容量贡献，由 Blocking 按领域公式求值。能力写入统一返回 Change，层／Rule／容量／volume 的结算按作用范围维护关系；Hook Change 没有关系后继。Unit.update 只接收 Change[]，先纯转换全批、一次发布数据与 Lifetime／Occupancy，再按原顺序结算；内部 replace 信任 Core 完整对象，不从字段差异构造、校验或通知 Blocking。setLayer 的 transform 改 layer／radius，settle 只解除 previous 中仍存在的旧出向 Ref，不回填旧 Unit。关系操作局部维护受影响 owner，移动只复核本 Unit，显式 Tile 更新保留全场维护；嵌套局部操作不裁撤无关 Blocker，真实同 owner 交叠使用最新事实。新取得要求存活，旧关系不因临时 HP 为 0 失效；Damage 在 HP Applied 后仍应死亡才请求 Unit.remove。离场先发布 LEAVING、显式释放自身关系，add／Finalize 不全场扫描。
 
-普通搜索每 Tick 在 Movement 后的固定 Blocking Step 中统一执行，不保存独立搜索周期，不因每次 Unit 更新全局搜索，不重构 Combat／Movement 模拟 Unity UID OnTick。显式立即搜索用于有真实需求的业务，不因本 Tick 已执行普通搜索而被拒绝。单次搜索固定开始时按距离、目标 ID 排序的候选 Ref 数组，逐项按最新资格、关系及容量尝试，不预选接敌名单或冻结起始预算；Hook 增容允许后续候选在本轮接敌，新单位不加入候选。该政策有意区别于原生预算预选，可能产生持续的关系分配差异。其余资格、容量及副作用按原生证据核对，固定阶段改变的接敌结果按对照测试评价；不以“只是一个 Tick”预先接受，也不为复刻内部调度引入全场多轮收敛。性能优化在语义稳定后进行。完整约定见 [Blocking 职责与调度政策](blocking.md#已确定的职责与调度政策)。Blockable 的阻挡消耗独立于容量、推拉重量和物理质量。
+普通搜索每 Tick 在 Movement 后的固定 Blocking Step 中统一执行，不保存独立搜索周期，不因每次 Unit 更新全局搜索，不重构 Combat／Movement 模拟 Unity UID OnTick。显式立即搜索用于有真实需求的业务，不因本 Tick 已执行普通搜索而被拒绝。单次搜索固定开始时按距离稳定排序的候选 Ref 数组，同距离保留 Unit 登记顺序，逐项按最新资格、关系及容量尝试，不预选接敌名单或冻结起始预算；Hook 增容允许后续候选在本轮接敌，新单位不加入候选。该政策有意区别于原生预算预选，可能产生持续的关系分配差异。其余资格、容量及副作用按原生证据核对，固定阶段改变的接敌结果按对照测试评价；不以“只是一个 Tick”预先接受，也不为复刻内部调度引入全场多轮收敛。性能优化在语义稳定后进行。完整约定见 [Blocking 职责与调度政策](blocking.md#已确定的职责与调度政策)。Blockable 的阻挡消耗独立于容量、推拉重量和物理质量。
 
 ## Effect、Hook 与生命周期
 

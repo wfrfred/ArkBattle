@@ -38,7 +38,7 @@ export function sweep(
 
 within 检查 Unit.position 是否在 Range 内，不要求 Hitbox，也不使用 Hitbox 的 offset 替代单位位置。overlap 检查 Range 与目标 Hitbox 的相交，使用 Unit.position 作为目标 Shape 的原点。Range 是 Shape 数组表示的并集；空 Range 不匹配任何对象。
 
-sweep 检查单个 Shape 沿 from 到 to 线性平移时，与各目标静态 Hitbox 的首次接触。fraction 在 [0, 1] 内，初始重叠或相切为 0；坐标分量相等时退化为静态相交。结果按 fraction 升序、相等时 Unit ID 升序。它不计算目标在 Tick 内的运动轨迹。
+sweep 检查单个 Shape 沿 from 到 to 线性平移时，与各目标静态 Hitbox 的首次接触。fraction 在 [0, 1] 内，初始重叠或相切为 0；坐标分量相等时退化为静态相交。结果按 fraction 稳定升序排列，相等时保留 Unit 登记顺序。它不计算目标在 Tick 内的运动轨迹。
 
 三种查询只纳入 lifecycle 为 PRESENT 且 isSpatiallyPresent 的 Unit，不检查 HP、阵营、Targetable 或 Effect 免疫。overlap 和 sweep 要求 Hitbox，within 不要求。LEAVING 宿主在清理回调期间仍能通过 units.get 读取，但不再参与新的空间集合查询。
 

@@ -27,7 +27,7 @@ test("Field and Unit updates do not acquire blocking before an explicit search",
     assert.equal(ownerId(original), undefined);
 });
 
-test("advance searches blockers in registration order; each search sorts distance then target ID", () => {
+test("advance searches blockers in registration order; equal-distance targets retain registration order", () => {
     let battle = fixture([
         holder(10, { position: [1, 1], capacity: 2 }),
         target(23, { position: [1.5, 1] }),
@@ -36,8 +36,8 @@ test("advance searches blockers in registration order; each search sorts distanc
         target(21, { position: [1.25, 1] }),
     ]);
     battle = blocking.advance(battle);
-    assert.deepEqual(blockedIds(battle, 10), [21, 22]);
-    assert.deepEqual(blockedIds(battle, 5), [23]);
+    assert.deepEqual(blockedIds(battle, 10), [21, 23]);
+    assert.deepEqual(blockedIds(battle, 5), [22]);
 });
 
 test("without configured Rules, blocking does not depend on either endpoint's allegiance", () => {

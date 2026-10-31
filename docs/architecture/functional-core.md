@@ -129,7 +129,7 @@ step(battle, commands)
     └─ 返回 State，由调用方接续
 ```
 
-Tick 的执行顺序在 step() 中直接可读。领域函数负责各自的纯结算；函数式契约不要求再建立一个完整的 Tick 入口或执行文件。
+Tick 的执行顺序在 step() 中直接可读。Combat、Movement 与路线完成检查沿 Unit Query 的登记顺序固定本轮候选；Combat 同时物化各宿主当时的 Execution Ref，随后逐项接续最新 BattleState，不把候选查询延迟到业务执行期间。领域函数负责各自的纯结算；函数式契约不要求再建立一个完整的 Tick 入口或执行文件。
 
 函数内部用局部 `let state` 顺序接续，调用方用 `battle = step(battle, commands)` 保存结果，不重放操作或已执行的回调。函数抛出时输入值仍完整保留；没有额外提交、发布或回滚协议。
 
