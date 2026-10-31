@@ -85,7 +85,7 @@ Contribution 提供参与计算的数值影响，不结算配置切换、清空 
 
 实际需求包括：琳琅诗怀雅的金币配置切换、玛露西尔的容量／最低门槛／逐次支付分离，以及 Fever 的发动政策。这些干员的完整内容接入仍需逐项完成。本轮不新增运行时 SP 配置切换 API、独立配置状态机或 Definition 回调。后续确需动态查询有效容量等参数时，由类型化 Definition 的领域回调解释已有玩法 state；跨次事实归 Skill.state，本轮事实归 Activation.state，不更换共享 Definition 对象以免破坏 Skill Ref 身份。容量变化时如何处理余额、获取许可与退出恢复仍由明确操作结算，不在纯查询中偷偷写入，也不另存一份 SP.value。
 
-Recovery 为 TIME、ACTION、HIT 或 NONE。EXTERNAL 是资源操作的来源，普通 Action 的启动、推进和结束不会自动授予 SP。具体普通行动在成功释放点调用 Action.released，Skill.enter 登记相应监听并调用自己的 recover；被拦截或取消的释放不产生通知。
+Recovery 为 TIME、ACTION、HIT 或 NONE。EXTERNAL 是资源操作的来源，普通 Action 的启动、推进和结束不会自动授予 SP。具体普通行动在成功释放点调用 Action.released，Skill 的 enter Hook 登记相应监听并调用自己的 recover；被拦截或取消的释放不产生通知。
 
 | 操作 | 契约 |
 | --- | --- |
@@ -133,9 +133,11 @@ AMMO 描述资源和耗尽结束政策，不代表所有“弹药类技能”加
 
 Operation（STOP／RETRIGGER）归领域 activation.ts，由 unit/skill/index.ts 导出；Capability 的 rule.ts 只引用该类型。Rule 只有 allowsActivation、allowsOperation、allowsRecovery。它们提供额外业务许可；内部完成、到期结束及宿主离场清理不受主动操作 Rule 否决。
 
-activate 要求宿主 PRESENT、空间在场，具有 Vitality 时 HP 大于零；operate 则保留 PRESENT、同一 Activation ACTIVE 与 Rule 准入，不附加空间或 HP 条件。当前 Activation 已存在时，内部信任对应 Activation Definition 已配置。Skill.enter 在登记回复 Hook 的完整操作后，重新确认宿主仍为 PRESENT 才执行 onEnter。持久 Skill.onTick 按 PRESENT 推进，Activation.onTick 另要求本轮 ACTIVE；它们不自动采用自然 SP 回复的暂停条件。已有技能的 STOP／RETRIGGER、计时或内部进度可以在不具备新发动资格时继续，这是各入口明确的规则选择，不合并为通用 available。
+activate 要求宿主 PRESENT、空间在场，具有 Vitality 时 HP 大于零；operate 则保留 PRESENT、同一 Activation ACTIVE 与 Rule 准入，不附加空间或 HP 条件。当前 Activation 已存在时，内部信任对应 Activation Definition 已配置。Skill 的 enter 是普通 Unit EnterHook，装配 Skill 能力时自动登记到实例 hooks；Unit.add 按统一注册序派发，不再特殊调用。该 Hook 从最新 BattleState 读取宿主，先登记回复监听，再执行 Definition.onEnter，最后重新读取仍为 PRESENT 的宿主并尝试发动 PASSIVE 技能；onEnter 同步移除宿主后不发动。与其它 Unit Hook 一样，本次派发的 Context 固定，后继需要当前 Skill／HP 时重新查询 BattleState。持久 Skill.onTick 按 PRESENT 推进，Activation.onTick 另要求本轮 ACTIVE；它们不自动采用自然 SP 回复的暂停条件。已有技能的 STOP／RETRIGGER、计时或内部进度可以在不具备新发动资格时继续，这是各入口明确的规则选择，不合并为通用 available。
 
 Hook 登记仅使用 capability/skill 的 `setHook(reference, key, hook): Change`／`removeHook(reference, key, id): Change`，Key 与事件载荷保持类型配对；由 Unit.update 登记，不再返回局部 State 或为每个事件提供同义专名 setter。Rule 和 Ammo 贡献同样绑定 Skill Capability Ref 返回 Change；精确私有 state 写回、SP 消费、激活与结束操作维持原协议。
+
+enter Hook 仅供 Unit 装配内部登记，Skill 公共入口不再导出可直接调用的 enter 操作；完整入场由 battle/unit.add 负责。
 
 除持久初始化外，Definition 与 Activation Definition 的内容回调都显式接收 source 为第二参、聚合 self 为第三参。Definition.onEnter／onTick 和 Activation Definition.initialize／accepts／cost 接收 Skill<S, A>；onStart／onTick／onOperation／onEnd 接收 activation 非空的 Activation<S, A>，Operation 或 End 为第四参。Activation.initialize 只构造本轮 A；持久 Definition.initialize 则接续 Result<S>。STOP 与 RETRIGGER 交给内容程序处理，未提供 onOperation 时 STOP 默认正常结束。
 
@@ -166,7 +168,7 @@ interface ActivationEnded {
 
 不提供通用 changed、阈值注册表或充能状态机。资源事件携带本次结算前后事实；阈值观察者订阅相关业务 Hook。每次派发独立固定候选 ID，逐项按 ID 读取最新登记并执行最新 accepts／invoke；同 ID 替换在本轮使用新版本，新 ID 等待下次派发，嵌套报告不会重写外层事实。
 
-HIT 回复由 Skill.enter 在 Damage 的 receivingStarted 扩展点登记，发生在接收准入后、Receiving Hook 和 HP 扣减前。Skill 自行监听受击事实并执行回复，Damage 与 Vitality 不依赖 Skill。
+HIT 回复由 Skill 的 enter Hook 在 Damage 的 receivingStarted 扩展点登记，发生在接收准入后、Receiving Hook 和 HP 扣减前。Skill 自行监听受击事实并执行回复，Damage 与 Vitality 不依赖 Skill。
 
 ## 5. 发动与完整结束
 

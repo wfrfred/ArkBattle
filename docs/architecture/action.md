@@ -305,7 +305,7 @@ beforeRelease(battle, executionRef) 返回 CONTINUE 或 INTERRUPT／recoveryTick
 
 释放 Hook 返回后，普通攻击进入输出前重新确认本轮 execution.RUNNING 及宿主在场资格；已经完成输出后的消耗按实际业务和采样身份处理。不能把所有跨领域调用后的检查都机械化为同一个存活门槛。
 
-普通攻击通过拦截后写入 ACTION_RELEASED，再调用 released 通知，随后从最新执行取得本次输出载荷。Skill.enter 通过该扩展点登记 ACTION 回复，通用 Action 调度器不自动通知或授予 SP。普通攻击本身不读取 Skill；content/actions/skill.ts 的组合器在本轮创建时采样 typed Activation Ref，在 afterOutput 调用 consume／check。旧攻击不消耗／结束新的 Activation。
+普通攻击通过拦截后写入 ACTION_RELEASED，再调用 released 通知，随后从最新执行取得本次输出载荷。Skill 的 enter Hook 通过该扩展点登记 ACTION 回复，通用 Action 调度器不自动通知或授予 SP。普通攻击本身不读取 Skill；content/actions/skill.ts 的组合器在本轮创建时采样 typed Activation Ref，在 afterOutput 调用 consume／check。旧攻击不消耗／结束新的 Activation。
 
 released 表示已经到达成功释放点，发生在伤害／治疗输出之前，不表示输出已完成。回复 Hook 可以同步取消执行或使宿主离场，此后模板不执行旧输出，已写入的 ACTION_RELEASED 事实保留。通知逐项检查当前登记、本轮 execution.RUNNING 与宿主 PRESENT 资格。
 

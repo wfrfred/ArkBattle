@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { getUnit, fixtureBattle } from "../helpers/unit.js";
+import { getUnit, baseUnit, fixtureBattle } from "../helpers/unit.js";
 import { create, getSkill, getActivation, setState, setActivationState, ref, activationRef } from "../../dist/core/unit/skill/index.js";
 import { initialize as initializeCapability } from "../../dist/core/unit/capability/skill/capability.js";
 import { initialize as initializeUnit } from "../../dist/core/unit/index.js";
 import * as operations from "../../dist/core/unit/skill/operations.js";
 import * as sp from "../../dist/core/unit/skill/sp.js";
-import { remove } from "../../dist/core/battle/unit.js";
+import { remove, add as addUnit } from "../../dist/core/battle/unit.js";
 import { fixture, definition, at } from "../helpers/skill.js";
 
 test("Skill creation validates direct Definitions before running their initializer", () => {
@@ -41,7 +41,7 @@ test("Skill creation threads its initialization battle through capability and Un
     });
     const factory = { initialize: current => create(current, program) };
     const created = create(battle, program);
-    const capability = initializeCapability(battle, factory);
+    const capability = initializeCapability(battle, baseUnit({ id: "threaded-skill", hooks: [], skill: factory }));
     const initialized = initializeUnit(battle, {
         id: 1, position: [0, 0], definition: { id: "threaded-skill", hooks: [], skill: factory },
     });
@@ -49,7 +49,7 @@ test("Skill creation threads its initialization battle through capability and Un
         assert.equal(result.state.tick, 18);
         assert.equal(result.state.execution.rngState, 99);
     }
-    for (const skill of [created.value, capability.value, initialized.value.skill]) {
+    for (const skill of [created.value, capability.value.skill, initialized.value.skill]) {
         assert.equal(skill.definition, program);
         assert.deepEqual(skill.state, { count: 3 });
         assert.equal(skill.sp.lastTick, 18);
@@ -81,7 +81,7 @@ test("Skill programs receive persistent state and activation state in one aggreg
             },
         },
     });
-    let battle = operations.enter(f.state, f.ref);
+    let battle = addUnit(fixtureBattle(), f.unit);
     const first = operations.activate(battle, f.skillRef);
     battle = operations.finish(first.state, first.value.ref);
     battle = operations.advance(at(battle, 1), f.ref);

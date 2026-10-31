@@ -16,11 +16,12 @@ export function hasSpatialPresence(unit: Unit): unit is Unit & SpatialPresence {
     return "spatialPresence" in unit && "spatialPresence" in unit.definition;
 }
 
-export const initialize: (battle: BattleState, definition: Definition) => Result<State> = (
-    battle,
-) => {
-    return { state: battle, value: { present: true } };
-};
+export function initialize<U extends Unit & Pick<SpatialPresence, "definition">>(
+    battle: BattleState,
+    unit: U,
+): Result<U & SpatialPresence> {
+    return { state: battle, value: { ...unit, spatialPresence: { present: true } } };
+}
 
 export function isSpatiallyPresent(unit: Unit): boolean {
     return !hasSpatialPresence(unit) || unit.spatialPresence.present;

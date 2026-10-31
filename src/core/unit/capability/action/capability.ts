@@ -50,19 +50,25 @@ export function hasActionDefinition(
     return "action" in definition;
 }
 
-export function initialize(battle: BattleState, definition: Definition): Result<State> {
-    const initialized = definition.initialize(battle);
+export function initialize<U extends Unit & Pick<Action, "definition">>(
+    battle: BattleState,
+    unit: U,
+): Result<U & Action> {
+    const initialized = unit.definition.action.initialize(battle);
 
     return {
         state: initialized.state,
         value: {
-            actions: initialized.value,
-            nextExecutionId: 0,
-            interval: [],
-            speed: [],
-            rules: [],
-            beforeRelease: [],
-            released: [],
+            ...unit,
+            action: {
+                actions: initialized.value,
+                nextExecutionId: 0,
+                interval: [],
+                speed: [],
+                rules: [],
+                beforeRelease: [],
+                released: [],
+            },
         },
     };
 }

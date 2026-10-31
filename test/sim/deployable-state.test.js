@@ -1,4 +1,4 @@
-import { fixtureBattle } from "../helpers/unit.js";
+import { baseUnit, fixtureBattle } from "../helpers/unit.js";
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
@@ -19,7 +19,7 @@ test('deployable definitions initialize a paired capability without a Card', () 
   const unit = initialize({ id: 0, definition, position: [0, 0] });
   assert.equal(hasDeployable(unit), true);
   assert.equal(unit.definition.deployable, definition.deployable);
-  assert.deepEqual(unit.deployable, initializeDeployable(fixtureBattle(0), definition.deployable).value);
+  assert.deepEqual(unit.deployable, initializeDeployable(fixtureBattle(0), baseUnit({ ...definition, hooks: [] })).value.deployable);
 
   const other = initialize({ id: 1, definition: { id: 'enemy' }, position: [0, 0] });
   assert.equal(hasDeployable(other), false);
@@ -42,7 +42,7 @@ test('Unit initialization preserves deployable alongside independent capabilitie
   const created = initialize({ id: 0, position: [0, 0], definition: operator });
   assert.equal(created.definition, operator);
   assert.equal(hasDeployable(created), true);
-  assert.deepEqual(created.deployable, initializeDeployable(fixtureBattle(0), definition.deployable).value);
+  assert.deepEqual(created.deployable, initializeDeployable(fixtureBattle(0), baseUnit({ ...definition, hooks: [] })).value.deployable);
 });
 
 test('Unit initialization inference and the deployable guard retain capability and caller types', async () => {

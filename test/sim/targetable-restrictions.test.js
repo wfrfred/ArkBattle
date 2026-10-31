@@ -13,7 +13,7 @@ import {
     allyUntargetableRestriction,
 } from "../../dist/content/effects/visibility.js";
 import { healFreeRestriction } from "../../dist/content/effects/protection.js";
-import { initialize, fixtureBattle } from "../helpers/unit.js";
+import { initialize, baseUnit, fixtureBattle } from "../helpers/unit.js";
 import { effectFixtureWork } from "../helpers/effects.js";
 
 const owner = (id = 2, side = "ENEMY", restrictions = []) => initialize({
@@ -38,12 +38,12 @@ test("Targetable initializes innate restrictions in a new container while sharin
     const second = { id: "another-invisibility", value: invisibleRestriction };
     const definition = { restrictions: Object.freeze([entry, second]) };
     const battle = fixtureBattle();
-    const result = targetable.initialize(battle, definition);
+    const result = targetable.initialize(battle, baseUnit({ id: "targetable", hooks: [], targetable: definition }));
 
     assert.strictEqual(result.state, battle);
-    assert.notStrictEqual(result.value.restrictions, definition.restrictions);
-    assert.strictEqual(result.value.restrictions[0], entry);
-    assert.strictEqual(result.value.restrictions[1], second);
+    assert.notStrictEqual(result.value.targetable.restrictions, definition.restrictions);
+    assert.strictEqual(result.value.targetable.restrictions[0], entry);
+    assert.strictEqual(result.value.targetable.restrictions[1], second);
     assert.deepEqual(definition.restrictions, [entry, second]);
     assert.equal(targetable.hasTargetable(owner()), true);
     assert.equal(targetable.hasTargetable(initialize({ id: 3, position: [0, 0], definition: { hooks: [], id: "plain" } })), false);
@@ -55,7 +55,7 @@ test("Targetable initialization rejects different contributions with the same ID
     const definition = { restrictions: Object.freeze([first, second]) };
 
     assert.throws(
-        () => targetable.initialize(fixtureBattle(), definition),
+        () => targetable.initialize(fixtureBattle(), baseUnit({ id: "targetable", hooks: [], targetable: definition })),
         { name: "TypeError", message: "duplicate targetable restriction identity: duplicate" },
     );
     assert.deepEqual(definition.restrictions, [first, second]);
@@ -66,7 +66,7 @@ test("Targetable initialization rejects a repeated reference to the same contrib
     const definition = { restrictions: Object.freeze([entry, entry]) };
 
     assert.throws(
-        () => targetable.initialize(fixtureBattle(), definition),
+        () => targetable.initialize(fixtureBattle(), baseUnit({ id: "targetable", hooks: [], targetable: definition })),
         { name: "TypeError", message: "duplicate targetable restriction identity: duplicate" },
     );
     assert.deepEqual(definition.restrictions, [entry, entry]);

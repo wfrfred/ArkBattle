@@ -2,8 +2,6 @@ import * as battlefield from "../battlefield/unit.js";
 import type { State as BattlefieldState } from "../battlefield/state.js";
 import type { Id, LeaveReason, Unit, Departure } from "../unit/unit.js";
 import * as units from "../unit/query.js";
-import * as skills from "../unit/skill/operations.js";
-import { hasSkill } from "../unit/capability/skill/capability.js";
 import { hasBlockable } from "../unit/capability/blocking/blockable.js";
 import * as blocking from "./blocking/operations.js";
 import { relations } from "./blocking/query.js";
@@ -25,14 +23,9 @@ export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
     battle = publishBattlefield(battle, next, [{ previousUnit: undefined, nextUnit: unit }]);
     battle = recordUnitDeployment(battle, unit);
     const reference = units.ref(unit);
-    let current = units.get(battle, reference);
-    if (current?.lifecycle === "PRESENT" && hasSkill(current)) {
-        battle = skills.enter(battle, units.ref(current));
-        current = units.get(battle, reference);
-    }
-
+    const current = units.get(battle, reference);
     if (current?.lifecycle === "PRESENT") {
-        const entries = current.definition.hooks.filter((entry) => entry.stage === "enter");
+        const entries = current.hooks.filter((entry) => entry.stage === "enter");
 
         battle = hooks.dispatch(battle, current, undefined, {
             candidates: () => entries.map(({ id }) => id),
@@ -129,7 +122,7 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
         battle = occupancy.notify(battle, previous, next, [reference.id]);
         battle = recycleUnitCard(battle, departing, reason, battle.tick);
 
-        const entries = departure.unit.definition.hooks.filter((entry) => entry.stage === "leave");
+        const entries = departure.unit.hooks.filter((entry) => entry.stage === "leave");
         battle = hooks.dispatch(battle, departure, undefined, {
             candidates: () => entries.map(({ id }) => id),
             find: (_current, id) => entries.find((entry) => entry.id === id),
@@ -157,7 +150,7 @@ export function advance(battle: BattleState): BattleState {
         const reference = units.ref(candidate);
         const self = units.get(battle, reference);
         if (self?.lifecycle === "PRESENT") {
-            const entries = self.definition.hooks.filter((entry) => entry.stage === "tick");
+            const entries = self.hooks.filter((entry) => entry.stage === "tick");
 
             battle = hooks.dispatch(battle, self, undefined, {
                 candidates: () => entries.map(({ id }) => id),

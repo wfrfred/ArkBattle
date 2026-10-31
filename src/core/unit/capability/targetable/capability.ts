@@ -28,7 +28,11 @@ export function hasTargetable<U extends Unit>(unit: U): unit is U & Targetable {
     return "targetable" in unit && "targetable" in unit.definition;
 }
 
-export function initialize(battle: BattleState, definition: Definition): Result<State> {
+export function initialize<U extends Unit & Pick<Targetable, "definition">>(
+    battle: BattleState,
+    unit: U,
+): Result<U & Targetable> {
+    const definition = unit.definition.targetable;
     const ids = new Set<string>();
 
     for (const entry of definition.restrictions) {
@@ -39,7 +43,10 @@ export function initialize(battle: BattleState, definition: Definition): Result<
         ids.add(entry.id);
     }
 
-    return { state: battle, value: { restrictions: [...definition.restrictions] } };
+    return {
+        state: battle,
+        value: { ...unit, targetable: { restrictions: [...definition.restrictions] } },
+    };
 }
 
 export function setRestriction(

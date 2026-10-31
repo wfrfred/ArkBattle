@@ -49,7 +49,11 @@ export function hasLocomotion<U extends Unit>(unit: U): unit is U & Locomotion {
     return "locomotion" in unit && "locomotion" in unit.definition;
 }
 
-export function initialize(battle: BattleState, definition: Definition): Result<State> {
+export function initialize<U extends Unit & Pick<Locomotion, "definition">>(
+    battle: BattleState,
+    unit: U,
+): Result<U & Locomotion> {
+    const definition = unit.definition.locomotion;
     assertNonnegativeNumber(definition.speed, "speed");
     assertNonnegativeNumber(definition.minSpeed, "minSpeed");
     assertNonnegativeNumber(definition.halfBodyWidth, "halfBodyWidth");
@@ -58,7 +62,7 @@ export function initialize(battle: BattleState, definition: Definition): Result<
 
     return {
         state: battle,
-        value: { velocity: [0, 0], speed: [], rules: [] },
+        value: { ...unit, locomotion: { velocity: [0, 0], speed: [], rules: [] } },
     };
 }
 

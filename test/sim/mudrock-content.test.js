@@ -34,7 +34,7 @@ const canMove = (battle, unit) => {
     const moved = advanceLocomotion(battle, unitRef(unit), { nextPoint: goal, goal }, { mode: "WALK", speedMultiplier: 1 });
     return getUnit(moved, unit.id).position !== unit.position;
 };
-import { initialize as initializeTargetable, setRestriction } from "../../dist/core/unit/capability/targetable/capability.js";
+import { setRestriction } from "../../dist/core/unit/capability/targetable/capability.js";
 import { invincible } from "../../dist/content/effects/protection.js";
 import { setAttackContribution } from "../../dist/core/unit/capability/offense/index.js";
 import { setMaxHpContribution } from "../../dist/core/unit/capability/vitality/index.js";

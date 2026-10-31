@@ -27,7 +27,6 @@ export {
     cancel,
     operate,
     advance,
-    enter,
     extendTime,
 } from "./operations.js";
 

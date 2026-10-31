@@ -1,7 +1,7 @@
 import { tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import * as unitQueries from "../../dist/core/unit/query.js";
-import { fixtureBattle } from "../helpers/unit.js";
+import { baseUnit, fixtureBattle } from "../helpers/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize as initializeBattle, step as stepBattle } from "../../dist/core/battle/runtime.js";
@@ -209,7 +209,7 @@ test("preset Units without a Card do not recycle; refund eligibility is a separa
     const ordinary = initializeUnit({  id: 10, definition: unit, position: [0, 0] });
     const refundable = initializeUnit({
         id: 11, definition: unit, position: [1, 0],
-        states: { deployable: { ...initializeDeployable(fixtureBattle(0), unit.deployable).value, refundAllowed: true } },
+        states: { deployable: { ...initializeDeployable(fixtureBattle(0), baseUnit(unit)).value.deployable, refundAllowed: true } },
     });
     let state = createBattleState(
         fixtureBattlefieldState([ordinary, refundable]), undefined, 0,

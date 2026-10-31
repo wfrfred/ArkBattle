@@ -21,6 +21,7 @@ import { actionCapability } from "../helpers/actions.js";
 import { initialize } from "../helpers/unit.js";
 import { createBattleState } from '../../dist/core/battle/state.js';
 import { getUnit } from '../helpers/unit.js';
+import { add as addUnit } from '../../dist/core/battle/unit.js';
 
 
 
@@ -150,8 +151,7 @@ test('skill runtime: HIT SP requires positive damage and an eligible receiver', 
     if (cancelReception) receiver = { ...receiver, vitality: { ...receiver.vitality, damageReceptionRules: setFixtureEntry(receiver.vitality.damageReceptionRules, {
       id: 'test-cancel-reception', allows: () => false,
     }) } };
-    let work = createBattleState(fixtureBattlefield([receiver]));
-    work = skills.enter(work, unitRef(receiver));
+    const work = addUnit(createBattleState(fixtureBattlefield([])), receiver);
     const result = dealDamage(work, { source: null, target: unitRef(receiver), parameters: parameters(power, 'TRUE') });
     assert.equal(result.value.kind, power > 0 && !cancelReception ? 'APPLIED' : 'REJECTED');
     assert.equal(getUnit(result.state, 0).skill.sp.value, expected);
@@ -177,8 +177,7 @@ test('skill runtime: HIT recovery precedes reception Hooks even when they subseq
       return { state: battle, value: { ...pending, cancellation: { reason: 'SHIELD' } } };
     },
   }) } };
-  let battle = createBattleState(fixtureBattlefield([receiver]));
-  battle = skills.enter(battle, unitRef(receiver));
+  let battle = addUnit(createBattleState(fixtureBattlefield([])), receiver);
   battle = dealDamage(battle, { source: null, target: { id: 0 }, parameters: parameters(10, 'TRUE') }).state;
   assert.equal(getUnit(battle, 0).skill.sp.value, 2);
   assert.equal(getUnit(battle, 0).vitality.hp, 100000);
@@ -193,8 +192,7 @@ test('skill runtime: each nested positive reception independently earns HIT SP',
       return { state: dealDamage(battle, { source: null, target: context.request.target, parameters: parameters(1, 'TRUE') }).state, value: pending };
     },
   }) } };
-  let battle = createBattleState(fixtureBattlefield([receiver]));
-  battle = skills.enter(battle, unitRef(receiver));
+  let battle = addUnit(createBattleState(fixtureBattlefield([])), receiver);
   battle = dealDamage(battle, { source: null, target: unitRef(receiver), parameters: parameters(10, 'TRUE') }).state;
   assert.equal(getUnit(battle, 0).skill.sp.value, 4);
   assert.equal(getUnit(battle, 0).vitality.hp, 99989);

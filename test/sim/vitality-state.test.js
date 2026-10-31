@@ -13,7 +13,7 @@ import {
 } from "../../dist/core/unit/capability/vitality/capability.js";
 import { initializers } from "../../dist/core/unit/capability/catalog.js";
 import { create } from "../../dist/core/unit/contribution/attribute.js";
-import { getUnit, fixtureBattle, initialize as initializeUnit, replaceUnit } from "../helpers/unit.js";
+import { getUnit, baseUnit, fixtureBattle, initialize as initializeUnit, replaceUnit } from "../helpers/unit.js";
 
 import { effectFixtureWork } from "../helpers/effects.js";
 
@@ -21,12 +21,12 @@ test("Vitality starts full at its effective MaxHP and preserves fractional attri
     const battle = fixtureBattle();
     for (const [maxHp, expected] of [[0, 1], [0.5, 1], [1, 1], [100.5, 100.5]]) {
         const definition = { maxHp, defense: 20.5, resistance: 10.25 };
-        const result = initialize(battle, definition);
+        const result = initialize(battle, baseUnit({ id: "vitality", hooks: [], vitality: definition }));
         assert.equal(result.state, battle);
-        assert.equal(result.value.hp, expected);
-        assert.equal(resolveMaxHp(result.value, definition), expected);
-        assert.deepEqual(result.value.defense, []);
-        assert.deepEqual(result.value.resistance, []);
+        assert.equal(result.value.vitality.hp, expected);
+        assert.equal(resolveMaxHp(result.value.vitality, definition), expected);
+        assert.deepEqual(result.value.vitality.defense, []);
+        assert.deepEqual(result.value.vitality.resistance, []);
     }
     assert.equal(Object.hasOwn(initializers, "defense"), false);
 });
@@ -51,7 +51,7 @@ test("MaxHP transitions preserve fractional HP ratios and the effective minimum"
     const definition = { maxHp: 100.5, defense: 0, resistance: 0 };
     const unit = initializeUnit({ id: 1, position: [0, 0],
         definition: { id: "fractional-max-hp", vitality: definition },
-        states: { vitality: { ...initialize(battle, definition).value, hp: 25.125 } },
+        states: { vitality: { ...initialize(battle, baseUnit({ id: "vitality", hooks: [], vitality: definition })).value.vitality, hp: 25.125 } },
     });
     const initialBattle = effectFixtureWork(unit);
     const initial = unit.vitality;
@@ -71,7 +71,7 @@ test("MaxHP transitions preserve fractional HP ratios and the effective minimum"
     const floorDefinition = { maxHp: 0.5, defense: 0, resistance: 0 };
     const floorUnit = initializeUnit({ id: 2, position: [0, 0],
         definition: { id: "floor-max-hp", vitality: floorDefinition },
-        states: { vitality: { ...initialize(battle, floorDefinition).value, hp: 0.25 } },
+        states: { vitality: { ...initialize(battle, baseUnit({ id: "vitality", hooks: [], vitality: floorDefinition })).value.vitality, hp: 0.25 } },
     });
     const reducedBattle = applyUnitChanges(effectFixtureWork(floorUnit), [setMaxHpContribution(unitRef(floorUnit), {
         id: "penalty", value: [create({ finalAddition: -10 })],

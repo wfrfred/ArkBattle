@@ -38,18 +38,24 @@ export function hasBlockable<U extends Unit>(unit: U): unit is U & Blockable {
     return "blockable" in unit && "blockable" in unit.definition;
 }
 
-export function initialize(battle: BattleState, definition: Definition): Result<State> {
-    assertPositiveSafeInteger(definition.volume, "blocking volume");
+export function initialize<U extends Unit & Pick<Blockable, "definition">>(
+    battle: BattleState,
+    unit: U,
+): Result<U & Blockable> {
+    assertPositiveSafeInteger(unit.definition.blockable.volume, "blocking volume");
 
     return {
         state: battle,
         value: {
-            blocker: null,
-            adjustment: null,
-            volume: [],
-            rules: [],
-            acquired: [],
-            released: [],
+            ...unit,
+            blockable: {
+                blocker: null,
+                adjustment: null,
+                volume: [],
+                rules: [],
+                acquired: [],
+                released: [],
+            },
         },
     };
 }

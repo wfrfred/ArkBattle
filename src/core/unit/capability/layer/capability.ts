@@ -20,6 +20,9 @@ export function hasLayer<U extends Unit>(unit: U): unit is U & Layer {
     return "layer" in unit && "layer" in unit.definition;
 }
 
-export function initialize(battle: BattleState, definition: Definition): Result<State> {
-    return { state: battle, value: { type: definition.type } };
+export function initialize<U extends Unit & Pick<Layer, "definition">>(
+    battle: BattleState,
+    unit: U,
+): Result<U & Layer> {
+    return { state: battle, value: { ...unit, layer: { type: unit.definition.layer.type } } };
 }

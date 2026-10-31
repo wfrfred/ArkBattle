@@ -28,6 +28,7 @@ import { add as addBattleUnit, update as applyUnitChanges, replace as updateBatt
 import { hasSpatialPresence, isSpatiallyPresent } from "../../dist/core/unit/capability/presence/capability.js";
 import { initialize } from "../helpers/unit.js";
 import { initialize as initializeUnit } from "../../dist/core/unit/initialize.js";
+import { baseUnit } from "../helpers/unit.js";
 import { hasVitality, initialize as initializeVitalityState } from "../../dist/core/unit/capability/vitality/capability.js";
 import { hasAction } from "../../dist/core/unit/capability/action/capability.js";
 import { areHostile, hasAllegiance } from "../../dist/core/unit/capability/allegiance/capability.js";
@@ -53,10 +54,12 @@ const presenceBattlefield = () => createFieldState(createMap(1, 5, tileEntries(A
   })))));
 
 
-const presenceUnit = (id, position) => ({
-  effects:Effects.empty(), id, definition: Object.freeze({ hooks: [], id: `presence_${id}`, vitality: Object.freeze({ maxHp: 100, defense: 0, resistance: 0 }), spatialPresence: Object.freeze({}) }), position: Object.freeze(position),
-  vitality: initializeVitalityState(fixtureBattle(0), { maxHp:100, defense: 0, resistance: 0 }).value, spatialPresence: { present: true },
-});
+const presenceUnit = (id, position) => {
+  const definition = Object.freeze({ hooks: [], id: `presence_${id}`, vitality: Object.freeze({ maxHp: 100, defense: 0, resistance: 0 }), spatialPresence: Object.freeze({}) });
+  return initializeVitalityState(fixtureBattle(0), baseUnit(definition, {
+    id, position: Object.freeze(position), spatialPresence: { present: true },
+  })).value;
+};
 
 
 
@@ -189,7 +192,7 @@ const catalogDefinition = () => Object.freeze({
 
 
 function catalogRouteState(definition) {
-  const state = initializeRouteState(fixtureBattle(0), definition).value;
+  const state = initializeRouteState(fixtureBattle(0), baseUnit({ id: "route", hooks: [], route: definition })).value.route;
   const main = { ...state.main, phase: { type: 'CHECKPOINT', index: 0,
     checkpointState: { type: 'WAITING', deadlineTick: 9 } } };
   return { main, alternative: main };
@@ -321,7 +324,7 @@ test('core capability guards require both definition and state', () => {
 test('core immutable unit updates retain earlier capability values', () => {
   const definition = catalogDefinition();
   const unit = initialize({ id: 1, definition, position: [2, 0],
-    states: { route: catalogRouteState(definition.route), spatialPresence: { present: true }, targetable: initializeTargetableState(fixtureBattle(0), fixtureDefinition("targetable")).value } });
+    states: { route: catalogRouteState(definition.route), spatialPresence: { present: true }, targetable: initializeTargetableState(fixtureBattle(0), baseUnit({ id: "targetable", hooks: [], targetable: fixtureDefinition("targetable") })).value.targetable } });
   const snapshot = unit;
   let runtime = presenceBattlefield();
   runtime = addUnit(runtime, unit);
@@ -441,9 +444,9 @@ test('empty ranges never contain a position or overlap a hitbox', () => {
 test('core domain rules compose independently and preserve earlier unit states', () => {
   const definition = { hooks: [], id: 'rule_unit', vitality: { maxHp: 100, defense: 0, resistance: 0 } };
   const first = initialize({ id: 1, definition, position: [0, 0],
-    states: { targetable: initializeTargetableState(fixtureBattle(0), fixtureDefinition("targetable")).value } });
+    states: { targetable: initializeTargetableState(fixtureBattle(0), baseUnit({ id: "targetable", hooks: [], targetable: fixtureDefinition("targetable") })).value.targetable } });
   const second = initialize({ id: 2, definition, position: [0, 0],
-    states: { targetable: initializeTargetableState(fixtureBattle(0), fixtureDefinition("targetable")).value } });
+    states: { targetable: initializeTargetableState(fixtureBattle(0), baseUnit({ id: "targetable", hooks: [], targetable: fixtureDefinition("targetable") })).value.targetable } });
   const source = { id: 3, definition: { hooks: [], id: 'query_source' }, position: [0, 0] };
   const battle = addBattleUnit(addBattleUnit(fixtureBattle(), first), second);
   const request = { source: unitRef(source), purposes: ['HEAL'], filter: () => true,
@@ -549,6 +552,7 @@ import { advance as advanceLocomotion } from ${sourceModule('capability/locomoti
 import { advance as advanceRoute, movementTarget, pathMotionMode } from ${sourceModule('capability/route/index')};
 import { ref as unitRef, get as getUnit } from ${sourceModule('query')};
 import type { Unit, Definition as UnitDefinition } from ${sourceModule('unit')};
+import { Effects } from ${sourceModule('effect/effects')};
 import type { ImmutableData } from ${sourceModule('../common/immutable-data')};
 import type { Ref } from ${sourceModule('../common/ref')};
 import { initialize as initializeOffenseState } from ${sourceModule('capability/offense/capability')};
@@ -586,6 +590,9 @@ declare const projectileDefinition: ProjectileDefinition<{ readonly charges: num
 declare const projectileInput: ProjectileCreateInput<{ readonly charges: number }>;
 declare const typedProjectile: Projectile<{ readonly charges: number }>;
 declare const placement: { readonly definition: EnemyProbe & { readonly occupancy: { readonly slot: 'OCCUPANT' } }; readonly position: readonly [number, number]; readonly tile: OccupancyState['tile'] };
+function createBaseUnit<D extends UnitDefinition>(definition: D): Unit & { readonly definition: D } {
+  return { id: 0, lifecycle: 'PRESENT', definition, hooks: [], position: [0, 0], effects: Effects.empty() };
+}
 `;
   const compile = (name, source) => {
     const path = join(directory, `${name}.mts`);
@@ -611,11 +618,18 @@ if (elementalReport.type === "APPLIED" && elementalReport.burst !== null) {
 if (elementalReport.type === "REJECTED") {
   const reason: string = elementalReport.reason;
 }
-initializeOffenseState(battleState, { attack: 1 }).value.attack;
-initializeVitalityState(battleState, { maxHp: 100, defense: 1, resistance: 0 }).value.defense;
-initializeLocomotionState(battleState, enemyDefinition.locomotion).value.velocity;
-declare const actionDefinition: Parameters<typeof initializeActionState>[1];
-initializeActionState(battleState, actionDefinition).value.actions;
+const directBase = { ...createBaseUnit({ ...enemyDefinition, offense: { attack: 1 } }), marker: 'kept' as const };
+const withVitality = initializeVitalityState(battleState, directBase).value;
+const withOffense = initializeOffenseState(battleState, withVitality).value;
+withOffense.offense.attack;
+withOffense.vitality.defense;
+const keptMarker: 'kept' = withOffense.marker;
+const keptEnemyCode: 17 = withOffense.definition.enemyCode;
+initializeLocomotionState(battleState, createBaseUnit(enemyDefinition)).value.locomotion.velocity;
+declare const actionHost: Parameters<typeof initializeActionState>[1];
+initializeActionState(battleState, actionHost).value.action.actions;
+// @ts-expect-error capability initialization requires its declared configuration on the Unit.
+initializeOffenseState(battleState, createBaseUnit({ id: 'no-offense', hooks: [] }));
 // @ts-expect-error capability initialization requires the current BattleState.
 initializeOffenseState({ attack: 1 });
 // @ts-expect-error capability initialization requires the current BattleState.
@@ -631,8 +645,8 @@ type ExtraDefinitionFields = Assert<Equal<Extract<keyof Product<EnemyProbe>['def
 type DeclaredDefinitions = Assert<Product<{ readonly occupancy: { readonly slot: 'OCCUPANT' }; readonly targetable: { restrictions: [] } }> extends Occupancy & Targetable ? true : false>;
 type OptionalProduct = Assert<Equal<keyof Product<OptionalProbe>, 'definition'>>;
 type MetadataIsNotCapability = Assert<Equal<keyof Product<{ readonly label: string }>, 'definition'>>;
-type OptionalHasNoRequiredCapabilities = Assert<Equal<RequiredKeys<Unit & Product<OptionalProbe>>, 'id' | 'definition' | 'position' | 'effects' | 'lifecycle'>>;
-type WideHasNoRequiredCapabilities = Assert<Equal<RequiredKeys<Unit & Product<UnitDefinition>>, 'id' | 'definition' | 'position' | 'effects' | 'lifecycle'>>;
+type OptionalHasNoRequiredCapabilities = Assert<Equal<RequiredKeys<Unit & Product<OptionalProbe>>, 'id' | 'definition' | 'position' | 'effects' | 'lifecycle' | 'hooks'>>;
+type WideHasNoRequiredCapabilities = Assert<Equal<RequiredKeys<Unit & Product<UnitDefinition>>, 'id' | 'definition' | 'position' | 'effects' | 'lifecycle' | 'hooks'>>;
 function initializeGeneric<D extends EnemyDefinition>(definition: D): Unit & Product<D> {
   return initializeUnit(battleState, { id: 0, definition, position: [0, 0] }).value;
 }
@@ -710,7 +724,7 @@ battleState.battlefield.projectiles.replace(projectileRef(typedProjectile), type
       ['projectile-as-unit', `addUnit(createBattlefieldState(battlefieldMap), typedProjectile);`],
       ['unit-removal-raw-id', `removeUnit(createBattlefieldState(battlefieldMap), 0);`],
       ['unit-removal-projectile-ref', `removeUnit(createBattlefieldState(battlefieldMap), projectileRef(typedProjectile));`],
-      ['state-extra-field', `initializeUnit(battleState, { id: 1, definition: { hooks: [], id: 'offense', offense: { attack: 1 } }, position: [0, 0], states: { offense: initializeOffenseState(battleState, { attack: 1 }).value } });`],
+      ['state-extra-field', `initializeUnit(battleState, { id: 1, definition: { hooks: [], id: 'offense', offense: { attack: 1 } }, position: [0, 0], states: { offense: initializeOffenseState(battleState, createBaseUnit({ id: 'offense', hooks: [], offense: { attack: 1 } })).value.offense } });`],
       ['unconfigured', `initializeUnit(battleState, { id: 1, definition: { hooks: [], id: 'bare' }, position: [0, 0] }).value.locomotion.velocity;`],
       ['invalid-offense-config', `initializeUnit(battleState, { id: 1, definition: { hooks: [], id: 'invalid', offense: { attack: [] } }, position: [0, 0] });`],
       ['missing-occupancy-slot', `initializeUnit(battleState, { id: 1, definition: { hooks: [], id: 'invalid', occupancy: {} }, position: [0, 0] });`],

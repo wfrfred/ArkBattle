@@ -13,7 +13,7 @@ import * as presence from "../presence/operations.js";
 import { hasSpatialPresence } from "../presence/capability.js";
 import { hasBlockable } from "../blocking/blockable.js";
 import {
-    initialize,
+    createProgress,
     type Definition,
     type Phase,
     type Progress,
@@ -62,12 +62,10 @@ export function setAlternative(
         return battle;
     }
 
-    const initialized = initialize(battle, definition);
-
-    return replaceUnit(initialized.state, [
+    return replaceUnit(battle, [
         {
             ...self,
-            route: { ...self.route, alternative: initialized.value.main },
+            route: { ...self.route, alternative: createProgress(definition) },
         },
     ]);
 }

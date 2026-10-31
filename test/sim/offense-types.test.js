@@ -64,8 +64,13 @@ setAttackContribution(strong, { id: "static", value: staticInput });
 const legacy: Input = ({ unit }: { unit: Unit }) => [];
 // @ts-expect-error Dynamic inputs return modifiers rather than a BattleState transition.
 const operation: Input = (current: BattleState) => current;
-initialize(battle, { attack: 1 });
-// @ts-expect-error Offense initialization always requires its Definition.
+const configured = { ...unit, definition: { ...unit.definition, offense: { attack: 1 } } };
+const initialized = initialize(battle, configured).value;
+type Initialized = Assert<Equal<typeof initialized, typeof configured & Offense>>;
+const initializedState: State = initialized.offense;
+// @ts-expect-error Offense initialization requires a Unit that declares its Definition.
+initialize(battle, unit);
+// @ts-expect-error Offense initialization always requires the Unit being assembled.
 initialize(battle);
 `);
         const program = ts.createProgram([path], {

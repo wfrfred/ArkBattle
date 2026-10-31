@@ -52,7 +52,11 @@ export function hasVitalityDefinition(
     return "vitality" in definition;
 }
 
-export function initialize(battle: BattleState, definition: Definition): Result<State> {
+export function initialize<U extends Unit & Pick<Vitality, "definition">>(
+    battle: BattleState,
+    unit: U,
+): Result<U & Vitality> {
+    const definition = unit.definition.vitality;
     assertNonnegativeNumber(definition.maxHp, "maxHp");
     assertNonnegativeNumber(definition.defense, "defense");
     assertNonnegativeNumber(definition.resistance, "resistance");
@@ -60,13 +64,16 @@ export function initialize(battle: BattleState, definition: Definition): Result<
     return {
         state: battle,
         value: {
-            hp: Math.max(1, definition.maxHp),
-            maxHp: [],
-            defense: [],
-            resistance: [],
-            damageHooks: [],
-            healingHooks: [],
-            damageReceptionRules: [],
+            ...unit,
+            vitality: {
+                hp: Math.max(1, definition.maxHp),
+                maxHp: [],
+                defense: [],
+                resistance: [],
+                damageHooks: [],
+                healingHooks: [],
+                damageReceptionRules: [],
+            },
         },
     };
 }

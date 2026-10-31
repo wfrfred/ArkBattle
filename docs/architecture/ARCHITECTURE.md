@@ -85,7 +85,7 @@ Definition 保存不可变基础值、参数和行为描述。Capability State �
 
 Content 直接组合 Unit Definition 与所需的 Catalog Definitions，不经过干员或敌人 Archetype 工厂；必要的领域校验放在 initialize。静态内容可用 satisfies 声明具体能力；动态加载结果使用标准 Definition，并在需要可选能力时通过守卫缩窄。
 
-Capability.initialize(battle, definition) 返回 Result<State>，Unit.initialize(battle, input) 返回 Result<Unit & Product<D>>；逐个接续 battle，在登记前组合完整 Unit。Product<D> 由 Catalog 从 initializer 字典推导，只组合明确选择的能力的标准 Definition／State，不保留整个输入 D 或额外内容字段。通用创建不接受预制能力状态或独立当前 tick，路线与部署等在明确的业务创建流程中设置。Skill／Action Capability 非泛型，内部普通查询集中恢复具体程序与私有状态的类型配对；Action 每个配置项在 Unit 初始化时建立聚合条目，保存 Definition、持久 state、Cooldown 和可空的 Execution；每次启动创建新执行身份，终结只清空 execution。详见 [Capability 初始化与装配](capability.md#初始化与装配)。标签归属仍待整理，现有 Profile 依赖见 [后续整理记录](capability.md#待整理单位标签与-profile-依赖)。
+Capability.initialize(battle, unit) 返回 Result<U & Capability>，从 unit.definition 读取自身配置，保留已有 Unit 字段并添加自身状态或 Hook。Unit.initialize(battle, input) 从基础 Unit 开始按 initializer 序列 fold，逐项接续 battle 与 Unit，完成后返回 Result<Unit & Product<D>>，再由创建流程登记。Product<D> 由 Catalog 从 initializer 字典推导，仅承诺明确选择的标准能力状态，并保留原始 Definition D 的字面量及内容字段。通用创建不接受预制能力状态或独立当前 tick，路线与部署等在明确的业务创建流程中设置。Skill／Action Capability 非泛型，内部普通查询集中恢复具体程序与私有状态的类型配对；Action 每个配置项在 Unit 初始化时建立聚合条目，保存 Definition、持久 state、Cooldown 和可空的 Execution；每次启动创建新执行身份，终结只清空 execution。详见 [Capability 初始化与装配](capability.md#初始化与装配)。标签归属仍待整理，现有 Profile 依赖见 [后续整理记录](capability.md#待整理单位标签与-profile-依赖)。
 
 Effect 是附着于 Unit 的实例；`Unit.effects` 持有实例集合。`unit/effect/`、`unit/contribution/` 与 `unit/capability/` 平级；通用 Hook 位于 core/hook.ts，unit/hook.ts 只定义 Unit 的阶段类型。Capability 保存本领域的 Hook 和 Contribution；具体 Effect Definition 组合这些公开操作，抽象 Effect 只管理实例与生命周期。
 
@@ -186,7 +186,7 @@ Effect 直接持有 `Definition<S, H>` 与私有 State。S 描述实例状态，
 
 每 Tick 只执行一次 Effect 时间推进。开始时固定 Unit 与 Effect 身份列表，轮到实例时读取当前状态；仅 ACTIVE 实例执行 onTick，随后重新读取期限并检查到期。新实例下次参与推进；非生效实例仍会到期。周期进度和首次触发策略由具体 Definition 的私有 State 表达。
 
-Hook 是函数与资格开关的不可变登记项，由对应领域或 Capability 保存。Effect 可以在 onInstall 登记 Hook，资格闭包读取当前输入版本的 Effect，在 onEnd 撤销。执行 Hook 返回新状态及领域值；领域调用固定候选并逐项从返回版本重查登记与资格。每次派发独立收集候选 ID，嵌套操作使用自己的候选。公共 Hook 固定 Context、接续 battle 与 current；领域决定参与资格、排序及停止条件。Unit 通过必填的静态 Definition.hooks 接入 enter／tick／leave 生命周期内容；Unit 实例不另存 Hook 数组；承载变化由 Occupancy 的 SUPPORT Definition 保存 occupantAdded／occupantRemoved Hook，复用同一派发器，不在 Unit 添加能力专属回调。
+Hook 是函数与资格开关的不可变登记项，由对应领域或 Capability 保存。Effect 可以在 onInstall 登记 Hook，资格闭包读取当前输入版本的 Effect，在 onEnd 撤销。执行 Hook 返回新状态及领域值；领域调用固定候选并逐项从返回版本重查登记与资格。每次派发独立收集候选 ID，嵌套操作使用自己的候选。公共 Hook 固定 Context、接续 battle 与 current；领域决定参与资格、排序及停止条件。Unit Definition 必填 hooks，声明 enter／tick／leave 内容；初始化将能力与内容 Hook 按注册序装配到实例 hooks，Skill 入场处理也作为普通 enter Hook。承载变化由 Occupancy 的 SUPPORT Definition 保存 occupantAdded／occupantRemoved Hook，复用同一派发器，不在 Unit 添加能力专属回调。
 
 Context 表达本次调用的数据与必要只读参数；Unit、Effect 和 State 都对应明确输入版本。内容先形成消耗后的新状态再进入同步嵌套，返回后从后继版本查询。候选范围属于调用期，不进入长期快照；Context 不通过可变 holder 或动态 getter 追踪当前世界。
 

@@ -1,5 +1,5 @@
 import { set as setFixtureEntry } from "../../dist/core/hook.js";
-import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
+import { update as applyUnitChanges, add as addUnit } from "../../dist/core/battle/unit.js";
 import { damage as damageTargeting } from "../helpers/targeting.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import assert from "node:assert/strict";
@@ -19,7 +19,7 @@ import { setAttackContribution } from "../../dist/core/unit/capability/offense/c
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
 import { ref as skillRef, definition as createSkillDefinition } from "../helpers/skill.js";
-import { activate, enter as enterSkill } from "../../dist/core/unit/skill/operations.js";
+import { activate } from "../../dist/core/unit/skill/operations.js";
 
 const targeting = damageTargeting({ geometry, canTargetAir: true });
 const group = (operations) => ({ id: "primary", targeting, operations });
@@ -258,7 +258,8 @@ test("ACTION recovery callbacks may cancel the releasing attack before its outpu
             },
         }],
     } };
-    const original = enterSkill(battle(configured, unit(1)), unitRef(configured));
+    const entered = addUnit(battle(), configured);
+    const original = addUnit(entered, unit(1));
     const result = start(original, attack);
     const advanced = advance(result.state, result.value.ref);
     assert.equal(getUnit(advanced, 0).skill.sp.value, 1);

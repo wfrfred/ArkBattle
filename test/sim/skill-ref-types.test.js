@@ -29,6 +29,7 @@ type Active = { mode: "FIRST" | "SECOND" };
 type StartedRef = Assert<Equal<ActivationStarted["ref"], Ref<Activation>>>;
 type EndedRef = Assert<Equal<ActivationEnded["ref"], Ref<Activation>>>;
 declare const battle: BattleState;
+declare const unit: Unit;
 declare const sourceRef: Ref<Unit & SkillCapability>;
 declare const self: Activation<Persistent, Active>;
 declare const specialized: Ref<Activation<Persistent, Active> & { readonly marker: 17 }>;
@@ -71,13 +72,14 @@ program.onTick?.(battle, sourceRef, publicHost.skill);
 // @ts-expect-error Unit configuration stores a factory rather than a program.
 publicHost.definition.skill.id;
 // @ts-expect-error A program's private initializer is not a Skill aggregate factory.
-initializeSkill(battle, program);
+initializeSkill(battle, { ...unit, definition: { ...unit.definition, skill: program } });
 // @ts-expect-error A complete program does not replace the aggregate's required private state.
-initializeSkill(battle, { initialize: current => ({ state: current, value: { definition: program, sp: null, activation: null } }) });
+initializeSkill(battle, { ...unit, definition: { ...unit.definition, skill: { initialize: (current: BattleState) => ({ state: current, value: { definition: program, sp: null, activation: null } }) } } });
 const incompleteActivation = { trigger: "MANUAL" as const, sustain: { type: "INFINITE" as const } };
 // @ts-expect-error Private state cannot replace a missing activation initialization program.
-initializeSkill(battle, { initialize: current => ({ state: current, value: { definition: { ...definition, activation: incompleteActivation }, state: { count: 0 }, sp: null, activation: null } }) });
-const state = initializeSkill(battle, factory).value;
+initializeSkill(battle, { ...unit, definition: { ...unit.definition, skill: { initialize: (current: BattleState) => ({ state: current, value: { definition: { ...definition, activation: incompleteActivation }, state: { count: 0 }, sp: null, activation: null } }) } } });
+const configured = { ...unit, definition: { ...unit.definition, skill: factory } };
+const state = initializeSkill(battle, configured).value.skill;
 type CommonState = Assert<Equal<typeof state, State>>;
 setHook(sourceRef, "activationStarted", {
     id: "public-start-report",

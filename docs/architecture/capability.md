@@ -32,10 +32,13 @@ Capability 也可提供接收 BattleState 与 Typed Ref 的完整操作，例如
 每项 Capability 的公开初始化契约统一为：
 
 ```typescript
-initialize(battle: BattleState, definition: Definition): Result<State>
+initialize<U extends Unit & Pick<Capability, "definition">>(
+    battle: BattleState,
+    unit: U,
+): Result<U & Capability>
 ```
 
-Result.state 是接续的 BattleState，Result.value 是新建的 Capability State。初始化不改变战斗事实时返回原 battle；当前时间从 battle.tick 读取，不再传独立 tick 或只有时点的 Context。空 Definition 也保留必选参数。Skill 的 SP、Sustain 等内部值模型仍使用各自的局部初始化接口，不因名称相同升级为 Capability 创建操作。
+这里的 Capability 代表各自的能力接口，例如 Vitality 或 Skill。输入 Unit 已声明本能力的 Definition，initializer 直接读取 unit.definition 中的配置；Result.state 接续 BattleState，Result.value 返回保留已有字段并补充自身能力的新 Unit。初始化可以直接登记自身的 Unit Hook，不经通用装配器识别具体能力。不改变战斗事实时返回原 battle；当前时间从 battle.tick 读取，不传独立 tick 或只有时点的 Context。Skill 的 SP、Sustain 等内部值模型仍使用各自的局部初始化接口，不因名称相同改为 Unit 装配操作。
 
 Catalog 只登记 capability → initializer 字典，并从函数签名派生配置、状态及能力组合类型：
 
@@ -48,12 +51,14 @@ export const initializers = {
 
 export type Definitions = {
     readonly [K in keyof typeof initializers]:
-        Parameters<(typeof initializers)[K]>[1];
+        Parameters<(typeof initializers)[K]>[1]["definition"] extends
+            Readonly<Record<K, infer D>> ? D : never;
 };
 
 export type States = {
     readonly [K in keyof typeof initializers]:
-        ReturnType<(typeof initializers)[K]>["value"];
+        ReturnType<(typeof initializers)[K]>["value"] extends
+            Readonly<Record<K, infer S>> ? S : never;
 };
 
 type SelectedKeys<D> = {
@@ -68,9 +73,9 @@ export type Product<D> = {
 
 Product<D>.definition 直接保留 D，包含内容自有字段、字面量与联合分支信息；各 Capability 的运行 State 则使用 initializer 派生的标准 States 类型。SelectedKeys 的条件以 [D] 包裹，只有联合 Definition 的所有分支都明确要求某项能力时才承诺对应 State；可选能力也不提供存在保证。Unit 基础身份与生命周期 Hook 契约归 Unit 模块。类型推导与运行时装配共用 initializers，不另建能力映射表。Definition 与内部状态按项目契约保持不可变，不额外套深只读包装、复制或冻结。
 
-Unit 装配实现在 unit/initialize.ts，由 [unit/index.ts](../../src/core/unit/index.ts) 公开 initialize(battle, input) → Result<Unit & Product<D>> 及模型、Hook 类型和查询；完整登记与离场操作仍直接归 battle/unit.ts。Input 的 id、definition、position 为必填，不接收 effects；每个 Unit 始终以 Effects.empty() 初始化。初始 Effect 由 Unit Definition 中 `stage: "enter"` 的 Hook 在登记后调用 install，正常执行安装、生效与依赖结算。实现签名接收 Input<Definition & Partial<Definitions>>，按配置键是否存在选择能力，并直接读取 definition[key]；不使用 Reflect，也不重复检查内部能力配置是否为 undefined 或 null。已知能力的 Definition 受 Catalog 派生类型约束；通用装配结果只承诺 Definition 中明确选择的能力。capability/skill.initialize 返回完整的非泛型 Capability State，Catalog 的装配入口不变；程序私有类型由 unit/skill 内部恢复。
+Unit 装配实现在 unit/initialize.ts，由 [unit/index.ts](../../src/core/unit/index.ts) 公开 initialize(battle, input) → Result<Unit & Product<D>> 及模型、Hook 类型和查询；完整登记与离场操作仍直接归 battle/unit.ts。Input 的 id、definition、position 为必填，不接收 effects；基础 Unit 具有原始 Definition、位置、PRESENT、空 hooks 和 Effects.empty()。初始 Effect 仍由登记后的 enter Hook 调用 install，正常执行安装、生效与依赖结算。实现按 Definition 中的配置键选择 initializer，将当前 battle 与正在装配的 Unit 传给它；异构类型只在这一派发边界擦除。不使用 Reflect，不重复检查内部能力配置是否为 undefined 或 null，不维护额外状态字典或能力专属分支。已知能力的 Definition 受 Catalog 派生类型约束；公开装配结果只承诺明确选择的能力，Skill／Action 的私有类型仍由所属领域恢复。
 
-装配按登记次序调用所选 initializer，逐个接续返回的 battle，再组合完整 Unit。初始化可以读取当前战场或按所属流程消费 RNG；后续初始化与创建流程使用返回版本，不能重新接回旧 battle。这个阶段 Unit 尚未登记，初始化不能假设自己或兄弟能力已经可从战场取得。登记、Skill 入场及 Unit 的 enter Hook 等登场结算由创建流程负责。
+Unit.initialize 是对所选 initializer 列表的 fold：从基础 Unit 开始，按 Catalog 登记顺序逐个接续 Result 中的 battle 与 Unit，最后追加 Definition 的内容 Hook。每项 initializer 保留身份、Definition、已有能力及登记项，补充自身状态或 Hook；Skill 在自己的 initializer 中登记 enter Hook，通用初始化器不依赖 Skill。初始化可以读取当前战场或消费 RNG，但当前 Unit 尚未登记；本轮已有能力直接从输入 Unit 读取，不通过战场查询半成品。所有能力装配完成后才执行完整 add 与统一入场派发。
 
 Action Capability 的 Definition 保存 initialize(battle) → Result<Actions> 和可选 select。具体内容在类型明确处创建行动初始化函数，再以 createActions 顺序组合；Capability 接续返回的 BattleState，将 Actions 放入公共 State，并建立执行 ID 计数、贡献、规则和 Hook 的初值。配置不另存静态 Definition 集合，也不让调度器恢复具体内容类型。
 
@@ -95,7 +100,7 @@ Core 不提供干员或敌人 Archetype 层；内容直接组合 Unit Definition
 ## 构造、校验与命名
 
 - Capability Definition 由 Content 直接构造，不要求额外的 createDefinition 工厂。Action 直接提供 Definition 的 initialize 与可选 select，不设原样返回的工厂。几何构造等局部值转换由内容按需调用；必要的领域不变量校验放在 initialize，保持构造入口统一。其他领域尚存的历史工厂随各模块审查整理。
-- Capability.initialize 使用当前 battle 和 Definition 建立初态，返回 Result<State>；内部纯值模型保留自己的自然初始化参数。
+- Capability.initialize 使用当前 battle 和正在装配的 Unit，读取自身 Definition，返回 Result<U & Capability>；内部纯值模型保留自己的自然初始化参数。
 - validateState 验证已有值，返回 void，不伪装成构造。
 - Rule、Hook、Contribution 与 Blocker.layer 的 set／remove 工厂绑定 Ref 返回 Change；add、生命周期与精确私有 state 写回维持所属领域完整操作；resolve 查询有效值，advance 表达时间推进。Change 的后继由领域明确提供，不由 Unit 发布推断。
 
@@ -113,7 +118,7 @@ MaxHP 只接收明确采样的属性修正，在贡献变更时协调当前 HP �
 
 Offense Definition 保存基础 attack，State 保存 Contribution<Input>[]。Input 为静态 Modifier 数组，或只读的 `(battle, self: Unit & Offense) => readonly Modifier[]`。动态输入直接取得本次查询的 BattleState 与当前宿主，直接使用领域实体与战场事实，不依赖通用 Context 包装。
 
-initialize(battle, definition) 校验 attack 为有限非负数，返回空贡献状态；Definition 由内容直接构造。setAttackContribution／removeAttackContribution 绑定 Ref<Unit & Offense> 返回 Change，沿用 Contribution 的 ID 替换与互斥组规则；无额外结算，不启动 Blocking。
+initialize(battle, unit) 校验 unit.definition.offense.attack 为有限非负数，在保留输入 Unit 的同时建立空攻击贡献状态；Definition 由内容直接构造。setAttackContribution／removeAttackContribution 绑定 Ref<Unit & Offense> 返回 Change，沿用 Contribution 的 ID 替换与互斥组规则；无额外结算，不启动 Blocking。
 
 公开查询为 query.resolveAttack(battle, Ref<Unit & Offense>)，从指定 battle 读取当前对象，不存在时返回 undefined。能力由 Typed Ref 保证，查询不把缺少 Offense 解释为攻击力 0，也不附加生命值、空间存在或生命周期检查。计算先选择有效贡献，只求值胜出项，再按 Attribute 公式求值并限制下限为 0，不取整。
 

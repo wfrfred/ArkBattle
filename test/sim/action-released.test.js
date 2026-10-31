@@ -1,5 +1,5 @@
 
-import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
+import { update as applyUnitChanges, add as addUnit } from "../../dist/core/battle/unit.js";
 import { executionRef } from "../../dist/core/unit/action/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -11,7 +11,6 @@ import { advance } from "../../dist/core/unit/action/index.js";
 import { setBeforeReleaseHook, setReleasedHook } from "../../dist/core/unit/capability/action/index.js";
 import { released } from "../../dist/core/unit/capability/action/release.js";
 import { setHook } from "../../dist/core/unit/capability/skill/capability.js";
-import { enter } from "../../dist/core/unit/skill/operations.js";
 import { actionDefinition, unit, battle } from "../helpers/action-fixture.js";
 
 const hook = (id, invoke) => ({ id, invoke });
@@ -24,8 +23,9 @@ function fixture({ windupTicks = 0, recoveryAmount = 1, action, withSkill = true
     });
     const source = unit(0, { action: definition, ...(withSkill ? { skill } : {}) });
     const reference = unitRef(source);
-    const initial = battle(source, ...Array.from({ length: targets }, (_, index) => unit(index + 1)));
-    return { definition, ref: reference, state: withSkill ? enter(initial, reference) : initial };
+    const initial = [source, ...Array.from({ length: targets }, (_, index) => unit(index + 1))]
+        .reduce((state, self) => addUnit(state, self), battle());
+    return { definition, ref: reference, state: initial };
 }
 
 test("a successful attack notifies released after its release event, restores ACTION SP and then outputs", () => {

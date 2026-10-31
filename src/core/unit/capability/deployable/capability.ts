@@ -31,15 +31,23 @@ export interface Deployable {
     readonly deployable: State;
 }
 
-export function initialize(battle: BattleState, definition: Definition): Result<State> {
+export function initialize<U extends Unit & Pick<Deployable, "definition">>(
+    battle: BattleState,
+    unit: U,
+): Result<U & Deployable> {
+    const definition = unit.definition.deployable;
+
     return {
         state: battle,
         value: {
-            cardId: null,
-            cost: definition.cost,
-            refundLimit: definition.cost,
-            refundAllowed: false,
-            deployedHooks: [],
+            ...unit,
+            deployable: {
+                cardId: null,
+                cost: definition.cost,
+                refundLimit: definition.cost,
+                refundAllowed: false,
+                deployedHooks: [],
+            },
         },
     };
 }

@@ -44,7 +44,11 @@ export function hasBlocker<U extends Unit>(unit: U): unit is U & Blocker {
     return "blocker" in unit && "blocker" in unit.definition;
 }
 
-export function initialize(battle: BattleState, definition: Definition): Result<State> {
+export function initialize<U extends Unit & Pick<Blocker, "definition">>(
+    battle: BattleState,
+    unit: U,
+): Result<U & Blocker> {
+    const definition = unit.definition.blocker;
     const radius = definition.radius ?? DEFAULT_RADIUS[definition.layer];
     assertNonnegativeSafeInteger(definition.capacity, "blocking capacity");
     assertNonnegativeNumber(radius, "block radius");
@@ -52,13 +56,16 @@ export function initialize(battle: BattleState, definition: Definition): Result<
     return {
         state: battle,
         value: {
-            blocked: [],
-            capacity: [],
-            layer: definition.layer,
-            radius,
-            rules: definition.rules,
-            acquired: [],
-            released: [],
+            ...unit,
+            blocker: {
+                blocked: [],
+                capacity: [],
+                layer: definition.layer,
+                radius,
+                rules: definition.rules,
+                acquired: [],
+                released: [],
+            },
         },
     };
 }

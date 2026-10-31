@@ -77,7 +77,7 @@ S 是实例私有数据的类型，例如护盾层数、周期进度或 Aura 的
 
 Unit 初始化始终建立空 Effects，不接收预装容器。初始 Buff、护盾等由 Unit Definition 中 `stage: "enter"` 的 Hook 在宿主登记后调用 install，按正常安装流程执行 onInstall、生效协调与依赖登记。
 
-当前 battle/unit.add 先登记宿主、完成 Blocking 维护与适用的部署记录，再执行 Skill.enter，随后执行 Unit 的 enter Hook；这些 Hook 中安装的初始 Effect 因而不参与此前的 Skill.enter。
+当前 battle/unit.add 先登记宿主与适用的部署记录，再按实例 hooks 的登记顺序统一派发 enter Hook，不扫描全场 Blocking。Skill 的入场处理也是其中一个 Hook；初始 Effect 与技能入场业务的先后由装配顺序决定，不另设 Effect 入场阶段。默认装配先登记 Skill，再追加 Definition 中的内容 Hook。
 
 ### 不可变 Effects 容器
 

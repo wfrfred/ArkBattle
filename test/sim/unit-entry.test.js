@@ -44,7 +44,7 @@ const markEntered = (trace, id) => ({
   } }],
 });
 
-test('enter registers one complete Unit before Skill entry and passes its latest state to Unit entry', () => {
+test('entry hooks run around Skill in registration order and read the latest BattleState', () => {
   const trace = [];
   const skill = ({
     id: 'entry-program', initialize: battle => ({ state: battle, value: ({}) }), sp: null, activation: null,
@@ -54,23 +54,33 @@ test('enter registers one complete Unit before Skill entry and passes its latest
       return updateUnit(battle, [{ ...host, vitality: { ...host.vitality, hp: 63 } }]);
     },
   });
-  const unit = initialize({ id: 3, position: [1, 0], definition: {
+  const initialized = initialize({ id: 3, position: [1, 0], definition: {
     id: 'complete-entry', skill, vitality: { maxHp: 100, defense: 0, resistance: 0 },
     hooks: [{ id: "test/enter", stage: "enter", invoke(battle, self) {
-      assert.strictEqual(self, getUnit(battle, self.id));
-      trace.push(['unit', self.id, self.vitality.hp]);
-      return { state: updateUnit(battle, [{ ...self, vitality: { ...self.vitality, hp: 47 } }]), value: undefined };
+      const current = getUnit(battle, self.id);
+      assert.strictEqual(self, unit);
+      assert.equal(self.vitality.hp, 100);
+      trace.push(['unit', self.id, current.vitality.hp]);
+      return { state: updateUnit(battle, [{ ...current, vitality: { ...current.vitality, hp: 47 } }]), value: undefined };
     } }],
   } });
+  const unit = { ...initialized, hooks: [{
+    id: 'test/before-skill', stage: 'enter',
+    invoke(battle, self) {
+      assert.strictEqual(self, getUnit(battle, self.id));
+      trace.push(['before', self.id, self.vitality.hp]);
+      return { state: updateUnit(battle, [{ ...self, vitality: { ...self.vitality, hp: 90 } }]), value: undefined };
+    },
+  }, ...initialized.hooks] };
   const initial = fixtureBattle();
   const entered = add(initial, unit);
 
-  assert.deepEqual(trace, [['skill', 3, 100], ['unit', 3, 63]]);
+  assert.deepEqual(trace, [['before', 3, 100], ['skill', 3, 90], ['unit', 3, 63]]);
   assert.equal(getUnit(entered, 3).vitality.hp, 47);
   assert.equal(getUnit(initial, 3), undefined);
   assert.equal(unit.vitality.hp, 100);
   assert.throws(() => add(entered, unit), /duplicate unit/);
-  assert.equal(trace.length, 2);
+  assert.equal(trace.length, 3);
 });
 
 test('Skill entry can synchronously remove its host before the Unit entry callback', () => {

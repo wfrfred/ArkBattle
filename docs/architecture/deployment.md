@@ -234,7 +234,7 @@ type DeploymentCommand =
 
 Unit 只保存 PRESENT／LEAVING；注册前和删除后通过战场中不存在该实例表达，不增加一组出生、死亡、回收中间状态。
 
-Unit Definition 必填 hooks 数组，没有生命周期程序时显式传入 []。这些静态 Hook 由所有对应实例共享；Unit 不再增加一份 hooks 字段，也不提供动态生命周期 Hook 登记操作。
+Unit Definition 必填 hooks 数组，没有生命周期程序时显式传入 []。Unit 实例的 hooks 保存本次装配后的统一序列，初始化先登记能力提供的 Hook，再按 Definition 中的原顺序登记内容 Hook；程序对象可以共享，原 Definition 的身份与 hooks 不变。目前 Skill 能力自动登记自己的 enter Hook，不增加另一套入场阶段或优先级协议。
 
 ```typescript
 // unit/hook.ts：只声明 Unit 的阶段类型
@@ -258,6 +258,11 @@ export interface Definition {
     readonly hooks: readonly Hook[];
 }
 
+export interface Unit extends Identified<{ readonly id: Id }> {
+    // 其余身份、位置、能力与 Effects 字段省略
+    readonly hooks: readonly Hook[];
+}
+
 export interface Departure {
     readonly unit: Unit;
     readonly reason: LeaveReason;
@@ -266,7 +271,7 @@ export interface Departure {
 
 TacticalHook 是 core/hook.ts 的通用 Hook<C, T>。该模块集中既有 Hook 类型、dispatch 和 set／remove 数组操作；unit/hook.ts 仅声明阶段类型，battle/unit.ts 直接调用通用 dispatch。Effect、Skill、Mechanism 等领域自身的回调契约不因 Unit 的调整改变。
 
-enter 是本次场上实例的登场节点。battle/unit.add 在登记及战场关系维护后执行 Skill 入场操作，再读取最新 PRESENT Unit，筛选 Definition 中的 enter Hook 并直接调用通用 dispatch。advance 在阶段开始时固定 Unit 候选，轮到单位时读取最新 PRESENT 实例并派发 tick Hook；本轮新登场的单位下次参与。
+enter 是本次场上实例的登场节点。battle/unit.add 完成登记与适用的部署记录后，筛选实例 hooks 中的 enter Hook，按登记顺序调用通用 dispatch；不单独识别 Skill。Skill 的 enter Hook 负责登记技力回复监听、执行 Skill Definition.onEnter，并尝试发动 PASSIVE 技能，属于同一次派发。advance 在阶段开始时固定 Unit 候选，轮到单位时读取最新 PRESENT 实例并派发实例 hooks 中的 tick Hook；本轮新登场的单位下次参与。
 
 每次派发固定该阶段 Hook 的候选与 Context。enter／tick 的 Context 是开始派发时的 Unit，后续 Hook 仍接收同一对象；BattleState 则逐项接续最新版本。每项执行前检查宿主仍为 PRESENT，嵌套操作导致离场后停止剩余 enter／tick Hook。需要当前 Unit 属性时，从返回的最新 BattleState 查询，不将固定 Context 当作持续更新的对象。
 

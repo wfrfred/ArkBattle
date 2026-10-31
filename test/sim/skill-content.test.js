@@ -3,7 +3,7 @@ import { ref as skillRef } from "../helpers/skill.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { damage as damageTargeting } from "../helpers/targeting.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
-import { fixtureBattle } from "../helpers/unit.js";
+import { baseUnit, fixtureBattle } from "../helpers/unit.js";
 import { actionCapability } from "../helpers/actions.js";
 import { create as createAttack } from "../../dist/content/actions/attack.js";
 import { healing } from "../helpers/vitality.js";
@@ -210,7 +210,7 @@ test("instant healing uses the current activation tick and returns the applied h
       },
     },
   });
-  const unit = initialize({ id: 1, position: [0, 0], definition: { hooks: [], id: "heal-caster", skill: definition, vitality: { maxHp: 100, defense: 0, resistance: 0 } }, states: { vitality: { ...initializeVitality(fixtureBattle(0), { maxHp: 100, defense: 0, resistance: 0 }).value, hp: 50 } } });
+  const unit = initialize({ id: 1, position: [0, 0], definition: { hooks: [], id: "heal-caster", skill: definition, vitality: { maxHp: 100, defense: 0, resistance: 0 } }, states: { vitality: { ...initializeVitality(fixtureBattle(0), baseUnit({ id: "vitality", hooks: [], vitality: { maxHp: 100, defense: 0, resistance: 0 } })).value.vitality, hp: 50 } } });
   let activatedState = effectFixtureWork(unit);
   activatedState = skills.activate({ ...activatedState, tick: 3 }, skillRef(getUnit(activatedState, 1))).state;
   assert.equal(getUnit(activatedState, 1).vitality.hp, 80);

@@ -5,11 +5,10 @@ import {
     hasRoute,
 } from "../../dist/core/unit/capability/route/capability.js";
 import * as route from "../../dist/core/unit/capability/route/index.js";
-import { Effects } from "../../dist/core/unit/effect/effects.js";
 import { add as addUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { setOverlay } from "../../dist/core/battlefield/navigation/state.js";
-import { fixtureBattle } from "../helpers/unit.js";
+import { baseUnit, fixtureBattle } from "../helpers/unit.js";
 
 function definition(overrides = {}) {
     return {
@@ -26,17 +25,11 @@ function definition(overrides = {}) {
 
 function fixture(config = definition(), tick = 0, position = [0, 0]) {
     const battle = fixtureBattle(tick, { rngState: 17 });
-    const initialized = initialize(battle, config);
-    const unit = { hooks: [],
-        id: 3,
-        lifecycle: "PRESENT",
-        definition: { hooks: [], id: "route-test", route: config, spatialPresence: {} },
-        effects: Effects.empty(),
-        position,
-        spatialPresence: { present: true },
-        route: initialized.value,
-    };
-    return { battle: addUnit(initialized.state, unit), ref: { id: unit.id } };
+    const initialized = initialize(battle, baseUnit(
+        { hooks: [], id: "route-test", route: config, spatialPresence: {} },
+        { id: 3, position, spatialPresence: { present: true } },
+    ));
+    return { battle: addUnit(initialized.state, initialized.value), ref: { id: initialized.value.id } };
 }
 
 function current(battle, ref) {
@@ -50,23 +43,23 @@ function move(battle, ref, position) {
 test("Route initialization keeps the normalized definition and leaves RNG untouched", () => {
     const battle = fixtureBattle(37, { rngState: 17 });
     const config = definition({ offset: [0.2, 0.1], checkpoints: [{ type: "WAIT", tick: 9 }] });
-    const initialized = initialize(battle, config);
+    const initialized = initialize(battle, baseUnit({ id: "route-test", hooks: [], route: config }));
     assert.equal(initialized.state, battle);
-    assert.equal(initialized.value.main.definition, config);
-    assert.equal(initialized.value.main.pathMotionMode, "WALK");
-    assert.deepEqual(initialized.value.main.phase, {
+    assert.equal(initialized.value.route.main.definition, config);
+    assert.equal(initialized.value.route.main.pathMotionMode, "WALK");
+    assert.deepEqual(initialized.value.route.main.phase, {
         type: "CHECKPOINT", index: 0, checkpointState: { type: "PENDING" },
     });
-    assert.equal(initialized.value.alternative, null);
-    assert.deepEqual(initialize(battle, definition()).value.main.phase, { type: "END" });
-    assert.throws(() => initialize(battle, definition({ checkpoints: [{ type: "GOTO", index: 1 }] })), /jump/);
-    assert.throws(() => initialize(battle, definition({ checkpoints: [{ type: "WAIT", tick: -1 }] })), /tick/);
+    assert.equal(initialized.value.route.alternative, null);
+    assert.deepEqual(initialize(battle, baseUnit({ id: "route-test", hooks: [], route: definition() })).value.route.main.phase, { type: "END" });
+    assert.throws(() => initialize(battle, baseUnit({ id: "route-test", hooks: [], route: definition({ checkpoints: [{ type: "GOTO", index: 1 }] }) })), /jump/);
+    assert.throws(() => initialize(battle, baseUnit({ id: "route-test", hooks: [], route: definition({ checkpoints: [{ type: "WAIT", tick: -1 }] }) })), /tick/);
 });
 
 test("Route initialization permits start and end tiles outside the battlefield", () => {
     const battle = fixtureBattle();
     const config = definition({ startPosition: [-1, 0], endPosition: [2, 0] });
-    assert.equal(initialize(battle, config).value.main.definition, config);
+    assert.equal(initialize(battle, baseUnit({ id: "route-test", hooks: [], route: config })).value.route.main.definition, config);
 });
 
 test("relative waits use entry time and repeated advance does not consume waiting twice", () => {

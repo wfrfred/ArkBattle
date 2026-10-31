@@ -17,7 +17,7 @@ interface Definition {
     readonly resistance: number;
 }
 
-initialize(battle, definition): Result<State>;
+initialize<U extends Unit & Pick<Vitality, "definition">>(battle, unit: U): Result<U & Vitality>;
 setMaxHpContribution(ref: Ref<Unit & Vitality>, entry): Change;
 removeMaxHpContribution(ref: Ref<Unit & Vitality>, id): Change;
 resolveMaxHp(state, definition): number;

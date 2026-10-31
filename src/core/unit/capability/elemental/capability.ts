@@ -106,26 +106,34 @@ export function createDefinition(
     };
 }
 
-export function initialize(battle: BattleState, definition: Definition): Result<State> {
+export function initialize<U extends Unit & Pick<Elemental, "definition">>(
+    battle: BattleState,
+    unit: U,
+): Result<U & Elemental> {
+    const definition = unit.definition.elemental;
+
     return {
         state: battle,
         value: {
-            ep: elementValues(definition.maxEp),
-            burst: null,
-            nextBurstId: 0,
-            lastAdvancedTick: battle.tick,
-            maxEp: [],
-            recoverySpeed: [],
-            elementResistance: [],
-            damageResistance: [],
-            burstRecoverySpeed: [],
-            receiving: [],
-            rules: [],
-            received: [],
-            damaged: [],
-            healed: [],
-            burstStarted: [],
-            burstEnded: [],
+            ...unit,
+            elemental: {
+                ep: elementValues(definition.maxEp),
+                burst: null,
+                nextBurstId: 0,
+                lastAdvancedTick: battle.tick,
+                maxEp: [],
+                recoverySpeed: [],
+                elementResistance: [],
+                damageResistance: [],
+                burstRecoverySpeed: [],
+                receiving: [],
+                rules: [],
+                received: [],
+                damaged: [],
+                healed: [],
+                burstStarted: [],
+                burstEnded: [],
+            },
         },
     };
 }

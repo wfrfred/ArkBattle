@@ -25,6 +25,7 @@ export interface Unit extends Identified<{ readonly id: Id }> {
     readonly id: Id;
     readonly lifecycle: Lifecycle;
     readonly definition: Definition;
+    readonly hooks: readonly Hook[];
     readonly position: WorldPosition;
     readonly effects: Effects;
 }

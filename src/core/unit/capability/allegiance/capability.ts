@@ -20,8 +20,11 @@ export function hasAllegiance<U extends Unit>(unit: U): unit is U & Allegiance {
     return "allegiance" in unit && "allegiance" in unit.definition;
 }
 
-export function initialize(battle: BattleState, definition: Definition): Result<State> {
-    return { state: battle, value: definition };
+export function initialize<U extends Unit & Pick<Allegiance, "definition">>(
+    battle: BattleState,
+    unit: U,
+): Result<U & Allegiance> {
+    return { state: battle, value: { ...unit, allegiance: unit.definition.allegiance } };
 }
 
 export function areHostile(left: Unit & Allegiance, right: Unit & Allegiance): boolean {

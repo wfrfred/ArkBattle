@@ -12,7 +12,7 @@ import * as operations from "../../dist/core/unit/action/index.js";
 import { initialize } from "../../dist/core/unit/initialize.js";
 import { add as addUnit } from "../../dist/core/battle/unit.js";
 import * as units from "../../dist/core/unit/query.js";
-import { fixtureBattle } from "../helpers/unit.js";
+import { baseUnit, fixtureBattle } from "../helpers/unit.js";
 
 const definition = (id, data = {}, execution = {}) => ({
     id, intervalTicks: 10, speed: 100,
@@ -39,22 +39,23 @@ test("Action initialization composes ordered programs and creates independent pe
     const firstInitializer = createAction(first), secondInitializer = createAction(second);
     const configured = { initialize: battle => createActions(battle, firstInitializer, secondInitializer) };
     const initial = fixtureBattle(7, { rngState: 10 });
-    const a = initializeActions(initial, configured);
-    const b = initializeActions(a.state, configured);
+    const pending = baseUnit({ id: "action-host", hooks: [], action: configured });
+    const a = initializeActions(initial, pending);
+    const b = initializeActions(a.state, pending);
     assert.deepEqual(calls, [["number", 10], ["string", 11], ["number", 12], ["string", 13]]);
     assert.equal(initial.execution.rngState, 10);
     assert.equal(a.state.execution.rngState, 12);
     assert.equal(b.state.execution.rngState, 14);
-    assert.deepEqual(a.value.actions.keys().toArray(), ["number", "string"]);
-    assert.deepEqual(a.value.actions.get(first.id, first).state, { count: 3 });
-    assert.deepEqual(a.value.actions.get(second.id, second).state, { mode: "first" });
-    assert.notEqual(a.value.actions.get(first.id, first).state, b.value.actions.get(first.id, first).state);
-    assert.notEqual(a.value.actions.get(second.id, second).state, b.value.actions.get(second.id, second).state);
-    assert.equal(a.value.actions.get(first.id, first).execution, null);
-    const empty = initializeActions(initial, { initialize: createActions });
+    assert.deepEqual(a.value.action.actions.keys().toArray(), ["number", "string"]);
+    assert.deepEqual(a.value.action.actions.get(first.id, first).state, { count: 3 });
+    assert.deepEqual(a.value.action.actions.get(second.id, second).state, { mode: "first" });
+    assert.notEqual(a.value.action.actions.get(first.id, first).state, b.value.action.actions.get(first.id, first).state);
+    assert.notEqual(a.value.action.actions.get(second.id, second).state, b.value.action.actions.get(second.id, second).state);
+    assert.equal(a.value.action.actions.get(first.id, first).execution, null);
+    const empty = initializeActions(initial, baseUnit({ id: "empty-actions", hooks: [], action: { initialize: createActions } }));
     assert.equal(empty.state, initial);
-    assert.equal(empty.value.actions.size, 0);
-    assert.equal(empty.value.nextExecutionId, 0);
+    assert.equal(empty.value.action.actions.size, 0);
+    assert.equal(empty.value.action.nextExecutionId, 0);
     assert.throws(() => createActions(initial, firstInitializer, createAction({ ...first })), RangeError);
     assert.throws(() => createAction({ ...first, id: "" }), TypeError);
     assert.throws(() => createAction({ ...first, intervalTicks: -1 }), RangeError);

@@ -35,11 +35,19 @@ export const initializers = {
 } as const;
 
 export type Definitions = {
-    readonly [K in keyof typeof initializers]: Parameters<(typeof initializers)[K]>[1];
+    readonly [K in keyof typeof initializers]: Parameters<
+        (typeof initializers)[K]
+    >[1]["definition"] extends Readonly<Record<K, infer D>>
+        ? D
+        : never;
 };
 
 export type States = {
-    readonly [K in keyof typeof initializers]: ReturnType<(typeof initializers)[K]>["value"];
+    readonly [K in keyof typeof initializers]: ReturnType<
+        (typeof initializers)[K]
+    >["value"] extends Readonly<Record<K, infer S>>
+        ? S
+        : never;
 };
 
 type SelectedKeys<D> = {

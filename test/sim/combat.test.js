@@ -1,12 +1,11 @@
 import { set as setFixtureEntry } from "../../dist/core/hook.js";
-import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
+import { update as applyUnitChanges, add as addUnit } from "../../dist/core/battle/unit.js";
 import { tiles as tileEntries } from "../helpers/tiles.js";
 import * as blockingQueries from "../../dist/core/battle/blocking/query.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { calculateDamage } from "../../dist/core/battle/damage/calculate.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { definition as skillDefinition } from "../helpers/skill.js";
-import { enter as enterSkill } from "../../dist/core/unit/skill/operations.js";
 import { actionCapability } from "../helpers/actions.js";
 import { create as createAttack } from "../../dist/content/actions/attack.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
@@ -544,7 +543,7 @@ test('core vitality: invincibility rejects receiving before HIT SP and removing 
       return { state, value: pending };
     },
   }) } };
-  const state = enterSkill(createBattleState(fixtureBattlefieldState([target])), unitRef(target));
+  const state = addUnit(createBattleState(fixtureBattlefieldState([])), target);
   const request = { source: null, target: unitRef(target), parameters: parameters(10, 'TRUE') };
   const blocked = dealDamage(state, request);
   const protection = getUnit(state, 1).effects.values().find(effect => effect.definition === invincible);

@@ -33,10 +33,13 @@ export function hasOffenseDefinition(
     return "offense" in definition;
 }
 
-export function initialize(battle: BattleState, definition: Definition): Result<State> {
-    assertNonnegativeNumber(definition.attack, "attack");
+export function initialize<U extends Unit & Pick<Offense, "definition">>(
+    battle: BattleState,
+    unit: U,
+): Result<U & Offense> {
+    assertNonnegativeNumber(unit.definition.offense.attack, "attack");
 
-    return { state: battle, value: { attack: [] } };
+    return { state: battle, value: { ...unit, offense: { attack: [] } } };
 }
 
 export function setAttackContribution(

@@ -22,28 +22,32 @@ export function initialize(
         throw new TypeError("a unit cannot be both blocker and blockable");
     }
 
-    const states: Record<string, unknown> = {};
+    let unit: Unit = {
+        id: input.id,
+        lifecycle: "PRESENT",
+        definition: input.definition,
+        hooks: [],
+        position: input.position,
+        effects: Effects.empty(),
+    };
 
     for (const key of Object.keys(initializers) as (keyof typeof initializers)[]) {
         if (!(key in input.definition)) {
             continue;
         }
 
-        const definition = input.definition[key];
-        const initialized = initializers[key](battle, definition as never);
+        // The selected key pairs this Unit's definition with its initializer before erasure.
+        const initializer = initializers[key] as (battle: BattleState, unit: Unit) => Result<Unit>;
+        const initialized = initializer(battle, unit);
         battle = initialized.state;
-        states[key] = initialized.value;
+        unit = initialized.value;
     }
 
     return {
         state: battle,
         value: {
-            id: input.id,
-            lifecycle: "PRESENT",
-            definition: input.definition,
-            position: input.position,
-            effects: Effects.empty(),
-            ...states,
+            ...unit,
+            hooks: [...unit.hooks, ...input.definition.hooks],
         },
     };
 }

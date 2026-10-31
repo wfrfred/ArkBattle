@@ -299,7 +299,7 @@ Unit.initialize 将 Blocker／Blockable 的组合限制为至多一种，两者�
 
 Blocking.release(battle, readonly Relation[]) 在入口过滤失效旧身份与重复项，先发布整批双端解除结果，再记录全部 BLOCKING_RELEASED，最后按首次输入顺序逐条派发 Hook。每条开始时同时固定两端候选 ID，后续读取最新登记；ACQUIRED 按旧身份失效停止，RELEASED 作为历史通知继续。release 不接受额外 Unit 更新值，不自动维护、搜索或取消偏移。空间业务先纯发布字段和自身计划取消，再调用 release(battle, relations(battle, ref))；两步间没有回调，首个通知已经可以读取完整结果。
 
-add 接收创建方已经完成 Capability 初始化、部署信息及路线初态的完整 Unit，负责登记、Skill 入场、enter Hook 和原时点的 Occupancy 通知，不扫描全场 Blocking。创建方逐个完成 add 再处理下一对象。Unit Definition 的 hooks 必填，无监听传 []；实例不增加另一份生命周期 Hook。Deployment 的卡消费与 DP 扣除在 add 前完成，登记后记录 UNIT_DEPLOYED，再执行 Skill 与 Unit 入场；部署通知仍由 Deployment 在 add 返回后派发。
+add 接收创建方已经完成 Capability 初始化、部署信息及路线初态的完整 Unit，负责登记、统一 enter Hook 和原时点的 Occupancy 通知，不扫描全场 Blocking。创建方逐个完成 add 再处理下一对象。Unit Definition 的 hooks 必填，无监听传 []；Unit.initialize 将能力 Hook 与内容 Hook 顺序装配到实例 hooks，三个生命周期阶段均读取该序列。Skill 的入场处理作为普通 enter Hook，不由 add 特殊调用。Deployment 的卡消费与 DP 扣除在 add 前完成，登记后记录 UNIT_DEPLOYED，再派发统一入场序列；部署通知仍由 Deployment 在 add 返回后派发。
 
 remove 按 Unit ID 请求 Unit Lifetime 结束，首次请求保留 Departure，先纯发布 LEAVING；若自身是 Blockable，则同时取消未完成的站位计划，再以 relations(battle, ref) 的局部结果调用 Blocking.release。Blocker 的全部旧关系整批解除并记录事件后才通知，保留其原目标的计划；通知返回后执行返费。真实所有权按 Skill、Action、Burst、Effect 顺序展开；依赖者完整 Finalize 后才注销、通知 Occupancy、回收 Card 和派发历史 leave，Finalize 不追加全场 Blocking 扫描。嵌套 remove 只保证请求／Prepare，不保证已物理移除。advance 保留入口 Unit Query 快照，在操作处生成 Ref，逐项读取最新 PRESENT Unit 并派发 tick Hook。
 

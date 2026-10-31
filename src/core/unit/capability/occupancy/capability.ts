@@ -25,8 +25,9 @@ export function hasOccupancy<U extends Unit>(unit: U): unit is U & Occupancy {
     return "occupancy" in unit && "occupancy" in unit.definition;
 }
 
-export const initialize: (battle: BattleState, definition: Definition) => Result<State> = (
-    battle,
-) => {
-    return { state: battle, value: { tile: null } };
-};
+export function initialize<U extends Unit & Pick<Occupancy, "definition">>(
+    battle: BattleState,
+    unit: U,
+): Result<U & Occupancy> {
+    return { state: battle, value: { ...unit, occupancy: { tile: null } } };
+}

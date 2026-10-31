@@ -8,6 +8,7 @@ import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "./tiles.js";
 import { actionCapability } from "./actions.js";
 import { create as createSkill } from "../../dist/core/unit/skill/index.js";
+import { Effects } from "../../dist/core/unit/effect/effects.js";
 
 const tile = createTile({
     heightType: "LOWLAND", meleeBlockable: true, buildableType: "ALL", passableMask: "ALL",
@@ -18,6 +19,18 @@ const map = createMap(1, 32, tileEntries(Array(32).fill(tile)));
 export function fixtureBattle(tick = 0, execution = {}) {
     const battle = createBattleState(create(map));
     return { ...battle, tick, execution: { ...battle.execution, ...execution } };
+}
+
+export function baseUnit(definition, fields = {}) {
+    return {
+        id: 0,
+        lifecycle: "PRESENT",
+        position: [0, 0],
+        ...fields,
+        definition,
+        hooks: [],
+        effects: Effects.empty(),
+    };
 }
 
 export function fixtureDefinition(capability) {

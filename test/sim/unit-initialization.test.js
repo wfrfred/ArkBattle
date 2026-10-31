@@ -10,6 +10,7 @@ import { definition as skillDefinition } from "../helpers/skill.js";
 import { fixtureBattle } from "../helpers/unit.js";
 import { Effects } from "../../dist/core/unit/effect/effects.js";
 import { createUnitPlacementDefinition } from "../../dist/core/battle/creation/placement.js";
+import { enter as skillEntry } from "../../dist/core/unit/skill/operations.js";
 
 const bursts = Object.fromEntries(["NEURAL", "EROSION", "BURN", "NECROSIS"].map(type => [type, {
     durationTicks: 300, onStart: battle => battle,
@@ -42,7 +43,8 @@ test("Skill and Elemental initialize from the current battle tick and keep share
     const battle = fixtureBattle(37);
     const skill = skillDefinition({ initialize: battle => ({ state: battle, value: ({ count: 3 }) }) });
     const elemental = elementalDefinition({ maxEp: 1000, bursts });
-    const definition = { hooks: [], id: "clocks", skill: { initialize: current => createSkill(current, skill) }, elemental };
+    const contentEntry = { id: 'test/content-entry', stage: 'enter', invoke: state => ({ state, value: undefined }) };
+    const definition = { hooks: [contentEntry], id: "clocks", skill: { initialize: current => createSkill(current, skill) }, elemental };
     const first = initialize(battle, { id: 1, definition, position: [0, 0] }).value;
     const second = initialize(battle, { id: 2, definition, position: [1, 0] }).value;
     assert.equal(first.skill.sp.lastTick, 37);
@@ -50,6 +52,10 @@ test("Skill and Elemental initialize from the current battle tick and keep share
     assert.deepEqual(first.skill.state, { count: 3 });
     assert.equal(first.definition, definition);
     assert.equal(second.definition, definition);
+    assert.deepEqual(first.hooks, [skillEntry, contentEntry]);
+    assert.deepEqual(second.hooks, [skillEntry, contentEntry]);
+    assert.deepEqual(definition.hooks, [contentEntry]);
+    assert.notEqual(first.hooks, second.hooks);
     assert.notEqual(first.skill, second.skill);
     assert.notEqual(first.skill.state, second.skill.state);
     assert.notEqual(first.elemental, second.elemental);
@@ -60,24 +66,45 @@ test("Unit initialization threads each capability result through the next initia
     const originalOffense = initializers.offense;
     const battle = fixtureBattle(5, { rngState: 17 });
     const trace = [];
+    const capabilityHook = { id: "test/capability", stage: "enter", invoke: state => ({ state, value: undefined }) };
+    const contentHook = { id: "test/content", stage: "enter", invoke: state => ({ state, value: undefined }) };
+    const definition = { hooks: [contentHook], id: "threaded", vitality: { maxHp: 100, defense: 0, resistance: 0 }, offense: { attack: 7 } };
+    let seed;
     try {
-        initializers.vitality = (current, definition) => {
-            trace.push(["vitality", current.execution.rngState, definition.maxHp]);
-            const result = originalVitality(current, definition);
-            return { ...result, state: { ...result.state, execution: { ...result.state.execution, rngState: 23 } } };
+        initializers.vitality = (current, unit) => {
+            seed = unit;
+            assert.equal(unit.definition, definition);
+            assert.equal(getUnit(current, unit.id), undefined);
+            assert.deepEqual(unit.hooks, []);
+            trace.push(["vitality", current.execution.rngState, unit.definition.vitality.maxHp]);
+            const result = originalVitality(current, unit);
+            return {
+                state: { ...result.state, execution: { ...result.state.execution, rngState: 23 } },
+                value: { ...result.value, assembled: true, hooks: [capabilityHook] },
+            };
         };
-        initializers.offense = (current, definition) => {
-            trace.push(["offense", current.execution.rngState, definition.attack]);
-            const result = originalOffense(current, definition);
+        initializers.offense = (current, unit) => {
+            assert.equal(unit.definition, definition);
+            assert.equal(unit.vitality.hp, 100);
+            assert.equal(unit.assembled, true);
+            assert.deepEqual(unit.hooks, [capabilityHook]);
+            assert.equal(getUnit(current, unit.id), undefined);
+            trace.push(["offense", current.execution.rngState, unit.definition.offense.attack]);
+            const result = originalOffense(current, unit);
             return { ...result, state: { ...result.state, execution: { ...result.state.execution, rngState: 29 } } };
         };
-        const result = initialize(battle, { id: 1, definition: { hooks: [], id: "threaded", vitality: { maxHp: 100, defense: 0, resistance: 0 }, offense: { attack: 7 } }, position: [0, 0],
-        });
+        const result = initialize(battle, { id: 1, definition, position: [0, 0] });
         assert.deepEqual(trace, [["vitality", 17, 100], ["offense", 23, 7]]);
         assert.equal(result.state.execution.rngState, 29);
         assert.equal(battle.execution.rngState, 17);
         assert.equal(result.value.vitality.hp, 100);
         assert.deepEqual(result.value.offense, { attack: [] });
+        assert.equal(result.value.assembled, true);
+        assert.equal(result.value.definition, definition);
+        assert.deepEqual(result.value.hooks, [capabilityHook, contentHook]);
+        assert.equal(result.value.effects, seed.effects);
+        assert.equal(Object.hasOwn(seed, "vitality"), false);
+        assert.deepEqual(seed.hooks, []);
     } finally {
         initializers.vitality = originalVitality;
         initializers.offense = originalOffense;

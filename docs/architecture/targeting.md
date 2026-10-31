@@ -130,10 +130,10 @@ Restriction.allows 只读地判断单项限制是否允许其宿主被本次请�
 ```typescript
 export function hasTargetable<U extends Unit>(unit: U): unit is U & Targetable;
 
-export function initialize(
+export function initialize<U extends Unit & Pick<Targetable, "definition">>(
     battle: BattleState,
-    definition: Definition,
-): Result<State>;
+    unit: U,
+): Result<U & Targetable>;
 
 export function setRestriction(
     ref: Ref<Unit & Targetable>,

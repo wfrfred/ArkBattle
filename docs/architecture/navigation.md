@@ -189,10 +189,10 @@ export interface Route {
     readonly route: State;
 }
 
-export function initialize(
+export function initialize<U extends Unit & Pick<Route, "definition">>(
     battle: BattleState,
-    definition: Definition,
-): Result<State>;
+    unit: U,
+): Result<U & Route>;
 
 export function advance(
     battle: BattleState,
@@ -283,7 +283,7 @@ Route.advance()
 Locomotion
 ```
 
-Route 初始化遵循 [Capability 约定](capability.md)，统一使用 initialize(battle, definition): Result<State>。Spawn 负责采样并接续更新后的 BattleState；Route.initialize 只建立执行进度，不再采样。初始 Unit.position 与路线查询使用同一份 Definition.offset。
+Route 初始化遵循 [Capability 约定](capability.md)，统一使用 initialize(battle, unit): Result<U & Route>，从 unit.definition.route 读取配置并在输入 Unit 上装配进度。Spawn 负责采样并接续更新后的 BattleState；Route.initialize 不再采样。初始 Unit.position 与路线查询使用同一份 Definition.offset。
 
 Alternative 的业务所有者同样提供已经规范化、偏移已经确定的 Definition，再调用 setAlternative。
 

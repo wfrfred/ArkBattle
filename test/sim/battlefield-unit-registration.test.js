@@ -156,7 +156,7 @@ import { add as addUnit } from ${sourceModule("battlefield/unit")};
 type ActingDefinition = Definition & Action['definition'];
 declare const definition: ImmutableData<ActingDefinition>;
 declare const map: TileMap;
-const unit = { id: 1, definition, position: [0, 0], effects: Effects.empty(), lifecycle: 'PRESENT' } satisfies Unit;
+const unit = { id: 1, definition, hooks: definition.hooks, position: [0, 0], effects: Effects.empty(), lifecycle: 'PRESENT' } satisfies Unit;
 const baseUnit: Unit = unit;
 const battlefield = create(map);
 addUnit(battlefield, baseUnit);

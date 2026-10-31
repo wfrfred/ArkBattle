@@ -11,7 +11,7 @@ import { initialize as initializeUnit } from "../../dist/core/unit/initialize.js
 import { add as addUnit, remove as removeUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
 import * as units from "../../dist/core/unit/query.js";
 import * as attribute from "../../dist/core/unit/contribution/attribute.js";
-import { fixtureBattle } from "../helpers/unit.js";
+import { baseUnit, fixtureBattle } from "../helpers/unit.js";
 
 const createUnit = (battle, id, attack, capabilities = {}) => initializeUnit(battle, {     id,
     position: [id, 0],
@@ -22,15 +22,15 @@ test("Offense initialization validates its base attribute through both construct
     const battle = fixtureBattle(7);
 
     for (const attack of [0, 0.25, 125.75]) {
-        const initialized = initialize(battle, { attack });
+        const initialized = initialize(battle, baseUnit({ id: "offense", hooks: [], offense: { attack } }));
         assert.strictEqual(initialized.state, battle);
-        assert.deepEqual(initialized.value, { attack: [] });
+        assert.deepEqual(initialized.value.offense, { attack: [] });
         const unit = createUnit(battle, 0, attack);
         assert.equal(resolveAttack(addUnit(battle, unit), units.ref(unit)), attack);
     }
 
     for (const attack of [-0.25, NaN, Infinity, -Infinity, "100", undefined]) {
-        assert.throws(() => initialize(battle, { attack }), /attack must be a finite nonnegative number/);
+        assert.throws(() => initialize(battle, baseUnit({ id: "offense", hooks: [], offense: { attack } })), /attack must be a finite nonnegative number/);
         assert.throws(() => createUnit(battle, 0, attack), /attack must be a finite nonnegative number/);
     }
 });

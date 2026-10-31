@@ -5,7 +5,7 @@ import { lifetime as actionLifetime } from "../../dist/core/unit/action/operatio
 import * as unitQueries from "../../dist/core/unit/index.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
-import { fixtureBattle } from "../helpers/unit.js";
+import { baseUnit, fixtureBattle } from "../helpers/unit.js";
 import { healing } from "../helpers/vitality.js";
 import { ref as unitRef } from "../../dist/core/unit/index.js";
 import { initialize as initializeActionState } from "../../dist/core/unit/capability/action/index.js";
@@ -292,7 +292,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
     });
     const primary = actor("primary-launcher", program(true));
     const sibling = actor("later-launcher", program(false));
-    const siblingAction = initializeActionState(fixtureBattle(0), sibling.action).value;
+    const siblingAction = initializeActionState(fixtureBattle(0), baseUnit({ ...sibling, hooks: [] })).value.action;
     const currentAction = siblingAction.actions.get("launch");
     const delayedSiblingAction = {
         ...siblingAction,
@@ -370,7 +370,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
                         ? {
                               states: {
                                   vitality: {
-                                      ...initializeVitalityState(fixtureBattle(0), { maxHp: 100, defense: 0, resistance: 0 }).value,
+                                      ...initializeVitalityState(fixtureBattle(0), baseUnit({ id: "vitality", hooks: [], vitality: { maxHp: 100, defense: 0, resistance: 0 } })).value.vitality,
                                       hp: 40,
                                   },
                               },

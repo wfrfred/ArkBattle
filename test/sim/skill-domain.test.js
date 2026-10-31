@@ -1,5 +1,5 @@
-import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
-import { fixtureBattle, getUnit, initialize } from "../helpers/unit.js";
+import { update as applyUnitChanges, add as addUnit } from "../../dist/core/battle/unit.js";
+import { baseUnit, fixtureBattle, getUnit, initialize } from "../helpers/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { replace as updateUnit } from "../../dist/core/battle/unit.js";
@@ -95,7 +95,7 @@ test("activation-specific payment samples the current SP without changing the co
 test("skill definitions are shared and deployments initialize independent private state", () => {
     const f = fixture({ initialize: battle => ({ state: battle, value: ({ count: 0 }) }), sp: resource({ initial: 1 }) });
     assert.equal(f.unit.skill.definition, f.definition);
-    const another = initializeSkill(fixtureBattle(90), f.unit.definition.skill).value;
+    const another = initializeSkill(fixtureBattle(90), baseUnit(f.unit.definition)).value.skill;
     assert.deepEqual(another.state, { count: 0 });
     assert.notEqual(another.state, f.unit.skill.state);
     assert.equal(another.sp.value, 1);
@@ -409,7 +409,7 @@ test("a deployment passive can have a finite TIME duration without natural react
     const f = fixture({ sp: null, activation: {
         trigger: "PASSIVE", sustain: { type: "TIME", durationTicks: 3 }, initialize: () => ({}),
     } });
-    let state = skills.enter(f.state, f.ref);
+    let state = addUnit(fixtureBattle(), f.unit);
     assert.equal(read(state).activation.sustain.endsAtTick, 3);
     state = skills.advance(at(state, 3), f.ref);
     assert.equal(read(state).activation, null);

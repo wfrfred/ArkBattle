@@ -67,7 +67,20 @@ export function hasRoute<U extends Unit>(unit: U): unit is U & Route {
     return "route" in unit && "route" in unit.definition;
 }
 
-export function initialize(battle: BattleState, definition: Definition): Result<State> {
+export function initialize<U extends Unit & Pick<Route, "definition">>(
+    battle: BattleState,
+    unit: U,
+): Result<U & Route> {
+    return {
+        state: battle,
+        value: {
+            ...unit,
+            route: { main: createProgress(unit.definition.route), alternative: null },
+        },
+    };
+}
+
+export function createProgress(definition: Definition): Progress {
     assert(Vec2.is(definition.offset), "invalid route offset", TypeError);
 
     for (const checkpoint of definition.checkpoints) {
@@ -86,18 +99,12 @@ export function initialize(battle: BattleState, definition: Definition): Result<
     }
 
     return {
-        state: battle,
-        value: {
-            main: {
-                definition,
-                pathMotionMode: definition.pathMotionMode,
-                phase:
-                    definition.checkpoints.length === 0
-                        ? { type: "END" }
-                        : { type: "CHECKPOINT", index: 0, checkpointState: { type: "PENDING" } },
-            },
-            alternative: null,
-        },
+        definition,
+        pathMotionMode: definition.pathMotionMode,
+        phase:
+            definition.checkpoints.length === 0
+                ? { type: "END" }
+                : { type: "CHECKPOINT", index: 0, checkpointState: { type: "PENDING" } },
     };
 }
 

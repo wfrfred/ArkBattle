@@ -3,7 +3,7 @@ import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
 import { lifetime as burstLifetime } from "../../dist/core/unit/capability/elemental/operations.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
-import { fixtureBattle } from "../helpers/unit.js";
+import { baseUnit, fixtureBattle } from "../helpers/unit.js";
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFileSync } from 'node:fs';
@@ -65,7 +65,7 @@ const near = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-8,
 
 test('Elemental owns immutable bars and initializes its clock without a recovery timer', () => {
   const definition = createElementalDefinition({ maxEp: 1000, bursts: simpleBursts() });
-  const state = initializeElementalState(fixtureBattle(7), definition).value;
+  const state = initializeElementalState(fixtureBattle(7), baseUnit({ id: "elemental", hooks: [], elemental: definition })).value.elemental;
   assert.deepEqual(state.ep, elementValues(1000));
   assert.equal(state.lastAdvancedTick, 7);
   assert.equal(state.burst, null);

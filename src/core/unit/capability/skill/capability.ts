@@ -8,6 +8,7 @@ import type { Input as AmmoInput } from "../../skill/ammo.js";
 import type { Rule } from "./rule.js";
 import type { Ref } from "../../../common/ref.js";
 import { createChange, type Change } from "../../change.js";
+import { enter } from "../../skill/operations.js";
 
 export interface Definition {
     readonly initialize: (battle: BattleState) => Result<SkillState<any, any>>;
@@ -41,8 +42,11 @@ export function hasSkillDefinition(
     return "skill" in definition;
 }
 
-export function initialize(battle: BattleState, definition: Definition): Result<State> {
-    const initialized = definition.initialize(battle);
+export function initialize<U extends Unit & Pick<Skill, "definition">>(
+    battle: BattleState,
+    unit: U,
+): Result<U & Skill> {
+    const initialized = unit.definition.skill.initialize(battle);
     const skill = initialized.value;
     const value: State = {
         ...skill,
@@ -63,7 +67,10 @@ export function initialize(battle: BattleState, definition: Definition): Result<
         activationEnded: [],
     };
 
-    return { state: initialized.state, value };
+    return {
+        state: initialized.state,
+        value: { ...unit, skill: value, hooks: registry.set(unit.hooks, enter) },
+    };
 }
 
 export function setRule(reference: Ref<Unit & Skill>, rule: Rule): Change {
