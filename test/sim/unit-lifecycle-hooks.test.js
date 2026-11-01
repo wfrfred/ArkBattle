@@ -20,6 +20,11 @@ test("Unit entry hooks retain their context while passing the latest BattleState
                     },
                 },
                 {
+                    id: "reject-after-change", stage: "enter",
+                    accepts: (battle, self) => getUnit(battle, self.id).vitality.hp === 100,
+                    invoke() { assert.fail("accepts must see the returned BattleState"); },
+                },
+                {
                     id: "observe", stage: "enter",
                     accepts: (battle, self) => getUnit(battle, self.id).vitality.hp === 75,
                     invoke(battle, self) {
@@ -39,6 +44,71 @@ test("Unit entry hooks retain their context while passing the latest BattleState
     assert.equal(getUnit(after, 1).vitality.hp, 75);
     assert.equal(getUnit(before, 1), undefined);
     assert.equal(unit.vitality.hp, 100);
+});
+
+test("Unit construction replaces matching hook IDs in place across lifecycle stages", () => {
+    const calls = [];
+    const stale = () => assert.fail("a replaced lifecycle hook must not execute");
+    const unit = initialize({
+        id: 1, position: [0, 0],
+        hooks: [
+            { id: "shared-enter", stage: "enter", invoke: stale },
+            {
+                id: "entry-tail", stage: "enter",
+                invoke(battle) {
+                    calls.push("tail");
+                    return { state: battle, value: undefined };
+                },
+            },
+            { id: "shared-tick", stage: "tick", invoke: stale },
+            { id: "shared-prepare", stage: "prepare", invoke: stale },
+            { id: "shared-leave", stage: "leave", invoke: stale },
+        ],
+        definition: {
+            id: "replaced-lifecycle-hooks",
+            hooks: [
+                {
+                    id: "shared-enter", stage: "enter",
+                    invoke(battle) {
+                        calls.push("enter");
+                        return { state: battle, value: undefined };
+                    },
+                },
+                {
+                    id: "shared-tick", stage: "tick",
+                    invoke(battle) {
+                        calls.push("tick");
+                        return { state: battle, value: undefined };
+                    },
+                },
+                {
+                    id: "shared-prepare", stage: "prepare",
+                    invoke(battle, departure) {
+                        assert.equal(departure.unit, unit);
+                        assert.equal(departure.unit.lifecycle, "PRESENT");
+                        assert.equal(getUnit(battle, unit.id).lifecycle, "LEAVING");
+                        calls.push("prepare");
+                        return { state: battle, value: undefined };
+                    },
+                },
+                {
+                    id: "shared-leave", stage: "leave",
+                    invoke(battle, departure) {
+                        assert.equal(departure.unit, unit);
+                        assert.equal(getUnit(battle, unit.id), undefined);
+                        calls.push("leave");
+                        return { state: battle, value: undefined };
+                    },
+                },
+            ],
+        },
+    });
+    let battle = add(fixtureBattle(), unit);
+    battle = advance(battle);
+    battle = remove(battle, unit.id, "SCRIPT");
+
+    assert.deepEqual(calls, ["enter", "tail", "tick", "prepare", "leave"]);
+    assert.equal(getUnit(battle, unit.id), undefined);
 });
 
 test("removing a Unit in an entry hook completes leave hooks and stops later entry or tick hooks", () => {

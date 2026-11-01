@@ -3,7 +3,6 @@ import type { State as BattlefieldState } from "../battlefield/state.js";
 import type { Id, LeaveReason, Unit, Departure } from "../unit/unit.js";
 import * as units from "../unit/query.js";
 import type { State as BattleState } from "./state.js";
-import * as hooks from "../hook.js";
 import { create as createLifetime } from "../lifetime/operations.js";
 import type { Ref } from "../common/ref.js";
 import { dispatch as dispatchObservers } from "./unit-hook.js";
@@ -15,15 +14,17 @@ export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
     const next = battlefield.add(previous, unit);
     battle = publishBattlefield(battle, next);
     const reference = units.ref(unit);
-    const current = units.get(battle, reference);
-    if (current?.lifecycle === "PRESENT") {
-        const entries = current.hooks.filter((entry) => entry.stage === "enter");
 
-        battle = hooks.dispatch(battle, current, undefined, {
-            candidates: () => entries.map(({ id }) => id),
-            find: (_current, id) => entries.find((entry) => entry.id === id),
-            stop: (state) => units.get(state, reference)?.lifecycle !== "PRESENT",
-        }).state;
+    for (const entry of unit.hooks) {
+        if (entry.stage !== "enter") {
+            continue;
+        }
+        if (units.get(battle, reference)?.lifecycle !== "PRESENT") {
+            break;
+        }
+        if (entry.accepts?.(battle, unit, undefined) !== false) {
+            battle = entry.invoke(battle, unit, undefined).state;
+        }
     }
 
     return dispatchObservers(battle, "registrationChanged", { previous, next, changed: [unit.id] });
@@ -79,12 +80,16 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
     begin: (self) => ({ ...self, lifecycle: "LEAVING" }),
     replace: (battle, _reference, next) => replace(battle, [next]),
     prepare: (battle, _reference, _initial, departure) => {
-        const entries = departure.unit.hooks.filter((entry) => entry.stage === "prepare");
+        for (const entry of departure.unit.hooks) {
+            if (
+                entry.stage === "prepare" &&
+                entry.accepts?.(battle, departure, undefined) !== false
+            ) {
+                battle = entry.invoke(battle, departure, undefined).state;
+            }
+        }
 
-        return hooks.dispatch(battle, departure, undefined, {
-            candidates: () => entries.map(({ id }) => id),
-            find: (_current, id) => entries.find((entry) => entry.id === id),
-        }).state;
+        return battle;
     },
     finalize: (battle, reference, departure) => {
         const departing = units.get(battle, reference)!;
@@ -105,11 +110,14 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
             changed: [reference.id],
         });
 
-        const entries = departure.unit.hooks.filter((entry) => entry.stage === "leave");
-        battle = hooks.dispatch(battle, departure, undefined, {
-            candidates: () => entries.map(({ id }) => id),
-            find: (_current, id) => entries.find((entry) => entry.id === id),
-        }).state;
+        for (const entry of departure.unit.hooks) {
+            if (
+                entry.stage === "leave" &&
+                entry.accepts?.(battle, departure, undefined) !== false
+            ) {
+                battle = entry.invoke(battle, departure, undefined).state;
+            }
+        }
 
         return dispatchObservers(battle, "leave", departure);
     },
@@ -132,14 +140,20 @@ export function advance(battle: BattleState): BattleState {
     for (const candidate of candidates) {
         const reference = units.ref(candidate);
         const self = units.get(battle, reference);
-        if (self?.lifecycle === "PRESENT") {
-            const entries = self.hooks.filter((entry) => entry.stage === "tick");
+        if (self?.lifecycle !== "PRESENT") {
+            continue;
+        }
 
-            battle = hooks.dispatch(battle, self, undefined, {
-                candidates: () => entries.map(({ id }) => id),
-                find: (_current, id) => entries.find((entry) => entry.id === id),
-                stop: (state) => units.get(state, reference)?.lifecycle !== "PRESENT",
-            }).state;
+        for (const entry of self.hooks) {
+            if (entry.stage !== "tick") {
+                continue;
+            }
+            if (units.get(battle, reference)?.lifecycle !== "PRESENT") {
+                break;
+            }
+            if (entry.accepts?.(battle, self, undefined) !== false) {
+                battle = entry.invoke(battle, self, undefined).state;
+            }
         }
     }
 

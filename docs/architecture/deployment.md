@@ -104,7 +104,7 @@ Unit.initialize 与直接 Placement 创建的 initial 按已声明能力约束�
 
 需要保存到 Battle.Input 或排程中的异构创建描述通过 createUnitPlacementDefinition 建立输入配对，UnitPlacementDefinition 的初始输入只暴露类型层的已配对标记，默认不含 any。直接 instantiate 仍能按具体 Definition 接收类型化初态。这里没有新的运行实例、容器、View 或二次运行时校验；实际字段仍由原 initializer 处理。
 
-Placement.hooks 是调用方明确提前登记的普通 Hook。装配顺序为初始 hooks、各 Capability 的登记、Definition.hooks；没有 CardEnter 阶段或按来源种类自动排序的优先级。具体内容可以据业务选择登记位置，不把这种项目装配顺序称为所有原生外来效果的统一顺序。
+Placement.hooks 是调用方明确提前登记的普通 Hook。装配顺序为初始 hooks、各 Capability 的登记、Definition.hooks；同 ID 后者替换前者并保留首次登记的位置。没有 CardEnter 阶段或按来源种类自动排序的优先级。具体内容可以据业务选择登记位置，不把这种项目装配顺序称为所有原生外来效果的统一顺序。
 
 ## 入场附着与共享机会
 
@@ -156,9 +156,9 @@ costCeiling 是独立费用上限，默认 99，与 maxDp 分开配置，不假�
 
 ### Unit：生命周期 Hook
 
-Unit 只保存 PRESENT／LEAVING，登场前和注销后通过集合中不存在表达。Unit Definition.hooks 必填；实例 hooks 保存初始登记、能力登记与内容登记的结果，原 Definition 保持不变。Skill 自行登记普通 enter Hook，Deployable 自行登记退款 prepare Hook；来源程序需要离场回收时自行提供普通 leave Hook。Unit 不枚举这些领域。
+Unit 只保存 PRESENT／LEAVING，登场前和注销后通过集合中不存在表达。Unit Definition.hooks 必填；实例 hooks 保存构造期合并的初始登记、能力登记与内容登记，运行期间不提供本地生命周期 Hook 的增删接口，原 Definition 保持不变。Skill 自行登记普通 enter Hook，Deployable 自行登记退款 prepare Hook；来源程序需要离场回收时自行提供普通 leave Hook。Unit 不枚举这些领域。
 
-enter 在 Unit 登记后派发。tick 固定阶段入口候选，逐项读取当前 PRESENT 实例。每次派发固定候选与 Context，BattleState 逐项接续；enter／tick 每项前确认宿主仍为 PRESENT。需要实时属性时重新查询，不将开始派发时的 Unit Context 当作可变对象。
+enter 在 Unit 登记后执行。tick 固定阶段入口 Unit 候选，逐项读取当前 PRESENT 实例。本地生命周期直接按该阶段的固定 Hook 对象序列执行，不转换成 ID 后再查找；Context 保持固定，accepts 使用逐项接续的最新 BattleState。enter／tick 每项前确认宿主仍为 PRESENT，离场后停止后续项。需要实时属性时重新查询，不将开始执行时的 Unit Context 当作可变对象。
 
 prepare 在发布 LEAVING 后、请求子依赖前执行。Departure 保存开始离场时的 Unit 与 reason，保留 Skill／Effect 清理前的数据；当前退款仍从最新 Unit 读取。leave 在子依赖完整析构、Unit 物理注销和登记变化通知之后执行，使用 Departure，不再查询已删除的宿主。跨部署资源在这些普通程序中转换，不由通用初始化器继承。
 

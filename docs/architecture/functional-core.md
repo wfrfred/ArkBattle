@@ -224,6 +224,8 @@ dispatch(battle, fixedContext, initialValue, options): Result<T>;
 
 candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定。每项依次检查 stop、find、accepts，再 invoke；三个查询只读，不消费 RNG。find 重新读取最新登记并确认节点／阶段资格。accepts 缺省为允许，返回 false 则跳过；stop 结束整次派发，保留已完成的状态和值，不自动取消业务或回滚。嵌套派发独立取得 Context、current 和候选；返回后接续其 Battle，外层 Context 不变，外层 current 由当前 Hook 返回值决定。
 
+上述候选 ID 协议用于动态登记，例如全局 Unit 观察者与 Capability Hook。Unit 本地的 enter／tick／prepare／leave 在构造期装配，运行期间不提供增删接口，直接按本阶段的固定 Hook 对象序列执行。它们同样固定 Context、逐项接续 BattleState，并在最新 Battle 上判断 accepts；enter／tick 每项前确认宿主仍为 PRESENT，prepare／leave 使用固定 Departure，leave 不查询已注销的宿主。装配时同 ID 后者覆盖并保留首次位置，不在执行时去重。
+
 不需要操作值的通知使用 T=void，仍返回 Result<void>，C 也可为 void。需要终止后续通知时，领域定义自己的控制值，不把业务取消、停止派发和生命周期终结混为同一个布尔值。Vitality 的阶段控制只在本节点生效，不能成为后续业务事实的一部分。
 
 公共 API 为 set、remove、dispatch；set/remove 按 ID 登记、替换与撤销，保留结构共享。领域持有登记集合，定义节点、排序、资格与停止条件。Effect 与 [Projectile](projectile.md) 的 Definition 回调直接接收完整 self；异构容器内部擦除私有参数，Core 调用同一实例自身 Definition 的程序，不解释未知 data。Definition 程序与本次 Hook 派发的固定 Context 分别定义。

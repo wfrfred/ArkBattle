@@ -75,7 +75,9 @@ Product<D>.definition 直接保留 D，包含内容自有字段、字面量与�
 
 Unit 装配实现在 unit/initialize.ts，由 [unit/index.ts](../../src/core/unit/index.ts) 公开 initialize(battle, input) → Result<Unit & Product<D>> 及模型、Hook 类型和查询；完整登记与离场操作仍直接归 battle/unit.ts。Input 的 id、definition、position 为必填，可选 initial 与 hooks，不接收 effects；基础 Unit 具有原始 Definition、位置、PRESENT、调用方已登记的 hooks（缺省为空）和 Effects.empty()。初始 Effect 仍由登记后的 enter Hook 调用 install，正常执行安装、生效与依赖结算。实现按 Definition 中的配置键选择 initializer，将当前 battle、正在装配的 Unit 和该项初始输入传给它；异构类型只在派发和创建描述的配对边界擦除。不使用 Reflect，不重复检查内部能力配置是否为 undefined 或 null，不维护另一套能力专属分支。已知能力的 Definition 受 Catalog 派生类型约束；公开装配结果只承诺明确选择的能力，Skill／Action 的私有类型仍由所属领域恢复。
 
-Unit.initialize 是对所选 initializer 列表的 fold：从调用方已登记初始 Hook 的基础 Unit 开始，按 Catalog 登记顺序逐个接续 Result 中的 battle 与 Unit，最后追加 Definition 的内容 Hook。每项 initializer 保留身份、Definition、已有能力及登记项，补充自身状态或 Hook；Skill 登记 enter，Deployable 登记退款 prepare；具体部署来源以普通 leave Hook 接入回收。Blocker 或 Blockable 将必要清理 prepare 放在序列前部。这里表达显式登记顺序，不按来源类型增加生命周期阶段或普遍优先级。通用初始化器及 Unit 生命周期操作不依赖这些具体领域。初始化可以读取当前战场或消费 RNG，但当前 Unit 尚未登记；本轮已有能力直接从输入 Unit 读取，不通过战场查询半成品。所有能力装配完成后才执行完整 add 与统一入场派发。
+Unit.initialize 是对所选 initializer 列表的 fold：从调用方已登记初始 Hook 的基础 Unit 开始，按 Catalog 登记顺序逐个接续 Result 中的 battle 与 Unit，最后合并 Definition 的内容 Hook。Hook 同 ID 后者覆盖前者并保留首次出现的位置，唯一性在装配期建立，执行时不重复去重。每项 initializer 保留身份、Definition、已有能力及登记项，补充自身状态或 Hook；Skill 登记 enter，Deployable 登记退款 prepare；具体部署来源以普通 leave Hook 接入回收。Blocker 或 Blockable 将必要清理 prepare 放在序列前部。这里表达显式登记顺序，不按来源类型增加生命周期阶段或普遍优先级。通用初始化器及 Unit 生命周期操作不依赖这些具体领域。初始化可以读取当前战场或消费 RNG，但当前 Unit 尚未登记；本轮已有能力直接从输入 Unit 读取，不通过战场查询半成品。所有能力装配完成后才执行完整 add 与统一入场派发。
+
+Unit 本地生命周期 Hook 是构造期确定的程序序列，运行期间没有增删接口；enter／tick／prepare／leave 直接按对象顺序执行。Context 固定，BattleState 逐项接续，accepts 读取最新 Battle；enter／tick 在每项前确认宿主仍为 PRESENT，prepare／leave 使用既定 Departure 完成终止业务。全局 Unit 观察者和 Capability 的动态 Hook 登记仍沿用各自的 set／remove 与通用 dispatch 协议。
 
 Action Capability 的 Definition 保存 initialize(battle) → Result<Actions> 和可选 select。具体内容在类型明确处创建行动初始化函数，再以 createActions 顺序组合；Capability 接续返回的 BattleState，将 Actions 放入公共 State，并建立执行 ID 计数、贡献、规则和 Hook 的初值。配置不另存静态 Definition 集合，也不让调度器恢复具体内容类型。
 

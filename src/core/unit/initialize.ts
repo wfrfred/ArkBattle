@@ -10,6 +10,7 @@ import {
 import { Effects } from "./effect/effects.js";
 import type { Unit, Definition, Id } from "./unit.js";
 import type { Hook } from "./hook.js";
+import { set as setHook } from "../hook.js";
 
 export interface Input<D extends Definition & Partial<Definitions> = Definition> {
     readonly id: Id;
@@ -36,7 +37,7 @@ export function initialize(
         lifecycle: "PRESENT",
         definition: input.definition,
         // These programs were explicitly registered before the capability initialization fold.
-        hooks: input.hooks ?? [],
+        hooks: (input.hooks ?? []).reduce<readonly Hook[]>(setHook, []),
         position: input.position,
         effects: Effects.empty(),
     };
@@ -61,7 +62,7 @@ export function initialize(
         state: battle,
         value: {
             ...unit,
-            hooks: [...unit.hooks, ...input.definition.hooks],
+            hooks: [...unit.hooks, ...input.definition.hooks].reduce<readonly Hook[]>(setHook, []),
         },
     };
 }

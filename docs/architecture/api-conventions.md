@@ -210,6 +210,8 @@ Hook<C,T> 是 `(battle, context, current) => Result<T>`。C 是本次派发固�
 
 公共 dispatch 的 options 只提供 candidates、find、可选 stop。候选在本次入口确定一次；find 每项确认最新登记与节点资格，accepts 只读，stop 决定是否结束整个派发。普通通知用 void；控制和业务取消由领域明确表达。详见[公共 Hook 契约](functional-core.md#6-hook-和生命周期的纯契约)。
 
+Unit 本地生命周期 Hook 在构造期完成装配，运行期间不提供增删接口。它们直接按固定 Hook 对象序列执行，保留固定 Context、最新 BattleState 与 accepts 判断，不经候选 ID 和 find 往返。全局 Unit 观察者及其它动态登记继续使用上述 dispatch 协议。
+
 同步嵌套操作独立收集候选，不通过 BattleState、全局变量或其他容器继承外层派发的快照。
 
 ## 4. 未完成的完整操作整理
@@ -222,7 +224,7 @@ Hook<C,T> 是 `(battle, context, current) => Result<T>`。C 是本次派发固�
 
 接口整理保留真实可接受输入：允许普通 Unit 并用报告表达缺少能力的操作，继续使用 `Ref<Unit>`；要求明确能力的推进使用 `Ref<Unit & H>`。命名遵循 ESM 惯例，不以转发层统一签名。
 
-阶段中命令处理与自动推进保持既定顺序；拆分函数和统一签名不改变时序。Unit 生命周期通过静态 Definition.hooks 的 enter／tick／prepare／leave 阶段复用通用 Hook，部署 Hook 及其余接口按下节记录；标签与 Profile 的已知问题见 [Capability 记录](capability.md#待整理单位标签与-profile-依赖)。
+阶段中命令处理与自动推进保持既定顺序；拆分函数和统一签名不改变时序。Unit 生命周期通过构造期装配的 enter／tick／prepare／leave 程序序列复用通用 Hook 类型，部署 Hook 及其余接口按下节记录；标签与 Profile 的已知问题见 [Capability 记录](capability.md#待整理单位标签与-profile-依赖)。
 
 ## 5. 未完成的回调与查询整理
 
@@ -298,7 +300,7 @@ Unit.initialize 将 Blocker／Blockable 的组合限制为至多一种，两者�
 
 Blocking.release(battle, readonly Relation[]) 在入口过滤失效旧身份与重复项，先发布整批双端解除结果，再记录全部 BLOCKING_RELEASED，最后按首次输入顺序逐条派发 Hook。每条开始时同时固定两端候选 ID，后续读取最新登记；ACQUIRED 按旧身份失效停止，RELEASED 作为历史通知继续。release 不接受额外 Unit 更新值，不自动维护、搜索或取消偏移。空间业务先纯发布字段和自身计划取消，再调用 release(battle, relations(battle, ref))；两步间没有回调，首个通知已经可以读取完整结果。
 
-add 接收创建方已经完成 Capability 初始化、部署信息及路线初态的完整 Unit，负责登记、统一 enter Hook，再发出 registrationChanged 全局观察通知；Runtime 登记的 Occupancy 观察者负责承载通知。Unit 不识别具体能力或扫描全场 Blocking。创建方逐个完成 add 再处理下一对象。Unit Definition 的 hooks 必填，无监听传 []；Unit.initialize 从显式初始 hooks 开始 fold 各能力，最后追加 Definition.hooks；enter／tick／prepare／leave 均读取该序列。可选 initial 按 initializer 的第三参数与已声明能力配对，不接受任意 Partial<Unit>。Skill 自行登记 enter Hook。实际 Deployment 在 initialize／enter 之前完成卡／DP 和共享机会消费，add 前写入本次部署事实并记录 UNIT_DEPLOYED，add 返回后派发 deployedHooks；Unit.add 不推断部署。
+add 接收创建方已经完成 Capability 初始化、部署信息及路线初态的完整 Unit，负责登记、统一 enter Hook，再发出 registrationChanged 全局观察通知；Runtime 登记的 Occupancy 观察者负责承载通知。Unit 不识别具体能力或扫描全场 Blocking。创建方逐个完成 add 再处理下一对象。Unit Definition 的 hooks 必填，无监听传 []；Unit.initialize 从显式初始 hooks 开始 fold 各能力，最后合并 Definition.hooks，同 ID 后者替换并保留首次位置；enter／tick／prepare／leave 均直接执行相应的固定对象序列。enter／tick 每项前确认当前宿主仍为 PRESENT；prepare／leave 使用固定 Departure，leave 时宿主已经注销。可选 initial 按 initializer 的第三参数与已声明能力配对，不接受任意 Partial<Unit>。Skill 自行登记 enter Hook。实际 Deployment 在 initialize／enter 之前完成卡／DP 和共享机会消费，add 前写入本次部署事实并记录 UNIT_DEPLOYED，add 返回后派发 deployedHooks；Unit.add 不推断部署。
 
 remove 按 Unit ID 请求 Unit Lifetime 结束，首次请求保留 Departure，纯发布 LEAVING 后统一派发 prepare Hook。Blocking 自行登记的首部 Hook 解除本 Unit 旧关系，Blockable 取消自身 adjustment；Deployable Hook 随后按最新 Unit 返费。Unit 不调用能力专属操作，Lifetime 按父子边登记顺序展开依赖。依赖者完整 Finalize 后才注销 Unit、记录移除事实，发出 registrationChanged，再执行本地 leave（部署来源的回收程序及内容 Hook），最后发出全局 leave；Card 关联本身不自动决定归还政策，Finalize 不扫描能力或全场关系。嵌套 remove 只保证请求／Prepare，不保证已物理移除。advance 保留入口 Unit Query 快照，在操作处生成 Ref，逐项读取最新 PRESENT Unit 并派发 tick Hook。
 
