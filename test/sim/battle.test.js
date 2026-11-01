@@ -1549,7 +1549,7 @@ const deployableDefinition = (id = 'test_deployable') => Object.freeze({ hooks: 
 test('core battle deploys and retreats units with immutable occupancy and current tile navigation costs', () => {
   const definition = deployableDefinition();
   let runtime = initializeBattle(deploymentBattleInput({}, [{ definition: definition, supply: {
-    stockLimit: null, activeLimit: null, recharge: 'DEPLOYMENT', costPenalty: false,
+    stockLimit: null, activeLimit: null,
   } }]));
   const maps = runtime.battlefield.navigation;
   const deployed = (runtime = advanceBattle(runtime, [{ type: 'DEPLOY_UNIT', cardId: 0, tilePosition: [0, 1] }]));
@@ -1573,7 +1573,7 @@ test('core battle deploys and retreats units with immutable occupancy and curren
 
   const occupancy = { tile: [0, 5] };
   const initialInput = deploymentBattleInput({
-    initialUnits: [{ definition: Object.freeze({ hooks: [], id: 'reserved_home', occupancy: { slot: 'OCCUPANT' } }), position: [5, 0], tile: occupancy.tile,
+    initialUnits: [{ definition: Object.freeze({ hooks: [], id: 'reserved_home', occupancy: { slot: 'OCCUPANT' } }), position: [5, 0], initial: { occupancy },
        }],
   }, [{ definition: definition }]);
   let reserved = initializeBattle(initialInput);
@@ -1630,7 +1630,7 @@ test('core battle deploys and retreats units with immutable occupancy and curren
 test('core battle accepts the first deployment and rejects an occupied destination without consuming another identity', () => {
   const definition = deployableDefinition();
   const spec = deploymentBattleInput({}, [{ definition: definition, supply: {
-    stockLimit: null, activeLimit: null, recharge: 'DEPLOYMENT', costPenalty: false,
+    stockLimit: null, activeLimit: null,
   } }]);
   let runtime = initializeBattle(spec), replay = initializeBattle(spec);
   const deploy = tilePosition => ({ type: 'DEPLOY_UNIT', cardId: 0, tilePosition });
@@ -1654,7 +1654,7 @@ test('core visibility: commands from different domains execute in phase order be
   const definition = deployableDefinition();
   const spec = deploymentBattleInput({ predefines: [{
     id: 17, alias: null, initiallyPresent: true, creation: {
-      type: 'UNIT', definition, position: [1, 0], tile: [0, 1],
+      type: 'UNIT', definition, position: [1, 0], initial: { occupancy: { tile: [0, 1] } },
     },
   }] }, [{ definition: definition }]);
   let runtime = initializeBattle(spec);
@@ -1666,7 +1666,7 @@ test('core visibility: commands from different domains execute in phase order be
   ]));
 
   assert.deepEqual(step.events.filter(event => event.type === 'UNIT_DEPLOYED' || event.type === 'UNIT_REMOVED'), [
-    { type: 'UNIT_DEPLOYED', unitId: 1, position: [1, 0], tick: 0 },
+    { type: 'UNIT_DEPLOYED', unitId: 1, position: [1, 0], program: '@deployment/operator', payment: { amount: 0 }, tick: 0 },
     { type: 'UNIT_REMOVED', unitId: 0, reason: 'SCRIPT', tick: 0,
       unit: { ...unitAtRemoval, lifecycle: 'LEAVING' } },
   ]);
@@ -1697,24 +1697,24 @@ test('core elevated support disables blocking without changing target layer and 
   });
   const occupancy = { tile: [0, 1] };
   const recipe = createPredefinedDefinition({ id: 50, alias: 'test_platform', initiallyPresent: true, creation: {
-    type: 'UNIT', definition: provider, position: [1, 0], tile: occupancy.tile,
+    type: 'UNIT', definition: provider, position: [1, 0], initial: { occupancy },
   } });
-  assert.equal(recipe.creation.tile, occupancy.tile);
-  assert.deepEqual(recipe.creation.tile, [0, 1]);
+  assert.equal(recipe.creation.initial.occupancy.tile, occupancy.tile);
+  assert.deepEqual(recipe.creation.initial.occupancy.tile, [0, 1]);
   const tile = [0, 1];
   const hiddenRecipe = createPredefinedDefinition({ ...recipe, initiallyPresent: false,
-    creation: { ...recipe.creation, tile } });
+    creation: { ...recipe.creation, initial: { occupancy: { tile } } } });
   let runtime = initializeBattle(deploymentBattleInput({
     initialUnits: [{ definition: enemyDefinition, position: [1, 0] }],
     predefines: [hiddenRecipe],
   }, [{ definition: definition }]));
-  assert.equal(hiddenRecipe.creation.tile, tile);
+  assert.equal(hiddenRecipe.creation.initial.occupancy.tile, tile);
 
   assert.deepEqual(runtime.predefinedPresence, []);
   (runtime = advanceBattle(runtime, [{ type: 'APPEAR_PREDEFINED', definitionId: 50 }]));
   const platformId = runtime.predefinedPresence[0].source.unitId;
   const platform = runtime.battlefield.units.get(platformId);
-  assert.equal(platform.occupancy.tile, hiddenRecipe.creation.tile);
+  assert.equal(platform.occupancy.tile, hiddenRecipe.creation.initial.occupancy.tile);
   assert.deepEqual(platform.occupancy.tile, [0, 1]);
   assert.equal(platform.definition.occupancy.slot, 'SUPPORT');
 

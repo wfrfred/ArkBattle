@@ -6,7 +6,7 @@ export type {
     Id as CardId,
     Supply,
     Input as CardInput,
-    Cooldown as CardCooldown,
+    Clock as CardClock,
     Card,
 } from "./card/card.js";
 
@@ -16,7 +16,7 @@ export { resolveBaseCost, resolveCost, resolveRedeployTicks } from "./card/state
 
 export type { DeploymentRequest, DeploymentDecision } from "./query.js";
 
-export { usedSlots, evaluateDeployment } from "./query.js";
+export { usedSlots, activeCount, evaluateDeployment, preview } from "./query.js";
 
 export { addCard, advance } from "./resources.js";
 
@@ -24,4 +24,14 @@ export { notifyDeployed } from "./lifecycle.js";
 
 export type { DeployRequest, DeploymentCommand, Rejection, DeployOutcome } from "./operations.js";
 
-export { deploy, retreat, resolveDeploymentCommands } from "./operations.js";
+export { deploy, retreat, canRetreat, resolveDeploymentCommands } from "./operations.js";
+
+export type { Program, Preparation, Payment, Refund, Rejected } from "./program.js";
+
+export { operator, consumable, queued, create as createProgram } from "./normal.js";
+
+export * as dp from "./dp.js";
+
+export type { Ordering } from "./order.js";
+
+export { ordered, setOrdering, refreshOrder } from "./order.js";

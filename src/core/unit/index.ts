@@ -12,6 +12,8 @@ export type { Hook, EnterHook, TickHook, PrepareHook, LeaveHook } from "./hook.j
 
 export type { Input } from "./initialize.js";
 
+export type { Initial } from "./capability/catalog.js";
+
 export type { Change } from "./change.js";
 
 export { initialize } from "./initialize.js";

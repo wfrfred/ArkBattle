@@ -6,7 +6,9 @@ export {
     createDefinition,
 } from "./capability.js";
 
-export type { Definition, State, Deployable } from "./capability.js";
+export type { Definition, State, Deployable, Rule } from "./capability.js";
+
+export { setRetreatRule, removeRetreatRule } from "./rule.js";
 
 export { setHook, removeHook } from "./hook.js";
 

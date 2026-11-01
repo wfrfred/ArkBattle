@@ -15,7 +15,9 @@ import {
 import type { DamageRequest, HealRequest } from "../../unit/capability/elemental/operations.js";
 import { get, ref } from "../../unit/query.js";
 import { overlaps } from "../../geometry/intersection.js";
-import type { Range } from "../../geometry/range.js";
+import { fromTiles, type Range } from "../../geometry/range.js";
+import type { TilePosition } from "../../geometry/coordinate.js";
+import { hasDirection } from "../../unit/capability/occupancy/capability.js";
 import type { Filter } from "./contract.js";
 
 export function and(...filters: readonly Filter[]): Filter {
@@ -71,6 +73,24 @@ export function range(range: Range): Filter {
             source !== undefined &&
             hasHitbox(target) &&
             overlaps(range, source.position, target.definition.hitbox.shape, target.position)
+        );
+    };
+}
+
+export function directionalRange(tiles: readonly TilePosition[]): Filter {
+    return (battle, request, target) => {
+        const source = get(battle, request.source);
+
+        return (
+            source !== undefined &&
+            hasDirection(source) &&
+            hasHitbox(target) &&
+            overlaps(
+                fromTiles(tiles, source.occupancy.direction),
+                source.position,
+                target.definition.hitbox.shape,
+                target.position,
+            )
         );
     };
 }

@@ -8,6 +8,7 @@ import {
     type PredefinedDefinition,
 } from "../../core/battle/steps/predefined.js";
 import { createMechanismDefinition } from "../../core/battle/mechanism.js";
+import { createUnitPlacementDefinition } from "../../core/battle/creation/placement.js";
 import { createTerrainMechanism } from "../../content/terrain/mechanism.js";
 import { mire, deepsea } from "../../content/terrain/definition.js";
 import { create as createCrate } from "../../content/devices/crate.js";
@@ -189,9 +190,11 @@ export function parsePredefinedDefinition(
         initiallyPresent: !instance.hidden,
         creation: {
             type: "UNIT",
-            definition,
-            position,
-            tile: instance.position,
+            ...createUnitPlacementDefinition({
+                definition,
+                position,
+                initial: { occupancy: { tile: instance.position } },
+            }),
         },
     });
 }

@@ -1,78 +1,81 @@
-import type { TilePosition, WorldPosition } from "../../geometry/coordinate.js";
+import type { WorldPosition } from "../../geometry/coordinate.js";
 import * as initialization from "../../unit/initialize.js";
-import type { Product } from "../../unit/capability/catalog.js";
+import type { Initial, Inputs, Product } from "../../unit/capability/catalog.js";
 import type { Unit, Definition } from "../../unit/unit.js";
 import type { ImmutableData } from "../../common/immutable-data.js";
-import { hasOccupancy, type Occupancy } from "../../unit/capability/occupancy/capability.js";
+import type { Hook } from "../../unit/hook.js";
 import type { Result, State as BattleState } from "../state.js";
+
+declare const paired: unique symbol;
+
+interface PlacementInitial {
+    readonly [paired]: true;
+}
 
 export interface UnitPlacementDefinition<D extends Definition = Definition> {
     readonly definition: D;
     readonly position: WorldPosition;
-    readonly tile?: TilePosition | null;
+    readonly initial?: PlacementInitial;
+    readonly hooks?: readonly Hook[];
 }
 
-type NormalizedUnitPlacement<P extends UnitPlacementDefinition> = P extends unknown
-    ? {
-          readonly definition: ImmutableData<P["definition"]>;
-          readonly position: WorldPosition;
-          readonly tile?: TilePosition | null;
-      }
+interface Input<D extends Definition> {
+    readonly definition: D;
+    readonly position: WorldPosition;
+    readonly initial?: Initial<NoInfer<D>>;
+    readonly hooks?: readonly Hook[];
+}
+
+interface ErasedPlacement {
+    readonly definition: Definition;
+    readonly position: WorldPosition;
+    readonly initial?: object;
+    readonly hooks?: readonly Hook[];
+}
+
+type NormalizedUnitPlacement<P extends Input<any>> = P extends unknown
+    ? UnitPlacementDefinition<ImmutableData<P["definition"]>>
     : never;
 
-export function createUnitPlacementDefinition<P extends UnitPlacementDefinition>(
-    placement: P,
+export function createUnitPlacementDefinition<D extends Definition>(
+    placement: UnitPlacementDefinition<D>,
+): UnitPlacementDefinition<ImmutableData<D>>;
+export function createUnitPlacementDefinition<P extends Input<any>>(
+    placement: P & { readonly initial?: Initial<NoInfer<P["definition"]>> },
 ): NormalizedUnitPlacement<P>;
-export function createUnitPlacementDefinition(
-    placement: UnitPlacementDefinition,
-): NormalizedUnitPlacement<UnitPlacementDefinition> {
+export function createUnitPlacementDefinition(placement: ErasedPlacement): ErasedPlacement {
     return {
         definition: placement.definition,
-        ...(placement.tile === undefined ? {} : { tile: placement.tile }),
+        ...(placement.initial === undefined ? {} : { initial: placement.initial }),
+        ...(placement.hooks === undefined ? {} : { hooks: placement.hooks }),
         position: placement.position,
     };
 }
 
-function nextIdentity(value: number, name: string): number {
-    const next = value + 1;
-    if (!Number.isSafeInteger(next)) {
-        throw new RangeError(`${name} identity overflow`);
-    }
-
-    return next;
-}
-
-export function instantiateUnitPlacement<P extends UnitPlacementDefinition>(
+export function instantiateUnitPlacement<D extends Definition>(
     battle: BattleState,
-    placement: P,
+    placement: UnitPlacementDefinition<D>,
+): Result<Unit & Product<D>>;
+export function instantiateUnitPlacement<P extends Input<any>>(
+    battle: BattleState,
+    placement: P & { readonly initial?: Initial<NoInfer<P["definition"]>> },
 ): Result<Unit & Product<P["definition"]>>;
 export function instantiateUnitPlacement(
     battle: BattleState,
-    placement: UnitPlacementDefinition,
+    placement: ErasedPlacement,
 ): Result<Unit> {
     const id = battle.execution.nextUnitId;
-    const nextUnitId = nextIdentity(id, "unit");
-    battle = { ...battle, execution: { ...battle.execution, nextUnitId } };
+    battle = { ...battle, execution: { ...battle.execution, nextUnitId: id + 1 } };
+    // The constructor or the immediate typed input pairs capabilities with their initial inputs.
     const initialized = initialization.initialize(battle, {
         id,
         definition: placement.definition,
         position: placement.position,
-    });
-    battle = initialized.state;
-    let unit: Unit = initialized.value;
+        ...(placement.initial === undefined
+            ? {}
+            : { initial: placement.initial as Partial<Inputs> }),
+        ...(placement.hooks === undefined ? {} : { hooks: placement.hooks }),
+    } as initialization.Input<any>);
 
-    if (placement.tile !== undefined) {
-        if (!hasOccupancy(unit)) {
-            throw new TypeError("unit placement tile requires occupancy capability");
-        }
-
-        const occupancy = { tile: placement.tile };
-        const occupied: Unit & Occupancy = { ...unit, occupancy };
-        unit = occupied;
-    }
-
-    return {
-        state: battle,
-        value: unit,
-    };
+    return initialized;
 }

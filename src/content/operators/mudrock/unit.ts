@@ -67,7 +67,6 @@ export interface Definition
             | "vitality"
         > {
     readonly profile: Profile;
-    readonly direction: Direction;
 }
 
 interface ShieldState {
@@ -252,8 +251,8 @@ export function create(
     const recoveryTicks = options.recoveryTicks ?? 0;
 
     const shield = shieldEffect(profile);
-    const normalAttack = createNormal(profile, direction, recoveryTicks);
-    const action = createSkillAction(profile, direction, recoveryTicks);
+    const normalAttack = createNormal(profile, recoveryTicks);
+    const action = createSkillAction(profile, recoveryTicks);
     const targeting = action.attack.targetGroups[0].targeting;
     const skill: SkillDefinition = {
         ...profile.skill.definition,
@@ -288,8 +287,7 @@ export function create(
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
         id: profile.id,
         profile,
-        direction,
-        occupancy: { slot: "OCCUPANT" },
+        occupancy: { slot: "OCCUPANT", direction },
         targetable: { restrictions: [] },
         deployable: createDeployableDefinition({
             cost: profile.attributes.cost,

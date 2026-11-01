@@ -1,7 +1,6 @@
 import * as contribution from "../../../unit/contribution/contribution.js";
 import * as attribute from "../../../unit/contribution/attribute.js";
-import type { LeaveReason } from "../../../unit/unit.js";
-import type { Card, Cooldown } from "./card.js";
+import type { Card, Clock, TimerTarget } from "./card.js";
 
 export function resolveBaseCost(card: Card<any>): number {
     const addition = contribution
@@ -12,23 +11,22 @@ export function resolveBaseCost(card: Card<any>): number {
     return Math.max(0, Math.floor(card.definition.deployable.cost + addition));
 }
 
-export function resolveCost(card: Card<any>): number {
-    const penalty: attribute.Modifier = {
-        addition: 0,
-        multiplier: 0.5 * card.costStage,
-        finalAddition: 0,
-        finalScaler: 1,
-    };
-
-    return Math.max(
+export function resolveCost(card: Card<any>, ceiling = 99): number {
+    const modifiers = contribution.resolve(card.costContributions).flat();
+    const baseCost = Math.max(
         0,
         Math.floor(
-            attribute.apply(card.definition.deployable.cost, [
-                ...contribution.resolve(card.costContributions).flat(),
-                penalty,
-            ]),
+            card.definition.deployable.cost +
+                modifiers.reduce((sum, value) => sum + value.addition, 0),
         ),
     );
+    const rawCost = Math.floor(baseCost * (1 + 0.5 * card.costStage));
+    const scale =
+        (1 + modifiers.reduce((sum, value) => sum + value.multiplier, 0)) *
+        modifiers.reduce((product, value) => product * value.finalScaler, 1);
+    const addition = modifiers.reduce((sum, value) => sum + value.finalAddition, 0);
+
+    return Math.max(0, Math.min(ceiling, Math.floor(rawCost * scale) + addition));
 }
 
 export function resolveRedeployTicks(card: Card<any>): number {
@@ -43,74 +41,63 @@ export function resolveRedeployTicks(card: Card<any>): number {
     );
 }
 
-function startCooldown(card: Card<any>, tick: number): Cooldown {
-    const durationTicks = resolveRedeployTicks(card);
-
-    return { readyAtTick: tick + durationTicks, durationTicks };
+function createClock(tick: number, durationTicks: number): Clock {
+    return { type: "RUNNING", readyAtTick: tick + durationTicks, durationTicks };
 }
 
-export function consume<T extends Card<any>>(card: T, tick: number): T {
-    return {
-        ...card,
-        stock: card.stock === null ? null : card.stock - 1,
-        cooldown: card.supply.recharge === "DEPLOYMENT" ? startCooldown(card, tick) : card.cooldown,
-    };
+export function consume<T extends Card<any>>(card: T, count = 1): T {
+    return card.stock === null || count === 0 ? card : { ...card, stock: card.stock - count };
 }
 
-export function recycle<T extends Card<any>>(
+export function incrementCostStage<T extends Card<any>>(card: T): T {
+    const costStage = Math.min(2, card.costStage + 1);
+
+    return costStage === card.costStage ? card : { ...card, costStage };
+}
+
+export function startCooldown<T extends Card<any>>(
     card: T,
     tick: number,
-    reason: LeaveReason | "MOVE",
+    durationTicks = resolveRedeployTicks(card),
 ): T {
-    const costStage =
-        card.supply.costPenalty && (reason === "RETREAT" || reason === "DEATH")
-            ? Math.min(2, card.costStage + 1)
-            : card.costStage;
-
-    switch (card.supply.recharge) {
-        case "DEPLOYMENT":
-            return costStage === card.costStage ? card : { ...card, costStage };
-
-        case "RETURN":
-            return { ...card, costStage, cooldown: startCooldown(card, tick) };
-
-        case "QUEUED":
-            return {
-                ...card,
-                costStage,
-                pendingReturns: card.pendingReturns + 1,
-                cooldown: card.cooldown ?? startCooldown(card, tick),
-            };
-    }
+    return { ...card, cooldown: createClock(tick, durationTicks) };
 }
 
-export function advance<T extends Card<any>>(card: T, tick: number): T {
-    if (card.cooldown === null || tick < card.cooldown.readyAtTick) {
+export function enqueueRecovery<T extends Card<any>>(card: T, tick: number, count = 1): T {
+    if (count === 0) {
         return card;
     }
 
-    switch (card.supply.recharge) {
-        case "DEPLOYMENT":
-            return { ...card, cooldown: null };
+    const recovery = card.recovery;
 
-        case "RETURN":
-            return recharge({ ...card, cooldown: null }, 1);
+    return {
+        ...card,
+        recovery: {
+            pending: (recovery?.pending ?? 0) + count,
+            clock: recovery?.clock ?? createClock(tick, resolveRedeployTicks(card)),
+        },
+    };
+}
 
-        case "QUEUED": {
-            while (card.cooldown !== null && tick >= card.cooldown.readyAtTick) {
-                const pendingReturns = card.pendingReturns - 1;
-                const finishedAtTick = card.cooldown.readyAtTick;
-
-                card = recharge({ ...card, pendingReturns, cooldown: null }, 1);
-
-                if (pendingReturns > 0) {
-                    card = { ...card, cooldown: startCooldown(card, finishedAtTick) };
-                }
-            }
-
-            return card;
-        }
+export function advance<T extends Card<any>>(card: T, tick: number): T {
+    if (card.cooldown?.type === "RUNNING" && tick >= card.cooldown.readyAtTick) {
+        card = { ...card, cooldown: null };
     }
+
+    while (card.recovery?.clock.type === "RUNNING" && tick >= card.recovery.clock.readyAtTick) {
+        const pending = card.recovery.pending - 1;
+        const finishedAtTick = card.recovery.clock.readyAtTick;
+        card = recharge(card, 1);
+        card = {
+            ...card,
+            recovery:
+                pending === 0
+                    ? null
+                    : { pending, clock: createClock(finishedAtTick, resolveRedeployTicks(card)) },
+        };
+    }
+
+    return card;
 }
 
 export function recharge<T extends Card<any>>(card: T, count: number): T {
@@ -123,18 +110,86 @@ export function recharge<T extends Card<any>>(card: T, count: number): T {
     return stock === card.stock ? card : { ...card, stock };
 }
 
-export function reduceCooldown<T extends Card<any>>(card: T, ticks: number, tick: number): T {
-    if (card.cooldown === null || ticks === 0 || card.cooldown.readyAtTick <= tick) {
+export function reduceCooldown<T extends Card<any>>(
+    card: T,
+    ticks: number,
+    tick: number,
+    target: TimerTarget = "COOLDOWN",
+): T {
+    const current = getClock(card, target);
+    if (current === null || ticks === 0) {
         return card;
     }
 
-    return {
-        ...card,
-        cooldown: {
-            ...card.cooldown,
-            readyAtTick: Math.max(tick, card.cooldown.readyAtTick - ticks),
-        },
-    };
+    const next: Clock =
+        current.type === "RUNNING"
+            ? { ...current, readyAtTick: Math.max(tick, current.readyAtTick - ticks) }
+            : { ...current, remainingTicks: Math.max(0, current.remainingTicks - ticks) };
+
+    return replaceClock(card, target, next);
+}
+
+export function clearCooldown<T extends Card<any>>(
+    card: T,
+    tick: number,
+    target: TimerTarget = "COOLDOWN",
+): T {
+    const current = getClock(card, target);
+    if (current === null) {
+        return card;
+    }
+
+    return replaceClock(
+        card,
+        target,
+        current.type === "RUNNING"
+            ? { ...current, readyAtTick: tick }
+            : { ...current, remainingTicks: 0 },
+    );
+}
+
+export function pauseCooldown<T extends Card<any>>(
+    card: T,
+    tick: number,
+    target: TimerTarget = "COOLDOWN",
+): T {
+    const current = getClock(card, target);
+    if (current?.type !== "RUNNING") {
+        return card;
+    }
+
+    return replaceClock(card, target, {
+        type: "PAUSED",
+        durationTicks: current.durationTicks,
+        remainingTicks: current.readyAtTick - tick,
+    });
+}
+
+export function resumeCooldown<T extends Card<any>>(
+    card: T,
+    tick: number,
+    target: TimerTarget = "COOLDOWN",
+): T {
+    const current = getClock(card, target);
+    if (current?.type !== "PAUSED") {
+        return card;
+    }
+
+    return replaceClock(card, target, {
+        type: "RUNNING",
+        durationTicks: current.durationTicks,
+        readyAtTick: tick + current.remainingTicks,
+    });
+}
+
+function getClock(card: Card<any>, target: TimerTarget): Clock | null {
+    return target === "COOLDOWN" ? card.cooldown : (card.recovery?.clock ?? null);
+}
+
+function replaceClock<T extends Card<any>>(card: T, target: TimerTarget, clock: Clock): T {
+    return target === "COOLDOWN"
+        ? { ...card, cooldown: clock }
+        : { ...card, recovery: { ...card.recovery!, clock } };
 }
 
 export function setCostContribution<T extends Card<any>>(

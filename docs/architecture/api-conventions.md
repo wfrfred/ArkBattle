@@ -96,10 +96,10 @@ Hook 与领域操作按执行语义命名：
 | Blocking | [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts)、[capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) | Battle 入口提供关系查询及 acquire／release／maintain／maintainAll／search／advance；relations(battle, ref?) 局部直接读取原关联，release 接收 readonly Relation[]，批量解除、记录整批事件后顺序通知，不附加维护或搜索。maintain 接收单条 Relation，仅复核原身份的当前资格；maintainAll 固定入口关系并逐条复核一遍。Capability 入口导出 setLayer、两端 Rule／容量／volume／Hook 的 Change 工厂及模型类型，经 Unit.update 统一发布后结算；容量／volume 的裁撤由各自 Settlement 使用内部 settleCapacity 完成。容量仅用 ADD／ZERO，半径保存于 Definition.radius 和 State.radius。setLayer 以 previous.blocked 的旧 Ref 调用 release，不回填旧 Unit；DEFAULT_RADIUS 和 settleCapacity 保持内部。 |
 | Damage／Healing | [damage/index.ts](../../src/core/battle/damage/index.ts)、[healing/index.ts](../../src/core/battle/healing/index.ts) | 各自的 Calculate／Apply 两阶段、请求／报告及 Hook 登记；阶段派发保持内部实现，不合并结算协议。 |
 | Targeting | [battle/targeting/index.ts](../../src/core/battle/targeting/index.ts) | Filter／Comparator／Selector、hasCandidate 与 select；只读 hasCandidate 归 query.ts，可能消费 RNG 的选择保留 select.ts。 |
-| Deployment | [battle/deployment/index.ts](../../src/core/battle/deployment/index.ts) | 部署经济、addCard、部署命令与生命周期协作；addCard 接收原 Unit Definition 和独立 supply／stock 配置，返回 Card Typed Ref；deploy 使用 Card Ref，Command 在边界保留 cardId 编号。 |
-| Card | [battle/deployment/card/index.ts](../../src/core/battle/deployment/card/index.ts) | Card<S>、Program、原 Unit Definition 类型别名、ref、get／all、数值查询与私有 state／贡献／库存／当前冷却的完整写回；内部纯计算与完整替换不公开，不复制 Unit Change。 |
+| Deployment | [battle/deployment/index.ts](../../src/core/battle/deployment/index.ts) | 部署经济、addCard、只读 Program.prepare／preview 与完整 deploy／retreat；普通请求读取 Card.program，内容可显式提供 Program。统一资格后先消费再构造与 enter；Command 在边界把 cardId 转为 Ref。DP 操作与独立业务顺序同属本领域。 |
+| Card | [battle/deployment/card/index.ts](../../src/core/battle/deployment/card/index.ts) | Card<S>、私有 Program、原 Unit Definition 类型别名、ref、get／all、规则与未来 Unit Hook、费用贡献、库存、使用冷却和串行恢复。字段／资源操作接收 BattleState 与 Typed Ref；纯计算与完整替换不公开，不复制 Unit Change。 |
 | Schedule | [battle/schedule/index.ts](../../src/core/battle/schedule/index.ts) | 配置、执行状态、创建、推进、登记／结算与统计查询；isSpawnScheduleCompleted／getSpawnedCount／getSpawnScheduleCounts／getUnspawnedCount 归 query.ts，队列算法与辅助计算保持内部依赖。 |
-| 多文件 Capability | unit/capability/ 下 action、blocking、deployable、elemental、locomotion、occupancy、offense、presence、route、skill、vitality 各自的 index.ts | 十一个入口按能力职责选择导出；Skill 入口只提供工厂 Definition、Capability／State、守卫、初始化及 Rule／Hook／Ammo 贡献 Change 工厂，不导出领域程序、资源结算或 Activation 业务。完整实例写回、阶段派发和具体运动算法不因共享导出成为内容 API。 |
+| 多文件 Capability | unit/capability/ 下 action、blocking、deployable、elemental、locomotion、occupancy、offense、presence、route、skill、vitality 各自的 index.ts | 按能力职责选择导出。Occupancy 保存可空的摆放朝向并提供 setDirection Change；Skill 入口只提供工厂 Definition、Capability／State、守卫、初始化及 Rule／Hook／Ammo 贡献 Change 工厂，不导出领域程序、资源结算或 Activation 业务。完整实例写回、阶段派发和具体运动算法不因共享导出成为内容 API。 |
 | 小 Capability 与 Catalog | allegiance／hitbox／layer／targetable 的 capability.ts；unit/capability/catalog.ts | 单文件能力保留自然入口；Catalog 只维护初始化字典与派生类型，不增加模板 index 或另一套能力映射。 |
 | Contribution、Hook 与 Tick | unit/contribution/contribution.ts、attribute.ts；core/hook.ts、tick.ts | 各自保留明确的数据／计算／派发入口，不设全 Core 聚合层。 |
 | Common 与 Geometry | common/、geometry/ 下现有功能模块 | Ref、Query、集合、数值、坐标与几何按用途直接导入；私有 Store 不经公共入口公开。 |
@@ -218,7 +218,6 @@ Hook<C,T> 是 `(battle, context, current) => Result<T>`。C 是本次派发固�
 
 | 接口 | 当前形状 | 待调整内容 |
 | --- | --- | --- |
-| [Deployment.retreat](../../src/core/battle/deployment/operations.ts) | retreat 按 unitId | 目标为 `retreat(battle, ref)`；deploy 已使用 Card Ref 与部署输入，属于创建操作。 |
 | [Deployment.advance](../../src/core/battle/deployment/resources.ts)／[advanceSpawning](../../src/core/battle/steps/spawning.ts) | `(battle, tick)`／`(battle, commands, tick)` | 实际调用重复传入当前 battle.tick；保留 Card／Schedule 局部计算自己的时点参数。 |
 
 接口整理保留真实可接受输入：允许普通 Unit 并用报告表达缺少能力的操作，继续使用 `Ref<Unit>`；要求明确能力的推进使用 `Ref<Unit & H>`。命名遵循 ESM 惯例，不以转发层统一签名。
@@ -255,7 +254,7 @@ Skill.state 保存跨次玩法事实，Activation.state 保存本轮事实，由
 
 SP setContribution／removeContribution 仍归 unit/skill/sp.ts，只接受 recoverySpeed／recoveryMultiplier 两项属性，并绑定 Skill Capability Ref 返回 Change；它们使用 Attribute 修正数据与公式。Ammo 的 Input 使用独立 Modifier 和已核实的容量公式，来源直接登记在 Capability.ammo。capacity／requirement／cost 与 TIME duration 没有通用 Contribution 接口；配置切换、消费与当前轮次延时属于明确操作。共享 Input<M, H> 只统一数据提供形式，不决定这些操作或其公式。Contribution.group.priority 只负责互斥选择。非 TIME 的 sp.advance 直接 no-op，不更新 lastTick。Elemental 的完整宿主写回是 operations.ts 中的私有 replaceHost；query.ts 只保留查询。两者均不向内容推广完整实例写回。Action 按 Definition 聚合持久 state、Cooldown 和当前 Execution；内容分别用 setState、setCooldown、setExecutionState 设置对应字段，不提交完整旧条目。Unit 的 leave Hook 以 Departure 为固定终止历史载荷，保留开始离场时的 Unit 与 reason。
 
-Card 的 state.ts 与 Action 的局部 Cooldown 计算只处理显式传入的局部值，保留必要的 tick 参数。Card 公共写回统一接收 BattleState 与 Card Typed Ref，setState 接收结果值，不公开完整替换或 transform；setRedeployTimeContribution 影响以后启动的冷却，reduceCooldown／clearCooldown 改当前周期。Projectile 的发射时点、到期时点等历史事实也继续保存。
+Card 的 state.ts 与 Action 的局部 Cooldown 计算只处理显式传入的局部值，保留必要的 tick 参数。Card 公共写回统一接收 BattleState 与 Card Typed Ref，setState 接收结果值，不公开完整替换或 transform；setRedeployTimeContribution 影响以后启动的周期，reduceCooldown／clearCooldown 可明确选择使用冷却或库存恢复，只改当前段；enqueueRecovery 追加待恢复份数，不覆盖已有计时。暂停操作保存剩余时间，来源特化由具体内容组合。Deployment.Program.prepare 与 preview 只读，准备结果不公开独立 apply；完整 deploy 在统一资格后先消费，再执行已配对的构造程序。Projectile 的发射时点、到期时点等历史事实也继续保存。
 
 ### 5.1 Unit 完整操作与批量变更
 
@@ -268,7 +267,7 @@ remove(battle: BattleState, unitId: Id, reason: LeaveReason): BattleState;
 advance(battle: BattleState): BattleState;
 ```
 
-Rule、Hook、Contribution 与 Blocker.layer 的 61 个公开写入工厂统一为 `setXxx(ref, value): Change`／`removeXxx(ref, id): Change`。Ref 确定所需能力，工厂不接收 battle。Content 组合已经构造好的 Change，不提交完整 Unit，也不传任意 Unit 转换函数：
+Rule、Hook、Contribution、Blocker.layer 与 Occupancy.direction 的公开写入工厂统一为 `setXxx(ref, value): Change`／`removeXxx(ref, id): Change`。Ref 确定所需能力，工厂不接收 battle。Content 组合已经构造好的 Change，不提交完整 Unit，也不传任意 Unit 转换函数：
 
 ```typescript
 battle = update(battle, [
@@ -299,9 +298,9 @@ Unit.initialize 将 Blocker／Blockable 的组合限制为至多一种，两者�
 
 Blocking.release(battle, readonly Relation[]) 在入口过滤失效旧身份与重复项，先发布整批双端解除结果，再记录全部 BLOCKING_RELEASED，最后按首次输入顺序逐条派发 Hook。每条开始时同时固定两端候选 ID，后续读取最新登记；ACQUIRED 按旧身份失效停止，RELEASED 作为历史通知继续。release 不接受额外 Unit 更新值，不自动维护、搜索或取消偏移。空间业务先纯发布字段和自身计划取消，再调用 release(battle, relations(battle, ref))；两步间没有回调，首个通知已经可以读取完整结果。
 
-add 接收创建方已经完成 Capability 初始化、部署信息及路线初态的完整 Unit，负责登记、统一 enter Hook，再发出 registrationChanged 全局观察通知；Runtime 登记的 Occupancy 观察者负责承载通知。Unit 不识别具体能力或扫描全场 Blocking。创建方逐个完成 add 再处理下一对象。Unit Definition 的 hooks 必填，无监听传 []；Unit.initialize 将能力 Hook 与内容 Hook 装配到实例 hooks，enter／tick／prepare／leave 均读取该序列。Skill 自行登记 enter Hook。实际 Deployment 在 add 前完成卡／DP 消费并记录 UNIT_DEPLOYED，add 返回后再派发 deployedHooks；Unit.add 不推断部署事实。
+add 接收创建方已经完成 Capability 初始化、部署信息及路线初态的完整 Unit，负责登记、统一 enter Hook，再发出 registrationChanged 全局观察通知；Runtime 登记的 Occupancy 观察者负责承载通知。Unit 不识别具体能力或扫描全场 Blocking。创建方逐个完成 add 再处理下一对象。Unit Definition 的 hooks 必填，无监听传 []；Unit.initialize 从显式初始 hooks 开始 fold 各能力，最后追加 Definition.hooks；enter／tick／prepare／leave 均读取该序列。可选 initial 按 initializer 的第三参数与已声明能力配对，不接受任意 Partial<Unit>。Skill 自行登记 enter Hook。实际 Deployment 在 initialize／enter 之前完成卡／DP 和共享机会消费，add 前写入本次部署事实并记录 UNIT_DEPLOYED，add 返回后派发 deployedHooks；Unit.add 不推断部署。
 
-remove 按 Unit ID 请求 Unit Lifetime 结束，首次请求保留 Departure，纯发布 LEAVING 后统一派发 prepare Hook。Blocking 自行登记的首部 Hook 解除本 Unit 旧关系，Blockable 取消自身 adjustment；Deployable Hook 随后按最新 Unit 返费。Unit 不调用能力专属操作，Lifetime 按父子边登记顺序展开依赖。依赖者完整 Finalize 后才注销 Unit、记录移除事实，发出 registrationChanged，再执行本地 leave（Deployable 回卡及内容 Hook），最后发出全局 leave；Finalize 不扫描能力或全场关系。嵌套 remove 只保证请求／Prepare，不保证已物理移除。advance 保留入口 Unit Query 快照，在操作处生成 Ref，逐项读取最新 PRESENT Unit 并派发 tick Hook。
+remove 按 Unit ID 请求 Unit Lifetime 结束，首次请求保留 Departure，纯发布 LEAVING 后统一派发 prepare Hook。Blocking 自行登记的首部 Hook 解除本 Unit 旧关系，Blockable 取消自身 adjustment；Deployable Hook 随后按最新 Unit 返费。Unit 不调用能力专属操作，Lifetime 按父子边登记顺序展开依赖。依赖者完整 Finalize 后才注销 Unit、记录移除事实，发出 registrationChanged，再执行本地 leave（部署来源的回收程序及内容 Hook），最后发出全局 leave；Card 关联本身不自动决定归还政策，Finalize 不扫描能力或全场关系。嵌套 remove 只保证请求／Prepare，不保证已物理移除。advance 保留入口 Unit Query 快照，在操作处生成 Ref，逐项读取最新 PRESENT Unit 并派发 tick Hook。
 
 battlefield/unit.ts 的 add／update／remove 仍是纯存储与索引转换，Field.update 接收完整 Unit 数组，不能与公开 Battle.update 的 Change 数组混用。BattleState 不保留另一套 Unit CRUD，通用 setBattlefield 已移除；特殊撤退—再部署留待实际内容审查。
 

@@ -95,7 +95,7 @@ test("deployment observers consume preceding state and recheck registration and 
         return state;
     }, (state) => getUnit(state, 0).vitality.hp === 70));
     const previous = state;
-    const next = notifyDeployed(state, { unit: deployed, kind: "MANUAL" });
+    const next = notifyDeployed(state, { unit: deployed, program: "@deployment/operator", origin: "MANUAL", payment: { amount: 0 } });
     assert.deepEqual(calls, ["first", "enabled-after-first"]);
     assert.equal(getUnit(next, 0).vitality.hp, 70);
     assert.equal(getUnit(previous, 0).vitality.hp, 100);
@@ -113,7 +113,7 @@ test("new observers wait for the next notification; replacing an observer retain
     }));
     state = addHook(state, 0, record("second", (state) => { calls.push("obsolete"); return state; }));
     state = addHook(state, 0, record("second", (state) => { calls.push("second"); return state; }));
-    const fact = { unit: deployed, kind: "MANUAL" };
+    const fact = { unit: deployed, program: "@deployment/operator", origin: "MANUAL", payment: { amount: 0 } };
     state = notifyDeployed(state, fact);
     assert.deepEqual(calls, ["first", "second"]);
     notifyDeployed(state, fact);
@@ -125,17 +125,17 @@ test("a nested deployment notification returns its state before the outer observ
     let state = createBattleState(fixtureBattlefieldState([deployed]));
     const calls = [];
     state = addHook(state, 0, record("nested", (state, fact) => {
-        calls.push(fact.kind);
-        if (fact.kind === "MANUAL") {
-            state = notifyDeployed(state, { unit: deployed, kind: "AUTOMATIC" });
+        calls.push(fact.origin);
+        if (fact.origin === "MANUAL") {
+            state = notifyDeployed(state, { unit: deployed, program: "test/automatic", origin: "CONTENT", payment: null });
             assert.equal(getUnit(state, 0).vitality.hp, 50);
             return state;
         }
         const currentUnit4 = getUnit(state, 0);
         return replaceUnit(state, { ...currentUnit4, vitality: { ...currentUnit4.vitality, hp: 50 } });
     }));
-    const next = notifyDeployed(state, { unit: deployed, kind: "MANUAL" });
-    assert.deepEqual(calls, ["MANUAL", "AUTOMATIC"]);
+    const next = notifyDeployed(state, { unit: deployed, program: "@deployment/operator", origin: "MANUAL", payment: { amount: 0 } });
+    assert.deepEqual(calls, ["MANUAL", "CONTENT"]);
     assert.equal(getUnit(next, 0).vitality.hp, 50);
     assert.equal(getUnit(state, 0).vitality.hp, 100);
 });
@@ -144,7 +144,7 @@ test("entry precedes deployment observers; observer registrations survive succes
     const calls = [];
     const bootstrap = definition("bootstrap", { hooks: [{ id: "test/enter", stage: "enter", invoke(state) {
         return { state: addHook(state, 0, record("observer", (state, fact) => {
-            calls.push(["observed", fact.unit.id, fact.kind]);
+            calls.push(["observed", fact.unit.id, fact.origin]);
             assert.equal(fact.unit.deployable.card?.id, fact.unit.id - 1);
             assert.equal(getUnit(state, fact.unit.id).vitality.hp, 75);
             return state;
@@ -254,7 +254,7 @@ test("failed ticks throw and do not publish deployment hook changes", () => {
 
 test("deployment keeps its event snapshot after removal while observers read the latest battle", () => {
     const deployed = unit(1);
-    const fact = { unit: deployed, kind: "MANUAL" };
+    const fact = { unit: deployed, program: "@deployment/operator", origin: "MANUAL", payment: { amount: 0 } };
     let state = createBattleState(fixtureBattlefieldState([unit(0), deployed]));
     state = addHook(state, 0, record("remove", (state, context) => {
         assert.equal(context, fact);
@@ -280,7 +280,7 @@ test("deployment resolves current versions independently for identical IDs on di
         return addHook(state, 1, record("same", state => { calls.push("replacement"); return state; }));
     }));
     state = addHook(state, 1, record("same", () => assert.fail("old registration ran")));
-    notifyDeployed(state, { unit: getUnit(state, 1), kind: "MANUAL" });
+    notifyDeployed(state, { unit: getUnit(state, 1), program: "@deployment/operator", origin: "MANUAL", payment: { amount: 0 } });
     assert.deepEqual(calls, ["first-host", "replacement"]);
 });
 
@@ -289,16 +289,16 @@ test("nested deployment observes newly registered candidates without adding them
     const deployed = unit(0);
     let state = createBattleState(fixtureBattlefieldState([deployed]));
     state = addHook(state, 0, record("first", (state, context) => {
-        calls.push(["first", context.kind]);
-        if (context.kind === "MANUAL") {
+        calls.push(["first", context.origin]);
+        if (context.origin === "MANUAL") {
             state = addHook(state, 0, record("late", (state, nested) => {
-                calls.push(["late", nested.kind]);
+                calls.push(["late", nested.origin]);
                 return state;
             }));
-            state = notifyDeployed(state, { unit: deployed, kind: "AUTOMATIC" });
+            state = notifyDeployed(state, { unit: deployed, program: "test/automatic", origin: "CONTENT", payment: null });
         }
         return state;
     }));
-    notifyDeployed(state, { unit: deployed, kind: "MANUAL" });
-    assert.deepEqual(calls, [["first", "MANUAL"], ["first", "AUTOMATIC"], ["late", "AUTOMATIC"]]);
+    notifyDeployed(state, { unit: deployed, program: "@deployment/operator", origin: "MANUAL", payment: { amount: 0 } });
+    assert.deepEqual(calls, [["first", "MANUAL"], ["first", "CONTENT"], ["late", "CONTENT"]]);
 });

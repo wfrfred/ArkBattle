@@ -41,7 +41,7 @@ test('Melantha uses main-mode level, potential, trust and talent, then a scoped 
     slots: 1, placement: 'MELEE', allowedSiteConditions: [conditions.normal],
     refund: { rate: 0.5, limit: 'BASE_COST' },
   });
-  assert.equal(unit.deployable.refundAllowed, false);
+  assert.equal(unit.deployable.refund, null);
   let state = createBattleState(fixtureBattlefieldState([]));
   const untouched = state;
   state = add(state, unit);

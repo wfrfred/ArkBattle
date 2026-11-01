@@ -277,7 +277,9 @@ test("aura runtime: source retirement ends remote bound buffs within the same st
 
     const receiver = attackEffect("retired-aura-receiver");
     const aura = auraEffect(receiver);
-    let runtime = initializeBattle(input(effectPlacement(aura)));
+    const host = effectPlacement(aura);
+    const definition = { ...host.definition, deployable: createDeployableDefinition({ cost: 0, redeployTicks: 0, slots: 0, buildableType: "ALL" }) };
+    let runtime = initializeBattle(input({ ...host, definition }));
     runtime = stepBattle(runtime, []);
     const before = runtime;
     runtime = stepBattle(runtime, [{ type: "RETREAT_UNIT", unitId: 0 }]);

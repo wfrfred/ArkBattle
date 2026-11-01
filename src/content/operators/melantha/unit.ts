@@ -52,7 +52,6 @@ export interface Definition
             | "vitality"
         > {
     readonly profile: Profile;
-    readonly direction: Direction;
 }
 
 function attackBonus(id: string, amount: number): EffectDefinition<object, Offense> {
@@ -114,14 +113,13 @@ export function create(profile: Profile, direction: Direction = "RIGHT"): Defini
         },
     };
 
-    const attack = createAttack(profile, direction);
+    const attack = createAttack(profile);
     const initializeAttack = createAction(attack);
 
     return {
         id: profile.id,
         profile,
-        direction,
-        occupancy: { slot: "OCCUPANT" },
+        occupancy: { slot: "OCCUPANT", direction },
         targetable: { restrictions: [] },
         deployable: createDeployableDefinition({
             cost: profile.attributes.cost,

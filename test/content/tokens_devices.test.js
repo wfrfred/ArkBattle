@@ -451,7 +451,7 @@ test('core real hidden platforms grant ranged deployment support while retaining
     cost: 5, redeployTicks: 30, slots: 0, placement: 'MELEE', allowedSiteConditions: [siteConditions.normal],
     refund: { rate: 0.5, limit: 'BASE_COST' },
   });
-  assert.equal(platform.deployable.refundAllowed, false);
+  assert.equal(platform.deployable.refund, null);
   assert.deepEqual(platform.occupancy.tile, tile);
   assert.equal(platform.definition.occupancy.slot, 'SUPPORT');
   assert.equal(navigationMap(runtime.battlefield.navigation).get(tile).passable, originalCell.passable);

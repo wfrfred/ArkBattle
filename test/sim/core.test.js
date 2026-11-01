@@ -135,24 +135,21 @@ test('core presence transitions preserve the original state when later settlemen
 
 test('core placement applies an explicit tile to a declared occupancy capability', () => {
   const tile = [0, 1];
-  const placement = { definition: { hooks: [], id: 'placement', occupancy: { slot: 'OCCUPANT' } }, position: [0, 0], tile };
+  const placement = { definition: { hooks: [], id: 'placement', occupancy: { slot: 'OCCUPANT' } }, position: [0, 0], initial: { occupancy: { tile } } };
   const battle = fixtureBattle(17);
   const direct = instantiateUnitPlacement(battle, placement).value;
   const normalized = createUnitPlacementDefinition(placement);
   const placed = instantiateUnitPlacement(battle, normalized).value;
   assert.equal(direct.occupancy.tile, tile);
-  assert.equal(normalized.tile, tile);
+  assert.equal(normalized.initial.occupancy.tile, tile);
   assert.equal(placed.occupancy.tile, tile);
   assert.equal(placed.definition, placement.definition);
   assert.equal(placed.position, placement.position);
 
   const nextTile = [0, 2];
-  const next = instantiateUnitPlacement(battle, { ...normalized, tile: nextTile }).value;
+  const next = instantiateUnitPlacement(battle, { ...normalized, initial: { occupancy: { tile: nextTile } } }).value;
   assert.equal(next.occupancy.tile, nextTile);
   assert.deepEqual(placed.occupancy.tile, [0, 1]);
-  assert.throws(() => instantiateUnitPlacement(battle, {
-    definition: { hooks: [], id: 'no-occupancy' }, position: [0, 0], tile,
-  }), /occupancy capability/);
 });
 
 
@@ -589,7 +586,7 @@ declare const battleState: BattleState;
 declare const projectileDefinition: ProjectileDefinition<{ readonly charges: number }>;
 declare const projectileInput: ProjectileCreateInput<{ readonly charges: number }>;
 declare const typedProjectile: Projectile<{ readonly charges: number }>;
-declare const placement: { readonly definition: EnemyProbe & { readonly occupancy: { readonly slot: 'OCCUPANT' } }; readonly position: readonly [number, number]; readonly tile: OccupancyState['tile'] };
+declare const placement: { readonly definition: EnemyProbe & { readonly occupancy: { readonly slot: 'OCCUPANT' } }; readonly position: readonly [number, number]; readonly initial: { readonly occupancy: { readonly tile: readonly [number, number] | null } } };
 function createBaseUnit<D extends UnitDefinition>(definition: D): Unit & { readonly definition: D } {
   return { id: 0, lifecycle: 'PRESENT', definition, hooks: [], position: [0, 0], effects: Effects.empty() };
 }
@@ -680,12 +677,12 @@ const normalizedPlaced = instantiateUnitPlacement(battleState, normalizedPlaceme
 type NormalizedPlacementCapabilities = Assert<typeof normalizedPlaced extends ExpectedPlacement ? true : false>;
 type NormalizedPlacementInput = Assert<ExpectedPlacement extends typeof normalizedPlaced ? true : false>;
 const requiredPlacement = createUnitPlacementDefinition({
-  definition: { ...enemyDefinition, occupancy: { slot: 'OCCUPANT' as const } }, position: [0, 0], tile: null, extra: 31,
+  definition: { ...enemyDefinition, occupancy: { slot: 'OCCUPANT' as const } }, position: [0, 0], initial: { occupancy: { tile: null } }, extra: 31,
 });
 const requiredPlaced = instantiateUnitPlacement(battleState, requiredPlacement).value;
 requiredPlaced.occupancy.tile;
 const requiredOccupancy: Occupancy = requiredPlaced;
-type NormalizedPlacementFields = Assert<Equal<keyof typeof requiredPlacement, 'definition' | 'position' | 'tile'>>;
+type NormalizedPlacementFields = Assert<Equal<keyof typeof requiredPlacement, 'definition' | 'position' | 'initial' | 'hooks'>>;
 const ordinaryLocomotion: LocomotionState = enemy.locomotion;
 declare const guarded: Unit & {
   readonly definition: ImmutableData<EnemyProbe>;

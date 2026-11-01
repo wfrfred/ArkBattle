@@ -88,7 +88,7 @@ test("entry installs one persistent shield container and preserves prior snapsho
         slots: 1, placement: "MELEE", allowedSiteConditions: [conditions.normal],
         refund: { rate: 0.5, limit: "BASE_COST" },
     });
-    assert.equal(getUnit(state, 0).deployable.refundAllowed, false);
+    assert.equal(getUnit(state, 0).deployable.refund, null);
     const externalHealing = healing(hp(state, 1000), {
         source: null, target: { id: 0 }, parameters: { power: 100, multiplier: 1 },
     });

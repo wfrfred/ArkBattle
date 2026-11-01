@@ -1,13 +1,18 @@
 import {
+    assertFiniteNumber,
     assertNonnegativeNumber,
     assertNonnegativeSafeInteger,
     assertPositiveSafeInteger,
 } from "../../common/assert.js";
 import type * as card from "./card/card.js";
+import type { Ref } from "../../common/ref.js";
+import type { Ordering } from "./order.js";
 
 export interface Definition {
     readonly initialDp: number;
+    readonly minDp?: number;
     readonly maxDp: number;
+    readonly costCeiling?: number;
     readonly dpRecoveryTicks: number | null;
     readonly slotLimit: number | null;
 }
@@ -20,8 +25,12 @@ export interface Input {
 export interface State {
     readonly definition: Definition;
     readonly cards: readonly card.Card[];
+    readonly order: readonly Ref<card.Card>[];
+    readonly ordering: Ordering | null;
     readonly dp: number;
-    readonly nextDpRecoveryAtTick: number | null;
+    readonly minDp: number;
+    readonly dpRecoveryProgress: number;
+    readonly lastDpRecoveryTick: number;
 }
 
 const emptyDefinition: Definition = {
@@ -32,11 +41,17 @@ const emptyDefinition: Definition = {
 };
 
 export function initialize(definition: Definition = emptyDefinition, tick = 0): State {
-    assertNonnegativeNumber(definition.initialDp, "initial deployment points");
+    assertFiniteNumber(definition.initialDp, "initial deployment points");
+    const minDp = definition.minDp ?? 0;
+    assertFiniteNumber(minDp, "deployment point minimum");
     assertNonnegativeNumber(definition.maxDp, "deployment point limit");
+    assertNonnegativeNumber(definition.costCeiling ?? 99, "deployment cost ceiling");
 
-    if (definition.initialDp > definition.maxDp) {
-        throw new RangeError("initial deployment points exceed the limit");
+    if (minDp > definition.maxDp) {
+        throw new RangeError("deployment point minimum exceeds the limit");
+    }
+    if (definition.initialDp < minDp || definition.initialDp > definition.maxDp) {
+        throw new RangeError("initial deployment points are outside the account limits");
     }
     if (definition.dpRecoveryTicks !== null) {
         assertPositiveSafeInteger(definition.dpRecoveryTicks, "deployment point recovery interval");
@@ -48,23 +63,13 @@ export function initialize(definition: Definition = emptyDefinition, tick = 0): 
     return {
         definition,
         cards: [],
+        order: [],
+        ordering: null,
         dp: definition.initialDp,
-        nextDpRecoveryAtTick:
-            definition.dpRecoveryTicks !== null && definition.initialDp < definition.maxDp
-                ? tick + definition.dpRecoveryTicks
-                : null,
+        minDp,
+        dpRecoveryProgress: 0,
+        lastDpRecoveryTick: tick,
     };
 }
 
-export function changeDp(state: State, amount: number, tick: number): State {
-    const dp = Math.max(0, Math.min(state.definition.maxDp, state.dp + amount));
-    const interval = state.definition.dpRecoveryTicks;
-    const nextDpRecoveryAtTick =
-        dp >= state.definition.maxDp || interval === null
-            ? null
-            : (state.nextDpRecoveryAtTick ?? tick + interval);
-
-    return dp === state.dp && nextDpRecoveryAtTick === state.nextDpRecoveryAtTick
-        ? state
-        : { ...state, dp, nextDpRecoveryAtTick };
-}
+export { changeDp } from "./dp.js";

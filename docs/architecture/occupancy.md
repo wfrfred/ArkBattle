@@ -1,25 +1,34 @@
 # Occupancy 与 Support
 
-Occupancy 保存 Unit 的单格登记；Battlefield 保存按地块查询的双槽反向表。消费方直接读取该表，不再提供另一套 Support Relation 查询。
+Occupancy 保存 Unit 的单格登记与本次四向摆放朝向；Battlefield 保存按地块查询的双槽反向表。消费方直接读取该表，不再提供另一套 Support Relation 查询。占格不表示必须有朝向，没有朝向的对象使用 null。
 
 ## Unit 登记
 
 ```typescript
 export type Slot = "OCCUPANT" | "SUPPORT";
 
-export type Definition =
+export type Definition = { readonly direction?: Direction } & (
     | { readonly slot: "OCCUPANT" }
     | {
           readonly slot: "SUPPORT";
           readonly hooks: readonly SupportHook[];
-      };
+      }
+);
 
 export interface State {
     readonly tile: TilePosition | null;
+    readonly direction: Direction | null;
+}
+
+export interface Initial {
+    readonly tile?: TilePosition | null;
+    readonly direction?: Direction;
 }
 ```
 
-Occupancy Definition 明确记录 slot，initialize 返回 tile 为 null 的 State。普通干员和阻隔工事配置为 OCCUPANT；射击台配置为 SUPPORT。只有 SUPPORT 提供必填 hooks 数组，没有响应时显式传入 []；State 仍只保存 tile，不复制静态 Hook，也不新增动态登记接口。单个 Unit 最多登记一个地块，实例生命周期内不改变 Slot。Deployment 直接读取 Definition.slot 确定登记类别。
+Occupancy Definition 明确记录 slot，并可提供 direction 初态。initialize 接收本次可选 tile／direction；缺省 tile 为 null，方向使用 Definition 初态或 null。普通干员和阻隔工事配置为 OCCUPANT；射击台配置为 SUPPORT。只有 SUPPORT 提供必填 hooks 数组，没有响应时显式传入 []；State 不复制静态 Hook，也不新增动态 Support Hook 登记接口。单个 Unit 最多登记一个地块，实例生命周期内不改变 Slot。Deployment 直接读取 Definition.slot 确定登记类别。
+
+初始方向与实际 Unit 实例分别保存，Definition 不因一次部署选择而改变。setDirection 接收 Occupancy Typed Ref，返回只改当前朝向的 Change，不修改地块登记或派发承载通知；hasDirection 只缩窄 direction 非 null 的对象，不建立另一个运行能力。Targeting.directionalRange 据当前值旋转相对地块范围。基础 Unit 没有方向，装置不默认伪造 RIGHT；这项领域归属针对当前固定地块摆放需求，不预设未来所有朝向都必须占格。
 
 登记与 Unit.position、SpatialPresence、HP 和生命周期阶段分别表达。身体移动或暂时空间消失不改变登记；明确修改 occupancy.tile 或从 Battlefield 移除 Unit 才改变反向表。
 
@@ -84,13 +93,13 @@ Added／Removed 表示相对于该 Support 的承载关系变化，不表示乘�
 
 平台和乘员由当前 Occupancy 的双槽登记直接查询。承载关系变化通过 Support Hook 同步维护内容规则；Unit 的真实离场仍使用 leave Hook，不把两者合成同一种生命周期。
 
-如果具体平台要求离场时让格上单位一同离场，由它的 leave Hook 从固定 Departure.unit 读取旧登记格，再从最新 BattleState 查询当前 occupant，组合完整 Unit.remove。内容 leave Hook 执行时平台已经完成自身清理、注销，以及先登记的 Deployable leave Hook 所负责的 Card 回收；历史 Unit 保留旧登记，不能直接删除乘员存储。因此平台移除记录先于内容引起的乘员移除记录。
+如果具体平台要求离场时让格上单位一同离场，由它的 leave Hook 从固定 Departure.unit 读取旧登记格，再从最新 BattleState 查询当前 occupant，组合完整 Unit.remove。内容 leave Hook 执行时平台已经完成自身清理、注销；本次来源若提前登记了回收 leave，也按该顺序结算。Card 关联本身不授予回收政策。历史 Unit 保留旧登记，不能直接删除乘员存储。因此平台移除记录先于内容引起的乘员移除记录。
 
 占格变化不等于 Unit 离场，不执行 leave Hook。登记交换等批量更新验证的是最终布局与通知的一致性，不代表允许任意搬动游戏对象。本轮删除了直接重定位流程；真实特殊撤退—再部署尚未实现。
 
 ## 内容边界
 
-平台改格按 Occupancy 登记格调用完整 battle/tile.update，直接修改 field.map 中当前 Tile.state。当前预置装置离场时，只把自身改过的字段恢复为 definition.initial 对应值，保留其它字段；局部恢复由内容负责，不提供通用覆写撤销栈。TileBinding 已移除，Occupancy 只维护登记，不负责地块属性。
+平台改格按 Occupancy 登记格调用完整 battle/tile.update，直接修改 field.map 中当前 Tile.state。当前预置装置离场时，只把自身改过的字段恢复为 definition.initial 对应值，保留其它字段；局部恢复由内容负责，不提供通用覆写撤销栈。TileBinding 已移除，Occupancy 维护登记与摆放朝向，不负责地块属性。
 
 平台对乘员的禁阻挡、丢失后的击倒、撤退或其他处理由对应内容提供，不是所有 Support 的默认规则。普通登记高地也不因 Slot 或 elevation 自动获得这些平台规则。官方普通版特制水上平台部署后销毁自身、留下地块改写；不能据此认定其具有“平台被摧毁导致上方单位离场”的规则。地块效果和持久平台均可按实际生命周期组织内容。
 

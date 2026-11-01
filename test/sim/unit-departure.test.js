@@ -81,7 +81,10 @@ function fixture() {
             definition: { hooks: [],
                 id: `departure-${id}`,
                 vitality: { maxHp: 100, defense: 0, resistance: 0 },
-                ...(id < 2 ? { skill } : {}),
+                ...(id < 2 ? {
+                    skill,
+                    deployable: createDeployableDefinition({ cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" }),
+                } : {}),
             },
         }),
     );
@@ -187,7 +190,7 @@ for (const domain of ["deployment", "predefined"]) {
                             type: "UNIT",
                             definition,
                             position: [0, 0],
-                            tile: [0, 0],
+                            initial: { occupancy: { tile: [0, 0] } },
                         },
                     }),
                 ],

@@ -1,169 +1,154 @@
-import { evaluateDeployment, usedSlots } from "./query.js";
-import { Tile, type TilePosition } from "../../geometry/coordinate.js";
-import { hasDeployable } from "../../unit/capability/deployable/capability.js";
-import { instantiateUnitPlacement } from "../creation/placement.js";
-import type { Id } from "../../unit/unit.js";
+import type { Ref } from "../../common/ref.js";
+import type { Direction } from "../../geometry/direction.js";
+import type { TilePosition } from "../../geometry/coordinate.js";
+import type { Unit, Id } from "../../unit/unit.js";
+import { hasDeployable, type Deployable } from "../../unit/capability/deployable/capability.js";
+import * as units from "../../unit/query.js";
 import type { Command } from "../contract.js";
 import { add, remove } from "../unit.js";
 import { appendEvents, type State as BattleState, type Result } from "../state.js";
-import { changeDp } from "./deployment.js";
+import { changeDp } from "./dp.js";
 import { notifyDeployed } from "./lifecycle.js";
-import { replaceCard } from "./resources.js";
-import * as card from "./card/state.js";
 import { get as getCard } from "./card/query.js";
 import type { Card, Id as CardId } from "./card/card.js";
-import type { Ref } from "../../common/ref.js";
+import { evaluate } from "./query.js";
+import type { DeployRequest, DeployOutcome, Program } from "./program.js";
 
-export interface DeployRequest<T extends Card<any> = Card> {
-    readonly card: Ref<T>;
-    readonly tilePosition: TilePosition;
-}
+export type { DeployRequest, DeployOutcome, Rejection } from "./program.js";
 
 export type DeploymentCommand =
-    | { readonly type: "DEPLOY_UNIT"; readonly cardId: CardId; readonly tilePosition: TilePosition }
+    | {
+          readonly type: "DEPLOY_UNIT";
+          readonly cardId: CardId;
+          readonly tilePosition: TilePosition;
+          readonly direction?: Direction;
+      }
     | { readonly type: "RETREAT_UNIT"; readonly unitId: Id };
 
-export type Rejection =
-    | "UNKNOWN_CARD"
-    | "NO_STOCK"
-    | "COOLDOWN"
-    | "ACTIVE_LIMIT"
-    | "SLOT_LIMIT"
-    | "INSUFFICIENT_DP"
-    | Extract<ReturnType<typeof evaluateDeployment>, { readonly type: "DENIED" }>["reason"];
-
-export type DeployOutcome =
-    | { readonly type: "DEPLOYED"; readonly cardId: CardId; readonly unitId: Id }
-    | { readonly type: "REJECTED"; readonly reason: Rejection };
-
 export function deploy<T extends Card<any>>(
-    state: BattleState,
+    battle: BattleState,
     request: DeployRequest<T>,
+): Result<DeployOutcome>;
+export function deploy<I>(
+    battle: BattleState,
+    input: I,
+    program: Program<I>,
+): Result<DeployOutcome>;
+export function deploy(
+    battle: BattleState,
+    input: unknown,
+    program?: Program<any>,
 ): Result<DeployOutcome> {
-    let value: Card<any> | undefined = getCard(state, request.card);
-    const reject = (reason: Rejection): Result<DeployOutcome> => ({
-        state,
-        value: { type: "REJECTED", reason },
-    });
+    const origin = program === undefined ? "MANUAL" : "CONTENT";
+    if (program === undefined) {
+        const request = input as DeployRequest;
+        const self = getCard(battle, request.card);
+        if (self === undefined) {
+            return { state: battle, value: { type: "REJECTED", reason: "UNKNOWN_CARD" } };
+        }
 
-    if (value === undefined) {
-        return reject("UNKNOWN_CARD");
+        program = self.program;
     }
 
-    value = card.advance(value, state.tick);
-    state = replaceCard(state, value);
-
-    if (value.stock === 0) {
-        return reject("NO_STOCK");
-    }
-    if (value.supply.recharge !== "QUEUED" && value.cooldown !== null) {
-        return reject("COOLDOWN");
+    const prepared = program.prepare(battle, input);
+    if (prepared.type === "REJECTED") {
+        return { state: battle, value: prepared };
     }
 
-    const activeLimit = value.supply.activeLimit;
-    const active = [...state.battlefield.units.values()].filter(
-        (unit) => hasDeployable(unit) && unit.deployable.card?.id === request.card.id,
-    ).length;
-    if (activeLimit !== null && active >= activeLimit) {
-        return reject("ACTIVE_LIMIT");
+    const rejected = evaluate(battle, prepared);
+    if (rejected !== null) {
+        return { state: battle, value: rejected };
     }
 
-    const definition = value.definition;
-    const slotLimit = state.deployment.definition.slotLimit;
-    if (slotLimit !== null && usedSlots(state) + definition.deployable.slots > slotLimit) {
-        return reject("SLOT_LIMIT");
+    if (prepared.payment !== null) {
+        battle = {
+            ...battle,
+            deployment: changeDp(battle.deployment, -prepared.payment.amount, battle.tick),
+        };
     }
 
-    const cost = card.resolveCost(value);
-    if (state.deployment.dp < cost) {
-        return reject("INSUFFICIENT_DP");
-    }
-
-    const slot = definition.occupancy.slot;
-    const decision = evaluateDeployment(state.battlefield, {
-        profile: definition.deployable,
-        tile: request.tilePosition,
-        slot,
-    });
-    if (decision.type === "DENIED") {
-        return reject(decision.reason);
-    }
-
-    const placed = instantiateUnitPlacement(state, {
-        definition,
-        position: Tile.center(request.tilePosition),
-        tile: request.tilePosition,
-    });
-    state = placed.state;
+    battle = prepared.consume?.(battle) ?? battle;
+    const initialized = prepared.initialize(battle);
+    battle = initialized.state;
     const unit = {
-        ...placed.value,
+        ...initialized.value,
         deployable: {
-            ...placed.value.deployable,
-            card: request.card as object as Ref<Card>,
-            cost,
-            refundLimit:
-                definition.deployable.refund.limit === "DEPLOYMENT_COST"
-                    ? cost
-                    : card.resolveBaseCost(value),
-            refundAllowed: true,
+            ...initialized.value.deployable,
+            card: prepared.card,
+            cost: prepared.cost,
+            slots: prepared.slots,
+            refund: prepared.refund,
+            retreatAllowed: prepared.retreatAllowed,
         },
     };
-    state = replaceCard(
-        state,
-        card.advance(card.consume(getCard(state, request.card)!, state.tick), state.tick),
-    );
-    state = {
-        ...state,
-        deployment: changeDp(state.deployment, -cost, state.tick),
-    };
-    state = appendEvents(state, [
+    battle = appendEvents(battle, [
         {
             type: "UNIT_DEPLOYED",
             unitId: unit.id,
             position: unit.position,
-            tick: state.tick,
+            program: program.id,
+            payment: prepared.payment,
+            tick: battle.tick,
         },
     ]);
-    state = add(state, unit);
-    state = notifyDeployed(state, { unit, kind: "MANUAL" });
+    battle = add(battle, unit);
+    battle = notifyDeployed(battle, {
+        unit,
+        program: program.id,
+        origin,
+        payment: prepared.payment,
+    });
 
-    return { state, value: { type: "DEPLOYED", cardId: value.id, unitId: unit.id } };
+    return {
+        state: battle,
+        value: { type: "DEPLOYED", cardId: prepared.card?.id ?? null, unitId: unit.id },
+    };
 }
 
-export function retreat(state: BattleState, unitId: Id): BattleState {
-    if (state.battlefield.units.get(unitId) === undefined) {
-        throw new RangeError(`unknown retreat unit ${unitId}`);
-    }
+export function canRetreat(battle: BattleState, reference: Ref<Unit & Deployable>): boolean {
+    const self = units.get(battle, reference);
 
-    return remove(state, unitId, "RETREAT");
+    return (
+        self?.lifecycle === "PRESENT" &&
+        self.deployable.retreatAllowed &&
+        self.deployable.retreatRules.every((rule) => rule.allows(battle, reference))
+    );
+}
+
+export function retreat(battle: BattleState, reference: Ref<Unit & Deployable>): BattleState {
+    return canRetreat(battle, reference) ? remove(battle, reference.id, "RETREAT") : battle;
 }
 
 export function resolveDeploymentCommands(
-    state: BattleState,
+    battle: BattleState,
     commands: readonly Command[],
 ): BattleState {
     for (const command of commands) {
         if (command.type === "DEPLOY_UNIT") {
-            const result = deploy(state, {
+            const result = deploy(battle, {
                 card: { id: command.cardId } as Ref<Card>,
                 tilePosition: command.tilePosition,
+                ...(command.direction === undefined ? {} : { direction: command.direction }),
             });
-            state = result.state;
+            battle = result.state;
 
             if (result.value.type === "REJECTED") {
-                state = appendEvents(state, [
+                battle = appendEvents(battle, [
                     {
                         type: "DEPLOYMENT_REJECTED",
                         cardId: command.cardId,
                         reason: result.value.reason,
-                        tick: state.tick,
+                        tick: battle.tick,
                     },
                 ]);
             }
         } else if (command.type === "RETREAT_UNIT") {
-            state = retreat(state, command.unitId);
+            const self = battle.battlefield.units.get(command.unitId);
+            if (self !== undefined && hasDeployable(self)) {
+                battle = retreat(battle, units.ref(self));
+            }
         }
     }
 
-    return state;
+    return battle;
 }

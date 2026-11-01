@@ -18,6 +18,7 @@ import { hasLocomotion } from "../core/unit/capability/locomotion/index.js";
 import { hasRoute } from "../core/unit/capability/route/index.js";
 import { isSpatiallyPresent } from "../core/unit/capability/presence/index.js";
 import { hasLayer } from "../core/unit/capability/layer/capability.js";
+import { hasDirection } from "../core/unit/capability/occupancy/index.js";
 import { hasAction } from "../core/unit/capability/action/index.js";
 import { hasSkill } from "../core/unit/capability/skill/index.js";
 import { stun } from "../content/effects/stun.js";
@@ -187,12 +188,9 @@ function unitInfo(unit: Unit, data: LegacyData, supplied?: LegacyUnitMetadata): 
     const skillId = hasSkill(unit) ? unit.skill.definition.id : undefined;
     const skillIndex =
         supplied?.skillIndex ?? skills.find((skill) => skill.skillId === skillId)?.index;
-    const direction = "direction" in unit.definition ? unit.definition.direction : undefined;
-    const dir: Direction =
-        supplied?.direction ??
-        (direction === "UP" || direction === "DOWN" || direction === "LEFT" || direction === "RIGHT"
-            ? direction
-            : "RIGHT");
+    const dir: Direction = hasDirection(unit)
+        ? unit.occupancy.direction
+        : (supplied?.direction ?? "RIGHT");
 
     const facing = enemy && hasLocomotion(unit) ? unit.locomotion.velocity[0] > 0 : dir !== "LEFT";
     let kind: LegacyUnitInfo["kind"] = "device";

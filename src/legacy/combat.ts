@@ -14,7 +14,7 @@ import { normal as normalCondition } from "../content/terrain/condition.js";
 import type { DamageType } from "../core/battle/damage/index.js";
 import { Tile, type TilePosition } from "../core/geometry/coordinate.js";
 import type { Direction } from "../core/geometry/direction.js";
-import { fromTiles } from "../core/geometry/range.js";
+import { createUnitPlacementDefinition } from "../core/battle/creation/placement.js";
 import type { Input as RouteInput } from "../core/battle/creation/route.js";
 import { TICKS_PER_SECOND } from "../core/tick.js";
 import type { Definitions as CapabilityDefinitions } from "../core/unit/capability/catalog.js";
@@ -169,9 +169,7 @@ function operatorDefinition(value: unknown, direction: Direction) {
                         targeting.damage,
                         ...(canTargetAir ? [] : [targeting.ground]),
                         targeting.or(
-                            targeting.range(
-                                fromTiles(attackRange(definition.rangeGrid), direction),
-                            ),
+                            targeting.directionalRange(attackRange(definition.rangeGrid)),
                             targeting.blocking,
                         ),
                     ),
@@ -220,7 +218,7 @@ function operatorDefinition(value: unknown, direction: Direction) {
         action: {
             initialize: (battle) => createActions(battle, initializeAttack),
         },
-        direction,
+        occupancy: { slot: "OCCUPANT", direction },
     } satisfies UnitDefinition &
         Pick<
             CapabilityDefinitions,
@@ -233,7 +231,8 @@ function operatorDefinition(value: unknown, direction: Direction) {
             | "hitbox"
             | "blocker"
             | "action"
-        > & { readonly direction: Direction; readonly attack: Attack };
+            | "occupancy"
+        > & { readonly attack: Attack };
 }
 
 function enemyDefinition(value: unknown) {
@@ -381,10 +380,13 @@ function combatMap(options: LegacyCombatOptions): Map {
 }
 
 export function createLegacyCombatSpec(options: LegacyCombatOptions) {
-    const initialUnits = options.operators.map((operator) => ({
-        definition: operatorDefinition(operator.definition, operator.direction ?? "RIGHT"),
-        position: Tile.center(operator.position),
-    }));
+    const initialUnits = options.operators.map((operator) =>
+        createUnitPlacementDefinition({
+            definition: operatorDefinition(operator.definition, operator.direction ?? "RIGHT"),
+            position: Tile.center(operator.position),
+            initial: { occupancy: { tile: operator.position } },
+        }),
+    );
     const spawns = options.enemies.map((enemy) => ({
         definition: enemyDefinition(enemy.definition),
         route: enemy.route,

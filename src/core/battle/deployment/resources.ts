@@ -11,7 +11,9 @@ import {
 } from "./card/card.js";
 import { get, all } from "./card/query.js";
 import * as card from "./card/state.js";
-import { changeDp } from "./deployment.js";
+import * as dp from "./dp.js";
+import { refreshOrder } from "./order.js";
+import { operator } from "./normal.js";
 
 export function replaceCard(state: BattleState, value: Card<any>): BattleState {
     const index = state.deployment.cards.findIndex((current) => current.id === value.id);
@@ -22,7 +24,7 @@ export function replaceCard(state: BattleState, value: Card<any>): BattleState {
     const cards = [...state.deployment.cards];
     cards[index] = value as Card;
 
-    return { ...state, deployment: { ...state.deployment, cards } };
+    return refreshOrder({ ...state, deployment: { ...state.deployment, cards } });
 }
 
 export function addCard<S extends object>(
@@ -51,10 +53,7 @@ export function addCard(
     if (stock !== null) {
         assertNonnegativeSafeInteger(stock, "card stock");
     }
-    if (
-        (supply.stockLimit !== null && (stock === null || stock > supply.stockLimit)) ||
-        (supply.recharge === "QUEUED" && stock === null)
-    ) {
+    if (supply.stockLimit !== null && (stock === null || stock > supply.stockLimit)) {
         throw new RangeError("card stock does not match its supply");
     }
 
@@ -69,20 +68,27 @@ export function addCard(
         id,
         definition,
         supply,
+        program: initial.program ?? operator,
+        hooks: [],
+        rules: [],
         state: initialized.value as object,
         stock,
         cooldown: null,
-        pendingReturns: 0,
+        recovery: null,
         costStage: 0,
         costContributions: [],
         redeployTimeContributions: [],
     };
 
     return {
-        state: {
+        state: refreshOrder({
             ...battle,
-            deployment: { ...battle.deployment, cards: [...battle.deployment.cards, value] },
-        },
+            deployment: {
+                ...battle.deployment,
+                cards: [...battle.deployment.cards, value],
+                order: [...battle.deployment.order, ref(value)],
+            },
+        }),
         value: ref(value),
     };
 }
@@ -97,17 +103,7 @@ export function advance(state: BattleState, tick: number): BattleState {
         state = self.definition.deployable.card?.onTick?.(state, self) ?? state;
     }
 
-    let deployment = state.deployment;
-    const next = deployment.nextDpRecoveryAtTick;
-    const interval = deployment.definition.dpRecoveryTicks;
-    if (next !== null && interval !== null && tick >= next) {
-        const count = Math.floor((tick - next) / interval) + 1;
-        deployment = changeDp(deployment, count, tick);
-
-        if (deployment.nextDpRecoveryAtTick !== null) {
-            deployment = { ...deployment, nextDpRecoveryAtTick: next + count * interval };
-        }
-    }
+    const deployment = dp.advance(state.deployment, tick);
 
     return deployment === state.deployment ? state : { ...state, deployment };
 }

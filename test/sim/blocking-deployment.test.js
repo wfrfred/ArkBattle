@@ -22,11 +22,11 @@ test("retreat refunds use current deployment state after blocking release hooks"
     });
     let battle = fixture([blocker, target()]);
     const currentUnit = getUnit(battle, 10);
-    battle = applyUnitChanges(battle, [createChange({ id: currentUnit.id }, unit => ({ ...unit, deployable: { ...currentUnit.deployable, refundAllowed: true } })), setHook({ id: currentUnit.id }, "released", hook("disable-refund", current => {
+    battle = applyUnitChanges(battle, [createChange({ id: currentUnit.id }, unit => ({ ...unit, deployable: { ...currentUnit.deployable, refund: { rate: 0.5, limit: 20 } } })), setHook({ id: currentUnit.id }, "released", hook("disable-refund", current => {
             const currentUnit2 = getUnit(current, 10);
             return replaceUnit(current, {
                 ...currentUnit2,
-                deployable: { ...currentUnit2.deployable, refundAllowed: false },
+                deployable: { ...currentUnit2.deployable, refund: null },
             });
         }))]);
     battle = acquire(battle);
@@ -34,8 +34,8 @@ test("retreat refunds use current deployment state after blocking release hooks"
     battle = remove(battle, 10, "RETREAT");
 
     assert.equal(battle.deployment.dp, before.deployment.dp);
-    assert.equal(battle.removedUnits.find(({ unitId }) => unitId === 10).unit.deployable.refundAllowed, false);
-    assert.equal(getUnit(before, 10).deployable.refundAllowed, true);
+    assert.equal(battle.removedUnits.find(({ unitId }) => unitId === 10).unit.deployable.refund, null);
+    assert.deepEqual(getUnit(before, 10).deployable.refund, { rate: 0.5, limit: 20 });
     assert.equal(ownerId(battle), undefined);
 });
 

@@ -67,6 +67,8 @@ export function fromTiles(tiles: readonly TilePosition[], direction: Direction):
 
 Range 表示形状并集，空数组表示空范围。fromTiles 将相对原点的格子坐标绕 [0, 0] 按 direction 旋转，再转换成半宽高均为 0.5 的 Box；查询时决定实际世界原点。它不执行目标所属格查询，需要格心原点的调用方使用 Tile.center(originTile)。单个 Hitbox 直接保存 Shape，不使用中间 Geometry 包装。遵守 readonly 约定，不要求运行时冻结。
 
+四向 Direction 是几何值，不意味着所有 Unit 都拥有方向。本轮固定地块摆放的朝向由 Occupancy 保存为 direction，允许 null；创建通过 initial.occupancy.direction 覆盖。Targeting.range 使用已确定的 Range，directionalRange 接收相对格子列表，仅当当前 occupancy.direction 非 null 时旋转范围。几何模块不查询 Unit 或 Battle，方向相关的业务读取留在 Targeting；不把未来所有朝向需求预先等同于占格。
+
 ## 几何计算
 
 ```typescript

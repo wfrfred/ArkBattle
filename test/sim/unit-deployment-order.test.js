@@ -34,7 +34,7 @@ test("tile changes during entry release blocking before deployment observers", (
             invoke(state, fact) {
                 calls.push("deployed");
                 assert.equal(fact.unit.id, 30);
-                assert.equal(fact.kind, "MANUAL");
+                assert.equal(fact.origin, "MANUAL");
                 assert.equal(getUnit(state, fact.unit.id).vitality.hp, 75);
                 assert.deepEqual(calls, ["entered", "released", "deployed"]);
                 return { state, value: undefined };
@@ -86,7 +86,7 @@ test("manual deployment records its event before entry and notifies observers af
             id: "observe-manual-entry",
             invoke(state, fact) {
                 calls.push("deployed");
-                assert.equal(fact.kind, "MANUAL");
+                assert.equal(fact.origin, "MANUAL");
                 assert.equal(getUnit(state, fact.unit.id).vitality.hp, 60);
                 assert.deepEqual(calls, ["entered", "deployed"]);
                 return { state, value: undefined };

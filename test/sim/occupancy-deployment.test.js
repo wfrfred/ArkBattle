@@ -23,7 +23,7 @@ for (const slot of ["OCCUPANT", "SUPPORT"]) {
         const id = deployed.value.unitId;
         const original = getUnit(deployed.state, id);
         assert.equal(original.definition, definition);
-        assert.deepEqual(original.occupancy, { tile: [0, 1] });
+        assert.deepEqual(original.occupancy, { tile: [0, 1], direction: null });
         assert.equal(at(deployed.state.battlefield, [0, 1])[indexedSlot].id, id);
         assert.equal(at(deployed.state.battlefield, [0, 1])[otherSlot], null);
         assert.deepEqual(deploy(deployed.state, { ...request, card: second.value }).value, {

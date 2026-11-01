@@ -3,7 +3,8 @@ import type { Placement, SiteCondition } from "../../../battlefield/map/tile.js"
 import type { Unit, Definition as UnitDefinition } from "../../unit.js";
 import type { DeployedHook } from "./hook.js";
 import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../../common/assert.js";
-import { prepare, leave } from "../../../battle/deployment/lifecycle.js";
+import { prepare } from "../../../battle/deployment/lifecycle.js";
+import type { Refund } from "../../../battle/deployment/program.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Card, Program } from "../../../battle/deployment/card/card.js";
 
@@ -23,9 +24,16 @@ export interface Definition<S extends object = object> {
 export interface State {
     readonly card: Ref<Card> | null;
     readonly cost: number;
-    readonly refundLimit: number;
-    readonly refundAllowed: boolean;
+    readonly slots: number;
+    readonly refund: Refund | null;
+    readonly retreatAllowed: boolean;
+    readonly retreatRules: readonly Rule[];
     readonly deployedHooks: readonly DeployedHook[];
+}
+
+export interface Rule {
+    readonly id: string;
+    readonly allows: (battle: BattleState, reference: Ref<Unit & Deployable>) => boolean;
 }
 
 export interface Deployable {
@@ -43,21 +51,23 @@ export function initialize<
         state: battle,
         value: {
             ...unit,
-            hooks: [...unit.hooks, prepare, leave],
+            hooks: [...unit.hooks, prepare],
             deployable: {
                 card: null,
                 cost: definition.cost,
-                refundLimit: definition.cost,
-                refundAllowed: false,
+                slots: definition.slots,
+                refund: null,
+                retreatAllowed: true,
+                retreatRules: [],
                 deployedHooks: [],
             },
         },
     };
 }
 
-export function resolveRefund(definition: Pick<Definition, "refund">, state: State): number {
-    return state.refundAllowed
-        ? Math.max(0, Math.floor(Math.min(state.cost * definition.refund.rate, state.refundLimit)))
+export function resolveRefund(state: State): number {
+    return state.refund !== null
+        ? Math.max(0, Math.floor(Math.min(state.cost * state.refund.rate, state.refund.limit)))
         : 0;
 }
 

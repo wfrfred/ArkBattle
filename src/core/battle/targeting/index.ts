@@ -11,6 +11,7 @@ export {
     sameSide,
     ground,
     range,
+    directionalRange,
     blocking,
     blocker,
     missingHp,

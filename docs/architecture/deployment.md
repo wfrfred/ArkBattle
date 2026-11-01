@@ -1,418 +1,176 @@
 # Deployment、Card 与 Unit 生命周期
 
-Deployment 管理 Card、供给、部署经济和完整部署操作；Deployable 保存场上实例的部署参数；Unit 生命周期操作派发生命周期节点，能力与领域自行接入清理。
+Deployment 完成一次部署的资格判断、资源消费、实例创建和通知。Card 保存跨部署的状态；Deployable 保存本次场上实例的部署事实；Unit 与 Lifetime 负责登记、登场和完整离场。普通创建、Unit 登场和部署是三个不同操作，不能由阵营、Card 关联或一次 add 自动推断部署。
 
-部署方向、手动资格、费用上限、特殊部署与卫戍接入仍有未完成设计，见相关段落及[待定事项](#后续需要定案的内容)。其目标接口不表示对应链路已经实现，逐项要求见 [Tactical 语义](tactical-semantics.md)。
+范围是主模式作战规则与卫戍协议的接入能力，不包含保全派驻和生息演算的区域流转。执行约定见 [函数式内核](functional-core.md)，创建与修改约定见 [Capability](capability.md)。
 
-范围是主模式干员／敌人的作战规则与卫戍协议接入，不包含保全派驻和生息演算。函数式执行契约见 [Tactical 函数式内核](functional-core.md)，能力接口约定见 [Capability API](capability.md)。
+## 状态归属
 
-## 状态归属与执行职责
+| 事实 | 所属领域 |
+| --- | --- |
+| 本次实例的身份、真实位置、PRESENT／LEAVING | Unit |
+| 地块、空间索引和实际占位 | Battlefield／Occupancy |
+| 当前 DP、下限、上限、自然回复进度 | Deployment |
+| Card 身份、私有 state、库存、计时与费用修正 | Card |
+| 本次 COST、额度、返费条件、手动撤退资格、来源 Card | Deployable |
+| 共有一次性机会、来源关系、倒地位置、自动部署条件 | 对应 Effect、Skill 或 Mechanism |
 
-| 概念 | 数据或规则归属 | 执行职责 |
+Definition ID 标识内容，Card ID 标识本场持续存在的可部署记录，Unit ID 标识本次场上实例。Card.definition 直接引用原 Unit Definition，不另建 Card 内容定义或包一层 definition.unit。每次部署重新初始化 Unit；需要跨部署保留的资源放入 Card.state，由具体 enter／leave 程序显式转换，不保存旧 Unit 作为下次初态。
+
+库存、库存上限、同 Card 在场上限、全场部署额度与地块占位分别表达。activeCount 和 usedSlots 从 Battlefield 中的实例事实查询，不保存第二份在场列表或计数。**本项目在 Unit 物理注销时释放在场数量和额度**，所以 LEAVING 仍占用它们；这是项目结算约定，不由 Lifetime 的存储要求推定为已证实的原生退出时点。
+
+## 一次部署的程序
+
+[battle/deployment/program.ts](../../src/core/battle/deployment/program.ts) 定义静态程序：
+
+```typescript
+interface Program<I> {
+    readonly id: string;
+    readonly prepare: (battle: BattleState, input: I) => Preparation | Rejected;
+}
+```
+
+prepare 只读当前事实，可以拒绝，或准备本次的地块要求、COST、额度、返费条件、支付、消费程序与实例创建程序。它不扣资源、不分配身份、不安装 Effect，也不消耗共享机会。准备结果只在完整 deploy 内接续使用；preview 只返回资格、费用与支付事实，不向外暴露可延后提交的计划。
+
+普通程序可在本地推进目标 Card 的纯计时值，并以纯替换形成只读工作 Battle，让自身与 Rule 查询同一版本；这不发布到调用方，也不执行 Card.onTick。拒绝仍返回原 Battle；成功时在 consume 阶段接续已准备的计时事实与实际消费。
+
+Preparation 的 initialize 和 consume 闭包在已知类型的位置保存 Definition、Typed Ref 与采样值，因此不需要再建立 Deployment Execution、Activation 或通用私有上下文。Core 执行准备好的程序，不解释内容的私有数据。参数和准备结果必须遵守领域契约，程序异常直接传播，不转换为普通业务拒绝，也不增加回滚或重试框架。
+
+两个公共调用对应不同来源：
+
+```typescript
+deploy(battle, { card, tilePosition, direction });
+deploy(battle, input, program);
+```
+
+第一种读取 Card.program；第二种由具体内容或 Mechanism 显式提供本次程序。标准程序位于 [normal.ts](../../src/core/battle/deployment/normal.ts)：
+
+| 程序 | 成功部署 | 实例离场 |
 | --- | --- | --- |
-| 场上实例的身份、位置与生命周期状态 | Unit | 局部不可变变换形成新 Unit |
-| Unit 的集合与占格 | Battlefield | 直接不可变操作完成登记、删除及空间／承载结构维护；阻挡关系由 Blocking 操作构造 |
-| 登场、退场及其连锁结算 | Unit 生命周期领域 | Unit 派发统一 Hook；能力自行接入，Lifetime 按已登记依赖完成析构 |
-| Card、库存、再部署进度及部署经济 | Deployment | 本领域转换维护场下记录和部署操作的后果 |
-| 倒地记录、自动再登场等模式规则 | 对应 Mechanism | 组合公开领域操作，保存模式事实 |
-| Tick 执行顺序 | battle/runtime.step | 直接调用领域操作并返回完整新 State |
+| operator | 消耗一个库存 | 普通撤退／死亡递增费用阶段；无限库存启动使用冷却，有限库存登记恢复 |
+| consumable | 消耗一个库存并启动使用冷却 | 不自动归还库存 |
+| queued | 消耗一个库存 | 登记一个串行恢复份数；仍有库存时允许继续部署 |
 
-Unit 是不可变数据，不是自主推进的运行时对象。`lifecycle` 属于 Unit，但完成一次退场可能改变其他 Unit 的 Effect、未完成 Action、Card 与模式状态，因此完整退场是作用于 BattleState 的纯函数。
+这些是明确组合资源操作的程序，不是 Card 内部 switch 的生命周期策略。Content 可以通过 createProgram 组合其它已确认的供给行为，或直接提供特殊 Program；Card 的 supply 只保存 stockLimit 与 activeLimit。没有离场业务的 consumable 不登记空的 leave Hook。Card 存在或实例关联 Card，不意味着离场必须补回一个库存。
 
-“规则属于 Unit 生命周期领域”不要求 Unit 实例持有方法；“操作接收 BattleState”也不意味着算法都归 Tick 调度函数。step 只编排时序；Battlefield 只维护场上事实及其约束，不自动执行角色内容回调。领域结算没有第二套 Unit 存储或共享可变工作视图。
+普通程序负责 Card、库存、当前冷却、同卡在场数、Card Rule 和方向资格。完整 deploy 再统一检查全场额度、DP 支付范围、当前地块与占位。拒绝不消费 DP、库存、共享机会或 Unit ID；特殊程序自己选择是否消费库存及采用哪种冷却，不通过 force／free／ignore 标志组合授权。
 
-## 三种身份与待部署状态
+## 支付、属性与完整执行
 
-- Definition ID 标识静态内容。等级、潜能、技能和模组选型完成后得到本场使用的不可变 Definition。
-- Card ID 标识本场战斗中持续存在的可部署记录；普通干员退出场上后，这个记录继续保存进度。
-- Unit ID 标识本次场上实例。场上实例退出与 Card 消失是不同的事实。
+本次场上 COST、实际支付和返费条件彼此独立：
 
-普通再次部署调用 `deploy(battle, { card, tilePosition })`，业务接口使用 `Ref<Card>`。默认创建标准 Capability 初态；确需跨部署保留的资源单独保存并显式转换，不保存整个旧 Unit 作为下次初态。普通干员 Card 对应至多一个场上实例；召唤物的库存与同时在场数量可以不同。
+- payment 为 `{ amount: 0 }` 表示发生了正常零费支付；null 表示没有支付流程。
+- cost 保存本次实例的费用属性，后续 Card 改价不改写它。
+- refund 为 null 表示不返费，否则保存本次 rate 和 limit；免费投递可以保留正常 COST 与返费资格。
+- slots 保存本次额度占用，可与同内容的其它创建方式不同。
 
-`unit.deployable.card: Ref<Card> | null` 关联本次实例的来源 Card。例如关卡直接预置的干员未必存在对应待部署记录。是否发生部署业务由执行该操作的领域明确决定，不能从 card 非空、阵营为 ALLY 或“新注册 Unit”推导。
-
-阵营、当前玩家归属与原始责任归属分别表达，不在 Deployable State 中统一塞入 `side`。旧多人模式的地块 `playerSideMask` 不在支持范围内，不进入 Tile 或部署请求。
-
-## Deployable Capability
-
-Deployable 表达场上实例的部署参数和本次部署事实。Deployment 是完整部署操作与场下经济的领域，两者名称按职责区分。
+完整执行顺序为：
 
 ```text
-unit/capability/deployable/
-├── index.ts            显式公共类型、局部操作与部署 Hook
-├── capability.ts       Definition、State、查询与初始化
-└── hook.ts             部署观察 Hook 的类型及不可变增删
-
-battle/deployment/
-├── index.ts            显式公共查询、资源、部署与生命周期协作
-├── card/
-│   ├── index.ts        Card 公共类型、Typed Ref 查询与完整写回
-│   ├── card.ts         Program、Definition、Card 与 ref
-│   ├── state.ts        供给、费用与冷却的内部纯计算
-│   ├── query.ts        Typed Ref 的 get／all
-│   └── operations.ts   私有 state、贡献、库存与当前冷却写回
-├── deployment.ts       Definition、Input、State、初始化与局部 DP 转换
-├── query.ts            部署额度与当前地块／占格资格查询
-├── resources.ts        Card 创建与 Card、DP 时间推进
-├── lifecycle.ts        Deployable prepare／leave Hook 与部署通知
-└── operations.ts       完整部署、撤退与 Command 处理
+Program.prepare（只读）
+→ 公共资格检查
+→ 接纳本次固定参数并支付 DP
+→ consume：库存、共享机会及其它来源消费
+→ initialize：分配身份，完成本次 Unit 构造
+→ 写入本次 Deployable 事实，记录 UNIT_DEPLOYED
+→ Unit.add：登记、普通 enter Hook、registrationChanged
+→ 派发 deployedHooks
 ```
 
-上层通过两个领域各自的 index 导入公共契约。Deployable.initialize 自行登记 lifecycle.ts 提供的 prepare／leave Hook，分别负责退款与回卡；Unit 不依赖 Deployment。实际部署由 operations.ts 记录 UNIT_DEPLOYED，并在 add 返回后派发部署通知，Unit.add 不推断是否发生部署。Card 的完整替换仅供 Core 内部使用，Content 调用带 Typed Ref 的字段或资源操作。
+消费先于构造和 enter，入场程序嵌套部署时能读到已消费的机会。接纳后不再重新报价、选择优惠或决定已固定的程序。consume 仍通过正常领域操作接续 BattleState，不额外承诺内容回调之间的隔离。enter 中立即死亡仍是一次已经发生的成功部署，结果和通知保存该历史事实，不保证返回时新 Unit 仍存在。
 
-```typescript
-// unit/capability/deployable/capability.ts
-export interface Definition<S extends object = object> {
-    readonly cost: number;
-    readonly redeployTicks: number;
-    readonly slots: number;
-    readonly placement: Exclude<Placement, "NONE">;
-    readonly allowedSiteConditions: readonly SiteCondition[];
-    readonly refund: {
-        readonly rate: number;
-        readonly limit: "BASE_COST" | "DEPLOYMENT_COST";
-    };
-    readonly card?: Program<S>;
-}
+手动 Command 只携带 cardId、地块和可选方向，在边界恢复 Card Ref；不接受临时的任意 Unit Definition。手动撤退使用 `retreat(battle, Ref<Unit & Deployable>)`，检查 PRESENT、retreatAllowed 和当前 retreatRules。内容强退使用明确的 Unit 离场操作；控制者身份与网络授权由外层处理，不混入撤退 Rule。
 
-export interface State {
-    readonly card: Ref<Card> | null;
-    readonly cost: number;
-    readonly refundLimit: number;
-    readonly refundAllowed: boolean;
-    readonly deployedHooks: readonly DeployedHook[];
-}
+## 本次方向与创建输入
 
-export interface Deployable {
-    readonly definition: { readonly deployable: Omit<Definition, "card"> };
-    readonly deployable: State;
-}
-```
+本轮的四向摆放朝向归 [Occupancy](../../src/core/unit/capability/occupancy/index.ts)：Definition.occupancy.direction 可选，State.occupancy.direction 为 Direction 或 null。没有朝向的装置使用 null，不伪造 RIGHT；基础 Unit 没有方向字段。这是当前固定地块摆放需求的领域归属，不将所有未来朝向与占格宣称为数学等价。
 
-| 字段 | 含义 |
-| --- | --- |
-| Definition.cost | 配置选定后的基础部署费用；Card 当前有效费用另行计算 |
-| redeployTicks | 基础再部署时间；当前冷却进度是 Card 的运行事实 |
-| slots | 占用的部署额度；与地块占用、库存及同 Card 在场上限分别表达 |
-| placement | 通常可部署于近战、远程或两类地块 |
-| allowedSiteConditions | 必填的场地条件 symbol 数组；由内容装配明确提供 |
-| refund | 内容配置的撤退返费率与上限策略，普通干员为 50%／BASE_COST |
-| Definition.card | 可选的 Card 私有程序；由 Deployment 创建 Card 时初始化，不由 Unit initializer 执行 |
-| State.card | 本次场上实例关联的 Card Typed Ref；允许无记录的实例 |
-| State.cost | 此实例的部署费用属性，不等同于实际扣款，也不随 Card 后续费用变化 |
-| refundLimit | 部署时确定的本实例返费上限数值 |
-| refundAllowed | 此次部署是否允许返费，由创建流程明确赋值 |
-| deployedHooks | 此 Unit 登记的部署观察函数；随不可变 Unit 状态更新 |
+Unit.initialize 与直接 Placement 创建的 initial 按已声明能力约束输入。Occupancy 接收可选 tile 和 direction；省略方向时使用 Definition 初态或 null，本次部署输入可以明确覆盖。能力的 initializer 在 fold 中处理自己的输入，通用 Unit 不判断具体能力。initial 不是 Partial<Unit>，不能导入任意 Skill、Vitality、Effect 等运行状态。Content 的 directionalRange 读取当前 occupancy.direction，非 null 时旋转相对范围；静态 range 仍接收已确定的几何范围。
 
-slots 采用静态参数。选定技能或模组后固定的差异由内容装配产生，不为未确认的动态额度变化先添加 Contribution 容器。关卡自动放置的装置不占部署数，必须明确配置 slots 为 0；不能用阻挡数推算部署额度。[PRTS 射击台](https://prts.wiki/w/射击台) 明确区分手动与关卡自动部署的占用规则。
+需要保存到 Battle.Input 或排程中的异构创建描述通过 createUnitPlacementDefinition 建立输入配对，UnitPlacementDefinition 的初始输入只暴露类型层的已配对标记，默认不含 any。直接 instantiate 仍能按具体 Definition 接收类型化初态。这里没有新的运行实例、容器、View 或二次运行时校验；实际字段仍由原 initializer 处理。
 
-部署资格读取当前 Tile.state.placement 与 siteCondition。siteCondition 是单个 symbol 或 null；null 无条件通过场地条件检查，其余值必须包含在 Deployable.allowedSiteConditions 中。Content 的 condition.normal（NORMAL）是普通场地条件，不等于 null；Core 不默认引入它。官方数值位掩码在 Data 边界转换，不进入 Core。
+Placement.hooks 是调用方明确提前登记的普通 Hook。装配顺序为初始 hooks、各 Capability 的登记、Definition.hooks；没有 CardEnter 阶段或按来源种类自动排序的优先级。具体内容可以据业务选择登记位置，不把这种项目装配顺序称为所有原生外来效果的统一顺序。
 
-地块覆写直接更新当前 Tile.state，TileBinding 已移除。SUPPORT 登记本身不覆写部署许可；平台内容按登记格显式改写，详见 [Terrain 与 Mechanism](terrain.md)。Occupancy 的 Definition 声明 OCCUPANT／SUPPORT 槽位，State.tile 保存当前登记地块，Field 自动维护双槽反向表，见 [Occupancy 与 Support](occupancy.md)；SpatialPresence 表达是否参与空间事实；Layer 表达 GROUND／AIR，均不能替代 Deployable。
+## 入场附着与共享机会
 
-本次部署的 COST 属性与实际扣除的 DP 必须区分，也不能在撤退时读取 Card 的当前费用代替旧实例的属性。允许返费时按 `floor(min(State.cost × refund.rate, State.refundLimit))` 结算。基础上限从本次基础费用计算；采用 DEPLOYMENT_COST 策略时以上场费用属性为限。返费资格由具体操作确定，免费投递不必然禁止返费；直接预放的初态默认不允许返费，但不能从 card 为 null 推断所有实例都不能返费。[PRTS 部署费用](https://prts.wiki/w/部署费用#撤退返费) 提供玩法依据。
+Card.hooks 保存未来实例要携带的普通 Unit Hook。新实例通过已有 enter Hook 调用 effects.install，创建真实 Effect，照常执行安装、生效与 Lifetime 登记。松桐生命增益、银灰屏障和延迟攻击均按这种职责组合，不设置独立 Attachment 容器、登记协议或生命周期，也不预装 Effects。
 
-## Card 与部署子系统
+授予时采样的数据可由程序闭包保存；需要输出时实时读取的数据在对应 Effect 的执行点查询。Hook 的移除由实际内容决定：下次部署消耗、下次离场失效、来源离场失效并不相同。已接纳部署保存本次程序，即使 consume 随后撤销 Card 上的下次机会，也不撤销本次已经接受的安装程序。
 
-Card 是本场战斗中跨部署存在的不可变实体，保存在 Deployment，不是 Unit 或部署按钮。Card<S>.definition 直接引用原 Unit Definition，不包一层 definition.unit，也不复制或改写共享定义；supply 独立保存本次供给政策。Card 的 Definition<S> 是带 Deployable／Occupancy 与相应 Card 程序的 Unit Definition 类型，不是第二份内容定义。
+多个 Card 共享一次优惠时，剩余机会保存在实际来源的 Effect／Skill／Mechanism.state。报价与成功消费引用同一来源；不能给每张 Card 复制一份次数，也不为了共享来源把优惠、屏障和定时攻击强行做成一种生命周期。
 
-```typescript
-interface Program<S extends object = object> {
-    readonly initialize: (battle: BattleState) => Result<S>;
-    readonly onTick?: (battle: BattleState, self: Card<S>) => BattleState;
-}
+Card.rules 使用 DISPLAY、SELECT、DEPLOY 区分显示、选择和部署资格。实际计时、库存和临时资格各自查询，不新增重复的 enabled 状态。Rule 不执行状态变更。
 
-interface Supply {
-    readonly stockLimit: number | null;
-    readonly activeLimit: number | null;
-    readonly recharge: "DEPLOYMENT" | "RETURN" | "QUEUED";
-    readonly costPenalty: boolean;
-}
+Card 私有 Program<S> 的 initialize／onTick 与部署 Program<I>.prepare 分工不同：前者创建和推进跨部署私有 state，后者准备一次部署。普通干员可省略私有程序，不要求内容另写 Card Definition。普通查询默认 object，Typed Ref 或匹配 Definition 的查询恢复具体 S；异构存储的类型擦除不向 Content 暴露 any。
 
-interface Cooldown {
-    readonly readyAtTick: number;
-    readonly durationTicks: number;
-}
+## 待部署区顺序
 
-interface Card<S extends object = object> extends Identified<{ readonly id: CardId }> {
-    readonly id: CardId;
-    readonly definition: Definition<S>;
-    readonly supply: Supply;
-    readonly state: S;
-    readonly stock: number | null;
-    readonly cooldown: Cooldown | null;
-    readonly pendingReturns: number;
-    readonly costStage: number;
-    readonly costContributions: readonly Contribution<readonly attribute.Modifier[]>[];
-    readonly redeployTimeContributions: readonly Contribution<readonly attribute.Modifier[]>[];
-}
-```
+Deployment.order 独立保存 Card Ref 的业务顺序，cards 保持身份存储；ordered 查询前者，Card.all 枚举后者。重排不改变 Card ID、私有状态或同卡在场关联。
 
-需要场下私有逻辑的内容在 Unit Definition 的 deployable.card 提供 Program<S>，包括 initialize 与可选 onTick；普通干员省略该字段，创建时取得空 state，不必另外编写 Card 内容。Deployment 创建 Card 时接续 initialize 返回的 BattleState；Card 的身份与私有 state 不随一次 Unit 离场重建。普通查询返回默认 object 的完整 Card，精确 Ref 或匹配已知 Unit Definition 的查询保留 S；异构类型擦除留在内部存储边界，不向 Content 返回 any。Deployable 守卫只证明部署所需配置与状态，保留已知 Unit Definition 中 Card 程序的私有类型，不将其覆盖为 Program<object>。
+当前只保存一个纯 Ordering 程序，输入当前 BattleState 与顺序，返回同一集合的新排列。setOrdering 替换这个唯一程序，refreshOrder 重新求值；新增 Card 先追加到序列，再按现有程序整理，Card 写回同样更新顺序。依赖其它 Battle 事实的重排由来源在所需时点显式 refresh，不跟踪纯程序的任意读取依赖。程序由内容负责给出合法排列，不在内部反复校验自己已经构造的 Ref。
 
-每次普通部署仍重新初始化 Unit 的全部 Capability。Card.state 负责跨部署事实，Unit 自身的 enter／leave Hook 通过 deployable.card 的 Ref 显式读取、转换和写回这些数据。例如魔力在入场时转换为当前 SP，离场时从 Departure 读取剩余 SP 再保存回 Card；不保存整个旧 Unit，也不自动继承 HP、Skill、Effect 等状态。部署附加复用 Unit enter，不增加 Entry 阶段或 Card 的 Effect 容器。
+setOrdering(null) 停止自动重排并保留现有顺序，不自动恢复所谓原始顺序。多来源重排的竞争、来源退出后的恢复及真实初始／中途插入排序仍待具体内容取证；单程序接口不宣称这些机制已经实现，也不预设 priority 或隐式恢复栈。
 
-| 内容 | 职责 |
-| --- | --- |
-| id、definition | Card 身份与原 Unit Definition；基础费用／冷却取自 definition.deployable |
-| state | 具体内容跨部署保存的私有状态 |
-| supply.stockLimit、supply.activeLimit | 库存上限与同 Card 在场上限，null 分别表示无限库存／不限在场数 |
-| stock | 当前可用数量；null 表示无限供给，0 表示没有可用库存 |
-| cooldown | 当前周期的截止 Tick 与启动时长；不等同于基础 redeployTicks |
-| pendingReturns | 排队补充中等待完成的回收数量，不能由库存或在场数量推算 |
-| costStage | 本 Card 的费用惩罚进度，普通撤退／死亡增加，最多两个阶段 |
-| costContributions | 对当前费用的修正候选 |
-| redeployTimeContributions | 对以后启动的冷却周期时长的修正候选 |
+## 冷却与库存恢复
 
-普通干员供给默认无限库存、至多一个场上实例、RETURN 冷却，并启用费用惩罚。默认策略不是所有召唤物的规则，具体创建配置明确自身供给。
+Card 将使用冷却 cooldown 与库存恢复 recovery 分开。使用冷却结束只解除本段间隔；库存恢复保存 pending 份数和一条 clock，每段结束补回一份，再决定是否启动下一段。同一份事实只保存一次，有限唯一供给使用恢复周期即可，不复制一份相同的使用冷却。
 
-- DEPLOYMENT：消耗库存时启动冷却，周期结束解除冷却；不自动补回库存。
-- RETURN：离场启动冷却，周期结束补回一个库存。
-- QUEUED：离场登记待回收数量，按顺序完成补充；有库存时可继续部署，不因补充周期正在运行而禁止消耗。
+Clock 保存启动时的 durationTicks；RUNNING 保存 readyAtTick，PAUSED 保存 remainingTicks。setRedeployTimeContribution 只影响后续周期。恢复下一段时读取 Card 当时已有的有效时长，不为每份入队保存预算，也不永久复用整条队列首次启动的预算。
 
-每次有效回收都必须保留其供给事实。只保存一个截止时间的 RETURN 仅用于不会同时存在多个待回收实例的合法组合；多实例来源采用已明确的供给政策。RETURN 的实际构造约束和更多并行／串行政策仍待核对，见 DEPLOY-06；本轮不改变既有 Supply 政策。
+enqueueRecovery 的公共约定是追加份数并保留已存在的当前段；没有当前段时才启动。每次有效回收都保留份数，不会被后一次归队覆盖。原生 OnRecycle 某些状态切换可能 Reset 的具体来源路径尚未闭合，本项目不把这些未确认路径偷偷加入通用追加操作；有实际内容要求时，由来源显式重置对应周期。
 
-库存、库存上限和同时在场上限是三个独立事实。场上 Unit 的 deployable.card 是关联的权威事实，查询当前实例从 Battlefield 取得，不另存 card.deployed[]。实际返费属于完整离场结算，Card 内部纯转换只处理自己的供给、计时及费用进度。
+reduceCooldown／clearCooldown 可指定 COOLDOWN 或 RECOVERY，只操作当前段，不把多余缩短量传给后续段。recharge 直接增加可用库存，不重置计时器。暂停保存剩余时间；暂停期间减时和清零只修改该剩余值，恢复时再继续并结算到期。零时长周期可以在当前 Tick 完成。这些是当前公共操作的明确项目契约，不能据此声称黑棺、莲座等所有来源组合均已核实。
 
-setRedeployTimeContribution／removeRedeployTimeContribution 只影响以后启动的冷却，不缩放正在运行的截止 Tick。reduceCooldown／clearCooldown 处理当前周期，并按 Supply 完成到期与补回；排队供给仍可继续下个周期，不把多余缩短量传给它。零时长周期可在当前 Tick 完成。Deployment 固定阶段入口的 Card 候选，逐项读取当前 Card，先发布到期结果再调用其 onTick；新建 Card 不加入本轮候选，回调后不写回旧整份对象。
+Deployment 在阶段入口固定 Card 候选，逐项读取当前 Card，先发布到期结果再调用可选私有 onTick；新 Card 下次参与，回调后不回填旧整份对象。
 
-Deployment 保存静态 initialDp／maxDp／dpRecoveryTicks／slotLimit 与运行时 cards／dp／nextDpRecoveryAtTick。dpRecoveryTicks 为 null 表示不自然回复，slotLimit 为 null 表示不限制部署额度；额度查询读取场上 Deployable Definition。达到 DP 上限时停止自然回复计时，扣费后重新开始。
+## DP 与费用计算
 
-Card ID 由 nextCardId 分配，独立于 Unit ID；addCard 返回精确 Ref<Card<S>>，初始化 Card 不消耗 Unit ID。Card 集合与 Deployment State 随 BattleState 显式接续，不另设待部署记录镜像。Contribution 可用于 Card，但其登记与结算由 Card 领域负责；不复制 Unit Change 或公开完整 Card replace。
+Deployment 保存 dp、minDp、自然回复进度和最近推进 Tick。maxDp、dpRecoveryTicks、slotLimit 属于配置；minDp 默认 0，可由显式操作调整。费用支付允许降至当前下限，主动 recover／modify 与自然回复分别处理。
 
-本轮保留现有数值算法和 Supply 政策。费用分阶段取整与独立上限已有取证，多来源归并与再部署修正仍有证据缺口；这些差异后续独立收敛。未确定的 Rule、Hook、共享机会与排序框架不在本轮新增。
+自然回复逐次采样推进开始时的当前 DP。负数时，本次时间推进量乘 0.5；回到 0 后下一次正常推进，保留已有进度。主动加费不减半。达到最大 DP 时清空自然回复进度，之后再次消费从新的时点继续；没有自然回复时不运行计时。一次推进内产生多个回复点时不在循环跨零处额外拆分。
 
-## API 与 Commands
+costCeiling 是独立费用上限，默认 99，与 maxDp 分开配置，不假定两者动态同步。普通费用先计算再部署阶段后的 rawCost 并向下取整，再按运行修正乘算、向下取整、加最终增量，最后限制到 `[0, costCeiling]`。普通费用阶段最多两层，每层 0.5；COST 和实付数值仍由本次程序分别决定。
 
-Card 内容从 battle/deployment/card/index.ts 使用模型、ref、get／all、数值查询与完整写回。state.ts 的局部 Card→Card 计算和完整替换供 Core 内部使用，不要求 Content 自行查对象、调用局部 setter 后再补写回。
-
-```typescript
-// card/index.ts：普通查询使用默认 object，精确 Ref／Definition 查询保留私有 S
-ref(self): Ref<Card<S>>;
-get(battle, ref): Card<S> | undefined;
-get(battle, ref, definition): Card<S> | undefined;
-all(battle): Query<Card>;
-resolveBaseCost(card): number;
-resolveCost(card): number;
-resolveRedeployTicks(card): number;
-
-setState(battle, ref, nextState): BattleState;
-recharge(battle, ref, count): BattleState;
-reduceCooldown(battle, ref, ticks): BattleState;
-clearCooldown(battle, ref): BattleState;
-setCostContribution(battle, ref, contribution): BattleState;
-removeCostContribution(battle, ref, id): BattleState;
-setRedeployTimeContribution(battle, ref, contribution): BattleState;
-removeRedeployTimeContribution(battle, ref, id): BattleState;
-
-// deployment/index.ts
-addCard(battle, definition, options?: { supply?: Supply; stock?: number | null }): Result<Ref<Card<S>>>;
-deploy<T extends Card<any>>(battle, request: DeployRequest<T>): Result<DeployOutcome>;
-retreat(battle, unitId): BattleState;
-```
-
-setState 只接收已经计算好的 state，用 Typed Ref 与 NoInfer 保持私有类型配对；其余操作只允许修改对应字段或资源。Content 不提交完整 Card，不使用通用 transform 写回。写回目标缺失时抛出 RangeError；给定结果值与当前值相同时保留原状态，身份、共享 Definition、供给及无关字段由 Core 保持。
-
-Deployable 的 prepare／leave Hook 与 notifyDeployed 位于 lifecycle.ts；它们消费相应节点的明确业务载荷，不重新拼接 Unit 登记或离场流程。
-
-战斗 Input 可配置 deployment: { definition, cards }，cards 中每项为 `{ definition: 原 Unit Definition, supply?, stock? }`。这些条目只配置本次 Card 的创建，内容程序仍属于原 Unit Definition。供给缺省使用普通干员规则；不配置 Deployment 时，Card 集合为空、初始 DP 为 0。
-
-业务 deploy 请求使用 Card Ref 与地块；外部 Command 仍携带 cardId 编号，由命令边界转换为 Card Ref。Card 已在战斗输入／创建阶段建立，Command 不临时带入任意 Unit Definition。部署直接使用 card.definition 初始化新 Unit；刷怪和直接生成对象使用自身流程。本次方向仍未接入，见 DEPLOY-03。
-
-```typescript
-type DeploymentCommand =
-    | { readonly type: "DEPLOY_UNIT"; readonly cardId: CardId;
-        readonly tilePosition: TilePosition }
-    | { readonly type: "RETREAT_UNIT"; readonly unitId: UnitId };
-```
-
-完整部署依次检查 Card 是否存在、库存、冷却、同 Card 在场上限、总部署额度、DP 与地形占位。普通资格拒绝返回 REJECTED；外部 Command 输出 DEPLOYMENT_REJECTED，且不消费库存、DP 或 Unit ID。程序异常仍使本次 Tick 失败，不当作业务拒绝。成功结果保存 cardId 与生成的 unitId，登记已发生的领域事件；value 不重复返回已写入事件流的 Signals。部署被接受不保证回调结束后 Unit 仍存活，结果表达已经发生的事实。
-
-实际部署费用还需按关卡费用上限裁定。手动撤退命令按可撤退性和调用方控制范围裁定；网络身份与授权由外层处理，内容强退和实际离场保留独立语义。当前这两项仍有缺口，不能把只检查 Unit 存在的通用离场入口当作完整手动规则。
-
-再次部署没有额外 redeploy Command。当前不提供直接改变既有部署对象位置的公共操作、命令、事件或内容回调；特殊撤退—再部署仍须按真实内容审查退出原因、Buff／技能初态、HP 和费用政策，本轮不实现，不能借普通 Unit 状态更新推导出免费搬动平台或干员的能力。
-
-正常部署由外部 Command 驱动，卫戍初始／自动部署由 Mechanism 组合公开领域操作。实例创建、Card 关联、战场登记和生命周期规则集中维护。模式消费政策与公共部署流程的接入契约仍需按玩法明确，不用 force/free/ignore 开关或通用权限注册表替代这项设计。
+当前 costContributions 保留既有项目组合：基础 addition 求和；运行倍率采用 `(1 + Σmultiplier) × ΠfinalScaler`；finalAddition 求和。明确的分阶段取整与独立上限已有原生依据，**这些多来源字段的归并不因此自动获得原生证明**。完整来源写入、倍率上限偏移及同步规则仍有调查缺口；本轮不扩展一套新的通用价格修正系统。
 
 ## 生命周期与 Hook 接口
 
 ### Unit：生命周期 Hook
 
-Unit 只保存 PRESENT／LEAVING；注册前和删除后通过战场中不存在该实例表达，不增加一组出生、死亡、回收中间状态。
+Unit 只保存 PRESENT／LEAVING，登场前和注销后通过集合中不存在表达。Unit Definition.hooks 必填；实例 hooks 保存初始登记、能力登记与内容登记的结果，原 Definition 保持不变。Skill 自行登记普通 enter Hook，Deployable 自行登记退款 prepare Hook；来源程序需要离场回收时自行提供普通 leave Hook。Unit 不枚举这些领域。
 
-Unit Definition 必填 hooks 数组，没有生命周期程序时显式传入 []。Unit 实例的 hooks 保存本次装配后的统一序列，初始化先登记能力提供的 Hook，再按 Definition 中的原顺序登记内容 Hook；程序对象可以共享，原 Definition 的身份与 hooks 不变。能力初始化自行登记所需 Hook：Skill 接入 enter，Deployable 接入 prepare／leave，Blocker 或 Blockable 将自身 prepare 清理放在序列前部；随后追加内容 Hook。Unit 不枚举能力或调用其专属操作。
+enter 在 Unit 登记后派发。tick 固定阶段入口候选，逐项读取当前 PRESENT 实例。每次派发固定候选与 Context，BattleState 逐项接续；enter／tick 每项前确认宿主仍为 PRESENT。需要实时属性时重新查询，不将开始派发时的 Unit Context 当作可变对象。
 
-```typescript
-// unit/hook.ts：只声明 Unit 的阶段类型
-export interface EnterHook extends TacticalHook<Unit, void> {
-    readonly stage: "enter";
-}
-
-export interface TickHook extends TacticalHook<Unit, void> {
-    readonly stage: "tick";
-}
-
-export interface PrepareHook extends TacticalHook<Departure, void> {
-    readonly stage: "prepare";
-}
-
-export interface LeaveHook extends TacticalHook<Departure, void> {
-    readonly stage: "leave";
-}
-
-export type Hook = EnterHook | TickHook | PrepareHook | LeaveHook;
-
-// unit/unit.ts
-export interface Definition {
-    readonly id: DefinitionId;
-    readonly hooks: readonly Hook[];
-}
-
-export interface Unit extends Identified<{ readonly id: Id }> {
-    // 其余身份、位置、能力与 Effects 字段省略
-    readonly hooks: readonly Hook[];
-}
-
-export interface Departure {
-    readonly unit: Unit;
-    readonly reason: LeaveReason;
-}
-```
-
-TacticalHook 是 core/hook.ts 的通用 Hook<C, T>。该模块集中既有 Hook 类型、dispatch 和 set／remove 数组操作；unit/hook.ts 仅声明阶段类型，battle/unit.ts 直接调用通用 dispatch。Effect、Skill、Mechanism 等领域自身的回调契约不因 Unit 的调整改变。
-
-enter 是本次场上实例的登场节点。battle/unit.add 完成登记后，筛选实例 hooks 中的 enter Hook，按登记顺序调用通用 dispatch；不单独识别 Skill。Skill 的 enter Hook 负责登记技力回复监听、执行 Skill Definition.onEnter，并尝试发动 PASSIVE 技能，属于同一次派发。advance 在阶段开始时固定 Unit 候选，轮到单位时读取最新 PRESENT 实例并派发实例 hooks 中的 tick Hook；本轮新登场的单位下次参与。
-
-每次派发固定该阶段 Hook 的候选与 Context。enter／tick 的 Context 是开始派发时的 Unit，后续 Hook 仍接收同一对象；BattleState 则逐项接续最新版本。每项执行前检查宿主仍为 PRESENT，嵌套操作导致离场后停止剩余 enter／tick Hook。需要当前 Unit 属性时，从返回的最新 BattleState 查询，不将固定 Context 当作持续更新的对象。
-
-prepare 在 LEAVING 发布后、自动请求子依赖之前派发。Blocking Hook 先批量解除自身关系，Blockable 同时取消自己的 adjustment；Deployable Hook 随后按最新 Unit 与结束原因退款。prepare／leave 的固定 Context 均为 Departure，记录开始离场、尚未清理 Skill／Effect 的 Unit 与 reason；不把这个历史对象整体写回。
-
-leave 在全部子依赖完整析构、Unit 物理注销与登记变化通知后派发。Deployable 自身的 leave Hook 回收 Card，随后内容 Hook 可以读取 Departure 中的原 SP 或位置并修改当前 Card、生成新对象；不查询已删除的宿主，也不保存整个旧 Unit 作为 Card 初态。leave 不以宿主仍在场作为派发资格。
-
-旧 Unit 的静态／采样数据可直接读取；依赖当时全场的动态有效值须在清理前求出。不能将旧 Unit 与新 BattleState 混合后声称查到了离场前的动态属性。Effect 的结束业务仍在自己的 onDisable／onEnd 时点执行，不把全部退场业务搬进最后的 leave Hook。
-
-承载关系变化由 Occupancy 的 SUPPORT Definition 中的 occupantAdded／occupantRemoved Hook 接收，不属于 Unit 生命周期 Hook；具体契约见 [Occupancy](occupancy.md#同步登记通知)。不提供直接重定位流程或对应的内容回调。
+prepare 在发布 LEAVING 后、请求子依赖前执行。Departure 保存开始离场时的 Unit 与 reason，保留 Skill／Effect 清理前的数据；当前退款仍从最新 Unit 读取。leave 在子依赖完整析构、Unit 物理注销和登记变化通知之后执行，使用 Departure，不再查询已删除的宿主。跨部署资源在这些普通程序中转换，不由通用初始化器继承。
 
 ### Deployable：对实际部署的观察
 
-Deployable 复用 Unit 的 prepare／leave 生命周期节点；实际部署通过 deployedHooks 通知观察者。
+Deployed 保存本次 Unit、program 标识、origin 与 Payment。origin 只区分 MANUAL／CONTENT 的调用来源，不选择一组隐含消费权限；具体程序标识表达业务来源。正常零费支付和没有支付在通知中仍然可区分。
 
-动态部署观察保存在所属 Unit 的 deployable.deployedHooks 中。Deployable 提供接入点，具体 Effect／技能内容登记闭包；Deployment 结算负责通知，聚合 State 不另存全局 Hook 集合。
-
-```typescript
-// unit/capability/deployable/hook.ts
-export interface Deployed {
-    readonly unit: Unit & Deployable;
-    readonly kind: "MANUAL" | "INITIAL" | "AUTOMATIC" | "MOVE";
-}
-
-export type DeployedHook = Hook<Deployed, void>;
-
-setHook(ref: Ref<Unit & Deployable>, hook: DeployedHook): Change;
-removeHook(ref: Ref<Unit & Deployable>, id: string): Change;
-```
-
-Deployed 是已发生部署的输入事实，unit 取自本次登记完成时的值；其中的 deployable.card 可以为 null。kind 表达本次方式，不是跳过费用／地形检查的权限开关。回调需要单位当前状态时，从传入 BattleState 查询，不把事实中的旧值当作持续更新的对象。
-
-调用遵守公共 Hook 的 accepts／invoke 契约。自身部署动作和其他单位的部署响应均可登记；业务自行判断事实中的实例是不是自身。Effect 通过当前输入版本查询自己的存在和生效状态，控制资格并在结束时撤销登记。
-
-通知开始时按 Unit 存储顺序及各 Unit 内 Hook 登记顺序固定候选身份；每项执行前从最新返回版本重查所属实例、登记与资格。本次通知中新登记的 Hook 不补进当前列表。较早进入战场的观察者通常先于新实例在 enter 节点登记的 Hook，但不规定所有自身战吼都发生在他人响应之后：需要早执行的自身内容属于 enter 节点，需要部署通知的内容属于对应 Hook。具体内容若存在显著顺序依赖，以官方业务证据确定，不能仅凭一个通用顺序替代规则。
-
-普通敌人出生只走登场流程，不自动广播部署事实。创建者必须明确这是否是部署；新 Unit、ALLY 阵营和 card 非空都不是充分条件。自己与他人的部署响应共用这个入口，不建立两套通知协议。
-
-### 完整顺序
-
-普通部署的顺序是：
-
-```text
-接纳部署，初始化本次 Unit 并附加 Card 关联
-→ 提交本次 Card／DP 消费，记录 UNIT_DEPLOYED
-→ 登记 Unit，发布 Occupancy，不扫描全场 Blocking 或能力槽位
-→ Unit 的 enter Hook：接入实例内容与规定的入场业务，各领域自行登记 Lifetime 关系
-→ registrationChanged 观察通知：Occupancy 处理承载变化
-→ Deployment 以本次 Unit 事实派发 deployedHooks
-→ 返回部署结果
-```
-
-Unit 的 enter Hook 可以同步触发退场，部署通知仍表示此前已发生的部署，不因回调返回时当前 Unit 已不存在就丢失。通知本身也可以触发退场；后续 Hook 接续实际返回版本。拒绝的部署没有 Unit 的 enter Hook 或部署通知。
-
-真实离场委托 [Unit Lifetime](lifetime.md)，分成同步请求与最终析构：
-
-```text
-首次接受离场，捕获 Departure 与明确采样数值
-→ 登记 PREPARING，发布 LEAVING
-→ 统一 prepare Hook：Blocking 先解除关系并通知，Deployable 随后按最新 Unit 返费
-→ 按关系登记顺序请求 owner／显式依赖子项
-→ 等待全部真实依赖者整个 Finalize 返回
-→ Unit Finalize 从当前状态注销、记录移除事实，完成占格发布；不追加全场阻挡扫描
-→ registrationChanged 观察通知：Occupancy 处理承载变化
-→ Unit 的 leave Hook：Deployable 回收 Card，再执行内容 Hook（初始 Departure）
-→ 全局 leave 观察通知：Mechanism 等自行登记的响应
-→ 整个 Unit Finalize 返回，移除 Pending，完成本次离场工作
-```
-
-Departure.unit 保存开始离场时、尚未清理 Skill／Effect 的不可变 Unit，作为本次业务结束输入随 Pending 保留；它不是通用 Context 或最后可得实例回退。动态属性若需要离场前的全场采样，应在清理前按业务明确取得。注销和移除记录使用清理后最新 Unit，不能用 Departure.unit 覆盖当前状态。返费在标记发布及 Blocking Hook 后从最新 Unit 求值，在 Card 费用进度更新之前发生，不把 Departure.unit 当作实时退款依据。
-
-Unit 不点名 Blocking、Deployment、Skill、Action 或 Effect。能力通过统一 Hook 接入业务，拥有关系由各领域的完整创建／启动与结束操作登记／注销，Lifetime 图是唯一关系权威；Unit 不扫描能力槽位。每个领域负责自己的结束内容、数据写回和事件，公共运行器不解释其私有状态。
+通知在 add 返回后固定观察者候选，按 Unit 顺序和各自登记顺序执行；每项重查当前 PRESENT 观察者及登记。输入的 Unit 是本次部署事实，回调需要当前状态时另查。新登记 Hook 不补进本次派发，入场后已删除的 Unit 不影响历史部署事实。普通敌人创建不自动广播部署。
 
 ### 离场清理的偏序
 
-请求顺序和完成顺序分别确定：
-
 ```text
-Unit 请求：LEAVING → prepare Hook（Blocking 清理 → Deployable 退款 → 内容）
-        │
-        ▼
-按关系登记顺序请求直接依赖者
-        │
-        ▼
-各子项完成整个 Finalize（含 onEnd、槽位结算、末尾通知）
-        │
-        ▼
-Unit Finalize：注销 → registrationChanged → leave Hook（含回卡）→ 全局 leave
+请求 Unit 结束并保存 Departure
+→ 发布 LEAVING
+→ prepare（Blocking 清理、退款、内容）
+→ 按关系登记顺序请求直接依赖者
+→ 所有依赖者完整 Finalize，包括末尾通知
+→ Unit 注销、记录移除事实
+→ registrationChanged
+→ 本地 leave（来源回收、内容转换等普通程序）
+→ 全局 leave（Mechanism 等观察者）
 ```
 
-直接子候选按父子边的登记顺序，不区分能力种类或 owner／显式 Scope；更新已有边保序，解绑后重绑追加。真实依赖仍优先完成，不为无依赖兄弟设置能力优先级。兄弟可以都先成为 ENDING，前一个兄弟的结束程序不能假设后一个仍在运行。同一依赖者被多个目标请求时复用首次 Pending，End 与传播原因不被后续请求覆盖。
+Blocker／Blockable 将必要的 Blocking 清理 prepare 放在序列前部；其余程序遵守实际登记顺序。真实依赖先于 owner 完整析构，无依赖兄弟按边的登记顺序处理，不设置能力种类优先级。Pending 保留到整个 Finalize 返回，不能由实例已从容器删除推断末尾业务已经结束。详细状态机与依赖登记见 [Lifetime](lifetime.md)。
 
-Pending 在整个 Finalize 返回前存在。子实例已注销但仍在派发末尾 Hook 时，其 parents 仍让 Unit 等待；不能用对象已从容器消失推断其结束内容全部完成。Unit 的物理删除仍由所属领域 Finalize 执行，公开 Battlefield.remove 只承担纯存储职责。
+嵌套 remove 同步标记和 Prepare，但不保证已注销、释放占位或回收 Card；无外层结算时由本次 drain 完成后返回。Effect.onEnd 请求宿主离场时，宿主等待该 Effect 完整结束。ENDING／Pending 的上游不再接受新依赖；清理字段通过正常领域操作写入，异常直接传播。成功复活不等于真实离场，不执行 leave。
 
-Effect.onEnd 内请求宿主离场，嵌套 remove 会标记 LEAVING、同步执行首次 Prepare 并返回；宿主等待该 Effect 完整 Finalize 后才注销。等待来自实际 Effect→Unit 关系，调用 remove 不反向建立 Effect 等待 Unit 的边。普通函数继续控制流，后续实时事实从返回 battle 查询；不等待无关调用栈退出。
+Unit 只派发通用节点。Runtime 为 Occupancy 登记 registrationChanged 观察；Mechanism 自行登记和撤销全局 leave 观察。Unit 不点名 Blocking、Deployment、Action、Skill、Effect 或模式内容，也不扫描能力重建 Lifetime 投影。
 
-无活动结算时 remove 在本次调用内 drain 完再返回；已有结算时，返回不保证占格释放、Card 回收或 leave 通知已发生。Damage.completed 同样不保证目标的离场 Finalize 完成，需要完成事实的业务应使用既有最终通知，不在嵌套调用中强行 drain。
+## 卫戍协议与剩余范围
 
-LEAVING 宿主与 Pending／ENDING 目标不能接受新的真正依赖；空间查询和普通业务资格不能只检查 get 非空。其他 Unit 上只有 source、未绑定生命周期的独立效果仍可保留。结束中的合法清理字段仍按各自 API 写入，跨完整操作后接续最新状态；异常直接传播，不补做剩余 Finalize。
+卫戍的初始免费部署、倒地位置、隐藏待部署区、自动再部署和回合间经济由外部 Mechanism／Meta 组合领域操作。特殊 Program 可以不支付、不消费库存并选择所需的离场程序，仍经过公共地块、占位和额度检查；Core 不按模式名称分支。
 
-BattleState.unitHooks 保存 registrationChanged 与 leave 的全局观察登记，由 battle/unit-hook.ts 按通用 Hook 协议派发。Runtime 初始化时登记 Occupancy 的 registrationChanged 观察者；Mechanism 创建时为 onUnitLeave 登记 leave 观察者，结束时撤销，派发时确认当前 Mechanism 的 ACTIVE 资格。Unit 只发通用通知，不导入这些消费者。模式响应位于 Unit 的本地 leave Hook 之后，自动再登场可读取已完成跨部署资源转换的 Card。更早就必须成立的倒地／资格约束仍由对应业务步骤维护。
-
-HP 归零、复活与真实离场分别处理；成功复活不执行 Unit 的 leave Hook。直接更新位置不重新执行 Unit 的 enter Hook，也不广播部署。特殊撤退—再部署与其原因、状态继承和通知政策尚待实际内容实现，本轮不预设一套移动流程。
-
-Unit 生命周期 Hook 与部署 Hook 遵循通用 accepts／invoke 契约，invoke 返回 Result<void> 并接续其中的 BattleState；模式响应继续使用自身回调契约。Unit 不自驱，Battlefield 的存储与一致性维护不触发这些内容；完整领域结算控制调用顺序，Runtime 只推进 Tick 和发布最终结果。
-
-### 内容接入示例
-
-下列示例说明职责分工；各角色的原生相对触发顺序仍需按具体内容核对。
-
-- 泥岩的初始盾通过 Unit Definition 的 `stage: "enter"` Hook 调用 Effect.install，持续充能由该 Effect 推进；Unit 初始化只建立空 Effects。是否有需要后于其他部署业务的动作，按具体内容安排，而非把所有自身动作强制放在一个时点。
-- [焰尾 X 模组](https://m.prts.wiki/w/焰尾#天赋)需要观察其他卡西米尔干员的部署，可以在天赋 Effect 中登记 DeployedHook。
-- [玛露西尔](https://prts.wiki/w/玛露西尔#天赋)需要入场／退场转换魔力与技力。Unit 的 enter Hook 读取持续资源；Unit 的 leave Hook 读取 departure.unit 的清理前 SP，再写入当前 Card。场下资源推进仍属于对应领域。
-- [伊内丝](https://m.prts.wiki/w/伊内丝#天赋)的离场生成物可在 Unit 的 leave Hook 创建，原位置已释放。技能对影哨生成的影响读取离场事实与内容状态，不因存在统一回调就忽略技能规则。
-
-登场与部署通知之间存在业务观察顺序。具体内容所需的早晚节点参照[天赋生命周期调研](../research/cases/06-talent-lifecycle-and-model.md)，不按客户端内部方法数量增加公共回调。
-
-## 卫戍协议接入
-
-倒地位置、初始格子和自动再登场政策由模式 Mechanism 保存，例如 `{ cardId, tile, initialTile }`。这类非空间目标的记录无需额外 Tactical Unit 或 Battlefield Reservation；Mechanism 负责实际拦截／驱动有关操作，仅保存记录不会自动改变部署规则。
-
-联防的敌人责任归属不属于 Card，也不等同于当前阵营。模式记录原始责任玩家，在真实生成时绑定并向分裂／召唤子体传递；登场业务能观察这项事实。结算保留所需的逃逸、离场和未登场事实，Meta 消费最终结果调整局内状态，不逐 Tick 维护第二份战场镜像。
-
-主模式 Card／Deployment 不保存卫戍倒地字段。模式 Mechanism 需要保存私有运行事实并接入部署／离场操作；当前 Mechanism 的基本结构不能被当作这条链路已经实现。具体玩法资料入口见 [PRTS 卫戍协议帮助](https://m.prts.wiki/w/卫戍协议/帮助)。
-
-## 后续需要定案的内容
-
-1. 特殊部署对费用属性、实际扣款和返费资格的独立调整入口。
-2. 更多召唤物的宿主资格、真实供给政策及专属场下资源。
-3. 正常 Command 与模式 Mechanism 共用的部署结算边界及消费政策接入方式。
-4. 各具体内容的部署触发顺序及跨部署资源转换规则。
-5. 特殊移动的退出／重新进入原因与具体继承政策，避免普通撤退惩罚和业务通知误触发。
-
-这些事项按真实内容落实；重要玩法语义查证，普通一 Tick 差异采用简单约定，纯工程中间过程不增加防御框架。天赋的跨部署与场下需求见 [天赋调研](../research/cases/06-talent-lifecycle-and-model.md)。
+该接入边界不代表卫戍内容链已经完成。仍需按实际内容闭合：来源 Card 在宿主结束时的保留／隐藏／重建、多来源排序竞争、特定归队 Reset、暂停来源组合、术语移动的退出与继承政策，以及各内容的具体入场时序。费用来源的完整归并与退出资格的精确原生阶段也保留证据缺口。未知项不阻止已明确的通用操作，但不能由接口或测试存在推定相应玩法已接入。

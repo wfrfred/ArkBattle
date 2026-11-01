@@ -1,13 +1,22 @@
 import type { WorldPosition } from "../geometry/coordinate.js";
 import type { State as BattleState, Result } from "../battle/state.js";
-import { initializers, type Definitions, type Product } from "./capability/catalog.js";
+import {
+    initializers,
+    type Definitions,
+    type Initial,
+    type Inputs,
+    type Product,
+} from "./capability/catalog.js";
 import { Effects } from "./effect/effects.js";
 import type { Unit, Definition, Id } from "./unit.js";
+import type { Hook } from "./hook.js";
 
 export interface Input<D extends Definition & Partial<Definitions> = Definition> {
     readonly id: Id;
     readonly definition: D;
     readonly position: WorldPosition;
+    readonly initial?: Initial<NoInfer<D>>;
+    readonly hooks?: readonly Hook[];
 }
 
 export function initialize<D extends Definition & Partial<Definitions>>(
@@ -16,7 +25,7 @@ export function initialize<D extends Definition & Partial<Definitions>>(
 ): Result<Unit & Product<D>>;
 export function initialize(
     battle: BattleState,
-    input: Input<Definition & Partial<Definitions>>,
+    input: Omit<Input, "initial"> & { readonly initial?: Partial<Inputs> },
 ): Result<Unit> {
     if ("blocker" in input.definition && "blockable" in input.definition) {
         throw new TypeError("a unit cannot be both blocker and blockable");
@@ -26,7 +35,8 @@ export function initialize(
         id: input.id,
         lifecycle: "PRESENT",
         definition: input.definition,
-        hooks: [],
+        // These programs were explicitly registered before the capability initialization fold.
+        hooks: input.hooks ?? [],
         position: input.position,
         effects: Effects.empty(),
     };
@@ -37,8 +47,12 @@ export function initialize(
         }
 
         // The selected key pairs this Unit's definition with its initializer before erasure.
-        const initializer = initializers[key] as (battle: BattleState, unit: Unit) => Result<Unit>;
-        const initialized = initializer(battle, unit);
+        const initializer = initializers[key] as (
+            battle: BattleState,
+            unit: Unit,
+            initial?: unknown,
+        ) => Result<Unit>;
+        const initialized = initializer(battle, unit, input.initial?.[key]);
         battle = initialized.state;
         unit = initialized.value;
     }

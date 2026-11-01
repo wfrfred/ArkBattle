@@ -4,7 +4,10 @@ import type { Contribution } from "../../../unit/contribution/contribution.js";
 import type { Modifier } from "../../../unit/contribution/attribute.js";
 import type { State as BattleState } from "../../state.js";
 import { replaceCard } from "../resources.js";
-import type { Card } from "./card.js";
+import type { Card, TimerTarget } from "./card.js";
+import type { Hook } from "../../../unit/hook.js";
+import type { Rule } from "./rule.js";
+import * as hook from "../../../hook.js";
 import { get } from "./query.js";
 import * as card from "./state.js";
 
@@ -29,33 +32,136 @@ export function recharge(
     return replaceCard(battle, card.recharge(self, count));
 }
 
+export function consume(battle: BattleState, reference: Ref<Card<any>>, count = 1): BattleState {
+    assertNonnegativeSafeInteger(count, "card consumption count");
+    const self = card.advance(requireCard(battle, reference), battle.tick);
+    if (self.stock !== null && count > self.stock) {
+        throw new RangeError("card stock is insufficient");
+    }
+
+    return replaceCard(battle, card.consume(self, count));
+}
+
+export function incrementCostStage(battle: BattleState, reference: Ref<Card<any>>): BattleState {
+    return replaceCard(battle, card.incrementCostStage(requireCard(battle, reference)));
+}
+
+export function startCooldown(
+    battle: BattleState,
+    reference: Ref<Card<any>>,
+    durationTicks?: number,
+): BattleState {
+    if (durationTicks !== undefined) {
+        assertNonnegativeSafeInteger(durationTicks, "cooldown duration ticks");
+    }
+
+    const self = requireCard(battle, reference);
+
+    return replaceCard(
+        battle,
+        card.advance(card.startCooldown(self, battle.tick, durationTicks), battle.tick),
+    );
+}
+
+export function enqueueRecovery(
+    battle: BattleState,
+    reference: Ref<Card<any>>,
+    count = 1,
+): BattleState {
+    assertNonnegativeSafeInteger(count, "card recovery count");
+    const self = card.advance(requireCard(battle, reference), battle.tick);
+
+    return replaceCard(
+        battle,
+        card.advance(card.enqueueRecovery(self, battle.tick, count), battle.tick),
+    );
+}
+
 export function reduceCooldown(
     battle: BattleState,
     reference: Ref<Card<any>>,
     ticks: number,
+    target: TimerTarget = "COOLDOWN",
 ): BattleState {
     assertNonnegativeSafeInteger(ticks, "cooldown reduction ticks");
     const self = card.advance(requireCard(battle, reference), battle.tick);
 
     return replaceCard(
         battle,
-        card.advance(card.reduceCooldown(self, ticks, battle.tick), battle.tick),
+        card.advance(card.reduceCooldown(self, ticks, battle.tick, target), battle.tick),
     );
 }
 
-export function clearCooldown(battle: BattleState, reference: Ref<Card<any>>): BattleState {
+export function clearCooldown(
+    battle: BattleState,
+    reference: Ref<Card<any>>,
+    target: TimerTarget = "COOLDOWN",
+): BattleState {
     const self = card.advance(requireCard(battle, reference), battle.tick);
-    if (self.cooldown === null) {
-        return replaceCard(battle, self);
-    }
 
     return replaceCard(
         battle,
-        card.advance(
-            { ...self, cooldown: { ...self.cooldown, readyAtTick: battle.tick } },
-            battle.tick,
-        ),
+        card.advance(card.clearCooldown(self, battle.tick, target), battle.tick),
     );
+}
+
+export function pauseCooldown(
+    battle: BattleState,
+    reference: Ref<Card<any>>,
+    target: TimerTarget = "COOLDOWN",
+): BattleState {
+    const self = card.advance(requireCard(battle, reference), battle.tick);
+
+    return replaceCard(battle, card.pauseCooldown(self, battle.tick, target));
+}
+
+export function resumeCooldown(
+    battle: BattleState,
+    reference: Ref<Card<any>>,
+    target: TimerTarget = "COOLDOWN",
+): BattleState {
+    const self = requireCard(battle, reference);
+
+    return replaceCard(
+        battle,
+        card.advance(card.resumeCooldown(self, battle.tick, target), battle.tick),
+    );
+}
+
+export function setHook(battle: BattleState, reference: Ref<Card<any>>, entry: Hook): BattleState {
+    const self = requireCard(battle, reference);
+    const hooks = hook.set(self.hooks, entry);
+
+    return hooks === self.hooks ? battle : replaceCard(battle, { ...self, hooks });
+}
+
+export function removeHook(
+    battle: BattleState,
+    reference: Ref<Card<any>>,
+    id: string,
+): BattleState {
+    const self = requireCard(battle, reference);
+    const hooks = hook.remove(self.hooks, id);
+
+    return hooks === self.hooks ? battle : replaceCard(battle, { ...self, hooks });
+}
+
+export function setRule(battle: BattleState, reference: Ref<Card<any>>, entry: Rule): BattleState {
+    const self = requireCard(battle, reference);
+    const rules = hook.set(self.rules, entry);
+
+    return rules === self.rules ? battle : replaceCard(battle, { ...self, rules });
+}
+
+export function removeRule(
+    battle: BattleState,
+    reference: Ref<Card<any>>,
+    id: string,
+): BattleState {
+    const self = requireCard(battle, reference);
+    const rules = hook.remove(self.rules, id);
+
+    return rules === self.rules ? battle : replaceCard(battle, { ...self, rules });
 }
 
 export function setCostContribution(

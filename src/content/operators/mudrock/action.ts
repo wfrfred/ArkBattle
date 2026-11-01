@@ -26,8 +26,6 @@ import * as targeting from "../../../core/battle/targeting/index.js";
 import { first } from "../../../core/battle/targeting/index.js";
 
 import { createRng } from "../../../core/common/rng.js";
-import type { Direction } from "../../../core/geometry/direction.js";
-import { fromTiles } from "../../../core/geometry/range.js";
 import type { Profile } from "../../../data/arknights/operator.js";
 import { secondsToTicks } from "../../../data/arknights/tick.js";
 import { stun } from "../../effects/stun.js";
@@ -36,13 +34,10 @@ import { value, healSelf } from "./common.js";
 
 function attackDefinition(
     profile: Profile,
-    direction: Direction,
     skill: boolean,
     recoveryTicks: number,
 ): AttackConfiguration {
-    const withinRange = targeting.range(
-        fromTiles(skill ? profile.skillRange! : profile.range, direction),
-    );
+    const withinRange = targeting.directionalRange(skill ? profile.skillRange! : profile.range);
 
     return {
         id: skill ? "mudrock/s2" : "normal-attack",
@@ -81,20 +76,15 @@ function attackDefinition(
     };
 }
 
-export function createNormal(
-    profile: Profile,
-    direction: Direction,
-    recoveryTicks: number,
-): Attack {
-    return createAttack(attackDefinition(profile, direction, false, recoveryTicks));
+export function createNormal(profile: Profile, recoveryTicks: number): Attack {
+    return createAttack(attackDefinition(profile, false, recoveryTicks));
 }
 
 export function createSkill(
     profile: Profile,
-    direction: Direction,
     recoveryTicks: number,
 ): Attack<object, SkillAttackState> {
-    const activeConfiguration = attackDefinition(profile, direction, true, recoveryTicks);
+    const activeConfiguration = attackDefinition(profile, true, recoveryTicks);
     const targeting = activeConfiguration.targetGroups[0].targeting;
     const attackScale = value(profile.skill.blackboard, "atk_scale");
     const healRatio = value(profile.skill.blackboard, "hp_ratio");

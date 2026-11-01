@@ -29,7 +29,7 @@ test("Unit initialization pairs every declared capability, including empty defin
     assert.equal(unit.definition, definition);
     assert.deepEqual(unit.targetable, { restrictions: [] });
     assert.deepEqual(unit.spatialPresence, { present: true });
-    assert.deepEqual(unit.occupancy, { tile: null });
+    assert.deepEqual(unit.occupancy, { tile: null, direction: null });
 
     assert.equal(unit.vitality.hp, 100);
     assert.equal(getUnit(battle, unit.id), undefined);

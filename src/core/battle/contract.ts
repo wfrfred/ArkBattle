@@ -21,6 +21,7 @@ import type { Id as ProjectileId } from "../projectile/projectile.js";
 import type { Signal as ProjectileSignal } from "../projectile/event.js";
 import type { Signal as ElementalSignal } from "../unit/capability/elemental/operations.js";
 import type { Signal as SkillSignal } from "../unit/skill/operations.js";
+import type { Payment } from "./deployment/program.js";
 
 export interface Definition {
     readonly predefines: readonly PredefinedDefinition[];
@@ -72,6 +73,8 @@ export type Event =
           readonly type: "UNIT_DEPLOYED";
           readonly unitId: Id;
           readonly position: WorldPosition;
+          readonly program: string;
+          readonly payment: Payment | null;
           readonly tick: number;
       }
     | { readonly type: "ENEMY_SPAWNED"; readonly unitId: Id; readonly tick: number }

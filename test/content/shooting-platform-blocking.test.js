@@ -133,8 +133,8 @@ for (const entry of ["initial", "script", "manual"]) {
                 schedule: { type: "TIMELINE", spawns: [] }, predefines: [], initialMechanisms: [],
                 maxTicks: 10, routeMoveMultiplier: 1, rngState: 1,
                 initialUnits: [
-                    { definition: platformDefinition(), position: Tile.center(first), tile: first },
-                    { definition: passengerDefinition(), position: Tile.center(first), tile: first },
+                    { definition: platformDefinition(), position: Tile.center(first), initial: { occupancy: { tile: first } } },
+                    { definition: passengerDefinition(), position: Tile.center(first), initial: { occupancy: { tile: first } } },
                 ],
             });
             id = 1;

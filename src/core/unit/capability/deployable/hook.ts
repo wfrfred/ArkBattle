@@ -3,10 +3,13 @@ import * as hook from "../../../hook.js";
 import type { Ref } from "../../../common/ref.js";
 import { createChange, type Change } from "../../change.js";
 import type { Deployable } from "./capability.js";
+import type { Payment } from "../../../battle/deployment/program.js";
 
 export interface Deployed {
     readonly unit: Unit & Deployable;
-    readonly kind: "MANUAL" | "INITIAL" | "AUTOMATIC" | "MOVE";
+    readonly program: string;
+    readonly origin: "MANUAL" | "CONTENT";
+    readonly payment: Payment | null;
 }
 
 export type DeployedHook = hook.Hook<Deployed, void>;

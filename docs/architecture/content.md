@@ -26,7 +26,7 @@ Meta 可以选择配置或提供关卡输入。卫戍的普通／金色等政策
 
 Definition 保存静态配置和纯内容函数，Unit 保存运行时身份、Capability 状态和 Effects。角色无需手工构造标准 Capability State；通用初始化工厂根据 Definition 自动装配它们。
 
-Unit Definition 必填 hooks 数组，静态声明 enter、tick、prepare 和 leave 阶段的 Hook；没有生命周期程序时使用 []。Unit.initialize 将能力提供的 Hook 与内容 Hook 按登记顺序装配到实例 hooks；Skill 的入场处理自动作为普通 enter Hook 登记，不修改共享 Definition。初始对象、部署、刷怪和预定义出现按输入顺序逐个完成创建、登记和统一 enter Hook；下一对象接续前一对象的最新 BattleState，不预先创建后续实例。
+Unit Definition 必填 hooks 数组，静态声明 enter、tick、prepare 和 leave 阶段的 Hook；没有生命周期程序时使用 []。Unit.initialize 从调用方显式提供的初始 hooks 开始，各能力按 fold 登记，最后追加 Definition.hooks；Skill 的入场处理自动作为普通 enter Hook 登记，不修改共享 Definition。这个顺序是创建程序的明确装配顺序，不宣称原生外来效果均有统一的优先级。初始对象、部署、刷怪和预定义出现按输入顺序逐个完成创建、登记和统一 enter Hook；下一对象接续前一对象的最新 BattleState，不预先创建后续实例。
 
 battle/unit.add 读取已登记的 PRESENT Unit，直接派发实例 hooks 中的 enter Hook；advance 在阶段开始时固定 Unit 候选，本轮新创建的单位下次参与，轮到单位时读取最新 PRESENT 实例并派发 tick Hook。每次派发固定 Context，Skill 的 enter Hook 也不为后继重新采样 Context；enter／tick 每项前确认宿主仍为 PRESENT。prepare 在 LEAVING 发布后、请求子依赖前执行；leave 在注销后使用开始离场时捕获的 Departure，保留清理前 SP 等事实，不查询已经删除的宿主。跨同步操作后当前运行状态仍需重新查询。具体契约见 [Unit 生命周期](deployment.md#unit生命周期-hook)。
 
@@ -58,6 +58,10 @@ battle/unit.add 读取已登记的 PRESENT Unit，直接派发实例 hooks 中�
 具体角色 Definition 必须声明实际依赖的 Capability，工厂输出保留标准状态与配置的对应关系。Effect 的 Host 泛型用于表达回调读取哪些能力。
 
 Card 私有程序可选声明于 Unit Definition 的 deployable.card，不要求内容再编写独立 Card Definition。Card 的 state 跨部署保存，Unit 每次部署重新初始化；需要继承的具体资源由 enter／leave 显式转换。Card 通过自身领域的 Typed Ref 操作写回，不调用内部完整 replace。
+
+一次部署的 Program 与 Card 私有程序分别负责准备本次操作和推进跨部署状态。Program.prepare 只读，完整 deploy 在公共资格通过后先结算支付与来源消费，再构造、登记和入场。特殊免费部署显式使用 payment:null，正常零费仍为 payment:{amount:0}；来源自己的回收政策通过普通 leave Hook 执行。入场附着由 Card 携带普通 Hook，Unit 入场时调用 effects.install，不建立 Attachment 或 Card Effect 容器。共享一次机会由真正来源保存，不能复制到各 Card。
+
+本轮四向摆放朝向归 Occupancy；定义可提供方向初态，本次部署通过 initial.occupancy.direction 覆盖，方向相关攻击范围读取当前实例。没有朝向的装置使用 null，不伪造 RIGHT；基础 Unit 没有方向字段。Occupancy 同时通过 initial.occupancy.tile 接受本次登记，不通过通用 Partial<Unit> 预装运行状态。保存到 Battle.Input／排程的异构创建描述使用 createUnitPlacementDefinition 配对初态；直接创建仍按具体 Definition 约束输入。
 
 基础 Unit 只声明身份、生命周期、Definition、位置和 Effects。每个 Capability 同时声明自身的配置与运行状态；业务通过 `Unit & Vitality & Offense` 等组合表达需要的能力。初始化工厂由具体 Definition 推导所创建的标准状态，异构战场查询则通过 `hasX` 收窄为实际需要的能力。能力集合用于装配和快照投影，不作为基础 Unit 的可选字段聚合。
 
