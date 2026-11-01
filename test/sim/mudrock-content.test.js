@@ -84,6 +84,7 @@ test("entry installs one persistent shield container and preserves prior snapsho
     assert.equal(getUnit(state, 0).effects.values().toArray().filter(instance => instance.definition.id === "mudrock/shield").length, 1);
     assert.equal(getUnit(state, 0).definition.profile, prepared);
     assert.deepEqual(getUnit(state, 0).definition.deployable, {
+        card: getUnit(state, 0).definition.deployable.card,
         cost: prepared.attributes.cost, redeployTicks: prepared.attributes.respawnTime * 30,
         slots: 1, placement: "MELEE", allowedSiteConditions: [conditions.normal],
         refund: { rate: 0.5, limit: "BASE_COST" },

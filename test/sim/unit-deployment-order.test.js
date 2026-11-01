@@ -15,7 +15,7 @@ import { getUnit } from "../helpers/unit.js";
 
 test("tile changes during entry release blocking before deployment observers", () => {
     const calls = [];
-    const profile = createDeployable({ cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" });
+    const profile = createDeployable({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" });
     const blocker = holder(10, {
         definition: { deployable: profile },
     });
@@ -78,7 +78,7 @@ test("tile changes during entry release blocking before deployment observers", (
 
 test("manual deployment records its event before entry and notifies observers after entry completes", () => {
     const calls = [];
-    const profile = createDeployable({ cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" });
+    const profile = createDeployable({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" });
     const observer = holder(10, { definition: { deployable: profile } });
     let battle = fixture([observer]);
     const current = getUnit(battle, observer.id);

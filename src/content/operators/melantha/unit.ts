@@ -122,6 +122,7 @@ export function create(profile: Profile, direction: Direction = "RIGHT"): Defini
         occupancy: { slot: "OCCUPANT", direction },
         targetable: { restrictions: [] },
         deployable: createDeployableDefinition({
+            card: {},
             cost: profile.attributes.cost,
             redeployTicks: secondsToTicks(profile.attributes.respawnTime),
             slots: 1,

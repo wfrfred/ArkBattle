@@ -48,7 +48,7 @@ const definition = (fields = {}) => ({
     id: "operator",
     vitality: { maxHp: 100, defense: 0, resistance: 0 },
     occupancy: { slot: "OCCUPANT" },
-    deployable: createDeployable({ cost: 10, redeployTicks: 3, slots: 1, buildableType: "ALL" }),
+    deployable: createDeployable({ card: {}, cost: 10, redeployTicks: 3, slots: 1, buildableType: "ALL" }),
     ...fields,
 });
 const budget = (fields = {}) => ({
@@ -98,6 +98,7 @@ const reject = (state, input, reason) => {
 test("deployment binds its Card and snapshots field COST independently of later Card discounts", () => {
     const unit = definition({
         deployable: createDeployable({
+            card: {},
             cost: 20,
             redeployTicks: 0,
             slots: 1,
@@ -227,7 +228,7 @@ test("DP recovery stops at its cap and starts a fresh interval after spending", 
 
 test("queued supply permits deploying remaining stock while returned Units recharge serially", () => {
     const unit = definition({
-        deployable: createDeployable({ cost: 0, redeployTicks: 4, slots: 1, buildableType: "ALL" }),
+        deployable: createDeployable({ card: {}, cost: 0, redeployTicks: 4, slots: 1, buildableType: "ALL" }),
     });
     const first = deployUnit(
         fixture([{ definition: unit, supply: supply(), program: programs.queued }]),
@@ -259,7 +260,7 @@ test("queued supply permits deploying remaining stock while returned Units recha
 
 test("multiple finite operator returns preserve every inventory recovery", () => {
     const unit = definition({
-        deployable: createDeployable({ cost: 0, redeployTicks: 4, slots: 1, buildableType: "ALL" }),
+        deployable: createDeployable({ card: {}, cost: 0, redeployTicks: 4, slots: 1, buildableType: "ALL" }),
     });
     const first = deployUnit(
         fixture([{ definition: unit, supply: supply(), program: programs.operator }]),
@@ -353,6 +354,7 @@ test("zero-cooldown departure can redeploy synchronously without overwriting the
     let replacementId;
     const unit = definition({
         deployable: createDeployable({
+            card: {},
             cost: 10,
             redeployTicks: 0,
             slots: 1,
@@ -578,6 +580,7 @@ test("Card ticks fix candidates and read changes made by preceding Card programs
 test("complete Card resource operations preserve a running timer and sample changes for the next return", () => {
     const unit = definition({
         deployable: createDeployable({
+            card: {},
             cost: 0,
             redeployTicks: 30,
             slots: 1,
@@ -620,6 +623,7 @@ test("complete Card resource operations preserve a running timer and sample chan
 test("explicit Card recharge caps available stock without replacing its running timer", () => {
     const unit = definition({
         deployable: createDeployable({
+            card: {},
             cost: 0,
             redeployTicks: 30,
             slots: 1,
@@ -647,6 +651,7 @@ test("explicit Card recharge caps available stock without replacing its running 
 test("clearing a queued Card cooldown completes the current return and starts the next full period", () => {
     const unit = definition({
         deployable: createDeployable({
+            card: {},
             cost: 0,
             redeployTicks: 30,
             slots: 1,

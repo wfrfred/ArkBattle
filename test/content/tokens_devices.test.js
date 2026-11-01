@@ -448,6 +448,7 @@ test('core real hidden platforms grant ranged deployment support while retaining
   assert.equal(currentTile.state.walkCost, 1000);
   assert.equal(currentTile.state.siteCondition, currentTile.definition.initial.siteCondition);
   assert.deepEqual(platform.definition.deployable, {
+    card: platform.definition.deployable.card,
     cost: 5, redeployTicks: 30, slots: 0, placement: 'MELEE', allowedSiteConditions: [siteConditions.normal],
     refund: { rate: 0.5, limit: 'BASE_COST' },
   });

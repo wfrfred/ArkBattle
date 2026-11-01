@@ -1,8 +1,7 @@
 import type { Identified, Ref } from "../../../common/ref.js";
-import type { Result, State as BattleState } from "../../state.js";
-import type { Definition as UnitDefinition } from "../../../unit/unit.js";
+import type { Definition as BaseDefinition } from "../../../unit/unit.js";
 import type { Definition as DeployableDefinition } from "../../../unit/capability/deployable/capability.js";
-import type { Occupancy } from "../../../unit/capability/occupancy/capability.js";
+import type { Definition as OccupancyDefinition } from "../../../unit/capability/occupancy/capability.js";
 import type { Contribution } from "../../../unit/contribution/contribution.js";
 import type { Modifier } from "../../../unit/contribution/attribute.js";
 import type { Program as DeploymentProgram, DeployRequest } from "../program.js";
@@ -11,17 +10,9 @@ import type { Rule } from "./rule.js";
 
 export type Id = number;
 
-export interface Program<S extends object = object> {
-    readonly initialize: (battle: BattleState) => Result<S>;
-    readonly onTick?: (battle: BattleState, self: Card<S>) => BattleState;
-}
-
-export type Definition<S extends object = object> = UnitDefinition & {
+export type UnitDefinition<S extends object = object> = BaseDefinition & {
     readonly deployable: DeployableDefinition<S>;
-} & Occupancy["definition"];
-
-export type StatefulDefinition<S extends object> = Definition<S> & {
-    readonly deployable: { readonly card: Program<S> };
+    readonly occupancy: OccupancyDefinition;
 };
 
 export interface Supply {
@@ -36,7 +27,7 @@ export interface Initial {
 }
 
 export interface Input extends Initial {
-    readonly definition: Definition<any>;
+    readonly definition: UnitDefinition<any>;
 }
 
 export type Clock = {
@@ -55,7 +46,7 @@ export type TimerTarget = "COOLDOWN" | "RECOVERY";
 
 export interface Card<S extends object = object> extends Identified<{ readonly id: Id }> {
     readonly id: Id;
-    readonly definition: Definition<S>;
+    readonly definition: UnitDefinition<S>;
     readonly supply: Supply;
     readonly program: DeploymentProgram<DeployRequest>;
     readonly hooks: readonly Hook[];

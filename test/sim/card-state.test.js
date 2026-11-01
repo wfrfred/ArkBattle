@@ -1,3 +1,4 @@
+import { createDefinition as createDeployableDefinition } from "../../dist/core/unit/capability/deployable/index.js";
 import * as conditions from "../../dist/content/terrain/condition.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -11,14 +12,15 @@ const definition = (cost = 10, redeployTicks = 30) => ({
     id: "deployable",
     hooks: [],
     occupancy: { slot: "OCCUPANT" },
-    deployable: {
+    deployable: createDeployableDefinition({
+        card: {},
         cost,
         redeployTicks,
         slots: 1,
         placement: "ALL",
         allowedSiteConditions: [conditions.normal],
         refund: { rate: 0.5, limit: "BASE_COST" },
-    },
+    }),
 });
 function createCard(id, definition, options = {}) {
     const initial = fixtureBattle(0, { nextCardId: id });
@@ -43,6 +45,9 @@ test("ordinary Cards share definitions and have independent persistent progress"
     assert.equal(first.definition, unit);
     assert.equal(first.supply, operatorSupply);
     assert.deepEqual(first.state, {});
+    assert.deepEqual(second.state, {});
+    assert.notEqual(first.state, second.state);
+    assert.equal(unit.deployable.card.onTick, undefined);
     assert.equal(first.stock, null);
     assert.equal(first.supply.activeLimit, 1);
     assert.equal(first.cooldown, null);

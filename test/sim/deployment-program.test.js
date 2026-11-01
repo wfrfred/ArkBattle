@@ -1,3 +1,4 @@
+import { createDefinition as createDeployableDefinition } from "../../dist/core/unit/capability/deployable/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { fixtureBattle } from "../helpers/unit.js";
@@ -24,14 +25,15 @@ function definition(id, cost = 10, slots = 1) {
         hooks: [],
         occupancy: { slot: "OCCUPANT" },
         offense: { attack: 10 },
-        deployable: {
+        deployable: createDeployableDefinition({
+            card: {},
             cost,
             redeployTicks: 30,
             slots,
             placement: "ALL",
             allowedSiteConditions: [normalCondition],
             refund: { rate: 0.5, limit: "BASE_COST" },
-        },
+        }),
     };
 }
 

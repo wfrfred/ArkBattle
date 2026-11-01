@@ -10,7 +10,7 @@ for (const slot of ["OCCUPANT", "SUPPORT"]) {
     test(`deployment uses declared ${slot} occupancy with declared occupancy`, () => {
         const definition = { hooks: [],
             id: `declared-${slot}`, occupancy: slot === "SUPPORT" ? { slot, hooks: [] } : { slot }, spatialPresence: {},
-            deployable: createDeployable({ cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" }),
+            deployable: createDeployable({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" }),
 
         };
         const indexedSlot = slot === "OCCUPANT" ? "occupant" : "support";

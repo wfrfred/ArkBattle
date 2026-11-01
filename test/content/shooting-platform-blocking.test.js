@@ -27,6 +27,7 @@ function fixture(units = [], options) {
 const first = [1, 2];
 const second = [1, 5];
 const profile = createDeployable({
+    card: {},
     cost: 0, redeployTicks: 0, slots: 0, placement: "ALL",
     allowedSiteConditions: [conditions.normal],
 });

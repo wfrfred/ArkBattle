@@ -20,14 +20,14 @@ import type { Unit } from ${source("unit/unit")};
 import { createDefinition, hasDeployable, type Deployable } from ${source("unit/capability/deployable/index")};
 import { initialize as initializeUnit } from ${source("unit/initialize")};
 import { addCard, deploy } from ${source("battle/deployment/index")};
-import { type Card, type Program, ref, get, all, setState } from ${source("battle/deployment/card/index")};
+import { type Card, type Definition, ref, get, all, setState } from ${source("battle/deployment/card/index")};
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
 type Assert<T extends true> = T;
 type Private = { charges: number };
 declare const battle: BattleState;
 declare const unit: Ref<Unit>;
 declare const erased: Ref<Card>;
-const program: Program<Private> = {
+const cardDefinition: Definition<Private> = {
     initialize: current => ({ state: current, value: { charges: 2 } }),
     onTick(current, self) {
         const charges: number = self.state.charges;
@@ -38,7 +38,7 @@ const definition = {
     id: "typed-card", hooks: [], occupancy: { slot: "OCCUPANT" as const },
     deployable: createDefinition({
         cost: 0, redeployTicks: 1, slots: 1, placement: "ALL",
-        allowedSiteConditions: [], card: program,
+        allowedSiteConditions: [], card: cardDefinition,
     }),
 };
 const inline = {
@@ -93,12 +93,16 @@ type Every = Assert<Equal<typeof every, Query<Card>>>;
 every.find(() => true)?.state.charges;
 const plain = {
     id: "plain-card", hooks: [], occupancy: { slot: "OCCUPANT" as const },
-    deployable: createDefinition({ cost: 0, redeployTicks: 1, slots: 1, placement: "ALL", allowedSiteConditions: [] }),
+    deployable: createDefinition({ card: {}, cost: 0, redeployTicks: 1, slots: 1, placement: "ALL", allowedSiteConditions: [] }),
 };
-const withoutProgram = addCard(battle, plain);
-type EmptyState = Assert<Equal<typeof withoutProgram.value, Ref<Card>>>;
+const empty = addCard(battle, plain);
+type EmptyState = Assert<Equal<typeof empty.value, Ref<Card>>>;
 const unmatched = get(battle, erased, plain);
 type Unmatched = Assert<Equal<typeof unmatched, Card | undefined>>;
+// @ts-expect-error empty Card behavior must be declared explicitly.
+createDefinition({ cost: 0, redeployTicks: 1, slots: 1, placement: "ALL", allowedSiteConditions: [] });
+// @ts-expect-error a private state type requires an initializer that constructs that state.
+createDefinition<Private>({ card: {}, cost: 0, redeployTicks: 1, slots: 1, placement: "ALL", allowedSiteConditions: [] });
 // @ts-expect-error A Unit reference cannot address a Card.
 get(battle, unit);
 // @ts-expect-error A bare ID does not prove a Card reference.

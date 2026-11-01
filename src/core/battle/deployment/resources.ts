@@ -1,14 +1,7 @@
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import type { Ref } from "../../common/ref.js";
 import type { State as BattleState, Result } from "../state.js";
-import {
-    operatorSupply,
-    ref,
-    type Card,
-    type Definition,
-    type StatefulDefinition,
-    type Initial,
-} from "./card/card.js";
+import { operatorSupply, ref, type Card, type UnitDefinition, type Initial } from "./card/card.js";
 import { get, all } from "./card/query.js";
 import * as card from "./card/state.js";
 import * as dp from "./dp.js";
@@ -29,19 +22,9 @@ export function replaceCard(state: BattleState, value: Card<any>): BattleState {
 
 export function addCard<S extends object>(
     battle: BattleState,
-    definition: StatefulDefinition<S>,
-    initial?: Initial,
-): Result<Ref<Card<S>>>;
-export function addCard(
-    battle: BattleState,
-    definition: Definition,
-    initial?: Initial,
-): Result<Ref<Card>>;
-export function addCard(
-    battle: BattleState,
-    definition: Definition<any>,
+    definition: UnitDefinition<S>,
     initial: Initial = {},
-): Result<Ref<Card<any>>> {
+): Result<Ref<Card<S>>> {
     const supply = initial.supply ?? operatorSupply;
     const stock = initial.stock === undefined ? supply.stockLimit : initial.stock;
     if (supply.stockLimit !== null) {
@@ -59,19 +42,16 @@ export function addCard(
 
     const id = battle.execution.nextCardId;
     battle = { ...battle, execution: { ...battle.execution, nextCardId: id + 1 } };
-    const initialized = definition.deployable.card?.initialize(battle) ?? {
-        state: battle,
-        value: {},
-    };
+    const initialized = definition.deployable.card.initialize(battle);
     battle = initialized.state;
-    const value: Card<any> = {
+    const value: Card<S> = {
         id,
         definition,
         supply,
         program: initial.program ?? operator,
         hooks: [],
         rules: [],
-        state: initialized.value as object,
+        state: initialized.value,
         stock,
         cooldown: null,
         recovery: null,
@@ -79,14 +59,16 @@ export function addCard(
         costContributions: [],
         redeployTimeContributions: [],
     };
+    // Erase the private state only when entering the heterogeneous collection.
+    const entry: Card<any> = value;
 
     return {
         state: refreshOrder({
             ...battle,
             deployment: {
                 ...battle.deployment,
-                cards: [...battle.deployment.cards, value],
-                order: [...battle.deployment.order, ref(value)],
+                cards: [...battle.deployment.cards, entry],
+                order: [...battle.deployment.order, ref(entry)],
             },
         }),
         value: ref(value),
@@ -100,7 +82,7 @@ export function advance(state: BattleState, tick: number): BattleState {
         const reference = ref(candidate);
         const self = card.advance(get(state, reference)!, tick);
         state = replaceCard(state, self);
-        state = self.definition.deployable.card?.onTick?.(state, self) ?? state;
+        state = self.definition.deployable.card.onTick?.(state, self) ?? state;
     }
 
     const deployment = dp.advance(state.deployment, tick);

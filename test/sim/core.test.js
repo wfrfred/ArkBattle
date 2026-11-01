@@ -772,7 +772,7 @@ test('core deployment uses buildability and terrain independently of navigation 
   ]));
   const runtime = createFieldState(map);
   const query = (type, column) => evaluateDeployment(runtime, {
-    profile: createDeployableDefinition({ cost: 0, redeployTicks: 0, slots: 1, buildableType: type }), tile: [0, column],
+    profile: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: type }), tile: [0, column],
   });
   for (const [type, column, allowed] of [
     ['MELEE', 0, true], ['RANGED', 0, false], ['ALL', 0, true],
@@ -789,11 +789,11 @@ test('core deployment uses buildability and terrain independently of navigation 
     assert.deepEqual(query('ALL', column), { type: 'DENIED', reason });
   }
   assert.deepEqual(evaluateDeployment(runtime, {
-    profile: createDeployableDefinition({ cost: 0, redeployTicks: 0, slots: 1, placement: 'ALL', allowedSiteConditions: [conditions.deepsea] }),
+    profile: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, placement: 'ALL', allowedSiteConditions: [conditions.deepsea] }),
     tile: [0, 5],
   }), { type: 'ALLOWED' });
   assert.deepEqual(evaluateDeployment(runtime, {
-    profile: createDeployableDefinition({ cost: 0, redeployTicks: 0, slots: 1, placement: 'ALL', allowedSiteConditions: [conditions.normal, conditions.deepsea] }),
+    profile: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, placement: 'ALL', allowedSiteConditions: [conditions.normal, conditions.deepsea] }),
     tile: [0, 5],
   }), { type: 'ALLOWED' });
 });
@@ -809,7 +809,7 @@ test('core occupancy tile is independent of spatial presence and geometric membe
   assert.deepEqual(unitsAt(runtime, [0, 1]).map(unit => unit.id), [3]);
   assert.equal(occupancyAt(runtime, [0, 1])?.occupant?.id, 1);
   assert.equal(occupancyAt(runtime, [0, 2])?.occupant?.id, 2);
-  const profile = createDeployableDefinition({ cost: 0, redeployTicks: 0, slots: 1, buildableType: 'ALL' });
+  const profile = createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: 'ALL' });
   for (const tile of [[0, 1], [0, 2]]) {
     assert.deepEqual(evaluateDeployment(runtime, { profile, tile }),
       { type: 'DENIED', reason: 'OCCUPIED' });
@@ -844,7 +844,7 @@ test('core support allows a platform and occupant to coexist without treating th
   }, [0, 1]);
   runtime = addUnit(runtime, platform);
   runtime = changeFieldTile(runtime, [0, 1], { placement: 'RANGED', elevation: 'HIGHLAND', allowsBlocking: false });
-  const profile = createDeployableDefinition({ cost: 0, redeployTicks: 0, slots: 1, buildableType: 'RANGED' });
+  const profile = createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: 'RANGED' });
   assert.deepEqual(evaluateDeployment(runtime, { profile, tile: [0, 1] }),
     { type: 'ALLOWED' });
   const occupant = deploymentUnit(2, [1, 0], { occupancy: { slot: 'OCCUPANT' }, deployable: profile }, [0, 1]);

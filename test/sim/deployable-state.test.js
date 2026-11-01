@@ -12,7 +12,7 @@ import { unit as actionUnit } from '../helpers/action-fixture.js';
 
 const definition = {
   id: 'deployable',
-  deployable: createDeployableDefinition({ cost: 0, redeployTicks: 0, slots: 1, buildableType: 'MELEE' }),
+  deployable: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: 'MELEE' }),
 };
 
 test('deployable definitions initialize a paired capability without a Card', () => {
@@ -53,13 +53,14 @@ test('Unit initialization inference and the deployable guard retain capability a
   try {
     writeFileSync(path, `
 import { initialize } from ${module('../../src/core/unit/initialize.js')};
-import { initialize as initializeDeployable, hasDeployable, type Deployable } from ${module('../../src/core/unit/capability/deployable/capability.js')};
+import { initialize as initializeDeployable, createDefinition, hasDeployable, type Deployable } from ${module('../../src/core/unit/capability/deployable/capability.js')};
 import type { Unit } from ${module('../../src/core/unit/unit.js')};
 
-const definition = { id: 'typed-deployable', hooks: [], deployable: {
+const definition = { id: 'typed-deployable', hooks: [], deployable: createDefinition({
+  card: {},
   cost: 0, redeployTicks: 0, slots: 1, placement: 'MELEE' as const, allowedSiteConditions: [Symbol('normal')],
   refund: { rate: 0.5, limit: 'BASE_COST' as const },
-} };
+}) };
 declare const battle: import(${module('../../src/core/battle/state.js')}).State;
 const unit: Unit & Deployable = initialize(battle, { id: 0, definition, position: [0, 0] }).value;
 const card: import(${module('../../src/core/common/ref.js')}).Ref<import(${module('../../src/core/battle/deployment/card/index.js')}).Card> | null = unit.deployable.card;

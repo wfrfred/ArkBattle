@@ -1,3 +1,4 @@
+import { createDefinition as createDeployableDefinition } from "../../dist/core/unit/capability/deployable/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { fixtureBattle } from "../helpers/unit.js";
@@ -10,14 +11,15 @@ function fixture(stock = 0, redeployTicks = 30) {
         id: "resource-card",
         hooks: [],
         occupancy: { slot: "OCCUPANT" },
-        deployable: {
+        deployable: createDeployableDefinition({
+            card: {},
             cost: 5,
             redeployTicks,
             slots: 0,
             placement: "ALL",
             allowedSiteConditions: [],
             refund: { rate: 0.5, limit: "BASE_COST" },
-        },
+        }),
     };
     return addCard(fixtureBattle(), definition, {
         supply: { stockLimit: 3, activeLimit: null },

@@ -57,9 +57,9 @@ battle/unit.add 读取已登记的 PRESENT Unit，直接派发实例 hooks 中�
 
 具体角色 Definition 必须声明实际依赖的 Capability，工厂输出保留标准状态与配置的对应关系。Effect 的 Host 泛型用于表达回调读取哪些能力。
 
-Card 私有程序可选声明于 Unit Definition 的 deployable.card，不要求内容再编写独立 Card Definition。Card 的 state 跨部署保存，Unit 每次部署重新初始化；需要继承的具体资源由 enter／leave 显式转换。Card 通过自身领域的 Typed Ref 操作写回，不调用内部完整 replace。
+Unit Definition 的 deployable.card 必填。没有私有逻辑时明确写 `card: {}`；createDeployableDefinition 将其归一成空状态初始化器。需要私有逻辑时在 card 中声明 initialize 和可选 onTick，具体状态类型从初始化结果推断。Card.definition 仍引用原 Unit Definition，不另建一份内容对象。Card 的 state 跨部署保存，Unit 每次部署重新初始化；需要继承的具体资源由 enter／leave 显式转换。Card 通过自身领域的 Typed Ref 操作写回，不调用内部完整 replace。
 
-一次部署的 Program 与 Card 私有程序分别负责准备本次操作和推进跨部署状态。Program.prepare 只读，完整 deploy 在公共资格通过后先结算支付与来源消费，再构造、登记和入场。特殊免费部署显式使用 payment:null，正常零费仍为 payment:{amount:0}；来源自己的回收政策通过普通 leave Hook 执行。入场附着由 Card 携带普通 Hook，Unit 入场时调用 effects.install，不建立 Attachment 或 Card Effect 容器。共享一次机会由真正来源保存，不能复制到各 Card。
+一次部署的 Program 与 Card Definition 分别负责准备本次操作和推进跨部署状态。Program.prepare 只读，完整 deploy 在公共资格通过后先结算支付与来源消费，再构造、登记和入场。特殊免费部署显式使用 payment:null，正常零费仍为 payment:{amount:0}；来源自己的回收政策通过普通 leave Hook 执行。入场附着由 Card 携带普通 Hook，Unit 入场时调用 effects.install，不建立 Attachment 或 Card Effect 容器。共享一次机会由真正来源保存，不能复制到各 Card。
 
 本轮四向摆放朝向归 Occupancy；定义可提供方向初态，本次部署通过 initial.occupancy.direction 覆盖，方向相关攻击范围读取当前实例。没有朝向的装置使用 null，不伪造 RIGHT；基础 Unit 没有方向字段。Occupancy 同时通过 initial.occupancy.tile 接受本次登记，不通过通用 Partial<Unit> 预装运行状态。保存到 Battle.Input／排程的异构创建描述使用 createUnitPlacementDefinition 配对初态；直接创建仍按具体 Definition 约束输入。
 

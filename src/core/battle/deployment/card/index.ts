@@ -1,7 +1,6 @@
 export type {
     Id,
-    Program,
-    Definition,
+    UnitDefinition,
     Supply,
     Initial,
     Input,
@@ -10,6 +9,8 @@ export type {
     TimerTarget,
     Card,
 } from "./card.js";
+
+export type { Definition } from "./definition.js";
 
 export type { Purpose, Rule } from "./rule.js";
 

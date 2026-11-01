@@ -1,3 +1,4 @@
+import { createDefinition as createDeployableDefinition } from "../../dist/core/unit/capability/deployable/index.js";
 import * as conditions from "../../dist/content/terrain/condition.js";
 import { tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
@@ -223,7 +224,7 @@ test('scheduled Units enter after spawning and keep immutable old snapshots', ()
 
 test('predefined appearances and deployment initialize once', () => {
   const trace = [];
-  const deployable = { ...markEntered(trace, 'deployed'), occupancy: { slot: "OCCUPANT" }, deployable: { cost: 0, redeployTicks: 0, slots: 1, placement: 'ALL', allowedSiteConditions: [conditions.normal], refund: { rate: 0.5, limit: 'BASE_COST' } } };
+  const deployable = { ...markEntered(trace, 'deployed'), occupancy: { slot: "OCCUPANT" }, deployable: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, placement: 'ALL', allowedSiteConditions: [conditions.normal], refund: { rate: 0.5, limit: 'BASE_COST' } }) };
   let runtime = initializeBattle(input({ deployment: {
     definition: { initialDp: 0, maxDp: 99, dpRecoveryTicks: null, slotLimit: null },
     cards: [{ definition: deployable }],

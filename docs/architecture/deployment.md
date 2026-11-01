@@ -101,7 +101,11 @@ Card.hooks 保存未来实例要携带的普通 Unit Hook。新实例通过已�
 
 Card.rules 使用 DISPLAY、SELECT、DEPLOY 区分显示、选择和部署资格。实际计时、库存和临时资格各自查询，不新增重复的 enabled 状态。Rule 不执行状态变更。
 
-Card 私有 Program<S> 的 initialize／onTick 与部署 Program<I>.prepare 分工不同：前者创建和推进跨部署私有 state，后者准备一次部署。普通干员可省略私有程序，不要求内容另写 Card Definition。普通查询默认 object，Typed Ref 或匹配 Definition 的查询恢复具体 S；异构存储的类型擦除不向 Content 暴露 any。
+Unit Definition 的 deployable.card 必填。没有自定义私有状态或时间程序时明确写 `card: {}`；Deployable.createDefinition 在构造入口补上空状态初始化器，归一后的 Card Definition 始终具有 initialize，无 onTick 时不登记空回调。
+
+[card/definition.ts](../../src/core/battle/deployment/card/definition.ts) 的 Definition<S> 描述 initialize／onTick，负责创建和推进跨部署私有 state；Deployment.Program<I>.prepare 负责准备一次部署。Card.definition 仍引用原 Unit Definition，其 UnitDefinition<S> 类型别名保留与 Card 私有状态的配对，不增加第二份内容对象。
+
+空配置产生默认 object 状态；提供 initialize 时从返回值推断具体 S，构造入口不把 `{}` 断言成任意 S。addCard 和匹配已知 Unit Definition 的 get 使用同一套泛型契约，不区分有状态／无状态的 Definition。普通查询仍使用默认 object，Typed Ref 或匹配 Unit Definition 的查询恢复具体 S；异构存储的类型擦除不向 Content 暴露 any。
 
 ## 待部署区顺序
 

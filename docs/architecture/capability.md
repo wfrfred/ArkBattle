@@ -106,6 +106,8 @@ Core 不提供干员或敌人 Archetype 层；内容直接组合 Unit Definition
 
 不为统一前缀增加 normalize，不保留无工作转发，不以 Object.freeze 证明内部调用者遵守不可变约定。外部格式检查在 Data／I/O 边界，领域不变量由对应领域维护。跨模块出现同名类型和函数时，使用命名空间或有角色含义的导入别名。
 
+Deployable 的 createDefinition 负责配置校验与 Card 初始程序归一。输入 card 必填，无自定义逻辑时写 `{}`；空配置补上创建空私有状态的 initialize，归一输出始终有初始化器，onTick 仍按实际需要提供。自定义初始化结果推断 Card 的 S，空配置使用默认 object，不把空对象当作任意私有类型，也不另分有状态／无状态的 Definition。Card 程序的 Definition 归 battle/deployment/card/definition.ts，Deployable 引用它。
+
 ## 属性与贡献
 
 unit/contribution/attribute.ts 只定义明日方舟属性的 Modifier、create、apply。四字段和四段公式只属于 Attribute，不是所有数值过程的通用公式。动态 Input 由各领域声明：静态 Modifier 数组，或 `(battle, self: Unit & 本领域Capability) => readonly Modifier[]`；所属领域直接求值，不使用通用 Query Context 或 evaluate 包装。

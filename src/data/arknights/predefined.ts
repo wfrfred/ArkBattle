@@ -139,6 +139,7 @@ function unitDefinition(
         vitality: { defense: 0, resistance: 0, maxHp: maxHp! },
         deployable: createDeployableDefinition({
             ...profile.deployable,
+            card: {},
             cost: cost!,
             redeployTicks: secondsToTicks(respawnTime!),
             slots: 0,

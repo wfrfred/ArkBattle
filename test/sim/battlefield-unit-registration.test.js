@@ -1,3 +1,4 @@
+import { createDefinition as createDeployableDefinition } from "../../dist/core/unit/capability/deployable/index.js";
 import * as conditions from "../../dist/content/terrain/condition.js";
 import { tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
@@ -35,14 +36,15 @@ const map = () =>
 const definition = () => ({ hooks: [],
     id: "paired-capabilities",
     targetable: { restrictions: [] }, spatialPresence: {}, occupancy: { slot: "OCCUPANT" },
-    deployable: {
+    deployable: createDeployableDefinition({
+        card: {},
         cost: 10,
         redeployTicks: 30,
         slots: 1,
         placement: "MELEE",
         allowedSiteConditions: [conditions.normal],
         refund: { rate: 0.5, limit: "BASE_COST" },
-    },
+    }),
     vitality: { maxHp: 100, defense: 20, resistance: 10 },
     offense: { attack: 10 },
     action: actionCapability(createAttack({ id: 'normal', speed: 100,

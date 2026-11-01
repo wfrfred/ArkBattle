@@ -37,6 +37,7 @@ test('Melantha uses main-mode level, potential, trust and talent, then a scoped 
   const definition = create(prepared);
   const unit = initialize({ id: 0, position: [0, 0], definition });
   assert.deepEqual(definition.deployable, {
+    card: definition.deployable.card,
     cost: prepared.attributes.cost, redeployTicks: prepared.attributes.respawnTime * 30,
     slots: 1, placement: 'MELEE', allowedSiteConditions: [conditions.normal],
     refund: { rate: 0.5, limit: 'BASE_COST' },

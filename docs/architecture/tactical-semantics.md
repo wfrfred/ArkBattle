@@ -82,7 +82,7 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | DEPLOY-04 手动撤退资格 | 手动撤退按可撤退性裁定，内容强退与实际离场使用各自入口。[异常效果](https://prts.wiki/w/异常效果) | retreat 使用 Deployable Typed Ref，检查 PRESENT、retreatAllowed 与当前 Rule；控制者身份和网络授权留在外层，具体限制来源仍需接入。 | 通用入口已实现；来源待接入／P2 |
 | DEPLOY-05 免费与特殊部署 | 实际扣账、场上费用属性、返费资格与来源分别决定。[可返费](https://prts.wiki/w/部署费用#可返费) | 静态 Program 只读准备，完整 deploy 统一资格后先消费再构造／enter；Payment{amount:0} 与 null 区分正常零费和无支付。卫戍及具体免费来源仍由 Content／Mechanism 实现。 | 通用协议已实现；具体来源待接入／P1 |
 | DEPLOY-06 Card 多实例回收 | 每个有效回收保留供给事实，来源明确选择冷却与补回方式。[待部署区](https://prts.wiki/w/待部署区) | 使用冷却与串行 recovery 分开；每次 enqueueRecovery 累加份数，下一段读取当前有效时长，消除旧 RETURN 覆盖丢库存。追加保留本段是项目通用操作契约，特定原生 Reset 路径仍未闭合。 | 通用恢复已实现；来源特化待接入／P2 |
-| DEPLOY-07 场下属性与冷却 | 跨部署资源由 Card 保存，当前周期与未来时长分别操作。[待部署区](https://prts.wiki/w/待部署区) | 私有 Program、Typed Ref、暂停及当前段操作已接入；负 DP 每次推进自然回复乘 0.5、跨零保留进度，主动加费不减半。特殊暂停组合及更多场下资源仍待具体内容。 | 通用能力已实现；特殊内容待接入／P2 |
+| DEPLOY-07 场下属性与冷却 | 跨部署资源由 Card 保存，当前周期与未来时长分别操作。[待部署区](https://prts.wiki/w/待部署区) | Card 私有 Definition、Typed Ref、暂停及当前段操作已接入；负 DP 每次推进自然回复乘 0.5、跨零保留进度，主动加费不减半。特殊暂停组合及更多场下资源仍待具体内容。 | 通用能力已实现；特殊内容待接入／P2 |
 | SCHEDULE-01 波次与预置动作 | 出兵进度、存活等待、最终计数和关卡动作分别表达。[波次](https://prts.wiki/w/作战机制#扩展阅读：波次) | 波次／分支基础已有，预置可由命令操作；原始 ACTIVATE / WITHDRAW / BATTLE_EVENTS 等尚未全部接调度链。 | 部分实现／P1 |
 | RESULT-01 漏怪与结束 | 区分击杀、漏怪、非首要目标和模式结束条件；按所属目标／玩家反馈结果。[作战机制](https://prts.wiki/w/作战机制)、[卫戍帮助](https://prts.wiki/w/卫戍协议/帮助) | Runtime 主要按 SCHEDULE_COMPLETED / TIME_LIMIT 结束，无完整关卡生命与模式胜负结算。 | 部分实现／P0 |
 | CONTENT-01 干员与敌人接入 | 主模式等级、精英、潜能、信赖、模组与具体天赋／技能共同生成行为。[玫兰莎](https://prts.wiki/w/玫兰莎)、[泥岩](https://prts.wiki/w/泥岩) | Data 配置和四个代表内容已跑通；不能推定所有天赋、技能、敌人及分支模板已实现。 | 部分实现／P1 |

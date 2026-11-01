@@ -6,7 +6,8 @@ import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../../
 import { prepare } from "../../../battle/deployment/lifecycle.js";
 import type { Refund } from "../../../battle/deployment/program.js";
 import type { Ref } from "../../../common/ref.js";
-import type { Card, Program } from "../../../battle/deployment/card/card.js";
+import type { Card } from "../../../battle/deployment/card/card.js";
+import type { Definition as CardDefinition } from "../../../battle/deployment/card/definition.js";
 
 export interface Definition<S extends object = object> {
     readonly cost: number;
@@ -18,7 +19,7 @@ export interface Definition<S extends object = object> {
         readonly rate: number;
         readonly limit: "BASE_COST" | "DEPLOYMENT_COST";
     };
-    readonly card?: Program<S>;
+    readonly card: CardDefinition<S>;
 }
 
 export interface State {
@@ -37,7 +38,7 @@ export interface Rule {
 }
 
 export interface Deployable {
-    // Narrow deployment fields without erasing a known Card program's private type.
+    // Narrow deployment fields without erasing a known Card definition's private type.
     readonly definition: { readonly deployable: Omit<Definition, "card"> };
     readonly deployable: State;
 }
@@ -85,13 +86,14 @@ type Input<S extends object = object> = Omit<Definition<S>, "refund"> & {
     readonly refund?: Definition["refund"];
 };
 
-export function createDefinition<S extends object>(
-    definition: Input<S> & { readonly card: Program<S> },
-): Definition<S> & { readonly card: Program<S> };
-export function createDefinition(definition: Input): Definition;
+export function createDefinition<S extends object>(definition: Input<S>): Definition<S>;
 export function createDefinition(
-    definition: Omit<Definition<any>, "refund"> & {
+    definition: Omit<Input, "card"> & { readonly card: Partial<CardDefinition> },
+): Definition;
+export function createDefinition(
+    definition: Omit<Definition<any>, "refund" | "card"> & {
         readonly refund?: Definition["refund"];
+        readonly card: Partial<CardDefinition<any>>;
     },
 ): Definition<any> {
     const refund = definition.refund ?? { rate: 0.5, limit: "BASE_COST" };
@@ -107,6 +109,9 @@ export function createDefinition(
         placement: definition.placement,
         allowedSiteConditions: definition.allowedSiteConditions,
         refund,
-        ...(definition.card === undefined ? {} : { card: definition.card }),
+        card: {
+            ...definition.card,
+            initialize: definition.card.initialize ?? ((battle) => ({ state: battle, value: {} })),
+        },
     };
 }

@@ -35,6 +35,7 @@ function configuration(id, tileChanges = {}) {
         id,
         vitality: { maxHp: 100, defense: 0, resistance: 0 },
         deployable: createDeployable({
+            card: {},
             cost: 0,
             redeployTicks: 0,
             slots: 0,

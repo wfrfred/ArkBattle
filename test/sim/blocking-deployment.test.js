@@ -13,6 +13,7 @@ test("retreat refunds use current deployment state after blocking release hooks"
     const blocker = holder(10, {
         definition: {
             deployable: createDefinition({
+                card: {},
                 cost: 20,
                 redeployTicks: 0,
                 slots: 1,

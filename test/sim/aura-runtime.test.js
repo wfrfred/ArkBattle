@@ -154,7 +154,7 @@ test("aura runtime: predefined, deployment and spawning join before the same tic
             },
     };
     const deployable = auraUnit(3, [0, 0], {
-        occupancy: { slot: "OCCUPANT" }, deployable: createDeployableDefinition({ cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" }),
+        occupancy: { slot: "OCCUPANT" }, deployable: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" }),
     }).definition;
     let runtime = initializeBattle(input(host, {
             predefines: [predefined],
@@ -278,7 +278,7 @@ test("aura runtime: source retirement ends remote bound buffs within the same st
     const receiver = attackEffect("retired-aura-receiver");
     const aura = auraEffect(receiver);
     const host = effectPlacement(aura);
-    const definition = { ...host.definition, deployable: createDeployableDefinition({ cost: 0, redeployTicks: 0, slots: 0, buildableType: "ALL" }) };
+    const definition = { ...host.definition, deployable: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 0, buildableType: "ALL" }) };
     let runtime = initializeBattle(input({ ...host, definition }));
     runtime = stepBattle(runtime, []);
     const before = runtime;

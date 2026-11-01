@@ -83,7 +83,7 @@ function fixture() {
                 vitality: { maxHp: 100, defense: 0, resistance: 0 },
                 ...(id < 2 ? {
                     skill,
-                    deployable: createDeployableDefinition({ cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" }),
+                    deployable: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" }),
                 } : {}),
             },
         }),
@@ -158,7 +158,7 @@ for (const domain of ["deployment", "predefined"]) {
                 return { state: changeTile(battle, position, { walkCost: tile.definition.initial.walkCost }), value: undefined };
             } }],
 
-            deployable: createDeployableDefinition({ cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" }),
+            deployable: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" }),
             vitality: Object.freeze({ maxHp: 100, defense: 0, resistance: 0 }),
         });
         const before = createBattleState(battlefield);

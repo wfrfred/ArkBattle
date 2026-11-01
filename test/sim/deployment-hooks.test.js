@@ -30,7 +30,7 @@ const tile = createTile({
     terrain: normal.create({}), walkCost: 1, advancedBuildableMask: 1,
 });
 const map = createMap(1, 8, tileEntries(Array(8).fill(tile)));
-const profile = createDeployable({ cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" });
+const profile = createDeployable({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" });
 const route = createRouteDefinition({
     pathMotionMode: "WALK", startPosition: [0, 7], endPosition: [0, 0],
     spawnOffset: [0, 0], spawnRandomRange: [0, 0],
