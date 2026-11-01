@@ -31,7 +31,7 @@ interface Definition {
 | lastAdvancedTick | 自然回复或爆发预算的上次推进时点 |
 | maxEp／recoverySpeed／elementResistance／damageResistance／burstRecoverySpeed | 五个属性的 Contribution |
 | receiving | 抗性后、本次提交前的 DamageHook，逐项接续 battle 与剩余损伤 |
-| rules | 接收损伤、接收治疗的许可 |
+| rules | damage／heal 两个节点各自的接收许可登记 |
 | received／damaged／healed／burstStarted／burstEnded | 各明确业务事实的 Hook |
 
 属性 Contribution 的动态 Input 为 `(battle, self) => readonly attribute.Modifier[]`。属性修正、资格 Rule、伤判和事实通知分别承担自己的职责。请求类型相关的减免通过 DamageHook 读取 request.type 并返回新剩余数额，不复制四组基础抗性，也不在布尔 Rule 中执行副作用。
@@ -84,7 +84,7 @@ DamageOutcome 为 APPLIED `{ amount, burst: Ref<Burst> | null }` 或 REJECTED `{
 
 损伤先按当前 elementResistance 修正，再执行本次 DamageHook 管线。Hook 返回 Result<number>，接续新的 BattleState 和剩余数额；每次派发固定候选 ID，逐项读取最新登记，嵌套派发独立收集。返回后重查目标资格、当前上限及 EP，再提交数额，损失不超过当前 EP。Effect 可以保存护盾预算、在启停时登记和撤销 DamageHook，Hook 消耗当前 Effect 预算并返回剩余损伤；Elemental 不认识具体护盾。某型 EP 归零时，一次性把四条 EP 置零、登记新 Burst，并重设推进时点；在内容回调前登记 Burst→Unit 的 Lifetime owner 关系。治疗对每条 EP 各应用完整请求数额，分别限制到当前上限，不在四型之间分摊。动态上限变化不按比例重算 EP；后续实际写入 EP 的操作或 Runtime 推进将数值限制在当前上限内。
 
-接收的基本资格为宿主在场、空间存在，具有 Vitality 时 HP 大于零。Burst 存在期间，包括 ENDING，拒绝损伤和治疗；中立阵营默认拒绝损伤。Rule 分开 allowsDamage 和 allowsHeal。元素免疫可以只限制损伤；HP 禁疗不隐式决定元素治疗。无敌内容向 Elemental 登记损伤拒绝 Rule，并在失效时移除，Core 不读取 Vitality 的内部接收规则。
+接收的基本资格为宿主在场、空间存在，具有 Vitality 时 HP 大于零。Burst 存在期间，包括 ENDING，拒绝损伤和治疗；中立阵营默认拒绝损伤。Rule 按 damage／heal 节点分别保存，统一使用 `allows(battle, { self, request })`，request 类型由节点确定。`setRule(ref, key, rule)`／`removeRule(ref, key, id)` 返回 Change，同 ID 在不同节点独立。元素免疫可以只限制损伤；HP 禁疗不隐式决定元素治疗。无敌内容向 damage 节点登记拒绝 Rule，并在失效时移除，Core 不读取 Vitality 的内部接收规则。
 
 Targeting 提供标准元素 Filter，由 Content 显式组合：elementDamage 根据本次实际类型和数值调用 canReceiveDamage；elementHealing 调用 canReceiveHeal 与 resolveDamageRatio，始终读取最新 battle 中的动态 Rule 和有效上限。普通 HP 行动附带元素输出，不自动套用元素接收条件。只读 Filter 不派发收到请求 Hook，也不执行结算；Selector 的随机消费由 Targeting Result 接续。
 

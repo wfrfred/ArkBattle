@@ -18,7 +18,7 @@ export const invincibleRestriction: targetable.Restriction = {
 
 export const healFreeRestriction: targetable.Restriction = {
     kind: healFreeKind,
-    allows: (_battle, request) => !request.purposes.includes("HEAL"),
+    allows: (_battle, { request }) => !request.purposes.includes("HEAL"),
 };
 
 export const invincible: Definition<object, targetable.Targetable> = {
@@ -39,15 +39,15 @@ export const invincible: Definition<object, targetable.Targetable> = {
             }),
             ...(elemental.hasElemental(unit)
                 ? [
-                      elemental.setRule(units.ref(unit), {
+                      elemental.setRule(units.ref(unit), "damage", {
                           id,
-                          allowsDamage: () => false,
+                          allows: () => false,
                       }),
                   ]
                 : []),
             ...(vitality.hasVitality(unit)
                 ? [
-                      vitality.setDamageReceptionRule(units.ref(unit), {
+                      vitality.setRule(units.ref(unit), {
                           id,
                           allows: () => false,
                       }),
@@ -65,10 +65,10 @@ export const invincible: Definition<object, targetable.Targetable> = {
 
         return updateUnit(state, [
             targetable.removeRestriction(units.ref(unit), id),
-            ...(elemental.hasElemental(unit) ? [elemental.removeRule(units.ref(unit), id)] : []),
-            ...(vitality.hasVitality(unit)
-                ? [vitality.removeDamageReceptionRule(units.ref(unit), id)]
+            ...(elemental.hasElemental(unit)
+                ? [elemental.removeRule(units.ref(unit), "damage", id)]
                 : []),
+            ...(vitality.hasVitality(unit) ? [vitality.removeRule(units.ref(unit), id)] : []),
         ]);
     },
 };

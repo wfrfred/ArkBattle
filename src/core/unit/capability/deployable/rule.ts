@@ -4,7 +4,7 @@ import { createChange, type Change } from "../../change.js";
 import type { Deployable, Rule } from "./capability.js";
 import * as hook from "../../../hook.js";
 
-export function setRetreatRule(reference: Ref<Unit & Deployable>, rule: Rule): Change {
+export function setRule(reference: Ref<Unit & Deployable>, rule: Rule): Change {
     return createChange(reference, (self) => {
         const retreatRules = hook.set(self.deployable.retreatRules, rule);
 
@@ -14,11 +14,11 @@ export function setRetreatRule(reference: Ref<Unit & Deployable>, rule: Rule): C
     });
 }
 
-export function removeRetreatRule(reference: Ref<Unit & Deployable>, id: string): Change {
+export function removeRule(reference: Ref<Unit & Deployable>, id: string): Change {
     return createChange(reference, (self) => {
-        const retreatRules = self.deployable.retreatRules.filter((entry) => entry.id !== id);
+        const retreatRules = hook.remove(self.deployable.retreatRules, id);
 
-        return retreatRules.length === self.deployable.retreatRules.length
+        return retreatRules === self.deployable.retreatRules
             ? self
             : { ...self, deployable: { ...self.deployable, retreatRules } };
     });

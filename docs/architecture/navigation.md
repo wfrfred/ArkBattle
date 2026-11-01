@@ -344,9 +344,13 @@ export interface State {
     readonly rules: readonly Rule[];
 }
 
+export interface RuleContext {
+    readonly self: Unit & Locomotion;
+}
+
 export interface Rule {
     readonly id: string;
-    readonly allows: (battle: BattleState, self: Unit & Locomotion) => boolean;
+    readonly allows: (battle: BattleState, context: RuleContext) => boolean;
 }
 
 export interface Locomotion {

@@ -2,8 +2,8 @@ export {
     hasVitality,
     hasVitalityDefinition,
     initialize,
-    setDamageReceptionRule,
-    removeDamageReceptionRule,
+    setRule,
+    removeRule,
     setMaxHpContribution,
     removeMaxHpContribution,
     resolveMaxHp,
@@ -14,5 +14,10 @@ export {
 } from "./capability.js";
 
 export type { Definition, DefenseValues, Input, State, Vitality } from "./capability.js";
+
+export type {
+    ReceptionRule as Rule,
+    ReceivingContext as RuleContext,
+} from "../../../battle/damage/hook.js";
 
 export { resolveDefense } from "./query.js";

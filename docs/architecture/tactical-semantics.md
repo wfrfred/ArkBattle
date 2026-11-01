@@ -68,7 +68,7 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | ABNORMAL-02 沉默／静默 | 沉默只作用可沉默的技能、能力与 Buff；静默另有无条件限制。[异常效果](https://prts.wiki/w/异常效果) | [effects/control.ts:5](../../src/content/effects/control.ts#L5) 的 silence 无条件禁止 Skill 激活，也未暂停已有可沉默 Effect。 | 明确不一致／P1 |
 | ABNORMAL-03 免疫、反制、抵抗 | 区分安装限制、使效果失效、清除相关 Buff 和持续时间变化；不能统一为删除实例。[BUFF](https://prts.wiki/w/BUFF)、[异常效果](https://prts.wiki/w/异常效果) | 通用行为尚未接入；当前地面敌人工厂拒绝未支持的 stunImmune 配置。 | 部分实现／P1 |
 | ABNORMAL-04 其他异常组合 | 寒冷、冻结、缴械、束缚、沉睡、浮空等按内容组合规则，并保留必要的可查询语义。[异常效果](https://prts.wiki/w/异常效果) | 现有 Capability / Effect 接口提供部分组合基础，具体机制未完整接入。 | 部分实现／P2 |
-| EP-03 元素免疫与恢复 | 元素免疫限制损失；爆发冷却对回复的限制独立。[元素](https://prts.wiki/w/元素)、[元素免疫](https://prts.wiki/w/异常效果) | [elemental/query.ts](../../src/core/unit/capability/elemental/query.ts) 分开损伤／治疗准入；allowsDamage 可表达元素免疫而不拒绝治疗，Burst 冷却同时限制两者。结论按 PRTS 定义推导，尚未客户端动态复核。 | 待客户端复核／P2 |
+| EP-03 元素免疫与恢复 | 元素免疫限制损失；爆发冷却对回复的限制独立。[元素](https://prts.wiki/w/元素)、[元素免疫](https://prts.wiki/w/异常效果) | [elemental/query.ts](../../src/core/unit/capability/elemental/query.ts) 分开损伤／治疗准入；damage 节点的 Rule 可表达元素免疫而不拒绝治疗，Burst 冷却同时限制两者。结论按 PRTS 定义推导，尚未客户端动态复核。 | 待客户端复核／P2 |
 | EP-04 类型及属性扩展 | 按目标内容接入狂躁、元素回复、爆发恢复速度与其他动态修正。[元素](https://prts.wiki/w/元素) | 狂躁及相应特殊内容尚未接入；四型 EP 和动态属性契约见 [Elemental 设计](elemental.md)。 | 狂躁及特殊内容／P2 |
 | BLOCK-02 特殊阻挡 | 地面／空中阻挡、起飞、不可阻挡和强制解除关系按机制分别处理。[行动方式](https://prts.wiki/w/行动方式) | 通用 GROUND／AIR 阻挡、标准半径、AIR 地块豁免与 setLayer 完整切换已接入；具体起降内容、特殊目标层豁免及半径倍率仍待接入。 | 部分实现／P1 |
 | BLOCK-03 关系改变容量 | 大君之触、大君之赐使阻挡者阻挡数 +1，同类效果最多叠加 6 次。[大君之触](https://prts.wiki/w/大君之触)、[大君之赐](https://prts.wiki/w/大君之赐) | 当前已按固定候选和实时容量处理，关系 Hook 增容可用于后续候选；这些敌人的关系效果尚未接入。满阻挡时是否有特殊尝试／补偿，以及建立关系后的容量变化如何接续选择，见 [Blocking 专项记录](blocking.md#满阻挡筛选与关系引起的容量变化)。 | 机制已确认；特殊边界待核对／P1 |

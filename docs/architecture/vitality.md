@@ -34,6 +34,8 @@ MaxHP 保留静态 Modifier[]，set／remove 工厂返回 Change，在纯 transf
 
 HP、Contribution、Hook 与 Rule 共存于同一 Vitality State。DEF／RES 的修改保留其他字段；属性变化不派发普通治疗 Hook。治疗索敌默认 provider 与显式注入 provider 均读取有效 MaxHP，避免把基础值或未计修正的上限用于缺血判定和比例排序。
 
+Damage 接收 Rule 使用 `allows(battle, ReceivingContext)`；Vitality 的单节点登记接口为 `setRule(ref, rule)`／`removeRule(ref, id)`，返回 Change，由 Unit.update 写入 damageReceptionRules。
+
 ## 1. 计算与实行
 
 伤害分为 `calculate` 和 `apply` 两步，均为显式接续 BattleState 的纯状态转换，允许 Hook 参与。

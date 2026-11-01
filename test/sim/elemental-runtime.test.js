@@ -283,7 +283,7 @@ test('elemental healing receives every EP bar independently from HP healing and 
   let immune = effectFixtureWork(unit('CHARACTER'));
   immune = element(immune, 'BURN', 0, 100).state;
   const currentUnit7 = getUnit(immune, 1);
-  immune = applyUnitChanges(immune, [setRule({ id: currentUnit7.id }, { id: 'immune', allowsDamage: () => false })]);
+  immune = applyUnitChanges(immune, [setRule({ id: currentUnit7.id }, 'damage', { id: 'immune', allows: () => false })]);
   assert.equal(elemental.heal(immune, unitRef(getUnit(immune, 1)), { power: 100, source: null }).value.type, 'APPLIED');
 });
 
@@ -356,8 +356,8 @@ test('elemental attack targeting uses current request-specific reception Rules',
   const receiver = unit('ENEMY');
   let work = effectFixtureWork(caster, receiver);
   const currentUnit9 = getUnit(work, 1);
-  work = applyUnitChanges(work, [setRule({ id: currentUnit9.id }, {
-    id: 'only-burn', allowsDamage: (_battle, _self, request) => request.type === 'BURN',
+  work = applyUnitChanges(work, [setRule({ id: currentUnit9.id }, 'damage', {
+    id: 'only-burn', allows: (_battle, { request }) => request.type === 'BURN',
   })]);
   assert.deepEqual(chooseTargets(work, unitRef(caster), neural.attack).value.primary, []);
   assert.deepEqual(chooseTargets(work, unitRef(caster), burn.attack).value.primary.map(ref => ref.id), [1]);

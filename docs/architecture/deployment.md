@@ -114,7 +114,7 @@ Card.hooks 保存未来实例要携带的普通 Unit Hook。新实例通过已�
 
 多个 Card 共享一次优惠时，剩余机会保存在实际来源的 Effect／Skill／Mechanism.state。报价与成功消费引用同一来源；不能给每张 Card 复制一份次数，也不为了共享来源把优惠、屏障和定时攻击强行做成一种生命周期。
 
-Card.rules 使用 DISPLAY、SELECT、DEPLOY 区分显示、选择和部署资格。实际计时、库存和临时资格各自查询，不新增重复的 enabled 状态。Rule 不执行状态变更。
+Card.rules 使用 DISPLAY、SELECT、DEPLOY 区分显示、选择和部署资格，统一执行 `allows(battle, context)`。`cards.allows(battle, context)` 在 DISPLAY／SELECT 时接收 `{ purpose, ref }`，在 DEPLOY 时接收 `{ purpose: "DEPLOY", request }`，部署规则读取真实请求的落点和方向。RuleContext 的泛型保留已知 Card Ref，普通规则仍只依赖公开状态；实际计时、库存和临时资格各自查询，不新增重复的 enabled 状态。Rule 不执行状态变更。
 
 Unit Definition 的 deployable.card 必填。没有自定义私有状态或时间程序时明确写 `card: {}`；Deployable.createDefinition 在构造入口补上空状态初始化器，归一后的 Card Definition 始终具有 initialize，无 onTick 时不登记空回调。
 

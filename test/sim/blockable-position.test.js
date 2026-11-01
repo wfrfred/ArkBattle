@@ -117,7 +117,7 @@ test("position updates publish first and the Blocking checkpoint releases using 
     let observed;
     battle = update(battle, [
         capability.setBlockableRule({ id: 20 }, {
-            id: "position-bound", allows: (_state, _owner, unit) => unit.position[0] < 2.4,
+            id: "position-bound", allows: (_state, { blockable: unit }) => unit.position[0] < 2.4,
         }),
         capability.setBlockableHook({ id: 20 }, "released", hook("position", state => {
             observed = getUnit(state, 20).position;

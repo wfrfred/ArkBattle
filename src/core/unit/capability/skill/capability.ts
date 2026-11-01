@@ -5,7 +5,7 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Skill as SkillState } from "../../skill/skill.js";
 import type { Events, Hook, Key } from "./hook.js";
 import type { Input as AmmoInput } from "../../skill/ammo.js";
-import type { Rule } from "./rule.js";
+import type { Rule, Key as RuleKey, Rules } from "./rule.js";
 import type { Ref } from "../../../common/ref.js";
 import { createChange, type Change } from "../../change.js";
 import { enter } from "../../skill/operations.js";
@@ -17,7 +17,7 @@ export interface Definition {
 export interface State extends SkillState {
     readonly nextActivationId: number;
     readonly ammo: readonly contribution.Contribution<AmmoInput>[];
-    readonly rules: readonly Rule[];
+    readonly rules: Rules;
     readonly spRecovered: readonly Hook<Events["spRecovered"]>[];
     readonly spPaid: readonly Hook<Events["spPaid"]>[];
     readonly spModified: readonly Hook<Events["spModified"]>[];
@@ -52,12 +52,16 @@ export function initialize<U extends Unit & Pick<Skill, "definition">>(
         ...skill,
         nextActivationId: 0,
         ammo: [],
-        rules: [
-            {
-                id: "@skill/active-recovery",
-                allowsRecovery: (_battle, self) => self.skill.activation === null,
-            },
-        ],
+        rules: {
+            activation: [],
+            operation: [],
+            recovery: [
+                {
+                    id: "@skill/active-recovery",
+                    allows: (_battle, { self }) => self.skill.activation === null,
+                },
+            ],
+        },
         spRecovered: [],
         spPaid: [],
         spModified: [],
@@ -73,19 +77,27 @@ export function initialize<U extends Unit & Pick<Skill, "definition">>(
     };
 }
 
-export function setRule(reference: Ref<Unit & Skill>, rule: Rule): Change {
+export function setRule<K extends RuleKey>(
+    reference: Ref<Unit & Skill>,
+    key: K,
+    rule: Rule<NoInfer<K>>,
+): Change {
     return createChange(reference, (self) => {
-        const rules = registry.set(self.skill.rules, rule);
+        const entries = registry.set(self.skill.rules[key], rule);
 
-        return rules === self.skill.rules ? self : { ...self, skill: { ...self.skill, rules } };
+        return entries === self.skill.rules[key]
+            ? self
+            : { ...self, skill: { ...self.skill, rules: { ...self.skill.rules, [key]: entries } } };
     });
 }
 
-export function removeRule(reference: Ref<Unit & Skill>, id: string): Change {
+export function removeRule(reference: Ref<Unit & Skill>, key: RuleKey, id: string): Change {
     return createChange(reference, (self) => {
-        const rules = registry.remove(self.skill.rules, id);
+        const entries = registry.remove<Rules[RuleKey][number]>(self.skill.rules[key], id);
 
-        return rules === self.skill.rules ? self : { ...self, skill: { ...self.skill, rules } };
+        return entries === self.skill.rules[key]
+            ? self
+            : { ...self, skill: { ...self.skill, rules: { ...self.skill.rules, [key]: entries } } };
     });
 }
 

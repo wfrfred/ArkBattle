@@ -194,7 +194,7 @@ test("release affects only its supplied relationships without maintaining siblin
     let battle = fixture([holder(10, { capacity: 2 }), target(20), target(21), target(22)]);
     battle = applyUnitChanges(battle, [blockerOperations.setRule({ id: 10 }, {
         id: "second-needs-first",
-        allows: (_state, owner, candidate) => candidate.id !== 21 || owner.blocker.blocked.some(entry => entry.id === 20),
+        allows: (_state, { blocker: owner, blockable: candidate }) => candidate.id !== 21 || owner.blocker.blocked.some(entry => entry.id === 20),
     })]);
     battle = blocking.acquire(battle, { id: 10 }, { id: 20 });
     battle = blocking.acquire(battle, { id: 10 }, { id: 21 });

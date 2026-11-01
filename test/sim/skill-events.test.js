@@ -109,7 +109,7 @@ test("operation Rules gate user controls but cannot veto timeout or forced cance
     let state = skills.activate(f.state, f.skillRef).state;
     const reference = activationRef(unitRef(getUnit(state, 1)), getUnit(state, 1).skill);
     const currentSkill6 = getUnit(state, 1).skill;
-    state = setSkill(state, { ...currentSkill6, rules: [...currentSkill6.rules, { id: "no-control", allowsOperation: () => false }] });
+    state = setSkill(state, { ...currentSkill6, rules: { ...currentSkill6.rules, operation: [...currentSkill6.rules.operation, { id: "no-control", allows: () => false }] } });
     assert.equal(skills.operate(state, reference, "STOP").value.type, "REJECTED");
     assert.deepEqual(seen, []);
     state = skills.cancel(state, reference, "DEPARTURE");

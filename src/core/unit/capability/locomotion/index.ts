@@ -9,6 +9,7 @@ export {
 
 export type {
     Definition,
+    RuleContext,
     Rule,
     Input,
     State,

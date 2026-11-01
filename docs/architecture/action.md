@@ -187,9 +187,14 @@ interface Definition {
     readonly select?: (battle: BattleState, self: Unit & ActionCapability) => Result<readonly string[]>;
 }
 
+interface RuleContext {
+    readonly self: Unit & ActionCapability;
+    readonly definitionId: string;
+}
+
 interface Rule {
     readonly id: string;
-    readonly allows: (battle: BattleState, self: Unit & ActionCapability, definitionId: string) => boolean;
+    readonly allows: (battle: BattleState, context: RuleContext) => boolean;
 }
 
 type Input = contribution.Input<Modifier, Unit & ActionCapability>;

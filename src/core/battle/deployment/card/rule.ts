@@ -1,10 +1,18 @@
 import type { Ref } from "../../../common/ref.js";
-import type { State as BattleState } from "../../state.js";
+import type { Rule as BaseRule } from "../../../rule.js";
+import type { DeployRequest } from "../program.js";
 import type { Card } from "./card.js";
 
-export type Purpose = "DISPLAY" | "SELECT" | "DEPLOY";
+export type RuleContext<T extends Card<any> = Card> =
+    | {
+          readonly purpose: "DISPLAY" | "SELECT";
+          readonly ref: Ref<T>;
+      }
+    | {
+          readonly purpose: "DEPLOY";
+          readonly request: DeployRequest<T>;
+      };
 
-export interface Rule {
-    readonly id: string;
-    readonly allows: (battle: BattleState, reference: Ref<Card>, purpose: Purpose) => boolean;
-}
+export type Purpose = RuleContext["purpose"];
+
+export type Rule = BaseRule<RuleContext>;

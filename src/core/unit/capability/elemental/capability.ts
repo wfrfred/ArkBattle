@@ -11,7 +11,7 @@ import * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
 import type { Burst, Definition as BurstDefinition } from "./burst.js";
 import type { DamageHook, Events, Hook, Key } from "./hook.js";
-import type { Rule } from "./rule.js";
+import type { Rule, Key as RuleKey, Rules } from "./rule.js";
 import type { Ref } from "../../../common/ref.js";
 import { createChange, type Change } from "../../change.js";
 
@@ -46,7 +46,7 @@ export interface State {
     readonly damageResistance: readonly contribution.Contribution<Input>[];
     readonly burstRecoverySpeed: readonly contribution.Contribution<Input>[];
     readonly receiving: readonly DamageHook[];
-    readonly rules: readonly Rule[];
+    readonly rules: Rules;
     readonly received: readonly Hook<Events["received"]>[];
     readonly damaged: readonly Hook<Events["damaged"]>[];
     readonly healed: readonly Hook<Events["healed"]>[];
@@ -127,7 +127,7 @@ export function initialize<U extends Unit & Pick<Elemental, "definition">>(
                 damageResistance: [],
                 burstRecoverySpeed: [],
                 receiving: [],
-                rules: [],
+                rules: { damage: [], heal: [] },
                 received: [],
                 damaged: [],
                 healed: [],
@@ -186,23 +186,39 @@ export function removeDamageHook(reference: Ref<Unit & Elemental>, id: string): 
     });
 }
 
-export function setRule(reference: Ref<Unit & Elemental>, rule: Rule): Change {
+export function setRule<K extends RuleKey>(
+    reference: Ref<Unit & Elemental>,
+    key: K,
+    rule: Rule<NoInfer<K>>,
+): Change {
     return createChange(reference, (self) => {
-        const rules = registry.set(self.elemental.rules, rule);
+        const entries = registry.set(self.elemental.rules[key], rule);
 
-        return rules === self.elemental.rules
+        return entries === self.elemental.rules[key]
             ? self
-            : { ...self, elemental: { ...self.elemental, rules } };
+            : {
+                  ...self,
+                  elemental: {
+                      ...self.elemental,
+                      rules: { ...self.elemental.rules, [key]: entries },
+                  },
+              };
     });
 }
 
-export function removeRule(reference: Ref<Unit & Elemental>, id: string): Change {
+export function removeRule(reference: Ref<Unit & Elemental>, key: RuleKey, id: string): Change {
     return createChange(reference, (self) => {
-        const rules = registry.remove(self.elemental.rules, id);
+        const entries = registry.remove<Rules[RuleKey][number]>(self.elemental.rules[key], id);
 
-        return rules === self.elemental.rules
+        return entries === self.elemental.rules[key]
             ? self
-            : { ...self, elemental: { ...self.elemental, rules } };
+            : {
+                  ...self,
+                  elemental: {
+                      ...self.elemental,
+                      rules: { ...self.elemental.rules, [key]: entries },
+                  },
+              };
     });
 }
 

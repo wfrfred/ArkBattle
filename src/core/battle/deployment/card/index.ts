@@ -11,7 +11,7 @@ export type {
 
 export type { Definition } from "./definition.js";
 
-export type { Purpose, Rule } from "./rule.js";
+export type { RuleContext, Purpose, Rule } from "./rule.js";
 
 export { ref } from "./card.js";
 

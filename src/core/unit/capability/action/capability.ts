@@ -8,20 +8,19 @@ import * as hook from "../../../hook.js";
 import type { BeforeReleaseHook, ReleasedHook } from "./release.js";
 import type { Ref } from "../../../common/ref.js";
 import { createChange, type Change } from "../../change.js";
+import type { Rule as BaseRule } from "../../../rule.js";
 
 export interface Definition {
     readonly initialize: (battle: BattleState) => Result<Actions>;
     readonly select?: (battle: BattleState, self: Unit & Action) => Result<readonly DefinitionId[]>;
 }
 
-export interface Rule {
-    readonly id: string;
-    readonly allows: (
-        battle: BattleState,
-        self: Unit & Action,
-        definitionId: DefinitionId,
-    ) => boolean;
+export interface RuleContext {
+    readonly self: Unit & Action;
+    readonly definitionId: DefinitionId;
 }
+
+export type Rule = BaseRule<RuleContext>;
 
 export type Input = contribution.Input<attribute.Modifier, Unit & Action>;
 

@@ -105,17 +105,18 @@ search() 的执行规则已经确定：固定候选数组，逐个 acquire()，�
 两端使用同一个 [Rule](../../src/core/unit/capability/blocking/rule.ts)，从 [Capability 入口](../../src/core/unit/capability/blocking/index.ts) 导入：
 
 ```typescript
+export interface RuleContext {
+    readonly blocker: Unit & Blocker;
+    readonly blockable: Unit & Blockable;
+}
+
 export interface Rule {
     readonly id: string;
-    readonly allows: (
-        battle: BattleState,
-        blocker: Unit & Blocker,
-        blockable: Unit & Blockable,
-    ) => boolean;
+    readonly allows: (battle: BattleState, context: RuleContext) => boolean;
 }
 ```
 
-Rule 是针对当前双方的纯查询，可以读取完整 Unit 的其他能力及 BattleState，不执行状态写入。`blocker.rules` 与 `blockable.rules` 只表示规则的登记所有者；两边都按相同参数顺序调用，不把 Blockable 侧的参数反转，也不另定义各自的 Rule 类型。多个限制按独立 ID 登记与撤销。
+Rule 是针对当前双方的纯查询，可以读取完整 Unit 的其他能力及 BattleState，不执行状态写入。`blocker.rules` 与 `blockable.rules` 只表示规则的登记所有者；两边都使用同一 `{ blocker, blockable }` Context，不把 Blockable 侧的角色反转，也不另定义各自的 Rule 类型。多个限制按独立 ID 登记与撤销。
 
 Rule 的读取范围不意味着自动订阅每个 Battle 字段。Rule Change 的 Settlement 同步复核所属单位的当前关系；时间、第三方单位等间接事实变化由每 Tick 的 Blocking 检查点统一复核。每次全场复核固定入口关系集合并只遍历一遍，Hook 返回后尚未访问的关系读取最新状态；已访问关系在后续 Hook 或搜索中受间接变化影响时，等待下一检查点，除非该业务明确执行即时复核。这是项目的调度契约，不声称原生存在相同全场阶段。
 
@@ -144,7 +145,7 @@ Blocking 将资格与其他取得条件分开处理：
 | 阶段 | 检查内容 |
 | --- | --- |
 | `canSearch` | 不依赖具体目标的基础资格，包括阻挡者在场、存活、空间存在；GROUND 另要求当前根格的阻挡许可，AIR 跳过该地块条件；不提前求值二元 Rule。 |
-| `canRetain` | 双方 PRESENT 且空间存在，阻挡层与目标空地身份匹配，以及两端所有 `Rule.allows(battle, blocker, blockable)`；GROUND 还要求当前根格允许阻挡，AIR 豁免。临时 HP 为 0 不作为默认保持资格的退出条件。 |
+| `canRetain` | 双方 PRESENT 且空间存在，阻挡层与目标空地身份匹配，以及两端所有 `Rule.allows(battle, { blocker, blockable })`；GROUND 还要求当前根格允许阻挡，AIR 豁免。临时 HP 为 0 不作为默认保持资格的退出条件。 |
 | 新关系取得 | 在搜索和关系资格之外，双方有 Vitality 时 HP 必须大于 0，确认目标尚无归属、双方在接敌距离内，且当前占用加目标 volume 不超过 capacity。 |
 | 容量裁撤 | 独立比较当前总占用与容量，超出时从既有有序关联末尾逐项解除；每项通知后接续最新状态。 |
 

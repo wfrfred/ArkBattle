@@ -54,4 +54,4 @@ export {
 
 export type { Receiving, DamageHook, Damaged, Healed, Events, Key, Context, Hook } from "./hook.js";
 
-export type { Rule } from "./rule.js";
+export type { Rule, Key as RuleKey, Contexts as RuleContexts, Rules } from "./rule.js";

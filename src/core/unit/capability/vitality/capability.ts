@@ -78,10 +78,7 @@ export function initialize<U extends Unit & Pick<Vitality, "definition">>(
     };
 }
 
-export function setDamageReceptionRule(
-    reference: Ref<Unit & Vitality>,
-    rule: DamageReceptionRule,
-): Change {
+export function setRule(reference: Ref<Unit & Vitality>, rule: DamageReceptionRule): Change {
     return createChange(reference, (self) => {
         const damageReceptionRules = registry.set(self.vitality.damageReceptionRules, rule);
 
@@ -91,7 +88,7 @@ export function setDamageReceptionRule(
     });
 }
 
-export function removeDamageReceptionRule(reference: Ref<Unit & Vitality>, id: string): Change {
+export function removeRule(reference: Ref<Unit & Vitality>, id: string): Change {
     return createChange(reference, (self) => {
         const damageReceptionRules = registry.remove(self.vitality.damageReceptionRules, id);
 

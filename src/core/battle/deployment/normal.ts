@@ -54,7 +54,7 @@ export function create(definition: Definition): Program<DeployRequest> {
             if (self.stock === 0) {
                 return { type: "REJECTED", reason: "NO_STOCK" };
             }
-            if (!allows(current, request.card, "DEPLOY")) {
+            if (!allows(current, { purpose: "DEPLOY", request })) {
                 return { type: "REJECTED", reason: "RULE" };
             }
 

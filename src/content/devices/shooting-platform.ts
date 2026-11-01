@@ -67,7 +67,7 @@ export function create(configuration: Configuration): Definition {
                                     : update(battle, [
                                           setRule(unitRef(occupant), {
                                               id: ruleId,
-                                              allows: (_battle, blocker) =>
+                                              allows: (_battle, { blocker }) =>
                                                   blocker.blocker.layer === "AIR",
                                           }),
                                       ]),

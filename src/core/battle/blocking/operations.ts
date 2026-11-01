@@ -61,8 +61,10 @@ function canRetain(
         allowsTile(battle, blocker) &&
         hasLayer(target) &&
         blocker.blocker.layer === target.layer.type &&
-        blocker.blocker.rules.every((rule) => rule.allows(battle, blocker, target)) &&
-        target.blockable.rules.every((rule) => rule.allows(battle, blocker, target))
+        blocker.blocker.rules.every((rule) =>
+            rule.allows(battle, { blocker, blockable: target }),
+        ) &&
+        target.blockable.rules.every((rule) => rule.allows(battle, { blocker, blockable: target }))
     );
 }
 

@@ -16,7 +16,7 @@ import { reflect } from "./motion.js";
 import { integrate } from "./steering.js";
 
 function canMove(battle: BattleState, self: Unit & Locomotion): boolean {
-    return self.locomotion.rules.every((rule) => rule.allows(battle, self));
+    return self.locomotion.rules.every((rule) => rule.allows(battle, { self }));
 }
 
 function resolveSpeed(battle: BattleState, self: Unit & Locomotion): number {

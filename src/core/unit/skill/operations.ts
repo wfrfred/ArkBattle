@@ -155,7 +155,7 @@ export function activate<S extends object, A extends object>(
         return reject("ALREADY_ACTIVATED");
     }
     if (
-        !unit.skill.rules.every((rule) => rule.allowsActivation?.(battle, unit) ?? true) ||
+        !unit.skill.rules.activation.every((rule) => rule.allows(battle, { self: unit })) ||
         !(definition.accepts?.(battle, source, self) ?? true)
     ) {
         return reject("CONDITION");
@@ -323,7 +323,7 @@ export function operate<X extends Activation<any, any>>(
 
     const definition = self.definition.activation!;
     if (
-        !unit.skill.rules.every((rule) => rule.allowsOperation?.(battle, unit, operation) ?? true)
+        !unit.skill.rules.operation.every((rule) => rule.allows(battle, { self: unit, operation }))
     ) {
         return reject("CONDITION");
     }

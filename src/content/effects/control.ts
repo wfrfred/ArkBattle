@@ -12,9 +12,9 @@ export const silence: Definition<object> = {
 
         return unit !== undefined && skill.hasSkill(unit)
             ? updateUnit(state, [
-                  skill.setRule(units.ref(unit), {
+                  skill.setRule(units.ref(unit), "activation", {
                       id: `@effect/${self.id}/silence`,
-                      allowsActivation: () => false,
+                      allows: () => false,
                   }),
               ])
             : state;
@@ -23,7 +23,9 @@ export const silence: Definition<object> = {
         const unit = units.get(state, self.host);
 
         return unit !== undefined && skill.hasSkill(unit)
-            ? updateUnit(state, [skill.removeRule(units.ref(unit), `@effect/${self.id}/silence`)])
+            ? updateUnit(state, [
+                  skill.removeRule(units.ref(unit), "activation", `@effect/${self.id}/silence`),
+              ])
             : state;
     },
 };
@@ -36,9 +38,9 @@ export const blockSpRecovery: Definition<object> = {
 
         return unit !== undefined && skill.hasSkill(unit)
             ? updateUnit(state, [
-                  skill.setRule(units.ref(unit), {
+                  skill.setRule(units.ref(unit), "recovery", {
                       id: `@effect/${self.id}/sp-recovery`,
-                      allowsRecovery: () => false,
+                      allows: () => false,
                   }),
               ])
             : state;
@@ -48,7 +50,7 @@ export const blockSpRecovery: Definition<object> = {
 
         return unit !== undefined && skill.hasSkill(unit)
             ? updateUnit(state, [
-                  skill.removeRule(units.ref(unit), `@effect/${self.id}/sp-recovery`),
+                  skill.removeRule(units.ref(unit), "recovery", `@effect/${self.id}/sp-recovery`),
               ])
             : state;
     },

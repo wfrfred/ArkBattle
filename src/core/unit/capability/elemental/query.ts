@@ -116,7 +116,7 @@ export function damageRejection(
         return "NEUTRAL";
     }
 
-    return self.elemental.rules.every((rule) => rule.allowsDamage?.(battle, self, request) ?? true)
+    return self.elemental.rules.damage.every((rule) => rule.allows(battle, { self, request }))
         ? undefined
         : "RULE";
 }
@@ -140,7 +140,7 @@ export function healRejection(
         return "RECOVERING";
     }
 
-    return self.elemental.rules.every((rule) => rule.allowsHeal?.(battle, self, request) ?? true)
+    return self.elemental.rules.heal.every((rule) => rule.allows(battle, { self, request }))
         ? undefined
         : "RULE";
 }

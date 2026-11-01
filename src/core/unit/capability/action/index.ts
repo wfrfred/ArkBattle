@@ -10,7 +10,7 @@ export {
     removeReleasedHook,
 } from "./capability.js";
 
-export type { Definition, Rule, Input, State, Action } from "./capability.js";
+export type { Definition, RuleContext, Rule, Input, State, Action } from "./capability.js";
 
 export { beforeRelease, released } from "./release.js";
 

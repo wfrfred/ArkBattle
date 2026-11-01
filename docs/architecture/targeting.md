@@ -88,13 +88,14 @@ export interface Definition {
     readonly restrictions: readonly Contribution<Restriction>[];
 }
 
+export interface Context {
+    readonly request: targeting.Request;
+    readonly owner: Unit & Targetable;
+}
+
 export interface Restriction {
     readonly kind: symbol;
-    readonly allows: (
-        battle: BattleState,
-        request: targeting.Request,
-        owner: Unit & Targetable,
-    ) => boolean;
+    readonly allows: (battle: BattleState, context: Context) => boolean;
 }
 
 export interface State {

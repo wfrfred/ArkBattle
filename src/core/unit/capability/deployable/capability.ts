@@ -8,6 +8,7 @@ import type { Refund } from "../../../battle/deployment/program.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Card } from "../../../battle/deployment/card/card.js";
 import type { Definition as CardDefinition } from "../../../battle/deployment/card/definition.js";
+import type { Rule as BaseRule } from "../../../rule.js";
 
 export interface Definition<S extends object = object> {
     readonly cost: number;
@@ -32,10 +33,11 @@ export interface State {
     readonly deployedHooks: readonly DeployedHook[];
 }
 
-export interface Rule {
-    readonly id: string;
-    readonly allows: (battle: BattleState, reference: Ref<Unit & Deployable>) => boolean;
+export interface RuleContext {
+    readonly ref: Ref<Unit & Deployable>;
 }
+
+export type Rule = BaseRule<RuleContext>;
 
 export interface Deployable {
     // Narrow deployment fields without erasing a known Card definition's private type.

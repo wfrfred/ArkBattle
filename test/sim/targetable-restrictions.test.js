@@ -153,7 +153,7 @@ test("restriction callbacks receive the actual request, current battle and owner
     const battle = effectFixtureWork(source, target);
 
     assert.equal(targetable.allowsRestrictions(battle, input, target), true);
-    assert.deepEqual(received, [battle, input, target]);
+    assert.deepEqual(received, [battle, { request: input, owner: target }]);
     assert.equal(targetable.allowsRestrictions(battle, input, owner(3)), true);
 });
 
@@ -165,13 +165,13 @@ test("visibility content distinguishes different sides from hostile sides indepe
 
     for (const purposes of [[], ["DAMAGE"], ["HEAL"], ["ELEMENT_DAMAGE", "ELEMENT_HEAL"], ["EFFECT"]]) {
         const input = request(ally, purposes);
-        assert.equal(invisibleRestriction.allows(battle, input, neutral), false);
-        assert.equal(untargetableRestriction.allows(battle, input, neutral), false);
-        assert.equal(camouflageRestriction.allows(battle, input, neutral), true);
-        assert.equal(camouflageRestriction.allows(battle, input, enemy), false);
-        assert.equal(invisibleRestriction.allows(battle, input, ally), true);
-        assert.equal(allyUntargetableRestriction.allows(battle, input, ally), false);
-        assert.equal(allyUntargetableRestriction.allows(battle, input, enemy), true);
+        assert.equal(invisibleRestriction.allows(battle, { request: input, owner: neutral }), false);
+        assert.equal(untargetableRestriction.allows(battle, { request: input, owner: neutral }), false);
+        assert.equal(camouflageRestriction.allows(battle, { request: input, owner: neutral }), true);
+        assert.equal(camouflageRestriction.allows(battle, { request: input, owner: enemy }), false);
+        assert.equal(invisibleRestriction.allows(battle, { request: input, owner: ally }), true);
+        assert.equal(allyUntargetableRestriction.allows(battle, { request: input, owner: ally }), false);
+        assert.equal(allyUntargetableRestriction.allows(battle, { request: input, owner: enemy }), true);
     }
 });
 

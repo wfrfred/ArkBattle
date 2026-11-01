@@ -13,7 +13,7 @@ import * as units from "../../dist/core/unit/query.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { add, remove, update } from "../../dist/core/battle/unit.js";
 import { instantiateUnitPlacement } from "../../dist/core/battle/creation/placement.js";
-import { setRetreatRule } from "../../dist/core/unit/capability/deployable/index.js";
+import { setRule as setDeployableRule, removeRule as removeDeployableRule } from "../../dist/core/unit/capability/deployable/index.js";
 import { setAttackContribution } from "../../dist/core/unit/capability/offense/capability.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
@@ -268,22 +268,54 @@ test("Card presentation rules do not erase it or block deployment, and manual re
     const initial = fixture([definition("hidden")]);
     let battle = cards.setRule(initial.battle, initial.references[0], {
         id: "hidden-and-unselectable",
-        allows: (_current, _reference, purpose) => purpose === "DEPLOY",
+        allows: (_current, { purpose }) => purpose === "DEPLOY",
     });
     assert.ok(cards.get(battle, initial.references[0]));
-    assert.equal(cards.allows(battle, initial.references[0], "DISPLAY"), false);
-    assert.equal(cards.allows(battle, initial.references[0], "SELECT"), false);
+    assert.equal(cards.allows(battle, { ref: initial.references[0], purpose: "DISPLAY" }), false);
+    assert.equal(cards.allows(battle, { ref: initial.references[0], purpose: "SELECT" }), false);
     const deployed = deploy(battle, request(initial.references[0]));
     assert.equal(deployed.value.type, "DEPLOYED");
     const self = units.get(deployed.state, { id: deployed.value.unitId });
     const reference = units.ref(self);
     battle = update(deployed.state, [
-        setRetreatRule(reference, { id: "cannot-retreat", allows: () => false }),
+        setDeployableRule(reference, {
+            id: "cannot-retreat",
+            allows: (_current, { ref }) => ref.id !== reference.id,
+        }),
     ]);
     assert.equal(canRetreat(battle, reference), false);
     assert.equal(retreat(battle, reference), battle);
+    assert.equal(update(battle, [removeDeployableRule(reference, "missing")]), battle);
     battle = remove(battle, reference.id, "SCRIPT");
     assert.equal(units.get(battle, reference), undefined);
+});
+
+test("Card deployment rules receive the actual request in preview and deployment", () => {
+    const initial = fixture([definition("request-rule")]);
+    const reference = initial.references[0];
+    const seen = [];
+    const battle = cards.setRule(initial.battle, reference, {
+        id: "specific-position-and-direction",
+        allows(_current, context) {
+            if (context.purpose !== "DEPLOY") return true;
+            seen.push(context.request);
+            return context.request.tilePosition[1] === 1 && context.request.direction === "LEFT";
+        },
+    });
+    const rejected = { ...request(reference), direction: "RIGHT" };
+    const accepted = { ...request(reference, 1), direction: "LEFT" };
+
+    assert.deepEqual(preview(battle, rejected, operator), { type: "REJECTED", reason: "RULE" });
+    assert.deepEqual(preview(battle, accepted, operator), {
+        type: "ALLOWED",
+        cost: 10,
+        payment: { amount: 10 },
+    });
+    const result = deploy(battle, accepted);
+    assert.equal(result.value.type, "DEPLOYED");
+    assert.deepEqual(seen, [rejected, accepted, accepted]);
+    assert.equal(cards.get(battle, reference).stock, 1);
+    assert.equal(cards.get(result.state, reference).stock, 0);
 });
 
 test("one ordering program follows current prices without changing identity storage and can be stopped at the current order", () => {
@@ -366,8 +398,8 @@ test("entry rules see due inventory without preview publication and successful c
     let battle = cards.enqueueRecovery(added.state, added.value);
     battle = cards.setRule(battle, added.value, {
         id: "recovered-inventory",
-        allows(current, reference) {
-            const self = cards.get(current, reference);
+        allows(current, context) {
+            const self = cards.get(current, context.purpose === "DEPLOY" ? context.request.card : context.ref);
             return self.stock === 1 && self.recovery === null;
         },
     });

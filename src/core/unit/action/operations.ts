@@ -71,7 +71,11 @@ export function start<P extends object, E extends object>(
         if (action.execution !== null) {
             return reject("CASTING");
         }
-        if (!unit.action.rules.every((rule) => rule.allows(battle, unit, definition.id))) {
+        if (
+            !unit.action.rules.every((rule) =>
+                rule.allows(battle, { self: unit, definitionId: definition.id }),
+            )
+        ) {
             return reject("RULE");
         }
 

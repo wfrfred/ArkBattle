@@ -7,7 +7,7 @@ import { replace as updateUnit } from "../../dist/core/battle/unit.js";
 import * as skills from "../../dist/core/unit/skill/operations.js";
 import { create } from "../../dist/core/unit/skill/initialize.js";
 import * as sp from "../../dist/core/unit/skill/sp.js";
-import { initialize as initializeSkill, removeRule } from "../../dist/core/unit/capability/skill/capability.js";
+import { initialize as initializeSkill, setRule, removeRule } from "../../dist/core/unit/capability/skill/capability.js";
 import { create as value } from "../../dist/core/unit/contribution/attribute.js";
 
 import { get as getHookHost, ref } from "../../dist/core/unit/query.js";
@@ -138,9 +138,11 @@ test("capacity, requirement and payment are independent configuration values and
 test("payment needs no Activation and ignores recovery and activation Rules", () => {
     const f = fixture({ sp: resource({ initial: 5 }), activation: null });
     const currentSkill9 = getUnit(f.state, 1).skill;
-    let state = setSkill(f.state, { ...currentSkill9, rules: [{
-        id: "blocked", allowsActivation: () => false, allowsRecovery: () => false,
-    }] });
+    let state = setSkill(f.state, { ...currentSkill9, rules: {
+        activation: [{ id: "blocked", allows: () => false }],
+        operation: [],
+        recovery: [{ id: "blocked", allows: () => false }],
+    } });
     state = sp.pay(state, f.ref, 3).state;
     assert.equal(read(state).sp.value, 2);
     assert.equal(read(state).activation, null);
@@ -150,7 +152,7 @@ test("payment needs no Activation and ignores recovery and activation Rules", ()
 test("recovery Rules block ordinary positive modification, but not drains, payment or explicit force", () => {
     const f = fixture({ sp: resource({ initial: 4 }) });
     const currentSkill10 = getUnit(f.state, 1).skill;
-    const state = setSkill(f.state, { ...currentSkill10, rules: [{ id: "block", allowsRecovery: () => false }] });
+    const state = setSkill(f.state, { ...currentSkill10, rules: { ...currentSkill10.rules, recovery: [{ id: "block", allows: () => false }] } });
     assert.equal(sp.recover(state, f.ref, "TIME", 1).state, state);
     assert.equal(sp.modify(state, f.ref, 1).state, state);
     assert.equal(read(sp.modify(state, f.ref, -2).state).sp.value, 2);
@@ -167,10 +169,44 @@ test("active recovery is a removable default Rule and payment remains legal duri
     state = sp.pay(state, f.ref, 1).state;
     assert.equal(read(state).sp.value, 2);
     const currentSkill11 = getUnit(state, 1).skill;
-    state = applyUnitChanges(state, [removeRule({ id: 1 }, "@skill/active-recovery")]);
+    state = applyUnitChanges(state, [removeRule({ id: 1 }, "recovery", "@skill/active-recovery")]);
     state = sp.recover(state, f.ref, "TIME", 1).state;
     assert.equal(read(state).sp.value, 3);
     assert.equal(read(state).activation.status, "ACTIVE");
+});
+
+test("skill Rule identities are local to each node and replacement preserves activation order", () => {
+    const f = fixture({ sp: resource({ initial: 3 }) });
+    const seen = [];
+    const deny = { id: "shared", allows: () => false };
+    const replacement = { id: "shared", allows: (_battle, { self }) => {
+        seen.push(["replacement", self.id]);
+        return true;
+    } };
+    let state = applyUnitChanges(f.state, [
+        setRule(f.ref, "activation", deny),
+        setRule(f.ref, "recovery", deny),
+        setRule(f.ref, "activation", { id: "after", allows: () => { seen.push(["after", 1]); return true; } }),
+        setRule(f.ref, "activation", replacement),
+    ]);
+    assert.deepEqual(read(state).rules.activation.map(({ id }) => id), ["shared", "after"]);
+    assert.equal(applyUnitChanges(state, [setRule(f.ref, "activation", replacement)]), state);
+    assert.equal(applyUnitChanges(state, [removeRule(f.ref, "operation", "missing")]), state);
+    const started = skills.activate(state, f.skillRef);
+    assert.equal(started.value.type, "ACTIVATED");
+    assert.deepEqual(seen, [["replacement", 1], ["after", 1]]);
+
+    state = applyUnitChanges(started.state, [
+        removeRule(f.ref, "activation", "shared"),
+        removeRule(f.ref, "recovery", "@skill/active-recovery"),
+    ]);
+    assert.deepEqual(read(state).rules.recovery.map(({ id }) => id), ["shared"]);
+    assert.equal(sp.recover(state, f.ref, "TIME", 1).value.type, "REJECTED");
+    state = applyUnitChanges(state, [removeRule(f.ref, "recovery", "shared")]);
+    state = sp.recover(state, f.ref, "TIME", 1).state;
+    assert.equal(read(state).sp.value, 1);
+    assert.deepEqual(read(f.state).rules.activation, []);
+    assert.deepEqual(read(f.state).rules.recovery.map(({ id }) => id), ["@skill/active-recovery"]);
 });
 
 test("natural SP pauses while full and resumes the saved remainder without a backlog", () => {
@@ -192,12 +228,12 @@ test("recovery restrictions pause the natural timer and do not accumulate missed
     const f = fixture({ sp: resource() });
     let state = skills.advance(at(f.state, 12), f.ref);
     const currentSkill12 = getUnit(state, 1).skill;
-    state = setSkill(state, { ...currentSkill12, rules: [{ id: "block", allowsRecovery: () => false }] });
+    state = setSkill(state, { ...currentSkill12, rules: { ...currentSkill12.rules, recovery: [{ id: "block", allows: () => false }] } });
     state = skills.advance(at(state, 200), f.ref);
     assert.equal(read(state).sp.value, 0);
     assert.equal(read(state).sp.recovery.remainingTicks, 18);
     const currentSkill13 = getUnit(state, 1).skill;
-    state = setSkill(state, { ...currentSkill13, rules: currentSkill13.rules.filter(({ id }) => id !== "block") });
+    state = setSkill(state, { ...currentSkill13, rules: { ...currentSkill13.rules, recovery: currentSkill13.rules.recovery.filter(({ id }) => id !== "block") } });
     state = skills.advance(at(state, 217), f.ref);
     assert.equal(read(state).sp.value, 0);
     state = skills.advance(at(state, 218), f.ref);

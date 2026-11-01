@@ -119,11 +119,14 @@ test("Card selection rules are independent and future Unit hooks use ordinary re
     let battle = cards.setHook(added.state, added.value, entry);
     battle = cards.setRule(battle, added.value, {
         id: "cannot-select",
-        allows: (_battle, _reference, purpose) => purpose !== "SELECT",
+        allows: (_battle, { purpose }) => purpose !== "SELECT",
     });
-    assert.equal(cards.allows(battle, added.value, "DISPLAY"), true);
-    assert.equal(cards.allows(battle, added.value, "SELECT"), false);
-    assert.equal(cards.allows(battle, added.value, "DEPLOY"), true);
+    assert.equal(cards.allows(battle, { ref: added.value, purpose: "DISPLAY" }), true);
+    assert.equal(cards.allows(battle, { ref: added.value, purpose: "SELECT" }), false);
+    assert.equal(cards.allows(battle, {
+        purpose: "DEPLOY",
+        request: { card: added.value, tilePosition: [0, 0] },
+    }), true);
     assert.deepEqual(cards.get(battle, added.value).hooks, [entry]);
     assert.equal(cards.setHook(battle, added.value, entry), battle);
     assert.equal(cards.removeRule(battle, added.value, "missing"), battle);

@@ -22,7 +22,7 @@ export type {
     PositionAdjustment,
 } from "./blockable.js";
 
-export { sides, type Rule } from "./rule.js";
+export { sides, type Rule, type RuleContext } from "./rule.js";
 
 export type { Relation, Context, Hook, Key } from "./contract.js";
 

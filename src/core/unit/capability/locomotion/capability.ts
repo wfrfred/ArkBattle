@@ -9,6 +9,7 @@ import type { SteeringParameters } from "./steering.js";
 import * as registry from "../../../hook.js";
 import type { Ref } from "../../../common/ref.js";
 import { createChange, type Change } from "../../change.js";
+import type { Rule as BaseRule } from "../../../rule.js";
 
 export interface Definition {
     readonly speed: number;
@@ -17,10 +18,11 @@ export interface Definition {
     readonly halfBodyWidth: number;
 }
 
-export interface Rule {
-    readonly id: string;
-    readonly allows: (battle: BattleState, self: Unit & Locomotion) => boolean;
+export interface RuleContext {
+    readonly self: Unit & Locomotion;
 }
+
+export type Rule = BaseRule<RuleContext>;
 
 export type Input = contribution.Input<attribute.Modifier, Unit & Locomotion>;
 

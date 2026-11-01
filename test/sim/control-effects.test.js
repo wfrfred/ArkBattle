@@ -26,7 +26,7 @@ const activationAllowed = (state) => {
     return activate(ready, skillRef(unit)).value.type === "ACTIVATED";
 };
 const recoveryAllowed = (state) => recover(state, unitRef(getUnit(state, 0)), "TIME", 0).value.type === "APPLIED";
-const actionAllowed = (battle, self) => self.action.rules.every(rule => rule.allows(battle, self, "normal"));
+const actionAllowed = (battle, self) => self.action.rules.every(rule => rule.allows(battle, { self, definitionId: "normal" }));
 
 function actor(action = true) {
     return unit(0, {

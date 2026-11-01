@@ -71,6 +71,18 @@ Hook 与领域操作按执行语义命名：
 
 生命周期结束的公开 end／cancel／stop／remove 委托 [Lifetime](lifetime.md)：无活动结算时，本次调用完成 request 与 drain，返回时 Pending 为空；有活动结算时，只同步完成首次请求和 Prepare，不承诺槽位释放、注销或最终通知。重复 PREPARING 请求不等待原 Prepare。Finalize 整体返回才解除依赖者对 owner 的等待；Damage.completed 只报告本次伤害完成，不保证目标离场 Finalize 已完成。
 
+### Rule 接口约定
+
+Rule 使用公共 `Rule<C>` 类型，只有登记身份 `id` 和纯资格判断 `allows(battle, context): boolean`。所有业务输入放入所属领域的 Context，BattleState 单独传入；不再混用额外位置参数或多个可选的 allowsXxx 方法。Context 使用已有对象或 Ref 表达实际读取契约，不为统一形式增加重复查询。
+
+单判断节点领域使用 `setRule(ref, rule)`／`removeRule(ref, id)`；多节点领域使用 `setRule(ref, key, rule)`／`removeRule(ref, key, id)`，key 与 Context 类型配对。Skill 的节点为 activation／operation／recovery，Elemental 为 damage／heal，State.rules 按节点分别保存只读登记数组。ID 只在对应宿主、对应节点内唯一；同 ID 替换保留原位置，新 ID 追加，撤销缺失项不改变状态。
+
+各节点按登记顺序检查，任一拒绝即停止，空集合允许；判断只读，不消费资源或推进 BattleState。Unit 能力的登记返回 Change，由 Unit.update 执行，必要后继仍由领域提供；Card 的登记沿自身完整操作写回。检查时点、默认资格及 Blocking 关系复核不由公共类型推断。
+
+Card 的 RuleContext 按查询用途区分：DISPLAY／SELECT 接收 Card Ref，DEPLOY 接收真实 Request；不为展示或点选伪造落点。普通规则只知道公开的 Card 类型，查询入口仍接纳具体私有状态的 Typed Ref。
+
+这项约定统一接口与登记语义，不新增公共集合工具、规则运行时类或执行引擎。Targetable Restriction 仍按 Contribution 的登记与互斥规则组合，其 allows 同样采用 `(battle, context)`，kind 豁免语义保持独立。
+
 ### 模块与公共入口
 
 1. 按领域组织目录，按职责组织文件。query.ts 只负责只读查询，operations.ts 负责完整业务结算，局部状态变换归所属数据或 Capability 模块，Tick 调度归 Runtime。内部辅助步骤保持业务内聚，文件长度与函数名本身不决定拆分。

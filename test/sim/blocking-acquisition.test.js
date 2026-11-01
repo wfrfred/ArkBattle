@@ -18,7 +18,7 @@ test("both endpoint Rules receive the same pair and changes release an incompati
     ]), tick: 7 };
     battle = applyUnitChanges(battle, [blockerOperations.setRule({ id: 10 }, {
         id: "skip-first",
-        allows(current, blocker, blockable) {
+        allows(current, { blocker, blockable }) {
             assert.equal(current.tick, 7);
             assert.equal(getUnit(current, blocker.id), blocker);
             assert.equal(getUnit(current, blockable.id), blockable);
@@ -28,7 +28,7 @@ test("both endpoint Rules receive the same pair and changes release an incompati
     })]);
     battle = applyUnitChanges(battle, [blockableOperations.setRule({ id: 21 }, {
         id: "second-owner-only",
-        allows(current, blocker, blockable) {
+        allows(current, { blocker, blockable }) {
             assert.equal(current.tick, 7);
             assert.equal(getUnit(current, blocker.id), blocker);
             assert.equal(getUnit(current, blockable.id), blockable);
@@ -44,7 +44,7 @@ test("both endpoint Rules receive the same pair and changes release an incompati
 
     battle = applyUnitChanges(battle, [blockableOperations.setRule({ id: 22 }, {
         id: "second-owner-only",
-        allows: (_current, blocker, blockable) => blocker.id === 11 && blockable.id === 22,
+        allows: (_current, { blocker, blockable }) => blocker.id === 11 && blockable.id === 22,
     })]);
     assert.equal(ownerId(battle, 22), undefined);
     assert.deepEqual(blockedIds(battle, 10), []);
@@ -57,7 +57,7 @@ test("acquisition rechecks its own relation while indirect changes to earlier re
     let battle = fixture([holder(10, { capacity: 2 }), target(20), target(21, { position: [2.5, 1] })]);
     battle = applyUnitChanges(battle, [blockerOperations.setRule({ id: 10 }, {
         id: "twenty-excludes-twenty-one",
-        allows(_battle, owner, candidate) {
+        allows(_battle, { blocker: owner, blockable: candidate }) {
             return candidate.id !== 20 || !owner.blocker.blocked.some(reference => reference.id === 21);
         },
     })]);
@@ -83,7 +83,7 @@ test("explicit maintenance settles remaining Rules after releasing their prerequ
     let battle = fixture([holder(10, { capacity: 2 }), target(20), target(21, { position: [2.1, 1] })]);
     battle = applyUnitChanges(battle, [blockerOperations.setRule({ id: 10 }, {
         id: "twenty-requires-twenty-one",
-        allows(_battle, owner, candidate) {
+        allows(_battle, { blocker: owner, blockable: candidate }) {
             return candidate.id !== 20 || owner.blocker.blocked.some(reference => reference.id === 21);
         },
     })]);

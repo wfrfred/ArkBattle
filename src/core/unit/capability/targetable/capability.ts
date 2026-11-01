@@ -10,9 +10,14 @@ export interface Definition {
     readonly restrictions: readonly Contribution<Restriction>[];
 }
 
+export interface Context {
+    readonly request: Request;
+    readonly owner: Unit & Targetable;
+}
+
 export interface Restriction {
     readonly kind: symbol;
-    readonly allows: (battle: BattleState, request: Request, owner: Unit & Targetable) => boolean;
+    readonly allows: (battle: BattleState, context: Context) => boolean;
 }
 
 export interface State {
@@ -82,6 +87,7 @@ export function allowsRestrictions(
         .resolve(owner.targetable.restrictions)
         .every(
             (restriction) =>
-                (ignore?.(restriction.kind) ?? false) || restriction.allows(battle, request, owner),
+                (ignore?.(restriction.kind) ?? false) ||
+                restriction.allows(battle, { request, owner }),
         );
 }

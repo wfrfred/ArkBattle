@@ -46,7 +46,7 @@ export const untargetableKind = Symbol("untargetable");
 
 export const allyUntargetableKind = Symbol("ally-untargetable");
 
-const allowsSameSide: targetable.Restriction["allows"] = (battle, request, owner) => {
+const allowsSameSide: targetable.Restriction["allows"] = (battle, { request, owner }) => {
     const source = units.get(battle, request.source);
 
     return (
@@ -64,7 +64,7 @@ export const invisibleRestriction: targetable.Restriction = {
 
 export const camouflageRestriction: targetable.Restriction = {
     kind: camouflageKind,
-    allows(battle, request, owner) {
+    allows(battle, { request, owner }) {
         const source = units.get(battle, request.source);
 
         return (
@@ -83,7 +83,7 @@ export const untargetableRestriction: targetable.Restriction = {
 
 export const allyUntargetableRestriction: targetable.Restriction = {
     kind: allyUntargetableKind,
-    allows(battle, request, owner) {
+    allows(battle, { request, owner }) {
         const source = units.get(battle, request.source);
 
         return (

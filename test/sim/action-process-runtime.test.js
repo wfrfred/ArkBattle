@@ -104,7 +104,7 @@ test("cooldown refresh leaves Blocking maintenance explicit instead of treating 
     let initial = battle(source, target);
     initial = applyUnitChanges(initial, [setBlockerRule(reference, {
         id: "blocking-during-long-period",
-        allows: (_battle, host) => host.action.actions.get(definition.id).cooldown.periodTicks >= 10,
+        allows: (_battle, { blocker: host }) => host.action.actions.get(definition.id).cooldown.periodTicks >= 10,
     })]);
     const current = getUnit(initial, source.id);
     initial = applyUnitChanges(initial, [setSpeedContribution({ id: current.id }, {

@@ -19,6 +19,7 @@ import {
   setHook,
   removeHook,
   setRule,
+  removeRule,
 } from '../../dist/core/unit/capability/elemental/capability.js';
 import * as elemental from '../../dist/core/unit/capability/elemental/operations.js';
 import { get as getBurst, resolveBurstRecoverySpeed, resolveDamageResistance } from '../../dist/core/unit/capability/elemental/query.js';
@@ -143,7 +144,7 @@ test('receiving an immune request is observable while actual damage is absent an
   const f = fixture();
   const seen = [];
   let battle = elemental.damage(f.battle, f.target, request('BURN', 100)).state;
-  battle = applyUnitChanges(battle, [setRule(f.target, { id: 'immune', allowsDamage: () => false })]);
+  battle = applyUnitChanges(battle, [setRule(f.target, 'damage', { id: 'immune', allows: () => false })]);
   battle = applyUnitChanges(battle, [setHook(f.target, 'received', hook('received', (current, { event }) => {
     seen.push(['received', event.request.power]); return { state: current, value: undefined };
   })), setHook(f.target, 'damaged', hook('damaged', (current) => { seen.push('damaged'); return { state: current, value: undefined }; }))]);
@@ -154,6 +155,31 @@ test('receiving an immune request is observable while actual damage is absent an
   const healed = elemental.heal(denied.state, f.target, { source: null, power: 50 });
   assert.equal(healed.value.type, 'APPLIED');
   assert.equal(get(healed.state, f.target).elemental.ep.BURN, 950);
+});
+
+test('elemental damage and heal Rules with the same ID replace and end independently', () => {
+  const f = fixture();
+  const contexts = [];
+  const deny = { id: 'shared', allows: () => false };
+  let battle = applyUnitChanges(f.battle, [
+    setRule(f.target, 'damage', deny),
+    setRule(f.target, 'heal', deny),
+    setRule(f.target, 'damage', { id: 'shared', allows: (_current, { self, request }) => {
+      contexts.push([self.id, request.type]);
+      return request.type === 'BURN';
+    } }),
+  ]);
+  assert.equal(applyUnitChanges(battle, [removeRule(f.target, 'heal', 'missing')]), battle);
+  const damaged = elemental.damage(battle, f.target, request('BURN', 100));
+  assert.equal(damaged.value.type, 'APPLIED');
+  assert.deepEqual(contexts[0], [1, 'BURN']);
+  battle = applyUnitChanges(damaged.state, [removeRule(f.target, 'damage', 'shared')]);
+  assert.equal(elemental.heal(battle, f.target, { source: null, power: 50 }).value.type, 'REJECTED');
+  battle = applyUnitChanges(battle, [removeRule(f.target, 'heal', 'shared')]);
+  const healed = elemental.heal(battle, f.target, { source: null, power: 50 });
+  assert.equal(healed.value.type, 'APPLIED');
+  assert.equal(get(healed.state, f.target).elemental.ep.BURN, 950);
+  assert.deepEqual(get(f.battle, f.target).elemental.rules, { damage: [], heal: [] });
 });
 
 test('received Hook may remove the host before settlement without publishing damage from a stale Unit', () => {

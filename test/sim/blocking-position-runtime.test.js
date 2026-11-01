@@ -94,7 +94,7 @@ test("all initial position plans advance before the first autonomous movement Ru
 test("position-dependent Blocking Rules are rechecked in the Blocking phase after position adjustment", () => {
     let battle = fixture([holder(), target()]);
     battle = update(battle, [capability.setBlockerRule({ id: 10 }, {
-        id: "position-limit", allows: (_state, _owner, candidate) => candidate.position[0] < 2.3,
+        id: "position-limit", allows: (_state, { blockable: candidate }) => candidate.position[0] < 2.3,
     })]);
     battle = blocking.search(battle, { id: 10 });
 

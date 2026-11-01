@@ -111,7 +111,7 @@ export function canRetreat(battle: BattleState, reference: Ref<Unit & Deployable
     return (
         self?.lifecycle === "PRESENT" &&
         self.deployable.retreatAllowed &&
-        self.deployable.retreatRules.every((rule) => rule.allows(battle, reference))
+        self.deployable.retreatRules.every((rule) => rule.allows(battle, { ref: reference }))
     );
 }
 

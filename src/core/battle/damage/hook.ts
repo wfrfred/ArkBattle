@@ -3,6 +3,7 @@ import type { State as BattleState, Result } from "../state.js";
 import type { Unit } from "../../unit/unit.js";
 import * as units from "../../unit/query.js";
 import * as hooks from "../../hook.js";
+import type { Rule } from "../../rule.js";
 import { hasVitality, type Vitality } from "../../unit/capability/vitality/capability.js";
 import { createChange, type Change } from "../../unit/change.js";
 import type {
@@ -72,10 +73,7 @@ export type Hook =
     | HpAppliedHook
     | CompletedHook;
 
-export interface ReceptionRule {
-    readonly id: string;
-    readonly allows: (battle: BattleState, context: ReceivingContext) => boolean;
-}
+export type ReceptionRule = Rule<ReceivingContext>;
 
 export function setHook(reference: Ref<Unit & Vitality>, entry: Hook): Change {
     return createChange(reference, (self) => {
