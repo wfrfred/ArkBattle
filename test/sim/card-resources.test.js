@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { fixtureBattle } from "../helpers/unit.js";
 import { addCard, advance } from "../../dist/core/battle/deployment/resources.js";
+import { queued } from "../../dist/core/battle/deployment/normal.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 
@@ -22,7 +23,9 @@ function fixture(stock = 0, redeployTicks = 30) {
         }),
     };
     return addCard(fixtureBattle(), definition, {
-        supply: { stockLimit: 3, activeLimit: null },
+        stockLimit: 3,
+        activeLimit: null,
+        program: queued,
         stock,
     });
 }

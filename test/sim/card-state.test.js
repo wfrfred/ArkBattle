@@ -3,8 +3,12 @@ import * as conditions from "../../dist/content/terrain/condition.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import * as cards from "../../dist/core/battle/deployment/card/state.js";
-import { get, operatorSupply } from "../../dist/core/battle/deployment/card/index.js";
-import { addCard } from "../../dist/core/battle/deployment/index.js";
+import { get } from "../../dist/core/battle/deployment/card/index.js";
+import {
+    addCard,
+    operator as operatorProgram,
+    queued,
+} from "../../dist/core/battle/deployment/index.js";
 import { fixtureBattle } from "../helpers/unit.js";
 import { create as value } from "../../dist/core/unit/contribution/attribute.js";
 
@@ -24,13 +28,22 @@ const definition = (cost = 10, redeployTicks = 30) => ({
 });
 function createCard(id, definition, options = {}) {
     const initial = fixtureBattle(0, { nextCardId: id });
-    const created = addCard(initial, definition, options);
+    const created = addCard(initial, definition, {
+        stock: 1,
+        stockLimit: 1,
+        activeLimit: 1,
+        program: operatorProgram,
+        ...options,
+    });
     return get(created.state, created.value);
 }
 const operator = (cost = 10, redeployTicks = 30) => createCard(0, definition(cost, redeployTicks));
 const token = (stockLimit = 3, redeployTicks = 10) =>
     createCard(1, definition(5, redeployTicks), {
-        supply: { stockLimit, activeLimit: stockLimit },
+        stock: stockLimit,
+        stockLimit,
+        activeLimit: stockLimit,
+        program: queued,
     });
 const modification = (id, fields, group) => ({
     id,
@@ -43,13 +56,13 @@ test("ordinary Cards share definitions and have independent persistent progress"
     const first = createCard(0, unit);
     const second = createCard(1, unit);
     assert.equal(first.definition, unit);
-    assert.equal(first.supply, operatorSupply);
     assert.deepEqual(first.state, {});
     assert.deepEqual(second.state, {});
     assert.notEqual(first.state, second.state);
     assert.equal(unit.deployable.card.onTick, undefined);
-    assert.equal(first.stock, null);
-    assert.equal(first.supply.activeLimit, 1);
+    assert.equal(first.stock, 1);
+    assert.equal(first.stockLimit, 1);
+    assert.equal(first.activeLimit, 1);
     assert.equal(first.cooldown, null);
     assert.equal(first.recovery, null);
     const changed = cards.incrementCostStage(first);
@@ -174,7 +187,7 @@ test("future duration modifiers do not rescale a use cooldown that already start
     );
     assert.equal(cards.resolveRedeployTicks(modified), 15);
     assert.equal(modified.cooldown, waiting.cooldown);
-    const shortened = cards.reduceCooldown(modified, 10, 10);
+    const shortened = cards.reduceCooldown(modified, 10, 10, "COOLDOWN");
     assert.equal(shortened.cooldown.readyAtTick, 25);
     assert.equal(shortened.cooldown.durationTicks, 30);
     assert.equal(cards.advance(shortened, 25).cooldown, null);
@@ -212,23 +225,26 @@ test("excess reduction applies to the current recovery segment only", () => {
 
 test("explicit recharge caps inventory without discarding either clock", () => {
     const initial = createCard(1, definition(), {
-        supply: { stockLimit: 5, activeLimit: 2 },
+        stockLimit: 5,
+        activeLimit: 2,
         stock: 2,
     });
     const consumed = cards.consume(initial);
     const waiting = cards.enqueueRecovery(cards.startCooldown(consumed, 10), 10);
     const replenished = cards.recharge(waiting, 10);
     assert.equal(replenished.stock, 5);
-    assert.equal(replenished.supply.activeLimit, 2);
+    assert.equal(replenished.activeLimit, 2);
     assert.equal(replenished.cooldown, waiting.cooldown);
     assert.equal(replenished.recovery, waiting.recovery);
     assert.equal(cards.recharge(replenished, 1), replenished);
-    assert.equal(cards.recharge(operator(), 5).stock, null);
+    const ordinary = operator();
+    assert.equal(cards.recharge(ordinary, 5), ordinary);
     assert.equal(consumed.stock, 1);
 });
 
 test("Card construction rejects impossible finite inventory", () => {
-    const supply = { stockLimit: 1, activeLimit: 1 };
-    assert.throws(() => createCard(0, definition(), { supply, stock: 2 }), RangeError);
-    assert.throws(() => createCard(0, definition(), { supply, stock: null }), RangeError);
+    assert.throws(() => createCard(0, definition(), { stock: 2 }), RangeError);
+    for (const stock of [-1, 0.5]) {
+        assert.throws(() => createCard(0, definition(), { stock }), RangeError);
+    }
 });

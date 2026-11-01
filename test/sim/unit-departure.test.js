@@ -1,3 +1,4 @@
+import { operator } from "../../dist/core/battle/deployment/normal.js";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { ref as skillRef } from "../helpers/skill.js";
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
@@ -164,8 +165,8 @@ for (const domain of ["deployment", "predefined"]) {
         const before = createBattleState(battlefield);
         let state = changeTile(before, [0, 0], { passability: "WALK_ONLY" });
         if (domain === "deployment") {
-            state = addCard(state, definition).state;
-            state = addCard(state, definition).state;
+            state = addCard(state, definition, { stock: 1, stockLimit: 1, activeLimit: 1, program: operator }).state;
+            state = addCard(state, definition, { stock: 1, stockLimit: 1, activeLimit: 1, program: operator }).state;
             state = resolveDeploymentCommands(
                 state,
                 [

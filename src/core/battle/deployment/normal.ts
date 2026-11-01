@@ -9,13 +9,12 @@ import * as cards from "./card/operations.js";
 import { get, allows } from "./card/query.js";
 import { resolveBaseCost, resolveCost, advance } from "./card/state.js";
 import type { Card } from "./card/card.js";
-import type { DeployRequest, Program, Rejection } from "./program.js";
+import type { DeployRequest, Program } from "./program.js";
 import { activeCount } from "./query.js";
 import { replaceCard } from "./resources.js";
 
 interface Definition {
     readonly id: string;
-    readonly available?: (battle: BattleState, self: Card) => Rejection | null;
     readonly consume: (battle: BattleState, reference: Ref<Card>) => BattleState;
     readonly onLeave?: (
         battle: BattleState,
@@ -59,13 +58,12 @@ export function create(definition: Definition): Program<DeployRequest> {
                 return { type: "REJECTED", reason: "RULE" };
             }
 
-            const unavailable = definition.available?.(current, self);
-            if (unavailable != null) {
-                return { type: "REJECTED", reason: unavailable };
+            if (self.cooldown !== null) {
+                return { type: "REJECTED", reason: "COOLDOWN" };
             }
             if (
-                self.supply.activeLimit !== null &&
-                activeCount(current, request.card) >= self.supply.activeLimit
+                self.activeLimit !== null &&
+                activeCount(current, request.card) >= self.activeLimit
             ) {
                 return { type: "REJECTED", reason: "ACTIVE_LIMIT" };
             }
@@ -119,23 +117,18 @@ export function create(definition: Definition): Program<DeployRequest> {
 
 export const operator = create({
     id: "@deployment/operator",
-    available: (_battle, self) =>
-        self.cooldown !== null || self.recovery !== null ? "COOLDOWN" : null,
     consume: cards.consume,
     onLeave: (battle, reference, departure) => {
         if (departure.reason === "RETREAT" || departure.reason === "DEATH") {
             battle = cards.incrementCostStage(battle, reference);
         }
 
-        return get(battle, reference)!.stock === null
-            ? cards.startCooldown(battle, reference)
-            : cards.enqueueRecovery(battle, reference);
+        return cards.enqueueRecovery(battle, reference);
     },
 });
 
 export const consumable = create({
     id: "@deployment/consumable",
-    available: (_battle, self) => (self.cooldown !== null ? "COOLDOWN" : null),
     consume: (battle, reference) =>
         cards.startCooldown(cards.consume(battle, reference), reference),
 });

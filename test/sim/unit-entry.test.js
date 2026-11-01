@@ -1,3 +1,4 @@
+import { operator } from "../../dist/core/battle/deployment/normal.js";
 import { createDefinition as createDeployableDefinition } from "../../dist/core/unit/capability/deployable/index.js";
 import * as conditions from "../../dist/content/terrain/condition.js";
 import { tiles as tileEntries } from '../helpers/tiles.js';
@@ -227,7 +228,7 @@ test('predefined appearances and deployment initialize once', () => {
   const deployable = { ...markEntered(trace, 'deployed'), occupancy: { slot: "OCCUPANT" }, deployable: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, placement: 'ALL', allowedSiteConditions: [conditions.normal], refund: { rate: 0.5, limit: 'BASE_COST' } }) };
   let runtime = initializeBattle(input({ deployment: {
     definition: { initialDp: 0, maxDp: 99, dpRecoveryTicks: null, slotLimit: null },
-    cards: [{ definition: deployable }],
+    cards: [{ definition: deployable, stock: 1, stockLimit: 1, activeLimit: 1, program: operator }],
   }, predefines: [{
     id: 9, alias: null, initiallyPresent: true,
     creation: { type: 'UNIT', definition: markEntered(trace, 'predefined'), position: [2, 0] },

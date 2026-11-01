@@ -1,3 +1,4 @@
+import { operator } from "../../dist/core/battle/deployment/normal.js";
 import { tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import * as unitQueries from "../../dist/core/unit/query.js";
@@ -160,7 +161,7 @@ test("aura runtime: predefined, deployment and spawning join before the same tic
             predefines: [predefined],
             deployment: {
                 definition: { initialDp: 0, maxDp: 99, dpRecoveryTicks: null, slotLimit: null },
-                cards: [{ definition: deployable }],
+                cards: [{ definition: deployable, stock: 1, stockLimit: 1, activeLimit: 1, program: operator }],
             },
             schedule: { type: "TIMELINE", spawns: [spawn({ tick: 0 })] },
         }));

@@ -46,7 +46,7 @@ function createClock(tick: number, durationTicks: number): Clock {
 }
 
 export function consume<T extends Card<any>>(card: T, count = 1): T {
-    return card.stock === null || count === 0 ? card : { ...card, stock: card.stock - count };
+    return count === 0 ? card : { ...card, stock: card.stock - count };
 }
 
 export function incrementCostStage<T extends Card<any>>(card: T): T {
@@ -101,11 +101,11 @@ export function advance<T extends Card<any>>(card: T, tick: number): T {
 }
 
 export function recharge<T extends Card<any>>(card: T, count: number): T {
-    if (card.stock === null || count === 0) {
+    if (count === 0) {
         return card;
     }
 
-    const stock = Math.min(card.supply.stockLimit ?? Infinity, card.stock + count);
+    const stock = Math.min(card.stockLimit ?? Infinity, card.stock + count);
 
     return stock === card.stock ? card : { ...card, stock };
 }
@@ -114,7 +114,7 @@ export function reduceCooldown<T extends Card<any>>(
     card: T,
     ticks: number,
     tick: number,
-    target: TimerTarget = "COOLDOWN",
+    target: TimerTarget,
 ): T {
     const current = getClock(card, target);
     if (current === null || ticks === 0) {
@@ -129,11 +129,7 @@ export function reduceCooldown<T extends Card<any>>(
     return replaceClock(card, target, next);
 }
 
-export function clearCooldown<T extends Card<any>>(
-    card: T,
-    tick: number,
-    target: TimerTarget = "COOLDOWN",
-): T {
+export function clearCooldown<T extends Card<any>>(card: T, tick: number, target: TimerTarget): T {
     const current = getClock(card, target);
     if (current === null) {
         return card;
@@ -148,11 +144,7 @@ export function clearCooldown<T extends Card<any>>(
     );
 }
 
-export function pauseCooldown<T extends Card<any>>(
-    card: T,
-    tick: number,
-    target: TimerTarget = "COOLDOWN",
-): T {
+export function pauseCooldown<T extends Card<any>>(card: T, tick: number, target: TimerTarget): T {
     const current = getClock(card, target);
     if (current?.type !== "RUNNING") {
         return card;
@@ -165,11 +157,7 @@ export function pauseCooldown<T extends Card<any>>(
     });
 }
 
-export function resumeCooldown<T extends Card<any>>(
-    card: T,
-    tick: number,
-    target: TimerTarget = "COOLDOWN",
-): T {
+export function resumeCooldown<T extends Card<any>>(card: T, tick: number, target: TimerTarget): T {
     const current = getClock(card, target);
     if (current?.type !== "PAUSED") {
         return card;

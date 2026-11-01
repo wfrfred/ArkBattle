@@ -1,12 +1,11 @@
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import type { Ref } from "../../common/ref.js";
 import type { State as BattleState, Result } from "../state.js";
-import { operatorSupply, ref, type Card, type UnitDefinition, type Initial } from "./card/card.js";
+import { ref, type Card, type UnitDefinition, type Initial } from "./card/card.js";
 import { get, all } from "./card/query.js";
 import * as card from "./card/state.js";
 import * as dp from "./dp.js";
 import { refreshOrder } from "./order.js";
-import { operator } from "./normal.js";
 
 export function replaceCard(state: BattleState, value: Card<any>): BattleState {
     const index = state.deployment.cards.findIndex((current) => current.id === value.id);
@@ -23,21 +22,20 @@ export function replaceCard(state: BattleState, value: Card<any>): BattleState {
 export function addCard<S extends object>(
     battle: BattleState,
     definition: UnitDefinition<S>,
-    initial: Initial = {},
+    initial: Initial,
 ): Result<Ref<Card<S>>> {
-    const supply = initial.supply ?? operatorSupply;
-    const stock = initial.stock === undefined ? supply.stockLimit : initial.stock;
-    if (supply.stockLimit !== null) {
-        assertNonnegativeSafeInteger(supply.stockLimit, "card stock limit");
+    const { stock, stockLimit, activeLimit, program } = initial;
+
+    assertNonnegativeSafeInteger(stock, "card stock");
+
+    if (stockLimit !== null) {
+        assertNonnegativeSafeInteger(stockLimit, "card stock limit");
     }
-    if (supply.activeLimit !== null) {
-        assertNonnegativeSafeInteger(supply.activeLimit, "card active limit");
+    if (activeLimit !== null) {
+        assertNonnegativeSafeInteger(activeLimit, "card active limit");
     }
-    if (stock !== null) {
-        assertNonnegativeSafeInteger(stock, "card stock");
-    }
-    if (supply.stockLimit !== null && (stock === null || stock > supply.stockLimit)) {
-        throw new RangeError("card stock does not match its supply");
+    if (stockLimit !== null && stock > stockLimit) {
+        throw new RangeError("card stock exceeds the limit");
     }
 
     const id = battle.execution.nextCardId;
@@ -47,8 +45,9 @@ export function addCard<S extends object>(
     const value: Card<S> = {
         id,
         definition,
-        supply,
-        program: initial.program ?? operator,
+        stockLimit,
+        activeLimit,
+        program,
         hooks: [],
         rules: [],
         state: initialized.value,

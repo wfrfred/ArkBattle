@@ -35,7 +35,7 @@ export function recharge(
 export function consume(battle: BattleState, reference: Ref<Card<any>>, count = 1): BattleState {
     assertNonnegativeSafeInteger(count, "card consumption count");
     const self = card.advance(requireCard(battle, reference), battle.tick);
-    if (self.stock !== null && count > self.stock) {
+    if (count > self.stock) {
         throw new RangeError("card stock is insufficient");
     }
 
@@ -81,7 +81,7 @@ export function reduceCooldown(
     battle: BattleState,
     reference: Ref<Card<any>>,
     ticks: number,
-    target: TimerTarget = "COOLDOWN",
+    target: TimerTarget,
 ): BattleState {
     assertNonnegativeSafeInteger(ticks, "cooldown reduction ticks");
     const self = card.advance(requireCard(battle, reference), battle.tick);
@@ -95,7 +95,7 @@ export function reduceCooldown(
 export function clearCooldown(
     battle: BattleState,
     reference: Ref<Card<any>>,
-    target: TimerTarget = "COOLDOWN",
+    target: TimerTarget,
 ): BattleState {
     const self = card.advance(requireCard(battle, reference), battle.tick);
 
@@ -108,7 +108,7 @@ export function clearCooldown(
 export function pauseCooldown(
     battle: BattleState,
     reference: Ref<Card<any>>,
-    target: TimerTarget = "COOLDOWN",
+    target: TimerTarget,
 ): BattleState {
     const self = card.advance(requireCard(battle, reference), battle.tick);
 
@@ -118,7 +118,7 @@ export function pauseCooldown(
 export function resumeCooldown(
     battle: BattleState,
     reference: Ref<Card<any>>,
-    target: TimerTarget = "COOLDOWN",
+    target: TimerTarget,
 ): BattleState {
     const self = requireCard(battle, reference);
 

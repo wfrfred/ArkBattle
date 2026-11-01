@@ -50,7 +50,7 @@ function fixture(definitions, options = {}) {
     };
     const references = [];
     for (const content of definitions) {
-        const added = addCard(battle, content);
+        const added = addCard(battle, content, { stock: 1, stockLimit: 1, activeLimit: 1, program: operator });
         battle = added.state;
         references.push(added.value);
     }
@@ -77,11 +77,15 @@ test("ordinary zero payment and omitted payment remain distinct while a free ins
         reports(delivered.state).map((report) => report.payment),
         [{ amount: 0 }, null],
     );
+    assert.equal(cards.get(delivered.state, initial.references[0]).stock, 0);
+    assert.equal(cards.get(delivered.state, initial.references[1]).stock, 0);
     assert.equal(delivered.state.deployment.dp, 20);
     const self = units.get(delivered.state, { id: delivered.value.unitId });
     assert.equal(self.deployable.cost, 10);
     const returned = retreat(delivered.state, units.ref(self));
     assert.equal(returned.deployment.dp, 25);
+    assert.equal(cards.get(returned, initial.references[1]).recovery.pending, 1);
+    assert.equal(cards.get(returned, initial.references[1]).cooldown, null);
 });
 
 test("preview and failed common eligibility never consume the accepted program or allocate Unit identity", () => {
@@ -231,8 +235,10 @@ test("Card entry hooks install ordinary Effects with grant-time data and resolve
 test("a source program can preserve stock while the deployed instance still consumes active and global quotas", () => {
     const initial = fixture([definition("reusable"), definition("other")], { slotLimit: 1 });
     const stocked = addCard(initial.battle, definition("stocked"), {
-        supply: { stockLimit: 2, activeLimit: 1 },
         stock: 2,
+        stockLimit: 2,
+        activeLimit: 1,
+        program: operator,
     });
     const program = {
         id: "test/no-stock-consumption",
@@ -352,8 +358,10 @@ test("entry rules see due inventory without preview publication and successful c
     };
     const initial = fixture([]);
     const added = addCard(initial.battle, content, {
-        supply: { stockLimit: 1, activeLimit: 1 },
         stock: 0,
+        stockLimit: 1,
+        activeLimit: 1,
+        program: operator,
     });
     let battle = cards.enqueueRecovery(added.state, added.value);
     battle = cards.setRule(battle, added.value, {

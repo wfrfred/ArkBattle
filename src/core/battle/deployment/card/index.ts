@@ -1,7 +1,6 @@
 export type {
     Id,
     UnitDefinition,
-    Supply,
     Initial,
     Input,
     Clock,
@@ -14,7 +13,7 @@ export type { Definition } from "./definition.js";
 
 export type { Purpose, Rule } from "./rule.js";
 
-export { ref, operatorSupply } from "./card.js";
+export { ref } from "./card.js";
 
 export { get, all, allows } from "./query.js";
 

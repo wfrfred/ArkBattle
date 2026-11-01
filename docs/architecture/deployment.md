@@ -19,6 +19,21 @@ Definition ID 标识内容，Card ID 标识本场持续存在的可部署记录�
 
 库存、库存上限、同 Card 在场上限、全场部署额度与地块占位分别表达。activeCount 和 usedSlots 从 Battlefield 中的实例事实查询，不保存第二份在场列表或计数。**本项目在 Unit 物理注销时释放在场数量和额度**，所以 LEAVING 仍占用它们；这是项目结算约定，不由 Lifetime 的存储要求推定为已证实的原生退出时点。
 
+Card 直接保存 stock、stockLimit 与 activeLimit。stock 始终为非负整数，表示当前可用份数；stockLimit 与 activeLimit 可为 null，分别只表示不设持有上限或同 Card 在场上限，stock 仍保留实际计数。
+
+创建 Card 时必须明确提供数量和部署程序，addCard 的 Initial 与 Battle Input 中每条 Card 配置均要求 stock、stockLimit、activeLimit、program：
+
+```typescript
+addCard(battle, definition, {
+    stock: 1,
+    stockLimit: 1,
+    activeLimit: 1,
+    program: operator,
+});
+```
+
+初始份数来自本场带入配置，不是 Unit Definition 的固有限制。每份普通干员分别建立 Card；即使引用相同 Definition，库存、计时、费用阶段和私有状态仍各自独立。堆叠召唤物则由同一 Card 的多份库存表达，不能将多份普通干员合并成一条恢复队列。
+
 ## 一次部署的程序
 
 [battle/deployment/program.ts](../../src/core/battle/deployment/program.ts) 定义静态程序：
@@ -47,13 +62,13 @@ deploy(battle, input, program);
 
 | 程序 | 成功部署 | 实例离场 |
 | --- | --- | --- |
-| operator | 消耗一个库存 | 普通撤退／死亡递增费用阶段；无限库存启动使用冷却，有限库存登记恢复 |
+| operator | 消耗一个库存 | 登记一个库存恢复份数；普通撤退／死亡另递增费用阶段 |
 | consumable | 消耗一个库存并启动使用冷却 | 不自动归还库存 |
 | queued | 消耗一个库存 | 登记一个串行恢复份数；仍有库存时允许继续部署 |
 
-这些是明确组合资源操作的程序，不是 Card 内部 switch 的生命周期策略。Content 可以通过 createProgram 组合其它已确认的供给行为，或直接提供特殊 Program；Card 的 supply 只保存 stockLimit 与 activeLimit。没有离场业务的 consumable 不登记空的 leave Hook。Card 存在或实例关联 Card，不意味着离场必须补回一个库存。
+这些是明确组合资源操作的程序，不是 Card 内部 switch 的生命周期策略。Content 可以通过 createProgram 组合其它已确认的供给行为，或直接提供特殊 Program；消费、计时和离场归还由程序明确组合，不由库存值选择另一种生命周期行为。没有离场业务的 consumable 不登记空的 leave Hook。Card 存在或实例关联 Card，不意味着离场必须补回一个库存。离场是否归还与允许手动撤退分别表达，归还程序可以按实际结束原因决定是否执行。
 
-普通程序负责 Card、库存、当前冷却、同卡在场数、Card Rule 和方向资格。完整 deploy 再统一检查全场额度、DP 支付范围、当前地块与占位。拒绝不消费 DP、库存、共享机会或 Unit ID；特殊程序自己选择是否消费库存及采用哪种冷却，不通过 force／free／ignore 标志组合授权。
+标准程序统一检查 Card、可用库存、部署间隔 cooldown、同卡在场数和 Card Rule；recovery 存在本身不禁止部署，只要仍有可用库存且其它资格满足，就可继续部署。完整 deploy 再统一检查全场额度、DP 支付范围、当前地块与占位。拒绝不消费 DP、库存、共享机会或 Unit ID；特殊程序自己选择是否消费库存及采用哪种冷却，不通过 force／free／ignore 标志组合授权。
 
 ## 支付、属性与完整执行
 
@@ -117,13 +132,13 @@ setOrdering(null) 停止自动重排并保留现有顺序，不自动恢复所�
 
 ## 冷却与库存恢复
 
-Card 将使用冷却 cooldown 与库存恢复 recovery 分开。使用冷却结束只解除本段间隔；库存恢复保存 pending 份数和一条 clock，每段结束补回一份，再决定是否启动下一段。同一份事实只保存一次，有限唯一供给使用恢复周期即可，不复制一份相同的使用冷却。
+Card 将部署间隔 cooldown 与库存恢复 recovery 分开。部署间隔结束只解除本段间隔，不补库存；库存恢复保存 pending 份数和一条 clock，每段结束补回一份，再决定是否启动下一段。普通干员的库存循环为 1 → 部署消费至 0 → 实例离场后启动恢复 → 到期回到 1；期间 Card 身份、费用阶段和私有状态保持。每份干员使用自己 Card 的恢复时钟，不复制一份相同的 cooldown。
 
 Clock 保存启动时的 durationTicks；RUNNING 保存 readyAtTick，PAUSED 保存 remainingTicks。setRedeployTimeContribution 只影响后续周期。恢复下一段时读取 Card 当时已有的有效时长，不为每份入队保存预算，也不永久复用整条队列首次启动的预算。
 
 enqueueRecovery 的公共约定是追加份数并保留已存在的当前段；没有当前段时才启动。每次有效回收都保留份数，不会被后一次归队覆盖。原生 OnRecycle 某些状态切换可能 Reset 的具体来源路径尚未闭合，本项目不把这些未确认路径偷偷加入通用追加操作；有实际内容要求时，由来源显式重置对应周期。
 
-reduceCooldown／clearCooldown 可指定 COOLDOWN 或 RECOVERY，只操作当前段，不把多余缩短量传给后续段。recharge 直接增加可用库存，不重置计时器。暂停保存剩余时间；暂停期间减时和清零只修改该剩余值，恢复时再继续并结算到期。零时长周期可以在当前 Tick 完成。这些是当前公共操作的明确项目契约，不能据此声称黑棺、莲座等所有来源组合均已核实。
+reduceCooldown／clearCooldown／pauseCooldown／resumeCooldown 必须明确指定 COOLDOWN 或 RECOVERY，不提供默认目标，不自动选择非空时钟，也不同时修改两者。普通干员的再部署时间操作作用于 RECOVERY；部署间隔操作作用于 COOLDOWN。减时只操作当前段，不把多余缩短量传给后续段。recharge 直接增加可用库存，不重置计时器。暂停保存剩余时间；暂停期间减时和清零只修改该剩余值，恢复时再继续并结算到期。零时长周期可以在当前 Tick 完成。这些是当前公共操作的明确项目契约，不能据此声称黑棺、莲座等所有来源组合均已核实。
 
 Deployment 在阶段入口固定 Card 候选，逐项读取当前 Card，先发布到期结果再调用可选私有 onTick；新 Card 下次参与，回调后不回填旧整份对象。
 
@@ -175,6 +190,6 @@ Unit 只派发通用节点。Runtime 为 Occupancy 登记 registrationChanged �
 
 ## 卫戍协议与剩余范围
 
-卫戍的初始免费部署、倒地位置、隐藏待部署区、自动再部署和回合间经济由外部 Mechanism／Meta 组合领域操作。特殊 Program 可以不支付、不消费库存并选择所需的离场程序，仍经过公共地块、占位和额度检查；Core 不按模式名称分支。
+卫戍的初始免费部署、倒地位置、隐藏待部署区、自动再部署和回合间经济由外部 Mechanism／Meta 组合领域操作。普通干员初始免费部署保留该份 Card 的正常库存消费，支付流程与库存消费独立；预放召唤物按已确认的机制通过特殊 Program 选择不消费库存。是否补数由该次来源的离场程序决定，不能因关联 Card 自动归还。特殊 Program 仍经过公共地块、占位和额度检查；Core 不按模式名称分支。
 
 该接入边界不代表卫戍内容链已经完成。仍需按实际内容闭合：来源 Card 在宿主结束时的保留／隐藏／重建、多来源排序竞争、特定归队 Reset、暂停来源组合、术语移动的退出与继承政策，以及各内容的具体入场时序。费用来源的完整归并与退出资格的精确原生阶段也保留证据缺口。未知项不阻止已明确的通用操作，但不能由接口或测试存在推定相应玩法已接入。

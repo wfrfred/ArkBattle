@@ -1,3 +1,4 @@
+import { operator } from "../../dist/core/battle/deployment/normal.js";
 import { notify, registrationChanged } from "../../dist/core/battle/occupancy.js";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
@@ -145,7 +146,7 @@ for (const entry of ["initial", "script", "manual"]) {
                 battle = add(battle, passenger());
                 id = 10;
             } else {
-                const card = addCard(battle, passengerDefinition());
+                const card = addCard(battle, passengerDefinition(), { stock: 1, stockLimit: 1, activeLimit: 1, program: operator });
                 const result = deploy(card.state, { card: card.value, tilePosition: first });
                 assert.equal(result.value.type, "DEPLOYED");
                 battle = result.state;

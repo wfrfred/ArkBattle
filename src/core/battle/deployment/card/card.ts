@@ -15,15 +15,11 @@ export type UnitDefinition<S extends object = object> = BaseDefinition & {
     readonly occupancy: OccupancyDefinition;
 };
 
-export interface Supply {
+export interface Initial {
+    readonly stock: number;
     readonly stockLimit: number | null;
     readonly activeLimit: number | null;
-}
-
-export interface Initial {
-    readonly supply?: Supply;
-    readonly stock?: number | null;
-    readonly program?: DeploymentProgram<DeployRequest>;
+    readonly program: DeploymentProgram<DeployRequest>;
 }
 
 export interface Input extends Initial {
@@ -47,23 +43,19 @@ export type TimerTarget = "COOLDOWN" | "RECOVERY";
 export interface Card<S extends object = object> extends Identified<{ readonly id: Id }> {
     readonly id: Id;
     readonly definition: UnitDefinition<S>;
-    readonly supply: Supply;
+    readonly stockLimit: number | null;
+    readonly activeLimit: number | null;
     readonly program: DeploymentProgram<DeployRequest>;
     readonly hooks: readonly Hook[];
     readonly rules: readonly Rule[];
     readonly state: S;
-    readonly stock: number | null;
+    readonly stock: number;
     readonly cooldown: Clock | null;
     readonly recovery: Recovery | null;
     readonly costStage: number;
     readonly costContributions: readonly Contribution<readonly Modifier[]>[];
     readonly redeployTimeContributions: readonly Contribution<readonly Modifier[]>[];
 }
-
-export const operatorSupply: Supply = {
-    stockLimit: null,
-    activeLimit: 1,
-};
 
 export function ref<T extends Card<any>>(self: T): Ref<T> {
     return { id: self.id } as Ref<T>;

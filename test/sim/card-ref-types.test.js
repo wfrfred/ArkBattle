@@ -19,14 +19,15 @@ import type { State as BattleState } from ${source("battle/state")};
 import type { Unit } from ${source("unit/unit")};
 import { createDefinition, hasDeployable, type Deployable } from ${source("unit/capability/deployable/index")};
 import { initialize as initializeUnit } from ${source("unit/initialize")};
-import { addCard, deploy } from ${source("battle/deployment/index")};
-import { type Card, type Definition, ref, get, all, setState } from ${source("battle/deployment/card/index")};
+import { addCard, deploy, operator } from ${source("battle/deployment/index")};
+import { type Card, type Definition, ref, get, all, setState, reduceCooldown, clearCooldown } from ${source("battle/deployment/card/index")};
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
 type Assert<T extends true> = T;
 type Private = { charges: number };
 declare const battle: BattleState;
 declare const unit: Ref<Unit>;
 declare const erased: Ref<Card>;
+const initial = { stock: 1, stockLimit: 1, activeLimit: 1, program: operator };
 const cardDefinition: Definition<Private> = {
     initialize: current => ({ state: current, value: { charges: 2 } }),
     onTick(current, self) {
@@ -55,7 +56,7 @@ const inline = {
         },
     }),
 };
-const inlineAdded = addCard(battle, inline);
+const inlineAdded = addCard(battle, inline, initial);
 type InlineAdded = Assert<Equal<typeof inlineAdded.value, Ref<Card<Private>>>>;
 const initialized = initializeUnit(battle, { id: 0, position: [0, 0], definition: inline }).value;
 const initializedCard: Ref<Card> | null = initialized.deployable.card;
@@ -72,9 +73,20 @@ if (hasDeployable(unknownUnit)) {
     const label: string = unknownUnit.label;
     const source: Ref<Card> | null = guarded.deployable.card;
 }
-const added = addCard(battle, definition);
+const added = addCard(battle, definition, initial);
 type Added = Assert<Equal<typeof added.value, Ref<Card<Private>>>>;
+// @ts-expect-error Card creation requires explicit inventory and deployment behavior.
+addCard(battle, definition);
+// @ts-expect-error Available inventory is a number, never an unlimited-stock sentinel.
+addCard(battle, definition, { ...initial, stock: null });
+reduceCooldown(battle, added.value, 1, "RECOVERY");
+clearCooldown(battle, added.value, "RECOVERY");
+// @ts-expect-error Timing operations require an explicit clock target.
+reduceCooldown(battle, added.value, 1);
+// @ts-expect-error Clearing a clock must name the interval or inventory recovery.
+clearCooldown(battle, added.value);
 const precise = get(added.state, added.value)!;
+type Stock = Assert<Equal<typeof precise.stock, number>>;
 type State = Assert<Equal<typeof precise.state, Private>>;
 const known = get(battle, erased, definition);
 type Known = Assert<Equal<typeof known, Card<Private> | undefined>>;
@@ -95,7 +107,7 @@ const plain = {
     id: "plain-card", hooks: [], occupancy: { slot: "OCCUPANT" as const },
     deployable: createDefinition({ card: {}, cost: 0, redeployTicks: 1, slots: 1, placement: "ALL", allowedSiteConditions: [] }),
 };
-const empty = addCard(battle, plain);
+const empty = addCard(battle, plain, initial);
 type EmptyState = Assert<Equal<typeof empty.value, Ref<Card>>>;
 const unmatched = get(battle, erased, plain);
 type Unmatched = Assert<Equal<typeof unmatched, Card | undefined>>;

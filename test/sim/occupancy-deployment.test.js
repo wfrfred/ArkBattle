@@ -1,3 +1,4 @@
+import { operator } from "../../dist/core/battle/deployment/normal.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { addCard } from "../../dist/core/battle/deployment/index.js";
@@ -15,8 +16,8 @@ for (const slot of ["OCCUPANT", "SUPPORT"]) {
         };
         const indexedSlot = slot === "OCCUPANT" ? "occupant" : "support";
         const otherSlot = slot === "OCCUPANT" ? "support" : "occupant";
-        const first = addCard(fixtureBattle(), definition);
-        const second = addCard(first.state, definition);
+        const first = addCard(fixtureBattle(), definition, { stock: 1, stockLimit: 1, activeLimit: 1, program: operator });
+        const second = addCard(first.state, definition, { stock: 1, stockLimit: 1, activeLimit: 1, program: operator });
         const request = { card: first.value, tilePosition: [0, 1] };
         const deployed = deploy(second.state, request);
         assert.equal(deployed.value.type, "DEPLOYED");

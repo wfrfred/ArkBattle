@@ -1,3 +1,4 @@
+import { operator } from "../../dist/core/battle/deployment/normal.js";
 
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { tiles as tileEntries } from '../helpers/tiles.js';
@@ -53,7 +54,7 @@ const definition = (id, fields = {}) => ({ hooks: [], id, vitality: { maxHp: 100
 const unit = (id, fields = {}) => initialize({ id, definition: definition(`unit:${id}`, fields), position: [id, 0] });
 const deployment = (definitions) => ({
     definition: { initialDp: 0, maxDp: 99, dpRecoveryTicks: null, slotLimit: null },
-    cards: definitions.map((definition) => ({ definition })),
+    cards: definitions.map((definition) => ({ definition, stock: 1, stockLimit: 1, activeLimit: 1, program: operator })),
 });
 const input = (fields = {}) => ({
     map, schedule: { type: "TIMELINE", spawns: [spawn(enemy(), 1000)] }, initialUnits: [], predefines: [],

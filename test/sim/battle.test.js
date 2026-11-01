@@ -1,3 +1,4 @@
+import { operator, queued } from "../../dist/core/battle/deployment/normal.js";
 import { changeTile } from "../helpers/tiles.js";
 import { tiles as tileEntries } from "../helpers/tiles.js";
 import { normal } from "../../dist/content/terrain/definition.js";
@@ -1528,7 +1529,9 @@ function deploymentBattleInput(overrides = {}, cards = []) {
   });
   return {
     ...withTimelineSpawns(source, [{ ...source.schedule.spawns[0], tick: 99 }]),
-    deployment: { definition: { initialDp: 99, maxDp: 99, dpRecoveryTicks: null, slotLimit: null }, cards },
+    deployment: { definition: { initialDp: 99, maxDp: 99, dpRecoveryTicks: null, slotLimit: null },
+      cards: cards.map(card => ({ stock: 1, stockLimit: 1, activeLimit: 1, program: operator, ...card })),
+    },
     map: createMap(1, 6, tileEntries(Array.from({ length: 6 }, () => ({
       heightType: 'LOWLAND', meleeBlockable: true, buildableType: 'ALL', passableMask: 'ALL',
       terrain: normal.create({}), walkCost: 1, advancedBuildableMask: 1,
@@ -1548,9 +1551,7 @@ const deployableDefinition = (id = 'test_deployable') => Object.freeze({ hooks: 
 
 test('core battle deploys and retreats units with immutable occupancy and current tile navigation costs', () => {
   const definition = deployableDefinition();
-  let runtime = initializeBattle(deploymentBattleInput({}, [{ definition: definition, supply: {
-    stockLimit: null, activeLimit: null,
-  } }]));
+  let runtime = initializeBattle(deploymentBattleInput({}, [{ definition, stock: 2, stockLimit: 2, activeLimit: null, program: queued }]));
   const maps = runtime.battlefield.navigation;
   const deployed = (runtime = advanceBattle(runtime, [{ type: 'DEPLOY_UNIT', cardId: 0, tilePosition: [0, 1] }]));
   const unit = runtime.battlefield.units.get(0);
@@ -1629,9 +1630,7 @@ test('core battle deploys and retreats units with immutable occupancy and curren
 
 test('core battle accepts the first deployment and rejects an occupied destination without consuming another identity', () => {
   const definition = deployableDefinition();
-  const spec = deploymentBattleInput({}, [{ definition: definition, supply: {
-    stockLimit: null, activeLimit: null,
-  } }]);
+  const spec = deploymentBattleInput({}, [{ definition, stock: 2, stockLimit: 2, activeLimit: null, program: queued }]);
   let runtime = initializeBattle(spec), replay = initializeBattle(spec);
   const deploy = tilePosition => ({ type: 'DEPLOY_UNIT', cardId: 0, tilePosition });
   const before = runtime, maps = runtime.battlefield.navigation;

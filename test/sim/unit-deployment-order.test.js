@@ -1,3 +1,4 @@
+import { operator } from "../../dist/core/battle/deployment/normal.js";
 
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { changeTile } from "../helpers/tiles.js";
@@ -60,7 +61,7 @@ test("tile changes during entry release blocking before deployment observers", (
             return { state: update(state, [{ ...unit, vitality: { ...unit.vitality, hp: 75 } }]), value: undefined };
         } }],
     };
-    const added = addCard(battle, definition);
+    const added = addCard(battle, definition, { stock: 1, stockLimit: 1, activeLimit: 1, program: operator });
     const deployed = deploy({
         ...added.state,
         execution: { ...added.state.execution, nextUnitId: 30 },
@@ -105,7 +106,7 @@ test("manual deployment records its event before entry and notifies observers af
             return { state: update(state, [{ ...self, vitality: { ...self.vitality, hp: 60 } }]), value: undefined };
         } }],
     };
-    const added = addCard(battle, definition);
+    const added = addCard(battle, definition, { stock: 1, stockLimit: 1, activeLimit: 1, program: operator });
     const result = deploy(added.state, {
         card: added.value,
         tilePosition: [0, 3],

@@ -2,15 +2,7 @@ export type { Definition, Input, State } from "./deployment.js";
 
 export { initialize, changeDp } from "./deployment.js";
 
-export type {
-    Id as CardId,
-    Supply,
-    Input as CardInput,
-    Clock as CardClock,
-    Card,
-} from "./card/card.js";
-
-export { operatorSupply } from "./card/card.js";
+export type { Id as CardId, Input as CardInput, Clock as CardClock, Card } from "./card/card.js";
 
 export { resolveBaseCost, resolveCost, resolveRedeployTicks } from "./card/state.js";
 
