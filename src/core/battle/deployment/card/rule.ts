@@ -1,6 +1,6 @@
 import type { Ref } from "../../../common/ref.js";
 import type { Rule as BaseRule } from "../../../rule.js";
-import type { DeployRequest } from "../program.js";
+import type { DeployRequest } from "../request.js";
 import type { Card } from "./card.js";
 
 export type RuleContext<T extends Card<any> = Card> =

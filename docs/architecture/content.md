@@ -28,13 +28,13 @@ Definition 保存静态配置和纯内容函数，Unit 保存运行时身份、C
 
 Unit Definition 必填 hooks 数组，静态声明 enter、tick、prepare 和 leave 阶段的 Hook；没有生命周期程序时使用 []。Unit.initialize 从调用方显式提供的初始 hooks 开始，各能力按 fold 登记，最后追加 Definition.hooks；Skill 的入场处理自动作为普通 enter Hook 登记，不修改共享 Definition。这个顺序是创建程序的明确装配顺序，不宣称原生外来效果均有统一的优先级。初始对象、部署、刷怪和预定义出现按输入顺序逐个完成创建、登记和统一 enter Hook；下一对象接续前一对象的最新 BattleState，不预先创建后续实例。
 
-battle/unit.add 读取已登记的 PRESENT Unit，直接派发实例 hooks 中的 enter Hook；advance 在阶段开始时固定 Unit 候选，本轮新创建的单位下次参与，轮到单位时读取最新 PRESENT 实例并派发 tick Hook。每次派发固定 Context，Skill 的 enter Hook 也不为后继重新采样 Context；enter／tick 每项前确认宿主仍为 PRESENT。prepare 在 LEAVING 发布后、请求子依赖前执行；leave 在注销后使用开始离场时捕获的 Departure，保留清理前 SP 等事实，不查询已经删除的宿主。跨同步操作后当前运行状态仍需重新查询。具体契约见 [Unit 生命周期](deployment.md#unit生命周期-hook)。
+battle/unit.add 读取已登记的 PRESENT Unit，直接派发实例 hooks 中的 enter Hook；advance 在阶段开始时固定 Unit 候选，本轮新创建的单位下次参与，轮到单位时读取最新 PRESENT 实例并派发 tick Hook。每次派发固定 Context，Skill 的 enter Hook 也不为后继重新采样 Context；enter／tick 每项前确认宿主仍为 PRESENT。prepare 在 LEAVING 发布后、请求子依赖前执行；leave 在注销后使用开始离场时捕获的 Departure，保留清理前 SP 等事实，不查询已经删除的宿主。跨同步操作后当前运行状态仍需重新查询。具体契约见 [Unit 生命周期](capability.md#初始化与装配)。
 
 具体 Unit 可以直接增加自己的运行时字段，例如 Boss 阶段与转阶段截止时间。Unit 的 tick Hook 位于部署、刷怪之后，Effect、技能与行动推进之前；需要立即响应伤害或行动结束的阶段变化仍由对应领域 Hook 或内容程序执行。单位行为推进不代替各 Capability 的独立推进，异常直接向外抛出，Tick 成功后才发布新状态。
 
 低层 Battlefield 变换不执行角色程序。伤害、治疗、Skill 和 Effect 等完整结算继续使用显式的纯状态传递；Runtime 承担外部推进和 Tick 发布。
 
-完整 battle/unit.add／remove 在 enter 后／物理注销后发出 registrationChanged；Runtime 登记的 Occupancy 观察者按受影响登记格的承载差分向 SUPPORT 派发 occupantAdded／occupantRemoved Hook。通用 Change update 和内部 replace 仅维护双槽登记，不派发通知；当前生产没有任意搬格工厂。候选和 Context 固定，Removed 可携带已移除对象历史，Added 每项确认当前组合仍有效；具体契约见 [Occupancy](occupancy.md#同步登记通知)。
+Occupancy 初始化自行登记 enter／leave 程序，向 SUPPORT 的静态 Hook 派发 occupantAdded／occupantRemoved；Deployment 在 fold 前已登记的入场程序仍先执行。双方先发布共享的 pair，再发 Added；Removed 按旧 pair 身份清理，不能影响后来建立的新绑定。Context 保存绑定建立时的双方快照，需要当前生命值、Effect 或其它事实时从最新 BattleState 查询。通用 Change update 和内部 replace 仅维护双槽索引，不派发配对内容通知；当前生产没有任意搬格工厂。具体契约见 [Occupancy](occupancy.md)。
 
 ## 语义证据与项目政策
 
@@ -57,11 +57,11 @@ battle/unit.add 读取已登记的 PRESENT Unit，直接派发实例 hooks 中�
 
 具体角色 Definition 必须声明实际依赖的 Capability，工厂输出保留标准状态与配置的对应关系。Effect 的 Host 泛型用于表达回调读取哪些能力。
 
-Unit Definition 的 deployable.card 必填。没有私有逻辑时明确写 `card: {}`；createDeployableDefinition 将其归一成空状态初始化器。需要私有逻辑时在 card 中声明 initialize 和可选 onTick，具体状态类型从初始化结果推断。Card.definition 仍引用原 Unit Definition，不另建一份内容对象。Card 的 state 跨部署保存，Unit 每次部署重新初始化；需要继承的具体资源由 enter／leave 显式转换。Card 通过自身领域的 Typed Ref 操作写回，不调用内部完整 replace。
+可部署内容在完整静态 Unit Definition 的顶层分别声明 card、deployable 和 occupancy。card 明确提供基础费用、时长、初始库存与上限、退费策略、部署规则、Unit 附加 Hook，以及 initialize 和可选 onTick；没有私有逻辑时 initialize 显式返回空对象。Deployable Definition 只保存固有 retreatRules，单向依赖 Occupancy，本次来源 Card、COST、部署位份额和退费依据由 Deployment 在 Unit 初始化完成、登记之前写入。Card.definition 保留原静态定义，不另建或按次拼装内容对象。Card 的 state 跨部署保存，Unit 每次部署重新初始化；需要继承的具体资源由内容显式转换。Card 通过自身领域的 Typed Ref 操作写回，不调用内部完整 replace。
 
-一次部署的 Program 与 Card Definition 分别负责准备本次操作和推进跨部署状态。Program.prepare 只读，完整 deploy 在公共资格通过后先结算支付与来源消费，再构造、登记和入场。特殊免费部署显式使用 payment:null，正常零费仍为 payment:{amount:0}；来源自己的回收政策通过普通 leave Hook 执行。入场附着由 Card 携带普通 Hook，Unit 入场时调用 effects.install，不建立 Attachment 或 Card Effect 容器。共享一次机会由真正来源保存，不能复制到各 Card。
+一次部署使用完整 Request，包含 Card Ref、落点、可选方向、Quote、附加 Rule 和普通 Unit Hook。默认规则、Card 的静态与当前规则、本次附加规则按 ID 合并后统一判断，UI 与实际部署复用相同资格；通过后先消费 DP／库存／部署位，再构造、登记并执行入场程序。quote.dp 为 null 表示跳过支付，0 表示正常零费。Card 显式配置部署间隔、离场库存恢复及费用阶段策略；主动撤退与被动死亡在各自路径使用这些策略，不对所有 leave 自动回收。主动撤退即时处理退款，实际离场后的 Card 后继通过本次全局 leave 观察完成；slots 由本地 leave 归还。入场附着使用 Card 或 Request 携带的普通 Hook 调用 effects.install，不建立 Attachment 或 Card Effect 容器。共享一次机会由真正来源保存，不能复制到各 Card。完整契约见 [Deployment](deployment.md)，特殊移动重部署留待后续实现。
 
-本轮四向摆放朝向归 Occupancy；定义可提供方向初态，本次部署通过 initial.occupancy.direction 覆盖，方向相关攻击范围读取当前实例。没有朝向的装置使用 null，不伪造 RIGHT；基础 Unit 没有方向字段。Occupancy 同时通过 initial.occupancy.tile 接受本次登记，不通过通用 Partial<Unit> 预装运行状态。保存到 Battle.Input／排程的异构创建描述使用 createUnitPlacementDefinition 配对初态；直接创建仍按具体 Definition 约束输入。
+本轮四向摆放朝向归 Occupancy；方向不在静态 Definition 中声明，本次部署通过 initial.occupancy.direction 提供，方向相关攻击范围读取当前实例。没有朝向的装置使用 null，不伪造 RIGHT；基础 Unit 没有方向字段。Occupancy 同时通过 initial.occupancy.tile 接受本次登记，不通过通用 Partial<Unit> 预装运行状态。关卡开场 Unit 声明为 initiallyPresent:true 的 Predefined，直接提供静态 definition、position、可选 initial.occupancy 和 hooks。Predefined 与 Deployment 都直接调用 unit.initialize，不经过额外创建工厂、品牌或泛型配对层。
 
 基础 Unit 只声明身份、生命周期、Definition、位置和 Effects。每个 Capability 同时声明自身的配置与运行状态；业务通过 `Unit & Vitality & Offense` 等组合表达需要的能力。初始化工厂由具体 Definition 推导所创建的标准状态，异构战场查询则通过 `hasX` 收窄为实际需要的能力。能力集合用于装配和快照投影，不作为基础 Unit 的可选字段聚合。
 

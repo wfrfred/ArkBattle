@@ -1,4 +1,3 @@
-import { operator } from "../../dist/core/battle/deployment/normal.js";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { ref as skillRef } from "../helpers/skill.js";
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
@@ -15,7 +14,7 @@ import { actionCapability } from "../helpers/actions.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { create as createBattlefield } from "../../dist/core/battlefield/state.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
-import { createDefinition as createDeployableDefinition } from "../helpers/deployable.js";
+import { createDefinition as createDeployableDefinition, createCardDefinition } from "../helpers/deployable.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { addCard } from "../../dist/core/battle/deployment/index.js";
@@ -84,7 +83,7 @@ function fixture() {
                 vitality: { maxHp: 100, defense: 0, resistance: 0 },
                 ...(id < 2 ? {
                     skill,
-                    deployable: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" }),
+                    deployable: createDeployableDefinition(),
                 } : {}),
             },
         }),
@@ -159,14 +158,15 @@ for (const domain of ["deployment", "predefined"]) {
                 return { state: changeTile(battle, position, { walkCost: tile.definition.initial.walkCost }), value: undefined };
             } }],
 
-            deployable: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" }),
+            deployable: createDeployableDefinition(),
+            card: createCardDefinition({ cost: 0, redeployTicks: 0, slots: 1 }),
             vitality: Object.freeze({ maxHp: 100, defense: 0, resistance: 0 }),
         });
         const before = createBattleState(battlefield);
         let state = changeTile(before, [0, 0], { passability: "WALK_ONLY" });
         if (domain === "deployment") {
-            state = addCard(state, definition, { stock: 1, stockLimit: 1, activeLimit: 1, program: operator }).state;
-            state = addCard(state, definition, { stock: 1, stockLimit: 1, activeLimit: 1, program: operator }).state;
+            state = addCard(state, definition).state;
+            state = addCard(state, definition).state;
             state = resolveDeploymentCommands(
                 state,
                 [

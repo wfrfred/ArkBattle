@@ -7,15 +7,17 @@ import type { Definition as DeployableDefinition } from "../../core/unit/capabil
 import type { Definition as OccupancyDefinition } from "../../core/unit/capability/occupancy/index.js";
 import type { Definition as VitalityDefinition } from "../../core/unit/capability/vitality/index.js";
 import type { Definition as UnitDefinition } from "../../core/unit/index.js";
+import type { Definition as CardDefinition } from "../../core/battle/deployment/card/index.js";
 import { hole } from "../terrain/definition.js";
 
 export interface Definition extends UnitDefinition {
     readonly vitality: VitalityDefinition;
     readonly deployable: DeployableDefinition;
     readonly occupancy: OccupancyDefinition;
+    readonly card: CardDefinition;
 }
 
-export interface Configuration extends Pick<Definition, "id" | "vitality" | "deployable"> {
+export interface Configuration extends Pick<Definition, "id" | "vitality" | "deployable" | "card"> {
     readonly tileChanges: Partial<TileState>;
 }
 

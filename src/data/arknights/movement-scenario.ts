@@ -254,7 +254,6 @@ export function loadMovementScenario(
             map: level.map,
             schedule: compiled.schedule,
             predefines: loaded.predefines,
-            initialUnits: [],
             initialMechanisms,
             maxTicks: secondsToTicks(level.options.maxPlayTime),
             routeMoveMultiplier: level.options.moveMultiplier,

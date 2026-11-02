@@ -1,3 +1,4 @@
+import { predefinedUnits } from "../helpers/predefined.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
@@ -45,8 +46,8 @@ function runtime(definitions, spawns = []) {
             ...spawns,
             spawn({ hooks: [], spatialPresence: {}, id: "later", vitality: { maxHp: 100, defense: 0, resistance: 0 }, locomotion }, 100),
         ] },
-        initialUnits: definitions.map((definition, id) => ({ definition, position: [id, 0] })),
-        predefines: [], initialMechanisms: [], maxTicks: 10, routeMoveMultiplier: 1, rngState: 123,
+        predefines: predefinedUnits(definitions.map((definition, id) => ({ definition, position: [id, 0] }))),
+         initialMechanisms: [], maxTicks: 10, routeMoveMultiplier: 1, rngState: 123,
     });
 }
 

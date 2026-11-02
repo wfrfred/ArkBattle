@@ -2,7 +2,6 @@
 
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { ref as skillRef } from "../helpers/skill.js";
-import * as conditions from "../../dist/content/terrain/condition.js";
 import * as blockingQueries from "../../dist/core/battle/blocking/index.js";
 import { advance as advanceBlocking } from "../../dist/core/battle/blocking/index.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
@@ -65,7 +64,7 @@ function setup(configuration = {}, targets = [], options = {}) {
 
     const prepared = profile(configuration);
     const content = create(prepared, options);
-    const unit = initialize({ id: 0, position: [0, 0], definition: content.definition });
+    const unit = initialize({ id: 0, position: [0, 0], definition: content.definition, initial: { occupancy: { direction: "RIGHT" } } });
     const initial = createBattleState(fixtureBattlefieldState(targets));
     return { prepared, ...content, initial, unit, state: advanceBlocking(add(initial, unit)) };
 }
@@ -83,12 +82,17 @@ test("entry installs one persistent shield container and preserves prior snapsho
     assert.deepEqual(readShield(getUnit(state, 0)), { layers: 1, timer: 270 });
     assert.equal(getUnit(state, 0).effects.values().toArray().filter(instance => instance.definition.id === "mudrock/shield").length, 1);
     assert.equal(getUnit(state, 0).definition.profile, prepared);
-    assert.deepEqual(getUnit(state, 0).definition.deployable, {
-        card: getUnit(state, 0).definition.deployable.card,
+    assert.deepEqual(getUnit(state, 0).definition.deployable, { retreatRules: [] });
+    const { deploymentRules, unitHooks, initialize: initializeCard, ...card } = getUnit(state, 0).definition.card;
+    assert.deepEqual(card, {
         cost: prepared.attributes.cost, redeployTicks: prepared.attributes.respawnTime * 30,
-        slots: 1, placement: "MELEE", allowedSiteConditions: [conditions.normal],
+        slots: 1, stock: 1, stockLimit: 1, activeLimit: 1,
+        cooldownOnDeploy: false, recoverOnLeave: true, increaseCostOnLeave: true,
         refund: { rate: 0.5, limit: "BASE_COST" },
     });
+    assert.deepEqual(deploymentRules.map(rule => rule.id), ["deployment/site"]);
+    assert.deepEqual(unitHooks, []);
+    assert.equal(typeof initializeCard, "function");
     assert.equal(getUnit(state, 0).deployable.refund, null);
     const externalHealing = healing(hp(state, 1000), {
         source: null, target: { id: 0 }, parameters: { power: 100, multiplier: 1 },

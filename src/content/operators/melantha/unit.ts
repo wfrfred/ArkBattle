@@ -18,7 +18,8 @@ import {
     lifetime as skillLifetime,
 } from "../../../core/unit/skill/index.js";
 
-import { createDefinition as createDeployableDefinition } from "../../../core/unit/capability/deployable/index.js";
+import type { Definition as CardDefinition } from "../../../core/battle/deployment/card/index.js";
+import { get as getTile } from "../../../core/battlefield/map/map.js";
 import { sides } from "../../../core/unit/capability/blocking/index.js";
 import {
     hasOffense,
@@ -29,7 +30,6 @@ import {
 import { type Definition as EffectDefinition, install } from "../../../core/unit/effect/index.js";
 
 import * as attribute from "../../../core/unit/contribution/attribute.js";
-import type { Direction } from "../../../core/geometry/direction.js";
 import { secondsToTicks } from "../../../data/arknights/tick.js";
 import { create as createAttack } from "./action.js";
 
@@ -52,6 +52,7 @@ export interface Definition
             | "vitality"
         > {
     readonly profile: Profile;
+    readonly card: CardDefinition;
 }
 
 function attackBonus(id: string, amount: number): EffectDefinition<object, Offense> {
@@ -82,7 +83,7 @@ function attackBonus(id: string, amount: number): EffectDefinition<object, Offen
     };
 }
 
-export function create(profile: Profile, direction: Direction = "RIGHT"): Definition {
+export function create(profile: Profile): Definition {
     if (profile.id !== "char_208_melan" || profile.skill.definition.id !== "skcom_atk_up[1]") {
         throw new TypeError("Melantha content requires her first skill");
     }
@@ -119,16 +120,38 @@ export function create(profile: Profile, direction: Direction = "RIGHT"): Defini
     return {
         id: profile.id,
         profile,
-        occupancy: { slot: "OCCUPANT", direction },
+        occupancy: { slot: "OCCUPANT" },
         targetable: { restrictions: [] },
-        deployable: createDeployableDefinition({
-            card: {},
+        deployable: { retreatRules: [] },
+        card: {
             cost: profile.attributes.cost,
             redeployTicks: secondsToTicks(profile.attributes.respawnTime),
             slots: 1,
-            placement: "MELEE",
-            allowedSiteConditions: [normalSite],
-        }),
+            stock: 1,
+            stockLimit: 1,
+            activeLimit: 1,
+            cooldownOnDeploy: false,
+            recoverOnLeave: true,
+            increaseCostOnLeave: true,
+            refund: { rate: 0.5, limit: "BASE_COST" },
+            deploymentRules: [
+                {
+                    id: "deployment/site",
+                    allows(battle, { request }) {
+                        const tile = getTile(battle.battlefield.map, request.tilePosition);
+
+                        return (
+                            tile !== undefined &&
+                            (tile.state.placement === "MELEE" || tile.state.placement === "ALL") &&
+                            (tile.state.siteCondition === null ||
+                                tile.state.siteCondition === normalSite)
+                        );
+                    },
+                },
+            ],
+            unitHooks: [],
+            initialize: (battle) => ({ state: battle, value: {} }),
+        },
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
         vitality: {
             maxHp: profile.attributes.maxHp,

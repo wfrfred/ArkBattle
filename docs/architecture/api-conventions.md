@@ -108,8 +108,8 @@ Card 的 RuleContext 按查询用途区分：DISPLAY／SELECT 接收 Card Ref，
 | Blocking | [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts)、[capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) | Battle 入口提供关系查询及 acquire／release／maintain／maintainAll／search／advance；relations(battle, ref?) 局部直接读取原关联，release 接收 readonly Relation[]，批量解除、记录整批事件后顺序通知，不附加维护或搜索。maintain 接收单条 Relation，仅复核原身份的当前资格；maintainAll 固定入口关系并逐条复核一遍。Capability 入口导出 setLayer、两端 Rule／容量／volume／Hook 的 Change 工厂及模型类型，经 Unit.update 统一发布后结算；容量／volume 的裁撤由各自 Settlement 使用内部 settleCapacity 完成。容量仅用 ADD／ZERO，半径保存于 Definition.radius 和 State.radius。setLayer 以 previous.blocked 的旧 Ref 调用 release，不回填旧 Unit；DEFAULT_RADIUS 和 settleCapacity 保持内部。 |
 | Damage／Healing | [damage/index.ts](../../src/core/battle/damage/index.ts)、[healing/index.ts](../../src/core/battle/healing/index.ts) | 各自的 Calculate／Apply 两阶段、请求／报告及 Hook 登记；阶段派发保持内部实现，不合并结算协议。 |
 | Targeting | [battle/targeting/index.ts](../../src/core/battle/targeting/index.ts) | Filter／Comparator／Selector、hasCandidate 与 select；只读 hasCandidate 归 query.ts，可能消费 RNG 的选择保留 select.ts。 |
-| Deployment | [battle/deployment/index.ts](../../src/core/battle/deployment/index.ts) | 部署经济、addCard、只读 Program.prepare／preview 与完整 deploy／retreat；普通请求读取 Card.program，内容可显式提供 Program。统一资格后先消费再构造与 enter；Command 在边界把 cardId 转为 Ref。DP 操作与独立业务顺序同属本领域。 |
-| Card | [battle/deployment/card/index.ts](../../src/core/battle/deployment/card/index.ts) | Card<S>、私有程序 Definition<S>、原 Unit Definition 的 UnitDefinition<S> 类型别名、ref、get／all、规则与未来 Unit Hook、费用贡献、计数库存、独立持有／在场上限、部署间隔和串行恢复。Card 创建配置的 stock、stockLimit、activeLimit、program 必填；Deployable.card 必填，空逻辑明确写 {}，在构造入口补空状态初始化器。addCard／已知定义查询使用统一泛型契约。字段／资源操作接收 BattleState 与 Typed Ref；纯计算与完整替换不公开，不复制 Unit Change。 |
+| Deployment | [battle/deployment/index.ts](../../src/core/battle/deployment/index.ts) | 部署经济、addCard、完整 Request／Quote、统一 evaluate／preview／positions、deploy 与领域部署 Hook。retreat／canRetreat 归 Deployable，Deployment 入口保留协作导出；Command 在边界把 cardId 转为 Ref 并生成完整请求。详见[部署契约](deployment.md)。 |
+| Card | [battle/deployment/card/index.ts](../../src/core/battle/deployment/card/index.ts) | Card<S>、私有程序 Definition<S>、ref、get／all、规则与未来 Unit Hook、费用贡献、计数库存、部署间隔和串行恢复。addCard 接收包含顶层 card 配置的完整静态 Unit Definition，Card 保留同一引用供部署直接使用，不独立配对两份定义或按次组装。Card 配置不嵌入 Deployable，本次部署事实归 Deployable State。字段／资源操作接收 BattleState 与 Typed Ref；纯计算与完整替换不公开，不复制 Unit Change。详见[静态内容与 Card](deployment.md#静态内容与-card)。 |
 | Schedule | [battle/schedule/index.ts](../../src/core/battle/schedule/index.ts) | 配置、执行状态、创建、推进、登记／结算与统计查询；isSpawnScheduleCompleted／getSpawnedCount／getSpawnScheduleCounts／getUnspawnedCount 归 query.ts，队列算法与辅助计算保持内部依赖。 |
 | 多文件 Capability | unit/capability/ 下 action、blocking、deployable、elemental、locomotion、occupancy、offense、presence、route、skill、vitality 各自的 index.ts | 按能力职责选择导出。Occupancy 保存可空的摆放朝向并提供 setDirection Change；Skill 入口只提供工厂 Definition、Capability／State、守卫、初始化及 Rule／Hook／Ammo 贡献 Change 工厂，不导出领域程序、资源结算或 Activation 业务。完整实例写回、阶段派发和具体运动算法不因共享导出成为内容 API。 |
 | 小 Capability 与 Catalog | allegiance／hitbox／layer／targetable 的 capability.ts；unit/capability/catalog.ts | 单文件能力保留自然入口；Catalog 只维护初始化字典与派生类型，不增加模板 index 或另一套能力映射。 |
@@ -117,8 +117,8 @@ Card 的 RuleContext 按查询用途区分：DISPLAY／SELECT 接收 Card Ref，
 | Common 与 Geometry | common/、geometry/ 下现有功能模块 | Ref、Query、集合、数值、坐标与几何按用途直接导入；私有 Store 不经公共入口公开。 |
 | Map、Field 与空间查询 | battlefield/map/map.ts、tile.ts、terrain.ts；battlefield/state.ts、occupancy.ts、spatial/query.ts | 保留现有自然入口及只读／纯转换边界；Tiles 等内部容器不为 index 公开，完整地块结算仍归 battle/tile.ts。 |
 | Navigation | battlefield/navigation/ 下现有状态、缓存、寻路与射线模块 | 按实际算法和依赖直接导入，不为统一模板增加聚合入口。 |
-| Mechanism 与 Creation | battle/mechanism.ts；battle/creation/ 下具体创建模块 | Mechanism 保留单模块契约、lifetime 及内部容器；各创建流程保留自身公开输入与结果，不并入 Runtime 入口。 |
-| Runtime 内部协作 | battle/execution/、steps/ 及 battle/occupancy.ts 等同步协作实现 | 阶段编排和登记观察按需直接依赖，不作为独立内容入口；battle/unit-hook.ts 管理 registrationChanged／leave 全局 Hook，由 Runtime 与相应领域登记消费者；共享依赖析构归 core/lifetime。 |
+| Mechanism 与 Creation | battle/mechanism.ts；battle/creation/ 下具体创建模块 | Mechanism 保留单模块契约、lifetime 及内部容器；路线规范化、Mechanism 创建保留实际业务。普通 Unit 直接调用 unit.initialize，Predefined 只管理关卡预置与当前实例绑定，不另设通用创建包装。 |
+| Runtime 内部协作 | battle/execution/、steps/ 及 battle/occupancy.ts 等同步协作实现 | 阶段编排和登记观察按需直接依赖，不作为独立内容入口；battle/unit-hook.ts 管理真实 leave 的全局观察；占格配对由 Occupancy 自身程序处理；共享依赖析构归 core/lifetime。 |
 
 ## 2. 参数与职责
 
@@ -268,7 +268,7 @@ Skill.state 保存跨次玩法事实，Activation.state 保存本轮事实，由
 
 SP setContribution／removeContribution 仍归 unit/skill/sp.ts，只接受 recoverySpeed／recoveryMultiplier 两项属性，并绑定 Skill Capability Ref 返回 Change；它们使用 Attribute 修正数据与公式。Ammo 的 Input 使用独立 Modifier 和已核实的容量公式，来源直接登记在 Capability.ammo。capacity／requirement／cost 与 TIME duration 没有通用 Contribution 接口；配置切换、消费与当前轮次延时属于明确操作。共享 Input<M, H> 只统一数据提供形式，不决定这些操作或其公式。Contribution.group.priority 只负责互斥选择。非 TIME 的 sp.advance 直接 no-op，不更新 lastTick。Elemental 的完整宿主写回是 operations.ts 中的私有 replaceHost；query.ts 只保留查询。两者均不向内容推广完整实例写回。Action 按 Definition 聚合持久 state、Cooldown 和当前 Execution；内容分别用 setState、setCooldown、setExecutionState 设置对应字段，不提交完整旧条目。Unit 的 leave Hook 以 Departure 为固定终止历史载荷，保留开始离场时的 Unit 与 reason。
 
-Card 的 state.ts 与 Action 的局部 Cooldown 计算只处理显式传入的局部值，保留必要的 tick 参数。Card 公共写回统一接收 BattleState 与 Card Typed Ref，setState 接收结果值，不公开完整替换或 transform；setRedeployTimeContribution 影响以后启动的周期，reduceCooldown／clearCooldown／pauseCooldown／resumeCooldown 必须明确指定 COOLDOWN 或 RECOVERY，只操作所选当前段；enqueueRecovery 追加待恢复份数，不覆盖已有计时。普通干员使用库存恢复，不另存相同的部署间隔；剩余库存的部署资格不受恢复队列存在影响。暂停操作保存剩余时间，来源特化由具体内容组合。Deployment.Program.prepare 与 preview 只读，准备结果不公开独立 apply；完整 deploy 在统一资格后先消费，再执行已配对的构造程序。Projectile 的发射时点、到期时点等历史事实也继续保存。
+Card 的 state.ts 与 Action 的局部 Cooldown 计算只处理显式传入的局部值，保留必要的 tick 参数。Card 公共写回统一接收 BattleState 与 Card Typed Ref，setState 接收结果值，不公开完整替换或 transform；setRedeployTimeContribution 影响以后启动的周期，reduceCooldown／clearCooldown／pauseCooldown／resumeCooldown 必须明确指定 COOLDOWN 或 RECOVERY，只操作所选当前段；enqueueRecovery 追加待恢复份数，不覆盖已有计时。普通干员使用库存恢复，不另存相同的部署间隔；剩余库存的部署资格不受恢复队列存在影响。暂停操作保存剩余时间，来源特化由具体内容组合。Deployment 的 evaluate／preview 在临时不可变状态中接续到期资源，再用同一完整 Request 求值；完整 deploy 在统一资格后先消费，再直接复用静态 Definition 初始化实例，不公开独立 Preparation／apply。Projectile 的发射时点、到期时点等历史事实也继续保存。
 
 ### 5.1 Unit 完整操作与批量变更
 
@@ -312,9 +312,9 @@ Unit.initialize 将 Blocker／Blockable 的组合限制为至多一种，两者�
 
 Blocking.release(battle, readonly Relation[]) 在入口过滤失效旧身份与重复项，先发布整批双端解除结果，再记录全部 BLOCKING_RELEASED，最后按首次输入顺序逐条派发 Hook。每条开始时同时固定两端候选 ID，后续读取最新登记；ACQUIRED 按旧身份失效停止，RELEASED 作为历史通知继续。release 不接受额外 Unit 更新值，不自动维护、搜索或取消偏移。空间业务先纯发布字段和自身计划取消，再调用 release(battle, relations(battle, ref))；两步间没有回调，首个通知已经可以读取完整结果。
 
-add 接收创建方已经完成 Capability 初始化、部署信息及路线初态的完整 Unit，负责登记、统一 enter Hook，再发出 registrationChanged 全局观察通知；Runtime 登记的 Occupancy 观察者负责承载通知。Unit 不识别具体能力或扫描全场 Blocking。创建方逐个完成 add 再处理下一对象。Unit Definition 的 hooks 必填，无监听传 []；Unit.initialize 从显式初始 hooks 开始 fold 各能力，最后合并 Definition.hooks，同 ID 后者替换并保留首次位置；enter／tick／prepare／leave 均直接执行相应的固定对象序列。enter／tick 每项前确认当前宿主仍为 PRESENT；prepare／leave 使用固定 Departure，leave 时宿主已经注销。可选 initial 按 initializer 的第三参数与已声明能力配对，不接受任意 Partial<Unit>。Skill 自行登记 enter Hook。实际 Deployment 在 initialize／enter 之前完成卡／DP 和共享机会消费，add 前写入本次部署事实并记录 UNIT_DEPLOYED，add 返回后派发 deployedHooks；Unit.add 不推断部署。
+add 接收创建方完成初始化的完整 Unit，登记后按顺序执行 enter，不推断部署或点名能力。Deployment 在初始化 fold 前登记自己的 enter，Occupancy 随后追加配对程序，先注册先执行；不再发送 registrationChanged。Unit Definition.hooks 必填，无监听传 []；同 ID 替换保留首次位置。本地程序序列在构造期确定，enter／tick 每项前确认 PRESENT；prepare／leave 使用固定 Departure，leave 时实例已经注销。能力创建输入保持可选；Deployable 在初始化入口要求已有 Occupancy。实际部署在初始化前提交 DP／库存／额度，在未登记 Unit 上写入本次部署事实，并在 add 前记录 UNIT_DEPLOYED。
 
-remove 按 Unit ID 请求 Unit Lifetime 结束，首次请求保留 Departure，纯发布 LEAVING 后统一派发 prepare Hook。Blocking 自行登记的首部 Hook 解除本 Unit 旧关系，Blockable 取消自身 adjustment；Deployable Hook 随后按最新 Unit 返费。Unit 不调用能力专属操作，Lifetime 按父子边登记顺序展开依赖。依赖者完整 Finalize 后才注销 Unit、记录移除事实，发出 registrationChanged，再执行本地 leave（部署来源的回收程序及内容 Hook），最后发出全局 leave；Card 关联本身不自动决定归还政策，Finalize 不扫描能力或全场关系。嵌套 remove 只保证请求／Prepare，不保证已物理移除。advance 保留入口 Unit Query 快照，在操作处生成 Ref，逐项读取最新 PRESENT Unit 并派发 tick Hook。
+remove 按 Unit ID 请求 Lifetime 结束，首次请求保存 Departure、发布 LEAVING，再执行已登记 prepare。Blocking 自行清理关系与位置计划。真实依赖者完整 Finalize 后才注销 Unit、记录移除事实，执行本地 leave，最后派发全局 leave；Unit 不识别能力或扫描领域状态补救。主动撤退由 Deployable 接口组织退款与离场后继，被动死亡程序只接受已确认死亡，不对所有 leave 无条件回收。Occupancy 用已通知的旧 pair 清理，不把同格新实例当旧对端；Deployable 在本地 leave 归还该实例额度。嵌套 remove 只保证请求／Prepare，最外层结算结束才保证完成。advance 固定入口候选，再逐项读取最新 PRESENT Unit 执行 tick。
 
 battlefield/unit.ts 的 add／update／remove 仍是纯存储与索引转换，Field.update 接收完整 Unit 数组，不能与公开 Battle.update 的 Change 数组混用。BattleState 不保留另一套 Unit CRUD，通用 setBattlefield 已移除；特殊撤退—再部署留待实际内容审查。
 

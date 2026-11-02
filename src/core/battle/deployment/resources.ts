@@ -1,7 +1,7 @@
-import { assertNonnegativeSafeInteger } from "../../common/assert.js";
+import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../common/assert.js";
 import type { Ref } from "../../common/ref.js";
 import type { State as BattleState, Result } from "../state.js";
-import { ref, type Card, type UnitDefinition, type Initial } from "./card/card.js";
+import { ref, type Card, type UnitDefinition } from "./card/card.js";
 import { get, all } from "./card/query.js";
 import * as card from "./card/state.js";
 import * as dp from "./dp.js";
@@ -22,11 +22,17 @@ export function replaceCard(state: BattleState, value: Card<any>): BattleState {
 export function addCard<S extends object>(
     battle: BattleState,
     definition: UnitDefinition<S>,
-    initial: Initial,
 ): Result<Ref<Card<S>>> {
-    const { stock, stockLimit, activeLimit, program } = initial;
+    const { stock, stockLimit, activeLimit, cost, redeployTicks, slots, refund } = definition.card;
 
+    assertNonnegativeNumber(cost, "card cost");
+    assertNonnegativeSafeInteger(redeployTicks, "card redeployment ticks");
+    assertNonnegativeSafeInteger(slots, "card deployment slots");
     assertNonnegativeSafeInteger(stock, "card stock");
+
+    if (refund !== null) {
+        assertNonnegativeNumber(refund.rate, "card refund rate");
+    }
 
     if (stockLimit !== null) {
         assertNonnegativeSafeInteger(stockLimit, "card stock limit");
@@ -40,15 +46,12 @@ export function addCard<S extends object>(
 
     const id = battle.execution.nextCardId;
     battle = { ...battle, execution: { ...battle.execution, nextCardId: id + 1 } };
-    const initialized = definition.deployable.card.initialize(battle);
+    const initialized = definition.card.initialize(battle);
     battle = initialized.state;
     const value: Card<S> = {
         id,
         definition,
-        stockLimit,
-        activeLimit,
-        program,
-        hooks: [],
+        hooks: definition.card.unitHooks,
         rules: [],
         state: initialized.value,
         stock,
@@ -81,7 +84,7 @@ export function advance(state: BattleState, tick: number): BattleState {
         const reference = ref(candidate);
         const self = card.advance(get(state, reference)!, tick);
         state = replaceCard(state, self);
-        state = self.definition.deployable.card.onTick?.(state, self) ?? state;
+        state = self.definition.card.onTick?.(state, self) ?? state;
     }
 
     const deployment = dp.advance(state.deployment, tick);

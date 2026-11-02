@@ -1,3 +1,4 @@
+import { predefinedUnits } from "../helpers/predefined.js";
 import { create as createSkill } from "../../dist/core/unit/skill/index.js";
 import { ref as skillRef } from "../helpers/skill.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
@@ -81,7 +82,7 @@ test("native attack buff data builds a shared Definition and changes attacks thr
     locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 } },
   };
   const base = createLegacyCombatSpec({ rows: 1, columns: 3, operators: [], enemies: [], maxTicks: 2200 });
-  let runtime = initializeBattle({ ...base, initialUnits: [{ definition: actor, position: [0, 0] }],
+  let runtime = initializeBattle({ ...base, predefines: predefinedUnits([{ definition: actor, position: [0, 0] }]),
     schedule: { type: "TIMELINE", spawns: [{ definition: target, tick: 0,
       route: { pathMotionMode: "WALK", startPosition: [0, 1], endPosition: [0, 2], spawnOffset: [0, 0],
         spawnRandomRange: [0, 0], checkpoints: [], allowDiagonalMove: false, visitEveryTileCenter: false,

@@ -68,7 +68,7 @@ runtime.initialize(input) 创建 BattleState；runtime.step(battle, commands) �
 
 调用方用 `battle = step(battle, commands)` 接续状态，events 与 result 直接读取返回值。异常抛出时赋值未发生，原值保持不变；已结束战斗返回原 State，不产生新 Tick 或清空最后一帧事实。表现层直接接收 State 并使用领域查询生成所需的视觉数据，不复制 Unit、不展开核心容器，也不形成第二套完整 Snapshot 模型。
 
-State.definition 只保存推进需要的静态 predefines、maxTicks 与 routeMoveMultiplier；地图与 Schedule Definition 已由所属领域持有。完整 Input 的初始单位、初始机制、Card 创建配置与随机种子只在初始化时消费，不由另一个 Runtime 对象保存。Card 直接持有原 Unit Definition、库存、持有及在场上限与跨部署私有 state；每条创建配置明确提供 stock、stockLimit、activeLimit、program，私有程序在 deployable.card 显式声明。每份普通干员拥有独立 Card，部署消费库存、完整离场后启动恢复，到期补回一份；计时、费用和私有状态各自保留。普通 Unit 每次部署仍从标准初态创建，特定资源由 enter／leave 显式转换。
+State.definition 只保存推进需要的静态 predefines、maxTicks 与 routeMoveMultiplier；地图与 Schedule Definition 已由所属领域持有。关卡开场 Unit 由 predefines 中 initiallyPresent:true 的项创建，与后续出现／移除共用同一预置管理。Input 的初始机制、Card 创建配置与随机种子只在初始化时消费，不由另一个 Runtime 对象保存。Card.definition 直接持有包含顶层 card 配置的完整静态 Unit Definition；初始库存、持有及在场上限、基础费用与时长来自该配置，实例只保存当前库存、计时、费用阶段和跨部署私有 state。addCard 接收这一份定义，initialize 明确创建私有数据，Card 不因场上实例返手而重建。每份普通干员拥有独立 Card；库存和费用阶段的退出业务由主动撤退及被动死亡各自执行，不对所有 leave 自动回收。Card 的静态行为开关及资源时点见 [Deployment](deployment.md)。普通 Unit 每次部署仍从标准初态创建，特定资源由内容明确转换。
 
 Battlefield 拥有不可变场上事实及关系，维护存储和索引一致性，提供值形式的 State 与纯转换。集合操作直接构造下一版本，内部纯函数集中维护一致性；有时序语义的 Blocking 操作与同步通知由完整 BattleState 操作承接，普通搜索由 step 固定阶段调度。领域不持有可变 Battlefield Runtime，不重放操作或业务回调。
 
@@ -82,7 +82,7 @@ Mechanism 是没有独立场上空间实体的机制实例，由 `battle.State.m
 
 Capability 接口同时描述对应的静态 Definition 与运行时 State，组合 Unit & Vitality & Offense 即可同时访问这些能力的配置与状态。单位可以拥有 Vitality、Offense、Action、Skill、Elemental、Locomotion、Targetable、空间几何、部署、占用或阻挡能力。每项已声明能力必须同时提供 Definition 与 State；没有内容的一侧使用空实现。Unit 登记后不能增加或删除能力，只更新其当前状态。
 
-Definition 保存不可变基础值、参数和行为描述。Capability State 保存当前已经生效的事实、贡献、冷却和进度。Catalog 只有 initializer 字典与从签名派生的 Definitions／States／Product；装配归 unit/initialize.ts。统一构造入口建立能力配对，内部更新遵守组成稳定的契约，存储层不反复遍历能力校验。领域规则留在所属模块。
+Definition 保存不可变基础值、参数和行为描述。Capability State 保存当前已经生效的事实、贡献、冷却和进度。Catalog 提供 initializer 字典，并从签名派生 Definitions／States／Product 及可选创建输入；装配归 unit/initialize.ts。Deployable 单向依赖 Occupancy，先初始化 Occupancy，再建立未关联部署的 Deployable 初态。Deployment 在资源消费后直接调用 unit.initialize，在未登记 Unit 上写入本次部署事实，然后登记与 enter。Predefined 同样直接复用 Unit 初始化，不另设创建包装或配对框架。统一构造入口建立能力配对，内部更新遵守组成稳定的契约，存储层不反复遍历能力校验。领域规则留在所属模块。
 
 Content 直接组合 Unit Definition 与所需的 Catalog Definitions，不经过干员或敌人 Archetype 工厂；必要的领域校验放在 initialize。静态内容可用 satisfies 声明具体能力；动态加载结果使用标准 Definition，并在需要可选能力时通过守卫缩窄。
 
@@ -189,7 +189,7 @@ Effect 直接持有 `Definition<S, H>` 与私有 State。S 描述实例状态，
 
 Hook 是函数与资格开关的不可变登记项，由对应领域或 Capability 保存。Effect 可以在 onInstall 登记 Hook，资格闭包读取当前输入版本的 Effect，在 onEnd 撤销。执行 Hook 返回新状态及领域值；动态登记固定候选 ID 并逐项从返回版本重查登记与资格，嵌套操作使用自己的候选。公共 Hook 固定 Context、接续 battle 与 current；领域决定参与资格、排序及停止条件。
 
-Unit Definition 必填 hooks，声明 enter／tick／prepare／leave 内容；初始化将初始、能力与内容 Hook 按注册序装配到实例 hooks，同 ID 后者替换并保留首次位置。Unit 本地生命周期没有运行时增删接口，直接按固定 Hook 对象序列执行；accepts 使用最新 BattleState，enter／tick 每项前确认宿主仍为 PRESENT，prepare／leave 保留固定 Departure。Skill 入场处理也作为普通 enter Hook。全局 Unit 观察者继续使用动态派发。承载变化由 Occupancy 的 SUPPORT Definition 保存 occupantAdded／occupantRemoved Hook，复用通用派发器，不在 Unit 添加能力专属回调。
+Unit Definition 必填 hooks，声明 enter／tick／prepare／leave 内容；初始化将初始、能力与内容 Hook 按注册序装配到实例 hooks，同 ID 后者替换并保留首次位置。Unit 本地生命周期没有运行时增删接口，直接按固定 Hook 对象序列执行；accepts 使用最新 BattleState，enter／tick 每项前确认宿主仍为 PRESENT，prepare／leave 保留固定 Departure。Skill 入场处理也作为普通 enter Hook。Deployment 在 fold 前登记部署通知与被动死亡响应，Occupancy 随后登记配对程序，先登记先执行。全局 Unit 观察者继续使用动态派发；主动撤退的 Card 后继在对应全局 leave 完成。承载变化由 Occupancy 的 SUPPORT Definition 保存 occupantAdded／occupantRemoved Hook；双方 State 共享已通知的 pair，Context 是绑定建立时的快照，实际当前状态须重读。通用 Unit 不添加能力专属回调，也不经全场登记差分替 Occupancy 组织业务。
 
 Context 表达本次调用的数据与必要只读参数；Unit、Effect 和 State 都对应明确输入版本。内容先形成消耗后的新状态再进入同步嵌套，返回后从后继版本查询。候选范围属于调用期，不进入长期快照；Context 不通过可变 holder 或动态 getter 追踪当前世界。
 

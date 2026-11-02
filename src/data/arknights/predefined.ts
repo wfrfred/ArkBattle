@@ -8,14 +8,13 @@ import {
     type PredefinedDefinition,
 } from "../../core/battle/steps/predefined.js";
 import { createMechanismDefinition } from "../../core/battle/mechanism.js";
-import { createUnitPlacementDefinition } from "../../core/battle/creation/placement.js";
 import { createTerrainMechanism } from "../../content/terrain/mechanism.js";
 import { mire, deepsea } from "../../content/terrain/definition.js";
 import { create as createCrate } from "../../content/devices/crate.js";
 import { create as createShootingPlatform } from "../../content/devices/shooting-platform.js";
-import type { Definition as DeviceDefinition } from "../../content/devices/tile.js";
+import type { Definition as DeviceDefinition, Configuration } from "../../content/devices/tile.js";
 import { Tile } from "../../core/geometry/coordinate.js";
-import { createDefinition as createDeployableDefinition } from "../../core/unit/capability/deployable/index.js";
+import { get as getTile } from "../../core/battlefield/map/map.js";
 import type { ArknightsPredefinedInstance } from "./level.js";
 import type { PredefinedPrefab } from "./prefab.js";
 import { secondsToTicks } from "./tick.js";
@@ -134,16 +133,43 @@ function unitDefinition(
         throw new RangeError("predefined unit level is outside attribute keyframes");
     }
 
-    const configuration = {
+    const configuration: Configuration = {
         id: instance.inst.characterKey,
         vitality: { defense: 0, resistance: 0, maxHp: maxHp! },
-        deployable: createDeployableDefinition({
-            ...profile.deployable,
-            card: {},
+        deployable: { retreatRules: [] },
+        card: {
             cost: cost!,
             redeployTicks: secondsToTicks(respawnTime!),
             slots: 0,
-        }),
+            stock: 1,
+            stockLimit: 1,
+            activeLimit: 1,
+            cooldownOnDeploy: false,
+            recoverOnLeave: false,
+            increaseCostOnLeave: false,
+            refund: { rate: 0.5, limit: "BASE_COST" },
+            deploymentRules: [
+                {
+                    id: "deployment/site",
+                    allows(battle, { request }) {
+                        const tile = getTile(battle.battlefield.map, request.tilePosition);
+                        const { placement, allowedSiteConditions } = profile.deployable;
+
+                        return (
+                            tile !== undefined &&
+                            tile.state.placement !== "NONE" &&
+                            (tile.state.placement === "ALL" ||
+                                placement === "ALL" ||
+                                tile.state.placement === placement) &&
+                            (tile.state.siteCondition === null ||
+                                allowedSiteConditions.includes(tile.state.siteCondition))
+                        );
+                    },
+                },
+            ],
+            unitHooks: [],
+            initialize: (battle) => ({ state: battle, value: {} }),
+        },
         tileChanges: profile.tileChanges,
     };
 
@@ -191,11 +217,9 @@ export function parsePredefinedDefinition(
         initiallyPresent: !instance.hidden,
         creation: {
             type: "UNIT",
-            ...createUnitPlacementDefinition({
-                definition,
-                position,
-                initial: { occupancy: { tile: instance.position } },
-            }),
+            definition,
+            position,
+            initial: { occupancy: { tile: instance.position } },
         },
     });
 }

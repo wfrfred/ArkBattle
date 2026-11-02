@@ -1,96 +1,98 @@
 import { at } from "../battlefield/occupancy.js";
-import type { State as BattlefieldState } from "../battlefield/state.js";
-import type { TilePosition } from "../geometry/coordinate.js";
-import { hasOccupancy, type Occupancy } from "../unit/capability/occupancy/capability.js";
+import type { Ref } from "../common/ref.js";
 import type { Context, SupportHook } from "../unit/capability/occupancy/hook.js";
-import type { Id, Unit } from "../unit/unit.js";
-import * as hooks from "../hook.js";
+import type { Occupancy } from "../unit/capability/occupancy/capability.js";
+import type { Unit } from "../unit/unit.js";
+import * as units from "../unit/query.js";
+import { replace } from "./unit.js";
 import type { State } from "./state.js";
-import type { Events, Hook } from "./unit-hook.js";
 
-export const registrationChanged: Hook<Events["registrationChanged"]> = {
-    id: "@occupancy/registration-changed",
-    invoke: (battle, { previous, next, changed }) => ({
-        state: notify(battle, previous, next, changed),
-        value: undefined,
-    }),
-};
-
-export function notify(
-    battle: State,
-    previous: BattlefieldState,
-    next: BattlefieldState,
-    changed: readonly Id[],
-): State {
-    if (previous.occupancy === next.occupancy) {
+export function enter(battle: State, reference: Ref<Unit & Occupancy>): State {
+    const self = units.get(battle, reference);
+    if (self?.lifecycle !== "PRESENT" || self.occupancy.tile === null) {
         return battle;
     }
 
-    const positions = new Map<number, TilePosition>();
-
-    for (const id of changed) {
-        for (const field of [previous, next]) {
-            const unit = field.units.get(id);
-            if (unit !== undefined && hasOccupancy(unit) && unit.occupancy.tile !== null) {
-                const tile = unit.occupancy.tile;
-                positions.set(tile[0] * field.map.columns + tile[1], tile);
-            }
-        }
+    const tile = self.occupancy.tile;
+    const current = at(battle.battlefield, tile)!;
+    if (current.support === null || current.occupant === null) {
+        return battle;
     }
 
-    const candidates: {
-        readonly stage: SupportHook["stage"];
-        readonly context: Context;
-    }[] = [];
+    const support = units.get(battle, current.support)!;
+    const occupant = units.get(battle, current.occupant)!;
+    if (support.lifecycle !== "PRESENT" || occupant.lifecycle !== "PRESENT") {
+        return battle;
+    }
 
-    for (const tile of positions.values()) {
-        const before = at(previous, tile);
-        const after = at(next, tile);
-        if (
-            before?.occupant?.id === after?.occupant?.id &&
-            before?.support?.id === after?.support?.id
-        ) {
+    const previous = support.occupancy.pair;
+    if (previous !== null && previous.occupant.id === occupant.id) {
+        return battle;
+    }
+    if (previous !== null) {
+        return enter(release(battle, previous), reference);
+    }
+    if (occupant.occupancy.pair !== null) {
+        return enter(release(battle, occupant.occupancy.pair), reference);
+    }
+
+    // These snapshots precede the binding write, so they never retain their own pair.
+    const pair: Context = { tile, support, occupant };
+    battle = replace(battle, [
+        { ...support, occupancy: { ...support.occupancy, pair } },
+        { ...occupant, occupancy: { ...occupant.occupancy, pair } },
+    ]);
+
+    return notify(battle, "occupantAdded", pair);
+}
+
+export function leave(battle: State, self: Unit & Occupancy): State {
+    return self.occupancy.pair === null ? battle : release(battle, self.occupancy.pair);
+}
+
+function release(battle: State, pair: Context): State {
+    const updates: (Unit & Occupancy)[] = [];
+
+    for (const self of [pair.support, pair.occupant]) {
+        const current = units.get(battle, units.ref(self));
+        if (current?.occupancy.pair === pair) {
+            updates.push({ ...current, occupancy: { ...current.occupancy, pair: null } });
+        }
+    }
+    // A later entry may already have completed this old binding's removal.
+    if (updates.length === 0) {
+        return battle;
+    }
+
+    battle = replace(battle, updates);
+
+    return notify(battle, "occupantRemoved", pair);
+}
+
+function notify(battle: State, stage: SupportHook["stage"], pair: Context): State {
+    const definition = pair.support.definition.occupancy;
+    if (definition.slot !== "SUPPORT") {
+        return battle;
+    }
+
+    for (const entry of definition.hooks) {
+        if (entry.stage !== stage) {
             continue;
         }
-
-        for (const [stage, field, occupancy] of [
-            ["occupantRemoved", previous, before],
-            ["occupantAdded", next, after],
-        ] as const) {
-            if (occupancy?.support != null && occupancy.occupant !== null) {
-                candidates.push({
-                    stage,
-                    context: {
-                        tile,
-                        support: field.units.get(occupancy.support.id)! as Unit & Occupancy,
-                        occupant: field.units.get(occupancy.occupant.id)! as Unit & Occupancy,
-                    },
-                });
+        if (stage === "occupantAdded") {
+            const support = units.get(battle, units.ref(pair.support));
+            const occupant = units.get(battle, units.ref(pair.occupant));
+            if (
+                support?.lifecycle !== "PRESENT" ||
+                occupant?.lifecycle !== "PRESENT" ||
+                support.occupancy.pair !== pair ||
+                occupant.occupancy.pair !== pair
+            ) {
+                break;
             }
         }
-    }
-
-    for (const { stage, context } of candidates) {
-        const definition = context.support.definition.occupancy;
-        if (definition.slot === "SUPPORT") {
-            const entries = definition.hooks.filter((entry) => entry.stage === stage);
-
-            battle = hooks.dispatch(battle, context, undefined, {
-                candidates: () => entries.map(({ id }) => id),
-                find: (_current, id) => entries.find((entry) => entry.id === id),
-                stop(current) {
-                    if (stage === "occupantRemoved") {
-                        return false;
-                    }
-
-                    const occupancy = at(current.battlefield, context.tile);
-
-                    return (
-                        occupancy?.support?.id !== context.support.id ||
-                        occupancy.occupant?.id !== context.occupant.id
-                    );
-                },
-            }).state;
+        if (entry.accepts?.(battle, pair, undefined) !== false) {
+            battle = entry.invoke(battle, pair, undefined).state;
         }
     }
 

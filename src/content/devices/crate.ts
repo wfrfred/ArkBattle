@@ -2,13 +2,14 @@ import { hasOccupancy } from "../../core/unit/capability/occupancy/index.js";
 import { apply, restore, type Configuration, type Definition } from "./tile.js";
 
 export function create(configuration: Configuration): Definition {
-    const { id, vitality, deployable } = configuration;
+    const { id, vitality, deployable, card } = configuration;
     const tileChanges = { ...configuration.tileChanges, walkCost: 1000 };
 
     return {
         id,
         vitality,
         deployable,
+        card,
         occupancy: { slot: "OCCUPANT" },
         hooks: [
             {

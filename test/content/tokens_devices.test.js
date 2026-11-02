@@ -15,7 +15,9 @@ import { loadMovementScenario } from "../../dist/data/arknights/movement-scenari
 import { createLevelDefinition, parseLevelContent } from "../../dist/data/arknights/level.js";
 import { resolvePredefinedSkillBlackboard } from "../../dist/data/arknights/skill.js";
 import { parsePredefinedPrefab, parseTileDeploymentPrefab } from "../../dist/data/arknights/prefab.js";
-import { evaluateDeployment } from "../../dist/core/battle/deployment/index.js";
+import { addCard, createRequest, preview } from "../../dist/core/battle/deployment/index.js";
+import { createBattleState } from "../../dist/core/battle/state.js";
+import { createCardDefinition } from "../helpers/deployable.js";
 import { parseBattlefieldMap } from "../../dist/data/arknights/map.js";
 import { initialize as initializeUnit } from "../../dist/core/unit/index.js";
 import { add as addBattleUnit, replace as updateBattleUnit } from "../../dist/core/battle/unit.js";
@@ -447,11 +449,11 @@ test('core real hidden platforms grant ranged deployment support while retaining
   assert.equal(currentTile.state.placement, 'RANGED');
   assert.equal(currentTile.state.walkCost, 1000);
   assert.equal(currentTile.state.siteCondition, currentTile.definition.initial.siteCondition);
-  assert.deepEqual(platform.definition.deployable, {
-    card: platform.definition.deployable.card,
-    cost: 5, redeployTicks: 30, slots: 0, placement: 'MELEE', allowedSiteConditions: [siteConditions.normal],
-    refund: { rate: 0.5, limit: 'BASE_COST' },
-  });
+  assert.deepEqual(platform.definition.deployable, { retreatRules: [] });
+  assert.equal(platform.definition.card.cost, 5);
+  assert.equal(platform.definition.card.redeployTicks, 30);
+  assert.equal(platform.definition.card.slots, 0);
+  assert.deepEqual(platform.definition.card.refund, { rate: 0.5, limit: 'BASE_COST' });
   assert.equal(platform.deployable.refund, null);
   assert.deepEqual(platform.occupancy.tile, tile);
   assert.equal(platform.definition.occupancy.slot, 'SUPPORT');
@@ -461,10 +463,14 @@ test('core real hidden platforms grant ranged deployment support while retaining
 
   let field = appeared.battlefield;
   assert.equal(occupancyAt(field, tile)?.support?.id, platform.id);
-  assert.deepEqual(evaluateDeployment(field, { profile: { placement: 'RANGED', allowedSiteConditions: [siteConditions.normal] },
-    tile }), { type: 'ALLOWED' });
-  assert.deepEqual(evaluateDeployment(field, { profile: { placement: 'MELEE', allowedSiteConditions: [siteConditions.normal] },
-    tile }), { type: 'DENIED', reason: 'BUILDABLE_TYPE' });
+  for (const [placement, expected] of [['RANGED', 'ALLOWED'], ['MELEE', 'REJECTED']]) {
+    const card = addCard(createBattleState(field), {
+      id: `platform-preview-${placement}`, hooks: [],
+      occupancy: { slot: 'OCCUPANT' }, deployable: { retreatRules: [] },
+      card: createCardDefinition({ placement }),
+    });
+    assert.equal(preview(card.state, createRequest(card.state, card.value, tile)).type, expected);
+  }
 
   (runtime = advanceBattle(runtime, [{ type: 'REMOVE_PREDEFINED', definitionId, reason: 'SCRIPT' }]));
   assert.equal(runtime.battlefield.units.has(platform.id), false);

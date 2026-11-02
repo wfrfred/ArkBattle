@@ -39,7 +39,7 @@ function currentOccupant(battle: BattleState, platformId: Id) {
 }
 
 export function create(configuration: Configuration): Definition {
-    const { id, vitality, deployable } = configuration;
+    const { id, vitality, deployable, card } = configuration;
     const tileChanges = {
         ...configuration.tileChanges,
         walkCost: 1000,
@@ -49,6 +49,7 @@ export function create(configuration: Configuration): Definition {
         id,
         vitality,
         deployable,
+        card,
         occupancy: {
             slot: "SUPPORT",
             hooks: [

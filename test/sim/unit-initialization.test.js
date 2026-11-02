@@ -9,7 +9,6 @@ import { createDefinition as elementalDefinition } from "../../dist/core/unit/ca
 import { definition as skillDefinition } from "../helpers/skill.js";
 import { fixtureBattle } from "../helpers/unit.js";
 import { Effects } from "../../dist/core/unit/effect/effects.js";
-import { createUnitPlacementDefinition } from "../../dist/core/battle/creation/placement.js";
 import { enter as skillEntry } from "../../dist/core/unit/skill/operations.js";
 
 const bursts = Object.fromEntries(["NEURAL", "EROSION", "BURN", "NECROSIS"].map(type => [type, {
@@ -29,7 +28,7 @@ test("Unit initialization pairs every declared capability, including empty defin
     assert.equal(unit.definition, definition);
     assert.deepEqual(unit.targetable, { restrictions: [] });
     assert.deepEqual(unit.spatialPresence, { present: true });
-    assert.deepEqual(unit.occupancy, { tile: null, direction: null });
+    assert.deepEqual(unit.occupancy, { tile: null, direction: null, pair: null });
 
     assert.equal(unit.vitality.hp, 100);
     assert.equal(getUnit(battle, unit.id), undefined);
@@ -126,7 +125,5 @@ test("generic Unit initialization cannot inject prepared states or override the 
     assert.equal(result.value.elemental.lastAdvancedTick, 19);
     assert.equal(Object.hasOwn(result.value, "occupancy"), false);
     assert.equal(result.value.effects.size, 0);
-    const placement = createUnitPlacementDefinition({ definition, position: [0, 0], effects });
-    assert.equal(Object.hasOwn(placement, "effects"), false);
     assert.equal(result.state, battle);
 });

@@ -136,7 +136,6 @@ export function compileLevelMovementFragment(
             map: level.map,
             schedule: createSpawnScheduleDefinition({ type: "TIMELINE", spawns }),
             predefines: [],
-            initialUnits: [],
             initialMechanisms: [],
             maxTicks: secondsToTicks(level.options.maxPlayTime),
             routeMoveMultiplier: level.options.moveMultiplier,

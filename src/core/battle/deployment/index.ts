@@ -6,21 +6,29 @@ export type { Id as CardId, Input as CardInput, Clock as CardClock, Card } from 
 
 export { resolveBaseCost, resolveCost, resolveRedeployTicks } from "./card/state.js";
 
-export type { DeploymentRequest, DeploymentDecision } from "./query.js";
+export type { Quote, DeployRequest, DeployOutcome, Rejection, Rejected } from "./request.js";
 
-export { usedSlots, activeCount, evaluateDeployment, preview } from "./query.js";
+export type { Rule, RuleContext } from "./rule.js";
+
+export type { Hook, Deployed } from "./hook.js";
+
+export { setHook, removeHook } from "./hook.js";
+
+export {
+    usedSlots,
+    activeCount,
+    createRequest,
+    evaluate,
+    preview,
+    positions,
+    defaultRules,
+} from "./query.js";
 
 export { addCard, advance } from "./resources.js";
 
-export { notifyDeployed } from "./lifecycle.js";
-
-export type { DeployRequest, DeploymentCommand, Rejection, DeployOutcome } from "./operations.js";
+export type { DeploymentCommand } from "./operations.js";
 
 export { deploy, retreat, canRetreat, resolveDeploymentCommands } from "./operations.js";
-
-export type { Program, Preparation, Payment, Refund, Rejected } from "./program.js";
-
-export { operator, consumable, queued, create as createProgram } from "./normal.js";
 
 export * as dp from "./dp.js";
 

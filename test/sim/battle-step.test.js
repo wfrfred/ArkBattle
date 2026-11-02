@@ -1,3 +1,4 @@
+import { predefinedUnits } from "../helpers/predefined.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize, step } from "../../dist/core/battle/runtime.js";
@@ -9,8 +10,8 @@ import { fixtureBattle } from "../helpers/unit.js";
 function input(definition) {
     return {
         map: fixtureBattle().battlefield.map,
-        initialUnits: [{ definition, position: [0, 0] }],
-        initialMechanisms: [], predefines: [],
+        predefines: predefinedUnits([{ definition, position: [0, 0] }]),
+        initialMechanisms: [],
         schedule: { type: "TIMELINE", spawns: [] },
         maxTicks: 2, routeMoveMultiplier: 1, rngState: 1,
     };

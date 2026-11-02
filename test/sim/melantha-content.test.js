@@ -1,5 +1,4 @@
 import { ref as skillRef } from "../helpers/skill.js";
-import * as conditions from "../../dist/content/terrain/condition.js";
 import * as blockingQueries from "../../dist/core/battle/blocking/index.js";
 import { advance as advanceBlocking } from "../../dist/core/battle/blocking/index.js";
 import { ref as activationRef } from "../../dist/core/unit/skill/activation.js";
@@ -35,13 +34,18 @@ test('Melantha uses main-mode level, potential, trust and talent, then a scoped 
 
   const prepared = profile();
   const definition = create(prepared);
-  const unit = initialize({ id: 0, position: [0, 0], definition });
-  assert.deepEqual(definition.deployable, {
-    card: definition.deployable.card,
+  const unit = initialize({ id: 0, position: [0, 0], definition, initial: { occupancy: { direction: 'RIGHT' } } });
+  assert.deepEqual(definition.deployable, { retreatRules: [] });
+  const { deploymentRules, unitHooks, initialize: initializeCard, ...card } = definition.card;
+  assert.deepEqual(card, {
     cost: prepared.attributes.cost, redeployTicks: prepared.attributes.respawnTime * 30,
-    slots: 1, placement: 'MELEE', allowedSiteConditions: [conditions.normal],
+    slots: 1, stock: 1, stockLimit: 1, activeLimit: 1,
+    cooldownOnDeploy: false, recoverOnLeave: true, increaseCostOnLeave: true,
     refund: { rate: 0.5, limit: 'BASE_COST' },
   });
+  assert.deepEqual(deploymentRules.map(rule => rule.id), ['deployment/site']);
+  assert.deepEqual(unitHooks, []);
+  assert.equal(typeof initializeCard, 'function');
   assert.equal(unit.deployable.refund, null);
   let state = createBattleState(fixtureBattlefieldState([]));
   const untouched = state;
@@ -69,7 +73,7 @@ test('Melantha uses main-mode level, potential, trust and talent, then a scoped 
 test('explicit skill finish removes only skill output, preserving Melantha talent', () => {
 
   const definition = create(profile({ level: 1, potential: 1, trust: 0 }));
-  const unit = initialize({ id: 0, position: [0, 0], definition });
+  const unit = initialize({ id: 0, position: [0, 0], definition, initial: { occupancy: { direction: 'RIGHT' } } });
   let state = add(createBattleState(fixtureBattlefieldState([])), unit);
   const before = resolveAttack(state, unitRef(getUnit(state, 0)));
   state = updateUnit(state, [{ ...getUnit(state, 0), skill: { ...getUnit(state, 0).skill, sp: { ...getUnit(state, 0).skill.sp, value: 40 } } }]);
@@ -86,7 +90,7 @@ test('ordinary attacks read current talent and skill contributions instead of ca
     id: 'receiver', targetable: { restrictions: [] }, vitality: { maxHp: 10000, defense: 0, resistance: 0 }, allegiance: { side: 'ENEMY' }, layer: { type: 'GROUND' },
     hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: .1 } },
   } });
-  const source = initialize({ id: 0, position: [0, 0], definition });
+  const source = initialize({ id: 0, position: [0, 0], definition, initial: { occupancy: { direction: 'RIGHT' } } });
   const attack = source.action.actions.get('normal-attack').definition;
   let state = add(createBattleState(fixtureBattlefieldState([receiver])), source);
   state = updateUnit(state, [{ ...getUnit(state, 0), skill: { ...getUnit(state, 0).skill, sp: { ...getUnit(state, 0).skill.sp, value: 40 } } }]);
@@ -106,7 +110,7 @@ test('the ordinary ground block radius catches a target 0.6 units from Melantha'
     allegiance: { side: 'ENEMY' }, layer: { type: 'GROUND' },
     hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: .1 } },
   } });
-  const state = advanceBlocking(createBattleState(fixtureBattlefieldState([initialize({ id: 0, position: [0, 0], definition }), receiver])));
+  const state = advanceBlocking(createBattleState(fixtureBattlefieldState([initialize({ id: 0, position: [0, 0], definition, initial: { occupancy: { direction: 'RIGHT' } } }), receiver])));
   assert.deepEqual(blockingQueries.relations(state).map(({ blocker, blocked }) => ({ blockerUnitId: blocker.id, blockedUnitId: blocked.id })), [{ blockerUnitId: 0, blockedUnitId: 1 }]);
 });
 
@@ -119,7 +123,7 @@ test('Melantha still checks active targeting restrictions on enemies she is bloc
       allegiance: { side: 'ENEMY' }, layer: { type: 'GROUND' },
       hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: .1 } },
     } });
-    const source = initialize({ id: 0, position: [0, 0], definition });
+    const source = initialize({ id: 0, position: [0, 0], definition, initial: { occupancy: { direction: 'RIGHT' } } });
     const attack = source.action.actions.get('normal-attack').definition;
     const state = advanceBlocking(createBattleState(fixtureBattlefieldState([source, receiver])));
 

@@ -1,5 +1,5 @@
-import { operator } from "../../dist/core/battle/deployment/normal.js";
-import { createDefinition as createDeployableDefinition } from "../../dist/core/unit/capability/deployable/index.js";
+import { predefinedUnits } from "../helpers/predefined.js";
+import { createDefinition as createDeployableDefinition, createCardDefinition } from "../helpers/deployable.js";
 import * as conditions from "../../dist/content/terrain/condition.js";
 import { tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { initialize as initializeBattle, step as stepBattle } from '../../dist/core/battle/runtime.js';
 import { add, replace as updateUnit, remove } from '../../dist/core/battle/unit.js';
 import { getUnit, initialize, fixtureBattle } from '../helpers/unit.js';
-import { instantiateUnitPlacement } from '../../dist/core/battle/creation/placement.js';
+import { initialize as initializeUnit } from '../../dist/core/unit/initialize.js';
 import { advancePredefined } from '../../dist/core/battle/steps/predefined.js';
 import { resolveScheduleUnits } from '../../dist/core/battle/schedule/index.js';
 import { create as createMap } from '../../dist/core/battlefield/map/map.js';
@@ -34,7 +34,7 @@ const spawn = (definition, tick = 0) => ({
   timing: { waveStartedAtTick: tick, fragmentStartedAtTick: tick },
 });
 const input = (fields = {}) => ({
-  map, schedule: { type: 'TIMELINE', spawns: [] }, initialUnits: [], predefines: [],
+  map, schedule: { type: 'TIMELINE', spawns: [] },  predefines: [],
   initialMechanisms: [], maxTicks: 30, routeMoveMultiplier: 1,
   rngState: 123, ...fields,
 });
@@ -109,7 +109,9 @@ test('initial Units finish entry before allocating and registering the next Unit
     assert.deepEqual([...state.battlefield.units.keys()], [self.id]);
     assert.equal(state.execution.nextUnitId, 1);
     state = firstEntry.hooks[0].invoke(state, self).state;
-    const child = instantiateUnitPlacement(state, {
+    const id = state.execution.nextUnitId;
+    state = { ...state, execution: { ...state.execution, nextUnitId: id + 1 } };
+    const child = initializeUnit(state, { id,
       definition: markEntered(trace, 'child'), position: [2, 0],
     });
     return { state: add(child.state, child.value), value: undefined };
@@ -122,10 +124,10 @@ test('initial Units finish entry before allocating and registering the next Unit
     assert.equal(getUnit(state, 1).vitality.hp, 75);
     return secondEntry.hooks[0].invoke(state, self);
   } }] };
-  let runtime = initializeBattle(input({ initialUnits: [
+  let runtime = initializeBattle(input({ predefines: predefinedUnits([
     { definition: first, position: [0, 0] },
     { definition: second, position: [1, 0] },
-  ] }));
+  ]) }));
   assert.deepEqual(trace, [['first', 0, 100], ['child', 1, 100], ['second', 2, 100]]);
   assert.equal(runtime.execution.nextUnitId, 3);
   assert.deepEqual(unitQueries.all(runtime).toArray().map(unit => unit.vitality.hp), [75, 75, 75]);
@@ -175,7 +177,9 @@ test('same-tick spawns expose only completed entries and preserve nested allocat
       assert.equal(state.schedule.pendingSpawnCount, 1);
       assert.deepEqual(state.schedule.managedFinalUnitIds, [0]);
       assert.deepEqual(state.events.map(event => event.unitId), [0]);
-      const child = instantiateUnitPlacement(state, {
+      const id = state.execution.nextUnitId;
+    state = { ...state, execution: { ...state.execution, nextUnitId: id + 1 } };
+    const child = initializeUnit(state, { id,
         definition: { hooks: [], id: 'spawn-child' }, position: [2, 0],
       });
       state = add(child.state, child.value);
@@ -225,10 +229,10 @@ test('scheduled Units enter after spawning and keep immutable old snapshots', ()
 
 test('predefined appearances and deployment initialize once', () => {
   const trace = [];
-  const deployable = { ...markEntered(trace, 'deployed'), occupancy: { slot: "OCCUPANT" }, deployable: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, placement: 'ALL', allowedSiteConditions: [conditions.normal], refund: { rate: 0.5, limit: 'BASE_COST' } }) };
+  const deployable = { ...markEntered(trace, 'deployed'), occupancy: { slot: "OCCUPANT" }, deployable: createDeployableDefinition(), card: createCardDefinition({ cost: 0, redeployTicks: 0, slots: 1, placement: 'ALL', allowedSiteConditions: [conditions.normal], refund: { rate: 0.5, limit: 'BASE_COST' } }) };
   let runtime = initializeBattle(input({ deployment: {
     definition: { initialDp: 0, maxDp: 99, dpRecoveryTicks: null, slotLimit: null },
-    cards: [{ definition: deployable, stock: 1, stockLimit: 1, activeLimit: 1, program: operator }],
+    cards: [{ definition: deployable }],
   }, predefines: [{
     id: 9, alias: null, initiallyPresent: true,
     creation: { type: 'UNIT', definition: markEntered(trace, 'predefined'), position: [2, 0] },

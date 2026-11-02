@@ -1,15 +1,6 @@
-export type {
-    Id,
-    UnitDefinition,
-    Initial,
-    Input,
-    Clock,
-    Recovery,
-    TimerTarget,
-    Card,
-} from "./card.js";
+export type { Id, UnitDefinition, Input, Clock, Recovery, TimerTarget, Card } from "./card.js";
 
-export type { Definition } from "./definition.js";
+export type { Definition, Refund } from "./definition.js";
 
 export type { RuleContext, Purpose, Rule } from "./rule.js";
 

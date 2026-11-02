@@ -104,7 +104,7 @@ Capability 可以承担完整领域结算，例如 SpatialPresence.appear／disa
 
 ### 3.3 调用方持有状态
 
-initialize(input) 返回完整 battle.State，包括 Schedule、预置进度、统计和结果。step(battle, commands) 开帧通过新值清空或覆盖本 Tick 的临时字段，按顺序调用纯领域函数并返回完整新 State。commands 必填，无命令时传 []；events/result 在返回的 State 中，不另返回 Step 包装。网络、文件、渲染、现实时间和日志输出由外层处理。
+initialize(input) 返回完整 battle.State，包括 Schedule、预置进度、统计和结果。关卡开场 Unit 由 initiallyPresent:true 的 Predefined 创建，与后续出现／移除共用预置机制；创建直接调用 unit.initialize，再登记与 enter。step(battle, commands) 开帧通过新值清空或覆盖本 Tick 的临时字段，按顺序调用纯领域函数并返回完整新 State。commands 必填，无命令时传 []；events/result 在返回的 State 中，不另返回 Step 包装。网络、文件、渲染、现实时间和日志输出由外层处理。
 
 ```text
 step(battle, commands)
@@ -137,10 +137,12 @@ Tick 的执行顺序在 step() 中直接可读。Combat、Movement 与路线完�
 
 | 所属领域                           | 权威事实                                                                 |
 | ---------------------------------- | ------------------------------------------------------------------------ |
-| Battlefield                        | Units、Navigation、Projectiles、占位／承载与派生索引      |
+| Battlefield                        | Units、Navigation、Projectiles、占格结构索引及其他派生索引      |
+| Unit.occupancy | 当前登记格、实例朝向、已通知的 pair 绑定；绑定快照不代表实时 Unit 数据 |
 | Unit.blocker／Unit.blockable | 初始化至多选择一种，也允许两者皆无；保存唯一归属或有序关联，Blockable 另有独立站位计划；接敌、解除及维护由 Blocking 执行，真实坐标仍只有 Unit.position |
 | Unit／Capability                   | HP、控制状态、行动就绪、技能状态、路线、各自 Hook 与 Contribution 集合   |
-| Unit.effects                       | Effects 容器保存实例身份、Definition、私有 data、生效状态、来源 Ref 与 scopes |
+| Unit.effects                       | Effects 容器保存实例身份、Definition、私有 data、生效状态、来源 Ref 与 deadline；Scope 关系归 Lifetime |
+| Battle.deployment | DP、usedSlots 账户、Card 记录与手牌顺序、部署观察 Hook；各 Card 保存当前库存、计时及私有 state |
 | Schedule                           | 波次、片段、出生与完成账本                                               |
 | Unit.action.actions                | 按配置 ID 聚合 Definition、持久 state、Cooldown 和当前 Execution；执行身份进度由 Capability.nextExecutionId 保存 |
 | PredefinedPresence                 | 预置 Definition 到实际实例的绑定                                         |
@@ -178,7 +180,7 @@ unit.remove(battle, id, reason) → nextBattle
 unit.advance(battle) → nextBattle
 ```
 
-battlefield/unit.ts 的 add／update／remove 只完成纯状态转换；完整 Unit 业务统一位于 battle/unit.ts，提供 add／update／remove／advance。Unit 初始化在入口建立 Blocker／Blockable 至多一种的约束，内部信任，不由角色推导阵营、Layer 或移动能力。remove 委托 Unit Lifetime，在请求阶段纯发布 LEAVING，再派发能力自行登记的 prepare Hook：Blocking 清理本 Unit 的关系与自身计划，Deployable 按最新 Unit 退款。已登记 owner 与 Scope 依赖者完整 Finalize 后，Unit 注销并记录移除事实、通知 registrationChanged，再执行本地 leave（含 Deployable 回卡）与全局 leave；Unit 不识别具体能力或全场扫描补救领域清理。调用方不拼接这些内部步骤，BattleState 不另提供 Unit 登记或注销入口。
+battlefield/unit.ts 的 add／update／remove 只完成纯状态转换；完整 Unit 业务统一位于 battle/unit.ts，提供 add／update／remove／advance。Blocking 在自身构造入口建立 Blocker／Blockable 至多一种的约束，内部信任，不由角色推导阵营、Layer 或移动能力。remove 委托 Unit Lifetime，在请求阶段纯发布 LEAVING，再派发能力自行登记的 prepare Hook，由 Blocking 清理本 Unit 的关系与自身计划。已登记 owner 与 Scope 依赖者完整 Finalize 后，Unit 注销并记录移除事实，再按登记序执行本地 leave 与全局 leave。Occupancy 自己处理旧配对，Deployable 的本地 leave 归还实际占用；部署时预装的死亡响应只处理确认死亡。主动撤退由其领域操作退款，并在该实例的全局 leave 完成 Card 后继。Unit 不识别具体能力，也不全场扫描补救领域清理；调用方不拼接这些内部步骤，BattleState 不另提供 Unit 登记或注销入口。部署契约见 [Deployment](deployment.md)。
 
 add 拒绝重复身份。公开 Unit.update 只接收 opaque Change 数组，在执行任何内容程序前确认每个目标已登记，缺失时抛出 RangeError；同一目标可在本批出现多次。各项 transform 按顺序读取暂存的最新 Unit；返回原 Unit 引用时由 update 统一跳过本项后继，Settlement 不重复判断 no-op。完成全部转换后一次发布 Field，再按原 Change 顺序执行实际变换项的 settle。Field 内部 update 仍接收完整 Unit 数组，信任 Core 构造的身份与 Definition，不重复校验；替换保持登记顺序。Unit 身体所属格由 position 与 SpatialPresence 查询，不另存位置索引或空间依赖分类。
 
@@ -186,7 +188,7 @@ Capability 的 Rule、Hook、Contribution 与 Blocker.layer 工厂接收 Typed R
 
 一次 update 可以组合多个 Unit 的 Change；所有最终字段先发布，之后原顺序结算。较早后继的 Hook 可见较晚 Change 的最终字段和未完成的清理，这属于明确的批次语义。嵌套 update 只有自己的局部队列，不调度外层剩余项；领域后继按受影响对象限定范围，同对象交叠则读取共同最新事实。本项 transform 返回原引用时不登记结算；整批最终恢复批前值或原对象时，仍保留此前真实变换已经登记的结算。Tick 成功后 Runtime 发布最终 BattleState，不需要调用方另行执行 settle。
 
-初始化、刷怪和预定义出现逐个完成创建、登记与入场，接续 Hook 返回的最新 BattleState 后才处理下一个对象，不预先分配后续实例身份。刷怪按当前实例逐个登记调度归属和出生事件后再执行 enter Hook；待生成数量随实际生成递减。纯集合批量写入不定义批量入场语义。Unit.add 只登记并派发统一 enter Hook，随后发出 registrationChanged，由 Runtime 登记的 Occupancy 观察者响应；它不识别具体能力或扫描全场 Blocking。入场内容需要取得、搜索或修改资格时，调用明确的 Blocking 操作。
+初始化、刷怪和预定义出现逐个完成创建、登记与入场，接续 Hook 返回的最新 BattleState 后才处理下一个对象，不预先分配后续实例身份。刷怪按当前实例逐个登记调度归属和出生事件后再执行 enter Hook；待生成数量随实际生成递减。纯集合批量写入不定义批量入场语义。Unit.add 只登记并派发普通 enter Hook；Deployment 预先登记部署通知，Occupancy 初始化随后追加配对程序，先登记先执行，不再经登记差分广播处理 Occupancy。Unit 不识别这些具体能力或扫描全场 Blocking。入场内容需要取得、搜索或修改资格时，调用明确的 Blocking 操作。
 
 unit.update 与内部 replace 不准备、校验或推断 Blocking 关系，也不派发 Blocking／Occupancy 通知。acquire／release 明确构造关系双端并发布，acquire 通知后只复核本次新 Relation；release 统一接收 Relation 数组，入口过滤旧身份与重复项，整批解除并记录全部 RELEASED 事件，再按输入顺序通知，不附加维护、搜索或计划取消。Capacity 的 Settlement 只按当前容量从本 Blocker 的末尾裁撤；volume 在 settle 读取当前 owner，结算该阻挡组，不追随 Hook 中的新归属；两者共享内部 settleCapacity，每条通知后重新读取容量与占用，不夹带资格扫描。Rule 的 Settlement 固定自身相关关系，逐条 maintain 复核资格，不维护其他关系或裁容量。setLayer 将本项 previous.blocked 中的原 Ref 交给 release，不回填旧 Unit。SpatialPresence 与 Route 的主动位置覆盖先纯发布新空间事实及自身计划取消，再以 relations(battle, ref) 的局部结果调用 release；两步间无回调，首个 Hook 已可见完整结果，不要求挤在同一次 replace。普通私有 state 写回与 Hook Change 没有 Blocking 后继。
 
@@ -292,7 +294,7 @@ Healing 中若嵌套 Damage，Damage 必须把冷却消耗、HP、致死裁决�
 
 伤害领域必须容纳致死裁决和到零后处理。只有实际离场才关闭 Unit 的宿主生命周期并完成其相关清理。死亡爆炸等内容接入明确的击倒／死亡协议，不能把任意 Effect.onEnd 都解释为宿主死亡。
 
-跨 Tick 保存可恢复数据；不保存同步 Hook 栈、Promise、generator 或某次调用的 Context。Action、Projectile、Route 和周期 Effect 各自推进，不合并为统一过程框架。
+跨 Tick 保存可恢复数据；不保存同步 Hook 栈、Promise、generator 或普通调用的工作 Context。Occupancy 的 pair 保存已经建立的业务绑定及其不可变采样，虽也作为配对通知的 Context 使用，却不代表实时 Unit 状态或待重放回调；需要当前事实仍从最新 BattleState 查询。Action、Projectile、Route 和周期 Effect 各自推进，不合并为统一过程框架。
 
 ## 10. Meta 接入边界
 

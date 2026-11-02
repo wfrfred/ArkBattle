@@ -1,3 +1,4 @@
+import { predefinedUnits } from "../helpers/predefined.js";
 
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
@@ -39,10 +40,10 @@ function spec(initialUnits) {
             maxTicks: 20,
             seed: 17,
         }),
-        initialUnits: initialUnits.map((value) => ({
+        predefines: predefinedUnits(initialUnits.map((value) => ({
             definition: value.definition,
             position: value.position,
-        })),
+        }))),
         schedule: {
             type: "TIMELINE",
             spawns: [

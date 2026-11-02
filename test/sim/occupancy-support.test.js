@@ -52,7 +52,7 @@ const withoutTile = current => ({ ...current, occupancy: { ...(current).occupanc
 
 test("a null occupancy tile and empty tiles have no occupancy entry", () => {
     const initialized = initialize({ id: 1, definition: { hooks: [], id: "empty", occupancy: { slot: "OCCUPANT" } }, position: [0, 0] });
-    assert.deepEqual(initialized.occupancy, { tile: null, direction: null });
+    assert.deepEqual(initialized.occupancy, { tile: null, direction: null, pair: null });
     const current = fieldUnits.add(field.create(map), initialized);
     assert.equal(current.occupancy.size, 0);
     assert.equal(at(current, [0, 0]), undefined);

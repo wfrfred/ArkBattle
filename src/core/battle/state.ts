@@ -72,7 +72,7 @@ export function createBattleState(
             endings: new Map(),
             settling: false,
         },
-        unitHooks: { registrationChanged: [], leave: [] },
+        unitHooks: { leave: [] },
         schedule,
         predefinedPresence: [],
         completedRouteCount: 0,

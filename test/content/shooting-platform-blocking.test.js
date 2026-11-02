@@ -1,43 +1,37 @@
-import { operator } from "../../dist/core/battle/deployment/normal.js";
-import { notify, registrationChanged } from "../../dist/core/battle/occupancy.js";
+import { predefinedUnits } from "../helpers/predefined.js";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { create as createPlatform } from "../../dist/content/devices/shooting-platform.js";
-import * as conditions from "../../dist/content/terrain/condition.js";
 import { add, remove, replace as update } from "../../dist/core/battle/unit.js";
 import { addCard } from "../../dist/core/battle/deployment/index.js";
-import { deploy } from "../../dist/core/battle/deployment/index.js";
+import { deploy, createRequest } from "../../dist/core/battle/deployment/index.js";
 import { initialize as initializeBattle } from "../../dist/core/battle/index.js";
 import { get as getTile } from "../../dist/core/battlefield/map/map.js";
 import { at as occupancyAt } from "../../dist/core/battlefield/occupancy.js";
 import { Tile } from "../../dist/core/geometry/coordinate.js";
-import { createDefinition as createDeployable } from "../../dist/core/unit/capability/deployable/index.js";
+import { createDefinition as createDeployable, createCardDefinition } from "../helpers/deployable.js";
 import { setHook } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import { sides, setLayer } from "../../dist/core/unit/capability/blocking/index.js";
 import { fixture as blockingFixture, holder, target, acquire, ownerId, hook } from "../helpers/blocking.js";
 import { getUnit, initialize } from "../helpers/unit.js";
-import { setHook as setUnitHook } from "../../dist/core/battle/unit-hook.js";
 
 function fixture(units = [], options) {
-    let battle = setUnitHook(blockingFixture([], options), "registrationChanged", registrationChanged);
+    let battle = blockingFixture([], options);
     for (const unit of units) battle = add(battle, unit);
     return battle;
 }
 
 const first = [1, 2];
 const second = [1, 5];
-const profile = createDeployable({
-    card: {},
-    cost: 0, redeployTicks: 0, slots: 0, placement: "ALL",
-    allowedSiteConditions: [conditions.normal],
-});
+const profile = createDeployable();
+const cardDefinition = createCardDefinition({ cost: 0, redeployTicks: 0, slots: 0, placement: "ALL" });
 
 function passengerDefinition(extra = {}) {
     return { hooks: [],
         id: "platform-passenger", occupancy: { slot: "OCCUPANT" }, spatialPresence: {},
         allegiance: { side: "ALLY" }, vitality: { maxHp: 100, defense: 0, resistance: 0 },
-        blocker: { layer: "GROUND", capacity: 1, radius: 1, rules: [sides("ENEMY")] }, deployable: profile,
+        blocker: { layer: "GROUND", capacity: 1, radius: 1, rules: [sides("ENEMY")] }, deployable: profile, card: cardDefinition,
         ...extra,
     };
 }
@@ -48,7 +42,7 @@ function passenger(id = 10, tile = first, extra = {}) {
 
 function platformDefinition(id = "shooting-platform") {
     return createPlatform({ hooks: [],
-        id, vitality: { maxHp: 100, defense: 0, resistance: 0 }, deployable: profile,
+        id, vitality: { maxHp: 100, defense: 0, resistance: 0 }, deployable: profile, card: cardDefinition,
         tileChanges: { elevation: "HIGHLAND" },
     });
 }
@@ -132,12 +126,12 @@ for (const entry of ["initial", "script", "manual"]) {
         if (entry === "initial") {
             battle = initializeBattle({
                 map: fixture().battlefield.map,
-                schedule: { type: "TIMELINE", spawns: [] }, predefines: [], initialMechanisms: [],
+                schedule: { type: "TIMELINE", spawns: [] },  initialMechanisms: [],
                 maxTicks: 10, routeMoveMultiplier: 1, rngState: 1,
-                initialUnits: [
-                    { definition: platformDefinition(), position: Tile.center(first), initial: { occupancy: { tile: first } } },
-                    { definition: passengerDefinition(), position: Tile.center(first), initial: { occupancy: { tile: first } } },
-                ],
+                predefines: predefinedUnits([
+                    { definition: platformDefinition(), position: Tile.center(first), initial: { occupancy: { tile: first }, deployable: { card: null, cost: 0, slots: 0, refund: null } } },
+                    { definition: passengerDefinition(), position: Tile.center(first), initial: { occupancy: { tile: first }, deployable: { card: null, cost: 0, slots: 0, refund: null } } },
+                ]),
             });
             id = 1;
         } else {
@@ -146,8 +140,8 @@ for (const entry of ["initial", "script", "manual"]) {
                 battle = add(battle, passenger());
                 id = 10;
             } else {
-                const card = addCard(battle, passengerDefinition(), { stock: 1, stockLimit: 1, activeLimit: 1, program: operator });
-                const result = deploy(card.state, { card: card.value, tilePosition: first });
+                const card = addCard(battle, passengerDefinition());
+                const result = deploy(card.state, createRequest(card.state, card.value, first));
                 assert.equal(result.value.type, "DEPLOYED");
                 battle = result.state;
                 id = result.value.unitId;
@@ -158,21 +152,19 @@ for (const entry of ["initial", "script", "manual"]) {
     });
 }
 
-test("one update exchanges passengers and synchronizes rules against the final occupancy", () => {
+test("pure storage exchanges passengers without dispatching occupancy content", () => {
     let battle = fixture([platform(), passenger(), passenger(11, second)]);
     const before = battle;
-    const previousPassengerField = battle.battlefield;
     battle = update(battle, [move(getUnit(battle, 10), second), move(getUnit(battle, 11), first)]);
-    battle = notify(battle, previousPassengerField, battle.battlefield, [10,11]);
 
-    assertEligible(battle, 10);
-    assertSuppressed(battle, 11);
+    assertSuppressed(battle, 10);
+    assertEligible(battle, 11);
     assert.equal(occupancyAt(battle.battlefield, first).occupant.id, 11);
     assertSuppressed(before, 10);
     assertEligible(before, 11);
 });
 
-test("one update exchanges supports beneath stationary passengers and releases the newly suppressed blocker", () => {
+test("pure storage exchanges supports without changing rules or blocking relations", () => {
     const support = initialize({
         id: 31, position: Tile.center(second),
         definition: { id: "ordinary-support", occupancy: { slot: "SUPPORT", hooks: [] } },
@@ -182,13 +174,11 @@ test("one update exchanges supports beneath stationary passengers and releases t
     battle = acquire(battle, 11);
     assert.equal(ownerId(battle, 21), 11);
 
-    const previousSupportField = battle.battlefield;
     battle = update(battle, [move(getUnit(battle, 30), second), move(getUnit(battle, 31), first)]);
-    battle = notify(battle, previousSupportField, battle.battlefield, [30,31]);
 
-    assertEligible(battle, 10);
-    assertSuppressed(battle, 11);
-    assert.equal(ownerId(battle, 21), undefined);
+    assertSuppressed(battle, 10);
+    assertEligible(battle, 11);
+    assert.equal(ownerId(battle, 21), 11);
     assert.equal(getUnit(battle, 10).lifecycle, "PRESENT");
     assert.equal(getUnit(battle, 11).lifecycle, "PRESENT");
 });

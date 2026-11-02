@@ -27,11 +27,11 @@ import {
     type Definition as SkillDefinition,
 } from "../../../core/unit/skill/index.js";
 import { hasSkill } from "../../../core/unit/capability/skill/index.js";
-import type { Direction } from "../../../core/geometry/direction.js";
 
 import type { Definitions as CapabilityDefinitions } from "../../../core/unit/capability/catalog.js";
 import { hasAction } from "../../../core/unit/capability/action/index.js";
-import { createDefinition as createDeployableDefinition } from "../../../core/unit/capability/deployable/index.js";
+import type { Definition as CardDefinition } from "../../../core/battle/deployment/card/index.js";
+import { get as getTile } from "../../../core/battlefield/map/map.js";
 
 import { healFree } from "../../effects/protection.js";
 import { hasVitality, type Vitality } from "../../../core/unit/capability/vitality/index.js";
@@ -67,6 +67,7 @@ export interface Definition
             | "vitality"
         > {
     readonly profile: Profile;
+    readonly card: CardDefinition;
 }
 
 interface ShieldState {
@@ -231,7 +232,7 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
 
 export function create(
     profile: Profile,
-    options: { readonly direction?: Direction; readonly recoveryTicks?: number } = {},
+    options: { readonly recoveryTicks?: number } = {},
 ): { readonly definition: Definition; readonly action: Attack<object, SkillAttackState> } {
     if (
         profile.id !== "char_311_mudrok" ||
@@ -247,7 +248,6 @@ export function create(
         throw new TypeError("Mudrock content supports only module X");
     }
 
-    const direction = options.direction ?? "RIGHT";
     const recoveryTicks = options.recoveryTicks ?? 0;
 
     const shield = shieldEffect(profile);
@@ -287,16 +287,38 @@ export function create(
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
         id: profile.id,
         profile,
-        occupancy: { slot: "OCCUPANT", direction },
+        occupancy: { slot: "OCCUPANT" },
         targetable: { restrictions: [] },
-        deployable: createDeployableDefinition({
-            card: {},
+        deployable: { retreatRules: [] },
+        card: {
             cost: profile.attributes.cost,
             redeployTicks: secondsToTicks(profile.attributes.respawnTime),
             slots: 1,
-            placement: "MELEE",
-            allowedSiteConditions: [normalSite],
-        }),
+            stock: 1,
+            stockLimit: 1,
+            activeLimit: 1,
+            cooldownOnDeploy: false,
+            recoverOnLeave: true,
+            increaseCostOnLeave: true,
+            refund: { rate: 0.5, limit: "BASE_COST" },
+            deploymentRules: [
+                {
+                    id: "deployment/site",
+                    allows(battle, { request }) {
+                        const tile = getTile(battle.battlefield.map, request.tilePosition);
+
+                        return (
+                            tile !== undefined &&
+                            (tile.state.placement === "MELEE" || tile.state.placement === "ALL") &&
+                            (tile.state.siteCondition === null ||
+                                tile.state.siteCondition === normalSite)
+                        );
+                    },
+                },
+            ],
+            unitHooks: [],
+            initialize: (battle) => ({ state: battle, value: {} }),
+        },
         vitality: {
             maxHp: profile.attributes.maxHp,
             defense: profile.attributes.defense,

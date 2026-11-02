@@ -40,7 +40,8 @@ export function createTacticalMechanicsDemo(
     readonly elementType: ElementType | null;
 } {
     const base = createTacticalCombatDemoSpec(map, route, data, seed, "PROJECTILE");
-    const source = base.initialUnits[0]!;
+    const predefined = base.predefines[0]!;
+    const source = predefined.creation;
     const spawn = base.schedule.spawns[0]!;
     const maxTicks = (scenario === "SKILL" ? 120 : 60) * TICKS_PER_SECOND;
     const elementType = scenario === "SKILL" ? null : ELEMENT_SCENARIOS[scenario];
@@ -109,7 +110,7 @@ export function createTacticalMechanicsDemo(
     return {
         input: {
             ...base,
-            initialUnits: [{ ...source, definition }],
+            predefines: [{ ...predefined, creation: { ...source, definition } }],
             schedule: {
                 type: "TIMELINE",
                 spawns: [{ ...spawn, definition: target, route: targetRoute, tick: 0 }],

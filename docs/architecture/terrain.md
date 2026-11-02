@@ -14,7 +14,7 @@ Map 的 Tiles 是稠密的不可变序列。`add(tile)` 接受完整泛型 Tile�
 
 `battlefield/tile.update(field, position, state)` 是运行态地块变更入口，确认目标地块并校验新 walkCost；这与 tile.create 的初始值校验属于不同入口。通行规则或步行代价改变时同步重建 Navigation baseline，保留已有 overlay。完整战斗入口 `battle/tile.update(battle, position, state)` 接续该结果并维护 Blocking，不重复校验。内容改格使用完整入口。
 
-`siteCondition` 是单个 `symbol | null`，表达该格要求的部署场地条件；Deployable 的 `allowedSiteConditions` 数组列出支持的条件。null 表示没有场地条件要求，Content 的普通场地 `condition.normal`（NORMAL）则是一个实际条件，两者不同。Core 不默认导入普通场地，也不解释官方位掩码。Data 当前把官方位值 1／2／4／8／32 转成 normal／deepsea／tide／night／brokenWalkway；`brokenWalkway` 仅接入场地许可，完整步道切换与坠落机制尚未接入。
+`siteCondition` 是单个 `symbol | null`，表达该格要求的部署场地条件；Content 在 Card 的部署 Rule 中判断本次请求是否支持该条件。null 表示没有场地条件要求，Content 的普通场地 `condition.normal`（NORMAL）则是一个实际条件，两者不同。Core 不默认导入普通场地，也不解释官方位掩码。Data 当前把官方位值 1／2／4／8／32 转成 normal／deepsea／tide／night／brokenWalkway；`brokenWalkway` 仅接入场地许可，完整步道切换与坠落机制尚未接入。
 
 `elevation` 表达当前高度类别，`placement` 表达当前部署类别，`passability` 表达导航通行类别；三者不代替 `allowsBlocking`。地图适配以显式 `tile_blockable` 优先、初始高地默认不可阻挡的规则生成 `allowsBlocking` 初值。Blocking 有登记格时只查登记根格的当前许可，无登记格才查身体格；不以当前 elevation 再次硬拒绝。原生 `Tile.isMeleeBlockable`（70673，`0x1808c6070`）同样优先返回黑板覆盖；其默认 `isHighland`（70670，`0x1808c5f10`）读原始 TileData 高度，与可被 Token 改写的当前 Options.heightType 分开。项目已将有效阻挡许可显式保存为字段，调用方直接消费该字段。
 
@@ -45,7 +45,7 @@ Runtime 顺序为 `Movement → Mechanism → Blocking → RouteCompletion`。�
 
 平台等 Content 按 Occupancy 登记格改写当前 Tile，而不是以身体世界位置代替登记。当前预置装置离场时，仅将自己改写的字段恢复为 `definition.initial` 对应值，保留其它当前字段。恢复政策由内容确定，没有通用撤销栈。TileBinding 和 tile-cost Effect 已移除，部署、阻挡与导航统一消费当前 Tile 属性。
 
-射击台 Content 通过 Occupancy 的 SUPPORT Hook，在当前乘员的 blocker.rules 登记平台实例独占的共享二元 Rule，禁止其与任何目标建立或保留阻挡；occupantAdded 安装，occupantRemoved 只清除该平台规则，不覆写地块 `allowsBlocking`。处理旧关系事实时仍重查当前承载，避免删除重入后重新建立的规则，详见 [Occupancy 同步通知](occupancy.md#同步登记通知)。原生平台向乘员施加 WALK 条件下的 `highland_common[block_core]`／`BLOCK_FREE`，详见 [Blocking 的原生对照](blocking.md#地块阻挡资格)。
+射击台 Content 通过 Occupancy 的 SUPPORT Hook，在当前乘员的 blocker.rules 登记平台实例独占的共享二元 Rule，禁止其与任何目标建立或保留阻挡；occupantAdded 安装，occupantRemoved 只清除该平台规则，不覆写地块 `allowsBlocking`。处理旧关系事实时仍重查当前承载，避免删除重入后重新建立的规则，详见 [Occupancy 同步通知](occupancy.md#已通知的业务配对)。原生平台向乘员施加 WALK 条件下的 `highland_common[block_core]`／`BLOCK_FREE`，详见 [Blocking 的原生对照](blocking.md#地块阻挡资格)。
 
 `walkCost` 保存最终有效步行代价，不是可任意累加或取最大值的基础代价。原生普通 `Tile.get_moveCost`（70678，`0x1808adc40`）按 `overrideObstacleLikeMoveCost` 返回 1000 或 1；`HoleTile.get_moveCost`（70580，`0x1808addd0`）直接返回 1,000,000，不受该标记降低。当前装置 Content 的 apply 对普通地形赋 1000，对真实地穴保留定义中的固定代价 1,000,000；不把这些结果泛化成 `max(任意当前代价, 1000)`。完整地穴身份由 Terrain Definition 表达，不能仅凭“hole-like”状态推断固定代价。
 

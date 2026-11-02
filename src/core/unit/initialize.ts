@@ -28,10 +28,6 @@ export function initialize(
     battle: BattleState,
     input: Omit<Input, "initial"> & { readonly initial?: Partial<Inputs> },
 ): Result<Unit> {
-    if ("blocker" in input.definition && "blockable" in input.definition) {
-        throw new TypeError("a unit cannot be both blocker and blockable");
-    }
-
     let unit: Unit = {
         id: input.id,
         lifecycle: "PRESENT",

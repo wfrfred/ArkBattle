@@ -1,4 +1,4 @@
-import { createDefinition as createDeployableDefinition } from "../../dist/core/unit/capability/deployable/index.js";
+import { createDefinition as createDeployableDefinition } from "../helpers/deployable.js";
 import * as conditions from "../../dist/content/terrain/condition.js";
 import { tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
@@ -36,15 +36,7 @@ const map = () =>
 const definition = () => ({ hooks: [],
     id: "paired-capabilities",
     targetable: { restrictions: [] }, spatialPresence: {}, occupancy: { slot: "OCCUPANT" },
-    deployable: createDeployableDefinition({
-        card: {},
-        cost: 10,
-        redeployTicks: 30,
-        slots: 1,
-        placement: "MELEE",
-        allowedSiteConditions: [conditions.normal],
-        refund: { rate: 0.5, limit: "BASE_COST" },
-    }),
+    deployable: createDeployableDefinition(),
     vitality: { maxHp: 100, defense: 20, resistance: 10 },
     offense: { attack: 10 },
     action: actionCapability(createAttack({ id: 'normal', speed: 100,
@@ -122,12 +114,12 @@ test("battlefield replacement preserves configured capability composition on upd
         ...unit,
         action: { ...unit.action, actions: unit.action.actions.replace(currentAction.definition, { ...currentAction, cooldown: { periodTicks: 3, readyAtTick: 7 } }) },
         spatialPresence: { present: false },
-        occupancy: { tile: null },
+        occupancy: { ...unit.occupancy, tile: null },
     };
     runtime = updateUnit(runtime, [updated]);
     assert.deepEqual(runtime.units.get(1).action, updated.action);
     assert.deepEqual(unitsAt(runtime, [0, 0]), []);
-    const restored = { ...updated, spatialPresence: { present: true }, occupancy: { tile: null } };
+    const restored = { ...updated, spatialPresence: { present: true }, occupancy: { ...updated.occupancy, tile: null } };
     runtime = updateUnit(runtime, [restored]);
     assert.deepEqual(
         unitsAt(runtime, [0, 0])

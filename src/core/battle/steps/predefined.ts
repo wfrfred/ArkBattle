@@ -1,5 +1,8 @@
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
-import type { LeaveReason } from "../../unit/unit.js";
+import type { Definition as UnitDefinition, LeaveReason } from "../../unit/unit.js";
+import { initialize as initializeUnit, type Input as UnitInput } from "../../unit/initialize.js";
+import type { WorldPosition } from "../../geometry/coordinate.js";
+import type { Hook } from "../../unit/hook.js";
 import {
     get as getMechanism,
     remove as removeMechanism,
@@ -7,18 +10,18 @@ import {
     type Mechanism,
 } from "../mechanism.js";
 import type { Ref } from "../../common/ref.js";
-import {
-    createUnitPlacementDefinition,
-    instantiateUnitPlacement,
-    type UnitPlacementDefinition,
-} from "../creation/placement.js";
 import { instantiateMechanismPlacement } from "../creation/mechanism.js";
 import type { Command } from "../contract.js";
 import { add, remove } from "../unit.js";
 import type { State as BattleState } from "../state.js";
+import type { Inputs } from "../../unit/capability/catalog.js";
 
-export interface PredefinedUnitCreation extends UnitPlacementDefinition {
+export interface PredefinedUnitCreation {
     readonly type: "UNIT";
+    readonly definition: UnitDefinition;
+    readonly position: WorldPosition;
+    readonly initial?: Partial<Inputs>;
+    readonly hooks?: readonly Hook[];
 }
 
 export interface PredefinedMechanismCreation {
@@ -53,20 +56,7 @@ export type PredefinedCommand =
 export function createPredefinedDefinition(definition: PredefinedDefinition): PredefinedDefinition {
     assertNonnegativeSafeInteger(definition.id, "predefined definition id");
 
-    const creation = definition.creation;
-
-    return {
-        id: definition.id,
-        alias: definition.alias,
-        initiallyPresent: definition.initiallyPresent,
-        creation:
-            creation.type === "UNIT"
-                ? {
-                      type: creation.type,
-                      ...createUnitPlacementDefinition(creation),
-                  }
-                : { ...creation },
-    };
+    return definition;
 }
 
 export function predefinedIdsForAlias(
@@ -136,7 +126,9 @@ export function advancePredefined(
 
         const creation = definition.creation;
         if (creation.type === "UNIT") {
-            const initialized = instantiateUnitPlacement(state, creation);
+            const id = state.execution.nextUnitId;
+            state = { ...state, execution: { ...state.execution, nextUnitId: id + 1 } };
+            const initialized = initializeUnit(state, { ...creation, id } as UnitInput<any>);
             state = initialized.state;
             const unit = initialized.value;
             state = {

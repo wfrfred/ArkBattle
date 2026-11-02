@@ -1,14 +1,8 @@
-import { createDefinition as createDeployableDefinition } from "../../dist/core/unit/capability/deployable/index.js";
-import * as conditions from "../../dist/content/terrain/condition.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import * as cards from "../../dist/core/battle/deployment/card/state.js";
 import { get } from "../../dist/core/battle/deployment/card/index.js";
-import {
-    addCard,
-    operator as operatorProgram,
-    queued,
-} from "../../dist/core/battle/deployment/index.js";
+import { addCard } from "../../dist/core/battle/deployment/index.js";
 import { fixtureBattle } from "../helpers/unit.js";
 import { create as value } from "../../dist/core/unit/contribution/attribute.js";
 
@@ -16,25 +10,29 @@ const definition = (cost = 10, redeployTicks = 30) => ({
     id: "deployable",
     hooks: [],
     occupancy: { slot: "OCCUPANT" },
-    deployable: createDeployableDefinition({
-        card: {},
+    deployable: { retreatRules: [] },
+    card: {
         cost,
         redeployTicks,
         slots: 1,
-        placement: "ALL",
-        allowedSiteConditions: [conditions.normal],
-        refund: { rate: 0.5, limit: "BASE_COST" },
-    }),
-});
-function createCard(id, definition, options = {}) {
-    const initial = fixtureBattle(0, { nextCardId: id });
-    const created = addCard(initial, definition, {
         stock: 1,
         stockLimit: 1,
         activeLimit: 1,
-        program: operatorProgram,
-        ...options,
-    });
+        cooldownOnDeploy: false,
+        recoverOnLeave: true,
+        increaseCostOnLeave: true,
+        refund: { rate: 0.5, limit: "BASE_COST" },
+        deploymentRules: [],
+        unitHooks: [],
+        initialize: battle => ({ state: battle, value: {} }),
+    },
+});
+function createCard(id, definition, options) {
+    const initial = fixtureBattle(0, { nextCardId: id });
+    const content = options === undefined
+        ? definition
+        : { ...definition, card: { ...definition.card, ...options } };
+    const created = addCard(initial, content);
     return get(created.state, created.value);
 }
 const operator = (cost = 10, redeployTicks = 30) => createCard(0, definition(cost, redeployTicks));
@@ -43,7 +41,6 @@ const token = (stockLimit = 3, redeployTicks = 10) =>
         stock: stockLimit,
         stockLimit,
         activeLimit: stockLimit,
-        program: queued,
     });
 const modification = (id, fields, group) => ({
     id,
@@ -59,10 +56,10 @@ test("ordinary Cards share definitions and have independent persistent progress"
     assert.deepEqual(first.state, {});
     assert.deepEqual(second.state, {});
     assert.notEqual(first.state, second.state);
-    assert.equal(unit.deployable.card.onTick, undefined);
+    assert.equal(unit.card.onTick, undefined);
     assert.equal(first.stock, 1);
-    assert.equal(first.stockLimit, 1);
-    assert.equal(first.activeLimit, 1);
+    assert.equal(first.definition.card.stockLimit, 1);
+    assert.equal(first.definition.card.activeLimit, 1);
     assert.equal(first.cooldown, null);
     assert.equal(first.recovery, null);
     const changed = cards.incrementCostStage(first);
@@ -233,7 +230,7 @@ test("explicit recharge caps inventory without discarding either clock", () => {
     const waiting = cards.enqueueRecovery(cards.startCooldown(consumed, 10), 10);
     const replenished = cards.recharge(waiting, 10);
     assert.equal(replenished.stock, 5);
-    assert.equal(replenished.activeLimit, 2);
+    assert.equal(replenished.definition.card.activeLimit, 2);
     assert.equal(replenished.cooldown, waiting.cooldown);
     assert.equal(replenished.recovery, waiting.recovery);
     assert.equal(cards.recharge(replenished, 1), replenished);

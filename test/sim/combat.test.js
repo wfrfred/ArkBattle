@@ -1,3 +1,4 @@
+import { predefinedUnits } from "../helpers/predefined.js";
 import { set as setFixtureEntry } from "../../dist/core/hook.js";
 import { update as applyUnitChanges, add as addUnit } from "../../dist/core/battle/unit.js";
 import { tiles as tileEntries } from "../helpers/tiles.js";
@@ -327,7 +328,18 @@ test('core combat: immutable updates preserve earlier combat state', () => {
   });
   let battle = initializeBattle(input);
   let replay = initializeBattle(input);
-  assert.deepEqual((battle = advanceBattle(battle, [])), (replay = advanceBattle(replay, [])));
+  const values = battle => ({
+    ...battle,
+    battlefield: {
+      ...battle.battlefield,
+      units: new Map([...battle.battlefield.units].map(([id, unit]) => [id, {
+        ...unit,
+        // Instance hooks close over each Unit; compare their registration and all state values.
+        hooks: unit.hooks.map(({ id, stage }) => ({ id, stage })),
+      }])),
+    },
+  });
+  assert.deepEqual(values(battle = advanceBattle(battle, [])), values(replay = advanceBattle(replay, [])));
   const snapshot = battle;
   const operator = snapshot.battlefield.units.get(0);
   const actionId = operator.action.actions.values().toArray()[0].definition.id;
@@ -368,8 +380,8 @@ test('core combat: immutable updates preserve earlier combat state', () => {
   assert.deepEqual(operator.blocker.capacity, []);
   assert.equal(operator.vitality.hp, hp);
   assert.deepEqual(battle, snapshot);
-  assert.deepEqual((battle = advanceBattle(battle, [])), (replay = advanceBattle(replay, [])));
-  assert.deepEqual(battle, replay);
+  assert.deepEqual(values(battle = advanceBattle(battle, [])), values(replay = advanceBattle(replay, [])));
+  assert.deepEqual(values(battle), values(replay));
   assert.deepEqual(blockingQueries.relations(snapshot).map(({ blocker, blocked }) => [blocker.id, blocked.id]), [[0, 1]]);
   assert.equal(operator.vitality.hp, hp);
 });
@@ -793,9 +805,9 @@ test('core combat: healing sees earlier phase damage and replays the same combat
   const medic = actionUnit(2, 'ALLY', [3, 0], { action: attackDefinition([
     { id: 'heal', targeting: healingTargeting(), operations: [healEffect(10)] },
   ]) });
-  const input = { ...base, initialUnits: [attacker, friend, medic].map(unit => ({
+  const input = { ...base, predefines: predefinedUnits([attacker, friend, medic].map(unit => ({
     definition: unit.definition, position: unit.position,
-  })) };
+  }))) };
   const run = () => {
     let battle = initializeBattle(input);
     const step = (battle = advanceBattle(battle, []));

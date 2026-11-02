@@ -1,6 +1,5 @@
 import type { Seed } from "../common/rng.js";
 import type { Map } from "../battlefield/map/map.js";
-import type { UnitPlacementDefinition } from "./creation/placement.js";
 import type { MechanismPlacementDefinition } from "./creation/mechanism.js";
 import type { SpawnScheduleDefinition } from "./schedule/definition.js";
 import type { CombatEvent } from "./execution/event.js";
@@ -21,7 +20,6 @@ import type { Id as ProjectileId } from "../projectile/projectile.js";
 import type { Signal as ProjectileSignal } from "../projectile/event.js";
 import type { Signal as ElementalSignal } from "../unit/capability/elemental/operations.js";
 import type { Signal as SkillSignal } from "../unit/skill/operations.js";
-import type { Payment } from "./deployment/program.js";
 
 export interface Definition {
     readonly predefines: readonly PredefinedDefinition[];
@@ -33,7 +31,6 @@ export interface Input extends Definition {
     readonly deployment?: DeploymentInput;
     readonly map: Map;
     readonly schedule: SpawnScheduleDefinition;
-    readonly initialUnits: readonly UnitPlacementDefinition[];
     readonly initialMechanisms: readonly MechanismPlacementDefinition[];
     readonly rngState: Seed;
 }
@@ -73,8 +70,7 @@ export type Event =
           readonly type: "UNIT_DEPLOYED";
           readonly unitId: Id;
           readonly position: WorldPosition;
-          readonly program: string;
-          readonly payment: Payment | null;
+          readonly payment: number | null;
           readonly tick: number;
       }
     | { readonly type: "ENEMY_SPAWNED"; readonly unitId: Id; readonly tick: number }

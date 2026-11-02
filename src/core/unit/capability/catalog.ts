@@ -16,6 +16,7 @@ import * as targetable from "./targetable/capability.js";
 import * as vitality from "./vitality/capability.js";
 
 export const initializers = {
+    occupancy: occupancy.initialize,
     deployable: deployable.initialize,
     vitality: vitality.initialize,
     offense: offense.initialize,
@@ -30,7 +31,6 @@ export const initializers = {
     locomotion: locomotion.initialize,
     route: route.initialize,
     spatialPresence: presence.initialize,
-    occupancy: occupancy.initialize,
     targetable: targetable.initialize,
 } as const;
 

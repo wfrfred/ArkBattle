@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { add, update } from "../../dist/core/battle/unit.js";
-import { instantiateUnitPlacement } from "../../dist/core/battle/creation/placement.js";
+import { initialize as initializeUnit } from "../../dist/core/unit/initialize.js";
 import { directionalRange } from "../../dist/core/battle/targeting/index.js";
 import { ref } from "../../dist/core/unit/index.js";
 import { hasDirection, setDirection } from "../../dist/core/unit/capability/occupancy/index.js";
@@ -13,21 +13,21 @@ test("creation inputs set only declared capability facts without changing the sh
     const definition = {
         id: "oriented",
         hooks: [],
-        occupancy: { slot: "OCCUPANT", direction: "RIGHT" },
+        occupancy: { slot: "OCCUPANT" },
     };
-    const first = instantiateUnitPlacement(fixtureBattle(), {
-        definition,
+    const first = initializeUnit(fixtureBattle(), {
+        id: 0, definition,
         position: [0, 0],
         initial: { occupancy: { tile: [0, 0], direction: "UP" } },
     });
-    const second = instantiateUnitPlacement(first.state, { definition, position: [1, 0] });
+    const second = initializeUnit(first.state, { id: 1, definition, position: [1, 0], initial: { occupancy: { direction: "RIGHT" } } });
     assert.equal(first.value.definition, definition);
     assert.equal(second.value.definition, definition);
-    assert.deepEqual(first.value.occupancy, { tile: [0, 0], direction: "UP" });
-    assert.deepEqual(second.value.occupancy, { tile: null, direction: "RIGHT" });
-    assert.equal(definition.occupancy.direction, "RIGHT");
-    const device = instantiateUnitPlacement(second.state, {
-        definition: { id: "unoriented-device", hooks: [], occupancy: { slot: "OCCUPANT" } }, position: [2, 0],
+    assert.deepEqual(first.value.occupancy, { tile: [0, 0], direction: "UP", pair: null });
+    assert.deepEqual(second.value.occupancy, { tile: null, direction: "RIGHT", pair: null });
+    assert.equal(Object.hasOwn(definition.occupancy, "direction"), false);
+    const device = initializeUnit(second.state, {
+        id: 2, definition: { id: "unoriented-device", hooks: [], occupancy: { slot: "OCCUPANT" } }, position: [2, 0],
     }).value;
     assert.equal(hasDirection(device), false);
     assert.equal(Object.hasOwn(device, "direction"), false);
@@ -35,14 +35,14 @@ test("creation inputs set only declared capability facts without changing the sh
 });
 
 test("directional targeting reads the current instance direction", () => {
-    const initialized = instantiateUnitPlacement(fixtureBattle(), {
-        definition: { id: "attacker", hooks: [], occupancy: { slot: "OCCUPANT", direction: "RIGHT" } },
-        position: [0, 0],
+    const initialized = initializeUnit(fixtureBattle(), {
+        id: 0, definition: { id: "attacker", hooks: [], occupancy: { slot: "OCCUPANT" } },
+        position: [0, 0], initial: { occupancy: { direction: "RIGHT" } },
     });
     const source = initialized.value;
     let battle = add(initialized.state, source);
-    const target = instantiateUnitPlacement(battle, {
-        definition: {
+    const target = initializeUnit(battle, {
+        id: 1, definition: {
             id: "target", hooks: [],
             hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 } },
         },
@@ -54,7 +54,7 @@ test("directional targeting reads the current instance direction", () => {
     battle = update(battle, [setDirection(ref(source), "UP")]);
     assert.equal(filter(battle, request, target), false);
     assert.equal(filter(battle, request, { ...target, position: [0, 1] }), true);
-    assert.equal(getUnit(battle, source.id).definition.occupancy.direction, "RIGHT");
+    assert.equal(Object.hasOwn(getUnit(battle, source.id).definition.occupancy, "direction"), false);
 });
 
 test("explicit creation hooks keep registration order through capability initialization", () => {
@@ -70,8 +70,8 @@ test("explicit creation hooks keep registration order through capability initial
         id: "hook-order", hooks: [content],
         skill: { initialize: battle => createSkill(battle, skill) },
     };
-    const initialized = instantiateUnitPlacement(fixtureBattle(), {
-        definition, position: [0, 0], hooks: [before],
+    const initialized = initializeUnit(fixtureBattle(), {
+        id: 0, definition, position: [0, 0], hooks: [before],
     });
     add(initialized.state, initialized.value);
     assert.deepEqual(trace, ["given", "skill", "content"]);

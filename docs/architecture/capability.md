@@ -2,6 +2,8 @@
 
 Capability 按领域组织静态规则、当前状态和操作。每项 Capability 都具有配对的静态配置、State、能力接口和统一的 initialize；程序配置可由对应独立领域提供，例如 Skill Definition 归 unit/skill。没有静态配置或运行事实的一侧使用空实现，不使用 null 或省略字段代替。
 
+Deployable Definition 仅声明固有撤退规则，State 保存本次来源 Card、COST、实际额度、退费依据和当前撤退规则。Capability 初始化建立未关联部署的初态；Deployment 在 Unit 登记前写入本次事实，直接使用 Content 的完整静态 Unit Definition。Card 创建入口接收这同一份定义，通用 Unit／Catalog 不识别 card 字段。完整流程见 [Deployment](deployment.md)。
+
 ## 数据与类型
 
 单一领域模块使用 Definition、State 与该能力的名称。多个概念共存时保留能区分角色的名称，例如 Blocker／Blockable、ActionDefinition 与 Action Capability 的 Definition。Layer 与 Hitbox 分别位于独立领域目录，使用各自的 Definition 与 State。
@@ -13,7 +15,7 @@ interface Vitality {
 }
 ```
 
-Definition 保存静态参数与行为描述，State 保存本领域当前事实。结构相同的配置与初态可以共享引用；更新当前状态创建新值，不修改配置。Unit 可以不选择某项能力；一旦选择，对应 Definition 和 State 必须同时存在。SpatialPresence 使用空 Definition，Hitbox 使用空 State；空定义和空状态均使用 interface {}。Occupancy Definition 声明 Slot，State 记录当前登记地块。Targetable 的 Definition 使用必填 restrictions 数组声明固有限制，初始化复制贡献容器建立 State；空数组表示没有固有限制，详见 [Targeting 与 Targetable 类型](targeting.md)。Skill.activation 为 null 等领域内部业务状态不受此配对约定限制。
+Definition 保存静态参数与行为描述，State 保存本领域当前事实。结构相同的配置与初态可以共享引用；更新当前状态创建新值，不修改配置。Unit 可以不选择某项能力；一旦选择，对应 Definition 和 State 必须同时存在。SpatialPresence 使用空 Definition，Hitbox 使用空 State；空定义和空状态均使用 interface {}。Occupancy Definition 声明 Slot，State 记录当前登记地块、实例朝向和已通知的配对事实。Targetable 的 Definition 使用必填 restrictions 数组声明固有限制，初始化复制贡献容器建立 State；空数组表示没有固有限制，详见 [Targeting 与 Targetable 类型](targeting.md)。Skill.activation 为 null 等领域内部业务状态不受此配对约定限制。
 
 基础 Unit 是非泛型接口，保留运行时实例 ID 与 definition.id 对应的静态内容身份。通用工厂返回 Unit 基础结构与明确选择的能力的标准 Definition／State 组合。Skill／Action Capability 本身非泛型，不把具体程序的私有类型传播到宿主 Unit、SP、Rule、Hook 或 Contribution。Core 从当前 unit.skill 直接读取完整单槽聚合；已知 Definition 构造持久 Ref、已知非空聚合构造本轮 Ref，分别保持私有类型配对。需要某项能力的业务通过 Unit 与对应 Capability 的交叉类型声明依赖。
 
@@ -38,7 +40,7 @@ initialize<U extends Unit & Pick<Capability, "definition">>(
 ): Result<U & Capability>
 ```
 
-这里的 Capability 代表各自的能力接口，例如 Vitality 或 Skill。输入 Unit 已声明本能力的 Definition，initializer 直接读取 unit.definition 中的配置；Result.state 接续 BattleState，Result.value 返回保留已有字段并补充自身能力的新 Unit。需要本次创建参数的能力可以另接收可选第三参数，例如 Occupancy 的 `{ tile?, direction? }`。Catalog 从 initializer 的这个参数派生 Inputs；Initial<D> 只允许 D 明确声明的能力输入，不是任意预装 State。初始化可以直接登记自身的 Unit Hook，不经通用装配器识别具体能力。不改变战斗事实时返回原 battle；当前时间从 battle.tick 读取，不传独立 tick 或只有时点的 Context。Skill 的 SP、Sustain 等内部值模型仍使用各自的局部初始化接口，不因名称相同改为 Unit 装配操作。
+这里的 Capability 代表各自的能力接口，例如 Vitality 或 Skill。输入 Unit 已声明本能力的 Definition，initializer 直接读取 unit.definition 中的配置；Result.state 接续 BattleState，Result.value 返回保留已有字段并补充自身能力的新 Unit。具有前置能力依赖的 initializer 也在输入类型中声明该依赖。Occupancy 可以另接收可选的 `{ tile?, direction? }` 创建参数；Catalog 从 initializer 签名派生 Inputs，Initial<D> 仅表达所选能力的可选创建输入，不接收任意预装 State。Deployable 沿用两参数初始化，不为部署事实扩展通用构造协议。初始化可以直接登记自身的 Unit Hook，不经通用装配器识别具体能力。不改变战斗事实时返回原 battle；当前时间从 battle.tick 读取，不传独立 tick 或只有时点的 Context。Skill 的 SP、Sustain 等内部值模型仍使用各自的局部初始化接口，不因名称相同改为 Unit 装配操作。
 
 Catalog 只登记 capability → initializer 字典，并从函数签名派生配置、状态及能力组合类型：
 
@@ -73,21 +75,23 @@ export type Product<D> = {
 
 Product<D>.definition 直接保留 D，包含内容自有字段、字面量与联合分支信息；各 Capability 的运行 State 则使用 initializer 派生的标准 States 类型。SelectedKeys 的条件以 [D] 包裹，只有联合 Definition 的所有分支都明确要求某项能力时才承诺对应 State；可选能力也不提供存在保证。Unit 基础身份与生命周期 Hook 契约归 Unit 模块。类型推导与运行时装配共用 initializers，不另建能力映射表。Definition 与内部状态按项目契约保持不可变，不额外套深只读包装、复制或冻结。
 
-Unit 装配实现在 unit/initialize.ts，由 [unit/index.ts](../../src/core/unit/index.ts) 公开 initialize(battle, input) → Result<Unit & Product<D>> 及模型、Hook 类型和查询；完整登记与离场操作仍直接归 battle/unit.ts。Input 的 id、definition、position 为必填，可选 initial 与 hooks，不接收 effects；基础 Unit 具有原始 Definition、位置、PRESENT、调用方已登记的 hooks（缺省为空）和 Effects.empty()。初始 Effect 仍由登记后的 enter Hook 调用 install，正常执行安装、生效与依赖结算。实现按 Definition 中的配置键选择 initializer，将当前 battle、正在装配的 Unit 和该项初始输入传给它；异构类型只在派发和创建描述的配对边界擦除。不使用 Reflect，不重复检查内部能力配置是否为 undefined 或 null，不维护另一套能力专属分支。已知能力的 Definition 受 Catalog 派生类型约束；公开装配结果只承诺明确选择的能力，Skill／Action 的私有类型仍由所属领域恢复。
+Unit 装配实现在 unit/initialize.ts，由 [unit/index.ts](../../src/core/unit/index.ts) 公开 initialize(battle, input) → Result<Unit & Product<D>> 及模型、Hook 类型和查询；完整登记与离场操作仍直接归 battle/unit.ts。Input 的 id、definition、position 为必填，hooks 与 initial 可选，不接收 effects；基础 Unit 具有原始 Definition、位置、PRESENT、调用方已登记的 hooks（缺省为空）和 Effects.empty()。初始 Effect 仍由登记后的 enter Hook 调用 install，正常执行安装、生效与依赖结算。实现按 Definition 中的配置键选择 initializer，将当前 battle、正在装配的 Unit 和该项初始输入传给它；异构 initializer 的类型只在 fold 派发处擦除。不使用 Reflect，不重复检查内部能力配置是否为 undefined 或 null，不维护另一套能力专属分支。已知能力的 Definition 受 Catalog 派生类型约束；公开装配结果只承诺明确选择的能力，Skill／Action 的私有类型仍由所属领域恢复。
 
-Unit.initialize 是对所选 initializer 列表的 fold：从调用方已登记初始 Hook 的基础 Unit 开始，按 Catalog 登记顺序逐个接续 Result 中的 battle 与 Unit，最后合并 Definition 的内容 Hook。Hook 同 ID 后者覆盖前者并保留首次出现的位置，唯一性在装配期建立，执行时不重复去重。每项 initializer 保留身份、Definition、已有能力及登记项，补充自身状态或 Hook；Skill 登记 enter，Deployable 登记退款 prepare；具体部署来源以普通 leave Hook 接入回收。Blocker 或 Blockable 将必要清理 prepare 放在序列前部。这里表达显式登记顺序，不按来源类型增加生命周期阶段或普遍优先级。通用初始化器及 Unit 生命周期操作不依赖这些具体领域。初始化可以读取当前战场或消费 RNG，但当前 Unit 尚未登记；本轮已有能力直接从输入 Unit 读取，不通过战场查询半成品。所有能力装配完成后才执行完整 add 与统一入场派发。
+Unit.initialize 是对所选 initializer 列表的 fold：从调用方已登记初始 Hook 的基础 Unit 开始，按 Catalog 登记顺序逐个接续 Result 中的 battle 与 Unit，最后合并 Definition 的内容 Hook。Hook 同 ID 后者覆盖前者并保留首次出现的位置，唯一性在装配期建立，执行时不重复去重。每项 initializer 保留身份、Definition、已有能力及登记项，补充自身状态或 Hook；Skill 登记 enter，Occupancy 登记入场／离场配对程序，Deployable 登记实际占用释放的本地 leave。部署来源预先登记部署通知与被动死亡响应，主动撤退的退款及 Card 后继由领域操作安排。Blocker 或 Blockable 将必要清理 prepare 放在序列前部。这里表达显式登记顺序，不按来源类型增加生命周期阶段或普遍优先级。通用初始化器及 Unit 生命周期操作不解释这些具体领域。初始化可以读取当前战场或消费 RNG，但当前 Unit 尚未登记；已有能力直接从输入 Unit 读取，不通过战场查询半成品。所有能力装配完成后才执行完整 add 与统一入场派发。
 
 Unit 本地生命周期 Hook 是构造期确定的程序序列，运行期间没有增删接口；enter／tick／prepare／leave 直接按对象顺序执行。Context 固定，BattleState 逐项接续，accepts 读取最新 Battle；enter／tick 在每项前确认宿主仍为 PRESENT，prepare／leave 使用既定 Departure 完成终止业务。全局 Unit 观察者和 Capability 的动态 Hook 登记仍沿用各自的 set／remove 与通用 dispatch 协议。
+
+Deployable 单向依赖 Occupancy，类型以交叉组合表达，initialize(battle, unit) 接收已经具有 Occupancy 的 Unit，Catalog 先构造 Occupancy 再构造 Deployable。Deployable 初态为 card:null、cost:0、slots:0、refund:null，撤退规则来自静态 Definition。Deployment 消费资源、调用 Unit.initialize 后，在尚未登记的 Unit 上写入本次来源 Card、COST、部署位份额和退费依据，再一次登记并执行 enter。此时没有中间场上实例或额外更新通知。Deployment 在 fold 前已登记的 Hook 仍先执行；能力构造的前置依赖不改变已有 Hook 的登记顺序。主动撤退自行组织退款，实际离场后通过本次全局 leave 观察完成 Card 后继；被动死亡程序只响应已确认死亡。共有占格与占用释放覆盖所有相应离场，不新增原因体系或临时结算字段。完整移动重部署仍留待下一轮，当前契约见 [Deployment](deployment.md)。
 
 Action Capability 的 Definition 保存 initialize(battle) → Result<Actions> 和可选 select。具体内容在类型明确处创建行动初始化函数，再以 createActions 顺序组合；Capability 接续返回的 BattleState，将 Actions 放入公共 State，并建立执行 ID 计数、贡献、规则和 Hook 的初值。配置不另存静态 Definition 集合，也不让调度器恢复具体内容类型。
 
 每个行动创建程序生成配对的 Definition、持久 state、初始就绪的 Cooldown 和 execution: null；即使尚未启动也已经存在。持久 Action Ref 由宿主与 Definition 定位，跨多轮有效；每次 start 接收该引用，只创建本轮执行数据，宿主内 nextExecutionId 独立递增，返回携带 host 与本轮 execution.id 的 Execution Ref。onTick／onEnd 通过 Execution<P, E> 取得本轮完整视图，持久 state 与 execution.state 保持各自类型，宿主引用由回调参数提供。完成或取消只清空 execution，保留最新持久 state 与 Cooldown。Skill Capability 的 Definition 只保存 initialize 工厂，以 Result<Skill<any, any>> 接纳完整的不同私有类型聚合；State 扩展默认 Skill<object, object>，不建立另一套公开元数据类型。内容调用 unit/skill.create(battle, programDefinition)，接续 Definition.initialize(battle) → Result<S>，创建定义、持久 state、SP 与 activation: null；Capability 接续结果补规则、贡献、Hook 与 nextActivationId，本轮 A 在 activate 时建立。
 
-路线、部署占格和 Card 归属等属于具体实例的创建业务。直接 Placement 创建接收类型化 initial 与普通 hooks；Occupancy 用 initial.occupancy 的 tile／direction 初始化本次登记与朝向，Slot 来自该能力的 Definition，不在 Placement 或 Unit 内再识别该能力。需要保存到异构 Battle.Input／排程的创建描述由 createUnitPlacementDefinition 建立配对，UnitPlacementDefinition 的 initial 只保留类型层已配对标记，默认不含 any，不引入运行容器或重复校验。状态与双槽反向表见 [Occupancy 与 Support](occupancy.md)；Deployment 在通用初始化结果上写入本次 COST、额度、返费与 Card 等事实。带路线的 Unit 由 battle/creation/routed-unit.ts 的 initialize(battle, input) 创建，公开 Input／Initialization，结果字段为 unit；它先规范化路线并采样总偏移，将最终 Route Definition 与初始位置交给 Unit 初始化。输出 Definition 保留原 D 的内容字段和各联合分支元数据，仅将 route 字段替换为规范化的 Route.Definition，不把原 Definition 收窄为通用能力配置。Route 与 Locomotion 通过 Catalog 独立装配，见 [Navigation、Route 与 Locomotion 设计](navigation.md)。
+路线、部署占格和 Card 归属等属于具体实例的创建业务。Occupancy 用 initial.occupancy 的 tile／direction 初始化本次登记与朝向，Slot 来自该能力的 Definition，状态与双槽反向表见 [Occupancy 与 Support](occupancy.md)。Deployment 和 Predefined 直接调用 Unit.initialize；不设额外的创建描述工厂、配对标记或构造转发层。关卡开场 Unit 使用 initiallyPresent:true 的预置项，Predefined 负责别名、出现／移除命令和当前实例绑定，不另外实现 Unit 初始化。带路线的 Unit 由 battle/creation/routed-unit.ts 的 initialize(battle, input) 创建，返回 Result<Unit & Route> 及所选能力；它先规范化路线并采样总偏移，将最终 Route Definition 与初始位置交给 Unit 初始化。输出 Definition 保留原 D 的内容字段和各联合分支元数据，仅将 route 字段替换为规范化的 Route.Definition，不把原 Definition 收窄为通用能力配置。Route 与 Locomotion 通过 Catalog 独立装配，见 [Navigation、Route 与 Locomotion 设计](navigation.md)。
 
 Core 不提供干员或敌人 Archetype 层；内容直接组合 Unit Definition 与所需的 Catalog Definitions，具体创建流程只声明实际需要的能力。Unit.initialize 是统一构造入口，负责按 Definition 建立能力配对。Unit 登记后的 Definition 与能力组成保持稳定，局部 State 可以更新；内部领域操作遵守此契约。路线可改变 SpatialPresence.present，不能临时安装或删除 SpatialPresence。查询与历史业务记录直接共享不可变 Unit，保留内容自有状态字段。
 
-当前项目将 Blocker 与 Blockable 约束为至多一种，也允许 Unit 两者皆无。Unit.initialize 在实际构造入口确认组合，内部信任能力身份不变，不重复检查互斥。该约束不推导阵营、自身 Layer、Route 或 Locomotion，也不把容量为 0 或暂时禁挡视为能力消失。
+当前项目将 Blocker 与 Blockable 约束为至多一种，也允许 Unit 两者皆无。Blocking 的构造入口确认组合，通用 Unit 不点名这两个能力；内部信任能力身份不变，不重复检查互斥。该约束不推导阵营、自身 Layer、Route 或 Locomotion，也不把容量为 0 或暂时禁挡视为能力消失。
 
 领域的结构存在性检查不反向依赖 Catalog。无需中央 hasCapability、CapabilityMap 或 DefinitionPart 描述业务依赖。
 
@@ -108,7 +112,7 @@ Core 不提供干员或敌人 Archetype 层；内容直接组合 Unit Definition
 
 不为统一前缀增加 normalize，不保留无工作转发，不以 Object.freeze 证明内部调用者遵守不可变约定。外部格式检查在 Data／I/O 边界，领域不变量由对应领域维护。跨模块出现同名类型和函数时，使用命名空间或有角色含义的导入别名。
 
-Deployable 的 createDefinition 负责配置校验与 Card 初始程序归一。输入 card 必填，无自定义逻辑时写 `{}`；空配置补上创建空私有状态的 initialize，归一输出始终有初始化器，onTick 仍按实际需要提供。自定义初始化结果推断 Card 的 S，空配置使用默认 object，不把空对象当作任意私有类型，也不另分有状态／无状态的 Definition。Card 程序的 Definition 归 battle/deployment/card/definition.ts，Deployable 引用它。
+Deployable Definition 直接声明 retreatRules，不提供 createDefinition 转发工厂，也不持有 Card 配置。Card 配置归 battle/deployment/card/definition.ts，由完整静态 Unit Definition 的顶层 card 字段提供；initialize 必填，无私有数据时也显式返回空对象，不根据省略配置补程序。
 
 ## 属性与贡献
 
@@ -130,7 +134,7 @@ initialize(battle, unit) 校验 unit.definition.offense.attack 为有限非负�
 
 ## Layer 与 Hitbox
 
-本轮四向摆放朝向归 Occupancy，Definition.occupancy.direction 可省略，当前 occupancy.direction 为 Direction 或 null。占格不意味着一定有朝向，装置可以为 null；基础 Unit 不增加字段，也不建立独立 Direction Capability。创建通过 initial.occupancy.direction 覆盖初态，setDirection 返回绑定 Occupancy Ref 的 Change，hasDirection 只缩窄非 null 的字段。方向相关索敌读取当前实例，不在共享 Action 程序里捕获本次方向。几何 Direction 类型和坐标旋转仍属于 Geometry，不反向依赖 Unit；当前领域选择不预设未来所有方向需求都必须占格。
+本轮四向摆放朝向归 Occupancy，当前 occupancy.direction 为 Direction 或 null；本次摆放方向通过 initial.occupancy.direction 建立，不写入 Content 的静态 Definition。部署路径从 Request.direction 提供该输入，其它创建路径由对应入口提供。占格不意味着一定有朝向，装置可以为 null；基础 Unit 不增加字段，也不建立独立 Direction Capability。setDirection 返回绑定 Occupancy Ref 的 Change，hasDirection 只缩窄非 null 的字段。方向相关索敌读取当前实例，不在共享 Action 程序里捕获本次方向。几何 Direction 类型和坐标旋转仍属于 Geometry，不反向依赖 Unit；当前领域选择不预设未来所有方向需求都必须占格。
 
 Unit.position 表达当前世界坐标；Layer 表达 GROUND／AIR 空地身份，Route.pathMotionMode 表达 WALK／FLY 通行方式。这三者独立，升空不自动改变坐标或寻路模式。
 

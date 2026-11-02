@@ -23,7 +23,7 @@ import * as skill from ${source("unit/capability/skill/index")};
 import * as elemental from ${source("unit/capability/elemental/index")};
 import * as blocker from ${source("unit/capability/blocking/index")};
 import * as cards from ${source("battle/deployment/card/index")};
-import type { DeployRequest } from ${source("battle/deployment/program")};
+import type { DeployRequest } from ${source("battle/deployment/request")};
 
 declare const battle: BattleState;
 declare const skillRef: Ref<Unit & skill.Skill>;
@@ -81,6 +81,7 @@ declare const typedCard: Ref<cards.Card<{ readonly charges: number }>>;
 cards.allows(battle, { purpose: "SELECT", ref: typedCard });
 const request: DeployRequest<cards.Card<{ readonly charges: number }>> = {
     card: typedCard, tilePosition: [0, 0], direction: "RIGHT",
+    quote: { dp: 0, stock: 1, slots: 1 }, rules: [], hooks: [],
 };
 cards.allows(battle, { purpose: "DEPLOY", request });
 // @ts-expect-error deployment qualification requires its actual request.

@@ -9,7 +9,7 @@ import { update as updateBattleTile } from "../../dist/core/battle/tile.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { effectiveMap, field as navigationField } from "../../dist/core/battlefield/navigation/cache.js";
 import { nextPoint, setOverlay } from "../../dist/core/battlefield/navigation/state.js";
-import { evaluateDeployment } from "../../dist/core/battle/deployment/query.js";
+import { createCardDefinition, previewPlacement } from "../helpers/deployable.js";
 import { normal as normalTerrain } from "../../dist/content/terrain/definition.js";
 import { normal, deepsea, tide } from "../../dist/content/terrain/condition.js";
 import { fixture, holder, target, acquire, ownerId } from "../helpers/blocking.js";
@@ -22,7 +22,7 @@ const initial = {
 const definition = { terrain: normalTerrain.create({}), initial };
 const tile = createTile(definition);
 const map = createMap(1, 3, Tiles.empty().add(tile).add(tile).add(tile));
-const profile = { placement: "ALL", allowedSiteConditions: [normal, tide] };
+const profile = createCardDefinition({ placement: "ALL", allowedSiteConditions: [normal, tide] });
 
 test("Tile state updates preserve the definition and earlier map versions", () => {
     const original = createField(map);
@@ -42,17 +42,17 @@ test("Tile state updates preserve the definition and earlier map versions", () =
 
 test("deployment distinguishes NORMAL, no extra requirement, and multiple accepted conditions", () => {
     let field = createField(map);
-    const decision = () => evaluateDeployment(field, { tile: [0, 1], profile });
+    const decision = () => previewPlacement(field, profile, [0, 1]);
     assert.equal(decision().type, "ALLOWED");
     field = updateTile(field, [0, 1], { ...initial, siteCondition: tide });
     assert.equal(decision().type, "ALLOWED");
     field = updateTile(field, [0, 1], { ...initial, siteCondition: deepsea });
-    assert.deepEqual(decision(), { type: "DENIED", reason: "TERRAIN" });
-    const acceptsNothing = { ...profile, allowedSiteConditions: [] };
+    assert.deepEqual(decision(), { type: "REJECTED", reason: "RULE" });
+    const acceptsNothing = createCardDefinition({ placement: "ALL", allowedSiteConditions: [] });
     field = updateTile(field, [0, 1], initial);
-    assert.equal(evaluateDeployment(field, { tile: [0, 1], profile: acceptsNothing }).type, "DENIED");
+    assert.equal(previewPlacement(field, acceptsNothing, [0, 1]).type, "REJECTED");
     field = updateTile(field, [0, 1], { ...initial, siteCondition: null });
-    assert.equal(evaluateDeployment(field, { tile: [0, 1], profile: acceptsNothing }).type, "ALLOWED");
+    assert.equal(previewPlacement(field, acceptsNothing, [0, 1]).type, "ALLOWED");
 });
 
 test("navigation observes current tile rules and retains independent overlays", () => {

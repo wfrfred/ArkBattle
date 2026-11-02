@@ -15,8 +15,7 @@ import { create as createAttack } from "../../dist/content/actions/attack.js";
 import { Effects } from "../../dist/core/unit/effect/effects.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
@@ -44,9 +43,7 @@ import { contains, overlaps } from "../../dist/core/geometry/intersection.js";
 import { search as searchBlocking } from "../../dist/core/battle/blocking/operations.js";
 import { hasLocomotion } from "../../dist/core/unit/capability/locomotion/capability.js";
 import { initialize as initializeRouteState, hasRoute } from "../../dist/core/unit/capability/route/capability.js";
-import { createUnitPlacementDefinition, instantiateUnitPlacement } from "../../dist/core/battle/creation/placement.js";
-import { createDefinition as createDeployableDefinition } from "../helpers/deployable.js";
-import { evaluateDeployment } from "../../dist/core/battle/deployment/query.js";
+import { createCardDefinition, previewPlacement } from "../helpers/deployable.js";
 
 const presenceBattlefield = () => createFieldState(createMap(1, 5, tileEntries(Array.from({ length: 5 }, () => ({
     heightType: 'LOWLAND', meleeBlockable: true, buildableType: 'MELEE', passableMask: 'ALL',
@@ -133,21 +130,17 @@ test('core presence transitions preserve the original state when later settlemen
 });
 
 
-test('core placement applies an explicit tile to a declared occupancy capability', () => {
+test('Unit initialization applies an explicit tile without changing the shared definition', () => {
   const tile = [0, 1];
-  const placement = { definition: { hooks: [], id: 'placement', occupancy: { slot: 'OCCUPANT' } }, position: [0, 0], initial: { occupancy: { tile } } };
+  const input = { id: 0, definition: { hooks: [], id: 'occupant', occupancy: { slot: 'OCCUPANT' } }, position: [0, 0], initial: { occupancy: { tile } } };
   const battle = fixtureBattle(17);
-  const direct = instantiateUnitPlacement(battle, placement).value;
-  const normalized = createUnitPlacementDefinition(placement);
-  const placed = instantiateUnitPlacement(battle, normalized).value;
-  assert.equal(direct.occupancy.tile, tile);
-  assert.equal(normalized.initial.occupancy.tile, tile);
+  const placed = initializeUnit(battle, input).value;
   assert.equal(placed.occupancy.tile, tile);
-  assert.equal(placed.definition, placement.definition);
-  assert.equal(placed.position, placement.position);
+  assert.equal(placed.definition, input.definition);
+  assert.equal(placed.position, input.position);
 
   const nextTile = [0, 2];
-  const next = instantiateUnitPlacement(battle, { ...normalized, initial: { occupancy: { tile: nextTile } } }).value;
+  const next = initializeUnit(battle, { ...input, id: 1, initial: { occupancy: { tile: nextTile } } }).value;
   assert.equal(next.occupancy.tile, nextTile);
   assert.deepEqual(placed.occupancy.tile, [0, 1]);
 });
@@ -449,9 +442,9 @@ test('core domain rules compose independently and preserve earlier unit states',
   const request = { source: unitRef(source), purposes: ['HEAL'], filter: () => true,
     selector: (state, _request, candidates) => ({ state, value: candidates.map(unitRef) }) };
   const restrictSource = { id: 'source-a', value: { kind: Symbol('source'),
-    allows: (_battle, current) => current.source.id !== source.id } };
+    allows: (_battle, { request: current }) => current.source.id !== source.id } };
   const restrictPurpose = { id: 'source-b', value: { kind: Symbol('purpose'),
-    allows: (_battle, current) => current.purposes.includes('DAMAGE') } };
+    allows: (_battle, { request: current }) => current.purposes.includes('DAMAGE') } };
   const reference = unitRef(first);
   const one = applyUnitChanges(battle, [setRestriction(reference, restrictSource)]);
   const both = applyUnitChanges(one, [setRestriction(reference, restrictPurpose)]);
@@ -538,11 +531,13 @@ test('core Unit Changes preserve Definition and prior position while presence st
 
 test('catalog products preserve supplied definitions, capability states and guard context', async () => {
   const { default: ts } = await import('typescript');
-  const directory = mkdtempSync(join(tmpdir(), 'stronghold-unit-types-'));
+  const cache = fileURLToPath(new URL('../../.cache/', import.meta.url));
+  mkdirSync(cache, { recursive: true });
+  const directory = mkdtempSync(join(cache, 'stronghold-unit-types-'));
   const sourceModule = name => JSON.stringify(fileURLToPath(
     new URL(`../../src/core/unit/${name}.js`, import.meta.url)));
   const imports = `
-import { initialize as initializeUnit } from ${sourceModule('initialize')};
+import { initialize as initializeUnit, type Input as UnitInput } from ${sourceModule('initialize')};
 import type { Definitions as CapabilityDefinitions, Product } from ${sourceModule('capability/catalog')};
 import { initialize as initializeRoutedUnit, type Input as RoutedUnitInput } from ${sourceModule('../battle/creation/routed-unit')};
 import { advance as advanceLocomotion } from ${sourceModule('capability/locomotion/index')};
@@ -563,7 +558,6 @@ import type { Targetable } from ${sourceModule('capability/targetable/capability
 import { create as createBattlefieldState } from ${sourceModule('../battlefield/state')};
 import { add as addUnit, update as updateUnit, remove as removeUnit } from ${sourceModule('../battlefield/unit')};
 import type { Map as TileMap } from ${sourceModule('../battlefield/map/map')};
-import { createUnitPlacementDefinition, instantiateUnitPlacement, type UnitPlacementDefinition } from ${sourceModule('../battle/creation/placement')};
 import type { BattleExecutionState } from ${sourceModule('../battle/execution/state')};
 import { get as getProjectile, ref as projectileRef } from ${sourceModule('../projectile/query')};
 import { create as createProjectile, type CreateInput as ProjectileCreateInput } from ${sourceModule('../battle/projectile')};
@@ -586,7 +580,6 @@ declare const battleState: BattleState;
 declare const projectileDefinition: ProjectileDefinition<{ readonly charges: number }>;
 declare const projectileInput: ProjectileCreateInput<{ readonly charges: number }>;
 declare const typedProjectile: Projectile<{ readonly charges: number }>;
-declare const placement: { readonly definition: EnemyProbe & { readonly occupancy: { readonly slot: 'OCCUPANT' } }; readonly position: readonly [number, number]; readonly initial: { readonly occupancy: { readonly tile: readonly [number, number] | null } } };
 function createBaseUnit<D extends UnitDefinition>(definition: D): Unit & { readonly definition: D } {
   return { id: 0, lifecycle: 'PRESENT', definition, hooks: [], position: [0, 0], effects: Effects.empty() };
 }
@@ -644,8 +637,8 @@ type OptionalProduct = Assert<Equal<keyof Product<OptionalProbe>, 'definition'>>
 type MetadataIsNotCapability = Assert<Equal<keyof Product<{ readonly label: string }>, 'definition'>>;
 type OptionalHasNoRequiredCapabilities = Assert<Equal<RequiredKeys<Unit & Product<OptionalProbe>>, 'id' | 'definition' | 'position' | 'effects' | 'lifecycle' | 'hooks'>>;
 type WideHasNoRequiredCapabilities = Assert<Equal<RequiredKeys<Unit & Product<UnitDefinition>>, 'id' | 'definition' | 'position' | 'effects' | 'lifecycle' | 'hooks'>>;
-function initializeGeneric<D extends EnemyDefinition>(definition: D): Unit & Product<D> {
-  return initializeUnit(battleState, { id: 0, definition, position: [0, 0] }).value;
+function initializeGeneric<D extends EnemyDefinition>(input: UnitInput<D>): Unit & Product<D> {
+  return initializeUnit(battleState, input).value;
 }
 const enemy = initializeUnit(battleState, { id: 1, definition: enemyDefinition, position: [0, 0] }).value;
 const baseUnit: Unit = enemy;
@@ -665,24 +658,6 @@ const movedBattle = target === null ? advancedRoute : advanceLocomotion(advanced
 const movedEnemy = getUnit(movedBattle, unitRef(routedEnemy))!;
 const movedContentId: string = movedEnemy.definition.id;
 movedEnemy.route.main.definition;
-const placed = instantiateUnitPlacement(battleState, placement).value;
-const placedDefinition: UnitDefinition & Product<typeof placement['definition']>['definition'] = placed.definition;
-const acceptedPlacementDefinition: typeof placed.definition = placement.definition;
-type ExpectedPlacement = Unit & Product<typeof placement['definition']>;
-const placedCapabilities: Unit & Vitality & Locomotion & Occupancy = placed;
-type PlacementCapabilities = Assert<typeof placed extends ExpectedPlacement ? true : false>;
-type PlacementInput = Assert<ExpectedPlacement extends typeof placed ? true : false>;
-const normalizedPlacement = createUnitPlacementDefinition(placement);
-const normalizedPlaced = instantiateUnitPlacement(battleState, normalizedPlacement).value;
-type NormalizedPlacementCapabilities = Assert<typeof normalizedPlaced extends ExpectedPlacement ? true : false>;
-type NormalizedPlacementInput = Assert<ExpectedPlacement extends typeof normalizedPlaced ? true : false>;
-const requiredPlacement = createUnitPlacementDefinition({
-  definition: { ...enemyDefinition, occupancy: { slot: 'OCCUPANT' as const } }, position: [0, 0], initial: { occupancy: { tile: null } }, extra: 31,
-});
-const requiredPlaced = instantiateUnitPlacement(battleState, requiredPlacement).value;
-requiredPlaced.occupancy.tile;
-const requiredOccupancy: Occupancy = requiredPlaced;
-type NormalizedPlacementFields = Assert<Equal<keyof typeof requiredPlacement, 'definition' | 'position' | 'initial' | 'hooks'>>;
 const ordinaryLocomotion: LocomotionState = enemy.locomotion;
 declare const guarded: Unit & {
   readonly definition: ImmutableData<EnemyProbe>;
@@ -731,8 +706,6 @@ battleState.battlefield.projectiles.replace(projectileRef(typedProjectile), type
       ['wide', `declare const wideDefinition: UnitDefinition; initializeUnit(battleState, { id: 1, definition: wideDefinition, position: [0, 0] }).value.locomotion.velocity;`],
       ['base-unit-definition', `declare const unit: Unit; unit.definition.vitality.maxHp;`],
       ['missing-route-refinement', `initializeUnit(battleState, { id: 1, definition: enemyDefinition, position: [0, 0] }).value.route.main;`],
-      ['optional-normalized-occupancy', `declare const optionalPlacement: UnitPlacementDefinition<EnemyProbe>; instantiateUnitPlacement(battleState, createUnitPlacementDefinition(optionalPlacement)).value.occupancy.tile;`],
-      ['normalized-unknown-field', `createUnitPlacementDefinition({ definition: enemyDefinition, position: [0, 0], extra: 31 }).extra;`],
     ]) {
       const diagnostics = compile(name, source);
       assert.ok(diagnostics.some(diagnostic => diagnostic.file === join(directory, `${name}.mts`)),
@@ -771,9 +744,8 @@ test('core deployment uses buildability and terrain independently of navigation 
     }) }),
   ]));
   const runtime = createFieldState(map);
-  const query = (type, column) => evaluateDeployment(runtime, {
-    profile: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: type }), tile: [0, column],
-  });
+  const query = (type, column) => previewPlacement(runtime,
+    createCardDefinition({ cost: 0, redeployTicks: 0, slots: 1, buildableType: type }), [0, column]);
   for (const [type, column, allowed] of [
     ['MELEE', 0, true], ['RANGED', 0, false], ['ALL', 0, true],
     ['MELEE', 1, false], ['RANGED', 1, true], ['ALL', 1, true],
@@ -781,21 +753,15 @@ test('core deployment uses buildability and terrain independently of navigation 
   ]) {
     assert.deepEqual(query(type, column), allowed
       ? { type: 'ALLOWED' }
-      : { type: 'DENIED', reason: 'BUILDABLE_TYPE' });
+      : { type: 'REJECTED', reason: 'RULE' });
   }
   assert.equal(runtime.navigation.baseline.WALK.cells[2].passable, false);
-  for (const [column, reason] of [[3, 'BUILDABLE_TYPE'], [4, 'BUILDABLE_TYPE'],
-    [5, 'TERRAIN'], [6, 'OUTSIDE_MAP'], [-1, 'OUTSIDE_MAP']]) {
-    assert.deepEqual(query('ALL', column), { type: 'DENIED', reason });
+  for (const [column, reason] of [[3, 'RULE'], [4, 'RULE'],
+    [5, 'RULE'], [6, 'OUTSIDE_MAP'], [-1, 'OUTSIDE_MAP']]) {
+    assert.deepEqual(query('ALL', column), { type: 'REJECTED', reason });
   }
-  assert.deepEqual(evaluateDeployment(runtime, {
-    profile: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, placement: 'ALL', allowedSiteConditions: [conditions.deepsea] }),
-    tile: [0, 5],
-  }), { type: 'ALLOWED' });
-  assert.deepEqual(evaluateDeployment(runtime, {
-    profile: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, placement: 'ALL', allowedSiteConditions: [conditions.normal, conditions.deepsea] }),
-    tile: [0, 5],
-  }), { type: 'ALLOWED' });
+  assert.deepEqual(previewPlacement(runtime, createCardDefinition({ cost: 0, redeployTicks: 0, slots: 1, placement: 'ALL', allowedSiteConditions: [conditions.deepsea] }), [0, 5]), { type: 'ALLOWED' });
+  assert.deepEqual(previewPlacement(runtime, createCardDefinition({ cost: 0, redeployTicks: 0, slots: 1, placement: 'ALL', allowedSiteConditions: [conditions.normal, conditions.deepsea] }), [0, 5]), { type: 'ALLOWED' });
 });
 
 
@@ -809,10 +775,10 @@ test('core occupancy tile is independent of spatial presence and geometric membe
   assert.deepEqual(unitsAt(runtime, [0, 1]).map(unit => unit.id), [3]);
   assert.equal(occupancyAt(runtime, [0, 1])?.occupant?.id, 1);
   assert.equal(occupancyAt(runtime, [0, 2])?.occupant?.id, 2);
-  const profile = createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: 'ALL' });
+  const profile = createCardDefinition({ cost: 0, redeployTicks: 0, slots: 1, buildableType: 'ALL' });
   for (const tile of [[0, 1], [0, 2]]) {
-    assert.deepEqual(evaluateDeployment(runtime, { profile, tile }),
-      { type: 'DENIED', reason: 'OCCUPIED' });
+    assert.deepEqual(previewPlacement(runtime, profile, tile),
+      { type: 'REJECTED', reason: 'OCCUPIED' });
   }
 
   const occupancy = runtime.occupancy;
@@ -844,17 +810,17 @@ test('core support allows a platform and occupant to coexist without treating th
   }, [0, 1]);
   runtime = addUnit(runtime, platform);
   runtime = changeFieldTile(runtime, [0, 1], { placement: 'RANGED', elevation: 'HIGHLAND', allowsBlocking: false });
-  const profile = createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: 'RANGED' });
-  assert.deepEqual(evaluateDeployment(runtime, { profile, tile: [0, 1] }),
+  const profile = createCardDefinition({ cost: 0, redeployTicks: 0, slots: 1, buildableType: 'RANGED' });
+  assert.deepEqual(previewPlacement(runtime, profile, [0, 1]),
     { type: 'ALLOWED' });
-  const occupant = deploymentUnit(2, [1, 0], { occupancy: { slot: 'OCCUPANT' }, deployable: profile }, [0, 1]);
+  const occupant = deploymentUnit(2, [1, 0], { occupancy: { slot: 'OCCUPANT' }, deployable: { retreatRules: [] }, card: profile }, [0, 1]);
   runtime = addUnit(runtime, occupant);
   assert.deepEqual(unitsAt(runtime, [0, 1]).map(unit => unit.id), [1, 2]);
   const entry = occupancyAt(runtime, [0, 1]);
   assert.equal(runtime.units.get(entry.support.id), platform);
   assert.equal(runtime.units.get(entry.occupant.id), occupant);
-  assert.deepEqual(evaluateDeployment(runtime, { profile, tile: [0, 1] }),
-    { type: 'DENIED', reason: 'OCCUPIED' });
+  assert.deepEqual(previewPlacement(runtime, profile, [0, 1]),
+    { type: 'REJECTED', reason: 'OCCUPIED' });
   const retained = runtime;
   const removed = removeBattleUnit(createBattleState(runtime), 1, 'SCRIPT');
   runtime = removed.battlefield;

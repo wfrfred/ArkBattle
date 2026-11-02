@@ -1,3 +1,4 @@
+import { predefinedUnits } from "../helpers/predefined.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -27,7 +28,7 @@ const spawn = (definition, tick) => ({
 });
 function input(overrides = {}) {
     return {
-        map, initialUnits: [], predefines: [], initialMechanisms: [], schedule: { type: "TIMELINE", spawns: [
+        map,  predefines: [], initialMechanisms: [], schedule: { type: "TIMELINE", spawns: [
             spawn({ hooks: [], spatialPresence: {}, id: "later", vitality: { maxHp: 100, defense: 0, resistance: 0 }, locomotion }, 100),
         ] },
         maxTicks: 10, routeMoveMultiplier: 1, rngState: 123,
@@ -50,13 +51,16 @@ test("initial entry receives the complete battle state and its returned facts pe
         return { state: { ...state, completedRouteCount: state.completedRouteCount + 1 }, value: undefined };
     } };
     let battle = initializeBattle(input({
-        initialUnits: [{ definition: { id: "initial", hooks: [enterHook] }, position: [0, 0] }],
-        predefines: [predefined(7, { id: "predefined", hooks: [enterHook] }, true)],
+        predefines: predefinedUnits([{ definition: { id: "initial", hooks: [enterHook] }, position: [0, 0] }], [predefined(7, { id: "predefined", hooks: [enterHook] }, true)]),
+
     }));
     assert.equal(observations.length, 2);
-    assert.deepEqual(observations[0].predefinedPresence, []);
+    assert.deepEqual(observations[0].predefinedPresence, [{ definitionId: 8, source: { type: "UNIT", unitId: 0 } }]);
     assert.deepEqual([...observations[0].battlefield.units.keys()], [0]);
-    assert.deepEqual(observations[1].predefinedPresence, [{ definitionId: 7, source: { type: "UNIT", unitId: 1 } }]);
+    assert.deepEqual(observations[1].predefinedPresence, [
+        { definitionId: 8, source: { type: "UNIT", unitId: 0 } },
+        { definitionId: 7, source: { type: "UNIT", unitId: 1 } },
+    ]);
     assert.deepEqual([...observations[1].battlefield.units.keys()], [0, 1]);
     assert.equal(observations[0].completedRouteCount, 0);
     assert.equal(observations[1].completedRouteCount, 1);
@@ -119,7 +123,7 @@ test("nested predefined entry and departure keep the latest presence bindings", 
 test("starting a new tick clears temporary facts without changing retained state versions", () => {
     const received = [], returned = [];
     let battle = initializeBattle(input({
-        initialUnits: [
+        predefines: predefinedUnits([
             { position: [0, 0], definition: { id: "observer", hooks: [{ id: "test/tick", stage: "tick", invoke(state) {
                 received.push(state);
                 assert.deepEqual(state.events, []);
@@ -132,7 +136,7 @@ test("starting a new tick clears temporary facts without changing retained state
                 return { state: state, value: undefined };
             } }] } },
             { position: [1, 0], definition: { hooks: [], id: "removed" } },
-        ],
+        ]),
     }));
     const first = (battle = stepBattle(battle, []));
     const second = (battle = stepBattle(battle, []));

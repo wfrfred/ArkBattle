@@ -15,7 +15,7 @@ import type { Unit, Definition as UnitDefinition } from ${source('unit/index')};
 import type { Definitions, Product } from ${source('unit/capability/catalog')};
 import { initialize } from ${source('unit/index')};
 import type { Input as UnitInput } from ${source('unit/initialize')};
-import { createUnitPlacementDefinition, type UnitPlacementDefinition } from ${source('battle/creation/placement')};
+import type { PredefinedUnitCreation } from ${source('battle/steps/predefined')};
 import { hasOffense, type Offense } from ${source('unit/capability/offense/index')};
 import { create as createSkill, type Definition as SkillDefinition } from ${source('unit/skill/index')};
 import { hasSkill, type Skill } from ${source('unit/capability/skill/index')};
@@ -41,13 +41,11 @@ declare const route: RouteDefinition;
 declare const routeInput: RouteInput;
 declare const preparedEffects: Unit['effects'];
 type NoInitialEffects = Assert<Equal<Extract<keyof UnitInput, 'effects'>, never>>;
-type NoPlacementEffects = Assert<Equal<Extract<keyof UnitPlacementDefinition, 'effects'>, never>>;
+type NoPredefinedEffects = Assert<Equal<Extract<keyof PredefinedUnitCreation, 'effects'>, never>>;
 // @ts-expect-error Unit initialization cannot import an Effect container.
 initialize(battle, { id: 11, definition: configuration, position: [0, 0], effects: preparedEffects });
-// @ts-expect-error A placement does not carry an Effect container.
-const preloaded: UnitPlacementDefinition = { definition: configuration, position: [0, 0], effects: preparedEffects };
-const normalized = createUnitPlacementDefinition({ definition: configuration, position: [0, 0], effects: preparedEffects });
-type NoNormalizedEffects = Assert<Equal<Extract<keyof typeof normalized, 'effects'>, never>>;
+// @ts-expect-error Predefined creation does not carry a preinstalled Effect container.
+const preloaded: PredefinedUnitCreation = { type: "UNIT", definition: configuration, position: [0, 0], effects: preparedEffects };
 const selected = { ...configuration, offense: { attack: 10 }, skill: { initialize: (current: BattleState) => createSkill(current, skill) }, elemental } satisfies Configuration;
 const plain = initialize(battle, { id: 0, definition: configuration, position: [0, 0] }).value;
 const complete = initialize(battle, { id: 1, definition: selected, position: [0, 0] }).value;
@@ -55,9 +53,9 @@ const bare = initialize(battle, { id: 2, definition: { hooks: [], id: 'bare' }, 
 const routed = initialize(battle, { id: 3, definition: { ...selected, route }, position: [0, 0] }).value;
 const paired: Unit & Vitality & Offense & Skill & Elemental = complete;
 const captured: Unit & Vitality & Offense & Skill & Elemental & Route = routed;
-const generic = <D extends UnitDefinition & Partial<Definitions>>(definition: D): Unit & Product<D> =>
-  initialize(battle, { id: 4, definition, position: [0, 0] }).value;
-const genericComplete: Unit & Vitality & Offense & Skill & Elemental = generic(selected);
+const generic = <D extends UnitDefinition & Partial<Definitions>>(input: UnitInput<D>): Unit & Product<D> =>
+  initialize(battle, input).value;
+const genericComplete: Unit & Vitality & Offense & Skill & Elemental = generic({ id: 4, definition: selected, position: [0, 0] });
 type LiteralDefinition = UnitDefinition & {
   readonly label: 'literal-content';
   readonly vitality: { readonly maxHp: 100; readonly defense: 0; readonly resistance: 0 };

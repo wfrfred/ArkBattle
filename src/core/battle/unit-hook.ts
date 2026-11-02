@@ -1,16 +1,8 @@
 import * as hooks from "../hook.js";
-import type { State as BattlefieldState } from "../battlefield/state.js";
-import type { Departure, Id } from "../unit/unit.js";
+import type { Departure } from "../unit/unit.js";
 import type { State as BattleState } from "./state.js";
 
-export interface RegistrationChange {
-    readonly previous: BattlefieldState;
-    readonly next: BattlefieldState;
-    readonly changed: readonly Id[];
-}
-
 export interface Events {
-    readonly registrationChanged: RegistrationChange;
     readonly leave: Departure;
 }
 

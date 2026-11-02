@@ -32,7 +32,7 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | Locomotion / Route / Navigation | 分别处理运动、行动脚本和可通行路径；行动类型、寻路方式、阻挡模式不互相代替。 |
 | Projectile | 已发射后的独立过程，保存目标、样本、命中历史与飞行进度；内容决定接触和终止策略。 |
 | Deployment / Card | Deployment 管费用与部署操作；Card 管跨实例的私有 state、供给、费用惩罚和冷却；Deployable 管场上部署属性。 |
-| Schedule / Predefined | 分别管理出兵／关卡动作进度，以及预置定义与运行实例的绑定。 |
+| Schedule / Predefined | 分别管理出兵／关卡动作进度，以及预置定义与运行实例的绑定；开场 Unit 使用 initiallyPresent:true 的预置项，出现时直接复用 Unit 初始化与登记。 |
 | Data / Content | Data 适配原始配置；Content 实现具体角色、技能、天赋、装备和模式规则，组合领域操作。 |
 | Meta / 模式规则 | 外层经营与回合生成战斗输入；本场即时规则显式接入 Tactical，结果与归属反馈回外层。 |
 
@@ -79,8 +79,8 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | PROJECTILE-01 飞行与命中 | 追踪、定时、沿途碰撞、附着、套索及到期处理按内容表达；已发射弹道不自动随 Action 结束。[弹道](https://prts.wiki/w/抛射物) | [最小执行内核](projectile.md) 已确定独立实例、三个回调及 Lifetime 请求／Finalize；异构集合与安全写入边界待定。当前仍为简单飞行、到达接触和终止，复杂运动与到达后周期业务待迁移接入。 | 设计部分确定，迁移待完成／P1 |
 | DEPLOY-02 关卡费用上限 | 实际部署费用按独立费用上限裁定，不与当前 DP 账户上限混为一个值。[数值范围](https://prts.wiki/w/数值范围) | rawCost 与运行费用分阶段取整，按 costCeiling 截断；多来源修正仍为明确项目组合，完整原生来源写入与动态同步未闭合。 | 基础已实现；来源公式待核实／P2 |
 | DEPLOY-03 部署方向 | 手动部署输入提供本次朝向，决定实例的方向相关范围与业务。[部署操作](https://prts.wiki/w/新人入门) | DeployRequest.direction 经 Occupancy 初始输入写入本次实例；directionalRange 读当前可空朝向，基础 Unit 与无朝向装置不伪造方向。 | 基础已实现；更多内容按需接入 |
-| DEPLOY-04 手动撤退资格 | 手动撤退按可撤退性裁定，内容强退与实际离场使用各自入口。[异常效果](https://prts.wiki/w/异常效果) | retreat 使用 Deployable Typed Ref，检查 PRESENT、retreatAllowed 与当前 Rule；控制者身份和网络授权留在外层，具体限制来源仍需接入。 | 通用入口已实现；来源待接入／P2 |
-| DEPLOY-05 免费与特殊部署 | 实际扣账、场上费用属性、返费资格与来源分别决定。[可返费](https://prts.wiki/w/部署费用#可返费) | 静态 Program 只读准备，完整 deploy 统一资格后先消费再构造／enter；Payment{amount:0} 与 null 区分正常零费和无支付。卫戍及具体免费来源仍由 Content／Mechanism 实现。 | 通用协议已实现；具体来源待接入／P1 |
+| DEPLOY-04 手动撤退资格 | 手动撤退按可撤退性裁定，内容强退与实际离场使用各自入口。[异常效果](https://prts.wiki/w/异常效果) | retreat 使用已包含 Occupancy 契约的 Deployable Typed Ref，检查 PRESENT 与当前 Rule，主动组织退款和实际离场后的 Card 后继；被动死亡结算只响应确认死亡。控制者身份和网络授权留在外层，具体限制来源仍需接入。 | 通用入口已实现；来源待接入／P2 |
+| DEPLOY-05 免费与特殊部署 | 实际扣账、场上费用属性、返费资格与来源分别决定。[可返费](https://prts.wiki/w/部署费用#可返费) | 完整 Request 携带 Quote、附加 Rule 和普通 Unit Hook；规则合并后统一资格，先消费 DP／库存／部署位，再构造、登记并按登记序执行 enter。quote.dp 的 0 与 null 区分正常零费和无支付。卫戍及具体免费来源仍由 Content／Mechanism 实现，完整移动重部署尚未接入。 | 普通协议已实现；特殊来源待接入／P1 |
 | DEPLOY-06 Card 多实例回收 | 每个有效回收保留供给事实，来源明确选择冷却与补回方式。[待部署区](https://prts.wiki/w/待部署区) | 使用冷却与串行 recovery 分开；每次 enqueueRecovery 累加份数，下一段读取当前有效时长，消除旧 RETURN 覆盖丢库存。追加保留本段是项目通用操作契约，特定原生 Reset 路径仍未闭合。 | 通用恢复已实现；来源特化待接入／P2 |
 | DEPLOY-07 场下属性与冷却 | 跨部署资源由 Card 保存，当前周期与未来时长分别操作。[待部署区](https://prts.wiki/w/待部署区) | Card 私有 Definition、Typed Ref、暂停及当前段操作已接入；负 DP 每次推进自然回复乘 0.5、跨零保留进度，主动加费不减半。特殊暂停组合及更多场下资源仍待具体内容。 | 通用能力已实现；特殊内容待接入／P2 |
 | SCHEDULE-01 波次与预置动作 | 出兵进度、存活等待、最终计数和关卡动作分别表达。[波次](https://prts.wiki/w/作战机制#扩展阅读：波次) | 波次／分支基础已有，预置可由命令操作；原始 ACTIVATE / WITHDRAW / BATTLE_EVENTS 等尚未全部接调度链。 | 部分实现／P1 |

@@ -53,7 +53,7 @@ const definitions = new WeakMap();
 
 export function initialize({ states = {}, tick = 0, definition, ...input }) {
     const additional = ["targetable", "spatialPresence", "occupancy"].filter(
-        key => key in states && !(key in definition),
+        key => (key in states || (key === "occupancy" && "deployable" in definition)) && !(key in definition),
     );
     const defaultHooks = !("hooks" in definition);
     const skillFactory = definition.skill !== undefined && "id" in definition.skill;
@@ -73,8 +73,16 @@ export function initialize({ states = {}, tick = 0, definition, ...input }) {
     for (const key of Object.keys(states)) {
         if (!(key in paired)) throw new Error(`prepared capability ${key} requires configuration`);
     }
-    const result = initializeUnit(fixtureBattle(tick), { ...input, definition: paired });
-    return { ...result.value, ...states };
+    const initial = {
+        ...(states.occupancy === undefined ? {} : { occupancy: states.occupancy }),
+        ...input.initial,
+    };
+    const result = initializeUnit(fixtureBattle(tick), { ...input, definition: paired, initial });
+    return { ...result.value, ...states,
+        ...(states.occupancy === undefined ? {} : {
+            occupancy: { ...result.value.occupancy, ...states.occupancy },
+        }),
+    };
 }
 
 export function placement({ states = {}, definition, ...input }) {
@@ -82,14 +90,25 @@ export function placement({ states = {}, definition, ...input }) {
         ...input,
         definition: {
             ...definition,
+            ...("deployable" in definition && !("occupancy" in definition)
+                ? { occupancy: { slot: "OCCUPANT" } } : {}),
             ...(definition.skill !== undefined && "id" in definition.skill
                 ? { skill: { initialize: battle => createSkill(battle, definition.skill) } } : {}),
             hooks: [{
                 id: "fixture/prepared-state", stage: "enter",
                 invoke(battle, self) {
-                    return { state: updateUnit(battle, [{ ...self, ...states }]), value: undefined };
+                    const current = battle.battlefield.units.get(self.id);
+                    return { state: updateUnit(battle, [{ ...current, ...states,
+                        ...(states.occupancy === undefined ? {} : {
+                            occupancy: { ...current.occupancy, ...states.occupancy },
+                        }),
+                    }]), value: undefined };
                 },
             }, ...(definition.hooks ?? [])],
+        },
+        initial: {
+            ...(states.occupancy === undefined ? {} : { occupancy: states.occupancy }),
+            ...input.initial,
         },
     };
 }

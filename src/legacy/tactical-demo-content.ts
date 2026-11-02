@@ -122,12 +122,35 @@ export function createTacticalContentDemo(
     const input: Input = {
         map,
         schedule: { type: "TIMELINE", spawns },
-        initialUnits: [
-            { definition: defender.definition, position: [6, 5] },
-            { definition: guard, position: [8, 3] },
+        predefines: [
+            {
+                id: 0,
+                alias: null,
+                initiallyPresent: true,
+                creation: {
+                    type: "UNIT",
+                    definition: defender.definition,
+                    position: [6, 5],
+                    initial: {
+                        occupancy: { tile: [5, 6], direction: "RIGHT" },
+                    },
+                },
+            },
+            {
+                id: 1,
+                alias: null,
+                initiallyPresent: true,
+                creation: {
+                    type: "UNIT",
+                    definition: guard,
+                    position: [8, 3],
+                    initial: {
+                        occupancy: { tile: [3, 8], direction: "RIGHT" },
+                    },
+                },
+            },
         ],
         initialMechanisms: [],
-        predefines: [],
         maxTicks: 80 * TICKS_PER_SECOND,
         routeMoveMultiplier: 1,
         rngState: configuration.seed,

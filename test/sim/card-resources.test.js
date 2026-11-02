@@ -1,9 +1,7 @@
-import { createDefinition as createDeployableDefinition } from "../../dist/core/unit/capability/deployable/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { fixtureBattle } from "../helpers/unit.js";
 import { addCard, advance } from "../../dist/core/battle/deployment/resources.js";
-import { queued } from "../../dist/core/battle/deployment/normal.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 
@@ -12,22 +10,24 @@ function fixture(stock = 0, redeployTicks = 30) {
         id: "resource-card",
         hooks: [],
         occupancy: { slot: "OCCUPANT" },
-        deployable: createDeployableDefinition({
-            card: {},
+        deployable: { retreatRules: [] },
+        card: {
             cost: 5,
             redeployTicks,
             slots: 0,
-            placement: "ALL",
-            allowedSiteConditions: [],
+            stock,
+            stockLimit: 3,
+            activeLimit: null,
+            cooldownOnDeploy: false,
+            recoverOnLeave: true,
+            increaseCostOnLeave: false,
             refund: { rate: 0.5, limit: "BASE_COST" },
-        }),
+            deploymentRules: [],
+            unitHooks: [],
+            initialize: battle => ({ state: battle, value: {} }),
+        },
     };
-    return addCard(fixtureBattle(), definition, {
-        stockLimit: 3,
-        activeLimit: null,
-        program: queued,
-        stock,
-    });
+    return addCard(fixtureBattle(), definition);
 }
 
 const at = (battle, tick) => advance({ ...battle, tick }, tick);
@@ -125,7 +125,7 @@ test("Card selection rules are independent and future Unit hooks use ordinary re
     assert.equal(cards.allows(battle, { ref: added.value, purpose: "SELECT" }), false);
     assert.equal(cards.allows(battle, {
         purpose: "DEPLOY",
-        request: { card: added.value, tilePosition: [0, 0] },
+        request: { card: added.value, tilePosition: [0, 0], quote: { dp: 5, stock: 1, slots: 0 }, rules: [], hooks: [] },
     }), true);
     assert.deepEqual(cards.get(battle, added.value).hooks, [entry]);
     assert.equal(cards.setHook(battle, added.value, entry), battle);

@@ -1,20 +1,27 @@
 import type { Ref } from "../../common/ref.js";
-import type { Direction } from "../../geometry/direction.js";
-import type { TilePosition } from "../../geometry/coordinate.js";
 import type { Unit, Id } from "../../unit/unit.js";
 import { hasDeployable, type Deployable } from "../../unit/capability/deployable/capability.js";
-import * as units from "../../unit/query.js";
+import { canRetreat, retreat } from "../../unit/capability/deployable/operations.js";
 import type { Command } from "../contract.js";
-import { add, remove } from "../unit.js";
+import { add } from "../unit.js";
 import { appendEvents, type State as BattleState, type Result } from "../state.js";
-import { changeDp } from "./dp.js";
+import { initialize as initializeUnit } from "../../unit/initialize.js";
+import { Tile, type TilePosition } from "../../geometry/coordinate.js";
+import type { Direction } from "../../geometry/direction.js";
 import { notifyDeployed } from "./lifecycle.js";
-import { get as getCard } from "./card/query.js";
+import { get } from "./card/query.js";
 import type { Card, Id as CardId } from "./card/card.js";
-import { evaluate } from "./query.js";
-import type { DeployRequest, DeployOutcome, Program } from "./program.js";
+import * as card from "./card/state.js";
+import * as cards from "./card/operations.js";
+import { replaceCard } from "./resources.js";
+import { advance as advanceDp } from "./dp.js";
+import { evaluate, createRequest } from "./query.js";
+import type { DeployRequest, DeployOutcome } from "./request.js";
+import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../common/assert.js";
 
-export type { DeployRequest, DeployOutcome, Rejection } from "./program.js";
+export { canRetreat, retreat };
+
+export type { DeployRequest, DeployOutcome, Rejection } from "./request.js";
 
 export type DeploymentCommand =
     | {
@@ -28,95 +35,120 @@ export type DeploymentCommand =
 export function deploy<T extends Card<any>>(
     battle: BattleState,
     request: DeployRequest<T>,
-): Result<DeployOutcome>;
-export function deploy<I>(
-    battle: BattleState,
-    input: I,
-    program: Program<I>,
-): Result<DeployOutcome>;
-export function deploy(
-    battle: BattleState,
-    input: unknown,
-    program?: Program<any>,
 ): Result<DeployOutcome> {
-    const origin = program === undefined ? "MANUAL" : "CONTENT";
-    if (program === undefined) {
-        const request = input as DeployRequest;
-        const self = getCard(battle, request.card);
-        if (self === undefined) {
-            return { state: battle, value: { type: "REJECTED", reason: "UNKNOWN_CARD" } };
-        }
-
-        program = self.program;
+    if (request.quote.dp !== null) {
+        assertNonnegativeNumber(request.quote.dp, "deployment payment");
     }
 
-    const prepared = program.prepare(battle, input);
-    if (prepared.type === "REJECTED") {
-        return { state: battle, value: prepared };
-    }
-
-    const rejected = evaluate(battle, prepared);
+    assertNonnegativeSafeInteger(request.quote.stock, "deployment stock consumption");
+    assertNonnegativeSafeInteger(request.quote.slots, "deployment slot consumption");
+    // The request's Ref keeps its private Card type; core only executes its paired programs.
+    const input = request as object as DeployRequest;
+    const rejected = evaluate(battle, input);
     if (rejected !== null) {
         return { state: battle, value: rejected };
     }
 
-    if (prepared.payment !== null) {
-        battle = {
-            ...battle,
-            deployment: changeDp(battle.deployment, -prepared.payment.amount, battle.tick),
-        };
+    const self = get(battle, request.card)!;
+    const definition = self.definition.card;
+    const cost = card.resolveCost(self, battle.deployment.definition.costCeiling ?? 99);
+    const refund =
+        definition.refund === null
+            ? null
+            : {
+                  rate: definition.refund.rate,
+                  limit:
+                      definition.refund.limit === "DEPLOYMENT_COST"
+                          ? cost
+                          : card.resolveBaseCost(self),
+              };
+    const current = advanceDp(battle.deployment, battle.tick);
+    battle = {
+        ...battle,
+        deployment: {
+            ...current,
+            dp: request.quote.dp === null ? current.dp : current.dp - request.quote.dp,
+            lastDpRecoveryTick:
+                request.quote.dp !== null && request.quote.dp !== 0
+                    ? battle.tick
+                    : current.lastDpRecoveryTick,
+            usedSlots: current.usedSlots + request.quote.slots,
+        },
+    };
+    let consumed = card.consume(card.advance(self, battle.tick), request.quote.stock);
+    if (definition.cooldownOnDeploy) {
+        consumed = card.advance(card.startCooldown(consumed, battle.tick), battle.tick);
     }
 
-    battle = prepared.consume?.(battle) ?? battle;
-    const initialized = prepared.initialize(battle);
-    battle = initialized.state;
+    battle = replaceCard(battle, consumed);
+    const id = battle.execution.nextUnitId;
+    battle = { ...battle, execution: { ...battle.execution, nextUnitId: id + 1 } };
+    const initialized = initializeUnit(battle, {
+        id,
+        definition: self.definition,
+        position: Tile.center(request.tilePosition),
+        initial: {
+            occupancy: {
+                tile: request.tilePosition,
+                ...(request.direction === undefined ? {} : { direction: request.direction }),
+            },
+        },
+        hooks: [
+            {
+                id: "@deployment/enter",
+                stage: "enter",
+                invoke: (state, unit) => ({
+                    state: notifyDeployed(state, {
+                        unit: unit as Unit & Deployable,
+                        request: input,
+                    }),
+                    value: undefined,
+                }),
+            },
+            {
+                id: "@deployment/death",
+                stage: "leave",
+                accepts: (_state, departure) => departure.reason === "DEATH",
+                invoke: (state) => {
+                    if (definition.increaseCostOnLeave) {
+                        state = cards.incrementCostStage(state, request.card);
+                    }
+                    if (definition.recoverOnLeave) {
+                        state = cards.enqueueRecovery(state, request.card);
+                    }
+
+                    return { state, value: undefined };
+                },
+            },
+            ...self.hooks,
+            ...request.hooks,
+        ],
+    });
     const unit = {
         ...initialized.value,
         deployable: {
             ...initialized.value.deployable,
-            card: prepared.card,
-            cost: prepared.cost,
-            slots: prepared.slots,
-            refund: prepared.refund,
-            retreatAllowed: prepared.retreatAllowed,
+            card: input.card,
+            cost,
+            slots: request.quote.slots,
+            refund,
         },
     };
-    battle = appendEvents(battle, [
+    battle = appendEvents(initialized.state, [
         {
             type: "UNIT_DEPLOYED",
             unitId: unit.id,
             position: unit.position,
-            program: program.id,
-            payment: prepared.payment,
+            payment: request.quote.dp,
             tick: battle.tick,
         },
     ]);
     battle = add(battle, unit);
-    battle = notifyDeployed(battle, {
-        unit,
-        program: program.id,
-        origin,
-        payment: prepared.payment,
-    });
 
     return {
         state: battle,
-        value: { type: "DEPLOYED", cardId: prepared.card?.id ?? null, unitId: unit.id },
+        value: { type: "DEPLOYED", cardId: self.id, unitId: unit.id },
     };
-}
-
-export function canRetreat(battle: BattleState, reference: Ref<Unit & Deployable>): boolean {
-    const self = units.get(battle, reference);
-
-    return (
-        self?.lifecycle === "PRESENT" &&
-        self.deployable.retreatAllowed &&
-        self.deployable.retreatRules.every((rule) => rule.allows(battle, { ref: reference }))
-    );
-}
-
-export function retreat(battle: BattleState, reference: Ref<Unit & Deployable>): BattleState {
-    return canRetreat(battle, reference) ? remove(battle, reference.id, "RETREAT") : battle;
 }
 
 export function resolveDeploymentCommands(
@@ -125,11 +157,20 @@ export function resolveDeploymentCommands(
 ): BattleState {
     for (const command of commands) {
         if (command.type === "DEPLOY_UNIT") {
-            const result = deploy(battle, {
-                card: { id: command.cardId } as Ref<Card>,
-                tilePosition: command.tilePosition,
-                ...(command.direction === undefined ? {} : { direction: command.direction }),
-            });
+            const reference = { id: command.cardId } as Ref<Card>;
+            const request = createRequest(
+                battle,
+                reference,
+                command.tilePosition,
+                command.direction,
+            );
+            const result =
+                request === undefined
+                    ? {
+                          state: battle,
+                          value: { type: "REJECTED" as const, reason: "UNKNOWN_CARD" as const },
+                      }
+                    : deploy(battle, request);
             battle = result.state;
 
             if (result.value.type === "REJECTED") {
@@ -145,7 +186,7 @@ export function resolveDeploymentCommands(
         } else if (command.type === "RETREAT_UNIT") {
             const self = battle.battlefield.units.get(command.unitId);
             if (self !== undefined && hasDeployable(self)) {
-                battle = retreat(battle, units.ref(self));
+                battle = retreat(battle, { id: self.id } as Ref<Unit & Deployable>);
             }
         }
     }

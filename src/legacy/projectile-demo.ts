@@ -204,10 +204,17 @@ export function createTacticalProjectileDemo(
         input: {
             ...input,
             schedule,
-            initialUnits: input.initialUnits.map((unit) => ({
-                ...unit,
-                definition: transform(unit.definition),
-            })),
+            predefines: input.predefines.map((predefined) =>
+                predefined.creation.type === "UNIT"
+                    ? {
+                          ...predefined,
+                          creation: {
+                              ...predefined.creation,
+                              definition: transform(predefined.creation.definition),
+                          },
+                      }
+                    : predefined,
+            ),
         },
     };
 }

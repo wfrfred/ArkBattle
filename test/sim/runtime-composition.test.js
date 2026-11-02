@@ -1,3 +1,4 @@
+import { predefinedUnits } from "../helpers/predefined.js";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { scope as lifetimeScope, dependencies } from "../../dist/core/lifetime/index.js";
 import { lifetime as effectLifetime } from "../../dist/core/unit/effect/operations.js";
@@ -358,7 +359,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
                 maxTicks: 20,
                 seed: 17,
             }),
-            initialUnits: [
+            predefines: predefinedUnits([
                 effectPlacement(
                     aura,
                     initialize({ id: 0, definition: primary, position: [0, 0] }),
@@ -382,7 +383,7 @@ function scenario({ failure = null, cancelled = false } = {}) {
                     position: [0, 2],
                     states: { action: delayedSiblingAction },
                 }),
-            ],
+            ]),
             initialMechanisms: [],
             schedule: {
                 type: "TIMELINE",

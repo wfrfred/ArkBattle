@@ -1,3 +1,4 @@
+import { predefinedUnits } from "../helpers/predefined.js";
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { fixtureBattle, initialize } from '../helpers/unit.js';
@@ -143,10 +144,10 @@ test('demo projectile damage clears removed sources for both live and cached att
     const actor = actionUnit(0, { action: true });
     const attack = actor.action.actions.get('primary').definition;
     const { input } = createTacticalProjectileDemo({
-      initialUnits: [{ definition: { ...actor.definition, attack }, position: actor.position }],
+      predefines: predefinedUnits([{ definition: { ...actor.definition, attack }, position: actor.position }]),
       schedule: { type: 'TIMELINE', spawns: [] },
     }, cachedOnly);
-    const source = initialize({ id: 0, ...input.initialUnits[0] });
+    const source = initialize({ id: 0, ...input.predefines[0].creation });
     const target = actionUnit(1);
     const battle = addUnit(addUnit(fixtureBattle(), source), target);
     const configured = source.action.actions.get('primary');

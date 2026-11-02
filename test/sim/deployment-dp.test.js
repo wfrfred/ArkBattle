@@ -3,6 +3,8 @@ import { test } from "node:test";
 import { initialize } from "../../dist/core/battle/deployment/deployment.js";
 import * as dp from "../../dist/core/battle/deployment/dp.js";
 import { fixtureBattle } from "../helpers/unit.js";
+import { createCardDefinition } from "../helpers/deployable.js";
+import { addCard, createRequest, deploy } from "../../dist/core/battle/deployment/index.js";
 
 const definition = (fields = {}) => ({
     initialDp: 0,
@@ -92,4 +94,21 @@ test("the deployment cost ceiling is independent of the DP account limit", () =>
     assert.equal(state.minDp, 0);
     assert.throws(() => initialize(definition({ initialDp: -1 })), RangeError);
     assert.throws(() => initialize(definition({ minDp: 101 })), RangeError);
+});
+
+test("deployment starts DP recovery from payment rather than time spent at the cap", () => {
+    const added = addCard({ ...battle({ initialDp: 20, maxDp: 20, dpRecoveryTicks: 30 }), tick: 300 }, {
+        id: "payment-clock",
+        hooks: [],
+        occupancy: { slot: "OCCUPANT" },
+        deployable: { retreatRules: [] },
+        card: createCardDefinition({ cost: 10 }),
+    });
+    const result = deploy(added.state, createRequest(added.state, added.value, [0, 1]));
+    assert.equal(result.value.type, "DEPLOYED");
+    assert.equal(result.state.deployment.dp, 10);
+    assert.equal(result.state.deployment.lastDpRecoveryTick, 300);
+    assert.equal(dp.advance(result.state.deployment, 301).dp, 10);
+    assert.equal(dp.advance(result.state.deployment, 330).dp, 11);
+    assert.equal(added.state.deployment.dp, 20);
 });

@@ -1,4 +1,4 @@
-import { operator, queued } from "../../dist/core/battle/deployment/normal.js";
+import { predefinedUnits } from "../helpers/predefined.js";
 import { changeTile } from "../helpers/tiles.js";
 import { tiles as tileEntries } from "../helpers/tiles.js";
 import { normal } from "../../dist/content/terrain/definition.js";
@@ -30,7 +30,7 @@ import { compileSpawnSchedule } from "../../dist/data/arknights/schedule.js";
 import { compileLevelMovementFragment } from "../../dist/data/arknights/movement-fragment.js";
 import { loadMovementScenario } from "../../dist/data/arknights/movement-scenario.js";
 import { createLegacyCombatBattle } from "../helpers/legacy-combat.js";
-import { createDefinition as createDeployableDefinition } from "../helpers/deployable.js";
+import { createCardDefinition } from "../helpers/deployable.js";
 import { createPredefinedDefinition } from "../../dist/core/battle/steps/predefined.js";
 import { appendEvents } from "../../dist/core/battle/state.js";
 import { add as addUnit } from "../../dist/core/battle/unit.js";
@@ -663,15 +663,15 @@ test('core battle propagates nested settlement errors without publishing battlef
       } });
       state = addUnit(state, unit);
       state = { ...state, execution: { ...state.execution, nextUnitId: unit.id + 1 } };
-      state = appendEvents(state, [{ type: 'UNIT_DEPLOYED', unitId: unit.id, position: unit.position, tick: state.tick }]);
+      state = appendEvents(state, [{ type: 'UNIT_DEPLOYED', unitId: unit.id, position: unit.position, payment: null, tick: state.tick }]);
       state = installEffect(state, unitRef(getUnit(state, 1)), effect, { source: unitRef(getUnit(state, 0)) }).state;
       return { state, value: false };
     },
   };
-  const input = deploymentBattleInput({ initialUnits: [
+  const input = deploymentBattleInput({ predefines: predefinedUnits([
     { definition: { hooks: [], id: 'nested-action-source', vitality: { maxHp: 100, defense: 0, resistance: 0 }, action: actionCapability(action) }, position: [0, 0] },
     { definition: { hooks: [], id: 'nested-target', vitality: { maxHp: 100, defense: 0, resistance: 0 } }, position: [1, 0] },
-  ] });
+  ]) });
   let runtime = initializeBattle(input);
   const before = runtime;
   observedRuntime = runtime;
@@ -1481,9 +1481,9 @@ test('core same-position alternative disappearance and appearance replace an exi
     terrain: normal.create({}), walkCost: 1, advancedBuildableMask: 1,
   }))));
   let runtime = initializeBattle({
-    map, initialUnits: [{ definition: operator.definition, position: [1, 0] }],
-    predefines: [{ id: 99, alias: null, initiallyPresent: false, creation: {
-      type: 'UNIT', definition: operator.definition, position: [1.5, 0], } }],
+    map, predefines: predefinedUnits([{ definition: operator.definition, position: [1, 0] }], [{ id: 99, alias: null, initiallyPresent: false, creation: {
+      type: 'UNIT', definition: operator.definition, position: [1.5, 0], } }]),
+
     schedule: { type: 'TIMELINE', spawns: [{
       definition: enemy.definition, route, tick: 0,
       timing: { waveStartedAtTick: 0, fragmentStartedAtTick: 0 },
@@ -1530,7 +1530,7 @@ function deploymentBattleInput(overrides = {}, cards = []) {
   return {
     ...withTimelineSpawns(source, [{ ...source.schedule.spawns[0], tick: 99 }]),
     deployment: { definition: { initialDp: 99, maxDp: 99, dpRecoveryTicks: null, slotLimit: null },
-      cards: cards.map(card => ({ stock: 1, stockLimit: 1, activeLimit: 1, program: operator, ...card })),
+      cards,
     },
     map: createMap(1, 6, tileEntries(Array.from({ length: 6 }, () => ({
       heightType: 'LOWLAND', meleeBlockable: true, buildableType: 'ALL', passableMask: 'ALL',
@@ -1541,8 +1541,9 @@ function deploymentBattleInput(overrides = {}, cards = []) {
 }
 
 
-const deployableDefinition = (id = 'test_deployable') => Object.freeze({ hooks: [],
-  id, occupancy: { slot: 'OCCUPANT' }, deployable: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: 'ALL' }),
+const deployableDefinition = (id = 'test_deployable', card = {}) => Object.freeze({ hooks: [],
+  id, occupancy: { slot: 'OCCUPANT' }, deployable: { retreatRules: [] },
+  card: createCardDefinition({ cost: 0, redeployTicks: 0, slots: 1, ...card }),
   vitality: Object.freeze({ maxHp: 100, defense: 0, resistance: 0 }), allegiance: Object.freeze({ side: 'ALLY' }),
   layer: Object.freeze({ type: 'GROUND' }),
   blocker: Object.freeze({ layer: "GROUND", rules: [], capacity: 1, radius: 0.7 }),
@@ -1550,8 +1551,11 @@ const deployableDefinition = (id = 'test_deployable') => Object.freeze({ hooks: 
 
 
 test('core battle deploys and retreats units with immutable occupancy and current tile navigation costs', () => {
-  const definition = deployableDefinition();
-  let runtime = initializeBattle(deploymentBattleInput({}, [{ definition, stock: 2, stockLimit: 2, activeLimit: null, program: queued }]));
+  const definition = deployableDefinition('test_deployable', {
+    stock: 2, stockLimit: 2, activeLimit: null,
+    cooldownOnDeploy: false, recoverOnLeave: true, increaseCostOnLeave: false,
+  });
+  let runtime = initializeBattle(deploymentBattleInput({}, [{ definition }]));
   const maps = runtime.battlefield.navigation;
   const deployed = (runtime = advanceBattle(runtime, [{ type: 'DEPLOY_UNIT', cardId: 0, tilePosition: [0, 1] }]));
   const unit = runtime.battlefield.units.get(0);
@@ -1574,8 +1578,8 @@ test('core battle deploys and retreats units with immutable occupancy and curren
 
   const occupancy = { tile: [0, 5] };
   const initialInput = deploymentBattleInput({
-    initialUnits: [{ definition: Object.freeze({ hooks: [], id: 'reserved_home', occupancy: { slot: 'OCCUPANT' } }), position: [5, 0], initial: { occupancy },
-       }],
+    predefines: predefinedUnits([{ definition: Object.freeze({ hooks: [], id: 'reserved_home', occupancy: { slot: 'OCCUPANT' } }), position: [5, 0], initial: { occupancy },
+       }]),
   }, [{ definition: definition }]);
   let reserved = initializeBattle(initialInput);
   assert.equal(reserved.battlefield.units.get(0).occupancy.tile, occupancy.tile);
@@ -1629,8 +1633,11 @@ test('core battle deploys and retreats units with immutable occupancy and curren
 
 
 test('core battle accepts the first deployment and rejects an occupied destination without consuming another identity', () => {
-  const definition = deployableDefinition();
-  const spec = deploymentBattleInput({}, [{ definition, stock: 2, stockLimit: 2, activeLimit: null, program: queued }]);
+  const definition = deployableDefinition('test_deployable', {
+    stock: 2, stockLimit: 2, activeLimit: null,
+    cooldownOnDeploy: false, recoverOnLeave: true, increaseCostOnLeave: false,
+  });
+  const spec = deploymentBattleInput({}, [{ definition }]);
   let runtime = initializeBattle(spec), replay = initializeBattle(spec);
   const deploy = tilePosition => ({ type: 'DEPLOY_UNIT', cardId: 0, tilePosition });
   const before = runtime, maps = runtime.battlefield.navigation;
@@ -1641,8 +1648,20 @@ test('core battle accepts the first deployment and rejects an occupied destinati
   assert.equal(runtime.deployment.dp, before.deployment.dp);
   assert.equal(runtime.battlefield.navigation, maps);
   let deployed = initializeBattle(spec);
-  assert.deepEqual((deployed = advanceBattle(deployed, [deploy([0, 1]), deploy([0, 2])])), (replay = advanceBattle(replay, [deploy([0, 1]), deploy([0, 2])])));
-  assert.deepEqual(deployed, replay);
+  deployed = advanceBattle(deployed, [deploy([0, 1]), deploy([0, 2])]);
+  replay = advanceBattle(replay, [deploy([0, 1]), deploy([0, 2])]);
+  const values = battle => ({
+    ...battle,
+    battlefield: {
+      ...battle.battlefield,
+      units: new Map([...battle.battlefield.units].map(([id, unit]) => [id, {
+        ...unit,
+        // Per-deployment closures have distinct identities; their registered order and state are deterministic.
+        hooks: unit.hooks.map(({ id, stage }) => ({ id, stage })),
+      }])),
+    },
+  });
+  assert.deepEqual(values(deployed), values(replay));
 
   (replay = advanceBattle(replay, [{ type: 'RETREAT_UNIT', unitId: 0 }, deploy([0, 1])]));
   assert.deepEqual([...replay.battlefield.units.values()].map(unit => unit.id), [1, 2]);
@@ -1653,7 +1672,10 @@ test('core visibility: commands from different domains execute in phase order be
   const definition = deployableDefinition();
   const spec = deploymentBattleInput({ predefines: [{
     id: 17, alias: null, initiallyPresent: true, creation: {
-      type: 'UNIT', definition, position: [1, 0], initial: { occupancy: { tile: [0, 1] } },
+      type: 'UNIT', definition, position: [1, 0], initial: {
+        occupancy: { tile: [0, 1] },
+        deployable: { card: null, cost: 0, slots: 1, refund: null },
+      },
     },
   }] }, [{ definition: definition }]);
   let runtime = initializeBattle(spec);
@@ -1665,7 +1687,7 @@ test('core visibility: commands from different domains execute in phase order be
   ]));
 
   assert.deepEqual(step.events.filter(event => event.type === 'UNIT_DEPLOYED' || event.type === 'UNIT_REMOVED'), [
-    { type: 'UNIT_DEPLOYED', unitId: 1, position: [1, 0], program: '@deployment/operator', payment: { amount: 0 }, tick: 0 },
+    { type: 'UNIT_DEPLOYED', unitId: 1, position: [1, 0], payment: 0, tick: 0 },
     { type: 'UNIT_REMOVED', unitId: 0, reason: 'SCRIPT', tick: 0,
       unit: { ...unitAtRemoval, lifecycle: 'LEAVING' } },
   ]);
@@ -1704,14 +1726,14 @@ test('core elevated support disables blocking without changing target layer and 
   const hiddenRecipe = createPredefinedDefinition({ ...recipe, initiallyPresent: false,
     creation: { ...recipe.creation, initial: { occupancy: { tile } } } });
   let runtime = initializeBattle(deploymentBattleInput({
-    initialUnits: [{ definition: enemyDefinition, position: [1, 0] }],
-    predefines: [hiddenRecipe],
+    predefines: predefinedUnits([{ definition: enemyDefinition, position: [1, 0] }], [hiddenRecipe]),
+
   }, [{ definition: definition }]));
   assert.equal(hiddenRecipe.creation.initial.occupancy.tile, tile);
 
-  assert.deepEqual(runtime.predefinedPresence, []);
+  assert.equal(runtime.predefinedPresence.some(binding => binding.definitionId === 50), false);
   (runtime = advanceBattle(runtime, [{ type: 'APPEAR_PREDEFINED', definitionId: 50 }]));
-  const platformId = runtime.predefinedPresence[0].source.unitId;
+  const platformId = runtime.predefinedPresence.find(binding => binding.definitionId === 50).source.unitId;
   const platform = runtime.battlefield.units.get(platformId);
   assert.equal(platform.occupancy.tile, hiddenRecipe.creation.initial.occupancy.tile);
   assert.deepEqual(platform.occupancy.tile, [0, 1]);
@@ -1724,7 +1746,11 @@ test('core elevated support disables blocking without changing target layer and 
   const supported = runtime;
   const supportedEntry = occupancyAt(supported.battlefield, [0, 1]);
   assert.equal(supportedEntry.occupant.id, occupantId);
-  assert.equal(supported.battlefield.units.get(supportedEntry.support.id), platform);
+  const pairedPlatform = supported.battlefield.units.get(supportedEntry.support.id);
+  assert.equal(pairedPlatform.definition, platform.definition);
+  assert.equal(pairedPlatform.position, platform.position);
+  assert.equal(pairedPlatform.occupancy.pair.occupant.id, occupantId);
+  assert.equal(platform.occupancy.pair, null);
   assert.deepEqual(blockingQueries.relations(supported).map(({ blocker, blocked }) => [blocker.id, blocked.id]), []);
   assert.equal(supported.battlefield.units.get(occupantId).layer.type, 'GROUND');
   const removed = (runtime = advanceBattle(runtime, [{ type: 'REMOVE_PREDEFINED', definitionId: 50, reason: 'SCRIPT' }]));
@@ -1733,7 +1759,7 @@ test('core elevated support disables blocking without changing target layer and 
   const remainingEntry = occupancyAt(after.battlefield, [0, 1]);
   assert.equal(remainingEntry.occupant.id, occupantId);
   assert.equal(remainingEntry.support, null);
-  assert.equal(supported.battlefield.units.get(occupancyAt(supported.battlefield, [0, 1]).support.id), platform);
+  assert.equal(supported.battlefield.units.get(occupancyAt(supported.battlefield, [0, 1]).support.id), pairedPlatform);
   assert.equal(after.battlefield.units.get(occupantId).definition, definition);
   assert.deepEqual(after.battlefield.units.get(occupantId).position, [1, 0]);
   assert.equal(after.battlefield.units.get(occupantId).vitality.hp, 100);

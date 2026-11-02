@@ -1,3 +1,4 @@
+import { predefinedUnits } from "../helpers/predefined.js";
 import { createTile } from "../helpers/tiles.js";
 import { normal } from '../../dist/content/terrain/definition.js';
 import { Tiles } from '../../dist/core/battlefield/map/tiles.js';
@@ -60,7 +61,7 @@ const validTile = rawMap.tiles.get(0, normal)!;
 const invalidTile = { ...validTile, state: { ...validTile.state, passability: 'INVALID' as const } };
 // @ts-expect-error Battle input maps require valid tile field types.
 Tiles.empty().add(invalidTile);
-${["initialUnits", "initialMechanisms"]
+${["predefines", "initialMechanisms"]
     .map(
         (field, index) => `
 const { ${field}: omitted${index}, ...without${index} } = input;
@@ -175,16 +176,10 @@ function fixture({ spawnTick = 100 } = {}) {
                 },
             ],
         },
-        initialUnits: [
+        predefines: predefinedUnits([
             placement("placed-a", 0),
             effectPlacement(initial, initialize({ id: 1, ...placement("placed-b", 1) })),
-        ],
-        initialMechanisms: [
-            { definition: { id: "first-mechanism", initialize: () => ({}) } },
-            { definition: { id: "plain-mechanism", initialize: () => ({}) } },
-        ],
-
-        predefines: [
+        ], [
             {
                 id: 100,
                 alias: "present-mechanism",
@@ -223,7 +218,13 @@ function fixture({ spawnTick = 100 } = {}) {
                     ...effectPlacement(initial, initialize({ id: 103, ...placement("later-unit", 3) })),
                 },
             },
+        ]),
+        initialMechanisms: [
+            { definition: { id: "first-mechanism", initialize: () => ({}) } },
+            { definition: { id: "plain-mechanism", initialize: () => ({}) } },
         ],
+
+
         maxTicks: 4,
         routeMoveMultiplier: 1,
         rngState: 17,
@@ -237,7 +238,7 @@ test("runtime allocates initial IDs, resolves creation references, and never reu
     let runtime = initializeBattle(input);
     const initial = runtime;
 
-    assert.equal(unitQueries.all(initial).toArray()[0].definition, fields.initialUnits[0].definition);
+    assert.equal(unitQueries.all(initial).toArray()[0].definition, fields.predefines[0].creation.definition);
     assert.equal([...initial.mechanisms.values()][1].definition, fields.initialMechanisms[1].definition);
 
     assert.deepEqual(
@@ -288,7 +289,7 @@ test("runtime allocates initial IDs, resolves creation references, and never reu
     );
 
     assert.deepEqual(
-        appeared.predefinedPresence.filter((binding) => binding.definitionId >= 102),
+        appeared.predefinedPresence.filter((binding) => binding.definitionId === 102 || binding.definitionId === 103),
         [
             { definitionId: 102, source: { type: "MECHANISM", ref: { id: 3 } } },
             { definitionId: 103, source: { type: "UNIT", unitId: 3 } },

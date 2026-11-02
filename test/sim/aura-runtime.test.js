@@ -1,4 +1,4 @@
-import { operator } from "../../dist/core/battle/deployment/normal.js";
+import { predefinedUnits } from "../helpers/predefined.js";
 import { tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import * as unitQueries from "../../dist/core/unit/query.js";
@@ -12,7 +12,7 @@ import { getUnit } from "../helpers/unit.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "../helpers/tiles.js";
 
-import { createDefinition as createDeployableDefinition } from "../helpers/deployable.js";
+import { createCardDefinition } from "../helpers/deployable.js";
 import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import {
@@ -68,16 +68,17 @@ function spawn({ tick = 2, start = 4, end = 7, speed = 0, wait = true } = {}) {
 }
 
 function input(host, overrides = {}) {
+    const { predefines = [], ...fields } = overrides;
     return {
         map: createMap(1, 8, tileEntries(Array(8).fill(tile))),
-        initialUnits: [host, { definition: auraUnit(1).definition, position: [1, 0] }],
+        predefines: predefinedUnits([host, { definition: auraUnit(1).definition, position: [1, 0] }], predefines),
         schedule: { type: "TIMELINE", spawns: [spawn()] },
-        predefines: [],
+
         initialMechanisms: [],
         maxTicks: 10,
         routeMoveMultiplier: 1,
         rngState: 17,
-        ...overrides,
+        ...fields,
     };
 }
 
@@ -155,13 +156,14 @@ test("aura runtime: predefined, deployment and spawning join before the same tic
             },
     };
     const deployable = auraUnit(3, [0, 0], {
-        occupancy: { slot: "OCCUPANT" }, deployable: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 1, buildableType: "ALL" }),
+        occupancy: { slot: "OCCUPANT" }, deployable: { retreatRules: [] },
+        card: createCardDefinition({ cost: 0, redeployTicks: 0, slots: 1 }),
     }).definition;
     let runtime = initializeBattle(input(host, {
             predefines: [predefined],
             deployment: {
                 definition: { initialDp: 0, maxDp: 99, dpRecoveryTicks: null, slotLimit: null },
-                cards: [{ definition: deployable, stock: 1, stockLimit: 1, activeLimit: 1, program: operator }],
+                cards: [{ definition: deployable }],
             },
             schedule: { type: "TIMELINE", spawns: [spawn({ tick: 0 })] },
         }));
@@ -279,8 +281,15 @@ test("aura runtime: source retirement ends remote bound buffs within the same st
     const receiver = attackEffect("retired-aura-receiver");
     const aura = auraEffect(receiver);
     const host = effectPlacement(aura);
-    const definition = { ...host.definition, deployable: createDeployableDefinition({ card: {}, cost: 0, redeployTicks: 0, slots: 0, buildableType: "ALL" }) };
-    let runtime = initializeBattle(input({ ...host, definition }));
+    const definition = {
+        ...host.definition,
+        occupancy: { slot: "OCCUPANT" },
+        deployable: { retreatRules: [] },
+    };
+    let runtime = initializeBattle(input({ ...host, definition, initial: {
+        occupancy: { tile: [0, 0] },
+        deployable: { card: null, cost: 0, slots: 0, refund: null },
+    } }));
     runtime = stepBattle(runtime, []);
     const before = runtime;
     runtime = stepBattle(runtime, [{ type: "RETREAT_UNIT", unitId: 0 }]);

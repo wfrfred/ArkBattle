@@ -4,25 +4,19 @@ import type { Definition as DeployableDefinition } from "../../../unit/capabilit
 import type { Definition as OccupancyDefinition } from "../../../unit/capability/occupancy/capability.js";
 import type { Contribution } from "../../../unit/contribution/contribution.js";
 import type { Modifier } from "../../../unit/contribution/attribute.js";
-import type { Program as DeploymentProgram, DeployRequest } from "../program.js";
 import type { Hook } from "../../../unit/hook.js";
+import type { Definition } from "./definition.js";
 import type { Rule } from "./rule.js";
 
 export type Id = number;
 
 export type UnitDefinition<S extends object = object> = BaseDefinition & {
-    readonly deployable: DeployableDefinition<S>;
+    readonly card: Definition<S>;
+    readonly deployable: DeployableDefinition;
     readonly occupancy: OccupancyDefinition;
 };
 
-export interface Initial {
-    readonly stock: number;
-    readonly stockLimit: number | null;
-    readonly activeLimit: number | null;
-    readonly program: DeploymentProgram<DeployRequest>;
-}
-
-export interface Input extends Initial {
+export interface Input {
     readonly definition: UnitDefinition<any>;
 }
 
@@ -43,9 +37,6 @@ export type TimerTarget = "COOLDOWN" | "RECOVERY";
 export interface Card<S extends object = object> extends Identified<{ readonly id: Id }> {
     readonly id: Id;
     readonly definition: UnitDefinition<S>;
-    readonly stockLimit: number | null;
-    readonly activeLimit: number | null;
-    readonly program: DeploymentProgram<DeployRequest>;
     readonly hooks: readonly Hook[];
     readonly rules: readonly Rule[];
     readonly state: S;

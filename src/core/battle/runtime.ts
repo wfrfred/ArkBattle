@@ -24,8 +24,6 @@ import { initializeBattlefield } from "./initialization.js";
 import * as unit from "./unit.js";
 import { addCard, advance as advanceDeployment } from "./deployment/resources.js";
 import { initialize as initializeDeployment } from "./deployment/deployment.js";
-import { setHook as setUnitHook } from "./unit-hook.js";
-import { registrationChanged } from "./occupancy.js";
 
 export type { Input, Command, Event, Result } from "./contract.js";
 
@@ -71,10 +69,8 @@ export function initialize(input: Input): State {
         },
     );
 
-    initial = setUnitHook(initial, "registrationChanged", registrationChanged);
-
-    for (const { definition, ...options } of input.deployment?.cards ?? []) {
-        initial = addCard(initial, definition, options).state;
+    for (const { definition } of input.deployment?.cards ?? []) {
+        initial = addCard(initial, definition).state;
     }
 
     return initializeBattlefield(initial, input);

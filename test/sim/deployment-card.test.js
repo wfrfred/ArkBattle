@@ -1,7 +1,6 @@
 import { tiles as tileEntries } from "../helpers/tiles.js";
 import { normal } from "../../dist/content/terrain/definition.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
-import { baseUnit, fixtureBattle } from "../helpers/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
@@ -19,12 +18,12 @@ import {
     initialize as initializeDeployment,
 } from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
-import * as programs from "../../dist/core/battle/deployment/normal.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import {
-    createDefinition as createDeployable,
-    initialize as initializeDeployable,
-} from "../helpers/deployable.js";
+    setHook as setUnitHook,
+    removeHook as removeUnitHook,
+} from "../../dist/core/battle/unit-hook.js";
+import { createRequest } from "../../dist/core/battle/deployment/query.js";
 import { initialize as initializeUnit } from "../helpers/unit.js";
 import { create as createBattlefield } from "../../dist/core/battlefield/state.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
@@ -48,14 +47,24 @@ const definition = (fields = {}) => ({
     id: "operator",
     vitality: { maxHp: 100, defense: 0, resistance: 0 },
     occupancy: { slot: "OCCUPANT" },
-    deployable: createDeployable({
-        card: {},
+    deployable: { retreatRules: [] },
+    ...fields,
+    card: {
         cost: 10,
         redeployTicks: 3,
         slots: 1,
-        buildableType: "ALL",
-    }),
-    ...fields,
+        stock: 1,
+        stockLimit: 1,
+        activeLimit: 1,
+        cooldownOnDeploy: false,
+        recoverOnLeave: true,
+        increaseCostOnLeave: true,
+        refund: { rate: 0.5, limit: "BASE_COST" },
+        deploymentRules: [],
+        unitHooks: [],
+        initialize: (state) => ({ state, value: {} }),
+        ...fields.card,
+    },
 });
 const budget = (fields = {}) => ({
     initialDp: 100,
@@ -64,11 +73,26 @@ const budget = (fields = {}) => ({
     slotLimit: null,
     ...fields,
 });
+const operatorBehavior = {
+    cooldownOnDeploy: false,
+    recoverOnLeave: true,
+    increaseCostOnLeave: true,
+};
+const queuedBehavior = {
+    cooldownOnDeploy: false,
+    recoverOnLeave: true,
+    increaseCostOnLeave: false,
+};
+const consumableBehavior = {
+    cooldownOnDeploy: true,
+    recoverOnLeave: false,
+    increaseCostOnLeave: false,
+};
 const ordinary = (fields = {}) => ({
     stock: 1,
     stockLimit: 1,
     activeLimit: 1,
-    program: programs.operator,
+    ...operatorBehavior,
     ...fields,
 });
 const inventory = (fields = {}) => ({
@@ -84,8 +108,13 @@ const fixture = (inputs, fields = {}) => {
         0,
         initializeDeployment(budget(fields)),
     );
-    for (const { definition, ...options } of inputs)
-        state = addCard(state, definition, ordinary(options)).state;
+    for (const { definition, ...options } of inputs) {
+        const content =
+            Object.keys(options).length === 0
+                ? definition
+                : { ...definition, card: { ...definition.card, ...options } };
+        state = addCard(state, content).state;
+    }
     return state;
 };
 const getCard = (state, id) => cards.get(state, cards.ref({ id }));
@@ -93,15 +122,22 @@ const request = (cardId = 0, column = 0) => ({
     card: cards.ref({ id: cardId }),
     tilePosition: [0, column],
 });
+const completeRequest = (state, input) =>
+    createRequest(state, input.card, input.tilePosition, input.direction) ?? {
+        ...input,
+        quote: { dp: 0, stock: 1, slots: 0 },
+        rules: [],
+        hooks: [],
+    };
 const at = (state, tick) => advance({ ...state, tick }, tick);
 const retreatUnit = (state, id) => retreat(state, unitQueries.ref(getUnit(state, id)));
 const deployUnit = (state, cardId = 0, column = 0) => {
-    const result = deploy(state, request(cardId, column));
+    const result = deploy(state, completeRequest(state, request(cardId, column)));
     assert.equal(result.value.type, "DEPLOYED");
     return result;
 };
 const reject = (state, input, reason) => {
-    const result = deploy(state, input);
+    const result = deploy(state, completeRequest(state, input));
     assert.deepEqual(result.value, { type: "REJECTED", reason });
     assert.equal(result.state.execution, state.execution);
     assert.equal(result.state.deployment.dp, state.deployment.dp);
@@ -111,13 +147,11 @@ const reject = (state, input, reason) => {
 
 test("deployment binds its Card and snapshots field COST independently of later Card discounts", () => {
     const unit = definition({
-        deployable: createDeployable({
-            card: {},
+        card: {
             cost: 20,
             redeployTicks: 0,
             slots: 1,
-            buildableType: "ALL",
-        }),
+        },
     });
     const previous = fixture([{ definition: unit }]);
     const deployed = deployUnit(previous);
@@ -242,7 +276,7 @@ test("deployment rejection leaves stock, DP, Unit allocation and battlefield unc
             {
                 definition: unit,
                 ...inventory({ stock: 1, stockLimit: 1 }),
-                program: programs.consumable,
+                ...consumableBehavior,
             },
         ]),
     ).state;
@@ -250,7 +284,7 @@ test("deployment rejection leaves stock, DP, Unit allocation and battlefield unc
     reject(finite, request(0, 1), "NO_STOCK");
 
     const waiting = deployUnit(
-        fixture([{ definition: unit, ...inventory(), program: programs.consumable }]),
+        fixture([{ definition: unit, ...inventory(), ...consumableBehavior }]),
     ).state;
     assert.equal(getCard(waiting, 0).stock, 2);
     reject(waiting, request(0, 1), "COOLDOWN");
@@ -262,7 +296,7 @@ test("a consumable departure does not restore stock when its deployment interval
             {
                 definition: definition(),
                 ...inventory({ stock: 1, stockLimit: 1 }),
-                program: programs.consumable,
+                ...consumableBehavior,
             },
         ]),
     );
@@ -293,16 +327,14 @@ test("DP recovery stops at its cap and starts a fresh interval after spending", 
 
 test("queued recovery permits deploying remaining stock while returned Units recharge serially", () => {
     const unit = definition({
-        deployable: createDeployable({
-            card: {},
+        card: {
             cost: 0,
             redeployTicks: 4,
             slots: 1,
-            buildableType: "ALL",
-        }),
+        },
     });
     const first = deployUnit(
-        fixture([{ definition: unit, ...inventory(), program: programs.queued }]),
+        fixture([{ definition: unit, ...inventory(), ...queuedBehavior }]),
         0,
         0,
     );
@@ -331,17 +363,13 @@ test("queued recovery permits deploying remaining stock while returned Units rec
 
 test("ordinary deployment can use remaining stock while earlier returns recover", () => {
     const unit = definition({
-        deployable: createDeployable({
-            card: {},
+        card: {
             cost: 0,
             redeployTicks: 4,
             slots: 1,
-            buildableType: "ALL",
-        }),
+        },
     });
-    const first = deployUnit(
-        fixture([{ definition: unit, ...inventory(), program: programs.operator }]),
-    );
+    const first = deployUnit(fixture([{ definition: unit, ...inventory(), ...operatorBehavior }]));
     const second = deployUnit(first.state, 0, 1);
     let state = retreatUnit(at(second.state, 1), first.value.unitId);
     state = retreatUnit(at(state, 2), second.value.unitId);
@@ -362,22 +390,26 @@ test("scripted and expired departures do not add the operator cost penalty", () 
         const deployed = deployUnit(fixture([{ definition: definition() }]));
         const state = remove(deployed.state, deployed.value.unitId, reason);
         assert.equal(getCard(state, 0).costStage, 0);
+        assert.equal(getCard(state, 0).stock, 0);
+        assert.equal(getCard(state, 0).recovery, null);
         assert.equal(state.deployment.dp, 90);
     }
 });
 
 test("preset Units without a Card do not recycle; refund eligibility is a separate fact", () => {
     const unit = definition();
-    const ordinary = initializeUnit({ id: 10, definition: unit, position: [0, 0] });
+    const ordinary = initializeUnit({
+        id: 10,
+        definition: unit,
+        position: [0, 0],
+        states: { deployable: { card: null, cost: 10, slots: 0, refund: null, retreatRules: unit.deployable.retreatRules } },
+    });
     const refundable = initializeUnit({
         id: 11,
         definition: unit,
         position: [1, 0],
         states: {
-            deployable: {
-                ...initializeDeployable(fixtureBattle(0), baseUnit(unit)).value.deployable,
-                refund: { rate: 0.5, limit: 10 },
-            },
+            deployable: { card: null, cost: 10, slots: 0, refund: { rate: 0.5, limit: 10 }, retreatRules: unit.deployable.retreatRules },
         },
     });
     let state = createBattleState(
@@ -431,28 +463,37 @@ test("entry-triggered death recycles its Card before the Unit departure callback
     assert.equal(getCard(previous, 0).costStage, 0);
 });
 
-test("zero-cooldown departure can redeploy synchronously without overwriting the nested result", () => {
+test("zero-duration recovery permits fresh deployment in the completed departure notification", () => {
     let replacementId;
     const unit = definition({
-        deployable: createDeployable({
-            card: {},
-            cost: 10,
-            redeployTicks: 0,
-            slots: 1,
-            buildableType: "ALL",
-        }),
+        card: { cost: 10, redeployTicks: 0, slots: 1 },
         hooks: [
             {
                 id: "test/leave",
                 stage: "leave",
                 invoke(state, departure) {
-                    assert.equal(getCard(state, 0).cooldown, null);
-                    assert.equal(getCard(state, 0).recovery, null);
-                    assert.equal(getCard(state, 0).stock, 1);
-                    assert.equal(getCard(state, 0).costStage, 1);
-                    const replacement = deployUnit(state, departure.unit.deployable.card.id, 1);
-                    replacementId = replacement.value.unitId;
-                    return { state: replacement.state, value: undefined };
+                    const id = `test/redeploy/${departure.unit.id}`;
+                    return {
+                        state: setUnitHook(state, "leave", {
+                            id,
+                            accepts: (_current, completed) =>
+                                completed.unit.id === departure.unit.id,
+                            invoke(current, completed) {
+                                assert.equal(getCard(current, 0).cooldown, null);
+                                assert.equal(getCard(current, 0).recovery, null);
+                                assert.equal(getCard(current, 0).stock, 1);
+                                assert.equal(getCard(current, 0).costStage, 1);
+                                const replacement = deployUnit(
+                                    removeUnitHook(current, "leave", id),
+                                    completed.unit.deployable.card.id,
+                                    1,
+                                );
+                                replacementId = replacement.value.unitId;
+                                return { state: replacement.state, value: undefined };
+                            },
+                        }),
+                        value: undefined,
+                    };
                 },
             },
         ],
@@ -474,7 +515,7 @@ test("a failed Tick publishes neither preceding deployments nor Card, DP and ide
     let runtime = initializeBattle({
         map,
         schedule: { type: "TIMELINE", spawns: [] },
-        initialUnits: [],
+
         predefines: [],
         initialMechanisms: [],
         maxTicks: 3,
@@ -483,9 +524,8 @@ test("a failed Tick publishes neither preceding deployments nor Card, DP and ide
         deployment: {
             definition: budget(),
             cards: [
-                { definition: definition(), ...ordinary() },
+                { definition: definition() },
                 {
-                    ...ordinary(),
                     definition: definition({
                         hooks: [
                             {
@@ -521,24 +561,21 @@ test("a failed Tick publishes neither preceding deployments nor Card, DP and ide
     assert.equal(after.result, null);
 });
 
-test("Card programs keep private state across field instances and tick independently of deployment", () => {
+test("Card private state survives field instances and ticks independently of deployment", () => {
     const entered = [];
     const unit = definition({
-        deployable: createDeployable({
+        card: {
             cost: 0,
             redeployTicks: 0,
             slots: 1,
-            buildableType: "ALL",
-            card: {
-                initialize: (state) => ({ state, value: { entries: 0, ticks: 0 } }),
-                onTick(state, self) {
-                    return cards.setState(state, cards.ref(self), {
-                        ...self.state,
-                        ticks: self.state.ticks + 1,
-                    });
-                },
+            initialize: (state) => ({ state, value: { entries: 0, ticks: 0 } }),
+            onTick(state, self) {
+                return cards.setState(state, cards.ref(self), {
+                    ...self.state,
+                    ticks: self.state.ticks + 1,
+                });
             },
-        }),
+        },
         hooks: [
             {
                 id: "test/card-state",
@@ -557,8 +594,8 @@ test("Card programs keep private state across field instances and tick independe
             },
         ],
     });
-    const first = addCard(fixture([]), unit, ordinary());
-    const second = addCard(first.state, unit, ordinary());
+    const first = addCard(fixture([]), unit);
+    const second = addCard(first.state, unit);
     assert.equal(cards.get(second.state, first.value).definition, unit);
     assert.equal(cards.get(second.state, first.value, { ...unit }), undefined);
     assert.equal(
@@ -571,11 +608,11 @@ test("Card programs keep private state across field instances and tick independe
     );
     let state = at(second.state, 1);
     assert.deepEqual(cards.get(state, first.value).state, { entries: 0, ticks: 1 });
-    const deployed = deploy(state, { card: first.value, tilePosition: [0, 0] });
+    const deployed = deploy(state, createRequest(state, first.value, [0, 0]));
     state = at(deployed.state, 2);
     assert.deepEqual(cards.get(state, first.value).state, { entries: 1, ticks: 2 });
     state = retreatUnit(state, deployed.value.unitId);
-    const next = deploy(state, { card: first.value, tilePosition: [0, 1] });
+    const next = deploy(state, createRequest(state, first.value, [0, 1]));
     assert.equal(next.value.type, "DEPLOYED");
     assert.deepEqual(entered, [
         [0, 0, 100],
@@ -591,55 +628,46 @@ test("Card ticks fix candidates and read changes made by preceding Card programs
     let second;
     const late = definition({
         id: "late-card",
-        deployable: createDeployable({
+        card: {
             cost: 0,
             redeployTicks: 0,
             slots: 1,
-            buildableType: "ALL",
-            card: {
-                initialize: (state) => ({ state, value: {} }),
-                onTick(state) {
-                    trace.push("late");
-                    return state;
-                },
+            initialize: (state) => ({ state, value: {} }),
+            onTick(state) {
+                trace.push("late");
+                return state;
             },
-        }),
+        },
     });
     const firstDefinition = definition({
-        deployable: createDeployable({
+        card: {
             cost: 0,
             redeployTicks: 0,
             slots: 1,
-            buildableType: "ALL",
-            card: {
-                initialize: (state) => ({ state, value: { spawned: false } }),
-                onTick(state, self) {
-                    trace.push("first");
-                    if (self.state.spawned) return state;
-                    state = cards.setState(state, second, { count: 20 });
-                    state = addCard(state, late, ordinary()).state;
-                    return cards.setState(state, cards.ref(self), { spawned: true });
-                },
+            initialize: (state) => ({ state, value: { spawned: false } }),
+            onTick(state, self) {
+                trace.push("first");
+                if (self.state.spawned) return state;
+                state = cards.setState(state, second, { count: 20 });
+                state = addCard(state, late).state;
+                return cards.setState(state, cards.ref(self), { spawned: true });
             },
-        }),
+        },
     });
     const secondDefinition = definition({
-        deployable: createDeployable({
+        card: {
             cost: 0,
             redeployTicks: 0,
             slots: 1,
-            buildableType: "ALL",
-            card: {
-                initialize: (state) => ({ state, value: { count: 0 } }),
-                onTick(state, self) {
-                    trace.push(self.state.count);
-                    return state;
-                },
+            initialize: (state) => ({ state, value: { count: 0 } }),
+            onTick(state, self) {
+                trace.push(self.state.count);
+                return state;
             },
-        }),
+        },
     });
-    const a = addCard(fixture([]), firstDefinition, ordinary());
-    const b = addCard(a.state, secondDefinition, ordinary());
+    const a = addCard(fixture([]), firstDefinition);
+    const b = addCard(a.state, secondDefinition);
     second = b.value;
     let state = at(b.state, 1);
     assert.deepEqual(trace, ["first", 20]);
@@ -663,16 +691,14 @@ test("Card ticks fix candidates and read changes made by preceding Card programs
 
 test("complete Card resource operations preserve a running timer and sample changes for the next return", () => {
     const unit = definition({
-        deployable: createDeployable({
-            card: {},
+        card: {
             cost: 0,
             redeployTicks: 30,
             slots: 1,
-            buildableType: "ALL",
-        }),
+        },
     });
-    const created = addCard(fixture([]), unit, ordinary());
-    const deployed = deploy(created.state, { card: created.value, tilePosition: [0, 0] });
+    const created = addCard(fixture([]), unit);
+    const deployed = deploy(created.state, createRequest(created.state, created.value, [0, 0]));
     const returned = retreatUnit({ ...deployed.state, tick: 5 }, deployed.value.unitId);
     const timer = cards.get(returned, created.value).recovery.clock;
     let state = cards.setRedeployTimeContribution(returned, created.value, {
@@ -691,7 +717,7 @@ test("complete Card resource operations preserve a running timer and sample chan
     assert.equal(cards.get(state, created.value).recovery, null);
     assert.equal(cards.get(state, created.value).stock, 1);
     assert.equal(cards.clearCooldown(state, created.value, "RECOVERY"), state);
-    const next = deploy(state, { card: created.value, tilePosition: [0, 1] });
+    const next = deploy(state, createRequest(state, created.value, [0, 1]));
     state = retreatUnit({ ...next.state, tick: 50 }, next.value.unitId);
     assert.deepEqual(cards.get(state, created.value).recovery.clock, {
         type: "RUNNING",
@@ -707,20 +733,24 @@ test("complete Card resource operations preserve a running timer and sample chan
 
 test("explicit Card recharge caps available stock without replacing its running timer", () => {
     const unit = definition({
-        deployable: createDeployable({
-            card: {},
+        card: {
             cost: 0,
             redeployTicks: 30,
             slots: 1,
-            buildableType: "ALL",
-        }),
+        },
     });
-    const created = addCard(fixture([]), unit, {
-        ...inventory(),
-        stock: 1,
-        program: programs.consumable,
+    const created = addCard(fixture([]), {
+        ...unit,
+        card: {
+            ...unit.card,
+            ...{
+                ...inventory(),
+                stock: 1,
+                ...consumableBehavior,
+            },
+        },
     });
-    const deployed = deploy(created.state, { card: created.value, tilePosition: [0, 0] });
+    const deployed = deploy(created.state, createRequest(created.state, created.value, [0, 0]));
     const timer = cards.get(deployed.state, created.value).cooldown;
     const replenished = cards.recharge(deployed.state, created.value, 10);
     assert.equal(cards.get(replenished, created.value).stock, 3);
@@ -738,17 +768,18 @@ test("explicit Card recharge caps available stock without replacing its running 
 
 test("clearing a queued Card cooldown completes the current return and starts the next full period", () => {
     const unit = definition({
-        deployable: createDeployable({
-            card: {},
+        card: {
             cost: 0,
             redeployTicks: 30,
             slots: 1,
-            buildableType: "ALL",
-        }),
+        },
     });
-    const created = addCard(fixture([]), unit, { ...inventory(), program: programs.queued });
-    const first = deploy(created.state, { card: created.value, tilePosition: [0, 0] });
-    const second = deploy(first.state, { card: created.value, tilePosition: [0, 1] });
+    const created = addCard(fixture([]), {
+        ...unit,
+        card: { ...unit.card, ...{ ...inventory(), ...queuedBehavior } },
+    });
+    const first = deploy(created.state, createRequest(created.state, created.value, [0, 0]));
+    const second = deploy(first.state, createRequest(first.state, created.value, [0, 1]));
     let state = retreatUnit(second.state, first.value.unitId);
     state = retreatUnit(state, second.value.unitId);
     const original = state;

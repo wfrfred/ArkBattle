@@ -12,7 +12,7 @@ import { create as createTile } from "../../dist/core/battlefield/map/tile.js";
 import { Tiles } from "../../dist/core/battlefield/map/tiles.js";
 import { Tile } from "../../dist/core/geometry/coordinate.js";
 import { initialize } from "../../dist/core/unit/index.js";
-import { createDefinition as createDeployable } from "../../dist/core/unit/capability/deployable/index.js";
+import { createCardDefinition } from "../helpers/deployable.js";
 
 function battle(firstTerrain = normal, firstCost = 2000) {
     const tiles = [0, 1, 2].reduce((entries, index) => entries.add(createTile({
@@ -34,22 +34,19 @@ function configuration(id, tileChanges = {}) {
     return { hooks: [],
         id,
         vitality: { maxHp: 100, defense: 0, resistance: 0 },
-        deployable: createDeployable({
-            card: {},
-            cost: 0,
-            redeployTicks: 0,
-            slots: 0,
-            placement: "ALL",
-            allowedSiteConditions: [conditions.normal],
-        }),
+        deployable: { retreatRules: [] },
+        card: createCardDefinition({ cost: 0, redeployTicks: 0, slots: 0, placement: "ALL" }),
         tileChanges,
     };
 }
 
 function place(battle, id, definition, tile, position = Tile.center(tile)) {
-    const initialized = initialize(battle, { id, definition, position });
+    const initialized = initialize(battle, { id, definition, position, initial: {
+        occupancy: { tile },
+        deployable: { card: null, cost: 0, slots: 0, refund: null },
+    } });
 
-    return add(initialized.state, { ...initialized.value, occupancy: { ...(initialized.value).occupancy, tile } });
+    return add(initialized.state, initialized.value);
 }
 
 for (const [name, create] of [["crate", createCrate], ["shooting platform", createShootingPlatform]]) {

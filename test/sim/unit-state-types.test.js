@@ -125,7 +125,7 @@ const acquiredBattle:BattleState=acquireRelation(battle,unitRef(capabilityHost),
 acquireRelation(battle,unitRef(bare),unitRef(blockableHost));
 // @ts-expect-error acquiring a relationship requires a Blockable identity.
 acquireRelation(battle,unitRef(capabilityHost),unitRef(bare));
-const blockingRule:BlockingRule={id:'pair',allows(current,blocker,blockable){
+const blockingRule:BlockingRule={id:'pair',allows(current,{blocker,blockable}){
  const state:BattleState=current;
  const capacity:readonly Contribution<readonly BlockingModifier[]>[]=blocker.blocker.capacity;
  const volume:readonly Contribution<number>[]=blockable.blockable.volume;

@@ -10,8 +10,7 @@ import type { Change, Transformation, Settlement } from "../unit/change.js";
 
 /* eslint-disable @typescript-eslint/no-unnecessary-type-parameters -- Accept capability-bearing object literals while returning only BattleState. */
 export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
-    const previous = battle.battlefield;
-    const next = battlefield.add(previous, unit);
+    const next = battlefield.add(battle.battlefield, unit);
     battle = publishBattlefield(battle, next);
     const reference = units.ref(unit);
 
@@ -27,7 +26,7 @@ export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
         }
     }
 
-    return dispatchObservers(battle, "registrationChanged", { previous, next, changed: [unit.id] });
+    return battle;
 }
 
 export function update(battle: BattleState, changes: readonly Change[]): BattleState {
@@ -94,8 +93,7 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
     finalize: (battle, reference, departure) => {
         const departing = units.get(battle, reference)!;
         const { reason } = departure;
-        const previous = battle.battlefield;
-        const next = battlefield.remove(previous, reference);
+        const next = battlefield.remove(battle.battlefield, reference);
         battle = publishBattlefield(battle, next);
         battle = {
             ...battle,
@@ -104,11 +102,6 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
                 { unitId: reference.id, reason, unit: departing },
             ],
         };
-        battle = dispatchObservers(battle, "registrationChanged", {
-            previous,
-            next,
-            changed: [reference.id],
-        });
 
         for (const entry of departure.unit.hooks) {
             if (

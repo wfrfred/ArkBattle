@@ -13,7 +13,7 @@ import * as actions from "../../dist/core/unit/action/index.js";
 import { advance as advanceAction } from "../../dist/core/unit/action/index.js";
 import { install } from "../../dist/core/unit/effect/index.js";
 import { advancePredefined } from "../../dist/core/battle/steps/predefined.js";
-import { instantiateUnitPlacement } from "../../dist/core/battle/creation/placement.js";
+import { initialize as initializeUnit } from "../../dist/core/unit/initialize.js";
 
 for (const nested of ["cancel", "advance", "advance complete", "advance waiting"]) {
     test(`sequential departure: a nested ${nested} cannot produce a second action outcome`, () => {
@@ -93,9 +93,11 @@ test("sequential predefined commands allocate after all earlier callback results
         id: "birth-on-end",
         initialize: () => ({}),
         onEnd(state) {
-            const created = instantiateUnitPlacement(
+            const id = state.execution.nextUnitId;
+            state = { ...state, execution: { ...state.execution, nextUnitId: id + 1 } };
+            const created = initializeUnit(
                 state,
-                { definition: { hooks: [], id: "callback-child" }, position: [1, 0] },
+                { id, definition: { hooks: [], id: "callback-child" }, position: [1, 0] },
             );
             return addUnit(created.state, created.value);
         },

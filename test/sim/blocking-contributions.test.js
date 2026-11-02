@@ -125,8 +125,7 @@ test("blocking initialization accepts plain definitions and validates them throu
     }
 });
 
-test("unit initialization rejects simultaneous Blocking roles before invoking content initializers", () => {
-    let initialized = 0;
+test("Blocking construction rejects simultaneous blocker and blockable roles", () => {
     assert.throws(() => initialize({
         id: 0,
         position: [0, 0],
@@ -134,13 +133,8 @@ test("unit initialization rejects simultaneous Blocking roles before invoking co
             id: "invalid-blocking-roles",
             blocker: { layer: "GROUND", rules: [], capacity: 1 },
             blockable: { volume: 1 },
-            action: { initialize() {
-                initialized++;
-                throw new Error("content initializer must not run");
-            } },
         },
     }), { name: "TypeError", message: /both blocker and blockable/ });
-    assert.equal(initialized, 0);
 });
 
 test("blocking capacity: immutable additions resolve ties to even after clamping", () => {

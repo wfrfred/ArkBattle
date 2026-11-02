@@ -49,6 +49,10 @@ export function initialize<U extends Unit & Pick<Blocker, "definition">>(
     battle: BattleState,
     unit: U,
 ): Result<U & Blocker> {
+    if ("blockable" in unit.definition) {
+        throw new TypeError("a unit cannot be both blocker and blockable");
+    }
+
     const definition = unit.definition.blocker;
     const radius = definition.radius ?? DEFAULT_RADIUS[definition.layer];
     assertNonnegativeSafeInteger(definition.capacity, "blocking capacity");

@@ -1,3 +1,4 @@
+import { predefinedUnits } from "../helpers/predefined.js";
 import { set as setFixtureEntry } from "../../dist/core/hook.js";
 import { create as createSkill } from "../../dist/core/unit/skill/index.js";
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
@@ -69,8 +70,8 @@ function scenario(skill, { targets = 1, attackTargets = 1, windupTicks = 0, cont
   const base = createLegacyCombatSpec({ rows: 1, columns: 8, operators: [], enemies: [], maxTicks: 200, seed: 7 });
   const definition = actor(skill, { attackTargets, windupTicks, activeAction });
   let runtime = initializeBattle({ ...base,
-    initialUnits: [{ definition, position: [0, 0] },
-      ...Array.from({ length: targets }, (_, index) => ({ definition: target(), position: [index + 1, 0] }))],
+    predefines: predefinedUnits([{ definition, position: [0, 0] },
+      ...Array.from({ length: targets }, (_, index) => ({ definition: target(), position: [index + 1, 0] }))]),
     schedule: { type: 'TIMELINE', spawns: [{
       definition: { hooks: [], id: 'future', vitality: { maxHp: 1, defense: 0, resistance: 0 }, locomotion: {
         halfBodyWidth: 0, minSpeed: 0, speed: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 },
