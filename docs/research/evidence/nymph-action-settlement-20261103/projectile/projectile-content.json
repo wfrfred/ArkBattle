@@ -1,0 +1,323 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-03",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+      "bytes": 6749,
+      "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+    },
+    "lock": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py.lock",
+      "bytes": 52,
+      "sha256": "87b323d3e2572bcaa81cbb098e0e97bf27591738562d5f21247237a29a807148"
+    },
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/assets.py",
+        "bytes": 3399,
+        "sha256": "c458702aa0e014a093c548db9100709ac6338f74cee11aceb45c661003de4a09"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      }
+    ],
+    "source": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+      "bytes": 1905483,
+      "sha256": "cc3f21b73b10fbc619a1ff8b099f31e678c883ddacb7bb6775fea960ffecb0e1"
+    },
+    "monoScriptSource": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+      "bytes": 477255,
+      "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+    },
+    "scope": "Current real S1 projectile prefab hierarchy only; static configuration, not runtime observation."
+  },
+  "result": [
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-3708200872107265271",
+      "name": "projectile_chr_nymph_s1",
+      "hierarchy": [
+        {
+          "name": "projectile_chr_nymph_s1",
+          "gameObjectPathId": "8647485595897934601",
+          "transformPathId": "-3073145664901762295"
+        }
+      ],
+      "typeId": 3,
+      "monoScript": {
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "id": "-8797129986015012478",
+        "name": "SimpleProjectile",
+        "cl": "SimpleProjectile",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "externalScriptReference": {
+        "fileId": 1,
+        "guid": "00000000000000000000000000000000",
+        "type": 0,
+        "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+      },
+      "sha256": "392117b8b74fb91bfc599980ac134ea9ed581303e3ea0d0adc33ce0b29b69aa2",
+      "rawFile": "projectile--3708200872107265271.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 8647485595897934601
+        },
+        "common:349": true,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -8797129986015012478
+        },
+        "common:427": "",
+        "_randomDelayToBorn": 0.0,
+        "_randomDelayToBornKey": "",
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": 4534534765857452809
+        },
+        "_keepAlreadyHitTime": -1.0,
+        "_mainEffect": "nymph_skill_01_trail",
+        "_clearMainEffectWhenReached": true,
+        "_actionController": {
+          "_detachBuffsWhenTargetLeave": false,
+          "_detachAllBuffsWhenStopped": false,
+          "_onlyAddBuffsToTraceTarget": false,
+          "_onlyAddBuffsToTargetOnce": false,
+          "_dontAddBuffs": false,
+          "_excludeAttachments": false,
+          "_useSelfBlackboard": false,
+          "_extraBuffsInTheEnd": {
+            "Array": []
+          },
+          "_useExtraBuffsWhenStopHit": false,
+          "_addExtraBuffsWhenReached": false,
+          "_detachAllExtraBuffsWhenStopped": false
+        },
+        "_fixDealHitTargetLeft": true,
+        "_stopGraphicProjectileWhenClearMainEffect": false,
+        "_overrideAudioSignal": "",
+        "_fireProjectileReachedEvent": false,
+        "_eliminatableStatus": 0,
+        "_movementAdjustableStatus": 0,
+        "_managedBySource": false,
+        "_projectileType": 0,
+        "_containsChildrenBehaviours": false,
+        "_canHitSameTargetMultipleTimes": false,
+        "_lifeTimeType": true,
+        "_lifeTime": 10.0,
+        "_getLifeTimeFromBB": false,
+        "_hitNumType": true,
+        "_maxHitNum": 1,
+        "_getMaxHitNumFromBB": false,
+        "_maxHitNumBBKey": "",
+        "_stopAfterMaxHit": true,
+        "_stopAfterFirstHit": false,
+        "_stopWhenSourceInvalid": false,
+        "_alwaysHitTraceTargetInTheEnd": true,
+        "_alwaysHitTraceTargetWhenReached": false,
+        "_alwaysReachInTheEnd": false,
+        "_limitedMaxHitNumToSourceBlockedCnt": false,
+        "_allowZeroBlockCntLimit": false
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-2424235725978684663",
+      "name": "projectile_chr_nymph_s1",
+      "hierarchy": [
+        {
+          "name": "projectile_chr_nymph_s1",
+          "gameObjectPathId": "8647485595897934601",
+          "transformPathId": "-3073145664901762295"
+        }
+      ],
+      "typeId": 10,
+      "monoScript": {
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "id": "6834194400804168919",
+        "name": "EffectBehaviour",
+        "cl": "EffectBehaviour",
+        "ns": "Torappu.Battle.Projectiles",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "externalScriptReference": {
+        "fileId": 1,
+        "guid": "00000000000000000000000000000000",
+        "type": 0,
+        "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+      },
+      "sha256": "2a1991a811ec9b075b3ae7cbd48770fde5f8dbae0391006c4ee59199dca3710f",
+      "rawFile": "projectile--2424235725978684663.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 8647485595897934601
+        },
+        "common:349": true,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 6834194400804168919
+        },
+        "common:427": "",
+        "_effectsWhenStart": {
+          "Array": []
+        },
+        "_effectsWhenReached": {
+          "Array": []
+        },
+        "_effectsWhenHit": {
+          "Array": [
+            "nymph_skill_01_hit"
+          ]
+        },
+        "_effectsToTargetWhenStart": {
+          "Array": []
+        },
+        "_effectsToTileWhenStart": {
+          "Array": []
+        },
+        "_effectsWhenStop": {
+          "Array": []
+        },
+        "_effectOnTrigger": {
+          "Array": []
+        },
+        "_replaceHitEffectAfterFirstHit": false,
+        "_repalceEffectsWhenHit": {
+          "Array": []
+        },
+        "_onlyPlayHitEffectOnTraceTarget": false,
+        "_onlyPlayHitEffectOnNotTraceTarget": false,
+        "_onlyPlayHitEffectOnce": false,
+        "_clearHitEffectOnStop": false,
+        "_clearPlayEffectOnStop": false,
+        "_clearEffectsOnTileOnStop": false,
+        "_clearReachedEffectWhenStop": false,
+        "_alwaysPlayStartEffects": false,
+        "_playStartEffectOnlyOnProjectile": false,
+        "_useSourceFaceVector": false,
+        "_useSourceFaceVectorOnHit": false,
+        "_useSourceFaceVectorOnStart": false,
+        "_forceReachTargetGround": false,
+        "_followTargetGround": false,
+        "_replaceMainEffectWhenReach": false,
+        "_mainEffectToReplace": "",
+        "_useTraceTargetWhenReach": false,
+        "_setReachEffectOnProjectile": false,
+        "_syncEffectScaleViaProjectile": false
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "3630816019678409481",
+      "name": "projectile_chr_nymph_s1",
+      "hierarchy": [
+        {
+          "name": "projectile_chr_nymph_s1",
+          "gameObjectPathId": "8647485595897934601",
+          "transformPathId": "-3073145664901762295"
+        }
+      ],
+      "typeId": 2,
+      "monoScript": {
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "id": "-1429203677512073985",
+        "name": "AdvancedMovement",
+        "cl": "AdvancedMovement",
+        "ns": "Torappu.Battle.Projectiles",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "externalScriptReference": {
+        "fileId": 1,
+        "guid": "00000000000000000000000000000000",
+        "type": 0,
+        "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+      },
+      "sha256": "4ac4d95c327f84b0bcb36f7bc61d20307288d3b120695e050345244f8b7765c9",
+      "rawFile": "projectile-3630816019678409481.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 8647485595897934601
+        },
+        "common:349": true,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -1429203677512073985
+        },
+        "common:427": "",
+        "_rotateToTarget": true,
+        "_forceReachedWhenTimeup": true,
+        "_useSourceDirection": false,
+        "_useTargetDirection": false,
+        "_useStartToTarget": false,
+        "_awayFromSourceAsDirection": false,
+        "_flyToTargetLocationOnly": false,
+        "_useSourceDirectionRandomArcAngleStart": false,
+        "_useSourceToTargetRandomArcAngleStart": false,
+        "_useSourceDirectionArcAngleWithRatio": false,
+        "_useSourceToTargetArcAngleWithRatio": false,
+        "_sourceDirectionArcAngleRatio": 0.0,
+        "_sourceToTargetArcAngle": 0.0,
+        "_adjustSourceToTargetArcAngleBySourceFace": false,
+        "_flyToPredefinedLocation": false,
+        "_predefinedLocation": 0,
+        "_freezeRotationZ": false,
+        "_freezeRotationXY": false,
+        "_exactMatchCameraForward": false,
+        "_resetToTargetPosWhenReached": false,
+        "_resetToTracetargetMapPosV3": false,
+        "_handleWithIBuildableTarget": false,
+        "_forceResetToTargetPosWhenReached": false,
+        "_fixProjectileZWhenReached": false,
+        "_fixOnProjectileReached": false,
+        "_onlyReachedInTime": 0.0,
+        "_moveType": 1,
+        "_moveTypeData": {
+          "common:106": {
+            "Array": []
+          }
+        },
+        "_speed": 10.0,
+        "_speedKey": "",
+        "_distance": 0.0,
+        "_comeBack": false,
+        "_comeBackSpeedScale": 0.25,
+        "_delayToStart": 0.0,
+        "_delayAfterReached": 0.0,
+        "_delayToReachAfterHit": 0.0,
+        "_clearTraceTargetWhenReached": true,
+        "_updateDelayTimeOnlyOnce": false,
+        "_skipSmoothLerpDirection": false,
+        "_addInertia": false,
+        "_turnSpeed": 0.0,
+        "_useDynamicSpeed": false,
+        "_deltaSpeedPerSec": 0.0,
+        "_finalSpeed": 0.0,
+        "_randomOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "_forceUseTargetMountPoint": false,
+        "_rotateToTargetOnDelayToStart": false,
+        "_drawFuncTurnAndWaveDebugLine": false,
+        "_fixProjectileHasReached": false
+      }
+    }
+  ]
+}

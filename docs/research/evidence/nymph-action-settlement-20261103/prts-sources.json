@@ -1,0 +1,25 @@
+{
+  "provenance": {
+    "kind": "community-document-review",
+    "reviewedAt": "2026-11-03",
+    "scope": "妮芙 S1 的攻击附加程序与时点；社区资料不标为官方文档。"
+  },
+  "result": {
+    "sources": [
+      {
+        "url": "https://prts.wiki/w/妮芙",
+        "sections": ["技能1·笞心击", "天赋·失魂"],
+        "usedFor": "S1 法术伤害附加凋亡损伤、既有凋亡爆发时的额外元素伤害，以及触发爆发的当次攻击可以触发第一天赋。",
+        "limitation": "不能单凭技能文字确定索敌、发射采样、接收回调、归零处理和伤害后通知的内部先后。"
+      },
+      {
+        "url": "https://prts.wiki/w/伤害分类#攻击附加效果",
+        "sections": ["攻击附加效果"],
+        "usedFor": "攻击配置附带 Buff 与附带元素损伤的一般相对顺序，以及攻击配置和在场能力附加 Buff 的差别。",
+        "limitation": "一般性说明不替代妮芙 S1 实际资源绑定，也不证明所有伤害后观察者都在 EP 之后运行。"
+      }
+    ],
+    "existingFixedRevisionReview": "../attack-addon-order-20261102/prts-sources.json",
+    "retrieval": "网页工具访问原固定 oldid 页面失败；本轮通过 PRTS 当前页面搜索结果核对机制描述。具体调用顺序继续使用本地官方客户端与真实资源取证。"
+  }
+}
