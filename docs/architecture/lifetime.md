@@ -100,7 +100,7 @@ Prepare 先于自动请求依赖者。它主动请求子项时可以确定该子
 
 首次嵌套请求返回保证自身 Prepare 已完成，不保证 Finalize 已执行；重复请求 PREPARING 节点不等待原 Prepare。Prepare 是多步完整操作，不是原子业务事务：其中同步调用的 Hook 可能观察到尚未全部完成的清理。需要随标记原子失效的具体事实必须一起纯提交，不能把任意 Content 回调宣称为原子执行。
 
-结束中的实例立即拒绝新的依赖和正常推进。Unit Prepare 按装配顺序派发 prepare Hook；Blocking 的清理 Hook 排在前面，Deployable 的 Hook 随后读取最新 Unit 决定返费，Departure.unit 仍只表示离场历史。Effect 的 onDisable 在 Prepare 撤销输出；Group 在此时协调候补，但仍检查 enabled、Lifetime 上游资格和既有竞争规则。LEAVING 宿主不会重新启用弱 Buff。
+结束中的实例立即拒绝新的依赖和正常推进。Unit Prepare 按装配顺序派发 prepare Hook，Blocking 的清理由自身登记的程序处理；Departure.unit 表示离场历史。主动撤退在请求 Unit 结束前直接结算返费、Card 费用阶段与库存恢复，不依赖 Prepare 或离场完成通知。Effect 的 onDisable 在 Prepare 撤销输出；Group 在此时协调候补，但仍检查 enabled、Lifetime 上游资格和既有竞争规则。LEAVING 宿主不会重新启用弱 Buff。
 
 ## Finalize 与完成边界
 

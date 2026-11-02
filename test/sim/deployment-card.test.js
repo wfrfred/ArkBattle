@@ -19,10 +19,8 @@ import {
 } from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
 import { remove } from "../../dist/core/battle/unit.js";
-import {
-    setHook as setUnitHook,
-    removeHook as removeUnitHook,
-} from "../../dist/core/battle/unit-hook.js";
+import { setHook as setUnitHook } from "../../dist/core/battle/unit-hook.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
 import { createRequest } from "../../dist/core/battle/deployment/query.js";
 import { initialize as initializeUnit } from "../helpers/unit.js";
 import { create as createBattlefield } from "../../dist/core/battlefield/state.js";
@@ -463,43 +461,24 @@ test("entry-triggered death recycles its Card before the Unit departure callback
     assert.equal(getCard(previous, 0).costStage, 0);
 });
 
-test("zero-duration recovery permits fresh deployment in the completed departure notification", () => {
+test("existing departure observers can deploy zero-duration returns with settled Card resources", () => {
     let replacementId;
-    const unit = definition({
-        card: { cost: 10, redeployTicks: 0, slots: 1 },
-        hooks: [
-            {
-                id: "test/leave",
-                stage: "leave",
-                invoke(state, departure) {
-                    const id = `test/redeploy/${departure.unit.id}`;
-                    return {
-                        state: setUnitHook(state, "leave", {
-                            id,
-                            accepts: (_current, completed) =>
-                                completed.unit.id === departure.unit.id,
-                            invoke(current, completed) {
-                                assert.equal(getCard(current, 0).cooldown, null);
-                                assert.equal(getCard(current, 0).recovery, null);
-                                assert.equal(getCard(current, 0).stock, 1);
-                                assert.equal(getCard(current, 0).costStage, 1);
-                                const replacement = deployUnit(
-                                    removeUnitHook(current, "leave", id),
-                                    completed.unit.deployable.card.id,
-                                    1,
-                                );
-                                replacementId = replacement.value.unitId;
-                                return { state: replacement.state, value: undefined };
-                            },
-                        }),
-                        value: undefined,
-                    };
-                },
-            },
-        ],
-    });
+    const unit = definition({ card: { cost: 10, redeployTicks: 0, slots: 1 } });
     const first = deployUnit(fixture([{ definition: unit }]));
-    const next = retreatUnit(first.state, first.value.unitId);
+    const observed = setUnitHook(first.state, "leave", {
+        id: "test/redeploy",
+        accepts: (_state, departure) => departure.unit.id === first.value.unitId,
+        invoke(state, departure) {
+            assert.equal(getCard(state, 0).cooldown, null);
+            assert.equal(getCard(state, 0).recovery, null);
+            assert.equal(getCard(state, 0).stock, 1);
+            assert.equal(getCard(state, 0).costStage, 1);
+            const replacement = deployUnit(state, departure.unit.deployable.card.id, 1);
+            replacementId = replacement.value.unitId;
+            return { state: replacement.state, value: undefined };
+        },
+    });
+    const next = retreatUnit(observed, first.value.unitId);
     assert.equal(replacementId, 1);
     assert.equal(getUnit(next, first.value.unitId), undefined);
     assert.equal(getUnit(next, replacementId).deployable.cost, 15);
@@ -508,6 +487,46 @@ test("zero-duration recovery permits fresh deployment in the completed departure
     assert.equal(getCard(next, 0).costStage, 1);
     assert.equal(next.events.filter((event) => event.type === "UNIT_DEPLOYED").length, 2);
     assert.notEqual(getUnit(first.state, first.value.unitId), undefined);
+});
+
+test("nested retreat settles resources before departure cleanup and accepts subsequent recovery operations", () => {
+    const unit = definition({
+        hooks: [{
+            id: "test/prepare",
+            stage: "prepare",
+            invoke(state) {
+                assert.equal(state.deployment.dp, 95);
+                assert.equal(getCard(state, 0).costStage, 1);
+                assert.equal(getCard(state, 0).recovery.clock.readyAtTick, 3);
+                return { state, value: undefined };
+            },
+        }],
+    });
+    const deployed = deployUnit(fixture([{ definition: unit }]));
+    const host = unitQueries.ref(getUnit(deployed.state, deployed.value.unitId));
+    let requested = false;
+    const installed = effects.install(deployed.state, host, {
+        id: "test/recall-on-end",
+        initialize: () => ({}),
+        onEnd(state) {
+            state = retreatUnit(state, host.id);
+            requested = true;
+            assert.equal(getUnit(state, host.id).lifecycle, "LEAVING");
+            assert.equal(state.deployment.usedSlots, 1);
+            assert.equal(getCard(state, 0).recovery.pending, 1);
+            return cards.clearCooldown(state, getUnit(state, host.id).deployable.card, "RECOVERY");
+        },
+    });
+
+    const next = effects.end(installed.state, installed.value, "FINISHED");
+
+    assert.equal(requested, true);
+    assert.equal(getUnit(next, host.id), undefined);
+    assert.equal(next.deployment.usedSlots, 0);
+    assert.equal(next.deployment.dp, 95);
+    assert.equal(getCard(next, 0).costStage, 1);
+    assert.equal(getCard(next, 0).stock, 1);
+    assert.equal(getCard(next, 0).recovery, null);
 });
 
 test("a failed Tick publishes neither preceding deployments nor Card, DP and identity changes", () => {

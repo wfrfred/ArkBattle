@@ -180,7 +180,7 @@ unit.remove(battle, id, reason) → nextBattle
 unit.advance(battle) → nextBattle
 ```
 
-battlefield/unit.ts 的 add／update／remove 只完成纯状态转换；完整 Unit 业务统一位于 battle/unit.ts，提供 add／update／remove／advance。Blocking 在自身构造入口建立 Blocker／Blockable 至多一种的约束，内部信任，不由角色推导阵营、Layer 或移动能力。remove 委托 Unit Lifetime，在请求阶段纯发布 LEAVING，再派发能力自行登记的 prepare Hook，由 Blocking 清理本 Unit 的关系与自身计划。已登记 owner 与 Scope 依赖者完整 Finalize 后，Unit 注销并记录移除事实，再按登记序执行本地 leave 与全局 leave。Occupancy 自己处理旧配对，Deployable 的本地 leave 归还实际占用；部署时预装的死亡响应只处理确认死亡。主动撤退由其领域操作退款，并在该实例的全局 leave 完成 Card 后继。Unit 不识别具体能力，也不全场扫描补救领域清理；调用方不拼接这些内部步骤，BattleState 不另提供 Unit 登记或注销入口。部署契约见 [Deployment](deployment.md)。
+battlefield/unit.ts 的 add／update／remove 只完成纯状态转换；完整 Unit 业务统一位于 battle/unit.ts，提供 add／update／remove／advance。Blocking 在自身构造入口建立 Blocker／Blockable 至多一种的约束，内部信任，不由角色推导阵营、Layer 或移动能力。remove 委托 Unit Lifetime，在请求阶段纯发布 LEAVING，再派发能力自行登记的 prepare Hook，由 Blocking 清理本 Unit 的关系与自身计划。已登记 owner 与 Scope 依赖者完整 Finalize 后，Unit 注销并记录移除事实，再按登记序执行本地 leave 与全局 leave。Occupancy 自己处理旧配对，Deployable 的本地 leave 归还实际占用；部署时预装的死亡响应只处理确认死亡。主动撤退由其领域操作在请求离场前直接结算退款、Card 费用阶段与库存恢复。Unit 不识别具体能力，也不全场扫描补救领域清理；调用方不拼接这些内部步骤，BattleState 不另提供 Unit 登记或注销入口。部署契约见 [Deployment](deployment.md)。
 
 add 拒绝重复身份。公开 Unit.update 只接收 opaque Change 数组，在执行任何内容程序前确认每个目标已登记，缺失时抛出 RangeError；同一目标可在本批出现多次。各项 transform 按顺序读取暂存的最新 Unit；返回原 Unit 引用时由 update 统一跳过本项后继，Settlement 不重复判断 no-op。完成全部转换后一次发布 Field，再按原 Change 顺序执行实际变换项的 settle。Field 内部 update 仍接收完整 Unit 数组，信任 Core 构造的身份与 Definition，不重复校验；替换保持登记顺序。Unit 身体所属格由 position 与 SpatialPresence 查询，不另存位置索引或空间依赖分类。
 

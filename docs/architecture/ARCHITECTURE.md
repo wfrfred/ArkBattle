@@ -189,7 +189,7 @@ Effect 直接持有 `Definition<S, H>` 与私有 State。S 描述实例状态，
 
 Hook 是函数与资格开关的不可变登记项，由对应领域或 Capability 保存。Effect 可以在 onInstall 登记 Hook，资格闭包读取当前输入版本的 Effect，在 onEnd 撤销。执行 Hook 返回新状态及领域值；动态登记固定候选 ID 并逐项从返回版本重查登记与资格，嵌套操作使用自己的候选。公共 Hook 固定 Context、接续 battle 与 current；领域决定参与资格、排序及停止条件。
 
-Unit Definition 必填 hooks，声明 enter／tick／prepare／leave 内容；初始化将初始、能力与内容 Hook 按注册序装配到实例 hooks，同 ID 后者替换并保留首次位置。Unit 本地生命周期没有运行时增删接口，直接按固定 Hook 对象序列执行；accepts 使用最新 BattleState，enter／tick 每项前确认宿主仍为 PRESENT，prepare／leave 保留固定 Departure。Skill 入场处理也作为普通 enter Hook。Deployment 在 fold 前登记部署通知与被动死亡响应，Occupancy 随后登记配对程序，先登记先执行。全局 Unit 观察者继续使用动态派发；主动撤退的 Card 后继在对应全局 leave 完成。承载变化由 Occupancy 的 SUPPORT Definition 保存 occupantAdded／occupantRemoved Hook；双方 State 共享已通知的 pair，Context 是绑定建立时的快照，实际当前状态须重读。通用 Unit 不添加能力专属回调，也不经全场登记差分替 Occupancy 组织业务。
+Unit Definition 必填 hooks，声明 enter／tick／prepare／leave 内容；初始化将初始、能力与内容 Hook 按注册序装配到实例 hooks，同 ID 后者替换并保留首次位置。Unit 本地生命周期没有运行时增删接口，直接按固定 Hook 对象序列执行；accepts 使用最新 BattleState，enter／tick 每项前确认宿主仍为 PRESENT，prepare／leave 保留固定 Departure。Skill 入场处理也作为普通 enter Hook。Deployment 在 fold 前登记部署通知与被动死亡响应，Occupancy 随后登记配对程序，先登记先执行。全局 Unit 观察者继续使用动态派发；主动撤退在请求 Unit 离场前直接结算 DP、Card 费用阶段与库存恢复。承载变化由 Occupancy 的 SUPPORT Definition 保存 occupantAdded／occupantRemoved Hook；双方 State 共享已通知的 pair，Context 是绑定建立时的快照，实际当前状态须重读。通用 Unit 不添加能力专属回调，也不经全场登记差分替 Occupancy 组织业务。
 
 Context 表达本次调用的数据与必要只读参数；Unit、Effect 和 State 都对应明确输入版本。内容先形成消耗后的新状态再进入同步嵌套，返回后从后继版本查询。候选范围属于调用期，不进入长期快照；Context 不通过可变 holder 或动态 getter 追踪当前世界。
 

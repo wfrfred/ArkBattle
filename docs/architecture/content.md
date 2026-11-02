@@ -59,7 +59,7 @@ Occupancy 初始化自行登记 enter／leave 程序，向 SUPPORT 的静态 Hoo
 
 可部署内容在完整静态 Unit Definition 的顶层分别声明 card、deployable 和 occupancy。card 明确提供基础费用、时长、初始库存与上限、退费策略、部署规则、Unit 附加 Hook，以及 initialize 和可选 onTick；没有私有逻辑时 initialize 显式返回空对象。Deployable Definition 只保存固有 retreatRules，单向依赖 Occupancy，本次来源 Card、COST、部署位份额和退费依据由 Deployment 在 Unit 初始化完成、登记之前写入。Card.definition 保留原静态定义，不另建或按次拼装内容对象。Card 的 state 跨部署保存，Unit 每次部署重新初始化；需要继承的具体资源由内容显式转换。Card 通过自身领域的 Typed Ref 操作写回，不调用内部完整 replace。
 
-一次部署使用完整 Request，包含 Card Ref、落点、可选方向、Quote、附加 Rule 和普通 Unit Hook。默认规则、Card 的静态与当前规则、本次附加规则按 ID 合并后统一判断，UI 与实际部署复用相同资格；通过后先消费 DP／库存／部署位，再构造、登记并执行入场程序。quote.dp 为 null 表示跳过支付，0 表示正常零费。Card 显式配置部署间隔、离场库存恢复及费用阶段策略；主动撤退与被动死亡在各自路径使用这些策略，不对所有 leave 自动回收。主动撤退即时处理退款，实际离场后的 Card 后继通过本次全局 leave 观察完成；slots 由本地 leave 归还。入场附着使用 Card 或 Request 携带的普通 Hook 调用 effects.install，不建立 Attachment 或 Card Effect 容器。共享一次机会由真正来源保存，不能复制到各 Card。完整契约见 [Deployment](deployment.md)，特殊移动重部署留待后续实现。
+一次部署使用完整 Request，包含 Card Ref、落点、可选方向、Quote、附加 Rule 和普通 Unit Hook。默认规则、Card 的静态与当前规则、本次附加规则按 ID 合并后统一判断，UI 与实际部署复用相同资格；通过后先消费 DP／库存／部署位，再构造、登记并执行入场程序。quote.dp 为 null 表示跳过支付，0 表示正常零费。Card 显式配置部署间隔、离场库存恢复及费用阶段策略；主动撤退与被动死亡在各自路径使用这些策略，不对所有 leave 自动回收。主动撤退在请求 Unit 离场前直接结算退款、Card 费用阶段与库存恢复；slots 由本地 leave 归还。入场附着使用 Card 或 Request 携带的普通 Hook 调用 effects.install，不建立 Attachment 或 Card Effect 容器。共享一次机会由真正来源保存，不能复制到各 Card。完整契约见 [Deployment](deployment.md)，特殊移动重部署留待后续实现。
 
 本轮四向摆放朝向归 Occupancy；方向不在静态 Definition 中声明，本次部署通过 initial.occupancy.direction 提供，方向相关攻击范围读取当前实例。没有朝向的装置使用 null，不伪造 RIGHT；基础 Unit 没有方向字段。Occupancy 同时通过 initial.occupancy.tile 接受本次登记，不通过通用 Partial<Unit> 预装运行状态。关卡开场 Unit 声明为 initiallyPresent:true 的 Predefined，直接提供静态 definition、position、可选 initial.occupancy 和 hooks。Predefined 与 Deployment 都直接调用 unit.initialize，不经过额外创建工厂、品牌或泛型配对层。
 

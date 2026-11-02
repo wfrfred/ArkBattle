@@ -314,7 +314,7 @@ Blocking.release(battle, readonly Relation[]) 在入口过滤失效旧身份与�
 
 add 接收创建方完成初始化的完整 Unit，登记后按顺序执行 enter，不推断部署或点名能力。Deployment 在初始化 fold 前登记自己的 enter，Occupancy 随后追加配对程序，先注册先执行；不再发送 registrationChanged。Unit Definition.hooks 必填，无监听传 []；同 ID 替换保留首次位置。本地程序序列在构造期确定，enter／tick 每项前确认 PRESENT；prepare／leave 使用固定 Departure，leave 时实例已经注销。能力创建输入保持可选；Deployable 在初始化入口要求已有 Occupancy。实际部署在初始化前提交 DP／库存／额度，在未登记 Unit 上写入本次部署事实，并在 add 前记录 UNIT_DEPLOYED。
 
-remove 按 Unit ID 请求 Lifetime 结束，首次请求保存 Departure、发布 LEAVING，再执行已登记 prepare。Blocking 自行清理关系与位置计划。真实依赖者完整 Finalize 后才注销 Unit、记录移除事实，执行本地 leave，最后派发全局 leave；Unit 不识别能力或扫描领域状态补救。主动撤退由 Deployable 接口组织退款与离场后继，被动死亡程序只接受已确认死亡，不对所有 leave 无条件回收。Occupancy 用已通知的旧 pair 清理，不把同格新实例当旧对端；Deployable 在本地 leave 归还该实例额度。嵌套 remove 只保证请求／Prepare，最外层结算结束才保证完成。advance 固定入口候选，再逐项读取最新 PRESENT Unit 执行 tick。
+remove 按 Unit ID 请求 Lifetime 结束，首次请求保存 Departure、发布 LEAVING，再执行已登记 prepare。Blocking 自行清理关系与位置计划。真实依赖者完整 Finalize 后才注销 Unit、记录移除事实，执行本地 leave，最后派发全局 leave；Unit 不识别能力或扫描领域状态补救。主动撤退由 Deployable 接口在 remove 前直接结算退款、Card 费用阶段与库存恢复；被动死亡程序只接受已确认死亡，不对所有 leave 无条件回收。Occupancy 用已通知的旧 pair 清理，不把同格新实例当旧对端；Deployable 在本地 leave 归还该实例额度。嵌套 remove 只保证请求／Prepare，最外层结算结束才保证完成；主动撤退的资源结算不等待物理注销。advance 固定入口候选，再逐项读取最新 PRESENT Unit 执行 tick。
 
 battlefield/unit.ts 的 add／update／remove 仍是纯存储与索引转换，Field.update 接收完整 Unit 数组，不能与公开 Battle.update 的 Change 数组混用。BattleState 不保留另一套 Unit CRUD，通用 setBattlefield 已移除；特殊撤退—再部署留待实际内容审查。
 
