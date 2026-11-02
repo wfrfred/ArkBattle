@@ -1,0 +1,289 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-03",
+    "scope": "PRTS community review, not official documentation or gameplay execution. Native references retain their own input/version boundaries."
+  },
+  "result": {
+    "sources": [
+      {
+        "title": "山",
+        "url": "https://prts.wiki/w/山#天赋",
+        "revisionUrl": "https://prts.wiki/index.php?title=山&oldid=446581",
+        "section": "第一天赋 巨力重拳及备注",
+        "webLines": [
+          123,
+          129
+        ],
+        "finding": "The talent rolls per attack rather than per damage; its scale and debuff share the successful attack outcome."
+      },
+      {
+        "title": "赤刃明霄陈",
+        "url": "https://prts.wiki/w/赤刃明霄陈#天赋",
+        "revisionUrl": "https://prts.wiki/index.php?title=赤刃明霄陈&oldid=446439",
+        "section": "第一天赋 形意洞照，弱点伤害说明",
+        "webLines": [
+          134,
+          147
+        ],
+        "finding": "Physical/magical packets choose a type per target using silent physical and magical formula estimates or target fixed weakness; the probes exclude receiving modifiers and damage resets."
+      },
+      {
+        "title": "逻各斯",
+        "url": "https://prts.wiki/w/逻各斯#天赋",
+        "revisionUrl": "https://prts.wiki/index.php?title=逻各斯&oldid=446567",
+        "section": "第二天赋 剜魂具辞及备注",
+        "webLines": [
+          178,
+          184
+        ],
+        "finding": "Target debuff contributes +150 (or +165) input for magical damage after attack scaling and before RES; affects the applying attack and even zero-input magical damage. This is not post-defense fragile."
+      },
+      {
+        "title": "羽毛笔",
+        "url": "https://prts.wiki/w/羽毛笔#技能",
+        "revisionUrl": "https://prts.wiki/index.php?title=羽毛笔&oldid=447200",
+        "section": "技能2 收割备注",
+        "webLines": [
+          181,
+          198
+        ],
+        "finding": "Against target below half HP, obtains temporary ATK and recomputes theoretical damage with this packet scale and current defense/penetration, then overwrites packet amount. Earlier amount adjustments disappear, so final amount can decrease. Temporary ATK persists until successful damage, another target output, or next frame."
+      },
+      {
+        "title": "拉普兰德",
+        "url": "https://prts.wiki/w/拉普兰德#技能",
+        "revisionUrl": "https://prts.wiki/index.php?title=拉普兰德&oldid=442427",
+        "section": "技能2 狼魂",
+        "webLines": [
+          217,
+          241
+        ],
+        "finding": "Skill changes attack damage to magical, adds a target and removes ranged scale penalty. It establishes type configuration during the mode, without proving a per-damage side effect is needed."
+      },
+      {
+        "title": "铃兰",
+        "url": "https://prts.wiki/w/铃兰#天赋",
+        "revisionUrl": "https://prts.wiki/index.php?title=铃兰&oldid=446568",
+        "section": "第二天赋 画地为牢",
+        "webLines": [
+          130,
+          140
+        ],
+        "finding": "Grants fragile to slowed targets in range; fragile filters physical/magical/true damage and takes the highest same-name strength."
+      },
+      {
+        "title": "伤判效果",
+        "url": "https://prts.wiki/w/伤判效果",
+        "revisionUrl": "https://prts.wiki/index.php?title=伤判效果&oldid=441587",
+        "section": "定义与处理规则",
+        "webLines": [
+          17,
+          25,
+          48,
+          50
+        ],
+        "finding": "Fragile and sanctuary are normally target receiving modifiers after defense/RES. Ordered processing and each modifier's conditions are semantically relevant. This does not justify a target pre-formula hook."
+      },
+      {
+        "title": "事件",
+        "url": "https://prts.wiki/w/事件#伤害相关的时点",
+        "revisionUrl": "https://prts.wiki/index.php?title=事件&oldid=401942",
+        "section": "伤害相关的时点",
+        "webLines": [
+          25,
+          48
+        ],
+        "finding": "Distinguishes source/target pre-formula events, native after-calculate cleanup of temporary penetration, and source output damage for La Pluma recalculation. Source-less and precalculated damage differ in event eligibility."
+      },
+      {
+        "title": "伤害分类",
+        "url": "https://prts.wiki/w/伤害分类",
+        "revisionUrl": "https://prts.wiki/index.php?title=伤害分类&oldid=442847",
+        "section": "伤害属性、其他特征、弱点伤害",
+        "webLines": [
+          14,
+          79,
+          92,
+          108
+        ],
+        "finding": "Damage type, attack type and application way are independent. Ordinary/skill attack damage excludes attached Buff damage. Precomputed and already-computed packets have different formula/event behavior; no-source eligibility cannot be inferred from targetability. Weakness is per packet and silent; existing native case retains an atkAddition mismatch."
+      },
+      {
+        "url": "https://prts.wiki/w/伤害分类#攻击附加效果",
+        "section": "攻击附加效果",
+        "facts": [
+          "Configured attack Buffs precede the attack's own damage; configured elemental buildup follows it.",
+          "Every strike in a multistrike can attach its Buff.",
+          "Talent-added attack Buffs have a different source-presence condition from Buffs configured directly on the attack."
+        ],
+        "nativeCrossCheck": "Case27 confirms the Nymph chain; generic public hit Hook necessity does not follow from native names."
+      },
+      {
+        "url": "https://prts.wiki/w/技能#技力需求",
+        "section": "技力需求",
+        "facts": [
+          "Attack SP recovery is per eligible attack; multistrike normally recovers on each attack, with the Swordmaster double-strike exception."
+        ],
+        "limits": [
+          "This page does not establish the exact pre-windup versus release instruction position."
+        ]
+      },
+      {
+        "url": "https://prts.wiki/w/阿米娅#天赋",
+        "section": "情绪吸收 and correction footnote",
+        "facts": [
+          "PRTS corrects the in-game attack wording to successful damage output, and separately describes SP granted after killing an enemy."
+        ],
+        "limits": [
+          "Native template for Amiya was not extracted in this finite investigation."
+        ]
+      },
+      {
+        "url": "https://prts.wiki/w/羽毛笔#特性",
+        "section": "分支信息",
+        "facts": [
+          "Any self-output damage can trigger trait healing; the trait also has a short accumulation window, count cap based on block count, and separated actual healing intervals."
+        ],
+        "parameters": {
+          "accumulationWindowSeconds": 0.05,
+          "healIntervalSeconds": 0.12
+        },
+        "limits": [
+          "Exact cancellation and invulnerability qualification requires native cross-check."
+        ]
+      },
+      {
+        "url": "https://prts.wiki/w/赫拉格#特性",
+        "section": "武者分支信息",
+        "facts": [
+          "Trait healing is tied to damage output and is not restricted to attacks; some Musha impose extra qualifying conditions."
+        ],
+        "limits": [
+          "Do not silently move this to successful-damage-after based only on colloquial lifesteal wording."
+        ]
+      },
+      {
+        "url": "https://prts.wiki/w/苇草#特性",
+        "section": "冲锋手分支信息",
+        "facts": [
+          "Kill credit yields DP. Kill attribution is not identical to damage-source attribution."
+        ]
+      },
+      {
+        "url": "https://prts.wiki/w/焰影苇草#特性",
+        "section": "咒愈师分支信息",
+        "facts": [
+          "Incantation healing requires successful damage and a healing target. Its numeric basis is determined before actual damage application and is damage value rather than observed HP loss."
+        ]
+      },
+      {
+        "url": "https://prts.wiki/w/炎客#天赋",
+        "section": "血戮",
+        "facts": [
+          "Base talent depends on personal kills; upgraded module instead observes enemy defeats in nearby tiles. This distinguishes credited kills from other units' nearby deaths."
+        ]
+      },
+      {
+        "url": "https://prts.wiki/w/事件#伤害相关的时点",
+        "section": "伤害相关的时点",
+        "facts": [
+          "PRTS distinguishes damage output from successful-damage-after."
+        ],
+        "limits": [
+          "Page marks itself incomplete; native case27 supplies the concrete event ordering instead."
+        ]
+      },
+      {
+        "title": "伤判效果",
+        "url": "https://prts.wiki/w/伤判效果",
+        "section": "优先级、取消与各效果条件"
+      },
+      {
+        "title": "乌尔比安",
+        "url": "https://prts.wiki/w/乌尔比安#天赋",
+        "section": "正式应用前的治疗"
+      },
+      {
+        "title": "泥岩",
+        "url": "https://prts.wiki/w/泥岩#天赋",
+        "section": "次数盾、抵挡与回复；当前普通模式生命周期区别"
+      },
+      {
+        "title": "玛恩纳",
+        "url": "https://prts.wiki/w/玛恩纳#天赋",
+        "section": "反伤"
+      },
+      {
+        "title": "焰尾",
+        "url": "https://prts.wiki/w/焰尾#天赋",
+        "section": "第一天赋观察成功闪避，第二天赋提供闪避"
+      },
+      {
+        "title": "特殊机制",
+        "url": "https://prts.wiki/w/特殊机制",
+        "section": "特殊 HP 与普通免死"
+      },
+      {
+        "title": "衍生生命",
+        "url": "https://prts.wiki/w/衍生生命",
+        "section": "非致命、归零前干预与不死"
+      },
+      {
+        "title": "若叶睦",
+        "url": "https://prts.wiki/w/睦",
+        "section": "持有不死时的替身切换"
+      },
+      {
+        "title": "远牙",
+        "url": "https://prts.wiki/w/远牙#天赋",
+        "section": "凝神备注",
+        "finding": "成功受伤后使增益失效；被伤判归零不触发。"
+      },
+      {
+        "title": "伤判效果",
+        "url": "https://prts.wiki/w/伤判效果",
+        "section": "雷蛇战术防御的抵挡对照",
+        "finding": "天赋依成功受伤；抵挡/屏障完全吸收时不触发。"
+      },
+      {
+        "title": "止颂",
+        "url": "https://prts.wiki/w/止颂#天赋",
+        "section": "痛楚砺刃备注",
+        "finding": "不要求成功受伤，重复受击重置持续时间。"
+      }
+    ],
+    "historicalNative": [
+      {
+        "case": "docs/research/cases/10-weak-damage-and-critical.md",
+        "lines": [
+          9,
+          20,
+          24,
+          39,
+          43,
+          60
+        ],
+        "evidence": "docs/research/evidence/weak-damage-20261016/records.json",
+        "dllSha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "metadataSha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "limit": "Historical weak-damage extraction; not revalidated against November DLL. Case expressly leaves concrete crit ordering and atkAddition discrepancy open."
+      },
+      {
+        "case": "docs/research/cases/27-attack-additions-and-damage-events.md",
+        "lines": [
+          67,
+          78
+        ],
+        "evidence": "docs/research/evidence/nymph-action-settlement-20261103/damage/native-damage.json",
+        "dllSha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "metadataSha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "finding": "Current source/target pre-formula callbacks and source after-calculate exist; target callback is also run in the no-source reference calculation. Callback count therefore cannot define actual damage or hit count."
+      }
+    ],
+    "limits": [
+      "How target Logos atkAddition participates in current weak comparison is explicitly disputed between old ordinary native and PRTS; no conclusion on precise composition order.",
+      "Mountain crit content priority relative to weak-damage conversion is not proven by equal template priority, and old generic next-attack talent cannot be assumed to bind Mountain.",
+      "La Pluma is community evidence here; exact temporary ATK scope and all special runtime paths were not re-extracted."
+    ]
+  }
+}

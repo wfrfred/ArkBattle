@@ -73,3 +73,4 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | [elemental-timing-20261102](elemental-timing-20261102/README.md) | 元素爆发同步触发、首次恢复机会、按 deltaTime 推进及宿主更新顺序 |
 | [attack-addon-order-20261102](attack-addon-order-20261102/README.md) | 妮芙 S1 的前置附加 Buff、来源伤害后 EP、短延迟天赋监听与当前 HP／Projectile 原生调用链 |
 | [nymph-action-settlement-20261103](nymph-action-settlement-20261103/README.md) | 妮芙 S1 从选取目标到弹道抵达、主伤害采样与接收、后置 EP，以及归零／击杀／回收的实际时点 |
+| [damage-hook-needs-20261103](damage-hook-needs-20261103/README.md) | 伤害 Hook 的真实玩法依据、9 个新增接收／免死节点、六个已有模板和 PRTS 资料登记 |

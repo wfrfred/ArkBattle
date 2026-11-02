@@ -281,6 +281,8 @@ Apply 依次确认目标当前存在、PRESENT 且 HP 大于零，派发 Receivi
 
 ## 5. 未完成的机制设计
 
+实际内容对扩展时点与事件粒度的要求见[伤害 Hook 需求调查](../research/cases/28-damage-hooks-and-event-granularity.md)。该调查区分必要语义机会与独立公共 Hook，不代替本章已确认的项目政策。
+
 - **死亡清理**：普通 Damage 同步确认死亡并请求离场，Finalize 遵循 Lifetime 的最外层完成边界；全场扫描的位置及绕过 Damage 的致死操作如何完成清理，尚未定案。扫描保留，不以此改变普通 Damage／Healing 时序。
 - **特殊 HP 修改**：暂定绝大多数伤害进入 Damage，少数 Effect 可以直接修改 HP 以绕过普通受击，负责读取最新状态并遵守 HP 范围。暂不新增 HpTransition、setHp 或另一套通用管线；这项政策不决定死亡扫描与离场时点。
 - **伤害分类**：AttackType、ApplyWay 等描述本次伤害的固有分类，不能从目标状态或来源单位类型反推。具体字段尚未确定；是否需要表达以可观测游戏语义为准，不以现有消费者或客户端同名枚举为准。不预设 DamageAttributes、DamageAttribution、DamageMode 或通用 Flags。无视闪避、取消限制、非致命、生命流失的表达仍需对应机制审查；分担和特殊生命机制也不属于普通主路径。
