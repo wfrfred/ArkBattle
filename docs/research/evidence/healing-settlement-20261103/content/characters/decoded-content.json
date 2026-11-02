@@ -1,0 +1,1102 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-03",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/healing-settlement-20261103/content/extract_content.py",
+      "bytes": 5006,
+      "sha256": "475b7452fc1a03beb1802f1b517e6af9e515e0bd1100c9c22437ce12dc1c7387"
+    },
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+        "bytes": 8161,
+        "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      }
+    ],
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_117_myrrh.ab",
+        "bytes": 17901,
+        "sha256": "e8df52d0fc058c98b4e1cc655adc20e157ecf3386dcd93be8a9b62708a1d8ef9"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_473_mberry.ab",
+        "bytes": 26199,
+        "sha256": "ef53adb2b73899bf2db7b52102af86cb1612915f01f41a4e16e4a6417b204acb"
+      }
+    ],
+    "scope": "Static installed type-tree content; two selected ordinary healers; no runtime or XLua verification."
+  },
+  "result": [
+    {
+      "bundle": "charpack/char_117_myrrh.ab",
+      "file": "CAB-bb39b949015fbd20018f01f85fe0cb3d",
+      "pathId": "-6208793881063593099",
+      "name": "char_117_myrrh",
+      "hierarchy": [
+        {
+          "name": "char_117_myrrh",
+          "gameObjectPathId": "7935830261241604981",
+          "transformPathId": "-7246462226803856523"
+        }
+      ],
+      "sha256": "ce237e11fc266916a616d4d87622ce72c3982677fbc6e237f5837627dd721bf4",
+      "rawFile": "char_117_myrrh--6208793881063593099.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 7935830261241604981
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -1297314214590689040
+        },
+        "common:427": "",
+        "_animator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_modes": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": 6123565879521897333
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": -2675226763051209867
+            }
+          ]
+        },
+        "_commonAbilities": {
+          "Array": []
+        },
+        "_uiMountPoint": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_effectTransform": {
+          "m_FileID": 0,
+          "m_PathID": -3574997122364413067
+        },
+        "_shadow": {
+          "m_FileID": 0,
+          "m_PathID": -9151803725611537547
+        },
+        "_defaultBodyColor": {
+          "r": 1.0,
+          "g": 1.0,
+          "b": 1.0,
+          "a": 1.0
+        },
+        "_hideShadowOnRecycle": 0,
+        "_overrideGraphicBound": -1.0,
+        "_hudPluginReplacePairs": {
+          "Array": []
+        },
+        "_showDebugName": 0,
+        "_skinHolder": {
+          "m_FileID": 0,
+          "m_PathID": -8701369987408336011
+        },
+        "_motionMode": 0,
+        "_blockMode": 0,
+        "_ignoreBlockMode": 0,
+        "_isFixedRotation": 0,
+        "_occupiedRemainingCharacterCnt": 1,
+        "_useRealBornTimeFromAnim": 0,
+        "_buildCondition": {
+          "buildableType": 2,
+          "isTryingOverlapCharacater": 0,
+          "needSpecifyDirection": 1,
+          "limitByHostAttackRange": 0,
+          "limitByHostAbilityRange": 0,
+          "canNotBuildInHostAttackRange": 0,
+          "abilityName": "",
+          "tileKey": "",
+          "ignoreBuildableTypeTileTypes": 0,
+          "extraBuildConditionArray": {
+            "SerializedState": "null",
+            "SerializedObjectReferences": {
+              "Array": []
+            }
+          },
+          "advancedBuildableMask": 1,
+          "overlapOptions": {
+            "_verifySourceId": 0,
+            "_verifySourceIds": {
+              "Array": []
+            },
+            "_verifySourceProfession": 0,
+            "_verifySourceProfessions": 0,
+            "_isAllConditionOR": 1,
+            "_overlapPriority": 0,
+            "_changeTargetGraphicColor": 0,
+            "_excludeSourceId": 0,
+            "_excludeSourceIds": {
+              "Array": []
+            },
+            "_verifySourceTargetTokenRelationship": 0
+          },
+          "excludeNoTargetTile": 0,
+          "extraLocateRange": "",
+          "checkManuallyBuildableType": 0,
+          "manuallyBuildableType": 0,
+          "_excludeOccupiedByWalkEnemy": 0,
+          "allowWalkEnemyInHostRange": 0,
+          "_checkUpdateBuildable": 0
+        },
+        "_traitAbility": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_withdrawCostRecoverRatio": 0.5,
+        "_maxWithdrawCostRatioOfRawCost": 1.0,
+        "_directionTransform": {
+          "m_FileID": 0,
+          "m_PathID": 5582782972837423989
+        },
+        "_directionIndicator": {
+          "m_FileID": 0,
+          "m_PathID": 1575484845143616373
+        },
+        "_startEffect": "",
+        "_deadEffect": "",
+        "_playStartVocal": 1,
+        "_showDeadTweenColor": 1,
+        "_useSpecificDeadAnim": 0,
+        "_onlyPlayStartEffectOnce": 0,
+        "_dontMoveCameraWhenFocus": 0,
+        "_disableCharInfoPanel": 0,
+        "_disableRotateWhenDead": 0,
+        "_disableSetDirectionWhenDummy": 0,
+        "_clearProjectileWhenDead": 0,
+        "_useIdForAudioSignalMask": 0,
+        "_skipBornAudioOnMoveLikeRespawnSelf": 0,
+        "_preprocessData": 0,
+        "_disableClickCharacterInfo": 0,
+        "_skillUiFollowHeadPint": 0,
+        "m_overrideBornTime": -1.0
+      }
+    },
+    {
+      "bundle": "charpack/char_117_myrrh.ab",
+      "file": "CAB-bb39b949015fbd20018f01f85fe0cb3d",
+      "pathId": "-4946051259289834635",
+      "name": "Attack",
+      "hierarchy": [
+        {
+          "name": "Attack",
+          "gameObjectPathId": "-2332144915916264587",
+          "transformPathId": "-6677681431333442699"
+        },
+        {
+          "name": "Body",
+          "gameObjectPathId": "1586279504686148469",
+          "transformPathId": "-7358557067814704267"
+        },
+        {
+          "name": "Default",
+          "gameObjectPathId": "4780960489501617013",
+          "transformPathId": "-3070481491880776843"
+        },
+        {
+          "name": "Modes",
+          "gameObjectPathId": "1365184260674284405",
+          "transformPathId": "-5775138023500354699"
+        },
+        {
+          "name": "char_117_myrrh",
+          "gameObjectPathId": "7935830261241604981",
+          "transformPathId": "-7246462226803856523"
+        }
+      ],
+      "sha256": "d46b511a0c721ce7dbacc7b77eda58b83e5d9114cae558ea79d4ed31ec425ccf",
+      "rawFile": "char_117_myrrh--4946051259289834635.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -2332144915916264587
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 9150588117521808812
+        },
+        "common:427": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 1,
+        "_selectTargetTiming": 0,
+        "_timeMode": 0,
+        "_alwaysIncludeTarget": 1,
+        "_allowNoTarget": 0,
+        "_animKey": "Attack",
+        "_endAnimKey": "Idle",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 1,
+        "_faceToDefault": 0,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": {
+          "Array": []
+        },
+        "_maxAnimScale": 1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 0,
+        "_isCont": 0,
+        "_isHpRatio": 0,
+        "_hasNoActionNode": 0,
+        "_ignoreHealFree": 0,
+        "_applyEPHeal": 0,
+        "_applyHealScaleToEPHealScale": 0,
+        "_projectileKey": "projectile_myrrh",
+        "_useCachedAtkOnly": 0,
+        "_mountPointType": 2
+      }
+    },
+    {
+      "bundle": "charpack/char_117_myrrh.ab",
+      "file": "CAB-bb39b949015fbd20018f01f85fe0cb3d",
+      "pathId": "-2627947242665088139",
+      "name": "Trigger",
+      "hierarchy": [
+        {
+          "name": "Trigger",
+          "gameObjectPathId": "1785186375240248181",
+          "transformPathId": "-6009728668682097803"
+        },
+        {
+          "name": "Attack",
+          "gameObjectPathId": "-2332144915916264587",
+          "transformPathId": "-6677681431333442699"
+        },
+        {
+          "name": "Body",
+          "gameObjectPathId": "1586279504686148469",
+          "transformPathId": "-7358557067814704267"
+        },
+        {
+          "name": "Default",
+          "gameObjectPathId": "4780960489501617013",
+          "transformPathId": "-3070481491880776843"
+        },
+        {
+          "name": "Modes",
+          "gameObjectPathId": "1365184260674284405",
+          "transformPathId": "-5775138023500354699"
+        },
+        {
+          "name": "char_117_myrrh",
+          "gameObjectPathId": "7935830261241604981",
+          "transformPathId": "-7246462226803856523"
+        }
+      ],
+      "sha256": "9231f9630a8439449d15b3a4a1797f502110fa55f795c01e963c9347b9658a1a",
+      "rawFile": "char_117_myrrh--2627947242665088139.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 1785186375240248181
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 7080728813803358465
+        },
+        "common:427": "",
+        "_targetSide": 1,
+        "_targetMotion": 3,
+        "_targetCategory": 1,
+        "_postFilter": 3,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 29,
+        "_abnormalCombo": 2,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 1,
+        "_maxTargetKey": "max_target",
+        "_maxTargetExtraKey": "",
+        "_maxNum": 1,
+        "_excludeOwner": 0,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0,
+        "_targetOptionHookedKeys": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_117_myrrh.ab",
+      "file": "CAB-bb39b949015fbd20018f01f85fe0cb3d",
+      "pathId": "-2408678113008227467",
+      "name": "Trigger",
+      "hierarchy": [
+        {
+          "name": "Trigger",
+          "gameObjectPathId": "1785186375240248181",
+          "transformPathId": "-6009728668682097803"
+        },
+        {
+          "name": "Attack",
+          "gameObjectPathId": "-2332144915916264587",
+          "transformPathId": "-6677681431333442699"
+        },
+        {
+          "name": "Body",
+          "gameObjectPathId": "1586279504686148469",
+          "transformPathId": "-7358557067814704267"
+        },
+        {
+          "name": "Default",
+          "gameObjectPathId": "4780960489501617013",
+          "transformPathId": "-3070481491880776843"
+        },
+        {
+          "name": "Modes",
+          "gameObjectPathId": "1365184260674284405",
+          "transformPathId": "-5775138023500354699"
+        },
+        {
+          "name": "char_117_myrrh",
+          "gameObjectPathId": "7935830261241604981",
+          "transformPathId": "-7246462226803856523"
+        }
+      ],
+      "sha256": "20f2fd0f84a7f1c837f1408b7f3b83ba7de7ce731307f0c33a41c28770c12bc9",
+      "rawFile": "char_117_myrrh--2408678113008227467.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 1785186375240248181
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 8607874384982393801
+        },
+        "common:427": "",
+        "_keepTarget": 0,
+        "_minTargetNum": 1,
+        "_overrideSearchTargetTick": -1
+      }
+    },
+    {
+      "bundle": "charpack/char_117_myrrh.ab",
+      "file": "CAB-bb39b949015fbd20018f01f85fe0cb3d",
+      "pathId": "6123565879521897333",
+      "name": "Default",
+      "hierarchy": [
+        {
+          "name": "Default",
+          "gameObjectPathId": "4780960489501617013",
+          "transformPathId": "-3070481491880776843"
+        },
+        {
+          "name": "Modes",
+          "gameObjectPathId": "1365184260674284405",
+          "transformPathId": "-5775138023500354699"
+        },
+        {
+          "name": "char_117_myrrh",
+          "gameObjectPathId": "7935830261241604981",
+          "transformPathId": "-7246462226803856523"
+        }
+      ],
+      "sha256": "9df967f08b4719c2db5eafe64b50bf003ce72943e9d897faa895a0e0dab129f0",
+      "rawFile": "char_117_myrrh-6123565879521897333.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 4780960489501617013
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 5390319429299248724
+        },
+        "common:427": "",
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": -7358557067814704267
+        },
+        "_animatorHooker": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_overrideStartEffect": "",
+        "_overrideDeadEffect": "",
+        "_combat": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_attack": {
+          "m_FileID": 0,
+          "m_PathID": -4946051259289834635
+        },
+        "_attackTrigger": {
+          "m_FileID": 0,
+          "m_PathID": -2408678113008227467
+        },
+        "_hideUIAttackRange": 0,
+        "_updateAttackRangeExtendByAttributeDirty": 0,
+        "_rangeToShow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_extraRangesToShow": {
+          "Array": []
+        },
+        "_generalAbilities": {
+          "Array": []
+        },
+        "_addIndexToSignalId": 0,
+        "_includeIndexZero": 0,
+        "_alwaysHideHp": {
+          "isDefined": 0,
+          "value": 0
+        },
+        "_alwaysHideSp": {
+          "isDefined": 0,
+          "value": 0
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_473_mberry.ab",
+      "file": "CAB-64da1f07e74ec4318182d559126b9e0a",
+      "pathId": "-8088516567538670957",
+      "name": "Trigger",
+      "hierarchy": [
+        {
+          "name": "Trigger",
+          "gameObjectPathId": "-7111686360692956525",
+          "transformPathId": "-1133232479049227629"
+        },
+        {
+          "name": "Heal",
+          "gameObjectPathId": "8024388790745555603",
+          "transformPathId": "2194595214666424979"
+        },
+        {
+          "name": "Body",
+          "gameObjectPathId": "-5206019335551655277",
+          "transformPathId": "5984246846656406163"
+        },
+        {
+          "name": "Default",
+          "gameObjectPathId": "3633091435619803795",
+          "transformPathId": "-5891146447705283949"
+        },
+        {
+          "name": "Modes",
+          "gameObjectPathId": "-932482005604572525",
+          "transformPathId": "804086842205397651"
+        },
+        {
+          "name": "char_473_mberry",
+          "gameObjectPathId": "5137274470801334931",
+          "transformPathId": "1957614986783351443"
+        }
+      ],
+      "sha256": "ad76aa4d47b29d2b008279f901396086548d88ab4fa5182b268e3825674c8d8f",
+      "rawFile": "char_473_mberry--8088516567538670957.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -7111686360692956525
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 8607874384982393801
+        },
+        "common:427": "",
+        "_keepTarget": 0,
+        "_minTargetNum": 1,
+        "_overrideSearchTargetTick": -1
+      }
+    },
+    {
+      "bundle": "charpack/char_473_mberry.ab",
+      "file": "CAB-64da1f07e74ec4318182d559126b9e0a",
+      "pathId": "-8059306237034241389",
+      "name": "Default",
+      "hierarchy": [
+        {
+          "name": "Default",
+          "gameObjectPathId": "3633091435619803795",
+          "transformPathId": "-5891146447705283949"
+        },
+        {
+          "name": "Modes",
+          "gameObjectPathId": "-932482005604572525",
+          "transformPathId": "804086842205397651"
+        },
+        {
+          "name": "char_473_mberry",
+          "gameObjectPathId": "5137274470801334931",
+          "transformPathId": "1957614986783351443"
+        }
+      ],
+      "sha256": "b7db0a4809a2079d452e8f1cbb39e3d6f74bfabbaf5e06c1d3f7c5f0ad74852d",
+      "rawFile": "char_473_mberry--8059306237034241389.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 3633091435619803795
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 5390319429299248724
+        },
+        "common:427": "",
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": 5984246846656406163
+        },
+        "_animatorHooker": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_overrideStartEffect": "",
+        "_overrideDeadEffect": "",
+        "_combat": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_attack": {
+          "m_FileID": 0,
+          "m_PathID": 8731248604591743635
+        },
+        "_attackTrigger": {
+          "m_FileID": 0,
+          "m_PathID": -8088516567538670957
+        },
+        "_hideUIAttackRange": 0,
+        "_updateAttackRangeExtendByAttributeDirty": 0,
+        "_rangeToShow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_extraRangesToShow": {
+          "Array": []
+        },
+        "_generalAbilities": {
+          "Array": []
+        },
+        "_addIndexToSignalId": 0,
+        "_includeIndexZero": 0,
+        "_alwaysHideHp": {
+          "isDefined": 0,
+          "value": 0
+        },
+        "_alwaysHideSp": {
+          "isDefined": 0,
+          "value": 0
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_473_mberry.ab",
+      "file": "CAB-64da1f07e74ec4318182d559126b9e0a",
+      "pathId": "-427840004798160237",
+      "name": "char_473_mberry",
+      "hierarchy": [
+        {
+          "name": "char_473_mberry",
+          "gameObjectPathId": "5137274470801334931",
+          "transformPathId": "1957614986783351443"
+        }
+      ],
+      "sha256": "75f2ed69ec2e68c6900e3f7d5a8e98f62d3ce4afc62eadc9719190bd27991b82",
+      "rawFile": "char_473_mberry--427840004798160237.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 5137274470801334931
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -1297314214590689040
+        },
+        "common:427": "",
+        "_animator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_modes": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": -8059306237034241389
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 4693324294030156435
+            }
+          ]
+        },
+        "_commonAbilities": {
+          "Array": []
+        },
+        "_uiMountPoint": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_effectTransform": {
+          "m_FileID": 0,
+          "m_PathID": 1959549792801972883
+        },
+        "_shadow": {
+          "m_FileID": 0,
+          "m_PathID": -1237513198097341805
+        },
+        "_defaultBodyColor": {
+          "r": 1.0,
+          "g": 1.0,
+          "b": 1.0,
+          "a": 1.0
+        },
+        "_hideShadowOnRecycle": 0,
+        "_overrideGraphicBound": -1.0,
+        "_hudPluginReplacePairs": {
+          "Array": []
+        },
+        "_showDebugName": 0,
+        "_skinHolder": {
+          "m_FileID": 0,
+          "m_PathID": -5387891098136419693
+        },
+        "_motionMode": 0,
+        "_blockMode": 0,
+        "_ignoreBlockMode": 0,
+        "_isFixedRotation": 0,
+        "_occupiedRemainingCharacterCnt": 1,
+        "_useRealBornTimeFromAnim": 0,
+        "_buildCondition": {
+          "buildableType": 2,
+          "isTryingOverlapCharacater": 0,
+          "needSpecifyDirection": 1,
+          "limitByHostAttackRange": 0,
+          "limitByHostAbilityRange": 0,
+          "canNotBuildInHostAttackRange": 0,
+          "abilityName": "",
+          "tileKey": "",
+          "ignoreBuildableTypeTileTypes": 0,
+          "extraBuildConditionArray": {
+            "SerializedState": "null",
+            "SerializedObjectReferences": {
+              "Array": []
+            }
+          },
+          "advancedBuildableMask": 1,
+          "overlapOptions": {
+            "_verifySourceId": 0,
+            "_verifySourceIds": {
+              "Array": []
+            },
+            "_verifySourceProfession": 0,
+            "_verifySourceProfessions": 0,
+            "_isAllConditionOR": 1,
+            "_overlapPriority": 0,
+            "_changeTargetGraphicColor": 0,
+            "_excludeSourceId": 0,
+            "_excludeSourceIds": {
+              "Array": []
+            },
+            "_verifySourceTargetTokenRelationship": 0
+          },
+          "excludeNoTargetTile": 0,
+          "extraLocateRange": "",
+          "checkManuallyBuildableType": 0,
+          "manuallyBuildableType": 0,
+          "_excludeOccupiedByWalkEnemy": 0,
+          "allowWalkEnemyInHostRange": 0,
+          "_checkUpdateBuildable": 0
+        },
+        "_traitAbility": {
+          "m_FileID": 0,
+          "m_PathID": 2182608855241056915
+        },
+        "_withdrawCostRecoverRatio": 0.5,
+        "_maxWithdrawCostRatioOfRawCost": 1.0,
+        "_directionTransform": {
+          "m_FileID": 0,
+          "m_PathID": -326684245218827629
+        },
+        "_directionIndicator": {
+          "m_FileID": 0,
+          "m_PathID": -7758399713056922989
+        },
+        "_startEffect": "",
+        "_deadEffect": "",
+        "_playStartVocal": 1,
+        "_showDeadTweenColor": 1,
+        "_useSpecificDeadAnim": 0,
+        "_onlyPlayStartEffectOnce": 0,
+        "_dontMoveCameraWhenFocus": 0,
+        "_disableCharInfoPanel": 0,
+        "_disableRotateWhenDead": 0,
+        "_disableSetDirectionWhenDummy": 0,
+        "_clearProjectileWhenDead": 0,
+        "_useIdForAudioSignalMask": 0,
+        "_skipBornAudioOnMoveLikeRespawnSelf": 0,
+        "_preprocessData": 0,
+        "_disableClickCharacterInfo": 0,
+        "_skillUiFollowHeadPint": 0,
+        "m_overrideBornTime": -1.0
+      }
+    },
+    {
+      "bundle": "charpack/char_473_mberry.ab",
+      "file": "CAB-64da1f07e74ec4318182d559126b9e0a",
+      "pathId": "2182608855241056915",
+      "name": "Trait",
+      "hierarchy": [
+        {
+          "name": "Trait",
+          "gameObjectPathId": "5788043752147575443",
+          "transformPathId": "3434821462897386131"
+        },
+        {
+          "name": "char_473_mberry",
+          "gameObjectPathId": "5137274470801334931",
+          "transformPathId": "1957614986783351443"
+        }
+      ],
+      "sha256": "e17ebf56679db2f05ba0d24f40ecc15aaf4a7b9429b9821dbf69a9b27632e95b",
+      "rawFile": "char_473_mberry-2182608855241056915.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 5788043752147575443
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -8004000125733044417
+        },
+        "common:427": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_buffs": {
+          "Array": []
+        },
+        "_additiveActiveBuffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "mberry_trait",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "ep_heal_all",
+              "disableOverride": 0,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 0,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        },
+        "_targetFamilyMask": 31,
+        "_targetValidator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_probKey": ""
+      }
+    },
+    {
+      "bundle": "charpack/char_473_mberry.ab",
+      "file": "CAB-64da1f07e74ec4318182d559126b9e0a",
+      "pathId": "6895478437080457875",
+      "name": "Trigger",
+      "hierarchy": [
+        {
+          "name": "Trigger",
+          "gameObjectPathId": "-7111686360692956525",
+          "transformPathId": "-1133232479049227629"
+        },
+        {
+          "name": "Heal",
+          "gameObjectPathId": "8024388790745555603",
+          "transformPathId": "2194595214666424979"
+        },
+        {
+          "name": "Body",
+          "gameObjectPathId": "-5206019335551655277",
+          "transformPathId": "5984246846656406163"
+        },
+        {
+          "name": "Default",
+          "gameObjectPathId": "3633091435619803795",
+          "transformPathId": "-5891146447705283949"
+        },
+        {
+          "name": "Modes",
+          "gameObjectPathId": "-932482005604572525",
+          "transformPathId": "804086842205397651"
+        },
+        {
+          "name": "char_473_mberry",
+          "gameObjectPathId": "5137274470801334931",
+          "transformPathId": "1957614986783351443"
+        }
+      ],
+      "sha256": "6b406977f77220b42e58e6064ad0871ac04944d2e840ac6d4ad34c9afd23cc79",
+      "rawFile": "char_473_mberry-6895478437080457875.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -7111686360692956525
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 7080728813803358465
+        },
+        "common:427": "",
+        "_targetSide": 1,
+        "_targetMotion": 3,
+        "_targetCategory": 1,
+        "_postFilter": 37,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 20,
+        "_abnormalCombo": 1,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 1,
+        "_maxTargetKey": "max_target",
+        "_maxTargetExtraKey": "",
+        "_maxNum": 1,
+        "_excludeOwner": 0,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0,
+        "_targetOptionHookedKeys": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_473_mberry.ab",
+      "file": "CAB-64da1f07e74ec4318182d559126b9e0a",
+      "pathId": "8731248604591743635",
+      "name": "Heal",
+      "hierarchy": [
+        {
+          "name": "Heal",
+          "gameObjectPathId": "8024388790745555603",
+          "transformPathId": "2194595214666424979"
+        },
+        {
+          "name": "Body",
+          "gameObjectPathId": "-5206019335551655277",
+          "transformPathId": "5984246846656406163"
+        },
+        {
+          "name": "Default",
+          "gameObjectPathId": "3633091435619803795",
+          "transformPathId": "-5891146447705283949"
+        },
+        {
+          "name": "Modes",
+          "gameObjectPathId": "-932482005604572525",
+          "transformPathId": "804086842205397651"
+        },
+        {
+          "name": "char_473_mberry",
+          "gameObjectPathId": "5137274470801334931",
+          "transformPathId": "1957614986783351443"
+        }
+      ],
+      "sha256": "3347b8fcfba2c1a0045213c751486901a5f95c97ffa93c7ad7aa302935082500",
+      "rawFile": "char_473_mberry-8731248604591743635.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 8024388790745555603
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 9150588117521808812
+        },
+        "common:427": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 2,
+        "_selectTargetTiming": 0,
+        "_timeMode": 0,
+        "_alwaysIncludeTarget": 1,
+        "_allowNoTarget": 0,
+        "_animKey": "Attack",
+        "_endAnimKey": "Idle",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 1,
+        "_faceToDefault": 0,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": {
+          "Array": []
+        },
+        "_maxAnimScale": 1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 0,
+        "_isCont": 0,
+        "_isHpRatio": 0,
+        "_hasNoActionNode": 0,
+        "_ignoreHealFree": 0,
+        "_applyEPHeal": 0,
+        "_applyHealScaleToEPHealScale": 0,
+        "_projectileKey": "projectile_chr_mberry",
+        "_useCachedAtkOnly": 0,
+        "_mountPointType": 2
+      }
+    }
+  ]
+}

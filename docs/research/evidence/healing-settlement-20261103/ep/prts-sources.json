@@ -1,0 +1,26 @@
+{
+  "checkedOn": "2026-11-03",
+  "sourceNature": "PRTS community documentation, not official client evidence",
+  "sources": [
+    {
+      "title": "元素",
+      "url": "https://prts.wiki/index.php?title=元素&oldid=447011",
+      "sections": ["元素值（EP）", "当前损伤元素", "元素损伤爆发"],
+      "supports": "Separate EP by element, current minimum is a selection/display fact, and recovery prevents outside EP gain/loss.",
+      "gap": "Does not specify EP healing construction, HP heal multipliers, shared Modifier events, per-type actual gain accumulation, or the rejection stage."
+    },
+    {
+      "title": "异常效果",
+      "url": "https://prts.wiki/index.php?title=异常效果&oldid=447322",
+      "sections": ["异常效果（AbnormalFlag）：HEAL_FREE", "异常效果（AbnormalFlag）：ELEMENT_FREE_ALL"],
+      "supports": "Distinguishes HP healing prohibition from elemental immunity and regeneration-like recovery.",
+      "gap": "Does not close the EP Heal Modifier classification or exact treatment of positive EP modifications."
+    },
+    {
+      "title": "蜜莓",
+      "url": "https://prts.wiki/w/蜜莓",
+      "status": "web tool fetch timed out; no claim based on this page"
+    }
+  ],
+  "followup": "These gaps justify narrow native extraction. Real Wandering Medic content bindings and PRTS class ratio are investigated independently by the content agent; no local source ATK ratio of 0.5 has been established by this extraction."
+}

@@ -239,6 +239,8 @@ HP 变化、死亡确定、Unit 仍存在和离场完成分别处理。已确定
 
 普通治疗沿用 Damage 的状态接续与派发结构，但不引入伤害类型、穿透、防御公式或默认死亡处理。
 
+普通 HP／EP 治疗的原生公式、共享与专属事件、满血回复及具体治疗内容顺序见[治疗结算调查](../research/cases/29-hp-and-ep-healing-settlement.md)。调查不改变本章已确认的项目规则或直接规定统一领域接口。
+
 ```typescript
 interface HealingParameters {
     readonly power: number;

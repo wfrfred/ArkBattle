@@ -1,0 +1,74 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-03",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/healing-settlement-20261103/content/resolve_trait_script.py",
+      "bytes": 3590,
+      "sha256": "2ba459e1a11dff8e25264f6dfeba0959905933fc8c34841856d03b4c4255a1a6"
+    },
+    "helper": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+      "bytes": 6749,
+      "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+    },
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      }
+    ],
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_473_mberry.ab",
+        "bytes": 26199,
+        "sha256": "ef53adb2b73899bf2db7b52102af86cb1612915f01f41a4e16e4a6417b204acb"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      }
+    ],
+    "scriptBundleLocator": "Existing case27 projectile/decode_projectile.py known current bundle path and SHA256"
+  },
+  "result": {
+    "trait": {
+      "bundle": "charpack/char_473_mberry.ab",
+      "file": "CAB-64da1f07e74ec4318182d559126b9e0a",
+      "pathId": "2182608855241056915",
+      "sha256": "e17ebf56679db2f05ba0d24f40ecc15aaf4a7b9429b9821dbf69a9b27632e95b",
+      "scriptPPtr": {
+        "fileId": 1,
+        "pathId": "-8004000125733044417"
+      }
+    },
+    "externalScriptReference": {
+      "fileId": 1,
+      "guid": "00000000000000000000000000000000",
+      "type": 0,
+      "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+    },
+    "resolvedMonoScript": {
+      "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+      "file": "CAB-658d74aab777086fc32b93f385be999a",
+      "classId": 115,
+      "pathId": "-8004000125733044417",
+      "sha256": "d9f4e289f0ab0e01489aa3db42622db094d1a6fbbc2eb36d02bf662767bbfbbc",
+      "rawFile": "MonoScript--8004000125733044417.bin",
+      "value": {
+        "id": "-8004000125733044417",
+        "name": "PassiveAttachmentAbility",
+        "cl": "PassiveAttachmentAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      }
+    },
+    "scope": "Direct external PPtr -> exact SerializedFile -> exact MonoScript object identity; no runtime/XLua verification; no bundle scan."
+  }
+}

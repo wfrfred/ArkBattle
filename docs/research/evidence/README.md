@@ -75,3 +75,4 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | [nymph-action-settlement-20261103](nymph-action-settlement-20261103/README.md) | 妮芙 S1 从选取目标到弹道抵达、主伤害采样与接收、后置 EP，以及归零／击杀／回收的实际时点 |
 | [damage-hook-needs-20261103](damage-hook-needs-20261103/README.md) | 伤害 Hook 的真实玩法依据、9 个新增接收／免死节点、六个已有模板和 PRTS 资料登记 |
 | [ep-modifier-events-20261103](ep-modifier-events-20261103/README.md) | EP 的通用 Modifier 与专属接收／后置事件；浮空信件同时观察 HP／EP 前置时点的实际资源绑定 |
+| [healing-settlement-20261103](healing-settlement-20261103/README.md) | HP／EP 治疗的计算、共用 Modifier、专属接收／后置、逐型恢复与医师／行医的真实命中组合 |

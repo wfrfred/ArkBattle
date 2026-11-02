@@ -1,0 +1,1275 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-03"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-11-03",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "content/native-content.json#/provenance/client/dll",
+          "ep/native-ep-heal.json#/provenance/client/dll",
+          "hp/native-hp-healing.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "content/native-content.json#/provenance/client/metadata",
+          "ep/native-ep-heal.json#/provenance/client/metadata",
+          "hp/native-hp-healing.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "content/characters/decoded-content.json",
+      "content/native-content.json",
+      "content/projectiles/decoded-content.json",
+      "content/prts-sources.json",
+      "content/script-binding/trait-script-binding.json",
+      "content/templates/decoded-content.json",
+      "ep/native-ep-heal.json",
+      "ep/prts-sources.json",
+      "hp/native-hp-healing.json",
+      "hp/prts-sources.json",
+      "hp/reused-inputs.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12589,
+        "sha256": "1a85248a6a48d92d61c65f5ba044d079954866ff0c1672488b92f0cf1366af9a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "content/characters/char_117_myrrh--2408678113008227467.bin",
+        "kind": "artifact",
+        "bytes": 44,
+        "sha256": "20f2fd0f84a7f1c837f1408b7f3b83ba7de7ce731307f0c33a41c28770c12bc9"
+      },
+      {
+        "path": "content/characters/char_117_myrrh--2627947242665088139.bin",
+        "kind": "artifact",
+        "bytes": 152,
+        "sha256": "9231f9630a8439449d15b3a4a1797f502110fa55f795c01e963c9347b9658a1a"
+      },
+      {
+        "path": "content/characters/char_117_myrrh--4946051259289834635.bin",
+        "kind": "artifact",
+        "bytes": 260,
+        "sha256": "d46b511a0c721ce7dbacc7b77eda58b83e5d9114cae558ea79d4ed31ec425ccf"
+      },
+      {
+        "path": "content/characters/char_117_myrrh--6208793881063593099.bin",
+        "kind": "artifact",
+        "bytes": 412,
+        "sha256": "ce237e11fc266916a616d4d87622ce72c3982677fbc6e237f5837627dd721bf4"
+      },
+      {
+        "path": "content/characters/char_117_myrrh-6123565879521897333.bin",
+        "kind": "artifact",
+        "bytes": 152,
+        "sha256": "9df967f08b4719c2db5eafe64b50bf003ce72943e9d897faa895a0e0dab129f0"
+      },
+      {
+        "path": "content/characters/char_473_mberry--427840004798160237.bin",
+        "kind": "artifact",
+        "bytes": 412,
+        "sha256": "75f2ed69ec2e68c6900e3f7d5a8e98f62d3ce4afc62eadc9719190bd27991b82"
+      },
+      {
+        "path": "content/characters/char_473_mberry--8059306237034241389.bin",
+        "kind": "artifact",
+        "bytes": 152,
+        "sha256": "b7db0a4809a2079d452e8f1cbb39e3d6f74bfabbaf5e06c1d3f7c5f0ad74852d"
+      },
+      {
+        "path": "content/characters/char_473_mberry--8088516567538670957.bin",
+        "kind": "artifact",
+        "bytes": 44,
+        "sha256": "ad76aa4d47b29d2b008279f901396086548d88ab4fa5182b268e3825674c8d8f"
+      },
+      {
+        "path": "content/characters/char_473_mberry-2182608855241056915.bin",
+        "kind": "artifact",
+        "bytes": 300,
+        "sha256": "e17ebf56679db2f05ba0d24f40ecc15aaf4a7b9429b9821dbf69a9b27632e95b"
+      },
+      {
+        "path": "content/characters/char_473_mberry-6895478437080457875.bin",
+        "kind": "artifact",
+        "bytes": 152,
+        "sha256": "6b406977f77220b42e58e6064ad0871ac04944d2e840ac6d4ad34c9afd23cc79"
+      },
+      {
+        "path": "content/characters/char_473_mberry-8731248604591743635.bin",
+        "kind": "artifact",
+        "bytes": 268,
+        "sha256": "3347b8fcfba2c1a0045213c751486901a5f95c97ffa93c7ad7aa302935082500"
+      },
+      {
+        "path": "content/characters/decoded-content.json",
+        "kind": "record",
+        "bytes": 33191,
+        "sha256": "44632ccc565b2cc616c61e5f21ab58f52816cf91b952a38c964ff65e2929b196"
+      },
+      {
+        "path": "content/extract_content.py",
+        "kind": "historical-script",
+        "bytes": 5006,
+        "sha256": "475b7452fc1a03beb1802f1b517e6af9e515e0bd1100c9c22437ce12dc1c7387"
+      },
+      {
+        "path": "content/extract_native.py",
+        "kind": "historical-script",
+        "bytes": 3317,
+        "sha256": "3c077dd500a9c64e89652f26bb42d042f355a5288fb91cf335f860b36a1012ca"
+      },
+      {
+        "path": "content/extract_native.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "content/native-content.json",
+        "kind": "record",
+        "bytes": 305621,
+        "sha256": "a1156e4b688cdb2f67c297eee4f14bc2944c854917882d5be21c375a0a8bdccb"
+      },
+      {
+        "path": "content/projectiles/[uc]projectiles--3219002462648043989.bin",
+        "kind": "artifact",
+        "bytes": 232,
+        "sha256": "38b7e7dafe857d25b8a5e23d9f86f79890baa500f81bc31d0a9adadc40ce6376"
+      },
+      {
+        "path": "content/projectiles/[uc]projectiles-4965476126317245995.bin",
+        "kind": "artifact",
+        "bytes": 188,
+        "sha256": "2aad8023bfce69a363d2cd94bb88522814394a199891d122e008c7490d23f6b1"
+      },
+      {
+        "path": "content/projectiles/[uc]projectiles-5235117087301787663.bin",
+        "kind": "artifact",
+        "bytes": 232,
+        "sha256": "02dd9a803d91d51289a88627cdaeb72a21b05b57b6ca7c405ba0d5fa676526c3"
+      },
+      {
+        "path": "content/projectiles/[uc]projectiles-5862338322421014543.bin",
+        "kind": "artifact",
+        "bytes": 188,
+        "sha256": "6dab4ed02d6c106098ce63238bd41f69855d6329c0f9b384f3498ca614f42109"
+      },
+      {
+        "path": "content/projectiles/decoded-content.json",
+        "kind": "record",
+        "bytes": 11258,
+        "sha256": "fa1a03c3f409b1f39c4a8acb152810ed80d7bf44115beb1df7e9754c9075546f"
+      },
+      {
+        "path": "content/prts-sources.json",
+        "kind": "record",
+        "bytes": 1144,
+        "sha256": "b62f8ca5305eba2139d70a4f6546d2f24a6efdd733e6847ea781dece8a82e36c"
+      },
+      {
+        "path": "content/resolve_trait_script.py",
+        "kind": "historical-script",
+        "bytes": 3590,
+        "sha256": "2ba459e1a11dff8e25264f6dfeba0959905933fc8c34841856d03b4c4255a1a6"
+      },
+      {
+        "path": "content/script-binding/MonoScript--8004000125733044417.bin",
+        "kind": "artifact",
+        "bytes": 128,
+        "sha256": "d9f4e289f0ab0e01489aa3db42622db094d1a6fbbc2eb36d02bf662767bbfbbc"
+      },
+      {
+        "path": "content/script-binding/trait-script-binding.json",
+        "kind": "record",
+        "bytes": 3099,
+        "sha256": "6a996cc226f0573c66b849e83bd0e8733f8766e901d9ca901ec9f38162c51ba2"
+      },
+      {
+        "path": "content/templates/decoded-content.json",
+        "kind": "record",
+        "bytes": 2420,
+        "sha256": "973b31700568e534e6d8cbd7342782d0cadbcec2450b7fe11dac16085d65afbe"
+      },
+      {
+        "path": "ep/extract_ep_heal.py",
+        "kind": "historical-script",
+        "bytes": 5444,
+        "sha256": "2b97e8ab3c4a17d76ef0b4fbd37e076a1d721e8e74aa86bae41ef4c50efac1d6"
+      },
+      {
+        "path": "ep/extract_ep_heal.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "ep/native-ep-heal.json",
+        "kind": "record",
+        "bytes": 295576,
+        "sha256": "e8fbb85dd9733162bd3e84de41d51d20859d3d5878f7a4abcd98143ddf175728"
+      },
+      {
+        "path": "ep/prts-sources.json",
+        "kind": "record",
+        "bytes": 1488,
+        "sha256": "366e1dd9af9ce03bdcf4952da1bf4c46d264e1349e61aec612fe41ea4111c733"
+      },
+      {
+        "path": "hp/extract_hp_healing.py",
+        "kind": "historical-script",
+        "bytes": 4391,
+        "sha256": "c66cc95fc83716100f6e2ecf28498b184cba0c17fbd234da3ef06f250421ba4c"
+      },
+      {
+        "path": "hp/extract_hp_healing.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "hp/native-hp-healing.json",
+        "kind": "record",
+        "bytes": 156699,
+        "sha256": "af53c9fdf9bd28503d6170364a0f123a4fef6e642bc0eaad2a19767276de0824"
+      },
+      {
+        "path": "hp/prts-sources.json",
+        "kind": "record",
+        "bytes": 1271,
+        "sha256": "38efa586bdf2dc25c592e326cc87ab718eed015de68875ccef55bd18d35eba9c"
+      },
+      {
+        "path": "hp/reused-inputs.json",
+        "kind": "record",
+        "bytes": 1283,
+        "sha256": "43e16425247ce5f18fff8a14e9d4ca44b8cf124bb06551a597a8b573e4df6d20"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 65905,
+          "mode": "disasm",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/0",
+            "hp/native-hp-healing.json#/result/methods/0",
+            "hp/native-hp-healing.json#/result/bodies/0/fragments/0",
+            "hp/native-hp-healing.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateHeal",
+          "address": "0x180686810"
+        },
+        {
+          "index": 65906,
+          "mode": "disasm",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/1",
+            "hp/native-hp-healing.json#/result/methods/1",
+            "hp/native-hp-healing.json#/result/bodies/1/fragments/0",
+            "hp/native-hp-healing.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateHeal",
+          "address": "0x180686a40"
+        },
+        {
+          "index": 66146,
+          "mode": "disasm",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/2",
+            "hp/native-hp-healing.json#/result/methods/2",
+            "hp/native-hp-healing.json#/result/bodies/2/fragments/0",
+            "hp/native-hp-healing.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAfterOutputHeal",
+          "address": "0x1806d0250"
+        },
+        {
+          "index": 66153,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/3"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnTakeEPDamage",
+          "address": "0x1806d5250"
+        },
+        {
+          "index": 66155,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/4"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOutputAtkOrHeal",
+          "address": "0x1806d35f0"
+        },
+        {
+          "index": 66156,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/5"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOutputAtkOrHealEachSpell",
+          "address": "0x1806d3540"
+        },
+        {
+          "index": 66176,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/6"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeTrySetEpZero",
+          "address": "0x1806d14f0"
+        },
+        {
+          "index": 66196,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/7"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnEPBreakStart",
+          "address": "0x1806d21a0"
+        },
+        {
+          "index": 66197,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/8"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeEPBreakStart",
+          "address": "0x1806d0fd0"
+        },
+        {
+          "index": 66198,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/9"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnEPBreakFinish",
+          "address": "0x1806d20f0"
+        },
+        {
+          "index": 66199,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/10"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeEPBreakFinish",
+          "address": "0x1806d0f20"
+        },
+        {
+          "index": 66252,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/11"
+          ],
+          "fullname": "Torappu.Battle.Buff._InitIsEpBreakBuff",
+          "address": "0x1806d9c60"
+        },
+        {
+          "index": 67355,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/12"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_isInEpBreakRecovery",
+          "address": "0x180737680"
+        },
+        {
+          "index": 67409,
+          "mode": "disasm",
+          "records": [
+            "ep/native-ep-heal.json#/result/methods/0",
+            "ep/native-ep-heal.json#/result/bodies/0/fragments/0",
+            "ep/native-ep-heal.json#/result/bodies/0/fragments/0/method",
+            "ep/native-ep-heal.json#/result/discovery/13"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_canRecoverEp",
+          "address": "0x180733a70"
+        },
+        {
+          "index": 67449,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/14"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_minEpType",
+          "address": "0x180738fc0"
+        },
+        {
+          "index": 67450,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/15"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_minEpRatio",
+          "address": "0x180738df0"
+        },
+        {
+          "index": 67451,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/16"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_maxEp",
+          "address": "0x180738a00"
+        },
+        {
+          "index": 67477,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/17"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_sumUpEpRecoveryPerSec",
+          "address": "0x18073a220"
+        },
+        {
+          "index": 67515,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/18"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_isHealFree",
+          "address": "0x180737430"
+        },
+        {
+          "index": 67517,
+          "mode": "disasm",
+          "records": [
+            "ep/native-ep-heal.json#/result/methods/1",
+            "ep/native-ep-heal.json#/result/bodies/1/fragments/0",
+            "ep/native-ep-heal.json#/result/bodies/1/fragments/0/method",
+            "ep/native-ep-heal.json#/result/discovery/19"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_isEPFreeAll",
+          "address": "0x180737190"
+        },
+        {
+          "index": 67629,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/20"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetAllEpInternal",
+          "address": "0x18072d940"
+        },
+        {
+          "index": 67630,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/21"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetEpInternal",
+          "address": "0x18072e010"
+        },
+        {
+          "index": 67643,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/22"
+          ],
+          "fullname": "Torappu.Battle.Entity._UpdateEpRecovery",
+          "address": "0x180732030"
+        },
+        {
+          "index": 67652,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/23"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnEpZero",
+          "address": "0x180729ca0"
+        },
+        {
+          "index": 67674,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/24"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnAfterOutputHeal",
+          "address": "0x180727c00"
+        },
+        {
+          "index": 67681,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/25"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnOutputAttackOrHeal",
+          "address": "0x18072abd0"
+        },
+        {
+          "index": 67682,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/26"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnOutputAttackOrHealEachSpell",
+          "address": "0x18072ab20"
+        },
+        {
+          "index": 67684,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/27"
+          ],
+          "fullname": "Torappu.Battle.Entity._DoApplyEPModifierInternal",
+          "address": "0x180730be0"
+        },
+        {
+          "index": 67710,
+          "mode": "disasm",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/28",
+            "hp/native-hp-healing.json#/result/methods/3",
+            "hp/native-hp-healing.json#/result/bodies/3/fragments/0",
+            "hp/native-hp-healing.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnTakeHeal",
+          "address": "0x18072bff0"
+        },
+        {
+          "index": 67711,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/29"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnTakeEPDamage",
+          "address": "0x18072be40"
+        },
+        {
+          "index": 72135,
+          "mode": "disasm",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/30",
+            "hp/native-hp-healing.json#/result/methods/4",
+            "hp/native-hp-healing.json#/result/bodies/4/fragments/0",
+            "hp/native-hp-healing.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isHeal",
+          "address": "0x18090d8b0"
+        },
+        {
+          "index": 72137,
+          "mode": "disasm",
+          "records": [
+            "ep/native-ep-heal.json#/result/methods/2",
+            "ep/native-ep-heal.json#/result/bodies/2/fragments/0",
+            "ep/native-ep-heal.json#/result/bodies/2/fragments/0/method",
+            "ep/native-ep-heal.json#/result/discovery/31"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isElementHeal",
+          "address": "0x18090d770"
+        },
+        {
+          "index": 72155,
+          "mode": "disasm",
+          "records": [
+            "hp/native-hp-healing.json#/result/methods/5",
+            "hp/native-hp-healing.json#/result/bodies/5/fragments/0",
+            "hp/native-hp-healing.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_finalDelta",
+          "address": "0x18090cff0"
+        },
+        {
+          "index": 72177,
+          "mode": "disasm",
+          "records": [
+            "ep/native-ep-heal.json#/result/methods/3",
+            "ep/native-ep-heal.json#/result/bodies/3/fragments/0",
+            "ep/native-ep-heal.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Modifier..ctor",
+          "address": "0x18090c770"
+        },
+        {
+          "index": 72178,
+          "mode": "disasm",
+          "records": [
+            "ep/native-ep-heal.json#/result/methods/4",
+            "ep/native-ep-heal.json#/result/bodies/4/fragments/0",
+            "ep/native-ep-heal.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Modifier..ctor",
+          "address": "0x18090c5e0"
+        },
+        {
+          "index": 72182,
+          "mode": "metadata",
+          "records": [
+            "ep/native-ep-heal.json#/result/discovery/32"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewHeal",
+          "address": "0x18090ad20"
+        },
+        {
+          "index": 72183,
+          "mode": "disasm",
+          "records": [
+            "ep/native-ep-heal.json#/result/methods/5",
+            "ep/native-ep-heal.json#/result/bodies/5/fragments/0",
+            "ep/native-ep-heal.json#/result/bodies/5/fragments/0/method",
+            "ep/native-ep-heal.json#/result/discovery/33"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewElementHeal",
+          "address": "0x18090ab00"
+        },
+        {
+          "index": 93047,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/0/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.get_isCont",
+          "address": "0x180f5f0e0"
+        },
+        {
+          "index": 93048,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/0/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.get_ignoreHealFree",
+          "address": "0x180f5f080"
+        },
+        {
+          "index": 93049,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/0/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.get_isHpRatio",
+          "address": "0x180f5f140"
+        },
+        {
+          "index": 93050,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/0/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.get_applyWay",
+          "address": "0x180f5ef90"
+        },
+        {
+          "index": 93051,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/0/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.get_healScale",
+          "address": "0x180f5eff0"
+        },
+        {
+          "index": 93052,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/0/methods/5"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.GetEventActions",
+          "address": "0x180f5eb70"
+        },
+        {
+          "index": 93053,
+          "mode": "disasm",
+          "records": [
+            "content/native-content.json#/result/methods/0",
+            "content/native-content.json#/result/bodies/0/fragments/0",
+            "content/native-content.json#/result/bodies/0/fragments/0/method",
+            "content/native-content.json#/result/fieldOwners/0/methods/6"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.GetProjectileActions",
+          "address": "0x180f5ebf0"
+        },
+        {
+          "index": 93054,
+          "mode": "disasm",
+          "records": [
+            "content/native-content.json#/result/methods/1",
+            "content/native-content.json#/result/bodies/1/fragments/0",
+            "content/native-content.json#/result/bodies/1/fragments/0/method",
+            "content/native-content.json#/result/fieldOwners/0/methods/7"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.ApplyHealScale",
+          "address": "0x180f5e550"
+        },
+        {
+          "index": 93055,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/0/methods/8"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.ApplyElementHealScale",
+          "address": "0x180f5e490"
+        },
+        {
+          "index": 93056,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/0/methods/9"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.ApplyElementHealScaleForElementHealNode",
+          "address": "0x180f5e3e0"
+        },
+        {
+          "index": 93057,
+          "mode": "disasm",
+          "records": [
+            "content/native-content.json#/result/methods/2",
+            "content/native-content.json#/result/bodies/2/fragments/0",
+            "content/native-content.json#/result/bodies/2/fragments/0/method",
+            "content/native-content.json#/result/fieldOwners/0/methods/10"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.DoSetData",
+          "address": "0x180f5e700"
+        },
+        {
+          "index": 93058,
+          "mode": "disasm",
+          "records": [
+            "content/native-content.json#/result/methods/3",
+            "content/native-content.json#/result/bodies/3/fragments/0",
+            "content/native-content.json#/result/bodies/3/fragments/0/method",
+            "content/native-content.json#/result/fieldOwners/0/methods/11"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.NewHealNode",
+          "address": "0x180f5ed80"
+        },
+        {
+          "index": 93059,
+          "mode": "disasm",
+          "records": [
+            "content/native-content.json#/result/methods/4",
+            "content/native-content.json#/result/bodies/4/fragments/0",
+            "content/native-content.json#/result/bodies/4/fragments/0/method",
+            "content/native-content.json#/result/fieldOwners/0/methods/12"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.NewElementHealNode",
+          "address": "0x180f5ec80"
+        },
+        {
+          "index": 93060,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/0/methods/13"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.CheckIsDamageOrHealSource",
+          "address": "0x180f5e6a0"
+        },
+        {
+          "index": 93061,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/0/methods/14"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.GeneratePurposeMask",
+          "address": "0x180f5eb10"
+        },
+        {
+          "index": 93062,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/0/methods/15"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal..ctor",
+          "address": "0x180f5ee90"
+        },
+        {
+          "index": 93063,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/0/methods/16"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.<>xLuaBaseProxy_get_applyWay",
+          "address": "0x180f50540"
+        },
+        {
+          "index": 93064,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/0/methods/17"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.<>xLuaBaseProxy_DoSetData",
+          "address": "0x18060a0b0"
+        },
+        {
+          "index": 93065,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/0/methods/18"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.<>xLuaBaseProxy_CheckIsDamageOrHealSource",
+          "address": "0x180f3fa50"
+        },
+        {
+          "index": 93066,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/0/methods/19"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Heal.<>xLuaBaseProxy_GeneratePurposeMask",
+          "address": "0x180f3fa60"
+        },
+        {
+          "index": 93081,
+          "mode": "disasm",
+          "records": [
+            "content/native-content.json#/result/methods/5",
+            "content/native-content.json#/result/bodies/5/fragments/0",
+            "content/native-content.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RangedHeal.OnCastOnTarget",
+          "address": "0x180f6bfa0"
+        },
+        {
+          "index": 93083,
+          "mode": "disasm",
+          "records": [
+            "content/native-content.json#/result/methods/6",
+            "content/native-content.json#/result/bodies/6/fragments/0",
+            "content/native-content.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RangedHeal.NewHealNode",
+          "address": "0x180f6bdc0"
+        },
+        {
+          "index": 93084,
+          "mode": "disasm",
+          "records": [
+            "content/native-content.json#/result/methods/7",
+            "content/native-content.json#/result/bodies/7/fragments/0",
+            "content/native-content.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RangedHeal.GetProjectileActions",
+          "address": "0x180f6bcf0"
+        },
+        {
+          "index": 94556,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/1/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Abilities.PassiveAttachmentAbility.get_isAffecting",
+          "address": "0x180fc53b0"
+        },
+        {
+          "index": 94557,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/1/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Abilities.PassiveAttachmentAbility.GatherBuffs",
+          "address": "0x180fc5250"
+        },
+        {
+          "index": 94558,
+          "mode": "disasm",
+          "records": [
+            "content/native-content.json#/result/methods/8",
+            "content/native-content.json#/result/bodies/8/fragments/0",
+            "content/native-content.json#/result/bodies/8/fragments/0/method",
+            "content/native-content.json#/result/fieldOwners/1/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Abilities.PassiveAttachmentAbility.DoSetData",
+          "address": "0x180fc5110"
+        },
+        {
+          "index": 94559,
+          "mode": "disasm",
+          "records": [
+            "content/native-content.json#/result/methods/9",
+            "content/native-content.json#/result/bodies/9/fragments/0",
+            "content/native-content.json#/result/bodies/9/fragments/0/method",
+            "content/native-content.json#/result/fieldOwners/1/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Abilities.PassiveAttachmentAbility.DoAttach",
+          "address": "0x180fc4ec0"
+        },
+        {
+          "index": 94560,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/1/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Abilities.PassiveAttachmentAbility.DoDetach",
+          "address": "0x180fc5030"
+        },
+        {
+          "index": 94561,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/1/methods/5"
+          ],
+          "fullname": "Torappu.Battle.Abilities.PassiveAttachmentAbility..ctor",
+          "address": "0x180fc5300"
+        },
+        {
+          "index": 94562,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/1/methods/6"
+          ],
+          "fullname": "Torappu.Battle.Abilities.PassiveAttachmentAbility.<>xLuaBaseProxy_get_isAffecting",
+          "address": "0x180f57c00"
+        },
+        {
+          "index": 94563,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/1/methods/7"
+          ],
+          "fullname": "Torappu.Battle.Abilities.PassiveAttachmentAbility.<>xLuaBaseProxy_GatherBuffs",
+          "address": "0x180f51750"
+        },
+        {
+          "index": 94564,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/1/methods/8"
+          ],
+          "fullname": "Torappu.Battle.Abilities.PassiveAttachmentAbility.<>xLuaBaseProxy_DoSetData",
+          "address": "0x18060a0b0"
+        },
+        {
+          "index": 94565,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/1/methods/9"
+          ],
+          "fullname": "Torappu.Battle.Abilities.PassiveAttachmentAbility.<>xLuaBaseProxy_DoAttach",
+          "address": "0x180f70c90"
+        },
+        {
+          "index": 94566,
+          "mode": "metadata",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/1/methods/10"
+          ],
+          "fullname": "Torappu.Battle.Abilities.PassiveAttachmentAbility.<>xLuaBaseProxy_DoDetach",
+          "address": "0x180f4ac30"
+        },
+        {
+          "index": 99906,
+          "mode": "disasm",
+          "records": [
+            "ep/native-ep-heal.json#/result/methods/6",
+            "ep/native-ep-heal.json#/result/bodies/6/fragments/0",
+            "ep/native-ep-heal.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementHeal.Execute",
+          "address": "0x181156690"
+        },
+        {
+          "index": 99909,
+          "mode": "disasm",
+          "records": [
+            "ep/native-ep-heal.json#/result/methods/7",
+            "ep/native-ep-heal.json#/result/bodies/7/fragments/0",
+            "ep/native-ep-heal.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementHeal..ctor",
+          "address": "0x181156be0"
+        },
+        {
+          "index": 99910,
+          "mode": "disasm",
+          "records": [
+            "ep/native-ep-heal.json#/result/methods/8",
+            "ep/native-ep-heal.json#/result/bodies/8/fragments/0",
+            "ep/native-ep-heal.json#/result/bodies/8/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementHeal..ctor",
+          "address": "0x181156af0"
+        },
+        {
+          "index": 99911,
+          "mode": "disasm",
+          "records": [
+            "ep/native-ep-heal.json#/result/methods/9",
+            "ep/native-ep-heal.json#/result/bodies/9/fragments/0",
+            "ep/native-ep-heal.json#/result/bodies/9/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementHeal.PreprocessForProjectile",
+          "address": "0x181156a00"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Abilities.Heal",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/0",
+            "content/native-content.json#/result/fieldOwners/0/type"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.PassiveAttachmentAbility",
+          "records": [
+            "content/native-content.json#/result/fieldOwners/1",
+            "content/native-content.json#/result/fieldOwners/1/type"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Action.Nodes/ApplyElementHeal",
+          "records": [
+            "ep/native-ep-heal.json#/result/fields/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Entity",
+          "records": [
+            "ep/native-ep-heal.json#/result/fields/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Modifier",
+          "records": [
+            "ep/native-ep-heal.json#/result/fields/1",
+            "hp/native-hp-healing.json#/result/modifierFields"
+          ]
+        }
+      ],
+      "constants": [
+        {
+          "address": "0x1870adbe0",
+          "format": "<f",
+          "records": [
+            "ep/native-ep-heal.json#/result/constants/defaultEpHealRatio"
+          ]
+        }
+      ],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_117_myrrh.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_117_myrrh.ab",
+          "sha256": "e8df52d0fc058c98b4e1cc655adc20e157ecf3386dcd93be8a9b62708a1d8ef9",
+          "records": [
+            "content/characters/decoded-content.json#/provenance/sources/0"
+          ],
+          "bytes": 17901
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_473_mberry.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_473_mberry.ab",
+          "sha256": "ef53adb2b73899bf2db7b52102af86cb1612915f01f41a4e16e4a6417b204acb",
+          "records": [
+            "content/characters/decoded-content.json#/provenance/sources/1",
+            "content/script-binding/trait-script-binding.json#/provenance/sources/0"
+          ],
+          "bytes": 26199
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_117_myrrh.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_117_myrrh.ab",
+          "sha256": "ce237e11fc266916a616d4d87622ce72c3982677fbc6e237f5837627dd721bf4",
+          "records": [
+            "content/characters/decoded-content.json#/result/0"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_117_myrrh.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_117_myrrh.ab",
+          "sha256": "d46b511a0c721ce7dbacc7b77eda58b83e5d9114cae558ea79d4ed31ec425ccf",
+          "records": [
+            "content/characters/decoded-content.json#/result/1"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_117_myrrh.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_117_myrrh.ab",
+          "sha256": "9231f9630a8439449d15b3a4a1797f502110fa55f795c01e963c9347b9658a1a",
+          "records": [
+            "content/characters/decoded-content.json#/result/2"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_117_myrrh.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_117_myrrh.ab",
+          "sha256": "20f2fd0f84a7f1c837f1408b7f3b83ba7de7ce731307f0c33a41c28770c12bc9",
+          "records": [
+            "content/characters/decoded-content.json#/result/3"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_117_myrrh.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_117_myrrh.ab",
+          "sha256": "9df967f08b4719c2db5eafe64b50bf003ce72943e9d897faa895a0e0dab129f0",
+          "records": [
+            "content/characters/decoded-content.json#/result/4"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_473_mberry.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_473_mberry.ab",
+          "sha256": "ad76aa4d47b29d2b008279f901396086548d88ab4fa5182b268e3825674c8d8f",
+          "records": [
+            "content/characters/decoded-content.json#/result/5"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_473_mberry.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_473_mberry.ab",
+          "sha256": "b7db0a4809a2079d452e8f1cbb39e3d6f74bfabbaf5e06c1d3f7c5f0ad74852d",
+          "records": [
+            "content/characters/decoded-content.json#/result/6"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_473_mberry.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_473_mberry.ab",
+          "sha256": "75f2ed69ec2e68c6900e3f7d5a8e98f62d3ce4afc62eadc9719190bd27991b82",
+          "records": [
+            "content/characters/decoded-content.json#/result/7"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_473_mberry.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_473_mberry.ab",
+          "sha256": "e17ebf56679db2f05ba0d24f40ecc15aaf4a7b9429b9821dbf69a9b27632e95b",
+          "records": [
+            "content/characters/decoded-content.json#/result/8",
+            "content/script-binding/trait-script-binding.json#/result/trait"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_473_mberry.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_473_mberry.ab",
+          "sha256": "6b406977f77220b42e58e6064ad0871ac04944d2e840ac6d4ad34c9afd23cc79",
+          "records": [
+            "content/characters/decoded-content.json#/result/9"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_473_mberry.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_473_mberry.ab",
+          "sha256": "3347b8fcfba2c1a0045213c751486901a5f95c97ffa93c7ad7aa302935082500",
+          "records": [
+            "content/characters/decoded-content.json#/result/10"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+          "sha256": "cc3f21b73b10fbc619a1ff8b099f31e678c883ddacb7bb6775fea960ffecb0e1",
+          "records": [
+            "content/projectiles/decoded-content.json#/provenance/sources/0"
+          ],
+          "bytes": 1905483
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]projectiles.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+          "sha256": "38b7e7dafe857d25b8a5e23d9f86f79890baa500f81bc31d0a9adadc40ce6376",
+          "records": [
+            "content/projectiles/decoded-content.json#/result/0"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]projectiles.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+          "sha256": "2aad8023bfce69a363d2cd94bb88522814394a199891d122e008c7490d23f6b1",
+          "records": [
+            "content/projectiles/decoded-content.json#/result/1"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]projectiles.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+          "sha256": "02dd9a803d91d51289a88627cdaeb72a21b05b57b6ca7c405ba0d5fa676526c3",
+          "records": [
+            "content/projectiles/decoded-content.json#/result/2"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]projectiles.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+          "sha256": "6dab4ed02d6c106098ce63238bd41f69855d6329c0f9b384f3498ca614f42109",
+          "records": [
+            "content/projectiles/decoded-content.json#/result/3"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "content/script-binding/trait-script-binding.json#/provenance/sources/1"
+          ],
+          "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "d9f4e289f0ab0e01489aa3db42622db094d1a6fbbc2eb36d02bf662767bbfbbc",
+          "records": [
+            "content/script-binding/trait-script-binding.json#/result/resolvedMonoScript"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "content/templates/decoded-content.json#/provenance/sources/0"
+          ],
+          "bytes": 2151020
+        },
+        {
+          "kind": "bundle",
+          "path": "config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+          "records": [
+            "content/templates/decoded-content.json#/result/0"
+          ]
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

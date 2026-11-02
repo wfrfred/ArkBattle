@@ -1,0 +1,11 @@
+{
+  "checkedOn": "2026-11-03",
+  "sourceClass": "PRTS community wiki, not official documentation",
+  "pages": [
+    {"url":"https://prts.wiki/w/游戏数据基础", "sections":["治疗量"], "supports":"Basic healing equals ATK times ATK/heal scale; does not establish full native event order."},
+    {"url":"https://prts.wiki/w/事件", "sections":["伤害相关的时点"], "supports":"Generic output/applying/applied Modifier timing includes healing.", "limits":"Marked incomplete and reference ordering only; no exact OnTakeHeal/AfterOutputHeal details."},
+    {"url":"https://prts.wiki/w/特殊机制", "sections":["生命复原"], "supports":"HEAL-kind life loss with SKIP_MODIFIER_EVENT bypasses ordinary healing effects and HEAL_FREE.", "limits":"Current opening attempts timed out; text was available in same-day prior task and current search excerpts. Native skip branch is the timing evidence."},
+    {"url":"https://prts.wiki/w/异常效果", "sections":["HEAL_FREE / 禁疗"], "supports":"Separates target selection exclusion from received ordinary healing being set to zero; does not determine this project's policy."}
+  ],
+  "fallbacks":[{"url":"https://prts.wiki/w/治疗","result":"Tool could not access; used 游戏数据基础 and native instead."}]
+}

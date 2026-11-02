@@ -67,6 +67,8 @@ type End =
 
 完整操作与查询使用最新 battle，当前时间读取 battle.tick。
 
+普通 EP 回复的原生求值、逐型提交、共享 Modifier 时点及行医命中组合见[治疗结算调查](../research/cases/29-hp-and-ep-healing-settlement.md)，与本文的当前项目政策分别记录。
+
 | 接口 | 形状与结果 |
 | --- | --- |
 | operations.damage | `(battle, target: Ref<Unit>, { source, type, power }) => Result<DamageOutcome>` |

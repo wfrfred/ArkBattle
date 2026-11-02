@@ -1,0 +1,35 @@
+{
+  "checkedOn": "2026-11-03",
+  "inputs": [
+    {
+      "path": "docs/research/evidence/attack-addon-order-20261102/hp/native-hp.json",
+      "bytes": 814334,
+      "sha256": "bc037d63eee427388a1113cd40c0c87c2c9233b18757b963580799a7afd1b9ba"
+    },
+    {
+      "path": "docs/research/evidence/nymph-action-settlement-20261103/damage/native-damage.json",
+      "bytes": 1593461,
+      "sha256": "95036b2704b33266c7126ded25e502d56a6f5d0a24cc008e916b211bbe9c49a0"
+    },
+    {
+      "path": "docs/research/evidence/ep-modifier-events-20261103/native-ep-events.json",
+      "bytes": 310567,
+      "sha256": "4e7616f943089808e094d254e2a3f8f230643fc4331f2dae0e98751196fb9d54"
+    },
+    {
+      "path": "docs/research/evidence/damage-hook-needs-20261103/native-reception.json",
+      "bytes": 470228,
+      "sha256": "7f5a02be9d4d09c6f8997c681241cf4938323bd00ae705b673be91851ffa160a"
+    },
+    {
+      "path": ".agents/skills/arkbattle-native-research/scripts/native.py",
+      "bytes": 18723,
+      "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+    },
+    {
+      "path": ".agents/skills/arkbattle-native-research/scripts/native.py.lock",
+      "bytes": 3739,
+      "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+    }
+  ]
+}

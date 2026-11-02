@@ -176,6 +176,8 @@ HP 归零
 
 EP 免疫／无敌分支刚执行取消后仍可能进入 `OnTakeEPDamage`，各 Buff 再按自己的条件决定是否响应；并不意味着每项接收程序必然输出。外层取消检查、来源有效性、force 与 skip 路径仍限制上表的实际执行。
 
+skip 的范围不能简称为跳过全部 Modifier 事件：当前0x80路径绕过目标 Before5、来源 Output8、目标 Applying6和普通专属接收，并在提交后绕过普通 Applied；但独立的 skipped 接收返回后仍可能执行来源 BeforeTargetApply61。分支锚点补核见[治疗调查](29-hp-and-ep-healing-settlement.md#5-skip生命复原与自然回复)。
+
 所选三个 `CalculateElementDamage` 重载读取来源攻击力或显式损伤量、倍率和目标当前 `epResistance`，没有调用 HP 的 Calculate／BeingCalculate／AfterCalculate Buff 回调。该结论限定这三个方法，不扩展为所有特殊 EP 内容均无其他前置程序。本轮没有展开公式中静态下限数值的初始化值，也不以社区简式替代完整数值公式。
 
 共用时点确有真实内容依据：[PRTS 的浮空信件](https://prts.wiki/w/浮空信件)描述其在将受到符合条件的伤害或元素损伤前累计 SP，满 SP 后无敌并传送。当前 `enemy_10231_agpack` Prefab 的 PassiveAbility 直接绑定 `agpack_t[record_damage_cnt]`，该模板的 event5 明确使用 `IsDamage OR IsElementDamage`，然后判断来源、累计 SP 并执行后续。Prefab、模板和 event5 的原生映射相互闭合；这是静态内容选择证据，没有冒充实机观察。

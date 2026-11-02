@@ -1,0 +1,27 @@
+{
+  "collectedOn": "2026-11-03",
+  "scope": "PRTS community evidence consulted before native/content extraction; two representatives only.",
+  "sources": [
+    {
+      "url": "https://prts.wiki/w/末药#特性",
+      "section": "医师·分支信息",
+      "facts": [
+        "Ordinary attacks produce healing and prioritize lowest HP ratio.",
+        "Normal targeting excludes full-HP units; HEAL_FREE prevents healing targets and reduces received healing to zero."
+      ]
+    },
+    {
+      "url": "https://prts.wiki/w/桑葚#特性",
+      "section": "行医·特性与分支信息",
+      "facts": [
+        "EP healing is described as 50% ATK.",
+        "Full-HP friendly units with EP deficit may be selected.",
+        "Ordinary treatment restores all EP types; normal selection prioritizes HP ratio before current EP ratio.",
+        "HEAL_FREE still restricts the healing action."
+      ],
+      "limits": [
+        "The current client prefab and decoded attachment have empty explicit Buff blackboards. This narrow investigation does not establish the external TraitData entry supplying the actual 0.5 value."
+      ]
+    }
+  ]
+}
