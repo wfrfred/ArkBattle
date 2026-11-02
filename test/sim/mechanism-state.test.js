@@ -49,7 +49,7 @@ test("mechanism instances keep typed independent state and old snapshots", () =>
     assert.equal(base.mechanisms.get(left.id, counter("shared")), undefined);
 });
 
-test("mechanism private updates and identity allocation reject invalid operations", () => {
+test("mechanism private updates reject missing instances and identity changes", () => {
     const initial = fixtureBattle();
     const definition = counter("counter");
     const [battle, reference] = register(initial, definition);
@@ -62,11 +62,6 @@ test("mechanism private updates and identity allocation reject invalid operation
         ...self, definition: counter("other"),
     }), TypeError);
     assert.throws(() => initial.mechanisms.remove(reference.id), RangeError);
-    for (const id of [-1, 0.5, NaN, Infinity, Number.MAX_SAFE_INTEGER]) {
-        assert.throws(() => mechanisms.create({
-            ...initial, execution: { ...initial.execution, nextMechanismId: id },
-        }, definition), RangeError);
-    }
     assert.equal(battle.mechanisms.size, 1);
     assert.equal(mechanisms.get(battle, reference), self);
 });

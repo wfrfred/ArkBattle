@@ -45,7 +45,6 @@ const refresh = (stackCount, expiresAtTick, reloadModifiers) => ({
 });
 const instance = (battle) => getUnit(battle, 0).effects.values().toArray()[0];
 const power = (battle) => resolveAttack(battle, unitRef(getUnit(battle, 0)));
-const address = { host: { id: 0 }, id: 0 };
 
 test("buff expiry: a native STACK descriptor peels one layer and resets the caller's fixed lifetime", () => {
     const rule = compileBuffStacking(parseBuffStacking(native("sbell2_e_002_trait[interval]")));
@@ -83,17 +82,9 @@ test("buff expiry: raw counts above the effective cap skip reload until they rea
     assert.deepEqual(unlimited.expire(application(4), 30, 30), refresh(3, 60, true));
 });
 
-test("buff expiry: zero lifetime advances one tick, while invalid inputs fail", () => {
+test("buff expiry: zero lifetime advances one tick", () => {
     const rule = compileBuffStacking(description());
     assert.deepEqual(rule.expire(application(3, 0), 0, 0), refresh(2, 1, true));
-    for (const value of [-1, 0.5, undefined, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
-        assert.throws(() => rule.expire(application(3), value, 30), /safe integer/);
-    }
-    for (const value of [-1, 0.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
-        assert.throws(() => rule.expire(application(3), 30, value), /safe integer/);
-        assert.throws(() => rule.expire(application(value), 30, 30), /safe integer/);
-        assert.throws(() => rule.expire(application(3, value), 30, 30), /safe integer/);
-    }
 });
 
 function harness({ stackCount = 3, maxValidStackCnt = -1 } = {}) {

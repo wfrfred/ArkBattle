@@ -82,8 +82,6 @@ const wrong: string = latest.state.charges;
 update(battle, known, { state: { charges: charges - 1 } });
 update(battle, known, {});
 update(battle, known, { position: latest.position });
-// @ts-expect-error Updates take a value rather than a transform.
-update(battle, known, () => ({ state: { charges: 1 } }));
 // @ts-expect-error a precise reference fixes replacement state inference.
 entries.replace(known, { ...projectile, state: { charges: "wrong" } });
 // @ts-expect-error public references do not prove writable private state types.

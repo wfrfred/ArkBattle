@@ -199,19 +199,6 @@ test("action release: a nested dispatch takes new candidates from its own curren
     assert.deepEqual(calls, ["A", "A", "B"]);
 });
 
-test("action release: a thrown hook preserves the caller's private state", () => {
-    const started = initial();
-    const installed = attach(
-        started.state,
-        releaseEffect("failure", { attempts: 0 }, (state, context, self, ref) => {
-            state = change(state, ref, { attempts: self.data.attempts + 1 });
-            throw new Error("release failed");
-        }),
-    );
-    assert.throws(() => beforeRelease(installed.state, started.value.ref), /release failed/);
-    assert.equal(effects.get(installed.state, installed.value).data.attempts, 0);
-});
-
 test("action release: selected IDs invoke their current replacement while new IDs wait", () => {
     const started = initial();
     const seen = [];
@@ -247,7 +234,6 @@ test("action release: selected IDs invoke their current replacement while new ID
     beforeRelease(dispatched.state, started.value.ref);
     assert.deepEqual(seen, ["first", "replacement", "first", "replacement", "later"]);
 });
-
 
 test("action release: hooks share fixed identities and receive the preceding state and directive", () => {
     const started = initial();

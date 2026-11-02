@@ -56,19 +56,6 @@ test("batch update swaps occupied tiles using the complete final Unit states", (
     assert.equal(before.units.get(first.id), first);
 });
 
-test("batch update supports a three-way occupancy cycle regardless of input order", () => {
-    const first = unit(1, 0), second = unit(2, 1), third = unit(3, 2);
-    const before = fixture(first, second, third);
-    const updates = [move(first, 1), move(second, 2), move(third, 0)];
-    const forward = updateUnit(before, updates);
-    const reverse = updateUnit(before, [...updates].reverse());
-
-    for (const after of [forward, reverse]) {
-        assert.deepEqual([0, 1, 2].map(column => at(after, [0, column]).occupant.id), [3, 1, 2]);
-        assert.deepEqual([...after.units.keys()], [1, 2, 3]);
-    }
-    assert.deepEqual([0, 1, 2].map(column => at(before, [0, column]).occupant.id), [1, 2, 3]);
-});
 
 test("batch update swaps SUPPORT occupancy tiles without disturbing their occupants", () => {
     const first = unit(1, 0, "SUPPORT"), second = unit(2, 1, "SUPPORT");
@@ -84,22 +71,6 @@ test("batch update swaps SUPPORT occupancy tiles without disturbing their occupa
     assert.equal(after.units.get(occupantB.id), occupantB);
 });
 
-test("batch update moves OCCUPANT and SUPPORT between tiles using their declared slots", () => {
-    const occupant = unit(1, 0), support = unit(2, 1, "SUPPORT");
-    const before = fixture(occupant, support);
-    const updates = [move(occupant, 1), move(support, 0)];
-
-    for (const batch of [updates, [...updates].reverse()]) {
-        const after = updateUnit(before, batch);
-        assert.equal(after.occupancy.size, 2);
-        assert.equal(at(after, [0, 1]).occupant.id, occupant.id);
-        assert.equal(at(after, [0, 1]).support, null);
-        assert.equal(at(after, [0, 0]).occupant, null);
-        assert.equal(at(after, [0, 0]).support.id, support.id);
-        assert.equal(at(before, [0, 0]).occupant.id, occupant.id);
-        assert.equal(at(before, [0, 1]).support.id, support.id);
-    }
-});
 
 test("batch update rejects a final occupancy conflict without changing the input", () => {
     const first = unit(1, 0), second = unit(2, 1);

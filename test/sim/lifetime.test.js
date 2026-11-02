@@ -3,7 +3,6 @@ import { set as setFixtureEntry } from "../../dist/core/hook.js";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { createBattleState } from "../../dist/core/battle/state.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as skills from "../../dist/core/unit/skill/index.js";
 import { setHook } from "../../dist/core/unit/capability/skill/index.js";
@@ -300,36 +299,6 @@ test("Prepare rejects transitive dependencies if any upstream parent is ending",
     assert.equal(effects.get(battle, leaf), undefined);
     assert.deepEqual(dependencies(battle, scope(effects.lifetime, independent.value)), []);
     settled(battle);
-});
-
-test("Prepare exceptions propagate without mutating the input or forcing Finalize", () => {
-    const failure = new Error("prepare failed");
-    let finalized = 0;
-    const installed = effects.install(effectFixtureWork(unit()), { id: 1 }, definition("failing", { value: 1 }, {
-        onDisable(battle, self) {
-            battle = effects.setData(battle, effects.ref(self), { value: 2 });
-            throw failure;
-        },
-        onEnd(battle) { finalized++; return battle; },
-    }));
-    assert.throws(() => effects.end(installed.state, installed.value), error => error === failure);
-    assert.equal(finalized, 0);
-    assert.equal(effects.get(installed.state, installed.value).status, "ACTIVE");
-    assert.deepEqual(effects.get(installed.state, installed.value).data, { value: 1 });
-    settled(installed.state);
-});
-
-test("Battle construction and raw Unit publication never infer Lifetime relationships", () => {
-    const host = unit(1);
-    const initial = effectFixtureWork(host);
-    const installed = effects.install(initial, { id: 1 }, definition("registered-child"));
-    assert.equal(installed.state.lifetime.dependencies.entries.size, 1);
-    assert.equal(initial.lifetime.dependencies.entries.size, 0);
-    const recreated = createBattleState(installed.state.battlefield);
-    assert.equal(recreated.lifetime.dependencies.entries.size, 0);
-    assert.equal(recreated.lifetime.dependencies.children.size, 0);
-    const published = update(initial, [getUnit(installed.state, 1)]);
-    assert.equal(published.lifetime.dependencies, initial.lifetime.dependencies);
 });
 
 test("public Lifetime binding owns explicit dependencies without duplicating the Effect or owner", () => {

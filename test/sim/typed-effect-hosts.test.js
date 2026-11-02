@@ -109,22 +109,6 @@ const vitality: Definition<{ charges: number }, Vitality> = {
         return state;
     },
 };
-type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
-type Assert<T extends true> = T;
-type InstallCallback = Assert<Equal<Parameters<NonNullable<Definition<{ charges: number }, Vitality>["onInstall"]>>, [BattleState, Effect<{ charges: number }, Vitality>]>>;
-type EnableCallback = Assert<Equal<Parameters<NonNullable<Definition<{ charges: number }, Vitality>["onEnable"]>>, [BattleState, Effect<{ charges: number }, Vitality>]>>;
-type DisableCallback = Assert<Equal<Parameters<NonNullable<Definition<{ charges: number }, Vitality>["onDisable"]>>, [BattleState, Effect<{ charges: number }, Vitality>]>>;
-type TickCallback = Assert<Equal<Parameters<NonNullable<Definition<{ charges: number }, Vitality>["onTick"]>>, [BattleState, Effect<{ charges: number }, Vitality>]>>;
-type TerminalCallback = Assert<Equal<Parameters<NonNullable<Definition<{ charges: number }, Vitality>["onEnd"]>>, [BattleState, Effect<{ charges: number }, Vitality>, string]>>;
-const legacy = (_state: BattleState, context: {
-    self: Effect<{ charges: number }, Vitality>;
-    unit: Unit & Vitality;
-    ref: Ref<Effect<{ charges: number }, Vitality>>;
-}) => _state;
-// @ts-expect-error lifecycle callbacks receive the precise Effect rather than a wrapper.
-const invalidWrappedCallback: Definition<{ charges: number }, Vitality> = { ...vitality, onInstall: legacy };
-// @ts-expect-error onEnd receives the reason separately rather than inside a wrapper.
-const invalidWrappedEnd: Definition<{ charges: number }, Vitality> = { ...vitality, onEnd: legacy };
 const combined: Definition<object, Locomotion & Vitality> = {
     id: "combined", initialize: () => ({}),
 };

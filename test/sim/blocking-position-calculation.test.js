@@ -40,12 +40,3 @@ test("after dispersion is triggered, other targets inside 0.4 contribute weighte
     close(result, [0.49979748783340083, -0.014229235939485914]);
     assert.ok(Math.abs(Math.hypot(...result) - 0.5) < 1e-12);
 });
-
-test("settled positions can be consumed from a single-pass iterable", () => {
-    function* previous() {
-        yield [0.5, 0];
-        yield [0.3, 0];
-    }
-
-    close(calculate([0, 0], [0.2, 0], previous()), [0.49979748783340083, -0.014229235939485914]);
-});

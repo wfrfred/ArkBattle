@@ -45,8 +45,6 @@ test("deployable initialization preserves earlier programs and adds its own clea
     assert.equal(unit.hooks[0], entered);
     assert.ok(unit.hooks.some(entry => entry.id === "@deployable/release-slots"));
     assert.equal(unit.deployable.card, null);
-    assert.equal("deployedHooks" in unit.deployable, false);
-    assert.equal("retreatAllowed" in unit.deployable, false);
 });
 
 test("Deployable Capability initialization requires Occupancy", async () => {

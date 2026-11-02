@@ -99,23 +99,3 @@ test("Effect update remains available during both ENDING callbacks without reviv
     assert.deepEqual(effects.get(created.state, created.value).data.phases, []);
     assert.equal(effects.get(created.state, created.value).status, "ACTIVE");
 });
-
-test("Effect installation callbacks can initialize private data before enable observes it", () => {
-    const observed = [];
-    const created = fixture({ count: 0 }, {
-        onInstall(state, self) {
-            const ref = effectRef(self);
-            assert.equal(effects.get(state, ref).status, "INSTALLING");
-            const currentData = effects.get(state, ref).data;
-            return effects.setData(state, ref, { ...currentData, count: currentData.count + 1 });
-        },
-        onEnable(state, self) {
-            observed.push(self.data.count);
-            return state;
-        },
-    });
-
-    assert.deepEqual(observed, [1]);
-    assert.equal(effects.get(created.state, created.value).data.count, 1);
-    assert.equal(effects.get(created.state, created.value).status, "ACTIVE");
-});

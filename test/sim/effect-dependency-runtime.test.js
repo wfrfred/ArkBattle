@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { add as addUnit, remove, replace as updateUnit, lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
+import { add as addUnit, remove, lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { available, scope, getRef } from "../../dist/core/lifetime/index.js";
 import { dependents } from "../../dist/core/lifetime/dependency.js";
-import { initialize, fixtureBattle, getUnit } from "../helpers/unit.js";
+import { initialize, fixtureBattle } from "../helpers/unit.js";
 
 const unit = (id, definition = {}) => initialize({
     id, position: [id, 0], definition: { hooks: [], id: `dependency-host-${id}`, ...definition },
@@ -18,7 +18,7 @@ function fixture(...units) {
     return battle;
 }
 
-test("Unit enter installs publish runtime dependencies without a Field index", () => {
+test("Unit enter installs publish runtime dependencies", () => {
     const target = scope(unitLifetime, { id: 2 });
     let reference;
     const host = unit(1, { hooks: [{
@@ -33,8 +33,6 @@ test("Unit enter installs publish runtime dependencies without a Field index", (
     }] });
     const battle = fixture(unit(2), host);
     assert.deepEqual(effectRefs(battle, target), [reference]);
-    assert.equal("lifetime" in battle.battlefield, false);
-    assert.equal("effectLifetimes" in battle.battlefield, false);
 });
 
 test("installing and removing a host updates runtime dependencies and preserves old snapshots", () => {
@@ -100,36 +98,6 @@ test("ENDING keeps its relationships until physical removal while refusing new b
     const battle = effects.end(installed.state, installed.value);
     assert.deepEqual(observed, ["disable", "end"]);
     assert.deepEqual(effectRefs(battle, target), []);
-});
-
-test("complete Unit updates retain installed dependencies alongside occupancy and data changes", () => {
-    const target = scope(unitLifetime, { id: 2 });
-    const installed = effects.install(fixture(unit(1, { occupancy: { slot: "OCCUPANT" } }), unit(2)), { id: 1 }, {
-        id: "updated", initialize: () => ({}),
-    }, { scopes: [target] });
-    const previous = installed.state;
-    const current = getUnit(previous, 1);
-    let battle = updateUnit(previous, [{ ...current, occupancy: { tile: [0, 1] } }]);
-    battle = effects.setData(battle, installed.value, { changed: true });
-    assert.deepEqual(effectRefs(battle, target), [installed.value]);
-    assert.deepEqual(effects.get(battle, installed.value).data, { changed: true });
-    assert.deepEqual(getUnit(previous, 1).occupancy.tile, null);
-    assert.deepEqual(getUnit(battle, 1).occupancy.tile, [0, 1]);
-    battle = remove(battle, 2, "SCRIPT");
-    assert.equal(effects.get(battle, installed.value), undefined);
-    assert.deepEqual(effectRefs(battle, target), []);
-});
-
-test("ordinary Unit updates preserve the dependency index", () => {
-    const target = scope(unitLifetime, { id: 2 });
-    let battle = effects.install(fixture(unit(1), unit(2)), { id: 1 }, {
-        id: "retained", initialize: () => ({}),
-    }, { scopes: [target] }).state;
-    const previous = battle.lifetime.dependencies;
-    const captured = effectRefs(battle, target);
-    battle = updateUnit(battle, [{ ...getUnit(battle, 1), position: [5, 0] }]);
-    assert.equal(battle.lifetime.dependencies, previous);
-    assert.deepEqual(effectRefs(battle, target), captured);
 });
 
 test("a dependent ending callback can mutate another bucket without losing its update", () => {

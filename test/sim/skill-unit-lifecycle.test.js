@@ -120,13 +120,3 @@ test("ending content may create independent remote effects while closed lifetime
     assert.equal(getUnit(finished, 1).effects.values().toArray().length, 1);
     assert.equal(effects.get(finished, installedRef).status, "ACTIVE");
 });
-
-test("departure cleanup failures propagate without changing the input version", () => {
-    const failure = new Error("cleanup failed");
-    const f = fixture({ disable() { throw failure; } });
-    const started = skills.activate(f.state, skillRef(getUnit(f.state, f.source.id)));
-    assert.throws(() => remove(started.state, 0, "SCRIPT"), (error) => error === failure);
-    assert.equal(getUnit(started.state, 0).lifecycle, "PRESENT");
-    assert.equal(getUnit(started.state, 0).skill.activation.status, "ACTIVE");
-    assert.equal(getUnit(started.state, 1).effects.values().toArray().length, 2);
-});

@@ -1,35 +1,33 @@
 
-import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
-import { snapshot } from "../helpers/snapshot.js";
+
+
 import { tiles as tileEntries } from "../helpers/tiles.js";
 import { normal, hole, infection, mire as mireTerrain } from "../../dist/content/terrain/definition.js";
-import { unitsAt } from "../helpers/battlefield.js";
+
 import * as route from "../../dist/core/unit/capability/route/index.js";
 import * as locomotion from "../../dist/core/unit/capability/locomotion/index.js";
 import * as units from "../../dist/core/unit/query.js";
-import { createBattleState } from "../../dist/core/battle/state.js";
+
 import { add as addUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
-import { create as createField } from "../../dist/core/battlefield/state.js";
-import * as blocking from "../../dist/core/battle/blocking/index.js";
-import { blockedIds, fixture as blockingFixture } from "../helpers/blocking.js";
+
+
 import { fixtureBattle } from "../helpers/unit.js";
-import { Effects } from "../../dist/core/unit/effect/effects.js";
+
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { create as createMap, get } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "../helpers/tiles.js";
 import { create as projectStaticNavigationMap } from "../../dist/core/battlefield/map/navigation.js";
-import { applyUnitChanges as applyFieldChanges, maintainFully } from "../helpers/battlefield-projection.js";
+
 import { Map as NavigationMap } from "../../dist/core/battlefield/navigation/map.js";
 import { create as createNavigation, setOverlay, removeOverlay } from "../../dist/core/battlefield/navigation/state.js";
 import { parseBattlefieldMap } from "../../dist/data/arknights/map.js";
 import { parseRouteDefinition } from "../../dist/data/arknights/route.js";
 import { initialize as initializeRoutedUnit } from "../../dist/core/battle/creation/routed-unit.js";
 import { initialize } from "../helpers/unit.js";
-import * as blockableOperations from "../../dist/core/unit/capability/blocking/blockable-operations.js";
-import { setRule as setBlockerRule, setCapacityContribution } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
-import { sides } from "../../dist/core/unit/capability/blocking/index.js";
+
+
 import { build } from "../../dist/core/battlefield/navigation/field.js";
 
 const fieldCell = (overrides = {}) => ({
@@ -51,8 +49,6 @@ test('core fields charge departing cells and publish only immutable smoothed suc
   assert.deepEqual(distances(field), [10, 3, 0]);
   assert.deepEqual(field.nodes[0].next, [0, 1]);
   assert.equal(field.nodes[2].next, null);
-  assert.deepEqual(Object.keys(field.nodes[0]).sort(), ['distance', 'next']);
-  assert.equal(Object.hasOwn(field, 'map'), false);
   assert.equal(JSON.stringify({ map, target }), before);
   assert.strictEqual(field.target, target);
   assert.deepEqual(build(map, target), field);
@@ -112,262 +108,6 @@ test('core smoothing uses the current row-major successor chain without a weight
 });
 
 
-const battlefieldUnit = (id, position) => ({ hooks: [],
-  effects:Effects.empty(), id, definition: Object.freeze({ id: `battlefield_unit_${id}` }), position: Object.freeze([...position]),
-});
-
-
-function projectionFacts(state) {
-  const definitionFacts = ({ initialize, prepare, onTick, onEnd, ...definition }) => definition;
-  return { ...state, navigation: { ...state.navigation, baseline: { WALK: { ...state.navigation.baseline.WALK }, FLY: { ...state.navigation.baseline.FLY } } }, projectiles: state.projectiles.values().toArray(), units: new Map([...state.units].map(([id, unit]) => [
-    id, { ...unit, effects: unit.effects.toJSON(), definition: unit.definition.action === undefined
-      ? unit.definition
-      : { ...unit.definition, action: definitionFacts(unit.definition.action) },
-      ...(unit.action === undefined ? {} : { action: { ...unit.action,
-        actions: new Map(unit.action.actions.values().map(current => [current.definition.id, {
-          ...current, definition: definitionFacts(current.definition),
-        }])),
-      } }),
-      ...(unit.blocker === undefined ? {} : { blocker: { ...unit.blocker,
-        rules: unit.blocker.rules.map(({ id }) => id),
-      } }),
-      ...(unit.blockable === undefined ? {} : { blockable: { ...unit.blockable,
-        rules: unit.blockable.rules.map(({ id }) => id),
-      } }),
-    },
-  ])) };
-}
-
-
-function projectionSnapshot(state) {
-  const { map, ...facts } = projectionFacts(state);
-  const mapFacts = {
-    rows: map.rows,
-    columns: map.columns,
-    tiles: Array.from({ length: map.tiles.size }, (_, index) => {
-      const tile = map.tiles.get(index);
-      return { ...tile, terrain: { params: tile.definition.terrain.params } };
-    }),
-    markers: map.markers,
-    blockEdges: map.blockEdges,
-  };
-  return { state: { ...snapshot(facts), map }, mapFacts: snapshot(mapFacts) };
-}
-
-
-function assertProjectionSnapshot(state, snapshot) {
-  assert.equal(state.map, snapshot.state.map);
-  assert.equal(state.map.tiles, snapshot.state.map.tiles);
-  assert.deepEqual(projectionFacts(state), snapshot.state);
-  assert.deepEqual(projectionSnapshot(state).mapFacts, snapshot.mapFacts);
-}
-
-
-function battlefieldProjectionHarness(rows = 2, columns = 5,
-  map = createMap(rows, columns, tileEntries(Array.from({ length: rows * columns }, () => coreGround())))) {
-  const branches = [applyFieldChanges, maintainFully].map(settle => {
-    const baseline = Object.freeze({
-      WALK: projectStaticNavigationMap(map, 'WALK', 0),
-      FLY: projectStaticNavigationMap(map, 'FLY', 0),
-    });
-    return { baseline, settle, state: { ...createField(map), navigation: createNavigation(baseline) } };
-  });
-  const equivalent = () => {
-    const [selective, full] = branches.map(branch => branch.state);
-    assert.deepEqual(selective, full);
-    assert.deepEqual([...selective.units], [...full.units]);
-    for (let row = 0; row < map.rows; row++) {
-      for (let column = 0; column < map.columns; column++) {
-        assert.deepEqual(unitsAt(selective, [row, column]), unitsAt(full, [row, column]));
-      }
-    }
-  };
-  const commit = content => {
-    const results = branches.map(branch => {
-      const previous = branch.state;
-      const snapshot = projectionSnapshot(previous);
-      const settled = branch.settle(previous, content);
-      assertProjectionSnapshot(previous, snapshot);
-      branch.state = settled;
-      return settled.occupancy;
-    });
-    assert.deepEqual(results[0], results[1]);
-    equivalent();
-    return results[0];
-  };
-  const reject = (content, expected) => {
-    for (const branch of branches) {
-      const previous = branch.state;
-      const snapshot = projectionSnapshot(previous);
-      assert.throws(() => {
-        branch.settle(previous, content);
-      }, expected);
-      assert.equal(branch.state, previous);
-      assertProjectionSnapshot(previous, snapshot);
-    }
-    equivalent();
-  };
-  return { branches, commit, reject, equivalent, get state() { return branches[0].state; } };
-}
-
-
-const projectionTile = column => [0, column];
-
-const projectionUnit = (id, position, definition = {}, states = {}) => initialize({
-  id, position, definition: Object.freeze({ hooks: [], id: `projection_unit_${id}`, spatialPresence: {}, ...definition }), states,
-});
-
-
-test('core selective projection retains occupancy and route intent while queries read current Unit values', () => {
-  const h = battlefieldProjectionHarness();
-  const routed = routedEnemyHarness({ speedPerTick: 0.1, checkpoints: [coreMove(4)] });
-  h.commit({ ...h.state, units: new Map([...h.state.units, ...[routed.enemy].map(unit => [unit.id, unit])]) });
-  const previous = h.state;
-  const progress = previous.units.get(1).route.main;
-  h.commit({ ...h.state, units: new Map([...h.state.units, ...[{
-    ...h.state.units.get(1), vitality: { ...h.state.units.get(1).vitality, hp: 90 },
-  }].map(unit => [unit.id, unit])]) });
-  assert.notEqual(h.state.units, previous.units);
-  assert.equal(h.state.occupancy, previous.occupancy);
-  assert.equal('blockingRelations' in h.state, false);
-  assert.equal(h.state.navigation, previous.navigation);
-  assert.equal(h.state.units.get(1).route.main, progress);
-  assert.equal(unitsAt(h.state, [0, 0])[0].vitality.hp, 90);
-  assert.equal(unitsAt(previous, [0, 0])[0].vitality.hp, 100);
-  assert.equal(previous.units.get(1).vitality.hp, 100);
-});
-
-
-test('explicit Blocking settlement retains or releases by tile permission independently of passability', () => {
-  const passableMasks = ['ALL', 'FLY_ONLY', 'WALK_ONLY', 'NONE'];
-  const map = createMap(1, 8, tileEntries([true, false].flatMap(meleeBlockable =>
-    passableMasks.map(passableMask => coreGround({ meleeBlockable, passableMask })))));
-  const blocker = projectionUnit(10, [0, 0], {
-    vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ALLY' }, blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 1 },
-  });
-  const enemy = projectionUnit(11, [0.1, 0], {
-    vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ENEMY' }, blockable: { volume: 1 },
-    layer: { type: 'GROUND' },
-  });
-  const initial = addUnit(addUnit(createBattleState(createField(map)), blocker), enemy);
-  const acquired = blocking.search(initial, units.ref(blocker));
-  const entry = acquired.battlefield.units.get(10).blocker.blocked[0];
-  assert.deepEqual(blockedIds(acquired), [11]);
-  for (let column = 0; column < passableMasks.length; column++) {
-    const retained = blocking.maintainAll(updateUnit(acquired, [{ ...acquired.battlefield.units.get(10), position: [column, 0] }]));
-    assert.equal(retained.battlefield.units.get(10).blocker.blocked[0], entry, passableMasks[column]);
-  }
-
-  for (const position of [[4, 0], [5, 0], [6, 0], [7, 0], [-1, 0]]) {
-    const changed = blocking.maintainAll(updateUnit(acquired, [{ ...acquired.battlefield.units.get(10), position }]));
-    assert.deepEqual(blockedIds(changed), []);
-    assert.deepEqual(blockedIds(acquired), [11]);
-  }
-  const hidden = blocking.maintainAll(updateUnit(acquired, [{
-    ...acquired.battlefield.units.get(10), position: [1e30, 0], spatialPresence: { present: false },
-  }]));
-  assert.deepEqual(blockedIds(hidden), []);
-});
-
-
-test('selective and full field projection derive current occupancy independently of blocking', () => {
-  const h = battlefieldProjectionHarness();
-  const rider = projectionUnit(10, [1, 0], {}, {
-    spatialPresence: { present: true }, occupancy: { tile: projectionTile(1) },
-  });
-  const platform = projectionUnit(12, [1, 0], {
-    occupancy: { slot: 'SUPPORT', hooks: [] },
-  }, { spatialPresence: { present: true }, occupancy: { tile: projectionTile(1) } });
-  const registered = h.commit({ ...h.state, units: new Map([[10, rider], [12, platform]]) });
-  assert.deepEqual(registered, new Map([[1, { occupant: { id: 10 }, support: { id: 12 } }]]));
-  const cleared = h.commit({ ...h.state, units: new Map([...h.state.units, [12, {
-    ...h.state.units.get(12), occupancy: { ...(h.state.units.get(12)).occupancy, tile: null },
-  }]]) });
-  assert.deepEqual(cleared, new Map([[1, { occupant: { id: 10 }, support: null }]]));
-  const restored = h.commit({ ...h.state, units: new Map([...h.state.units, [12, platform]]) });
-  assert.deepEqual(restored, new Map([[1, { occupant: { id: 10 }, support: { id: 12 } }]]));
-  const removed = h.commit({ ...h.state, units: new Map([...h.state.units].filter(([id]) => id !== 12)) });
-  assert.deepEqual(removed, new Map([[1, { occupant: { id: 10 }, support: null }]]));
-  assert.equal('blockingRelations' in h.state, false);
-});
-
-
-test('explicit Blocking settlement preserves relation history and releases current eligibility changes', () => {
-  const blocker = projectionUnit(10, [1, 0], {
-    vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ALLY' }, blocker: { layer: "GROUND", rules: [sides("ENEMY")], capacity: 2, radius: 1 },
-  });
-  const enemy = projectionUnit(11, [1.1, 0], {
-    vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: 'ENEMY' }, blockable: { volume: 1 }, layer: { type: 'GROUND' },
-  });
-  const acquired = blocking.search(blockingFixture([blocker, enemy]), units.ref(blocker));
-  const first = acquired.battlefield.units.get(10).blocker.blocked[0];
-  const moved = updateUnit(acquired, [{ ...acquired.battlefield.units.get(11), position: [4, 1] }]);
-  assert.equal(moved.battlefield.units.get(10).blocker.blocked[0], first);
-  const released = blocking.release(acquired, blocking.relations(acquired, units.ref(enemy)));
-  assert.deepEqual(blockedIds(released), []);
-  const reacquired = blocking.search(released, units.ref(blocker));
-  assert.deepEqual(blockedIds(reacquired), [11]);
-  assert.notEqual(reacquired.battlefield.units.get(10).blocker.blocked[0], first);
-
-  const mutations = [
-    battle => blocking.maintainAll(updateUnit(battle, [{ ...units.get(battle, { id: 11 }), allegiance: { side: 'ALLY' } }])),
-    battle => blocking.maintainAll(updateUnit(battle, [{ ...units.get(battle, { id: 11 }), layer: { type: 'AIR' } }])),
-    battle => applyUnitChanges(battle, [blockableOperations.setVolumeContribution({ id: 11 }, { id: 'larger', value: 2 })]),
-    battle => applyUnitChanges(battle, [blockableOperations.setRule({ id: 11 }, { id: 'unblockable', allows: () => false })]),
-  ];
-  for (const mutate of mutations) {
-    const changed = mutate(acquired);
-    assert.deepEqual(blockedIds(changed), []);
-    assert.deepEqual(blockedIds(acquired), [11]);
-  }
-  for (const change of [
-    battle => applyUnitChanges(battle, [setCapacityContribution({ id: 10 }, { id: 'capacity-zero', value: [{ type: 'ZERO' }] })]),
-    battle => applyUnitChanges(battle, [setBlockerRule({ id: 10 }, { id: 'cannot-block', allows: () => false })]),
-  ]) {
-    assert.deepEqual(blockedIds(change(acquired)), []);
-  }
-});
-
-
-test('core selective and full projection preserve occupancy and reject bounds and slot conflicts atomically', () => {
-  const h = battlefieldProjectionHarness();
-  h.commit({ ...h.state, units: new Map([...h.state.units, ...[battlefieldUnit(10, [0, 0])].map(unit => [unit.id, unit])]) });
-  const reserved = projectionUnit(11, [1, 0], {}, { spatialPresence: { present: false },
-    occupancy: { tile: projectionTile(1) } });
-  h.commit({ ...h.state, units: new Map([...h.state.units, ...[reserved].map(unit => [unit.id, unit])]) });
-  const hiddenField = h.state;
-  const occupancy = h.state.occupancy;
-  h.commit({ ...h.state, units: new Map([...h.state.units, ...[{
-    ...h.state.units.get(11), position: Object.freeze([1e30, 0]),
-  }].map(unit => [unit.id, unit])]) });
-  assert.deepEqual(h.state.units.get(11).position, [1e30, 0]);
-  assert.deepEqual(unitsAt(h.state, [0, 1]), []);
-  assert.equal(h.state.occupancy, occupancy);
-  assert.equal(h.state.occupancy.get(1).occupant.id, 11);
-  h.commit({ ...h.state, units: new Map([...h.state.units, ...[{
-    ...h.state.units.get(11), position: Object.freeze([1, 0]), spatialPresence: { present: true },
-  }].map(unit => [unit.id, unit])]) });
-  assert.deepEqual(unitsAt(h.state, [0, 1]).map(unit => unit.id), [11]);
-  assert.deepEqual(unitsAt(hiddenField, [0, 1]), []);
-  h.commit({ ...h.state, units: new Map([...h.state.units, ...[{
-    ...h.state.units.get(11), position: Object.freeze([1e30, 0]), spatialPresence: { present: false },
-  }].map(unit => [unit.id, unit])]) });
-  assert.deepEqual(unitsAt(h.state, [0, 1]), []);
-  h.reject({ ...h.state, units: new Map([...h.state.units, ...[projectionUnit(12, [2, 0], {}, {
-    occupancy: { tile: projectionTile(1) },
-  })].map(unit => [unit.id, unit])]) }, /occupancy slot is already occupied/);
-  h.reject({ ...h.state, units: new Map([...h.state.units, ...[projectionUnit(12, [2, 0], {}, {
-    spatialPresence: { present: false }, occupancy: { tile: projectionTile(99) },
-  })].map(unit => [unit.id, unit])]) }, /occupancy tile is outside/);
-  h.commit({ ...h.state, units: new Map([...h.state.units, ...[battlefieldUnit(12, [0, 0])].map(unit => [unit.id, unit])]) });
-  const reregistered = h.state.units.get(10);
-  h.commit({ ...h.state, units: new Map([...h.state.units].filter(([id]) => id !== 10)) });
-  h.commit({ ...h.state, units: new Map([...h.state.units, [reregistered.id, reregistered]]) });
-  assert.deepEqual([...h.state.units.keys()], [11, 12, 10]);
-  assert.deepEqual(unitsAt(h.state, [0, 0]).map(unit => unit.id), [12, 10]);
-});
-
-
 const coreGround = (overrides = {}) => createTile({
   heightType: 'LOWLAND', meleeBlockable: true, buildableType: 'MELEE', passableMask: 'ALL',
   terrain: normal.create({}), walkCost: 1, advancedBuildableMask: 1, ...overrides,
@@ -395,7 +135,6 @@ test('core battlefield maps retain validated internal coordinates and enforce ma
   assert.equal(map.blockEdges[0].blockMask, 'WALK_ONLY');
   assert.equal(get(map, [0, 2]), undefined);
   assert.throws(() => createMap(1, 2, tileEntries([coreGround(), ,])), RangeError);
-  assert.throws(() => createMap(Number.MAX_SAFE_INTEGER, 2, tileEntries([])), RangeError);
   assert.throws(() => createMap(1, 2, tileEntries([coreGround()])), RangeError);
   assert.throws(() => createMap(1, 1, tileEntries([coreGround()]), [{ type: 'START', position: [0, 1] }]), /outside the map/);
   assert.throws(() => createMap(1, 1, tileEntries([coreGround()]), [,]), TypeError);
@@ -479,9 +218,6 @@ test('raw tile mechanisms require controller inputs and explicit consumption of 
   } });
   assert.deepEqual(consumed, [[[0, 0], 'isValidHand']]);
 });
-
-
-
 
 
 const coreMove = column => ({ type: 'MOVE', position: [0, column], offset: [0, 0] });

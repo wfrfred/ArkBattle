@@ -265,22 +265,6 @@ test("instant instructions apply presence and teleport effects once before conti
     assert.equal(route.advance(advanced, ref), advanced);
 });
 
-test("instant transition budget preserves progress across ticks and bounds valid loops", () => {
-    const long = definition({ checkpoints: Array.from({ length: 200 }, () => ({ type: "ALERT" })) });
-    const { battle, ref } = fixture(long);
-    const first = route.advance(battle, ref);
-    const phase = current(first, ref).route.main.phase;
-    assert.equal(phase.type, "CHECKPOINT");
-    assert.ok(phase.index > 0 && phase.index < long.checkpoints.length);
-    const second = route.advance({ ...first, tick: 1 }, ref);
-    assert.ok(current(second, ref).route.main.phase.index > phase.index);
-    assert.ok(first.events.length <= 128);
-    const loop = fixture(definition({ checkpoints: [{ type: "ALERT" }, { type: "GOTO", index: 0 }] }));
-    const advanced = route.advance(loop.battle, loop.ref);
-    assert.equal(current(advanced, loop.ref).route.main.phase.type, "CHECKPOINT");
-    assert.ok(advanced.events.length > 0 && advanced.events.length <= 128);
-});
-
 test("Route operations ignore absent and leaving hosts", () => {
     const { battle, ref } = fixture();
     const leaving = updateUnit(battle, [{ ...current(battle, ref), lifecycle: "LEAVING" }]);

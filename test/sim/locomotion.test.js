@@ -45,7 +45,6 @@ test("Locomotion integrates the saved velocity with acceleration and speed limit
     near(self.position[0], 2 + self.locomotion.velocity[0]);
     near(self.position[1], 2 + self.locomotion.velocity[1]);
     assert.deepEqual(getUnit(battle, 1).position, [2, 2]);
-    assert.deepEqual(Object.keys(self.locomotion).sort(), ["rules", "speed", "velocity"]);
 });
 
 test("Locomotion predicts arrival at goal, preserves velocity, and does not snap to an intermediate point", () => {

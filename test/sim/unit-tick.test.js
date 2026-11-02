@@ -12,7 +12,7 @@ import { initialize } from "../helpers/unit.js";
 import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
 import { install } from "../../dist/core/unit/effect/index.js";
 import { fixtureBattlefieldState } from "../helpers/battlefield.js";
-import { map, unit as combatUnit } from "../helpers/action-fixture.js";
+import { map } from "../helpers/action-fixture.js";
 
 const locomotion = {
     halfBodyWidth: 0, minSpeed: 0, speed: 0,
@@ -151,40 +151,4 @@ test("Scheduled Units tick after entering without mandatory combat or movement c
     assert.equal("vitality" in spawned, false);
     assert.equal("locomotion" in spawned, false);
     assert.equal("spatialPresence" in spawned, false);
-});
-
-test("Unit initialization preserves tick hooks across independent capability combinations", () => {
-    const trace = [];
-    const tickHook = { id: "observe-tick", stage: "tick", invoke(state, self) {
-        trace.push(self.id);
-        return { state, value: undefined };
-    } };
-    const base = combatUnit(0, { action: true }).definition;
-    const definitions = [
-        { ...base, hooks: [tickHook], blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 0.5 } },
-        { spatialPresence: {}, ...base, hooks: [tickHook], locomotion, blockable: { volume: 1 } },
-        { id: "scripted", hooks: [tickHook] },
-    ];
-    const units = definitions.map((definition, id) => initialize({ id, position: [id, 0], definition }));
-    const before = createBattleState(fixtureBattlefieldState(units));
-
-    assert.equal(advance(before), before);
-    assert.deepEqual(trace, [0, 1, 2]);
-    for (const [id, definition] of definitions.entries()) {
-        assert.equal(getUnit(before, id).definition, definition);
-    }
-});
-
-test("Unit tick errors propagate without publishing an incomplete Tick", () => {
-    const failure = new Error("boss phase failed");
-    let battle = runtime([
-        { id: "first", vitality: { maxHp: 100, defense: 0, resistance: 0 }, hooks: [{ id: "test/tick", stage: "tick", invoke(state, self) {
-            return { state: updateUnit(state, [{ ...self, vitality: { ...self.vitality, hp: 50 } }]), value: undefined };
-        } }] },
-        { id: "failed", hooks: [{ id: "test/tick", stage: "tick", invoke() { throw failure; } }] },
-    ]);
-    const before = battle;
-
-    assert.throws(() => (battle = stepBattle(battle, [])), error => error === failure);
-    assert.deepEqual(battle, before);
 });

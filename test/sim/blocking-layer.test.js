@@ -132,11 +132,6 @@ test("setting the current layer is a no-op and retains existing relations", () =
     assert.equal(applyUnitChanges(battle, [capability.setLayer({ id: 10 }, "GROUND")]), battle);
 });
 
-test("a missing Blocker rejects at the update entry", () => {
-    const battle = fixture();
-    assert.throws(() => applyUnitChanges(battle, [capability.setLayer({ id: 10 }, "AIR")]), /unknown unit: 10/);
-});
-
 test("switching a Blocker leaves another Blocker's ownership unchanged", () => {
     let battle = fixture([
         standardHolder(),

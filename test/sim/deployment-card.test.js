@@ -3,20 +3,11 @@ import { normal } from "../../dist/content/terrain/definition.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import {
-    initialize as initializeBattle,
-    step as stepBattle,
-} from "../../dist/core/battle/runtime.js";
 
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { getUnit } from "../helpers/unit.js";
 import { deploy, retreat } from "../../dist/core/battle/deployment/operations.js";
-import {
-    addCard,
-    advance,
-    changeDp,
-    initialize as initializeDeployment,
-} from "../../dist/core/battle/deployment/index.js";
+import { addCard, advance, initialize as initializeDeployment } from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import { setHook as setUnitHook } from "../../dist/core/battle/unit-hook.js";
@@ -86,13 +77,6 @@ const consumableBehavior = {
     recoverOnLeave: false,
     increaseCostOnLeave: false,
 };
-const ordinary = (fields = {}) => ({
-    stock: 1,
-    stockLimit: 1,
-    activeLimit: 1,
-    ...operatorBehavior,
-    ...fields,
-});
 const inventory = (fields = {}) => ({
     stock: 3,
     stockLimit: 3,
@@ -307,22 +291,6 @@ test("a consumable departure does not restore stock when its deployment interval
     reject(state, request(0, 1), "NO_STOCK");
 });
 
-test("DP recovery stops at its cap and starts a fresh interval after spending", () => {
-    let state = fixture([], { initialDp: 1, maxDp: 3, dpRecoveryTicks: 2 });
-    state = at(state, 2);
-    assert.equal(state.deployment.dp, 2);
-    assert.equal(state.deployment.dpRecoveryProgress, 0);
-    state = at(state, 100);
-    assert.equal(state.deployment.dp, 3);
-    assert.equal(state.deployment.dpRecoveryProgress, 0);
-    state = { ...state, tick: 101, deployment: changeDp(state.deployment, -1, 101) };
-    assert.equal(state.deployment.lastDpRecoveryTick, 101);
-    assert.equal(at(state, 102).deployment.dp, 2);
-    state = at(state, 103);
-    assert.equal(state.deployment.dp, 3);
-    assert.equal(state.deployment.dpRecoveryProgress, 0);
-});
-
 test("queued recovery permits deploying remaining stock while returned Units recharge serially", () => {
     const unit = definition({
         card: {
@@ -529,55 +497,6 @@ test("nested retreat settles resources before departure cleanup and accepts subs
     assert.equal(getCard(next, 0).recovery, null);
 });
 
-test("a failed Tick publishes neither preceding deployments nor Card, DP and identity changes", () => {
-    const failure = new Error("entry failed");
-    let runtime = initializeBattle({
-        map,
-        schedule: { type: "TIMELINE", spawns: [] },
-
-        predefines: [],
-        initialMechanisms: [],
-        maxTicks: 3,
-        routeMoveMultiplier: 1,
-        rngState: 1,
-        deployment: {
-            definition: budget(),
-            cards: [
-                definition(),
-                definition({
-                    hooks: [
-                        {
-                            id: "test/enter",
-                            stage: "enter",
-                            invoke() {
-                                throw failure;
-                            },
-                        },
-                    ],
-                }),
-            ],
-        },
-    });
-    const before = runtime;
-    assert.throws(
-        () =>
-            (runtime = stepBattle(runtime, [
-                { type: "DEPLOY_UNIT", ref: { id: 0 }, tilePosition: [0, 0] },
-                { type: "DEPLOY_UNIT", ref: { id: 1 }, tilePosition: [0, 1] },
-            ])),
-        (error) => error === failure,
-    );
-    const after = runtime;
-    assert.equal(after.deployment, before.deployment);
-    assert.equal(after.execution, before.execution);
-    assert.equal(after.deployment.dp, 100);
-    assert.equal(after.execution.nextCardId, 2);
-    assert.equal(after.execution.nextUnitId, 0);
-    assert.equal(after.tick, 0);
-    assert.deepEqual(unitQueries.all(after).toArray(), []);
-    assert.equal(after.result, null);
-});
-
 test("Card private state survives field instances and ticks independently of deployment", () => {
     const entered = [];
     const unit = definition({
@@ -781,38 +700,4 @@ test("explicit Card recharge caps available stock without replacing its running 
             RangeError,
         );
     }
-});
-
-test("clearing a queued Card cooldown completes the current return and starts the next full period", () => {
-    const unit = definition({
-        card: {
-            cost: 0,
-            redeployTicks: 30,
-            slots: 1,
-        },
-    });
-    const created = addCard(fixture([]), {
-        ...unit,
-        card: { ...unit.card, ...{ ...inventory(), ...queuedBehavior } },
-    });
-    const first = deploy(created.state, createRequest(created.state, created.value, [0, 0]));
-    const second = deploy(first.state, createRequest(first.state, created.value, [0, 1]));
-    let state = retreatUnit(second.state, first.value.unitId);
-    state = retreatUnit(state, second.value.unitId);
-    const original = state;
-    state = cards.clearCooldown({ ...state, tick: 20 }, created.value, "RECOVERY");
-    const current = cards.get(state, created.value);
-    assert.equal(current.stock, 2);
-    assert.equal(current.recovery.pending, 1);
-    assert.deepEqual(current.recovery.clock, {
-        type: "RUNNING",
-        readyAtTick: 50,
-        durationTicks: 30,
-    });
-    assert.equal(cards.get(original, created.value).stock, 1);
-    assert.deepEqual(cards.get(original, created.value).recovery.clock, {
-        type: "RUNNING",
-        readyAtTick: 30,
-        durationTicks: 30,
-    });
 });

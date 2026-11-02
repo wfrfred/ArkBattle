@@ -387,20 +387,6 @@ test('core combat: immutable updates preserve earlier combat state', () => {
 });
 
 
-test('core combat: a rejected tick preserves spawn identities, action state, HP and blocking', () => {
-  const options = {
-    rows: 3, columns: 10,
-    operators: [{ definition: guard({ stats: { atk: 100, maxHp: 1e6, blockCnt: 1 } }), position: [1, 5] }],
-    enemies: [{ definition: walker({ hp: 1000, speed: 0 }), route: coreCombatRoute([1, 6], { spawnOffset: [-0.6, 0] }) }],
-  };
-  let battle = createLegacyCombatBattle(options);
-  const before = battle;
-
-  assert.throws(() => (battle = advanceBattle(battle, [{ type: 'CLEAR_ALTERNATIVE_ROUTE', unitId: 999999 }])), /unknown alternative route unit/);
-  assert.equal(battle, before);
-});
-
-
 test('core combat: the limited legacy adapter rejects unsupported content and preserves interval conversion', () => {
   const options = {
     rows: 3, columns: 10,

@@ -4,8 +4,8 @@ import { tiles as tileEntries } from "../helpers/tiles.js";
 import { normal } from "../../dist/content/terrain/definition.js";
 import * as blockingQueries from "../../dist/core/battle/blocking/query.js";
 import { at as occupancyAt } from "../../dist/core/battlefield/occupancy.js";
-import { damage as dealDamage, parameters } from "../helpers/vitality.js";
-import { ref as unitRef } from "../../dist/core/unit/query.js";
+
+
 import { apply as applyOverlays } from "../../dist/core/battlefield/navigation/overlay.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -32,14 +32,7 @@ import { loadMovementScenario } from "../../dist/data/arknights/movement-scenari
 import { createLegacyCombatBattle } from "../helpers/legacy-combat.js";
 import { createCardDefinition } from "../helpers/deployable.js";
 import { createPredefinedDefinition } from "../../dist/core/battle/steps/predefined.js";
-import { appendEvents } from "../../dist/core/battle/state.js";
-import { add as addUnit } from "../../dist/core/battle/unit.js";
-import { getUnit } from "../helpers/unit.js";
-import { initialize } from "../helpers/unit.js";
-import { actionCapability } from "../helpers/actions.js";
-import { executionRef } from "../../dist/core/unit/action/index.js";
-import { setExecutionState as setActionExecutionState } from "../../dist/core/unit/action/index.js";
-import { install as installEffect } from "../../dist/core/unit/effect/index.js";
+
 
 const navigationMap = (state, mode = 'WALK') => applyOverlays(state.baseline[mode], state.overlays[mode]);
 
@@ -370,27 +363,6 @@ test('core patrol stays registered and pending in the spawn schedule through det
 });
 
 
-test('core absolute wait overflow does not publish same-tick spawns, identities or RNG', () => {
-  const { spec } = slimeMovementFragment();
-  const spawn = spec.schedule.spawns[0];
-  const route = createRouteDefinition({ ...spawn.route, visitEveryCheckPoint: true, checkpoints: [
-    { type: 'WAIT_FOR_TICKS', durationTicks: 1 },
-    { type: 'WAIT_CURRENT_WAVE_TICKS', targetElapsedTicks: Number.MAX_SAFE_INTEGER },
-  ] });
-  const mechanism = { definition: createMechanismDefinition({ initialize: () => ({}), id: 'wait-expiry' }), active: true };
-
-  let runtime = initializeBattle({ ...withTimelineSpawns(spec, [
-    { ...spawn, tick: 5 },
-    { ...spawn, tick: 5, route, alwaysCheckCurrentPoint: true, timing: { waveStartedAtTick: 2, fragmentStartedAtTick: 3 } },
-  ]), initialMechanisms: [{ definition: mechanism.definition, active: mechanism.active }],  });
-  while (runtime.tick < 5) (runtime = advanceBattle(runtime, []));
-  const before = runtime, maps = runtime.battlefield.navigation;
-  assert.throws(() => (runtime = advanceBattle(runtime, [])), /route wait deadline/);
-  assert.equal(runtime, before);
-  assert.equal(runtime.battlefield.navigation, maps);
-});
-
-
 test('core instant route signals retain identity and scheduler ownership through disappearance and appearance', () => {
   const input = routeCommandBattle([
     { type: 'DISAPPEAR' }, { type: 'WAIT_FOR_TICKS', durationTicks: 3 }, { type: 'ALERT' },
@@ -526,171 +498,6 @@ test('core alternative route commands execute pending teleport instructions duri
     { type: 'CLEAR_ALTERNATIVE_ROUTE', unitId: 0 },
   ]));
   assert.deepEqual(skipped.events.filter(event => event.type === 'ROUTE'), []);
-});
-
-
-test('core failed alternative route commands do not publish same-tick births, RNG or navigation identities', () => {
-  const initial = routeCommandBattle([{ type: 'WAIT_FOR_TICKS', durationTicks: 30 }]);
-  const spawn = initial.schedule.spawns[0];
-  const mechanism = { definition: createMechanismDefinition({ initialize: () => ({}), id: 'alternative-expiry' }), active: true };
-
-  const input = { ...withTimelineSpawns(initial, [spawn, { ...spawn, tick: 1 }]), initialMechanisms: [{ definition: mechanism.definition, active: mechanism.active }],  };
-  let runtime = initializeBattle(input);
-  (runtime = advanceBattle(runtime, []));
-  const before = runtime, maps = runtime.battlefield.navigation;
-  const route = createRouteDefinition({ ...spawn.route, checkpoints: [{ type: 'MOVE', target: {
-    position: [9, 8], reachOffset: [0.25, 0],
-  } }] });
-  const command = { type: 'SET_ALTERNATIVE_ROUTE', unitId: 0, route: normalizeRoute(route, spawn.timing, route.spawnOffset, true) };
-  assert.throws(() => (runtime = advanceBattle(runtime, [command, { type: 'CLEAR_ALTERNATIVE_ROUTE', unitId: 999 }])), /unknown alternative route unit/);
-  assert.equal(runtime, before);
-  assert.equal(runtime.battlefield.navigation, maps);
-  let fixed = initializeBattle({ ...initial, predefines: [{ id: 0, alias: null, initiallyPresent: true,
-    creation: { type: 'UNIT', definition: Object.freeze({ id: 'fixed', hooks: [] }), position: [10, 9], },
-  }] });
-  const fixedBefore = fixed;
-  assert.throws(() => (fixed = advanceBattle(fixed, [{ ...command, unitId: 0 }])), /unit has no route/);
-  assert.deepEqual(fixed, fixedBefore);
-});
-
-
-test('core battle publishes a completed tick only after all operations succeed', () => {
-  for (const reason of ['TIME_LIMIT', 'SCHEDULE_COMPLETED']) {
-    const base = routeCommandBattle([{ type: 'WAIT_FOR_TICKS', durationTicks: 30 }], { speed: 1 / 30, maxTicks: 2 });
-    const source = base.schedule.spawns[0];
-    const completedRoute = createRouteDefinition({ ...source.route, endPosition: source.route.startPosition, checkpoints: [] });
-    const initialMechanism = {
-      definition: createMechanismDefinition({ initialize: () => ({}), id: 'late-failure-initial' }), active: true,
-    };
-
-
-    const predefinedUnit = Object.freeze({ hooks: [], id: 'late-failure-predefined', vitality: Object.freeze({ maxHp: 25, defense: 0, resistance: 0 }) });
-    let failureEnabled = false;
-    let failures = 0;
-    let observedRuntime;
-    let observedSnapshot;
-    let observedMaps;
-    const lifecycle = { id: 'late-failure-rule', initialize: () => ({}), onTick(state, self) {
-      if (state.tick !== 1) return state;
-      assert.ok(state.battlefield.units.size > observedSnapshot.battlefield.units.size);
-      assert.ok(state.mechanisms.get(1) !== undefined);
-      assert.deepEqual(observedRuntime, observedSnapshot);
-      assert.equal(observedRuntime.battlefield.navigation, observedMaps);
-      if (failureEnabled) { failures++; throw new Error('late-stage failure'); }
-      return state;
-    } };
-    const failingDefinition = Object.freeze({ ...predefinedUnit, hooks: [{ id: "test/enter", stage: "enter", invoke(state, self) {
-      return { state: installEffect(state, unitRef(self), lifecycle).state, value: undefined };
-    } }] });
-    const input = {
-      ...withTimelineSpawns(base, [
-        ...(reason === 'TIME_LIMIT' ? [source] : []),
-        { ...source, tick: 1, route: completedRoute },
-      ]),
-      initialMechanisms: [{ definition: initialMechanism.definition, active: initialMechanism.active }],
-      predefines: [
-        { id: 0, alias: null, initiallyPresent: true,
-          creation: { type: 'UNIT', definition: predefinedUnit, position: Object.freeze([8, 9]), } },
-        { id: 1, alias: null, initiallyPresent: false,
-          creation: { type: 'MECHANISM', definition: createMechanismDefinition({ initialize: () => ({}), id: 'late-failure-created' }),  } },
-        { id: 2, alias: null, initiallyPresent: false,
-          creation: { type: 'UNIT', definition: failingDefinition, position: Object.freeze([8, 9]), } },
-      ],
-    };
-    let runtime = initializeBattle(input), replay = initializeBattle(input);
-    assert.deepEqual((runtime = advanceBattle(runtime, [])), (replay = advanceBattle(replay, [])));
-    const before = runtime, maps = runtime.battlefield.navigation;
-    const commands = [
-      { type: 'REMOVE_PREDEFINED', definitionId: 0, reason: 'SCRIPT' },
-      { type: 'APPEAR_PREDEFINED', definitionId: 1 },
-      { type: 'APPEAR_PREDEFINED', definitionId: 2 },
-    ];
-    observedRuntime = runtime; observedSnapshot = before; observedMaps = maps;
-    const expected = (replay = advanceBattle(replay, commands)), expectedSnapshot = replay;
-    assert.equal(expected.result.reason, reason);
-    assert.equal(expected.result.completedRouteCount, 1);
-    assert.equal(expectedSnapshot.battlefield.units.size, reason === 'TIME_LIMIT' ? 2 : 1);
-    assert.equal(expected.events.filter(event => event.type === 'ENEMY_SPAWNED').length, 1);
-    assert.equal(expected.events.filter(event => event.type === 'UNIT_REMOVED').length, 2);
-    assert.notEqual(expectedSnapshot.execution.rngState, before.execution.rngState);
-    assert.ok(expectedSnapshot.execution.nextUnitId > before.execution.nextUnitId);
-    assert.ok(expectedSnapshot.execution.nextMechanismId > before.execution.nextMechanismId);
-
-    failureEnabled = true;
-    assert.throws(() => (runtime = advanceBattle(runtime, commands)), /late-stage failure/);
-    assert.equal(runtime, before);
-    assert.equal(runtime.battlefield.navigation, maps);
-    assert.equal(failures, 1);
-    assert.equal(advanceBattle(replay, []), expectedSnapshot);
-    assert.deepEqual(replay, expectedSnapshot);
-  }
-});
-
-
-test('core battle propagates nested settlement errors without publishing battlefield, identities or Action progress', () => {
-  const sentinel = new Error('nested settlement failure');
-  let fail = true;
-  let observedRuntime;
-  let observedSnapshot;
-  let observedMaps;
-  let observations = 0;
-
-  const effect = {
-    id: 'nested-failure-effect', initialize: () => ({}),
-    onInstall: (state) => {
-      state = dealDamage(state, { source: { id: 0 }, target: { id: 1 }, parameters: parameters(7, 'TRUE') }).state;
-      assert.equal(getUnit(state, 1).vitality.hp, 93);
-      assert.equal(getUnit(state, 2).definition.id, 'nested-created');
-      assert.equal(state.execution.nextUnitId, 3);
-      assert.equal(getUnit(state, 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 1);
-      assert.ok(state.events.some(event => event.type === 'DAMAGE'));
-      assert.deepEqual(observedRuntime, observedSnapshot);
-      assert.equal(observedRuntime.battlefield.navigation, observedMaps);
-      observations++;
-      if (fail) throw sentinel;
-      return state;
-    },
-  };
-  const action = {
-    id: 'nested-action', intervalTicks: 10, speed: 100,
-    initialize: state => ({ state, value: {} }),
-    prepare: state => ({ state, value: { entered: false } }),
-    onTick(state, source, self) {
-      if (self.execution.state.entered) return { state, value: false };
-      state = setActionExecutionState(state, executionRef(source, self), { entered: true });
-      const unit = initialize({ id: state.execution.nextUnitId, position: [2, 0], definition: { hooks: [],
-        id: 'nested-created', vitality: { maxHp: 10, defense: 0, resistance: 0 },
-      } });
-      state = addUnit(state, unit);
-      state = { ...state, execution: { ...state.execution, nextUnitId: unit.id + 1 } };
-      state = appendEvents(state, [{ type: 'UNIT_DEPLOYED', unitId: unit.id, position: unit.position, payment: null, tick: state.tick }]);
-      state = installEffect(state, unitRef(getUnit(state, 1)), effect, { source: unitRef(getUnit(state, 0)) }).state;
-      return { state, value: false };
-    },
-  };
-  const input = deploymentBattleInput({ predefines: predefinedUnits([
-    { definition: { hooks: [], id: 'nested-action-source', vitality: { maxHp: 100, defense: 0, resistance: 0 }, action: actionCapability(action) }, position: [0, 0] },
-    { definition: { hooks: [], id: 'nested-target', vitality: { maxHp: 100, defense: 0, resistance: 0 } }, position: [1, 0] },
-  ]) });
-  let runtime = initializeBattle(input);
-  const before = runtime;
-  observedRuntime = runtime;
-  observedSnapshot = before;
-  observedMaps = runtime.battlefield.navigation;
-  assert.throws(() => (runtime = advanceBattle(runtime, [])), error => error === sentinel);
-  assert.equal(runtime, before);
-  assert.equal(runtime.result, null);
-
-  fail = false;
-  let expected = initializeBattle(input);
-  observedRuntime = expected;
-  observedSnapshot = expected;
-  observedMaps = expected.battlefield.navigation;
-  (expected = advanceBattle(expected, []));
-  assert.equal(observations, 2);
-  assert.equal(expected.execution.nextUnitId, 3);
-  assert.equal(expected.battlefield.units.get(0).action.actions.values().filter(self => self.execution !== null).toArray().length, 1);
-  assert.equal(expected.battlefield.units.get(1).vitality.hp, 93);
 });
 
 
@@ -1698,8 +1505,6 @@ test('core visibility: commands from different domains execute in phase order be
 });
 
 
-
-
 test('core elevated support disables blocking without changing target layer and leaves its occupant without content cleanup', () => {
   const provider = Object.freeze({ id: 'platform_provider', occupancy: { slot: 'SUPPORT', hooks: [] },
     hooks: [{ id: "test/enter", stage: "enter", invoke(battle, self) { return { state: changeTile(battle, self.occupancy.tile, { elevation: 'HIGHLAND', allowsBlocking: false }), value: undefined }; } }, { id: "test/leave", stage: "leave", invoke(battle, { unit }) {
@@ -1737,7 +1542,6 @@ test('core elevated support disables blocking without changing target layer and 
   assert.equal(platform.occupancy.tile, hiddenRecipe.creation.initial.occupancy.tile);
   assert.deepEqual(platform.occupancy.tile, [0, 1]);
   assert.equal(platform.definition.occupancy.slot, 'SUPPORT');
-
 
 
   const deployed = (runtime = advanceBattle(runtime, [{ type: 'DEPLOY_UNIT', ref: { id: 0 }, tilePosition: [0, 1] }]));

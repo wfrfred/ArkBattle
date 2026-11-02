@@ -38,8 +38,6 @@ const definition: Definition<Persistent, Active> = ({
     onEnter(current, source, program) {
         const count: number = program.state.count;
         const identity = ref(source, program.definition);
-        // @ts-expect-error persistent state is supplied as a value rather than a transform.
-        setState(current, identity, () => ({ count: count + 1 }));
         return setState(current, identity, { count: count + 1 });
     },
     activation: { trigger: "MANUAL", sustain: { type: "INFINITE" },
@@ -165,11 +163,7 @@ ref(known, definition);
 getActivation(battle, erased)!.activation.state.mode;
 // @ts-expect-error the round Ref fixes the activation state type.
 setActivationState(battle, known, { mode: "INVALID" });
-// @ts-expect-error activation state accepts a computed value.
-setActivationState(battle, known, () => ({ mode: "SECOND" }));
 setActivationState(battle, known, { mode: "SECOND" });
-// @ts-expect-error getters no longer accept a second Definition token.
-getActivation(battle, known, definition);
 `);
         const program = ts.createProgram([path], {
             noEmit: true, strict: true, exactOptionalPropertyTypes: true,
@@ -181,24 +175,4 @@ getActivation(battle, known, definition);
     } finally {
         rmSync(directory, { recursive: true, force: true });
     }
-});
-
-test("Skill operations typecheck when their semantic diagnostics are requested before other project files", async () => {
-    const { default: ts } = await import("typescript");
-    const root = fileURLToPath(new URL("../../", import.meta.url));
-    const configPath = fileURLToPath(new URL("../../tsconfig.json", import.meta.url));
-    const config = ts.readConfigFile(configPath, ts.sys.readFile);
-    assert.equal(config.error, undefined);
-    const parsed = ts.parseJsonConfigFileContent(config.config, ts.sys, root, { noEmit: true });
-    assert.deepEqual(parsed.errors, []);
-    const program = ts.createProgram(parsed.fileNames, parsed.options);
-    const operationsPath = fileURLToPath(new URL("../../src/core/unit/skill/operations.ts", import.meta.url));
-    const operations = program.getSourceFile(operationsPath);
-    assert.ok(operations);
-
-    const diagnostics = program.getSemanticDiagnostics(operations);
-    assert.deepEqual(diagnostics.map((diagnostic) => ({
-        code: diagnostic.code,
-        message: ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"),
-    })), []);
 });

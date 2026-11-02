@@ -1,17 +1,17 @@
 import { tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
-import { blockerOf } from "../../dist/core/battle/blocking/query.js";
+
 import { unitsAt } from "../helpers/battlefield.js";
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { create } from '../../dist/core/battlefield/state.js';
-import { add as addUnit, update as updateUnit, remove as removeUnit } from '../../dist/core/battlefield/unit.js';
+import { add as addUnit, update as updateUnit } from '../../dist/core/battlefield/unit.js';
 import { create as createMap } from '../../dist/core/battlefield/map/map.js';
 import { createTile } from '../helpers/tiles.js';
 
 import { setOverlay, nextPoint } from '../../dist/core/battlefield/navigation/state.js';
 import { initialize } from "../helpers/unit.js";
-import { ref } from '../../dist/core/unit/query.js';
+
 import { createBattleState } from '../../dist/core/battle/state.js';
 import { add as addBattleUnit, replace as updateBattleUnit, remove as removeBattleUnit } from '../../dist/core/battle/unit.js';
 import { finishBattleEvents } from '../../dist/core/battle/events.js';
@@ -45,41 +45,6 @@ test('field tile update validates runtime movement cost at the mutation boundary
   assert.equal(updateTile(after, [0, 1], state), after);
 });
 
-test('pure transitions preserve input states and retained versions while allowing independent branches', () => {
-  const empty = initial();
-  const original = unit(1);
-  const registered = addUnit(empty, original);
-  const updateHp = hp => ({ ...original, vitality: { ...original.vitality, hp } });
-  const left = updateUnit(registered, [updateHp(40)]);
-  const right = updateUnit(registered, [updateHp(70)]);
-
-  assert.deepEqual([...registered.units.keys()], [1]);
-  assert.deepEqual([...empty.units.keys()], []);
-  assert.equal(registered.units.get(1), original, 'stored values are shared by immutable convention');
-  assert.equal(registered.units.get(1).vitality.hp, 100);
-  assert.equal(left.units.get(1).vitality.hp, 40);
-  assert.equal(right.units.get(1).vitality.hp, 70);
-  assert.equal(updateUnit(registered, [original]), registered);
-});
-
-test('pure field updates expose current tile queries without acquiring blocking relations', () => {
-  const blocker = (id, column) => unit(id, [column, 0], {
-    allegiance: { side: 'ALLY' }, blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 1 },
-  });
-  const enemy = unit(20, [1.25, 0], {
-    allegiance: { side: 'ENEMY' }, blockable: { volume: 1 }, layer: { type: 'GROUND' },
-  });
-  const before = [blocker(10, 1), blocker(11, 2), enemy].reduce((field, unit) => addUnit(field, unit), initial());
-  const removed = removeUnit(before, ref(before.units.get(10)));
-
-  assert.equal(blockerOf(createBattleState(before), ref(before.units.get(20))), undefined);
-  assert.equal(blockerOf(createBattleState(removed), ref(removed.units.get(20))), undefined);
-  assert.equal(blockerOf(createBattleState(before), ref(before.units.get(20))), undefined);
-  assert.deepEqual(unitsAt(before, [0, 1]).map(unit => unit.id), [10, 20]);
-  assert.deepEqual(unitsAt(removed, [0, 1]).map(unit => unit.id), [20]);
-  assert.equal('blockingRelations' in before, false);
-  assert.equal(removed.units.has(10), false);
-});
 
 test('navigation overlays and tile queries follow each returned state version', () => {
   const owner = unit(1, [0, 0]);

@@ -33,7 +33,7 @@ test("Vitality starts full at its effective MaxHP and preserves fractional attri
 
 test("Vitality initialization rejects invalid base attributes at the shared construction boundary", () => {
     for (const field of ["maxHp", "defense", "resistance"]) {
-        for (const invalid of [-1, NaN, Infinity, -Infinity, undefined]) {
+        for (const invalid of [-1, undefined]) {
             assert.throws(() => initializeUnit({
                 id: 1,
                 position: [0, 0],

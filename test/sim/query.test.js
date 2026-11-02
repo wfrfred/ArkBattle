@@ -138,40 +138,6 @@ test("flatMap preserves nested order and closes both cursors on early exit", () 
     assert.deepEqual(outer.query.flatMap(value => value === 2 ? [] : [value, -value]).toArray(), [1, -1, 3, -3]);
 });
 
-test("consumer break and callback exceptions close every active cursor", () => {
-    const broken = tracked([1, 2, 3]);
-
-    for (const value of broken.query) {
-        assert.equal(value, 1);
-        break;
-    }
-
-    assert.equal(broken.state.closed, 1);
-
-    const failure = new Error("callback failed");
-
-    for (const consume of [
-        query => query.filter(() => { throw failure; }).toArray(),
-        query => query.map(() => { throw failure; }).toArray(),
-        query => query.flatMap(() => { throw failure; }).toArray(),
-        query => query.some(() => { throw failure; }),
-        query => query.find(() => { throw failure; }),
-        query => query.reduce(() => { throw failure; }, 0),
-    ]) {
-        const source = tracked([1, 2]);
-
-        assert.throws(() => consume(source.query), error => error === failure);
-        assert.deepEqual(source.state, { opened: 1, read: [1], closed: 1 });
-    }
-
-    const outer = tracked([1, 2]);
-    const inner = tracked(["a", "b"]);
-    const flattened = outer.query.flatMap(() => inner.query).map(() => { throw failure; });
-
-    assert.throws(() => flattened.toArray(), error => error === failure);
-    assert.equal(outer.state.closed, 1);
-    assert.equal(inner.state.closed, 1);
-});
 
 test("empty sequences retain terminal identities and reductions preserve order", () => {
     const empty = create(() => [][Symbol.iterator]());

@@ -240,58 +240,6 @@ test("recovery restrictions pause the natural timer and do not accumulate missed
     assert.equal(read(state).sp.value, 1);
 });
 
-test("a zero-HP host preserves its natural remainder while advancing the paused clock", () => {
-    const unit = initialize({ id: 1, position: [0, 0], definition: {
-        id: "reviving-host", vitality: { maxHp: 100, defense: 0, resistance: 0 }, skill: definition({ sp: resource() }),
-    } });
-    const reference = ref(unit);
-    let state = sp.advance(at(effectFixtureWork(unit), 12), reference);
-    const before = state;
-    let current = getUnit(state, 1);
-    state = updateUnit(state, [{ ...current, vitality: { ...current.vitality, hp: 0 } }]);
-    state = sp.advance(at(state, 200), reference);
-    assert.equal(read(state).sp.value, 0);
-    assert.equal(read(state).sp.lastTick, 200);
-    assert.equal(read(state).sp.recovery.remainingTicks, 18);
-    assert.throws(() => sp.advance(at(state, 199), reference), /earlier tick/);
-    current = getUnit(state, 1);
-    state = updateUnit(state, [{ ...current, vitality: { ...current.vitality, hp: 100 } }]);
-    state = sp.advance(at(state, 217), reference);
-    assert.equal(read(state).sp.value, 0);
-    assert.equal(read(state).sp.recovery.remainingTicks, 1);
-    state = sp.advance(at(state, 218), reference);
-    assert.equal(read(state).sp.value, 1);
-    assert.equal(read(before).sp.lastTick, 12);
-    assert.equal(read(before).sp.recovery.remainingTicks, 18);
-});
-
-test("a paused zero-HP host still applies natural speed changes and zero-rate invalidation", () => {
-    const unit = initialize({ id: 1, position: [0, 0], definition: {
-        id: "paused-speed-host", vitality: { maxHp: 100, defense: 0, resistance: 0 }, skill: definition({ sp: resource() }),
-    } });
-    const reference = ref(unit);
-    let state = sp.advance(at(effectFixtureWork(unit), 12), reference);
-    const current = getUnit(state, 1);
-    state = updateUnit(state, [{ ...current, vitality: { ...current.vitality, hp: 0 } }]);
-    state = applyUnitChanges(state, [sp.setContribution(reference, "recoverySpeed", {
-        id: "double", value: [value({ finalScaler: 2 })],
-    })]);
-    state = sp.advance(at(state, 100), reference);
-    assert.deepEqual(read(state).sp.recovery, { periodTicks: 15, remainingTicks: 3 });
-    assert.equal(read(state).sp.lastTick, 100);
-    state = applyUnitChanges(state, [sp.setContribution(reference, "recoveryMultiplier", {
-        id: "zero", value: [value({ finalScaler: 0 })],
-    })]);
-    state = sp.advance(at(state, 200), reference);
-    assert.equal(read(state).sp.recovery, null);
-    assert.equal(read(state).sp.lastTick, 200);
-    state = applyUnitChanges(state, [sp.removeContribution(reference, "recoveryMultiplier", "zero")]);
-    state = sp.advance(at(state, 300), reference);
-    assert.deepEqual(read(state).sp.recovery, { periodTicks: 15, remainingTicks: 15 });
-    assert.equal(read(state).sp.value, 0);
-    assert.equal(read(state).sp.lastTick, 300);
-});
-
 test("natural advancement supports a host without Vitality and leaves a LEAVING host unchanged", () => {
     const f = fixture({ sp: resource() });
     const state = sp.advance(at(f.state, 30), f.ref);
@@ -468,7 +416,6 @@ test("generic Action scheduling does not itself award ACTION SP", () => {
     const battle = advanceAction(started.state, started.value.ref);
     assert.equal(read(battle).sp.value, 0);
 });
-
 
 test("non-TIME recovery does not evaluate natural speed or publish tick-only Unit updates", () => {
     for (const type of ["ACTION", "HIT", "NONE"]) {

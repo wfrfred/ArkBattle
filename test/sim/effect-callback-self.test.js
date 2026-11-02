@@ -21,49 +21,6 @@ function fixture() {
     return battle;
 }
 
-test("Effect lifecycle callbacks receive their current instance directly and a separate end reason", () => {
-    const calls = [];
-    const observe = (name, battle, self, reason) => {
-        assert.equal(effects.get(battle, ref(self)), self);
-        assert.equal(units.get(battle, self.host).effects.get(ref(self)), self);
-        calls.push([name, self.status, self.data.count, battle.tick, reason]);
-        return battle;
-    };
-    const program = {
-        id: "direct-self",
-        initialize: () => ({ count: 0 }),
-        onInstall(battle, self) {
-            observe("install", battle, self);
-            const currentData = effects.get(battle, ref(self)).data;
-            return effects.setData(battle, ref(self), { count: currentData.count + 1 });
-        },
-        onEnable: (battle, self) => observe("enable", battle, self),
-        onDisable: (battle, self) => observe("disable", battle, self),
-        onTick(battle, self) {
-            observe("tick", battle, self);
-            const currentData = effects.get(battle, ref(self)).data;
-            return effects.setData(battle, ref(self), { count: currentData.count + 1 });
-        },
-        onEnd: (battle, self, reason) => observe("end", battle, self, reason),
-    };
-    const installed = effects.install(fixture(), { id: 1 }, program);
-    const reference = installed.value;
-    let battle = effects.advance(installed.state);
-    battle = effects.setEnabled(battle, reference, false);
-    battle = effects.setEnabled(battle, reference, true);
-    battle = effects.end(battle, reference, "TEST_END");
-    assert.deepEqual(calls, [
-        ["install", "INSTALLING", 0, 5, undefined],
-        ["enable", "ACTIVE", 1, 5, undefined],
-        ["tick", "ACTIVE", 1, 5, undefined],
-        ["disable", "INACTIVE", 2, 5, undefined],
-        ["enable", "ACTIVE", 2, 5, undefined],
-        ["disable", "ENDING", 2, 5, undefined],
-        ["end", "ENDING", 2, 5, "TEST_END"],
-    ]);
-    assert.equal(effects.get(battle, reference), undefined);
-});
-
 test("Effect onEnd receives private data updated by disable and dependent cleanup", () => {
     let parent;
     const seen = [];

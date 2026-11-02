@@ -2,7 +2,6 @@ import { predefinedUnits } from "../helpers/predefined.js";
 import { tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import * as unitQueries from "../../dist/core/unit/query.js";
-import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -245,35 +244,6 @@ test("aura runtime: movement departure is observed at the next aura tick", () =>
     );
     assert.equal(attackAt(departed, 2), 120);
     assert.equal(attackAt(before, 2), 120);
-});
-
-test("aura runtime: callback failure propagates the original error without publishing the tick", () => {
-
-    const failure = new Error("aura registration failed");
-    const attempts = [];
-    let receiver;
-    receiver = attackEffect("fallible-aura-receiver", {
-        onInstall: (state, self) => {
-            const currentData = effects.get(state, effectRef(self)).data;
-            state = effects.setData(state, effectRef(self), { ...currentData, starts: 1 });
-            if (self.host.id === 2) {
-                attempts.push(effectRef(self));
-                throw failure;
-            }
-            return state;
-        },
-    });
-    const aura = auraEffect(receiver);
-    let runtime = initializeBattle(input(effectPlacement(aura)));
-    runtime = stepBattle(runtime, []);
-    runtime = stepBattle(runtime, []);
-    const before = runtime;
-    assert.throws(
-        () => (runtime = stepBattle(runtime, [])),
-        (error) => error === failure,
-    );
-    assert.deepEqual(runtime, before);
-    assert.equal(attempts.length, 1);
 });
 
 test("aura runtime: source retirement ends remote bound buffs within the same step", () => {

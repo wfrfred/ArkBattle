@@ -29,37 +29,6 @@ test("Projectile update accepts position and state values while preserving earli
     assert.deepEqual(firstInstance.state, { count: 1 });
 });
 
-test("Projectile update writes only position and private state while preserving all unrelated facts", () => {
-    const first = create();
-    const second = projectiles.create(first.state, { id: "sibling" }, {
-        position: [3, 0], state: { label: "untouched" },
-    });
-    const original = projectilesQuery.get(second.state, first.value);
-    const sibling = projectilesQuery.get(second.state, second.value);
-    const currentProjectile = projectilesQuery.get(second.state, first.value);
-    const changed = projectiles.update(second.state, first.value, {
-        id: 999,
-        lifecycle: "ENDING",
-        definition: { id: "forbidden" },
-        position: [1, 0],
-        state: { count: currentProjectile.state.count + 1 },
-    });
-    const current = projectilesQuery.get(changed, first.value);
-
-    assert.equal(current.id, original.id);
-    assert.strictEqual(current.definition, original.definition);
-    assert.equal(current.lifecycle, "ACTIVE");
-    assert.deepEqual(current.position, [1, 0]);
-    assert.deepEqual(current.state, { count: 1 });
-    assert.strictEqual(projectilesQuery.get(changed, second.value), sibling);
-    assert.strictEqual(changed.execution, second.state.execution);
-    assert.strictEqual(changed.events, second.state.events);
-    assert.strictEqual(changed.battlefield.navigation, second.state.battlefield.navigation);
-    assert.strictEqual(changed.battlefield.units, second.state.battlefield.units);
-    assert.strictEqual(changed.battlefield.occupancy, second.state.battlefield.occupancy);
-    assert.strictEqual(changed.battlefield.map, second.state.battlefield.map);
-});
-
 test("Projectile update retains omitted fields and returns the original BattleState for unchanged references", () => {
     const created = create();
     const original = projectilesQuery.get(created.state, created.value);

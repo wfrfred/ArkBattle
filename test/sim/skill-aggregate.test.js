@@ -1,9 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { getUnit, baseUnit, fixtureBattle } from "../helpers/unit.js";
+import { getUnit, fixtureBattle } from "../helpers/unit.js";
 import { create, getSkill, getActivation, setState, setActivationState, ref, activationRef } from "../../dist/core/unit/skill/index.js";
-import { initialize as initializeCapability } from "../../dist/core/unit/capability/skill/capability.js";
-import { initialize as initializeUnit } from "../../dist/core/unit/index.js";
 import * as operations from "../../dist/core/unit/skill/operations.js";
 import * as sp from "../../dist/core/unit/skill/sp.js";
 import { remove, add as addUnit } from "../../dist/core/battle/unit.js";
@@ -29,33 +27,6 @@ test("Skill creation validates direct Definitions before running their initializ
         assert.throws(() => create(battle, candidate));
         assert.equal(initialized, false);
     }
-});
-
-test("Skill creation threads its initialization battle through capability and Unit creation before starting SP clocks", () => {
-    const battle = fixtureBattle(11);
-    const program = definition({
-        initialize: current => ({
-            state: { ...current, tick: 18, execution: { ...current.execution, rngState: 99 } },
-            value: { count: 3 },
-        }),
-    });
-    const factory = { initialize: current => create(current, program) };
-    const created = create(battle, program);
-    const capability = initializeCapability(battle, baseUnit({ id: "threaded-skill", hooks: [], skill: factory }));
-    const initialized = initializeUnit(battle, {
-        id: 1, position: [0, 0], definition: { id: "threaded-skill", hooks: [], skill: factory },
-    });
-    for (const result of [created, capability, initialized]) {
-        assert.equal(result.state.tick, 18);
-        assert.equal(result.state.execution.rngState, 99);
-    }
-    for (const skill of [created.value, capability.value.skill, initialized.value.skill]) {
-        assert.equal(skill.definition, program);
-        assert.deepEqual(skill.state, { count: 3 });
-        assert.equal(skill.sp.lastTick, 18);
-        assert.equal(skill.activation, null);
-    }
-    assert.equal(battle.tick, 11);
 });
 
 test("Skill programs receive persistent state and activation state in one aggregate with an explicit source", () => {

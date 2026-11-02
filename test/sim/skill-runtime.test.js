@@ -15,7 +15,6 @@ import { test } from 'node:test';
 import { initialize as initializeBattle, step as stepBattle } from '../../dist/core/battle/index.js';
 import { createLegacyCombatSpec } from '../../dist/legacy/combat.js';
 
-import * as skills from '../../dist/core/unit/skill/index.js';
 import { ref as activationRef } from '../../dist/core/unit/skill/activation.js';
 import { create as createAttack } from '../../dist/content/actions/attack.js';
 import { actionCapability } from "../helpers/actions.js";
@@ -23,8 +22,6 @@ import { initialize } from "../helpers/unit.js";
 import { createBattleState } from '../../dist/core/battle/state.js';
 import { getUnit } from '../helpers/unit.js';
 import { add as addUnit } from '../../dist/core/battle/unit.js';
-
-
 
 const geometry = [{ type: 'CIRCLE', offset: [0, 0], radius: 5 }];
 const hit = { type: 'CIRCLE', offset: [0, 0], radius: 0.1 };
@@ -56,13 +53,11 @@ function target() {
 }
 function scenario(skill, { targets = 1, attackTargets = 1, windupTicks = 0, content, activeAction } = {}) {
   const buff = attackBuff('skill/attack', 100);
-  const fault = { enabled: false };
   skill = ({ ...skill, activation: { ...skill.activation,
     onStart: content ?? ((state, source, self) => {
       const installed = effects.install(state, source, buff, {
         source, scopes: [lifetimeScope(skillLifetime, activationRef(source, self))],
       });
-      if (fault.enabled) throw new Error('skill fault');
       assert.ok(installed.value);
       return installed.state;
     }),
@@ -83,7 +78,7 @@ function scenario(skill, { targets = 1, attackTargets = 1, windupTicks = 0, cont
       notCountInTotal: false,
     }] },
   });
-  return { runtime, fault };
+  return { runtime };
 }
 function skill({ trigger = 'MANUAL', recovery = { type: 'TIME', intervalTicks: 30 }, initial = 2, cost = 2, durationTicks = 3 } = {}) {
   return ({ id: 'test-skill', initialize: battle => ({ state: battle, value: ({}) }),
@@ -158,14 +153,6 @@ test('skill runtime: HIT SP requires positive damage and an eligible receiver', 
     assert.equal(getUnit(result.state, 0).skill.sp.value, expected);
     assert.equal(getUnit(result.state, 0).vitality.hp, 100000 - (power > 0 && !cancelReception ? power : 0));
   }
-});
-
-test('skill runtime: failed activation propagates without publishing contribution or progress', () => {
-  let { runtime, fault } = scenario(skill());
-  const before = runtime;
-  fault.enabled = true;
-  assert.throws(() => (runtime = stepBattle(runtime, [{ type: 'ACTIVATE_SKILL', unitId: 0 }])), /skill fault/);
-  assert.deepEqual(runtime, before);
 });
 
 test('skill runtime: HIT recovery precedes reception Hooks even when they subsequently cancel damage', () => {

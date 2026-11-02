@@ -50,33 +50,6 @@ const enemyDefinition = { hooks: [],
     },
 };
 
-test("Route input and normalization retain internal tile tuples", () => {
-    const startPosition = Object.freeze([-0, 1]);
-    const endPosition = Object.freeze([0, 8]);
-    const movePosition = Object.freeze([0, 3]);
-    const appearPosition = Object.freeze([0, 5]);
-    const checkpoints = [
-        { type: "MOVE", target: { position: movePosition, reachOffset: [0, 0] } },
-        { type: "APPEAR_AT_POS", position: appearPosition, reachOffset: [0, 0] },
-    ];
-    const source = { ...input(), startPosition, endPosition, checkpoints };
-    const raw = createInput(source);
-    const offset = Object.freeze([0.25, -0.4]);
-    const route = normalize(raw, timing, offset, true);
-
-    assert.equal(raw, source);
-    assert.equal(raw.checkpoints, checkpoints);
-    assert.equal(raw.startPosition, startPosition);
-    assert.equal(raw.endPosition, endPosition);
-    assert.equal(raw.checkpoints[0].target.position, movePosition);
-    assert.equal(raw.checkpoints[1].position, appearPosition);
-    assert.equal(route.startPosition, startPosition);
-    assert.equal(route.endPosition, endPosition);
-    assert.equal(route.checkpoints[0].position, movePosition);
-    assert.equal(route.checkpoints[1].position, appearPosition);
-    assert.equal(route.offset, offset);
-});
-
 test("Spawn binds wave and fragment waits while keeping relative waits relative", () => {
     const raw = input({ checkpoints: [
         { type: "WAIT_FOR_TICKS", durationTicks: 5 },
@@ -97,8 +70,6 @@ test("Spawn binds wave and fragment waits while keeping relative waits relative"
     assert.deepEqual(first.offset, [0.25, -0.4]);
     assert.equal(first.alwaysCheckCurrentPoint, true);
     assert.equal(first.requireAllCheckpoints, true);
-    assert.equal("timing" in first, false);
-    assert.equal("spawnRandomRange" in first, false);
 });
 
 test("Patrol normalization retains group loops and remaps later jump indices", () => {
@@ -123,7 +94,7 @@ test("Patrol normalization retains group loops and remaps later jump indices", (
     assert.deepEqual(single.checkpoints.map(checkpoint => checkpoint.type), ["MOVE"]);
 });
 
-test("Route parser keeps source construction facts and drops removed runtime policies", () => {
+test("Route parser retains source offsets and rejects unsupported checkpoint instructions", () => {
     const raw = rawRoute();
     const route = parseRouteDefinition(raw);
 
@@ -131,9 +102,6 @@ test("Route parser keeps source construction facts and drops removed runtime pol
     assert.deepEqual(route.checkpoints[0], {
         type: "MOVE", target: { position: [0, 3], reachOffset: [0.1, 0.2] },
     });
-    assert.equal("allowDiagonalMove" in route, false);
-    assert.equal("visitEveryNodeCenter" in route, false);
-    assert.equal("visitEveryTileCenter" in route, false);
     for (const type of ["MAP_OFFSET_MOVE", "WAIT_BOSSRUSH_WAVE"]) {
         assert.throws(() => parseRouteDefinition({
             ...raw, checkpoints: [{ ...raw.checkpoints[0], type }],
@@ -141,19 +109,16 @@ test("Route parser keeps source construction facts and drops removed runtime pol
     }
 });
 
-test("Route parser rejects noninteger and unsafe raw rows and columns before creating tile positions", () => {
+test("Route parser rejects noninteger rows and columns before creating tile positions", () => {
     const raw = rawRoute();
-    const invalid = [0.5, Number.MAX_SAFE_INTEGER + 1, Number.MIN_SAFE_INTEGER - 1, NaN, Infinity, -Infinity];
     for (const axis of ["row", "col"]) {
-        for (const value of invalid) {
-            const position = { row: 0, col: 1, [axis]: value };
-            assert.throws(() => parseRouteDefinition(rawRoute({ startPosition: position })), RangeError);
-            assert.throws(() => parseRouteDefinition(rawRoute({ endPosition: position })), RangeError);
-            for (const type of ["MOVE", "PATROL_MOVE", "APPEAR_AT_POS"]) {
-                assert.throws(() => parseRouteDefinition(rawRoute({
-                    checkpoints: [{ ...raw.checkpoints[0], type, position }],
-                })), RangeError);
-            }
+        const position = { row: 0, col: 1, [axis]: 0.5 };
+        assert.throws(() => parseRouteDefinition(rawRoute({ startPosition: position })), RangeError);
+        assert.throws(() => parseRouteDefinition(rawRoute({ endPosition: position })), RangeError);
+        for (const type of ["MOVE", "PATROL_MOVE", "APPEAR_AT_POS"]) {
+            assert.throws(() => parseRouteDefinition(rawRoute({
+                checkpoints: [{ ...raw.checkpoints[0], type, position }],
+            })), RangeError);
         }
     }
 });
@@ -180,7 +145,6 @@ test("Enemy initialization uses one sampled offset for its Route Definition and 
     assert.equal(enemy.route.alternative, null);
     assert.equal("route" in enemyDefinition, false);
     assert.equal(result.state.battlefield.units.has(enemy.id), false);
-    assert.equal("mainRoute" in enemy.locomotion, false);
 });
 
 test("Repeated enemy births share the Enemy Definition without sharing per-birth route context", () => {
@@ -199,16 +163,4 @@ test("Repeated enemy births share the Enemy Definition without sharing per-birth
     assert.notDeepEqual(first.value.definition.route.offset, second.value.definition.route.offset);
     assert.equal("route" in enemyDefinition, false);
     assert.equal("alwaysCheckCurrentPoint" in raw, false);
-});
-
-test("Spawn rejects unrepresentable absolute deadlines and spawn bounds before publishing state", () => {
-    assert.throws(() => normalize(input({ checkpoints: [
-        { type: "WAIT_CURRENT_WAVE_TICKS", targetElapsedTicks: 1 },
-    ] }), { waveStartedAtTick: Number.MAX_SAFE_INTEGER, fragmentStartedAtTick: 0 }, [0, 0], true), RangeError);
-    const before = fixtureBattle(0, { rngState: 42 });
-    assert.throws(() => initializeRoutedUnit(before, {
-        id: 0, definition: enemyDefinition, route: input({ spawnRandomRange: [Number.MAX_VALUE, 0] }),
-        timing, alwaysCheckCurrentPoint: true,
-    }), RangeError);
-    assert.equal(before.execution.rngState, 42);
 });

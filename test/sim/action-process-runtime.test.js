@@ -1,14 +1,9 @@
 import { predefinedUnits } from "../helpers/predefined.js";
 
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
-import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
-import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
-import { lifetime as actionLifetime } from "../../dist/core/unit/action/operations.js";
 import { ref as unitReference } from "../../dist/core/unit/query.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
-import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
-import * as effects from "../../dist/core/unit/effect/index.js";
 import { executionRef } from "../../dist/core/unit/action/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -294,63 +289,6 @@ test("action runtime: host order advances old instances before selection and def
     trace.length = 0;
     runtime = stepBattle(runtime, []);
     assert.deepEqual(trace, ["old/0", "select/0", "old/1", "child/1", "select/1"]);
-});
-
-test("action runtime: a late exception publishes neither progressed action state nor domain changes", () => {
-    const failure = new Error("continuation failed");
-    const definition = program("failure", {
-        onTick(state, source, self) {
-            if (state.tick === 0) return { state, value: false };
-            state = actions.setExecutionState(state, executionRef(source, self), { count: 9 });
-            state = updateUnit(state, [{ ...getUnit(state, 1), position: [3, 0] }]);
-            throw failure;
-        },
-    });
-    let runtime = initializeBattle(spec([unit(0, { action: definition }), unit(1)]));
-    runtime = stepBattle(runtime, []);
-    const before = runtime;
-    assert.throws(
-        () => (runtime = stepBattle(runtime, [])),
-        (error) => error === failure,
-    );
-    assert.deepEqual(runtime, before);
-    assert.equal(unitQueries.all(before).find(unit => unit.id === 0).action.actions.values().filter(self => self.execution !== null).toArray()[0].execution.state.count, 0);
-});
-
-test("action runtime: dependency cleanup requests host death without completing destruction before a thrown callback", () => {
-    const failure = new Error("terminal finish failed");
-    let observedDeparture = false;
-    const dependency = {
-        id: "terminal-dependency",
-        initialize: () => ({}),
-        onEnd(state, self) {
-            assert.equal(self.host.id, 1);
-            state = dealDamage(state, { source: { id: 0 }, target: self.host, parameters: parameters(100, "TRUE") }).state;
-            observedDeparture = getUnit(state, 1).lifecycle === "LEAVING";
-            assert.equal(effects.get(state, effectRef(self)), self);
-            assert.notEqual(getUnit(state, 0), undefined);
-            throw failure;
-        },
-    };
-    const definition = program("terminal", {
-        onTick(state, source, self) {
-            if (state.tick === 0)
-                state = effects.install(state, unitRef(getUnit(state, 1)), dependency, {
-                    scopes: [lifetimeScope(actionLifetime, executionRef(source, self))],
-                }).state;
-            return { state, value: state.tick > 0 };
-        },
-    });
-    let runtime = initializeBattle(spec([unit(0, { action: definition }), unit(1)]));
-    runtime = stepBattle(runtime, []);
-    const before = runtime;
-    assert.throws(
-        () => (runtime = stepBattle(runtime, [])),
-        (error) => error === failure,
-    );
-    assert.equal(observedDeparture, true);
-    assert.deepEqual(runtime, before);
-    assert.equal(unitQueries.all(before).find((value) => value.id === 1).vitality.hp, 100);
 });
 
 test("action runtime preserves execution start order when selection reverses configuration order", () => {

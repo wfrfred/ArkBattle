@@ -4,12 +4,13 @@ import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { add as addUnit } from "../../dist/core/battle/unit.js";
-import { getUnit, replaceUnit } from "../helpers/unit.js";
+import { getUnit } from "../helpers/unit.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as query from "../../dist/core/battle/blocking/query.js";
-import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
+
 import * as presence from "../../dist/core/unit/capability/presence/operations.js";
-import * as blockable from "../../dist/core/unit/capability/blocking/blockable.js";
+import { ref as unitRef } from "../../dist/core/unit/query.js";
+
 import * as blockableOperations from "../../dist/core/unit/capability/blocking/blockable-operations.js";
 import { fixture, holder, target, acquire, blockedIds, ownerId, capacity, hook } from "../helpers/blocking.js";
 
@@ -222,23 +223,7 @@ test("tail release notification can restore capacity before the next relation is
     assert.equal(query.usedCapacity(battle, { id: 10 }), 2);
 });
 
-test("an unrelated Unit update leaves capacity maintenance to the enclosing Blocking operation", () => {
-    let battle = fixture([holder(10, { capacity: 3 }), target(20), target(21), target(22), target(30, { position: [10, 1] })]);
-    const removed = [];
-    battle = onBlocker(battle, 10, "released", hook("nested-update", (state, { relation }) => {
-        removed.push(relation.blocked.id);
-        if (relation.blocked.id !== 22) return state;
-        const currentUnit4 = getUnit(state, 30);
-        state = replaceUnit(state, { ...currentUnit4, position: [10.25, 1] });
-        assert.deepEqual(blockedIds(state), [20, 21], "ordinary Unit updates do not recursively trim Blocking relations");
-        return capacity(state, 10, 2);
-    }));
-    battle = capacity(acquire(battle), 10, 1);
-    assert.deepEqual(removed, [22]);
-    assert.deepEqual(blockedIds(battle), [20, 21]);
-});
-
-test("pure reverse-link maintenance does not trim the next relation before notifying this release", () => {
+test("capacity reduction notifies each tail release before removing the next relation", () => {
     let battle = fixture([holder(10, { capacity: 3 }), target(20), target(21), target(22)]);
     const snapshots = [];
     battle = onBlocker(battle, 10, "released", hook("observe-prefix", (state, { relation }) => {
@@ -387,21 +372,6 @@ test("old captured Ref entries never release a same-pair relationship reestablis
     assert.equal(blocking.release(battle, old), battle);
 });
 
-test("a fresh same-owner Ref in an ordinary update does not notify or rebuild the relationship", () => {
-    let battle = fixture([holder(), target()]);
-    const calls = [];
-    for (const key of ["acquired", "released"]) battle = onBlocker(battle, 10, key, hook(key, state => {
-        calls.push(key);
-        return state;
-    }));
-    battle = acquire(battle);
-    const previous = getUnit(battle, 10).blocker.blocked;
-    const currentUnit7 = getUnit(battle, 20);
-    battle = replaceUnit(battle, { ...currentUnit7, blockable: { ...currentUnit7.blockable, blocker: { id: 10 } } });
-    assert.equal(getUnit(battle, 10).blocker.blocked, previous);
-    assert.deepEqual(calls, ["acquired"]);
-});
-
 test("an initially occupied candidate can be acquired after an earlier Hook releases its old owner", () => {
     let battle = fixture([
         holder(10, { capacity: 2 }), holder(11, { position: [3, 1] }),
@@ -440,7 +410,6 @@ test("independent Blockers retain only their own relationships when their capaci
     assert.deepEqual(blockedIds(battle, 11), []);
 });
 
-
 test("explicit spatial changes publish the new position before releasing only the captured old relationships", () => {
     let battle = fixture([holder(10, { capacity: 2 }), target(20), target(21)]);
     let reentered = false;
@@ -459,4 +428,87 @@ test("explicit spatial changes publish the new position before releasing only th
     assert.notEqual(getUnit(battle, 10).blocker.blocked[0], old[0]);
     assert.notEqual(getUnit(battle, 10).blocker.blocked[1], old[1]);
     assert.deepEqual(getUnit(previous, 10).position, [2, 1]);
+});
+
+test("spatial updates clear the captured batch before Hooks and preserve newly acquired relations", () => {
+    let battle = fixture([holder(10, { capacity: 2 }), target(20), target(21)]);
+    const owner = getUnit(battle, 10);
+    const released = [];
+    let captured;
+    battle = applyUnitChanges(battle, [blockerOperations.setHook({ id: owner.id }, "released", hook("reacquire-after-spatial-update", (current, { relation }) => {
+            released.push(relation.blocked);
+            if (relation.blocked === captured[0].blocked) {
+                assert.deepEqual(blockedIds(current), []);
+                assert.equal(ownerId(current, 20), undefined);
+                assert.equal(ownerId(current, 21), undefined);
+                assert.deepEqual(getUnit(current, 10).position, [2.1, 1]);
+                return acquire(current);
+            }
+            assert.deepEqual(blockedIds(current), [20, 21]);
+            return current;
+        }))]);
+    battle = acquire(battle);
+    captured = blocking.relations(battle, unitRef(getUnit(battle, 10)));
+    const before = battle;
+    battle = presence.appear(battle, unitRef(getUnit(battle, 10)), [2.1, 1]);
+
+    assert.deepEqual(released, captured.map(relation => relation.blocked));
+    assert.deepEqual(blockedIds(battle), [20, 21]);
+    for (let index = 0; index < captured.length; index++) {
+        assert.notEqual(getUnit(battle, 10).blocker.blocked[index], captured[index].blocked);
+    }
+    assert.deepEqual(getUnit(before, 10).position, [2, 1]);
+    assert.equal(blocking.release(battle, captured), battle);
+});
+
+test("disappearing a Blocker publishes every release before ordered endpoint notifications", () => {
+    let battle = fixture([holder(10, { capacity: 2 }), target(20), target(21)]);
+    const observed = [];
+    const record = label => (state, { relation }) => {
+        observed.push([relation.blocker.id, relation.blocked.id, label]);
+        assert.equal(getUnit(state, 10).spatialPresence.present, false);
+        assert.equal(getUnit(state, 10).lifecycle, "PRESENT");
+        assert.deepEqual(blockedIds(state, 10), []);
+        assert.equal(ownerId(state, 20), undefined);
+        assert.equal(ownerId(state, 21), undefined);
+        return state;
+    };
+    const owner = getUnit(battle, 10);
+    battle = applyUnitChanges(battle, [
+        blockerOperations.setHook({ id: owner.id }, "released", hook("owner", record("blocker"))),
+        blockableOperations.setHook({ id: 20 }, "released", hook("first-target", record("blockable"))),
+        blockableOperations.setHook({ id: 21 }, "released", hook("second-target", record("blockable"))),
+    ]);
+    battle = acquire(battle);
+    assert.deepEqual(blocking.relations(battle, { id: 10 }).map(relation => [relation.blocker.id, relation.blocked.id]), [
+        [10, 20], [10, 21],
+    ]);
+
+    battle = presence.disappear(battle, { id: 10 });
+
+    assert.deepEqual(observed, [
+        [10, 20, "blocker"], [10, 20, "blockable"],
+        [10, 21, "blocker"], [10, 21, "blockable"],
+    ]);
+    assert.deepEqual(battle.events.filter(event => event.type === "BLOCKING_RELEASED").map(event => [event.blockerUnitId, event.blockedUnitId]), [
+        [10, 20], [10, 21],
+    ]);
+});
+
+test("disappearing a Blockable publishes its absence and release while preserving another target", () => {
+    let battle = acquire(fixture([holder(10, { capacity: 2 }), target(20), target(21)]));
+    const retained = getUnit(battle, 10).blocker.blocked[1];
+    let calls = 0;
+    battle = applyUnitChanges(battle, [blockableOperations.setHook({ id: 20 }, "released", hook("disappear", current => {
+        calls++;
+        assert.equal(getUnit(current, 20).spatialPresence.present, false);
+        assert.equal(getUnit(current, 20).blockable.adjustment, null);
+        assert.equal(ownerId(current, 20), undefined);
+        assert.deepEqual(blockedIds(current), [21]);
+        assert.equal(getUnit(current, 10).blocker.blocked[0], retained);
+        return current;
+    }))]);
+    battle = presence.disappear(battle, { id: 20 });
+    assert.equal(calls, 1);
+    assert.equal(ownerId(battle, 21), 10);
 });

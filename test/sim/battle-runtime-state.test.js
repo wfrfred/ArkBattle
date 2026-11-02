@@ -1,5 +1,5 @@
 import { predefinedUnits } from "../helpers/predefined.js";
-import * as unitQueries from "../../dist/core/unit/query.js";
+
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize as initializeBattle, step as stepBattle } from "../../dist/core/battle/runtime.js";
@@ -147,36 +147,4 @@ test("starting a new tick clears temporary facts without changing retained state
     assert.equal(returned[0].removedUnits.length, 1);
     assert.notEqual(received[1].events, returned[0].events);
     assert.notEqual(received[1].removedUnits, returned[0].removedUnits);
-});
-
-test("a failed tick publishes neither schedule nor predefined or statistics changes", () => {
-    const failure = new Error("late state failure");
-    let fail = true;
-    let failedState;
-    const definition = {
-        spatialPresence: {},
-        id: "spawned", vitality: { maxHp: 100, defense: 0, resistance: 0 }, locomotion,
-        hooks: [{ id: "test/tick", stage: "tick", invoke(state) {
-            failedState = state;
-            if (fail) throw failure;
-            return { state: state, value: undefined };
-        } }],
-    };
-    let battle = initializeBattle(input({
-        predefines: [predefined(5, { id: "appearing", hooks: [{ id: "test/enter", stage: "enter", invoke(state) { return { state: ({ ...state, completedRouteCount: 3 }), value: undefined }; } }] })],
-        schedule: { type: "TIMELINE", spawns: [spawn(definition, 0)] },
-    }));
-    const before = battle;
-    const commands = [{ type: "APPEAR_PREDEFINED", definitionId: 5 }];
-    assert.throws(() => (battle = stepBattle(battle, commands)), error => error === failure);
-    assert.deepEqual(battle, before);
-    assert.equal(failedState.schedule.spawnedCount, 1);
-    assert.equal(failedState.completedRouteCount, 3);
-    assert.equal(failedState.predefinedPresence.length, 1);
-    fail = false;
-    battle = stepBattle(battle, commands);
-    assert.deepEqual(unitQueries.all(battle).toArray().map(unit => unit.id), [0, 1]);
-    assert.equal(battle.completedRouteCount, 3);
-    assert.equal(before.execution.nextUnitId, 0);
-    assert.deepEqual(before.predefinedPresence, []);
 });

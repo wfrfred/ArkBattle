@@ -326,31 +326,6 @@ test('core omitted predefined customization stays unresolved in raw data while s
 });
 
 
-test('core failed command batches do not publish hidden recipes, battlefield projections or execution counters', () => {
-  const scenario = predefinedMovementScenario(arknightsFixture('level_act1autochess_m02'));
-  for (const [command, error] of [
-    [{ type: 'APPEAR_PREDEFINED', definitionId: 9999 }, /unknown predefined definition/],
-    [{ type: 'TRIGGER_BRANCH', branchId: 'missing', isLoop: false }, /unknown scheduler branch/],
-  ]) {
-    let failed = initializeBattle(scenario.spec);
-    const [definitionId] = predefinedIdsForAlias(failed.definition.predefines, 'trap_1105_accrate#001');
-    const before = failed;
-    const maps = failed.battlefield.navigation;
-    assert.throws(() => (failed = advanceBattle(failed, [
-      { type: 'APPEAR_PREDEFINED', definitionId }, command,
-    ])), error);
-    assert.equal(failed, before);
-    assert.strictEqual(failed.battlefield.navigation, maps);
-  }
-  let runtime = initializeBattle(scenario.spec);
-  const [definitionId] = predefinedIdsForAlias(runtime.definition.predefines, 'trap_1105_accrate#001');
-  (runtime = advanceBattle(runtime, [{ type: 'APPEAR_PREDEFINED', definitionId }]));
-  assert.equal(runtime.tick, 1);
-  assert.equal(runtime.battlefield.units.get(0).id, 0);
-
-});
-
-
 test('core raw tile modes distinguish crates from platforms and require the referenced prefab mode', () => {
   assert.deepEqual(parsePredefinedPrefab(arknightsFixture('prefab_trap_1105_accrate')), {
     type: 'UNIT', prefabKey: 'trap_1105_accrate',

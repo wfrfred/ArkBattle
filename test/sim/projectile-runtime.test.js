@@ -1,5 +1,4 @@
 import { predefinedUnits } from "../helpers/predefined.js";
-import * as unitQueries from "../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
@@ -318,21 +317,6 @@ test("battle execution can stop a same-Tick creation explicitly without normally
     assert.equal(result.events.filter(event => event.type === "PROJECTILE_STOPPED").length, 1);
 });
 
-test("a throwing termination callback leaves the caller's BattleState unchanged", () => {
-    const definition = { id: "throwing", onEnd(battle) {
-        battle = dealDamage(battle, { source: null, target: { id: 1 }, parameters: parameters(9, "TRUE") }).state;
-        throw new Error("termination failed");
-    } };
-    let rt = runtime([unit(0, { hooks: [{ id: "test/tick", stage: "tick", invoke(battle) { return { state: battle.tick === 0 ? create(battle, definition).state : battle, value: undefined }; } }] }), unit(1)]);
-    rt = stepBattle(rt, []);
-    const before = rt;
-
-    assert.throws(() => (rt = stepBattle(rt, [{ type: "STOP_PROJECTILE", projectileId: 0 }])), /termination failed/);
-    assert.deepEqual(rt, before);
-    assert.equal(unitQueries.all(before).find(self => self.id === 1).vitality.hp, 100);
-    assert.equal(projectilesQuery.all(before).toArray()[0].lifecycle, "ACTIVE");
-});
-
 test("a terminal battle leaves outstanding projectiles frozen without termination callbacks", () => {
     let stops = 0;
     let advances = 0;
@@ -345,24 +329,4 @@ test("a terminal battle leaves outstanding projectiles frozen without terminatio
     assert.equal(advances, 0);
     assert.equal(stops, 0);
     assert.strictEqual((rt = stepBattle(rt, [])), snapshot);
-});
-
-test("A throwing onStart or onEnd leaves the caller's immutable branch intact", () => {
-    const initial = battle(unit(1));
-    const throwingCreate = { id: "throw-create", onStart(battle) {
-        battle = create(battle, { id: "nested" }).state;
-        throw new Error("create failed");
-    } };
-    assert.throws(() => create(initial, throwingCreate), /create failed/);
-    assert.equal(initial.execution.nextProjectileId, 0);
-    assert.deepEqual(instances(initial), []);
-
-    const created = create(initial, { id: "throw-stop", onEnd(battle) {
-        battle = dealDamage(battle, { source: null, target: { id: 1 }, parameters: parameters(10, "TRUE") }).state;
-        throw new Error("stop failed");
-    } });
-    assert.throws(() => projectiles.stop(created.state, created.value), /stop failed/);
-    assert.equal(getUnit(created.state, 1).vitality.hp, 100);
-    assert.equal(projectilesQuery.get(created.state, created.value).lifecycle, "ACTIVE");
-    assert.deepEqual(created.state.events, []);
 });

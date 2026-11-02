@@ -12,12 +12,11 @@ import { calculateDamage } from "../../dist/core/battle/damage/index.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 
-
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { initialize as initializeBattle, step as stepBattle } from '../../dist/core/battle/index.js';
 import { createLegacyCombatSpec } from '../../dist/legacy/combat.js';
-import { getUnit, initialize, placement, replaceUnit } from "../helpers/unit.js";
+import { getUnit, initialize, replaceUnit } from "../helpers/unit.js";
 
 import { create as createAttack, chooseTargets } from '../../dist/content/actions/attack.js';
 import { actionCapability } from "../helpers/actions.js";
@@ -210,26 +209,20 @@ test('elemental execution: periodic output follows burst speed and does not pay 
   }
 });
 
-for (const pause of ['spatial absence', 'zero HP']) {
-  test(`elemental execution: ${pause} pauses Burst and periodic clocks without catchup on return`, () => {
-    let work = element(effectFixtureWork(unit('ENEMY')), 'NECROSIS').state;
-    const currentUnit3 = getUnit(work, 1);
-    work = replaceUnit(work, pause === 'spatial absence'
-      ? { ...currentUnit3, spatialPresence: { present: false } }
-      : { ...currentUnit3, vitality: { ...currentUnit3.vitality, hp: 0 } });
-    work = advance(work, 100);
-    assert.equal(getUnit(work, 1).elemental.burst.remainingTicks, 450);
-    assert.equal(work.events.some(event => event.type === 'DAMAGE'), false);
-    const currentUnit4 = getUnit(work, 1);
-    work = replaceUnit(work, pause === 'spatial absence'
-      ? { ...currentUnit4, spatialPresence: { present: true } }
-      : { ...currentUnit4, vitality: { ...currentUnit4.vitality, hp: 100000 } });
-    work = advance(work, 130);
-    assert.equal(getUnit(work, 1).elemental.burst.remainingTicks, 420);
-    assert.equal(getUnit(work, 1).vitality.hp, 99200);
-    assert.equal(work.events.filter(event => event.type === 'DAMAGE').length, 1);
-  });
-}
+test('elemental execution: spatial absence pauses Burst and periodic clocks without catchup on return', () => {
+  let work = element(effectFixtureWork(unit('ENEMY')), 'NECROSIS').state;
+  const currentUnit3 = getUnit(work, 1);
+  work = replaceUnit(work, { ...currentUnit3, spatialPresence: { present: false } });
+  work = advance(work, 100);
+  assert.equal(getUnit(work, 1).elemental.burst.remainingTicks, 450);
+  assert.equal(work.events.some(event => event.type === 'DAMAGE'), false);
+  const currentUnit4 = getUnit(work, 1);
+  work = replaceUnit(work, { ...currentUnit4, spatialPresence: { present: true } });
+  work = advance(work, 130);
+  assert.equal(getUnit(work, 1).elemental.burst.remainingTicks, 420);
+  assert.equal(getUnit(work, 1).vitality.hp, 99200);
+  assert.equal(work.events.filter(event => event.type === 'DAMAGE').length, 1);
+});
 
 test('elemental execution: temporary burn resistance follows Burst lifetime when recovery speed changes', () => {
   let work = element(effectFixtureWork(unit('ENEMY')), 'BURN').state;
@@ -384,7 +377,7 @@ function route() {
 function spawn(definition, tick) {
   return { definition, route: route(), tick, timing: { waveStartedAtTick: 0, fragmentStartedAtTick: 0 }, alwaysCheckCurrentPoint: true, notCountInTotal: false };
 }
-function battle(receiver, type, { moving = false, targetStates } = {}) {
+function battle(receiver, type, { moving = false } = {}) {
   const casterAttack = createAttack({ ...action(10000).attack,
     targetGroups: [{ ...action().attack.targetGroups[0], operations: [
       { type: 'ELEMENT_DAMAGE', elementType: type, power: 1000 },
@@ -399,7 +392,7 @@ function battle(receiver, type, { moving = false, targetStates } = {}) {
   const base = createLegacyCombatSpec({ rows: 1, columns: 8, operators: [], enemies: [], maxTicks: 600, seed: 7 });
   const keepOpen = { hooks: [], id: 'future', vitality: { maxHp: 1, defense: 0, resistance: 0 }, locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } } };
   let runtime = initializeBattle({ ...base,
-    predefines: predefinedUnits([{ definition: caster, position: [0, 0] }, ...(moving ? [] : [placement({ definition: victim, position: [1, 0], ...(targetStates === undefined ? {} : { states: targetStates(victim) }) })])]),
+    predefines: predefinedUnits([{ definition: caster, position: [0, 0] }, ...(moving ? [] : [{ definition: victim, position: [1, 0] }])]),
     schedule: { type: 'TIMELINE', spawns: [...(moving ? [spawn(victim, 0)] : []), spawn(keepOpen, 599)] },
   });
   return { runtime };
@@ -474,21 +467,4 @@ test('elemental runtime: enemy neural paralysis consumes exactly three ordinary 
   assert.equal(hits.length > 0, true);
   assert.equal(hits[0].tick >= 45, true);
   assert.equal(cancelled.every(event => event.tick < hits[0].tick), true);
-});
-
-test('elemental runtime: nested burst damage failure publishes neither EP progress, HP, effects nor tick', () => {
-  let { runtime } = battle('CHARACTER', 'BURN', {
-    targetStates: selected => {
-      const target = initialize({ id: 1, position: [1, 0], definition: selected });
-      const changed = ({ ...target, vitality: { ...target.vitality, damageHooks: setFixtureEntry(target.vitality.damageHooks, {
-        id: 'elemental-fault', stage: 'receiving', priority: 100,
-        accepts: () => true,
-        invoke: () => { throw new Error('nested burst failed'); },
-      }) } });
-      return { vitality: changed.vitality };
-    },
-  });
-  const initial = runtime;
-  assert.throws(() => (runtime = stepBattle(runtime, [])), /nested burst failed/);
-  assert.deepEqual(runtime, initial);
 });

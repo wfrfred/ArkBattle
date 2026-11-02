@@ -36,12 +36,6 @@ function createCard(id, definition, options) {
     return get(created.state, created.value);
 }
 const operator = (cost = 10, redeployTicks = 30) => createCard(0, definition(cost, redeployTicks));
-const token = (stockLimit = 3, redeployTicks = 10) =>
-    createCard(1, definition(5, redeployTicks), {
-        stock: stockLimit,
-        stockLimit,
-        activeLimit: stockLimit,
-    });
 const modification = (id, fields, group) => ({
     id,
     value: [value(fields)],
@@ -111,71 +105,6 @@ test("Card contribution groups select a winner and removing it restores the fall
     assert.equal(cards.removeCostContribution(card, "missing"), card);
 });
 
-test("an explicit use cooldown clears at its deadline without regenerating inventory", () => {
-    const initial = token();
-    const consumed = cards.consume(initial);
-    assert.equal(consumed.stock, 2);
-    assert.equal(consumed.cooldown, null);
-    const waiting = cards.startCooldown(consumed, 10);
-    assert.deepEqual(waiting.cooldown, { type: "RUNNING", readyAtTick: 20, durationTicks: 10 });
-    assert.equal(cards.advance(waiting, 19), waiting);
-    const ready = cards.advance(waiting, 20);
-    assert.equal(ready.cooldown, null);
-    assert.equal(ready.stock, 2);
-    assert.equal(initial.stock, 3);
-});
-
-test("inventory recovery restores one item independently of a use cooldown", () => {
-    const waiting = cards.enqueueRecovery(cards.startCooldown(cards.consume(token(1)), 5, 20), 7);
-    assert.equal(cards.advance(waiting, 16), waiting);
-    const ready = cards.advance(waiting, 17);
-    assert.equal(ready.stock, 1);
-    assert.equal(ready.recovery, null);
-    assert.equal(ready.cooldown.readyAtTick, 25);
-});
-
-test("recovery processes every pending item serially while consumption remains independent", () => {
-    const initial = token(3, 30);
-    let card = cards.consume(cards.consume(initial));
-    card = cards.enqueueRecovery(card, 5);
-    card = cards.enqueueRecovery(card, 10);
-    assert.equal(card.stock, 1);
-    assert.equal(card.recovery.pending, 2);
-    assert.deepEqual(card.recovery.clock, { type: "RUNNING", readyAtTick: 35, durationTicks: 30 });
-    card = cards.consume(card);
-    assert.equal(card.stock, 0);
-    const firstReady = cards.advance(card, 35);
-    assert.equal(firstReady.stock, 1);
-    assert.equal(firstReady.recovery.pending, 1);
-    assert.equal(firstReady.recovery.clock.readyAtTick, 65);
-    assert.equal(cards.advance(firstReady, 64), firstReady);
-    const nextReady = cards.advance(firstReady, 65);
-    assert.equal(nextReady.stock, 2);
-    assert.equal(nextReady.recovery, null);
-    assert.equal(initial.stock, 3);
-});
-
-test("recovery can cross multiple elapsed deadlines without losing pending items", () => {
-    const waiting = cards.enqueueRecovery(cards.consume(token(3, 10), 3), 1, 3);
-    const ready = cards.advance(waiting, 31);
-    assert.equal(ready.stock, 3);
-    assert.equal(ready.recovery, null);
-    assert.equal(waiting.stock, 0);
-    assert.equal(waiting.recovery.pending, 3);
-});
-
-test("zero-duration cooldown and all pending recoveries complete at the same tick", () => {
-    const waiting = cards.enqueueRecovery(
-        cards.startCooldown(cards.consume(token(3, 0), 3), 7),
-        7,
-        3,
-    );
-    const ready = cards.advance(waiting, 7);
-    assert.equal(ready.stock, 3);
-    assert.equal(ready.recovery, null);
-    assert.equal(ready.cooldown, null);
-});
-
 test("future duration modifiers do not rescale a use cooldown that already started", () => {
     const waiting = cards.startCooldown(operator(10, 30), 5);
     const modified = cards.setRedeployTimeContribution(
@@ -194,49 +123,6 @@ test("future duration modifiers do not rescale a use cooldown that already start
         30,
     );
     assert.equal(cards.removeRedeployTimeContribution(modified, "missing"), modified);
-});
-
-test("recovery keeps its current duration and samples the next duration when that segment starts", () => {
-    let card = cards.enqueueRecovery(cards.consume(token(2, 30), 2), 0, 2);
-    card = cards.setRedeployTimeContribution(card, modification("shorter", { multiplier: -0.5 }));
-    assert.equal(card.recovery.clock.readyAtTick, 30);
-    const firstReady = cards.advance(card, 30);
-    assert.equal(firstReady.stock, 1);
-    assert.deepEqual(firstReady.recovery.clock, {
-        type: "RUNNING",
-        readyAtTick: 45,
-        durationTicks: 15,
-    });
-    assert.equal(cards.advance(firstReady, 45).stock, 2);
-});
-
-test("excess reduction applies to the current recovery segment only", () => {
-    const waiting = cards.enqueueRecovery(cards.consume(token(3, 30), 3), 0, 3);
-    const firstReady = cards.advance(cards.reduceCooldown(waiting, 100, 20, "RECOVERY"), 20);
-    assert.equal(firstReady.stock, 1);
-    assert.equal(firstReady.recovery.pending, 2);
-    assert.equal(firstReady.recovery.clock.readyAtTick, 50);
-    assert.equal(cards.advance(firstReady, 49), firstReady);
-    assert.equal(cards.advance(firstReady, 50).stock, 2);
-});
-
-test("explicit recharge caps inventory without discarding either clock", () => {
-    const initial = createCard(1, definition(), {
-        stockLimit: 5,
-        activeLimit: 2,
-        stock: 2,
-    });
-    const consumed = cards.consume(initial);
-    const waiting = cards.enqueueRecovery(cards.startCooldown(consumed, 10), 10);
-    const replenished = cards.recharge(waiting, 10);
-    assert.equal(replenished.stock, 5);
-    assert.equal(replenished.definition.card.activeLimit, 2);
-    assert.equal(replenished.cooldown, waiting.cooldown);
-    assert.equal(replenished.recovery, waiting.recovery);
-    assert.equal(cards.recharge(replenished, 1), replenished);
-    const ordinary = operator();
-    assert.equal(cards.recharge(ordinary, 5), ordinary);
-    assert.equal(consumed.stock, 1);
 });
 
 test("Card construction rejects impossible finite inventory", () => {

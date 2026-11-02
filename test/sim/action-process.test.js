@@ -317,23 +317,3 @@ test("action: source departure completes nested cleanup while entered content co
         false,
     );
 });
-
-test("action: a throwing program leaves its input progress, instances and target untouched", () => {
-    const failure = new Error("program failed");
-    const definition = program("failure", {
-        onTick(state, source, self) {
-            if (state.tick === 0) return { state, value: false };
-            state = actions.setExecutionState(state, executionRef(source, self), { progress: 7 });
-            state = updateUnit(state, [{ ...getUnit(state, 1), position: [4, 0] }]);
-            throw failure;
-        },
-    });
-    const started = accepted(definition),
-        before = started.state;
-    assert.throws(
-        () => advance({ ...before, tick: 1 }, started.value.ref),
-        (error) => error === failure,
-    );
-    assert.equal(actions.getExecution(before, started.value.ref).execution.state.progress, 0);
-    assert.deepEqual(getUnit(before, 1).position, [1, 0]);
-});

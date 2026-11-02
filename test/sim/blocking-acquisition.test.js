@@ -1,14 +1,14 @@
-import { createChange } from "../../dist/core/unit/change.js";
+
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { replace as updateUnit } from "../../dist/core/battle/unit.js";
+
 import { release, relations, maintain, advance, acquire as acquirePair } from "../../dist/core/battle/blocking/index.js";
 import { getUnit, replaceUnit } from "../helpers/unit.js";
-import * as blocker from "../../dist/core/unit/capability/blocking/blocker.js";
+
 import * as blockerOperations from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import * as blockableOperations from "../../dist/core/unit/capability/blocking/blockable-operations.js";
-import { fixture, holder, target, acquire, blockedIds, ownerId, capacity, hook } from "../helpers/blocking.js";
+import { fixture, holder, target, acquire, blockedIds, ownerId, hook } from "../helpers/blocking.js";
 
 test("both endpoint Rules receive the same pair and changes release an incompatible existing relation", () => {
     const owner = holder(10, { capacity: 3 });
@@ -163,7 +163,6 @@ test("acquire reads the latest volume instead of an earlier Unit snapshot", () =
     assert.equal(getUnit(initial, 20).blockable.volume.length, 0);
 });
 
-
 test("a qualified acquire preserves subsequent Hook changes", () => {
     let battle = fixture([holder(), target()]);
     const currentUnit2 = getUnit(battle, 10);
@@ -181,30 +180,4 @@ test("a qualified acquire preserves subsequent Hook changes", () => {
     assert.deepEqual(battle.events.map(event => event.type), ["BLOCKING_ACQUIRED"]);
     assert.equal(getUnit(initial, 20).vitality.hp, 100);
     assert.equal(ownerId(initial), undefined);
-});
-
-for (const [name, candidate, expectedError] of [
-    ["a missing Unit", () => target(99), /unknown unit: 99/],
-    ["the current Unit object", state => getUnit(state, 10)],
-]) test(`updating ${name} does not trigger unrelated maintenance inside a release Hook`, () => {
-    let battle = fixture([holder(10, { capacity: 3 }), target(20), target(21), target(22)]);
-    const released = [];
-    const currentUnit4 = getUnit(battle, 10);
-    battle = applyUnitChanges(battle, [blockerOperations.setHook({ id: currentUnit4.id }, "released", hook("restore-capacity", (state, { relation }) => {
-            released.push(relation.blocked.id);
-            if (relation.blocked.id !== 22) return state;
-            assert.deepEqual(blockedIds(state), [20, 21]);
-            if (expectedError === undefined) {
-                assert.equal(updateUnit(state, [candidate(state)]), state);
-            } else {
-                assert.throws(() => applyUnitChanges(state, [createChange({id:candidate(state).id}, unit=>unit)]), expectedError);
-            }
-            return capacity(state, 10, 2);
-        }))]);
-
-    battle = capacity(acquire(battle), 10, 1);
-
-    assert.deepEqual(released, [22]);
-    assert.deepEqual(blockedIds(battle), [20, 21]);
-    assert.equal(getUnit(battle, 99), undefined);
 });

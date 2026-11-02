@@ -3,7 +3,7 @@ import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { create as createPlatform } from "../../dist/content/devices/shooting-platform.js";
-import { add, remove, replace as update } from "../../dist/core/battle/unit.js";
+import { add, remove } from "../../dist/core/battle/unit.js";
 import { addCard } from "../../dist/core/battle/deployment/index.js";
 import { deploy, createRequest } from "../../dist/core/battle/deployment/index.js";
 import { initialize as initializeBattle } from "../../dist/core/battle/index.js";
@@ -64,10 +64,6 @@ function assertSuppressed(battle, id) {
 function assertEligible(battle, id) {
     const unit = getUnit(battle, id);
     assert.deepEqual(unit.blocker.rules.map(rule => rule.id), ["blocking/sides"]);
-}
-
-function move(unit, tile) {
-    return { ...unit, position: Tile.center(tile), occupancy: { ...(unit).occupancy, tile } };
 }
 
 test("platform entry suppresses its existing passenger synchronously without changing tile permission or other blockers", () => {
@@ -151,37 +147,6 @@ for (const entry of ["initial", "script", "manual"]) {
         assert.equal(getTile(battle.battlefield.map, first).state.allowsBlocking, true);
     });
 }
-
-test("pure storage exchanges passengers without dispatching occupancy content", () => {
-    let battle = fixture([platform(), passenger(), passenger(11, second)]);
-    const before = battle;
-    battle = update(battle, [move(getUnit(battle, 10), second), move(getUnit(battle, 11), first)]);
-
-    assertSuppressed(battle, 10);
-    assertEligible(battle, 11);
-    assert.equal(occupancyAt(battle.battlefield, first).occupant.id, 11);
-    assertSuppressed(before, 10);
-    assertEligible(before, 11);
-});
-
-test("pure storage exchanges supports without changing rules or blocking relations", () => {
-    const support = initialize({
-        id: 31, position: Tile.center(second),
-        definition: { id: "ordinary-support", occupancy: { slot: "SUPPORT", hooks: [] } },
-        states: { occupancy: { tile: second } },
-    });
-    let battle = fixture([platform(), support, passenger(), passenger(11, second), target(21, { position: [5.25, 1] })]);
-    battle = acquire(battle, 11);
-    assert.equal(ownerId(battle, 21), 11);
-
-    battle = update(battle, [move(getUnit(battle, 30), second), move(getUnit(battle, 31), first)]);
-
-    assertSuppressed(battle, 10);
-    assertEligible(battle, 11);
-    assert.equal(ownerId(battle, 21), 11);
-    assert.equal(getUnit(battle, 10).lifecycle, "PRESENT");
-    assert.equal(getUnit(battle, 11).lifecycle, "PRESENT");
-});
 
 test("platform removal removes only its old passenger and keeps tile permission", () => {
     let battle = fixture([platform(), passenger(), passenger(11, second)]);

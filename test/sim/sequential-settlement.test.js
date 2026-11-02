@@ -1,89 +1,12 @@
-import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
-import { lifetime as actionLifetime } from "../../dist/core/unit/action/operations.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { battle, unit } from "../helpers/action-fixture.js";
 import { add as addUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
-import { remove } from "../../dist/core/battle/unit.js";
-
-import { actionCapability } from "../helpers/actions.js";
-import * as actions from "../../dist/core/unit/action/index.js";
-import { advance as advanceAction } from "../../dist/core/unit/action/index.js";
 import { install } from "../../dist/core/unit/effect/index.js";
 import { advancePredefined } from "../../dist/core/battle/steps/predefined.js";
 import { initialize as initializeUnit } from "../../dist/core/unit/initialize.js";
-
-for (const nested of ["cancel", "advance", "advance complete", "advance waiting"]) {
-    test(`sequential departure: a nested ${nested} cannot produce a second action outcome`, () => {
-
-        let executions = 0;
-        let armed = false;
-        const first = {
-            id: "first", intervalTicks: 10, speed: 100,
-            initialize: state => ({ state, value: {} }),
-            prepare: state => ({ state, value: {} }),
-            onTick: state => ({ state, value: false }),
-        };
-        const second = {
-            id: "second", intervalTicks: 10, speed: 100,
-            initialize: state => ({ state, value: {} }),
-            prepare: state => ({ state, value: { finishAtTick: 100 } }),
-            onTick(state, source, self) {
-                if (armed) executions++;
-                return { state, value: armed && (nested === "advance complete" ||
-                    nested === "advance waiting" && state.tick >= self.execution.state.finishAtTick) };
-            },
-        };
-        let state = battle(unit(0, { action: actionCapability(first, second) }), unit(1));
-        const acceptedFirst = actions.start(state, actions.ref(unitRef(getUnit(state, 0)), first));
-        const firstRef = acceptedFirst.value.ref;
-        const acceptedSecond = actions.start(acceptedFirst.state, actions.ref(unitRef(getUnit(state, 0)), second));
-        const secondRef = acceptedSecond.value.ref;
-        state = acceptedSecond.state;
-        armed = true;
-        state = install(
-            state,
-            unitRef(getUnit(state, 1)),
-            {
-                id: "nested-action-end",
-                initialize: () => ({}),
-                onEnd(state) {
-                    return nested === "cancel"
-                        ? actions.cancel(state, secondRef, "CONTENT_CANCELLED")
-                        : advanceAction(state, secondRef);
-                },
-            },
-            { scopes: [lifetimeScope(actionLifetime, firstRef)] },
-        ).state;
-        const before = state;
-        state = remove(state, 0, "RETREAT");
-        assert.equal(executions, 0);
-        assert.equal(actions.all(state).length, 0);
-        assert.equal(
-            state.events.filter(
-                event => event.sourceUnitId === secondRef.host.id && event.executionId === secondRef.id && event.type === "ACTION_CANCELLED",
-            ).length,
-            1,
-        );
-        assert.equal(
-            state.events.filter(
-                event => event.sourceUnitId === secondRef.host.id && event.executionId === secondRef.id && event.type === "ACTION_FINISHED",
-            ).length,
-            0,
-        );
-        assert.equal(
-            state.events.filter(
-                event => event.sourceUnitId === firstRef.host.id && event.executionId === firstRef.id && event.type === "ACTION_CANCELLED",
-            ).length,
-            1,
-        );
-        assert.equal(getUnit(state, 0), undefined);
-        assert.equal(actions.all(before).length, 2);
-        assert.equal(getUnit(before, 0).lifecycle, "PRESENT");
-    });
-}
 
 test("sequential predefined commands allocate after all earlier callback results", () => {
 

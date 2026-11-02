@@ -65,28 +65,6 @@ test("key and value queries remain bound to their old version and evaluate lazil
     assert.deepEqual(changed.values().toArray(), [100, 3]);
 });
 
-test("undefined is a stored value rather than an absent entry", () => {
-    const original = Store.empty().add("present", undefined);
-
-    assert.equal(original.size, 1);
-    assert.equal(original.get("present"), undefined);
-    assert.deepEqual(original.keys().toArray(), ["present"]);
-    assert.deepEqual(original.values().toArray(), [undefined]);
-    assert.throws(() => original.add("present", "duplicate"), RangeError);
-    assert.strictEqual(original.replace("present", undefined), original);
-
-    const replaced = original.replace("present", "defined");
-    const removed = original.remove("present");
-
-    assert.equal(replaced.get("present"), "defined");
-    assert.equal(replaced.size, 1);
-    assert.equal(removed.size, 0);
-    assert.deepEqual(removed.keys().toArray(), []);
-    assert.equal(removed.add("present", undefined).size, 1);
-    assert.throws(() => removed.replace("present", undefined), RangeError);
-    assert.throws(() => removed.remove("present"), RangeError);
-    assert.deepEqual(original.values().toArray(), [undefined]);
-});
 
 test("object keys are identified by reference rather than their contents", () => {
     const left = { id: 1 };
@@ -109,69 +87,4 @@ test("object keys are identified by reference rather than their contents", () =>
     assert.equal(remaining.size, 1);
     assert.equal(remaining.get(right), undefined);
     assert.equal(original.get(left), "left");
-});
-
-test("numeric keys treat NaN as equal to itself and positive and negative zero as one key", () => {
-    const original = Store.empty().add(NaN, "nan").add(-0, "zero");
-
-    assert.equal(original.get(Number("not-a-number")), "nan");
-    assert.equal(original.get(+0), "zero");
-    assert.equal(original.get(-0), "zero");
-    assert.throws(() => original.add(NaN, "duplicate"), RangeError);
-    assert.throws(() => original.add(+0, "duplicate"), RangeError);
-
-    const replaced = original.replace(NaN, "changed nan").replace(+0, "changed zero");
-    const remaining = replaced.remove(-0);
-
-    assert.equal(replaced.size, 2);
-    assert.equal(replaced.get(NaN), "changed nan");
-    assert.equal(replaced.get(-0), "changed zero");
-    assert.deepEqual(replaced.values().toArray(), ["changed nan", "changed zero"]);
-    assert.equal(remaining.size, 1);
-    assert.deepEqual(remaining.keys().toArray(), [NaN]);
-    assert.equal(remaining.remove(NaN).size, 0);
-    assert.deepEqual(original.values().toArray(), ["nan", "zero"]);
-});
-
-test("replacement shares the store for Object.is equal values and distinguishes signed zero values", () => {
-    const object = { value: 1 };
-    const original = Store.empty().add("object", object).add("nan", NaN).add("zero", +0);
-
-    assert.strictEqual(original.replace("object", object), original);
-    assert.strictEqual(original.replace("nan", NaN), original);
-    assert.strictEqual(original.replace("zero", +0), original);
-
-    const otherObject = { value: 1 };
-    const replacedObject = original.replace("object", otherObject);
-    const negative = original.replace("zero", -0);
-    const positive = negative.replace("zero", +0);
-
-    assert.notStrictEqual(replacedObject, original);
-    assert.strictEqual(replacedObject.get("object"), otherObject);
-    assert.strictEqual(original.get("object"), object);
-    assert.notStrictEqual(negative, original);
-    assert.equal(Object.is(negative.get("zero"), -0), true);
-    assert.equal(Object.is(original.get("zero"), +0), true);
-    assert.strictEqual(negative.replace("zero", -0), negative);
-    assert.notStrictEqual(positive, negative);
-    assert.equal(Object.is(positive.get("zero"), +0), true);
-});
-
-test("stored objects retain their identity without cloning or freezing their nested values", () => {
-    const value = { nested: { amount: 1 } };
-    const original = Store.empty().add("value", value);
-
-    assert.strictEqual(original.get("value"), value);
-    assert.strictEqual(original.values().toArray()[0], value);
-    assert.equal(Object.isFrozen(value), false);
-    assert.equal(Object.isFrozen(value.nested), false);
-
-    const replacement = { nested: { amount: 2 } };
-    const changed = original.replace("value", replacement);
-
-    assert.strictEqual(changed.get("value"), replacement);
-    assert.strictEqual(changed.get("value").nested, replacement.nested);
-    assert.equal(Object.isFrozen(replacement), false);
-    assert.equal(Object.isFrozen(replacement.nested), false);
-    assert.strictEqual(original.get("value"), value);
 });

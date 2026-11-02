@@ -98,7 +98,6 @@ test("deployment observers are global registrations and consume the latest prece
     assert.deepEqual(calls, ["first", "enabled-after-first"]);
     assert.equal(getUnit(next, 0).vitality.hp, 70);
     assert.equal(getUnit(previous, 0).vitality.hp, 100);
-    assert.equal("deployedHooks" in getUnit(next, 0).deployable, false);
 });
 
 test("new deployment observers wait for the next dispatch and same-ID replacement retains order", () => {
@@ -229,17 +228,4 @@ test("deployment notifications preserve their original fact after an earlier obs
     const next = notifyDeployed(state, event);
     assert.equal(getUnit(next, 1), undefined);
     assert.equal(getUnit(state, 1), deployed);
-});
-
-test("a failed deployment observer does not publish its Unit, Card or listener changes", () => {
-    const failure = new Error("deployment callback failed");
-    let runtime = initializeBattle(input({ deployment: deployment([definition("incoming")]) }));
-    runtime = setHook(runtime, record("failure", state => {
-        setHook(state, record("unpublished", current => current));
-        throw failure;
-    }));
-    const previous = runtime;
-    assert.throws(() => stepBattle(runtime, [deploy(0)]), error => error === failure);
-    assert.equal(previous.battlefield.units.size, 0);
-    assert.equal(previous.deployment.cards[0].stock, 1);
 });

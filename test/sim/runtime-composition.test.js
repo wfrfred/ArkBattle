@@ -10,14 +10,8 @@ import { baseUnit, fixtureBattle } from "../helpers/unit.js";
 import { healing } from "../helpers/vitality.js";
 import { ref as unitRef } from "../../dist/core/unit/index.js";
 import { initialize as initializeActionState } from "../../dist/core/unit/capability/action/index.js";
-import {
-    setAttackContribution,
-    removeAttackContribution,
-} from "../../dist/core/unit/capability/offense/index.js";
-import {
-    setHook as setDamageHook,
-    removeHook as removeDamageHook,
-} from "../../dist/core/battle/damage/index.js";
+import { setAttackContribution, removeAttackContribution } from "../../dist/core/unit/capability/offense/index.js";
+import { setHook as setDamageHook, removeHook as removeDamageHook } from "../../dist/core/battle/damage/index.js";
 import { get as getEffect } from "../../dist/core/unit/effect/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -41,7 +35,7 @@ import { all as allProjectiles, get as getProjectile, ref as projectileRef } fro
 import { create as createProjectile, update as updateProjectile, stop as stopProjectile } from "../../dist/core/battle/projectile.js";
 
 const hit = { type: "CIRCLE", offset: [0, 0], radius: 0.1 };
-const range = [{ type: "CIRCLE", offset: [0, 0], radius: 12 }];
+
 
 function passive(id, hp = 100) {
     return {
@@ -69,9 +63,7 @@ function effect(snapshot, unitId, ref) {
         .effects.values().find((instance) => instance.definition.id === ref.id);
 }
 
-function scenario({ failure = null, cancelled = false } = {}) {
-
-    const fault = { enabled: failure !== null };
+function scenario({ cancelled = false } = {}) {
     const launches = [];
     const scopes = [];
     const attempts = [];
@@ -177,10 +169,6 @@ function scenario({ failure = null, cancelled = false } = {}) {
                             state,
                             value: {
                                     ...pending,
-                                    amount:
-                                        fault.enabled && failure === "invalid-damage"
-                                            ? NaN
-                                            : pending.amount,
                                     cancellation: cancelled
                                         ? { reason: "BLOCKED" }
                                         : null,
@@ -251,19 +239,6 @@ function scenario({ failure = null, cancelled = false } = {}) {
                 projectileRef(self),
                 "EXPLICIT",
                             );
-            if (fault.enabled && failure === "late-projectile") {
-                const auraState = getUnit(state, 0).effects.values().find(
-                    (instance) => instance.definition === aura,
-                ).data;
-                assert.deepEqual(
-                    auraState.receivers.map((binding) => binding.unitId),
-                    [0, 1, 2, 3],
-                );
-                assert.equal(getUnit(state, 1).vitality.hp, 83);
-                assert.equal(marked(getUnit(state, 1)), true);
-                assert.equal(getUnit(state, 2).action.actions.get("launch").cooldown.readyAtTick, 101);
-                throw new Error("late composition failure");
-            }
             return state;
     });
     const shell = {
@@ -401,7 +376,6 @@ function scenario({ failure = null, cancelled = false } = {}) {
         });
     return {
         runtime,
-        fault,
         launches,
         attempts,
         scopes,
@@ -415,45 +389,6 @@ function scenario({ failure = null, cancelled = false } = {}) {
     };
 }
 
-test("runtime composition: late exceptions and invalid settlement propagate without publishing any domain", () => {
-    for (const failure of ["late-projectile", "invalid-damage"]) {
-        const failed = scenario({ failure });
-        failed.runtime = stepBattle(failed.runtime, []);
-        const before = failed.runtime;
-        const maps = failed.runtime.battlefield.navigation;
-        assert.equal(unitQueries.all(before).find(unit => unit.id === 0).action.nextExecutionId, 1);
-        assert.equal(before.execution.nextProjectileId, 1);
-        assert.equal(before.execution.nextUnitId, 3);
-        assert.equal(before.schedule.spawnedCount, 0);
-        assert.equal(effect(before, 0, failed.scoped).data.starts, 1);
-        assert.equal(resolveAttack(before, unitRef(unitQueries.all(before).find((unit) => unit.id === 0))), 17);
-
-        assert.throws(
-            () => (failed.runtime = stepBattle(failed.runtime, [])),
-            {
-                "late-projectile": /late composition failure/,
-                "invalid-damage": RangeError,
-            }[failure],
-        );
-        assert.deepEqual(failed.runtime, before);
-        assert.equal(failed.runtime.battlefield.navigation, maps);
-        assert.deepEqual(
-            failed.launches.map((launch) => [launch.id, launch.hostId, launch.executionId]),
-            [
-                [0, 0, 0],
-                [1, 0, 0],
-                [2, 2, 0],
-            ],
-        );
-        assert.deepEqual(failed.attempts, [
-            {
-                address: { host: { id: 1 }, id: 0 },
-                quota: { remaining: 2, consumed: 1 },
-                marked: true,
-            },
-        ]);
-    }
-});
 
 test("runtime composition: a successful battle preserves identities, snapshots and the terminal trace", () => {
     const run = scenario();

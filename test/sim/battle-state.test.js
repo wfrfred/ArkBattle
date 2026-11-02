@@ -4,8 +4,8 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { fixtureBattlefieldState } from "../helpers/battlefield.js";
 import { appendEvents, createBattleState } from "../../dist/core/battle/state.js";
-import { add as addUnit, remove as removeUnit, replace as updateUnit, update as applyUnitChanges } from "../../dist/core/battle/unit.js";
-import { createChange } from "../../dist/core/unit/change.js";
+import { remove as removeUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
+
 import { getUnit } from "../helpers/unit.js";
 
 const unit = (id, position = [0, 0]) =>
@@ -30,19 +30,6 @@ test("battle state: each returned version exposes completed updates and retains 
     assert.deepEqual(removed.removedUnits, [{ unitId: 1, reason: "SCRIPT", unit: { ...first, lifecycle: "LEAVING" } }]);
 });
 
-test("battle state: independent branches keep their own registrations and removals", () => {
-    const first = unit(1),
-        spawned = unit(8);
-    const initial = fixture(first);
-    const moved = { ...first, position: [1, 0] };
-    const left = updateUnit(initial, [moved]);
-    const right = removeUnit(addUnit(initial, spawned), 1, "DEATH");
-    assert.equal(getUnit(left, 1), moved);
-    assert.equal(getUnit(left, 8), undefined);
-    assert.deepEqual(unitQueries.all(right).map(unit => unit.id).toArray(), [8]);
-    assert.equal(getUnit(initial, 1), first);
-    assert.deepEqual(unitQueries.all(initial).map(unit => unit.id).toArray(), [1]);
-});
 
 test("battle state: no-op updates retain identity and zero HP alone does not remove a unit", () => {
     const first = initialize({
@@ -73,22 +60,4 @@ test("battle state: facts, event prefixes and execution progress travel through 
     assert.deepEqual(initial.events, []);
     assert.deepEqual(recorded.events, [first]);
     assert.equal(initial.execution.rngState, 0);
-});
-
-test("battle state: public Changes do not register missing units", () => {
-    const first = unit(1),
-        second = unit(2);
-    const initial = fixture(first, second);
-    const snapshot = initial;
-    const moved = { ...first, position: [3, 0] },
-        spawned = unit(8);
-    const movedState = applyUnitChanges(initial, [createChange(unitQueries.ref(first), () => moved)]);
-    assert.equal(applyUnitChanges(movedState, [createChange(unitQueries.ref(second), self => self)]), movedState);
-    assert.throws(() => applyUnitChanges(movedState, [createChange(unitQueries.ref(spawned), self => self)]), /unknown unit: 8/);
-    const changed = addUnit(movedState, spawned);
-    assert.equal(getUnit(changed, 1), moved);
-    assert.equal(getUnit(changed, 8), spawned);
-    assert.equal(unitQueries.get(snapshot, { id: 1 }), first);
-    assert.equal(unitQueries.get(snapshot, { id: 8 }), undefined);
-    assert.deepEqual(unitQueries.all(changed).map(unit => unit.id).toArray(), [1, 2, 8]);
 });

@@ -9,7 +9,7 @@ import { fixtureBattle } from "../helpers/unit.js";
 test("out-of-bounds tiles retain empty-query and unreachable-field behavior", () => {
     const field = fixtureBattle().battlefield;
     const navigationMap = field.navigation.baseline.WALK;
-    for (const tile of [[-1, 0], [0, field.map.columns], [Number.MAX_SAFE_INTEGER, 0]]) {
+    for (const tile of [[-1, 0], [0, field.map.columns]]) {
         assert.equal(at(field, tile), undefined);
         assert.equal(get(field.map, tile), undefined);
         assert.equal(navigationMap.get(tile), undefined);

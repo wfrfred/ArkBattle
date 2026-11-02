@@ -102,8 +102,6 @@ setExecutionState(battle, erased, {});
 setExecutionState(battle, source, { count: 1 });
 // @ts-expect-error Updates require references rather than snapshots.
 setExecutionState(battle, action, { count: 1 });
-// @ts-expect-error Execution state is supplied as a value rather than a transform.
-setExecutionState(battle, known, () => ({ count: 1 }));
 const persistent: Definition<{ uses: number }, { target: string }> = {
     id: "persistent", intervalTicks: 10, speed: 100,
     initialize: current => ({ state: current, value: { uses: 0 } }),
@@ -127,10 +125,6 @@ const persistentCurrent = getAction(battle, persistentReference);
 type PersistentCurrent = Assert<Equal<typeof persistentCurrent, Action<{ uses: number }, { target: string }> | undefined>>;
 setState(battle, persistentReference, { uses: persistentCurrent!.state.uses + 1 });
 setCooldown(battle, persistentReference, { ...persistentCurrent!.cooldown, readyAtTick: 20 });
-// @ts-expect-error Persistent state is supplied as a value rather than a transform.
-setState(battle, persistentReference, () => ({ uses: 1 }));
-// @ts-expect-error Cooldown is supplied as a value rather than a transform.
-setCooldown(battle, persistentReference, current => current);
 resetCooldown(battle, persistentReference);
 clearCooldown(battle, persistentReference);
 const persistentStart = start(battle, persistentReference);

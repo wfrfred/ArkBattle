@@ -1,6 +1,3 @@
-import * as unitQueries from "../../dist/core/unit/query.js";
-import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
-import { ref as unitRef } from "../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize } from "../helpers/unit.js";
@@ -14,29 +11,6 @@ const unit = () =>
         position: [0, 0],
         definition: { hooks: [], id: "cleanup", vitality: { maxHp: 100, defense: 0, resistance: 0 } },
     });
-
-test("effect cleanup: terminal business sees the ending instance and ending immediately removes it", () => {
-    const seen = [];
-    const value = definition(
-        "terminal",
-        { count: 3 },
-        {
-            onEnd(state, self) {
-                assert.equal(get(state, effectRef(self)).status, "ENDING");
-                seen.push(self.data.count);
-                return state;
-            },
-        },
-    );
-    let battle = effectFixtureWork(unit());
-    let ref;
-    ({ state: battle, value: ref } = install(battle, value));
-    const before = battle;
-    battle = effect.end(battle, ref);
-    assert.equal(get(battle, ref), undefined);
-    assert.deepEqual(seen, [3]);
-    assert.equal(unitQueries.get(before, { id: 0 }).effects.values().toArray()[0].status, "ACTIVE");
-});
 
 test("effect cleanup: a replacement installed during end uses a new identity and survives the old cleanup", () => {
     let next;
