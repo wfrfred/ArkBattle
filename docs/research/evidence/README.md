@@ -71,3 +71,4 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | [numeric-parameters](numeric-parameters/README.md) | 属性数值与限幅；原取证日期和输入指纹未记录 |
 | [block-positioning-20261031](block-positioning-20261031/README.md) | 阻挡站位曲线、解除、位置覆盖及插值与自主移动调度 |
 | [elemental-timing-20261102](elemental-timing-20261102/README.md) | 元素爆发同步触发、首次恢复机会、按 deltaTime 推进及宿主更新顺序 |
+| [attack-addon-order-20261102](attack-addon-order-20261102/README.md) | 妮芙 S1 的前置附加 Buff、来源伤害后 EP、短延迟天赋监听与当前 HP／Projectile 原生调用链 |

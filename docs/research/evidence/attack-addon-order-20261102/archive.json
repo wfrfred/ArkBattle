@@ -1,0 +1,554 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-02"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-02",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "content/native/ability-active-buffs.json#/provenance/client/dll",
+          "content/native/ability-type-chain.json#/provenance/client/dll",
+          "content/native/event-bindings.json#/provenance/client/dll",
+          "content/native/event-bodies.json#/provenance/client/dll",
+          "content/native/projectile-active-buffs.json#/provenance/client/dll",
+          "hp/native-hp.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "content/native/ability-active-buffs.json#/provenance/client/metadata",
+          "content/native/ability-type-chain.json#/provenance/client/metadata",
+          "content/native/event-bindings.json#/provenance/client/metadata",
+          "content/native/event-bodies.json#/provenance/client/metadata",
+          "content/native/projectile-active-buffs.json#/provenance/client/metadata",
+          "hp/native-hp.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "content/decoded-content.json",
+      "content/native/ability-active-buffs.json",
+      "content/native/ability-type-chain.json",
+      "content/native/event-bindings.json",
+      "content/native/event-bodies.json",
+      "content/native/projectile-active-buffs.json",
+      "content/selected-templates.json",
+      "hp/native-hp.json",
+      "prts-sources.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12589,
+        "sha256": "1a85248a6a48d92d61c65f5ba044d079954866ff0c1672488b92f0cf1366af9a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "content/[uc]projectiles--3708200872107265271.bin",
+        "kind": "artifact",
+        "bytes": 228,
+        "sha256": "392117b8b74fb91bfc599980ac134ea9ed581303e3ea0d0adc33ce0b29b69aa2"
+      },
+      {
+        "path": "content/[uc]skills-6783746386767521089.bin",
+        "kind": "artifact",
+        "bytes": 384,
+        "sha256": "0a06d39429cf10dd2c272eb0f47997d2f41dc50757515438f801a9afbb2d7b55"
+      },
+      {
+        "path": "content/[uc]skills-9084098710201771329.bin",
+        "kind": "artifact",
+        "bytes": 284,
+        "sha256": "84fe858d600aa2d3c2b56900827574e589f439108bb74a45ac24f4bfd018eebd"
+      },
+      {
+        "path": "content/char_4146_nymph-1315311228480272941.bin",
+        "kind": "artifact",
+        "bytes": 424,
+        "sha256": "78bee91d5175d68359f1da21e339dd7c43d217518ce6b35c94963e75ca737a22"
+      },
+      {
+        "path": "content/char_4146_nymph-16031150783937069.bin",
+        "kind": "artifact",
+        "bytes": 572,
+        "sha256": "9ea6346f1e40bcaf567f4fd4d2d950d44315f73a8cee81ad8e2078ec7ab3c86a"
+      },
+      {
+        "path": "content/char_4146_nymph-3118566733096761901.bin",
+        "kind": "artifact",
+        "bytes": 284,
+        "sha256": "ab5d6ff259f78cf7c269ac6c4b61c389dcca20881676ad28e8ef78dafa588a47"
+      },
+      {
+        "path": "content/char_4146_nymph-336072622153021997.bin",
+        "kind": "artifact",
+        "bytes": 164,
+        "sha256": "25f9bc97d118a3bc61ca36685cfa0e83c3d029bd808c4b76afd1a091798ec4bf"
+      },
+      {
+        "path": "content/char_4146_nymph-6576157648104864301.bin",
+        "kind": "artifact",
+        "bytes": 348,
+        "sha256": "a09e0bea2757d19b9a770f245f8a544e80887948ddf6c73183b3e0d86dc96a71"
+      },
+      {
+        "path": "content/decode_content.py",
+        "kind": "historical-script",
+        "bytes": 8161,
+        "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+      },
+      {
+        "path": "content/decoded-content.json",
+        "kind": "record",
+        "bytes": 35765,
+        "sha256": "6081013a534bce14b247494d5f3eb4fcbf0cf32d6ff4b066897a0836ad44c091"
+      },
+      {
+        "path": "content/extract_native.py",
+        "kind": "historical-script",
+        "bytes": 6171,
+        "sha256": "8f5a89ff009bca4e48b3ce9357c03f17ee1cae4f1c48ef62565b0d678255994f"
+      },
+      {
+        "path": "content/extract_native.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "content/native/ability-active-buffs.json",
+        "kind": "record",
+        "bytes": 82102,
+        "sha256": "a251a35ffd2a7ad858991eae383fcff50ce86007e2a4b2603525b40b9c29aa96"
+      },
+      {
+        "path": "content/native/ability-type-chain.json",
+        "kind": "record",
+        "bytes": 19053,
+        "sha256": "594e43a154c98f64a670d793f22f163189d08690ad621bdb541b8a5c05780900"
+      },
+      {
+        "path": "content/native/event-bindings.json",
+        "kind": "record",
+        "bytes": 35917,
+        "sha256": "0c6f65241bb2f5b70aa82ab322ccf10e286299b3744874fccc18b16a1fc6877b"
+      },
+      {
+        "path": "content/native/event-bodies.json",
+        "kind": "record",
+        "bytes": 66815,
+        "sha256": "5821e4ef7a7032a0ddaed0a8c7788c02c1936d732b75ee86e4234fc8e79a3f5d"
+      },
+      {
+        "path": "content/native/projectile-active-buffs.json",
+        "kind": "record",
+        "bytes": 141514,
+        "sha256": "0b16c2a8510d478245d7a43cdbd97102c28bc2c73fb77a9e6508ee387be1883e"
+      },
+      {
+        "path": "content/selected-templates.json",
+        "kind": "record",
+        "bytes": 18612,
+        "sha256": "0e43af4d24eec1f2124aad451ab5c460553a3615956dc1f95c6b70048c09cc23"
+      },
+      {
+        "path": "hp/extract_hp_selected.py",
+        "kind": "historical-script",
+        "bytes": 4477,
+        "sha256": "3469f28c4af50b36462fdf0c5664361bde211df1da1b14771f4f98f2641abdb5"
+      },
+      {
+        "path": "hp/extract_hp_selected.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "hp/native-hp.json",
+        "kind": "record",
+        "bytes": 814334,
+        "sha256": "bc037d63eee427388a1113cd40c0c87c2c9233b18757b963580799a7afd1b9ba"
+      },
+      {
+        "path": "prts-sources.json",
+        "kind": "record",
+        "bytes": 1728,
+        "sha256": "0ed9b6dafcf931267413dfb65616ab63e74e47bad14d5fd420d61b3b1364ee74"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 64038,
+          "mode": "metadata",
+          "records": [
+            "content/native/ability-active-buffs.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.Ability.GetActiveBuffs"
+        },
+        {
+          "index": 66123,
+          "mode": "disasm",
+          "records": [
+            "content/native/event-bindings.json#/result/0/method",
+            "content/native/event-bodies.json#/result/0",
+            "content/native/event-bodies.json#/result/0/method",
+            "hp/native-hp.json#/result/methods/0",
+            "hp/native-hp.json#/result/bodies/0/fragments/0",
+            "hp/native-hp.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnStart",
+          "address": "0x1806d4fc0"
+        },
+        {
+          "index": 66125,
+          "mode": "disasm",
+          "records": [
+            "content/native/event-bindings.json#/result/1/method",
+            "content/native/event-bodies.json#/result/1",
+            "content/native/event-bodies.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnTrigger",
+          "address": "0x1806d58d0"
+        },
+        {
+          "index": 66144,
+          "mode": "disasm",
+          "records": [
+            "content/native/event-bindings.json#/result/2/method",
+            "content/native/event-bodies.json#/result/2",
+            "content/native/event-bodies.json#/result/2/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeTargetApplyModifier",
+          "address": "0x1806d1340"
+        },
+        {
+          "index": 66145,
+          "mode": "disasm",
+          "records": [
+            "content/native/event-bindings.json#/result/3/method",
+            "content/native/event-bodies.json#/result/3",
+            "content/native/event-bodies.json#/result/3/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAfterOutputDamage",
+          "address": "0x1806d00b0"
+        },
+        {
+          "index": 66301,
+          "mode": "disasm",
+          "records": [
+            "hp/native-hp.json#/result/methods/1",
+            "hp/native-hp.json#/result/bodies/1/fragments/0",
+            "hp/native-hp.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.NewBuff",
+          "address": "0x1806b6940"
+        },
+        {
+          "index": 67543,
+          "mode": "disasm",
+          "records": [
+            "hp/native-hp.json#/result/methods/2",
+            "hp/native-hp.json#/result/bodies/2/fragments/0",
+            "hp/native-hp.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.AddBuff",
+          "address": "0x180720760"
+        },
+        {
+          "index": 67544,
+          "mode": "disasm",
+          "records": [
+            "hp/native-hp.json#/result/methods/3",
+            "hp/native-hp.json#/result/bodies/3/fragments/0",
+            "hp/native-hp.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.AddBuff",
+          "address": "0x1807208c0"
+        },
+        {
+          "index": 67665,
+          "mode": "disasm",
+          "records": [
+            "hp/native-hp.json#/result/methods/4",
+            "hp/native-hp.json#/result/bodies/4/fragments/0",
+            "hp/native-hp.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.ApplyModifier",
+          "address": "0x1807211a0"
+        },
+        {
+          "index": 67667,
+          "mode": "disasm",
+          "records": [
+            "hp/native-hp.json#/result/methods/5",
+            "hp/native-hp.json#/result/bodies/5/fragments/0",
+            "hp/native-hp.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity._OnApplyingModifier",
+          "address": "0x1807314a0"
+        },
+        {
+          "index": 67669,
+          "mode": "disasm",
+          "records": [
+            "hp/native-hp.json#/result/methods/6",
+            "hp/native-hp.json#/result/bodies/6/fragments/0",
+            "hp/native-hp.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnAppliedModifier",
+          "address": "0x180727cb0"
+        },
+        {
+          "index": 67683,
+          "mode": "disasm",
+          "records": [
+            "hp/native-hp.json#/result/methods/7",
+            "hp/native-hp.json#/result/bodies/7/fragments/0",
+            "hp/native-hp.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.DoApplyModifier",
+          "address": "0x180722fe0"
+        },
+        {
+          "index": 72156,
+          "mode": "disasm",
+          "records": [
+            "hp/native-hp.json#/result/methods/8",
+            "hp/native-hp.json#/result/bodies/8/fragments/0",
+            "hp/native-hp.json#/result/bodies/8/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_value",
+          "address": "0x18090e0a0"
+        },
+        {
+          "index": 72620,
+          "mode": "metadata",
+          "records": [
+            "content/native/projectile-active-buffs.json#/result/methods/0/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile/ActionController.Init",
+          "address": "0x180920430"
+        },
+        {
+          "index": 72625,
+          "mode": "disasm",
+          "records": [
+            "hp/native-hp.json#/result/methods/9",
+            "hp/native-hp.json#/result/bodies/9/fragments/0",
+            "hp/native-hp.json#/result/bodies/9/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile/ActionController.OnHitTarget",
+          "address": "0x1809207b0"
+        },
+        {
+          "index": 72635,
+          "mode": "metadata",
+          "records": [
+            "content/native/projectile-active-buffs.json#/result/methods/1/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile/ActionController._AttachBuffs",
+          "address": "0x1809215c0"
+        },
+        {
+          "index": 79019,
+          "mode": "disasm",
+          "records": [
+            "hp/native-hp.json#/result/methods/10",
+            "hp/native-hp.json#/result/bodies/10/fragments/0",
+            "hp/native-hp.json#/result/bodies/10/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Unit.OnTakeDamage",
+          "address": "0x180b1a510"
+        },
+        {
+          "index": 93886,
+          "mode": "metadata",
+          "records": [
+            "content/native/ability-active-buffs.json#/result/1/method",
+            "content/native/ability-type-chain.json#/result/2/declaredActiveBuffAccessors/0"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.GetActiveBuffs",
+          "address": "0x180f90790"
+        },
+        {
+          "index": 99347,
+          "mode": "disasm",
+          "records": [
+            "hp/native-hp.json#/result/methods/11",
+            "hp/native-hp.json#/result/bodies/11/fragments/0",
+            "hp/native-hp.json#/result/bodies/11/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.Execute",
+          "address": "0x1810f70b0"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Modifier",
+          "records": [
+            "hp/native-hp.json#/result/modifierFields"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Projectile/ActionController",
+          "records": [
+            "content/native/projectile-active-buffs.json#/result/fields/0"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4146_nymph.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4146_nymph.ab",
+          "sha256": "e5f8d7c626ebfbeedda9a968da977e8cf35c99f0b7c7861d72e6ff34aa710c28",
+          "records": [
+            "content/decoded-content.json#/provenance/sources/0",
+            "content/selected-templates.json#/provenance/sources/0"
+          ],
+          "bytes": 25609
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
+          "records": [
+            "content/decoded-content.json#/provenance/sources/1",
+            "content/selected-templates.json#/provenance/sources/1"
+          ],
+          "bytes": 1367500
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "content/decoded-content.json#/provenance/sources/2",
+            "content/selected-templates.json#/provenance/sources/2"
+          ],
+          "bytes": 2151020
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+          "sha256": "cc3f21b73b10fbc619a1ff8b099f31e678c883ddacb7bb6775fea960ffecb0e1",
+          "records": [
+            "content/decoded-content.json#/provenance/sources/3",
+            "content/selected-templates.json#/provenance/sources/3"
+          ],
+          "bytes": 1905483
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_4146_nymph.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4146_nymph.ab",
+          "sha256": "9ea6346f1e40bcaf567f4fd4d2d950d44315f73a8cee81ad8e2078ec7ab3c86a",
+          "records": [
+            "content/decoded-content.json#/result/0"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_4146_nymph.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4146_nymph.ab",
+          "sha256": "25f9bc97d118a3bc61ca36685cfa0e83c3d029bd808c4b76afd1a091798ec4bf",
+          "records": [
+            "content/decoded-content.json#/result/1"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_4146_nymph.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4146_nymph.ab",
+          "sha256": "78bee91d5175d68359f1da21e339dd7c43d217518ce6b35c94963e75ca737a22",
+          "records": [
+            "content/decoded-content.json#/result/2"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_4146_nymph.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4146_nymph.ab",
+          "sha256": "ab5d6ff259f78cf7c269ac6c4b61c389dcca20881676ad28e8ef78dafa588a47",
+          "records": [
+            "content/decoded-content.json#/result/3"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_4146_nymph.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4146_nymph.ab",
+          "sha256": "a09e0bea2757d19b9a770f245f8a544e80887948ddf6c73183b3e0d86dc96a71",
+          "records": [
+            "content/decoded-content.json#/result/4"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "0a06d39429cf10dd2c272eb0f47997d2f41dc50757515438f801a9afbb2d7b55",
+          "records": [
+            "content/decoded-content.json#/result/5"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "84fe858d600aa2d3c2b56900827574e589f439108bb74a45ac24f4bfd018eebd",
+          "records": [
+            "content/decoded-content.json#/result/6"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+          "records": [
+            "content/decoded-content.json#/result/7",
+            "content/selected-templates.json#/result/0"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]projectiles.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+          "sha256": "392117b8b74fb91bfc599980ac134ea9ed581303e3ea0d0adc33ce0b29b69aa2",
+          "records": [
+            "content/decoded-content.json#/result/8"
+          ]
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

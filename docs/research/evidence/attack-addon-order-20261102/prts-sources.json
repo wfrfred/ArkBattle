@@ -1,0 +1,31 @@
+{
+  "provenance": {
+    "accessedAt": "2026-11-02",
+    "sourceKind": "community wiki; not official documentation",
+    "purpose": "Compare a concrete attack's added EP/Effects with HP application and damage notifications."
+  },
+  "result": {
+    "sources": [
+      {
+        "title": "伤害分类",
+        "url": "https://prts.wiki/index.php?title=伤害分类&oldid=442847#攻击附加效果",
+        "section": "攻击附加效果",
+        "summary": "Attack-configured Buffs apply before the attack's own damage; configured elemental damage to EP applies afterward. Buff actions can implement different explicit sequences. Static attack attachments and talent-added attachments also differ when the source leaves before projectile impact.",
+        "unresolved": "Does not specify every native damage notification's position relative to these attachments."
+      },
+      {
+        "title": "妮芙",
+        "url": "https://prts.wiki/index.php?title=妮芙&oldid=446578#天赋",
+        "section": "第一天赋 失魂 / 备注",
+        "summary": "The attack that triggers necrosis burst can also activate Nymph's first talent; the talent adds persistent elemental HP damage during that burst."
+      },
+      {
+        "title": "妮芙",
+        "url": "https://prts.wiki/index.php?title=妮芙&oldid=446578#技能",
+        "section": "技能1 笞心击 / 备注",
+        "summary": "S1 adds necrosis EP damage proportional to arts damage. Its conditional extra elemental HP damage checks whether the target is already bursting before arts HP damage, then EP damage follows the arts damage.",
+        "unresolved": "Native prefab, action event and damage-notification ordering must be traced."
+      }
+    ]
+  }
+}
