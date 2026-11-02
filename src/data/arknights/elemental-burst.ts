@@ -56,7 +56,6 @@ import type { ArknightsElementalBurstProfile } from "./elemental.js";
 
 interface Clock {
     readonly elapsedTicks: number;
-    readonly lastAdvancedTick: number;
     readonly scaler: number;
 }
 
@@ -169,7 +168,6 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
         id: `${id}/periodic`,
         initialize: () => ({
             elapsedTicks: 0,
-            lastAdvancedTick: 0,
             scaler: 1 - profile.attackReductionRatio,
         }),
         onEnable: (battle, self) => {
@@ -193,72 +191,96 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
                   ])
                 : battle;
         },
-        onTick: (battle, self) => {
-            const ref = effectRef(self);
-            const burst = dependencies(battle, scope(effects.lifetime, ref))
-                .map((entry) => getRef(entry, burstLifetime))
-                .find((reference) => reference !== undefined);
-            if (burst === undefined || getBurst(battle, burst)?.status !== "ACTIVE") {
+        onTick: advancePeriodic,
+        onEnd: (battle, self, reason) =>
+            reason === "ELEMENTAL_BURST_FINISHED" ? advancePeriodic(battle, self) : battle,
+    };
+
+    function advancePeriodic(
+        battle: BattleState,
+        self: effects.Effect<Clock, Elemental>,
+    ): BattleState {
+        const ref = effectRef(self);
+        const reference = dependencies(battle, scope(effects.lifetime, ref))
+            .map((entry) => getRef(entry, burstLifetime))
+            .find((reference) => reference !== undefined);
+        const burst = reference === undefined ? undefined : getBurst(battle, reference);
+        const ending = self.status === "ENDING";
+        if (
+            reference === undefined ||
+            burst === undefined ||
+            (ending ? burst.remainingTicks !== 0 : burst.status !== "ACTIVE")
+        ) {
+            return battle;
+        }
+
+        const currentHost = (state: BattleState) => {
+            const host = units.get(state, self.host);
+
+            return host !== undefined &&
+                available(host) &&
+                getBurst(state, reference)?.status === burst.status &&
+                effects.get(state, ref)?.status === self.status
+                ? host
+                : undefined;
+        };
+        if (currentHost(battle) === undefined) {
+            return battle;
+        }
+
+        const elapsedTicks = ending
+            ? profile.durationTicks
+            : Math.min(
+                  profile.durationTicks,
+                  self.data.elapsedTicks + resolveBurstRecoverySpeed(battle, self.host)!,
+              );
+        const previousSecond = Math.floor((self.data.elapsedTicks + 1e-8) / TICKS_PER_SECOND);
+        const currentSecond = Math.floor((elapsedTicks + 1e-8) / TICKS_PER_SECOND);
+        battle = effects.setData(battle, ref, {
+            ...self.data,
+            elapsedTicks,
+        });
+
+        for (let second = previousSecond + 1; second <= currentSecond; second++) {
+            let unit = currentHost(battle);
+            if (unit === undefined) {
                 return battle;
             }
-
-            const rate =
-                activeHost(battle, burst) === undefined
-                    ? 0
-                    : resolveBurstRecoverySpeed(battle, self.host)!;
-            const elapsedTicks = Math.min(
-                profile.durationTicks,
-                self.data.elapsedTicks + (battle.tick - self.data.lastAdvancedTick) * rate,
-            );
-            const previousSecond = Math.floor((self.data.elapsedTicks + 1e-8) / TICKS_PER_SECOND);
-            const currentSecond = Math.floor((elapsedTicks + 1e-8) / TICKS_PER_SECOND);
-            battle = effects.setData(battle, ref, {
-                ...self.data,
-                elapsedTicks,
-                lastAdvancedTick: battle.tick,
-            });
-
-            for (let second = previousSecond + 1; second <= currentSecond; second++) {
-                let unit = activeHost(battle, burst);
-                if (unit === undefined || effects.get(battle, ref)?.status !== "ACTIVE") {
-                    return battle;
-                }
-                if (profile.spDrainPerSecond > 0 && hasSkill(unit)) {
-                    battle = modify(battle, units.ref(unit), -profile.spDrainPerSecond).state;
-                }
-
-                unit = activeHost(battle, burst);
-
-                if (unit === undefined || effects.get(battle, ref)?.status !== "ACTIVE") {
-                    return battle;
-                }
-                if (profile.damagePerSecond !== null) {
-                    battle = hurt(battle, burst, profile.damagePerSecond);
-                }
-
-                unit = activeHost(battle, burst);
-                const current = effects.get(battle, ref);
-                if (unit === undefined || current?.status !== "ACTIVE") {
-                    return battle;
-                }
-                if (profile.attackReductionRatio > 0 && hasOffense(unit)) {
-                    const durationSeconds = profile.durationTicks / TICKS_PER_SECOND;
-                    const scaler =
-                        1 -
-                        profile.attackReductionRatio * Math.max(0, 1 - second / durationSeconds);
-                    battle = effects.setData(battle, ref, { ...current.data, scaler });
-                    battle = updateUnit(battle, [
-                        setAttackContribution(units.ref(unit), {
-                            id: `@effect/${self.id}/attack`,
-                            value: [attribute.create({ finalScaler: scaler })],
-                        }),
-                    ]);
-                }
+            if (profile.spDrainPerSecond > 0 && hasSkill(unit)) {
+                battle = modify(battle, units.ref(unit), -profile.spDrainPerSecond).state;
             }
 
-            return battle;
-        },
-    };
+            unit = currentHost(battle);
+
+            if (unit === undefined) {
+                return battle;
+            }
+            if (profile.damagePerSecond !== null) {
+                battle = hurt(battle, unit, profile.damagePerSecond);
+            }
+
+            unit = currentHost(battle);
+            const current = effects.get(battle, ref);
+            if (unit === undefined) {
+                return battle;
+            }
+            if (!ending && profile.attackReductionRatio > 0 && hasOffense(unit)) {
+                const durationSeconds = profile.durationTicks / TICKS_PER_SECOND;
+                const scaler =
+                    1 - profile.attackReductionRatio * Math.max(0, 1 - second / durationSeconds);
+                battle = effects.setData(battle, ref, { ...current!.data, scaler });
+                battle = updateUnit(battle, [
+                    setAttackContribution(units.ref(unit), {
+                        id: `@effect/${self.id}/attack`,
+                        value: [attribute.create({ finalScaler: scaler })],
+                    }),
+                ]);
+            }
+        }
+
+        return battle;
+    }
+
     const controls: readonly EffectDefinition<object>[] = [
         ...(profile.stunTicks > 0 ? [stun] : []),
         ...(profile.blocksSkill ? [silence] : []),
@@ -304,7 +326,6 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
                     scopes,
                     data: {
                         elapsedTicks: 0,
-                        lastAdvancedTick: battle.tick,
                         scaler: 1 - profile.attackReductionRatio,
                     },
                 }).state;
@@ -332,7 +353,11 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
                 }
             }
 
-            return profile.burstDamage === null ? battle : hurt(battle, ref, profile.burstDamage);
+            unit = activeHost(battle, ref);
+
+            return profile.burstDamage === null || unit === undefined
+                ? battle
+                : hurt(battle, unit, profile.burstDamage);
         },
     };
 }
@@ -347,11 +372,10 @@ function activeHost(battle: BattleState, ref: Ref<Burst>) {
 
 function hurt(
     battle: BattleState,
-    ref: Ref<Burst>,
+    host: units.Unit & Elemental,
     damage: NonNullable<ArknightsElementalBurstProfile["burstDamage"]>,
 ): BattleState {
-    const host = activeHost(battle, ref);
-    if (host === undefined || !hasVitality(host)) {
+    if (!hasVitality(host)) {
         return battle;
     }
 

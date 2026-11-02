@@ -30,7 +30,6 @@ Data／Content 直接提供完整静态 Definition，明日方舟的基础参数
 | ep | 四型当前 EP，可以保存小数；初始化为基础上限 |
 | burst | 当前 Burst，或 null；Core 同一宿主至多一个 |
 | nextBurstId | 宿主内单调分配的爆发身份 |
-| lastAdvancedTick | 自然回复或爆发预算的上次推进时点 |
 | maxEp／recoverySpeed／elementResistance／damageResistance／burstRecoverySpeed | 五个属性的 Contribution |
 | receiving | 抗性后、本次提交前的 DamageHook，逐项接续 battle 与剩余损伤 |
 | rules | damage／heal 两个节点各自的接收许可登记 |
@@ -84,7 +83,7 @@ type End =
 
 DamageOutcome 为 APPLIED `{ amount, burst: Ref<Burst> | null }` 或 REJECTED `{ reason }`；HealOutcome 为 APPLIED `{ amounts: Values }` 或 REJECTED `{ reason }`。零作用可以成功返回 APPLIED，不派发实际变化 Hook。操作接受普通 Unit Ref，目标不具有 Elemental 时返回 NO_ELEMENTAL。
 
-损伤先按当前 elementResistance 修正，再执行本次 DamageHook 管线。Hook 返回 Result<number>，接续新的 BattleState 和剩余数额；每次派发固定候选 ID，逐项读取最新登记，嵌套派发独立收集。返回后重查目标资格、当前上限及 EP，再提交数额，损失不超过当前 EP。Effect 可以保存护盾预算、在启停时登记和撤销 DamageHook，Hook 消耗当前 Effect 预算并返回剩余损伤；Elemental 不认识具体护盾。某型 EP 归零时，一次性把四条 EP 置零、登记新 Burst，并重设推进时点；在内容回调前登记 Burst→Unit 的 Lifetime owner 关系。治疗对每条 EP 各应用完整请求数额，分别限制到当前上限，不在四型之间分摊。动态上限变化不按比例重算 EP；后续实际写入 EP 的操作或 Runtime 推进将数值限制在当前上限内。
+损伤先按当前 elementResistance 修正，再执行本次 DamageHook 管线。Hook 返回 Result<number>，接续新的 BattleState 和剩余数额；每次派发固定候选 ID，逐项读取最新登记，嵌套派发独立收集。返回后重查目标资格、当前上限及 EP，再提交数额，损失不超过当前 EP。Effect 可以保存护盾预算、在启停时登记和撤销 DamageHook，Hook 消耗当前 Effect 预算并返回剩余损伤；Elemental 不认识具体护盾。某型 EP 归零时，一次性把四条 EP 置零、登记新 Burst；在内容回调前登记 Burst→Unit 的 Lifetime owner 关系。治疗对每条 EP 各应用完整请求数额，分别限制到当前上限，不在四型之间分摊。动态上限变化不按比例重算 EP；后续实际写入 EP 的操作或 Runtime 推进将数值限制在当前上限内。
 
 接收的基本资格为宿主在场、空间存在，具有 Vitality 时 HP 大于零。Burst 存在期间，包括 ENDING，拒绝损伤和治疗；中立阵营默认拒绝损伤。Rule 按 damage／heal 节点分别保存，统一使用 `allows(battle, { self, request })`，request 类型由节点确定。`setRule(ref, key, rule)`／`removeRule(ref, key, id)` 返回 Change，同 ID 在不同节点独立。元素免疫可以只限制损伤；HP 禁疗不隐式决定元素治疗。无敌内容向 damage 节点登记拒绝 Rule，并在失效时移除，Core 不读取 Vitality 的内部接收规则。
 
@@ -129,7 +128,7 @@ finish 和 cancel 委托 Burst 的 lifetime，先同步请求，再由最外层�
 → 依赖者完整 Finalize 后开始本轮 Finalize
 → 从当前实例与原 Definition 调用 onEnd(battle, self, end)
 → 从最新宿主读取状态，四型 EP 重置到最新上限
-→ 移除 Burst，lastAdvancedTick = battle.tick，注销本轮 Lifetime 关系
+→ 移除 Burst，注销本轮 Lifetime 关系
 → 记录结束事件，派发 burstEnded
 ```
 
@@ -141,13 +140,15 @@ Unit 请求离场发布 LEAVING 后，通过所有权边自动请求本轮 Burst
 
 ## 6. 时间推进
 
-原生首次恢复与宿主更新顺序的证据见[案例 25](../research/cases/25-elemental-burst-recovery-timing.md)。下述全场阶段与计时字段描述当前 Core 实现，不作为原生首 Tick 规则的依据；首次推进与恢复期间 EP 写回的项目映射仍需审查。
+原生首次恢复与宿主更新顺序的证据见[案例 25](../research/cases/25-elemental-burst-recovery-timing.md)。Core 采用固定步长的全场阶段调度，按项目语义尺度忽略创建时点造成的帧内微时序差异；恢复期间 EP 写回的项目映射仍需独立审查。
 
-Runtime 遍历绑定阶段入口状态的 `units.all(snapshot).filter(hasElemental)`，在调用 advance 时生成宿主 Ref 并读取当前对象，不为固定来源额外生成数组。正常 EP 使用 `recoveryPerSecond × elapsedTicks / TICKS_PER_SECOND`；爆发预算使用 `remainingTicks - 当前 burstRecoverySpeed × elapsedTicks`，归零后正常完成。速度为零时暂停，后续变化作用于剩余预算，不改成启动时固定的 endsAtTick。
+Runtime 每 Tick 调度一次 Elemental，遍历绑定阶段入口状态的 `units.all(snapshot).filter(hasElemental)`，在调用 advance 时生成宿主 Ref 并读取当前对象。每次 advance 固定推进一个 Tick：正常 EP 回复量为 `当前 recoverySpeed / TICKS_PER_SECOND`，爆发预算扣除当前 `burstRecoverySpeed`，归零后正常完成。速度为零时暂停，后续变化作用于剩余预算。
 
-普通 damage／heal 保留 lastAdvancedTick；进入或退出 Burst 时重设时点，避免跨阶段补算。宿主仍在场但基本资格、回复 Rule 或速度使本轮无法推进时，仍更新时钟，不把暂停时间补回来。自然回复由 Runtime 更新 EP，不派发显式 heal 的 healed Hook。
+本阶段执行到宿主时，按其当前状态决定推进自然恢复还是 Burst。阶段之前已经创建的 Burst 可以在本 Tick 推进，阶段之后创建的自然等下一次调度；创建和阶段切换没有额外的首 Tick 跳过规则。每次调度只推进当前一步，暂停或不具备资格期间不积攒补算时间。自然回复由 Runtime 更新 EP，不派发显式 heal 的 healed Hook。
 
-Content Effect 为需要缩放的周期输出保存自己的进度，并读取动态爆发恢复速度；明确固定间隔的业务使用自己的时钟。Lifetime 绑定不自动缩放 Effect 时间。累计输出、触发次数、生命周期等可观察行为按 [README 的语义尺度](README.md)核对。
+爆发的周期 Effect 保存已经处理的有效进度，每次 onTick 按当前爆发恢复速度推进一步，跨过周期边界时结算对应输出。自然预算耗尽时，Effect.onEnd 结清完整预算内尚未执行的周期边界，避免阶段内新建 Effect 少一次调度而丢失整次伤害或 SP 操作。该收尾只接受 ELEMENTAL_BURST_FINISHED、Burst 剩余预算已归零且宿主仍在场的情况；取消、提前 finish 或宿主离场不补输出。
+
+周期推进与预算收尾均由 Content 程序完成，Lifetime 绑定只表达结束关系。明确固定间隔的其他业务使用自己的时钟。累计输出、触发次数、生命周期等可观察行为按 [README 的语义尺度](README.md)核对。
 
 Core 同一宿主只允许一个 Burst，并在爆发期间拒绝损伤和治疗。少数多种元素爆发的特殊内容由 Content 组合输出和生命周期，不引入通用多阶段爆发或启动免疫窗口。
 

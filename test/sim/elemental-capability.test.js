@@ -64,16 +64,21 @@ const setElemental = (battle, target, nextState) => {
 };
 const hook = (id, invoke, accepts = () => true) => ({ id, accepts, invoke });
 const at = (battle, tick) => ({ ...battle, tick });
+const advance = (battle, target, tick) => {
+  for (let next = battle.tick + 1; next <= tick; next++) {
+    battle = elemental.advance(at(battle, next), target);
+  }
+  return battle;
+};
 const near = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-8, `${actual} != ${expected}`);
 
-test('Elemental owns immutable bars and initializes its clock without a recovery timer', () => {
+test('Elemental owns immutable bars and starts without an active Burst', () => {
   const definition = {
     maxEp: 1000, recoveryPerSecond: 0, elementResistance: 0,
     damageResistance: 0, burstRecoverySpeed: 1, bursts: simpleBursts(),
   };
   const state = initializeElementalState(fixtureBattle(7), baseUnit({ id: "elemental", hooks: [], elemental: definition })).value.elemental;
   assert.deepEqual(state.ep, elementValues(1000));
-  assert.equal(state.lastAdvancedTick, 7);
   assert.equal(state.burst, null);
   const f = fixture();
   assert.equal(hasElemental(get(f.battle, f.target)), true);
@@ -125,10 +130,12 @@ test('a burst has a stable identity, locks reception, preserves source and reset
   assert.equal(burst.remainingTicks, 300);
   for (const type of ELEMENT_TYPES) assert.equal(elemental.damage(result.state, f.target, request(type)).value.type, 'REJECTED');
   assert.equal(elemental.heal(result.state, f.target, { source: null, power: 100 }).value.type, 'REJECTED');
-  const halfway = elemental.advance(at(result.state, 154), f.target);
+  const firstAdvance = elemental.advance(result.state, f.target);
+  assert.equal(getBurst(firstAdvance, result.value.burst).remainingTicks, 299);
+  const halfway = advance(firstAdvance, f.target, 153);
   assert.equal(getBurst(halfway, result.value.burst).remainingTicks, 150);
   assert.deepEqual(get(halfway, f.target).elemental.ep, get(result.state, f.target).elemental.ep);
-  const completed = elemental.advance(at(halfway, 304), f.target);
+  const completed = advance(halfway, f.target, 303);
   assert.equal(getBurst(completed, result.value.burst), undefined);
   assert.equal(get(completed, f.target).elemental.burst, null);
   assert.deepEqual(get(completed, f.target).elemental.ep, elementValues(1000));
@@ -411,28 +418,28 @@ test('nested host departure during onEnd cannot resurrect the ending Unit or Bur
 test('dynamic burst speed preserves elapsed budget and zero speed does not accumulate deferred progress', () => {
   const f = fixture();
   const result = elemental.damage(f.battle, f.target, request('BURN', 1000));
-  let battle = elemental.advance(at(result.state, 60), f.target);
+  let battle = advance(result.state, f.target, 60);
   assert.equal(getBurst(battle, result.value.burst).remainingTicks, 240);
   battle = applyUnitChanges(battle, [setContribution(f.target, 'burstRecoverySpeed', { id: 'speed', value: [modifier({ finalScaler: 0 })] })]);
-  battle = elemental.advance(at(battle, 1000), f.target);
+  battle = advance(battle, f.target, 1000);
   assert.equal(getBurst(battle, result.value.burst).remainingTicks, 240);
-  assert.equal(get(battle, f.target).elemental.lastAdvancedTick, 1000);
   battle = applyUnitChanges(battle, [setContribution(f.target, 'burstRecoverySpeed', { id: 'speed', value: [modifier({ finalScaler: 2 })] })]);
   assert.equal(resolveBurstRecoverySpeed(battle, f.target), 2);
-  battle = elemental.advance(at(battle, 1060), f.target);
+  battle = advance(battle, f.target, 1060);
   assert.equal(getBurst(battle, result.value.burst).remainingTicks, 120);
-  battle = elemental.advance(at(battle, 1120), f.target);
+  battle = advance(battle, f.target, 1120);
   assert.equal(getBurst(battle, result.value.burst), undefined);
 });
 
 test('natural recovery preserves fractional EP and never accumulates a full-bar healing budget', () => {
   const f = fixture({ recoveryPerSecond: 15 });
-  let battle = elemental.advance(at(f.battle, 1000), f.target);
+  let battle = advance(f.battle, f.target, 1000);
   battle = elemental.damage(battle, f.target, request('BURN', 100)).state;
-  battle = elemental.advance(at(battle, 1001), f.target);
+  battle = advance(battle, f.target, 1001);
   assert.equal(get(battle, f.target).elemental.ep.BURN, 900.5);
   assert.equal(get(battle, f.target).elemental.ep.NEURAL, 1000);
-  assert.deepEqual(get(elemental.advance(battle, f.target), f.target).elemental.ep, get(battle, f.target).elemental.ep);
+  battle = advance(battle, f.target, 1002);
+  assert.equal(get(battle, f.target).elemental.ep.BURN, 901);
 });
 
 test('ordinary damage and healing before the scheduled advance do not consume natural recovery time', () => {
@@ -445,7 +452,6 @@ test('ordinary damage and healing before the scheduled advance do not consume na
     battle = elemental.advance(battle, f.target);
   }
   assert.equal(get(battle, f.target).elemental.ep.BURN, 895);
-  assert.equal(get(battle, f.target).elemental.lastAdvancedTick, 10);
 });
 
 for (const accepts of [true, false]) {

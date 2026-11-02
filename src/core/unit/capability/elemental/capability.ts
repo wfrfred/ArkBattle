@@ -39,7 +39,6 @@ export interface State {
     readonly ep: Values;
     readonly burst: Burst | null;
     readonly nextBurstId: number;
-    readonly lastAdvancedTick: number;
     readonly maxEp: readonly contribution.Contribution<Input>[];
     readonly recoverySpeed: readonly contribution.Contribution<Input>[];
     readonly elementResistance: readonly contribution.Contribution<Input>[];
@@ -100,7 +99,6 @@ export function initialize<U extends Unit & Pick<Elemental, "definition">>(
                 ep: elementValues(definition.maxEp),
                 burst: null,
                 nextBurstId: 0,
-                lastAdvancedTick: battle.tick,
                 maxEp: [],
                 recoverySpeed: [],
                 elementResistance: [],

@@ -37,7 +37,7 @@ test("Unit initialization pairs every declared capability, including empty defin
     for (const key of Object.keys(initializers)) assert.equal(Object.hasOwn(bare, key), false, key);
 });
 
-test("Skill and Elemental initialize from the current battle tick and keep shared definitions", () => {
+test("Skill and Elemental initialize separate states from shared definitions", () => {
     const battle = fixtureBattle(37);
     const skill = skillDefinition({ initialize: battle => ({ state: battle, value: ({ count: 3 }) }) });
     const elemental = {
@@ -49,7 +49,6 @@ test("Skill and Elemental initialize from the current battle tick and keep share
     const first = initialize(battle, { id: 1, definition, position: [0, 0] }).value;
     const second = initialize(battle, { id: 2, definition, position: [1, 0] }).value;
     assert.equal(first.skill.sp.lastTick, 37);
-    assert.equal(first.elemental.lastAdvancedTick, 37);
     assert.deepEqual(first.skill.state, { count: 3 });
     assert.equal(first.definition, definition);
     assert.equal(second.definition, definition);
@@ -127,7 +126,7 @@ test("generic Unit initialization cannot inject prepared states or override the 
         states: { vitality: { hp: 1 }, occupancy: { tile: [0, 0] } },
     });
     assert.equal(result.value.vitality.hp, 100);
-    assert.equal(result.value.elemental.lastAdvancedTick, 19);
+    assert.equal(result.state.tick, 19);
     assert.equal(Object.hasOwn(result.value, "occupancy"), false);
     assert.equal(result.value.effects.size, 0);
     assert.equal(result.state, battle);

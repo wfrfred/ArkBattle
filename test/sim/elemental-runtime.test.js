@@ -64,8 +64,11 @@ function element(work, type, tick = work.tick, power = 1000) {
   return elemental.damage({ ...work, tick }, unitRef(getUnit(work, 1)), { type, power, source: { id: 9 } });
 }
 function advance(work, tick) {
-  work = effects.advance({ ...work, tick });
-  return elemental.advance(work, unitRef(getUnit(work, 1)));
+  for (let next = work.tick + 1; next <= tick; next++) {
+    work = effects.advance({ ...work, tick: next });
+    work = elemental.advance(work, unitRef(getUnit(work, 1)));
+  }
+  return work;
 }
 function defense(work) {
   const unit = getUnit(work, 1);
@@ -176,7 +179,7 @@ test('elemental execution: enemy necrosis damage is elemental and its attack red
   assert.equal(damage.every(event => event.amount === 800 && event.damageType === 'ELEMENTAL'), true);
 });
 
-test('elemental execution: paused and accelerated burst time also controls periodic output without changing total pulses', () => {
+test('elemental execution: periodic output follows burst speed and does not pay out unused time on early exit', () => {
   let work = effectFixtureWork(unit('ENEMY'));
   work = element(work, 'NECROSIS').state;
   const speed = value => setContribution({id:1}, 'burstRecoverySpeed', {
@@ -196,6 +199,15 @@ test('elemental execution: paused and accelerated burst time also controls perio
   assert.equal(getUnit(work, 1).vitality.hp, 88000);
   assert.equal(work.events.filter(event => event.type === 'DAMAGE').length, 15);
   assert.equal(power(work), 100);
+
+  for (const end of [elemental.finish, elemental.cancel]) {
+    const started = element(effectFixtureWork(unit('ENEMY')), 'NECROSIS');
+    const partial = advance(started.state, 29);
+    const ended = end(partial, started.value.burst);
+    assert.equal(getUnit(ended, 1).elemental.burst, null);
+    assert.equal(getUnit(ended, 1).vitality.hp, 100000);
+    assert.equal(ended.events.filter(event => event.type === 'DAMAGE').length, 0);
+  }
 });
 
 for (const pause of ['spatial absence', 'zero HP']) {
@@ -207,7 +219,6 @@ for (const pause of ['spatial absence', 'zero HP']) {
       : { ...currentUnit3, vitality: { ...currentUnit3.vitality, hp: 0 } });
     work = advance(work, 100);
     assert.equal(getUnit(work, 1).elemental.burst.remainingTicks, 450);
-    assert.equal(getUnit(work, 1).elemental.lastAdvancedTick, 100);
     assert.equal(work.events.some(event => event.type === 'DAMAGE'), false);
     const currentUnit4 = getUnit(work, 1);
     work = replaceUnit(work, pause === 'spatial absence'
@@ -394,6 +405,49 @@ function battle(receiver, type, { moving = false, targetStates } = {}) {
   return { runtime };
 }
 function victim(runtime) { return unitQueries.all(runtime).find(entry => entry.id === 1); }
+
+test('elemental runtime: Unit and Effect tick triggers preserve every necrosis pulse through recovery', () => {
+  for (const source of ['Unit', 'Effect']) {
+    const trigger = {
+      id: 'burst-trigger', initialize: () => ({}),
+      onTick(state, self) {
+        state = effects.end(state, effects.ref(self));
+        return elemental.damage(state, self.host, { type: 'NECROSIS', power: 1000, source: null }).state;
+      },
+    };
+    const receiver = definition('ENEMY', {
+      action: actionCapability(),
+      hooks: source === 'Unit' ? [{
+        id: 'burst-trigger', stage: 'tick',
+        invoke(state, self) {
+          return { state: self.elemental.nextBurstId === 0
+            ? elemental.damage(state, unitRef(self), { type: 'NECROSIS', power: 1000, source: null }).state
+            : state, value: undefined };
+        },
+      }] : [{
+        id: 'install-trigger', stage: 'enter',
+        invoke(state, self) {
+          return { state: effects.install(state, unitRef(self), trigger).state, value: undefined };
+        },
+      }],
+    });
+    const base = createLegacyCombatSpec({ rows: 1, columns: 8, operators: [], enemies: [], maxTicks: 600, seed: 7 });
+    const future = { hooks: [], id: 'future', vitality: { maxHp: 1, defense: 0, resistance: 0 }, locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } } };
+    let runtime = initializeBattle({ ...base,
+      predefines: predefinedUnits([{ definition: receiver, position: [1, 0] }]),
+      schedule: { type: 'TIMELINE', spawns: [spawn(future, 599)] },
+    });
+    const hits = [];
+    for (let tick = 0; tick < 450; tick++) {
+      runtime = stepBattle(runtime, []);
+      hits.push(...runtime.events.filter(event => event.type === 'DAMAGE'));
+    }
+    const current = unitQueries.all(runtime).find(entry => entry.definition === receiver);
+    assert.equal(hits.length, 15, source);
+    assert.equal(current.vitality.hp, 88000, source);
+    assert.equal(current.elemental.burst, null, source);
+  }
+});
 
 test('elemental runtime: character neural stun prevents ordinary attacks and route movement until recovery ends', () => {
   let { runtime } = battle('CHARACTER', 'NEURAL', { moving: true });

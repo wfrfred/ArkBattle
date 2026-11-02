@@ -149,8 +149,6 @@ export function damage(
                 ep,
                 burst,
                 nextBurstId,
-                lastAdvancedTick:
-                    burst === null ? currentSelf.elemental.lastAdvancedTick : battle.tick,
             },
         },
     ]);
@@ -279,7 +277,6 @@ export const lifetime = lifetimes.create<Burst, Burst, End>({
                     ...host.elemental,
                     ep: elementValues(maximum),
                     burst: null,
-                    lastAdvancedTick: battle.tick,
                 },
             },
         ]);
@@ -319,22 +316,21 @@ export function cancel(
 
 export function advance(battle: BattleState, host: Ref<Unit & Elemental>): BattleState {
     const self = units.get(battle, host);
-    if (self?.lifecycle !== "PRESENT") {
+    if (self === undefined || !query.available(self)) {
         return battle;
     }
 
-    const elapsed = battle.tick - self.elemental.lastAdvancedTick;
     const state = self.elemental;
-    const next = { ...state, lastAdvancedTick: battle.tick };
+    const next = { ...state };
 
-    if (query.available(self) && state.burst?.status === "ACTIVE") {
+    if (state.burst?.status === "ACTIVE") {
         const rate = query.resolveBurstRecoverySpeed(battle, host)!;
         next.burst = {
             ...state.burst,
-            remainingTicks: Math.max(0, state.burst.remainingTicks - rate * elapsed),
+            remainingTicks: Math.max(0, state.burst.remainingTicks - rate),
         };
-    } else if (query.available(self) && state.burst === null) {
-        const power = (query.resolveRecoverySpeed(battle, host)! * elapsed) / TICKS_PER_SECOND;
+    } else if (state.burst === null) {
+        const power = query.resolveRecoverySpeed(battle, host)! / TICKS_PER_SECOND;
         const maximum = query.resolveMaxEp(battle, host)!;
         const ep = { ...normalizedEp(self, maximum) };
         const request: HealRequest = { source: null, power };
@@ -345,6 +341,8 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
         }
 
         next.ep = ep;
+    } else {
+        return battle;
     }
 
     battle = replaceUnits(battle, [{ ...self, elemental: next }]);
