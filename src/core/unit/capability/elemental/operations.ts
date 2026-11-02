@@ -76,32 +76,34 @@ export function damage(
 ): Result<DamageOutcome> {
     assertNonnegativeNumber(request.power, "element damage power");
 
-    if (!ELEMENT_TYPES.includes(request.type)) {
-        throw new TypeError("unknown element damage type");
-    }
-
-    let self = units.get(battle, target);
-    if (self === undefined || !hasElemental(self) || !query.available(self)) {
+    const self = units.get(battle, target);
+    if (self === undefined) {
         return {
             state: battle,
-            value: { type: "REJECTED", reason: query.damageRejection(battle, target, request)! },
+            value: { type: "REJECTED", reason: "TARGET_ABSENT" },
+        };
+    }
+    if (!hasElemental(self)) {
+        return {
+            state: battle,
+            value: { type: "REJECTED", reason: "NO_ELEMENTAL" },
+        };
+    }
+    if (!query.available(self)) {
+        return {
+            state: battle,
+            value: { type: "REJECTED", reason: "INACTIVE" },
         };
     }
 
-    battle = dispatch(battle, units.ref(self), "received", { request });
+    const identity = units.ref(self);
+    battle = dispatch(battle, identity, "received", { request });
 
     const reason = query.damageRejection(battle, target, request);
     if (reason !== undefined) {
         return { state: battle, value: { type: "REJECTED", reason } };
     }
 
-    self = units.get(battle, target);
-
-    if (self === undefined || !hasElemental(self)) {
-        return { state: battle, value: { type: "REJECTED", reason: "TARGET_ABSENT" } };
-    }
-
-    const identity: Ref<Unit & Elemental> = units.ref(self);
     const resistance = query.resolveElementResistance(battle, identity)!;
     const reception = receive(battle, identity, request, request.power * (1 - resistance / 100));
     battle = reception.state;
@@ -139,16 +141,19 @@ export function damage(
         burst === null
             ? { ...normalizedEp(currentSelf, maximum), [request.type]: current }
             : elementValues(0);
-    battle = replaceHost(battle, {
-        ...currentSelf,
-        elemental: {
-            ...currentSelf.elemental,
-            ep,
-            burst,
-            nextBurstId,
-            lastAdvancedTick: burst === null ? currentSelf.elemental.lastAdvancedTick : battle.tick,
+    battle = replaceUnits(battle, [
+        {
+            ...currentSelf,
+            elemental: {
+                ...currentSelf.elemental,
+                ep,
+                burst,
+                nextBurstId,
+                lastAdvancedTick:
+                    burst === null ? currentSelf.elemental.lastAdvancedTick : battle.tick,
+            },
         },
-    });
+    ]);
     const reference = burst === null ? null : burstRef(burst);
     if (reference !== null) {
         battle = register(
@@ -206,11 +211,7 @@ export function heal(
         return { state: battle, value: { type: "REJECTED", reason } };
     }
 
-    const self = units.get(battle, target);
-    if (self === undefined || !hasElemental(self)) {
-        return { state: battle, value: { type: "REJECTED", reason: "TARGET_ABSENT" } };
-    }
-
+    const self = units.get(battle, target) as Unit & Elemental;
     const identity = units.ref(self);
     const maximum = query.resolveMaxEp(battle, identity)!;
     const previous = normalizedEp(self, maximum);
@@ -232,10 +233,9 @@ export function heal(
         current: current,
         amounts: amounts,
     };
-    battle = replaceHost(battle, {
-        ...self,
-        elemental: { ...self.elemental, ep: event.current },
-    });
+    battle = replaceUnits(battle, [
+        { ...self, elemental: { ...self.elemental, ep: event.current } },
+    ]);
     battle = appendEvents(battle, [
         {
             type: "ELEMENT_HEAL",
@@ -322,9 +322,6 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
     if (self?.lifecycle !== "PRESENT") {
         return battle;
     }
-    if (battle.tick < self.elemental.lastAdvancedTick) {
-        throw new RangeError("elemental cannot advance to an earlier tick");
-    }
 
     const elapsed = battle.tick - self.elemental.lastAdvancedTick;
     const state = self.elemental;
@@ -350,7 +347,7 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
         next.ep = ep;
     }
 
-    battle = replaceHost(battle, { ...self, elemental: next });
+    battle = replaceUnits(battle, [{ ...self, elemental: next }]);
 
     return next.burst?.status === "ACTIVE" && next.burst.remainingTicks <= 0
         ? finish(battle, burstRef(next.burst))
@@ -364,12 +361,4 @@ function normalizedEp(self: Unit & Elemental, maximum: number): Values {
         BURN: Math.min(maximum, Math.max(0, self.elemental.ep.BURN)),
         NECROSIS: Math.min(maximum, Math.max(0, self.elemental.ep.NECROSIS)),
     };
-}
-
-function replaceHost(battle: BattleState, self: Unit & Elemental): BattleState {
-    const current = units.get(battle, units.ref(self));
-
-    return current?.definition.elemental === self.definition.elemental
-        ? replaceUnits(battle, [self])
-        : battle;
 }

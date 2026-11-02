@@ -9,7 +9,6 @@ import { test } from 'node:test';
 import { readFileSync } from 'node:fs';
 import {
   ELEMENT_TYPES,
-  createDefinition as createElementalDefinition,
   elementValues,
   hasElemental,
   initialize as initializeElementalState,
@@ -52,7 +51,10 @@ const holder = (options = {}, extras = {}) => initialize({
   },
 });
 const fixture = (options = {}, program = {}) => {
-  const unit = holder({}, { elemental: createElementalDefinition({ maxEp: 1000, bursts: simpleBursts(program), ...options }) });
+  const unit = holder({}, { elemental: {
+    maxEp: 1000, recoveryPerSecond: 0, elementResistance: 0,
+    damageResistance: 0, burstRecoverySpeed: 1, bursts: simpleBursts(program), ...options,
+  } });
   return { battle: effectFixtureWork(unit), target: ref(unit) };
 };
 const request = (type = 'BURN', power = 100, source = { id: 9 }) => ({ type, power, source });
@@ -65,13 +67,14 @@ const at = (battle, tick) => ({ ...battle, tick });
 const near = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-8, `${actual} != ${expected}`);
 
 test('Elemental owns immutable bars and initializes its clock without a recovery timer', () => {
-  const definition = createElementalDefinition({ maxEp: 1000, bursts: simpleBursts() });
+  const definition = {
+    maxEp: 1000, recoveryPerSecond: 0, elementResistance: 0,
+    damageResistance: 0, burstRecoverySpeed: 1, bursts: simpleBursts(),
+  };
   const state = initializeElementalState(fixtureBattle(7), baseUnit({ id: "elemental", hooks: [], elemental: definition })).value.elemental;
   assert.deepEqual(state.ep, elementValues(1000));
   assert.equal(state.lastAdvancedTick, 7);
   assert.equal(state.burst, null);
-  assert.equal(definition.recoveryPerSecond, 0);
-  assert.equal(definition.burstRecoverySpeed, 1);
   const f = fixture();
   assert.equal(hasElemental(get(f.battle, f.target)), true);
   const result = elemental.damage(f.battle, f.target, request());
@@ -80,6 +83,16 @@ test('Elemental owns immutable bars and initializes its clock without a recovery
   assert.equal(get(result.state, f.target).elemental.ep.BURN, 900);
   assert.equal(get(f.battle, f.target).elemental.ep.BURN, 1000);
   assert.equal(get(result.state, f.target).definition, get(f.battle, f.target).definition);
+});
+
+test('Elemental initialization validates a complete directly constructed definition', () => {
+  const definition = {
+    maxEp: 0, recoveryPerSecond: 0, elementResistance: 0,
+    damageResistance: 0, burstRecoverySpeed: 1, bursts: simpleBursts(),
+  };
+  assert.throws(() => initializeElementalState(
+    fixtureBattle(), baseUnit({ id: 'invalid-elemental', hooks: [], elemental: definition }),
+  ), RangeError);
 });
 
 test('EP bars retain independent partial loss and resistance has a five percent floor independent of HP resistance', () => {
@@ -512,9 +525,6 @@ test('standard burst profiles distinguish receiver class, boss threshold, ordina
   assert.equal(enemy[3].attackReductionRatio, 0.5);
   assert.equal(holder({ receiver: 'ENEMY', boss: true }).definition.elemental.maxEp, 2000);
   assert.equal(holder({ receiver: 'CHARACTER', boss: true }).definition.elemental.maxEp, 1000);
-  assert.throws(() => createElementalDefinition({
-    maxEp: 0, bursts: simpleBursts(),
-  }), RangeError);
 });
 
 test('standard elemental profiles match the extracted client EPBreakBuffDB, BuffData and prefab damage nodes', () => {

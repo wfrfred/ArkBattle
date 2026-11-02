@@ -1,6 +1,5 @@
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import { assertNonnegativeNumber } from "../../../common/assert.js";
 import * as units from "../../query.js";
 import * as hooks from "../../../hook.js";
 import type { Unit } from "../../unit.js";
@@ -57,23 +56,8 @@ export function receive(
     return hooks.dispatch<Receiving, number>(battle, { host, request }, amount, {
         candidates: (current) =>
             units.get(current, host)?.elemental.receiving.map(({ id }) => id) ?? [],
-        find: (current, id) => {
-            const entry = units
-                .get(current, host)
-                ?.elemental.receiving.find((candidate) => candidate.id === id);
-
-            return entry === undefined
-                ? undefined
-                : {
-                      ...entry,
-                      invoke: (state, context, pending) => {
-                          const result = entry.invoke(state, context, pending);
-                          assertNonnegativeNumber(result.value, "pending element damage");
-
-                          return result;
-                      },
-                  };
-        },
+        find: (current, id) =>
+            units.get(current, host)?.elemental.receiving.find((candidate) => candidate.id === id),
         stop: (current) => damageRejection(current, host, request) !== undefined,
     });
 }

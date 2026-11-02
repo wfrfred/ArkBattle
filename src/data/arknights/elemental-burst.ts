@@ -247,13 +247,8 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
                         1 -
                         profile.attackReductionRatio * Math.max(0, 1 - second / durationSeconds);
                     battle = effects.setData(battle, ref, { ...current.data, scaler });
-                    const host = activeHost(battle, burst)!;
-                    if (!hasOffense(host)) {
-                        return battle;
-                    }
-
                     battle = updateUnit(battle, [
-                        setAttackContribution(units.ref(host), {
+                        setAttackContribution(units.ref(unit), {
                             id: `@effect/${self.id}/attack`,
                             value: [attribute.create({ finalScaler: scaler })],
                         }),
@@ -329,7 +324,7 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
                 if (existing === undefined) {
                     battle = effects.install(battle, units.ref(unit), paralysis).state;
                 } else {
-                    const current = unit.effects.get(existing.id, paralysis)!;
+                    const current = existing as effects.Effect<{ remaining: number }, Action>;
                     battle = effects.setData(battle, effectRef(current), {
                         ...current.data,
                         remaining: profile.paralysisStacks,

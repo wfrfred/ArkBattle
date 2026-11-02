@@ -3,7 +3,6 @@ export {
     hasElemental,
     hasElementalDefinition,
     elementValues,
-    createDefinition,
     initialize,
     setContribution,
     removeContribution,

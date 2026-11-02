@@ -61,7 +61,7 @@ function resolve(
     parameter: Parameter,
 ): number | undefined {
     const self = units.get(battle, host);
-    if (self === undefined || !hasElemental(self)) {
+    if (self === undefined) {
         return undefined;
     }
 

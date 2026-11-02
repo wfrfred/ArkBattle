@@ -4,7 +4,7 @@ Elemental 负责元素值、元素损伤与治疗、一次爆发的身份和冷�
 
 Unit Definition 直接关联共享的 Elemental Definition，Content 提供爆发程序。
 
-公开类型、查询和业务操作从 [elemental/index.ts](../../src/core/unit/capability/elemental/index.ts) 导入，包括只读的 available。Capability 的 Rule、Hook 与属性贡献 set／remove 绑定 Ref<Unit & Elemental> 返回 Change，交给 Unit.update 登记，不由 Content 重建 Unit。爆发、损伤与恢复等完整操作保持 BattleState 协议；operations.ts 的私有 replaceHost 通过内部 Unit.replace 写回，不作为公开内容接口，query.ts 只负责查询。
+公开类型、查询和业务操作从 [elemental/index.ts](../../src/core/unit/capability/elemental/index.ts) 导入，包括只读的 available。Capability 的 Rule、Hook 与属性贡献 set／remove 绑定 Ref<Unit & Elemental> 返回 Change，交给 Unit.update 登记。爆发、损伤与恢复等完整操作保持 BattleState 协议，状态写回使用 Core 内部的 Unit.replace；query.ts 负责查询。
 
 ## 1. 能力与定义
 
@@ -20,6 +20,8 @@ interface Definition {
     readonly bursts: Readonly<Record<Type, BurstDefinition>>;
 }
 ```
+
+Data／Content 直接提供完整静态 Definition，明日方舟的基础参数由 Data 选择。initialize 作为能力构造入口，校验基础数值和各型爆发时长，再建立初始状态；Definition 与 bursts 共享原引用。内部计算信任已建立的配置与能力配对。
 
 四条 EP 分别保存数值，共用基础上限、自然回复速度与抗性。elementResistance 用于 EP 损伤，damageResistance 用于 HP 元素伤害；两个结算入口和两个属性各自独立。抗性有效值限制在 0–95，回复与爆发恢复速度不小于零，上限不小于 1。
 
@@ -90,7 +92,7 @@ Targeting 提供标准元素 Filter，由 Content 显式组合：elementDamage �
 
 ## 4. Hook、提交事实与同步重入
 
-Hook 采用公共协议 `(battle, fixedContext, current) => Result<T>`。事实通知固定 `{ host, event }`，T=void；DamageHook 固定 `{ host, request }`，T=number，金额只在 current 接续。accepts 只查询，实时宿主按 host 从 battle 读取。setDamageHook／removeDamageHook 管理伤判登记。每次派发固定候选 ID，逐项读取最新登记与 accepts；同 ID 替换使用新版本，新 ID 等待下一次派发。嵌套操作独立取候选。
+Hook 采用公共协议 `(battle, fixedContext, current) => Result<T>`。事实通知固定 `{ host, event }`，T=void；DamageHook 固定 `{ host, request }`，T=number，金额只在 current 接续，内容程序负责返回合法的非负剩余损伤。accepts 只查询，实时宿主按 host 从 battle 读取。setDamageHook／removeDamageHook 管理伤判登记。每次派发固定候选 ID，逐项读取最新登记与 accepts；同 ID 替换使用新版本，新 ID 等待下一次派发。嵌套操作独立取候选。
 
 | Hook | 载荷与时点 |
 | --- | --- |

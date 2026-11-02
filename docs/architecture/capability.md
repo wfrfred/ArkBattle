@@ -105,7 +105,7 @@ Core 不提供干员或敌人 Archetype 层；内容直接组合 Unit Definition
 
 ## 构造、校验与命名
 
-- Capability Definition 由 Content 直接构造，不要求额外的 createDefinition 工厂。Action 直接提供 Definition 的 initialize 与可选 select，不设原样返回的工厂。几何构造等局部值转换由内容按需调用；必要的领域不变量校验放在 initialize，保持构造入口统一。其他领域尚存的历史工厂随各模块审查整理。
+- Capability Definition 由 Content 直接构造，必要的领域不变量校验放在 initialize。Action 的 Definition 提供 initialize 与可选 select；Elemental 的完整配置与爆发程序由 Data／Content 提供，能力初始化校验基础数值和各型爆发时长。几何构造等局部值转换由内容按需调用。
 - Capability.initialize 使用当前 battle 和正在装配的 Unit，读取自身 Definition，返回 Result<U & Capability>；内部纯值模型保留自己的自然初始化参数。
 - validateState 验证已有值，返回 void，不伪装成构造。
 - Rule、Hook、Contribution 与 Blocker.layer 的 set／remove 工厂绑定 Ref 返回 Change；add、生命周期与精确私有 state 写回维持所属领域完整操作；resolve 查询有效值，advance 表达时间推进。Change 的后继由领域明确提供，不由 Unit 发布推断。

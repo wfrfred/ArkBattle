@@ -5,7 +5,6 @@ import { initialize } from "../../dist/core/unit/initialize.js";
 import { initializers } from "../../dist/core/unit/capability/catalog.js";
 import { add as addUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
-import { createDefinition as elementalDefinition } from "../../dist/core/unit/capability/elemental/capability.js";
 import { definition as skillDefinition } from "../helpers/skill.js";
 import { fixtureBattle } from "../helpers/unit.js";
 import { Effects } from "../../dist/core/unit/effect/effects.js";
@@ -41,7 +40,10 @@ test("Unit initialization pairs every declared capability, including empty defin
 test("Skill and Elemental initialize from the current battle tick and keep shared definitions", () => {
     const battle = fixtureBattle(37);
     const skill = skillDefinition({ initialize: battle => ({ state: battle, value: ({ count: 3 }) }) });
-    const elemental = elementalDefinition({ maxEp: 1000, bursts });
+    const elemental = {
+        maxEp: 1000, recoveryPerSecond: 0, elementResistance: 0,
+        damageResistance: 0, burstRecoverySpeed: 1, bursts,
+    };
     const contentEntry = { id: 'test/content-entry', stage: 'enter', invoke: state => ({ state, value: undefined }) };
     const definition = { hooks: [contentEntry], id: "clocks", skill: { initialize: current => createSkill(current, skill) }, elemental };
     const first = initialize(battle, { id: 1, definition, position: [0, 0] }).value;
@@ -112,7 +114,10 @@ test("Unit initialization threads each capability result through the next initia
 
 test("generic Unit initialization cannot inject prepared states or override the battle clock", () => {
     const battle = fixtureBattle(19);
-    const definition = { hooks: [], id: "no-prepared-state", vitality: { maxHp: 100, defense: 0, resistance: 0 }, elemental: elementalDefinition({ maxEp: 1000, bursts }) };
+    const definition = { hooks: [], id: "no-prepared-state", vitality: { maxHp: 100, defense: 0, resistance: 0 }, elemental: {
+        maxEp: 1000, recoveryPerSecond: 0, elementResistance: 0,
+        damageResistance: 0, burstRecoverySpeed: 1, bursts,
+    } };
     const effects = Effects.empty().add({
         id: 0, host: { id: 1 }, definition: { id: "unsupported-preload", initialize: () => ({}) },
         data: {}, source: null, deadline: null, enabled: true, status: "ACTIVE",

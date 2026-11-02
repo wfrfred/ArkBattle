@@ -1,8 +1,7 @@
-import {
-    createDefinition as createElementalDefinition,
-    type Definition as ElementalDefinition,
-    type Type,
-    type BurstDefinition,
+import type {
+    Definition as ElementalDefinition,
+    Type,
+    BurstDefinition,
 } from "../../core/unit/capability/elemental/index.js";
 
 import { create as createBurstDefinition } from "./elemental-burst.js";
@@ -149,7 +148,7 @@ export function getArknightsElementalBurstProfile(
 export function createArknightsElementalDefinition(
     options: ArknightsElementalOptions,
 ): ElementalDefinition {
-    return createElementalDefinition({
+    return {
         maxEp:
             options.maxEp ?? (options.receiver === "ENEMY" && options.boss === true ? 2000 : 1000),
         recoveryPerSecond: options.recoveryPerSecond ?? 0,
@@ -157,5 +156,5 @@ export function createArknightsElementalDefinition(
         damageResistance: options.damageResistance ?? 0,
         burstRecoverySpeed: options.burstRecoverySpeed ?? 1,
         bursts: bursts[options.receiver],
-    });
+    };
 }

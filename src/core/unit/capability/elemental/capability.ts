@@ -73,44 +73,24 @@ export function elementValues(value: number): Values {
     return { NEURAL: value, EROSION: value, BURN: value, NECROSIS: value };
 }
 
-export function createDefinition(
-    definition: Pick<Definition, "maxEp" | "bursts"> &
-        Partial<Omit<Definition, "maxEp" | "bursts">>,
-): Definition {
-    const {
-        maxEp,
-        bursts,
-        recoveryPerSecond = 0,
-        elementResistance = 0,
-        damageResistance = 0,
-        burstRecoverySpeed = 1,
-    } = definition;
-
-    assertPositiveNumber(maxEp, "maximum EP");
-    assertNonnegativeNumber(recoveryPerSecond, "EP recovery per second");
-    assertFiniteNumber(elementResistance, "element resistance");
-    assertFiniteNumber(damageResistance, "element HP damage resistance");
-    assertNonnegativeNumber(burstRecoverySpeed, "element burst recovery speed");
-
-    for (const type of ELEMENT_TYPES) {
-        assertNonnegativeSafeInteger(bursts[type].durationTicks, "element burst duration");
-    }
-
-    return {
-        maxEp,
-        recoveryPerSecond,
-        elementResistance,
-        damageResistance,
-        burstRecoverySpeed,
-        bursts: { ...bursts },
-    };
-}
-
 export function initialize<U extends Unit & Pick<Elemental, "definition">>(
     battle: BattleState,
     unit: U,
 ): Result<U & Elemental> {
     const definition = unit.definition.elemental;
+
+    assertPositiveNumber(definition.maxEp, "maximum EP");
+    assertNonnegativeNumber(definition.recoveryPerSecond, "EP recovery per second");
+    assertFiniteNumber(definition.elementResistance, "element resistance");
+    assertFiniteNumber(definition.damageResistance, "element HP damage resistance");
+    assertNonnegativeNumber(definition.burstRecoverySpeed, "element burst recovery speed");
+
+    for (const type of ELEMENT_TYPES) {
+        assertNonnegativeSafeInteger(
+            definition.bursts[type].durationTicks,
+            "element burst duration",
+        );
+    }
 
     return {
         state: battle,
