@@ -70,3 +70,4 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | [skill-parameter-formulas-20261029](skill-parameter-formulas-20261029/README.md) | SP、Ammo 和时长的原生公式 |
 | [numeric-parameters](numeric-parameters/README.md) | 属性数值与限幅；原取证日期和输入指纹未记录 |
 | [block-positioning-20261031](block-positioning-20261031/README.md) | 阻挡站位曲线、解除、位置覆盖及插值与自主移动调度 |
+| [elemental-timing-20261102](elemental-timing-20261102/README.md) | 元素爆发同步触发、首次恢复机会、按 deltaTime 推进及宿主更新顺序 |

@@ -1,0 +1,90 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-02",
+    "scope": "Community-wiki reference search; not official documentation or native execution.",
+    "accessedTimezone": "Asia/Singapore"
+  },
+  "result": {
+    "topic": "Elemental burst recovery: first logical update and trigger-frame timing",
+    "accessed_date": "2026-11-02",
+    "accessed_timezone": "Asia/Singapore",
+    "source_kind": "community_wiki_not_official_documentation",
+    "question": "Whether an elemental burst always skips recovery-budget advancement during its creation logical frame, or first advancement depends on when the trigger occurs relative to the host EPController.OnTick.",
+    "sources": [
+      {
+        "title": "元素",
+        "url": "https://prts.wiki/w/元素",
+        "revision_url": "https://prts.wiki/index.php?title=元素&oldid=447011",
+        "page_declared_reference_client": "2.7.91",
+        "sections": [
+          {
+            "title": "元素损伤爆发（ElementBreak）",
+            "short_quote": "元素损伤爆发开始时会立刻给予单位相应的效果，随后进入爆发冷却状态。",
+            "paraphrase": "Depleting one EP type triggers its burst. Burst effects are applied immediately, then recovery/cooldown prevents EP loss and external EP restoration. At burst completion all EP types are reset to their maxima.",
+            "supports": [
+              "Immediate burst business effects after EP depletion",
+              "Recovery/cooldown lock and eventual EP reset"
+            ],
+            "does_not_establish": [
+              "First recovery-budget decrement logical frame",
+              "A universal skip-creation-frame check",
+              "Ordering between EP damage trigger and host EPController.OnTick",
+              "Whether expiry is checked before or after the current update decrement"
+            ]
+          },
+          {
+            "title": "攻击附带的元素损伤",
+            "paraphrase": "EP damage directly attached to an attack is usually processed after its HP damage; some Buff-based implementations can apply EP damage first. The subsection is marked incomplete.",
+            "supports": [
+              "Different EP-damage application paths exist"
+            ],
+            "does_not_establish": [
+              "Global host update ordering or first recovery tick"
+            ]
+          }
+        ],
+        "inspection": "Read the complete mechanism content and searched page text for 帧 and 恢复速度; neither yielded a first-frame rule. This is absence of a statement in this inspected page, not proof that no such client rule exists."
+      },
+      {
+        "title": "数值范围",
+        "url": "https://prts.wiki/w/数值范围",
+        "revision_url": "https://prts.wiki/index.php?title=数值范围&oldid=444062",
+        "page_declared_reference_client": "2.7.81",
+        "section": "基本属性",
+        "attribute": {
+          "id": 35,
+          "internal_name": "EP_BREAK_RECOVER_SPEED",
+          "name": "损伤冷却恢复速度",
+          "default_minimum": 0,
+          "default_maximum": null,
+          "default_value": 1
+        },
+        "short_quote": "影响元素损伤爆发的恢复速度",
+        "supports": [
+          "A recovery-speed attribute with default value 1 and default lower bound 0"
+        ],
+        "does_not_establish": [
+          "First-frame decrement or frame-order semantics"
+        ]
+      },
+      {
+        "title": "作战机制",
+        "url": "https://prts.wiki/w/作战机制",
+        "revision_url": "https://prts.wiki/index.php?title=作战机制&oldid=441625",
+        "inspection": "Opened as the general mechanics cross-reference; did not find a section closing the elemental-burst first-recovery-frame question. No positive timing conclusion is drawn from this page."
+      }
+    ],
+    "search_queries": [
+      "site:prts.wiki 元素损伤 爆发 恢复 帧 计时",
+      "site:prts.wiki 元素损伤 恢复速度 爆发 时长",
+      "site:prts.wiki 元素 第一帧",
+      "site:prts.wiki 爆发冷却 帧",
+      "site:prts.wiki 爆发恢复 速度"
+    ],
+    "result": {
+      "status": "insufficient_for_first_frame_timing",
+      "established": "PRTS confirms immediate effects and a recovery phase, but does not specify the first budget update or a creation-frame skip.",
+      "next_evidence": "Inspect official-client EPController trigger and OnTick paths, their shared timer state, and real callers that determine whether the trigger can precede or follow the host update."
+    }
+  }
+}

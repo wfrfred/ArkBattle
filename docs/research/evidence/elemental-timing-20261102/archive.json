@@ -1,0 +1,1218 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-02"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-02",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "ep-controller.json#/provenance/client/dll",
+          "ep-native.json#/provenance/client/dll",
+          "maxep-helper.json#/provenance/client/dll",
+          "schedule-native.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "ep-controller.json#/provenance/client/metadata",
+          "ep-native.json#/provenance/client/metadata",
+          "maxep-helper.json#/provenance/client/metadata",
+          "schedule-native.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "ep-controller.json",
+      "ep-native.json",
+      "maxep-helper.json",
+      "prts-sources.json",
+      "schedule-native.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12589,
+        "sha256": "1a85248a6a48d92d61c65f5ba044d079954866ff0c1672488b92f0cf1366af9a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "ep-controller.json",
+        "kind": "record",
+        "bytes": 40562,
+        "sha256": "27df5f24c3ed2abf131afc5fe132de2ecbb01b92f3b738591434caf4deb1d627"
+      },
+      {
+        "path": "ep-native.json",
+        "kind": "record",
+        "bytes": 765115,
+        "sha256": "1de1e5c4097e325eeb5d0cb8b25195b3addad13997def41e28e8f5a829f0ba99"
+      },
+      {
+        "path": "extract_ep.py",
+        "kind": "historical-script",
+        "bytes": 2902,
+        "sha256": "5fe88ba1aa3498c5c41cc9bd5fadaaca1055bf42bb598482df4feaa6eed07942"
+      },
+      {
+        "path": "extract_ep.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "extract_schedule.py",
+        "kind": "historical-script",
+        "bytes": 4290,
+        "sha256": "928f06c9fe859049b20fbae68d95d119cc60e87b8141807682897a5ca61fd614"
+      },
+      {
+        "path": "extract_schedule.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "maxep-helper.json",
+        "kind": "record",
+        "bytes": 20228,
+        "sha256": "f58f4bbaef0fe02db990913ad29f03c7f2773e32165678ba3d041c73963a2b29"
+      },
+      {
+        "path": "prts-sources.json",
+        "kind": "record",
+        "bytes": 4572,
+        "sha256": "57ef7660eb77601e8f7f9129adf0234169bb46bfc1dac6f86fbb14a6ffa7cbae"
+      },
+      {
+        "path": "schedule-native.json",
+        "kind": "record",
+        "bytes": 1412075,
+        "sha256": "5f579fa10ac6f6ff44e60fca1f6c8cc09edba6573a314ae27b9b45ac6093b2d2"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 18333,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/0"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleModifierWrap._m_NewElementDamageModifierAfterCalculate_xlua_st_",
+          "address": "0x180a616a0"
+        },
+        {
+          "index": 18350,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/1"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleModifierWrap._g_get_isElementDamage",
+          "address": "0x180a5db40"
+        },
+        {
+          "index": 65802,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/0",
+            "schedule-native.json#/result/bodies/0/method",
+            "schedule-native.json#/result/bodies/0/fragments/0",
+            "schedule-native.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.OnTick",
+          "address": "0x18065aaa0"
+        },
+        {
+          "index": 65902,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/2"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686700"
+        },
+        {
+          "index": 65903,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/3"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686440"
+        },
+        {
+          "index": 65904,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/4"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686530"
+        },
+        {
+          "index": 66125,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/1",
+            "schedule-native.json#/result/bodies/1/method",
+            "schedule-native.json#/result/bodies/1/fragments/0",
+            "schedule-native.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnTrigger",
+          "address": "0x1806d58d0"
+        },
+        {
+          "index": 66126,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/2",
+            "schedule-native.json#/result/bodies/2/method",
+            "schedule-native.json#/result/bodies/2/fragments/0",
+            "schedule-native.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnTick",
+          "address": "0x1806d54d0"
+        },
+        {
+          "index": 66147,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/5"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAfterOutputElementDamage",
+          "address": "0x1806d0180"
+        },
+        {
+          "index": 66153,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/6"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnTakeEPDamage",
+          "address": "0x1806d5250"
+        },
+        {
+          "index": 66232,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/3",
+            "schedule-native.json#/result/bodies/3/method",
+            "schedule-native.json#/result/bodies/3/fragments/0",
+            "schedule-native.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._RunActions",
+          "address": "0x1806dc050"
+        },
+        {
+          "index": 66233,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/4",
+            "schedule-native.json#/result/bodies/4/method",
+            "schedule-native.json#/result/bodies/4/fragments/0",
+            "schedule-native.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._RunActionsCore",
+          "address": "0x1806dbbd0"
+        },
+        {
+          "index": 66349,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/5",
+            "schedule-native.json#/result/bodies/5/method",
+            "schedule-native.json#/result/bodies/5/fragments/0",
+            "schedule-native.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.Tick",
+          "address": "0x1806c9880"
+        },
+        {
+          "index": 66380,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/7"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnAfterOutputElementDamage",
+          "address": "0x1806b8c90"
+        },
+        {
+          "index": 66384,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/8"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnTakeEPDamage",
+          "address": "0x1806c76c0"
+        },
+        {
+          "index": 67451,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/6",
+            "schedule-native.json#/result/bodies/6/method",
+            "schedule-native.json#/result/bodies/6/fragments/0",
+            "schedule-native.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_maxEp",
+          "address": "0x180738a00"
+        },
+        {
+          "index": 67460,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/9"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_epDamageResistance",
+          "address": "0x180734bb0"
+        },
+        {
+          "index": 67630,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/7",
+            "schedule-native.json#/result/bodies/7/method",
+            "schedule-native.json#/result/bodies/7/fragments/0",
+            "schedule-native.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetEpInternal",
+          "address": "0x18072e010"
+        },
+        {
+          "index": 67643,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/8",
+            "schedule-native.json#/result/bodies/8/method",
+            "schedule-native.json#/result/bodies/8/fragments/0",
+            "schedule-native.json#/result/bodies/8/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity._UpdateEpRecovery",
+          "address": "0x180732030"
+        },
+        {
+          "index": 67665,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/9",
+            "schedule-native.json#/result/bodies/9/method",
+            "schedule-native.json#/result/bodies/9/fragments/0",
+            "schedule-native.json#/result/bodies/9/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.ApplyModifier",
+          "address": "0x1807211a0"
+        },
+        {
+          "index": 67675,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/10"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnAfterOutputElementDamage",
+          "address": "0x180727b50"
+        },
+        {
+          "index": 67683,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/10",
+            "schedule-native.json#/result/bodies/10/method",
+            "schedule-native.json#/result/bodies/10/fragments/0",
+            "schedule-native.json#/result/bodies/10/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.DoApplyModifier",
+          "address": "0x180722fe0"
+        },
+        {
+          "index": 67684,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/11",
+            "schedule-native.json#/result/bodies/11/method",
+            "schedule-native.json#/result/bodies/11/fragments/0",
+            "schedule-native.json#/result/bodies/11/fragments/0/method",
+            "schedule-native.json#/result/relatedMethods/11"
+          ],
+          "fullname": "Torappu.Battle.Entity._DoApplyEPModifierInternal",
+          "address": "0x180730be0"
+        },
+        {
+          "index": 67697,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/12",
+            "schedule-native.json#/result/bodies/12/method",
+            "schedule-native.json#/result/bodies/12/fragments/0",
+            "schedule-native.json#/result/bodies/12/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnTick",
+          "address": "0x18072c290"
+        },
+        {
+          "index": 67711,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/12"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnTakeEPDamage",
+          "address": "0x18072be40"
+        },
+        {
+          "index": 67754,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/0",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController.get_isInBreakRecovery/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController.get_isInBreakRecovery",
+          "address": "0x18074f420"
+        },
+        {
+          "index": 67755,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/1",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController.set_isInBreakRecovery/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController.set_isInBreakRecovery",
+          "address": "0x18074f480"
+        },
+        {
+          "index": 67756,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/2",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController.Reset/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController.Reset",
+          "address": "0x18074e920"
+        },
+        {
+          "index": 67757,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/3",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController.OnFinish/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController.OnFinish",
+          "address": "0x18074e3b0"
+        },
+        {
+          "index": 67758,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/4",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController.OnTick/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController.OnTick",
+          "address": "0x18074e490"
+        },
+        {
+          "index": 67759,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/5",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController.ReduceEpBreakCooldownDuration/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController.ReduceEpBreakCooldownDuration",
+          "address": "0x18074e6e0"
+        },
+        {
+          "index": 67760,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/6",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController._RefreshEpRecoverAfterCooldownReduced/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController._RefreshEpRecoverAfterCooldownReduced",
+          "address": "0x18074ed40"
+        },
+        {
+          "index": 67761,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/7",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController._CreateBrokenBuff/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController._CreateBrokenBuff",
+          "address": "0x18074ea20"
+        },
+        {
+          "index": 67762,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/8",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController._StartEPRecovery/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController._StartEPRecovery",
+          "address": "0x18074ef70"
+        },
+        {
+          "index": 67763,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/9",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController.OnElementBreak/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController.OnElementBreak",
+          "address": "0x18074e080"
+        },
+        {
+          "index": 67764,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/10",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController._GetEpBreakDuration/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController._GetEpBreakDuration",
+          "address": "0x18074ec20"
+        },
+        {
+          "index": 67765,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/11",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController.get_attributeMask/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController.get_attributeMask",
+          "address": "0x18074f3c0"
+        },
+        {
+          "index": 67766,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/12",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController.get_abnormalFlagMask/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController.get_abnormalFlagMask",
+          "address": "0x18074f2e0"
+        },
+        {
+          "index": 67767,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/13",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController.get_abnormalImmuneMask/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController.get_abnormalImmuneMask",
+          "address": "0x18074f360"
+        },
+        {
+          "index": 67768,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/14",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController.get_abnormalAntiMask/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController.get_abnormalAntiMask",
+          "address": "0x18074f1c0"
+        },
+        {
+          "index": 67769,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/15",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController.get_abnormalComboMask/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController.get_abnormalComboMask",
+          "address": "0x18074f280"
+        },
+        {
+          "index": 67770,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/16",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController.get_abnormalComboImmuneMask/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController.get_abnormalComboImmuneMask",
+          "address": "0x18074f220"
+        },
+        {
+          "index": 67771,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/17",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController.GetValue/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController.GetValue",
+          "address": "0x18074dfa0"
+        },
+        {
+          "index": 67772,
+          "mode": "metadata",
+          "records": [
+            "ep-controller.json#/result/0/methods/18",
+            "ep-native.json#/result/methods/Torappu.Battle.Entity~1EPController..ctor/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/EPController..ctor",
+          "address": "0x18074f100"
+        },
+        {
+          "index": 67982,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/13"
+          ],
+          "fullname": "Torappu.Battle.BattleLogger.LogEpModifier",
+          "address": "0x180741920"
+        },
+        {
+          "index": 68032,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/14"
+          ],
+          "fullname": "Torappu.Battle.BattleLogger/BattleStats/CharAdvancedStats.ToListElementDamage",
+          "address": "0x18074c630"
+        },
+        {
+          "index": 69081,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/15"
+          ],
+          "fullname": "Torappu.Battle.Act33SideManager.ApplyElementDamageCharactersWithRope",
+          "address": "0x1807a6a90"
+        },
+        {
+          "index": 69083,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/16"
+          ],
+          "fullname": "Torappu.Battle.Act33SideManager._ApplyElementDamageModifier",
+          "address": "0x1807aa610"
+        },
+        {
+          "index": 72136,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/17"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isElementDamage",
+          "address": "0x18090d630"
+        },
+        {
+          "index": 72181,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/18"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewElementDamageModifierAfterCalculate",
+          "address": "0x18090a8e0"
+        },
+        {
+          "index": 72254,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/13",
+            "schedule-native.json#/result/bodies/13/method",
+            "schedule-native.json#/result/bodies/13/fragments/0",
+            "schedule-native.json#/result/bodies/13/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.ObjectManager.OnFixedUpdate",
+          "address": "0x180913830"
+        },
+        {
+          "index": 77329,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/14",
+            "schedule-native.json#/result/bodies/14/method",
+            "schedule-native.json#/result/bodies/14/fragments/0",
+            "schedule-native.json#/result/bodies/14/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Character.OnTick",
+          "address": "0x180aa4570"
+        },
+        {
+          "index": 77845,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/15",
+            "schedule-native.json#/result/bodies/15/method",
+            "schedule-native.json#/result/bodies/15/fragments/0",
+            "schedule-native.json#/result/bodies/15/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnTick",
+          "address": "0x180ac09a0"
+        },
+        {
+          "index": 79025,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/16",
+            "schedule-native.json#/result/bodies/16/method",
+            "schedule-native.json#/result/bodies/16/fragments/0",
+            "schedule-native.json#/result/bodies/16/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Unit.OnTick",
+          "address": "0x180b1a640"
+        },
+        {
+          "index": 92284,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/19"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_hasEpDamage",
+          "address": "0x180f3fd80"
+        },
+        {
+          "index": 92287,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/20"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_elementDamageType",
+          "address": "0x180f3fd20"
+        },
+        {
+          "index": 92294,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/21"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.ApplyElementDamageScale",
+          "address": "0x180f3ec10"
+        },
+        {
+          "index": 93348,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/22"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ProjectileToTileAbility.get_hasEpDamage",
+          "address": "0x180f7baf0"
+        },
+        {
+          "index": 93359,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/23"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ProjectileToTileAbility.ApplyElementDamageScale",
+          "address": "0x180f7a260"
+        },
+        {
+          "index": 93894,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/24"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.CreateElementDamageNode",
+          "address": "0x180f90230"
+        },
+        {
+          "index": 93895,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/25"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.NewElementDamageNode",
+          "address": "0x180f90cc0"
+        },
+        {
+          "index": 97423,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/26"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/Act33SideBurnCharactersWithRope.get_isFixedEpDamage",
+          "address": "0x18106aee0"
+        },
+        {
+          "index": 99204,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/27"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/UpdateAttackElementDamageScale.get_allowedSource",
+          "address": "0x1811089f0"
+        },
+        {
+          "index": 99205,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/28"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/UpdateAttackElementDamageScale.Execute",
+          "address": "0x181108730"
+        },
+        {
+          "index": 99206,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/29"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/UpdateAttackElementDamageScale..ctor",
+          "address": "0x181108940"
+        },
+        {
+          "index": 99223,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/30"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage.get_allowedSource",
+          "address": "0x1810fb000"
+        },
+        {
+          "index": 99224,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/31"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage.get_shieldByAnotherSource",
+          "address": "0x1810fb060"
+        },
+        {
+          "index": 99225,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/32"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage.Execute",
+          "address": "0x1810fab10"
+        },
+        {
+          "index": 99226,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/33"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage..ctor",
+          "address": "0x1810faf50"
+        },
+        {
+          "index": 99250,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/34"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/EpDamageScale.get_allowedSource",
+          "address": "0x1811010e0"
+        },
+        {
+          "index": 99251,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/35"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/EpDamageScale.Execute",
+          "address": "0x181100b60"
+        },
+        {
+          "index": 99252,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/36"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/EpDamageScale..ctor",
+          "address": "0x181101050"
+        },
+        {
+          "index": 99321,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/37"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_multiplyWithBuffValidStackCnt",
+          "address": "0x1810f8890"
+        },
+        {
+          "index": 99322,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/38"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_isFixedEpDamage",
+          "address": "0x1810f8830"
+        },
+        {
+          "index": 99323,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/39"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_epDamageScale",
+          "address": "0x1810f87d0"
+        },
+        {
+          "index": 99324,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/40"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.set_epDamageScale",
+          "address": "0x1810f8950"
+        },
+        {
+          "index": 99325,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/41"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_epDamageRatio",
+          "address": "0x1810f8770"
+        },
+        {
+          "index": 99326,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/42"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_allowedSource",
+          "address": "0x1810f8710"
+        },
+        {
+          "index": 99327,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/43"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_purposeMask",
+          "address": "0x1810f88f0"
+        },
+        {
+          "index": 99328,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/44"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage._CheckNodeInvalid",
+          "address": "0x1810f8340"
+        },
+        {
+          "index": 99329,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/17",
+            "schedule-native.json#/result/bodies/17/method",
+            "schedule-native.json#/result/bodies/17/fragments/0",
+            "schedule-native.json#/result/bodies/17/fragments/0/method",
+            "schedule-native.json#/result/relatedMethods/45"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.Execute",
+          "address": "0x1810f7c20"
+        },
+        {
+          "index": 99330,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/46"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage..ctor",
+          "address": "0x1810f8610"
+        },
+        {
+          "index": 99331,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/47"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage..ctor",
+          "address": "0x1810f84e0"
+        },
+        {
+          "index": 99332,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/48"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.CreateElementDamageModifier",
+          "address": "0x1810f76d0"
+        },
+        {
+          "index": 99333,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/49"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.PreprocessForProjectile",
+          "address": "0x1810f8210"
+        },
+        {
+          "index": 99334,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/50"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.DeliverPreprocessPara",
+          "address": "0x1810f7ba0"
+        },
+        {
+          "index": 99335,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/51"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.get_allowedSource",
+          "address": "0x1810f4fc0"
+        },
+        {
+          "index": 99336,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/52"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.get_purposeMask",
+          "address": "0x1810f5020"
+        },
+        {
+          "index": 99337,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/53"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.Execute",
+          "address": "0x1810f4480"
+        },
+        {
+          "index": 99338,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/54"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage._GetTargets_DISPOSE",
+          "address": "0x1810f4b60"
+        },
+        {
+          "index": 99339,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/55"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage._DealEpDamage",
+          "address": "0x1810f4910"
+        },
+        {
+          "index": 99340,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/56"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.PreprocessForProjectile",
+          "address": "0x1810f48b0"
+        },
+        {
+          "index": 99341,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/57"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage..ctor",
+          "address": "0x1810f4f50"
+        },
+        {
+          "index": 99342,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/58"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage/<>c__DisplayClass16_0..ctor",
+          "address": "0x180520cc0"
+        },
+        {
+          "index": 99343,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/59"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage/<>c__DisplayClass16_0.<_GetTargets_DISPOSE>b__1",
+          "address": "0x1811081b0"
+        },
+        {
+          "index": 99344,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/60"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage/<>c__DisplayClass16_0.<_GetTargets_DISPOSE>b__0",
+          "address": "0x181108100"
+        },
+        {
+          "index": 99345,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/61"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.get_allowedSource",
+          "address": "0x1810f7610"
+        },
+        {
+          "index": 99346,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/62"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.get_purposeMask",
+          "address": "0x1810f7670"
+        },
+        {
+          "index": 99347,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/63"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.Execute",
+          "address": "0x1810f70b0"
+        },
+        {
+          "index": 99348,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/64"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.PreprocessForProjectile",
+          "address": "0x1810f7540"
+        },
+        {
+          "index": 99349,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/65"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue..ctor",
+          "address": "0x1810f75a0"
+        },
+        {
+          "index": 99350,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/66"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.get_allowedSource",
+          "address": "0x1810f8e40"
+        },
+        {
+          "index": 99351,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/67"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.get_purposeMask",
+          "address": "0x1810f8ea0"
+        },
+        {
+          "index": 99352,
+          "mode": "disasm",
+          "records": [
+            "schedule-native.json#/result/methods/18",
+            "schedule-native.json#/result/bodies/18/method",
+            "schedule-native.json#/result/bodies/18/fragments/0",
+            "schedule-native.json#/result/bodies/18/fragments/0/method",
+            "schedule-native.json#/result/relatedMethods/68"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.Execute",
+          "address": "0x1810f89c0"
+        },
+        {
+          "index": 99353,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/69"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.PreprocessForProjectile",
+          "address": "0x1810f8d80"
+        },
+        {
+          "index": 99354,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/70"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage..ctor",
+          "address": "0x1810f8de0"
+        },
+        {
+          "index": 100224,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/71"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsElementDamage.get_allowedSource",
+          "address": "0x181177a90"
+        },
+        {
+          "index": 100225,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/72"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsElementDamage.Execute",
+          "address": "0x181177970"
+        },
+        {
+          "index": 100226,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/73"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsElementDamage..ctor",
+          "address": "0x181177a30"
+        },
+        {
+          "index": 101509,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/74"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterElementDamageModifer.get_allowedSource",
+          "address": "0x1811d62e0"
+        },
+        {
+          "index": 101510,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/75"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterElementDamageModifer.Execute",
+          "address": "0x1811d6190"
+        },
+        {
+          "index": 101511,
+          "mode": "metadata",
+          "records": [
+            "schedule-native.json#/result/relatedMethods/76"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterElementDamageModifer..ctor",
+          "address": "0x1811d6280"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Entity/EPController",
+          "records": [
+            "ep-controller.json#/result/0"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}
