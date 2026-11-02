@@ -134,6 +134,7 @@ test("retreat settles refund and the persistent Card before departure; confirmed
                                         dp: current.deployment.dp,
                                         stage: card.costStage,
                                         pending: card.recovery.pending,
+                                        slots: deployment.usedSlots(current),
                                     });
                                     return { state: current, value: undefined };
                                 },
@@ -149,7 +150,7 @@ test("retreat settles refund and the persistent Card before departure; confirmed
     state = deployment.retreat(first.state, units.ref(get(first.state, first.value.unitId)));
     assert.equal(get(state, first.value.unitId), undefined);
     assert.equal(deployment.usedSlots(state), 0);
-    assert.deepEqual(departures, [{ reason: "RETREAT", dp: 45, stage: 1, pending: 1 }]);
+    assert.deepEqual(departures, [{ reason: "RETREAT", dp: 45, stage: 1, pending: 1, slots: 0 }]);
 
     state = deployment.advance({ ...state, tick: 10 });
     assert.equal(cards.get(state, card).stock, 1);
@@ -166,7 +167,7 @@ test("retreat settles refund and the persistent Card before departure; confirmed
     state = damage.applyDamage(request, damage.calculateDamage(state, request)).state;
     assert.equal(get(state, second.value.unitId), undefined);
     assert.equal(deployment.usedSlots(state), 0);
-    assert.deepEqual(departures[1], { reason: "DEATH", dp: 30, stage: 2, pending: 1 });
+    assert.deepEqual(departures[1], { reason: "DEATH", dp: 30, stage: 2, pending: 1, slots: 0 });
 });
 
 test("occupancy pairs notify once and an old departure cannot clear the replacement pair", () => {
@@ -205,7 +206,9 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
             increaseCostOnLeave: false,
         },
     };
-    let state = battle([], { deployment: { definition: account, cards: [support, summon] } });
+    let state = battle([], {
+        deployment: { definition: { ...account, slotLimit: 1 }, cards: [support, summon] },
+    });
     const [supportCard, unitCard] = [...cards.all(state)].map(cards.ref);
     const placedSupport = deployment.deploy(
         state,
@@ -221,6 +224,7 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
                 id: "replace-on-leave",
                 stage: "leave",
                 invoke: (current) => {
+                    assert.equal(deployment.usedSlots(current), 0);
                     const result = deployment.deploy(
                         current,
                         deployment.createRequest(current, unitCard, [1, 2]),
@@ -233,7 +237,10 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
         ],
     });
     state = placedUnit.state;
-    const denied = deployment.deploy(state, deployment.createRequest(state, unitCard, [1, 2]));
+    const denied = deployment.deploy(state, {
+        ...request,
+        quote: { ...request.quote, slots: 0 },
+    });
     assert.deepEqual(denied.value, { type: "REJECTED", reason: "OCCUPIED" });
     state = deployment.retreat(state, units.ref(get(state, placedUnit.value.unitId)));
     assert.deepEqual(notifications, [
@@ -244,6 +251,7 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
     const pair = get(state, placedSupport.value.unitId).occupancy.pair;
     assert.equal(pair.occupant.id, replacement);
     assert.equal(get(state, replacement).occupancy.pair, pair);
+    assert.equal(deployment.usedSlots(state), 1);
 });
 
 test("stock recovers serially with sampled budgets; pause and reduction affect only the selected segment", () => {

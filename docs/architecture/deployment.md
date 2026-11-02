@@ -11,7 +11,7 @@ Deployment 完成一次部署的资格判断、资源消费、实例创建和部
 1. **资格与消费一致。** 预览和实际部署使用同一完整 Request、规则合并方式和当前资源事实。预览不消费资源或创建实例；拒绝部署不消费；规则通过后先提交 DP、库存及部署额度，再构造、登记和执行入场程序。
 2. **部署事实属于本次实例。** 本次 COST、退款依据、占用额度和来源 Card 在登记前确定；朝向和地块是实例输入。Card 跨场上实例存续，持久资源不因每次部署重新初始化。
 3. **主动撤退与死亡分别结账。** 撤退先按本次部署事实退款、处理 Card，再请求 Unit 结束；被动死亡只在确认死亡后通过已登记程序处理。普通 SCRIPT／EXPIRED 离场不冒充死亡，也不重复执行主动撤退的账务。
-4. **离场完成后资源与关联完整释放。** 真实离场释放本次占用的部署额度与占格，结束真实依赖者；嵌套结束只完成请求时，不提前宣称对象已注销或额度已归还。
+4. **离场先清理结构与额度，再通知内容。** 真实依赖者完整结束后，注销 Unit 并释放结构占格，再归还本次占用的部署额度、结算死亡 Card，随后执行内容与配对通知。嵌套结束只完成请求时，不提前宣称对象已注销或额度已归还。
 5. **库存与时间不凭空增减。** 部署间隔和库存恢复相互独立；逐份恢复按各段启动时采样预算，暂停保存剩余时间，修改当前段不消费后段预算，补库存不重置时钟。
 6. **DP 按账户规则运行。** 支付不补发满额期间的自然回复；负 DP 仅使自然回复减半，主动增费不减半；跨零保留已有回复进度。
 
@@ -210,14 +210,19 @@ Occupancy 配对解除和实例额度释放是共有清理，在各类真实离�
 Unit 请求结束并发布 LEAVING
 → 顺序执行 prepare（包括 Blocking 自行登记的清理）
 → Lifetime 结束真实 owner／Scope 依赖者
-→ 注销 Unit 与结构索引，记录移除事实
-→ 顺序执行本地 leave
+→ 注销 Unit、释放结构占格，记录移除事实
+→ @deployable/release-slots 归还本次部署额度
+→ @deployment/death 仅在 DEATH 时结算 Card
+→ Card.unitHooks 的 leave
+→ Request.hooks 的 leave
+→ @occupancy/leave 清理已通知的配对
+→ Definition 的 leave
 → 顺序派发全局 leave
 ```
 
-本地 leave 按登记顺序执行：普通部署的死亡程序按接受条件响应，Card.unitHooks 和 Request.hooks 保留装配位置；Occupancy 清理已通知的配对，Deployable 归还实例占用的 usedSlots，Definition 的内容 Hook 随后执行。
+本地 leave 按上述登记顺序执行。Card、Request 与 Definition 的内容程序均能观察到 Unit 已注销、结构占格已释放和部署额度已归还；死亡时，Card 账务也已完成。Occupancy 按上述顺序清理旧业务配对，不影响替代实例的新配对。
 
-普通 deploy 在资源提交时增加 usedSlots，并将相同份额写入本次 Deployable State；离场按该份额归还。关卡预置直接初始化 Unit，部署位份额为 0。usedSlots 是独立账户；activeCount 按当前仍登记的实例及其来源 Card 统计，因此包含尚未注销的 LEAVING 实例。离场执行额度释放程序前，该份额仍计入 usedSlots。
+普通 deploy 在资源提交时增加 usedSlots，并将相同份额写入本次 Deployable State；离场按该份额归还。关卡预置直接初始化 Unit，部署位份额为 0。usedSlots 是独立账户，在 prepare 与依赖者析构期间仍计入该份额；Unit 物理注销后，由 @deployable/release-slots 在本地内容 leave 之前归还。activeCount 按当前仍登记的实例及其来源 Card 统计，因此包含尚未注销的 LEAVING 实例。
 
 Unit 执行已登记的生命周期程序；Lifetime 关系由各实例所属领域维护。Deployable.card 只表示来源地址，不构成 Lifetime 依赖；Lifetime 所有权由显式登记的 owner 关系决定，回收行为由 Card 的供给配置与对应领域操作决定。
 

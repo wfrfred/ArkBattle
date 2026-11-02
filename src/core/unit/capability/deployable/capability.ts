@@ -45,7 +45,6 @@ export function initialize<
         value: {
             ...unit,
             hooks: [
-                ...unit.hooks,
                 {
                     id: "@deployable/release-slots",
                     stage: "leave",
@@ -64,6 +63,7 @@ export function initialize<
                         return { state: current, value: undefined };
                     },
                 },
+                ...unit.hooks,
             ],
             deployable: {
                 card: null,
