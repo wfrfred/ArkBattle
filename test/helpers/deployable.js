@@ -1,8 +1,5 @@
 import * as conditions from "../../dist/content/terrain/condition.js";
 import { get as getTile } from "../../dist/core/battlefield/map/map.js";
-import { createBattleState } from "../../dist/core/battle/state.js";
-import { addCard, createRequest, preview } from "../../dist/core/battle/deployment/index.js";
-export { initialize, hasDeployable } from "../../dist/core/unit/capability/deployable/index.js";
 
 export function createDefinition({ retreatRules = [] } = {}) {
     return { retreatRules };
@@ -37,16 +34,4 @@ export function createCardDefinition({
         }, ...deploymentRules],
         unitHooks, initialize, ...rest,
     };
-}
-
-export function previewPlacement(field, card, tilePosition, slot = "OCCUPANT") {
-    const created = addCard(createBattleState(field), {
-        id: "fixture/deployment-preview",
-        hooks: [],
-        occupancy: slot === "SUPPORT" ? { slot, hooks: [] } : { slot },
-        deployable: { retreatRules: [] },
-        card,
-    });
-    const result = preview(created.state, createRequest(created.state, created.value, tilePosition));
-    return result.type === "ALLOWED" ? { type: "ALLOWED" } : result;
 }

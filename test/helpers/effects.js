@@ -7,10 +7,6 @@ import { getUnit } from "./unit.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { get } from "../../dist/core/unit/effect/index.js";
 import {
-    setAttackContribution,
-    removeAttackContribution,
-} from "../../dist/core/unit/capability/offense/index.js";
-import {
     setMaxHpContribution,
     removeMaxHpContribution,
 } from "../../dist/core/unit/capability/vitality/index.js";
@@ -33,20 +29,6 @@ export function install(
     initial = {},
 ) {
     return effects.install(state, unitRef(getUnit(state, unitId)), definition, initial);
-}
-
-export function at(state, tick) {
-    return { ...state, tick };
-}
-
-export function attackBuff(id = "attack-buff", amount = 20, callbacks = {}) {
-    return contributionBuff(
-        id,
-        amount,
-        setAttackContribution,
-        removeAttackContribution,
-        callbacks,
-    );
 }
 
 export function maxHpBuff(id = "max-hp-buff", amount = 100, callbacks = {}) {
@@ -84,17 +66,6 @@ function contributionBuff(id, amount, set, remove, callbacks) {
             },
         },
     );
-}
-
-export function refreshAttack(state, ref) {
-    const instance = get(state, ref);
-    if (instance?.status !== "ACTIVE") return state;
-    const unit = getUnit(state, ref.host.id);
-    if (unit === undefined) return state;
-    return update(state, [setAttackContribution(ref.host, {
-            id: `${ref.host.id}:${ref.id}`,
-            value: [modifier({ finalAddition: instance.data.amount })],
-        })]);
 }
 
 export function contributionEffect(

@@ -66,10 +66,6 @@ export function damage(battle, request) {
     return applyDamage(request, calculateDamage(battle, request));
 }
 
-export function healingParameters(power, multiplier = 1) {
-    return { power, multiplier };
-}
-
 export function healing(battle, request) {
     return applyHealing(request, calculateHealing(battle, request));
 }
@@ -80,11 +76,6 @@ export function setSelf(state, context, self, next) {
     return current === undefined
         ? state
         : effects.setData(state, effectRef(current), next);
-}
-
-export function current(state, context, self) {
-    const unit = getUnit(state, context.host.id);
-    return unit && unit.effects.get(self.id, self.definition);
 }
 
 function hookEffect(domain, id, initial, entries, callbacks = {}) {

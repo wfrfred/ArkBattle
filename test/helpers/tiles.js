@@ -1,6 +1,5 @@
 import { get } from "../../dist/core/battlefield/map/map.js";
 import { update as updateBattleTile } from "../../dist/core/battle/tile.js";
-import { update as updateFieldTile } from "../../dist/core/battlefield/tile.js";
 import { create } from "../../dist/core/battlefield/map/tile.js";
 import { Tiles } from "../../dist/core/battlefield/map/tiles.js";
 import * as conditions from "../../dist/content/terrain/condition.js";
@@ -21,7 +20,7 @@ export function createTile(input) {
     return create({ terrain: input.terrain ?? input.definition.terrain, initial });
 }
 
-export function siteCondition(mask) {
+function siteCondition(mask) {
     return ({ 0: null, 1: conditions.normal, 2: conditions.deepsea, 4: conditions.tide, 8: conditions.night })[mask];
 }
 
@@ -37,9 +36,4 @@ export function tilesOf(map, definition) {
 export function changeTile(battle, position, changes) {
     const tile = get(battle.battlefield.map, position);
     return updateBattleTile(battle, position, { ...tile.state, ...changes });
-}
-
-export function changeFieldTile(field, position, changes) {
-    const tile = get(field.map, position);
-    return updateFieldTile(field, position, { ...tile.state, ...changes });
 }

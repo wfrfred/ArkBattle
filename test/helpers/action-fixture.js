@@ -1,6 +1,6 @@
 import { tiles as tileEntries } from './tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
-import { damage as damageTargeting, healing as healingTargeting } from "./targeting.js";
+import { damage as damageTargeting } from "./targeting.js";
 import { create as createBattlefield } from "../../dist/core/battlefield/state.js";
 import { add as addUnit } from "../../dist/core/battlefield/unit.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
@@ -82,11 +82,4 @@ export function battle(...units) {
     return createBattleState(
         units.reduce((field, unit) => addUnit(field, unit), createBattlefield(map)),
     );
-}
-
-export function assertData(assert, value) {
-    assert.notEqual(typeof value, "function");
-    assert.equal(value instanceof Map, false);
-    if (value !== null && typeof value === "object")
-        for (const child of Object.values(value)) assertData(assert, child);
 }

@@ -1,10 +1,8 @@
 import { tiles as tileEntries } from './tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
-import { World } from "../../dist/core/geometry/coordinate.js";
-import { isSpatiallyPresent } from "../../dist/core/unit/capability/presence/index.js";
 import { create } from "../../dist/core/battlefield/state.js";
-import { add as addUnit, update as updateUnit } from "../../dist/core/battlefield/unit.js";
-import { create as createMap, contains } from "../../dist/core/battlefield/map/map.js";
+import { add as addUnit } from "../../dist/core/battlefield/unit.js";
+import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "./tiles.js";
 
 const tile = createTile({
@@ -23,20 +21,6 @@ export function fixtureBattlefieldState(input) {
     return addUnits(state, units);
 }
 
-export function addUnits(field, units) {
+function addUnits(field, units) {
     return units.reduce((current, unit) => addUnit(current, unit), field);
-}
-
-export function replaceUnits(field, units) {
-    return units.reduce((current, unit) => updateUnit(current, [unit]), field);
-}
-
-export function unitsAt(field, tile) {
-    if (!contains(field.map, tile)) return [];
-    return [...field.units.values()]
-        .filter(isSpatiallyPresent)
-        .filter(unit => {
-            const position = World.toTile(unit.position);
-            return position[0] === tile[0] && position[1] === tile[1];
-        });
 }

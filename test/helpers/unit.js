@@ -85,34 +85,6 @@ export function initialize({ states = {}, tick = 0, definition, ...input }) {
     };
 }
 
-export function placement({ states = {}, definition, ...input }) {
-    return {
-        ...input,
-        definition: {
-            ...definition,
-            ...("deployable" in definition && !("occupancy" in definition)
-                ? { occupancy: { slot: "OCCUPANT" } } : {}),
-            ...(definition.skill !== undefined && "id" in definition.skill
-                ? { skill: { initialize: battle => createSkill(battle, definition.skill) } } : {}),
-            hooks: [{
-                id: "fixture/prepared-state", stage: "enter",
-                invoke(battle, self) {
-                    const current = battle.battlefield.units.get(self.id);
-                    return { state: updateUnit(battle, [{ ...current, ...states,
-                        ...(states.occupancy === undefined ? {} : {
-                            occupancy: { ...current.occupancy, ...states.occupancy },
-                        }),
-                    }]), value: undefined };
-                },
-            }, ...(definition.hooks ?? [])],
-        },
-        initial: {
-            ...(states.occupancy === undefined ? {} : { occupancy: states.occupancy }),
-            ...input.initial,
-        },
-    };
-}
-
 export function getUnit(battle, id) {
     return battle.battlefield.units.get(id);
 }
