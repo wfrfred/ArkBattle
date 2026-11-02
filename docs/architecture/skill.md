@@ -4,6 +4,18 @@ Skill 负责 SP、发动、持续预算、主动操作和完整终止。Action �
 
 领域 API 从 [unit/skill/index.ts](../../src/core/unit/skill/index.ts) 导入；能力守卫、初始化和 Change 工厂从 [capability/skill/index.ts](../../src/core/unit/capability/skill/index.ts) 导入。两个入口按职责选择导出，不相互转发整套 API。
 
+## 关键语义
+
+Skill 需要保障的结果是：
+
+- 持久 Skill 与本轮 Activation 分开。结束只清空本轮，持久玩法状态和资源保留；旧激活引用不能消费或终止后来一轮。
+- 发动资格、SP 门槛和实际支付分开求值。成功发动先提交支付与新实例，再执行启动业务；启动通知或支付响应已经结束本轮时，不继续旧启动程序。
+- SP 的回复、支付和直接增减保持各自许可与真实数额。自然回复按有效速度计时，满槽或阻回期间不积攒补发；普通 Action 不自动获得攻击 SP。
+- 持续预算归本轮。延时不改下一轮，弹药容量按独立公式采样；消费、耗尽检查、普通补弹和内容增加弹药各自履行资源责任，旧行动不消费新激活。
+- 正常结束、取消与宿主离场走完整终止。自身 onEnd 读取本轮私有状态；activationEnded 表达槽位释放后的历史事实，不把结束程序或私有状态交给观察者。
+
+下文的数据与接口说明约束领域边界，不为每个 Setter、普通类型字段或同引用返回值单独确立验收目标。状态接续、Hook 候选和依赖析构以公共契约为准，Skill 只保留其特有的资源与执行后果。
+
 ## 模块与入口
 
 | 模块 | 职责 |
@@ -16,7 +28,7 @@ Skill 负责 SP、发动、持续预算、主动操作和完整终止。Action �
 | `unit/capability/skill/capability.ts` | 初始化工厂 Definition、Skill Capability、公共 State、结构守卫与 Change 工厂 |
 | `unit/capability/skill/rule.ts`、`hook.ts` | 能力 Rule、Hook 类型与事件契约 |
 
-领域 index 提供 create、Skill／Activation、ref／activationRef、getSkill／getActivation、字段写回及 SP／Ammo／激活业务，不转发能力守卫、Rule／Hook 与 Ammo 贡献登记。Capability index 提供对应能力 API。Core 已取得当前宿主时直接读取 unit.skill，不解释私有 state；不公开内部写回，不使用泛型 reader。
+领域 index 提供 create、Skill／Activation、ref／activationRef、getSkill／getActivation、字段写回及 SP／Ammo／激活业务，不转发能力守卫、Rule／Hook 与 Ammo 贡献登记。Capability index 提供对应能力 API。Core 已取得当前宿主时直接读取 unit.skill，不解释私有 state；完整聚合替换只供领域内部使用。
 
 SP 的 setContribution／removeContribution 仅登记 recoverySpeed／recoveryMultiplier，绑定 Ref<Unit & SkillCapability> 返回 Change，经领域入口以 setSpContribution／removeSpContribution 导出。它们与 SP State／Input 保持同一模块，不增加 Capability 转发，不附带资源支付或延时。容量、门槛、支付和 TIME 时长没有通用 Contribution 注册表。
 
@@ -81,7 +93,7 @@ SP Definition 保存 initial、capacity、requirement、可选数值 cost 和 Re
 
 只有 recoverySpeed／recoveryMultiplier 使用 `contribution.Input<attribute.Modifier, Unit & SkillCapability>`：静态值为修正数据列表，动态函数根据当前 battle 与宿主返回同类列表。先由 Contribution 选择互斥胜者，再求值并展平数据；两项属性分别按 Attribute 固定公式 `((base + Σaddition) × max(0, 1 + Σmultiplier) + ΣfinalAddition) × ΠfinalScaler` 归并、限制下限为零，再相乘得到自然回复速度。两项保留连续值，不取整。
 
-Contribution 提供参与计算的数值影响，不结算配置切换、清空 SP、支付或当前 Activation 的时间变化。客户端 Rune／遗物的逐来源取整属于创建前预处理；运行中配置替换也有明确提交入口。它们不能用属性贡献查询代替。证据及边界见 [Skill 原生公式调研](../research/cases/09-skill-mechanisms-and-requirements.md#27-原生公式复核ammo-sp-与具体持续时间操作)。
+Contribution 提供参与计算的数值影响，不结算配置切换、清空 SP、支付或当前 Activation 的时间变化。客户端 Rune／遗物的逐来源取整属于创建前预处理；运行中配置替换涉及资源与许可的有序变化，需要相应领域操作，当前尚无完整提交入口。证据及边界见 [Skill 原生公式调研](../research/cases/09-skill-mechanisms-and-requirements.md#27-原生公式复核ammosp-与具体持续时间操作)。
 
 实际需求包括：琳琅诗怀雅的金币配置切换、玛露西尔的容量／最低门槛／逐次支付分离，以及 Fever 的发动政策。这些干员的完整内容接入仍需逐项完成。本轮不新增运行时 SP 配置切换 API、独立配置状态机或 Definition 回调。后续确需动态查询有效容量等参数时，由类型化 Definition 的领域回调解释已有玩法 state；跨次事实归 Skill.state，本轮事实归 Activation.state，不更换共享 Definition 对象以免破坏 Skill Ref 身份。容量变化时如何处理余额、获取许可与退出恢复仍由明确操作结算，不在纯查询中偷偷写入，也不另存一份 SP.value。
 
@@ -98,10 +110,10 @@ Recovery 为 TIME、ACTION、HIT 或 NONE。EXTERNAL 是资源操作的来源，
 sp.advance 对 ACTION／HIT／NONE 回复直接返回原 battle，不更新 lastTick，也不提交无业务变化的 Unit。仅 TIME 推进自然计时；自然回复速度与倍率分别结算后相乘，计时状态保存周期、余时与 lastTick：
 
 - 阻回和满槽暂停并保留余时，不积累暂停期间的回复。
-- 宿主 HP 为零但仍在场时同样暂停计时；lastTick 随推进更新，同一身份恢复生命后不追补暂停期间的 SP。没有 Vitality 的宿主照常推进。
+- 调度时宿主不具备资源操作资格则不回复，也不积攒这段暂停的时间。没有 Vitality 的宿主照常推进；这不定义长期 HP 为零后同身份复活的生命周期。
 - 速度变化保留绝对已过时长，不保留周期完成比例。
 - 速度变为零使计时无效，恢复正速度后从完整周期开始。
-- 多 Tick 推进达到满槽后即暂停余下时间。
+- 计时计算达到满槽后即暂停余下时间。Runtime 按正常 Tick 调度，不以任意跳 Tick 或同 Tick 重复调度建立额外玩法要求。
 
 SP 自然回复在正速度分支直接计算周期，并按当前剩余容量限制回复脉冲数，不为这些内部结果追加极端算术断言。
 
@@ -133,11 +145,11 @@ AMMO 描述资源和耗尽结束政策，不代表所有“弹药类技能”加
 
 Operation（STOP／RETRIGGER）归领域 activation.ts，由 unit/skill/index.ts 导出；Capability 的 rule.ts 只引用该类型。Rule 按 activation／operation／recovery 三个节点分别登记，统一使用 `allows(battle, context)`：Context 都有 self，operation 节点另有 operation，recovery 节点另有 source。`setRule(ref, key, rule)`／`removeRule(ref, key, id)` 返回 Change，key 保留具体 Context 类型；State.rules 按节点保存数组，同 ID 在不同节点互不影响。它们提供额外业务许可；内部完成、到期结束及宿主离场清理不受主动操作 Rule 否决。
 
-activate 要求宿主 PRESENT、空间在场，具有 Vitality 时 HP 大于零；operate 则保留 PRESENT、同一 Activation ACTIVE 与 Rule 准入，不附加空间或 HP 条件。当前 Activation 已存在时，内部信任对应 Activation Definition 已配置。Skill 的 enter 是普通 Unit EnterHook，装配 Skill 能力时自动登记到实例 hooks；Unit.add 按统一注册序派发，不再特殊调用。该 Hook 从最新 BattleState 读取宿主，先登记回复监听，再执行 Definition.onEnter，最后重新读取仍为 PRESENT 的宿主并尝试发动 PASSIVE 技能；onEnter 同步移除宿主后不发动。与其它 Unit Hook 一样，本次派发的 Context 固定，后继需要当前 Skill／HP 时重新查询 BattleState。持久 Skill.onTick 按 PRESENT 推进，Activation.onTick 另要求本轮 ACTIVE；它们不自动采用自然 SP 回复的暂停条件。已有技能的 STOP／RETRIGGER、计时或内部进度可以在不具备新发动资格时继续，这是各入口明确的规则选择，不合并为通用 available。
+activate 要求宿主 PRESENT、空间在场，具有 Vitality 时 HP 大于零；operate 则保留 PRESENT、同一 Activation ACTIVE 与 Rule 准入，不附加空间或 HP 条件。当前 Activation 已存在时，内部信任对应 Activation Definition 已配置。Skill 的 enter 是普通 Unit EnterHook，装配 Skill 能力时自动登记到实例 hooks；Unit.add 按统一注册序派发。该 Hook 从最新 BattleState 读取宿主，先登记回复监听，再执行 Definition.onEnter，最后重新读取仍为 PRESENT 的宿主并尝试发动 PASSIVE 技能；onEnter 同步移除宿主后不发动。与其它 Unit Hook 一样，本次派发的 Context 固定，后继需要当前 Skill／HP 时重新查询 BattleState。持久 Skill.onTick 按 PRESENT 推进，Activation.onTick 另要求本轮 ACTIVE；它们不自动采用自然 SP 回复的暂停条件。已有技能的 STOP／RETRIGGER、计时或内部进度可以在不具备新发动资格时继续，这是各入口明确的规则选择，不合并为通用 available。
 
-Hook 登记仅使用 capability/skill 的 `setHook(reference, key, hook): Change`／`removeHook(reference, key, id): Change`，Key 与事件载荷保持类型配对；由 Unit.update 登记，不再返回局部 State 或为每个事件提供同义专名 setter。Rule 和 Ammo 贡献同样绑定 Skill Capability Ref 返回 Change；精确私有 state 写回、SP 消费、激活与结束操作维持原协议。
+Hook 登记使用 capability/skill 的 `setHook(reference, key, hook): Change`／`removeHook(reference, key, id): Change`，Key 与事件载荷保持类型配对，由 Unit.update 提交。Rule 和 Ammo 贡献同样绑定 Skill Capability Ref 返回 Change；精确私有 state 写回、SP 消费、激活与结束使用各自领域操作。
 
-enter Hook 仅供 Unit 装配内部登记，Skill 公共入口不再导出可直接调用的 enter 操作；完整入场由 battle/unit.add 负责。
+enter Hook 仅供 Unit 装配内部登记；完整入场由 battle/unit.add 负责。
 
 除持久初始化外，Definition 与 Activation Definition 的内容回调都显式接收 source 为第二参、聚合 self 为第三参。Definition.onEnter／onTick 和 Activation Definition.initialize／accepts／cost 接收 Skill<S, A>；onStart／onTick／onOperation／onEnd 接收 activation 非空的 Activation<S, A>，Operation 或 End 为第四参。Activation.initialize 只构造本轮 A；持久 Definition.initialize 则接续 Result<S>。STOP 与 RETRIGGER 交给内容程序处理，未提供 onOperation 时 STOP 默认正常结束。
 
@@ -164,9 +176,9 @@ interface ActivationEnded {
 }
 ```
 
-报告不携带完整 Definition 或私有 state，Ref 使用默认 object 泛型；具体 S／A 由自身配对的 Definition 程序解释。accepts 只读，invoke 返回 Result<void>。每次派发固定候选 ID，逐项读取最新登记；后续观察者始终收到同一本次事实，当前状态另从最新 battle 查询。activationEnded 在清空槽位后通知，其中 Ref 不保证仍可查询到对象，也不能据它取得后来一轮。
+报告不携带完整 Definition 或私有 state，Ref 使用默认 object 泛型；具体 S／A 由自身配对的 Definition 程序解释。accepts 只读，invoke 返回 Result<void>。观察者收到同一本次事实，当前状态另从最新 battle 查询；候选范围遵守[公共 Hook 契约](functional-core.md#7-同步候选范围)。activationEnded 在清空槽位后通知，其中 Ref 不保证仍可查询到对象，也不能据它取得后来一轮。
 
-不提供通用 changed、阈值注册表或充能状态机。资源事件携带本次结算前后事实；阈值观察者订阅相关业务 Hook。每次派发独立固定候选 ID，逐项按 ID 读取最新登记并执行最新 accepts／invoke；同 ID 替换在本轮使用新版本，新 ID 等待下次派发，嵌套报告不会重写外层事实。
+资源事件携带本次结算前后事实；阈值观察者订阅相关业务 Hook，不增加通用 changed 或阈值注册表。嵌套资源结算不重写外层报告。
 
 HIT 回复由 Skill 的 enter Hook 在 Damage 的 receivingStarted 扩展点登记，发生在接收准入后、Receiving Hook 和 HP 扣减前。Skill 自行监听受击事实并执行回复，Damage 与 Vitality 不依赖 Skill。
 
@@ -178,7 +190,7 @@ accepts、门槛与本次支付在 Activation 创建之前确定，不能依赖�
 
 activationStarted 表达实例已经创建，不承诺 onStart 效果已经安装。它的派发先于可能终止激活的支付与启动程序。没有活动 Lifetime 结算时，前一个 activationStarted Hook 的结束操作可以在后续 activationStarted 候选前完成 activationEnded；已有结算时，嵌套结束只同步执行请求／Prepare，activationEnded 等待 Finalize。后续候选始终处理原创建事实，不因终止重写报告。
 
-Skill 的公共 lifetime 描述符绑定本轮 Activation，Effect 使用 scope(skillLifetime, activationRef) 建立依赖。请求先登记 Pending 并发布 ENDING，再展开依赖；最外层结算器等待依赖者完整完成后进入 Finalize。Finalize 从所有权保护的当前 unit.skill 取得同一轮完整聚合，以显式 source 调用 onEnd，再重读宿主并只清空 activation，保留最新持久 state／SP，注销本轮 Lifetime 关系，记录事件与派发 activationEnded；其他完整操作同样通过普通查询线性接续，不经过泛型 reader。整个 Finalize 返回后才解除 owner 等待，Unit 在此期间保留原 Definition 与当前状态，不需要通用历史回退。
+Skill 的公共 lifetime 描述符绑定本轮 Activation，Effect 使用 scope(skillLifetime, activationRef) 建立依赖。请求与完成边界遵守[共享 Lifetime](lifetime.md)。Finalize 从所有权保护的当前 unit.skill 取得同一轮完整聚合，以显式 source 调用 onEnd，再重读宿主并只清空 activation，保留最新持久 state／SP，注销本轮 Lifetime 关系，记录事件与派发 activationEnded。
 
 ENDING 期间继续占用同一激活槽位，持久 Skill 聚合始终保留。嵌套 finish／cancel 首次请求返回只保证 Prepare，不保证本轮已清空或 activationEnded 已派发；需要下一次激活的业务放在槽位释放后的 activationEnded 时点，已有结算范围中不能强行 drain。重复 PREPARING 请求也不等待原 Prepare。
 
@@ -189,3 +201,5 @@ Unit 退场通过各领域已登记的 owner 与显式 Scope 自动请求依赖�
 跨部署魔力的持久载体、Fever 的持续暂停／恢复、特殊异常状态发动许可与不同弹药类加成资格，仍需按[代表技能覆盖审查](../research/cases/09-skill-mechanisms-and-requirements.md#7-当前目标设计的代表技能覆盖性)逐项接入。
 
 TIME／INFINITE 与独立弹药同时存在的模型、grant 的独立增加通知，须结合具体玩法和观察需求确定；现有 AMMO 生命周期不自动代表全部弹药类加成资格。
+
+长期保留 HP 为零的宿主、同一 Unit 身份复活后的技能接续，属于尚未确定的特殊生命机制。普通伤害按 HP Applied 响应后的最新 HP 决定真实离场；不能通过手工维持 HP 为零并跨 Tick 调度，预先确立复活或续回复政策。

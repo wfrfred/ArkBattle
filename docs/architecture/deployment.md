@@ -4,6 +4,17 @@ Deployment 完成一次部署的资格判断、资源消费、实例创建和部
 
 原生研究用于确认业务条件、结果、继承和关键时序，项目按这些语义划分领域。当前支持普通按格部署、主动撤退和被动死亡结算。
 
+## 关键语义
+
+验收按以下业务结果选择代表场景，不为每个字段、资源 Setter 或 Hook 节点分别建立矩阵。通用状态接续与依赖完成要求见[函数式内核](functional-core.md#状态接续后的读取与续执行)和 [Lifetime](lifetime.md)。
+
+1. **资格与消费一致。** 预览和实际部署使用同一完整 Request、规则合并方式和当前资源事实。预览不消费资源或创建实例；拒绝部署不消费；规则通过后先提交 DP、库存及部署额度，再构造、登记和执行入场程序。
+2. **部署事实属于本次实例。** 本次 COST、退款依据、占用额度和来源 Card 在登记前确定；朝向和地块是实例输入。Card 跨场上实例存续，持久资源不因每次部署重新初始化。
+3. **主动撤退与死亡分别结账。** 撤退先按本次部署事实退款、处理 Card，再请求 Unit 结束；被动死亡只在确认死亡后通过已登记程序处理。普通 SCRIPT／EXPIRED 离场不冒充死亡，也不重复执行主动撤退的账务。
+4. **离场完成后资源与关联完整释放。** 真实离场释放本次占用的部署额度与占格，结束真实依赖者；嵌套结束只完成请求时，不提前宣称对象已注销或额度已归还。
+5. **库存与时间不凭空增减。** 部署间隔和库存恢复相互独立；逐份恢复按各段启动时采样预算，暂停保存剩余时间，修改当前段不消费后段预算，补库存不重置时钟。
+6. **DP 按账户规则运行。** 支付不补发满额期间的自然回复；负 DP 仅使自然回复减半，主动增费不减半；跨零保留已有回复进度。
+
 ## 状态归属
 
 | 事实 | 所属领域 |
@@ -216,7 +227,7 @@ Deployment 自己持有 Hook 集合，setHook(battle, hook)／removeHook(battle,
 
 Deployed 载荷为 { unit, request }，支付信息读取 request.quote。它是已登记新实例的部署事实；后续普通入场程序尚可能修改状态或移除实例，观察者需要当前事实时重新查询。UNIT_DEPLOYED 诊断事件保存 Unit ID、位置、payment:number|null 与 Tick。
 
-派发先固定已有 Hook ID，再逐项从最新状态查找：撤销或替换影响后继候选，新登记项不加入当前轮。一次性来源在触发新部署等完整业务前先消费自己的机会；嵌套操作接续最新 BattleState。
+观察集合遵守[公共 Hook 派发契约](functional-core.md#7-同步候选范围)。一次性来源在触发新部署等完整业务前先消费自己的机会；嵌套操作接续最新 BattleState。
 
 ## 库存与计时
 
@@ -227,6 +238,12 @@ Card.stock 保存当前可用份数，stockLimit 和 activeLimit 从静态配置
 Clock 保存启动时的 durationTicks；RUNNING 保存 readyAtTick，PAUSED 保存 remainingTicks。恢复队列的 pending 包括正在恢复的当前份。每段开始时采样当时的有效时长，预算固定到该段结束。
 
 setRedeployTimeContribution 影响后续周期。reduceCooldown／clearCooldown／pauseCooldown／resumeCooldown 必须指定 COOLDOWN 或 RECOVERY，只修改选中当前段；多余减时不传递到后续段。recharge 直接增加库存，不重置时钟。暂停保存剩余量，零周期可以在当前 Tick 完成。
+
+## DP
+
+当前 DP、允许下限和自然回复进度由 Deployment 保存。自然回复受回复周期和上限限制；满额期间不累计可在以后消费时补发的回复。付款与显式资源变更先接续当前回复事实，再提交本次增减。
+
+允许下限为负时，负 DP 状态的自然回复速度减半，主动 recover／modify 不减半。跨过零值保留已经取得的回复进度，不重新启动一段计时。该规则见[目标语义中的 DEPLOY-07](tactical-semantics.md#逐项目标与缺口)与[部署调查](../research/cases/24-deployment-cost-and-supply.md)。
 
 ## 支持范围
 

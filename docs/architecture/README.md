@@ -8,9 +8,13 @@
 
 各领域文档记录有效的数据模型、API 和执行语义。尚未完成的重构、开放问题和验收要求保留在对应章节；[接口约定](api-conventions.md)汇总尚未统一的接口，[目标语义与实现缺口](tactical-semantics.md)记录未完成的玩法接入。
 
+已审查部分先按[语义验收](verification.md)确定保留目标，再重新选择最小测试。当前范围为 Battlefield、Unit 独立领域、Action／Allegiance／Blocking／Deployable Capability 及对应 Battle 协作。领域文档的关键语义、接入／实现说明与未决内容分别阅读，接口和字段列表不自动成为测试清单。
+
 | 文档                                      | 内容                                                                               |
 | ----------------------------------------- | ---------------------------------------------------------------------------------- |
 | [总体架构](ARCHITECTURE.md)               | 项目分层、状态归属、Tick 发布、不可变约定与模块惯例                                |
+| [已审查范围的语义验收](verification.md) | 关键保留目标、范围边界与最小验收原则 |
+| [Battlefield](battlefield.md) | 地图、纯存储、结构占格、导航与空间查询，以及完整 Battle 结算边界 |
 | [Tactical 函数式内核](functional-core.md) | 状态接续、同步结算、Hook、状态归属与 Tick 发布 |
 | [Tactical 目标语义与实现缺口](tactical-semantics.md) | 未完成的玩法机制、待核对问题与验收案例 |
 | [Capability API](capability.md) | 能力配对、统一初始化与装配、Change 工厂、完整结算、事件责任与模块命名 |

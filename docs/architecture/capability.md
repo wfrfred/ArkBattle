@@ -105,6 +105,8 @@ Core 不提供干员或敌人 Archetype 层；内容直接组合 Unit Definition
 
 ## 构造、校验与命名
 
+合法构造入口建立 Definition／State 配对、能力依赖和身份约束；登记后的内部操作信任这些不变量，不把内容私有状态重新视作未知 JSON，也不重复检查 Typed Ref 已证明的能力。初值与写回遵守所属领域的职责，不能绕过领域操作，靠任意 State 覆写补出缺失能力或部署事实。Deployment 在 Unit 初始化后、登记前写入本次部署事实属于合法的领域创建流程。测试夹具同样遵守这些边界。
+
 - Capability Definition 由 Content 直接构造，必要的领域不变量校验放在 initialize。Action 的 Definition 提供 initialize 与可选 select；Elemental 的完整配置与爆发程序由 Data／Content 提供，能力初始化校验基础数值和各型爆发时长。几何构造等局部值转换由内容按需调用。
 - Capability.initialize 使用当前 battle 和正在装配的 Unit，读取自身 Definition，返回 Result<U & Capability>；内部纯值模型保留自己的自然初始化参数。
 - validateState 验证已有值，返回 void，不伪装成构造。
@@ -113,6 +115,12 @@ Core 不提供干员或敌人 Archetype 层；内容直接组合 Unit Definition
 不为统一前缀增加 normalize，不保留无工作转发，不以 Object.freeze 证明内部调用者遵守不可变约定。外部格式检查在 Data／I/O 边界，领域不变量由对应领域维护。跨模块出现同名类型和函数时，使用命名空间或有角色含义的导入别名。
 
 Deployable Definition 声明 retreatRules。Card 配置归 battle/deployment/card/definition.ts，由完整静态 Unit Definition 的顶层 card 字段提供；initialize 必填，无私有数据时显式返回空对象。Card.unitHooks 通过 setUnitHook／removeUnitHook 管理以后部署的 Unit 生命周期程序，Deployment 在构造前将它们加入 Unit 的初始 Hook 序列。
+
+## Allegiance
+
+Allegiance 保存 ALLY、ENEMY、NEUTRAL 三种 Side，表达阵营关系，不表示干员、敌人、装置等实体类别。标准敌对判定为一方属于 ENEMY、另一方不属于 ENEMY；ALLY 与 NEUTRAL 之间不因此互为敌对。
+
+阵营只是相应业务规则的输入，不自动决定是否可索敌、可受伤或可阻挡。Blocking 由双方资格与明确选择的 Rule 判断，不把普通干员采用的 ENEMY 侧策略提升为所有阻挡关系的公理。
 
 ## 属性与贡献
 

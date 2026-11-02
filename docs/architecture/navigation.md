@@ -30,6 +30,16 @@ Navigation.State 聚合基础 Map 与 Overlay 集合这两项权威输入，由 
 
 Navigation 内部维护可变派生缓存，不进入 BattleState，也不需要 Operation 返回缓存的新状态。缓存命中、未命中、淘汰或重建不得改变领域结果。
 
+### Navigation 的关键语义
+
+- 通行资格、WALK／FLY 代价和有向出口共同决定可达性，不能因额外直线筛选而替换 Field 的导航建议。
+- Overlay 只能增加限制；多来源叠加以及撤销其中一项后，都继续保留其他来源和基础地图的限制。
+- 当前地图或 Overlay 变化后，查询使用该版本的有效规则；旧状态的查询结果不被后来变更污染。
+- 不可达时返回 null；能够追踪目标时保留精确世界坐标，实际移动与到达由消费方判断。
+- 路径计算及缓存保持确定结果。Hash 数值、缓存键、对象共享和命中次数属于内部实现，不形成独立玩法验收目标。
+
+Battlefield 的纯存储、地块写回与完整 Battle 操作边界见 [Battlefield](battlefield.md)。下文的类型与算法说明用于解释这些语义，不要求按每个字段或内部函数分别建立验收场景。Route／Locomotion 的既有章节保留其各自的执行契约。
+
 ## State 与公共操作
 
 navigation/state.ts 定义 Navigation 自身的 State。接口不依赖完整 BattleState、BattlefieldState 或 Battlefield 的具体地图类型。
@@ -69,7 +79,7 @@ export function nextPoint(
 
 ### 创建
 
-create 信任来自同一战场地块地图的 WALK／FLY 投影，直接保存传入的 readonly baseline Record 引用，不重复验证尺寸或 FLY 基础代价，不复制或冻结容器。初始 WALK、FLY Overlay 集合均为空数组。调用方遵守 readonly 输入契约，后续变更通过新 State 表达。
+create 信任来自同一战场地块地图的 WALK／FLY 投影，不重复验证尺寸或 FLY 基础代价。调用方遵守 readonly 输入契约，后续变更通过新 State 表达；Overlay 初始为空。
 
 基础 Map 由 Battlefield 创建和转换后传入，Navigation 不负责解释战场地块。
 
@@ -84,7 +94,7 @@ create 信任来自同一战场地块地图的 WALK／FLY 投影，直接保存�
 | removeOverlay，ID 存在 | 删除对应 Overlay。 |
 | removeOverlay，ID 不存在 | 返回原 State。 |
 
-操作不修改输入 State，以新集合保存变更。setOverlay 在实际登记入口校验 ID 为非负安全整数，提供 cost 时要求它为正安全整数；登记 FLY Overlay 时，cost 只能省略或为 1。通过校验后直接保存 readonly Overlay 引用，不复制或冻结其数组与坐标；通用 apply 保持已有合并规则。
+操作不修改输入 State，以新集合保存变更。setOverlay 在实际登记入口建立 ID 与代价约束：ID 为非负安全整数，提供 cost 时须为正安全整数；FLY 的 cost 只能省略或为 1。内部 apply 信任已登记的数据，按下面的合并规则计算。
 
 ### nextPoint
 
@@ -430,9 +440,9 @@ export type Hash = number;
 export function hash(map: Map): Hash;
 ```
 
-`moveCost` 统一改为 `cost`。Map 不保存移动方式、历史 revision 或公开的 Hash 字段。
+Map 描述尺寸和每个 Cell 的通行资格、代价及有向出口。移动方式由所属 State 的集合确定。
 
-Map 构造器直接保存 rows、columns 与 readonly cells 引用，Cell 及 departures 同样共享，不逐格校验、不复制快照，也不执行运行时冻结。尺寸、稠密 Cell 数组和有效代价由上游输入构造与地块投影提供；调用方遵守 readonly 契约，不在发布后修改共享输入。FLY 基础代价为 1 由战场地块投影产生，setOverlay 保留 FLY 覆盖代价只能为 1 的入口约束。
+尺寸、完整 Cell 数据和有效代价由上游构造与地块投影建立。内部 Map 信任这些输入，遵守 readonly 契约，不逐格重复校验。FLY 的基础代价为 1，覆盖代价在 setOverlay 入口保持同一约束。
 
 `equals` 比较尺寸及全部 Cell 内容。相同引用可以直接判等；若借助 Hash，Hash 相同后仍需确认内容。
 
@@ -452,9 +462,9 @@ export interface Overlay extends Identified<{ readonly id: Id }> {
 
 ```
 
-Overlay 覆盖已经确定的格子，使用公共 `Ref<Overlay>` 表达身份。它不保存移动方式，也不管理自身生命周期。生命周期由具体业务所有者负责，Battlefield 在必要时协调其对 Navigation 的影响。删除旧 NavigationModifier 的 source、follow、expiresAtTick 等通用管理机制，不在 Battlefield 恢复同一套机制。
+Overlay 覆盖已经确定的格子，使用公共 `Ref<Overlay>` 表达身份。它不保存移动方式，也不管理自身生命周期。何时登记、更新和撤销由具体业务所有者负责。
 
-Overlay 直接以 readonly 对象表达，不另设构造函数；数值校验集中在 Navigation.setOverlay 入口。内部格子坐标、数组与 Overlay 对象直接共享。移动方式由 State 中的登记集合及操作参数 mode 决定，不需要 Overlay 保存，也不引入 Layer。
+Overlay 以 readonly 值表达，数值校验集中在 Navigation.setOverlay 入口。移动方式由 State 中的登记集合及操作参数 mode 决定，与单位的空地身份分别表达。
 
 单个格子的叠加语义为：
 
@@ -479,19 +489,17 @@ export function apply(
 
 不同输入得到相同地图内容时，不要求 `apply` 返回同一个对象；历史内容的对象复用属于缓存优化，不能成为路径有效性的业务前提。
 
-不另设 resolve。apply 可以透明使用缓存，缓存命中率、对象复用和淘汰策略不进入 API 契约。removeOverlay 更新权威 Overlay 集合，后续查询重新 apply 或复用相同内容的缓存，不对有效 Map 做逆操作。
+removeOverlay 更新权威 Overlay 集合，后续查询按剩余集合重新计算有效规则，不对旧有效 Map 做逆操作。缓存命中率、对象复用和淘汰策略不进入业务契约。
 
 ## hash
 
-`map.ts` 的 `hash(map)` 仅由地图尺寸与全部 Cell 内容决定。`a.equals(b)` 为真时，两者 Hash 必须相同；Hash 相同不保证地图相等。
-
-`hash` 完整读取地图内容。增量计算可以作为内部优化，不改变该接口或判等契约。
+`map.ts` 的 hash 是地图内容的辅助值；相等地图得到相同 Hash，Hash 相同仍不能代替内容判等。Hash 的具体数值和计算过程不影响通行语义，不作为玩法验收目标。
 
 ## 内部缓存
 
-有效 Map 使用 `WeakMap<State, Partial<Record<MotionMode, Map>>>` 按 State 身份与移动方式复用。Field 使用 `WeakMap<Map, Map<TargetKey, Field>>` 按有效 Map 身份与目标格复用；命中后直接返回，未命中则构建并登记 Field。
+有效 Map 与目标导向 Field 可以按对应输入复用。同一目标格内的不同精确目标可以复用 Field，末段仍由 nextPoint 返回各自的精确 WorldPosition。
 
-精确的 WorldPosition 不进入 Field 缓存键，仍由 nextPoint 在末段返回。缓存不调用 Hash 或内容比较，不保存历史内容索引、容量预算或淘汰顺序。不同 Map 即使内容相等，也各自构建 Field；缓存只保留仍存活 State／Map 所需的派生结果。
+缓存不拥有执行进度，也不决定结果。缓存键、容器类型和存活策略均属于内部实现；重建或命中必须得到相同的导航建议。
 
 ## 内部 Field 类型与构建 API
 
@@ -516,7 +524,7 @@ export function build(
 ): Field;
 ```
 
-Field 是只读、可共享的目标导向寻路结果，不持有 Map。rows、columns 描述网格尺寸，nodes 是完整稠密数组，长度为 rows × columns，以 row × columns + col 定位对应节点；null 是不可达的唯一节点值。Field、Node 与数组不执行运行时冻结，消费方遵守 readonly 契约。
+Field 是只读的目标导向寻路结果。nodes 对应完整网格，null 表达不可达；内部布局和对象复用不改变下列含义：
 
 - 不可达格：nodes[index] 为 null。
 - 可达目标格：distance 为 0，next 为 null。
@@ -524,9 +532,9 @@ Field 是只读、可共享的目标导向寻路结果，不持有 Map。rows、
 
 Map 的代价为正，因此只有可达目标节点的 distance 为 0。target 记录请求目标，不保证该格一定可达；目标格越界或不可通时，nodes 全部为 null。上述不变量由 build 保证，不增加显式状态判别字段。
 
-distance 使用普通 number 直接累计原始 SPFA 代价，不增加理论溢出的 Infinity 回退或额外抛错分支；平滑后不重新计算，不表示实际连续运动距离。Map 是 build 的输入，缓存仍可依据输入 Map 和目标定位结果，不要求在 Field 中反向保存 Map。
+distance 累计原始搜索代价，平滑后不重新计算，不表示实际连续运动距离。按游戏尺度信任已构造的合法代价，不为内部累加增加理论溢出协议。
 
-最终 Node.next 只保存平滑后的后继，不保存 rawNext 或 nextTurn。原始后继可以作为内部构建工作值，经平滑覆盖后发布只读 Field。Field 不保存 Cursor、Visits 或其他 Unit 执行进度。
+最终 Node.next 表达平滑后的后继格。原始后继是构建工作值，Field 不保存 Unit 执行进度。
 
 build 是不修改输入 Map 的确定性计算：
 
@@ -550,4 +558,4 @@ build 是不修改输入 Map 的确定性计算：
 
 [客户端原生核对](../research/cases/12-navigation-native-algorithm.md)确认原始搜索后原地覆盖唯一的 next 完成平滑；普通移动不保留另一份 rawNext。[Route 与移动时序核对](../research/cases/13-route-and-movement-timing.md)记录路点、等待与运动消费的原生条件及调用顺序。
 
-Navigation 使用上述 SPFA 与原地平滑，删除旧计算的射线代价预算及 query.ts 的三候选回退。Route 管理指令与导航追踪点，包括地图外恢复目标；Locomotion 消费实际世界坐标与当前模式，并内部完成运动、避障及目的格反射；Battle 负责调度和生命周期。两个 Capability 经由 Catalog 独立初始化，不保存共享 Field、请求 ID 或缓存 Provider。
+Navigation 使用上述搜索与平滑规则。Route 管理指令与导航追踪点，Locomotion 消费实际世界坐标并完成运动，Battle 负责调度和生命周期。导航计算保持独立，不接管这些执行状态。

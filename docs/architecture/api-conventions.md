@@ -238,11 +238,9 @@ Unit 本地生命周期 Hook 在构造期完成装配，运行期间不提供增
 
 阶段中命令处理与自动推进保持既定顺序；拆分函数和统一签名不改变时序。Unit 生命周期通过构造期装配的 enter／tick／prepare／leave 程序序列复用通用 Hook 类型，部署 Hook 及其余接口按下节记录；标签与 Profile 的已知问题见 [Capability 记录](capability.md#待整理单位标签与-profile-依赖)。
 
-## 5. 未完成的回调与查询整理
+## 5. 数值输入、查询与字段写回
 
-| 接口 | 当前载体 | 待调整内容 |
-| --- | --- | --- |
-| [Mechanism.onUnitLeave](../../src/core/battle/mechanism.ts) | `(battle, mechanismId, departure)` | 回调已知 Mechanism，应传 self，再传离场业务载荷。 |
+这里记录接口形状与职责；关键语义及本轮验收范围以[语义验收](verification.md)为准。签名中的字段、异常类型与无变化优化不自动形成独立测试项。
 
 数值贡献的静态／动态输入统一复用 `unit/contribution/contribution.ts` 中的泛型类型：
 

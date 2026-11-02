@@ -6,7 +6,7 @@ Spatial 提供 Unit 位置与 Hitbox 的空间查询。查询来源是坐标和�
 
 Unit.position 保存实际世界位置，Hitbox Definition 的 shape 保存单个静态 Shape。SpatialPresence 表达空间存在性，没有该 Capability 的 Unit 默认具有空间存在性。Layer 的空地身份独立于这些几何事实。
 
-Spatial 通过 units.all(battle) 枚举传入状态版本中的 Unit，用类型守卫保留 Capability 信息，在公开结果边界显式转换成 Ref 和数组。它不直接依赖存储容器的遍历 API，不维护缓存或空间索引。
+Spatial 在传入的 BattlefieldState 上枚举 Unit，用类型守卫保留 Capability 信息，在公开结果边界形成 Ref 和数组。它不要求完整 BattleState，不维护另一份空间索引；结果始终属于本次查询的输入版本。
 
 Battlefield State 不保存 spatial 或 unitsByTile。单位身体所属格通过 World.toTile 的 ties-to-even 规则计算；它与连续 Shape 的包含判定有不同的边界语义。生产空间查询只公开下列三个接口，不另外提供格子所属查询包装。
 

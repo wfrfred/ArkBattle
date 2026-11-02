@@ -8,6 +8,18 @@ Action 负责行为程序的选择、启动、推进与完整终止。具体内�
 >
 > 同步嵌套遵守[状态接续约定](functional-core.md#状态接续后的读取与续执行)：后续需要当前对象或资格时重读，明确采样与历史载荷保留，不用旧聚合条目覆盖嵌套更新。
 
+## 关键语义
+
+Action 需要保障的结果是：
+
+- 持久 Action 与本轮 Execution 分开。同配置同宿主至多有一个未完成执行；本轮结束保留持久状态，旧执行引用不能操作后来一轮。
+- 启动资格、冷却与内容条件全部通过后才登记执行和开始周期。普通拒绝不分配执行身份；准备程序已经完成的状态变化继续接续。
+- 冷却产生正确行动节奏。不同配置独立计时，变速按规定保留进度；完成或取消不默认重置周期，错过的行动机会不积攒补发。
+- 释放拦截、成功释放与实际输出分开。中断或回调取消后不执行旧输出；成功释放已经触发的回复与其他前缀业务不撤销。
+- 执行通过自己的 Definition 处理私有状态。完整终止使用[共享 Lifetime](lifetime.md)，最终只清空原轮次，并保留结束程序已经提交的持久状态与冷却。
+
+这些结果由合法的启动、释放、取消与结束场景保障。下文的文件布局、容器类型和字段写回说明用于界定职责，不逐项形成独立的玩法验收目标；通用 Hook、状态接续和依赖析构也不在各个 Action 接入点重复展开。
+
 ## 1. 状态与领域职责
 
 | 对象 | 职责 |
@@ -28,7 +40,7 @@ Rule 只负责启动准入，不自动中断现有执行。眩晕等需要中断
 
 聚合类型、Execution、Definition、创建程序、容器、Cooldown 和生命周期操作位于 unit/action/；Capability 配置、贡献、Rule、周期属性与释放 Hook 位于 unit/capability/action/。模块组织遵守[公共入口约定](api-conventions.md#模块与公共入口)，领域内使用 Definition、Action、Execution、Id 等局部名字。
 
-[unit/action/index.ts](../../src/core/unit/action/index.ts) 显式提供公共 API，上层默认从该入口导入。初始公开范围为：
+[unit/action/index.ts](../../src/core/unit/action/index.ts) 显式提供公共 API，上层默认从该入口导入：
 
 | 职责 | 导出 |
 | --- | --- |
@@ -130,7 +142,7 @@ create 在接收具体 Definition 时校验非空 ID、基础间隔与速度一�
 
 Actions 以私有 Store<DefinitionId, Action<any, any>> 保存异构完整聚合。普通 get(id)／values() 返回默认 object／object 的 Action，包含完整 Definition、state、Cooldown 和可空 Execution；get(id, definition) 按 Definition 对象身份恢复 P／E。容器按配置 ID 统一使用 get(id)，getExecution(id) 则按本轮 Execution ID 读取完整条目，不另维护执行集合或索引；领域 getAction(battle, ref) 继续提供持久 Typed Ref 查询。any 留在异构存储及必要的泛型上界，普通查询不把 any 作为默认结果。
 
-Core 的选择、冷却刷新、推进与终止直接读取内部完整条目，保持条目与其自身 Definition 的配对，不解释私有 P／E 的形状，也不通过高阶 reader 传递具体泛型。内容查询仍由精确 Typed Ref 恢复 P／E，字段 setter 保留 NoInfer；普通查询直接返回完整对象，私有形状仍只由精确 Ref／Definition 证明，底层 Store 不公开。
+Core 的选择、冷却刷新、推进与终止直接读取内部完整条目，保持条目与其自身 Definition 的配对，不解释私有 P／E 的形状。内容查询由精确 Typed Ref 恢复 P／E，字段 setter 保留 NoInfer；普通查询返回完整对象，私有形状由精确 Ref／Definition 证明，底层 Store 不公开。
 
 同一 BattleState 内的连续只读求值复用已取得的宿主和条目；完整操作返回后仍按状态接续约定重新读取。释放派发在每项 Hook 前从当前版本检查执行与宿主资格，不缓存入口时的资格。
 
@@ -266,17 +278,17 @@ export declare function clearCooldown<T extends Action<any, any>>(
 
 start 从当前 Action 检查配置对象身份、来源资格、execution 占用、Rule、Cooldown 和内容条件。未配置 Definition 属于调用／配置错误；普通拒绝不分配执行 ID 或开始周期。STARTED 表示已受理：start 通过 prepare 构造 E、登记本轮 Execution 并重置 Cooldown，首次 onTick 由独立的 advance 入口执行。返回的 Ref 标识本轮执行，使用时仍从最新 BattleState 确认其状态。
 
-start 内的局部 check 复用同一套准入规则，在 prepare 前检查，并在 prepare 成功后从接续的 BattleState 重新读取宿主与聚合条目，按最新周期再次确认准入，再以其结果登记。prepare 返回 null 时直接返回 CONDITION。回调使自身进入冷却时返回 COOLDOWN，保留已经发生的修改。仍可启动时才基于最新宿主一次写回该 Action 的新 Cooldown、Execution 和 nextExecutionId，保留持久 state、兄弟行动及其他能力的修改，并登记 Execution→Unit 的 Lifetime owner 关系。
+prepare 前检查准入；prepare 成功返回后，从接续的 BattleState 重新读取宿主与聚合条目，按最新周期确认仍可启动。prepare 返回 null 时返回 CONDITION。回调使自身进入冷却时返回 COOLDOWN，保留已经发生的修改。仍可启动时才基于最新宿主一次写回新 Cooldown、Execution 和 nextExecutionId，保留持久 state、兄弟行动及其他能力的修改，并登记 Execution→Unit 的 Lifetime owner 关系。
 
 三类写入只接收已经计算好的结果值。setExecutionState 以 Execution Ref 指定本轮，只设置 execution.state；setState 与 setCooldown 以 Action Ref 指定持久行动，分别只设置持久 state 与 Cooldown。Core 从传入的最新 BattleState 读取当前聚合条目，只替换指定字段，保留其他字段、Definition、执行身份和生命周期；给定值与当前字段引用相同时返回原 BattleState。
 
 宿主或指定执行缺失时，写入操作抛出 RangeError；Action Ref 所给 Definition 未配置或对象身份不匹配时抛出 TypeError。setExecutionState 在 execution 为 ENDING 时抛出 TypeError；setState／setCooldown 可以在结束程序中更新持久事实。调用方从当前 battle 查询并计算下一值，计算和提交之间不执行其他完整操作；跨领域调用返回后先接续 battle，再重读所需实时状态，避免用旧 self.state／self.execution.state 覆盖当前数据。`NoInfer` 限制结果值参与泛型推导；精确 Ref 保持 P／E 关联，预先弱化类型后写入不兼容数据属于调用契约错误，不增加运行时形状校验。
 
-单个 Action 的完整写回由文件私有 replaceAction 统一，通过底层 Actions.replace(definition, next) 提交已配对条目，信任已有宿主、Definition 与执行身份。start 仍将新 Cooldown、Execution 和 nextExecutionId 一次写回；refreshCooldowns 仍批量构造后一次提交，不改为逐条写回。生命周期变更由完整领域操作管理，内容只调用对应字段的更新操作。
+Core 的完整写回信任已有宿主、Definition 与执行身份，不再恢复或校验内容私有数据的形状。生命周期变更由完整领域操作管理，内容只调用对应字段的更新操作。
 
 终止通过 Action 的 lifetime 请求：登记 Pending、发布 execution.ENDING，再按关系请求本轮依赖者。所有依赖者完整 Finalize 后，从当前存储取得配对 Execution 执行可选 onEnd，接续返回状态，清空同一 execution、注销本轮 Lifetime 关系并登记结束事件。首次请求固定 End 与依赖传播原因，重复请求不覆盖或重复收尾；整个 Finalize 返回后才解除 owner 等待。
 
-Unit 对 Execution 的所有权保护宿主到本轮整个 Finalize 返回。onEnd 内请求宿主离场会先使 Unit LEAVING，但 Unit 不会在该回调中途注销；不再保留宿主缺失时的通用 ending 回退。onEnd 返回后从最新状态读取配对 Action，再清空本轮 execution，保留回调修改的持久 state 与 Cooldown；不删除配置条目，也不清理后来执行。持久状态不隐含跨部署保存。
+Unit 对 Execution 的所有权保护宿主到本轮整个 Finalize 返回。onEnd 内请求宿主离场会先使 Unit LEAVING，但 Unit 不会在该回调中途注销。onEnd 返回后从最新状态读取配对 Action，再清空本轮 execution，保留回调修改的持久 state 与 Cooldown。持久状态不隐含跨部署保存。
 
 首次嵌套 cancel 同步完成请求与 Prepare，不保证 execution 已清空或结束事件已记录；同一结算范围内 cancel 后立即 start 同配置可能仍被占位拒绝。无活动结算时，结束入口在本次调用内 drain 完再返回。已经进入的 onTick 继续普通控制流，后继按需要重读当前资格；等待边不来自函数调用栈。cancelForUnit 固定执行 Ref，依次请求取消；Unit 退场改由所有权边传播，无须手工调用这套批量入口。Action.onEnd／事件的 SOURCE_ABSENT 与依赖者接收的原离场原因分别保留。
 

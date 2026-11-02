@@ -8,6 +8,18 @@ Effect 负责附着实例、生效状态、覆写组与生命周期。总体执�
 
 Effect 用于表达属性增益、护盾、周期伤害与治疗、技能附带状态、效果覆写和光环分发。核心负责附着实例与生命周期，具体 Definition 组合 Capability 的操作实现玩法。
 
+## 关键语义
+
+Effect 需要保障的结果是：
+
+- 安装、实际生效和存在性分开。onInstall 完成前不自动启用或推进实例；禁用保留实例及私有进度；结束撤销输出，安装期间结束的实例不能被外层流程恢复。
+- 整体覆写组按优先级和安装先后选一个生效对象。禁用最强实例不使弱者补位；最强实例结束后，仍有资格的候补才重新生效。
+- 宿主所有权、显式 Scope 与来源分开。宿主或任一依赖结束会关闭 Effect，普通 source 不自动建立依赖；开始结束的依赖链不再接受新绑定。
+- 截止期限与有效周期分开。非生效期间不补发周期输出，绝对期限继续前进；到期 Tick 的正常业务及其中提交的续期必须得到完整结算。
+- 结束时先撤销自身输出，再等待依赖者完整结束，最后执行自身收尾并移除实例。收尾使用当前状态，宿主由所有权保护到本 Effect 的整个 Finalize 返回。
+
+这些语义用于选择必要的业务场景。公共依赖析构、Hook 派发和不可变状态接续由各自契约集中说明；容器实现、字段清单与逐个 Setter 的内部检查不独立构成玩法验收目标。Aura 与具体 Buff 需要有实际内容程序，不能用夹具实现其策略后将夹具自身当作产品验收。
+
 ## 1. 目录与职责
 
 | 模块 | 职责 |
@@ -19,9 +31,9 @@ Effect 用于表达属性增益、护盾、周期伤害与治疗、技能附带�
 | `unit/effect/query.ts` | 按精确 Ref 读取当前实例的 get |
 | `unit/effect/operations.ts` | 安装、私有数据与期限写回、启停、推进与完整结束 |
 | `core/lifetime/` | 共享依赖关系、结束请求与 DAG 析构 |
-| `content/effects/` | 护盾、异常、属性增益、Aura 等具体程序 |
+| `content/effects/` | 已接入的护盾、异常与属性增益程序；Aura 接入范围见后文 |
 
-内容从 index 导入公开契约，包含 Effect 的静态 lifetime 描述符；get 归 query.ts，领域操作直接依赖该查询。Effects 容器保持内部职责；通用依赖索引归 core/lifetime，不再由 Effect 专属模块维护。Effect、Hook、Contribution 都在 Unit 域内，与 Capability 平级。Effect 集合是 Unit 的组成部分；具体能力负责自己的数值和事件。
+内容从 index 导入公开契约，包含 Effect 的静态 lifetime 描述符；get 归 query.ts，领域操作直接依赖该查询。Effects 容器保持内部职责；通用依赖索引归 core/lifetime。Effect、Hook、Contribution 都在 Unit 域内，与 Capability 平级。Effect 集合是 Unit 的组成部分；具体能力负责自己的数值和事件。
 
 | 模块            | 负责什么                                          | 集合由谁持有                 |
 | --------------- | ------------------------------------------------- | ---------------------------- |
@@ -31,7 +43,7 @@ Effect 用于表达属性增益、护盾、周期伤害与治疗、技能附带�
 | Contribution    | 不可变数据包、set／remove、分组选取与数值辅助     | 提供该属性的 Capability      |
 | Capability      | 属性读写、事件阶段、调用顺序、短路与修改响应      | 对应 Capability State        |
 | 具体 Definition | 将生命周期回调与 Capability 操作组合为玩法        | 实例 data 保存内容需要的进度 |
-| Battlefield     | 定义场上状态值，纯转换维护事实、索引与关系        | Battlefield State            |
+| Battlefield     | 定义场上状态值，纯转换维护存储与结构索引        | Battlefield State            |
 | battle/runtime.step | 按领域顺序接续纯操作并返回完整 State | 输入与返回的不可变值 |
 
 [Damage 与 Healing](vitality.md) 由 Battle 领域执行，属性计算由所属 Capability 执行；具体 Definition 组合这些操作。
@@ -116,7 +128,7 @@ Core 与 Content 统一使用 get(id) 取得默认 object 参数的完整 Effect
 
 Effects 的完整替换属于 Core 存储接口。它不接收 BattleState，不选择或执行生命周期回调，不决定覆写赢家、不检查宿主生命周期，也不结束 Scope。Core 通过它提交已完成的领域结算；内容私有数据更新使用 `setData()`，许可与生命周期变化使用相应完整操作。
 
-operations.ts 的私有 replaceEffect(battle, unit, self) 提交已经配对的宿主与完整 Effect。调用方从当前 battle 取得对象并完成入口所需的缺失、ENDING、无变化等判断；helper 信任这些前提，不重复查找对象或校验存在性，直接通过 Effects.replace 与内部 Unit replace 发布。Effects.replace 读取当前槽位以保留缺失及同引用时的 no-op，配对和身份稳定性由 Core 保证；业务资格由所属入口负责。
+Core 的完整替换提交已经配对的宿主与 Effect，信任入口建立的身份、Definition 和能力约束；业务资格由所属领域操作负责。存储替换只发布数据和结构索引，不执行生命周期回调或重建依赖图。
 
 不可变 State 直接共享这个容器。容器的 `toJSON()` 直接物化底层 values，在序列化边界将结果断言为只读 Snapshot 数组，返回 `{ instances, nextId }`。Snapshot 用 unknown 表达诊断载荷并限制 Definition 的诊断字段，让 JSON 诊断包含数据与 ID 进度。实例与诊断 Snapshot 的 source 均保留 `Ref<Unit> | null`；具体输出只需数值来源 ID 时在输出位置读取 source?.id。诊断表示独立于普通 Query，不承担恢复 Definition、回调或运行容器的职责。
 
@@ -190,11 +202,11 @@ Hook 的 accepts 读取 Effect 的覆写结果；伤害阶段与优先级由 Dam
 | onEnable  | 从不生效变为生效                 | 登记静态 Contribution，恢复输出     |
 | onDisable | 从生效变为不生效，或活跃实例结束 | 撤销静态 Contribution，关闭附带输出 |
 | onTick    | 本轮推进时实例仍为 ACTIVE        | 周期伤害、治疗、补盾、Aura 刷新     |
-| onEnd     | 实例已结束，依赖结束完成后，一次 | 移除稳定 Hook，执行结束业务         |
+| onEnd     | 实例仍为 ENDING，依赖完整结束后，一次 | 移除稳定 Hook，执行结束业务         |
 
 安装先形成包含 INSTALLING 实例的新状态，以此调用 onInstall，接续其返回值。回调返回后，仍然处于 INSTALLING 的实例转为 INACTIVE，再协调是否生效。生效切换先形成新 status，再运行回调并接续返回值；回调输入表达新状态。
 
-install 检查已取得宿主的 lifecycle；updateStatus 先排除 INSTALLING／ENDING，再通过 Lifetime.available 检查自身及全部上游资格。replaceEffect 经内部 replaceUnits 只发布数据和 Field 结构索引，不执行内容回调或重建 Lifetime 图：初次登记后直接将新实例传给 onInstall，状态切换发布后直接将新实例传给 onEnable／onDisable，不重复查询或检查刚写入的状态。onInstall、onDisable 等内容程序或完整业务操作返回后，仍按状态接续约定重读后续需要的事实；安装继续前确认当前仍为 INSTALLING。结束中宿主由所有权边保护到本 Effect 完整 Finalize 返回，不再维护宿主提前消失时的通用 fallback。
+install 检查已取得宿主的生命周期；生效协调排除 INSTALLING／ENDING，并通过 Lifetime.available 检查自身及全部上游资格。纯发布不会调用内容程序：初次登记后直接将新实例传给 onInstall，状态切换发布后直接将新实例传给 onEnable／onDisable，无需重新查询刚写入的实例。onInstall、onDisable 等内容程序或完整业务操作返回后，按[状态接续约定](functional-core.md#状态接续后的读取与续执行)重读后续需要的事实；安装继续前确认当前仍为 INSTALLING。结束中宿主由所有权边保护到本 Effect 完整 Finalize 返回。
 
 onInstall 完成前，实例不能执行 onEnable。安装期间的同步嵌套操作可以登记子实例、改变许可与私有 data，也可以结束自己或宿主。INSTALLING 和 ENDING 都由实例自身保存；结束的实例不在外层安装返回时恢复。INSTALLING 实例已经登记，可以成为子 Effect 的 Scope，也作为尚未结束的同组候选。
 
@@ -223,9 +235,9 @@ function setData<T extends Effect<any, any>>(
     data: NoInfer<T["data"]>,
 ): BattleState;
 
-function setDeadline(
+function setDeadline<T extends Effect<any, any>>(
     battle: BattleState,
-    ref: Ref<Effect<any, any>>,
+    ref: Ref<T>,
     tick: number | null,
 ): BattleState;
 ```
@@ -254,9 +266,7 @@ Effect 的 end 使用共享的请求／Finalize 协议：
 
 Group 在 Prepare 即排除 ENDING 候选并协调弱者，早于本实例 onEnd。补位仍按最新宿主 PRESENT、enabled、Scope 资格及原竞争规则决定；Unit 已 LEAVING 时不会启用候补。onDisable 中的多步操作不是原子事务：其中同步调用的 Hook 可以观察到尚未全部撤销的输出，需要随标记原子失效的具体事实必须一起提交。
 
-父对象的 Prepare 先于依赖者 Prepare，父 Finalize 晚于全部依赖者完整 Finalize。兄弟可以都先成为 ENDING，前一个 onEnd 不保证其他兄弟仍在运行。首次请求固定业务原因与依赖传播原因，重复请求不覆盖，也不重复调用内容程序。
-
-没有活动结算时，end 在本次调用内完成 request 与 drain，返回时 Pending 为空。有活动结算时，嵌套 end 只同步完成首次请求和 Prepare，不保证槽位释放、注销或最终通知；重复请求 PREPARING 对象也不等待原 Prepare。需要已完成事实的后继业务使用领域完成通知，不递归启动另一个 drain。
+父对象准备结束与依赖者完整完成之间的顺序、首次原因和嵌套请求边界，统一遵守[Lifetime 请求与完成契约](lifetime.md#请求与-prepare)。嵌套 end 不保证实例已经注销，需要已完成事实的后继业务使用领域完成通知。
 
 Unit 从 LEAVING 开始，通过真实所有权边请求 Skill、Action、Burst 和 Effect 结束；只有这些子项与显式依赖者都完整 Finalize 后才注销。Effect.onEnd 内请求宿主退场会先标记宿主，但宿主会等待本 Effect 整个 Finalize 返回，不会在回调中途消失。因此 onEnd 从当前存储取得 self，不再保存通用最后可得实例回退。
 
@@ -300,7 +310,7 @@ Context 是本次派发固定的事件或操作事实；BattleState 与 current 
 
 具体 Effect 可以在 onInstall 登记 Hook，在 onEnd 撤销。闭包捕获稳定的 Effect Ref 与静态配置；accepts 和 invoke 从最新 battle 读取当前实例、覆写结果和私有 data。不能把安装时捕获的数据当作当前盾数。消耗等需要被嵌套观察的进度先写回，再进入其他领域操作。
 
-每次派发固定候选 ID，逐项按 ID 查找最新登记并执行 accepts／invoke。同 ID 替换使用新版本；新 ID 不进入已经固定的候选。嵌套派发及后续独立阶段各自取候选，新登记项可以参加这些新派发。完整协议见 [函数式内核的 Hook 契约](functional-core.md)。
+候选、替换和嵌套派发遵守[公共 Hook 契约](functional-core.md#7-同步候选范围)。Effect 接入只补充自身实际生效资格与对应业务结果，不为各个回调点另外定义派发协议。
 
 吸血、反伤、安装其他 Effect 等业务直接调用对应领域操作并接续结果。零层护盾只是不满足本次拦截资格；若 Effect 还负责周期补盾，可以继续保持 ACTIVE 和执行 onTick。
 
@@ -322,7 +332,9 @@ Contribution 分组平局使用 ID 字典序，Effect 覆写平局使用安装�
 
 静态采样由内容决定刷新时点，动态 Contribution 在查询时只读求值。`setData()` 不隐式刷新已经登记的输出；需要响应私有数据变化的内容明确更新相应 Contribution。
 
-## 8. Aura 复用普通 Effect
+## 8. 待接入的 Aura 内容
+
+以下是 Aura 的内容组合边界，不代表已有通用 Aura 实现或已经完成具体光环的验收。当前缺口见 [Tactical 语义的逐项目标与缺口](tactical-semantics.md#逐项目标与缺口)。
 
 ```text
 Unit A
