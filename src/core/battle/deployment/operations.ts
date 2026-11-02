@@ -125,7 +125,7 @@ export function deploy<T extends Card<any>>(
                     return { state, value: undefined };
                 },
             },
-            ...self.hooks,
+            ...self.unitHooks,
             ...request.hooks,
         ],
     });

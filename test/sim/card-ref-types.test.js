@@ -23,7 +23,7 @@ import { resolveDeploymentCommands } from ${source("battle/deployment/operations
 import { ref as unitRef } from ${source("unit/query")};
 import { hasDeployable, type Deployable } from ${source("unit/capability/deployable/index")};
 import { initialize as initializeUnit } from ${source("unit/initialize")};
-import { addCard, deploy, advance as advanceDeployment, type Input as DeploymentInput } from ${source("battle/deployment/index")};
+import { addCard, activeCount, deploy, advance as advanceDeployment, type Input as DeploymentInput } from ${source("battle/deployment/index")};
 // @ts-expect-error Card creation uses complete definitions, without a separate input wrapper.
 import type { CardInput } from ${source("battle/deployment/index")};
 import { type Card, type Definition, ref, get, all, allows, setState, reduceCooldown, clearCooldown } from ${source("battle/deployment/card/index")};
@@ -83,6 +83,10 @@ if (hasDeployable(unknownUnit)) {
 }
 const added = addCard(battle, definition);
 type Added = Assert<Equal<typeof added.value, Ref<Card<Private>>>>;
+const typedActiveCount = activeCount(battle, added.value);
+type TypedActiveCount = Assert<Equal<typeof typedActiveCount, number>>;
+const ordinaryActiveCount = activeCount(battle, erased);
+type OrdinaryActiveCount = Assert<Equal<typeof ordinaryActiveCount, number>>;
 const deployCommand: Command<Card<Private>> = {
     type: "DEPLOY_UNIT", ref: added.value, tilePosition: [0, 0], direction: "RIGHT",
 };

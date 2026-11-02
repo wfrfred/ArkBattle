@@ -58,7 +58,7 @@ export function addCard<S extends object>(
     const value: Card<S> = {
         id,
         definition,
-        hooks: definition.card.unitHooks,
+        unitHooks: definition.card.unitHooks,
         rules: [],
         state: initialized.value,
         stock,

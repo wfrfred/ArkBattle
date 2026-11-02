@@ -71,11 +71,11 @@ Context 保存 tile、support、occupant，属于绑定建立时采样的事实�
 
 通知只向 Support 的静态 hooks 派发。Added 每个回调前确认两端仍为 PRESENT 且持有原 pair；回调导致组合失效时停止后继 Added。Removed 携带原 pair 的固定事实，不替换为同格新对象。所有回调接续最新 BattleState。
 
-Unit 不识别 Occupancy，也不发送 Battlefield 差分事件；旧 registrationChanged 桥已经移除。普通 update／replace 只发布状态及结构索引，不自动派发配对事件。当前没有公开任意搬格操作，未来真实占格变更应由完整 Occupancy 操作处理自身通知。
+Occupancy 通过已登记的 Unit enter／leave 程序处理配对通知。普通 update／replace 只发布状态及结构索引。当前没有公开搬格操作。
 
 ## 与其他领域协作
 
-Deployment 通过同一套 Request／Rule 检查地块和槽位，落点和本次方向通过 unit.initialize 的可选 initial.occupancy 输入。关卡预置使用同一输入，开场 Unit 声明 initiallyPresent:true，不另建初始放置流程。实际部署通知与 Support 配对是不同事件，前者由 Deployment 登记的 enter 程序触发。
+Deployment 通过 Request／Rule 检查地块和槽位，落点和本次方向通过 unit.initialize 的可选 initial.occupancy 输入。关卡预置使用同一输入，开场 Unit 声明 initiallyPresent:true。实际部署通知与 Support 配对是不同事件，前者由 Deployment 登记的 enter 程序触发。
 
 Blocking 有非空登记格时，以该格作为根格读取地块允许阻挡的事实；没有登记格时回退到身体坐标。地块登记与世界位置仍是两个独立事实。
 
@@ -85,6 +85,4 @@ Blocking 有非空登记格时，以该格作为根格读取地块允许阻挡�
 
 ## 范围
 
-占格变化不等于 Unit 离场。结构层支持交换不代表公开任意搬动游戏对象；完整特殊撤退—再部署本轮未实现。
-
-大型 Hitbox 不等于多格占用。本轮不支持相关模式的大型设施多格登记，不为其扩展当前模型。有关部署、主动操作与被动死亡的分工见 [Deployment](deployment.md)。
+当前支持单格 OCCUPANT／SUPPORT 登记和配对通知。完整特殊撤退—再部署、公开搬格及大型设施多格登记尚未实现；大型 Hitbox 本身只描述受击几何。部署、主动操作与被动死亡的分工见 [Deployment](deployment.md)。

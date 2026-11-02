@@ -128,22 +128,26 @@ export function resumeCooldown(
     );
 }
 
-export function setHook(battle: BattleState, reference: Ref<Card<any>>, entry: Hook): BattleState {
+export function setUnitHook(
+    battle: BattleState,
+    reference: Ref<Card<any>>,
+    entry: Hook,
+): BattleState {
     const self = requireCard(battle, reference);
-    const hooks = hook.set(self.hooks, entry);
+    const unitHooks = hook.set(self.unitHooks, entry);
 
-    return hooks === self.hooks ? battle : replaceCard(battle, { ...self, hooks });
+    return unitHooks === self.unitHooks ? battle : replaceCard(battle, { ...self, unitHooks });
 }
 
-export function removeHook(
+export function removeUnitHook(
     battle: BattleState,
     reference: Ref<Card<any>>,
     id: string,
 ): BattleState {
     const self = requireCard(battle, reference);
-    const hooks = hook.remove(self.hooks, id);
+    const unitHooks = hook.remove(self.unitHooks, id);
 
-    return hooks === self.hooks ? battle : replaceCard(battle, { ...self, hooks });
+    return unitHooks === self.unitHooks ? battle : replaceCard(battle, { ...self, unitHooks });
 }
 
 export function setRule(battle: BattleState, reference: Ref<Card<any>>, entry: Rule): BattleState {

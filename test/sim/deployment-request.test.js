@@ -119,7 +119,7 @@ test("entry hooks install sampled Effects while later output reads current Unit 
             return battle;
         },
     };
-    const battle = cards.setHook(initial.battle, initial.references[0], {
+    const battle = cards.setUnitHook(initial.battle, initial.references[0], {
         id: "install-follow-up", stage: "enter",
         invoke(current, self) {
             return { state: effects.install(current, units.ref(self), effect, { data: { amount: 3 } }).state, value: undefined };

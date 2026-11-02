@@ -17,7 +17,7 @@ export function usedSlots(battle: BattleState): number {
     return battle.deployment.usedSlots;
 }
 
-export function activeCount(battle: BattleState, reference: Ref<Card>): number {
+export function activeCount(battle: BattleState, reference: Ref<Card<any>>): number {
     let count = 0;
 
     for (const unit of battle.battlefield.units.values()) {

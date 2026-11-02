@@ -117,7 +117,7 @@ test("Card selection rules are independent and future Unit hooks use ordinary re
         stage: "enter",
         invoke: (battle) => ({ state: battle, value: undefined }),
     };
-    let battle = cards.setHook(added.state, added.value, entry);
+    let battle = cards.setUnitHook(added.state, added.value, entry);
     battle = cards.setRule(battle, added.value, {
         id: "cannot-select",
         allows: (_battle, { purpose }) => purpose !== "SELECT",
@@ -128,9 +128,9 @@ test("Card selection rules are independent and future Unit hooks use ordinary re
     assert.deepEqual(preview(battle, request), { type: "REJECTED", reason: "NO_STOCK" });
     battle = cards.recharge(battle, added.value, 1);
     assert.equal(preview(battle, { ...request, quote: { ...request.quote, dp: null } }).type, "ALLOWED");
-    assert.deepEqual(cards.get(battle, added.value).hooks, [entry]);
-    assert.equal(cards.setHook(battle, added.value, entry), battle);
+    assert.deepEqual(cards.get(battle, added.value).unitHooks, [entry]);
+    assert.equal(cards.setUnitHook(battle, added.value, entry), battle);
     assert.equal(cards.removeRule(battle, added.value, "missing"), battle);
-    battle = cards.removeHook(battle, added.value, entry.id);
-    assert.deepEqual(cards.get(battle, added.value).hooks, []);
+    battle = cards.removeUnitHook(battle, added.value, entry.id);
+    assert.deepEqual(cards.get(battle, added.value).unitHooks, []);
 });

@@ -33,7 +33,7 @@ export type TimerTarget = "COOLDOWN" | "RECOVERY";
 export interface Card<S extends object = object> extends Identified<{ readonly id: Id }> {
     readonly id: Id;
     readonly definition: UnitDefinition<S>;
-    readonly hooks: readonly Hook[];
+    readonly unitHooks: readonly Hook[];
     readonly rules: readonly Rule[];
     readonly state: S;
     readonly stock: number;
