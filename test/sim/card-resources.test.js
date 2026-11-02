@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { fixtureBattle } from "../helpers/unit.js";
 import { addCard, advance } from "../../dist/core/battle/deployment/resources.js";
+import { createRequest, preview } from "../../dist/core/battle/deployment/query.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 
@@ -30,7 +31,7 @@ function fixture(stock = 0, redeployTicks = 30) {
     return addCard(fixtureBattle(), definition);
 }
 
-const at = (battle, tick) => advance({ ...battle, tick }, tick);
+const at = (battle, tick) => advance({ ...battle, tick });
 
 test("queue stores every return and samples a new duration only when the next segment starts", () => {
     const added = fixture();
@@ -123,10 +124,10 @@ test("Card selection rules are independent and future Unit hooks use ordinary re
     });
     assert.equal(cards.allows(battle, { ref: added.value, purpose: "DISPLAY" }), true);
     assert.equal(cards.allows(battle, { ref: added.value, purpose: "SELECT" }), false);
-    assert.equal(cards.allows(battle, {
-        purpose: "DEPLOY",
-        request: { card: added.value, tilePosition: [0, 0], quote: { dp: 5, stock: 1, slots: 0 }, rules: [], hooks: [] },
-    }), true);
+    const request = createRequest(battle, added.value, [0, 0]);
+    assert.deepEqual(preview(battle, request), { type: "REJECTED", reason: "NO_STOCK" });
+    battle = cards.recharge(battle, added.value, 1);
+    assert.equal(preview(battle, { ...request, quote: { ...request.quote, dp: null } }).type, "ALLOWED");
     assert.deepEqual(cards.get(battle, added.value).hooks, [entry]);
     assert.equal(cards.setHook(battle, added.value, entry), battle);
     assert.equal(cards.removeRule(battle, added.value, "missing"), battle);

@@ -20,7 +20,7 @@ export interface Definition {
 
 export interface Input {
     readonly definition: Definition;
-    readonly cards: readonly card.Input[];
+    readonly cards: readonly card.UnitDefinition<any>[];
 }
 
 export interface State {

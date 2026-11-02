@@ -2,7 +2,7 @@ export type { Definition, Input, State } from "./deployment.js";
 
 export { initialize, changeDp } from "./deployment.js";
 
-export type { Id as CardId, Input as CardInput, Clock as CardClock, Card } from "./card/card.js";
+export type { Id as CardId, Clock as CardClock, Card } from "./card/card.js";
 
 export { resolveBaseCost, resolveCost, resolveRedeployTicks } from "./card/state.js";
 
@@ -28,7 +28,9 @@ export { addCard, advance } from "./resources.js";
 
 export type { DeploymentCommand } from "./operations.js";
 
-export { deploy, retreat, canRetreat, resolveDeploymentCommands } from "./operations.js";
+export { deploy, resolveDeploymentCommands } from "./operations.js";
+
+export { retreat, canRetreat } from "../../unit/capability/deployable/operations.js";
 
 export * as dp from "./dp.js";
 

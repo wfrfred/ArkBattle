@@ -127,7 +127,7 @@ const completeRequest = (state, input) =>
         rules: [],
         hooks: [],
     };
-const at = (state, tick) => advance({ ...state, tick }, tick);
+const at = (state, tick) => advance({ ...state, tick });
 const retreatUnit = (state, id) => retreat(state, unitQueries.ref(getUnit(state, id)));
 const deployUnit = (state, cardId = 0, column = 0) => {
     const result = deploy(state, completeRequest(state, request(cardId, column)));
@@ -543,20 +543,18 @@ test("a failed Tick publishes neither preceding deployments nor Card, DP and ide
         deployment: {
             definition: budget(),
             cards: [
-                { definition: definition() },
-                {
-                    definition: definition({
-                        hooks: [
-                            {
-                                id: "test/enter",
-                                stage: "enter",
-                                invoke() {
-                                    throw failure;
-                                },
+                definition(),
+                definition({
+                    hooks: [
+                        {
+                            id: "test/enter",
+                            stage: "enter",
+                            invoke() {
+                                throw failure;
                             },
-                        ],
-                    }),
-                },
+                        },
+                    ],
+                }),
             ],
         },
     });

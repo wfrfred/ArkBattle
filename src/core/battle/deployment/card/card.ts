@@ -16,10 +16,6 @@ export type UnitDefinition<S extends object = object> = BaseDefinition & {
     readonly occupancy: OccupancyDefinition;
 };
 
-export interface Input {
-    readonly definition: UnitDefinition<any>;
-}
-
 export type Clock = {
     readonly durationTicks: number;
 } & (

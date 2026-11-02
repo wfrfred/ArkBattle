@@ -1555,7 +1555,7 @@ test('core battle deploys and retreats units with immutable occupancy and curren
     stock: 2, stockLimit: 2, activeLimit: null,
     cooldownOnDeploy: false, recoverOnLeave: true, increaseCostOnLeave: false,
   });
-  let runtime = initializeBattle(deploymentBattleInput({}, [{ definition }]));
+  let runtime = initializeBattle(deploymentBattleInput({}, [definition]));
   const maps = runtime.battlefield.navigation;
   const deployed = (runtime = advanceBattle(runtime, [{ type: 'DEPLOY_UNIT', cardId: 0, tilePosition: [0, 1] }]));
   const unit = runtime.battlefield.units.get(0);
@@ -1580,7 +1580,7 @@ test('core battle deploys and retreats units with immutable occupancy and curren
   const initialInput = deploymentBattleInput({
     predefines: predefinedUnits([{ definition: Object.freeze({ hooks: [], id: 'reserved_home', occupancy: { slot: 'OCCUPANT' } }), position: [5, 0], initial: { occupancy },
        }]),
-  }, [{ definition: definition }]);
+  }, [definition]);
   let reserved = initializeBattle(initialInput);
   assert.equal(reserved.battlefield.units.get(0).occupancy.tile, occupancy.tile);
   assert.deepEqual(reserved.battlefield.units.get(0).occupancy.tile, [0, 5]);
@@ -1601,7 +1601,7 @@ test('core battle deploys and retreats units with immutable occupancy and curren
     level.predefines.tokenInsts.find(instance => instance.inst.characterKey === 'trap_1105_accrate'),
     parsePredefinedPrefab(arknightsFixture('prefab_trap_1105_accrate')), arknightsFixture('character_trap_1105_accrate'));
   const crate = recipe.creation.definition;
-  let crates = initializeBattle(deploymentBattleInput({}, [{ definition: crate }, { definition: definition }]));
+  let crates = initializeBattle(deploymentBattleInput({}, [crate, definition]));
   const baseline = crates.battlefield.navigation;
   (crates = advanceBattle(crates, [{ type: 'DEPLOY_UNIT', cardId: 0, tilePosition: [0, 1] }]));
   assert.deepEqual(navigationMap(crates.battlefield.navigation).cells.map(cell => cell.cost), [1, 1000, 1, 1, 1, 1]);
@@ -1637,7 +1637,7 @@ test('core battle accepts the first deployment and rejects an occupied destinati
     stock: 2, stockLimit: 2, activeLimit: null,
     cooldownOnDeploy: false, recoverOnLeave: true, increaseCostOnLeave: false,
   });
-  const spec = deploymentBattleInput({}, [{ definition }]);
+  const spec = deploymentBattleInput({}, [definition]);
   let runtime = initializeBattle(spec), replay = initializeBattle(spec);
   const deploy = tilePosition => ({ type: 'DEPLOY_UNIT', cardId: 0, tilePosition });
   const before = runtime, maps = runtime.battlefield.navigation;
@@ -1674,10 +1674,9 @@ test('core visibility: commands from different domains execute in phase order be
     id: 17, alias: null, initiallyPresent: true, creation: {
       type: 'UNIT', definition, position: [1, 0], initial: {
         occupancy: { tile: [0, 1] },
-        deployable: { card: null, cost: 0, slots: 1, refund: null },
       },
     },
-  }] }, [{ definition: definition }]);
+  }] }, [definition]);
   let runtime = initializeBattle(spec);
   assert.deepEqual([...runtime.battlefield.units.values()].map(unit => unit.id), [0]);
   const unitAtRemoval = runtime.battlefield.units.get(0);
@@ -1728,7 +1727,7 @@ test('core elevated support disables blocking without changing target layer and 
   let runtime = initializeBattle(deploymentBattleInput({
     predefines: predefinedUnits([{ definition: enemyDefinition, position: [1, 0] }], [hiddenRecipe]),
 
-  }, [{ definition: definition }]));
+  }, [definition]));
   assert.equal(hiddenRecipe.creation.initial.occupancy.tile, tile);
 
   assert.equal(runtime.predefinedPresence.some(binding => binding.definitionId === 50), false);

@@ -43,7 +43,6 @@ function configuration(id, tileChanges = {}) {
 function place(battle, id, definition, tile, position = Tile.center(tile)) {
     const initialized = initialize(battle, { id, definition, position, initial: {
         occupancy: { tile },
-        deployable: { card: null, cost: 0, slots: 0, refund: null },
     } });
 
     return add(initialized.state, initialized.value);

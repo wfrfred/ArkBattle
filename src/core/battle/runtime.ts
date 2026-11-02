@@ -69,7 +69,7 @@ export function initialize(input: Input): State {
         },
     );
 
-    for (const { definition } of input.deployment?.cards ?? []) {
+    for (const definition of input.deployment?.cards ?? []) {
         initial = addCard(initial, definition).state;
     }
 
@@ -89,7 +89,7 @@ export function step(battle: State, commands: readonly Command[]): State {
         removedUnits: [],
     };
 
-    state = advanceDeployment(state, tick);
+    state = advanceDeployment(state);
     state = advancePredefined(state, battle.definition.predefines, commands);
 
     state = prepareCombat(state, commands);

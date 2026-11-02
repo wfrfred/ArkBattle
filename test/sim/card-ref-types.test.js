@@ -19,12 +19,15 @@ import type { State as BattleState } from ${source("battle/state")};
 import type { Unit } from ${source("unit/unit")};
 import { hasDeployable, type Deployable } from ${source("unit/capability/deployable/index")};
 import { initialize as initializeUnit } from ${source("unit/initialize")};
-import { addCard, deploy } from ${source("battle/deployment/index")};
-import { type Card, type Definition, ref, get, all, setState, reduceCooldown, clearCooldown } from ${source("battle/deployment/card/index")};
+import { addCard, deploy, advance as advanceDeployment, type Input as DeploymentInput } from ${source("battle/deployment/index")};
+// @ts-expect-error Card creation uses complete definitions, without a separate input wrapper.
+import type { CardInput } from ${source("battle/deployment/index")};
+import { type Card, type Definition, ref, get, all, allows, setState, reduceCooldown, clearCooldown } from ${source("battle/deployment/card/index")};
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
 type Assert<T extends true> = T;
 type Private = { charges: number };
 declare const battle: BattleState;
+declare const deploymentInput: DeploymentInput;
 declare const unit: Ref<Unit>;
 declare const erased: Ref<Card>;
 const cardDefinition: Definition<Private> = {
@@ -133,6 +136,16 @@ const request = {
     quote: { dp: 0, stock: 1, slots: 1 }, rules: [], hooks: [],
 };
 deploy(battle, request);
+allows(battle, { ref: added.value, purpose: "DISPLAY" });
+allows(battle, { ref: added.value, purpose: "SELECT" });
+// @ts-expect-error Deployment permission must use the complete deployment qualification.
+allows(battle, { purpose: "DEPLOY", request });
+const startingCards: DeploymentInput = { ...deploymentInput, cards: [definition, definition, inline] };
+// @ts-expect-error Initial Cards are definitions rather than single-field wrappers.
+const wrappedCards: DeploymentInput = { ...deploymentInput, cards: [{ definition }] };
+advanceDeployment(battle);
+// @ts-expect-error A complete Battle operation reads its current Tick from BattleState.
+advanceDeployment(battle, battle.tick);
 // @ts-expect-error Deployment accepts a Card reference, not a numeric command ID.
 deploy(battle, { ...request, card: 0 });
 // @ts-expect-error Unit references cannot satisfy deployment's Card identity.

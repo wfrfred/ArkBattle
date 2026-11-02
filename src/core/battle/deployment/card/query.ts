@@ -24,8 +24,11 @@ export function all(battle: BattleState): Query<Card> {
     return create(() => battle.deployment.cards.values());
 }
 
-export function allows<T extends Card<any>>(battle: BattleState, context: RuleContext<T>): boolean {
-    const self = get(battle, context.purpose === "DEPLOY" ? context.request.card : context.ref);
+export function allows<T extends Card<any>>(
+    battle: BattleState,
+    context: Exclude<RuleContext<T>, { readonly purpose: "DEPLOY" }>,
+): boolean {
+    const self = get(battle, context.ref);
 
-    return self?.rules.every((rule) => rule.allows(battle, context as RuleContext)) ?? false;
+    return self?.rules.every((rule) => rule.allows(battle, context)) ?? false;
 }

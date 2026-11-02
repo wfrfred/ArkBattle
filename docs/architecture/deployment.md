@@ -52,7 +52,7 @@ interface Definition<S extends object = object> {
 | 队列恢复装置 | false | true | false |
 | 有部署间隔的消耗品 | true | false | false |
 
-Card 创建为 addCard(battle, definition)，Battle 输入的每项为 { definition }。入口校验静态数值配置，并在登记前执行 initialize；没有私有状态时也显式提供返回空对象的初始化程序。Card.initialize 只执行一次，部署和返手不重建 Card。
+Card 创建为 addCard(battle, definition)，Battle 输入的 cards 直接保存完整静态 Definition 数组。相同 Definition 出现多次会创建多张独立 Card，不增加单字段输入包装。入口校验静态数值配置，并在登记前执行 initialize；没有私有状态时也显式提供返回空对象的初始化程序。Card.initialize 只执行一次，部署和返手不重建 Card。
 
 实例保留 definition、state、当前 stock、cooldown、recovery、costStage、贡献及动态规则／Unit Hook。固定上限不重复保存，删除 Program 与来源 Initial 配置。setState 接收计算后的状态值；普通 get 保持 object 默认类型，精确 Ref 保留具体私有类型，any 只用于 Core 异构边界。
 
@@ -88,9 +88,9 @@ Deployment Rule 为 { id, allows(battle, { request }) }。evaluate 按以下顺�
 
 同 ID 后者替换前者，保留首次登记的位置。默认规则覆盖库存、间隔、同 Card 在场上限、全场额度、DP、地图范围、同槽占用与禁部署地块。部署类型和特殊场地许可由内容规则表达，不在 Rule 外增加另一套不可覆盖的资格判断。
 
-Card 动态 Rule 保留 DISPLAY／SELECT／DEPLOY 的查询上下文；DEPLOY 时传入完整 request。实际部署统一合并这些规则，不先调用 Card.allows 再执行第二套门槛。
+Card 动态 Rule 保留 DISPLAY／SELECT／DEPLOY 的上下文；DEPLOY 时传入完整 request。Card.allows 只查询 DISPLAY／SELECT，部署资格统一使用 evaluate／preview，由其完整合并规则，不再公开只检查部分规则的 DEPLOY 查询。
 
-preview 与 positions 使用同一个 evaluate。求值前在临时不可变 BattleState 中接续到期库存、时钟及 DP，让全部规则看到相同的当前事实；查询不发布该状态、不初始化 Unit、不分配身份。positions 接收完整请求，枚举地图落点，保留其报价和规则覆盖。
+求值前接续一次到期库存、时钟及 DP，让全部规则看到相同的当前事实；完整部署在该版本上判断并消费资源，不丢弃结果后重新计算。evaluate／preview 的查询不发布该临时状态、不初始化 Unit、不分配身份。positions 接收完整请求，复用资源版本和合并后的规则集合，各落点仍完整执行规则，保留报价和规则覆盖。
 
 规则通过后，内部消费信任已确认的资格，不重新判断或钳制成不足额消费。单独公开的资源操作仍维护自己的入口契约。资格拒绝返回输入 BattleState，不发布计时接续或其他部分结果。
 
@@ -179,7 +179,7 @@ Catalog 显式先构造 Occupancy、再构造 Deployable；Deployable 在初始�
 
 ## 主动操作与被动死亡
 
-主动 retreat 接收 Deployable Typed Ref，确认 PRESENT 和当前撤退规则后，依次按本次依据退款、根据 Card 配置推进费用阶段并登记库存恢复，再请求 Unit 正常结束。这些资源结算都由本次主动操作直接完成，不要求调用方另行退款或手工拼接资源操作。
+完整 retreat 位于 Deployable 的 operations.ts，接收 Typed Ref，确认 PRESENT 和当前撤退规则后，依次按本次依据退款、根据 Card 配置推进费用阶段并登记库存恢复，再请求 Unit 正常结束。不将资格检查与执行拆成两层转发；Deployment 公共入口仅重导出同一实现，canRetreat 保留为独立查询。
 
 Card 贡献、费用阶段和恢复计时归 Card，不因目标 Unit 的离场清理自动撤销。需要新启动恢复段时，retreat 按 Card 当前有效时长建立预算；追加已有队列仍保留当前段，后续段按既有规则启动。后续离场程序能够读取已结算的 DP 与 Card 状态。嵌套 Lifetime 请求不保证立即注销 Unit，但 retreat 的资源结算已经完成，物理注销与共有清理由外层 Lifetime 结算继续处理。不登记临时全局 leave Hook，也不增加完成回调或延续队列。
 
@@ -215,6 +215,8 @@ Deployed 载荷为 { unit, request }，支付信息读取 request.quote。它是
 ## 库存与计时
 
 Card.stock 保存当前可用份数，stockLimit 和 activeLimit 从静态配置读取。cooldown 表示部署间隔，到期不补库存；recovery 保存串行恢复的份数和当前时钟，每段完成补一份。普通干员只使用恢复队列表达再部署时间，不复制相同的间隔。
+
+完整推进为 advance(battle)，统一读取 battle.tick；Card 和 DP 的局部值转换仍显式接收 tick。
 
 Clock 保存启动时的 durationTicks；RUNNING 保存 readyAtTick，PAUSED 保存 remainingTicks。恢复队列的 pending 包括正在恢复的当前份。每段开始时采样当时的有效时长，不给整个队列永久固定首次预算，也不在每份入队时预存全部预算。
 

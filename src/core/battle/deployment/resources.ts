@@ -19,6 +19,13 @@ export function replaceCard(state: BattleState, value: Card<any>): BattleState {
     return refreshOrder({ ...state, deployment: { ...state.deployment, cards } });
 }
 
+export function advanceResources(battle: BattleState, self: Card<any>): BattleState {
+    battle = replaceCard(battle, card.advance(self, battle.tick));
+    const deployment = dp.advance(battle.deployment, battle.tick);
+
+    return deployment === battle.deployment ? battle : { ...battle, deployment };
+}
+
 export function addCard<S extends object>(
     battle: BattleState,
     definition: UnitDefinition<S>,
@@ -77,7 +84,8 @@ export function addCard<S extends object>(
     };
 }
 
-export function advance(state: BattleState, tick: number): BattleState {
+export function advance(state: BattleState): BattleState {
+    const tick = state.tick;
     const candidates = all(state);
 
     for (const candidate of candidates) {

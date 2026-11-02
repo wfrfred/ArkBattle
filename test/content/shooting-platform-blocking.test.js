@@ -129,8 +129,8 @@ for (const entry of ["initial", "script", "manual"]) {
                 schedule: { type: "TIMELINE", spawns: [] },  initialMechanisms: [],
                 maxTicks: 10, routeMoveMultiplier: 1, rngState: 1,
                 predefines: predefinedUnits([
-                    { definition: platformDefinition(), position: Tile.center(first), initial: { occupancy: { tile: first }, deployable: { card: null, cost: 0, slots: 0, refund: null } } },
-                    { definition: passengerDefinition(), position: Tile.center(first), initial: { occupancy: { tile: first }, deployable: { card: null, cost: 0, slots: 0, refund: null } } },
+                    { definition: platformDefinition(), position: Tile.center(first), initial: { occupancy: { tile: first } } },
+                    { definition: passengerDefinition(), position: Tile.center(first), initial: { occupancy: { tile: first } } },
                 ]),
             });
             id = 1;

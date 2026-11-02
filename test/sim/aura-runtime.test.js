@@ -163,7 +163,7 @@ test("aura runtime: predefined, deployment and spawning join before the same tic
             predefines: [predefined],
             deployment: {
                 definition: { initialDp: 0, maxDp: 99, dpRecoveryTicks: null, slotLimit: null },
-                cards: [{ definition: deployable }],
+                cards: [deployable],
             },
             schedule: { type: "TIMELINE", spawns: [spawn({ tick: 0 })] },
         }));
@@ -288,7 +288,6 @@ test("aura runtime: source retirement ends remote bound buffs within the same st
     };
     let runtime = initializeBattle(input({ ...host, definition, initial: {
         occupancy: { tile: [0, 0] },
-        deployable: { card: null, cost: 0, slots: 0, refund: null },
     } }));
     runtime = stepBattle(runtime, []);
     const before = runtime;

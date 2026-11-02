@@ -79,7 +79,7 @@ Rule 使用公共 `Rule<C>` 类型，只有登记身份 `id` 和纯资格判断 
 
 各节点按登记顺序检查，任一拒绝即停止，空集合允许；判断只读，不消费资源或推进 BattleState。Unit 能力的登记返回 Change，由 Unit.update 执行，必要后继仍由领域提供；Card 的登记沿自身完整操作写回。检查时点、默认资格及 Blocking 关系复核不由公共类型推断。
 
-Card 的 RuleContext 按查询用途区分：DISPLAY／SELECT 接收 Card Ref，DEPLOY 接收真实 Request；不为展示或点选伪造落点。普通规则只知道公开的 Card 类型，查询入口仍接纳具体私有状态的 Typed Ref。
+Card 的 RuleContext 按用途区分：DISPLAY／SELECT 接收 Card Ref，DEPLOY 接收真实 Request；Card.allows 仅接受前两种查询，部署资格统一由 Deployment 的 evaluate／preview 计算。注册的 Card Rule 仍可参与完整 DEPLOY 判断，不为展示或点选伪造落点。普通规则只知道公开的 Card 类型，查询入口仍接纳具体私有状态的 Typed Ref。
 
 这项约定统一接口与登记语义，不新增公共集合工具、规则运行时类或执行引擎。Targetable Restriction 仍按 Contribution 的登记与互斥规则组合，其 allows 同样采用 `(battle, context)`，kind 豁免语义保持独立。
 
@@ -258,7 +258,7 @@ Offense、Action、Locomotion、Vitality、Elemental 的公开属性查询从最
 
 战场查询直接归所属领域，返回完整实体或确有用途的关系投影。Unit 使用 all／get，Blocking 使用 blockerOf／blocked／usedCapacity／relations；relations(battle, ref?) 省略 Ref 时投影全场，提供 Ref 时直接读取局部关联并保留原 blocked Ref，不扫描全场后过滤。Projectile 使用 get 及容器查询。Occupancy.at(field, tile) 返回 occupant／support 双槽登记，消费方直接读取并按需取得当前 Unit；map 与 navigation 可直接读取 Field 的只读字段。战斗入口为 initialize(input) 与 step(battle, commands)，直接返回不可变 BattleState，commands 是必填数组；消费侧按所需语义形成局部输出，不提供第二套完整 Snapshot 或 Runtime 对象。
 
-Tactical 的导出函数、Definition 回调、Change 工厂与容器公共方法遵循上述职责分类。Hook 的固定事件 Context、MovementContext 业务输入、创建时的宿主身份、容器内部数字键、私有状态结果值、纯 Geometry／Navigation／Card／Cooldown 计算均有明确职责，不能机械升级为 Battle 操作。battle/deployment/query.ts 的 evaluateDeployment(field, request) 是 Deployment 的纯资格计算，读取 Battlefield 提供的当前地块与占格事实；归属按业务职责划分，参数按实际数据需求收窄，不因位于 Battle 目录就要求完整 BattleState。
+Tactical 的导出函数、Definition 回调、Change 工厂与容器公共方法遵循上述职责分类。Hook 的固定事件 Context、MovementContext 业务输入、创建时的宿主身份、容器内部数字键、私有状态结果值、纯 Geometry／Navigation／Card／Cooldown 计算均有明确职责，不能机械升级为 Battle 操作。battle/deployment/query.ts 的 evaluate(battle, request) 读取部署资源和 Battlefield 的当前地块与占格事实；归属按业务职责划分，参数按实际数据需求选择，不因位于 Battle 目录就增加包装。
 
 Skill 的程序、单槽 Skill<S, A> 聚合、非空 Activation<S, A> 视图、资源与完整业务归 unit/skill；capability/skill 只配置 initialize 工厂，State 扩展默认 Skill，并补规则、Hook、贡献和轮次 ID。完整程序与元数据从 unit.skill.definition 读取，Unit Definition.skill 不保存程序。通用读取直接使用当前 unit.skill，getSkill／getActivation 通过精确 Ref 恢复类型，不提供 Instance 包装或泛型 reader。
 
@@ -268,7 +268,7 @@ Skill.state 保存跨次玩法事实，Activation.state 保存本轮事实，由
 
 SP setContribution／removeContribution 仍归 unit/skill/sp.ts，只接受 recoverySpeed／recoveryMultiplier 两项属性，并绑定 Skill Capability Ref 返回 Change；它们使用 Attribute 修正数据与公式。Ammo 的 Input 使用独立 Modifier 和已核实的容量公式，来源直接登记在 Capability.ammo。capacity／requirement／cost 与 TIME duration 没有通用 Contribution 接口；配置切换、消费与当前轮次延时属于明确操作。共享 Input<M, H> 只统一数据提供形式，不决定这些操作或其公式。Contribution.group.priority 只负责互斥选择。非 TIME 的 sp.advance 直接 no-op，不更新 lastTick。Elemental 的完整宿主写回是 operations.ts 中的私有 replaceHost；query.ts 只保留查询。两者均不向内容推广完整实例写回。Action 按 Definition 聚合持久 state、Cooldown 和当前 Execution；内容分别用 setState、setCooldown、setExecutionState 设置对应字段，不提交完整旧条目。Unit 的 leave Hook 以 Departure 为固定终止历史载荷，保留开始离场时的 Unit 与 reason。
 
-Card 的 state.ts 与 Action 的局部 Cooldown 计算只处理显式传入的局部值，保留必要的 tick 参数。Card 公共写回统一接收 BattleState 与 Card Typed Ref，setState 接收结果值，不公开完整替换或 transform；setRedeployTimeContribution 影响以后启动的周期，reduceCooldown／clearCooldown／pauseCooldown／resumeCooldown 必须明确指定 COOLDOWN 或 RECOVERY，只操作所选当前段；enqueueRecovery 追加待恢复份数，不覆盖已有计时。普通干员使用库存恢复，不另存相同的部署间隔；剩余库存的部署资格不受恢复队列存在影响。暂停操作保存剩余时间，来源特化由具体内容组合。Deployment 的 evaluate／preview 在临时不可变状态中接续到期资源，再用同一完整 Request 求值；完整 deploy 在统一资格后先消费，再直接复用静态 Definition 初始化实例，不公开独立 Preparation／apply。Projectile 的发射时点、到期时点等历史事实也继续保存。
+Card 的 state.ts 与 Action 的局部 Cooldown 计算只处理显式传入的局部值，保留必要的 tick 参数。Card 公共写回统一接收 BattleState 与 Card Typed Ref，setState 接收结果值，不公开完整替换或 transform；setRedeployTimeContribution 影响以后启动的周期，reduceCooldown／clearCooldown／pauseCooldown／resumeCooldown 必须明确指定 COOLDOWN 或 RECOVERY，只操作所选当前段；enqueueRecovery 追加待恢复份数，不覆盖已有计时。普通干员使用库存恢复，不另存相同的部署间隔；剩余库存的部署资格不受恢复队列存在影响。暂停操作保存剩余时间，来源特化由具体内容组合。Deployment 先接续一次当前资源，再用完整 Request 求值；evaluate／preview 不发布临时状态，deploy 在同一版本上判断并消费，positions 复用资源与规则集合。实例创建直接复用静态 Definition，不公开独立 Preparation／apply。Projectile 的发射时点、到期时点等历史事实也继续保存。
 
 ### 5.1 Unit 完整操作与批量变更
 

@@ -8,14 +8,13 @@ import { appendEvents, type State as BattleState, type Result } from "../state.j
 import { initialize as initializeUnit } from "../../unit/initialize.js";
 import { Tile, type TilePosition } from "../../geometry/coordinate.js";
 import type { Direction } from "../../geometry/direction.js";
-import { notifyDeployed } from "./lifecycle.js";
+import { dispatch as notifyDeployed } from "./hook.js";
 import { get } from "./card/query.js";
 import type { Card, Id as CardId } from "./card/card.js";
 import * as card from "./card/state.js";
 import * as cards from "./card/operations.js";
-import { replaceCard } from "./resources.js";
-import { advance as advanceDp } from "./dp.js";
-import { evaluate, createRequest } from "./query.js";
+import { advanceResources, replaceCard } from "./resources.js";
+import { evaluateRules, resolveRules, createRequest } from "./query.js";
 import type { DeployRequest, DeployOutcome } from "./request.js";
 import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../common/assert.js";
 
@@ -44,12 +43,19 @@ export function deploy<T extends Card<any>>(
     assertNonnegativeSafeInteger(request.quote.slots, "deployment slot consumption");
     // The request's Ref keeps its private Card type; core only executes its paired programs.
     const input = request as object as DeployRequest;
-    const rejected = evaluate(battle, input);
-    if (rejected !== null) {
-        return { state: battle, value: rejected };
+    const previous = battle;
+    let self = get(battle, request.card);
+    if (self === undefined) {
+        return { state: battle, value: { type: "REJECTED", reason: "UNKNOWN_CARD" } };
     }
 
-    const self = get(battle, request.card)!;
+    battle = advanceResources(battle, self);
+    const rejected = evaluateRules(battle, input, resolveRules(self, input));
+    if (rejected !== null) {
+        return { state: previous, value: rejected };
+    }
+
+    self = get(battle, request.card)!;
     const definition = self.definition.card;
     const cost = card.resolveCost(self, battle.deployment.definition.costCeiling ?? 99);
     const refund =
@@ -62,7 +68,7 @@ export function deploy<T extends Card<any>>(
                           ? cost
                           : card.resolveBaseCost(self),
               };
-    const current = advanceDp(battle.deployment, battle.tick);
+    const current = battle.deployment;
     battle = {
         ...battle,
         deployment: {
@@ -75,7 +81,7 @@ export function deploy<T extends Card<any>>(
             usedSlots: current.usedSlots + request.quote.slots,
         },
     };
-    let consumed = card.consume(card.advance(self, battle.tick), request.quote.stock);
+    let consumed = card.consume(self, request.quote.stock);
     if (definition.cooldownOnDeploy) {
         consumed = card.advance(card.startCooldown(consumed, battle.tick), battle.tick);
     }

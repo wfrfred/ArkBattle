@@ -23,6 +23,7 @@ import * as skill from ${source("unit/capability/skill/index")};
 import * as elemental from ${source("unit/capability/elemental/index")};
 import * as blocker from ${source("unit/capability/blocking/index")};
 import * as cards from ${source("battle/deployment/card/index")};
+import { evaluate } from ${source("battle/deployment/query")};
 import type { DeployRequest } from ${source("battle/deployment/request")};
 
 declare const battle: BattleState;
@@ -83,8 +84,10 @@ const request: DeployRequest<cards.Card<{ readonly charges: number }>> = {
     card: typedCard, tilePosition: [0, 0], direction: "RIGHT",
     quote: { dp: 0, stock: 1, slots: 1 }, rules: [], hooks: [],
 };
+evaluate(battle, request);
+// @ts-expect-error Card queries do not expose partial deployment qualification.
 cards.allows(battle, { purpose: "DEPLOY", request });
-// @ts-expect-error deployment qualification requires its actual request.
+// @ts-expect-error Card permission queries only accept display and selection.
 cards.allows(battle, { purpose: "DEPLOY", ref: typedCard });
 const observer: cards.Rule = {
     id: "observer",

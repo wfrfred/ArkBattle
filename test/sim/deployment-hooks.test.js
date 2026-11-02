@@ -6,8 +6,7 @@ import { normal } from "../../dist/content/terrain/definition.js";
 import { initialize as initializeBattle, step as stepBattle } from "../../dist/core/battle/runtime.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { getUnit, initialize, replaceUnit } from "../helpers/unit.js";
-import { notifyDeployed } from "../../dist/core/battle/deployment/lifecycle.js";
-import { setHook, removeHook } from "../../dist/core/battle/deployment/hook.js";
+import { dispatch as notifyDeployed, setHook, removeHook } from "../../dist/core/battle/deployment/hook.js";
 import { createCardDefinition } from "../helpers/deployable.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
@@ -48,7 +47,7 @@ const definition = (id, fields = {}) => ({ id, hooks: [],
 const unit = (id, fields = {}) => initialize({ id, definition: definition(`unit:${id}`, fields), position: [id, 0] });
 const deployment = definitions => ({
     definition: { initialDp: 0, maxDp: 99, dpRecoveryTicks: null, slotLimit: null },
-    cards: definitions.map(definition => ({ definition })),
+    cards: definitions,
 });
 const input = (fields = {}) => ({
     map, schedule: { type: "TIMELINE", spawns: [spawn(enemy(), 1000)] },  predefines: [],

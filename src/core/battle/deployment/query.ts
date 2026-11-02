@@ -7,12 +7,11 @@ import { hasDeployable } from "../../unit/capability/deployable/capability.js";
 import type { State as BattleState } from "../state.js";
 import type { Card } from "./card/card.js";
 import { get } from "./card/query.js";
-import { advance, resolveCost } from "./card/state.js";
+import { resolveCost } from "./card/state.js";
 import type { Rule as CardRule } from "./card/rule.js";
 import type { Rule } from "./rule.js";
 import type { DeployRequest, Quote, Rejected, Rejection } from "./request.js";
-import { advance as advanceDp } from "./dp.js";
-import { replaceCard } from "./resources.js";
+import { advanceResources } from "./resources.js";
 
 export function usedSlots(battle: BattleState): number {
     return battle.deployment.usedSlots;
@@ -145,6 +144,43 @@ const defaults: readonly [Rejection, Rule][] = [
 
 export const defaultRules: readonly Rule[] = defaults.map(([, rule]) => rule);
 
+export function resolveRules(
+    self: Card<any>,
+    request: DeployRequest,
+): readonly (Rule | CardRule)[] {
+    const rules = new Map<string, Rule | CardRule>();
+
+    for (const rule of [
+        ...defaultRules,
+        ...self.definition.card.deploymentRules,
+        ...self.rules,
+        ...request.rules,
+    ]) {
+        rules.set(rule.id, rule);
+    }
+
+    return [...rules.values()];
+}
+
+export function evaluateRules(
+    battle: BattleState,
+    request: DeployRequest,
+    rules: readonly (Rule | CardRule)[],
+): Rejected | null {
+    const context = { purpose: "DEPLOY" as const, request };
+
+    for (const rule of rules) {
+        if (!rule.allows(battle, context)) {
+            return {
+                type: "REJECTED",
+                reason: defaults.find(([, entry]) => entry.id === rule.id)?.[0] ?? "RULE",
+            };
+        }
+    }
+
+    return null;
+}
+
 export function evaluate<T extends Card<any>>(
     battle: BattleState,
     request: DeployRequest<T>,
@@ -155,32 +191,9 @@ export function evaluate<T extends Card<any>>(
         return { type: "REJECTED", reason: "UNKNOWN_CARD" };
     }
 
-    battle = replaceCard(battle, advance(self, battle.tick));
-    const deployment = advanceDp(battle.deployment, battle.tick);
-    battle = deployment === battle.deployment ? battle : { ...battle, deployment };
-    const rules = new Map<string, Rule | CardRule>();
+    battle = advanceResources(battle, self);
 
-    for (const rule of [
-        ...defaultRules,
-        ...self.definition.card.deploymentRules,
-        ...self.rules,
-        ...input.rules,
-    ]) {
-        rules.set(rule.id, rule);
-    }
-
-    const context = { purpose: "DEPLOY" as const, request: input };
-
-    for (const rule of rules.values()) {
-        if (!rule.allows(battle, context)) {
-            return {
-                type: "REJECTED",
-                reason: defaults.find(([, entry]) => entry.id === rule.id)?.[0] ?? "RULE",
-            };
-        }
-    }
-
-    return null;
+    return evaluateRules(battle, input, resolveRules(self, input));
 }
 
 export function preview<T extends Card<any>>(
@@ -193,7 +206,14 @@ export function preview<T extends Card<any>>(
           readonly cost: number;
           readonly quote: Quote;
       } {
-    const rejected = evaluate(battle, request);
+    const input = request as object as DeployRequest;
+    const self = get(battle, input.card);
+    if (self === undefined) {
+        return { type: "REJECTED", reason: "UNKNOWN_CARD" };
+    }
+
+    battle = advanceResources(battle, self);
+    const rejected = evaluateRules(battle, input, resolveRules(self, input));
     if (rejected !== null) {
         return rejected;
     }
@@ -213,12 +233,20 @@ export function positions<T extends Card<any>>(
     request: DeployRequest<T>,
 ): readonly TilePosition[] {
     const result: TilePosition[] = [];
+    const input = request as object as DeployRequest;
+    const self = get(battle, input.card);
+    if (self === undefined) {
+        return result;
+    }
+
+    battle = advanceResources(battle, self);
+    const rules = resolveRules(self, input);
     const { rows, columns } = battle.battlefield.map;
 
     for (let row = 0; row < rows; row++) {
         for (let column = 0; column < columns; column++) {
             const tilePosition: TilePosition = [row, column];
-            if (evaluate(battle, { ...request, tilePosition }) === null) {
+            if (evaluateRules(battle, { ...input, tilePosition }, rules) === null) {
                 result.push(tilePosition);
             }
         }

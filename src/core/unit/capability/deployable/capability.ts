@@ -4,7 +4,6 @@ import type { Ref } from "../../../common/ref.js";
 import type { Card } from "../../../battle/deployment/card/card.js";
 import type { Rule as BaseRule } from "../../../rule.js";
 import { hasOccupancy, type Occupancy } from "../occupancy/capability.js";
-import { releaseSlots } from "../../../battle/deployment/lifecycle.js";
 
 export interface Refund {
     readonly rate: number;
@@ -50,10 +49,20 @@ export function initialize<
                 {
                     id: "@deployable/release-slots",
                     stage: "leave",
-                    invoke: (current, departure) => ({
-                        state: releaseSlots(current, departure),
-                        value: undefined,
-                    }),
+                    invoke: (current, departure) => {
+                        const { slots } = (departure.unit as Unit & Deployable).deployable;
+                        if (slots !== 0) {
+                            current = {
+                                ...current,
+                                deployment: {
+                                    ...current.deployment,
+                                    usedSlots: current.deployment.usedSlots - slots,
+                                },
+                            };
+                        }
+
+                        return { state: current, value: undefined };
+                    },
                 },
             ],
             deployable: {
