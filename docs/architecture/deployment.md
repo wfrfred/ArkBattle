@@ -75,7 +75,9 @@ interface DeployRequest<T extends Card<any> = Card> {
 }
 ```
 
-createRequest(battle, cardRef, tilePosition, direction?) 生成普通请求；来源不存在时返回 undefined。Command 只携带 Card ID、地块和可选方向，由边界生成完整请求；Content 可以在明确的请求上提供本次报价、规则和程序。
+createRequest(battle, cardRef, tilePosition, direction?) 生成普通请求；来源不存在时返回 undefined。DEPLOY_UNIT Command 携带 ref: Ref<Card>、地块和可选方向，再据此生成完整请求；RETREAT_UNIT 携带 ref: Ref<Unit & Deployable>，直接调用撤退操作。生成方确认所需目标类型，领域操作仍检查引用是否存在及当前业务资格。Content 可以在明确的请求上提供本次报价、规则和程序。
+
+Command 默认使用 Card；显式声明可以用 Command<Card<S>> 保留具体 Card 类型。step 与命令处理器在 Core 统一执行边界接纳不同私有类型的 Card 引用，不读取其私有 state。
 
 Quote 表示实际支付与消费。dp:null 跳过支付，dp:0 是正常零费支付；stock 和 slots 可以为 0。本次 COST 与退费上限在消费前另外采样，不等同于实付 DP，也不放回 Quote。
 

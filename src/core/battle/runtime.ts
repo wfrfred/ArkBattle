@@ -23,6 +23,7 @@ import { createSpawnScheduleExecution } from "./schedule/state.js";
 import { initializeBattlefield } from "./initialization.js";
 import * as unit from "./unit.js";
 import { addCard, advance as advanceDeployment } from "./deployment/resources.js";
+import type { Card } from "./deployment/card/card.js";
 import { initialize as initializeDeployment } from "./deployment/deployment.js";
 
 export type { Input, Command, Event, Result } from "./contract.js";
@@ -76,7 +77,7 @@ export function initialize(input: Input): State {
     return initializeBattlefield(initial, input);
 }
 
-export function step(battle: State, commands: readonly Command[]): State {
+export function step(battle: State, commands: readonly Command<Card<any>>[]): State {
     if (battle.result !== null) {
         return battle;
     }

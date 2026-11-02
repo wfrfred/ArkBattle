@@ -1557,7 +1557,7 @@ test('core battle deploys and retreats units with immutable occupancy and curren
   });
   let runtime = initializeBattle(deploymentBattleInput({}, [definition]));
   const maps = runtime.battlefield.navigation;
-  const deployed = (runtime = advanceBattle(runtime, [{ type: 'DEPLOY_UNIT', cardId: 0, tilePosition: [0, 1] }]));
+  const deployed = (runtime = advanceBattle(runtime, [{ type: 'DEPLOY_UNIT', ref: { id: 0 }, tilePosition: [0, 1] }]));
   const unit = runtime.battlefield.units.get(0);
   assert.equal(unit.id, 0);
   assert.equal(unit.definition, definition);
@@ -1567,12 +1567,12 @@ test('core battle deploys and retreats units with immutable occupancy and curren
   assert.deepEqual(deployed.events.filter(event => event.type === 'UNIT_DEPLOYED').map(event => event.unitId), [0]);
   assert.equal(runtime.battlefield.navigation, maps);
 
-  (runtime = advanceBattle(runtime, [{ type: 'DEPLOY_UNIT', cardId: 0, tilePosition: [0, 3] }]));
+  (runtime = advanceBattle(runtime, [{ type: 'DEPLOY_UNIT', ref: { id: 0 }, tilePosition: [0, 3] }]));
   assert.deepEqual([...runtime.battlefield.units.values()].map(value => [value.id, value.position]), [[0, [1, 0]], [1, [3, 0]]]);
-  const retreated = (runtime = advanceBattle(runtime, [{ type: 'RETREAT_UNIT', unitId: 0 }]));
+  const retreated = (runtime = advanceBattle(runtime, [{ type: 'RETREAT_UNIT', ref: { id: 0 } }]));
   assert.deepEqual(retreated.events.filter(event => event.type === 'UNIT_REMOVED').map(event => event.unitId), [0]);
   assert.deepEqual([...runtime.battlefield.units.values()].map(value => value.id), [1]);
-  (runtime = advanceBattle(runtime, [{ type: 'DEPLOY_UNIT', cardId: 0, tilePosition: [0, 1] }]));
+  (runtime = advanceBattle(runtime, [{ type: 'DEPLOY_UNIT', ref: { id: 0 }, tilePosition: [0, 1] }]));
   assert.deepEqual([...runtime.battlefield.units.values()].map(value => [value.id, value.position]), [[1, [3, 0]], [2, [1, 0]]]);
   assert.equal(runtime.battlefield.navigation, maps);
 
@@ -1588,7 +1588,7 @@ test('core battle deploys and retreats units with immutable occupancy and curren
 
 
   const before = reserved;
-  const rejected = (reserved = advanceBattle(reserved, [{ type: 'DEPLOY_UNIT', cardId: 0, tilePosition: [0, 5] }]));
+  const rejected = (reserved = advanceBattle(reserved, [{ type: 'DEPLOY_UNIT', ref: { id: 0 }, tilePosition: [0, 5] }]));
   assert.deepEqual(rejected.events.filter(event => event.type === 'DEPLOYMENT_REJECTED').map(event => event.reason), ['OCCUPIED']);
   assert.deepEqual(reserved.battlefield.units, before.battlefield.units);
   assert.deepEqual(reserved.deployment, before.deployment);
@@ -1603,7 +1603,7 @@ test('core battle deploys and retreats units with immutable occupancy and curren
   const crate = recipe.creation.definition;
   let crates = initializeBattle(deploymentBattleInput({}, [crate, definition]));
   const baseline = crates.battlefield.navigation;
-  (crates = advanceBattle(crates, [{ type: 'DEPLOY_UNIT', cardId: 0, tilePosition: [0, 1] }]));
+  (crates = advanceBattle(crates, [{ type: 'DEPLOY_UNIT', ref: { id: 0 }, tilePosition: [0, 1] }]));
   assert.deepEqual(navigationMap(crates.battlefield.navigation).cells.map(cell => cell.cost), [1, 1000, 1, 1, 1, 1]);
   assert.deepEqual(navigationMap(crates.battlefield.navigation).cells.map(cell => cell.passable), navigationMap(baseline).cells.map(cell => cell.passable));
   assert.deepEqual(crates.battlefield.navigation.baseline.FLY.cells, baseline.baseline.FLY.cells);
@@ -1614,13 +1614,13 @@ test('core battle deploys and retreats units with immutable occupancy and curren
   assert.equal(occupancyAt(crates.battlefield, [0, 1])?.occupant?.id, 0);
   assert.equal(occupancyAt(crates.battlefield, [0, 1])?.support ?? null, null);
   const crateBlockedDeployment = advanceBattle(crates, [
-    { type: 'DEPLOY_UNIT', cardId: 1, tilePosition: [0, 1] },
+    { type: 'DEPLOY_UNIT', ref: { id: 1 }, tilePosition: [0, 1] },
   ]);
   assert.deepEqual(crateBlockedDeployment.events.filter(event => event.type === 'DEPLOYMENT_REJECTED')
     .map(event => event.reason), ['OCCUPIED']);
   assert.deepEqual([...crateBlockedDeployment.battlefield.units.keys()], [0]);
   const initialCrate = crates;
-  (crates = advanceBattle(crates, [{ type: 'RETREAT_UNIT', unitId: 0 }]));
+  (crates = advanceBattle(crates, [{ type: 'RETREAT_UNIT', ref: { id: 0 } }]));
   assert.equal(crates.battlefield.units.size, 0);
   assert.deepEqual(initialCrate.battlefield.units.get(0).position, [1, 0]);
   assert.deepEqual(initialCrate.battlefield.units.get(0).occupancy.tile, [0, 1]);
@@ -1639,7 +1639,7 @@ test('core battle accepts the first deployment and rejects an occupied destinati
   });
   const spec = deploymentBattleInput({}, [definition]);
   let runtime = initializeBattle(spec), replay = initializeBattle(spec);
-  const deploy = tilePosition => ({ type: 'DEPLOY_UNIT', cardId: 0, tilePosition });
+  const deploy = tilePosition => ({ type: 'DEPLOY_UNIT', ref: { id: 0 }, tilePosition });
   const before = runtime, maps = runtime.battlefield.navigation;
   const result = (runtime = advanceBattle(runtime, [deploy([0, 1]), deploy([0, 1])]));
   assert.deepEqual(result.events.filter(event => event.type === 'DEPLOYMENT_REJECTED').map(event => event.reason), ['OCCUPIED']);
@@ -1663,7 +1663,7 @@ test('core battle accepts the first deployment and rejects an occupied destinati
   });
   assert.deepEqual(values(deployed), values(replay));
 
-  (replay = advanceBattle(replay, [{ type: 'RETREAT_UNIT', unitId: 0 }, deploy([0, 1])]));
+  (replay = advanceBattle(replay, [{ type: 'RETREAT_UNIT', ref: { id: 0 } }, deploy([0, 1])]));
   assert.deepEqual([...replay.battlefield.units.values()].map(unit => unit.id), [1, 2]);
 });
 
@@ -1681,7 +1681,7 @@ test('core visibility: commands from different domains execute in phase order be
   assert.deepEqual([...runtime.battlefield.units.values()].map(unit => unit.id), [0]);
   const unitAtRemoval = runtime.battlefield.units.get(0);
   const step = (runtime = advanceBattle(runtime, [
-    { type: 'DEPLOY_UNIT', cardId: 0, tilePosition: [0, 1] },
+    { type: 'DEPLOY_UNIT', ref: { id: 0 }, tilePosition: [0, 1] },
     { type: 'REMOVE_PREDEFINED', definitionId: 17, reason: 'SCRIPT' },
   ]));
 
@@ -1740,7 +1740,7 @@ test('core elevated support disables blocking without changing target layer and 
 
 
 
-  const deployed = (runtime = advanceBattle(runtime, [{ type: 'DEPLOY_UNIT', cardId: 0, tilePosition: [0, 1] }]));
+  const deployed = (runtime = advanceBattle(runtime, [{ type: 'DEPLOY_UNIT', ref: { id: 0 }, tilePosition: [0, 1] }]));
   const occupantId = deployed.events.find(event => event.type === 'UNIT_DEPLOYED').unitId;
   const supported = runtime;
   const supportedEntry = occupancyAt(supported.battlefield, [0, 1]);

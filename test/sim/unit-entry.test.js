@@ -243,7 +243,7 @@ test('predefined appearances and deployment initialize once', () => {
       steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 },
     },
   }, 1000)] } }));
-  runtime = stepBattle(runtime, [{ type: 'DEPLOY_UNIT', cardId: 0, tilePosition: [0, 0] }]);
+  runtime = stepBattle(runtime, [{ type: 'DEPLOY_UNIT', ref: { id: 0 }, tilePosition: [0, 0] }]);
   const before = runtime;
   runtime = stepBattle(runtime, [{ type: 'REMOVE_PREDEFINED', definitionId: 9, reason: 'SCRIPT' },
     { type: 'APPEAR_PREDEFINED', definitionId: 9 }]);

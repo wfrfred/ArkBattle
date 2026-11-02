@@ -29,6 +29,7 @@ import { project as projectTrackingProjectile } from "../content/projectiles/tra
 import { hasAllegiance } from "../core/unit/capability/allegiance/capability.js";
 import { hasAction } from "../core/unit/capability/action/index.js";
 import { hasSkill } from "../core/unit/capability/skill/index.js";
+import { hasDeployable } from "../core/unit/capability/deployable/index.js";
 import {
     createTacticalMechanicsDemo,
     isTacticalMechanicsScenario,
@@ -679,12 +680,13 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
 
                 const source = units
                     .all(state)
+                    .filter(hasDeployable)
                     .find((unit) => hasAllegiance(unit) && unit.allegiance.side === "ALLY");
                 if (source === undefined) {
                     return;
                 }
 
-                requested = [{ type: "RETREAT_UNIT", unitId: source.id }];
+                requested = [{ type: "RETREAT_UNIT", ref: units.ref(source) }];
             } else if (type === "STOP_PROJECTILES") {
                 if (!projectileActions || state.battlefield.projectiles.size === 0) {
                     return;

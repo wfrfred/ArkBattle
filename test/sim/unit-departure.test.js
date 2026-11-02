@@ -102,8 +102,8 @@ for (const domain of ["deployment", "predefined"]) {
             state = resolveDeploymentCommands(
                 state,
                 [
-                    { type: "RETREAT_UNIT", unitId: 0 },
-                    { type: "RETREAT_UNIT", unitId: 1 },
+                    { type: "RETREAT_UNIT", ref: { id: 0 } },
+                    { type: "RETREAT_UNIT", ref: { id: 1 } },
                 ],
             );
         } else {
@@ -172,11 +172,11 @@ for (const domain of ["deployment", "predefined"]) {
                 [
                     {
                         type: "DEPLOY_UNIT",
-                        cardId: 0,
+                        ref: { id: 0 },
                         tilePosition: [0, 0],
                     },
-                    { type: "RETREAT_UNIT", unitId: 0 },
-                    { type: "DEPLOY_UNIT", cardId: 1, tilePosition: [0, 0] },
+                    { type: "RETREAT_UNIT", ref: { id: 0 } },
+                    { type: "DEPLOY_UNIT", ref: { id: 1 }, tilePosition: [0, 0] },
                 ],
             );
         } else {

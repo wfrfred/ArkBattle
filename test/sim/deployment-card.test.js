@@ -562,8 +562,8 @@ test("a failed Tick publishes neither preceding deployments nor Card, DP and ide
     assert.throws(
         () =>
             (runtime = stepBattle(runtime, [
-                { type: "DEPLOY_UNIT", cardId: 0, tilePosition: [0, 0] },
-                { type: "DEPLOY_UNIT", cardId: 1, tilePosition: [0, 1] },
+                { type: "DEPLOY_UNIT", ref: { id: 0 }, tilePosition: [0, 0] },
+                { type: "DEPLOY_UNIT", ref: { id: 1 }, tilePosition: [0, 1] },
             ])),
         (error) => error === failure,
     );

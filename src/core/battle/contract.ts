@@ -7,6 +7,7 @@ import type { WorldPosition } from "../geometry/coordinate.js";
 import type { Signal as RouteSignal } from "../unit/capability/route/operations.js";
 import type { Unit, Id, LeaveReason } from "../unit/unit.js";
 import type { Input as DeploymentInput } from "./deployment/deployment.js";
+import type { Card } from "./deployment/card/card.js";
 import type { PredefinedDefinition, PredefinedCommand } from "./steps/predefined.js";
 import type { AlternativeRouteCommand } from "./steps/movement.js";
 import type {
@@ -35,10 +36,10 @@ export interface Input extends Definition {
     readonly rngState: Seed;
 }
 
-export type Command =
+export type Command<T extends Card<any> = Card> =
     | PredefinedCommand
     | AlternativeRouteCommand
-    | DeploymentCommand
+    | DeploymentCommand<T>
     | { readonly type: "ACTIVATE_SKILL"; readonly unitId: Id }
     | { readonly type: "FINISH_SKILL"; readonly unitId: Id }
     | {

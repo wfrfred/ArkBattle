@@ -53,13 +53,28 @@ const input = (fields = {}) => ({
     map, schedule: { type: "TIMELINE", spawns: [spawn(enemy(), 1000)] },  predefines: [],
     initialMechanisms: [], maxTicks: 30, routeMoveMultiplier: 1, rngState: 1, ...fields,
 });
-const deploy = (cardId, column = 0) => ({ type: "DEPLOY_UNIT", cardId, tilePosition: [0, column] });
+const deploy = (cardId, column = 0) => ({ type: "DEPLOY_UNIT", ref: { id: cardId }, tilePosition: [0, column] });
 const record = (id, invoke, accepts) => ({ id, accepts, invoke(state, deployed) {
     return { state: invoke(state, deployed), value: undefined };
 } });
 const fact = (self, dp = 0) => ({ unit: self, request: {
     card: { id: 0 }, tilePosition: [0, self.id], quote: { dp, stock: 1, slots: 0 }, rules: [], hooks: [],
 } });
+
+test("deployment commands handle references whose targets no longer exist", () => {
+    const initial = initializeBattle(input({ deployment: deployment([definition("unused")]) }));
+    const next = stepBattle(initial, [
+        deploy(99),
+        { type: "RETREAT_UNIT", ref: { id: 99 } },
+    ]);
+
+    assert.deepEqual(next.events, [{
+        type: "DEPLOYMENT_REJECTED", cardId: 99, reason: "UNKNOWN_CARD", tick: 0,
+    }]);
+    assert.equal(next.deployment.cards[0].stock, 1);
+    assert.equal(next.battlefield.units.size, 0);
+    assert.equal(next.execution.nextUnitId, 0);
+});
 
 test("deployment observers are global registrations and consume the latest preceding state", () => {
     const deployed = unit(1);

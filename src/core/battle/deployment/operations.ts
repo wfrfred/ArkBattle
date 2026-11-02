@@ -1,6 +1,6 @@
 import type { Ref } from "../../common/ref.js";
-import type { Unit, Id } from "../../unit/unit.js";
-import { hasDeployable, type Deployable } from "../../unit/capability/deployable/capability.js";
+import type { Unit } from "../../unit/unit.js";
+import type { Deployable } from "../../unit/capability/deployable/capability.js";
 import { canRetreat, retreat } from "../../unit/capability/deployable/operations.js";
 import type { Command } from "../contract.js";
 import { add } from "../unit.js";
@@ -10,7 +10,7 @@ import { Tile, type TilePosition } from "../../geometry/coordinate.js";
 import type { Direction } from "../../geometry/direction.js";
 import { dispatch as notifyDeployed } from "./hook.js";
 import { get } from "./card/query.js";
-import type { Card, Id as CardId } from "./card/card.js";
+import type { Card } from "./card/card.js";
 import * as card from "./card/state.js";
 import * as cards from "./card/operations.js";
 import { advanceResources, replaceCard } from "./resources.js";
@@ -22,14 +22,14 @@ export { canRetreat, retreat };
 
 export type { DeployRequest, DeployOutcome, Rejection } from "./request.js";
 
-export type DeploymentCommand =
+export type DeploymentCommand<T extends Card<any> = Card> =
     | {
           readonly type: "DEPLOY_UNIT";
-          readonly cardId: CardId;
+          readonly ref: Ref<T>;
           readonly tilePosition: TilePosition;
           readonly direction?: Direction;
       }
-    | { readonly type: "RETREAT_UNIT"; readonly unitId: Id };
+    | { readonly type: "RETREAT_UNIT"; readonly ref: Ref<Unit & Deployable> };
 
 export function deploy<T extends Card<any>>(
     battle: BattleState,
@@ -159,14 +159,13 @@ export function deploy<T extends Card<any>>(
 
 export function resolveDeploymentCommands(
     battle: BattleState,
-    commands: readonly Command[],
+    commands: readonly Command<Card<any>>[],
 ): BattleState {
     for (const command of commands) {
         if (command.type === "DEPLOY_UNIT") {
-            const reference = { id: command.cardId } as Ref<Card>;
             const request = createRequest(
                 battle,
-                reference,
+                command.ref,
                 command.tilePosition,
                 command.direction,
             );
@@ -183,17 +182,14 @@ export function resolveDeploymentCommands(
                 battle = appendEvents(battle, [
                     {
                         type: "DEPLOYMENT_REJECTED",
-                        cardId: command.cardId,
+                        cardId: command.ref.id,
                         reason: result.value.reason,
                         tick: battle.tick,
                     },
                 ]);
             }
         } else if (command.type === "RETREAT_UNIT") {
-            const self = battle.battlefield.units.get(command.unitId);
-            if (self !== undefined && hasDeployable(self)) {
-                battle = retreat(battle, { id: self.id } as Ref<Unit & Deployable>);
-            }
+            battle = retreat(battle, command.ref);
         }
     }
 

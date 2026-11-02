@@ -170,7 +170,7 @@ test("aura runtime: predefined, deployment and spawning join before the same tic
     assert.deepEqual(starts, []);
     runtime = stepBattle(runtime, [
         { type: "APPEAR_PREDEFINED", definitionId: 7 },
-        { type: "DEPLOY_UNIT", cardId: 0, tilePosition: [0, 2] },
+        { type: "DEPLOY_UNIT", ref: { id: 0 }, tilePosition: [0, 2] },
     ]);
     assert.deepEqual(starts, [
         [1, 0],
@@ -291,7 +291,7 @@ test("aura runtime: source retirement ends remote bound buffs within the same st
     } }));
     runtime = stepBattle(runtime, []);
     const before = runtime;
-    runtime = stepBattle(runtime, [{ type: "RETREAT_UNIT", unitId: 0 }]);
+    runtime = stepBattle(runtime, [{ type: "RETREAT_UNIT", ref: { id: 0 } }]);
     const after = runtime;
     assert.equal(
         unitQueries.all(after).some((unit) => unit.id === 0),

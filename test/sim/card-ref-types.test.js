@@ -17,6 +17,10 @@ import type { Ref } from ${source("common/ref")};
 import type { Query } from ${source("common/query")};
 import type { State as BattleState } from ${source("battle/state")};
 import type { Unit } from ${source("unit/unit")};
+import type { Command } from ${source("battle/contract")};
+import { step } from ${source("battle/runtime")};
+import { resolveDeploymentCommands } from ${source("battle/deployment/operations")};
+import { ref as unitRef } from ${source("unit/query")};
 import { hasDeployable, type Deployable } from ${source("unit/capability/deployable/index")};
 import { initialize as initializeUnit } from ${source("unit/initialize")};
 import { addCard, deploy, advance as advanceDeployment, type Input as DeploymentInput } from ${source("battle/deployment/index")};
@@ -79,6 +83,40 @@ if (hasDeployable(unknownUnit)) {
 }
 const added = addCard(battle, definition);
 type Added = Assert<Equal<typeof added.value, Ref<Card<Private>>>>;
+const deployCommand: Command<Card<Private>> = {
+    type: "DEPLOY_UNIT", ref: added.value, tilePosition: [0, 0], direction: "RIGHT",
+};
+const retreatCommand: Command = { type: "RETREAT_UNIT", ref: unitRef(initialized) };
+declare const alternateCard: Ref<Card<{ readonly uses: number }>>;
+step(battle, [
+    deployCommand,
+    { type: "DEPLOY_UNIT", ref: alternateCard, tilePosition: [0, 1] },
+    retreatCommand,
+]);
+resolveDeploymentCommands(battle, [
+    deployCommand,
+    { type: "DEPLOY_UNIT", ref: alternateCard, tilePosition: [0, 1] },
+    retreatCommand,
+]);
+declare const ordinaryCommand: Command;
+if (ordinaryCommand.type === "DEPLOY_UNIT") {
+    const target = get(battle, ordinaryCommand.ref)!;
+    type CommandState = Assert<Equal<typeof target.state, object>>;
+    // @ts-expect-error A default Command does not expose a Card's private state.
+    target.state.charges;
+}
+// @ts-expect-error Deployment commands carry a typed reference rather than a numeric Card ID.
+const numericDeployCommand: Command = { type: "DEPLOY_UNIT", cardId: 0, tilePosition: [0, 0] };
+// @ts-expect-error Retreat commands require a Deployable reference, not a numeric Unit ID.
+const numericRetreatCommand: Command = { type: "RETREAT_UNIT", unitId: 0 };
+// @ts-expect-error A Card reference cannot address a field Unit for retreat.
+const cardRetreatCommand: Command = { type: "RETREAT_UNIT", ref: added.value };
+// @ts-expect-error An ordinary Unit reference does not establish Deployable capability.
+const ordinaryRetreatCommand: Command = { type: "RETREAT_UNIT", ref: unit };
+// @ts-expect-error A field Unit cannot serve as the Card being deployed.
+const unitDeployCommand: Command = { type: "DEPLOY_UNIT", ref: unitRef(initialized), tilePosition: [0, 0] };
+// @ts-expect-error A bare address does not establish a typed Card reference.
+const untypedDeployCommand: Command = { type: "DEPLOY_UNIT", ref: { id: 0 }, tilePosition: [0, 0] };
 // @ts-expect-error Card creation takes its inventory from one complete static definition.
 addCard(battle, definition, { stock: 1 });
 reduceCooldown(battle, added.value, 1, "RECOVERY");
