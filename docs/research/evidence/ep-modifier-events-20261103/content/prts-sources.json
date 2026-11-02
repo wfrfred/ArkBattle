@@ -1,0 +1,9 @@
+{
+  "checkedOn": "2026-11-03",
+  "sources": [
+    {"url":"https://prts.wiki/w/元素", "section":"元素值（EP）、攻击附带的元素损伤、元素损伤爆发", "classification":"community Wiki", "claims":"损伤抵抗先应用，后续仍可有损伤倍率；EP扣除可同步引发爆发。页面不能闭合通用Modifier事件的精确顺序。", "clientVersionMentioned":"2.7.91"},
+    {"url":"https://prts.wiki/w/事件", "section":"伤害相关的时点", "classification":"community Wiki, work in progress", "claims":"BeforeApplying/Applying/Applied Modifier 是通用调整值时点；页面没有提供具体共用HP/EP内容的原生绑定，不仅据通用名称作结论。"},
+    {"url":"https://prts.wiki/w/浮空信件", "section":"级别0／天赋与能力", "classification":"community Wiki", "claims":"不处于无敌或消失，且将受到来自存活、不同地块我方单位的伤害或元素损伤前，+1SP；满SP后无敌并传送、清SP。enemy model identifies enemy_10231_agpack.", "nativeBinding":"agpack_t[record_damage_cnt], event5, IsDamage OR IsElementDamage"}
+  ],
+  "limits":"没有用PRTS的任何中文动词替代事件绑定；P3R免疫/反射仅作为未继续展开的候选，不作为本轮已核实原生结论。"
+}

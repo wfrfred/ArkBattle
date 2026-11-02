@@ -153,12 +153,41 @@ HP 归零
 
 一个最小伤害差异例子：目标本击前没有爆发，剩余 EP 为 10，主伤害 100，附加 EP 为 15，条件元素 HP 段为 50，且目标存活。原顺序的本击额外 HP 为 0；若实现成“主伤害 → EP → 再检查当前爆发并执行附加”，会错误地多出 50。数值只为区分顺序，不代表角色面板。
 
-## 6. 项目关联与未决边界
+这个反例只证明 S1 的前置判断不能后移。保持前置程序不变，仅调整 EP 与其他 HP 伤害后观察者的相对顺序，是否会产生具体玩法差异，仍需要对应内容的证据；不能用这个反例代替该项评估。
+
+## 6. EP 损伤的共用与专属事件
+
+2026-11-03 在同指纹客户端补查 EP 分支，复用上述 HP 主体和[案例 25](25-elemental-burst-recovery-timing.md)的提交／爆发链，只新增 13 个方法与浮空信件的精确资源绑定。材料、定位与复跑命令见 [EP 事件证据](../evidence/ep-modifier-events-20261103/README.md)。以下编号均属于 Buff.Event，不与 Entity／EventPool 编号混用。
+
+对于存活目标、非零合法输入、普通 force=false、未设置跳过通知标记、没有中途取消且分类未被回调改写的 EP 损伤，顺序为：
+
+| 顺序 | 原生时点 | 与 HP 的关系 |
+| --- | --- | --- |
+| 1 | 目标 `OnBeforeApplyingModifier`，event5 | 共用前置时点 |
+| 2 | 来源 `OnOutputModifier`，event8 | 共用；EP 不进入 HP 专属 `OnOutputDamage` |
+| 3 | 目标 `OnApplyingModifier`，event6 | 共用接收前程序 |
+| 4 | EP 免疫／无敌判断，目标 `OnTakeEPDamage`，event68 | EP 专属；HP 另走 `OnTakeDamage` |
+| 5 | 来源 `OnBeforeTargetApplyModifier`，event61 | 共用；位于接收与取消检查之后 |
+| 6 | `DoApplyModifier → _DoApplyEPModifierInternal → SetEpInternal` | EP 写入；归零可在这里同步启动爆发与恢复 |
+| 7 | 目标 `OnAppliedModifier`，event7 | 共用；不保证原目标 Buff 仍有效 |
+| 8 | 来源 `OnAfterOutputElementDamage`，event83 | EP 专属；不进入 HP 专属 `OnAfterOutputDamage` |
+
+分流直接依据当前 Modifier：`get_isDamage` 72134 要求 targetType=HP(0) 且 damageType 不是 NONE／HEAL；`get_isElementDamage` 72136 要求 targetType=EP(5)、deltaType=损伤(2)。EP 构造方法 72181 写入后一组标签。目标应用后程序返回后，来源后置分支再次读取当前分类，不能把初始请求类型当作原生全程不变的事实。
+
+EP 免疫／无敌分支刚执行取消后仍可能进入 `OnTakeEPDamage`，各 Buff 再按自己的条件决定是否响应；并不意味着每项接收程序必然输出。外层取消检查、来源有效性、force 与 skip 路径仍限制上表的实际执行。
+
+所选三个 `CalculateElementDamage` 重载读取来源攻击力或显式损伤量、倍率和目标当前 `epResistance`，没有调用 HP 的 Calculate／BeingCalculate／AfterCalculate Buff 回调。该结论限定这三个方法，不扩展为所有特殊 EP 内容均无其他前置程序。本轮没有展开公式中静态下限数值的初始化值，也不以社区简式替代完整数值公式。
+
+共用时点确有真实内容依据：[PRTS 的浮空信件](https://prts.wiki/w/浮空信件)描述其在将受到符合条件的伤害或元素损伤前累计 SP，满 SP 后无敌并传送。当前 `enemy_10231_agpack` Prefab 的 PassiveAbility 直接绑定 `agpack_t[record_damage_cnt]`，该模板的 event5 明确使用 `IsDamage OR IsElementDamage`，然后判断来源、累计 SP 并执行后续。Prefab、模板和 event5 的原生映射相互闭合；这是静态内容选择证据，没有冒充实机观察。
+
+这些事实证明 HP／EP 既有共享的内容时点，也有各自的接收和来源后置事件，不能把 EP 直接套进 HP 专属管线。它们不决定项目必须采用同一注册表或完全相同的阶段接口，也不证明把附加 EP 移到全部 HP 后置观察者之后必然改变玩法。
+
+## 7. 项目关联与未决边界
 
 这些事实支持以下接口边界，但不直接指定新的 API：
 
 1. Targeting 负责本次选择；Action／Projectile 保存必要身份与样本。命中时读取实时事实和保存发射样本需要按具体内容区分。
-2. 一次命中需要能够在主伤害前执行内容，在应用前登记程序，并在相应伤害后时点派生 EP。不能把 Attack.afterOutput 或完整 Damage 返回点当作所有这些时点的共同替代。
+2. 本例的原生程序分别位于主伤害前、接收后 HP 写入前及来源伤害后。不能把 Attack.afterOutput 或完整 Damage 返回点当作这些不同采样与执行时点的共同替代；项目是否需要独立的应用前扩展点，仍应依据具体结果差异决定。
 3. EP、HP 与 Effect 的操作各有接收与生命周期语义；附加 HP 段也会独立触发伤害业务。Battle 可以协调这些领域，不需要让 Elemental 反向调用或拥有整个 Damage 管线。
 4. 伤害数值、实际 HP／屏障变化、击杀事实与目标仍可接收后续输出是不同事实。完成报告不应依靠目标一定仍在当前存储中，也不能默认后置 EP 按 HP 差计算。
 5. 不能只因原生具有某个回调、参考计算或延迟监听，就要求项目新增同样的字段、事件总线或阶段框架；应以这里可区分的游戏结果决定需要的契约。

@@ -1,0 +1,308 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-03"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-11-03",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "native-ep-events.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "native-ep-events.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "content/agpack-prefab.json",
+      "content/agpack-templates.json",
+      "content/prts-sources.json",
+      "native-ep-events.json",
+      "prts-sources.json",
+      "reused-inputs.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12589,
+        "sha256": "1a85248a6a48d92d61c65f5ba044d079954866ff0c1672488b92f0cf1366af9a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "content/agpack-passive--4786395766426076502.bin",
+        "kind": "artifact",
+        "bytes": 316,
+        "sha256": "0aabdb3cd523932694104994d191e69b99f0fdcdaba1e0162624b7d651d03e26"
+      },
+      {
+        "path": "content/agpack-prefab.json",
+        "kind": "record",
+        "bytes": 5803,
+        "sha256": "884df4c43d26d6a4d659d492bccec5e0df127b04b4268754fdfeb3e5a255a1be"
+      },
+      {
+        "path": "content/agpack-templates.json",
+        "kind": "record",
+        "bytes": 13277,
+        "sha256": "238588ebe5ae5ea2c0feb4cb9f6696c258803e8a02be9bcab16b8ad9d3096757"
+      },
+      {
+        "path": "content/extract_agpack.py",
+        "kind": "historical-script",
+        "bytes": 6234,
+        "sha256": "9af7b48d789d6786205c6dcf52513af4bedac383e27beb17ee17d7bf1c6ae444"
+      },
+      {
+        "path": "content/prts-sources.json",
+        "kind": "record",
+        "bytes": 1274,
+        "sha256": "5827ec6ffa45f8b2077262fcdaca7cdd6ae97a4f3cdc58f3ee11f25c971278e3"
+      },
+      {
+        "path": "extract_ep_events.py",
+        "kind": "historical-script",
+        "bytes": 4509,
+        "sha256": "0ae347e8f822cf1167775474089a3b836bb552bbca30f28aee1a3d558bb486e2"
+      },
+      {
+        "path": "extract_ep_events.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "native-ep-events.json",
+        "kind": "record",
+        "bytes": 310567,
+        "sha256": "4e7616f943089808e094d254e2a3f8f230643fc4331f2dae0e98751196fb9d54"
+      },
+      {
+        "path": "prts-sources.json",
+        "kind": "record",
+        "bytes": 1659,
+        "sha256": "454afb03e41967139b4c48da8460ed0005d285d4452e5785fe4dd2805e7d8211"
+      },
+      {
+        "path": "reused-inputs.json",
+        "kind": "record",
+        "bytes": 2084,
+        "sha256": "7d5844a4deb41f0b291741452808740971beb461307bfc172d8c2c56cc74f207"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 65902,
+          "mode": "disasm",
+          "records": [
+            "native-ep-events.json#/result/methods/0",
+            "native-ep-events.json#/result/bodies/0/fragments/0",
+            "native-ep-events.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686700"
+        },
+        {
+          "index": 65903,
+          "mode": "disasm",
+          "records": [
+            "native-ep-events.json#/result/methods/1",
+            "native-ep-events.json#/result/bodies/1/fragments/0",
+            "native-ep-events.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686440"
+        },
+        {
+          "index": 65904,
+          "mode": "disasm",
+          "records": [
+            "native-ep-events.json#/result/methods/2",
+            "native-ep-events.json#/result/bodies/2/fragments/0",
+            "native-ep-events.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686530"
+        },
+        {
+          "index": 66139,
+          "mode": "disasm",
+          "records": [
+            "native-ep-events.json#/result/methods/3",
+            "native-ep-events.json#/result/bodies/3/fragments/0",
+            "native-ep-events.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeApplyingModifier",
+          "address": "0x1806d0b60"
+        },
+        {
+          "index": 66140,
+          "mode": "disasm",
+          "records": [
+            "native-ep-events.json#/result/methods/4",
+            "native-ep-events.json#/result/bodies/4/fragments/0",
+            "native-ep-events.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnApplyingModifier",
+          "address": "0x1806d05f0"
+        },
+        {
+          "index": 66141,
+          "mode": "disasm",
+          "records": [
+            "native-ep-events.json#/result/methods/5",
+            "native-ep-events.json#/result/bodies/5/fragments/0",
+            "native-ep-events.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAppliedModifier",
+          "address": "0x1806d0440"
+        },
+        {
+          "index": 66143,
+          "mode": "disasm",
+          "records": [
+            "native-ep-events.json#/result/methods/6",
+            "native-ep-events.json#/result/bodies/6/fragments/0",
+            "native-ep-events.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOutputModifier",
+          "address": "0x1806d3850"
+        },
+        {
+          "index": 66147,
+          "mode": "disasm",
+          "records": [
+            "native-ep-events.json#/result/methods/7",
+            "native-ep-events.json#/result/bodies/7/fragments/0",
+            "native-ep-events.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAfterOutputElementDamage",
+          "address": "0x1806d0180"
+        },
+        {
+          "index": 66153,
+          "mode": "disasm",
+          "records": [
+            "native-ep-events.json#/result/methods/8",
+            "native-ep-events.json#/result/bodies/8/fragments/0",
+            "native-ep-events.json#/result/bodies/8/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnTakeEPDamage",
+          "address": "0x1806d5250"
+        },
+        {
+          "index": 67664,
+          "mode": "disasm",
+          "records": [
+            "native-ep-events.json#/result/methods/9",
+            "native-ep-events.json#/result/bodies/9/fragments/0",
+            "native-ep-events.json#/result/bodies/9/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.IsUnhurtableWithModifier",
+          "address": "0x180727440"
+        },
+        {
+          "index": 72134,
+          "mode": "disasm",
+          "records": [
+            "native-ep-events.json#/result/methods/10",
+            "native-ep-events.json#/result/bodies/10/fragments/0",
+            "native-ep-events.json#/result/bodies/10/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isDamage",
+          "address": "0x18090d4d0"
+        },
+        {
+          "index": 72136,
+          "mode": "disasm",
+          "records": [
+            "native-ep-events.json#/result/methods/11",
+            "native-ep-events.json#/result/bodies/11/fragments/0",
+            "native-ep-events.json#/result/bodies/11/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isElementDamage",
+          "address": "0x18090d630"
+        },
+        {
+          "index": 72181,
+          "mode": "disasm",
+          "records": [
+            "native-ep-events.json#/result/methods/12",
+            "native-ep-events.json#/result/bodies/12/fragments/0",
+            "native-ep-events.json#/result/bodies/12/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewElementDamageModifierAfterCalculate",
+          "address": "0x18090a8e0"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Modifier",
+          "records": [
+            "native-ep-events.json#/result/modifierFields"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "content/agpack-prefab.json#/provenance/sources/0",
+            "content/agpack-templates.json#/provenance/sources/0"
+          ],
+          "bytes": 2151020
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_34.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_34.ab",
+          "sha256": "f6bae238962bc330c6cc72734f788fe09be81dd6eae8eda1305312495899bafb",
+          "records": [
+            "content/agpack-prefab.json#/provenance/sources/1",
+            "content/agpack-prefab.json#/result/0/source",
+            "content/agpack-templates.json#/provenance/sources/1"
+          ],
+          "bytes": 413007
+        },
+        {
+          "kind": "bundle",
+          "path": "config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+          "records": [
+            "content/agpack-templates.json#/result/0"
+          ]
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

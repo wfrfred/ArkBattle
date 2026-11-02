@@ -1,0 +1,30 @@
+{
+  "checkedOn": "2026-11-03",
+  "sourceClass": "PRTS community wiki, not official documentation",
+  "pages": [
+    {
+      "url": "https://prts.wiki/w/元素",
+      "sections": ["元素值（EP）", "元素损伤爆发", "攻击附带的元素损伤"],
+      "observedReferenceClient": "2.7.91",
+      "supports": "EP is separate per element; loss uses EP resistance; depletion causes immediate burst effects; some attacks attach EP after HP damage.",
+      "doesNotClose": "Exact source/target generic Modifier events and EP-specific notification branches."
+    },
+    {
+      "url": "https://prts.wiki/w/事件",
+      "sections": ["伤害相关的时点"],
+      "supports": "BeforeApplying/Applying/Applied are general Modifier points; Applying may be used for effects cancelling HP damage and EP loss together.",
+      "limits": "Page is marked incomplete; event ordering is reference only; its lethal row incorrectly labels the HP-protection concept as EP_ZERO and is not used for event identification."
+    },
+    {
+      "url": "https://prts.wiki/w/妮芙",
+      "sections": ["技能", "天赋"],
+      "supports": "Context for already archived case27's independently applied post-HP EP.",
+      "limits": "S1 front sampling difference is not used as evidence about EP versus external post-HP observers."
+    },
+    {
+      "url": "https://prts.wiki/w/浮空信件",
+      "sections": ["能力"],
+      "supports": "Concrete content responds before damage or EP loss from an available allied source at another tile, gaining SP and potentially invulnerability/teleport. Current resource binding is checked separately in content-helper."
+    }
+  ]
+}

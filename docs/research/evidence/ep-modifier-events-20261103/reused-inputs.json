@@ -1,0 +1,51 @@
+{
+  "checkedOn": "2026-11-03",
+  "scope": "Existing same-client inputs and tools referenced by this narrow EP event supplement; ASM files are readability projections of these JSONs, not new binary extraction.",
+  "inputs": [
+    {
+      "path": ".agents/skills/arkbattle-native-research/scripts/native.py",
+      "bytes": 18723,
+      "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+    },
+    {
+      "path": ".agents/skills/arkbattle-native-research/scripts/native.py.lock",
+      "bytes": 3739,
+      "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+    },
+    {
+      "path": ".agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+      "bytes": 3542,
+      "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+    },
+    {
+      "path": "docs/research/evidence/elemental-timing-20261102/schedule-native.json",
+      "bytes": 1412075,
+      "sha256": "5f579fa10ac6f6ff44e60fca1f6c8cc09edba6573a314ae27b9b45ac6093b2d2"
+    },
+    {
+      "path": "docs/research/evidence/elemental-timing-20261102/ep-native.json",
+      "bytes": 765115,
+      "sha256": "1de1e5c4097e325eeb5d0cb8b25195b3addad13997def41e28e8f5a829f0ba99"
+    },
+    {
+      "path": "docs/research/evidence/attack-addon-order-20261102/hp/native-hp.json",
+      "bytes": 814334,
+      "sha256": "bc037d63eee427388a1113cd40c0c87c2c9233b18757b963580799a7afd1b9ba"
+    },
+    {
+      "path": "docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+      "bytes": 8161,
+      "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+    },
+    {
+      "path": "docs/research/evidence/attack-addon-order-20261102/content/native/event-bindings.json",
+      "bytes": 35917,
+      "sha256": "0c6f65241bb2f5b70aa82ab322ccf10e286299b3744874fccc18b16a1fc6877b"
+    },
+    {
+      "path": "docs/research/evidence/nymph-action-settlement-20261103/damage/native-damage.json",
+      "bytes": 1593461,
+      "sha256": "95036b2704b33266c7126ded25e502d56a6f5d0a24cc008e916b211bbe9c49a0"
+    }
+  ]
+}

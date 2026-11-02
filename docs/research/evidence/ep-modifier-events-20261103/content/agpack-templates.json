@@ -1,0 +1,298 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-03",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/ep-modifier-events-20261103/content/extract_agpack.py",
+      "bytes": 6234,
+      "sha256": "9af7b48d789d6786205c6dcf52513af4bedac383e27beb17ee17d7bf1c6ae444"
+    },
+    "helper": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+      "bytes": 8161,
+      "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+    },
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      }
+    ],
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+        "bytes": 2151020,
+        "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_34.ab",
+        "bytes": 413007,
+        "sha256": "f6bae238962bc330c6cc72734f788fe09be81dd6eae8eda1305312495899bafb"
+      }
+    ],
+    "scope": "Exact Floating Letter holder entries and prefab passive binding; no runtime/XLua verification."
+  },
+  "result": [
+    {
+      "bundle": "config/buff_template_holder.ab",
+      "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "pathId": "6070581171229484677",
+      "sha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+      "templates": [
+        {
+          "templateKey": "agpack_t[record_damage_cnt]",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "templateIndex": 2507,
+          "events": [
+            {
+              "event": 5,
+              "actions": [
+                {
+                  "_abnormalFlag": "INVINCIBLE",
+                  "_targetType": "BUFF_OWNER",
+                  "_isUnset": false,
+                  "_abnormalFlagKey": "",
+                  "$type": "Torappu.Battle.Action.Nodes+CheckAbnormalFlag"
+                },
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+IfNot"
+                },
+                {
+                  "_conditionsNode": [
+                    {
+                      "$type": "Torappu.Battle.Action.Nodes+IsDamage"
+                    },
+                    {
+                      "$type": "Torappu.Battle.Action.Nodes+IsElementDamage"
+                    }
+                  ],
+                  "_succeedNodes": [
+                    {
+                      "_sideMask": "ALLY",
+                      "_targetType": "MODIFIER_SOURCE",
+                      "$type": "Torappu.Battle.Action.Nodes+IfTargetSide"
+                    },
+                    {
+                      "_ownerType": "MODIFIER_SOURCE",
+                      "$type": "Torappu.Battle.Action.Nodes+CheckUnitAlive"
+                    },
+                    {
+                      "_targetType": "BUFF_OWNER",
+                      "$type": "Torappu.Battle.Action.Nodes+CheckEntityDisappeared"
+                    },
+                    {
+                      "$type": "Torappu.Battle.Action.Nodes+IfNot"
+                    },
+                    {
+                      "allowedSource": "ALL",
+                      "_targetType": "BUFF_OWNER",
+                      "_gridRowKey": "MyRow",
+                      "_gridColKey": "MyCol",
+                      "_useConstLocationKey": false,
+                      "$type": "Torappu.Battle.Action.Nodes+AssignGridPositionToBlackboard"
+                    },
+                    {
+                      "_conditionsNode": [
+                        {
+                          "_target": "MODIFIER_SOURCE",
+                          "_checkRow": true,
+                          "_blackboardKey": "MyRow",
+                          "_compareType": "EQUALS",
+                          "$type": "Torappu.Battle.Action.Nodes+CheckTargetGridPositionRowOrColWithBB"
+                        },
+                        {
+                          "_target": "MODIFIER_SOURCE",
+                          "_checkRow": false,
+                          "_blackboardKey": "MyCol",
+                          "_compareType": "EQUALS",
+                          "$type": "Torappu.Battle.Action.Nodes+CheckTargetGridPositionRowOrColWithBB"
+                        }
+                      ],
+                      "_succeedNodes": null,
+                      "_failNodes": [
+                        {
+                          "_targetType": "BUFF_OWNER",
+                          "_modifyByRatio": false,
+                          "_modifyRatio": 0.0,
+                          "_modifyByRatioBasedOnCurSP": false,
+                          "_modifyBySpCost": false,
+                          "_dontCheckSpType": false,
+                          "_spMask": "ALL",
+                          "_forceFlag": true,
+                          "_dontShowSpUI": true,
+                          "_modifyValue": 1,
+                          "_spString": "sp",
+                          "_isMinis": false,
+                          "_customModifierKey": "",
+                          "$type": "Torappu.Battle.Action.Nodes+ModifySp"
+                        },
+                        {
+                          "_targetType": "BUFF_OWNER",
+                          "_condType": "EQUALS",
+                          "_spRatio": 1.0,
+                          "$type": "Torappu.Battle.Action.Nodes+FilterByTargetSpRatio"
+                        },
+                        {
+                          "_buff": {
+                            "attributes": {
+                              "abnormalFlags": [
+                                "INVINCIBLE"
+                              ],
+                              "abnormalImmunes": [],
+                              "abnormalAntis": [],
+                              "abnormalCombos": [],
+                              "abnormalComboImmunes": [],
+                              "attributeModifiers": []
+                            },
+                            "buffKey": "agpack_t[born_invincible]",
+                            "loadFromDB": false,
+                            "isDurableBuff": false,
+                            "isDamageMissable": false,
+                            "isSilenceable": false,
+                            "isStunnable": false,
+                            "isFreezable": false,
+                            "isLevitatable": false,
+                            "isGroundBoundable": false,
+                            "statusResistable": "AUTOMATIC",
+                            "templateKey": "empty",
+                            "disableOverride": false,
+                            "overrideKey": null,
+                            "overrideType": "EXTEND",
+                            "maxStackCnt": 1,
+                            "refreshRemainingTimeWhenStackMax": false,
+                            "clearAllStackCntWhenTimeUp": false,
+                            "maxValidStackCnt": -1,
+                            "independentCharacterSource": false,
+                            "overrideEffectKey": null,
+                            "overrideOnEventPriority": false,
+                            "onEventPriority": "DEFAULT",
+                            "audioSignal": null,
+                            "lifeTimeType": "LIMITED",
+                            "takeSnapshotWhenExtend": false,
+                            "durationKey": "born_invincible_duration",
+                            "remainingTimeKey": null,
+                            "lifeTime": 0.0,
+                            "triggerLifeType": "IMMEDIATELY",
+                            "triggerCnt": 0,
+                            "triggerInterval": -1.0,
+                            "waitFirstTriggerInterval": true,
+                            "firstTriggerInterval": -1.0,
+                            "priority": -1,
+                            "priorityBBKeys": [],
+                            "stripBlackboardParamsWithBuffKey": false,
+                            "blackboard": [],
+                            "enableInitDirectionFromSource": false
+                          },
+                          "_buffOwner": "BUFF_OWNER",
+                          "_useSpecialBuffSource": false,
+                          "_specialBuffSource": "BUFF_SOURCE",
+                          "_isDerivedBuff": false,
+                          "_finishDerivedBuffIfParentFinish": false,
+                          "_inherateSourceProjectileFromParentBuff": false,
+                          "_hookEffectKeyFromSourceProjectile": false,
+                          "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                        },
+                        {
+                          "_source": "BUFF_OWNER",
+                          "_target": "BUFF_OWNER",
+                          "_clearRouteBeforeInsert": true,
+                          "_type": "DISAPPEAR",
+                          "_randomizeReachOffset": false,
+                          "_reachOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                          },
+                          "_time": 0.0,
+                          "_addIntoRuntimeRoute": false,
+                          "_toMapPosition": false,
+                          "_checkReachable": false,
+                          "_manuallySpecifyInsertIndex": false,
+                          "_insertIndex": 0,
+                          "_manuallySpecifyReassignIndex": true,
+                          "_reassignIndex": 0,
+                          "$type": "Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute"
+                        },
+                        {
+                          "_source": "MODIFIER_SOURCE",
+                          "_target": "BUFF_OWNER",
+                          "_clearRouteBeforeInsert": false,
+                          "_type": "APPEAR_AT_POS",
+                          "_randomizeReachOffset": false,
+                          "_reachOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                          },
+                          "_time": 0.0,
+                          "_addIntoRuntimeRoute": false,
+                          "_toMapPosition": false,
+                          "_checkReachable": false,
+                          "_manuallySpecifyInsertIndex": true,
+                          "_insertIndex": 1,
+                          "_manuallySpecifyReassignIndex": true,
+                          "_reassignIndex": 0,
+                          "$type": "Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute"
+                        },
+                        {
+                          "_source": "MODIFIER_SOURCE",
+                          "_target": "BUFF_OWNER",
+                          "_clearRouteBeforeInsert": false,
+                          "_type": "WAIT_FOR_SECONDS",
+                          "_randomizeReachOffset": false,
+                          "_reachOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                          },
+                          "_time": 100000.0,
+                          "_addIntoRuntimeRoute": false,
+                          "_toMapPosition": false,
+                          "_checkReachable": false,
+                          "_manuallySpecifyInsertIndex": true,
+                          "_insertIndex": 2,
+                          "_manuallySpecifyReassignIndex": true,
+                          "_reassignIndex": 0,
+                          "$type": "Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute"
+                        },
+                        {
+                          "_enemy": "BUFF_OWNER",
+                          "$type": "Torappu.Battle.Action.Nodes+ClearEnemySp"
+                        }
+                      ],
+                      "_isAnd": true,
+                      "$type": "Torappu.Battle.Action.Nodes+IfConditions"
+                    }
+                  ],
+                  "_failNodes": null,
+                  "_isAnd": false,
+                  "$type": "Torappu.Battle.Action.Nodes+IfConditions"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "templateKey": "agpack_a[passive]",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "templateIndex": 2512,
+          "events": [
+            {
+              "event": 10,
+              "actions": [
+                {
+                  "_reason": "UNHURTABLE",
+                  "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
