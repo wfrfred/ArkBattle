@@ -269,7 +269,6 @@ export function createTerrainMechanism(
         return create(terrain.mire, indices, {
             id: "terrain/mire",
             intervalTicks: 3,
-            // Current native content uses one second; the older PRTS three-second report differs.
             enter: (battle, unit, params, scopes) =>
                 effects.install(battle, units.ref(unit), createMireEffect(params), {
                     scopes,

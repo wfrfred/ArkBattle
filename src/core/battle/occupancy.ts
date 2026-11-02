@@ -36,7 +36,6 @@ export function enter(battle: State, reference: Ref<Unit & Occupancy>): State {
         return enter(release(battle, occupant.occupancy.pair), reference);
     }
 
-    // These snapshots precede the binding write, so they never retain their own pair.
     const pair: Context = { tile, support, occupant };
     battle = replace(battle, [
         { ...support, occupancy: { ...support.occupancy, pair } },
@@ -59,7 +58,6 @@ function release(battle: State, pair: Context): State {
             updates.push({ ...current, occupancy: { ...current.occupancy, pair: null } });
         }
     }
-    // A later entry may already have completed this old binding's removal.
     if (updates.length === 0) {
         return battle;
     }

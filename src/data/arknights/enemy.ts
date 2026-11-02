@@ -348,7 +348,6 @@ function textValue(source: Record<string, unknown>, key: string): string {
     return value;
 }
 
-/** Resolves client table inheritance before the values enter tactical content. */
 export function prepare(value: unknown, configuration: Configuration): Profile {
     const level = enemyLevel(configuration.level);
     const source = record(value, "enemy database entry");

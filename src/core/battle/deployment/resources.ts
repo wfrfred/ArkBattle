@@ -68,7 +68,6 @@ export function addCard<S extends object>(
         costContributions: [],
         redeployTimeContributions: [],
     };
-    // Erase the private state only when entering the heterogeneous collection.
     const entry: Card<any> = value;
 
     return {

@@ -3,7 +3,6 @@ import type { State as BattleState, Result } from "../battle/state.js";
 import { paired, type Definition, type Lifetime, type Scope } from "./lifetime.js";
 import * as dependency from "./dependency.js";
 
-// Scope construction keeps each erased Ref and End paired with its own static program.
 interface Pair {
     readonly definition: Definition<Identified<object>, Identified<object>, unknown>;
     readonly ref: Ref<Identified<object>>;
@@ -76,7 +75,6 @@ export function dependencies(battle: BattleState, target: Scope): readonly Scope
     return battle.lifetime.dependencies.entries.get(dependency.key(target))?.scopes ?? [];
 }
 
-// Complete domain operations register their own instances before invoking content.
 export function register(
     battle: BattleState,
     target: Scope,

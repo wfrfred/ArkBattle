@@ -34,7 +34,6 @@ export function update(battle: BattleState, changes: readonly Change[]): BattleS
     const settlements: ((state: BattleState) => BattleState)[] = [];
 
     for (const change of changes) {
-        // Construction pairs the reference and its programs before their types are erased.
         const { ref, transform, settle } = change as Change & {
             readonly ref: Ref<Unit>;
             readonly transform: Transformation<Unit>;

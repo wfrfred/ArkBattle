@@ -41,7 +41,6 @@ export function deploy<T extends Card<any>>(
 
     assertNonnegativeSafeInteger(request.quote.stock, "deployment stock consumption");
     assertNonnegativeSafeInteger(request.quote.slots, "deployment slot consumption");
-    // The request's Ref keeps its private Card type; core only executes its paired programs.
     const input = request as object as DeployRequest;
     const previous = battle;
     let self = get(battle, request.card);

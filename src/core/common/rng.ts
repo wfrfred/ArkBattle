@@ -10,45 +10,19 @@ export interface Rng {
     /** @returns [0, 1). */
     next(): number;
 
-    /**
-     * @param upper Integer in [1, 2 ** 32].
-     * @returns Integer in [0, upper).
-     * @throws {RangeError} Invalid upper bound.
-     */
-    int(upper: number): number;
-    /**
-     * @param lower Safe integer less than upper.
-     * @param upper Safe integer greater than lower.
-     * Range width must not exceed 2 ** 32.
-     * @returns Integer in [lower, upper).
-     * @throws {RangeError} Invalid bounds.
-     */
-    int(lower: number, upper: number): number;
+    int(upperExclusive: number): number;
+    int(lowerInclusive: number, upperExclusive: number): number;
 
-    /**
-     * @param probability Finite number in [0, 1].
-     * @throws {RangeError} Invalid probability.
-     */
     chance(probability: number): boolean;
 
     pick<T>(items: NonEmptyArray<T>): T;
-    /**
-     * Weights must be finite and non-negative; their sum must be finite and positive.
-     * @throws {RangeError} Invalid weights or sum.
-     */
     weighted<T>(items: NonEmptyArray<readonly [T, number]>): T;
 
-    /** Does not modify the input array. */
-    shuffle<T>(arr: readonly T[]): T[];
+    shuffle<T>(items: readonly T[]): T[];
 
-    /** @returns Current internal state. */
     state(): Seed;
 }
 
-/**
- * @param seed Integer in [0, 2 ** 32), including a saved state.
- * @throws {RangeError} Invalid seed.
- */
 export function createRng(seed: Seed): Rng {
     if (!Number.isInteger(seed) || seed < 0 || seed >= UINT32_RANGE) {
         throw new RangeError("seed must be an unsigned 32-bit integer");
@@ -65,13 +39,9 @@ export function createRng(seed: Seed): Rng {
         return ((t ^ (t >>> 14)) >>> 0) / UINT32_RANGE;
     }
 
-    function int(a: number, b?: number): number {
-        const lower = b === undefined ? 0 : a;
-        let upper = a;
-
-        if (b !== undefined) {
-            upper = b;
-        }
+    function int(lowerOrUpper: number, upperExclusive?: number): number {
+        const lower = upperExclusive === undefined ? 0 : lowerOrUpper;
+        const upper = upperExclusive ?? lowerOrUpper;
 
         if (!Number.isSafeInteger(lower) || !Number.isSafeInteger(upper) || lower >= upper) {
             throw new RangeError(`invalid integer range [${lower}, ${upper})`);
@@ -126,8 +96,8 @@ export function createRng(seed: Seed): Rng {
         return lastPositive!;
     }
 
-    function shuffle<T>(arr: readonly T[]): T[] {
-        const result = [...arr];
+    function shuffle<T>(items: readonly T[]): T[] {
+        const result = [...items];
 
         for (let i = result.length - 1; i > 0; i--) {
             const j = int(i + 1);

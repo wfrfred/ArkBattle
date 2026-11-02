@@ -32,7 +32,6 @@ export function initialize(
         id: input.id,
         lifecycle: "PRESENT",
         definition: input.definition,
-        // These programs were explicitly registered before the capability initialization fold.
         hooks: (input.hooks ?? []).reduce<readonly Hook[]>(setHook, []),
         position: input.position,
         effects: Effects.empty(),
@@ -43,7 +42,6 @@ export function initialize(
             continue;
         }
 
-        // The selected key pairs this Unit's definition with its initializer before erasure.
         const initializer = initializers[key] as (
             battle: BattleState,
             unit: Unit,
