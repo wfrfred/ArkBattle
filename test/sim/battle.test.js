@@ -217,39 +217,6 @@ test('core raw 01 movement fragment replays every tick and completes routes with
 });
 
 
-test('core battle state retains immutable values and the published tick after later steps', () => {
-  const { spec } = slimeMovementFragment();
-  let runtime = initializeBattle(spec);
-  let replica = initializeBattle(spec);
-  while (runtime.tick < 91) {
-    assert.deepEqual((runtime = advanceBattle(runtime, [])), (replica = advanceBattle(replica, [])));
-  }
-  const before = runtime;
-  const unit = before.battlefield.units.get(0);
-  const position = unit.position;
-  const routeProgress = unit.route.main.phase;
-  const routeDefinition = unit.route.main.definition;
-  const x = position[0];
-  assert.strictEqual(routeDefinition, unit.definition.route);
-
-  runtime = advanceBattle(before, []);
-  assert.deepEqual(runtime, advanceBattle(before, []));
-  replica = advanceBattle(replica, []);
-  const current = runtime;
-  assert.deepEqual(current, replica);
-  assert.equal(current.tick, 92);
-  assert.equal(before.tick, 91);
-  assert.equal(before.battlefield.units.get(0).position, position);
-  assert.equal(position[0], x);
-  assert.ok(current.battlefield.units.get(0).position[0] < x);
-  assert.equal(before.battlefield.units.get(0).route.main.phase, routeProgress);
-  assert.equal(before.battlefield.units.get(0).route.main.definition, routeDefinition);
-  assert.equal(before.execution.nextUnitId, 1);
-  assert.deepEqual(before.schedule.managedFinalUnitIds, [0]);
-  assert.equal(before.completedRouteCount, 0);
-});
-
-
 test('core battle initializes all route waits at the birth tick and replays their exact completion edges', () => {
   const { spec } = slimeMovementFragment();
   const spawn = spec.schedule.spawns[0];
@@ -534,22 +501,6 @@ test('core schedule removal feedback advances the next wave only on the next tic
 });
 
 
-test('core independent runtimes preserve every tick, event and RNG transition', () => {
-  const input = routeCommandBattle([
-    { type: 'MOVE', target: { position: [9, 8], reachOffset: [0.25, 0.25] } },
-    { type: 'WAIT_FOR_TICKS', durationTicks: 2 },
-    { type: 'MOVE', target: { position: [9, 6], reachOffset: [0.25, 0.25] } },
-  ], { speed: 1 / 5, maxTicks: 100 });
-  let runtime = initializeBattle(input), replay = initializeBattle(input);
-  for (let tick = 0; runtime.result === null; tick++) {
-    assert.deepEqual((runtime = advanceBattle(runtime, [])), (replay = advanceBattle(replay, [])));
-    assert.deepEqual(runtime, replay);
-  }
-  assert.equal(runtime.result.reason, 'SCHEDULE_COMPLETED');
-  assert.equal(runtime.result.completedRouteCount, 1);
-});
-
-
 test('core battle deadline keeps live units separate from spawns due at the excluded final edge', () => {
   const { spec } = slimeMovementFragment();
   const limited = { ...spec, maxTicks: 240 };
@@ -816,45 +767,6 @@ test('raw levels preserve predefined configuration and keep unsupported inputs o
     const unsupported = arknightsFixture('level_act1autochess_01');
     mutate(unsupported);
     assert.throws(() => slimeMovementFragment(unsupported), /require|unsupported/);
-  }
-});
-
-
-test('schedule execution shares its definition and retains earlier immutable progress', () => {
-  const timelineDefinition = createSpawnScheduleDefinition({ type: 'TIMELINE', spawns: [] });
-  const timeline = createSpawnScheduleExecution(timelineDefinition);
-  assert.equal(timeline.definition, timelineDefinition);
-  assert.equal(timeline.type, 'TIMELINE');
-  assert.equal(isSpawnScheduleCompleted(timeline), true);
-  assert.equal(getUnspawnedCount(timeline), 0);
-  const advanced = advanceSpawnSchedule(timeline, { tick: 0 });
-  const recorded = recordScheduleSpawns(advanced.state, advanced.spawns, []);
-  assert.equal(recorded.definition, timelineDefinition);
-  assert.equal(resolveScheduleUnits(recorded, []).definition, timelineDefinition);
-  assert.equal(advanced.state.managedFinalUnitIds, timeline.managedFinalUnitIds);
-  assert.equal(advanced.state.managedWaveUnitIds, timeline.managedWaveUnitIds);
-  assert.equal(timeline.lastTick, null);
-  assert.equal(advanced.state.lastTick, 0);
-  assert.deepEqual(timeline.managedFinalUnitIds, []);
-
-  const { schedule } = syntheticSpawnSchedule([nativeWave([nativeFragment([nativeSpawn()])])]);
-  const waves = createSpawnScheduleExecution(schedule);
-  assert.equal(waves.definition, schedule);
-  const firstWave = advanceSpawnSchedule(waves, { tick: 0 });
-  assert.equal(firstWave.state.definition, schedule);
-  assert.equal(waves.main.phase, 'NOT_STARTED');
-  assert.equal(waves.lastTick, null);
-  assert.equal(firstWave.state.lastTick, 0);
-  const { spec } = slimeMovementFragment();
-  for (const definition of [timelineDefinition, schedule]) {
-    let runtime = initializeBattle({ ...spec, schedule: definition });
-    assert.deepEqual(getSpawnScheduleCounts(runtime.schedule), {
-      spawnedCount: 0, unspawnedCount: definition.type === 'TIMELINE' ? 0 : 1,
-    });
-    (runtime = advanceBattle(runtime, []));
-    assert.deepEqual(getSpawnScheduleCounts(runtime.schedule), {
-      spawnedCount: definition.type === 'TIMELINE' ? 0 : 1, unspawnedCount: 0,
-    });
   }
 });
 

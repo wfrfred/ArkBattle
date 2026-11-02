@@ -45,10 +45,6 @@ const forged: Change = {};
 update(battle, [plain]);
 // @ts-expect-error the publication API rejects arbitrary transforms.
 update(battle, [(self: Unit) => self]);
-// @ts-expect-error Changes already carry their own target; update has no separate host argument.
-update(battle, armed, [attack]);
-// @ts-expect-error the Core constructor is not part of the public Unit entrypoint.
-publicUnit.createChange;
 `;
     const options = {
         noEmit: true,

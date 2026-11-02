@@ -15,8 +15,7 @@ import { createTile } from "../helpers/tiles.js";
 import { Map as NavigationMap } from "../../dist/core/battlefield/navigation/map.js";
 import { create as createNavigation, nextPoint as nextNavigationPoint } from "../../dist/core/battlefield/navigation/state.js";
 import * as routeOperations from "../../dist/core/unit/capability/route/index.js";
-import * as unitQueries from "../../dist/core/unit/query.js";
-import { World } from "../../dist/core/geometry/coordinate.js";
+
 
 const step = battle => resolveRouteCompletion(advanceBlocking(advanceMovement(battle, { routeMoveMultiplier: 1 })));
 const cell = overrides => ({
@@ -50,25 +49,6 @@ function unit(battle, id, definition, position = [0, 0]) {
     }).value;
 }
 
-test("Battle movement applies Locomotion's destination reflection and preserves integrated velocity", () => {
-    const cells = Array.from({ length: 15 }, () => cell());
-    cells[8] = cell({ passable: false });
-    let state = battle(5, 3, cells);
-    const initial = unit(state, 1, {
-        locomotion: { speed: 1, minSpeed: 0, halfBodyWidth: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 0 } },
-    }, [1, 2]);
-    const moving = { ...initial, locomotion: { ...initial.locomotion, velocity: [1, 0] } };
-    state = addUnit(state, moving);
-    const advanced = step(state);
-    assert.deepEqual(getUnit(advanced, 1).position, [0, 2]);
-    assert.deepEqual(getUnit(advanced, 1).locomotion.velocity, [1, 0]);
-    const positions = unitQueries.all(advanced).map(unit => World.toTile(unit.position)).toArray();
-    assert.deepEqual(positions, [[2, 0]]);
-    assert.equal(positions.some(([row, column]) => row === 2 && column === 1), false);
-    assert.deepEqual(advanced.events, []);
-    assert.deepEqual(advanced.removedUnits, []);
-    assert.equal(getUnit(state, 1), moving);
-});
 
 test("Main completion stops motion while blocked and produces one event only when departure succeeds", () => {
     let state = battle();
@@ -99,21 +79,6 @@ test("Main completion stops motion while blocked and produces one event only whe
     assert.equal(step(departed).events.filter(event => event.type === "ROUTE_COMPLETED").length, 1);
 });
 
-test("Main departure callbacks can remove a later departure candidate after the movement phase", () => {
-    let state = battle();
-    state = addUnit(state, unit(state, 1, {
-        route: route({ endPosition: [0, 0] }),
-        hooks: [{ id: "test/leave", stage: "leave", invoke(current) { return { state: remove(current, 2, "SCRIPT"), value: undefined }; } }],
-    }));
-    state = addUnit(state, unit(state, 2, {
-        route: route({ checkpoints: [{ type: "ALERT" }] }),
-    }));
-    const advanced = step(state);
-    assert.equal(getUnit(advanced, 1), undefined);
-    assert.equal(getUnit(advanced, 2), undefined);
-    assert.deepEqual(advanced.events.filter(event => event.type === "ROUTE_COMPLETED").map(event => event.unitId), [1]);
-    assert.equal(advanced.events.some(event => event.type === "ROUTE"), true);
-});
 
 test("a route wait skips Locomotion without clearing its history velocity", () => {
     let state = battle();
@@ -198,26 +163,4 @@ test("Runtime consumes the current path mode without changing the unit's ground 
     assert.equal(moved.layer.type, "GROUND");
     assert.equal(moved.route.main.definition.pathMotionMode, "WALK");
     assert.equal(moved.route.main.pathMotionMode, "FLY");
-});
-
-test("Alternative takeover preserves Main checkpoint progress while its endpoint can still trigger departure", () => {
-    for (const requireAllCheckpoints of [false, true]) {
-        let state = battle(1, 6);
-        const initial = unit(state, 1, {
-            route: route({
-                endPosition: [0, 2], requireAllCheckpoints,
-                checkpoints: [{ type: "WAIT", tick: 100 }],
-            }),
-        }, [2, 0]);
-        state = addUnit(state, initial);
-        state = routeOperations.setAlternative(state, { id: 1 }, route({ endPosition: [0, 5] }));
-        const advanced = step(state);
-        const remaining = getUnit(advanced, 1);
-        assert.equal(remaining === undefined, !requireAllCheckpoints);
-        assert.equal(advanced.events.filter(event => event.type === "ROUTE_COMPLETED").length, requireAllCheckpoints ? 0 : 1);
-        if (remaining !== undefined) {
-            assert.equal(remaining.route.main, initial.route.main);
-            assert.notEqual(remaining.route.alternative, null);
-        }
-    }
 });

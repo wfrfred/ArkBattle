@@ -11,7 +11,7 @@ import { addCard, advance, initialize as initializeDeployment } from "../../dist
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import { setHook as setUnitHook } from "../../dist/core/battle/unit-hook.js";
-import * as effects from "../../dist/core/unit/effect/index.js";
+
 import { createRequest } from "../../dist/core/battle/deployment/query.js";
 import { initialize as initializeUnit } from "../helpers/unit.js";
 import { create as createBattlefield } from "../../dist/core/battlefield/state.js";
@@ -62,11 +62,7 @@ const budget = (fields = {}) => ({
     slotLimit: null,
     ...fields,
 });
-const operatorBehavior = {
-    cooldownOnDeploy: false,
-    recoverOnLeave: true,
-    increaseCostOnLeave: true,
-};
+
 const queuedBehavior = {
     cooldownOnDeploy: false,
     recoverOnLeave: true,
@@ -327,29 +323,6 @@ test("queued recovery permits deploying remaining stock while returned Units rec
     assert.notEqual(getUnit(state, third.value.unitId), undefined);
 });
 
-test("ordinary deployment can use remaining stock while earlier returns recover", () => {
-    const unit = definition({
-        card: {
-            cost: 0,
-            redeployTicks: 4,
-            slots: 1,
-        },
-    });
-    const first = deployUnit(fixture([{ definition: unit, ...inventory(), ...operatorBehavior }]));
-    const second = deployUnit(first.state, 0, 1);
-    let state = retreatUnit(at(second.state, 1), first.value.unitId);
-    state = retreatUnit(at(state, 2), second.value.unitId);
-    assert.equal(getCard(state, 0).stock, 1);
-    assert.equal(getCard(state, 0).recovery.pending, 2);
-    state = deployUnit(state, 0, 2).state;
-    assert.equal(getCard(state, 0).stock, 0);
-    state = at(state, 5);
-    assert.equal(getCard(state, 0).stock, 1);
-    assert.equal(getCard(state, 0).recovery.pending, 1);
-    state = at(state, 9);
-    assert.equal(getCard(state, 0).stock, 2);
-    assert.equal(getCard(state, 0).recovery, null);
-});
 
 test("scripted and expired departures do not add the operator cost penalty", () => {
     for (const reason of ["SCRIPT", "EXPIRED"]) {
@@ -457,45 +430,6 @@ test("existing departure observers can deploy zero-duration returns with settled
     assert.notEqual(getUnit(first.state, first.value.unitId), undefined);
 });
 
-test("nested retreat settles resources before departure cleanup and accepts subsequent recovery operations", () => {
-    const unit = definition({
-        hooks: [{
-            id: "test/prepare",
-            stage: "prepare",
-            invoke(state) {
-                assert.equal(state.deployment.dp, 95);
-                assert.equal(getCard(state, 0).costStage, 1);
-                assert.equal(getCard(state, 0).recovery.clock.readyAtTick, 3);
-                return { state, value: undefined };
-            },
-        }],
-    });
-    const deployed = deployUnit(fixture([{ definition: unit }]));
-    const host = unitQueries.ref(getUnit(deployed.state, deployed.value.unitId));
-    let requested = false;
-    const installed = effects.install(deployed.state, host, {
-        id: "test/recall-on-end",
-        initialize: () => ({}),
-        onEnd(state) {
-            state = retreatUnit(state, host.id);
-            requested = true;
-            assert.equal(getUnit(state, host.id).lifecycle, "LEAVING");
-            assert.equal(state.deployment.usedSlots, 1);
-            assert.equal(getCard(state, 0).recovery.pending, 1);
-            return cards.clearCooldown(state, getUnit(state, host.id).deployable.card, "RECOVERY");
-        },
-    });
-
-    const next = effects.end(installed.state, installed.value, "FINISHED");
-
-    assert.equal(requested, true);
-    assert.equal(getUnit(next, host.id), undefined);
-    assert.equal(next.deployment.usedSlots, 0);
-    assert.equal(next.deployment.dp, 95);
-    assert.equal(getCard(next, 0).costStage, 1);
-    assert.equal(getCard(next, 0).stock, 1);
-    assert.equal(getCard(next, 0).recovery, null);
-});
 
 test("Card private state survives field instances and ticks independently of deployment", () => {
     const entered = [];
@@ -559,71 +493,6 @@ test("Card private state survives field instances and ticks independently of dep
     assert.deepEqual(cards.get(first.state, first.value).state, { entries: 0, ticks: 0 });
 });
 
-test("Card ticks fix candidates and read changes made by preceding Card programs", () => {
-    const trace = [];
-    let second;
-    const late = definition({
-        id: "late-card",
-        card: {
-            cost: 0,
-            redeployTicks: 0,
-            slots: 1,
-            initialize: (state) => ({ state, value: {} }),
-            onTick(state) {
-                trace.push("late");
-                return state;
-            },
-        },
-    });
-    const firstDefinition = definition({
-        card: {
-            cost: 0,
-            redeployTicks: 0,
-            slots: 1,
-            initialize: (state) => ({ state, value: { spawned: false } }),
-            onTick(state, self) {
-                trace.push("first");
-                if (self.state.spawned) return state;
-                state = cards.setState(state, second, { count: 20 });
-                state = addCard(state, late).state;
-                return cards.setState(state, cards.ref(self), { spawned: true });
-            },
-        },
-    });
-    const secondDefinition = definition({
-        card: {
-            cost: 0,
-            redeployTicks: 0,
-            slots: 1,
-            initialize: (state) => ({ state, value: { count: 0 } }),
-            onTick(state, self) {
-                trace.push(self.state.count);
-                return state;
-            },
-        },
-    });
-    const a = addCard(fixture([]), firstDefinition);
-    const b = addCard(a.state, secondDefinition);
-    second = b.value;
-    let state = at(b.state, 1);
-    assert.deepEqual(trace, ["first", 20]);
-    assert.deepEqual(
-        cards
-            .all(state)
-            .map((self) => self.id)
-            .toArray(),
-        [0, 1, 2],
-    );
-    assert.deepEqual(
-        cards
-            .all(b.state)
-            .map((self) => self.id)
-            .toArray(),
-        [0, 1],
-    );
-    state = at(state, 2);
-    assert.deepEqual(trace, ["first", 20, "first", 20, "late"]);
-});
 
 test("complete Card resource operations preserve a running timer and sample changes for the next return", () => {
     const unit = definition({

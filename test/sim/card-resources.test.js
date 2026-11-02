@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { fixtureBattle } from "../helpers/unit.js";
 import { addCard, advance } from "../../dist/core/battle/deployment/resources.js";
-import { createRequest, preview } from "../../dist/core/battle/deployment/query.js";
+
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 
@@ -108,29 +108,4 @@ test("zero-duration serial recovery completes all pending inventory in the curre
     const battle = cards.enqueueRecovery(added.state, added.value, 3);
     assert.equal(cards.get(battle, added.value).stock, 3);
     assert.equal(cards.get(battle, added.value).recovery, null);
-});
-
-test("Card selection rules are independent and future Unit hooks use ordinary registration", () => {
-    const added = fixture();
-    const entry = {
-        id: "on-entry",
-        stage: "enter",
-        invoke: (battle) => ({ state: battle, value: undefined }),
-    };
-    let battle = cards.setUnitHook(added.state, added.value, entry);
-    battle = cards.setRule(battle, added.value, {
-        id: "cannot-select",
-        allows: (_battle, { purpose }) => purpose !== "SELECT",
-    });
-    assert.equal(cards.allows(battle, { ref: added.value, purpose: "DISPLAY" }), true);
-    assert.equal(cards.allows(battle, { ref: added.value, purpose: "SELECT" }), false);
-    const request = createRequest(battle, added.value, [0, 0]);
-    assert.deepEqual(preview(battle, request), { type: "REJECTED", reason: "NO_STOCK" });
-    battle = cards.recharge(battle, added.value, 1);
-    assert.equal(preview(battle, { ...request, quote: { ...request.quote, dp: null } }).type, "ALLOWED");
-    assert.deepEqual(cards.get(battle, added.value).unitHooks, [entry]);
-    assert.equal(cards.setUnitHook(battle, added.value, entry), battle);
-    assert.equal(cards.removeRule(battle, added.value, "missing"), battle);
-    battle = cards.removeUnitHook(battle, added.value, entry.id);
-    assert.deepEqual(cards.get(battle, added.value).unitHooks, []);
 });

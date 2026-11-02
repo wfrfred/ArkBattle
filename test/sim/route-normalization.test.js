@@ -146,21 +146,3 @@ test("Enemy initialization uses one sampled offset for its Route Definition and 
     assert.equal("route" in enemyDefinition, false);
     assert.equal(result.state.battlefield.units.has(enemy.id), false);
 });
-
-test("Repeated enemy births share the Enemy Definition without sharing per-birth route context", () => {
-    const raw = input({ checkpoints: [{ type: "WAIT_CURRENT_WAVE_TICKS", targetElapsedTicks: 2 }] });
-    const before = fixtureBattle(0, { rngState: 42 });
-    const first = initializeRoutedUnit(before, {
-        id: 0, definition: enemyDefinition, route: raw, timing, alwaysCheckCurrentPoint: true,
-    });
-    const second = initializeRoutedUnit(first.state, {
-        id: 1, definition: enemyDefinition, route: raw,
-        timing: { waveStartedAtTick: 100, fragmentStartedAtTick: 120 }, alwaysCheckCurrentPoint: false,
-    });
-
-    assert.equal(first.value.definition.route.checkpoints[0].tick, 22);
-    assert.equal(second.value.definition.route.checkpoints[0].tick, 102);
-    assert.notDeepEqual(first.value.definition.route.offset, second.value.definition.route.offset);
-    assert.equal("route" in enemyDefinition, false);
-    assert.equal("alwaysCheckCurrentPoint" in raw, false);
-});

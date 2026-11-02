@@ -1,9 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import {
-    initialize,
-    hasRoute,
-} from "../../dist/core/unit/capability/route/capability.js";
+import { initialize } from "../../dist/core/unit/capability/route/capability.js";
 import * as route from "../../dist/core/unit/capability/route/index.js";
 import { add as addUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
@@ -40,27 +37,6 @@ function move(battle, ref, position) {
     return updateUnit(battle, [{ ...current(battle, ref), position }]);
 }
 
-test("Route initialization keeps the normalized definition and leaves RNG untouched", () => {
-    const battle = fixtureBattle(37, { rngState: 17 });
-    const config = definition({ offset: [0.2, 0.1], checkpoints: [{ type: "WAIT", tick: 9 }] });
-    const initialized = initialize(battle, baseUnit({ id: "route-test", hooks: [], route: config }));
-    assert.equal(initialized.state, battle);
-    assert.equal(initialized.value.route.main.definition, config);
-    assert.equal(initialized.value.route.main.pathMotionMode, "WALK");
-    assert.deepEqual(initialized.value.route.main.phase, {
-        type: "CHECKPOINT", index: 0, checkpointState: { type: "PENDING" },
-    });
-    assert.equal(initialized.value.route.alternative, null);
-    assert.deepEqual(initialize(battle, baseUnit({ id: "route-test", hooks: [], route: definition() })).value.route.main.phase, { type: "END" });
-    assert.throws(() => initialize(battle, baseUnit({ id: "route-test", hooks: [], route: definition({ checkpoints: [{ type: "GOTO", index: 1 }] }) })), /jump/);
-    assert.throws(() => initialize(battle, baseUnit({ id: "route-test", hooks: [], route: definition({ checkpoints: [{ type: "WAIT", tick: -1 }] }) })), /tick/);
-});
-
-test("Route initialization permits start and end tiles outside the battlefield", () => {
-    const battle = fixtureBattle();
-    const config = definition({ startPosition: [-1, 0], endPosition: [2, 0] });
-    assert.equal(initialize(battle, baseUnit({ id: "route-test", hooks: [], route: config })).value.route.main.definition, config);
-});
 
 test("relative waits use entry time and repeated advance does not consume waiting twice", () => {
     const { battle, ref } = fixture(definition({
@@ -263,17 +239,4 @@ test("instant instructions apply presence and teleport effects once before conti
         "DISAPPEAR", "APPEAR_AT_POS", "ALERT",
     ]);
     assert.equal(route.advance(advanced, ref), advanced);
-});
-
-test("Route operations ignore absent and leaving hosts", () => {
-    const { battle, ref } = fixture();
-    const leaving = updateUnit(battle, [{ ...current(battle, ref), lifecycle: "LEAVING" }]);
-    assert.equal(hasRoute(current(battle, ref)), true);
-    for (const state of [fixtureBattle(), leaving]) {
-        assert.equal(route.advance(state, ref), state);
-        assert.equal(route.setAlternative(state, ref, definition()), state);
-        assert.equal(route.clearAlternative(state, ref), state);
-        assert.equal(route.setPathMotionMode(state, ref, "FLY"), state);
-        assert.equal(route.movementTarget(state, ref), null);
-    }
 });

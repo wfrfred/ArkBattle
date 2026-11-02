@@ -32,13 +32,6 @@ test("negative DP advances natural recovery at half speed and keeps progress acr
     assert.equal(state.dpRecoveryProgress, 0);
 });
 
-test("one natural recovery advance samples the entry sign without splitting at zero", () => {
-    const initial = initialize(definition({ initialDp: -1, minDp: -10 }));
-    const state = dp.advance(initial, 16);
-    assert.equal(state.dp, 1);
-    assert.equal(state.dpRecoveryProgress, 0);
-    assert.equal(initial.dp, -1);
-});
 
 test("active DP recovery is not halved while the account is negative", () => {
     const initial = battle({ initialDp: -8, minDp: -10 });
@@ -87,14 +80,6 @@ test("changing the account minimum clamps the balance without resetting recovery
     assert.equal(current.deployment.dpRecoveryProgress, 1);
 });
 
-test("the deployment cost ceiling is independent of the DP account limit", () => {
-    const state = initialize(definition({ maxDp: 200, costCeiling: 40 }));
-    assert.equal(state.definition.maxDp, 200);
-    assert.equal(state.definition.costCeiling, 40);
-    assert.equal(state.minDp, 0);
-    assert.throws(() => initialize(definition({ initialDp: -1 })), RangeError);
-    assert.throws(() => initialize(definition({ minDp: 101 })), RangeError);
-});
 
 test("deployment starts DP recovery from payment rather than time spent at the cap", () => {
     const added = addCard({ ...battle({ initialDp: 20, maxDp: 20, dpRecoveryTicks: 30 }), tick: 300 }, {

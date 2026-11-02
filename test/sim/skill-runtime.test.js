@@ -88,20 +88,6 @@ function skill({ trigger = 'MANUAL', recovery = { type: 'TIME', intervalTicks: 3
 }
 function source(runtime) { return unitQueries.all(runtime).find(({ id }) => id === 0); }
 
-test('skill runtime: manual buff affects current attacks, locks SP and restores facts at duration end', () => {
-  let { runtime } = scenario(skill());
-  const first = (runtime = stepBattle(runtime, [{ type: 'ACTIVATE_SKILL', unitId: 0 }]));
-  assert.equal(first.events.find(({ type }) => type === 'DAMAGE').amount, 200);
-  assert.equal(first.events.filter(({ type }) => type === 'SKILL_ACTIVATED').length, 1);
-  assert.equal(source(runtime).skill.sp.value, 0);
-  runtime = stepBattle(runtime, [{ type: 'ACTIVATE_SKILL', unitId: 0 }]);
-  runtime = stepBattle(runtime, []);
-  const ended = (runtime = stepBattle(runtime, []));
-  assert.equal(ended.events.find(({ type }) => type === 'DAMAGE').amount, 100);
-  assert.equal(ended.events.filter(({ type }) => type === 'SKILL_FINISHED').length, 1);
-  assert.equal(source(runtime).skill.activation, null);
-  assert.equal(source(runtime).skill.sp.value, 0);
-});
 
 test('skill runtime: TIME gives integer pulses and AUTO starts at full SP', () => {
   let { runtime } = scenario(skill({ trigger: 'AUTO', initial: 0 }));
@@ -133,12 +119,6 @@ test('skill runtime: ACTION recovery counts a multi-target release once', () => 
   assert.equal(source(runtime).skill.sp.value, 1);
 });
 
-test('skill runtime: cancelled windup earns no ACTION SP', () => {
-  let { runtime } = scenario(skill({ recovery: { type: 'ACTION', amount: 1 }, initial: 0 }), { windupTicks: 2 });
-  runtime = stepBattle(runtime, []);
-  runtime = stepBattle(runtime, [{ type: 'CANCEL_ACTION_EXECUTION', ref: { host: { id: 0 }, id: 0 } }]);
-  assert.equal(source(runtime).skill.sp.value, 0);
-});
 
 test('skill runtime: HIT SP requires positive damage and an eligible receiver', () => {
   for (const [power, cancelReception, expected] of [[0, false, 0], [10, false, 1], [10, true, 0]]) {

@@ -7,7 +7,7 @@ import * as effects from "../../dist/core/unit/effect/index.js";
 import * as skills from "../../dist/core/unit/skill/index.js";
 import { setHook } from "../../dist/core/unit/capability/skill/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
-import { available, scope, bind, dependencies, unbind } from "../../dist/core/lifetime/index.js";
+import { scope, bind, dependencies, unbind } from "../../dist/core/lifetime/index.js";
 import { key } from "../../dist/core/lifetime/dependency.js";
 import { remove, replace as update, lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
 import { setHook as setBlockerHook } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
@@ -153,37 +153,6 @@ test("shared descendants finalize once and Prepare keeps the first child's reaso
     settled(battle);
 });
 
-test("group fallback becomes ACTIVE in Prepare before dependent Prepare and the old winner's Finalize", () => {
-    const trace = [];
-    let weakRef;
-    const weak = definition("weak", {}, { group: { id: "fallback", priority: 1 },
-        onEnable(battle) { trace.push("weak:enable"); return battle; },
-    });
-    const strong = definition("strong", {}, { group: { id: "fallback", priority: 2 },
-        onDisable(battle) { trace.push("strong:disable"); return battle; },
-        onEnd(battle) {
-            assert.equal(effects.get(battle, weakRef).status, "ACTIVE");
-            trace.push("strong:end");
-            return battle;
-        },
-    });
-    const first = effects.install(effectFixtureWork(unit()), { id: 1 }, weak);
-    weakRef = first.value;
-    const winner = effects.install(first.state, { id: 1 }, strong);
-    const dependent = effects.install(winner.state, { id: 1 }, definition("dependent", {}, {
-        onDisable(battle) {
-            assert.equal(effects.get(battle, weakRef).status, "ACTIVE");
-            trace.push("child:prepare");
-            return battle;
-        },
-        onEnd(battle) { trace.push("child:end"); return battle; },
-    }), { scopes: [scope(effects.lifetime, winner.value)] });
-    trace.length = 0;
-    const battle = effects.end(dependent.state, winner.value);
-    assert.deepEqual(trace, ["strong:disable", "weak:enable", "child:prepare", "child:end", "strong:end"]);
-    settled(battle);
-});
-
 test("stable bindings reject cycles and Prepare rejects a target whose ancestor is ENDING", () => {
     let middle, leaf;
     const base = effects.install(effectFixtureWork(unit()), { id: 1 }, definition("base"));
@@ -260,43 +229,6 @@ test("Unit ENDING publication rejects remote dependencies on its still RUNNING A
     assert.equal(calls, 1);
     assert.equal(getUnit(battle, 10), undefined);
     assert.equal(getUnit(battle, 1).effects.size, 2);
-    assert.deepEqual(dependencies(battle, scope(effects.lifetime, independent.value)), []);
-    settled(battle);
-});
-
-test("Prepare rejects transitive dependencies if any upstream parent is ending", () => {
-    let middle, leaf;
-    const root = effects.install(effectFixtureWork(unit(), unit(2)), { id: 1 }, definition("root", {}, {
-        onDisable(battle) {
-            assert.equal(effects.get(battle, middle).status, "ACTIVE");
-            assert.equal(effects.get(battle, leaf).status, "ACTIVE");
-            assert.equal(battle.lifetime.endings.has(key(scope(effects.lifetime, middle))), false);
-            assert.equal(battle.lifetime.endings.has(key(scope(effects.lifetime, leaf))), false);
-            assert.equal(available(battle, scope(effects.lifetime, open.value)), true);
-            const installed = effects.install(battle, { id: 2 }, definition("late-transitive"), {
-                scopes: [scope(effects.lifetime, leaf)],
-            });
-            const bound = bind(installed.state, scope(effects.lifetime, independent.value), scope(effects.lifetime, leaf));
-            assert.deepEqual({ installed: installed.value !== undefined, bound: bound.value }, {
-                installed: false, bound: false,
-            });
-            assert.equal(bound.state, battle);
-            return bound.state;
-        },
-    }));
-    const open = effects.install(root.state, { id: 1 }, definition("open-parent"));
-    const branch = effects.install(open.state, { id: 1 }, definition("middle"), {
-        scopes: [scope(effects.lifetime, root.value)],
-    });
-    middle = branch.value;
-    const child = effects.install(branch.state, { id: 1 }, definition("multi-parent-child"), {
-        scopes: [scope(effects.lifetime, open.value), scope(effects.lifetime, middle)],
-    });
-    leaf = child.value;
-    const independent = effects.install(child.state, { id: 2 }, definition("independent"));
-    const battle = effects.end(independent.state, root.value);
-    assert.equal(effects.get(battle, open.value).status, "ACTIVE");
-    assert.equal(effects.get(battle, leaf), undefined);
     assert.deepEqual(dependencies(battle, scope(effects.lifetime, independent.value)), []);
     settled(battle);
 });

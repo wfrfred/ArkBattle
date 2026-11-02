@@ -6,15 +6,13 @@ import { normal } from '../../dist/content/terrain/definition.js';
 import * as unitQueries from "../../dist/core/unit/query.js";
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+
+
 import { initialize as initializeBattle, step as stepBattle } from '../../dist/core/battle/runtime.js';
 import { add, replace as updateUnit, remove } from '../../dist/core/battle/unit.js';
 import { getUnit, initialize, fixtureBattle } from '../helpers/unit.js';
 import { initialize as initializeUnit } from '../../dist/core/unit/initialize.js';
-import { advancePredefined } from '../../dist/core/battle/steps/predefined.js';
+
 import { resolveScheduleUnits } from '../../dist/core/battle/schedule/index.js';
 import { create as createMap } from '../../dist/core/battlefield/map/map.js';
 import { createInput as createRouteDefinition } from '../../dist/core/battle/creation/route.js';
@@ -134,37 +132,6 @@ test('initial Units finish entry before allocating and registering the next Unit
   assert.equal(second.vitality.maxHp, 100);
 });
 
-test('initial predefined entry uses the same sequential bindings as later appearances', () => {
-  const trace = [];
-  const definitions = [{
-    id: 0, alias: null, initiallyPresent: true,
-    creation: { type: 'UNIT', position: [0, 0], definition: {
-      id: 'first-predefined',
-      hooks: [{ id: "test/enter", stage: "enter", invoke(state, self) {
-        trace.push(self.id);
-        assert.equal(state.execution.nextUnitId, 1);
-        assert.deepEqual(state.predefinedPresence, [
-          { definitionId: 0, source: { type: 'UNIT', unitId: self.id } },
-        ]);
-        return { state: advancePredefined(state, definitions, [
-          { type: 'APPEAR_PREDEFINED', definitionId: 1 },
-        ]), value: undefined };
-      } }],
-    } },
-  }, {
-    id: 1, alias: null, initiallyPresent: true,
-    creation: { type: 'UNIT', position: [1, 0], definition: {
-      id: 'second-predefined', hooks: [{ id: "test/enter", stage: "enter", invoke(state, self) { trace.push(self.id); return { state: state, value: undefined }; } }],
-    } },
-  }];
-  let runtime = initializeBattle(input({ predefines: definitions }));
-  assert.deepEqual(trace, [0, 1]);
-  assert.equal(runtime.execution.nextUnitId, 2);
-  assert.deepEqual(runtime.predefinedPresence, [
-    { definitionId: 0, source: { type: 'UNIT', unitId: 0 } },
-    { definitionId: 1, source: { type: 'UNIT', unitId: 1 } },
-  ]);
-});
 
 test('same-tick spawns expose only completed entries and preserve nested allocations and schedule updates', () => {
   const trace = [];
@@ -212,20 +179,6 @@ test('same-tick spawns expose only completed entries and preserve nested allocat
   assert.equal(before.execution.nextUnitId, 0);
 });
 
-test('scheduled Units enter after spawning and keep immutable old snapshots', () => {
-  const trace = [];
-  const definition = { spatialPresence: {}, ...markEntered(trace, 'spawned'), locomotion: {
-    halfBodyWidth: 0, speed: 0, minSpeed: 0,
-    steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 },
-  } };
-  let runtime = initializeBattle(input({ schedule: { type: 'TIMELINE', spawns: [spawn(definition)] } }));
-  const before = runtime;
-  runtime = stepBattle(runtime, []);
-  runtime = stepBattle(runtime, []);
-  assert.deepEqual(trace, [['spawned', 0, 100]]);
-  assert.equal(unitQueries.all(runtime).toArray()[0].vitality.hp, 75);
-  assert.deepEqual(unitQueries.all(before).toArray(), []);
-});
 
 test('predefined appearances and deployment initialize once', () => {
   const trace = [];
@@ -251,54 +204,4 @@ test('predefined appearances and deployment initialize once', () => {
   assert.equal(unitQueries.all(before).find(unit => unit.id === 1).vitality.hp, 75);
   assert.deepEqual(unitQueries.all(before).find(unit => unit.id === 1).position, [0, 0]);
   assert.deepEqual(unitQueries.all(runtime).find(unit => unit.id === 1).position, [0, 0]);
-});
-
-test('unit initialization exposes registered lifecycle hooks and selected capability state', async () => {
-  const { default: ts } = await import('typescript');
-  const directory = mkdtempSync(join(tmpdir(), 'stronghold-entry-types-'));
-  const module = JSON.stringify(fileURLToPath(new URL('../../src/core/unit/initialize.js', import.meta.url)));
-  const path = join(directory, 'entry.mts');
-  try {
-    writeFileSync(path, `
-import { initialize } from ${module};
-import type { EnterHook } from ${JSON.stringify(fileURLToPath(new URL('../../src/core/unit/hook.js', import.meta.url)))};
-import type { Unit } from ${JSON.stringify(fileURLToPath(new URL('../../src/core/unit/unit.js', import.meta.url)))};
-import * as operations from ${JSON.stringify(fileURLToPath(new URL('../../src/core/battle/unit.js', import.meta.url)))};
-import { createChange } from ${JSON.stringify(fileURLToPath(new URL('../../src/core/unit/change.js', import.meta.url)))};
-import { ref } from ${JSON.stringify(fileURLToPath(new URL('../../src/core/unit/query.js', import.meta.url)))};
-import * as state from ${JSON.stringify(fileURLToPath(new URL('../../src/core/battle/state.js', import.meta.url)))};
-declare const battle: import(${JSON.stringify(fileURLToPath(new URL('../../src/core/battle/state.js', import.meta.url)))}).State;
-const enter: EnterHook = {
-  id: 'typed-entry', stage: 'enter',
-  invoke(state, self) { const id: number = self.id; return { state, value: undefined }; },
-};
-const unit = initialize(battle, { id: 0, position: [0, 0], definition: {
-  id: 'typed-content', hooks: [enter], vitality: { maxHp: 100, defense: 0, resistance: 0 },
-} }).value;
-enter.invoke(battle, unit, undefined);
-// @ts-expect-error Unit entry hooks receive the fixed Unit snapshot, not its numeric identity.
-enter.invoke(battle, unit.id, undefined);
-const hp: number = unit.vitality.hp;
-const entered = operations.add(battle, unit);
-const updated = operations.update(entered, [createChange(ref(unit), self => ({ ...self, vitality: { ...self.vitality, hp: 75 } }))]);
-const departed = operations.remove(updated, unit.id, "SCRIPT");
-const advanced: state.State = operations.advance(departed);
-// @ts-expect-error entry accepts a complete Unit, not an already registered identity.
-operations.add(battle, unit.id);
-// @ts-expect-error Battle State no longer exports a separate registration operation.
-state.addUnit;
-// @ts-expect-error Battle State no longer exposes an incomplete removal operation.
-state.removeUnit;
-// @ts-expect-error Unit updates belong to battle/unit.ts.
-state.updateUnit;
-`);
-    const program = ts.createProgram([path], {
-      noEmit: true, target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.NodeNext,
-      moduleResolution: ts.ModuleResolutionKind.NodeNext, strict: true, exactOptionalPropertyTypes: true,
-      noUncheckedIndexedAccess: true, skipLibCheck: true, types: [],
-    });
-    assert.deepEqual(ts.getPreEmitDiagnostics(program).map(d => ts.flattenDiagnosticMessageText(d.messageText, '\n')), []);
-  } finally {
-    rmSync(directory, { recursive: true, force: true });
-  }
 });

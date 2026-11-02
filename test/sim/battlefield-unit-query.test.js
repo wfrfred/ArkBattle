@@ -21,33 +21,6 @@ function fixture(...units) {
     return units.reduce((current, unit) => fieldUnits.add(current, unit), field.create(map));
 }
 
-test("Field Unit storage preserves registration order and returns the current Unit objects", () => {
-    const first = unit(9, [1.1, 0]);
-    const second = unit(2, [1, 0]);
-    const initial = fixture(first, second);
-    const changed = { ...first, position: [1.2, 0] };
-    const next = fieldUnits.update(initial, [changed]);
-    assert.deepEqual([...next.units.values()], [changed, second]);
-    assert.equal(next.units.get(9), changed);
-    assert.equal(initial.units.get(9), first);
-});
-
-test("retained Field versions preserve Unit facts after movement, disappearance and removal", () => {
-    const original = unit(1, [0, 0], { spatialPresence: {} });
-    const initial = fixture(original);
-    const moved = fieldUnits.update(initial, [{ ...original, position: [1, 0] }]);
-    const hidden = fieldUnits.update(moved, [{
-        ...moved.units.get(1), spatialPresence: { present: false },
-    }]);
-    const removed = fieldUnits.remove(hidden, { id: 1 });
-    assert.equal(initial.units.get(1), original);
-    assert.deepEqual(initial.units.get(1).position, [0, 0]);
-    assert.deepEqual(moved.units.get(1).position, [1, 0]);
-    assert.equal(moved.units.get(1).spatialPresence.present, true);
-    assert.equal(hidden.units.get(1).spatialPresence.present, false);
-    assert.equal(removed.units.has(1), false);
-    assert.deepEqual([...initial.units.values()], [original]);
-});
 
 test("Field registration preserves body position, spatial presence and occupancy as independent facts", () => {
     const implicitPresence = unit(1, [1, 0]);

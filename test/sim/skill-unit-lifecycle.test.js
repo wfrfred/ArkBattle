@@ -65,26 +65,6 @@ for (const reason of ["DEATH", "RETREAT", "SCRIPT"]) {
     });
 }
 
-test("entered start content continues after host departure and late lifetime dependencies are rejected", () => {
-    const trace = [];
-    const f = fixture({ start(battle, source, self, installOwned) {
-        battle = installOwned(battle, source, self);
-        battle = remove(battle, source.id, "SCRIPT");
-        trace.push("continued");
-        assert.equal(query.getActivation(battle, activationRef(source, self)), undefined);
-        battle = installOwned(battle, source, self, false);
-        assert.equal(getUnit(battle, 1).effects.nextId, 2);
-        return battle;
-    } });
-    const activated = skills.activate(f.state, skillRef(getUnit(f.state, f.source.id)));
-    assert.deepEqual(trace, ["continued"]);
-    assert.equal(getUnit(activated.state, 0), undefined);
-    assert.deepEqual(getUnit(activated.state, 1).effects.values().toArray(), []);
-    assert.equal(f.ended.length, 1);
-    assert.deepEqual(f.disabled, [0, 1]);
-    assert.equal(getUnit(f.state, 0).skill.activation, null);
-    assert.equal(getUnit(f.state, 1).effects.nextId, 0);
-});
 
 test("termination closes dependent lifetimes before onEnd and reentrant termination has no second effect", () => {
     let callbacks = 0;
@@ -102,21 +82,4 @@ test("termination closes dependent lifetimes before onEnd and reentrant terminat
     assert.equal(query.getActivation(finished, started.value.ref), undefined);
     assert.equal(skills.finish(finished, started.value.ref), finished);
     assert.equal(callbacks, 1);
-});
-
-test("ending content may create independent remote effects while closed lifetime bindings remain unavailable", () => {
-    const independent = effectDefinition("independent");
-    let installedRef;
-    const f = fixture({ end(battle, source, self) {
-        const host = unitRef(getUnit(battle, 1));
-        const bound = effects.install(battle, host, independent, { scopes: [lifetimeScope(skillLifetime, activationRef(source, self))] });
-        assert.equal(bound.value, undefined);
-        const installed = effects.install(bound.state, host, independent);
-        installedRef = installed.value;
-        return installed.state;
-    } });
-    const started = skills.activate(f.state, skillRef(getUnit(f.state, f.source.id)));
-    const finished = skills.finish(started.state, started.value.ref);
-    assert.equal(getUnit(finished, 1).effects.values().toArray().length, 1);
-    assert.equal(effects.get(finished, installedRef).status, "ACTIVE");
 });

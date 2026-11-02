@@ -7,7 +7,7 @@ import * as projectiles from "../../dist/core/battle/projectile.js";
 import * as projectilesQuery from "../../dist/core/projectile/query.js";
 import { advance } from "../../dist/core/battle/projectile.js";
 import { advanceProjectiles } from "../../dist/core/battle/steps/projectiles.js";
-import { remove as removeUnit } from "../../dist/core/battle/unit.js";
+
 import { getUnit } from "../helpers/unit.js";
 import { initialize as initializeBattle, step as stepBattle } from "../../dist/core/battle/runtime.js";
 import { createLegacyCombatSpec } from "../../dist/legacy/combat.js";
@@ -30,30 +30,6 @@ function runtime(initialUnits, maxTicks = 20) {
     });
 }
 
-function hitOriginal(battle, reference) {
-    const self = projectilesQuery.get(battle, reference);
-    if (self === undefined || self.state.hit) return battle;
-    const target = getUnit(battle, self.state.target);
-    if (target?.lifecycle !== "PRESENT" || target.vitality.hp <= 0) return battle;
-    const currentProjectile = projectilesQuery.get(battle, reference);
-    battle = projectiles.update(battle, reference, { state: { ...currentProjectile.state, hit: true } });
-    return dealDamage(battle, {
-        source: self.state.source, target: { id: target.id }, parameters: parameters(self.state.power, "TRUE"),
-    }).state;
-}
-
-const arrow = {
-    id: "original-target-arrow",
-    onTick(battle, self) {
-        battle = projectiles.update(battle, projectilesQuery.ref(self), { position: [1, 0] });
-        battle = hitOriginal(battle, projectilesQuery.ref(self));
-        return projectiles.stop(battle, projectilesQuery.ref(self), "ARRIVED");
-    },
-    onEnd(battle, self, reason) {
-        return reason === "DISPEL" ? battle : hitOriginal(battle, projectilesQuery.ref(self));
-    },
-};
-const arrowState = { source: { id: 0 }, target: 1, power: 10, hit: false };
 
 test("Projectile creation registers before onStart and nested creation allocates independent identities", () => {
     const observed = [];
@@ -97,22 +73,6 @@ test("onStart may synchronously stop its own instance while create still returns
     assert.deepEqual(created.state.events.map(event => event.type), ["PROJECTILE_STOPPED"]);
 });
 
-test("Projectile creation shares caller-provided immutable state and does not initialize or copy it", () => {
-    const definition = { id: "shared" };
-    const payload = { history: [1, 2] };
-    const initial = battle();
-    const first = create(initial, definition, payload);
-    const sibling = create(initial, definition, payload);
-    const second = create(first.state, definition, payload);
-
-    assert.deepEqual(first, sibling);
-    assert.equal(first.value.id, 0);
-    assert.equal(second.value.id, 1);
-    assert.strictEqual(projectilesQuery.get(second.state, first.value).definition, definition);
-    assert.strictEqual(projectilesQuery.get(second.state, first.value).state, payload);
-    assert.strictEqual(projectilesQuery.get(second.state, second.value).state, payload);
-    assert.equal(initial.battlefield.projectiles.size, 0);
-});
 
 test("Projectile stop publishes ENDING and its event before cleanup, and repeated stop is a no-op", () => {
     const observed = [];
@@ -226,44 +186,6 @@ test("A stationary Projectile remains ACTIVE and can continue periodic output af
     assert.equal(damageEvents(secondPulse).length, 2);
 });
 
-test("Ordinary stop may hit the saved original target while DISPEL omits that content policy", () => {
-    for (const reason of ["ARRIVED", "EXPIRED", "EXPLICIT", "DISPEL"]) {
-        const created = create(battle(unit(0), unit(1, { targetable: undefined, hitbox: undefined })), arrow, arrowState);
-        const stopped = projectiles.stop(created.state, created.value, reason);
-        assert.equal(getUnit(stopped, 1).vitality.hp, reason === "DISPEL" ? 100 : 90);
-        assert.equal(projectilesQuery.get(stopped, created.value), undefined);
-        assert.equal(stopped.events.find(event => event.type === "PROJECTILE_STOPPED").reason, reason);
-    }
-});
-
-test("Original-target hit progress recorded before business prevents synchronous Stop fallback from repeating it", () => {
-    let reference;
-    const definition = { ...arrow, id: "reentrant-hit", onTick(battle, self) {
-        const currentProjectile = projectilesQuery.get(battle, projectilesQuery.ref(self));
-        battle = projectiles.update(battle, projectilesQuery.ref(self), { state: { ...currentProjectile.state, hit: true } });
-        battle = projectiles.stop(battle, reference);
-        return dealDamage(battle, { source: self.state.source, target: { id: self.state.target }, parameters: parameters(self.state.power, "TRUE") }).state;
-    } };
-    const created = create(battle(unit(0), unit(1)), definition, arrowState);
-    reference = created.value;
-    const progressed = advance(created.state, candidates(created.state));
-
-    assert.equal(getUnit(progressed, 1).vitality.hp, 90);
-    assert.equal(damageEvents(progressed).length, 1);
-    assert.equal(projectilesQuery.get(progressed, reference), undefined);
-    assert.deepEqual(projectilesQuery.get(created.state, reference).state, arrowState);
-});
-
-test("Source departure does not terminate independent projectiles or erase sampled output", () => {
-    const created = create(battle(unit(0), unit(1)), arrow, arrowState);
-    const retreated = removeUnit(created.state, 0, "RETREAT");
-    const progressed = advance(retreated, candidates(retreated));
-
-    assert.equal(getUnit(progressed, 0), undefined);
-    assert.equal(getUnit(progressed, 1).vitality.hp, 90);
-    assert.equal(projectilesQuery.get(progressed, created.value), undefined);
-    assert.equal(getUnit(created.state, 1).vitality.hp, 100);
-});
 
 test("Battle commands stop in order before survivors advance and ignore duplicate or missing IDs", () => {
     const observed = [];

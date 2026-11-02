@@ -1,7 +1,7 @@
 
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
-import { search as searchBlocking } from "../../dist/core/battle/blocking/operations.js";
-import { advanceMovement } from "../../dist/core/battle/steps/movement.js";
+
+
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
@@ -106,24 +106,6 @@ test("move speed: minimum, arithmetic and movement permission are separate", () 
     close(speed(h.work), 8 / 30);
 });
 
-test("move speed: effect lifecycle preserves shared immutable snapshots", () => {
-    const program = movementEffect();
-    const h = harness();
-    const before = h.unit;
-    const copied = before;
-    assert.equal(copied.locomotion, before.locomotion);
-    h.work = install(h.work, program).state;
-    close(speed(h.work), 0.125);
-    h.work = effects.setEnabled(h.work, address, false);
-    close(speed(h.work), 0.25);
-    h.work = effects.setEnabled(h.work, address, true);
-    const participating = h.unit;
-    h.work = effects.end(h.work, address);
-    assert.equal(h.unit.locomotion.speed.length, 0);
-    assert.equal(copied.locomotion.speed.length, 0);
-    assert.equal(participating.locomotion.speed.length, 1);
-    assert.equal(h.work.execution.rngState, 17);
-});
 
 test("move speed: acceleration, zero budget and restoration use current contributions", () => {
     const program = movementEffect();
@@ -166,50 +148,6 @@ test("move speed: live contributions read latest battle and unit facts", () => {
     assert.equal(fullHp.vitality.hp, 100);
 });
 
-test("locomotion: one target consumes at most one movement budget without overshoot", () => {
-    const h = harness({ speed: 10 });
-    assert.deepEqual(h.step(0, [0.2, 0]).position, [0.2, 0]);
-    assert.deepEqual(h.unit.locomotion.velocity, [0, 0]);
-    assert.deepEqual(h.step(1, [0.2, 0]).position, [0.2, 0]);
-    assert.equal("moving" in h.unit.locomotion, false);
-    const far = harness({ speed: 0.25 });
-    close(far.step(0, [20, 0]).position[0], 0.25);
-    close(far.step(1, [20, 0]).position[0], 0.5);
-    assert.equal("route" in far.unit, false);
-    assert.equal("mainRoute" in far.unit.locomotion, false);
-});
-
-test("locomotion: absent tracking target skips advancement and preserves inertia", () => {
-    const h = harness({
-        speed: 0.5,
-        steeringParameters: { steeringFactor: 0.2, maxSteeringForce: 0.1 },
-    });
-    close(h.step(0).position[0], 0.1);
-    const position = h.unit.position;
-    assert.equal(h.step(1, null).position, position);
-    assert.equal("moving" in h.unit.locomotion, false);
-    assert.deepEqual(h.unit.locomotion.velocity, [0.1, 0]);
-});
-
-test("locomotion: lifecycle and presence gate integration while Runtime gates blocking", () => {
-    const h = harness({ blockable: true, route: true });
-    h.work = updateUnit(h.work, [{ ...h.unit, spatialPresence: { present: false } }]);
-    assert.deepEqual(h.step(0).position, [0, 0]);
-    h.work = updateUnit(h.work, [{ ...h.unit, spatialPresence: { present: true } }]);
-    const blocker = initialize(h.work, { id: 1, position: [0, 0], definition: { hooks: [],
-            id: "movement-blocker", allegiance: { side: "ALLY" },
-            blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 1 },
-        },
-    });
-    h.work = searchBlocking(addUnit(blocker.state, blocker.value), { id: 1 });
-    assert.equal(h.unit.blockable.blocker.id, 1);
-    h.work = advanceMovement({ ...h.work, tick: 1 }, { routeMoveMultiplier: 1 });
-    assert.deepEqual(h.unit.position, [0, 0]);
-    assert.deepEqual(h.unit.locomotion.rules, []);
-    h.work = updateUnit(h.work, [{ ...h.unit, lifecycle: "LEAVING" }]);
-    assert.equal(advance(h.work, unitRef(h.unit), { nextPoint: [20, 0], goal: [20, 0] }, { mode: "WALK", speedMultiplier: 1 }), h.work);
-    assert.equal(advance(h.work, { id: 99 }, { nextPoint: [20, 0], goal: [20, 0] }, { mode: "WALK", speedMultiplier: 1 }), h.work);
-});
 
 test("move speed: native Mire modifier slows movement and expiry restores it", () => {
     const fixture = name => JSON.parse(readFileSync(

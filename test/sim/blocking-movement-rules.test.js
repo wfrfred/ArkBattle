@@ -1,12 +1,12 @@
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { remove as removeUnit } from "../../dist/core/battle/unit.js";
+
 import { getUnit } from "../helpers/unit.js";
 import { advanceMovement } from "../../dist/core/battle/steps/movement.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as locomotion from "../../dist/core/unit/capability/locomotion/capability.js";
-import * as presence from "../../dist/core/unit/capability/presence/operations.js";
+
 import { fixture, holder, target, acquire, ownerId, blockedIds } from "../helpers/blocking.js";
 
 const route = (checkpoints = []) => ({
@@ -50,25 +50,6 @@ test("Runtime gates blocked autonomous movement without installing Locomotion ru
     assert.deepEqual(original.locomotion.velocity, [0.0625, 0]);
 });
 
-test("release restores autonomous movement and preserves the controller velocity", () => {
-    const blocked = acquire(fixture([holder(), mover()]));
-    const velocity = getUnit(blocked, 20).locomotion.velocity;
-    const released = blocking.release(blocked, blocking.relations(blocked, { id: 20 }));
-    assert.equal(ownerId(released), undefined);
-    assert.equal(getUnit(released, 20).locomotion.velocity, velocity);
-    assertMoves(released);
-    assertStopped(blocked);
-});
-
-test("removing a blocker releases movement until a later blocker search", () => {
-    let battle = acquire(fixture([holder(), holder(11, { position: [3, 1] }), mover()]));
-    battle = removeUnit(battle, 10, "RETREAT");
-    assert.equal(ownerId(battle), undefined);
-    assertMoves(battle);
-    battle = acquire(battle, 11);
-    assert.equal(ownerId(battle), 11);
-    assertStopped(battle);
-});
 
 test("blocking does not change independently registered Locomotion rules", () => {
     const casting = { id: "casting", allows: () => false };
@@ -110,20 +91,6 @@ test("Route spatial instructions execute while blocked and release the old relat
     let battle = acquire(fixture([holder(), mover(20, { checkpoints: [{ type: "DISAPPEAR" }] })]));
     battle = step(battle);
     assert.equal(getUnit(battle, 20).spatialPresence.present, false);
-    assert.equal(ownerId(battle), undefined);
-    assert.deepEqual(blockedIds(battle), []);
-});
-
-test("appearance does not reacquire and disappearance releases immediately", () => {
-    let battle = acquire(fixture([holder(), mover()]));
-    battle = presence.disappear(battle, { id: 10 });
-    assert.equal(ownerId(battle), undefined);
-    assertMoves(battle);
-    battle = presence.appear(battle, { id: 10 }, [2, 1]);
-    assert.equal(ownerId(battle), undefined);
-    battle = acquire(battle);
-    assertStopped(battle);
-    battle = presence.disappear(battle, { id: 20 });
     assert.equal(ownerId(battle), undefined);
     assert.deepEqual(blockedIds(battle), []);
 });

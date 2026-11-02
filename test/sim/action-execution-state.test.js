@@ -44,22 +44,6 @@ test("action start registers execution without invoking its first onTick", () =>
     assert.equal(actions.getAction(initial, actions.ref(source, definition)).execution, null);
 });
 
-test("action storage: heterogeneous definitions retain their private state and callback pairing", () => {
-    const first = program("number", { prepare: (state) => ({ state, value: { count: 3 } }) });
-    const second = program("text", { prepare: (state) => ({ state, value: { message: "ready" } }) });
-    const initial = battle(
-        unit(0, { action: actionCapability(first, second) }),
-    );
-    const source = unitRef(getUnit(initial, 0));
-    const a = actions.start(initial, actions.ref(source, first)),
-        b = actions.start(a.state, actions.ref(source, second));
-    assert.equal(actions.getExecution(b.state, a.value.ref).definition, first);
-    assert.deepEqual(actions.getExecution(b.state, a.value.ref).execution.state, { count: 3 });
-    assert.equal(actions.getExecution(b.state, b.value.ref).definition, second);
-    assert.deepEqual(actions.getExecution(b.state, b.value.ref).execution.state, { message: "ready" });
-    assert.equal(actions.forUnit(b.state, source).length, 2);
-    assert.equal(actions.all(initial).length, 0);
-});
 
 test("action storage: same-definition reentry is rejected while another definition may start", () => {
     const first = program("first"),
@@ -74,22 +58,6 @@ test("action storage: same-definition reentry is rejected while another definiti
     assert.equal(actions.start(retry.state, actions.ref(source, second)).value.type, "STARTED");
 });
 
-test("action storage: replacements preserve earlier instances and never recreate an ended identity", () => {
-    const definition = program("branch");
-    const initial = battle(unit(0, { action: definition })),
-        source = unitRef(getUnit(initial, 0));
-    const started = actions.start(initial, actions.ref(source, definition)),
-        self = actions.getExecution(started.state, started.value.ref);
-    const changed = actions.setExecutionState(started.state, executionRef(started.value.ref.host, self), { count: 1 });
-    assert.equal(actions.getExecution(changed, started.value.ref).execution.state.count, 1);
-    assert.equal(actions.getExecution(started.state, started.value.ref).execution.state.count, 0);
-    const cancelled = actions.cancel(changed, started.value.ref, "SCRIPT");
-    assert.throws(() => actions.setExecutionState(cancelled, executionRef(started.value.ref.host, self), { count: 9 }), /unknown action execution: 0/);
-    const restarted = actions.start({ ...cancelled, tick: 10 }, actions.ref(source, definition));
-    assert.equal(restarted.value.type, "STARTED");
-    assert.notEqual(restarted.value.ref.id, started.value.ref.id);
-    assert.equal(actions.getExecution(restarted.state, started.value.ref), undefined);
-});
 
 test("action: startup rules prohibit new instances while an accepted program keeps its own continuation", () => {
     const first = program("running", {

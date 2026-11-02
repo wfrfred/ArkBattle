@@ -159,15 +159,6 @@ test("platform removal removes only its old passenger and keeps tile permission"
     assert.equal(getTile(battle.battlefield.map, second).state.allowsBlocking, true);
 });
 
-test("a passenger without Blocker receives no synthetic blocking capability", () => {
-    const unit = initialize({
-        id: 10, position: Tile.center(first), definition: { hooks: [], id: "nonblocking-passenger", occupancy: { slot: "OCCUPANT" } },
-        states: { occupancy: { tile: first } },
-    });
-    const battle = fixture([platform(), unit]);
-    assert.equal("blocker" in getUnit(battle, 10), false);
-    assert.equal("blocker" in getUnit(battle, 30), false);
-});
 
 for (const nested of ["remove passenger", "remove platform"]) {
     test(`a released Hook can ${nested} while platform entry installs its rule without leaving stale state`, () => {

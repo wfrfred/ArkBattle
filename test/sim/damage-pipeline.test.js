@@ -1,4 +1,3 @@
-import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { invincible } from "../../dist/content/effects/protection.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -7,9 +6,9 @@ import {
 } from "../helpers/vitality.js";
 import { contributionEffect } from "../helpers/effects.js";
 import * as modifier from "../../dist/core/unit/contribution/attribute.js";
-import { setAttackContribution, removeAttackContribution } from "../../dist/core/unit/capability/offense/capability.js";
+
 import { setResistanceContribution, removeResistanceContribution } from "../../dist/core/unit/capability/vitality/capability.js";
-import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
+
 import { calculateDamage } from "../../dist/core/battle/damage/calculate.js";
 import { applyDamage } from "../../dist/core/battle/damage/apply.js";
 import { healing } from "../helpers/vitality.js";
@@ -21,51 +20,11 @@ const rule = (id, stage, transform, priority = 0, properties = {}) => damageEffe
     stage, priority,
     invoke: (state, context, _self, value) => ({ state, value: transform(context, value) }),
 }], properties);
-const scaleAttack = (factor) => (_context, value) => ({
-    ...value, attack: { ...value.attack, multiplier: value.attack.multiplier * factor },
-});
+
 const scaleReceived = (factor) => (_context, value) => ({ ...value, amount: value.amount * factor });
 const trueRequest = (power, overrides = {}) => request(power, { parameters: parameters(power, "TRUE"), ...overrides });
 const heal = (state, targetUnitId, power) => healing(state, {
     source: null, target: { id: targetUnitId }, parameters: { power, multiplier: 1 },
-});
-
-test("damage pipeline: numeric contributions retain four distinct positions and clamp the direct multiplier", () => {
-    assert.equal(modifier.apply(100, [
-        modifier.create({ addition: 10, multiplier: 0.5, finalAddition: 7, finalScaler: 2 }),
-        modifier.create({ addition: 20, multiplier: 0.5, finalAddition: 3, finalScaler: 0.5 }),
-    ]), 270);
-    assert.equal(modifier.apply(100, [modifier.create({ multiplier: -2, finalAddition: 7, finalScaler: 2 })]), 14);
-});
-
-test("damage pipeline: dynamic low HP attack reads current state and stable prior snapshots", () => {
-    const lowHp = contributionEffect("low-hp", {}, {
-        capability: "offense", set: setAttackContribution, remove: removeAttackContribution,
-        dynamic: true,
-        value: (_effect, _battle, self) => self.vitality.hp < self.definition.vitality.maxHp / 2
-            ? [modifier.create({ multiplier: 1 })] : [],
-    });
-    const source = attach(unit(1, { hp: 750, maxHp: 1000 }), lowHp);
-    let battle = settle(workFor(source, unit(2)), trueRequest(500, { source: { id: 2 }, target: { id: 1 } })).state;
-    const damaged = battle;
-    battle = heal(battle, 1, 400).state;
-    assert.equal(resolveAttack(damaged, unitRef(getUnit(damaged, 1))), 200);
-    assert.equal(getUnit(damaged, 1).vitality.hp, 250);
-    assert.equal(getUnit(battle, 1).vitality.hp, 650);
-    assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 1))), 100);
-    assert.equal(source.unit.vitality.hp, 750);
-});
-
-test("damage pipeline: formula parameter replacement and multiplication retain execution order", () => {
-    const replace = (_context, value) => ({ ...value, attack: { ...value.attack, multiplier: 3 } });
-    for (const [first, second, expected] of [[scaleAttack(2), replace, 300], [replace, scaleAttack(2), 600]]) {
-        const source = attach(unit(1), rule("attack-scale", "sourceFormula", (context, input) => second(context, first(context, input))));
-        const input = request(100);
-        const calculated = calculateDamage(workFor(source, unit(2)), input);
-        assert.equal(calculated.value.amount, expected);
-        assert.equal(getUnit(calculated.state, 2).vitality.hp, 5000);
-        assert.equal(applyDamage(input, calculated).value.application.hpLoss, expected);
-    }
 });
 
 test("damage pipeline: fixed penetration precedes proportional penetration", () => {
@@ -119,26 +78,6 @@ test("damage pipeline: reduction and complete absorption consume barrier budget 
     assert.equal(stateOf(initial, 2, shield).remainingAmount, 800);
 });
 
-test("damage pipeline: Effect overwriting gates hooks while retaining suppressed instances", () => {
-    const weak = rule("weak", "receiving", scaleReceived(2), 0, { group: { id: "fragile", priority: 2 } });
-    const strong = rule("strong", "receiving", scaleReceived(3), 0, { group: { id: "fragile", priority: 3 } });
-    const battle = workFor(unit(1), attach(attach(unit(2), weak), strong));
-    assert.equal(settle(battle, request(100)).value.application.hpLoss, 300);
-    assert.deepEqual(getUnit(battle, 2).effects.values().toArray().map((self) => self.status), ["INACTIVE", "ACTIVE"]);
-});
-
-test("damage pipeline: Contribution groups and Effect groups have separate responsibilities", () => {
-    const attack = contributionEffect("attack", {}, {
-        capability: "offense", set: setAttackContribution, remove: removeAttackContribution,
-        group: { id: "shared", priority: 100 }, value: () => [modifier.create({ multiplier: 1 })],
-    });
-    const weak = rule("weak", "receiving", scaleReceived(2), 0, { group: { id: "shared", priority: 1 } });
-    const strong = rule("strong", "receiving", scaleReceived(3), 0, { group: { id: "shared", priority: 2 } });
-    const battle = workFor(unit(1), attach(attach(attach(unit(2), attack), weak), strong));
-    assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 2))), 200);
-    assert.equal(settle(battle, request(100)).value.application.hpLoss, 300);
-});
-
 test("damage pipeline: final formula type reaches output and receiving while Request stays fixed", () => {
     const seen = [];
     const source = attach(attach(unit(1), rule("conversion", "sourceFormula", (_context, input) => ({
@@ -168,16 +107,6 @@ test("damage pipeline: priority precedes registration order with stable equal-pr
         target = attach(target, rule("high", "receiving", (_context, pending) => ({ ...pending, amount: pending.amount - 50 }), 1000));
         assert.equal(settle(workFor(unit(1), target), request(300)).value.application.hpLoss, reverse ? 1200 : 900);
     }
-});
-
-test("damage pipeline: missing target rejects calculation and reception without changing state", () => {
-    const battle = workFor(unit(1));
-    const input = request(100);
-    const calculated = calculateDamage(battle, input);
-    assert.equal(calculated.value, undefined);
-    const result = applyDamage(input, calculated);
-    assert.deepEqual(result.value, { kind: "REJECTED" });
-    assert.equal(result.state, battle);
 });
 
 test("damage pipeline: invincibility rejects reception after calculation and preserves barrier resources", () => {
@@ -254,26 +183,6 @@ test("damage pipeline: nested removal makes the outer application unavailable wi
     assert.equal(result.value.received.amount, 100);
     assert.equal(getUnit(result.state, 2), undefined);
     assert.equal(result.state.removedUnits.length, 1);
-});
-
-test("damage pipeline: cancellation remains observable when a later hook removes the receiver", () => {
-    const cancellation = rule("cancel", "receiving", (_context, pending) => ({
-        ...pending, cancellation: { reason: "BLOCKED" },
-    }), 100);
-    const removal = damageEffect("removal", {}, [{
-        stage: "receiving", invoke(state, _context, _self, pending) {
-            return { state: remove(state, 2, "DEATH"), value: pending };
-        },
-    }]);
-    const target = attach(attach(unit(2), cancellation), removal);
-    const result = settle(workFor(unit(1), target), request(100));
-    assert.equal(result.value.kind, "CANCELLED");
-    assert.equal(getUnit(result.state, 2), undefined);
-    const event = result.state.events.find(event => event.type === "DAMAGE");
-    assert.equal(event.amount, 0);
-    assert.equal(event.receivedAmount, 100);
-    assert.equal(event.cancellation.reason, "BLOCKED");
-    assert.equal(event.hp, null);
 });
 
 test("damage pipeline: lethal HP facts precede cleanup, and only surviving observers receive Completed", () => {

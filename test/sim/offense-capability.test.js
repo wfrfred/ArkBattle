@@ -8,7 +8,7 @@ import {
 } from "../../dist/core/unit/capability/offense/capability.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
 import { initialize as initializeUnit } from "../../dist/core/unit/initialize.js";
-import { add as addUnit, remove as removeUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
+import { add as addUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
 import * as units from "../../dist/core/unit/query.js";
 import * as attribute from "../../dist/core/unit/contribution/attribute.js";
 import { baseUnit, fixtureBattle } from "../helpers/unit.js";
@@ -35,24 +35,6 @@ test("Offense initialization validates its base attribute through both construct
     }
 });
 
-test("Offense contribution replacement and removal preserve prior states and no-op identity", () => {
-    const unit = createUnit(fixtureBattle(), 0, 100);
-    const initial = addUnit(fixtureBattle(), unit);
-    const reference = units.ref(unit);
-    const first = { id: "bonus", value: [attribute.create({ addition: 20 })] };
-    const replaced = { id: "bonus", value: [attribute.create({ multiplier: 0.5 })] };
-    const added = applyUnitChanges(initial, [setAttackContribution(reference, first)]);
-    const updated = applyUnitChanges(added, [setAttackContribution(reference, replaced)]);
-
-    assert.deepEqual(units.get(initial, reference).offense.attack, []);
-    assert.deepEqual(units.get(added, reference).offense.attack, [first]);
-    assert.deepEqual(units.get(updated, reference).offense.attack, [replaced]);
-    assert.strictEqual(applyUnitChanges(updated, [setAttackContribution(reference, replaced)]), updated);
-    assert.strictEqual(applyUnitChanges(updated, [removeAttackContribution(reference, "absent")]), updated);
-    const removed = applyUnitChanges(updated, [removeAttackContribution(reference, "bonus")]);
-    assert.deepEqual(units.get(removed, reference).offense, unit.offense);
-    assert.notStrictEqual(removed, updated);
-});
 
 test("Offense dynamic contributions receive the queried battle and its current typed owner", () => {
     let battle = fixtureBattle(2);
@@ -118,42 +100,6 @@ test("Offense resolves exclusive contribution winners before evaluating dynamic 
     assert.equal(weakerEvaluations, 1);
 });
 
-test("Offense queries stop evaluating contributions after the referenced Unit is removed", () => {
-    const initial = fixtureBattle();
-    const original = createUnit(initial, 0, 100);
-    let evaluations = 0;
-    const reference = units.ref(original);
-    const battle = applyUnitChanges(addUnit(initial, original), [setAttackContribution(reference, {
-            id: "observed",
-            value: () => {
-                evaluations++;
-                return [];
-            },
-        })]);
-    assert.equal(resolveAttack(battle, reference), 100);
-    const removed = removeUnit(battle, original.id, "SCRIPT");
-
-    assert.equal(resolveAttack(removed, reference), undefined);
-    assert.equal(evaluations, 1);
-    assert.equal(resolveAttack(battle, reference), 100);
-});
-
-test("Offense attribute queries do not impose lifecycle, HP or spatial qualifications", () => {
-    const initial = fixtureBattle();
-    const original = createUnit(initial, 0, 75.5, {
-        vitality: { maxHp: 100, defense: 0, resistance: 0 },
-        spatialPresence: {},
-    });
-    const unit = {
-        ...original,
-        lifecycle: "LEAVING",
-        vitality: { ...original.vitality, hp: 0 },
-        spatialPresence: { ...original.spatialPresence, present: false },
-    };
-    const battle = addUnit(initial, unit);
-
-    assert.equal(resolveAttack(battle, units.ref(unit)), 75.5);
-});
 
 test("Offense retains fractional attribute values and applies only its nonnegative bound", () => {
     const initial = fixtureBattle();

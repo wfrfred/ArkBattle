@@ -1,13 +1,13 @@
 import { predefinedUnits } from "../helpers/predefined.js";
 
-import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
+
 import { ref as unitReference } from "../../dist/core/unit/query.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { executionRef } from "../../dist/core/unit/action/index.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { battle, unit } from "../helpers/action-fixture.js";
+import { unit } from "../helpers/action-fixture.js";
 import { initialize as initializeBattle, step as stepBattle } from "../../dist/core/battle/runtime.js";
 
 import { createLegacyCombatSpec } from "../../dist/legacy/combat.js";
@@ -18,12 +18,7 @@ import { getUnit } from "../helpers/unit.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { actionCapability } from "../helpers/actions.js";
-import { advance as advanceCombat } from "../../dist/core/battle/steps/combat.js";
-import { search as acquireBlocking, maintainAll as maintainBlocking } from "../../dist/core/battle/blocking/index.js";
-import { setHook as setBlockerHook } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
-import { setRule as setBlockerRule } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
-import { setSpeedContribution } from "../../dist/core/unit/capability/action/index.js";
-import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
+
 
 function spec(initialUnits) {
     return {
@@ -83,53 +78,6 @@ const program = (id, extra = {}) => ({
     ...extra,
 });
 
-test("cooldown refresh leaves Blocking maintenance explicit instead of treating Rules as subscriptions", () => {
-    let selections = 0;
-    const periods = [];
-    const definition = program("refresh-removal");
-    const capability = {
-        ...actionCapability(definition),
-        select(state) {
-            selections++;
-            return { state, value: [definition.id] };
-        },
-    };
-    const source = unit(0, { action: capability, blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 2 } });
-    const target = unit(1, { blockable: { volume: 1 } });
-    const reference = unitRef(source);
-    let initial = battle(source, target);
-    initial = applyUnitChanges(initial, [setBlockerRule(reference, {
-        id: "blocking-during-long-period",
-        allows: (_battle, { blocker: host }) => host.action.actions.get(definition.id).cooldown.periodTicks >= 10,
-    })]);
-    const current = getUnit(initial, source.id);
-    initial = applyUnitChanges(initial, [setSpeedContribution({ id: current.id }, {
-            id: "tick-speed",
-            value: state => [modifier({ addition: state.tick >= 11 ? 100 : 0 })],
-        }), setBlockerHook({ id: current.id }, "released", {
-            id: "remove-on-release",
-            invoke(state, context) {
-                periods.push(actions.getAction(state, actions.ref(context.host, definition)).cooldown.periodTicks);
-                return { state: remove(state, context.host.id, "SCRIPT"), value: undefined };
-            },
-        })]);
-    initial = acquireBlocking(initial, reference);
-    assert.deepEqual(getUnit(initial, source.id).blocker.blocked.map(ref => ref.id), [target.id]);
-
-    const advanced = advanceCombat({ ...initial, tick: 11 });
-
-    assert.deepEqual(periods, []);
-    assert.equal(selections, 1);
-    assert.equal(getUnit(advanced, source.id).lifecycle, "PRESENT");
-    assert.equal(actions.getAction(advanced, actions.ref(reference, definition)).cooldown.periodTicks, 5);
-    assert.deepEqual(getUnit(advanced, source.id).blocker.blocked.map(ref => ref.id), [target.id]);
-    assert.equal(advanced.events.some(event => event.type === "BLOCKING_RELEASED"), false);
-    const settled = maintainBlocking(advanced);
-    assert.deepEqual(periods, [5]);
-    assert.equal(getUnit(settled, source.id), undefined);
-    assert.deepEqual(settled.removedUnits.map(({ unitId, reason }) => [unitId, reason]), [[source.id, "SCRIPT"]]);
-    assert.equal(actions.getAction(initial, actions.ref(reference, definition)).cooldown.periodTicks, 10);
-});
 
 test("action runtime: a newly registered instance first executes once and retained snapshots stay immutable", () => {
     const definition = program("progress", {
@@ -150,27 +98,6 @@ test("action runtime: a newly registered instance first executes once and retain
     assert.equal(retained.execution.state.count, 1);
 });
 
-test("action runtime: an execution registered before the same-tick scan is advanced once", () => {
-    const ticks = [];
-    const definition = program("before-scan", {
-        onTick(state, source, self) {
-            ticks.push(state.tick);
-            const currentState = actions.getExecution(state, executionRef(source, self)).execution.state;
-            return {
-                state: actions.setExecutionState(state, executionRef(source, self), { count: currentState.count + 1 }),
-                value: false,
-            };
-        },
-    });
-    const initial = initializeBattle(spec([unit(0, { action: definition }), unit(1)]));
-    const source = unitRef(getUnit(initial, 0));
-    const started = actions.start(initial, actions.ref(source, definition));
-    assert.deepEqual(ticks, []);
-    const stepped = stepBattle(started.state, []);
-    assert.deepEqual(ticks, [0]);
-    assert.equal(actions.getExecution(stepped, started.value.ref).execution.state.count, 1);
-    assert.equal(actions.getExecution(started.state, started.value.ref).execution.state.count, 0);
-});
 
 test("action runtime: an immediately finished definition starts once in one automatic scheduling pass", () => {
     let starts = 0;

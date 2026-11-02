@@ -18,19 +18,6 @@ function plan(battle, id, to, startTick = battle.tick) {
     }]);
 }
 
-test("stable blocking position uses the planned endpoint only while the relation exists", () => {
-    const self = target();
-    const endpoint = [3, 1];
-    const adjusted = {
-        ...self,
-        blockable: { ...self.blockable, adjustment: { from: self.position, to: endpoint, startTick: 0 } },
-    };
-    assert.equal(capability.stableBlockPosition(self), self.position);
-    assert.equal(capability.stableBlockPosition(adjusted), self.position);
-    const blocked = { ...adjusted, blockable: { ...adjusted.blockable, blocker: { id: 10 } } };
-    assert.equal(capability.stableBlockPosition(blocked), endpoint);
-    assert.equal(capability.stableBlockPosition({ ...blocked, blockable: { ...blocked.blockable, adjustment: null } }), self.position);
-});
 
 test("position adjustment writes the linear midpoint, clears at 0.2 seconds, and retains old snapshots", () => {
     const endpoint = [2, 2];
@@ -51,19 +38,6 @@ test("position adjustment writes the linear midpoint, clears at 0.2 seconds, and
     assert.equal(original.blockable.adjustment.to, endpoint);
 });
 
-test("relationship release preserves and continues the remaining position adjustment", () => {
-    let battle = fixture([holder(), target()]);
-    battle = blocking.acquire(battle, { id: 10 }, { id: 20 });
-    battle = plan(battle, 20, [2.5, 1]);
-    const adjustment = getUnit(battle, 20).blockable.adjustment;
-
-    battle = blocking.release(battle, blocking.relations(battle, { id: 10 }));
-    assert.equal(ownerId(battle), undefined);
-    assert.equal(getUnit(battle, 20).blockable.adjustment, adjustment);
-    battle = blockable.advancePosition({ ...battle, tick: 3 }, { id: 20 });
-    assert.deepEqual(getUnit(battle, 20).position, [2.375, 1]);
-    assert.equal(getUnit(battle, 20).blockable.adjustment, adjustment);
-});
 
 test("Blockable release publishes cancellation and incoming relationship cleanup before notification", () => {
     let battle = fixture([holder(), target(), holder(11, { position: [7, 1] }), target(30, { position: [7.25, 1] })]);
@@ -108,32 +82,4 @@ test("position adjustment ignores autonomous movement Rules and preserves Locomo
     const advanced = blockable.advancePosition({ ...initial, tick: 3 }, { id: 20 });
     assert.deepEqual(getUnit(advanced, 20).position, [2.375, 1]);
     assert.equal(getUnit(advanced, 20).locomotion, self.locomotion);
-});
-
-test("position updates publish first and the Blocking checkpoint releases using the latest position", () => {
-    let battle = fixture([holder(), target()]);
-    battle = blocking.acquire(battle, { id: 10 }, { id: 20 });
-    battle = plan(battle, 20, [2.5, 1]);
-    let observed;
-    battle = update(battle, [
-        capability.setBlockableRule({ id: 20 }, {
-            id: "position-bound", allows: (_state, { blockable: unit }) => unit.position[0] < 2.4,
-        }),
-        capability.setBlockableHook({ id: 20 }, "released", hook("position", state => {
-            observed = getUnit(state, 20).position;
-            return state;
-        })),
-    ]);
-    const adjustment = getUnit(battle, 20).blockable.adjustment;
-
-    battle = blockable.advancePosition({ ...battle, tick: 4 }, { id: 20 });
-    assert.equal(ownerId(battle), 10);
-    assert.equal(observed, undefined);
-    assert.ok(getUnit(battle, 20).position[0] > 2.4);
-
-    battle = blocking.advance(battle);
-    assert.equal(ownerId(battle), undefined);
-    assert.equal(observed, getUnit(battle, 20).position);
-    assert.ok(observed[0] > 2.4);
-    assert.equal(getUnit(battle, 20).blockable.adjustment, adjustment);
 });

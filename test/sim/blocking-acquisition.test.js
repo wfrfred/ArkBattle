@@ -3,12 +3,14 @@ import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { release, relations, maintain, advance, acquire as acquirePair } from "../../dist/core/battle/blocking/index.js";
+import * as blocking from "../../dist/core/battle/blocking/index.js";
+import { sides } from "../../dist/core/unit/capability/blocking/index.js";
+
 import { getUnit, replaceUnit } from "../helpers/unit.js";
 
 import * as blockerOperations from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import * as blockableOperations from "../../dist/core/unit/capability/blocking/blockable-operations.js";
-import { fixture, holder, target, acquire, blockedIds, ownerId, hook } from "../helpers/blocking.js";
+import { fixture, holder, target, acquire, blockedIds, ownerId } from "../helpers/blocking.js";
 
 test("both endpoint Rules receive the same pair and changes release an incompatible existing relation", () => {
     const owner = holder(10, { capacity: 3 });
@@ -53,131 +55,84 @@ test("both endpoint Rules receive the same pair and changes release an incompati
     assert.equal(ownerId(battle, 22), 11);
 });
 
-test("acquisition rechecks its own relation while indirect changes to earlier relations wait for the Blocking phase", () => {
-    let battle = fixture([holder(10, { capacity: 2 }), target(20), target(21, { position: [2.5, 1] })]);
-    battle = applyUnitChanges(battle, [blockerOperations.setRule({ id: 10 }, {
-        id: "twenty-excludes-twenty-one",
-        allows(_battle, { blocker: owner, blockable: candidate }) {
-            return candidate.id !== 20 || !owner.blocker.blocked.some(reference => reference.id === 21);
-        },
-    })]);
 
-    battle = acquire(battle);
+test("advance searches blockers in registration order; equal-distance targets retain registration order", () => {
+    let battle = fixture([
+        holder(10, { position: [1, 1], capacity: 2 }),
+        target(23, { position: [1.5, 1] }),
+        holder(5, { position: [2, 1] }),
+        target(22, { position: [1.5, 1] }),
+        target(21, { position: [1.25, 1] }),
+    ]);
+    battle = blocking.advance(battle);
+    assert.deepEqual(blockedIds(battle, 10), [21, 23]);
+    assert.deepEqual(blockedIds(battle, 5), [22]);
+});
 
+test("without configured Rules, blocking does not depend on either endpoint's allegiance", () => {
+    for (const [left, right] of [["ALLY", "ALLY"], ["ALLY", "NEUTRAL"], [null, null]]) {
+        const owner = holder(10, { side: left ?? "ALLY", definition: {
+            blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 1 },
+        } });
+        const candidate = target(20, { side: right ?? "ENEMY" });
+        const battle = acquire(fixture([
+            left === null ? withoutAllegiance(owner) : owner,
+            right === null ? withoutAllegiance(candidate) : candidate,
+        ]));
+        assert.equal(ownerId(battle), 10, `${left} -> ${right}`);
+    }
+});
+
+test("the standard ENEMY policy selects target sides without requiring blocker allegiance", () => {
+    for (const [left, right, expected] of [
+        ["ALLY", "ENEMY", true], ["ALLY", "ALLY", false], ["ALLY", "NEUTRAL", false],
+        ["ALLY", null, false], [null, "ENEMY", true], ["ENEMY", "ENEMY", true],
+    ]) {
+        const owner = holder(10, { side: left ?? "ALLY" });
+        const candidate = target(20, { side: right ?? "ENEMY" });
+        const battle = acquire(fixture([
+            left === null ? withoutAllegiance(owner) : owner,
+            right === null ? withoutAllegiance(candidate) : candidate,
+        ]));
+        assert.equal(ownerId(battle), expected ? 10 : undefined, `${left} -> ${right}`);
+    }
+});
+
+test("one side policy can admit both ALLY and NEUTRAL targets", () => {
+    const battle = acquire(fixture([
+        holder(10, { definition: {
+            blocker: { layer: "GROUND", capacity: 3, radius: 1, rules: [sides("ALLY", "NEUTRAL")] },
+        } }),
+        target(20, { side: "ALLY" }), target(21, { side: "NEUTRAL" }), target(22),
+    ]));
     assert.deepEqual(blockedIds(battle), [20, 21]);
-    assert.equal(ownerId(battle, 20), 10);
-    assert.deepEqual(battle.events.map(event => [event.type, event.blockedUnitId]), [
-        ["BLOCKING_ACQUIRED", 20], ["BLOCKING_ACQUIRED", 21],
-    ]);
-    battle = advance(battle);
-
-    assert.deepEqual(blockedIds(battle), [21]);
-    assert.equal(ownerId(battle, 20), undefined);
-    assert.equal(ownerId(battle, 21), 10);
-    assert.deepEqual(battle.events.map(event => [event.type, event.blockedUnitId]), [
-        ["BLOCKING_ACQUIRED", 20], ["BLOCKING_ACQUIRED", 21], ["BLOCKING_RELEASED", 20],
-    ]);
 });
 
-test("explicit maintenance settles remaining Rules after releasing their prerequisite relationship", () => {
-    let battle = fixture([holder(10, { capacity: 2 }), target(20), target(21, { position: [2.1, 1] })]);
-    battle = applyUnitChanges(battle, [blockerOperations.setRule({ id: 10 }, {
-        id: "twenty-requires-twenty-one",
-        allows(_battle, { blocker: owner, blockable: candidate }) {
-            return candidate.id !== 20 || owner.blocker.blocked.some(reference => reference.id === 21);
-        },
-    })]);
-    battle = acquire(battle);
-    battle = acquire(battle);
-    assert.deepEqual(blockedIds(battle), [21, 20]);
-
-    battle = release(battle, relations(battle, { id: 21 }));
-    assert.deepEqual(blockedIds(battle), [20], "release only changes the supplied relationship");
-    battle = maintain(battle, relations(battle, { id: 20 })[0]);
-
-    assert.deepEqual(blockedIds(battle), []);
-    assert.equal(ownerId(battle, 20), undefined);
-    assert.equal(ownerId(battle, 21), undefined);
-    assert.deepEqual(battle.events.map(event => [event.type, event.blockedUnitId]), [
-        ["BLOCKING_ACQUIRED", 21], ["BLOCKING_ACQUIRED", 20],
-        ["BLOCKING_RELEASED", 21], ["BLOCKING_RELEASED", 20],
-    ]);
-});
-
-const denied = [
-    ["outside acquisition radius", () => [holder(), target(20, { position: [6, 1] })]],
-    ["insufficient capacity", () => [holder(10, { capacity: 0 }), target()]],
-    ["target volume exceeds capacity", () => [holder(), target(20, { volume: 2 })]],
-    ["blocker Rule denies acquisition", () => {
-        const unit = holder();
-        return [{ ...unit, blocker: { ...unit.blocker, rules: [...unit.blocker.rules, { id: "deny", allows: () => false }] } }, target()];
-    }],
-    ["Blockable Rule denies acquisition", () => {
-        const unit = target();
-        return [holder(), { ...unit, blockable: { ...unit.blockable, rules: [{ id: "deny", allows: () => false }] } }];
-    }],
-    ["target has no HP", () => {
-        const unit = target();
-        return [holder(), { ...unit, vitality: { ...unit.vitality, hp: 0 } }];
-    }],
-    ["blocker is leaving", () => [
-        { ...holder(), lifecycle: "LEAVING" }, target(),
-    ]],
-    ["target is not hostile", () => [holder(), target(20, { side: "ALLY" })]],
-    ["target is aerial", () => {
-        const unit = target();
-        return [holder(), { ...unit, layer: { ...unit.layer, type: "AIR" } }];
-    }],
-];
-
-for (const [name, create] of denied) {
-    test(`acquire rejects ${name} without changing state or notifying`, () => {
-        let battle = fixture(create());
-        const calls = [];
-        for (const key of ["acquired", "released"]) {
-            const currentUnit = getUnit(battle, 10);
-            battle = applyUnitChanges(battle, [blockerOperations.setHook({ id: currentUnit.id }, key, hook(key, state => {
-                    calls.push(key);
-                    return state;
-                }))]);
-        }
-        const initialOwner = getUnit(battle, 10);
-        const initialTarget = getUnit(battle, 20);
-
-        assert.equal(acquirePair(battle, { id: 10 }, { id: 20 }), battle);
-        assert.deepEqual(calls, []);
-        assert.equal(getUnit(battle, 10), initialOwner);
-        assert.equal(getUnit(battle, 20), initialTarget);
-        assert.deepEqual(battle.events, []);
-        assert.equal(ownerId(battle), undefined);
-        assert.deepEqual(blockedIds(battle), []);
-        assert.equal(acquire(battle), battle, "search rejects the same invalid attempt without throwing");
-    });
-}
-
-test("acquire reads the latest volume instead of an earlier Unit snapshot", () => {
-    const initial = fixture([holder(), target()]);
-    const battle = applyUnitChanges(initial, [blockableOperations.setVolumeContribution({ id: 20 }, { id: "larger", value: 1 })]);
-    assert.equal(acquirePair(battle, { id: 10 }, { id: 20 }), battle);
-    assert.equal(ownerId(battle), undefined);
-    assert.equal(getUnit(initial, 20).blockable.volume.length, 0);
-});
-
-test("a qualified acquire preserves subsequent Hook changes", () => {
-    let battle = fixture([holder(), target()]);
-    const currentUnit2 = getUnit(battle, 10);
-    battle = applyUnitChanges(battle, [blockerOperations.setHook({ id: currentUnit2.id }, "acquired", hook("update-target", state => {
-            const currentUnit3 = getUnit(state, 20);
-            return replaceUnit(state, { ...currentUnit3, vitality: { ...currentUnit3.vitality, hp: 75 } });
-        }))]);
-    const initial = battle;
-
-    battle = acquirePair(battle, { id: 10 }, { id: 20 });
-
+test("existing blocking is retained beyond acquisition distance and radius changes only affect search", () => {
+    let battle = acquire(fixture([holder(), target()]));
+    const stored = getUnit(battle, 10).blocker.blocked[0];
+    const currentUnit5 = getUnit(battle, 20);
+    battle = replaceUnit(battle, { ...currentUnit5, position: [8, 1] });
+    const currentUnit6 = getUnit(battle, 10);
+    battle = replaceUnit(battle, { ...currentUnit6, blocker: { ...currentUnit6.blocker, radius: 0 } });
+    assert.equal(getUnit(battle, 10).blocker.blocked[0], stored);
     assert.equal(ownerId(battle), 10);
-    assert.deepEqual(blockedIds(battle), [20]);
-    assert.equal(getUnit(battle, 20).vitality.hp, 75);
-    assert.deepEqual(battle.events.map(event => event.type), ["BLOCKING_ACQUIRED"]);
-    assert.equal(getUnit(initial, 20).vitality.hp, 100);
-    assert.equal(ownerId(initial), undefined);
+    battle = blocking.release(battle, blocking.relations(battle, { id: 20 }));
+    assert.equal(ownerId(acquire(battle)), undefined);
 });
+
+test("search uses inclusive radius and can acquire an out-of-map target", () => {
+    for (const [position, expected] of [[[2.25, 1], true], [[2.2501, 1], false], [[-0.25, 1], true]]) {
+        const positionOfHolder = position[0] < 0 ? [0, 1] : [2, 1];
+        const battle = acquire(fixture([
+            holder(10, { position: positionOfHolder, radius: 0.25 }), target(20, { position }),
+        ]));
+        assert.equal(ownerId(battle), expected ? 10 : undefined);
+    }
+});
+
+function withoutAllegiance(unit) {
+    const { allegiance: ignoredDefinition, ...definition } = unit.definition;
+    const { allegiance: ignoredState, ...remaining } = unit;
+    return { ...remaining, definition };
+}

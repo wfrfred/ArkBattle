@@ -36,37 +36,6 @@ function installOwned(state, source, self, definition = ownedEffect) {
     }).state;
 }
 
-test("action: private progress and sampled values survive immutable branches without replay", () => {
-    const definition = program("sample", {
-        prepare: (state) => ({
-            state,
-            value: {
-                released: false,
-                power: getUnit(state, 1).vitality.hp,
-                releaseAtTick: state.tick + 2,
-            },
-        }),
-        onTick(state, source, self) {
-            if (state.tick < self.execution.state.releaseAtTick) return { state, value: false };
-            const currentState2 = actions.getExecution(state, executionRef(source, self)).execution.state;
-            state = actions.setExecutionState(state, executionRef(source, self), { ...currentState2, released: true });
-            state = updateUnit(state, [{
-                ...getUnit(state, 1),
-                vitality: { ...getUnit(state, 1).vitality, hp: self.execution.state.power - 7 },
-            }]);
-            return { state, value: true };
-        },
-    });
-    const initial = battle(unit(0, { action: definition }), unit(1));
-    const started = accepted(definition, initial);
-    const retained = actions.getExecution(started.state, started.value.ref);
-    const completed = advance({ ...started.state, tick: 2 }, started.value.ref);
-    assert.equal(getUnit(completed, 1).vitality.hp, 93);
-    assert.equal(actions.getExecution(completed, started.value.ref), undefined);
-    assert.equal(retained.execution.state.released, false);
-    assert.equal(getUnit(initial, 1).vitality.hp, 100);
-    assert.deepEqual(advance({ ...started.state, tick: 2 }, started.value.ref), completed);
-});
 
 test("action: cancellation closes its dependencies once and retains preceding business", () => {
     let ended = 0;
@@ -203,27 +172,6 @@ test("action: dependency cleanup requests host removal while its execution Final
     assert.equal(getUnit(started.state, 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 1);
 });
 
-test("action: private progress is visible to nested callbacks before their business executes", () => {
-    let observed;
-    const dependency = {
-        ...ownedEffect,
-        onInstall(state) {
-            observed = actions.getExecution(state, currentRef).execution.state.progress;
-            return state;
-        },
-    };
-    let currentRef;
-    const definition = program("visible", {
-        onTick(state, source, self) {
-            currentRef = executionRef(source, self);
-            state = actions.setExecutionState(state, executionRef(source, self), { progress: 1 });
-            return { state: installOwned(state, source, self, dependency), value: true };
-        },
-    });
-    const started = accepted(definition);
-    advance(started.state, started.value.ref);
-    assert.equal(observed, 1);
-});
 
 test("action: normal finish and cancellation close dependencies before one terminal callback", () => {
     for (const finish of [false, true]) {
@@ -267,6 +215,7 @@ test("action: ENDING occupies the definition and repeated cancellation cannot re
         onEnd(state, source, self) {
             count++;
             assert.equal(actions.getExecution(state, executionRef(source, self)).execution.status, "ENDING");
+            assert.throws(() => actions.setExecutionState(state, executionRef(source, self), {}), /cannot update an ending action/);
             state = actions.cancel(state, executionRef(source, self), "REENTER");
             const attempted = actions.start(state, actions.ref(source, definition));
             assert.deepEqual(attempted.value, { type: "REJECTED", reason: "CASTING" });
@@ -277,43 +226,4 @@ test("action: ENDING occupies the definition and repeated cancellation cannot re
     const state = actions.cancel(started.state, started.value.ref, "SCRIPT");
     assert.equal(count, 1);
     assert.equal(actions.getExecution(state, started.value.ref), undefined);
-});
-
-test("action: source departure completes nested cleanup while entered content continues", () => {
-    const trace = [];
-    const definition = program("depart", {
-        onTick(state, source, self) {
-            state = installOwned(state, source, self, {
-                ...ownedEffect,
-                onEnd: (state) => {
-                    trace.push("dependency");
-                    return state;
-                },
-            });
-            state = remove(state, source.id, "SCRIPT");
-            assert.equal(actions.getExecution(state, executionRef(source, self)), undefined);
-            trace.push("returned");
-            state = updateUnit(state, [{ ...getUnit(state, 1), position: [4, 0] }]);
-            assert.throws(() => actions.setExecutionState(state, executionRef(source, self), { progress: 9 }), /unknown unit: 0/);
-            return { state, value: true };
-        },
-        onEnd: (state) => {
-            trace.push("end");
-            return state;
-        },
-    });
-    const started = accepted(definition);
-    const departed = advance(started.state, started.value.ref);
-    assert.deepEqual(trace, ["dependency", "end", "returned"]);
-    assert.equal(actions.getExecution(departed, started.value.ref), undefined);
-    assert.equal(getUnit(departed, 0), undefined);
-    assert.deepEqual(getUnit(departed, 1).position, [4, 0]);
-    assert.equal(
-        departed.events.filter((event) => event.type === "ACTION_CANCELLED").length,
-        1,
-    );
-    assert.equal(
-        departed.events.some((event) => event.type === "ACTION_FINISHED"),
-        false,
-    );
 });

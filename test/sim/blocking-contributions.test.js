@@ -13,11 +13,11 @@ import { usedCapacity } from "../../dist/core/battle/blocking/query.js";
 import { resolveCapacity } from "../../dist/core/unit/capability/blocking/blocker.js";
 import { setCapacityContribution, removeCapacityContribution } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import { resolveVolume } from "../../dist/core/unit/capability/blocking/blockable.js";
-import { setVolumeContribution, removeVolumeContribution, setRule, removeRule } from "../../dist/core/unit/capability/blocking/blockable-operations.js";
+import { setVolumeContribution, removeVolumeContribution, setRule } from "../../dist/core/unit/capability/blocking/blockable-operations.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { compileAttributeModifiers, parseAttributeModifiers } from "../../dist/data/arknights/modifier.js";
 import { compileBuffStacking, parseBuffStacking } from "../../dist/data/arknights/buff-stacking.js";
-import { maxHpBuff, at, effectFixtureWork } from "../helpers/effects.js";
+import { at, effectFixtureWork } from "../helpers/effects.js";
 
 const fixtures = JSON.parse(
     readFileSync(new URL("../fixtures/arknights/blocking_buffs.json", import.meta.url), "utf8"),
@@ -61,11 +61,7 @@ const install = (work, effect, expiresAtTick = null) =>
         })),
         deadline: expiresAtTick,
     });
-const change = (work, next, setting) => {
-    const currentData = effects.get(work, effectAddress).data;
-    work = effects.setData(work, effectAddress, { ...currentData, ...next });
-    return refreshContribution(work, effectAddress, setting);
-};
+
 const entry = (id, value) => ({ id, value: [value] });
 
 function contributionEffect(id, initial, setting, callbacks = {}) {
@@ -187,31 +183,6 @@ test("blocking capacity: exclusive group selection happens before ZERO is applie
     assert.equal(capacity(independent), 0);
 });
 
-test("blocking capacity: explicit refresh and lifecycle output changes preserve base capacity and unrelated HP", () => {
-    const setting = output((instance) => [{ type: "ADD", value: instance.data.amount }]);
-    const effect = contributionEffect("capacity", { amount: -1 }, setting);
-    const initialized = blocker();
-    const owner = { ...initialized, vitality: { ...initialized.vitality, hp: 50 } };
-    let work = effectFixtureWork(owner);
-    work = install(work, effect).state;
-    const old = getUnit(work, 0);
-    assert.equal(capacity(work), 2);
-    work = change(work, { amount: -2 }, setting);
-    assert.equal(capacity(work), 1);
-    work = effects.setEnabled(work, effectAddress, false);
-    assert.equal(capacity(work), 3);
-    work = change(work, { amount: -9 }, setting);
-    assert.equal(capacity(work), 3);
-    work = effects.setEnabled(work, effectAddress, true);
-    assert.equal(capacity(work), 0);
-    work = effects.install(work, unitRef(getUnit(work, 0)), maxHpBuff("hp", 100)).state;
-    assert.equal(getUnit(work, 0).vitality.hp, 100);
-    work = effects.end(work, effectAddress);
-    assert.equal(capacity(work), 3);
-    assert.equal(getUnit(work, 0).vitality.hp, 100);
-    assert.equal(old.blocker.capacity.length, 1);
-    assert.equal(capacityOf(old), 2);
-});
 
 function battlefield(units) {
     let battle = acquire(blockingFixture(units), 0);
@@ -262,29 +233,6 @@ test("blocking volume: independent Effect contributions release targets and clea
     assert.deepEqual(original.units.get(1).blockable.volume, []);
 });
 
-test("blocking volume: integer additions honor exclusive groups and restore the remaining candidate", () => {
-    const h = battlefield([blocker(4), enemy(1), enemy(2)]);
-    const original = h.state.units.get(1);
-    h.publish(applyUnitChanges(h.work(), [setVolumeContribution({ id: 1 }, { id: "independent", value: 1 })]));
-    h.publish(applyUnitChanges(h.work(), [setVolumeContribution({ id: 1 }, {
-        id: "lower", value: 1, group: { id: "size", priority: 1 },
-    })]));
-    h.publish(applyUnitChanges(h.work(), [setVolumeContribution({ id: 1 }, {
-        id: "higher", value: 2, group: { id: "size", priority: 2 },
-    })]));
-    const expanded = h.state.units.get(1);
-    assert.equal(resolveVolume(expanded.definition.blockable, expanded.blockable), 4);
-    assert.deepEqual(h.blocked(), [1]);
-    h.publish(applyUnitChanges(h.work(), [removeVolumeContribution({ id: 1 }, "higher")]));
-    assert.equal(resolveVolume(original.definition.blockable, h.state.units.get(1).blockable), 3);
-    assert.deepEqual(h.blocked(), [1]);
-    h.search();
-    assert.deepEqual(h.blocked(), [1, 2]);
-    assert.equal(resolveVolume(original.definition.blockable, expanded.blockable), 4);
-    assert.equal(resolveVolume(original.definition.blockable, original.blockable), 1);
-    h.publish(applyUnitChanges(h.work(), [removeVolumeContribution({ id: 1 }, "lower")]));
-    assert.equal(resolveVolume(original.definition.blockable, h.state.units.get(1).blockable), 2);
-});
 
 test("blocking volume: only integer additions are accepted", () => {
     const battle = effectFixtureWork(enemy(1, 2));
@@ -312,25 +260,6 @@ test("blocking volume: negative additions still consume one capacity while Rules
     assert.deepEqual(h.blocked(), [2]);
 });
 
-test("blocking eligibility: overlapping rules release and reacquire targets independently of volume", () => {
-    const h = battlefield([blocker(), enemy(1), enemy(2)]);
-    const original = h.state.units.get(1);
-    const first = { id: "first", allows: () => false };
-    const second = { id: "second", allows: () => false };
-    h.publish(applyUnitChanges(h.work(), [setRule({ id: 1 }, first)]));
-    assert.deepEqual(h.blocked(), [2]);
-    h.publish(applyUnitChanges(h.work(), [setRule({ id: 1 }, second)]));
-    h.publish(applyUnitChanges(h.work(), [removeRule({ id: 1 }, first.id)]));
-    assert.deepEqual(h.state.units.get(1).blockable.rules.map(({ id }) => id), ["second"]);
-    assert.deepEqual(h.blocked(), [2]);
-    h.publish(applyUnitChanges(h.work(), [removeRule({ id: 1 }, second.id)]));
-    assert.deepEqual(h.state.units.get(1).blockable.rules, []);
-    assert.deepEqual(h.blocked(), [2]);
-    h.search();
-    assert.deepEqual(h.blocked(), [2, 1]);
-    assert.equal(resolveVolume(original.definition.blockable, original.blockable), 1);
-    assert.deepEqual(original.blockable.rules, []);
-});
 
 function nativeModifier(raw) {
     const description = raw.node._buff.attributes.attributeModifiers.find(

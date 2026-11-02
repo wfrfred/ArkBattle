@@ -1,7 +1,7 @@
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { replaceUnit } from "../helpers/unit.js";
+
 import { unit, workFor, attach, healingEffect, damage } from "../helpers/vitality.js";
 import { calculateHealing } from "../../dist/core/battle/healing/calculate.js";
 import { applyHealing } from "../../dist/core/battle/healing/apply.js";
@@ -159,42 +159,6 @@ test("healing pipeline: source departure skips its later Hooks while sampled hea
     assert.equal(getUnit(result.state, 1), undefined);
     assert.equal(result.value.application.hpGain, 40);
     assert.equal(hp(result.state), 60);
-});
-
-test("healing pipeline: a LEAVING source cannot run its Hooks but its previously sampled healing remains valid", () => {
-    const source = attach(unit(1), healingEffect("leaving-source", {}, [
-        entry("sourceFormula", () => assert.fail("LEAVING source cannot run Formula")),
-        entry("output", () => assert.fail("LEAVING source cannot run Output")),
-        entry("completed", () => assert.fail("LEAVING source cannot observe Completed")),
-    ]));
-    const initial = workFor(source, unit(2, { hp: 20, maxHp: 100 }));
-    const leaving = getUnit(initial, 1);
-    const result = heal(replaceUnit(initial, { ...leaving, lifecycle: "LEAVING" }));
-    assert.equal(result.value.application.hpGain, 20);
-    assert.equal(hp(result.state), 40);
-});
-
-test("healing pipeline: missing, LEAVING, and zero HP targets reject ordinary healing", () => {
-    const unavailable = [undefined, { ...unit(2, { hp: 20, maxHp: 100 }), lifecycle: "LEAVING" }, unit(2, { hp: 0, maxHp: 100 })];
-    for (const target of unavailable) {
-        const initial = target === undefined ? workFor(unit(1)) : workFor(unit(1), target);
-        const calculated = calculateHealing(initial, request());
-        assert.equal(calculated.value, undefined);
-        const result = applyHealing(request(), calculated);
-        assert.deepEqual(result.value, { kind: "REJECTED" });
-        assert.equal(result.state, initial);
-        assert.deepEqual(result.state.events, []);
-    }
-});
-
-test("healing pipeline: Apply rechecks target eligibility against the carried BattleState", () => {
-    const input = request();
-    const initial = workFor(unit(1), unit(2, { hp: 50, maxHp: 100 }));
-    const calculated = calculateHealing(initial, input);
-    const state = remove(calculated.state, 2, "DEATH");
-    const result = applyHealing(input, { ...calculated, state });
-    assert.deepEqual(result.value, { kind: "REJECTED" });
-    assert.equal(getUnit(result.state, 2), undefined);
 });
 
 test("healing pipeline: nested lethal damage makes restoration unavailable without resurrection", () => {

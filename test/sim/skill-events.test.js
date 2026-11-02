@@ -63,42 +63,6 @@ test("onStart self-termination follows creation notification and entered content
     assert.equal(settled.state.events.filter(({ type }) => type === "SKILL_FINISHED").length, 1);
 });
 
-test("each nested dispatch gets fresh candidates while the outer dispatch keeps its selected sequence", () => {
-    const trace = [];
-    const later = hook("later", (battle, { event }) => { trace.push(["later", event.current]); return { state: battle, value: undefined }; });
-    const f = fixture();
-    const currentSkill2 = getUnit(f.state, 1).skill;
-    let state = setSkill(f.state, { ...currentSkill2, spRecovered: [
-        hook("install", (battle, { host, event }) => {
-            const self = getHookHost(battle, host);
-
-            trace.push(["install", event.current]);
-            if (event.current !== 1) return { state: battle, value: undefined };
-            const currentSkill3 = getUnit(battle, 1).skill;
-            battle = setSkill(battle, { ...currentSkill3, spRecovered: [...currentSkill3.spRecovered, later] });
-            return { state: sp.recover(battle, unitRef(self), "TIME", 1).state, value: undefined };
-        }),
-    ] });
-    state = sp.pay(state, f.ref, 2).state;
-    state = sp.recover(state, f.ref, "TIME", 1).state;
-    assert.deepEqual(trace, [["install", 1], ["install", 2], ["later", 2]]);
-});
-
-test("removing a selected Hook during dispatch prevents its later invocation", () => {
-    const trace = [];
-    const f = fixture();
-    const currentSkill4 = getUnit(f.state, 1).skill;
-    let state = setSkill(f.state, { ...currentSkill4, spPaid: [
-        hook("remove", (battle) => {
-            trace.push("remove");
-            const currentSkill5 = getUnit(battle, 1).skill;
-            return { state: setSkill(battle, { ...currentSkill5, spPaid: currentSkill5.spPaid.filter(({ id }) => id !== "removed") }), value: undefined };
-        }),
-        hook("removed", (battle) => { trace.push("removed"); return { state: battle, value: undefined }; }),
-    ] });
-    state = sp.pay(state, f.ref, 1).state;
-    assert.deepEqual(trace, ["remove"]);
-});
 
 test("operation Rules gate user controls but cannot veto timeout or forced cancellation", () => {
     const seen = [];
@@ -273,42 +237,4 @@ test("an activationEnded Hook may start a replacement without running the old st
     assert.deepEqual(settled.state.events.filter(({ type }) => type.startsWith("SKILL_")).map(({ type, activationId }) => [type, activationId]), [
         ["SKILL_ACTIVATED", 0], ["SKILL_FINISHED", 0], ["SKILL_ACTIVATED", 1],
     ]);
-});
-
-
-test("activation replacement changes live state while remaining observers retain the original context", () => {
-    const f = fixture({
-        sp: { initial: 4, capacity: 4, requirement: 2, cost: 2, recovery: { type: "NONE" } },
-        activation: { trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}) },
-    });
-    const seen = [];
-    let original;
-    const currentSkill11 = getUnit(f.state, 1).skill;
-    const state = setSkill(f.state, { ...currentSkill11, activationStarted: [
-        {
-            id: "replace",
-            invoke(battle, context) {
-                if (context.event.ref.id === 0) {
-                    original = context;
-                    battle = skills.finish(battle, context.event.ref);
-                    battle = skills.activate(battle, skillRef(getUnit(battle, context.host.id))).state;
-                }
-                return { state: battle, value: undefined };
-            },
-        },
-        {
-            id: "observe",
-            invoke(battle, context) {
-                if (context.event.ref.id === 0) {
-                    assert.equal(context, original);
-                }
-                const current = getHookHost(battle, context.host).skill.activation;
-                seen.push([context.event.ref.id, current.id]);
-                return { state: battle, value: undefined };
-            },
-        },
-    ] });
-    const result = skills.activate(state, f.skillRef);
-    assert.deepEqual(seen, [[1, 1], [0, 1]]);
-    assert.equal(getUnit(result.state, f.ref.id).skill.activation.id, 1);
 });

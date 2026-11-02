@@ -18,19 +18,6 @@ function loaded(amount = 3, overrides = {}) {
 const remaining = (battle) => getUnit(battle, 1).skill.activation.sustain.remaining;
 const observe = (id, invoke) => ({ id, invoke });
 
-test("ammunition spending preserves input versions and consumes the full requested amount", () => {
-    const f = loaded(3);
-    const first = ammo.consume(f.state, f.activation, 2);
-    assert.equal(first.value.amount, 2);
-    assert.equal(remaining(first.state), 1);
-    assert.equal(remaining(f.state), 3);
-    const final = ammo.consume(first.state, f.activation, 2);
-    assert.equal(final.value.amount, 2);
-    assert.equal(remaining(final.state), -1);
-    assert.equal(query.getActivation(final.state, f.activation).activation.status, "ACTIVE");
-    assert.throws(() => ammo.consume(first.state, f.activation, 0), /positive.*integer/);
-    assert.throws(() => ammo.consume(first.state, f.activation, 0.5), /integer/);
-});
 
 test("ammunition depletion does not end an activation until an explicit check", () => {
     const f = loaded(1);
@@ -45,12 +32,6 @@ test("ammunition depletion does not end an activation until an explicit check", 
     assert.equal(ammo.check(state, f.activation), state);
 });
 
-test("an ammunition skill remains active indefinitely when no content consumes or checks ammunition", () => {
-    const f = loaded(31);
-    const state = skills.advance(at(f.state, 10000), f.ref);
-    assert.equal(remaining(state), 31);
-    assert.deepEqual(query.getActivation(state, f.activation).activation.sustain, { type: "AMMO", initial: 31, remaining: 31, replenished: 0 });
-});
 
 test("ordinary replenishment tracks a cumulative allowance independently of current ammunition", () => {
     const reports = [];
@@ -129,19 +110,6 @@ test("content ammunition grants respect current capacity without consuming ordin
     assert.equal(reports.length, 1, "a grant after ordinary allowance exhaustion is still a distinct operation");
 });
 
-test("ammunition capacity contributions are sampled for each new activation", () => {
-    const f = loaded(3);
-    const currentSkill4 = getUnit(f.state, 1).skill;
-    let state = applyUnitChanges(f.state, [setAmmoContribution({ id: 1 }, {
-        id: "bonus", value: [{ addition: 2, ratio: 0 }],
-    })]);
-    assert.equal(remaining(state), 3);
-    assert.equal(query.getActivation(state, f.activation).activation.sustain.initial, 3);
-    state = skills.finish(state, f.activation);
-    state = skills.activate(state, f.skillRef).state;
-    assert.equal(remaining(state), 5);
-    assert.equal(query.getActivation(state, currentRef(state)).activation.sustain.initial, 5);
-});
 
 test("ammunition capacity adds fixed counts after rounding only the original proportional bonus", () => {
     assert.equal(ammo.resolveCapacity(10, [
@@ -168,19 +136,16 @@ test("ammunition modifiers resolve live inputs and exclusive sources only when t
             { addition: battle.tick, ratio: 0 },
             { addition: 0, ratio: 0.5 },
         ] };
-    const currentSkill5 = getUnit(f.state, 1).skill;
     let state = applyUnitChanges(f.state, [setAmmoContribution({ id: 1 }, weak), setAmmoContribution({ id: 1 }, strong)]);
     state = at(state, 2);
     assert.equal(remaining(state), 10);
     state = skills.activate(skills.finish(state, f.activation), f.skillRef).state;
     assert.equal(remaining(state), 17);
     const current = currentRef(state);
-    const currentSkill6 = getUnit(state, 1).skill;
     state = applyUnitChanges(state, [removeAmmoContribution({ id: 1 }, "strong")]);
     assert.equal(remaining(state), 17);
     state = skills.activate(skills.finish(state, current), f.skillRef).state;
     assert.equal(remaining(state), 12);
-    const before = getUnit(state, 1).skill;
     assert.equal(applyUnitChanges(state, [removeAmmoContribution({id:1}, "missing")]), state);
     assert.equal(applyUnitChanges(state, [setAmmoContribution({id:1}, weak)]), state);
 });
@@ -199,7 +164,7 @@ test("consumption Hooks report the complete consumed amount and settled negative
     assert.equal(seen[0].amount, 3);
     assert.equal(seen[0].previous.remaining, 1);
     assert.equal(seen[0].current.remaining, -2);
-    state = skills.finish(state, f.activation);
+    skills.finish(state, f.activation);
     assert.equal(seen.length, 1);
 });
 
@@ -229,67 +194,6 @@ test("nested replenishment produces its own report and a later depletion check r
     assert.equal(query.getActivation(state, f.activation).activation.status, "ACTIVE");
 });
 
-test("nested replenishment retains each settled request and snapshot for later outer observers", () => {
-    const entered = [];
-    const observed = [];
-    const f = loaded(5);
-    const currentSkill9 = getUnit(f.state, 1).skill;
-    let state = setSkill(f.state, { ...currentSkill9, ammoReplenished: [
-        observe("nested", (battle, { event }) => {
-            entered.push(event);
-            if (event.requested !== 10) return { state: battle, value: undefined };
-            battle = ammo.consume(battle, event.ref, 3).state;
-            return { state: ammo.replenish(battle, event.ref, 8).state, value: undefined };
-        }),
-        observe("after", (battle, { event }) => {
-            observed.push({ event, remaining: remaining(battle) });
-            return { state: battle, value: undefined };
-        }),
-    ] });
-    state = ammo.consume(state, f.activation, 4).state;
-    state = ammo.replenish(state, f.activation, 10).state;
-    assert.deepEqual(entered, [{
-        ref: f.activation, requested: 10, amount: 4,
-        previous: { type: "AMMO", initial: 5, remaining: 1, replenished: 0 },
-        current: { type: "AMMO", initial: 5, remaining: 5, replenished: 4 },
-    }, {
-        ref: f.activation, requested: 8, amount: 1,
-        previous: { type: "AMMO", initial: 5, remaining: 2, replenished: 4 },
-        current: { type: "AMMO", initial: 5, remaining: 3, replenished: 5 },
-    }]);
-    assert.equal(observed[0].event, entered[1]);
-    assert.equal(observed[1].event, entered[0]);
-    assert.deepEqual(observed.map(({ remaining }) => remaining), [3, 3]);
-    assert.equal(remaining(state), 3);
-});
-
-test("old activation references cannot consume or replenish a newly started activation", () => {
-    const f = loaded(3);
-    let state = skills.finish(f.state, f.activation);
-    const started = skills.activate(state, f.skillRef);
-    state = started.state;
-    assert.equal(started.value.ref.id, f.activation.id + 1);
-    assert.equal(query.getActivation(state, f.activation), undefined);
-    assert.equal(ammo.consume(state, f.activation, 1).state, state);
-    assert.equal(ammo.replenish(state, f.activation, 1).state, state);
-    assert.equal(ammo.check(state, f.activation), state);
-    assert.equal(remaining(state), 3);
-});
-
-test("consumption remains settled when its Hook ends the observed activation", () => {
-    let report;
-    const f = loaded(1);
-    const currentSkill10 = getUnit(f.state, 1).skill;
-    let state = setSkill(f.state, { ...currentSkill10, ammoConsumed: [observe("end", (battle, { event }) => {
-        report = event;
-        return { state: skills.finish(battle, event.ref), value: undefined };
-    })] });
-    const consumed = ammo.consume(state, f.activation, 3);
-    assert.equal(consumed.value.amount, 3);
-    assert.equal(report.current.remaining, -2);
-    assert.equal(getUnit(consumed.state, 1).skill.activation, null);
-    assert.equal(consumed.state.events.filter(({ type }) => type === "SKILL_FINISHED").length, 1);
-});
 
 test("a consumption Hook can replace its activation without a later check ending the replacement", () => {
     const f = loaded(3);

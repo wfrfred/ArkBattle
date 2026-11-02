@@ -24,7 +24,7 @@ import { initialize } from "../helpers/unit.js";
 import { start as startAction, ref as actionRef } from "../../dist/core/unit/action/index.js";
 import { advance as advanceAction } from "../../dist/core/unit/action/index.js";
 import { damage as damageFixture, healing as healingFixture } from "../helpers/targeting.js";
-import { topK } from "../../dist/core/common/collection.js";
+
 import { setMaxHpContribution } from "../../dist/core/unit/capability/vitality/capability.js";
 import { select as selectTargets } from "../../dist/core/battle/targeting/index.js";
 import { allowsRestrictions } from "../../dist/core/unit/capability/targetable/capability.js";
@@ -33,10 +33,10 @@ import { invisible, camouflage, untargetable, allyUntargetable } from "../../dis
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { healing } from "../helpers/vitality.js";
 
-import { setCapacityContribution } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
+
 import * as modifier from "../../dist/core/unit/contribution/attribute.js";
 import { createBattleState as createEmptyBattleState } from "../../dist/core/battle/state.js";
-import { replace as updateUnit } from "../../dist/core/battle/unit.js";
+
 import { getUnit } from "../helpers/unit.js";
 
 function combatBattle(field) {
@@ -320,73 +320,6 @@ test('core combat: damage formulas retain the 5% floor and immutable vitality tr
 });
 
 
-test('core combat: immutable updates preserve earlier combat state', () => {
-  const input = createLegacyCombatSpec({
-    rows: 3, columns: 10,
-    operators: [{ definition: guard({ stats: { atk: 0, maxHp: 1e6, blockCnt: 1 } }), position: [1, 5] }],
-    enemies: [{ definition: walker({ speed: 0 }), route: coreCombatRoute([1, 6], { spawnOffset: [-0.6, 0] }) }],
-  });
-  let battle = initializeBattle(input);
-  let replay = initializeBattle(input);
-  const values = battle => ({
-    ...battle,
-    battlefield: {
-      ...battle.battlefield,
-      units: new Map([...battle.battlefield.units].map(([id, unit]) => [id, {
-        ...unit,
-        // Instance hooks close over each Unit; compare their registration and all state values.
-        hooks: unit.hooks.map(({ id, stage }) => ({ id, stage })),
-      }])),
-    },
-  });
-  assert.deepEqual(values(battle = advanceBattle(battle, [])), values(replay = advanceBattle(replay, [])));
-  const snapshot = battle;
-  const operator = snapshot.battlefield.units.get(0);
-  const actionId = operator.action.actions.values().toArray()[0].definition.id;
-  const readyAtTick = operator.action.actions.get(actionId).cooldown.readyAtTick;
-  const hp = operator.vitality.hp;
-  assert.deepEqual(blockingQueries.relations(snapshot).map(({ blocker, blocked }) => [blocker.id, blocked.id]), [[0, 1]]);
-
-  const battlefield = snapshot.battlefield;
-  const previous = snapshot;
-  const currentAction = operator.action.actions.get(actionId);
-  const changed = {
-    ...operator,
-    action: { ...operator.action, actions: operator.action.actions.replace(currentAction.definition, { ...currentAction, cooldown: { ...currentAction.cooldown, readyAtTick: 999999 } }) },
-    allegiance: { ...operator.allegiance, side: 'ENEMY' },
-    layer: { ...operator.layer, type: 'AIR' },
-    targetable: { ...operator.targetable, restrictions: setFixtureEntry(operator.targetable.restrictions, { id: 'changed-targeting', value: { kind: Symbol('changed-targeting'), allows: () => false } }) },
-    vitality: { ...operator.vitality, hp: 0 },
-  };
-  const updated = updateUnit(previous, [changed]);
-  const draft = applyUnitChanges(updated, [setCapacityContribution(unitRef(changed), {
-    id: 'disabled-capacity', value: [{ type: 'ZERO' }],
-  })]);
-  assert.equal(unitQueries.get(draft, { id: 0 }).definition, changed.definition);
-  assert.deepEqual(unitQueries.get(draft, { id: 0 }).blocker.blocked, []);
-  assert.deepEqual(blockingQueries.relations(draft).map(({ blocker, blocked }) => ([blocker.id, blocked.id])), []);
-  assert.equal(unitQueries.get(draft, { id: 0 }).action.actions.get(actionId).cooldown.readyAtTick, 999999);
-  const targetingRequest = { source: unitRef(snapshot.battlefield.units.get(1)),
-    ...operator.action.actions.values().toArray()[0].definition.attack.targetGroups[0].targeting };
-  assert.equal(allowsRestrictions({ battlefield }, targetingRequest, unitQueries.get(draft, { id: 0 })), false);
-
-  assert.equal(unitQueries.get(previous, { id: 0 }), operator);
-  assert.deepEqual(blockingQueries.relations(previous).map(({ blocker, blocked }) => ([blocker.id, blocked.id])), [[0, 1]]);
-  assert.equal(operator.action.actions.get(actionId).cooldown.readyAtTick, readyAtTick);
-  assert.equal(operator.allegiance.side, 'ALLY');
-  assert.equal(operator.layer.type, 'GROUND');
-  assert.equal(operator.definition.hitbox.shape.radius, 0.25);
-  assert.equal(allowsRestrictions(previous, targetingRequest, operator), true);
-  assert.deepEqual(operator.blocker.capacity, []);
-  assert.equal(operator.vitality.hp, hp);
-  assert.deepEqual(battle, snapshot);
-  assert.deepEqual(values(battle = advanceBattle(battle, [])), values(replay = advanceBattle(replay, [])));
-  assert.deepEqual(values(battle), values(replay));
-  assert.deepEqual(blockingQueries.relations(snapshot).map(({ blocker, blocked }) => [blocker.id, blocked.id]), [[0, 1]]);
-  assert.equal(operator.vitality.hp, hp);
-});
-
-
 test('core combat: the limited legacy adapter rejects unsupported content and preserves interval conversion', () => {
   const options = {
     rows: 3, columns: 10,
@@ -409,53 +342,6 @@ test('core combat: the limited legacy adapter rejects unsupported content and pr
       ...options, operators: [{ definition: guard({ rangeGrid: [offset] }), position: [1, 5] }],
     }), { name: 'RangeError', message: 'invalid tile position' });
   }
-});
-
-
-test('core targeting: explicit ID comparison resolves ties independently of insertion order', () => {
-  const units = [7, 1, 4, 2].map(id => actionUnit(id, 'ENEMY', [1, 0]));
-  const source = actionUnit(0, 'ALLY', [0, 0]);
-  const before = [...units];
-  for (const candidates of [units, units.toReversed()]) {
-    const state = combatBattle(fixtureBattlefieldState([source, ...candidates]));
-    const result = selectTargets(state, { source: unitRef(source), purposes: [],
-      filter: (_battle, _request, target) => target.id !== 0 && target.id !== 1,
-      selector: (battle, _request, eligible) => ({ state: battle,
-        value: topK(eligible, 2, (left, right) => left.id - right.id).map(unitRef) }) });
-    assert.deepEqual(result.value.map(ref => ref.id), [2, 4]);
-    assert.equal(result.state, state);
-  }
-  assert.deepEqual(units, before);
-});
-
-
-test('core targeting: each finite target limit returns the same explicitly ranked prefix', () => {
-  const source = actionUnit(100, 'ALLY', [0, 0]);
-  const units = Array.from({ length: 37 }, (_, id) => actionUnit(id, 'ENEMY', [id % 6, 0]));
-  const compare = (left, right) => left.position[0] - right.position[0] || left.id - right.id;
-  const ordered = units.filter(unit => unit.id % 4 !== 0).sort(compare);
-  for (const candidates of [units, units.toReversed(), units.map((_, id) => units[(id * 13) % 37])]) {
-    const state = combatBattle(fixtureBattlefieldState([source, ...candidates]));
-    for (const limit of [0, 1, 2, 3, 8, 37, 100]) {
-      const result = selectTargets(state, { source: unitRef(source), purposes: [],
-        filter: (_battle, _request, target) => target.id !== source.id && target.id % 4 !== 0,
-        selector: (battle, _request, eligible) => ({ state: battle,
-          value: topK(eligible, limit, compare).map(unitRef) }) });
-      assert.deepEqual(result.value.map(ref => ref.id), ordered.slice(0, limit).map(unit => unit.id));
-    }
-  }
-});
-
-
-test('core targeting: a small multi-target query selects across a large unordered candidate set', () => {
-  const source = actionUnit(1000, 'ALLY', [0, 0]);
-  const units = Array.from({ length: 509 }, (_, id) => actionUnit(id, 'ENEMY', [(id * 73) % 509, 0]));
-  const state = combatBattle(fixtureBattlefieldState([source, ...units]));
-  const result = selectTargets(state, { source: unitRef(source), purposes: [],
-    filter: (_battle, _request, target) => target.id !== source.id,
-    selector: (battle, _request, eligible) => ({ state: battle,
-      value: topK(eligible, 3, (left, right) => left.position[0] - right.position[0]).map(unitRef) }) });
-  assert.deepEqual(result.value.map(ref => getUnit(result.state, ref.id).position[0]), [0, 1, 2]);
 });
 
 

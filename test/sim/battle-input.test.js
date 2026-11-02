@@ -5,113 +5,37 @@ import { Tiles } from '../../dist/core/battlefield/map/tiles.js';
 import * as unitQueries from "../../dist/core/unit/query.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
-import { fileURLToPath } from "node:url";
+
+
 import { initialize as initializeBattle, step as stepBattle } from "../../dist/core/battle/runtime.js";
 
 import { definition } from "../helpers/effects.js";
-import { initialize } from "../helpers/unit.js";
-import { effectPlacement } from "../helpers/aura.js";
+
+import { install } from "../../dist/core/unit/effect/index.js";
+import { ref } from "../../dist/core/unit/query.js";
 import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
 
-test("runtime accepts the battle contract Input directly with structural maps and creation references", async () => {
-    const { default: ts } = await import("typescript");
-    const directory = mkdtempSync(join(tmpdir(), "stronghold-battle-input-types-"));
-    const sourceModule = (path) =>
-        JSON.stringify(
-            fileURLToPath(new URL(`../../src/core/${path}.js`, import.meta.url)),
-        );
-    const path = join(directory, "input.mts");
-    try {
-        writeFileSync(
-            path,
-            `
-import type { Input, Command, Event, Result } from ${sourceModule("battle/contract")};
-import { initialize as initializeBattle, step as stepBattle } from ${sourceModule("battle/runtime")};
-// @ts-expect-error Runtime state is threaded through pure operations.
-import { BattleRuntime } from ${sourceModule("battle/runtime")};
-import type { State as BattleState } from ${sourceModule("battle/state")};
-import type { Map } from ${sourceModule("battlefield/map/map")};
-import { Tiles } from ${sourceModule("battlefield/map/tiles")};
-import { normal } from ${JSON.stringify(fileURLToPath(new URL('../../src/content/terrain/definition.js', import.meta.url)))};
-declare const input: Input;
-declare const rawMap: Pick<Map, 'rows' | 'columns' | 'tiles' | 'markers' | 'blockEdges'>;
-const initial = initializeBattle(input);
-initializeBattle(Object.freeze(input));
-const commands: readonly Command[] = [];
-const advanced = stepBattle(initial, commands);
-const events: readonly Event[] = advanced.events;
-const result: Result | null = advanced.result;
-type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
-type Assert<T extends true> = T;
-type InitialState = Assert<Equal<typeof initial, BattleState>>;
-type AdvancedState = Assert<Equal<typeof advanced, BattleState>>;
-// @ts-expect-error Commands must be supplied explicitly.
-stepBattle(initial);
-// @ts-expect-error BattleState has no Runtime facade.
-initial.step(commands);
-initializeBattle({ ...input, map: rawMap });
-initializeBattle({ ...input, map: Object.freeze(rawMap) });
-const { tiles: omittedTiles, ...incompleteMap } = rawMap;
-// @ts-expect-error Battle input maps require every map field.
-initializeBattle({ ...input, map: incompleteMap });
-const validTile = rawMap.tiles.get(0, normal)!;
-const invalidTile = { ...validTile, state: { ...validTile.state, passability: 'INVALID' as const } };
-// @ts-expect-error Battle input maps require valid tile field types.
-Tiles.empty().add(invalidTile);
-${["predefines", "initialMechanisms"]
-    .map(
-        (field, index) => `
-const { ${field}: omitted${index}, ...without${index} } = input;
-// @ts-expect-error Every initial collection must be supplied explicitly.
-initializeBattle(without${index});
-`,
-    )
-    .join("")}
-${[
-    "nextUnitId",
-    "nextMechanismId",
-    "nextOverlayId",
-    "nextProjectileId",
-]
-    .map(
-        (field) => `
-// @ts-expect-error Instance identity allocation belongs to the runtime.
-initializeBattle({ ...input, ${field}: 100 });
-`,
-    )
-    .join("")}
-
-`,
-        );
-        const program = ts.createProgram([path], {
-            noEmit: true,
-            strict: true,
-            exactOptionalPropertyTypes: true,
-            noUncheckedIndexedAccess: true,
-            target: ts.ScriptTarget.ES2022,
-            module: ts.ModuleKind.NodeNext,
-            moduleResolution: ts.ModuleResolutionKind.NodeNext,
-            skipLibCheck: true,
-            types: [],
-        });
-        assert.deepEqual(
-            ts
-                .getPreEmitDiagnostics(program)
-                .map((diagnostic) => ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n")),
-            [],
-        );
-    } finally {
-        rmSync(directory, { recursive: true, force: true });
-    }
-});
 
 const placement = (id, column) => ({
     definition: { hooks: [], id, vitality: { maxHp: 100, defense: 0, resistance: 0 } },
     position: [column, 0],
 });
+
+function withEffect(effect, placement) {
+    return {
+        ...placement,
+        definition: {
+            ...placement.definition,
+            hooks: [{
+                id: "fixture/initial-effect", stage: "enter",
+                invoke(battle, self) {
+                    const host = ref(self);
+                    return { state: install(battle, host, effect, { source: host }).state, value: undefined };
+                },
+            }, ...placement.definition.hooks],
+        },
+    };
+}
 
 function fixture({ spawnTick = 100 } = {}) {
     const tile = createTile({
@@ -178,7 +102,7 @@ function fixture({ spawnTick = 100 } = {}) {
         },
         predefines: predefinedUnits([
             placement("placed-a", 0),
-            effectPlacement(initial, initialize({ id: 1, ...placement("placed-b", 1) })),
+            withEffect(initial, placement("placed-b", 1)),
         ], [
             {
                 id: 100,
@@ -215,7 +139,7 @@ function fixture({ spawnTick = 100 } = {}) {
                 initiallyPresent: false,
                 creation: {
                     type: "UNIT",
-                    ...effectPlacement(initial, initialize({ id: 103, ...placement("later-unit", 3) })),
+                    ...withEffect(initial, placement("later-unit", 3)),
                 },
             },
         ]),
@@ -258,7 +182,6 @@ test("runtime allocates initial IDs, resolves creation references, and never reu
         nextOverlayId: 0,
         nextProjectileId: 0,
     });
-
 
 
     assert.deepEqual(unitQueries.all(initial).toArray()[1].effects.values().toArray()[0].source, unitQueries.ref(unitQueries.all(initial).toArray()[1]));

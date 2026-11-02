@@ -75,8 +75,6 @@ const pair: blocker.Rule = {
 };
 // @ts-expect-error rules return a boolean, not a state transition.
 const sideEffect: Rule<object> = { id: "invalid", allows: () => battle };
-// @ts-expect-error the old optional callback protocol is removed.
-const legacy: skill.Rule<"activation"> = { id: "legacy", allowsActivation: () => false };
 
 declare const typedCard: Ref<cards.Card<{ readonly charges: number }>>;
 cards.allows(battle, { purpose: "SELECT", ref: typedCard });

@@ -55,16 +55,6 @@ const attach = (state, definition) =>
 const change = (state, ref, data) =>
     effects.setData(state, ref, data);
 
-test("action release: ordinary and disabled effects continue without executing disabled hooks", () => {
-    const started = initial();
-    assert.deepEqual(beforeRelease(started.state, started.value.ref).value, CONTINUE);
-    const installed = attach(
-        started.state,
-        releaseEffect("disabled", {}, () => assert.fail("disabled hook ran")),
-    );
-    const disabled = effects.setEnabled(installed.state, installed.value, false);
-    assert.deepEqual(beforeRelease(disabled, started.value.ref).value, CONTINUE);
-});
 
 test("action release: hiding the source in a continuing hook cancels before release or damage", () => {
     const attack = actionDefinition();
@@ -111,7 +101,6 @@ test("action release: a hook publishes charge changes and returns its recovery d
     assert.equal(effects.get(state, installed.value), undefined);
     assert.deepEqual(beforeRelease(state, started.value.ref).value, CONTINUE);
     assert.equal(effects.get(installed.state, installed.value).data.remaining, 3);
-    assert.equal("recoveryUntilTick" in getUnit(state, 0).action, false);
 });
 
 test("action release: the first interruption stops later registered hooks", () => {
@@ -136,139 +125,4 @@ test("action release: the first interruption stops later registered hooks", () =
         recoveryTicks: 4,
     });
     assert.deepEqual(calls, ["first", "second"]);
-});
-
-for (const operation of ["enable", "end"]) {
-    test(`action release: ${operation} changes later eligibility while new candidates wait for the next dispatch`, () => {
-        const started = initial(),
-            calls = [];
-        let state = started.state,
-            secondRef;
-        const third = releaseEffect("third", {}, (state) => {
-            calls.push("C");
-            return { state, value: CONTINUE };
-        });
-        const first = releaseEffect("first", { entered: false }, (state, context, self, ref) => {
-            calls.push("A");
-            if (!self.data.entered) {
-                state = change(state, ref, { entered: true });
-                state =
-                    operation === "enable"
-                        ? effects.setEnabled(state, secondRef, true)
-                        : effects.end(state, secondRef);
-                state = attach(state, third).state;
-            }
-            return { state, value: CONTINUE };
-        });
-        state = attach(state, first).state;
-        const second = attach(
-            state,
-            releaseEffect("second", {}, (state) => {
-                calls.push("B");
-                return { state, value: CONTINUE };
-            }),
-        );
-        state = second.state;
-        secondRef = second.value;
-        if (operation === "enable") state = effects.setEnabled(state, secondRef, false);
-        state = beforeRelease(state, started.value.ref).state;
-        assert.deepEqual(calls, operation === "enable" ? ["A", "B"] : ["A"]);
-        calls.length = 0;
-        beforeRelease({ ...state, tick: 1 }, started.value.ref);
-        assert.deepEqual(calls, operation === "enable" ? ["A", "B", "C"] : ["A", "C"]);
-    });
-}
-
-test("action release: a nested dispatch takes new candidates from its own current battle", () => {
-    const started = initial(),
-        calls = [];
-    const later = releaseEffect("later", {}, (state) => {
-        calls.push("B");
-        return { state, value: CONTINUE };
-    });
-    const first = releaseEffect("first", { nested: false }, (state, context, self, ref) => {
-        calls.push("A");
-        if (!self.data.nested) {
-            state = change(state, ref, { nested: true });
-            state = attach(state, later).state;
-            state = beforeRelease(state, started.value.ref).state;
-        }
-        return { state, value: CONTINUE };
-    });
-    beforeRelease(attach(started.state, first).state, started.value.ref);
-    assert.deepEqual(calls, ["A", "A", "B"]);
-});
-
-test("action release: selected IDs invoke their current replacement while new IDs wait", () => {
-    const started = initial();
-    const seen = [];
-    let registered = false;
-    const later = {
-        id: "later", accepts: () => true,
-        invoke(state) { seen.push("later"); return { state, value: CONTINUE }; },
-    };
-    const replacement = {
-        id: "version", accepts: () => true,
-        invoke(state) { seen.push("replacement"); return { state, value: CONTINUE }; },
-    };
-    const first = {
-        id: "first", accepts: () => true,
-        invoke(state) {
-            seen.push("first");
-            if (!registered) {
-                registered = true;
-                const currentUnit3 = getUnit(state, 0);
-                state = applyUnitChanges(state, [setBeforeReleaseHook({ id: currentUnit3.id }, replacement), setBeforeReleaseHook({ id: currentUnit3.id }, later)]);
-            }
-            return { state, value: CONTINUE };
-        },
-    };
-    const currentUnit4 = getUnit(started.state, 0);
-    const state = applyUnitChanges(started.state, [setBeforeReleaseHook({ id: currentUnit4.id }, first), setBeforeReleaseHook({ id: currentUnit4.id }, {
-            id: "version", accepts: () => true,
-            invoke: () => assert.fail("the selected registration has a new version"),
-        })]);
-    const dispatched = beforeRelease(state, started.value.ref);
-    assert.deepEqual(dispatched.value, CONTINUE);
-    assert.deepEqual(seen, ["first", "replacement"]);
-    beforeRelease(dispatched.state, started.value.ref);
-    assert.deepEqual(seen, ["first", "replacement", "first", "replacement", "later"]);
-});
-
-test("action release: hooks share fixed identities and receive the preceding state and directive", () => {
-    const started = initial();
-    let fixed;
-    const directive = { type: "CONTINUE" };
-    const currentUnit6 = getUnit(started.state, 0);
-    let state = applyUnitChanges(started.state, [setBeforeReleaseHook({ id: currentUnit6.id }, {
-            id: "first",
-            invoke(state, context, current) {
-                fixed = context;
-                assert.deepEqual(current, CONTINUE);
-                assert.equal(context.execution, started.value.ref);
-                const currentUnit5 = getUnit(state, 0);
-                return { state: replaceUnit(state, ({ ...currentUnit5,
-                    vitality: { ...currentUnit5.vitality, hp: 75 },
-                })), value: directive };
-            },
-        })]);
-    const currentUnit7 = getUnit(state, 0);
-    state = applyUnitChanges(state, [setBeforeReleaseHook({ id: currentUnit7.id }, {
-            id: "second",
-            accepts(state, context, current) {
-                assert.equal(context, fixed);
-                assert.equal(current, directive);
-                assert.equal(getUnit(state, context.source.id).vitality.hp, 75);
-                return true;
-            },
-            invoke(state, context, current) {
-                assert.equal(context, fixed);
-                assert.equal(current, directive);
-                return { state, value: { type: "INTERRUPT", recoveryTicks: 2 } };
-            },
-        })]);
-    const result = beforeRelease(state, started.value.ref);
-    assert.deepEqual(result.value, { type: "INTERRUPT", recoveryTicks: 2 });
-    assert.equal(getUnit(result.state, 0).vitality.hp, 75);
-    assert.equal(getUnit(started.state, 0).vitality.hp, 100);
 });

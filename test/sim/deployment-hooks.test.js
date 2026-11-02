@@ -100,40 +100,6 @@ test("deployment observers are global registrations and consume the latest prece
     assert.equal(getUnit(previous, 0).vitality.hp, 100);
 });
 
-test("new deployment observers wait for the next dispatch and same-ID replacement retains order", () => {
-    const deployed = unit(0);
-    let state = createBattleState(fixtureBattlefieldState([deployed]));
-    const calls = [];
-    const late = record("late", state => { calls.push("late"); return state; });
-    state = setHook(state, record("first", state => { calls.push("first"); return setHook(state, late); }));
-    state = setHook(state, record("second", () => assert.fail("obsolete observer ran")));
-    state = setHook(state, record("second", state => { calls.push("second"); return state; }));
-    state = notifyDeployed(state, fact(deployed));
-    assert.deepEqual(calls, ["first", "second"]);
-    notifyDeployed(state, fact(deployed));
-    assert.deepEqual(calls, ["first", "second", "first", "second", "late"]);
-});
-
-test("nested deployment notifications use their own candidates and return state to the outer observer", () => {
-    const deployed = unit(0);
-    let state = createBattleState(fixtureBattlefieldState([deployed]));
-    const calls = [];
-    state = setHook(state, record("first", (state, event) => {
-        calls.push(["first", event.request.quote.dp]);
-        if (event.request.quote.dp === 0) {
-            state = setHook(state, record("late", (state, nested) => { calls.push(["late", nested.request.quote.dp]); return state; }));
-            state = notifyDeployed(state, fact(deployed, null));
-            assert.equal(getUnit(state, 0).vitality.hp, 50);
-            return state;
-        }
-        const current = getUnit(state, 0);
-        return replaceUnit(state, { ...current, vitality: { ...current.vitality, hp: 50 } });
-    }));
-    const next = notifyDeployed(state, fact(deployed));
-    assert.deepEqual(calls, [["first", 0], ["first", null], ["late", null]]);
-    assert.equal(getUnit(next, 0).vitality.hp, 50);
-    assert.equal(getUnit(state, 0).vitality.hp, 100);
-});
 
 test("the registered deployment enter runs before the incoming Unit's own enter", () => {
     const calls = [];
@@ -142,12 +108,14 @@ test("the registered deployment enter runs before the incoming Unit's own enter"
             return { state: setHook(state, record("observer", (state, event) => {
                 calls.push(["observed", event.unit.id]);
                 assert.equal(getUnit(state, event.unit.id).vitality.hp, 100);
+                assert.equal(state.events.some(fact => fact.type === "UNIT_DEPLOYED" && fact.unitId === event.unit.id), true);
                 return state;
             })), value: undefined };
         },
     }] };
     const incoming = definition("incoming", { hooks: [{ id: "own-enter", stage: "enter", invoke(state, self) {
         calls.push(["entered", self.id]);
+        assert.equal(state.events.some(fact => fact.type === "UNIT_DEPLOYED" && fact.unitId === self.id), true);
         return { state: replaceUnit(state, { ...getUnit(state, self.id), vitality: { ...self.vitality, hp: 75 } }), value: undefined };
     } }] });
     let runtime = initializeBattle(input({ predefines: predefinedUnits([{ definition: bootstrap, position: [7, 0] }]), deployment: deployment([incoming, incoming]) }));

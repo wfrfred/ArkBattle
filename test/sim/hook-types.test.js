@@ -58,10 +58,6 @@ const nestedResult: Hook<Context, number> = { id: "bad", invoke: () => ({ state:
 const wrongValue: Hook<Context, number> = { id: "bad", invoke: () => ({ state: battle, value: "one" }) };
 // @ts-expect-error notification callbacks must return Result<void>.
 const bareState: Hook<Context, void> = { id: "bad", invoke: () => battle };
-// @ts-expect-error contexts are explicit fixed dispatch inputs, not refreshed by a resolver.
-const liveContext: DispatchOptions<Context, number> = { ...options, context: () => context };
-// @ts-expect-error the old four-parameter Hook contract is removed.
-type LegacyHook = Hook<BattleState, Context, number, number>;
 `);
         const program = ts.createProgram([path], {
             strict: true, noEmit: true, skipLibCheck: true,

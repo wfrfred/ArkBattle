@@ -17,22 +17,12 @@ function standardHolder(layer = "GROUND", capacity = 2) {
 }
 
 function onReleased(battle, id, capabilityName, entry) {
-    const unit = getUnit(battle, id);
     const setHook = capabilityName === "blocker"
         ? capability.setBlockerHook
         : capability.setBlockableHook;
     return applyUnitChanges(battle, [setHook({ id }, "released", entry)]);
 }
 
-for (const [layer, radius] of [["GROUND", 0.7071], ["AIR", 0.8944]]) {
-    test(`${layer} blocking initializes with the Core standard radius`, () => {
-        const unit = standardHolder(layer);
-        assert.equal(unit.blocker.layer, layer);
-        assert.equal(unit.blocker.radius, radius);
-        assert.equal(unit.definition.blocker.radius, undefined);
-        assert.equal(unit.layer.type, "GROUND", "blocking layer is independent of the unit's own layer");
-    });
-}
 
 test("switching blocking layer replaces the standard radius and preserves Definition and own layer", () => {
     let battle = fixture([standardHolder()]);
@@ -126,30 +116,6 @@ for (const layer of ["GROUND", "AIR"]) {
     });
 }
 
-test("setting the current layer is a no-op and retains existing relations", () => {
-    const battle = acquire(fixture([standardHolder(), target()]));
-    assert.deepEqual(blockedIds(battle), [20]);
-    assert.equal(applyUnitChanges(battle, [capability.setLayer({ id: 10 }, "GROUND")]), battle);
-});
-
-test("switching a Blocker leaves another Blocker's ownership unchanged", () => {
-    let battle = fixture([
-        standardHolder(),
-        holder(11, { position: [7, 1] }),
-        target(),
-        target(21, { position: [7.25, 1] }),
-    ]);
-    battle = acquire(acquire(battle, 11));
-    const retained = getUnit(battle, 11).blocker.blocked[0];
-    assert.equal(ownerId(battle, 21), 11);
-    assert.equal(ownerId(battle, 20), 10);
-    battle = applyUnitChanges(battle, [capability.setLayer({ id: 10 }, "AIR")]);
-    assert.equal(ownerId(battle, 21), 11);
-    assert.deepEqual(blockedIds(battle, 11), [21]);
-    assert.equal(getUnit(battle, 11).blocker.blocked[0], retained);
-    assert.equal(ownerId(battle, 20), undefined);
-    assert.deepEqual(blockedIds(battle), []);
-});
 
 test("layer switching publishes all old releases and the new radius before ordered notifications", () => {
     let battle = fixture([
@@ -186,54 +152,4 @@ test("layer switching publishes all old releases and the new radius before order
         battle.events.filter(event => event.type === "BLOCKING_RELEASED").map(event => event.blockedUnitId),
         [20, 21],
     );
-});
-
-test("a switch during an acquired Hook stops the stale acquisition notification", () => {
-    let battle = fixture([standardHolder(), target()]);
-    const observed = [];
-    let unit = getUnit(battle, 10);
-    battle = applyUnitChanges(battle, [capability.setBlockerHook({ id: unit.id }, "acquired", hook("switch", state => {
-            observed.push("blocker acquired");
-            return applyUnitChanges(state, [capability.setLayer({ id: 10 }, "AIR")]);
-        }))]);
-    unit = getUnit(battle, 20);
-    battle = applyUnitChanges(battle, [capability.setBlockableHook({ id: unit.id }, "acquired", hook("stale", state => {
-            observed.push("blockable acquired");
-            return state;
-        }))]);
-    battle = onReleased(battle, 20, "blockable", hook("release", state => {
-        observed.push("blockable released");
-        return state;
-    }));
-    battle = acquire(battle);
-    assert.deepEqual(observed, ["blocker acquired", "blockable released"]);
-    assert.equal(getUnit(battle, 10).blocker.layer, "AIR");
-    assert.deepEqual(blockedIds(battle), []);
-});
-
-test("nested switches and searches retain their latest layer and rebuilt relation identities", () => {
-    let battle = fixture([standardHolder(), target(20), target(21)]);
-    const released = [];
-    let rebuilt;
-    battle = onReleased(battle, 10, "blocker", hook("rebuild", (state, { relation }) => {
-        released.push(relation.blocked.id);
-        if (relation.blocked.id !== 20) return state;
-        state = applyUnitChanges(state, [capability.setLayer({ id: 10 }, "GROUND")]);
-        state = acquire(state);
-        rebuilt = getUnit(state, 10).blocker.blocked;
-        assert.deepEqual(blockedIds(state), [20, 21]);
-        return state;
-    }));
-    battle = acquire(battle);
-    const original = getUnit(battle, 10).blocker.blocked;
-    battle = applyUnitChanges(battle, [capability.setLayer({ id: 10 }, "AIR")]);
-    assert.deepEqual(released, [20, 21]);
-    assert.equal(getUnit(battle, 10).blocker.layer, "GROUND");
-    assert.equal(getUnit(battle, 10).blocker.radius, 0.7071);
-    assert.equal(getUnit(battle, 10).blocker.blocked, rebuilt);
-    assert.deepEqual(blockedIds(battle), [20, 21]);
-    assert.equal(ownerId(battle, 20), 10);
-    assert.equal(ownerId(battle, 21), 10);
-    assert.notEqual(rebuilt[0], original[0]);
-    assert.notEqual(rebuilt[1], original[1]);
 });

@@ -5,7 +5,7 @@ import { test } from "node:test";
 import { initialize } from "../../dist/core/unit/initialize.js";
 import { actionCapability } from "../helpers/actions.js";
 import * as actions from "../../dist/core/unit/action/index.js";
-import { advance } from "../../dist/core/unit/action/index.js";
+import { advance, create as createAction } from "../../dist/core/unit/action/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { add as addUnit } from "../../dist/core/battle/unit.js";
@@ -50,6 +50,9 @@ test("Action initializes every aggregate before any start and threads battle res
         assert.notEqual(stored, actions.getAction(b.state, actions.ref(b.source, definition)));
         assert.notEqual(stored.state, actions.getAction(b.state, actions.ref(b.source, definition)).state);
     }
+    assert.throws(() => createAction({ ...first, id: "" }), TypeError);
+    assert.throws(() => createAction({ ...first, intervalTicks: -1 }), RangeError);
+    assert.throws(() => createAction({ ...first, speed: Infinity }), RangeError);
 });
 
 test("Action completion and cancellation clear execution while preserving persistent history", () => {

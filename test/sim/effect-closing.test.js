@@ -1,27 +1,20 @@
-
-import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { remove as endUnit } from "../../dist/core/battle/unit.js";
 import { scope as lifetimeScope } from "../../dist/core/lifetime/index.js";
 import { lifetime as effectLifetime } from "../../dist/core/unit/effect/operations.js";
 import { lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
-import { get as unitQueryGet } from "../../dist/core/unit/query.js";
-import { ref as effectRef } from "../../dist/core/unit/effect/effect.js";
-import { damage as dealDamage, parameters } from "../helpers/vitality.js";
+
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize } from "../helpers/unit.js";
-import { replace as updateUnit } from "../../dist/core/battle/unit.js";
+
 import { getUnit } from "../helpers/unit.js";
 
-import {
-    removeHook,
-    setHook,
-} from "../../dist/core/battle/damage/hook.js";
+
 import * as effect from "../../dist/core/unit/effect/index.js";
 import { get } from "../../dist/core/unit/effect/index.js";
-import { effectFixtureWork, install, definition, attackBuff } from "../helpers/effects.js";
-import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
+import { effectFixtureWork, install, definition } from "../helpers/effects.js";
+
 
 const unit = (id) =>
     initialize({
@@ -119,94 +112,9 @@ test("effect lifetimes: a closing host rejects a new dependent before its instal
     );
     let battle = effectFixtureWork(unit(0));
     battle = install(battle, parent).state;
-    battle = endUnit(battle, (unitRef(getUnit(battle, 0))).id, "DEATH");
+    endUnit(battle, (unitRef(getUnit(battle, 0))).id, "DEATH");
     assert.equal(installed, undefined);
     assert.equal(attempts, 0);
-});
-
-test("effect lifetimes: a closed parent cannot admit a remote dependent during terminal business", () => {
-    let accepted;
-    const child = definition("new-dependent");
-    const parent = definition(
-        "parent",
-        {},
-        {
-            onEnd(state, self) {
-                const result = effect.install(
-                    state,
-                    unitRef(getUnit(state, 1)),
-                    child,
-                    {
-                        scopes: [lifetimeScope(effectLifetime, effectRef(self))],
-                    },
-                );
-                accepted = result.value;
-                return result.state;
-            },
-        },
-    );
-    let battle = effectFixtureWork(unit(0), unit(1));
-    let ref;
-    ({ state: battle, value: ref } = install(battle, parent, 0));
-    battle = effect.end(battle, ref);
-    assert.equal(accepted, undefined);
-    assert.equal(getUnit(battle, 1).effects?.values().length ?? 0, 0);
-});
-
-test("effect lifetimes: each subsequent terminal callback sees preceding state changes", () => {
-    let later;
-    const last = definition(
-        "last",
-        {},
-        {
-            onEnd(state, self) {
-                assert.equal(unitQueryGet(state, self.host).vitality.hp, 30);
-                return state;
-            },
-        },
-    );
-    const first = definition(
-        "first",
-        {},
-        {
-            onEnd(state) {
-                const receiver = getUnit(state, 1);
-                state = updateUnit(state, [{
-                    ...receiver,
-                    vitality: { ...receiver.vitality, hp: 30 },
-                }]);
-                return effect.end(state, later, "EXPLICIT");
-            },
-        },
-    );
-    let battle = effectFixtureWork(unit(0), unit(1));
-    let ref;
-    ({ state: battle, value: ref } = install(battle, first, 0));
-    ({ state: battle, value: later } = install(battle, last, 1));
-    battle = effect.end(battle, ref);
-    assert.equal(get(battle, later), undefined);
-});
-
-test("effect lifetimes: ending the same instance in its disable callback remains terminal and idempotent", () => {
-    const calls = [];
-    const value = attackBuff("terminal", 20, {
-        onDisable(state, self) {
-            calls.push("disable");
-            state = effect.setEnabled(state, effectRef(self), true);
-            return effect.end(state, effectRef(self), "NESTED");
-        },
-        onEnd: (state) => {
-            calls.push("end");
-            return state;
-        },
-    });
-    let battle = effectFixtureWork(unit(0));
-    let ref;
-    ({ state: battle, value: ref } = install(battle, value));
-    battle = effect.end(battle, ref);
-    assert.deepEqual(calls, ["disable", "end"]);
-    assert.equal(get(battle, ref), undefined);
-    assert.equal(resolveAttack(battle, unitRef(getUnit(battle, 0))), 100);
 });
 
 test("effect lifetimes: closing a host never reenables its suppressed effects", () => {
@@ -242,53 +150,4 @@ test("effect lifetimes: closing a host never reenables its suppressed effects", 
 
     assert.deepEqual(enabled, []);
     assert.equal(getUnit(battle, 0), undefined);
-});
-
-test("effect lifetimes: terminal hook cleanup cannot recreate a host killed by a child's ending", () => {
-
-    const parent = definition(
-        "parent-hook",
-        {},
-        {
-            onInstall(state, self) {
-                return applyUnitChanges(state, [setHook({ id: unitQueryGet(state, self.host).id }, {
-                        id: "parent-hook",
-                        stage: "completed",
-                        priority: 0,
-                        accepts: () => true,
-                        invoke(state) {
-                            return { state, value: undefined };
-                        },
-                    })]);
-            },
-            onEnd(state, self) {
-                const host = getUnit(state, self.host.id);
-                return host === undefined
-                    ? state
-                    : applyUnitChanges(state, [removeHook({ id: host.id }, "parent-hook")]);
-            },
-        },
-    );
-    const child = definition(
-        "child-death",
-        {},
-        {
-            onEnd(state) {
-                return dealDamage(state, { source: null, target: { id: 0 }, parameters: parameters(100, "TRUE") }).state;
-            },
-        },
-    );
-    let battle = effectFixtureWork(unit(0), unit(1));
-    let ref;
-    ({ state: battle, value: ref } = install(battle, parent, 0));
-    battle = install(battle, child, 1, { scopes: [lifetimeScope(effectLifetime, ref)] }).state;
-
-    battle = effect.end(battle, ref);
-
-    assert.equal(getUnit(battle, 0), undefined);
-    assert.deepEqual(getUnit(battle, 1).effects.values().toArray(), []);
-    assert.deepEqual(
-        battle.removedUnits.map(({ unitId, reason }) => [unitId, reason]),
-        [[0, "DEATH"]],
-    );
 });

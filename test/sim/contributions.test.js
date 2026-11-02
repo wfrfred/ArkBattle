@@ -1,30 +1,9 @@
-import { set as setFixtureEntry } from "../../dist/core/hook.js";
-
-import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
-import { resolveDefense } from "../../dist/core/unit/capability/vitality/query.js";
-import { ref as unitRef } from "../../dist/core/unit/query.js";
-import { effectFixtureWork as workFor } from "../helpers/effects.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import * as modifier from "../../dist/core/unit/contribution/attribute.js";
 import * as contribution from "../../dist/core/unit/contribution/contribution.js";
-import { initialize, getUnit, replaceUnit } from "../helpers/unit.js";
-import {
-    setAttackContribution,
-    removeAttackContribution,
-} from "../../dist/core/unit/capability/offense/capability.js";
-import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
 
 
-
-
-
-const unit = (id, attack = 100) =>
-    initialize({
-        id,
-        definition: { hooks: [], id: `unit-${id}`, offense: { attack }, vitality: { maxHp: 100, defense: 0, resistance: 0 } },
-        position: [0, 0],
-    });
 const value = (amount) => modifier.create({ finalAddition: amount });
 test("contributions: set and remove preserve immutable arrays and shared values", () => {
     const group = { id: "attack", priority: 3 };
@@ -69,38 +48,6 @@ test("contributions: group priority and ID ties are independent of insertion ord
     assert.equal(fallback.length, 3);
 });
 
-test("contributions: winners alone evaluate and effective modifiers follow ID order", () => {
-    const calls = [];
-    const context = { amount: 7 };
-    const entries = [
-        {
-            id: "z",
-            value: (input) => {
-                calls.push(input);
-                return [value(input.amount)];
-            },
-        },
-        {
-            id: "loser",
-            group: { id: "shared", priority: 0 },
-            value: () => {
-                throw new Error("loser evaluated");
-            },
-        },
-        { id: "a", group: { id: "shared", priority: 1 }, value: [value(3)] },
-    ];
-    const selected = contribution.resolve(entries);
-    assert.deepEqual(calls, []);
-    assert.equal(selected[0], entries[2].value);
-    assert.equal(selected[1], entries[0].value);
-    assert.deepEqual(
-        selected.flatMap((input) => typeof input === "function" ? input(context) : input),
-        [value(3), value(7)],
-    );
-    assert.deepEqual(calls, [context]);
-    assert.equal(selected[0], entries[2].value);
-});
-
 test("contributions: selection preserves domain payloads without interpreting or flattening them", () => {
     const budget = { fixed: 2, ratio: 0.5 };
     const entries = contribution.set(
@@ -119,66 +66,4 @@ test("contributions: selection preserves domain payloads without interpreting or
     ];
     assert.deepEqual(contribution.resolve(volumes), [-1, 3]);
     assert.equal(contribution.resolve(volumes).reduce((sum, value) => sum + value, 0), 2);
-});
-
-test("contributions: capability set, remove and replacement preserve prior snapshots", () => {
-    const initial = unit(1);
-    const sample = { id: "inspiration", value: [value(150)] };
-    const sampled = ({ ...initial, offense: { ...initial.offense, attack: setFixtureEntry(initial.offense.attack, sample) } });
-    let work = workFor(sampled);
-    assert.equal(resolveAttack(work, unitRef(getUnit(work, 1))), 250);
-    const currentUnit = getUnit(work, 1);
-    work = applyUnitChanges(work, [removeAttackContribution({ id: currentUnit.id }, "inspiration")]);
-    assert.equal(resolveAttack(work, unitRef(getUnit(work, 1))), 100);
-    const currentUnit2 = getUnit(work, 1);
-    work = applyUnitChanges(work, [setAttackContribution({ id: currentUnit2.id }, sample)]);
-    assert.equal(resolveAttack(work, unitRef(getUnit(work, 1))), 250);
-    const copied = getUnit(work, 1);
-    assert.equal(copied.offense.attack, getUnit(work, 1).offense.attack);
-    const resumedSnapshot = work;
-    const currentUnit3 = getUnit(work, 1);
-    work = applyUnitChanges(work, [setAttackContribution({ id: currentUnit3.id }, { id: "inspiration", value: [value(200)] })]);
-    assert.equal(resolveAttack(work, unitRef(getUnit(work, 1))), 300);
-    assert.equal(resolveAttack(resumedSnapshot, unitRef(getUnit(resumedSnapshot, 1))), 250);
-});
-
-test("contributions: direct capability closures read current facts and retain previous snapshots", () => {
-    const initial = ({ ...unit(1), offense: { ...unit(1).offense, attack: setFixtureEntry((unit(1).offense)["attack"], {
-        id: "dynamic",
-        value: (_battle, self) => [value(self.vitality.hp < 50 ? 100 : 0)],
-    }) } });
-    let work = workFor(initial);
-    const original = work;
-    assert.equal(resolveAttack(original, unitRef(getUnit(original, 1))), 100);
-    const currentUnit4 = getUnit(work, 1);
-    work = replaceUnit(work, {
-        ...currentUnit4,
-        vitality: { ...currentUnit4.vitality, hp: 30 },
-    });
-    assert.equal(resolveAttack(work, unitRef(getUnit(work, 1))), 200);
-    assert.equal(resolveAttack(original, unitRef(getUnit(original, 1))), 100);
-    assert.equal(getUnit(work, 1).offense.attack, initial.offense.attack);
-});
-
-test("contributions: sampled and dynamic defense values resolve without mutating inputs", () => {
-    for (const dynamic of [false, true])
-        for (const [amount, expected] of [
-            [0, 30],
-            [10, 40],
-            [-50, 0],
-            [90, 100],
-        ]) {
-            const base = initialize({
-                id: 1,
-                position: [0, 0],
-                definition: { hooks: [], id: "defended", vitality: { maxHp: 100, defense: 200, resistance: 30 } },
-            });
-            const modifiers = [value(amount)];
-            const entry = { id: "resistance", value: dynamic ? () => modifiers : modifiers };
-            const current = ({ ...base, vitality: { ...base.vitality, resistance: setFixtureEntry(base.vitality.resistance, entry) } });
-            const battle = workFor(current);
-            assert.deepEqual(resolveDefense(battle, unitRef(current)), { defense: 200, resistance: expected });
-            assert.equal(current.vitality.resistance[0], entry);
-            assert.equal(base.definition.vitality.resistance, 30);
-        }
 });

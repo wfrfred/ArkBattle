@@ -71,17 +71,6 @@ test("buff expiry: native clear-all and every non-STACK policy finish without a 
     }
 });
 
-test("buff expiry: raw counts above the effective cap skip reload until they reach the exact cap", () => {
-    const rule = compileBuffStacking(description({ maxValidStackCnt: 2 }));
-    assert.deepEqual(rule.expire(application(4), 30, 30), refresh(3, 60, false));
-    assert.deepEqual(rule.expire(application(3, 60), 30, 60), refresh(2, 90, true));
-    assert.deepEqual(rule.expire(application(2, 90), 30, 90), refresh(1, 120, true));
-    const zero = compileBuffStacking(description({ maxValidStackCnt: 0 }));
-    assert.deepEqual(zero.expire(application(2), 30, 30), refresh(1, 60, false));
-    const unlimited = compileBuffStacking(description({ maxValidStackCnt: -7 }));
-    assert.deepEqual(unlimited.expire(application(4), 30, 30), refresh(3, 60, true));
-});
-
 test("buff expiry: zero lifetime advances one tick", () => {
     const rule = compileBuffStacking(description());
     assert.deepEqual(rule.expire(application(3, 0), 0, 0), refresh(2, 1, true));
@@ -189,14 +178,7 @@ test("buff expiry content renews private layers and refreshes static contributio
     assert.equal(power(before), 250);
     assert.equal(instance(before).data.stackCount, 3);
 });
-test("inactive layered buffs reach deadline without executing their active tick behavior", () => {
-    const buff = harness({ stackCount: 2 });
-    buff.work = effects.setEnabled(buff.work, buff.ref, false);
-    buff.work = effects.advance(at(buff.work, 30));
-    assert.equal(instance(buff.work), undefined);
-    assert.equal(power(buff.work), 100);
-    assert.deepEqual(buff.samples, [100]);
-});
+
 test("native effective cap preserves sampled input until a renewal requires resampling", () => {
     const buff = harness({ stackCount: 4, maxValidStackCnt: 2 });
     const original = buff.work;

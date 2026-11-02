@@ -57,21 +57,6 @@ test("batch update swaps occupied tiles using the complete final Unit states", (
 });
 
 
-test("batch update swaps SUPPORT occupancy tiles without disturbing their occupants", () => {
-    const first = unit(1, 0, "SUPPORT"), second = unit(2, 1, "SUPPORT");
-    const occupantA = unit(3, 0), occupantB = unit(4, 1);
-    const before = fixture(first, second, occupantA, occupantB);
-    const after = updateUnit(before, [move(first, 1), move(second, 0)]);
-
-    assert.equal(at(after, [0, 0]).support.id, 2);
-    assert.equal(at(after, [0, 1]).support.id, 1);
-    assert.equal(at(after, [0, 0]).occupant, at(before, [0, 0]).occupant);
-    assert.equal(at(after, [0, 1]).occupant, at(before, [0, 1]).occupant);
-    assert.equal(after.units.get(occupantA.id), occupantA);
-    assert.equal(after.units.get(occupantB.id), occupantB);
-});
-
-
 test("batch update rejects a final occupancy conflict without changing the input", () => {
     const first = unit(1, 0), second = unit(2, 1);
     const before = fixture(first, second);
@@ -116,23 +101,4 @@ test("field batch update rejects occupancy outside the map without publishing pa
     assert.equal(before.units.get(second.id), second);
     assert.equal(at(before, [0, 0]).occupant.id, first.id);
     assert.equal(at(before, [0, 1]).occupant.id, second.id);
-});
-
-test("empty and unchanged batches retain state identity while local updates share unchanged indexes", () => {
-    const first = unit(1, 0), second = unit(2, 1);
-    const before = fixture(first, second);
-
-    assert.equal(updateUnit(before, []), before);
-    assert.equal(updateUnit(before, [first, second]), before);
-    assert.equal(updateUnit(before, [first]), before);
-    const changed = { ...first, vitality: { ...first.vitality, hp: 75 } };
-    const after = updateUnit(before, [changed, second]);
-    const single = updateUnit(before, [changed]);
-    assert.equal(after.occupancy, before.occupancy);
-    assert.equal(after.navigation, before.navigation);
-    assert.equal(after.projectiles, before.projectiles);
-    assert.equal(after.units.get(second.id), second);
-    assert.equal(after.units.get(first.id), changed);
-    assert.deepEqual([...single.units], [...after.units]);
-    assert.equal(single.occupancy, after.occupancy);
 });

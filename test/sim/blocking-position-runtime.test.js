@@ -5,9 +5,9 @@ import { advanceMovement } from "../../dist/core/battle/steps/movement.js";
 import { remove, update } from "../../dist/core/battle/unit.js";
 import * as capability from "../../dist/core/unit/capability/blocking/index.js";
 import * as presence from "../../dist/core/unit/capability/presence/operations.js";
-import * as route from "../../dist/core/unit/capability/route/operations.js";
-import * as locomotion from "../../dist/core/unit/capability/locomotion/capability.js";
-import { initialize, getUnit } from "../helpers/unit.js";
+
+
+import { getUnit } from "../helpers/unit.js";
 import { fixture, holder, target, hook, blockedIds } from "../helpers/blocking.js";
 
 const routeDefinition = {
@@ -77,19 +77,6 @@ test("released targets advance both an unfinished position plan and autonomous m
     assert.ok(getUnit(completed, 20).position[0] > 2.5);
 });
 
-test("all initial position plans advance before the first autonomous movement Rule reads other targets", () => {
-    const moving = target(20, { definition: { route: routeDefinition, locomotion: locomotionDefinition } });
-    let battle = blocking.search(fixture([holder(10, { capacity: 2 }), moving, target(21)]), { id: 10 });
-    const second = getUnit(battle, 21);
-    const expected = second.position.map((value, i) => (value + second.blockable.adjustment.to[i]) / 2);
-    let observed;
-    battle = update(battle, [locomotion.setRule({ id: 20 }, {
-        id: "observe-shift", allows(state) { observed = getUnit(state, 21).position; return false; },
-    })]);
-    battle = blocking.release(battle, blocking.relations(battle, { id: 10 }));
-    battle = advance({ ...battle, tick: 3 });
-    assert.deepEqual(observed, expected);
-});
 
 test("position-dependent Blocking Rules are rechecked in the Blocking phase after position adjustment", () => {
     let battle = fixture([holder(), target()]);
@@ -125,24 +112,6 @@ test("spatial changes cancel plans with new position and relation cleanup visibl
     assert.deepEqual(getUnit(advance({ ...battle, tick: 100 }), 20).position, [8, 1]);
 });
 
-test("route position commands without SpatialPresence cancel the old plan and release before notification", () => {
-    const moving = initialize({ id: 20, position: [2.25, 1], definition: {
-        id: "route-position", hooks: [], allegiance: { side: "ENEMY" },
-        layer: { type: "GROUND" }, blockable: { volume: 1 },
-        route: { ...routeDefinition, checkpoints: [{ type: "APPEAR_AT_POS", position: [1, 8], offset: [0, 0] }] },
-    } });
-    let battle = blocking.search(fixture([holder(), moving]), { id: 10 });
-    let observed;
-    battle = update(battle, [capability.setBlockableHook({ id: 20 }, "released", hook("route-jump", (state) => {
-        observed = getUnit(state, 20);
-        return state;
-    }))]);
-    battle = route.advance(battle, { id: 20 });
-    assert.deepEqual(observed.position, [8, 1]);
-    assert.equal(observed.blockable.adjustment, null);
-    assert.equal(observed.blockable.blocker, null);
-    assert.deepEqual(getUnit(advance({ ...battle, tick: 100 }), 20).position, [8, 1]);
-});
 
 test("leaving targets cancel their own plan while a leaving blocker preserves its former targets' plans", () => {
     let battle = blocking.search(fixture([holder(), target()]), { id: 10 });

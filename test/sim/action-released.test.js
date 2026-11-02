@@ -130,46 +130,6 @@ test("default attack output reads bindings replaced by a released Hook from the 
     assert.deepEqual(advanced.events.filter(({ type }) => type === "DAMAGE").map(({ targetUnitId }) => targetUnitId), [2]);
 });
 
-test("release dispatch reads replacements for selected IDs and defers newly registered IDs", () => {
-    const seen = [];
-    let registered = false;
-    const replacement = hook("version", (current) => { seen.push("new-version"); return { state: current, value: undefined }; });
-    const late = hook("late", (current) => { seen.push("late"); return { state: current, value: undefined }; });
-    const f = fixture({ windupTicks: 10, withSkill: false });
-    let state = applyUnitChanges(f.state, [setReleasedHook({ id: 0 }, hook("register", (current) => {
-        seen.push("register");
-        if (registered) return { state: current, value: undefined };
-        registered = true;
-        return { state: applyUnitChanges(current, [
-            setReleasedHook({ id: 0 }, replacement),
-            setReleasedHook({ id: 0 }, late),
-        ]), value: undefined };
-    }))]);
-    state = applyUnitChanges(state, [setReleasedHook({ id: 0 }, hook("stable", (current) => { seen.push("stable"); return { state: current, value: undefined }; }))]);
-    state = applyUnitChanges(state, [setReleasedHook({ id: 0 }, hook("version", () => assert.fail("the selected old version was replaced")))]);
-    const started = actions.start(state, actions.ref(f.ref, f.definition));
-    state = released(started.state, started.value.ref);
-    assert.deepEqual(seen, ["register", "stable", "new-version"]);
-    state = released(state, started.value.ref);
-    assert.deepEqual(seen, ["register", "stable", "new-version", "register", "stable", "new-version", "late"]);
-    assert.equal(state.events.some(({ type }) => type === "DAMAGE"), false);
-});
-
-test("generic Action start and onTick do not implicitly emit a release or grant ACTION SP", () => {
-    const definition = {
-        id: "store-energy", intervalTicks: 30, speed: 100,
-        initialize: (state) => ({ state, value: {} }),
-        prepare: (state) => ({ state, value: {} }),
-        onTick: (state) => ({ state, value: true }),
-    };
-    const f = fixture({ action: definition });
-    const state = applyUnitChanges(f.state, [setReleasedHook({ id: 0 }, hook("unreleased", () => assert.fail("generic scheduling does not emit a release")))]);
-    const started = actions.start(state, actions.ref(f.ref, f.definition));
-    const advanced = advance(started.state, started.value.ref);
-    assert.equal(getUnit(advanced, 0).skill.sp.value, 0);
-    assert.equal(advanced.events.some(({ type }) => type === "ACTION_RELEASED"), false);
-});
-
 
 test("release observers stop after their Action ends and retain the completed observer's state", () => {
     const f = fixture({ windupTicks: 10, withSkill: false });

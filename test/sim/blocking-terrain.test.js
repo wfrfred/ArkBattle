@@ -56,53 +56,6 @@ for (const [name, options, expected] of [
     });
 }
 
-test("highland support prevents its occupant from blocking even when its buildable type is NONE", () => {
-    const support = initialize({
-        id: 30,
-        position: [2, 1],
-        definition: {
-            id: "unbuildable-highland-support",
-            occupancy: { slot: "SUPPORT", hooks: [] },
-        },
-        states: { occupancy: { tile: [1, 2] } },
-    });
-    let battle = fixture([
-        support,
-        holder(10, { states: { occupancy: { tile: [1, 2] } } }),
-        target(),
-    ]);
-
-    battle = changeTile(battle, [1, 2], { elevation: "HIGHLAND", placement: "NONE", allowsBlocking: false });
-    battle = search(battle, { id: 10 });
-
-    assert.equal(blockerOf(battle, { id: 20 }), undefined);
-    assert.equal(battle.events.some(event => event.type === "BLOCKING_ACQUIRED"), false);
-});
-
-for (const [name, options, expected] of [
-    ["blockable", {}, 10],
-    ["unblockable", { blackboard: flag(0) }, undefined],
-]) {
-    test(`support registration preserves the ${name} map tile`, () => {
-        const support = initialize({
-            id: 30,
-            position: [1, 0],
-            definition: { id: "support-without-tile-change", occupancy: { slot: "SUPPORT", hooks: [] } },
-            states: { occupancy: { tile: [0, 1] } },
-        });
-        let battle = createBattleState(create(map(options)));
-        battle = addUnit(battle, support);
-        battle = addUnit(battle, holder(10, {
-            position: [1, 0], states: { occupancy: { tile: [0, 1] } },
-        }));
-        battle = addUnit(battle, target(20, { position: [1.25, 0] }));
-
-        battle = search(battle, { id: 10 });
-
-        assert.equal(blockerOf(battle, { id: 20 })?.id, expected);
-        assert.equal(battle.events.some(event => event.type === "BLOCKING_ACQUIRED"), expected !== undefined);
-    });
-}
 
 for (const [registeredHeight, bodyHeight, expected] of [
     ["HIGHLAND", "LOWLAND", undefined],

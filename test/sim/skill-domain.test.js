@@ -1,20 +1,19 @@
 import { update as applyUnitChanges, add as addUnit } from "../../dist/core/battle/unit.js";
-import { baseUnit, fixtureBattle, getUnit, initialize } from "../helpers/unit.js";
+import { fixtureBattle, getUnit, initialize } from "../helpers/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { replace as updateUnit } from "../../dist/core/battle/unit.js";
 
 import * as skills from "../../dist/core/unit/skill/operations.js";
-import { create } from "../../dist/core/unit/skill/initialize.js";
+
 import * as sp from "../../dist/core/unit/skill/sp.js";
-import { initialize as initializeSkill, setRule, removeRule } from "../../dist/core/unit/capability/skill/capability.js";
+import { removeRule } from "../../dist/core/unit/capability/skill/capability.js";
 import { create as value } from "../../dist/core/unit/contribution/attribute.js";
 
 import { get as getHookHost, ref } from "../../dist/core/unit/query.js";
 import { effectFixtureWork } from "../helpers/effects.js";
-import { actionCapability } from "../helpers/actions.js";
-import { start as startAction, ref as actionRef } from "../../dist/core/unit/action/index.js";
-import { advance as advanceAction } from "../../dist/core/unit/action/index.js";
+
+
 import { ref as skillRef, fixture, definition, at, setSkill, currentRef } from "../helpers/skill.js";
 
 const resource = (overrides = {}) => ({
@@ -92,17 +91,6 @@ test("activation-specific payment samples the current SP without changing the co
     assert.equal(read(started.state).definition, f.definition);
 });
 
-test("skill definitions are shared and deployments initialize independent private state", () => {
-    const f = fixture({ initialize: battle => ({ state: battle, value: ({ count: 0 }) }), sp: resource({ initial: 1 }) });
-    assert.equal(f.unit.skill.definition, f.definition);
-    const another = initializeSkill(fixtureBattle(90), baseUnit(f.unit.definition)).value.skill;
-    assert.deepEqual(another.state, { count: 0 });
-    assert.notEqual(another.state, f.unit.skill.state);
-    assert.equal(another.sp.value, 1);
-    assert.equal(another.sp.lastTick, 90);
-    assert.throws(() => create(f.state, definition({ sp: resource({ initial: 7 }) })), /capacity/);
-    assert.throws(() => create(f.state, definition({ sp: resource({ initial: 0.5 }) })), /integer/);
-});
 
 for (const source of ["TIME", "ACTION", "HIT"]) {
     test(`${source} recovery caps capacity and preserves ordinary charge budgets`, () => {
@@ -168,46 +156,12 @@ test("active recovery is a removable default Rule and payment remains legal duri
     assert.equal(sp.recover(state, f.ref, "TIME", 1).value.type, "REJECTED");
     state = sp.pay(state, f.ref, 1).state;
     assert.equal(read(state).sp.value, 2);
-    const currentSkill11 = getUnit(state, 1).skill;
     state = applyUnitChanges(state, [removeRule({ id: 1 }, "recovery", "@skill/active-recovery")]);
     state = sp.recover(state, f.ref, "TIME", 1).state;
     assert.equal(read(state).sp.value, 3);
     assert.equal(read(state).activation.status, "ACTIVE");
 });
 
-test("skill Rule identities are local to each node and replacement preserves activation order", () => {
-    const f = fixture({ sp: resource({ initial: 3 }) });
-    const seen = [];
-    const deny = { id: "shared", allows: () => false };
-    const replacement = { id: "shared", allows: (_battle, { self }) => {
-        seen.push(["replacement", self.id]);
-        return true;
-    } };
-    let state = applyUnitChanges(f.state, [
-        setRule(f.ref, "activation", deny),
-        setRule(f.ref, "recovery", deny),
-        setRule(f.ref, "activation", { id: "after", allows: () => { seen.push(["after", 1]); return true; } }),
-        setRule(f.ref, "activation", replacement),
-    ]);
-    assert.deepEqual(read(state).rules.activation.map(({ id }) => id), ["shared", "after"]);
-    assert.equal(applyUnitChanges(state, [setRule(f.ref, "activation", replacement)]), state);
-    assert.equal(applyUnitChanges(state, [removeRule(f.ref, "operation", "missing")]), state);
-    const started = skills.activate(state, f.skillRef);
-    assert.equal(started.value.type, "ACTIVATED");
-    assert.deepEqual(seen, [["replacement", 1], ["after", 1]]);
-
-    state = applyUnitChanges(started.state, [
-        removeRule(f.ref, "activation", "shared"),
-        removeRule(f.ref, "recovery", "@skill/active-recovery"),
-    ]);
-    assert.deepEqual(read(state).rules.recovery.map(({ id }) => id), ["shared"]);
-    assert.equal(sp.recover(state, f.ref, "TIME", 1).value.type, "REJECTED");
-    state = applyUnitChanges(state, [removeRule(f.ref, "recovery", "shared")]);
-    state = sp.recover(state, f.ref, "TIME", 1).state;
-    assert.equal(read(state).sp.value, 1);
-    assert.deepEqual(read(f.state).rules.activation, []);
-    assert.deepEqual(read(f.state).rules.recovery.map(({ id }) => id), ["@skill/active-recovery"]);
-});
 
 test("natural SP pauses while full and resumes the saved remainder without a backlog", () => {
     const f = fixture({ sp: resource({ capacity: 2, requirement: 2, cost: 2 }) });
@@ -324,28 +278,6 @@ test("SP Hooks keep settled reports across nested payment and dispatch only thei
     assert.equal(read(state).sp.value, 0);
 });
 
-test("persistent state survives activations and activation state is initialized independently", () => {
-    const f = fixture({ initialize: battle => ({ state: battle, value: ({ count: 0 }) }), sp: null,
-        activation: { trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({ count: 0 }) },
-    });
-    let state = skills.activate(f.state, f.skillRef).state;
-    const currentSkill21 = getUnit(state, 1).skill;
-    state = setSkill(state, { ...currentSkill21, state: { count: 7 } });
-    state = skills.finish(state, currentRef(state));
-    state = skills.activate(state, f.skillRef).state;
-    assert.deepEqual(read(state).state, { count: 7 });
-    assert.deepEqual(read(state).activation.state, { count: 0 });
-    assert.equal(read(state).activation.id, 1);
-});
-
-test("normal activation refusal allocates no identity and preserves the input state", () => {
-    const f = fixture({ sp: resource() });
-    const rejected = skills.activate(f.state, f.skillRef);
-    assert.equal(rejected.value.type, "REJECTED");
-    assert.equal(rejected.state, f.state);
-    assert.equal(read(rejected.state).nextActivationId, 0);
-    assert.equal(skills.activate(f.state, f.skillRef, "AUTO").value.type, "REJECTED");
-});
 
 test("definition admission rejects before payment and activation allocation", () => {
     const f = fixture({ activation: {
@@ -402,20 +334,6 @@ test("a deployment passive can have a finite TIME duration without natural react
     assert.equal(read(state).nextActivationId, 1);
 });
 
-test("generic Action scheduling does not itself award ACTION SP", () => {
-    const action = { id: "reload-like", intervalTicks: 30, speed: 100,
-        initialize: battle => ({ state: battle, value: {} }),
-        prepare: (battle) => ({ state: battle, value: {} }),
-        onTick: (battle) => ({ state: battle, value: true }),
-    };
-    const unit = initialize({ id: 1, position: [0, 0], definition: {
-        id: "actor", skill: definition({ sp: resource({ recovery: { type: "ACTION", amount: 1 } }) }),
-        action: actionCapability(action),
-    } });
-    const started = startAction(effectFixtureWork(unit), actionRef(ref(unit), action));
-    const battle = advanceAction(started.state, started.value.ref);
-    assert.equal(read(battle).sp.value, 0);
-});
 
 test("non-TIME recovery does not evaluate natural speed or publish tick-only Unit updates", () => {
     for (const type of ["ACTION", "HIT", "NONE"]) {

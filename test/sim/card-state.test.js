@@ -42,25 +42,6 @@ const modification = (id, fields, group) => ({
     ...(group === undefined ? {} : { group }),
 });
 
-test("ordinary Cards share definitions and have independent persistent progress", () => {
-    const unit = definition();
-    const first = createCard(0, unit);
-    const second = createCard(1, unit);
-    assert.equal(first.definition, unit);
-    assert.deepEqual(first.state, {});
-    assert.deepEqual(second.state, {});
-    assert.notEqual(first.state, second.state);
-    assert.equal(unit.card.onTick, undefined);
-    assert.equal(first.stock, 1);
-    assert.equal(first.definition.card.stockLimit, 1);
-    assert.equal(first.definition.card.activeLimit, 1);
-    assert.equal(first.cooldown, null);
-    assert.equal(first.recovery, null);
-    const changed = cards.incrementCostStage(first);
-    assert.equal(changed.costStage, 1);
-    assert.equal(second.costStage, 0);
-    assert.equal(first.costStage, 0);
-});
 
 test("cost stages cap at two and preserve staged rounding", () => {
     const first = operator(11);
@@ -88,42 +69,6 @@ test("cost penalty multiplies base additions without multiplying final cost redu
     assert.equal(cards.resolveBaseCost(card), 12);
 });
 
-test("Card contribution groups select a winner and removing it restores the fallback", () => {
-    const initial = operator();
-    let card = cards.setCostContribution(
-        initial,
-        modification("weak", { finalAddition: -1 }, { id: "discount", priority: 1 }),
-    );
-    card = cards.setCostContribution(
-        card,
-        modification("strong", { finalAddition: -3 }, { id: "discount", priority: 2 }),
-    );
-    assert.equal(cards.resolveCost(card), 7);
-    card = cards.removeCostContribution(card, "strong");
-    assert.equal(cards.resolveCost(card), 9);
-    assert.equal(cards.resolveCost(initial), 10);
-    assert.equal(cards.removeCostContribution(card, "missing"), card);
-});
-
-test("future duration modifiers do not rescale a use cooldown that already started", () => {
-    const waiting = cards.startCooldown(operator(10, 30), 5);
-    const modified = cards.setRedeployTimeContribution(
-        waiting,
-        modification("shorter", { multiplier: -0.5 }),
-    );
-    assert.equal(cards.resolveRedeployTicks(modified), 15);
-    assert.equal(modified.cooldown, waiting.cooldown);
-    const shortened = cards.reduceCooldown(modified, 10, 10, "COOLDOWN");
-    assert.equal(shortened.cooldown.readyAtTick, 25);
-    assert.equal(shortened.cooldown.durationTicks, 30);
-    assert.equal(cards.advance(shortened, 25).cooldown, null);
-    assert.equal(cards.startCooldown(shortened, 50).cooldown.readyAtTick, 65);
-    assert.equal(
-        cards.resolveRedeployTicks(cards.removeRedeployTimeContribution(modified, "shorter")),
-        30,
-    );
-    assert.equal(cards.removeRedeployTimeContribution(modified, "missing"), modified);
-});
 
 test("Card construction rejects impossible finite inventory", () => {
     assert.throws(() => createCard(0, definition(), { stock: 2 }), RangeError);

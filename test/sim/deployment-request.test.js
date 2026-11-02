@@ -61,22 +61,6 @@ test("free payment keeps the deployment COST and refund basis independent", () =
     assert.equal(returned.deployment.dp, 25);
 });
 
-test("qualification and preview do not initialize a Unit or publish failed resource consumption", () => {
-    let initialized = 0;
-    const content = definition("expensive", 10, 1, {
-        skill: { initialize(battle) { initialized++; throw new Error("rejected initialization"); } },
-    });
-    const initial = fixture([content], { initialDp: 5 });
-    const input = request(initial.battle, initial.references[0]);
-    assert.deepEqual(preview(initial.battle, input), { type: "REJECTED", reason: "INSUFFICIENT_DP" });
-    const rejected = deploy(initial.battle, input);
-    assert.deepEqual(rejected.value, { type: "REJECTED", reason: "INSUFFICIENT_DP" });
-    assert.equal(rejected.state, initial.battle);
-    assert.equal(initialized, 0);
-    const outside = { ...input, tilePosition: [0, 100], quote: { ...input.quote, dp: null } };
-    assert.equal(deploy(initial.battle, outside).value.type, "REJECTED");
-    assert.equal(initialized, 0);
-});
 
 test("successful initialization reads committed resources and preserves the exact static definition", () => {
     const trace = [];

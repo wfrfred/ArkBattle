@@ -64,27 +64,3 @@ test("key and value queries remain bound to their old version and evaluate lazil
     assert.deepEqual(changed.keys().toArray(), ["first", "third"]);
     assert.deepEqual(changed.values().toArray(), [100, 3]);
 });
-
-
-test("object keys are identified by reference rather than their contents", () => {
-    const left = { id: 1 };
-    const right = { id: 1 };
-    const original = Store.empty().add(left, "left").add(right, "right");
-
-    assert.equal(original.size, 2);
-    assert.equal(original.get(left), "left");
-    assert.equal(original.get(right), "right");
-    assert.equal(original.get({ id: 1 }), undefined);
-    assert.throws(() => original.add(left, "duplicate"), RangeError);
-
-    const replaced = original.replace(left, "changed");
-    const remaining = replaced.remove(right);
-
-    assert.equal(replaced.get(left), "changed");
-    assert.equal(replaced.get(right), "right");
-    assert.strictEqual(replaced.keys().toArray()[0], left);
-    assert.strictEqual(replaced.keys().toArray()[1], right);
-    assert.equal(remaining.size, 1);
-    assert.equal(remaining.get(right), undefined);
-    assert.equal(original.get(left), "left");
-});

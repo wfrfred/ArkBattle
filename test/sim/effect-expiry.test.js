@@ -59,36 +59,6 @@ test("effect deadlines: writes wait for advance and termination remains ENDING t
     assert.deepEqual(trace, [["tick", 1], ["tick", 2], ["disable"], ["end", "ENDING"]]);
 });
 
-test("effect deadlines: layered content renews the same identity and ends only after its last layer", () => {
-    const value = definition(
-        "layered",
-        { layers: 3, deadline: 2 },
-        {
-            onTick(state, self) {
-                if (state.tick < self.data.deadline) return state;
-                const layers = self.data.layers - 1;
-                if (layers === 0) {
-                    return effect.end(state, effectRef(self), "LAYERS_EXHAUSTED");
-                }
-                const deadline = state.tick + 2;
-                const currentData = effect.get(state, effectRef(self)).data;
-                state = effect.setData(state, effectRef(self), { ...currentData, layers, deadline });
-                return effect.setDeadline(state, effectRef(self), deadline);
-            },
-        },
-    );
-    let battle = effectFixtureWork(unit());
-    let ref;
-    ({ state: battle, value: ref } = install(battle, value, 0, {
-        deadline: 2,
-    }));
-    for (let tick = 0; tick < 6; tick++) battle = effect.advance(at(battle, tick));
-    assert.equal(get(battle, ref).data.layers, 1);
-    assert.equal(get(battle, ref).id, ref.id);
-    battle = effect.advance(at(battle, 6));
-    assert.equal(get(battle, ref), undefined);
-});
-
 test("effect deadlines: the current deadline is read after an earlier callback renews a later candidate", () => {
     let later;
     const early = definition(

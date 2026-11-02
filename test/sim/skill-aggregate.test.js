@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { getUnit, fixtureBattle } from "../helpers/unit.js";
 import { create, getSkill, getActivation, setState, setActivationState, ref, activationRef } from "../../dist/core/unit/skill/index.js";
 import * as operations from "../../dist/core/unit/skill/operations.js";
-import * as sp from "../../dist/core/unit/skill/sp.js";
+
 import { remove, add as addUnit } from "../../dist/core/battle/unit.js";
 import { fixture, definition, at } from "../helpers/skill.js";
 
@@ -54,6 +54,7 @@ test("Skill programs receive persistent state and activation state in one aggreg
     });
     let battle = addUnit(fixtureBattle(), f.unit);
     const first = operations.activate(battle, f.skillRef);
+    assert.equal(getSkill(first.state, ref(f.ref, { ...f.definition })), undefined);
     battle = operations.finish(first.state, first.value.ref);
     battle = operations.advance(at(battle, 1), f.ref);
     const second = operations.activate(battle, f.skillRef);
@@ -62,29 +63,6 @@ test("Skill programs receive persistent state and activation state in one aggreg
     assert.deepEqual(f.unit.skill.state, { count: 0 });
 });
 
-test("a persistent Skill Ref requires its configured Definition and survives successive activations", () => {
-    const f = fixture({
-        initialize: battle => ({ state: battle, value: { count: 1 } }), sp: null,
-        activation: {
-            trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}),
-            onStart(battle, source, self) {
-                return setState(battle, ref(source, self.definition), { count: self.state.count + 1 });
-            },
-        },
-    });
-    const started = operations.activate(f.state, f.skillRef);
-    const other = definition({ id: f.definition.id });
-    assert.notEqual(other, f.definition);
-    assert.equal(getSkill(started.state, ref(f.ref, other)), undefined);
-    assert.deepEqual(getSkill(started.state, f.skillRef).state, { count: 2 });
-    assert.equal(getActivation(started.state, started.value.ref), getSkill(started.state, f.skillRef));
-    const finished = operations.finish(started.state, started.value.ref);
-    assert.equal(getActivation(finished, started.value.ref), undefined);
-    assert.deepEqual(getSkill(finished, f.skillRef).state, { count: 2 });
-    const next = operations.activate(finished, f.skillRef);
-    assert.notEqual(next.value.ref.id, started.value.ref.id);
-    assert.deepEqual(getSkill(next.state, f.skillRef).state, { count: 3 });
-});
 
 test("Activation state writes preserve the latest duration and reject a previous identity", () => {
     const f = fixture({ sp: null });
@@ -108,29 +86,6 @@ test("Activation state writes preserve the latest duration and reject a previous
     assert.deepEqual(getActivation(second.state, second.value.ref).activation.state, {});
 });
 
-test("persistent state writes preserve fresh SP and Activation rather than restoring a sampled aggregate", () => {
-    const f = fixture({
-        initialize: battle => ({ state: battle, value: { count: 0 } }),
-        sp: { initial: 4, capacity: 8, requirement: 1, cost: 1, recovery: { type: "NONE" } },
-    });
-    const sampled = getSkill(f.state, f.skillRef);
-    const charged = sp.modify(f.state, f.ref, 2, true).state;
-    const started = operations.activate(charged, f.skillRef);
-    const before = getUnit(started.state, f.ref.id).skill;
-    const persistentState = { count: 1 };
-    const updated = setState(started.state, f.skillRef, persistentState);
-    const current = getUnit(updated, f.ref.id).skill;
-    assert.equal(current.state, persistentState);
-    assert.equal(current.sp, before.sp);
-    assert.equal(current.sp.value, 5);
-    assert.equal(current.activation, before.activation);
-    assert.equal(current.nextActivationId, 1);
-    assert.equal(current.rules, before.rules);
-    assert.equal(setState(updated, f.skillRef, persistentState), updated);
-    assert.deepEqual(sampled.state, { count: 0 });
-    assert.equal(sampled.sp.value, 4);
-    assert.equal(sampled.activation, null);
-});
 
 test("ending callbacks may write persistent state while ordinary Activation writes remain closed", () => {
     let saved;

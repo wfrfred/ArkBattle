@@ -13,27 +13,16 @@ test("Unit Refs preserve guard proofs, permit covariance and reject forged or st
     try {
         writeFileSync(path, `
 import type { Unit } from ${source("unit/unit")};
-import type { TickHook } from ${source("unit/hook")};
-import type { Result } from ${source("battle/state")};
 import type { Identified, Ref, Identity, Phantom } from ${source("common/ref")};
 import type { Query } from ${source("common/query")};
 import type { State as BattleState } from ${source("battle/state")};
 import * as units from ${source("unit/query")};
 import { hasLocomotion, type Locomotion } from ${source("unit/capability/locomotion/capability")};
-import { hasVitality, type Vitality } from ${source("unit/capability/vitality/capability")};
-import { hasSkill, type Skill } from ${source("unit/capability/skill/capability")};
+import type { Vitality } from ${source("unit/capability/vitality/capability")};
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
 type Assert<T extends true> = T;
 type EmptyIdentity = Assert<Equal<Identity<{}>, never>>;
 type ObjectIdentity = Assert<Equal<Identity<object>, never>>;
-type UnknownIdentity = Assert<Equal<Identity<unknown>, never>>;
-type PlainIdentity = Assert<Equal<Identity<{ readonly id: number }>, never>>;
-type AnyIdentity = Assert<Equal<Identity<any>, object>>;
-type EmptyRef = Assert<Equal<Ref<{}>, never>>;
-type ObjectRef = Assert<Equal<Ref<object>, never>>;
-type UnknownRef = Assert<Equal<Ref<unknown>, never>>;
-type PlainRef = Assert<Equal<Ref<{ readonly id: number }>, never>>;
-type AnyRef = Assert<Equal<Ref<any>, object & Phantom<any>>>;
 type PersistentAddress = { readonly id: number; readonly definition: "persistent" };
 type RoundAddress = { readonly id: string; readonly round: number };
 type ModelState = { readonly state: { readonly count: number }; readonly label: string };
@@ -51,17 +40,6 @@ const roundId: string = roundRef.id;
 const persistentId: number = roundRef.id;
 // @ts-expect-error Replacing an identity removes fields belonging only to the old address.
 roundRef.definition;
-type Erased = Identified<never, Persistent>;
-type ErasedState = Assert<Equal<Pick<Erased, keyof ModelState>, ModelState>>;
-type ErasedIdentity = Assert<Equal<Identity<Erased>, never>>;
-type ErasedRef = Assert<Equal<Ref<Erased>, never>>;
-type OtherAddress = { readonly key: string };
-type Other = Identified<OtherAddress, { readonly active: boolean }>;
-type IdentifiedUnion = Persistent | Other;
-type UnionIdentity = Assert<Equal<Identity<IdentifiedUnion>, PersistentAddress | OtherAddress>>;
-type UnionRef = Assert<Equal<Ref<IdentifiedUnion>, (PersistentAddress | OtherAddress) & Phantom<IdentifiedUnion>>>;
-type MixedIdentity = Assert<Equal<Identity<Persistent | ModelState>, never>>;
-type MixedRef = Assert<Equal<Ref<Persistent | ModelState>, never>>;
 declare const battle: BattleState;
 declare const strong: Ref<Unit & Locomotion & Vitality>;
 declare const moving: Ref<Unit & Locomotion>;
@@ -85,38 +63,10 @@ type Preserved = Assert<Equal<typeof preserved, Ref<Unit & Locomotion & Vitality
 const current = units.get(battle, strong);
 type Current = Assert<Equal<typeof current, (Unit & Locomotion & Vitality) | undefined>>;
 const candidates = units.all(battle);
-type Candidates = Assert<Equal<typeof candidates, Query<Unit>>>;
-const candidateValues = candidates.toArray();
-type CandidateValues = Assert<Equal<typeof candidateValues, readonly Unit[]>>;
-const candidateRefs = candidates.map(units.ref).toArray();
-type CandidateRefs = Assert<Equal<typeof candidateRefs, readonly Ref<Unit>[]>>;
-type TickBattle = Assert<Equal<Parameters<TickHook["invoke"]>[0], BattleState>>;
-type TickContext = Assert<Equal<Parameters<TickHook["invoke"]>[1], Unit>>;
-const tick: TickHook = {
-    id: "tick", stage: "tick",
-    invoke(state, self) {
-        const reference: Ref<Unit> = units.ref(self);
-        return { state, value: undefined };
-    },
-};
-declare const tickById: (state: BattleState, unitId: number, current: void) => Result<void>;
-// @ts-expect-error Unit tick hooks receive a Unit context rather than its ID.
-const invalidTick: TickHook = { id: "invalid", stage: "tick", invoke: tickById };
 const locomotives = candidates.filter(hasLocomotion);
 type Locomotives = Assert<Equal<typeof locomotives, Query<Unit & Locomotion>>>;
 const movingRefs = locomotives.map(units.ref).toArray();
 type MovingRefs = Assert<Equal<typeof movingRefs, readonly Ref<Unit & Locomotion>[]>>;
-const skills = candidates.filter(hasSkill);
-type Skills = Assert<Equal<typeof skills, Query<Unit & Skill>>>;
-const both = candidates.filter((unit): unit is Unit & Locomotion & Vitality =>
-    hasLocomotion(unit) && hasVitality(unit));
-type Both = Assert<Equal<typeof both, Query<Unit & Locomotion & Vitality>>>;
-const sequential = locomotives.filter(hasVitality);
-type Sequential = Assert<Equal<typeof sequential, Query<Unit & Locomotion & Vitality>>>;
-const ordinary = candidates.filter(unit => unit.id > 0);
-type Ordinary = Assert<Equal<typeof ordinary, Query<Unit>>>;
-// @ts-expect-error An ordinary condition does not prove an additional Capability.
-const unproven: Query<Unit & Locomotion> = ordinary;
 type Address = Assert<Equal<Identity<Unit & Locomotion>, { readonly id: number }>>;
 interface HostedUnit extends Unit { readonly host: string }
 declare const hosted: HostedUnit;

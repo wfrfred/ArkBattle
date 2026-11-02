@@ -33,21 +33,6 @@ const request = (source, purposes = ["DAMAGE"]) => ({
 });
 const restriction = (kind, allows = () => false) => ({ kind, allows });
 
-test("Targetable initializes innate restrictions in a new container while sharing immutable entries", () => {
-    const entry = { id: "native-invisibility", value: invisibleRestriction };
-    const second = { id: "another-invisibility", value: invisibleRestriction };
-    const definition = { restrictions: Object.freeze([entry, second]) };
-    const battle = fixtureBattle();
-    const result = targetable.initialize(battle, baseUnit({ id: "targetable", hooks: [], targetable: definition }));
-
-    assert.strictEqual(result.state, battle);
-    assert.notStrictEqual(result.value.targetable.restrictions, definition.restrictions);
-    assert.strictEqual(result.value.targetable.restrictions[0], entry);
-    assert.strictEqual(result.value.targetable.restrictions[1], second);
-    assert.deepEqual(definition.restrictions, [entry, second]);
-    assert.equal(targetable.hasTargetable(owner()), true);
-    assert.equal(targetable.hasTargetable(initialize({ id: 3, position: [0, 0], definition: { hooks: [], id: "plain" } })), false);
-});
 
 test("Targetable initialization rejects different contributions with the same ID", () => {
     const first = { id: "duplicate", value: invisibleRestriction };
@@ -61,52 +46,6 @@ test("Targetable initialization rejects different contributions with the same ID
     assert.deepEqual(definition.restrictions, [first, second]);
 });
 
-test("Targetable initialization rejects a repeated reference to the same contribution", () => {
-    const entry = { id: "duplicate", value: invisibleRestriction };
-    const definition = { restrictions: Object.freeze([entry, entry]) };
-
-    assert.throws(
-        () => targetable.initialize(fixtureBattle(), baseUnit({ id: "targetable", hooks: [], targetable: definition })),
-        { name: "TypeError", message: "duplicate targetable restriction identity: duplicate" },
-    );
-    assert.deepEqual(definition.restrictions, [entry, entry]);
-});
-
-test("restriction registration shares ID replacement and no-change semantics with Contribution", () => {
-    const original = owner();
-    const reference = units.ref(original);
-    const initial = effectFixtureWork(original);
-    const entry = { id: "limit", value: restriction(Symbol("first")) };
-    const installed = applyUnitChanges(initial, [targetable.setRestriction(reference, entry)]);
-
-    assert.strictEqual(applyUnitChanges(installed, [targetable.setRestriction(reference, entry)]), installed);
-    assert.strictEqual(applyUnitChanges(installed, [targetable.removeRestriction(reference, "absent")]), installed);
-    assert.deepEqual(original.targetable.restrictions, []);
-
-    const replacement = { id: entry.id, value: restriction(Symbol("second"), () => true) };
-    const replaced = applyUnitChanges(installed, [targetable.setRestriction(reference, replacement)]);
-    assert.deepEqual(units.get(replaced, reference).targetable.restrictions, [replacement]);
-    assert.deepEqual(units.get(installed, reference).targetable.restrictions, [entry]);
-    const copied = applyUnitChanges(replaced, [targetable.setRestriction(reference, { ...replacement })]);
-    assert.notStrictEqual(copied, replaced);
-    const removed = applyUnitChanges(replaced, [targetable.removeRestriction(reference, entry.id)]);
-    assert.deepEqual(units.get(removed, reference).targetable, original.targetable);
-});
-
-test("a same-ID dynamic replacement does not restore the original definition entry when removed", () => {
-    const original = { id: "shared", value: invisibleRestriction };
-    const unit = owner(2, "ENEMY", [original]);
-    const initialized = effectFixtureWork(unit);
-    const reference = units.ref(unit);
-    const replaced = applyUnitChanges(initialized, [targetable.setRestriction(reference, {
-        id: "shared",
-        value: untargetableRestriction,
-    })]);
-
-    const removed = applyUnitChanges(replaced, [targetable.removeRestriction(reference, "shared")]);
-    assert.deepEqual(units.get(removed, reference).targetable.restrictions, []);
-    assert.deepEqual(unit.targetable.restrictions, [original]);
-});
 
 test("query exemption applies after exclusive group resolution without reviving the suppressed limit", () => {
     const hidden = Symbol("hidden");

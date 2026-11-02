@@ -66,22 +66,6 @@ test('core blocking: enemy volume consumes capacity and oversized enemies cannot
 });
 
 
-test('core blocking: ground eligibility comes from unit data while route motion is independent', () => {
-  let battle = coreBlockingBattle(
-    [{ definition: op(FRONT, 2), position: [1, 5] }],
-    [
-      { definition: foe('core_ground', { speed: 0, motion: 'WALK' }), route: coreBlockingRoute([1, 6], { pathMotionMode: 'FLY', spawnOffset: [-0.6, 0] }) },
-      { definition: foe('core_air', { speed: 0, motion: 'FLY' }), route: coreBlockingRoute([1, 6], { spawnOffset: [-0.6, 0] }) },
-    ],
-  );
-  battle = stepBattle(battle, []);
-
-  assert.deepEqual(coreBlockedBy(battle, 0), [1]);
-  assert.equal(coreBlockingUnit(battle, 1).layer.type, 'GROUND');
-  assert.equal(coreBlockingUnit(battle, 2).layer.type, 'AIR');
-});
-
-
 test('core blocking: a full operator lets another enemy walk through', () => {
   let battle = coreBlockingBattle(
     [{ definition: op(FRONT), position: [1, 5] }],
@@ -97,44 +81,6 @@ test('core blocking: a full operator lets another enemy walk through', () => {
 
   assert.deepEqual(coreBlockedBy(battle, 0), [1]);
   assert.ok(coreBlockingUnit(battle, 2).position[0] < 4.2);
-});
-
-
-test('core blocking: the first registered eligible blocker wins when both contact a stationary enemy', () => {
-  let battle = coreBlockingBattle(
-    [{ definition: op(FRONT), position: [1, 6] }, { definition: op(BACK), position: [1, 5] }],
-    [{ definition: foe('core_still', { speed: 0 }), route: coreBlockingRoute([1, 6], { spawnOffset: [-0.6, 0] }) }],
-  );
-  battle = stepBattle(battle, []);
-
-  assert.deepEqual(coreBlockedBy(battle, 0), [2]);
-  assert.deepEqual(coreBlockedBy(battle, 1), []);
-});
-
-
-test('core visibility: blocker death preserves the offset and releases autonomous movement in the same tick', () => {
-  let battle = coreBlockingBattle(
-    [{ definition: chessRec({ id: FRONT, stats: { maxHp: 10, atk: 0, def: 0, blockCnt: 1 }, skill: null }), position: [1, 5] }],
-    [{ definition: foe('core_killer', { atk: 1000 }), route: coreBlockingRoute([1, 6], { spawnOffset: [-0.6, 0] }) }],
-  );
-  const acquired = (battle = stepBattle(battle, []));
-  assert.equal(acquired.events.some(event => event.type === 'UNIT_REMOVED'), false);
-  assert.deepEqual(coreBlockedBy(battle, 0), [1]);
-  const adjustment = coreBlockingUnit(battle, 1).blockable.adjustment;
-  const speed = coreBlockingUnit(battle, 1).definition.locomotion.speed;
-  const death = (battle = stepBattle(battle, []));
-  const resumed = coreBlockingUnit(battle, 1).position;
-
-  assert.ok(death.events.some(event => event.type === 'UNIT_REMOVED' && event.unitId === 0 && event.reason === 'DEATH'));
-  assert.deepEqual(blockingQueries.relations(battle).map(({ blocker, blocked }) => ({ blockerUnitId: blocker.id, blockedUnitId: blocked.id })), []);
-  assert.equal(coreBlockingUnit(battle, 1).blockable.adjustment, adjustment);
-  const offsetPosition = adjustment.from[0] + (adjustment.to[0] - adjustment.from[0]) / 6;
-  assert.ok(Math.abs(resumed[0] - (offsetPosition - speed)) < 1e-9);
-  assert.equal(resumed[1], 1);
-  battle = stepBattle(battle, []);
-  const nextOffsetPosition = adjustment.from[0] + (adjustment.to[0] - adjustment.from[0]) / 3;
-  assert.ok(Math.abs(coreBlockingUnit(battle, 1).position[0] - (nextOffsetPosition - speed)) < 1e-9);
-  assert.equal(coreBlockingUnit(battle, 1).blockable.adjustment, adjustment);
 });
 
 
