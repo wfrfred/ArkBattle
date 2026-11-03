@@ -4,7 +4,7 @@ import type { Definition as DeployableDefinition } from "../../../unit/capabilit
 import type { Definition as OccupancyDefinition } from "../../../unit/capability/occupancy/capability.js";
 import type { Contribution } from "../../../unit/contribution/contribution.js";
 import type { Modifier } from "../../../unit/contribution/attribute.js";
-import type { Hook } from "../../../unit/hook.js";
+import type { Hooks } from "../../../hook.js";
 import type { Definition } from "./definition.js";
 import type { Rule } from "./rule.js";
 
@@ -33,7 +33,7 @@ export type TimerTarget = "COOLDOWN" | "RECOVERY";
 export interface Card<S extends object = object> extends Identified<{ readonly id: Id }> {
     readonly id: Id;
     readonly definition: UnitDefinition<S>;
-    readonly unitHooks: readonly Hook[];
+    readonly unitHooks: Hooks;
     readonly rules: readonly Rule[];
     readonly state: S;
     readonly stock: number;

@@ -1,16 +1,18 @@
+import { Hooks } from "../../dist/core/hook.js";
+import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
 import * as units from "../../dist/core/unit/query.js";
-import * as damage from "../../dist/core/battle/damage/index.js";
+import * as damage from "../../dist/core/battle/damage/hp/index.js";
 import * as attribute from "../../dist/core/unit/contribution/attribute.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 
 const operator = {
     id: "operator",
-    hooks: [],
+    hooks: Hooks.empty(),
     occupancy: { slot: "OCCUPANT" },
     deployable: { retreatRules: [] },
     vitality: { maxHp: 100, defense: 0, resistance: 0 },
@@ -26,7 +28,7 @@ const operator = {
         increaseCostOnLeave: true,
         refund: { rate: 0.5, limit: "BASE_COST" },
         deploymentRules: [],
-        unitHooks: [],
+        unitHooks: Hooks.empty(),
         initialize: (state) => ({ state, value: {} }),
     },
 };
@@ -79,10 +81,9 @@ test("preview, evaluation and deployment use one request; rejection consumes not
     const allowed = {
         ...rejected,
         tilePosition: [0, 2],
-        hooks: [
-            {
+        hooks: Hooks.empty().set(unitLifecycle.enter, {
                 id: "observe-consumption",
-                stage: "enter",
+
                 invoke: (current, self) => {
                     entered = true;
                     assert.equal(current.deployment.dp, 40);
@@ -91,8 +92,7 @@ test("preview, evaluation and deployment use one request; rejection consumes not
                     assert.equal(get(current, self.id).deployable.card.id, card.id);
                     return { state: current, value: undefined };
                 },
-            },
-        ],
+            }),
     };
     assert.equal(deployment.evaluate(state, allowed), null);
     assert.deepEqual(deployment.preview(state, allowed), {
@@ -123,10 +123,9 @@ test("retreat settles refund and the persistent Card before departure; confirmed
                     ...operator,
                     card: {
                         ...operator.card,
-                        unitHooks: [
-                            {
+                        unitHooks: Hooks.empty().set(unitLifecycle.leave, {
                                 id: "observe-departure",
-                                stage: "leave",
+
                                 invoke: (current, { unit, reason }) => {
                                     const card = cards.get(current, unit.deployable.card);
                                     departures.push({
@@ -138,8 +137,7 @@ test("retreat settles refund and the persistent Card before departure; confirmed
                                     });
                                     return { state: current, value: undefined };
                                 },
-                            },
-                        ],
+                            }),
                     },
                 },
             ],
@@ -219,10 +217,9 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
     const request = deployment.createRequest(state, unitCard, [1, 2]);
     const placedUnit = deployment.deploy(state, {
         ...request,
-        hooks: [
-            {
+        hooks: Hooks.empty().set(unitLifecycle.leave, {
                 id: "replace-on-leave",
-                stage: "leave",
+
                 invoke: (current) => {
                     assert.equal(deployment.usedSlots(current), 0);
                     const result = deployment.deploy(
@@ -233,8 +230,7 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
                     replacement = result.value.unitId;
                     return { state: result.state, value: undefined };
                 },
-            },
-        ],
+            }),
     });
     state = placedUnit.state;
     const denied = deployment.deploy(state, {

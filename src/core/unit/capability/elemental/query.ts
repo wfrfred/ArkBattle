@@ -15,7 +15,8 @@ import {
     type Type,
 } from "./capability.js";
 import type { Burst } from "./burst.js";
-import type { DamageRequest, HealRequest } from "./operations.js";
+import type { Request as DamageRequest } from "../../../battle/damage/ep/contract.js";
+import type { Request as HealingRequest } from "../../../battle/healing/ep/contract.js";
 
 export function get(battle: BattleState, reference: Ref<Burst>): Burst | undefined {
     const burst = units.get(battle, reference.host)?.elemental.burst;
@@ -94,71 +95,31 @@ export function available(self: Unit): boolean {
     );
 }
 
-export function damageRejection(
-    battle: BattleState,
-    host: Ref<Unit>,
-    request: DamageRequest,
-): string | undefined {
-    const self = units.get(battle, host);
-    if (self === undefined) {
-        return "TARGET_ABSENT";
-    }
-    if (!hasElemental(self)) {
-        return "NO_ELEMENTAL";
-    }
-    if (!available(self)) {
-        return "INACTIVE";
-    }
-    if (self.elemental.burst !== null) {
-        return "RECOVERING";
-    }
-    if (hasAllegiance(self) && self.allegiance.side === "NEUTRAL") {
-        return "NEUTRAL";
-    }
-
-    return self.elemental.rules.damage.every((rule) => rule.allows(battle, { self, request }))
-        ? undefined
-        : "RULE";
-}
-
-export function healRejection(
-    battle: BattleState,
-    host: Ref<Unit>,
-    request: HealRequest,
-): string | undefined {
-    const self = units.get(battle, host);
-    if (self === undefined) {
-        return "TARGET_ABSENT";
-    }
-    if (!hasElemental(self)) {
-        return "NO_ELEMENTAL";
-    }
-    if (!available(self)) {
-        return "INACTIVE";
-    }
-    if (self.elemental.burst !== null) {
-        return "RECOVERING";
-    }
-
-    return self.elemental.rules.heal.every((rule) => rule.allows(battle, { self, request }))
-        ? undefined
-        : "RULE";
-}
-
 export function canReceiveDamage(
     battle: BattleState,
-    host: Ref<Unit>,
     request: DamageRequest,
+    type: Type = request.type,
 ): boolean {
-    return damageRejection(battle, host, request) === undefined;
+    const self = units.get(battle, request.target);
+
+    return (
+        self !== undefined &&
+        available(self) &&
+        self.elemental.burst === null &&
+        (!hasAllegiance(self) || self.allegiance.side !== "NEUTRAL") &&
+        self.elemental.rules.damage.every((rule) => rule.allows(battle, { self, request, type }))
+    );
 }
 
-export function canReceiveHeal(
-    battle: BattleState,
-    host: Ref<Unit>,
-    request: HealRequest,
-): boolean {
-    return healRejection(battle, host, request) === undefined;
+export function canReceiveHealing(battle: BattleState, request: HealingRequest): boolean {
+    const self = units.get(battle, request.target);
+
+    return (
+        self !== undefined &&
+        available(self) &&
+        self.elemental.burst === null &&
+        self.elemental.rules.heal.every((rule) => rule.allows(battle, { self, request }))
+    );
 }
 
 export function currentType(self: Unit, maxEp?: number): Type | undefined {

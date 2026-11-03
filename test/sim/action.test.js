@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
@@ -41,7 +42,7 @@ test("prepare can reject without allocating a round; ending preserves the latest
     };
     const definition = {
         id: "actor",
-        hooks: [],
+        hooks: Hooks.empty(),
         action: { initialize: (state) => actions.createActions(state, actions.create(program)) },
     };
     let state = battle([{ definition, position: [1, 1] }]);
@@ -89,7 +90,7 @@ test("independent cooldowns preserve progress when speed changes and survive fin
     const slow = { ...fast, id: "slow", intervalTicks: 20 };
     const definition = {
         id: "actor",
-        hooks: [],
+        hooks: Hooks.empty(),
         action: {
             initialize: (state) =>
                 actions.createActions(state, actions.create(fast), actions.create(slow)),
@@ -149,13 +150,13 @@ test("interrupted attack, successful release, and damage output are separate bus
     };
     const definition = {
         id: "actor",
-        hooks: [],
+        hooks: Hooks.empty(),
         action: { initialize: (state) => actions.createActions(state, actions.create(program)) },
         skill: { initialize: (state) => skills.create(state, resource) },
     };
     const target = {
         id: "target",
-        hooks: [],
+        hooks: Hooks.empty(),
         targetable: { restrictions: [] },
         vitality: { maxHp: 100, defense: 0, resistance: 0 },
     };
@@ -227,7 +228,7 @@ test("Combat advances a zero-period action once per Tick with deterministic resu
     };
     const definition = {
         id: "actor",
-        hooks: [],
+        hooks: Hooks.empty(),
         action: { initialize: (state) => actions.createActions(state, actions.create(program)) },
         skill: { initialize: (state) => skills.create(state, resource) },
     };

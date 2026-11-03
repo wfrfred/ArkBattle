@@ -1,3 +1,5 @@
+import { Hooks } from "../../dist/core/hook.js";
+import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import * as siteConditions from "../../dist/content/terrain/condition.js";
 import { parseSiteCondition, parseAllowedSiteConditions } from "../../dist/data/arknights/site-condition.js";
 import { mire as mireTerrain, deepsea as deepseaTerrain } from "../../dist/content/terrain/definition.js";
@@ -440,7 +442,7 @@ test('core real hidden platforms grant ranged deployment support while retaining
   assert.equal(occupancyAt(field, tile)?.support?.id, platform.id);
   for (const [placement, expected] of [['RANGED', 'ALLOWED'], ['MELEE', 'REJECTED']]) {
     const card = addCard(createBattleState(field), {
-      id: `platform-preview-${placement}`, hooks: [],
+      id: `platform-preview-${placement}`, hooks: Hooks.empty(),
       occupancy: { slot: 'OCCUPANT' }, deployable: { retreatRules: [] },
       card: createCardDefinition({ placement }),
     });
@@ -477,12 +479,12 @@ test('core platform removal restores only its registered tile fields after neste
   const initialized = initializeUnit(runtime, {     id: 500, position: [tile[1], tile[0]],
     definition: {
       id: 'platform-occupant', occupancy: { slot: 'OCCUPANT' },
-      hooks: [{ id: "test/leave", stage: "leave", invoke(battle) {
+      hooks: Hooks.empty().set(unitLifecycle.leave, { id: "test/leave",  invoke(battle) {
         const current = getMapTile(battle.battlefield.map, tile);
         return { state: updateBattleTile(battle, tile, {
           ...current.state, siteCondition: siteConditions.night, passability: 'FLY_ONLY', allowsBlocking: false,
         }), value: undefined };
-      } }],
+      } }),
     },
   });
   runtime = addBattleUnit(initialized.state, { ...initialized.value, occupancy: { ...(initialized.value).occupancy, tile } });

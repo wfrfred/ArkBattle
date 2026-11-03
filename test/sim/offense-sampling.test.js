@@ -1,4 +1,4 @@
-import { set as setFixtureEntry } from "../../dist/core/hook.js";
+import { targetApplied } from "../../dist/core/battle/damage/hp/index.js";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -26,8 +26,8 @@ test("source attack samples current Offense separately for each target after nes
     const second = unit(2);
     const initial = battle(source, {
         ...first,
-        vitality: { ...first.vitality, damageHooks: setFixtureEntry(first.vitality.damageHooks, {
-            id: "boost-next-target", stage: "hpApplied", priority: 0,
+        hooks: first.hooks.set(targetApplied, {
+            id: "boost-next-target", priority: 0,
             invoke(state) {
                 const current = units.get(state, sourceRef);
                 return {
@@ -37,7 +37,7 @@ test("source attack samples current Offense separately for each target after nes
                     value: undefined,
                 };
             },
-        }) },
+        }),
     }, second);
     const result = actions.start(initial, actions.ref(sourceRef, definition));
     const advanced = advance(result.state, result.value.ref);

@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import { tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import { advance as advanceBlocking, search as searchBlocking } from "../../dist/core/battle/blocking/operations.js";
@@ -41,7 +42,7 @@ function battle(rows = 5, columns = 3, cells = Array.from({ length: rows * colum
 
 function unit(battle, id, definition, position = [0, 0]) {
     return initialize(battle, {         id, position,
-        definition: { hooks: [],
+        definition: { hooks: Hooks.empty(),
             id: `route-movement-${id}`, spatialPresence: {},
             locomotion: { speed: 2, minSpeed: 0, halfBodyWidth: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
             route: route(), ...definition,
@@ -52,7 +53,7 @@ function unit(battle, id, definition, position = [0, 0]) {
 
 test("Main completion stops motion while blocked and produces one event only when departure succeeds", () => {
     let state = battle();
-    const blocker = initialize(state, { id: 1, position: [0, 0], definition: { hooks: [],
+    const blocker = initialize(state, { id: 1, position: [0, 0], definition: { hooks: Hooks.empty(),
         id: "route-movement-blocker", spatialPresence: {},
         allegiance: { side: "ALLY" }, layer: { type: "GROUND" },
         blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 1 },

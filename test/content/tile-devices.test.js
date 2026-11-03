@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { create as createCrate } from "../../dist/content/devices/crate.js";
@@ -31,7 +32,7 @@ function battle(firstTerrain = normal, firstCost = 2000) {
 }
 
 function configuration(id, tileChanges = {}) {
-    return { hooks: [],
+    return { hooks: Hooks.empty(),
         id,
         vitality: { maxHp: 100, defense: 0, resistance: 0 },
         deployable: { retreatRules: [] },

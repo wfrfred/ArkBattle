@@ -32,7 +32,12 @@
 | [blocking](sim/blocking.test.js) | 成对资格、层与地块、容量尾部裁撤、批量解除与旧 Ref、多目标分散及独立位置计划；归零通知期间保留关系，确认死亡后清理。 |
 | [deployment](sim/deployment.test.js) | Request 预览与执行一致、拒绝不消费、消费先于入场；撤退／死亡账务与 Card 延续；离场注销、结构占格和部署额度释放先于本地内容通知，死亡 Card 先于 Card／Request 通知结算；旧 Occupancy 配对清理、逐份恢复预算及 DP。 |
 | [core-types](sim/core-types.test.js) | Typed Ref 保留身份和私有数据配对，普通擦除查询不泄漏 `any`；能力证明与不透明 Change 约束写入。 |
+| [HP 结算](sim/hp-settlement.test.js) | 按[结算回归清单](../docs/architecture/verification.md#hook-与-hpep-结算的回归语义)保障公式与采样、独立 Calculate 状态、接收与提交、零值和取消、最新资源及 Applied 后死亡。 |
+| [EP 结算](sim/ep-settlement.test.js) | 同一清单下的抗性与实际类型、四型资源、同步 Burst、结束和恢复预算；不复制公共 Hook／Lifetime 矩阵。 |
+| [原生元素内容](sim/elemental-runtime.test.js) | 真实 Data 爆发的伤害、异常、永久输出及周期累计结果；不重写一套夹具算法模拟内容。 |
 
 [battle 夹具](helpers/battle.js)只通过 Runtime 的公开输入构造地图和预置 Unit。场景通过实际领域操作建立执行、资源及依赖事实；纯算法直接使用合法值。
+
+HP／EP 定向套件从文档清单编写，直接使用真实构造、Hook 登记、资源操作和 Lifetime。结算 helper 只组合 Calculate／Apply；不提供旧阶段名适配、Hook Effect 描述器、资源 State 注入或另一套结算程序。
 
 其余套件覆盖未纳入本轮重新定标的 Capability、完整 Runtime／Schedule／Projectile／Mechanism、Data／Content 和 Legacy 等范围，不代表这些测试已通过同样的必要性审查。公共协议不再按接入领域重复建立矩阵，修复问题也不自动新增回归套件。

@@ -9,10 +9,11 @@ import { hasBlockable } from "../../unit/capability/blocking/blockable.js";
 import { blockerOf } from "../blocking/query.js";
 import {
     canReceiveDamage,
-    canReceiveHeal,
+    canReceiveHealing,
     resolveDamageRatio,
 } from "../../unit/capability/elemental/query.js";
-import type { DamageRequest, HealRequest } from "../../unit/capability/elemental/operations.js";
+import type { Request as DamageRequest } from "../damage/ep/contract.js";
+import type { Request as HealingRequest } from "../healing/ep/contract.js";
 import { get, ref } from "../../unit/query.js";
 import { overlaps } from "../../geometry/intersection.js";
 import { fromTiles, type Range } from "../../geometry/range.js";
@@ -124,13 +125,18 @@ export const damage: Filter = and(present, alive, hostile, allowsRestrictions);
 
 export const healing: Filter = and(present, alive, sameSide, missingHp, allowsRestrictions);
 
-export function elementDamage(input: Omit<DamageRequest, "source">): Filter {
-    return and(present, hostile, allowsRestrictions, (battle, request, target) =>
-        canReceiveDamage(battle, ref(target), { ...input, source: request.source }),
+export function elementDamage(input: Omit<DamageRequest, "source" | "target">): Filter {
+    return and(
+        present,
+        hostile,
+        allowsRestrictions,
+        (battle, request, target) =>
+            hasElemental(target) &&
+            canReceiveDamage(battle, { ...input, source: request.source, target: ref(target) }),
     );
 }
 
-export function elementHealing(input: Omit<HealRequest, "source">): Filter {
+export function elementHealing(input: Omit<HealingRequest, "source" | "target">): Filter {
     return and(
         present,
         sameSide,
@@ -138,6 +144,6 @@ export function elementHealing(input: Omit<HealRequest, "source">): Filter {
         (battle, request, target) =>
             hasElemental(target) &&
             (resolveDamageRatio(battle, ref(target)) ?? 0) > 0 &&
-            canReceiveHeal(battle, ref(target), { ...input, source: request.source }),
+            canReceiveHealing(battle, { ...input, source: request.source, target: ref(target) }),
     );
 }

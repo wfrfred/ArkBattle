@@ -1,3 +1,5 @@
+import { Hooks } from "../../dist/core/hook.js";
+import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import { predefinedUnits } from "../helpers/predefined.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -22,9 +24,9 @@ test("battle step returns complete immutable State values and preserves its inpu
     const marker = { count: 1 };
     battle = initialize(input({
         id: "published-state",
-        hooks: [{ id: "test/tick", stage: "tick", invoke(battle, self) {
+        hooks: Hooks.empty().set(unitLifecycle.tick, { id: "test/tick",  invoke(battle, self) {
             return { state: updateUnit(battle, [{ ...self, marker }]), value: undefined };
-        } }],
+        } }),
     }));
     const before = battle;
     const original = units.get(before, { id: 0 });
@@ -47,10 +49,10 @@ test("a throwing battle step does not change its input or require a recovery pro
     let working;
     let battle = initialize(input({
         id: "failed-state",
-        hooks: [{ id: "test/tick", stage: "tick", invoke(battle, self) {
+        hooks: Hooks.empty().set(unitLifecycle.tick, { id: "test/tick",  invoke(battle, self) {
             working = updateUnit(battle, [{ ...self, marker: { failed: true } }]);
             throw failure;
-        } }],
+        } }),
     }));
     const before = battle;
     const original = units.get(before, { id: 0 });
@@ -67,10 +69,10 @@ test("Unit removal events share the recorded immutable Unit including content-ow
     const marker = { resource: "retained" };
     let battle = initialize(input({
         id: "removed-state",
-        hooks: [{ id: "test/tick", stage: "tick", invoke(battle, self) {
+        hooks: Hooks.empty().set(unitLifecycle.tick, { id: "test/tick",  invoke(battle, self) {
             battle = updateUnit(battle, [{ ...self, marker }]);
             return { state: remove(battle, self.id, "SCRIPT"), value: undefined };
-        } }],
+        } }),
     }));
     const before = battle;
     battle = step(battle, []);

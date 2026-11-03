@@ -1,5 +1,6 @@
 import * as conditions from "../../dist/content/terrain/condition.js";
 import { get as getTile } from "../../dist/core/battlefield/map/map.js";
+import { Hooks } from "../../dist/core/hook.js";
 
 export function createDefinition({ retreatRules = [] } = {}) {
     return { retreatRules };
@@ -11,7 +12,7 @@ export function createCardDefinition({
     refund = { rate: 0.5, limit: "BASE_COST" },
     cooldownOnDeploy = false, recoverOnLeave = true, increaseCostOnLeave = true,
     placement, buildableType, advancedBuildableMask = 1,
-    allowedSiteConditions, deploymentRules = [], unitHooks = [],
+    allowedSiteConditions, deploymentRules = [], unitHooks = Hooks.empty(),
     initialize = battle => ({ state: battle, value: {} }),
     ...rest
 } = {}) {

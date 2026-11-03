@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { validateShape } from '../../dist/core/geometry/shape.js';
@@ -18,7 +19,7 @@ test('shape validation and unit initialization reject invalid numeric hitbox val
   for (const shape of invalid) {
     assert.throws(() => validateShape(shape), RangeError);
     assert.throws(() => initialize({ id: 1, position: [0, 0],
-      definition: { hooks: [], id: 'invalid_hitbox', hitbox: { shape } },
+      definition: { hooks: Hooks.empty(), id: 'invalid_hitbox', hitbox: { shape } },
     }), RangeError);
   }
 });

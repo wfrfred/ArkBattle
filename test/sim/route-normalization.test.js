@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { createRng } from "../../dist/core/common/rng.js";
@@ -38,7 +39,7 @@ const rawRoute = (overrides = {}) => ({
     ...overrides,
 });
 const timing = { waveStartedAtTick: 20, fragmentStartedAtTick: 45 };
-const enemyDefinition = { hooks: [],
+const enemyDefinition = { hooks: Hooks.empty(),
     spatialPresence: {},
     id: "route-spawn-test",
     vitality: { maxHp: 100, defense: 0, resistance: 0 },

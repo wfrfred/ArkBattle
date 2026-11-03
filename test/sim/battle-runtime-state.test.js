@@ -1,3 +1,5 @@
+import { Hooks } from "../../dist/core/hook.js";
+import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import { predefinedUnits } from "../helpers/predefined.js";
 
 import assert from "node:assert/strict";
@@ -29,7 +31,7 @@ const spawn = (definition, tick) => ({
 function input(overrides = {}) {
     return {
         map,  predefines: [], initialMechanisms: [], schedule: { type: "TIMELINE", spawns: [
-            spawn({ hooks: [], spatialPresence: {}, id: "later", vitality: { maxHp: 100, defense: 0, resistance: 0 }, locomotion }, 100),
+            spawn({ hooks: Hooks.empty(), spatialPresence: {}, id: "later", vitality: { maxHp: 100, defense: 0, resistance: 0 }, locomotion }, 100),
         ] },
         maxTicks: 10, routeMoveMultiplier: 1, rngState: 123,
         ...overrides,
@@ -42,7 +44,7 @@ const predefined = (id, definition, initiallyPresent = false) => ({
 
 test("initial entry receives the complete battle state and its returned facts persist", () => {
     const observations = [];
-    const enterHook = { id: "observe-entry", stage: "enter", invoke(state, self) {
+    const enterHook = { id: "observe-entry",  invoke(state, self) {
         observations.push(state);
         assert.equal(state.schedule.definition.spawns.length, 1);
         assert.equal(state.result, null);
@@ -51,7 +53,7 @@ test("initial entry receives the complete battle state and its returned facts pe
         return { state: { ...state, completedRouteCount: state.completedRouteCount + 1 }, value: undefined };
     } };
     let battle = initializeBattle(input({
-        predefines: predefinedUnits([{ definition: { id: "initial", hooks: [enterHook] }, position: [0, 0] }], [predefined(7, { id: "predefined", hooks: [enterHook] }, true)]),
+        predefines: predefinedUnits([{ definition: { id: "initial", hooks: Hooks.empty().set(unitLifecycle.enter, enterHook) }, position: [0, 0] }], [predefined(7, { id: "predefined", hooks: Hooks.empty().set(unitLifecycle.enter, enterHook) }, true)]),
 
     }));
     assert.equal(observations.length, 2);
@@ -74,14 +76,14 @@ test("spawn entry observes recorded schedule progress before running content", (
     const definition = {
         spatialPresence: {},
         id: "spawned", vitality: { maxHp: 100, defense: 0, resistance: 0 }, locomotion,
-        hooks: [{ id: "test/enter", stage: "enter", invoke(state, self) {
+        hooks: Hooks.empty().set(unitLifecycle.enter, { id: "test/enter",  invoke(state, self) {
             observed = state;
             assert.equal(state.schedule.cursor, 1);
             assert.equal(state.schedule.spawnedCount, 1);
             assert.equal(state.schedule.pendingSpawnCount, 0);
             assert.deepEqual(state.schedule.managedFinalUnitIds, [self.id]);
             return { state: { ...state, completedRouteCount: 4 }, value: undefined };
-        } }],
+        } }),
     };
     let battle = initializeBattle(input({
         schedule: { type: "TIMELINE", spawns: [spawn(definition, 0)] },
@@ -98,17 +100,17 @@ test("nested predefined entry and departure keep the latest presence bindings", 
     definitions = [
         predefined(1, {
             id: "parent",
-            hooks: [{ id: "test/enter", stage: "enter", invoke(state) {
+            hooks: Hooks.empty().set(unitLifecycle.enter, { id: "test/enter",  invoke(state) {
                 observations.push(state.predefinedPresence.map(binding => binding.definitionId));
                 return { state: advancePredefined(state, definitions, [{ type: "APPEAR_PREDEFINED", definitionId: 2 }], state.tick), value: undefined };
-            } }, { id: "test/leave", stage: "leave", invoke(state) {
+            } }).set(unitLifecycle.leave, { id: "test/leave",  invoke(state) {
                 observations.push(state.predefinedPresence.map(binding => binding.definitionId));
                 return { state: advancePredefined(state, definitions, [{ type: "APPEAR_PREDEFINED", definitionId: 3 }], state.tick), value: undefined };
-            } }],
+            } }),
 
         }),
-        predefined(2, { id: "entry-child", hooks: [] }),
-        predefined(3, { id: "departure-child", hooks: [] }),
+        predefined(2, { id: "entry-child", hooks: Hooks.empty() }),
+        predefined(3, { id: "departure-child", hooks: Hooks.empty() }),
     ];
     let battle = initializeBattle(input({ predefines: definitions }));
     battle = stepBattle(battle, [{ type: "APPEAR_PREDEFINED", definitionId: 1 }]);
@@ -124,7 +126,7 @@ test("starting a new tick clears temporary facts without changing retained state
     const received = [], returned = [];
     let battle = initializeBattle(input({
         predefines: predefinedUnits([
-            { position: [0, 0], definition: { id: "observer", hooks: [{ id: "test/tick", stage: "tick", invoke(state) {
+            { position: [0, 0], definition: { id: "observer", hooks: Hooks.empty().set(unitLifecycle.tick, { id: "test/tick",  invoke(state) {
                 received.push(state);
                 assert.deepEqual(state.events, []);
                 assert.deepEqual(state.removedUnits, []);
@@ -134,8 +136,8 @@ test("starting a new tick clears temporary facts without changing retained state
                 }
                 returned.push(state);
                 return { state: state, value: undefined };
-            } }] } },
-            { position: [1, 0], definition: { hooks: [], id: "removed" } },
+            } }) } },
+            { position: [1, 0], definition: { hooks: Hooks.empty(), id: "removed" } },
         ]),
     }));
     const first = (battle = stepBattle(battle, []));

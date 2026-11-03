@@ -8,6 +8,8 @@ import type { Hook } from "./contract.js";
 import type { Rule } from "./rule.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
 import { prepare } from "./blockable-operations.js";
+import { Hooks } from "../../../hook.js";
+import { prepare as prepareKey } from "../../hook.js";
 
 export interface Definition {
     readonly volume: number;
@@ -49,7 +51,7 @@ export function initialize<U extends Unit & Pick<Blockable, "definition">>(
         state: battle,
         value: {
             ...unit,
-            hooks: [prepare, ...unit.hooks],
+            hooks: Hooks.empty().set(prepareKey, prepare).merge(unit.hooks),
             blockable: {
                 blocker: null,
                 adjustment: null,

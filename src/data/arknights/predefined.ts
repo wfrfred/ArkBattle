@@ -1,3 +1,4 @@
+import { Hooks } from "../../core/hook.js";
 import {
     assertNonnegativeNumber,
     assertPositiveNumber,
@@ -167,7 +168,7 @@ function unitDefinition(
                     },
                 },
             ],
-            unitHooks: [],
+            unitHooks: Hooks.empty(),
             initialize: (battle) => ({ state: battle, value: {} }),
         },
         tileChanges: profile.tileChanges,

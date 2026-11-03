@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import { tiles as tileEntries } from './tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import { initialize as initializeUnit } from "../../dist/core/unit/index.js";
@@ -28,7 +29,7 @@ export function baseUnit(definition, fields = {}) {
         position: [0, 0],
         ...fields,
         definition,
-        hooks: [],
+        hooks: Hooks.empty(),
         effects: Effects.empty(),
     };
 }
@@ -64,7 +65,7 @@ export function initialize({ states = {}, tick = 0, definition, ...input }) {
         const key = [...additional, defaultHooks ? "hooks" : ""].join(":");
         paired = versions.get(key);
         if (paired === undefined) {
-            paired = { ...definition, ...(defaultHooks ? { hooks: [] } : {}),
+            paired = { ...definition, ...(defaultHooks ? { hooks: Hooks.empty() } : {}),
                 ...(skillFactory ? { skill: { initialize: battle => createSkill(battle, definition.skill) } } : {}),
                 ...Object.fromEntries(additional.map(key => [key, fixtureDefinition(key)])) };
             versions.set(key, paired);

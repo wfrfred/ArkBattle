@@ -9,10 +9,10 @@ import type { Unit } from "../unit.js";
 import type { EnterHook } from "../hook.js";
 import * as contribution from "../contribution/contribution.js";
 import { isSpatiallyPresent } from "../capability/presence/capability.js";
-import { hasVitality } from "../capability/vitality/capability.js";
+import { hasVitality, setDamageReceivingStartedHook } from "../capability/vitality/capability.js";
 import { hasAction, setReleasedHook } from "../capability/action/capability.js";
 import type { ReleasedHook } from "../capability/action/release.js";
-import { setHook as setDamageHook, type ReceivingStartedHook } from "../../battle/damage/hook.js";
+import type { ReceivingStartedHook } from "../../battle/damage/hp/hook.js";
 import { hasSkill, type Skill as SkillCapability } from "../capability/skill/capability.js";
 import {
     ref as activationRef,
@@ -30,7 +30,6 @@ import { resolveCapacity as resolveAmmoCapacity } from "./ammo.js";
 
 const hitRecovery: ReceivingStartedHook = {
     id: "@skill/hit-recovery",
-    stage: "receivingStarted",
     priority: 0,
     invoke: (battle, { request }) => {
         const target = units.get(battle, request.target);
@@ -374,13 +373,12 @@ export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>):
 
 export const enter: EnterHook = {
     id: "@skill/enter",
-    stage: "enter",
     invoke: (battle, self) => {
         const host = units.ref(self as Unit & SkillCapability);
         let unit = units.get(battle, host)!;
         const definition = unit.skill.definition;
         if (hasVitality(unit) && definition.sp?.recovery.type === "HIT") {
-            battle = update(battle, [setDamageHook(units.ref(unit), hitRecovery)]);
+            battle = update(battle, [setDamageReceivingStartedHook(units.ref(unit), hitRecovery)]);
         } else if (hasAction(unit) && definition.sp?.recovery.type === "ACTION") {
             battle = update(battle, [setReleasedHook(units.ref(unit), actionRecovery)]);
         }

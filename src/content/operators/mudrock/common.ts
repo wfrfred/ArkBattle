@@ -5,8 +5,8 @@ import { hasVitality, resolveMaxHp } from "../../../core/unit/capability/vitalit
 import {
     calculateHealing,
     applyHealing,
-    type HealingRequest,
-} from "../../../core/battle/healing/index.js";
+    type Request as HealingRequest,
+} from "../../../core/battle/healing/hp/index.js";
 
 import type { Profile } from "../../../data/arknights/operator.js";
 

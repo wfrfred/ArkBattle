@@ -1,3 +1,5 @@
+import { Hooks } from "../../core/hook.js";
+import * as unitHooks from "../../core/unit/hook.js";
 import type { State as BattleState } from "../../core/battle/index.js";
 import { remove as removeUnit, update } from "../../core/battle/unit.js";
 import { at as occupancyAt } from "../../core/battlefield/occupancy.js";
@@ -71,10 +73,9 @@ export function create(configuration: Configuration): Definition {
                 },
             ],
         },
-        hooks: [
-            {
+        hooks: Hooks.empty()
+            .set(unitHooks.enter, {
                 id: "shooting-platform/apply-tile",
-                stage: "enter",
                 invoke(battle, self) {
                     return {
                         state:
@@ -84,10 +85,9 @@ export function create(configuration: Configuration): Definition {
                         value: undefined,
                     };
                 },
-            },
-            {
+            })
+            .set(unitHooks.leave, {
                 id: "shooting-platform/restore-tile",
-                stage: "leave",
                 invoke(battle, { unit }) {
                     if (!hasOccupancy(unit) || unit.occupancy.tile === null) {
                         return { state: battle, value: undefined };
@@ -98,7 +98,6 @@ export function create(configuration: Configuration): Definition {
 
                     return { state: restore(battle, position, tileChanges), value: undefined };
                 },
-            },
-        ],
+            }),
     };
 }

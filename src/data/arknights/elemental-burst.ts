@@ -44,10 +44,10 @@ import { modify } from "../../core/unit/skill/index.js";
 import { hasSkill } from "../../core/unit/capability/skill/index.js";
 
 import {
-    type DamageRequest,
+    type Request as DamageRequest,
     calculateDamage,
     applyDamage,
-} from "../../core/battle/damage/index.js";
+} from "../../core/battle/damage/hp/index.js";
 
 import * as attribute from "../../core/unit/contribution/attribute.js";
 import { stun } from "../../content/effects/stun.js";

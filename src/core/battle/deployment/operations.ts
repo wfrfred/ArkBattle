@@ -17,6 +17,8 @@ import { advanceResources, replaceCard } from "./resources.js";
 import { evaluateRules, resolveRules, createRequest } from "./query.js";
 import type { DeployRequest, DeployOutcome } from "./request.js";
 import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../common/assert.js";
+import { Hooks } from "../../hook.js";
+import * as lifecycle from "../../unit/hook.js";
 
 export { canRetreat, retreat };
 
@@ -98,10 +100,9 @@ export function deploy<T extends Card<any>>(
                 ...(request.direction === undefined ? {} : { direction: request.direction }),
             },
         },
-        hooks: [
-            {
+        hooks: Hooks.empty()
+            .set(lifecycle.enter, {
                 id: "@deployment/enter",
-                stage: "enter",
                 invoke: (state, unit) => ({
                     state: notifyDeployed(state, {
                         unit: unit as Unit & Deployable,
@@ -109,10 +110,9 @@ export function deploy<T extends Card<any>>(
                     }),
                     value: undefined,
                 }),
-            },
-            {
+            })
+            .set(lifecycle.leave, {
                 id: "@deployment/death",
-                stage: "leave",
                 accepts: (_state, departure) => departure.reason === "DEATH",
                 invoke: (state) => {
                     if (definition.increaseCostOnLeave) {
@@ -124,10 +124,9 @@ export function deploy<T extends Card<any>>(
 
                     return { state, value: undefined };
                 },
-            },
-            ...self.unitHooks,
-            ...request.hooks,
-        ],
+            })
+            .merge(self.unitHooks)
+            .merge(request.hooks),
     });
     const unit = {
         ...initialized.value,

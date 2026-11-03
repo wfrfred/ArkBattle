@@ -1,3 +1,4 @@
+import { Hooks } from "../core/hook.js";
 import { createArknightsElementalDefinition } from "../data/arknights/elemental.js";
 import { create as createAction, createActions } from "../core/unit/action/index.js";
 import { create as createAttack, type Attack } from "../content/actions/attack.js";
@@ -11,7 +12,7 @@ import { create as createTile } from "../core/battlefield/map/tile.js";
 import { Tiles } from "../core/battlefield/map/tiles.js";
 import { normal } from "../content/terrain/definition.js";
 import { normal as normalCondition } from "../content/terrain/condition.js";
-import type { DamageType } from "../core/battle/damage/index.js";
+import type { DamageType } from "../core/battle/damage/hp/index.js";
 import { Tile, type TilePosition } from "../core/geometry/coordinate.js";
 import type { Direction } from "../core/geometry/direction.js";
 import type { Input as RouteInput } from "../core/battle/creation/route.js";
@@ -192,7 +193,7 @@ function operatorDefinition(value: unknown) {
     const initializeAttack = createAction(attack);
 
     return {
-        hooks: [],
+        hooks: Hooks.empty(),
         targetable: { restrictions: [] },
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
         id: stringField(definition.chessId, "chessId"),
@@ -305,7 +306,7 @@ function enemyDefinition(value: unknown) {
     const initializeAttack = createAction(attack);
 
     return {
-        hooks: [],
+        hooks: Hooks.empty(),
         spatialPresence: {},
         targetable: { restrictions: [] },
         elemental: createArknightsElementalDefinition({ receiver: "ENEMY" }),

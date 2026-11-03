@@ -1,7 +1,7 @@
 import type { Ref } from "../../common/ref.js";
 import type { Direction } from "../../geometry/direction.js";
 import type { TilePosition } from "../../geometry/coordinate.js";
-import type { Hook } from "../../unit/hook.js";
+import type { Hooks } from "../../hook.js";
 import type { Card } from "./card/card.js";
 import type { Rule } from "./rule.js";
 
@@ -17,7 +17,7 @@ export interface DeployRequest<T extends Card<any> = Card> {
     readonly direction?: Direction;
     readonly quote: Quote;
     readonly rules: readonly Rule[];
-    readonly hooks: readonly Hook[];
+    readonly hooks: Hooks;
 }
 
 export type Rejection =

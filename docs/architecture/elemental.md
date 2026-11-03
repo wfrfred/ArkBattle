@@ -1,10 +1,10 @@
 # Elemental 设计
 
-Elemental 负责元素值、元素损伤与治疗、一次爆发的身份和冷却预算。爆发造成的 HP 伤害、异常状态、属性变化和周期输出由 Content 通过公开领域接口组合。当前四型为 NEURAL、EROSION、BURN、NECROSIS；狂躁尚未接入。
+Elemental 负责元素值的接收与资源提交、一次爆发的身份和冷却预算；EP Damage／Healing 的 Calculate／Apply 由 Battle 编排。爆发造成的 HP 伤害、异常状态、属性变化和周期输出由 Content 通过公开领域接口组合。当前四型为 NEURAL、EROSION、BURN、NECROSIS；狂躁尚未接入。
 
 Unit Definition 直接关联共享的 Elemental Definition，Content 提供爆发程序。
 
-公开类型、查询和业务操作从 [elemental/index.ts](../../src/core/unit/capability/elemental/index.ts) 导入，包括只读的 available。Capability 的 Rule、Hook 与属性贡献 set／remove 绑定 Ref<Unit & Elemental> 返回 Change，交给 Unit.update 登记。爆发、损伤与恢复等完整操作保持 BattleState 协议，状态写回使用 Core 内部的 Unit.replace；query.ts 负责查询。
+公开类型、查询和业务操作从 [elemental/index.ts](../../src/core/unit/capability/elemental/index.ts) 导入，包括只读的 available。Capability 的 Rule、Hook 与属性贡献 set／remove 绑定 Ref<Unit & Elemental> 返回 Change，交给 Unit.update 登记。资源提交复用对应业务的 CommitContext，爆发与恢复等操作保持 BattleState 协议，状态写回使用 Core 内部的 Unit.replace；query.ts 负责查询。
 
 ## 1. 能力与定义
 
@@ -31,11 +31,11 @@ Data／Content 直接提供完整静态 Definition，明日方舟的基础参数
 | burst | 当前 Burst，或 null；Core 同一宿主至多一个 |
 | nextBurstId | 宿主内单调分配的爆发身份 |
 | maxEp／recoverySpeed／elementResistance／damageResistance／burstRecoverySpeed | 五个属性的 Contribution |
-| receiving | 抗性后、本次提交前的 DamageHook，逐项接续 battle 与剩余损伤 |
+| receiving | 抗性计算后、本次提交前的 DamageReceivingHook，逐项接续 battle 与 Pending |
 | rules | damage／heal 两个节点各自的接收许可登记 |
-| received／damaged／healed／burstStarted／burstEnded | 各明确业务事实的 Hook |
+| damaged／healed／burstStarted／burstEnded | 各明确业务事实的 Hook |
 
-属性 Contribution 的动态 Input 为 `(battle, self) => readonly attribute.Modifier[]`。属性修正、资格 Rule、伤判和事实通知分别承担自己的职责。请求类型相关的减免通过 DamageHook 读取 request.type 并返回新剩余数额，不复制四组基础抗性，也不在布尔 Rule 中执行副作用。
+属性 Contribution 的动态 Input 为 `(battle, self) => readonly attribute.Modifier[]`。属性修正、资格 Rule、伤判和事实通知分别承担自己的职责。请求类型相关的减免通过 DamageReceivingHook 读取 calculated.type 并返回新 Pending，不复制四组基础抗性，也不在布尔 Rule 中执行副作用。
 
 能力组合由内容装配决定。内容中的干员与地面敌人默认同时提供 Vitality 和 Elemental；Core 的 Unit 允许明确组合所需能力。免疫不通过删除 Elemental 表达。CHARACTER／ENEMY 仅用于 Data／Content 选择静态爆发程序，不进入 Core 接收者枚举，也不由当前阵营推导。
 
@@ -63,66 +63,88 @@ type End =
 
 不是所有爆发产物都绑定 Burst。例如永久侵蚀减防、冷却结束后尚待消费的麻痹保留自己的生命周期。具体爆发程序位于 [data/arknights/elemental-burst.ts](../../src/data/arknights/elemental-burst.ts)。
 
-## 3. 查询与完整操作
+## 3. 查询、结算与资源提交
 
-完整操作与查询使用最新 battle，当前时间读取 battle.tick。
+EP 损伤与治疗分别通过 [damage/ep/index.ts](../../src/core/battle/damage/ep/index.ts) 和 [healing/ep/index.ts](../../src/core/battle/healing/ep/index.ts) 使用两阶段接口。Damage／Healing 顶层仅导出 hp、ep 命名空间。Calculate 形成输出，Apply 才开始接收；零计算输出在 Apply 入口拒绝，零实际变化允许成功。完整边界见 [Vitality／Elemental 接口](vitality.md#18-已定稿的接收与资源提交接口)。
 
-EP 损伤与治疗遵守[Calculate 输出计算、Apply 目标接收的项目边界](vitality.md#1-calculate-与-apply-的语义边界)：零计算输出在 Apply 入口拒绝，不进入本笔接收或 Applied；零实际变化允许成功。[资格、专属接收与资源提交接口](vitality.md#18-已定稿的接收与资源提交接口)已定稿：Battle 编排通用流程，Elemental 提供 canReceiveDamage／canReceiveHealing、receiveDamage 与 commitDamage／commitHealing。commit 复用对应 EP 业务的 CommitContext，报告由 Elemental 定义；EP Healing 不增加空的 receiveHealing。元素损伤抗性在 Calculate 求值，Burst 与能力通知随提交同步完成，通用 Applied 随后由 Battle 派发。下列现有完整入口尚待迁移，Burst 生命周期保持下文契约。
+EP Damage.Request 为 `{ source, target, type, power }`，Parameters 为可变工作值 `{ type, power }`，Calculated 保存公式确定的 `{ type, amount }`。先来源 Formula、再目标 Formula，然后按当前元素损伤抗性计算数额，最后执行来源 Output。抗性有效值在 0～95，之后的状态变化不使 Apply 重算；实际元素类型来自 Calculated，不用初始 Request.type 代替。
 
-普通 EP 回复的原生求值、逐型提交、共享 Modifier 时点及行医命中组合见[治疗结算调查](../research/cases/29-hp-and-ep-healing-settlement.md)，与本文的当前项目政策分别记录。
+EP Healing.Request 为 `{ source, target, power }`，Parameters 为 `{ power }`，Calculated 为 `{ amount }`。它经过自己的 Formula／Output，不应用元素损伤抗性。
 
 | 接口 | 形状与结果 |
 | --- | --- |
-| operations.damage | `(battle, target: Ref<Unit>, { source, type, power }) => Result<DamageOutcome>` |
-| operations.heal | `(battle, target: Ref<Unit>, { source, power }) => Result<HealOutcome>` |
-| operations.finish | `(battle, ref: Ref<Burst>) => BattleState` |
-| operations.cancel | `(battle, ref: Ref<Burst>, reason?) => BattleState` |
-| operations.advance | `(battle, host: Ref<Unit & Elemental>) => BattleState`；Runtime 专用推进 |
-| query.get | `(battle, ref: Ref<Burst>) => Burst \| undefined` |
-| query.canReceiveDamage／canReceiveHeal | `(battle, target: Ref<Unit>, request) => boolean` |
-| query.resolveMaxEp／resolveRecoverySpeed／resolveElementResistance／resolveDamageResistance／resolveBurstRecoverySpeed | `(battle, host: Ref<Unit & Elemental>) => number \| undefined` |
-| query.resolveDamageRatio | `(battle, host: Ref<Unit & Elemental>) => number \| undefined` |
-| query.currentType／damageRatio | `(self: Unit, maxEp?) => Type \| undefined / number`；已知对象的局部查询 |
-| query.available | `(self: Unit) => boolean`；基础在场、空间存在与生命资格查询 |
+| damage.ep.calculateDamage | `(battle, request) => Result<Calculated \| undefined>` |
+| damage.ep.applyDamage | `(request, calculation) => Result<Outcome>` |
+| healing.ep.calculateHealing | `(battle, request) => Result<Calculated \| undefined>` |
+| healing.ep.applyHealing | `(request, calculation) => Result<Outcome>` |
+| canReceiveDamage | `(battle, request, type = request.type) => boolean`；资格查询不要求 Calculated |
+| canReceiveHealing | `(battle, request) => boolean` |
+| receiveDamage | `(battle, context: damage.ep.ReceivingContext, pending) => Result<Pending>` |
+| commitDamage／commitHealing | `(battle, context: 对应业务的 CommitContext) => Result<对应资源报告>` |
+| finish／cancel | `(battle, ref: Ref<Burst>, reason?) => BattleState`；finish 不接收原因 |
+| advance | `(battle, host: Ref<Unit & Elemental>) => BattleState`；Runtime 专用 |
+| get | `(battle, ref: Ref<Burst>) => Burst \| undefined` |
+| resolveMaxEp／resolveRecoverySpeed／resolveElementResistance／resolveDamageResistance／resolveBurstRecoverySpeed | `(battle, host: Ref<Unit & Elemental>) => number \| undefined` |
+| resolveDamageRatio | `(battle, host: Ref<Unit & Elemental>) => number \| undefined` |
+| currentType／damageRatio | 已知 Unit 的局部元素类型／损伤比例查询 |
+| available | 已知 Unit 的基础在场、空间存在与生命资格查询 |
 
-DamageOutcome 为 APPLIED `{ amount, burst: Ref<Burst> | null }` 或 REJECTED `{ reason }`；HealOutcome 为 APPLIED `{ amounts: Values }` 或 REJECTED `{ reason }`。实际 EP 变化为零可以成功返回 APPLIED，不派发实际变化的 damaged／healed Hook；这不表示允许零计算输出进入接收。操作接受普通 Unit Ref，目标不具有 Elemental 时返回 NO_ELEMENTAL。
+接收要求宿主在场且空间存在，具有 Vitality 时 HP 大于零。Burst 存在期间，包括 ENDING，拒绝损伤和治疗；中立阵营默认拒绝损伤。Rule 按 damage／heal 两个节点登记：damage 使用 `allows(battle, { self, request, type })`，type 是本次实际元素类型；heal 使用 `{ self, request }`。它们只读，均由 setRule／removeRule 的 Change 修改。无敌通过 damage Rule 拒绝，不查询 Vitality 内部接收规则；HP 禁疗不隐式决定 EP 接收。
 
-损伤先按当前 elementResistance 修正，再执行本次 DamageHook 管线。Hook 返回 Result<number>，接续新的 BattleState 和剩余数额；每次派发固定候选 ID，逐项读取最新登记，嵌套派发独立收集。返回后重查目标资格、当前上限及 EP，再提交数额，损失不超过当前 EP。Effect 可以保存护盾预算、在启停时登记和撤销 DamageHook，Hook 消耗当前 Effect 预算并返回剩余损伤；Elemental 不认识具体护盾。某型 EP 归零时，一次性把四条 EP 置零、登记新 Burst；在内容回调前登记 Burst→Unit 的 Lifetime owner 关系。治疗对每条 EP 各应用完整请求数额，分别限制到当前上限，不在四型之间分摊。动态上限变化不按比例重算 EP；后续实际写入 EP 的操作或 Runtime 推进将数值限制在当前上限内。
+Targeting 的 elementDamage／elementHealing Filter 按当前候选构造完整请求并查询 canReceive；索敌不运行 Calculate，也不派发接收 Hook。没有 Elemental 的候选在过滤边界排除，后续 Typed Ref 保留该能力证明。elementHealing 另外要求当前存在元素损伤。普通 HP 行动附带 EP 输出，不自动套用元素接收条件。
 
-接收的基本资格为宿主在场、空间存在，具有 Vitality 时 HP 大于零。Burst 存在期间，包括 ENDING，拒绝损伤和治疗；中立阵营默认拒绝损伤。Rule 按 damage／heal 节点分别保存，统一使用 `allows(battle, { self, request })`，request 类型由节点确定。`setRule(ref, key, rule)`／`removeRule(ref, key, id)` 返回 Change，同 ID 在不同节点独立。元素免疫可以只限制损伤；HP 禁疗不隐式决定元素治疗。无敌内容向 damage 节点登记拒绝 Rule，并在失效时移除，Core 不读取 Vitality 的内部接收规则。
+Elemental 定义两种资源报告：
 
-Targeting 提供标准元素 Filter，由 Content 显式组合：elementDamage 根据本次实际类型和数值调用 canReceiveDamage；elementHealing 调用 canReceiveHeal 与 resolveDamageRatio，始终读取最新 battle 中的动态 Rule 和有效上限。普通 HP 行动附带元素输出，不自动套用元素接收条件。只读 Filter 不派发收到请求 Hook，也不执行结算；Selector 的随机消费由 Targeting Result 接续。
+```typescript
+interface DamageApplication {
+    readonly type: Type;
+    readonly epBefore: number;
+    readonly epAfter: number;
+    readonly epLoss: number;
+    readonly burst: Ref<Burst> | null;
+}
+
+interface HealingApplication {
+    readonly epBefore: Values;
+    readonly epAfter: Values;
+    readonly epGain: Values;
+}
+```
+
+Damage 的 before／after／loss 描述本次元素类型，Burst 身份描述本次创建事实；治疗对四型各应用完整接收量，分别限制到当前上限，不在四型间分摊。某型 EP 耗尽时同步将四型 EP 置零并创建 Burst。动态上限变化不按比例重算 EP，后续实际写入或 Runtime 推进限制到当前上限。
+
+报告在写入时采样；Battle 的 Application 直接引用同一类型，并放入 APPLIED Outcome。损伤有 REJECTED／CANCELLED／UNAVAILABLE／APPLIED；EP Healing 没有取消工作值阶段，只提供 REJECTED／UNAVAILABLE／APPLIED。成功但实际变化为零时，不派发能力 damaged／healed，Battle 仍派发通用 Applied。
 
 ## 4. Hook、提交事实与同步重入
 
-结算 Hook 采用[已定稿的精确类型与取消契约](vitality.md#16-已定稿的结算-hook-类型)：EP Damage／Healing 各有自己的 Context 与 Application，不并入联合 Context；EP Damage 接收的 Pending 独立保存 amount 与 cancellation。取消后仍可修改 amount、继续独立业务，但保留已有取消及原因；领域 cancel 构造函数封装条件类型断言。EP Healing 暂不机械增加专属 Receiving Hook，HP Damage 的 ReceivingStarted 不向 EP 复制。以下既有接收接口尚待迁移，Burst 及实际 EP 变化通知保持各自语义。
+通用 Formula、Output、BeforeReceive、BeforeCommit、targetApplied、sourceApplied 存于 [Unit.hooks](hook.md)，由对应 Battle 子域定义键与派发。基础目标资格成立后执行 beforeReceive，再读取最新 Rule；取消、失效及已提交结果按各业务 Outcome 表达。
 
-Hook 采用公共协议 `(battle, fixedContext, current) => Result<T>`。事实通知固定 `{ host, event }`，T=void；DamageHook 固定 `{ host, request }`，T=number，金额只在 current 接续，内容程序负责返回合法的非负剩余损伤。accepts 只查询，实时宿主按 host 从 battle 读取。setDamageHook／removeDamageHook 管理伤判登记。每次派发固定候选 ID，逐项读取最新登记与 accepts；同 ID 替换使用新版本，新 ID 等待下一次派发。嵌套操作独立取候选。
+Elemental 仅保存专属 DamageReceivingHook 和实际资源／Burst 通知。`setDamageReceivingHook`／`removeDamageReceivingHook` 返回 Change。接收 Context 固定 `{ target, request, calculated }`，工作值为 Pending；取消后仍派发后续 Hook，但保留已有取消及原因。领域 cancel 构造函数封装类型断言，不新增运行时取消检查。EP Healing 没有专属 Receiving，不导出取消构造器。
+
+事实通知固定 `{ host, event }`，T=void；以下 event 在资源写入或生命周期转移处确定：
 
 | Hook | 载荷与时点 |
 | --- | --- |
-| received | `{ request }`；基本目标资格成立后、接收 Rule 与爆发锁定等准入检查之前；可能最终被拒绝 |
-| damaged | `{ request, previous, current, amount, burst }`；实际 EP 损失大于零，已经提交 |
-| healed | `{ request, previous, current, amounts }`；显式 heal 至少一型实际恢复，已经提交 |
-| burstStarted | 已登记的 Burst；表示创建事实，不承诺 onStart 内容已经完成 |
-| burstEnded | `{ burst, end }`；完整结束、清理并移除当前实例后 |
+| damaged | `{ request, ...DamageApplication }`；本次实际 EP 损失大于零，已经提交 |
+| healed | `{ request, ...HealingApplication }`；显式恢复至少一型 EP，已经提交 |
+| burstStarted | 已登记的 Burst，表示创建事实，不承诺 onStart 已完成 |
+| burstEnded | `{ burst, end }`；本轮完整结束、清理并移除后 |
 
-收到请求与实际损失分别表达，免疫抵消仍可被 received 观察。不存在目标、没有 Elemental 或基本资格不成立时不派发 received。received 可以同步改变或终结目标；返回后从最新 battle 重做准入和数额求值。
-
-爆发分支的顺序为：
+EP 损伤的爆发分支按以下顺序执行：
 
 ```text
-提交本次 EP 扣减、归零与 Burst
+提交本次 EP 扣减、四型归零与 Burst
+→ 登记 Burst→Unit 的 Lifetime owner 关系
 → 记录 ELEMENT_DAMAGE 和 ELEMENT_BURST
-→ burstStarted Hook
-→ damaged Hook
+→ burstStarted
+→ damaged
 → 重读同一 Burst、ACTIVE 状态和宿主资格
 → 仍有资格才执行 Definition.onStart
+→ 返回固定资源报告
+→ Battle 的 targetApplied、sourceApplied
 ```
 
-非爆发分支提交损伤后只派发 damaged。报告与 Hook 保留提交时的数值，不因同步嵌套结束而重算。burstStarted Hook 可以请求结束 Burst，随后仍可能派发原损伤事实。没有活动 Lifetime 结算时，早先 burstStarted 候选可以使 burstEnded 嵌套完成；已有结算时，burstEnded 等到 Finalize。后续 burstStarted 候选继续处理原创建事实，不改写已提交报告。
-
-任何跨领域操作之后，如果后续依赖自己或宿主的当前资格，都按[状态接续契约](functional-core.md#状态接续后的读取与续执行)重新读取。已明确采样的数值和已提交事实继续保留。
+非爆发分支的实际损伤只派发 damaged。burstStarted 可以同步取消 Burst，随后 damaged 仍报告已发生的损失；后续嵌套业务不重算外层报告。无活动 Lifetime 结算时，早先候选可以使 burstEnded 嵌套完成；有活动结算时等待 Finalize。当前对象、资格与 Hook 登记在完整业务返回后从最新 BattleState 查询，明确采样的事实继续保留。
 
 ## 5. 完整结束与离场
 

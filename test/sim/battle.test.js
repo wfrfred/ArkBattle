@@ -1,3 +1,5 @@
+import { Hooks } from "../../dist/core/hook.js";
+import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import { predefinedUnits } from "../helpers/predefined.js";
 import { changeTile } from "../helpers/tiles.js";
 import { tiles as tileEntries } from "../helpers/tiles.js";
@@ -561,10 +563,10 @@ test('raw enemy movement levels inherit only defined values and reject sparse, u
   const fixture = arknightsFixture('enemy_1007_slime');
   const profile = slimeMovementProfile();
   const parseMovement = (value, level) => parseEnemyMovementDefinition(value, level, profile);
-  assert.deepEqual(parseMovement(fixture, 0), { hooks: [],
+  assert.deepEqual(parseMovement(fixture, 0), { hooks: Hooks.empty(),
     id: 'enemy_1007_slime', spatialPresence: {}, vitality: { maxHp: 550, defense: 0, resistance: 0 }, locomotion: { halfBodyWidth: profile.halfBodyWidth, speed: 1 / 30, minSpeed: 0.1 / 30, steeringParameters: profile.steeringParameters },
   });
-  assert.deepEqual(parseMovement(fixture, 1), { hooks: [],
+  assert.deepEqual(parseMovement(fixture, 1), { hooks: Hooks.empty(),
     id: 'enemy_1007_slime', spatialPresence: {}, vitality: { maxHp: 2050, defense: 0, resistance: 0 }, locomotion: { halfBodyWidth: profile.halfBodyWidth, speed: 1 / 30, minSpeed: 0.1 / 30, steeringParameters: profile.steeringParameters },
   });
   assert.deepEqual(parseMovement({ ...fixture, Value: [...fixture.Value].reverse() }, 1), parseMovement(fixture, 1));
@@ -1260,7 +1262,7 @@ function deploymentBattleInput(overrides = {}, cards = []) {
 }
 
 
-const deployableDefinition = (id = 'test_deployable', card = {}) => Object.freeze({ hooks: [],
+const deployableDefinition = (id = 'test_deployable', card = {}) => Object.freeze({ hooks: Hooks.empty(),
   id, occupancy: { slot: 'OCCUPANT' }, deployable: { retreatRules: [] },
   card: createCardDefinition({ cost: 0, redeployTicks: 0, slots: 1, ...card }),
   vitality: Object.freeze({ maxHp: 100, defense: 0, resistance: 0 }), allegiance: Object.freeze({ side: 'ALLY' }),
@@ -1297,7 +1299,7 @@ test('core battle deploys and retreats units with immutable occupancy and curren
 
   const occupancy = { tile: [0, 5] };
   const initialInput = deploymentBattleInput({
-    predefines: predefinedUnits([{ definition: Object.freeze({ hooks: [], id: 'reserved_home', occupancy: { slot: 'OCCUPANT' } }), position: [5, 0], initial: { occupancy },
+    predefines: predefinedUnits([{ definition: Object.freeze({ hooks: Hooks.empty(), id: 'reserved_home', occupancy: { slot: 'OCCUPANT' } }), position: [5, 0], initial: { occupancy },
        }]),
   }, [definition]);
   let reserved = initializeBattle(initialInput);
@@ -1376,7 +1378,8 @@ test('core battle accepts the first deployment and rejects an occupied destinati
       units: new Map([...battle.battlefield.units].map(([id, unit]) => [id, {
         ...unit,
         // Per-deployment closures have distinct identities; their registered order and state are deterministic.
-        hooks: unit.hooks.map(({ id, stage }) => ({ id, stage })),
+        hooks: [unitLifecycle.enter, unitLifecycle.tick, unitLifecycle.prepare, unitLifecycle.leave]
+          .map(key => [key.name, unit.hooks.get(key).map(({ id }) => id)]),
       }])),
     },
   });
@@ -1419,16 +1422,16 @@ test('core visibility: commands from different domains execute in phase order be
 
 test('core elevated support disables blocking without changing target layer and leaves its occupant without content cleanup', () => {
   const provider = Object.freeze({ id: 'platform_provider', occupancy: { slot: 'SUPPORT', hooks: [] },
-    hooks: [{ id: "test/enter", stage: "enter", invoke(battle, self) { return { state: changeTile(battle, self.occupancy.tile, { elevation: 'HIGHLAND', allowsBlocking: false }), value: undefined }; } }, { id: "test/leave", stage: "leave", invoke(battle, { unit }) {
+    hooks: Hooks.empty().set(unitLifecycle.enter, { id: "test/enter",  invoke(battle, self) { return { state: changeTile(battle, self.occupancy.tile, { elevation: 'HIGHLAND', allowsBlocking: false }), value: undefined }; } }).set(unitLifecycle.leave, { id: "test/leave",  invoke(battle, { unit }) {
       const position = unit.occupancy.tile;
       const initial = battle.battlefield.map.tiles.get(position[0] * battle.battlefield.map.columns + position[1]).definition.initial;
       return { state: changeTile(battle, position, { elevation: initial.elevation, allowsBlocking: initial.allowsBlocking }), value: undefined };
-    } }],
+    } }),
 
 
   });
   const definition = deployableDefinition();
-  const enemyDefinition = Object.freeze({ hooks: [], id: 'standing_enemy',
+  const enemyDefinition = Object.freeze({ hooks: Hooks.empty(), id: 'standing_enemy',
     vitality: Object.freeze({ maxHp: 100, defense: 0, resistance: 0 }), allegiance: Object.freeze({ side: 'ENEMY' }),
     layer: Object.freeze({ type: 'GROUND' }), blockable: Object.freeze({ volume: 1 }),
   });

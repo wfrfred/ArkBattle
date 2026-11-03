@@ -67,7 +67,7 @@ interface Definition<S extends object = object> {
 
 Card 创建为 addCard(battle, definition)，Battle 输入的 cards 保存完整静态 Definition 数组。相同 Definition 出现多次会创建多张独立 Card。入口校验静态数值配置，并在登记前执行 initialize；没有私有状态时也显式提供返回空对象的初始化程序。Card.initialize 只执行一次，Card 在部署和返手之间持续存在。
 
-实例保留 definition、state、当前 stock、cooldown、recovery、costStage、贡献、动态 rules 和 unitHooks；固定上限从 Definition 读取。unitHooks 使用[统一 Hooks 集合](hook.md)，注入以后部署的实例，通过 setUnitHook／removeUnitHook 按类型化键与 ID 登记、替换和移除。Card 的修改不追溯改变已创建 Unit；这些实例仍可独立通过通用 Hook Change 修改自身登记。集合接口尚待源码迁移。
+实例保留 definition、state、当前 stock、cooldown、recovery、costStage、贡献、动态 rules 和 unitHooks；固定上限从 Definition 读取。unitHooks 使用[统一 Hooks 集合](hook.md)，注入以后部署的实例，通过 setUnitHook／removeUnitHook 按类型化键与 ID 登记、替换和移除。Card 的修改不追溯改变已创建 Unit；这些实例仍可独立通过通用 Hook Change 修改自身登记。
 
 setState 接收计算后的状态值。普通 get 返回默认 object 私有状态，精确 Ref 或已知 Definition 查询保留具体私有类型；any 用于 Core 异构边界或泛型约束。activeCount(battle, Ref<Card<any>>) 仅按来源身份统计当前场上实例，接纳带具体私有状态的 Card Ref，不读取或返回其私有状态。
 

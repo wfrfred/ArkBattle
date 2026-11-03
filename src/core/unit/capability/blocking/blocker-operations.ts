@@ -20,7 +20,6 @@ import {
 
 export const prepare: PrepareHook = {
     id: "@blocker/prepare",
-    stage: "prepare",
     invoke: (battle, { unit }) => ({
         state: blocking.release(battle, relations(battle, units.ref(unit as Unit & Blocker))),
         value: undefined,

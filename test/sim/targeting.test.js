@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import { search as searchBlocking } from "../../dist/core/battle/blocking/operations.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -14,7 +15,7 @@ import { initialize } from "../helpers/unit.js";
 const unit = (id, definitions = {}, states = {}) => initialize({
     id,
     position: [id, 0],
-    definition: { hooks: [], id: `targeting-${id}`, ...definitions },
+    definition: { hooks: Hooks.empty(), id: `targeting-${id}`, ...definitions },
     states,
 });
 const target = (id, definitions = {}, states = {}) => unit(id, {

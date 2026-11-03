@@ -1,3 +1,5 @@
+import { Hooks } from "../../core/hook.js";
+import * as unitHooks from "../../core/unit/hook.js";
 import { update as updateUnit } from "../../core/battle/unit.js";
 import { createArknightsElementalDefinition } from "../../data/arknights/elemental.js";
 
@@ -49,26 +51,22 @@ export function createDefinition(
     return {
         id: profile.id,
         massLevel: profile.mass,
-        hooks: [
-            {
-                id: "ground-enemy/movement-casting-rule",
-                stage: "enter",
-                invoke(battle, self) {
-                    return {
-                        state: !hasLocomotion(self)
-                            ? battle
-                            : updateUnit(battle, [
-                                  setRule(unitRef(self), {
-                                      id: "attack-casting",
-                                      allows: (current, { self }) =>
-                                          !isCasting(current, unitRef(self)),
-                                  }),
-                              ]),
-                        value: undefined,
-                    };
-                },
+        hooks: Hooks.empty().set(unitHooks.enter, {
+            id: "ground-enemy/movement-casting-rule",
+            invoke(battle, self) {
+                return {
+                    state: !hasLocomotion(self)
+                        ? battle
+                        : updateUnit(battle, [
+                              setRule(unitRef(self), {
+                                  id: "attack-casting",
+                                  allows: (current, { self }) => !isCasting(current, unitRef(self)),
+                              }),
+                          ]),
+                    value: undefined,
+                };
             },
-        ],
+        }),
         elemental,
         vitality: {
             maxHp: profile.maxHp,

@@ -1,16 +1,15 @@
-import { assertNonnegativeNumber } from "../../common/assert.js";
-import type { Result, State as BattleState } from "../state.js";
-import * as units from "../../unit/query.js";
-import { resolveDefense } from "../../unit/capability/vitality/query.js";
-import { hasElemental } from "../../unit/capability/elemental/capability.js";
-import { resolveDamageResistance } from "../../unit/capability/elemental/query.js";
-import type { CalculatedDamage, DamageParameters, DamageRequest } from "./contract.js";
-import { dispatch } from "./hook.js";
+import type { Result, State as BattleState } from "../../state.js";
+import * as units from "../../../unit/query.js";
+import { resolveDefense } from "../../../unit/capability/vitality/query.js";
+import { hasElemental } from "../../../unit/capability/elemental/capability.js";
+import { resolveDamageResistance } from "../../../unit/capability/elemental/query.js";
+import type { Calculated, Parameters, Request } from "./contract.js";
+import { dispatch, sourceFormula, targetFormula, output as outputKey } from "./hook.js";
 
 export function calculateDamage(
     battle: BattleState,
-    request: DamageRequest,
-): Result<CalculatedDamage | undefined> {
+    request: Request,
+): Result<Calculated | undefined> {
     const unavailable = (current: BattleState) => {
         const target = units.get(current, request.target);
 
@@ -22,22 +21,13 @@ export function calculateDamage(
 
     let parameters = request.parameters;
 
-    for (const [owner, stage] of [
-        [request.source, "sourceFormula"],
-        [request.target, "targetFormula"],
+    const context = { target: request.target, request };
+
+    for (const [owner, key] of [
+        [request.source, sourceFormula],
+        [request.target, targetFormula],
     ] as const) {
-        const result = dispatch(
-            battle,
-            owner,
-            request,
-            parameters,
-            (entry) =>
-                (entry.stage === "sourceFormula" || entry.stage === "targetFormula") &&
-                entry.stage === stage
-                    ? entry
-                    : undefined,
-            unavailable,
-        );
+        const result = dispatch(battle, owner, key, context, parameters, unavailable);
         battle = result.state;
         parameters = result.value;
     }
@@ -47,16 +37,14 @@ export function calculateDamage(
     }
 
     const amount = formula(battle, request, parameters);
-    assertNonnegativeNumber(amount, "calculated damage");
     const output = dispatch(
         battle,
         request.source,
-        { request, type: parameters.type },
+        outputKey,
+        { ...context, type: parameters.type },
         amount,
-        (entry) => (entry.stage === "output" ? entry : undefined),
         unavailable,
     );
-    assertNonnegativeNumber(output.value, "output damage");
 
     return {
         state: output.state,
@@ -66,11 +54,7 @@ export function calculateDamage(
     };
 }
 
-function formula(
-    battle: BattleState,
-    request: DamageRequest,
-    parameters: DamageParameters,
-): number {
+function formula(battle: BattleState, request: Request, parameters: Parameters): number {
     const attack = parameters.attack;
     const power = Math.max(0, attack.power * attack.multiplier + attack.addition);
 
@@ -99,7 +83,7 @@ function formula(
         case "ELEMENTAL": {
             const target = units.get(battle, request.target)!;
             const resistance = hasElemental(target)
-                ? (resolveDamageResistance(battle, units.ref(target)) ?? 0)
+                ? resolveDamageResistance(battle, units.ref(target))!
                 : 0;
 
             return Math.max(power * 0.05, power * Math.max(0, 1 - resistance / 100));

@@ -6,8 +6,8 @@ export {
     initialize,
     setContribution,
     removeContribution,
-    setDamageHook,
-    removeDamageHook,
+    setDamageReceivingHook,
+    removeDamageReceivingHook,
     setRule,
     removeRule,
     setHook,
@@ -26,15 +26,17 @@ export type {
     Burst,
 } from "./burst.js";
 
-export { lifetime, damage, heal, finish, cancel, advance } from "./operations.js";
-
-export type {
-    DamageRequest,
-    HealRequest,
-    DamageOutcome,
-    HealOutcome,
-    Signal,
+export {
+    lifetime,
+    receiveDamage,
+    commitDamage,
+    commitHealing,
+    finish,
+    cancel,
+    advance,
 } from "./operations.js";
+
+export type { DamageApplication, HealingApplication, Signal } from "./operations.js";
 
 export {
     get,
@@ -45,12 +47,12 @@ export {
     resolveDamageResistance,
     resolveBurstRecoverySpeed,
     canReceiveDamage,
-    canReceiveHeal,
+    canReceiveHealing,
     currentType,
     damageRatio,
     resolveDamageRatio,
 } from "./query.js";
 
-export type { Receiving, DamageHook, Damaged, Healed, Events, Key, Context, Hook } from "./hook.js";
+export type { DamageReceivingHook, Damaged, Healed, Events, Key, Context, Hook } from "./hook.js";
 
 export type { Rule, Key as RuleKey, Contexts as RuleContexts, Rules } from "./rule.js";

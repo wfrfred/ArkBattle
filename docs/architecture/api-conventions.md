@@ -223,7 +223,7 @@ Hook<C,T> 是 `(battle, context, current) => Result<T>`。C 是本次派发固�
 
 公共 dispatch 的 options 只提供 candidates、find、可选 stop。候选在本次入口确定一次；find 每项确认最新登记与节点资格，accepts 只读，stop 决定是否结束整个派发。普通通知用 void；控制和业务取消由领域明确表达。详见[公共 Hook 契约](functional-core.md#6-hook-和生命周期的纯契约)。
 
-Unit 本地登记使用[类型化 Hooks 集合](hook.md)，固有 Hook 在构造期装配，运行期间可经 setHook(ref, key, hook)／removeHook(ref, key, id) 返回的 Change 修改，包括生命周期键。enter／tick／prepare 沿用固定候选 ID、逐项读取最新登记的协议，Context 不随实时查询改写；leave 在注销前取本轮最新 Hook 对象快照，注销后执行并接续状态。全局 Unit 观察者及 Capability 专属登记保持各自的存储入口。该目标接口尚待源码迁移。
+Unit 本地登记使用[类型化 Hooks 集合](hook.md)，固有 Hook 在构造期装配，运行期间可经 setHook(ref, key, hook)／removeHook(ref, key, id) 返回的 Change 修改，包括生命周期键。enter／tick／prepare 沿用固定候选 ID、逐项读取最新登记的协议，Context 不随实时查询改写；leave 在注销前取本轮最新 Hook 对象快照，注销后执行并接续状态。全局 Unit 观察者及 Capability 专属登记保持各自的存储入口。
 
 同步嵌套操作独立收集候选，不通过 BattleState、全局变量或其他容器继承外层派发的快照。
 

@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize, resolveMaxHp } from "../../dist/core/unit/capability/vitality/capability.js";
@@ -9,7 +10,7 @@ test("Vitality starts full at its effective MaxHP and preserves fractional attri
     const battle = fixtureBattle();
     for (const [maxHp, expected] of [[0, 1], [0.5, 1], [1, 1], [100.5, 100.5]]) {
         const definition = { maxHp, defense: 20.5, resistance: 10.25 };
-        const result = initialize(battle, baseUnit({ id: "vitality", hooks: [], vitality: definition }));
+        const result = initialize(battle, baseUnit({ id: "vitality", hooks: Hooks.empty(), vitality: definition }));
         assert.equal(result.state, battle);
         assert.equal(result.value.vitality.hp, expected);
         assert.equal(resolveMaxHp(result.value.vitality, definition), expected);
@@ -25,7 +26,7 @@ test("Vitality initialization rejects invalid base attributes at the shared cons
             assert.throws(() => initializeUnit({
                 id: 1,
                 position: [0, 0],
-                definition: { hooks: [],
+                definition: { hooks: Hooks.empty(),
                     id: "invalid-vitality",
                     vitality: { maxHp: 100, defense: 0, resistance: 0, [field]: invalid },
                 },

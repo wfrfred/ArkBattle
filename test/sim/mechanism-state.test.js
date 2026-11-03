@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
@@ -156,7 +157,7 @@ test("advance fixes identities, rechecks latest state, and does not restore a re
 });
 
 test("onTick and nested unit departure preserve the latest mechanism state", () => {
-    const host = initialize({ id: 0, position: [0, 0], definition: { hooks: [], id: "host" } });
+    const host = initialize({ id: 0, position: [0, 0], definition: { hooks: Hooks.empty(), id: "host" } });
     let battle = createBattleState(fixtureBattlefieldState([host]));
     const definition = mechanisms.createMechanismDefinition({
         id: "contacts", initialize: () => ({ contacts: [], departures: 0 }),
@@ -189,7 +190,7 @@ test("runtime scans mechanisms after movement and before route completion", () =
         alwaysCheckCurrentPoint: true,
     });
     const moving = initialize({
-        id: 0, position: [0, 0], definition: { hooks: [],
+        id: 0, position: [0, 0], definition: { hooks: Hooks.empty(),
             id: "moving", spatialPresence: {}, route: route([0, 0], [0, 1]),
             locomotion: {
                 speed: 1, minSpeed: 0, halfBodyWidth: 0,
@@ -198,7 +199,7 @@ test("runtime scans mechanisms after movement and before route completion", () =
         },
     });
     const arriving = initialize({
-        id: 1, position: [2, 0], definition: { hooks: [],
+        id: 1, position: [2, 0], definition: { hooks: Hooks.empty(),
             id: "arriving", spatialPresence: {}, route: route([0, 2], [0, 2]),
         },
     });

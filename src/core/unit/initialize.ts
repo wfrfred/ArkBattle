@@ -9,15 +9,14 @@ import {
 } from "./capability/catalog.js";
 import { Effects } from "./effect/effects.js";
 import type { Unit, Definition, Id } from "./unit.js";
-import type { Hook } from "./hook.js";
-import { set as setHook } from "../hook.js";
+import { Hooks } from "../hook.js";
 
 export interface Input<D extends Definition & Partial<Definitions> = Definition> {
     readonly id: Id;
     readonly definition: D;
     readonly position: WorldPosition;
     readonly initial?: Initial<NoInfer<D>>;
-    readonly hooks?: readonly Hook[];
+    readonly hooks?: Hooks;
 }
 
 export function initialize<D extends Definition & Partial<Definitions>>(
@@ -32,7 +31,7 @@ export function initialize(
         id: input.id,
         lifecycle: "PRESENT",
         definition: input.definition,
-        hooks: (input.hooks ?? []).reduce<readonly Hook[]>(setHook, []),
+        hooks: input.hooks ?? Hooks.empty(),
         position: input.position,
         effects: Effects.empty(),
     };
@@ -56,7 +55,7 @@ export function initialize(
         state: battle,
         value: {
             ...unit,
-            hooks: [...unit.hooks, ...input.definition.hooks].reduce<readonly Hook[]>(setHook, []),
+            hooks: unit.hooks.merge(input.definition.hooks),
         },
     };
 }

@@ -1,3 +1,5 @@
+import { Hooks } from "../../dist/core/hook.js";
+import * as unitLifecycle from "../../dist/core/unit/hook.js";
 
 
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
@@ -23,7 +25,7 @@ import { replace as updateUnit } from "../../dist/core/battle/unit.js";
 import { getUnit } from "../helpers/unit.js";
 import { add } from "../../dist/core/battle/unit.js";
 import { advance, end, get, install, setData as setEffectData } from "../../dist/core/unit/effect/index.js";
-import { setHook, removeHook } from "../../dist/core/battle/damage/index.js";
+import { setDamageReceivingHook as setHook, removeDamageReceivingHook as removeHook } from "../../dist/core/unit/capability/vitality/index.js";
 import { activate as activateSkill, advance as advanceSkill, finish as finishSkill } from "../../dist/core/unit/skill/index.js";
 import { start, cancel, ref as actionRef } from "../../dist/core/unit/action/index.js";
 import { advance as advanceAction } from "../../dist/core/unit/action/index.js";
@@ -54,7 +56,7 @@ const profile = (fields = {}) => {
             }),
         });
 };
-const enemy = (id, position, fields = {}) => initialize({ id, position, definition: { hooks: [],
+const enemy = (id, position, fields = {}) => initialize({ id, position, definition: { hooks: Hooks.empty(),
     id: `enemy-${id}`, targetable: { restrictions: [] }, vitality: { maxHp: 10000, defense: 0, resistance: 0 }, allegiance: { side: "ENEMY" }, layer: { type: "GROUND" },
     hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 } },
     locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0.1, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
@@ -91,7 +93,7 @@ test("entry installs one persistent shield container and preserves prior snapsho
         refund: { rate: 0.5, limit: "BASE_COST" },
     });
     assert.deepEqual(deploymentRules.map(rule => rule.id), ["deployment/site"]);
-    assert.deepEqual(unitHooks, []);
+    assert.deepEqual(unitHooks.get(unitLifecycle.enter), []);
     assert.equal(typeof initializeCard, "function");
     assert.equal(getUnit(state, 0).deployable.refund, null);
     const externalHealing = healing(hp(state, 1000), {
@@ -136,7 +138,6 @@ test("an earlier barrier exhausts its budget without consuming Mudrock's shield 
             const ref = effectRef(self);
             return applyUnitChanges(state, [setHook({ id: unit.id }, {
                 id: `barrier/${self.id}`,
-                stage: "receiving",
                 priority: 200,
                 accepts: (_state, _context, pending) => pending.cancellation === null && pending.amount > 0,
                 invoke(state, _context, pending) {

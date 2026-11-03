@@ -4,6 +4,12 @@ export {
     initialize,
     setRule,
     removeRule,
+    setDamageReceivingStartedHook,
+    removeDamageReceivingStartedHook,
+    setDamageReceivingHook,
+    removeDamageReceivingHook,
+    setHealingReceivingHook,
+    removeHealingReceivingHook,
     setMaxHpContribution,
     removeMaxHpContribution,
     resolveMaxHp,
@@ -15,9 +21,19 @@ export {
 
 export type { Definition, DefenseValues, Input, State, Vitality } from "./capability.js";
 
-export type {
-    ReceptionRule as Rule,
-    ReceivingContext as RuleContext,
-} from "../../../battle/damage/hook.js";
+export type { DamageReceptionRule as Rule } from "./rule.js";
+
+export type { ReceivingContext as RuleContext } from "../../../battle/damage/hp/hook.js";
 
 export { resolveDefense } from "./query.js";
+
+export {
+    canReceiveDamage,
+    canReceiveHealing,
+    receiveDamage,
+    receiveHealing,
+    commitDamage,
+    commitHealing,
+} from "./operations.js";
+
+export type { DamageApplication, HealingApplication } from "./operations.js";

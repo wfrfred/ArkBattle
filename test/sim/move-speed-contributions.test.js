@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 
@@ -28,7 +29,7 @@ const close = (actual, expected) =>
 function harness({ speed = 0.25, minimum = 0, steeringParameters, blockable = false, route = false } = {}) {
     const initialized = initialize(fixtureBattle(0, { rngState: 17 }), {         id: 0,
         position: [0, 0],
-        definition: { hooks: [],
+        definition: { hooks: Hooks.empty(),
             id: "dynamic-mover",
             ...(blockable ? {
                 allegiance: { side: "ENEMY" }, layer: { type: "GROUND" }, blockable: { volume: 1 },

@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, get } from "../helpers/battle.js";
@@ -13,7 +14,7 @@ import { create } from "../../dist/core/unit/contribution/attribute.js";
 test("exclusive selection precedes dynamic input evaluation and the attribute formula combines surviving sources", () => {
     const calls = [];
     let state = battle([
-        { definition: { id: "source", hooks: [], offense: { attack: 100 } }, position: [0, 0] },
+        { definition: { id: "source", hooks: Hooks.empty(), offense: { attack: 100 } }, position: [0, 0] },
     ]);
     const host = ref(get(state, 0));
     const group = { id: "inspiration", priority: 2 };

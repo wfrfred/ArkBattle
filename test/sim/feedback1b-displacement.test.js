@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import { fixtureBattle } from "../helpers/unit.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -31,7 +32,7 @@ function coreDisplacedEnemy(checkpoints = [{
     {
       id: 1,
       alwaysCheckCurrentPoint: true,
-      definition: { hooks: [],
+      definition: { hooks: Hooks.empty(),
         spatialPresence: {},
         id: 'enemy_displacement_boundary',
         vitality: { maxHp: 100, defense: 0, resistance: 0 },

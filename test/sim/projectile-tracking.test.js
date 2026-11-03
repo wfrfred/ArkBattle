@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import { predefinedUnits } from "../helpers/predefined.js";
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
@@ -16,10 +17,10 @@ import { start as startAction, ref as actionRef } from '../../dist/core/unit/act
 import { advance as advanceAction } from '../../dist/core/unit/action/index.js';
 
 function setup(sourceCapabilities = {}) {
-  const source = initialize({ id: 0, position: [0, 0], definition: { hooks: [],
+  const source = initialize({ id: 0, position: [0, 0], definition: { hooks: Hooks.empty(),
     id: 'source', offense: { attack: 40 }, ...sourceCapabilities,
   } });
-  const target = initialize({ id: 1, position: [1, 0], definition: { hooks: [],
+  const target = initialize({ id: 1, position: [1, 0], definition: { hooks: Hooks.empty(),
     id: 'target', vitality: { maxHp: 1000, defense: 0, resistance: 0 },
     spatialPresence: {}, targetable: { restrictions: [{ id: 'hidden', value: {
       kind: Symbol('hidden'), allows: () => false,
@@ -172,7 +173,7 @@ test('demo projectile damage clears removed sources for both live and cached att
 test('a missing locked target does not redirect its arrow to another nearby unit', () => {
   const fixture = setup();
   const launched = projectiles.create(fixture.battle, createArrow(), { position: [0, 0], state: fixture.state });
-  const other = initialize({ id: 2, position: [1, 0], definition: { hooks: [],
+  const other = initialize({ id: 2, position: [1, 0], definition: { hooks: Hooks.empty(),
     id: 'nearby', vitality: { maxHp: 100, defense: 0, resistance: 0 },
   } });
   const withoutTarget = addUnit(removeUnit(launched.state, fixture.target.id, "DEATH"), other);

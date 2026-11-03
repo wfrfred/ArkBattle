@@ -1,10 +1,12 @@
+import { Hooks } from "../../dist/core/hook.js";
+import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import { predefinedUnits } from "../helpers/predefined.js";
 import { set as setFixtureEntry } from "../../dist/core/hook.js";
 import { update as applyUnitChanges, add as addUnit } from "../../dist/core/battle/unit.js";
 import { tiles as tileEntries } from "../helpers/tiles.js";
 import * as blockingQueries from "../../dist/core/battle/blocking/query.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
-import { calculateDamage } from "../../dist/core/battle/damage/calculate.js";
+import { calculateDamage } from "../../dist/core/battle/damage/hp/calculate.js";
 import { damage as dealDamage, parameters } from "../helpers/vitality.js";
 import { definition as skillDefinition } from "../helpers/skill.js";
 import { actionCapability } from "../helpers/actions.js";
@@ -293,7 +295,7 @@ test('core combat: damage formulas retain the 5% floor and immutable vitality tr
     ['PHYSICAL', 300, 0, 700], ['PHYSICAL', 2000, 0, 50],
     ['ARTS', 0, 30, 700], ['ARTS', 0, 100, 50], ['TRUE', 9999, 100, 1000],
   ]) {
-    const receiver = initialize({ id: 0, position: [0, 0], definition: { hooks: [],
+    const receiver = initialize({ id: 0, position: [0, 0], definition: { hooks: Hooks.empty(),
       id: 'formula-target', vitality: { maxHp: 5000, defense, resistance },
     } });
     const battle = combatBattle(fixtureBattlefieldState([receiver]));
@@ -302,7 +304,7 @@ test('core combat: damage formulas retain the 5% floor and immutable vitality tr
 
   const unit = initialize({
     id: 0, position: [0, 0],
-    definition: { hooks: [], id: 'core_target', vitality: { maxHp: 7, defense: 0, resistance: 0 } },
+    definition: { hooks: Hooks.empty(), id: 'core_target', vitality: { maxHp: 7, defense: 0, resistance: 0 } },
   });
   const state = combatBattle(fixtureBattlefieldState([unit]));
 
@@ -369,12 +371,12 @@ const attackDefinition = (targetGroups, followUps = []) => createAttack({
 
 
 function actionUnit(id, side, position, { hp = 100, effects: initialEffects = [], action, skill } = {}) {
-  const definition = { hooks: initialEffects.map((effect, index) => ({
-      id: `fixture/effect-${index}`, stage: 'enter',
+  const definition = { hooks: initialEffects.reduce((hooks, effect, index) => hooks.set(unitLifecycle.enter, {
+      id: `fixture/effect-${index}`,
       invoke(battle, self) {
         return { state: effects.install(battle, unitRef(self), effect).state, value: undefined };
       },
-    })),
+    }), Hooks.empty()),
     id: `action_unit_${id}`, targetable: { restrictions: [] }, vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side },
     layer: { type: 'GROUND' }, hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.1 } }, blocker: { layer: "GROUND", rules: [], capacity: 0, radius: 0 },
     ...(skill === undefined ? {} : { skill }),
@@ -429,8 +431,8 @@ test('core vitality: invincibility rejects receiving before HIT SP and removing 
     id: 'hit-sp', sp: { initial: 0, capacity: 10, requirement: 10, recovery: { type: 'HIT', amount: 1 } },
     activation: { trigger: 'MANUAL', sustain: { type: 'INFINITE' }, initialize: () => ({}) },
   }) });
-  const target = { ...protectedTarget, vitality: { ...protectedTarget.vitality, damageHooks: setFixtureEntry(protectedTarget.vitality.damageHooks, {
-    id: 'observe-reception', stage: 'receiving', priority: 0,
+  const target = { ...protectedTarget, vitality: { ...protectedTarget.vitality, damageReceiving: setFixtureEntry(protectedTarget.vitality.damageReceiving, {
+    id: 'observe-reception', priority: 0,
     invoke(state, context, pending) {
       observed.push(getUnit(state, context.request.target.id).skill.sp.value);
       return { state, value: pending };
@@ -459,8 +461,8 @@ test('core vitality: nested direct healing ignores target selection restrictions
     const original = actionUnit(1, 'ENEMY', [1, 0], {
       hp: 40, effects: installedInitially ? [healFree] : [],
     });
-    const target = { ...original, vitality: { ...original.vitality, damageHooks: setFixtureEntry(original.vitality.damageHooks, {
-      id: 'change-healing-restriction', stage: 'receiving', priority: 0,
+    const target = { ...original, vitality: { ...original.vitality, damageReceiving: setFixtureEntry(original.vitality.damageReceiving, {
+      id: 'change-healing-restriction', priority: 0,
       invoke(state, context, pending) {
         if (installedInitially) {
           state = effects.end(state, { host: context.request.target,
@@ -555,7 +557,7 @@ test('core targeting: enemies and neutral units select each other while allies a
   assert.deepEqual(select(ally), [1]);
   assert.deepEqual(select(enemy), [0, 2]);
   assert.deepEqual(select(neutral), [1]);
-  const unaffiliated = initialize({ id: 3, definition: { hooks: [], id: 'unaffiliated' }, position: [0, 0] });
+  const unaffiliated = initialize({ id: 3, definition: { hooks: Hooks.empty(), id: 'unaffiliated' }, position: [0, 0] });
   assert.deepEqual(select(unaffiliated), []);
 });
 

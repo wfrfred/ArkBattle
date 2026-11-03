@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle } from "../helpers/battle.js";
@@ -9,8 +10,8 @@ import { setHook, removeHook } from "../../dist/core/battle/unit-hook.js";
 
 test("a batch publishes every final transformation before settlements and preserves nested results", () => {
     const before = battle([
-        { definition: { id: "first", hooks: [] }, position: [0, 0] },
-        { definition: { id: "second", hooks: [] }, position: [1, 0] },
+        { definition: { id: "first", hooks: Hooks.empty() }, position: [0, 0] },
+        { definition: { id: "second", hooks: Hooks.empty() }, position: [1, 0] },
     ]);
     const [first, second] = units.all(before).map(units.ref).toArray();
     const order = [];
@@ -63,7 +64,7 @@ test("a batch publishes every final transformation before settlements and preser
 });
 
 test("Hook dispatch fixes its candidates, reads current registrations and gives nested dispatch its own candidates", () => {
-    let state = battle([{ definition: { id: "observed", hooks: [] }, position: [0, 0] }]);
+    let state = battle([{ definition: { id: "observed", hooks: Hooks.empty() }, position: [0, 0] }]);
     const subject = units.all(state).find(() => true);
     const calls = [];
     let nested = false;

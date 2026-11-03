@@ -1,3 +1,5 @@
+import { Hooks } from "../../dist/core/hook.js";
+import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import { predefinedUnits } from "../helpers/predefined.js";
 import { createTile } from "../helpers/tiles.js";
 import { normal } from '../../dist/content/terrain/definition.js';
@@ -17,7 +19,7 @@ import { createInput as createRouteDefinition } from "../../dist/core/battle/cre
 
 
 const placement = (id, column) => ({
-    definition: { hooks: [], id, vitality: { maxHp: 100, defense: 0, resistance: 0 } },
+    definition: { hooks: Hooks.empty(), id, vitality: { maxHp: 100, defense: 0, resistance: 0 } },
     position: [column, 0],
 });
 
@@ -26,13 +28,13 @@ function withEffect(effect, placement) {
         ...placement,
         definition: {
             ...placement.definition,
-            hooks: [{
-                id: "fixture/initial-effect", stage: "enter",
+            hooks: Hooks.empty().set(unitLifecycle.enter, {
+                id: "fixture/initial-effect",
                 invoke(battle, self) {
                     const host = ref(self);
                     return { state: install(battle, host, effect, { source: host }).state, value: undefined };
                 },
-            }, ...placement.definition.hooks],
+            }).merge(placement.definition.hooks),
         },
     };
 }
@@ -64,7 +66,7 @@ function fixture({ spawnTick = 100 } = {}) {
             return state;
         },
     });
-    const enemy = { hooks: [],
+    const enemy = { hooks: Hooks.empty(),
         spatialPresence: {},
         id: "scheduled-enemy",
         vitality: { maxHp: 100, defense: 0, resistance: 0 },

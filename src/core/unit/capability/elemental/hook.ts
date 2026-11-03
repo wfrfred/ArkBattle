@@ -1,37 +1,26 @@
 import type { Ref } from "../../../common/ref.js";
-import type { State as BattleState, Result } from "../../../battle/state.js";
+import type { State as BattleState } from "../../../battle/state.js";
 import * as units from "../../query.js";
 import * as hooks from "../../../hook.js";
 import type { Unit } from "../../unit.js";
-import type { Elemental, Values } from "./capability.js";
+import type { Elemental } from "./capability.js";
 import type { Burst, End } from "./burst.js";
-import type { DamageRequest, HealRequest } from "./operations.js";
-import { damageRejection } from "./query.js";
+import type { DamageApplication, HealingApplication } from "./operations.js";
+import type { Request as DamageRequest } from "../../../battle/damage/ep/contract.js";
+import type { Request as HealingRequest } from "../../../battle/healing/ep/contract.js";
+import type { ReceivingHook } from "../../../battle/damage/ep/hook.js";
 
-export interface Receiving {
-    readonly host: Ref<Unit & Elemental>;
+export type DamageReceivingHook = ReceivingHook;
+
+export interface Damaged extends DamageApplication {
     readonly request: DamageRequest;
 }
 
-export type DamageHook = hooks.Hook<Receiving, number>;
-
-export interface Damaged {
-    readonly request: DamageRequest;
-    readonly previous: number;
-    readonly current: number;
-    readonly amount: number;
-    readonly burst: Ref<Burst> | null;
-}
-
-export interface Healed {
-    readonly request: HealRequest;
-    readonly previous: Values;
-    readonly current: Values;
-    readonly amounts: Values;
+export interface Healed extends HealingApplication {
+    readonly request: HealingRequest;
 }
 
 export interface Events {
-    readonly received: { readonly request: DamageRequest };
     readonly damaged: Damaged;
     readonly healed: Healed;
     readonly burstStarted: Burst;
@@ -46,21 +35,6 @@ export interface Context<E> {
 }
 
 export type Hook<E> = hooks.Hook<Context<E>, void>;
-
-export function receive(
-    battle: BattleState,
-    host: Ref<Unit & Elemental>,
-    request: DamageRequest,
-    amount: number,
-): Result<number> {
-    return hooks.dispatch<Receiving, number>(battle, { host, request }, amount, {
-        candidates: (current) =>
-            units.get(current, host)?.elemental.receiving.map(({ id }) => id) ?? [],
-        find: (current, id) =>
-            units.get(current, host)?.elemental.receiving.find((candidate) => candidate.id === id),
-        stop: (current) => damageRejection(current, host, request) !== undefined,
-    });
-}
 
 export function dispatch<K extends Key>(
     battle: BattleState,

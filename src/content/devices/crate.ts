@@ -1,3 +1,5 @@
+import { Hooks } from "../../core/hook.js";
+import * as unitHooks from "../../core/unit/hook.js";
 import { hasOccupancy } from "../../core/unit/capability/occupancy/index.js";
 import { apply, restore, type Configuration, type Definition } from "./tile.js";
 
@@ -11,10 +13,9 @@ export function create(configuration: Configuration): Definition {
         deployable,
         card,
         occupancy: { slot: "OCCUPANT" },
-        hooks: [
-            {
+        hooks: Hooks.empty()
+            .set(unitHooks.enter, {
                 id: "crate/apply-tile",
-                stage: "enter",
                 invoke(battle, self) {
                     return {
                         state:
@@ -24,10 +25,9 @@ export function create(configuration: Configuration): Definition {
                         value: undefined,
                     };
                 },
-            },
-            {
+            })
+            .set(unitHooks.leave, {
                 id: "crate/restore-tile",
-                stage: "leave",
                 invoke(battle, { unit }) {
                     return {
                         state:
@@ -37,7 +37,6 @@ export function create(configuration: Configuration): Definition {
                         value: undefined,
                     };
                 },
-            },
-        ],
+            }),
     };
 }

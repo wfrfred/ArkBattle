@@ -1,33 +1,3 @@
-export type {
-    DamageType,
-    AttackParameters,
-    Penetration,
-    DamageParameters,
-    DamageRequest,
-    CalculatedDamage,
-    DamageCancellation,
-    PendingDamage,
-    ApplicationResult,
-    DamageOutcome,
-} from "./contract.js";
+export * as hp from "./hp/index.js";
 
-export type {
-    CalculationContext,
-    ReceivingContext,
-    AppliedContext,
-    CompletedContext,
-    ParametersHook,
-    OutputHook,
-    ReceivingStartedHook,
-    ReceivingHook,
-    HpAppliedHook,
-    CompletedHook,
-    Hook,
-    ReceptionRule,
-} from "./hook.js";
-
-export { setHook, removeHook } from "./hook.js";
-
-export { calculateDamage } from "./calculate.js";
-
-export { applyDamage } from "./apply.js";
+export * as ep from "./ep/index.js";

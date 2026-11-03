@@ -79,7 +79,7 @@ Unit 装配实现在 unit/initialize.ts，由 [unit/index.ts](../../src/core/uni
 
 Unit.initialize 是对所选 initializer 列表的 fold：从调用方已登记初始 Hooks 的基础 Unit 开始，按 Catalog 登记顺序逐个接续 Result 中的 battle 与 Unit，最后 merge Definition.hooks。同键同 ID 后者覆盖前者并保留首次出现的位置，执行时不重复去重。每项 initializer 保留身份、Definition、已有能力及登记项，补充自身状态或 Hook；Skill 登记 enter，Occupancy 登记入场／离场配对程序，Deployable 登记实际占用释放的本地 leave。部署来源预先登记部署通知与被动死亡响应，主动撤退的退款、Card 费用阶段与库存恢复由领域操作在请求离场前直接结算。Blocker 或 Blockable 将必要清理 prepare 放在该键的序列前部。这里表达显式登记顺序，不按来源类型增加生命周期阶段或普遍优先级。通用初始化器及 Unit 生命周期操作不解释这些具体领域。初始化可以读取当前战场或消费 RNG，但当前 Unit 尚未登记；已有能力直接从输入 Unit 读取，不通过战场查询半成品。所有固有 Hook，包括结算 Hook，均在完整 add 与任何入场程序之前就绪。
 
-Unit Definition、创建输入和实例 hooks 使用[类型化键组织的 Hooks 集合](hook.md)，无登记时显式使用 Hooks.empty()。通用 Unit.setHook／removeHook 返回 Change，允许运行期间修改生命周期键。enter／tick／prepare 固定候选 ID 和 Context，逐项读取最新登记；enter／tick 每项前确认宿主仍为 PRESENT，prepare 使用既定 Departure。leave 在注销前捕获最新 Hook 集合，注销后按该快照执行，Departure 的历史事实不变。全局 Unit 观察者和 Capability 专属登记继续使用各自的存储与派发入口。集合及接口尚待源码迁移。
+Unit Definition、创建输入和实例 hooks 使用[类型化键组织的 Hooks 集合](hook.md)，无登记时显式使用 Hooks.empty()。通用 Unit.setHook／removeHook 返回 Change，允许运行期间修改生命周期键。enter／tick／prepare 固定候选 ID 和 Context，逐项读取最新登记；enter／tick 每项前确认宿主仍为 PRESENT，prepare 使用既定 Departure。leave 在注销前捕获最新 Hook 集合，注销后按该快照执行，Departure 的历史事实不变。全局 Unit 观察者和 Capability 专属登记继续使用各自的存储与派发入口。
 
 Deployable 单向依赖 Occupancy，类型以交叉组合表达，initialize(battle, unit) 接收已经具有 Occupancy 的 Unit，Catalog 先构造 Occupancy 再构造 Deployable。Deployable 初态为 card:null、cost:0、slots:0、refund:null，撤退规则来自静态 Definition。Deployment 消费资源、调用 Unit.initialize 后，在尚未登记的 Unit 上写入本次来源 Card、COST、部署位份额和退费依据，再登记并执行 enter。Deployment 在 fold 前登记的 Hook 保留原位置；能力构造的前置依赖不改变程序登记顺序。主动撤退在请求离场前结算退款、Card 费用阶段与库存恢复；被动死亡程序只响应已确认死亡。共有占格与占用释放覆盖各类真实离场。完整契约与支持范围见 [Deployment](deployment.md)。
 

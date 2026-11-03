@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
@@ -19,7 +20,7 @@ import { effectFixtureWork } from "../helpers/effects.js";
 const owner = (id = 2, side = "ENEMY", restrictions = []) => initialize({
     id,
     position: [0, 0],
-    definition: { hooks: [],
+    definition: { hooks: Hooks.empty(),
         id: `targetable-${id}`,
         allegiance: { side },
         targetable: { restrictions },
@@ -40,7 +41,7 @@ test("Targetable initialization rejects different contributions with the same ID
     const definition = { restrictions: Object.freeze([first, second]) };
 
     assert.throws(
-        () => targetable.initialize(fixtureBattle(), baseUnit({ id: "targetable", hooks: [], targetable: definition })),
+        () => targetable.initialize(fixtureBattle(), baseUnit({ id: "targetable", hooks: Hooks.empty(), targetable: definition })),
         { name: "TypeError", message: "duplicate targetable restriction identity: duplicate" },
     );
     assert.deepEqual(definition.restrictions, [first, second]);

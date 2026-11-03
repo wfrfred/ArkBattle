@@ -1,3 +1,5 @@
+import { Hooks } from "../../dist/core/hook.js";
+import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import * as terrain from "../../dist/content/terrain/definition.js";
@@ -29,7 +31,7 @@ const mireParams = {
 const deepseaParams = { damage: 40, attackSpeedModifier: -0.6, moveSpeedMultiplier: 0.6 };
 const unit = (id, column, fields = {}) => ({
     id, column,
-    definition: { hooks: [],
+    definition: { hooks: Hooks.empty(),
         id: `terrain-unit/${id}`,
         vitality: { maxHp: 1000, defense: 0, resistance: 0 },
         offense: { attack: 100 }, action: actionCapability(),
@@ -214,7 +216,7 @@ test("runtime detects terrain after the unit's current position changes", () => 
     const configured = setup([
         terrain.normal.create({}), terrain.infection.create(infectionParams()),
     ], [unit(0, 0, {
-        hooks: [{ id: "test/tick", stage: "tick", invoke(battle, self) { return { state: update(battle, [{ ...self, position: [1, 0] }]), value: undefined }; } }],
+        hooks: Hooks.empty().set(unitLifecycle.tick, { id: "test/tick",  invoke(battle, self) { return { state: update(battle, [{ ...self, position: [1, 0] }]), value: undefined }; } }),
     })], terrain.infection);
     const battle = step(configured.battle, []);
     assert.equal(current(battle).effects.size, 1);

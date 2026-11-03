@@ -12,6 +12,7 @@ import type { Rule as CardRule } from "./card/rule.js";
 import type { Rule } from "./rule.js";
 import type { DeployRequest, Quote, Rejected, Rejection } from "./request.js";
 import { advanceResources } from "./resources.js";
+import { Hooks } from "../../hook.js";
 
 export function usedSlots(battle: BattleState): number {
     return battle.deployment.usedSlots;
@@ -50,7 +51,7 @@ export function createRequest<T extends Card<any>>(
             slots: self.definition.card.slots,
         },
         rules: [],
-        hooks: [],
+        hooks: Hooks.empty(),
     };
 }
 

@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
@@ -42,7 +43,7 @@ test("installation, participation, and destruction have distinct lifetimes and p
             return state;
         },
     };
-    const definition = { id: "operator", hooks: [], offense: { attack: 100 } };
+    const definition = { id: "operator", hooks: Hooks.empty(), offense: { attack: 100 } };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
     const installed = effects.install(state, source, program, { enabled: false });
@@ -96,7 +97,7 @@ test("overall replacement uses priority and installation order; disabling the wi
         group: { id: "overall", priority: 2 },
         initialize: () => ({ bonus: 30 }),
     };
-    const definition = { id: "operator", hooks: [], offense: { attack: 100 } };
+    const definition = { id: "operator", hooks: Hooks.empty(), offense: { attack: 100 } };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
     const low = effects.install(state, source, weak);
@@ -144,7 +145,7 @@ test("absolute deadlines continue while inactive, active ticks do not catch up, 
         },
     };
     const inactive = { ...program, id: "inactive" };
-    const definition = { id: "operator", hooks: [] };
+    const definition = { id: "operator", hooks: Hooks.empty() };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
     const active = effects.install(state, source, program, { deadline: 6 });
@@ -168,7 +169,7 @@ test("absolute deadlines continue while inactive, active ticks do not catch up, 
 });
 
 test("source attribution alone does not bind lifetime, while explicit scope and ownership do", () => {
-    const definition = { id: "unit", hooks: [] };
+    const definition = { id: "unit", hooks: Hooks.empty() };
     const program = { id: "effect", initialize: () => ({}) };
     let state = battle([
         { definition, position: [1, 1] },

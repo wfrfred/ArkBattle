@@ -1,7 +1,7 @@
 import type { Ref } from "../../core/common/ref.js";
 import type { State as BattleState } from "../../core/battle/index.js";
 import { update as updateUnit } from "../../core/battle/unit.js";
-import { applyDamage, calculateDamage } from "../../core/battle/damage/index.js";
+import { applyDamage, calculateDamage } from "../../core/battle/damage/hp/index.js";
 
 import * as effects from "../../core/unit/effect/index.js";
 import { type Definition, ref as effectRef, type Effect } from "../../core/unit/effect/index.js";

@@ -8,6 +8,7 @@
 - `core/unit/` 的基础 Unit、构造、查询、Change，以及独立的 Action、Skill、Effect、Contribution 领域。
 - `core/unit/capability/` 已审查到 Deployable：Action、Allegiance、Blocking、Deployable。
 - 对应的 `core/battle/unit.ts`、Tile、Blocking、Deployment／Card、Occupancy 协作，以及调度器对上述领域的调用。
+- Unit 本地类型化 Hooks、HP／EP 的 Damage／Healing 两阶段结算，以及 Vitality／Elemental 的专属接收、资源提交与 Burst 协作。
 - 公共 Hook、Typed Ref 和 Lifetime 只承担上述领域共享的契约，不按每个消费者重复展开。
 
 Deployable 对 Occupancy 的构造依赖、入场与配对属于本轮协作边界。Skill Capability 作为 Skill 领域的宿主接入，保留已确认的配对与资源职责。其余 Capability、完整 Projectile／Mechanism／Schedule 领域和 Legacy 展示协议不在本轮重新定测试的范围；被依赖不表示整域已经重新审查。
@@ -45,6 +46,26 @@ Deployable 对 Occupancy 的构造依赖、入场与配对属于本轮协作边�
 | Card 与经济 | Card 跨场上实例存续；库存、部署间隔和逐份恢复分别结算，启动时采样预算，暂停与减时不篡改其它段。DP 自然回复与主动增减分开。 | [Deployment](deployment.md#关键语义) |
 | 撤退、死亡与占格配对 | 主动撤退先结算退款和 Card，再请求离场；死亡响应确认后的死亡事实。依赖者先结束，Unit 注销、结构占格与部署额度释放先于本地内容 leave；死亡 Card 先于 Card／Request 通知结算，旧业务配对清理不影响替代实例的新关系。 | [Deployment](deployment.md#主动操作与被动死亡)、[Occupancy](occupancy.md#关键协作语义) |
 | 确定性与信任边界 | 相同输入、种子和程序得到相同重要结果；合法构造之后内部信任身份、能力与私有数据配对。复杂类型边界由少量编译期代表证明，不以运行时形状校验替代。 | [总体目标](ARCHITECTURE.md#范围与行为依据)、[构造与校验](capability.md#构造校验与命名) |
+
+## Hook 与 HP／EP 结算的回归语义
+
+以下清单先于本轮结算测试编写，依据 [Hook 契约](hook.md)、[输出与接收](vitality.md#1-calculate-与-apply-的语义边界)、[资源提交](vitality.md#18-已定稿的接收与资源提交接口)和 [Elemental](elemental.md)确定。场景数量不随接口、阶段或历史故障增加；不得以现有测试的预期反推保留要求。
+
+| 编号 | 必须保障的业务结果 | 定向场景 |
+| --- | --- | --- |
+| HOOK-01 | Unit 可以携带不同领域的精确 Hook，固有登记在首次 enter 前就绪；生命周期动态修改遵守固定候选、最新登记，leave 使用注销前最新程序及原 Departure。 | 公共集合／类型与一个实际 Unit 生命周期场景集中验证，不在四条管线重复候选矩阵。 |
+| HP-01 | 物理、法术、真实及元素 HP 伤害采用各自公式；公式后类型与防御采样传到 Apply，初始 Request 不变。Calculate 不构成受击，也不写入本笔 HP。 | 合法基础属性与 Formula／Output 干预，核对最终数额、类型和接收前 HP。 |
+| HP-02 | 从同一输入分别执行 Calculate 时，各自业务状态独立，调用方接续其中一个结果后只发生该次 Apply。弱点选高分支仍是具体内容待接入的规则。 | 当前只验证真实 Calculate／Apply 的独立分支和状态接续；不在夹具手写“选高”算法来证明产品已支持弱点。 |
+| APPLY-01 | BeforeReceive 可改变准入；Receiving 的取消保留已完成业务并继续独立响应，取消后不提交。BeforeCommit 位于接收后与写入前，返回后使用最新资格及资源。 | 以受击回复／护盾／嵌套恢复等有业务意义的操作组合，核对最终资源和固定提交报告；Hook 通用排序不再逐层重复。 |
+| APPLY-02 | 四种业务均拒绝零计算输出；正数输出被接收为零或实际变化为零仍可成功。来源无 Vitality 仍可执行输出 Hook；同源同目标的两个 Applied 角色分别执行。 | 以最小合法 Unit 组合验证共同边界；治疗使用满资源，损伤使用完整吸收。 |
+| HP-03 | HP 写入后先执行两侧 Applied，再按最新 HP 确认死亡，随后清理关系和注销。普通 Healing 不恢复零 HP；特殊生命干预接口仍待具体机制设计。 | 真实致死场景观察两侧响应中的零 HP、仍在场及原关系，响应结束后才注销并释放；不伪造零 HP 回正或复制 Lifetime 的整套析构测试。 |
+| EP-01 | EP 抗性在 Calculate 采样，Apply 使用实际元素类型和最新 EP；四型独立损伤，治疗对每型应用完整数额，HP 元素抗性与 EP 抗性分离。 | 明确的公式转换／抗性贡献和多型损伤、恢复，核对逐型结果，不以伪造运行状态准备场景。 |
+| EP-02 | EP 耗尽同步登记 Burst 与 owner，先创建事实通知、再损失通知、再仍有效的启动程序，最后执行 Battle Applied；同步取消不运行旧轮启动，原损失报告不被改写。 | 一个正常爆发与一个在创建事实中取消的代表场景，必要依赖通过真实 install／scope 建立。 |
+| EP-03 | Burst 期间拒收损伤与治疗；动态速度只改变剩余预算，暂停不积攒补算；正常完成与取消重置 EP，绑定输出结束而独立输出保留；自然恢复保持小数且不触发普通治疗通知。 | 通过真实损伤、贡献、结束和时间推进准备资源状态，集中验证资源及预算后果，不检查内部身份递增与单项 Setter。 |
+
+原生爆发的伤害、异常、SP 与累计周期输出属于具体 Content／Data 的验收，不在资源管线中再实现一份内容程序。保留代表性的实际内容结果，不能用一个测试夹具自写模拟算法来替代。
+
+旧的独立阶段、历史零值政策、重复回调矩阵和纯字段测试不作为保留目标。新套件按以上清单重新组织；不通过兼容夹具恢复旧登记协议，也不以修改旧断言作为本轮测试设计方法。
 
 ## 不单独保留的内容
 

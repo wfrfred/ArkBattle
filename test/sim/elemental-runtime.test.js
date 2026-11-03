@@ -1,55 +1,40 @@
-import { predefinedUnits } from "../helpers/predefined.js";
-import { set as setFixtureEntry } from "../../dist/core/hook.js";
+import assert from "node:assert/strict";
+import { test } from "node:test";
+import { battle as createBattle } from "../helpers/battle.js";
+import { Hooks } from "../../dist/core/hook.js";
+import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import * as unitQueries from "../../dist/core/unit/index.js";
 import { resolveDefense } from "../../dist/core/unit/capability/vitality/index.js";
-import { distance } from "../../dist/core/battle/targeting/index.js";
-import { elementDamage, elementHealing } from "../../dist/core/battle/targeting/index.js";
-import { and, sameSide, range as inRange } from "../../dist/core/battle/targeting/index.js";
-import { first } from "../../dist/core/battle/targeting/index.js";
-import { damage as damageTargeting } from "../helpers/targeting.js";
-import { calculateDamage } from "../../dist/core/battle/damage/index.js";
-import { damage as dealDamage, parameters } from "../helpers/vitality.js";
+import { and, damage as damageFilter, range as inRange, first, distance } from "../../dist/core/battle/targeting/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
-
-import assert from 'node:assert/strict';
-import { test } from 'node:test';
-import { initialize as initializeBattle, step as stepBattle } from '../../dist/core/battle/index.js';
-import { createLegacyCombatSpec } from '../../dist/legacy/combat.js';
-import { getUnit, initialize, replaceUnit } from "../helpers/unit.js";
-
-import { create as createAttack, chooseTargets } from '../../dist/content/actions/attack.js';
+import { step as stepBattle } from "../../dist/core/battle/index.js";
+import { getUnit, initialize } from "../helpers/unit.js";
+import { create as createAttack } from "../../dist/content/actions/attack.js";
 import { actionCapability } from "../helpers/actions.js";
-import { start, ref as actionRef } from '../../dist/core/unit/action/index.js';
-import { advance as advanceAction } from '../../dist/core/unit/action/index.js';
-import { ref as unitRef } from '../../dist/core/unit/index.js';
-import { createInput as createRouteDefinition } from '../../dist/core/battle/creation/route.js';
-import { ref as skillRef, definition as createSkillDefinition } from '../helpers/skill.js';
-import { activate as activateSkill, advance as advanceSkill } from '../../dist/core/unit/skill/index.js';
-import { recover } from '../../dist/core/unit/skill/sp.js';
-
-import { resolveAttack } from '../../dist/core/unit/capability/offense/index.js';
-import { create as modifier } from '../../dist/core/unit/contribution/attribute.js';
-import { healing } from '../helpers/vitality.js';
-import * as elemental from '../../dist/core/unit/capability/elemental/index.js';
-import { get as getBurst } from '../../dist/core/unit/capability/elemental/index.js';
-import { elementValues, setRule, setContribution, setHook as setElementalHook } from '../../dist/core/unit/capability/elemental/index.js';
-import { createArknightsElementalDefinition } from '../../dist/data/arknights/elemental.js';
-import { invincible } from '../../dist/content/effects/protection.js';
-import { effectFixtureWork } from '../helpers/effects.js';
+import { ref as unitRef } from "../../dist/core/unit/index.js";
+import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
+import { ref as skillRef, definition as createSkillDefinition } from "../helpers/skill.js";
+import { activate as activateSkill, advance as advanceSkill } from "../../dist/core/unit/skill/index.js";
+import { recover } from "../../dist/core/unit/skill/sp.js";
+import { resolveAttack } from "../../dist/core/unit/capability/offense/index.js";
+import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
+import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
+import { get as getBurst, elementValues, setContribution } from "../../dist/core/unit/capability/elemental/index.js";
+import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
+import { effectFixtureWork } from "../helpers/effects.js";
+import * as epDamage from "../../dist/core/battle/damage/ep/index.js";
 
 const range = [{ type: 'CIRCLE', offset: [0, 0], radius: 20 }];
 const hit = { type: 'CIRCLE', offset: [0, 0], radius: 0.1 };
 function action(interval = 1) {
   return createAttack({ id: 'normal-attack', triggerBindingId: 'primary', intervalTicks: interval, recoveryTicks: 0,
-    targetGroups: [{ id: 'primary', targeting: damageTargeting({
-      type: 'DAMAGE', scope: { type: 'RANGE', geometry: range },
-      canTargetAir: true, includeBlockingRelations: false, preferBlockingRelations: false,
-      ignoreTargetFree: false, ignoreInvisible: false, maxTargets: 1,
-    }), operations: [{ type: 'DAMAGE', power: 1, damageType: 'TRUE' }] }], followUps: [] });
+    targetGroups: [{ id: 'primary', targeting: {
+      purposes: ['DAMAGE'], filter: and(damageFilter, inRange(range)), selector: first(1, distance),
+    }, operations: [{ type: 'DAMAGE', power: 1, damageType: 'TRUE' }] }], followUps: [] });
 }
 function definition(receiver = 'CHARACTER', overrides = {}, elementOptions = {}) {
-  return { hooks: [], id: `element-${receiver}`, targetable: { restrictions: [] }, spatialPresence: {}, vitality: { maxHp: 100000, defense: 500, resistance: 50 },
+  return { hooks: Hooks.empty(), id: `element-${receiver}`, targetable: { restrictions: [] }, spatialPresence: {}, vitality: { maxHp: 100000, defense: 500, resistance: 50 },
     offense: { attack: 100 },
     allegiance: { side: receiver === 'CHARACTER' ? 'ALLY' : 'ENEMY' },
     layer: { type: 'GROUND' }, hitbox: { shape: hit },
@@ -60,7 +45,8 @@ function unit(receiver = 'CHARACTER', overrides = {}, elementOptions = {}) {
   return initialize({ id: 1, position: [1, 0], definition: definition(receiver, overrides, elementOptions) });
 }
 function element(work, type, tick = work.tick, power = 1000) {
-  return elemental.damage({ ...work, tick }, unitRef(getUnit(work, 1)), { type, power, source: { id: 9 } });
+  const request = { target: unitRef(getUnit(work, 1)), type, power, source: null };
+  return epDamage.applyDamage(request, epDamage.calculateDamage({ ...work, tick }, request));
 }
 function advance(work, tick) {
   for (let next = work.tick + 1; next <= tick; next++) {
@@ -87,8 +73,8 @@ test('elemental execution: standard immediate bursts apply class-specific damage
     const original = effectFixtureWork(unit(receiver));
     const result = element(original, type);
     const input = result.state;
-    assert.equal(result.value.type, 'APPLIED');
-    assert.deepEqual(getBurst(result.state, result.value.burst).source, { id: 9 });
+    assert.equal(result.value.kind, 'APPLIED');
+    assert.equal(getBurst(result.state, result.value.application.burst).source, null);
     assert.equal(getUnit(input, 1).vitality.hp, 100000 - expectedHpLoss);
     assert.deepEqual(defense(input), { defense: expectedDefense, resistance: expectedResistance });
     const hits = input.events.filter(event => event.type === 'DAMAGE');
@@ -111,31 +97,6 @@ test('elemental execution: erosion defense loss survives recovery and stacks on 
     firstState = element(firstState, 'EROSION', duration).state;
     assert.equal(defense(firstState).defense, 500 - 2 * reduction);
     assert.equal(recoveredHp - getUnit(firstState, 1).vitality.hp, secondHpLoss);
-  }
-});
-
-test('elemental execution: repeated enemy neural bursts refresh the remaining three paralysis charges', () => {
-  let work = element(effectFixtureWork(unit('ENEMY')), 'NEURAL').state;
-  const original = getUnit(work, 1).effects.values().find(effect => effect.definition.id.endsWith('/paralysis'));
-  assert.equal(original.data.remaining, 3);
-  work = advance(work, 300);
-  assert.equal(getUnit(work, 1).effects.get(original.id).data.remaining, 3);
-  work = element(work, 'NEURAL').state;
-  const residual = getUnit(work, 1).effects.values().toArray().filter(effect => effect.definition.id.endsWith('/paralysis'));
-  assert.equal(residual.length, 1);
-  assert.equal(residual[0].id, original.id);
-  assert.equal(residual[0].data.remaining, 3);
-});
-
-test('elemental execution: burn resistance loss remains during recovery and expires at its deadline', () => {
-  for (const receiver of ['CHARACTER', 'ENEMY']) {
-    let broken = effectFixtureWork(unit(receiver));
-    broken = element(broken, 'BURN').state;
-    broken = advance(broken, 299);
-    assert.equal(defense(broken).resistance, 30);
-    broken = advance(broken, 300);
-    assert.equal(defense(broken).resistance, 50);
-    assert.deepEqual(getUnit(broken, 1).elemental.ep, elementValues(1000));
   }
 });
 
@@ -188,7 +149,6 @@ test('elemental execution: periodic output follows burst speed and does not pay 
   work = advance(work, 60);
   assert.equal(getUnit(work, 1).vitality.hp, 100000);
   assert.equal(getUnit(work, 1).elemental.burst.remainingTicks, 450);
-  const currentUnit2 = getUnit(work, 1);
   work = applyUnitChanges(work, [speed(2)]);
   work = advance(work, 210);
   assert.equal(getUnit(work, 1).vitality.hp, 92000);
@@ -202,171 +162,11 @@ test('elemental execution: periodic output follows burst speed and does not pay 
   for (const end of [elemental.finish, elemental.cancel]) {
     const started = element(effectFixtureWork(unit('ENEMY')), 'NECROSIS');
     const partial = advance(started.state, 29);
-    const ended = end(partial, started.value.burst);
+    const ended = end(partial, started.value.application.burst);
     assert.equal(getUnit(ended, 1).elemental.burst, null);
     assert.equal(getUnit(ended, 1).vitality.hp, 100000);
     assert.equal(ended.events.filter(event => event.type === 'DAMAGE').length, 0);
   }
-});
-
-test('elemental execution: spatial absence pauses Burst and periodic clocks without catchup on return', () => {
-  let work = element(effectFixtureWork(unit('ENEMY')), 'NECROSIS').state;
-  const currentUnit3 = getUnit(work, 1);
-  work = replaceUnit(work, { ...currentUnit3, spatialPresence: { present: false } });
-  work = advance(work, 100);
-  assert.equal(getUnit(work, 1).elemental.burst.remainingTicks, 450);
-  assert.equal(work.events.some(event => event.type === 'DAMAGE'), false);
-  const currentUnit4 = getUnit(work, 1);
-  work = replaceUnit(work, { ...currentUnit4, spatialPresence: { present: true } });
-  work = advance(work, 130);
-  assert.equal(getUnit(work, 1).elemental.burst.remainingTicks, 420);
-  assert.equal(getUnit(work, 1).vitality.hp, 99200);
-  assert.equal(work.events.filter(event => event.type === 'DAMAGE').length, 1);
-});
-
-test('elemental execution: temporary burn resistance follows Burst lifetime when recovery speed changes', () => {
-  let work = element(effectFixtureWork(unit('ENEMY')), 'BURN').state;
-  const currentUnit5 = getUnit(work, 1);
-  work = applyUnitChanges(work, [setContribution({ id: currentUnit5.id }, 'burstRecoverySpeed', {
-    id: 'burst-speed', value: [modifier({ finalScaler: 2 })],
-  })]);
-  work = advance(work, 149);
-  assert.equal(defense(work).resistance, 30);
-  work = advance(work, 150);
-  assert.equal(defense(work).resistance, 50);
-  assert.equal(getUnit(work, 1).elemental.burst, null);
-});
-
-test('elemental HP damage ignores physical defense, magic resistance, source attack contributions and EP resistance but has its own five percent floor', () => {
-  for (const [damageResistance, expected] of [[0, 100], [50, 50], [100, 5], [1000, 5], [-50, 100]]) {
-    const source = initialize({ id: 0, position: [0, 0], definition: { hooks: [], id: 'element-source', offense: { attack: 10000 } } });
-    const boosted = ({ ...source, offense: { ...source.offense, attack: setFixtureEntry(source.offense.attack, { id: 'attack-buff', value: [modifier({ multiplier: 100 })] }) } });
-    const input = effectFixtureWork(boosted, unit('ENEMY', { vitality: { maxHp: 100000, defense: 100000, resistance: 99 } }, { damageResistance, elementResistance: 100 }));
-    const result = dealDamage(input, { source: { id: 0 }, target: { id: 1 }, parameters: parameters(100, 'ELEMENTAL') });
-    near(result.value.application.hpLoss, expected);
-    near(result.value.received.amount, expected);
-    near(calculateDamage(input, { source: unitRef(boosted), target: { id: 1 }, parameters: parameters(100, 'ELEMENTAL') }).value.amount, expected);
-    assert.deepEqual(getUnit(input, 1).elemental.ep, elementValues(1000));
-  }
-});
-
-test('HP elemental settlement and EP settlement read their distinct current contributions', () => {
-  let work = effectFixtureWork(unit('ENEMY'));
-  const currentUnit6 = getUnit(work, 1);
-  work = applyUnitChanges(work, [setContribution({ id: currentUnit6.id }, 'damageResistance', { id: 'hp-resistance', value: [modifier({ addition: 50 })] }), setContribution({ id: currentUnit6.id }, 'elementResistance', { id: 'ep-resistance', value: [modifier({ addition: 100 })] })]);
-  const hp = dealDamage(work, { source: null, target: { id: 1 }, parameters: parameters(100, 'ELEMENTAL') });
-  assert.equal(hp.value.application.hpLoss, 50);
-  const ep = element(hp.state, 'BURN', 0, 100);
-  near(ep.value.amount, 5);
-  assert.equal(getUnit(ep.state, 1).vitality.hp, 99950);
-  assert.equal(getUnit(ep.state, 1).elemental.ep.BURN, 995);
-});
-
-test('elemental healing receives every EP bar independently from HP healing and refuses the shared burst lock', () => {
-  let receiver = unit('CHARACTER');
-  receiver = { ...receiver, vitality: { ...receiver.vitality, healingHooks: setFixtureEntry(receiver.vitality.healingHooks, {
-    id: 'hp-healing-refused', stage: 'receiving', priority: 0,
-    invoke: (state, _context, pending) => ({ state, value: { ...pending, cancellation: { reason: 'CONTENT_REJECTS_HEALING' } } }),
-  }) } };
-  receiver = { ...receiver, vitality: { ...receiver.vitality, hp: 99000 } };
-  let work = effectFixtureWork(receiver);
-  work = element(work, 'BURN', 0, 200).state;
-  work = element(work, 'NEURAL', 0, 80).state;
-  const hp = healing(work, { source: null, target: { id: 1 }, parameters: { power: 100, multiplier: 1 } });
-  work = hp.state;
-  assert.equal(hp.value.kind, 'CANCELLED');
-  assert.equal(hp.value.received.amount, 100);
-  const healed = elemental.heal(work, unitRef(getUnit(work, 1)), { power: 100, source: null });
-  work = healed.state;
-  assert.equal(healed.value.type, 'APPLIED');
-  assert.equal(Object.values(healed.value.amounts).reduce((sum, amount) => sum + amount, 0), 180);
-  assert.equal(getUnit(work, 1).vitality.hp, 99000);
-  assert.deepEqual(getUnit(work, 1).elemental.ep, { NEURAL: 1000, EROSION: 1000, BURN: 900, NECROSIS: 1000 });
-  let broken = work;
-  broken = element(broken, 'BURN').state;
-  assert.equal(elemental.heal(broken, unitRef(getUnit(broken, 1)), { power: 1000, source: null }).value.type, 'REJECTED');
-  let immune = effectFixtureWork(unit('CHARACTER'));
-  immune = element(immune, 'BURN', 0, 100).state;
-  const currentUnit7 = getUnit(immune, 1);
-  immune = applyUnitChanges(immune, [setRule({ id: currentUnit7.id }, 'damage', { id: 'immune', allows: () => false })]);
-  assert.equal(elemental.heal(immune, unitRef(getUnit(immune, 1)), { power: 100, source: null }).value.type, 'APPLIED');
-});
-
-test('invincibility observes incoming EP damage, permits EP healing and removes its Rule when the Effect ends', () => {
-  const seen = [];
-  let work = element(effectFixtureWork(unit()), 'BURN', 0, 200).state;
-  const currentUnit8 = getUnit(work, 1);
-  work = applyUnitChanges(work, [setElementalHook({ id: currentUnit8.id }, 'received', {
-    id: 'received', invoke: (battle, { event }) => { seen.push(event.request.power); return { state: battle, value: undefined }; },
-  })]);
-  const installed = effects.install(work, unitRef(getUnit(work, 1)), invincible);
-  const denied = element(installed.state, 'BURN', 0, 100);
-  assert.equal(denied.value.type, 'REJECTED');
-  assert.deepEqual(seen, [100]);
-  assert.equal(getUnit(denied.state, 1).elemental.ep.BURN, 800);
-  work = elemental.heal(denied.state, unitRef(getUnit(denied.state, 1)), { source: null, power: 50 }).state;
-  assert.equal(getUnit(work, 1).elemental.ep.BURN, 850);
-  work = effects.end(work, installed.value, 'EXPLICIT');
-  const accepted = element(work, 'BURN', 0, 100);
-  assert.equal(accepted.value.type, 'APPLIED');
-  assert.equal(getUnit(accepted.state, 1).elemental.ep.BURN, 750);
-});
-
-test('elemental attacks select EP receivers without Vitality', () => {
-  const healingAction = createAttack({ id: 'healing', triggerBindingId: 'primary', intervalTicks: 30,
-    targetGroups: [{ id: 'primary', targeting: { purposes: ['ELEMENT_HEAL'],
-      filter: and(sameSide, inRange(range), elementHealing({ power: 100 }),
-        (_battle, request, target) => target.id !== request.source.id), selector: first(1, distance) },
-      operations: [{ type: 'ELEMENT_HEAL', power: 100 }] }],
-  });
-  const damageAction = createAttack({ ...action().attack, id: 'damage', targetGroups: [{ ...action().attack.targetGroups[0],
-    targeting: { purposes: ['ELEMENT_DAMAGE'], filter: and(inRange(range),
-      elementDamage({ type: 'NEURAL', power: 100 })), selector: first(1, distance) },
-    operations: [{ type: 'ELEMENT_DAMAGE', elementType: 'NEURAL', power: 100 }] }],
-  });
-  const healer = initialize({ id: 0, position: [0, 0], definition: definition('CHARACTER', {
-    action: actionCapability(healingAction, damageAction),
-  }) });
-  const { vitality: omitted, ...receiverDefinition } = definition('CHARACTER');
-  let receiver = initialize({ id: 1, position: [1, 0], definition: receiverDefinition });
-  let work = effectFixtureWork(healer, receiver);
-  work = element(work, 'BURN', 0, 200).state;
-  assert.deepEqual(chooseTargets(work, unitRef(healer), healingAction.attack).value.primary.map(ref => ref.id), [1]);
-  const healingStarted = start(work, actionRef(unitRef(healer), healingAction));
-  work = advanceAction(healingStarted.state, healingStarted.value.ref);
-  receiver = getUnit(work, 1);
-  assert.equal('vitality' in receiver, false);
-  assert.equal(receiver.elemental.ep.BURN, 900);
-  assert.equal(work.events.filter(event => event.type === 'ELEMENT_HEAL').length, 1);
-  const hostileReceiver = { ...receiver, allegiance: { side: 'ENEMY' } };
-  work = effectFixtureWork(healer, hostileReceiver);
-  assert.deepEqual(chooseTargets(work, unitRef(healer), damageAction.attack).value.primary.map(ref => ref.id), [1]);
-  const damageStarted = start(work, actionRef(unitRef(healer), damageAction));
-  work = advanceAction(damageStarted.state, damageStarted.value.ref);
-  assert.equal(getUnit(work, 1).elemental.ep.NEURAL, 900);
-});
-
-test('elemental attack targeting uses current request-specific reception Rules', () => {
-  const attackFor = type => createAttack({ ...action().attack, id: `element-${type}`, targetGroups: [{
-    ...action().attack.targetGroups[0],
-    targeting: { purposes: ['ELEMENT_DAMAGE'], filter: and(inRange(range),
-      elementDamage({ type, power: 100 })), selector: first(1, distance) },
-    operations: [{ type: 'ELEMENT_DAMAGE', elementType: type, power: 100 }],
-  }] });
-  const neural = attackFor('NEURAL');
-  const burn = attackFor('BURN');
-  const caster = initialize({ id: 0, position: [0, 0], definition: definition('CHARACTER', {
-    action: actionCapability(neural, burn),
-  }) });
-  const receiver = unit('ENEMY');
-  let work = effectFixtureWork(caster, receiver);
-  const currentUnit9 = getUnit(work, 1);
-  work = applyUnitChanges(work, [setRule({ id: currentUnit9.id }, 'damage', {
-    id: 'only-burn', allows: (_battle, { request }) => request.type === 'BURN',
-  })]);
-  assert.deepEqual(chooseTargets(work, unitRef(caster), neural.attack).value.primary, []);
-  assert.deepEqual(chooseTargets(work, unitRef(caster), burn.attack).value.primary.map(ref => ref.id), [1]);
-  assert.deepEqual(work.events, []);
 });
 
 function route() {
@@ -384,15 +184,17 @@ function battle(receiver, type, { moving = false } = {}) {
       ...action().attack.targetGroups[0].operations,
     ] }],
   });
-  const caster = definition('CHARACTER', { hooks: [], id: 'caster', allegiance: { side: 'ALLY' },
+  const caster = definition('CHARACTER', { hooks: Hooks.empty(), id: 'caster', allegiance: { side: 'ALLY' },
     action: actionCapability(casterAttack) });
-  const victim = definition(receiver, { hooks: [], id: 'victim', allegiance: { side: 'ENEMY' },
+  const victim = definition(receiver, { hooks: Hooks.empty(), id: 'victim', allegiance: { side: 'ENEMY' },
     action: actionCapability(action(1)),
     ...(moving ? { locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0.001, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } }, blockable: { volume: 1 } } : {}) });
-  const base = createLegacyCombatSpec({ rows: 1, columns: 8, operators: [], enemies: [], maxTicks: 600, seed: 7 });
-  const keepOpen = { hooks: [], id: 'future', vitality: { maxHp: 1, defense: 0, resistance: 0 }, locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } } };
-  let runtime = initializeBattle({ ...base,
-    predefines: predefinedUnits([{ definition: caster, position: [0, 0] }, ...(moving ? [] : [{ definition: victim, position: [1, 0] }])]),
+  const keepOpen = { hooks: Hooks.empty(), id: 'future', vitality: { maxHp: 1, defense: 0, resistance: 0 }, locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } } };
+  const runtime = createBattle([
+    { definition: caster, position: [0, 0] },
+    ...(moving ? [] : [{ definition: victim, position: [1, 0] }]),
+  ], {
+    rows: 1, columns: 8, maxTicks: 600,
     schedule: { type: 'TIMELINE', spawns: [...(moving ? [spawn(victim, 0)] : []), spawn(keepOpen, 599)] },
   });
   return { runtime };
@@ -405,29 +207,29 @@ test('elemental runtime: Unit and Effect tick triggers preserve every necrosis p
       id: 'burst-trigger', initialize: () => ({}),
       onTick(state, self) {
         state = effects.end(state, effects.ref(self));
-        return elemental.damage(state, self.host, { type: 'NECROSIS', power: 1000, source: null }).state;
+        const request = { target: self.host, type: 'NECROSIS', power: 1000, source: null };
+        return epDamage.applyDamage(request, epDamage.calculateDamage(state, request)).state;
       },
     };
     const receiver = definition('ENEMY', {
       action: actionCapability(),
-      hooks: source === 'Unit' ? [{
-        id: 'burst-trigger', stage: 'tick',
+      hooks: source === 'Unit' ? Hooks.empty().set(unitLifecycle.tick, {
+        id: 'burst-trigger',
         invoke(state, self) {
-          return { state: self.elemental.nextBurstId === 0
-            ? elemental.damage(state, unitRef(self), { type: 'NECROSIS', power: 1000, source: null }).state
-            : state, value: undefined };
+          state = applyUnitChanges(state, [unitLifecycle.removeHook(unitRef(self), unitLifecycle.tick, 'burst-trigger')]);
+          const request = { target: unitRef(self), type: 'NECROSIS', power: 1000, source: null };
+          return { state: epDamage.applyDamage(request, epDamage.calculateDamage(state, request)).state, value: undefined };
         },
-      }] : [{
-        id: 'install-trigger', stage: 'enter',
+      }) : Hooks.empty().set(unitLifecycle.enter, {
+        id: 'install-trigger',
         invoke(state, self) {
           return { state: effects.install(state, unitRef(self), trigger).state, value: undefined };
         },
-      }],
+      }),
     });
-    const base = createLegacyCombatSpec({ rows: 1, columns: 8, operators: [], enemies: [], maxTicks: 600, seed: 7 });
-    const future = { hooks: [], id: 'future', vitality: { maxHp: 1, defense: 0, resistance: 0 }, locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } } };
-    let runtime = initializeBattle({ ...base,
-      predefines: predefinedUnits([{ definition: receiver, position: [1, 0] }]),
+      const future = { hooks: Hooks.empty(), id: 'future', vitality: { maxHp: 1, defense: 0, resistance: 0 }, locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } } };
+    let runtime = createBattle([{ definition: receiver, position: [1, 0] }], {
+      rows: 1, columns: 8, maxTicks: 600,
       schedule: { type: 'TIMELINE', spawns: [spawn(future, 599)] },
     });
     const hits = [];

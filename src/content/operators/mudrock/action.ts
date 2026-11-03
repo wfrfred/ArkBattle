@@ -19,8 +19,8 @@ import { hasVitality } from "../../../core/unit/capability/vitality/index.js";
 import {
     calculateDamage,
     applyDamage,
-    type DamageRequest,
-} from "../../../core/battle/damage/index.js";
+    type Request as DamageRequest,
+} from "../../../core/battle/damage/hp/index.js";
 
 import * as targeting from "../../../core/battle/targeting/index.js";
 import { first } from "../../../core/battle/targeting/index.js";

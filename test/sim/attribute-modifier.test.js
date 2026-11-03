@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import { damage as damageTargeting } from "../helpers/targeting.js";
 import { actionCapability } from "../helpers/actions.js";
@@ -239,7 +240,7 @@ test("attribute modifiers: native Mire percentages affect existing ASPD and norm
     const unit = initialize({
         id: 0,
         position: [0, 0],
-        definition: { hooks: [],
+        definition: { hooks: Hooks.empty(),
             id: "mire-receiver",
             locomotion: {
                 halfBodyWidth: 0, speed: 1 / 30,
@@ -320,7 +321,7 @@ test("attribute modifiers: inspiration samples belong to the Effect input and re
         initialize({
             id,
             position: [id, 0],
-            definition: { hooks: [], id: `inspiration-${id}`, offense: { attack: power } },
+            definition: { hooks: Hooks.empty(), id: `inspiration-${id}`, offense: { attack: power } },
         });
     const source = unit(0, 100);
     const receiver = unit(1, 20);

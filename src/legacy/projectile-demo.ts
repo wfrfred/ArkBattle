@@ -9,7 +9,11 @@ import {
 import { create as createAction, createActions } from "../core/unit/action/index.js";
 import { hasActionDefinition } from "../core/unit/capability/action/index.js";
 import { create as createAttack, isAttack } from "../content/actions/attack.js";
-import { calculateDamage, applyDamage, type DamageRequest } from "../core/battle/damage/index.js";
+import {
+    calculateDamage,
+    applyDamage,
+    type Request as DamageRequest,
+} from "../core/battle/damage/hp/index.js";
 
 import * as tracking from "../content/projectiles/tracking.js";
 

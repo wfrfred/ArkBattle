@@ -1,3 +1,5 @@
+import { Hooks } from "../../../core/hook.js";
+import * as unitHooks from "../../../core/unit/hook.js";
 import { normal as normalSite } from "../../terrain/condition.js";
 import { update as updateUnit } from "../../../core/battle/unit.js";
 import { scope } from "../../../core/lifetime/index.js";
@@ -149,7 +151,7 @@ export function create(profile: Profile): Definition {
                     },
                 },
             ],
-            unitHooks: [],
+            unitHooks: Hooks.empty(),
             initialize: (battle) => ({ state: battle, value: {} }),
         },
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
@@ -172,20 +174,17 @@ export function create(profile: Profile): Definition {
             initialize: (battle) => createActions(battle, initializeAttack),
         },
         skill: { initialize: (battle) => createSkill(battle, skill) },
-        hooks: [
-            {
-                id: "melantha/install-talent",
-                stage: "enter",
-                invoke(state, self) {
-                    return {
-                        state:
-                            talentBonus !== undefined && hasOffense(self)
-                                ? install(state, unitRef(self), talent).state
-                                : state,
-                        value: undefined,
-                    };
-                },
+        hooks: Hooks.empty().set(unitHooks.enter, {
+            id: "melantha/install-talent",
+            invoke(state, self) {
+                return {
+                    state:
+                        talentBonus !== undefined && hasOffense(self)
+                            ? install(state, unitRef(self), talent).state
+                            : state,
+                    value: undefined,
+                };
             },
-        ],
+        }),
     };
 }

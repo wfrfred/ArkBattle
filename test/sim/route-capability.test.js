@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize } from "../../dist/core/unit/capability/route/capability.js";
@@ -23,7 +24,7 @@ function definition(overrides = {}) {
 function fixture(config = definition(), tick = 0, position = [0, 0]) {
     const battle = fixtureBattle(tick, { rngState: 17 });
     const initialized = initialize(battle, baseUnit(
-        { hooks: [], id: "route-test", route: config, spatialPresence: {} },
+        { hooks: Hooks.empty(), id: "route-test", route: config, spatialPresence: {} },
         { id: 3, position, spatialPresence: { present: true } },
     ));
     return { battle: addUnit(initialized.state, initialized.value), ref: { id: initialized.value.id } };

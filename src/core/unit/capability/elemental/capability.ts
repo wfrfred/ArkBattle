@@ -10,7 +10,7 @@ import * as registry from "../../../hook.js";
 import * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
 import type { Burst, Definition as BurstDefinition } from "./burst.js";
-import type { DamageHook, Events, Hook, Key } from "./hook.js";
+import type { DamageReceivingHook, Events, Hook, Key } from "./hook.js";
 import type { Rule, Key as RuleKey, Rules } from "./rule.js";
 import type { Ref } from "../../../common/ref.js";
 import { createChange, type Change } from "../../change.js";
@@ -44,9 +44,8 @@ export interface State {
     readonly elementResistance: readonly contribution.Contribution<Input>[];
     readonly damageResistance: readonly contribution.Contribution<Input>[];
     readonly burstRecoverySpeed: readonly contribution.Contribution<Input>[];
-    readonly receiving: readonly DamageHook[];
+    readonly receiving: readonly DamageReceivingHook[];
     readonly rules: Rules;
-    readonly received: readonly Hook<Events["received"]>[];
     readonly damaged: readonly Hook<Events["damaged"]>[];
     readonly healed: readonly Hook<Events["healed"]>[];
     readonly burstStarted: readonly Hook<Events["burstStarted"]>[];
@@ -106,7 +105,6 @@ export function initialize<U extends Unit & Pick<Elemental, "definition">>(
                 burstRecoverySpeed: [],
                 receiving: [],
                 rules: { damage: [], heal: [] },
-                received: [],
                 damaged: [],
                 healed: [],
                 burstStarted: [],
@@ -144,7 +142,10 @@ export function removeContribution(
     });
 }
 
-export function setDamageHook(reference: Ref<Unit & Elemental>, hook: DamageHook): Change {
+export function setDamageReceivingHook(
+    reference: Ref<Unit & Elemental>,
+    hook: DamageReceivingHook,
+): Change {
     return createChange(reference, (self) => {
         const receiving = registry.set(self.elemental.receiving, hook);
 
@@ -154,7 +155,7 @@ export function setDamageHook(reference: Ref<Unit & Elemental>, hook: DamageHook
     });
 }
 
-export function removeDamageHook(reference: Ref<Unit & Elemental>, id: string): Change {
+export function removeDamageReceivingHook(reference: Ref<Unit & Elemental>, id: string): Change {
     return createChange(reference, (self) => {
         const receiving = registry.remove(self.elemental.receiving, id);
 

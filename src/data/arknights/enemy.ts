@@ -1,3 +1,4 @@
+import { Hooks } from "../../core/hook.js";
 import {
     assertNonnegativeNumber,
     assertNonnegativeSafeInteger,
@@ -222,7 +223,7 @@ export function createEnemyMovementContent(
 
     const definition = {
         id,
-        hooks: [],
+        hooks: Hooks.empty(),
         spatialPresence: {},
         vitality: { defense: 0, resistance: 0, maxHp },
         locomotion: {

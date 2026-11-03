@@ -1,3 +1,5 @@
+import { Hooks } from "../../dist/core/hook.js";
+import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import { ref as unitRef } from "../../dist/core/unit/query.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -20,7 +22,7 @@ test("sequential predefined commands allocate after all earlier callback results
             state = { ...state, execution: { ...state.execution, nextUnitId: id + 1 } };
             const created = initializeUnit(
                 state,
-                { id, definition: { hooks: [], id: "callback-child" }, position: [1, 0] },
+                { id, definition: { hooks: Hooks.empty(), id: "callback-child" }, position: [1, 0] },
             );
             return addUnit(created.state, created.value);
         },
@@ -43,7 +45,7 @@ test("sequential predefined commands allocate after all earlier callback results
             initiallyPresent: false,
             creation: {
                 type: "UNIT",
-                definition: { hooks: [], id: "predefined-child" },
+                definition: { hooks: Hooks.empty(), id: "predefined-child" },
                 position: [2, 0],
                 },
         },
@@ -72,14 +74,14 @@ test("predefined removal preserves a replacement created by its own leave callba
             position: [0, 0],
             definition: {
                 id: "reappearing-on-leave",
-                hooks: [{ id: "test/leave", stage: "leave", invoke(state, departure) {
+                hooks: Hooks.empty().set(unitLifecycle.leave, { id: "test/leave",  invoke(state, departure) {
                     calls++;
                     assert.equal(getUnit(state, departure.unit.id), undefined);
                     assert.deepEqual(state.predefinedPresence, []);
                     return { state: advancePredefined(state, definitions, [
                         { type: "APPEAR_PREDEFINED", definitionId: 0 },
                     ]), value: undefined };
-                } }],
+                } }),
             },
         },
     }];
@@ -115,7 +117,7 @@ test("predefined appearance retains a nested replacement and its latest binding"
             position: [0, 0],
             definition: {
                 id: "reappearing-on-enter",
-                hooks: [{ id: "test/enter", stage: "enter", invoke(state, self) {
+                hooks: Hooks.empty().set(unitLifecycle.enter, { id: "test/enter",  invoke(state, self) {
                     entered.push(self.id);
                     assert.deepEqual(state.predefinedPresence, [
                         { definitionId: 0, source: { type: "UNIT", unitId: self.id } },
@@ -127,7 +129,7 @@ test("predefined appearance retains a nested replacement and its latest binding"
                         { type: "REMOVE_PREDEFINED", definitionId: 0, reason: "SCRIPT" },
                         { type: "APPEAR_PREDEFINED", definitionId: 0 },
                     ]), value: undefined };
-                } }],
+                } }),
             },
         },
     }];

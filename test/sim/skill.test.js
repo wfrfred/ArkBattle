@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
@@ -38,7 +39,7 @@ test("activation publishes payment before onStart and clears only the completed 
     };
     const definition = {
         id: "operator",
-        hooks: [],
+        hooks: Hooks.empty(),
         skill: { initialize: (state) => skills.create(state, program) },
     };
     let state = battle([{ definition, position: [1, 1] }]);
@@ -92,7 +93,7 @@ test("cancellation during payment notification retains payment and suppresses th
     };
     const definition = {
         id: "operator",
-        hooks: [],
+        hooks: Hooks.empty(),
         skill: { initialize: (state) => skills.create(state, program) },
     };
     let state = battle([{ definition, position: [1, 1] }]);
@@ -132,7 +133,7 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
     };
     const definition = {
         id: "operator",
-        hooks: [],
+        hooks: Hooks.empty(),
         skill: { initialize: (state) => skills.create(state, program) },
     };
     let state = battle([{ definition, position: [1, 1] }]);
@@ -185,7 +186,7 @@ test("TIME extension changes this activation rather than the next activation's b
     };
     const definition = {
         id: "operator",
-        hooks: [],
+        hooks: Hooks.empty(),
         skill: { initialize: (state) => skills.create(state, program) },
     };
     let state = battle([{ definition, position: [1, 1] }]);
@@ -215,7 +216,7 @@ test("AMMO samples its own capacity formula and distinguishes consumption, refil
     };
     const definition = {
         id: "operator",
-        hooks: [],
+        hooks: Hooks.empty(),
         skill: { initialize: (state) => skills.create(state, program) },
     };
     let state = battle([{ definition, position: [1, 1] }]);

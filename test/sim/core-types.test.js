@@ -10,14 +10,36 @@ test("typed identities retain private data and capability proofs across erased C
     const source = `
 import type { Ref } from ${module("common/ref")};
 import type { State } from ${module("battle/state")};
+import { Hooks, key, type Hook } from ${module("hook")};
 import { initialize, ref, get, type Unit, type Change } from ${module("unit/index")};
 import { update } from ${module("battle/unit")};
 import * as actions from ${module("unit/action/index")};
 import * as effects from ${module("unit/effect/index")};
+import * as hpDamage from ${module("battle/damage/hp/index")};
 import type { Offense } from ${module("unit/capability/offense/index")};
 import { setAttackContribution } from ${module("unit/capability/offense/index")};
 import { setLayer } from ${module("unit/capability/blocking/index")};
 declare const battle: State;
+const outputKey = key<Hook<{ amount: number }, number>>('output');
+const textKey = key<Hook<{ text: string }, number>>('text');
+const registered = Hooks.empty().set(outputKey, {
+    id: 'output', invoke: (state, context, current) => ({ state, value: current + context.amount }),
+});
+registered.get(outputKey)[0]!.invoke(battle, { amount: 1 }, 0);
+// @ts-expect-error a key preserves its exact Hook type through storage.
+const mismatchedKey: typeof outputKey = textKey;
+// @ts-expect-error entries cannot widen the Hook type established by their key.
+Hooks.empty().set(outputKey, { id: 'wrong', invoke: (state, context: { text: string }, current) => ({ state, value: current }) });
+const receivingKey = key<hpDamage.ReceivingHook>('receiving');
+const receivingHooks = Hooks.empty().set(receivingKey, {
+    id: 'evade', invoke: (state, _context, current) => ({ state, value: hpDamage.cancel(current, 'EVADE') }),
+});
+declare const receivingContext: hpDamage.ReceivingContext;
+declare const cancelled: hpDamage.Pending<hpDamage.Cancellation<'EVADE'>>;
+const reception = receivingHooks.get(receivingKey)[0]!.invoke(battle, receivingContext, cancelled);
+const preservedReason: 'EVADE' = reception.value.cancellation.reason;
+// @ts-expect-error erased storage preserves the specialized Receiving signature.
+Hooks.empty().set(receivingKey, { id: 'revive', invoke: (state, _context, current: hpDamage.Pending) => ({ state, value: { ...current, cancellation: null } }) });
 const program: actions.Definition<{ uses: number }, { hits: number }> = {
     id: 'attack', intervalTicks: 10, speed: 100,
     initialize: state => ({ state, value: { uses: 0 } }),
@@ -25,7 +47,7 @@ const program: actions.Definition<{ uses: number }, { hits: number }> = {
     onTick: state => ({ state, value: true }),
 };
 const host = initialize(battle, { id: 0, position: [0, 0], definition: {
-    id: 'armed', hooks: [], offense: { attack: 100 },
+    id: 'armed', hooks: Hooks.empty(), offense: { attack: 100 },
     action: { initialize: state => actions.createActions(state, actions.create(program)) },
 } }).value;
 const reference = ref(host);
@@ -58,7 +80,7 @@ if (installed.value !== undefined) {
     // @ts-expect-error writes cannot widen the identity's private data pairing.
     effects.setData(installed.state, installed.value, { charges: 'wrong' });
 }
-const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'bare', hooks: [] } }).value;
+const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'bare', hooks: Hooks.empty() } }).value;
 // @ts-expect-error the host has not established the required capability.
 effects.install(battle, ref(bare), shield);
 const change: Change = setAttackContribution(reference, { id: 'bonus', value: [] });

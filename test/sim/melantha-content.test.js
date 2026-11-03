@@ -1,3 +1,5 @@
+import { Hooks } from "../../dist/core/hook.js";
+import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import { ref as skillRef } from "../helpers/skill.js";
 import * as blockingQueries from "../../dist/core/battle/blocking/index.js";
 import { advance as advanceBlocking } from "../../dist/core/battle/blocking/index.js";
@@ -44,7 +46,7 @@ test('Melantha uses main-mode level, potential, trust and talent, then a scoped 
     refund: { rate: 0.5, limit: 'BASE_COST' },
   });
   assert.deepEqual(deploymentRules.map(rule => rule.id), ['deployment/site']);
-  assert.deepEqual(unitHooks, []);
+  assert.deepEqual(unitHooks.get(unitLifecycle.enter), []);
   assert.equal(typeof initializeCard, 'function');
   assert.equal(unit.deployable.refund, null);
   let state = createBattleState(fixtureBattlefieldState([]));
@@ -86,7 +88,7 @@ test('explicit skill finish removes only skill output, preserving Melantha talen
 test('ordinary attacks read current talent and skill contributions instead of captured table attack', () => {
 
   const definition = create(profile());
-  const receiver = initialize({ id: 1, position: [1, 0], definition: { hooks: [],
+  const receiver = initialize({ id: 1, position: [1, 0], definition: { hooks: Hooks.empty(),
     id: 'receiver', targetable: { restrictions: [] }, vitality: { maxHp: 10000, defense: 0, resistance: 0 }, allegiance: { side: 'ENEMY' }, layer: { type: 'GROUND' },
     hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: .1 } },
   } });
@@ -105,7 +107,7 @@ test('ordinary attacks read current talent and skill contributions instead of ca
 test('the ordinary ground block radius catches a target 0.6 units from Melantha', () => {
 
   const definition = create(profile());
-  const receiver = initialize({ id: 1, position: [0.6, 0], definition: { hooks: [],
+  const receiver = initialize({ id: 1, position: [0.6, 0], definition: { hooks: Hooks.empty(),
     id: 'nearby-enemy', targetable: { restrictions: [] }, vitality: { maxHp: 1000, defense: 0, resistance: 0 }, blockable: { volume: 1 },
     allegiance: { side: 'ENEMY' }, layer: { type: 'GROUND' },
     hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: .1 } },
@@ -117,7 +119,7 @@ test('the ordinary ground block radius catches a target 0.6 units from Melantha'
 test('Melantha still checks active targeting restrictions on enemies she is blocking', () => {
   const definition = create(profile());
   for (const value of [invisibleRestriction, camouflageRestriction, untargetableRestriction]) {
-    const receiver = initialize({ id: 1, position: [0.6, 0], definition: { hooks: [],
+    const receiver = initialize({ id: 1, position: [0.6, 0], definition: { hooks: Hooks.empty(),
       id: 'hidden-blocked-enemy', targetable: { restrictions: [{ id: 'innate', value }] },
       vitality: { maxHp: 1000, defense: 0, resistance: 0 }, blockable: { volume: 1 },
       allegiance: { side: 'ENEMY' }, layer: { type: 'GROUND' },

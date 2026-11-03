@@ -9,6 +9,7 @@ import type { Rule, Key as RuleKey, Rules } from "./rule.js";
 import type { Ref } from "../../../common/ref.js";
 import { createChange, type Change } from "../../change.js";
 import { enter } from "../../skill/operations.js";
+import { enter as enterKey } from "../../hook.js";
 
 export interface Definition {
     readonly initialize: (battle: BattleState) => Result<SkillState<any, any>>;
@@ -73,7 +74,7 @@ export function initialize<U extends Unit & Pick<Skill, "definition">>(
 
     return {
         state: initialized.state,
-        value: { ...unit, skill: value, hooks: registry.set(unit.hooks, enter) },
+        value: { ...unit, skill: value, hooks: unit.hooks.set(enterKey, enter) },
     };
 }
 

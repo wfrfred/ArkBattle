@@ -1,3 +1,5 @@
+import { Hooks } from "../../dist/core/hook.js";
+import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import { predefinedUnits } from "../helpers/predefined.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -24,7 +26,7 @@ const tick = (battle, number) => advance({ ...battle, tick: number }, candidates
 function runtime(initialUnits, maxTicks = 20) {
     return initializeBattle({ ...createLegacyCombatSpec({ rows: 1, columns: 8, operators: [], enemies: [], maxTicks, seed: 17 }),
         predefines: predefinedUnits(initialUnits.map(value => ({ definition: value.definition, position: value.position }))),
-        schedule: { type: "TIMELINE", spawns: [{ definition: { hooks: [], spatialPresence: {}, id: "future", vitality: { maxHp: 1, defense: 0, resistance: 0 }, locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } } },
+        schedule: { type: "TIMELINE", spawns: [{ definition: { hooks: Hooks.empty(), spatialPresence: {}, id: "future", vitality: { maxHp: 1, defense: 0, resistance: 0 }, locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } } },
             route: createRouteDefinition({ pathMotionMode: "WALK", startPosition: [0, 7], endPosition: [0, 1], spawnOffset: [0, 0], spawnRandomRange: [0, 0], checkpoints: [], allowDiagonalMove: false, visitEveryTileCenter: false, visitEveryNodeCenter: false, visitEveryCheckPoint: true }),
             tick: 100, timing: { waveStartedAtTick: 0, fragmentStartedAtTick: 0 }, alwaysCheckCurrentPoint: true, notCountInTotal: false }] },
     });
@@ -211,9 +213,9 @@ test("Runtime freezes Projectile candidates before Unit callbacks, Action output
         return self.state.spawned ? battle : create(projectiles.update(battle, projectilesQuery.ref(self), { state: { spawned: true } }), grandchild).state;
     } };
     const fromAction = { id: "action-child", onStart(battle) { observed.push(["action-create", battle.tick]); return battle; }, onTick(battle, self) { observed.push([self.definition.id, battle.tick]); return battle; } };
-    const source = unit(0, { hooks: [{ id: "test/tick", stage: "tick", invoke(battle) {
+    const source = unit(0, { hooks: Hooks.empty().set(unitLifecycle.tick, { id: "test/tick",  invoke(battle) {
         return { state: battle.tick === 0 ? create(battle, fromUnit, { spawned: false }).state : battle, value: undefined };
-    } }], action: actionDefinition(0, { output: battle => create(battle, fromAction).state }) });
+    } }), action: actionDefinition(0, { output: battle => create(battle, fromAction).state }) });
     let rt = runtime([source, unit(1)]);
 
     rt = stepBattle(rt, []);
@@ -231,7 +233,7 @@ test("battle execution can stop a same-Tick creation explicitly without normally
     const definition = { id: "same-step", onStart(battle) { observed.push("create"); return battle; },
         onTick(battle) { observed.push("advance"); return battle; },
         onEnd(battle, _self, reason) { observed.push(reason); return battle; } };
-    let rt = runtime([unit(0, { hooks: [{ id: "test/tick", stage: "tick", invoke(battle) { return { state: create(battle, definition).state, value: undefined }; } }] })]);
+    let rt = runtime([unit(0, { hooks: Hooks.empty().set(unitLifecycle.tick, { id: "test/tick",  invoke(battle) { return { state: create(battle, definition).state, value: undefined }; } }) })]);
     const result = (rt = stepBattle(rt, [{ type: "STOP_PROJECTILE", projectileId: 0 }]));
 
     assert.deepEqual(observed, ["create", "EXPLICIT"]);
@@ -243,7 +245,7 @@ test("a terminal battle leaves outstanding projectiles frozen without terminatio
     let stops = 0;
     let advances = 0;
     const definition = { id: "frozen", onTick(battle) { advances++; return battle; }, onEnd(battle) { stops++; return battle; } };
-    let rt = runtime([unit(0, { hooks: [{ id: "test/tick", stage: "tick", invoke(battle) { return { state: create(battle, definition).state, value: undefined }; } }] })], 1);
+    let rt = runtime([unit(0, { hooks: Hooks.empty().set(unitLifecycle.tick, { id: "test/tick",  invoke(battle) { return { state: create(battle, definition).state, value: undefined }; } }) })], 1);
     rt = stepBattle(rt, []);
     const snapshot = rt;
 

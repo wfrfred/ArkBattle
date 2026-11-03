@@ -1,3 +1,5 @@
+import { Hooks } from "../../dist/core/hook.js";
+import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import { predefinedUnits } from "../helpers/predefined.js";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
@@ -28,7 +30,7 @@ const profile = createDeployable();
 const cardDefinition = createCardDefinition({ cost: 0, redeployTicks: 0, slots: 0, placement: "ALL" });
 
 function passengerDefinition(extra = {}) {
-    return { hooks: [],
+    return { hooks: Hooks.empty(),
         id: "platform-passenger", occupancy: { slot: "OCCUPANT" }, spatialPresence: {},
         allegiance: { side: "ALLY" }, vitality: { maxHp: 100, defense: 0, resistance: 0 },
         blocker: { layer: "GROUND", capacity: 1, radius: 1, rules: [sides("ENEMY")] }, deployable: profile, card: cardDefinition,
@@ -41,7 +43,7 @@ function passenger(id = 10, tile = first, extra = {}) {
 }
 
 function platformDefinition(id = "shooting-platform") {
-    return createPlatform({ hooks: [],
+    return createPlatform({ hooks: Hooks.empty(),
         id, vitality: { maxHp: 100, defense: 0, resistance: 0 }, deployable: profile, card: cardDefinition,
         tileChanges: { elevation: "HIGHLAND" },
     });
@@ -185,10 +187,10 @@ for (const nested of ["remove passenger", "remove platform"]) {
 test("a departing passenger can install its successor on the platform without outer cleanup removing the successor rule", () => {
     let battle = fixture([platform(), target()]);
     const successor = passenger(11, first, {
-        hooks: [{ id: "test/enter", stage: "enter", invoke(state) { return { state: acquire(state, 11), value: undefined }; } }],
+        hooks: Hooks.empty().set(unitLifecycle.enter, { id: "test/enter",  invoke(state) { return { state: acquire(state, 11), value: undefined }; } }),
     });
     battle = add(battle, passenger(10, first, {
-        hooks: [{ id: "test/leave", stage: "leave", invoke(state) { return { state: add(state, successor), value: undefined }; } }],
+        hooks: Hooks.empty().set(unitLifecycle.leave, { id: "test/leave",  invoke(state) { return { state: add(state, successor), value: undefined }; } }),
     }));
 
     battle = remove(battle, 10, "SCRIPT");
@@ -201,10 +203,10 @@ test("a departing passenger can install its successor on the platform without ou
 test("a passenger killed by platform removal can install an eligible successor after the platform is gone", () => {
     let battle = fixture([platform(), target()]);
     const successor = passenger(11, first, {
-        hooks: [{ id: "test/enter", stage: "enter", invoke(state) { return { state: acquire(state, 11), value: undefined }; } }],
+        hooks: Hooks.empty().set(unitLifecycle.enter, { id: "test/enter",  invoke(state) { return { state: acquire(state, 11), value: undefined }; } }),
     });
     battle = add(battle, passenger(10, first, {
-        hooks: [{ id: "test/leave", stage: "leave", invoke(state) { return { state: add(state, successor), value: undefined }; } }],
+        hooks: Hooks.empty().set(unitLifecycle.leave, { id: "test/leave",  invoke(state) { return { state: add(state, successor), value: undefined }; } }),
     }));
 
     battle = remove(battle, 30, "SCRIPT");

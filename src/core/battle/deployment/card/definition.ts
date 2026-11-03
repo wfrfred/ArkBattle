@@ -1,7 +1,7 @@
 import type { Result, State as BattleState } from "../../state.js";
 import type { Card } from "./card.js";
 import type { Rule } from "../rule.js";
-import type { Hook } from "../../../unit/hook.js";
+import type { Hooks } from "../../../hook.js";
 
 export interface Refund {
     readonly rate: number;
@@ -20,7 +20,7 @@ export interface Definition<S extends object = object> {
     readonly increaseCostOnLeave: boolean;
     readonly refund: Refund | null;
     readonly deploymentRules: readonly Rule[];
-    readonly unitHooks: readonly Hook[];
+    readonly unitHooks: Hooks;
     readonly initialize: (battle: BattleState) => Result<S>;
     readonly onTick?: (battle: BattleState, self: Card<S>) => BattleState;
 }

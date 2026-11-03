@@ -2,8 +2,8 @@ import { create as createAttack, type Attack } from "../../actions/attack.js";
 import {
     calculateDamage,
     applyDamage,
-    type DamageRequest,
-} from "../../../core/battle/damage/index.js";
+    type Request as DamageRequest,
+} from "../../../core/battle/damage/hp/index.js";
 
 import * as units from "../../../core/unit/index.js";
 import type { Profile } from "../../../data/arknights/enemy.js";

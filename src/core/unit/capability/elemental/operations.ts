@@ -1,42 +1,43 @@
 import { lifetime as unitLifetime, replace as replaceUnits } from "../../../battle/unit.js";
-import { assertNonnegativeNumber } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
 import * as lifetimes from "../../../lifetime/index.js";
 import { register, unregister } from "../../../lifetime/operations.js";
+import * as hooks from "../../../hook.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import {
     ELEMENT_TYPES,
     elementValues,
-    hasElemental,
     type Elemental,
     type Type,
     type Values,
 } from "./capability.js";
 import { ref as burstRef, type Burst, type End } from "./burst.js";
-import { dispatch, receive, type Damaged, type Healed } from "./hook.js";
+import { dispatch } from "./hook.js";
 import * as query from "./query.js";
+import type * as damage from "../../../battle/damage/ep/contract.js";
+import type {
+    ReceivingContext,
+    CommitContext as DamageCommitContext,
+} from "../../../battle/damage/ep/hook.js";
+import type { Request as HealingRequest } from "../../../battle/healing/ep/contract.js";
+import type { CommitContext as HealingCommitContext } from "../../../battle/healing/ep/hook.js";
 
-export interface DamageRequest {
-    readonly source: Ref<Unit> | null;
+export interface DamageApplication {
     readonly type: Type;
-    readonly power: number;
+    readonly epBefore: number;
+    readonly epAfter: number;
+    readonly epLoss: number;
+    readonly burst: Ref<Burst> | null;
 }
 
-export interface HealRequest {
-    readonly source: Ref<Unit> | null;
-    readonly power: number;
+export interface HealingApplication {
+    readonly epBefore: Values;
+    readonly epAfter: Values;
+    readonly epGain: Values;
 }
-
-export type DamageOutcome =
-    | { readonly type: "APPLIED"; readonly amount: number; readonly burst: Ref<Burst> | null }
-    | { readonly type: "REJECTED"; readonly reason: string };
-
-export type HealOutcome =
-    | { readonly type: "APPLIED"; readonly amounts: Values }
-    | { readonly type: "REJECTED"; readonly reason: string };
 
 export type Signal =
     | {
@@ -69,95 +70,78 @@ export type Signal =
           readonly tick: number;
       };
 
-export function damage(
+export function receiveDamage(
     battle: BattleState,
-    target: Ref<Unit>,
-    request: DamageRequest,
-): Result<DamageOutcome> {
-    assertNonnegativeNumber(request.power, "element damage power");
+    context: ReceivingContext,
+    pending: damage.Pending,
+): Result<damage.Pending> {
+    return hooks.dispatch(battle, context, pending, {
+        candidates: (current) =>
+            [...(units.get(current, context.target)?.elemental.receiving ?? [])]
+                .sort((left, right) => (right.priority ?? 0) - (left.priority ?? 0))
+                .map(({ id }) => id),
+        find(current, id) {
+            const host = units.get(current, context.target);
 
-    const self = units.get(battle, target);
-    if (self === undefined) {
+            return host !== undefined && query.available(host)
+                ? host.elemental.receiving.find((entry) => entry.id === id)
+                : undefined;
+        },
+    });
+}
+
+export function commitDamage(
+    battle: BattleState,
+    context: DamageCommitContext,
+): Result<DamageApplication> {
+    const { target, request, calculated, received } = context;
+    const type = calculated.type;
+    const self = units.get(battle, target)!;
+    const maximum = query.resolveMaxEp(battle, target)!;
+    const epBefore = Math.min(maximum, Math.max(0, self.elemental.ep[type]));
+    const epLoss = Math.min(epBefore, received.amount);
+    if (epLoss === 0) {
         return {
             state: battle,
-            value: { type: "REJECTED", reason: "TARGET_ABSENT" },
-        };
-    }
-    if (!hasElemental(self)) {
-        return {
-            state: battle,
-            value: { type: "REJECTED", reason: "NO_ELEMENTAL" },
-        };
-    }
-    if (!query.available(self)) {
-        return {
-            state: battle,
-            value: { type: "REJECTED", reason: "INACTIVE" },
+            value: { type, epBefore, epAfter: epBefore, epLoss, burst: null },
         };
     }
 
-    const identity = units.ref(self);
-    battle = dispatch(battle, identity, "received", { request });
-
-    const reason = query.damageRejection(battle, target, request);
-    if (reason !== undefined) {
-        return { state: battle, value: { type: "REJECTED", reason } };
-    }
-
-    const resistance = query.resolveElementResistance(battle, identity)!;
-    const reception = receive(battle, identity, request, request.power * (1 - resistance / 100));
-    battle = reception.state;
-
-    const rejection = query.damageRejection(battle, target, request);
-    if (rejection !== undefined) {
-        return { state: battle, value: { type: "REJECTED", reason: rejection } };
-    }
-
-    const currentSelf = units.get(battle, identity)!;
-    const maximum = query.resolveMaxEp(battle, identity)!;
-    const previous = Math.min(maximum, Math.max(0, currentSelf.elemental.ep[request.type]));
-    const amount = Math.min(previous, reception.value);
-    if (amount === 0) {
-        return { state: battle, value: { type: "APPLIED", amount: 0, burst: null } };
-    }
-
-    const current = previous - amount;
-    const definition = currentSelf.definition.elemental.bursts[request.type];
+    const epAfter = epBefore - epLoss;
+    const definition = self.definition.elemental.bursts[type];
     const burst: Burst | null =
-        current > 0
+        epAfter > 0
             ? null
             : {
-                  host: identity,
-                  id: currentSelf.elemental.nextBurstId,
-                  type: request.type,
+                  host: target,
+                  id: self.elemental.nextBurstId,
+                  type,
                   source: request.source,
                   startedAtTick: battle.tick,
                   status: "ACTIVE",
                   remainingTicks: definition.durationTicks,
               };
-    const nextBurstId = currentSelf.elemental.nextBurstId + (burst === null ? 0 : 1);
-
+    const reference = burst === null ? null : burstRef(burst);
+    const application: DamageApplication = { type, epBefore, epAfter, epLoss, burst: reference };
     const ep =
-        burst === null
-            ? { ...normalizedEp(currentSelf, maximum), [request.type]: current }
-            : elementValues(0);
+        burst === null ? { ...normalizedEp(self, maximum), [type]: epAfter } : elementValues(0);
     battle = replaceUnits(battle, [
         {
-            ...currentSelf,
+            ...self,
             elemental: {
-                ...currentSelf.elemental,
+                ...self.elemental,
                 ep,
                 burst,
-                nextBurstId,
+                nextBurstId: self.elemental.nextBurstId + (burst === null ? 0 : 1),
             },
         },
     ]);
-    const reference = burst === null ? null : burstRef(burst);
+
     if (reference !== null) {
         battle = register(
             battle,
             lifetimes.scope(lifetime, reference),
-            lifetimes.scope(unitLifetime, identity),
+            lifetimes.scope(unitLifetime, target),
         );
     }
 
@@ -165,24 +149,23 @@ export function damage(
         {
             type: "ELEMENT_DAMAGE",
             sourceUnitId: request.source?.id ?? null,
-            targetUnitId: currentSelf.id,
-            elementType: request.type,
-            amount,
-            ep: current,
+            targetUnitId: target.id,
+            elementType: type,
+            amount: epLoss,
+            ep: epAfter,
             tick: battle.tick,
         },
     ]);
 
     if (burst !== null) {
         battle = appendEvents(battle, [{ type: "ELEMENT_BURST", burst, tick: battle.tick }]);
-        battle = dispatch(battle, identity, "burstStarted", burst);
+        battle = dispatch(battle, target, "burstStarted", burst);
     }
 
-    const event: Damaged = { request, previous, current, amount, burst: reference };
-    battle = dispatch(battle, identity, "damaged", event);
+    battle = dispatch(battle, target, "damaged", { request, ...application });
 
     if (reference !== null) {
-        const host = units.get(battle, identity);
+        const host = units.get(battle, target);
         const active = query.get(battle, reference);
         if (host !== undefined && query.available(host) && active?.status === "ACTIVE") {
             battle = definition.onStart(battle, active);
@@ -194,58 +177,43 @@ export function damage(
         }
     }
 
-    return { state: battle, value: { type: "APPLIED", amount, burst: reference } };
+    return { state: battle, value: application };
 }
 
-export function heal(
+export function commitHealing(
     battle: BattleState,
-    target: Ref<Unit>,
-    request: HealRequest,
-): Result<HealOutcome> {
-    assertNonnegativeNumber(request.power, "element heal power");
-
-    const reason = query.healRejection(battle, target, request);
-    if (reason !== undefined) {
-        return { state: battle, value: { type: "REJECTED", reason } };
-    }
-
-    const self = units.get(battle, target) as Unit & Elemental;
-    const identity = units.ref(self);
-    const maximum = query.resolveMaxEp(battle, identity)!;
-    const previous = normalizedEp(self, maximum);
-    const amounts = { ...elementValues(0) };
-    const current = { ...previous };
+    context: HealingCommitContext,
+): Result<HealingApplication> {
+    const { target, request, received } = context;
+    const self = units.get(battle, target)!;
+    const maximum = query.resolveMaxEp(battle, target)!;
+    const epBefore = normalizedEp(self, maximum);
+    const epGain = { ...elementValues(0) };
+    const epAfter = { ...epBefore };
 
     for (const type of ELEMENT_TYPES) {
-        amounts[type] = Math.min(request.power, Math.max(0, maximum - previous[type]));
-        current[type] += amounts[type];
+        epGain[type] = Math.min(received.amount, Math.max(0, maximum - epBefore[type]));
+        epAfter[type] += epGain[type];
     }
 
-    if (!ELEMENT_TYPES.some((type) => amounts[type] > 0)) {
-        return { state: battle, value: { type: "APPLIED", amounts } };
+    const application: HealingApplication = { epBefore, epAfter, epGain };
+    if (!ELEMENT_TYPES.some((type) => epGain[type] > 0)) {
+        return { state: battle, value: application };
     }
 
-    const event: Healed = {
-        request,
-        previous,
-        current: current,
-        amounts: amounts,
-    };
-    battle = replaceUnits(battle, [
-        { ...self, elemental: { ...self.elemental, ep: event.current } },
-    ]);
+    battle = replaceUnits(battle, [{ ...self, elemental: { ...self.elemental, ep: epAfter } }]);
     battle = appendEvents(battle, [
         {
             type: "ELEMENT_HEAL",
             sourceUnitId: request.source?.id ?? null,
-            targetUnitId: self.id,
-            amounts: event.amounts,
+            targetUnitId: target.id,
+            amounts: epGain,
             tick: battle.tick,
         },
     ]);
-    battle = dispatch(battle, identity, "healed", event);
+    battle = dispatch(battle, target, "healed", { request, ...application });
 
-    return { state: battle, value: { type: "APPLIED", amounts: event.amounts } };
+    return { state: battle, value: application };
 }
 
 export const lifetime = lifetimes.create<Burst, Burst, End>({
@@ -333,8 +301,8 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
         const power = query.resolveRecoverySpeed(battle, host)! / TICKS_PER_SECOND;
         const maximum = query.resolveMaxEp(battle, host)!;
         const ep = { ...normalizedEp(self, maximum) };
-        const request: HealRequest = { source: null, power };
-        if (query.canReceiveHeal(battle, host, request)) {
+        const request: HealingRequest = { target: host, source: null, power };
+        if (query.canReceiveHealing(battle, request)) {
             for (const type of ELEMENT_TYPES) {
                 ep[type] = Math.min(maximum, ep[type] + power);
             }

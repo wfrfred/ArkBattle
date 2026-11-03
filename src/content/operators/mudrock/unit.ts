@@ -1,3 +1,5 @@
+import { Hooks } from "../../../core/hook.js";
+import * as unitHooks from "../../../core/unit/hook.js";
 import { normal as normalSite } from "../../terrain/condition.js";
 import { update as updateUnit } from "../../../core/battle/unit.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
@@ -34,8 +36,13 @@ import type { Definition as CardDefinition } from "../../../core/battle/deployme
 import { get as getTile } from "../../../core/battlefield/map/map.js";
 
 import { healFree } from "../../effects/protection.js";
-import { hasVitality, type Vitality } from "../../../core/unit/capability/vitality/index.js";
-import { removeHook, setHook } from "../../../core/battle/damage/index.js";
+import {
+    hasVitality,
+    setDamageReceivingHook,
+    removeDamageReceivingHook,
+    type Vitality,
+} from "../../../core/unit/capability/vitality/index.js";
+import { cancel } from "../../../core/battle/damage/hp/index.js";
 import {
     type Definition as EffectDefinition,
     type Effect,
@@ -140,9 +147,8 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
             const ref = effectRef(self);
 
             return updateUnit(state, [
-                setHook(unitRef(unit), {
+                setDamageReceivingHook(unitRef(unit), {
                     id: `${SHIELD_ID}/${self.id}`,
-                    stage: "receiving",
                     priority: 100,
                     accepts: () => true,
                     invoke(state, context, pending) {
@@ -169,12 +175,7 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
 
                             return {
                                 state,
-                                value: {
-                                    ...pending,
-                                    cancellation: {
-                                        reason: "MUDROCK_SHIELD",
-                                    },
-                                },
+                                value: cancel(pending, "MUDROCK_SHIELD"),
                             };
                         }
 
@@ -207,7 +208,9 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
 
             return unit === undefined
                 ? state
-                : updateUnit(state, [removeHook(unitRef(unit), `${SHIELD_ID}/${self.id}`)]);
+                : updateUnit(state, [
+                      removeDamageReceivingHook(unitRef(unit), `${SHIELD_ID}/${self.id}`),
+                  ]);
         },
         onTick(state, self) {
             const elapsed = state.tick - self.data.lastTick;
@@ -316,7 +319,7 @@ export function create(
                     },
                 },
             ],
-            unitHooks: [],
+            unitHooks: Hooks.empty(),
             initialize: (battle) => ({ state: battle, value: {} }),
         },
         vitality: {
@@ -344,22 +347,19 @@ export function create(
             }),
         },
         skill: { initialize: (battle) => createSkill(battle, skill) },
-        hooks: [
-            {
-                id: "mudrock/install-initial-effects",
-                stage: "enter",
-                invoke(state, self) {
-                    if (!hasVitality(self) || !hasTargetable(self)) {
-                        return { state, value: undefined };
-                    }
+        hooks: Hooks.empty().set(unitHooks.enter, {
+            id: "mudrock/install-initial-effects",
+            invoke(state, self) {
+                if (!hasVitality(self) || !hasTargetable(self)) {
+                    return { state, value: undefined };
+                }
 
-                    const host = unitRef(self);
-                    state = install(state, host, shield).state;
+                const host = unitRef(self);
+                state = install(state, host, shield).state;
 
-                    return { state: install(state, host, healFree).state, value: undefined };
-                },
+                return { state: install(state, host, healFree).state, value: undefined };
             },
-        ],
+        }),
     };
 
     return { definition, action };

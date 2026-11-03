@@ -1,3 +1,5 @@
+import { Hooks } from "../../dist/core/hook.js";
+import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, get } from "../helpers/battle.js";
@@ -21,16 +23,14 @@ test("a field batch publishes final occupancy without moving bodies or executing
     const definition = (id) => ({
         id,
         occupancy: { slot: "OCCUPANT" },
-        hooks: [
-            {
+        hooks: Hooks.empty().set(unitLifecycle.enter, {
                 id: "entry",
-                stage: "enter",
+
                 invoke: (state) => {
                     notices.push(id);
                     return { state, value: undefined };
                 },
-            },
-        ],
+            }),
     });
     const state = battle([
         {
@@ -113,16 +113,16 @@ test("spatial queries distinguish body position from hitboxes and return current
         {
             definition: {
                 id: "offset",
-                hooks: [],
+                hooks: Hooks.empty(),
                 hitbox: { shape: { ...circle(0.5), offset: [2, 0] } },
             },
             position: [0, 0],
         },
-        { definition: { id: "body", hooks: [] }, position: [2, 0] },
+        { definition: { id: "body", hooks: Hooks.empty() }, position: [2, 0] },
         {
             definition: {
                 id: "near",
-                hooks: [],
+                hooks: Hooks.empty(),
                 spatialPresence: {},
                 hitbox: { shape: circle(0.25) },
             },

@@ -5,7 +5,7 @@ import type { Modifier } from "../../../unit/contribution/attribute.js";
 import type { State as BattleState } from "../../state.js";
 import { replaceCard } from "../resources.js";
 import type { Card, TimerTarget } from "./card.js";
-import type { Hook } from "../../../unit/hook.js";
+import type { Entry, Key } from "../../../hook.js";
 import type { Rule } from "./rule.js";
 import * as hook from "../../../hook.js";
 import { get } from "./query.js";
@@ -128,24 +128,26 @@ export function resumeCooldown(
     );
 }
 
-export function setUnitHook(
+export function setUnitHook<H extends Entry>(
     battle: BattleState,
     reference: Ref<Card<any>>,
-    entry: Hook,
+    key: Key<H>,
+    entry: NoInfer<H>,
 ): BattleState {
     const self = requireCard(battle, reference);
-    const unitHooks = hook.set(self.unitHooks, entry);
+    const unitHooks = self.unitHooks.set(key, entry);
 
     return unitHooks === self.unitHooks ? battle : replaceCard(battle, { ...self, unitHooks });
 }
 
-export function removeUnitHook(
+export function removeUnitHook<H extends Entry>(
     battle: BattleState,
     reference: Ref<Card<any>>,
+    key: Key<H>,
     id: string,
 ): BattleState {
     const self = requireCard(battle, reference);
-    const unitHooks = hook.remove(self.unitHooks, id);
+    const unitHooks = self.unitHooks.remove(key, id);
 
     return unitHooks === self.unitHooks ? battle : replaceCard(battle, { ...self, unitHooks });
 }

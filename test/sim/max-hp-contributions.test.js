@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import { update } from "../../dist/core/battle/unit.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 
@@ -18,7 +19,7 @@ const receiver = (hp = 50) => {
     const unit = initialize({
         id: 1,
         position: [0, 0],
-        definition: { hooks: [], id: "host", vitality: { maxHp: 100, defense: 0, resistance: 0 } },
+        definition: { hooks: Hooks.empty(), id: "host", vitality: { maxHp: 100, defense: 0, resistance: 0 } },
     });
     return { ...unit, vitality: { ...unit.vitality, hp } };
 };

@@ -1,7 +1,7 @@
 import type { WorldPosition } from "../geometry/coordinate.js";
 import type { Effects } from "./effect/effects.js";
 import type { Identified } from "../common/ref.js";
-import type { Hook } from "./hook.js";
+import type { Hooks } from "../hook.js";
 
 export type Id = number;
 
@@ -13,7 +13,7 @@ export type LeaveReason = "DEATH" | "RETREAT" | "EXPIRED" | "SCRIPT";
 
 export interface Definition {
     readonly id: DefinitionId;
-    readonly hooks: readonly Hook[];
+    readonly hooks: Hooks;
 }
 
 export interface Departure {
@@ -25,7 +25,7 @@ export interface Unit extends Identified<{ readonly id: Id }> {
     readonly id: Id;
     readonly lifecycle: Lifecycle;
     readonly definition: Definition;
-    readonly hooks: readonly Hook[];
+    readonly hooks: Hooks;
     readonly position: WorldPosition;
     readonly effects: Effects;
 }

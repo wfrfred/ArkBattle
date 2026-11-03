@@ -7,6 +7,8 @@ import type { Blockable } from "./blockable.js";
 import type { Hook } from "./contract.js";
 import type { Rule } from "./rule.js";
 import { prepare } from "./blocker-operations.js";
+import { Hooks } from "../../../hook.js";
+import { prepare as prepareKey } from "../../hook.js";
 
 export type Layer = "GROUND" | "AIR";
 
@@ -62,7 +64,7 @@ export function initialize<U extends Unit & Pick<Blocker, "definition">>(
         state: battle,
         value: {
             ...unit,
-            hooks: [prepare, ...unit.hooks],
+            hooks: Hooks.empty().set(prepareKey, prepare).merge(unit.hooks),
             blocker: {
                 blocked: [],
                 capacity: [],

@@ -8,7 +8,9 @@ export type {
     Departure,
 } from "./unit.js";
 
-export type { Hook, EnterHook, TickHook, PrepareHook, LeaveHook } from "./hook.js";
+export type { EnterHook, TickHook, PrepareHook, LeaveHook } from "./hook.js";
+
+export { enter, tick, prepare, leave, setHook, removeHook } from "./hook.js";
 
 export type { Input } from "./initialize.js";
 

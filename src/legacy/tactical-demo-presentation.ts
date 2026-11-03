@@ -5,7 +5,7 @@ import type { Unit, Id } from "../core/unit/index.js";
 import { hasBlockable } from "../core/unit/capability/blocking/index.js";
 import { blockerOf } from "../core/battle/blocking/index.js";
 import * as projectiles from "../core/projectile/index.js";
-import type { DamageType } from "../core/battle/damage/index.js";
+import type { DamageType } from "../core/battle/damage/hp/index.js";
 import { hasAllegiance } from "../core/unit/capability/allegiance/capability.js";
 import {
     hasElemental,

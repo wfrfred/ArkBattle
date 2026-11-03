@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
@@ -24,7 +25,7 @@ function fixture({ position = [2, 2], velocity = [0, 0], definition = {}, cells 
         FLY: new Map(8, 8, base.map(entry => ({ ...entry, cost: 1 }))),
     }) } };
     const initialized = initialize(battle, {         id: 1, position,
-        definition: { hooks: [], id: "movement", spatialPresence: {}, locomotion: {
+        definition: { hooks: Hooks.empty(), id: "movement", spatialPresence: {}, locomotion: {
             speed: 0.2, minSpeed: 0, halfBodyWidth: 0.2,
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 }, ...definition,
         } },

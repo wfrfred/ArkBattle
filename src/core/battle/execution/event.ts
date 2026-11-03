@@ -1,6 +1,6 @@
 import type { Id } from "../../unit/unit.js";
-import type { DamageType, DamageCancellation } from "../damage/contract.js";
-import type { HealingCancellation } from "../healing/contract.js";
+import type { DamageType, Cancellation as DamageCancellation } from "../damage/hp/contract.js";
+import type { Cancellation as HealingCancellation } from "../healing/hp/contract.js";
 
 export type CombatEvent =
     | {

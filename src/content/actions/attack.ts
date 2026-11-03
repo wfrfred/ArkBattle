@@ -32,22 +32,23 @@ import { hasOffense, resolveAttack } from "../../core/unit/capability/offense/in
 import {
     calculateDamage,
     applyDamage,
-    type DamageRequest,
+    type Request as DamageRequest,
     type DamageType,
-} from "../../core/battle/damage/index.js";
+} from "../../core/battle/damage/hp/index.js";
 
 import { hasVitality } from "../../core/unit/capability/vitality/index.js";
 import {
     calculateHealing,
     applyHealing,
-    type HealingRequest,
-} from "../../core/battle/healing/index.js";
+    type Request as HealingRequest,
+} from "../../core/battle/healing/hp/index.js";
 
 import {
-    damage as damageElement,
-    heal as healElement,
+    hasElemental,
     type Type as ElementType,
 } from "../../core/unit/capability/elemental/index.js";
+import * as epDamage from "../../core/battle/damage/ep/index.js";
+import * as epHealing from "../../core/battle/healing/ep/index.js";
 
 import { type Request, select } from "../../core/battle/targeting/index.js";
 
@@ -220,15 +221,37 @@ function apply(
             return applyHealing(request, calculateHealing(battle, request)).state;
         }
 
-        case "ELEMENT_DAMAGE":
-            return damageElement(battle, target, {
+        case "ELEMENT_DAMAGE": {
+            const receiver = units.get(battle, target);
+            if (receiver === undefined || !hasElemental(receiver)) {
+                return battle;
+            }
+
+            const request: epDamage.Request = {
                 source,
+                target: units.ref(receiver),
                 type: operation.elementType,
                 power: operation.power,
-            }).state;
+            };
 
-        case "ELEMENT_HEAL":
-            return healElement(battle, target, { source, power: operation.power }).state;
+            return epDamage.applyDamage(request, epDamage.calculateDamage(battle, request)).state;
+        }
+
+        case "ELEMENT_HEAL": {
+            const receiver = units.get(battle, target);
+            if (receiver === undefined || !hasElemental(receiver)) {
+                return battle;
+            }
+
+            const request: epHealing.Request = {
+                source,
+                target: units.ref(receiver),
+                power: operation.power,
+            };
+
+            return epHealing.applyHealing(request, epHealing.calculateHealing(battle, request))
+                .state;
+        }
     }
 }
 

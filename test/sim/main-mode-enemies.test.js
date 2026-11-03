@@ -1,8 +1,9 @@
+import { Hooks } from "../../dist/core/hook.js";
 import { tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import * as blockingQueries from "../../dist/core/battle/blocking/index.js";
 import { advance as advanceBlocking, release as releaseBlocking } from "../../dist/core/battle/blocking/index.js";
-import { damage as damageElement } from "../../dist/core/unit/capability/elemental/index.js";
+import * as epDamage from "../../dist/core/battle/damage/ep/index.js";
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -42,7 +43,7 @@ function emptyBattle() {
 }
 
 function guard(id, position, blockCapacity = 1, restrictions = []) {
-  return initialize({ id, position, definition: { hooks: [],
+  return initialize({ id, position, definition: { hooks: Hooks.empty(),
     id: 'test-guard', targetable: { restrictions }, vitality: { maxHp: 1000, defense: 40, resistance: 0 }, allegiance: { side: 'ALLY' }, layer: { type: 'GROUND' },
     hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.2 } },
     blocker: { layer: "GROUND", rules: [], capacity: blockCapacity, radius: 0.70709997 },
@@ -103,7 +104,8 @@ test('hound factory composes capabilities and attacks its retained blocker with 
   assert.equal(definition.locomotion.speed, 1.9 / 30);
 
   const before = advanceBlocking(addUnit(addUnit(emptyBattle(), guard(0, [2, 2])), hound));
-  const damaged = damageElement(before, unitRef(hound), { source: null, type: 'BURN', power: 100 });
+  const request = { source: null, target: unitRef(hound), type: 'BURN', power: 100 };
+  const damaged = epDamage.applyDamage(request, epDamage.calculateDamage(before, request));
   assert.equal(getUnit(damaged.state, 1).elemental.ep.BURN, 900);
   assert.equal(getUnit(damaged.state, 1).vitality.hp, 820);
   const started = startAction(before, actionRef(unitRef(hound), attack));

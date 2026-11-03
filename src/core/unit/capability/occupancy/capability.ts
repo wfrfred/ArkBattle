@@ -5,6 +5,7 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Context, SupportHook } from "./hook.js";
 import { enter, leave } from "../../../battle/occupancy.js";
 import { ref } from "../../query.js";
+import * as lifecycle from "../../hook.js";
 
 export type Slot = "OCCUPANT" | "SUPPORT";
 
@@ -52,25 +53,21 @@ export function initialize<U extends Unit & Pick<Occupancy, "definition">>(
         state: battle,
         value: {
             ...unit,
-            hooks: [
-                ...unit.hooks,
-                {
+            hooks: unit.hooks
+                .set(lifecycle.enter, {
                     id: "@occupancy/enter",
-                    stage: "enter",
                     invoke: (current, self) => ({
                         state: enter(current, ref(self as Unit & Occupancy)),
                         value: undefined,
                     }),
-                },
-                {
+                })
+                .set(lifecycle.leave, {
                     id: "@occupancy/leave",
-                    stage: "leave",
                     invoke: (current, departure) => ({
                         state: leave(current, departure.unit as Unit & Occupancy),
                         value: undefined,
                     }),
-                },
-            ],
+                }),
             occupancy: {
                 tile: initial?.tile ?? null,
                 direction: initial?.direction ?? null,

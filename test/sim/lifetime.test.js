@@ -1,3 +1,5 @@
+import { Hooks } from "../../dist/core/hook.js";
+import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle } from "../helpers/battle.js";
@@ -13,18 +15,16 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
         {
             definition: {
                 id: "owner",
-                hooks: [
-                    {
+                hooks: Hooks.empty().set(unitLifecycle.leave, {
                         id: "observe-removal",
-                        stage: "leave",
+
                         invoke(current, departure) {
                             assert.equal(departure.reason, "DEATH");
                             assert.equal(units.get(current, units.ref(departure.unit)), undefined);
                             calls.push("owner-left");
                             return { state: current, value: undefined };
                         },
-                    },
-                ],
+                    }),
             },
             position: [0, 0],
         },
@@ -104,10 +104,9 @@ test("an ending ancestor rejects new dependents before its running Action receiv
                     initialize: (current) =>
                         actions.createActions(current, actions.create(program)),
                 },
-                hooks: [
-                    {
+                hooks: Hooks.empty().set(unitLifecycle.prepare, {
                         id: "bind-during-departure",
-                        stage: "prepare",
+
                         invoke(current) {
                             assert.equal(
                                 actions.getExecution(current, execution).execution.status,
@@ -127,12 +126,11 @@ test("an ending ancestor rejects new dependents before its running Action receiv
                             attempted = installed.value;
                             return { state: installed.state, value: undefined };
                         },
-                    },
-                ],
+                    }),
             },
             position: [0, 0],
         },
-        { definition: { id: "recipient", hooks: [] }, position: [1, 0] },
+        { definition: { id: "recipient", hooks: Hooks.empty() }, position: [1, 0] },
     ]);
     const source = units.all(state).find((unit) => unit.definition.id === "source");
     const started = actions.start(state, actions.ref(units.ref(source), program));

@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import { tiles as tileEntries } from './tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import { damage as damageTargeting } from "./targeting.js";
@@ -62,7 +63,7 @@ export function unit(
               : "prepare" in action
                 ? actionCapability(action)
                 : action;
-    const definition = { hooks: [],
+    const definition = { hooks: Hooks.empty(),
         id: `action-${id}`,
         vitality: { maxHp: hp, defense: 0, resistance: 0 },
         targetable: { restrictions: [] }, spatialPresence: {}, occupancy: { slot: "OCCUPANT" },

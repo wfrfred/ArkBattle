@@ -1,24 +1,26 @@
+import { Hooks } from "../../dist/core/hook.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
 import * as units from "../../dist/core/unit/query.js";
+import { setHook as setUnitHook } from "../../dist/core/unit/index.js";
 import * as unit from "../../dist/core/battle/unit.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as capability from "../../dist/core/unit/capability/blocking/index.js";
 import * as tiles from "../../dist/core/battle/tile.js";
 import * as maps from "../../dist/core/battlefield/map/map.js";
-import * as damage from "../../dist/core/battle/damage/index.js";
+import * as damage from "../../dist/core/battle/damage/hp/index.js";
 import { advanceMovement } from "../../dist/core/battle/steps/movement.js";
 import { Vec2 } from "../../dist/core/common/vector.js";
 
 const blocker = {
     id: "guard",
-    hooks: [],
+    hooks: Hooks.empty(),
     blocker: { capacity: 3, layer: "GROUND", rules: [] },
 };
 const enemy = {
     id: "enemy",
-    hooks: [],
+    hooks: Hooks.empty(),
     blockable: { volume: 1 },
     layer: { type: "GROUND" },
     allegiance: { side: "ENEMY" },
@@ -214,7 +216,7 @@ test("position adjustment continues after relation release and active departure 
     assert.equal(get(state, 1).blockable.adjustment, null);
 });
 
-test("zero HP keeps the relation until damage confirms death after hpApplied", () => {
+test("zero HP keeps the relation until damage confirms death after Applied", () => {
     let state = battle([
         {
             definition: {
@@ -230,9 +232,8 @@ test("zero HP keeps the relation until damage confirms death after hpApplied", (
     state = blocking.acquire(state, owner, target);
     let observed = false;
     state = unit.update(state, [
-        damage.setHook(owner, {
+        setUnitHook(owner, damage.targetApplied, {
             id: "observe-before-death",
-            stage: "hpApplied",
             priority: 0,
             invoke: (current) => {
                 observed = true;

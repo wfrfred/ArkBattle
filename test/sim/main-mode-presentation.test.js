@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import { definition as skillDefinition } from "../helpers/skill.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -12,7 +13,7 @@ import { actionCapability } from "../helpers/actions.js";
 const data = { lookup() {} };
 
 const unit = (id, definitionId, side = 'ALLY', skill, fields = {}) => initialize({
-  id, position: [id + 1, 4], definition: { hooks: [],
+  id, position: [id + 1, 4], definition: { hooks: Hooks.empty(),
     id: definitionId, allegiance: { side }, layer: { type: 'GROUND' },
     vitality: { maxHp: 1000, defense: 0, resistance: 0 },
     ...(skill === undefined ? {} : { skill: skillDefinition({

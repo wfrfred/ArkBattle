@@ -2,7 +2,7 @@ import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import type { Definition as UnitDefinition, LeaveReason } from "../../unit/unit.js";
 import { initialize as initializeUnit, type Input as UnitInput } from "../../unit/initialize.js";
 import type { WorldPosition } from "../../geometry/coordinate.js";
-import type { Hook } from "../../unit/hook.js";
+import type { Hooks } from "../../hook.js";
 import {
     get as getMechanism,
     remove as removeMechanism,
@@ -21,7 +21,7 @@ export interface PredefinedUnitCreation {
     readonly definition: UnitDefinition;
     readonly position: WorldPosition;
     readonly initial?: Partial<Inputs>;
-    readonly hooks?: readonly Hook[];
+    readonly hooks?: Hooks;
 }
 
 export interface PredefinedMechanismCreation {
