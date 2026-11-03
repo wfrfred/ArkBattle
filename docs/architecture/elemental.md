@@ -67,7 +67,7 @@ type End =
 
 完整操作与查询使用最新 battle，当前时间读取 battle.tick。
 
-EP 损伤与治疗遵守[Calculate 输出计算、Apply 目标接收的项目边界](vitality.md#1-calculate-与-apply-的语义边界)：零计算输出在 Apply 入口拒绝，不进入本笔接收或 Applied；零实际变化允许成功。本节现有完整入口仍需按此边界整理；具体协调接口尚未确定，Burst 生命周期保持下文契约，不按原生事件序列重新设计。
+EP 损伤与治疗遵守[Calculate 输出计算、Apply 目标接收的项目边界](vitality.md#1-calculate-与-apply-的语义边界)：零计算输出在 Apply 入口拒绝，不进入本笔接收或 Applied；零实际变化允许成功。[资格、专属接收与资源提交接口](vitality.md#18-已定稿的接收与资源提交接口)已定稿：Battle 编排通用流程，Elemental 提供 canReceiveDamage／canReceiveHealing、receiveDamage 与 commitDamage／commitHealing。commit 复用对应 EP 业务的 CommitContext，报告由 Elemental 定义；EP Healing 不增加空的 receiveHealing。元素损伤抗性在 Calculate 求值，Burst 与能力通知随提交同步完成，通用 Applied 随后由 Battle 派发。下列现有完整入口尚待迁移，Burst 生命周期保持下文契约。
 
 普通 EP 回复的原生求值、逐型提交、共享 Modifier 时点及行医命中组合见[治疗结算调查](../research/cases/29-hp-and-ep-healing-settlement.md)，与本文的当前项目政策分别记录。
 

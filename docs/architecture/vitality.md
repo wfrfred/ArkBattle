@@ -201,11 +201,7 @@ interface CommitContext extends ReceivingContext {
     readonly received: Pending;
 }
 
-interface Application {
-    readonly hpBefore: number;
-    readonly hpAfter: number;
-    readonly hpLoss: number;
-}
+type Application = vitality.DamageApplication;
 
 interface AppliedContext extends CommitContext {
     readonly application: Application;
@@ -278,6 +274,74 @@ Next 在输入未取消时允许首次取消，输入已有取消时只允许返
 HP ReceivingStarted、HP Damage／Healing Receiving 仍存于 Vitality，EP Damage Receiving 仍存于 Elemental，使用各自 Capability 的 Change API；EP Healing 不机械新增专属 Receiving。Burst 与实际 EP 变化通知保持 Elemental 自身职责。
 
 本地登记随承载 Unit 注销而移除，不建立 BattleState 外置表或单独 Hook Lifetime。临时 Effect 在启停时登记、撤销自己的输出；跨 Unit 安装仍由机制拥有者管理撤销。通用集合不承担派发、接收资格或自动回滚。
+
+### 1.8 已定稿的接收与资源提交接口
+
+Battle 编排四种业务各自的 Calculate／Apply、通用 Hook 与 Outcome；Vitality／Elemental 提供资格查询、专属接收和资源提交。Capability 不执行来源 Formula、Output、通用 BeforeReceive／BeforeCommit／Applied，Battle 不直接写入 HP／EP。以下为待源码迁移的目标接口。
+
+| 职责 | Vitality | Elemental |
+| --- | --- | --- |
+| 只读接收资格 | canReceiveDamage、canReceiveHealing | canReceiveDamage、canReceiveHealing |
+| 专属接收 | receiveDamage、receiveHealing | receiveDamage；EP Healing 不增加空的接收接口 |
+| 资源提交 | commitDamage、commitHealing | commitDamage、commitHealing |
+
+canReceive 只查询当前资格与接收 Rule，不执行 Hook。它接收相应业务判断资格实际需要的事实，不统一要求完整 ReceivingContext：EP 索敌发生在 Calculate 前，不需要也不能伪造 Calculated。HP 接收规则需要计算后的实际伤害类型时，读取该次计算确定的事实，不以 Request 中的初始类型代替。各业务不为形式一致强制同形输入。
+
+receive 接续当前 BattleState 和 Pending，执行该资源的专属接收阶段。已有 ReceivingContext 包含目标，不再单独传入重复的 target：
+
+```typescript
+// Vitality；Elemental 的损伤接收使用 EpDamage 的精确类型。
+receiveDamage(
+    battle: BattleState,
+    context: HpDamage.ReceivingContext,
+    pending: HpDamage.Pending,
+): Result<HpDamage.Pending>;
+
+receiveHealing(
+    battle: BattleState,
+    context: HpHealing.ReceivingContext,
+    pending: HpHealing.Pending,
+): Result<HpHealing.Pending>;
+```
+
+HP Damage 的 receive 包含 ReceivingStarted 和有序 Receiving，HP Healing 只执行自己的 Receiving；EP Damage 执行 EP 专属 Receiving。它们都可能发生同步业务，不能退化为只返回数值的局部计算。取消继续遵守第 1.6 节的 Pending 契约。
+
+commit 直接复用已经定义的精确 CommitContext，不再拆出目标、原始请求和最终接收量作为另一组参数。该 Context 已提供本次固定请求、计算结果与 received，足以支持资源写入、Burst 归因和能力通知。两种能力分别提供：
+
+```typescript
+// Vitality
+commitDamage(battle: BattleState, context: HpDamage.CommitContext): Result<DamageApplication>;
+commitHealing(battle: BattleState, context: HpHealing.CommitContext): Result<HealingApplication>;
+
+// Elemental
+commitDamage(battle: BattleState, context: EpDamage.CommitContext): Result<DamageApplication>;
+commitHealing(battle: BattleState, context: EpHealing.CommitContext): Result<HealingApplication>;
+```
+
+DamageApplication／HealingApplication 由各自资源能力定义。Battle 的 Application 直接引用同一报告，不再声明相同字段的副本。HP 报告保存 hpBefore、hpAfter 和实际 hpLoss／hpGain；EP 报告保存本次实际变化及对应 Burst 创建事实，治疗逐型报告，不把数额在四型间分摊。报告在资源写入时确定，之后的嵌套业务不重算它。
+
+共享 CommitContext 是复用结算事实，不改变业务控制权。commit 从最新 BattleState 读取资源，保留 Receiving 与 BeforeCommit 已完成的变化；进入前已经确认资格且其间没有回调时，内部信任该事实，不重复检查同一组 Rule。特殊生命写入接管仍按具体内容另行研究，不在这里增加占位协议。
+
+Apply 的编排为：
+
+```text
+非零计算输出与目标基础资格
+→ 通用 BeforeReceive
+→ 最新 canReceive
+→ 专属 receive（该业务具有时）
+→ 确认取消与当前资格
+→ 来源 BeforeCommit
+→ 确认当前资格
+→ 对应 Capability.commit（复用 CommitContext）
+→ targetApplied
+→ sourceApplied
+→ HP Damage 按当前 HP 确认死亡
+→ Outcome
+```
+
+只在同步业务可能改变续执行条件的边界重查资格，无回调的连续步骤不追加防御。取消不执行 BeforeCommit、commit 或 Applied；正数计算输出在接收后归零、或实际变化为零，仍可成功提交并派发 Applied。
+
+HP commit 不提前请求死亡，Battle 在两侧 Applied 后读取当前目标，仍为 PRESENT 且 HP 不大于零时才请求离场。EP commit 则同步完成 EP 写入、必要的 Burst 创建及 Lifetime 登记，随后依次执行 burstStarted、实际损失的 damaged 通知、仍有资格的 Burst.onStart，再返回提交报告，供 Battle 派发通用 Applied。EP Healing 的 healed 也由资源操作按实际变化派发；CommitContext 保留其所需的原始请求事实。自然恢复不经过普通 Healing 的 Calculate／Apply。
 
 ## 2. 弱点伤害的项目规则
 

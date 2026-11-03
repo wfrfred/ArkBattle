@@ -68,6 +68,7 @@ Hook 与领域操作按执行语义命名：
 | 完整实例写回 | Action 容器 `replace(definition, next)` 提交聚合条目，Effect／Projectile 容器按各自身份提交完整实例；均由 Core 内部使用。身份、Definition、执行进度与生命周期按对应领域契约维护。 |
 | 程序回调有额外结果 | 可以返回 `Result<T>`；例如 Action Definition.prepare 的准备结果、onTick 的完成指示和 Hook 的业务指令。 |
 | Damage／Healing 两阶段接续 | `applyDamage(request, calculation: Result<CalculatedDamage \| undefined>)` 与 `applyHealing(request, calculation: Result<CalculatedHealing \| undefined>)` 通过计算 Result 显式接续 state 和数值，分别返回领域 Outcome。插入其他操作时调用者须更新其中 state。 |
+| Vitality／Elemental 资源提交 | `commitDamage(battle, context)`／`commitHealing(battle, context)` 复用对应业务的精确 CommitContext，返回 Capability 定义的 Application 报告；专属接收用 receiveDamage／receiveHealing，资格查询用 canReceiveDamage／canReceiveHealing。EP Healing 不增加空的 receiveHealing；Battle 编排 BeforeCommit 与通用 Applied。见[已定稿资源接口](vitality.md#18-已定稿的接收与资源提交接口)。 |
 
 生命周期结束的公开 end／cancel／stop／remove 委托 [Lifetime](lifetime.md)：无活动结算时，本次调用完成 request 与 drain，返回时 Pending 为空；有活动结算时，只同步完成首次请求和 Prepare，不承诺槽位释放、注销或最终通知。重复 PREPARING 请求不等待原 Prepare。Finalize 整体返回才解除依赖者对 owner 的等待；Damage.completed 只报告本次伤害完成，不保证目标离场 Finalize 已完成。
 
