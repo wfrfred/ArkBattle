@@ -51,7 +51,7 @@ interface Definition<S extends object = object> {
     readonly recoverOnLeave: boolean;
     readonly increaseCostOnLeave: boolean;
     readonly deploymentRules: readonly deployment.Rule[];
-    readonly unitHooks: readonly unit.Hook[];
+    readonly unitHooks: Hooks;
     readonly initialize: (battle: BattleState) => Result<S>;
     readonly onTick?: (battle: BattleState, self: Card<S>) => BattleState;
 }
@@ -67,7 +67,7 @@ interface Definition<S extends object = object> {
 
 Card 创建为 addCard(battle, definition)，Battle 输入的 cards 保存完整静态 Definition 数组。相同 Definition 出现多次会创建多张独立 Card。入口校验静态数值配置，并在登记前执行 initialize；没有私有状态时也显式提供返回空对象的初始化程序。Card.initialize 只执行一次，Card 在部署和返手之间持续存在。
 
-实例保留 definition、state、当前 stock、cooldown、recovery、costStage、贡献、动态 rules 和 unitHooks；固定上限从 Definition 读取。unitHooks 是注入以后部署实例的 Unit 生命周期程序，通过 setUnitHook／removeUnitHook 按 ID 登记、替换和移除，已创建 Unit 的程序保持原有装配结果。
+实例保留 definition、state、当前 stock、cooldown、recovery、costStage、贡献、动态 rules 和 unitHooks；固定上限从 Definition 读取。unitHooks 使用[统一 Hooks 集合](hook.md)，注入以后部署的实例，通过 setUnitHook／removeUnitHook 按类型化键与 ID 登记、替换和移除。Card 的修改不追溯改变已创建 Unit；这些实例仍可独立通过通用 Hook Change 修改自身登记。集合接口尚待源码迁移。
 
 setState 接收计算后的状态值。普通 get 返回默认 object 私有状态，精确 Ref 或已知 Definition 查询保留具体私有类型；any 用于 Core 异构边界或泛型约束。activeCount(battle, Ref<Card<any>>) 仅按来源身份统计当前场上实例，接纳带具体私有状态的 Card Ref，不读取或返回其私有状态。
 
@@ -86,7 +86,7 @@ interface DeployRequest<T extends Card<any> = Card> {
     readonly direction?: Direction;
     readonly quote: Quote;
     readonly rules: readonly deployment.Rule[];
-    readonly hooks: readonly unit.Hook[];
+    readonly hooks: Hooks;
 }
 ```
 
@@ -103,7 +103,7 @@ Deployment Rule 为 { id, allows(battle, { request }) }。evaluate 按以下顺�
 3. Card 当前动态规则。
 4. Request 的规则。
 
-同 ID 后者替换前者，保留首次登记的位置。默认规则覆盖库存、间隔、同 Card 在场上限、全场额度、DP、地图范围、同槽占用与禁部署地块。部署类型和特殊场地许可由内容规则表达，规则合并后统一决定部署资格。
+Rule 同 ID 后者替换前者，保留首次登记的位置；Hooks 按同键同 ID 使用相同替换规则。默认规则覆盖库存、间隔、同 Card 在场上限、全场额度、DP、地图范围、同槽占用与禁部署地块。部署类型和特殊场地许可由内容规则表达，规则合并后统一决定部署资格。
 
 Card 动态 Rule 按 DISPLAY／SELECT／DEPLOY 区分上下文；DEPLOY 时传入完整 request。Card.allows 查询展示和点选资格，evaluate／preview 合并全部部署规则并查询部署资格。
 
@@ -146,7 +146,7 @@ predefines: [
             definition,
             position,
             initial: { occupancy: { tile, direction } },
-            hooks: [],
+            hooks: Hooks.empty(),
         },
     },
 ]
@@ -210,6 +210,7 @@ Occupancy 配对解除和实例额度释放是共有清理，在各类真实离�
 Unit 请求结束并发布 LEAVING
 → 顺序执行 prepare（包括 Blocking 自行登记的清理）
 → Lifetime 结束真实 owner／Scope 依赖者
+→ 从最新 Unit 捕获本轮 leave Hook 快照
 → 注销 Unit、释放结构占格，记录移除事实
 → @deployable/release-slots 归还本次部署额度
 → @deployment/death 仅在 DEATH 时结算 Card
@@ -220,7 +221,7 @@ Unit 请求结束并发布 LEAVING
 → 顺序派发全局 leave
 ```
 
-本地 leave 按上述登记顺序执行。Card、Request 与 Definition 的内容程序均能观察到 Unit 已注销、结构占格已释放和部署额度已归还；死亡时，Card 账务也已完成。Occupancy 按上述顺序清理旧业务配对，不影响替代实例的新配对。
+本地 leave 按注销前捕获的快照顺序执行，Context 仍为离场开始时确定的 Departure；准备和依赖者析构期间对 leave 登记的修改可以生效。上述是内建清理与内容的必要偏序，动态组合仍遵守这一业务契约。Card、Request 与 Definition 的内容程序均能观察到 Unit 已注销、结构占格已释放和部署额度已归还；死亡时，Card 账务也已完成。Occupancy 继续读取 Departure 中的旧业务配对，不影响替代实例的新配对。
 
 普通 deploy 在资源提交时增加 usedSlots，并将相同份额写入本次 Deployable State；离场按该份额归还。关卡预置直接初始化 Unit，部署位份额为 0。usedSlots 是独立账户，在 prepare 与依赖者析构期间仍计入该份额；Unit 物理注销后，由 @deployable/release-slots 在本地内容 leave 之前归还。activeCount 按当前仍登记的实例及其来源 Card 统计，因此包含尚未注销的 LEAVING 实例。
 

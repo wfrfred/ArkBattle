@@ -26,9 +26,9 @@ Meta 可以选择配置或提供关卡输入。卫戍的普通／金色等政策
 
 Definition 保存静态配置和纯内容函数，Unit 保存运行时身份、Capability 状态和 Effects。角色无需手工构造标准 Capability State；通用初始化工厂根据 Definition 自动装配它们。
 
-Unit Definition 必填 hooks 数组，静态声明 enter、tick、prepare 和 leave 阶段的 Hook；没有生命周期程序时使用 []。Unit.initialize 从调用方显式提供的初始 hooks 开始，各能力按 fold 登记，最后追加 Definition.hooks；Skill 的入场处理自动作为普通 enter Hook 登记，不修改共享 Definition。这个顺序是创建程序的明确装配顺序，不宣称原生外来效果均有统一的优先级。初始对象、部署、刷怪和预定义出现按输入顺序逐个完成创建、登记和统一 enter Hook；下一对象接续前一对象的最新 BattleState，不预先创建后续实例。
+Unit Definition 必填[类型化 Hooks 集合](hook.md)，静态组合生命周期和各结算领域的固有 Hook；无登记使用 Hooks.empty()。Unit.initialize 从调用方显式提供的初始 hooks 开始，各能力按 fold 登记，最后 merge Definition.hooks；Skill 的入场处理自动作为普通 enter Hook 登记，不修改共享 Definition。所有固有登记在 Unit.add 及任何 enter 之前就绪，不要求通过 enter 安装天赋 Hook。这个顺序是创建程序的明确装配顺序，不宣称原生外来效果均有统一的优先级。初始对象、部署、刷怪和预定义出现按输入顺序逐个完成创建、登记和统一 enter Hook；下一对象接续前一对象的最新 BattleState，不预先创建后续实例。集合及登记接口尚待源码迁移。
 
-battle/unit.add 读取已登记的 PRESENT Unit，直接派发实例 hooks 中的 enter Hook；advance 在阶段开始时固定 Unit 候选，本轮新创建的单位下次参与，轮到单位时读取最新 PRESENT 实例并派发 tick Hook。每次派发固定 Context，Skill 的 enter Hook 也不为后继重新采样 Context；enter／tick 每项前确认宿主仍为 PRESENT。prepare 在 LEAVING 发布后、请求子依赖前执行；leave 在注销后使用开始离场时捕获的 Departure，保留清理前 SP 等事实，不查询已经删除的宿主。跨同步操作后当前运行状态仍需重新查询。具体契约见 [Unit 生命周期](capability.md#初始化与装配)。
+battle/unit.add 登记 PRESENT Unit 后派发 enter 键；advance 在阶段开始时固定 Unit 候选，本轮新创建的单位下次参与，轮到单位时读取最新 PRESENT 实例并派发 tick 键。运行时可通过通用 Hook Change 修改登记，包括生命周期键；enter／tick／prepare 固定本轮候选 ID，逐项读取最新登记。每次派发固定 Context，Skill 的 enter Hook 也不为后继重新采样 Context；enter／tick 每项前确认宿主仍为 PRESENT。prepare 在 LEAVING 发布后、请求子依赖前执行；leave 的 Hook 快照在注销前读取，注销后使用开始离场时捕获的 Departure 执行，保留清理前 SP 等历史事实，不查询已经删除的宿主。跨同步操作后当前运行状态仍需重新查询。具体契约见 [Unit 生命周期](capability.md#初始化与装配)。
 
 具体 Unit 可以直接增加自己的运行时字段，例如 Boss 阶段与转阶段截止时间。Unit 的 tick Hook 位于部署、刷怪之后，Effect、技能与行动推进之前；需要立即响应伤害或行动结束的阶段变化仍由对应领域 Hook 或内容程序执行。单位行为推进不代替各 Capability 的独立推进，异常直接向外抛出，Tick 成功后才发布新状态。
 

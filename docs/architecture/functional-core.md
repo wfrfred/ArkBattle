@@ -202,7 +202,7 @@ Locomotion 和阻挡站位推进只发布位置、速度或计划，不调用 Bl
 
 ## 6. Hook 和生命周期的纯契约
 
-Hook 使用统一的泛型状态转换与动态派发协议，登记仍由所属领域持有。公共层只依赖 BattleState、Result 和字符串登记身份，不认识具体 Capability。
+Hook 使用统一的泛型状态转换与动态派发协议。领域定义类型化键与执行时点，Unit 本地登记保存在不可变 Hooks 集合；专属接收与能力事实通知仍存于 Capability。公共集合只要求条目 ID，不认识具体 Capability，完整目标契约见 [Hook 集合与登记](hook.md)。
 
 实例自身的 Definition 程序使用 onStart／onTick／onEnd；公共生命周期通知使用对象名＋Started／Ended，业务事实使用对象名＋过去分词，前置干预使用 beforeXxx。具体 Hook 类型使用对应名称＋Hook，通用 Hook<C, T> 协议不变。start／end、finish、cancel 分别表达生命周期、正常完成与取消，completed 只表达一次业务结算完成；不同语义阶段不为名称一致而合并。完整约定见 [接口命名规则](api-conventions.md#1-基本分类)。
 
@@ -228,7 +228,7 @@ dispatch(battle, fixedContext, initialValue, options): Result<T>;
 
 candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定。每项依次检查 stop、find、accepts，再 invoke；三个查询只读，不消费 RNG。find 重新读取最新登记并确认节点／阶段资格。accepts 缺省为允许，返回 false 则跳过；stop 结束整次派发，保留已完成的状态和值，不自动取消业务或回滚。嵌套派发独立取得 Context、current 和候选；返回后接续其 Battle，外层 Context 不变，外层 current 由当前 Hook 返回值决定。
 
-上述候选 ID 协议用于动态登记，例如全局 Unit 观察者与 Capability Hook。Unit 本地的 enter／tick／prepare／leave 在构造期装配，运行期间不提供增删接口，直接按本阶段的固定 Hook 对象序列执行。它们同样固定 Context、逐项接续 BattleState，并在最新 Battle 上判断 accepts；enter／tick 每项前确认宿主仍为 PRESENT，prepare／leave 使用固定 Departure，leave 不查询已注销的宿主。装配时同 ID 后者覆盖并保留首次位置，不在执行时去重。
+上述候选 ID 协议同样用于 Unit 的 enter／tick／prepare。固有 Hooks 在构造期全部装配，运行时可经通用 Change 登记、替换和撤销生命周期键；每次派发固定 Context，逐项接续 BattleState、读取最新登记并判断 accepts。enter／tick 的 Context 是本阶段采样的 Unit，每项前确认宿主仍为 PRESENT；prepare 使用固定 Departure。leave 在物理注销前从最新 Unit 捕获本轮 Hook 对象快照，注销后按序执行并检查 accepts，不查询已删除宿主。leave 登记快照与 Departure 的历史事实分别采样。同键同 ID 替换保留位置，不重放已完成阶段。
 
 不需要操作值的通知使用 T=void，仍返回 Result<void>，C 也可为 void。需要终止后续通知时，领域定义自己的控制值，不把业务取消、停止派发和生命周期终结混为同一个布尔值。Vitality 的阶段控制只在本节点生效，不能成为后续业务事实的一部分。
 
@@ -236,7 +236,7 @@ candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定�
 
 Unit 持有不可变 Effects 容器，内部 Store<Id, Effect<any, any>> 保存异构完整实例及 ID 进度。普通 get(id)／values() 返回默认 object／object 的完整 Effect，包含 data 与原 Definition；精确 Ref／Definition 查询保留已有类型证明。values／keys 返回绑定容器版本的 Query；Core 同样使用 get(id) 返回的默认 object 完整实例调用自身 Definition。Core 不解释未知 data 或 H；跨完整操作后仍读取最新实例。真实所有权保护结束中的宿主与存储，不保留通用终止 fallback；Departure 等明确历史载荷按本领域业务输入保存。
 
-Unit.initialize 始终创建空 Effects；初始内容在宿主登记后，通过既有 `stage: "enter"` 的 Unit Hook 调用 install。各领域在完整创建／启动与结束操作中登记／注销关系，不由普通 Unit update／replace 投影。createBattleState 建立空 Lifetime 图，不扫描预置 Unit；初始对象通过完整 add 入场。Effect.source 仅以 `Ref<Unit> | null` 表达施加者，来源存活与生命周期 Scope 分开，来源离场本身不终结 Effect。
+Unit.initialize 始终创建空 Effects；初始内容在宿主登记后，通过 enter 键下的 Unit Hook 调用 install。各领域在完整创建／启动与结束操作中登记／注销关系，不由普通 Unit update／replace 投影。createBattleState 建立空 Lifetime 图，不扫描预置 Unit；初始对象通过完整 add 入场。Effect.source 仅以 `Ref<Unit> | null` 表达施加者，来源存活与生命周期 Scope 分开，来源离场本身不终结 Effect。
 
 容器不接收战斗状态，也不决定生命周期阶段；完整 replace 由 Core 提交已经配对的值。Effect 容器保存宿主内 ID 进度，Action 的 nextExecutionId 保存于 Capability；Actions 按配置 ID 保存聚合条目，本轮终结只清空 execution。普通内容通过 `effects.setData(battle, ref, nextData)` 提交私有 data，Action 的 setExecutionState 通过本轮 Execution Ref 使用同样形式设置 execution.state，setState／setCooldown 通过持久 Action Ref 分别设置持久 state／Cooldown。Action Ref 由 host 与 Definition 定位，保留私有类型配对；Execution Ref 仍由 host 与本轮 execution.id 定位。两种引用读取同一聚合条目，不增加运行容器或 ID 分配。操作从最新 battle 读取当前实例，只替换指定字段；给定载荷与当前字段引用相同时不生成新 battle。Action 的 execution 为 ENDING 时不允许普通执行写入；持久字段和 Effect 的结束清理仍按各自协议更新。
 

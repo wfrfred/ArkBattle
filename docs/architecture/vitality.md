@@ -1,6 +1,6 @@
 # Vitality、Damage 与 Healing 设计
 
-Vitality 保存 HP、MaxHP、DEF、RES，以及伤害与治疗的 Hook 登记和伤害接收规则。`battle/damage/`、`battle/healing/` 提供普通伤害与治疗的完整操作，复用[公共 Hook 契约](functional-core.md#6-hook-和生命周期的纯契约)。
+Vitality 保存 HP、MaxHP、DEF、RES，以及伤害与治疗的专属接收 Hook 和伤害接收规则。通用结算 Hook 由对应领域定义，存于来源或目标的 Unit.hooks。`battle/damage/`、`battle/healing/` 提供 Calculate／Apply 操作，复用[公共 Hook 契约](functional-core.md#6-hook-和生命周期的纯契约)；Hook 类型与登记的目标契约已定，源码尚待迁移。
 
 上层分别从 [vitality/index.ts](../../src/core/unit/capability/vitality/index.ts)、[damage/index.ts](../../src/core/battle/damage/index.ts) 与 [healing/index.ts](../../src/core/battle/healing/index.ts) 导入公共契约。Damage／Healing 保持 Calculate／Apply 两阶段；Hook 登记与公开类型可由入口取得，内部 dispatch 不公开。
 
@@ -175,7 +175,7 @@ Parameters Hook 使用固定 Request 和当前 DamageParameters；Output 使用�
 
 AppliedContext 保留 request、calculated、Receiving 最终 received 和本次 application，不重复携带 Outcome；Outcome 的 APPLIED 分支引用同一个 Application 类型。CompletedContext 保留 request、可能 undefined 的 calculated 和同一份 outcome。application 的 hpBefore／hpAfter／hpLoss 在普通 HP 写入处确定，不受之后治疗、嵌套伤害或离场影响。
 
-Formula 分来源与目标两个节点，Output 属于来源，BeforeReceive／ReceivingStarted／Receiving 属于目标，BeforeCommit 属于来源。Applied 和 Completed 依次通知目标与来源，同一宿主不重复通知。每个节点、每个宿主的派发独立固定候选 ID；目标响应中新登记的来源 Hook 可进入随后独立的来源派发。具体登记 API、优先级及生命周期清理在后续登记设计中确定，不由本节的精确类型预定。
+Formula 分来源与目标两个节点，Output 属于来源，BeforeReceive／ReceivingStarted／Receiving 属于目标，BeforeCommit 属于来源。Applied 分别通过 targetApplied 与 sourceApplied 键依次通知目标和来源，同一 Unit 承担两个角色时也分别执行各自登记；Completed 仍按既定终结通知契约，同一宿主不重复通知。每个节点、每个宿主的派发独立固定候选 ID，目标响应中新登记的来源 Hook 可进入随后独立的来源派发。登记、优先级和生命周期见第 1.7 节。
 
 DAMAGE 事件的 amount 表示本次实际 HP 损失，receivedAmount 保留 Receiving 最终数值，cancellation 区分取消。取消后目标已被嵌套移除时仍记录事件，hp 为 null，不伪造当前生命快照。零数值输入在 Apply 入口 REJECTED，不进入普通受击回复；无敌等入口 Rule 拒绝也不进入 Receiving。取消不停止后继 Receiving Hook，次数盾自行筛除取消或非正数值；反伤可继续。
 
@@ -211,13 +211,17 @@ interface AppliedContext extends CommitContext {
     readonly application: Application;
 }
 
-type SourceFormulaHook = Hook<Context, Parameters>;
-type TargetFormulaHook = Hook<Context, Parameters>;
-type OutputHook = Hook<OutputContext, number>;
-type BeforeReceiveHook = Hook<ReceivingContext, void>;
-type ReceivingStartedHook = Hook<ReceivingContext, void>;
-type BeforeCommitHook = Hook<CommitContext, void>;
-type AppliedHook = Hook<AppliedContext, void>;
+interface Entry<C, T> extends Hook<C, T> {
+    readonly priority?: number;
+}
+
+type SourceFormulaHook = Entry<Context, Parameters>;
+type TargetFormulaHook = Entry<Context, Parameters>;
+type OutputHook = Entry<OutputContext, number>;
+type BeforeReceiveHook = Entry<ReceivingContext, void>;
+type ReceivingStartedHook = Entry<ReceivingContext, void>;
+type BeforeCommitHook = Entry<CommitContext, void>;
+type AppliedHook = Entry<AppliedContext, void>;
 ```
 
 Request 始终表示初始事实；公式参数、输出量和接收工作值只经对应 Hook 的 current 接续。OutputContext.type 是公式确定的类型，不重新读取 Request 的初始类型。BeforeReceive、ReceivingStarted、BeforeCommit 与 Applied 只接续 BattleState 业务；Applied 的报告在提交时确定，只对成功提交派发，零实际变化仍可成功。其余业务定义自己的 Application，不重复声明成功 Outcome 的另一份报告。
@@ -245,7 +249,7 @@ interface Pending<
 type Next<C extends Cancellation | null> =
     C | (null extends C ? Cancellation : never);
 
-interface ReceivingHook extends Hook<ReceivingContext, Pending> {
+interface ReceivingHook extends Entry<ReceivingContext, Pending> {
     readonly invoke: <C extends Cancellation | null>(
         battle: BattleState,
         context: ReceivingContext,
@@ -264,6 +268,16 @@ amount 与 cancellation 独立：接收量可以归零而未取消，取消也�
 Next 在输入未取消时允许首次取消，输入已有取消时只允许返回原取消类型；amount 始终为 number。ReceivingHook 可作为普通 `Hook<ReceivingContext, Pending>` 交给现有派发器，不增加运行时取消校验。
 
 领域提供纯工作值构造函数 cancel，内容在 invoke 的返回值中使用 `value: cancel(current, "EVADE")`。cancel 保留当前 amount，已有 cancellation 则原样保留，否则写入新原因；必要的条件类型断言集中在此构造函数内部。内容不需要显式操作 Next 或编写类型断言，普通改量继续使用 `{ ...current, amount: nextAmount }`。
+
+### 1.7 已定稿的 Hook 登记、顺序与生命周期
+
+使用[类型化键与 Unit 本地 Hooks 集合](hook.md)。HP Damage、EP Damage、HP Healing、EP Healing 分别导出自己的 sourceFormula、targetFormula、output、beforeReceive、beforeCommit、targetApplied、sourceApplied 等实际需要的精确键，不通过联合 Context 或中央事件目录描述。
+
+固有登记直接写入 Unit Definition.hooks，在任何 enter 程序之前完成装配。运行时统一使用 `unit.setHook(ref, key, hook): Change`／`unit.removeHook(ref, key, id): Change`，经 Unit.update 发布；生命周期键也允许修改，不另设登记权限或领域转发入口。集合本身只要求 id，priority 在上文结算域的实际 Hook 类型中声明，缺省为 0；同阶段按 priority 降序，相同时保留登记顺序。同键同 ID 替换保位，当前派发不因替换重新排序。
+
+HP ReceivingStarted、HP Damage／Healing Receiving 仍存于 Vitality，EP Damage Receiving 仍存于 Elemental，使用各自 Capability 的 Change API；EP Healing 不机械新增专属 Receiving。Burst 与实际 EP 变化通知保持 Elemental 自身职责。
+
+本地登记随承载 Unit 注销而移除，不建立 BattleState 外置表或单独 Hook Lifetime。临时 Effect 在启停时登记、撤销自己的输出；跨 Unit 安装仍由机制拥有者管理撤销。通用集合不承担派发、接收资格或自动回滚。
 
 ## 2. 弱点伤害的项目规则
 
@@ -365,7 +379,7 @@ applyHealing(request, calculation): Result<HealingOutcome>;
 
 Calculate 依次派发来源 Formula、目标 Formula，将当前 power 与 multiplier 相乘，再派发来源数值 Output。Request 始终表示初始事实，当前 Parameters 与 Output 数值逐项接续。初始负 power 按零处理；每个完成阶段的最终数值必须有限且非负。目标缺失、LEAVING 或 HP 为零时无法计算，已完成的状态前缀仍返回。
 
-Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本笔接收与 Applied。正数治疗确认目标当前存在、PRESENT 且 HP 大于零，按第 1 节的接收与提交边界执行，读取最新 HP、MaxHP 截断恢复量并提交；该 HP 发布不附带 Blocking 维护。随后按目标、来源顺序派发 Applied 与 Completed，同一宿主不重复通知。HP Healing 不另设 ReceivingStarted。来源缺失或 LEAVING 时不运行其 Hook，但不因此取消仍可作用于有效目标的已采样治疗。
+Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本笔接收与 Applied。正数治疗确认目标当前存在、PRESENT 且 HP 大于零，按第 1 节的接收与提交边界执行，读取最新 HP、MaxHP 截断恢复量并提交；该 HP 发布不附带 Blocking 维护。随后依次派发 targetApplied 与 sourceApplied，即使来源与目标为同一 Unit 也分别执行；Completed 保持同一宿主不重复通知。HP Healing 不另设 ReceivingStarted。来源缺失或 LEAVING 时不运行其 Hook，但不因此取消仍可作用于有效目标的已采样治疗。
 
 结果与 Damage 使用相同的 REJECTED、CANCELLED、UNAVAILABLE、APPLIED 区分。PendingHealing 保存 amount 与可空 cancellation；取消不停止剩余 Receiving Hook。ApplicationResult 保存 hpBefore、hpAfter、hpGain，后续嵌套业务不追溯修改这次恢复事实。Received amount 与实际 hpGain 分开；完整恢复量不在 Calculate 提前按缺失 HP 截断。
 

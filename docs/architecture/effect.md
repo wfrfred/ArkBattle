@@ -39,7 +39,7 @@ Effect 需要保障的结果是：
 | --------------- | ------------------------------------------------- | ---------------------------- |
 | Effect          | 安装、私有数据、生效状态、覆写组、期限、结束     | Unit.effects                 |
 | Effects         | 不可变异构实例存储、增删查改与宿主内 ID 进度      | Unit.effects                 |
-| Hook            | 不可变登记项及 set／remove 数组操作               | 提供该事件的 Capability      |
+| Hook            | 不可变登记项、类型化集合及动态登记               | Unit.hooks 或事件专属 Capability |
 | Contribution    | 不可变数据包、set／remove、分组选取与数值辅助     | 提供该属性的 Capability      |
 | Capability      | 属性读写、事件阶段、调用顺序、短路与修改响应      | 对应 Capability State        |
 | 具体 Definition | 将生命周期回调与 Capability 操作组合为玩法        | 实例 data 保存内容需要的进度 |
@@ -87,7 +87,7 @@ S 是实例私有数据的类型，例如护盾层数、周期进度或 Aura 的
 
 覆写组与固定优先级属于 Definition，实例直接读取 `definition.group`。每次安装的初始属性使用 `Initial<S>`：`source`、`scopes`、`deadline`、`data` 和 `enabled`。source 为 `Ref<Unit> | null`，省略时为 null；scopes 只作为创建时的 Lifetime 依赖输入，不保存到 Effect；deadline 为独立的绝对 Tick 期限，省略或 null 表示不限期。这些输入不覆写 Definition 的规则。
 
-Unit 初始化始终建立空 Effects，不接收预装容器。初始 Buff、护盾等由 Unit Definition 中 `stage: "enter"` 的 Hook 在宿主登记后调用 install，按正常安装流程执行 onInstall、生效协调与依赖登记。
+Unit 初始化始终建立空 Effects，不接收预装容器。初始 Buff、护盾等由 Unit Definition 的 enter 键下的 Hook 在宿主登记后调用 install，按正常安装流程执行 onInstall、生效协调与依赖登记。
 
 当前 battle/unit.add 先登记宿主，再按实例 hooks 的登记顺序统一派发 enter Hook，不推断部署事实或扫描全场 Blocking。Skill 的入场处理也是其中一个 Hook；初始 Effect 与技能入场业务的先后由装配顺序决定，不另设 Effect 入场阶段。默认装配先登记 Skill，再追加 Definition 中的内容 Hook。
 

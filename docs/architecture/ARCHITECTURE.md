@@ -88,9 +88,9 @@ Content 直接组合 Unit Definition 与所需的 Catalog Definitions，不经�
 
 Capability.initialize(battle, unit) 返回 Result<U & Capability>，从 unit.definition 读取自身配置，保留已有 Unit 字段并添加自身状态或 Hook。Unit.initialize(battle, input) 从基础 Unit 开始按 initializer 序列 fold，逐项接续 battle 与 Unit，完成后返回 Result<Unit & Product<D>>，再由创建流程登记。Product<D> 由 Catalog 从 initializer 字典推导，仅承诺明确选择的标准能力状态，并保留原始 Definition D 的字面量及内容字段。通用创建不接受预制能力状态或独立当前 tick，路线与部署等在明确的业务创建流程中设置。Skill／Action Capability 非泛型，内部普通查询集中恢复具体程序与私有状态的类型配对；Action 每个配置项在 Unit 初始化时建立聚合条目，保存 Definition、持久 state、Cooldown 和可空的 Execution；每次启动创建新执行身份，终结只清空 execution。详见 [Capability 初始化与装配](capability.md#初始化与装配)。标签归属仍待整理，现有 Profile 依赖见 [后续整理记录](capability.md#待整理单位标签与-profile-依赖)。
 
-Effect 是附着于 Unit 的实例；`Unit.effects` 持有实例集合。`unit/effect/`、`unit/contribution/` 与 `unit/capability/` 平级；通用 Hook 位于 core/hook.ts，unit/hook.ts 只定义 Unit 的阶段类型。Capability 保存本领域的 Hook 和 Contribution；具体 Effect Definition 组合这些公开操作，抽象 Effect 只管理实例与生命周期。
+Effect 是附着于 Unit 的实例；`Unit.effects` 持有实例集合。`unit/effect/`、`unit/contribution/` 与 `unit/capability/` 平级。公共 Hook 模块提供协议、类型化键与集合；Unit 模块定义自身生命周期键，Capability 保存专属 Hook 和 Contribution。具体 Effect Definition 组合这些公开操作，抽象 Effect 只管理实例与生命周期。
 
-Unit 初始化始终建立空 Effects，不接受预装实例输入。初始护盾、Buff 等通过现有 Unit Definition 的 `stage: "enter"` Hook 在登记后调用 Effect.install，接续正常安装与生效结算。
+Unit 初始化始终建立空 Effects，不接受预装实例输入。初始护盾、Buff 等通过 Unit Definition 的 enter 键下的 Hook 在登记后调用 Effect.install，接续正常安装与生效结算。
 
 眩晕、无敌、治疗不可选中等由具体 Effect 组合各领域规则；领域查询读取当前能力事实。沉默与静默、免疫与反制等尚未完成的机制见 [目标语义与实现缺口](tactical-semantics.md)。
 
@@ -108,8 +108,8 @@ Rule、Hook、Contribution 与 Blocker.layer 的公开写入绑定 Typed Ref，�
 | Action             | 启动周期、运行实例、推进、取消与完成 | Definition 保存基础间隔、速度与程序；Unit.action.actions 按配置 ID 保存持久 state、Cooldown 与当前 Execution；nextExecutionId、贡献与 Rule 归 Capability |
 | Skill              | SP 获取与支付、激活许可、持续、结束和弹药消耗  | unit/skill 保存领域程序与资源操作；capability/skill 定义宿主能力与 Change 工厂，事实仍存于 Unit.skill；Effect 通过本轮 Skill Lifetime 关联 |
 | Targeting          | 候选、查询资格、优先级与确定性选择             | 读取当前事实；比较器纯函数并追加确定性 tie-break                                  |
-| Damage             | 公式、输出、有序接收、普通扣血及死亡       | 流程在 battle/damage；Offense／Vitality／Elemental 提供属性，Vitality 保存 HP 与 Hook／规则登记。特殊生命保护尚待设计 |
-| Healing            | 计算、输出、有序接收、普通恢复与通知           | 流程在 battle/healing；Vitality 保存 HP／MaxHP 与 Hook。治疗不可选中由 Targetable 表达，明确 Ref 的治疗只检查生命周期和接收 Hook |
+| Damage             | 公式、输出、有序接收、普通扣血及死亡       | 流程在 battle/damage；Offense／Vitality／Elemental 提供属性。通用结算登记存于 Unit.hooks，专属接收与规则留在资源能力。特殊生命保护尚待设计 |
+| Healing            | 计算、输出、有序接收、普通恢复与通知           | 流程在 battle/healing；Vitality 保存 HP／MaxHP 与专属接收 Hook，通用结算登记存于 Unit.hooks。治疗不可选中由 Targetable 表达，明确 Ref 的治疗只检查生命周期和接收 Hook |
 | Elemental          | 元素值、损伤与治疗、爆发身份及动态冷却预算 | Unit 直接关联 Definition，状态保存四型 EP 与当前 Burst；元素损伤抗性和元素 HP 伤害抗性分别表达 |
 | Effect             | 附着实例、私有状态、生效切换、覆写与结束       | Unit 持有实例与独立 deadline；依赖归 Lifetime；具体 Definition 登记 Hook 和 Contribution |
 | Lifetime           | 结束幂等、依赖传播与完成调度 | 静态描述符配对 Typed Ref；图保存 owner 与显式依赖；Pending 保存本次请求与阶段，owner 等全部依赖者完整 Finalize |
@@ -189,7 +189,7 @@ Effect 直接持有 `Definition<S, H>` 与私有 State。S 描述实例状态，
 
 Hook 是函数与资格开关的不可变登记项，由对应领域或 Capability 保存。Effect 可以在 onInstall 登记 Hook，资格闭包读取当前输入版本的 Effect，在 onEnd 撤销。执行 Hook 返回新状态及领域值；动态登记固定候选 ID 并逐项从返回版本重查登记与资格，嵌套操作使用自己的候选。公共 Hook 固定 Context、接续 battle 与 current；领域决定参与资格、排序及停止条件。
 
-Unit Definition 必填 hooks，声明 enter／tick／prepare／leave 内容；初始化将初始、能力与内容 Hook 按注册序装配到实例 hooks，同 ID 后者替换并保留首次位置。Unit 本地生命周期没有运行时增删接口，直接按固定 Hook 对象序列执行；accepts 使用最新 BattleState，enter／tick 每项前确认宿主仍为 PRESENT，prepare／leave 保留固定 Departure。Skill 入场处理也作为普通 enter Hook。Deployment 在 fold 前登记部署通知与被动死亡响应，Occupancy 随后登记配对程序，先登记先执行。全局 Unit 观察者继续使用动态派发；主动撤退在请求 Unit 离场前直接结算 DP、Card 费用阶段与库存恢复。承载变化由 Occupancy 的 SUPPORT Definition 保存 occupantAdded／occupantRemoved Hook；双方 State 共享已通知的 pair，Context 是绑定建立时的快照，实际当前状态须重读。通用 Unit 不添加能力专属回调，也不经全场登记差分替 Occupancy 组织业务。
+Unit Definition 与实例持有[类型化键组织的不可变 Hooks 集合](hook.md)，无登记使用 Hooks.empty()。各领域提供精确键与执行时点，Unit 不枚举具体结算 Context；专属接收 Hook 仍归 Capability。初始化按既有装配序合并初始、能力和 Definition 的登记，同键同 ID 后者替换且保留首次位置；全部固有 Hook 在 add 前就绪。通用 setHook／removeHook 返回 Change，生命周期键也允许运行时修改。enter／tick／prepare 固定候选 ID 并读取最新登记，Context 固定；enter／tick 每项前确认 PRESENT，prepare／leave 保留 Departure，leave 在注销前取最新程序快照、注销后执行。集合与派发接口尚待源码迁移。Skill 入场处理仍是普通 enter Hook；Deployment 在 fold 前登记部署通知与被动死亡响应，Occupancy 随后登记配对程序，先登记先执行。主动撤退在请求 Unit 离场前直接结算 DP、Card 费用阶段与库存恢复。承载通知仍归 Occupancy 的 SUPPORT Definition 与共享 pair，不由通用 Unit 推断。
 
 Context 表达本次调用的数据与必要只读参数；Unit、Effect 和 State 都对应明确输入版本。内容先形成消耗后的新状态再进入同步嵌套，返回后从后继版本查询。候选范围属于调用期，不进入长期快照；Context 不通过可变 holder 或动态 getter 追踪当前世界。
 
@@ -258,7 +258,7 @@ Unit 基础模块使用 unit.Id、unit.Definition、unit.Lifecycle；查询层�
 
 内容配置与行为定义使用 Definition，运行时实体使用领域名称，例如 EffectDefinition / Effect、ProjectileDefinition / Projectile、MechanismDefinition / Mechanism。Runtime 用于持有并推进可变状态的容器；Compiled 用于确实经过编译而产生的独立执行表示；Program 用于实际可执行的程序，不作为普通定义的领域别名。
 
-`unit/contribution/` 提供不可变数据包、数组操作与公共数值运算；core/hook.ts 提供通用 Hook 数据、dispatch 与数组操作；unit/hook.ts 仅声明 Unit 生命周期阶段类型；`unit/effect/` 管理附着实例与生命周期。Capability 持有自身的集合并提供领域写入、查询与调用协议，具体 Definition 完成组合。
+`unit/contribution/` 提供不可变数据包、数组操作与公共数值运算；公共 Hook 模块提供协议、类型化键、Hooks 集合与 dispatch，Unit 模块提供自己的生命周期键和通用 Hook Change 工厂；`unit/effect/` 管理附着实例与生命周期。各领域定义精确键与派发，Capability 持有专属登记并提供写入、查询与调用协议，具体 Definition 完成组合。
 
 只导出实际需要的契约。类型描述应与转换真实保留的信息一致。使用能够表达约束的简单类型结构；映射与条件类型集中用于确有价值的能力推导。
 
