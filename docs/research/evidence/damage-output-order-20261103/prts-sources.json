@@ -1,0 +1,14 @@
+{
+  "checkedOn": "2026-11-03",
+  "sourceClass": "PRTS community wiki, not official documentation",
+  "sources": [
+    {"url": "https://prts.wiki/w/事件", "section": "伤害相关的时点", "supports": "Target BeforeApplying is distinct from target Applying and from source OutputModifier/OutputDamage; names alone do not prove that every stage is necessary in ArkBattle."},
+    {"url": "https://prts.wiki/w/浮空信件", "section": "天赋与能力", "supports": "Before HP/EP inputs the enemy may gain SP and teleport; actual archived counter buff is not silenceable, so source silence does not establish the proposed counterexample."},
+    {"url": "https://prts.wiki/w/蒂比#技能", "section": "S2 紧急赶场通知", "supports": "Automatic defensive activation is S2. Its current trigger template is Applying6; it must not be described as target Before5 just because it precedes ordinary receiving judgments."},
+    {"url": "https://prts.wiki/w/绽放", "section": "备注", "supports": "The relic's HP-damage SP gain observes source OutputDamage. This does not reverse its relative order with Tippi's Applying6 trigger when Before5 and source11 are swapped."},
+    {"url": "https://prts.wiki/w/羽毛笔#技能", "section": "S2 收割", "supports": "Output-stage recalculation can overwrite previously modified damage; reachability of a target-before modification must be established separately."},
+    {"url": "https://prts.wiki/index.php?title=禁闭所&oldid=442044", "section": "装置机制", "supports": "Enemy default-category device only accepts attacks from adjacent tiles and zeros modifiers from outside. Installed prefab and native targeting are independently checked."},
+    {"url": "https://prts.wiki/w/隐德来希#技能", "section": "S3 灵与欲的惜别", "supports": "The candle's special damage admission is tied to Entelechia; the candidate pairing with Crow is not an ordinary legal attack."}
+  ],
+  "limits": "A finite negative search is not a proof that source output and target before-applying commute for all native content. No game execution or active XLua validation."
+}

@@ -1,0 +1,454 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-03",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/healing-settlement-20261103/content/extract_content.py",
+      "bytes": 5006,
+      "sha256": "475b7452fc1a03beb1802f1b517e6af9e515e0bd1100c9c22437ce12dc1c7387"
+    },
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+        "bytes": 8161,
+        "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      }
+    ],
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_421_crow.ab",
+        "bytes": 21804,
+        "sha256": "df04e989102d84f030ca6697dea90efdaf81a273cbcd110978cc9b1ea5438031"
+      }
+    ],
+    "scope": "Static installed type-tree content; two selected ordinary healers; no runtime or XLua verification."
+  },
+  "result": [
+    {
+      "bundle": "charpack/char_421_crow.ab",
+      "file": "CAB-02047c32aaf8d32a5697a6b6c7b09e5e",
+      "pathId": "-3069682105502667693",
+      "name": "S2",
+      "hierarchy": [
+        {
+          "name": "S2",
+          "gameObjectPathId": "4622051419759373395",
+          "transformPathId": "-6507484921857053613"
+        },
+        {
+          "name": "Modes",
+          "gameObjectPathId": "5525459329579674707",
+          "transformPathId": "-2964940889979622317"
+        },
+        {
+          "name": "char_421_crow",
+          "gameObjectPathId": "5605796113856916563",
+          "transformPathId": "-3700530069251232685"
+        }
+      ],
+      "sha256": "37ebb6fe47350d91c49e7edec04d88583cda4eb7dad22b831d95f5df8dbeaefc",
+      "rawFile": "char_421_crow--3069682105502667693.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 4622051419759373395
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 5390319429299248724
+        },
+        "common:427": "",
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": -6961987223885779885
+        },
+        "_animatorHooker": {
+          "m_FileID": 0,
+          "m_PathID": -6103587371182199725
+        },
+        "_overrideStartEffect": "",
+        "_overrideDeadEffect": "",
+        "_combat": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_attack": {
+          "m_FileID": 0,
+          "m_PathID": 2831199944281353299
+        },
+        "_attackTrigger": {
+          "m_FileID": 0,
+          "m_PathID": 5074893101429419091
+        },
+        "_hideUIAttackRange": 0,
+        "_updateAttackRangeExtendByAttributeDirty": 0,
+        "_rangeToShow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_extraRangesToShow": {
+          "Array": []
+        },
+        "_generalAbilities": {
+          "Array": []
+        },
+        "_addIndexToSignalId": 1,
+        "_includeIndexZero": 0,
+        "_alwaysHideHp": {
+          "isDefined": 0,
+          "value": 0
+        },
+        "_alwaysHideSp": {
+          "isDefined": 0,
+          "value": 0
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_421_crow.ab",
+      "file": "CAB-02047c32aaf8d32a5697a6b6c7b09e5e",
+      "pathId": "-164417716366349229",
+      "name": "Trigger",
+      "hierarchy": [
+        {
+          "name": "Trigger",
+          "gameObjectPathId": "3994847682470407251",
+          "transformPathId": "-7109334474756658093"
+        },
+        {
+          "name": "Attack",
+          "gameObjectPathId": "-6304280435588338605",
+          "transformPathId": "3590745408297823315"
+        },
+        {
+          "name": "Body",
+          "gameObjectPathId": "-7950401425753248685",
+          "transformPathId": "-6961987223885779885"
+        },
+        {
+          "name": "S2",
+          "gameObjectPathId": "4622051419759373395",
+          "transformPathId": "-6507484921857053613"
+        },
+        {
+          "name": "Modes",
+          "gameObjectPathId": "5525459329579674707",
+          "transformPathId": "-2964940889979622317"
+        },
+        {
+          "name": "char_421_crow",
+          "gameObjectPathId": "5605796113856916563",
+          "transformPathId": "-3700530069251232685"
+        }
+      ],
+      "sha256": "13fdba4f438742369bf351ff69440f8111692918e96617a1b10162d743503411",
+      "rawFile": "char_421_crow--164417716366349229.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 3994847682470407251
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 840206743537877183
+        },
+        "common:427": "",
+        "_targetSide": 2,
+        "_targetMotion": 1,
+        "_targetCategory": 1,
+        "_postFilter": 0,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 23,
+        "_abnormalCombo": 2,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 0,
+        "_maxTargetKey": "max_target",
+        "_maxTargetExtraKey": "",
+        "_maxNum": 1,
+        "_excludeOwner": 0,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0,
+        "_targetOptionHookedKeys": {
+          "Array": []
+        },
+        "_limitedMaxTargetNumToBlockedCnt": 0,
+        "_allowZeroBlockCntLimit": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_421_crow.ab",
+      "file": "CAB-02047c32aaf8d32a5697a6b6c7b09e5e",
+      "pathId": "2831199944281353299",
+      "name": "Attack",
+      "hierarchy": [
+        {
+          "name": "Attack",
+          "gameObjectPathId": "-6304280435588338605",
+          "transformPathId": "3590745408297823315"
+        },
+        {
+          "name": "Body",
+          "gameObjectPathId": "-7950401425753248685",
+          "transformPathId": "-6961987223885779885"
+        },
+        {
+          "name": "S2",
+          "gameObjectPathId": "4622051419759373395",
+          "transformPathId": "-6507484921857053613"
+        },
+        {
+          "name": "Modes",
+          "gameObjectPathId": "5525459329579674707",
+          "transformPathId": "-2964940889979622317"
+        },
+        {
+          "name": "char_421_crow",
+          "gameObjectPathId": "5605796113856916563",
+          "transformPathId": "-3700530069251232685"
+        }
+      ],
+      "sha256": "8d0f942a2d91f789b7e0067598687af14b569f6bc4262aeef85e9984c6e30022",
+      "rawFile": "char_421_crow-2831199944281353299.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -6304280435588338605
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 4381884627089348317
+        },
+        "common:427": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": -164417716366349229
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 1,
+        "_selectTargetTiming": 1,
+        "_timeMode": 0,
+        "_alwaysIncludeTarget": 0,
+        "_allowNoTarget": 0,
+        "_animKey": "Attack",
+        "_endAnimKey": "Idle",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 0,
+        "_faceToDefault": 0,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": {
+          "Array": []
+        },
+        "_maxAnimScale": -1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 0,
+        "_atkScale": 1.0,
+        "_atkScaleKey": "atk_scale",
+        "_attackType": 1,
+        "_elementDamageType": 0,
+        "_epDamageRatio": 0.0,
+        "_useDynamicAttackType": 0,
+        "_deliveryParaWhenReplaceActionNode": 0,
+        "_damageType": 1,
+        "_extraDamageType": 0,
+        "_alwaysPutIncludeTargetFirst": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_421_crow.ab",
+      "file": "CAB-02047c32aaf8d32a5697a6b6c7b09e5e",
+      "pathId": "8803867177890016339",
+      "name": "char_421_crow",
+      "hierarchy": [
+        {
+          "name": "char_421_crow",
+          "gameObjectPathId": "5605796113856916563",
+          "transformPathId": "-3700530069251232685"
+        }
+      ],
+      "sha256": "40543b93e22626b7d6a22c1fcc01a13bd9434f28a6fbae909b206ccfa57c4c5b",
+      "rawFile": "char_421_crow-8803867177890016339.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 5605796113856916563
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -1297314214590689040
+        },
+        "common:427": "",
+        "_animator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_modes": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": 1566711352169262163
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": -3069682105502667693
+            }
+          ]
+        },
+        "_commonAbilities": {
+          "Array": []
+        },
+        "_uiMountPoint": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_effectTransform": {
+          "m_FileID": 0,
+          "m_PathID": -4707934556070745005
+        },
+        "_shadow": {
+          "m_FileID": 0,
+          "m_PathID": -1555870485033784237
+        },
+        "_defaultBodyColor": {
+          "r": 1.0,
+          "g": 1.0,
+          "b": 1.0,
+          "a": 1.0
+        },
+        "_hideShadowOnRecycle": 0,
+        "_overrideGraphicBound": -1.0,
+        "_hudPluginReplacePairs": {
+          "Array": []
+        },
+        "_showDebugName": 0,
+        "_skinHolder": {
+          "m_FileID": 0,
+          "m_PathID": 8421966771816229971
+        },
+        "_motionMode": 0,
+        "_blockMode": 0,
+        "_ignoreBlockMode": 0,
+        "_isFixedRotation": 0,
+        "_occupiedRemainingCharacterCnt": 1,
+        "_useRealBornTimeFromAnim": 0,
+        "_buildCondition": {
+          "buildableType": 1,
+          "isTryingOverlapCharacater": 0,
+          "needSpecifyDirection": 1,
+          "limitByHostAttackRange": 0,
+          "limitByHostAbilityRange": 0,
+          "canNotBuildInHostAttackRange": 0,
+          "abilityName": "",
+          "tileKey": "",
+          "ignoreBuildableTypeTileTypes": 0,
+          "extraBuildConditionArray": {
+            "SerializedState": "null",
+            "SerializedObjectReferences": {
+              "Array": []
+            }
+          },
+          "advancedBuildableMask": 1,
+          "overlapOptions": {
+            "_verifySourceId": 0,
+            "_verifySourceIds": {
+              "Array": []
+            },
+            "_verifySourceProfession": 0,
+            "_verifySourceProfessions": 0,
+            "_isAllConditionOR": 1,
+            "_overlapPriority": 0,
+            "_changeTargetGraphicColor": 0,
+            "_excludeSourceId": 0,
+            "_excludeSourceIds": {
+              "Array": []
+            },
+            "_verifySourceTargetTokenRelationship": 0
+          },
+          "excludeNoTargetTile": 0,
+          "extraLocateRange": "",
+          "checkManuallyBuildableType": 0,
+          "manuallyBuildableType": 0,
+          "_excludeOccupiedByWalkEnemy": 0,
+          "allowWalkEnemyInHostRange": 0,
+          "_checkUpdateBuildable": 0
+        },
+        "_traitAbility": {
+          "m_FileID": 0,
+          "m_PathID": 3058030796539292755
+        },
+        "_withdrawCostRecoverRatio": 0.5,
+        "_maxWithdrawCostRatioOfRawCost": 1.0,
+        "_directionTransform": {
+          "m_FileID": 0,
+          "m_PathID": 8626615527455910995
+        },
+        "_directionIndicator": {
+          "m_FileID": 0,
+          "m_PathID": 9033614137694415955
+        },
+        "_startEffect": "",
+        "_deadEffect": "",
+        "_playStartVocal": 1,
+        "_showDeadTweenColor": 1,
+        "_useSpecificDeadAnim": 0,
+        "_onlyPlayStartEffectOnce": 0,
+        "_dontMoveCameraWhenFocus": 0,
+        "_disableCharInfoPanel": 0,
+        "_disableRotateWhenDead": 0,
+        "_disableSetDirectionWhenDummy": 0,
+        "_clearProjectileWhenDead": 0,
+        "_useIdForAudioSignalMask": 0,
+        "_skipBornAudioOnMoveLikeRespawnSelf": 0,
+        "_preprocessData": 0,
+        "_disableClickCharacterInfo": 0,
+        "_skillUiFollowHeadPint": 0,
+        "m_overrideBornTime": -1.0
+      }
+    }
+  ]
+}

@@ -1,0 +1,1008 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-03"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-11-03",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "native-targeting.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "native-targeting.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "crow/decoded-content.json",
+      "native-targeting.json",
+      "prison/decoded-content.json",
+      "prts-sources.json",
+      "templates/decoded-content.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12589,
+        "sha256": "1a85248a6a48d92d61c65f5ba044d079954866ff0c1672488b92f0cf1366af9a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "crow/char_421_crow--164417716366349229.bin",
+        "kind": "artifact",
+        "bytes": 160,
+        "sha256": "13fdba4f438742369bf351ff69440f8111692918e96617a1b10162d743503411"
+      },
+      {
+        "path": "crow/char_421_crow--3069682105502667693.bin",
+        "kind": "artifact",
+        "bytes": 152,
+        "sha256": "37ebb6fe47350d91c49e7edec04d88583cda4eb7dad22b831d95f5df8dbeaefc"
+      },
+      {
+        "path": "crow/char_421_crow-2831199944281353299.bin",
+        "kind": "artifact",
+        "bytes": 260,
+        "sha256": "8d0f942a2d91f789b7e0067598687af14b569f6bc4262aeef85e9984c6e30022"
+      },
+      {
+        "path": "crow/char_421_crow-8803867177890016339.bin",
+        "kind": "artifact",
+        "bytes": 412,
+        "sha256": "40543b93e22626b7d6a22c1fcc01a13bd9434f28a6fbae909b206ccfa57c4c5b"
+      },
+      {
+        "path": "crow/decoded-content.json",
+        "kind": "record",
+        "bytes": 13846,
+        "sha256": "1d5be07757040bc3351ac9a7c34e3230732f14f61ca853a265aefdb3d85106a0"
+      },
+      {
+        "path": "extract_hit_range.py",
+        "kind": "historical-script",
+        "bytes": 2022,
+        "sha256": "94a5796038c68dd0d628be5be3daba3fc1fd9a4dc70b68ae385fefdd12e6085a"
+      },
+      {
+        "path": "extract_hit_range.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "native-targeting.json",
+        "kind": "record",
+        "bytes": 180513,
+        "sha256": "0cbb99c2cf521362733ac3808beeb216585dc5e5e2549bef33fac4d44713951a"
+      },
+      {
+        "path": "prison/btl_pfb_tokens_4--664377713333506512.bin",
+        "kind": "artifact",
+        "bytes": 904,
+        "sha256": "93fea956657e3797295ab47cb0f19df9b904cb9718ac9b62d099be6e369e3383"
+      },
+      {
+        "path": "prison/btl_pfb_tokens_4--8720332516268970448.bin",
+        "kind": "artifact",
+        "bytes": 596,
+        "sha256": "b5e2107989069dca323cc4b4beaf03556b5cc8b408441bb68176aba3046bf1ee"
+      },
+      {
+        "path": "prison/decoded-content.json",
+        "kind": "record",
+        "bytes": 16913,
+        "sha256": "00122c58a13d10b8953655a21bb18d5a50d4e602e2c2bcf8433cb35f38131610"
+      },
+      {
+        "path": "prts-sources.json",
+        "kind": "record",
+        "bytes": 2111,
+        "sha256": "38bb23485efd0bfa040a6791cae7530080fa427559a1e52a362d965db1a51bea"
+      },
+      {
+        "path": "templates/decoded-content.json",
+        "kind": "record",
+        "bytes": 13317,
+        "sha256": "9bcff7acc151d45a7cb3d1f40c1af81c88599352b8d9cdad34a7d3990ba7da9b"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 67720,
+          "mode": "disasm",
+          "records": [
+            "native-targeting.json#/result/methods/1",
+            "native-targeting.json#/result/bodies/1/fragments/0",
+            "native-targeting.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.IsInHitRange",
+          "address": "0x1807270f0"
+        },
+        {
+          "index": 75478,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/0"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_limitTargetNum",
+          "address": "0x1809f3090"
+        },
+        {
+          "index": 75479,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/1"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_targetSide",
+          "address": "0x1809f3450"
+        },
+        {
+          "index": 75480,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/2"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_targetMotion",
+          "address": "0x1809f33e0"
+        },
+        {
+          "index": 75481,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/3"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_targetCategory",
+          "address": "0x1809f3370"
+        },
+        {
+          "index": 75482,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/4"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_maxTargetNum",
+          "address": "0x1809f3110"
+        },
+        {
+          "index": 75483,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/5"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_ignoreTargetFree",
+          "address": "0x1809f2f90"
+        },
+        {
+          "index": 75484,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/6"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_ignoreAllyTargetFree",
+          "address": "0x1809f2d80"
+        },
+        {
+          "index": 75485,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/7"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_ignoreHealFree",
+          "address": "0x1809f2e00"
+        },
+        {
+          "index": 75486,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/8"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_ignoreMotionMode",
+          "address": "0x1809f2f10"
+        },
+        {
+          "index": 75487,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/9"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_forceIgnoreCamouflage",
+          "address": "0x1809f2d00"
+        },
+        {
+          "index": 75488,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/10"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_ignoreHitRange",
+          "address": "0x1809f2e80"
+        },
+        {
+          "index": 75489,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/11"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_onlyIgnoreSomeOfTargetFreeCase",
+          "address": "0x1809f3200"
+        },
+        {
+          "index": 75490,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/12"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_needProfessionMask",
+          "address": "0x1809f3180"
+        },
+        {
+          "index": 75491,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/13"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_abnormalFlag",
+          "address": "0x1809f2980"
+        },
+        {
+          "index": 75492,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/14"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_abnormalCombo",
+          "address": "0x1809f2910"
+        },
+        {
+          "index": 75493,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/15"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_professionMask",
+          "address": "0x1809f3290"
+        },
+        {
+          "index": 75494,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/16"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_excludeSomeAbnormalFlagsEnabled",
+          "address": "0x1809f2b70"
+        },
+        {
+          "index": 75495,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/17"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_excludeSomeAbnormalFlags",
+          "address": "0x1809f2bf0"
+        },
+        {
+          "index": 75496,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/18"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_excludeAbnormalFlag",
+          "address": "0x1809f2af0"
+        },
+        {
+          "index": 75497,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/19"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_filterTypeAllAndLimitTargetNum",
+          "address": "0x1809f2c70"
+        },
+        {
+          "index": 75498,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/20"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_isAlly",
+          "address": "0x1809f3010"
+        },
+        {
+          "index": 75499,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/21"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_dontExcludeOwner",
+          "address": "0x1809f2a70"
+        },
+        {
+          "index": 75500,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/22"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_checkUnitType",
+          "address": "0x1809f29f0"
+        },
+        {
+          "index": 75501,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/23"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.get_unitTypeMask",
+          "address": "0x1809f34c0"
+        },
+        {
+          "index": 75502,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/24"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.Reset",
+          "address": "0x1809f1960"
+        },
+        {
+          "index": 75503,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/25"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.SetData",
+          "address": "0x1809f1b90"
+        },
+        {
+          "index": 75504,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/26"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector._CompareEntityTauntLevel",
+          "address": "0x1809f2140"
+        },
+        {
+          "index": 75505,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/27"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.OnPostFilter",
+          "address": "0x1809f1630"
+        },
+        {
+          "index": 75506,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/28"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.OnPostFilter",
+          "address": "0x1809f15b0"
+        },
+        {
+          "index": 75507,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/29"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.Awake",
+          "address": "0x1809f1470"
+        },
+        {
+          "index": 75508,
+          "mode": "disasm",
+          "records": [
+            "native-targeting.json#/result/discovery/30",
+            "native-targeting.json#/result/methods/2",
+            "native-targeting.json#/result/bodies/2/fragments/0",
+            "native-targeting.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.ValidateTarget",
+          "address": "0x1809f1e60"
+        },
+        {
+          "index": 75509,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/31"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector._CheckAbilityInputTargetValid",
+          "address": "0x1809f1f30"
+        },
+        {
+          "index": 75510,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/32"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector._ResetTargetOptionParams",
+          "address": "0x1809f22f0"
+        },
+        {
+          "index": 75511,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/33"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector._UpdateTargetOptionsByBlackboard",
+          "address": "0x1809f23d0"
+        },
+        {
+          "index": 75512,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/34"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector._InitHookedKeyHashSet",
+          "address": "0x1809f2200"
+        },
+        {
+          "index": 75513,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/35"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.AddExcludeTarget",
+          "address": "0x1809f13c0"
+        },
+        {
+          "index": 75514,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/36"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.ClearExcludeTarget",
+          "address": "0x1809f1510"
+        },
+        {
+          "index": 75515,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/37"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector..ctor",
+          "address": "0x1809f2780"
+        },
+        {
+          "index": 75516,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/38"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector..cctor",
+          "address": "0x1809f26e0"
+        },
+        {
+          "index": 75517,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/39"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.<>xLuaBaseProxy_get_ignoreAllyTargetFree",
+          "address": "0x1809f1df0"
+        },
+        {
+          "index": 75518,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/40"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.<>xLuaBaseProxy_get_ignoreHealFree",
+          "address": "0x1809f1e00"
+        },
+        {
+          "index": 75519,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/41"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.<>xLuaBaseProxy_get_ignoreMotionMode",
+          "address": "0x1809f1e20"
+        },
+        {
+          "index": 75520,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/42"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.<>xLuaBaseProxy_get_forceIgnoreCamouflage",
+          "address": "0x1809f1de0"
+        },
+        {
+          "index": 75521,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/43"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.<>xLuaBaseProxy_get_ignoreHitRange",
+          "address": "0x1809f1e10"
+        },
+        {
+          "index": 75522,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/44"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.<>xLuaBaseProxy_get_onlyIgnoreSomeOfTargetFreeCase",
+          "address": "0x1809f1e30"
+        },
+        {
+          "index": 75523,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/45"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.<>xLuaBaseProxy_get_abnormalFlag",
+          "address": "0x1809f1da0"
+        },
+        {
+          "index": 75524,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/46"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.<>xLuaBaseProxy_get_abnormalCombo",
+          "address": "0x1809f1d90"
+        },
+        {
+          "index": 75525,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/47"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.<>xLuaBaseProxy_get_professionMask",
+          "address": "0x1809f1e40"
+        },
+        {
+          "index": 75526,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/48"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.<>xLuaBaseProxy_get_excludeSomeAbnormalFlags",
+          "address": "0x1809f1dd0"
+        },
+        {
+          "index": 75527,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/49"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.<>xLuaBaseProxy_get_excludeAbnormalFlag",
+          "address": "0x1809f1dc0"
+        },
+        {
+          "index": 75528,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/50"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.<>xLuaBaseProxy_get_checkUnitType",
+          "address": "0x1809f1db0"
+        },
+        {
+          "index": 75529,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/51"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.<>xLuaBaseProxy_get_unitTypeMask",
+          "address": "0x1809f1e50"
+        },
+        {
+          "index": 75530,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/52"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.<>xLuaBaseProxy_Reset",
+          "address": "0x1809f1d60"
+        },
+        {
+          "index": 75531,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/53"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.<>xLuaBaseProxy_SetData",
+          "address": "0x1809f1d70"
+        },
+        {
+          "index": 75532,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/54"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.<>xLuaBaseProxy_Awake",
+          "address": "0x1809f1d50"
+        },
+        {
+          "index": 75533,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/55"
+          ],
+          "fullname": "Torappu.Battle.AdvancedSelector.<>xLuaBaseProxy_ValidateTarget",
+          "address": "0x1809f1d80"
+        },
+        {
+          "index": 76378,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/56"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.get_owner",
+          "address": "0x180a41e60"
+        },
+        {
+          "index": 76379,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/57"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.set_owner",
+          "address": "0x180a42140"
+        },
+        {
+          "index": 76380,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/58"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.get_ability",
+          "address": "0x180a41ce0"
+        },
+        {
+          "index": 76381,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/59"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.set_ability",
+          "address": "0x180a420c0"
+        },
+        {
+          "index": 76382,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/60"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.get_ignoreMapLayer",
+          "address": "0x180a41e00"
+        },
+        {
+          "index": 76383,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/61"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.get_ignoreHitRange",
+          "address": "0x180a41da0"
+        },
+        {
+          "index": 76384,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/62"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.get_forceIgnoreCamouflage",
+          "address": "0x180a41d40"
+        },
+        {
+          "index": 76385,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/63"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.get_sourcePurposeMask",
+          "address": "0x180a3af90"
+        },
+        {
+          "index": 76386,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/64"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.get_validator",
+          "address": "0x180a42060"
+        },
+        {
+          "index": 76387,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/65"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.get_validateTargetFunc",
+          "address": "0x180a41ec0"
+        },
+        {
+          "index": 76388,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/66"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.get_validateTileFunc",
+          "address": "0x180a41f90"
+        },
+        {
+          "index": 76389,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/67"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.Reset",
+          "address": "0x180a41530"
+        },
+        {
+          "index": 76390,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/68"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.FindTargets_DISPOSE",
+          "address": "0x180a412f0"
+        },
+        {
+          "index": 76391,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/69"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.FindTargets_DISPOSE",
+          "address": "0x180a41250"
+        },
+        {
+          "index": 76392,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/70"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.DoFindTargets_DISPOSE"
+        },
+        {
+          "index": 76393,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/71"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.CheckTargetIn"
+        },
+        {
+          "index": 76394,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/72"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.CheckTargetInOriginRange",
+          "address": "0x180a3ae90"
+        },
+        {
+          "index": 76395,
+          "mode": "disasm",
+          "records": [
+            "native-targeting.json#/result/discovery/73",
+            "native-targeting.json#/result/methods/3",
+            "native-targeting.json#/result/bodies/3/fragments/0",
+            "native-targeting.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.ValidateTarget",
+          "address": "0x180a41700"
+        },
+        {
+          "index": 76396,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/74"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.ValidateTile",
+          "address": "0x180a41a80"
+        },
+        {
+          "index": 76397,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/75"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.VerifyTarget",
+          "address": "0x180a41b90"
+        },
+        {
+          "index": 76398,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/76"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.VerifyTarget",
+          "address": "0x180a41af0"
+        },
+        {
+          "index": 76399,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/77"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.FindTiles"
+        },
+        {
+          "index": 76400,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/78"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.FindProjectiles_CLEAR",
+          "address": "0x180a2bc90"
+        },
+        {
+          "index": 76401,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/79"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.SetData",
+          "address": "0x180a41630"
+        },
+        {
+          "index": 76402,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/80"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.OnCastedOnTarget",
+          "address": "0x180a414d0"
+        },
+        {
+          "index": 76403,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/81"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector.OnAbilityExtendUpdated",
+          "address": "0x180a3af20"
+        },
+        {
+          "index": 76404,
+          "mode": "metadata",
+          "records": [
+            "native-targeting.json#/result/discovery/82"
+          ],
+          "fullname": "Torappu.Battle.TargetSelector..ctor",
+          "address": "0x180a41c80"
+        },
+        {
+          "index": 78848,
+          "mode": "disasm",
+          "records": [
+            "native-targeting.json#/result/methods/0",
+            "native-targeting.json#/result/bodies/0/fragments/0",
+            "native-targeting.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Trap.IsInHitRange",
+          "address": "0x180b07320"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_421_crow.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_421_crow.ab",
+          "sha256": "df04e989102d84f030ca6697dea90efdaf81a273cbcd110978cc9b1ea5438031",
+          "records": [
+            "crow/decoded-content.json#/provenance/sources/0"
+          ],
+          "bytes": 21804
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_421_crow.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_421_crow.ab",
+          "sha256": "37ebb6fe47350d91c49e7edec04d88583cda4eb7dad22b831d95f5df8dbeaefc",
+          "records": [
+            "crow/decoded-content.json#/result/0"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_421_crow.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_421_crow.ab",
+          "sha256": "13fdba4f438742369bf351ff69440f8111692918e96617a1b10162d743503411",
+          "records": [
+            "crow/decoded-content.json#/result/1"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_421_crow.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_421_crow.ab",
+          "sha256": "8d0f942a2d91f789b7e0067598687af14b569f6bc4262aeef85e9984c6e30022",
+          "records": [
+            "crow/decoded-content.json#/result/2"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_421_crow.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_421_crow.ab",
+          "sha256": "40543b93e22626b7d6a22c1fcc01a13bd9434f28a6fbae909b206ccfa57c4c5b",
+          "records": [
+            "crow/decoded-content.json#/result/3"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_4.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_4.ab",
+          "sha256": "09ef43e4a181cda91c01c5dc9658451fac30de1e87b462e5b60f71ae546ed618",
+          "records": [
+            "prison/decoded-content.json#/provenance/sources/0"
+          ],
+          "bytes": 3211755
+        },
+        {
+          "kind": "bundle",
+          "path": "pkgrps/btl_pfb_tokens_4.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_4.ab",
+          "sha256": "b5e2107989069dca323cc4b4beaf03556b5cc8b408441bb68176aba3046bf1ee",
+          "records": [
+            "prison/decoded-content.json#/result/0"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "pkgrps/btl_pfb_tokens_4.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_4.ab",
+          "sha256": "93fea956657e3797295ab47cb0f19df9b904cb9718ac9b62d099be6e369e3383",
+          "records": [
+            "prison/decoded-content.json#/result/1"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "templates/decoded-content.json#/provenance/sources/0"
+          ],
+          "bytes": 2151020
+        },
+        {
+          "kind": "bundle",
+          "path": "config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+          "records": [
+            "templates/decoded-content.json#/result/0"
+          ]
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

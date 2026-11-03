@@ -1,0 +1,331 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-03",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/healing-settlement-20261103/content/extract_content.py",
+      "bytes": 5006,
+      "sha256": "475b7452fc1a03beb1802f1b517e6af9e515e0bd1100c9c22437ce12dc1c7387"
+    },
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+        "bytes": 8161,
+        "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      }
+    ],
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+        "bytes": 2151020,
+        "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+      }
+    ],
+    "scope": "Static installed type-tree content; two selected ordinary healers; no runtime or XLua verification."
+  },
+  "result": [
+    {
+      "bundle": "config/buff_template_holder.ab",
+      "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "pathId": "6070581171229484677",
+      "name": "",
+      "hierarchy": [],
+      "sha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+      "rawFile": null,
+      "value": {
+        "templates": [
+          {
+            "templateKey": "crow_s_2",
+            "effectKey": "",
+            "onEventPriority": 0,
+            "templateIndex": 594,
+            "events": [
+              {
+                "event": 21,
+                "actions": [
+                  {
+                    "_buffKey": "crow_s_2[atk]",
+                    "_loadFromBlackboard": false,
+                    "_decCntIfStack": false,
+                    "_updateOverrideMap": true,
+                    "_targetType": "BUFF_OWNER",
+                    "_checkBuffSource": false,
+                    "_sourceType": "BUFF_SOURCE",
+                    "_alsoClearNullSource": false,
+                    "_finishHostBuff": false,
+                    "_excludeThisBuff": false,
+                    "_decCntKey": null,
+                    "_decCnt": 1,
+                    "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+                  }
+                ]
+              },
+              {
+                "event": 22,
+                "actions": [
+                  {
+                    "_buffKey": "crow_s_2[atk]",
+                    "_loadFromBlackboard": false,
+                    "_decCntIfStack": false,
+                    "_updateOverrideMap": true,
+                    "_targetType": "BUFF_OWNER",
+                    "_checkBuffSource": false,
+                    "_sourceType": "BUFF_SOURCE",
+                    "_alsoClearNullSource": false,
+                    "_finishHostBuff": false,
+                    "_excludeThisBuff": false,
+                    "_decCntKey": null,
+                    "_decCnt": 1,
+                    "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+                  }
+                ]
+              },
+              {
+                "event": 11,
+                "actions": [
+                  {
+                    "_conditionNode": {
+                      "_targetType": "MODIFIER_TARGET",
+                      "_condType": "LT",
+                      "_value": 0.0,
+                      "_useSourceHpRatio": false,
+                      "_sourceType": "SOURCE",
+                      "_blackboardPrefix": null,
+                      "$type": "Torappu.Battle.Action.Nodes+FilterByTargetHpRatio"
+                    },
+                    "_succeedNodes": [
+                      {
+                        "_buff": {
+                          "attributes": {
+                            "abnormalFlags": [],
+                            "abnormalImmunes": [],
+                            "abnormalAntis": [],
+                            "abnormalCombos": [],
+                            "abnormalComboImmunes": [],
+                            "attributeModifiers": [
+                              {
+                                "attributeType": "ATK",
+                                "formulaItem": "MULTIPLIER",
+                                "value": 0.0,
+                                "loadFromBlackboard": true,
+                                "fetchBaseValueFromSourceEntity": false
+                              }
+                            ]
+                          },
+                          "buffKey": "crow_s_2[atk]",
+                          "loadFromDB": false,
+                          "isDurableBuff": false,
+                          "isDamageMissable": false,
+                          "isSilenceable": false,
+                          "isStunnable": false,
+                          "isFreezable": false,
+                          "isLevitatable": false,
+                          "isGroundBoundable": false,
+                          "statusResistable": "AUTOMATIC",
+                          "templateKey": "empty",
+                          "disableOverride": false,
+                          "overrideKey": null,
+                          "overrideType": "UNIQUE",
+                          "maxStackCnt": 1,
+                          "refreshRemainingTimeWhenStackMax": false,
+                          "clearAllStackCntWhenTimeUp": false,
+                          "maxValidStackCnt": -1,
+                          "independentCharacterSource": false,
+                          "overrideEffectKey": null,
+                          "overrideOnEventPriority": false,
+                          "onEventPriority": "DEFAULT",
+                          "audioSignal": null,
+                          "lifeTimeType": "INFINITY",
+                          "takeSnapshotWhenExtend": false,
+                          "durationKey": null,
+                          "remainingTimeKey": null,
+                          "lifeTime": 0.0,
+                          "triggerLifeType": "IMMEDIATELY",
+                          "triggerCnt": 0,
+                          "triggerInterval": -1.0,
+                          "waitFirstTriggerInterval": true,
+                          "firstTriggerInterval": -1.0,
+                          "priority": -1,
+                          "priorityBBKeys": [],
+                          "stripBlackboardParamsWithBuffKey": true,
+                          "blackboard": [],
+                          "enableInitDirectionFromSource": false
+                        },
+                        "_buffOwner": "BUFF_OWNER",
+                        "_useSpecialBuffSource": false,
+                        "_specialBuffSource": "BUFF_SOURCE",
+                        "_isDerivedBuff": false,
+                        "_finishDerivedBuffIfParentFinish": false,
+                        "_inherateSourceProjectileFromParentBuff": false,
+                        "_hookEffectKeyFromSourceProjectile": false,
+                        "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                      }
+                    ],
+                    "_failNodes": [
+                      {
+                        "_buffKey": "crow_s_2[atk]",
+                        "_loadFromBlackboard": false,
+                        "_decCntIfStack": false,
+                        "_updateOverrideMap": true,
+                        "_targetType": "BUFF_OWNER",
+                        "_checkBuffSource": false,
+                        "_sourceType": "BUFF_SOURCE",
+                        "_alsoClearNullSource": false,
+                        "_finishHostBuff": false,
+                        "_excludeThisBuff": false,
+                        "_decCntKey": null,
+                        "_decCnt": 1,
+                        "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+                      }
+                    ],
+                    "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                  },
+                  {
+                    "$type": "Torappu.Battle.Action.Nodes+RecalculateDamage"
+                  }
+                ]
+              },
+              {
+                "event": 1,
+                "actions": [
+                  {
+                    "_buffKey": "crow_s_2[atk]",
+                    "_loadFromBlackboard": false,
+                    "_decCntIfStack": false,
+                    "_updateOverrideMap": true,
+                    "_targetType": "BUFF_OWNER",
+                    "_checkBuffSource": false,
+                    "_sourceType": "BUFF_SOURCE",
+                    "_alsoClearNullSource": false,
+                    "_finishHostBuff": false,
+                    "_excludeThisBuff": false,
+                    "_decCntKey": null,
+                    "_decCnt": 1,
+                    "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "templateKey": "entlec_t[ensure_dmg]",
+            "effectKey": "",
+            "onEventPriority": 0,
+            "templateIndex": 5188,
+            "events": [
+              {
+                "event": 5,
+                "actions": [
+                  {
+                    "$type": "Torappu.Battle.Action.Nodes+IsDamage"
+                  },
+                  {
+                    "_filterAttackType": true,
+                    "_attackTypeFilter": "BUFF",
+                    "_filterDamageType": false,
+                    "_damageMask": "NONE",
+                    "_filterSharedMask": false,
+                    "_sharedFlag": "IS_CONTINUOUS",
+                    "_filterModifierSource": false,
+                    "_source": "BUFF_OWNER",
+                    "_filterBySourceId": false,
+                    "_sourceId": null,
+                    "_checkHasScource": false,
+                    "_isNoSource": false,
+                    "_filterModifierCancelled": false,
+                    "_filterApplyWay": false,
+                    "_applyWay": "NONE",
+                    "$type": "Torappu.Battle.Action.Nodes+FilterDamageModifer"
+                  },
+                  {
+                    "$type": "Torappu.Battle.Action.Nodes+IfNot"
+                  },
+                  {
+                    "_key": "min_atk_scale",
+                    "$type": "Torappu.Battle.Action.Nodes+EnsureDmgOrHeal"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "templateKey": "tippi_s_2[trigger]",
+            "effectKey": "",
+            "onEventPriority": 0,
+            "templateIndex": 5811,
+            "events": [
+              {
+                "event": 6,
+                "actions": [
+                  {
+                    "$type": "Torappu.Battle.Action.Nodes+IsDamage"
+                  },
+                  {
+                    "_targetType": "BUFF_OWNER",
+                    "_checkCurModeIndex": 0,
+                    "_loadCurModeBbKey": "",
+                    "$type": "Torappu.Battle.Action.Nodes+CheckUnitCurrentMode"
+                  },
+                  {
+                    "_targetType": "BUFF_OWNER",
+                    "_checkBeforeTrigger": true,
+                    "_useInputTarget": false,
+                    "_inputTargetType": "MODIFIER_SOURCE",
+                    "_fallbackToProjectileSource": false,
+                    "$type": "Torappu.Battle.Action.Nodes+TriggerAutoSkill"
+                  },
+                  {
+                    "_damageMask": "PHYSICAL_AND_MAGICAL",
+                    "_applyWayFilter": "ALL",
+                    "$type": "Torappu.Battle.Action.Nodes+Evade"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "templateKey": "ubprison_p[check_range]",
+            "effectKey": "",
+            "onEventPriority": 0,
+            "templateIndex": 6598,
+            "events": [
+              {
+                "event": 5,
+                "actions": [
+                  {
+                    "_targetType": "MODIFIER_SOURCE",
+                    "_soureceType": "BUFF_OWNER",
+                    "_rangeId": "x-5",
+                    "_autoRange": false,
+                    "_checkRadius": false,
+                    "_rangeRadius": 0.0,
+                    "_customDirection": false,
+                    "_direction": 0,
+                    "_directionKey": "direction",
+                    "$type": "Torappu.Battle.Action.Nodes+CheckTargetInRange"
+                  },
+                  {
+                    "$type": "Torappu.Battle.Action.Nodes+IfNot"
+                  },
+                  {
+                    "_scaleKey": "modify_scale_zero",
+                    "$type": "Torappu.Battle.Action.Nodes+ModifierScaleUp"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

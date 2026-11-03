@@ -1,0 +1,536 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-03",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/healing-settlement-20261103/content/extract_content.py",
+      "bytes": 5006,
+      "sha256": "475b7452fc1a03beb1802f1b517e6af9e515e0bd1100c9c22437ce12dc1c7387"
+    },
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+        "bytes": 8161,
+        "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      }
+    ],
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_4.ab",
+        "bytes": 3211755,
+        "sha256": "09ef43e4a181cda91c01c5dc9658451fac30de1e87b462e5b60f71ae546ed618"
+      }
+    ],
+    "scope": "Static installed type-tree content; two selected ordinary healers; no runtime or XLua verification."
+  },
+  "result": [
+    {
+      "bundle": "pkgrps/btl_pfb_tokens_4.ab",
+      "file": "CAB-425a845ff37dbe17e203e6b341c4f664",
+      "pathId": "-8720332516268970448",
+      "name": "trap_317_ubprison",
+      "hierarchy": [
+        {
+          "name": "trap_317_ubprison",
+          "gameObjectPathId": "-3290655887584399824",
+          "transformPathId": "1951681471924137520"
+        }
+      ],
+      "sha256": "b5e2107989069dca323cc4b4beaf03556b5cc8b408441bb68176aba3046bf1ee",
+      "rawFile": "btl_pfb_tokens_4--8720332516268970448.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -3290655887584399824
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 7298368132990067154
+        },
+        "common:427": "",
+        "_animator": {
+          "m_FileID": 0,
+          "m_PathID": 1029246455249366576
+        },
+        "_modes": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": 8174599822089842224
+            }
+          ]
+        },
+        "_commonAbilities": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": -664377713333506512
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 3898312257256812080
+            }
+          ]
+        },
+        "_uiMountPoint": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_effectTransform": {
+          "m_FileID": 0,
+          "m_PathID": -2159459656298926544
+        },
+        "_shadow": {
+          "m_FileID": 0,
+          "m_PathID": 2306582412283211312
+        },
+        "_defaultBodyColor": {
+          "r": 1.0,
+          "g": 1.0,
+          "b": 1.0,
+          "a": 1.0
+        },
+        "_hideShadowOnRecycle": 0,
+        "_overrideGraphicBound": -1.0,
+        "_hudPluginReplacePairs": {
+          "Array": []
+        },
+        "_showDebugName": 0,
+        "_skinHolder": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_motionMode": 0,
+        "_blockMode": 0,
+        "_ignoreBlockMode": 0,
+        "_isFixedRotation": 0,
+        "_occupiedRemainingCharacterCnt": 0,
+        "_useRealBornTimeFromAnim": 0,
+        "_buildCondition": {
+          "buildableType": 1,
+          "isTryingOverlapCharacater": 0,
+          "needSpecifyDirection": 0,
+          "limitByHostAttackRange": 0,
+          "limitByHostAbilityRange": 0,
+          "canNotBuildInHostAttackRange": 0,
+          "abilityName": "",
+          "tileKey": "",
+          "ignoreBuildableTypeTileTypes": 0,
+          "extraBuildConditionArray": {
+            "SerializedState": "null",
+            "SerializedObjectReferences": {
+              "Array": []
+            }
+          },
+          "advancedBuildableMask": 1,
+          "overlapOptions": {
+            "_verifySourceId": 0,
+            "_verifySourceIds": {
+              "Array": []
+            },
+            "_verifySourceProfession": 0,
+            "_verifySourceProfessions": 0,
+            "_isAllConditionOR": 1,
+            "_overlapPriority": 0,
+            "_changeTargetGraphicColor": 0,
+            "_excludeSourceId": 0,
+            "_excludeSourceIds": {
+              "Array": []
+            },
+            "_verifySourceTargetTokenRelationship": 0
+          },
+          "excludeNoTargetTile": 0,
+          "extraLocateRange": "",
+          "checkManuallyBuildableType": 0,
+          "manuallyBuildableType": 0,
+          "_excludeOccupiedByWalkEnemy": 0,
+          "allowWalkEnemyInHostRange": 0,
+          "_checkUpdateBuildable": 0
+        },
+        "_traitAbility": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_withdrawCostRecoverRatio": 0.0,
+        "_maxWithdrawCostRatioOfRawCost": 1.0,
+        "_directionTransform": {
+          "m_FileID": 0,
+          "m_PathID": 3064430253159083568
+        },
+        "_directionIndicator": {
+          "m_FileID": 0,
+          "m_PathID": -2323252798224142800
+        },
+        "_startEffect": "",
+        "_deadEffect": "",
+        "_playStartVocal": 1,
+        "_showDeadTweenColor": 0,
+        "_useSpecificDeadAnim": 0,
+        "_onlyPlayStartEffectOnce": 0,
+        "_dontMoveCameraWhenFocus": 0,
+        "_disableCharInfoPanel": 0,
+        "_disableRotateWhenDead": 0,
+        "_disableSetDirectionWhenDummy": 0,
+        "_clearProjectileWhenDead": 0,
+        "_useIdForAudioSignalMask": 3,
+        "_skipBornAudioOnMoveLikeRespawnSelf": 0,
+        "_preprocessData": 0,
+        "_disableClickCharacterInfo": 0,
+        "_skillUiFollowHeadPint": 0,
+        "m_overrideBornTime": -1.0,
+        "_sideType": 2,
+        "_category": 1,
+        "_cardPolicy": 0,
+        "_alwaysShowHp": 1,
+        "_alwaysHideHp": 0,
+        "_alwaysHideSp": 0,
+        "_forceUseAllyHud": 0,
+        "_rewriteTileOptions": 0,
+        "_rewriteTileHeightTypeOnMode": 0,
+        "_rewriteTileHeightTypeOnModeBySelf": 1,
+        "_ignoreBlockAnyRoutes": 0,
+        "_setTileGraphicDirtyWhenSwitchMode": 0,
+        "_hideTileOptions": 0,
+        "_isInfinity": 0,
+        "_ignoreExcludeFromBattle": 0,
+        "_notShowInDeck": 0,
+        "_asRewardCardInLegionMode": 0,
+        "_rechargeOnlyOnce": 0,
+        "_willBuildOverlapBuffSource": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_assignDirectionToBBWhenTryingOverlap": 0,
+        "_updateCardStateAfterOverlapLikeSpawn": 0,
+        "_newCardStateAfterOverlapLikeSpawn": 3,
+        "_tokenCanBeOverlapDontAddTileBuff": 0,
+        "_withdrawable": 0,
+        "_ignoreParentWithdrawable": 0,
+        "_blockRadiusSquare": 0.4999903738498688,
+        "_filterTag": {
+          "Array": []
+        },
+        "_hideSpBarWhenEmpty": 0,
+        "_hideSpBarWhenFull": 0,
+        "_hideSpBarWhenSkill": 0,
+        "_hideSpBarWhenNotHaveSkill": 0,
+        "_syncSpViaTiles": 0,
+        "_disableUIHub": 0,
+        "_disableUIHubExceptCustom": 0,
+        "_hitRangeId": "x-5",
+        "_alwaysBlockFreeOptimize": 0,
+        "_customInitHpRatio": 0,
+        "_initHpRatio": 1.0,
+        "_customRecycleDelay": 0,
+        "_overrideRecycleDelay": 0.0
+      }
+    },
+    {
+      "bundle": "pkgrps/btl_pfb_tokens_4.ab",
+      "file": "CAB-425a845ff37dbe17e203e6b341c4f664",
+      "pathId": "-664377713333506512",
+      "name": "Ability0",
+      "hierarchy": [
+        {
+          "name": "Ability0",
+          "gameObjectPathId": "-5996227695394296272",
+          "transformPathId": "6164647771114696240"
+        },
+        {
+          "name": "CommonAbilities",
+          "gameObjectPathId": "-6723622959523631568",
+          "transformPathId": "-56219048720929232"
+        },
+        {
+          "name": "Direction",
+          "gameObjectPathId": "-6518865314582958544",
+          "transformPathId": "3064430253159083568"
+        },
+        {
+          "name": "Others",
+          "gameObjectPathId": "6685793858436263472",
+          "transformPathId": "-4894379201940754896"
+        },
+        {
+          "name": "trap_317_ubprison",
+          "gameObjectPathId": "-3290655887584399824",
+          "transformPathId": "1951681471924137520"
+        }
+      ],
+      "sha256": "93fea956657e3797295ab47cb0f19df9b904cb9718ac9b62d099be6e369e3383",
+      "rawFile": "btl_pfb_tokens_4--664377713333506512.bin",
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -5996227695394296272
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 3800760148018415462
+        },
+        "common:427": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 1,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_buffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "ubprison_p[lock]",
+              "loadFromDB": 0,
+              "isDurableBuff": 1,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "ubprison_p[lock]",
+              "disableOverride": 0,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 2,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "duration",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            },
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "ubprison_p[check_range]",
+              "loadFromDB": 0,
+              "isDurableBuff": 1,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "ubprison_p[check_range]",
+              "disableOverride": 0,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 2,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "duration",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": [
+                  {
+                    "key": "modify_scale_zero",
+                    "value": 0.0,
+                    "valueStr": ""
+                  }
+                ]
+              },
+              "enableInitDirectionFromSource": 0
+            },
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": [
+                    0,
+                    11,
+                    12,
+                    16,
+                    23,
+                    25,
+                    18,
+                    36,
+                    31,
+                    20,
+                    33,
+                    39,
+                    40,
+                    41,
+                    42,
+                    43
+                  ]
+                },
+                "abnormalAntis": {
+                  "Array": [
+                    0,
+                    11,
+                    12,
+                    16,
+                    23,
+                    25,
+                    18,
+                    36,
+                    31,
+                    33,
+                    39,
+                    40,
+                    41,
+                    42,
+                    43
+                  ]
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": [
+                    0
+                  ]
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "ubprison_p[immune_control]",
+              "loadFromDB": 0,
+              "isDurableBuff": 1,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "empty",
+              "disableOverride": 0,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 2,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "duration",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
