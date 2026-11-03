@@ -86,6 +86,8 @@ EP 自然回复与爆发恢复通过直接 EP setter 推进，不经过上表普
 
 这些事实支持一个协调领域组织 HP Damage、EP Damage、HP Healing、EP Healing，但不直接决定领域命名、共同 Request 或最终 Hook API。可以复用应用阶段的语义和状态接续协议，分别保留公式、接收规则、提交与后继。一次 Action／命中中的多次结算仍由内容编排，不能预设所有附加恢复都在主 HP 返回之后。
 
+项目已确认[Calculate 输出计算、Apply 目标接收](../../architecture/vitality.md#1-calculate-与-apply-的语义边界)的共同边界；本节原生事件顺序是机制证据，不是逐项迁移 Hook 的目标。
+
 当前政策保持：healFree 只限制 Targeting；显式治疗不因此新增接收免疫；满血和零治疗不自动拒绝；自然回复不派发普通治疗 Hook；既定死亡通知顺序、弱点完整双 Calculate 与 Burst 生命周期不变。上述政策与原生的差异已分别标明，不通过调查静默修改。
 
 未知项包括活跃 XLua、特化 GameMode／force／skip组合、额外生命和 HP override、全部治疗加成来源、桑葚外部 TraitData 的0.5参数与所有动态资格组合。研究限定普通 native 与所选资源，没有运行完整客户端；不据字段名称补齐未知结论。

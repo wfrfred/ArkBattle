@@ -186,6 +186,8 @@ skip 的范围不能简称为跳过全部 Modifier 事件：当前0x80路径绕�
 
 ## 7. 项目关联与未决边界
 
+项目已确认[Calculate 输出计算、Apply 目标接收](../../architecture/vitality.md#1-calculate-与-apply-的语义边界)的设计选择；上文保留原生调用链，不要求项目复制其目标／来源交替顺序。
+
 这些事实支持以下接口边界，但不直接指定新的 API：
 
 1. Targeting 负责本次选择；Action／Projectile 保存必要身份与样本。命中时读取实时事实和保存发射样本需要按具体内容区分。

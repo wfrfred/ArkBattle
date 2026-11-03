@@ -36,16 +36,30 @@ HP、Contribution、Hook 与 Rule 共存于同一 Vitality State。DEF／RES 的
 
 Damage 接收 Rule 使用 `allows(battle, ReceivingContext)`；Vitality 的单节点登记接口为 `setRule(ref, rule)`／`removeRule(ref, id)`，返回 Change，由 Unit.update 写入 damageReceptionRules。
 
-## 1. 计算与实行
+## 1. Calculate 与 Apply 的语义边界
 
-伤害分为 `calculate` 和 `apply` 两步，均为显式接续 BattleState 的纯状态转换，允许 Hook 参与。
+HP Damage、EP Damage、HP Healing 与 EP Healing 共同采用两阶段边界：Calculate 表示输出计算，Apply 表示目标接收。两阶段均显式接续 BattleState，允许 Hook 参与；这是 ArkBattle 的明确设计选择，不以复刻原生 Hook 时序为目标。下文具体接口描述普通 HP 伤害与治疗，EP 接口仍需按此边界整理。
 
 | 阶段 | 职责 |
 | --- | --- |
-| calculate | 结算本次伤害的计算与输出修正，得到交给实行阶段的数值及业务数据；相关 Hook 可以修改本次结果并接续 BattleState。 |
-| apply | 接收选定的计算结果，执行接收 Hook、伤判、生命变化及致死处理；接收阶段仍可以修改或取消本次伤害。 |
+| Calculate：输出计算 | 来源尝试产生一笔伤害或治疗；执行来源与目标的公式修正，读取防御、抗性等属性，计算并修正输出，返回 Calculated 及对应 BattleState。 |
+| Apply：目标接收 | 目标尝试接收选定的输出；执行目标应用前程序、接收资格及有序伤判、资源提交、应用后通知与后继业务。接收阶段仍可修改或取消本笔输出。 |
 
-计算阶段不直接应用本次伤害的 HP 变化，但 Hook 发起的嵌套伤害、治疗、Effect 操作及生命周期业务正常进入其返回状态。实行阶段从传入的最新 BattleState 读取对象并确认当前资格。
+Calculate 不提交本笔输出的资源变化，也不派发本笔输出的受击或受治疗响应。计算 Hook 可以消费资源、推进 RNG 或发起独立的伤害、治疗、Effect 与生命周期操作；嵌套结算正常执行自己的 Apply，并进入返回状态。目标参与公式修正不等于目标已经受击。
+
+Calculate 成功不意味着目标受击；Apply 被调用也不意味着一定发生资源变化。Apply 从传入的最新 BattleState 读取对象并确认当前资格，不因计算成功跳过接收判断。
+
+内容程序按机制语义归属，不按原生事件编号逐项映射：
+
+| 内容程序 | 所属阶段 |
+| --- | --- |
+| 修改公式输入或最终输出 | Calculate |
+| 目标因即将受到伤害或治疗而响应 | Apply |
+| 闪避、护盾、反伤、受击回复 SP | Apply |
+| 成功造成伤害后的附加 EP | Apply 的来源后置 Hook，发起独立 EP 结算 |
+| 资源变化、爆发与死亡 | Apply 中的对应资源提交及后继业务，具体职责由领域契约规定 |
+
+即使原生先执行目标前置程序、再执行来源输出修正，ArkBattle 仍先完成 Calculate，再开始 Apply。以后仅在具体 Content 确认重要玩法差异时处理该机制，不据此恢复整套原生事件序列。原生时序及本次反例核对见[案例 28 第 6 节](../research/cases/28-damage-hooks-and-event-granularity.md#6-目标前置与来源输出能否交换)。
 
 Content 负责具体机制的采样、特殊公式和流程组合；公共 API 提供通用计算与实行。请求是静态数据，不携带延迟计算回调；Hook 通过工作值修改本次计算或接收结果。
 
@@ -181,7 +195,7 @@ DAMAGE 事件的 amount 表示本次实际 HP 损失，receivedAmount 保留 Rec
 
 两个候选从同一个输入状态分别执行，不把物理分支返回的状态传给法术分支。选择依据是包含输出修正在内的 Calculate 最终伤害结果，不是仅完成防御公式的数值，也不是护盾、闪避、HP 上限裁切等实行之后的结果。例如物理公式为 100、法术公式为 90，而法术输出修正后为 180，则选择法术的 180 及其对应状态。
 
-选中分支的状态、事件、RNG、ID 分配与 Hook 引发的嵌套业务一并接续；未选分支全部丢弃。不仅选取一个伤害数值，也不在选择之后重新计算一遍。只有选中分支进入 apply，实行阶段的 Hook 与本次 HP 应用执行一次。
+选中分支的状态、事件、RNG、ID 分配与 Hook 引发的嵌套业务一并接续；未选分支全部丢弃。不仅选取一个伤害数值，也不在选择之后重新计算一遍。两次 Calculate 都不派发本笔伤害的受击响应；只有选中分支进入 Apply，接收阶段的 Hook 与本次 HP 应用执行一次。
 
 这依赖既有纯状态契约：Hook 的战斗影响通过返回的 BattleState 表达，不修改输入版本或依赖闭包保存战斗进度。两个计算分支允许共享不可变输入，不需要为试算建立另一套可变 Runtime。
 
