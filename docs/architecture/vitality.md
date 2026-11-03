@@ -49,6 +49,8 @@ Calculate 不提交本笔输出的资源变化，也不派发本笔输出的受�
 
 Calculate 成功不意味着目标受击；Apply 被调用也不意味着一定发生资源变化。Apply 从传入的最新 BattleState 读取对象并确认当前资格，不因计算成功跳过接收判断。
 
+四种业务统一区分三种量：Calculate 最终形成的计算输出量、Receiving 后的接收量，以及 Capability 提交后的实际变化量。**零计算输出在 Apply 入口返回 REJECTED，不进入本笔接收或 Applied；Calculate 已完成的状态仍保留。零实际变化允许成功返回 APPLIED。** 例如正数治疗作用于满血目标，仍正常接收并通知，报告中的实际恢复量为零；不能按实际变化量倒推是否发生了接收。接收量归零与明确取消也分别处理，取消仍按取消结果结算。
+
 内容程序按机制语义归属，不按原生事件编号逐项映射：
 
 | 内容程序 | 所属阶段 |
@@ -277,11 +279,11 @@ applyHealing(request, calculation): Result<HealingOutcome>;
 
 Calculate 依次派发来源 Formula、目标 Formula，将当前 power 与 multiplier 相乘，再派发来源数值 Output。Request 始终表示初始事实，当前 Parameters 与 Output 数值逐项接续。初始负 power 按零处理；每个完成阶段的最终数值必须有限且非负。目标缺失、LEAVING 或 HP 为零时无法计算，已完成的状态前缀仍返回。
 
-Apply 依次确认目标当前存在、PRESENT 且 HP 大于零，派发 Receiving Started、有序 Receiving，重新确认生命周期与 HP，再读取最新 HP、MaxHP 截断恢复量并提交；该 HP 发布不附带 Blocking 维护。随后按目标、来源顺序派发 HP Applied 与 Completed，同一宿主不重复通知。来源缺失或 LEAVING 时不运行其 Hook，但不因此取消仍可作用于有效目标的已采样治疗。
+Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本笔接收与 Applied。正数治疗依次确认目标当前存在、PRESENT 且 HP 大于零，派发 Receiving Started、有序 Receiving，重新确认生命周期与 HP，再读取最新 HP、MaxHP 截断恢复量并提交；该 HP 发布不附带 Blocking 维护。随后按目标、来源顺序派发 HP Applied 与 Completed，同一宿主不重复通知。来源缺失或 LEAVING 时不运行其 Hook，但不因此取消仍可作用于有效目标的已采样治疗。
 
 结果与 Damage 使用相同的 REJECTED、CANCELLED、UNAVAILABLE、APPLIED 区分。PendingHealing 保存 amount 与可空 cancellation；取消不停止剩余 Receiving Hook。ApplicationResult 保存 hpBefore、hpAfter、hpGain，后续嵌套业务不追溯修改这次恢复事实。Received amount 与实际 hpGain 分开；完整恢复量不在 Calculate 提前按缺失 HP 截断。
 
-**满血与零治疗不自动拒绝。** 普通索敌是否排除满血对象由选择器决定；已明确目标的治疗仍经过正常 Hook，可形成 APPLIED、hpGain 为零。事件 HEAL 的 amount 保持实际恢复量，receivedAmount 记录最终接收量，cancellation 记录业务取消；取消后目标被嵌套移除时仍记录事件，hp 为 null。普通治疗不能复活 HP 为零的对象。
+**满血不自动拒绝正数治疗。** 普通索敌是否排除满血对象由选择器决定；已明确目标的正数治疗仍经过正常 Hook，可形成 APPLIED、hpGain 为零。事件 HEAL 的 amount 保持实际恢复量，receivedAmount 记录最终接收量，cancellation 记录业务取消；取消后目标被嵌套移除时仍记录事件，hp 为 null。普通治疗不能复活 HP 为零的对象。
 
 ### 4.1 治疗不可选中是项目选择
 

@@ -67,7 +67,7 @@ type End =
 
 完整操作与查询使用最新 battle，当前时间读取 battle.tick。
 
-EP 损伤与治疗遵守[Calculate 输出计算、Apply 目标接收的项目边界](vitality.md#1-calculate-与-apply-的语义边界)。本节现有完整入口仍需按此边界整理；具体协调接口尚未确定，Burst 生命周期保持下文契约，不按原生事件序列重新设计。
+EP 损伤与治疗遵守[Calculate 输出计算、Apply 目标接收的项目边界](vitality.md#1-calculate-与-apply-的语义边界)：零计算输出在 Apply 入口拒绝，不进入本笔接收或 Applied；零实际变化允许成功。本节现有完整入口仍需按此边界整理；具体协调接口尚未确定，Burst 生命周期保持下文契约，不按原生事件序列重新设计。
 
 普通 EP 回复的原生求值、逐型提交、共享 Modifier 时点及行医命中组合见[治疗结算调查](../research/cases/29-hp-and-ep-healing-settlement.md)，与本文的当前项目政策分别记录。
 
@@ -85,7 +85,7 @@ EP 损伤与治疗遵守[Calculate 输出计算、Apply 目标接收的项目边
 | query.currentType／damageRatio | `(self: Unit, maxEp?) => Type \| undefined / number`；已知对象的局部查询 |
 | query.available | `(self: Unit) => boolean`；基础在场、空间存在与生命资格查询 |
 
-DamageOutcome 为 APPLIED `{ amount, burst: Ref<Burst> | null }` 或 REJECTED `{ reason }`；HealOutcome 为 APPLIED `{ amounts: Values }` 或 REJECTED `{ reason }`。零作用可以成功返回 APPLIED，不派发实际变化 Hook。操作接受普通 Unit Ref，目标不具有 Elemental 时返回 NO_ELEMENTAL。
+DamageOutcome 为 APPLIED `{ amount, burst: Ref<Burst> | null }` 或 REJECTED `{ reason }`；HealOutcome 为 APPLIED `{ amounts: Values }` 或 REJECTED `{ reason }`。实际 EP 变化为零可以成功返回 APPLIED，不派发实际变化的 damaged／healed Hook；这不表示允许零计算输出进入接收。操作接受普通 Unit Ref，目标不具有 Elemental 时返回 NO_ELEMENTAL。
 
 损伤先按当前 elementResistance 修正，再执行本次 DamageHook 管线。Hook 返回 Result<number>，接续新的 BattleState 和剩余数额；每次派发固定候选 ID，逐项读取最新登记，嵌套派发独立收集。返回后重查目标资格、当前上限及 EP，再提交数额，损失不超过当前 EP。Effect 可以保存护盾预算、在启停时登记和撤销 DamageHook，Hook 消耗当前 Effect 预算并返回剩余损伤；Elemental 不认识具体护盾。某型 EP 归零时，一次性把四条 EP 置零、登记新 Burst；在内容回调前登记 Burst→Unit 的 Lifetime owner 关系。治疗对每条 EP 各应用完整请求数额，分别限制到当前上限，不在四型之间分摊。动态上限变化不按比例重算 EP；后续实际写入 EP 的操作或 Runtime 推进将数值限制在当前上限内。
 

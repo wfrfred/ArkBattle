@@ -48,6 +48,8 @@ H=\max(0,\operatorname{ATK}\times\operatorname{healScale})
 
 一个直接控制流支持的区分例子：已满 HP 的目标接收正数治疗100，最终 HP 不变、实际回复0，但 DoApply 仍可成功，继续目标 Applied7 和来源 AfterOutputHeal85。初始数值为0则会在原生入口被取消判断排除。**满血的正数治疗与初始零治疗不同，普通后置并不统一要求实际回复大于0。** 该例是静态分支推导，没有实机执行。
 
+零值入口的直接证据复用[接收节点原体](../evidence/damage-hook-needs-20261103/native-reception.json)中的 `Modifier.get_isCancelled` 72132：普通非 XLua 分支在 deltaType 非 NONE 时读取当前 value，再调用 `MathUtil.IsZero`。`Entity.ApplyModifier` 67665 在目标 Before5 之前调用这个判断。这里是原生 Modifier 入口的当前数值；ArkBattle 的 Calculate／Apply 划分仍按项目契约，不将两个检查位置机械等同。
+
 ### EP：独立基数、逐型恢复与累计量
 
 所查 `ApplyElementHeal.Execute` 99906 在 `_maxEpHeal=false` 时，读取当前或弹道缓存 ATK，乘节点黑板可覆盖的 epHealRatio，然后直接构造 EP Modifier 并应用。不调用 HP CalculateHeal，不读取主 HP 的理论量或实际恢复量，也没有在该节点公式中应用 EP 损伤抗性。通用前置程序仍可修改或取消这次数值。
@@ -88,6 +90,8 @@ EP 自然回复与爆发恢复通过直接 EP setter 推进，不经过上表普
 
 项目已确认[Calculate 输出计算、Apply 目标接收](../../architecture/vitality.md#1-calculate-与-apply-的语义边界)的共同边界；本节原生事件顺序是机制证据，不是逐项迁移 Hook 的目标。
 
-当前政策保持：healFree 只限制 Targeting；显式治疗不因此新增接收免疫；满血和零治疗不自动拒绝；自然回复不派发普通治疗 Hook；既定死亡通知顺序、弱点完整双 Calculate 与 Burst 生命周期不变。上述政策与原生的差异已分别标明，不通过调查静默修改。
+**零值项目决策（2026-11-03，用户确认）：** 四种业务的最终计算输出为零时，在 Apply 入口拒绝，不进入本笔接收或 Applied；实际资源变化为零则允许成功。满血目标接收正数治疗属于后者。具体契约见[Calculate 与 Apply 的语义边界](../../architecture/vitality.md#1-calculate-与-apply-的语义边界)。
+
+其余政策保持：healFree 只限制 Targeting；显式治疗不因此新增接收免疫；自然回复不派发普通治疗 Hook；既定死亡通知顺序、弱点完整双 Calculate 与 Burst 生命周期不变。上述政策与原生的差异已分别标明，不通过调查静默修改。
 
 未知项包括活跃 XLua、特化 GameMode／force／skip组合、额外生命和 HP override、全部治疗加成来源、桑葚外部 TraitData 的0.5参数与所有动态资格组合。研究限定普通 native 与所选资源，没有运行完整客户端；不据字段名称补齐未知结论。

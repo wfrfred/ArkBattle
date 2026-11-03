@@ -4,7 +4,7 @@
 
 **已定稿的同步结算契约：** [跨领域操作后的读取与续执行](functional-core.md#状态接续后的读取与续执行)、[每次派发独立选取 Hook 候选](functional-core.md#7-同步候选范围)、[Lifetime 请求与依赖析构](lifetime.md)、[离场清理的必要偏序](deployment.md#离场清理的偏序)。请求同步发布终止态并执行 Prepare；最外层结算器按 DAG 完成 Finalize，宿主等待真实依赖者完整返回。嵌套结束不保证槽位已释放或对象已注销，后继实时事实从最新 battle 查询。
 
-**已定稿的输出与接收边界：** [Calculate 与 Apply](vitality.md#1-calculate-与-apply-的语义边界)分别负责本笔伤害／治疗的输出计算与目标接收。输出计算不派发本笔受击响应；两阶段按机制语义安排内容程序，不以复刻原生 Hook 时序为目标。
+**已定稿的输出与接收边界：** [Calculate 与 Apply](vitality.md#1-calculate-与-apply-的语义边界)分别负责本笔伤害／治疗的输出计算与目标接收。输出计算不派发本笔受击响应；零计算输出在 Apply 入口拒绝，零实际变化允许成功。两阶段按机制语义安排内容程序，不以复刻原生 Hook 时序为目标。
 
 **已确定的 Unit 变更与 Blocking 政策：** [Unit 批量变更](api-conventions.md#51-unit-完整操作与批量变更)采用 Ref 绑定 Change：全批纯转换、一次 Field 发布、原顺序结算；精确私有 state 写回和完整生命周期操作保持原协议。[Blocking](blocking.md#已确定的职责与调度政策)明确构造与通知关系，后继局部维护本对象或受影响 owner，不扫描无关批次；完整 Tile 操作仍可全场维护。临时 HP 为 0 不提前解除旧关系，真实离场由 Unit.remove 的统一 prepare 节点接入 Blocking 自身清理。普通接敌每 Tick 在 Movement 后统一执行。
 
