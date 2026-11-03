@@ -95,6 +95,8 @@ Targeting 提供标准元素 Filter，由 Content 显式组合：elementDamage �
 
 ## 4. Hook、提交事实与同步重入
 
+结算 Hook 采用[已定稿的精确类型与取消契约](vitality.md#16-已定稿的结算-hook-类型)：EP Damage／Healing 各有自己的 Context 与 Application，不并入联合 Context；EP Damage 接收的 Pending 独立保存 amount 与 cancellation。取消后仍可修改 amount、继续独立业务，但保留已有取消及原因；领域 cancel 构造函数封装条件类型断言。EP Healing 暂不机械增加专属 Receiving Hook，HP Damage 的 ReceivingStarted 不向 EP 复制。以下既有接收接口尚待迁移，Burst 及实际 EP 变化通知保持各自语义。
+
 Hook 采用公共协议 `(battle, fixedContext, current) => Result<T>`。事实通知固定 `{ host, event }`，T=void；DamageHook 固定 `{ host, request }`，T=number，金额只在 current 接续，内容程序负责返回合法的非负剩余损伤。accepts 只查询，实时宿主按 host 从 battle 读取。setDamageHook／removeDamageHook 管理伤判登记。每次派发固定候选 ID，逐项读取最新登记与 accepts；同 ID 替换使用新版本，新 ID 等待下一次派发。嵌套操作独立取候选。
 
 | Hook | 载荷与时点 |

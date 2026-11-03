@@ -6,6 +6,8 @@
 
 **已定稿的输出与接收边界：** [Calculate 与 Apply](vitality.md#1-calculate-与-apply-的语义边界)分别负责本笔伤害／治疗的输出计算与目标接收。输出计算不派发本笔受击响应；零计算输出在 Apply 入口拒绝，零实际变化允许成功。两阶段按机制语义安排内容程序，不以复刻原生 Hook 时序为目标。
 
+**已定稿的结算 Hook 类型：** [固定 Context、工作值与取消](vitality.md#16-已定稿的结算-hook-类型)由四种业务分别提供精确契约。取消不停止接收派发，后续保留已有取消及原因；领域 cancel 构造函数封装类型断言，Applied 只携带成功提交事实。登记 API、优先级及生命周期清理继续单独设计。
+
 **已确定的 Unit 变更与 Blocking 政策：** [Unit 批量变更](api-conventions.md#51-unit-完整操作与批量变更)采用 Ref 绑定 Change：全批纯转换、一次 Field 发布、原顺序结算；精确私有 state 写回和完整生命周期操作保持原协议。[Blocking](blocking.md#已确定的职责与调度政策)明确构造与通知关系，后继局部维护本对象或受影响 owner，不扫描无关批次；完整 Tile 操作仍可全场维护。临时 HP 为 0 不提前解除旧关系，真实离场由 Unit.remove 的统一 prepare 节点接入 Blocking 自身清理。普通接敌每 Tick 在 Movement 后统一执行。
 
 各领域文档记录有效的数据模型、API 和执行语义。尚未完成的重构、开放问题和验收要求保留在对应章节；[接口约定](api-conventions.md)汇总尚未统一的接口，[目标语义与实现缺口](tactical-semantics.md)记录未完成的玩法接入。
@@ -31,7 +33,7 @@
 | [Terrain 与 Mechanism](terrain.md) | 逐格参数、类型化 Tiles、地形轮询、控制器与 Unit Effect 的职责 |
 | [Navigation、Route 与 Locomotion 设计](navigation.md) | 地图、Overlay、寻路查询、路线执行与运动结算的职责划分 |
 | [Blocking 设计](blocking.md) | 双端关系、Blockable 唯一归属、分阶段通知、每 Tick 搜索、实时容量与关系身份 |
-| [Vitality / Damage 设计](vitality.md) | Calculate、请求与参数类型、Apply 五个时点、普通结果、暂缓的特殊生命语义，以及弱点伤害的项目规则 |
+| [Vitality / Damage 设计](vitality.md) | Calculate／Apply 边界、精确 Hook 类型、取消与提交报告，以及弱点伤害和特殊生命语义 |
 | [Deployment 与 Unit 生命周期](deployment.md) | Card／场上实例、部署参数与 API、登场／离场职责及支持范围 |
 | [Effect 设计](effect.md)                  | Unit 附着实例、Definition 泛型、生命周期、Hook／Contribution 接入、Aura 与文件职责 |
 | [Projectile 设计](projectile.md) | 独立完整实例、异构 Store／Query、内容回调与更新、Step 候选及终止请求／Finalize |
