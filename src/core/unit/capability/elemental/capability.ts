@@ -14,12 +14,14 @@ import type { DamageReceivingHook, Events, Hook } from "./hook.js";
 import type { Rules } from "./rule.js";
 import { createRegistrationOperations } from "../../registration.js";
 
-export enum Type {
-    NEURAL = "NEURAL",
-    EROSION = "EROSION",
-    BURN = "BURN",
-    NECROSIS = "NECROSIS",
-}
+export const Type = {
+    NEURAL: "NEURAL",
+    EROSION: "EROSION",
+    BURN: "BURN",
+    NECROSIS: "NECROSIS",
+} as const;
+
+export type Type = (typeof Type)[keyof typeof Type];
 
 export const ELEMENT_TYPES: readonly Type[] = Object.values(Type);
 

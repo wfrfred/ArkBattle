@@ -116,9 +116,7 @@ vitality.setRule(patientRef, {
     id: 'damage-permission', allows: (_state, context) => context.calculated.amount > 0,
 });
 declare const elementalRef: Ref<Unit & elemental.Elemental>;
-const injuryType: elemental.Type = elemental.Type.NEURAL;
-// @ts-expect-error raw text must be parsed before it establishes an element type.
-const unparsedInjury: elemental.Type = 'NEURAL';
+const injuryType: elemental.Type = 'NEURAL';
 elemental.setRule(elementalRef, 'damageRules', {
     id: 'injury-permission', allows: (_state, context) => context.type === 'NEURAL',
 });
