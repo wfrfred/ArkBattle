@@ -1,5 +1,7 @@
 import type { Result, State as BattleState } from "../../state.js";
 import * as units from "../../../unit/query.js";
+import type { Unit } from "../../../unit/unit.js";
+import type { Vitality } from "../../../unit/capability/vitality/capability.js";
 import { resolveDefense, resolveResistance } from "../../../unit/capability/vitality/query.js";
 import { hasElemental } from "../../../unit/capability/elemental/capability.js";
 import { resolveDamageResistance } from "../../../unit/capability/elemental/query.js";
@@ -32,11 +34,12 @@ export function calculateDamage(
         parameters = result.value;
     }
 
-    if (unavailable(battle)) {
+    const target = units.get(battle, request.target);
+    if (target?.lifecycle !== "PRESENT" || target.vitality.hp <= 0) {
         return { state: battle, value: undefined };
     }
 
-    const amount = formula(battle, request, parameters);
+    const amount = formula(battle, target, parameters);
     const output = dispatch(
         battle,
         request.source,
@@ -54,13 +57,13 @@ export function calculateDamage(
     };
 }
 
-function formula(battle: BattleState, request: Request, parameters: Parameters): number {
+function formula(battle: BattleState, target: Unit & Vitality, parameters: Parameters): number {
     const attack = parameters.attack;
     const power = Math.max(0, attack.power * attack.multiplier + attack.addition);
 
     switch (parameters.type) {
         case "PHYSICAL": {
-            const defense = resolveDefense(battle, request.target)!;
+            const defense = resolveDefense(battle, target);
             const effective =
                 Math.max(0, defense - parameters.penetration.fixed) *
                 Math.max(0, 1 - parameters.penetration.proportional);
@@ -69,7 +72,7 @@ function formula(battle: BattleState, request: Request, parameters: Parameters):
         }
 
         case "ARTS": {
-            const resistance = resolveResistance(battle, request.target)!;
+            const resistance = resolveResistance(battle, target);
             const effective =
                 Math.max(0, resistance - parameters.penetration.fixed) *
                 Math.max(0, 1 - parameters.penetration.proportional);
@@ -81,10 +84,7 @@ function formula(battle: BattleState, request: Request, parameters: Parameters):
             return power;
 
         case "ELEMENTAL": {
-            const target = units.get(battle, request.target)!;
-            const resistance = hasElemental(target)
-                ? resolveDamageResistance(battle, units.ref(target))!
-                : 0;
+            const resistance = hasElemental(target) ? resolveDamageResistance(battle, target) : 0;
 
             return Math.max(power * 0.05, power * Math.max(0, 1 - resistance / 100));
         }

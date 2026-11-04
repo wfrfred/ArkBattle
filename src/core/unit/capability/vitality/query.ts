@@ -1,20 +1,10 @@
-import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
-import * as units from "../../query.js";
 import * as contribution from "../../contribution/contribution.js";
 import * as attribute from "../../contribution/attribute.js";
 import type { Vitality } from "./capability.js";
 
-export function resolveDefense(
-    battle: BattleState,
-    reference: Ref<Unit & Vitality>,
-): number | undefined {
-    const self = units.get(battle, reference);
-    if (self === undefined) {
-        return undefined;
-    }
-
+export function resolveDefense(battle: BattleState, self: Unit & Vitality): number {
     return Math.max(
         0,
         attribute.apply(
@@ -26,15 +16,7 @@ export function resolveDefense(
     );
 }
 
-export function resolveResistance(
-    battle: BattleState,
-    reference: Ref<Unit & Vitality>,
-): number | undefined {
-    const self = units.get(battle, reference);
-    if (self === undefined) {
-        return undefined;
-    }
-
+export function resolveResistance(battle: BattleState, self: Unit & Vitality): number {
     return Math.min(
         100,
         Math.max(

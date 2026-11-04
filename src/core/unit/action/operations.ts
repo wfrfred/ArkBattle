@@ -8,7 +8,7 @@ import type { Unit } from "../unit.js";
 import type { Action as ActionCapability } from "../capability/action/capability.js";
 import { isSpatiallyPresent } from "../capability/presence/capability.js";
 import { hasVitality } from "../capability/vitality/capability.js";
-import { resolveInterval } from "../capability/action/timing.js";
+import { resolvePeriod } from "../capability/action/timing.js";
 import type { Action } from "./action.js";
 import { ref, type Execution } from "./execution.js";
 import type { End } from "./definition.js";
@@ -79,7 +79,7 @@ export function start<P extends object, E extends object>(
             return reject("RULE");
         }
 
-        const period = resolveInterval(battle, source, definition)!;
+        const period = resolvePeriod(battle, unit, definition);
         const resized = cooldown.resizeKeepingProgress(action.cooldown, period, battle.tick);
         if (cooldown.remaining(resized, battle.tick) > 0) {
             return reject("COOLDOWN");
@@ -256,7 +256,7 @@ export function refreshCooldowns(
 
     for (const id of actions.keys()) {
         const self = actions.get(id)!;
-        const period = resolveInterval(battle, source, self.definition)!;
+        const period = resolvePeriod(battle, unit, self.definition);
         const next = cooldown.resizeKeepingProgress(self.cooldown, period, battle.tick);
         if (next !== self.cooldown) {
             actions = actions.replace(self.definition, { ...self, cooldown: next });

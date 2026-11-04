@@ -57,10 +57,10 @@ function advance(work, tick) {
 }
 function defense(work) {
   const unit = getUnit(work, 1);
-  return resolveDefense(work, unitRef(unit));
+  return resolveDefense(work, unit);
 }
 function power(work) {
-  return resolveAttack(work, unitRef(getUnit(work, 1)));
+  return resolveAttack(work, getUnit(work, 1));
 }
 function near(actual, expected) { assert.ok(Math.abs(actual - expected) < 1e-8, `${actual} != ${expected}`); }
 
@@ -77,7 +77,7 @@ test('elemental execution: standard immediate bursts apply class-specific damage
     assert.equal(getBurst(result.state, result.value.application.burst).source, null);
     assert.equal(getUnit(input, 1).vitality.hp, 100000 - expectedHpLoss);
     assert.equal(defense(input), expectedDefense);
-    assert.equal(resolveResistance(input, unitRef(getUnit(input, 1))), expectedResistance);
+    assert.equal(resolveResistance(input, getUnit(input, 1)), expectedResistance);
     const hits = input.events.filter(event => event.type === 'DAMAGE');
     assert.equal(hits.length, 1);
     assert.equal(hits[0].amount, expectedHpLoss);

@@ -40,7 +40,7 @@ test("Melantha's talent and S1 affect real attacks, and the talent remains after
     const actor = source();
     let battle = add(add(createBattleState(fixtureBattlefieldState([])), actor), receiver());
     const base = (738 + 25 + 65) * 1.08;
-    assert.equal(resolveAttack(battle, ref(actor)), base);
+    assert.equal(resolveAttack(battle, getUnit(battle, actor.id)), base);
 
     battle = modify(battle, ref(actor), 40).state;
     battle = activate(battle, skillRef(getUnit(battle, 0))).state;
@@ -50,7 +50,7 @@ test("Melantha's talent and S1 affect real attacks, and the talent remains after
     assert.ok(Math.abs(getUnit(battle, 1).vitality.hp - (10000 - (738 + 25 + 65) * 1.58)) < 1e-6);
 
     battle = advance({ ...battle, tick: 600 }, ref(actor));
-    assert.equal(resolveAttack(battle, ref(actor)), base);
+    assert.equal(resolveAttack(battle, getUnit(battle, actor.id)), base);
     assert.equal(getUnit(battle, 0).skill.activation, null);
 });
 

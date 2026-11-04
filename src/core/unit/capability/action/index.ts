@@ -14,7 +14,7 @@ export { beforeRelease, released } from "./release.js";
 
 export type { Directive, Context, BeforeReleaseHook, ReleasedHook } from "./release.js";
 
-export { resolveSpeed, resolveBaseInterval, resolveInterval, period } from "./timing.js";
+export { resolveSpeed, resolveBaseInterval, resolvePeriod, period } from "./timing.js";
 
 export {
     setIntervalContribution,

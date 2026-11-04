@@ -12,6 +12,7 @@ import {
     type Type as ElementType,
     damageRatio,
     currentType,
+    resolveMaxEp,
 } from "../core/unit/capability/elemental/index.js";
 
 import { hasLocomotion } from "../core/unit/capability/locomotion/index.js";
@@ -157,7 +158,7 @@ function isFlying(unit: Unit): boolean {
 
 function maxHp(unit: Unit): number {
     if (hasVitality(unit)) {
-        return resolveVitalityMaxHp(unit.vitality, unit.definition.vitality);
+        return resolveVitalityMaxHp(unit.definition.vitality, unit.vitality);
     }
 
     return hasVitalityDefinition(unit.definition) ? unit.definition.vitality.maxHp : 0;
@@ -599,14 +600,15 @@ export class TacticalDemoPresentation {
                 continue;
             }
 
-            const type = currentType(unit);
+            const maximum = resolveMaxEp(state, unit);
+            const type = currentType(unit, maximum);
             if (type === undefined) {
                 continue;
             }
 
             const fill = Math.min(
                 0.99,
-                Math.max(0.01, Math.floor(damageRatio(unit) * 100 + 1e-9) / 100),
+                Math.max(0.01, Math.floor(damageRatio(unit, maximum) * 100 + 1e-9) / 100),
             );
             gauges.push([unit.id, ELEMENT_TYPE[type], fill, 0, 0]);
         }

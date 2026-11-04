@@ -1,17 +1,10 @@
-import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
-import * as units from "../../query.js";
 import * as contribution from "../../contribution/contribution.js";
 import * as attribute from "../../contribution/attribute.js";
 import type { Offense } from "./capability.js";
 
-export function resolveAttack(battle: BattleState, ref: Ref<Unit & Offense>): number | undefined {
-    const self = units.get(battle, ref);
-    if (self === undefined) {
-        return undefined;
-    }
-
+export function resolveAttack(battle: BattleState, self: Unit & Offense): number {
     return Math.max(
         0,
         attribute.apply(

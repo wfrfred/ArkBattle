@@ -25,7 +25,7 @@ export function healSelf(state: BattleState, unitId: Id, ratio: number): BattleS
         return state;
     }
 
-    const maxHp = resolveMaxHp(unit.vitality, unit.definition.vitality);
+    const maxHp = resolveMaxHp(unit.definition.vitality, unit.vitality);
     const request: HealingRequest = {
         source: unitRef(unit),
         target: unitRef(unit),

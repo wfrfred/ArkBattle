@@ -32,11 +32,12 @@ export function calculateDamage(
         parameters = result.value;
     }
 
-    if (unavailable(battle)) {
+    const target = units.get(battle, request.target);
+    if (target === undefined || !available(target)) {
         return { state: battle, value: undefined };
     }
 
-    const resistance = resolveElementResistance(battle, request.target)!;
+    const resistance = resolveElementResistance(battle, target);
     const amount = Math.max(0, parameters.power) * (1 - resistance / 100);
     const result = dispatch(
         battle,

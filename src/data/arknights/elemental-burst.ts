@@ -234,7 +234,9 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
                 ? host
                 : undefined;
         };
-        if (currentHost(battle) === undefined) {
+
+        const host = currentHost(battle);
+        if (host === undefined) {
             return battle;
         }
 
@@ -242,7 +244,7 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
             ? profile.durationTicks
             : Math.min(
                   profile.durationTicks,
-                  self.data.elapsedTicks + resolveBurstRecoverySpeed(battle, self.host)!,
+                  self.data.elapsedTicks + resolveBurstRecoverySpeed(battle, host),
               );
         const previousSecond = Math.floor((self.data.elapsedTicks + 1e-8) / TICKS_PER_SECOND);
         const currentSecond = Math.floor((elapsedTicks + 1e-8) / TICKS_PER_SECOND);

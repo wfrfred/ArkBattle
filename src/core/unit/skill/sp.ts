@@ -48,6 +48,18 @@ export interface State {
     readonly recoveryMultiplier: readonly contribution.Contribution<Input>[];
 }
 
+type WithSp = Unit &
+    Skill & {
+        readonly skill: {
+            readonly sp: State;
+            readonly definition: { readonly sp: Definition };
+        };
+    };
+
+export function hasSp(self: Unit & Skill): self is WithSp {
+    return self.skill.sp !== null;
+}
+
 export interface Recovered {
     readonly source: Source;
     readonly amount: number;
@@ -151,35 +163,12 @@ export function initialize(definition: Definition, tick = 0): State {
     };
 }
 
-export function resolveCapacity(battle: BattleState, ref: Ref<Unit & Skill>): number | undefined {
-    return units.get(battle, ref)?.skill.definition.sp?.capacity;
+export function resolveRecoverySpeed(battle: BattleState, self: WithSp): number {
+    return resolve(battle, self, "recoverySpeed");
 }
-export function resolveRequirement(
-    battle: BattleState,
-    ref: Ref<Unit & Skill>,
-): number | undefined {
-    return units.get(battle, ref)?.skill.definition.sp?.requirement;
-}
-export function resolveCost(battle: BattleState, ref: Ref<Unit & Skill>): number | undefined {
-    const definition = units.get(battle, ref)?.skill.definition.sp;
 
-    return definition?.cost ?? definition?.requirement;
-}
-export function resolveRecoverySpeed(
-    battle: BattleState,
-    ref: Ref<Unit & Skill>,
-): number | undefined {
-    const self = units.get(battle, ref);
-
-    return self === undefined ? undefined : resolve(battle, self, "recoverySpeed");
-}
-export function resolveRecoveryMultiplier(
-    battle: BattleState,
-    ref: Ref<Unit & Skill>,
-): number | undefined {
-    const self = units.get(battle, ref);
-
-    return self === undefined ? undefined : resolve(battle, self, "recoveryMultiplier");
+export function resolveRecoveryMultiplier(battle: BattleState, self: WithSp): number {
+    return resolve(battle, self, "recoveryMultiplier");
 }
 
 export function recover(
@@ -201,11 +190,12 @@ export function recover(
         return rejected(battle, "UNAVAILABLE");
     }
 
-    const state = self.skill.sp;
-    const definition = self.skill.definition.sp;
-    if (state === null || definition === null) {
+    if (!hasSp(self)) {
         return rejected(battle, "NO_SP");
     }
+
+    const state = self.skill.sp;
+    const definition = self.skill.definition.sp;
     if (source !== "EXTERNAL" && definition.recovery.type !== source) {
         return rejected(battle, "WRONG_SOURCE");
     }
@@ -257,12 +247,12 @@ export function pay(battle: BattleState, ref: Ref<Unit & Skill>, amount?: number
         return rejected(battle, "UNAVAILABLE");
     }
 
-    const state = self.skill.sp;
-    const definition = self.skill.definition.sp;
-    if (state === null || definition === null) {
+    if (!hasSp(self)) {
         return rejected(battle, "NO_SP");
     }
 
+    const state = self.skill.sp;
+    const definition = self.skill.definition.sp;
     const cost = amount ?? definition.cost ?? definition.requirement;
     if (state.value < cost) {
         return rejected(battle, "INSUFFICIENT_SP");
@@ -300,11 +290,12 @@ export function modify(
         return rejected(battle, "UNAVAILABLE");
     }
 
-    const state = self.skill.sp;
-    const definition = self.skill.definition.sp;
-    if (state === null || definition === null) {
+    if (!hasSp(self)) {
         return rejected(battle, "NO_SP");
     }
+
+    const state = self.skill.sp;
+    const definition = self.skill.definition.sp;
     if (delta > 0 && !forced && !allowsRecovery(battle, self, "EXTERNAL")) {
         return rejected(battle, "RULE");
     }
@@ -331,13 +322,13 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
     if (self === undefined) {
         return battle;
     }
-    if (self.lifecycle !== "PRESENT" || self.skill.sp === null) {
+    if (self.lifecycle !== "PRESENT" || !hasSp(self)) {
         return battle;
     }
 
     const state = self.skill.sp;
     const definition = self.skill.definition.sp;
-    if (definition?.recovery.type !== "TIME") {
+    if (definition.recovery.type !== "TIME") {
         return battle;
     }
 
@@ -345,8 +336,7 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
         throw new RangeError("skill SP cannot advance to an earlier tick");
     }
 
-    const rate =
-        resolve(battle, self, "recoverySpeed")! * resolve(battle, self, "recoveryMultiplier")!;
+    const rate = resolveRecoverySpeed(battle, self) * resolveRecoveryMultiplier(battle, self);
     let recovery: Timer | null = null;
     let pulses = 0;
 
@@ -387,12 +377,9 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
     return pulses === 0 ? battle : recover(battle, ref, "TIME", pulses).state;
 }
 
-function resolve(battle: BattleState, self: Unit & Skill, key: Parameter): number | undefined {
+function resolve(battle: BattleState, self: WithSp, key: Parameter): number {
     const definition = self.skill.definition.sp;
     const state = self.skill.sp;
-    if (definition === null || state === null) {
-        return undefined;
-    }
 
     let base = 1;
     if (key === "recoverySpeed") {

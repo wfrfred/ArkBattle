@@ -253,7 +253,9 @@ export type Input<M, H> =
 
 `M` 由所属领域定义修正数据，`H` 保留对应宿主能力。各领域的 Input 别名使用这个共享类型；互斥组先选择，再对保留输入在同一 BattleState 中只读求值并展开列表，由领域公式归并。输入函数不接收累计结果，也不执行支付或写回操作；具体求值与采样时点由所属查询或操作决定。
 
-Offense、Action、Locomotion、Vitality、Elemental 的公开属性查询从最新 BattleState 按 Ref 读取宿主，属性公式模块只保留 Modifier、create、apply。
+动态 Contribution 求值统一为 `resolveXxx(battle, self, ...必要基础参数): number`，self 是调用方刚从该 BattleState 取得的完整能力对象。求值不按 Ref 再次定位、不检查宿主存在性或生命周期，也不返回 undefined；缺失、能力资格、来源离场后的缓存和跨完整业务操作后的重新读取由业务入口负责。Action 的基础值属于具体 Action，resolveSpeed／resolveBaseInterval／resolvePeriod 在 self 后显式接收对应 Definition 的 Timing 数据。
+
+纯公式只接收实际需要的局部值：MaxHP 与 Blocking 的容量／体积统一为 `(definition, state)`；Ammo 使用 `(base, modifiers)`；Card 持有自身 Definition 与 State，继续接收 Card 值。局部公式不为形式一致增加 Battle 或 Ref。普通配置字段直接读取，不包装 Getter；SP 容量、门槛和默认费用直接来自 Definition，本次发动费用仍由 Activation.cost 程序与默认配置共同决定。SP 可空槽位在资源入口通过 hasSp 收窄后求值，两项回复属性同样返回 number。属性公式模块只保留 Modifier、create、apply。
 
 战场查询直接归所属领域，返回完整实体或确有用途的关系投影。Unit 使用 all／get，Blocking 使用 blockerOf／blocked／usedCapacity／relations；relations(battle, ref?) 省略 Ref 时投影全场，提供 Ref 时直接读取局部关联并保留原 blocked Ref，不扫描全场后过滤。Projectile 使用 get 及容器查询。Occupancy.at(field, tile) 返回 occupant／support 双槽登记，消费方直接读取并按需取得当前 Unit；map 与 navigation 可直接读取 Field 的只读字段。战斗入口为 initialize(input) 与 step(battle, commands)，直接返回不可变 BattleState，commands 是必填数组；消费侧按所需语义形成局部输出，不提供第二套完整 Snapshot 或 Runtime 对象。
 

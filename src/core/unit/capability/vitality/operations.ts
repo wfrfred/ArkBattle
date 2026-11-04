@@ -96,7 +96,7 @@ export function commitHealing(
 ): Result<HealingApplication> {
     const unit = units.get(battle, context.target)!;
     const hpBefore = unit.vitality.hp;
-    const maxHp = resolveMaxHp(unit.vitality, unit.definition.vitality);
+    const maxHp = resolveMaxHp(unit.definition.vitality, unit.vitality);
     const hpAfter = hpBefore + Math.max(0, Math.min(context.received.amount, maxHp - hpBefore));
     const application = { hpBefore, hpAfter, hpGain: hpAfter - hpBefore };
 

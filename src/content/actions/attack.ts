@@ -185,7 +185,7 @@ function apply(
                 if (current === undefined) {
                     power = undefined;
                 } else if (hasOffense(current)) {
-                    power = resolveAttack(battle, units.ref(current));
+                    power = resolveAttack(battle, current);
                 } else {
                     power = 0;
                 }

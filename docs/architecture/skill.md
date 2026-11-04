@@ -32,6 +32,8 @@ Skill 需要保障的结果是：
 
 SP 的 setContribution／removeContribution 仅登记 recoverySpeed／recoveryMultiplier，绑定 Ref<Unit & SkillCapability> 返回 Change，经领域入口以 setSpContribution／removeSpContribution 导出。它们与 SP State／Input 保持同一模块，不增加 Capability 转发，不附带资源支付或延时。容量、门槛、支付和 TIME 时长没有通用 Contribution 注册表。
 
+SP 容量、门槛和默认费用直接读取 Skill Definition；发动实际费用优先采用 Activation.cost 程序。Skill 可以没有 SP，资源操作在入口通过 hasSp 确认槽位并建立 Definition／State 配对的非空类型证明，内部不重复检查。resolveRecoverySpeed／resolveRecoveryMultiplier 接收 battle 与已证明具有 SP 的当前宿主，直接求值贡献并返回 number，不再承担 Ref 定位或缺失兜底。
+
 ## 1. 单槽聚合、Definition 与两种身份
 
 每个 Unit 的 unit.skill 直接保存一份 Skill 聚合，至多有一个当前 Activation，不使用集合或额外 Instance 包装：

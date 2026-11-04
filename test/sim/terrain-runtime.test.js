@@ -61,7 +61,7 @@ function setup(terrains, placements, definition) {
 
 const current = (battle, id = 0) => battle.battlefield.units.get(id);
 const effect = (battle, id = 0) => current(battle, id).effects.values().toArray()[0];
-const attackSpeed = (battle, id = 0) => resolveSpeed(battle, units.ref(current(battle, id)), {
+const attackSpeed = (battle, id = 0) => resolveSpeed(battle, current(battle, id), {
     intervalTicks: 30, speed: 100,
 });
 const at = (battle, tick) => mechanisms.advance(effects.advance({ ...battle, tick }));
@@ -80,7 +80,7 @@ test("one infection mechanism preserves distinct tile damage and buffs after lea
     const original = configured.battle;
     let battle = at(original, 0);
     const installed = effect(battle);
-    assert.equal(resolveAttack(battle, units.ref(current(battle))), 120);
+    assert.equal(resolveAttack(battle, current(battle)), 120);
     assert.equal(attackSpeed(battle), 120);
     assert.equal(current(original).effects.size, 0);
     battle = update(battle, [{ ...current(battle), position: [3, 0] }]);
@@ -94,7 +94,7 @@ test("one infection mechanism preserves distinct tile damage and buffs after lea
     battle = through(battle, 31, 65);
     assert.equal(current(battle).vitality.hp, 840);
     assert.equal(current(battle).effects.size, 0);
-    assert.equal(resolveAttack(battle, units.ref(current(battle))), 100);
+    assert.equal(resolveAttack(battle, current(battle)), 100);
     assert.equal(attackSpeed(battle), 100);
 });
 

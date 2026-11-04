@@ -469,7 +469,7 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
 
             return {
                 hp: unit.vitality.hp,
-                maxHp: resolveMaxHp(unit.vitality, unit.definition.vitality),
+                maxHp: resolveMaxHp(unit.definition.vitality, unit.vitality),
                 sp: unit.skill.sp?.value ?? 0,
                 maxSp: unit.skill.definition.sp?.requirement ?? 0,
                 ...(shield === undefined

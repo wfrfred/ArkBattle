@@ -30,10 +30,10 @@ export const distance: Comparator = (battle, request, left, right) => {
 
 export const hpRatio: Comparator = (_battle, _request, left, right) => {
     const leftRatio = hasVitality(left)
-        ? left.vitality.hp / resolveMaxHp(left.vitality, left.definition.vitality)
+        ? left.vitality.hp / resolveMaxHp(left.definition.vitality, left.vitality)
         : 1;
     const rightRatio = hasVitality(right)
-        ? right.vitality.hp / resolveMaxHp(right.vitality, right.definition.vitality)
+        ? right.vitality.hp / resolveMaxHp(right.definition.vitality, right.vitality)
         : 1;
 
     return leftRatio - rightRatio;

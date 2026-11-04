@@ -9,10 +9,14 @@ import * as epHealing from "../../dist/core/battle/healing/ep/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
 import { update } from "../../dist/core/battle/unit.js";
+import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
+import { TacticalDemoPresentation } from "../../dist/legacy/tactical-demo-presentation.js";
+import { select, elementHealing, first } from "../../dist/core/battle/targeting/index.js";
 
 const burst = { durationTicks: 6, onStart: state => state };
 const elementalReceiver = {
     id: "ep-receiver", hooks: Hooks.empty(), spatialPresence: {}, allegiance: { side: "ALLY" },
+    targetable: { restrictions: [] },
     elemental: {
         maxEp: 1000, recoveryPerSecond: 15, elementResistance: 0,
         damageResistance: 0, burstRecoverySpeed: 1,
@@ -88,4 +92,20 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     assert.equal(full.value.kind, "APPLIED");
     assert.deepEqual(full.value.application.epGain, elemental.elementValues(0));
     assert.equal(healingNotices, 3);
+
+    const selection = {
+        source: target, purposes: ["ELEMENTAL_INJURY_HEALED"],
+        filter: elementHealing({ power: 100 }), selector: first(1, () => 0),
+    };
+    assert.deepEqual(select(full.state, selection).value, []);
+    state = update(full.state, [elemental.setContribution(target, "maxEp", {
+        id: "larger-pool", value: [modifier({ multiplier: 1 })],
+    })]);
+    const current = get(state, 0);
+    const maximum = elemental.resolveMaxEp(state, current);
+    assert.equal(maximum, 2000);
+    assert.equal(elemental.resolveDamageRatio(state, current), 0.5);
+    assert.deepEqual(select(state, selection).value.map(reference => reference.id), [0]);
+    const view = new TacticalDemoPresentation({ lookup() {} });
+    assert.equal(view.elements(state)[0][2], 0.5);
 });

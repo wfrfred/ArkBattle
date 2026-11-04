@@ -119,7 +119,7 @@ export const blocker: Filter = (battle, request, target) => {
 
 export const missingHp: Filter = (_battle, _request, target) =>
     hasVitality(target) &&
-    target.vitality.hp < resolveMaxHp(target.vitality, target.definition.vitality);
+    target.vitality.hp < resolveMaxHp(target.definition.vitality, target.vitality);
 
 export const damage: Filter = and(present, alive, hostile, allowsRestrictions);
 
@@ -143,7 +143,7 @@ export function elementHealing(input: Omit<HealingRequest, "source" | "target">)
         allowsRestrictions,
         (battle, request, target) =>
             hasElemental(target) &&
-            (resolveDamageRatio(battle, ref(target)) ?? 0) > 0 &&
+            resolveDamageRatio(battle, target) > 0 &&
             canReceiveHealing(battle, { ...input, source: request.source, target: ref(target) }),
     );
 }

@@ -7,13 +7,7 @@ import * as attribute from "../../contribution/attribute.js";
 import { hasAllegiance } from "../allegiance/capability.js";
 import { isSpatiallyPresent } from "../presence/capability.js";
 import { hasVitality } from "../vitality/capability.js";
-import {
-    ELEMENT_TYPES,
-    hasElemental,
-    type Elemental,
-    type Parameter,
-    type Type,
-} from "./capability.js";
+import { ELEMENT_TYPES, type Elemental, type Parameter, type Type } from "./capability.js";
 import type { Burst } from "./burst.js";
 import type { Request as DamageRequest } from "../../../battle/damage/ep/contract.js";
 import type { Request as HealingRequest } from "../../../battle/healing/ep/contract.js";
@@ -24,48 +18,27 @@ export function get(battle: BattleState, reference: Ref<Burst>): Burst | undefin
     return burst?.id === reference.id ? burst : undefined;
 }
 
-export function resolveMaxEp(battle: BattleState, host: Ref<Unit & Elemental>): number | undefined {
-    return resolve(battle, host, "maxEp");
+export function resolveMaxEp(battle: BattleState, self: Unit & Elemental): number {
+    return resolve(battle, self, "maxEp");
 }
 
-export function resolveRecoverySpeed(
-    battle: BattleState,
-    host: Ref<Unit & Elemental>,
-): number | undefined {
-    return resolve(battle, host, "recoverySpeed");
+export function resolveRecoverySpeed(battle: BattleState, self: Unit & Elemental): number {
+    return resolve(battle, self, "recoverySpeed");
 }
 
-export function resolveElementResistance(
-    battle: BattleState,
-    host: Ref<Unit & Elemental>,
-): number | undefined {
-    return resolve(battle, host, "elementResistance");
+export function resolveElementResistance(battle: BattleState, self: Unit & Elemental): number {
+    return resolve(battle, self, "elementResistance");
 }
 
-export function resolveDamageResistance(
-    battle: BattleState,
-    host: Ref<Unit & Elemental>,
-): number | undefined {
-    return resolve(battle, host, "damageResistance");
+export function resolveDamageResistance(battle: BattleState, self: Unit & Elemental): number {
+    return resolve(battle, self, "damageResistance");
 }
 
-export function resolveBurstRecoverySpeed(
-    battle: BattleState,
-    host: Ref<Unit & Elemental>,
-): number | undefined {
-    return resolve(battle, host, "burstRecoverySpeed");
+export function resolveBurstRecoverySpeed(battle: BattleState, self: Unit & Elemental): number {
+    return resolve(battle, self, "burstRecoverySpeed");
 }
 
-function resolve(
-    battle: BattleState,
-    host: Ref<Unit & Elemental>,
-    parameter: Parameter,
-): number | undefined {
-    const self = units.get(battle, host);
-    if (self === undefined) {
-        return undefined;
-    }
-
+function resolve(battle: BattleState, self: Unit & Elemental, parameter: Parameter): number {
     const base =
         parameter === "recoverySpeed"
             ? self.definition.elemental.recoveryPerSecond
@@ -122,13 +95,9 @@ export function canReceiveHealing(battle: BattleState, request: HealingRequest):
     );
 }
 
-export function currentType(self: Unit, maxEp?: number): Type | undefined {
-    if (!hasElemental(self)) {
-        return undefined;
-    }
-
+export function currentType(self: Unit & Elemental, maxEp: number): Type | undefined {
     let selected: Type | undefined;
-    let minimum = maxEp ?? self.definition.elemental.maxEp;
+    let minimum = maxEp;
 
     for (const type of ELEMENT_TYPES) {
         if (self.elemental.ep[type] < minimum) {
@@ -140,22 +109,12 @@ export function currentType(self: Unit, maxEp?: number): Type | undefined {
     return selected;
 }
 
-export function damageRatio(self: Unit, maxEp?: number): number {
-    if (!hasElemental(self)) {
-        return 0;
-    }
+export function damageRatio(self: Unit & Elemental, maxEp: number): number {
+    const type = currentType(self, maxEp);
 
-    const maximum = maxEp ?? self.definition.elemental.maxEp;
-    const type = currentType(self, maximum);
-
-    return type === undefined ? 0 : Math.min(1, Math.max(0, 1 - self.elemental.ep[type] / maximum));
+    return type === undefined ? 0 : Math.min(1, Math.max(0, 1 - self.elemental.ep[type] / maxEp));
 }
 
-export function resolveDamageRatio(
-    battle: BattleState,
-    host: Ref<Unit & Elemental>,
-): number | undefined {
-    const self = units.get(battle, host);
-
-    return self === undefined ? undefined : damageRatio(self, resolveMaxEp(battle, host));
+export function resolveDamageRatio(battle: BattleState, self: Unit & Elemental): number {
+    return damageRatio(self, resolveMaxEp(battle, self));
 }

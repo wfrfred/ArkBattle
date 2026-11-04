@@ -37,9 +37,7 @@ export type { Event } from "./event.js";
 export {
     setContribution as setSpContribution,
     removeContribution as removeSpContribution,
-    resolveCapacity as resolveSpCapacity,
-    resolveRequirement,
-    resolveCost,
+    hasSp,
     resolveRecoverySpeed,
     resolveRecoveryMultiplier,
     recover,

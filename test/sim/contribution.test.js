@@ -42,11 +42,11 @@ test("exclusive selection precedes dynamic input evaluation and the attribute fo
             },
         }),
     ]);
-    assert.equal(resolveAttack(state, host), 460);
+    assert.equal(resolveAttack(state, get(state, host.id)), 460);
     assert.deepEqual(calls, ["a"]);
 
     state = update(state, [removeAttackContribution(host, "inspiration/a")]);
-    assert.equal(resolveAttack(state, host), 380);
+    assert.equal(resolveAttack(state, get(state, host.id)), 380);
     assert.deepEqual(calls, ["a", "z"]);
     state = update(state, [
         setAttackContribution(host, {
@@ -55,6 +55,6 @@ test("exclusive selection precedes dynamic input evaluation and the attribute fo
             value: [create({ finalAddition: 100 })],
         }),
     ]);
-    assert.equal(resolveAttack(state, host), 560);
+    assert.equal(resolveAttack(state, get(state, host.id)), 560);
     assert.deepEqual(calls, ["a", "z"]);
 });

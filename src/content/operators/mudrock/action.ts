@@ -99,7 +99,7 @@ export function createSkill(
                 return state;
             }
 
-            const power = hasOffense(source) ? resolveAttack(state, unitRef(source))! : 0;
+            const power = hasOffense(source) ? resolveAttack(state, source) : 0;
             state = healSelf(state, source.id, healRatio);
 
             for (const targetRef of self.execution.state.bindings.primary ?? []) {

@@ -292,10 +292,10 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
         id: "larger-hp", value: [attribute.create({ multiplier: 2 })],
     })]);
     assert.equal(get(state, 1).vitality.hp, 187.5);
-    assert.equal(vitality.resolveMaxHp(get(state, 1).vitality, get(state, 1).definition.vitality), 300);
+    assert.equal(vitality.resolveMaxHp(get(state, 1).definition.vitality, get(state, 1).vitality), 300);
     state = update(state, [vitality.removeMaxHpContribution(target, "larger-hp")]);
     assert.equal(get(state, 1).vitality.hp, 62.5);
-    assert.equal(vitality.resolveMaxHp(get(state, 1).vitality, get(state, 1).definition.vitality), 100);
+    assert.equal(vitality.resolveMaxHp(get(state, 1).definition.vitality, get(state, 1).vitality), 100);
     assert.equal(healingNotifications, 2);
 });
 

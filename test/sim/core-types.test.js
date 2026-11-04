@@ -17,10 +17,12 @@ import * as actions from ${module("unit/action/index")};
 import * as effects from ${module("unit/effect/index")};
 import * as hpDamage from ${module("battle/damage/hp/index")};
 import * as vitality from ${module("unit/capability/vitality/index")};
+import * as skills from ${module("unit/skill/index")};
+import type { Skill as SkillCapability } from ${module("unit/capability/skill/index")};
 import * as actionCapability from ${module("unit/capability/action/index")};
 import { createRegistrationOperations } from ${module("unit/registration")};
 import type { Offense } from ${module("unit/capability/offense/index")};
-import { setAttackContribution } from ${module("unit/capability/offense/index")};
+import { setAttackContribution, resolveAttack } from ${module("unit/capability/offense/index")};
 import { setLayer } from ${module("unit/capability/blocking/index")};
 declare const battle: State;
 const outputKey = key<Hook<{ amount: number }, number>>('output');
@@ -88,6 +90,18 @@ const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'ba
 effects.install(battle, ref(bare), shield);
 const change: Change = setAttackContribution(reference, { id: 'bonus', value: [] });
 update(battle, [change]);
+const attack: number = resolveAttack(battle, host);
+// @ts-expect-error value computation accepts the current object rather than its address.
+resolveAttack(battle, reference);
+// @ts-expect-error value computation requires the relevant capability.
+resolveAttack(battle, bare);
+declare const skillHost: Unit & SkillCapability;
+// @ts-expect-error a Skill can legitimately have no SP resource.
+skills.resolveRecoverySpeed(battle, skillHost);
+if (skills.hasSp(skillHost)) {
+    const speed: number = skills.resolveRecoverySpeed(battle, skillHost);
+    const multiplier: number = skills.resolveRecoveryMultiplier(battle, skillHost);
+}
 const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
     id: 'patient', hooks: Hooks.empty(),
     vitality: { maxHp: 100, defense: 10, resistance: 0 },

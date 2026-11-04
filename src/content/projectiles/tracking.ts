@@ -71,7 +71,7 @@ export function attackPower<S extends State>(battle: BattleState, self: Projecti
         return self.state.cachedAtk;
     }
 
-    return hasOffense(source) ? resolveAttack(battle, units.ref(source))! : 0;
+    return hasOffense(source) ? resolveAttack(battle, source) : 0;
 }
 
 export function hit<S extends State>(

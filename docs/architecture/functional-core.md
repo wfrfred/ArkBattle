@@ -66,7 +66,7 @@ Meta 通过战斗输入、内容规则和结果接口接入。商店、经济、
 ```typescript
 absorb(shieldState, incoming) → { state: shieldState, value: incoming }
 attribute.apply(base, modifiers) → number
-resolveAttack(battle, sourceRef) → number | undefined
+resolveAttack(battle, source) → number
 sort(candidates, compare) → T[]
 topK(candidates, k, compare) → T[]
 ```

@@ -84,9 +84,9 @@ EP Healing.Request 为 `{ source, target, power }`，Parameters 为 `{ power }`�
 | finish／cancel | `(battle, ref: Ref<Burst>, reason?) => BattleState`；finish 不接收原因 |
 | advance | `(battle, host: Ref<Unit & Elemental>) => BattleState`；Runtime 专用 |
 | get | `(battle, ref: Ref<Burst>) => Burst \| undefined` |
-| resolveMaxEp／resolveRecoverySpeed／resolveElementResistance／resolveDamageResistance／resolveBurstRecoverySpeed | `(battle, host: Ref<Unit & Elemental>) => number \| undefined` |
-| resolveDamageRatio | `(battle, host: Ref<Unit & Elemental>) => number \| undefined` |
-| currentType／damageRatio | 已知 Unit 的局部元素类型／损伤比例查询 |
+| resolveMaxEp／resolveRecoverySpeed／resolveElementResistance／resolveDamageResistance／resolveBurstRecoverySpeed | `(battle, self: Unit & Elemental) => number` |
+| resolveDamageRatio | `(battle, self: Unit & Elemental) => number`，使用有效 MaxEP |
+| currentType／damageRatio | `(self: Unit & Elemental, maxEp: number)`，显式接收有效上限，不回落到静态 Definition |
 | available | 已知 Unit 的基础在场、空间存在与生命资格查询 |
 
 接收要求宿主在场且空间存在，具有 Vitality 时 HP 大于零。Burst 存在期间，包括 ENDING，拒绝损伤和治疗；中立阵营默认拒绝损伤。Rule 按 damage／heal 两个节点登记：damage 使用 `allows(battle, { self, request, type })`，type 是本次实际元素类型；heal 使用 `{ self, request }`。它们只读，均由 setRule／removeRule 的 Change 修改。无敌通过 damage Rule 拒绝，不查询 Vitality 内部接收规则；HP 禁疗不隐式决定 EP 接收。

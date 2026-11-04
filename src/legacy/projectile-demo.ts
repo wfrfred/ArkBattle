@@ -137,7 +137,7 @@ export function createTacticalProjectileDemo(
                     throw new Error("projectile demo source requires Offense capability");
                 }
 
-                const cachedAtk = resolveAttack(state, unitRef(source))!;
+                const cachedAtk = resolveAttack(state, source);
 
                 const launched = createProjectile(state, shell, {
                     position: source.position,

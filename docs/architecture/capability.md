@@ -136,7 +136,7 @@ Offense Definition 保存基础 attack，State 保存 Contribution<Input>[]。In
 
 initialize(battle, unit) 校验 unit.definition.offense.attack 为有限非负数，在保留输入 Unit 的同时建立空攻击贡献状态；Definition 由内容直接构造。setAttackContribution／removeAttackContribution 绑定 Ref<Unit & Offense> 返回 Change，沿用 Contribution 的 ID 替换与互斥组规则；无额外结算，不启动 Blocking。
 
-公开查询为 query.resolveAttack(battle, Ref<Unit & Offense>)，从指定 battle 读取当前对象，不存在时返回 undefined。能力由 Typed Ref 保证，查询不把缺少 Offense 解释为攻击力 0，也不附加生命值、空间存在或生命周期检查。计算先选择有效贡献，只求值胜出项，再按 Attribute 公式求值并限制下限为 0，不取整。
+公开求值为 query.resolveAttack(battle, self: Unit & Offense): number。调用业务先取得当前宿主并确认能力，求值直接使用该对象，不重复定位或判空，也不附加生命值、空间存在或生命周期检查。计算先选择有效贡献，只求值胜出项，再按 Attribute 公式求值并限制下限为 0，不取整。
 
 采样与降级由调用业务决定。普通攻击模板在每个 SOURCE_ATTACK 输出时查询；弩手在发射时保存缓存，命中时沿用当前实时／来源移除后缓存的政策；泥岩 S2 在自疗和目标循环前采样一次。查询不负责这些政策，也不把攻击力读取变成 BattleState 操作。
 

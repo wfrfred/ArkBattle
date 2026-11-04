@@ -124,8 +124,8 @@ export function setMaxHpContribution(
         const vitality = { ...self.vitality, maxHp };
         const hp = preserveHpRatio(
             self.vitality.hp,
-            resolveMaxHp(self.vitality, self.definition.vitality),
-            resolveMaxHp(vitality, self.definition.vitality),
+            resolveMaxHp(self.definition.vitality, self.vitality),
+            resolveMaxHp(self.definition.vitality, vitality),
         );
 
         return { ...self, vitality: { ...vitality, hp } };
@@ -142,15 +142,15 @@ export function removeMaxHpContribution(reference: Ref<Unit & Vitality>, id: str
         const vitality = { ...self.vitality, maxHp };
         const hp = preserveHpRatio(
             self.vitality.hp,
-            resolveMaxHp(self.vitality, self.definition.vitality),
-            resolveMaxHp(vitality, self.definition.vitality),
+            resolveMaxHp(self.definition.vitality, self.vitality),
+            resolveMaxHp(self.definition.vitality, vitality),
         );
 
         return { ...self, vitality: { ...vitality, hp } };
     });
 }
 
-export function resolveMaxHp(state: State, definition: Definition): number {
+export function resolveMaxHp(definition: Definition, state: State): number {
     return Math.max(1, attribute.apply(definition.maxHp, contribution.resolve(state.maxHp).flat()));
 }
 

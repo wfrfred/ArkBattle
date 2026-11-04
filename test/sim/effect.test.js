@@ -15,7 +15,7 @@ test("installation, participation, and destruction have distinct lifetimes and p
         id: "buff",
         initialize: () => ({ activations: 0 }),
         onInstall(state, self) {
-            observed.push(["install", self.status, offense.resolveAttack(state, self.host)]);
+            observed.push(["install", self.status, offense.resolveAttack(state, units.get(state, self.host))]);
             return effects.setData(state, effects.ref(self), { activations: 1 });
         },
         onEnable(state, self) {
@@ -38,7 +38,7 @@ test("installation, participation, and destruction have distinct lifetimes and p
                 "end",
                 self.status,
                 self.data.activations,
-                offense.resolveAttack(state, self.host),
+                offense.resolveAttack(state, units.get(state, self.host)),
             ]);
             return state;
         },
@@ -51,9 +51,9 @@ test("installation, participation, and destruction have distinct lifetimes and p
     assert.equal(effects.get(state, installed.value).status, "INACTIVE");
     assert.deepEqual(observed, [["install", "INSTALLING", 100]]);
     state = effects.setEnabled(state, installed.value, true);
-    assert.equal(offense.resolveAttack(state, source), 120);
+    assert.equal(offense.resolveAttack(state, units.get(state, source)), 120);
     state = effects.setEnabled(state, installed.value, false);
-    assert.equal(offense.resolveAttack(state, source), 100);
+    assert.equal(offense.resolveAttack(state, units.get(state, source)), 100);
     assert.equal(effects.get(state, installed.value).data.activations, 2);
     state = effects.setEnabled(state, installed.value, true);
     state = effects.end(state, installed.value);
@@ -107,17 +107,17 @@ test("overall replacement uses priority and installation order; disabling the wi
     assert.equal(effects.get(state, low.value).status, "INACTIVE");
     assert.equal(effects.get(state, high.value).status, "ACTIVE");
     assert.equal(effects.get(state, equal.value).status, "INACTIVE");
-    assert.equal(offense.resolveAttack(state, source), 120);
+    assert.equal(offense.resolveAttack(state, units.get(state, source)), 120);
     state = effects.setEnabled(state, high.value, false);
     assert.equal(effects.get(state, low.value).status, "INACTIVE");
     assert.equal(effects.get(state, equal.value).status, "INACTIVE");
-    assert.equal(offense.resolveAttack(state, source), 100);
+    assert.equal(offense.resolveAttack(state, units.get(state, source)), 100);
     state = effects.end(state, high.value);
     assert.equal(effects.get(state, equal.value).status, "ACTIVE");
-    assert.equal(offense.resolveAttack(state, source), 130);
+    assert.equal(offense.resolveAttack(state, units.get(state, source)), 130);
     state = effects.end(state, equal.value);
     assert.equal(effects.get(state, low.value).status, "ACTIVE");
-    assert.equal(offense.resolveAttack(state, source), 110);
+    assert.equal(offense.resolveAttack(state, units.get(state, source)), 110);
 });
 
 test("absolute deadlines continue while inactive, active ticks do not catch up, and a deadline-tick callback can extend the effect", () => {

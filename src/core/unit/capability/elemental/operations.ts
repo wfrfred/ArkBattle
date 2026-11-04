@@ -66,7 +66,7 @@ export function commitDamage(
     const { target, request, calculated, received } = context;
     const type = calculated.type;
     const self = units.get(battle, target)!;
-    const maximum = query.resolveMaxEp(battle, target)!;
+    const maximum = query.resolveMaxEp(battle, self);
     const epBefore = Math.min(maximum, Math.max(0, self.elemental.ep[type]));
     const epLoss = Math.min(epBefore, received.amount);
     if (epLoss === 0) {
@@ -161,7 +161,7 @@ export function commitHealing(
 ): Result<HealingApplication> {
     const { target, request, received } = context;
     const self = units.get(battle, target)!;
-    const maximum = query.resolveMaxEp(battle, target)!;
+    const maximum = query.resolveMaxEp(battle, self);
     const epBefore = normalizedEp(self, maximum);
     const epGain = { ...elementValues(0) };
     const epAfter = { ...epBefore };
@@ -211,7 +211,7 @@ export const lifetime = lifetimes.create<Burst, Burst, End>({
         }
 
         const host = units.get(battle, reference.host)!;
-        const maximum = query.resolveMaxEp(battle, reference.host)!;
+        const maximum = query.resolveMaxEp(battle, host);
         battle = replaceUnits(battle, [
             {
                 ...host,
@@ -252,14 +252,14 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
     const next = { ...state };
 
     if (state.burst?.status === "ACTIVE") {
-        const rate = query.resolveBurstRecoverySpeed(battle, host)!;
+        const rate = query.resolveBurstRecoverySpeed(battle, self);
         next.burst = {
             ...state.burst,
             remainingTicks: Math.max(0, state.burst.remainingTicks - rate),
         };
     } else if (state.burst === null) {
-        const power = query.resolveRecoverySpeed(battle, host)! / TICKS_PER_SECOND;
-        const maximum = query.resolveMaxEp(battle, host)!;
+        const power = query.resolveRecoverySpeed(battle, self) / TICKS_PER_SECOND;
+        const maximum = query.resolveMaxEp(battle, self);
         const ep = { ...normalizedEp(self, maximum) };
         const request: HealingRequest = { target: host, source: null, power };
         if (query.canReceiveHealing(battle, request)) {

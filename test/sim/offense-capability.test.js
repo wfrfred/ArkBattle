@@ -15,9 +15,9 @@ test("effective attack keeps fractional values and applies its nonnegative bound
     state = update(state, [setAttackContribution(host, { id: "power", value: [
         create({ addition: 0.25, multiplier: 0.5, finalAddition: 0.75, finalScaler: 1.2 }),
     ] })]);
-    assert.ok(Math.abs(resolveAttack(state, host) - 181.8) < 1e-9);
+    assert.ok(Math.abs(resolveAttack(state, get(state, host.id)) - 181.8) < 1e-9);
     state = update(state, [setAttackContribution(host, {
         id: "power", value: [create({ finalAddition: -101 })],
     })]);
-    assert.equal(resolveAttack(state, host), 0);
+    assert.equal(resolveAttack(state, get(state, host.id)), 0);
 });
