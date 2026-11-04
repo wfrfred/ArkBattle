@@ -23,16 +23,14 @@ import {
 
 import {
     hasAction,
-    setBeforeReleaseHook,
-    removeBeforeReleaseHook,
+    setHook as setActionHook,
+    removeHook as removeActionHook,
     type Action,
 } from "../../core/unit/capability/action/index.js";
 import {
     hasVitality,
-    setDefenseContribution,
-    removeDefenseContribution,
-    setResistanceContribution,
-    removeResistanceContribution,
+    setContribution as setVitalityContribution,
+    removeContribution as removeVitalityContribution,
     type Vitality,
 } from "../../core/unit/capability/vitality/index.js";
 import {
@@ -76,7 +74,7 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
 
             if (self.data.defense !== 0) {
                 changes.push(
-                    setDefenseContribution(units.ref(unit), {
+                    setVitalityContribution(units.ref(unit), "defense", {
                         id: `@effect/${self.id}/defense`,
                         value: [attribute.create({ addition: -self.data.defense })],
                     }),
@@ -84,7 +82,7 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
             }
             if (self.data.resistance !== 0) {
                 changes.push(
-                    setResistanceContribution(units.ref(unit), {
+                    setVitalityContribution(units.ref(unit), "resistance", {
                         id: `@effect/${self.id}/resistance`,
                         value: [attribute.create({ addition: -self.data.resistance })],
                     }),
@@ -100,8 +98,16 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
             }
 
             return updateUnit(battle, [
-                removeDefenseContribution(units.ref(unit), `@effect/${self.id}/defense`),
-                removeResistanceContribution(units.ref(unit), `@effect/${self.id}/resistance`),
+                removeVitalityContribution(
+                    units.ref(unit),
+                    "defense",
+                    `@effect/${self.id}/defense`,
+                ),
+                removeVitalityContribution(
+                    units.ref(unit),
+                    "resistance",
+                    `@effect/${self.id}/resistance`,
+                ),
             ]);
         },
     };
@@ -117,7 +123,7 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
             const effectId = self.id;
 
             return updateUnit(battle, [
-                setBeforeReleaseHook(units.ref(unit), {
+                setActionHook(units.ref(unit), "beforeRelease", {
                     id: `@effect/${effectId}/paralysis`,
                     accepts: (battle, context) => {
                         const current = units
@@ -160,7 +166,11 @@ export function create(id: string, profile: ArknightsElementalBurstProfile): Def
             return unit === undefined
                 ? battle
                 : updateUnit(battle, [
-                      removeBeforeReleaseHook(units.ref(unit), `@effect/${self.id}/paralysis`),
+                      removeActionHook(
+                          units.ref(unit),
+                          "beforeRelease",
+                          `@effect/${self.id}/paralysis`,
+                      ),
                   ]);
         },
     };

@@ -101,7 +101,7 @@ test("HP-01: formulas use the calculated type and sampled defenses without begin
             id: "final-output",
             invoke: (current, _context, amount) => ({ state: current, value: amount + 5 }),
         }),
-        vitality.setDamageReceivingHook(target, {
+        vitality.setHook(target, "damageReceiving", {
             id: "receive",
             invoke(current, _context, pending) {
                 receptions++;
@@ -119,7 +119,7 @@ test("HP-01: formulas use the calculated type and sampled defenses without begin
     assert.equal(request.parameters.attack.multiplier, 1);
     assert.equal(get(calculated.state, 1).vitality.hp, 1000);
     assert.equal(receptions, 0);
-    state = update(calculated.state, [vitality.setResistanceContribution(target, {
+    state = update(calculated.state, [vitality.setContribution(target, "resistance", {
         id: "later-resistance", value: [attribute.create({ finalAddition: 20 })],
     })]);
     const applied = hpDamage.applyDamage(request, { ...calculated, state });
@@ -150,7 +150,7 @@ test("HP-02: independent Calculate results retain their own business state and o
     const preparation = damageRequest(null, source, 100);
     state = hpDamage.applyDamage(preparation, hpDamage.calculateDamage(state, preparation)).state;
     let receptions = 0;
-    state = update(state, [vitality.setDamageReceivingStartedHook(target, {
+    state = update(state, [vitality.setHook(target, "damageReceivingStarted", {
         id: "count-receptions",
         invoke(current) { receptions++; return { state: current, value: undefined }; },
     })]);
@@ -197,7 +197,7 @@ test("APPLY-01: invincibility installed before reception rejects HIT recovery un
                 return { state: installed.state, value: undefined };
             },
         }),
-        vitality.setDamageReceivingHook(target, {
+        vitality.setHook(target, "damageReceiving", {
             id: "receiving",
             invoke(current, _context, pending) {
                 receivedSp.push(get(current, 1).skill.sp.value);
@@ -242,10 +242,10 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
             id: "ordinary-healing",
             invoke(current) { healingNotifications++; return { state: current, value: undefined }; },
         }),
-        vitality.setDamageReceivingStartedHook(target, {
+        vitality.setHook(target, "damageReceivingStarted", {
             id: "started", invoke(current) { calls.push("started"); return { state: current, value: undefined }; },
         }),
-        vitality.setDamageReceivingHook(target, {
+        vitality.setHook(target, "damageReceiving", {
             id: "larger-hp-pool",
             invoke(current, _context, pending) {
                 calls.push("receiving");
@@ -309,7 +309,7 @@ test("APPLY-01: cancellation retains recovery and reflection but skips the origi
     const preparation = damageRequest(null, source, 40);
     state = hpDamage.applyDamage(preparation, hpDamage.calculateDamage(state, preparation)).state;
     state = update(state, [
-        vitality.setDamageReceivingHook(target, {
+        vitality.setHook(target, "damageReceiving", {
             id: "evade", priority: 10,
             invoke(current, _context, pending) {
                 const recovery = healingRequest(null, source, 6);
@@ -317,7 +317,7 @@ test("APPLY-01: cancellation retains recovery and reflection but skips the origi
                 return { state: current, value: hpDamage.cancel(pending, "EVADE") };
             },
         }),
-        vitality.setDamageReceivingHook(target, {
+        vitality.setHook(target, "damageReceiving", {
             id: "reflect",
             invoke(current, _context, pending) {
                 assert.equal(pending.cancellation.reason, "EVADE");
@@ -346,7 +346,7 @@ test("APPLY-02: HP zero output rejects while full absorption still commits and n
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
     state = update(state, [
-        vitality.setDamageReceivingHook(target, { id: "absorb", invoke: (current, _context, pending) => ({ state: current, value: { ...pending, amount: 0 } }) }),
+        vitality.setHook(target, "damageReceiving", { id: "absorb", invoke: (current, _context, pending) => ({ state: current, value: { ...pending, amount: 0 } }) }),
         units.setHook(target, hpDamage.targetApplied, { id: "target", invoke(current) { calls.push("targetApplied"); return { state: current, value: undefined }; } }),
         units.setHook(source, hpDamage.sourceApplied, { id: "source", invoke(current) { calls.push("sourceApplied"); return { state: current, value: undefined }; } }),
     ]);

@@ -3,13 +3,13 @@ import { relations } from "../../../battle/blocking/query.js";
 import * as registry from "../../../hook.js";
 import * as contribution from "../../contribution/contribution.js";
 import { createChange, type Change } from "../../change.js";
+import { createRegistrationOperations } from "../../registration.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
 import type { PrepareHook } from "../../hook.js";
-import type { Hook, Key } from "./contract.js";
 import type { Rule } from "./rule.js";
 import { assertSafeInteger } from "../../../common/assert.js";
-import type { Blockable } from "./blockable.js";
+import type { Blockable, Hooks } from "./blockable.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import { replace } from "../../../battle/unit.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
@@ -157,26 +157,8 @@ export function removeVolumeContribution(reference: Ref<Unit & Blockable>, id: s
     );
 }
 
-export function setHook(
-    reference: Ref<Unit & Blockable>,
-    key: Key,
-    hook: Hook<Unit & Blockable>,
-): Change {
-    return createChange(reference, (self) => {
-        const entries = registry.set(self.blockable[key], hook);
-
-        return entries === self.blockable[key]
-            ? self
-            : { ...self, blockable: { ...self.blockable, [key]: entries } };
-    });
-}
-
-export function removeHook(reference: Ref<Unit & Blockable>, key: Key, id: string): Change {
-    return createChange(reference, (self) => {
-        const entries = registry.remove(self.blockable[key], id);
-
-        return entries === self.blockable[key]
-            ? self
-            : { ...self, blockable: { ...self.blockable, [key]: entries } };
-    });
-}
+export const { set: setHook, remove: removeHook } = createRegistrationOperations<
+    Unit & Blockable,
+    "blockable",
+    keyof Hooks
+>("blockable");

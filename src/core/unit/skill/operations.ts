@@ -9,8 +9,8 @@ import type { Unit } from "../unit.js";
 import type { EnterHook } from "../hook.js";
 import * as contribution from "../contribution/contribution.js";
 import { isSpatiallyPresent } from "../capability/presence/capability.js";
-import { hasVitality, setDamageReceivingStartedHook } from "../capability/vitality/capability.js";
-import { hasAction, setReleasedHook } from "../capability/action/capability.js";
+import { hasVitality, setHook as setVitalityHook } from "../capability/vitality/capability.js";
+import { hasAction, setHook as setActionHook } from "../capability/action/capability.js";
 import type { ReleasedHook } from "../capability/action/release.js";
 import type { ReceivingStartedHook } from "../../battle/damage/hp/hook.js";
 import { hasSkill, type Skill as SkillCapability } from "../capability/skill/capability.js";
@@ -362,9 +362,11 @@ export const enter: EnterHook = {
         let unit = units.get(battle, host)!;
         const definition = unit.skill.definition;
         if (hasVitality(unit) && definition.sp?.recovery.type === "HIT") {
-            battle = update(battle, [setDamageReceivingStartedHook(units.ref(unit), hitRecovery)]);
+            battle = update(battle, [
+                setVitalityHook(units.ref(unit), "damageReceivingStarted", hitRecovery),
+            ]);
         } else if (hasAction(unit) && definition.sp?.recovery.type === "ACTION") {
-            battle = update(battle, [setReleasedHook(units.ref(unit), actionRecovery)]);
+            battle = update(battle, [setActionHook(units.ref(unit), "released", actionRecovery)]);
         }
 
         unit = units.get(battle, host)!;

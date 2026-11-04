@@ -4,10 +4,8 @@ export {
     initialize,
     setRule,
     removeRule,
-    setBeforeReleaseHook,
-    removeBeforeReleaseHook,
-    setReleasedHook,
-    removeReleasedHook,
+    setHook,
+    removeHook,
 } from "./capability.js";
 
 export type { Definition, RuleContext, Rule, Input, State, Action } from "./capability.js";

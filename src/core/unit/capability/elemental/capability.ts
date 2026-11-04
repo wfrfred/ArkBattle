@@ -7,13 +7,14 @@ import {
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Unit, Definition as UnitDefinition } from "../../unit.js";
 import * as registry from "../../../hook.js";
-import * as contribution from "../../contribution/contribution.js";
+import type * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
 import type { Burst, Definition as BurstDefinition } from "./burst.js";
-import type { DamageReceivingHook, Events, Hook, Key } from "./hook.js";
+import type { DamageReceivingHook, Events, Hook } from "./hook.js";
 import type { Rule, Key as RuleKey, Rules } from "./rule.js";
 import type { Ref } from "../../../common/ref.js";
 import { createChange, type Change } from "../../change.js";
+import { createRegistrationOperations } from "../../registration.js";
 
 export const ELEMENT_TYPES = ["NEURAL", "EROSION", "BURN", "NECROSIS"] as const;
 
@@ -32,24 +33,29 @@ export interface Definition {
     readonly bursts: Readonly<Record<Type, BurstDefinition>>;
 }
 
-export type Parameter =
-    "maxEp" | "recoverySpeed" | "elementResistance" | "damageResistance" | "burstRecoverySpeed";
-
-export interface State {
-    readonly ep: Values;
-    readonly burst: Burst | null;
-    readonly nextBurstId: number;
+interface Contributions {
     readonly maxEp: readonly contribution.Contribution<Input>[];
     readonly recoverySpeed: readonly contribution.Contribution<Input>[];
     readonly elementResistance: readonly contribution.Contribution<Input>[];
     readonly damageResistance: readonly contribution.Contribution<Input>[];
     readonly burstRecoverySpeed: readonly contribution.Contribution<Input>[];
-    readonly receiving: readonly DamageReceivingHook[];
-    readonly rules: Rules;
+}
+
+export type Parameter = keyof Contributions;
+
+interface Hooks {
     readonly damaged: readonly Hook<Events["damaged"]>[];
     readonly healed: readonly Hook<Events["healed"]>[];
     readonly burstStarted: readonly Hook<Events["burstStarted"]>[];
     readonly burstEnded: readonly Hook<Events["burstEnded"]>[];
+}
+
+export interface State extends Contributions, Hooks {
+    readonly ep: Values;
+    readonly burst: Burst | null;
+    readonly nextBurstId: number;
+    readonly receiving: readonly DamageReceivingHook[];
+    readonly rules: Rules;
 }
 
 export interface Elemental {
@@ -114,33 +120,11 @@ export function initialize<U extends Unit & Pick<Elemental, "definition">>(
     };
 }
 
-export function setContribution(
-    reference: Ref<Unit & Elemental>,
-    key: Parameter,
-    entry: contribution.Contribution<Input>,
-): Change {
-    return createChange(reference, (self) => {
-        const entries = contribution.set(self.elemental[key], entry);
-
-        return entries === self.elemental[key]
-            ? self
-            : { ...self, elemental: { ...self.elemental, [key]: entries } };
-    });
-}
-
-export function removeContribution(
-    reference: Ref<Unit & Elemental>,
-    key: Parameter,
-    id: string,
-): Change {
-    return createChange(reference, (self) => {
-        const entries = contribution.remove(self.elemental[key], id);
-
-        return entries === self.elemental[key]
-            ? self
-            : { ...self, elemental: { ...self.elemental, [key]: entries } };
-    });
-}
+export const { set: setContribution, remove: removeContribution } = createRegistrationOperations<
+    Unit & Elemental,
+    "elemental",
+    keyof Contributions
+>("elemental");
 
 export function setDamageReceivingHook(
     reference: Ref<Unit & Elemental>,
@@ -201,26 +185,8 @@ export function removeRule(reference: Ref<Unit & Elemental>, key: RuleKey, id: s
     });
 }
 
-export function setHook<K extends Key>(
-    reference: Ref<Unit & Elemental>,
-    key: K,
-    hook: Hook<Events[K]>,
-): Change {
-    return createChange(reference, (self) => {
-        const hooks = registry.set(self.elemental[key] as readonly Hook<Events[K]>[], hook);
-
-        return hooks === self.elemental[key]
-            ? self
-            : { ...self, elemental: { ...self.elemental, [key]: hooks } };
-    });
-}
-
-export function removeHook(reference: Ref<Unit & Elemental>, key: Key, id: string): Change {
-    return createChange(reference, (self) => {
-        const hooks = registry.remove<State[Key][number]>(self.elemental[key], id);
-
-        return hooks === self.elemental[key]
-            ? self
-            : { ...self, elemental: { ...self.elemental, [key]: hooks } };
-    });
-}
+export const { set: setHook, remove: removeHook } = createRegistrationOperations<
+    Unit & Elemental,
+    "elemental",
+    keyof Hooks
+>("elemental");

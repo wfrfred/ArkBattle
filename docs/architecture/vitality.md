@@ -21,17 +21,17 @@ initialize<U extends Unit & Pick<Vitality, "definition">>(battle, unit: U): Resu
 setMaxHpContribution(ref: Ref<Unit & Vitality>, entry): Change;
 removeMaxHpContribution(ref: Ref<Unit & Vitality>, id): Change;
 resolveMaxHp(state, definition): number;
-setDefenseContribution(ref: Ref<Unit & Vitality>, entry): Change;
-removeDefenseContribution(ref: Ref<Unit & Vitality>, id): Change;
-setResistanceContribution(ref: Ref<Unit & Vitality>, entry): Change;
-removeResistanceContribution(ref: Ref<Unit & Vitality>, id): Change;
+setContribution(ref: Ref<Unit & Vitality>, key: "defense" | "resistance", entry): Change;
+removeContribution(ref: Ref<Unit & Vitality>, key: "defense" | "resistance", id): Change;
+setHook(ref: Ref<Unit & Vitality>, key, hook): Change;
+removeHook(ref: Ref<Unit & Vitality>, key, id): Change;
 resolveDefense(battle, ref: Ref<Unit & Vitality>): number | undefined;
 resolveResistance(battle, ref: Ref<Unit & Vitality>): number | undefined;
 ```
 
 基础 MaxHP、DEF、RES 全部必填，由 initialize 校验为有限非负数，可以是小数。初始 HP 为 `Math.max(1, definition.maxHp)`，有效 MaxHP 的下限为 1。基础 RES 可以超过 100，有效值在属性修正后限制到 0～100；有效 DEF 的下限为 0。普通 HP 使用 0～有效 MaxHP 的范围，不在每次计算后取整。
 
-MaxHP 保留静态 Modifier[]，set／remove 工厂返回 Change，在纯 transform 中同步维持 HP 比例，零 HP 不因属性变化复活；不附带治疗通知或 Blocking 后继。DEF／RES 的 Input 为静态修正或 `(battle, self: Unit & Vitality) => readonly Modifier[]`，对应工厂也绑定 Ref 返回 Change。resolveDefense／resolveResistance 分别从最新 battle 读取并计算 DEF／RES，缺失返回 undefined；Damage 在 Formula Hook 后按伤害类型读取所需属性，不提前缓存或混入穿透。
+MaxHP 保留静态 Modifier[]，set／remove 工厂返回 Change，在纯 transform 中同步维持 HP 比例，零 HP 不因属性变化复活；不附带治疗通知或 Blocking 后继。DEF／RES 的 Input 为静态修正或 `(battle, self: Unit & Vitality) => readonly Modifier[]`，由普通注册工厂生成 setContribution／removeContribution。专属接收 Hook 同样通过 setHook／removeHook 登记，字段与 Hook 类型保持配对。MaxHP 单独保留领域实现，不进入普通字段集合。resolveDefense／resolveResistance 分别从最新 battle 读取并计算 DEF／RES，缺失返回 undefined；Damage 在 Formula Hook 后按伤害类型读取所需属性，不提前缓存或混入穿透。
 
 HP、Contribution、专属接收 Hook 与 Rule 共存于同一 Vitality State。DEF／RES 的修改保留其他字段；属性变化不派发普通治疗 Hook。治疗索敌默认 provider 与显式注入 provider 均读取有效 MaxHP，避免把基础值或未计修正的上限用于缺血判定和比例排序。
 
@@ -223,7 +223,7 @@ type AppliedHook = Entry<AppliedContext, void>;
 
 Request 始终表示初始事实；公式参数、输出量和接收工作值只经对应 Hook 的 current 接续。OutputContext.type 是公式确定的类型，不重新读取 Request 的初始类型。BeforeReceive、ReceivingStarted、BeforeCommit 与 Applied 只接续 BattleState 业务；Applied 的报告在提交时确定，只对成功提交派发，零实际变化仍可成功。其余业务定义自己的 Application，不重复声明成功 Outcome 的另一份报告。
 
-各业务 Hook 键由相应子域导出，专属接收登记分别为 Vitality.setDamageReceivingStartedHook／setDamageReceivingHook／setHealingReceivingHook，以及 Elemental.setDamageReceivingHook，撤销使用对应 remove 接口。
+各业务 Hook 键由相应子域导出。Vitality 专属接收使用 setHook(ref, key, hook)，key 为 damageReceivingStarted／damageReceiving／healingReceiving；Elemental 单字段接收使用 setDamageReceivingHook。撤销使用对应 remove 接口。
 
 ReceivingStarted 目前只供 HP Damage 的普通受击 SP 等接收开始业务使用，不向其他三种结算机械添加。EP Healing 不提供专属 Receiving，其 Pending.cancellation 固定为 null，也不导出无执行路径的取消构造器或 CANCELLED 结果。各业务只提供实际需要的阶段，不按目录模板补齐接口。
 

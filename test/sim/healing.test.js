@@ -28,7 +28,7 @@ test("HP Healing calculates output before reception and full HP still notifies b
     const target = units.ref(get(state, 0));
     assert.equal(get(state, 0).vitality.hp, 100.5);
     state = update(state, [
-        vitality.setHealingReceivingHook(target, {
+        vitality.setHook(target, "healingReceiving", {
             id: "receive", invoke(current, _context, pending) { calls.push("receive"); return { state: current, value: pending }; },
         }),
         units.setHook(target, hpHealing.targetApplied, {

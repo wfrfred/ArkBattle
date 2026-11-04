@@ -4,19 +4,13 @@ export {
     initialize,
     setRule,
     removeRule,
-    setDamageReceivingStartedHook,
-    removeDamageReceivingStartedHook,
-    setDamageReceivingHook,
-    removeDamageReceivingHook,
-    setHealingReceivingHook,
-    removeHealingReceivingHook,
+    setContribution,
+    removeContribution,
+    setHook,
+    removeHook,
     setMaxHpContribution,
     removeMaxHpContribution,
     resolveMaxHp,
-    setDefenseContribution,
-    removeDefenseContribution,
-    setResistanceContribution,
-    removeResistanceContribution,
 } from "./capability.js";
 
 export type { Definition, Input, State, Vitality } from "./capability.js";

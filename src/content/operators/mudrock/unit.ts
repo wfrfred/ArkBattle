@@ -38,8 +38,8 @@ import { get as getTile } from "../../../core/battlefield/map/map.js";
 import { healFree } from "../../effects/protection.js";
 import {
     hasVitality,
-    setDamageReceivingHook,
-    removeDamageReceivingHook,
+    setHook as setVitalityHook,
+    removeHook as removeVitalityHook,
     type Vitality,
 } from "../../../core/unit/capability/vitality/index.js";
 import { cancel } from "../../../core/battle/damage/hp/index.js";
@@ -147,7 +147,7 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
             const ref = effectRef(self);
 
             return updateUnit(state, [
-                setDamageReceivingHook(unitRef(unit), {
+                setVitalityHook(unitRef(unit), "damageReceiving", {
                     id: `${SHIELD_ID}/${self.id}`,
                     priority: 100,
                     accepts: () => true,
@@ -209,7 +209,11 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
             return unit === undefined
                 ? state
                 : updateUnit(state, [
-                      removeDamageReceivingHook(unitRef(unit), `${SHIELD_ID}/${self.id}`),
+                      removeVitalityHook(
+                          unitRef(unit),
+                          "damageReceiving",
+                          `${SHIELD_ID}/${self.id}`,
+                      ),
                   ]);
         },
         onTick(state, self) {

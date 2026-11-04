@@ -291,6 +291,10 @@ battle = update(battle, [
 
 Change 是带必需品牌的 opaque 描述；构造实现 `createChange(ref, transform, settle?)` 只供 Core 内部使用。Transformation<U> 是纯 `(unit: U) => U`，Settlement<U> 是 `(battle, previous: U) => BattleState`；两个程序的 U 均从 Ref 经 NoInfer 确定，不由回调反推放宽。构造边界配对后才擦除异构类型，不增加公开 InternalChange、Prepared 或另一套转换协议。品牌表达构造契约，不作为恶意 Content 的安全隔离。
 
+普通数组注册由内部 [registration.ts](../../src/core/unit/registration.ts) 的 `createRegistrationOperations<U, P, K>(property)` 生成 set／remove Change。Capability 用 Contributions、Hooks 等字段分组声明允许自动注册的集合，State 继承这些分组；K 取 `keyof` 分组，Entry 直接从真实 U[P][K] 提取。set 由具体 Key 推断内联回调类型，再与字段／Entry 的映射元组联合交叉，保持联合 Key 的配对；宿主能力由固定 Ref<U> 约束。工厂复用按 ID 替换保序的数组操作，只完成纯变换和不可变复制，不增加运行时字段清单、能力校验、初始化、求值或派发。
+
+Vitality 普通贡献使用 `setContribution(ref, "defense" | "resistance", entry)`，专属 Hook 使用 `setHook(ref, key, hook)`；Action 的 beforeRelease／released、Elemental 的普通贡献与事件 Hook、Skill 事件 Hook 和 Blocking 两侧 Hook 使用同一工厂。它不经 Unit 公共入口导出。MaxHP 的贡献与 HP 比例在同一次手写变换中更新；Ammo 注册保留 AMMO 适用条件，发动时采样容量，当前轮次仍由资源操作改变；Action interval／speed 与 Blocking Rule／容量／体积保留所属领域 Settlement。可空 SP、嵌套 Rule、单字段接口及 Unit Typed Key Hooks、Card／Battle 登记使用各自明确实现，不扩展通用路径或后继配置。
+
 update 按以下顺序处理整批，允许同一 Unit 多个 Change，也允许跨多个 Unit：
 
 1. 按 Change 顺序从本批暂存的最新 Unit 执行全部 transform；首次触及的目标必须已登记，缺失时抛出 RangeError。每项返回值与其输入 Unit 引用相同时，update 统一跳过该项发布和 settle；无变化的 Transformation 必须返回原 Unit，不做字段深比较。此阶段不执行 Hook 或完整领域操作。

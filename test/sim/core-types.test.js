@@ -16,6 +16,9 @@ import { update } from ${module("battle/unit")};
 import * as actions from ${module("unit/action/index")};
 import * as effects from ${module("unit/effect/index")};
 import * as hpDamage from ${module("battle/damage/hp/index")};
+import * as vitality from ${module("unit/capability/vitality/index")};
+import * as actionCapability from ${module("unit/capability/action/index")};
+import { createRegistrationOperations } from ${module("unit/registration")};
 import type { Offense } from ${module("unit/capability/offense/index")};
 import { setAttackContribution } from ${module("unit/capability/offense/index")};
 import { setLayer } from ${module("unit/capability/blocking/index")};
@@ -85,6 +88,51 @@ const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'ba
 effects.install(battle, ref(bare), shield);
 const change: Change = setAttackContribution(reference, { id: 'bonus', value: [] });
 update(battle, [change]);
+const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
+    id: 'patient', hooks: Hooks.empty(),
+    vitality: { maxHp: 100, defense: 10, resistance: 0 },
+} }).value;
+const patientRef = ref(patient);
+vitality.setContribution(patientRef, 'defense', {
+    id: 'armor', value: (_state, self) => {
+        const defense: number = self.definition.vitality.defense;
+        return [];
+    },
+});
+vitality.setHook(patientRef, 'damageReceiving', {
+    id: 'cancel',
+    invoke: (state, context, pending) => {
+        const amount: number = context.calculated.amount;
+        // @ts-expect-error inline callbacks retain precise working values rather than any.
+        const invalidAmount: string = pending.amount;
+        return { state, value: hpDamage.cancel(pending, 'EVADE') };
+    },
+});
+actionCapability.setHook(reference, 'beforeRelease', {
+    id: 'interrupt',
+    invoke: (state, context) => {
+        const source: Ref<Unit> = context.source;
+        return { state, value: { type: 'INTERRUPT', recoveryTicks: 1 } };
+    },
+});
+// @ts-expect-error automatic operations cannot write a special field.
+vitality.setContribution(patientRef, 'maxHp', { id: 'wrong', value: [] });
+// @ts-expect-error an Entry cannot establish a missing host capability.
+vitality.setContribution(ref(bare), 'defense', { id: 'wrong', value: [] });
+declare const damageReceiving: hpDamage.ReceivingHook;
+declare const pairedRegistration:
+    | [key: 'damageReceiving', hook: hpDamage.ReceivingHook]
+    | [key: 'damageReceivingStarted', hook: hpDamage.ReceivingStartedHook];
+vitality.setHook(patientRef, ...pairedRegistration);
+// @ts-expect-error each field retains its corresponding Hook type.
+vitality.setHook(patientRef, 'healingReceiving', damageReceiving);
+declare const receivingStage: 'damageReceiving' | 'healingReceiving';
+// @ts-expect-error a union key and an unrelated Entry are not a paired argument.
+vitality.setHook(patientRef, receivingStage, damageReceiving);
+// @ts-expect-error a factory can select only actual registration fields.
+createRegistrationOperations<Unit & vitality.Vitality, 'vitality', 'unknown'>('vitality');
+// @ts-expect-error ordinary resource values are not registration arrays.
+createRegistrationOperations<Unit & vitality.Vitality, 'vitality', 'hp'>('vitality');
 // @ts-expect-error a different capability cannot be inferred from an unrelated proof.
 setLayer(reference, 'AIR');
 // @ts-expect-error public writes accept constructed Changes rather than complete snapshots.

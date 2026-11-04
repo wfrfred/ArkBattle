@@ -8,7 +8,7 @@ import type { Hook } from "./contract.js";
 import type { Rule } from "./rule.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
 import { prepare } from "./blockable-operations.js";
-import { Hooks } from "../../../hook.js";
+import { Hooks as UnitHooks } from "../../../hook.js";
 import { prepare as prepareKey } from "../../hook.js";
 
 export interface Definition {
@@ -21,13 +21,16 @@ export interface PositionAdjustment {
     readonly startTick: number;
 }
 
-export interface State {
+export interface Hooks {
+    readonly acquired: readonly Hook<Unit & Blockable>[];
+    readonly released: readonly Hook<Unit & Blockable>[];
+}
+
+export interface State extends Hooks {
     readonly blocker: Ref<Unit & Blocker> | null;
     readonly adjustment: PositionAdjustment | null;
     readonly volume: readonly contribution.Contribution<number>[];
     readonly rules: readonly Rule[];
-    readonly acquired: readonly Hook<Unit & Blockable>[];
-    readonly released: readonly Hook<Unit & Blockable>[];
 }
 
 export interface Blockable {
@@ -51,7 +54,7 @@ export function initialize<U extends Unit & Pick<Blockable, "definition">>(
         state: battle,
         value: {
             ...unit,
-            hooks: Hooks.empty().set(prepareKey, prepare).merge(unit.hooks),
+            hooks: UnitHooks.empty().set(prepareKey, prepare).merge(unit.hooks),
             blockable: {
                 blocker: null,
                 adjustment: null,

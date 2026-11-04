@@ -4,16 +4,17 @@ import type { State as BattleState } from "../../../battle/state.js";
 import * as registry from "../../../hook.js";
 import * as contribution from "../../contribution/contribution.js";
 import { createChange, type Change } from "../../change.js";
+import { createRegistrationOperations } from "../../registration.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
 import type { PrepareHook } from "../../hook.js";
 import * as units from "../../query.js";
-import type { Hook, Key } from "./contract.js";
 import type { Rule } from "./rule.js";
 import {
     DEFAULT_RADIUS,
     resolveCapacity,
     type Blocker,
+    type Hooks,
     type Layer,
     type Modifier,
 } from "./blocker.js";
@@ -134,26 +135,8 @@ export function setLayer(reference: Ref<Unit & Blocker>, layer: Layer): Change {
     );
 }
 
-export function setHook(
-    reference: Ref<Unit & Blocker>,
-    key: Key,
-    hook: Hook<Unit & Blocker>,
-): Change {
-    return createChange(reference, (self) => {
-        const entries = registry.set(self.blocker[key], hook);
-
-        return entries === self.blocker[key]
-            ? self
-            : { ...self, blocker: { ...self.blocker, [key]: entries } };
-    });
-}
-
-export function removeHook(reference: Ref<Unit & Blocker>, key: Key, id: string): Change {
-    return createChange(reference, (self) => {
-        const entries = registry.remove(self.blocker[key], id);
-
-        return entries === self.blocker[key]
-            ? self
-            : { ...self, blocker: { ...self.blocker, [key]: entries } };
-    });
-}
+export const { set: setHook, remove: removeHook } = createRegistrationOperations<
+    Unit & Blocker,
+    "blocker",
+    keyof Hooks
+>("blocker");

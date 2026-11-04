@@ -3,11 +3,12 @@ import * as registry from "../../../hook.js";
 import * as contribution from "../../contribution/contribution.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Skill as SkillState } from "../../skill/skill.js";
-import type { Events, Hook, Key } from "./hook.js";
+import type { Events, Hook } from "./hook.js";
 import type { Input as AmmoInput } from "../../skill/ammo.js";
 import type { Rule, Key as RuleKey, Rules } from "./rule.js";
 import type { Ref } from "../../../common/ref.js";
 import { createChange, type Change } from "../../change.js";
+import { createRegistrationOperations } from "../../registration.js";
 import { enter } from "../../skill/operations.js";
 import { enter as enterKey } from "../../hook.js";
 
@@ -15,10 +16,7 @@ export interface Definition {
     readonly initialize: (battle: BattleState) => Result<SkillState<any, any>>;
 }
 
-export interface State extends SkillState {
-    readonly nextActivationId: number;
-    readonly ammo: readonly contribution.Contribution<AmmoInput>[];
-    readonly rules: Rules;
+interface Hooks {
     readonly spRecovered: readonly Hook<Events["spRecovered"]>[];
     readonly spPaid: readonly Hook<Events["spPaid"]>[];
     readonly spModified: readonly Hook<Events["spModified"]>[];
@@ -26,6 +24,12 @@ export interface State extends SkillState {
     readonly ammoReplenished: readonly Hook<Events["ammoReplenished"]>[];
     readonly activationStarted: readonly Hook<Events["activationStarted"]>[];
     readonly activationEnded: readonly Hook<Events["activationEnded"]>[];
+}
+
+export interface State extends SkillState, Hooks {
+    readonly nextActivationId: number;
+    readonly ammo: readonly contribution.Contribution<AmmoInput>[];
+    readonly rules: Rules;
 }
 
 export interface Skill {
@@ -102,29 +106,11 @@ export function removeRule(reference: Ref<Unit & Skill>, key: RuleKey, id: strin
     });
 }
 
-export function setHook<K extends Key>(
-    reference: Ref<Unit & Skill>,
-    key: K,
-    hook: Hook<Events[K]>,
-): Change {
-    return createChange(reference, (self) => {
-        const hooks = registry.set(self.skill[key] as readonly Hook<Events[K]>[], hook);
-
-        return hooks === self.skill[key]
-            ? self
-            : { ...self, skill: { ...self.skill, [key]: hooks } };
-    });
-}
-
-export function removeHook(reference: Ref<Unit & Skill>, key: Key, id: string): Change {
-    return createChange(reference, (self) => {
-        const hooks = registry.remove<State[Key][number]>(self.skill[key], id);
-
-        return hooks === self.skill[key]
-            ? self
-            : { ...self, skill: { ...self.skill, [key]: hooks } };
-    });
-}
+export const { set: setHook, remove: removeHook } = createRegistrationOperations<
+    Unit & Skill,
+    "skill",
+    keyof Hooks
+>("skill");
 
 export function setAmmoContribution(
     reference: Ref<Unit & Skill>,

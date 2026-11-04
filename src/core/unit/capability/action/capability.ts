@@ -8,6 +8,7 @@ import * as hook from "../../../hook.js";
 import type { BeforeReleaseHook, ReleasedHook } from "./release.js";
 import type { Ref } from "../../../common/ref.js";
 import { createChange, type Change } from "../../change.js";
+import { createRegistrationOperations } from "../../registration.js";
 import type { Rule as BaseRule } from "../../../rule.js";
 
 export interface Definition {
@@ -24,14 +25,17 @@ export type Rule = BaseRule<RuleContext>;
 
 export type Input = contribution.Input<attribute.Modifier, Unit & Action>;
 
-export interface State {
+interface Hooks {
+    readonly beforeRelease: readonly BeforeReleaseHook[];
+    readonly released: readonly ReleasedHook[];
+}
+
+export interface State extends Hooks {
     readonly actions: Actions;
     readonly nextExecutionId: number;
     readonly interval: readonly contribution.Contribution<Input>[];
     readonly speed: readonly contribution.Contribution<Input>[];
     readonly rules: readonly Rule[];
-    readonly beforeRelease: readonly BeforeReleaseHook[];
-    readonly released: readonly ReleasedHook[];
 }
 
 export interface Action {
@@ -88,45 +92,8 @@ export function removeRule(reference: Ref<Unit & Action>, id: string): Change {
     });
 }
 
-export function setBeforeReleaseHook(
-    reference: Ref<Unit & Action>,
-    entry: BeforeReleaseHook,
-): Change {
-    return createChange(reference, (self) => {
-        const beforeRelease = hook.set(self.action.beforeRelease, entry);
-
-        return beforeRelease === self.action.beforeRelease
-            ? self
-            : { ...self, action: { ...self.action, beforeRelease } };
-    });
-}
-
-export function removeBeforeReleaseHook(reference: Ref<Unit & Action>, id: string): Change {
-    return createChange(reference, (self) => {
-        const beforeRelease = hook.remove(self.action.beforeRelease, id);
-
-        return beforeRelease === self.action.beforeRelease
-            ? self
-            : { ...self, action: { ...self.action, beforeRelease } };
-    });
-}
-
-export function setReleasedHook(reference: Ref<Unit & Action>, entry: ReleasedHook): Change {
-    return createChange(reference, (self) => {
-        const released = hook.set(self.action.released, entry);
-
-        return released === self.action.released
-            ? self
-            : { ...self, action: { ...self.action, released } };
-    });
-}
-
-export function removeReleasedHook(reference: Ref<Unit & Action>, id: string): Change {
-    return createChange(reference, (self) => {
-        const released = hook.remove(self.action.released, id);
-
-        return released === self.action.released
-            ? self
-            : { ...self, action: { ...self.action, released } };
-    });
-}
+export const { set: setHook, remove: removeHook } = createRegistrationOperations<
+    Unit & Action,
+    "action",
+    keyof Hooks
+>("action");

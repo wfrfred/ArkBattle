@@ -7,7 +7,7 @@ import type { Blockable } from "./blockable.js";
 import type { Hook } from "./contract.js";
 import type { Rule } from "./rule.js";
 import { prepare } from "./blocker-operations.js";
-import { Hooks } from "../../../hook.js";
+import { Hooks as UnitHooks } from "../../../hook.js";
 import { prepare as prepareKey } from "../../hook.js";
 
 export type Layer = "GROUND" | "AIR";
@@ -26,14 +26,17 @@ export interface Definition {
     readonly rules: readonly Rule[];
 }
 
-export interface State {
+export interface Hooks {
+    readonly acquired: readonly Hook<Unit & Blocker>[];
+    readonly released: readonly Hook<Unit & Blocker>[];
+}
+
+export interface State extends Hooks {
     readonly blocked: readonly Ref<Unit & Blockable>[];
     readonly capacity: readonly contribution.Contribution<readonly Modifier[]>[];
     readonly layer: Layer;
     readonly radius: number;
     readonly rules: readonly Rule[];
-    readonly acquired: readonly Hook<Unit & Blocker>[];
-    readonly released: readonly Hook<Unit & Blocker>[];
 }
 
 export interface Blocker {
@@ -64,7 +67,7 @@ export function initialize<U extends Unit & Pick<Blocker, "definition">>(
         state: battle,
         value: {
             ...unit,
-            hooks: Hooks.empty().set(prepareKey, prepare).merge(unit.hooks),
+            hooks: UnitHooks.empty().set(prepareKey, prepare).merge(unit.hooks),
             blocker: {
                 blocked: [],
                 capacity: [],

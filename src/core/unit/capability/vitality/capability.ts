@@ -12,6 +12,7 @@ import type { DamageReceptionRule } from "./rule.js";
 import * as registry from "../../../hook.js";
 import type { Ref } from "../../../common/ref.js";
 import { createChange, type Change } from "../../change.js";
+import { createRegistrationOperations } from "../../registration.js";
 
 export interface Definition {
     readonly maxHp: number;
@@ -21,14 +22,20 @@ export interface Definition {
 
 export type Input = contribution.Input<attribute.Modifier, Unit & Vitality>;
 
-export interface State {
-    readonly hp: number;
-    readonly maxHp: readonly contribution.Contribution<readonly attribute.Modifier[]>[];
+interface Contributions {
     readonly defense: readonly contribution.Contribution<Input>[];
     readonly resistance: readonly contribution.Contribution<Input>[];
+}
+
+interface Hooks {
     readonly damageReceivingStarted: readonly ReceivingStartedHook[];
     readonly damageReceiving: readonly DamageReceivingHook[];
     readonly healingReceiving: readonly HealingReceivingHook[];
+}
+
+export interface State extends Contributions, Hooks {
+    readonly hp: number;
+    readonly maxHp: readonly contribution.Contribution<readonly attribute.Modifier[]>[];
     readonly damageReceptionRules: readonly DamageReceptionRule[];
 }
 
@@ -142,136 +149,14 @@ export function resolveMaxHp(state: State, definition: Definition): number {
     return Math.max(1, attribute.apply(definition.maxHp, contribution.resolve(state.maxHp).flat()));
 }
 
-function setContributions(
-    state: State,
-    parameter: "defense" | "resistance",
-    entries: State["defense"],
-): State {
-    return entries === state[parameter] ? state : { ...state, [parameter]: entries };
-}
+export const { set: setContribution, remove: removeContribution } = createRegistrationOperations<
+    Unit & Vitality,
+    "vitality",
+    keyof Contributions
+>("vitality");
 
-export function setDefenseContribution(
-    reference: Ref<Unit & Vitality>,
-    entry: contribution.Contribution<Input>,
-): Change {
-    return createChange(reference, (self) => {
-        const vitality = setContributions(
-            self.vitality,
-            "defense",
-            contribution.set(self.vitality.defense, entry),
-        );
-
-        return vitality === self.vitality ? self : { ...self, vitality };
-    });
-}
-
-export function removeDefenseContribution(reference: Ref<Unit & Vitality>, id: string): Change {
-    return createChange(reference, (self) => {
-        const vitality = setContributions(
-            self.vitality,
-            "defense",
-            contribution.remove(self.vitality.defense, id),
-        );
-
-        return vitality === self.vitality ? self : { ...self, vitality };
-    });
-}
-
-export function setResistanceContribution(
-    reference: Ref<Unit & Vitality>,
-    entry: contribution.Contribution<Input>,
-): Change {
-    return createChange(reference, (self) => {
-        const vitality = setContributions(
-            self.vitality,
-            "resistance",
-            contribution.set(self.vitality.resistance, entry),
-        );
-
-        return vitality === self.vitality ? self : { ...self, vitality };
-    });
-}
-
-export function removeResistanceContribution(reference: Ref<Unit & Vitality>, id: string): Change {
-    return createChange(reference, (self) => {
-        const vitality = setContributions(
-            self.vitality,
-            "resistance",
-            contribution.remove(self.vitality.resistance, id),
-        );
-
-        return vitality === self.vitality ? self : { ...self, vitality };
-    });
-}
-
-export function setDamageReceivingStartedHook(
-    reference: Ref<Unit & Vitality>,
-    entry: ReceivingStartedHook,
-): Change {
-    return createChange(reference, (self) => {
-        const entries = registry.set(self.vitality.damageReceivingStarted, entry);
-
-        return entries === self.vitality.damageReceivingStarted
-            ? self
-            : { ...self, vitality: { ...self.vitality, damageReceivingStarted: entries } };
-    });
-}
-
-export function removeDamageReceivingStartedHook(
-    reference: Ref<Unit & Vitality>,
-    id: string,
-): Change {
-    return createChange(reference, (self) => {
-        const entries = registry.remove(self.vitality.damageReceivingStarted, id);
-
-        return entries === self.vitality.damageReceivingStarted
-            ? self
-            : { ...self, vitality: { ...self.vitality, damageReceivingStarted: entries } };
-    });
-}
-
-export function setDamageReceivingHook(
-    reference: Ref<Unit & Vitality>,
-    entry: DamageReceivingHook,
-): Change {
-    return createChange(reference, (self) => {
-        const entries = registry.set(self.vitality.damageReceiving, entry);
-
-        return entries === self.vitality.damageReceiving
-            ? self
-            : { ...self, vitality: { ...self.vitality, damageReceiving: entries } };
-    });
-}
-
-export function removeDamageReceivingHook(reference: Ref<Unit & Vitality>, id: string): Change {
-    return createChange(reference, (self) => {
-        const entries = registry.remove(self.vitality.damageReceiving, id);
-
-        return entries === self.vitality.damageReceiving
-            ? self
-            : { ...self, vitality: { ...self.vitality, damageReceiving: entries } };
-    });
-}
-
-export function setHealingReceivingHook(
-    reference: Ref<Unit & Vitality>,
-    entry: HealingReceivingHook,
-): Change {
-    return createChange(reference, (self) => {
-        const entries = registry.set(self.vitality.healingReceiving, entry);
-
-        return entries === self.vitality.healingReceiving
-            ? self
-            : { ...self, vitality: { ...self.vitality, healingReceiving: entries } };
-    });
-}
-
-export function removeHealingReceivingHook(reference: Ref<Unit & Vitality>, id: string): Change {
-    return createChange(reference, (self) => {
-        const entries = registry.remove(self.vitality.healingReceiving, id);
-
-        return entries === self.vitality.healingReceiving
-            ? self
-            : { ...self, vitality: { ...self.vitality, healingReceiving: entries } };
-    });
-}
+export const { set: setHook, remove: removeHook } = createRegistrationOperations<
+    Unit & Vitality,
+    "vitality",
+    keyof Hooks
+>("vitality");
