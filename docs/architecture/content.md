@@ -14,9 +14,9 @@ Meta 可以选择配置或提供关卡输入。卫戍的普通／金色等政策
 
 具体内容按角色目录组织，例如 `enemies/hound/`、`enemies/crossbowman/`、`operators/melantha/`、`operators/mudrock/`。action.ts 描述该角色的具体行动、目标条件、私有状态和输出程序；unit.ts 组装属性、Capability、天赋与行动选择策略。Unit 的 action.initialize 用 createActions 接续各项具体创建程序，运行时只维护 Actions，不另建静态定义注册表。Skill 只需一个聚合，Unit 的 skill.initialize 调用 skills.create(battle, programDefinition)；完整程序与元数据保存在当前 unit.skill.definition，Skill 回调使用显式 source 与聚合 self。
 
-标准元素爆发由 Core 的 Elemental 领域提供八个具体 Effect，各自只接收自身需要的数值参数。Data 绑定数值并按接收者类别选好元素到 Effect Definition 的映射，Core 直接查表安装；Data 不提供爆发执行回调。眩晕、封技和阻止 SP 回复等通用控制定义位于 `core/unit/control.ts`，Content 直接复用；具体角色的特殊交互仍由自己的 Effect、Hook 和 Rule 表达。Effect 是运行载体，不按实现机制另设一个收纳各领域业务的顶层 effects 目录。
+标准效果成品由 Core 提供，目标目录为 `core/effects/`，按控制、保护、可选中性等职责组织；标准元素爆发的具体程序归 `core/effects/elemental/`。通用附着实例、生命周期操作与 Effects 异构容器继续位于 `core/unit/effect/`。Content 复用标准效果，决定触发时机、对象、参数与专属附加业务；同一标准效果的识别、叠加、替换和伤判规则由公共实现维护。
 
-标准效果成品库是否整体归 Core 尚未定稿；完整候选清单及用户对其规模、归属的质疑保存在[Effect 讨论记录](effect.md#10-标准效果候选与归属讨论记录未定稿)。现有实现位置不作为扩大 Core 范围的依据，也不据候选清单自动迁移 Content。
+Elemental Capability 负责 EP 接收与提交、爆发触发和当前爆发引用；Data 绑定数值并按接收者类别选好元素到具体 Effect Definition 的映射，不提供爆发执行回调。标准效果按实际使用逐项实现，完整候选范围见[标准效果库](effect.md#10-标准效果库与候选范围)；清单不作为一次性实现计划，也不提前建立空文件。此处目录已确认，现有实现的源码迁移尚未执行。
 
 弩手的 action.ts 分别定义 melee 与 ranged，两者有各自的冷却和执行状态。unit.ts 按当前阻挡关系选择近战或远程，在已有主动作执行期间不并发启动另一主动作；选择和互斥属于内容策略。场景选择敌人和配置波次，不通过一个带敌人 ID 分支的中央工厂构造所有内容。确实共用的地面属性与能力装配由普通函数提供，具体攻击程序归各自内容。
 

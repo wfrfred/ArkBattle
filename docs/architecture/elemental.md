@@ -40,6 +40,8 @@ interface Definition {
 
 ## 2. Burst Effect 与标准规则
 
+标准爆发的具体 Effect 程序归 Core 标准效果库，目标目录为 `core/effects/elemental/`；通用控制目标位于 `core/effects/control.ts`。Elemental Capability 仍负责 EP、爆发触发与当前引用，通用实例管理归 `core/unit/effect/`。目录已确认，源码迁移尚未执行，以下链接指向当前实现。完整范围和按需实现原则见[标准效果库](effect.md#10-标准效果库与候选范围)。
+
 [burst.ts](../../src/core/unit/capability/elemental/burst.ts) 定义共同的 Burst 类型、进度与生命周期操作；[bursts/](../../src/core/unit/capability/elemental/bursts) 分别实现神经、侵蚀、灼燃和凋亡的具体标准 Effect。其数据只保存元素类型与一份有效进度：
 
 ```typescript
@@ -55,7 +57,7 @@ Core 提供八个具体 Effect：神经眩晕／麻痹、物理／元素侵蚀�
 
 Burst 的 id、host、source、enabled、status 由 Effect 提供，Elemental 的 burst 槽位只保存它的 Typed Ref。`ref(self)` 复用 Effect Ref，地址为 host + Effect ID；没有独立 Burst ID 分配器或 Lifetime。旧引用不能操作后来的爆发。来源引用保存历史身份，不要求来源仍在场，也不隐含生命周期绑定；跨 Battle 使用 Ref 仍属于调用契约错误。
 
-[data/arknights/elemental.ts](../../src/data/arknights/elemental.ts) 保存原始类型映射、八套数值和具体 Effect 的选择表。新增元素时新增对应 Effect 实现，补充元素枚举与映射表；通用 EP 的 Calculate／Apply／Commit 以及已有爆发程序不需要为新机制增加分支。共享函数只处理进度、EP 恢复和结束收尾。通用控制 Effect 位于 [unit/control.ts](../../src/core/unit/control.ts)，Content 直接复用；通用 Effect 引擎不解释元素规则。
+[data/arknights/elemental.ts](../../src/data/arknights/elemental.ts) 保存原始类型映射、八套数值和具体 Effect 的选择表。新增元素时新增对应 Effect 实现，补充元素枚举与映射表；通用 EP 的 Calculate／Apply／Commit 以及已有爆发程序不需要为新机制增加分支。共享函数只处理进度、EP 恢复和结束收尾。当前通用控制实现在 [unit/control.ts](../../src/core/unit/control.ts)，Content 直接复用；通用 Effect 引擎不解释元素规则。
 
 需要随本轮结束的产物通过 `scope(effects.lifetime, ref)` 绑定根 Burst Effect：眩晕、灼燃减抗、封技、阻止 SP 回复等在根实例结束时清理。是否允许新依赖沿用 Effect Lifetime 的可用性，不建立另一套 Burst 状态机。
 
