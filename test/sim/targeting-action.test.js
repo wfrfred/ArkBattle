@@ -6,7 +6,7 @@ import { battle as createBattle, get } from "../helpers/battle.js";
 import { Hooks } from "../../dist/core/hook.js";
 import * as hpDamage from "../../dist/core/battle/damage/hp/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
-import { healFree } from "../../dist/content/effects/protection.js";
+import { healFree } from "../../dist/core/effects/protection.js";
 import { random } from "../../dist/core/battle/targeting/selector.js";
 import { getUnit } from "../helpers/unit.js";
 import { ref } from "../../dist/core/unit/query.js";

@@ -1,13 +1,18 @@
-import { update } from "../../../../battle/unit.js";
-import { scope } from "../../../../lifetime/operations.js";
-import { TICKS_PER_SECOND } from "../../../../tick.js";
-import * as units from "../../../query.js";
-import * as effects from "../../../effect/operations.js";
-import { ref, type Effect } from "../../../effect/effect.js";
-import type { Definition as EffectDefinition } from "../../../effect/definition.js";
-import { stun } from "../../../control.js";
-import { hasAction, setHook, removeHook, type Action } from "../../action/capability.js";
-import { Type } from "../capability.js";
+import { update } from "../../battle/unit.js";
+import { scope } from "../../lifetime/operations.js";
+import { TICKS_PER_SECOND } from "../../tick.js";
+import * as units from "../../unit/query.js";
+import * as effects from "../../unit/effect/operations.js";
+import { ref, type Effect } from "../../unit/effect/effect.js";
+import type { Definition as EffectDefinition } from "../../unit/effect/definition.js";
+import { stun } from "../control.js";
+import {
+    hasAction,
+    setHook,
+    removeHook,
+    type Action,
+} from "../../unit/capability/action/capability.js";
+import { Type } from "../../unit/capability/elemental/capability.js";
 import {
     activeHost,
     advance,
@@ -16,7 +21,7 @@ import {
     onInstall,
     onEnd,
     type Definition,
-} from "../burst.js";
+} from "../../unit/capability/elemental/burst.js";
 
 export interface StunParameters {
     readonly durationTicks: number;

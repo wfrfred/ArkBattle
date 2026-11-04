@@ -1,18 +1,18 @@
 import { update as updateUnit } from "../battle/unit.js";
 
-import type { Definition } from "./effect/definition.js";
-import * as action from "./capability/action/capability.js";
-import { hasBlocker } from "./capability/blocking/blocker.js";
+import type { Definition } from "../unit/effect/definition.js";
+import * as action from "../unit/capability/action/capability.js";
+import { hasBlocker } from "../unit/capability/blocking/blocker.js";
 import {
     setRule as setBlockerRule,
     removeRule as removeBlockerRule,
-} from "./capability/blocking/blocker-operations.js";
-import * as locomotion from "./capability/locomotion/capability.js";
+} from "../unit/capability/blocking/blocker-operations.js";
+import * as locomotion from "../unit/capability/locomotion/capability.js";
 
-import * as skill from "./capability/skill/capability.js";
-import { cancelForUnit } from "./action/operations.js";
-import * as units from "./query.js";
-import type { Change } from "./change.js";
+import * as skill from "../unit/capability/skill/capability.js";
+import { cancelForUnit } from "../unit/action/operations.js";
+import * as units from "../unit/query.js";
+import type { Change } from "../unit/change.js";
 
 export const stun: Definition<object> = {
     id: "control/stun",

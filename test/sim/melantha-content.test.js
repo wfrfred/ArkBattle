@@ -14,7 +14,7 @@ import { fixtureBattlefieldState } from "../helpers/battlefield.js";
 import { ref } from "../../dist/core/unit/index.js";
 import { start, advance as advanceAction, ref as actionRef } from "../../dist/core/unit/action/index.js";
 import { advance as advanceBlocking, relations } from "../../dist/core/battle/blocking/index.js";
-import { invisibleRestriction } from "../../dist/content/effects/visibility.js";
+import { invisibleRestriction } from "../../dist/core/effects/visibility.js";
 
 const data = JSON.parse(readFileSync(new URL("../fixtures/arknights/main-mode-units.json", import.meta.url)));
 const profile = () => prepare(

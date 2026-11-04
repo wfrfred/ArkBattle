@@ -21,8 +21,8 @@ import { start as startAction, ref as actionRef } from '../../dist/core/unit/act
 import { ref as unitRef } from '../../dist/core/unit/index.js';
 import { select } from '../../dist/core/battle/targeting/index.js';
 import { allowsRestrictions } from '../../dist/core/unit/capability/targetable/capability.js';
-import { invisibleRestriction } from '../../dist/content/effects/visibility.js';
-import { invincible } from '../../dist/content/effects/protection.js';
+import { invisibleRestriction } from '../../dist/core/effects/visibility.js';
+import { invincible } from '../../dist/core/effects/protection.js';
 import { install } from '../../dist/core/unit/effect/index.js';
 import { range } from '../../dist/core/battle/targeting/index.js';
 import { advance as advanceAction } from '../../dist/core/unit/action/index.js';

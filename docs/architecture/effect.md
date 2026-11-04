@@ -4,7 +4,7 @@ Effect 负责附着实例、生效状态、覆写组与生命周期。总体执�
 
 公开契约遵守[五类接口约定](api-conventions.md)。生命周期回调直接接收 battle 与 self，结束原因作为独立参数，内容程序通过领域操作接续 BattleState。
 
-具体 Buff、异常与 Aura 的规则及未接入项见 [Tactical 语义](tactical-semantics.md)。标准效果库的职责、目标目录和候选范围见[标准效果库](#10-标准效果库与候选范围)。
+具体 Buff、异常与 Aura 的规则及未接入项见 [Tactical 语义](tactical-semantics.md)。标准效果库的职责、目录和候选范围见[标准效果库](#10-标准效果库与候选范围)。
 
 Effect 用于表达属性增益、护盾、周期伤害与治疗、技能附带状态、效果覆写和光环分发。核心负责附着实例与生命周期，具体 Definition 组合 Capability 的操作实现玩法。
 
@@ -31,7 +31,8 @@ Effect 需要保障的结果是：
 | `unit/effect/query.ts` | 按精确 Ref 读取当前实例的 get |
 | `unit/effect/operations.ts` | 安装、私有数据与期限写回、启停、推进与完整结束 |
 | `core/lifetime/` | 共享依赖关系、结束请求与 DAG 析构 |
-| `content/effects/` | 已接入的护盾、异常与属性增益程序；Aura 接入范围见后文 |
+| [core/effects/](../../src/core/effects) | 控制、保护、可选中性与标准元素爆发的具体 Definition |
+| `content/` | 角色专属效果及标准效果的使用程序；Aura 接入范围见后文 |
 
 内容从 index 导入公开契约，包含 Effect 的静态 lifetime 描述符；get 归 query.ts，领域操作直接依赖该查询。Effects 容器保持内部职责；通用依赖索引归 core/lifetime。Effect、Hook、Contribution 都在 Unit 域内，与 Capability 平级。Effect 集合是 Unit 的组成部分；具体能力负责自己的数值和事件。
 
@@ -366,7 +367,7 @@ Unit、Effect、Hook、Contribution 与其嵌套状态一旦写入，就按不�
 
 ## 10. 标准效果库与候选范围
 
-确认日期：2026-11-05。标准效果成品库归 Core，目标目录为 `core/effects/`；具体角色的私有机制由 Content 实现。按实际使用逐项实现效果，以下清单保留为语义候选目录，不作为一次性实现计划。各项精确机制、承载和 API 在实际接入时核对与确定。
+标准效果成品库位于 `core/effects/`；具体角色的私有机制由 Content 实现。按实际使用逐项实现效果，以下清单保留为语义候选目录，不作为一次性实现计划。各项精确机制、承载和 API 在实际接入时核对与确定。
 
 ### 候选范围
 
@@ -387,7 +388,7 @@ Unit、Effect、Hook、Contribution 与其嵌套状态一旦写入，就按不�
 
 这些是语义种类；独立识别不要求复制实现，也不自动要求每项都有单独的 Effect Definition、工厂、文件或枚举。拥有术语名称、多个使用者或可参数化的实现，都不足以单独决定代码归属。各项精确机制和交互仍需按实际需求核对。
 
-原生资料参考本轮查阅的社区资料：[异常效果](https://prts.wiki/w/异常效果)、[术语释义](https://prts.wiki/w/术语释义)、[伤判效果](https://prts.wiki/w/伤判效果)。已有客户端证据见[启动资格与中断](../research/cases/08-action-eligibility-and-interruption.md)、[异常免疫与反制](../research/cases/19-effect-selection-and-immunity.md)。本表不是对全部候选完成客户端取证的声明。
+机制资料参考社区资料：[异常效果](https://prts.wiki/w/异常效果)、[术语释义](https://prts.wiki/w/术语释义)、[伤判效果](https://prts.wiki/w/伤判效果)。已有客户端证据见[启动资格与中断](../research/cases/08-action-eligibility-and-interruption.md)、[异常免疫与反制](../research/cases/19-effect-selection-and-immunity.md)。本表不是对全部候选完成客户端取证的声明。
 
 ### 需要区分的基础机制
 
@@ -401,7 +402,7 @@ Unit、Effect、Hook、Contribution 与其嵌套状态一旦写入，就按不�
 
 Core 的领域规则、资源操作、查询、Hook、Contribution 和生命周期，为标准效果库提供基础接口。标准效果组合这些接口实现公共行为；不同基础机制各自保留职责，不因列入候选就新增一套平行状态或复制实现。具体承载和 API 随实际接入确定。
 
-### 已确认的归属与目标目录
+### 目录与职责
 
 ```text
 core/
@@ -409,21 +410,26 @@ core/
 │   ├── control.ts
 │   ├── protection.ts
 │   ├── visibility.ts
-│   └── elemental/       # 标准元素爆发的具体程序
+│   └── elemental/
+│       ├── neural.ts
+│       ├── erosion.ts
+│       ├── burn.ts
+│       └── necrosis.ts
 └── unit/
-    └── effect/          # 附着实例、生命周期操作、Effects 异构容器
+    ├── effect/          # 附着实例、生命周期操作、Effects 异构容器
+    └── capability/
+        └── elemental/
+            └── burst.ts  # 共同类型、进度、EP 恢复与结束收尾
 ```
 
 - 标准元素爆发依赖眩晕等标准效果，公共程序保持 Core 内部依赖；Content 直接复用这些成品，避免各自实现同一机制而产生优先级、叠加或替换差异。
 - 标准效果库导出 stun、invincible 等具体 Definition 或配置工厂；`core/unit/effect/` 提供 install、end 等实例操作。Effects 是运行时异构容器，两者按职责和导入名称区分。
 - Elemental Capability 继续负责 EP 接收与提交、爆发触发和当前爆发引用；`effects/elemental/` 实现标准爆发造成的伤害、控制、属性变化与周期输出。Data 提供数值及具体 Definition 的选择表。
 - Content 决定标准效果的施加对象、触发时机、配置参数与专属附加业务。普通属性增减、任意周期输出、反伤、标记、光环等继续按具体内容组合；专属程序也使用同一套 Definition 与安装接口，不建立涵盖所有 Effect 的封闭总枚举。
-- 已有且在使用的标准实现可在后续迁移时整理到目标目录；新增内容需要什么再实现什么，不为候选清单提前创建空模块。按职责组织文件，不要求每个效果单独建文件。
-
-目标目录尚未迁移：现有通用控制仍位于 `core/unit/control.ts`，标准爆发程序位于 `core/unit/capability/elemental/bursts/`，保护和可选中性程序仍位于 `content/effects/`。本次仅确认并记录架构，没有执行源码迁移。
+- 现有控制、保护、可选中性程序分别位于 [control.ts](../../src/core/effects/control.ts)、[protection.ts](../../src/core/effects/protection.ts)、[visibility.ts](../../src/core/effects/visibility.ts)，标准元素爆发的四个程序位于 `effects/elemental/`。新增内容需要什么再实现什么，不为候选清单提前创建空模块。按职责组织文件，不要求每个效果单独建文件。
 
 ### 保持现有契约
 
 当前 Core 已有四型元素的八套标准爆发；狂躁在此仅是新增类型的候选，不表示已批准扩展。现有 `control.silence` 仅限制 Skill 发动，不能据其名称认为已实现完整沉默或静默；改名与语义修正需另行落实。
 
-`healFree` 继续遵守已确认的治疗索敌限制，与接收禁疗分开；Damage／Healing 的 Calculate、Apply、Hook 和提交时序不因本次归属讨论改变。本记录不触发源码迁移、API 新增或测试扩张。
+`healFree` 继续遵守已确认的治疗索敌限制，与接收禁疗分开；Damage／Healing 的 Calculate、Apply、Hook 和提交时序保持既定协议。

@@ -14,9 +14,9 @@ Meta 可以选择配置或提供关卡输入。卫戍的普通／金色等政策
 
 具体内容按角色目录组织，例如 `enemies/hound/`、`enemies/crossbowman/`、`operators/melantha/`、`operators/mudrock/`。action.ts 描述该角色的具体行动、目标条件、私有状态和输出程序；unit.ts 组装属性、Capability、天赋与行动选择策略。Unit 的 action.initialize 用 createActions 接续各项具体创建程序，运行时只维护 Actions，不另建静态定义注册表。Skill 只需一个聚合，Unit 的 skill.initialize 调用 skills.create(battle, programDefinition)；完整程序与元数据保存在当前 unit.skill.definition，Skill 回调使用显式 source 与聚合 self。
 
-标准效果成品由 Core 提供，目标目录为 `core/effects/`，按控制、保护、可选中性等职责组织；标准元素爆发的具体程序归 `core/effects/elemental/`。通用附着实例、生命周期操作与 Effects 异构容器继续位于 `core/unit/effect/`。Content 复用标准效果，决定触发时机、对象、参数与专属附加业务；同一标准效果的识别、叠加、替换和伤判规则由公共实现维护。
+标准效果成品位于 `core/effects/`，控制、保护、可选中性程序分别由 [control.ts](../../src/core/effects/control.ts)、[protection.ts](../../src/core/effects/protection.ts)、[visibility.ts](../../src/core/effects/visibility.ts) 提供；标准元素爆发的具体程序位于 `core/effects/elemental/`。通用附着实例、生命周期操作与 Effects 异构容器继续位于 `core/unit/effect/`。Content 复用标准效果，决定触发时机、对象、参数与专属附加业务；同一标准效果的识别、叠加、替换和伤判规则由公共实现维护。
 
-Elemental Capability 负责 EP 接收与提交、爆发触发和当前爆发引用；Data 绑定数值并按接收者类别选好元素到具体 Effect Definition 的映射，不提供爆发执行回调。标准效果按实际使用逐项实现，完整候选范围见[标准效果库](effect.md#10-标准效果库与候选范围)；清单不作为一次性实现计划，也不提前建立空文件。此处目录已确认，现有实现的源码迁移尚未执行。
+Elemental Capability 负责 EP 接收与提交、爆发触发和当前爆发引用，共同的类型、进度、EP 恢复与结束收尾保留在 `core/unit/capability/elemental/burst.ts`；Data 绑定数值并按接收者类别选好元素到具体 Effect Definition 的映射，不提供爆发执行回调。标准效果按实际使用逐项实现，完整候选范围见[标准效果库](effect.md#10-标准效果库与候选范围)；清单不作为一次性实现计划，也不提前建立空文件。
 
 弩手的 action.ts 分别定义 melee 与 ranged，两者有各自的冷却和执行状态。unit.ts 按当前阻挡关系选择近战或远程，在已有主动作执行期间不并发启动另一主动作；选择和互斥属于内容策略。场景选择敌人和配置波次，不通过一个带敌人 ID 分支的中央工厂构造所有内容。确实共用的地面属性与能力装配由普通函数提供，具体攻击程序归各自内容。
 

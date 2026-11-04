@@ -19,7 +19,7 @@ import { actionCapability } from "../helpers/actions.js";
 import { actionDefinition } from "../helpers/action-fixture.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
 import { resolveSpeed } from "../../dist/core/unit/capability/action/timing.js";
-import { invisibilityKind } from "../../dist/content/effects/visibility.js";
+import { invisibilityKind } from "../../dist/core/effects/visibility.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
 
 const infectionParams = (damage = 80) => ({

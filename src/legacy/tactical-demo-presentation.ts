@@ -23,8 +23,8 @@ import { hasLayer } from "../core/unit/capability/layer/capability.js";
 import { hasDirection } from "../core/unit/capability/occupancy/index.js";
 import { hasAction } from "../core/unit/capability/action/index.js";
 import { hasSkill } from "../core/unit/capability/skill/index.js";
-import { stun } from "../core/unit/control.js";
-import { invincible } from "../content/effects/protection.js";
+import { stun } from "../core/effects/control.js";
+import { invincible } from "../core/effects/protection.js";
 import { project as projectTrackingProjectile } from "../content/projectiles/tracking.js";
 import {
     hasVitality,

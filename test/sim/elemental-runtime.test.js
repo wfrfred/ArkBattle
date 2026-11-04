@@ -21,7 +21,7 @@ import { create as modifier } from "../../dist/core/unit/contribution/attribute.
 import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
 import { get as getBurst, elementValues, setContribution } from "../../dist/core/unit/capability/elemental/index.js";
 import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
-import { stun } from "../../dist/core/unit/control.js";
+import { stun } from "../../dist/core/effects/control.js";
 import * as epDamage from "../../dist/core/battle/damage/ep/index.js";
 
 const range = [{ type: 'CIRCLE', offset: [0, 0], radius: 20 }];

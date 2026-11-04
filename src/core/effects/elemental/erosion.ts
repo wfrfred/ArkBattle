@@ -1,16 +1,16 @@
-import { update } from "../../../../battle/unit.js";
-import * as units from "../../../query.js";
-import * as effects from "../../../effect/operations.js";
-import { ref } from "../../../effect/effect.js";
-import type { Definition as EffectDefinition } from "../../../effect/definition.js";
-import * as attribute from "../../../contribution/attribute.js";
+import { update } from "../../battle/unit.js";
+import * as units from "../../unit/query.js";
+import * as effects from "../../unit/effect/operations.js";
+import { ref } from "../../unit/effect/effect.js";
+import type { Definition as EffectDefinition } from "../../unit/effect/definition.js";
+import * as attribute from "../../unit/contribution/attribute.js";
 import {
     hasVitality,
     setContribution,
     removeContribution,
     type Vitality,
-} from "../../vitality/capability.js";
-import { Type } from "../capability.js";
+} from "../../unit/capability/vitality/capability.js";
+import { Type } from "../../unit/capability/elemental/capability.js";
 import {
     activeHost,
     advance,
@@ -19,7 +19,7 @@ import {
     onInstall,
     onEnd,
     type Definition,
-} from "../burst.js";
+} from "../../unit/capability/elemental/burst.js";
 
 export interface Parameters {
     readonly durationTicks: number;

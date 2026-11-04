@@ -28,7 +28,7 @@ import { first } from "../../../core/battle/targeting/index.js";
 import { createRng } from "../../../core/common/rng.js";
 import type { Profile } from "../../../data/arknights/operator.js";
 import { secondsToTicks } from "../../../data/arknights/tick.js";
-import { stun } from "../../../core/unit/control.js";
+import { stun } from "../../../core/effects/control.js";
 import { install } from "../../../core/unit/effect/index.js";
 import { value, healSelf } from "./common.js";
 

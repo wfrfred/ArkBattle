@@ -21,7 +21,7 @@ import * as targetable from "../../core/unit/capability/targetable/capability.js
 import * as attribute from "../../core/unit/contribution/attribute.js";
 import { TICKS_PER_SECOND } from "../../core/tick.js";
 import type { DeepseaParams, InfectionParams, MireParams } from "./definition.js";
-import { invisibleRestriction } from "../effects/visibility.js";
+import { invisibleRestriction } from "../../core/effects/visibility.js";
 
 interface Modifiers {
     readonly attack?: attribute.Modifier;

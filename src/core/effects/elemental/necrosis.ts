@@ -1,18 +1,18 @@
-import { update } from "../../../../battle/unit.js";
-import { scope } from "../../../../lifetime/operations.js";
-import { TICKS_PER_SECOND } from "../../../../tick.js";
-import { silence, blockSpRecovery } from "../../../control.js";
-import * as attribute from "../../../contribution/attribute.js";
-import * as effects from "../../../effect/operations.js";
-import * as units from "../../../query.js";
-import { modify } from "../../../skill/sp.js";
+import { update } from "../../battle/unit.js";
+import { scope } from "../../lifetime/operations.js";
+import { TICKS_PER_SECOND } from "../../tick.js";
+import { silence, blockSpRecovery } from "../control.js";
+import * as attribute from "../../unit/contribution/attribute.js";
+import * as effects from "../../unit/effect/operations.js";
+import * as units from "../../unit/query.js";
+import { modify } from "../../unit/skill/sp.js";
 import {
     hasOffense,
     setAttackContribution,
     removeAttackContribution,
-} from "../../offense/capability.js";
-import { hasSkill } from "../../skill/capability.js";
-import { Type } from "../capability.js";
+} from "../../unit/capability/offense/capability.js";
+import { hasSkill } from "../../unit/capability/skill/capability.js";
+import { Type } from "../../unit/capability/elemental/capability.js";
 import {
     onInstall,
     advance,
@@ -22,7 +22,7 @@ import {
     finishStart,
     ref,
     type Definition,
-} from "../burst.js";
+} from "../../unit/capability/elemental/burst.js";
 
 export interface SpDrainParameters {
     readonly durationTicks: number;

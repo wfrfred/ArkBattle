@@ -14,7 +14,7 @@ import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as skills from "../../dist/core/unit/skill/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as lifetime from "../../dist/core/lifetime/index.js";
-import { invincible } from "../../dist/content/effects/protection.js";
+import { invincible } from "../../dist/core/effects/protection.js";
 import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
 
 function damageRequest(source, target, power, type = "TRUE", penetration = { fixed: 0, proportional: 0 }) {

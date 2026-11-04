@@ -35,7 +35,7 @@ import { hasAction } from "../../../core/unit/capability/action/index.js";
 import type { Definition as CardDefinition } from "../../../core/battle/deployment/card/index.js";
 import { get as getTile } from "../../../core/battlefield/map/map.js";
 
-import { healFree } from "../../effects/protection.js";
+import { healFree } from "../../../core/effects/protection.js";
 import {
     hasVitality,
     setHook as setVitalityHook,

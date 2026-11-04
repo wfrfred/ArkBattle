@@ -3,19 +3,16 @@ import {
     type Definition as ElementalDefinition,
     type BurstDefinition,
 } from "../../core/unit/capability/elemental/index.js";
-import { createStun, createParalysis } from "../../core/unit/capability/elemental/bursts/neural.js";
+import { createStun, createParalysis } from "../../core/effects/elemental/neural.js";
 import {
     createPhysical,
     createElemental as createElementalErosion,
-} from "../../core/unit/capability/elemental/bursts/erosion.js";
+} from "../../core/effects/elemental/erosion.js";
 import {
     createArts,
     createElemental as createElementalBurn,
-} from "../../core/unit/capability/elemental/bursts/burn.js";
-import {
-    createSpDrain,
-    createAttackReduction,
-} from "../../core/unit/capability/elemental/bursts/necrosis.js";
+} from "../../core/effects/elemental/burn.js";
+import { createSpDrain, createAttackReduction } from "../../core/effects/elemental/necrosis.js";
 import { secondsToTicks } from "./tick.js";
 
 const elements = {

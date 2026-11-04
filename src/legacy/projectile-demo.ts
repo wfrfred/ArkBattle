@@ -30,7 +30,7 @@ import {
     resolveAttack,
 } from "../core/unit/capability/offense/index.js";
 
-import { healFree } from "../content/effects/protection.js";
+import { healFree } from "../core/effects/protection.js";
 import { hasVitality } from "../core/unit/capability/vitality/index.js";
 import { hasTargetable } from "../core/unit/capability/targetable/capability.js";
 

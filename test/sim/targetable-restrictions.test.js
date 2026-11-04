@@ -12,8 +12,8 @@ import {
     camouflageRestriction,
     untargetableRestriction,
     allyUntargetableRestriction,
-} from "../../dist/content/effects/visibility.js";
-import { healFreeRestriction } from "../../dist/content/effects/protection.js";
+} from "../../dist/core/effects/visibility.js";
+import { healFreeRestriction } from "../../dist/core/effects/protection.js";
 import { initialize, baseUnit, fixtureBattle } from "../helpers/unit.js";
 import { effectFixtureWork } from "../helpers/effects.js";
 
