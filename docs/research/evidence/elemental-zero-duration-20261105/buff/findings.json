@@ -1,0 +1,93 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-05",
+    "scope": "Analysis of the freshly extracted native lifecycle records; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "sourceRecords": [
+      "metadata.json",
+      "native.json",
+      "expanded.json"
+    ]
+  },
+  "result": {
+    "scope": "Static native branches of the fingerprinted installed client. No game execution or runtime XLua verification. No project source or tests changed.",
+    "reproduce": "UV_CACHE_DIR=\"$PWD/.cache/uv\" uv run --locked --offline docs/research/evidence/elemental-zero-duration-20261105/buff/extract.py --address 0x184741640 --address 0x1869459c0 --out .cache/native-research/elemental-zero-20261105/buff/replay",
+    "claims": [
+      {
+        "claim": "LIMITED plus duration zero preserves zero m_lifeTime; it does not rewrite the configured LifeType enum to IMMEDIATELY.",
+        "evidence": [
+          "metadata.json LifeType IMMEDIATELY=0 LIMITED=1 INFINITY=2 CUSTOM=3",
+          "native.json method 66092 Reset: 0x1806d647d..0x1806d6530",
+          "expanded.json 0x184741640: type0 returns 0; type2 returns sentinel; other types return the supplied FP value"
+        ]
+      },
+      {
+        "claim": "Ordinary get_isFinished is m_isFinished || (m_started && MathUtil.IsZero(m_lifeTime)). Exact zero satisfies the latter after OnStart.",
+        "evidence": [
+          "native.json method 66080: 0x1806dddc3..0x1806dde0a",
+          "expanded.json 0x1869459c0 MathUtil.IsZero"
+        ]
+      },
+      {
+        "claim": "For an initialized owner and zero-root lifetime unchanged by content, NewBuff executes OnStart, then observes finished and immediately removes/finishes the root before enabling it. No root OnTick is required.",
+        "evidence": [
+          "native.json method 66301: OnStart at0x1806b6fe5, isFinished at0x1806b705f, FinishAndRemove at0x1806b707e; normal set_isEnabled is only later at0x1806b70ac",
+          "native.json method 66123 OnStart: event0 at0x1806d5035 then started=true at0x1806d503c",
+          "native.json method 66092 Reset: enabled/started flags cleared at0x1806d61af..0x1806d61c2"
+        ]
+      },
+      {
+        "claim": "Root start actions and finish actions can execute. Ordinary root OnEnable attribute/abnormal publication, its OnEnable actions and periodic trigger do not occur. A never-enabled root has no corresponding OnDisable transition.",
+        "evidence": [
+          "native.json method 66123 OnStart event0",
+          "native.json methods 66362 and66363: remove then MarkFinish, ClearDerivedBuffsIfNot, event1 at0x1806cd867",
+          "native.json method 66121: Attributes.AddModifier at0x1806d22d9 before event24",
+          "native.json method 66249: OnDisable work requires actual enabled-state change",
+          "native.json method 66233: event actions reach ActionUtil.RunActions at0x1806dbe7b without an enabled-state guard for start/finish callers"
+        ]
+      },
+      {
+        "claim": "CreateBuff installs a child completely before registering the derived relationship. Nonzero/infinite children may enable and run their own start/enable actions during the zero-root start program.",
+        "evidence": [
+          "native.json method 98388: Entity.AddBuff at0x1810bf8d9, then AddDerivedBuffSafe at0x1810bf911",
+          "metadata.json CreateBuff fields _isDerivedBuff at0x24, _finishDerivedBuffIfParentFinish at0x25"
+        ]
+      },
+      {
+        "claim": "Registered derived children are marked finished when the parent is cleaned up; nonderived children are not automatically cleaned by that relation. Already-issued actions are not rolled back.",
+        "evidence": [
+          "native.json method 66101 MarkFinish: set_isEnabled(false), set explicit finished, ClearDerivedBuffsIfNot",
+          "native.json method 66257 ClearDerivedBuffsIfNot: child MarkFinish at0x1806ce697",
+          "native.json method 66116 AddDerivedBuffSafe: finished-parent branch optionally MarkFinish child at0x1806cdf9f"
+        ]
+      },
+      {
+        "claim": "A first trigger interval of zero initializes the timer; it does not itself dispatch an immediate OnTrigger during normal installation. Ordinary periodic triggering needs a later OnTick. Explicit content trigger actions are outside this conclusion.",
+        "evidence": [
+          "native.json method 66092 Reset: timer Reset at0x1806d6750 and SetRemainingTime at0x1806d67e7",
+          "native.json method 66126 OnTick: early finished check0x1806d5560; timer advance at0x1806d5635 and OnTrigger at0x1806d565a",
+          "native.json method 66125 OnTrigger additionally requires enabled state"
+        ]
+      }
+    ],
+    "limits": [
+      "No assertion that every official burst has initial duration zero; this batch determines the engine behavior if zero is supplied.",
+      "Child duration, binding and action effects are template-specific. Root lifetime zero does not imply zero child lifetimes or no emitted damage.",
+      "OnStart programs may rewrite their own lifetime or explicitly manipulate enabled state; conclusions above state the ordinary unchanged-lifetime path.",
+      "The generic life-type leaf at0x184741640 has an explicit0x14-byte extraction boundary covering all its local branches and returns. Other method main ranges and their continuations have fullyDecoded=true; this is not a claim to have unfolded every downstream action implementation."
+    ]
+  }
+}

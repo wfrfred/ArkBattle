@@ -1,0 +1,4201 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-05"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-05",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "buff/expanded.json#/provenance/client/dll",
+          "buff/findings.json#/provenance/client/dll",
+          "buff/metadata.json#/provenance/client/dll",
+          "buff/native.json#/provenance/client/dll",
+          "controller/controller-findings.json#/provenance/client/dll",
+          "controller/finish-events.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "buff/expanded.json#/provenance/client/metadata",
+          "buff/findings.json#/provenance/client/metadata",
+          "buff/metadata.json#/provenance/client/metadata",
+          "buff/native.json#/provenance/client/metadata",
+          "controller/controller-findings.json#/provenance/client/metadata",
+          "controller/finish-events.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "buff/expanded.json",
+      "buff/findings.json",
+      "buff/metadata.json",
+      "buff/native.json",
+      "controller/controller-findings.json",
+      "controller/finish-events.json",
+      "templates/buffdb-mirror.json",
+      "templates/selected-templates.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12589,
+        "sha256": "1a85248a6a48d92d61c65f5ba044d079954866ff0c1672488b92f0cf1366af9a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "buff/expanded.json",
+        "kind": "record",
+        "bytes": 27854,
+        "sha256": "254482056215b819b60e2df53f3f4766bacf39615d9af3a15738c3700818039f"
+      },
+      {
+        "path": "buff/extract.py",
+        "kind": "historical-script",
+        "bytes": 5618,
+        "sha256": "2f4235a3f600abec6bfc180c243e047adea5e44dd9e0f8391bdc072207e14d10"
+      },
+      {
+        "path": "buff/extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "buff/findings.json",
+        "kind": "record",
+        "bytes": 6036,
+        "sha256": "7b0b16097e39b4917f7e23c6288927851ac6f5f07a8ec2e4887982e7cd70bcd6"
+      },
+      {
+        "path": "buff/metadata.json",
+        "kind": "record",
+        "bytes": 546370,
+        "sha256": "1b201c38742f73f968f1beb80a821b344feb92101fdbedc8c64ca4959d5e6e82"
+      },
+      {
+        "path": "buff/native.json",
+        "kind": "record",
+        "bytes": 1231741,
+        "sha256": "b2890bd77bae40c3cfb45fa78cfe193d6f2b16d82845eb2bfee3d179f670d8ec"
+      },
+      {
+        "path": "controller/controller-findings.json",
+        "kind": "record",
+        "bytes": 19897,
+        "sha256": "83eeaed4e1fc798544e3e45aa98e318803fc52916b9464031cf18d7da2b53fc5"
+      },
+      {
+        "path": "controller/finish-events.json",
+        "kind": "record",
+        "bytes": 91627,
+        "sha256": "f074fb7a293deed6d05a7ccfa5b1a4664bf461109db1db6b81b65376def7d7ec"
+      },
+      {
+        "path": "templates/buffdb-mirror.json",
+        "kind": "record",
+        "bytes": 26464,
+        "sha256": "a69b0b9feb3140e247485e6323a02223eade3beb0615bf2371560903f1dbb48e"
+      },
+      {
+        "path": "templates/extract_templates.py",
+        "kind": "historical-script",
+        "bytes": 4749,
+        "sha256": "59403abb3255831f9c749cfacc82acd1fe6239c55beb24b582fa9344c07cb5f0"
+      },
+      {
+        "path": "templates/selected-templates.json",
+        "kind": "record",
+        "bytes": 115095,
+        "sha256": "758a14a7632de20653842d15499d10833a710065608ee2b07923b31f6f27afb5"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 22609,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.EPBreakBuffData/methods/0"
+          ],
+          "fullname": "Torappu.EPBreakBuffData..ctor",
+          "address": "0x180520cc0"
+        },
+        {
+          "index": 31509,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.BuffData/methods/0"
+          ],
+          "fullname": "Torappu.BuffData.get_isAutoPriority",
+          "address": "0x18237b220"
+        },
+        {
+          "index": 31510,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.BuffData/methods/1"
+          ],
+          "fullname": "Torappu.BuffData.GetOverrideKey",
+          "address": "0x18237adf0"
+        },
+        {
+          "index": 31511,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.BuffData/methods/2"
+          ],
+          "fullname": "Torappu.BuffData.ToString",
+          "address": "0x18237ae90"
+        },
+        {
+          "index": 31512,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.BuffData/methods/3"
+          ],
+          "fullname": "Torappu.BuffData.EnsureBuffData",
+          "address": "0x18237ad60"
+        },
+        {
+          "index": 31513,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.BuffData/methods/4"
+          ],
+          "fullname": "Torappu.BuffData.DeepClone",
+          "address": "0x18237a950"
+        },
+        {
+          "index": 31514,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.BuffData/methods/5"
+          ],
+          "fullname": "Torappu.BuffData..ctor",
+          "address": "0x18237b0e0"
+        },
+        {
+          "index": 31515,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.BuffData/methods/6"
+          ],
+          "fullname": "Torappu.BuffData.<>xLuaBaseProxy_ToString",
+          "address": "0x180617900"
+        },
+        {
+          "index": 66032,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_key",
+          "address": "0x1806ddf20"
+        },
+        {
+          "index": 66033,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_key",
+          "address": "0x1806df3d0"
+        },
+        {
+          "index": 66034,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_templateKey",
+          "address": "0x1806de8f0"
+        },
+        {
+          "index": 66035,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_overrideKey",
+          "address": "0x1806de2a0"
+        },
+        {
+          "index": 66036,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_overrideKey",
+          "address": "0x1806df590"
+        },
+        {
+          "index": 66037,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/5"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_instanceUid",
+          "address": "0x1806ddbe0"
+        },
+        {
+          "index": 66038,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/6"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_instanceUid",
+          "address": "0x1806df2a0"
+        },
+        {
+          "index": 66039,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/7"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_priority",
+          "address": "0x1806de3e0"
+        },
+        {
+          "index": 66040,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/8"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_priority",
+          "address": "0x1806df630"
+        },
+        {
+          "index": 66041,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/9"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_triggerCnt",
+          "address": "0x1806de970"
+        },
+        {
+          "index": 66042,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/10"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_owner",
+          "address": "0x1806de320"
+        },
+        {
+          "index": 66043,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/11"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_source",
+          "address": "0x1806de7e0"
+        },
+        {
+          "index": 66044,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/12"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_sourceProjectile",
+          "address": "0x1806de750"
+        },
+        {
+          "index": 66045,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/13"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_context",
+          "address": "0x1806dd840"
+        },
+        {
+          "index": 66046,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/14"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_attributeMask",
+          "address": "0x1806dd6c0"
+        },
+        {
+          "index": 66047,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/15"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_attributeMask",
+          "address": "0x1806def20"
+        },
+        {
+          "index": 66048,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/16"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_abnormalFlagMask",
+          "address": "0x1806dd540"
+        },
+        {
+          "index": 66049,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/17"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_abnormalFlagMask",
+          "address": "0x1806dee00"
+        },
+        {
+          "index": 66050,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/18"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_abnormalImmuneMask",
+          "address": "0x1806dd5c0"
+        },
+        {
+          "index": 66051,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/19"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_abnormalImmuneMask",
+          "address": "0x1806dee90"
+        },
+        {
+          "index": 66052,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/20"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_abnormalAntiMask",
+          "address": "0x1806dd3c0"
+        },
+        {
+          "index": 66053,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/21"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_abnormalAntiMask",
+          "address": "0x1806dec50"
+        },
+        {
+          "index": 66054,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/22"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_abnormalComboMask",
+          "address": "0x1806dd4c0"
+        },
+        {
+          "index": 66055,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/23"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_abnormalComboMask",
+          "address": "0x1806ded70"
+        },
+        {
+          "index": 66056,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/24"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_abnormalComboImmuneMask",
+          "address": "0x1806dd440"
+        },
+        {
+          "index": 66057,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/25"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_abnormalComboImmuneMask",
+          "address": "0x1806dece0"
+        },
+        {
+          "index": 66058,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/26"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_blackboard",
+          "address": "0x1806dd7c0"
+        },
+        {
+          "index": 66059,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/27"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_runtimeAttributesSnapshot",
+          "address": "0x1806de5f0"
+        },
+        {
+          "index": 66060,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/28"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_lifeTime",
+          "address": "0x1806ddfa0"
+        },
+        {
+          "index": 66061,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/29"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_remainingTime",
+          "address": "0x1806de570"
+        },
+        {
+          "index": 66062,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/30"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_existingTime",
+          "address": "0x1806ddae0"
+        },
+        {
+          "index": 66063,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/31"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_remainingRatio",
+          "address": "0x1806de450"
+        },
+        {
+          "index": 66064,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/32"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_triggerInterval",
+          "address": "0x1806de9f0"
+        },
+        {
+          "index": 66065,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/33"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_triggerTimer",
+          "address": "0x1806dea80"
+        },
+        {
+          "index": 66066,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/34"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_effectKey",
+          "address": "0x1806dd950"
+        },
+        {
+          "index": 66067,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/35"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_effectKey",
+          "address": "0x1806df050"
+        },
+        {
+          "index": 66068,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/36"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_enableInitDirectionFromSource",
+          "address": "0x1806dda60"
+        },
+        {
+          "index": 66069,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/37"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_enableInitDirectionFromSource",
+          "address": "0x1806df180"
+        },
+        {
+          "index": 66070,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/38"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_onEventPriority",
+          "address": "0x1806de0b0"
+        },
+        {
+          "index": 66071,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/39"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_onEventPriority",
+          "address": "0x1806df500"
+        },
+        {
+          "index": 66072,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/40"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_audioSignal",
+          "address": "0x1806dd740"
+        },
+        {
+          "index": 66073,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/41"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_audioSignal",
+          "address": "0x1806defb0"
+        },
+        {
+          "index": 66074,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/42"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_ability",
+          "address": "0x1806dd330"
+        },
+        {
+          "index": 66075,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/43"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_triggerable",
+          "address": "0x1806deb00"
+        },
+        {
+          "index": 66076,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/44"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_triggerable",
+          "address": "0x1806df6c0"
+        },
+        {
+          "index": 66077,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/45"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_derivedBuffs",
+          "address": "0x1806dd8d0"
+        },
+        {
+          "index": 66078,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/46",
+            "buff/native.json#/result/66078",
+            "buff/native.json#/result/66078/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_isEnabled",
+          "address": "0x1806ddc50"
+        },
+        {
+          "index": 66079,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/47",
+            "buff/native.json#/result/66079",
+            "buff/native.json#/result/66079/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_isEnabled",
+          "address": "0x1806df330"
+        },
+        {
+          "index": 66080,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/48",
+            "buff/native.json#/result/66080",
+            "buff/native.json#/result/66080/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_isFinished",
+          "address": "0x1806ddd60"
+        },
+        {
+          "index": 66081,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/49"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_needRemove",
+          "address": "0x1806de020"
+        },
+        {
+          "index": 66082,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/50"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_needRemove",
+          "address": "0x1806df470"
+        },
+        {
+          "index": 66083,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/51",
+            "buff/native.json#/result/66083",
+            "buff/native.json#/result/66083/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_isFinishedOrDisabled",
+          "address": "0x1806ddcd0"
+        },
+        {
+          "index": 66084,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/52"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_stackCnt",
+          "address": "0x1806de870"
+        },
+        {
+          "index": 66085,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/53"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_validStackCnt",
+          "address": "0x1806deb80"
+        },
+        {
+          "index": 66086,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/54"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_overridableStackCnt",
+          "address": "0x1806de130"
+        },
+        {
+          "index": 66087,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/55",
+            "buff/native.json#/result/66087",
+            "buff/native.json#/result/66087/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_isValid",
+          "address": "0x1806ddea0"
+        },
+        {
+          "index": 66088,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/56"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_isStatusResistable",
+          "address": "0x1806dde20"
+        },
+        {
+          "index": 66089,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/57"
+          ],
+          "fullname": "Torappu.Battle.Buff.CompareTo",
+          "address": "0x1806ce720"
+        },
+        {
+          "index": 66090,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/58"
+          ],
+          "fullname": "Torappu.Battle.Buff..ctor",
+          "address": "0x1806dd0b0"
+        },
+        {
+          "index": 66091,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/59",
+            "buff/native.json#/result/66091",
+            "buff/native.json#/result/66091/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._IsActionValid",
+          "address": "0x1806da330"
+        },
+        {
+          "index": 66092,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/60",
+            "buff/native.json#/result/66092",
+            "buff/native.json#/result/66092/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.Reset",
+          "address": "0x1806d5b20"
+        },
+        {
+          "index": 66093,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/61"
+          ],
+          "fullname": "Torappu.Battle.Buff.GetValue",
+          "address": "0x1806cf750"
+        },
+        {
+          "index": 66094,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/62"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_abnormalResistanceMask",
+          "address": "0x1806dd640"
+        },
+        {
+          "index": 66095,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/63"
+          ],
+          "fullname": "Torappu.Battle.Buff.GetAbnormalResistance",
+          "address": "0x1806cf550"
+        },
+        {
+          "index": 66096,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/64"
+          ],
+          "fullname": "Torappu.Battle.Buff.TryUpdateAbnormalResistance",
+          "address": "0x1806d7690"
+        },
+        {
+          "index": 66097,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/65"
+          ],
+          "fullname": "Torappu.Battle.Buff._MarkAbnormalResistanceDirty",
+          "address": "0x1806db1d0"
+        },
+        {
+          "index": 66098,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/66",
+            "buff/native.json#/result/66098",
+            "buff/native.json#/result/66098/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._ResetTriggerTimer",
+          "address": "0x1806dbb20"
+        },
+        {
+          "index": 66099,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/67"
+          ],
+          "fullname": "Torappu.Battle.Buff.Trigger",
+          "address": "0x1806d75d0"
+        },
+        {
+          "index": 66100,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/68"
+          ],
+          "fullname": "Torappu.Battle.Buff.OverrideEffectKey",
+          "address": "0x1806d5a70"
+        },
+        {
+          "index": 66101,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/69",
+            "buff/native.json#/result/66101",
+            "buff/native.json#/result/66101/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.MarkFinish",
+          "address": "0x1806cfa80"
+        },
+        {
+          "index": 66102,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/70"
+          ],
+          "fullname": "Torappu.Battle.Buff.DecStackCntOrMarkFinish",
+          "address": "0x1806cec80"
+        },
+        {
+          "index": 66103,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/71"
+          ],
+          "fullname": "Torappu.Battle.Buff._SetAttributeModifier",
+          "address": "0x1806dc600"
+        },
+        {
+          "index": 66104,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/72"
+          ],
+          "fullname": "Torappu.Battle.Buff._SetAttributeModifier",
+          "address": "0x1806dc760"
+        },
+        {
+          "index": 66105,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/73"
+          ],
+          "fullname": "Torappu.Battle.Buff.TryUpdateAttributeModifier",
+          "address": "0x1806d79d0"
+        },
+        {
+          "index": 66106,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/74"
+          ],
+          "fullname": "Torappu.Battle.Buff.TryUpdatePriorityBlackboardValue",
+          "address": "0x1806d80d0"
+        },
+        {
+          "index": 66107,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/75"
+          ],
+          "fullname": "Torappu.Battle.Buff.TryUpdatePriorityBlackboardValue",
+          "address": "0x1806d8220"
+        },
+        {
+          "index": 66108,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/76"
+          ],
+          "fullname": "Torappu.Battle.Buff._RefreshPriorityAfterBlackboardChange",
+          "address": "0x1806db9c0"
+        },
+        {
+          "index": 66109,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/77"
+          ],
+          "fullname": "Torappu.Battle.Buff.TryUpdateAttributeModifier",
+          "address": "0x1806d78c0"
+        },
+        {
+          "index": 66110,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/78"
+          ],
+          "fullname": "Torappu.Battle.Buff.TryUpdateAttributeModifier",
+          "address": "0x1806d7d30"
+        },
+        {
+          "index": 66111,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/79"
+          ],
+          "fullname": "Torappu.Battle.Buff.TryUpdateAttributeModifier",
+          "address": "0x1806d7fd0"
+        },
+        {
+          "index": 66112,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/80"
+          ],
+          "fullname": "Torappu.Battle.Buff.TryUpdateAttributeModifier",
+          "address": "0x1806d7e40"
+        },
+        {
+          "index": 66113,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/81"
+          ],
+          "fullname": "Torappu.Battle.Buff.CheckAttributeModifier",
+          "address": "0x1806ce3c0"
+        },
+        {
+          "index": 66114,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/82"
+          ],
+          "fullname": "Torappu.Battle.Buff.ToString",
+          "address": "0x1806d7220"
+        },
+        {
+          "index": 66115,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/83"
+          ],
+          "fullname": "Torappu.Battle.Buff.FetchDuration",
+          "address": "0x1806cede0"
+        },
+        {
+          "index": 66116,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/84",
+            "buff/native.json#/result/66116",
+            "buff/native.json#/result/66116/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.AddDerivedBuffSafe",
+          "address": "0x1806cdea0"
+        },
+        {
+          "index": 66117,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/85"
+          ],
+          "fullname": "Torappu.Battle.Buff.ForceSetLifeTimeAndRemainingTime_Unsafe",
+          "address": "0x1806cf460"
+        },
+        {
+          "index": 66118,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/86",
+            "buff/native.json#/result/66118",
+            "buff/native.json#/result/66118/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.SubtractRemainingTime",
+          "address": "0x1806d6f80"
+        },
+        {
+          "index": 66119,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/87"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAllocate",
+          "address": "0x1806d0320"
+        },
+        {
+          "index": 66120,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/88"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnRecycle",
+          "address": "0x1806d49b0"
+        },
+        {
+          "index": 66121,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/89",
+            "buff/native.json#/result/66121",
+            "buff/native.json#/result/66121/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnEnable",
+          "address": "0x1806d2250"
+        },
+        {
+          "index": 66122,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/90",
+            "buff/native.json#/result/66122",
+            "buff/native.json#/result/66122/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnDisable",
+          "address": "0x1806d1fe0"
+        },
+        {
+          "index": 66123,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/91",
+            "buff/native.json#/result/66123",
+            "buff/native.json#/result/66123/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnStart",
+          "address": "0x1806d4fc0"
+        },
+        {
+          "index": 66124,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/92",
+            "buff/native.json#/result/66124",
+            "buff/native.json#/result/66124/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnFinish",
+          "address": "0x1806d29e0"
+        },
+        {
+          "index": 66125,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/93",
+            "buff/native.json#/result/66125",
+            "buff/native.json#/result/66125/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnTrigger",
+          "address": "0x1806d58d0"
+        },
+        {
+          "index": 66126,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/94",
+            "buff/native.json#/result/66126",
+            "buff/native.json#/result/66126/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnTick",
+          "address": "0x1806d54d0"
+        },
+        {
+          "index": 66127,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/95"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnLateTick",
+          "address": "0x1806d2e20"
+        },
+        {
+          "index": 66128,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/96"
+          ],
+          "fullname": "Torappu.Battle.Buff.AddDerivedBuff",
+          "address": "0x1806cdfd0"
+        },
+        {
+          "index": 66129,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/97"
+          ],
+          "fullname": "Torappu.Battle.Buff.ContainsAnyDerivedBuff",
+          "address": "0x1806ce840"
+        },
+        {
+          "index": 66130,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/98"
+          ],
+          "fullname": "Torappu.Battle.Buff.ContainsDerivedBuff",
+          "address": "0x1806ce990"
+        },
+        {
+          "index": 66131,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/99"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOwnerBorn",
+          "address": "0x1806d3d70"
+        },
+        {
+          "index": 66132,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/100"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOwnerPostBorn",
+          "address": "0x1806d4410"
+        },
+        {
+          "index": 66133,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/101"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOwnerLocate",
+          "address": "0x1806d42b0"
+        },
+        {
+          "index": 66134,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/102"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOwnerBornExit",
+          "address": "0x1806d3cc0"
+        },
+        {
+          "index": 66135,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/103"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOwnerFinish",
+          "address": "0x1806d3ed0"
+        },
+        {
+          "index": 66136,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/104"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOwnerReborn",
+          "address": "0x1806d44c0"
+        },
+        {
+          "index": 66137,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/105"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOwnerDying",
+          "address": "0x1806d3e20"
+        },
+        {
+          "index": 66138,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/106"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnGameOver",
+          "address": "0x1806d2b60"
+        },
+        {
+          "index": 66139,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/107"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeApplyingModifier",
+          "address": "0x1806d0b60"
+        },
+        {
+          "index": 66140,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/108"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnApplyingModifier",
+          "address": "0x1806d05f0"
+        },
+        {
+          "index": 66141,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/109"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAppliedModifier",
+          "address": "0x1806d0440"
+        },
+        {
+          "index": 66142,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/110"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnApplyingSkippedModifier",
+          "address": "0x1806d07a0"
+        },
+        {
+          "index": 66143,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/111"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOutputModifier",
+          "address": "0x1806d3850"
+        },
+        {
+          "index": 66144,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/112"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeTargetApplyModifier",
+          "address": "0x1806d1340"
+        },
+        {
+          "index": 66145,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/113"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAfterOutputDamage",
+          "address": "0x1806d00b0"
+        },
+        {
+          "index": 66146,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/114"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAfterOutputHeal",
+          "address": "0x1806d0250"
+        },
+        {
+          "index": 66147,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/115"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAfterOutputElementDamage",
+          "address": "0x1806d0180"
+        },
+        {
+          "index": 66148,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/116"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnCalculateCachedProjectileDamage",
+          "address": "0x1806d1bc0"
+        },
+        {
+          "index": 66149,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/117"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnCalculateDamage",
+          "address": "0x1806d1d20"
+        },
+        {
+          "index": 66150,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/118"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAfterCalculateDamage",
+          "address": "0x1806d0000"
+        },
+        {
+          "index": 66151,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/119"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeingCalculateDamage",
+          "address": "0x1806d1750"
+        },
+        {
+          "index": 66152,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/120"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnTakeDamage",
+          "address": "0x1806d50a0"
+        },
+        {
+          "index": 66153,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/121"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnTakeEPDamage",
+          "address": "0x1806d5250"
+        },
+        {
+          "index": 66154,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/122"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOutputDamage",
+          "address": "0x1806d36a0"
+        },
+        {
+          "index": 66155,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/123"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOutputAtkOrHeal",
+          "address": "0x1806d35f0"
+        },
+        {
+          "index": 66156,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/124"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOutputAtkOrHealEachSpell",
+          "address": "0x1806d3540"
+        },
+        {
+          "index": 66157,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/125"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnEvadeDamage",
+          "address": "0x1806d2830"
+        },
+        {
+          "index": 66158,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/126"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBlockDamage",
+          "address": "0x1806d1960"
+        },
+        {
+          "index": 66159,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/127"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnTargetKilled",
+          "address": "0x1806d5400"
+        },
+        {
+          "index": 66160,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/128"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAbilityStart",
+          "address": "0x1806cfea0"
+        },
+        {
+          "index": 66161,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/129"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOtherBuffStart",
+          "address": "0x1806d33e0"
+        },
+        {
+          "index": 66162,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/130"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOtherBuffLateEnable",
+          "address": "0x1806d3330"
+        },
+        {
+          "index": 66163,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/131"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAbilityFinish",
+          "address": "0x1806cfc90"
+        },
+        {
+          "index": 66164,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/132"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeAbilitySpellOn",
+          "address": "0x1806d0a00"
+        },
+        {
+          "index": 66165,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/133"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAbilitySpellOn",
+          "address": "0x1806cfdf0"
+        },
+        {
+          "index": 66166,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/134"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAbilityCastOnTarget",
+          "address": "0x1806cfbe0"
+        },
+        {
+          "index": 66167,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/135"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnSkillStart",
+          "address": "0x1806d4e60"
+        },
+        {
+          "index": 66168,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/136"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnToggleSkillStart",
+          "address": "0x1806d5770"
+        },
+        {
+          "index": 66169,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/137"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnSkillRetriggered",
+          "address": "0x1806d4db0"
+        },
+        {
+          "index": 66170,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/138"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnSkillCastSucceed",
+          "address": "0x1806d4c50"
+        },
+        {
+          "index": 66171,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/139"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnSkillFinish",
+          "address": "0x1806d4d00"
+        },
+        {
+          "index": 66172,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/140"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeAttack",
+          "address": "0x1806d0d10"
+        },
+        {
+          "index": 66173,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/141"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAfterAttack",
+          "address": "0x1806cff50"
+        },
+        {
+          "index": 66174,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/142"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeTrySetHpZero",
+          "address": "0x1806d15a0"
+        },
+        {
+          "index": 66175,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/143"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnPostTrySetHpZero",
+          "address": "0x1806d46d0"
+        },
+        {
+          "index": 66176,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/144"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeTrySetEpZero",
+          "address": "0x1806d14f0"
+        },
+        {
+          "index": 66177,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/145"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeDisappear",
+          "address": "0x1806d0e70"
+        },
+        {
+          "index": 66178,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/146"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeAppear",
+          "address": "0x1806d0ab0"
+        },
+        {
+          "index": 66179,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/147"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOwnerAbnormalFlagDirty",
+          "address": "0x1806d3a00"
+        },
+        {
+          "index": 66180,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/148"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOwnerBlockeeChanged",
+          "address": "0x1806d3c10"
+        },
+        {
+          "index": 66181,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/149"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOwnerBlockModeChanged",
+          "address": "0x1806d3b60"
+        },
+        {
+          "index": 66182,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/150"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnCollideWithHighLand",
+          "address": "0x1806d1e80"
+        },
+        {
+          "index": 66183,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/151"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeExitUnbalancedState",
+          "address": "0x1806d11e0"
+        },
+        {
+          "index": 66184,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/152"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnEnterUnbalancedState",
+          "address": "0x1806d2620"
+        },
+        {
+          "index": 66185,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/153"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnEnterMagicCircuit",
+          "address": "0x1806d2570"
+        },
+        {
+          "index": 66186,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/154"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnLeaveMagicCircuit",
+          "address": "0x1806d2f10"
+        },
+        {
+          "index": 66187,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/155"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAbilityInterrupted",
+          "address": "0x1806cfd40"
+        },
+        {
+          "index": 66188,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/156"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOwnerRootTileChanged",
+          "address": "0x1806d4570"
+        },
+        {
+          "index": 66189,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/157"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOtherResistableBuffStart",
+          "address": "0x1806d3490"
+        },
+        {
+          "index": 66190,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/158"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnEsOverZero",
+          "address": "0x1806d2780"
+        },
+        {
+          "index": 66191,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/159"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnMotionModeChanged",
+          "address": "0x1806d3280"
+        },
+        {
+          "index": 66192,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/160"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnDirectionChanged",
+          "address": "0x1806d1f30"
+        },
+        {
+          "index": 66193,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/161"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeDirectionChange",
+          "address": "0x1806d0dc0"
+        },
+        {
+          "index": 66194,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/162"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnMakeEnemyUnbalanced",
+          "address": "0x1806d31d0"
+        },
+        {
+          "index": 66195,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/163"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnEnterLevitateState",
+          "address": "0x1806d24c0"
+        },
+        {
+          "index": 66196,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/164"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnEPBreakStart",
+          "address": "0x1806d21a0"
+        },
+        {
+          "index": 66197,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/165"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeEPBreakStart",
+          "address": "0x1806d0fd0"
+        },
+        {
+          "index": 66198,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/166",
+            "controller/finish-events.json#/result/0",
+            "controller/finish-events.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnEPBreakFinish",
+          "address": "0x1806d20f0"
+        },
+        {
+          "index": 66199,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/167",
+            "controller/finish-events.json#/result/1",
+            "controller/finish-events.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeEPBreakFinish",
+          "address": "0x1806d0f20"
+        },
+        {
+          "index": 66200,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/168"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeExitLevitateState",
+          "address": "0x1806d1130"
+        },
+        {
+          "index": 66201,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/169"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnEnterGroundBoundState",
+          "address": "0x1806d2410"
+        },
+        {
+          "index": 66202,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/170"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeExitGroundBoundState",
+          "address": "0x1806d1080"
+        },
+        {
+          "index": 66203,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/171"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnEndPulling",
+          "address": "0x1806d2360"
+        },
+        {
+          "index": 66204,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/172"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeFallDown",
+          "address": "0x1806d1290"
+        },
+        {
+          "index": 66205,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/173"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOwnerOverlapped",
+          "address": "0x1806d4360"
+        },
+        {
+          "index": 66206,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/174"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBossWaveWillStart",
+          "address": "0x1806d1b10"
+        },
+        {
+          "index": 66207,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/175"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnStageEnd",
+          "address": "0x1806d4f10"
+        },
+        {
+          "index": 66208,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/176"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnLegionModeDrawCard",
+          "address": "0x1806d3070"
+        },
+        {
+          "index": 66209,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/177"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnLegionModeRefreshCard",
+          "address": "0x1806d3120"
+        },
+        {
+          "index": 66210,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/178"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnSandboxOwnerResChanged",
+          "address": "0x1806d4a40"
+        },
+        {
+          "index": 66211,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/179"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAutoChessModeChanged",
+          "address": "0x1806d0950"
+        },
+        {
+          "index": 66212,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/180"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnEntityWillOverlap",
+          "address": "0x1806d26d0"
+        },
+        {
+          "index": 66213,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/181"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOwnerBeforeDead",
+          "address": "0x1806d3ab0"
+        },
+        {
+          "index": 66214,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/182"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOwnerHpFull",
+          "address": "0x1806d4200"
+        },
+        {
+          "index": 66215,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/183"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnUnitSwitchMode",
+          "address": "0x1806d59c0"
+        },
+        {
+          "index": 66216,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/184"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnPalsyOverflow",
+          "address": "0x1806d4620"
+        },
+        {
+          "index": 66217,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/185"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnTriggerPalsy",
+          "address": "0x1806d5820"
+        },
+        {
+          "index": 66218,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/186"
+          ],
+          "fullname": "Torappu.Battle.Buff.CooperatePlayerDying",
+          "address": "0x1806ceb20"
+        },
+        {
+          "index": 66219,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/187"
+          ],
+          "fullname": "Torappu.Battle.Buff.CooperatePlayerRevive",
+          "address": "0x1806cebd0"
+        },
+        {
+          "index": 66220,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/188"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnLegionModeDangerLevelRefresh",
+          "address": "0x1806d2fc0"
+        },
+        {
+          "index": 66221,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/189"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnHalfIdleTrapCheckUpgrade",
+          "address": "0x1806d2d70"
+        },
+        {
+          "index": 66222,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/190"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnHalfIdleKawaPolluted",
+          "address": "0x1806d2cc0"
+        },
+        {
+          "index": 66223,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/191"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnHalfIdleKawaCleaned",
+          "address": "0x1806d2c10"
+        },
+        {
+          "index": 66224,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/192"
+          ],
+          "fullname": "Torappu.Battle.Buff.HalfIdleGainEquip",
+          "address": "0x1806cf920"
+        },
+        {
+          "index": 66225,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/193"
+          ],
+          "fullname": "Torappu.Battle.Buff.HalfIdleGainTrap",
+          "address": "0x1806cf9d0"
+        },
+        {
+          "index": 66226,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/194"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnProjectileSelectTargets",
+          "address": "0x1806d48e0"
+        },
+        {
+          "index": 66227,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/195"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnProjectileBorn",
+          "address": "0x1806d4780"
+        },
+        {
+          "index": 66228,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/196"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnProjectileHitTarget",
+          "address": "0x1806d4830"
+        },
+        {
+          "index": 66229,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/197"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnSandboxV3ResourceCntChange",
+          "address": "0x1806d4ba0"
+        },
+        {
+          "index": 66230,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/198"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBlockCntChanged",
+          "address": "0x1806d18b0"
+        },
+        {
+          "index": 66231,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/199"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnSandboxV3RecipeChanged",
+          "address": "0x1806d4af0"
+        },
+        {
+          "index": 66232,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/200",
+            "buff/native.json#/result/66232",
+            "buff/native.json#/result/66232/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._RunActions",
+          "address": "0x1806dc050"
+        },
+        {
+          "index": 66233,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/201",
+            "buff/native.json#/result/66233",
+            "buff/native.json#/result/66233/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._RunActionsCore",
+          "address": "0x1806dbbd0"
+        },
+        {
+          "index": 66234,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/202"
+          ],
+          "fullname": "Torappu.Battle.Buff._LoadAttributesModifier",
+          "address": "0x1806da630"
+        },
+        {
+          "index": 66235,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/203"
+          ],
+          "fullname": "Torappu.Battle.Buff.CheckAbnormalFlagAnti",
+          "address": "0x1806ce310"
+        },
+        {
+          "index": 66236,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/204"
+          ],
+          "fullname": "Torappu.Battle.Buff.TakeSnapshotToBuffAttribute",
+          "address": "0x1806d7130"
+        },
+        {
+          "index": 66237,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/205",
+            "buff/native.json#/result/66237",
+            "buff/native.json#/result/66237/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._ModifyLifeTimeFinally",
+          "address": "0x1806db3f0"
+        },
+        {
+          "index": 66238,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/206"
+          ],
+          "fullname": "Torappu.Battle.Buff._LoadActions",
+          "address": "0x1806da410"
+        },
+        {
+          "index": 66239,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/207"
+          ],
+          "fullname": "Torappu.Battle.Buff._MarkAttributeDirty",
+          "address": "0x1806db2e0"
+        },
+        {
+          "index": 66240,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/208"
+          ],
+          "fullname": "Torappu.Battle.Buff._CalcAbnormalMask",
+          "address": "0x1806d88a0"
+        },
+        {
+          "index": 66241,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/209"
+          ],
+          "fullname": "Torappu.Battle.Buff._CalcAbnormalCombo",
+          "address": "0x1806d8680"
+        },
+        {
+          "index": 66242,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/210"
+          ],
+          "fullname": "Torappu.Battle.Buff._CalculatePriority",
+          "address": "0x1806d8ac0"
+        },
+        {
+          "index": 66243,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/211"
+          ],
+          "fullname": "Torappu.Battle.Buff._CalculatePriority",
+          "address": "0x1806d8b60"
+        },
+        {
+          "index": 66244,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/212"
+          ],
+          "fullname": "Torappu.Battle.Buff._DoUpdateStack",
+          "address": "0x1806d9370"
+        },
+        {
+          "index": 66245,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/213"
+          ],
+          "fullname": "Torappu.Battle.Buff._AddStack",
+          "address": "0x1806d83f0"
+        },
+        {
+          "index": 66246,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/214"
+          ],
+          "fullname": "Torappu.Battle.Buff._FillRemainingTimeWhenStackMax",
+          "address": "0x1806d96b0"
+        },
+        {
+          "index": 66247,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/215"
+          ],
+          "fullname": "Torappu.Battle.Buff._FillRemainingTime",
+          "address": "0x1806d9790"
+        },
+        {
+          "index": 66248,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/216"
+          ],
+          "fullname": "Torappu.Battle.Buff._ExtendRemainingTime",
+          "address": "0x1806d94b0"
+        },
+        {
+          "index": 66249,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/217",
+            "buff/native.json#/result/66249",
+            "buff/native.json#/result/66249/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._UpdateIsEnabledIfNotFinished",
+          "address": "0x1806dca50"
+        },
+        {
+          "index": 66250,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/218"
+          ],
+          "fullname": "Torappu.Battle.Buff._InitIsStatusResistable",
+          "address": "0x1806d9f20"
+        },
+        {
+          "index": 66251,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/219"
+          ],
+          "fullname": "Torappu.Battle.Buff._InitCanSlowDown",
+          "address": "0x1806d9b80"
+        },
+        {
+          "index": 66252,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/220"
+          ],
+          "fullname": "Torappu.Battle.Buff._InitIsEpBreakBuff",
+          "address": "0x1806d9c60"
+        },
+        {
+          "index": 66253,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/221"
+          ],
+          "fullname": "Torappu.Battle.Buff._AutoCalcIsStatusResistable",
+          "address": "0x1806d84e0"
+        },
+        {
+          "index": 66254,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/222",
+            "buff/native.json#/result/66254",
+            "buff/native.json#/result/66254/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._PreprocessDeltaTime",
+          "address": "0x1806db710"
+        },
+        {
+          "index": 66255,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/223"
+          ],
+          "fullname": "Torappu.Battle.Buff._GetAbnormalResistanceForThisBuff",
+          "address": "0x1806d9970"
+        },
+        {
+          "index": 66256,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/224"
+          ],
+          "fullname": "Torappu.Battle.Buff.FinishDerivedBuff",
+          "address": "0x1806cf130"
+        },
+        {
+          "index": 66257,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/225",
+            "buff/native.json#/result/66257",
+            "buff/native.json#/result/66257/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.ClearDerivedBuffsIfNot",
+          "address": "0x1806ce520"
+        },
+        {
+          "index": 66258,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/226"
+          ],
+          "fullname": "Torappu.Battle.Buff._UpdateOverrideMap",
+          "address": "0x1806dce60"
+        },
+        {
+          "index": 66259,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/227"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_hasShield",
+          "address": "0x1806ddb60"
+        },
+        {
+          "index": 66260,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/228"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_hasShield",
+          "address": "0x1806df210"
+        },
+        {
+          "index": 66261,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/229"
+          ],
+          "fullname": "Torappu.Battle.Buff.CalculateShieldData",
+          "address": "0x1806ce1f0"
+        },
+        {
+          "index": 66262,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/230"
+          ],
+          "fullname": "Torappu.Battle.Buff._InitShieldSource",
+          "address": "0x1806da140"
+        },
+        {
+          "index": 66263,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/231"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_enableEventReentryGuard",
+          "address": "0x1806dd9d0"
+        },
+        {
+          "index": 66264,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/232"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_enableEventReentryGuard",
+          "address": "0x1806df0f0"
+        },
+        {
+          "index": 66265,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/233"
+          ],
+          "fullname": "Torappu.Battle.Buff.GetEventReentryLimit",
+          "address": "0x1806cf670"
+        },
+        {
+          "index": 66266,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/234"
+          ],
+          "fullname": "Torappu.Battle.Buff.SetEventReentryLimit",
+          "address": "0x1806d6e90"
+        },
+        {
+          "index": 66267,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/235"
+          ],
+          "fullname": "Torappu.Battle.Buff._CreateEventReentryLimits",
+          "address": "0x1806d8f00"
+        },
+        {
+          "index": 66268,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/236"
+          ],
+          "fullname": "Torappu.Battle.Buff._ClearEventReentryDepth",
+          "address": "0x1806d8e70"
+        },
+        {
+          "index": 66269,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/237"
+          ],
+          "fullname": "Torappu.Battle.Buff._OnEventReentryBlocked",
+          "address": "0x1806db650"
+        },
+        {
+          "index": 66270,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/238"
+          ],
+          "fullname": "Torappu.Battle.Buff._TryConsumeReentryBlockLogSlot",
+          "address": "0x1806dc880"
+        },
+        {
+          "index": 66271,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/239"
+          ],
+          "fullname": "Torappu.Battle.Buff._LogEventReentryBlocked",
+          "address": "0x1806dae40"
+        },
+        {
+          "index": 66272,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/240"
+          ],
+          "fullname": "Torappu.Battle.Buff..cctor",
+          "address": "0x1806dcf10"
+        },
+        {
+          "index": 66273,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/methods/241"
+          ],
+          "fullname": "Torappu.Battle.Buff.<>xLuaBaseProxy_ToString",
+          "address": "0x180617900"
+        },
+        {
+          "index": 66293,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.get_owner",
+          "address": "0x1806cdd40"
+        },
+        {
+          "index": 66294,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.set_owner",
+          "address": "0x1806cde20"
+        },
+        {
+          "index": 66295,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.get_attributes",
+          "address": "0x1806cdb90"
+        },
+        {
+          "index": 66296,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.get_context",
+          "address": "0x1806cdcc0"
+        },
+        {
+          "index": 66297,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.get_buffCnt",
+          "address": "0x1806cdc40"
+        },
+        {
+          "index": 66298,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/5"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.get_pool",
+          "address": "0x1806cdda0"
+        },
+        {
+          "index": 66299,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/6"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.CreateBuff",
+          "address": "0x1806b3c30"
+        },
+        {
+          "index": 66300,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/7"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer..ctor",
+          "address": "0x1806cd9e0"
+        },
+        {
+          "index": 66301,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/8",
+            "buff/native.json#/result/66301",
+            "buff/native.json#/result/66301/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.NewBuff",
+          "address": "0x1806b6940"
+        },
+        {
+          "index": 66302,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/9"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.EnsureOverrideGroup",
+          "address": "0x1806b3fa0"
+        },
+        {
+          "index": 66303,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/10"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.RemoveBuff",
+          "address": "0x1806c8ad0"
+        },
+        {
+          "index": 66304,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/11"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.RemoveBuffs",
+          "address": "0x1806c9170"
+        },
+        {
+          "index": 66305,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/12"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.RemoveBuffs",
+          "address": "0x1806c8ed0"
+        },
+        {
+          "index": 66306,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/13"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.RemoveOneBuffByKey",
+          "address": "0x1806c9410"
+        },
+        {
+          "index": 66307,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/14"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.RemoveBuffsByBuffSource",
+          "address": "0x1806c8ba0"
+        },
+        {
+          "index": 66308,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/15"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.CollectBuffSourceByBuffKey_DISPOSE",
+          "address": "0x1806b2420"
+        },
+        {
+          "index": 66309,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/16"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.RemoveAllStatusResistableBuffs",
+          "address": "0x1806c8880"
+        },
+        {
+          "index": 66310,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/17"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.RemoveAllBuffsWithCertainAbnormalFlag",
+          "address": "0x1806c85e0"
+        },
+        {
+          "index": 66311,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/18"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.ForceRefreshFinishedBuffs",
+          "address": "0x1806b4500"
+        },
+        {
+          "index": 66312,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/19"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.ResetAllBuffsTriggerTimer",
+          "address": "0x1806c9640"
+        },
+        {
+          "index": 66313,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/20"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.DecStackCntBuffsOrMarkFinish",
+          "address": "0x1806b3cc0"
+        },
+        {
+          "index": 66314,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/21"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.GetBuffByUid",
+          "address": "0x1806b5140"
+        },
+        {
+          "index": 66315,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/22"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.GetFirstBuffByKey",
+          "address": "0x1806b5e10"
+        },
+        {
+          "index": 66316,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/23"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.GetFirstBuffByKeyIgnoreEnabled",
+          "address": "0x1806b5bf0"
+        },
+        {
+          "index": 66317,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/24"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.GetAllUnfinishedBuffsByKey",
+          "address": "0x1806b4e70"
+        },
+        {
+          "index": 66318,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/25"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.GetAllUnfinishedBuffsByKeyAndSource",
+          "address": "0x1806b4b40"
+        },
+        {
+          "index": 66319,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/26"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.GetAllBuffsByKey",
+          "address": "0x1806b4880"
+        },
+        {
+          "index": 66320,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/27"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.GetAllBuffsByKeyAndSource",
+          "address": "0x1806b4560"
+        },
+        {
+          "index": 66321,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/28"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.GetFirstBuffByKeyAndSource",
+          "address": "0x1806b5980"
+        },
+        {
+          "index": 66322,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/29"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.CheckTriggerableBuffByKeys",
+          "address": "0x1806b0f10"
+        },
+        {
+          "index": 66323,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/30"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.TriggerBuffByKeys",
+          "address": "0x1806ca000"
+        },
+        {
+          "index": 66324,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/31"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.TriggerAllBuffsByKeys",
+          "address": "0x1806c9d20"
+        },
+        {
+          "index": 66325,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/32"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.TryGetOverrideGroup",
+          "address": "0x1806cbf40"
+        },
+        {
+          "index": 66326,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/33"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.GetOverrideKeyCandidate",
+          "address": "0x1806b6150"
+        },
+        {
+          "index": 66327,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/34"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.EnsureOverrideIndependentKey",
+          "address": "0x1806b43c0"
+        },
+        {
+          "index": 66328,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/35"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.TryGetOverrideGroup",
+          "address": "0x1806cc000"
+        },
+        {
+          "index": 66329,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/36"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.ContainsBuff",
+          "address": "0x1806b2e30"
+        },
+        {
+          "index": 66330,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/37"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.ContainsBuffFromCertainSource",
+          "address": "0x1806b29d0"
+        },
+        {
+          "index": 66331,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/38"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.ContainsBuffFromCertainCardUid",
+          "address": "0x1806b2750"
+        },
+        {
+          "index": 66332,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/39"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.ContainsBuffWithValidator",
+          "address": "0x1806b2c40"
+        },
+        {
+          "index": 66333,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/40"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.ContainsStatusResistableBuff",
+          "address": "0x1806b3590"
+        },
+        {
+          "index": 66334,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/41"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.ContainsResistableAbnormalFlagsBuff",
+          "address": "0x1806b3300"
+        },
+        {
+          "index": 66335,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/42"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.ContainsIrresistibleAbnormalFlagsBuff",
+          "address": "0x1806b3060"
+        },
+        {
+          "index": 66336,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/43"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.TryGetFirstBuffStackCount",
+          "address": "0x1806cb7b0"
+        },
+        {
+          "index": 66337,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/44"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.TryGetFirstBuffStackCountFromCertainSource",
+          "address": "0x1806cb510"
+        },
+        {
+          "index": 66338,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/45"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.TryGetFirstBuffValidStackCount",
+          "address": "0x1806cbcc0"
+        },
+        {
+          "index": 66339,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/46"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.TryGetFirstBuffValidStackCountFromCertainSource",
+          "address": "0x1806cb9f0"
+        },
+        {
+          "index": 66340,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/47"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.GetOverridableBuffStackCount",
+          "address": "0x1806b6040"
+        },
+        {
+          "index": 66341,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/48"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.TryGetBuffCountByKeyFromAllBuffs",
+          "address": "0x1806cb260"
+        },
+        {
+          "index": 66342,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/49"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.GetBuffValueMultiplierByKeyFromAllBuffs",
+          "address": "0x1806b55a0"
+        },
+        {
+          "index": 66343,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/50"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.GetBuffValueAccumulateByKeyFromAllBuffs",
+          "address": "0x1806b5240"
+        },
+        {
+          "index": 66344,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/51"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.TryGetBuffCountByKeyFromAllBuffsWithCertainSource",
+          "address": "0x1806caf60"
+        },
+        {
+          "index": 66345,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/52"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.TryGetBuffCountByBlackboardFromAll",
+          "address": "0x1806cac20"
+        },
+        {
+          "index": 66346,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/53"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.TryGetBuffBlackboardValueByBlackboardFromAll",
+          "address": "0x1806ca4f0"
+        },
+        {
+          "index": 66347,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/54"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.TryGetBuffBlackboardValueByBuffKey",
+          "address": "0x1806ca810"
+        },
+        {
+          "index": 66348,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/55"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.TryGetBuffBlackboardBoolByBuffKey",
+          "address": "0x1806ca260"
+        },
+        {
+          "index": 66349,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/56",
+            "buff/native.json#/result/66349",
+            "buff/native.json#/result/66349/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.Tick",
+          "address": "0x1806c9880"
+        },
+        {
+          "index": 66350,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/57"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.ClearOnRecycle",
+          "address": "0x1806b1150"
+        },
+        {
+          "index": 66351,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/58"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.Clear",
+          "address": "0x1806b1eb0"
+        },
+        {
+          "index": 66352,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/59"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.ClearWithWhiteList",
+          "address": "0x1806b1290"
+        },
+        {
+          "index": 66353,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/60"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer._ClearBuffOverrideMapWithWhiteList",
+          "address": "0x1806ccd40"
+        },
+        {
+          "index": 66354,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/61"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer._ClearBuffUidMapWithWhiteList",
+          "address": "0x1806cd0a0"
+        },
+        {
+          "index": 66355,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/62",
+            "buff/native.json#/result/66355",
+            "buff/native.json#/result/66355/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer._CheckFinishedBuffs",
+          "address": "0x1806cc320"
+        },
+        {
+          "index": 66356,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/63"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer._CheckBuffsActionValid",
+          "address": "0x1806cc110"
+        },
+        {
+          "index": 66357,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/64"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer._CheckThroughBuffAbnormalAnti",
+          "address": "0x1806cc760"
+        },
+        {
+          "index": 66358,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/65"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer._CheckThroughBuffStatusResistableAnti",
+          "address": "0x1806cc940"
+        },
+        {
+          "index": 66359,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/66"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer._CheckThroughLevitateBuffCondition",
+          "address": "0x1806ccb90"
+        },
+        {
+          "index": 66360,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/67"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer._CheckThroughGroundBoundBuffCondition",
+          "address": "0x1806cca00"
+        },
+        {
+          "index": 66361,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/68"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer._FilterBuffAbnormalAnti",
+          "address": "0x1806cd3e0"
+        },
+        {
+          "index": 66362,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/69",
+            "buff/native.json#/result/66362",
+            "buff/native.json#/result/66362/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer._FinishAndRemoveBuff",
+          "address": "0x1806cd650"
+        },
+        {
+          "index": 66363,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/70",
+            "buff/native.json#/result/66363",
+            "buff/native.json#/result/66363/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer._FinishBuff",
+          "address": "0x1806cd740"
+        },
+        {
+          "index": 66364,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/71"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOwnerBorn",
+          "address": "0x1806c3630"
+        },
+        {
+          "index": 66365,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/72"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOwnerPostBorn",
+          "address": "0x1806c4520"
+        },
+        {
+          "index": 66366,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/73"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOwnerLocate",
+          "address": "0x1806c3fd0"
+        },
+        {
+          "index": 66367,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/74"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOwnerBornExit",
+          "address": "0x1806c33d0"
+        },
+        {
+          "index": 66368,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/75"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOwnerFinish",
+          "address": "0x1806c3ae0"
+        },
+        {
+          "index": 66369,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/76"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOwnerReborn",
+          "address": "0x1806c4770"
+        },
+        {
+          "index": 66370,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/77"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOwnerDying",
+          "address": "0x1806c3890"
+        },
+        {
+          "index": 66371,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/78"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnGameOver",
+          "address": "0x1806bfbc0"
+        },
+        {
+          "index": 66372,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/79"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeforeApplyingModifier",
+          "address": "0x1806ba680"
+        },
+        {
+          "index": 66373,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/80"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnApplyingModifier",
+          "address": "0x1806b9780"
+        },
+        {
+          "index": 66374,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/81"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnAppliedModifier",
+          "address": "0x1806b93f0"
+        },
+        {
+          "index": 66375,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/82"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnApplyingSkippedModifier",
+          "address": "0x1806b9b10"
+        },
+        {
+          "index": 66376,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/83"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOutputModifier",
+          "address": "0x1806c26d0"
+        },
+        {
+          "index": 66377,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/84"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeforeTargetApplyModifier",
+          "address": "0x1806bbfd0"
+        },
+        {
+          "index": 66378,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/85"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnAfterOutputDamage",
+          "address": "0x1806b8900"
+        },
+        {
+          "index": 66379,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/86"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnAfterOutputHeal",
+          "address": "0x1806b9040"
+        },
+        {
+          "index": 66380,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/87"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnAfterOutputElementDamage",
+          "address": "0x1806b8c90"
+        },
+        {
+          "index": 66381,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/88"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnEvadeDamage",
+          "address": "0x1806bf830"
+        },
+        {
+          "index": 66382,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/89"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBlockDamage",
+          "address": "0x1806bcf80"
+        },
+        {
+          "index": 66383,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/90"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnTakeDamage",
+          "address": "0x1806c7330"
+        },
+        {
+          "index": 66384,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/91"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnTakeEPDamage",
+          "address": "0x1806c76c0"
+        },
+        {
+          "index": 66385,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/92"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnEPBreakStart",
+          "address": "0x1806be360"
+        },
+        {
+          "index": 66386,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/93"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeforeEPBreakStart",
+          "address": "0x1806bb3b0"
+        },
+        {
+          "index": 66387,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/94",
+            "controller/finish-events.json#/result/2",
+            "controller/finish-events.json#/result/2/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnEPBreakFinish",
+          "address": "0x1806be0f0"
+        },
+        {
+          "index": 66388,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/95",
+            "controller/finish-events.json#/result/3",
+            "controller/finish-events.json#/result/3/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeforeEPBreakFinish",
+          "address": "0x1806bb140"
+        },
+        {
+          "index": 66389,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/96"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOutputDamage",
+          "address": "0x1806c2340"
+        },
+        {
+          "index": 66390,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/97"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOutputAtkOrHeal",
+          "address": "0x1806c2000"
+        },
+        {
+          "index": 66391,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/98"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOutputAtkOrHealEachSpell",
+          "address": "0x1806c1cc0"
+        },
+        {
+          "index": 66392,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/99"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnTargetKilled",
+          "address": "0x1806c7a70"
+        },
+        {
+          "index": 66393,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/100"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnCalculateCachedProjectileDamage",
+          "address": "0x1806bd5a0"
+        },
+        {
+          "index": 66394,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/101"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnCalculateDamage",
+          "address": "0x1806bd8e0"
+        },
+        {
+          "index": 66395,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/102"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnAfterCalculateDamage",
+          "address": "0x1806b8610"
+        },
+        {
+          "index": 66396,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/103"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeingCalculateDamage",
+          "address": "0x1806bc9d0"
+        },
+        {
+          "index": 66397,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/104"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnAbilityStart",
+          "address": "0x1806b7f90"
+        },
+        {
+          "index": 66398,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/105"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnMakeEnemyUnbalanced",
+          "address": "0x1806c0f10"
+        },
+        {
+          "index": 66399,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/106"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnEnterLevitateState",
+          "address": "0x1806beb30"
+        },
+        {
+          "index": 66400,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/107"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeforeExitLevitateState",
+          "address": "0x1806bb890"
+        },
+        {
+          "index": 66401,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/108"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnEnterGroundBoundState",
+          "address": "0x1806be8c0"
+        },
+        {
+          "index": 66402,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/109"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeforeExitGroundBoundState",
+          "address": "0x1806bb620"
+        },
+        {
+          "index": 66403,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/110"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnEndPulling",
+          "address": "0x1806be5d0"
+        },
+        {
+          "index": 66404,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/111"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeforeFallDown",
+          "address": "0x1806bbd60"
+        },
+        {
+          "index": 66405,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/112"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOwnerOverlapped",
+          "address": "0x1806c4230"
+        },
+        {
+          "index": 66406,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/113"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBossWaveWillStart",
+          "address": "0x1806bd330"
+        },
+        {
+          "index": 66407,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/114"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnStageEnd",
+          "address": "0x1806c70c0"
+        },
+        {
+          "index": 66408,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/115"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOtherBuffStart",
+          "address": "0x1806c1720"
+        },
+        {
+          "index": 66409,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/116"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOtherResistableBuffStart",
+          "address": "0x1806c19d0"
+        },
+        {
+          "index": 66410,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/117"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOtherBuffLateEnable",
+          "address": "0x1806c1470"
+        },
+        {
+          "index": 66411,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/118"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnAbilityFinish",
+          "address": "0x1806b7620"
+        },
+        {
+          "index": 66412,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/119"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnAbilityInterrupted",
+          "address": "0x1806b7960"
+        },
+        {
+          "index": 66413,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/120"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeforeAbilitySpellOn",
+          "address": "0x1806ba120"
+        },
+        {
+          "index": 66414,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/121"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnAbilitySpellOn",
+          "address": "0x1806b7c50"
+        },
+        {
+          "index": 66415,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/122"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnAbilityCastOnTarget",
+          "address": "0x1806b71f0"
+        },
+        {
+          "index": 66416,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/123"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnSkillStart",
+          "address": "0x1806c6d70"
+        },
+        {
+          "index": 66417,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/124"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnToggleSkillStart",
+          "address": "0x1806c7db0"
+        },
+        {
+          "index": 66418,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/125"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnSkillRetriggered",
+          "address": "0x1806c6a20"
+        },
+        {
+          "index": 66419,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/126"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnSkillCastSucceed",
+          "address": "0x1806c63d0"
+        },
+        {
+          "index": 66420,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/127"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnSkillFinish",
+          "address": "0x1806c66d0"
+        },
+        {
+          "index": 66421,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/128"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeforeAttack",
+          "address": "0x1806baa10"
+        },
+        {
+          "index": 66422,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/129"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnAfterAttack",
+          "address": "0x1806b82d0"
+        },
+        {
+          "index": 66423,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/130"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeforeTrySetHpZero",
+          "address": "0x1806bc5e0"
+        },
+        {
+          "index": 66424,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/131"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnPostTrySetHpZero",
+          "address": "0x1806c4f30"
+        },
+        {
+          "index": 66425,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/132"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeforeTrySetEpZero",
+          "address": "0x1806bc380"
+        },
+        {
+          "index": 66426,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/133"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeforeDisappear",
+          "address": "0x1806baee0"
+        },
+        {
+          "index": 66427,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/134"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeforeAppear",
+          "address": "0x1806ba410"
+        },
+        {
+          "index": 66428,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/135"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOwnerAbnormalFlagDirty",
+          "address": "0x1806c2a60"
+        },
+        {
+          "index": 66429,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/136"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOwnerBlockeeChanged",
+          "address": "0x1806c3170"
+        },
+        {
+          "index": 66430,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/137"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOwnerBlockModeChanged",
+          "address": "0x1806c2f10"
+        },
+        {
+          "index": 66431,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/138"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnCollideWithHighLand",
+          "address": "0x1806bdc20"
+        },
+        {
+          "index": 66432,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/139"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeforeExitUnbalancedState",
+          "address": "0x1806bbb00"
+        },
+        {
+          "index": 66433,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/140"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnEnterUnbalancedState",
+          "address": "0x1806bf000"
+        },
+        {
+          "index": 66434,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/141"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnEnterMagicCircuit",
+          "address": "0x1806beda0"
+        },
+        {
+          "index": 66435,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/142"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnLeaveMagicCircuit",
+          "address": "0x1806c0560"
+        },
+        {
+          "index": 66436,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/143"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOwnerRootTileChanged",
+          "address": "0x1806c49c0"
+        },
+        {
+          "index": 66437,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/144"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnMotionModeChanged",
+          "address": "0x1806c1200"
+        },
+        {
+          "index": 66438,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/145"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnDirectionChanged",
+          "address": "0x1806bde80"
+        },
+        {
+          "index": 66439,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/146"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeforeDirectionChange",
+          "address": "0x1806bac70"
+        },
+        {
+          "index": 66440,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/147"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnEsOverZero",
+          "address": "0x1806bf5d0"
+        },
+        {
+          "index": 66441,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/148"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnLegionModeDrawCard",
+          "address": "0x1806c0a30"
+        },
+        {
+          "index": 66442,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/149"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnLegionModeRefreshCard",
+          "address": "0x1806c0ca0"
+        },
+        {
+          "index": 66443,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/150"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnSandboxOwnerResChanged",
+          "address": "0x1806c5c90"
+        },
+        {
+          "index": 66444,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/151"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnAutoChessModeChanged",
+          "address": "0x1806b9ec0"
+        },
+        {
+          "index": 66445,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/152"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnEntityWillOverlap",
+          "address": "0x1806bf270"
+        },
+        {
+          "index": 66446,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/153"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOwnerBeforeDead",
+          "address": "0x1806c2cc0"
+        },
+        {
+          "index": 66447,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/154"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOwnerHpFull",
+          "address": "0x1806c3d60"
+        },
+        {
+          "index": 66448,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/155"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnUnitSwitchMode",
+          "address": "0x1806c8370"
+        },
+        {
+          "index": 66449,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/156"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnPalsyOverflow",
+          "address": "0x1806c4cb0"
+        },
+        {
+          "index": 66450,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/157"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnTriggerPalsy",
+          "address": "0x1806c8100"
+        },
+        {
+          "index": 66451,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/158"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.CooperatePlayerDying",
+          "address": "0x1806b3750"
+        },
+        {
+          "index": 66452,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/159"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.CooperatePlayerRevive",
+          "address": "0x1806b39c0"
+        },
+        {
+          "index": 66453,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/160"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnLegionModeDangerLevelRefresh",
+          "address": "0x1806c07c0"
+        },
+        {
+          "index": 66454,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/161"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnHalfIdleTrapCheckUpgrade",
+          "address": "0x1806c02f0"
+        },
+        {
+          "index": 66455,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/162"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnHalfIdleKawaPolluted",
+          "address": "0x1806c0080"
+        },
+        {
+          "index": 66456,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/163"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnHalfIdleKawaCleaned",
+          "address": "0x1806bfe10"
+        },
+        {
+          "index": 66457,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/164"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnProjectileSelectTargets",
+          "address": "0x1806c58c0"
+        },
+        {
+          "index": 66458,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/165"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnProjectileBorn",
+          "address": "0x1806c5220"
+        },
+        {
+          "index": 66459,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/166"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnProjectileHitTarget",
+          "address": "0x1806c5510"
+        },
+        {
+          "index": 66460,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/167"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.HalfIdleGainEquip",
+          "address": "0x1806b6320"
+        },
+        {
+          "index": 66461,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/168"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.HalfIdleGainTrap",
+          "address": "0x1806b6630"
+        },
+        {
+          "index": 66462,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/169"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnSandboxV3ResourceCntChange",
+          "address": "0x1806c6160"
+        },
+        {
+          "index": 66463,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/170"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBlockCntChanged",
+          "address": "0x1806bcd10"
+        },
+        {
+          "index": 66464,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/171"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnSandboxV3RecipeChanged",
+          "address": "0x1806c5ef0"
+        },
+        {
+          "index": 66465,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/172"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.CalculateShieldValue",
+          "address": "0x1806b0c20"
+        },
+        {
+          "index": 66466,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff~1BuffContainer/methods/173"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.CalculateShieldValueByTarget",
+          "address": "0x1806b08e0"
+        },
+        {
+          "index": 67543,
+          "mode": "disasm",
+          "records": [
+            "buff/native.json#/result/67543",
+            "buff/native.json#/result/67543/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.AddBuff",
+          "address": "0x180720760"
+        },
+        {
+          "index": 67544,
+          "mode": "disasm",
+          "records": [
+            "buff/native.json#/result/67544",
+            "buff/native.json#/result/67544/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.AddBuff",
+          "address": "0x1807208c0"
+        },
+        {
+          "index": 67547,
+          "mode": "disasm",
+          "records": [
+            "buff/native.json#/result/67547",
+            "buff/native.json#/result/67547/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.AddBuffById",
+          "address": "0x18071fe80"
+        },
+        {
+          "index": 98386,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Action.Nodes~1CreateBuff/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CreateBuff.get_allowedSource",
+          "address": "0x1810ba510"
+        },
+        {
+          "index": 98387,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Action.Nodes~1CreateBuff/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CreateBuff.get_data",
+          "address": "0x1810beee0"
+        },
+        {
+          "index": 98388,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Action.Nodes~1CreateBuff/methods/2",
+            "buff/native.json#/result/98388",
+            "buff/native.json#/result/98388/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CreateBuff.Execute",
+          "address": "0x1810bf5b0"
+        },
+        {
+          "index": 98389,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Action.Nodes~1CreateBuff/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CreateBuff.GatherBuffs",
+          "address": "0x1810bf970"
+        },
+        {
+          "index": 98390,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Action.Nodes~1CreateBuff/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CreateBuff.TryHookEffect",
+          "address": "0x1810bfa00"
+        },
+        {
+          "index": 98391,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Action.Nodes~1CreateBuff/methods/5"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CreateBuff..ctor",
+          "address": "0x1810bfb50"
+        },
+        {
+          "index": 98486,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Action.Nodes~1CreateBuffStacked/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CreateBuffStacked.get_allowedSource",
+          "address": "0x1810c8d80"
+        },
+        {
+          "index": 98487,
+          "mode": "disasm",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Action.Nodes~1CreateBuffStacked/methods/1",
+            "buff/native.json#/result/98487",
+            "buff/native.json#/result/98487/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CreateBuffStacked.Execute",
+          "address": "0x1810c8900"
+        },
+        {
+          "index": 98488,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Action.Nodes~1CreateBuffStacked/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CreateBuffStacked._AddBuff",
+          "address": "0x1810c8b50"
+        },
+        {
+          "index": 98489,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Action.Nodes~1CreateBuffStacked/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CreateBuffStacked.GatherBuffs",
+          "address": "0x1810c8ac0"
+        },
+        {
+          "index": 98490,
+          "mode": "metadata",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Action.Nodes~1CreateBuffStacked/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CreateBuffStacked..ctor",
+          "address": "0x1810c8ca0"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Buff",
+          "records": [
+            "buff/metadata.json#/result/Torappu.Battle.Buff/type"
+          ]
+        },
+        {
+          "name": "Torappu.BuffData",
+          "records": [
+            "buff/metadata.json#/result/Torappu.BuffData/type"
+          ]
+        },
+        {
+          "name": "Torappu.EPBreakBuffData",
+          "records": [
+            "buff/metadata.json#/result/Torappu.EPBreakBuffData/type"
+          ]
+        },
+        {
+          "name": "Torappu.LifeType",
+          "records": [
+            "buff/metadata.json#/result/Torappu.LifeType/type"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "templates/selected-templates.json#/provenance/source"
+          ],
+          "bytes": 2151020
+        },
+        {
+          "kind": "bundle",
+          "path": "config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+          "records": [
+            "templates/selected-templates.json#/result"
+          ]
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}
