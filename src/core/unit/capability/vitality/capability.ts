@@ -103,19 +103,12 @@ export function removeRule(reference: Ref<Unit & Vitality>, id: string): Change 
     });
 }
 
-function setMaxHpContributions(state: State, definition: Definition, maxHp: State["maxHp"]): State {
-    if (maxHp === state.maxHp) {
-        return state;
+function preserveHpRatio(hp: number, previousMax: number, nextMax: number): number {
+    if (previousMax === nextMax || hp <= 0) {
+        return hp;
     }
 
-    const next = { ...state, maxHp };
-    const previousMax = resolveMaxHp(state, definition);
-    const nextMax = resolveMaxHp(next, definition);
-    if (previousMax === nextMax || state.hp <= 0) {
-        return next;
-    }
-
-    return { ...next, hp: Math.min(nextMax, (state.hp / previousMax) * nextMax) };
+    return Math.min(nextMax, (hp / previousMax) * nextMax);
 }
 
 export function setMaxHpContribution(
@@ -123,25 +116,37 @@ export function setMaxHpContribution(
     entry: contribution.Contribution<readonly attribute.Modifier[]>,
 ): Change {
     return createChange(reference, (self) => {
-        const vitality = setMaxHpContributions(
-            self.vitality,
-            self.definition.vitality,
-            contribution.set(self.vitality.maxHp, entry),
+        const maxHp = contribution.set(self.vitality.maxHp, entry);
+        if (maxHp === self.vitality.maxHp) {
+            return self;
+        }
+
+        const vitality = { ...self.vitality, maxHp };
+        const hp = preserveHpRatio(
+            self.vitality.hp,
+            resolveMaxHp(self.vitality, self.definition.vitality),
+            resolveMaxHp(vitality, self.definition.vitality),
         );
 
-        return vitality === self.vitality ? self : { ...self, vitality };
+        return { ...self, vitality: { ...vitality, hp } };
     });
 }
 
 export function removeMaxHpContribution(reference: Ref<Unit & Vitality>, id: string): Change {
     return createChange(reference, (self) => {
-        const vitality = setMaxHpContributions(
-            self.vitality,
-            self.definition.vitality,
-            contribution.remove(self.vitality.maxHp, id),
+        const maxHp = contribution.remove(self.vitality.maxHp, id);
+        if (maxHp === self.vitality.maxHp) {
+            return self;
+        }
+
+        const vitality = { ...self.vitality, maxHp };
+        const hp = preserveHpRatio(
+            self.vitality.hp,
+            resolveMaxHp(self.vitality, self.definition.vitality),
+            resolveMaxHp(vitality, self.definition.vitality),
         );
 
-        return vitality === self.vitality ? self : { ...self, vitality };
+        return { ...self, vitality: { ...vitality, hp } };
     });
 }
 
