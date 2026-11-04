@@ -35,7 +35,7 @@ import {
     isTacticalMechanicsScenario,
     type TacticalMechanicsScenario,
 } from "./tactical-demo-mechanics.js";
-import { hasElemental } from "../core/unit/capability/elemental/index.js";
+import { hasElemental, get as getBurst } from "../core/unit/capability/elemental/index.js";
 import {
     createTacticalContentDemo,
     defaults as contentDefaults,
@@ -491,10 +491,17 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
             return null;
         }
 
+        const recovery =
+            target.elemental.burst === null ? null : getBurst(state, target.elemental.burst)!;
+
         return {
             remainingEp: target.elemental.ep[type],
             maxEp: target.definition.elemental.maxEp,
-            recoveryTicks: target.elemental.burst?.remainingTicks ?? 0,
+            recoveryTicks:
+                recovery === null
+                    ? 0
+                    : target.definition.elemental.bursts[recovery.data.type].durationTicks -
+                      recovery.data.elapsedTicks,
         };
     }
 

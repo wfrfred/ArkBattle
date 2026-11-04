@@ -9,6 +9,7 @@ import type { Unit, Definition as UnitDefinition } from "../../unit.js";
 import type * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
 import type { Burst, Definition as BurstDefinition } from "./burst.js";
+import type { Ref } from "../../../common/ref.js";
 import type { DamageReceivingHook, Events, Hook } from "./hook.js";
 import type { Rules } from "./rule.js";
 import { createRegistrationOperations } from "../../registration.js";
@@ -50,8 +51,7 @@ interface Hooks {
 
 export interface State extends Rules, Contributions, Hooks {
     readonly ep: Values;
-    readonly burst: Burst | null;
-    readonly nextBurstId: number;
+    readonly burst: Ref<Burst> | null;
 }
 
 export interface Elemental {
@@ -99,7 +99,6 @@ export function initialize<U extends Unit & Pick<Elemental, "definition">>(
             elemental: {
                 ep: elementValues(definition.maxEp),
                 burst: null,
-                nextBurstId: 0,
                 maxEp: [],
                 recoverySpeed: [],
                 elementResistance: [],

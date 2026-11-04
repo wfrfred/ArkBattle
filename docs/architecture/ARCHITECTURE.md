@@ -110,7 +110,7 @@ Rule、Hook、Contribution 与 Blocker.layer 的公开写入绑定 Typed Ref，�
 | Targeting          | 候选、查询资格、优先级与确定性选择             | 读取当前事实；比较器纯函数并追加确定性 tie-break                                  |
 | Damage             | 公式、输出、有序接收、普通扣血及死亡       | 流程在 battle/damage；Offense／Vitality／Elemental 提供属性。通用结算登记存于 Unit.hooks，专属接收与规则留在资源能力。特殊生命保护尚待设计 |
 | Healing            | 计算、输出、有序接收、普通恢复与通知           | 流程在 battle/healing；Vitality 保存 HP／MaxHP 与专属接收 Hook，通用结算登记存于 Unit.hooks。治疗不可选中由 Targetable 表达，明确 Ref 的治疗只检查生命周期和接收 Hook |
-| Elemental          | 元素值、损伤与治疗、爆发身份及动态冷却预算 | Unit 直接关联 Definition，状态保存四型 EP 与当前 Burst；元素损伤抗性和元素 HP 伤害抗性分别表达 |
+| Elemental          | 元素值、损伤与治疗、标准爆发及动态恢复预算 | 状态保存四型 EP 与当前 Burst Effect Ref，Core 固定程序消费 Data 的纯配置；元素损伤抗性和元素 HP 伤害抗性分别表达 |
 | Effect             | 附着实例、私有状态、生效切换、覆写与结束       | Unit 持有实例与独立 deadline；依赖归 Lifetime；具体 Definition 登记 Hook 和 Contribution |
 | Lifetime           | 结束幂等、依赖传播与完成调度 | 静态描述符配对 Typed Ref；图保存 owner 与显式依赖；Pending 保存本次请求与阶段，owner 等全部依赖者完整 Finalize |
 | Projectile         | 独立空间执行实例、内容程序与终止请求／Finalize | 根实例保存身份、Definition、位置、ACTIVE／ENDING 与私有 state；运动、命中、采样和计时按内容组合，见 [Projectile 设计](projectile.md) |
@@ -131,11 +131,11 @@ Damage 和 Healing 分别在 battle/damage、battle/healing 维护 Calculate／A
 
 Skill 的 Definition／create、单槽聚合、Activation 非空视图、查询、资源与完整操作位于 unit/skill；unit/capability/skill 保留初始化工厂、能力状态、守卫及规则／Hook／预算贡献 Change 工厂。Unit Definition.skill.initialize 调用 create，接续持久数据初始化与 SP 初态；unit.skill 直接保存程序 Definition、state、SP 和可空 activation，能力状态再补规则等字段，不建 Instance 包装或集合。程序元数据从 unit.skill.definition 取得，两种 Ref 分别绑定持久 Skill 与本轮 Activation，宿主由回调第二参 source 提供。两个 index 按职责提供契约，SP 的贡献 Change 工厂仍在领域 sp.ts。自然回复按 tick 进度产生 SP；ACTION 回复通过成功释放通知，HIT 回复通过 Damage 的接收 Hook，由 Skill 自己登记和结算。默认激活阻回由 Rule 表达，上限、门槛和支付分别求值。普通攻击不依赖 Skill，具体技能行动通过公开扩展点组合，不修改基础 Definition。
 
-技能结束与单位退场委托同一 Lifetime 请求／析构协议。Unit 的所有权边保护 Execution、Activation、Burst 和 Effects，全部子项完成 Finalize 后才能移除 Unit。已经进入的内容仍按普通控制流继续，后继按最新状态确认资格；不能重建已结束实例，新的真正依赖也不能绑定到 Pending／ENDING 对象。
+技能结束与单位退场委托同一 Lifetime 请求／析构协议。Unit 的所有权边保护 Execution、Activation 和 Effects，标准 Burst 复用 Effect 的身份与 Lifetime；全部子项完成 Finalize 后才能移除 Unit。已经进入的内容仍按普通控制流继续，后继按最新状态确认资格；不能重建已结束实例，新的真正依赖也不能绑定到 Pending／ENDING 对象。
 
 弹药消耗属于实际攻击输出，准备步骤与取消的前摇不消耗弹药；同一次攻击的多目标输出只消费一次。消耗与耗尽检查由内容在明确节点分别调用；普通弹药技能检查时点的内容对照见 [待完成机制](tactical-semantics.md)。已经释放的 Projectile 具有独立生命周期，技能结束或 Action 取消不会删除它。
 
-干员和敌人内容按需组合 Vitality 与 Elemental；Core 的基础 Unit 不隐含这些能力，也不提供干员或敌人 Archetype 层。免疫通过 Elemental Rule 表达，不通过删除能力表达。神经、侵蚀、灼燃和坏死分别积累，Core 保留一个稳定身份的 Burst，以动态速度推进剩余冷却预算。Content 直接提供并共享爆发程序，接收者类别只用于内容装配，不依赖当前阵营或 Core 注册表。EP 损伤与 HP 元素伤害调用不同操作；请求接收与实际损失分开通知。元素治疗有自己的查询及接收资格，HP 禁疗不隐式决定 EP 接收。少数多爆发特例由 Content 组合实际语义，详见 [Elemental 设计](elemental.md)。
+干员和敌人内容按需组合 Vitality 与 Elemental；Core 的基础 Unit 不隐含这些能力，也不提供干员或敌人 Archetype 层。免疫通过 Elemental Rule 表达，不通过删除能力表达。神经、侵蚀、灼燃和坏死分别积累，Elemental 只保存当前标准 Burst Effect 的引用；该 Effect 以一份有效进度推进动态恢复预算、四型 EP 回填和周期输出。Core 实现固定标准规则，Data 选择纯参数，不注入任意爆发程序，接收者类别不依赖当前阵营或 Core 注册表。EP Commit 同步安装 Burst，先创建通知、再 damaged、再启用标准效果，返回后才执行 Battle Applied；damaged／healed 保留各自资源通知职责。EP 损伤与 HP 元素伤害调用不同操作，元素治疗有自己的接收资格，HP 禁疗不隐式决定 EP 接收。少数多爆发特例由 Content 组合实际语义，详见 [Elemental 设计](elemental.md)。
 
 ## 数值、贡献与领域响应
 
@@ -179,7 +179,7 @@ Blocker Definition 保存基础容量，State 保存 ADD／ZERO 容量贡献，�
 
 Effect 直接持有 `Definition<S, H>` 与私有 State。S 描述实例状态，H 描述宿主需要的 Capability 结构。抽象 Effect 不依赖 Damage、Healing、Offense 等具体 Capability；具体 Definition 通过这些领域的公开操作登记与撤销输出。
 
-生命周期状态为 `INSTALLING`、`INACTIVE`、`ACTIVE`、`ENDING`，外部许可 `enabled` 独立保存。宿主实际退场必然结束其 Effect；安装输入 scopes 可以绑定 Unit、Action、Skill 激活、Elemental Burst 或另一个 Effect，登记后关系只保存在 Lifetime 图中，任一依赖结束即结束实例。deadline 独立表达截止时点；source 使用 `Ref<Unit> | null` 记录施加者，不要求来源仍在场，也不隐含生命周期绑定。所有权与显式 Scope 的合并关系保持 DAG。
+生命周期状态为 `INSTALLING`、`INACTIVE`、`ACTIVE`、`ENDING`，外部许可 `enabled` 独立保存。宿主实际退场必然结束其 Effect；安装输入 scopes 可以绑定 Unit、Action、Skill 激活或另一个 Effect，Burst 使用同一 Effect Lifetime。登记后关系只保存在 Lifetime 图中，任一依赖结束即结束实例。deadline 独立表达截止时点；source 使用 `Ref<Unit> | null` 记录施加者，不要求来源仍在场，也不隐含生命周期绑定。所有权与显式 Scope 的合并关系保持 DAG。
 
 同宿主覆写组先在未结束实例中选取最高优先级，同优先级保留较早取得的实例，再检查赢家的 enabled。禁用最强实例不会让弱者补位。Contribution 分组、Hook 调用顺序与具体业务条件分别由所属模块处理。
 

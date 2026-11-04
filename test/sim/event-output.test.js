@@ -14,12 +14,9 @@ import { createInput } from "../../dist/core/battle/creation/route.js";
 import { advanceMovement, resolveRouteCompletion } from "../../dist/core/battle/steps/movement.js";
 import { TacticalDemoPresentation } from "../../dist/legacy/tactical-demo-presentation.js";
 
-const burst = { durationTicks: 30, onStart: state => state };
-const elemental = {
-    maxEp: 1000, recoveryPerSecond: 0, elementResistance: 0,
-    damageResistance: 0, burstRecoverySpeed: 1,
-    bursts: { NEURAL: burst, EROSION: burst, BURN: burst, NECROSIS: burst },
-};
+import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
+
+const elemental = createArknightsElementalDefinition({ receiver: "CHARACTER" });
 const data = { lookup() {} };
 
 test("EVENT-01: real HP and EP damage and healing produce the corresponding floating text", () => {
@@ -54,7 +51,7 @@ test("EVENT-01: real HP and EP damage and healing produce the corresponding floa
 test("EVENT-02: a Burst keeps its original position through movement and death in the same Tick", () => {
     let state = battle([{ definition: {
         id: "receiver", hooks: Hooks.empty(), elemental, spatialPresence: {},
-        vitality: { maxHp: 1000, defense: 0, resistance: 0 },
+        vitality: { maxHp: 2000, defense: 0, resistance: 0 },
     }, position: [1, 1] }]);
     const target = units.ref(get(state, 0));
     const injury = { source: null, target, type: "BURN", power: 1000 };
@@ -62,7 +59,7 @@ test("EVENT-02: a Burst keeps its original position through movement and death i
     state = presence.appear(state, target, [4, 1]);
     const lethal = {
         source: null, target,
-        parameters: { type: "TRUE", attack: { power: 1000, multiplier: 1, addition: 0 } },
+        parameters: { type: "TRUE", attack: { power: 2000, multiplier: 1, addition: 0 } },
     };
     state = hpDamage.applyDamage(lethal, hpDamage.calculateDamage(state, lethal)).state;
 
@@ -71,7 +68,8 @@ test("EVENT-02: a Burst keeps its original position through movement and death i
     assert.deepEqual(view.advance(state, state.events), [
         ["dmg", 0, 1000, "burn"],
         ["fx", "burst", 1, 1, { id: 0, element: "burn" }],
-        ["dmg", 0, 1000, "true"],
+        ["dmg", 0, 1200, "arts"],
+        ["dmg", 0, 800, "true"],
         ["die", 0, "killed"],
     ]);
     assert.deepEqual(view.units(state)[0].info.x, 4);

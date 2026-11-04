@@ -15,6 +15,7 @@ import * as skills from "../../dist/core/unit/skill/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as lifetime from "../../dist/core/lifetime/index.js";
 import { invincible } from "../../dist/content/effects/protection.js";
+import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
 
 function damageRequest(source, target, power, type = "TRUE", penetration = { fixed: 0, proportional: 0 }) {
     const attack = { power, multiplier: 1, addition: 0 };
@@ -30,25 +31,10 @@ const healingRequest = (source, target, power) => ({
     source, target, parameters: { power, multiplier: 1 },
 });
 
-function elementalDefinition(config = {}, hooks = Hooks.empty(), program = {}) {
+function elementalDefinition(config = {}, hooks = Hooks.empty()) {
     return {
-        id: "ep-receiver",
-        hooks,
-        spatialPresence: {},
-        allegiance: { side: "ALLY" },
-        elemental: {
-            maxEp: 1000,
-            recoveryPerSecond: 0,
-            elementResistance: 0,
-            damageResistance: 0,
-            burstRecoverySpeed: 1,
-            bursts: Object.fromEntries(elemental.ELEMENT_TYPES.map(type => [type, {
-                durationTicks: 6,
-                onStart: state => state,
-                ...program,
-            }])),
-            ...config,
-        },
+        id: "ep-receiver", hooks, spatialPresence: {}, allegiance: { side: "ALLY" },
+        elemental: { ...createArknightsElementalDefinition({ receiver: "CHARACTER" }), ...config },
     };
 }
 
@@ -57,16 +43,14 @@ function injuryRequest(target, type, power, source = null) {
 }
 
 test("HP-01: formulas use the calculated type and sampled defenses without beginning reception", () => {
-    const burst = { durationTicks: 30, onStart: state => state };
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
             id: "target", hooks: Hooks.empty(),
             vitality: { maxHp: 1000, defense: 150, resistance: 80 },
             elemental: {
-                maxEp: 1000, recoveryPerSecond: 0, elementResistance: 95,
-                damageResistance: 40, burstRecoverySpeed: 1,
-                bursts: { NEURAL: burst, EROSION: burst, BURN: burst, NECROSIS: burst },
+                ...createArknightsElementalDefinition({ receiver: "CHARACTER" }),
+                elementResistance: 95, damageResistance: 40,
             },
         }, position: [1, 0] },
     ]);
@@ -465,25 +449,24 @@ test("EP-01: calculated resistance and element survive later state changes; HP e
     assert.equal(get(absorbed.state, 0).elemental.ep.NEURAL, 830);
 });
 
-test("EP-02: depletion creates a usable Burst before its notifications and program, then runs Battle Applied", () => {
+test("EP-02: depletion registers the Burst before resource notifications and standard output, then runs Applied", () => {
     const order = [];
-    let bound;
     let ended = 0;
-    const program = {
-        onStart(state, burst) {
-            order.push("program");
-            const installed = effects.install(state, burst.host, {
-                id: "burst-dependent", initialize: () => ({}),
-            }, { scopes: [lifetime.scope(elemental.lifetime, elemental.ref(burst))] });
-            bound = installed.value;
-            return installed.state;
-        },
-    };
-    const hooks = Hooks.empty().set(epDamage.targetApplied, {
-        id: "applied", invoke: state => { order.push("applied"); return { state, value: undefined }; },
-    });
+    const hooks = Hooks.empty()
+        .set(hpDamage.beforeReceive, {
+            id: "standard-output", invoke: current => {
+                order.push("program");
+                return { state: current, value: undefined };
+            },
+        })
+        .set(epDamage.targetApplied, {
+            id: "applied", invoke: current => { order.push("applied"); return { state: current, value: undefined }; },
+        });
     let state = battle([
-        { definition: elementalDefinition({}, hooks, program), position: [0, 0] },
+        { definition: {
+            ...elementalDefinition({}, hooks),
+            vitality: { maxHp: 10000, defense: 0, resistance: 50 },
+        }, position: [0, 0] },
         { definition: { id: "source", hooks: Hooks.empty() }, position: [1, 0] },
     ]);
     const target = units.ref(get(state, 0));
@@ -492,7 +475,9 @@ test("EP-02: depletion creates a usable Burst before its notifications and progr
         elemental.setHook(target, "burstStarted", {
             id: "creation", invoke(current, { event }) {
                 order.push("started");
-                assert.equal(elemental.get(current, elemental.ref(event)).status, "ACTIVE");
+                const reference = effects.ref(event);
+                assert.equal(get(current, 0).elemental.burst.id, reference.id);
+                assert.equal(lifetime.available(current, lifetime.scope(effects.lifetime, reference)), true);
                 return { state: current, value: undefined };
             },
         }),
@@ -500,7 +485,11 @@ test("EP-02: depletion creates a usable Burst before its notifications and progr
             id: "loss", invoke(current) { order.push("damaged"); return { state: current, value: undefined }; },
         }),
         elemental.setHook(target, "burstEnded", {
-            id: "end", invoke(current) { ended++; return { state: current, value: undefined }; },
+            id: "end", invoke(current) {
+                ended++;
+                assert.equal(get(current, 0).elemental.burst, null);
+                return { state: current, value: undefined };
+            },
         }),
     ]);
     const preceding = injuryRequest(target, "NEURAL", 200);
@@ -510,33 +499,42 @@ test("EP-02: depletion creates a usable Burst before its notifications and progr
     const result = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming));
     assert.deepEqual(order, ["started", "damaged", "program", "applied"]);
     assert.deepEqual(get(result.state, 0).elemental.ep, elemental.elementValues(0));
-    assert.equal(effects.get(result.state, bound).status, "ACTIVE");
+    assert.equal(get(result.state, 0).vitality.hp, 9160);
+    assert.equal(vitality.resolveResistance(result.state, get(result.state, 0)), 30);
     assert.deepEqual(elemental.get(result.state, result.value.application.burst).source, source);
     const sourceRemoved = remove(result.state, source.id, "SCRIPT");
     assert.equal(elemental.get(sourceRemoved, result.value.application.burst).status, "ACTIVE");
     const removed = remove(sourceRemoved, target.id, "SCRIPT");
     assert.equal(get(removed, 0), undefined);
     assert.equal(elemental.get(removed, result.value.application.burst), undefined);
-    assert.equal(effects.get(removed, bound), undefined);
     assert.equal(ended, 1);
 });
 
-test("EP-02: cancelling a newly created Burst suppresses its startup without rewriting the damage report", () => {
+test("EP-02: cancelling a newly registered Burst suppresses standard output without rewriting the loss report", () => {
     const order = [];
-    const hooks = Hooks.empty().set(epDamage.targetApplied, {
-        id: "applied", invoke: state => { order.push("applied"); return { state, value: undefined }; },
-    });
-    let state = battle([{ definition: elementalDefinition({}, hooks, {
-        onStart() { throw new Error("cancelled Burst startup"); },
-        onEnd(current) { order.push("ended"); return current; },
-    }), position: [0, 0] }]);
+    const hooks = Hooks.empty()
+        .set(hpDamage.beforeReceive, {
+            id: "standard-output", invoke: current => {
+                order.push("program"); return { state: current, value: undefined };
+            },
+        })
+        .set(epDamage.targetApplied, {
+            id: "applied", invoke: current => { order.push("applied"); return { state: current, value: undefined }; },
+        });
+    let state = battle([{ definition: {
+        ...elementalDefinition({}, hooks),
+        vitality: { maxHp: 10000, defense: 0, resistance: 50 },
+    }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     state = update(state, [
         elemental.setHook(target, "burstStarted", {
             id: "cancel", invoke(current, { event }) {
                 order.push("started");
-                return { state: elemental.cancel(current, elemental.ref(event), "CONTENT"), value: undefined };
+                return { state: elemental.cancel(current, effects.ref(event), "CONTENT"), value: undefined };
             },
+        }),
+        elemental.setHook(target, "burstEnded", {
+            id: "end", invoke(current) { order.push("ended"); return { state: current, value: undefined }; },
         }),
         elemental.setHook(target, "damaged", {
             id: "loss", invoke(current, { event }) {
@@ -552,4 +550,6 @@ test("EP-02: cancelling a newly created Burst suppresses its startup without rew
     assert.equal(result.value.application.epAfter, 0);
     assert.deepEqual(get(result.state, 0).elemental.ep, elemental.elementValues(1000));
     assert.equal(get(result.state, 0).elemental.burst, null);
+    assert.equal(get(result.state, 0).vitality.hp, 10000);
+    assert.equal(vitality.resolveResistance(result.state, get(result.state, 0)), 50);
 });

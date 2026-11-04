@@ -15,7 +15,6 @@ Lifetime 统一实例的结束请求、依赖传播和最终析构。领域继�
 | Unit | unitId |
 | Action Execution | hostId、executionId |
 | Skill Activation | hostId、activationId |
-| Elemental Burst | hostId、burstId |
 | Effect | hostId、effectId |
 | Projectile | projectileId |
 | Mechanism | mechanismId |
@@ -24,16 +23,16 @@ Key 由 kind 与整个数值地址作无歧义编码。相同地址的 Ref 值�
 
 ```typescript
 import { scope, getRef, available } from "../../lifetime/index.js";
-import { lifetime as burstLifetime } from "../capability/elemental/index.js";
+import { lifetime as effectLifetime } from "../effect/index.js";
 
-const binding = scope(burstLifetime, burstRef);
-const ref = getRef(binding, burstLifetime);
+const binding = scope(effectLifetime, burstRef);
+const ref = getRef(binding, effectLifetime);
 const usable = available(battle, binding);
 ```
 
-Scope 公开 type: "LIFETIME"、kind 和只读数值 address，描述符／Ref 的配对保存在内部受信边界，不向内容暴露存储容器。scope 保持描述符与 Ref 的领域配对，不查询 battle。getRef 仅在描述符匹配时返回 Ref<V>，恢复描述符的公开完整类型而不推断 Scope 原始私有参数；例如 Elemental 周期 Effect 用 dependencies 查询显式依赖，再取回 Burst 身份并读取当前 Burst。异构配对只在公共模块内部擦除，调用方不能把别的领域 Ref 配给描述符。
+Scope 公开 type: "LIFETIME"、kind 和只读数值 address，描述符／Ref 的配对保存在内部受信边界，不向内容暴露存储容器。scope 保持描述符与 Ref 的领域配对，不查询 battle。getRef 仅在描述符匹配时返回 Ref<V>，恢复描述符的公开完整类型而不推断 Scope 原始私有参数；Burst 的 Typed Ref 可以直接作为 Effect Lifetime 的依赖目标；getRef 恢复的是公开 Effect 类型，已有精确 Burst Ref 的调用方仍可按其原类型查询，不为 Burst 建立另一种描述符。异构配对只在公共模块内部擦除，调用方不能把别的领域 Ref 配给描述符。
 
-available 沿依赖图的父边检查目标自身及全部上游（实际 owner 与显式 Scope）：任一节点缺失、已 Pending 或结束中，目标均不可接纳新依赖。检查使用当前 BattleState；父对象已开始结束、子对象尚未收到结束请求的发布／Prepare 窗口也适用。Unit 要求 PRESENT，Action 要求 RUNNING，Skill／Burst 要求 ACTIVE；Effect 的 INSTALLING／INACTIVE 和 Mechanism 的 INACTIVE 仍可成为依赖目标。HP、空间在场和 source 是否存活不属于这项判断。
+available 沿依赖图的父边检查目标自身及全部上游（实际 owner 与显式 Scope）：任一节点缺失、已 Pending 或结束中，目标均不可接纳新依赖。检查使用当前 BattleState；父对象已开始结束、子对象尚未收到结束请求的发布／Prepare 窗口也适用。Unit 要求 PRESENT，Action 要求 RUNNING，Skill 要求 ACTIVE；Effect（包括标准 Burst）的 INSTALLING／INACTIVE 和 Mechanism 的 INACTIVE 仍可成为依赖目标。HP、空间在场和 source 是否存活不属于这项判断。
 
 Scope 只表达 Lifetime 依赖；Effect 的 deadline 独立保存期限，不进入依赖图。source 和普通私有 Ref 不自动产生关系。安装入口检查宿主与所给 Scope 的可用性；后续 bind 入口检查两端资格及合并图的闭环，内部传播与析构信任这些约束。
 
@@ -76,7 +75,7 @@ end(battle, ref, end, dependencyReason?): BattleState;
 
 `BattleState.lifetime` 保存 dependencies、endings 和 settling。dependencies 是 owner 与显式 scopes 的唯一关系权威，同时保存反向 children；endings 是本次结算的未完成工作，Pending 仅含 target、end、parents、phase；settling 表示已有最外层结算器。正常对外稳定状态的 endings 为空，settling 为 false。
 
-每个关系条目保存 target、单个 owner 与显式 scopes；parent→children 合并两类父边，同一父子身份只出现一次。领域创建实例时登记关系，最终移除时注销；普通私有状态写回不重建关系。Unit 虽持有 Execution、Activation、Burst 和 Effects 的存储，关系图不从这些槽位扫描或投影，也不在 Effect 上重复保存 scopes。图不保存第二份实例或生命周期状态。
+每个关系条目保存 target、单个 owner 与显式 scopes；parent→children 合并两类父边，同一父子身份只出现一次。领域创建实例时登记关系，最终移除时注销；普通私有状态写回不重建关系。Unit 虽持有 Execution、Activation 和 Effects 的存储，关系图不从这些槽位扫描或投影，也不在 Effect 上重复保存 scopes；Elemental 的 Burst 引用指向同一 Effects 容器中的标准实例。图不保存第二份实例或生命周期状态。
 
 createBattleState 建立空关系图，不扫描传入 Battlefield 的 Unit 或能力槽位。初始 Unit 通过完整创建和 add 进入战场，其后各领域在启动／安装及 Finalize 内维护自己的关系。纯 Unit update／replace 只发布对象与 Field 结构索引，不修改 Lifetime 图。公共 Lifetime 不导入具体领域，也不全场扫描。
 

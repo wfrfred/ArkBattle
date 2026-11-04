@@ -36,9 +36,9 @@
 | [core-types](sim/core-types.test.js) | Typed Ref 保留身份和私有数据配对，普通擦除查询不泄漏 `any`；能力证明与不透明 Change 约束写入；普通注册的按 Key 和固定字段接口均保留 Entry 与能力 Ref 的类型关联。 |
 | [damage](sim/damage.test.js) | 按[伤害／治疗回归清单](../docs/architecture/verification.md#hook-与伤害治疗的回归语义)保障 HP／EP 公式与采样、独立 Calculate 状态、接收与提交、零值和取消、最新资源、Applied 后死亡及同步 Burst。 |
 | [healing](sim/healing.test.js) | HP／EP 治疗公式、四型恢复、满资源仍成功、双侧 Applied 和自然恢复的区别。 |
-| [elemental](sim/elemental.test.js) | Burst 期间接收限制、动态与暂停预算、完成／取消后的资源和绑定输出；不复制公共 Lifetime 矩阵。 |
+| [elemental](sim/elemental.test.js) | 标准 Burst Effect 的单进度、恢复期间四型 EP 逐步回填、动态与暂停预算、完整周期、完成／取消后的资源与作用生命周期；不复制公共 Lifetime 矩阵。 |
 | [UI瞬时输出](sim/event-output.test.js) | 按EVENT清单集中验证真实结算飘字、爆发位置与注销快照、路线计数独立和Tick输出清空。 |
-| [原生元素内容](sim/elemental-runtime.test.js) | 真实 Data 爆发的伤害、异常、永久输出及周期累计结果；不重写一套夹具算法模拟内容。 |
+| [标准元素爆发](sim/elemental-runtime.test.js) | Core 固定 Effect 消费真实 Data 配置产生伤害、异常、永久输出和周期累计结果；不重写夹具算法或按八套配置逐字段扩展。 |
 
 [battle 夹具](helpers/battle.js)只通过 Runtime 的公开输入构造地图和预置 Unit。场景通过实际领域操作建立执行、资源及依赖事实；纯算法直接使用合法值。
 

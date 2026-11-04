@@ -13,9 +13,9 @@ import type { Request as DamageRequest } from "../../../battle/damage/ep/contrac
 import type { Request as HealingRequest } from "../../../battle/healing/ep/contract.js";
 
 export function get(battle: BattleState, reference: Ref<Burst>): Burst | undefined {
-    const burst = units.get(battle, reference.host)?.elemental.burst;
+    const host = units.get(battle, reference.host);
 
-    return burst?.id === reference.id ? burst : undefined;
+    return host?.elemental.burst?.id === reference.id ? host.effects.get(reference) : undefined;
 }
 
 export function resolveMaxEp(battle: BattleState, self: Unit & Elemental): number {

@@ -144,7 +144,7 @@ Ref 与静态 Definition 不同。Definition 相同可以有多个实例；实�
 
 宿主 Unit 退场必然结束其附着 Effect；install 在 Lifetime 图中登记这条 owner 关系。`source: Ref<Unit> | null` 只标注施加者；安装不要求来源仍在场，来源也不自动成为 Scope。A 给 B 施加中毒，不因为 source 指向 A 就自动随 A 退场结束；确实需要随来源结束的内容通过 Unit 的 lifetime 描述符显式绑定 A。
 
-额外生命周期约束使用 [公共 Lifetime](lifetime.md) 的 Scope。内容用 scope(领域 lifetime, ref) 建立配对，用 getRef 恢复对应 Ref。SKILL 绑定一次 Activation，ACTION 绑定一次 Execution，Burst 和 Effect 同样绑定精确运行身份；持久 Action 配置不是生命周期目标。任一上游请求结束就请求结束本 Effect，不等待所有目标都结束。绑定不共享时间轴，详见 [Elemental 设计](elemental.md)。
+额外生命周期约束使用 [公共 Lifetime](lifetime.md) 的 Scope。内容用 scope(领域 lifetime, ref) 建立配对，用 getRef 恢复对应 Ref。SKILL 绑定一次 Activation，ACTION 绑定一次 Execution；标准 Burst 本身就是 Effect，通过 effects.lifetime 绑定其精确运行身份，持久 Action 配置不是生命周期目标。任一上游请求结束就请求结束本 Effect，不等待所有目标都结束。绑定不共享时间轴，详见 [Elemental 设计](elemental.md)。
 
 BattleState.lifetime.dependencies 是 owner 与显式依赖的唯一关系权威。install 在入口校验宿主 PRESENT、输入 Scope 可用性与 deadline，发布 INSTALLING 实例并登记 owner／scopes 后才调用 onInstall。后续通过 Lifetime.bind／unbind 管理显式依赖；dependencies 查询不包含 owner。Effect 不重复保存 scopes，也不从 Unit 更新投影关系。内部写回信任已经建立的约束，战斗初始化不扫描预装实例。
 
@@ -152,7 +152,7 @@ BattleState.lifetime.dependencies 是 owner 与显式依赖的唯一关系权威
 
 ENDING 时保留关系，物理移除后活索引可以撤销，但未完成 Pending.parents 保留到整个 Finalize 返回。查询依赖者同时合并这两种来源，避免子 Effect 注销后的结束通知中请求宿主退场时漏掉等待。Pending 表示工作进度，不是第二份生命周期或实例表。
 
-Scope 资格沿实际 owner 和显式 Scope 父边，检查目标及全部上游的 Pending 与最新领域状态；任一上游缺失或结束中即拒绝新的安装／绑定，即使目标自身尚未收到结束请求。各节点的存活要求为：Unit 为 PRESENT，Action 为 RUNNING，Skill／Burst 为 ACTIVE，Effect 只要存在且未 ENDING 即可，包含 INSTALLING／INACTIVE；Mechanism 的 INACTIVE 也可成为目标。不能把 HP 或空间存在附加为 Unit 生命周期资格。开始结束的目标不能接受新绑定。
+Scope 资格沿实际 owner 和显式 Scope 父边，检查目标及全部上游的 Pending 与最新领域状态；任一上游缺失或结束中即拒绝新的安装／绑定，即使目标自身尚未收到结束请求。各节点的存活要求为：Unit 为 PRESENT，Action 为 RUNNING，Skill 为 ACTIVE，Effect（包括标准 Burst）只要存在且未 ENDING 即可，包含 INSTALLING／INACTIVE；Mechanism 的 INACTIVE 也可成为目标。不能把 HP 或空间存在附加为 Unit 生命周期资格。开始结束的目标不能接受新绑定。
 
 宿主退场、Scope 结束、deadline 到期和显式 end 都进入同一个 Effect lifetime 请求。各领域负责决定何时请求结束自己的实例，共享运行器负责依赖传播与完成调度；不再保留 closeLifetime 或 Effect 专属递归传播入口。
 

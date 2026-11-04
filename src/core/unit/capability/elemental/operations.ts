@@ -1,9 +1,8 @@
-import { lifetime as unitLifetime, replace as replaceUnits } from "../../../battle/unit.js";
+import { replace as replaceUnits } from "../../../battle/unit.js";
 import type { Ref } from "../../../common/ref.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
-import * as lifetimes from "../../../lifetime/index.js";
-import { register, unregister } from "../../../lifetime/operations.js";
+import * as effects from "../../effect/operations.js";
 import * as hooks from "../../../hook.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
@@ -14,7 +13,7 @@ import {
     type Type,
     type Values,
 } from "./capability.js";
-import { ref as burstRef, type Burst, type End } from "./burst.js";
+import { definitions, type Burst } from "./burst.js";
 import { dispatch } from "./hook.js";
 import * as query from "./query.js";
 import type * as damage from "../../../battle/damage/ep/contract.js";
@@ -77,42 +76,9 @@ export function commitDamage(
     }
 
     const epAfter = epBefore - epLoss;
-    const definition = self.definition.elemental.bursts[type];
-    const burst: Burst | null =
-        epAfter > 0
-            ? null
-            : {
-                  host: target,
-                  id: self.elemental.nextBurstId,
-                  type,
-                  source: request.source,
-                  startedAtTick: battle.tick,
-                  status: "ACTIVE",
-                  remainingTicks: definition.durationTicks,
-              };
-    const reference = burst === null ? null : burstRef(burst);
-    const application: DamageApplication = { type, epBefore, epAfter, epLoss, burst: reference };
-    const ep =
-        burst === null ? { ...normalizedEp(self, maximum), [type]: epAfter } : elementValues(0);
-    battle = replaceUnits(battle, [
-        {
-            ...self,
-            elemental: {
-                ...self.elemental,
-                ep,
-                burst,
-                nextBurstId: self.elemental.nextBurstId + (burst === null ? 0 : 1),
-            },
-        },
-    ]);
-
-    if (reference !== null) {
-        battle = register(
-            battle,
-            lifetimes.scope(lifetime, reference),
-            lifetimes.scope(unitLifetime, target),
-        );
-    }
+    const depleted = epAfter === 0;
+    const ep = depleted ? elementValues(0) : { ...normalizedEp(self, maximum), [type]: epAfter };
+    battle = replaceUnits(battle, [{ ...self, elemental: { ...self.elemental, ep } }]);
 
     battle = appendEvents(battle, [
         {
@@ -124,32 +90,21 @@ export function commitDamage(
         },
     ]);
 
-    if (burst !== null) {
-        battle = appendEvents(battle, [
-            {
-                type: "ELEMENTAL_BURST",
-                unitId: target.id,
-                elementType: type,
-                position: self.position,
-                tick: battle.tick,
-            },
-        ]);
-        battle = dispatch(battle, target, "burstStarted", burst);
+    let reference: Ref<Burst> | null = null;
+    if (depleted) {
+        const installed = effects.install(battle, target, definitions[type], {
+            source: request.source,
+            enabled: false,
+        });
+        battle = installed.state;
+        reference = installed.value!;
     }
 
+    const application: DamageApplication = { type, epBefore, epAfter, epLoss, burst: reference };
     battle = dispatch(battle, target, "damaged", { request, ...application });
 
     if (reference !== null) {
-        const host = units.get(battle, target);
-        const active = query.get(battle, reference);
-        if (host !== undefined && query.available(host) && active?.status === "ACTIVE") {
-            battle = definition.onStart(battle, active);
-        }
-
-        const after = query.get(battle, reference);
-        if (after?.status === "ACTIVE" && after.remainingTicks <= 0) {
-            battle = finish(battle, reference);
-        }
+        battle = effects.setEnabled(battle, reference, true);
     }
 
     return { state: battle, value: application };
@@ -190,48 +145,8 @@ export function commitHealing(
     return { state: battle, value: application };
 }
 
-export const lifetime = lifetimes.create<Burst, Burst, End>({
-    kind: "ELEMENTAL_BURST",
-    address: (reference) => [reference.host.id, reference.id],
-    get: query.get,
-    isEnding: (self) => self.status === "ENDING",
-    begin: (self) => ({ ...self, status: "ENDING" }),
-    replace(battle, reference, next) {
-        const host = units.get(battle, reference.host)!;
-
-        return replaceUnits(battle, [{ ...host, elemental: { ...host.elemental, burst: next } }]);
-    },
-    finalize(battle, reference, ending) {
-        const self = units.get(battle, reference.host)!;
-        const active = self.elemental.burst!;
-        const definition = self.definition.elemental.bursts[active.type];
-
-        if (definition.onEnd !== undefined) {
-            battle = definition.onEnd(battle, active, ending);
-        }
-
-        const host = units.get(battle, reference.host)!;
-        const maximum = query.resolveMaxEp(battle, host);
-        battle = replaceUnits(battle, [
-            {
-                ...host,
-                elemental: {
-                    ...host.elemental,
-                    ep: elementValues(maximum),
-                    burst: null,
-                },
-            },
-        ]);
-        battle = unregister(battle, lifetimes.scope(lifetime, reference));
-
-        return dispatch(battle, reference.host, "burstEnded", { burst: active, end: ending });
-    },
-    reason: (ending) => (ending.type === "FINISHED" ? "ELEMENTAL_BURST_FINISHED" : ending.reason),
-    fromDependency: (reason) => ({ type: "CANCELLED", reason }),
-});
-
 export function finish(battle: BattleState, reference: Ref<Burst>): BattleState {
-    return lifetime.end(battle, reference, { type: "FINISHED" });
+    return effects.end(battle, reference, "ELEMENTAL_BURST_FINISHED");
 }
 
 export function cancel(
@@ -239,7 +154,7 @@ export function cancel(
     reference: Ref<Burst>,
     reason = "CANCELLED",
 ): BattleState {
-    return lifetime.end(battle, reference, { type: "CANCELLED", reason });
+    return effects.end(battle, reference, reason);
 }
 
 export function advance(battle: BattleState, host: Ref<Unit & Elemental>): BattleState {
@@ -248,36 +163,24 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
         return battle;
     }
 
-    const state = self.elemental;
-    const next = { ...state };
-
-    if (state.burst?.status === "ACTIVE") {
-        const rate = query.resolveBurstRecoverySpeed(battle, self);
-        next.burst = {
-            ...state.burst,
-            remainingTicks: Math.max(0, state.burst.remainingTicks - rate),
-        };
-    } else if (state.burst === null) {
-        const power = query.resolveRecoverySpeed(battle, self) / TICKS_PER_SECOND;
-        const maximum = query.resolveMaxEp(battle, self);
-        const ep = { ...normalizedEp(self, maximum) };
-        const request: HealingRequest = { target: host, source: null, power };
-        if (query.canReceiveHealing(battle, request)) {
-            for (const type of ELEMENT_TYPES) {
-                ep[type] = Math.min(maximum, ep[type] + power);
-            }
-        }
-
-        next.ep = ep;
-    } else {
+    if (self.elemental.burst !== null) {
         return battle;
     }
 
-    battle = replaceUnits(battle, [{ ...self, elemental: next }]);
+    const power = query.resolveRecoverySpeed(battle, self) / TICKS_PER_SECOND;
+    const request: HealingRequest = { target: host, source: null, power };
+    if (!self.elemental.healingRules.every((rule) => rule.allows(battle, { self, request }))) {
+        return battle;
+    }
 
-    return next.burst?.status === "ACTIVE" && next.burst.remainingTicks <= 0
-        ? finish(battle, burstRef(next.burst))
-        : battle;
+    const maximum = query.resolveMaxEp(battle, self);
+    const ep = { ...normalizedEp(self, maximum) };
+
+    for (const type of ELEMENT_TYPES) {
+        ep[type] = Math.min(maximum, ep[type] + power);
+    }
+
+    return replaceUnits(battle, [{ ...self, elemental: { ...self.elemental, ep } }]);
 }
 
 function normalizedEp(self: Unit & Elemental, maximum: number): Values {

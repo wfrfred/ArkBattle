@@ -9,8 +9,7 @@ import * as skills from "../../dist/core/unit/skill/index.js";
 import * as sp from "../../dist/core/unit/skill/sp.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { advance as advanceLocomotion } from "../../dist/core/unit/capability/locomotion/index.js";
-import { stun } from "../../dist/content/effects/stun.js";
-import { silence, blockSpRecovery } from "../../dist/content/effects/control.js";
+import { stun, silence, blockSpRecovery } from "../../dist/core/unit/control.js";
 
 function actor(onEnd = state => state) {
     const action = {

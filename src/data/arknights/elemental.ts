@@ -4,32 +4,13 @@ import type {
     BurstDefinition,
 } from "../../core/unit/capability/elemental/index.js";
 
-import { create as createBurstDefinition } from "./elemental-burst.js";
 import { secondsToTicks } from "./tick.js";
 
 const elements = { SANITY: "NEURAL", WATER: "EROSION", FIRE: "BURN", DARK: "NECROSIS" } as const;
 
 export type Receiver = "CHARACTER" | "ENEMY";
 
-export interface ArknightsElementalBurstProfile {
-    readonly durationTicks: number;
-    readonly burstDamage: {
-        readonly type: "PHYSICAL" | "ARTS" | "TRUE" | "ELEMENTAL";
-        readonly power: number;
-    } | null;
-    readonly damagePerSecond: {
-        readonly type: "ARTS" | "ELEMENTAL";
-        readonly power: number;
-    } | null;
-    readonly defReduction: number;
-    readonly resReduction: number;
-    readonly stunTicks: number;
-    readonly paralysisStacks: number;
-    readonly spDrainPerSecond: number;
-    readonly blocksSkill: boolean;
-    readonly blocksSpRecovery: boolean;
-    readonly attackReductionRatio: number;
-}
+export type ArknightsElementalBurstProfile = BurstDefinition;
 
 export interface ArknightsElementalOptions {
     readonly receiver: Receiver;
@@ -50,15 +31,13 @@ function profile(
         damagePerSecond: null,
         defReduction: 0,
         resReduction: 0,
-        stunTicks: 0,
+        stun: false,
         paralysisStacks: 0,
         spDrainPerSecond: 0,
         blocksSkill: false,
         blocksSpRecovery: false,
         attackReductionRatio: 0,
         ...input,
-        ...(input.burstDamage == null ? {} : { burstDamage: { ...input.burstDamage } }),
-        ...(input.damagePerSecond == null ? {} : { damagePerSecond: { ...input.damagePerSecond } }),
     };
 }
 
@@ -68,7 +47,7 @@ const profiles: Readonly<Record<Receiver, Readonly<Record<Type, ArknightsElement
             NEURAL: profile({
                 durationTicks: secondsToTicks(10),
                 burstDamage: { type: "TRUE", power: 1000 },
-                stunTicks: secondsToTicks(10),
+                stun: true,
             }),
             EROSION: profile({
                 durationTicks: secondsToTicks(10),
@@ -112,22 +91,6 @@ const profiles: Readonly<Record<Receiver, Readonly<Record<Type, ArknightsElement
         },
     };
 
-function createBursts(receiver: Receiver): Readonly<Record<Type, BurstDefinition>> {
-    const selected = profiles[receiver];
-
-    return {
-        NEURAL: createBurstDefinition(`elemental/${receiver}/NEURAL`, selected.NEURAL),
-        EROSION: createBurstDefinition(`elemental/${receiver}/EROSION`, selected.EROSION),
-        BURN: createBurstDefinition(`elemental/${receiver}/BURN`, selected.BURN),
-        NECROSIS: createBurstDefinition(`elemental/${receiver}/NECROSIS`, selected.NECROSIS),
-    };
-}
-
-const bursts = {
-    CHARACTER: createBursts("CHARACTER"),
-    ENEMY: createBursts("ENEMY"),
-};
-
 export function parseElementType(value: unknown): Type {
     for (const [index, key] of Object.keys(elements).entries()) {
         if (value === key || value === index + 1) {
@@ -155,6 +118,6 @@ export function createArknightsElementalDefinition(
         elementResistance: options.elementResistance ?? 0,
         damageResistance: options.damageResistance ?? 0,
         burstRecoverySpeed: options.burstRecoverySpeed ?? 1,
-        bursts: bursts[options.receiver],
+        bursts: profiles[options.receiver],
     };
 }

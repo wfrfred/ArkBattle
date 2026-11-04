@@ -13,15 +13,11 @@ import { create as modifier } from "../../dist/core/unit/contribution/attribute.
 import { TacticalDemoPresentation } from "../../dist/legacy/tactical-demo-presentation.js";
 import { select, elementHealing, first } from "../../dist/core/battle/targeting/index.js";
 
-const burst = { durationTicks: 6, onStart: state => state };
+import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
 const elementalReceiver = {
     id: "ep-receiver", hooks: Hooks.empty(), spatialPresence: {}, allegiance: { side: "ALLY" },
     targetable: { restrictions: [] },
-    elemental: {
-        maxEp: 1000, recoveryPerSecond: 15, elementResistance: 0,
-        damageResistance: 0, burstRecoverySpeed: 1,
-        bursts: Object.fromEntries(elemental.ELEMENT_TYPES.map(type => [type, burst])),
-    },
+    elemental: createArknightsElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
 };
 
 test("HP Healing calculates output before reception and full HP still notifies both self-target roles", () => {

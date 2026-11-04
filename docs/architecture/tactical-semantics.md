@@ -65,7 +65,7 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | SKILL-02 弹药耗尽检查 | 消费与耗尽检查分离；普通弹药技能的下一次普攻检查结束语义应由对应内容表达。[弹药](https://prts.wiki/w/技能#特殊属性) | 现有内容组合器在本次 afterOutput 连续调用 consume／check，尚需用代表内容核对其与目标检查时点的差异及影响。 | 内容时点待核对／P1 |
 | EFFECT-02 叠加与续期 | DEFAULT / STACK / UNIQUE / EXTEND / EXTEND_TIME 等按内容实施，不能用同一组赢家替代。[叠加策略](https://prts.wiki/w/BUFF#叠加策略) | [data/arknights/buff-stacking.ts](../../src/data/arknights/buff-stacking.ts) 有计划计算，但没有生产调用链；实际安装尚未覆盖五类策略。 | 部分实现／P1 |
 | EFFECT-03 Aura 与周期业务 | Effect 保存刷新进度和目标到接收实例的关联；范围查询不等于安装事实；每个领域消费自己的输出。[BUFF](https://prts.wiki/w/BUFF) | onTick、data、子 scope 可承载，但缺代表性生产 Aura 链路及其刷新、暂停、离开验证。 | 部分实现／P1 |
-| ABNORMAL-02 沉默／静默 | 沉默只作用可沉默的技能、能力与 Buff；静默另有无条件限制。[异常效果](https://prts.wiki/w/异常效果) | [effects/control.ts:5](../../src/content/effects/control.ts#L5) 的 silence 无条件禁止 Skill 激活，也未暂停已有可沉默 Effect。 | 明确不一致／P1 |
+| ABNORMAL-02 沉默／静默 | 沉默只作用可沉默的技能、能力与 Buff；静默另有无条件限制。[异常效果](https://prts.wiki/w/异常效果) | [unit/control.ts](../../src/core/unit/control.ts) 的 silence 无条件禁止 Skill 激活，也未暂停已有可沉默 Effect。 | 明确不一致／P1 |
 | ABNORMAL-03 免疫、反制、抵抗 | 区分安装限制、使效果失效、清除相关 Buff 和持续时间变化；不能统一为删除实例。[BUFF](https://prts.wiki/w/BUFF)、[异常效果](https://prts.wiki/w/异常效果) | 通用行为尚未接入；当前地面敌人工厂拒绝未支持的 stunImmune 配置。 | 部分实现／P1 |
 | ABNORMAL-04 其他异常组合 | 寒冷、冻结、缴械、束缚、沉睡、浮空等按内容组合规则，并保留必要的可查询语义。[异常效果](https://prts.wiki/w/异常效果) | 现有 Capability / Effect 接口提供部分组合基础，具体机制未完整接入。 | 部分实现／P2 |
 | EP-03 元素免疫与恢复 | 元素免疫限制损失；爆发冷却对回复的限制独立。[元素](https://prts.wiki/w/元素)、[元素免疫](https://prts.wiki/w/异常效果) | [elemental/query.ts](../../src/core/unit/capability/elemental/query.ts) 分开损伤／治疗准入；damage 节点的 Rule 可表达元素免疫而不拒绝治疗，Burst 冷却同时限制两者。结论按 PRTS 定义推导，尚未客户端动态复核。 | 待客户端复核／P2 |

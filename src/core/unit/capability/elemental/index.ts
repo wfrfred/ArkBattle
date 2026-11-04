@@ -16,16 +16,9 @@ export type { Type, Values, Input, Definition, Parameter, State, Elemental } fro
 
 export { ref } from "./burst.js";
 
-export type {
-    Id as BurstId,
-    Status as BurstStatus,
-    End,
-    Definition as BurstDefinition,
-    Burst,
-} from "./burst.js";
+export type { End, Definition as BurstDefinition, State as BurstState, Burst } from "./burst.js";
 
 export {
-    lifetime,
     receiveDamage,
     commitDamage,
     commitHealing,

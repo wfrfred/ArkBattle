@@ -107,7 +107,7 @@ Core 不提供干员或敌人 Archetype 层；内容直接组合 Unit Definition
 
 合法构造入口建立 Definition／State 配对、能力依赖和身份约束；登记后的内部操作信任这些不变量，不把内容私有状态重新视作未知 JSON，也不重复检查 Typed Ref 已证明的能力。初值与写回遵守所属领域的职责，不能绕过领域操作，靠任意 State 覆写补出缺失能力或部署事实。Deployment 在 Unit 初始化后、登记前写入本次部署事实属于合法的领域创建流程。测试夹具同样遵守这些边界。
 
-- Capability Definition 由 Content 直接构造，必要的领域不变量校验放在 initialize。Action 的 Definition 提供 initialize 与可选 select；Elemental 的完整配置与爆发程序由 Data／Content 提供，能力初始化校验基础数值和各型爆发时长。几何构造等局部值转换由内容按需调用。
+- Capability Definition 由 Content 直接构造，必要的领域不变量校验放在 initialize。Action 的 Definition 提供 initialize 与可选 select；Elemental 的标准爆发 Effect 由 Core 固定实现，Data 提供纯配置，能力初始化校验基础数值和各型爆发参数。几何构造等局部值转换由内容按需调用。
 - Capability.initialize 使用当前 battle 和正在装配的 Unit，读取自身 Definition，返回 Result<U & Capability>；内部纯值模型保留自己的自然初始化参数。
 - validateState 验证已有值，返回 void，不伪装成构造。
 - Rule、Hook、Contribution 与 Blocker.layer 的 set／remove 工厂绑定 Ref 返回 Change；add、生命周期与精确私有 state 写回维持所属领域完整操作；resolve 查询有效值，advance 表达时间推进。Change 的后继由领域明确提供，不由 Unit 发布推断。

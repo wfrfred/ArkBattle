@@ -13,6 +13,7 @@ import {
     damageRatio,
     currentType,
     resolveMaxEp,
+    get as getBurst,
 } from "../core/unit/capability/elemental/index.js";
 
 import { hasLocomotion } from "../core/unit/capability/locomotion/index.js";
@@ -22,7 +23,7 @@ import { hasLayer } from "../core/unit/capability/layer/capability.js";
 import { hasDirection } from "../core/unit/capability/occupancy/index.js";
 import { hasAction } from "../core/unit/capability/action/index.js";
 import { hasSkill } from "../core/unit/capability/skill/index.js";
-import { stun } from "../content/effects/stun.js";
+import { stun } from "../core/unit/control.js";
 import { invincible } from "../content/effects/protection.js";
 import { project as projectTrackingProjectile } from "../content/projectiles/tracking.js";
 import {
@@ -587,15 +588,17 @@ export class TacticalDemoPresentation {
                 continue;
             }
 
-            const recovery = unit.elemental.burst;
-            if (recovery !== null) {
+            const reference = unit.elemental.burst;
+            if (reference !== null) {
+                const recovery = getBurst(state, reference)!;
+                const definition = unit.definition.elemental.bursts[recovery.data.type];
+                const remainingTicks = definition.durationTicks - recovery.data.elapsedTicks;
                 gauges.push([
                     unit.id,
-                    ELEMENT_TYPE[recovery.type],
+                    ELEMENT_TYPE[recovery.data.type],
                     1,
-                    (state.tick + recovery.remainingTicks) / TICKS_PER_SECOND,
-                    unit.definition.elemental.bursts[recovery.type].durationTicks /
-                        TICKS_PER_SECOND,
+                    (state.tick + remainingTicks) / TICKS_PER_SECOND,
+                    definition.durationTicks / TICKS_PER_SECOND,
                 ]);
                 continue;
             }

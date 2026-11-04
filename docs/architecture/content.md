@@ -14,6 +14,8 @@ Meta 可以选择配置或提供关卡输入。卫戍的普通／金色等政策
 
 具体内容按角色目录组织，例如 `enemies/hound/`、`enemies/crossbowman/`、`operators/melantha/`、`operators/mudrock/`。action.ts 描述该角色的具体行动、目标条件、私有状态和输出程序；unit.ts 组装属性、Capability、天赋与行动选择策略。Unit 的 action.initialize 用 createActions 接续各项具体创建程序，运行时只维护 Actions，不另建静态定义注册表。Skill 只需一个聚合，Unit 的 skill.initialize 调用 skills.create(battle, programDefinition)；完整程序与元数据保存在当前 unit.skill.definition，Skill 回调使用显式 source 与聚合 self。
 
+标准元素爆发由 Core 的 Elemental 领域提供固定 Effect，Data 只选择八套静态数值配置，不提供爆发执行回调。眩晕、封技和阻止 SP 回复等通用控制定义位于 `core/unit/control.ts`，Content 直接复用；具体角色的特殊交互仍由自己的 Effect、Hook 和 Rule 表达。Effect 是运行载体，不按实现机制另设一个收纳各领域业务的顶层 effects 目录。
+
 弩手的 action.ts 分别定义 melee 与 ranged，两者有各自的冷却和执行状态。unit.ts 按当前阻挡关系选择近战或远程，在已有主动作执行期间不并发启动另一主动作；选择和互斥属于内容策略。场景选择敌人和配置波次，不通过一个带敌人 ID 分支的中央工厂构造所有内容。确实共用的地面属性与能力装配由普通函数提供，具体攻击程序归各自内容。
 
 装置行为位于 `devices/`。`crate.ts`、`shooting-platform.ts` 接受类型化配置并构造 Unit Definition，通过 Unit 的 enter／leave Hook 处理改格和清理；实际共用的改格函数放在 Content 内。射击台在 Occupancy 的 SUPPORT Definition 中提供 occupantAdded／occupantRemoved Hook，在当前乘员的 blocker.rules 登记平台独占的共享二元 Rule，禁止其与任何目标建立或保留阻挡，解除登记或消失时清理自身规则，不改写地块阻挡许可。Data 只解析资源与关卡实例，并根据资源标识选择工厂，不在运行程序中按 Prefab Key 决定业务。内部批量登记交换用于验证结构与同步通知，不能证明游戏允许自由搬动平台。
