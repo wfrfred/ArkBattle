@@ -1,4 +1,5 @@
 export {
+    Type,
     ELEMENT_TYPES,
     hasElemental,
     hasElementalDefinition,
@@ -12,7 +13,7 @@ export {
     removeHook,
 } from "./capability.js";
 
-export type { Type, Values, Input, Definition, Parameter, State, Elemental } from "./capability.js";
+export type { Values, Input, Definition, Parameter, State, Elemental } from "./capability.js";
 
 export { ref } from "./burst.js";
 

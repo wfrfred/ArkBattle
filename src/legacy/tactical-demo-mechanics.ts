@@ -6,7 +6,7 @@ import type { Input } from "../core/battle/index.js";
 
 import type { Map } from "../core/battlefield/map/map.js";
 import { TICKS_PER_SECOND } from "../core/tick.js";
-import type { Type as ElementType } from "../core/unit/capability/elemental/index.js";
+import { Type as ElementType } from "../core/unit/capability/elemental/index.js";
 import { createInput, type Input as RouteInput } from "../core/battle/creation/route.js";
 import { createArknightsElementalDefinition } from "../data/arknights/elemental.js";
 import { compileArknightsAttackBuffSkill } from "../data/arknights/skill-buff.js";
@@ -14,10 +14,10 @@ import { createTacticalCombatDemoSpec } from "./tactical-demo-combat.js";
 import type { LegacyData } from "./tactical-demo-presentation.js";
 
 const ELEMENT_SCENARIOS = {
-    ELEMENT_NEURAL: "NEURAL",
-    ELEMENT_EROSION: "EROSION",
-    ELEMENT_BURN: "BURN",
-    ELEMENT_NECROSIS: "NECROSIS",
+    ELEMENT_NEURAL: ElementType.NEURAL,
+    ELEMENT_EROSION: ElementType.EROSION,
+    ELEMENT_BURN: ElementType.BURN,
+    ELEMENT_NECROSIS: ElementType.NECROSIS,
 } as const;
 
 export type TacticalMechanicsScenario = "SKILL" | keyof typeof ELEMENT_SCENARIOS;

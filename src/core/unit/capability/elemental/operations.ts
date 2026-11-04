@@ -13,7 +13,7 @@ import {
     type Type,
     type Values,
 } from "./capability.js";
-import { definitions, type Burst } from "./burst.js";
+import type { Burst } from "./burst.js";
 import { dispatch } from "./hook.js";
 import * as query from "./query.js";
 import type * as damage from "../../../battle/damage/ep/contract.js";
@@ -92,7 +92,7 @@ export function commitDamage(
 
     let reference: Ref<Burst> | null = null;
     if (depleted) {
-        const installed = effects.install(battle, target, definitions[type], {
+        const installed = effects.install(battle, target, self.definition.elemental.bursts[type], {
             source: request.source,
             enabled: false,
         });
@@ -184,10 +184,10 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
 }
 
 function normalizedEp(self: Unit & Elemental, maximum: number): Values {
-    return {
-        NEURAL: Math.min(maximum, Math.max(0, self.elemental.ep.NEURAL)),
-        EROSION: Math.min(maximum, Math.max(0, self.elemental.ep.EROSION)),
-        BURN: Math.min(maximum, Math.max(0, self.elemental.ep.BURN)),
-        NECROSIS: Math.min(maximum, Math.max(0, self.elemental.ep.NECROSIS)),
-    };
+    return Object.fromEntries(
+        ELEMENT_TYPES.map((type) => [
+            type,
+            Math.min(maximum, Math.max(0, self.elemental.ep[type])),
+        ]),
+    ) as Values;
 }

@@ -110,7 +110,7 @@ Rule、Hook、Contribution 与 Blocker.layer 的公开写入绑定 Typed Ref，�
 | Targeting          | 候选、查询资格、优先级与确定性选择             | 读取当前事实；比较器纯函数并追加确定性 tie-break                                  |
 | Damage             | 公式、输出、有序接收、普通扣血及死亡       | 流程在 battle/damage；Offense／Vitality／Elemental 提供属性。通用结算登记存于 Unit.hooks，专属接收与规则留在资源能力。特殊生命保护尚待设计 |
 | Healing            | 计算、输出、有序接收、普通恢复与通知           | 流程在 battle/healing；Vitality 保存 HP／MaxHP 与专属接收 Hook，通用结算登记存于 Unit.hooks。治疗不可选中由 Targetable 表达，明确 Ref 的治疗只检查生命周期和接收 Hook |
-| Elemental          | 元素值、损伤与治疗、标准爆发及动态恢复预算 | 状态保存四型 EP 与当前 Burst Effect Ref，Core 固定程序消费 Data 的纯配置；元素损伤抗性和元素 HP 伤害抗性分别表达 |
+| Elemental          | 元素值、损伤与治疗、标准爆发及动态恢复预算 | 状态保存四型 EP 与当前 Burst Effect Ref，Core 提供具体 Effect，Data 选择实现并绑定数值；元素损伤抗性和元素 HP 伤害抗性分别表达 |
 | Effect             | 附着实例、私有状态、生效切换、覆写与结束       | Unit 持有实例与独立 deadline；依赖归 Lifetime；具体 Definition 登记 Hook 和 Contribution |
 | Lifetime           | 结束幂等、依赖传播与完成调度 | 静态描述符配对 Typed Ref；图保存 owner 与显式依赖；Pending 保存本次请求与阶段，owner 等全部依赖者完整 Finalize |
 | Projectile         | 独立空间执行实例、内容程序与终止请求／Finalize | 根实例保存身份、Definition、位置、ACTIVE／ENDING 与私有 state；运动、命中、采样和计时按内容组合，见 [Projectile 设计](projectile.md) |
@@ -135,7 +135,7 @@ Skill 的 Definition／create、单槽聚合、Activation 非空视图、查询�
 
 弹药消耗属于实际攻击输出，准备步骤与取消的前摇不消耗弹药；同一次攻击的多目标输出只消费一次。消耗与耗尽检查由内容在明确节点分别调用；普通弹药技能检查时点的内容对照见 [待完成机制](tactical-semantics.md)。已经释放的 Projectile 具有独立生命周期，技能结束或 Action 取消不会删除它。
 
-干员和敌人内容按需组合 Vitality 与 Elemental；Core 的基础 Unit 不隐含这些能力，也不提供干员或敌人 Archetype 层。免疫通过 Elemental Rule 表达，不通过删除能力表达。神经、侵蚀、灼燃和坏死分别积累，Elemental 只保存当前标准 Burst Effect 的引用；该 Effect 以一份有效进度推进动态恢复预算、四型 EP 回填和周期输出。Core 实现固定标准规则，Data 选择纯参数，不注入任意爆发程序，接收者类别不依赖当前阵营或 Core 注册表。EP Commit 同步安装 Burst，先创建通知、再 damaged、再启用标准效果，返回后才执行 Battle Applied；damaged／healed 保留各自资源通知职责。EP 损伤与 HP 元素伤害调用不同操作，元素治疗有自己的接收资格，HP 禁疗不隐式决定 EP 接收。少数多爆发特例由 Content 组合实际语义，详见 [Elemental 设计](elemental.md)。
+干员和敌人内容按需组合 Vitality 与 Elemental；Core 的基础 Unit 不隐含这些能力，也不提供干员或敌人 Archetype 层。免疫通过 Elemental Rule 表达，不通过删除能力表达。神经、侵蚀、灼燃和坏死分别积累，Elemental 只保存当前标准 Burst Effect 的引用；该 Effect 以一份有效进度推进动态恢复预算、四型 EP 回填和周期输出。Core 用八个具体 Effect 实现各套标准规则，Data 选择对应实现并绑定数值，形成按元素枚举查找的静态表；不保留大参数表与开关解释器。接收者类别不依赖当前阵营或 Core 注册表。EP Commit 同步安装 Burst，先创建通知、再 damaged、再启用标准效果，返回后才执行 Battle Applied；damaged／healed 保留各自资源通知职责。EP 损伤与 HP 元素伤害调用不同操作，元素治疗有自己的接收资格，HP 禁疗不隐式决定 EP 接收。少数多爆发特例由 Content 组合实际语义，详见 [Elemental 设计](elemental.md)。
 
 ## 数值、贡献与领域响应
 
