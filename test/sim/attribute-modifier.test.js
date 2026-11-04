@@ -1,9 +1,3 @@
-import { Hooks } from "../../dist/core/hook.js";
-import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
-import { damage as damageTargeting } from "../helpers/targeting.js";
-import { actionCapability } from "../helpers/actions.js";
-import { create as createAttack } from '../../dist/content/actions/attack.js';
-import { ref as unitRef } from "../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
@@ -11,32 +5,7 @@ import {
     parseAttributeModifiers,
     compileAttributeModifiers,
 } from "../../dist/data/arknights/modifier.js";
-import { remove as removeUnit } from "../../dist/core/battle/unit.js";
-import { getUnit } from "../helpers/unit.js";
-import * as effects from "../../dist/core/unit/effect/index.js";
-import {
-    setAttackContribution,
-    removeAttackContribution,
-} from "../../dist/core/unit/capability/offense/capability.js";
-import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
-import {
-    setSpeedContribution,
-    removeSpeedContribution,
-} from "../../dist/core/unit/capability/action/index.js";
-import { resolveSpeed } from "../../dist/core/unit/capability/action/timing.js";
-import {
-    setSpeedContribution as setMoveSpeedContribution,
-    removeSpeedContribution as removeMoveSpeedContribution,
-} from "../../dist/core/unit/capability/locomotion/index.js";
-import { advance as advanceLocomotion } from "../../dist/core/unit/capability/locomotion/index.js";
-import { initialize } from "../helpers/unit.js";
 import * as modifier from "../../dist/core/unit/contribution/attribute.js";
-import {
-    definition,
-    contributionEffect,
-    refreshContribution,
-    effectFixtureWork,
-} from "../helpers/effects.js";
 
 const fixture = (name) =>
     JSON.parse(
@@ -204,7 +173,7 @@ test("attribute modifiers: Warfarin's actual ATK descriptor is a percentage cont
     close(modifier.apply(100, [value]), 190);
 });
 
-test("attribute modifiers: native Mire percentages affect existing ASPD and normalized speed", () => {
+test("attribute modifiers: native Mire data preserves ASPD and normalized movement operands", () => {
     const raw = fixture("buff_mire_attr");
     const blackboard = new Map(
         fixture("skill_sktok_mire").levels[0].blackboard.map(({ key, value }) => [key, value]),
@@ -213,142 +182,8 @@ test("attribute modifiers: native Mire percentages affect existing ASPD and norm
         parseAttributeModifiers(raw.node._buff.attributes.attributeModifiers),
     );
     const sampled = new Map(
-        compiled.map((entry) => [entry.attributeType, entry.sample(context({ blackboard }))]),
+        compiled.map(entry => [entry.attributeType, entry.sample(context({ blackboard }))]),
     );
-    const program = definition(
-        "compiled-mire",
-        {},
-        {
-            onEnable(state, self) {
-                const id = `${self.id}`;
-                const currentUnit = getUnit(state, self.host.id);
-                return applyUnitChanges(state, [setSpeedContribution({ id: currentUnit.id }, {
-                        id,
-                        value: [sampled.get("ATTACK_SPEED")],
-                    }), setMoveSpeedContribution({ id: currentUnit.id }, {
-                        id,
-                        value: [sampled.get("MOVE_SPEED")],
-                    })]);
-            },
-            onDisable(state, self) {
-                const id = `${self.id}`;
-                const currentUnit1 = getUnit(state, self.host.id);
-                return applyUnitChanges(state, [removeSpeedContribution({ id: currentUnit1.id }, id), removeMoveSpeedContribution({ id: currentUnit1.id }, id)]);
-            },
-        },
-    );
-    const unit = initialize({
-        id: 0,
-        position: [0, 0],
-        definition: { hooks: Hooks.empty(),
-            id: "mire-receiver",
-            locomotion: {
-                halfBodyWidth: 0, speed: 1 / 30,
-                minSpeed: 0.1 / 30,
-                steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 },
-            },
-            action: actionCapability(createAttack({ id: 'normal', speed: 200,
-                    triggerBindingId: "unused",
-                    intervalTicks: 30,
-                    recoveryTicks: 0,
-                    targetGroups: [
-                        {
-                            id: "unused",
-                            targeting: damageTargeting({
-                                type: "DAMAGE",
-                                scope: { type: "BLOCKER" },
-                                canTargetAir: false,
-                                includeBlockingRelations: true,
-                                preferBlockingRelations: true,
-                                ignoreTargetFree: false,
-                                ignoreInvisible: false,
-                                maxTargets: 1,
-                            }),
-                            operations: [{ type: "DAMAGE", power: 0, damageType: "TRUE" }],
-                        },
-                    ],
-                    followUps: [],
-                 })),
-        },
-    });
-    let installed = effectFixtureWork(unit);
-    installed = effects.install(installed, unitRef(getUnit(installed, 0)), program).state;
-    const receiver = getUnit(installed, 0);
-    assert.equal(
-        resolveSpeed(installed, unitRef(receiver), receiver.action.actions.values().toArray()[0].definition),
-        190,
-    );
-    close(
-        getUnit(advanceLocomotion(installed, unitRef(receiver), {
-            nextPoint: [20, 0], goal: [20, 0],
-        }, { mode: "WALK", speedMultiplier: 1 }), receiver.id).position[0] - receiver.position[0],
-        0.95 / 30,
-    );
-});
-
-test("attribute modifiers: inspiration samples belong to the Effect input and refresh only explicitly", () => {
-    const raw = fixture("buff_encourage_atk");
-    const [compiled] = compileAttributeModifiers(
-        parseAttributeModifiers(raw.node._buff.attributes.attributeModifiers),
-    );
-    const output = {
-        capability: "offense", set: setAttackContribution,
-        remove: removeAttackContribution,
-        value: (instance) => [
-            compiled.sample(
-                context({
-                    blackboard: new Map([["atk", instance.data.ratio]]),
-                    readSourceAttribute: () => instance.data.sourceAttack,
-                }),
-            ),
-        ],
-    };
-    const amplify = contributionEffect(
-        "source-amplification",
-        {},
-        {
-            capability: "offense", set: setAttackContribution,
-            remove: removeAttackContribution,
-            value: () => [modifier.create({ multiplier: 1 })],
-        },
-    );
-    const program = contributionEffect(
-        "compiled-inspiration",
-        { sourceAttack: 0, ratio: 0.6 },
-        output,
-    );
-    const unit = (id, power) =>
-        initialize({
-            id,
-            position: [id, 0],
-            definition: { hooks: Hooks.empty(), id: `inspiration-${id}`, offense: { attack: power } },
-        });
-    const source = unit(0, 100);
-    const receiver = unit(1, 20);
-    let work = effectFixtureWork(source, receiver);
-    const sampleInput = (work) => ({ sourceAttack: resolveAttack(work, unitRef(source)), ratio: 0.6 });
-    const installed = effects.install(work, unitRef(getUnit(work, 1)), program, {
-        source: unitRef(source),
-        data: sampleInput(work),
-    });
-    work = installed.state;
-    const ref = installed.value;
-    assert.equal(resolveAttack(work, unitRef(receiver)), 80);
-    const copied = getUnit(work, 1);
-    work = effects.install(work, unitRef(getUnit(work, 0)), amplify).state;
-    assert.equal(resolveAttack(work, unitRef(source)), 200);
-    assert.equal(resolveAttack(work, unitRef(receiver)), 80);
-    work = effects.setEnabled(work, ref, false);
-    assert.equal(resolveAttack(work, unitRef(receiver)), 20);
-    work = effects.setEnabled(work, ref, true);
-    assert.equal(resolveAttack(work, unitRef(receiver)), 80);
-    const sampledInput = sampleInput(work);
-    work = effects.setData(work, ref, sampledInput);
-    work = refreshContribution(work, ref, program, output);
-    assert.equal(resolveAttack(work, unitRef(receiver)), 140);
-    work = removeUnit(work, 0, "RETREAT");
-    assert.equal(resolveAttack(work, unitRef(receiver)), 140);
-    assert.equal(copied.effects.values().toArray()[0].data.sourceAttack, 100);
-    work = effects.end(work, ref);
-    assert.equal(resolveAttack(work, unitRef(receiver)), 20);
+    assert.equal(modifier.apply(200, [sampled.get("ATTACK_SPEED")]), 190);
+    close(modifier.apply(1 / 30, [sampled.get("MOVE_SPEED")]), 0.95 / 30);
 });

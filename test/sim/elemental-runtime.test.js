@@ -15,7 +15,7 @@ import { actionCapability } from "../helpers/actions.js";
 import { ref as unitRef } from "../../dist/core/unit/index.js";
 import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
 import { ref as skillRef, definition as createSkillDefinition } from "../helpers/skill.js";
-import { activate as activateSkill, advance as advanceSkill } from "../../dist/core/unit/skill/index.js";
+import { create as createSkill, activate as activateSkill, advance as advanceSkill } from "../../dist/core/unit/skill/index.js";
 import { recover } from "../../dist/core/unit/skill/sp.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/index.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
@@ -102,7 +102,7 @@ test('elemental execution: erosion defense loss survives recovery and stacks on 
 
 test('elemental execution: character necrosis settles fifteen magical pulses, drains SP and blocks recovery and activation until recovery ends', () => {
   const skill = createSkillDefinition({ id: 'necrosis-sp', sp: { initial: 20, capacity: 30, requirement: 30, recovery: { type: 'TIME', intervalTicks: 30 } } });
-  let work = effectFixtureWork(unit('CHARACTER', { skill }));
+  let work = effectFixtureWork(unit('CHARACTER', { skill: { initialize: state => createSkill(state, skill) } }));
   work = element(work, 'NECROSIS').state;
   assert.equal(getUnit(work, 1).vitality.hp, 100000);
   assert.equal(activateSkill(work, skillRef(getUnit(work, 1))).value.type, 'REJECTED');

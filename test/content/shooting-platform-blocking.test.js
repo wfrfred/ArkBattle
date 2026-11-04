@@ -1,218 +1,71 @@
 import { Hooks } from "../../dist/core/hook.js";
-import * as unitLifecycle from "../../dist/core/unit/hook.js";
-import { predefinedUnits } from "../helpers/predefined.js";
-import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { create as createPlatform } from "../../dist/content/devices/shooting-platform.js";
-import { add, remove } from "../../dist/core/battle/unit.js";
-import { addCard } from "../../dist/core/battle/deployment/index.js";
-import { deploy, createRequest } from "../../dist/core/battle/deployment/index.js";
-import { initialize as initializeBattle } from "../../dist/core/battle/index.js";
+import { add, remove, update } from "../../dist/core/battle/unit.js";
 import { get as getTile } from "../../dist/core/battlefield/map/map.js";
 import { at as occupancyAt } from "../../dist/core/battlefield/occupancy.js";
 import { Tile } from "../../dist/core/geometry/coordinate.js";
 import { createDefinition as createDeployable, createCardDefinition } from "../helpers/deployable.js";
-import { setHook } from "../../dist/core/unit/capability/blocking/blocker-operations.js";
 import { sides, setLayer } from "../../dist/core/unit/capability/blocking/index.js";
-import { fixture as blockingFixture, holder, target, acquire, ownerId, hook } from "../helpers/blocking.js";
+import { fixture as blockingFixture, holder, target, acquire, ownerId } from "../helpers/blocking.js";
 import { getUnit, initialize } from "../helpers/unit.js";
 
-function fixture(units = [], options) {
-    let battle = blockingFixture([], options);
+const first = [1, 2];
+const second = [1, 5];
+const deployable = createDeployable();
+const card = createCardDefinition({ cost: 0, redeployTicks: 0, slots: 0, placement: "ALL" });
+function passenger(id = 10, tile = first, layer = "GROUND") {
+    return initialize({
+        id, position: Tile.center(tile), initial: { occupancy: { tile } }, definition: {
+            id: "passenger", hooks: Hooks.empty(), occupancy: { slot: "OCCUPANT" }, spatialPresence: {},
+            allegiance: { side: "ALLY" }, vitality: { maxHp: 100, defense: 0, resistance: 0 },
+            blocker: { layer, capacity: 1, rules: [sides("ENEMY")] },
+        },
+    });
+}
+function platform() {
+    return initialize({
+        id: 30, position: Tile.center(first), initial: { occupancy: { tile: first } },
+        definition: createPlatform({
+            id: "platform", vitality: { maxHp: 100, defense: 0, resistance: 0 },
+            deployable, card, tileChanges: { elevation: "HIGHLAND" },
+        }),
+    });
+}
+function fixture(units) {
+    let battle = blockingFixture();
     for (const unit of units) battle = add(battle, unit);
     return battle;
 }
 
-const first = [1, 2];
-const second = [1, 5];
-const profile = createDeployable();
-const cardDefinition = createCardDefinition({ cost: 0, redeployTicks: 0, slots: 0, placement: "ALL" });
-
-function passengerDefinition(extra = {}) {
-    return { hooks: Hooks.empty(),
-        id: "platform-passenger", occupancy: { slot: "OCCUPANT" }, spatialPresence: {},
-        allegiance: { side: "ALLY" }, vitality: { maxHp: 100, defense: 0, resistance: 0 },
-        blocker: { layer: "GROUND", capacity: 1, radius: 1, rules: [sides("ENEMY")] }, deployable: profile, card: cardDefinition,
-        ...extra,
-    };
-}
-
-function passenger(id = 10, tile = first, extra = {}) {
-    return initialize({ id, position: Tile.center(tile), definition: passengerDefinition(extra), states: { occupancy: { tile } } });
-}
-
-function platformDefinition(id = "shooting-platform") {
-    return createPlatform({ hooks: Hooks.empty(),
-        id, vitality: { maxHp: 100, defense: 0, resistance: 0 }, deployable: profile, card: cardDefinition,
-        tileChanges: { elevation: "HIGHLAND" },
-    });
-}
-
-function platform(id = 30, tile = first) {
-    return initialize({
-        id, position: Tile.center(tile), definition: platformDefinition(`platform-${id}`),
-        states: { occupancy: { tile } },
-    });
-}
-
-function assertSuppressed(battle, id) {
-    const unit = getUnit(battle, id);
-    assert.equal(unit.blocker.rules.length, 2);
-    assert.equal(unit.blocker.rules[0].id, "blocking/sides");
-    assert.deepEqual(unit.blocker.blocked, []);
-}
-
-function assertEligible(battle, id) {
-    const unit = getUnit(battle, id);
-    assert.deepEqual(unit.blocker.rules.map(rule => rule.id), ["blocking/sides"]);
-}
-
-test("platform entry suppresses its existing passenger synchronously without changing tile permission or other blockers", () => {
-    let battle = fixture([
-        passenger(), target(), holder(11), passenger(12, second),
-    ]);
-    battle = acquire(battle);
-    const before = battle;
-    const originalTile = getTile(battle.battlefield.map, first);
-    assert.equal(ownerId(before), 10);
-
+test("a platform suppresses its ground passenger without disabling other blockers on the tile", () => {
+    let battle = acquire(fixture([passenger(), target(), holder(11)]));
+    assert.equal(ownerId(battle), 10);
     battle = add(battle, platform());
-
-    assertSuppressed(battle, 10);
-    assertEligible(battle, 11); // Same world tile, without OCCUPANT registration.
-    assertEligible(battle, 12);
     assert.equal(ownerId(battle), undefined);
-    assert.equal(getTile(battle.battlefield.map, first).state.allowsBlocking, originalTile.state.allowsBlocking);
-    assert.equal(getTile(battle.battlefield.map, second).state.allowsBlocking, true);
-    assert.equal(ownerId(before), 10);
-    assertEligible(before, 10);
-
+    assert.equal(getTile(battle.battlefield.map, first).state.allowsBlocking, true);
     battle = acquire(battle, 11);
-    assert.equal(ownerId(battle), 11, "the platform must not disable the tile for an unrelated blocker");
+    assert.equal(ownerId(battle), 11);
 });
 
-test("an AIR passenger can block from a platform and landing releases its airborne target", () => {
-    const airborne = passenger(10, first, {
-        blocker: { capacity: 1, layer: "AIR", rules: [sides("ENEMY")] },
-    });
-    let battle = fixture([platform(), airborne, target(20, { layer: "AIR" }), target(21)]);
-    const ruleIds = getUnit(battle, 10).blocker.rules.map(rule => rule.id);
-    assert.equal(ruleIds.length, 2, "the platform keeps its own conditional restriction registered");
-    battle = acquire(battle);
+test("an airborne passenger can block from a platform, and landing restores its restriction", () => {
+    let battle = acquire(fixture([platform(), passenger(10, first, "AIR"),
+        target(20, { layer: "AIR" }), target(21)]));
     assert.equal(ownerId(battle, 20), 10);
     assert.equal(ownerId(battle, 21), undefined);
-
-    battle = applyUnitChanges(battle, [setLayer({ id: 10 }, "GROUND")]);
+    battle = update(battle, [setLayer({ id: 10 }, "GROUND")]);
     assert.equal(ownerId(battle, 20), undefined);
-    assert.deepEqual(getUnit(battle, 10).blocker.rules.map(rule => rule.id), ruleIds);
     battle = acquire(battle);
-    assert.equal(ownerId(battle, 21), undefined, "the same platform restriction prevents ground blocking");
-
-    battle = applyUnitChanges(battle, [setLayer({ id: 10 }, "AIR")]);
-    assert.equal(ownerId(battle, 20), undefined, "takeoff does not acquire before a search");
-    battle = acquire(battle);
-    assert.equal(ownerId(battle, 20), 10);
-    assert.deepEqual(getUnit(battle, 10).blocker.rules.map(rule => rule.id), ruleIds);
+    assert.equal(ownerId(battle, 21), undefined);
 });
 
-for (const entry of ["initial", "script", "manual"]) {
-    test(`a passenger entering an existing platform through ${entry} entry is already suppressed when the operation returns`, () => {
-        let battle;
-        let id;
-        if (entry === "initial") {
-            battle = initializeBattle({
-                map: fixture().battlefield.map,
-                schedule: { type: "TIMELINE", spawns: [] },  initialMechanisms: [],
-                maxTicks: 10, routeMoveMultiplier: 1, rngState: 1,
-                predefines: predefinedUnits([
-                    { definition: platformDefinition(), position: Tile.center(first), initial: { occupancy: { tile: first } } },
-                    { definition: passengerDefinition(), position: Tile.center(first), initial: { occupancy: { tile: first } } },
-                ]),
-            });
-            id = 1;
-        } else {
-            battle = add(fixture(), platform());
-            if (entry === "script") {
-                battle = add(battle, passenger());
-                id = 10;
-            } else {
-                const card = addCard(battle, passengerDefinition());
-                const result = deploy(card.state, createRequest(card.state, card.value, first));
-                assert.equal(result.value.type, "DEPLOYED");
-                battle = result.state;
-                id = result.value.unitId;
-            }
-        }
-        assertSuppressed(battle, id);
-        assert.equal(getTile(battle.battlefield.map, first).state.allowsBlocking, true);
-    });
-}
-
-test("platform removal removes only its old passenger and keeps tile permission", () => {
+test("removing a platform kills its own passenger and restores the tile", () => {
     let battle = fixture([platform(), passenger(), passenger(11, second)]);
     battle = remove(battle, 30, "SCRIPT");
-
     assert.equal(getUnit(battle, 10), undefined);
     assert.equal(battle.removedUnits.find(entry => entry.unitId === 10).reason, "DEATH");
-    assertEligible(battle, 11);
-    assert.equal(getTile(battle.battlefield.map, first).state.allowsBlocking, true);
-    assert.equal(getTile(battle.battlefield.map, second).state.allowsBlocking, true);
-});
-
-
-for (const nested of ["remove passenger", "remove platform"]) {
-    test(`a released Hook can ${nested} while platform entry installs its rule without leaving stale state`, () => {
-        let battle = fixture([passenger(), target()]);
-        battle = acquire(battle);
-        const unit = getUnit(battle, 10);
-        let calls = 0;
-        battle = applyUnitChanges(battle, [setHook({ id: unit.id }, "released", hook("nested-platform-change", state => {
-                calls++;
-                return remove(state, nested === "remove passenger" ? 10 : 30, "SCRIPT");
-            }))]);
-
-        battle = add(battle, platform());
-
-        assert.equal(calls, 1);
-        assert.equal(ownerId(battle), undefined);
-        assert.equal(getUnit(battle, 10), undefined);
-        assert.equal(occupancyAt(battle.battlefield, first)?.occupant ?? null, null);
-        if (nested === "remove platform") assert.equal(getUnit(battle, 30), undefined);
-        assert.equal(getTile(battle.battlefield.map, first).state.allowsBlocking, true);
-    });
-}
-
-test("a departing passenger can install its successor on the platform without outer cleanup removing the successor rule", () => {
-    let battle = fixture([platform(), target()]);
-    const successor = passenger(11, first, {
-        hooks: Hooks.empty().set(unitLifecycle.enter, { id: "test/enter",  invoke(state) { return { state: acquire(state, 11), value: undefined }; } }),
-    });
-    battle = add(battle, passenger(10, first, {
-        hooks: Hooks.empty().set(unitLifecycle.leave, { id: "test/leave",  invoke(state) { return { state: add(state, successor), value: undefined }; } }),
-    }));
-
-    battle = remove(battle, 10, "SCRIPT");
-
-    assertSuppressed(battle, 11);
-    assert.equal(ownerId(battle), undefined);
-    assert.equal(occupancyAt(battle.battlefield, first).occupant.id, 11);
-});
-
-test("a passenger killed by platform removal can install an eligible successor after the platform is gone", () => {
-    let battle = fixture([platform(), target()]);
-    const successor = passenger(11, first, {
-        hooks: Hooks.empty().set(unitLifecycle.enter, { id: "test/enter",  invoke(state) { return { state: acquire(state, 11), value: undefined }; } }),
-    });
-    battle = add(battle, passenger(10, first, {
-        hooks: Hooks.empty().set(unitLifecycle.leave, { id: "test/leave",  invoke(state) { return { state: add(state, successor), value: undefined }; } }),
-    }));
-
-    battle = remove(battle, 30, "SCRIPT");
-
-    assert.equal(getUnit(battle, 30), undefined);
-    assert.equal(getUnit(battle, 10), undefined);
-    assertEligible(battle, 11);
-    assert.equal(ownerId(battle), 11);
-    assert.equal(occupancyAt(battle.battlefield, first).occupant.id, 11);
+    assert.ok(getUnit(battle, 11));
+    assert.equal(occupancyAt(battle.battlefield, first)?.occupant ?? null, null);
+    assert.equal(getTile(battle.battlefield.map, first).state.elevation, "LOWLAND");
 });

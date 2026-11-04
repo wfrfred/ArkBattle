@@ -1,0 +1,91 @@
+import assert from "node:assert/strict";
+import { test } from "node:test";
+import { battle, get } from "../helpers/battle.js";
+import { Hooks } from "../../dist/core/hook.js";
+import * as units from "../../dist/core/unit/index.js";
+import * as epDamage from "../../dist/core/battle/damage/ep/index.js";
+import * as hpHealing from "../../dist/core/battle/healing/hp/index.js";
+import * as epHealing from "../../dist/core/battle/healing/ep/index.js";
+import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
+import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
+import { update } from "../../dist/core/battle/unit.js";
+
+const burst = { durationTicks: 6, onStart: state => state };
+const elementalReceiver = {
+    id: "ep-receiver", hooks: Hooks.empty(), spatialPresence: {}, allegiance: { side: "ALLY" },
+    elemental: {
+        maxEp: 1000, recoveryPerSecond: 15, elementResistance: 0,
+        damageResistance: 0, burstRecoverySpeed: 1,
+        bursts: Object.fromEntries(elemental.ELEMENT_TYPES.map(type => [type, burst])),
+    },
+};
+
+test("HP Healing calculates output before reception and full HP still notifies both self-target roles", () => {
+    const calls = [];
+    let state = battle([{ definition: {
+        id: "patient", hooks: Hooks.empty(), vitality: { maxHp: 100.5, defense: 0, resistance: 0 },
+    }, position: [0, 0] }]);
+    const target = units.ref(get(state, 0));
+    assert.equal(get(state, 0).vitality.hp, 100.5);
+    state = update(state, [
+        vitality.setHealingReceivingHook(target, {
+            id: "receive", invoke(current, _context, pending) { calls.push("receive"); return { state: current, value: pending }; },
+        }),
+        units.setHook(target, hpHealing.targetApplied, {
+            id: "target", invoke(current) { calls.push("target"); return { state: current, value: undefined }; },
+        }),
+        units.setHook(target, hpHealing.sourceApplied, {
+            id: "source", invoke(current) { calls.push("source"); return { state: current, value: undefined }; },
+        }),
+    ]);
+    const zero = { source: target, target, parameters: { power: 0, multiplier: 1 } };
+    assert.equal(hpHealing.applyHealing(zero, hpHealing.calculateHealing(state, zero)).value.kind, "REJECTED");
+    assert.deepEqual(calls, []);
+    const request = { source: target, target, parameters: { power: 25, multiplier: 2 } };
+    const calculated = hpHealing.calculateHealing(state, request);
+    assert.equal(calculated.value.amount, 50);
+    assert.equal(get(calculated.state, 0).vitality.hp, 100.5);
+    assert.deepEqual(calls, []);
+    const full = hpHealing.applyHealing(request, calculated);
+    assert.equal(full.value.kind, "APPLIED");
+    assert.deepEqual(full.value.application, { hpBefore: 100.5, hpAfter: 100.5, hpGain: 0 });
+    assert.deepEqual(calls, ["receive", "target", "source"]);
+});
+
+test("EP-01/03: losses stay per element, healing gives every bar the full amount, and natural recovery is separate", () => {
+    let healingNotices = 0;
+    const hooks = Hooks.empty().set(epHealing.targetApplied, {
+        id: "ordinary-healing",
+        invoke(state) {
+            healingNotices++;
+            return { state, value: undefined };
+        },
+    });
+    let state = battle([{ definition: { ...elementalReceiver, hooks }, position: [0, 0] }]);
+    const target = units.ref(get(state, 0));
+    for (const [type, power] of [["NEURAL", 200], ["EROSION", 80], ["BURN", 40]]) {
+        const incoming = { target, type, power, source: null };
+        state = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming)).state;
+    }
+    assert.deepEqual(get(state, 0).elemental.ep, {
+        NEURAL: 800, EROSION: 920, BURN: 960, NECROSIS: 1000,
+    });
+    const incoming = { target, source: null, power: 100 };
+    const zero = { ...incoming, power: 0 };
+    assert.equal(epHealing.applyHealing(zero, epHealing.calculateHealing(state, zero)).value.kind, "REJECTED");
+    assert.equal(healingNotices, 0);
+    const restored = epHealing.applyHealing(incoming, epHealing.calculateHealing(state, incoming));
+    assert.deepEqual(restored.value.application.epGain, {
+        NEURAL: 100, EROSION: 80, BURN: 40, NECROSIS: 0,
+    });
+    state = elemental.advance({ ...restored.state, tick: 1 }, target);
+    assert.equal(get(state, 0).elemental.ep.NEURAL, 900.5);
+    assert.equal(healingNotices, 1);
+    assert.equal("vitality" in get(state, 0), false);
+
+    const toppedUp = epHealing.applyHealing(incoming, epHealing.calculateHealing(state, incoming));
+    const full = epHealing.applyHealing(incoming, epHealing.calculateHealing(toppedUp.state, incoming));
+    assert.equal(full.value.kind, "APPLIED");
+    assert.deepEqual(full.value.application.epGain, elemental.elementValues(0));
+    assert.equal(healingNotices, 3);
+});

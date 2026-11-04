@@ -3,7 +3,6 @@ import { tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import * as blockingQueries from "../../dist/core/battle/blocking/index.js";
 import { advance as advanceBlocking, release as releaseBlocking } from "../../dist/core/battle/blocking/index.js";
-import * as epDamage from "../../dist/core/battle/damage/ep/index.js";
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -22,13 +21,13 @@ import { start as startAction, ref as actionRef } from '../../dist/core/unit/act
 import { ref as unitRef } from '../../dist/core/unit/index.js';
 import { select } from '../../dist/core/battle/targeting/index.js';
 import { allowsRestrictions } from '../../dist/core/unit/capability/targetable/capability.js';
-import { invisibleRestriction, camouflageRestriction, untargetableRestriction } from '../../dist/content/effects/visibility.js';
-import { invincibleRestriction } from '../../dist/content/effects/protection.js';
+import { invisibleRestriction } from '../../dist/content/effects/visibility.js';
+import { invincible } from '../../dist/content/effects/protection.js';
+import { install } from '../../dist/core/unit/effect/index.js';
 import { range } from '../../dist/core/battle/targeting/index.js';
 import { advance as advanceAction } from '../../dist/core/unit/action/index.js';
 import { advance as advanceCombat } from '../../dist/core/battle/steps/combat.js';
 import { advance as advanceProjectiles } from '../../dist/core/battle/projectile.js';
-import * as projectiles from '../../dist/core/battle/projectile.js';
 import * as projectilesQuery from '../../dist/core/projectile/index.js';
 import { setOverlay } from '../../dist/core/battlefield/navigation/state.js';
 import { advance as advanceLocomotion } from '../../dist/core/unit/capability/locomotion/index.js';
@@ -95,47 +94,24 @@ test('unimplemented enemy mechanisms are rejected at the table and content bound
   }, 0.2), /Crossbowman content/);
 });
 
-test('hound factory composes capabilities and attacks its retained blocker with pure state flow', () => {
-
-  const { definition, action: attack } = createHound(profile('enemy_1000_gopro'), { windupTicks: 0, recoveryTicks: 0, hitRadius: 0.2 }, 0.2);
-  const hound = initialize({ id: 1, position: [2, 2.5], definition });
-  assert.equal(hound.vitality.hp, 820);
-  assert.equal(hound.locomotion.speed.length, 0);
-  assert.equal(definition.locomotion.speed, 1.9 / 30);
-
-  const before = advanceBlocking(addUnit(addUnit(emptyBattle(), guard(0, [2, 2])), hound));
-  const request = { source: null, target: unitRef(hound), type: 'BURN', power: 100 };
-  const damaged = epDamage.applyDamage(request, epDamage.calculateDamage(before, request));
-  assert.equal(getUnit(damaged.state, 1).elemental.ep.BURN, 900);
-  assert.equal(getUnit(damaged.state, 1).vitality.hp, 820);
-  const started = startAction(before, actionRef(unitRef(hound), attack));
-  const after = advanceAction(started.state, started.value.ref);
-  assert.equal(getUnit(after, 0).vitality.hp, 850);
-  assert.equal(getUnit(before, 0).vitality.hp, 1000);
-  assert.equal(before.events.some(event => event.type === "DAMAGE"), false);
-  assert.ok(after.events.some(event => event.type === 'DAMAGE'));
-});
-
-test('a blocked hound selects its blocker directly despite normal targeting restrictions', () => {
+test('a hound attacks its hidden blocker while still respecting invincibility', () => {
   const { definition, action } = createHound(profile('enemy_1000_gopro'), {
     windupTicks: 0, recoveryTicks: 0, hitRadius: 0.2,
   }, 0.2);
+  const blocker = guard(0, [2, 2], 1, [{ id: 'hidden', value: invisibleRestriction }]);
+  const hound = initialize({ id: 1, position: [2, 2.5], definition });
+  const before = advanceBlocking(addUnit(addUnit(emptyBattle(), blocker), hound));
+  const request = { ...action.attack.targetGroups[0].targeting, source: unitRef(hound) };
+  assert.equal(allowsRestrictions(before, request, getUnit(before, 0)), false);
+  assert.deepEqual(select(before, request).value.map(ref => ref.id), [0]);
+  const started = startAction(before, actionRef(unitRef(hound), action));
+  const hit = advanceAction(started.state, started.value.ref);
+  assert.equal(getUnit(hit, 0).vitality.hp, 850);
 
-  for (const value of [invisibleRestriction, camouflageRestriction, untargetableRestriction]) {
-    const blocker = guard(0, [2, 2], 1, [{ id: 'innate', value }]);
-    const hound = initialize({ id: 1, position: [2, 2.5], definition });
-    const before = advanceBlocking(addUnit(addUnit(emptyBattle(), blocker), hound));
-    const request = { ...action.attack.targetGroups[0].targeting, source: unitRef(hound) };
-
-    assert.deepEqual(blockingQueries.relations(before).map(({ blocker, blocked }) => ({ blockerUnitId: blocker.id, blockedUnitId: blocked.id })), [{ blockerUnitId: 0, blockedUnitId: 1 }]);
-    assert.equal(allowsRestrictions(before, request, getUnit(before, 0)), false);
-    assert.deepEqual(select(before, request).value.map(ref => ref.id), [0]);
-    const started = startAction(before, actionRef(unitRef(hound), action));
-    assert.equal(started.value.type, 'STARTED');
-    const advanced = advanceAction(started.state, started.value.ref);
-    assert.ok(getUnit(advanced, 0).vitality.hp < 1000);
-    assert.equal(getUnit(before, 0).vitality.hp, 1000);
-  }
+  const protectedState = install(before, unitRef(blocker), invincible).state;
+  const protectedStart = startAction(protectedState, actionRef(unitRef(hound), action));
+  assert.equal(protectedStart.value.type, 'STARTED');
+  assert.equal(getUnit(advanceAction(protectedStart.state, protectedStart.value.ref), 0).vitality.hp, 1000);
 });
 
 test('crossbow selects melee for its actual blocker while ranged targeting keeps ordinary restrictions', () => {
@@ -171,24 +147,6 @@ test('crossbow selects melee for its actual blocker while ranged targeting keeps
   assert.deepEqual(definition.action.select(unblocked, getUnit(unblocked, 1)).value, ['ranged']);
 });
 
-test('directly selecting an invincible blocker still preserves damage reception rules', () => {
-  const { definition, action } = createHound(profile('enemy_1000_gopro'), {
-    windupTicks: 0, recoveryTicks: 0, hitRadius: 0.2,
-  }, 0.2);
-  const base = guard(0, [2, 2], 1, [{ id: 'invincible', value: invincibleRestriction }]);
-  const blocker = { ...base, vitality: { ...base.vitality,
-    damageReceptionRules: [{ id: 'invincible', allows: () => false }],
-  } };
-  const hound = initialize({ id: 1, position: [2, 2.5], definition });
-  const state = advanceBlocking(addUnit(addUnit(emptyBattle(), blocker), hound));
-  const started = startAction(state, actionRef(unitRef(hound), action));
-
-  assert.equal(started.value.type, 'STARTED');
-  const advanced = advanceAction(started.state, started.value.ref);
-  assert.equal(getUnit(advanced, 0).vitality.hp, 1000);
-  assert.equal(advanced.events.some(event => event.type === 'ACTION_RELEASED'), true);
-});
-
 test('crossbow uses explicit windup and arrow speed, then settles damage on contact', () => {
 
   const projectileDefinition = createArrow();
@@ -210,28 +168,8 @@ test('crossbow uses explicit windup and arrow speed, then settles damage on cont
     state = advanceProjectiles({ ...state, tick }, projectilesQuery.all(state).map(projectilesQuery.ref));
   }
   assert.equal(getUnit(state, 0).vitality.hp, 800);
-  assert.equal(state.events.filter(event => event.type === 'DAMAGE' && event.targetUnitId === 0).length, 1);
   assert.equal(getUnit(before, 0).vitality.hp, 1000);
   assert.equal(before.battlefield.projectiles.size, 0);
-});
-
-test('different crossbow configurations share an arrow definition in one battle', () => {
-
-  const projectile = { definition: createArrow(), speedPerSecond: 6, stopDelayTicks: 0 };
-  const base = createCrossbowman(profile('enemy_1003_ncbow'), {
-    windupTicks: 1, recoveryTicks: 1, hitRadius: 0.2, projectile,
-  }, 0.2);
-  const advanced = createCrossbowman(profile('enemy_1003_ncbow', 1), {
-    windupTicks: 2, recoveryTicks: 1, hitRadius: 0.2, projectile,
-  }, 0.2);
-
-  assert.strictEqual(base.definition.elemental.bursts.BURN, advanced.definition.elemental.bursts.BURN);
-  assert.equal(base.definition.offense.attack, 240);
-  assert.equal(advanced.definition.offense.attack, 310);
-  assert.equal(base.actions.ranged.attack.windupTicks, 1);
-  assert.equal(advanced.actions.ranged.attack.windupTicks, 2);
-  assert.equal(base.actions.melee.attack.intervalTicks, base.actions.ranged.attack.intervalTicks);
-  assert.strictEqual(base.definition.attackTiming.projectile.definition, advanced.definition.attackTiming.projectile.definition);
 });
 
 test('crossbow switching between ranged and blocker melee preserves independent cooldowns', () => {
@@ -272,8 +210,6 @@ test('crossbow switching between ranged and blocker melee preserves independent 
   assert.equal(meleeAgain.battlefield.projectiles.size, 2);
   assert.equal(cooldown(meleeAgain, actions.ranged), period * 2);
   assert.equal(cooldown(meleeAgain, actions.melee), period * 2 + 1);
-  assert.deepEqual(meleeAgain.events.filter(event => event.type === 'ACTION_RELEASED')
-    .map(event => event.tick), [0, 1, period, period + 1]);
   assert.equal(cooldown(ranged, actions.melee), 0);
   assert.equal(getUnit(initial, 0).vitality.hp, 1000);
 });

@@ -9,6 +9,7 @@ import { createTile } from "./tiles.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as query from "../../dist/core/battle/blocking/index.js";
 import * as blocker from "../../dist/core/unit/capability/blocking/index.js";
+import { Hooks } from "../../dist/core/hook.js";
 
 export function fixture(units = [], { rows = 3, columns = 12 } = {}) {
     const tile = createTile({
@@ -21,31 +22,31 @@ export function fixture(units = [], { rows = 3, columns = 12 } = {}) {
     return battle;
 }
 
-export function holder(id = 10, { position = [2, 1], capacity = 1, radius = 1, layer = "GROUND", side = "ALLY", definition = {}, states = {} } = {}) {
+export function holder(id = 10, { position = [2, 1], capacity = 1, radius = 1, layer = "GROUND", side = "ALLY", definition = {} } = {}) {
     return initialize({
         id, position,
         definition: {
             id: `blocking-holder-${id}`,
+            hooks: Hooks.empty(),
             ...(side === undefined ? {} : { allegiance: { side } }),
             spatialPresence: {}, vitality: { maxHp: 100, defense: 0, resistance: 0 },
             blocker: { layer, capacity, radius, rules: [blocker.sides("ENEMY")] },
             ...definition,
         },
-        states,
     });
 }
 
-export function target(id = 20, { position = [2.25, 1], volume = 1, layer = "GROUND", side = "ENEMY", definition = {}, states = {} } = {}) {
+export function target(id = 20, { position = [2.25, 1], volume = 1, layer = "GROUND", side = "ENEMY", definition = {} } = {}) {
     return initialize({
         id, position,
         definition: {
             id: `blocking-target-${id}`,
+            hooks: Hooks.empty(),
             ...(side === undefined ? {} : { allegiance: { side } }),
             spatialPresence: {}, vitality: { maxHp: 100, defense: 0, resistance: 0 },
             layer: { type: layer }, blockable: { volume },
             ...definition,
         },
-        states,
     });
 }
 
@@ -55,14 +56,4 @@ export function acquire(battle, id = 10) {
 
 export function ownerId(battle, id = 20) {
     return query.blockerOf(battle, { id })?.id;
-}
-
-export function hook(id, invoke, accepts) {
-    return {
-        id,
-        ...(accepts === undefined ? {} : { accepts }),
-        invoke(battle, context) {
-            return { state: invoke(battle, context), value: undefined };
-        },
-    };
 }

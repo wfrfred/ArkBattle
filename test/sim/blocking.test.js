@@ -3,13 +3,12 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
 import * as units from "../../dist/core/unit/query.js";
-import { setHook as setUnitHook } from "../../dist/core/unit/index.js";
 import * as unit from "../../dist/core/battle/unit.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as capability from "../../dist/core/unit/capability/blocking/index.js";
 import * as tiles from "../../dist/core/battle/tile.js";
 import * as maps from "../../dist/core/battlefield/map/map.js";
-import * as damage from "../../dist/core/battle/damage/hp/index.js";
+import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { advanceMovement } from "../../dist/core/battle/steps/movement.js";
 import { Vec2 } from "../../dist/core/common/vector.js";
 
@@ -20,6 +19,7 @@ const blocker = {
 };
 const enemy = {
     id: "enemy",
+    spatialPresence: {},
     hooks: Hooks.empty(),
     blockable: { volume: 1 },
     layer: { type: "GROUND" },
@@ -184,7 +184,7 @@ test("batch release publishes all endpoints before hooks and old relations canno
     assert.ok(targets.every((target) => blocking.blockerOf(state, target) === undefined));
 });
 
-test("position adjustment continues after relation release and active departure cancels it", () => {
+test("position plans survive relation release while active departure and spatial overrides cancel them", () => {
     let state = battle([
         { definition: blocker, position: [2, 1] },
         { definition: enemy, position: [2.2, 1] },
@@ -214,47 +214,26 @@ test("position adjustment continues after relation release and active departure 
     state = advanceMovement({ ...state, tick: 6 }, { routeMoveMultiplier: 1 });
     assert.deepEqual(get(state, 1).position, [2.5, 1]);
     assert.equal(get(state, 1).blockable.adjustment, null);
-});
 
-test("zero HP keeps the relation until damage confirms death after Applied", () => {
-    let state = battle([
-        {
-            definition: {
-                ...blocker,
-                vitality: { maxHp: 100, defense: 0, resistance: 0 },
-            },
-            position: [2, 1],
-        },
-        { definition: enemy, position: [2.2, 1] },
-    ]);
-    const owner = units.ref(get(state, 0));
-    const target = units.ref(get(state, 1));
-    state = blocking.acquire(state, owner, target);
+    state = blocking.acquire(state, owner, departing);
+    assert.notEqual(get(state, 2).blockable.adjustment, null);
     let observed = false;
     state = unit.update(state, [
-        setUnitHook(owner, damage.targetApplied, {
-            id: "observe-before-death",
-            priority: 0,
-            invoke: (current) => {
+        capability.setBlockableHook(departing, "released", {
+            id: "observe-space-override",
+            invoke(current) {
                 observed = true;
-                assert.equal(get(current, owner.id).vitality.hp, 0);
-                assert.equal(get(current, owner.id).lifecycle, "PRESENT");
-                assert.equal(blocking.blockerOf(current, target).id, owner.id);
-                assert.deepEqual(
-                    blocking.blocked(current, owner).map(({ id }) => id),
-                    [target.id],
-                );
+                assert.deepEqual(get(current, 2).position, [5, 1]);
+                assert.equal(get(current, 2).spatialPresence.present, true);
+                assert.equal(get(current, 2).blockable.adjustment, null);
+                assert.equal(blocking.blockerOf(current, departing), undefined);
+                assert.deepEqual(blocking.blocked(current, owner), []);
                 return { state: current, value: undefined };
             },
         }),
     ]);
-    const request = {
-        source: null,
-        target: owner,
-        parameters: { type: "TRUE", attack: { power: 100, multiplier: 1, addition: 0 } },
-    };
-    state = damage.applyDamage(request, damage.calculateDamage(state, request)).state;
+    state = presence.appear(state, departing, [5, 1]);
     assert.equal(observed, true);
-    assert.equal(get(state, owner.id), undefined);
-    assert.equal(blocking.blockerOf(state, target), undefined);
+    assert.deepEqual(get(state, 2).position, [5, 1]);
+    assert.equal(get(state, 2).blockable.adjustment, null);
 });

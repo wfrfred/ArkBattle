@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { createWithState, chooseTargets } from "../../dist/content/actions/attack.js";
-import { select } from "../../dist/core/battle/targeting/index.js";
+import { select, first, hpRatio } from "../../dist/core/battle/targeting/index.js";
+import { battle as createBattle, get } from "../helpers/battle.js";
+import { Hooks } from "../../dist/core/hook.js";
+import * as hpDamage from "../../dist/core/battle/damage/hp/index.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
+import { healFree } from "../../dist/content/effects/protection.js";
 import { random } from "../../dist/core/battle/targeting/selector.js";
 import { getUnit } from "../helpers/unit.js";
 import { ref } from "../../dist/core/unit/query.js";
@@ -93,4 +98,52 @@ test("targeting only requires a hitbox when a geometric range filter is composed
         ...request,
         filter: and(damage, range([{ type: "CIRCLE", offset: [0, 0], radius: 10 }])),
     }).value, []);
+});
+
+test("bound healing survives later selection restrictions and follow-ups keep their BINDING and SOURCE receivers", () => {
+    const patient = {
+        id: "patient", hooks: Hooks.empty(), targetable: { restrictions: [] },
+        vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: "ALLY" },
+    };
+    const recipients = {
+        purposes: ["HEAL"],
+        filter: and(healing, (_state, request, target) => target.id !== request.source.id),
+        selector: first(1, hpRatio),
+    };
+    let selected;
+    const program = createWithState({
+        id: "bound-healing", intervalTicks: 1, triggerBindingId: "primary",
+        initialize: state => ({ state, value: {} }),
+        prepare(state) {
+            return { state: effects.install(state, selected, healFree).state, value: {} };
+        },
+        targetGroups: [{ id: "primary", targeting: recipients, operations: [{ type: "HEAL", power: 20 }] }],
+        followUps: [
+            { receiver: { type: "BINDING", bindingId: "primary" }, operation: { type: "HEAL", power: 5 } },
+            { receiver: { type: "SOURCE" }, operation: { type: "HEAL", power: 15 } },
+        ],
+    });
+    let state = createBattle([
+        { definition: {
+            ...patient, id: "medic",
+            action: { initialize: state => actions.createActions(state, actions.create(program)) },
+        }, position: [1, 1] },
+        { definition: patient, position: [2, 1] },
+        { definition: patient, position: [3, 1] },
+    ]);
+    for (const [id, amount] of [[0, 40], [1, 70], [2, 60]]) {
+        const request = { source: null, target: ref(get(state, id)), parameters: { type: "TRUE", attack: { power: amount, multiplier: 1, addition: 0 } } };
+        state = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request)).state;
+    }
+    const source = ref(get(state, 0));
+    const query = { ...recipients, source };
+    [selected] = select(state, query).value;
+    assert.equal(selected.id, 1);
+    const started = actions.start(state, actions.ref(source, program));
+    assert.equal(started.value.type, "STARTED");
+    assert.deepEqual(select(started.state, query).value.map(target => target.id), [2]);
+    state = actions.advance(started.state, started.value.ref);
+    assert.equal(get(state, 0).vitality.hp, 75);
+    assert.equal(get(state, 1).vitality.hp, 55);
+    assert.equal(get(state, 2).vitality.hp, 40);
 });

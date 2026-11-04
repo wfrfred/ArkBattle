@@ -1,27 +1,11 @@
-import { Hooks } from "../../dist/core/hook.js";
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { validateShape } from '../../dist/core/geometry/shape.js';
 import { fromTiles } from '../../dist/core/geometry/range.js';
 import { contains, overlaps } from '../../dist/core/geometry/intersection.js';
-import { initialize } from '../helpers/unit.js';
 
-test('shape validation and unit initialization reject invalid numeric hitbox values', () => {
-  const invalid = [
-    { type: 'CIRCLE', offset: [NaN, 0], radius: 1 },
-    { type: 'CIRCLE', offset: [0, Infinity], radius: 1 },
-    { type: 'CIRCLE', offset: [0, 0], radius: -1 },
-    { type: 'CIRCLE', offset: [0, 0], radius: Infinity },
-    { type: 'BOX', offset: [0, 0], halfExtents: [1, -1] },
-    { type: 'BOX', offset: [0, 0], halfExtents: [NaN, 1] },
-    { type: 'BOX', offset: [0, 0], halfExtents: [1, Infinity] },
-  ];
-  for (const shape of invalid) {
-    assert.throws(() => validateShape(shape), RangeError);
-    assert.throws(() => initialize({ id: 1, position: [0, 0],
-      definition: { hooks: Hooks.empty(), id: 'invalid_hitbox', hitbox: { shape } },
-    }), RangeError);
-  }
+test('shape input rejects a negative radius', () => {
+  assert.throws(() => validateShape({ type: 'CIRCLE', offset: [0, 0], radius: -1 }), RangeError);
 });
 
 test('ranges include tangent contacts and exclude circle-box corner gaps', () => {

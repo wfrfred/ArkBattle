@@ -1,5 +1,3 @@
-import { get } from "../../dist/core/battlefield/map/map.js";
-import { update as updateBattleTile } from "../../dist/core/battle/tile.js";
 import { create } from "../../dist/core/battlefield/map/tile.js";
 import { Tiles } from "../../dist/core/battlefield/map/tiles.js";
 import * as conditions from "../../dist/content/terrain/condition.js";
@@ -31,9 +29,4 @@ export function tiles(entries) {
 export function tilesOf(map, definition) {
     return Array.from({ length: map.tiles.size }, (_, index) => map.tiles.get(index, definition))
         .filter(tile => tile !== undefined);
-}
-
-export function changeTile(battle, position, changes) {
-    const tile = get(battle.battlefield.map, position);
-    return updateBattleTile(battle, position, { ...tile.state, ...changes });
 }

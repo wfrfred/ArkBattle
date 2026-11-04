@@ -1,3 +1,4 @@
+import * as hpDamage from "../../dist/core/battle/damage/hp/index.js";
 import { targetApplied } from "../../dist/core/battle/damage/hp/index.js";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
@@ -29,9 +30,8 @@ test("source attack samples current Offense separately for each target after nes
         hooks: first.hooks.set(targetApplied, {
             id: "boost-next-target", priority: 0,
             invoke(state) {
-                const current = units.get(state, sourceRef);
                 return {
-                    state: applyUnitChanges(state, [setAttackContribution({ id: current.id }, {
+                    state: applyUnitChanges(state, [setAttackContribution(sourceRef, {
                             id: "reaction", value: [modifier({ addition: 15 })],
                         })]),
                     value: undefined,
@@ -44,7 +44,6 @@ test("source attack samples current Offense separately for each target after nes
     assert.equal(result.value.type, "STARTED");
     assert.equal(units.get(advanced, units.ref(first)).vitality.hp, 90);
     assert.equal(units.get(advanced, units.ref(second)).vitality.hp, 75);
-    assert.equal(units.get(initial, sourceRef).offense.attack.length, 0);
 });
 
 test("fixed damage and healing do not require an Offense capability", () => {
@@ -54,7 +53,12 @@ test("fixed damage and healing do not require an Offense capability", () => {
     const source = unit(0, { action: definition, offense: undefined });
     const target = unit(1);
     const sourceRef = units.ref(source);
-    const initial = battle({ ...source, vitality: { ...source.vitality, hp: 50 } }, target);
+    const wound = {
+        source: null, target: sourceRef,
+        parameters: { type: "TRUE", attack: { power: 50, multiplier: 1, addition: 0 } },
+    };
+    const initial = hpDamage.applyDamage(wound,
+        hpDamage.calculateDamage(battle(source, target), wound)).state;
     const result = actions.start(initial, actions.ref(sourceRef, definition));
     const advanced = advance(result.state, result.value.ref);
     assert.equal(result.value.type, "STARTED");

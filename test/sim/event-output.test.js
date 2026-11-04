@@ -22,7 +22,7 @@ const elemental = {
 };
 const data = { lookup() {} };
 
-test("EVENT-01: real HP and EP settlements produce the corresponding floating text", () => {
+test("EVENT-01: real HP and EP damage and healing produce the corresponding floating text", () => {
     let state = battle([{ definition: {
         id: "receiver", hooks: Hooks.empty(), elemental,
         vitality: { maxHp: 1000, defense: 0, resistance: 0 },

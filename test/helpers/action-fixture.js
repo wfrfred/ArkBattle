@@ -3,7 +3,7 @@ import { tiles as tileEntries } from './tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import { damage as damageTargeting } from "./targeting.js";
 import { create as createBattlefield } from "../../dist/core/battlefield/state.js";
-import { add as addUnit } from "../../dist/core/battlefield/unit.js";
+import { add as addUnit } from "../../dist/core/battle/unit.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { createTile } from "./tiles.js";
@@ -19,7 +19,7 @@ const tile = createTile({
     passableMask: "ALL",
     terrain: normal.create({}), walkCost: 1, advancedBuildableMask: 1,
 });
-export const map = createMap(1, 32, tileEntries(Array(32).fill(tile)));
+const map = createMap(1, 32, tileEntries(Array(32).fill(tile)));
 
 export function actionDefinition(power = 7, extra = {}) {
     const { baseAttackTimeTicks = 10, ...configuration } = extra;
@@ -33,13 +33,8 @@ export function actionDefinition(power = 7, extra = {}) {
                 {
                     id: "primary",
                     targeting: damageTargeting({
-                        type: "DAMAGE",
-                        scope: { type: "RANGE", geometry },
+                        geometry,
                         canTargetAir: true,
-                        includeBlockingRelations: false,
-                        preferBlockingRelations: false,
-                        ignoreTargetFree: false,
-                        ignoreInvisible: false,
                         maxTargets: 1,
                     }),
                     operations: [{ type: "DAMAGE", power, damageType: "TRUE" }],
@@ -80,7 +75,7 @@ export function unit(
 }
 
 export function battle(...units) {
-    return createBattleState(
-        units.reduce((field, unit) => addUnit(field, unit), createBattlefield(map)),
-    );
+    let state = createBattleState(createBattlefield(map));
+    for (const unit of units) state = addUnit(state, unit);
+    return state;
 }

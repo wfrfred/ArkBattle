@@ -1,4 +1,10 @@
 import { Hooks } from "../../dist/core/hook.js";
+import { battle as createBattle, get } from "../helpers/battle.js";
+import { update } from "../../dist/core/battle/unit.js";
+import * as damage from "../../dist/core/battle/damage/hp/index.js";
+import { setMaxHpContribution } from "../../dist/core/unit/capability/vitality/index.js";
+import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
+import { createInput, normalize } from "../../dist/core/battle/creation/route.js";
 import { search as searchBlocking } from "../../dist/core/battle/blocking/operations.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -12,15 +18,14 @@ import { createBattleState } from "../../dist/core/battle/state.js";
 import { fixtureBattlefieldState } from "../helpers/battlefield.js";
 import { initialize } from "../helpers/unit.js";
 
-const unit = (id, definitions = {}, states = {}) => initialize({
+const unit = (id, definitions = {}) => initialize({
     id,
     position: [id, 0],
     definition: { hooks: Hooks.empty(), id: `targeting-${id}`, ...definitions },
-    states,
 });
-const target = (id, definitions = {}, states = {}) => unit(id, {
+const target = (id, definitions = {}) => unit(id, {
     targetable: { restrictions: [] }, ...definitions,
-}, states);
+});
 const battle = (...units) => createBattleState(fixtureBattlefieldState(units));
 const request = (source, options = {}) => ({
     source: ref(source),
@@ -186,21 +191,85 @@ test("standard filters compose eligibility and source exclusion explicitly", () 
     })).value, [{ id: 2 }]);
 });
 
-test("blockedFirst preserves blocking relation order and then uses the next comparator", () => {
-    const source = unit(0, {
-        allegiance: { side: "ALLY" }, blocker: { layer: "GROUND", rules: [], capacity: 2, radius: 1 },
-    });
-    const definition = {
-        allegiance: { side: "ENEMY" }, blockable: { volume: 1 }, layer: { type: "GROUND" },
+test("blocked targets outrank nearer candidates and remain selectable outside ordinary range", () => {
+    const living = {
+        id: "target", hooks: Hooks.empty(), targetable: { restrictions: [] },
+        vitality: { maxHp: 100, defense: 0, resistance: 0 },
+        allegiance: { side: "ENEMY" }, layer: { type: "GROUND" },
+        hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.01 } },
     };
-    const initial = battle(source, target(1),
-        { ...target(2, definition), position: [0.5, 0] },
-        { ...target(3, definition), position: [0.25, 0] }, target(4));
-    const current = searchBlocking(initial, ref(source));
+    let state = createBattle([
+        { definition: {
+            id: "blocker", hooks: Hooks.empty(), allegiance: { side: "ALLY" },
+            blocker: { layer: "GROUND", rules: [], capacity: 2, radius: 1 },
+        }, position: [2, 1] },
+        { definition: living, position: [1.95, 1] },
+        { definition: { ...living, blockable: { volume: 1 } }, position: [2.5, 1] },
+        { definition: { ...living, blockable: { volume: 1 } }, position: [2.25, 1] },
+    ]);
+    const source = ref(get(state, 0));
+    state = searchBlocking(state, source);
+    const nearby = filters.range([{ type: "CIRCLE", offset: [0, 0], radius: 0.1 }]);
+    const query = {
+        source, purposes: ["DAMAGE"],
+        filter: filters.and(filters.damage, nearby),
+        selector: selectors.first(1, compare.distance),
+    };
+    assert.deepEqual(select(state, query).value.map(target => target.id), [1]);
+    assert.deepEqual(select(state, {
+        ...query,
+        filter: filters.and(filters.damage, filters.or(nearby, filters.blocking)),
+        selector: selectors.first(1, compare.combine(compare.blockedFirst, compare.distance)),
+    }).value.map(target => target.id), [3]);
+});
 
-    assert.deepEqual(select(current, request(source, {
-        selector: selectors.first(4, compare.combine(compare.blockedFirst, compare.distance)),
-    })).value, [{ id: 3 }, { id: 2 }, { id: 1 }, { id: 4 }]);
-    assert.deepEqual(select(current, request(source, { filter: filters.blocking })).value,
-        [{ id: 2 }, { id: 3 }]);
+test("geometric targeting uses hitboxes and current layer rather than route motion", () => {
+    const route = pathMotionMode => normalize(createInput({
+        pathMotionMode, startPosition: [1, 2], endPosition: [1, 6],
+        spawnOffset: [0, 0], spawnRandomRange: [0, 0], checkpoints: [], visitEveryCheckPoint: true,
+    }), { waveStartedAtTick: 0, fragmentStartedAtTick: 0 }, [0, 0], true);
+    const living = {
+        id: "target", hooks: Hooks.empty(), targetable: { restrictions: [] },
+        vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: "ENEMY" },
+        layer: { type: "GROUND" },
+        hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.7 } },
+    };
+    const state = createBattle([
+        { definition: { id: "source", hooks: Hooks.empty(), allegiance: { side: "ALLY" } }, position: [1, 1] },
+        { definition: { ...living, route: route("FLY") }, position: [2.6, 1] },
+        { definition: { ...living, layer: { type: "AIR" }, route: route("WALK") }, position: [2.6, 1] },
+        { definition: { ...living, hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 } } }, position: [2.6, 1] },
+    ]);
+    const source = ref(get(state, 0));
+    const inRange = filters.and(filters.damage, filters.range([{ type: "CIRCLE", offset: [0, 0], radius: 1 }]));
+    const query = { source, purposes: ["DAMAGE"], filter: inRange, selector: selectors.first(3, compare.distance) };
+    assert.deepEqual(select(state, query).value.map(target => target.id), [1, 2]);
+    assert.deepEqual(select(state, { ...query, filter: filters.and(inRange, filters.ground) }).value.map(target => target.id), [1]);
+});
+
+test("healing eligibility and priority use effective MaxHP after real resource changes", () => {
+    const patient = {
+        id: "patient", hooks: Hooks.empty(), targetable: { restrictions: [] },
+        vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: "ALLY" },
+    };
+    let state = createBattle([
+        { definition: patient, position: [1, 1] },
+        { definition: patient, position: [2, 1] },
+        { definition: patient, position: [3, 1] },
+    ]);
+    const source = ref(get(state, 0));
+    const enlarged = ref(get(state, 1));
+    state = update(state, [setMaxHpContribution(enlarged, {
+        id: "larger-hp", value: [modifier({ finalAddition: 300 })],
+    })]);
+    for (const [id, amount] of [[1, 300], [2, 60]]) {
+        const request = { source: null, target: ref(get(state, id)), parameters: { type: "TRUE", attack: { power: amount, multiplier: 1, addition: 0 } } };
+        state = damage.applyDamage(request, damage.calculateDamage(state, request)).state;
+    }
+    assert.equal(get(state, 1).vitality.hp, 100);
+    assert.equal(get(state, 2).vitality.hp, 40);
+    assert.deepEqual(select(state, {
+        source, purposes: ["HEAL"], filter: filters.healing,
+        selector: selectors.first(3, compare.hpRatio),
+    }).value.map(target => target.id), [1, 2]);
 });

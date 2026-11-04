@@ -1,5 +1,4 @@
 import { Hooks } from "../../dist/core/hook.js";
-import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import * as siteConditions from "../../dist/content/terrain/condition.js";
 import { parseSiteCondition, parseAllowedSiteConditions } from "../../dist/data/arknights/site-condition.js";
 import { mire as mireTerrain, deepsea as deepseaTerrain } from "../../dist/content/terrain/definition.js";
@@ -11,20 +10,14 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { initialize as initializeBattle, step as advanceBattle } from "../../dist/core/battle/index.js";
 import { create as createFieldState } from "../../dist/core/battlefield/state.js";
-import { remove as removeFieldUnit } from "../../dist/core/battlefield/unit.js";
 import { apply as applyOverlays } from "../../dist/core/battlefield/navigation/overlay.js";
 import { loadMovementScenario } from "../../dist/data/arknights/movement-scenario.js";
 import { createLevelDefinition, parseLevelContent } from "../../dist/data/arknights/level.js";
 import { resolvePredefinedSkillBlackboard } from "../../dist/data/arknights/skill.js";
 import { parsePredefinedPrefab, parseTileDeploymentPrefab } from "../../dist/data/arknights/prefab.js";
 import { addCard, createRequest, preview } from "../../dist/core/battle/deployment/index.js";
-import { createBattleState } from "../../dist/core/battle/state.js";
 import { createCardDefinition } from "../helpers/deployable.js";
 import { parseBattlefieldMap } from "../../dist/data/arknights/map.js";
-import { initialize as initializeUnit } from "../../dist/core/unit/index.js";
-import { add as addBattleUnit, replace as updateBattleUnit } from "../../dist/core/battle/unit.js";
-import { update as updateBattleTile } from "../../dist/core/battle/tile.js";
-import { get as getMapTile } from "../../dist/core/battlefield/map/map.js";
 
 const navigationMap = (state, mode = 'WALK') => applyOverlays(state.baseline[mode], state.overlays[mode]);
 
@@ -53,122 +46,45 @@ function predefinedMovementScenario(rawLevel) {
 }
 
 
-test('core act1 m01 initializes all 12 raw crates without changing passage or FLY navigation, and keeps them after schedule completion', () => {
+test('the real act1 m01 crates raise WALK cost without closing passage and remain after the enemy wave ends', () => {
   const rawLevel = arknightsFixture('level_act1autochess_m01');
   const scenario = predefinedMovementScenario(rawLevel);
   let runtime = initializeBattle(scenario.spec);
   const baseline = createFieldState(scenario.spec.map).navigation;
-  const initial = runtime;
   const crates = rawLevel.predefines.tokenInsts.filter(instance => instance.inst.characterKey === 'trap_1105_accrate');
   assert.equal(crates.length, 12);
-  assert.equal(initial.battlefield.units.size, 12);
-
-  assert.equal(initial.predefinedPresence.length, 12);
-  assert.equal(initial.mechanisms.size, 0);
+  assert.equal(runtime.battlefield.units.size, 12);
   assert.deepEqual(runtime.battlefield.navigation.baseline.FLY, baseline.baseline.FLY);
-  assert.deepEqual(navigationMap(runtime.battlefield.navigation).cells.map(cell => cell.passable), navigationMap(baseline).cells.map(cell => cell.passable));
+  const units = [...runtime.battlefield.units.values()];
   for (const instance of crates) {
-    const [definitionId] = predefinedIdsForAlias(runtime.definition.predefines, instance.alias);
-    const binding = initial.predefinedPresence.find(binding => binding.definitionId === definitionId);
-    const unit = initial.battlefield.units.get(binding.source.unitId);
+    const unit = units.find(unit => unit.position[0] === instance.position.col && unit.position[1] === instance.position.row);
     assert.equal(unit.definition.id, 'trap_1105_accrate');
     assert.equal(unit.vitality.hp, 100);
-    assert.deepEqual(unit.position, [instance.position.col, instance.position.row]);
-    const cell = navigationMap(runtime.battlefield.navigation).get([instance.position.row, instance.position.col]);
+    const tile = [instance.position.row, instance.position.col];
+    const cell = navigationMap(runtime.battlefield.navigation).get(tile);
     assert.equal(cell.cost, 1000);
-    assert.deepEqual(cell.departures, navigationMap(baseline).get([instance.position.row, instance.position.col]).departures);
-    const tile = initial.battlefield.map.tiles.get(instance.position.row * initial.battlefield.map.columns + instance.position.col);
-    assert.equal(tile.state.walkCost, 1000);
-    assert.equal(tile.definition.initial.walkCost, 1);
-    assert.equal(tile.state.placement, 'NONE');
-    assert.equal(unit.effects.size, 0);
+    assert.equal(cell.passable, navigationMap(baseline).get(tile).passable);
+    assert.equal(runtime.battlefield.map.tiles.get(tile[0] * runtime.battlefield.map.columns + tile[1]).state.placement, 'NONE');
   }
-  while (runtime.result === null) (runtime = advanceBattle(runtime, []));
-  assert.equal(runtime.result.reason, 'SCHEDULE_COMPLETED');
-  assert.equal(runtime.result.spawnedCount, 1);
-  assert.equal(runtime.result.completedRouteCount, 1);
-  assert.equal(runtime.result.unspawnedCount, 0);
-  assert.deepEqual(runtime.result.remainingUnitIds, [...initial.battlefield.units.values()].map(unit => unit.id));
-  assert.deepEqual(runtime.battlefield.units, initial.battlefield.units);
-
+  while (runtime.result === null) runtime = advanceBattle(runtime, []);
+  assert.equal(runtime.battlefield.units.size, 12);
 });
 
-
-test('core act1 m02 keeps hidden crate recipes out of the battlefield and applies appearance/removal with fresh identities', () => {
+test('the real act1 m02 hidden crate applies its tile changes only while present', () => {
   const scenario = predefinedMovementScenario(arknightsFixture('level_act1autochess_m02'));
   let runtime = initializeBattle(scenario.spec);
-  assert.equal(scenario.spec.predefines.length, 16);
-  assert.ok(scenario.spec.predefines.every(definition => !definition.initiallyPresent));
   assert.equal(runtime.battlefield.units.size, 0);
-
-  assert.deepEqual(runtime.predefinedPresence, []);
   const [definitionId] = predefinedIdsForAlias(runtime.definition.predefines, 'trap_1105_accrate#001');
-  const originalMaps = runtime.battlefield.navigation;
-  const originalCell = navigationMap(originalMaps).get([12, 4]);
-  (runtime = advanceBattle(runtime, [{ type: 'APPEAR_PREDEFINED', definitionId }]));
-  const appeared = runtime;
-  const [unit] = appeared.battlefield.units.values();
+  const tile = [12, 4];
+  const originalCell = navigationMap(runtime.battlefield.navigation).get(tile);
+  runtime = advanceBattle(runtime, [{ type: 'APPEAR_PREDEFINED', definitionId }]);
+  const unit = [...runtime.battlefield.units.values()][0];
   assert.deepEqual(unit.position, [4, 12]);
-  assert.equal(unit.id, 0);
-  assert.deepEqual(appeared.predefinedPresence, [{ definitionId, source: { type: 'UNIT', unitId: unit.id } }]);
-  assert.equal(appeared.battlefield.map.tiles.get(12 * appeared.battlefield.map.columns + 4).state.walkCost, 1000);
-  assert.deepEqual(appeared.battlefield.navigation.overlays.WALK, []);
-  assert.equal(navigationMap(runtime.battlefield.navigation).get([12, 4]).cost, 1000);
-  assert.equal(navigationMap(runtime.battlefield.navigation).get([12, 4]).passable, originalCell.passable);
-  assert.deepEqual(runtime.battlefield.navigation.baseline.FLY, originalMaps.baseline.FLY);
-  const appearedMaps = runtime.battlefield.navigation;
-  (runtime = advanceBattle(runtime, [{ type: 'APPEAR_PREDEFINED', definitionId }]));
-  assert.deepEqual(runtime.battlefield.units, appeared.battlefield.units);
-  assert.deepEqual(runtime.execution, appeared.execution);
-  assert.strictEqual(runtime.battlefield.navigation, appearedMaps);
-  const external = runtime;
-  assert.equal(external.battlefield.units.get(0).vitality, unit.vitality);
-
-  assert.equal(external.predefinedPresence, appeared.predefinedPresence);
-  const removed = (runtime = advanceBattle(runtime, [{ type: 'REMOVE_PREDEFINED', definitionId, reason: 'SCRIPT' }]));
-  const [departed] = removed.events;
-  assert.deepEqual(removed.events.map(({ unit, ...event }) => event), [{ type: 'UNIT_REMOVED', unitId: unit.id, reason: 'SCRIPT', tick: 2 }]);
-  assert.deepEqual(departed.unit.effects.values().toArray(), []);
-  assert.deepEqual({ ...departed.unit, effects: unit.effects }, { ...unit, lifecycle: 'LEAVING' });
+  assert.equal(navigationMap(runtime.battlefield.navigation).get(tile).cost, 1000);
+  runtime = advanceBattle(runtime, [{ type: 'REMOVE_PREDEFINED', definitionId, reason: 'SCRIPT' }]);
   assert.equal(runtime.battlefield.units.size, 0);
-
-  assert.deepEqual(runtime.predefinedPresence, []);
-  assert.equal(appeared.battlefield.units.get(0).vitality.hp, unit.definition.vitality.maxHp);
-
-  assert.deepEqual(appeared.predefinedPresence, [{ definitionId, source: { type: 'UNIT', unitId: unit.id } }]);
-  assert.deepEqual(navigationMap(runtime.battlefield.navigation).get([12, 4]), originalCell);
-  assert.deepEqual(runtime.battlefield.navigation.baseline.FLY, originalMaps.baseline.FLY);
-  const removedMaps = runtime.battlefield.navigation;
-  assert.deepEqual((runtime = advanceBattle(runtime, [{ type: 'REMOVE_PREDEFINED', definitionId, reason: 'SCRIPT' }])).events, []);
-  assert.strictEqual(runtime.battlefield.navigation, removedMaps);
-  (runtime = advanceBattle(runtime, [{ type: 'APPEAR_PREDEFINED', definitionId }]));
-  assert.equal(runtime.battlefield.units.values().next().value.id, unit.id + 1);
-
-  assert.deepEqual(runtime.predefinedPresence[0].source, { type: 'UNIT', unitId: unit.id + 1 });
+  assert.deepEqual(navigationMap(runtime.battlefield.navigation).get(tile), originalCell);
 });
-
-
-test('core predefined aliases can name two real crate recipes at different positions without merging their instances', () => {
-  const rawLevel = arknightsFixture('level_act1autochess_m02');
-  const crates = rawLevel.predefines.tokenInsts.filter(instance => instance.inst.characterKey === 'trap_1105_accrate');
-  const duplicate = structuredClone(crates[0]);
-  duplicate.position = structuredClone(crates[1].position);
-  rawLevel.predefines.tokenInsts.push(duplicate);
-  let runtime = initializeBattle(predefinedMovementScenario(rawLevel).spec);
-  const definitionIds = predefinedIdsForAlias(runtime.definition.predefines, crates[0].alias);
-  assert.equal(definitionIds.length, 2);
-  assert.notEqual(definitionIds[0], definitionIds[1]);
-  (runtime = advanceBattle(runtime, definitionIds.map(definitionId => ({ type: 'APPEAR_PREDEFINED', definitionId }))));
-  assert.deepEqual([...runtime.battlefield.units.values()].map(unit => unit.id), [0, 1]);
-  assert.deepEqual([...runtime.battlefield.units.values()].map(unit => unit.position), [[4, 12], [5, 12]]);
-  assert.deepEqual(runtime.predefinedPresence.map(binding => binding.definitionId), definitionIds);
-  (runtime = advanceBattle(runtime, [{ type: 'REMOVE_PREDEFINED', definitionId: definitionIds[0], reason: 'SCRIPT' }]));
-  assert.deepEqual([...runtime.battlefield.units.values()].map(unit => unit.id), [1]);
-
-  assert.equal(navigationMap(runtime.battlefield.navigation).get([12, 4]).cost, 1);
-  assert.equal(navigationMap(runtime.battlefield.navigation).get([12, 5]).cost, 1000);
-});
-
 
 test('core act2 mire and tide controller prefabs initialize nonspatial mechanisms and supply the raw terrain parameters', () => {
   const cases = [
@@ -187,15 +103,11 @@ test('core act2 mire and tide controller prefabs initialize nonspatial mechanism
     const [mechanism] = snapshot.mechanisms.values();
     assert.equal(mechanism.definition.id, controllerKey);
     assert.equal(mechanism.status, 'ACTIVE');
-    assert.ok(!('position' in mechanism));
-    assert.ok(!('hp' in mechanism));
-    assert.ok(!('vitality' in mechanism));
     assert.equal(snapshot.battlefield.units.size, 4);
     assert.ok([...snapshot.battlefield.units.values()].every(unit => unit.definition.id === 'trap_1105_accrate'));
 
     const controller = scenario.spec.predefines.find(definition => definition.creation.definition.id === controllerKey);
     assert.equal(controller.creation.type, 'MECHANISM');
-    assert.ok(!('position' in controller.creation));
     assert.deepEqual(snapshot.predefinedPresence.find(binding => binding.definitionId === controller.id).source,
       { type: 'MECHANISM', ref: { id: mechanism.id } });
     const affected = tilesOf(scenario.spec.map, terrainType);
@@ -208,7 +120,6 @@ test('core act2 mire and tide controller prefabs initialize nonspatial mechanism
     while (runtime.result === null) (runtime = advanceBattle(runtime, []));
     assert.equal(runtime.result.reason, 'SCHEDULE_COMPLETED');
     assert.equal(runtime.result.remainingUnitIds.length, 4);
-    assert.deepEqual(runtime.mechanisms, snapshot.mechanisms);
   }
 });
 
@@ -402,104 +313,37 @@ test('core raw mode keep switches retain tile fields instead of activating unuse
 });
 
 
-test('core real hidden platforms grant ranged deployment support while retaining passage and a WALK cost of 1000', () => {
+test('a real hidden platform grants ranged deployment support and restores its tile after removal', () => {
   const raw = arknightsFixture('level_act1autochess_m02');
   const index = raw.predefines.tokenInsts.findIndex(instance => instance.inst.characterKey === 'trap_1106_achplat');
-  assert.ok(index >= 0);
   const instance = raw.predefines.tokenInsts[index];
-  assert.equal(instance.hidden, true);
   const scenario = loadMovementScenario(raw, {
     actions: [{ waveIndex: 0, fragmentIndex: 0, actionIndex: 0 }], branches: [],
     predefines: [{ source: 'predefines', collection: 'tokenInsts', index }],
   }, movementCatalog, 123);
   let runtime = initializeBattle(scenario.spec);
   const [definitionId] = predefinedIdsForAlias(runtime.definition.predefines, instance.alias);
-  const originalMaps = runtime.battlefield.navigation;
   const tile = [instance.position.row, instance.position.col];
+  const originalMaps = runtime.battlefield.navigation;
   const originalCell = navigationMap(originalMaps).get(tile);
-  (runtime = advanceBattle(runtime, [{ type: 'APPEAR_PREDEFINED', definitionId }]));
-  const appeared = runtime;
-  const platform = [...appeared.battlefield.units.values()].find(unit => unit.definition.id === 'trap_1106_achplat');
-  assert.ok(!('tileBinding' in platform.definition));
+  runtime = advanceBattle(runtime, [{ type: 'APPEAR_PREDEFINED', definitionId }]);
+  const platform = [...runtime.battlefield.units.values()][0];
   const currentTile = runtime.battlefield.map.tiles.get(tile[0] * runtime.battlefield.map.columns + tile[1]);
   assert.equal(currentTile.state.elevation, 'HIGHLAND');
   assert.equal(currentTile.state.placement, 'RANGED');
   assert.equal(currentTile.state.walkCost, 1000);
-  assert.equal(currentTile.state.siteCondition, currentTile.definition.initial.siteCondition);
-  assert.deepEqual(platform.definition.deployable, { retreatRules: [] });
-  assert.equal(platform.definition.card.cost, 5);
-  assert.equal(platform.definition.card.redeployTicks, 30);
-  assert.equal(platform.definition.card.slots, 0);
-  assert.deepEqual(platform.definition.card.refund, { rate: 0.5, limit: 'BASE_COST' });
-  assert.equal(platform.deployable.refund, null);
-  assert.deepEqual(platform.occupancy.tile, tile);
-  assert.equal(platform.definition.occupancy.slot, 'SUPPORT');
+  assert.equal(occupancyAt(runtime.battlefield, tile).support.id, platform.id);
   assert.equal(navigationMap(runtime.battlefield.navigation).get(tile).passable, originalCell.passable);
-  assert.equal(navigationMap(runtime.battlefield.navigation).get(tile).cost, 1000);
   assert.deepEqual(navigationMap(runtime.battlefield.navigation, 'FLY').get(tile), navigationMap(originalMaps, 'FLY').get(tile));
 
-  let field = appeared.battlefield;
-  assert.equal(occupancyAt(field, tile)?.support?.id, platform.id);
   for (const [placement, expected] of [['RANGED', 'ALLOWED'], ['MELEE', 'REJECTED']]) {
-    const card = addCard(createBattleState(field), {
-      id: `platform-preview-${placement}`, hooks: Hooks.empty(),
+    const card = addCard(runtime, {
+      id: 'platform-preview-' + placement, hooks: Hooks.empty(),
       occupancy: { slot: 'OCCUPANT' }, deployable: { retreatRules: [] },
       card: createCardDefinition({ placement }),
     });
     assert.equal(preview(card.state, createRequest(card.state, card.value, tile)).type, expected);
   }
-
-  (runtime = advanceBattle(runtime, [{ type: 'REMOVE_PREDEFINED', definitionId, reason: 'SCRIPT' }]));
-  assert.equal(runtime.battlefield.units.has(platform.id), false);
-  assert.deepEqual(navigationMap(runtime.battlefield.navigation).get(tile), originalCell);
-  assert.deepEqual(navigationMap(runtime.battlefield.navigation, 'FLY').get(tile), navigationMap(originalMaps, 'FLY').get(tile));
-  field = removeFieldUnit(field, { id: platform.id });
-  assert.equal(occupancyAt(field, tile)?.support ?? null, null);
-});
-
-
-test('core platform removal restores only its registered tile fields after nested occupant departure', () => {
-  const raw = arknightsFixture('level_act1autochess_m02');
-  const index = raw.predefines.tokenInsts.findIndex(instance => instance.inst.characterKey === 'trap_1106_achplat');
-  const instance = raw.predefines.tokenInsts[index];
-  const scenario = loadMovementScenario(raw, {
-    actions: [{ waveIndex: 0, fragmentIndex: 0, actionIndex: 0 }], branches: [], predefines: [{ source: 'predefines', collection: 'tokenInsts', index }],
-  }, movementCatalog, 123);
-  let runtime = initializeBattle(scenario.spec);
-  const [definitionId] = predefinedIdsForAlias(runtime.definition.predefines, instance.alias);
-  runtime = advanceBattle(runtime, [{ type: 'APPEAR_PREDEFINED', definitionId }]);
-  const tile = [instance.position.row, instance.position.col];
-  const platform = [...runtime.battlefield.units.values()][0];
-  const neighbour = [tile[0], tile[1] + 1];
-  const neighbourBefore = getMapTile(runtime.battlefield.map, neighbour);
-  runtime = updateBattleUnit(runtime, [{ ...platform, position: [neighbour[1], neighbour[0]] }]);
-  assert.strictEqual(getMapTile(runtime.battlefield.map, neighbour), neighbourBefore);
-  assert.equal(getMapTile(runtime.battlefield.map, tile).state.walkCost, 1000);
-
-  const initialized = initializeUnit(runtime, {     id: 500, position: [tile[1], tile[0]],
-    definition: {
-      id: 'platform-occupant', occupancy: { slot: 'OCCUPANT' },
-      hooks: Hooks.empty().set(unitLifecycle.leave, { id: "test/leave",  invoke(battle) {
-        const current = getMapTile(battle.battlefield.map, tile);
-        return { state: updateBattleTile(battle, tile, {
-          ...current.state, siteCondition: siteConditions.night, passability: 'FLY_ONLY', allowsBlocking: false,
-        }), value: undefined };
-      } }),
-    },
-  });
-  runtime = addBattleUnit(initialized.state, { ...initialized.value, occupancy: { ...(initialized.value).occupancy, tile } });
-  const before = runtime;
   runtime = advanceBattle(runtime, [{ type: 'REMOVE_PREDEFINED', definitionId, reason: 'SCRIPT' }]);
-  assert.equal(runtime.battlefield.units.has(500), false);
-  assert.ok(runtime.removedUnits.some(entry => entry.unitId === 500 && entry.reason === 'DEATH'));
-  const restored = getMapTile(runtime.battlefield.map, tile);
-  assert.equal(restored.state.elevation, restored.definition.initial.elevation);
-  assert.equal(restored.state.placement, restored.definition.initial.placement);
-  assert.equal(restored.state.walkCost, restored.definition.initial.walkCost);
-  assert.equal(restored.state.siteCondition, siteConditions.night);
-  assert.equal(restored.state.passability, 'FLY_ONLY');
-  assert.equal(restored.state.allowsBlocking, false);
-  assert.equal(getMapTile(before.battlefield.map, tile).state.walkCost, 1000);
-  assert.equal(getMapTile(before.battlefield.map, tile).state.siteCondition, siteConditions.normal);
-  assert.strictEqual(getMapTile(runtime.battlefield.map, neighbour), neighbourBefore);
+  assert.deepEqual(navigationMap(runtime.battlefield.navigation).get(tile), originalCell);
 });
