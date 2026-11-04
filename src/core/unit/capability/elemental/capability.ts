@@ -77,7 +77,12 @@ export function hasElementalDefinition(
 }
 
 export function elementValues(value: number): Values {
-    return Object.fromEntries(ELEMENT_TYPES.map((type) => [type, value])) as Values;
+    return {
+        NEURAL: value,
+        EROSION: value,
+        BURN: value,
+        NECROSIS: value,
+    };
 }
 
 export function initialize<U extends Unit & Pick<Elemental, "definition">>(

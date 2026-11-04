@@ -49,6 +49,8 @@ interface Definition {
 
 标准爆发的具体 Effect 程序位于 `core/effects/elemental/`；通用控制位于 `core/effects/control.ts`。Elemental Capability 负责 EP、爆发触发与当前引用，通用实例管理归 `core/unit/effect/`。完整范围和按需实现原则见[标准效果库](effect.md#10-标准效果库与候选范围)。
 
+标准爆发组装 HP 伤害请求的共享程序位于 `effects/elemental/damage.ts`，由具体效果调用 Battle 的 Calculate／Apply；Elemental Capability 不承担 HP 伤害输出。
+
 [burst.ts](../../src/core/unit/capability/elemental/burst.ts) 定义共同的 Burst 类型、进度、EP 恢复与结束收尾；[neural.ts](../../src/core/effects/elemental/neural.ts)、[erosion.ts](../../src/core/effects/elemental/erosion.ts)、[burn.ts](../../src/core/effects/elemental/burn.ts)、[necrosis.ts](../../src/core/effects/elemental/necrosis.ts) 分别实现神经、侵蚀、灼燃和凋亡的具体标准 Effect。其 data 只保存元素类型：
 
 ```typescript

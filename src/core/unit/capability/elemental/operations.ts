@@ -66,7 +66,7 @@ export function commitDamage(
     const type = calculated.type;
     const self = units.get(battle, target)!;
     const maximum = query.resolveMaxEp(battle, self);
-    const epBefore = Math.min(maximum, Math.max(0, self.elemental.ep[type]));
+    const epBefore = Math.min(maximum, self.elemental.ep[type]);
     const epLoss = Math.min(epBefore, received.amount);
     if (epLoss === 0) {
         return {
@@ -179,10 +179,11 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
 }
 
 function normalizedEp(self: Unit & Elemental, maximum: number): Values {
-    return Object.fromEntries(
-        ELEMENT_TYPES.map((type) => [
-            type,
-            Math.min(maximum, Math.max(0, self.elemental.ep[type])),
-        ]),
-    ) as Values;
+    const ep = { ...self.elemental.ep };
+
+    for (const type of ELEMENT_TYPES) {
+        ep[type] = Math.min(ep[type], maximum);
+    }
+
+    return ep;
 }

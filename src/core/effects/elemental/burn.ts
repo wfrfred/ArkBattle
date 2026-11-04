@@ -11,12 +11,12 @@ import {
     type Vitality,
 } from "../../unit/capability/vitality/capability.js";
 import { Type } from "../../unit/capability/elemental/capability.js";
+import { hurt } from "./damage.js";
 import {
     onInstall as registerBurst,
     advance,
     onEnd,
     availableHost,
-    hurt,
     ref,
     type Definition,
 } from "../../unit/capability/elemental/burst.js";

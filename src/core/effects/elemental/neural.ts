@@ -12,10 +12,10 @@ import {
     type Action,
 } from "../../unit/capability/action/capability.js";
 import { Type } from "../../unit/capability/elemental/capability.js";
+import { hurt } from "./damage.js";
 import {
     availableHost,
     advance,
-    hurt,
     onInstall as registerBurst,
     onEnd,
     type Definition,
