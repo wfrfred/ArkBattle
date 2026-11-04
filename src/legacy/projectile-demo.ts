@@ -72,7 +72,7 @@ export function createTacticalProjectileDemo(
             if (hasTargetable(target)) {
                 state = install(state, unitRef(target), marker, {
                     source: current.state.source,
-                    deadline: state.tick + 45,
+                    expiration: { type: "DEADLINE", tick: state.tick + 45 },
                 }).state;
             }
 
@@ -155,7 +155,7 @@ export function createTacticalProjectileDemo(
                 });
                 state = install(launched.state, unitRef(source), boost, {
                     source: unitRef(source),
-                    deadline: state.tick + 70,
+                    expiration: { type: "DEADLINE", tick: state.tick + 70 },
                 }).state;
 
                 return state;

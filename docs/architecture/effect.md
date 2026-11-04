@@ -2,7 +2,7 @@
 
 Effect 负责附着实例、生效状态、覆写组与生命周期。总体执行模型见[总体架构](ARCHITECTURE.md)，状态接续契约见[函数式内核](functional-core.md)。
 
-公开契约遵守[五类接口约定](api-conventions.md)。生命周期回调直接接收 battle 与 self，结束原因作为独立参数，内容程序通过领域操作接续 BattleState。
+公开契约遵守[五类接口约定](api-conventions.md)。生命周期回调接收 battle 与 self；onTick 另接收本次推进前的 Expiration，onEnd 另接收结束原因。内容程序通过领域操作接续 BattleState。
 
 具体 Buff、异常与 Aura 的规则及未接入项见 [Tactical 语义](tactical-semantics.md)。标准效果库的职责、目录和候选范围见[标准效果库](#10-标准效果库与候选范围)。
 
@@ -12,10 +12,10 @@ Effect 用于表达属性增益、护盾、周期伤害与治疗、技能附带�
 
 Effect 需要保障的结果是：
 
-- 安装、实际生效和存在性分开。onInstall 完成前不自动启用或推进实例；禁用保留实例及私有进度；结束撤销输出，安装期间结束的实例不能被外层流程恢复。
+- 安装、实际生效和存在性分开。onInstall 完成后重读实例；零有效时长或已经到期的实例直接进入结束，不启用、不推进、不调用 onDisable。禁用保留实例及私有进度，安装期间结束的实例不能被外层流程恢复。
 - 整体覆写组按优先级和安装先后选一个生效对象。禁用最强实例不使弱者补位；最强实例结束后，仍有资格的候补才重新生效。
 - 宿主所有权、显式 Scope 与来源分开。宿主或任一依赖结束会关闭 Effect，普通 source 不自动建立依赖；开始结束的依赖链不再接受新绑定。
-- 截止期限与有效周期分开。非生效期间不补发周期输出，绝对期限继续前进；到期 Tick 的正常业务及其中提交的续期必须得到完整结算。
+- 有效时长、绝对期限与无限期明确区分。ACTIVE 的有效时长先推进并发布，再执行 onTick，最后按最新时间状态判断结束；禁用暂停有效时长，绝对期限继续到期。速率为零仍有 onTick 执行机会，末次业务和其中的续期得到完整结算。
 - 结束时先撤销自身输出，再等待依赖者完整结束，最后执行自身收尾并移除实例。收尾使用当前状态，宿主由所有权保护到本 Effect 的整个 Finalize 返回。
 
 这些语义用于选择必要的业务场景。公共依赖析构、Hook 派发和不可变状态接续由各自契约集中说明；容器实现、字段清单与逐个 Setter 的内部检查不独立构成玩法验收目标。Aura 与具体 Buff 需要有实际内容程序，不能用夹具实现其策略后将夹具自身当作产品验收。
@@ -26,10 +26,11 @@ Effect 需要保障的结果是：
 | --- | --- |
 | [unit/effect/index.ts](../../src/core/unit/effect/index.ts) | 显式公共类型、查询与生命周期操作 |
 | `unit/effect/definition.ts` | 共享 Definition 与生命周期回调 |
-| `unit/effect/effect.ts` | 实例、身份与独立期限 |
+| `unit/effect/effect.ts` | 实例、身份与时间状态 |
+| `unit/effect/expiration.ts` | Expiration 联合类型及时间状态判断 |
 | `unit/effect/effects.ts` | 不可变异构容器与宿主内 ID 进度 |
 | `unit/effect/query.ts` | 按精确 Ref 读取当前实例的 get |
-| `unit/effect/operations.ts` | 安装、私有数据与期限写回、启停、推进与完整结束 |
+| `unit/effect/operations.ts` | 安装、私有数据与时间状态写回、启停、推进与完整结束 |
 | `core/lifetime/` | 共享依赖关系、结束请求与 DAG 析构 |
 | [core/effects/](../../src/core/effects) | 控制、保护、可选中性与标准元素爆发的具体 Definition |
 | `content/` | 角色专属效果及标准效果的使用程序；Aura 接入范围见后文 |
@@ -38,7 +39,7 @@ Effect 需要保障的结果是：
 
 | 模块            | 负责什么                                          | 集合由谁持有                 |
 | --------------- | ------------------------------------------------- | ---------------------------- |
-| Effect          | 安装、私有数据、生效状态、覆写组、期限、结束     | Unit.effects                 |
+| Effect          | 安装、私有数据、生效状态、覆写组、时间、结束     | Unit.effects                 |
 | Effects         | 不可变异构实例存储、增删查改与宿主内 ID 进度      | Unit.effects                 |
 | Hook            | 不可变登记项、类型化集合及动态登记               | Unit.hooks 或事件专属 Capability |
 | Contribution    | 不可变数据包、set／remove、分组选取与数值辅助     | 提供该属性的 Capability      |
@@ -63,7 +64,11 @@ interface Definition<S extends object = object, H extends object = object> {
     readonly onInstall?: (battle: BattleState, self: Effect<S, H>) => BattleState;
     readonly onEnable?: (battle: BattleState, self: Effect<S, H>) => BattleState;
     readonly onDisable?: (battle: BattleState, self: Effect<S, H>) => BattleState;
-    readonly onTick?: (battle: BattleState, self: Effect<S, H>) => BattleState;
+    readonly onTick?: (
+        battle: BattleState,
+        self: Effect<S, H>,
+        previousExpiration: Expiration,
+    ) => BattleState;
     readonly onEnd?: (battle: BattleState, self: Effect<S, H>, reason: string) => BattleState;
 }
 
@@ -73,7 +78,7 @@ interface Effect<S extends object = object, H extends object = object> {
     readonly definition: Definition<S, H>;
     readonly data: S;
     readonly source: Ref<Unit> | null;
-    readonly deadline: number | null;
+    readonly expiration: Expiration;
     readonly enabled: boolean;
     readonly status: "INSTALLING" | "INACTIVE" | "ACTIVE" | "ENDING";
 }
@@ -86,7 +91,7 @@ S 是实例私有数据的类型，例如护盾层数、周期进度或 Aura 的
 
 安装入口接收 `Ref<Unit & NoInfer<H>>`，通过 units.get 取得最新宿主。创建与内容入口保证宿主能力组合，类型表达所需结构。Definition 中的函数是静态行为，self 是这次回调输入版本中的类型化实例。当前时间读取 battle.tick，实例身份通过 ref(self) 取得。嵌套返回后需要后继事实时，从新 BattleState 查询，不靠动态 getter 接续。
 
-覆写组与固定优先级属于 Definition，实例直接读取 `definition.group`。每次安装的初始属性使用 `Initial<S>`：`source`、`scopes`、`deadline`、`data` 和 `enabled`。source 为 `Ref<Unit> | null`，省略时为 null；scopes 只作为创建时的 Lifetime 依赖输入，不保存到 Effect；deadline 为独立的绝对 Tick 期限，省略或 null 表示不限期。这些输入不覆写 Definition 的规则。
+覆写组与固定优先级属于 Definition，实例直接读取 `definition.group`。每次安装的初始属性使用 `Initial<S>`：`source`、`scopes`、`expiration`、`data` 和 `enabled`。source 为 `Ref<Unit> | null`，省略时为 null；scopes 只作为创建时的 Lifetime 依赖输入，不保存到 Effect；expiration 省略时为 `{ type: "INFINITE" }`。时间状态的三种形式见下文，不用 null 表达无限期。这些输入不覆写 Definition 的规则。
 
 Unit 初始化始终建立空 Effects，不接收预装容器。初始 Buff、护盾等由 Unit Definition 的 enter 键下的 Hook 在宿主登记后调用 install，按正常安装流程执行 onInstall、生效协调与依赖登记。
 
@@ -98,7 +103,7 @@ Unit 初始化始终建立空 Effects，不接收预装容器。初始 Buff、�
 
 普通 get(id) 返回完整 Effect<object, object>，values() 返回绑定容器版本的 Query<Effect>，keys() 返回 Query<Id>。实例的 data 和完整 Definition 都存在，默认 object 不声称某种私有形状。Query 惰性、可重复遍历，绑定的不可变容器版本已经固定枚举来源；在完整操作处生成 Ref，并从最新 BattleState 读取当前实例，不为固定身份额外生成数组。
 
-Effect<S, H> 直接保存完整 Definition<S, H> 与 data，以及 id、宿主、来源、deadline 和参与状态。宿主类型同时保留 Ref<Unit> 与 Ref<Unit & H>，内部 H 擦除为 any 时仍有 Unit 地址与身份。普通读取不增加另一套实体类型，具体私有读写继续使用原配对证明。
+Effect<S, H> 直接保存完整 Definition<S, H> 与 data，以及 id、宿主、来源、expiration 和参与状态。宿主类型同时保留 Ref<Unit> 与 Ref<Unit & H>，内部 H 擦除为 any 时仍有 Unit 地址与身份。普通读取不增加另一套实体类型，具体私有读写继续使用原配对证明。
 
 具体内容需要恢复 S／H 时，使用精确 Ref 或 Definition 对象身份查询。Core 只需把未知实例交给它自身 Definition 的程序，直接使用 get(id) 的完整 Effect<object, object> 即可，不恢复某个具体内容类型。
 
@@ -147,15 +152,15 @@ Ref 与静态 Definition 不同。Definition 相同可以有多个实例；实�
 
 额外生命周期约束使用 [公共 Lifetime](lifetime.md) 的 Scope。内容用 scope(领域 lifetime, ref) 建立配对，用 getRef 恢复对应 Ref。SKILL 绑定一次 Activation，ACTION 绑定一次 Execution；标准 Burst 本身就是 Effect，通过 effects.lifetime 绑定其精确运行身份，持久 Action 配置不是生命周期目标。任一上游请求结束就请求结束本 Effect，不等待所有目标都结束。绑定不共享时间轴，详见 [Elemental 设计](elemental.md)。
 
-BattleState.lifetime.dependencies 是 owner 与显式依赖的唯一关系权威。install 在入口校验宿主 PRESENT、输入 Scope 可用性与 deadline，发布 INSTALLING 实例并登记 owner／scopes 后才调用 onInstall。后续通过 Lifetime.bind／unbind 管理显式依赖；dependencies 查询不包含 owner。Effect 不重复保存 scopes，也不从 Unit 更新投影关系。内部写回信任已经建立的约束，战斗初始化不扫描预装实例。
+BattleState.lifetime.dependencies 是 owner 与显式依赖的唯一关系权威。install 在入口校验宿主 PRESENT、输入 Scope 可用性与 expiration，发布 INSTALLING 实例并登记 owner／scopes 后才调用 onInstall。后续通过 Lifetime.bind／unbind 管理显式依赖；dependencies 查询不包含 owner。Effect 不重复保存 scopes，也不从 Unit 更新投影关系。内部写回信任已经建立的约束，战斗初始化不扫描预装实例。
 
-关系图合并 owner 与显式 Scope，直接子候选按父子边登记顺序请求；更新同一边保序，解除后重绑追加，不再区分 owned／scoped 优先级或按实例 ID 排序。Finalize 移除实例后注销关系；setData、setDeadline 等普通字段写回不修改关系图。
+关系图合并 owner 与显式 Scope，直接子候选按父子边登记顺序请求；更新同一边保序，解除后重绑追加，不再区分 owned／scoped 优先级或按实例 ID 排序。Finalize 移除实例后注销关系；setData、setExpiration 等普通字段写回不修改关系图。
 
 ENDING 时保留关系，物理移除后活索引可以撤销，但未完成 Pending.parents 保留到整个 Finalize 返回。查询依赖者同时合并这两种来源，避免子 Effect 注销后的结束通知中请求宿主退场时漏掉等待。Pending 表示工作进度，不是第二份生命周期或实例表。
 
 Scope 资格沿实际 owner 和显式 Scope 父边，检查目标及全部上游的 Pending 与最新领域状态；任一上游缺失或结束中即拒绝新的安装／绑定，即使目标自身尚未收到结束请求。各节点的存活要求为：Unit 为 PRESENT，Action 为 RUNNING，Skill 为 ACTIVE，Effect（包括标准 Burst）只要存在且未 ENDING 即可，包含 INSTALLING／INACTIVE；Mechanism 的 INACTIVE 也可成为目标。不能把 HP 或空间存在附加为 Unit 生命周期资格。开始结束的目标不能接受新绑定。
 
-宿主退场、Scope 结束、deadline 到期和显式 end 都进入同一个 Effect lifetime 请求。各领域负责决定何时请求结束自己的实例，共享运行器负责依赖传播与完成调度；不再保留 closeLifetime 或 Effect 专属递归传播入口。
+宿主退场、Scope 结束、expiration 到期和显式 end 都进入同一个 Effect lifetime 请求。各领域负责决定何时请求结束自己的实例，共享运行器负责依赖传播与完成调度；不再保留 closeLifetime 或 Effect 专属递归传播入口。
 
 ## 4. 生效状态与覆写
 
@@ -176,8 +181,8 @@ stateDiagram-v2
 | 状态       | 含义                     | 时间推进与输出                                         |
 | ---------- | ------------------------ | ------------------------------------------------------ |
 | INSTALLING | 已登记，安装回调尚未完成 | 可以被查询和绑定；不执行 onEnable 或 onTick            |
-| ACTIVE     | 获准且当前生效           | 可以执行 onTick；Hook 资格与 Contribution 输出可以生效 |
-| INACTIVE   | 仍存在，当前被禁用或覆写 | 保存私有 data；不执行 onTick；仍会到期                 |
+| ACTIVE     | 获准且当前生效           | 先推进 DURATION，再执行 onTick；Hook 资格与 Contribution 输出可以生效 |
+| INACTIVE   | 仍存在，当前被禁用或覆写 | 保存私有 data；DURATION 暂停，不执行 onTick；DEADLINE 仍会到期 |
 | ENDING     | 已进入不可逆的结束结算   | 停止正常参与；Prepare 撤销输出，Finalize 后移除        |
 
 同一个宿主、同一个 Effect group 的竞争规则是：先在所有未结束实例中选最高 priority，平局选较早安装的实例，再检查这个实例的 enabled。禁用最强实例仍占据组位置，弱者不会补位；最强实例结束后，仍存活的弱者可以重新生效。
@@ -202,10 +207,10 @@ Hook 的 accepts 读取 Effect 的覆写结果；伤害阶段与优先级由 Dam
 | onInstall | 实例已登记后，一次               | 登记稳定 Hook，初始化内容所需联系   |
 | onEnable  | 从不生效变为生效                 | 登记静态 Contribution，恢复输出     |
 | onDisable | 从生效变为不生效，或活跃实例结束 | 撤销静态 Contribution，关闭附带输出 |
-| onTick    | 本轮推进时实例仍为 ACTIVE        | 周期伤害、治疗、补盾、Aura 刷新     |
+| onTick    | 本轮推进时实例仍为 ACTIVE，时间状态已发布 | 根据本次前后时间状态结算周期伤害、治疗、补盾、Aura 刷新 |
 | onEnd     | 实例仍为 ENDING，依赖完整结束后，一次 | 移除稳定 Hook，执行结束业务         |
 
-安装先形成包含 INSTALLING 实例的新状态，以此调用 onInstall，接续其返回值。回调返回后，仍然处于 INSTALLING 的实例转为 INACTIVE，再协调是否生效。生效切换先形成新 status，再运行回调并接续返回值；回调输入表达新状态。
+安装先形成包含 INSTALLING 实例的新状态，以此调用 onInstall，接续其返回值。回调返回后重新读取当前实例和 expiration；仍为 INSTALLING 且已经到期时，通过 Lifetime 请求结束，不调用 onEnable、onTick 或 onDisable。未到期的实例转为 INACTIVE，再协调是否生效。onInstall 可以用 setExpiration 延长初始零时长或已到期期限，安装继续使用回调返回后的事实。生效协调准备启用实例时也先检查到期，不能先短暂启用再结束。生效切换先形成新 status，再运行回调并接续返回值；回调输入表达新状态。
 
 install 检查已取得宿主的生命周期；生效协调排除 INSTALLING／ENDING，并通过 Lifetime.available 检查自身及全部上游资格。纯发布不会调用内容程序：初次登记后直接将新实例传给 onInstall，状态切换发布后直接将新实例传给 onEnable／onDisable，无需重新查询刚写入的实例。onInstall、onDisable 等内容程序或完整业务操作返回后，按[状态接续约定](functional-core.md#状态接续后的读取与续执行)重读后续需要的事实；安装继续前确认当前仍为 INSTALLING。结束中宿主由所有权边保护到本 Effect 完整 Finalize 返回。
 
@@ -223,7 +228,7 @@ Contribution 的登记／撤销与 Hook 的开关是两种自然接入方式，�
 | `get(battle, ref)`                    | 从明确输入版本查一个实例，不转换事实                     |
 | `setData(battle, ref, data)`                 | 设置指定实例的私有 data，返回相应战斗版本               |
 | `setEnabled(battle, ref, enabled)`               | 返回完成许可、生效变化与回调后的状态                     |
-| `setDeadline(battle, ref, tickOrNull)`             | 写回当前实例的 deadline，null 清除期限，返回 BattleState |
+| `setExpiration(battle, ref, expiration)`           | 替换当前实例的时间状态，返回 BattleState |
 | `end(battle, ref, reason?)`                       | 同步执行结束请求；最外层调用完成整批 Finalize 后返回      |
 | `advance(battle)`                                | 由 Runtime 调度，返回一次 Effect 时间推进后的状态         |
 
@@ -236,14 +241,14 @@ function setData<T extends Effect<any, any>>(
     data: NoInfer<T["data"]>,
 ): BattleState;
 
-function setDeadline<T extends Effect<any, any>>(
+function setExpiration<T extends Effect<any, any>>(
     battle: BattleState,
     ref: Ref<T>,
-    tick: number | null,
+    expiration: Expiration,
 ): BattleState;
 ```
 
-`setData()` 接收已经计算好的 data，从传入 BattleState 重新读取当前实例。宿主或实例缺失时抛出 RangeError；给定 data 与当前 data 引用相同时返回原 BattleState。提交只改变 data，保留当前身份、Definition、source、deadline、enabled、status 和编号进度。
+`setData()` 接收已经计算好的 data，从传入 BattleState 重新读取当前实例。宿主或实例缺失时抛出 RangeError；给定 data 与当前 data 引用相同时返回原 BattleState。提交只改变 data，保留当前身份、Definition、source、expiration、enabled、status 和编号进度。
 
 内容从当前 battle 查询 data，完成业务采样和局部计算后直接提交结果值，保留未变字段。计算和提交之间不执行其他完整操作；跨领域调用后先接续其 battle，再重读所需实时状态。INSTALLING、INACTIVE、ACTIVE、ENDING 都允许设置私有数据；onDisable／onEnd 因而可以更新清理进度，写入不会恢复生命周期或阻止最终移除。
 
@@ -251,9 +256,9 @@ function setDeadline<T extends Effect<any, any>>(
 
 `NoInfer` 约束本次结果值的类型推导。私有更新必须保留实例与 Definition 对应的 S／H 类型关联；Ref 可协变查询，借预先弱化的完整 Ref 写入不兼容私有数据属于调用契约错误，不增加运行时数据形状检查。
 
-`setDeadline()` 从当前 battle 按 `Ref<Effect<any, any>>` 取得宿主与实例，只替换 deadline；null 清除期限。非 null 的 tick 在入口校验为非负安全整数，非法值抛出 RangeError；宿主或实例缺失也抛出 RangeError。给定值与当前 deadline 相同时返回原 BattleState，不修改 Lifetime 关系。
+`setExpiration()` 从当前 battle 按精确 Effect Ref 取得宿主与实例，只替换 expiration。DURATION 的 elapsed、total、rate 在写入入口校验为有限非负数，DEADLINE 的 tick 为非负安全整数；非法值、缺失宿主或实例抛出 RangeError。给定对象与当前 expiration 引用相同时返回原 BattleState，不修改 Lifetime 关系。
 
-期限写回保留当前 status，INSTALLING、INACTIVE、ACTIVE、ENDING 均可更新；ENDING 中设置期限不会恢复实例或阻止最终移除。该操作只提交期限，不额外推进或立即结束实例，即使新期限已经到达当前 tick，到期仍由正常 advance 在 onTick 后读取最新期限并结算。
+时间写回保留当前 status，INSTALLING、INACTIVE、ACTIVE、ENDING 均可更新；ENDING 中写入不会恢复实例或阻止最终移除。该操作只提交结果值，不额外推进或立即结束实例。安装完成、生效协调或正常 advance 在各自的检查点决定生命周期后继。
 
 ### 结束流程
 
@@ -279,19 +284,47 @@ Unit 从 LEAVING 开始，通过真实所有权边请求 Skill、Action、Burst 
 
 battle/runtime.step 每 Tick 调用一次 Effect advance，安排在 Spawning 之后、Elemental 与 Skills 之前。step 直接表达领域操作的顺序并接续返回值；Effect 只完成一次时间推进。
 
+时间状态由公开的 Expiration 表达：
+
+```typescript
+type Expiration =
+    | {
+          readonly type: "DURATION";
+          readonly elapsed: number;
+          readonly total: number;
+          readonly rate: number;
+      }
+    | { readonly type: "DEADLINE"; readonly tick: number }
+    | { readonly type: "INFINITE" };
+```
+
+DURATION 保存有效时长进度。每次 ACTIVE 推进将 elapsed 更新为 `min(total, elapsed + rate)`；elapsed 达到 total 时到期。rate 是每次调度的具体增量，不接收求值回调。DEADLINE 在 `battle.tick >= tick` 时到期；INFINITE 没有时间到期条件。合法输入只在 install／setExpiration 校验一次，内部推进信任已建立的约束。
+
 ```text
 固定本轮 Unit / Effect Ref 候选
     ↓
 逐个读取上一项返回状态中的实例
-    ├─ ACTIVE：执行 onTick
-    └─ 重新读取实例和期限，到期则 end(EXPIRED)
+    ├─ ACTIVE：采样 previousExpiration
+    │           → 自动推进 DURATION 并发布
+    │           → onTick(battle, 最新 self, previousExpiration)
+    └─ 重新读取实例和 expiration，到期则 end(EXPIRED)
 ```
 
-新装实例不进入已经固定的本轮候选；已经结束的候选跳过。onTick 先于到期检查，因此到期 Tick 仍可执行一次周期业务。回调通过 setDeadline 提交续期或清除期限后，advance 接续返回的 battle，再读取最新期限决定是否 end(EXPIRED)；setDeadline 自身不追加推进或立即终止。这个顺序可能改变完整的一次伤害／治疗，属于明确的项目规则。
+新装实例不进入已经固定的本轮候选；已经结束的候选跳过。onTick 取得时间状态已经发布的 self，第三参数是本次自动推进前的固定样本，不是第二份持久状态。内容可以据此比较跨过的周期边界，无需在 data 重复保存同一时长进度。DURATION 的 rate 为 0 时进度不变，ACTIVE 实例仍执行 onTick；DEADLINE 和 INFINITE 也照常执行 ACTIVE 的 onTick。
 
-持续期限与有效周期分开处理。实例 INACTIVE 时不会执行 onTick，周期进度保存在私有 data 中，恢复后继续累计；deadline 截止时间继续前进。周期计时应按有效推进次数或内容明确选择的方式表达，不能用绝对时间跳过来隐式补发暂停期间的业务。
+本次自动推进达到 total 后仍执行最后一次 onTick，再读取最新实例决定是否结束。回调可以用 setExpiration 延长 total、替换进度或转换时间类型，最终检查使用回调返回后的 expiration；同步结束或移除的旧实例不再被外层推进恢复。setExpiration 本身不额外推进，也不立即结束。
+
+INACTIVE 时不累计 DURATION，也不执行 onTick；DEADLINE 仍按当前 Tick 到期。恢复生效后从保留的有效进度继续，不补发暂停期间的业务。周期输出策略仍由具体 Definition 决定，通用引擎只提供时间状态与本次前后样本。
 
 首次立即触发表示第一次符合条件的推进可以触发；内容明确需要安装时执行的业务才放进 onInstall／onEnable。抽象 Effect 不添加通用周期定时器或专用 Aura 刷新阶段。
+
+### 必要回归场景
+
+- 安装回调可以观察和修改初始时间；回调后仍为零时长或已到期时只完成结束，不调用 onEnable／onTick／onDisable，onInstall 已完成的业务不回滚。安装中已结束的实例不会复活。
+- 有效时长在禁用期间暂停，rate 为零仍运行内容程序；最后一次推进先发布时间再结算业务，回调续期或转换类型后按最新结果决定是否结束。
+- 禁用实例的绝对期限仍可到期；时间 Setter 只写入结果，启用前的到期检查不产生短暂输出。
+
+以上场景集中验证公共时间协议，不按每种标准 Effect 复制计时、续期或启停矩阵；具体内容只补自身新增的可观察结果。
 
 ## 7. Capability 的接入
 

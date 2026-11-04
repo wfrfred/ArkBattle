@@ -65,7 +65,7 @@ const current = (battle, id = 0) => battle.battlefield.units.get(id);
 const effect = (battle, id = 0) => current(battle, id).effects.values().toArray()[0];
 const attackSpeed = (battle, id = 0) => {
     const source = current(battle, id);
-    return resolveSpeed(battle, source, source.action.actions.get("primary"));
+    return resolveSpeed(source, source.action.actions.get("primary"));
 };
 const at = (battle, tick) => mechanisms.advance(effects.advance({ ...battle, tick }));
 function through(battle, start, end) {
@@ -115,7 +115,7 @@ test("infection re-entry and crossing differently configured tiles keep the acti
     battle = at(battle, 2);
     assert.equal(effect(battle).id, installed.id);
     assert.equal(effect(battle).data.nextTick, 30);
-    assert.equal(effect(battle).deadline, 65);
+    assert.deepEqual(effect(battle).expiration, { type: "DEADLINE", tick: 65 });
     battle = through(battle, 3, 30);
     assert.equal(current(battle).vitality.hp, 920, "existing infection retains its sampled damage");
 });

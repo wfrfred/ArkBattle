@@ -38,6 +38,7 @@ const bursts: Readonly<Record<Receiver, Readonly<Record<Type, BurstDefinition>>>
     CHARACTER: {
         [Type.NEURAL]: createStun({
             durationTicks: secondsToTicks(10),
+            stunDurationTicks: secondsToTicks(10),
             damage: 1000,
         }),
         [Type.EROSION]: createPhysical({

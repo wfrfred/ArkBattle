@@ -94,7 +94,6 @@ export function commitDamage(
     if (depleted) {
         const installed = effects.install(battle, target, self.definition.elemental.bursts[type], {
             source: request.source,
-            enabled: false,
         });
         battle = installed.state;
         reference = installed.value!;
@@ -102,10 +101,6 @@ export function commitDamage(
 
     const application: DamageApplication = { type, epBefore, epAfter, epLoss, burst: reference };
     battle = dispatch(battle, target, "damaged", { request, ...application });
-
-    if (reference !== null) {
-        battle = effects.setEnabled(battle, reference, true);
-    }
 
     return { state: battle, value: application };
 }

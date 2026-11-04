@@ -14,12 +14,11 @@ import {
 import { hasSkill } from "../../unit/capability/skill/capability.js";
 import { Type } from "../../unit/capability/elemental/capability.js";
 import {
-    onInstall,
+    onInstall as registerBurst,
     advance,
     onEnd,
-    activeHost,
+    availableHost,
     hurt,
-    finishStart,
     ref,
     type Definition,
 } from "../../unit/capability/elemental/burst.js";
@@ -40,29 +39,29 @@ export function createSpDrain(parameters: SpDrainParameters): Definition {
     return {
         id: "elemental/necrosis/sp-drain",
         durationTicks: parameters.durationTicks,
-        initialize: () => ({ type: Type.NECROSIS, elapsedTicks: 0 }),
-        onInstall,
-        onEnable(battle, self) {
+        initialize: () => ({ type: Type.NECROSIS }),
+        onInstall(battle, self) {
+            battle = registerBurst(battle, self);
             const reference = ref(self);
             const scopes = [scope(effects.lifetime, reference)];
 
             for (const control of [silence, blockSpRecovery]) {
-                if (activeHost(battle, reference) === undefined) {
+                if (availableHost(battle, reference) === undefined) {
                     return battle;
                 }
 
                 battle = effects.install(battle, self.host, control, { scopes }).state;
             }
 
-            return finishStart(battle, self);
+            return battle;
         },
-        onTick: (battle, self) =>
-            advance(battle, self, (current, host, reference) => {
+        onTick: (battle, self, previousExpiration) =>
+            advance(battle, self, previousExpiration, (current, host, reference) => {
                 if (hasSkill(host)) {
                     current = modify(current, units.ref(host), -parameters.spDrainPerSecond).state;
                 }
 
-                const unit = activeHost(current, reference);
+                const unit = availableHost(current, reference);
 
                 if (unit === undefined) {
                     return current;
@@ -78,25 +77,23 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
     return {
         id: "elemental/necrosis/attack-reduction",
         durationTicks: parameters.durationTicks,
-        initialize: () => ({ type: Type.NECROSIS, elapsedTicks: 0 }),
-        onInstall,
+        initialize: () => ({ type: Type.NECROSIS }),
+        onInstall: registerBurst,
         onEnable(battle, self) {
-            const unit = activeHost(battle, ref(self));
-            if (unit === undefined) {
-                return battle;
-            }
-            if (hasOffense(unit)) {
-                battle = update(battle, [
-                    setAttackContribution(units.ref(unit), {
-                        id: `@effect/${self.id}/attack`,
-                        value: [
-                            attribute.create({ finalScaler: 1 - parameters.attackReductionRatio }),
-                        ],
-                    }),
-                ]);
-            }
+            const unit = units.get(battle, self.host)!;
 
-            return finishStart(battle, self);
+            return hasOffense(unit)
+                ? update(battle, [
+                      setAttackContribution(units.ref(unit), {
+                          id: `@effect/${self.id}/attack`,
+                          value: [
+                              attribute.create({
+                                  finalScaler: 1 - parameters.attackReductionRatio,
+                              }),
+                          ],
+                      }),
+                  ])
+                : battle;
         },
         onDisable(battle, self) {
             const unit = units.get(battle, self.host)!;
@@ -107,10 +104,10 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
                   ])
                 : battle;
         },
-        onTick: (battle, self) =>
-            advance(battle, self, (current, host, reference, second) => {
+        onTick: (battle, self, previousExpiration) =>
+            advance(battle, self, previousExpiration, (current, host, reference, second) => {
                 current = hurt(current, host, "ELEMENTAL", parameters.damagePerSecond);
-                const unit = activeHost(current, reference);
+                const unit = availableHost(current, reference);
 
                 if (unit === undefined) {
                     return current;

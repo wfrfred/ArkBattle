@@ -58,9 +58,15 @@ const host = initialize(battle, { id: 0, position: [0, 0], definition: {
 } }).value;
 const reference = ref(host);
 const currentAction = host.action.actions.get(program.id, program)!;
-const currentPeriod: number = actionCapability.resolvePeriod(battle, host, currentAction);
+const currentPeriod: number = actionCapability.resolvePeriod(host, currentAction);
 // @ts-expect-error an Action calculation takes the instance rather than a detached Definition.
-actionCapability.resolvePeriod(battle, host, program);
+actionCapability.resolvePeriod(host, program);
+actionCapability.setSpeedContribution(reference, { id: 'fixed-speed', value: [] });
+const dynamicModifiers = (_state: State, _self: Unit & actionCapability.Action) => [];
+// @ts-expect-error Action time contributions publish fixed values through a Change.
+actionCapability.setSpeedContribution(reference, { id: 'dynamic-speed', value: dynamicModifiers });
+// @ts-expect-error interval changes use the same fixed contribution contract as speed.
+actionCapability.setIntervalContribution(reference, { id: 'dynamic-interval', value: dynamicModifiers });
 const persistent = actions.ref(reference, program);
 const uses: number = actions.getAction(battle, persistent)!.state.uses;
 actions.setState(battle, persistent, { uses: uses + 1 });

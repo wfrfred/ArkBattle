@@ -260,7 +260,7 @@ export function createTerrainMechanism(
 
                 return effects.install(battle, units.ref(unit), createInfectionEffect(params), {
                     data: { nextTick: battle.tick + TICKS_PER_SECOND },
-                    deadline: battle.tick + params.durationTicks,
+                    expiration: { type: "DEADLINE", tick: battle.tick + params.durationTicks },
                 });
             },
         });

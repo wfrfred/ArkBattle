@@ -9,6 +9,9 @@ import * as epHealing from "../../dist/core/battle/healing/ep/index.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
+import * as locomotion from "../../dist/core/unit/capability/locomotion/index.js";
+import { createStun } from "../../dist/core/effects/elemental/neural.js";
+import { createSpDrain } from "../../dist/core/effects/elemental/necrosis.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
 
@@ -30,7 +33,7 @@ test("EP-03: Burst recovery refills all EP with the current budget and releases 
     const heal = { target, source: null, power: 100 };
     assert.equal(epHealing.applyHealing(heal, epHealing.calculateHealing(state, heal)).value.kind, "REJECTED");
     state = effects.advance({ ...state, tick: 1 });
-    assert.equal(elemental.get(state, burst).data.elapsedTicks, 1);
+    assert.equal(elemental.get(state, burst).expiration.elapsed, 1);
     for (const value of Object.values(get(state, 0).elemental.ep)) {
         assert.ok(Math.abs(value - 1000 / 300) < 1e-8);
     }
@@ -40,7 +43,7 @@ test("EP-03: Burst recovery refills all EP with the current budget and releases 
     for (let tick = 2; tick <= 4; tick++) {
         state = effects.advance({ ...state, tick });
     }
-    assert.equal(elemental.get(state, burst).data.elapsedTicks, 1);
+    assert.equal(elemental.get(state, burst).expiration.elapsed, 1);
     state = update(state, [
         elemental.setContribution(target, "burstRecoverySpeed", {
             id: "clock", value: [modifier({ finalScaler: 2 })],
@@ -50,7 +53,7 @@ test("EP-03: Burst recovery refills all EP with the current budget and releases 
         }),
     ]);
     state = effects.advance({ ...state, tick: 5 });
-    assert.equal(elemental.get(state, burst).data.elapsedTicks, 3);
+    assert.equal(elemental.get(state, burst).expiration.elapsed, 3);
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(20));
     for (let tick = 6; tick <= 154; tick++) {
         state = effects.advance({ ...state, tick });
@@ -64,4 +67,44 @@ test("EP-03: Burst recovery refills all EP with the current budget and releases 
     state = elemental.cancel(restarted.state, restarted.value.application.burst, "CONTENT");
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(2000));
     assert.equal(vitality.resolveResistance(state, get(state, 0)), 50);
+});
+
+test("EP-03: zero recovery budgets keep installation output and independent stun without later periodic output", () => {
+    const definition = {
+        ...elementalReceiver,
+        locomotion: {
+            speed: 1, minSpeed: 0, halfBodyWidth: 0,
+            steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 },
+        },
+        elemental: {
+            ...elementalReceiver.elemental,
+            bursts: {
+                ...elementalReceiver.elemental.bursts,
+                NEURAL: createStun({ durationTicks: 0, stunDurationTicks: 300, damage: 1000 }),
+                NECROSIS: createSpDrain({ durationTicks: 0, damagePerSecond: 100, spDrainPerSecond: 1 }),
+            },
+        },
+    };
+    let state = battle([{ definition, position: [0, 0] }]);
+    const target = units.ref(get(state, 0));
+    const neural = { target, type: "NEURAL", power: 1000, source: null };
+    const result = epDamage.applyDamage(neural, epDamage.calculateDamage(state, neural));
+    state = result.state;
+    assert.equal(get(state, 0).vitality.hp, 9000);
+    assert.equal(elemental.get(state, result.value.application.burst), undefined);
+    assert.equal(get(state, 0).elemental.burst, null);
+    assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(1000));
+    const goal = { nextPoint: [0.5, 0], goal: [0.5, 0] };
+    const movement = { mode: "WALK", speedMultiplier: 1 };
+    assert.equal(locomotion.advance(state, target, goal, movement), state);
+    state = effects.advance({ ...state, tick: 300 });
+    state = locomotion.advance(state, target, goal, movement);
+    assert.deepEqual(get(state, 0).position, goal.goal);
+
+    const necrosis = { target, type: "NECROSIS", power: 1000, source: null };
+    state = epDamage.applyDamage(necrosis, epDamage.calculateDamage(state, necrosis)).state;
+    state = effects.advance({ ...state, tick: 750 });
+    assert.equal(get(state, 0).vitality.hp, 9000);
+    assert.equal(get(state, 0).elemental.burst, null);
+    assert.equal(state.events.filter(event => event.type === "DAMAGE").length, 1);
 });

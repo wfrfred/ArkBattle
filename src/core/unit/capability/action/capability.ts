@@ -20,7 +20,7 @@ export interface RuleContext {
 
 export type Rule = BaseRule<RuleContext>;
 
-export type Input = contribution.Input<attribute.Modifier, Unit & Action>;
+export type Input = readonly attribute.Modifier[];
 
 interface Hooks {
     readonly beforeRelease: readonly BeforeReleaseHook[];

@@ -7,10 +7,10 @@ import { applyDamage } from "../../../battle/damage/hp/apply.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
-import * as effects from "../../effect/operations.js";
 import { get as getEffect } from "../../effect/query.js";
 import { ref, type Effect } from "../../effect/effect.js";
 import type { Definition as EffectDefinition } from "../../effect/definition.js";
+import type { Expiration } from "../../effect/expiration.js";
 import { hasVitality } from "../vitality/capability.js";
 import { elementValues, type Elemental, type Type } from "./capability.js";
 import { available, resolveMaxEp, resolveBurstRecoverySpeed } from "./query.js";
@@ -18,7 +18,6 @@ import { dispatch } from "./hook.js";
 
 export interface State {
     readonly type: Type;
-    readonly elapsedTicks: number;
 }
 
 export interface Definition extends EffectDefinition<State, Elemental> {
@@ -34,7 +33,22 @@ export { ref };
 
 export function onInstall(battle: BattleState, self: Burst): BattleState {
     const host = units.get(battle, self.host)!;
-    battle = replace(battle, [{ ...host, elemental: { ...host.elemental, burst: ref(self) } }]);
+    const current: Burst = {
+        ...self,
+        expiration: {
+            type: "DURATION",
+            elapsed: 0,
+            total: (self.definition as Definition).durationTicks,
+            rate: 0,
+        },
+    };
+    battle = replace(battle, [
+        {
+            ...host,
+            effects: host.effects.replace(ref(current), current),
+            elemental: { ...host.elemental, burst: ref(current) },
+        },
+    ]);
     battle = appendEvents(battle, [
         {
             type: "ELEMENTAL_BURST",
@@ -45,12 +59,13 @@ export function onInstall(battle: BattleState, self: Burst): BattleState {
         },
     ]);
 
-    return dispatch(battle, self.host, "burstStarted", self);
+    return dispatch(battle, current.host, "burstStarted", current);
 }
 
 export function advance(
     battle: BattleState,
     self: Burst,
+    previousExpiration: Expiration,
     onSecond?: (
         battle: BattleState,
         host: Unit & Elemental,
@@ -59,21 +74,20 @@ export function advance(
     ) => BattleState,
 ): BattleState {
     const reference = ref(self);
-    const host = activeHost(battle, reference);
+    const host = availableHost(battle, reference);
     if (host === undefined) {
         return battle;
     }
 
-    const { durationTicks } = host.definition.elemental.bursts[self.data.type];
-    const elapsedTicks = Math.min(
-        durationTicks,
-        self.data.elapsedTicks + resolveBurstRecoverySpeed(battle, host),
+    const expiration = self.expiration as Extract<Expiration, { type: "DURATION" }>;
+    const previous = previousExpiration as typeof expiration;
+    const elapsed = Math.min(
+        expiration.total,
+        expiration.elapsed + resolveBurstRecoverySpeed(battle, host),
     );
     const maximum = resolveMaxEp(battle, host);
-    const current = { ...self, data: { ...self.data, elapsedTicks } };
-    const ep = elementValues(
-        durationTicks === 0 ? maximum : (maximum * elapsedTicks) / durationTicks,
-    );
+    const current = { ...self, expiration: { ...expiration, elapsed } };
+    const ep = elementValues((maximum * elapsed) / expiration.total);
     battle = replace(battle, [
         {
             ...host,
@@ -83,11 +97,11 @@ export function advance(
     ]);
 
     if (onSecond !== undefined) {
-        const previousSecond = Math.floor((self.data.elapsedTicks + 1e-8) / TICKS_PER_SECOND);
-        const currentSecond = Math.floor((elapsedTicks + 1e-8) / TICKS_PER_SECOND);
+        const previousSecond = Math.floor((previous.elapsed + 1e-8) / TICKS_PER_SECOND);
+        const currentSecond = Math.floor((elapsed + 1e-8) / TICKS_PER_SECOND);
 
         for (let second = previousSecond + 1; second <= currentSecond; second++) {
-            const currentHost = activeHost(battle, reference);
+            const currentHost = availableHost(battle, reference);
             if (currentHost === undefined) {
                 return battle;
             }
@@ -96,9 +110,7 @@ export function advance(
         }
     }
 
-    return elapsedTicks >= durationTicks
-        ? effects.end(battle, reference, "ELEMENTAL_BURST_FINISHED")
-        : battle;
+    return battle;
 }
 
 export function onEnd(battle: BattleState, self: Burst, reason: string): BattleState {
@@ -114,28 +126,21 @@ export function onEnd(battle: BattleState, self: Burst, reason: string): BattleS
         },
     ]);
     const end: End =
-        reason === "ELEMENTAL_BURST_FINISHED"
+        reason === "EXPIRED" || reason === "ELEMENTAL_BURST_FINISHED"
             ? { type: "FINISHED" }
             : { type: "CANCELLED", reason };
 
     return dispatch(battle, self.host, "burstEnded", { burst: self, end });
 }
 
-export function finishStart(battle: BattleState, self: Burst): BattleState {
-    return (self.definition as Definition).durationTicks === 0
-        ? effects.end(battle, ref(self), "ELEMENTAL_BURST_FINISHED")
-        : battle;
-}
-
-export function activeHost(
+export function availableHost(
     battle: BattleState,
     reference: Ref<Burst>,
 ): (Unit & Elemental) | undefined {
     const host = units.get(battle, reference.host);
+    const status = getEffect(battle, reference)?.status;
 
-    return host !== undefined &&
-        available(host) &&
-        getEffect(battle, reference)?.status === "ACTIVE"
+    return host !== undefined && available(host) && (status === "ACTIVE" || status === "INSTALLING")
         ? host
         : undefined;
 }

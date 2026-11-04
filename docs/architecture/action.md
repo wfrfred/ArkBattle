@@ -14,7 +14,7 @@ Action 需要保障的结果是：
 
 - 持久 Action 与本轮 Execution 分开。同配置同宿主至多有一个未完成执行；本轮结束保留持久状态，旧执行引用不能操作后来一轮。
 - 启动资格、冷却与内容条件全部通过后才登记执行和开始周期。普通拒绝不分配执行身份；准备程序已经完成的状态变化继续接续。
-- 冷却产生正确行动节奏。不同配置独立计时，变速按规定保留进度；完成或取消不默认重置周期，错过的行动机会不积攒补发。
+- 冷却产生正确行动节奏。不同配置独立计时；攻速和间隔通过静态修正列表登记，变更发布后同步按新周期保留进度，不等 Combat 下一次推进。完成或取消不默认重置周期，错过的行动机会不积攒补发。
 - 释放拦截、成功释放与实际输出分开。中断或回调取消后不执行旧输出；成功释放已经触发的回复与其他前缀业务不撤销。
 - 执行通过自己的 Definition 处理私有状态。完整终止使用[共享 Lifetime](lifetime.md)，最终只清空原轮次，并保留结束程序已经提交的持久状态与冷却。
 
@@ -209,7 +209,7 @@ interface Rule {
     readonly allows: (battle: BattleState, context: RuleContext) => boolean;
 }
 
-type Input = contribution.Input<Modifier, Unit & ActionCapability>;
+type Input = readonly Modifier[];
 
 interface State {
     readonly actions: Actions;
@@ -222,7 +222,9 @@ interface State {
 }
 ```
 
-setIntervalContribution／setSpeedContribution 及对应 remove 绑定 Ref<Unit & ActionCapability> 返回 Change，实现在 capability/action/operations.ts。transform 只修改贡献集合，无变化时返回原 Unit，由 update 统一跳过 settle；实际变化的 settle 从最新 battle 调用 refreshCooldowns，按全批最终周期及当前完成比例换算冷却；Content 不补一次手工刷新。Rule／释放 Hook 登记也返回 Change，但不附带冷却或 Blocking 后继。动态求值使用 resolveBaseInterval／resolveSpeed／resolvePeriod(battle, source: Unit & ActionCapability, self: Action)，直接接收已取得的宿主与具体 Action 并返回 number。共享贡献及动态 Input 使用 source，基础时序取 self.definition。resolveBaseInterval 是速度换算前的间隔，resolvePeriod 是用于 Cooldown 的实际周期；创建实例前的初始冷却仍使用局部公式 period(intervalTicks, speed)。
+setIntervalContribution／setSpeedContribution 及对应 remove 绑定 Ref<Unit & ActionCapability> 返回 Change，实现在 capability/action/operations.ts。贡献只接收静态 Modifier 数组，不接收依赖 BattleState 的求值函数。transform 只修改贡献集合，无变化时返回原 Unit，由 update 统一跳过 settle；实际变化的 settle 从最新 battle 调用 refreshCooldowns，按全批最终周期及当前完成比例换算冷却。Content 不补一次手工刷新，Combat 也不每 Tick 刷新。依赖 HP、技能阶段等事实的速率变化，由拥有该机制的程序在相应业务时点提交新的修正列表。
+
+Rule／释放 Hook 登记也返回 Change，但不附带冷却或 Blocking 后继。属性查询使用 resolveBaseInterval／resolveSpeed／resolvePeriod(source: Unit & ActionCapability, self: Action)，直接接收已取得的宿主与具体 Action 并返回 number。共享贡献使用 source，基础时序取 self.definition。resolveBaseInterval 是速度换算前的间隔，resolvePeriod 是用于 Cooldown 的实际周期；创建实例前的初始冷却仍使用局部公式 period(intervalTicks, speed)。
 
 普通攻击周期依据 [PRTS 攻速公式](https://prts.wiki/w/游戏数据基础#攻速公式)：修正间隔 × 100 / 限制后的速度。速度属性下限为 20，周期计算速度上限为 600，有效周期至少为 1 Tick。纯 Cooldown 支持非负连续周期，不在纯值函数中强加攻击的量化限制。
 
@@ -230,7 +232,7 @@ setIntervalContribution／setSpeedContribution 及对应 remove 绑定 Ref<Unit 
 
 Cooldown 保存 periodTicks／readyAtTick；reset 从当前时点开始完整周期，clear 立即就绪。resizeKeepingProgress 保留完成比例，resizeKeepingElapsed 保留绝对已过时间，二者明确分开。
 
-成功启动开始周期；结束和取消不默认重置或清空。refreshCooldowns 从 Actions 逐项读取对应 Definition 和当前 Cooldown；resetCooldown／clearCooldown 先刷新周期，再明确控制指定配置行动。setCooldown 只设置指定条目的 Cooldown，不隐式刷新全部行动。
+成功启动开始周期；结束和取消不默认重置或清空。refreshCooldowns 由贡献变更的 Settlement 调用，从 Actions 逐项读取对应 Definition 和当前 Cooldown。启动、resetCooldown／clearCooldown 直接使用已经接续的当前周期；setCooldown 只设置指定条目的 Cooldown，不隐式刷新全部行动。
 
 普通攻击不足一 Tick 余量的节奏政策由具体攻击程序处理，不进入通用 reset；修正所用的先前到期时间在内容 prepare 返回的最新 BattleState 中采样，不能沿用回调前的冷却快照覆盖本次修改。周期变化不自动缩放已经采样的执行等待。
 

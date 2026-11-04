@@ -1,6 +1,7 @@
 import type { Unit } from "../unit.js";
 import type { Definition } from "./definition.js";
 import type { Identified, Ref } from "../../common/ref.js";
+import type { Expiration } from "./expiration.js";
 
 export type Id = number;
 
@@ -15,7 +16,7 @@ export interface Effect<S extends object = object, H extends object = object> ex
     readonly definition: Definition<S, H>;
     readonly data: S;
     readonly source: Ref<Unit> | null;
-    readonly deadline: number | null;
+    readonly expiration: Expiration;
     readonly enabled: boolean;
     readonly status: Status;
 }

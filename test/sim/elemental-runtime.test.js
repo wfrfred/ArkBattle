@@ -141,7 +141,7 @@ test('elemental execution: periodic output follows burst speed and does not pay 
   work = applyUnitChanges(work, [speed(0)]);
   work = advance(work, 60);
   assert.equal(getUnit(work, 0).vitality.hp, 100000);
-  assert.equal(getBurst(work, getUnit(work, 0).elemental.burst).data.elapsedTicks, 0);
+  assert.equal(getBurst(work, getUnit(work, 0).elemental.burst).expiration.elapsed, 0);
   assert.deepEqual(getUnit(work, 0).elemental.ep, elementValues(0));
   work = applyUnitChanges(work, [
     speed(2),
@@ -246,7 +246,7 @@ test('elemental runtime: Unit and Effect tick triggers preserve every necrosis p
   }
 });
 
-test('elemental runtime: character neural stun prevents ordinary attacks and route movement until recovery ends', () => {
+test('elemental runtime: character neural stun prevents ordinary attacks and route movement for its own duration', () => {
   let { runtime } = battle('CHARACTER', 'NEURAL', { moving: true });
   const first = (runtime = stepBattle(runtime, []));
   const casterHp = getUnit(first, 0).vitality.hp;
@@ -263,7 +263,9 @@ test('elemental runtime: character neural stun prevents ordinary attacks and rou
 
 test('elemental runtime: unused neural paralysis survives recovery and the next burst resets its remaining charges', () => {
   let { runtime } = battle('ENEMY', 'NEURAL');
-  runtime = effects.install(runtime, unitRef(victim(runtime)), stun, { deadline: 301 }).state;
+  runtime = effects.install(runtime, unitRef(victim(runtime)), stun, {
+    expiration: { type: 'DEADLINE', tick: 301 },
+  }).state;
   const events = [];
   for (let tick = 0; tick <= 300; tick++) events.push(...(runtime = stepBattle(runtime, [])).events);
   assert.equal(victim(runtime).elemental.burst, null);

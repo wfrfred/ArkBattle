@@ -12,12 +12,11 @@ import {
 } from "../../unit/capability/vitality/capability.js";
 import { Type } from "../../unit/capability/elemental/capability.js";
 import {
-    onInstall,
+    onInstall as registerBurst,
     advance,
     onEnd,
-    activeHost,
+    availableHost,
     hurt,
-    finishStart,
     ref,
     type Definition,
 } from "../../unit/capability/elemental/burst.js";
@@ -52,11 +51,11 @@ export function createArts(parameters: Parameters): Definition {
     return {
         id: "elemental/burn/arts",
         durationTicks: parameters.durationTicks,
-        initialize: () => ({ type: Type.BURN, elapsedTicks: 0 }),
-        onInstall,
-        onEnable(battle, self) {
+        initialize: () => ({ type: Type.BURN }),
+        onInstall(battle, self) {
+            battle = registerBurst(battle, self);
             const reference = ref(self);
-            let unit = activeHost(battle, reference);
+            let unit = availableHost(battle, reference);
 
             if (unit === undefined) {
                 return battle;
@@ -67,15 +66,13 @@ export function createArts(parameters: Parameters): Definition {
                 }).state;
             }
 
-            unit = activeHost(battle, reference);
+            unit = availableHost(battle, reference);
 
             if (unit === undefined) {
                 return battle;
             }
 
-            battle = hurt(battle, unit, "ARTS", parameters.damage);
-
-            return finishStart(battle, self);
+            return hurt(battle, unit, "ARTS", parameters.damage);
         },
         onTick: advance,
         onEnd,
@@ -88,11 +85,11 @@ export function createElemental(parameters: Parameters): Definition {
     return {
         id: "elemental/burn/elemental",
         durationTicks: parameters.durationTicks,
-        initialize: () => ({ type: Type.BURN, elapsedTicks: 0 }),
-        onInstall,
-        onEnable(battle, self) {
+        initialize: () => ({ type: Type.BURN }),
+        onInstall(battle, self) {
+            battle = registerBurst(battle, self);
             const reference = ref(self);
-            let unit = activeHost(battle, reference);
+            let unit = availableHost(battle, reference);
 
             if (unit === undefined) {
                 return battle;
@@ -103,15 +100,13 @@ export function createElemental(parameters: Parameters): Definition {
                 }).state;
             }
 
-            unit = activeHost(battle, reference);
+            unit = availableHost(battle, reference);
 
             if (unit === undefined) {
                 return battle;
             }
 
-            battle = hurt(battle, unit, "ELEMENTAL", parameters.damage);
-
-            return finishStart(battle, self);
+            return hurt(battle, unit, "ELEMENTAL", parameters.damage);
         },
         onTick: advance,
         onEnd,

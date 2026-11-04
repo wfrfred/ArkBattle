@@ -12,11 +12,10 @@ import {
 } from "../../unit/capability/vitality/capability.js";
 import { Type } from "../../unit/capability/elemental/capability.js";
 import {
-    activeHost,
+    availableHost,
     advance,
-    finishStart,
     hurt,
-    onInstall,
+    onInstall as registerBurst,
     onEnd,
     type Definition,
 } from "../../unit/capability/elemental/burst.js";
@@ -51,11 +50,11 @@ export function createPhysical(parameters: Parameters): Definition {
     return {
         id: "elemental/erosion-physical/burst",
         durationTicks: parameters.durationTicks,
-        initialize: () => ({ type: Type.EROSION, elapsedTicks: 0 }),
-        onInstall,
-        onEnable(battle, self) {
+        initialize: () => ({ type: Type.EROSION }),
+        onInstall(battle, self) {
+            battle = registerBurst(battle, self);
             const reference = ref(self);
-            let host = activeHost(battle, reference);
+            let host = availableHost(battle, reference);
             if (host === undefined) {
                 return battle;
             }
@@ -63,13 +62,13 @@ export function createPhysical(parameters: Parameters): Definition {
                 battle = effects.install(battle, units.ref(host), defense).state;
             }
 
-            host = activeHost(battle, reference);
+            host = availableHost(battle, reference);
 
             if (host !== undefined) {
                 battle = hurt(battle, host, "PHYSICAL", parameters.damage);
             }
 
-            return finishStart(battle, self);
+            return battle;
         },
         onTick: advance,
         onEnd,
@@ -82,11 +81,11 @@ export function createElemental(parameters: Parameters): Definition {
     return {
         id: "elemental/erosion-elemental/burst",
         durationTicks: parameters.durationTicks,
-        initialize: () => ({ type: Type.EROSION, elapsedTicks: 0 }),
-        onInstall,
-        onEnable(battle, self) {
+        initialize: () => ({ type: Type.EROSION }),
+        onInstall(battle, self) {
+            battle = registerBurst(battle, self);
             const reference = ref(self);
-            let host = activeHost(battle, reference);
+            let host = availableHost(battle, reference);
             if (host === undefined) {
                 return battle;
             }
@@ -94,13 +93,13 @@ export function createElemental(parameters: Parameters): Definition {
                 battle = effects.install(battle, units.ref(host), defense).state;
             }
 
-            host = activeHost(battle, reference);
+            host = availableHost(battle, reference);
 
             if (host !== undefined) {
                 battle = hurt(battle, host, "ELEMENTAL", parameters.damage);
             }
 
-            return finishStart(battle, self);
+            return battle;
         },
         onTick: advance,
         onEnd,

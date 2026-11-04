@@ -6,6 +6,13 @@ Unit Definition 直接关联共享的 Elemental Definition。bursts 按元素类
 
 公开类型、查询和业务操作从 [elemental/index.ts](../../src/core/unit/capability/elemental/index.ts) 导入，包括只读的 available。Capability 的 Rule、Hook 与属性贡献 set／remove 绑定 Ref<Unit & Elemental> 返回 Change，交给 Unit.update 登记。资源提交复用对应业务的 CommitContext，爆发与恢复等操作保持 BattleState 协议，状态写回使用 Core 内部的 Unit.replace；query.ts 负责查询。
 
+## 关键语义
+
+- EP 提交、burstStarted、onInstall 的一次性爆发输出、damaged、Battle Applied 依次发生。零恢复预算仍执行安装业务，随后由通用 Effect 安装流程正常结束，不补发周期输出。
+- 恢复进度只保存在根 Effect 的 DURATION expiration。根的 rate 为零，内容 onTick 按当前恢复速度推进同一 elapsed，并与四型真实 EP 一次发布；自然到期交给 Effect 框架。
+- 神经眩晕使用独立期限，不绑定根恢复时间；永久侵蚀减防与剩余麻痹也独立保留。灼燃减抗、封技与阻回依赖根结束。
+- 最后一次正常推进先结算预算内周期业务，再结束；取消、提前完成与离场不补未来输出。时间协议由 Effect 集中验收，Elemental 只验证这些资源与业务结果。
+
 ## 1. 能力与定义
 
 [capability.ts](../../src/core/unit/capability/elemental/capability.ts) 的 Definition 为：
@@ -42,26 +49,25 @@ interface Definition {
 
 标准爆发的具体 Effect 程序位于 `core/effects/elemental/`；通用控制位于 `core/effects/control.ts`。Elemental Capability 负责 EP、爆发触发与当前引用，通用实例管理归 `core/unit/effect/`。完整范围和按需实现原则见[标准效果库](effect.md#10-标准效果库与候选范围)。
 
-[burst.ts](../../src/core/unit/capability/elemental/burst.ts) 定义共同的 Burst 类型、进度、EP 恢复与结束收尾；[neural.ts](../../src/core/effects/elemental/neural.ts)、[erosion.ts](../../src/core/effects/elemental/erosion.ts)、[burn.ts](../../src/core/effects/elemental/burn.ts)、[necrosis.ts](../../src/core/effects/elemental/necrosis.ts) 分别实现神经、侵蚀、灼燃和凋亡的具体标准 Effect。其数据只保存元素类型与一份有效进度：
+[burst.ts](../../src/core/unit/capability/elemental/burst.ts) 定义共同的 Burst 类型、进度、EP 恢复与结束收尾；[neural.ts](../../src/core/effects/elemental/neural.ts)、[erosion.ts](../../src/core/effects/elemental/erosion.ts)、[burn.ts](../../src/core/effects/elemental/burn.ts)、[necrosis.ts](../../src/core/effects/elemental/necrosis.ts) 分别实现神经、侵蚀、灼燃和凋亡的具体标准 Effect。其 data 只保存元素类型：
 
 ```typescript
 interface BurstState {
     readonly type: Type;
-    readonly elapsedTicks: number;
 }
 
 type Burst = Effect<BurstState, Elemental>;
 ```
 
-Core 提供八个具体 Effect：神经眩晕／麻痹、物理／元素侵蚀、法术／元素灼燃，以及消耗 SP／恢复攻击力的凋亡。每个实现只接收自身所需的数值参数，并明确描述行为，不通过共同的大参数表或一串开关解释效果组合。Data 在模块初始化时传入数值，构建并保存完整静态 Definition；每轮只查表复用。initialize 返回真实初态 `{ type, elapsedTicks: 0 }`。BurstDefinition 是普通 Effect Definition 加共同的只读 durationTicks 元数据；共享推进据此计算预算，具体程序使用自身参数，不另保存 remainingTicks、周期 Clock 或攻击力恢复 scaler。
+Core 提供八个具体 Effect：神经眩晕／麻痹、物理／元素侵蚀、法术／元素灼燃，以及消耗 SP／恢复攻击力的凋亡。每个实现只接收自身所需的数值参数，并明确描述行为，不通过共同的大参数表或一串开关解释效果组合。Data 在模块初始化时传入数值，构建并保存完整静态 Definition；每轮只查表复用。initialize 返回 `{ type }`，data 不重复保存时间进度。BurstDefinition 是普通 Effect Definition 加共同的只读 durationTicks 恢复预算；安装时以此建立 DURATION expiration，不另保存 remainingTicks、周期 Clock 或攻击力恢复 scaler。
 
 Burst 的 id、host、source、enabled、status 由 Effect 提供，Elemental 的 burst 槽位只保存它的 Typed Ref。`ref(self)` 复用 Effect Ref，地址为 host + Effect ID；没有独立 Burst ID 分配器或 Lifetime。旧引用不能操作后来的爆发。来源引用保存历史身份，不要求来源仍在场，也不隐含生命周期绑定；跨 Battle 使用 Ref 仍属于调用契约错误。
 
 [data/arknights/elemental.ts](../../src/data/arknights/elemental.ts) 保存原始类型映射、八套数值和具体 Effect 的选择表。新增元素时新增对应 Effect 实现，补充元素类型与映射表；通用 EP 的 Calculate／Apply／Commit 以及已有爆发程序不需要为新机制增加分支。共享函数只处理进度、EP 恢复和结束收尾。通用控制实现在 [effects/control.ts](../../src/core/effects/control.ts)，Content 直接复用；通用 Effect 引擎不解释元素规则。
 
-需要随本轮结束的产物通过 `scope(effects.lifetime, ref)` 绑定根 Burst Effect：眩晕、灼燃减抗、封技、阻止 SP 回复等在根实例结束时清理。是否允许新依赖沿用 Effect Lifetime 的可用性，不建立另一套 Burst 状态机。
+需要随本轮结束的产物通过 `scope(effects.lifetime, ref)` 绑定根 Burst Effect：灼燃减抗、封技、阻止 SP 回复等在根实例结束时清理。是否允许新依赖沿用 Effect Lifetime 的可用性，不建立另一套 Burst 状态机。
 
-永久侵蚀减防和冷却结束后尚未消费的麻痹具有独立生命周期，不绑定根实例。永久性由侵蚀规则决定，不由减防数值的正负推断；再次神经爆发时按标准规则重置尚存麻痹的层数。
+神经眩晕由独立的 stunDurationTicks 配置建立 DEADLINE，不绑定根恢复时间；Data 明确配置恢复十秒与眩晕十秒，二者不是同一个事实。零眩晕期限使用通用安装到期处理，不启用控制。永久侵蚀减防和冷却结束后尚未消费的麻痹也具有独立生命周期，不绑定根实例。永久性由侵蚀规则决定，不由减防数值的正负推断；再次神经爆发时按标准规则重置尚存麻痹的层数。
 
 ## 3. 查询、结算与资源提交
 
@@ -127,26 +133,28 @@ Elemental 仅保存专属 DamageReceivingHook 和实际资源／Burst 通知，�
 | --- | --- |
 | damaged | `{ request, ...DamageApplication }`；本次实际 EP 损失大于零，已经提交 |
 | healed | `{ request, ...HealingApplication }`；显式恢复至少一型 EP，已经提交 |
-| burstStarted | 已登记并写入槽位的 Burst Effect，表示创建事实；标准效果尚未启用 |
+| burstStarted | 已登记并写入槽位的 Burst Effect，表示创建事实；一次性爆发输出尚未执行 |
 | burstEnded | `{ burst, end }`；依赖已清理、EP 已重置且槽位已清空，根 Effect 随后由通用流程移除 |
 
 EP 损伤的爆发分支在同一次 commitDamage 内按以下顺序执行：
 
 ```text
 提交本次 EP 扣减并将四型归零，记录 ELEMENTAL_INJURY
-→ effects.install(enabled: false)，登记标准 Burst Effect 及 Unit owner
-    → onInstall 写入 Elemental 的 Burst 引用
+→ effects.install 登记标准 Burst Effect 及 Unit owner
+    → onInstall 同时写入 DURATION { elapsed: 0, total: durationTicks, rate: 0 } 和 Elemental 的 Burst 引用
     → 记录 ELEMENTAL_BURST，派发 burstStarted
+    → 重新读取仍可执行的本轮实例，执行一次性爆发输出
+    → 通用安装流程处理到期；未到期时启用持续输出
 → damaged
-→ effects.setEnabled(true)
-    → 仍有效的本轮实例执行 onEnable，标准爆发立即生效
 → 返回固定资源报告
 → Battle 的 targetApplied、sourceApplied
 ```
 
-分阶段启用复用现有 Effect 操作，为 damaged 保留资源提交后、标准爆发生效前的明确时点，不引入额外生命周期。Apply 不在 Commit 返回后补做爆发业务。非爆发分支的实际损伤只派发 damaged；显式回复继续通过 healed 通知资源变化，二者不与 Battle Applied 合并。
+一次性产物与即时伤害属于 onInstall；根自身可撤销的持续属性贡献由 onEnable／onDisable 管理。Apply 不在 Commit 返回后补做爆发业务。非爆发分支的实际损伤只派发 damaged；显式回复继续通过 healed 通知资源变化，二者不与 Battle Applied 合并。
 
-burstStarted 可以同步取消本轮 Effect；随后 damaged 和适用的 Battle Applied 仍报告已经发生的提交，本轮 onEnable 不执行。后续嵌套业务不重算外层报告。无活动 Lifetime 结算时，取消可以使 burstEnded 嵌套完成；有活动结算时等待 Finalize。当前对象、资格与 Hook 登记在完整业务返回后从最新 BattleState 查询，明确采样的数值和原 Ref 继续使用，不误操作后来创建的新一轮。
+通用 Effect 在 onInstall 完成后检查到期，因此零预算仍产生即时伤害和独立产物，随后正常结束并通知 damaged。尚存麻痹、永久减防与独立眩晕继续遵守自己的生命周期，临时派生输出随根清理；根自身的持续贡献不经历启用。
+
+burstStarted 可以同步取消本轮 Effect；随后 damaged 和适用的 Battle Applied 仍报告已经发生的提交，本轮启动输出不执行。后续嵌套业务不重算外层报告。无活动 Lifetime 结算时，取消可以使 burstEnded 嵌套完成；有活动结算时等待 Finalize。当前对象、资格与 Hook 登记在完整业务返回后从最新 BattleState 查询，明确采样的数值和原 Ref 继续使用，不误操作后来创建的新一轮。
 
 ## 5. 完整结束与离场
 
@@ -154,7 +162,7 @@ Burst 的结束复用 Effect Lifetime，先同步请求，再由最外层结算�
 
 ```text
 登记 Pending，Effect → ENDING
-→ onDisable 撤销启用输出，结束依赖 Effect
+→ 已启用时 onDisable 撤销持续输出，结束依赖 Effect
 → 所有依赖者完整 Finalize 后执行根 Effect.onEnd
     → 四型 EP 重置到宿主最新有效上限
     → 清空 Elemental 的 Burst 引用
@@ -166,7 +174,7 @@ ENDING 期间仍占用爆发槽位，重复请求不覆盖首次原因或重复�
 
 burstEnded 表示 Elemental 侧资源收尾完成，触发时根 Effect 仍为 ENDING，随后才从 Effect 容器移除。该通知可以创建下一轮；通用 Finalize 接续最新 Unit，仅移除旧 Effect ID，不覆盖新槽位。无需为此增加 afterRemove 回调。
 
-正常完成与取消都在宿主仍存在时重置 EP，显式在场取消也采用相同政策。重置属于结束操作，不派发 healed。End 保留 FINISHED 与携带 reason 的 CANCELLED 语义，并用于通知及依赖清理。恢复进度由 UI 查询当前 State，不输出自然恢复完成或爆发结束的诊断 Event。
+正常完成与取消都在宿主仍存在时重置 EP，显式在场取消也采用相同政策。重置属于结束操作，不派发 healed。End 保留 FINISHED 与携带 reason 的 CANCELLED 语义，并用于通知及依赖清理；Effect 自然到期映射为 FINISHED。恢复进度由 UI 查询当前 expiration，不输出自然恢复完成或爆发结束的诊断 Event。
 
 Unit 请求离场发布 LEAVING 后，通过所有权边自动结束根 Burst Effect。Unit 等待它与其他依赖者整个 Finalize 后才注销和派发 leave；离场入口不手动取消爆发，也不提前清空 burst 或依赖集合。
 
@@ -174,7 +182,7 @@ Unit 请求离场发布 LEAVING 后，通过所有权边自动结束根 Burst Ef
 
 原生恢复顺序与 EP 写回的证据见[案例 25](../research/cases/25-elemental-burst-recovery-timing.md)。Core 采用固定步长的全场阶段调度，按项目语义尺度忽略创建时点造成的帧内微时序差异，不增加创建 Tick 跳过或 lastAdvancedTick。
 
-根 Burst Effect 的 onTick 是唯一爆发推进入口。对正时长配置，每次获准推进时使用当前 burstRecoverySpeed 更新有效进度，并按最新有效上限回填全部 EP：
+根 Burst Effect 的 onTick 是唯一爆发推进入口。expiration 保存唯一有效进度，rate 固定为零，通用自动推进不另加一份时间。对正时长配置，每次宿主获准推进时，内容程序使用当前 burstRecoverySpeed 更新 expiration.elapsed，并按最新有效上限回填全部 EP，两者在同一 Unit 写回中发布：
 
 ```text
 elapsed' = min(duration, elapsed + currentBurstRecoverySpeed)
@@ -183,8 +191,14 @@ allEP = currentMaxEP × elapsed' / duration
 
 恢复期间四型 EP 会逐步回填，不一直保持零值到结束；Burst 槽位存在期间仍拒绝新的 EP 损伤和显式回复。速度为零或宿主暂时不具备推进资格时暂停，后续只推进当前一步，不积攒补算。动态上限与恢复速度在各次实际推进时重新求值。
 
-同一份有效进度决定跨过的周期边界与凋亡攻击力恢复。自然推进先完成预算内最后一次周期业务，再正常结束；取消、提前 finish 或宿主离场不补未来输出。不另装一枚周期 Effect 保存同类时钟，也不在 onEnd 补发另一个调度器遗漏的周期。
+同一份有效进度决定跨过的周期边界与凋亡攻击力恢复。内容程序完成预算内最后一次周期业务后返回，由通用 Effect 框架按最新 expiration 处理到期，Burst 不再重复判断普通自然终止；取消、提前 finish 或宿主离场不补未来输出。不另装一枚周期 Effect 保存同类时钟，也不在 onEnd 补发另一个调度器遗漏的周期。
 
 Elemental 的 Runtime 推进只负责无 Burst 时的自然回复，量为 `当前 recoverySpeed / TICKS_PER_SECOND`，保留小数，不派发显式 heal 的 healed Hook 或普通治疗通知。Effect 与自然回复分别由既有调度阶段安排；阶段之前创建的实例可以参与当次推进，阶段之后创建的实例等下一次候选，不新增首 Tick 特判。
 
 Core 同一宿主只允许一个 Burst。少数多种元素爆发的特殊内容由 Content 组合输出和生命周期，不引入通用多阶段爆发或启动免疫窗口。狂躁及其余角色特例的内容覆盖仍需补充；这不改变上述四型与单 Burst 契约。
+
+### 必要回归场景
+
+- 标准灼燃验证 EP 中间值、动态上限与速度、暂停和根结束后的临时减抗撤销；同一场景读取 expiration 的唯一进度，不在夹具重写计时算法。
+- 零恢复预算验证即时伤害和独立眩晕／永久减防仍发生，四型 EP 写满并清槽，凋亡不产生未来周期输出。
+- 正常完成包含预算内最后一次周期业务；取消或启动回调中结束根后不继续输出。既定 burstStarted、damaged 与 Battle Applied 时序继续由现有集中场景保障。

@@ -26,9 +26,9 @@
 | [hook](sim/hook.test.js) | 公共 Hook 固定候选、读取最新登记、独立嵌套派发。 |
 | [runtime](sim/runtime.test.js) | 初始化／出生事实先于 enter；正常预置替换接续最新绑定；Tick 阶段有序、失败不发布。 |
 | [lifetime](sim/lifetime.test.js) | 依赖者完整结束后宿主才注销；首次原因和收尾唯一；祖先开始结束后拒收新依赖。 |
-| [action](sim/action.test.js) | 启动拒绝、持久与执行身份、冷却与变速、攻击中断／释放／输出、Combat 推进及确定性。 |
+| [action](sim/action.test.js) | 启动拒绝、持久与执行身份、静态时序贡献变更时同步保留冷却进度、攻击中断／释放／输出、Combat 推进及确定性。 |
 | [skill](sim/skill.test.js) | 持久与本轮状态、SP 门槛／支付／回复许可、TIME 当轮延时、Ammo 公式／采样／补弹额度／耗尽。 |
-| [effect](sim/effect.test.js) | 安装与启停输出、覆写赢家、私有进度与绝对期限、续期、来源与生命周期依赖分离。 |
+| [effect](sim/effect.test.js) | 安装与启停输出、零时长安装、覆写赢家、三种互斥时间、有效时长暂停与手动推进、末次回调续期、来源与生命周期依赖分离。 |
 | [contribution](sim/contribution.test.js) | 先选互斥赢家再动态求值，真实属性输出遵循领域公式。 |
 | [allegiance](sim/allegiance.test.js) | ALLY／ENEMY／NEUTRAL 的敌对关系。 |
 | [blocking](sim/blocking.test.js) | 成对资格、层与地块、容量尾部裁撤、批量解除与旧 Ref、多目标分散及独立位置计划；主动空间覆盖先发布新位置和解除结果，再通知。 |
@@ -36,7 +36,7 @@
 | [core-types](sim/core-types.test.js) | Typed Ref 保留身份和私有数据配对，普通擦除查询不泄漏 `any`；能力证明与不透明 Change 约束写入；普通注册的按 Key 和固定字段接口均保留 Entry 与能力 Ref 的类型关联。 |
 | [damage](sim/damage.test.js) | 按[伤害／治疗回归清单](../docs/architecture/verification.md#hook-与伤害治疗的回归语义)保障 HP／EP 公式与采样、独立 Calculate 状态、接收与提交、零值和取消、最新资源、Applied 后死亡及同步 Burst。 |
 | [healing](sim/healing.test.js) | HP／EP 治疗公式、四型恢复、满资源仍成功、双侧 Applied 和自然恢复的区别。 |
-| [elemental](sim/elemental.test.js) | 标准 Burst Effect 的单进度、恢复期间四型 EP 逐步回填、动态与暂停预算、完整周期、完成／取消后的资源与作用生命周期；不复制公共 Lifetime 矩阵。 |
+| [elemental](sim/elemental.test.js) | rate 为零的标准 Burst 手动推进唯一时间进度，恢复期间四型 EP 逐步回填；动态与暂停预算、完整周期、零预算的一次性输出和独立产物、完成／取消后的资源与作用生命周期；不复制公共时间或 Lifetime 矩阵。 |
 | [UI瞬时输出](sim/event-output.test.js) | 按EVENT清单集中验证真实结算飘字、爆发位置与注销快照、路线计数独立和Tick输出清空。 |
 | [标准元素爆发](sim/elemental-runtime.test.js) | Core 具体 Effect 使用 Data 绑定的真实数值产生伤害、异常、永久输出和周期累计结果；不重写夹具算法或按八套配置逐字段扩展。 |
 

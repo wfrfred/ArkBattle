@@ -1,5 +1,6 @@
 import type { State as BattleState } from "../../battle/state.js";
 import type { Effect } from "./effect.js";
+import type { Expiration } from "./expiration.js";
 
 export interface Group {
     readonly id: string;
@@ -13,6 +14,10 @@ export interface Definition<S extends object, H extends object = object> {
     readonly onInstall?: (battle: BattleState, self: Effect<S, H>) => BattleState;
     readonly onEnable?: (battle: BattleState, self: Effect<S, H>) => BattleState;
     readonly onDisable?: (battle: BattleState, self: Effect<S, H>) => BattleState;
-    readonly onTick?: (battle: BattleState, self: Effect<S, H>) => BattleState;
+    readonly onTick?: (
+        battle: BattleState,
+        self: Effect<S, H>,
+        previous: Expiration,
+    ) => BattleState;
     readonly onEnd?: (battle: BattleState, self: Effect<S, H>, reason: string) => BattleState;
 }

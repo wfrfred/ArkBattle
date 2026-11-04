@@ -591,14 +591,18 @@ export class TacticalDemoPresentation {
             const reference = unit.elemental.burst;
             if (reference !== null) {
                 const recovery = getBurst(state, reference)!;
-                const definition = unit.definition.elemental.bursts[recovery.data.type];
-                const remainingTicks = definition.durationTicks - recovery.data.elapsedTicks;
+                const expiration = recovery.expiration;
+                if (expiration.type !== "DURATION") {
+                    continue;
+                }
+
+                const remainingTicks = expiration.total - expiration.elapsed;
                 gauges.push([
                     unit.id,
                     ELEMENT_TYPE[recovery.data.type],
                     1,
                     (state.tick + remainingTicks) / TICKS_PER_SECOND,
-                    definition.durationTicks / TICKS_PER_SECOND,
+                    expiration.total / TICKS_PER_SECOND,
                 ]);
                 continue;
             }

@@ -79,13 +79,11 @@ export function start<P extends object, E extends object>(
             return reject("RULE");
         }
 
-        const period = resolvePeriod(battle, unit, action);
-        const resized = cooldown.resizeKeepingProgress(action.cooldown, period, battle.tick);
-        if (cooldown.remaining(resized, battle.tick) > 0) {
+        if (cooldown.remaining(action.cooldown, battle.tick) > 0) {
             return reject("COOLDOWN");
         }
 
-        return { type: "READY" as const, unit, action, cooldown: resized };
+        return { type: "READY" as const, unit, action };
     }
 
     const initial = check(battle);
@@ -105,11 +103,11 @@ export function start<P extends object, E extends object>(
         return { state: battle, value: latest };
     }
 
-    const { unit, action, cooldown: acceptedCooldown } = latest;
+    const { unit, action } = latest;
     const self: Execution<P, E> = {
         definition: action.definition,
         state: action.state,
-        cooldown: cooldown.reset(acceptedCooldown, battle.tick),
+        cooldown: cooldown.reset(action.cooldown, battle.tick),
         execution: {
             id: unit.action.nextExecutionId,
             startedAtTick: battle.tick,
@@ -256,7 +254,7 @@ export function refreshCooldowns(
 
     for (const id of actions.keys()) {
         const self = actions.get(id)!;
-        const period = resolvePeriod(battle, unit, self);
+        const period = resolvePeriod(unit, self);
         const next = cooldown.resizeKeepingProgress(self.cooldown, period, battle.tick);
         if (next !== self.cooldown) {
             actions = actions.replace(self.definition, { ...self, cooldown: next });
@@ -272,8 +270,6 @@ export function resetCooldown<X extends Action<any, any>>(
     battle: BattleState,
     reference: Ref<X>,
 ): BattleState {
-    battle = refreshCooldowns(battle, reference.host);
-
     const { unit, action } = getAction(battle, reference);
     const next = cooldown.reset(action.cooldown, battle.tick);
 
@@ -286,8 +282,6 @@ export function clearCooldown<X extends Action<any, any>>(
     battle: BattleState,
     reference: Ref<X>,
 ): BattleState {
-    battle = refreshCooldowns(battle, reference.host);
-
     const { unit, action } = getAction(battle, reference);
     const next = cooldown.clear(action.cooldown, battle.tick);
 

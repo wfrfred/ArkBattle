@@ -449,7 +449,7 @@ test("EP-01: calculated resistance and element survive later state changes; HP e
     assert.equal(get(absorbed.state, 0).elemental.ep.NEURAL, 830);
 });
 
-test("EP-02: depletion registers the Burst before resource notifications and standard output, then runs Applied", () => {
+test("EP-02: depletion registers the Burst and completes standard output before resource notifications and Applied", () => {
     const order = [];
     let ended = 0;
     const hooks = Hooks.empty()
@@ -497,7 +497,7 @@ test("EP-02: depletion registers the Burst before resource notifications and sta
     order.length = 0;
     const incoming = injuryRequest(target, "BURN", 1000, source);
     const result = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming));
-    assert.deepEqual(order, ["started", "damaged", "program", "applied"]);
+    assert.deepEqual(order, ["started", "program", "damaged", "applied"]);
     assert.deepEqual(get(result.state, 0).elemental.ep, elemental.elementValues(0));
     assert.equal(get(result.state, 0).vitality.hp, 9160);
     assert.equal(vitality.resolveResistance(result.state, get(result.state, 0)), 30);

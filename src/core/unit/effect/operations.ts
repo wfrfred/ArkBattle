@@ -13,13 +13,13 @@ import {
 import { register, unregister } from "../../lifetime/operations.js";
 import type { Definition } from "./definition.js";
 import { type Effect, ref as effectRef } from "./effect.js";
-import { assertNonnegativeSafeInteger } from "../../common/assert.js";
+import { expired, validate, type Expiration } from "./expiration.js";
 import { get } from "./query.js";
 
 export interface Initial<S extends object> {
     readonly source?: Ref<Unit> | null;
     readonly scopes?: readonly LifetimeScope[];
-    readonly deadline?: number | null;
+    readonly expiration?: Expiration;
     readonly data?: S;
     readonly enabled?: boolean;
 }
@@ -32,11 +32,8 @@ export function install<S extends object, H extends object>(
 ): Result<Ref<Effect<S, H>> | undefined> {
     const unit = units.get(battle, host);
     const scopes = initial.scopes ?? [];
-    const deadline = initial.deadline ?? null;
-
-    if (deadline !== null) {
-        assertNonnegativeSafeInteger(deadline, "effect deadline");
-    }
+    const expiration = initial.expiration ?? { type: "INFINITE" };
+    validate(expiration);
 
     if (unit?.lifecycle !== "PRESENT" || scopes.some((scope) => !available(battle, scope))) {
         return { state: battle, value: undefined };
@@ -48,7 +45,7 @@ export function install<S extends object, H extends object>(
         definition,
         data: initial.data ?? definition.initialize(),
         source: initial.source ?? null,
-        deadline,
+        expiration,
         enabled: initial.enabled ?? true,
         status: "INSTALLING",
     };
@@ -64,6 +61,10 @@ export function install<S extends object, H extends object>(
         installed = currentUnit?.effects.get(ref);
     }
     if (installed?.status === "INSTALLING") {
+        if (expired(installed.expiration, battle.tick)) {
+            return { state: end(battle, ref, "EXPIRED"), value: ref };
+        }
+
         battle = replaceEffect(battle, currentUnit!, { ...installed, status: "INACTIVE" });
         battle =
             definition.group === undefined
@@ -92,14 +93,12 @@ export function setData<T extends Effect<any, any>>(
     return data === self.data ? battle : replaceEffect(battle, unit, { ...self, data });
 }
 
-export function setDeadline<T extends Effect<any, any>>(
+export function setExpiration<T extends Effect<any, any>>(
     battle: BattleState,
     ref: Ref<T>,
-    tick: number | null,
+    expiration: Expiration,
 ): BattleState {
-    if (tick !== null) {
-        assertNonnegativeSafeInteger(tick, "effect deadline");
-    }
+    validate(expiration);
 
     const unit = units.get<Unit>(battle, ref.host);
     if (unit === undefined) {
@@ -111,9 +110,9 @@ export function setDeadline<T extends Effect<any, any>>(
         throw new RangeError(`unknown effect: ${ref.id}`);
     }
 
-    return self.deadline === tick
+    return self.expiration === expiration
         ? battle
-        : replaceEffect(battle, unit, { ...self, deadline: tick });
+        : replaceEffect(battle, unit, { ...self, expiration });
 }
 
 export function setEnabled<T extends Effect<any, any>>(
@@ -176,14 +175,29 @@ export function advance(battle: BattleState): BattleState {
 
     for (const candidate of candidates) {
         const ref = effectRef(candidate);
-        const instance = units.get(battle, ref.host)?.effects.get(ref.id);
-        if (instance?.status === "ACTIVE" && instance.definition.onTick !== undefined) {
-            battle = instance.definition.onTick(battle, instance);
+        const unit = units.get(battle, ref.host);
+        let instance = unit?.effects.get(ref.id);
+        if (instance?.status === "ACTIVE") {
+            const previous = instance.expiration;
+            if (previous.type === "DURATION") {
+                const elapsed = Math.min(previous.total, previous.elapsed + previous.rate);
+                if (elapsed !== previous.elapsed) {
+                    instance = { ...instance, expiration: { ...previous, elapsed } };
+                    battle = replaceEffect(battle, unit!, instance);
+                }
+            }
+
+            if (instance.definition.onTick !== undefined) {
+                battle = instance.definition.onTick(battle, instance, previous);
+            }
         }
 
         const current = get(battle, ref);
-        const expires = current?.deadline ?? null;
-        if (expires !== null && expires <= battle.tick) {
+        if (
+            current !== undefined &&
+            current.status !== "ENDING" &&
+            expired(current.expiration, battle.tick)
+        ) {
             battle = end(battle, ref, "EXPIRED");
         }
     }
@@ -230,6 +244,9 @@ function updateStatus<T extends Effect<any, any>>(battle: BattleState, ref: Ref<
                 ));
     if (active === (instance.status === "ACTIVE")) {
         return battle;
+    }
+    if (active && expired(instance.expiration, battle.tick)) {
+        return end(battle, ref, "EXPIRED");
     }
 
     const next: Effect = {

@@ -1,5 +1,4 @@
 import { update } from "../../battle/unit.js";
-import { scope } from "../../lifetime/operations.js";
 import { TICKS_PER_SECOND } from "../../tick.js";
 import * as units from "../../unit/query.js";
 import * as effects from "../../unit/effect/operations.js";
@@ -14,21 +13,23 @@ import {
 } from "../../unit/capability/action/capability.js";
 import { Type } from "../../unit/capability/elemental/capability.js";
 import {
-    activeHost,
+    availableHost,
     advance,
-    finishStart,
     hurt,
-    onInstall,
+    onInstall as registerBurst,
     onEnd,
     type Definition,
 } from "../../unit/capability/elemental/burst.js";
 
 export interface StunParameters {
     readonly durationTicks: number;
+    readonly stunDurationTicks: number;
     readonly damage: number;
 }
 
-export interface ParalysisParameters extends StunParameters {
+export interface ParalysisParameters {
+    readonly durationTicks: number;
+    readonly damage: number;
     readonly paralysisStacks: number;
 }
 
@@ -36,25 +37,25 @@ export function createStun(parameters: StunParameters): Definition {
     return {
         id: "elemental/neural-stun/burst",
         durationTicks: parameters.durationTicks,
-        initialize: () => ({ type: Type.NEURAL, elapsedTicks: 0 }),
-        onInstall,
-        onEnable(battle, self) {
+        initialize: () => ({ type: Type.NEURAL }),
+        onInstall(battle, self) {
+            battle = registerBurst(battle, self);
             const reference = ref(self);
-            let host = activeHost(battle, reference);
+            let host = availableHost(battle, reference);
             if (host === undefined) {
                 return battle;
             }
 
             battle = effects.install(battle, self.host, stun, {
-                scopes: [scope(effects.lifetime, reference)],
+                expiration: { type: "DEADLINE", tick: battle.tick + parameters.stunDurationTicks },
             }).state;
-            host = activeHost(battle, reference);
+            host = availableHost(battle, reference);
 
             if (host !== undefined) {
                 battle = hurt(battle, host, "TRUE", parameters.damage);
             }
 
-            return finishStart(battle, self);
+            return battle;
         },
         onTick: advance,
         onEnd,
@@ -97,7 +98,10 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                         const host = units.get(current, self.host);
                         if (host?.lifecycle === "PRESENT") {
                             current = effects.install(current, self.host, stun, {
-                                deadline: current.tick + recoveryTicks,
+                                expiration: {
+                                    type: "DEADLINE",
+                                    tick: current.tick + recoveryTicks,
+                                },
                             }).state;
                         }
 
@@ -115,11 +119,11 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
     return {
         id: "elemental/neural-paralysis/burst",
         durationTicks: parameters.durationTicks,
-        initialize: () => ({ type: Type.NEURAL, elapsedTicks: 0 }),
-        onInstall,
-        onEnable(battle, self) {
+        initialize: () => ({ type: Type.NEURAL }),
+        onInstall(battle, self) {
+            battle = registerBurst(battle, self);
             const reference = ref(self);
-            let host = activeHost(battle, reference);
+            let host = availableHost(battle, reference);
             if (host === undefined) {
                 return battle;
             }
@@ -141,13 +145,13 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                           );
             }
 
-            host = activeHost(battle, reference);
+            host = availableHost(battle, reference);
 
             if (host !== undefined) {
                 battle = hurt(battle, host, "ELEMENTAL", parameters.damage);
             }
 
-            return finishStart(battle, self);
+            return battle;
         },
         onTick: advance,
         onEnd,

@@ -78,7 +78,7 @@ test("prepare can reject without allocating a round; ending preserves the latest
     });
 });
 
-test("independent cooldowns preserve progress when speed changes and survive finish or cancellation", () => {
+test("static speed and interval changes synchronously preserve independent cooldown progress", () => {
     const fast = {
         id: "fast",
         intervalTicks: 10,
@@ -115,14 +115,40 @@ test("independent cooldowns preserve progress when speed changes and survive fin
     ]);
     assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 6);
     assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 11);
-    assert.equal(actions.start({ ...state, tick: 5 }, fastRef).value.reason, "COOLDOWN");
-    state = { ...state, tick: 6 };
+
+    state = update({ ...state, tick: 3 }, [action.removeSpeedContribution(source, "speed")]);
+    assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 9);
+    assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 19);
+
+    state = update(state, [
+        action.setIntervalContribution(source, {
+            id: "interval",
+            value: [modifier({ addition: 10 })],
+        }),
+        action.setSpeedContribution(source, {
+            id: "speed",
+            value: [modifier({ addition: 100 })],
+        }),
+    ]);
+    assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 9);
+    assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 15);
+
+    state = actions.resetCooldown(state, fastRef);
+    state = actions.clearCooldown(state, slowRef);
+    assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 13);
+    assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 3);
+    const slowStart = actions.start(state, slowRef);
+    state = actions.advance(slowStart.state, slowStart.value.ref);
+    assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 18);
+    assert.equal(actions.start({ ...state, tick: 12 }, fastRef).value.reason, "COOLDOWN");
+
+    state = { ...state, tick: 13 };
     const ready = actions.start(state, fastRef);
     assert.equal(ready.value.type, "STARTED");
     assert.equal(actions.start(ready.state, slowRef).value.reason, "COOLDOWN");
     state = actions.advance(ready.state, ready.value.ref);
-    assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 11);
-    assert.equal(actions.start({ ...state, tick: 11 }, slowRef).value.type, "STARTED");
+    assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 23);
+    assert.equal(actions.start({ ...state, tick: 18 }, slowRef).value.type, "STARTED");
 });
 
 test("interrupted attack, successful release, and damage output are separate business stages", () => {

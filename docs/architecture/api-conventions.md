@@ -251,9 +251,13 @@ export type Input<M, H> =
     | ((battle: BattleState, self: H) => readonly M[]);
 ```
 
-`M` 由所属领域定义修正数据，`H` 保留对应宿主能力。各领域的 Input 别名使用这个共享类型；互斥组先选择，再对保留输入在同一 BattleState 中只读求值并展开列表，由领域公式归并。输入函数不接收累计结果，也不执行支付或写回操作；具体求值与采样时点由所属查询或操作决定。
+`M` 由所属领域定义修正数据，`H` 保留对应宿主能力。需要动态输入的领域复用这个共享类型；互斥组先选择，再对保留输入在同一 BattleState 中只读求值并展开列表，由领域公式归并。输入函数不接收累计结果，也不执行支付或写回操作；具体求值与采样时点由所属查询或操作决定。Action 的 speed／interval 只接受静态 Modifier 列表，使用下述独立契约。
 
-动态 Contribution 求值返回 number，并按实际对象角色组织参数。Unit 自身属性使用 `resolveXxx(battle, self)`，self 是已取得的完整能力对象；Action 的时序使用 `resolveSpeed／resolveBaseInterval／resolvePeriod(battle, source, self)`，source 是宿主 Unit，self 是具体 Action。基础时序从 self.definition 读取，共享贡献及其动态 Input 从 source 取得，不再额外传裸 Definition。求值不按 Ref 再次定位、不检查存在性或生命周期；缺失、能力资格、来源离场后的缓存和跨完整业务操作后的重新读取由业务入口负责。不为统一参数个数引入包装对象或新增实例字段。
+Contribution 求值返回 number，并按实际对象角色组织参数。Unit 动态属性使用 `resolveXxx(battle, self)`，self 是已取得的完整能力对象。Action 的时序使用 `resolveSpeed／resolveBaseInterval／resolvePeriod(source, self)`，source 是宿主 Unit，self 是具体 Action；基础时序来自 self.definition，静态贡献来自 source，不传无用途的 BattleState 或裸 Definition。求值不按 Ref 再次定位、不检查存在性或生命周期；缺失、能力资格、来源离场后的缓存和跨完整业务操作后的重新读取由业务入口负责。不为统一参数个数引入包装对象或新增实例字段。
+
+Action speed／interval 的载荷为 `readonly attribute.Modifier[]`，不接受动态求值函数。set／remove 仍返回带 Settlement 的 Change；全批 Transformation 发布后，按最终贡献刷新该宿主 Action 的周期，保留当前冷却已完成比例。普通 Tick 只推进已保存的冷却，不再次轮询时序贡献。依赖玩法状态的时序变化由相应业务在事实改变处提交新的列表，不取消其他领域已支持的动态 Input。
+
+Action 时序的必要回归语义是：静态贡献增删会在完整更新返回前调整当前周期并保留完成比例，同一批按最终贡献求值；普通推进不会反复改写周期。静态载荷的类型约束集中在公共类型检查中证明，不为 speed／interval 分别复制登记协议矩阵。
 
 纯公式只接收实际需要的局部值：MaxHP 与 Blocking 的容量／体积统一为 `(definition, state)`；Ammo 使用 `(base, modifiers)`；Card 持有自身 Definition 与 State，继续接收 Card 值。局部公式不为形式一致增加 Battle 或 Ref。普通配置字段直接读取，不包装 Getter；SP 容量、门槛和默认费用直接来自 Definition，本次发动费用仍由 Activation.cost 程序与默认配置共同决定。SP 可空槽位在资源入口通过 hasSp 收窄后求值，两项回复属性同样返回 number。属性公式模块只保留 Modifier、create、apply。
 
@@ -311,7 +315,7 @@ Rule 可读取任意 Battle 事实，但读取范围不表示自动订阅每次�
 
 Core 内部 `replace(battle, readonly Unit[])` 仅发布已合法构造的完整对象与派生索引，信任身份、Definition 和能力配对，不重复校验或派发内容 Hook。它不是公开原始 Unit 写回协议；生命周期、精确私有 state 写回及关系双端构造继续由各领域使用。Field 保留地图边界与最终双槽冲突校验。通用 update／replace 均不派发 Occupancy 或 Blocking 通知；当前生产中只有 add／remove 明确改变占格登记，仍在各自既定时点通知 SUPPORT，不为尚无内容需求的搬格创建新工厂。
 
-Action.interval／speed Change 的 settle 调用 refreshCooldowns，按最终贡献重算当前冷却；Blocker.layer 的 transform 只改 layer／radius，update 根据该项 transform 的引用变化决定是否执行 settle，再由 settle 按 previous.blocked 中的旧 Ref 批量解除，不能重新调用 setLayer 或写回旧 Unit。MaxHP 的比例响应属于纯 transform，不附带治疗通知。Stun 先通过一批 Change 发布各能力限制，再由 Blocking 后继清理关系，update 返回后才取消 Action。
+Action.interval／speed Change 的 settle 调用 refreshCooldowns，按最终静态贡献重算当前冷却并保留完成比例；Combat 不逐 Tick 调用该刷新。Blocker.layer 的 transform 只改 layer／radius，update 根据该项 transform 的引用变化决定是否执行 settle，再由 settle 按 previous.blocked 中的旧 Ref 批量解除，不能重新调用 setLayer 或写回旧 Unit。MaxHP 的比例响应属于纯 transform，不附带治疗通知。Stun 先通过一批 Change 发布各能力限制，再由 Blocking 后继清理关系，update 返回后才取消 Action。
 
 Unit.initialize 将 Blocker／Blockable 的组合限制为至多一种，两者皆无合法；内部信任该构造约束及能力身份稳定，不在各操作重复检查。角色不决定阵营、宿主 Layer、Route 或 Locomotion，临时容量为 0 或禁挡也不改变角色。
 
@@ -327,13 +331,15 @@ battlefield/unit.ts 的 add／update／remove 是纯存储与索引转换，Fiel
 
 Effect 实例保存 `host: Ref<Unit> & Ref<Unit & H>`，使内部 H 擦除为 any 时仍保留 Unit 身份。安装入口使用 `Ref<Unit & NoInfer<H>>`，从最新 battle 读取宿主，并原样保存身份；H 由 Definition 决定，不能通过双方共同推导削弱能力要求。返回的 `Ref<Effect<S, H>>` 以 host + id 定位。
 
-`effect.ref(self)` 从已知实例保留完整类型，`effects.get(battle, ref)` 恢复 S / H；`units.get(battle, self.host)` 返回 `(Unit & H) | undefined`。同地址的不同 Ref 值可以使用。内容通过 `effects.setData(battle, ref, nextData)` 提交私有数据结果值，Core 保留当前身份、Definition、deadline 和生命周期；ENDING 中仍可完成私有清理。
+`effect.ref(self)` 从已知实例保留完整类型，`effects.get(battle, ref)` 恢复 S / H；`units.get(battle, self.host)` 返回 `(Unit & H) | undefined`。同地址的不同 Ref 值可以使用。内容通过 `effects.setData(battle, ref, nextData)` 提交私有数据结果值，Core 保留当前身份、Definition、expiration 和生命周期；ENDING 中仍可完成私有清理。
 
 Unit 初始化不接收预装 Effects，始终建立空容器；初始内容在 enter 键下的 Unit Hook 中调用 Effect.install。Effect 的 Initial.source、实例与诊断 Snapshot 均使用 `Ref<Unit> | null` 标注施加者；来源不要求仍在场，也不隐含 Scope 或存活依赖，需要绑定时显式提供生命周期 Scope。
 
-Effect.install 在入口检查宿主 PRESENT、输入 Scope 可用性与 deadline；登记实例及 Lifetime owner／显式依赖后才调用 onInstall。后续绑定统一使用 Lifetime.bind，由该入口检查两端资格与 DAG；Effect 不再保存 scopes。setDeadline 在写回入口校验期限。私有 replaceEffect(battle, unit, self) 信任已取得且配对的完整对象，只提交写回，不再次查找或验证存在性；updateStatus 用 Lifetime.available 检查自身及全部上游资格。Effects.replace 信任 Core 提供的 Ref／ID／host／Definition 配对，读取当前槽位以保留缺失实例及同引用时的 no-op，不重复校验身份。Effects.add 保留 id === nextId 的登记约束，身份直接递增；get(ref) 的宿主识别和 get(id, definition) 的类型查询继续保留。完整 Unit 更新或内容程序返回后，后继业务仍按最新 battle 重读；这与重复校验同一输入属于不同职责。
+Effect.install 在入口检查宿主 PRESENT、输入 Scope 可用性与 expiration；Initial.expiration 省略时为 INFINITE。登记实例及 Lifetime owner／显式依赖后调用 onInstall，再重读当前实例；零有效时长或已到期的实例通过 Lifetime 结束，不进入 onEnable／onTick／onDisable。回调可提交新的时间状态，后继使用最新结果；准备启用实例的生效协调同样先处理到期。后续绑定统一使用 Lifetime.bind，由该入口检查两端资格与 DAG；Effect 不再保存 scopes。setExpiration 在写回入口校验时间状态。私有 replaceEffect(battle, unit, self) 信任已取得且配对的完整对象，只提交写回，不再次查找或验证存在性；updateStatus 用 Lifetime.available 检查自身及全部上游资格。Effects.replace 信任 Core 提供的 Ref／ID／host／Definition 配对，读取当前槽位以保留缺失实例及同引用时的 no-op，不重复校验身份。Effects.add 保留 id === nextId 的登记约束，身份直接递增；get(ref) 的宿主识别和 get(id, definition) 的类型查询继续保留。完整 Unit 更新或内容程序返回后，后继业务仍按最新 battle 重读；这与重复校验同一输入属于不同职责。
 
-`Effect.setDeadline(battle, ref: Ref<Effect<any, any>>, tick: number | null)` 返回 BattleState，只替换独立 deadline，null 清除期限，不修改 Lifetime 图或当前 status。tick 非 null 时须为非负安全整数；非法期限及缺失宿主／实例均抛出 RangeError。给定值与当前 deadline 相同时返回原 BattleState。ENDING 可更新期限而不会复活；该操作不额外推进或立即结束实例，到期仍在正常 advance 的 onTick 后按最新期限判断。
+`Effect.setExpiration(battle, ref, expiration: Expiration)` 返回 BattleState，Ref 保留实例的具体泛型，只替换时间状态，不修改 Lifetime 图或当前 status。Expiration 为 `DURATION { elapsed, total, rate }`、`DEADLINE { tick }` 或 `INFINITE`；DURATION 三项在入口校验为有限非负数，tick 校验为非负安全整数，内部计算信任这些约束。非法输入及缺失宿主／实例均抛出 RangeError；同一 expiration 引用返回原 BattleState。ENDING 可写入但不会复活，Setter 不额外推进或立即结束。
+
+Effect.advance 对 ACTIVE 实例先采样旧 Expiration、自动推进并发布 DURATION，再调用 `onTick(battle, self, previousExpiration)`，最后重读当前实例与时间状态判断结束。rate 为零仍调用 onTick；INACTIVE 不推进有效时长、不调用 onTick，绝对期限仍会到期，INFINITE 无到期。回调通过 setExpiration 提交结果值，可以续期或转换类型。第三参数是本次推进的历史样本，不保存为另一份持久状态。完整时间与必要回归语义见 [Effect 时间推进](effect.md#6-时间推进)。
 
 Action 的 `setExecutionState(battle, ref, nextState)` 通过 Execution Ref 只设置本轮 execution.state，缺失时抛出 RangeError，execution 为 ENDING 时抛出 TypeError。getAction、start、setState、setCooldown、resetCooldown 和 clearCooldown 使用持久 Action Ref；setState 和 setCooldown 分别设置持久 state／Cooldown，允许结束程序更新这些持久事实。getExecution、advance 和 cancel 使用本轮 Execution Ref；refreshCooldowns 仍按宿主批量刷新。各操作在字段引用未变时返回原 BattleState；完整聚合替换由 Core 内部完成。
 
@@ -345,5 +351,5 @@ Projectile 的 update 接收 `{ position?, state? }` 结果值，并从最新 ba
 
 Lifetime 使用各领域共享静态描述符与 Ref 配对，scope(lifetime, ref) 不读取 battle；getRef 通过匹配描述符恢复对应 Ref，available 查询 Pending 和当前领域资格。Action 绑定本轮 Execution，Skill 绑定本轮 Activation，标准 Burst 使用 Effect 的精确运行身份与描述符，不绑定持久配置。kind 与完整数值地址确定身份，不新增全局 ID 或动态注册器。BattleState.lifetime.dependencies 是 owner 与显式 scopes 的唯一关系权威；各领域创建／结束自行登记／注销，不由 Unit.update 或 replace 扫描投影。createBattleState 从空图开始，初始 Unit 必须经完整创建与 add 入场。直接子候选按边登记顺序，更新同一边保序、解绑后重绑追加。ENDING 关系保留到物理移除，Pending.parents 保留到完整 Finalize 返回。
 
-Lifetime 的 begin 是纯值转换，replace 接收完整结果值；prepare／finalize 是 Core 操作适配，不是 Content 的新生命周期回调。Effect 的 onInstall／onEnable／onDisable／onTick 仍接收 `(battle, self: Effect<S, H>)`，onEnd 额外接收独立 reason。运行器不解释私有 data；原有 Typed Ref／NoInfer 写回边界不变。
+Lifetime 的 begin 是纯值转换，replace 接收完整结果值；prepare／finalize 是 Core 操作适配，不是 Content 的新生命周期回调。Effect 的 onInstall／onEnable／onDisable 接收 `(battle, self: Effect<S, H>)`，onTick 额外接收本次推进前的 Expiration，onEnd 额外接收独立 reason。运行器不解释私有 data；Typed Ref／NoInfer 写回边界不变。
 

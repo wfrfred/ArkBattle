@@ -49,15 +49,9 @@ export function advance(battle: BattleState): BattleState {
         }
 
         const reference = units.ref(unit);
-        battle = actions.refreshCooldowns(battle, reference);
-        const current = units.get(battle, reference);
-        if (current?.lifecycle !== "PRESENT" || !isSpatiallyPresent(current)) {
-            continue;
-        }
-
-        const selected = current.definition.action.select?.(battle, current) ?? {
+        const selected = unit.definition.action.select?.(battle, unit) ?? {
             state: battle,
-            value: current.action.actions.keys(),
+            value: unit.action.actions.keys(),
         };
         battle = selected.state;
 

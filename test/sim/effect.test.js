@@ -120,7 +120,7 @@ test("overall replacement uses priority and installation order; disabling the wi
     assert.equal(offense.resolveAttack(state, units.get(state, source)), 110);
 });
 
-test("absolute deadlines continue while inactive, active ticks do not catch up, and a deadline-tick callback can extend the effect", () => {
+test("absolute deadlines continue while inactive and the final callback can extend the effect", () => {
     const ended = [];
     const program = {
         id: "periodic",
@@ -131,7 +131,7 @@ test("absolute deadlines continue while inactive, active ticks do not catch up, 
                 ticks: self.data.ticks + 1,
             });
             if (state.tick === 6) {
-                state = effects.setDeadline(state, effects.ref(self), 9);
+                state = effects.setExpiration(state, effects.ref(self), { type: "DEADLINE", tick: 9 });
                 state = effects.setData(state, effects.ref(self), {
                     ticks: self.data.ticks + 1,
                     extended: true,
@@ -148,8 +148,8 @@ test("absolute deadlines continue while inactive, active ticks do not catch up, 
     const definition = { id: "operator", hooks: Hooks.empty() };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
-    const active = effects.install(state, source, program, { deadline: 6 });
-    const paused = effects.install(active.state, source, inactive, { deadline: 3, enabled: false });
+    const active = effects.install(state, source, program, { expiration: { type: "DEADLINE", tick: 6 } });
+    const paused = effects.install(active.state, source, inactive, { expiration: { type: "DEADLINE", tick: 3 }, enabled: false });
     state = effects.advance(paused.state);
     state = effects.setEnabled({ ...state, tick: 1 }, active.value, false);
     for (let tick = 1; tick <= 4; tick++) state = effects.advance({ ...state, tick });
@@ -158,7 +158,7 @@ test("absolute deadlines continue while inactive, active ticks do not catch up, 
     state = effects.setEnabled({ ...state, tick: 5 }, active.value, true);
     state = effects.advance(state);
     state = effects.advance({ ...state, tick: 6 });
-    assert.equal(effects.get(state, active.value).deadline, 9);
+    assert.deepEqual(effects.get(state, active.value).expiration, { type: "DEADLINE", tick: 9 });
     assert.equal(effects.get(state, active.value).data.ticks, 3);
     for (let tick = 7; tick <= 9; tick++) state = effects.advance({ ...state, tick });
     assert.equal(effects.get(state, active.value), undefined);
@@ -166,6 +166,108 @@ test("absolute deadlines continue while inactive, active ticks do not catch up, 
         { id: "inactive", tick: 3, data: { ticks: 0, extended: false }, reason: "EXPIRED" },
         { id: "periodic", tick: 9, data: { ticks: 6, extended: true }, reason: "EXPIRED" },
     ]);
+});
+
+test("zero expiration runs installation and cleanup; installation may replace the expiration before enabling", () => {
+    const observed = [];
+    const definition = { id: "operator", hooks: Hooks.empty() };
+    let state = battle([{ definition, position: [1, 1] }]);
+    const source = units.ref(get(state, 0));
+    const program = {
+        id: "instant",
+        initialize: () => ({ installed: false }),
+        onInstall(state, self) {
+            observed.push("install");
+            return effects.setData(state, effects.ref(self), { installed: true });
+        },
+        onEnable: () => assert.fail("expired installation must not enable"),
+        onTick: () => assert.fail("expired installation must not tick"),
+        onDisable: () => assert.fail("an instance that never enabled must not disable"),
+        onEnd(state, self) {
+            assert.equal(self.data.installed, true);
+            observed.push("end");
+            return state;
+        },
+    };
+    for (const expiration of [
+        { type: "DURATION", elapsed: 0, total: 0, rate: 1 },
+        { type: "DEADLINE", tick: 0 },
+    ]) {
+        const installed = effects.install(state, source, program, { expiration });
+        state = installed.state;
+        assert.equal(effects.get(state, installed.value), undefined);
+    }
+    assert.deepEqual(observed, ["install", "end", "install", "end"]);
+
+    const extended = effects.install(state, source, {
+        id: "extended-installation",
+        initialize: () => ({}),
+        onInstall: (state, self) => effects.setExpiration(state, effects.ref(self), {
+            type: "DURATION", elapsed: 0, total: 2, rate: 1,
+        }),
+    }, { expiration: { type: "DURATION", elapsed: 0, total: 0, rate: 1 } });
+    state = extended.state;
+    assert.equal(effects.get(state, extended.value).status, "ACTIVE");
+    state = effects.advance({ ...state, tick: 1 });
+    assert.equal(effects.get(state, extended.value).expiration.elapsed, 1);
+    state = effects.advance({ ...state, tick: 2 });
+    assert.equal(effects.get(state, extended.value), undefined);
+});
+
+test("duration advances only while active, publishes before callbacks, and accepts manual progress and renewal", () => {
+    const observed = [];
+    const ended = [];
+    const definition = { id: "operator", hooks: Hooks.empty() };
+    let state = battle([{ definition, position: [1, 1] }]);
+    const source = units.ref(get(state, 0));
+    const installed = effects.install(state, source, {
+        id: "duration",
+        initialize: () => ({}),
+        onTick(state, self, previous) {
+            observed.push([previous.elapsed, self.expiration.elapsed]);
+            assert.equal(effects.get(state, effects.ref(self)), self);
+            if (self.expiration.elapsed === 3) {
+                state = effects.setEnabled(state, effects.ref(self), false);
+                state = effects.setExpiration(state, effects.ref(self), {
+                    ...self.expiration, total: 5, rate: 2,
+                });
+            }
+            return state;
+        },
+        onEnd(state, self) {
+            ended.push(self.expiration.elapsed);
+            return state;
+        },
+    }, { expiration: { type: "DURATION", elapsed: 0, total: 3, rate: 1 } });
+    state = effects.advance({ ...installed.state, tick: 1 });
+    state = effects.setEnabled(state, installed.value, false);
+    state = effects.advance({ ...state, tick: 2 });
+    state = effects.advance({ ...state, tick: 3 });
+    assert.equal(effects.get(state, installed.value).expiration.elapsed, 1);
+    state = effects.setEnabled({ ...state, tick: 4 }, installed.value, true);
+    state = effects.advance(state);
+    state = effects.advance({ ...state, tick: 5 });
+    assert.equal(effects.get(state, installed.value).status, "INACTIVE");
+    state = effects.setEnabled({ ...state, tick: 6 }, installed.value, true);
+    state = effects.advance(state);
+    assert.deepEqual(observed, [[0, 1], [1, 2], [2, 3], [3, 5]]);
+    assert.deepEqual(ended, [5]);
+    assert.equal(effects.get(state, installed.value), undefined);
+
+    const manual = effects.install(state, source, {
+        id: "manual-duration",
+        initialize: () => ({}),
+        onTick(state, self, previous) {
+            assert.equal(self.expiration.elapsed, previous.elapsed);
+            return effects.setExpiration(state, effects.ref(self), {
+                ...self.expiration, elapsed: self.expiration.elapsed + 1,
+            });
+        },
+    }, { expiration: { type: "DURATION", elapsed: 0, total: 2, rate: 0 } });
+    state = effects.advance({ ...manual.state, tick: 7 });
+    assert.equal(effects.get(state, manual.value).expiration.elapsed, 1);
+    state = effects.advance({ ...state, tick: 8 });
+    assert.equal(effects.get(state, manual.value), undefined);
 });
 
 test("source attribution alone does not bind lifetime, while explicit scope and ownership do", () => {

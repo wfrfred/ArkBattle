@@ -498,10 +498,9 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
             remainingEp: target.elemental.ep[type],
             maxEp: target.definition.elemental.maxEp,
             recoveryTicks:
-                recovery === null
-                    ? 0
-                    : target.definition.elemental.bursts[recovery.data.type].durationTicks -
-                      recovery.data.elapsedTicks,
+                recovery?.expiration.type === "DURATION"
+                    ? recovery.expiration.total - recovery.expiration.elapsed
+                    : 0,
         };
     }
 
