@@ -16,6 +16,8 @@ Meta 可以选择配置或提供关卡输入。卫戍的普通／金色等政策
 
 标准元素爆发由 Core 的 Elemental 领域提供八个具体 Effect，各自只接收自身需要的数值参数。Data 绑定数值并按接收者类别选好元素到 Effect Definition 的映射，Core 直接查表安装；Data 不提供爆发执行回调。眩晕、封技和阻止 SP 回复等通用控制定义位于 `core/unit/control.ts`，Content 直接复用；具体角色的特殊交互仍由自己的 Effect、Hook 和 Rule 表达。Effect 是运行载体，不按实现机制另设一个收纳各领域业务的顶层 effects 目录。
 
+标准效果成品库是否整体归 Core 尚未定稿；完整候选清单及用户对其规模、归属的质疑保存在[Effect 讨论记录](effect.md#10-标准效果候选与归属讨论记录未定稿)。现有实现位置不作为扩大 Core 范围的依据，也不据候选清单自动迁移 Content。
+
 弩手的 action.ts 分别定义 melee 与 ranged，两者有各自的冷却和执行状态。unit.ts 按当前阻挡关系选择近战或远程，在已有主动作执行期间不并发启动另一主动作；选择和互斥属于内容策略。场景选择敌人和配置波次，不通过一个带敌人 ID 分支的中央工厂构造所有内容。确实共用的地面属性与能力装配由普通函数提供，具体攻击程序归各自内容。
 
 装置行为位于 `devices/`。`crate.ts`、`shooting-platform.ts` 接受类型化配置并构造 Unit Definition，通过 Unit 的 enter／leave Hook 处理改格和清理；实际共用的改格函数放在 Content 内。射击台在 Occupancy 的 SUPPORT Definition 中提供 occupantAdded／occupantRemoved Hook，在当前乘员的 blocker.rules 登记平台独占的共享二元 Rule，禁止其与任何目标建立或保留阻挡，解除登记或消失时清理自身规则，不改写地块阻挡许可。Data 只解析资源与关卡实例，并根据资源标识选择工厂，不在运行程序中按 Prefab Key 决定业务。内部批量登记交换用于验证结构与同步通知，不能证明游戏允许自由搬动平台。
