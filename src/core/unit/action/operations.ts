@@ -79,7 +79,7 @@ export function start<P extends object, E extends object>(
             return reject("RULE");
         }
 
-        const period = resolvePeriod(battle, unit, definition);
+        const period = resolvePeriod(battle, unit, action);
         const resized = cooldown.resizeKeepingProgress(action.cooldown, period, battle.tick);
         if (cooldown.remaining(resized, battle.tick) > 0) {
             return reject("COOLDOWN");
@@ -256,7 +256,7 @@ export function refreshCooldowns(
 
     for (const id of actions.keys()) {
         const self = actions.get(id)!;
-        const period = resolvePeriod(battle, unit, self.definition);
+        const period = resolvePeriod(battle, unit, self);
         const next = cooldown.resizeKeepingProgress(self.cooldown, period, battle.tick);
         if (next !== self.cooldown) {
             actions = actions.replace(self.definition, { ...self, cooldown: next });

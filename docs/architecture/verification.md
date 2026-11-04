@@ -41,7 +41,7 @@ Deployable 对 Occupancy 的构造依赖、入场与配对属于本轮协作边�
 | Effect 生命周期 | 安装、生效、禁用与结束产生正确输出；禁用保留实例与私有进度，结束撤销输出；生命周期依赖与来源信息分开。 | [Effect](effect.md#关键语义) |
 | Effect 竞争与时间 | 覆写组赢家及禁用政策正确；绝对期限与周期进度分开，暂停不积攒补发，正常到期与内容续期按当前事实完成。 | [Effect](effect.md#关键语义) |
 | Contribution 与阵营 | 互斥选择先于动态求值，修正采用所属领域公式；阵营不隐式决定其它能力或关系资格。 | [属性与贡献](capability.md#属性与贡献)、[Allegiance](capability.md#allegiance) |
-| 数值求值 | 动态属性接收同一 BattleState 中已取得的能力对象，贡献求值返回确定数值；对象缺失与采样时点由业务入口决定。局部公式使用显式配置与状态，不自行回查宿主。 | [数值接口](api-conventions.md#5-数值输入查询与字段写回) |
+| 数值求值 | 动态属性接收同一 BattleState 中已取得的能力对象，贡献求值返回确定数值；对象缺失与采样时点由业务入口决定。Action 时序明确区分宿主 source 与具体 Action self，基础值取 self.definition。局部公式使用显式配置与状态，不自行回查宿主。 | [数值接口](api-conventions.md#5-数值输入查询与字段写回) |
 | Blocking 资格与容量 | 双方资格、阻挡层、当前容量与体积决定取得；容量减少从后建立的关系开始裁撤，HP Applied 响应结束并确认死亡前保留旧关系。 | [Blocking](blocking.md#关键语义) |
 | Blocking 关系与站位 | 批量解除先发布双端结果再通知；旧 Ref 不清掉新关系；普通关系解除与位置计划各有生命周期，主动脱离和空间覆盖完成自身清理。 | [Blocking](blocking.md#关键语义) |
 | 部署受理与消费 | 查询和执行使用完整 Request 与一致资源事实；拒绝不消费，通过后先消费再构造、登记、入场；预览不创建实例或发布消费。 | [Deployment](deployment.md#关键语义) |

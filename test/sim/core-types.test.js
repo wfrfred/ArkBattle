@@ -56,6 +56,10 @@ const host = initialize(battle, { id: 0, position: [0, 0], definition: {
     action: { initialize: state => actions.createActions(state, actions.create(program)) },
 } }).value;
 const reference = ref(host);
+const currentAction = host.action.actions.get(program.id, program)!;
+const currentPeriod: number = actionCapability.resolvePeriod(battle, host, currentAction);
+// @ts-expect-error an Action calculation takes the instance rather than a detached Definition.
+actionCapability.resolvePeriod(battle, host, program);
 const persistent = actions.ref(reference, program);
 const uses: number = actions.getAction(battle, persistent)!.state.uses;
 actions.setState(battle, persistent, { uses: uses + 1 });

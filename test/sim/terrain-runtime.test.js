@@ -16,6 +16,7 @@ import { initialize as initializeUnit } from "../../dist/core/unit/initialize.js
 import { add, replace as update } from "../../dist/core/battle/unit.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { actionCapability } from "../helpers/actions.js";
+import { actionDefinition } from "../helpers/action-fixture.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js";
 import { resolveSpeed } from "../../dist/core/unit/capability/action/timing.js";
 import { invisibilityKind } from "../../dist/content/effects/visibility.js";
@@ -34,7 +35,8 @@ const unit = (id, column, fields = {}) => ({
     definition: { hooks: Hooks.empty(),
         id: `terrain-unit/${id}`,
         vitality: { maxHp: 1000, defense: 0, resistance: 0 },
-        offense: { attack: 100 }, action: actionCapability(),
+        offense: { attack: 100 },
+        action: actionCapability(actionDefinition(1, { baseAttackTimeTicks: 30 })),
         layer: { type: "GROUND" }, allegiance: { side: "ALLY" },
         targetable: { restrictions: [] }, spatialPresence: {},
         ...fields,
@@ -61,9 +63,10 @@ function setup(terrains, placements, definition) {
 
 const current = (battle, id = 0) => battle.battlefield.units.get(id);
 const effect = (battle, id = 0) => current(battle, id).effects.values().toArray()[0];
-const attackSpeed = (battle, id = 0) => resolveSpeed(battle, current(battle, id), {
-    intervalTicks: 30, speed: 100,
-});
+const attackSpeed = (battle, id = 0) => {
+    const source = current(battle, id);
+    return resolveSpeed(battle, source, source.action.actions.get("primary"));
+};
 const at = (battle, tick) => mechanisms.advance(effects.advance({ ...battle, tick }));
 function through(battle, start, end) {
     for (let tick = start; tick <= end; tick++) battle = at(battle, tick);

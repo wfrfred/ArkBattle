@@ -61,7 +61,7 @@ Hook 与领域操作按执行语义命名：
 | 情况 | 形状或规则 |
 | --- | --- |
 | 全局或批量操作 | 没有单个主要对象时省略 ref，例如 `unit.advance(battle)`；仍按职责属于领域操作或时间推进，不新增一类。 |
-| 依赖战场的查询 | 动态 Contribution 可以依赖战场事实，公开入口使用 `(battle, ref, ...)`，读取当前对象后直接以 `(battle, self)` 求值；直接使用实体与战场事实，不把它们藏进通用 Context。 |
+| 依赖战场的查询 | 对象查找使用 `(battle, ref)`；动态 Contribution 求值使用已取得的实体和只读 battle。Unit 自身属性使用 `(battle, self)`，宿主与具体实例分离时使用 `(battle, source, self)`，不新增 Ref 转发入口或通用 Context。 |
 | 纯值转换带业务结果 | 返回本领域的下一值及结果，例如 SP 获得量、拒绝原因。这里的 state 是局部 State，不套固定为 BattleState 的 `battle.Result<T>`。 |
 | 创建操作与创建回调 | 对象尚不存在，接收宿主身份、Definition 和创建输入，返回创建身份或初始化结果；不要求传入不存在的 self / ref。 |
 | 内容状态写回 | 只接收已经计算好的结果值。Action.setExecutionState 设置 execution.state，setState／setCooldown 分别设置持久 state／Cooldown；Effect.setData 设置 data，Skill.setState／setActivationState 分别设置持久 state／本轮激活 state，Mechanism.setState 设置私有 state，Projectile.update 接收 `{ position?, state? }`。Core 读取当前实例，只替换允许字段并保留其他事实。 |
@@ -253,7 +253,7 @@ export type Input<M, H> =
 
 `M` 由所属领域定义修正数据，`H` 保留对应宿主能力。各领域的 Input 别名使用这个共享类型；互斥组先选择，再对保留输入在同一 BattleState 中只读求值并展开列表，由领域公式归并。输入函数不接收累计结果，也不执行支付或写回操作；具体求值与采样时点由所属查询或操作决定。
 
-动态 Contribution 求值统一为 `resolveXxx(battle, self, ...必要基础参数): number`，self 是调用方刚从该 BattleState 取得的完整能力对象。求值不按 Ref 再次定位、不检查宿主存在性或生命周期，也不返回 undefined；缺失、能力资格、来源离场后的缓存和跨完整业务操作后的重新读取由业务入口负责。Action 的基础值属于具体 Action，resolveSpeed／resolveBaseInterval／resolvePeriod 在 self 后显式接收对应 Definition 的 Timing 数据。
+动态 Contribution 求值返回 number，并按实际对象角色组织参数。Unit 自身属性使用 `resolveXxx(battle, self)`，self 是已取得的完整能力对象；Action 的时序使用 `resolveSpeed／resolveBaseInterval／resolvePeriod(battle, source, self)`，source 是宿主 Unit，self 是具体 Action。基础时序从 self.definition 读取，共享贡献及其动态 Input 从 source 取得，不再额外传裸 Definition。求值不按 Ref 再次定位、不检查存在性或生命周期；缺失、能力资格、来源离场后的缓存和跨完整业务操作后的重新读取由业务入口负责。不为统一参数个数引入包装对象或新增实例字段。
 
 纯公式只接收实际需要的局部值：MaxHP 与 Blocking 的容量／体积统一为 `(definition, state)`；Ammo 使用 `(base, modifiers)`；Card 持有自身 Definition 与 State，继续接收 Card 值。局部公式不为形式一致增加 Battle 或 Ref。普通配置字段直接读取，不包装 Getter；SP 容量、门槛和默认费用直接来自 Definition，本次发动费用仍由 Activation.cost 程序与默认配置共同决定。SP 可空槽位在资源入口通过 hasSp 收窄后求值，两项回复属性同样返回 number。属性公式模块只保留 Modifier、create、apply。
 

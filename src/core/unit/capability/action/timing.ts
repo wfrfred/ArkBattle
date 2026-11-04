@@ -2,48 +2,47 @@ import type { State as BattleState } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
 import * as contribution from "../../contribution/contribution.js";
 import * as attribute from "../../contribution/attribute.js";
-import type { Definition } from "../../action/definition.js";
-import type { Action } from "./capability.js";
+import type { Action } from "../../action/action.js";
+import type { Action as ActionCapability } from "./capability.js";
 
-type Timing = Pick<Definition, "intervalTicks" | "speed">;
-
-export function resolveSpeed(battle: BattleState, self: Unit & Action, definition: Timing): number {
+export function resolveSpeed<P extends object, E extends object>(
+    battle: BattleState,
+    source: Unit & ActionCapability,
+    self: Action<P, E>,
+): number {
     return Math.max(
         20,
         attribute.apply(
-            definition.speed,
+            self.definition.speed,
             contribution
-                .resolve(self.action.speed)
-                .flatMap((input) => (typeof input === "function" ? input(battle, self) : input)),
+                .resolve(source.action.speed)
+                .flatMap((input) => (typeof input === "function" ? input(battle, source) : input)),
         ),
     );
 }
 
-export function resolveBaseInterval(
+export function resolveBaseInterval<P extends object, E extends object>(
     battle: BattleState,
-    self: Unit & Action,
-    definition: Timing,
+    source: Unit & ActionCapability,
+    self: Action<P, E>,
 ): number {
     return Math.max(
         0,
         attribute.apply(
-            definition.intervalTicks,
+            self.definition.intervalTicks,
             contribution
-                .resolve(self.action.interval)
-                .flatMap((input) => (typeof input === "function" ? input(battle, self) : input)),
+                .resolve(source.action.interval)
+                .flatMap((input) => (typeof input === "function" ? input(battle, source) : input)),
         ),
     );
 }
 
-export function resolvePeriod(
+export function resolvePeriod<P extends object, E extends object>(
     battle: BattleState,
-    self: Unit & Action,
-    definition: Timing,
+    source: Unit & ActionCapability,
+    self: Action<P, E>,
 ): number {
-    return period(
-        resolveBaseInterval(battle, self, definition),
-        resolveSpeed(battle, self, definition),
-    );
+    return period(resolveBaseInterval(battle, source, self), resolveSpeed(battle, source, self));
 }
 
 export function period(intervalTicks: number, speed: number): number {
