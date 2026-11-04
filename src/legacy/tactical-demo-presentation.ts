@@ -361,7 +361,7 @@ export class TacticalDemoPresentation {
 
         for (const event of events) {
             switch (event.type) {
-                case "ACTION": {
+                case "ATTACK_STARTED": {
                     this.#attackCount++;
 
                     if (resumableSources.has(event.sourceUnitId)) {

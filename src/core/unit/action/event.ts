@@ -4,6 +4,6 @@ export type Event = {
     readonly sourceUnitId: UnitId;
     readonly tick: number;
 } & (
-    | { readonly type: "ACTION"; readonly targetUnitId: UnitId }
+    | { readonly type: "ATTACK_STARTED"; readonly targetUnitId: UnitId }
     | { readonly type: "ACTION_RELEASED" | "ACTION_FINISHED" | "ACTION_CANCELLED" }
 );

@@ -382,7 +382,7 @@ export function createWithState<P extends object, E extends object>(
                 self = current;
                 battle = appendEvents(battle, [
                     {
-                        type: "ACTION",
+                        type: "ATTACK_STARTED",
                         sourceUnitId: source.id,
                         targetUnitId: self.execution.state.target.id,
                         tick: battle.tick,

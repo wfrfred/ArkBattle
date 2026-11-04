@@ -11,7 +11,7 @@ UI 的实际需要决定输出哪些事实与字段。领域操作没有记录�
 | 定义归属 | 保留输出 |
 | --- | --- |
 | Unit | `UNIT_REMOVED`：身份、原因和注销时的 Unit 历史事实，支持最终 State 已没有对象时的离场表现。 |
-| Action | `ACTION`、`ACTION_RELEASED`、`ACTION_FINISHED`、`ACTION_CANCELLED`：当前行动动画需要的提示及生命周期。`ACTION` 是攻击模板首次推进时的有目标表现提示，不是所有 Action 的通用启动事实。 |
+| Action | `ATTACK_STARTED`：攻击模板首次推进时的有目标攻击表现提示；`ACTION_RELEASED`、`ACTION_FINISHED`、`ACTION_CANCELLED`：行动释放、完成与取消的动画时点。 |
 | Skill | `SKILL_ACTIVATED`、`SKILL_FINISHED`：技能动画的启动与结束。 |
 | Elemental | `ELEMENTAL_BURST`：发生爆发的 Unit、元素类型与当时位置。 |
 | Route | `ROUTE_COMPLETED`：路线完成后的漏怪表现，由 Battle 确认可以正常离场时追加。 |

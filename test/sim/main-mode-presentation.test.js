@@ -70,7 +70,7 @@ test("an active action waits for release animation while every AoE damage remain
     const source = units.ref(get(initial, 0));
     const started = actions.start(initial, actions.ref(source, action));
     assert.deepEqual(view.advance(started.state, [
-        { type: "ACTION", sourceUnitId: 0, targetUnitId: 1, tick: 0 },
+        { type: "ATTACK_STARTED", sourceUnitId: 0, targetUnitId: 1, tick: 0 },
     ]), []);
 
     const finished = actions.advance({ ...started.state, tick: 1 }, started.value.ref);
@@ -98,7 +98,7 @@ test("projectile release uses its registered trace target and later damage does 
         },
     });
     assert.deepEqual(view.advance(created.state, [
-        { type: "ACTION", sourceUnitId: 0, targetUnitId: 1, tick: 0 },
+        { type: "ATTACK_STARTED", sourceUnitId: 0, targetUnitId: 1, tick: 0 },
         { type: "ACTION_RELEASED", sourceUnitId: 0, tick: 0 },
         { type: "ACTION_FINISHED", sourceUnitId: 0, tick: 0 },
     ]), [["atk", 0, 2, "none"]]);
@@ -123,10 +123,10 @@ test("attack skills decorate attack cues while buff skills keep a separate activ
     assert.equal(presented[0].info.skillActive, false);
     assert.equal(presented[1].info.skillActive, true);
     assert.deepEqual(view.advance(state, [
-        { type: "ACTION", sourceUnitId: 0, targetUnitId: 2, tick: 0 },
+        { type: "ATTACK_STARTED", sourceUnitId: 0, targetUnitId: 2, tick: 0 },
         { type: "ACTION_RELEASED", sourceUnitId: 0, tick: 0 },
         { type: "ACTION_FINISHED", sourceUnitId: 0, tick: 0 },
-        { type: "ACTION", sourceUnitId: 1, targetUnitId: 2, tick: 0 },
+        { type: "ATTACK_STARTED", sourceUnitId: 1, targetUnitId: 2, tick: 0 },
         { type: "ACTION_RELEASED", sourceUnitId: 1, tick: 0 },
         { type: "ACTION_FINISHED", sourceUnitId: 1, tick: 0 },
     ]), [["atk", 0, 2, "none", { skill: true }], ["atk", 1, 2, "none"]]);

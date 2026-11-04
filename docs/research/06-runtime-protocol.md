@@ -154,7 +154,7 @@ Source active 是唯一源参与事实。默认跟随源参与的接收实例通
 
 [ActionExecution](../../src/core/unit/capability/action/process.ts) 保存在独立 Action 领域集合，并由 BattleSystemStates 与 BattleSnapshot 保存。每次执行有单调身份、来源、不可变 ActionDefinition 关联、接受时点与输入目标、绑定、数值样本、游标及等待事实；同一来源可以有多个执行。集合中没有函数、Map、候选作用域或同步调用帧。生成的执行事实不可变，复制集合时复用它们。编译段落只保存在定义关联的私有程序缓存中，缓存取得描述对象与数组的所有权。
 
-所有行动使用同一种编译 program 与同一个 runner。先检查来源、启动许可、冷却与恢复，再调用纯 bind 查询实际目标；bind 不接收 Work 或执行准备转换。不为更新展示目标每 tick 完整绑定。接受后立即分配执行身份，记录 ACTION，并按 intervalTicks／recoveryTicks 更新 Unit.ActionState。当前 ActionState 只保存 readyAtTick 与 recoveryUntilTick，不重复记录历史或当前目标；输入目标与绑定归 ActionExecution.inputTargetUnitId／bindings。当前展示使用 ACTION／ACTION_RELEASED 事件及在途事实，需要实时朝向时另作纯 projection，不修改执行绑定。
+所有行动使用同一种编译 program 与同一个 runner。先检查来源、启动许可、冷却与恢复，再调用纯 bind 查询实际目标；bind 不接收 Work 或执行准备转换。不为更新展示目标每 tick 完整绑定。接受后立即分配执行身份，并按 intervalTicks／recoveryTicks 更新 Unit.ActionState。当前 ActionState 只保存 readyAtTick 与 recoveryUntilTick，不重复记录历史或当前目标；输入目标与绑定归 ActionExecution.inputTargetUnitId／bindings。当前展示使用攻击模板首次推进时输出的 ATTACK_STARTED、释放时的 ACTION_RELEASED 事件及在途事实，需要实时朝向时另作纯 projection，不修改执行绑定。
 
 runner 连续推进同步步骤，完成时结束精确执行身份的生命周期绑定；遇到未完成等待才保留 continuation。瞬时完成也有执行身份，可以绑定临时 Effect，但不保留长期执行。执行输入与接受绑定不因之后的展示变化而改写；程序可以在某段安装后重新查询／绑定，不强迫所有后续目标在接受时固定。
 
