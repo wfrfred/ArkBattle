@@ -1,0 +1,34 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-05",
+    "sourceType": "Community mechanism reference, not official documentation",
+    "page": "https://prts.wiki/w/游戏数据基础",
+    "section": "攻速公式",
+    "sectionUrl": "https://prts.wiki/w/游戏数据基础#攻速公式",
+    "observedRevision": 447894,
+    "revisionSource": "The fetched page footer links to title=游戏数据基础&oldid=447894.",
+    "permanentUrl": "https://prts.wiki/index.php?title=游戏数据基础&oldid=447894#攻速公式",
+    "retrieval": "web.run open and find on the normal page; direct opening of the permanent URL returned a tool access error",
+    "scope": "Formal main page only. No sandbox animation measurements or project implementation used as native evidence."
+  },
+  "result": {
+    "formula": "T = T0 / (clamp(S, 10, 600) / 100)",
+    "definitions": {
+      "T": "实际攻击间隔",
+      "T0": "理论攻击间隔",
+      "S": "攻击速度，默认100"
+    },
+    "bounds": {
+      "formulaClamp": [10, 600],
+      "attributeLowerBoundNote": 20,
+      "note": "The section separately notes the ordinary attack-speed attribute lower bound; it must not be conflated with the formula's clamp."
+    },
+    "coverage": {
+      "mapsCurrentAttackSpeedToInterval": true,
+      "specifiesRefreshTriggerOrPhase": false,
+      "specifiesCooldownProgressContinuation": false,
+      "specifiesRetimingOfCurrentWindupOrRecovery": false
+    },
+    "interpretation": "This formula cannot establish whether an attribute change refreshes the current cooldown immediately, preserves progress, or retimes an existing animation/wait. Those timing claims require separate client evidence."
+  }
+}

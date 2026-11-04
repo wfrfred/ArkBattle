@@ -1,12 +1,12 @@
 # Action 的攻击周期、动画与执行占用
 
-核查日期：2026-10-14。研究 Stronghold Action 重构所需的官方时间语义，本轮不修改源码、不决定新的 Action API。
+核查日期：2026-10-14；2026-11-05 补核有效攻速的属性变更通知与冷却刷新时点。研究 Action 所需的原生时间语义，不修改源码、不决定新的 Action API。
 
 ## 证据范围
 
 直接读取本机官方 Windows 客户端的 IL2CPP metadata、原生方法和资源引用，交叉核对 PRTS。以下“原生实现”均指本轮读取的非 XLua 替换分支；没有运行官方战斗、执行 Lua hotfix 或逐帧录制。因此，代码中的计算与资源参数可以确认，实际事件落在哪一逻辑帧仍须区分推算与运行观测。
 
-当前客户端身份：
+2026-10-14 取证输入：
 
 - `GameAssembly.dll` SHA256：`583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5`。
 - `global-metadata.dat` SHA256：`d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f`，metadata version 29。
@@ -95,6 +95,37 @@ newRemaining = max(0, newPeriod - (oldPeriod - oldRemaining))
 3. 重算 `Ability.playbackSpeed` 不等于立即写入正在播放的 `SkeletonAnimation.timeScale`。所读 Entity → Unit → Character / Enemy 属性通知链，没有对 ASPD 再调用一次当前动画速度更新；所读常规 animator tick 也没有每帧从 Ability 自动拉取该速度。三段行为自身另有显式改速策略，见第 5 节。
 
 因此，“中途攻速变化保留 cooldown 完成比例”已确认；“当前前摇、后摇、当前 clip 和未来各段全部按比例移动”不能作为通则。
+
+### 2026-11-05 补核：属性变更时同步调整冷却
+
+本次重新读取当前客户端，DLL／metadata SHA-256 分别为 `cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff`／`e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5`。新地址、metadata slot、原始分支表与复跑入口见[攻速刷新取证](../evidence/attack-speed-timing-20261105/README.md)，不能套用上方旧批次的索引与地址。本节只补核属性与攻击周期链；当前动画、缓存预算和既有等待的边界仍引用上述 2026-10-14 证据。
+
+**普通 Modifier 增删会同步通知 Entity，攻速分支当场重算周期并保留冷却完成比例。数值缓存可以惰性计算，变更通知不等待下一 Tick。**
+
+```text
+Attributes.AddModifier / RemoveModifier
+    → 更新受影响属性的 Modifier 集合
+    → MarkAttributeDirty：标记属性缓存失效，并同步调用登记的委托
+    → Entity.OnAttributeDirty
+    → 读取当前基础攻击间隔与攻速；失效缓存此时重新求值
+    → 计算新攻击周期，通知 Ability.OnAttackTimeChanged
+    → 普通 FROM_ATTACK_SPEED 路径 ResetButKeepProgress
+```
+
+直接证据：
+
+- `Entity.Init` 67624 在 `0x1807267d9–0x18072685a` 将自身 virtual slot 126 的回调登记到 `Attributes.onAttributeMarkedDirty`；metadata 对应 `Entity.OnAttributeDirty`。`OnReset` 67646 按相同 slot 撤销，不能把不相关的构造函数事件委托当成这条绑定。
+- `AddModifier` 65240 先更新受影响的 Modifier 集合，再于 `0x1806773fd` 调用 `MarkAttributeDirty`；`RemoveModifier` 65241 对应 `0x18067901d`。
+- `MarkAttributeDirty` 65257 于 `0x1806786d1` 写入 dirty mask，随后于 `0x180678742` 直接调用委托，携带旧缓存数值。`GetValue` 65243 无 dirty 标记时读取缓存，有标记时于 `0x18067865a` 转入 `_CalculateAttributeValue`。这是惰性数值缓存与同步通知两个不同职责。
+- `Entity.OnAttributeDirty` 67699 的原始 switch 表将属性 7／8 导向 `0x180728875`；普通分支读取当前属性，在 `0x180728a40` 调用 `BattleFormula.CalculateAttackInterval`，再于 `0x180728a89` 调用 Ability virtual slot 60。metadata 对应 `OnAttackTimeChanged`。
+- 当前 `AbstractAnimatedAbility.OnAttackTimeChanged` 93883 在 FROM_ATTACK_SPEED 分支更新播放参数，并于 `0x180f90e2b` 调用 `PeriodicTimer.ResetButKeepProgress` 26426。后者保留旧周期的完成比例，当前实现与上文公式一致。
+- 普通 `PeriodicTimer.Update(deltaTime)` 26430 在 `0x181e4b3d3–0x181e4b42d` 扣减剩余时间并限制到零，不在这个计时入口重新求攻击速度或攻击周期。
+
+例如旧周期为 2 秒、剩余 1 秒，变化后周期为 1 秒，则当次通知将剩余冷却调整为 0.5 秒。普通 Tick 随后继续扣减剩余时间；不需要等待下一 Tick 才首次调整，也不是把本轮计时重置为完整新周期。这里描述的是当前已登记 Ability 的普通属性变更链，不穷尽特殊 Ability 的覆写、主动冷却操作或 XLua 替换。
+
+2026-11-05 查阅的 [PRTS 正式攻速公式页](https://prts.wiki/w/游戏数据基础#攻速公式) 页脚对应 `oldid=447894`，只提供攻速与间隔的公式及范围，没有规定本节的刷新时点；同步通知结论来自上述客户端指令。冷却换算也不能推出本轮前后摇重新按新周期缩放：普通后摇仍从施放开始采样的 `cachedDuration` 扣除已用时间，已经进入的固定等待不重算。
+
+对项目的含义是：当前每 Tick 调用 `refreshCooldowns` 属于支持动态 Contribution Input 的项目实现选择，不能用原生攻击周期本身证明必须轮询。是否改成只在明确变更入口维护，涉及动态贡献的求值与更新契约，应另外决定；本次不修改这项策略。
 
 ## 4. 普通动画缩放：周期长短和占用长短可以分离
 
