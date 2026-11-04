@@ -5,14 +5,32 @@ import type { Source } from "../../skill/sp.js";
 
 import type { Operation } from "../../skill/activation.js";
 
-export interface Contexts {
-    readonly activation: { readonly self: Unit & Skill };
-    readonly operation: { readonly self: Unit & Skill; readonly operation: Operation };
-    readonly recovery: { readonly self: Unit & Skill; readonly source: Source };
+export interface ActivationContext {
+    readonly self: Unit & Skill;
 }
 
-export type Key = keyof Contexts;
+export interface OperationContext {
+    readonly self: Unit & Skill;
+    readonly operation: Operation;
+}
 
-export type Rule<K extends Key = Key> = BaseRule<Contexts[K]>;
+export interface RecoveryContext {
+    readonly self: Unit & Skill;
+    readonly source: Source;
+}
 
-export type Rules = { readonly [K in Key]: readonly Rule<K>[] };
+export type ActivationRule = BaseRule<ActivationContext>;
+
+export type OperationRule = BaseRule<OperationContext>;
+
+export type RecoveryRule = BaseRule<RecoveryContext>;
+
+export interface Rules {
+    readonly activationRules: readonly ActivationRule[];
+    readonly operationRules: readonly OperationRule[];
+    readonly recoveryRules: readonly RecoveryRule[];
+}
+
+export type Key = keyof Rules;
+
+export type Rule<K extends Key = Key> = Rules[K][number];

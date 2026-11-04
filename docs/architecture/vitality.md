@@ -35,7 +35,7 @@ MaxHP 保留静态 Modifier[]，set／remove 工厂分别负责贡献登记与�
 
 HP、Contribution、专属接收 Hook 与 Rule 共存于同一 Vitality State。DEF／RES 的修改保留其他字段；属性变化不派发普通治疗 Hook。治疗索敌默认 provider 与显式注入 provider 均读取有效 MaxHP，避免把基础值或未计修正的上限用于缺血判定和比例排序。
 
-Damage 接收 Rule 使用 `allows(battle, ReceivingContext)`；Vitality 的单节点登记接口为 `setRule(ref, rule)`／`removeRule(ref, id)`，返回 Change，由 Unit.update 写入 damageReceptionRules。
+Damage 接收 Rule 使用 `allows(battle, ReceivingContext)`；Rules 声明 damageRules，State 直接继承 Rules、Contributions、Hooks。单节点登记接口保留 `setRule(ref, rule)`／`removeRule(ref, id)`，由普通登记工厂固定 damageRules 字段生成，返回 Change 交给 Unit.update 提交。普通治疗不另设 Rule 数组，治疗干预仍由专属 Receiving Hook 表达。
 
 ## 1. Calculate 与 Apply 的语义边界
 
@@ -223,7 +223,7 @@ type AppliedHook = Entry<AppliedContext, void>;
 
 Request 始终表示初始事实；公式参数、输出量和接收工作值只经对应 Hook 的 current 接续。OutputContext.type 是公式确定的类型，不重新读取 Request 的初始类型。BeforeReceive、ReceivingStarted、BeforeCommit 与 Applied 只接续 BattleState 业务；Applied 的报告在提交时确定，只对成功提交派发，零实际变化仍可成功。其余业务定义自己的 Application，不重复声明成功 Outcome 的另一份报告。
 
-各业务 Hook 键由相应子域导出。Vitality 专属接收使用 setHook(ref, key, hook)，key 为 damageReceivingStarted／damageReceiving／healingReceiving；Elemental 单字段接收使用 setDamageReceivingHook。撤销使用对应 remove 接口。
+各业务 Hook 键由相应子域导出。Vitality 专属接收使用 setHook(ref, key, hook)，key 为 damageReceivingStarted／damageReceiving／healingReceiving；Elemental 专属接收使用同一接口登记到 damageReceiving 字段。撤销使用对应 removeHook 接口。
 
 ReceivingStarted 目前只供 HP Damage 的普通受击 SP 等接收开始业务使用，不向其他三种结算机械添加。EP Healing 不提供专属 Receiving，其 Pending.cancellation 固定为 null，也不导出无执行路径的取消构造器或 CANCELLED 结果。各业务只提供实际需要的阶段，不按目录模板补齐接口。
 

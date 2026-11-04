@@ -89,7 +89,7 @@ EP Healing.Request 为 `{ source, target, power }`，Parameters 为 `{ power }`�
 | currentType／damageRatio | `(self: Unit & Elemental, maxEp: number)`，显式接收有效上限，不回落到静态 Definition |
 | available | 已知 Unit 的基础在场、空间存在与生命资格查询 |
 
-接收要求宿主在场且空间存在，具有 Vitality 时 HP 大于零。Burst 存在期间，包括 ENDING，拒绝损伤和治疗；中立阵营默认拒绝损伤。Rule 按 damage／heal 两个节点登记：damage 使用 `allows(battle, { self, request, type })`，type 是本次实际元素类型；heal 使用 `{ self, request }`。它们只读，均由 setRule／removeRule 的 Change 修改。无敌通过 damage Rule 拒绝，不查询 Vitality 内部接收规则；HP 禁疗不隐式决定 EP 接收。
+接收要求宿主在场且空间存在，具有 Vitality 时 HP 大于零。Burst 存在期间，包括 ENDING，拒绝损伤和治疗；中立阵营默认拒绝损伤。Rules 声明 damageRules／healingRules 两个数组，State 直接继承 Rules、Contributions、Hooks。damageRules 使用 `allows(battle, { self, request, type })`，type 是本次实际元素类型；healingRules 使用 `{ self, request }`。两者均由普通登记工厂生成的 `setRule(ref, key, rule)`／`removeRule(ref, key, id)` 修改，key 与对应 Context 类型配对。无敌通过 damageRules 拒绝，不查询 Vitality 内部接收规则；HP 禁疗不隐式决定 EP 接收。
 
 Targeting 的 elementDamage／elementHealing Filter 按当前候选构造完整请求并查询 canReceive；索敌不运行 Calculate，也不派发接收 Hook。没有 Elemental 的候选在过滤边界排除，后续 Typed Ref 保留该能力证明。elementHealing 另外要求当前存在元素损伤。普通 HP 行动附带 EP 输出，不自动套用元素接收条件。
 
@@ -119,7 +119,7 @@ Damage 的 before／after／loss 描述本次元素类型，Burst 身份描述�
 
 通用 Formula、Output、BeforeReceive、BeforeCommit、targetApplied、sourceApplied 存于 [Unit.hooks](hook.md)，由对应 Battle 子域定义键与派发。基础目标资格成立后执行 beforeReceive，再读取最新 Rule；取消、失效及已提交结果按各业务 Outcome 表达。
 
-Elemental 仅保存专属 DamageReceivingHook 和实际资源／Burst 通知。`setDamageReceivingHook`／`removeDamageReceivingHook` 返回 Change。接收 Context 固定 `{ target, request, calculated }`，工作值为 Pending；取消后仍派发后续 Hook，但保留已有取消及原因。领域 cancel 构造函数封装类型断言，不新增运行时取消检查。EP Healing 没有专属 Receiving，不导出取消构造器。
+Elemental 仅保存专属 DamageReceivingHook 和实际资源／Burst 通知，统一由 Hooks 分组声明。专属接收使用 `setHook(ref, "damageReceiving", hook)`／`removeHook(ref, "damageReceiving", id)`，与事实通知共用普通登记工厂并返回 Change。接收 Context 固定 `{ target, request, calculated }`，工作值为 Pending；取消后仍派发后续 Hook，但保留已有取消及原因。领域 cancel 构造函数封装类型断言，不新增运行时取消检查。EP Healing 没有专属 Receiving，不导出取消构造器。
 
 事实通知固定 `{ host, event }`，T=void；以下 event 在资源写入或生命周期转移处确定：
 

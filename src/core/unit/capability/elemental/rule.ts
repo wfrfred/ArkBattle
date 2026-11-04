@@ -4,17 +4,26 @@ import type { Elemental, Type } from "./capability.js";
 import type { Request as DamageRequest } from "../../../battle/damage/ep/contract.js";
 import type { Request as HealingRequest } from "../../../battle/healing/ep/contract.js";
 
-export interface Contexts {
-    readonly damage: {
-        readonly self: Unit & Elemental;
-        readonly request: DamageRequest;
-        readonly type: Type;
-    };
-    readonly heal: { readonly self: Unit & Elemental; readonly request: HealingRequest };
+export interface DamageContext {
+    readonly self: Unit & Elemental;
+    readonly request: DamageRequest;
+    readonly type: Type;
 }
 
-export type Key = keyof Contexts;
+export interface HealingContext {
+    readonly self: Unit & Elemental;
+    readonly request: HealingRequest;
+}
 
-export type Rule<K extends Key = Key> = BaseRule<Contexts[K]>;
+export type DamageRule = BaseRule<DamageContext>;
 
-export type Rules = { readonly [K in Key]: readonly Rule<K>[] };
+export type HealingRule = BaseRule<HealingContext>;
+
+export interface Rules {
+    readonly damageRules: readonly DamageRule[];
+    readonly healingRules: readonly HealingRule[];
+}
+
+export type Key = keyof Rules;
+
+export type Rule<K extends Key = Key> = Rules[K][number];

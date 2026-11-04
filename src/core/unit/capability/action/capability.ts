@@ -4,10 +4,7 @@ import type { Id as DefinitionId } from "../../action/definition.js";
 import type { Actions } from "../../action/actions.js";
 import type * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
-import * as hook from "../../../hook.js";
 import type { BeforeReleaseHook, ReleasedHook } from "./release.js";
-import type { Ref } from "../../../common/ref.js";
-import { createChange, type Change } from "../../change.js";
 import { createRegistrationOperations } from "../../registration.js";
 import type { Rule as BaseRule } from "../../../rule.js";
 
@@ -30,12 +27,15 @@ interface Hooks {
     readonly released: readonly ReleasedHook[];
 }
 
-export interface State extends Hooks {
+interface Rules {
+    readonly rules: readonly Rule[];
+}
+
+export interface State extends Rules, Hooks {
     readonly actions: Actions;
     readonly nextExecutionId: number;
     readonly interval: readonly contribution.Contribution<Input>[];
     readonly speed: readonly contribution.Contribution<Input>[];
-    readonly rules: readonly Rule[];
 }
 
 export interface Action {
@@ -76,21 +76,11 @@ export function initialize<U extends Unit & Pick<Action, "definition">>(
     };
 }
 
-export function setRule(reference: Ref<Unit & Action>, rule: Rule): Change {
-    return createChange(reference, (self) => {
-        const rules = hook.set(self.action.rules, rule);
-
-        return rules === self.action.rules ? self : { ...self, action: { ...self.action, rules } };
-    });
-}
-
-export function removeRule(reference: Ref<Unit & Action>, id: string): Change {
-    return createChange(reference, (self) => {
-        const rules = hook.remove(self.action.rules, id);
-
-        return rules === self.action.rules ? self : { ...self, action: { ...self.action, rules } };
-    });
-}
+export const { set: setRule, remove: removeRule } = createRegistrationOperations<
+    Unit & Action,
+    "action",
+    keyof Rules
+>("action", "rules");
 
 export const { set: setHook, remove: removeHook } = createRegistrationOperations<
     Unit & Action,

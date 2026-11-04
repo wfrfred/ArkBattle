@@ -17,6 +17,7 @@ import * as actions from ${module("unit/action/index")};
 import * as effects from ${module("unit/effect/index")};
 import * as hpDamage from ${module("battle/damage/hp/index")};
 import * as vitality from ${module("unit/capability/vitality/index")};
+import * as elemental from ${module("unit/capability/elemental/index")};
 import * as skills from ${module("unit/skill/index")};
 import type { Skill as SkillCapability } from ${module("unit/capability/skill/index")};
 import * as actionCapability from ${module("unit/capability/action/index")};
@@ -111,6 +112,22 @@ const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
     vitality: { maxHp: 100, defense: 10, resistance: 0 },
 } }).value;
 const patientRef = ref(patient);
+vitality.setRule(patientRef, {
+    id: 'damage-permission', allows: (_state, context) => context.calculated.amount > 0,
+});
+declare const elementalRef: Ref<Unit & elemental.Elemental>;
+elemental.setRule(elementalRef, 'damageRules', {
+    id: 'injury-permission', allows: (_state, context) => context.type === 'NEURAL',
+});
+declare const elementalRule: elemental.DamageRule;
+declare const elementalRuleKey: 'damageRules' | 'healingRules';
+// @ts-expect-error a Rule cannot be registered against an unrelated field Context.
+elemental.setRule(elementalRef, 'healingRules', elementalRule);
+const fixedRule = createRegistrationOperations<
+    Unit & elemental.Elemental, 'elemental', typeof elementalRuleKey
+>('elemental', elementalRuleKey);
+// @ts-expect-error fixing an uncertain field does not erase its Entry pairing.
+fixedRule.set(elementalRef, elementalRule);
 vitality.setContribution(patientRef, 'defense', {
     id: 'armor', value: (_state, self) => {
         const defense: number = self.definition.vitality.defense;

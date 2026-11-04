@@ -16,12 +16,15 @@ export interface Definition {
     readonly retreatRules: readonly Rule[];
 }
 
-export interface State {
+export interface Rules {
+    readonly retreatRules: readonly Rule[];
+}
+
+export interface State extends Rules {
     readonly card: Ref<Card> | null;
     readonly cost: number;
     readonly slots: number;
     readonly refund: Refund | null;
-    readonly retreatRules: readonly Rule[];
 }
 
 export interface RuleContext {

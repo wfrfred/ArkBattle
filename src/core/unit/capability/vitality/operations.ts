@@ -26,7 +26,7 @@ export function canReceiveDamage(battle: BattleState, context: damage.ReceivingC
     return (
         target?.lifecycle === "PRESENT" &&
         target.vitality.hp > 0 &&
-        target.vitality.damageReceptionRules.every((rule) => rule.allows(battle, context))
+        target.vitality.damageRules.every((rule) => rule.allows(battle, context))
     );
 }
 

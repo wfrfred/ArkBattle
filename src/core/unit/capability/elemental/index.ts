@@ -6,8 +6,6 @@ export {
     initialize,
     setContribution,
     removeContribution,
-    setDamageReceivingHook,
-    removeDamageReceivingHook,
     setRule,
     removeRule,
     setHook,
@@ -57,4 +55,12 @@ export {
 
 export type { DamageReceivingHook, Damaged, Healed, Events, Key, Context, Hook } from "./hook.js";
 
-export type { Rule, Key as RuleKey, Contexts as RuleContexts, Rules } from "./rule.js";
+export type {
+    DamageRule,
+    HealingRule,
+    DamageContext as DamageRuleContext,
+    HealingContext as HealingRuleContext,
+    Rule,
+    Key as RuleKey,
+    Rules,
+} from "./rule.js";

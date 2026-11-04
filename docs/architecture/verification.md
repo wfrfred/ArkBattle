@@ -33,7 +33,7 @@ Deployable 对 Occupancy 的构造依赖、入场与配对属于本轮协作边�
 | 地图、导航与空间查询 | Tile 与 Overlay 决定当前可达性和导航结果；缓存不改变结果。身体位置、空间存在、占格和命中几何分别表达，空间接触不等于业务命中。 | [Battlefield](battlefield.md#关键语义)、[Spatial](spatial.md) |
 | Unit 构造与能力 | 静态 Definition 决定能力组成，构造后配置与状态配对、组成稳定；初始 Effect 通过登记后的正常安装形成。 | [构造与装配](capability.md#初始化与装配) |
 | Unit 批量变更 | 同目标的变换顺序接续，全部最终字段先发布，再执行各自的业务后继；嵌套结算不丢失已完成事实。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
-| 普通注册 Change | Capability 明确选择自动字段；字段、Entry 与宿主 Ref 保持类型关联，注册仍遵守按 ID 替换保序和无变化不结算。特殊字段由领域完成自身变换与后继。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
+| 普通注册 Change | Capability 用扁平 Rules／Contributions／Hooks 分组明确选择自动字段；按 Key 和固定字段两种接口均保持字段、Entry 与宿主 Ref 的类型关联，注册遵守按 ID 替换保序和无变化不结算。特殊字段由领域完成自身变换与后继。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
 | 状态接续与 Hook | 同步业务接续最新状态；有意采样的历史事实保留。一次派发不吸收后来新增的候选，执行时使用最新登记与资格，嵌套派发独立。 | [状态接续](functional-core.md#状态接续后的读取与续执行)、[同步候选](functional-core.md#7-同步候选范围) |
 | 身份与结束 | 持久对象与本轮执行身份不同，旧轮次不操作新轮次；结束立即拒收新的依赖，依赖者完整结束后宿主才注销，收尾不重复执行或覆盖首次原因。 | [Lifetime](lifetime.md)、[Action](action.md#关键语义)、[Skill](skill.md#关键语义) |
 | Action | 启动受理、冷却、释放和输出保持各自含义；普通拒绝不创建执行。变速保留规定进度，释放前中断不伪造成功释放；已完成的输出与资源结算不回滚。 | [Action](action.md#关键语义) |

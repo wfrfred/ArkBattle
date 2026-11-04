@@ -432,7 +432,7 @@ test("EP-01: calculated resistance and element survive later state changes; HP e
         elemental.setContribution(target, "elementResistance", {
             id: "changed-after-calculation", value: [attribute.create({ finalScaler: 0 })],
         }),
-        elemental.setRule(target, "damage", {
+        elemental.setRule(target, "damageRules", {
             id: "only-neural", allows: (_current, { type }) => type === "NEURAL",
         }),
     ]);
@@ -454,7 +454,7 @@ test("EP-01: calculated resistance and element survive later state changes; HP e
 
     const zero = injuryRequest(target, "NEURAL", 0);
     assert.equal(epDamage.applyDamage(zero, epDamage.calculateDamage(hp.state, zero)).value.kind, "REJECTED");
-    const protectedState = update(hp.state, [elemental.setDamageReceivingHook(target, {
+    const protectedState = update(hp.state, [elemental.setHook(target, "damageReceiving", {
         id: "full-barrier",
         invoke: (current, _context, pending) => ({ state: current, value: { ...pending, amount: 0 } }),
     })]);

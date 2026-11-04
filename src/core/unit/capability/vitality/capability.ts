@@ -9,7 +9,6 @@ import type {
 } from "../../../battle/damage/hp/hook.js";
 import type { ReceivingHook as HealingReceivingHook } from "../../../battle/healing/hp/hook.js";
 import type { DamageReceptionRule } from "./rule.js";
-import * as registry from "../../../hook.js";
 import type { Ref } from "../../../common/ref.js";
 import { createChange, type Change } from "../../change.js";
 import { createRegistrationOperations } from "../../registration.js";
@@ -27,16 +26,19 @@ interface Contributions {
     readonly resistance: readonly contribution.Contribution<Input>[];
 }
 
+interface Rules {
+    readonly damageRules: readonly DamageReceptionRule[];
+}
+
 interface Hooks {
     readonly damageReceivingStarted: readonly ReceivingStartedHook[];
     readonly damageReceiving: readonly DamageReceivingHook[];
     readonly healingReceiving: readonly HealingReceivingHook[];
 }
 
-export interface State extends Contributions, Hooks {
+export interface State extends Rules, Contributions, Hooks {
     readonly hp: number;
     readonly maxHp: readonly contribution.Contribution<readonly attribute.Modifier[]>[];
-    readonly damageReceptionRules: readonly DamageReceptionRule[];
 }
 
 export interface Vitality {
@@ -77,31 +79,17 @@ export function initialize<U extends Unit & Pick<Vitality, "definition">>(
                 damageReceivingStarted: [],
                 damageReceiving: [],
                 healingReceiving: [],
-                damageReceptionRules: [],
+                damageRules: [],
             },
         },
     };
 }
 
-export function setRule(reference: Ref<Unit & Vitality>, rule: DamageReceptionRule): Change {
-    return createChange(reference, (self) => {
-        const damageReceptionRules = registry.set(self.vitality.damageReceptionRules, rule);
-
-        return damageReceptionRules === self.vitality.damageReceptionRules
-            ? self
-            : { ...self, vitality: { ...self.vitality, damageReceptionRules } };
-    });
-}
-
-export function removeRule(reference: Ref<Unit & Vitality>, id: string): Change {
-    return createChange(reference, (self) => {
-        const damageReceptionRules = registry.remove(self.vitality.damageReceptionRules, id);
-
-        return damageReceptionRules === self.vitality.damageReceptionRules
-            ? self
-            : { ...self, vitality: { ...self.vitality, damageReceptionRules } };
-    });
-}
+export const { set: setRule, remove: removeRule } = createRegistrationOperations<
+    Unit & Vitality,
+    "vitality",
+    keyof Rules
+>("vitality", "damageRules");
 
 function preserveHpRatio(hp: number, previousMax: number, nextMax: number): number {
     if (previousMax === nextMax || hp <= 0) {

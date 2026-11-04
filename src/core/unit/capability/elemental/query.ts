@@ -80,7 +80,7 @@ export function canReceiveDamage(
         available(self) &&
         self.elemental.burst === null &&
         (!hasAllegiance(self) || self.allegiance.side !== "NEUTRAL") &&
-        self.elemental.rules.damage.every((rule) => rule.allows(battle, { self, request, type }))
+        self.elemental.damageRules.every((rule) => rule.allows(battle, { self, request, type }))
     );
 }
 
@@ -91,7 +91,7 @@ export function canReceiveHealing(battle: BattleState, request: HealingRequest):
         self !== undefined &&
         available(self) &&
         self.elemental.burst === null &&
-        self.elemental.rules.heal.every((rule) => rule.allows(battle, { self, request }))
+        self.elemental.healingRules.every((rule) => rule.allows(battle, { self, request }))
     );
 }
 

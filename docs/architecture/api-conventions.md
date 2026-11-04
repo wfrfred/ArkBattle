@@ -76,7 +76,7 @@ Hook 与领域操作按执行语义命名：
 
 Rule 使用公共 `Rule<C>` 类型，只有登记身份 `id` 和纯资格判断 `allows(battle, context): boolean`。所有业务输入放入所属领域的 Context，BattleState 单独传入；不再混用额外位置参数或多个可选的 allowsXxx 方法。Context 使用已有对象或 Ref 表达实际读取契约，不为统一形式增加重复查询。
 
-单判断节点领域使用 `setRule(ref, rule)`／`removeRule(ref, id)`；多节点领域使用 `setRule(ref, key, rule)`／`removeRule(ref, key, id)`，key 与 Context 类型配对。Skill 的节点为 activation／operation／recovery，Elemental 为 damage／heal，State.rules 按节点分别保存只读登记数组。ID 只在对应宿主、对应节点内唯一；同 ID 替换保留原位置，新 ID 追加，撤销缺失项不改变状态。
+单判断节点领域使用 `setRule(ref, rule)`／`removeRule(ref, id)`；多节点领域使用 `setRule(ref, key, rule)`／`removeRule(ref, key, id)`，key 与 Context 类型配对。Skill 的字段为 activationRules／operationRules／recoveryRules，Elemental 为 damageRules／healingRules；Rules 声明这些只读数组，State 直接继承 Rules，不另嵌套 rules 对象。ID 只在对应宿主、对应字段内唯一；同 ID 替换保留原位置，新 ID 追加，撤销缺失项不改变状态。
 
 各节点按登记顺序检查，任一拒绝即停止，空集合允许；判断只读，不消费资源或推进 BattleState。Unit 能力的登记返回 Change，由 Unit.update 执行，必要后继仍由领域提供；Card 的登记沿自身完整操作写回。检查时点、默认资格及 Blocking 关系复核不由公共类型推断。
 
@@ -293,9 +293,9 @@ battle = update(battle, [
 
 Change 是带必需品牌的 opaque 描述；构造实现 `createChange(ref, transform, settle?)` 只供 Core 内部使用。Transformation<U> 是纯 `(unit: U) => U`，Settlement<U> 是 `(battle, previous: U) => BattleState`；两个程序的 U 均从 Ref 经 NoInfer 确定，不由回调反推放宽。构造边界配对后才擦除异构类型，不增加公开 InternalChange、Prepared 或另一套转换协议。品牌表达构造契约，不作为恶意 Content 的安全隔离。
 
-普通数组注册由内部 [registration.ts](../../src/core/unit/registration.ts) 的 `createRegistrationOperations<U, P, K>(property)` 生成 set／remove Change。Capability 用 Contributions、Hooks 等字段分组声明允许自动注册的集合，State 继承这些分组；K 取 `keyof` 分组，Entry 直接从真实 U[P][K] 提取。set 由具体 Key 推断内联回调类型，再与字段／Entry 的映射元组联合交叉，保持联合 Key 的配对；宿主能力由固定 Ref<U> 约束。工厂复用按 ID 替换保序的数组操作，只完成纯变换和不可变复制，不增加运行时字段清单、能力校验、初始化、求值或派发。
+普通数组注册由内部 [registration.ts](../../src/core/unit/registration.ts) 的 `createRegistrationOperations<U, P, K>(property)` 生成 set／remove Change。Capability 用 Rules、Contributions、Hooks 分组声明普通登记字段，State 直接继承这些分组；K 取 `keyof` 分组，Entry 直接从真实 U[P][K] 提取。set 由具体 Key 推断内联回调类型，再与字段／Entry 的映射元组联合交叉，保持联合 Key 的配对；宿主能力由固定 Ref<U> 约束。单字段接口通过工厂的 `(property, key)` 重载固定字段，生成省略 key 的 set／remove，无需各领域重复数组修改逻辑。工厂复用按 ID 替换保序的数组操作，只完成纯变换和不可变复制，不增加运行时字段清单、能力校验、初始化、求值或派发。
 
-Vitality 普通贡献使用 `setContribution(ref, "defense" | "resistance", entry)`，专属 Hook 使用 `setHook(ref, key, hook)`；Action 的 beforeRelease／released、Elemental 的普通贡献与事件 Hook、Skill 事件 Hook 和 Blocking 两侧 Hook 使用同一工厂。它不经 Unit 公共入口导出。MaxHP 的贡献与 HP 比例在同一次手写变换中更新；Ammo 注册保留 AMMO 适用条件，发动时采样容量，当前轮次仍由资源操作改变；Action interval／speed 与 Blocking Rule／容量／体积保留所属领域 Settlement。可空 SP、嵌套 Rule、单字段接口及 Unit Typed Key Hooks、Card／Battle 登记使用各自明确实现，不扩展通用路径或后继配置。
+Vitality 的 damageRules、普通贡献与专属 Hook，Elemental 的 Rules／Contributions／Hooks，Skill 的 Rules／Hooks，Action 的 Rules／Hooks，以及 Deployable、Locomotion、Offense、Targetable 的普通登记共用此工厂；Blocking 两侧的普通 Hook 也使用同一工厂。它不经 Unit 公共入口导出。MaxHP 的贡献与 HP 比例在同一次手写变换中更新；Ammo 注册保留 AMMO 适用条件，发动时采样容量，当前轮次仍由资源操作改变；Action interval／speed 与 Blocking Rule／容量／体积保留所属领域 Settlement。可空 SP、Unit Typed Key Hooks、Card／Battle 登记保持各自明确的状态和写回协议，不扩展通用路径或后继配置。
 
 update 按以下顺序处理整批，允许同一 Unit 多个 Change，也允许跨多个 Unit：
 

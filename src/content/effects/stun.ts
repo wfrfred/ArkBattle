@@ -29,7 +29,7 @@ export const stun: Definition<object> = {
             changes.push(locomotion.setRule(units.ref(unit), rule));
         }
         if (skill.hasSkill(unit)) {
-            changes.push(skill.setRule(units.ref(unit), "activation", rule));
+            changes.push(skill.setRule(units.ref(unit), "activationRules", rule));
         }
         if (blocking.hasBlocker(unit)) {
             changes.push(blocking.setBlockerRule(units.ref(unit), rule));
@@ -55,7 +55,7 @@ export const stun: Definition<object> = {
             changes.push(locomotion.removeRule(units.ref(unit), id));
         }
         if (skill.hasSkill(unit)) {
-            changes.push(skill.removeRule(units.ref(unit), "activation", id));
+            changes.push(skill.removeRule(units.ref(unit), "activationRules", id));
         }
         if (blocking.hasBlocker(unit)) {
             changes.push(blocking.removeBlockerRule(units.ref(unit), id));

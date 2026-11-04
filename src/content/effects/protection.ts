@@ -39,7 +39,7 @@ export const invincible: Definition<object, targetable.Targetable> = {
             }),
             ...(elemental.hasElemental(unit)
                 ? [
-                      elemental.setRule(units.ref(unit), "damage", {
+                      elemental.setRule(units.ref(unit), "damageRules", {
                           id,
                           allows: () => false,
                       }),
@@ -66,7 +66,7 @@ export const invincible: Definition<object, targetable.Targetable> = {
         return updateUnit(state, [
             targetable.removeRestriction(units.ref(unit), id),
             ...(elemental.hasElemental(unit)
-                ? [elemental.removeRule(units.ref(unit), "damage", id)]
+                ? [elemental.removeRule(units.ref(unit), "damageRules", id)]
                 : []),
             ...(vitality.hasVitality(unit) ? [vitality.removeRule(units.ref(unit), id)] : []),
         ]);

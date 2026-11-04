@@ -401,7 +401,7 @@ function resolve(battle: BattleState, self: WithSp, key: Parameter): number {
 }
 
 function allowsRecovery(battle: BattleState, self: Unit & Skill, source: Source): boolean {
-    return self.skill.rules.recovery.every((rule) => rule.allows(battle, { self, source }));
+    return self.skill.recoveryRules.every((rule) => rule.allows(battle, { self, source }));
 }
 
 function available(self: Unit): boolean {

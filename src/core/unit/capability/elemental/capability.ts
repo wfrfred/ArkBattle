@@ -6,14 +6,11 @@ import {
 } from "../../../common/assert.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Unit, Definition as UnitDefinition } from "../../unit.js";
-import * as registry from "../../../hook.js";
 import type * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
 import type { Burst, Definition as BurstDefinition } from "./burst.js";
 import type { DamageReceivingHook, Events, Hook } from "./hook.js";
-import type { Rule, Key as RuleKey, Rules } from "./rule.js";
-import type { Ref } from "../../../common/ref.js";
-import { createChange, type Change } from "../../change.js";
+import type { Rules } from "./rule.js";
 import { createRegistrationOperations } from "../../registration.js";
 
 export const ELEMENT_TYPES = ["NEURAL", "EROSION", "BURN", "NECROSIS"] as const;
@@ -44,18 +41,17 @@ interface Contributions {
 export type Parameter = keyof Contributions;
 
 interface Hooks {
+    readonly damageReceiving: readonly DamageReceivingHook[];
     readonly damaged: readonly Hook<Events["damaged"]>[];
     readonly healed: readonly Hook<Events["healed"]>[];
     readonly burstStarted: readonly Hook<Events["burstStarted"]>[];
     readonly burstEnded: readonly Hook<Events["burstEnded"]>[];
 }
 
-export interface State extends Contributions, Hooks {
+export interface State extends Rules, Contributions, Hooks {
     readonly ep: Values;
     readonly burst: Burst | null;
     readonly nextBurstId: number;
-    readonly receiving: readonly DamageReceivingHook[];
-    readonly rules: Rules;
 }
 
 export interface Elemental {
@@ -109,8 +105,9 @@ export function initialize<U extends Unit & Pick<Elemental, "definition">>(
                 elementResistance: [],
                 damageResistance: [],
                 burstRecoverySpeed: [],
-                receiving: [],
-                rules: { damage: [], heal: [] },
+                damageReceiving: [],
+                damageRules: [],
+                healingRules: [],
                 damaged: [],
                 healed: [],
                 burstStarted: [],
@@ -126,64 +123,11 @@ export const { set: setContribution, remove: removeContribution } = createRegist
     keyof Contributions
 >("elemental");
 
-export function setDamageReceivingHook(
-    reference: Ref<Unit & Elemental>,
-    hook: DamageReceivingHook,
-): Change {
-    return createChange(reference, (self) => {
-        const receiving = registry.set(self.elemental.receiving, hook);
-
-        return receiving === self.elemental.receiving
-            ? self
-            : { ...self, elemental: { ...self.elemental, receiving } };
-    });
-}
-
-export function removeDamageReceivingHook(reference: Ref<Unit & Elemental>, id: string): Change {
-    return createChange(reference, (self) => {
-        const receiving = registry.remove(self.elemental.receiving, id);
-
-        return receiving === self.elemental.receiving
-            ? self
-            : { ...self, elemental: { ...self.elemental, receiving } };
-    });
-}
-
-export function setRule<K extends RuleKey>(
-    reference: Ref<Unit & Elemental>,
-    key: K,
-    rule: Rule<NoInfer<K>>,
-): Change {
-    return createChange(reference, (self) => {
-        const entries = registry.set(self.elemental.rules[key], rule);
-
-        return entries === self.elemental.rules[key]
-            ? self
-            : {
-                  ...self,
-                  elemental: {
-                      ...self.elemental,
-                      rules: { ...self.elemental.rules, [key]: entries },
-                  },
-              };
-    });
-}
-
-export function removeRule(reference: Ref<Unit & Elemental>, key: RuleKey, id: string): Change {
-    return createChange(reference, (self) => {
-        const entries = registry.remove<Rules[RuleKey][number]>(self.elemental.rules[key], id);
-
-        return entries === self.elemental.rules[key]
-            ? self
-            : {
-                  ...self,
-                  elemental: {
-                      ...self.elemental,
-                      rules: { ...self.elemental.rules, [key]: entries },
-                  },
-              };
-    });
-}
+export const { set: setRule, remove: removeRule } = createRegistrationOperations<
+    Unit & Elemental,
+    "elemental",
+    keyof Rules
+>("elemental");
 
 export const { set: setHook, remove: removeHook } = createRegistrationOperations<
     Unit & Elemental,

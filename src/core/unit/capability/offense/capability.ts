@@ -1,10 +1,9 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import { assertNonnegativeNumber } from "../../../common/assert.js";
-import * as contribution from "../../contribution/contribution.js";
-import * as attribute from "../../contribution/attribute.js";
+import type * as contribution from "../../contribution/contribution.js";
+import type * as attribute from "../../contribution/attribute.js";
 import type { Unit, Definition as UnitDefinition } from "../../unit.js";
-import type { Ref } from "../../../common/ref.js";
-import { createChange, type Change } from "../../change.js";
+import { createRegistrationOperations } from "../../registration.js";
 
 export interface Definition {
     readonly attack: number;
@@ -12,9 +11,11 @@ export interface Definition {
 
 export type Input = contribution.Input<attribute.Modifier, Unit & Offense>;
 
-export interface State {
+interface Contributions {
     readonly attack: readonly contribution.Contribution<Input>[];
 }
+
+export interface State extends Contributions {}
 
 export interface Offense {
     readonly definition: {
@@ -42,25 +43,8 @@ export function initialize<U extends Unit & Pick<Offense, "definition">>(
     return { state: battle, value: { ...unit, offense: { attack: [] } } };
 }
 
-export function setAttackContribution(
-    reference: Ref<Unit & Offense>,
-    entry: contribution.Contribution<Input>,
-): Change {
-    return createChange(reference, (self) => {
-        const attack = contribution.set(self.offense.attack, entry);
-
-        return attack === self.offense.attack
-            ? self
-            : { ...self, offense: { ...self.offense, attack } };
-    });
-}
-
-export function removeAttackContribution(reference: Ref<Unit & Offense>, id: string): Change {
-    return createChange(reference, (self) => {
-        const attack = contribution.remove(self.offense.attack, id);
-
-        return attack === self.offense.attack
-            ? self
-            : { ...self, offense: { ...self.offense, attack } };
-    });
-}
+export const { set: setAttackContribution, remove: removeAttackContribution } =
+    createRegistrationOperations<Unit & Offense, "offense", keyof Contributions>(
+        "offense",
+        "attack",
+    );

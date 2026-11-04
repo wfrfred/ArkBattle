@@ -3,8 +3,7 @@ import type { Contribution } from "../../contribution/contribution.js";
 import type { Unit } from "../../unit.js";
 import type { Request } from "../../../battle/targeting/contract.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import type { Ref } from "../../../common/ref.js";
-import { createChange, type Change } from "../../change.js";
+import { createRegistrationOperations } from "../../registration.js";
 
 export interface Definition {
     readonly restrictions: readonly Contribution<Restriction>[];
@@ -20,9 +19,11 @@ export interface Restriction {
     readonly allows: (battle: BattleState, context: Context) => boolean;
 }
 
-export interface State {
+interface Contributions {
     readonly restrictions: readonly Contribution<Restriction>[];
 }
+
+export interface State extends Contributions {}
 
 export interface Targetable {
     readonly definition: { readonly targetable: Definition };
@@ -54,28 +55,11 @@ export function initialize<U extends Unit & Pick<Targetable, "definition">>(
     };
 }
 
-export function setRestriction(
-    reference: Ref<Unit & Targetable>,
-    entry: Contribution<Restriction>,
-): Change {
-    return createChange(reference, (self) => {
-        const restrictions = contribution.set(self.targetable.restrictions, entry);
-
-        return restrictions === self.targetable.restrictions
-            ? self
-            : { ...self, targetable: { ...self.targetable, restrictions } };
-    });
-}
-
-export function removeRestriction(reference: Ref<Unit & Targetable>, id: string): Change {
-    return createChange(reference, (self) => {
-        const restrictions = contribution.remove(self.targetable.restrictions, id);
-
-        return restrictions === self.targetable.restrictions
-            ? self
-            : { ...self, targetable: { ...self.targetable, restrictions } };
-    });
-}
+export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
+    Unit & Targetable,
+    "targetable",
+    keyof Contributions
+>("targetable", "restrictions");
 
 export function allowsRestrictions(
     battle: BattleState,

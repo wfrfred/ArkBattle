@@ -139,7 +139,7 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
     const source = units.ref(get(state, 0));
     for (let tick = 0; tick <= 5; tick++) state = skills.advance({ ...state, tick }, source);
     state = update(state, [
-        skill.setRule(source, "recovery", { id: "blocked", allows: () => false }),
+        skill.setRule(source, "recoveryRules", { id: "blocked", allows: () => false }),
     ]);
     const payment = skills.pay(state, source, 2);
     state = payment.state;
@@ -148,7 +148,7 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
     assert.equal(skills.modify(state, source, 1).value.reason, "RULE");
     for (let tick = 6; tick <= 10; tick++) state = skills.advance({ ...state, tick }, source);
     assert.equal(get(state, 0).skill.sp.value, 0);
-    state = update(state, [skill.removeRule(source, "recovery", "blocked")]);
+    state = update(state, [skill.removeRule(source, "recoveryRules", "blocked")]);
     for (let tick = 11; tick <= 13; tick++) state = skills.advance({ ...state, tick }, source);
     assert.equal(get(state, 0).skill.sp.value, 0);
     state = skills.advance({ ...state, tick: 14 }, source);

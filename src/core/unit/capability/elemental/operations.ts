@@ -46,14 +46,14 @@ export function receiveDamage(
 ): Result<damage.Pending> {
     return hooks.dispatch(battle, context, pending, {
         candidates: (current) =>
-            [...(units.get(current, context.target)?.elemental.receiving ?? [])]
+            [...(units.get(current, context.target)?.elemental.damageReceiving ?? [])]
                 .sort((left, right) => (right.priority ?? 0) - (left.priority ?? 0))
                 .map(({ id }) => id),
         find(current, id) {
             const host = units.get(current, context.target);
 
             return host !== undefined && query.available(host)
-                ? host.elemental.receiving.find((entry) => entry.id === id)
+                ? host.elemental.damageReceiving.find((entry) => entry.id === id)
                 : undefined;
         },
     });
