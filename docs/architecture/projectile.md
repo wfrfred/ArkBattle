@@ -15,10 +15,10 @@ Projectile 是具有空间位置的独立执行实例，存于 Battlefield。框
 ## 模块归属
 
 - [projectile/index.ts](../../src/core/projectile/index.ts) 是类型与 ref／all／get 的显式公共入口；完整 Battle 操作仍直接从 battle/projectile.ts 导入，不为入口汇聚搬动模型或操作。
-- `projectile/projectile.ts`、`definition.ts`、`event.ts` 定义实例、内容程序与事件类型。
+- `projectile/projectile.ts`、`definition.ts` 定义实例与内容程序。
 - `projectile/query.ts` 提供 `all`、`get` 和 `ref`，与 Unit 查询入口一致。all 返回绑定传入 BattleState 版本、按登记顺序惰性遍历的 Query<Projectile>，不自动筛选生命周期或转换 Ref；get/ref 保留 Typed Ref 中的已知对象类型。
 - `projectile/projectiles.ts` 封装异构完整实例的存储与类型恢复，不推进生命周期。
-- `battle/projectile.ts` 提供完整 `create`、`update`、`stop` 和 `advance`，直接替换 Battlefield 中的不可变 Projectiles 容器，负责身份、回调、事件与终结；不另设 Battlefield 转发操作。
+- `battle/projectile.ts` 提供完整 `create`、`update`、`stop` 和 `advance`，直接替换 Battlefield 中的不可变 Projectiles 容器，负责身份、回调与终结；不另设 Battlefield 转发操作。
 - `battlefield/state.ts` 定义唯一公开 State 与 create；Unit 的纯 `add`、`update`、`remove` 位于 `battlefield/unit.ts`。
 
 Battle 层的 update 只允许内容计算 position 和私有 state，Core 基于当前实例构造新值，因此身份、Definition 和生命周期自然保留，不另设完整实例更新接口或重复校验层。Field 继续拥有 Projectiles 状态，但不分配战斗身份或执行内容回调。advance 接收 Runtime 在整个 Tick 开始时捕获的候选 Ref，不在 Projectile 阶段重新枚举集合。
@@ -86,7 +86,7 @@ S 是内容私有的运行状态，可以包含运动进度、目标身份、记
 
 Definition 直接共享。三个回调都可选，派发方已经确定实例与 Definition 的泛型配对，直接传 self，不再要求回调先按 Ref 查询一次。self 表达进入该次回调时的实例值；跨领域操作返回后，需要当前状态或资格时，按 Ref 从最新 battle 重读，遵守[状态接续约定](functional-core.md#状态接续后的读取与续执行)。
 
-StopReason 使用单层联合，DISPEL 是其中一种原因；不另套 STOP／DISPEL 的 Termination 包装。原因既供内容选择收尾政策，也供事件记录。框架不需要为每个原因建立不同的生命周期分支，原因枚举随实际案例校准。
+StopReason 使用单层联合，DISPEL 是其中一种原因；不另套 STOP／DISPEL 的 Termination 包装。原因供内容选择收尾政策，并传入终结程序。框架不需要为每个原因建立不同的生命周期分支，原因枚举随实际案例校准。
 
 ## 3. 异构集合与类型恢复
 
@@ -176,7 +176,7 @@ Runtime 在整个 Battle Step 开始、任何可能创建或终结弹道的阶�
 
 onTick 可以移动、报告到达、命中、等待、切换运动方式或发起终结。到达后不再移动的实例仍可以保持 ACTIVE 并执行周期业务。职责分离不要求全场先统一运动、再统一命中、最后统一终结；具体过程可以同步调用并立即接续返回状态。
 
-## 6. 终止请求、Finalize 与事件
+## 6. 终止请求与 Finalize
 
 停止操作接收 StopReason，委托 Projectile 的静态 lifetime。请求阶段与 Finalize 分开：
 
@@ -185,7 +185,7 @@ onTick 可以移动、报告到达、命中、等待、切换运动方式或发�
     ↓
 登记 Pending，发布 ENDING
     ↓
-Prepare 记录 PROJECTILE_STOPPED，保留首次 StopReason
+结束请求保留首次 StopReason
     ↓
 请求依赖者；最外层结算器等待其完整 Finalize
     ↓
@@ -194,15 +194,15 @@ Finalize 从当前实例调用 onEnd(battle, self, reason)
 从回调返回的最新 battle 注销实例；整个返回后移除 Pending
 ```
 
-重复请求先查 Pending，首次 StopReason 与传播原因不变，不重复事件与回调；缺失时不创建工作。ENDING 阻止后续正常推进，不无差别拒绝终结程序中的命中、位置／私有状态更新和 Effect 清理。
+重复请求先查 Pending，首次 StopReason 与传播原因不变，不重复收尾回调；缺失时不创建工作。ENDING 阻止后续正常推进，不无差别拒绝终结程序中的命中、位置／私有状态更新和 Effect 清理。
 
 无活动 Lifetime 结算时 stop 在本次调用内完成整批 Finalize；有活动结算时，首次嵌套 stop 只保证 Prepare，不保证实例已从 get／all 消失或 onEnd 已执行，重复 PREPARING 请求也不等待。Pending 在整个 Finalize 返回前保留，即使领域先物理注销、再执行末尾业务，真实依赖关系也仍能约束上游完成。独立 Projectile 不因来源 Unit／Action 结束而自动成为依赖者。
 
 普通停止可以执行该内容的原目标保底、停止爆炸及其他收尾；DISPEL 是否跳过命中、执行什么专属业务由 Definition 确定。两者共用相同的生命周期保护与注销过程，清理可在同一个 onEnd 中完成。
 
-注销使用最新容器，保留回调中新建或修改的其他实例。注销后不保存长期驻留的 STOPPED／DESTROYED 状态，不增加 onDestroy 回调。PROJECTILE_STOPPED 记录进入终结的事实，因此收尾中仍可能记录命中事件；它不代表收尾已经全部完成。
+注销使用最新容器，保留回调中新建或修改的其他实例。注销后不保存长期驻留的 STOPPED／DESTROYED 状态，不增加 onDestroy 回调。停止原因通过终结程序传递；当前 UI 从 State 获取投射物，不输出停止诊断 Event。
 
-到达与命中事件由具体内容在实际业务节点记录，Core 不因停止自动补发 REACHED 或 HIT，也不把三个事件固化成固定顺序。
+到达与命中由具体内容在实际业务节点执行程序；当前不输出到达或命中诊断 Event。伤害等实际结算按自身 UI 输出契约记录必要事实。
 
 停止不会自动截断已经进入的同步调用栈。内容继续依赖实例活动资格时必须重读；旧 self 可以继续代表本次已发生的事实，不能被当作最新可写实例。延迟业务执行前同样需要确认资格，不能仅依赖最后一次 stop 防重来阻止前面已经发生的输出。
 

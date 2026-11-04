@@ -3,7 +3,7 @@ import type { Unit } from "../../unit/unit.js";
 import type { Targetable } from "../../unit/capability/targetable/capability.js";
 import type { State as BattleState, Result } from "../state.js";
 
-export type Purpose = "DAMAGE" | "HEAL" | "ELEMENT_DAMAGE" | "ELEMENT_HEAL" | "EFFECT";
+export type Purpose = "DAMAGE" | "HEAL" | "ELEMENTAL_INJURY" | "ELEMENTAL_INJURY_HEALED" | "EFFECT";
 
 export interface Request {
     readonly source: Ref<Unit>;

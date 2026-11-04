@@ -150,7 +150,7 @@ Tick 的执行顺序在 step() 中直接可读。Combat、Movement 与路线完�
 | PredefinedPresence                 | 预置 Definition 到实际实例的绑定                                         |
 | Execution                          | RNG 和全局 ID／请求分配进度；宿主内 Effect ID 仍归对应 Effect 集合       |
 | Battle.mechanisms：非空间 Mechanism | 共享额度、共享生命、周期、一次性锁和来源过程进度                         |
-| Battle                             | Tick、统计、结果，以及本 Tick 产生的不可变事件和变更事实                 |
+| Battle                             | Tick、统计、结果，以及本 Tick 的 UI 瞬时输出和业务移除事实                 |
 | Battle.lifetime                    | 从所有权／Scope 派生的 dependencies，以及本次结算的 endings／settling |
 
 战斗状态组合这些值，没有第二份 Unit 覆盖层，也不复制 Battlefield 的索引维护职责。全局规则只有需要独立状态时才创建 Mechanism；不把所有特殊技能归成一种通用机制对象。
@@ -190,9 +190,9 @@ Capability 的 Rule、Hook、Contribution 与 Blocker.layer 工厂接收 Typed R
 
 一次 update 可以组合多个 Unit 的 Change；所有最终字段先发布，之后原顺序结算。较早后继的 Hook 可见较晚 Change 的最终字段和未完成的清理，这属于明确的批次语义。嵌套 update 只有自己的局部队列，不调度外层剩余项；领域后继按受影响对象限定范围，同对象交叠则读取共同最新事实。本项 transform 返回原引用时不登记结算；整批最终恢复批前值或原对象时，仍保留此前真实变换已经登记的结算。Tick 成功后 Runtime 发布最终 BattleState，不需要调用方另行执行 settle。
 
-初始化、刷怪和预定义出现逐个完成创建、登记与入场，接续 Hook 返回的最新 BattleState 后才处理下一个对象，不预先分配后续实例身份。刷怪按当前实例逐个登记调度归属和出生事件后再执行 enter Hook；待生成数量随实际生成递减。纯集合批量写入不定义批量入场语义。Unit.add 只登记并派发普通 enter Hook；Deployment 预先登记部署通知，Occupancy 初始化随后追加配对程序，先登记先执行，不再经登记差分广播处理 Occupancy。Unit 不识别这些具体能力或扫描全场 Blocking。入场内容需要取得、搜索或修改资格时，调用明确的 Blocking 操作。
+初始化、刷怪和预定义出现逐个完成创建、登记与入场，接续 Hook 返回的最新 BattleState 后才处理下一个对象，不预先分配后续实例身份。刷怪按当前实例逐个登记调度归属后再执行 enter Hook；待生成数量随实际生成递减。纯集合批量写入不定义批量入场语义。Unit.add 只登记并派发普通 enter Hook；Deployment 预先登记部署通知，Occupancy 初始化随后追加配对程序，先登记先执行，不再经登记差分广播处理 Occupancy。Unit 不识别这些具体能力或扫描全场 Blocking。入场内容需要取得、搜索或修改资格时，调用明确的 Blocking 操作。
 
-unit.update 与内部 replace 不准备、校验或推断 Blocking 关系，也不派发 Blocking／Occupancy 通知。acquire／release 明确构造关系双端并发布，acquire 通知后只复核本次新 Relation；release 统一接收 Relation 数组，入口过滤旧身份与重复项，整批解除并记录全部 RELEASED 事件，再按输入顺序通知，不附加维护、搜索或计划取消。Capacity 的 Settlement 只按当前容量从本 Blocker 的末尾裁撤；volume 在 settle 读取当前 owner，结算该阻挡组，不追随 Hook 中的新归属；两者共享内部 settleCapacity，每条通知后重新读取容量与占用，不夹带资格扫描。Rule 的 Settlement 固定自身相关关系，逐条 maintain 复核资格，不维护其他关系或裁容量。setLayer 将本项 previous.blocked 中的原 Ref 交给 release，不回填旧 Unit。SpatialPresence 与 Route 的主动位置覆盖先纯发布新空间事实及自身计划取消，再以 relations(battle, ref) 的局部结果调用 release；两步间无回调，首个 Hook 已可见完整结果，不要求挤在同一次 replace。普通私有 state 写回与 Hook Change 没有 Blocking 后继。
+unit.update 与内部 replace 不准备、校验或推断 Blocking 关系，也不派发 Blocking／Occupancy 通知。acquire／release 明确构造关系双端并发布，acquire 通知后只复核本次新 Relation；release 统一接收 Relation 数组，入口过滤旧身份与重复项，整批解除，再按输入顺序通知，不附加维护、搜索或计划取消。Capacity 的 Settlement 只按当前容量从本 Blocker 的末尾裁撤；volume 在 settle 读取当前 owner，结算该阻挡组，不追随 Hook 中的新归属；两者共享内部 settleCapacity，每条通知后重新读取容量与占用，不夹带资格扫描。Rule 的 Settlement 固定自身相关关系，逐条 maintain 复核资格，不维护其他关系或裁容量。setLayer 将本项 previous.blocked 中的原 Ref 交给 release，不回填旧 Unit。SpatialPresence 与 Route 的主动位置覆盖先纯发布新空间事实及自身计划取消，再以 relations(battle, ref) 的局部结果调用 release；两步间无回调，首个 Hook 已可见完整结果，不要求挤在同一次 replace。普通私有 state 写回与 Hook Change 没有 Blocking 后继。
 
 Locomotion 和阻挡站位推进只发布位置、速度或计划，不调用 Blocking 维护；依赖位置的 Rule 在关系检查点求值。Route 的 APPEAR_AT_POS 是主动空间覆盖，明确解除当前关系。地块完整更新调用 maintainAll，固定入口旧关系、按 Unit 及其 blocked 顺序各复核一次资格，不重新收集候选、回头重扫或裁容量。maintain 接收 Relation，确认原身份仍存在后读取最新双方并复核资格；失效时仅解除这一条。Damage／Healing 的 HP 写入不启动 Blocking；旧关系不因临时 HP 为 0 失效，普通 Damage 在全部 HP Applied 响应后仍满足死亡条件才进入 Unit.remove 的显式释放。
 
@@ -224,7 +224,7 @@ dispatch(battle, fixedContext, initialValue, options): Result<T>;
 
 三个通道分别是固定 Context、动态 Battle、可接续 current。Context 保留本次事件身份、历史事实和明确采样值，不因实例结束或替换而改写。实时状态从最新 Battle 按身份查询；Context 内的历史对象不被当成持续最新的对象。需要当前 Effect 私有数据的程序通过捕获的 typed Ref 查询，不捕获可变运行进度。
 
-公开事件只提供该业务需要的事实。Skill 的 activationStarted／activationEnded 分别携带 `{ ref }`／`{ ref, end }`，不暴露完整 Definition 或私有 state；宿主由 Context.host 提供。activationEnded 清空槽位后通知，Ref 保留已结束轮次的身份，不保证还能查询对象。具体私有数据由自身已配对的 Definition 程序解释，观察者保存自己的计数、首次标记与其他玩法 state。
+业务 Hook 通知只提供该业务需要的事实。Skill 的 activationStarted／activationEnded 分别携带 `{ ref }`／`{ ref, end }`，不暴露完整 Definition 或私有 state；宿主由 Context.host 提供。activationEnded 清空槽位后通知，Ref 保留已结束轮次的身份，不保证还能查询对象。具体私有数据由自身已配对的 Definition 程序解释，观察者保存自己的计数、首次标记与其他玩法 state。
 
 candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定。每项依次检查 stop、find、accepts，再 invoke；三个查询只读，不消费 RNG。find 重新读取最新登记并确认节点／阶段资格。accepts 缺省为允许，返回 false 则跳过；stop 结束整次派发，保留已完成的状态和值，不自动取消业务或回滚。嵌套派发独立取得 Context、current 和候选；返回后接续其 Battle，外层 Context 不变，外层 current 由当前 Hook 返回值决定。
 

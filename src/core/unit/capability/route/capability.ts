@@ -3,7 +3,13 @@ import { assert, assertNonnegativeSafeInteger } from "../../../common/assert.js"
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { MotionMode } from "../../../battlefield/navigation/state.js";
 import { type TilePosition, type WorldPosition } from "../../../geometry/coordinate.js";
-import type { Unit } from "../../unit.js";
+import type { Id as UnitId, Unit } from "../../unit.js";
+
+export interface Event {
+    readonly type: "ROUTE_COMPLETED";
+    readonly unitId: UnitId;
+    readonly tick: number;
+}
 
 export interface Definition {
     readonly pathMotionMode: MotionMode;

@@ -1,9 +1,17 @@
 import type { DamageApplication } from "../../../unit/capability/vitality/operations.js";
 import type { Ref } from "../../../common/ref.js";
-import type { Unit } from "../../../unit/unit.js";
+import type { Unit, Id } from "../../../unit/unit.js";
 import type { Vitality } from "../../../unit/capability/vitality/capability.js";
 
 export type DamageType = "PHYSICAL" | "ARTS" | "TRUE" | "ELEMENTAL";
+
+export interface Event {
+    readonly type: "DAMAGE";
+    readonly targetUnitId: Id;
+    readonly damageType: DamageType;
+    readonly amount: number;
+    readonly tick: number;
+}
 
 export interface AttackParameters {
     readonly power: number;

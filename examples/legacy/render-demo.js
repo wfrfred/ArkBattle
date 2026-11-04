@@ -313,7 +313,7 @@ async function main() {
       }
       if (core.elementType) {
         const elementNames = { NEURAL: '神经', EROSION: '侵蚀', BURN: '灼燃', NECROSIS: '坏死' };
-        $('stats').textContent += `\n${elementNames[core.elementType] || core.elementType}损伤 ${core.elementDamageCount} 次  爆发 ${core.elementBurstCount} 次`;
+        $('stats').textContent += `\n${elementNames[core.elementType] || core.elementType}损伤 ${core.elementalInjuryCount} 次  爆发 ${core.elementBurstCount} 次`;
         if (core.element) {
           const element = core.element;
           $('stats').textContent += `\n元素槽剩余 ${element.remainingEp.toFixed(0)} / ${element.maxEp}${element.recoveryTicks > 0 ? `  爆发恢复 ${(element.recoveryTicks / 30).toFixed(1)} s` : ''}`;

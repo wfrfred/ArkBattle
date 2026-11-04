@@ -60,8 +60,12 @@ export type Operation =
           readonly powerSource?: "SOURCE_ATTACK";
       }
     | { readonly type: "HEAL"; readonly power: number }
-    | { readonly type: "ELEMENT_DAMAGE"; readonly power: number; readonly elementType: ElementType }
-    | { readonly type: "ELEMENT_HEAL"; readonly power: number };
+    | {
+          readonly type: "ELEMENTAL_INJURY";
+          readonly power: number;
+          readonly elementType: ElementType;
+      }
+    | { readonly type: "ELEMENTAL_INJURY_HEALED"; readonly power: number };
 
 export interface TargetGroup {
     readonly id: string;
@@ -84,7 +88,6 @@ export interface Configuration {
     readonly followUps?: readonly FollowUp[];
     readonly windupTicks?: number;
     readonly recoveryTicks?: number;
-    readonly markerId?: string;
 }
 
 export interface Definition<
@@ -221,7 +224,7 @@ function apply(
             return applyHealing(request, calculateHealing(battle, request)).state;
         }
 
-        case "ELEMENT_DAMAGE": {
+        case "ELEMENTAL_INJURY": {
             const receiver = units.get(battle, target);
             if (receiver === undefined || !hasElemental(receiver)) {
                 return battle;
@@ -237,7 +240,7 @@ function apply(
             return epDamage.applyDamage(request, epDamage.calculateDamage(battle, request)).state;
         }
 
-        case "ELEMENT_HEAL": {
+        case "ELEMENTAL_INJURY_HEALED": {
             const receiver = units.get(battle, target);
             if (receiver === undefined || !hasElemental(receiver)) {
                 return battle;
@@ -306,7 +309,6 @@ export function createWithState<P extends object, E extends object>(
         ...(definition.recoveryTicks === undefined
             ? {}
             : { recoveryTicks: definition.recoveryTicks }),
-        ...(definition.markerId === undefined ? {} : { markerId: definition.markerId }),
     };
     const attack: Attack<P, E> = {
         id: definition.id,
@@ -430,10 +432,8 @@ export function createWithState<P extends object, E extends object>(
                 battle = appendEvents(battle, [
                     {
                         type: "ACTION_RELEASED",
-                        executionId: self.execution.id,
                         sourceUnitId: source.id,
                         tick: battle.tick,
-                        markerId: definition.markerId ?? "normal-attack",
                     },
                 ]);
 

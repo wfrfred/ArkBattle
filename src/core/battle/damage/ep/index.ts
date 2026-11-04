@@ -5,6 +5,7 @@ export { applyDamage } from "./apply.js";
 export { cancel } from "./contract.js";
 
 export type {
+    Event,
     Request,
     Parameters,
     Calculated,

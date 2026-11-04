@@ -1,6 +1,6 @@
 import { Vec2 } from "../../core/common/vector.js";
 import type { Ref } from "../../core/common/ref.js";
-import { appendEvents, type State as BattleState } from "../../core/battle/index.js";
+import type { State as BattleState } from "../../core/battle/index.js";
 import * as projectiles from "../../core/projectile/index.js";
 import type {
     Definition as ProjectileDefinition,
@@ -94,17 +94,6 @@ export function hit<S extends State>(
         return battle;
     }
 
-    battle = appendEvents(battle, [
-        {
-            type: "PROJECTILE_HIT",
-            projectileId: marked.id,
-            source: marked.state.source?.id ?? null,
-            targetUnitId: target.id,
-            tick: battle.tick,
-            position: marked.position,
-        },
-    ]);
-
     return invoke(battle, marked, target);
 }
 
@@ -145,15 +134,6 @@ export function advance<S extends State>(
     }
 
     const advanced = projectiles.get(battle, reference)!;
-    battle = appendEvents(battle, [
-        {
-            type: "PROJECTILE_REACHED",
-            projectileId: advanced.id,
-            source: advanced.state.source?.id ?? null,
-            tick: battle.tick,
-            position: advanced.position,
-        },
-    ]);
     battle = onReached(battle, advanced);
     const latest = projectiles.get(battle, reference);
 

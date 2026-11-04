@@ -39,37 +39,6 @@ export interface HealingApplication {
     readonly epGain: Values;
 }
 
-export type Signal =
-    | {
-          readonly type: "ELEMENT_DAMAGE";
-          readonly sourceUnitId: number | null;
-          readonly targetUnitId: number;
-          readonly elementType: Type;
-          readonly amount: number;
-          readonly ep: number;
-          readonly tick: number;
-      }
-    | {
-          readonly type: "ELEMENT_HEAL";
-          readonly sourceUnitId: number | null;
-          readonly targetUnitId: number;
-          readonly amounts: Values;
-          readonly tick: number;
-      }
-    | { readonly type: "ELEMENT_BURST"; readonly burst: Burst; readonly tick: number }
-    | {
-          readonly type: "ELEMENT_RECOVERED";
-          readonly unitId: number;
-          readonly elementType: Type;
-          readonly tick: number;
-      }
-    | {
-          readonly type: "ELEMENT_BURST_ENDED";
-          readonly burst: Burst;
-          readonly end: End;
-          readonly tick: number;
-      };
-
 export function receiveDamage(
     battle: BattleState,
     context: ReceivingContext,
@@ -147,18 +116,24 @@ export function commitDamage(
 
     battle = appendEvents(battle, [
         {
-            type: "ELEMENT_DAMAGE",
-            sourceUnitId: request.source?.id ?? null,
+            type: "ELEMENTAL_INJURY",
             targetUnitId: target.id,
             elementType: type,
             amount: epLoss,
-            ep: epAfter,
             tick: battle.tick,
         },
     ]);
 
     if (burst !== null) {
-        battle = appendEvents(battle, [{ type: "ELEMENT_BURST", burst, tick: battle.tick }]);
+        battle = appendEvents(battle, [
+            {
+                type: "ELEMENTAL_BURST",
+                unitId: target.id,
+                elementType: type,
+                position: self.position,
+                tick: battle.tick,
+            },
+        ]);
         battle = dispatch(battle, target, "burstStarted", burst);
     }
 
@@ -204,10 +179,9 @@ export function commitHealing(
     battle = replaceUnits(battle, [{ ...self, elemental: { ...self.elemental, ep: epAfter } }]);
     battle = appendEvents(battle, [
         {
-            type: "ELEMENT_HEAL",
-            sourceUnitId: request.source?.id ?? null,
+            type: "ELEMENTAL_INJURY_HEALED",
             targetUnitId: target.id,
-            amounts: epGain,
+            amount: Object.values(epGain).reduce((total, amount) => total + amount, 0),
             tick: battle.tick,
         },
     ]);
@@ -249,20 +223,6 @@ export const lifetime = lifetimes.create<Burst, Burst, End>({
             },
         ]);
         battle = unregister(battle, lifetimes.scope(lifetime, reference));
-        battle = appendEvents(battle, [
-            { type: "ELEMENT_BURST_ENDED", burst: active, end: ending, tick: battle.tick },
-        ]);
-
-        if (ending.type === "FINISHED") {
-            battle = appendEvents(battle, [
-                {
-                    type: "ELEMENT_RECOVERED",
-                    unitId: reference.host.id,
-                    elementType: active.type,
-                    tick: battle.tick,
-                },
-            ]);
-        }
 
         return dispatch(battle, reference.host, "burstEnded", { burst: active, end: ending });
     },

@@ -63,16 +63,6 @@ export type Outcome<T extends Activation<any, any> = Activation> =
     | { readonly type: "ACTIVATED"; readonly ref: Ref<T> }
     | { readonly type: "REJECTED"; readonly reason: string };
 
-export type Signal = {
-    readonly unitId: number;
-    readonly skillId: string;
-    readonly activationId: number;
-    readonly tick: number;
-} & (
-    | { readonly type: "SKILL_ACTIVATED"; readonly endsAtTick: number | null }
-    | { readonly type: "SKILL_FINISHED"; readonly end: End }
-);
-
 export function setState<X extends Skill<any, any>>(
     battle: BattleState,
     reference: Ref<X>,
@@ -205,10 +195,7 @@ export function activate<S extends object, A extends object>(
         {
             type: "SKILL_ACTIVATED",
             unitId: source.id,
-            skillId: self.definition.id,
-            activationId: active.activation.id,
             tick: battle.tick,
-            endsAtTick: sustain.type === "TIME" ? sustain.endsAtTick : null,
         },
     ]);
     battle = dispatch(battle, source, "activationStarted", {
@@ -270,10 +257,7 @@ export const lifetime = lifetimes.create<Activation, Activation<any, any>, End>(
             {
                 type: "SKILL_FINISHED",
                 unitId: reference.host.id,
-                skillId: self.definition.id,
-                activationId: self.activation.id,
                 tick: battle.tick,
-                end: ending,
             },
         ]);
 

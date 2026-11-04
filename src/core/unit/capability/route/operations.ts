@@ -4,9 +4,9 @@ import { release } from "../../../battle/blocking/operations.js";
 import { relations } from "../../../battle/blocking/query.js";
 import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
-import { appendEvents, type State as BattleState } from "../../../battle/state.js";
+import type { State as BattleState } from "../../../battle/state.js";
 import * as navigation from "../../../battlefield/navigation/state.js";
-import { Tile, World, type WorldPosition } from "../../../geometry/coordinate.js";
+import { Tile, World } from "../../../geometry/coordinate.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import * as presence from "../presence/operations.js";
@@ -23,11 +23,6 @@ import { target } from "./query.js";
 
 const RADIUS = 0.05;
 const TRANSITION_BUDGET = 128;
-
-export type Signal =
-    | { readonly type: "DISAPPEAR" }
-    | { readonly type: "APPEAR_AT_POS"; readonly position: WorldPosition }
-    | { readonly type: "ALERT" };
 
 export function setPathMotionMode(
     battle: BattleState,
@@ -194,18 +189,13 @@ export function advance(battle: BattleState, ref: Ref<Unit & Route>): BattleStat
                 ...phase,
                 checkpointState: { type: "CONSUMED" },
             });
-            let signal: Signal;
 
             if (checkpoint.type === "DISAPPEAR") {
-                signal = checkpoint;
-
                 if (hasSpatialPresence(self)) {
                     battle = presence.disappear(battle, units.ref(self));
                 }
             } else if (checkpoint.type === "APPEAR_AT_POS") {
                 const position = Vec2.add(Tile.center(checkpoint.position), checkpoint.offset);
-                signal = { type: "APPEAR_AT_POS", position };
-
                 if (hasSpatialPresence(self)) {
                     battle = presence.appear(battle, units.ref(self), position);
                 } else {
@@ -221,20 +211,7 @@ export function advance(battle: BattleState, ref: Ref<Unit & Route>): BattleStat
                     battle = replaceUnit(battle, [next]);
                     battle = release(battle, relations(battle, ref));
                 }
-            } else {
-                signal = checkpoint;
             }
-
-            const current = units.get(battle, ref);
-            battle = appendEvents(battle, [
-                {
-                    type: "ROUTE",
-                    unitId: ref.id,
-                    signal,
-                    position: current?.position ?? self.position,
-                    tick: battle.tick,
-                },
-            ]);
         }
     }
 

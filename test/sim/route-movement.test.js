@@ -51,7 +51,7 @@ function unit(battle, id, definition, position = [0, 0]) {
 }
 
 
-test("Main completion stops motion while blocked and produces one event only when departure succeeds", () => {
+test("Main completion stops motion while blocked and departure waits for release", () => {
     let state = battle();
     const blocker = initialize(state, { id: 1, position: [0, 0], definition: { hooks: Hooks.empty(),
         id: "route-movement-blocker", spatialPresence: {},
@@ -71,13 +71,16 @@ test("Main completion stops motion while blocked and produces one event only whe
     assert.equal(getUnit(first, 2).route.main.phase.type, "COMPLETED");
     assert.deepEqual(getUnit(first, 2).position, [0, 0]);
     assert.deepEqual(getUnit(first, 2).locomotion.velocity, [1, 0]);
-    assert.equal(first.events.some(event => event.type === "ROUTE_COMPLETED"), false);
+
+    assert.equal(first.completedRouteCount, 0);
     const blockedAgain = step({ ...first, tick: 1 });
-    assert.equal(blockedAgain.events.some(event => event.type === "ROUTE_COMPLETED"), false);
+    assert.notEqual(getUnit(blockedAgain, 2), undefined);
+    assert.equal(blockedAgain.completedRouteCount, 0);
+
     const departed = step(remove(blockedAgain, 1, "SCRIPT"));
     assert.equal(getUnit(departed, 2), undefined);
-    assert.deepEqual(departed.events.filter(event => event.type === "ROUTE_COMPLETED").map(event => event.unitId), [2]);
-    assert.equal(step(departed).events.filter(event => event.type === "ROUTE_COMPLETED").length, 1);
+    assert.equal(departed.completedRouteCount, 1);
+    assert.equal(step(departed).completedRouteCount, 1);
 });
 
 

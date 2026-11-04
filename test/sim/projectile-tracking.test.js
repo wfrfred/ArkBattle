@@ -15,12 +15,13 @@ import { unit as actionUnit } from '../helpers/action-fixture.js';
 import { createTacticalProjectileDemo } from '../../dist/legacy/projectile-demo.js';
 import { start as startAction, ref as actionRef } from '../../dist/core/unit/action/index.js';
 import { advance as advanceAction } from '../../dist/core/unit/action/index.js';
+import { targetApplied } from '../../dist/core/battle/damage/hp/index.js';
 
-function setup(sourceCapabilities = {}) {
+function setup(targetHooks = Hooks.empty()) {
   const source = initialize({ id: 0, position: [0, 0], definition: { hooks: Hooks.empty(),
-    id: 'source', offense: { attack: 40 }, ...sourceCapabilities,
+    id: 'source', offense: { attack: 40 },
   } });
-  const target = initialize({ id: 1, position: [1, 0], definition: { hooks: Hooks.empty(),
+  const target = initialize({ id: 1, position: [1, 0], definition: { hooks: targetHooks,
     id: 'target', vitality: { maxHp: 1000, defense: 0, resistance: 0 },
     spatialPresence: {}, targetable: { restrictions: [{ id: 'hidden', value: {
       kind: Symbol('hidden'), allows: () => false,
@@ -49,11 +50,7 @@ test('locked arrow hit uses identity without requiring targetability, hitbox or 
 
   assert.equal(getUnit(after, 1).vitality.hp, 960);
   assert.equal(after.battlefield.projectiles.size, 0);
-  assert.deepEqual(after.events.filter(event => event.type.startsWith('PROJECTILE_')).map(event => event.type), [
-    'PROJECTILE_REACHED', 'PROJECTILE_HIT', 'PROJECTILE_STOPPED',
-  ]);
-  assert.deepEqual(after.events.find(event => event.type === 'PROJECTILE_REACHED').position, [1, 0]);
-  assert.ok(after.events.findIndex(event => event.type === 'PROJECTILE_HIT') < after.events.findIndex(event => event.type === 'DAMAGE'));
+  assert.equal(after.events.filter(event => event.type === 'DAMAGE').length, 1);
   assert.equal(getUnit(fixture.battle, 1).vitality.hp, 1000);
 });
 
@@ -65,8 +62,8 @@ test('dispel skips the ordinary arrow fallback hit while explicit stop performs 
 
   assert.equal(getUnit(dispelled, 1).vitality.hp, 1000);
   assert.equal(getUnit(stopped, 1).vitality.hp, 960);
-  assert.equal(dispelled.events.some(event => event.type === 'PROJECTILE_HIT'), false);
-  assert.equal(stopped.events.filter(event => event.type === 'PROJECTILE_HIT').length, 1);
+  assert.equal(dispelled.battlefield.projectiles.size, 0);
+  assert.equal(stopped.events.filter(event => event.type === 'DAMAGE').length, 1);
   assert.strictEqual(projectiles.stop(stopped, launched.value), stopped);
 });
 
@@ -86,8 +83,6 @@ test('tracking commits its hit attempt before content can synchronously stop the
   const after = step(launched.state, 1);
 
   assert.deepEqual(observed, [[true, true]]);
-  assert.equal(after.events.filter(event => event.type === 'PROJECTILE_HIT').length, 1);
-  assert.equal(after.events.filter(event => event.type === 'PROJECTILE_STOPPED').length, 1);
   assert.equal(after.battlefield.projectiles.size, 0);
 });
 
@@ -104,43 +99,34 @@ test('delayed tracking keeps the instance active after arrival without repeating
   assert.equal(projectilesQuery.get(reached, launched.value).state.stopAtTick, 3);
   assert.equal(projectilesQuery.get(waiting, launched.value).lifecycle, 'ACTIVE');
   assert.equal(projectilesQuery.get(ended, launched.value), undefined);
-  assert.equal(ended.events.filter(event => event.type === 'PROJECTILE_HIT').length, 1);
+  assert.equal(ended.events.filter(event => event.type === 'DAMAGE').length, 1);
   assert.equal(getUnit(ended, 1).vitality.hp, 960);
 });
 
 test('tracking reads current source attack and falls back to its launch sample after removal', () => {
-  const fixture = setup();
+  const sources = [];
+  const fixture = setup(Hooks.empty().set(targetApplied, {
+    id: 'observe-source',
+    invoke(battle, context) {
+      sources.push(context.request.source);
+      return { state: battle, value: undefined };
+    },
+  }));
   const launched = projectiles.create(fixture.battle, createArrow(), { position: [0, 0], state: fixture.state });
   const self = projectilesQuery.get(launched.state, launched.value);
 
   assert.equal(tracking.attackPower(launched.state, self), 40);
   const withSource = step(launched.state, 1);
-  assert.equal(withSource.events.find(event => event.type === 'DAMAGE').sourceUnitId, fixture.source.id);
   assert.equal(getUnit(withSource, 1).vitality.hp, 960);
   const withoutSource = removeUnit(launched.state, fixture.source.id, "DEATH");
   assert.equal(tracking.attackPower(withoutSource, self), 20);
   for (const after of [step(withoutSource, 1), projectiles.stop(withoutSource, launched.value)]) {
     assert.equal(getUnit(after, 1).vitality.hp, 980);
-    assert.equal(after.events.find(event => event.type === 'DAMAGE').sourceUnitId, null);
-    assert.equal(after.events.find(event => event.type === 'PROJECTILE_HIT').source, fixture.source.id);
   }
+  assert.deepEqual(sources, [ref(fixture.source), null, null]);
 });
 
-test('arrow damage retains an existing source identity even when its HP is zero and it is spatially absent', () => {
-  const fixture = setup({ vitality: { maxHp: 100, defense: 0, resistance: 0 }, spatialPresence: {} });
-  const launched = projectiles.create(fixture.battle, createArrow(), { position: [0, 0], state: fixture.state });
-  const inactiveSource = updateUnit(launched.state, [{
-    ...fixture.source,
-    vitality: { ...fixture.source.vitality, hp: 0 },
-    spatialPresence: { present: false },
-  }]);
-  const after = step(inactiveSource, 1);
-
-  assert.equal(after.events.find(event => event.type === 'DAMAGE').sourceUnitId, fixture.source.id);
-  assert.equal(getUnit(after, 1).vitality.hp, 960);
-});
-
-test('demo projectile damage clears removed sources for both live and cached attack policies', () => {
+test('demo projectile damage uses live attack or its launch sample after source removal', () => {
   for (const cachedOnly of [false, true]) {
     const actor = actionUnit(0, { action: true });
     const attack = actor.action.actions.get('primary').definition;
@@ -162,9 +148,7 @@ test('demo projectile damage clears removed sources for both live and cached att
     const liveDamage = existing.events.find(event => event.type === 'DAMAGE');
     const cachedDamage = withoutSource.events.find(event => event.type === 'DAMAGE');
 
-    assert.equal(liveDamage.sourceUnitId, source.id);
     assert.equal(liveDamage.amount, cachedOnly ? 10 : 70);
-    assert.equal(cachedDamage.sourceUnitId, null);
     assert.equal(cachedDamage.amount, 10);
     assert.equal(self.state.source.id, source.id);
   }
@@ -180,7 +164,6 @@ test('a missing locked target does not redirect its arrow to another nearby unit
   const after = step(withoutTarget, 1);
 
   assert.equal(getUnit(after, 2).vitality.hp, 100);
-  assert.equal(after.events.some(event => event.type === 'PROJECTILE_HIT'), false);
   assert.equal(after.battlefield.projectiles.size, 0);
 });
 

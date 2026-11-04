@@ -98,20 +98,19 @@ test("silence and SP prevention are separate rules, and prohibited time does not
 });
 
 test("stun interrupts a running Action through its complete cancellation operation", () => {
-    let endings = 0;
+    const endings = [];
     const program = {
         id: "held", intervalTicks: 30, speed: 100,
         initialize: state => ({ state, value: {} }),
         prepare: state => ({ state, value: {} }),
         onTick: state => ({ state, value: false }),
-        onEnd: state => { endings++; return state; },
+        onEnd: (state, _source, _self, end) => { endings.push(end); return state; },
     };
     const configured = actor(program);
     const started = actions.start(battle(configured), actions.ref(unitRef(configured), program));
     assert.equal(started.value.type, "STARTED");
     const stunned = effects.install(started.state, unitRef(configured), stun).state;
     assert.equal(actions.getExecution(stunned, started.value.ref), undefined);
-    assert.equal(endings, 1);
-    assert.deepEqual(stunned.events.filter(event => event.type === "ACTION_CANCELLED").map(event => event.reason), ["INTERRUPTED"]);
+    assert.deepEqual(endings, [{ type: "CANCELLED", reason: "INTERRUPTED" }]);
     assert.equal(actions.getExecution(started.state, started.value.ref).execution.status, "RUNNING");
 });

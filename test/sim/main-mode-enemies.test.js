@@ -210,7 +210,7 @@ test('crossbow uses explicit windup and arrow speed, then settles damage on cont
     state = advanceProjectiles({ ...state, tick }, projectilesQuery.all(state).map(projectilesQuery.ref));
   }
   assert.equal(getUnit(state, 0).vitality.hp, 800);
-  assert.ok(state.events.some(event => event.type === 'PROJECTILE_HIT' && event.targetUnitId === 0));
+  assert.equal(state.events.filter(event => event.type === 'DAMAGE' && event.targetUnitId === 0).length, 1);
   assert.equal(getUnit(before, 0).vitality.hp, 1000);
   assert.equal(before.battlefield.projectiles.size, 0);
 });
@@ -273,7 +273,7 @@ test('crossbow switching between ranged and blocker melee preserves independent 
   assert.equal(cooldown(meleeAgain, actions.ranged), period * 2);
   assert.equal(cooldown(meleeAgain, actions.melee), period * 2 + 1);
   assert.deepEqual(meleeAgain.events.filter(event => event.type === 'ACTION_RELEASED')
-    .map(event => [event.executionId, event.tick]), [[0, 0], [1, 1], [2, period], [3, period + 1]]);
+    .map(event => event.tick), [0, 1, period, period + 1]);
   assert.equal(cooldown(ranged, actions.melee), 0);
   assert.equal(getUnit(initial, 0).vitality.hp, 1000);
 });

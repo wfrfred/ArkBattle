@@ -34,6 +34,7 @@
 | [core-types](sim/core-types.test.js) | Typed Ref 保留身份和私有数据配对，普通擦除查询不泄漏 `any`；能力证明与不透明 Change 约束写入。 |
 | [HP 结算](sim/hp-settlement.test.js) | 按[结算回归清单](../docs/architecture/verification.md#hook-与-hpep-结算的回归语义)保障公式与采样、独立 Calculate 状态、接收与提交、零值和取消、最新资源及 Applied 后死亡。 |
 | [EP 结算](sim/ep-settlement.test.js) | 同一清单下的抗性与实际类型、四型资源、同步 Burst、结束和恢复预算；不复制公共 Hook／Lifetime 矩阵。 |
+| [UI瞬时输出](sim/event-output.test.js) | 按EVENT清单集中验证真实结算飘字、爆发位置与注销快照、路线计数独立和Tick输出清空。 |
 | [原生元素内容](sim/elemental-runtime.test.js) | 真实 Data 爆发的伤害、异常、永久输出及周期累计结果；不重写一套夹具算法模拟内容。 |
 
 [battle 夹具](helpers/battle.js)只通过 Runtime 的公开输入构造地图和预置 Unit。场景通过实际领域操作建立执行、资源及依赖事实；纯算法直接使用合法值。

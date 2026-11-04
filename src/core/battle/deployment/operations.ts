@@ -4,7 +4,7 @@ import type { Deployable } from "../../unit/capability/deployable/capability.js"
 import { canRetreat, retreat } from "../../unit/capability/deployable/operations.js";
 import type { Command } from "../contract.js";
 import { add } from "../unit.js";
-import { appendEvents, type State as BattleState, type Result } from "../state.js";
+import type { State as BattleState, Result } from "../state.js";
 import { initialize as initializeUnit } from "../../unit/initialize.js";
 import { Tile, type TilePosition } from "../../geometry/coordinate.js";
 import type { Direction } from "../../geometry/direction.js";
@@ -138,16 +138,7 @@ export function deploy<T extends Card<any>>(
             refund,
         },
     };
-    battle = appendEvents(initialized.state, [
-        {
-            type: "UNIT_DEPLOYED",
-            unitId: unit.id,
-            position: unit.position,
-            payment: request.quote.dp,
-            tick: battle.tick,
-        },
-    ]);
-    battle = add(battle, unit);
+    battle = add(initialized.state, unit);
 
     return {
         state: battle,
@@ -167,24 +158,8 @@ export function resolveDeploymentCommands(
                 command.tilePosition,
                 command.direction,
             );
-            const result =
-                request === undefined
-                    ? {
-                          state: battle,
-                          value: { type: "REJECTED" as const, reason: "UNKNOWN_CARD" as const },
-                      }
-                    : deploy(battle, request);
-            battle = result.state;
-
-            if (result.value.type === "REJECTED") {
-                battle = appendEvents(battle, [
-                    {
-                        type: "DEPLOYMENT_REJECTED",
-                        cardId: command.ref.id,
-                        reason: result.value.reason,
-                        tick: battle.tick,
-                    },
-                ]);
+            if (request !== undefined) {
+                battle = deploy(battle, request).state;
             }
         } else if (command.type === "RETREAT_UNIT") {
             battle = retreat(battle, command.ref);

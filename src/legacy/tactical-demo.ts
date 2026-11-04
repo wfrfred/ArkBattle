@@ -369,27 +369,7 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
                 continue;
             }
 
-            if (
-                event.type === "ENEMY_SPAWNED" ||
-                event.type === "ROUTE_COMPLETED" ||
-                event.type === "ACTION" ||
-                event.type === "ACTION_RELEASED" ||
-                event.type === "ACTION_FINISHED" ||
-                event.type === "ACTION_CANCELLED" ||
-                event.type === "PROJECTILE_REACHED" ||
-                event.type === "PROJECTILE_HIT" ||
-                event.type === "PROJECTILE_STOPPED" ||
-                event.type === "DAMAGE" ||
-                event.type === "HEAL" ||
-                event.type === "SKILL_ACTIVATED" ||
-                event.type === "SKILL_FINISHED" ||
-                event.type === "ELEMENT_DAMAGE" ||
-                event.type === "ELEMENT_HEAL" ||
-                event.type === "ELEMENT_BURST" ||
-                event.type === "ELEMENT_RECOVERED"
-            ) {
-                options.onEvent?.(event);
-            }
+            options.onEvent?.(event);
         }
     }
 

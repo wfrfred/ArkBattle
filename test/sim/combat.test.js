@@ -155,8 +155,8 @@ test('core combat: a blocked enemy exchanges attacks and death resolves the spaw
   const damage = first.events.filter(event => event.type === 'DAMAGE');
 
   assert.deepEqual(first.trace, second.trace);
-  assert.ok(damage.some(event => event.sourceUnitId === 0 && event.targetUnitId === 1));
-  assert.ok(damage.some(event => event.sourceUnitId === 1 && event.targetUnitId === 0));
+  assert.ok(damage.some(event => event.targetUnitId === 1));
+  assert.ok(first.battle.battlefield.units.get(0).vitality.hp < 1000);
   assert.ok(first.events.some(event => event.type === 'UNIT_REMOVED' && event.unitId === 1 && event.reason === 'DEATH'));
   assert.equal(first.battle.result.reason, 'SCHEDULE_COMPLETED');
   assert.equal(first.battle.result.spawnedCount, 1);
@@ -206,10 +206,11 @@ test('core combat: lethal damage caps HP loss and dead units cannot act or be se
   const { events } = (battle = advanceBattle(battle, []));
   const damage = events.filter(event => event.type === 'DAMAGE');
 
-  assert.deepEqual(damage.map(event => [event.sourceUnitId, event.targetUnitId, event.amount, event.hp]), [[0, 2, 7, 0]]);
+  assert.deepEqual(damage.map(event => [event.targetUnitId, event.amount]), [[2, 7]]);
   assert.equal(events.filter(event => event.type === 'ACTION').length, 1);
   assert.equal(battle.battlefield.units.get(0).vitality.hp, 1000);
   assert.equal(battle.battlefield.units.has(2), false);
+  assert.equal(battle.removedUnits.find(entry => entry.unitId === 2).unit.vitality.hp, 0);
   assert.equal(blockingQueries.relations(battle).length, 0);
 });
 
@@ -226,10 +227,10 @@ test('core visibility: consecutive attacks consume the current target HP within 
       route: coreCombatRoute([1, 6], { spawnOffset: [-0.6, 0] }) }],
   });
   const { events } = (battle = advanceBattle(battle, []));
-  const damage = events.filter(event => event.type === 'DAMAGE' && event.sourceUnitId < 2);
+  const damage = events.filter(event => event.type === 'DAMAGE' && event.targetUnitId === 2);
 
-  assert.deepEqual(damage.map(event => [event.sourceUnitId, event.targetUnitId, event.amount, event.hp]),
-    [[0, 2, 10, 15], [1, 2, 10, 5]]);
+  assert.deepEqual(damage.map(event => event.amount), [10, 10]);
+  assert.deepEqual(events.filter(event => event.type === 'ACTION').map(event => event.sourceUnitId), [0, 1]);
   assert.equal(battle.battlefield.units.get(2).vitality.hp, 5);
 });
 
@@ -603,7 +604,8 @@ test('core action: healing target selection owns the heal-free exception', () =>
     const heals = result.events.filter(event => event.type === 'HEAL');
 
     assert.equal(result.events.some(event => event.type === 'ACTION'), queryIgnore);
-    assert.deepEqual(heals.map(event => [event.amount, event.hp]), queryIgnore ? [[30, 70]] : []);
+    assert.deepEqual(heals.map(event => event.amount), queryIgnore ? [30] : []);
+    assert.equal(result.units.find(unit => unit.id === 1).vitality.hp, queryIgnore ? 70 : 40);
     assert.equal(JSON.stringify([source, target]), before);
   }
 });
@@ -625,8 +627,7 @@ test('core action: explicitly declared query purposes gate mixed outputs while s
   const permitted = executeSingleAction(damageOnly, damageOnly.action.actions.values().toArray()[0].definition, {
     battlefield: fixtureBattlefieldState([damageOnly, target]), tick: 0,
   });
-  assert.equal(permitted.events.find(event => event.type === 'DAMAGE').hp, 70);
-  assert.equal(permitted.events.find(event => event.type === 'HEAL').hp, 75);
+  assert.equal(permitted.units.find(unit => unit.id === 1).vitality.hp, 75);
 
   const source = actionUnit(0, 'ALLY', [0, 0], { hp: 60, effects: [healFree], action: attackDefinition([
     { id: 'attack', targeting: damageTargeting(), operations: [damageEffect(10)] },
@@ -635,7 +636,7 @@ test('core action: explicitly declared query purposes gate mixed outputs while s
     battlefield: fixtureBattlefieldState([source, target]), tick: 0,
   });
   assert.deepEqual(stepped.events.map(event => event.type), ['ACTION', 'ACTION_RELEASED', 'DAMAGE', 'HEAL', 'ACTION_FINISHED']);
-  assert.equal(stepped.events.find(event => event.type === 'DAMAGE').hp, 70);
+  assert.equal(stepped.units.find(unit => unit.id === 1).vitality.hp, 70);
   assert.equal(stepped.events.find(event => event.type === 'HEAL').amount, 15);
   assert.equal(stepped.units.find(unit => unit.id === 0).vitality.hp, 75);
   assert.equal(stepped.units.find(unit => unit.id === 0).action.actions.get('normal').cooldown.readyAtTick, 3);
@@ -688,7 +689,7 @@ test('core combat: healing sees earlier phase damage and replays the same combat
     const snapshot = battle;
     assert.equal(snapshot.battlefield.units.get(1).vitality.hp, 90);
     assert.deepEqual(step.events.filter(event => event.type === 'HEAL')
-      .map(event => [event.sourceUnitId, event.targetUnitId, event.amount]), [[2, 1, 10]]);
+      .map(event => [event.targetUnitId, event.amount]), [[1, 10]]);
     const facts = combatFacts(snapshot);
     assert.deepEqual(facts.combatants.find(unit => unit.id === 0).action.instances
       .map(({ id, status, state }) => [id, status, state.released, state.target.id]),
@@ -710,7 +711,7 @@ test('core action: binding follow-ups retain the selected target and read preced
   });
 
   assert.deepEqual(result.events.filter(event => event.type === 'HEAL')
-    .map(event => [event.targetUnitId, event.amount, event.hp]), [[1, 20, 50], [1, 5, 55]]);
+    .map(event => [event.targetUnitId, event.amount]), [[1, 20], [1, 5]]);
   assert.equal(result.units.find(unit => unit.id === 1).vitality.hp, 55);
   assert.equal(result.units.find(unit => unit.id === 2).vitality.hp, 40);
   assert.equal(first.vitality.hp, 30);

@@ -1,7 +1,14 @@
 import type { HealingApplication } from "../../../unit/capability/vitality/operations.js";
 import type { Ref } from "../../../common/ref.js";
-import type { Unit } from "../../../unit/unit.js";
+import type { Unit, Id } from "../../../unit/unit.js";
 import type { Vitality } from "../../../unit/capability/vitality/capability.js";
+
+export interface Event {
+    readonly type: "HEAL";
+    readonly targetUnitId: Id;
+    readonly amount: number;
+    readonly tick: number;
+}
 
 export interface Parameters {
     readonly power: number;

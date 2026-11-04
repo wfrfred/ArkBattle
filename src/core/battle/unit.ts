@@ -2,7 +2,7 @@ import * as battlefield from "../battlefield/unit.js";
 import type { State as BattlefieldState } from "../battlefield/state.js";
 import type { Id, LeaveReason, Unit, Departure } from "../unit/unit.js";
 import * as units from "../unit/query.js";
-import type { State as BattleState } from "./state.js";
+import { appendEvents, type State as BattleState } from "./state.js";
 import { create as createLifetime } from "../lifetime/operations.js";
 import type { Ref } from "../common/ref.js";
 import { dispatch as dispatchObservers } from "./unit-hook.js";
@@ -89,13 +89,12 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
         const { reason } = departure;
         const next = battlefield.remove(battle.battlefield, reference);
         battle = publishBattlefield(battle, next);
+        const removed = { unitId: reference.id, reason, unit: departing };
         battle = {
             ...battle,
-            removedUnits: [
-                ...battle.removedUnits,
-                { unitId: reference.id, reason, unit: departing },
-            ],
+            removedUnits: [...battle.removedUnits, removed],
         };
+        battle = appendEvents(battle, [{ type: "UNIT_REMOVED", tick: battle.tick, ...removed }]);
 
         for (const entry of entries) {
             if (entry.accepts?.(battle, departure, undefined) !== false) {

@@ -80,7 +80,6 @@ test('elemental execution: standard immediate bursts apply class-specific damage
     assert.equal(resolveResistance(input, unitRef(getUnit(input, 1))), expectedResistance);
     const hits = input.events.filter(event => event.type === 'DAMAGE');
     assert.equal(hits.length, 1);
-    assert.equal(hits[0].sourceUnitId, null);
     assert.equal(hits[0].amount, expectedHpLoss);
     assert.equal(getUnit(original, 1).vitality.hp, 100000);
     assert.deepEqual(getUnit(input, 1).elemental.ep, elementValues(0));
@@ -178,17 +177,25 @@ function route() {
 function spawn(definition, tick) {
   return { definition, route: route(), tick, timing: { waveStartedAtTick: 0, fragmentStartedAtTick: 0 }, alwaysCheckCurrentPoint: true, notCountInTotal: false };
 }
-function battle(receiver, type, { moving = false } = {}) {
+function battle(receiver, type, { moving = false, onActionEnd } = {}) {
   const casterAttack = createAttack({ ...action(10000).attack,
     targetGroups: [{ ...action().attack.targetGroups[0], operations: [
-      { type: 'ELEMENT_DAMAGE', elementType: type, power: 1000 },
+      { type: 'ELEMENTAL_INJURY', elementType: type, power: 1000 },
       ...action().attack.targetGroups[0].operations,
     ] }],
   });
   const caster = definition('CHARACTER', { hooks: Hooks.empty(), id: 'caster', allegiance: { side: 'ALLY' },
     action: actionCapability(casterAttack) });
+  const ordinaryAttack = action(1);
+  const victimAttack = onActionEnd === undefined ? ordinaryAttack : {
+    ...ordinaryAttack,
+    onEnd(state, source, self, end) {
+      onActionEnd(state, source, self, end);
+      return ordinaryAttack.onEnd?.(state, source, self, end) ?? state;
+    },
+  };
   const victim = definition(receiver, { hooks: Hooks.empty(), id: 'victim', allegiance: { side: 'ENEMY' },
-    action: actionCapability(action(1)),
+    action: actionCapability(victimAttack),
     ...(moving ? { locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0.001, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } }, blockable: { volume: 1 } } : {}) });
   const keepOpen = { hooks: Hooks.empty(), id: 'future', vitality: { maxHp: 1, defense: 0, resistance: 0 }, locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } } };
   const runtime = createBattle([
@@ -248,25 +255,33 @@ test('elemental runtime: Unit and Effect tick triggers preserve every necrosis p
 test('elemental runtime: character neural stun prevents ordinary attacks and route movement until recovery ends', () => {
   let { runtime } = battle('CHARACTER', 'NEURAL', { moving: true });
   const first = (runtime = stepBattle(runtime, []));
-  assert.equal(first.events.filter(event => event.type === 'DAMAGE' && event.sourceUnitId === 1).length, 0);
+  const casterHp = getUnit(first, 0).vitality.hp;
   const frozenPosition = [...victim(runtime).position];
   for (let tick = 1; tick < 300; tick++) {
     const step = (runtime = stepBattle(runtime, []));
-    assert.equal(step.events.some(event => event.type === 'DAMAGE' && event.sourceUnitId === 1), false);
+    assert.equal(getUnit(step, 0).vitality.hp, casterHp);
     assert.deepEqual(victim(runtime).position, frozenPosition);
   }
   const restored = (runtime = stepBattle(runtime, []));
-  assert.equal(restored.events.some(event => event.type === 'DAMAGE' && event.sourceUnitId === 1), true);
+  assert.ok(getUnit(restored, 0).vitality.hp < casterHp);
   assert.notDeepEqual(victim(runtime).position, frozenPosition);
 });
 
 test('elemental runtime: enemy neural paralysis consumes exactly three ordinary releases and then permits attacks', () => {
-  let { runtime } = battle('ENEMY', 'NEURAL');
+  const cancelled = [];
+  let { runtime } = battle('ENEMY', 'NEURAL', {
+    onActionEnd(state, source, self, end) {
+      if (end.type === 'CANCELLED') cancelled.push({ source, id: self.execution.id, end, tick: state.tick });
+    },
+  });
   const events = [];
   for (let tick = 0; tick <= 50; tick++) { events.push(...(runtime = stepBattle(runtime, [])).events); }
-  const cancelled = events.filter(event => event.type === 'ACTION_CANCELLED' && event.sourceUnitId === 1 && event.reason === 'INTERRUPTED');
-  assert.equal(cancelled.length, 3);
-  const hits = events.filter(event => event.type === 'DAMAGE' && event.sourceUnitId === 1);
+  assert.deepEqual(cancelled.map(entry => [entry.source.id, entry.id, entry.end]), [
+    [1, 0, { type: 'CANCELLED', reason: 'INTERRUPTED' }],
+    [1, 1, { type: 'CANCELLED', reason: 'INTERRUPTED' }],
+    [1, 2, { type: 'CANCELLED', reason: 'INTERRUPTED' }],
+  ]);
+  const hits = events.filter(event => event.type === 'DAMAGE' && event.targetUnitId === 0);
   assert.equal(hits.length > 0, true);
   assert.equal(hits[0].tick >= 45, true);
   assert.equal(cancelled.every(event => event.tick < hits[0].tick), true);

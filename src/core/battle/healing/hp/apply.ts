@@ -1,6 +1,5 @@
 import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../../unit/unit.js";
-import * as units from "../../../unit/query.js";
 import * as vitality from "../../../unit/capability/vitality/operations.js";
 import { appendEvents, type Result, type State as BattleState } from "../../state.js";
 import type { Calculated, Outcome, Request } from "./contract.js";
@@ -60,12 +59,8 @@ export function applyHealing(
     battle = appendEvents(battle, [
         {
             type: "HEAL",
-            sourceUnitId: request.source?.id ?? null,
             targetUnitId: request.target.id,
             amount: application.hpGain,
-            receivedAmount: received.amount,
-            cancellation: null,
-            hp: application.hpAfter,
             tick: battle.tick,
         },
     ]);
@@ -84,16 +79,11 @@ function complete(
     outcome: Outcome,
 ): Result<Outcome> {
     if (outcome.kind === "CANCELLED" && calculated !== undefined) {
-        const target = units.get(battle, request.target);
         battle = appendEvents(battle, [
             {
                 type: "HEAL",
-                sourceUnitId: request.source?.id ?? null,
                 targetUnitId: request.target.id,
                 amount: 0,
-                receivedAmount: outcome.received.amount,
-                cancellation: outcome.received.cancellation,
-                hp: target?.vitality.hp ?? null,
                 tick: battle.tick,
             },
         ]);

@@ -63,13 +63,9 @@ export function applyDamage(
     battle = appendEvents(battle, [
         {
             type: "DAMAGE",
-            sourceUnitId: request.source?.id ?? null,
             targetUnitId: request.target.id,
             damageType: calculation.type,
             amount: application.hpLoss,
-            receivedAmount: received.amount,
-            cancellation: null,
-            hp: application.hpAfter,
             tick: battle.tick,
         },
     ]);
@@ -93,17 +89,12 @@ function complete(
     outcome: Outcome,
 ): Result<Outcome> {
     if (outcome.kind === "CANCELLED" && calculated !== undefined) {
-        const target = units.get(battle, request.target);
         battle = appendEvents(battle, [
             {
                 type: "DAMAGE",
-                sourceUnitId: request.source?.id ?? null,
                 targetUnitId: request.target.id,
                 damageType: calculated.type,
                 amount: 0,
-                receivedAmount: outcome.received.amount,
-                cancellation: outcome.received.cancellation,
-                hp: target?.vitality.hp ?? null,
                 tick: battle.tick,
             },
         ]);

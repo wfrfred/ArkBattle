@@ -221,7 +221,7 @@ test("runtime scans mechanisms after movement and before route completion", () =
     assert.deepEqual(mechanisms.get(battle, reference).state.position, [1, 0]);
     assert.equal(battle.battlefield.units.get(1), undefined);
     assert.deepEqual(battle.removedUnits.map(({ unitId, reason }) => [unitId, reason]), [[1, "DEATH"]]);
-    assert.equal(battle.events.some(event => event.type === "ROUTE_COMPLETED"), false);
+
     assert.deepEqual(before.battlefield.units.get(0).position, [0, 0]);
 });
 

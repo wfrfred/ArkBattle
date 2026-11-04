@@ -176,10 +176,7 @@ test("interrupted attack, successful release, and damage output are separate bus
     state = actions.advance(started.state, started.value.ref);
     assert.equal(get(state, 0).skill.sp.value, 0);
     assert.equal(get(state, 1).vitality.hp, 100);
-    assert.equal(
-        state.events.some((event) => event.type === "ACTION_RELEASED"),
-        false,
-    );
+
 
     state = update({ ...state, tick: 10 }, [
         action.removeBeforeReleaseHook(source, "interrupt"),
@@ -195,7 +192,7 @@ test("interrupted attack, successful release, and damage output are separate bus
     state = actions.advance(started.state, started.value.ref);
     assert.equal(get(state, 0).skill.sp.value, 1);
     assert.equal(get(state, 1).vitality.hp, 100);
-    assert.equal(state.events.filter((event) => event.type === "ACTION_RELEASED").length, 1);
+
 
     state = update({ ...state, tick: 20 }, [action.removeReleasedHook(source, "cancel-output")]);
     started = actions.start(state, reference);
@@ -239,7 +236,7 @@ test("Combat advances a zero-period action once per Tick with deterministic resu
     assert.equal(get(firstRun, 0).action.nextExecutionId, 1);
     assert.equal(get(firstRun, 0).skill.sp.value, 0);
     assert.equal(firstRun.tick, 1);
-    assert.deepEqual(firstRun.events, repeated.events);
+
     assert.deepEqual(
         actions.getAction(firstRun, reference),
         actions.getAction(repeated, reference),

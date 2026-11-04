@@ -135,7 +135,7 @@ EP 损伤的爆发分支按以下顺序执行：
 ```text
 提交本次 EP 扣减、四型归零与 Burst
 → 登记 Burst→Unit 的 Lifetime owner 关系
-→ 记录 ELEMENT_DAMAGE 和 ELEMENT_BURST
+→ 记录 ELEMENTAL_INJURY 和 ELEMENTAL_BURST 的 UI 瞬时事实
 → burstStarted
 → damaged
 → 重读同一 Burst、ACTIVE 状态和宿主资格
@@ -157,12 +157,12 @@ finish 和 cancel 委托 Burst 的 lifetime，先同步请求，再由最外层�
 → 从当前实例与原 Definition 调用 onEnd(battle, self, end)
 → 从最新宿主读取状态，四型 EP 重置到最新上限
 → 移除 Burst，注销本轮 Lifetime 关系
-→ 记录结束事件，派发 burstEnded
+→ 派发 burstEnded
 ```
 
 ENDING 期间仍占用爆发槽位，重复请求不覆盖首次原因，也不重复 Prepare。嵌套 finish／cancel 返回不保证 EP 已重置、槽位已清空或 burstEnded 已派发。Unit 所有权保证宿主直到 Burst 整个 Finalize 返回才可注销，原 Definition 可从当前 Unit 取得，不使用通用 fallback。onEnd 后按最新同一 Burst 提交结算，burstEnded 在槽位释放后可以引发新业务。
 
-正常完成与取消都在宿主仍存在时重置 EP，显式在场取消也采用相同政策。重置属于结束操作，不派发 healed。ELEMENT_BURST_ENDED 保留完整 End；仅 FINISHED 另外记录 ELEMENT_RECOVERED，取消原因同时用于依赖清理与结束回调。
+正常完成与取消都在宿主仍存在时重置 EP，显式在场取消也采用相同政策。重置属于结束操作，不派发 healed。结束原因通过 burstEnded Hook 与结束回调传递，并用于依赖清理。爆发恢复状态由 UI 查询当前 State，不输出自然恢复完成或爆发结束的诊断 Event。
 
 Unit 请求离场发布 LEAVING 后，通过所有权边自动请求本轮 Burst 取消；取消与正常完成保留各自 End。Unit 等待 Burst 与其他依赖者整个 Finalize 后才注销和派发 leave；离场入口不手动调用 Elemental.cancel，也不清空 burst 或依赖集合。
 

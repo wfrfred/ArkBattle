@@ -72,14 +72,13 @@ test("onStart may synchronously stop its own instance while create still returns
     assert.equal(projectilesQuery.get(created.state, created.value), undefined);
     assert.deepEqual(observed, [["ENDING", "EXPLICIT"]]);
     assert.equal(created.state.execution.nextProjectileId, 1);
-    assert.deepEqual(created.state.events.map(event => event.type), ["PROJECTILE_STOPPED"]);
 });
 
 
-test("Projectile stop publishes ENDING and its event before cleanup, and repeated stop is a no-op", () => {
+test("Projectile stop publishes ENDING before cleanup, and repeated stop is a no-op", () => {
     const observed = [];
     const definition = { id: "ending", onTick() { assert.fail("ENDING instances must not normally advance"); }, onEnd(battle, self, reason) {
-        observed.push([self.lifecycle, reason, battle.events.at(-1).type]);
+        observed.push([self.lifecycle, reason]);
         assert.strictEqual(projectilesQuery.get(battle, projectilesQuery.ref(self)), self);
         assert.strictEqual(projectiles.stop(battle, projectilesQuery.ref(self), "DISPEL"), battle);
         assert.strictEqual(advance(battle, [projectilesQuery.ref(self)]), battle);
@@ -88,12 +87,9 @@ test("Projectile stop publishes ENDING and its event before cleanup, and repeate
     const created = create(battle(), definition);
     const stopped = projectiles.stop(created.state, created.value, "SOURCE_UNAVAILABLE");
 
-    assert.deepEqual(observed, [["ENDING", "SOURCE_UNAVAILABLE", "PROJECTILE_STOPPED"]]);
+    assert.deepEqual(observed, [["ENDING", "SOURCE_UNAVAILABLE"]]);
     assert.equal(projectilesQuery.get(stopped, created.value), undefined);
     assert.strictEqual(projectiles.stop(stopped, created.value), stopped);
-    assert.deepEqual(stopped.events[0], {
-        type: "PROJECTILE_STOPPED", tick: 0, projectileId: 0, position: [0, 0], reason: "SOURCE_UNAVAILABLE",
-    });
     assert.equal(projectilesQuery.get(created.state, created.value).lifecycle, "ACTIVE");
 });
 
@@ -200,7 +196,6 @@ test("Battle commands stop in order before survivors advance and ignore duplicat
     const progressed = advanceProjectiles(initial, candidates(initial), [2, 2, 999, 0].map(projectileId => ({ type: "STOP_PROJECTILE", projectileId })));
 
     assert.deepEqual(observed, [["stop", 2], ["stop", 0], ["advance", 1], ["advance", 3]]);
-    assert.deepEqual(progressed.events.map(event => event.projectileId), [2, 0]);
     assert.deepEqual(instances(progressed).map(self => [self.id, self.position]), [[1, [1, 0]], [3, [1, 0]]]);
     assert.ok(instances(initial).every(self => self.position[0] === 0));
 });
@@ -234,11 +229,10 @@ test("battle execution can stop a same-Tick creation explicitly without normally
         onTick(battle) { observed.push("advance"); return battle; },
         onEnd(battle, _self, reason) { observed.push(reason); return battle; } };
     let rt = runtime([unit(0, { hooks: Hooks.empty().set(unitLifecycle.tick, { id: "test/tick",  invoke(battle) { return { state: create(battle, definition).state, value: undefined }; } }) })]);
-    const result = (rt = stepBattle(rt, [{ type: "STOP_PROJECTILE", projectileId: 0 }]));
+    rt = stepBattle(rt, [{ type: "STOP_PROJECTILE", projectileId: 0 }]);
 
     assert.deepEqual(observed, ["create", "EXPLICIT"]);
     assert.deepEqual(projectilesQuery.all(rt).toArray(), []);
-    assert.equal(result.events.filter(event => event.type === "PROJECTILE_STOPPED").length, 1);
 });
 
 test("a terminal battle leaves outstanding projectiles frozen without termination callbacks", () => {

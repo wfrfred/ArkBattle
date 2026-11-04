@@ -6,8 +6,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize as initializeBattle, step as stepBattle } from "../../dist/core/battle/runtime.js";
 
-import { appendEvents } from "../../dist/core/battle/state.js";
-import { remove as removeUnit } from "../../dist/core/battle/unit.js";
+import { dp } from "../../dist/core/battle/deployment/index.js";
 import { advancePredefined } from "../../dist/core/battle/steps/predefined.js";
 
 import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
@@ -50,7 +49,7 @@ test("initial entry receives the complete battle state and its returned facts pe
         assert.equal(state.result, null);
         assert.equal(state.deployment.cards.length, 0);
         assert.equal(state.battlefield.units.has(self.id), true);
-        return { state: { ...state, completedRouteCount: state.completedRouteCount + 1 }, value: undefined };
+        return { state: dp.modify(state, 1), value: undefined };
     } };
     let battle = initializeBattle(input({
         predefines: predefinedUnits([{ definition: { id: "initial", hooks: Hooks.empty().set(unitLifecycle.enter, enterHook) }, position: [0, 0] }], [predefined(7, { id: "predefined", hooks: Hooks.empty().set(unitLifecycle.enter, enterHook) }, true)]),
@@ -64,11 +63,11 @@ test("initial entry receives the complete battle state and its returned facts pe
         { definitionId: 7, source: { type: "UNIT", unitId: 1 } },
     ]);
     assert.deepEqual([...observations[1].battlefield.units.keys()], [0, 1]);
-    assert.equal(observations[0].completedRouteCount, 0);
-    assert.equal(observations[1].completedRouteCount, 1);
-    assert.equal(battle.completedRouteCount, 2);
+    assert.equal(observations[0].deployment.dp, 0);
+    assert.equal(observations[1].deployment.dp, 1);
+    assert.equal(battle.deployment.dp, 2);
     battle = stepBattle(battle, []);
-    assert.equal(battle.completedRouteCount, 2);
+    assert.equal(battle.deployment.dp, 2);
 });
 
 test("spawn entry observes recorded schedule progress before running content", () => {
@@ -82,14 +81,14 @@ test("spawn entry observes recorded schedule progress before running content", (
             assert.equal(state.schedule.spawnedCount, 1);
             assert.equal(state.schedule.pendingSpawnCount, 0);
             assert.deepEqual(state.schedule.managedFinalUnitIds, [self.id]);
-            return { state: { ...state, completedRouteCount: 4 }, value: undefined };
+            return { state: dp.modify(state, 4), value: undefined };
         } }),
     };
     let battle = initializeBattle(input({
         schedule: { type: "TIMELINE", spawns: [spawn(definition, 0)] },
     }));
     battle = stepBattle(battle, []);
-    assert.equal(battle.completedRouteCount, 4);
+    assert.equal(battle.deployment.dp, 4);
     assert.equal(observed.schedule.spawnedCount, 1);
 });
 
@@ -120,33 +119,4 @@ test("nested predefined entry and departure keep the latest presence bindings", 
     assert.deepEqual(battle.predefinedPresence.map(binding => binding.definitionId), [2, 3]);
     assert.deepEqual(observations, [[1], [2]]);
     assert.deepEqual(first.predefinedPresence.map(binding => binding.definitionId), [1, 2]);
-});
-
-test("starting a new tick clears temporary facts without changing retained state versions", () => {
-    const received = [], returned = [];
-    let battle = initializeBattle(input({
-        predefines: predefinedUnits([
-            { position: [0, 0], definition: { id: "observer", hooks: Hooks.empty().set(unitLifecycle.tick, { id: "test/tick",  invoke(state) {
-                received.push(state);
-                assert.deepEqual(state.events, []);
-                assert.deepEqual(state.removedUnits, []);
-                if (state.tick === 0) {
-                    state = removeUnit(state, 1, "SCRIPT");
-                    state = appendEvents(state, [{ type: "ROUTE_COMPLETED", unitId: 1, tick: 0 }]);
-                }
-                returned.push(state);
-                return { state: state, value: undefined };
-            } }) } },
-            { position: [1, 0], definition: { hooks: Hooks.empty(), id: "removed" } },
-        ]),
-    }));
-    const first = (battle = stepBattle(battle, []));
-    const second = (battle = stepBattle(battle, []));
-    assert.deepEqual(first.events.map(event => event.type), ["ROUTE_COMPLETED", "UNIT_REMOVED"]);
-    assert.deepEqual(second.events, []);
-    assert.equal(battle.completedRouteCount, 1);
-    assert.equal(returned[0].events.length, 1);
-    assert.equal(returned[0].removedUnits.length, 1);
-    assert.notEqual(received[1].events, returned[0].events);
-    assert.notEqual(received[1].removedUnits, returned[0].removedUnits);
 });

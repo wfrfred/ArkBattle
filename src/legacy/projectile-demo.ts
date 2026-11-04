@@ -125,7 +125,6 @@ export function createTacticalProjectileDemo(
             ...definition.attack.attack,
             windupTicks: 6,
             recoveryTicks: 6,
-            markerId: "demo-shell",
             output: (state, host, self) => {
                 const source = getCurrentUnit(state, host);
                 const targetId = self.execution.state.target.id;

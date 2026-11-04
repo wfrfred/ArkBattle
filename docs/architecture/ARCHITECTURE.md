@@ -52,7 +52,7 @@ initialize(input) / step(battle, commands)：创建与推进不可变状态
    ├─ lifetime（权威依赖图、当前 endings 与 settling）
    ├─ unitHooks（登记变化与离场的全局观察）
    ├─ Mechanisms
-   ├─ 本 Tick 的事件与移除事实
+   ├─ 本 Tick 的 UI 瞬时输出与业务移除事实
    └─ Battlefield
       ├─ Map
       ├─ Units + Effects + Capabilities
@@ -246,7 +246,7 @@ Core 内部传递领域值时共享引用，状态转换只创建受影响路径
 
 静态定义、Hook 与 Contribution 直接共享引用，由所属领域组织执行与结算顺序。异构实例容器内部封装类型配对。战斗 initialize 接收 Input，领域操作直接调用所属模块的公开 API。
 
-快照保存固定版本的事实，并可共享静态 Definition，不包含借用上下文、运行时句柄或注册容器。事件记录已发生结果，权威状态继续由领域事实表示。
+快照保存固定版本的事实，并可共享静态 Definition，不包含借用上下文、运行时句柄或注册容器。Event 仅记录 UI 需要的瞬时事实，权威状态继续由领域事实表示，具体契约见 [UI 瞬时输出](event.md)。
 
 ## TypeScript 与模块惯例
 

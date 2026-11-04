@@ -30,7 +30,9 @@ export {
     extendTime,
 } from "./operations.js";
 
-export type { Outcome, Signal } from "./operations.js";
+export type { Outcome } from "./operations.js";
+
+export type { Event } from "./event.js";
 
 export {
     setContribution as setSpContribution,

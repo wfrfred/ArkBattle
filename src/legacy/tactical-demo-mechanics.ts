@@ -67,7 +67,7 @@ export function createTacticalMechanicsDemo(
                     operations: [
                         ...group.operations,
                         {
-                            type: "ELEMENT_DAMAGE",
+                            type: "ELEMENTAL_INJURY",
                             elementType: ELEMENT_SCENARIOS[scenario],
                             power: 400,
                         },

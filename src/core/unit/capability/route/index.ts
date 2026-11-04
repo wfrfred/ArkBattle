@@ -8,10 +8,9 @@ export type {
     Progress,
     State,
     Route,
+    Event,
 } from "./capability.js";
 
 export { setPathMotionMode, setAlternative, clearAlternative, advance } from "./operations.js";
-
-export type { Signal } from "./operations.js";
 
 export { movementTarget } from "./query.js";

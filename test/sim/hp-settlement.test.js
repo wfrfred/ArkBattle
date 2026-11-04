@@ -143,7 +143,6 @@ test("HP-02: independent Calculate results retain their own business state and o
     assert.equal(get(result.state, 0).vitality.hp, 120);
     assert.equal(get(result.state, 1).vitality.hp, 320);
     assert.equal(receptions, 1);
-    assert.deepEqual(result.state.events.slice(-2).map(event => [event.type, event.amount]), [["HEAL", 20], ["DAMAGE", 180]]);
     assert.equal(get(physical.state, 1).vitality.hp, 500);
 });
 

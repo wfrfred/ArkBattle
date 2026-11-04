@@ -172,9 +172,9 @@ volume 使用 Contribution<number>，筛选互斥胜者后累加整数追加量�
 
 Rule 可以读取时间、第三方单位等任意 Battle 事实，系统不跟踪函数依赖，也不让每次字段发布都执行全场维护。每 Tick 的 Blocking 阶段先固定阶段初 Blocker 候选，再通过 maintainAll 固定入口既有关系、按顺序各复核一次资格，最后搜索新关系。完整地块更新同样显式调用 maintainAll；它不裁容量、不重新收集候选或回头复核已访问项。晚于某条复核才发生的间接条件变化在下一检查点反映，需要同步生效的业务明确执行相应关系操作。
 
-切换阻挡层使用 `setLayer(Ref<Unit & Blocker>, layer): Change`。transform 只更新 layer／radius；同层请求返回原 Unit，由 update 统一跳过后继；实际变化的 settle 将 previous.blocked 的原 Ref 组成 Relation 数组交给 release。后继不重做 transform、不写回旧 Unit；首个 RELEASED 前本次有效旧集合的双端解除及全部事件已发布，不附加维护或搜索。混合批次中较早的其他后继可能先处理部分旧关系，不能把切层自身的批量可见性扩为全批首个 RELEASED 的保证。切换不改变自身 Layer、不增加 Hook 或 Contribution；细节见 [Blocking 批次契约](blocking.md#显式关系操作与同步维护)。
+切换阻挡层使用 `setLayer(Ref<Unit & Blocker>, layer): Change`。transform 只更新 layer／radius；同层请求返回原 Unit，由 update 统一跳过后继；实际变化的 settle 将 previous.blocked 的原 Ref 组成 Relation 数组交给 release。后继不重做 transform、不写回旧 Unit；首个 RELEASED 前本次有效旧集合的双端解除已发布，不附加维护或搜索。混合批次中较早的其他后继可能先处理部分旧关系，不能把切层自身的批量可见性扩为全批首个 RELEASED 的保证。切换不改变自身 Layer、不增加 Hook 或 Contribution；细节见 [Blocking 批次契约](blocking.md#显式关系操作与同步维护)。
 
-关系归属与关联由两端 State 保存：Blockable.blocker 是唯一 owner 或 null，Blocker.blocked 是按建立顺序保留的目标 Ref 数组。acquire 发布双端与新计划后通知，再复核本次新 Relation 的资格；不扫描整个阻挡组或裁容量。release 入口过滤失效旧身份与重复项，整批发布双端解除、整批记录 BLOCKING_RELEASED，再按首次输入顺序逐条通知；每条仍先 Blocker、后 Blockable，双方 Hook 候选在该条通知开始时同时固定。release 不附加维护、搜索或计划取消。通用发布不补齐或比较关系。同一次关系的身份由正向列表中的 Ref 条目对象承担，重建必须创建新条目，普通字段更新共享既有引用。转移使用完整 Release 和新 Acquire。
+关系归属与关联由两端 State 保存：Blockable.blocker 是唯一 owner 或 null，Blocker.blocked 是按建立顺序保留的目标 Ref 数组。acquire 发布双端与新计划后通知，再复核本次新 Relation 的资格；不扫描整个阻挡组或裁容量。release 入口过滤失效旧身份与重复项，整批发布双端解除，再按首次输入顺序逐条通知；每条仍先 Blocker、后 Blockable，双方 Hook 候选在该条通知开始时同时固定。release 不附加维护、搜索或计划取消。通用发布不补齐或比较关系。同一次关系的身份由正向列表中的 Ref 条目对象承担，重建必须创建新条目，普通字段更新共享既有引用。转移使用完整 Release 和新 Acquire。
 
 Blockable.State 另保存 `adjustment: PositionAdjustment | null`，计划只有 `from`、`to` 和 `startTick`。acquire 以当前真实位置和先前目标的 stableBlockPosition 计算普通 0.5 最小间距与分散站位，将计划与双端关系一起发布后才通知 ACQUIRED。`Unit.position` 是唯一真实坐标；稳定位置在有关系时取计划终点，否则取当前坐标，不重复保存。固定 30 Hz 下，位置按 0.2 秒、6 Tick 线性推进，完成后清计划，不额外保存 Tween、progress 或 velocity。
 
@@ -186,7 +186,7 @@ Movement 绑定本轮起始的 Unit Query，分两遍先推进 Blockable 偏移�
 
 ## 事件与结果
 
-完整结算登记自身已发生的领域事件。调用方只接续返回状态，无需补写 Signals；公开 value 只保留业务结果。局部步骤可以报告尚未提交的事实或信号，由负责完整结算的领域消费。Tick 收尾允许根据 Removal Facts 等生成输出投影。
+完整结算通过公开 value 返回业务结果，通过 Hook 执行同步响应。仅有实际 UI 瞬时需求时，由事实所属领域定义 Event，在发生时点追加至 BattleState.events；不要求完整操作为全部变化记录事件，不通过事件反推统计或业务。具体归属与载荷见 [UI 瞬时输出](event.md)。
 
 Skill 激活先一次性提交支付与新 Activation，再记录 SKILL_ACTIVATED，派发 activationStarted Hook、spPaid Hook，重读同一身份及宿主资格后执行仍有资格的 onStart。activationStarted 表示创建事实，后续嵌套终止不撤销创建或支付报告；无活动 Lifetime 结算时，先前 activationStarted 候选可以触发 activationEnded 嵌套；已有结算时，嵌套结束只同步完成请求与 Prepare。后续候选仍处理原创建事实。正常零持续期也先创建与通知，再请求结束。请求发布 ENDING，最外层结算器等真实依赖者完整 Finalize 后调用结束程序、清空本轮、记录事件并派发 activationEnded；Unit 所有权保护原 Definition 和宿主到整个 Finalize 返回。两项公共报告分别为 ActivationStarted `{ ref }` 与 ActivationEnded `{ ref, end }`，不携带 Definition 或私有 state；Context.host 已提供宿主，结束报告中的 Ref 不保证本轮仍可查询。详见 [Skill 设计](skill.md#5-发动与完整结束)。
 

@@ -1,6 +1,6 @@
 import { initialize as initializeRoutedUnit } from "../creation/routed-unit.js";
 import type { Command } from "../contract.js";
-import { appendEvents, type State as BattleState } from "../state.js";
+import type { State as BattleState } from "../state.js";
 import { advanceSpawnSchedule, recordScheduleSpawns } from "../schedule/runtime.js";
 import { add } from "../unit.js";
 
@@ -36,7 +36,6 @@ export function advanceSpawning(
             ...state,
             schedule: recordScheduleSpawns(state.schedule, [spawn], [unit.id]),
         };
-        state = appendEvents(state, [{ type: "ENEMY_SPAWNED", unitId: unit.id, tick }]);
         state = add(state, unit);
     }
 

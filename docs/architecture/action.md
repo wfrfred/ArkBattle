@@ -44,7 +44,7 @@ Rule 只负责启动准入，不自动中断现有执行。眩晕等需要中断
 
 | 职责 | 导出 |
 | --- | --- |
-| 身份与类型 | ref、executionRef、lifetime；Action、Execution、Definition、Signal、StartOutcome |
+| 身份与类型 | ref、executionRef、lifetime；Action、Execution、Definition、Event、StartOutcome |
 | 创建 | create、createActions |
 | 查询 | all、forUnit、getExecution、getAction、isCasting |
 | 业务操作 | start、setExecutionState、setState、setCooldown、cancel、cancelForUnit、refreshCooldowns、resetCooldown、clearCooldown |
@@ -189,7 +189,7 @@ Execution 是按本轮身份读取的完整聚合，execution 确定非空；普
 
 Actions.toJSON 直接物化容器条目并返回诊断 Snapshot 数组，以 unknown 声明持久 state 与 execution.state，Definition 只承诺诊断字段。nextExecutionId 由 Capability State 单独保存。该真实诊断表示不替代完整 Action，也不承担恢复 Definition、回调或容器的协议。
 
-BattleState 不另存全场 Action 集合。all 按 Unit 集合顺序展平当前执行，各宿主内按 execution.id 升序枚举，保留本宿主的启动顺序；不承诺全场启动顺序。保留旧 BattleState 即保留旧聚合条目、执行进度及 nextExecutionId。Definition 直接共享；事件使用 sourceUnitId 与宿主内 executionId 标识一次执行。
+BattleState 不另存全场 Action 集合。all 按 Unit 集合顺序展平当前执行，各宿主内按 execution.id 升序枚举，保留本宿主的启动顺序；不承诺全场启动顺序。保留旧 BattleState 即保留旧聚合条目、执行进度及 nextExecutionId。Definition 直接共享；执行身份使用 sourceUnitId 与宿主内 executionId；UI 行动提示只携带当前动画需要的宿主、目标与发生 Tick，详见 [Event](event.md)。
 
 ## 5. Capability 与冷却
 

@@ -10,8 +10,8 @@ Targeting 位于 `battle/targeting/`，公共契约从 [index.ts](../../src/core
 export type Purpose =
     | "DAMAGE"
     | "HEAL"
-    | "ELEMENT_DAMAGE"
-    | "ELEMENT_HEAL"
+    | "ELEMENTAL_INJURY"
+    | "ELEMENTAL_INJURY_HEALED"
     | "EFFECT";
 
 export interface Request {

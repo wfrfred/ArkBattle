@@ -304,7 +304,7 @@ export class TacticalDemoPresentation {
     #killedCount = 0;
     #attackCount = 0;
     #damageCount = 0;
-    #elementDamageCount = 0;
+    #elementalInjuryCount = 0;
     #elementBurstCount = 0;
 
     constructor(data: LegacyData, options: TacticalDemoPresentationOptions = {}) {
@@ -323,7 +323,7 @@ export class TacticalDemoPresentation {
         this.#killedCount = 0;
         this.#attackCount = 0;
         this.#damageCount = 0;
-        this.#elementDamageCount = 0;
+        this.#elementalInjuryCount = 0;
         this.#elementBurstCount = 0;
     }
 
@@ -446,8 +446,8 @@ export class TacticalDemoPresentation {
                     break;
                 }
 
-                case "ELEMENT_DAMAGE":
-                    this.#elementDamageCount++;
+                case "ELEMENTAL_INJURY":
+                    this.#elementalInjuryCount++;
                     visible.push([
                         "dmg",
                         event.targetUnitId,
@@ -456,37 +456,23 @@ export class TacticalDemoPresentation {
                     ]);
                     break;
 
-                case "ELEMENT_HEAL": {
-                    const amount = Object.values(event.amounts).reduce(
-                        (sum, value) => sum + value,
-                        0,
-                    );
-                    visible.push(["heal", event.targetUnitId, Math.round(amount)]);
+                case "ELEMENTAL_INJURY_HEALED": {
+                    visible.push(["heal", event.targetUnitId, Math.round(event.amount)]);
                     break;
                 }
 
-                case "ELEMENT_BURST": {
+                case "ELEMENTAL_BURST": {
                     this.#elementBurstCount++;
 
-                    const removed = events.find(
-                        (candidate) =>
-                            candidate.type === "UNIT_REMOVED" &&
-                            candidate.unitId === event.burst.host.id,
-                    );
-                    const unit =
-                        units.get(after, event.burst.host) ??
-                        (removed?.type === "UNIT_REMOVED" ? removed.unit : undefined);
-                    if (unit !== undefined) {
-                        visible.push([
-                            "fx",
-                            "burst",
-                            ...unit.position,
-                            {
-                                id: unit.id,
-                                element: ELEMENT_TYPE[event.burst.type],
-                            },
-                        ]);
-                    }
+                    visible.push([
+                        "fx",
+                        "burst",
+                        ...event.position,
+                        {
+                            id: event.unitId,
+                            element: ELEMENT_TYPE[event.elementType],
+                        },
+                    ]);
 
                     break;
                 }
@@ -516,19 +502,6 @@ export class TacticalDemoPresentation {
 
                 case "ROUTE_COMPLETED":
                     visible.push(["leak", event.unitId]);
-                    break;
-
-                case "ENEMY_SPAWNED":
-                case "PROJECTILE_REACHED":
-                case "PROJECTILE_HIT":
-                case "PROJECTILE_STOPPED":
-                case "ELEMENT_RECOVERED":
-                case "ELEMENT_BURST_ENDED":
-                case "UNIT_DEPLOYED":
-                case "DEPLOYMENT_REJECTED":
-                case "BLOCKING_ACQUIRED":
-                case "BLOCKING_RELEASED":
-                case "ROUTE":
                     break;
             }
         }
@@ -645,14 +618,14 @@ export class TacticalDemoPresentation {
         readonly killedCount: number;
         readonly attackCount: number;
         readonly damageCount: number;
-        readonly elementDamageCount: number;
+        readonly elementalInjuryCount: number;
         readonly elementBurstCount: number;
     } {
         return {
             killedCount: this.#killedCount,
             attackCount: this.#attackCount,
             damageCount: this.#damageCount,
-            elementDamageCount: this.#elementDamageCount,
+            elementalInjuryCount: this.#elementalInjuryCount,
             elementBurstCount: this.#elementBurstCount,
         };
     }

@@ -161,12 +161,12 @@ test("APPLY-02: zero output is rejected, while fully absorbed damage and full-ba
     assert.deepEqual(full.value.application.epGain, elemental.elementValues(0));
     assert.deepEqual(notices, ["damage-target", "damage-source", "healing-target", "healing-source"]);
     assert.equal(receptions, 2);
-    assert.equal(full.state.events.some(event => event.type === "ELEMENT_DAMAGE" || event.type === "ELEMENT_HEAL"), false);
 });
 
 test("EP-02: depletion creates a usable Burst before its notifications and program, then runs Battle Applied", () => {
     const order = [];
     let bound;
+    let ended = 0;
     const program = {
         onStart(state, burst) {
             order.push("program");
@@ -197,6 +197,9 @@ test("EP-02: depletion creates a usable Burst before its notifications and progr
         elemental.setHook(target, "damaged", {
             id: "loss", invoke(current) { order.push("damaged"); return { state: current, value: undefined }; },
         }),
+        elemental.setHook(target, "burstEnded", {
+            id: "end", invoke(current) { ended++; return { state: current, value: undefined }; },
+        }),
     ]);
     const preceding = request(target, "NEURAL", 200);
     state = damage.applyDamage(preceding, damage.calculateDamage(state, preceding)).state;
@@ -213,7 +216,7 @@ test("EP-02: depletion creates a usable Burst before its notifications and progr
     assert.equal(get(removed, 0), undefined);
     assert.equal(elemental.get(removed, result.value.application.burst), undefined);
     assert.equal(effects.get(removed, bound), undefined);
-    assert.equal(removed.events.filter(event => event.type === "ELEMENT_BURST_ENDED").length, 1);
+    assert.equal(ended, 1);
 });
 
 test("EP-02: cancelling a newly created Burst suppresses its startup without rewriting the damage report", () => {

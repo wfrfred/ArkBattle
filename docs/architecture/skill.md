@@ -127,7 +127,7 @@ TIME 的基础 durationTicks 在创建 Activation 时形成 endsAtTick。初始�
 
 持续时间、耗弹量及贡献输入在实际入口校验。基础弹药 amount 已由 Skill 创建入口校验，发动时的 resolveCapacity 不重复检查该静态值；动态 Modifier 的 addition 整数与 ratio 有限性仍在发动求值入口检查。内部预算、到期 Tick、剩余弹药与激活身份按游戏尺度直接计算，不重复检查算术结果是否超过安全整数范围。
 
-TIME 不保留 Duration Contribution，也不新增通用的初始时长回调。雷狼龙S空爆由现有发动过程先支付默认单层费用，再由 onStart 读取本轮剩余 SP、计算实际消费层数、消费剩余 SP 并调用 extendTime；这与已核实的具体消费／延时链一致。哈蒂娅的运行中条件延长同样由 extendTime 表达。SKILL_ACTIVATED 保留 onStart 前已创建实例的初始 endsAtTick，后续延时不重写该历史创建事件；当前截止时间从同一 Activation 查询。
+TIME 不保留 Duration Contribution，也不新增通用的初始时长回调。雷狼龙S空爆由现有发动过程先支付默认单层费用，再由 onStart 读取本轮剩余 SP、计算实际消费层数、消费剩余 SP 并调用 extendTime；这与已核实的具体消费／延时链一致。哈蒂娅的运行中条件延长同样由 extendTime 表达。SKILL_ACTIVATED 只输出技能动画需要的 Unit 身份和发生 Tick；初始与延长后的截止时间从当前 Activation 查询。
 
 AMMO 的 setAmmoContribution 使用 `contribution.Input<ammo.Modifier, Unit & SkillCapability>`，只接受静态列表或返回列表的动态函数。持久来源登记在 Capability.ammo，与当前 Activation 的 Sustain 分开。ammo.Modifier 为 `{ addition, ratio }`，使用独立公式 `max(1, base + Σaddition + RoundToEven(base × Σratio))`，固定追加不参与比例乘算。原生一般式区分当前基础上限 M 和原始上限 B；项目目前覆盖普通初始化时 M = B 的情况，一个 base 已足够，不为未接入的基础上限变化另存一份状态。
 

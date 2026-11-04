@@ -113,6 +113,7 @@ export function resolveRouteCompletion(battle: BattleState): BattleState {
             continue;
         }
 
+        battle = { ...battle, completedRouteCount: battle.completedRouteCount + 1 };
         battle = appendEvents(battle, [
             { type: "ROUTE_COMPLETED", unitId: unit.id, tick: battle.tick },
         ]);

@@ -15,7 +15,6 @@ import { advance as advanceMechanisms } from "./mechanism.js";
 import * as projectiles from "../projectile/query.js";
 import { advanceElements } from "./steps/elemental.js";
 import { advanceSkills } from "./steps/skills.js";
-import { finishBattleEvents } from "./events.js";
 import { getSpawnScheduleCounts, isSpawnScheduleCompleted } from "./schedule/query.js";
 import { resolveScheduleUnits } from "./schedule/runtime.js";
 import { createSpawnScheduleDefinition } from "./schedule/definition.js";
@@ -131,16 +130,14 @@ export function step(battle: State, commands: readonly Command<Card<any>>[]): St
             state.removedUnits.map((removed) => removed.unitId),
         ),
     };
-    const finishedEvents = finishBattleEvents(state.events, state.removedUnits, tick);
     const tickIndex = tick + 1;
-    const completedRouteCount = state.completedRouteCount + finishedEvents.completedRouteCount;
     const completed = isSpawnScheduleCompleted(state.schedule);
     const result: Result | null =
         completed || tickIndex >= battle.definition.maxTicks
             ? {
                   reason: completed ? "SCHEDULE_COMPLETED" : "TIME_LIMIT",
                   elapsedTicks: tickIndex,
-                  completedRouteCount,
+                  completedRouteCount: state.completedRouteCount,
                   remainingUnitIds: units
                       .all(state)
                       .map((unit) => unit.id)
@@ -152,9 +149,7 @@ export function step(battle: State, commands: readonly Command<Card<any>>[]): St
     state = {
         ...state,
         tick: tickIndex,
-        completedRouteCount,
         result,
-        events: finishedEvents.events,
     };
 
     return state;

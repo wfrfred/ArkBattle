@@ -1,7 +1,15 @@
 import type { Ref } from "../../../common/ref.js";
-import type { Unit } from "../../../unit/unit.js";
+import type { Unit, Id } from "../../../unit/unit.js";
 import type { Elemental, Type } from "../../../unit/capability/elemental/capability.js";
 import type { DamageApplication } from "../../../unit/capability/elemental/operations.js";
+
+export interface Event {
+    readonly type: "ELEMENTAL_INJURY";
+    readonly targetUnitId: Id;
+    readonly elementType: Type;
+    readonly amount: number;
+    readonly tick: number;
+}
 
 export interface Parameters {
     readonly type: Type;

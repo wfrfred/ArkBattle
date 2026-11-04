@@ -83,7 +83,6 @@ test("platform entry suppresses its existing passenger synchronously without cha
     assertEligible(battle, 11); // Same world tile, without OCCUPANT registration.
     assertEligible(battle, 12);
     assert.equal(ownerId(battle), undefined);
-    assert.equal(battle.events.filter(event => event.type === "BLOCKING_RELEASED").length, 1);
     assert.equal(getTile(battle.battlefield.map, first).state.allowsBlocking, originalTile.state.allowsBlocking);
     assert.equal(getTile(battle.battlefield.map, second).state.allowsBlocking, true);
     assert.equal(ownerId(before), 10);

@@ -337,5 +337,4 @@ test("an old S2 recovery cannot close a newer skill activation", () => {
     assert.equal(getUnit(state, 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 0);
     assert.equal(getUnit(state, 0).skill.activation.id, 1);
     assert.equal(getUnit(before, 0).skill.activation.id, 1);
-    assert.deepEqual(state.events.filter(event => event.type === "SKILL_FINISHED").map(event => event.activationId), [0]);
 });

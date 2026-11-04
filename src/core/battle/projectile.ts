@@ -4,7 +4,7 @@ import type { Definition, StopReason } from "../projectile/definition.js";
 import type { Projectile } from "../projectile/projectile.js";
 import { get, ref } from "../projectile/query.js";
 import { create as createLifetime } from "../lifetime/operations.js";
-import { appendEvents, type State as BattleState, type Result } from "./state.js";
+import type { State as BattleState, Result } from "./state.js";
 
 export interface CreateInput<S extends object> {
     readonly position: WorldPosition;
@@ -85,19 +85,6 @@ export const lifetime = createLifetime<Projectile, Projectile<any>, StopReason>(
             projectiles: battle.battlefield.projectiles.replace(ref(next), next),
         },
     }),
-    prepare: (battle, reference, _initial, reason) => {
-        const self = get(battle, reference)!;
-
-        return appendEvents(battle, [
-            {
-                type: "PROJECTILE_STOPPED",
-                projectileId: self.id,
-                position: self.position,
-                tick: battle.tick,
-                reason,
-            },
-        ]);
-    },
     finalize: (battle, reference, reason) => {
         const self = get(battle, reference)!;
         battle = self.definition.onEnd?.(battle, self, reason) ?? battle;

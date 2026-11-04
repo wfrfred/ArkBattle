@@ -8,7 +8,7 @@ export type { Execution } from "./execution.js";
 
 export type { Definition } from "./definition.js";
 
-export type { Signal } from "./event.js";
+export type { Event } from "./event.js";
 
 export { create, createActions } from "./initialize.js";
 

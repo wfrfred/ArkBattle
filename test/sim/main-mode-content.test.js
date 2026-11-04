@@ -26,6 +26,7 @@ test('main-mode content runs deterministic shield, skill, blocking and projectil
   const before = first;
   const events = [];
   let hasBlocking = false;
+  let hasProjectile = false;
   let triggeredMelantha = false;
   while (first.result === null) {
     const guard = unitQueries.all(first).find(unit => unit.id === 1);
@@ -38,19 +39,20 @@ test('main-mode content runs deterministic shield, skill, blocking and projectil
     assert.deepEqual(step.result, replay.result);
     events.push(...step.events);
     hasBlocking ||= blockingQueries.relations(first).map(({ blocker, blocked }) => ({ blockerUnitId: blocker.id, blockedUnitId: blocked.id })).length > 0;
+    hasProjectile ||= first.battlefield.projectiles.size > 0;
   }
   assert.deepEqual(json(unitQueries.all(first).toArray()), json(unitQueries.all(second).toArray()));
   assert.deepEqual(first.execution, second.execution);
   assert.deepEqual(first.result, second.result);
   assert.deepEqual(json(first.schedule), json(second.schedule));
   assert.ok(hasBlocking);
-  assert.ok(events.some(event => event.type === 'PROJECTILE_HIT'));
+  assert.ok(hasProjectile);
   assert.ok(events.some(event => event.type === 'HEAL' && event.targetUnitId === 0));
   assert.ok(events.some(event => event.type === 'DAMAGE' && event.targetUnitId === 0 && event.amount === 0));
   assert.ok(events.some(event => event.type === 'SKILL_ACTIVATED' && event.unitId === 0));
   assert.ok(events.some(event => event.type === 'SKILL_FINISHED' && event.unitId === 0));
   assert.ok(events.some(event => event.type === 'SKILL_ACTIVATED' && event.unitId === 1));
-  assert.ok(events.some(event => event.type === 'DAMAGE' && event.sourceUnitId === 0 && event.amount > 0));
+  assert.ok(events.some(event => event.type === 'DAMAGE' && event.targetUnitId >= 2 && event.amount > 0));
   assert.equal(unitQueries.all(before).toArray().length, 2);
   assert.equal(unitQueries.all(before).toArray()[0].vitality.hp, unitQueries.all(before).toArray()[0].definition.vitality.maxHp);
   assert.equal(readShield(unitQueries.all(before).toArray()[0]).layers, 1);

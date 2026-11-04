@@ -186,12 +186,9 @@ export const lifetime = lifetimes.create<Execution, Execution<any, any>, End>({
 
         return appendEvents(battle, [
             {
-                executionId: self.execution.id,
                 sourceUnitId: reference.host.id,
                 tick: battle.tick,
-                ...(result.type === "FINISHED"
-                    ? { type: "ACTION_FINISHED" as const }
-                    : { type: "ACTION_CANCELLED" as const, reason: result.reason }),
+                type: result.type === "FINISHED" ? "ACTION_FINISHED" : "ACTION_CANCELLED",
             },
         ]);
     },

@@ -18,6 +18,14 @@
 
 ## 2. 资料与取证范围
 
+### 元素损伤与元素伤害的术语边界
+
+2026-11-04 对照公开游戏文本数据镜像：纯烬艾雅法拉的回复描述使用 `<$ba.dt.element>Elemental Injury</>`，对应元素损伤与 EP；逻各斯模组在坏死爆发期间追加的 `Elemental Damage` 对应元素 HP 伤害。来源为 [纯烬艾雅法拉 Reference Data](https://closure.wiki/operators/eyjafjalla-the-hvit-aska)和 [逻各斯 Reference Data](https://closure.wiki/operators/logos)中的游戏表文本，网站属于社区镜像，不标为官方文档，也不据此推导 native 调用顺序。
+
+这两个概念在项目命名中必须区分。EP 损伤的英文语义是 Elemental Injury；HP 的 ELEMENTAL 是 DamageType。旧标识中的 ELEMENT_DAMAGE 不能作为二者同义的依据。
+
+### 恢复时序资料
+
 2026-11-02 查阅 PRTS：
 
 - [元素·元素损伤爆发](https://prts.wiki/index.php?title=元素&oldid=447011)：该版条目参考客户端 2.7.91，说明 EP 归零、立即给予效果、进入冷却及结束后恢复全部 EP；没有说明首次恢复调用或统一跳过创建帧。

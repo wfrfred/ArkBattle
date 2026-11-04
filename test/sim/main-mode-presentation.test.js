@@ -92,7 +92,7 @@ test('resumable attacks animate once on release and preserve each AoE damage eve
 });
 
 
-test('projectile releases use their trace target and contacts do not repeat the attack animation', () => {
+test('projectile releases use their trace target and subsequent damage displays once', () => {
   const view = presentation();
   const released = stateFixture([], {
     projectiles: Projectiles.empty().add({
@@ -106,7 +106,6 @@ test('projectile releases use their trace target and contacts do not repeat the 
     { type: 'ACTION_FINISHED', sourceUnitId: 3, tick: 0 },
   ]), [['atk', 3, 1, 'none']]);
   assert.deepEqual(view.advance(stateFixture([]), [
-    { type: 'PROJECTILE_HIT', sourceUnitId: 3, targetUnitId: 1, tick: 1 },
     { type: 'DAMAGE', targetUnitId: 1, amount: 80, damageType: 'PHYSICAL', tick: 1 },
   ]), [['dmg', 1, 80, 'phys']]);
 });

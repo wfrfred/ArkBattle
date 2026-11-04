@@ -178,7 +178,7 @@ AppliedContext 保留 request、calculated、Receiving 最终 received 和本次
 
 Formula 分来源与目标两个节点，Output 属于来源，BeforeReceive／ReceivingStarted／Receiving 属于目标，BeforeCommit 属于来源。Applied 分别通过 targetApplied 与 sourceApplied 键依次通知目标和来源，同一 Unit 承担两个角色时也分别执行各自登记；Completed 仍按既定终结通知契约，同一宿主不重复通知。每个节点、每个宿主的派发独立固定候选 ID，目标响应中新登记的来源 Hook 可进入随后独立的来源派发。登记、优先级和生命周期见第 1.7 节。
 
-DAMAGE 事件的 amount 表示本次实际 HP 损失，receivedAmount 保留 Receiving 最终数值，cancellation 区分取消。取消后目标已被嵌套移除时仍记录事件，hp 为 null，不伪造当前生命快照。零数值输入在 Apply 入口 REJECTED，不进入普通受击回复；无敌等入口 Rule 拒绝也不进入 Receiving。取消不停止后继 Receiving Hook，次数盾自行筛除取消或非正数值；反伤可继续。
+DAMAGE 事件只携带飘字需要的目标、伤害类型、实际 HP 损失和发生 Tick。取消保留零值表现；接收量、取消原因和提交后的 HP 属于 Outcome／Application，不复制到 Event。零数值输入在 Apply 入口 REJECTED，不进入普通受击回复；无敌等入口 Rule 拒绝也不进入 Receiving。取消不停止后继 Receiving Hook，次数盾自行筛除取消或非正数值；反伤可继续。
 
 ### 1.6 已定稿的结算 Hook 类型
 
@@ -450,7 +450,7 @@ Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本�
 
 结果与 Damage 使用相同的 REJECTED、CANCELLED、UNAVAILABLE、APPLIED 区分。Pending 保存 amount 与可空 cancellation；取消不停止剩余 Receiving Hook。Application 保存 hpBefore、hpAfter、hpGain，后续嵌套业务不追溯修改这次恢复事实。Received amount 与实际 hpGain 分开；完整恢复量不在 Calculate 提前按缺失 HP 截断。
 
-**满血不自动拒绝正数治疗。** 普通索敌是否排除满血对象由选择器决定；已明确目标的正数治疗仍经过正常 Hook，可形成 APPLIED、hpGain 为零。事件 HEAL 的 amount 保持实际恢复量，receivedAmount 记录最终接收量，cancellation 记录业务取消；取消后目标被嵌套移除时仍记录事件，hp 为 null。普通治疗不能复活 HP 为零的对象。
+**满血不自动拒绝正数治疗。** 普通索敌是否排除满血对象由选择器决定；已明确目标的正数治疗仍经过正常 Hook，可形成 APPLIED、hpGain 为零。事件 HEAL 只携带目标、实际恢复量和发生 Tick，取消保留零值表现；接收量与取消报告通过 Outcome／Application 返回。普通治疗不能复活 HP 为零的对象。
 
 ### 4.1 治疗不可选中是项目选择
 

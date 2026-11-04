@@ -20,7 +20,7 @@ import { hasOccupancy } from "../../unit/capability/occupancy/capability.js";
 import { hasVitality } from "../../unit/capability/vitality/capability.js";
 import * as units from "../../unit/query.js";
 import type { Id, Unit } from "../../unit/unit.js";
-import { appendEvents, type State as BattleState } from "../state.js";
+import type { State as BattleState } from "../state.js";
 import type { Relation } from "../../unit/capability/blocking/contract.js";
 import * as hooks from "./hook.js";
 import { relations, usedCapacity } from "./query.js";
@@ -124,15 +124,6 @@ export function release(battle: BattleState, relations: readonly Relation[]): Ba
     }
 
     battle = replace(battle, [...prepared.values()]);
-    battle = appendEvents(
-        battle,
-        released.map((relation) => ({
-            type: "BLOCKING_RELEASED",
-            blockerUnitId: relation.blocker.id,
-            blockedUnitId: relation.blocked.id,
-            tick: battle.tick,
-        })),
-    );
 
     for (const relation of released) {
         battle = hooks.dispatch(battle, "released", relation);
@@ -194,14 +185,6 @@ export function acquire(
                 blocker: units.ref(blocker),
                 adjustment: { from: target.position, to, startTick: battle.tick },
             },
-        },
-    ]);
-    battle = appendEvents(battle, [
-        {
-            type: "BLOCKING_ACQUIRED",
-            blockerUnitId: blockerRef.id,
-            blockedUnitId: reference.id,
-            tick: battle.tick,
         },
     ]);
     const relation = { blocker: blockerRef, blocked: reference };

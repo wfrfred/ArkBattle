@@ -326,11 +326,11 @@ Main 是否 COMPLETED？
        是否允许离场？
          ├─ 否 → 保留 Unit 与 Main 的完成状态，后续重新检查
          └─ 是
-              ├─ 记录 ROUTE_COMPLETED
+              ├─ 累计路线完成数并输出 ROUTE_COMPLETED
               └─ Unit.remove(..., "SCRIPT")
 ```
 
-是否允许离场由 Battle 的结算政策判断，Route 不自行执行 Unit 离场。暂不能离场期间不重复产生 ROUTE_COMPLETED；事件在允许正常离场时由 Battle 记录，随后通过 Unit 的完整生命周期操作结算离场。
+是否允许离场由 Battle 的结算政策判断，Route 不自行执行 Unit 离场。暂不能离场期间不增加完成计数或重复产生 ROUTE_COMPLETED；允许正常离场时由 Battle 直接累计路线完成数、输出漏怪表现事实，随后通过 Unit 的完整生命周期操作结算离场。统计不读取表现 Event，详见 [UI 瞬时输出](event.md)。
 
 advance 可以同步触发跨领域操作。Battle 必须从其返回的最新 BattleState 重新读取 Unit，确认生命周期，再查询完成状态及离场资格；不能沿用推进前的 Unit 或 Route 快照。
 

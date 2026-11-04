@@ -221,7 +221,7 @@ return battle;
 
 acquire 失败时返回原 BattleState，不产生临时关系或通知。成功时在首次 Hook 前发布明确构造的双端状态与新 adjustment，再按 Blocker、Blockable 顺序通知，最后以 maintain 复核本次新 Relation 的当前资格；旧身份已被解除时跳过，不复核其他关系或裁撤整个阻挡组。Hook 中的容量／volume 操作由各自 Settlement 完成裁撤。它不绕过任何普通取得条件。
 
-`release(battle, captured)` 是唯一的关系解除操作，输入可以跨多个 owner。入口按正向列表中的原 Ref 条目过滤已失效的旧关系，重复的同一旧身份只处理一次，并保留首次出现的输入顺序。它先准备并发布整批双端解除结果，再记录整批 BLOCKING_RELEASED 事件，最后按该顺序逐条派发双方 RELEASED Hook。首个 Hook 已能读取整批解除结果和事件。
+`release(battle, captured)` 是唯一的关系解除操作，输入可以跨多个 owner。入口按正向列表中的原 Ref 条目过滤已失效的旧关系，重复的同一旧身份只处理一次，并保留首次出现的输入顺序。它先准备并发布整批双端解除结果，再按该顺序逐条派发双方 RELEASED Hook。首个 Hook 已能读取整批解除结果。
 
 release 只处理传入的旧集合，不自动 maintain、搜索或取消位置计划；Hook 新建立的条目不属于本次解除。过期集合或空集合返回原状态。旧身份在入口确认后，内部纯构造信任该事实；其他领域先完成自己的字段发布，再提交关系集合。调用方可使用 `relations(battle, reference)` 取得当前局部集合，或按具体业务提交已有的旧 Relation。
 
@@ -241,7 +241,7 @@ release 只处理传入的旧集合，不自动 maintain、搜索或取消位置
 
 工厂实现在 [blocker-operations.ts](../../src/core/unit/capability/blocking/blocker-operations.ts) 和 [blockable-operations.ts](../../src/core/unit/capability/blocking/blockable-operations.ts)。blocker.ts／blockable.ts 保留模型、初始化、守卫和数值查询，Catalog 与只读查询可精确依赖模型。公共入口直接导出工厂，不增加包装。
 
-setLayer 的 transform 只设置 layer 与实际 radius，不修改关系。同层请求由 transform 返回原 Unit，update 统一跳过其 settle。真实切层的 settle 将 previous.blocked 中的原 Ref 组成 Relation 数组交给 release；后者按当前 BattleState 过滤旧身份后批量解除、记录事件并通知。后继不重调 setLayer，也不把 previous 整体发布；本批其他字段和嵌套操作的新值因此保留。
+setLayer 的 transform 只设置 layer 与实际 radius，不修改关系。同层请求由 transform 返回原 Unit，update 统一跳过其 settle。真实切层的 settle 将 previous.blocked 中的原 Ref 组成 Relation 数组交给 release；后者按当前 BattleState 过滤旧身份后批量解除并通知。后继不重调 setLayer，也不把 previous 整体发布；本批其他字段和嵌套操作的新值因此保留。
 
 setLayer 不因旧关系在最终层下仍合法而保留它。新建立的同 ID 关系有新的 Ref 条目，不属于旧候选；该项解除不再额外维护新集合。它不自动 search、不新增 layerChanged Hook、不改变自身 Unit Layer。内容在对应 Effect 生命周期程序中提交该 Change，不机械绑定所有 Skill 开始或结束。
 
@@ -316,7 +316,7 @@ Blocking 保证每个 ACQUIRED Hook 开始时原关联 Ref 条目仍然有效。
 
 battle/blocking/query.ts 提供 blockerOf(battle, ref)、blocked(battle, ref)、usedCapacity(battle, ref)；输入保留相应 Capability 的 Typed Ref。按 Ref 读取后检查对象是否仍存在，不重复检查 Ref 已证明的稳定能力。`relations(battle, reference?)` 返回只读 Relation 数组：省略 reference 时按 Unit 顺序投影全场当前关联；提供 Unit Ref 时直接读取该 Unit 的角色与关联，不扫描全场。Blocker 按自身 blocked 顺序返回关系，Blockable 从当前 owner 列表取原条目；无能力、无关系或宿主已不存在时返回空数组。查询保留正向列表中的原 blocked Ref，hasRelation 据此判断某次旧关联是否仍有效，区分解除后重建的同双方关系。不存在独立的持久 Relation 实例。
 
-Blocker／Blockable State 各自持有 acquired、released Hook 数组，使用绑定对应 Typed Ref 的 setHook(reference, key, hook)／removeHook(reference, key, id) 返回 Change，再由 Unit.update 登记。每条关系在其第一个业务回调前同时固定两侧候选 ID，逐项恢复最新同 ID 登记并检查 accepts；新增 ID 不参加该条通知，同 ID 替换使用最新登记。先 Blocker，后 Blockable；Context 固定原关系事实，BattleState 每项接续最新版本。ACQUIRED 每项执行前通过原关联 Ref 条目身份确认关系仍存在，RELEASED 是历史通知，不要求旧关系仍存在。BLOCKING_ACQUIRED 在取得通知开始前记录；release 先记录整批 BLOCKING_RELEASED，再逐条开始派发，各条 Hook 候选在轮到该条时固定，不提前冻结后续关系的监听登记。
+Blocker／Blockable State 各自持有 acquired、released Hook 数组，使用绑定对应 Typed Ref 的 setHook(reference, key, hook)／removeHook(reference, key, id) 返回 Change，再由 Unit.update 登记。每条关系在其第一个业务回调前同时固定两侧候选 ID，逐项恢复最新同 ID 登记并检查 accepts；新增 ID 不参加该条通知，同 ID 替换使用最新登记。先 Blocker，后 Blockable；Context 固定原关系事实，BattleState 每项接续最新版本。ACQUIRED 每项执行前通过原关联 Ref 条目身份确认关系仍存在，RELEASED 是历史通知，不要求旧关系仍存在。取得和解除直接派发各自业务 Hook，不输出诊断 Event；release 在整批发布后逐条开始派发，各条 Hook 候选在轮到该条时固定，不提前冻结后续关系的监听登记。
 
 Runtime 执行 Movement → Mechanism.advance → Blocking.advance → resolveRouteCompletion。最后一步只检查路线是否已完成和能否离场，不再次推进 Route。消费侧通过 relations(battle) 从两端状态取得 Typed Ref 关系，按需生成输出；不保存额外的全局权威关系。Movement 根据 Blockable 的当前归属决定是否推进自主 Locomotion。
 

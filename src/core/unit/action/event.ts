@@ -1,12 +1,9 @@
 import type { Id as UnitId } from "../unit.js";
-import type { Id } from "./execution.js";
 
-export type Signal = {
-    readonly executionId: Id;
+export type Event = {
     readonly sourceUnitId: UnitId;
     readonly tick: number;
 } & (
-    | { readonly type: "ACTION_RELEASED"; readonly markerId: string }
-    | { readonly type: "ACTION_FINISHED" }
-    | { readonly type: "ACTION_CANCELLED"; readonly reason: string }
+    | { readonly type: "ACTION"; readonly targetUnitId: UnitId }
+    | { readonly type: "ACTION_RELEASED" | "ACTION_FINISHED" | "ACTION_CANCELLED" }
 );

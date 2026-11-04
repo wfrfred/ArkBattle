@@ -6,7 +6,10 @@ export type {
     Lifecycle,
     LeaveReason,
     Departure,
+    UnitRemoval,
 } from "./unit.js";
+
+export type { Event } from "./event.js";
 
 export type { EnterHook, TickHook, PrepareHook, LeaveHook } from "./hook.js";
 

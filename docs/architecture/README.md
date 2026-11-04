@@ -10,6 +10,8 @@
 
 **已定稿的资源操作边界：** [Vitality／Elemental 的资格、接收与提交](vitality.md#18-已定稿的接收与资源提交接口)由 Battle 编排、Capability 实施；commit 复用对应业务的 CommitContext，返回能力定义的资源报告。HP 死亡确认位于两侧 Applied 后，EP Burst 随资源提交同步处理。
 
+**已定稿的外部输出边界：** [Event](event.md)提供 UI 所需的瞬时事实，各领域定义、Battle 汇总。业务结果使用 Outcome／Application，内部响应使用 Hook，统计不读取 Event；不建立覆盖全部领域变化的事件日志。
+
 **已确定的 Unit 变更与 Blocking 政策：** [Unit 批量变更](api-conventions.md#51-unit-完整操作与批量变更)采用 Ref 绑定 Change：全批纯转换、一次 Field 发布、原顺序结算；精确私有 state 写回和完整生命周期操作保持原协议。[Blocking](blocking.md#已确定的职责与调度政策)明确构造与通知关系，后继局部维护本对象或受影响 owner，不扫描无关批次；完整 Tile 操作仍可全场维护。临时 HP 为 0 不提前解除旧关系，真实离场由 Unit.remove 的统一 prepare 节点接入 Blocking 自身清理。普通接敌每 Tick 在 Movement 后统一执行。
 
 各领域文档记录有效的数据模型、API 和执行语义。尚未完成的重构、开放问题和验收要求保留在对应章节；[接口约定](api-conventions.md)汇总尚未统一的接口，[目标语义与实现缺口](tactical-semantics.md)记录未完成的玩法接入。
@@ -26,6 +28,7 @@
 | [Capability API](capability.md) | 能力配对、统一初始化与装配、Change 工厂、完整结算、事件责任与模块命名 |
 | [接口约定](api-conventions.md) | 五类接口、Typed Ref、self、时间与尚未统一的接口 |
 | [Hook 集合与登记](hook.md) | 类型化键、Unit 本地不可变集合、固有组合、动态 Change 与生命周期派发 |
+| [UI 瞬时输出](event.md) | Event 的实际需求、领域归属、必要载荷与发生时点 |
 | [Lifetime 与依赖析构](lifetime.md) | 静态描述符、Scope、权威依赖图、同步 Prepare、Pending DAG 与最外层 Finalize |
 | [Action 设计](action.md) | 基础间隔与速度、贡献、Cooldown／Casting、程序与实例、调度和 Hook 契约及待定项 |
 | [Skill 设计](skill.md) | 单槽 Skill／Activation 聚合、两种 Ref、Capability 工厂、SP、持续预算、业务 Hook 与完整终止 |

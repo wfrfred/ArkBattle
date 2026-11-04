@@ -231,7 +231,7 @@ Unit 执行已登记的生命周期程序；Lifetime 关系由各实例所属领
 
 Deployment 自己持有 Hook 集合，setHook(battle, hook)／removeHook(battle, id) 登记、替换和撤销。观察者无需具有 Deployable；Effect／Mechanism 根据自身生命周期管理登记。
 
-Deployed 载荷为 { unit, request }，支付信息读取 request.quote。它是已登记新实例的部署事实；后续普通入场程序尚可能修改状态或移除实例，观察者需要当前事实时重新查询。UNIT_DEPLOYED 诊断事件保存 Unit ID、位置、payment:number|null 与 Tick。
+Deployed 载荷为 { unit, request }，支付信息读取 request.quote。它是已登记新实例的部署事实；后续普通入场程序尚可能修改状态或移除实例，观察者需要当前事实时重新查询。部署结果通过 Outcome 返回，当前 Card 与场上 Unit 从 State 查询，不额外输出部署诊断 Event。
 
 观察集合遵守[公共 Hook 派发契约](functional-core.md#7-同步候选范围)。一次性来源在触发新部署等完整业务前先消费自己的机会；嵌套操作接续最新 BattleState。
 

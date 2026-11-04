@@ -115,7 +115,6 @@ test("cancellation during payment notification retains payment and suppresses th
     assert.equal(get(state, 0).skill.sp.value, 0);
     assert.equal(get(state, 0).skill.activation, null);
     assert.equal(get(state, 0).skill.state.started, false);
-    assert.equal(state.events.filter((event) => event.type === "SKILL_FINISHED").length, 1);
 });
 
 test("natural SP recovery pauses without backlog and uses current recovery speed", () => {
