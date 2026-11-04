@@ -5,7 +5,7 @@ import { Hooks } from "../../dist/core/hook.js";
 import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import * as unitQueries from "../../dist/core/unit/index.js";
-import { resolveDefense } from "../../dist/core/unit/capability/vitality/index.js";
+import { resolveDefense, resolveResistance } from "../../dist/core/unit/capability/vitality/index.js";
 import { and, damage as damageFilter, range as inRange, first, distance } from "../../dist/core/battle/targeting/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { step as stepBattle } from "../../dist/core/battle/index.js";
@@ -76,7 +76,8 @@ test('elemental execution: standard immediate bursts apply class-specific damage
     assert.equal(result.value.kind, 'APPLIED');
     assert.equal(getBurst(result.state, result.value.application.burst).source, null);
     assert.equal(getUnit(input, 1).vitality.hp, 100000 - expectedHpLoss);
-    assert.deepEqual(defense(input), { defense: expectedDefense, resistance: expectedResistance });
+    assert.equal(defense(input), expectedDefense);
+    assert.equal(resolveResistance(input, unitRef(getUnit(input, 1))), expectedResistance);
     const hits = input.events.filter(event => event.type === 'DAMAGE');
     assert.equal(hits.length, 1);
     assert.equal(hits[0].sourceUnitId, null);
@@ -91,11 +92,11 @@ test('elemental execution: erosion defense loss survives recovery and stacks on 
     let firstState = effectFixtureWork(unit(receiver));
     firstState = element(firstState, 'EROSION').state;
     firstState = advance(firstState, duration);
-    assert.equal(defense(firstState).defense, 500 - reduction);
+    assert.equal(defense(firstState), 500 - reduction);
     assert.equal(getUnit(firstState, 1).elemental.burst, null);
     const recoveredHp = getUnit(firstState, 1).vitality.hp;
     firstState = element(firstState, 'EROSION', duration).state;
-    assert.equal(defense(firstState).defense, 500 - 2 * reduction);
+    assert.equal(defense(firstState), 500 - 2 * reduction);
     assert.equal(recoveredHp - getUnit(firstState, 1).vitality.hp, secondHpLoss);
   }
 });

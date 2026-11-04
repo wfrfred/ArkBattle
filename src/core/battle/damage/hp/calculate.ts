@@ -1,6 +1,6 @@
 import type { Result, State as BattleState } from "../../state.js";
 import * as units from "../../../unit/query.js";
-import { resolveDefense } from "../../../unit/capability/vitality/query.js";
+import { resolveDefense, resolveResistance } from "../../../unit/capability/vitality/query.js";
 import { hasElemental } from "../../../unit/capability/elemental/capability.js";
 import { resolveDamageResistance } from "../../../unit/capability/elemental/query.js";
 import type { Calculated, Parameters, Request } from "./contract.js";
@@ -60,7 +60,7 @@ function formula(battle: BattleState, request: Request, parameters: Parameters):
 
     switch (parameters.type) {
         case "PHYSICAL": {
-            const defense = resolveDefense(battle, request.target)!.defense;
+            const defense = resolveDefense(battle, request.target)!;
             const effective =
                 Math.max(0, defense - parameters.penetration.fixed) *
                 Math.max(0, 1 - parameters.penetration.proportional);
@@ -69,7 +69,7 @@ function formula(battle: BattleState, request: Request, parameters: Parameters):
         }
 
         case "ARTS": {
-            const resistance = resolveDefense(battle, request.target)!.resistance;
+            const resistance = resolveResistance(battle, request.target)!;
             const effective =
                 Math.max(0, resistance - parameters.penetration.fixed) *
                 Math.max(0, 1 - parameters.penetration.proportional);

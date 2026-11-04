@@ -19,13 +19,13 @@ export {
     removeResistanceContribution,
 } from "./capability.js";
 
-export type { Definition, DefenseValues, Input, State, Vitality } from "./capability.js";
+export type { Definition, Input, State, Vitality } from "./capability.js";
 
 export type { DamageReceptionRule as Rule } from "./rule.js";
 
 export type { ReceivingContext as RuleContext } from "../../../battle/damage/hp/hook.js";
 
-export { resolveDefense } from "./query.js";
+export { resolveDefense, resolveResistance } from "./query.js";
 
 export {
     canReceiveDamage,

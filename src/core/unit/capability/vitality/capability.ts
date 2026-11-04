@@ -19,11 +19,6 @@ export interface Definition {
     readonly resistance: number;
 }
 
-export interface DefenseValues {
-    readonly defense: number;
-    readonly resistance: number;
-}
-
 export type Input = contribution.Input<attribute.Modifier, Unit & Vitality>;
 
 export interface State {
