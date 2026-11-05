@@ -326,6 +326,25 @@ Skill 结束后的输出不自动证明宿主离场后也继续。例如蕾缪�
 
 弹药阈值可以从已结算的报告判断，暂不增加通用 `ammoExhausted` 或阈值注册表。TIME 的自然流逝通过 battle.tick 查询，到期通过 `activationEnded` 观察；没有实际观察者时，不为每个 Tick 或每次持续预算修正预置新的 Hook。
 
+### 3.2 2026-11-05：灰烬 S2 的消费节点与攻击中断
+
+本节区分“攻击中断”“本次是否已经消费”“已经进入的同步程序如何返回”。不能从输出已发生，直接推导后续尚未提交的消费一定需要补做；也不能从某次被取消，直接推导本次一定不消费。新的本机资源、指令、输入指纹及复跑入口见 [ammo-cancellation-20261105](../evidence/ammo-cancellation-20261105/README.md)。当前 DLL／metadata SHA-256 分别为 `cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff`／`e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5`，不是本案开头的旧客户端；没有运行游戏、注入中断或验证活跃 XLua。
+
+**实际绑定直接证实：** 本机灰烬 Character 的 S2 Mode 指向本轮 RangedAttack，同一 Attack GameObject 具有 AbilityEventCounter，`_countEvent=4`、`_expendPerTrigger=1`。`skchr_ash_2` 使用 CastSkillWithLimitTimes，并按配置取得当前主攻击的计数源。当前枚举常量 4 为 `ON_SPELL_ON`，3 为 `ON_CAST_END`；标签来自当前 metadata，不由整数或节点名称猜测。
+
+**消费早于实际目标输出：** `AbilityStandard.ExecuteSpell` 64119 在 `0x1805fd6d6` 发送事件 4。Counter 在符合本次计数条件的普通分支进入 `DealCountEvent` 96419，于 `0x181004147` 写入计数，再通知 `OnEventCountConsumed`；之后才返回施放流程，进入 `Entity.OnAbilitySpellOn`（`0x1805fd766`）和目标输出（`0x1805fd866`）。因此本例消费不应被理解为 afterOutput 的欠账。
+
+**中断的普通结束链：** `InterruptIfNot` 64025 以 `INTERRUPTED(1)` 进入 `FinishIfNot` 64056。实际 RangedAttack 的 OnCastEnd 沿 AbstractBasicAttack、AbstractAnimatedAbility、EasyToStartAbility 到 AbilityStandard，发出的是事件 3，没有补发本次事件 4。所查 Counter 没有接收结束原因来判断是否退还这次消费的普通分支。
+
+| 本次中断时点 | 本例普通 native 的结论 |
+| --- | --- |
+| 尚未进入本次消费节点 | 中断／结束本身不会额外补出这次消费。 |
+| 已经通过本次计数并写入消费 | 后续普通中断链没有按 INTERRUPTED 撤销这次消费的退款分支。计数器重置、技能退出和其它内容显式补弹分别判断。 |
+
+消费与耗尽结束仍分离：Counter 的 ready-to-reset 协调及 `ResetCount` 门控制后续技能收尾；CastSkillWithLimitTimes 的 OnTick 不是看到余额耗尽就无条件在本次输出前结束。不能仅据“前置消费”就把项目 consume／check 整段一同前移。
+
+这些结论限定灰烬 S2 的所选配置及普通未免耗路径，不推广为所有弹药技能的统一消费节点。流明等条件消费、节弹、弹药倾泻，以及技能关闭丢弃余弹，不与普通攻击中断合并。项目的 Lifetime／对象保留规则决定程序和存储何时结束，不能替代各玩法的消费条件和发生节点；本轮不据此修改通用 Lifetime、ENDING 写入权限或生产接口。
+
 ## 4. 调度与范围
 
 [卫戍帮助](https://prts.wiki/w/卫戍协议/帮助#作战阶段)明确，模式会自动操作原本的手动技能，具有自己的操作冷却和普通／特殊策略，也存在主动关闭的特殊策略。因此，技能自身触发类型与模式控制策略是两项需求。不能仅把 MANUAL 改为 AUTO 后按 SP 足够启动。既有项目的明确偏离继续按原约定处理。

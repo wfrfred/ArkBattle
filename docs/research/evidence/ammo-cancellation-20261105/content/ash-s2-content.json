@@ -1,0 +1,3511 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-05",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/ammo-cancel-content-20261105/extract_ash.py",
+      "bytes": 9217,
+      "sha256": "46221718ce98fad7c6b642c1e23f157e5c9508e9d847a46d33b686a2392c0b5f"
+    },
+    "helper": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+      "bytes": 6749,
+      "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+    },
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/assets.py",
+        "bytes": 3399,
+        "sha256": "c458702aa0e014a093c548db9100709ac6338f74cee11aceb45c661003de4a09"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      }
+    ],
+    "nativeSources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      }
+    ],
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_456_ash.ab",
+        "bytes": 24355,
+        "sha256": "c675a7ba388ceb8f484558a7eae5ea9c96f66dd43b813a3b9f0ee3c63defdc43"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+        "bytes": 1367500,
+        "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      }
+    ],
+    "scope": "Static installed Ash Prefab and skchr_ash_2 resource bindings only. No live client/XLua or attack/cancellation observation.",
+    "decodeBoundary": "Unresolved shared byte type common:928 is retained as an integer, not coerced to bool; enum/event labels require current metadata/native evidence. Array wrapper and unresolved common field names are preserved."
+  },
+  "result": {
+    "containerEntries": [
+      {
+        "bundle": "charpack/char_456_ash.ab",
+        "file": "CAB-55195225621ac69d3ca3b163a08522e5",
+        "pathId": "1",
+        "sha256": "9ba5b4402ba262be5e0a748a0414e7fbf1bfc16cef99e97e977571310e3a435e",
+        "selectedEntries": [
+          {
+            "common:155": "dyn/battle/prefabs/characters/char_456_ash.prefab",
+            "common:778": {
+              "preloadIndex": 0,
+              "preloadSize": 119,
+              "asset": {
+                "m_FileID": 0,
+                "m_PathID": 30179481437068147
+              }
+            }
+          }
+        ]
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "1",
+        "sha256": "fa4b1af713d7b4da58332c8a2254c182f97b51f9a9e5cce482465e88035a0af4",
+        "selectedEntries": [
+          {
+            "common:155": "dyn/battle/prefabs/[uc]skills/skchr_ash_2.prefab",
+            "common:778": {
+              "preloadIndex": 17738,
+              "preloadSize": 32,
+              "asset": {
+                "m_FileID": 0,
+                "m_PathID": -9098106877515160846
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "components": [
+      {
+        "bundle": "charpack/char_456_ash.ab",
+        "file": "CAB-55195225621ac69d3ca3b163a08522e5",
+        "pathId": "19486450107865971",
+        "hierarchy": [
+          {
+            "name": "S2",
+            "gameObjectPathId": "6620487804235275123",
+            "transformPathId": "1070877836878338931"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-3954195013106082957",
+            "transformPathId": "8712386565111995251"
+          },
+          {
+            "name": "char_456_ash",
+            "gameObjectPathId": "30179481437068147",
+            "transformPathId": "2879393481423313779"
+          }
+        ],
+        "name": "S2",
+        "typeId": 16,
+        "monoScript": {
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "id": "5390319429299248724",
+          "name": "UnitMode",
+          "cl": "UnitMode",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "externalScriptReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "rawFile": "ash-19486450107865971.bin",
+        "sha256": "28aceaaadd2fe59f1475b883e958b83180050614b039da3f28f08c293a18d02e",
+        "fieldOffsets": {
+          "common:374": {
+            "offset": 0,
+            "bytes": 12,
+            "serializedType": "common:564",
+            "hex": "0000000073db3fc394b2e05b"
+          },
+          "common:349": {
+            "offset": 12,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "common:490": {
+            "offset": 16,
+            "bytes": 12,
+            "serializedType": "common:616",
+            "hex": "01000000549e4439f642ce4a"
+          },
+          "common:427": {
+            "offset": 28,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_bodyTransform": {
+            "offset": 32,
+            "bytes": 12,
+            "serializedType": "PPtr<$Transform>",
+            "hex": "0000000073dbca47e63a1d4c"
+          },
+          "_animatorHooker": {
+            "offset": 44,
+            "bytes": 12,
+            "serializedType": "PPtr<$UnitAnimatorHooker>",
+            "hex": "0000000073db53302d017040"
+          },
+          "_overrideStartEffect": {
+            "offset": 56,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_overrideDeadEffect": {
+            "offset": 60,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_combat": {
+            "offset": 64,
+            "bytes": 12,
+            "serializedType": "PPtr<$Ability>",
+            "hex": "000000000000000000000000"
+          },
+          "_attack": {
+            "offset": 76,
+            "bytes": 12,
+            "serializedType": "PPtr<$Ability>",
+            "hex": "0000000073dbd90caf028573"
+          },
+          "_attackTrigger": {
+            "offset": 88,
+            "bytes": 12,
+            "serializedType": "PPtr<$TargetTrigger>",
+            "hex": "0000000073dbb18953e8a505"
+          },
+          "_hideUIAttackRange": {
+            "offset": 100,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_updateAttackRangeExtendByAttributeDirty": {
+            "offset": 104,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_rangeToShow": {
+            "offset": 108,
+            "bytes": 12,
+            "serializedType": "PPtr<$TargetSelector>",
+            "hex": "000000000000000000000000"
+          },
+          "_extraRangesToShow": {
+            "offset": 120,
+            "bytes": 4,
+            "serializedType": "common:981",
+            "hex": "00000000"
+          },
+          "_generalAbilities": {
+            "offset": 124,
+            "bytes": 4,
+            "serializedType": "common:981",
+            "hex": "00000000"
+          },
+          "_addIndexToSignalId": {
+            "offset": 128,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_includeIndexZero": {
+            "offset": 132,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_alwaysHideHp": {
+            "offset": 136,
+            "bytes": 8,
+            "serializedType": "SerializedBool",
+            "hex": "0000000000000000"
+          },
+          "_alwaysHideSp": {
+            "offset": 144,
+            "bytes": 8,
+            "serializedType": "SerializedBool",
+            "hex": "0000000000000000"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 6620487804235275123
+          },
+          "common:349": 1,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 5390319429299248724
+          },
+          "common:427": "",
+          "_bodyTransform": {
+            "m_FileID": 0,
+            "m_PathID": 5484604681928498035
+          },
+          "_animatorHooker": {
+            "m_FileID": 0,
+            "m_PathID": 4643212509414939507
+          },
+          "_overrideStartEffect": "",
+          "_overrideDeadEffect": "",
+          "_combat": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_attack": {
+            "m_FileID": 0,
+            "m_PathID": 8324062437122366323
+          },
+          "_attackTrigger": {
+            "m_FileID": 0,
+            "m_PathID": 406986786836962163
+          },
+          "_hideUIAttackRange": 0,
+          "_updateAttackRangeExtendByAttributeDirty": 0,
+          "_rangeToShow": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_extraRangesToShow": {
+            "Array": []
+          },
+          "_generalAbilities": {
+            "Array": []
+          },
+          "_addIndexToSignalId": 1,
+          "_includeIndexZero": 0,
+          "_alwaysHideHp": {
+            "isDefined": 0,
+            "value": 0
+          },
+          "_alwaysHideSp": {
+            "isDefined": 0,
+            "value": 0
+          }
+        }
+      },
+      {
+        "bundle": "charpack/char_456_ash.ab",
+        "file": "CAB-55195225621ac69d3ca3b163a08522e5",
+        "pathId": "7918768805007055731",
+        "hierarchy": [
+          {
+            "name": "Attack",
+            "gameObjectPathId": "-349758418146829453",
+            "transformPathId": "-4396643362238112909"
+          },
+          {
+            "name": "Body",
+            "gameObjectPathId": "-6731505436878251149",
+            "transformPathId": "5484604681928498035"
+          },
+          {
+            "name": "S2",
+            "gameObjectPathId": "6620487804235275123",
+            "transformPathId": "1070877836878338931"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-3954195013106082957",
+            "transformPathId": "8712386565111995251"
+          },
+          {
+            "name": "char_456_ash",
+            "gameObjectPathId": "30179481437068147",
+            "transformPathId": "2879393481423313779"
+          }
+        ],
+        "name": "Attack",
+        "typeId": 20,
+        "monoScript": {
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "id": "-994835214138492539",
+          "name": "AbilityEventCounter",
+          "cl": "AbilityEventCounter",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "externalScriptReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "rawFile": "ash-7918768805007055731.bin",
+        "sha256": "6aff8a2ff7adfb9dbc4ed2e92440b1e4d225d33ed80c3bf76128d368c3fde6a8",
+        "fieldOffsets": {
+          "common:374": {
+            "offset": 0,
+            "bytes": 12,
+            "serializedType": "common:564",
+            "hex": "0000000073db2761926825fb"
+          },
+          "common:349": {
+            "offset": 12,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "common:490": {
+            "offset": 16,
+            "bytes": 12,
+            "serializedType": "common:616",
+            "hex": "0100000085b939c3a4a231f2"
+          },
+          "common:427": {
+            "offset": 28,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_countEvent": {
+            "offset": 32,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "04000000"
+          },
+          "_useAnotherBBKey": {
+            "offset": 36,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_triggerTimeCount": {
+            "offset": 40,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "1f000000"
+          },
+          "_expendPerTrigger": {
+            "offset": 44,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "01000000"
+          },
+          "_resetAfterEnd": {
+            "offset": 48,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_resetImmediatelyWhenProgressEnd": {
+            "offset": 52,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_resetWhenAttackFinished": {
+            "offset": 56,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_ignoreTriggerOnce": {
+            "offset": 60,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_overrideRecoverCountLimit": {
+            "offset": 64,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_recoverCountLimit": {
+            "offset": 68,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "00000000"
+          },
+          "_forceAbilityWaitForPeriodWhenFinalCastEnd": {
+            "offset": 72,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_persistRemainingCountToSharedBlackboard": {
+            "offset": 76,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_remainingCountSharedBBKey": {
+            "offset": 80,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -349758418146829453
+          },
+          "common:349": 1,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -994835214138492539
+          },
+          "common:427": "",
+          "_countEvent": 4,
+          "_useAnotherBBKey": 0,
+          "_triggerTimeCount": 31,
+          "_expendPerTrigger": 1,
+          "_resetAfterEnd": 1,
+          "_resetImmediatelyWhenProgressEnd": 0,
+          "_resetWhenAttackFinished": 0,
+          "_ignoreTriggerOnce": 0,
+          "_overrideRecoverCountLimit": 0,
+          "_recoverCountLimit": 0,
+          "_forceAbilityWaitForPeriodWhenFinalCastEnd": 0,
+          "_persistRemainingCountToSharedBlackboard": 0,
+          "_remainingCountSharedBBKey": ""
+        }
+      },
+      {
+        "bundle": "charpack/char_456_ash.ab",
+        "file": "CAB-55195225621ac69d3ca3b163a08522e5",
+        "pathId": "8324062437122366323",
+        "hierarchy": [
+          {
+            "name": "Attack",
+            "gameObjectPathId": "-349758418146829453",
+            "transformPathId": "-4396643362238112909"
+          },
+          {
+            "name": "Body",
+            "gameObjectPathId": "-6731505436878251149",
+            "transformPathId": "5484604681928498035"
+          },
+          {
+            "name": "S2",
+            "gameObjectPathId": "6620487804235275123",
+            "transformPathId": "1070877836878338931"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-3954195013106082957",
+            "transformPathId": "8712386565111995251"
+          },
+          {
+            "name": "char_456_ash",
+            "gameObjectPathId": "30179481437068147",
+            "transformPathId": "2879393481423313779"
+          }
+        ],
+        "name": "Attack",
+        "typeId": 3,
+        "monoScript": {
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "id": "4156651312234227407",
+          "name": "RangedAttack",
+          "cl": "RangedAttack",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "externalScriptReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "rawFile": "ash-8324062437122366323.bin",
+        "sha256": "a82c16fd79b836d8770e413e13c306bf40f13ea1cd19168aa11c78b6e5ecccc2",
+        "fieldOffsets": {
+          "common:374": {
+            "offset": 0,
+            "bytes": 12,
+            "serializedType": "common:564",
+            "hex": "0000000073db2761926825fb"
+          },
+          "common:349": {
+            "offset": 12,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "common:490": {
+            "offset": 16,
+            "bytes": 12,
+            "serializedType": "common:616",
+            "hex": "01000000cfe6e1785864af39"
+          },
+          "common:427": {
+            "offset": 28,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_selector": {
+            "offset": 32,
+            "bytes": 12,
+            "serializedType": "PPtr<$TargetSelector>",
+            "hex": "000000000000000000000000"
+          },
+          "_metadata": {
+            "offset": 44,
+            "bytes": 8,
+            "serializedType": "Metadata",
+            "hex": "0000000000000000"
+          },
+          "_overrideSignalId": {
+            "offset": 52,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_interruptAbilityOnDetach": {
+            "offset": 56,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_attachPassiveBuffsOnDummy": {
+            "offset": 60,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_ignoreIfOwnerDead": {
+            "offset": 64,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_forceAsDmgOrHealAbility": {
+            "offset": 68,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_waitForAttackEvent": {
+            "offset": 72,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_interuptIfTargetDead": {
+            "offset": 76,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_resetCdStrategy": {
+            "offset": 80,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "01000000"
+          },
+          "_selectTargetSource": {
+            "offset": 84,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "02000000"
+          },
+          "_selectTargetTiming": {
+            "offset": 88,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "00000000"
+          },
+          "_timeMode": {
+            "offset": 92,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "00000000"
+          },
+          "_alwaysIncludeTarget": {
+            "offset": 96,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_allowNoTarget": {
+            "offset": 100,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_animKey": {
+            "offset": 104,
+            "bytes": 16,
+            "serializedType": "string",
+            "hex": "0c000000536b696c6c5f325f4c6f6f70"
+          },
+          "_endAnimKey": {
+            "offset": 120,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_downAnimKey": {
+            "offset": 124,
+            "bytes": 24,
+            "serializedType": "string",
+            "hex": "11000000536b696c6c5f325f4c6f6f705f446f776e000000"
+          },
+          "_downEndAnimKey": {
+            "offset": 148,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_upAnimKey": {
+            "offset": 152,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_upEndAnimKey": {
+            "offset": 156,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_cooldown": {
+            "offset": 160,
+            "bytes": 4,
+            "serializedType": "common:161",
+            "hex": "00000000"
+          },
+          "_cooldownKey": {
+            "offset": 164,
+            "bytes": 12,
+            "serializedType": "string",
+            "hex": "080000006475726174696f6e"
+          },
+          "_preDelay": {
+            "offset": 176,
+            "bytes": 4,
+            "serializedType": "common:161",
+            "hex": "00000000"
+          },
+          "_escapeTime": {
+            "offset": 180,
+            "bytes": 4,
+            "serializedType": "common:161",
+            "hex": "00000000"
+          },
+          "_faceToTarget": {
+            "offset": 184,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_faceToDefault": {
+            "offset": 188,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_faceToFront": {
+            "offset": 192,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_faceToFirstCastTarget": {
+            "offset": 196,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_checkFaceToFirstCastTargetDownAttack": {
+            "offset": 200,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_forceFaceToDirection": {
+            "offset": 204,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_activeBuffs": {
+            "offset": 208,
+            "bytes": 4,
+            "serializedType": "BuffData",
+            "hex": "00000000"
+          },
+          "_maxAnimScale": {
+            "offset": 212,
+            "bytes": 4,
+            "serializedType": "common:161",
+            "hex": "000080bf"
+          },
+          "_onlyPlayEndAnimWhenIsLastAbility": {
+            "offset": 216,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_ignorePalsyInterrupt": {
+            "offset": 220,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_affectedBySlowDown": {
+            "offset": 224,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_atkScale": {
+            "offset": 228,
+            "bytes": 4,
+            "serializedType": "common:161",
+            "hex": "0000803f"
+          },
+          "_atkScaleKey": {
+            "offset": 232,
+            "bytes": 16,
+            "serializedType": "string",
+            "hex": "0900000061746b5f7363616c65000000"
+          },
+          "_attackType": {
+            "offset": 248,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "01000000"
+          },
+          "_elementDamageType": {
+            "offset": 252,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "00000000"
+          },
+          "_epDamageRatio": {
+            "offset": 256,
+            "bytes": 4,
+            "serializedType": "common:161",
+            "hex": "00000000"
+          },
+          "_useDynamicAttackType": {
+            "offset": 260,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_deliveryParaWhenReplaceActionNode": {
+            "offset": 264,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_projectileKey": {
+            "offset": 268,
+            "bytes": 28,
+            "serializedType": "string",
+            "hex": "1500000070726f6a656374696c655f6368725f6173685f7332000000"
+          },
+          "_mountPointType": {
+            "offset": 296,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "02000000"
+          },
+          "_useMountGroup": {
+            "offset": 300,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_mountGroup": {
+            "offset": 304,
+            "bytes": 8,
+            "serializedType": "MountPointGroup",
+            "hex": "0000000000000000"
+          },
+          "_damageType": {
+            "offset": 312,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "01000000"
+          },
+          "_waitForProjectileInvalid": {
+            "offset": 316,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_notClearProjectileWhenCastEnd": {
+            "offset": 320,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_fireAttackFinishWhenProjectileInvalid": {
+            "offset": 324,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_minPostDelayWhenProjectileInvalid": {
+            "offset": 328,
+            "bytes": 4,
+            "serializedType": "common:161",
+            "hex": "00000000"
+          },
+          "_waitForAnimEndWhenProjectileInvalid": {
+            "offset": 332,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_projectileDestination": {
+            "offset": 336,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "00000000"
+          },
+          "_extraDamageType": {
+            "offset": 340,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "00000000"
+          },
+          "_emitToInputPosWhenTargetIsInvalid": {
+            "offset": 344,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_emitToInputRootTileWhenTargetIsInvalid": {
+            "offset": 348,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_useCachedAtkOnly": {
+            "offset": 352,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_transferSource": {
+            "offset": 356,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_extraProjectileKeys": {
+            "offset": 360,
+            "bytes": 4,
+            "serializedType": "common:981",
+            "hex": "00000000"
+          },
+          "_fireCreateProjectileEvent": {
+            "offset": 364,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -349758418146829453
+          },
+          "common:349": 1,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 4156651312234227407
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 0,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_waitForAttackEvent": 1,
+          "_interuptIfTargetDead": 0,
+          "_resetCdStrategy": 1,
+          "_selectTargetSource": 2,
+          "_selectTargetTiming": 0,
+          "_timeMode": 0,
+          "_alwaysIncludeTarget": 1,
+          "_allowNoTarget": 0,
+          "_animKey": "Skill_2_Loop",
+          "_endAnimKey": "",
+          "_downAnimKey": "Skill_2_Loop_Down",
+          "_downEndAnimKey": "",
+          "_upAnimKey": "",
+          "_upEndAnimKey": "",
+          "_cooldown": 0.0,
+          "_cooldownKey": "duration",
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_faceToTarget": 1,
+          "_faceToDefault": 0,
+          "_faceToFront": 0,
+          "_faceToFirstCastTarget": 0,
+          "_checkFaceToFirstCastTargetDownAttack": 0,
+          "_forceFaceToDirection": 0,
+          "_activeBuffs": {
+            "Array": []
+          },
+          "_maxAnimScale": -1.0,
+          "_onlyPlayEndAnimWhenIsLastAbility": 0,
+          "_ignorePalsyInterrupt": 0,
+          "_affectedBySlowDown": 0,
+          "_atkScale": 1.0,
+          "_atkScaleKey": "atk_scale",
+          "_attackType": 1,
+          "_elementDamageType": 0,
+          "_epDamageRatio": 0.0,
+          "_useDynamicAttackType": 0,
+          "_deliveryParaWhenReplaceActionNode": 0,
+          "_projectileKey": "projectile_chr_ash_s2",
+          "_mountPointType": 2,
+          "_useMountGroup": 0,
+          "_mountGroup": {
+            "loopType": 0,
+            "mountPoints": {
+              "Array": []
+            }
+          },
+          "_damageType": 1,
+          "_waitForProjectileInvalid": 0,
+          "_notClearProjectileWhenCastEnd": 0,
+          "_fireAttackFinishWhenProjectileInvalid": 0,
+          "_minPostDelayWhenProjectileInvalid": 0.0,
+          "_waitForAnimEndWhenProjectileInvalid": 0,
+          "_projectileDestination": 0,
+          "_extraDamageType": 0,
+          "_emitToInputPosWhenTargetIsInvalid": 0,
+          "_emitToInputRootTileWhenTargetIsInvalid": 0,
+          "_useCachedAtkOnly": 0,
+          "_transferSource": 0,
+          "_extraProjectileKeys": {
+            "Array": []
+          },
+          "_fireCreateProjectileEvent": 0
+        }
+      },
+      {
+        "bundle": "charpack/char_456_ash.ab",
+        "file": "CAB-55195225621ac69d3ca3b163a08522e5",
+        "pathId": "8466356838105471859",
+        "hierarchy": [
+          {
+            "name": "char_456_ash",
+            "gameObjectPathId": "30179481437068147",
+            "transformPathId": "2879393481423313779"
+          }
+        ],
+        "name": "char_456_ash",
+        "typeId": 22,
+        "monoScript": {
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "id": "-1297314214590689040",
+          "name": "Character",
+          "cl": "Character",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "externalScriptReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "rawFile": "ash-8466356838105471859.bin",
+        "sha256": "f9e29c44ee13d0a0d3cbc7b8cfacf58506d1622d11b34f0adfd74548ee884707",
+        "fieldOffsets": {
+          "common:374": {
+            "offset": 0,
+            "bytes": 12,
+            "serializedType": "common:564",
+            "hex": "0000000073db8f1614386b00"
+          },
+          "common:349": {
+            "offset": 12,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "common:490": {
+            "offset": 16,
+            "bytes": 12,
+            "serializedType": "common:616",
+            "hex": "01000000f0d041659803ffed"
+          },
+          "common:427": {
+            "offset": 28,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_animator": {
+            "offset": 32,
+            "bytes": 12,
+            "serializedType": "PPtr<$UnitAnimator>",
+            "hex": "000000000000000000000000"
+          },
+          "_modes": {
+            "offset": 44,
+            "bytes": 40,
+            "serializedType": "common:981",
+            "hex": "030000000000000073db8a5b9e4f9a2a0000000073db82bd2bb44c3a0000000073db9cb8d23a4500"
+          },
+          "_commonAbilities": {
+            "offset": 84,
+            "bytes": 4,
+            "serializedType": "common:981",
+            "hex": "00000000"
+          },
+          "_uiMountPoint": {
+            "offset": 88,
+            "bytes": 12,
+            "serializedType": "PPtr<$Transform>",
+            "hex": "000000000000000000000000"
+          },
+          "_effectTransform": {
+            "offset": 100,
+            "bytes": 12,
+            "serializedType": "PPtr<$Transform>",
+            "hex": "0000000073dbd3c9c9cd69bc"
+          },
+          "_shadow": {
+            "offset": 112,
+            "bytes": 12,
+            "serializedType": "PPtr<$ShadowController>",
+            "hex": "0000000073db5caff714bd55"
+          },
+          "_defaultBodyColor": {
+            "offset": 124,
+            "bytes": 16,
+            "serializedType": "common:86",
+            "hex": "0000803f0000803f0000803f0000803f"
+          },
+          "_hideShadowOnRecycle": {
+            "offset": 140,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_overrideGraphicBound": {
+            "offset": 144,
+            "bytes": 4,
+            "serializedType": "common:161",
+            "hex": "000080bf"
+          },
+          "_hudPluginReplacePairs": {
+            "offset": 148,
+            "bytes": 4,
+            "serializedType": "StringReplacePair",
+            "hex": "00000000"
+          },
+          "_showDebugName": {
+            "offset": 152,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_skinHolder": {
+            "offset": 156,
+            "bytes": 12,
+            "serializedType": "PPtr<$Transform>",
+            "hex": "0000000073db364aa4259668"
+          },
+          "_motionMode": {
+            "offset": 168,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "00000000"
+          },
+          "_blockMode": {
+            "offset": 172,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "00000000"
+          },
+          "_ignoreBlockMode": {
+            "offset": 176,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_isFixedRotation": {
+            "offset": 180,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_occupiedRemainingCharacterCnt": {
+            "offset": 184,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_useRealBornTimeFromAnim": {
+            "offset": 188,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_buildCondition": {
+            "offset": 192,
+            "bytes": 120,
+            "serializedType": "BuildCondition",
+            "hex": "020000000000000001000000000000000000000000000000000000000000000000000000040000006e756c6c00000000010000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "_traitAbility": {
+            "offset": 312,
+            "bytes": 12,
+            "serializedType": "PPtr<$Ability>",
+            "hex": "000000000000000000000000"
+          },
+          "_withdrawCostRecoverRatio": {
+            "offset": 324,
+            "bytes": 4,
+            "serializedType": "common:161",
+            "hex": "0000003f"
+          },
+          "_maxWithdrawCostRatioOfRawCost": {
+            "offset": 328,
+            "bytes": 4,
+            "serializedType": "common:161",
+            "hex": "0000803f"
+          },
+          "_directionTransform": {
+            "offset": 332,
+            "bytes": 12,
+            "serializedType": "PPtr<$Transform>",
+            "hex": "0000000073db9aa7d2c2baf3"
+          },
+          "_directionIndicator": {
+            "offset": 344,
+            "bytes": 12,
+            "serializedType": "PPtr<$Transform>",
+            "hex": "0000000073db600e3ae81d67"
+          },
+          "_startEffect": {
+            "offset": 356,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_deadEffect": {
+            "offset": 360,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_playStartVocal": {
+            "offset": 364,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_showDeadTweenColor": {
+            "offset": 368,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_useSpecificDeadAnim": {
+            "offset": 372,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_onlyPlayStartEffectOnce": {
+            "offset": 376,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_dontMoveCameraWhenFocus": {
+            "offset": 380,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_disableCharInfoPanel": {
+            "offset": 384,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_disableRotateWhenDead": {
+            "offset": 388,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_disableSetDirectionWhenDummy": {
+            "offset": 392,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_clearProjectileWhenDead": {
+            "offset": 396,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_useIdForAudioSignalMask": {
+            "offset": 400,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_skipBornAudioOnMoveLikeRespawnSelf": {
+            "offset": 404,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_preprocessData": {
+            "offset": 408,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_disableClickCharacterInfo": {
+            "offset": 412,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_skillUiFollowHeadPint": {
+            "offset": 416,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "m_overrideBornTime": {
+            "offset": 420,
+            "bytes": 4,
+            "serializedType": "common:161",
+            "hex": "000080bf"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 30179481437068147
+          },
+          "common:349": 1,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -1297314214590689040
+          },
+          "common:427": "",
+          "_animator": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_modes": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 3069853637565668211
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 4200930652385893235
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 19486450107865971
+              }
+            ]
+          },
+          "_commonAbilities": {
+            "Array": []
+          },
+          "_uiMountPoint": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_effectTransform": {
+            "m_FileID": 0,
+            "m_PathID": -4870135255466255501
+          },
+          "_shadow": {
+            "m_FileID": 0,
+            "m_PathID": 6178117317853764467
+          },
+          "_defaultBodyColor": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "_hideShadowOnRecycle": 0,
+          "_overrideGraphicBound": -1.0,
+          "_hudPluginReplacePairs": {
+            "Array": []
+          },
+          "_showDebugName": 0,
+          "_skinHolder": {
+            "m_FileID": 0,
+            "m_PathID": 7536252414001077107
+          },
+          "_motionMode": 0,
+          "_blockMode": 0,
+          "_ignoreBlockMode": 0,
+          "_isFixedRotation": 0,
+          "_occupiedRemainingCharacterCnt": 1,
+          "_useRealBornTimeFromAnim": 0,
+          "_buildCondition": {
+            "buildableType": 2,
+            "isTryingOverlapCharacater": 0,
+            "needSpecifyDirection": 1,
+            "limitByHostAttackRange": 0,
+            "limitByHostAbilityRange": 0,
+            "canNotBuildInHostAttackRange": 0,
+            "abilityName": "",
+            "tileKey": "",
+            "ignoreBuildableTypeTileTypes": 0,
+            "extraBuildConditionArray": {
+              "SerializedState": "null",
+              "SerializedObjectReferences": {
+                "Array": []
+              }
+            },
+            "advancedBuildableMask": 1,
+            "overlapOptions": {
+              "_verifySourceId": 0,
+              "_verifySourceIds": {
+                "Array": []
+              },
+              "_verifySourceProfession": 0,
+              "_verifySourceProfessions": 0,
+              "_isAllConditionOR": 1,
+              "_overlapPriority": 0,
+              "_changeTargetGraphicColor": 0,
+              "_excludeSourceId": 0,
+              "_excludeSourceIds": {
+                "Array": []
+              },
+              "_verifySourceTargetTokenRelationship": 0
+            },
+            "excludeNoTargetTile": 0,
+            "extraLocateRange": "",
+            "checkManuallyBuildableType": 0,
+            "manuallyBuildableType": 0,
+            "_excludeOccupiedByWalkEnemy": 0,
+            "allowWalkEnemyInHostRange": 0,
+            "_checkUpdateBuildable": 0
+          },
+          "_traitAbility": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_withdrawCostRecoverRatio": 0.5,
+          "_maxWithdrawCostRatioOfRawCost": 1.0,
+          "_directionTransform": {
+            "m_FileID": 0,
+            "m_PathID": -884180166814016653
+          },
+          "_directionIndicator": {
+            "m_FileID": 0,
+            "m_PathID": 7430350296278162291
+          },
+          "_startEffect": "",
+          "_deadEffect": "",
+          "_playStartVocal": 1,
+          "_showDeadTweenColor": 1,
+          "_useSpecificDeadAnim": 0,
+          "_onlyPlayStartEffectOnce": 0,
+          "_dontMoveCameraWhenFocus": 0,
+          "_disableCharInfoPanel": 0,
+          "_disableRotateWhenDead": 0,
+          "_disableSetDirectionWhenDummy": 0,
+          "_clearProjectileWhenDead": 0,
+          "_useIdForAudioSignalMask": 0,
+          "_skipBornAudioOnMoveLikeRespawnSelf": 0,
+          "_preprocessData": 0,
+          "_disableClickCharacterInfo": 0,
+          "_skillUiFollowHeadPint": 0,
+          "m_overrideBornTime": -1.0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-5680160276593925390",
+        "hierarchy": [
+          {
+            "name": "Switch",
+            "gameObjectPathId": "-7033900730704944398",
+            "transformPathId": "-6293853701380398350"
+          },
+          {
+            "name": "skchr_ash_2",
+            "gameObjectPathId": "-9098106877515160846",
+            "transformPathId": "8976130803360113394"
+          }
+        ],
+        "name": "Switch",
+        "typeId": 6,
+        "monoScript": {
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "id": "-4234909118878081699",
+          "name": "ActiveBuffAbility",
+          "cl": "ActiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "externalScriptReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "rawFile": "skill--5680160276593925390.bin",
+        "sha256": "d7b3f3606b50ae23d45f026351722c5a0889d134a7f3f7b1ccc9d449c23dbfd7",
+        "fieldOffsets": {
+          "common:374": {
+            "offset": 0,
+            "bytes": 12,
+            "serializedType": "common:564",
+            "hex": "00000000f2a2f8788d90629e"
+          },
+          "common:349": {
+            "offset": 12,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "common:490": {
+            "offset": 16,
+            "bytes": 12,
+            "serializedType": "common:616",
+            "hex": "010000005d9d350998943ac5"
+          },
+          "common:427": {
+            "offset": 28,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_selector": {
+            "offset": 32,
+            "bytes": 12,
+            "serializedType": "PPtr<$TargetSelector>",
+            "hex": "000000000000000000000000"
+          },
+          "_metadata": {
+            "offset": 44,
+            "bytes": 8,
+            "serializedType": "Metadata",
+            "hex": "0000000000000000"
+          },
+          "_overrideSignalId": {
+            "offset": 52,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_interruptAbilityOnDetach": {
+            "offset": 56,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_attachPassiveBuffsOnDummy": {
+            "offset": 60,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_ignoreIfOwnerDead": {
+            "offset": 64,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_forceAsDmgOrHealAbility": {
+            "offset": 68,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_waitForAttackEvent": {
+            "offset": 72,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_interuptIfTargetDead": {
+            "offset": 76,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_resetCdStrategy": {
+            "offset": 80,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "01000000"
+          },
+          "_buffs": {
+            "offset": 84,
+            "bytes": 956,
+            "serializedType": "BuffData",
+            "hex": "0400000000000000000000000000000000000000000000000100000008000000010000000000000001000000000000000f0000006173685f735f325b7377697463685d00000000000000000000000000000000000000000000000000000000000000000002000000170000007377697463685f6d6f64655f726573746172745f66736d00000000000000000000000000010000000000000000000000ffffffff00000000110000006173685f736b696c6c5f30325f6275666600000000000000000000000000000002000000000000000000000000000000000000000000000000000000000080bf01000000000080bfffffffff000000000000000001000000040000006d6f6465000000400000000000000000000000000000000000000000000000000000000000000000120000006173685f735f325b61746b5f7363616c655d0000000000000000000000000000000000000000000000000000000000000000000002000000120000006173685f735f325b61746b5f7363616c655d0000000000000000000000000000010000000000000000000000ffffffff00000000140000006173685f736b696c6c5f30325f627566665f303200000000000000000000000002000000000000000000000000000000000000000000000000000000000080bf01000000000080bfffffffff000000000100000000000000000000000000000000000000000000000000000000000000000000000d0000006173685f735f325b656666335d00000000000000000000000000000000000000000000000000000000000000000000000200000005000000656d707479000000000000000000000000000000010000000000000000000000ffffffff00000000160000006173685f736b696c6c5f30325f627566665f30335f6c000000000000000000000000000002000000000000000000000000000000000000000000000000000000000080bf01000000000080bfffffffff000000000000000000000000000000000000000000000000000000000000000000000000000000000d0000006173685f735f325b656666345d00000000000000000000000000000000000000000000000000000000000000000000000200000005000000656d707479000000000000000000000000000000010000000000000000000000ffffffff00000000140000006173685f736b696c6c5f30325f627566665f303400000000000000000000000002000000000000000000000000000000000000000000000000000000000080bf01000000000080bfffffffff00000000000000000000000000000000"
+          },
+          "_waitForCasting": {
+            "offset": 1040,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_updateLifetimeWhenSpellStart": {
+            "offset": 1044,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_preDelay": {
+            "offset": 1048,
+            "bytes": 4,
+            "serializedType": "common:161",
+            "hex": "00000000"
+          },
+          "_escapeTime": {
+            "offset": 1052,
+            "bytes": 4,
+            "serializedType": "common:161",
+            "hex": "00000000"
+          },
+          "_checkBuffEarlyFinish": {
+            "offset": 1056,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_passiveBuffs": {
+            "offset": 1060,
+            "bytes": 4,
+            "serializedType": "BuffData",
+            "hex": "00000000"
+          },
+          "_ignoreInfiniteBuffCooldown": {
+            "offset": 1064,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_enableUpdateCooldown": {
+            "offset": 1068,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -7033900730704944398
+          },
+          "common:349": 1,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -4234909118878081699
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 0,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_waitForAttackEvent": 1,
+          "_interuptIfTargetDead": 0,
+          "_resetCdStrategy": 1,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": [
+                      {
+                        "attributeType": 8,
+                        "formulaItem": 1,
+                        "value": 0.0,
+                        "loadFromBlackboard": 1,
+                        "fetchBaseValueFromSourceEntity": 0
+                      }
+                    ]
+                  }
+                },
+                "buffKey": "ash_s_2[switch]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "switch_mode_restart_fsm",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "ash_skill_02_buff",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": [
+                    {
+                      "key": "mode",
+                      "value": 2.0,
+                      "valueStr": ""
+                    }
+                  ]
+                },
+                "enableInitDirectionFromSource": 0
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "ash_s_2[atk_scale]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "ash_s_2[atk_scale]",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "ash_skill_02_buff_02",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 1,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "ash_s_2[eff3]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "empty",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "ash_skill_02_buff_03_l",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "ash_s_2[eff4]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "empty",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "ash_skill_02_buff_04",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          },
+          "_waitForCasting": 0,
+          "_updateLifetimeWhenSpellStart": 0,
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_checkBuffEarlyFinish": 0,
+          "_passiveBuffs": {
+            "Array": []
+          },
+          "_ignoreInfiniteBuffCooldown": 0,
+          "_enableUpdateCooldown": 0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-2996655092864802062",
+        "hierarchy": [
+          {
+            "name": "skchr_ash_2",
+            "gameObjectPathId": "-9098106877515160846",
+            "transformPathId": "8976130803360113394"
+          }
+        ],
+        "name": "skchr_ash_2",
+        "typeId": 45,
+        "monoScript": {
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "id": "7941707067095186750",
+          "name": "CastSkillWithLimitTimes",
+          "cl": "CastSkillWithLimitTimes",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "externalScriptReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "rawFile": "skill--2996655092864802062.bin",
+        "sha256": "8fb754feee358dbb6799b659f4da9f87db42ae53e090e9b40997cc973e6be4e4",
+        "fieldOffsets": {
+          "common:374": {
+            "offset": 0,
+            "bytes": 12,
+            "serializedType": "common:564",
+            "hex": "00000000f2a22badff07bd81"
+          },
+          "common:349": {
+            "offset": 12,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "common:490": {
+            "offset": 16,
+            "bytes": 12,
+            "serializedType": "common:616",
+            "hex": "010000003efd6a24809c366e"
+          },
+          "common:427": {
+            "offset": 28,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_maxTriggerTime": {
+            "offset": 32,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "ffffffff"
+          },
+          "_allowSpRecoveryWhenAffecting": {
+            "offset": 36,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_limitGlobalTriggerTime": {
+            "offset": 40,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_hidden": {
+            "offset": 44,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_showSpBarEvenHidden": {
+            "offset": 48,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_showSpAsBulletMode": {
+            "offset": 52,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_showSpRatioAsProgress": {
+            "offset": 56,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_playCharWordVoice": {
+            "offset": 60,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_playCharWordWithPassiveType": {
+            "offset": 64,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_earlyVoice": {
+            "offset": 68,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_canCastWithNoSp": {
+            "offset": 72,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_canSilenced": {
+            "offset": 76,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_canUseInAbnormalState": {
+            "offset": 80,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_defaultModeIndex": {
+            "offset": 84,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "ffffffff"
+          },
+          "_attackBlackboardModeIndex": {
+            "offset": 88,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "ffffffff"
+          },
+          "_extraAttackBlackboardModeIndices": {
+            "offset": 92,
+            "bytes": 4,
+            "serializedType": "common:981",
+            "hex": "00000000"
+          },
+          "_rangeIdModeIndex": {
+            "offset": 96,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "ffffffff"
+          },
+          "_extraRangeIdModeIndices": {
+            "offset": 100,
+            "bytes": 4,
+            "serializedType": "common:981",
+            "hex": "00000000"
+          },
+          "_rangeIdUsageType": {
+            "offset": 104,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "07"
+          },
+          "_writeDurationToAttackBlackboard": {
+            "offset": 108,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_attachSignalIds": {
+            "offset": 112,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_extraAbilities": {
+            "offset": 116,
+            "bytes": 4,
+            "serializedType": "common:981",
+            "hex": "00000000"
+          },
+          "_useEscapeTime": {
+            "offset": 120,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_earlySkillFinishAtAttackFinished": {
+            "offset": 124,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_stopAffectOnInterrupt": {
+            "offset": 128,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_showProgressToNext": {
+            "offset": 132,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_hideSkillStackCount": {
+            "offset": 136,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_hideHudSkillStackCount": {
+            "offset": 140,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_playSkillBeginAnim": {
+            "offset": 144,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_forceAnimFaceToDefault": {
+            "offset": 148,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_beginAnim": {
+            "offset": 152,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_beginAnimDown": {
+            "offset": 156,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_beginEffect": {
+            "offset": 160,
+            "bytes": 4,
+            "serializedType": "common:981",
+            "hex": "00000000"
+          },
+          "_useFaceVector": {
+            "offset": 164,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_beginAnimValidator": {
+            "offset": 168,
+            "bytes": 12,
+            "serializedType": "PPtr<$TargetValidator>",
+            "hex": "000000000000000000000000"
+          },
+          "_availableValidator": {
+            "offset": 180,
+            "bytes": 12,
+            "serializedType": "PPtr<$TargetValidator>",
+            "hex": "000000000000000000000000"
+          },
+          "_trigger": {
+            "offset": 192,
+            "bytes": 12,
+            "serializedType": "PPtr<$TargetTrigger>",
+            "hex": "000000000000000000000000"
+          },
+          "_switchToState": {
+            "offset": 204,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_uninterruptibleOnAbilityPredelay": {
+            "offset": 208,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_canSwitchDuringBorn": {
+            "offset": 212,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_canCastDuringBorn": {
+            "offset": 216,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_checkHasTargetBeforeDoCast": {
+            "offset": 220,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_useTriggerInManualMode": {
+            "offset": 224,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_allowNoTarget": {
+            "offset": 228,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_shouldCastLikeAttack": {
+            "offset": 232,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_isRemoteControlled": {
+            "offset": 236,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_hideRangeToShow": {
+            "offset": 240,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_forceToShowRange": {
+            "offset": 244,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_forceUseBaseShowRange": {
+            "offset": 248,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_rangeToShow": {
+            "offset": 252,
+            "bytes": 12,
+            "serializedType": "PPtr<$TargetSelector>",
+            "hex": "000000000000000000000000"
+          },
+          "_recoverSpIfNoTarget": {
+            "offset": 264,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_resetAbilityCooldownWhenCastEnd": {
+            "offset": 268,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_onlyAvailableWhenTokenValid": {
+            "offset": 272,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_hasUniStackColor": {
+            "offset": 276,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_skipSpCheckInSkillState": {
+            "offset": 280,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_progressSource": {
+            "offset": 284,
+            "bytes": 12,
+            "serializedType": "PPtr<$AbilityEventCounter>",
+            "hex": "000000000000000000000000"
+          },
+          "_fetchFromMainAttack": {
+            "offset": 296,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_fromMainRawAttack": {
+            "offset": 300,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_modeIndex": {
+            "offset": 304,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "02000000"
+          },
+          "_extraModeIndex": {
+            "offset": 308,
+            "bytes": 4,
+            "serializedType": "common:981",
+            "hex": "00000000"
+          },
+          "_useExtraModeProgress": {
+            "offset": 312,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_finishSkillWithProgress": {
+            "offset": 316,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_canDiscardRemainingCount": {
+            "offset": 320,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_hideProgressOnAffect": {
+            "offset": 324,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_isOverloadSkill": {
+            "offset": 328,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_checkBulletProgressValid": {
+            "offset": 332,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -9098106877515160846
+          },
+          "common:349": 1,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 7941707067095186750
+          },
+          "common:427": "",
+          "_maxTriggerTime": -1,
+          "_allowSpRecoveryWhenAffecting": 0,
+          "_limitGlobalTriggerTime": 0,
+          "_hidden": 0,
+          "_showSpBarEvenHidden": 0,
+          "_showSpAsBulletMode": 1,
+          "_showSpRatioAsProgress": 0,
+          "_playCharWordVoice": 1,
+          "_playCharWordWithPassiveType": 0,
+          "_earlyVoice": 0,
+          "_canCastWithNoSp": 0,
+          "_canSilenced": 0,
+          "_canUseInAbnormalState": 0,
+          "_defaultModeIndex": -1,
+          "_attackBlackboardModeIndex": -1,
+          "_extraAttackBlackboardModeIndices": {
+            "Array": []
+          },
+          "_rangeIdModeIndex": -1,
+          "_extraRangeIdModeIndices": {
+            "Array": []
+          },
+          "_rangeIdUsageType": 7,
+          "_writeDurationToAttackBlackboard": 0,
+          "_attachSignalIds": 0,
+          "_extraAbilities": {
+            "Array": []
+          },
+          "_useEscapeTime": 0,
+          "_earlySkillFinishAtAttackFinished": 0,
+          "_stopAffectOnInterrupt": 0,
+          "_showProgressToNext": 0,
+          "_hideSkillStackCount": 0,
+          "_hideHudSkillStackCount": 0,
+          "_playSkillBeginAnim": 0,
+          "_forceAnimFaceToDefault": 0,
+          "_beginAnim": "",
+          "_beginAnimDown": "",
+          "_beginEffect": {
+            "Array": []
+          },
+          "_useFaceVector": 0,
+          "_beginAnimValidator": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_availableValidator": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_trigger": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_switchToState": 1,
+          "_uninterruptibleOnAbilityPredelay": 0,
+          "_canSwitchDuringBorn": 1,
+          "_canCastDuringBorn": 1,
+          "_checkHasTargetBeforeDoCast": 0,
+          "_useTriggerInManualMode": 0,
+          "_allowNoTarget": 1,
+          "_shouldCastLikeAttack": 0,
+          "_isRemoteControlled": 0,
+          "_hideRangeToShow": 0,
+          "_forceToShowRange": 0,
+          "_forceUseBaseShowRange": 0,
+          "_rangeToShow": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_recoverSpIfNoTarget": 0,
+          "_resetAbilityCooldownWhenCastEnd": 0,
+          "_onlyAvailableWhenTokenValid": 0,
+          "_hasUniStackColor": 0,
+          "_skipSpCheckInSkillState": 0,
+          "_progressSource": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_fetchFromMainAttack": 1,
+          "_fromMainRawAttack": 0,
+          "_modeIndex": 2,
+          "_extraModeIndex": {
+            "Array": []
+          },
+          "_useExtraModeProgress": 0,
+          "_finishSkillWithProgress": 1,
+          "_canDiscardRemainingCount": 1,
+          "_hideProgressOnAffect": 1,
+          "_isOverloadSkill": 0,
+          "_checkBulletProgressValid": 0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-336944217143008526",
+        "hierarchy": [
+          {
+            "name": "skchr_ash_2",
+            "gameObjectPathId": "-9098106877515160846",
+            "transformPathId": "8976130803360113394"
+          }
+        ],
+        "name": "skchr_ash_2",
+        "typeId": 62,
+        "monoScript": {
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "id": "-3703208971068511792",
+          "name": "AbilitySequenceGroup",
+          "cl": "AbilitySequenceGroup",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "externalScriptReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "rawFile": "skill--336944217143008526.bin",
+        "sha256": "0b1e0f95dd1be82d520429d77529cfd56e1f585f12705649507e755c220ef91c",
+        "fieldOffsets": {
+          "common:374": {
+            "offset": 0,
+            "bytes": 12,
+            "serializedType": "common:564",
+            "hex": "00000000f2a22badff07bd81"
+          },
+          "common:349": {
+            "offset": 12,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "common:490": {
+            "offset": 16,
+            "bytes": 12,
+            "serializedType": "common:616",
+            "hex": "01000000d0e96bae0f8f9bcc"
+          },
+          "common:427": {
+            "offset": 28,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_selector": {
+            "offset": 32,
+            "bytes": 12,
+            "serializedType": "PPtr<$TargetSelector>",
+            "hex": "000000000000000000000000"
+          },
+          "_metadata": {
+            "offset": 44,
+            "bytes": 8,
+            "serializedType": "Metadata",
+            "hex": "0000000000000000"
+          },
+          "_overrideSignalId": {
+            "offset": 52,
+            "bytes": 4,
+            "serializedType": "string",
+            "hex": "00000000"
+          },
+          "_interruptAbilityOnDetach": {
+            "offset": 56,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_attachPassiveBuffsOnDummy": {
+            "offset": 60,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_ignoreIfOwnerDead": {
+            "offset": 64,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_forceAsDmgOrHealAbility": {
+            "offset": 68,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_abilities": {
+            "offset": 72,
+            "bytes": 40,
+            "serializedType": "common:981",
+            "hex": "0300000000000000f2a29d7cd6fddae500000000f2a2143aff98037600000000f2a255be52042cb1"
+          },
+          "_alwaysNext": {
+            "offset": 112,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_forceNextIfCastFail": {
+            "offset": 116,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_checkCanUseSubAbility": {
+            "offset": 120,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_useLongestAbilityCooldown": {
+            "offset": 124,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_fireCastStartEventWhenCast": {
+            "offset": 128,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_stopMoveNextWhenNotCasting": {
+            "offset": 132,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_alsoInterruptCurrentSubAbility": {
+            "offset": 136,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_interruptableSubAbilityIndice": {
+            "offset": 140,
+            "bytes": 16,
+            "serializedType": "common:981",
+            "hex": "03000000000000000100000002000000"
+          },
+          "_alsoStopSubAbilityAffect": {
+            "offset": 156,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_alsoResetSubAbilityCooldown": {
+            "offset": 160,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "01"
+          },
+          "_setDataExceptRedundance": {
+            "offset": 164,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_interruptIfTargetDead": {
+            "offset": 168,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_castToInputPosIfTargetInvalid": {
+            "offset": 172,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_timeMode": {
+            "offset": 176,
+            "bytes": 4,
+            "serializedType": "common:222",
+            "hex": "01000000"
+          },
+          "_updateCooldownAfterSubAbilitiesAttached": {
+            "offset": 180,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_enableLoop": {
+            "offset": 184,
+            "bytes": 1,
+            "serializedType": "common:928",
+            "hex": "00"
+          },
+          "_abilityLoopSettings": {
+            "offset": 188,
+            "bytes": 4,
+            "serializedType": "AbilityLoopGroup",
+            "hex": "00000000"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -9098106877515160846
+          },
+          "common:349": 1,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -3703208971068511792
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 0,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_abilities": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -1883914396445596942
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 8503808743364141810
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -5680160276593925390
+              }
+            ]
+          },
+          "_alwaysNext": 1,
+          "_forceNextIfCastFail": 0,
+          "_checkCanUseSubAbility": 0,
+          "_useLongestAbilityCooldown": 0,
+          "_fireCastStartEventWhenCast": 0,
+          "_stopMoveNextWhenNotCasting": 0,
+          "_alsoInterruptCurrentSubAbility": 1,
+          "_interruptableSubAbilityIndice": {
+            "Array": [
+              0,
+              1,
+              2
+            ]
+          },
+          "_alsoStopSubAbilityAffect": 1,
+          "_alsoResetSubAbilityCooldown": 1,
+          "_setDataExceptRedundance": 0,
+          "_interruptIfTargetDead": 0,
+          "_castToInputPosIfTargetInvalid": 0,
+          "_timeMode": 1,
+          "_updateCooldownAfterSubAbilitiesAttached": 0,
+          "_enableLoop": 0,
+          "_abilityLoopSettings": {
+            "Array": []
+          }
+        }
+      }
+    ],
+    "hierarchyObjects": [
+      {
+        "bundle": "charpack/char_456_ash.ab",
+        "file": "CAB-55195225621ac69d3ca3b163a08522e5",
+        "pathId": "-6731505436878251149",
+        "classId": 1,
+        "rawFile": "hierarchy--6731505436878251149.bin",
+        "sha256": "526d09251c4e583463516603fafbd9bc403d6471aaa3250b6c1c07b2432cb7bc",
+        "value": {
+          "m_Component": {
+            "Array": [
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 5484604681928498035
+                }
+              }
+            ]
+          },
+          "m_Layer": {
+            "type": "common:934",
+            "hex": "0a000000"
+          },
+          "common:427": "Body",
+          "m_Tag": {
+            "type": "common:907",
+            "hex": "0000"
+          },
+          "m_IsActive": {
+            "type": "common:76",
+            "hex": "01"
+          }
+        }
+      },
+      {
+        "bundle": "charpack/char_456_ash.ab",
+        "file": "CAB-55195225621ac69d3ca3b163a08522e5",
+        "pathId": "-4396643362238112909",
+        "classId": 4,
+        "rawFile": "hierarchy--4396643362238112909.bin",
+        "sha256": "ebd180287170035a7e6234c2dedadc673f357ac55252164a84d8913f46946df4",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -349758418146829453
+          },
+          "m_LocalRotation": {
+            "x": -0.0,
+            "y": -0.0,
+            "z": -0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -9022420576812606605
+              }
+            ]
+          },
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 5484604681928498035
+          }
+        }
+      },
+      {
+        "bundle": "charpack/char_456_ash.ab",
+        "file": "CAB-55195225621ac69d3ca3b163a08522e5",
+        "pathId": "-3954195013106082957",
+        "classId": 1,
+        "rawFile": "hierarchy--3954195013106082957.bin",
+        "sha256": "95c763627f8b982377634f5a4d8cffd255ad9d085c5fbeb932830bf358c60c8c",
+        "value": {
+          "m_Component": {
+            "Array": [
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 8712386565111995251
+                }
+              }
+            ]
+          },
+          "m_Layer": {
+            "type": "common:934",
+            "hex": "0a000000"
+          },
+          "common:427": "Modes",
+          "m_Tag": {
+            "type": "common:907",
+            "hex": "0000"
+          },
+          "m_IsActive": {
+            "type": "common:76",
+            "hex": "01"
+          }
+        }
+      },
+      {
+        "bundle": "charpack/char_456_ash.ab",
+        "file": "CAB-55195225621ac69d3ca3b163a08522e5",
+        "pathId": "-349758418146829453",
+        "classId": 1,
+        "rawFile": "hierarchy--349758418146829453.bin",
+        "sha256": "82a092228e5585ec31dba7cdae76f344455abb3ae6cb7827a591a6424461ce03",
+        "value": {
+          "m_Component": {
+            "Array": [
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": -4396643362238112909
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 8324062437122366323
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 7285063286999473011
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 7918768805007055731
+                }
+              }
+            ]
+          },
+          "m_Layer": {
+            "type": "common:934",
+            "hex": "0c000000"
+          },
+          "common:427": "Attack",
+          "m_Tag": {
+            "type": "common:907",
+            "hex": "0000"
+          },
+          "m_IsActive": {
+            "type": "common:76",
+            "hex": "01"
+          }
+        }
+      },
+      {
+        "bundle": "charpack/char_456_ash.ab",
+        "file": "CAB-55195225621ac69d3ca3b163a08522e5",
+        "pathId": "30179481437068147",
+        "classId": 1,
+        "rawFile": "hierarchy-30179481437068147.bin",
+        "sha256": "62dd200eac3e0b7a7194d0cf87cbba9845e700824d614ed7c7dd1bd6f33a0fcd",
+        "value": {
+          "m_Component": {
+            "Array": [
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 2879393481423313779
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 8466356838105471859
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 3349312483847560051
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": -8863324910397760653
+                }
+              }
+            ]
+          },
+          "m_Layer": {
+            "type": "common:934",
+            "hex": "0a000000"
+          },
+          "common:427": "char_456_ash",
+          "m_Tag": {
+            "type": "common:907",
+            "hex": "0500"
+          },
+          "m_IsActive": {
+            "type": "common:76",
+            "hex": "01"
+          }
+        }
+      },
+      {
+        "bundle": "charpack/char_456_ash.ab",
+        "file": "CAB-55195225621ac69d3ca3b163a08522e5",
+        "pathId": "1070877836878338931",
+        "classId": 4,
+        "rawFile": "hierarchy-1070877836878338931.bin",
+        "sha256": "a2ec5268d45af7857b445e8b020270f685c2d0bfe65caed5697b890c527a118a",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 6620487804235275123
+          },
+          "m_LocalRotation": {
+            "x": -0.0,
+            "y": -0.0,
+            "z": -0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 5484604681928498035
+              }
+            ]
+          },
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 8712386565111995251
+          }
+        }
+      },
+      {
+        "bundle": "charpack/char_456_ash.ab",
+        "file": "CAB-55195225621ac69d3ca3b163a08522e5",
+        "pathId": "2879393481423313779",
+        "classId": 4,
+        "rawFile": "hierarchy-2879393481423313779.bin",
+        "sha256": "82e6d9fd93703b09f939c7c499b16990ac88df8a779238c25af2e1c76b6f4544",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 30179481437068147
+          },
+          "m_LocalRotation": {
+            "x": -0.0,
+            "y": -0.0,
+            "z": 3.102349310779573e-08,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": -0.4000000059604645
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 7536252414001077107
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 8712386565111995251
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 1005888520220498803
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 2164187744773593971
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -4870135255466255501
+              }
+            ]
+          },
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        }
+      },
+      {
+        "bundle": "charpack/char_456_ash.ab",
+        "file": "CAB-55195225621ac69d3ca3b163a08522e5",
+        "pathId": "5484604681928498035",
+        "classId": 4,
+        "rawFile": "hierarchy-5484604681928498035.bin",
+        "sha256": "6b0a0faf738d3358ff73a7d32239f9a4676f39f4bf3d5420e1afbff05127270d",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -6731505436878251149
+          },
+          "m_LocalRotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -4396643362238112909
+              }
+            ]
+          },
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 1070877836878338931
+          }
+        }
+      },
+      {
+        "bundle": "charpack/char_456_ash.ab",
+        "file": "CAB-55195225621ac69d3ca3b163a08522e5",
+        "pathId": "6620487804235275123",
+        "classId": 1,
+        "rawFile": "hierarchy-6620487804235275123.bin",
+        "sha256": "c88a09dee37fbc4fbd28940de62dae70792109e207bc815834076fe22016236e",
+        "value": {
+          "m_Component": {
+            "Array": [
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 1070877836878338931
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 19486450107865971
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 4643212509414939507
+                }
+              }
+            ]
+          },
+          "m_Layer": {
+            "type": "common:934",
+            "hex": "0a000000"
+          },
+          "common:427": "S2",
+          "m_Tag": {
+            "type": "common:907",
+            "hex": "0000"
+          },
+          "m_IsActive": {
+            "type": "common:76",
+            "hex": "01"
+          }
+        }
+      },
+      {
+        "bundle": "charpack/char_456_ash.ab",
+        "file": "CAB-55195225621ac69d3ca3b163a08522e5",
+        "pathId": "8712386565111995251",
+        "classId": 4,
+        "rawFile": "hierarchy-8712386565111995251.bin",
+        "sha256": "d0f8d1adf3118437d0deaae8c1c2a5df71d40e2a3ce53d18083ba52028a3136c",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -3954195013106082957
+          },
+          "m_LocalRotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -3680983063288358029
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 8744849965501242227
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 1070877836878338931
+              }
+            ]
+          },
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 2879393481423313779
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-9098106877515160846",
+        "classId": 1,
+        "rawFile": "hierarchy--9098106877515160846.bin",
+        "sha256": "bffa7b482163b4541f1a1f83872c124217adbeb91a16d75f6f0c631f50819e18",
+        "value": {
+          "m_Component": {
+            "Array": [
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 8976130803360113394
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": -336944217143008526
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": -2996655092864802062
+                }
+              }
+            ]
+          },
+          "m_Layer": {
+            "type": "common:934",
+            "hex": "0a000000"
+          },
+          "common:427": "skchr_ash_2",
+          "m_Tag": {
+            "type": "common:907",
+            "hex": "0000"
+          },
+          "m_IsActive": {
+            "type": "common:76",
+            "hex": "01"
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-7033900730704944398",
+        "classId": 1,
+        "rawFile": "hierarchy--7033900730704944398.bin",
+        "sha256": "7ab60c8c50abf79a03a397d2e0113aa7a1a8dda2ba2ec0b66cbd7cdec43dd504",
+        "value": {
+          "m_Component": {
+            "Array": [
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": -6293853701380398350
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": -5680160276593925390
+                }
+              }
+            ]
+          },
+          "m_Layer": {
+            "type": "common:934",
+            "hex": "0a000000"
+          },
+          "common:427": "Switch",
+          "m_Tag": {
+            "type": "common:907",
+            "hex": "0000"
+          },
+          "m_IsActive": {
+            "type": "common:76",
+            "hex": "01"
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-6293853701380398350",
+        "classId": 4,
+        "rawFile": "hierarchy--6293853701380398350.bin",
+        "sha256": "21847112d744ca73064b492e1e2d8428c3d92b4e7a7256d8d5190d3c27ee5fdd",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -7033900730704944398
+          },
+          "m_LocalRotation": {
+            "x": -0.0,
+            "y": -0.0,
+            "z": -0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": {
+            "Array": []
+          },
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 8976130803360113394
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "8976130803360113394",
+        "classId": 4,
+        "rawFile": "hierarchy-8976130803360113394.bin",
+        "sha256": "9215a045b71fe3b97dc7d208745bd1faabfc22ed5833542b55b80d09678efdd1",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -9098106877515160846
+          },
+          "m_LocalRotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 2589941924841562866
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 5355347781584855794
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -6293853701380398350
+              }
+            ]
+          },
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        }
+      }
+    ],
+    "monoScripts": [
+      {
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "5390319429299248724",
+        "rawFile": "monoscript-5390319429299248724.bin",
+        "sha256": "2ee5244adfc51fb59b433f66bc65273dde36b7c53bf8d3254174519fb65f915f",
+        "value": {
+          "id": "5390319429299248724",
+          "name": "UnitMode",
+          "cl": "UnitMode",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        }
+      },
+      {
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "-994835214138492539",
+        "rawFile": "monoscript--994835214138492539.bin",
+        "sha256": "b92fee687d01ab3141e9c58a9a898b939355d53bfd9e42cdf22a77b92bf5603e",
+        "value": {
+          "id": "-994835214138492539",
+          "name": "AbilityEventCounter",
+          "cl": "AbilityEventCounter",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        }
+      },
+      {
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "4156651312234227407",
+        "rawFile": "monoscript-4156651312234227407.bin",
+        "sha256": "99f5a3477f8f69561c95d456ba63a374ec58b2484083055e8c50da5902fd0715",
+        "value": {
+          "id": "4156651312234227407",
+          "name": "RangedAttack",
+          "cl": "RangedAttack",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        }
+      },
+      {
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "-1297314214590689040",
+        "rawFile": "monoscript--1297314214590689040.bin",
+        "sha256": "c204a8c81bae4fcd54b95134ae0ba2806a701d7bdd145e4484e191cd60acf11a",
+        "value": {
+          "id": "-1297314214590689040",
+          "name": "Character",
+          "cl": "Character",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        }
+      },
+      {
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "-4234909118878081699",
+        "rawFile": "monoscript--4234909118878081699.bin",
+        "sha256": "0ef5f0eea0c41555d1532d4385d8f1e77fda6a8bc11e5d8bb12e3bddad3d9907",
+        "value": {
+          "id": "-4234909118878081699",
+          "name": "ActiveBuffAbility",
+          "cl": "ActiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        }
+      },
+      {
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "7941707067095186750",
+        "rawFile": "monoscript-7941707067095186750.bin",
+        "sha256": "3639e51cae0c23eed4a750bf29372565d29785efc8142d99b4a952541c5a030a",
+        "value": {
+          "id": "7941707067095186750",
+          "name": "CastSkillWithLimitTimes",
+          "cl": "CastSkillWithLimitTimes",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        }
+      },
+      {
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "-3703208971068511792",
+        "rawFile": "monoscript--3703208971068511792.bin",
+        "sha256": "19c76614379d6d22fe85bb75bfa2965d3f5c838d00e96b9c7b603a4fe5a3ced1",
+        "value": {
+          "id": "-3703208971068511792",
+          "name": "AbilitySequenceGroup",
+          "cl": "AbilitySequenceGroup",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        }
+      }
+    ]
+  }
+}
