@@ -57,7 +57,7 @@ export function createStun(parameters: StunParameters): Definition {
 
             return battle;
         },
-        onTick: advance,
+        onTick: (battle, self) => advance(battle, self),
         onEnd,
     };
 }
@@ -153,7 +153,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
 
             return battle;
         },
-        onTick: advance,
+        onTick: (battle, self) => advance(battle, self),
         onEnd,
     };
 }

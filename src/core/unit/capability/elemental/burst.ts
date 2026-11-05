@@ -65,7 +65,6 @@ export function onInstall(battle: BattleState, self: Effect<State, Elemental>): 
 export function advance(
     battle: BattleState,
     instance: Effect<State, Elemental>,
-    previousExpiration: Expiration,
     onSecond?: (
         battle: BattleState,
         host: Unit & Elemental,
@@ -81,7 +80,6 @@ export function advance(
     }
 
     const expiration = self.expiration;
-    const previous = previousExpiration as Duration;
     const elapsed = Math.min(
         expiration.total,
         expiration.elapsed + resolveBurstRecoverySpeed(battle, host),
@@ -98,7 +96,7 @@ export function advance(
     ]);
 
     if (onSecond !== undefined) {
-        const previousSecond = Math.floor((previous.elapsed + 1e-8) / TICKS_PER_SECOND);
+        const previousSecond = Math.floor((expiration.elapsed + 1e-8) / TICKS_PER_SECOND);
         const currentSecond = Math.floor((elapsed + 1e-8) / TICKS_PER_SECOND);
 
         for (let second = previousSecond + 1; second <= currentSecond; second++) {

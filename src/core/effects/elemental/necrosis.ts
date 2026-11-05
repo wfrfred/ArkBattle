@@ -55,8 +55,8 @@ export function createSpDrain(parameters: SpDrainParameters): Definition {
 
             return battle;
         },
-        onTick: (battle, self, previousExpiration) =>
-            advance(battle, self, previousExpiration, (current, host, reference) => {
+        onTick: (battle, self) =>
+            advance(battle, self, (current, host, reference) => {
                 if (hasSkill(host)) {
                     current = modify(current, units.ref(host), -parameters.spDrainPerSecond).state;
                 }
@@ -104,8 +104,8 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
                   ])
                 : battle;
         },
-        onTick: (battle, self, previousExpiration) =>
-            advance(battle, self, previousExpiration, (current, host, reference, second) => {
+        onTick: (battle, self) =>
+            advance(battle, self, (current, host, reference, second) => {
                 current = hurt(current, host, "ELEMENTAL", parameters.damagePerSecond);
                 const unit = availableHost(current, reference);
 

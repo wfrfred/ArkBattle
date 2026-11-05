@@ -70,7 +70,7 @@ export function createPhysical(parameters: Parameters): Definition {
 
             return battle;
         },
-        onTick: advance,
+        onTick: (battle, self) => advance(battle, self),
         onEnd,
     };
 }
@@ -101,7 +101,7 @@ export function createElemental(parameters: Parameters): Definition {
 
             return battle;
         },
-        onTick: advance,
+        onTick: (battle, self) => advance(battle, self),
         onEnd,
     };
 }
