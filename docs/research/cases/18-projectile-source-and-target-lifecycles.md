@@ -87,6 +87,25 @@ SetDisappeared 修改标记并调用前后回调，没有注销、清零 UID 或
 
 SetDisappeared 自身还会同步派发事件和 Buff 回调。具体 Content 可以借此另行杀死／终结单位；上面的结论以回调之后身份和 alive 仍成立为条件，不替任意内容提供存活保证。
 
+### 2026-11-05 复核：消失与 HP／EP 接收
+
+本次只复核已经归档的 2026-11-02／03 接收、治疗及 EP 计时材料，没有重新读取客户端、下载资源或执行游戏。它们采用较新的同一组输入：DLL SHA-256 `cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff`，metadata SHA-256 `e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5`；与本案 2026-10-21 的路线消失批次分别引用，不混用方法编号。下文方法按各 JSON 的 `result.bodies[].methodIndex` 或 fragment 中的完整方法名定位。
+
+**直接证实：消失标志与 DisappearState 的 INVINCIBLE 修正有各自的接收条件。** 下表限定存活目标、合法数值输入、普通非 skip 路径，且没有其它内容回调取消或改写分类：
+
+| 业务 | 已归档普通 native 分支 |
+| --- | --- |
+| HP 伤害 | `Entity.OnTakeDamage` 67709 在 `0x18072b9a6` 先检查 `isDisappeared`，成立则在 `0x18072bde2` 执行 `Modifier.Cancel(0)`；这个分支早于 `force` 判断，不只是依赖 DisappearState 的 INVINCIBLE。 |
+| EP 损伤 | `_OnApplyingModifier` 67667 的 EP 损伤分支在 `force=false` 时检查 EP_FREE_ALL，再调用 `IsUnhurtableWithModifier` 67664；后者检查 INVINCIBLE 或 `isDisappeared`。消失时直接返回不可受伤，不走后面的 `0x100` 旁路判断。`force=true` 会跳过这项普通接收检查，但其它回调及最终提交仍有自己的条件。 |
+| HP 治疗 | `OnTakeHeal` 67710 及其内联普通分支检查 HEAL_FREE，未将 `isDisappeared` 或 INVINCIBLE 作为治疗门禁。标准 DisappearState 的上述三个标志不含 HEAL_FREE；因此不能仅因消失就推定显式 HP 治疗必然拒收。 |
+| EP 回复 | 正向 EP Modifier 不进入 EP 损伤专属接收分支。`DoApplyModifier` 67683 的 EP 提交检查 EP_FREE_ALL；getter 67517 只读取该异常标志（21），不读 `isDisappeared`。所查链没有因标准消失本身拒收正向 EP 回复的条件。 |
+
+证据：HP 拒收见 [native-damage.json](../evidence/nymph-action-settlement-20261103/damage/native-damage.json) 的 67709；普通分流及提交见 [native-hp.json](../evidence/attack-addon-order-20261102/hp/native-hp.json) 的 67667／67683；无敌与消失判断见 [native-ep-events.json](../evidence/ep-modifier-events-20261103/native-ep-events.json) 的 67664（`0x180727517..5d4`）；HP 治疗见 [native-hp-healing.json](../evidence/healing-settlement-20261103/hp/native-hp-healing.json) 的 67710；EP_FREE_ALL 见 [native-ep-heal.json](../evidence/healing-settlement-20261103/ep/native-ep-heal.json) 的 67517。HP 主链接收材料已由 2026-11-03 批次重新核对相同输入指令字节，复用记录在 `native-damage.json.result.reusedEvidence`。
+
+**旁路边界：** `ApplyModifier` 67665 的 SKIP_MODIFIER_EVENT 路径不调用上述普通 OnTakeDamage／EP 损伤接收分支；但同时具有 `SKIP_MODIFIER_CONSIDER_UNHURTABLE`（`0x8000`）时，仍在 `0x180721360..3ed` 检查消失／不可受伤并可取消。不能概括为所有 skip 都穿过保护，也不能把普通伤害结论扩大成一切 HP 写入。正向治疗、生命复原、直接 setter 与 HP／EP 损伤应分别判断，相关治疗阶段见[案例 29](29-hp-and-ep-healing-settlement.md)。
+
+**推进范围：** 已归档 [schedule-native.json](../evidence/elemental-timing-20261102/schedule-native.json) 的 `Entity._UpdateEpRecovery` 67643 按 timer 推进并调用 `SetEpInternal` 67630；这两个所查普通主体不检查消失，外层 `Entity.OnTick` 67697 在 alive 分支调用自然恢复及相关控制器。结合消失不停止状态机、保留身份的证据，只能确认不能把消失统一解释为冻结所有计时；具体 Skill／Ability、Buff 的内部条件、输出与中断政策仍需按相应内容判断，本次没有穷尽它们。已锁定弹体的 Hit、命中历史与这里的资源接收仍是不同结果。
+
 ## 4. 来源死亡或撤退后，弹道与伤害分别判断
 
 **直接证实**：普通弩手、维什戴尔普攻／三技能实际弹道没有统一的“来源死亡就停止”政策。它们可以继续运动与命中，受自身寿命、命中行为及显式外部操作约束。
