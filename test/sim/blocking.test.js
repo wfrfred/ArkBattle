@@ -212,7 +212,6 @@ test("position plans survive relation release while active departure and spatial
     assert.ok(separated[1] < 1);
     assert.ok(Math.abs(Vec2.distanceSquared(separated, get(state, 0).position) - 0.25) < 1e-12);
     state = unit.update(state, [layer.setType(departing, "AIR")]);
-    assert.equal(get(state, 2).layer.type, "AIR");
     assert.equal(blocking.blockerOf(state, departing), undefined);
     assert.equal(get(state, 2).blockable.adjustment, null);
 

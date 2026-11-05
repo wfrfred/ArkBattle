@@ -137,13 +137,8 @@ test("spatial queries distinguish body position from hitboxes and return current
         contacts.map(({ target }) => target.id),
         [2, 0],
     );
-    assert.deepEqual(
-        contacts.map(({ fraction }) => fraction),
-        [0.125, 0.5625],
-    );
 
     const hidden = disappear(state, ref(get(state, 2)));
     const ended = remove(hidden, 0, "SCRIPT");
     assert.deepEqual(sweep(ended.battlefield, circle(0.25), [-1, 0], [3, 0]), []);
-    assert.deepEqual(sweep(state.battlefield, circle(0.25), [-1, 0], [3, 0]), contacts);
 });

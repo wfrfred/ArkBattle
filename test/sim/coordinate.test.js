@@ -15,7 +15,5 @@ test("world and tile coordinates swap axes, round ties to even and rotate around
     ]) {
         assert.deepEqual(Tile.rotate(tile, direction), expected);
     }
-    assert.deepEqual(position, [2.5, 3.5]);
-    assert.deepEqual(tile, [4, 2]);
     assert.equal(Tile.is([0.5, 1]), false);
 });

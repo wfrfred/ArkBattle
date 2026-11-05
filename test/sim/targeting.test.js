@@ -14,6 +14,8 @@ import * as filters from "../../dist/core/battle/targeting/filter.js";
 import * as selectors from "../../dist/core/battle/targeting/selector.js";
 import * as compare from "../../dist/core/battle/targeting/compare.js";
 import { ref } from "../../dist/core/unit/query.js";
+import { setType } from "../../dist/core/unit/capability/layer/index.js";
+import { disappear } from "../../dist/core/unit/capability/presence/index.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { fixtureBattlefieldState } from "../helpers/battlefield.js";
 import { initialize } from "../helpers/unit.js";
@@ -37,15 +39,13 @@ const request = (source, options = {}) => ({
 
 test("select enumerates Targetable and performs only the request's explicit filter", () => {
     const source = target(9);
-    const leaving = { ...target(2), lifecycle: "LEAVING" };
+    const ordinary = target(2);
     const configured = target(7, {
         targetable: { restrictions: [{
             id: "always-refuse", value: { kind: Symbol("untargetable"), allows: () => false },
         }] },
-        vitality: { maxHp: 10, defense: 0, resistance: 0 },
     });
-    const restricted = { ...configured, vitality: { ...configured.vitality, hp: 0 } };
-    const initial = battle(source, unit(4), leaving, restricted);
+    const initial = battle(source, unit(4), ordinary, configured);
     const selected = select(initial, request(source));
 
     assert.strictEqual(selected.state, initial);
@@ -180,15 +180,15 @@ test("random returns every candidate at most once and does not draw from an empt
 test("standard filters compose eligibility and source exclusion explicitly", () => {
     const source = target(0, { allegiance: { side: "ALLY" } });
     const alive = target(1, { allegiance: { side: "ENEMY" }, vitality: { maxHp: 10, defense: 0, resistance: 0 } });
-    const dead = target(2, { allegiance: { side: "ENEMY" }, vitality: { maxHp: 10, defense: 0, resistance: 0 } });
-    const initial = battle(source, alive, { ...dead, vitality: { ...dead.vitality, hp: 0 } });
+    const ally = target(2, { allegiance: { side: "ALLY" }, vitality: { maxHp: 10, defense: 0, resistance: 0 } });
+    const initial = battle(source, alive, ally);
 
     assert.deepEqual(select(initial, request(source, {
         filter: filters.and(filters.present, filters.alive, filters.hostile, filters.notSelf),
     })).value, [{ id: 1 }]);
     assert.deepEqual(select(initial, request(source, {
-        filter: filters.not(filters.or(filters.alive, filters.sameSide)),
-    })).value, [{ id: 2 }]);
+        filter: filters.not(filters.or(filters.hostile, filters.notSelf)),
+    })).value, [{ id: 0 }]);
 });
 
 test("blocked targets outrank nearer candidates and remain selectable outside ordinary range", () => {
@@ -223,7 +223,7 @@ test("blocked targets outrank nearer candidates and remain selectable outside or
     }).value.map(target => target.id), [3]);
 });
 
-test("geometric targeting uses hitboxes and current layer rather than route motion", () => {
+test("explicit geometry uses hitboxes while ground eligibility reads current layer rather than route motion", () => {
     const route = pathMotionMode => normalize(createInput({
         pathMotionMode, startPosition: [1, 2], endPosition: [1, 6],
         spawnOffset: [0, 0], spawnRandomRange: [0, 0], checkpoints: [], visitEveryCheckPoint: true,
@@ -232,19 +232,23 @@ test("geometric targeting uses hitboxes and current layer rather than route moti
         id: "target", hooks: Hooks.empty(), targetable: { restrictions: [] },
         vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: "ENEMY" },
         layer: { type: "GROUND" },
-        hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.7 } },
     };
-    const state = createBattle([
+    const hitbox = { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.7 } };
+    let state = createBattle([
         { definition: { id: "source", hooks: Hooks.empty(), allegiance: { side: "ALLY" } }, position: [1, 1] },
-        { definition: { ...living, route: route("FLY") }, position: [2.6, 1] },
-        { definition: { ...living, layer: { type: "AIR" }, route: route("WALK") }, position: [2.6, 1] },
-        { definition: { ...living, hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 } } }, position: [2.6, 1] },
+        { definition: { ...living, hitbox, route: route("FLY") }, position: [2.6, 1] },
+        { definition: { ...living, hitbox, route: route("WALK") }, position: [2.6, 1] },
+        { definition: { ...living, spatialPresence: {} }, position: [2.6, 1] },
     ]);
+    state = update(state, [setType(ref(get(state, 2)), "AIR")]);
     const source = ref(get(state, 0));
     const inRange = filters.and(filters.damage, filters.range([{ type: "CIRCLE", offset: [0, 0], radius: 1 }]));
     const query = { source, purposes: ["DAMAGE"], filter: inRange, selector: selectors.first(3, compare.distance) };
+    assert.deepEqual(select(state, { ...query, filter: filters.damage }).value.map(target => target.id), [1, 2, 3]);
     assert.deepEqual(select(state, query).value.map(target => target.id), [1, 2]);
     assert.deepEqual(select(state, { ...query, filter: filters.and(inRange, filters.ground) }).value.map(target => target.id), [1]);
+    state = disappear(state, ref(get(state, 3)));
+    assert.deepEqual(select(state, { ...query, filter: filters.damage }).value.map(target => target.id), [1, 2]);
 });
 
 test("healing eligibility and priority use effective MaxHP after real resource changes", () => {

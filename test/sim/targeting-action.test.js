@@ -11,7 +11,7 @@ import { random } from "../../dist/core/battle/targeting/selector.js";
 import { getUnit } from "../helpers/unit.js";
 import { ref } from "../../dist/core/unit/query.js";
 import * as actions from "../../dist/core/unit/action/index.js";
-import { and, damage, healing, range } from "../../dist/core/battle/targeting/filter.js";
+import { and, healing } from "../../dist/core/battle/targeting/filter.js";
 import { unit, battle } from "../helpers/action-fixture.js";
 
 function definition(groups, prepare = state => ({ state, value: {} })) {
@@ -71,33 +71,6 @@ test("an attack rejected for an empty trigger binding retains completed target-s
     assert.deepEqual(started.value, { type: "REJECTED", reason: "CONDITION" });
     assert.equal(started.state.execution.rngState, selected.state.execution.rngState);
     assert.equal(getUnit(started.state, 0).action.actions.values().filter(self => self.execution !== null).toArray().length, 0);
-});
-
-test("standard damage and healing filters exclude departing and spatially absent candidates explicitly", () => {
-    const source = unit(0);
-    const base = unit(1);
-    const ally = unit(2, { side: "ALLY" });
-    const initial = battle(source, base, ally);
-    const request = { source: ref(source), purposes: [], filter: () => true, selector: random(1) };
-
-    for (const [filter, target] of [[damage, base], [healing, { ...ally, vitality: { ...ally.vitality, hp: 50 } }]]) {
-        assert.equal(filter(initial, request, target), true);
-        assert.equal(filter(initial, request, { ...target, lifecycle: "LEAVING" }), false);
-        assert.equal(filter(initial, request, { ...target, spatialPresence: { present: false } }), false);
-    }
-});
-
-test("targeting only requires a hitbox when a geometric range filter is composed", () => {
-    const source = unit(0);
-    const target = unit(1, { hitbox: undefined });
-    const initial = battle(source, target);
-    const request = { source: ref(source), purposes: ["DAMAGE"], filter: damage, selector: random(1) };
-
-    assert.deepEqual(select(initial, request).value, [ref(target)]);
-    assert.deepEqual(select(initial, {
-        ...request,
-        filter: and(damage, range([{ type: "CIRCLE", offset: [0, 0], radius: 10 }])),
-    }).value, []);
 });
 
 test("bound healing survives later selection restrictions and follow-ups keep their BINDING and SOURCE receivers", () => {

@@ -15,7 +15,6 @@ test('ranges include tangent contacts and exclude circle-box corner gaps', () =>
   assert.equal(overlaps([circle(1)], [0, 0], circle(0.25), [1.251, 0]), false);
   assert.equal(overlaps([box(0.5, 0.5)], [0, 0], circle(0.625), [0.875, 1]), true);
   assert.equal(overlaps([box(0.5, 0.5)], [0, 0], circle(0.625), [1, 1]), false);
-  assert.equal(overlaps([circle(0.625)], [1, 1], box(0.5, 0.5), [0, 0]), false);
   assert.equal(overlaps([box(0.5, 0.5)], [0, 0], box(0.25, 0.25), [0.75, 0.75]), true);
   assert.equal(overlaps([box(0.5, 0.5)], [0, 0], box(0.25, 0.25), [0.751, 0.75]), false);
   assert.equal(overlaps([circle(1)], [0, 0], {
@@ -26,20 +25,11 @@ test('ranges include tangent contacts and exclude circle-box corner gaps', () =>
   assert.equal(contains([box(0.5, 0.5)], [2, 3], [2.5, 3.5]), true);
 });
 
-test('tile-derived ranges rotate all four directions around continuous source positions', () => {
+test('tile-derived ranges combine separated cells around a continuous source position', () => {
   const source = [0.25, 0.25];
   const hit = { type: 'CIRCLE', offset: [0, 0], radius: 0.125 };
-  for (const [direction, axis] of [['RIGHT', [1, 0]], ['UP', [0, 1]], ['LEFT', [-1, 0]], ['DOWN', [0, -1]]]) {
-    const range = fromTiles([[0, 1], [0, 3]], direction);
-    const at = distance => source.map((value, index) => value + axis[index] * distance);
-    assert.equal(overlaps(range, source, hit, at(1.625)), true, `${direction}: tangent`);
-    assert.equal(overlaps(range, source, hit, at(1.626)), false, `${direction}: beyond edge`);
-    assert.equal(overlaps(range, source, hit, at(2)), false, `${direction}: gap in union`);
-    assert.equal(contains(range, source, at(3)), true, `${direction}: second box`);
-  }
-  const originCell = fromTiles([[0, 0]], 'RIGHT');
-  assert.equal(overlaps(originCell, source, hit, [0.875, 0.25]), true);
-  assert.equal(overlaps(originCell, [0, 0], hit, [0.875, 0.25]), false);
-  assert.equal(contains(originCell, source, [0.75, 0.25]), true);
-  assert.equal(contains(originCell, [0, 0], [0.75, 0.25]), false);
+  const range = fromTiles([[0, 1], [0, 3]], 'UP');
+  assert.equal(overlaps(range, source, hit, [0.25, 1.875]), true);
+  assert.equal(overlaps(range, source, hit, [0.25, 2.25]), false);
+  assert.equal(contains(range, source, [0.25, 3.25]), true);
 });

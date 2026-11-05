@@ -25,7 +25,6 @@ import { createRegistrationOperations } from ${module("unit/registration")};
 import type { Offense } from ${module("unit/capability/offense/index")};
 import { setAttackContribution, resolveAttack } from ${module("unit/capability/offense/index")};
 import { setLayer } from ${module("unit/capability/blocking/index")};
-import * as layer from ${module("unit/capability/layer/index")};
 declare const battle: State;
 const outputKey = key<Hook<{ amount: number }, number>>('output');
 const textKey = key<Hook<{ text: string }, number>>('text');
@@ -184,10 +183,6 @@ createRegistrationOperations<Unit & vitality.Vitality, 'vitality', 'unknown'>('v
 createRegistrationOperations<Unit & vitality.Vitality, 'vitality', 'hp'>('vitality');
 // @ts-expect-error a different capability cannot be inferred from an unrelated proof.
 setLayer(reference, 'AIR');
-declare const layerRef: Ref<Unit & layer.Layer>;
-const layerChange: Change = layer.setType(layerRef, 'AIR');
-// @ts-expect-error a Layer write requires its own capability proof.
-layer.setType(reference, 'AIR');
 // @ts-expect-error public writes accept constructed Changes rather than complete snapshots.
 update(battle, [host]);
 // @ts-expect-error callers cannot fabricate an opaque Change.

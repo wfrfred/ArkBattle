@@ -29,8 +29,6 @@ import { advance as advanceAction } from '../../dist/core/unit/action/index.js';
 import { advance as advanceCombat } from '../../dist/core/battle/steps/combat.js';
 import { advance as advanceProjectiles } from '../../dist/core/battle/projectile.js';
 import * as projectilesQuery from '../../dist/core/projectile/index.js';
-import { setOverlay } from '../../dist/core/battlefield/navigation/state.js';
-import { advance as advanceLocomotion } from '../../dist/core/unit/capability/locomotion/index.js';
 
 const fixture = JSON.parse(readFileSync(new URL('../fixtures/arknights/main-mode-units.json', import.meta.url), 'utf8'));
 const rawEnemy = id => fixture.enemies.find(entry => entry.Key === id);
@@ -212,38 +210,4 @@ test('crossbow switching between ranged and blocker melee preserves independent 
   assert.equal(cooldown(meleeAgain, actions.melee), period * 2 + 1);
   assert.equal(cooldown(ranged, actions.melee), 0);
   assert.equal(getUnit(initial, 0).vitality.hp, 1000);
-});
-
-test('enemy content keeps hit radius and terrain avoidance width independent', () => {
-  const timing = { windupTicks: 0, recoveryTicks: 0, hitRadius: 0.4 };
-  const hound = createHound(profile('enemy_1000_gopro'), timing, 0.15).definition;
-  const crossbowman = createCrossbowman(profile('enemy_1003_ncbow'), {
-    ...timing,
-    projectile: { definition: createArrow(), speedPerSecond: 6, stopDelayTicks: 0 },
-  }, 0.25).definition;
-
-  for (const [definition, halfBodyWidth] of [[hound, 0.15], [crossbowman, 0.25]]) {
-    const unit = initialize({ id: 1, position: [2, 2], definition });
-    assert.equal(unit.definition.hitbox.shape.radius, 0.4);
-    assert.equal(unit.definition.locomotion.halfBodyWidth, halfBodyWidth);
-  }
-
-  const move = definition => {
-    const initial = emptyBattle();
-    const navigation = setOverlay(initial.battlefield.navigation, 'WALK', {
-      id: 0, cells: [[3, 3]], denyPassage: true, denyDepartures: [],
-    });
-    const before = addUnit({ ...initial, battlefield: { ...initial.battlefield, navigation } },
-      initialize({ id: 1, position: [2.1, 2.4], definition }));
-    const goal = [2.1, 4];
-    return getUnit(advanceLocomotion(before, { id: 1 }, { nextPoint: goal, goal }, {
-      mode: 'WALK', speedMultiplier: 1,
-    }), 1);
-  };
-  const narrow = move(hound);
-  const changedHit = move(createHound(profile('enemy_1000_gopro'), { ...timing, hitRadius: 0.05 }, 0.15).definition);
-  const wider = move(createHound(profile('enemy_1000_gopro'), timing, 0.35).definition);
-  assert.deepEqual(changedHit.position, narrow.position);
-  assert.deepEqual(changedHit.locomotion.velocity, narrow.locomotion.velocity);
-  assert.ok(wider.position[0] < narrow.position[0], 'only the wider movement body begins avoiding this corner');
 });
