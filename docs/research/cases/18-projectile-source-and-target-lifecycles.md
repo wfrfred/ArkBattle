@@ -87,6 +87,16 @@ SetDisappeared 修改标记并调用前后回调，没有注销、清零 UID 或
 
 SetDisappeared 自身还会同步派发事件和 Buff 回调。具体 Content 可以借此另行杀死／终结单位；上面的结论以回调之后身份和 alive 仍成立为条件，不替任意内容提供存活保证。
 
+### 2026-11-05 复核：哪些单位使用消失
+
+需要区分底层字段覆盖范围和实际机制需求，不能按敌人种类给消失能力列固定名单。
+
+- **底层声明：** `isDisappeared` 的 backing field 定义在 BObject，见 [BObject.json](../evidence/blocking-native-20261023/competition/BObject.json)；Character 和 Enemy 分别声明自己的 `OnDisappearChanged` 覆盖，见同批次的 [Character.json](../evidence/blocking-native-20261023/modes/Character.json) 和 [Enemy.json](../evidence/blocking-native-20261023/modes/Enemy.json)。字段和响应入口广泛存在，不证明每个继承者都有实际切换场景，也不能把 Enemy 的 DisappearState 行为推广到 Character。
+- **实际使用：** 普通敌人可以因关卡路线的 DISAPPEAR 指令使用消失，不要求该敌人具有专属消失技能。仓库六份关卡 fixture 中，[level_act1autochess_h07_02.json](../../../test/fixtures/arknights/level_act1autochess_h07_02.json) 的普通波次明确引用六条带 DISAPPEAR 的路线，涉及 `enemy_1427_lrnazg`、`enemy_1430_lrrook`、`enemy_1042_frostd` 三种配置、七个计划出生实例。其中五条还有 APPEAR_AT_POS，route 4 没有，不将全部六条概括为完整消失／出现对。
+- **关卡机制也可施加：** PRTS 社区资料 [TO-6 最难坦诚](https://prts.wiki/w/TO-6_最难坦诚) 的兔子洞说明，进入入口的地面敌方单位在延迟后进入消失状态，再经出口及其预设路线出现。这进一步说明使用需求可以由外部机制决定，而非单位固有种类决定。查阅日期：2026-11-05。
+
+上述样本不能推算全游戏的种类数或实例数；本轮没有全量统计，也没有穷尽干员、召唤物和装置的实际切换场景。隐匿、仅隐藏模型及尚未创建的 hidden 预置不计入消失。此处只记录使用范围，不决定 Presence 是否应成为所有 Unit 的必备状态。
+
 ### 2026-11-05 复核：消失与 HP／EP 接收
 
 本次只复核已经归档的 2026-11-02／03 接收、治疗及 EP 计时材料，没有重新读取客户端、下载资源或执行游戏。它们采用较新的同一组输入：DLL SHA-256 `cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff`，metadata SHA-256 `e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5`；与本案 2026-10-21 的路线消失批次分别引用，不混用方法编号。下文方法按各 JSON 的 `result.bodies[].methodIndex` 或 fragment 中的完整方法名定位。
