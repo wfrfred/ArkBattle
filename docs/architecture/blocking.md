@@ -2,9 +2,9 @@
 
 Blocking 负责阻挡关系的建立、解除、站位计算及必要维护；Blockable 保存并推进自身位置修正计划。本文描述两端状态、搜索政策、关系身份、位置推进及同步维护契约，原生特殊机制的未完成部分单列。
 
-Blocker／Blockable 的数值与能力 Change 工厂见 [Capability API](capability.md#blocking)。状态归属与同步返回契约见 [函数式内核](functional-core.md)。
+Blocker／Blockable 的数值、能力 Change 工厂与完整操作见 [Capability API](capability.md#blocking)。状态归属与同步返回契约见 [函数式内核](functional-core.md)。
 
-关系查询、acquire／release、maintain／maintainAll 与搜索从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入；Layer、Rule、容量、volume 与 Hook 的 Change 工厂从 [capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入。Blocking 自己定义 Layer 与容量 Modifier，公共类型也由 Capability 入口导出。工厂绑定 Typed Ref，由 Unit.update 执行；完整关系业务由 battle/blocking/operations.ts 组织，hook.ts 只派发。Blockable 的 advancePosition、releaseBlockable 完整操作及 stableBlockPosition 查询由 Capability 入口导出。关系解除统一使用接收 Relation 数组的 release，字段发布仍由所属领域负责。
+关系查询、acquire／release、maintain／maintainAll 与搜索从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入；Layer、Rule、容量、volume 与 Hook 的 Change 工厂从 [capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入。Blocking 自己定义 Layer 与容量 Modifier，公共类型也由 Capability 入口导出。工厂绑定 Typed Ref，由 Unit.update 执行；完整关系业务由 battle/blocking/operations.ts 组织，hook.ts 只派发。Blocker 的 releaseAll、Blockable 的 advancePosition／releaseBlockable 完整操作及 stableBlockPosition 查询由 Capability 入口导出。关系解除统一使用接收 Relation 数组的 release，字段发布仍由所属领域负责。
 
 ## 关键语义
 
@@ -221,9 +221,13 @@ return battle;
 
 acquire 失败时返回原 BattleState，不产生临时关系或通知。成功时在首次 Hook 前发布明确构造的双端状态与新 adjustment，再按 Blocker、Blockable 顺序通知，最后以 maintain 复核本次新 Relation 的当前资格；旧身份已被解除时跳过，不复核其他关系或裁撤整个阻挡组。Hook 中的容量／volume 操作由各自 Settlement 完成裁撤。它不绕过任何普通取得条件。
 
-`release(battle, captured)` 是唯一的关系解除操作，输入可以跨多个 owner。入口按正向列表中的原 Ref 条目过滤已失效的旧关系，重复的同一旧身份只处理一次，并保留首次出现的输入顺序。它先准备并发布整批双端解除结果，再按该顺序逐条派发双方 RELEASED Hook。首个 Hook 已能读取整批解除结果。
+双端关系解除统一由 `release(battle, captured)` 结算，输入可以跨多个 owner。入口按正向列表中的原 Ref 条目过滤已失效的旧关系，重复的同一旧身份只处理一次，并保留首次出现的输入顺序。它先准备并发布整批双端解除结果，再按该顺序逐条派发双方 RELEASED Hook。首个 Hook 已能读取整批解除结果。
 
 release 只处理传入的旧集合，不自动 maintain、搜索或取消位置计划；Hook 新建立的条目不属于本次解除。过期集合或空集合返回原状态。旧身份在入口确认后，内部纯构造信任该事实；其他领域先完成自己的字段发布，再提交关系集合。调用方可使用 `relations(battle, reference)` 取得当前局部集合，或按具体业务提交已有的旧 Relation。
+
+Blocker Capability 提供完整操作 `releaseAll(battle, reference: Ref<Unit & Blocker>): BattleState`，由 capability/blocking/index.ts 原名导出。入口从当前 BattleState 读取一次宿主，缺失时返回原状态；按取得顺序解除当前全部出向关系，不取消目标的位置计划，也不自动维护或搜索。
+
+内部共享的 `releaseCaptured(battle, self: Unit & Blocker)` 消费已取得的 self.blocker.blocked 原 Ref，将其组成 Relation 后交给 Blocking.release，不再读取宿主。该函数由 blocker-operations.ts 具名导出供 Core 协作，不经 index.ts 公开。releaseAll 传入当前对象，Change 后继则可明确传入 previous，二者复用相同的批量解除结算。
 
 两端 Capability 的 Change 工厂由 capability/blocking/index.ts 导出：
 
@@ -241,7 +245,7 @@ release 只处理传入的旧集合，不自动 maintain、搜索或取消位置
 
 工厂实现在 [blocker-operations.ts](../../src/core/unit/capability/blocking/blocker-operations.ts) 和 [blockable-operations.ts](../../src/core/unit/capability/blocking/blockable-operations.ts)。blocker.ts／blockable.ts 保留模型、初始化、守卫和数值查询，Catalog 与只读查询可精确依赖模型。公共入口直接导出工厂，不增加包装。
 
-setLayer 的 transform 只设置 layer 与实际 radius，不修改关系。同层请求由 transform 返回原 Unit，update 统一跳过其 settle。真实切层的 settle 将 previous.blocked 中的原 Ref 组成 Relation 数组交给 release；后者按当前 BattleState 过滤旧身份后批量解除并通知。后继不重调 setLayer，也不把 previous 整体发布；本批其他字段和嵌套操作的新值因此保留。
+setLayer 的 transform 只设置 layer 与实际 radius，不修改关系。同层请求由 transform 返回原 Unit，update 统一跳过其 settle。真实切层的 settle 调用 releaseCaptured(battle, previous)，按 previous.blocker.blocked 中的原 Ref 捕获旧集合；Blocking.release 按当前 BattleState 过滤旧身份后批量解除并通知。自身 Layer.setType 的 Blocker 分支使用同一内部操作。后继不重调 setLayer 或公开的 releaseAll，也不把 previous 整体发布；本批其他字段和嵌套操作的新值因此保留。
 
 setLayer 不因旧关系在最终层下仍合法而保留它。新建立的同 ID 关系有新的 Ref 条目，不属于旧候选；该项解除不再额外维护新集合。它不自动 search、不新增 layerChanged Hook、不改变自身 Unit Layer。内容在对应 Effect 生命周期程序中提交该 Change，不机械绑定所有 Skill 开始或结束。
 
@@ -280,7 +284,7 @@ Blocker.layer 的 Change 先在全批发布时设置 layer／radius，等轮到�
 
 嵌套 update 只执行自己的局部结算列表，不调度外层剩余项，不保存全局 pending 或更新锁。已经发布的同对象或同关联事实可以交叠，不能把局部队列误称为事务隔离。显式全场地块操作通过 maintainAll 复核已发布的资格事实；需要局部语义的工厂不能以全场复核代替自身后继。
 
-Unit 的真实离场由 Lifetime 先纯发布 LEAVING，再派发统一 prepare Hook。Blocker／Blockable 在自己的 initializer 中将清理 Hook 放在序列前部：Blockable 取消自身 adjustment，再以局部 relations 调用 release；Blocker 将自己的全部旧关系批量解除后才通知，不取消其原目标的计划。Unit 不导入 Blocking，Finalize 不扫描全场。主动撤退已在请求离场前完成返费与 Card 结算，见[主动操作与被动死亡](deployment.md#主动操作与被动死亡)；Blocking 清理不重新决定本次账务。Damage／Healing 写 HP 不启动 Blocking，临时 HP 为 0 不使旧关系失效，普通 Damage 完成 HP Applied 后仍应死亡才请求上述离场清理。普通私有 state 写回和 Hook Change 不启动 Blocking，Rule 能读取其他能力不代表系统自动订阅任意字段。
+Unit 的真实离场由 Lifetime 先纯发布 LEAVING，再派发统一 prepare Hook。Blocker／Blockable 在自己的 initializer 中将清理 Hook 放在序列前部：Blockable 取消自身 adjustment，再以局部 relations 调用 release；Blocker 调用 releaseAll，读取当前关系并批量解除后才通知，不取消其原目标的计划。Departure.unit 仅提供该宿主的身份，不将其历史 blocked 列表当作当前关系。Unit 不导入 Blocking，Finalize 不扫描全场。主动撤退已在请求离场前完成返费与 Card 结算，见[主动操作与被动死亡](deployment.md#主动操作与被动死亡)；Blocking 清理不重新决定本次账务。Damage／Healing 写 HP 不启动 Blocking，临时 HP 为 0 不使旧关系失效，普通 Damage 完成 HP Applied 后仍应死亡才请求上述离场清理。普通私有 state 写回和 Hook Change 不启动 Blocking，Rule 能读取其他能力不代表系统自动订阅任意字段。
 
 ## 取得归属与通知时点
 

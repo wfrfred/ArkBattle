@@ -34,6 +34,7 @@ export {
     setCapacityContribution,
     removeCapacityContribution,
     setLayer,
+    releaseAll,
 } from "./blocker-operations.js";
 
 export {

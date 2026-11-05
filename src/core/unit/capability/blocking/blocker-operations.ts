@@ -22,10 +22,25 @@ import {
 export const prepare: PrepareHook = {
     id: "@blocker/prepare",
     invoke: (battle, { unit }) => ({
-        state: blocking.release(battle, relations(battle, units.ref(unit as Unit & Blocker))),
+        state: releaseAll(battle, units.ref(unit as Unit & Blocker)),
         value: undefined,
     }),
 };
+
+export function releaseAll(battle: BattleState, reference: Ref<Unit & Blocker>): BattleState {
+    const self = units.get(battle, reference);
+
+    return self === undefined ? battle : releaseCaptured(battle, self);
+}
+
+export function releaseCaptured(battle: BattleState, self: Unit & Blocker): BattleState {
+    const blocker = units.ref(self);
+
+    return blocking.release(
+        battle,
+        self.blocker.blocked.map((blocked) => ({ blocker, blocked })),
+    );
+}
 
 function settleRules(battle: BattleState, reference: Ref<Unit & Blocker>): BattleState {
     for (const relation of relations(battle, reference)) {
@@ -127,11 +142,7 @@ export function setLayer(reference: Ref<Unit & Blocker>, layer: Layer): Change {
                           radius: self.definition.blocker.radius ?? DEFAULT_RADIUS[layer],
                       },
                   },
-        (battle, previous) =>
-            blocking.release(
-                battle,
-                previous.blocker.blocked.map((blocked) => ({ blocker: reference, blocked })),
-            ),
+        releaseCaptured,
     );
 }
 
