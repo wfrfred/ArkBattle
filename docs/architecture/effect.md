@@ -244,7 +244,7 @@ function setData<T extends Effect<any, any>>(
 function setExpiration<T extends Effect<any, any>>(
     battle: BattleState,
     ref: Ref<T>,
-    expiration: Expiration,
+    expiration: NoInfer<T["expiration"]>,
 ): BattleState;
 ```
 
@@ -256,7 +256,7 @@ function setExpiration<T extends Effect<any, any>>(
 
 `NoInfer` 约束本次结果值的类型推导。私有更新必须保留实例与 Definition 对应的 S／H 类型关联；Ref 可协变查询，借预先弱化的完整 Ref 写入不兼容私有数据属于调用契约错误，不增加运行时数据形状检查。
 
-`setExpiration()` 从当前 battle 按精确 Effect Ref 取得宿主与实例，只替换 expiration。DURATION 的 elapsed、total、rate 在写入入口校验为有限非负数，DEADLINE 的 tick 为非负安全整数；非法值、缺失宿主或实例抛出 RangeError。给定对象与当前 expiration 引用相同时返回原 BattleState，不修改 Lifetime 关系。
+`setExpiration()` 从当前 battle 按精确 Effect Ref 取得宿主与实例，只替换 expiration。新值遵守 Ref 所指类型的 expiration 约束；普通 Effect 可以切换时间类型，Burst 等已收窄类型保持自身的时间契约。DURATION 的 elapsed、total、rate 在写入入口校验为有限非负数，DEADLINE 的 tick 为非负安全整数；非法值、缺失宿主或实例抛出 RangeError。给定对象与当前 expiration 引用相同时返回原 BattleState，不修改 Lifetime 关系。
 
 时间写回保留当前 status，INSTALLING、INACTIVE、ACTIVE、ENDING 均可更新；ENDING 中写入不会恢复实例或阻止最终移除。该操作只提交结果值，不额外推进或立即结束实例。安装完成、生效协调或正常 advance 在各自的检查点决定生命周期后继。
 

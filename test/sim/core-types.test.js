@@ -93,9 +93,15 @@ const shield: effects.Definition<{ charges: number }, Offense> = {
 const installed = effects.install(battle, reference, shield);
 if (installed.value !== undefined) {
     const charges: number = effects.get(installed.state, installed.value)!.data.charges;
+    effects.setExpiration(installed.state, installed.value, { type: 'DEADLINE', tick: 10 });
     // @ts-expect-error writes cannot widen the identity's private data pairing.
     effects.setData(installed.state, installed.value, { charges: 'wrong' });
 }
+declare const burstRef: Ref<elemental.Burst>;
+const burst = elemental.get(battle, burstRef)!;
+effects.setExpiration(battle, burstRef, { ...burst.expiration, elapsed: burst.expiration.elapsed + 1 });
+// @ts-expect-error writes retain the Burst identity's duration contract.
+effects.setExpiration(battle, burstRef, { type: 'DEADLINE', tick: 10 });
 const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'bare', hooks: Hooks.empty() } }).value;
 // @ts-expect-error the host has not established the required capability.
 effects.install(battle, ref(bare), shield);

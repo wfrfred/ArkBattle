@@ -20,14 +20,18 @@ export interface Definition extends EffectDefinition<State, Elemental> {
     readonly durationTicks: number;
 }
 
-export type Burst = Effect<State, Elemental>;
+type Duration = Extract<Expiration, { type: "DURATION" }>;
+
+export interface Burst extends Effect<State, Elemental> {
+    readonly expiration: Duration;
+}
 
 export type End =
     { readonly type: "FINISHED" } | { readonly type: "CANCELLED"; readonly reason: string };
 
 export { ref };
 
-export function onInstall(battle: BattleState, self: Burst): BattleState {
+export function onInstall(battle: BattleState, self: Effect<State, Elemental>): BattleState {
     const host = units.get(battle, self.host)!;
     const current: Burst = {
         ...self,
@@ -60,7 +64,7 @@ export function onInstall(battle: BattleState, self: Burst): BattleState {
 
 export function advance(
     battle: BattleState,
-    self: Burst,
+    instance: Effect<State, Elemental>,
     previousExpiration: Expiration,
     onSecond?: (
         battle: BattleState,
@@ -69,14 +73,15 @@ export function advance(
         second: number,
     ) => BattleState,
 ): BattleState {
+    const self = instance as Burst;
     const reference = ref(self);
     const host = availableHost(battle, reference);
     if (host === undefined) {
         return battle;
     }
 
-    const expiration = self.expiration as Extract<Expiration, { type: "DURATION" }>;
-    const previous = previousExpiration as typeof expiration;
+    const expiration = self.expiration;
+    const previous = previousExpiration as Duration;
     const elapsed = Math.min(
         expiration.total,
         expiration.elapsed + resolveBurstRecoverySpeed(battle, host),
@@ -109,7 +114,12 @@ export function advance(
     return battle;
 }
 
-export function onEnd(battle: BattleState, self: Burst, reason: string): BattleState {
+export function onEnd(
+    battle: BattleState,
+    instance: Effect<State, Elemental>,
+    reason: string,
+): BattleState {
+    const self = instance as Burst;
     const host = units.get(battle, self.host)!;
     battle = replace(battle, [
         {
@@ -131,7 +141,7 @@ export function onEnd(battle: BattleState, self: Burst, reason: string): BattleS
 
 export function availableHost(
     battle: BattleState,
-    reference: Ref<Burst>,
+    reference: Ref<Effect<State, Elemental>>,
 ): (Unit & Elemental) | undefined {
     const host = units.get(battle, reference.host);
     const status = getEffect(battle, reference)?.status;

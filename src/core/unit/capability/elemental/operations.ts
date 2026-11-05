@@ -96,7 +96,7 @@ export function commitDamage(
             source: request.source,
         });
         battle = installed.state;
-        reference = installed.value!;
+        reference = installed.value! as Ref<Burst>;
     }
 
     const application: DamageApplication = { type, epBefore, epAfter, epLoss, burst: reference };

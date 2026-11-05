@@ -96,7 +96,7 @@ export function setData<T extends Effect<any, any>>(
 export function setExpiration<T extends Effect<any, any>>(
     battle: BattleState,
     ref: Ref<T>,
-    expiration: Expiration,
+    expiration: NoInfer<T["expiration"]>,
 ): BattleState {
     validate(expiration);
 
