@@ -1,6 +1,5 @@
 export {
     hasSkill,
-    hasSkillDefinition,
     initialize,
     setRule,
     removeRule,

@@ -2,7 +2,7 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import { assertNonnegativeNumber } from "../../../common/assert.js";
 import type * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
-import type { Unit, Definition as UnitDefinition } from "../../unit.js";
+import type { Unit } from "../../unit.js";
 import { createRegistrationOperations } from "../../registration.js";
 
 export interface Definition {
@@ -26,12 +26,6 @@ export interface Offense {
 
 export function hasOffense<U extends Unit>(unit: U): unit is U & Offense {
     return "offense" in unit && "offense" in unit.definition;
-}
-
-export function hasOffenseDefinition(
-    definition: UnitDefinition,
-): definition is UnitDefinition & Offense["definition"] {
-    return "offense" in definition;
 }
 
 export function initialize<U extends Unit & Pick<Offense, "definition">>(

@@ -1,6 +1,5 @@
 export {
     hasVitality,
-    hasVitalityDefinition,
     initialize,
     setRule,
     removeRule,

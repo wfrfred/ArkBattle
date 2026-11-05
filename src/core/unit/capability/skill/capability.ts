@@ -1,4 +1,4 @@
-import type { Definition as UnitDefinition, Unit } from "../../unit.js";
+import type { Unit } from "../../unit.js";
 import * as contribution from "../../contribution/contribution.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Skill as SkillState } from "../../skill/skill.js";
@@ -37,12 +37,6 @@ export interface Skill {
 
 export function hasSkill<U extends Unit>(unit: U): unit is U & Skill {
     return "skill" in unit && "skill" in unit.definition;
-}
-
-export function hasSkillDefinition(
-    definition: UnitDefinition,
-): definition is UnitDefinition & Skill["definition"] {
-    return "skill" in definition;
 }
 
 export function initialize<U extends Unit & Pick<Skill, "definition">>(

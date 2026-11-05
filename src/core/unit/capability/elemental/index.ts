@@ -2,7 +2,6 @@ export {
     Type,
     ELEMENT_TYPES,
     hasElemental,
-    hasElementalDefinition,
     elementValues,
     initialize,
     setContribution,

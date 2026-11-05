@@ -28,7 +28,6 @@ import { invincible } from "../core/effects/protection.js";
 import { project as projectTrackingProjectile } from "../content/projectiles/tracking.js";
 import {
     hasVitality,
-    hasVitalityDefinition,
     resolveMaxHp as resolveVitalityMaxHp,
 } from "../core/unit/capability/vitality/index.js";
 import type { Direction } from "../core/geometry/direction.js";
@@ -158,11 +157,7 @@ function isFlying(unit: Unit): boolean {
 }
 
 function maxHp(unit: Unit): number {
-    if (hasVitality(unit)) {
-        return resolveVitalityMaxHp(unit.definition.vitality, unit.vitality);
-    }
-
-    return hasVitalityDefinition(unit.definition) ? unit.definition.vitality.maxHp : 0;
+    return hasVitality(unit) ? resolveVitalityMaxHp(unit.definition.vitality, unit.vitality) : 0;
 }
 
 function skillActive(unit: Unit, animation?: LegacyUnitAnimation["skill"]): boolean {
@@ -592,10 +587,6 @@ export class TacticalDemoPresentation {
             if (reference !== null) {
                 const recovery = getBurst(state, reference)!;
                 const expiration = recovery.expiration;
-                if (expiration.type !== "DURATION") {
-                    continue;
-                }
-
                 const remainingTicks = expiration.total - expiration.elapsed;
                 gauges.push([
                     unit.id,

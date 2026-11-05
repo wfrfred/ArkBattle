@@ -1,5 +1,5 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import type { Unit, Definition as UnitDefinition } from "../../unit.js";
+import type { Unit } from "../../unit.js";
 import type { Id as DefinitionId } from "../../action/definition.js";
 import type { Actions } from "../../action/actions.js";
 import type * as contribution from "../../contribution/contribution.js";
@@ -45,12 +45,6 @@ export interface Action {
 
 export function hasAction<U extends Unit>(unit: U): unit is U & Action {
     return "action" in unit && "action" in unit.definition;
-}
-
-export function hasActionDefinition(
-    definition: UnitDefinition,
-): definition is UnitDefinition & Action["definition"] {
-    return "action" in definition;
 }
 
 export function initialize<U extends Unit & Pick<Action, "definition">>(

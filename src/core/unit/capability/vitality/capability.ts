@@ -2,7 +2,7 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import { assertNonnegativeNumber } from "../../../common/assert.js";
 import * as contribution from "../../contribution/contribution.js";
 import * as attribute from "../../contribution/attribute.js";
-import type { Unit, Definition as UnitDefinition } from "../../unit.js";
+import type { Unit } from "../../unit.js";
 import type {
     ReceivingHook as DamageReceivingHook,
     ReceivingStartedHook,
@@ -50,12 +50,6 @@ export interface Vitality {
 
 export function hasVitality<U extends Unit>(unit: U): unit is U & Vitality {
     return "vitality" in unit && "vitality" in unit.definition;
-}
-
-export function hasVitalityDefinition(
-    definition: UnitDefinition,
-): definition is UnitDefinition & Vitality["definition"] {
-    return "vitality" in definition;
 }
 
 export function initialize<U extends Unit & Pick<Vitality, "definition">>(

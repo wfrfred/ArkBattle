@@ -19,7 +19,7 @@ Definition 保存静态参数与行为描述，State 保存本领域当前事实
 
 基础 Unit 是非泛型接口，保留运行时实例 ID 与 definition.id 对应的静态内容身份。通用工厂返回 Unit 基础结构与明确选择的能力的标准 Definition／State 组合。Skill／Action Capability 本身非泛型，不把具体程序的私有类型传播到宿主 Unit、SP、Rule、Hook 或 Contribution。Core 从当前 unit.skill 直接读取完整单槽聚合；已知 Definition 构造持久 Ref、已知非空聚合构造本轮 Ref，分别保持私有类型配对。需要某项能力的业务通过 Unit 与对应 Capability 的交叉类型声明依赖。
 
-各领域保留 hasVitality／hasSkill 等结构守卫。它们可以使用泛型保留调用者已知结构，因为守卫不更新值。普通状态变换不承诺保留任意输入字面量类型，也不使用 StableUnit／widenUnit。Core 遵守 readonly 与约定式不可变，无需所有权接管与反复复制。
+各领域通过 hasVitality／hasSkill 等结构守卫确认已构造 Unit 的完整能力。静态 Definition 按具体类型直接读取，异构 Definition 的字段筛选在实际消费位置完成。守卫可以使用泛型保留调用者已知结构，因为守卫不更新值。普通状态变换不承诺保留任意输入字面量类型，也不使用 StableUnit／widenUnit。Core 遵守 readonly 与约定式不可变，无需所有权接管与反复复制。
 
 ## 操作范围
 

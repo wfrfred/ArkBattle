@@ -5,7 +5,7 @@ import {
     assertPositiveNumber,
 } from "../../../common/assert.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import type { Unit, Definition as UnitDefinition } from "../../unit.js";
+import type { Unit } from "../../unit.js";
 import type * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
 import type { Burst, Definition as BurstDefinition } from "./burst.js";
@@ -68,12 +68,6 @@ export interface Elemental {
 
 export function hasElemental<U extends Unit>(unit: U): unit is U & Elemental {
     return "elemental" in unit && "elemental" in unit.definition;
-}
-
-export function hasElementalDefinition(
-    definition: UnitDefinition,
-): definition is UnitDefinition & Elemental["definition"] {
-    return "elemental" in definition;
 }
 
 export function elementValues(value: number): Values {

@@ -1,6 +1,5 @@
 export {
     hasOffense,
-    hasOffenseDefinition,
     initialize,
     setAttackContribution,
     removeAttackContribution,

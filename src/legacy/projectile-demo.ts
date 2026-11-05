@@ -7,7 +7,7 @@ import {
     ref as unitRef,
 } from "../core/unit/index.js";
 import { create as createAction, createActions } from "../core/unit/action/index.js";
-import { hasActionDefinition } from "../core/unit/capability/action/index.js";
+import type { Definition as ActionDefinition } from "../core/unit/capability/action/index.js";
 import { create as createAttack, isAttack } from "../content/actions/attack.js";
 import {
     calculateDamage,
@@ -114,7 +114,7 @@ export function createTacticalProjectileDemo(
 
     function transform<D extends UnitDefinition>(definition: D): D {
         if (
-            !hasActionDefinition(definition) ||
+            !("action" in definition) ||
             !("attack" in definition) ||
             !isAttack(definition.attack)
         ) {
@@ -167,7 +167,7 @@ export function createTacticalProjectileDemo(
             ...definition,
             attack,
             action: {
-                ...definition.action,
+                ...(definition.action as ActionDefinition),
                 initialize: (battle: BattleState) => createActions(battle, initializeAttack),
             },
         };

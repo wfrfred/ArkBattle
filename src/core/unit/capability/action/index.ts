@@ -1,12 +1,4 @@
-export {
-    hasAction,
-    hasActionDefinition,
-    initialize,
-    setRule,
-    removeRule,
-    setHook,
-    removeHook,
-} from "./capability.js";
+export { hasAction, initialize, setRule, removeRule, setHook, removeHook } from "./capability.js";
 
 export type { Definition, RuleContext, Rule, Input, State, Action } from "./capability.js";
 
