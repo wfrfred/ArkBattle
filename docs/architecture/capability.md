@@ -23,9 +23,9 @@ Definition 保存静态参数与行为描述，State 保存本领域当前事实
 
 ## 操作范围
 
-纯数值与几何等局部计算仍直接接收值、返回值。对已登记 Unit 的公开 Rule、Hook、Contribution 与 Blocker.layer 写入则统一为 `setXxx(ref, value): Change`／`removeXxx(ref, id): Change` 工厂；Content 不接触任意 Unit 转换函数。Core 用 createChange 将目标、纯 transform 与可选 settle 配对，Unit.update 先完成全批转换、一次发布，再原顺序结算。跨能力 Rule 仍可只读完整 Unit 与 BattleState，不把真实业务输入压成通用上下文。
+纯数值与几何等局部计算仍直接接收值、返回值。对已登记 Unit 的公开 Rule、Hook、Contribution、Layer.type 与 Blocker.layer 写入则统一为 `setXxx(ref, value): Change`／`removeXxx(ref, id): Change` 工厂；Content 不接触任意 Unit 转换函数。Core 用 createChange 将目标、纯 transform 与可选 settle 配对，Unit.update 先完成全批转换、一次发布，再原顺序结算。跨能力 Rule 仍可只读完整 Unit 与 BattleState，不把真实业务输入压成通用上下文。
 
-Capability 也可提供接收 BattleState 与 Typed Ref 的完整操作，例如 SpatialPresence.appear／disappear 与 Locomotion.advance；是否需要时间推进、资格判断或领域结算由实际业务决定。Rule、Hook、Contribution 与 Blocker.layer 的工厂不自行提交；有后继的 Change 在发布后同步结算，无后继的 Hook Change 只改变集合。完整私有 state／生命周期操作保持各自原协议，见 [批量变更](api-conventions.md#51-unit-完整操作与批量变更)。
+Capability 也可提供接收 BattleState 与 Typed Ref 的完整操作，例如 SpatialPresence.appear／disappear 与 Locomotion.advance；是否需要时间推进、资格判断或领域结算由实际业务决定。Rule、Hook、Contribution、Layer.type 与 Blocker.layer 的工厂不自行提交；有后继的 Change 在发布后同步结算，无后继的 Hook Change 只改变集合。完整私有 state／生命周期操作保持各自原协议，见 [批量变更](api-conventions.md#51-unit-完整操作与批量变更)。
 
 完整结算接收当前 BattleState，按业务顺序返回已结算的新版本。有额外拒绝原因、结算报告或新身份时返回 `{ state, value }`，否则直接返回 State。普通查询不推进世界。所谓提交指生成并接续后继值；Tick 成功后，Runtime 才发布最终版本。
 
@@ -147,6 +147,8 @@ initialize(battle, unit) 校验 unit.definition.offense.attack 为有限非负�
 Unit.position 表达当前世界坐标；Layer 表达 GROUND／AIR 空地身份，Route.pathMotionMode 表达 WALK／FLY 通行方式。这三者独立，升空不自动改变坐标或寻路模式。
 
 unit/capability/layer/capability.ts 的 Definition.type 提供初始身份，State.type 保存当前身份；领域消费者读取 unit.layer.type。Unit.position 与 SpatialPresence 表达位置和空间存在事实，不承担空地身份。Battlefield 不保存另一份位置索引。
+
+Layer 的 `setType(reference: Ref<Unit & Layer>, type: Type): Change` 归 operations.ts，经 index.ts 与模型、守卫和 initialize 显式导出；Core 只需模型时继续直接依赖 capability.ts。它设置自身空地身份，与 Blocking.setLayer 调整可阻挡目标层的操作不同。setType 同时主动脱离阻挡，即使 type 相同也执行清理，每次形成新的 Layer State 和 Unit，不改变通用 update 的同引用跳过协议。全批 transform 先发布，settle 再按 previous 的稳定角色分支：Blocker 捕获 previous.blocker.blocked 中的原 Ref，批量解除旧出向关系，Hook 重建的新 Ref 不受旧请求影响；Blockable 调用自身 release，按最新状态解除入向关系并取消位置计划，后续独立请求仍可再次脱离当前关系；两种角色皆无时只更新身份。该操作不自动搜索，不修改 Definition、position、Route.pathMotionMode 或 Blocker 自己的 layer／radius，也不代替浮空效果的其他业务。原生边界见[运动调查](../research/cases/15-locomotion-native-semantics.md)和[蒂比起飞调查](../research/cases/21-tippi-air-blocking.md)。
 
 unit/capability/hitbox/capability.ts 的 Definition.shape 保存单个静态 Shape，State 为空实现；Spatial 与采用相交判定的 Targeting 读取 unit.definition.hitbox.shape。initialize 校验有限偏移、非负有限半径或半宽高；不复制几何到 State，不提供运行时形状修改接口。公开 API 只有 hasHitbox 与 initialize。
 

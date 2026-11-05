@@ -112,8 +112,8 @@ Card 的 RuleContext 按用途区分：DISPLAY／SELECT 接收 Card Ref，DEPLOY
 | Deployment | [battle/deployment/index.ts](../../src/core/battle/deployment/index.ts) | 部署经济、addCard、完整 Request／Quote、统一 evaluate／preview／positions、deploy 与领域部署 Hook。retreat／canRetreat 归 Deployable，Deployment 入口保留协作导出；部署与撤退 Command 统一以 ref 携带 Typed Ref，部署据此生成完整请求，撤退直接调用领域操作。详见[部署契约](deployment.md)。 |
 | Card | [battle/deployment/card/index.ts](../../src/core/battle/deployment/card/index.ts) | Card<S>、私有程序 Definition<S>、ref、get／all、有效值查询、规则、unitHooks、费用贡献、库存、部署间隔和串行恢复。addCard 接收含顶层 card 配置的完整静态 Unit Definition，Card 保留同一引用供部署使用；本次部署事实归 Deployable State。setUnitHook／removeUnitHook 管理注入以后部署实例的 Unit 生命周期程序。字段／资源操作接收 BattleState 与 Typed Ref，纯状态变换及完整替换由 Core 内部使用。详见[静态内容与 Card](deployment.md#静态内容与-card)。 |
 | Schedule | [battle/schedule/index.ts](../../src/core/battle/schedule/index.ts) | 配置、执行状态、创建、推进、登记／结算与统计查询；isSpawnScheduleCompleted／getSpawnedCount／getSpawnScheduleCounts／getUnspawnedCount 归 query.ts，队列算法与辅助计算保持内部依赖。 |
-| 多文件 Capability | unit/capability/ 下 action、blocking、deployable、elemental、locomotion、occupancy、offense、presence、route、skill、vitality 各自的 index.ts | 按能力职责选择导出。Occupancy 保存可空的摆放朝向并提供 setDirection Change；Skill 入口只提供工厂 Definition、Capability／State、守卫、初始化及 Rule／Hook／Ammo 贡献 Change 工厂，不导出领域程序、资源结算或 Activation 业务。完整实例写回、阶段派发和具体运动算法不因共享导出成为内容 API。 |
-| 小 Capability 与 Catalog | allegiance／hitbox／layer／targetable 的 capability.ts；unit/capability/catalog.ts | 单文件能力保留自然入口；Catalog 只维护初始化字典与派生类型，不增加模板 index 或另一套能力映射。 |
+| 多文件 Capability | unit/capability/ 下 action、blocking、deployable、elemental、layer、locomotion、occupancy、offense、presence、route、skill、vitality 各自的 index.ts | 按能力职责选择导出。Layer 提供自身空地身份的 setType Change，模型与 operations 分开；Occupancy 保存可空的摆放朝向并提供 setDirection Change；Skill 入口只提供工厂 Definition、Capability／State、守卫、初始化及 Rule／Hook／Ammo 贡献 Change 工厂，不导出领域程序、资源结算或 Activation 业务。完整实例写回、阶段派发和具体运动算法不因共享导出成为内容 API。 |
+| 小 Capability 与 Catalog | allegiance／hitbox／targetable 的 capability.ts；unit/capability/catalog.ts | 单文件能力保留自然入口；Catalog 只维护初始化字典与派生类型，不增加模板 index 或另一套能力映射。 |
 | Contribution、Hook 与 Tick | unit/contribution/contribution.ts、attribute.ts；core/hook.ts、tick.ts | 各自保留明确的数据／计算／派发入口，不设全 Core 聚合层。 |
 | Common 与 Geometry | common/、geometry/ 下现有功能模块 | Ref、Query、集合、数值、坐标与几何按用途直接导入；私有 Store 不经公共入口公开。 |
 | Map、Field 与空间查询 | battlefield/map/map.ts、tile.ts、terrain.ts；battlefield/state.ts、occupancy.ts、spatial/query.ts | 保留现有自然入口及只读／纯转换边界；Tiles 等内部容器不为 index 公开，完整地块结算仍归 battle/tile.ts。 |
@@ -286,7 +286,7 @@ remove(battle: BattleState, unitId: Id, reason: LeaveReason): BattleState;
 advance(battle: BattleState): BattleState;
 ```
 
-Rule、Hook、Contribution、Blocker.layer 与 Occupancy.direction 的公开写入工厂统一为 `setXxx(ref, value): Change`／`removeXxx(ref, id): Change`。Ref 确定所需能力，工厂不接收 battle。Content 组合已经构造好的 Change，不提交完整 Unit，也不传任意 Unit 转换函数：
+Rule、Hook、Contribution、Layer.type、Blocker.layer 与 Occupancy.direction 的公开写入工厂统一为 `setXxx(ref, value): Change`／`removeXxx(ref, id): Change`。Ref 确定所需能力，工厂不接收 battle。Content 组合已经构造好的 Change，不提交完整 Unit，也不传任意 Unit 转换函数：
 
 ```typescript
 battle = update(battle, [
@@ -303,7 +303,7 @@ Vitality 的 damageRules、普通贡献与专属 Hook，Elemental 的 Rules／Co
 
 update 按以下顺序处理整批，允许同一 Unit 多个 Change，也允许跨多个 Unit：
 
-1. 按 Change 顺序从本批暂存的最新 Unit 执行全部 transform；首次触及的目标必须已登记，缺失时抛出 RangeError。每项返回值与其输入 Unit 引用相同时，update 统一跳过该项发布和 settle；无变化的 Transformation 必须返回原 Unit，不做字段深比较。此阶段不执行 Hook 或完整领域操作。
+1. 按 Change 顺序从本批暂存的最新 Unit 执行全部 transform；首次触及的目标必须已登记，缺失时抛出 RangeError。每项返回值与其输入 Unit 引用相同时，update 统一跳过该项发布和 settle；整项 Change 没有业务动作时，Transformation 必须返回原 Unit，不做字段深比较。此阶段不执行 Hook 或完整领域操作。
 2. 一次发布所有最终 Unit；Field 维护 Unit 存储和 Occupancy 双槽。普通 update／replace 不扫描能力槽位或更新 Lifetime 关系。
 3. 按原 Change 顺序执行实际发生变换的各项 settle，每次接续最新 BattleState。previous 固定为该项 transform 前的暂存 Unit，只表示有意采样的旧事实；实时对象必须重新查询，不整体回填 previous。
 
@@ -316,6 +316,8 @@ Rule 可读取任意 Battle 事实，但读取范围不表示自动订阅每次�
 Core 内部 `replace(battle, readonly Unit[])` 仅发布已合法构造的完整对象与派生索引，信任身份、Definition 和能力配对，不重复校验或派发内容 Hook。它不是公开原始 Unit 写回协议；生命周期、精确私有 state 写回及关系双端构造继续由各领域使用。Field 保留地图边界与最终双槽冲突校验。通用 update／replace 均不派发 Occupancy 或 Blocking 通知；当前生产中只有 add／remove 明确改变占格登记，仍在各自既定时点通知 SUPPORT，不为尚无内容需求的搬格创建新工厂。
 
 Action.interval／speed Change 的 settle 调用 refreshCooldowns，按最终静态贡献重算当前冷却并保留完成比例；Combat 不逐 Tick 调用该刷新。Blocker.layer 的 transform 只改 layer／radius，update 根据该项 transform 的引用变化决定是否执行 settle，再由 settle 按 previous.blocked 中的旧 Ref 批量解除，不能重新调用 setLayer 或写回旧 Unit。MaxHP 的比例响应属于纯 transform，不附带治疗通知。Stun 先通过一批 Change 发布各能力限制，再由 Blocking 后继清理关系，update 返回后才取消 Action。
+
+Layer 的 `setType(reference: Ref<Unit & Layer>, type: Type): Change` 是设置自身身份并主动脱离阻挡的完整请求，同值也要结算。transform 每次建立新的 Layer State 和 Unit，只写 layer.type；全批发布后，settle 依据 previous 的稳定角色分支。Blocker 使用 previous.blocker.blocked 中原 Ref 的旧集合批量 release，保留通知中重建的新关系；Blockable 调用自身 release，解除当时的入向关系并取消位置计划，后续另一项请求可再次脱离新取得的关系；无角色则无阻挡后继。操作不自动搜索，不修改 Definition、position、Route 或 Blocker.layer／radius；宿主的存在性由通用 update 及复用的关系操作处理，不在 Layer 重复读取判空。此类完整请求的字段同值不等于整项无业务动作，通用 Change／update 不增加例外协议。
 
 Unit.initialize 将 Blocker／Blockable 的组合限制为至多一种，两者皆无合法；内部信任该构造约束及能力身份稳定，不在各操作重复检查。角色不决定阵营、宿主 Layer、Route 或 Locomotion，临时容量为 0 或禁挡也不改变角色。
 

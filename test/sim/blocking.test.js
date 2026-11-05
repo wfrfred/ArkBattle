@@ -6,6 +6,7 @@ import * as units from "../../dist/core/unit/query.js";
 import * as unit from "../../dist/core/battle/unit.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as capability from "../../dist/core/unit/capability/blocking/index.js";
+import * as layer from "../../dist/core/unit/capability/layer/index.js";
 import * as tiles from "../../dist/core/battle/tile.js";
 import * as maps from "../../dist/core/battlefield/map/map.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
@@ -120,9 +121,9 @@ test("capacity shrink releases the newest relation and observes callback changes
     );
 });
 
-test("batch release publishes all endpoints before hooks and old relations cannot release replacements", () => {
+test("own layer requests release old relations before hooks, including same-value requests", () => {
     let state = battle([
-        { definition: blocker, position: [2, 1] },
+        { definition: { ...blocker, layer: { type: "GROUND" } }, position: [2, 1] },
         { definition: enemy, position: [2.1, 1] },
         { definition: enemy, position: [2.2, 1] },
     ]);
@@ -137,6 +138,8 @@ test("batch release publishes all endpoints before hooks and old relations canno
             invoke: (current) => {
                 notifications++;
                 if (notifications === 1) {
+                    assert.equal(get(current, 0).layer.type, "AIR");
+                    assert.equal(get(current, 0).blocker.layer, "GROUND");
                     assert.deepEqual(blocking.blocked(current, owner), []);
                     assert.ok(
                         targets.every(
@@ -150,7 +153,7 @@ test("batch release publishes all endpoints before hooks and old relations canno
             },
         }),
     ]);
-    state = blocking.release(state, original);
+    state = unit.update(state, [layer.setType(owner, "AIR")]);
     assert.equal(notifications, 2);
     assert.deepEqual(
         blocking.blocked(state, owner).map(({ id }) => id),
@@ -163,6 +166,11 @@ test("batch release publishes all endpoints before hooks and old relations canno
         [1, 2],
     );
     assert.equal(notifications, 2);
+
+    state = unit.update(state, [layer.setType(owner, "AIR")]);
+    assert.equal(notifications, 4);
+    assert.deepEqual(blocking.blocked(state, owner), []);
+    state = blocking.search(state, owner);
 
     let removedNotifications = 0;
     state = unit.update(state, [
@@ -203,7 +211,8 @@ test("position plans survive relation release while active departure and spatial
     assert.notDeepEqual(separated, get(state, 1).blockable.adjustment.to);
     assert.ok(separated[1] < 1);
     assert.ok(Math.abs(Vec2.distanceSquared(separated, get(state, 0).position) - 0.25) < 1e-12);
-    state = capability.releaseBlockable(state, departing);
+    state = unit.update(state, [layer.setType(departing, "AIR")]);
+    assert.equal(get(state, 2).layer.type, "AIR");
     assert.equal(blocking.blockerOf(state, departing), undefined);
     assert.equal(get(state, 2).blockable.adjustment, null);
 
@@ -215,6 +224,7 @@ test("position plans survive relation release while active departure and spatial
     assert.deepEqual(get(state, 1).position, [2.5, 1]);
     assert.equal(get(state, 1).blockable.adjustment, null);
 
+    state = unit.update(state, [layer.setType(departing, "GROUND")]);
     state = blocking.acquire(state, owner, departing);
     assert.notEqual(get(state, 2).blockable.adjustment, null);
     let observed = false;

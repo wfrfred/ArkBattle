@@ -31,7 +31,7 @@
 | [effect](sim/effect.test.js) | 安装与启停输出、零时长安装、覆写赢家、三种互斥时间、有效时长暂停与手动推进、末次回调续期、来源与生命周期依赖分离。 |
 | [contribution](sim/contribution.test.js) | 先选互斥赢家再动态求值，真实属性输出遵循领域公式。 |
 | [allegiance](sim/allegiance.test.js) | ALLY／ENEMY／NEUTRAL 的敌对关系。 |
-| [blocking](sim/blocking.test.js) | 成对资格、层与地块、容量尾部裁撤、批量解除与旧 Ref、多目标分散及独立位置计划；主动空间覆盖先发布新位置和解除结果，再通知。 |
+| [blocking](sim/blocking.test.js) | 成对资格、层与地块、容量尾部裁撤、批量解除与旧 Ref、多目标分散及独立位置计划；自身空地设置（含同值）完成角色对应的关系／偏移清理，通知可见已发布的新身份；主动空间覆盖先发布新位置和解除结果，再通知。复用代表场景，不展开字段／角色矩阵。 |
 | [deployment](sim/deployment.test.js) | Request 预览与执行一致、拒绝不消费、消费先于入场；撤退／死亡账务与 Card 延续；离场注销、结构占格和部署额度释放先于本地内容通知，死亡 Card 先于 Card／Request 通知结算；旧 Occupancy 配对清理、逐份恢复预算及 DP。 |
 | [core-types](sim/core-types.test.js) | Typed Ref 保留身份和私有数据配对，普通擦除查询不泄漏 `any`；能力证明与不透明 Change 约束写入；普通注册的按 Key 和固定字段接口均保留 Entry 与能力 Ref 的类型关联。 |
 | [damage](sim/damage.test.js) | 按[伤害／治疗回归清单](../docs/architecture/verification.md#hook-与伤害治疗的回归语义)保障 HP／EP 公式与采样、独立 Calculate 状态、接收与提交、零值和取消、最新资源、Applied 后死亡及同步 Burst。 |
