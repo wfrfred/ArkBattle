@@ -1,0 +1,1459 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-05",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/presence-nonroute-assets/extract_ymtro.py",
+      "bytes": 7740,
+      "sha256": "c57080c36aecb4585893b985c5e943702f3b92ab270a4eaf9733ef8c884be410"
+    },
+    "helper": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+      "bytes": 6749,
+      "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+    },
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/assets.py",
+        "bytes": 3399,
+        "sha256": "c458702aa0e014a093c548db9100709ac6338f74cee11aceb45c661003de4a09"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      }
+    ],
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_12.ab",
+        "bytes": 309580,
+        "sha256": "2e9056a509d746f71fb22261f8f2daf8d41fbaebc7787f6d6a15d447576a2f2f"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      }
+    ],
+    "scope": "Exact installed enemy_1302_ymtro_2 prefab container, Root Enemy, Default UnitMode and Bus Talent/Ability/Selector/Validator/Range only; static, no live XLua or battle execution."
+  },
+  "result": {
+    "containerEntries": [
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "1",
+        "objectSha256": "3c3226ea70e5624b40aef20d1f93656f1faa331b3c859d3c06b26764cd23711d",
+        "selectedEntry": {
+          "common:155": "dyn/battle/prefabs/enemies/enemy_1302_ymtro_2.prefab",
+          "common:778": {
+            "preloadIndex": 4892,
+            "preloadSize": 92,
+            "asset": {
+              "m_FileID": 0,
+              "m_PathID": -290578867173269922
+            }
+          }
+        }
+      }
+    ],
+    "components": [
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "-8440417371917263266",
+        "name": "enemy_1302_ymtro_2",
+        "hierarchy": [
+          {
+            "name": "enemy_1302_ymtro_2",
+            "gameObjectPathId": "-290578867173269922",
+            "transformPathId": "7484320601300262494"
+          }
+        ],
+        "typeId": 13,
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -6629209555389654693
+        },
+        "externalScriptReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "monoScript": {
+          "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "id": "-6629209555389654693",
+          "name": "Enemy",
+          "cl": "Enemy",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "rawFile": "ymtro--8440417371917263266.bin",
+        "sha256": "bff7a18b3c8a3ee6180fca69cc20a101b3fbc81922de568ebb0a8d84868a2b3c",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -290578867173269922
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -6629209555389654693
+          },
+          "common:427": "",
+          "_animator": {
+            "m_FileID": 0,
+            "m_PathID": 4944246325035523678
+          },
+          "_modes": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -7751935427412369826
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -8592295193470247330
+              }
+            ]
+          },
+          "_commonAbilities": {
+            "Array": []
+          },
+          "_uiMountPoint": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_effectTransform": {
+            "m_FileID": 0,
+            "m_PathID": 4471851014421077598
+          },
+          "_shadow": {
+            "m_FileID": 0,
+            "m_PathID": -8268199907755106722
+          },
+          "_defaultBodyColor": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "_hideShadowOnRecycle": false,
+          "_overrideGraphicBound": -1.0,
+          "_hudPluginReplacePairs": {
+            "Array": []
+          },
+          "_showDebugName": false,
+          "_sideTypeIndex": 1,
+          "_locateRange": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_disableRenderLocateRange": false,
+          "_isFixedRotation": false,
+          "_bodyDirectionPolicy": 0,
+          "_useMoveDirAsFaceDir": false,
+          "_scaleMoveBySpeed": false,
+          "_scaleMoveAnimationRange": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "_showSpAsBulletMode": false,
+          "_hideBulletSpModes": {
+            "Array": []
+          },
+          "_alwaysShowHp": false,
+          "_alwaysHideHp": false,
+          "_keepMoveAnimScale": false,
+          "_useSpecificDeadAnim": false,
+          "_useSpecificReachExitAnim": false,
+          "_disableBornTweenColor": false,
+          "_height": 0.0,
+          "_groundBoundHeightZOffset": 0.10000000149011612,
+          "_useSpineLikeHeightUpdate": false,
+          "_spineLikeHeightUpdateRatio": 0.25,
+          "_delayToBorn": 0.0,
+          "_onlyDelayToBornOnTileStart": false,
+          "_audioSignalUseId": false,
+          "_startEffect": "",
+          "_deadEffect": "",
+          "_blockVolume": 4,
+          "_specialBlockCondition": {
+            "_type": 0,
+            "_buffKeyPairs": {
+              "Array": []
+            },
+            "_filterTags": {
+              "Array": []
+            }
+          },
+          "_dontSetEnemyFaceByCursorWhenBorn": false,
+          "_idleWhenBorn": false,
+          "_canNotExit": false,
+          "_hideShadowOnReset": false,
+          "_allowFalldownWhenReborn": false,
+          "_alwaysCheckCurrentPoint": false,
+          "_ignoreBlockMode": false,
+          "_specificBlockMask": 0
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "-8228304665366897058",
+        "name": "Selector",
+        "hierarchy": [
+          {
+            "name": "Selector",
+            "gameObjectPathId": "6795123960377237086",
+            "transformPathId": "-1142480169192137122"
+          },
+          {
+            "name": "Bus",
+            "gameObjectPathId": "4923775148966796894",
+            "transformPathId": "5874720134347349598"
+          },
+          {
+            "name": "Talents",
+            "gameObjectPathId": "-9176724440012693922",
+            "transformPathId": "-3756748317534724514"
+          },
+          {
+            "name": "Default",
+            "gameObjectPathId": "-1544982679738655138",
+            "transformPathId": "4873410847055928926"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-1938411756854780322",
+            "transformPathId": "-4327108995789169058"
+          },
+          {
+            "name": "enemy_1302_ymtro_2",
+            "gameObjectPathId": "-290578867173269922",
+            "transformPathId": "7484320601300262494"
+          }
+        ],
+        "typeId": 33,
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 6185056810787956083
+        },
+        "externalScriptReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "monoScript": {
+          "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "id": "6185056810787956083",
+          "name": "CircleRange",
+          "cl": "CircleRange",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "rawFile": "ymtro--8228304665366897058.bin",
+        "sha256": "c61b33d4043545178a2f83d0d2b68bc814ad1008c978af32066ef80b3796721c",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 6795123960377237086
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 6185056810787956083
+          },
+          "common:427": "",
+          "_useBlackboardRangeId": false,
+          "_extendable": false,
+          "_scaleble": false
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "-7751935427412369826",
+        "name": "Default",
+        "hierarchy": [
+          {
+            "name": "Default",
+            "gameObjectPathId": "-1544982679738655138",
+            "transformPathId": "4873410847055928926"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-1938411756854780322",
+            "transformPathId": "-4327108995789169058"
+          },
+          {
+            "name": "enemy_1302_ymtro_2",
+            "gameObjectPathId": "-290578867173269922",
+            "transformPathId": "7484320601300262494"
+          }
+        ],
+        "typeId": 3,
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 5390319429299248724
+        },
+        "externalScriptReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "monoScript": {
+          "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "id": "5390319429299248724",
+          "name": "UnitMode",
+          "cl": "UnitMode",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "rawFile": "ymtro--7751935427412369826.bin",
+        "sha256": "15c7093150fed38e27a0eb6a6863740c80d3d1e8d97d151fb5ad2b8230ca9bce",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -1544982679738655138
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 5390319429299248724
+          },
+          "common:427": "",
+          "_bodyTransform": {
+            "m_FileID": 0,
+            "m_PathID": 434119194846355038
+          },
+          "_animatorHooker": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_overrideStartEffect": "",
+          "_overrideDeadEffect": "",
+          "_combat": {
+            "m_FileID": 0,
+            "m_PathID": 2119431595636022878
+          },
+          "_attack": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_attackTrigger": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_hideUIAttackRange": false,
+          "_updateAttackRangeExtendByAttributeDirty": false,
+          "_rangeToShow": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_extraRangesToShow": {
+            "Array": []
+          },
+          "_generalAbilities": {
+            "Array": []
+          },
+          "_addIndexToSignalId": false,
+          "_includeIndexZero": false,
+          "_alwaysHideHp": {
+            "isDefined": false,
+            "value": false
+          },
+          "_alwaysHideSp": {
+            "isDefined": false,
+            "value": false
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "-5766570821806596514",
+        "name": "Selector",
+        "hierarchy": [
+          {
+            "name": "Selector",
+            "gameObjectPathId": "6795123960377237086",
+            "transformPathId": "-1142480169192137122"
+          },
+          {
+            "name": "Bus",
+            "gameObjectPathId": "4923775148966796894",
+            "transformPathId": "5874720134347349598"
+          },
+          {
+            "name": "Talents",
+            "gameObjectPathId": "-9176724440012693922",
+            "transformPathId": "-3756748317534724514"
+          },
+          {
+            "name": "Default",
+            "gameObjectPathId": "-1544982679738655138",
+            "transformPathId": "4873410847055928926"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-1938411756854780322",
+            "transformPathId": "-4327108995789169058"
+          },
+          {
+            "name": "enemy_1302_ymtro_2",
+            "gameObjectPathId": "-290578867173269922",
+            "transformPathId": "7484320601300262494"
+          }
+        ],
+        "typeId": 4,
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 6959540303033999559
+        },
+        "externalScriptReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "monoScript": {
+          "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "id": "6959540303033999559",
+          "name": "AdvancedSelectorWithTagAndBuffKey",
+          "cl": "AdvancedSelectorWithTagAndBuffKey",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "rawFile": "ymtro--5766570821806596514.bin",
+        "sha256": "38cabcac313f3996d0323566e504adaa061e7f33d92a4451b28a505420e6f55a",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 6795123960377237086
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 6959540303033999559
+          },
+          "common:427": "",
+          "_targetSide": 1,
+          "_targetMotion": 3,
+          "_targetCategory": 1,
+          "_postFilter": 0,
+          "_ignoreTargetFree": false,
+          "_onlyIgnoreSomeOfTargetFreeCase": false,
+          "_abnormalFlag": 27,
+          "_abnormalCombo": 2,
+          "_ignoreAllyTargetFree": false,
+          "_ignoreHealFree": false,
+          "_ignoreMotionMode": false,
+          "_forceIgnoreCamouflage": false,
+          "_needProfessionMask": false,
+          "_professionMask": 0,
+          "_excludeSomeAbnormalFlags": false,
+          "_excludeAbnormalFlag": 46,
+          "_limitTargetNum": false,
+          "_maxTargetKey": "max_target",
+          "_maxTargetExtraKey": "",
+          "_maxNum": 1,
+          "_excludeOwner": true,
+          "_sortByTauntAtLast": false,
+          "_ignoreHitRange": false,
+          "_checkUnitType": false,
+          "_unitTypeMask": 0,
+          "_abilityInputTargetAsSortSource": false,
+          "_targetOptionHookedKeys": {
+            "Array": []
+          },
+          "_tagExcluded": true,
+          "_filterTag": "machine",
+          "_filterTagList": {
+            "Array": []
+          },
+          "_buffKeyExcluded": true,
+          "_buffKey": "enemy_ymtro_t[mark]",
+          "_buffs": {
+            "Array": []
+          },
+          "_checkOrInsteadOfAnd": false,
+          "_filterBuffSource": false,
+          "_filterTokenHost": false
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "109810286188617310",
+        "name": "Bus",
+        "hierarchy": [
+          {
+            "name": "Bus",
+            "gameObjectPathId": "4923775148966796894",
+            "transformPathId": "5874720134347349598"
+          },
+          {
+            "name": "Talents",
+            "gameObjectPathId": "-9176724440012693922",
+            "transformPathId": "-3756748317534724514"
+          },
+          {
+            "name": "Default",
+            "gameObjectPathId": "-1544982679738655138",
+            "transformPathId": "4873410847055928926"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-1938411756854780322",
+            "transformPathId": "-4327108995789169058"
+          },
+          {
+            "name": "enemy_1302_ymtro_2",
+            "gameObjectPathId": "-290578867173269922",
+            "transformPathId": "7484320601300262494"
+          }
+        ],
+        "typeId": 59,
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 8689893180211089106
+        },
+        "externalScriptReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "monoScript": {
+          "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "id": "8689893180211089106",
+          "name": "DurbusAbility",
+          "cl": "DurbusAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "rawFile": "ymtro-109810286188617310.bin",
+        "sha256": "896381984fbd596a72fd3316196130488c2b271f9cfa0470981d105ad958d449",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 4923775148966796894
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 8689893180211089106
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": -5766570821806596514
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": false,
+          "_attachPassiveBuffsOnDummy": true,
+          "_ignoreIfOwnerDead": false,
+          "_forceAsDmgOrHealAbility": false,
+          "_randomOffsetBound": 0.0,
+          "_passengerEffects": {
+            "Array": [
+              "enemy_ymtro_buff_01",
+              "enemy_ymtro_buff_02",
+              "enemy_ymtro_buff_03",
+              "enemy_ymtro_buff_04"
+            ]
+          },
+          "_noPassengerEffect": "",
+          "_passiveBuffs": {
+            "Array": []
+          },
+          "_targetValidator": {
+            "m_FileID": 0,
+            "m_PathID": 4943122091596242526
+          },
+          "_useHostRoute": false,
+          "_appearOnTileCenter": true,
+          "_passengerToNearestEndPoint": false,
+          "_passengerUseBranchRoute": false,
+          "_delayToReleasePassengers": 0.0,
+          "_onlySearchPassengerInSpecifiedMode": false,
+          "_modeIndex": 0,
+          "_extraModeIndex": {
+            "Array": []
+          },
+          "_disablePassengerAppearColor": false,
+          "_effectOnPassengerWhenRelease": "",
+          "_effectWhenAddPassenger": "",
+          "_setToHostPosBeforeReassignRoute": false,
+          "_assignPassengerCountToBb": false,
+          "_buffsWhenCarryPassenger": {
+            "Array": []
+          },
+          "_passengerAsCarryBuffSource": false,
+          "_buffsToReleasedPassenger": {
+            "Array": []
+          },
+          "_ignoreHost": false,
+          "_killPassengersOnDetach": false,
+          "_excludeBossEnemy": false,
+          "_finishPassengersWithNoReasonOnDetach": false
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "4943122091596242526",
+        "name": "Bus",
+        "hierarchy": [
+          {
+            "name": "Bus",
+            "gameObjectPathId": "4923775148966796894",
+            "transformPathId": "5874720134347349598"
+          },
+          {
+            "name": "Talents",
+            "gameObjectPathId": "-9176724440012693922",
+            "transformPathId": "-3756748317534724514"
+          },
+          {
+            "name": "Default",
+            "gameObjectPathId": "-1544982679738655138",
+            "transformPathId": "4873410847055928926"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-1938411756854780322",
+            "transformPathId": "-4327108995789169058"
+          },
+          {
+            "name": "enemy_1302_ymtro_2",
+            "gameObjectPathId": "-290578867173269922",
+            "transformPathId": "7484320601300262494"
+          }
+        ],
+        "typeId": 60,
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -763094226163419936
+        },
+        "externalScriptReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "monoScript": {
+          "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "id": "-763094226163419936",
+          "name": "AdvancedEnemyValidator",
+          "cl": "AdvancedEnemyValidator",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "rawFile": "ymtro-4943122091596242526.bin",
+        "sha256": "22796897ef8333b676b681533fdb85bd06ab532e1b15804d6247cb78539f8bd7",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 4923775148966796894
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -763094226163419936
+          },
+          "common:427": "",
+          "_targetOptions": {
+            "targetSide": 1,
+            "targetMotion": 1,
+            "targetCategory": 1,
+            "enableAdvancedOptions": true,
+            "ignoreTargetFree": false,
+            "ignoreAllyTargetFree": false,
+            "ignoreHealFree": false,
+            "ignoreMotionMode": false,
+            "ignoreTargetSide": false,
+            "excludeSomeAbnormalFlags": false,
+            "containSomeAbnormalFlags": false,
+            "excludeAbnormalFlag": 0,
+            "containAbnormalFlag": 0,
+            "purposeMask": 0,
+            "professionMask": 0,
+            "checkUnitType": false,
+            "unitTypeMask": 0,
+            "onlyIgnoreSomeOfTargetFreeCase": false,
+            "abnormalFlag": 0,
+            "abnormalCombo": 0
+          },
+          "_enemyLevelMask": 3,
+          "_motionMask": 1,
+          "_allowNoneApplyWay": true,
+          "_applyWay": 3,
+          "_checkIsBlockedByOwner": false
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "6559147715892665950",
+        "name": "Bus",
+        "hierarchy": [
+          {
+            "name": "Bus",
+            "gameObjectPathId": "4923775148966796894",
+            "transformPathId": "5874720134347349598"
+          },
+          {
+            "name": "Talents",
+            "gameObjectPathId": "-9176724440012693922",
+            "transformPathId": "-3756748317534724514"
+          },
+          {
+            "name": "Default",
+            "gameObjectPathId": "-1544982679738655138",
+            "transformPathId": "4873410847055928926"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-1938411756854780322",
+            "transformPathId": "-4327108995789169058"
+          },
+          {
+            "name": "enemy_1302_ymtro_2",
+            "gameObjectPathId": "-290578867173269922",
+            "transformPathId": "7484320601300262494"
+          }
+        ],
+        "typeId": 19,
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -2726233351382997147
+        },
+        "externalScriptReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "monoScript": {
+          "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "id": "-2726233351382997147",
+          "name": "Talent",
+          "cl": "Talent",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "rawFile": "ymtro-6559147715892665950.bin",
+        "sha256": "6c64958dd7cf659689d33f7f8ae7546a3180d50c09a2e01cb4ca1831f4aa608b",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 4923775148966796894
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -2726233351382997147
+          },
+          "common:427": "",
+          "_overwriteTalentKey": "",
+          "_overwriteParentRangeId": false,
+          "_checkValidBySkillIndex": {
+            "Array": []
+          },
+          "_attachInDummy": false,
+          "_defaultModeIndex": -1,
+          "_attackBlackboardModeIndex": -1,
+          "_extraAttackBlackboardModeIndices": {
+            "Array": []
+          },
+          "_overrideDefaultRangeId": false,
+          "_applyTalentScale": false,
+          "_influenceSkillBlackboard": false,
+          "_fromRawDataToSkill": false,
+          "_applyTalentRange": false,
+          "_applyBlackboardBySkill": false,
+          "_applyStrBlackboardBySkill": false,
+          "_writeRangeIdToProjectileBlackboard": false,
+          "_affectWhenNotRootTalent": false,
+          "_scaleCertainKeyFlag": false,
+          "_scaleCertainKeyList": {
+            "Array": []
+          },
+          "_scaleCertainMode": false,
+          "_scaleModeIndices": {
+            "Array": []
+          }
+        }
+      }
+    ],
+    "hierarchyObjects": [
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "-9176724440012693922",
+        "classId": 1,
+        "typeId": 0,
+        "rawFile": "hierarchy--9176724440012693922.bin",
+        "sha256": "6f1071d16dc963375c7fa610d79199d0d50ce9feedaceee026dfbd9ecfdccad2",
+        "value": {
+          "m_Component": {
+            "Array": [
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": -3756748317534724514
+                }
+              }
+            ]
+          },
+          "m_Layer": {
+            "type": "common:934",
+            "hex": "09000000"
+          },
+          "common:427": "Talents",
+          "m_Tag": {
+            "type": "common:907",
+            "hex": "0000"
+          },
+          "m_IsActive": {
+            "type": "common:76",
+            "hex": "01"
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "-4327108995789169058",
+        "classId": 4,
+        "typeId": 1,
+        "rawFile": "hierarchy--4327108995789169058.bin",
+        "sha256": "e692df3705c3e710c77a7e538cd7238d31dc72d68b55c5b1f824c1bf5a6084bf",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -1938411756854780322
+          },
+          "m_LocalRotation": {
+            "x": -0.25881901383399963,
+            "y": -0.0,
+            "z": -0.0,
+            "w": 0.9659258723258972
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": -0.20000028610229492,
+            "z": -0.05999999865889549
+          },
+          "m_LocalScale": {
+            "x": 0.23999999463558197,
+            "y": 0.24000000953674316,
+            "z": 0.24000000953674316
+          },
+          "m_Children": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 4873410847055928926
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 6790995185493204574
+              }
+            ]
+          },
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 7484320601300262494
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "-3756748317534724514",
+        "classId": 4,
+        "typeId": 1,
+        "rawFile": "hierarchy--3756748317534724514.bin",
+        "sha256": "e269bbc10e5f5518f59014d908d232ad06a34c8041d91d261bd5907e26a42fd6",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -9176724440012693922
+          },
+          "m_LocalRotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 5874720134347349598
+              }
+            ]
+          },
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 4873410847055928926
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "-1938411756854780322",
+        "classId": 1,
+        "typeId": 0,
+        "rawFile": "hierarchy--1938411756854780322.bin",
+        "sha256": "ea1eb67c63747ef809290eeb0f5fca7b31acc34b8de70c8335b38ad430fc4160",
+        "value": {
+          "m_Component": {
+            "Array": [
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": -4327108995789169058
+                }
+              }
+            ]
+          },
+          "m_Layer": {
+            "type": "common:934",
+            "hex": "09000000"
+          },
+          "common:427": "Modes",
+          "m_Tag": {
+            "type": "common:907",
+            "hex": "0000"
+          },
+          "m_IsActive": {
+            "type": "common:76",
+            "hex": "01"
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "-1544982679738655138",
+        "classId": 1,
+        "typeId": 0,
+        "rawFile": "hierarchy--1544982679738655138.bin",
+        "sha256": "a71d45ed749db86b60dc51b45da72fa68052746dcbcede2fd7b2450399589520",
+        "value": {
+          "m_Component": {
+            "Array": [
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 4873410847055928926
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": -7751935427412369826
+                }
+              }
+            ]
+          },
+          "m_Layer": {
+            "type": "common:934",
+            "hex": "09000000"
+          },
+          "common:427": "Default",
+          "m_Tag": {
+            "type": "common:907",
+            "hex": "0000"
+          },
+          "m_IsActive": {
+            "type": "common:76",
+            "hex": "01"
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "-1142480169192137122",
+        "classId": 4,
+        "typeId": 1,
+        "rawFile": "hierarchy--1142480169192137122.bin",
+        "sha256": "be7398d24ba1e3d6db74bcb5db4ce4e42a3fb40deb554055d26c83e69ab208a7",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 6795123960377237086
+          },
+          "m_LocalRotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": {
+            "Array": []
+          },
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 5874720134347349598
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "-290578867173269922",
+        "classId": 1,
+        "typeId": 0,
+        "rawFile": "hierarchy--290578867173269922.bin",
+        "sha256": "e52a4e19a6548d560d7edd2e708663d9d39eeb95762ebd51d01bb579491b8a6d",
+        "value": {
+          "m_Component": {
+            "Array": [
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 7484320601300262494
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": -8440417371917263266
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 6226347900915211870
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 2208172829168885342
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": -3751958755150406050
+                }
+              }
+            ]
+          },
+          "m_Layer": {
+            "type": "common:934",
+            "hex": "09000000"
+          },
+          "common:427": "enemy_1302_ymtro_2",
+          "m_Tag": {
+            "type": "common:907",
+            "hex": "0500"
+          },
+          "m_IsActive": {
+            "type": "common:76",
+            "hex": "01"
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "4873410847055928926",
+        "classId": 4,
+        "typeId": 1,
+        "rawFile": "hierarchy-4873410847055928926.bin",
+        "sha256": "94629e36327a9ebd7eb8f26711c2297ff48befe2af0612cb3528fb04e1b8f753",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -1544982679738655138
+          },
+          "m_LocalRotation": {
+            "x": 0.25881901383399963,
+            "y": -0.0,
+            "z": -0.0,
+            "w": 0.9659258723258972
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.5966871976852417,
+            "z": 0.6331725716590881
+          },
+          "m_LocalScale": {
+            "x": 4.1666669845581055,
+            "y": 4.166666507720947,
+            "z": 4.166666507720947
+          },
+          "m_Children": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 434119194846355038
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -3756748317534724514
+              }
+            ]
+          },
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": -4327108995789169058
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "4923775148966796894",
+        "classId": 1,
+        "typeId": 0,
+        "rawFile": "hierarchy-4923775148966796894.bin",
+        "sha256": "ddf493ab008918823931f0496dce951725850b9db03943d4f00538f944c444ea",
+        "value": {
+          "m_Component": {
+            "Array": [
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 5874720134347349598
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 6559147715892665950
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 109810286188617310
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 4943122091596242526
+                }
+              }
+            ]
+          },
+          "m_Layer": {
+            "type": "common:934",
+            "hex": "09000000"
+          },
+          "common:427": "Bus",
+          "m_Tag": {
+            "type": "common:907",
+            "hex": "0000"
+          },
+          "m_IsActive": {
+            "type": "common:76",
+            "hex": "01"
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "5874720134347349598",
+        "classId": 4,
+        "typeId": 1,
+        "rawFile": "hierarchy-5874720134347349598.bin",
+        "sha256": "e767595e3ed92a5289cfcaa94cbe7d74ebd00803a68cb2698898829d87cb5157",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 4923775148966796894
+          },
+          "m_LocalRotation": {
+            "x": -0.0,
+            "y": -0.0,
+            "z": -0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -1142480169192137122
+              }
+            ]
+          },
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": -3756748317534724514
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "6795123960377237086",
+        "classId": 1,
+        "typeId": 0,
+        "rawFile": "hierarchy-6795123960377237086.bin",
+        "sha256": "c8747069b2a6f19e36317aeb834f561f9e79dcd8c24127091f340195af2fc50a",
+        "value": {
+          "m_Component": {
+            "Array": [
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": -1142480169192137122
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": -5766570821806596514
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": -8228304665366897058
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": -351489002213220770
+                }
+              }
+            ]
+          },
+          "m_Layer": {
+            "type": "common:934",
+            "hex": "0c000000"
+          },
+          "common:427": "Selector",
+          "m_Tag": {
+            "type": "common:907",
+            "hex": "0000"
+          },
+          "m_IsActive": {
+            "type": "common:76",
+            "hex": "01"
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+        "pathId": "7484320601300262494",
+        "classId": 4,
+        "typeId": 1,
+        "rawFile": "hierarchy-7484320601300262494.bin",
+        "sha256": "cf233ed130c8857b25925a7a0020ded93b4f86a8956669d1fb69b73db3103059",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -290578867173269922
+          },
+          "m_LocalRotation": {
+            "x": -0.0,
+            "y": -0.0,
+            "z": -0.0,
+            "w": 1.0
+          },
+          "m_LocalPosition": {
+            "x": 2.9800000190734863,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "m_LocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "m_Children": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 1772742118614883934
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -4327108995789169058
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -713075188754162082
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 4354785654957530718
+              }
+            ]
+          },
+          "m_Father": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        }
+      }
+    ],
+    "monoScripts": [
+      {
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "-6629209555389654693",
+        "classId": 115,
+        "rawFile": "monoscript--6629209555389654693.bin",
+        "sha256": "f29154cfd459f3f8cfbe54dfe80046a7657ee8699bfb8368d5b1b201a60db695",
+        "value": {
+          "id": "-6629209555389654693",
+          "name": "Enemy",
+          "cl": "Enemy",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        }
+      },
+      {
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "6185056810787956083",
+        "classId": 115,
+        "rawFile": "monoscript-6185056810787956083.bin",
+        "sha256": "ffd954c930e781b0138147e63c79c17b706bcf89a4056e5047043c5f5496dc20",
+        "value": {
+          "id": "6185056810787956083",
+          "name": "CircleRange",
+          "cl": "CircleRange",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        }
+      },
+      {
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "5390319429299248724",
+        "classId": 115,
+        "rawFile": "monoscript-5390319429299248724.bin",
+        "sha256": "2ee5244adfc51fb59b433f66bc65273dde36b7c53bf8d3254174519fb65f915f",
+        "value": {
+          "id": "5390319429299248724",
+          "name": "UnitMode",
+          "cl": "UnitMode",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        }
+      },
+      {
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "6959540303033999559",
+        "classId": 115,
+        "rawFile": "monoscript-6959540303033999559.bin",
+        "sha256": "3aefd31eca7a08dc141c7f97495c1bf640c9607990d7bac6dc1bb857b341aa80",
+        "value": {
+          "id": "6959540303033999559",
+          "name": "AdvancedSelectorWithTagAndBuffKey",
+          "cl": "AdvancedSelectorWithTagAndBuffKey",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        }
+      },
+      {
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "8689893180211089106",
+        "classId": 115,
+        "rawFile": "monoscript-8689893180211089106.bin",
+        "sha256": "f7b285150165bd812d9df037b5423e8d0cf1790e12cf26423efbc941a10e7a20",
+        "value": {
+          "id": "8689893180211089106",
+          "name": "DurbusAbility",
+          "cl": "DurbusAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        }
+      },
+      {
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "-763094226163419936",
+        "classId": 115,
+        "rawFile": "monoscript--763094226163419936.bin",
+        "sha256": "6e288405e482b43e28e062a4230854638e68c6bb101f6459faa9d7b9d8b00c4f",
+        "value": {
+          "id": "-763094226163419936",
+          "name": "AdvancedEnemyValidator",
+          "cl": "AdvancedEnemyValidator",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        }
+      },
+      {
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "-2726233351382997147",
+        "classId": 115,
+        "rawFile": "monoscript--2726233351382997147.bin",
+        "sha256": "1dc99fd802a314e011ec9bb8314fe2672d6a6e6c79ee62fea60728bc047bfc3b",
+        "value": {
+          "id": "-2726233351382997147",
+          "name": "Talent",
+          "cl": "Talent",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        }
+      }
+    ],
+    "attachmentBoundary": "Default._generalAbilities is empty; the Bus Talent and DurbusAbility share a GameObject below Default/Talents. Native Talent discovery/attachment must be checked separately."
+  }
+}

@@ -94,9 +94,23 @@ SetDisappeared 自身还会同步派发事件和 Buff 回调。具体 Content �
 - **底层声明：** `isDisappeared` 的 backing field 定义在 BObject，见 [BObject.json](../evidence/blocking-native-20261023/competition/BObject.json)；Character 和 Enemy 分别声明自己的 `OnDisappearChanged` 覆盖，见同批次的 [Character.json](../evidence/blocking-native-20261023/modes/Character.json) 和 [Enemy.json](../evidence/blocking-native-20261023/modes/Enemy.json)。字段和响应入口广泛存在，不证明每个继承者都有实际切换场景，也不能把 Enemy 的 DisappearState 行为推广到 Character。
 - **实际使用：** 普通敌人可以因关卡路线的 DISAPPEAR 指令使用消失，不要求该敌人具有专属消失技能。仓库六份关卡 fixture 中，[level_act1autochess_h07_02.json](../../../test/fixtures/arknights/level_act1autochess_h07_02.json) 的普通波次明确引用六条带 DISAPPEAR 的路线，涉及 `enemy_1427_lrnazg`、`enemy_1430_lrrook`、`enemy_1042_frostd` 三种配置、七个计划出生实例。其中五条还有 APPEAR_AT_POS，route 4 没有，不将全部六条概括为完整消失／出现对。
 - **关卡机制也可施加：** PRTS 社区资料 [TO-6 最难坦诚](https://prts.wiki/w/TO-6_最难坦诚) 的兔子洞说明，进入入口的地面敌方单位在延迟后进入消失状态，再经出口及其预设路线出现。这进一步说明使用需求可以由外部机制决定，而非单位固有种类决定。查阅日期：2026-11-05。
-- **非路线触发的正例：** PRTS 社区资料 [“越长尘”](https://m.prts.wiki/w/“越长尘”)（SH16，`enemy_1302_ymtro_2`）的载客说明：符合条件的周围敌人被装载为乘客时立即进入消失状态；卸载时移至卸客区域并取消消失。触发条件是装载／卸载业务，不是乘客自身路线抵达 DISAPPEAR／APPEAR_AT_POS。该例不证明乘客完全不具有路线，只证明消失可以由路线之外的机制控制。查阅日期：2026-11-05；此处依据社区机制资料，尚未闭合该配置的本机资源及 native 调用链。
+- **非路线触发的正例：** “越长尘”（SH16，`enemy_1302_ymtro_2`）装载乘客时令其消失，卸载时设置位置并取消消失。社区资料提供线索，本机配置及直接 native 调用已在下节闭合。该例不证明乘客没有路线，而是证明消失切换可由路线之外的业务控制。
 
 上述样本不能推算全游戏的种类数或实例数；本轮没有全量统计，也没有穷尽干员、召唤物和装置的实际切换场景。隐匿、仅隐藏模型及尚未创建的 hidden 预置不计入消失。此处只记录使用范围，不决定 Presence 是否应成为所有 Unit 的必备状态。
+
+### 2026-11-05 本机复核：越长尘装卸乘客
+
+本轮读取当前客户端，DLL／metadata 指纹与下节 HP／EP 接收复核引用的新版本一致。输入、复跑脚本、原始资源对象和指令见 [presence-passengers-20261105](../evidence/presence-passengers-20261105/README.md)。限定普通 native 分支，没有运行完整游戏或核实活跃 XLua。
+
+**资源绑定直接证实：** 本机 `battle/enm_pfb_12.ab` 的真实容器条目 `enemy_1302_ymtro_2.prefab` 指向 Root Enemy，后者的 `_modes[0]` 指向 Default。其 `Talents/Bus` GameObject 同时承载 Talent 与 DurbusAbility；实际外部 MonoScript PPtr 解析为 `Torappu.Battle.Abilities.DurbusAbility`。Default 的 `_generalAbilities` 为空，不能将其写成该数组显式引用 Bus。
+
+**天赋接入：** 当前 `UnitMode._InitTalents` 收集并设置子天赋的 parent mode；`BasicTalent.Awake` 保存组件查询所得 Ability，`DoAttach` 将其交给 `Ability.Attach`，再通过对应虚槽进入 DurbusAbility 的 `DoAttach`。这是 Talent 子树的能力装配路径，不是仅凭子 GameObject 名称判断会执行。
+
+**装载链：** 搜索开关开启且相应分支通过时，`DurbusAbility.OnTick` 94367 → `_SearchPassengers` 94347 → 从候选集合读取乘员、检查资格并登记 → `0x180fa5e80` 直接对该乘员调用 `BObject.SetDisappeared(true)` → `OnPassengerAdded`。布尔实参由 `mov dl, 1` 形成，接收者 `r12` 来自当前候选，不是 Bus 自身。
+
+**卸载链：** 本例 Ability 分离清理的非杀死乘客分支进入 `ReleaseAllPassengers` 94353 → `_ReleasePassenger` 94362 → `_DoReleasePassengers` 94363。零延迟配置选择直接卸载；后者先在 `0x180fa5197` 对乘员设置位置，再于 `0x180fa51a4` 以 `EDX=0` 调用 `SetDisappeared(false)`。接收者来自其 `Enemy passenger` 参数。
+
+本例 `_useHostRoute`、`_passengerToNearestEndPoint`、`_passengerUseBranchRoute` 均为 false。两次消失切换直接发生于 Ability，不经过 `BasicCursor.DisappearCheckpoint`／`AppearAtPosCheckpoint`；这足以证明非 Route 指令触发的实际使用，不表示整关没有 Route，也不推广成其它装卸配置均不改路线。当前 `BObject.SetDisappeared` 66007 在 `0x1806aff06` 写标志并执行相应前后回调，本体没有将这次切换改写为路线指令。
 
 ### 2026-11-05 复核：消失与 HP／EP 接收
 
