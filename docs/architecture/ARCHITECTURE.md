@@ -111,7 +111,7 @@ Rule、Hook、Contribution 与 Blocker.layer 的公开写入绑定 Typed Ref，�
 | Damage             | 公式、输出、有序接收、普通扣血及死亡       | 流程在 battle/damage；Offense／Vitality／Elemental 提供属性。通用结算登记存于 Unit.hooks，专属接收与规则留在资源能力。特殊生命保护尚待设计 |
 | Healing            | 计算、输出、有序接收、普通恢复与通知           | 流程在 battle/healing；Vitality 保存 HP／MaxHP 与专属接收 Hook，通用结算登记存于 Unit.hooks。治疗不可选中由 Targetable 表达，明确 Ref 的治疗只检查生命周期和接收 Hook |
 | Elemental          | 元素值、损伤与治疗、标准爆发及动态恢复预算 | 状态保存四型 EP 与当前 Burst Effect Ref，Core 提供具体 Effect，Data 选择实现并绑定数值；元素损伤抗性和元素 HP 伤害抗性分别表达 |
-| Effect             | 附着实例、私有状态、生效切换、覆写与结束       | Unit 持有实例与独立 deadline；依赖归 Lifetime；具体 Definition 登记 Hook 和 Contribution |
+| Effect             | 附着实例、私有状态、生效切换、覆写与结束       | Unit 持有实例与 expiration；时间归 Effect，依赖归 Lifetime；具体 Definition 登记 Hook 和 Contribution |
 | Lifetime           | 结束幂等、依赖传播与完成调度 | 静态描述符配对 Typed Ref；图保存 owner 与显式依赖；Pending 保存本次请求与阶段，owner 等全部依赖者完整 Finalize |
 | Projectile         | 独立空间执行实例、内容程序与终止请求／Finalize | 根实例保存身份、Definition、位置、ACTIVE／ENDING 与私有 state；运动、命中、采样和计时按内容组合，见 [Projectile 设计](projectile.md) |
 | Route              | 路线脚本、活动目标、等待和后继                 | 主／替代路线各自保存 Definition、当前 pathMotionMode 与 Phase；Spawn 规范化并采样偏移 |
@@ -135,7 +135,7 @@ Skill 的 Definition／create、单槽聚合、Activation 非空视图、查询�
 
 弹药消耗属于实际攻击输出，准备步骤与取消的前摇不消耗弹药；同一次攻击的多目标输出只消费一次。消耗与耗尽检查由内容在明确节点分别调用；普通弹药技能检查时点的内容对照见 [待完成机制](tactical-semantics.md)。已经释放的 Projectile 具有独立生命周期，技能结束或 Action 取消不会删除它。
 
-干员和敌人内容按需组合 Vitality 与 Elemental；Core 的基础 Unit 不隐含这些能力，也不提供干员或敌人 Archetype 层。免疫通过 Elemental Rule 表达，不通过删除能力表达。神经、侵蚀、灼燃和坏死分别积累，Elemental 只保存当前标准 Burst Effect 的引用；该 Effect 以一份有效进度推进动态恢复预算、四型 EP 回填和周期输出。Core 用八个具体 Effect 实现各套标准规则，Data 选择对应实现并绑定数值，形成按元素枚举查找的静态表；不保留大参数表与开关解释器。接收者类别不依赖当前阵营或 Core 注册表。EP Commit 同步安装 Burst，先创建通知、再 damaged、再启用标准效果，返回后才执行 Battle Applied；damaged／healed 保留各自资源通知职责。EP 损伤与 HP 元素伤害调用不同操作，元素治疗有自己的接收资格，HP 禁疗不隐式决定 EP 接收。少数多爆发特例由 Content 组合实际语义，详见 [Elemental 设计](elemental.md)。
+干员和敌人内容按需组合 Vitality 与 Elemental；Core 的基础 Unit 不隐含这些能力，也不提供干员或敌人 Archetype 层。免疫通过 Elemental Rule 表达，不通过删除能力表达。神经、侵蚀、灼燃和凋亡分别积累，Elemental 只保存当前标准 Burst Effect 的引用；该 Effect 以一份有效进度推进动态恢复预算、四型 EP 回填和周期输出。Core 用八个具体 Effect 实现各套标准规则，Data 选择对应实现并绑定数值，形成按元素枚举查找的静态表；不保留大参数表与开关解释器。接收者类别不依赖当前阵营或 Core 注册表。EP Commit 同步安装 Burst，先派发 burstStarted，再执行 onInstall 的一次性爆发输出，随后 damaged，返回后才执行 Battle Applied；damaged／healed 保留各自资源通知职责。EP 损伤与 HP 元素伤害调用不同操作，元素治疗有自己的接收资格，HP 禁疗不隐式决定 EP 接收。少数多爆发特例由 Content 组合实际语义，详见 [Elemental 设计](elemental.md)。
 
 ## 数值、贡献与领域响应
 
@@ -151,7 +151,7 @@ Contribution<V> 是带身份、载荷和可选分组的不可变登记项，负�
 
 属性 Contribution 的 `value` 可以是静态 Modifier 数组，也可以是接受 `(battle, self)` 的只读函数，self 声明本领域所需的 Capability。静态值只在来源显式替换时改变；动态函数在属性查询时求值，不执行状态转换，也不消耗 RNG。先按 group 选择候选，再求值；同优先级按 Contribution ID 的字典序确定胜者，不保存取得顺序。
 
-各数值 Capability 暴露自己的 set、remove 和 resolve 操作，并限定可接受的值类型。MaxHP 和阻挡容量只允许静态贡献；攻击、防御、行动时间和移速可以接受动态求值。Effect、技能、装备或其他来源决定贡献何时登记、替换、撤销。Effect 非生效时撤销其静态输出，恢复是否沿用样本或重新采样由具体 Definition 决定。
+各数值 Capability 暴露自己的 set、remove 和 resolve 操作，并限定可接受的值类型。MaxHP、阻挡容量和 Action 攻速／间隔只允许静态贡献；攻击、防御和移速可以接受动态求值。Effect、技能、装备或其他来源决定贡献何时登记、替换、撤销。Effect 非生效时撤销其静态输出，恢复是否沿用样本或重新采样由具体 Definition 决定。
 
 采样值有唯一权威归属。鼓舞样本可以属于 Offense contribution，Projectile 内容需要的 ATK 样本保存在该实例的私有 state，不成为所有弹道必需的根字段；同一数据的领域投影由同一转换维护。
 
@@ -165,7 +165,7 @@ MaxHP 的变化由 Vitality 按前后有效上限保持 HP 比例，独立于 He
 
 属性变化需要响应时，由对应 Capability 与状态写入口确定结算边界。领域可以保留明确差异，公共机制承接共享的领域规则与不变量。
 
-行动 Definition 保存基础间隔与基础速度，Unit 的 Action Capability 保存相应贡献。共享规则求有效周期，速度属性下限与周期公式的限制分别处理。Cooldown 保存采用过的周期作为历史事实；影响周期的完整状态转换及时刷新，普通更新保留完成比例，不统一改写本次程序已缓存的预算或已进入等待。具体类型与非普通计时的边界见 [Action 设计](action.md)。
+行动 Definition 保存基础间隔与基础速度，Unit 的 Action Capability 保存静态 Modifier 数组贡献。共享规则从当前宿主与 Action 求有效周期，速度属性下限与周期公式的限制分别处理。Cooldown 保存采用过的周期作为历史事实；攻速／间隔贡献的 set／remove Change 在 Settlement 按全批最终值刷新冷却并保留完成比例，普通 Tick 不轮询刷新。不统一改写本次程序已缓存的预算或已进入等待。具体类型与非普通计时的边界见 [Action 设计](action.md)。
 
 逻辑推进只发生在整数 tick。攻击间隔与就绪期限可以保留小数 tick，连续攻击继承上次到期的小数余量，避免逐次取整造成长期攻速损失；错过整个逻辑帧的行动机会不累积补发。自动调度逐一尝试每轮固定的行动候选，不循环重启即时完成的同一行动。
 
@@ -179,13 +179,13 @@ Blocker Definition 保存基础容量，State 保存 ADD／ZERO 容量贡献，�
 
 Effect 直接持有 `Definition<S, H>` 与私有 State。S 描述实例状态，H 描述宿主需要的 Capability 结构。抽象 Effect 不依赖 Damage、Healing、Offense 等具体 Capability；具体 Definition 通过这些领域的公开操作登记与撤销输出。
 
-生命周期状态为 `INSTALLING`、`INACTIVE`、`ACTIVE`、`ENDING`，外部许可 `enabled` 独立保存。宿主实际退场必然结束其 Effect；安装输入 scopes 可以绑定 Unit、Action、Skill 激活或另一个 Effect，Burst 使用同一 Effect Lifetime。登记后关系只保存在 Lifetime 图中，任一依赖结束即结束实例。deadline 独立表达截止时点；source 使用 `Ref<Unit> | null` 记录施加者，不要求来源仍在场，也不隐含生命周期绑定。所有权与显式 Scope 的合并关系保持 DAG。
+生命周期状态为 `INSTALLING`、`INACTIVE`、`ACTIVE`、`ENDING`，外部许可 `enabled` 独立保存。宿主实际退场必然结束其 Effect；安装输入 scopes 可以绑定 Unit、Action、Skill 激活或另一个 Effect，Burst 使用同一 Effect Lifetime。登记后关系只保存在 Lifetime 图中，任一依赖结束即结束实例。expiration 以互斥的 DURATION、DEADLINE、INFINITE 表达有效时长、绝对期限或无限期，时间不进入依赖图。source 使用 `Ref<Unit> | null` 记录施加者，不要求来源仍在场，也不隐含生命周期绑定。所有权与显式 Scope 的合并关系保持 DAG。
 
 同宿主覆写组先在未结束实例中选取最高优先级，同优先级保留较早取得的实例，再检查赢家的 enabled。禁用最强实例不会让弱者补位。Contribution 分组、Hook 调用顺序与具体业务条件分别由所属模块处理。
 
-生命周期由纯状态操作推进：安装执行 onInstall，生效切换执行 onEnable／onDisable；结束请求登记 Pending、发布 ENDING、执行 Prepare，再请求依赖者。Effect 在 Prepare 撤销输出并按当前资格协调 Group；最外层结算器在依赖者完整 Finalize 后执行本实例 onEnd 与移除。嵌套结束返回不保证注销或最终通知已完成；每项业务继续接续最新 BattleState，安装返回时重读实例与安装状态。
+生命周期由完整领域操作推进：安装执行 onInstall 并重读当前实例；零时长或已到期时直接请求结束，不启用、不推进，也不执行 onDisable。生效切换执行 onEnable／onDisable；结束请求登记 Pending、发布 ENDING、执行 Prepare，再请求依赖者。Effect 在 Prepare 撤销已启用的输出并按当前资格协调 Group；最外层结算器在依赖者完整 Finalize 后执行本实例 onEnd 与移除。嵌套结束返回不保证注销或最终通知已完成；每项业务继续接续最新 BattleState。
 
-每 Tick 只执行一次 Effect 时间推进。开始时固定 Unit 与 Effect 身份列表，轮到实例时读取当前状态；仅 ACTIVE 实例执行 onTick，随后重新读取期限并检查到期。新实例下次参与推进；非生效实例仍会到期。周期进度和首次触发策略由具体 Definition 的私有 State 表达。
+每 Tick 只执行一次 Effect 时间推进。开始时固定 Unit 与 Effect 身份候选，轮到实例时读取当前状态；ACTIVE 的 DURATION 先自动推进并发布 elapsed，再执行 onTick，旧 expiration 作为第三参数传入。回调返回后按最新实例与 expiration 判断结束，允许回调续期；rate 为零仍调用 onTick。INACTIVE 暂停 DURATION 且不执行 onTick，DEADLINE 不因禁用而暂停，INFINITE 不因时间到期。新实例下次参与推进；周期触发与首次触发策略由具体 Definition 确定，完整协议见 [Effect 时间推进](effect.md#6-时间推进)。
 
 Hook 是函数与资格开关的不可变登记项，由对应领域或 Capability 保存。Effect 可以在 onInstall 登记 Hook，资格闭包读取当前输入版本的 Effect，在 onEnd 撤销。执行 Hook 返回新状态及领域值；动态登记固定候选 ID 并逐项从返回版本重查登记与资格，嵌套操作使用自己的候选。公共 Hook 固定 Context、接续 battle 与 current；领域决定参与资格、排序及停止条件。
 

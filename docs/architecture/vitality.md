@@ -344,7 +344,7 @@ Apply 的编排为：
 
 只在同步业务可能改变续执行条件的边界重查资格，无回调的连续步骤不追加防御。取消不执行 BeforeCommit、commit 或 Applied；正数计算输出在接收后归零、或实际变化为零，仍可成功提交并派发 Applied。
 
-HP commit 不提前请求死亡，Battle 在两侧 Applied 后读取当前目标，仍为 PRESENT 且 HP 不大于零时才请求离场。EP commit 则同步完成 EP 写入、必要的 Burst 创建及 Lifetime 登记，随后依次执行 burstStarted、实际损失的 damaged 通知、仍有资格的 Burst.onStart，再返回提交报告，供 Battle 派发通用 Applied。EP Healing 的 healed 也由资源操作按实际变化派发；CommitContext 保留其所需的原始请求事实。自然恢复不经过普通 Healing 的 Calculate／Apply。
+HP commit 不提前请求死亡，Battle 在两侧 Applied 后读取当前目标，仍为 PRESENT 且 HP 不大于零时才请求离场。EP commit 同步完成 EP 写入、必要的 Burst 创建及 Lifetime 登记；Burst 的 onInstall 先发布创建事实并通知 burstStarted，再执行仍有效的本轮一次性爆发业务。安装流程完成后派发实际损失的 damaged 通知，再返回提交报告，供 Battle 依次派发 targetApplied、sourceApplied。零恢复预算仍执行安装业务，随后由通用 Effect 安装流程结束，不启用或推进根实例。EP Healing 的 healed 也由资源操作按实际变化派发；CommitContext 保留其所需的原始请求事实。自然恢复不经过普通 Healing 的 Calculate／Apply。
 
 ## 2. 弱点伤害的项目规则
 

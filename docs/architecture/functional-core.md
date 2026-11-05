@@ -143,7 +143,7 @@ Tick 的执行顺序在 step() 中直接可读。Combat、Movement 与路线完�
 | Unit.occupancy | 当前登记格、实例朝向、已通知的 pair 绑定；绑定快照不代表实时 Unit 数据 |
 | Unit.blocker／Unit.blockable | 初始化至多选择一种，也允许两者皆无；保存唯一归属或有序关联，Blockable 另有独立站位计划；接敌、解除及维护由 Blocking 执行，真实坐标仍只有 Unit.position |
 | Unit／Capability                   | HP、控制状态、行动就绪、技能状态、路线、各自 Hook 与 Contribution 集合   |
-| Unit.effects                       | Effects 容器保存实例身份、Definition、私有 data、生效状态、来源 Ref 与 deadline；Scope 关系归 Lifetime |
+| Unit.effects                       | Effects 容器保存实例身份、Definition、私有 data、生效状态、来源 Ref 与 expiration；DURATION／DEADLINE／INFINITE 互斥，Scope 关系归 Lifetime |
 | Battle.deployment | DP、usedSlots 账户、Card 记录与手牌顺序、部署观察 Hook；各 Card 保存当前库存、计时及私有 state |
 | Schedule                           | 波次、片段、出生与完成账本                                               |
 | Unit.action.actions                | 按配置 ID 聚合 Definition、持久 state、Cooldown 和当前 Execution；执行身份进度由 Capability.nextExecutionId 保存 |
@@ -204,7 +204,7 @@ Locomotion 和阻挡站位推进只发布位置、速度或计划，不调用 Bl
 
 Hook 使用统一的泛型状态转换与动态派发协议。领域定义类型化键与执行时点，Unit 本地登记保存在不可变 Hooks 集合；专属接收与能力事实通知仍存于 Capability。公共集合只要求条目 ID，不认识具体 Capability，完整目标契约见 [Hook 集合与登记](hook.md)。
 
-实例自身的 Definition 程序使用 onStart／onTick／onEnd；公共生命周期通知使用对象名＋Started／Ended，业务事实使用对象名＋过去分词，前置干预使用 beforeXxx。具体 Hook 类型使用对应名称＋Hook，通用 Hook<C, T> 协议不变。start／end、finish、cancel 分别表达生命周期、正常完成与取消，completed 只表达一次业务结算完成；不同语义阶段不为名称一致而合并。完整约定见 [接口命名规则](api-conventions.md#1-基本分类)。
+实例自身的 Definition 程序按实际阶段使用 onStart／onInstall／onEnable／onDisable／onTick／onEnd 等；公共生命周期通知使用对象名＋Started／Ended，业务事实使用对象名＋过去分词，前置干预使用 beforeXxx。具体 Hook 类型使用对应名称＋Hook，通用 Hook<C, T> 协议不变。start／end、finish、cancel 分别表达生命周期、正常完成与取消，completed 只表达一次业务结算完成；不同语义阶段不为名称一致而合并。完整约定见 [接口命名规则](api-conventions.md#1-基本分类)。
 
 ```typescript
 interface Hook<C, T> {
@@ -248,7 +248,9 @@ Projectile 的异构容器归 projectile/projectiles.ts，状态仍由 Battlefie
 
 self 是输入版本的值。嵌套调用返回后，遵守 [状态接续后的读取与续执行](#状态接续后的读取与续执行)：实时事实从返回 State 重新查询，明确采样与历史载荷保留。不使用动态 getter 偷偷追踪一个可变工作对象，也不以旧整份 Unit 覆盖新版本。
 
-安装先登记 INSTALLING，执行安装程序，接续其返回值；仍存在且安装完成的实例再决定是否 ACTIVE。结束请求发布 ENDING，Prepare 撤销输出、协调 Group 并展开依赖请求；Finalize 等全部真实依赖者完整完成，再调用结束程序与移除。关系权威归 Lifetime 图，包含各领域登记的 owner 与显式 scopes；Effect 独立保存 deadline，不重复保存依赖。合并图保持 DAG，兄弟按边登记顺序请求；source 只表达来源。
+安装先登记 INSTALLING，执行 onInstall 并接续其返回值，再读取当前实例；零时长或已到期时直接请求结束，不启用、不执行 onTick 或 onDisable。未到期的实例再决定是否 ACTIVE。结束请求发布 ENDING，Prepare 撤销已启用的输出、协调 Group 并展开依赖请求；Finalize 等全部真实依赖者完整完成，再调用结束程序与移除。关系权威归 Lifetime 图，包含各领域登记的 owner 与显式 scopes；Effect 独立保存 expiration，不重复保存依赖。合并图保持 DAG，兄弟按边登记顺序请求；source 只表达来源。
+
+Effect 的 expiration 选择 DURATION、DEADLINE、INFINITE 之一。ACTIVE 实例先自动推进并发布 DURATION，再调用 onTick，第三参数保存本次推进前的 expiration；回调后重读最新时间状态判断结束。rate 为零仍调用 onTick，INACTIVE 暂停有效时长且不调用 onTick；DEADLINE 的绝对期限不暂停，INFINITE 不因时间到期。时间推进与到期判断归 Effect，Lifetime 只处理收到结束请求后的依赖析构，详见 [Effect 时间推进](effect.md#6-时间推进)。
 
 已经进入的内容程序按自身控制流继续，明确采样载荷可保留为本次函数局部值。需要槽位释放或最终通知的后继业务使用领域完成时点，不能从嵌套 end 返回推断 Finalize 已完成。Pending 只保存当前同步结算工作，不保存通用最后载荷表、恢复调度或跨 Tick 删除队列。
 

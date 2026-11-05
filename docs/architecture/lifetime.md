@@ -34,7 +34,7 @@ Scope 公开 type: "LIFETIME"、kind 和只读数值 address，描述符／Ref �
 
 available 沿依赖图的父边检查目标自身及全部上游（实际 owner 与显式 Scope）：任一节点缺失、已 Pending 或结束中，目标均不可接纳新依赖。检查使用当前 BattleState；父对象已开始结束、子对象尚未收到结束请求的发布／Prepare 窗口也适用。Unit 要求 PRESENT，Action 要求 RUNNING，Skill 要求 ACTIVE；Effect（包括标准 Burst）的 INSTALLING／INACTIVE 和 Mechanism 的 INACTIVE 仍可成为依赖目标。HP、空间在场和 source 是否存活不属于这项判断。
 
-Scope 只表达 Lifetime 依赖；Effect 的 deadline 独立保存期限，不进入依赖图。source 和普通私有 Ref 不自动产生关系。安装入口检查宿主与所给 Scope 的可用性；后续 bind 入口检查两端资格及合并图的闭环，内部传播与析构信任这些约束。
+Scope 只表达 Lifetime 依赖。Effect 的 expiration 独立选择 DURATION、DEADLINE、INFINITE 之一，时间推进与到期判断由 Effect 执行，再通过正常结束请求进入 Lifetime；依赖图不保存时间。source 和普通私有 Ref 不自动产生关系。安装入口检查宿主与所给 Scope 的可用性；后续 bind 入口检查两端资格及合并图的闭环，内部传播与析构信任这些约束。
 
 公共导出不扩大调用权限：Content 可以构造 Scope 并调用已有业务入口；Action 的正常完成与推进仍归相应内容协议和调度器，不因描述符可见而允许任意执行完整实例写回。
 
@@ -121,6 +121,6 @@ Damage.completed 表达该次伤害结算完成，不承诺目标的全部离场
 
 业务调用不自动生成等待边。例如 Effect.onEnd 请求 Unit.remove，Unit 等待已有 Effect→Unit 关系，但 Effect 不因为调用了 remove 又反向等待 Unit。独立 Projectile 不随来源 Unit／Action 自动结束，普通 source、目标跟踪、Occupancy、Blocking、Card 冷却不自动转为 Lifetime 关系。
 
-字段写回沿用各领域合同：Effect 私有 data／期限、Projectile 位置／state 和 Action 持久 state／Cooldown 可供清理使用；Action ENDING 的 execution.state 不接受普通写入。Mechanism disable 是可逆参与变化，与最终析构分开：ACTIVE remove 的 Prepare 以 ENDING self 调用已有 onDisable，INACTIVE remove 不重复调用，Finalize 再执行 onEnd。
+字段写回沿用各领域合同：Effect 私有 data／expiration、Projectile 位置／state 和 Action 持久 state／Cooldown 可供清理使用；Action ENDING 的 execution.state 不接受普通写入。Mechanism disable 是可逆参与变化，与最终析构分开：ACTIVE remove 的 Prepare 以 ENDING self 调用已有 onDisable，INACTIVE remove 不重复调用，Finalize 再执行 onEnd。
 
 实现职责分别位于 `core/lifetime/lifetime.ts`（模型与类型）、`dependency.ts`（关系图与反向查询）、`operations.ts`（登记、绑定、组合器、请求与析构）、`index.ts`（显式公共入口）。领域按真实共享需要选择已有操作文件或 lifetime.ts，不套目录模板。

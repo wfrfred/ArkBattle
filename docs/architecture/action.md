@@ -299,7 +299,7 @@ Unit 对 Execution 的所有权保护宿主到本轮整个 Finalize 返回。onE
 Runtime 采用以下候选政策：
 
 1. 保留调度入口的 BattleState 与 Unit Query 快照，按登记顺序遍历；每个宿主本轮的执行 Ref 始终从该初始 BattleState 惰性查询，不要求提前生成数组。宿主离场由完整离场操作终止其执行，不保存脱离宿主的孤立 Execution。
-2. 对每个 Unit，先推进原有执行，再刷新 Cooldown；刷新返回后重新读取来源，仍为 PRESENT 且空间在场时才运行 select，已经离场或隐藏则跳过。
+2. 对每个 Unit，先推进原有执行，再从接续状态读取来源，仍具备 Action、为 PRESENT 且空间在场时才运行 select，已经离场或隐藏则跳过。Cooldown 由攻速／间隔贡献变更的 Settlement 同步维护，Combat 不逐 Tick 刷新。
 3. select 返回本轮候选 Definition ID 及接续状态，可以表达优先级、随机选择和具体模式政策；未提供时从 Actions.keys() 取得全部配置项。
 4. 候选去重后逐一通过 Actions.get(id) 取得条目及其 Definition，再构造持久 Action Ref 调用 start，每次读取最新来源与配置。列表顺序不代表引擎赋予的业务优先级。
 5. 调度器扫描入口固定的执行 Ref，每项读取最新状态并推进一次。自动候选的 start 返回 STARTED 后，Combat 显式调用 advance 推进该 Ref，保持自动动作在同 Tick 首次执行。
@@ -312,7 +312,7 @@ advance(battle, ref) 由 operations.ts 实现，index.ts 继续导出供调度�
 
 可复用普通攻击程序位于 content/actions/attack.ts，直接调用 Damage、Healing 与 Elemental 的公开操作。它在 prepare 绑定目标并保存 releaseAtTick／finishAtTick、released 等执行进度；到点执行输出并在恢复结束后完成。create 提供空持久／执行数据的入口；createWithState<P, E> 明确区分 initialize(battle) → Result<P> 与 prepare(battle, source, self) → Result<E>。output／afterOutput／onEnd 接收显式 source 与 execution 非空的 Execution<P, State<E>>，模板私有数据位于 self.execution.state.data。
 
-CD 补偿、cooldownAdjusted 与 released 的私有字段写回继续由完整 Action 操作经内部 replace 发布，不改为公开 Change，也不隐式触发 Blocking。Rule 可读取双方 Action 状态不表示自动订阅其所有字段；改变阻挡资格的内容在对应业务流程中显式复核关系。Attack 在真正执行 Hook、伤害等领域操作后按同一 Execution Ref 恢复当前 RUNNING 执行，并确认宿主 PRESENT 与空间存在；不把原始发布本身当成内容回调。Combat 的 select 使用冷却刷新后当前来源。
+CD 补偿、cooldownAdjusted 与 released 的私有字段写回继续由完整 Action 操作经内部 replace 发布，不改为公开 Change，也不隐式触发 Blocking。Rule 可读取双方 Action 状态不表示自动订阅其所有字段；改变阻挡资格的内容在对应业务流程中显式复核关系。Attack 在真正执行 Hook、伤害等领域操作后按同一 Execution Ref 恢复当前 RUNNING 执行，并确认宿主 PRESENT 与空间存在；不把原始发布本身当成内容回调。Combat 的 select 使用原有执行推进后重新读取的当前来源。
 
 Attack 模板统一校验前后摇、操作数值和绑定关系，上层内容不重复校验原样传入的同一字段。只读配置直接共享，公开 attack 配置只投影配置字段，不携带程序私有回调，也不额外复制、冻结其子对象。
 
