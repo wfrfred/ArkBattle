@@ -163,6 +163,18 @@ GROUND_BOUND 与 UNMOVABLE 是不同标志；isActuallyGroundBound 还会结合 
 
 **U：** 这不是全部特殊状态、技能、Boss 子类和时间停止的通用判定表；每种内容是否设置相应 flag 仍需沿其实际安装机制核对。
 
+### 2026-11-05 补核：自身空地身份切换与主动脱离
+
+本次只回答自身空地身份变化的阻挡清理由谁负责，不重做运动状态、异常叠加或寻路调查。先查 [PRTS 行动方式](https://prts.wiki/w/行动方式)和[异常效果](https://prts.wiki/w/异常效果)：社区资料区分当前身份、寻路方式与浮空控制，但没有说明普通切换入口的清理责任，因而补查官方客户端普通 native 分支。新客户端 DLL／metadata 与本篇原批次不同，按方法名重新定位，指纹、完整分段和复跑命令见 [layer-transition-20261105](../evidence/layer-transition-20261105/README.md)。
+
+**N：** 新版 `Enemy.ChangeMotionMode`（77856）先调用 `Entity.ChangeMotionMode`，随后尾跳 `Enemy.ReleaseBlock`；`Enemy.ResetMotionMode`（77857）同样先执行基类重置，再调用 `ReleaseBlock`。两个外层普通分支都没有新旧身份比较，也不根据基类是否实际改值决定是否脱离。因此，主动脱离并非只有浮空状态自行提供，也不是等下一次阻挡检查或只解除已经不兼容的关系。
+
+**N：** 基类 `ChangeMotionMode`（67597）进入 raw Setter（67372）；Setter 写入原始可变身份，只在新旧值不同时调用 virtual slot 128 的 `OnMotionModeChanged`。基类回调（67704）通知 Buff 容器；Enemy 覆盖（77755）继续通知当前地块。已展开的普通主体没有直接调用 `ReleaseBlock`，完整脱离发生在上述 Enemy 业务入口。基类 `ResetMotionMode`（67598）读取 `pathMotionMode` 再写入可变身份，没有反过来修改寻路配置；这是重置操作的特定语义，不表示空地身份与寻路必须始终相同。
+
+**N：** 同版 `ReleaseBlock` 先调用 `ReleaseFromBlocker`，具有阻挡他人能力时再调用 `ClearAllBlockees`。`ReleaseFromBlocker`（77805）解除现有入向关系后，以 `Kill(false)` 取消当前 `m_blockTween`；即使没有有效 owner，也会处理仍存在的阻挡插值。字段类型与 Kill 派发已在同版 metadata／指令中核对。浮空状态的 `OnEnter` 也独立调用 `ReleaseBlock`，说明特殊控制与普通显式切换都可发起完整脱离；不能以此把任何视觉升高都解释为自身身份切换。蒂比的区别仍见[案例 21](21-tippi-air-blocking.md)。
+
+**项目关联：** 这些证据用于确定 Layer 修改入口与主动脱离的责任，不自行决定 Change 的批次语义或 API。原生上述业务入口在同值调用时也会脱离；项目若保留同值 no-op，属于明确的工程取舍。未核实运行时 XLua、全部特殊子类及具体内容重写，不由这组普通入口推断异常竞争或全部导航后继。
+
 ## 7. 单位间分离与强制位移
 
 ### 单位分离是可选控制器行为

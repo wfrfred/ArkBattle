@@ -1,0 +1,381 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-05"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-05",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "base-and-levitate.json#/provenance/client/dll",
+          "enemy-changed-continuation.json#/provenance/client/dll",
+          "enemy-changed-epilogue.json#/provenance/client/dll",
+          "levitate-enter-completion.json#/provenance/client/dll",
+          "levitate-enter-continuation.json#/provenance/client/dll",
+          "motion-transition.json#/provenance/client/dll",
+          "probe.json#/provenance/client/dll",
+          "release-block.json#/provenance/client/dll",
+          "release-from-blocker-continuation.json#/provenance/client/dll",
+          "release-from-blocker-epilogue.json#/provenance/client/dll",
+          "release-from-blocker.json#/provenance/client/dll",
+          "selected-enemy-fields.json#/provenance/client/dll",
+          "setter-continuation.json#/provenance/client/dll",
+          "setter-epilogue.json#/provenance/client/dll",
+          "tween-kill-case-1.json#/provenance/client/dll",
+          "tween-kill-case-2.json#/provenance/client/dll",
+          "tween-kill-case-3.json#/provenance/client/dll",
+          "tween-kill-dispatch.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "base-and-levitate.json#/provenance/client/metadata",
+          "enemy-changed-continuation.json#/provenance/client/metadata",
+          "enemy-changed-epilogue.json#/provenance/client/metadata",
+          "levitate-enter-completion.json#/provenance/client/metadata",
+          "levitate-enter-continuation.json#/provenance/client/metadata",
+          "motion-transition.json#/provenance/client/metadata",
+          "probe.json#/provenance/client/metadata",
+          "release-block.json#/provenance/client/metadata",
+          "release-from-blocker-continuation.json#/provenance/client/metadata",
+          "release-from-blocker-epilogue.json#/provenance/client/metadata",
+          "release-from-blocker.json#/provenance/client/metadata",
+          "selected-enemy-fields.json#/provenance/client/metadata",
+          "setter-continuation.json#/provenance/client/metadata",
+          "setter-epilogue.json#/provenance/client/metadata",
+          "tween-kill-case-1.json#/provenance/client/metadata",
+          "tween-kill-case-2.json#/provenance/client/metadata",
+          "tween-kill-case-3.json#/provenance/client/metadata",
+          "tween-kill-dispatch.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "base-and-levitate.json",
+      "enemy-changed-continuation.json",
+      "enemy-changed-epilogue.json",
+      "levitate-enter-completion.json",
+      "levitate-enter-continuation.json",
+      "motion-transition.json",
+      "probe.json",
+      "prts-sources.json",
+      "release-block.json",
+      "release-from-blocker-continuation.json",
+      "release-from-blocker-epilogue.json",
+      "release-from-blocker.json",
+      "selected-enemy-fields.json",
+      "setter-continuation.json",
+      "setter-epilogue.json",
+      "tween-kill-case-1.json",
+      "tween-kill-case-2.json",
+      "tween-kill-case-3.json",
+      "tween-kill-dispatch.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12589,
+        "sha256": "1a85248a6a48d92d61c65f5ba044d079954866ff0c1672488b92f0cf1366af9a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "base-and-levitate.json",
+        "kind": "record",
+        "bytes": 81609,
+        "sha256": "6c3973ca77884e9fe83d795c67c7dbf282d63532fe5545d437039a55606c5142"
+      },
+      {
+        "path": "enemy-changed-continuation.json",
+        "kind": "record",
+        "bytes": 26098,
+        "sha256": "ba012bfa4bc793fff2bc9ce4b198c5753fc4741e2c16e67854ece9bdcba947a5"
+      },
+      {
+        "path": "enemy-changed-epilogue.json",
+        "kind": "record",
+        "bytes": 19537,
+        "sha256": "24ede17652b341c549e8e0a0ea55e9c91db6e972d4524dfc32bdf2d129733209"
+      },
+      {
+        "path": "levitate-enter-completion.json",
+        "kind": "record",
+        "bytes": 24641,
+        "sha256": "b32fb3f088f878d682c46f476dfdcfa69d343320f2ab6bac453ad579f5918194"
+      },
+      {
+        "path": "levitate-enter-continuation.json",
+        "kind": "record",
+        "bytes": 21616,
+        "sha256": "8465c4b7aacd0a13d8d45e5e6db524fe5660f96df335adff896a6000eaf5c1c9"
+      },
+      {
+        "path": "motion-transition.json",
+        "kind": "record",
+        "bytes": 74641,
+        "sha256": "f7dc8aeeb7373f49befd1760a547ff383610645903d6d740185e4ca0278208a3"
+      },
+      {
+        "path": "probe.json",
+        "kind": "record",
+        "bytes": 16908,
+        "sha256": "79b8d7c46d62e737ac4acbe72ce4656d3fb892edc7d0d18a66ab812e4d770a6f"
+      },
+      {
+        "path": "prts-sources.json",
+        "kind": "record",
+        "bytes": 1182,
+        "sha256": "d8fe7891f766f0972135fdc7134a33be13fd0a42da74610a77620c8e1e01e5d6"
+      },
+      {
+        "path": "release-block.json",
+        "kind": "record",
+        "bytes": 25036,
+        "sha256": "c38b65d84c46c36788b89d3bd674a7c96e9f1ca3681321422a76d66c7c7820eb"
+      },
+      {
+        "path": "release-from-blocker-continuation.json",
+        "kind": "record",
+        "bytes": 24775,
+        "sha256": "1e5f2a5107d9446b6a02111f8784ff6c46724f4b04565a3ef35c272ed2801cf8"
+      },
+      {
+        "path": "release-from-blocker-epilogue.json",
+        "kind": "record",
+        "bytes": 18598,
+        "sha256": "e7356b1848eb3af0c86a56facd21252f5645a5bb558da7d121b5cc2243d211be"
+      },
+      {
+        "path": "release-from-blocker.json",
+        "kind": "record",
+        "bytes": 21704,
+        "sha256": "a4d95689f1e0093e255d8ca1dbfdfc20327b6791850dd5ac7ee83542a7820949"
+      },
+      {
+        "path": "selected-enemy-fields.json",
+        "kind": "record",
+        "bytes": 20198,
+        "sha256": "26c726895505dec8d166c67580c2d01b9e8d9281393154337b3dcb850a15a449"
+      },
+      {
+        "path": "setter-continuation.json",
+        "kind": "record",
+        "bytes": 20099,
+        "sha256": "95b9fe5dec8b2d3ef022e6ad8847bc08a79c4b562ac994330998e5cf3d698f0c"
+      },
+      {
+        "path": "setter-epilogue.json",
+        "kind": "record",
+        "bytes": 18965,
+        "sha256": "0445eb7ad874f6958bda6dcd3c11736f7ddad7a37560046ff8b4f5d399cae16d"
+      },
+      {
+        "path": "tween-kill-case-1.json",
+        "kind": "record",
+        "bytes": 18679,
+        "sha256": "38e9cc68040be70a808ef5e0885dd9ee8e92a380142ab90630913dbb4e704f46"
+      },
+      {
+        "path": "tween-kill-case-2.json",
+        "kind": "record",
+        "bytes": 19666,
+        "sha256": "f8d062fc10bb5a9fe492b8343114567373c730b463c39e179b93db5e755846f4"
+      },
+      {
+        "path": "tween-kill-case-3.json",
+        "kind": "record",
+        "bytes": 25521,
+        "sha256": "953900133e3fa3a012ba5590b0461bfbe567dea4478b1c4081522601aecd4fb1"
+      },
+      {
+        "path": "tween-kill-dispatch.json",
+        "kind": "record",
+        "bytes": 19640,
+        "sha256": "5df4c644478b1ed017d44b1e2147a61702cc3f8a0654225f8b98276ea80aee69"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 67370,
+          "mode": "disasm",
+          "records": [
+            "base-and-levitate.json#/result/4",
+            "base-and-levitate.json#/result/4/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_pathMotionMode",
+          "address": "0x1807397e0"
+        },
+        {
+          "index": 67371,
+          "mode": "disasm",
+          "records": [
+            "base-and-levitate.json#/result/5",
+            "base-and-levitate.json#/result/5/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.set_pathMotionMode",
+          "address": "0x18073b3c0"
+        },
+        {
+          "index": 67372,
+          "mode": "disasm",
+          "records": [
+            "motion-transition.json#/result/0",
+            "motion-transition.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.set_changeableMotionMode",
+          "address": "0x18073ac30"
+        },
+        {
+          "index": 67373,
+          "mode": "disasm",
+          "records": [
+            "motion-transition.json#/result/1",
+            "motion-transition.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_changeableMotionMode",
+          "address": "0x1807340e0"
+        },
+        {
+          "index": 67597,
+          "mode": "disasm",
+          "records": [
+            "base-and-levitate.json#/result/0",
+            "base-and-levitate.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.ChangeMotionMode",
+          "address": "0x180721ca0"
+        },
+        {
+          "index": 67598,
+          "mode": "disasm",
+          "records": [
+            "base-and-levitate.json#/result/1",
+            "base-and-levitate.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.ResetMotionMode",
+          "address": "0x18072d8b0"
+        },
+        {
+          "index": 67704,
+          "mode": "disasm",
+          "records": [
+            "motion-transition.json#/result/2",
+            "motion-transition.json#/result/2/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnMotionModeChanged",
+          "address": "0x18072a8d0"
+        },
+        {
+          "index": 77635,
+          "mode": "metadata",
+          "records": [
+            "selected-enemy-fields.json#/result/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_rootTile",
+          "address": "0x180ace770"
+        },
+        {
+          "index": 77755,
+          "mode": "disasm",
+          "records": [
+            "motion-transition.json#/result/3",
+            "motion-transition.json#/result/3/method",
+            "selected-enemy-fields.json#/result/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnMotionModeChanged",
+          "address": "0x180abfa20"
+        },
+        {
+          "index": 77805,
+          "mode": "metadata",
+          "records": [
+            "selected-enemy-fields.json#/result/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Enemy.ReleaseFromBlocker",
+          "address": "0x180ac2820"
+        },
+        {
+          "index": 77856,
+          "mode": "disasm",
+          "records": [
+            "motion-transition.json#/result/4",
+            "motion-transition.json#/result/4/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.ChangeMotionMode",
+          "address": "0x180ab9b10"
+        },
+        {
+          "index": 77857,
+          "mode": "disasm",
+          "records": [
+            "motion-transition.json#/result/5",
+            "motion-transition.json#/result/5/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.ResetMotionMode",
+          "address": "0x180ac2aa0"
+        },
+        {
+          "index": 77860,
+          "mode": "metadata",
+          "records": [
+            "selected-enemy-fields.json#/result/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Enemy.ReleaseBlock",
+          "address": "0x180ac2770"
+        },
+        {
+          "index": 78046,
+          "mode": "disasm",
+          "records": [
+            "base-and-levitate.json#/result/2",
+            "base-and-levitate.json#/result/2/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/LevitateState.OnEnter",
+          "address": "0x180ae44a0"
+        },
+        {
+          "index": 78048,
+          "mode": "disasm",
+          "records": [
+            "base-and-levitate.json#/result/3",
+            "base-and-levitate.json#/result/3/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/LevitateState.OnExit",
+          "address": "0x180ae46b0"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Enemy",
+          "records": [
+            "selected-enemy-fields.json#/result"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

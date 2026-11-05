@@ -1,0 +1,32 @@
+{
+  "provenance": {
+    "reviewedOn": "2026-11-05",
+    "kind": "community-reference-review",
+    "source": "PRTS",
+    "official": false
+  },
+  "result": {
+    "question": "When a Unit changes its own ground/air identity, does the common transition clean up blocking, or is that cleanup owned by each specific effect?",
+    "pages": [
+      {
+        "url": "https://prts.wiki/w/行动方式",
+        "sections": [
+          "行动方式变化",
+          "浮空与缚地"
+        ],
+        "finding": "Confirms current identity can differ from pathfinding and that levitation/ground binding use separate control mechanisms; does not specify which common transition callback releases blocking."
+      },
+      {
+        "url": "https://prts.wiki/w/异常效果",
+        "sections": [
+          "异常效果"
+        ],
+        "finding": "Distinguishes abnormal flags and state-machine effects; insufficient to assign common Layer-transition cleanup responsibility."
+      }
+    ],
+    "limits": [
+      "Community descriptions do not prove exact client call ordering.",
+      "Conflicting or incomplete stacking descriptions are outside this targeted question."
+    ]
+  }
+}
