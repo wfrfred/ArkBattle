@@ -50,6 +50,6 @@ geometry/intersection.ts 只提供 contains、overlaps、sweep 的几何计算�
 
 空间查询仅接收 BattlefieldState，直接通过通用 Query 遍历该版本的 field.units；不为复用 Unit 查询入口而依赖完整 BattleState。查询不修改状态、不执行 Hook、不消费 RNG。结果是传入状态版本上的已完成查询；Ref 只保留身份，Contact.fraction 是当时的几何事实。后续同步业务改变状态后，需要当前资格或几何时，从最新 BattleState 重新读取和判定。消费方从接触顺序中选择符合业务资格的对象，不能把第一个几何接触默认当成实际命中。
 
-Projectile 的现有到达接触流程固定全体候选身份，逐项读取最新弹道、单位和几何。不能以初始 overlap 命中列表替代，否则先前回调把既有 Unit 移入范围时会遗漏。空间 sweep 本身不自动让 Projectile 成为沿途碰撞弹道。
+Projectile 是否查询范围或扫掠，由具体命中程序决定；按保存身份命中的路径不要求 Hitbox。空间 sweep 本身不自动让 Projectile 成为沿途碰撞弹道。
 
 阻挡的中点与阻挡半径、Locomotion 的地形避障以及 Navigation 的通行射线各有自身语义。

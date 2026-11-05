@@ -148,7 +148,7 @@ Unit.position 表达当前世界坐标；Layer 表达 GROUND／AIR 空地身份�
 
 unit/capability/layer/capability.ts 的 Definition.type 提供初始身份，State.type 保存当前身份；领域消费者读取 unit.layer.type。Unit.position 与 SpatialPresence 表达位置和空间存在事实，不承担空地身份。Battlefield 不保存另一份位置索引。
 
-unit/capability/hitbox/capability.ts 的 Definition.geometry 保存静态 ShapeGeometry，State 为空实现；索敌范围与弹道接触读取 unit.definition.hitbox.geometry。initialize 校验非空、稠密的形状集合，以及有限偏移、非负半径或半宽高；不复制几何到 State，不提供运行时形状修改接口。公开 API 只有 hasHitbox 与 initialize。
+unit/capability/hitbox/capability.ts 的 Definition.shape 保存单个静态 Shape，State 为空实现；Spatial 与采用相交判定的 Targeting 读取 unit.definition.hitbox.shape。initialize 校验有限偏移、非负有限半径或半宽高；不复制几何到 State，不提供运行时形状修改接口。公开 API 只有 hasHitbox 与 initialize。
 
 Hitbox 几何、Blocker 阻挡半径和 Locomotion.halfBodyWidth 分别用于受击接触、建立阻挡和地形避障，不相互代替。Targetable 的资格限制由其自身领域处理。
 

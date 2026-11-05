@@ -10,22 +10,24 @@ export type Vec2 = readonly [number, number];
 
 export declare const Vec2: {
     is(value: unknown): value is Vec2;
+    equal(a: Vec2, b: Vec2): boolean;
     add(a: Vec2, b: Vec2): Vec2;
     sub(a: Vec2, b: Vec2): Vec2;
     negate(v: Vec2): Vec2;
     scale(v: Vec2, factor: number): Vec2;
+    lerp(from: Vec2, to: Vec2, progress: number): Vec2;
     length(v: Vec2): number;
     distanceSquared(a: Vec2, b: Vec2): number;
     clampLength(v: Vec2, maxLength: number): Vec2;
 };
 ```
 
-`Vec2.is` 判断输入是否为两个有限数构成的数组。七个数学操作直接计算已建立约束的数据，不执行内部校验、冻结或包装构造。`add`、`sub`、`negate`、`scale` 返回新元组；`length` 使用欧氏范数，`distanceSquared` 返回平方距离。`clampLength` 超限时保持方向，未超限时可直接返回输入；调用方保证 `maxLength` 为非负有限数。
+`Vec2.is` 判断输入是否为两个有限数构成的数组。其余操作直接计算已建立约束的数据，不执行内部校验、冻结或包装构造。`equal` 逐分量精确比较；`add`、`sub`、`negate`、`scale` 返回新元组；`lerp` 按 progress 线性插值，不限制其范围；`length` 使用欧氏范数，`distanceSquared` 返回平方距离。`clampLength` 超限时保持方向，未超限时可直接返回输入；调用方保证 `maxLength` 为非负有限数。
 
 ## 坐标语义与转换
 
 ```typescript
-// tactical/geometry/coordinate.ts
+// geometry/coordinate.ts
 import type { Vec2 } from "../common/vector.js";
 import type { Direction } from "./direction.js";
 
