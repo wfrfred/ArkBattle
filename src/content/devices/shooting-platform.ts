@@ -33,45 +33,28 @@ export function create(configuration: Configuration): Definition {
         card,
         occupancy: {
             slot: "SUPPORT",
-            hooks: [
-                {
-                    id: "shooting-platform/block-passenger",
-                    stage: "occupantAdded",
-                    invoke(battle, { support, occupant }) {
-                        const ruleId = `shooting-platform/${support.id}/block-free`;
+            onOccupantAdded(battle, { support, occupant }) {
+                const ruleId = `shooting-platform/${support.id}/block-free`;
 
-                        return {
-                            state: hasBlocker(occupant)
-                                ? update(battle, [
-                                      setRule(unitRef(occupant), {
-                                          id: ruleId,
-                                          allows: (_battle, { blocker }) =>
-                                              blocker.blocker.layer === "AIR",
-                                      }),
-                                  ])
-                                : battle,
-                            value: undefined,
-                        };
-                    },
-                },
-                {
-                    id: "shooting-platform/unblock-passenger",
-                    stage: "occupantRemoved",
-                    invoke(battle, { support, occupant }) {
-                        const current = battle.battlefield.units.get(occupant.id);
-                        if (current !== undefined && hasBlocker(current)) {
-                            battle = update(battle, [
-                                removeRule(
-                                    unitRef(current),
-                                    `shooting-platform/${support.id}/block-free`,
-                                ),
-                            ]);
-                        }
+                return hasBlocker(occupant)
+                    ? update(battle, [
+                          setRule(unitRef(occupant), {
+                              id: ruleId,
+                              allows: (_battle, { blocker }) => blocker.blocker.layer === "AIR",
+                          }),
+                      ])
+                    : battle;
+            },
+            onOccupantRemoved(battle, { support, occupant }) {
+                const current = battle.battlefield.units.get(occupant.id);
+                if (current !== undefined && hasBlocker(current)) {
+                    battle = update(battle, [
+                        removeRule(unitRef(current), `shooting-platform/${support.id}/block-free`),
+                    ]);
+                }
 
-                        return { state: battle, value: undefined };
-                    },
-                },
-            ],
+                return battle;
+            },
         },
         hooks: Hooks.empty()
             .set(unitHooks.enter, {

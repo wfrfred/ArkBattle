@@ -2,7 +2,6 @@ import type { TilePosition } from "../../../geometry/coordinate.js";
 import type { Direction } from "../../../geometry/direction.js";
 import type { Unit } from "../../unit.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import type { Context, SupportHook } from "./hook.js";
 import { enter, leave } from "../../../battle/occupancy.js";
 import { ref } from "../../query.js";
 import * as lifecycle from "../../hook.js";
@@ -13,13 +12,25 @@ export type Definition =
     | { readonly slot: "OCCUPANT" }
     | {
           readonly slot: "SUPPORT";
-          readonly hooks: readonly SupportHook[];
+          readonly onOccupantAdded?: (battle: BattleState, pair: Pair) => BattleState;
+          readonly onOccupantRemoved?: (battle: BattleState, pair: Pair) => BattleState;
       };
+
+export interface Pair {
+    readonly support: Unit &
+        Occupancy & {
+            readonly definition: {
+                readonly occupancy: Extract<Definition, { readonly slot: "SUPPORT" }>;
+            };
+        };
+    readonly occupant: Unit & Occupancy;
+    readonly tile: TilePosition;
+}
 
 export interface State {
     readonly tile: TilePosition | null;
     readonly direction: Direction | null;
-    readonly pair: Context | null;
+    readonly pair: Pair | null;
 }
 
 export interface Initial {

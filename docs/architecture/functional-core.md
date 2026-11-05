@@ -298,7 +298,7 @@ Healing 中若嵌套 Damage，Damage 必须把冷却消耗、HP、致死裁决�
 
 伤害领域必须容纳致死裁决和到零后处理。只有实际离场才关闭 Unit 的宿主生命周期并完成其相关清理。死亡爆炸等内容接入明确的击倒／死亡协议，不能把任意 Effect.onEnd 都解释为宿主死亡。
 
-跨 Tick 保存可恢复数据；不保存同步 Hook 栈、Promise、generator 或普通调用的工作 Context。Occupancy 的 pair 保存已经建立的业务绑定及其不可变采样，虽也作为配对通知的 Context 使用，却不代表实时 Unit 状态或待重放回调；需要当前事实仍从最新 BattleState 查询。Action、Projectile、Route 和周期 Effect 各自推进，不合并为统一过程框架。
+跨 Tick 保存可恢复数据；不保存同步 Hook 栈、Promise、generator 或普通调用的工作 Context。Occupancy 的 Pair 保存已经建立的业务绑定及其不可变采样，也作为 Definition 配对程序的输入，不代表实时 Unit 状态或待重放回调；需要当前事实仍从最新 BattleState 查询。Action、Projectile、Route 和周期 Effect 各自推进，不合并为统一过程框架。
 
 ## 10. Meta 接入边界
 

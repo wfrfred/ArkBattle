@@ -336,7 +336,7 @@ GROUND 搜索只选一个当前根格：有非空 `occupancy.tile` 时使用登�
 
 `Tile.get_isMeleeBlockable`（70673，`0x1808c6070`）先读黑板 `tile_blockable`，有值直接返回，未配置才取 `!isHighland`。`Tile.get_isHighland`（70670，`0x1808c5f10`）默认读取 TileData 的原始高度；它与读取当前 Options 的 `get_heightType` 不是同一字段语义。因此普通高地的显式阻挡许可不能被当前 elevation 的硬判断覆盖。
 
-射击台另有内容规则。本机 `trap_1106_achplat` 的 `trap_1106_achplat_passive` 在 `ON_OWNER_OVERLAPPED` 向乘员创建 `highland_common[block]`；后者对 WALK 阻挡模式施加带 `BLOCK_FREE` 的派生 Buff，并随阻挡模式变化维护。`Tile.RegisterCharacter`（70726，`0x1808c1eb0`）通知 `BuffContainer.OnOwnerOverlapped`（65410，`0x1806764e0`），`SearchBlockee` 再通过 `Entity.isBlockFree`（66511，`0x180705590`）拒绝接敌。这证明平台禁阻挡来自具体内容，不是所有高地的通用规则。射击台 Content 通过 Occupancy 的 SUPPORT occupantAdded Hook 在当前乘员的 blocker.rules 登记平台自己的 Rule，只禁止 GROUND 阻挡；该纯规则直接读取当前 blocker.layer，AIR 可通过。occupantRemoved Hook 同步移除该平台规则，不改变地块 allowsBlocking，也不需要新的层变化通知。
+射击台另有内容规则。本机 `trap_1106_achplat` 的 `trap_1106_achplat_passive` 在 `ON_OWNER_OVERLAPPED` 向乘员创建 `highland_common[block]`；后者对 WALK 阻挡模式施加带 `BLOCK_FREE` 的派生 Buff，并随阻挡模式变化维护。`Tile.RegisterCharacter`（70726，`0x1808c1eb0`）通知 `BuffContainer.OnOwnerOverlapped`（65410，`0x1806764e0`），`SearchBlockee` 再通过 `Entity.isBlockFree`（66511，`0x180705590`）拒绝接敌。这证明平台禁阻挡来自具体内容，不是所有高地的通用规则。射击台 Content 通过 Occupancy 的 SUPPORT Definition onOccupantAdded 程序在当前乘员的 blocker.rules 登记平台自己的 Rule，只禁止 GROUND 阻挡；该纯规则直接读取当前 blocker.layer，AIR 仍由其余 Blocking 规则判断。onOccupantRemoved 程序同步移除该平台规则，不改变地块 allowsBlocking，也不需要新的层变化通知。
 
 ## 阻挡层与其他领域的边界
 

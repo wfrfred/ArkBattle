@@ -72,7 +72,7 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | EP-04 类型及属性扩展 | 按目标内容接入狂躁、元素回复、爆发恢复速度与其他动态修正。[元素](https://prts.wiki/w/元素) | 狂躁及相应特殊内容尚未接入；四型 EP 和动态属性契约见 [Elemental 设计](elemental.md)。 | 狂躁及特殊内容／P2 |
 | BLOCK-02 特殊阻挡 | 地面／空中阻挡、起飞、不可阻挡和强制解除关系按机制分别处理。[行动方式](https://prts.wiki/w/行动方式) | 通用 GROUND／AIR 阻挡、标准半径、AIR 地块豁免与 setLayer 完整切换已接入；具体起降内容、特殊目标层豁免及半径倍率仍待接入。 | 部分实现／P1 |
 | BLOCK-03 关系改变容量 | 大君之触、大君之赐使阻挡者阻挡数 +1，同类效果最多叠加 6 次。[大君之触](https://prts.wiki/w/大君之触)、[大君之赐](https://prts.wiki/w/大君之赐) | 当前已按固定候选和实时容量处理，关系 Hook 增容可用于后续候选；这些敌人的关系效果尚未接入。满阻挡时是否有特殊尝试／补偿，以及建立关系后的容量变化如何接续选择，见 [Blocking 专项记录](blocking.md#满阻挡筛选与关系引起的容量变化)。 | 机制已确认；特殊边界待核对／P1 |
-| SPACE-02 承载物后继 | 承载物消失后的击杀／撤退等属于具体设施业务。[伊斯贝塔高台](https://prts.wiki/w/伊斯贝塔高台) | Occupancy 单格登记派生承载并向 SUPPORT 派发乘员 Added／Removed Hook；具体设施通过 Unit 的 leave Hook 与当前格上乘员查询组织连带离场，不设额外的 SUPPORT_LOST 事件。 | 部分实现／P1 |
+| SPACE-02 承载物后继 | 承载物消失后的击杀／撤退等属于具体设施业务。[伊斯贝塔高台](https://prts.wiki/w/伊斯贝塔高台) | Battlefield 双槽索引记录同格对象，Occupancy 保存业务 Pair，并直接调用 SUPPORT Definition 的 onOccupantAdded／onOccupantRemoved 程序；具体设施通过 Unit 的 leave Hook 与当前格上乘员查询组织连带离场，不设额外的 SUPPORT_LOST 事件。 | 部分实现／P1 |
 | SPACE-03 地穴与持续地形 | 地面进入地穴触发坠落；毒雾、沼泽、深水等按各自规则结算。[地穴](https://prts.wiki/w/作战机制#地穴) | Tile 有参数，HOLE 进入寻路代价；地块业务没有完整消费链。 | 部分实现／P1 |
 | MOVE-01 路线与普通运动 | 移动、等待、巡逻、消失／出现及临时路线保存明确进度；寻路不重抽已解析目标。见 [Navigation、Route 与 Locomotion 设计](navigation.md)。 | Navigation State／Overlay／nextPoint、独立 Route Capability 与 Locomotion 的职责拆分尚未实施；Route 的 GOTO、统一 Progress 和局部目标查询已定，完整推进接口及部分运动政策仍待审查。 | 设计与迁移待完成／P1 |
 | MOVE-02 位移与术语移动 | 推拉、浮空、传送和特殊撤退再部署分别表达；重建与继承规则由内容决定。[术语释义](https://prts.wiki/w/术语释义) | 路线传送可用；直接重定位部署对象的接口已删除，完整推拉及术语移动未接入。 | 部分实现／P1 |

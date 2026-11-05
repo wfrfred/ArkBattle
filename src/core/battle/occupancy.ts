@@ -1,7 +1,6 @@
 import { at } from "../battlefield/occupancy.js";
 import type { Ref } from "../common/ref.js";
-import type { Context, SupportHook } from "../unit/capability/occupancy/hook.js";
-import type { Occupancy } from "../unit/capability/occupancy/capability.js";
+import type { Occupancy, Pair } from "../unit/capability/occupancy/capability.js";
 import type { Unit } from "../unit/unit.js";
 import * as units from "../unit/query.js";
 import { replace } from "./unit.js";
@@ -19,7 +18,7 @@ export function enter(battle: State, reference: Ref<Unit & Occupancy>): State {
         return battle;
     }
 
-    const support = units.get(battle, current.support)!;
+    const support = units.get(battle, current.support)! as Pair["support"];
     const occupant = units.get(battle, current.occupant)!;
     if (support.lifecycle !== "PRESENT" || occupant.lifecycle !== "PRESENT") {
         return battle;
@@ -36,20 +35,20 @@ export function enter(battle: State, reference: Ref<Unit & Occupancy>): State {
         return enter(release(battle, occupant.occupancy.pair), reference);
     }
 
-    const pair: Context = { tile, support, occupant };
+    const pair: Pair = { tile, support, occupant };
     battle = replace(battle, [
         { ...support, occupancy: { ...support.occupancy, pair } },
         { ...occupant, occupancy: { ...occupant.occupancy, pair } },
     ]);
 
-    return notify(battle, "occupantAdded", pair);
+    return support.definition.occupancy.onOccupantAdded?.(battle, pair) ?? battle;
 }
 
 export function leave(battle: State, self: Unit & Occupancy): State {
     return self.occupancy.pair === null ? battle : release(battle, self.occupancy.pair);
 }
 
-function release(battle: State, pair: Context): State {
+function release(battle: State, pair: Pair): State {
     const updates: (Unit & Occupancy)[] = [];
 
     for (const self of [pair.support, pair.occupant]) {
@@ -64,35 +63,5 @@ function release(battle: State, pair: Context): State {
 
     battle = replace(battle, updates);
 
-    return notify(battle, "occupantRemoved", pair);
-}
-
-function notify(battle: State, stage: SupportHook["stage"], pair: Context): State {
-    const definition = pair.support.definition.occupancy;
-    if (definition.slot !== "SUPPORT") {
-        return battle;
-    }
-
-    for (const entry of definition.hooks) {
-        if (entry.stage !== stage) {
-            continue;
-        }
-        if (stage === "occupantAdded") {
-            const support = units.get(battle, units.ref(pair.support));
-            const occupant = units.get(battle, units.ref(pair.occupant));
-            if (
-                support?.lifecycle !== "PRESENT" ||
-                occupant?.lifecycle !== "PRESENT" ||
-                support.occupancy.pair !== pair ||
-                occupant.occupancy.pair !== pair
-            ) {
-                break;
-            }
-        }
-        if (entry.accepts?.(battle, pair, undefined) !== false) {
-            battle = entry.invoke(battle, pair, undefined).state;
-        }
-    }
-
-    return battle;
+    return pair.support.definition.occupancy.onOccupantRemoved?.(battle, pair) ?? battle;
 }

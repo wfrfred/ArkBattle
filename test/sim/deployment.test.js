@@ -175,14 +175,14 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
         id: "support",
         occupancy: {
             slot: "SUPPORT",
-            hooks: ["occupantAdded", "occupantRemoved"].map((stage) => ({
-                id: stage,
-                stage,
-                invoke: (state, pair) => {
-                    notifications.push([stage, pair.occupant.id]);
-                    return { state, value: undefined };
-                },
-            })),
+            onOccupantAdded: (state, pair) => {
+                notifications.push(["occupantAdded", pair.occupant.id]);
+                return state;
+            },
+            onOccupantRemoved: (state, pair) => {
+                notifications.push(["occupantRemoved", pair.occupant.id]);
+                return state;
+            },
         },
         card: {
             ...operator.card,

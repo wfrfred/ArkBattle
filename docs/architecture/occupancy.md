@@ -1,6 +1,6 @@
 # Occupancy 与 Support
 
-Occupancy 保存单格登记、可选的四向摆放朝向和已经通知的配对。Battlefield 保存按地块查询的双槽结构索引。可部署对象单向依赖 Occupancy；普通场景对象可以只占格，不具有 Card 或撤退业务。
+Occupancy 保存单格登记、可选的四向摆放朝向和已经建立的业务配对。Battlefield 保存按地块查询的双槽结构索引。可部署对象单向依赖 Occupancy；普通场景对象可以只占格，不具有 Card 或撤退业务。
 
 ## 关键协作语义
 
@@ -17,12 +17,26 @@ type Slot = "OCCUPANT" | "SUPPORT";
 
 type Definition =
     | { readonly slot: "OCCUPANT" }
-    | { readonly slot: "SUPPORT"; readonly hooks: readonly SupportHook[] };
+    | {
+          readonly slot: "SUPPORT";
+          readonly onOccupantAdded?: (battle: BattleState, pair: Pair) => BattleState;
+          readonly onOccupantRemoved?: (battle: BattleState, pair: Pair) => BattleState;
+      };
+
+interface Pair {
+    readonly tile: TilePosition;
+    readonly support: Unit & Occupancy & {
+        readonly definition: {
+            readonly occupancy: Extract<Definition, { readonly slot: "SUPPORT" }>;
+        };
+    };
+    readonly occupant: Unit & Occupancy;
+}
 
 interface State {
     readonly tile: TilePosition | null;
     readonly direction: Direction | null;
-    readonly pair: Context | null;
+    readonly pair: Pair | null;
 }
 
 interface Initial {
@@ -31,7 +45,7 @@ interface Initial {
 }
 ```
 
-Slot 来自静态 Definition，实例生命周期内不变。没有 Support 响应时也明确写 hooks:[]。本次地块和方向由 Initial 提供，缺省为 null；静态 Definition 不包含本次方向。占格不意味着一定具有方向，基础 Unit 不增加方向字段。
+Slot 来自静态 Definition，实例生命周期内不变。SUPPORT 按内容需要提供配对建立与解除程序。本次地块和方向由 Initial 提供，缺省为 null；静态 Definition 不包含本次方向。占格不意味着一定具有方向，基础 Unit 不增加方向字段。
 
 Catalog 先初始化 Occupancy，再初始化依赖它的 Deployable。Occupancy 保留已有程序并追加自己的 enter／leave。Deployment 在 fold 前已经登记的程序仍先执行；这里遵守普通登记顺序，不引入能力优先级。
 
@@ -59,25 +73,25 @@ battlefield/unit.ts 的 add／update／remove 原子维护 Unit 存储及反向�
 
 ## 已通知的业务配对
 
-结构索引表达当前同格对象；pair 表达已经向 Support 通知过的业务绑定。这两项事实在生命周期回调期间不能混为一谈：旧实例已注销时，其他程序可能已经在同格创建替代对象。
+结构索引表达当前同格对象；Pair 是 Occupancy Capability 持有的业务绑定事实。这两项事实在生命周期回调期间不能混为一谈：旧实例已注销时，其他程序可能已经在同格创建替代对象。
 
 入场程序查询当前同格两端：Support 后入场与乘员后入场都走同一配对处理。已有相同 pair 时不重复通知；对端残留旧绑定时先完成其解除，再接续最新状态建立新绑定。
 
-建立配对时，先取得双方尚未写入该 pair 的不可变快照，组成 Context；然后一次发布两端的同一 pair，最后通知 occupantAdded。Context 不包含自身绑定，避免自引用和历史配对链。
+建立配对时，先取得双方尚未写入该 pair 的不可变快照，组成 Pair；然后一次发布两端的同一 pair，最后调用 Support Definition 的 onOccupantAdded。Pair 中的双方快照不包含自身绑定，避免自引用和历史配对链。
 
-Context 保存 tile、support、occupant，属于绑定建立时采样的事实，不能当作实时 Unit。内容程序需要当前 HP、能力状态或其他事实时，应根据身份重新查询。
+Pair 保存 tile、support、occupant，属于绑定建立时采样的事实，不能当作实时 Unit。内容程序需要当前 HP、能力状态或其他事实时，应根据身份重新查询。
 
-离场程序使用 Departure.unit 中的旧 pair，而不根据当前同格重新猜旧对端。解除只清理当前仍持有同一 pair 的端点，再派发 occupantRemoved。若后来的入场已经完成这条旧绑定的解除，旧离场不重复通知，也不清除替代对象的新绑定。
+离场程序使用 Departure.unit 中的旧 pair，而不根据当前同格重新猜旧对端。解除只清理当前仍持有同一 pair 的端点，先发布清理结果，再调用原 Support Definition 的 onOccupantRemoved。若后来的入场已经完成这条旧绑定的解除，旧离场不重复通知，也不清除替代对象的新绑定。
 
 | 变化 | 通知 |
 | --- | --- |
-| 乘员登记到已有 Support | occupantAdded |
-| Support 登记到已有乘员 | occupantAdded |
-| 已通知的配对任一端离场 | occupantRemoved |
+| 乘员登记到已有 Support | onOccupantAdded |
+| Support 登记到已有乘员 | onOccupantAdded |
+| 已建立的配对任一端离场 | onOccupantRemoved |
 | 原组合未变化 | 不重复通知 |
 | 同格出现替代实例 | 旧 pair 解除，新 pair 建立 |
 
-通知只向 Support 的静态 hooks 派发。Added 每个回调前确认两端仍为 PRESENT 且持有原 pair；回调导致组合失效时停止后继 Added。Removed 携带原 pair 的固定事实，不替换为同格新对象。所有回调接续最新 BattleState。
+配对通知直接调用 Support Definition 中对应的可选程序，并接续其返回的 BattleState。onOccupantAdded 开始时两端均为 PRESENT 且已经持有同一 pair；onOccupantRemoved 接收原 pair 的固定事实，不替换为同格新对象。配对程序可同步调用其他领域操作，返回后继续使用其最新状态。
 
 Occupancy 通过已登记的 Unit enter／leave 程序处理配对通知。普通 update／replace 只发布状态及结构索引。当前没有公开搬格操作。
 
@@ -87,7 +101,7 @@ Deployment 通过 Request／Rule 检查地块和槽位，落点和本次方向�
 
 Blocking 有非空登记格时，以该格作为根格读取地块允许阻挡的事实；没有登记格时回退到身体坐标。地块登记与世界位置仍是两个独立事实。
 
-平台对乘员的阻挡限制、平台销毁是否击倒乘员等，由具体内容程序表达。射击台按平台实例 ID 登记自己的 Blocking Rule，地面阻挡受限而空中阻挡按对应规则处理；移除时只撤销自己的输出。
+平台对乘员的阻挡限制、平台销毁是否击倒乘员等，由具体内容程序表达。射击台在 onOccupantAdded 按平台实例 ID 登记自己的 Blocking Rule，只禁止 GROUND 阻挡，AIR 仍由其余 Blocking 规则判断；onOccupantRemoved 只撤销该平台的输出。
 
 具体平台若需离场时击倒乘员，由自己的 leave 程序读取 Departure 的旧登记格并查询当前对象，再组合完整移除操作，不直接删除存储。地块属性修改与恢复也由具体内容调用完整 Tile 操作，不属于占格登记，不增加通用覆写栈。
 

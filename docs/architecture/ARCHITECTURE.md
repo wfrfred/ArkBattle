@@ -58,7 +58,7 @@ initialize(input) / step(battle, commands)：创建与推进不可变状态
       ├─ Units + Effects + Capabilities
       ├─ Projectiles
       ├─ 空间影响
-      ├─ Occupancy 登记反向表（Support 由登记派生）
+      ├─ Occupancy 双槽结构索引
       └─ 派生投影与索引
 ```
 
@@ -189,7 +189,7 @@ Effect 直接持有 `Definition<S, H>` 与私有 State。S 描述实例状态，
 
 Hook 是函数与资格开关的不可变登记项，由对应领域或 Capability 保存。Effect 可以在 onInstall 登记 Hook，资格闭包读取当前输入版本的 Effect，在 onEnd 撤销。执行 Hook 返回新状态及领域值；动态登记固定候选 ID 并逐项从返回版本重查登记与资格，嵌套操作使用自己的候选。公共 Hook 固定 Context、接续 battle 与 current；领域决定参与资格、排序及停止条件。
 
-Unit Definition 与实例持有[类型化键组织的不可变 Hooks 集合](hook.md)，无登记使用 Hooks.empty()。各领域提供精确键与执行时点，Unit 不枚举具体结算 Context；专属接收 Hook 仍归 Capability。初始化按既有装配序合并初始、能力和 Definition 的登记，同键同 ID 后者替换且保留首次位置；全部固有 Hook 在 add 前就绪。通用 setHook／removeHook 返回 Change，生命周期键也允许运行时修改。enter／tick／prepare 固定候选 ID 并读取最新登记，Context 固定；enter／tick 每项前确认 PRESENT，prepare／leave 保留 Departure，leave 在注销前取最新程序快照、注销后执行。Skill 入场处理仍是普通 enter Hook；Deployment 在 fold 前登记部署通知与被动死亡响应，Occupancy 随后登记配对程序，先登记先执行。主动撤退在请求 Unit 离场前直接结算 DP、Card 费用阶段与库存恢复。承载通知仍归 Occupancy 的 SUPPORT Definition 与共享 pair，不由通用 Unit 推断。
+Unit Definition 与实例持有[类型化键组织的不可变 Hooks 集合](hook.md)，无登记使用 Hooks.empty()。各领域提供精确键与执行时点，Unit 不枚举具体结算 Context；专属接收 Hook 仍归 Capability。初始化按既有装配序合并初始、能力和 Definition 的登记，同键同 ID 后者替换且保留首次位置；全部固有 Hook 在 add 前就绪。通用 setHook／removeHook 返回 Change，生命周期键也允许运行时修改。enter／tick／prepare 固定候选 ID 并读取最新登记，Context 固定；enter／tick 每项前确认 PRESENT，prepare／leave 保留 Departure，leave 在注销前取最新程序快照、注销后执行。Skill 入场处理仍是普通 enter Hook；Deployment 在 fold 前登记部署通知与被动死亡响应，Occupancy 随后登记配对程序，先登记先执行。主动撤退在请求 Unit 离场前直接结算 DP、Card 费用阶段与库存恢复。Occupancy Capability 保存共享 Pair，配对建立与解除直接调用 SUPPORT Definition 的对应程序，不由通用 Unit 或双槽结构索引推断。
 
 Context 表达本次调用的数据与必要只读参数；Unit、Effect 和 State 都对应明确输入版本。内容先形成消耗后的新状态再进入同步嵌套，返回后从后继版本查询。候选范围属于调用期，不进入长期快照；Context 不通过可变 holder 或动态 getter 追踪当前世界。
 

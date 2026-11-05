@@ -20,7 +20,7 @@ Elemental Capability 负责 EP 接收与提交、爆发触发和当前爆发引�
 
 弩手的 action.ts 分别定义 melee 与 ranged，两者有各自的冷却和执行状态。unit.ts 按当前阻挡关系选择近战或远程，在已有主动作执行期间不并发启动另一主动作；选择和互斥属于内容策略。场景选择敌人和配置波次，不通过一个带敌人 ID 分支的中央工厂构造所有内容。确实共用的地面属性与能力装配由普通函数提供，具体攻击程序归各自内容。
 
-装置行为位于 `devices/`。`crate.ts`、`shooting-platform.ts` 接受类型化配置并构造 Unit Definition，通过 Unit 的 enter／leave Hook 处理改格和清理；实际共用的改格函数放在 Content 内。射击台在 Occupancy 的 SUPPORT Definition 中提供 occupantAdded／occupantRemoved Hook，在当前乘员的 blocker.rules 登记平台独占的共享二元 Rule，禁止其与任何目标建立或保留阻挡，解除登记或消失时清理自身规则，不改写地块阻挡许可。Data 只解析资源与关卡实例，并根据资源标识选择工厂，不在运行程序中按 Prefab Key 决定业务。内部批量登记交换用于验证结构与同步通知，不能证明游戏允许自由搬动平台。
+装置行为位于 `devices/`。`crate.ts`、`shooting-platform.ts` 接受类型化配置并构造 Unit Definition，通过 Unit 的 enter／leave Hook 处理改格和清理；实际共用的改格函数放在 Content 内。射击台在 Occupancy 的 SUPPORT Definition 中提供 onOccupantAdded／onOccupantRemoved 程序，在当前乘员的 blocker.rules 登记平台实例独占的共享二元 Rule，只禁止 GROUND 阻挡，AIR 仍由其余 Blocking 规则判断；配对解除时只清理该平台规则，不改写地块阻挡许可。Data 只解析资源与关卡实例，并根据资源标识选择工厂，不在运行程序中按 Prefab Key 决定业务。内部批量登记交换用于验证结构与同步通知，不能证明游戏允许自由搬动平台。
 
 干员的分支共享模块表达共同特性和默认行为；具体干员显式组合这些函数，接入自己的天赋、技能及模组变化。不建立模板继承、中央分支注册表或逐层转发工厂。只有出现实际共享规则时才建立对应模块。
 
@@ -38,7 +38,7 @@ battle/unit.add 登记 PRESENT Unit 后派发 enter 键；advance 在阶段开�
 
 低层 Battlefield 变换不执行角色程序。伤害、治疗、Skill 和 Effect 等完整结算继续使用显式的纯状态传递；Runtime 承担外部推进和 Tick 发布。
 
-Occupancy 初始化自行登记 enter／leave 程序，向 SUPPORT 的静态 Hook 派发 occupantAdded／occupantRemoved；Deployment 在 fold 前已登记的入场程序仍先执行。双方先发布共享的 pair，再发 Added；Removed 按旧 pair 身份清理，不能影响后来建立的新绑定。Context 保存绑定建立时的双方快照，需要当前生命值、Effect 或其它事实时从最新 BattleState 查询。通用 Change update 和内部 replace 仅维护双槽索引，不派发配对内容通知；当前生产没有任意搬格工厂。具体契约见 [Occupancy](occupancy.md)。
+Occupancy 初始化自行登记 enter／leave 程序，直接调用 SUPPORT Definition 的 onOccupantAdded／onOccupantRemoved 程序；Deployment 在 fold 前已登记的入场程序仍先执行。双方先发布共享的 Pair，再调用 onOccupantAdded；解除按旧 Pair 身份先发布清理结果，再调用 onOccupantRemoved，不能影响后来建立的新绑定。Pair 保存绑定建立时的双方快照，需要当前生命值、Effect 或其它事实时从最新 BattleState 查询。通用 Change update 和内部 replace 仅维护双槽索引，不调用配对内容程序；当前生产没有任意搬格工厂。具体契约见 [Occupancy](occupancy.md)。
 
 ## 语义证据与项目政策
 
