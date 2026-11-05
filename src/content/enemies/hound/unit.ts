@@ -27,13 +27,13 @@ export type Enemy = Unit & Product<Definition>;
 export function create(
     profile: Profile,
     timing: AttackTiming,
-    halfBodyWidth: number,
+    movement: Pick<GroundDefinition["locomotion"], "steeringParameters" | "halfBodyWidth">,
 ): { readonly definition: Definition; readonly action: Attack } {
     if (profile.id !== "enemy_1000_gopro" || profile.applyWay !== "MELEE") {
         throw new TypeError("Hound content requires its melee profile");
     }
 
-    const ground = createGroundDefinition(profile, timing.hitRadius, halfBodyWidth);
+    const ground = createGroundDefinition(profile, timing.hitRadius, movement);
     const attack = createAttack(profile, timing);
     const initializeAttack = createAction(attack);
     const definition: Definition = {

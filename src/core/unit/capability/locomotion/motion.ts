@@ -18,7 +18,7 @@ export function reflect(
     }
 
     const normal = Vec2.sub(Tile.center(destination), position);
-    const magnitude = Math.hypot(normal[0], normal[1]);
+    const magnitude = Vec2.length(normal);
     const unitNormal = Vec2.scale(normal, 1 / magnitude);
     const delta = Vec2.sub(nextPosition, position);
     const dot = delta[0] * unitNormal[0] + delta[1] * unitNormal[1];

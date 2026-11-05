@@ -35,7 +35,7 @@ export interface Definition
 export function createDefinition(
     profile: Profile,
     hitRadius: number,
-    halfBodyWidth: number,
+    movement: Pick<Definition["locomotion"], "steeringParameters" | "halfBodyWidth">,
 ): Definition {
     if (profile.stunImmune) {
         throw new TypeError("this enemy content does not implement stun immunity");
@@ -83,8 +83,8 @@ export function createDefinition(
         locomotion: {
             speed: perSecondToPerTick(profile.moveSpeedPerSecond),
             minSpeed: perSecondToPerTick(0.1),
-            steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 },
-            halfBodyWidth,
+            steeringParameters: movement.steeringParameters,
+            halfBodyWidth: movement.halfBodyWidth,
         },
         spatialPresence: {},
         targetable: { restrictions: [] },

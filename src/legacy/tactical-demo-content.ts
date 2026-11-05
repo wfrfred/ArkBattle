@@ -69,7 +69,10 @@ export function createTacticalContentDemo(
             recoveryTicks: 4,
             hitRadius: 0.2,
         },
-        0.2,
+        {
+            halfBodyWidth: 0.2,
+            steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 },
+        },
     );
     const crossbowman = createCrossbowman(
         profiles.find((profile) => profile.id === "enemy_1003_ncbow")!,
@@ -83,7 +86,10 @@ export function createTacticalContentDemo(
                 stopDelayTicks: 0,
             },
         },
-        0.2,
+        {
+            halfBodyWidth: 0.2,
+            steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 },
+        },
     );
     const firstLane = createInput({
         ...route,

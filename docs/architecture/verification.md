@@ -6,7 +6,7 @@
 
 - `core/battlefield/`：地图与地块、Unit 存储、结构占格、Navigation 和 Spatial 查询。
 - `core/unit/` 的基础 Unit、构造、查询、Change，以及独立的 Action、Skill、Effect、Contribution 领域。
-- `core/unit/capability/` 已审查 Action、Allegiance、Blocking、Deployable、Hitbox 与 Layer。
+- `core/unit/capability/` 已审查 Action、Allegiance、Blocking、Deployable、Hitbox、Layer 与 Locomotion。
 - 对应的 `core/battle/unit.ts`、Tile、Blocking、Deployment／Card、Occupancy 协作，以及调度器对上述领域的调用。
 - Unit 本地类型化 Hooks、HP／EP 的 Damage／Healing 两阶段结算，以及 Vitality／Elemental 的专属接收、资源提交与 Burst 协作。
 - 公共 Hook、Typed Ref 和 Lifetime 只承担上述领域共享的契约，不按每个消费者重复展开。
@@ -44,6 +44,7 @@ Deployable 对 Occupancy 的构造依赖、入场与配对属于本轮协作边�
 | 数值求值 | 动态属性接收同一 BattleState 中已取得的能力对象，贡献求值返回确定数值；对象缺失与采样时点由业务入口决定。Action 时序明确区分宿主 source 与具体 Action self，基础值取 self.definition。局部公式使用显式配置与状态，不自行回查宿主。 | [数值接口](api-conventions.md#5-数值输入查询与字段写回) |
 | Blocking 资格与容量 | 双方资格、阻挡层、当前容量与体积决定取得；容量减少从后建立的关系开始裁撤，HP Applied 响应结束并确认死亡前保留旧关系。 | [Blocking](blocking.md#关键语义) |
 | Blocking 关系与站位 | 批量解除先发布双端结果再通知；旧 Ref 不清掉新关系；普通关系解除与位置计划各有生命周期，主动脱离和空间覆盖完成自身清理。自身 Layer.setType 包含同值请求的角色清理，全批新身份先于通知发布；Blocker 解除捕获的旧出向关系，Blockable 主动脱离当前入向关系并取消位置计划。 | [Blocking](blocking.md#关键语义)、[Layer](capability.md#layer-与-hitbox) |
+| Locomotion | 速度修正、下限和倍率与移动许可分开；转向使用历史速度、限力和限速；只吸附最终目标并保留速度，地形避障与目的格反射各自完成空间修正。 | [Locomotion](navigation.md#关键语义) |
 | 部署受理与消费 | 查询和执行使用完整 Request 与一致资源事实；拒绝不消费，通过后先消费再构造、登记、入场；预览不创建实例或发布消费。 | [Deployment](deployment.md#关键语义) |
 | Card 与经济 | Card 跨场上实例存续；库存、部署间隔和逐份恢复分别结算，启动时采样预算，暂停与减时不篡改其它段。DP 自然回复与主动增减分开。 | [Deployment](deployment.md#关键语义) |
 | 撤退、死亡与占格配对 | 主动撤退先结算退款和 Card，再请求离场；死亡响应确认后的死亡事实。依赖者先结束，Unit 注销、结构占格与部署额度释放先于本地内容 leave；死亡 Card 先于 Card／Request 通知结算，旧业务配对清理不影响替代实例的新关系。 | [Deployment](deployment.md#主动操作与被动死亡)、[Occupancy](occupancy.md#关键协作语义) |
@@ -61,6 +62,7 @@ Deployable 对 Occupancy 的构造依赖、入场与配对属于本轮协作边�
 | Runtime 组合 | 集中验证完整初始化／出生账簿先于 enter、一次正常预置替换保留最新绑定，以及 Tick 的阶段顺序／不可变发布与失败不发布。以公开创建、部署、资源和离场操作构造，不另写 marker、身份进度或内部存储夹具。 |
 | HP／EP 接收与死亡 | 伤害／治疗回归清单。死亡确认前保留 Blocking 只归 HP-03，不在 Blocking／Combat 再做同构场景。 |
 | 阻挡及位置计划 | Blocking：资格与层、容量尾部裁撤、批量通知与旧身份、独立位置计划。自身空地设置的清理（含同值）复用批量解除与位置计划代表场景，通知读取已发布的新身份；主动空间覆盖取消计划并解除旧关系，首个通知可见新位置。不按字段、角色或切换方向另建矩阵。 |
+| 自主运动 | Locomotion：纯算法集中验证转向、直邻／斜邻避障及反射公式；真实移动场景验证当前速度、最终目标吸附和暂停后的历史速度。半身宽、WALK 高代价格／FLY 硬障碍、方向投影与速度比例、不可通格恢复各保留独立结果，不枚举八方向及微小数值变体。Route 集成只保留等待、当前导航方式与 Layer 分离、阻挡解除后路线完成等协作结果；历史速度通过实际推进建立，不直接注入 Unit。 |
 | Card、部署、离场与占格 | Deployment：Request 与资源消费、主动／被动离场账务、一次旧占格配对不清理继任者、逐份恢复预算和 DP。删除旧 Battle 中相同构造与重入矩阵。 |
 | Action、Skill、Effect 与 Contribution | 各自主套件。共有身份、候选、输入校验和不可变版本由公共套件承担，不因更换内容宿主再测一遍。 |
 | 公共容器、Query 与类型关系 | 公共套件集中验证有序不可变写入、独立可重复遍历和必要的类型推断。删除逐方法空值／同引用／存储形状与极端数值矩阵。 |
@@ -73,7 +75,7 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 
 收敛完成要求是：已审查语义有明确且集中的测试归属，旧套件中的相同覆盖已移除，仍必要的独立结果已归回其领域，失去用途的夹具和导入已删除。仅写出清单或新增主套件不算完成。
 
-尚未完整审查的 Schedule／Data 解析、Route 执行、Locomotion／Targeting、完整 Projectile／Mechanism 等独立业务按现有范围保留；这些套件中夹带的上述已审查语义仍须去重，不能整文件豁免。测试数量是整理结果，不作为删减目标。
+尚未完整审查的 Schedule／Data 解析、Route 执行、Targeting、完整 Projectile／Mechanism 等独立业务按现有范围保留；这些套件中夹带的上述已审查语义仍须去重，不能整文件豁免。测试数量是整理结果，不作为删减目标。
 
 ## Hook 与伤害／治疗的回归语义
 

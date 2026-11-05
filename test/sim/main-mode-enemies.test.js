@@ -7,6 +7,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { prepare } from '../../dist/data/arknights/enemy.js';
+import { parseEnemyMovementPrefab } from '../../dist/data/arknights/prefab.js';
 import { create as createHound } from '../../dist/content/enemies/hound/unit.js';
 import { create as createCrossbowman } from '../../dist/content/enemies/crossbowman/unit.js';
 import { createArrow } from '../../dist/content/enemies/crossbowman/action.js';
@@ -33,6 +34,8 @@ import * as projectilesQuery from '../../dist/core/projectile/index.js';
 const fixture = JSON.parse(readFileSync(new URL('../fixtures/arknights/main-mode-units.json', import.meta.url), 'utf8'));
 const rawEnemy = id => fixture.enemies.find(entry => entry.Key === id);
 const profile = (id, level = 0, overwrittenData) => prepare(rawEnemy(id), { level, overwrittenData });
+const houndMovement = parseEnemyMovementPrefab(JSON.parse(readFileSync(new URL('../fixtures/arknights/prefab_enemy_1000_gopro.json', import.meta.url), 'utf8')));
+const crossbowMovement = { halfBodyWidth: 0.2, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } };
 
 function emptyBattle() {
   const tile = { heightType: 'LOWLAND', meleeBlockable: true, buildableType: 'ALL', passableMask: 'ALL', terrain: normal.create({}), walkCost: 1, advancedBuildableMask: 1 };
@@ -85,17 +88,17 @@ test('unimplemented enemy mechanisms are rejected at the table and content bound
   assert.throws(() => profile('enemy_1000_gopro', 0, { skills: [{ prefabKey: 'unimplemented' }] }), /unsupported enemy skills/);
   const timing = { windupTicks: 0, recoveryTicks: 0, hitRadius: 0.2 };
 
-  assert.throws(() => createHound({ ...profile('enemy_1000_gopro'), stunImmune: true }, timing, 0.2), /stun immunity/);
-  assert.throws(() => createHound(profile('enemy_1003_ncbow'), timing, 0.2), /Hound content/);
+  assert.throws(() => createHound({ ...profile('enemy_1000_gopro'), stunImmune: true }, timing, houndMovement), /stun immunity/);
+  assert.throws(() => createHound(profile('enemy_1003_ncbow'), timing, houndMovement), /Hound content/);
   assert.throws(() => createCrossbowman(profile('enemy_1000_gopro'), {
     ...timing, projectile: { definition: createArrow(), speedPerSecond: 6, stopDelayTicks: 0 },
-  }, 0.2), /Crossbowman content/);
+  }, crossbowMovement), /Crossbowman content/);
 });
 
 test('a hound attacks its hidden blocker while still respecting invincibility', () => {
   const { definition, action } = createHound(profile('enemy_1000_gopro'), {
     windupTicks: 0, recoveryTicks: 0, hitRadius: 0.2,
-  }, 0.2);
+  }, houndMovement);
   const blocker = guard(0, [2, 2], 1, [{ id: 'hidden', value: invisibleRestriction }]);
   const hound = initialize({ id: 1, position: [2, 2.5], definition });
   const before = advanceBlocking(addUnit(addUnit(emptyBattle(), blocker), hound));
@@ -117,7 +120,7 @@ test('crossbow selects melee for its actual blocker while ranged targeting keeps
   const projectile = { definition: createArrow(), speedPerSecond: 6, stopDelayTicks: 0 };
   const { definition, actions } = createCrossbowman({ ...profile('enemy_1003_ncbow'), rangeRadius: 0.01 }, {
     windupTicks: 1, recoveryTicks: 1, hitRadius: 0.2, projectile,
-  }, 0.2);
+  }, crossbowMovement);
   const blocker = guard(0, [2, 2], 1, [{ id: 'innate', value: invisibleRestriction }]);
   const bow = initialize({ id: 1, position: [2, 2.5], definition });
   const state = advanceBlocking(addUnit(addUnit(emptyBattle(), blocker), bow));
@@ -151,7 +154,7 @@ test('crossbow uses explicit windup and arrow speed, then settles damage on cont
   const { definition, actions: { ranged: attack } } = createCrossbowman(profile('enemy_1003_ncbow'), {
     windupTicks: 1, recoveryTicks: 1, hitRadius: 0.2,
     projectile: { definition: projectileDefinition, speedPerSecond: 6, stopDelayTicks: 0 },
-  }, 0.2);
+  }, crossbowMovement);
 
   const bow = initialize({ id: 1, position: [2, 3.5], definition });
   const before = addUnit(addUnit(emptyBattle(), guard(0, [2, 2], 0)), bow);
@@ -174,7 +177,7 @@ test('crossbow switching between ranged and blocker melee preserves independent 
   const { definition, actions } = createCrossbowman(profile('enemy_1003_ncbow'), {
     windupTicks: 0, recoveryTicks: 0, hitRadius: 0.2,
     projectile: { definition: createArrow(), speedPerSecond: 6, stopDelayTicks: 0 },
-  }, 0.2);
+  }, crossbowMovement);
   const bow = initialize({ id: 1, position: [2, 2.5], definition });
   const initial = addUnit(addUnit(emptyBattle(), guard(0, [2, 2])), bow);
   const cooldown = (battle, action) => getUnit(battle, 1).action.actions.get(action.id).cooldown.readyAtTick;

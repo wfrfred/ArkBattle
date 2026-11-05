@@ -93,15 +93,11 @@ export function calculate(
     velocity: WorldPosition,
     speed: number,
 ): WorldPosition {
-    if (speed <= 0) {
-        return [0, 0];
-    }
-
-    const magnitude = Math.hypot(direction[0], direction[1]);
+    const magnitude = Vec2.length(direction);
     const heading = magnitude > 0.00001 ? Vec2.scale(direction, 1 / magnitude) : [0, 0];
     const force = terrainForce(map, mode, position, halfBodyWidth);
     const projection = force[0] * heading[0] + force[1] * heading[1];
-    const scale = Math.max(0.5, Math.hypot(velocity[0], velocity[1]) / speed);
+    const scale = Math.max(0.5, Vec2.length(velocity) / speed);
 
     return [
         ((force[0] - projection * heading[0]) * scale) / TICKS_PER_SECOND ** 2,

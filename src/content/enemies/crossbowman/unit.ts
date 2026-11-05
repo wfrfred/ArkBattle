@@ -34,7 +34,7 @@ export type Enemy = Unit & Product<Definition>;
 export function create(
     profile: Profile,
     timing: AttackTiming,
-    halfBodyWidth: number,
+    movement: Pick<GroundDefinition["locomotion"], "steeringParameters" | "halfBodyWidth">,
 ): {
     readonly definition: Definition;
     readonly actions: { readonly melee: Attack; readonly ranged: Attack };
@@ -43,7 +43,7 @@ export function create(
         throw new TypeError("Crossbowman content requires its ranged profile");
     }
 
-    const ground = createGroundDefinition(profile, timing.hitRadius, halfBodyWidth);
+    const ground = createGroundDefinition(profile, timing.hitRadius, movement);
     const melee = createMelee(profile, timing);
     const ranged = createRanged(profile, timing, timing.projectile);
     const initializeMelee = createAction(melee);

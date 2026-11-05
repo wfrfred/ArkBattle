@@ -20,6 +20,4 @@ export type {
 
 export { advance } from "./operations.js";
 
-export { createSteeringParameters } from "./steering.js";
-
 export type { SteeringParameters } from "./steering.js";

@@ -1,19 +1,9 @@
 import { Vec2 } from "../../../common/vector.js";
-import { assertNonnegativeNumber } from "../../../common/assert.js";
 import { type WorldPosition } from "../../../geometry/coordinate.js";
 
 export interface SteeringParameters {
     readonly steeringFactor: number;
     readonly maxSteeringForce: number;
-}
-
-export function createSteeringParameters(parameters: SteeringParameters): SteeringParameters {
-    const { steeringFactor, maxSteeringForce } = parameters;
-
-    assertNonnegativeNumber(steeringFactor, "steeringFactor");
-    assertNonnegativeNumber(maxSteeringForce, "maxSteeringForce");
-
-    return { steeringFactor, maxSteeringForce };
 }
 
 export function integrate(
@@ -23,7 +13,7 @@ export function integrate(
     localForce: WorldPosition,
     parameters: SteeringParameters,
 ): WorldPosition {
-    const magnitude = Math.hypot(direction[0], direction[1]);
+    const magnitude = Vec2.length(direction);
     const heading: WorldPosition = magnitude > 1e-5 ? Vec2.scale(direction, 1 / magnitude) : [0, 0];
     const desired = Vec2.scale(heading, speed);
     const force = Vec2.clampLength(

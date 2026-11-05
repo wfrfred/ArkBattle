@@ -1,129 +1,82 @@
-import { Hooks } from "../../dist/core/hook.js";
-
-import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { fixtureBattle } from "../helpers/unit.js";
-import { initialize } from "../../dist/core/unit/initialize.js";
-import { add as addUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
-import { getUnit } from "../helpers/unit.js";
+import { battle, get } from "../helpers/battle.js";
+import { Hooks } from "../../dist/core/hook.js";
+import { ref } from "../../dist/core/unit/query.js";
 import { Map } from "../../dist/core/battlefield/navigation/map.js";
-import * as navigation from "../../dist/core/battlefield/navigation/state.js";
-import * as locomotion from "../../dist/core/unit/capability/locomotion/index.js";
+import { get as getTile } from "../../dist/core/battlefield/map/map.js";
+import { update as updateTile } from "../../dist/core/battle/tile.js";
+import { integrate } from "../../dist/core/unit/capability/locomotion/steering.js";
+import { reflect } from "../../dist/core/unit/capability/locomotion/motion.js";
+import { advance } from "../../dist/core/unit/capability/locomotion/index.js";
 
 const near = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-12, `${actual} ≈ ${expected}`);
-const cell = extra => ({ passable: true, cost: 1, departures: { UP: true, RIGHT: true, DOWN: true, LEFT: true }, ...extra });
 const context = { mode: "WALK", speedMultiplier: 1 };
-const ref = { id: 1 };
-const target = { nextPoint: [6, 2], goal: [6, 2] };
+const definition = {
+    id: "mover", hooks: Hooks.empty(), spatialPresence: {},
+    locomotion: { speed: 0.2, minSpeed: 0, halfBodyWidth: 0,
+        steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
+};
 
-function fixture({ position = [2, 2], velocity = [0, 0], definition = {}, cells } = {}) {
-    let battle = fixtureBattle();
-    const base = cells ?? Array.from({ length: 64 }, () => cell());
-    battle = { ...battle, battlefield: { ...battle.battlefield, navigation: navigation.create({
-        WALK: new Map(8, 8, base),
-        FLY: new Map(8, 8, base.map(entry => ({ ...entry, cost: 1 }))),
-    }) } };
-    const initialized = initialize(battle, {         id: 1, position,
-        definition: { hooks: Hooks.empty(), id: "movement", spatialPresence: {}, locomotion: {
-            speed: 0.2, minSpeed: 0, halfBodyWidth: 0.2,
-            steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 }, ...definition,
-        } },
+test("Steering limits the combined force before integrating and limiting speed", () => {
+    const turning = integrate([0, 0.1], [4, 0], 0.2, [0, 0.05], {
+        steeringFactor: 0.5, maxSteeringForce: 0.05,
     });
-    const self = { ...initialized.value, locomotion: { ...initialized.value.locomotion, velocity } };
-    return addUnit(initialized.state, self);
-}
+    near(turning[0], 0.05);
+    near(turning[1], 0.1);
 
-test("Locomotion integrates the saved velocity with acceleration and speed limits", () => {
-    const battle = fixture({ velocity: [0, 0.1], definition: {
-        steeringParameters: { steeringFactor: 0.5, maxSteeringForce: 0.1 },
-    } });
-    const next = locomotion.advance(battle, ref, target, context);
-    const self = getUnit(next, 1);
-    const scale = 0.1 / Math.hypot(0.1, -0.05);
-    near(self.locomotion.velocity[0], 0.1 * scale);
-    near(self.locomotion.velocity[1], 0.1 - 0.05 * scale);
-    near(self.position[0], 2 + self.locomotion.velocity[0]);
-    near(self.position[1], 2 + self.locomotion.velocity[1]);
-    assert.deepEqual(getUnit(battle, 1).position, [2, 2]);
+    const limited = integrate([0.2, 0], [1, 0], 0.2, [0, 0.3], {
+        steeringFactor: 1, maxSteeringForce: 0.3,
+    });
+    near(limited[0], 0.2 * 2 / Math.sqrt(13));
+    near(limited[1], 0.2 * 3 / Math.sqrt(13));
 });
 
-test("Locomotion predicts arrival at goal, preserves velocity, and does not snap to an intermediate point", () => {
-    const battle = fixture({ velocity: [0, 0.1] });
-    const original = getUnit(battle, 1);
-    const arrived = getUnit(locomotion.advance(battle, ref, {
-        nextPoint: [1, 2], goal: [2.1, 2],
-    }, context), 1);
-    assert.deepEqual(arrived.position, [2.1, 2]);
-    assert.equal(arrived.locomotion, original.locomotion);
-    const passed = getUnit(locomotion.advance(battle, ref, {
-        nextPoint: [2.05, 2], goal: [6, 2],
-    }, context), 1);
-    near(passed.position[0], 2.2);
-    near(passed.position[1], 2);
-    assert.deepEqual(passed.locomotion.velocity, [0.2, 0]);
+test("destination-cell reflection changes displacement without sweeping or a second pass", () => {
+    const map = new Map(3, 5, Array.from({ length: 15 }, (_, index) => ({
+        passable: index !== 6 && index !== 8, cost: 1,
+        departures: { UP: true, RIGHT: true, DOWN: true, LEFT: true },
+    })));
+    const reflected = reflect([2.4, 1], [2.7, 1.1], map);
+    near(reflected[0], 2.1);
+    near(reflected[1], 1.1);
+    assert.deepEqual(reflect([2, 1], [4, 1], map), [4, 1]);
+    assert.deepEqual(reflect([2, 1], [3, 1], map), [1, 1]);
 });
 
-test("Locomotion preserves velocity and state identity when permission or effective speed prevents movement", () => {
-    const battle = fixture({ velocity: [0.1, -0.1] });
-    const self = getUnit(battle, 1);
-    const denied = applyUnitChanges(battle, [locomotion.setRule({ id: self.id }, {
-        id: "immobile", allows: () => false,
-    })]);
-    assert.equal(locomotion.advance(denied, ref, target, context), denied);
-    assert.equal(locomotion.advance(battle, ref, target, { ...context, speedMultiplier: 0 }), battle);
-    const hidden = updateUnit(battle, [{ ...self, spatialPresence: { present: false } }]);
-    assert.equal(locomotion.advance(hidden, ref, target, context), hidden);
-    const stopped = fixture({ velocity: [0.1, 0], definition: { speed: 0 } });
-    assert.equal(locomotion.advance(stopped, ref, target, context), stopped);
-    assert.equal(locomotion.advance(battle, { id: 99 }, target, context), battle);
+test("movement passes intermediate tracking points and reaches the final goal with its history velocity", () => {
+    let state = battle([{ definition, position: [2, 1] }]);
+    const host = ref(get(state, 0));
+    state = advance(state, host, { nextPoint: [2, 2], goal: [2, 2] }, context);
+    state = advance({ ...state, tick: 1 }, host, { nextPoint: [2.05, 1.2], goal: [6, 1.2] }, context);
+    near(get(state, 0).position[0], 2.2);
+    near(get(state, 0).position[1], 1.2);
+    assert.deepEqual(get(state, 0).locomotion.velocity, [0.2, 0]);
+
+    const goal = [2.25, 1.2];
+    state = advance({ ...state, tick: 2 }, host, { nextPoint: [1, 1.2], goal }, context);
+    assert.deepEqual(get(state, 0).position, goal);
+    assert.deepEqual(get(state, 0).locomotion.velocity, [0.2, 0]);
 });
 
-test("Locomotion reflects about the destination-cell center while retaining controller velocity", () => {
-    const cells = Array.from({ length: 64 }, () => cell());
-    cells[2 * 8 + 3] = cell({ passable: false });
-    const battle = fixture({ cells, position: [2.4, 2], velocity: [0.3, 0.1], definition: {
-        speed: 0.5, steeringParameters: { steeringFactor: 1, maxSteeringForce: 0 },
-    } });
-    const self = getUnit(locomotion.advance(battle, ref, target, context), 1);
-    near(self.position[0], 2.1);
-    near(self.position[1], 2.1);
-    assert.equal(self.locomotion, getUnit(battle, 1).locomotion);
-});
+test("movement uses current terrain and reflects displacement while retaining controller velocity", () => {
+    let state = battle([{ definition, position: [2, 1.4] }]);
+    const host = ref(get(state, 0));
+    const target = { nextPoint: [6, 1.4], goal: [6, 1.4] };
+    state = advance(state, host, target, context);
+    const before = get(state, 0).position;
+    state = updateTile(state, [2, 2], {
+        ...getTile(state.battlefield.map, [2, 2]).state, walkCost: 1000,
+    });
+    state = advance({ ...state, tick: 1 }, host, target, context);
+    assert.ok(get(state, 0).position[0] > before[0]);
+    assert.ok(get(state, 0).position[1] < before[1]);
 
-test("Locomotion checks only a changed destination cell, without sweeping or rechecking a reflection", () => {
-    const cells = Array.from({ length: 64 }, () => cell());
-    cells[2 * 8 + 3] = cell({ passable: false });
-    const fast = fixture({ cells, velocity: [2, 0], definition: {
-        speed: 2, steeringParameters: { steeringFactor: 1, maxSteeringForce: 0 },
-    } });
-    assert.deepEqual(getUnit(locomotion.advance(fast, ref, target, context), 1).position, [4, 2]);
-    cells[2 * 8 + 1] = cell({ passable: false });
-    const reflected = fixture({ cells, velocity: [1, 0], definition: {
-        speed: 1, steeringParameters: { steeringFactor: 1, maxSteeringForce: 0 },
-    } });
-    assert.deepEqual(getUnit(locomotion.advance(reflected, ref, target, context), 1).position, [1, 2]);
-});
-
-test("Locomotion reads the effective map each integration and uses WALK or FLY avoidance", () => {
-    const initial = fixture({ position: [2, 2.4], velocity: [0.2, 0] });
-    const straight = { nextPoint: [6, 2.4], goal: [6, 2.4] };
-    const overlay = { id: 0, cells: [[3, 2]], denyPassage: false, denyDepartures: [], cost: 1000 };
-    const battle = { ...initial, battlefield: { ...initial.battlefield,
-        navigation: navigation.setOverlay(initial.battlefield.navigation, "WALK", overlay),
-    } };
-    const walking = getUnit(locomotion.advance(battle, ref, straight, context), 1);
-    const flying = getUnit(locomotion.advance(battle, ref, straight, { ...context, mode: "FLY" }), 1);
-    assert.ok(walking.position[1] < 2.4);
-    assert.equal(flying.position[1], 2.4);
-    assert.equal(getUnit(locomotion.advance(initial, ref, straight, context), 1).position[1], 2.4);
-    assert.ok(walking.locomotion.velocity[1] < 0);
-});
-
-test("Locomotion initialization validates static numbers and permits zero-width and zero-speed definitions", () => {
-    for (const [key, value] of [["speed", -1], ["minSpeed", NaN], ["halfBodyWidth", -0.1]]) {
-        assert.throws(() => fixture({ definition: { [key]: value } }), RangeError);
-    }
-    const unit = getUnit(fixture({ definition: { speed: 0, minSpeed: 0, halfBodyWidth: 0 } }), 1);
-    assert.deepEqual(unit.locomotion.velocity, [0, 0]);
+    const approaching = get(state, 0).position;
+    state = updateTile(state, [1, 3], {
+        ...getTile(state.battlefield.map, [1, 3]).state, passability: "NONE",
+    });
+    state = advance({ ...state, tick: 2 }, host, target, context);
+    assert.ok(get(state, 0).position[0] < approaching[0]);
+    assert.ok(get(state, 0).locomotion.velocity[0] > 0);
 });

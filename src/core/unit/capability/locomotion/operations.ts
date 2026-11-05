@@ -15,10 +15,6 @@ import { calculate as avoidance } from "./avoidance.js";
 import { reflect } from "./motion.js";
 import { integrate } from "./steering.js";
 
-function canMove(battle: BattleState, self: Unit & Locomotion): boolean {
-    return self.locomotion.rules.every((rule) => rule.allows(battle, { self }));
-}
-
 function resolveSpeed(battle: BattleState, self: Unit & Locomotion): number {
     const definition = self.definition.locomotion;
 
@@ -40,13 +36,16 @@ export function advance(
     context: MovementContext,
 ): BattleState {
     const self = units.get(battle, ref);
-    if (self?.lifecycle !== "PRESENT" || !isSpatiallyPresent(self) || !canMove(battle, self)) {
+    if (
+        self?.lifecycle !== "PRESENT" ||
+        !isSpatiallyPresent(self) ||
+        !self.locomotion.rules.every((rule) => rule.allows(battle, { self }))
+    ) {
         return battle;
     }
 
     assertNonnegativeNumber(context.speedMultiplier, "speedMultiplier");
     const speed = resolveSpeed(battle, self) * context.speedMultiplier;
-    assertNonnegativeNumber(speed, "movement budget");
 
     if (speed === 0) {
         return battle;

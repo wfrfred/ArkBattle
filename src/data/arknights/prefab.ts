@@ -6,10 +6,7 @@ import type {
     State as TileState,
 } from "../../core/battlefield/map/tile.js";
 import { parseSiteCondition, parseAllowedSiteConditions } from "./site-condition.js";
-import {
-    createSteeringParameters,
-    type SteeringParameters,
-} from "../../core/unit/capability/locomotion/index.js";
+import type { SteeringParameters } from "../../core/unit/capability/locomotion/index.js";
 import { secondsToTicks } from "./tick.js";
 
 export interface EnemyMovementPrefab {
@@ -130,14 +127,14 @@ export function parseEnemyMovementPrefab(value: unknown): EnemyMovementPrefab {
             enemy._onlyDelayToBornOnTileStart,
             "enemy _onlyDelayToBornOnTileStart",
         ),
-        steeringParameters: createSteeringParameters({
+        steeringParameters: {
             steeringFactor:
                 nonnegative(movement._steeringFactor, "movement _steeringFactor") /
                 TICKS_PER_SECOND,
             maxSteeringForce:
                 nonnegative(movement._maxSteeringForce, "movement _maxSteeringForce") /
                 TICKS_PER_SECOND ** 2,
-        }),
+        },
         halfBodyWidth: nonnegative(movement._halfBodyWidth, "movement _halfBodyWidth"),
     };
 }

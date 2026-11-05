@@ -338,6 +338,16 @@ advance 可以同步触发跨领域操作。Battle 必须从其返回的最新 B
 
 Locomotion 是独立 Capability。Definition 的 speed 与 minSpeed 使用格/Tick；steeringParameters 已由内容适配为每 Tick 参数：原生 steeringFactor 除以 tickRate，maxSteeringForce 除以 tickRate²。halfBodyWidth 使用世界距离，独立于命中半径。真实移动 Profile 读取 MovementController._halfBodyWidth；Content 工厂显式接收独立半宽，不从 AttackTiming.hitRadius 推导。
 
+### 关键语义
+
+- 当前速度贡献按属性公式求值，先应用 minSpeed，再乘本次运动倍率；Rule 独立决定是否允许自主移动。暂停或零速度不清除历史速度。
+- Steering 使用历史速度、目标速度误差和局部避障力，合力先限幅，再积分并限速。接近最终 goal 时可直接到达并保留历史速度；中间 nextPoint 只提供方向。
+- WALK 的避障同时考虑硬障碍和高代价格，FLY 只考虑硬障碍；半身宽用于横向几何，避障力去除沿目标方向的分量，并按历史速度比例缩放。当前位置不可通时采用相邻可通格的恢复方向。
+- 普通积分只根据跨格后的目的格决定是否反射位移，反射不改写积分速度；不另加整段扫掠或反射后的二次通行检查。
+- Route 的等待与即时指令、阻挡位置计划和自主移动分别推进。真实位置只保存于 Unit.position，历史 velocity 不代表本 Tick 一定移动。
+
+这些结果由少量纯算法与真实移动场景分别保障，不按邻格方向、微小阈值、字段或暂停原因展开矩阵。登记、旧版本和缺失 Ref 等公共协议集中验证。场景通过正常构造、advance 和主动空间操作建立位置与历史速度，不注入运行状态。
+
 ```typescript
 export interface Definition {
     readonly speed: number;
@@ -395,6 +405,8 @@ export function removeSpeedContribution(ref: Ref<Unit & Locomotion>, id: string)
 ```
 
 类型、初始化、守卫及 Rule／速度贡献 Change 工厂位于 locomotion/capability.ts；工厂绑定 Ref<Unit & Locomotion>，由 Unit.update 组合发布，不附带 Blocking 后继。operations.ts 提供完整推进，不转发工厂。初始化验证速度、下限、几何半宽和转向参数非负，不要求基础速度大于 minSpeed。
+
+SteeringParameters 是普通配置值，不提供只校验并复制对象的构造工厂。Data 解析原始 Prefab 并完成 Tick 换算，Ground Enemy 内容工厂显式接收 halfBodyWidth 与 steeringParameters，不隐藏一组固定转向参数；演示调用方自行提供其示例配置。
 
 推进读取最新 PRESENT、空间存在且 Rule 允许的 Unit。Movement 先推进全部 Blockable 位置修正，再推进 Route 并读取当前关系，只限制自主移动；独立位置计划存在或刚完成不自动禁止自主移动。Locomotion 只经内部 replace 提交位置与速度，不依赖 Blocking 维护；Blockable 的偏移推进同样只发布位置与计划。依赖当前位置或其他 Battle 事实的阻挡 Rule 在后续 Blocking 检查点复核；明确要求解除旧关系的空间操作仍自行完成清理。Blocker／Blockable 在 Unit 初始化时至多选择一种，但该约束不决定是否具有 Route、Locomotion 或何种自身 Layer。
 
