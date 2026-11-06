@@ -11,8 +11,7 @@ import {
 } from "../mechanism.js";
 import type { Ref } from "../../common/ref.js";
 import { instantiateMechanismPlacement } from "../creation/mechanism.js";
-import type { Command } from "../contract.js";
-import { add, remove } from "../unit.js";
+import { add, remove as removeUnit } from "../unit.js";
 import type { State as BattleState } from "../state.js";
 import type { Definitions, Initial } from "../../unit/capability/catalog.js";
 
@@ -47,14 +46,6 @@ export interface PredefinedPresence {
     readonly source: Source;
 }
 
-export type PredefinedCommand =
-    | { readonly type: "APPEAR_PREDEFINED"; readonly definitionId: number }
-    | {
-          readonly type: "REMOVE_PREDEFINED";
-          readonly definitionId: number;
-          readonly reason: LeaveReason;
-      };
-
 export function createPredefinedDefinition<T extends object>(
     definition: PredefinedDefinition<T>,
 ): PredefinedDefinition<T> {
@@ -83,83 +74,80 @@ export function reconcilePredefinedPresence(battle: BattleState): readonly Prede
     return remaining.length === presence.length ? presence : remaining;
 }
 
-export function advancePredefined(
-    state: BattleState,
-    definitions: readonly StoredPredefinedDefinition[],
-    commands: readonly Command[],
-): BattleState {
-    for (const command of commands) {
-        if (command.type !== "APPEAR_PREDEFINED" && command.type !== "REMOVE_PREDEFINED") {
-            continue;
-        }
-
-        const presence = reconcilePredefinedPresence(state);
-        if (presence !== state.predefinedPresence) {
-            state = { ...state, predefinedPresence: presence };
-        }
-
-        const definition = definitions.find((definition) => definition.id === command.definitionId);
-        if (definition === undefined) {
-            throw new RangeError(`unknown predefined definition: ${command.definitionId}`);
-        }
-
-        const binding = state.predefinedPresence.find(
-            (binding) => binding.definitionId === command.definitionId,
-        );
-
-        if (command.type === "REMOVE_PREDEFINED") {
-            if (binding === undefined) {
-                continue;
-            }
-
-            state = {
-                ...state,
-                predefinedPresence: state.predefinedPresence.filter(
-                    (binding) => binding.definitionId !== command.definitionId,
-                ),
-            };
-            state =
-                binding.source.type === "UNIT"
-                    ? remove(state, binding.source.unitId, command.reason)
-                    : removeMechanism(state, binding.source.ref);
-            continue;
-        }
-        if (binding !== undefined) {
-            continue;
-        }
-
-        const creation = definition.creation;
-        if (creation.type === "UNIT") {
-            const id = state.execution.nextUnitId;
-            state = { ...state, execution: { ...state.execution, nextUnitId: id + 1 } };
-            const initialized = initializeUnit(state, { ...creation, id });
-            state = initialized.state;
-            const unit = initialized.value;
-            state = {
-                ...state,
-                predefinedPresence: [
-                    ...state.predefinedPresence,
-                    { definitionId: definition.id, source: { type: "UNIT", unitId: unit.id } },
-                ],
-            };
-            state = add(state, unit);
-        } else {
-            const initialized = instantiateMechanismPlacement(state, creation);
-            state = {
-                ...initialized.state,
-                predefinedPresence: [
-                    ...initialized.state.predefinedPresence,
-                    {
-                        definitionId: definition.id,
-                        source: { type: "MECHANISM", ref: initialized.value },
-                    },
-                ],
-            };
-        }
+export function appear(battle: BattleState, id: PredefinedDefinition["id"]): BattleState {
+    const definition = battle.definition.predefines.find((definition) => definition.id === id);
+    if (definition === undefined) {
+        throw new RangeError(`unknown predefined definition: ${id}`);
     }
 
-    return {
-        ...state,
-        predefinedPresence: reconcilePredefinedPresence(state),
+    battle = reconcile(battle);
+
+    if (battle.predefinedPresence.some((binding) => binding.definitionId === id)) {
+        return battle;
+    }
+
+    const creation = definition.creation;
+    if (creation.type === "UNIT") {
+        const unitId = battle.execution.nextUnitId;
+        battle = { ...battle, execution: { ...battle.execution, nextUnitId: unitId + 1 } };
+        const initialized = initializeUnit(battle, { ...creation, id: unitId });
+        battle = initialized.state;
+        const unit = initialized.value;
+        battle = {
+            ...battle,
+            predefinedPresence: [
+                ...battle.predefinedPresence,
+                { definitionId: id, source: { type: "UNIT", unitId: unit.id } },
+            ],
+        };
+        battle = add(battle, unit);
+    } else {
+        const initialized = instantiateMechanismPlacement(battle, creation);
+        battle = {
+            ...initialized.state,
+            predefinedPresence: [
+                ...initialized.state.predefinedPresence,
+                { definitionId: id, source: { type: "MECHANISM", ref: initialized.value } },
+            ],
+        };
+    }
+
+    return reconcile(battle);
+}
+
+export function remove(
+    battle: BattleState,
+    id: PredefinedDefinition["id"],
+    reason: LeaveReason,
+): BattleState {
+    if (!battle.definition.predefines.some((definition) => definition.id === id)) {
+        throw new RangeError(`unknown predefined definition: ${id}`);
+    }
+
+    battle = reconcile(battle);
+    const binding = battle.predefinedPresence.find((binding) => binding.definitionId === id);
+    if (binding === undefined) {
+        return battle;
+    }
+
+    battle = {
+        ...battle,
+        predefinedPresence: battle.predefinedPresence.filter(
+            (binding) => binding.definitionId !== id,
+        ),
     };
+    battle =
+        binding.source.type === "UNIT"
+            ? removeUnit(battle, binding.source.unitId, reason)
+            : removeMechanism(battle, binding.source.ref);
+
+    return reconcile(battle);
+}
+
+function reconcile(battle: BattleState): BattleState {
+    const presence = reconcilePredefinedPresence(battle);
+
+    return presence === battle.predefinedPresence
+        ? battle
+        : { ...battle, predefinedPresence: presence };
 }

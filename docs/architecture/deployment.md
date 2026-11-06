@@ -156,6 +156,8 @@ predefines: [
 
 definition 是完整静态 Unit Definition；initial 和 hooks 按需提供。Predefined 在出现时分配 Unit ID，调用 unit.initialize，登记预置项与实例的绑定，再由 add 完成登记和 enter。Predefined 管理别名、出现／移除及重复出现，Unit.initialize 负责实例构造。
 
+预置操作直接调用 `predefined.appear(battle, id)` 与 `predefined.remove(battle, id, reason)`，id 对应 PredefinedDefinition.id。两者从 Battle Definition 查找预置项，不通过 Command 派发；开场初始化直接调用 appear。移除先撤销旧绑定，再执行实例的离场业务，离场程序可以立即让同一预置项重新出现，操作接续并保留新绑定。
+
 预置出现只执行对应的创建与入场程序；玩家部署的资源消费和部署通知由 Deployment 提供。
 
 ## Deployable 依赖与构造

@@ -108,13 +108,13 @@ Capability 可以承担完整领域结算，例如 Locomotion.advance。对已�
 
 ### 3.3 调用方持有状态
 
-initialize(input) 返回完整 battle.State，包括 Schedule、预置进度、统计和结果。关卡开场 Unit 由 initiallyPresent:true 的 Predefined 创建，与后续出现／移除共用预置机制；创建直接调用 unit.initialize，再登记与 enter。step(battle, commands) 开帧通过新值清空或覆盖本 Tick 的临时字段，按顺序调用纯领域函数并返回完整新 State。commands 必填，无命令时传 []；events/result 在返回的 State 中，不另返回 Step 包装。网络、文件、渲染、现实时间和日志输出由外层处理。
+initialize(input) 返回完整 battle.State，包括 Schedule、预置进度、统计和结果。关卡开场 Unit 由 initiallyPresent:true 的 Predefined 创建，与后续出现／移除共用预置机制；创建直接调用 unit.initialize，再登记与 enter。step(battle, commands) 开帧先将输入 State 的离场记录同步到 Schedule，再通过新值清空或覆盖本 Tick 的临时字段，按顺序调用纯领域函数并返回完整新 State。Tick 外的领域操作同样可以产生离场记录，不因开帧清理而遗漏；Tick 末继续结算本 Tick 的离场。commands 必填，无命令时传 []；events/result 在返回的 State 中，不另返回 Step 包装。网络、文件、渲染、现实时间和日志输出由外层处理。
 
 ```text
 step(battle, commands)
+    ├─ 接收 Tick 外已发生的离场，更新 Schedule
     ├─ 形成清空本 Tick 临时事实的新值
     ├─ Deployment 时间推进 → 接续状态
-    ├─ Predefined → 接续状态与 Presence
     ├─ Combat.prepare → 接续状态
     ├─ Deployment → 接续状态
     ├─ Spawning → 接续状态与 Schedule

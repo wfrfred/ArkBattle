@@ -5,11 +5,7 @@ import type { SpawnScheduleDefinition } from "./schedule/definition.js";
 import type { Id, Unit } from "../unit/unit.js";
 import type { Input as DeploymentInput } from "./deployment/deployment.js";
 import type { Card } from "./deployment/card/card.js";
-import type {
-    StoredPredefinedDefinition,
-    PredefinedDefinition,
-    PredefinedCommand,
-} from "./steps/predefined.js";
+import type { StoredPredefinedDefinition, PredefinedDefinition } from "./steps/predefined.js";
 import type { AlternativeRouteCommand } from "./steps/movement.js";
 import type { DeploymentCommand } from "./deployment/operations.js";
 import type { Ref } from "../common/ref.js";
@@ -45,7 +41,6 @@ export interface Input<
 }
 
 export type Command<T extends Card<any> = Card, P extends Projectile<any> = Projectile> =
-    | PredefinedCommand
     | AlternativeRouteCommand
     | DeploymentCommand<T>
     | { readonly type: "ACTIVATE_SKILL"; readonly ref: Ref<Unit & Skill> }

@@ -3,7 +3,7 @@ import { advance as advanceEffects } from "../unit/effect/operations.js";
 import { assert, assertNonnegativeNumber, assertPositiveSafeInteger } from "../common/assert.js";
 import { create as createBattlefield } from "../battlefield/state.js";
 import * as units from "../unit/query.js";
-import { reconcilePredefinedPresence, advancePredefined } from "./steps/predefined.js";
+import { reconcilePredefinedPresence } from "./steps/predefined.js";
 import type { Input, Command, Result } from "./contract.js";
 import { prepare as prepareCombat, advance as advanceCombat } from "./steps/combat.js";
 import { advanceSpawning } from "./steps/spawning.js";
@@ -94,12 +94,15 @@ export function step(
     const projectileCandidates = projectiles.all(battle);
     let state: State = {
         ...battle,
+        schedule: resolveScheduleUnits(
+            battle.schedule,
+            battle.removedUnits.map((removed) => removed.unitId),
+        ),
         events: [],
         removedUnits: [],
     };
 
     state = advanceDeployment(state);
-    state = advancePredefined(state, battle.definition.predefines, commands);
 
     state = prepareCombat(state, commands);
 

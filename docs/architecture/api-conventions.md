@@ -137,7 +137,7 @@ Card 的 RuleContext 按用途区分：DISPLAY／SELECT 接收 Card Ref，DEPLOY
 
 Action.cancelForUnit、forUnit 和 isCasting 均要求 `Ref<Unit & ActionCapability>`，异构 Unit 的调用方先通过 hasAction 缩窄。内部不重复检查类型已证明的能力；对象存在性和当前业务资格按各自操作处理。forUnit 从明确版本采样当前执行身份，Combat 仍使用阶段开始的版本。
 
-指向实体的 Command 统一使用 ref 字段承载 Typed Ref。Skill 启动／停止指向具有 Skill 能力的 Unit，替代路线指向具有 Route 能力的 Unit，弹体停止指向 Projectile，行动取消指向具体 Execution，部署和撤退保持各自 Card／Deployable 引用。命令从当前实例取得引用；已失效引用的处理由对应领域操作决定，不重复检查 Ref 已证明的能力。branchId、预置定义 ID 等非实体身份仍使用原本的 ID。 `Command<T, P>` 分别保留具体 Card 和 Projectile 类型，默认使用各自的公共 object 契约；Core 的统一执行入口接纳异构命令，内容声明命令时仍保留具体 Ref 的私有类型配对。
+指向实体的 Command 统一使用 ref 字段承载 Typed Ref。Skill 启动／停止指向具有 Skill 能力的 Unit，替代路线指向具有 Route 能力的 Unit，弹体停止指向 Projectile，行动取消指向具体 Execution，部署和撤退保持各自 Card／Deployable 引用。命令从当前实例取得引用；已失效引用的处理由对应领域操作决定，不重复检查 Ref 已证明的能力。branchId 等非实体身份仍使用原本的 ID。 `Command<T, P>` 分别保留具体 Card 和 Projectile 类型，默认使用各自的公共 object 契约；Core 的统一执行入口接纳异构命令，内容声明命令时仍保留具体 Ref 的私有类型配对。
 
 完整操作使用 `battle.tick` 作为当前时间，避免同一调用同时携带 battle.tick、request.tick、context.tick。局部纯计算没有 battle，必要的 tick 参数保留。计划时点、发射采样、previousTick 等历史事实仍作为明确业务数据保存或传递。
 

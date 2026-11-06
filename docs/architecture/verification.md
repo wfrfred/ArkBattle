@@ -62,7 +62,7 @@ Deployable 对 Occupancy 的构造依赖、入场与配对属于本轮协作边�
 | Unit 构造、能力配对和生命周期程序 | Unit：合法构造与一次真实生命周期。Hook 候选细则归 Hook，依赖析构细则归 Lifetime。 |
 | 组合变更与同步状态接续 | Unit Change 的一个主场景集中验证同目标 compose 的结合律与非交换、每项 previous／no-op／Settlement，以及最终 next 一次发布和嵌套后继。optional 复用已有变换，验证 false 为原对象及空后继、true 读取前序变换后的输入，不增加守卫／能力矩阵。第二 Unit 通过 Settlement 中正常的 update 改变，不作为跨 Unit 批次；各消费者只验证不同的业务后果。 |
 | Hook 派发 | Hook：一次登记变化与嵌套派发，集中保障固定候选和最新登记。 |
-| Runtime 组合 | 集中验证完整初始化／出生账簿先于 enter、一次正常预置替换保留最新绑定，以及 Tick 的阶段顺序／不可变发布与失败不发布。以公开创建、部署、资源和离场操作构造，不另写 marker、身份进度或内部存储夹具。 |
+| Runtime 组合 | 集中验证完整初始化／出生账簿先于 enter、通过 appear／remove 直接操作预置项并在离场重入时保留最新绑定、Tick 外的离场仍进入 Schedule 结账，以及 Tick 的阶段顺序／不可变发布与失败不发布。以公开创建、部署、资源和离场操作构造，不另写 marker、身份进度或内部存储夹具。 |
 | HP／EP 接收与死亡 | 伤害／治疗回归清单。死亡确认前保留 Blocking 只归 HP-03，不在 Blocking／Combat 再做同构场景。 |
 | 阻挡及位置计划 | Blocking：资格与层、容量尾部裁撤、批量通知与旧身份、独立位置计划。自身空地设置的清理（含同值）复用批量解除与位置计划代表场景，通知读取已发布的新身份；主动空间覆盖取消计划并解除旧关系，首个通知可见新位置。不按字段、角色或切换方向另建矩阵。 |
 | 空间存在及其协作 | Presence 集中验证保留身份、部署与 Occupancy、Effect／Lifetime，以及全部限制先于自身批量解除通知、领域释放后取消行动、appear 只移除自身限制。Blocking 保留自身偏移与目标独立计划的区别；Action／Skill、资源接收、Burst 和 tracking 弹道只在各自主场景验证新增的业务结果，不复制 Rule 登记、Hook 或生命周期矩阵。 |

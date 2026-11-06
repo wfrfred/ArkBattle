@@ -3,7 +3,7 @@ import * as siteConditions from "../../dist/content/terrain/condition.js";
 import { parseSiteCondition, parseAllowedSiteConditions } from "../../dist/data/arknights/site-condition.js";
 import { mire as mireTerrain, deepsea as deepseaTerrain } from "../../dist/content/terrain/definition.js";
 import { tilesOf } from "../helpers/tiles.js";
-import { predefinedIdsForAlias } from "../../dist/core/battle/steps/predefined.js";
+import { predefinedIdsForAlias, appear, remove } from "../../dist/core/battle/steps/predefined.js";
 import { at as occupancyAt } from "../../dist/core/battlefield/occupancy.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -77,11 +77,11 @@ test('the real act1 m02 hidden crate applies its tile changes only while present
   const [definitionId] = predefinedIdsForAlias(runtime.definition.predefines, 'trap_1105_accrate#001');
   const tile = [12, 4];
   const originalCell = navigationMap(runtime.battlefield.navigation).get(tile);
-  runtime = advanceBattle(runtime, [{ type: 'APPEAR_PREDEFINED', definitionId }]);
+  runtime = appear(runtime, definitionId);
   const unit = [...runtime.battlefield.units.values()][0];
   assert.deepEqual(unit.position, [4, 12]);
   assert.equal(navigationMap(runtime.battlefield.navigation).get(tile).cost, 1000);
-  runtime = advanceBattle(runtime, [{ type: 'REMOVE_PREDEFINED', definitionId, reason: 'SCRIPT' }]);
+  runtime = remove(runtime, definitionId, 'SCRIPT');
   assert.equal(runtime.battlefield.units.size, 0);
   assert.deepEqual(navigationMap(runtime.battlefield.navigation).get(tile), originalCell);
 });
@@ -326,7 +326,7 @@ test('a real hidden platform grants ranged deployment support and restores its t
   const tile = [instance.position.row, instance.position.col];
   const originalMaps = runtime.battlefield.navigation;
   const originalCell = navigationMap(originalMaps).get(tile);
-  runtime = advanceBattle(runtime, [{ type: 'APPEAR_PREDEFINED', definitionId }]);
+  runtime = appear(runtime, definitionId);
   const platform = [...runtime.battlefield.units.values()][0];
   const currentTile = runtime.battlefield.map.tiles.get(tile[0] * runtime.battlefield.map.columns + tile[1]);
   assert.equal(currentTile.state.elevation, 'HIGHLAND');
@@ -344,6 +344,6 @@ test('a real hidden platform grants ranged deployment support and restores its t
     });
     assert.equal(preview(card.state, createRequest(card.state, card.value, tile)).type, expected);
   }
-  runtime = advanceBattle(runtime, [{ type: 'REMOVE_PREDEFINED', definitionId, reason: 'SCRIPT' }]);
+  runtime = remove(runtime, definitionId, 'SCRIPT');
   assert.deepEqual(navigationMap(runtime.battlefield.navigation).get(tile), originalCell);
 });

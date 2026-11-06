@@ -2,6 +2,7 @@ import { hash as navigationHash } from "../core/battlefield/navigation/map.js";
 import { apply as applyOverlays } from "../core/battlefield/navigation/overlay.js";
 import { initialize, step as stepBattle, type Command, type Event } from "../core/battle/index.js";
 import { getSpawnScheduleCounts } from "../core/battle/schedule/index.js";
+import * as predefined from "../core/battle/steps/predefined.js";
 import * as units from "../core/unit/index.js";
 import { relations as blockingRelations } from "../core/battle/blocking/index.js";
 import * as projectiles from "../core/projectile/index.js";
@@ -100,6 +101,8 @@ export type TacticalDemoCommand =
     | "STOP_PROJECTILES"
     | "ACTIVATE_SKILL"
     | "STOP_SKILL";
+
+type RecordedInput = readonly Command[] | "APPEAR_CRATES" | "REMOVE_CRATES";
 
 const STAGE_IDS = new Set([
     "act1autochess_01",
@@ -306,7 +309,7 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
         kind === "boss" ? { r0: 0, r1: 6, c0: 0, c1: 20 } : { r0: 6, r1: 13, c0: 0, c1: 20 };
     const fieldId = "ts-tactical-demo";
 
-    const commands = new Map<number, readonly Command[]>();
+    const inputs = new Map<number, RecordedInput>();
     const crateIds = spec.predefines
         .filter((definition) => definition.creation.type === "UNIT")
         .map((definition) => definition.id);
@@ -391,11 +394,27 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
         view.debug.interp.snapToNewest();
     }
 
-    function advance(requested: readonly Command[] = commands.get(state.tick) ?? []) {
-        state = stepBattle(state, requested);
-        const visuals = presentation.advance(state, state.events);
+    function advance(requested: RecordedInput = inputs.get(state.tick) ?? []) {
+        let events: readonly Event[] = [];
+        if (typeof requested === "string") {
+            state = { ...state, events: [] };
 
-        return { events: state.events, visuals, result: state.result };
+            for (const id of crateIds) {
+                state =
+                    requested === "APPEAR_CRATES"
+                        ? predefined.appear(state, id)
+                        : predefined.remove(state, id, "SCRIPT");
+            }
+
+            events = state.events;
+            requested = [];
+        }
+
+        state = stepBattle(state, requested);
+        events = [...events, ...state.events];
+        const visuals = presentation.advance(state, events);
+
+        return { events, visuals, result: state.result };
     }
 
     function step(): void {
@@ -640,7 +659,7 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
 
         seek,
         reset(): void {
-            commands.clear();
+            inputs.clear();
             seek(0);
         },
 
@@ -650,7 +669,7 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
             }
 
             const tick = state.tick;
-            let requested: readonly Command[];
+            let requested: RecordedInput;
 
             if (type === "ACTIVATE_SKILL" || type === "STOP_SKILL") {
                 const source = manualSkillUnit();
@@ -690,22 +709,18 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
             } else if (type === "TRIGGER_DRAGON") {
                 requested = [{ type: "TRIGGER_BRANCH", branchId: "dragon", isLoop: true }];
             } else {
-                requested = crateIds.map((definitionId) =>
-                    type === "APPEAR_CRATES"
-                        ? { type: "APPEAR_PREDEFINED", definitionId }
-                        : { type: "REMOVE_PREDEFINED", definitionId, reason: "SCRIPT" },
-                );
+                requested = type;
             }
 
             const result = advance(requested);
 
-            for (const future of commands.keys()) {
+            for (const future of inputs.keys()) {
                 if (future >= tick) {
-                    commands.delete(future);
+                    inputs.delete(future);
                 }
             }
 
-            commands.set(tick, requested);
+            inputs.set(tick, requested);
             publish(result.events, result.visuals);
             view.debug.interp.snapToNewest();
         },
