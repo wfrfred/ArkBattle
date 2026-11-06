@@ -1,0 +1,1652 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-01",
+    "scope": "Exact selected serialized templates and their skill-prefab string bindings; no runtime execution or hotfix claim.",
+    "inputs": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+        "bytes": 2022247,
+        "sha256": "12419ad8d1ea9f670cca214e525240c691cdf3796b82acc8050698d66c202a37"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+        "bytes": 1343313,
+        "sha256": "14306a31b1856f61b25812a69a2a057b7c4634561fb2c2bccc42fb37ee41a27e"
+      }
+    ],
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/deployment-entry-20261101/content-bindings.py",
+        "bytes": 8151,
+        "sha256": "901f7254e79b524fb63562909b7628e5be4d9e3517bb1cf4f808f81e90622b12"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      }
+    ]
+  },
+  "result": {
+    "templates": [
+      {
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "holderPathId": "6070581171229484677",
+        "holderName": "buff_template_holder",
+        "holderObjectOffset": 162688,
+        "serializedBytes": 24,
+        "serializedSha256": "9a96f1fa8f46026a398c06c30624ef85d6f49a3bd46c586ce2df209c592ebe32",
+        "key": "empty",
+        "effectKey": "",
+        "onEventPriority": 0,
+        "events": []
+      },
+      {
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "holderPathId": "6070581171229484677",
+        "holderName": "buff_template_holder",
+        "holderObjectOffset": 313488,
+        "serializedBytes": 580,
+        "serializedSha256": "f2bff7a7bfb51db9e9783e31638c09dbfbe0f03189fafb32c4b8deef558a4ab0",
+        "key": "shield",
+        "effectKey": "",
+        "onEventPriority": 0,
+        "events": [
+          {
+            "event": 10,
+            "actions": [
+              {
+                "_filterDamageType": false,
+                "_damageMask": "NONE",
+                "_useDynamicVar": true,
+                "_allowNegativeDynamicVar": false,
+                "_useFixedValue": false,
+                "_showDamageNumber": false,
+                "_specifyBlockEffect": null,
+                "_useSource": false,
+                "_sourceType": "SOURCE",
+                "_filterApplyWay": false,
+                "_applyWayFilter": "NONE",
+                "_showShieldUI": true,
+                "$type": "Torappu.Battle.Action.Nodes+BlockDamage"
+              },
+              {
+                "_var": "dynamic",
+                "_noVarShowWarning": true,
+                "$type": "Torappu.Battle.Action.Nodes+IsBlackboardZero"
+              },
+              {
+                "_decCntIfStack": false,
+                "_updateOverrideMap": true,
+                "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+              }
+            ],
+            "objectReferences": []
+          }
+        ]
+      },
+      {
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "holderPathId": "6070581171229484677",
+        "holderName": "buff_template_holder",
+        "holderObjectOffset": 8941560,
+        "serializedBytes": 4276,
+        "serializedSha256": "697fd8e6545a837f0612f03b06cec3a6957dad8487c84bf7631874a42f228c37",
+        "key": "svash2_s_2[build_set]",
+        "effectKey": "",
+        "onEventPriority": 0,
+        "events": [
+          {
+            "event": 0,
+            "actions": [
+              {
+                "_defaultSettings": [
+                  {
+                    "key": "first",
+                    "val": 1.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "next",
+                    "val": 0.4,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "interval",
+                    "val": 0.1,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  }
+                ],
+                "$type": "Torappu.Battle.Action.Nodes+EnsureBlackboardDefaultValue"
+              },
+              {
+                "_deckBuff": {
+                  "cardEffectType": "NONE",
+                  "lifeType": "UNTIL_NEXT_SPAWN",
+                  "affectInHand": false,
+                  "affectOutOfHand": false,
+                  "wontSpawnWhenRallyPointSwitch": true,
+                  "showToastWhenAffect": false,
+                  "cardAnimWhenDeckbuffAdd": "svash2_card_skill_02_buff_once",
+                  "ignoreSpecialBuild": true,
+                  "buff": {
+                    "attributes": {
+                      "abnormalFlags": null,
+                      "abnormalImmunes": null,
+                      "abnormalAntis": null,
+                      "abnormalCombos": null,
+                      "abnormalComboImmunes": null,
+                      "attributeModifiers": null
+                    },
+                    "buffKey": "svash2_s_2[build]",
+                    "loadFromDB": false,
+                    "isDurableBuff": true,
+                    "isDamageMissable": false,
+                    "isSilenceable": false,
+                    "isStunnable": false,
+                    "isFreezable": false,
+                    "isLevitatable": false,
+                    "isGroundBoundable": false,
+                    "statusResistable": "AUTOMATIC",
+                    "templateKey": "svash2_s_2[build]",
+                    "disableOverride": false,
+                    "overrideKey": "svash2_s_2[build]",
+                    "overrideType": "STACK",
+                    "maxStackCnt": 1,
+                    "refreshRemainingTimeWhenStackMax": false,
+                    "clearAllStackCntWhenTimeUp": false,
+                    "maxValidStackCnt": -1,
+                    "independentCharacterSource": false,
+                    "overrideEffectKey": "",
+                    "overrideOnEventPriority": false,
+                    "onEventPriority": "DEFAULT",
+                    "audioSignal": null,
+                    "lifeTimeType": "INFINITY",
+                    "takeSnapshotWhenExtend": false,
+                    "durationKey": null,
+                    "remainingTimeKey": null,
+                    "lifeTime": 0.0,
+                    "triggerLifeType": "INFINITY",
+                    "triggerCnt": 1,
+                    "triggerInterval": 0.1,
+                    "waitFirstTriggerInterval": true,
+                    "firstTriggerInterval": 0.1,
+                    "priority": -1,
+                    "priorityBBKeys": [],
+                    "stripBlackboardParamsWithBuffKey": false,
+                    "blackboard": [],
+                    "enableInitDirectionFromSource": false
+                  }
+                },
+                "_actionSource": "BUFF_OWNER",
+                "_deckSelector": {
+                  "categoryMask": "NONE,WARRIOR,SNIPER,TANK,MEDIC,SUPPORT,CASTER,SPECIAL,PIONEER",
+                  "filterTag": null,
+                  "subprofessionTag": null,
+                  "onlySelectMe": false,
+                  "excludeMe": false,
+                  "mapTags": [],
+                  "enableOverride": false,
+                  "excludeNotInHand": false,
+                  "excludeNotShowInCardList": true,
+                  "excludeHiddenByCardState": false
+                },
+                "_selectOrder": "NEXT_TO_LEFT",
+                "_useTokenAsSouurceCard": true,
+                "$type": "Torappu.Battle.Action.Nodes+CreateDeckBuffWithSelectOrder"
+              },
+              {
+                "_defaultSettings": [
+                  {
+                    "key": "first",
+                    "val": 0.6,
+                    "valStr": null,
+                    "overrideIfExists": true
+                  },
+                  {
+                    "key": "next",
+                    "val": 0.4,
+                    "valStr": null,
+                    "overrideIfExists": true
+                  }
+                ],
+                "$type": "Torappu.Battle.Action.Nodes+EnsureBlackboardDefaultValue"
+              },
+              {
+                "_deckBuff": {
+                  "cardEffectType": "NONE",
+                  "lifeType": "UNTIL_NEXT_SPAWN",
+                  "affectInHand": false,
+                  "affectOutOfHand": false,
+                  "wontSpawnWhenRallyPointSwitch": true,
+                  "showToastWhenAffect": false,
+                  "cardAnimWhenDeckbuffAdd": "",
+                  "ignoreSpecialBuild": true,
+                  "buff": {
+                    "attributes": {
+                      "abnormalFlags": null,
+                      "abnormalImmunes": null,
+                      "abnormalAntis": null,
+                      "abnormalCombos": null,
+                      "abnormalComboImmunes": null,
+                      "attributeModifiers": null
+                    },
+                    "buffKey": "svash2_s_2[build][effect]",
+                    "loadFromDB": false,
+                    "isDurableBuff": true,
+                    "isDamageMissable": false,
+                    "isSilenceable": false,
+                    "isStunnable": false,
+                    "isFreezable": false,
+                    "isLevitatable": false,
+                    "isGroundBoundable": false,
+                    "statusResistable": "AUTOMATIC",
+                    "templateKey": "svash2_s_2[build][effect]",
+                    "disableOverride": false,
+                    "overrideKey": "svash2_s_2[build][effect]",
+                    "overrideType": "STACK",
+                    "maxStackCnt": 1,
+                    "refreshRemainingTimeWhenStackMax": false,
+                    "clearAllStackCntWhenTimeUp": false,
+                    "maxValidStackCnt": -1,
+                    "independentCharacterSource": false,
+                    "overrideEffectKey": "",
+                    "overrideOnEventPriority": false,
+                    "onEventPriority": "DEFAULT",
+                    "audioSignal": null,
+                    "lifeTimeType": "INFINITY",
+                    "takeSnapshotWhenExtend": false,
+                    "durationKey": null,
+                    "remainingTimeKey": null,
+                    "lifeTime": 0.0,
+                    "triggerLifeType": "INFINITY",
+                    "triggerCnt": 1,
+                    "triggerInterval": 0.4,
+                    "waitFirstTriggerInterval": true,
+                    "firstTriggerInterval": 1.0,
+                    "priority": -1,
+                    "priorityBBKeys": [],
+                    "stripBlackboardParamsWithBuffKey": false,
+                    "blackboard": [],
+                    "enableInitDirectionFromSource": false
+                  }
+                },
+                "_actionSource": "BUFF_OWNER",
+                "_deckSelector": {
+                  "categoryMask": "NONE,WARRIOR,SNIPER,TANK,MEDIC,SUPPORT,CASTER,SPECIAL,PIONEER",
+                  "filterTag": null,
+                  "subprofessionTag": null,
+                  "onlySelectMe": false,
+                  "excludeMe": false,
+                  "mapTags": [],
+                  "enableOverride": false,
+                  "excludeNotInHand": false,
+                  "excludeNotShowInCardList": true,
+                  "excludeHiddenByCardState": false
+                },
+                "_selectOrder": "NEXT_TO_LEFT",
+                "_useTokenAsSouurceCard": true,
+                "$type": "Torappu.Battle.Action.Nodes+CreateDeckBuffWithSelectOrder"
+              }
+            ],
+            "objectReferences": []
+          }
+        ]
+      },
+      {
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "holderPathId": "6070581171229484677",
+        "holderName": "buff_template_holder",
+        "holderObjectOffset": 8950252,
+        "serializedBytes": 4400,
+        "serializedSha256": "7ee4525cd3af69915ad44ca0bcb523b887adfd024f3cc50ffbff661ff04b1f16",
+        "key": "svash2_s_2[build]",
+        "effectKey": "",
+        "onEventPriority": 0,
+        "events": [
+          {
+            "event": 2,
+            "actions": [
+              {
+                "_conditionNode": {
+                  "_targetType": "BUFF_OWNER",
+                  "_anotherBuff": false,
+                  "_buffKey": null,
+                  "_blackboardKey": "time",
+                  "_blackboardKeyFromBb": null,
+                  "_valueToCompare": 0,
+                  "_anotherKeyToCompare": "first",
+                  "_condType": "GE",
+                  "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+                },
+                "_succeedNodes": [
+                  {
+                    "_defaultSettings": [
+                      {
+                        "key": "svash2_s_2[signal].cold",
+                        "val": 1.0,
+                        "valStr": null,
+                        "overrideIfExists": false
+                      }
+                    ],
+                    "$type": "Torappu.Battle.Action.Nodes+EnsureBlackboardDefaultValue"
+                  },
+                  {
+                    "_inputKey": "cold",
+                    "_outputKey": "svash2_s_2[signal].cold",
+                    "_multiplyParamKey": null,
+                    "_dividedParamKey": null,
+                    "_useRemainder": false,
+                    "_addParamKey": "",
+                    "_minusParamKey": null,
+                    "_minValueKey": null,
+                    "_maxValueKey": null,
+                    "_finalAbs": false,
+                    "_finalCeil": false,
+                    "_finalFloor": false,
+                    "_finalRound": false,
+                    "_useAbilityBlackboard": false,
+                    "_abilityName": "",
+                    "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+                  },
+                  {
+                    "_useAbilitySourceSide": false,
+                    "_sourceType": "BUFF_OWNER",
+                    "_targetType": "BUFF_OWNER",
+                    "_damageType": "PHYSICAL",
+                    "_sourceApplyWay": "MELEE",
+                    "_targetOptions": {
+                      "targetSide": "ENEMY",
+                      "targetMotion": "ALL",
+                      "targetCategory": "NONE,DEFAULT",
+                      "enableAdvancedOptions": true,
+                      "ignoreTargetFree": true,
+                      "ignoreAllyTargetFree": false,
+                      "ignoreHealFree": false,
+                      "ignoreMotionMode": false,
+                      "ignoreTargetSide": false,
+                      "excludeSomeAbnormalFlags": false,
+                      "containSomeAbnormalFlags": false,
+                      "excludeAbnormalFlag": "STUNNED",
+                      "containAbnormalFlag": "STUNNED",
+                      "purposeMask": "NONE",
+                      "professionMask": "NONE",
+                      "checkUnitType": false,
+                      "unitTypeMask": "NONE",
+                      "onlyIgnoreSomeOfTargetFreeCase": true,
+                      "abnormalFlag": "INVISIBLE",
+                      "abnormalCombo": "E_NUM"
+                    },
+                    "_excludeTarget": false,
+                    "_rangeId": "0-1",
+                    "_useRadius": false,
+                    "_radius": 0.0,
+                    "_useAbilitySelector": false,
+                    "_abilityName": null,
+                    "_damageScale": "atk_scale",
+                    "_buffs": [
+                      {
+                        "attributes": {
+                          "abnormalFlags": [],
+                          "abnormalImmunes": [],
+                          "abnormalAntis": [],
+                          "abnormalCombos": [],
+                          "abnormalComboImmunes": [],
+                          "attributeModifiers": []
+                        },
+                        "buffKey": "svash2_s_2[signal]",
+                        "loadFromDB": false,
+                        "isDurableBuff": false,
+                        "isDamageMissable": false,
+                        "isSilenceable": false,
+                        "isStunnable": false,
+                        "isFreezable": false,
+                        "isLevitatable": false,
+                        "isGroundBoundable": false,
+                        "statusResistable": "AUTOMATIC",
+                        "templateKey": "svash2_s_2[signal]",
+                        "disableOverride": false,
+                        "overrideKey": null,
+                        "overrideType": "DEFAULT",
+                        "maxStackCnt": 1,
+                        "refreshRemainingTimeWhenStackMax": false,
+                        "clearAllStackCntWhenTimeUp": false,
+                        "maxValidStackCnt": -1,
+                        "independentCharacterSource": false,
+                        "overrideEffectKey": null,
+                        "overrideOnEventPriority": false,
+                        "onEventPriority": "DEFAULT",
+                        "audioSignal": "svash2_s_2[hit]",
+                        "lifeTimeType": "IMMEDIATELY",
+                        "takeSnapshotWhenExtend": false,
+                        "durationKey": null,
+                        "remainingTimeKey": null,
+                        "lifeTime": 0.0,
+                        "triggerLifeType": "IMMEDIATELY",
+                        "triggerCnt": 0,
+                        "triggerInterval": -1.0,
+                        "waitFirstTriggerInterval": true,
+                        "firstTriggerInterval": -1.0,
+                        "priority": -1,
+                        "priorityBBKeys": [],
+                        "stripBlackboardParamsWithBuffKey": true,
+                        "blackboard": [],
+                        "enableInitDirectionFromSource": false
+                      }
+                    ],
+                    "_attackType": "NORMAL",
+                    "_createEffect": true,
+                    "_hitEffectKey": "svash2_skill_02_hit_01",
+                    "_hitEffectUseSourceFaceTo": true,
+                    "_useDamageFromBB": false,
+                    "_damageKey": "",
+                    "_isNoSourceDamage": true,
+                    "_checkTargetAlive": false,
+                    "_modifierKey": "",
+                    "_maxTargetCountKey": "max_target",
+                    "_filterType": "HATRED_DES",
+                    "$type": "Torappu.Battle.Action.Nodes+AOEDamage"
+                  },
+                  {
+                    "$type": "Torappu.Battle.Action.Nodes+AlwaysNext"
+                  },
+                  {
+                    "_decCntIfStack": true,
+                    "_updateOverrideMap": true,
+                    "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+                  },
+                  {
+                    "_inputKey": "first",
+                    "_outputKey": "first",
+                    "_multiplyParamKey": null,
+                    "_dividedParamKey": null,
+                    "_useRemainder": false,
+                    "_addParamKey": "next",
+                    "_minusParamKey": "",
+                    "_minValueKey": null,
+                    "_maxValueKey": null,
+                    "_finalAbs": true,
+                    "_finalCeil": false,
+                    "_finalFloor": false,
+                    "_finalRound": false,
+                    "_useAbilityBlackboard": false,
+                    "_abilityName": "",
+                    "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+                  }
+                ],
+                "_failNodes": [
+                  {
+                    "_inputKey": "time",
+                    "_outputKey": "time",
+                    "_multiplyParamKey": null,
+                    "_dividedParamKey": null,
+                    "_useRemainder": false,
+                    "_addParamKey": "interval",
+                    "_minusParamKey": null,
+                    "_minValueKey": null,
+                    "_maxValueKey": null,
+                    "_finalAbs": false,
+                    "_finalCeil": false,
+                    "_finalFloor": false,
+                    "_finalRound": false,
+                    "_useAbilityBlackboard": false,
+                    "_abilityName": "",
+                    "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+                  }
+                ],
+                "$type": "Torappu.Battle.Action.Nodes+IfElse"
+              }
+            ],
+            "objectReferences": []
+          },
+          {
+            "event": 0,
+            "actions": [
+              {
+                "_defaultSettings": [
+                  {
+                    "key": "time",
+                    "val": 0.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  }
+                ],
+                "$type": "Torappu.Battle.Action.Nodes+EnsureBlackboardDefaultValue"
+              }
+            ],
+            "objectReferences": []
+          }
+        ]
+      },
+      {
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "holderPathId": "6070581171229484677",
+        "holderName": "buff_template_holder",
+        "holderObjectOffset": 8956668,
+        "serializedBytes": 5328,
+        "serializedSha256": "8aef8094d61248a568559c70bb1538f6b110a747d269e860ae6dae8c823742dd",
+        "key": "svash2_s_2",
+        "effectKey": "",
+        "onEventPriority": 0,
+        "events": [
+          {
+            "event": 0,
+            "actions": [
+              {
+                "_defaultSettings": [
+                  {
+                    "key": "zero",
+                    "val": 0.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "cnt",
+                    "val": 1.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "inf",
+                    "val": 100.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "cost",
+                    "val": 2.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "svash2_s_2[cost].value",
+                    "val": 0.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "svash2_s_2[cost].cnt",
+                    "val": 0.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  }
+                ],
+                "$type": "Torappu.Battle.Action.Nodes+EnsureBlackboardDefaultValue"
+              },
+              {
+                "_inputKey": "zero",
+                "_outputKey": "cost",
+                "_multiplyParamKey": null,
+                "_dividedParamKey": null,
+                "_useRemainder": false,
+                "_addParamKey": null,
+                "_minusParamKey": "cost",
+                "_minValueKey": null,
+                "_maxValueKey": null,
+                "_finalAbs": false,
+                "_finalCeil": false,
+                "_finalFloor": false,
+                "_finalRound": false,
+                "_useAbilityBlackboard": false,
+                "_abilityName": "",
+                "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+              },
+              {
+                "_inputKey": "cnt",
+                "_outputKey": "svash2_s_2[cost].cnt",
+                "_multiplyParamKey": null,
+                "_dividedParamKey": null,
+                "_useRemainder": false,
+                "_addParamKey": null,
+                "_minusParamKey": "",
+                "_minValueKey": null,
+                "_maxValueKey": null,
+                "_finalAbs": false,
+                "_finalCeil": false,
+                "_finalFloor": false,
+                "_finalRound": false,
+                "_useAbilityBlackboard": false,
+                "_abilityName": "",
+                "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+              },
+              {
+                "_inputKey": "cost",
+                "_outputKey": "svash2_s_2[cost].value",
+                "_multiplyParamKey": null,
+                "_dividedParamKey": null,
+                "_useRemainder": false,
+                "_addParamKey": null,
+                "_minusParamKey": "",
+                "_minValueKey": null,
+                "_maxValueKey": null,
+                "_finalAbs": false,
+                "_finalCeil": false,
+                "_finalFloor": false,
+                "_finalRound": false,
+                "_useAbilityBlackboard": false,
+                "_abilityName": "",
+                "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+              },
+              {
+                "_buff": {
+                  "attributes": {
+                    "abnormalFlags": [],
+                    "abnormalImmunes": [],
+                    "abnormalAntis": [],
+                    "abnormalCombos": [],
+                    "abnormalComboImmunes": [],
+                    "attributeModifiers": []
+                  },
+                  "buffKey": "svash2_s_2[cost]",
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": "AUTOMATIC",
+                  "templateKey": "svash2_s_2[cost]",
+                  "disableOverride": false,
+                  "overrideKey": null,
+                  "overrideType": "DEFAULT",
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": null,
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": "DEFAULT",
+                  "audioSignal": null,
+                  "lifeTimeType": "IMMEDIATELY",
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": null,
+                  "remainingTimeKey": null,
+                  "lifeTime": 0.0,
+                  "triggerLifeType": "IMMEDIATELY",
+                  "triggerCnt": 0,
+                  "triggerInterval": -1.0,
+                  "waitFirstTriggerInterval": true,
+                  "firstTriggerInterval": -1.0,
+                  "priority": -1,
+                  "priorityBBKeys": [],
+                  "stripBlackboardParamsWithBuffKey": true,
+                  "blackboard": [],
+                  "enableInitDirectionFromSource": false
+                },
+                "_buffOwner": "BUFF_OWNER",
+                "_useSpecialBuffSource": false,
+                "_specialBuffSource": "BUFF_SOURCE",
+                "_isDerivedBuff": false,
+                "_finishDerivedBuffIfParentFinish": false,
+                "_inherateSourceProjectileFromParentBuff": false,
+                "_hookEffectKeyFromSourceProjectile": false,
+                "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+              },
+              {
+                "_source": "BUFF_OWNER",
+                "$type": "Torappu.Battle.Action.Nodes+SortDeck"
+              },
+              {
+                "_inputKey": "inf",
+                "_outputKey": "cnt",
+                "_multiplyParamKey": null,
+                "_dividedParamKey": null,
+                "_useRemainder": false,
+                "_addParamKey": null,
+                "_minusParamKey": "",
+                "_minValueKey": null,
+                "_maxValueKey": null,
+                "_finalAbs": false,
+                "_finalCeil": false,
+                "_finalFloor": false,
+                "_finalRound": false,
+                "_useAbilityBlackboard": false,
+                "_abilityName": "",
+                "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+              },
+              {
+                "_buff": {
+                  "attributes": {
+                    "abnormalFlags": [],
+                    "abnormalImmunes": [],
+                    "abnormalAntis": [],
+                    "abnormalCombos": [],
+                    "abnormalComboImmunes": [],
+                    "attributeModifiers": []
+                  },
+                  "buffKey": "svash2_s_2[build_set]",
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": "AUTOMATIC",
+                  "templateKey": "svash2_s_2[build_set]",
+                  "disableOverride": false,
+                  "overrideKey": null,
+                  "overrideType": "DEFAULT",
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": null,
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": "DEFAULT",
+                  "audioSignal": null,
+                  "lifeTimeType": "IMMEDIATELY",
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": null,
+                  "remainingTimeKey": null,
+                  "lifeTime": 0.0,
+                  "triggerLifeType": "IMMEDIATELY",
+                  "triggerCnt": 0,
+                  "triggerInterval": -1.0,
+                  "waitFirstTriggerInterval": true,
+                  "firstTriggerInterval": -1.0,
+                  "priority": -1,
+                  "priorityBBKeys": [],
+                  "stripBlackboardParamsWithBuffKey": false,
+                  "blackboard": [],
+                  "enableInitDirectionFromSource": false
+                },
+                "_buffOwner": "BUFF_OWNER",
+                "_useSpecialBuffSource": false,
+                "_specialBuffSource": "BUFF_SOURCE",
+                "_isDerivedBuff": false,
+                "_finishDerivedBuffIfParentFinish": false,
+                "_inherateSourceProjectileFromParentBuff": false,
+                "_hookEffectKeyFromSourceProjectile": false,
+                "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+              },
+              {
+                "_target": "BUFF_OWNER",
+                "_audioSignal": "svash2_s_2[blade]",
+                "$type": "Torappu.Battle.Action.Nodes+PlayAudio"
+              },
+              {
+                "_defaultSettings": [
+                  {
+                    "key": "true_snow_slash",
+                    "val": 0.0,
+                    "valStr": "",
+                    "overrideIfExists": false
+                  }
+                ],
+                "$type": "Torappu.Battle.Action.Nodes+EnsureBlackboardDefaultValue"
+              }
+            ],
+            "objectReferences": []
+          }
+        ]
+      },
+      {
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "holderPathId": "6070581171229484677",
+        "holderName": "buff_template_holder",
+        "holderObjectOffset": 8964020,
+        "serializedBytes": 8008,
+        "serializedSha256": "7b4e30e166a01a2dcd8856b49ce6ec675923201879534b036f54352525978a73",
+        "key": "svash2_s_1[deck]",
+        "effectKey": "",
+        "onEventPriority": 0,
+        "events": [
+          {
+            "event": 0,
+            "actions": [
+              {
+                "_defaultSettings": [
+                  {
+                    "key": "dynamic",
+                    "val": 0.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "max_hp",
+                    "val": 0.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "hp_ratio",
+                    "val": 0.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "zero",
+                    "val": 0.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "value",
+                    "val": 0.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "card_anim",
+                    "val": 0.0,
+                    "valStr": "svash2_card_skill_02_buff_once",
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "cnt",
+                    "val": 1.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "shield",
+                    "val": 0.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "effect",
+                    "val": 0.0,
+                    "valStr": "svash2_skill_01_shieldHit_01",
+                    "overrideIfExists": false
+                  }
+                ],
+                "$type": "Torappu.Battle.Action.Nodes+EnsureBlackboardDefaultValue"
+              },
+              {
+                "_conditionNode": {
+                  "$type": "Torappu.Battle.Action.Nodes+AlwaysNext"
+                },
+                "_succeedNodes": [
+                  {
+                    "_targetType": "BUFF_OWNER",
+                    "_attributeType": "MAX_HP",
+                    "_scaleVar": "",
+                    "_blackboardKey": "max_hp",
+                    "$type": "Torappu.Battle.Action.Nodes+AssignAttributeToBB"
+                  },
+                  {
+                    "_inputKey": "max_hp",
+                    "_outputKey": "dynamic",
+                    "_multiplyParamKey": "shield",
+                    "_dividedParamKey": null,
+                    "_useRemainder": false,
+                    "_addParamKey": null,
+                    "_minusParamKey": null,
+                    "_minValueKey": null,
+                    "_maxValueKey": null,
+                    "_finalAbs": true,
+                    "_finalCeil": false,
+                    "_finalFloor": false,
+                    "_finalRound": false,
+                    "_useAbilityBlackboard": false,
+                    "_abilityName": "",
+                    "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+                  },
+                  {
+                    "_inputKey": "dynamic",
+                    "_outputKey": "shield",
+                    "_multiplyParamKey": "dynamic",
+                    "_dividedParamKey": null,
+                    "_useRemainder": false,
+                    "_addParamKey": null,
+                    "_minusParamKey": null,
+                    "_minValueKey": null,
+                    "_maxValueKey": null,
+                    "_finalAbs": true,
+                    "_finalCeil": false,
+                    "_finalFloor": false,
+                    "_finalRound": false,
+                    "_useAbilityBlackboard": false,
+                    "_abilityName": "",
+                    "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+                  },
+                  {
+                    "_conditionNode": {
+                      "$type": "Torappu.Battle.Action.Nodes+AlwaysNext"
+                    },
+                    "_succeedNodes": [
+                      {
+                        "_createCardBuff": false,
+                        "_createDeckBuff": true,
+                        "_deckBuff": {
+                          "cardEffectType": "NONE",
+                          "lifeType": "UNTIL_NEXT_SPAWN",
+                          "affectInHand": false,
+                          "affectOutOfHand": false,
+                          "wontSpawnWhenRallyPointSwitch": false,
+                          "showToastWhenAffect": false,
+                          "cardAnimWhenDeckbuffAdd": null,
+                          "ignoreSpecialBuild": true,
+                          "buff": {
+                            "attributes": {
+                              "abnormalFlags": null,
+                              "abnormalImmunes": null,
+                              "abnormalAntis": null,
+                              "abnormalCombos": null,
+                              "abnormalComboImmunes": null,
+                              "attributeModifiers": null
+                            },
+                            "buffKey": "svash2_s_1[build]",
+                            "loadFromDB": false,
+                            "isDurableBuff": false,
+                            "isDamageMissable": false,
+                            "isSilenceable": false,
+                            "isStunnable": false,
+                            "isFreezable": false,
+                            "isLevitatable": false,
+                            "isGroundBoundable": false,
+                            "statusResistable": "AUTOMATIC",
+                            "templateKey": "shield",
+                            "disableOverride": false,
+                            "overrideKey": null,
+                            "overrideType": "UNIQUE",
+                            "maxStackCnt": 1,
+                            "refreshRemainingTimeWhenStackMax": false,
+                            "clearAllStackCntWhenTimeUp": false,
+                            "maxValidStackCnt": -1,
+                            "independentCharacterSource": false,
+                            "overrideEffectKey": "svash2_skill_01_shield_01",
+                            "overrideOnEventPriority": false,
+                            "onEventPriority": "DEFAULT",
+                            "audioSignal": "svash2_s_1[shield]",
+                            "lifeTimeType": "INFINITY",
+                            "takeSnapshotWhenExtend": false,
+                            "durationKey": null,
+                            "remainingTimeKey": null,
+                            "lifeTime": 0.0,
+                            "triggerLifeType": "IMMEDIATELY",
+                            "triggerCnt": 0,
+                            "triggerInterval": -1.0,
+                            "waitFirstTriggerInterval": true,
+                            "firstTriggerInterval": -1.0,
+                            "priority": -1,
+                            "priorityBBKeys": [],
+                            "stripBlackboardParamsWithBuffKey": false,
+                            "blackboard": [],
+                            "enableInitDirectionFromSource": false
+                          }
+                        },
+                        "_actionSource": "SOURCE",
+                        "_selectors": [
+                          {
+                            "selectOrder": "NEXT_TO_RIGHT",
+                            "deckSelector": {
+                              "categoryMask": "NONE,WARRIOR,SNIPER,CASTER",
+                              "filterTag": null,
+                              "subprofessionTag": null,
+                              "onlySelectMe": false,
+                              "excludeMe": false,
+                              "mapTags": [],
+                              "enableOverride": false,
+                              "excludeNotInHand": false,
+                              "excludeNotShowInCardList": true,
+                              "excludeHiddenByCardState": false
+                            }
+                          },
+                          {
+                            "selectOrder": "NEXT_TO_RIGHT",
+                            "deckSelector": {
+                              "categoryMask": "NONE,WARRIOR,SNIPER,TANK,MEDIC,SUPPORT,CASTER,SPECIAL,PIONEER",
+                              "filterTag": null,
+                              "subprofessionTag": null,
+                              "onlySelectMe": false,
+                              "excludeMe": false,
+                              "mapTags": [],
+                              "enableOverride": false,
+                              "excludeNotInHand": false,
+                              "excludeNotShowInCardList": true,
+                              "excludeHiddenByCardState": false
+                            }
+                          },
+                          {
+                            "selectOrder": "NEXT_TO_LEFT",
+                            "deckSelector": {
+                              "categoryMask": "NONE,WARRIOR,SNIPER,TANK,MEDIC,SUPPORT,CASTER,SPECIAL,PIONEER",
+                              "filterTag": null,
+                              "subprofessionTag": null,
+                              "onlySelectMe": false,
+                              "excludeMe": false,
+                              "mapTags": [],
+                              "enableOverride": false,
+                              "excludeNotInHand": false,
+                              "excludeNotShowInCardList": true,
+                              "excludeHiddenByCardState": false
+                            }
+                          }
+                        ],
+                        "_useTokenAsSouurceCard": true,
+                        "_lifeType": "UNTIL_NEXT_SPAWN",
+                        "_isRatio": false,
+                        "_enableMaxStackCount": false,
+                        "_filterIsInHand": false,
+                        "_useCardBuffKey": false,
+                        "_cardBuffKey": null,
+                        "$type": "Torappu.Battle.Action.Nodes+CreateDeckCardBuffsWithSelectOrderList"
+                      }
+                    ],
+                    "_failNodes": null,
+                    "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                  },
+                  {
+                    "$type": "Torappu.Battle.Action.Nodes+AlwaysNext"
+                  },
+                  {
+                    "_inputKey": "zero",
+                    "_outputKey": "value",
+                    "_multiplyParamKey": null,
+                    "_dividedParamKey": null,
+                    "_useRemainder": false,
+                    "_addParamKey": "",
+                    "_minusParamKey": "cost",
+                    "_minValueKey": "",
+                    "_maxValueKey": null,
+                    "_finalAbs": false,
+                    "_finalCeil": false,
+                    "_finalFloor": false,
+                    "_finalRound": false,
+                    "_useAbilityBlackboard": false,
+                    "_abilityName": "",
+                    "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+                  },
+                  {
+                    "_createCardBuff": true,
+                    "_createDeckBuff": false,
+                    "_deckBuff": {
+                      "cardEffectType": "NONE",
+                      "lifeType": "UNTIL_NEXT_SPAWN",
+                      "affectInHand": false,
+                      "affectOutOfHand": false,
+                      "wontSpawnWhenRallyPointSwitch": false,
+                      "showToastWhenAffect": false,
+                      "cardAnimWhenDeckbuffAdd": null,
+                      "ignoreSpecialBuild": false,
+                      "buff": {
+                        "attributes": {
+                          "abnormalFlags": null,
+                          "abnormalImmunes": null,
+                          "abnormalAntis": null,
+                          "abnormalCombos": null,
+                          "abnormalComboImmunes": null,
+                          "attributeModifiers": null
+                        },
+                        "buffKey": "svash2_s_1[build]",
+                        "loadFromDB": false,
+                        "isDurableBuff": false,
+                        "isDamageMissable": false,
+                        "isSilenceable": false,
+                        "isStunnable": false,
+                        "isFreezable": false,
+                        "isLevitatable": false,
+                        "isGroundBoundable": false,
+                        "statusResistable": "AUTOMATIC",
+                        "templateKey": "shield",
+                        "disableOverride": false,
+                        "overrideKey": null,
+                        "overrideType": "UNIQUE",
+                        "maxStackCnt": 1,
+                        "refreshRemainingTimeWhenStackMax": false,
+                        "clearAllStackCntWhenTimeUp": false,
+                        "maxValidStackCnt": -1,
+                        "independentCharacterSource": false,
+                        "overrideEffectKey": "svash2_skill_01_shield_01",
+                        "overrideOnEventPriority": false,
+                        "onEventPriority": "DEFAULT",
+                        "audioSignal": "svash2_s_1[shield]",
+                        "lifeTimeType": "INFINITY",
+                        "takeSnapshotWhenExtend": false,
+                        "durationKey": null,
+                        "remainingTimeKey": null,
+                        "lifeTime": 0.0,
+                        "triggerLifeType": "IMMEDIATELY",
+                        "triggerCnt": 0,
+                        "triggerInterval": -1.0,
+                        "waitFirstTriggerInterval": true,
+                        "firstTriggerInterval": -1.0,
+                        "priority": -1,
+                        "priorityBBKeys": [],
+                        "stripBlackboardParamsWithBuffKey": false,
+                        "blackboard": [],
+                        "enableInitDirectionFromSource": false
+                      }
+                    },
+                    "_actionSource": "SOURCE",
+                    "_selectors": [
+                      {
+                        "selectOrder": "NEXT_TO_RIGHT",
+                        "deckSelector": {
+                          "categoryMask": "NONE,WARRIOR,SNIPER,CASTER",
+                          "filterTag": null,
+                          "subprofessionTag": null,
+                          "onlySelectMe": false,
+                          "excludeMe": false,
+                          "mapTags": [],
+                          "enableOverride": false,
+                          "excludeNotInHand": false,
+                          "excludeNotShowInCardList": true,
+                          "excludeHiddenByCardState": false
+                        }
+                      },
+                      {
+                        "selectOrder": "NEXT_TO_RIGHT",
+                        "deckSelector": {
+                          "categoryMask": "NONE,WARRIOR,SNIPER,TANK,MEDIC,SUPPORT,CASTER,SPECIAL,PIONEER",
+                          "filterTag": null,
+                          "subprofessionTag": null,
+                          "onlySelectMe": false,
+                          "excludeMe": false,
+                          "mapTags": [],
+                          "enableOverride": false,
+                          "excludeNotInHand": false,
+                          "excludeNotShowInCardList": true,
+                          "excludeHiddenByCardState": false
+                        }
+                      },
+                      {
+                        "selectOrder": "NEXT_TO_LEFT",
+                        "deckSelector": {
+                          "categoryMask": "NONE,WARRIOR,SNIPER,TANK,MEDIC,SUPPORT,CASTER,SPECIAL,PIONEER",
+                          "filterTag": null,
+                          "subprofessionTag": null,
+                          "onlySelectMe": false,
+                          "excludeMe": false,
+                          "mapTags": [],
+                          "enableOverride": false,
+                          "excludeNotInHand": false,
+                          "excludeNotShowInCardList": true,
+                          "excludeHiddenByCardState": false
+                        }
+                      }
+                    ],
+                    "_useTokenAsSouurceCard": true,
+                    "_lifeType": "UNTIL_NEXT_SPAWN",
+                    "_isRatio": false,
+                    "_enableMaxStackCount": false,
+                    "_filterIsInHand": false,
+                    "_useCardBuffKey": false,
+                    "_cardBuffKey": null,
+                    "$type": "Torappu.Battle.Action.Nodes+CreateDeckCardBuffsWithSelectOrderList"
+                  }
+                ],
+                "_failNodes": null,
+                "$type": "Torappu.Battle.Action.Nodes+IfElse"
+              },
+              {
+                "$type": "Torappu.Battle.Action.Nodes+AlwaysNext"
+              },
+              {
+                "_source": "BUFF_OWNER",
+                "$type": "Torappu.Battle.Action.Nodes+SortDeck"
+              }
+            ],
+            "objectReferences": []
+          }
+        ]
+      },
+      {
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "holderPathId": "6070581171229484677",
+        "holderName": "buff_template_holder",
+        "holderObjectOffset": 10643576,
+        "serializedBytes": 3392,
+        "serializedSha256": "d71103700bfcfb7029bf348b34fef812a1ddf72155f28c166a20f0040b12e9eb",
+        "key": "makiri_s_2",
+        "effectKey": "",
+        "onEventPriority": 0,
+        "events": [
+          {
+            "event": 0,
+            "actions": [
+              {
+                "_modeIndex": 1,
+                "_loadModeFromBlackboard": false,
+                "_restoreDefault": false,
+                "_restartFSM": true,
+                "_targetType": "BUFF_OWNER",
+                "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+              },
+              {
+                "_defaultSettings": [
+                  {
+                    "key": "card_anim",
+                    "val": 0.0,
+                    "valStr": "plugin_common_buff_refresh_once",
+                    "overrideIfExists": false
+                  }
+                ],
+                "$type": "Torappu.Battle.Action.Nodes+EnsureBlackboardDefaultValue"
+              },
+              {
+                "_inputKey": "cost_decrease",
+                "_outputKey": "value",
+                "_multiplyParamKey": null,
+                "_dividedParamKey": null,
+                "_useRemainder": false,
+                "_addParamKey": null,
+                "_minusParamKey": null,
+                "_minValueKey": null,
+                "_maxValueKey": null,
+                "_finalAbs": false,
+                "_finalCeil": false,
+                "_finalFloor": false,
+                "_finalRound": false,
+                "_useAbilityBlackboard": false,
+                "_abilityName": "",
+                "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+              },
+              {
+                "$type": "Torappu.Battle.Action.Nodes+AlwaysNext"
+              },
+              {
+                "_deckSelector": {
+                  "categoryMask": "NONE,TANK,SUPPORT",
+                  "filterTag": null,
+                  "subprofessionTag": null,
+                  "onlySelectMe": false,
+                  "excludeMe": false,
+                  "mapTags": [],
+                  "enableOverride": false,
+                  "excludeNotInHand": false,
+                  "excludeNotShowInCardList": false,
+                  "excludeHiddenByCardState": true
+                },
+                "_source": "BUFF_OWNER",
+                "_lifeType": "UNTIL_NEXT_SPAWN",
+                "_isRatio": false,
+                "_enableMaxStackCount": false,
+                "_filterIsInHand": false,
+                "_useCardBuffKey": true,
+                "_cardBuffKey": "makiri_s_2[cost]",
+                "$type": "Torappu.Battle.Action.Nodes+CreateCardBuffWithDeckSelector"
+              },
+              {
+                "_deckBuff": {
+                  "cardEffectType": "NONE",
+                  "lifeType": "UNTIL_NEXT_SPAWN",
+                  "affectInHand": false,
+                  "affectOutOfHand": false,
+                  "wontSpawnWhenRallyPointSwitch": false,
+                  "showToastWhenAffect": false,
+                  "cardAnimWhenDeckbuffAdd": "",
+                  "ignoreSpecialBuild": false,
+                  "buff": {
+                    "attributes": {
+                      "abnormalFlags": [],
+                      "abnormalImmunes": [],
+                      "abnormalAntis": [],
+                      "abnormalCombos": [],
+                      "abnormalComboImmunes": [],
+                      "attributeModifiers": [
+                        {
+                          "attributeType": "MAX_HP",
+                          "formulaItem": "MULTIPLIER",
+                          "value": 0.0,
+                          "loadFromBlackboard": true,
+                          "fetchBaseValueFromSourceEntity": false
+                        }
+                      ]
+                    },
+                    "buffKey": "makiri_s_2[attr]",
+                    "loadFromDB": false,
+                    "isDurableBuff": false,
+                    "isDamageMissable": false,
+                    "isSilenceable": false,
+                    "isStunnable": false,
+                    "isFreezable": false,
+                    "isLevitatable": false,
+                    "isGroundBoundable": false,
+                    "statusResistable": "AUTOMATIC",
+                    "templateKey": "empty",
+                    "disableOverride": false,
+                    "overrideKey": null,
+                    "overrideType": "STACK",
+                    "maxStackCnt": 2,
+                    "refreshRemainingTimeWhenStackMax": false,
+                    "clearAllStackCntWhenTimeUp": false,
+                    "maxValidStackCnt": -1,
+                    "independentCharacterSource": false,
+                    "overrideEffectKey": "makiri_skill_02_buff_03",
+                    "overrideOnEventPriority": false,
+                    "onEventPriority": "DEFAULT",
+                    "audioSignal": null,
+                    "lifeTimeType": "INFINITY",
+                    "takeSnapshotWhenExtend": false,
+                    "durationKey": null,
+                    "remainingTimeKey": null,
+                    "lifeTime": 0.0,
+                    "triggerLifeType": "IMMEDIATELY",
+                    "triggerCnt": 0,
+                    "triggerInterval": -1.0,
+                    "waitFirstTriggerInterval": true,
+                    "firstTriggerInterval": -1.0,
+                    "priority": -1,
+                    "priorityBBKeys": [],
+                    "stripBlackboardParamsWithBuffKey": false,
+                    "blackboard": [],
+                    "enableInitDirectionFromSource": false
+                  }
+                },
+                "_actionSource": "BUFF_OWNER",
+                "_deckSelector": {
+                  "categoryMask": "NONE,TANK,SUPPORT",
+                  "filterTag": null,
+                  "subprofessionTag": null,
+                  "onlySelectMe": false,
+                  "excludeMe": false,
+                  "mapTags": [],
+                  "enableOverride": false,
+                  "excludeNotInHand": false,
+                  "excludeNotShowInCardList": false,
+                  "excludeHiddenByCardState": true
+                },
+                "$type": "Torappu.Battle.Action.Nodes+CreateDeckBuffWithDeckSelector"
+              }
+            ],
+            "objectReferences": []
+          },
+          {
+            "event": 1,
+            "actions": [
+              {
+                "_modeIndex": 1,
+                "_loadModeFromBlackboard": false,
+                "_restoreDefault": true,
+                "_restartFSM": true,
+                "_targetType": "BUFF_OWNER",
+                "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+              }
+            ],
+            "objectReferences": []
+          }
+        ]
+      }
+    ],
+    "skillBindings": [
+      {
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "componentPathId": "-5554646166507380326",
+        "scriptId": "c1b44c3bb3490f6d64ea0cd1d609440c",
+        "ownerFile": 0,
+        "gameObject": {
+          "name": "skchr_svash2_2",
+          "pathId": "-6229359572672929382",
+          "components": [
+            {
+              "file": 0,
+              "pathId": "-4996105108958764646"
+            },
+            {
+              "file": 0,
+              "pathId": "-8334490497291542118"
+            },
+            {
+              "file": 0,
+              "pathId": "-5554646166507380326"
+            },
+            {
+              "file": 0,
+              "pathId": "-3906319099975589478"
+            },
+            {
+              "file": 0,
+              "pathId": "-3708874611981639270"
+            },
+            {
+              "file": 0,
+              "pathId": "-4545966269644430950"
+            }
+          ]
+        },
+        "objectSha256": "0076baf252ce14b373460d6b4167d59a7a3e38e55ce5751df4c59606db6fd1d4",
+        "selectedStringFields": [
+          {
+            "path": [
+              "common:55",
+              "_activeBuffs",
+              "Array",
+              "0",
+              "common:106",
+              "buffKey"
+            ],
+            "offset": 216,
+            "value": "svash2_s_2[signal]"
+          },
+          {
+            "path": [
+              "common:55",
+              "_activeBuffs",
+              "Array",
+              "0",
+              "common:106",
+              "templateKey"
+            ],
+            "offset": 276,
+            "value": "svash2_s_2[signal]"
+          },
+          {
+            "path": [
+              "common:55",
+              "_activeBuffs",
+              "Array",
+              "0",
+              "common:106",
+              "audioSignal"
+            ],
+            "offset": 344,
+            "value": "svash2_s_2[hit]"
+          }
+        ]
+      },
+      {
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "componentPathId": "-3708874611981639270",
+        "scriptId": "465d5944fdf66fd44042b4b01a62c5d5",
+        "ownerFile": 0,
+        "gameObject": {
+          "name": "skchr_svash2_2",
+          "pathId": "-6229359572672929382",
+          "components": [
+            {
+              "file": 0,
+              "pathId": "-4996105108958764646"
+            },
+            {
+              "file": 0,
+              "pathId": "-8334490497291542118"
+            },
+            {
+              "file": 0,
+              "pathId": "-5554646166507380326"
+            },
+            {
+              "file": 0,
+              "pathId": "-3906319099975589478"
+            },
+            {
+              "file": 0,
+              "pathId": "-3708874611981639270"
+            },
+            {
+              "file": 0,
+              "pathId": "-4545966269644430950"
+            }
+          ]
+        },
+        "objectSha256": "6b85d8f9977c5e2a432944c56bef710da975a1ff02231f1a4827767ceedd1fc0",
+        "selectedStringFields": [
+          {
+            "path": [
+              "common:55",
+              "_buffs",
+              "Array",
+              "0",
+              "common:106",
+              "buffKey"
+            ],
+            "offset": 60,
+            "value": "svash2_s_2"
+          },
+          {
+            "path": [
+              "common:55",
+              "_buffs",
+              "Array",
+              "0",
+              "common:106",
+              "templateKey"
+            ],
+            "offset": 112,
+            "value": "svash2_s_2"
+          }
+        ]
+      },
+      {
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "componentPathId": "-1545544072988119321",
+        "scriptId": "94d0ebfda9ef298a570ee810608eff8f",
+        "ownerFile": 0,
+        "gameObject": {
+          "name": "skchr_makiri_2",
+          "pathId": "4197392308091891431",
+          "components": [
+            {
+              "file": 0,
+              "pathId": "8134584183881608935"
+            },
+            {
+              "file": 0,
+              "pathId": "-7986282190592463129"
+            },
+            {
+              "file": 0,
+              "pathId": "-1545544072988119321"
+            }
+          ]
+        },
+        "objectSha256": "8bec13d6a8e2990a51d9ad4aadf9963b10fa2863732d5c4a2a574a9fe03b62ec",
+        "selectedStringFields": [
+          {
+            "path": [
+              "common:55",
+              "_buffs",
+              "Array",
+              "0",
+              "common:106",
+              "buffKey"
+            ],
+            "offset": 112,
+            "value": "makiri_s_2"
+          },
+          {
+            "path": [
+              "common:55",
+              "_buffs",
+              "Array",
+              "0",
+              "common:106",
+              "templateKey"
+            ],
+            "offset": 164,
+            "value": "makiri_s_2"
+          },
+          {
+            "path": [
+              "common:55",
+              "_buffs",
+              "Array",
+              "1",
+              "common:106",
+              "buffKey"
+            ],
+            "offset": 344,
+            "value": "makiri_s_2[cost]"
+          },
+          {
+            "path": [
+              "common:55",
+              "_buffs",
+              "Array",
+              "2",
+              "common:106",
+              "buffKey"
+            ],
+            "offset": 624,
+            "value": "makiri_s_2[passive]"
+          }
+        ]
+      },
+      {
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "componentPathId": "493584995165205905",
+        "scriptId": "1328426c1a15720df144f67138d0b7b9",
+        "ownerFile": 0,
+        "gameObject": {
+          "name": "skchr_svash2_1",
+          "pathId": "8849078480749852049",
+          "components": [
+            {
+              "file": 0,
+              "pathId": "10302524540056977"
+            },
+            {
+              "file": 0,
+              "pathId": "-7041059844741991023"
+            },
+            {
+              "file": 0,
+              "pathId": "-2197836107766172271"
+            },
+            {
+              "file": 0,
+              "pathId": "826082840609355153"
+            },
+            {
+              "file": 0,
+              "pathId": "493584995165205905"
+            },
+            {
+              "file": 0,
+              "pathId": "543454479177741713"
+            }
+          ]
+        },
+        "objectSha256": "aab730b4016f4363f73ead1879ac9811a5442f3c0e610fda5b8a61ed7bf56187",
+        "selectedStringFields": [
+          {
+            "path": [
+              "common:55",
+              "_buffs",
+              "Array",
+              "1",
+              "common:106",
+              "buffKey"
+            ],
+            "offset": 304,
+            "value": "svash2_s_1[deck]"
+          },
+          {
+            "path": [
+              "common:55",
+              "_buffs",
+              "Array",
+              "1",
+              "common:106",
+              "templateKey"
+            ],
+            "offset": 360,
+            "value": "svash2_s_1[deck]"
+          }
+        ]
+      }
+    ]
+  }
+}

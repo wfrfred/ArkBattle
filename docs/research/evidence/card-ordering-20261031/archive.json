@@ -1,0 +1,298 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-31"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "aura.json#/provenance/client/dll",
+          "call-targets.json#/provenance/client/dll",
+          "callers.json#/provenance/client/dll",
+          "probe.json#/provenance/client/dll",
+          "runtime-sort.json#/provenance/client/dll"
+        ],
+        "bytes": 218523112
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "aura.json#/provenance/client/metadata",
+          "call-targets.json#/provenance/client/metadata",
+          "callers.json#/provenance/client/metadata",
+          "probe.json#/provenance/client/metadata",
+          "runtime-sort.json#/provenance/client/metadata"
+        ],
+        "bytes": 45805368
+      }
+    },
+    "sourceRecords": [
+      "aura.json",
+      "call-targets.json",
+      "callers.json",
+      "probe.json",
+      "prts-sources.json",
+      "runtime-sort.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12589,
+        "sha256": "1a85248a6a48d92d61c65f5ba044d079954866ff0c1672488b92f0cf1366af9a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "aura.json",
+        "kind": "record",
+        "bytes": 74347,
+        "sha256": "f99616388c693abe599f889c26369448d9d7d3894a98fe493b286321d984c6d1"
+      },
+      {
+        "path": "call-targets.json",
+        "kind": "record",
+        "bytes": 23214,
+        "sha256": "b6a6b0cfebb45319e8f6588f562d35b402842bb715b8e543f380988985f13816"
+      },
+      {
+        "path": "callers.json",
+        "kind": "record",
+        "bytes": 79142,
+        "sha256": "6a186f2bd14ea53266cbfcd7c28e20ebfeb77a836fd2065ab684e6d5c298d8ba"
+      },
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 4401,
+        "sha256": "eb8c7268859137540750d95f7b54c7f553512ba532e2fa87c7d38d1455402ec6"
+      },
+      {
+        "path": "extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "probe.json",
+        "kind": "record",
+        "bytes": 17002,
+        "sha256": "de816c33eab3af6e0ee1238ad0dfe41260b47dc642aa730374cc2a3b38db93d1"
+      },
+      {
+        "path": "prts-sources.json",
+        "kind": "record",
+        "bytes": 1545,
+        "sha256": "eded9dbf321167f353b1a07751a6a49d98149a0a4b3a9dd768e68a79e0e66b55"
+      },
+      {
+        "path": "runtime-sort.json",
+        "kind": "record",
+        "bytes": 93778,
+        "sha256": "2966a9e2a8972bb68bfe84d598c14765740b1bb7ff9832b1cd9051e6597fb9df"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 17511,
+          "mode": "disasm",
+          "records": [
+            "callers.json#/result/0",
+            "callers.json#/result/0/method"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_SortDeckRuntime",
+          "address": "0x180804630"
+        },
+        {
+          "index": 64737,
+          "mode": "disasm",
+          "records": [
+            "runtime-sort.json#/result/0",
+            "runtime-sort.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.SortDeckRuntime",
+          "address": "0x180631f60"
+        },
+        {
+          "index": 65735,
+          "mode": "metadata",
+          "records": [
+            "call-targets.json#/result/0"
+          ],
+          "fullname": "Torappu.Battle.Deck.get_cards",
+          "address": "0x1806cdea0"
+        },
+        {
+          "index": 65745,
+          "mode": "metadata",
+          "records": [
+            "call-targets.json#/result/1"
+          ],
+          "fullname": "Torappu.Battle.Deck.get_playerSide",
+          "address": "0x1806ce200"
+        },
+        {
+          "index": 65769,
+          "mode": "metadata",
+          "records": [
+            "callers.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.Deck.OnFixedUpdate",
+          "address": "0x1806c96d0"
+        },
+        {
+          "index": 65778,
+          "mode": "metadata",
+          "records": [
+            "call-targets.json#/result/2"
+          ],
+          "fullname": "Torappu.Battle.Deck.OnDeckSorted",
+          "address": "0x1806c9600"
+        },
+        {
+          "index": 65790,
+          "mode": "disasm",
+          "records": [
+            "runtime-sort.json#/result/1",
+            "runtime-sort.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.Deck.Compare",
+          "address": "0x1806c7de0"
+        },
+        {
+          "index": 65836,
+          "mode": "metadata",
+          "records": [
+            "call-targets.json#/result/3"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.get_cardPolicy"
+        },
+        {
+          "index": 65875,
+          "mode": "metadata",
+          "records": [
+            "call-targets.json#/result/5"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.AddDeckBuffWithKey",
+          "address": "0x1806b92d0"
+        },
+        {
+          "index": 65876,
+          "mode": "metadata",
+          "records": [
+            "call-targets.json#/result/6"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.ContainsDeckBuff",
+          "address": "0x1806b9fd0"
+        },
+        {
+          "index": 65886,
+          "mode": "metadata",
+          "records": [
+            "call-targets.json#/result/7"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.AddCardBuff",
+          "address": "0x1806b91b0"
+        },
+        {
+          "index": 65889,
+          "mode": "metadata",
+          "records": [
+            "call-targets.json#/result/8"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.ContainsCardBuff",
+          "address": "0x1806b9e50"
+        },
+        {
+          "index": 94222,
+          "mode": "metadata",
+          "records": [
+            "aura.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Svash2DeckAuraBehaviour/DeckBuffCardBuffDeckArua..ctor",
+          "address": "0x180f7cdd0"
+        },
+        {
+          "index": 94223,
+          "mode": "disasm",
+          "records": [
+            "aura.json#/result/1",
+            "aura.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Svash2DeckAuraBehaviour/DeckBuffCardBuffDeckArua.OnEnable",
+          "address": "0x180f7c960"
+        },
+        {
+          "index": 94224,
+          "mode": "disasm",
+          "records": [
+            "aura.json#/result/2",
+            "aura.json#/result/2/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Svash2DeckAuraBehaviour/DeckBuffCardBuffDeckArua.OnDisable",
+          "address": "0x180f7c900"
+        },
+        {
+          "index": 94226,
+          "mode": "disasm",
+          "records": [
+            "aura.json#/result/3",
+            "aura.json#/result/3/method",
+            "call-targets.json#/result/4"
+          ],
+          "fullname": "Torappu.Battle.Abilities.Svash2DeckAuraBehaviour/DeckBuffCardBuffDeckArua._ApplyByFilter",
+          "address": "0x180f7c9e0"
+        },
+        {
+          "index": 96495,
+          "mode": "metadata",
+          "records": [
+            "callers.json#/result/2/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/Svash2LRCardPositionSwap._SwapCardByCount",
+          "address": "0x1810446a0"
+        },
+        {
+          "index": 97114,
+          "mode": "metadata",
+          "records": [
+            "callers.json#/result/3/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/SortDeck.Execute",
+          "address": "0x181071c30"
+        },
+        {
+          "index": 99981,
+          "mode": "metadata",
+          "records": [
+            "callers.json#/result/4/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ClearDeckOverrider._ClearRawCostOverriderAndSort",
+          "address": "0x181163f80"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

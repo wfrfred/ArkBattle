@@ -1,0 +1,230 @@
+{
+  "date": "2026-10-31",
+  "scope": "Initial Enemy and derived controller fields in enm_pfb_*.ab; no hotfix/runtime overrides.",
+  "sources": [
+    {
+      "name": "enm_pfb_0.ab",
+      "bytes": 355902,
+      "sha256": "ed39f3c3357bbe90f758f3bdd1d88324e972a1942068842e8f3e45dfb714a2e2"
+    },
+    {
+      "name": "enm_pfb_1.ab",
+      "bytes": 350380,
+      "sha256": "28be19328aa0d2f891caec42d5e24d2a6dd09b95e176bfe575817da342acf7d5"
+    },
+    {
+      "name": "enm_pfb_10.ab",
+      "bytes": 269786,
+      "sha256": "147f97090e383db2cf3df1dbe87460b17f78f31d242d14561cc117c4762342c3"
+    },
+    {
+      "name": "enm_pfb_11.ab",
+      "bytes": 286756,
+      "sha256": "35c7c1247e16f8c30377959031cb0992174434b62b4d9bb36609dae6a85ae23d"
+    },
+    {
+      "name": "enm_pfb_12.ab",
+      "bytes": 308872,
+      "sha256": "cc628c80047f45280d948980cf76cab0749cb2931bb8beb6f0183d6780b08a41"
+    },
+    {
+      "name": "enm_pfb_13.ab",
+      "bytes": 341974,
+      "sha256": "c0f4e5e2dfa18a89eff91480e03e71cf74945edb8924c46844b9fded46142b12"
+    },
+    {
+      "name": "enm_pfb_14.ab",
+      "bytes": 337824,
+      "sha256": "a09ca7e43120b8e907b859856a55c40546dbd609c8d61785fe1336c89106b6c4"
+    },
+    {
+      "name": "enm_pfb_15.ab",
+      "bytes": 326947,
+      "sha256": "93c1cf9074438d1110b8b81abd11f10f49aab3824cbd119e615ac24fbfbe7ebb"
+    },
+    {
+      "name": "enm_pfb_16.ab",
+      "bytes": 316779,
+      "sha256": "7bb4f9f6cf6f860ee34cf410fc3e440b04cd2365787bbd351ed7a617227a625b"
+    },
+    {
+      "name": "enm_pfb_17.ab",
+      "bytes": 369479,
+      "sha256": "a1ef01bef144a4fa1cf716aa7e96aee7607fd66427971affa8017d5853554060"
+    },
+    {
+      "name": "enm_pfb_18.ab",
+      "bytes": 888486,
+      "sha256": "48dbafcaab677632bca8e7d823a33bb240fc9c4a7e589882b835192d7e82f36d"
+    },
+    {
+      "name": "enm_pfb_19.ab",
+      "bytes": 515499,
+      "sha256": "621a84f3aa2fc108b166d6262c59e75b33a83f5c38b1ca238215219449f825ca"
+    },
+    {
+      "name": "enm_pfb_2.ab",
+      "bytes": 282422,
+      "sha256": "4120cfda851e503c59b423189a50bacbdf5c163eadca989ff76816a2182cad11"
+    },
+    {
+      "name": "enm_pfb_20.ab",
+      "bytes": 470974,
+      "sha256": "d287334cf74ecad0e974455f6a764def75e07ae0beda68994eb2b4a51e228799"
+    },
+    {
+      "name": "enm_pfb_21.ab",
+      "bytes": 351442,
+      "sha256": "2eb49fa6c8cf00a9c4fe5da40049eb0f8413162cdd305171eaf50f6b8f431310"
+    },
+    {
+      "name": "enm_pfb_22.ab",
+      "bytes": 330880,
+      "sha256": "9397b1f6f7570f1144b553be7d80af5c3d7f98c361eb4e229d6798b0437ea5bf"
+    },
+    {
+      "name": "enm_pfb_23.ab",
+      "bytes": 426030,
+      "sha256": "e5bfea9b4bae05e1816606463d5f769c03173d2236b9dc16f0c8f781fd5dd807"
+    },
+    {
+      "name": "enm_pfb_24.ab",
+      "bytes": 432628,
+      "sha256": "069ec146aa7cb41e236949ad9461fa2addfb7eb5d47b0aea9516d650ac240b3d"
+    },
+    {
+      "name": "enm_pfb_25.ab",
+      "bytes": 493631,
+      "sha256": "3ef9a5921c26eafeba3b1b365d1bf8a38f0d3625206209498b6f84c14e2c1330"
+    },
+    {
+      "name": "enm_pfb_26.ab",
+      "bytes": 454786,
+      "sha256": "357283e57c84938357d92d0a746447995aa8a62919a7fd2b712caff44dcadd8d"
+    },
+    {
+      "name": "enm_pfb_27.ab",
+      "bytes": 491488,
+      "sha256": "550439579e19e07e1eb840c6d7d36b63124abaa8ab2491cf32b34785d766b81e"
+    },
+    {
+      "name": "enm_pfb_28.ab",
+      "bytes": 448100,
+      "sha256": "d6cef292cbad5320e20b744d99e34d6e9bfb018a173cdb3d81c89906df93a6c7"
+    },
+    {
+      "name": "enm_pfb_29.ab",
+      "bytes": 411173,
+      "sha256": "106db864efc09711ba3e74cb527aecd2001f7db4968146de52e413a10602c609"
+    },
+    {
+      "name": "enm_pfb_3.ab",
+      "bytes": 148031,
+      "sha256": "efd40f35954cf5e2de1048f3ddc8256db8758a7159eb7e00ee8c8449d9546f2d"
+    },
+    {
+      "name": "enm_pfb_30.ab",
+      "bytes": 397834,
+      "sha256": "24b6dbd92703bf8b260c1d3ff7fd553fe18d2af5c4fab4fd4b685d25272df838"
+    },
+    {
+      "name": "enm_pfb_31.ab",
+      "bytes": 464478,
+      "sha256": "cd82cdfa21a8faa2f12713e964b375c7a3f9e2679c1006e3aa35570a825136c9"
+    },
+    {
+      "name": "enm_pfb_32.ab",
+      "bytes": 248505,
+      "sha256": "294001d936e01f962d853bf4833d7f9bb43bd9326f93aac842eff3bc0f0320cf"
+    },
+    {
+      "name": "enm_pfb_33.ab",
+      "bytes": 449069,
+      "sha256": "d34a7e6100deebd756697f7b9b1fd7bfed7ea9470dabded99f0de713fd69af22"
+    },
+    {
+      "name": "enm_pfb_34.ab",
+      "bytes": 411574,
+      "sha256": "10bfe513eabd460d5f2776fe25939ff5b1138f46c6fc69ee89f3f0a5b66eb799"
+    },
+    {
+      "name": "enm_pfb_35.ab",
+      "bytes": 382849,
+      "sha256": "771714940ebfde440bc16dcad22d9bb108f3ed476d77fefc7cb9bbe6af8f409a"
+    },
+    {
+      "name": "enm_pfb_36.ab",
+      "bytes": 173660,
+      "sha256": "6dbc62cbffe4aee584545ae2c47d9e3ae220fe0f5c8634f2150cf2e37e296199"
+    },
+    {
+      "name": "enm_pfb_4.ab",
+      "bytes": 211975,
+      "sha256": "39289e95de9a35cc356e03bd540d2a7c4d919424cc7855adbf1c9f9457074506"
+    },
+    {
+      "name": "enm_pfb_5.ab",
+      "bytes": 259358,
+      "sha256": "b2283462005975a4c8b4885e43f5885c34ac36f0bba0937364e16cc13dd0ea20"
+    },
+    {
+      "name": "enm_pfb_6.ab",
+      "bytes": 287717,
+      "sha256": "824742dee67e4f8eda038f72e45a7032be9521048ebdd36da9d714340b2ae20f"
+    },
+    {
+      "name": "enm_pfb_7.ab",
+      "bytes": 298488,
+      "sha256": "76397f25fe712c7000a50ceb6d15937518907b028ad0232a5f8785ec16910716"
+    },
+    {
+      "name": "enm_pfb_8.ab",
+      "bytes": 295189,
+      "sha256": "4838eed6f91a248d80d3cdf350e0519ec4207f969341a65e20ac5b62b6a83653"
+    },
+    {
+      "name": "enm_pfb_9.ab",
+      "bytes": 233216,
+      "sha256": "21bb598e513ee29ab42cc04fb90c34f4f3c51dc30faf219989e0952df3cdc089"
+    },
+    {
+      "name": "enm_pfb_base_0.ab",
+      "bytes": 147392,
+      "sha256": "da7e5c5fd620eac9b7020f143423285b87eea861a0b6cf6534142db7dcf06b5b"
+    }
+  ],
+  "controllers": 2173,
+  "scriptTypes": {
+    "1933ff7e8a5c8203d6c79671cc9a6791": 1864,
+    "9e9f9729c5fdd5bfe14a604c80b8bc80": 37,
+    "4301a2c9488ce22f7be4b857f522da00": 1,
+    "ffb62221c7ca0385ec4c11482b7762d9": 1,
+    "8a02844a224469591f0815f99104a2cd": 1,
+    "26820eb414e841472a529c5b0e211dad": 117,
+    "afd5eea9d2e224c7ecd755dd04bf1e1c": 18,
+    "00d69a6a9ddae9fe7b8efd4495587b87": 1,
+    "a665108625f682534e23f794a8830180": 12,
+    "3764e0faf917b2ae4c8dd3e768fc0a8f": 14,
+    "f4242f5bc7e4ccbf6a1fcb30d64d5c68": 28,
+    "4fe2652435dc73dea63f8d9fd387ed97": 1,
+    "ef5efbced668302e7beb40e10d96cf93": 8,
+    "2d5a551f7ea73d430e337852c1e0be97": 1,
+    "db1a29d0916aedcb9c3b36b960621def": 1,
+    "bf63080613718732b42fabc5dbb27e74": 20,
+    "d219cc553a50f167f7896349e4e2e4d4": 5,
+    "bb638e4a3233b9329d7281df100790f6": 2,
+    "4c0adeb571cef3f041017edc345b0c66": 2,
+    "aed573b8245c298a16124447ee24bf52": 39
+  },
+  "nonzeroMasks": [],
+  "tools": [
+    {
+      "path": "docs/research/evidence/blocker-roles-20261031/extract.py",
+      "sha256": "6fb2b14bd9d1cb06039365378001594f03ecc4cbe3b1bb04ed6ac4ac001391bf"
+    },
+    {
+      "path": ".agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+      "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+    }
+  ]
+}

@@ -1,0 +1,539 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-01"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-01",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "cost-version/cap-field-binding.json#/provenance/client/dll",
+          "cost-version/cap-field.json#/provenance/client/dll",
+          "cost-version/card-cost.json#/provenance/client/dll",
+          "cost-version/expanded.json#/provenance/client/dll",
+          "cost-version/probe.json#/provenance/client/dll",
+          "cost-version/runtime-cost.json#/provenance/client/dll",
+          "negative-dp/negative-dp.json#/provenance/client/dll",
+          "negative-dp/probe.json#/provenance/client/dll",
+          "negative-dp/related.json#/provenance/client/dll",
+          "supply/probe.json#/provenance/client/dll",
+          "supply/supply-fields.json#/provenance/client/dll",
+          "supply/supply-methods.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "cost-version/cap-field-binding.json#/provenance/client/metadata",
+          "cost-version/cap-field.json#/provenance/client/metadata",
+          "cost-version/card-cost.json#/provenance/client/metadata",
+          "cost-version/expanded.json#/provenance/client/metadata",
+          "cost-version/probe.json#/provenance/client/metadata",
+          "cost-version/runtime-cost.json#/provenance/client/metadata",
+          "negative-dp/negative-dp.json#/provenance/client/metadata",
+          "negative-dp/probe.json#/provenance/client/metadata",
+          "negative-dp/related.json#/provenance/client/metadata",
+          "supply/probe.json#/provenance/client/metadata",
+          "supply/supply-fields.json#/provenance/client/metadata",
+          "supply/supply-methods.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "cost-version/cap-field-binding.json",
+      "cost-version/cap-field.json",
+      "cost-version/card-cost.json",
+      "cost-version/expanded.json",
+      "cost-version/probe.json",
+      "cost-version/runtime-cost.json",
+      "negative-dp/negative-dp.json",
+      "negative-dp/probe.json",
+      "negative-dp/prts-sources.json",
+      "negative-dp/related.json",
+      "supply/probe.json",
+      "supply/supply-fields.json",
+      "supply/supply-methods.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12589,
+        "sha256": "1a85248a6a48d92d61c65f5ba044d079954866ff0c1672488b92f0cf1366af9a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "cost-version/cap-field-binding.json",
+        "kind": "record",
+        "bytes": 18075,
+        "sha256": "68f6fab99e5230a34ad71c786c843606665aa66627a55a1607173272618fe501"
+      },
+      {
+        "path": "cost-version/cap-field.json",
+        "kind": "record",
+        "bytes": 23833,
+        "sha256": "8e28fd4dfebef248d50cf4d0c02a5e8b7cf7addf4ec2fa8fc6f00ce25e24c7e0"
+      },
+      {
+        "path": "cost-version/card-cost.json",
+        "kind": "record",
+        "bytes": 32699,
+        "sha256": "542e03563c704a77869344c7604ce1aceca99f3b9468072ad974c9079db22bfe"
+      },
+      {
+        "path": "cost-version/expanded.json",
+        "kind": "record",
+        "bytes": 60084,
+        "sha256": "ff9fbc7177b5f3c1d04b90076b9f1488cd9cdc8f38bc584c23438b3ac006fa64"
+      },
+      {
+        "path": "cost-version/extract.py",
+        "kind": "historical-script",
+        "bytes": 5053,
+        "sha256": "a2ac615042d1b2f13c3eabd7d5c22e872cd1c9f92c46cb574ed1b1fca03b2e6e"
+      },
+      {
+        "path": "cost-version/extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "cost-version/probe.json",
+        "kind": "record",
+        "bytes": 17205,
+        "sha256": "cbd562810ccb6e3c3211f5bf5aca0ec382af55f8e0e9c4cd9e589032de8dffe1"
+      },
+      {
+        "path": "cost-version/runtime-cost.json",
+        "kind": "record",
+        "bytes": 35942,
+        "sha256": "3ff472be2cd1c7a3500aa29f48ea7724df43c22644d60a6a10ef49b571cd5379"
+      },
+      {
+        "path": "negative-dp/extract.py",
+        "kind": "historical-script",
+        "bytes": 2946,
+        "sha256": "287c07343b4be3ea83db4974837bb23018370297af275c8c3a97b30de7297c39"
+      },
+      {
+        "path": "negative-dp/extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "negative-dp/negative-dp.json",
+        "kind": "record",
+        "bytes": 485655,
+        "sha256": "9110069ef35c140b8e348da7a36c49711a2b4af973a530e8f77661335291f8a9"
+      },
+      {
+        "path": "negative-dp/probe.json",
+        "kind": "record",
+        "bytes": 16908,
+        "sha256": "79b8d7c46d62e737ac4acbe72ce4656d3fb892edc7d0d18a66ab812e4d770a6f"
+      },
+      {
+        "path": "negative-dp/prts-sources.json",
+        "kind": "record",
+        "bytes": 1070,
+        "sha256": "c3bcf4a14a4a91d66fa267ce01c0d645c65a9a37483dc73d0fa5da24611997c3"
+      },
+      {
+        "path": "negative-dp/related.json",
+        "kind": "record",
+        "bytes": 32961,
+        "sha256": "4b4dbe917639f47d16b0f79d2ac881e1c84b665142386c91a04d0efd6ffe8674"
+      },
+      {
+        "path": "supply/extract.py",
+        "kind": "historical-script",
+        "bytes": 3826,
+        "sha256": "04e5f3f75492dbc2aa89e95861806c08ad9ddae56d4cec3be0c4e2a891571c3c"
+      },
+      {
+        "path": "supply/extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "supply/probe.json",
+        "kind": "record",
+        "bytes": 17199,
+        "sha256": "d4a6c61aa683dcf499f38af1d5180e9d3776ad4de8094620678174cdaf3b3318"
+      },
+      {
+        "path": "supply/supply-fields.json",
+        "kind": "record",
+        "bytes": 27059,
+        "sha256": "1a8786f39d9d0e843bbad54138f5775022f6c821769770669ef09cd9c881f1b9"
+      },
+      {
+        "path": "supply/supply-methods.json",
+        "kind": "record",
+        "bytes": 2239531,
+        "sha256": "21819f3a84a6090d0e423810750a1a036681a0a36973a9814790766b206b41e0"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 26423,
+          "mode": "metadata",
+          "records": [
+            "supply/supply-methods.json#/result/0/method"
+          ],
+          "fullname": "Torappu.PeriodicTimer.Reset",
+          "address": "0x181e4b0b0"
+        },
+        {
+          "index": 26424,
+          "mode": "metadata",
+          "records": [
+            "supply/supply-methods.json#/result/1/method"
+          ],
+          "fullname": "Torappu.PeriodicTimer.Reset",
+          "address": "0x181e4afc0"
+        },
+        {
+          "index": 26433,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/negative-dp.json#/result/methods/Torappu.PrecisePeriodicTimer.get_isReady/method",
+            "negative-dp/related.json#/result/Torappu.PrecisePeriodicTimer/methods/0"
+          ],
+          "fullname": "Torappu.PrecisePeriodicTimer.get_isReady",
+          "address": "0x181e4c1a0"
+        },
+        {
+          "index": 26434,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/related.json#/result/Torappu.PrecisePeriodicTimer/methods/1"
+          ],
+          "fullname": "Torappu.PrecisePeriodicTimer..ctor",
+          "address": "0x181e4c0f0"
+        },
+        {
+          "index": 26435,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/related.json#/result/Torappu.PrecisePeriodicTimer/methods/2"
+          ],
+          "fullname": "Torappu.PrecisePeriodicTimer..ctor",
+          "address": "0x181e4b440"
+        },
+        {
+          "index": 26436,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/negative-dp.json#/result/methods/Torappu.PrecisePeriodicTimer.Update/method",
+            "negative-dp/related.json#/result/Torappu.PrecisePeriodicTimer/methods/3"
+          ],
+          "fullname": "Torappu.PrecisePeriodicTimer.Update",
+          "address": "0x181e4c050"
+        },
+        {
+          "index": 26437,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/negative-dp.json#/result/methods/Torappu.PrecisePeriodicTimer.Next/method",
+            "negative-dp/related.json#/result/Torappu.PrecisePeriodicTimer/methods/4"
+          ],
+          "fullname": "Torappu.PrecisePeriodicTimer.Next",
+          "address": "0x181e4be80"
+        },
+        {
+          "index": 26438,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/related.json#/result/Torappu.PrecisePeriodicTimer/methods/5"
+          ],
+          "fullname": "Torappu.PrecisePeriodicTimer.UpdateMultiple",
+          "address": "0x181e4bf30"
+        },
+        {
+          "index": 26439,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/related.json#/result/Torappu.PrecisePeriodicTimer/methods/6"
+          ],
+          "fullname": "Torappu.PrecisePeriodicTimer.NextMultiple",
+          "address": "0x181e4bdb0"
+        },
+        {
+          "index": 65869,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/negative-dp.json#/result/methods/Torappu.Battle.BattleCostManager..ctor/method"
+          ],
+          "fullname": "Torappu.Battle.BattleCostManager..ctor",
+          "address": "0x180685230"
+        },
+        {
+          "index": 65875,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/negative-dp.json#/result/methods/Torappu.Battle.BattleCostManager.SetCost/method"
+          ],
+          "fullname": "Torappu.Battle.BattleCostManager.SetCost",
+          "address": "0x1806845d0"
+        },
+        {
+          "index": 65895,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/negative-dp.json#/result/methods/Torappu.Battle.BattleCostManager.UpdateCost/method"
+          ],
+          "fullname": "Torappu.Battle.BattleCostManager.UpdateCost",
+          "address": "0x180684d20"
+        },
+        {
+          "index": 65914,
+          "mode": "disasm",
+          "records": [
+            "cost-version/runtime-cost.json#/result",
+            "cost-version/runtime-cost.json#/result/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateRuntimeCardCost",
+          "address": "0x1806872b0"
+        },
+        {
+          "index": 66823,
+          "mode": "disasm",
+          "records": [
+            "cost-version/card-cost.json#/result/methods/0",
+            "cost-version/card-cost.json#/result/bodies/0",
+            "cost-version/card-cost.json#/result/bodies/0/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.get_rawCost",
+          "address": "0x1806f3420"
+        },
+        {
+          "index": 66826,
+          "mode": "disasm",
+          "records": [
+            "cost-version/card-cost.json#/result/methods/1",
+            "cost-version/card-cost.json#/result/bodies/1",
+            "cost-version/card-cost.json#/result/bodies/1/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.get_cost",
+          "address": "0x1806f2310"
+        },
+        {
+          "index": 66861,
+          "mode": "metadata",
+          "records": [
+            "supply/supply-methods.json#/result/2/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.Draw",
+          "address": "0x1806eb980"
+        },
+        {
+          "index": 66862,
+          "mode": "metadata",
+          "records": [
+            "supply/supply-methods.json#/result/3/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.Recharge",
+          "address": "0x1806edd80"
+        },
+        {
+          "index": 66867,
+          "mode": "metadata",
+          "records": [
+            "supply/supply-methods.json#/result/4/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.OnRecycle",
+          "address": "0x1806ecc70"
+        },
+        {
+          "index": 66869,
+          "mode": "metadata",
+          "records": [
+            "supply/supply-methods.json#/result/5/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card._UpdateCardBuff",
+          "address": "0x1806f0c30"
+        },
+        {
+          "index": 66909,
+          "mode": "metadata",
+          "records": [
+            "supply/supply-methods.json#/result/6/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.OnTick",
+          "address": "0x1806ed530"
+        },
+        {
+          "index": 67094,
+          "mode": "metadata",
+          "records": [
+            "supply/supply-methods.json#/result/7/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/TokenCard.OnRecycle",
+          "address": "0x18071d300"
+        },
+        {
+          "index": 226190,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/related.json#/result/0x18480bfc0/0"
+          ],
+          "fullname": "Torappu.FP.op_Addition",
+          "address": "0x18480bfc0"
+        },
+        {
+          "index": 226192,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/related.json#/result/0x18480bfc0/1"
+          ],
+          "fullname": "Torappu.FP.FastAdd",
+          "address": "0x18480bfc0"
+        },
+        {
+          "index": 226193,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/related.json#/result/0x18695c0c0/0"
+          ],
+          "fullname": "Torappu.FP.op_Subtraction",
+          "address": "0x18695c0c0"
+        },
+        {
+          "index": 226195,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/related.json#/result/0x18695c0c0/1"
+          ],
+          "fullname": "Torappu.FP.FastSub",
+          "address": "0x18695c0c0"
+        },
+        {
+          "index": 226197,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/related.json#/result/0x18695bf20/0"
+          ],
+          "fullname": "Torappu.FP.op_Multiply",
+          "address": "0x18695bf20"
+        },
+        {
+          "index": 226199,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/related.json#/result/0x18695bf20/1"
+          ],
+          "fullname": "Torappu.FP.FastMul",
+          "address": "0x18695bf20"
+        },
+        {
+          "index": 226224,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/related.json#/result/0x18695e180/0"
+          ],
+          "fullname": "Torappu.FP.op_Implicit",
+          "address": "0x18695e180"
+        },
+        {
+          "index": 226229,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/related.json#/result/0x18695e170/0"
+          ],
+          "fullname": "Torappu.FP.op_Implicit",
+          "address": "0x18695e170"
+        },
+        {
+          "index": 317441,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/related.json#/result/0x18480bfc0/2"
+          ],
+          "fullname": "UnityEngine.Timeline.DiscreteTime.op_Addition",
+          "address": "0x18480bfc0"
+        },
+        {
+          "index": 317442,
+          "mode": "metadata",
+          "records": [
+            "negative-dp/related.json#/result/0x18695c0c0/2"
+          ],
+          "fullname": "UnityEngine.Timeline.DiscreteTime.op_Subtraction",
+          "address": "0x18695c0c0"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.BattleOptions",
+          "records": [
+            "cost-version/cap-field.json#/result/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Deck/Card",
+          "records": [
+            "cost-version/card-cost.json#/result/type",
+            "supply/supply-fields.json#/result/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Deck/Card/CardPolicy",
+          "records": [
+            "supply/supply-fields.json#/result/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Deck/Card/RechargeTiming",
+          "records": [
+            "supply/supply-fields.json#/result/4"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Deck/Card/State",
+          "records": [
+            "supply/supply-fields.json#/result/3"
+          ]
+        },
+        {
+          "name": "Torappu.PeriodicTimer",
+          "records": [
+            "supply/supply-fields.json#/result/1"
+          ]
+        },
+        {
+          "name": "Torappu.PrecisePeriodicTimer",
+          "records": [
+            "negative-dp/related.json#/result/Torappu.PrecisePeriodicTimer/type"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

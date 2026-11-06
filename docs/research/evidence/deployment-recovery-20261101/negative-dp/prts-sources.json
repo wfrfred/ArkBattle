@@ -1,0 +1,24 @@
+{
+  "accessed": "2026-11-01",
+  "sourceType": "PRTS community documentation, not official documentation",
+  "sources": [
+    {
+      "url": "https://prts.wiki/w/部署费用#负数当前费用",
+      "section": "负数当前费用",
+      "findings": [
+        "当前DP<0时自然恢复速度减半，和费用回复速度等数值乘算；回复至0后不再减半。",
+        "绝大多数费用耗费可以按费用下限透支；特殊当前费用检查需启用_considerNegativeCost，纯数值比较不能一概平移。",
+        "部分清空费用机制实际设为0，能将负DP补至0。"
+      ],
+      "shortExcerpt": "在当前费用回复至0前，费用恢复速度将减半（与费用回复速度等数值乘算）",
+      "limit": "没有说明负值进入/跨0时已有进度如何处理，需客户端短链。"
+    },
+    {
+      "url": "https://prts.wiki/w/可露希尔#天赋",
+      "section": "极限调度 / 部署费用下限术语",
+      "findings": [
+        "费用小于0时部署费用自然回复速度-50%。"
+      ]
+    }
+  ]
+}

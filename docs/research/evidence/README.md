@@ -70,7 +70,16 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | [skill-parameter-formulas-20261029](skill-parameter-formulas-20261029/README.md) | SP、Ammo 和时长的原生公式 |
 | [numeric-parameters](numeric-parameters/README.md) | 属性数值与限幅；原取证日期和输入指纹未记录 |
 | [block-positioning-20261031](block-positioning-20261031/README.md) | 阻挡站位曲线、解除、位置覆盖及插值与自主移动调度 |
+| [blocker-roles-20261031](blocker-roles-20261031/README.md) | Blocker／Blockable 角色、阵营与 Enemy 初始阻挡掩码扫描 |
+| [deployment-native-20261031](deployment-native-20261031/README.md) | 部署费用 getter、两次取整与 MAX_COST_CEIL 字段绑定；供给与特殊部署资料见案例 24 |
+| [card-ordering-20261031](card-ordering-20261031/README.md) | Card 排序入口、调用实参与 Aura 边界；凛御银灰实际比较器安装／撤销及多来源竞争尚未闭合 |
+| [deployment-entry-20261101](deployment-entry-20261101/README.md) | 卡牌 Buff 转入角色、属性启用、基础 SP／HP 与出生事件；松桐、凛御银灰的具体模板和时点区别 |
+| [deployment-recovery-20261101](deployment-recovery-20261101/README.md) | 新客户端的队列库存恢复预算、负 DP 半速自然回复及费用短链复核 |
+| [deployment-direction-20261101](deployment-direction-20261101/README.md) | 有／无朝向设置的部署实例、岁相巨型范围与未绑定具体资源的 EnemyGiantBoss 类证据 |
+| [deployment-move-20261102](deployment-move-20261102/README.md) | 特殊移动的独立结束原因；与旧版结束后重新创建调用链分别标明版本边界 |
+| [card-policy-distribution-20261102](card-policy-distribution-20261102/README.md) | 原生 CardPolicy、份数消耗、回收与费用惩罚的配置分布和执行分支 |
 | [elemental-timing-20261102](elemental-timing-20261102/README.md) | 元素爆发同步触发、首次恢复机会、按 deltaTime 推进及宿主更新顺序 |
+| [arcane-chain-silence-20261102](arcane-chain-silence-20261102/README.md) | 奥术法阵伤害事件绑定、惊蛰逐目标弹跳、MODIFIER_TARGET 解析及 5 秒沉默配置 |
 | [attack-addon-order-20261102](attack-addon-order-20261102/README.md) | 妮芙 S1 的前置附加 Buff、来源伤害后 EP、短延迟天赋监听与当前 HP／Projectile 原生调用链 |
 | [nymph-action-settlement-20261103](nymph-action-settlement-20261103/README.md) | 妮芙 S1 从选取目标到弹道抵达、主伤害采样与接收、后置 EP，以及归零／击杀／回收的实际时点 |
 | [damage-hook-needs-20261103](damage-hook-needs-20261103/README.md) | 伤害 Hook 的真实玩法依据、9 个新增接收／免死节点、六个已有模板和 PRTS 资料登记 |

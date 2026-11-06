@@ -1,0 +1,1328 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-07"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-07",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "branch-bodies.json#/provenance/client/dll",
+          "random-bodies.json#/provenance/client/dll",
+          "random-helper.json#/provenance/client/dll",
+          "scheduler-fields.json#/provenance/client/dll",
+          "spawn-bodies.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "branch-bodies.json#/provenance/client/metadata",
+          "random-bodies.json#/provenance/client/metadata",
+          "random-helper.json#/provenance/client/metadata",
+          "scheduler-fields.json#/provenance/client/metadata",
+          "spawn-bodies.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "branch-bodies.json",
+      "random-bodies.json",
+      "random-helper.json",
+      "scheduler-fields.json",
+      "spawn-bodies.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "branch-bodies.json",
+        "kind": "record",
+        "bytes": 628885,
+        "sha256": "49c2935bf514048a9fd115db9cb15c2a88e76e03eb5fb8c0cf207c4410774b3f"
+      },
+      {
+        "path": "random-bodies.json",
+        "kind": "record",
+        "bytes": 540131,
+        "sha256": "bc1986fcbb3a363e41adeef80b61d8c8464c6006ce6300729db9cf9ab9e2b57b"
+      },
+      {
+        "path": "random-helper.json",
+        "kind": "record",
+        "bytes": 66430,
+        "sha256": "4d7013da9929e98f5d4dbe041bf355b201a9a7e179759edfb7bfd956b3805f83"
+      },
+      {
+        "path": "scheduler-fields.json",
+        "kind": "record",
+        "bytes": 28494,
+        "sha256": "5d99f86af566e44fb6011ed221b9a55026883cfcea493417800e8f3dec9040ef"
+      },
+      {
+        "path": "spawn-bodies.json",
+        "kind": "record",
+        "bytes": 633884,
+        "sha256": "49b614322d72b2122ca04f3a431928041311d08e9bdb0300e01e9150443d82ee"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 18333,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/0",
+            "random-bodies.json#/result/relatedMethods/0",
+            "spawn-bodies.json#/result/relatedMethods/0"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleModifierWrap._m_NewElementDamageModifierAfterCalculate_xlua_st_",
+          "address": "0x180a616a0"
+        },
+        {
+          "index": 18350,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/1",
+            "random-bodies.json#/result/relatedMethods/1",
+            "spawn-bodies.json#/result/relatedMethods/1"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleModifierWrap._g_get_isElementDamage",
+          "address": "0x180a5db40"
+        },
+        {
+          "index": 32181,
+          "mode": "disasm",
+          "records": [
+            "spawn-bodies.json#/result/methods/0",
+            "spawn-bodies.json#/result/bodies/0/method",
+            "spawn-bodies.json#/result/bodies/0/fragments/0",
+            "spawn-bodies.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.LevelData/WaveData/FragmentData/ActionData.get_weightValue",
+          "address": "0x182460e70"
+        },
+        {
+          "index": 32192,
+          "mode": "disasm",
+          "records": [
+            "random-bodies.json#/result/methods/0",
+            "random-bodies.json#/result/bodies/0/method",
+            "random-bodies.json#/result/bodies/0/fragments/0",
+            "random-bodies.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.LevelData/BranchData/PhaseData.get_randomActionGroups",
+          "address": "0x182470580"
+        },
+        {
+          "index": 32193,
+          "mode": "disasm",
+          "records": [
+            "random-bodies.json#/result/methods/1",
+            "random-bodies.json#/result/bodies/1/method",
+            "random-bodies.json#/result/bodies/1/fragments/0",
+            "random-bodies.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.LevelData/BranchData/PhaseData.FetchActionsWithRandomSpawn",
+          "address": "0x182470050"
+        },
+        {
+          "index": 65902,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/2",
+            "random-bodies.json#/result/relatedMethods/2",
+            "spawn-bodies.json#/result/relatedMethods/2"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686700"
+        },
+        {
+          "index": 65903,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/3",
+            "random-bodies.json#/result/relatedMethods/3",
+            "spawn-bodies.json#/result/relatedMethods/3"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686440"
+        },
+        {
+          "index": 65904,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/4",
+            "random-bodies.json#/result/relatedMethods/4",
+            "spawn-bodies.json#/result/relatedMethods/4"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686530"
+        },
+        {
+          "index": 66147,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/5",
+            "random-bodies.json#/result/relatedMethods/5",
+            "spawn-bodies.json#/result/relatedMethods/5"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAfterOutputElementDamage",
+          "address": "0x1806d0180"
+        },
+        {
+          "index": 66153,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/6",
+            "random-bodies.json#/result/relatedMethods/6",
+            "spawn-bodies.json#/result/relatedMethods/6"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnTakeEPDamage",
+          "address": "0x1806d5250"
+        },
+        {
+          "index": 66380,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/7",
+            "random-bodies.json#/result/relatedMethods/7",
+            "spawn-bodies.json#/result/relatedMethods/7"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnAfterOutputElementDamage",
+          "address": "0x1806b8c90"
+        },
+        {
+          "index": 66384,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/8",
+            "random-bodies.json#/result/relatedMethods/8",
+            "spawn-bodies.json#/result/relatedMethods/8"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnTakeEPDamage",
+          "address": "0x1806c76c0"
+        },
+        {
+          "index": 67460,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/9",
+            "random-bodies.json#/result/relatedMethods/9",
+            "spawn-bodies.json#/result/relatedMethods/9"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_epDamageResistance",
+          "address": "0x180734bb0"
+        },
+        {
+          "index": 67675,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/10",
+            "random-bodies.json#/result/relatedMethods/10",
+            "spawn-bodies.json#/result/relatedMethods/10"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnAfterOutputElementDamage",
+          "address": "0x180727b50"
+        },
+        {
+          "index": 67684,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/11",
+            "random-bodies.json#/result/relatedMethods/11",
+            "spawn-bodies.json#/result/relatedMethods/11"
+          ],
+          "fullname": "Torappu.Battle.Entity._DoApplyEPModifierInternal",
+          "address": "0x180730be0"
+        },
+        {
+          "index": 67711,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/12",
+            "random-bodies.json#/result/relatedMethods/12",
+            "spawn-bodies.json#/result/relatedMethods/12"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnTakeEPDamage",
+          "address": "0x18072be40"
+        },
+        {
+          "index": 67982,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/13",
+            "random-bodies.json#/result/relatedMethods/13",
+            "spawn-bodies.json#/result/relatedMethods/13"
+          ],
+          "fullname": "Torappu.Battle.BattleLogger.LogEpModifier",
+          "address": "0x180741920"
+        },
+        {
+          "index": 68032,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/14",
+            "random-bodies.json#/result/relatedMethods/14",
+            "spawn-bodies.json#/result/relatedMethods/14"
+          ],
+          "fullname": "Torappu.Battle.BattleLogger/BattleStats/CharAdvancedStats.ToListElementDamage",
+          "address": "0x18074c630"
+        },
+        {
+          "index": 69081,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/15",
+            "random-bodies.json#/result/relatedMethods/15",
+            "spawn-bodies.json#/result/relatedMethods/15"
+          ],
+          "fullname": "Torappu.Battle.Act33SideManager.ApplyElementDamageCharactersWithRope",
+          "address": "0x1807a6a90"
+        },
+        {
+          "index": 69083,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/16",
+            "random-bodies.json#/result/relatedMethods/16",
+            "spawn-bodies.json#/result/relatedMethods/16"
+          ],
+          "fullname": "Torappu.Battle.Act33SideManager._ApplyElementDamageModifier",
+          "address": "0x1807aa610"
+        },
+        {
+          "index": 72136,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/17",
+            "random-bodies.json#/result/relatedMethods/17",
+            "spawn-bodies.json#/result/relatedMethods/17"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isElementDamage",
+          "address": "0x18090d630"
+        },
+        {
+          "index": 72181,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/18",
+            "random-bodies.json#/result/relatedMethods/18",
+            "spawn-bodies.json#/result/relatedMethods/18"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewElementDamageModifierAfterCalculate",
+          "address": "0x18090a8e0"
+        },
+        {
+          "index": 73262,
+          "mode": "disasm",
+          "records": [
+            "random-bodies.json#/result/methods/2",
+            "random-bodies.json#/result/bodies/2/method",
+            "random-bodies.json#/result/bodies/2/fragments/0",
+            "random-bodies.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.Init",
+          "address": "0x18097e950"
+        },
+        {
+          "index": 73263,
+          "mode": "disasm",
+          "records": [
+            "branch-bodies.json#/result/methods/0",
+            "branch-bodies.json#/result/bodies/0/method",
+            "branch-bodies.json#/result/bodies/0/fragments/0",
+            "branch-bodies.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.CalculateStates",
+          "address": "0x18097d950"
+        },
+        {
+          "index": 73266,
+          "mode": "disasm",
+          "records": [
+            "branch-bodies.json#/result/methods/1",
+            "branch-bodies.json#/result/bodies/1/method",
+            "branch-bodies.json#/result/bodies/1/fragments/0",
+            "branch-bodies.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler._NotCountInTotal",
+          "address": "0x180986960"
+        },
+        {
+          "index": 73269,
+          "mode": "disasm",
+          "records": [
+            "branch-bodies.json#/result/methods/2",
+            "branch-bodies.json#/result/bodies/2/method",
+            "branch-bodies.json#/result/bodies/2/fragments/0",
+            "branch-bodies.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.CheckBranchIsReadyToMoveNext",
+          "address": "0x18097dd50"
+        },
+        {
+          "index": 73273,
+          "mode": "disasm",
+          "records": [
+            "branch-bodies.json#/result/methods/3",
+            "branch-bodies.json#/result/bodies/3/method",
+            "branch-bodies.json#/result/bodies/3/fragments/0",
+            "branch-bodies.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.TryMoveNextBranch",
+          "address": "0x180983e90"
+        },
+        {
+          "index": 73274,
+          "mode": "disasm",
+          "records": [
+            "branch-bodies.json#/result/methods/4",
+            "branch-bodies.json#/result/bodies/4/method",
+            "branch-bodies.json#/result/bodies/4/fragments/0",
+            "branch-bodies.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.TryPickRandomBranch",
+          "address": "0x1809842b0"
+        },
+        {
+          "index": 73275,
+          "mode": "disasm",
+          "records": [
+            "branch-bodies.json#/result/methods/5",
+            "branch-bodies.json#/result/bodies/5/method",
+            "branch-bodies.json#/result/bodies/5/fragments/0",
+            "branch-bodies.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.TryPickRandomBranchNotRepeat",
+          "address": "0x1809840b0"
+        },
+        {
+          "index": 73282,
+          "mode": "disasm",
+          "records": [
+            "branch-bodies.json#/result/methods/6",
+            "branch-bodies.json#/result/bodies/6/method",
+            "branch-bodies.json#/result/bodies/6/fragments/0",
+            "branch-bodies.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.FinishCurrentWave",
+          "address": "0x18097e270"
+        },
+        {
+          "index": 73285,
+          "mode": "disasm",
+          "records": [
+            "branch-bodies.json#/result/methods/7",
+            "branch-bodies.json#/result/bodies/7/method",
+            "branch-bodies.json#/result/bodies/7/fragments/0",
+            "branch-bodies.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.TrackEnemyAtNextWave",
+          "address": "0x180983130"
+        },
+        {
+          "index": 73296,
+          "mode": "disasm",
+          "records": [
+            "random-bodies.json#/result/methods/3",
+            "random-bodies.json#/result/bodies/3/method",
+            "random-bodies.json#/result/bodies/3/fragments/0",
+            "random-bodies.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler._DealAction",
+          "address": "0x180984f50"
+        },
+        {
+          "index": 73297,
+          "mode": "disasm",
+          "records": [
+            "random-bodies.json#/result/methods/4",
+            "random-bodies.json#/result/bodies/4/method",
+            "random-bodies.json#/result/bodies/4/fragments/0",
+            "random-bodies.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.TryDealDynamicPhase",
+          "address": "0x1809836a0"
+        },
+        {
+          "index": 73311,
+          "mode": "disasm",
+          "records": [
+            "spawn-bodies.json#/result/methods/1",
+            "spawn-bodies.json#/result/bodies/1/method",
+            "spawn-bodies.json#/result/bodies/1/fragments/0",
+            "spawn-bodies.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler._DoSpawnEnemyInternal",
+          "address": "0x180986030"
+        },
+        {
+          "index": 73312,
+          "mode": "disasm",
+          "records": [
+            "spawn-bodies.json#/result/methods/2",
+            "spawn-bodies.json#/result/bodies/2/method",
+            "spawn-bodies.json#/result/bodies/2/fragments/0",
+            "spawn-bodies.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler._DoSpawnEnemyInternal",
+          "address": "0x180986290"
+        },
+        {
+          "index": 73330,
+          "mode": "disasm",
+          "records": [
+            "spawn-bodies.json#/result/methods/3",
+            "spawn-bodies.json#/result/bodies/3/method",
+            "spawn-bodies.json#/result/bodies/3/fragments/0",
+            "spawn-bodies.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler._OnActionExecuted",
+          "address": "0x180986a60"
+        },
+        {
+          "index": 73331,
+          "mode": "disasm",
+          "records": [
+            "spawn-bodies.json#/result/methods/4",
+            "spawn-bodies.json#/result/bodies/4/method",
+            "spawn-bodies.json#/result/bodies/4/fragments/0",
+            "spawn-bodies.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler._CheckWaveNotFinish",
+          "address": "0x1809848a0"
+        },
+        {
+          "index": 73332,
+          "mode": "disasm",
+          "records": [
+            "branch-bodies.json#/result/methods/8",
+            "branch-bodies.json#/result/bodies/8/method",
+            "branch-bodies.json#/result/bodies/8/fragments/0",
+            "branch-bodies.json#/result/bodies/8/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler._CheckFinalNotFinish",
+          "address": "0x180984690"
+        },
+        {
+          "index": 73333,
+          "mode": "disasm",
+          "records": [
+            "spawn-bodies.json#/result/methods/5",
+            "spawn-bodies.json#/result/bodies/5/method",
+            "spawn-bodies.json#/result/bodies/5/fragments/0",
+            "spawn-bodies.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler._OnUnitDestroyed",
+          "address": "0x180986c00"
+        },
+        {
+          "index": 73335,
+          "mode": "disasm",
+          "records": [
+            "spawn-bodies.json#/result/methods/6",
+            "spawn-bodies.json#/result/bodies/6/method",
+            "spawn-bodies.json#/result/bodies/6/fragments/0",
+            "spawn-bodies.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler._OnEnemyRecycled",
+          "address": "0x180986ae0"
+        },
+        {
+          "index": 73337,
+          "mode": "disasm",
+          "records": [
+            "branch-bodies.json#/result/methods/9",
+            "branch-bodies.json#/result/bodies/9/method",
+            "branch-bodies.json#/result/bodies/9/fragments/0",
+            "branch-bodies.json#/result/bodies/9/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.CheckActionEnabled",
+          "address": "0x18097dbb0"
+        },
+        {
+          "index": 73348,
+          "mode": "disasm",
+          "records": [
+            "branch-bodies.json#/result/methods/10",
+            "branch-bodies.json#/result/bodies/10/method",
+            "branch-bodies.json#/result/bodies/10/fragments/0",
+            "branch-bodies.json#/result/bodies/10/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler/BranchRuntime.TryPickNextPhase",
+          "address": "0x180978640"
+        },
+        {
+          "index": 73349,
+          "mode": "disasm",
+          "records": [
+            "random-bodies.json#/result/methods/5",
+            "random-bodies.json#/result/bodies/5/method",
+            "random-bodies.json#/result/bodies/5/fragments/0",
+            "random-bodies.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler/BranchRuntime.TryPickRandomPhase",
+          "address": "0x180978910"
+        },
+        {
+          "index": 73350,
+          "mode": "disasm",
+          "records": [
+            "random-bodies.json#/result/methods/6",
+            "random-bodies.json#/result/bodies/6/method",
+            "random-bodies.json#/result/bodies/6/fragments/0",
+            "random-bodies.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler/BranchRuntime.TryPickRandomPhaseNotRepeat",
+          "address": "0x180978760"
+        },
+        {
+          "index": 73354,
+          "mode": "disasm",
+          "records": [
+            "random-bodies.json#/result/methods/7",
+            "random-bodies.json#/result/bodies/7/method",
+            "random-bodies.json#/result/bodies/7/fragments/0",
+            "random-bodies.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler/DefaultSchedulerPreprocessor.DoPreprocess",
+          "address": "0x180978b10"
+        },
+        {
+          "index": 73393,
+          "mode": "disasm",
+          "records": [
+            "spawn-bodies.json#/result/methods/7",
+            "spawn-bodies.json#/result/bodies/7/method",
+            "spawn-bodies.json#/result/bodies/7/fragments/0",
+            "spawn-bodies.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler/<_DoSchedule>d__119.MoveNext",
+          "address": "0x18098dbc0"
+        },
+        {
+          "index": 73413,
+          "mode": "disasm",
+          "records": [
+            "branch-bodies.json#/result/methods/11",
+            "branch-bodies.json#/result/bodies/11/method",
+            "branch-bodies.json#/result/bodies/11/fragments/0",
+            "branch-bodies.json#/result/bodies/11/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler/<_DealWave>d__123.MoveNext",
+          "address": "0x18098c240"
+        },
+        {
+          "index": 73424,
+          "mode": "disasm",
+          "records": [
+            "random-bodies.json#/result/methods/8",
+            "random-bodies.json#/result/bodies/8/method",
+            "random-bodies.json#/result/bodies/8/fragments/0",
+            "random-bodies.json#/result/bodies/8/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler/<_DealFragment>d__124.MoveNext",
+          "address": "0x18098bd70"
+        },
+        {
+          "index": 73430,
+          "mode": "disasm",
+          "records": [
+            "branch-bodies.json#/result/methods/12",
+            "branch-bodies.json#/result/bodies/12/method",
+            "branch-bodies.json#/result/bodies/12/fragments/0",
+            "branch-bodies.json#/result/bodies/12/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler/<_DealBranchPhase>d__125.MoveNext",
+          "address": "0x18098b460"
+        },
+        {
+          "index": 73442,
+          "mode": "disasm",
+          "records": [
+            "spawn-bodies.json#/result/methods/8",
+            "spawn-bodies.json#/result/bodies/8/method",
+            "spawn-bodies.json#/result/bodies/8/fragments/0",
+            "spawn-bodies.json#/result/bodies/8/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler/<_DoSpawn>d__128.MoveNext",
+          "address": "0x18098eba0"
+        },
+        {
+          "index": 92284,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/19",
+            "random-bodies.json#/result/relatedMethods/19",
+            "spawn-bodies.json#/result/relatedMethods/19"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_hasEpDamage",
+          "address": "0x180f3fd80"
+        },
+        {
+          "index": 92287,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/20",
+            "random-bodies.json#/result/relatedMethods/20",
+            "spawn-bodies.json#/result/relatedMethods/20"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_elementDamageType",
+          "address": "0x180f3fd20"
+        },
+        {
+          "index": 92294,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/21",
+            "random-bodies.json#/result/relatedMethods/21",
+            "spawn-bodies.json#/result/relatedMethods/21"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.ApplyElementDamageScale",
+          "address": "0x180f3ec10"
+        },
+        {
+          "index": 93348,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/22",
+            "random-bodies.json#/result/relatedMethods/22",
+            "spawn-bodies.json#/result/relatedMethods/22"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ProjectileToTileAbility.get_hasEpDamage",
+          "address": "0x180f7baf0"
+        },
+        {
+          "index": 93359,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/23",
+            "random-bodies.json#/result/relatedMethods/23",
+            "spawn-bodies.json#/result/relatedMethods/23"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ProjectileToTileAbility.ApplyElementDamageScale",
+          "address": "0x180f7a260"
+        },
+        {
+          "index": 93894,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/24",
+            "random-bodies.json#/result/relatedMethods/24",
+            "spawn-bodies.json#/result/relatedMethods/24"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.CreateElementDamageNode",
+          "address": "0x180f90230"
+        },
+        {
+          "index": 93895,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/25",
+            "random-bodies.json#/result/relatedMethods/25",
+            "spawn-bodies.json#/result/relatedMethods/25"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.NewElementDamageNode",
+          "address": "0x180f90cc0"
+        },
+        {
+          "index": 97423,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/26",
+            "random-bodies.json#/result/relatedMethods/26",
+            "spawn-bodies.json#/result/relatedMethods/26"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/Act33SideBurnCharactersWithRope.get_isFixedEpDamage",
+          "address": "0x18106aee0"
+        },
+        {
+          "index": 99204,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/27",
+            "random-bodies.json#/result/relatedMethods/27",
+            "spawn-bodies.json#/result/relatedMethods/27"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/UpdateAttackElementDamageScale.get_allowedSource",
+          "address": "0x1811089f0"
+        },
+        {
+          "index": 99205,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/28",
+            "random-bodies.json#/result/relatedMethods/28",
+            "spawn-bodies.json#/result/relatedMethods/28"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/UpdateAttackElementDamageScale.Execute",
+          "address": "0x181108730"
+        },
+        {
+          "index": 99206,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/29",
+            "random-bodies.json#/result/relatedMethods/29",
+            "spawn-bodies.json#/result/relatedMethods/29"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/UpdateAttackElementDamageScale..ctor",
+          "address": "0x181108940"
+        },
+        {
+          "index": 99223,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/30",
+            "random-bodies.json#/result/relatedMethods/30",
+            "spawn-bodies.json#/result/relatedMethods/30"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage.get_allowedSource",
+          "address": "0x1810fb000"
+        },
+        {
+          "index": 99224,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/31",
+            "random-bodies.json#/result/relatedMethods/31",
+            "spawn-bodies.json#/result/relatedMethods/31"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage.get_shieldByAnotherSource",
+          "address": "0x1810fb060"
+        },
+        {
+          "index": 99225,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/32",
+            "random-bodies.json#/result/relatedMethods/32",
+            "spawn-bodies.json#/result/relatedMethods/32"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage.Execute",
+          "address": "0x1810fab10"
+        },
+        {
+          "index": 99226,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/33",
+            "random-bodies.json#/result/relatedMethods/33",
+            "spawn-bodies.json#/result/relatedMethods/33"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage..ctor",
+          "address": "0x1810faf50"
+        },
+        {
+          "index": 99250,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/34",
+            "random-bodies.json#/result/relatedMethods/34",
+            "spawn-bodies.json#/result/relatedMethods/34"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/EpDamageScale.get_allowedSource",
+          "address": "0x1811010e0"
+        },
+        {
+          "index": 99251,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/35",
+            "random-bodies.json#/result/relatedMethods/35",
+            "spawn-bodies.json#/result/relatedMethods/35"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/EpDamageScale.Execute",
+          "address": "0x181100b60"
+        },
+        {
+          "index": 99252,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/36",
+            "random-bodies.json#/result/relatedMethods/36",
+            "spawn-bodies.json#/result/relatedMethods/36"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/EpDamageScale..ctor",
+          "address": "0x181101050"
+        },
+        {
+          "index": 99321,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/37",
+            "random-bodies.json#/result/relatedMethods/37",
+            "spawn-bodies.json#/result/relatedMethods/37"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_multiplyWithBuffValidStackCnt",
+          "address": "0x1810f8890"
+        },
+        {
+          "index": 99322,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/38",
+            "random-bodies.json#/result/relatedMethods/38",
+            "spawn-bodies.json#/result/relatedMethods/38"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_isFixedEpDamage",
+          "address": "0x1810f8830"
+        },
+        {
+          "index": 99323,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/39",
+            "random-bodies.json#/result/relatedMethods/39",
+            "spawn-bodies.json#/result/relatedMethods/39"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_epDamageScale",
+          "address": "0x1810f87d0"
+        },
+        {
+          "index": 99324,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/40",
+            "random-bodies.json#/result/relatedMethods/40",
+            "spawn-bodies.json#/result/relatedMethods/40"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.set_epDamageScale",
+          "address": "0x1810f8950"
+        },
+        {
+          "index": 99325,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/41",
+            "random-bodies.json#/result/relatedMethods/41",
+            "spawn-bodies.json#/result/relatedMethods/41"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_epDamageRatio",
+          "address": "0x1810f8770"
+        },
+        {
+          "index": 99326,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/42",
+            "random-bodies.json#/result/relatedMethods/42",
+            "spawn-bodies.json#/result/relatedMethods/42"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_allowedSource",
+          "address": "0x1810f8710"
+        },
+        {
+          "index": 99327,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/43",
+            "random-bodies.json#/result/relatedMethods/43",
+            "spawn-bodies.json#/result/relatedMethods/43"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_purposeMask",
+          "address": "0x1810f88f0"
+        },
+        {
+          "index": 99328,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/44",
+            "random-bodies.json#/result/relatedMethods/44",
+            "spawn-bodies.json#/result/relatedMethods/44"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage._CheckNodeInvalid",
+          "address": "0x1810f8340"
+        },
+        {
+          "index": 99329,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/45",
+            "random-bodies.json#/result/relatedMethods/45",
+            "spawn-bodies.json#/result/relatedMethods/45"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.Execute",
+          "address": "0x1810f7c20"
+        },
+        {
+          "index": 99330,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/46",
+            "random-bodies.json#/result/relatedMethods/46",
+            "spawn-bodies.json#/result/relatedMethods/46"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage..ctor",
+          "address": "0x1810f8610"
+        },
+        {
+          "index": 99331,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/47",
+            "random-bodies.json#/result/relatedMethods/47",
+            "spawn-bodies.json#/result/relatedMethods/47"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage..ctor",
+          "address": "0x1810f84e0"
+        },
+        {
+          "index": 99332,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/48",
+            "random-bodies.json#/result/relatedMethods/48",
+            "spawn-bodies.json#/result/relatedMethods/48"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.CreateElementDamageModifier",
+          "address": "0x1810f76d0"
+        },
+        {
+          "index": 99333,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/49",
+            "random-bodies.json#/result/relatedMethods/49",
+            "spawn-bodies.json#/result/relatedMethods/49"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.PreprocessForProjectile",
+          "address": "0x1810f8210"
+        },
+        {
+          "index": 99334,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/50",
+            "random-bodies.json#/result/relatedMethods/50",
+            "spawn-bodies.json#/result/relatedMethods/50"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.DeliverPreprocessPara",
+          "address": "0x1810f7ba0"
+        },
+        {
+          "index": 99335,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/51",
+            "random-bodies.json#/result/relatedMethods/51",
+            "spawn-bodies.json#/result/relatedMethods/51"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.get_allowedSource",
+          "address": "0x1810f4fc0"
+        },
+        {
+          "index": 99336,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/52",
+            "random-bodies.json#/result/relatedMethods/52",
+            "spawn-bodies.json#/result/relatedMethods/52"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.get_purposeMask",
+          "address": "0x1810f5020"
+        },
+        {
+          "index": 99337,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/53",
+            "random-bodies.json#/result/relatedMethods/53",
+            "spawn-bodies.json#/result/relatedMethods/53"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.Execute",
+          "address": "0x1810f4480"
+        },
+        {
+          "index": 99338,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/54",
+            "random-bodies.json#/result/relatedMethods/54",
+            "spawn-bodies.json#/result/relatedMethods/54"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage._GetTargets_DISPOSE",
+          "address": "0x1810f4b60"
+        },
+        {
+          "index": 99339,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/55",
+            "random-bodies.json#/result/relatedMethods/55",
+            "spawn-bodies.json#/result/relatedMethods/55"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage._DealEpDamage",
+          "address": "0x1810f4910"
+        },
+        {
+          "index": 99340,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/56",
+            "random-bodies.json#/result/relatedMethods/56",
+            "spawn-bodies.json#/result/relatedMethods/56"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.PreprocessForProjectile",
+          "address": "0x1810f48b0"
+        },
+        {
+          "index": 99341,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/57",
+            "random-bodies.json#/result/relatedMethods/57",
+            "spawn-bodies.json#/result/relatedMethods/57"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage..ctor",
+          "address": "0x1810f4f50"
+        },
+        {
+          "index": 99342,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/58",
+            "random-bodies.json#/result/relatedMethods/58",
+            "spawn-bodies.json#/result/relatedMethods/58"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage/<>c__DisplayClass16_0..ctor",
+          "address": "0x180520cc0"
+        },
+        {
+          "index": 99343,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/59",
+            "random-bodies.json#/result/relatedMethods/59",
+            "spawn-bodies.json#/result/relatedMethods/59"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage/<>c__DisplayClass16_0.<_GetTargets_DISPOSE>b__1",
+          "address": "0x1811081b0"
+        },
+        {
+          "index": 99344,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/60",
+            "random-bodies.json#/result/relatedMethods/60",
+            "spawn-bodies.json#/result/relatedMethods/60"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage/<>c__DisplayClass16_0.<_GetTargets_DISPOSE>b__0",
+          "address": "0x181108100"
+        },
+        {
+          "index": 99345,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/61",
+            "random-bodies.json#/result/relatedMethods/61",
+            "spawn-bodies.json#/result/relatedMethods/61"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.get_allowedSource",
+          "address": "0x1810f7610"
+        },
+        {
+          "index": 99346,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/62",
+            "random-bodies.json#/result/relatedMethods/62",
+            "spawn-bodies.json#/result/relatedMethods/62"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.get_purposeMask",
+          "address": "0x1810f7670"
+        },
+        {
+          "index": 99347,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/63",
+            "random-bodies.json#/result/relatedMethods/63",
+            "spawn-bodies.json#/result/relatedMethods/63"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.Execute",
+          "address": "0x1810f70b0"
+        },
+        {
+          "index": 99348,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/64",
+            "random-bodies.json#/result/relatedMethods/64",
+            "spawn-bodies.json#/result/relatedMethods/64"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.PreprocessForProjectile",
+          "address": "0x1810f7540"
+        },
+        {
+          "index": 99349,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/65",
+            "random-bodies.json#/result/relatedMethods/65",
+            "spawn-bodies.json#/result/relatedMethods/65"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue..ctor",
+          "address": "0x1810f75a0"
+        },
+        {
+          "index": 99350,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/66",
+            "random-bodies.json#/result/relatedMethods/66",
+            "spawn-bodies.json#/result/relatedMethods/66"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.get_allowedSource",
+          "address": "0x1810f8e40"
+        },
+        {
+          "index": 99351,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/67",
+            "random-bodies.json#/result/relatedMethods/67",
+            "spawn-bodies.json#/result/relatedMethods/67"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.get_purposeMask",
+          "address": "0x1810f8ea0"
+        },
+        {
+          "index": 99352,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/68",
+            "random-bodies.json#/result/relatedMethods/68",
+            "spawn-bodies.json#/result/relatedMethods/68"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.Execute",
+          "address": "0x1810f89c0"
+        },
+        {
+          "index": 99353,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/69",
+            "random-bodies.json#/result/relatedMethods/69",
+            "spawn-bodies.json#/result/relatedMethods/69"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.PreprocessForProjectile",
+          "address": "0x1810f8d80"
+        },
+        {
+          "index": 99354,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/70",
+            "random-bodies.json#/result/relatedMethods/70",
+            "spawn-bodies.json#/result/relatedMethods/70"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage..ctor",
+          "address": "0x1810f8de0"
+        },
+        {
+          "index": 100224,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/71",
+            "random-bodies.json#/result/relatedMethods/71",
+            "spawn-bodies.json#/result/relatedMethods/71"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsElementDamage.get_allowedSource",
+          "address": "0x181177a90"
+        },
+        {
+          "index": 100225,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/72",
+            "random-bodies.json#/result/relatedMethods/72",
+            "spawn-bodies.json#/result/relatedMethods/72"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsElementDamage.Execute",
+          "address": "0x181177970"
+        },
+        {
+          "index": 100226,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/73",
+            "random-bodies.json#/result/relatedMethods/73",
+            "spawn-bodies.json#/result/relatedMethods/73"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsElementDamage..ctor",
+          "address": "0x181177a30"
+        },
+        {
+          "index": 101509,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/74",
+            "random-bodies.json#/result/relatedMethods/74",
+            "spawn-bodies.json#/result/relatedMethods/74"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterElementDamageModifer.get_allowedSource",
+          "address": "0x1811d62e0"
+        },
+        {
+          "index": 101510,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/75",
+            "random-bodies.json#/result/relatedMethods/75",
+            "spawn-bodies.json#/result/relatedMethods/75"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterElementDamageModifer.Execute",
+          "address": "0x1811d6190"
+        },
+        {
+          "index": 101511,
+          "mode": "metadata",
+          "records": [
+            "branch-bodies.json#/result/relatedMethods/76",
+            "random-bodies.json#/result/relatedMethods/76",
+            "spawn-bodies.json#/result/relatedMethods/76"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterElementDamageModifer..ctor",
+          "address": "0x1811d6280"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Scheduler",
+          "records": [
+            "scheduler-fields.json#/result/0"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

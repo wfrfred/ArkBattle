@@ -1,0 +1,168 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-10-31"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "cap-field-binding.json#/provenance/client/dll",
+          "cap-field.json#/provenance/client/dll",
+          "card-cost.json#/provenance/client/dll",
+          "expanded.json#/provenance/client/dll",
+          "probe.json#/provenance/client/dll",
+          "runtime-cost.json#/provenance/client/dll"
+        ],
+        "bytes": 218523112
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "cap-field-binding.json#/provenance/client/metadata",
+          "cap-field.json#/provenance/client/metadata",
+          "card-cost.json#/provenance/client/metadata",
+          "expanded.json#/provenance/client/metadata",
+          "probe.json#/provenance/client/metadata",
+          "runtime-cost.json#/provenance/client/metadata"
+        ],
+        "bytes": 45805368
+      }
+    },
+    "sourceRecords": [
+      "cap-field-binding.json",
+      "cap-field.json",
+      "card-cost.json",
+      "expanded.json",
+      "probe.json",
+      "runtime-cost.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12589,
+        "sha256": "1a85248a6a48d92d61c65f5ba044d079954866ff0c1672488b92f0cf1366af9a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "cap-field-binding.json",
+        "kind": "record",
+        "bytes": 17876,
+        "sha256": "f36329c2e1f09a6a9c681095d61a076e45ab3b52bb8254da6ca88041afcf7ade"
+      },
+      {
+        "path": "cap-field.json",
+        "kind": "record",
+        "bytes": 23634,
+        "sha256": "60122ec0de1cfe2db88cfabf623dd3bf46cd9c2ae33f808c1ac8644066cd6dee"
+      },
+      {
+        "path": "card-cost.json",
+        "kind": "record",
+        "bytes": 32188,
+        "sha256": "4abd879c7693913a63893614ad9cc679a5c5d4319d43bc866b285f9f0cbe826b"
+      },
+      {
+        "path": "expanded.json",
+        "kind": "record",
+        "bytes": 51801,
+        "sha256": "d91911a6907a9fb83b0528e317366dc770734ba9a2d27205345a68976096cbd2"
+      },
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 5074,
+        "sha256": "31596720de89e65476d5f0f90281bb3b9dacfe0353daf1207bf87fff2ae30306"
+      },
+      {
+        "path": "extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "probe.json",
+        "kind": "record",
+        "bytes": 17006,
+        "sha256": "35c6b1e251471d7ea8086c75e87e13163ed3b29c3864e8bdf7ff43055c1d567e"
+      },
+      {
+        "path": "runtime-cost.json",
+        "kind": "record",
+        "bytes": 35743,
+        "sha256": "9c998b6ef3f088e7bef5a990b7937c2c4c477273bd3451b7aad5b7ac8d3be346"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 64934,
+          "mode": "disasm",
+          "records": [
+            "runtime-cost.json#/result",
+            "runtime-cost.json#/result/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateRuntimeCardCost",
+          "address": "0x1806586c0"
+        },
+        {
+          "index": 65831,
+          "mode": "disasm",
+          "records": [
+            "card-cost.json#/result/methods/0",
+            "card-cost.json#/result/bodies/0",
+            "card-cost.json#/result/bodies/0/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.get_rawCost",
+          "address": "0x1806c1f70"
+        },
+        {
+          "index": 65833,
+          "mode": "disasm",
+          "records": [
+            "card-cost.json#/result/methods/1",
+            "card-cost.json#/result/bodies/1",
+            "card-cost.json#/result/bodies/1/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.get_cost",
+          "address": "0x1806c0e60"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.BattleOptions",
+          "records": [
+            "cap-field.json#/result/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Deck/Card",
+          "records": [
+            "card-cost.json#/result/type"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

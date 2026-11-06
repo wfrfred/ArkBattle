@@ -1,0 +1,212 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-01",
+    "evidenceLevel": "C",
+    "provider": "PRTS community wiki",
+    "method": "Open the relevant operator and summon pages, inspect talent/skill remarks, and search for mechanism-specific timing and sampling details.",
+    "scope": "Seven mechanisms on five PRTS pages. No client execution, new native analysis, or architecture decision is represented by this file.",
+    "skill": ".agents/skills/arkbattle-native-research/SKILL.md",
+    "existingResearch": [
+      "docs/research/cases/06-talent-lifecycle-and-model.md",
+      "docs/research/cases/09-skill-mechanisms-and-requirements.md",
+      "docs/research/cases/24-deployment-cost-and-supply.md"
+    ],
+    "retrievalLimit": "The complete pages and their exact revisions were not archived. Short excerpts, URLs, sections, access dates, paraphrases, and unresolved questions are retained. Community wording is not a native call-chain trace."
+  },
+  "result": {
+    "sources": [
+      {
+        "id": "songtong",
+        "title": "松桐",
+        "url": "https://prts.wiki/w/松桐",
+        "section": "技能：万手成局；技能备注",
+        "sectionUrl": "https://prts.wiki/w/松桐#技能",
+        "accessedOn": "2026-11-01",
+        "excerpts": [
+          "技能开启时立即",
+          "持续至下次撤退"
+        ]
+      },
+      {
+        "id": "silverash-reignfrost",
+        "title": "凛御银灰",
+        "url": "https://prts.wiki/w/凛御银灰",
+        "sections": [
+          {
+            "name": "天赋：开放性开局；初始技力修正脚注",
+            "url": "https://prts.wiki/w/凛御银灰#天赋"
+          },
+          {
+            "name": "技能：周旋的谋略、御敌的锋锐；技能备注",
+            "url": "https://prts.wiki/w/凛御银灰#技能"
+          }
+        ],
+        "accessedOn": "2026-11-01",
+        "excerpts": [
+          "开启技能时",
+          "触发时",
+          "部署时技力",
+          "初始技力",
+          "下次再部署"
+        ]
+      },
+      {
+        "id": "eye-of-snowstorm",
+        "title": "风雪之眼",
+        "url": "https://prts.wiki/w/风雪之眼",
+        "section": "召唤物天赋：开放性开局",
+        "sectionUrl": "https://prts.wiki/w/风雪之眼#召唤物天赋",
+        "accessedOn": "2026-11-01",
+        "excerpts": [
+          "初始技力",
+          "再部署时间-20%"
+        ]
+      },
+      {
+        "id": "bagpipe",
+        "title": "风笛",
+        "url": "https://prts.wiki/w/风笛",
+        "section": "天赋：军事传统及 X 模组升级",
+        "sectionUrl": "https://prts.wiki/w/风笛#天赋",
+        "accessedOn": "2026-11-01",
+        "excerpts": [
+          "编入队伍时",
+          "自身部署时额外获得"
+        ]
+      },
+      {
+        "id": "marcille",
+        "title": "玛露西尔",
+        "url": "https://prts.wiki/w/玛露西尔",
+        "section": "天赋：建校以来第一才女；魔力术语与备注",
+        "sectionUrl": "https://prts.wiki/w/玛露西尔#天赋",
+        "accessedOn": "2026-11-01",
+        "excerpts": [
+          "入场时将魔力转换为技能技力"
+        ]
+      }
+    ],
+    "mechanisms": [
+      {
+        "id": "songtong-s2-max-hp",
+        "name": "松桐 S2：生命上限增益",
+        "sourceIds": ["songtong"],
+        "facts": [
+          "松桐开启技能时立即作用于待部署区重装、辅助干员，给予减费与比例生命上限增益。",
+          "生命增益最多两层，持续至受益者下次撤退；卡片标记可以显示叠层数。",
+          "该效果可从待部署状态延续到后续场上实例。"
+        ],
+        "unknowns": [
+          "增益在基础属性初始化、当前 HP 初始化、技能初始化与入场内容之间的具体位置。",
+          "是否先保存绝对 HP 数值，或部署时重新计算比例；页面不能决定当前 HP 的接续公式。"
+        ]
+      },
+      {
+        "id": "silverash-s1-barrier",
+        "name": "凛御银灰 S1：部署屏障",
+        "sourceIds": ["silverash-reignfrost"],
+        "facts": [
+          "受益者部署后获得屏障，屏障量取凛御银灰发动 S1 时的最大生命值。",
+          "备注注明屏障效果不叠加；不是等受益者部署时再读取来源最大生命值。"
+        ],
+        "unknowns": [
+          "屏障转移、安装和首次生效相对受益者技能初始化、入场业务及入场伤害的位置。",
+          "来源先退场时，尚未部署对象持有的屏障资格如何保留或消耗。"
+        ]
+      },
+      {
+        "id": "silverash-s2-deployment-attacks",
+        "name": "凛御银灰 S2：部署后的额外攻击",
+        "sourceIds": ["silverash-reignfrost"],
+        "facts": [
+          "各受益干员独立计数，从部署 1.1 秒后开始，每隔 0.5 秒触发一次。",
+          "每次触发时使用受益干员的攻击力，造成无来源物理伤害，按其所属地块判定。",
+          "受益者攻击力不是在凛御银灰施法时统一采样。"
+        ],
+        "unknowns": [
+          "部署时间零点对应客户端哪一步，以及新实例何时接收计数和延迟程序。",
+          "受益者提前退场等取消路径。",
+          "延迟效果登记是否早于技能初始化或 ArkBattle 的 Skill.enter。"
+        ]
+      },
+      {
+        "id": "silverash-deployment-sp",
+        "name": "凛御银灰第一天赋：部署 SP",
+        "sourceIds": ["silverash-reignfrost", "eye-of-snowstorm"],
+        "facts": [
+          "凛御银灰主页面把游戏原文的初始 SP 改写为部署时获得 SP，并在脚注说明描述与实际表现不符。",
+          "适用描述覆盖风雪之眼左侧干员及凛御银灰自身。",
+          "风雪之眼页面仍使用初始 SP 简写，不能作为另一个执行阶段的独立证明。"
+        ],
+        "unknowns": [
+          "额外 SP 与默认初始 SP 设置、容量应用及受益者自身入场业务的顺序。",
+          "是否为强制回复、是否通过普通恢复许可。",
+          "不能只按文本把全部部署 SP 合并为同一个静态初始 SP 字段。"
+        ]
+      },
+      {
+        "id": "silverash-next-redeployment",
+        "name": "凛御银灰第一天赋：下次再部署减免",
+        "sourceIds": ["silverash-reignfrost", "eye-of-snowstorm"],
+        "facts": [
+          "天赋明确指向下一次再部署时长降低，与本次部署 SP 获得并列。"
+        ],
+        "unknowns": [
+          "左侧资格的精确采样调用点、减免记录及消费的位置。",
+          "是否在目标后来退场时才采样相关属性。",
+          "来源先退场、手牌顺序改变后的持续规则，以及与已经开始的 CD 的关系。"
+        ]
+      },
+      {
+        "id": "bagpipe-initial-and-extra-sp",
+        "name": "风笛：编队初始 SP 与自身部署额外 SP",
+        "sourceIds": ["bagpipe"],
+        "facts": [
+          "普通天赋按编队提供先锋初始 SP，X 模组另列自身部署时额外获得的 SP。",
+          "两者有不同的参与条件，不能只因都影响部署时 SP 就视为同一业务。"
+        ],
+        "unknowns": [
+          "两条效果的客户端执行位置与相对入场回调的顺序。",
+          "容量截断、立即自动发动等组合的精确顺序。"
+        ]
+      },
+      {
+        "id": "marcille-mana-to-sp",
+        "name": "玛露西尔：场下魔力转 SP",
+        "sourceIds": ["marcille"],
+        "facts": [
+          "魔力在本场战斗继承，入场转为技能 SP，退场把剩余 SP 转回魔力。",
+          "技能表的初始 SP 实为初始魔力，技力需求值对应携带技能时的魔力上限。"
+        ],
+        "unknowns": [
+          "PRTS没有列出清空默认 SP、修改资源参数和写入当前 SP 的逐项顺序。",
+          "PRTS没有确定资源转换相对其它入场效果的位置。"
+        ]
+      }
+    ],
+    "existingEvidenceReuse": [
+      {
+        "case": "docs/research/cases/09-skill-mechanisms-and-requirements.md",
+        "section": "2.5 实际案例及其证明范围：玛露西尔",
+        "kind": "Previously archived client-content evidence; not new PRTS or native evidence in this file",
+        "summary": "marcil_t 事件 12 已记录 ClearCharacterSp → ModifySpData(mana_max, onlyUpdateSpCost = true, updateSkillSpCostMin = false) → forced ModifySp(mana)。",
+        "limit": "仍需追到该事件的上游调用位置，才可回答它与技能/天赋初始化的全局先后。"
+      }
+    ],
+    "queryFamilies": [
+      "松桐 最大生命值 部署时 备注",
+      "松桐 生命加成 撤退",
+      "凛御银灰 技力 初始",
+      "凛御银灰 屏障 退场 采样",
+      "凛御银灰 下次再部署 退场",
+      "风笛 初始技力 部署时 上限",
+      "玛露西尔 初始技力"
+    ],
+    "crossCuttingLimits": [
+      "部署时或部署后的社区描述不自动等于 ArkBattle 的 Skill.enter 前后。",
+      "本轮没有PRTS条目证明全部这些机制共用一个先于 Skill.enter 的统一 Entry 阶段。",
+      "S1 屏障与 S2 攻击已有不同采样时点，不能统一为部署时采样所有数值。",
+      "未检索到更细时序不代表相应说明不存在；本轮不据此设定工程阶段或接口。"
+    ]
+  }
+}

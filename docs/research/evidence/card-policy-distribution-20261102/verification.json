@@ -1,0 +1,10 @@
+{
+  "scope": "Static instruction witnesses and resource-count invariants; not runtime or native execution.",
+  "checks": {
+    "CharacterCard defaults to UNIQUE": true,
+    "CharacterCard defaults to non-counted supply": true,
+    "Draw has counted-stock decrement": true,
+    "OnRecycle conditionally increments cost counter": true,
+    "CardBuff changes cost-counter enable": true
+  }
+}

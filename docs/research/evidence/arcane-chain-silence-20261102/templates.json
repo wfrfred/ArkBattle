@@ -1,0 +1,87 @@
+{
+  "provenance": {
+    "input": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+      "bytes": 2151020,
+      "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+    }
+  },
+  "result": [
+    {
+      "key": "silence_attachment",
+      "effect": "",
+      "priority": 0,
+      "events": [
+        {
+          "event": 11,
+          "actions": [
+            {
+              "_buff": {
+                "attributes": {
+                  "abnormalFlags": [],
+                  "abnormalImmunes": [],
+                  "abnormalAntis": [],
+                  "abnormalCombos": [],
+                  "abnormalComboImmunes": [],
+                  "attributeModifiers": []
+                },
+                "buffKey": "silence",
+                "loadFromDB": true,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": "AUTOMATIC",
+                "templateKey": "empty",
+                "disableOverride": false,
+                "overrideKey": null,
+                "overrideType": "DEFAULT",
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": null,
+                "overrideOnEventPriority": false,
+                "onEventPriority": "DEFAULT",
+                "audioSignal": null,
+                "lifeTimeType": "LIMITED",
+                "takeSnapshotWhenExtend": false,
+                "durationKey": null,
+                "remainingTimeKey": null,
+                "lifeTime": 0.0,
+                "triggerLifeType": "IMMEDIATELY",
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": [],
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": [],
+                "enableInitDirectionFromSource": false
+              },
+              "_buffOwner": "MODIFIER_TARGET",
+              "_useSpecialBuffSource": false,
+              "_specialBuffSource": "BUFF_SOURCE",
+              "_isDerivedBuff": false,
+              "_finishDerivedBuffIfParentFinish": false,
+              "_inherateSourceProjectileFromParentBuff": false,
+              "_hookEffectKeyFromSourceProjectile": false,
+              "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+            }
+          ],
+          "refs": []
+        }
+      ],
+      "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "pathId": "6070581171229484677",
+      "offset": 7843452,
+      "serializedBytes": 1448,
+      "sha256": "b50c5800124719ab03cd10a48edc8e040e4659aece89007db3444f6ac36fe779"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "provenance": {
+    "collectedOn": "2026-10-31",
+    "method": "PRTS page open and targeted web searches; community evidence, not official implementation proof"
+  },
+  "result": {
+    "sources": [
+      {
+        "url": "https://prts.wiki/w/凛御银灰",
+        "supports": "A present SilverAsh the Reignfrost continuously changes waiting-area ordering using current cost, the time affected by that source's skill, profession and template identity; page-sensitive Eye relative-position condition.",
+        "doesNotEstablish": "Competition and restoration when multiple such sources are present."
+      },
+      {
+        "url": "https://prts.wiki/w/卫戍协议/帮助",
+        "supports": "The mode permits simultaneous same-operator instances and keeps summon stocks belonging to different operator instances separate.",
+        "doesNotEstablish": "Mode-specific interaction between multiple reordering sources."
+      }
+    ],
+    "queryFamilies": [
+      "凛御银灰 多个 排序 重排 离场",
+      "凛御银灰 同时在场 多名 手牌 排序",
+      "卫戍 凛御银灰 排序 天赋 多个",
+      "凛御银灰 恢复 顺序",
+      "凛御银灰 同时 排序／先部署 待部署／离场 重排",
+      "风雪之眼 多个",
+      "site:prts.wiki/w/凛御银灰 排序 同时",
+      "site:prts.wiki/w/凛御银灰 退场 排序",
+      "site:prts.wiki/w/卫戍协议 多个 同名"
+    ],
+    "limit": "No matching explanation was found in these searches. This is not evidence that no explanation exists."
+  }
+}

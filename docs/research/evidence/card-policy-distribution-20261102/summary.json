@@ -1,0 +1,73 @@
+{
+  "date": "2026-11-02",
+  "countsAre": "Serialized controller configurations, not verified playable cards, release status or live overrides.",
+  "bundles": 7,
+  "allPolicyCounts": {
+    "0": 661,
+    "1": 279,
+    "2": 1
+  },
+  "tokenPolicyCounts": {
+    "0": 53,
+    "1": 15,
+    "2": 1
+  },
+  "tokenCombinations": [
+    {
+      "policy": 0,
+      "isInfinity": 0,
+      "rechargeOnlyOnce": 0,
+      "count": 44,
+      "examples": [
+        "token_10045_alanna_crane",
+        "token_10043_necras_skeltn",
+        "token_10023_windft_wrench",
+        "token_10016_rfrost_mine"
+      ]
+    },
+    {
+      "policy": 0,
+      "isInfinity": 1,
+      "rechargeOnlyOnce": 0,
+      "count": 9,
+      "examples": [
+        "token_10042_tecno_puppet",
+        "token_10024_ebnhlz_rcube",
+        "token_10015_dusk_drgn",
+        "token_10008_cqbw_box"
+      ]
+    },
+    {
+      "policy": 1,
+      "isInfinity": 0,
+      "rechargeOnlyOnce": 0,
+      "count": 12,
+      "examples": [
+        "token_10029_slent2_protrb",
+        "token_10034_ray_sndbst",
+        "token_10009_weedy_cannon",
+        "token_10002_kalts_mon3tr"
+      ]
+    },
+    {
+      "policy": 1,
+      "isInfinity": 1,
+      "rechargeOnlyOnce": 0,
+      "count": 3,
+      "examples": [
+        "token_10019_nearl2_sword",
+        "token_10011_beewax_oblisk",
+        "token_10056_angel2_target"
+      ]
+    },
+    {
+      "policy": 2,
+      "isInfinity": 0,
+      "rechargeOnlyOnce": 0,
+      "count": 1,
+      "examples": [
+        "token_10070_aphris_pc"
+      ]
+    }
+  ]
+}

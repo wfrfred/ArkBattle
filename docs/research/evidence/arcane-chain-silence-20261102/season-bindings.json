@@ -1,0 +1,160 @@
+{
+  "provenance": {
+    "source": "Third-party extracted game-data mirror, pinned historical commit; not the installed bundle",
+    "commit": "86b6e749d3384dd0c7b825abbb795845dc6df933",
+    "inputs": [
+      {
+        "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/86b6e749d3384dd0c7b825abbb795845dc6df933/zh_CN/gamedata/excel/activity_table.json",
+        "bytes": 12886408,
+        "sha256": "f4b4d057fd4714915fb96d5719de7e8882da31026abbb8c38272b832cdb10e95"
+      },
+      {
+        "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/86b6e749d3384dd0c7b825abbb795845dc6df933/zh_CN/gamedata/buff_table.json",
+        "bytes": 143468,
+        "sha256": "148abe3609e9c28c2494e9939e2f0a7a4267b4e3f1941db3cbe8634b9db9c17c"
+      }
+    ]
+  },
+  "result": {
+    "effectInfoDataDict": {
+      "eff_acarm048": {
+        "effectId": "eff_acarm048",
+        "effectType": "EQUIP",
+        "effectCounterType": "NONE",
+        "continuedRound": -1,
+        "effectName": "奥术法阵",
+        "effectDesc": "法术抗性<@ba.vup>+20</>，攻击使目标失去特殊能力<@ba.vup>5</>秒",
+        "effectDecoIconId": null,
+        "enemyPrice": 0
+      },
+      "eff_acgarm048": {
+        "effectId": "eff_acgarm048",
+        "effectType": "EQUIP",
+        "effectCounterType": "NONE",
+        "continuedRound": -1,
+        "effectName": "奥术法阵",
+        "effectDesc": "法术抗性<@ba.vup>+30</>，攻击使目标失去特殊能力<@ba.vup>5</>秒",
+        "effectDecoIconId": null,
+        "enemyPrice": 0
+      }
+    },
+    "effectBuffInfoDataDict": {
+      "eff_acarm048": [
+        {
+          "key": "env_gbuff_new_with_verify",
+          "blackboard": [
+            {
+              "key": "key",
+              "value": 0.0,
+              "valueStr": "attr_common_global_buff"
+            },
+            {
+              "key": "magic_resistance",
+              "value": 20.0,
+              "valueStr": null
+            }
+          ],
+          "countType": "NONE"
+        },
+        {
+          "key": "env_gbuff_new_with_verify",
+          "blackboard": [
+            {
+              "key": "key",
+              "value": 0.0,
+              "valueStr": "silence_attachment"
+            },
+            {
+              "key": "silence",
+              "value": 5.0,
+              "valueStr": null
+            }
+          ],
+          "countType": "NONE"
+        }
+      ],
+      "eff_acgarm048": [
+        {
+          "key": "env_gbuff_new_with_verify",
+          "blackboard": [
+            {
+              "key": "key",
+              "value": 0.0,
+              "valueStr": "attr_common_global_buff"
+            },
+            {
+              "key": "magic_resistance",
+              "value": 30.0,
+              "valueStr": null
+            }
+          ],
+          "countType": "NONE"
+        },
+        {
+          "key": "env_gbuff_new_with_verify",
+          "blackboard": [
+            {
+              "key": "key",
+              "value": 0.0,
+              "valueStr": "silence_attachment"
+            },
+            {
+              "key": "silence",
+              "value": 5.0,
+              "valueStr": null
+            }
+          ],
+          "countType": "NONE"
+        }
+      ]
+    },
+    "silence": {
+      "attributes": {
+        "abnormalFlags": [
+          "SILENCED"
+        ],
+        "abnormalImmunes": null,
+        "abnormalAntis": null,
+        "abnormalCombos": null,
+        "abnormalComboImmunes": null,
+        "attributeModifiers": null
+      },
+      "buffKey": "silence",
+      "loadFromDB": false,
+      "isDurableBuff": false,
+      "isDamageMissable": true,
+      "isSilenceable": false,
+      "isStunnable": false,
+      "isFreezable": false,
+      "isLevitatable": false,
+      "statusResistable": "AUTOMATIC",
+      "templateKey": "empty",
+      "disableOverride": false,
+      "overrideKey": null,
+      "overrideType": "DEFAULT",
+      "maxStackCnt": 1,
+      "refreshRemainingTimeWhenStackMax": false,
+      "clearAllStackCntWhenTimeUp": false,
+      "maxValidStackCnt": -1,
+      "independentCharacterSource": false,
+      "overrideEffectKey": "buff_silence",
+      "overrideOnEventPriority": false,
+      "onEventPriority": "DEFAULT",
+      "audioSignal": null,
+      "lifeTimeType": "LIMITED",
+      "takeSnapshotWhenExtend": false,
+      "durationKey": "silence",
+      "lifeTime": 0.0,
+      "triggerLifeType": "IMMEDIATELY",
+      "triggerCnt": 0,
+      "triggerInterval": -1.0,
+      "waitFirstTriggerInterval": true,
+      "firstTriggerInterval": -1.0,
+      "priority": -1,
+      "priorityBBKeys": null,
+      "stripBlackboardParamsWithBuffKey": false,
+      "blackboard": null,
+      "enableInitDirectionFromSource": false
+    }
+  }
+}

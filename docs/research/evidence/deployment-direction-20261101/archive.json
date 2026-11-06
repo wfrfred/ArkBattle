@@ -1,0 +1,183 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-01"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-01",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "giant-born.json#/provenance/client/dll",
+          "probe.json#/provenance/client/dll",
+          "selected-types.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "giant-born.json#/provenance/client/metadata",
+          "probe.json#/provenance/client/metadata",
+          "selected-types.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "giant-born.json",
+      "probe.json",
+      "selected-types.json",
+      "sources.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12589,
+        "sha256": "1a85248a6a48d92d61c65f5ba044d079954866ff0c1672488b92f0cf1366af9a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 3854,
+        "sha256": "ccad764d9db51b6fedf2bf9319f229120a7e20a6fea19e18826f0b375ba4305d"
+      },
+      {
+        "path": "extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "giant-born.json",
+        "kind": "record",
+        "bytes": 62281,
+        "sha256": "2f46eb5ead99e8a9cc8306098b10d9168c712e92aa764175a6b0eb1237b49daf"
+      },
+      {
+        "path": "probe.json",
+        "kind": "record",
+        "bytes": 17193,
+        "sha256": "6c38e633c50ff1a400e918d530a2170dcfc25dcea1de3ed0613f112cfdab170e"
+      },
+      {
+        "path": "selected-types.json",
+        "kind": "record",
+        "bytes": 25491,
+        "sha256": "1ef28414f528f5ac42a071d05db0c7a53ae4ca2ef23b7b1299bb770040224768"
+      },
+      {
+        "path": "sources.json",
+        "kind": "record",
+        "bytes": 1835,
+        "sha256": "f046ab6e3617d2462b8cd217b1c661cbfb9442243aa3defd06b046a3e33240f3"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 67390,
+          "mode": "metadata",
+          "records": [
+            "selected-types.json#/result/0/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_direction",
+          "address": "0x180734910"
+        },
+        {
+          "index": 67391,
+          "mode": "metadata",
+          "records": [
+            "selected-types.json#/result/0/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Entity.set_direction",
+          "address": "0x18073ad00"
+        },
+        {
+          "index": 67538,
+          "mode": "metadata",
+          "records": [
+            "selected-types.json#/result/0/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetBodyAndFaceDirection",
+          "address": "0x18072daa0"
+        },
+        {
+          "index": 77788,
+          "mode": "metadata",
+          "records": [
+            "selected-types.json#/result/2/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Enemy.SetBodyAndFaceDirection",
+          "address": "0x180ac2cb0"
+        },
+        {
+          "index": 77833,
+          "mode": "metadata",
+          "records": [
+            "selected-types.json#/result/2/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Enemy._CalculateFaceDirection",
+          "address": "0x180ac66c0"
+        },
+        {
+          "index": 78312,
+          "mode": "metadata",
+          "records": [
+            "giant-born.json#/result/method",
+            "selected-types.json#/result/3/methods/0"
+          ],
+          "fullname": "Torappu.Battle.EnemyGiantBoss._DoBorn",
+          "address": "0x180adc320"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Enemy",
+          "records": [
+            "selected-types.json#/result/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.EnemyGiantBoss",
+          "records": [
+            "selected-types.json#/result/3"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Entity",
+          "records": [
+            "selected-types.json#/result/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Unit",
+          "records": [
+            "selected-types.json#/result/1"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

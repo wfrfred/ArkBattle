@@ -1,0 +1,25 @@
+{
+  "fieldIndex": 112461,
+  "name": "MODIFIER_TARGET",
+  "metadataDefault": {
+    "fieldIndex": 112461,
+    "typeIndex": 60309,
+    "dataIndex": 203893,
+    "index": 14921
+  },
+  "compressedByte": 8,
+  "value": 4,
+  "jumpTable": "0x18107af14",
+  "selectedBranch": "0x18107ad61",
+  "branchGetter": {
+    "address": "0x18107ad86",
+    "bytes": "e9053289ff",
+    "mnemonic": "jmp",
+    "operands": "0x18090df90",
+    "target": "0x18090df90",
+    "targetOutsideRange": true,
+    "methods": [
+      "Torappu.Battle.Modifier.get_target"
+    ]
+  }
+}

@@ -1,0 +1,1259 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [],
+    "collectionDateSource": "not recorded",
+    "organizedOn": "2026-10-31",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+        "records": [
+          "selected-character-movement.json#/provenance/client/dll"
+        ],
+        "bytes": 218523112
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+        "records": [
+          "selected-character-movement.json#/provenance/client/metadata"
+        ],
+        "bytes": 45805368
+      }
+    },
+    "sourceRecords": [
+      "selected-character-movement.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12589,
+        "sha256": "1a85248a6a48d92d61c65f5ba044d079954866ff0c1672488b92f0cf1366af9a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 3190,
+        "sha256": "245c346eb885e3926ed58168a349ec4b0326fef8dcbea66ba91847ba34b72e5a"
+      },
+      {
+        "path": "extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "selected-character-movement.json",
+        "kind": "record",
+        "bytes": 374995,
+        "sha256": "69ff2ec123fe86f030e2906806d64477eadc466102f57359dc3fb17605db66a4"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 75971,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/finishMethod"
+          ],
+          "fullname": "Torappu.Battle.Character.FinishMe",
+          "address": "0x180a29710"
+        },
+        {
+          "index": 75976,
+          "mode": "disasm",
+          "records": [
+            "selected-character-movement.json#/result/selectedMethods/0",
+            "selected-character-movement.json#/result/bodies/0",
+            "selected-character-movement.json#/result/bodies/0/method"
+          ],
+          "fullname": "Torappu.Battle.Character.MoveLikeRespawnSelf",
+          "address": "0x180a2c0a0"
+        },
+        {
+          "index": 75978,
+          "mode": "disasm",
+          "records": [
+            "selected-character-movement.json#/result/selectedMethods/1",
+            "selected-character-movement.json#/result/bodies/7",
+            "selected-character-movement.json#/result/bodies/7/method"
+          ],
+          "fullname": "Torappu.Battle.Character.MoveLikeRespawnSelf",
+          "address": "0x180a2c2b0"
+        },
+        {
+          "index": 75979,
+          "mode": "disasm",
+          "records": [
+            "selected-character-movement.json#/result/selectedMethods/2",
+            "selected-character-movement.json#/result/bodies/8",
+            "selected-character-movement.json#/result/bodies/8/method"
+          ],
+          "fullname": "Torappu.Battle.Character.MoveLikeRespawnExternal",
+          "address": "0x180a2bf50"
+        },
+        {
+          "index": 75980,
+          "mode": "disasm",
+          "records": [
+            "selected-character-movement.json#/result/selectedMethods/3",
+            "selected-character-movement.json#/result/bodies/9",
+            "selected-character-movement.json#/result/bodies/9/method"
+          ],
+          "fullname": "Torappu.Battle.Character._MoveLikeRespawn",
+          "address": "0x180a36830"
+        },
+        {
+          "index": 76034,
+          "mode": "disasm",
+          "records": [
+            "selected-character-movement.json#/result/selectedMethods/4",
+            "selected-character-movement.json#/result/bodies/16",
+            "selected-character-movement.json#/result/bodies/16/method"
+          ],
+          "fullname": "Torappu.Battle.Character.ConstructStateMachine",
+          "address": "0x180a28c40"
+        },
+        {
+          "index": 76146,
+          "mode": "disasm",
+          "records": [
+            "selected-character-movement.json#/result/selectedMethods/5",
+            "selected-character-movement.json#/result/stateMethods/0",
+            "selected-character-movement.json#/result/bodies/17",
+            "selected-character-movement.json#/result/bodies/17/method"
+          ],
+          "fullname": "Torappu.Battle.Character/States.ConstructStateMachine",
+          "address": "0x180a83ff0"
+        },
+        {
+          "index": 76147,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/1"
+          ],
+          "fullname": "Torappu.Battle.Character/States/Blackboard.get_owner",
+          "address": "0x180513660"
+        },
+        {
+          "index": 76148,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/2"
+          ],
+          "fullname": "Torappu.Battle.Character/States/Blackboard.set_owner",
+          "address": "0x1805158d0"
+        },
+        {
+          "index": 76149,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/3"
+          ],
+          "fullname": "Torappu.Battle.Character/States/Blackboard..ctor",
+          "address": "0x180570ac0"
+        },
+        {
+          "index": 76150,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/4"
+          ],
+          "fullname": "Torappu.Battle.Character/States/Blackboard.OnReset",
+          "address": "0x18050cf60"
+        },
+        {
+          "index": 76151,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/5"
+          ],
+          "fullname": "Torappu.Battle.Character/States/Blackboard.OnTick",
+          "address": "0x18050cf60"
+        },
+        {
+          "index": 76152,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/6"
+          ],
+          "fullname": "Torappu.Battle.Character/States/Blackboard.OnStop",
+          "address": "0x18050cf60"
+        },
+        {
+          "index": 76153,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/7"
+          ],
+          "fullname": "Torappu.Battle.Character/States/BasicState.ShouldSwitchToAbnormalState",
+          "address": "0x180a65e20"
+        },
+        {
+          "index": 76154,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/8"
+          ],
+          "fullname": "Torappu.Battle.Character/States/BasicState..ctor",
+          "address": "0x180a66100"
+        },
+        {
+          "index": 76155,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/9"
+          ],
+          "fullname": "Torappu.Battle.Character/States/BornState.OnEnter",
+          "address": "0x180a66170"
+        },
+        {
+          "index": 76156,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/10"
+          ],
+          "fullname": "Torappu.Battle.Character/States/BornState.OnTick",
+          "address": "0x180a663c0"
+        },
+        {
+          "index": 76157,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/11"
+          ],
+          "fullname": "Torappu.Battle.Character/States/BornState.OnExit",
+          "address": "0x180a66320"
+        },
+        {
+          "index": 76158,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/12"
+          ],
+          "fullname": "Torappu.Battle.Character/States/BornState._OnLocate",
+          "address": "0x180a66630"
+        },
+        {
+          "index": 76159,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/13"
+          ],
+          "fullname": "Torappu.Battle.Character/States/BornState..ctor",
+          "address": "0x180a66750"
+        },
+        {
+          "index": 76160,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/14"
+          ],
+          "fullname": "Torappu.Battle.Character/States/IdleState.OnEnter",
+          "address": "0x180a82010"
+        },
+        {
+          "index": 76161,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/15"
+          ],
+          "fullname": "Torappu.Battle.Character/States/IdleState.OnTick",
+          "address": "0x180a82120"
+        },
+        {
+          "index": 76162,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/16"
+          ],
+          "fullname": "Torappu.Battle.Character/States/IdleState..ctor",
+          "address": "0x180a822b0"
+        },
+        {
+          "index": 76163,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/17"
+          ],
+          "fullname": "Torappu.Battle.Character/States/CombatState.OnEnter",
+          "address": "0x180a66830"
+        },
+        {
+          "index": 76164,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/18"
+          ],
+          "fullname": "Torappu.Battle.Character/States/CombatState.OnTick",
+          "address": "0x180a66bb0"
+        },
+        {
+          "index": 76165,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/19"
+          ],
+          "fullname": "Torappu.Battle.Character/States/CombatState.OnExit",
+          "address": "0x180a669d0"
+        },
+        {
+          "index": 76166,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/20"
+          ],
+          "fullname": "Torappu.Battle.Character/States/CombatState._NextCombatOrExit",
+          "address": "0x180a66fd0"
+        },
+        {
+          "index": 76167,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/21"
+          ],
+          "fullname": "Torappu.Battle.Character/States/CombatState._StartAttack",
+          "address": "0x180a670f0"
+        },
+        {
+          "index": 76168,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/22"
+          ],
+          "fullname": "Torappu.Battle.Character/States/CombatState._GetTarget",
+          "address": "0x180a66f40"
+        },
+        {
+          "index": 76169,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/23"
+          ],
+          "fullname": "Torappu.Battle.Character/States/CombatState..ctor",
+          "address": "0x180a67340"
+        },
+        {
+          "index": 76170,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/24"
+          ],
+          "fullname": "Torappu.Battle.Character/States/CombatState.<_StartAttack>b__5_0",
+          "address": "0x180a66d70"
+        },
+        {
+          "index": 76171,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/25"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DeadState.OnEnter",
+          "address": "0x180a67490"
+        },
+        {
+          "index": 76172,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/26"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DeadState.OnExit",
+          "address": "0x180a67730"
+        },
+        {
+          "index": 76173,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/27"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DeadState.CheckSwitchOut",
+          "address": "0x180a67420"
+        },
+        {
+          "index": 76174,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/28"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DeadState._PlayAnimation",
+          "address": "0x180a677d0"
+        },
+        {
+          "index": 76175,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/29"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DeadState..ctor",
+          "address": "0x180a67f50"
+        },
+        {
+          "index": 76176,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/30"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DeadState/<>c__DisplayClass4_0..ctor",
+          "address": "0x18050fcc0"
+        },
+        {
+          "index": 76177,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/31"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DeadState/<>c__DisplayClass4_0.<_PlayAnimation>b__3",
+          "address": "0x180a851b0"
+        },
+        {
+          "index": 76178,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/32"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DeadState/<>c__DisplayClass4_0.<_PlayAnimation>b__5",
+          "address": "0x180a852e0"
+        },
+        {
+          "index": 76179,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/33"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DeadState/<>c..cctor",
+          "address": "0x180a85570"
+        },
+        {
+          "index": 76180,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/34"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DeadState/<>c..ctor",
+          "address": "0x18050fcc0"
+        },
+        {
+          "index": 76181,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/35"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DeadState/<>c.<_PlayAnimation>b__4_0",
+          "address": "0x18053d570"
+        },
+        {
+          "index": 76182,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/36"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DeadState/<>c.<_PlayAnimation>b__4_1",
+          "address": "0x18050cf60"
+        },
+        {
+          "index": 76183,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/37"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DeadState/<>c.<_PlayAnimation>b__4_2",
+          "address": "0x180a851a0"
+        },
+        {
+          "index": 76184,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/38"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DeadState/<>c.<_PlayAnimation>b__4_4",
+          "address": "0x180a851a0"
+        },
+        {
+          "index": 76185,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/39"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DyingState.OnEnter",
+          "address": "0x180a69720"
+        },
+        {
+          "index": 76186,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/40"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DyingState.CheckSwitchOut",
+          "address": "0x180a696b0"
+        },
+        {
+          "index": 76187,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/41"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DyingState..ctor",
+          "address": "0x180a69db0"
+        },
+        {
+          "index": 76188,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/42"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DyingState/<>c..cctor",
+          "address": "0x180a854f0"
+        },
+        {
+          "index": 76189,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/43"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DyingState/<>c..ctor",
+          "address": "0x18050fcc0"
+        },
+        {
+          "index": 76190,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/44"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DyingState/<>c.<OnEnter>b__0_0",
+          "address": "0x18053d570"
+        },
+        {
+          "index": 76191,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/45"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DyingState/<>c.<OnEnter>b__0_1",
+          "address": "0x18050cf60"
+        },
+        {
+          "index": 76192,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/46"
+          ],
+          "fullname": "Torappu.Battle.Character/States/AttackState.OnEnter",
+          "address": "0x180a64d30"
+        },
+        {
+          "index": 76193,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/47"
+          ],
+          "fullname": "Torappu.Battle.Character/States/AttackState.OnTick",
+          "address": "0x180a65120"
+        },
+        {
+          "index": 76194,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/48"
+          ],
+          "fullname": "Torappu.Battle.Character/States/AttackState.OnExit",
+          "address": "0x180a64f20"
+        },
+        {
+          "index": 76195,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/49"
+          ],
+          "fullname": "Torappu.Battle.Character/States/AttackState._NextAttackOrExit",
+          "address": "0x180a65870"
+        },
+        {
+          "index": 76196,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/50"
+          ],
+          "fullname": "Torappu.Battle.Character/States/AttackState._StartAttack",
+          "address": "0x180a659b0"
+        },
+        {
+          "index": 76197,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/51"
+          ],
+          "fullname": "Torappu.Battle.Character/States/AttackState._GetTarget",
+          "address": "0x180a65710"
+        },
+        {
+          "index": 76198,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/52"
+          ],
+          "fullname": "Torappu.Battle.Character/States/AttackState._CheckSwitchToCombat",
+          "address": "0x180a655c0"
+        },
+        {
+          "index": 76199,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/53"
+          ],
+          "fullname": "Torappu.Battle.Character/States/AttackState..ctor",
+          "address": "0x180a65d40"
+        },
+        {
+          "index": 76200,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/54"
+          ],
+          "fullname": "Torappu.Battle.Character/States/AttackState.<_StartAttack>b__5_0",
+          "address": "0x180a653f0"
+        },
+        {
+          "index": 76201,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/55"
+          ],
+          "fullname": "Torappu.Battle.Character/States/SkillState.OnEnter",
+          "address": "0x180a83760"
+        },
+        {
+          "index": 76202,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/56"
+          ],
+          "fullname": "Torappu.Battle.Character/States/SkillState.OnTick",
+          "address": "0x180a839e0"
+        },
+        {
+          "index": 76203,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/57"
+          ],
+          "fullname": "Torappu.Battle.Character/States/SkillState.OnExit",
+          "address": "0x180a838e0"
+        },
+        {
+          "index": 76204,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/58"
+          ],
+          "fullname": "Torappu.Battle.Character/States/SkillState._StartSkill",
+          "address": "0x180a83d30"
+        },
+        {
+          "index": 76205,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/59"
+          ],
+          "fullname": "Torappu.Battle.Character/States/SkillState._DoStartSkill",
+          "address": "0x180a83c40"
+        },
+        {
+          "index": 76206,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/60"
+          ],
+          "fullname": "Torappu.Battle.Character/States/SkillState..ctor",
+          "address": "0x180a83f10"
+        },
+        {
+          "index": 76207,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/61"
+          ],
+          "fullname": "Torappu.Battle.Character/States/SkillState/<>c__DisplayClass4_0..ctor",
+          "address": "0x18050fcc0"
+        },
+        {
+          "index": 76208,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/62"
+          ],
+          "fullname": "Torappu.Battle.Character/States/SkillState/<>c__DisplayClass4_0.<_StartSkill>b__0",
+          "address": "0x180a853d0"
+        },
+        {
+          "index": 76209,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/63"
+          ],
+          "fullname": "Torappu.Battle.Character/States/StunState.OnEnter",
+          "address": "0x180a84d80"
+        },
+        {
+          "index": 76210,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/64"
+          ],
+          "fullname": "Torappu.Battle.Character/States/StunState.OnTick",
+          "address": "0x180a85020"
+        },
+        {
+          "index": 76211,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/65"
+          ],
+          "fullname": "Torappu.Battle.Character/States/StunState.OnExit",
+          "address": "0x180a84f40"
+        },
+        {
+          "index": 76212,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/66"
+          ],
+          "fullname": "Torappu.Battle.Character/States/StunState.CheckSwitchOut",
+          "address": "0x180a84cc0"
+        },
+        {
+          "index": 76213,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/67"
+          ],
+          "fullname": "Torappu.Battle.Character/States/StunState..ctor",
+          "address": "0x180a850f0"
+        },
+        {
+          "index": 76214,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/68"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DisappearState.OnTick",
+          "address": "0x180a68d40"
+        },
+        {
+          "index": 76215,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/69"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DisappearState..ctor",
+          "address": "0x180a68df0"
+        },
+        {
+          "index": 76216,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/70"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DozeState.get_attributeMask",
+          "address": "0x180a69650"
+        },
+        {
+          "index": 76217,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/71"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DozeState.get_abnormalFlagMask",
+          "address": "0x180a69590"
+        },
+        {
+          "index": 76218,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/72"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DozeState.get_abnormalImmuneMask",
+          "address": "0x180a695f0"
+        },
+        {
+          "index": 76219,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/73"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DozeState.get_abnormalAntiMask",
+          "address": "0x180a69470"
+        },
+        {
+          "index": 76220,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/74"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DozeState.get_abnormalComboMask",
+          "address": "0x180a69530"
+        },
+        {
+          "index": 76221,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/75"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DozeState.get_abnormalComboImmuneMask",
+          "address": "0x180a694d0"
+        },
+        {
+          "index": 76222,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/76"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DozeState.OnEnter",
+          "address": "0x180a69040"
+        },
+        {
+          "index": 76223,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/77"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DozeState.OnTick",
+          "address": "0x180a692d0"
+        },
+        {
+          "index": 76224,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/78"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DozeState.OnExit",
+          "address": "0x180a691f0"
+        },
+        {
+          "index": 76225,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/79"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DozeState.CheckSwitchOut",
+          "address": "0x180a68ea0"
+        },
+        {
+          "index": 76226,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/80"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DozeState.GetValue",
+          "address": "0x180a68f60"
+        },
+        {
+          "index": 76227,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/81"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DozeState..ctor",
+          "address": "0x180a693c0"
+        },
+        {
+          "index": 76228,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/82"
+          ],
+          "fullname": "Torappu.Battle.Character/States/FreezeState.get_attributeMask",
+          "address": "0x180a81fb0"
+        },
+        {
+          "index": 76229,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/83"
+          ],
+          "fullname": "Torappu.Battle.Character/States/FreezeState.get_abnormalFlagMask",
+          "address": "0x180a81ef0"
+        },
+        {
+          "index": 76230,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/84"
+          ],
+          "fullname": "Torappu.Battle.Character/States/FreezeState.get_abnormalImmuneMask",
+          "address": "0x180a81f50"
+        },
+        {
+          "index": 76231,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/85"
+          ],
+          "fullname": "Torappu.Battle.Character/States/FreezeState.get_abnormalAntiMask",
+          "address": "0x180a81dd0"
+        },
+        {
+          "index": 76232,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/86"
+          ],
+          "fullname": "Torappu.Battle.Character/States/FreezeState.get_abnormalComboMask",
+          "address": "0x180a81e90"
+        },
+        {
+          "index": 76233,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/87"
+          ],
+          "fullname": "Torappu.Battle.Character/States/FreezeState.get_abnormalComboImmuneMask",
+          "address": "0x180a81e30"
+        },
+        {
+          "index": 76234,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/88"
+          ],
+          "fullname": "Torappu.Battle.Character/States/FreezeState.OnEnter",
+          "address": "0x180a81880"
+        },
+        {
+          "index": 76235,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/89"
+          ],
+          "fullname": "Torappu.Battle.Character/States/FreezeState.OnTick",
+          "address": "0x180a81c30"
+        },
+        {
+          "index": 76236,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/90"
+          ],
+          "fullname": "Torappu.Battle.Character/States/FreezeState.OnExit",
+          "address": "0x180a81aa0"
+        },
+        {
+          "index": 76237,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/91"
+          ],
+          "fullname": "Torappu.Battle.Character/States/FreezeState.CheckSwitchOut",
+          "address": "0x180a816e0"
+        },
+        {
+          "index": 76238,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/92"
+          ],
+          "fullname": "Torappu.Battle.Character/States/FreezeState.GetValue",
+          "address": "0x180a817a0"
+        },
+        {
+          "index": 76239,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/93"
+          ],
+          "fullname": "Torappu.Battle.Character/States/FreezeState..ctor",
+          "address": "0x180a81d20"
+        },
+        {
+          "index": 76240,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/94"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState.get_attributeMask",
+          "address": "0x180a83700"
+        },
+        {
+          "index": 76241,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/95"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState.get_abnormalFlagMask",
+          "address": "0x180a83640"
+        },
+        {
+          "index": 76242,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/96"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState.get_abnormalImmuneMask",
+          "address": "0x180a836a0"
+        },
+        {
+          "index": 76243,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/97"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState.get_abnormalAntiMask",
+          "address": "0x180a83520"
+        },
+        {
+          "index": 76244,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/98"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState.get_abnormalComboMask",
+          "address": "0x180a835e0"
+        },
+        {
+          "index": 76245,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/99"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState.get_abnormalComboImmuneMask",
+          "address": "0x180a83580"
+        },
+        {
+          "index": 76246,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/100"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState.GetValue",
+          "address": "0x180a82450"
+        },
+        {
+          "index": 76247,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/101"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState.OnEnter",
+          "address": "0x180a82530"
+        },
+        {
+          "index": 76248,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/102"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState.OnTick",
+          "address": "0x180a82b10"
+        },
+        {
+          "index": 76249,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/103"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState.OnExit",
+          "address": "0x180a82970"
+        },
+        {
+          "index": 76250,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/104"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState.CheckSwitchOut",
+          "address": "0x180a82360"
+        },
+        {
+          "index": 76251,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/105"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState._PlayAnimation",
+          "address": "0x180a82ee0"
+        },
+        {
+          "index": 76252,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/106"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState..ctor",
+          "address": "0x180a83470"
+        },
+        {
+          "index": 76253,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/107"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState.<_PlayAnimation>b__21_0",
+          "address": "0x180a82cf0"
+        },
+        {
+          "index": 76254,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/108"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState.<_PlayAnimation>b__21_2",
+          "address": "0x180a82de0"
+        },
+        {
+          "index": 76255,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/109"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState/<>c..cctor",
+          "address": "0x180a855f0"
+        },
+        {
+          "index": 76256,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/110"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState/<>c..ctor",
+          "address": "0x18050fcc0"
+        },
+        {
+          "index": 76257,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/111"
+          ],
+          "fullname": "Torappu.Battle.Character/States/RebornState/<>c.<_PlayAnimation>b__21_1",
+          "address": "0x18053d570"
+        },
+        {
+          "index": 76258,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/112"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DialogState.get_attributeMask",
+          "address": "0x180a68ce0"
+        },
+        {
+          "index": 76259,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/113"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DialogState.get_abnormalFlagMask",
+          "address": "0x180a68c20"
+        },
+        {
+          "index": 76260,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/114"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DialogState.get_abnormalImmuneMask",
+          "address": "0x180a68c80"
+        },
+        {
+          "index": 76261,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/115"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DialogState.get_abnormalAntiMask",
+          "address": "0x180a68b00"
+        },
+        {
+          "index": 76262,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/116"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DialogState.get_abnormalComboMask",
+          "address": "0x180a68bc0"
+        },
+        {
+          "index": 76263,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/117"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DialogState.get_abnormalComboImmuneMask",
+          "address": "0x180a68b60"
+        },
+        {
+          "index": 76264,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/118"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DialogState.GetValue",
+          "address": "0x180a68000"
+        },
+        {
+          "index": 76265,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/119"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DialogState.OnEnter",
+          "address": "0x180a680e0"
+        },
+        {
+          "index": 76266,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/120"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DialogState.OnTick",
+          "address": "0x180a68460"
+        },
+        {
+          "index": 76267,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/121"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DialogState.OnExit",
+          "address": "0x180a682f0"
+        },
+        {
+          "index": 76268,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/122"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DialogState._PlayAnim",
+          "address": "0x180a68670"
+        },
+        {
+          "index": 76269,
+          "mode": "metadata",
+          "records": [
+            "selected-character-movement.json#/result/stateMethods/123"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DialogState..ctor",
+          "address": "0x180a68a20"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

@@ -180,7 +180,7 @@ Buff 派发期间增删实例的完整可见性、延迟命中与技能切换同
 原始 `act1autochess_01` 的 dragon 分支包含 `enemy_9012_acloon`，但主 waves 没有对应触发动作。
 既有 native 调用扫描尚不能证明普通回合的触发时点；显式触发测试不能替代真实玩法触发证据。
 `h08_01` 的两个本地随机动作有相同 packKey，不能简化成互斥的两敌人随机选择。
-随机组的选择／关联规则、daily／season 内容输入，以及出生／完成／等待的可观察调度语义仍保留未核对状态；内部随机调用轨迹与 coroutine 精确量化不作为兼容目标。
+Branch Phase 的随机组与关联包规则补核见下文；其他模式的按日／按季刷新不在项目调查范围。内部随机调用轨迹与 coroutine 精确量化不作为兼容目标。
 
 卫戍 `RandomEnemyGenerater._DoReplaceLevelDataClient`（79011）与 `_DoReplaceActionDataClient`（79012）改写占位动作。
 普通回合选定特训条目后保留相应移动类别，并按战斗效能计算 count；另一移动类别占位动作不生成。
@@ -200,6 +200,20 @@ H8-1 的 `/waves/0/fragments/1` 有 preDelay=5，三条出生动作的 preDelay 
 卫戍模板的 `/branches/dragon/phases/0` 使用 preDelay=0，包含一条 enemy_9012_acloon 的 SPAWN，count=1、preDelay=0、routeIndex=0；其路线对应 extraRoutes[0]，主线动作的 routeIndex 则指向 routes。四个 Branch 的结构键都是 phases，phase 的键都是 preDelay、actions。分支配置未携带触发器；本次仍未核实这四个具体分支在实际玩法中的调用来源，不能将配置存在写成必然出生。
 
 **项目关联：** 两份原始 JSON 都没有顶层 timeline 字段；现有 Core 的 TIMELINE 是项目输入接口，不能当作已证实的原生关卡结构。主线与命名 Branch 可以同时存在，Branch 的 phase 与主线 Fragment 共享配置形状。是否统一项目输入形式、如何提供分支领域操作属于架构选择，本调查不代为确定。
+
+### 2026-11-07：分支执行、组选择与调度账本补核
+
+本批只补通用执行链与卫戍所需边界，不扩展到生息演算、保全派驻。当前客户端的字段、方法与完整相邻代码段见[证据批次](evidence/scheduler-native-20261107/README.md)；下列索引属于该批指纹。静态普通分支不代表已执行全部 XLua 热更新。
+
+- `TryMoveNextBranch`（73273）查找分支，调用 `BranchRuntime.TryPickNextPhase`（73348）立即推进游标，再用 `StartBattleCoroutine` 启动本次 Phase。未检查此前 Phase 是否完成；`CheckBranchIsReadyToMoveNext`（73269）只比较游标与 phases 数量。因此机制允许多次触发的 Phase 重叠，不需要为主线同时推进多个 Fragment。
+- loop 表示顺序游标耗尽后可重新从头取；一次调用仍只取一个 Phase，不会自动循环播放整个 Branch。另有随机 Phase 与不重复随机 Phase 两种入口（73274、73275），不能与 Phase 内的随机 Action 选择混为一谈。
+- `_DealBranchPhase.MoveNext`（73430）为本次调用新建队列，先取得 Phase 的有效动作，再调用 `_DealAction`，按 offset 排队执行。`blockGameFinish` 路径按 branchId 增减结束阻塞计数；它阻止的是调度结束，不表示这些敌人必然阻塞当前主波。
+- `PhaseData.FetchActionsWithRandomSpawn(true)`（32193）先将具有 groupKey／packKey 的动作设为无效；`get_randomActionGroups`（32192）按 groupKey 收集候选。每组调用一个按权重选择的辅助程序（本批 VA `0x18477e830`），把选中项设为有效，并收集其非空 packKey。随后按原动作列表重建有效列表：选中项及 packKey 命中的关联项加入。之后 `_DealAction` 才展开 count。因此选择粒度是 Action，Pack 能连带多项，不是每只出生各抽一次，也不是所有同 Pack 项互斥。此结论仅覆盖已追踪的 Branch Phase 路径，不证明主线预处理或其他模式刷新完全相同。
+- `Scheduler.Init`（73262）建立启用隐藏组集合；`CheckActionEnabled`（73337）对 hiddenGroup 为 null 的动作放行，否则检查组是否启用。hiddenGroup 控制动作是否参加调度，不是实例已出生后的隐匿状态。
+- 新批 `_DealWave.MoveNext`（73413）再次确认：先逐个执行 Fragment，再等待波次阻塞；只有存在 nextWave 且最大等待值非负时采用有时限等待。放行后清空本波集合、通知波次结束并执行 postDelay；存活实例不因此被删除。
+- `_DoSpawn.MoveNext`（73442）、`_OnUnitDestroyed`（73333）、`_OnEnemyRecycled`（73335）再次确认主波阻塞、全场结束集合及击杀／漏怪统计分离；销毁与回收是否释放 final 集合受配置控制。`_CheckFinalNotFinish`（73332）还读取游戏模式条件和结束阻塞项，不能仅凭场上无敌人判断结束。
+
+卫戍的占位出怪替换继续由模式准备程序负责，复用本节已有证据。dragon 等具体分支的真实触发来源、主线随机预处理、advancedWaveTag 的具体消费仍未在本批闭合，不能用方法或字段存在代替玩法可达性证据。
 
 ## 7. 地图、设备与隐藏内容的可达性
 
