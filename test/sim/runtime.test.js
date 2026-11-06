@@ -19,7 +19,7 @@ const account = {
 test("initial and scheduled entry see registered battle facts and preserve their resource operations", () => {
     const entered = [];
     const route = createRoute({
-        pathMotionMode: "WALK",
+        motionMode: "WALK",
         startPosition: [0, 5],
         endPosition: [0, 6],
         spawnOffset: [0, 0],

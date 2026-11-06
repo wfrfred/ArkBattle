@@ -28,7 +28,7 @@ export type Checkpoint =
     | { readonly type: "DISAPPEAR" | "ALERT" };
 
 export interface Input {
-    readonly pathMotionMode: MotionMode;
+    readonly motionMode: MotionMode;
     readonly startPosition: TilePosition;
     readonly endPosition: TilePosition;
     readonly spawnOffset: WorldPosition;
@@ -168,7 +168,7 @@ export function normalize(
     }
 
     return {
-        pathMotionMode: input.pathMotionMode,
+        motionMode: input.motionMode,
         startPosition: input.startPosition,
         endPosition: input.endPosition,
         offset,

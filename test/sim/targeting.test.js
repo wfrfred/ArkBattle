@@ -224,8 +224,8 @@ test("blocked targets outrank nearer candidates and remain selectable outside or
 });
 
 test("explicit geometry uses hitboxes while ground eligibility reads current layer rather than route motion", () => {
-    const route = pathMotionMode => normalize(createInput({
-        pathMotionMode, startPosition: [1, 2], endPosition: [1, 6],
+    const route = motionMode => normalize(createInput({
+        motionMode, startPosition: [1, 2], endPosition: [1, 6],
         spawnOffset: [0, 0], spawnRandomRange: [0, 0], checkpoints: [], visitEveryCheckPoint: true,
     }), { waveStartedAtTick: 0, fragmentStartedAtTick: 0 }, [0, 0], true);
     const living = {

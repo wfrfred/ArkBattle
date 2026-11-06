@@ -98,11 +98,11 @@ test("EVENT-02: a Burst keeps its original position through movement and death i
 
 test("EVENT-03: real route completion updates business counts independently of temporary UI output", () => {
     const route = {
-        pathMotionMode: "WALK", startPosition: [1, 1], endPosition: [1, 1], offset: [0, 0],
+        motionMode: "WALK", startPosition: [1, 1], endPosition: [1, 1], offset: [0, 0],
         checkpoints: [], requireAllCheckpoints: true, alwaysCheckCurrentPoint: true,
     };
     const futureRoute = createInput({
-        pathMotionMode: "WALK", startPosition: [1, 2], endPosition: [1, 3],
+        motionMode: "WALK", startPosition: [1, 2], endPosition: [1, 3],
         spawnOffset: [0, 0], spawnRandomRange: [0, 0],
         checkpoints: [{ type: "WAIT_FOR_TICKS", durationTicks: 100 }],
         visitEveryCheckPoint: true,

@@ -13,7 +13,7 @@ const move = (column, type = "MOVE") => ({
     target: { position: [0, column], reachOffset: [0.1, -0.2] },
 });
 const input = (overrides = {}) => createInput({
-    pathMotionMode: "WALK",
+    motionMode: "WALK",
     startPosition: [0, 1],
     endPosition: [0, 8],
     spawnOffset: [0.2, -0.3],

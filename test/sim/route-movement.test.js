@@ -14,7 +14,7 @@ import * as routeOperations from "../../dist/core/unit/capability/route/index.js
 
 const step = state => resolveRouteCompletion(advanceBlocking(advanceMovement(state, { routeMoveMultiplier: 1 })));
 const route = overrides => ({
-    pathMotionMode: "WALK", startPosition: [0, 0], endPosition: [0, 6], offset: [0, 0],
+    motionMode: "WALK", startPosition: [0, 0], endPosition: [0, 6], offset: [0, 0],
     checkpoints: [], requireAllCheckpoints: true, alwaysCheckCurrentPoint: true, ...overrides,
 });
 const mover = overrides => ({
@@ -115,7 +115,7 @@ test("Runtime consumes the current path mode without changing the unit's ground 
     const host = ref(get(state, 0));
     state = step(state);
     assert.deepEqual(get(state, 0).position, [0, 1]);
-    state = step({ ...update(state, host, routeOperations.setPathMotionMode("FLY")), tick: 1 });
+    state = step({ ...update(state, host, routeOperations.setMotionMode("FLY")), tick: 1 });
     assert.ok(get(state, 0).position[0] > 0);
     assert.equal(get(state, 0).layer.type, "GROUND");
 });
@@ -126,7 +126,7 @@ test("outside-map displacement recovers within the movement budget and keeps its
         locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0.1,
             steeringParameters: { steeringFactor: 0.25, maxSteeringForce: 1 } },
         route: {
-            pathMotionMode: "WALK", startPosition: [1, 0], endPosition: [1, 7],
+            motionMode: "WALK", startPosition: [1, 0], endPosition: [1, 7],
             offset: [0.1, 0.05], requireAllCheckpoints: true, alwaysCheckCurrentPoint: true,
             checkpoints: [{ type: "MOVE", position: [1, 6], offset: [0.2, 0.1] }],
         },

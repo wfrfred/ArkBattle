@@ -12,7 +12,7 @@ export interface Event {
 }
 
 export interface Definition {
-    readonly pathMotionMode: MotionMode;
+    readonly motionMode: MotionMode;
     readonly startPosition: TilePosition;
     readonly endPosition: TilePosition;
     readonly offset: WorldPosition;
@@ -55,7 +55,7 @@ export type Phase =
 
 export interface Progress {
     readonly definition: Definition;
-    readonly pathMotionMode: MotionMode;
+    readonly motionMode: MotionMode;
     readonly phase: Phase;
 }
 
@@ -106,7 +106,7 @@ export function createProgress(definition: Definition): Progress {
 
     return {
         definition,
-        pathMotionMode: definition.pathMotionMode,
+        motionMode: definition.motionMode,
         phase:
             definition.checkpoints.length === 0
                 ? { type: "END" }
@@ -118,6 +118,6 @@ export function isCompleted(state: State): boolean {
     return state.main.phase.type === "COMPLETED";
 }
 
-export function pathMotionMode(state: State): MotionMode {
-    return (state.alternative ?? state.main).pathMotionMode;
+export function motionMode(state: State): MotionMode {
+    return (state.alternative ?? state.main).motionMode;
 }

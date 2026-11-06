@@ -28,7 +28,7 @@ import type { Input as BattleInput, Command } from ${module("battle/contract")};
 import type { Card, UnitDefinition as CardDefinition } from ${module("battle/deployment/card/card")};
 import type { Projectile } from ${module("projectile/projectile")};
 import * as projectiles from ${module("projectile/query")};
-import { setPathMotionMode, setAlternative, clearAlternative, type Definition as RouteDefinition, type Route } from ${module("unit/capability/route/index")};
+import { setMotionMode, setAlternative, clearAlternative, type Definition as RouteDefinition, type Route } from ${module("unit/capability/route/index")};
 import * as mechanisms from ${module("battle/mechanism")};
 import { createPredefinedDefinition } from ${module("battle/steps/predefined")};
 import * as actionCapability from ${module("unit/capability/action/index")};
@@ -120,7 +120,7 @@ const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'ba
 declare const skillCommandRef: Ref<Unit & SkillCapability>;
 declare const routeCommandRef: Ref<Unit & Route>;
 declare const routeDefinition: RouteDefinition;
-const routeChange = compose(setAlternative(routeDefinition), compose(setPathMotionMode('FLY'), clearAlternative()));
+const routeChange = compose(setAlternative(routeDefinition), compose(setMotionMode('FLY'), clearAlternative()));
 update(battle, routeCommandRef, routeChange);
 // @ts-expect-error Route changes require a Route-capable Unit.
 update(battle, ref(bare), routeChange);

@@ -25,7 +25,7 @@ import { target } from "./query.js";
 const RADIUS = 0.05;
 const TRANSITION_BUDGET = 128;
 
-export function setPathMotionMode(mode: navigation.MotionMode): Change<Unit & Route> {
+export function setMotionMode(mode: navigation.MotionMode): Change<Unit & Route> {
     return createChange<Unit & Route>((self) => {
         if (self.lifecycle !== "PRESENT") {
             return self;
@@ -34,11 +34,11 @@ export function setPathMotionMode(mode: navigation.MotionMode): Change<Unit & Ro
         const slot = self.route.alternative === null ? "main" : "alternative";
         const progress = self.route[slot]!;
 
-        return progress.pathMotionMode === mode
+        return progress.motionMode === mode
             ? self
             : {
                   ...self,
-                  route: { ...self.route, [slot]: { ...progress, pathMotionMode: mode } },
+                  route: { ...self.route, [slot]: { ...progress, motionMode: mode } },
               };
     });
 }
@@ -142,7 +142,7 @@ export function advance(battle: BattleState, ref: Ref<Unit & Route>): BattleStat
         } else if (state.type === "MOVING") {
             const goal = target(progress)!;
             const locator = Vec2.add(self.position, Vec2.negate(progress.definition.offset));
-            const map = battle.battlefield.navigation.baseline[progress.pathMotionMode];
+            const map = battle.battlefield.navigation.baseline[progress.motionMode];
             const inside =
                 map.contains(World.toTile(self.position)) && map.contains(World.toTile(locator));
             const skipped =
@@ -150,7 +150,7 @@ export function advance(battle: BattleState, ref: Ref<Unit & Route>): BattleStat
                 inside &&
                 navigation.nextPoint(
                     battle.battlefield.navigation,
-                    progress.pathMotionMode,
+                    progress.motionMode,
                     locator,
                     goal,
                 ) === null;

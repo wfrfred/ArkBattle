@@ -1,7 +1,7 @@
 import {
     hasRoute,
     isCompleted,
-    pathMotionMode,
+    motionMode,
     type Definition as RouteDefinition,
     type Route,
 } from "../../unit/capability/route/capability.js";
@@ -76,7 +76,7 @@ export function advanceMovement(
         const target = movementTarget(battle, ref);
         if (target !== null) {
             battle = locomotion.advance(battle, units.ref(unit), target, {
-                mode: pathMotionMode(unit.route),
+                mode: motionMode(unit.route),
                 speedMultiplier: routeMoveMultiplier,
             });
         }

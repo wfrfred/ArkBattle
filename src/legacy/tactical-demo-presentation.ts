@@ -153,7 +153,7 @@ function isFlying(unit: Unit): boolean {
         return unit.layer.type === "AIR";
     }
 
-    return hasRoute(unit) && unit.definition.route.pathMotionMode === "FLY";
+    return hasRoute(unit) && unit.definition.route.motionMode === "FLY";
 }
 
 function maxHp(unit: Unit): number {

@@ -1,4 +1,4 @@
-export { hasRoute, initialize, isCompleted, pathMotionMode } from "./capability.js";
+export { hasRoute, initialize, isCompleted, motionMode } from "./capability.js";
 
 export type {
     Definition,
@@ -11,6 +11,6 @@ export type {
     Event,
 } from "./capability.js";
 
-export { setPathMotionMode, setAlternative, clearAlternative, advance } from "./operations.js";
+export { setMotionMode, setAlternative, clearAlternative, advance } from "./operations.js";
 
 export { movementTarget } from "./query.js";

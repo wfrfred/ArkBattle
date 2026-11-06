@@ -172,7 +172,7 @@ test('elemental execution: periodic output follows burst speed and does not pay 
 });
 
 function route() {
-  return createRouteDefinition({ pathMotionMode: 'WALK', startPosition: [0, 3], endPosition: [0, 7],
+  return createRouteDefinition({ motionMode: 'WALK', startPosition: [0, 3], endPosition: [0, 7],
     spawnOffset: [0, 0], spawnRandomRange: [0, 0], checkpoints: [], allowDiagonalMove: false,
     visitEveryTileCenter: false, visitEveryNodeCenter: false, visitEveryCheckPoint: true });
 }

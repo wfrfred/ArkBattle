@@ -59,7 +59,7 @@ export function movementTarget(battle: BattleState, ref: Ref<Unit & Route>): Mov
     }
 
     const definition = progress.definition;
-    const map = battle.battlefield.navigation.baseline[progress.pathMotionMode];
+    const map = battle.battlefield.navigation.baseline[progress.motionMode];
     const locator = Vec2.add(self.position, Vec2.negate(definition.offset));
     if (!map.contains(World.toTile(self.position)) || !map.contains(World.toTile(locator))) {
         const recovery = recoveryPoint(map, self.position, definition.offset);
@@ -69,7 +69,7 @@ export function movementTarget(battle: BattleState, ref: Ref<Unit & Route>): Mov
 
     const point = navigation.nextPoint(
         battle.battlefield.navigation,
-        progress.pathMotionMode,
+        progress.motionMode,
         locator,
         goal,
     );

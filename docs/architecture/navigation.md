@@ -123,7 +123,7 @@ Field、build、queryField 均不属于调用方使用 Navigation 所需的公�
 
 按[项目语义判断标准](README.md)选择最小设计，不以客户端的类层级或函数调用位置作为接口要求。
 
-- Route.advance 更新等待、检查路点、执行即时指令；Route.movementTarget 选择活动路线，转换路线偏移并调用 Navigation.nextPoint，返回实际世界坐标中的 nextPoint 与 goal；Locomotion 使用当前 pathMotionMode 执行运动。
+- Route.advance 更新等待、检查路点、执行即时指令；Route.movementTarget 选择活动路线，转换路线偏移并调用 Navigation.nextPoint，返回实际世界坐标中的 nextPoint 与 goal；Locomotion 使用当前 motionMode 执行运动。
 - 地图内的不可达路点直接利用 nextPoint 的 null 结果反馈给 Route，决定等待或跳过。当前不增加独立可达性查询、失败原因联合类型或额外的 Navigation API。
 - 地图外的位置恢复目标由 Route 的追踪点查询协调，Locomotion 负责实际位移及空间约束，不要求 Navigation 为此扩张返回类型。
 - 每 Tick 等待最多计时一次、路点可以连续推进、移动只消费一次预算。移动前后如何组织 Route 结算可以采用简单、确定的项目顺序，不强制复制客户端调用位置。
@@ -155,7 +155,7 @@ export type Checkpoint =
     | { readonly type: "GOTO"; readonly index: number };
 
 export interface Definition {
-    readonly pathMotionMode: MotionMode;
+    readonly motionMode: MotionMode;
     readonly startPosition: TilePosition;
     readonly endPosition: TilePosition;
     readonly offset: WorldPosition;
@@ -184,7 +184,7 @@ export type Phase =
 
 export interface Progress {
     readonly definition: Definition;
-    readonly pathMotionMode: MotionMode;
+    readonly motionMode: MotionMode;
     readonly phase: Phase;
 }
 
@@ -217,9 +217,9 @@ export function movementTarget(
     ref: Ref<Unit & Route>,
 ): MovementTarget | null;
 
-export function pathMotionMode(state: State): MotionMode;
+export function motionMode(state: State): MotionMode;
 
-export function setPathMotionMode(
+export function setMotionMode(
     mode: MotionMode,
 ): Change<Unit & Route>;
 
@@ -240,9 +240,9 @@ Route.movementTarget 从最新 BattleState 读取单位并选择活动路线。M
 
 Route 不对 Navigation 返回的追踪点追加整段射线筛选，也不回退到当前格中心。追踪点与当前实际位置之间的完整直线未必可通行；实际位移的合法性在运动结算中检查，不能借此替换导航目标或提前拒绝整段导航建议。
 
-Definition.pathMotionMode 是初始通行模式，Progress.pathMotionMode 是当前模式。setPathMotionMode 更新当前活动 Progress，保留 Definition 和 Phase；Main 与 Alternative 各自保存模式，clearAlternative 恢复 Main 原有模式。Route 查询与传给 Locomotion 的 mode 读取同一当前值。Layer 的 State.type（unit.layer.type）独立表达空地身份，升空不自动改变寻路方式。startPosition 用于初始位置及路线相关查询；Definition.offset 是构造最终 Definition 前已经采样的总路线偏移，Progress 不重复保存。原始 offset 与 randomRange 只作为 Spawn 构造输入，不将 randomRange 保留在最终 Definition 中。
+Definition.motionMode 是初始通行模式，Progress.motionMode 是当前模式。setMotionMode 更新当前活动 Progress，保留 Definition 和 Phase；Main 与 Alternative 各自保存模式，clearAlternative 恢复 Main 原有模式。Route 查询与传给 Locomotion 的 mode 读取同一当前值。Layer 的 State.type（unit.layer.type）独立表达空地身份，升空不自动改变寻路方式。startPosition 用于初始位置及路线相关查询；Definition.offset 是构造最终 Definition 前已经采样的总路线偏移，Progress 不重复保存。原始 offset 与 randomRange 只作为 Spawn 构造输入，不将 randomRange 保留在最终 Definition 中。
 
-requireAllCheckpoints 承接原 visitEveryCheckPoint 的语义，控制是否允许在尚未逐个完成路点时，因抵达终点而提前完成路线。alwaysCheckCurrentPoint 同样是固定执行政策，由 Definition 持有。CONSUMED 表示当前指令已经消费，用于同步重入时避免重复执行，不表示整条路线完成。类型、初始化及 isCompleted／pathMotionMode 的局部读取归 route/capability.ts；movementTarget 及其 target／recoveryPoint 辅助查询归 route/query.ts，target 仅供领域内部共享，不从 index 导出。设置 Change 工厂与完整路线推进由 route/operations.ts 提供。
+requireAllCheckpoints 承接原 visitEveryCheckPoint 的语义，控制是否允许在尚未逐个完成路点时，因抵达终点而提前完成路线。alwaysCheckCurrentPoint 同样是固定执行政策，由 Definition 持有。CONSUMED 表示当前指令已经消费，用于同步重入时避免重复执行，不表示整条路线完成。类型、初始化及 isCompleted／motionMode 的局部读取归 route/capability.ts；movementTarget 及其 target／recoveryPoint 辅助查询归 route/query.ts，target 仅供领域内部共享，不从 index 导出。设置 Change 工厂与完整路线推进由 route/operations.ts 提供。
 
 ### 指令归一化
 

@@ -870,7 +870,7 @@ test('raw 01 dragon branch waits for an explicit trigger and uses its own actual
     arknightsFixture('prefab_enemy_9012_acloon').components.find(component =>
       Object.hasOwn(component.fields, '_halfBodyWidth')).fields._halfBodyWidth);
   assert.deepEqual(dragon.definition.route.startPosition, scenario.level.extraRoutes[0].startPosition);
-  assert.equal(dragon.definition.route.pathMotionMode, 'FLY');
+  assert.equal(dragon.definition.route.motionMode, 'FLY');
   assert.deepEqual(runtime.schedule.managedWaveUnitIds, [0]);
   assert.deepEqual(runtime.schedule.managedFinalUnitIds, [0, 1]);
   runtime = advanceBattle(runtime, [{ type: 'TRIGGER_BRANCH', branchId: 'dragon', isLoop: false }]);

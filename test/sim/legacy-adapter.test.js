@@ -11,7 +11,7 @@ const guard = (fields = {}) => chessRec({
 });
 const walker = (fields = {}) => enemyRec({ key: "walker", hp: 1e6, speed: 1, ...fields });
 const coreCombatRoute = () => createRouteDefinition({
-    pathMotionMode: "WALK", startPosition: [1, 8], endPosition: [1, 0],
+    motionMode: "WALK", startPosition: [1, 8], endPosition: [1, 0],
     spawnOffset: [0, 0], spawnRandomRange: [0, 0], checkpoints: [],
     allowDiagonalMove: false, visitEveryTileCenter: false,
     visitEveryNodeCenter: false, visitEveryCheckPoint: true,

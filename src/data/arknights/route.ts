@@ -139,8 +139,8 @@ export function parseRouteDefinition(value: unknown): Input {
         "visitEveryNodeCenter",
         "visitEveryCheckPoint",
     ]);
-    const pathMotionMode = data.motionMode;
-    if (pathMotionMode !== "WALK" && pathMotionMode !== "FLY") {
+    const motionMode = data.motionMode;
+    if (motionMode !== "WALK" && motionMode !== "FLY") {
         throw new RangeError("unsupported Arknights route motion mode");
     }
     if (!Array.isArray(data.checkpoints)) {
@@ -159,7 +159,7 @@ export function parseRouteDefinition(value: unknown): Input {
     }
 
     return createInput({
-        pathMotionMode,
+        motionMode,
         startPosition: position(data.startPosition, "route.startPosition"),
         endPosition: position(data.endPosition, "route.endPosition"),
         spawnOffset: offset(data.spawnOffset, "route.spawnOffset"),

@@ -185,7 +185,7 @@ test("onTick and nested unit departure preserve the latest mechanism state", () 
 
 test("runtime scans mechanisms after movement and before route completion", () => {
     const route = (start, end) => ({
-        pathMotionMode: "WALK", startPosition: start, endPosition: end,
+        motionMode: "WALK", startPosition: start, endPosition: end,
         offset: [0, 0], checkpoints: [], requireAllCheckpoints: false,
         alwaysCheckCurrentPoint: true,
     });
