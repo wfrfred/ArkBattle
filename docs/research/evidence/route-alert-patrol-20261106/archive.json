@@ -1,0 +1,197 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-06"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-11-06",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "fields.json#/provenance/client/dll",
+          "native-alert.json#/provenance/client/dll",
+          "native-patrol.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "fields.json#/provenance/client/metadata",
+          "native-alert.json#/provenance/client/metadata",
+          "native-patrol.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "fields.json",
+      "native-alert.json",
+      "native-patrol.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12589,
+        "sha256": "1a85248a6a48d92d61c65f5ba044d079954866ff0c1672488b92f0cf1366af9a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "fields.json",
+        "kind": "record",
+        "bytes": 42078,
+        "sha256": "00d77da30b96b5d6ba9f7969be061aff6c229a59f7e7090657831a94b938dd1c"
+      },
+      {
+        "path": "native-alert.json",
+        "kind": "record",
+        "bytes": 46927,
+        "sha256": "369e8331e7537efbab8bb1f137bcd553c1537abbea43d55d4120a97a1e9b63d4"
+      },
+      {
+        "path": "native-patrol.json",
+        "kind": "record",
+        "bytes": 105782,
+        "sha256": "8e47ba1b6d87e489d113635c9459c656b60bf22f6e3d0c951cd029a0b519f0c4"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 71303,
+          "mode": "disasm",
+          "records": [
+            "native-patrol.json#/result/methods/4",
+            "native-patrol.json#/result/methods/4/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor._MoveNext",
+          "address": "0x1808cd750"
+        },
+        {
+          "index": 71323,
+          "mode": "disasm",
+          "records": [
+            "native-patrol.json#/result/methods/3",
+            "native-patrol.json#/result/methods/3/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/Checkpoint.NextCursor",
+          "address": "0x1808d1320"
+        },
+        {
+          "index": 71340,
+          "mode": "disasm",
+          "records": [
+            "native-patrol.json#/result/methods/0",
+            "native-patrol.json#/result/methods/0/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/PatrolMoveCheckpoint.IsValidPatrolCheckPoint",
+          "address": "0x1808dbad0"
+        },
+        {
+          "index": 71341,
+          "mode": "disasm",
+          "records": [
+            "native-patrol.json#/result/methods/1",
+            "native-patrol.json#/result/methods/1/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/PatrolMoveCheckpoint.OnTick",
+          "address": "0x1808dbdf0"
+        },
+        {
+          "index": 71342,
+          "mode": "disasm",
+          "records": [
+            "native-patrol.json#/result/methods/2",
+            "native-patrol.json#/result/methods/2/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/PatrolMoveCheckpoint.NextCursor",
+          "address": "0x1808dbb00"
+        },
+        {
+          "index": 71388,
+          "mode": "disasm",
+          "records": [
+            "native-alert.json#/result/methods/1",
+            "native-alert.json#/result/methods/1/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/AlertCheckpoint.CheckReached",
+          "address": "0x18053d7a0"
+        },
+        {
+          "index": 71390,
+          "mode": "disasm",
+          "records": [
+            "native-alert.json#/result/methods/0",
+            "native-alert.json#/result/methods/0/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/AlertCheckpoint.OnBegin",
+          "address": "0x1808cc0f0"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.BasicCursor",
+          "records": [
+            "fields.json#/result/3"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BasicCursor/AlertCheckpoint",
+          "records": [
+            "fields.json#/result/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BasicCursor/Checkpoint",
+          "records": [
+            "fields.json#/result/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BasicCursor/MoveCheckpoint",
+          "records": [
+            "fields.json#/result/6"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BasicCursor/PatrolMoveCheckpoint",
+          "records": [
+            "fields.json#/result/0"
+          ]
+        },
+        {
+          "name": "Torappu.CheckpointType",
+          "records": [
+            "fields.json#/result/5"
+          ]
+        },
+        {
+          "name": "Torappu.RouteData/CheckpointData",
+          "records": [
+            "fields.json#/result/4"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

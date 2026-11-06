@@ -123,3 +123,32 @@ return withinDistance(locator, sampledTarget, reachDistance);
 - 局部避障与位移修正后续按实际业务审查，不因客户端存在相关分支就预设额外 API。
 
 **U：** 未穷尽所有状态机子类、TracePositionCursor 预测前视对特殊短距离布局的影响、运行时热更覆盖和所有状态间切换的帧边界。本轮没有游戏现场验证，也没有以项目现有实现反证客户端。
+
+## 8. ALERT 与巡逻回边（2026-11-06 补核）
+
+本节针对普通 BasicCursor 的两个检查点，不重新调查整条运动链。PRTS [作战机制](https://prts.wiki/w/作战机制)查阅于 2026-11-06：确认巡逻点重复经过，但没有说明分段算法；ALERT 的合作关卡警示用途使用了不确定表述。因此读取当前官方 Windows 客户端的实际消费者。输入指纹、完整选择器和复跑命令见[本批 README](../evidence/route-alert-patrol-20261106/README.md)，与 2026-10-18 的旧批次不是同一份客户端。
+
+### ALERT：当前格的声音与警示特效
+
+**N：** AlertCheckpoint.OnBegin（71390，`0x1808cc0f0`）检查 Cursor.owner 有效，按其当前格取得 Tile，然后调用 `BattleController.PlayAudioAtPos` 和 `BattleController.CreateEffect`。完整普通路径没有设置警觉、索敌、攻击或其他战斗行为状态。CheckReached（71388）恒为 true，不等待特效完成。[入口与完整尾段](../evidence/route-alert-patrol-20261106/native-alert.json)
+
+因此，这条普通 native 路径直接支持的是即时警示表现，不能仅因名称 ALERT 而赋予它额外的战斗状态语义。本次没有核实具体警示资源、运行时 XLua 替换或特殊 Cursor；不将此结论扩大成所有模式下同名操作的保证。
+
+### PATROL_MOVE：连续非普通 MOVE 段的回边
+
+**N：** PatrolMoveCheckpoint.NextCursor（71342，`0x1808dbb00`）先看下一项；下一项属于合法巡逻段检查点时，直接前进。遇到末尾或下一项不合法时，从当前项的前一项开始向前扫描，回到这一连续段最早的前置项。若没有合法前置项，则仍然向后前进。当前方法以 `type - 1 <= 9` 判断合法范围，包含等待、出现／消失、ALERT、PATROL_MOVE 等检查点，排除普通 MOVE（0）。IsValidPatrolCheckPoint（71340）采用相同条件。[后继算法与实际分派](../evidence/route-alert-patrol-20261106/native-patrol.json)
+
+由这些分支可以直接推得：
+
+| 路点序列 | 普通 native 的后继 |
+| --- | --- |
+| 只有一个 PATROL_MOVE | 完成后前进，不自行构成循环。 |
+| WAIT → PATROL_MOVE → 末尾 | Patrol 回到 WAIT；每次重新进入 WAIT 都执行其 OnBegin。 |
+| MOVE → WAIT → PATROL_MOVE → PATROL_MOVE → MOVE | 最后一个 Patrol 回到 WAIT；前面的普通 MOVE 不属于循环段，后面的普通 MOVE 构成回跳边界。 |
+| PATROL_MOVE 后接合法非 MOVE 检查点 | 当前 Patrol 先前进，不因自身是巡逻点立即回跳；只有实际执行 Patrol.NextCursor 的边界才生成回边。 |
+
+**N：** BasicCursor._MoveNext 普通路径通过虚槽 12 调用当前检查点的 NextCursor，Patrol 的实现位于同槽，随后开始新检查点。上述规则是实际 Cursor 使用的后继算法，不只是类型名或未调用辅助方法的推测。
+
+**N：** 原生另有每个 PatrolCheckpoint 自身的重复切换计数；计数大于 50 时记录错误并前进，OnTick 将计数清零。这是该实现的局部防循环保护，不能据此宣称原生每 Tick 有统一的 50 次或 128 次 Route 推进额度。
+
+**U：** 以上来自当前静态普通 native 分支，未验证活跃 XLua、特殊 Cursor 或实机行为；本轮不据此决定项目的推进预算、表现 Event 或公开 API。
