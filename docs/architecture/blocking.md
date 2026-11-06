@@ -13,7 +13,7 @@ Blocker／Blockable 的数值、能力 Change 工厂与完整操作见 [Capabili
 1. **关系资格正确。** Blocker 与 Blockable 在构造入口互斥；阵营限制由二元 Rule 选择，空地、地块、存活及容量条件共同决定能否取得关系。临时 HP 归零后被 HP Applied 响应救活，不提前解除旧关系。
 2. **关系完整且排他。** 一个目标至多属于一个阻挡者；双端关联和取得时的位置计划先一起发布，再通知。旧 Ref 只能结束对应旧关系，不能误解除后来重建的同双方关系。
 3. **容量缩减保留前序目标。** 从已阻挡列表末尾逐项裁撤；每项通知后按最新容量与占用决定是否继续，不提前冻结整组裁撤名单。
-4. **明确解除同步完成。** 阻挡者离场、切层等批量解除先发布整个旧集合的解除结果，再通知；不自动搜索替代目标。后继业务遵守[状态接续契约](functional-core.md#状态接续后的读取与续执行)，不恢复旧关联。
+4. **明确解除同步完成。** Layer 与 Blocker.setLayer 的 Settlement 清理当时的当前关系，包括较早 Settlement 已建立的关系。每次批量释放在操作入口固定本次集合，先发布整批双端解除结果再通知；本次通知中新建的关系不追溯清理，不自动搜索替代目标。后继业务遵守[状态接续契约](functional-core.md#状态接续后的读取与续执行)，不恢复旧关联。
 5. **位置计划与关系独立。** 站位计算使用真实几何及前序目标的稳定位置；位置计划推进真实 Unit.position。普通关系解除保留计划，目标主动脱离或明确覆盖位置时取消计划；阻挡不停止路线等待。
 6. **搜索政策有确定的结果。** 普通搜索在 Movement 后执行；一次搜索固定候选，逐项按最新资格和容量尝试。已确认的实时增容政策可以影响后续候选，不添加新候选，也不要求全场反复收敛。
 
@@ -234,8 +234,6 @@ release 只处理传入的旧集合，不自动 maintain、搜索或取消位置
 
 Blocker Capability 提供完整操作 `releaseAll(battle, reference: Ref<Unit & Blocker>): BattleState`，由 capability/blocking/index.ts 原名导出。入口从当前 BattleState 读取一次宿主，缺失时返回原状态；按取得顺序解除当前全部出向关系，不取消目标的位置计划，也不自动维护或搜索。
 
-内部共享的 `releaseCaptured(battle, self: Unit & Blocker)` 消费已取得的 self.blocker.blocked 原 Ref，将其组成 Relation 后交给 Blocking.release，不再读取宿主。该函数由 blocker-operations.ts 具名导出供 Core 协作，不经 index.ts 公开。releaseAll 传入当前对象，Change 后继则可明确传入 previous，二者复用相同的批量解除结算。
-
 两端 Capability 的 Change 工厂由 capability/blocking/index.ts 导出：
 
 | 工厂 | 主要对象与输入 |
@@ -252,19 +250,19 @@ Blocker Capability 提供完整操作 `releaseAll(battle, reference: Ref<Unit & 
 
 工厂实现在 [blocker-operations.ts](../../src/core/unit/capability/blocking/blocker-operations.ts) 和 [blockable-operations.ts](../../src/core/unit/capability/blocking/blockable-operations.ts)。blocker.ts／blockable.ts 保留模型、初始化、守卫和数值查询，Catalog 与只读查询可精确依赖模型。公共入口直接导出工厂，不增加包装。
 
-setLayer 的 transform 只设置 layer 与实际 radius，不修改关系。同层请求由 transform 返回原 Unit，createChange 不登记其 settle。真实切层的 settle 调用 releaseCaptured(battle, previous)，按 previous.blocker.blocked 中的原 Ref 捕获旧集合；Blocking.release 按当前 BattleState 过滤旧身份后批量解除并通知。自身 Layer.setType 的 Blocker 分支使用同一内部操作。后继不重调 setLayer 或公开的 releaseAll，也不把 previous 整体发布；本批其他字段和嵌套操作的新值因此保留。
+setLayer 的 transform 只设置 layer 与实际 radius，不修改关系。同层请求由 transform 返回原 Unit，createChange 不登记其 settle。真实切层的 settle 调用 releaseAll(battle, ref(previous))，读取当时当前的全部出向关系并批量解除。自身 Layer.setType 的 Blocker 分支使用相同完整操作。previous 只提供稳定身份，不保存关系范围或整体写回；本批其他字段和嵌套操作的新值因此保留。
 
-setLayer 不因旧关系在最终层下仍合法而保留它。新建立的同 ID 关系有新的 Ref 条目，不属于旧候选；该项解除不再额外维护新集合。它不自动 search、不新增 layerChanged Hook、不改变自身 Unit Layer。内容在对应 Effect 生命周期程序中提交该 Change，不机械绑定所有 Skill 开始或结束。
+setLayer 不因关系在最终层下仍合法而保留它。较早 Settlement 的 Hook 已建立的关系也在当前清理范围内；本次 release 通知中新建立的同 ID 关系有新的 Ref 条目，不属于本次候选，不被追溯解除。它不自动 search、不新增 layerChanged Hook、不改变自身 Unit Layer。内容在对应 Effect 生命周期程序中提交该 Change，不机械绑定所有 Skill 开始或结束。
 
 ## 主动解除阻挡的空间操作
 
 [SpatialPresence](presence.md) 的 appear／disappear 返回组合 Change：自身叶子只修改空间事实，限制直接复用所属能力的 Rule Change；自身 Settlement 按 previous 的稳定角色调用 Blockable.release 或 Blocker.releaseAll，由完整操作读取当前关系、取消自身计划并释放。Blocker 不取消目标的独立计划。Route 主动覆盖位置时通过 unit.update 提交 Presence Change；没有该能力时先纯发布位置，再按角色调用相同完整操作。各释放操作在自己的首个 RELEASED Hook 前完成所属计划清理和整批双端解除，不向 Blocking.release 传入额外更新值。
 
-Blocker.layer 的 Change 先在全批发布时设置 layer／radius，等轮到自己的 settle 才通过 release 批量清理 previous 中的旧集合。该 settle 开始后仍存在的全部旧候选，在它自己的首个 RELEASED Hook 前一并清除。若较早 settle 已解除部分关系，那些较早通知遵守自己的结算语义，不能承诺全批第一个 RELEASED 前切层旧关系已全清空。
+Blocker.layer 的 Change 先在全批发布时设置 layer／radius，等轮到自己的 settle 才通过 releaseAll 读取并批量清理当前集合。release 操作入口固定的全部候选，在它自己的首个 RELEASED Hook 前一并清除。若较早 settle 已解除部分关系，那些较早通知遵守自己的结算语义，不能承诺全批第一个 RELEASED 前切层旧关系已全清空。
 
 例如同批先设置 capacity=1，再 GROUND→AIR，所有 Hook 都看到最终 AIR；容量后继可能先逐项解除 GROUND 旧关系，首个通知时其他旧关系仍存在。反向排列则先由切层后继批量清除。批内 GROUND→AIR→GROUND 最终仍为 GROUND，但旧出向关系应清理，通知不观察中间 AIR。拆成两次 update 则各自完成一轮发布和结算。
 
-旧候选只携带有意采样的 Ref 身份，不保留可重新提交的旧 Unit。Hook 新建的关系不被外层候选覆盖；每项通知接续最新 BattleState。普通移动仍不因超出初次接敌半径而自动解除关系。
+释放候选只在对应操作入口固定，携带原 Ref 身份，不保留可重新提交的旧 Unit。本次 Hook 新建的关系不被该次候选覆盖；后续另一项 Settlement 可以再次清理当时的当前关系。每项通知接续最新 BattleState。普通移动仍不因超出初次接敌半径而自动解除关系。
 
 ## 显式关系操作与同步维护
 
@@ -331,7 +329,7 @@ Blocker／Blockable State 各自持有 acquired、released Hook 数组，使用 
 
 Runtime 执行 Movement → Mechanism.advance → Blocking.advance → resolveRouteCompletion。最后一步只检查路线是否已完成和能否离场，不再次推进 Route。消费侧通过 relations(battle) 从两端状态取得 Typed Ref 关系，按需生成输出；不保存额外的全局权威关系。Movement 根据 Blockable 的当前归属决定是否推进自主 Locomotion。
 
-Presence 与 Route 的主动空间变更先纯发布新空间事实，再按角色调用 Blockable.release 或 Blocker.releaseAll。Blockable.release 在关系通知前取消自身计划，两种角色的释放均在首个通知前完成本次集合的双端解除。切层 Change 则先发布全批 layer 字段，自己的 settle 再解除 previous 中的旧集合；普通位置更新仍不按距离解除旧关系。Lifetime 的请求、宿主等待及最终移除遵守[公共析构协议](lifetime.md#请求与-prepare)。Departure 保留离场入口历史；后续需要当前对象的业务重新查询。返费与 Card 资源结算归 Deployment／Deployable，不由 Blocking 通知时点推导。
+Presence 与 Route 的主动空间变更先纯发布新空间事实，再按角色调用 Blockable.release 或 Blocker.releaseAll。Blockable.release 在关系通知前取消自身计划，两种角色的释放均在首个通知前完成本次集合的双端解除。切层 Change 则先发布全批 layer 字段，自己的 settle 再读取并解除当前关系；普通位置更新仍不按距离解除旧关系。Lifetime 的请求、宿主等待及最终移除遵守[公共析构协议](lifetime.md#请求与-prepare)。Departure 保留离场入口历史；后续需要当前对象的业务重新查询。返费与 Card 资源结算归 Deployment／Deployable，不由 Blocking 通知时点推导。
 
 ## 地块阻挡资格
 

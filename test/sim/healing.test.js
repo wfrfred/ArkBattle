@@ -22,6 +22,59 @@ const elementalReceiver = {
     elemental: createArknightsElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
 };
 
+test("APPLY-02: Calculate normalizes final HP/EP output before Apply starts receiving", () => {
+    for (const [name, operation, parameters] of [
+        ["HP Damage", hpDamage, {
+            type: "TRUE", attack: { power: -10, multiplier: 1, addition: 0 },
+        }],
+        ["EP Damage", epDamage, { type: "BURN", power: -10 }],
+        ["HP Healing", hpHealing, { power: -10, multiplier: 1 }],
+        ["EP Healing", epHealing, { power: -10 }],
+    ]) {
+        const hooks = Hooks.empty().set(operation.sourceFormula, {
+            id: "formula",
+            invoke(state, _context, current) {
+                assert.equal(current.attack?.power ?? current.power, -10, name);
+                return {
+                    state,
+                    value: current.attack === undefined
+                        ? { ...current, power: 10 }
+                        : { ...current, attack: { ...current.attack, power: 10 } },
+                };
+            },
+        }).set(operation.output, {
+            id: "output",
+            invoke(state, _context, amount) {
+                assert.equal(amount, 10, name);
+                return { state, value: -5 };
+            },
+        });
+        const state = battle([
+            { definition: { id: "source", hooks }, position: [0, 0] },
+            { definition: {
+                ...elementalReceiver,
+                vitality: { maxHp: 100, defense: 0, resistance: 0 },
+                hooks: Hooks.empty().set(operation.beforeReceive, {
+                    id: "receive",
+                    invoke: () => assert.fail(`${name}: zero output cannot start receiving`),
+                }),
+            }, position: [1, 0] },
+        ]);
+        const request = {
+            source: units.ref(get(state, 0)),
+            target: units.ref(get(state, 1)),
+            parameters,
+        };
+        const calculate = operation.calculateDamage ?? operation.calculateHealing;
+        const apply = operation.applyDamage ?? operation.applyHealing;
+        const calculated = calculate(state, request);
+        assert.equal(calculated.value.amount, 0, name);
+        const result = apply(request, calculated);
+        assert.equal(result.value.type, "REJECTED", name);
+        assert.equal(result.state, state, name);
+    }
+});
+
 test("HP Healing accepts full resources and absent patients while damage requires presence", () => {
     const calls = [];
     let state = battle([{ definition: {

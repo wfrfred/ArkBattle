@@ -148,7 +148,7 @@ Unit.position 表达当前世界坐标；Layer 表达 GROUND／AIR 空地身份�
 
 unit/capability/layer/capability.ts 的 Definition.type 提供初始身份，State.type 保存当前身份；领域消费者读取 unit.layer.type。Unit.position 与 SpatialPresence 表达位置和空间存在事实，不承担空地身份。Battlefield 不保存另一份位置索引。
 
-Layer 的 `setType(type: Type): Change<Unit & Layer>` 归 operations.ts，经 index.ts 与模型、守卫和 initialize 显式导出；Core 只需模型时继续直接依赖 capability.ts。它设置自身空地身份，与 Blocking.setLayer 调整可阻挡目标层的操作不同。setType 同时主动脱离阻挡，即使 type 相同也执行清理，每次形成新的 Layer State 和 Unit，不改变createChange 的同引用不登记结算协议。全批 transform 先发布，settle 再按 previous 的稳定角色分支：Blocker 调用内部 releaseCaptured(battle, previous)，批量解除 previous.blocker.blocked 中原 Ref 对应的旧出向关系，Hook 重建的新 Ref 不受旧请求影响；Blockable 调用自身 release，按最新状态解除入向关系并取消位置计划，后续独立请求仍可再次脱离当前关系；两种角色皆无时只更新身份。该操作不自动搜索，不修改 Definition、position、Route.pathMotionMode 或 Blocker 自己的 layer／radius，也不代替浮空效果的其他业务。原生边界见[运动调查](../research/cases/15-locomotion-native-semantics.md)和[蒂比起飞调查](../research/cases/21-tippi-air-blocking.md)。
+Layer 的 `setType(type: Type): Change<Unit & Layer>` 归 operations.ts，经 index.ts 与模型、守卫和 initialize 显式导出；Core 只需模型时继续直接依赖 capability.ts。它设置自身空地身份，与 Blocking.setLayer 调整可阻挡目标层的操作不同。setType 同时主动脱离阻挡，即使 type 相同也执行清理，每次形成新的 Layer State 和 Unit，不改变createChange 的同引用不登记结算协议。全批 transform 先发布，settle 再按 previous 的稳定角色分支：Blocker 调用 releaseAll(battle, ref(previous))，Blockable 调用自身 release，均按结算时最新状态解除关系；Blockable 同时取消位置计划。各释放操作在入口固定本次候选，不追删自身通知中新建的关系；后续独立请求仍可再次脱离当前关系；两种角色皆无时只更新身份。该操作不自动搜索，不修改 Definition、position、Route.pathMotionMode 或 Blocker 自己的 layer／radius，也不代替浮空效果的其他业务。原生边界见[运动调查](../research/cases/15-locomotion-native-semantics.md)和[蒂比起飞调查](../research/cases/21-tippi-air-blocking.md)。
 
 unit/capability/hitbox/capability.ts 的 Definition.shape 保存单个静态 Shape，State 为空实现；Spatial 与采用相交判定的 Targeting 读取 unit.definition.hitbox.shape。initialize 校验有限偏移、非负有限半径或半宽高；不复制几何到 State，不提供运行时形状修改接口。公开 API 只有 hasHitbox 与 initialize。
 
@@ -178,9 +178,9 @@ volume 使用 Contribution<number>，筛选互斥胜者后累加整数追加量�
 
 Rule 可以读取时间、第三方单位等任意 Battle 事实，系统不跟踪函数依赖，也不让每次字段发布都执行全场维护。每 Tick 的 Blocking 阶段先固定阶段初 Blocker 候选，再通过 maintainAll 固定入口既有关系、按顺序各复核一次资格，最后搜索新关系。完整地块更新同样显式调用 maintainAll；它不裁容量、不重新收集候选或回头复核已访问项。晚于某条复核才发生的间接条件变化在下一检查点反映，需要同步生效的业务明确执行相应关系操作。
 
-Blocker 的完整 `releaseAll(battle, Ref<Unit & Blocker>): BattleState` 归 blocker-operations.ts，经 Capability index.ts 原名导出。入口读取一次当前宿主，缺失时返回原 BattleState；将当前 blocked 的原 Ref 交给 Blocking.release 批量解除。内部共享的 releaseCaptured(battle, self: Unit & Blocker) 接收已取得的对象，不重新查询宿主，也不经过公共 index.ts。Blocker.prepare 通过公开 releaseAll 清理当前关系，Departure.unit 仅用于取得 Ref；不以离场历史快照恢复当前列表。解除不取消目标的位置计划，不自动维护或搜索。
+Blocker 的完整 `releaseAll(battle, Ref<Unit & Blocker>): BattleState` 归 blocker-operations.ts，经 Capability index.ts 原名导出。入口读取一次当前宿主，缺失时返回原 BattleState；将当前 blocked 的原 Ref 交给 Blocking.release 批量解除。Blocker.prepare 通过公开 releaseAll 清理当前关系，Departure.unit 仅用于取得 Ref；不以离场历史快照恢复当前列表。解除不取消目标的位置计划，不自动维护或搜索。
 
-切换阻挡层使用 `setLayer(layer): Change<Unit & Blocker>`。transform 只更新 layer／radius；同层请求返回原 Unit，由 createChange 不登记后继；实际变化的 settle 调用 releaseCaptured(battle, previous)，保留 previous.blocker.blocked 的原 Ref 范围。后继不重做 transform、不写回旧 Unit；首个 RELEASED 前本次有效旧集合的双端解除已发布，不附加维护或搜索。混合批次中较早的其他后继可能先处理部分旧关系，不能把切层自身的批量可见性扩为全批首个 RELEASED 的保证。切换不改变自身 Layer、不增加 Hook 或 Contribution；细节见 [Blocking 批次契约](blocking.md#显式关系操作与同步维护)。
+切换阻挡层使用 `setLayer(layer): Change<Unit & Blocker>`。transform 只更新 layer／radius；同层请求返回原 Unit，由 createChange 不登记后继；实际变化的 settle 调用 releaseAll(battle, ref(previous))，解除结算时当前全部出向关系，包含较早 Settlement 中取得的关系。后继不重做 transform、不写回旧 Unit；首个 RELEASED 前本次操作入口集合的双端解除已发布，不附加维护或搜索。混合批次中较早的其他后继可能先处理部分旧关系，不能把切层自身的批量可见性扩为全批首个 RELEASED 的保证。切换不改变自身 Layer、不增加 Hook 或 Contribution；细节见 [Blocking 批次契约](blocking.md#显式关系操作与同步维护)。
 
 关系归属与关联由两端 State 保存：Blockable.blocker 是唯一 owner 或 null，Blocker.blocked 是按建立顺序保留的目标 Ref 数组。acquire 发布双端与新计划后通知，再复核本次新 Relation 的资格；不扫描整个阻挡组或裁容量。release 入口过滤失效旧身份与重复项，整批发布双端解除，再按首次输入顺序逐条通知；每条仍先 Blocker、后 Blockable，双方 Hook 候选在该条通知开始时同时固定。release 不附加维护、搜索或计划取消。通用发布不补齐或比较关系。同一次关系的身份由正向列表中的 Ref 条目对象承担，重建必须创建新条目，普通字段更新共享既有引用。转移使用完整 Release 和新 Acquire。
 

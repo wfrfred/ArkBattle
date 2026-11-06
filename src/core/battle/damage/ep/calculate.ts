@@ -1,4 +1,3 @@
-import { assertNonnegativeNumber } from "../../../common/assert.js";
 import type { State as BattleState, Result } from "../../state.js";
 import * as units from "../../../unit/query.js";
 import { available, resolveElementResistance } from "../../../unit/capability/elemental/query.js";
@@ -9,8 +8,6 @@ export function calculateDamage(
     battle: BattleState,
     request: Request,
 ): Result<Calculated | undefined> {
-    assertNonnegativeNumber(request.parameters.power, "element damage power");
-
     const unavailable = (current: BattleState) => {
         const target = units.get(current, request.target);
 
@@ -52,6 +49,6 @@ export function calculateDamage(
         state: result.state,
         value: unavailable(result.state)
             ? undefined
-            : { type: parameters.type, amount: result.value },
+            : { type: parameters.type, amount: Math.max(0, result.value) },
     };
 }

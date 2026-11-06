@@ -53,7 +53,7 @@ export function calculateDamage(
         state: output.state,
         value: unavailable(output.state)
             ? undefined
-            : { type: parameters.type, amount: output.value },
+            : { type: parameters.type, amount: Math.max(0, output.value) },
     };
 }
 

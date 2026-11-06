@@ -16,7 +16,7 @@ export function calculateHealing(
         return { state: battle, value: undefined };
     }
 
-    let parameters = { ...request.parameters, power: Math.max(0, request.parameters.power) };
+    let parameters = request.parameters;
 
     const context = { target: request.target, request };
 
@@ -38,6 +38,6 @@ export function calculateHealing(
 
     return {
         state: output.state,
-        value: unavailable(output.state) ? undefined : { amount: output.value },
+        value: unavailable(output.state) ? undefined : { amount: Math.max(0, output.value) },
     };
 }

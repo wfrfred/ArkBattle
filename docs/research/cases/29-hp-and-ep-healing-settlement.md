@@ -2,6 +2,8 @@
 
 研究日期：2026-11-03；基线 `a85aaa4`。复用[案例 27](27-attack-additions-and-damage-events.md)、[案例 25](25-elemental-burst-recovery-timing.md)与 [EP 事件补查](../evidence/ep-modifier-events-20261103/README.md)的同指纹主体，只补治疗公式、分类、接收、来源后置和末药／桑葚普通模式的内容绑定。定位、指纹与复跑命令见[证据批次](../evidence/healing-settlement-20261103/README.md)。
 
+2026-11-06 补核负治疗数值，基线 `92f76d2`；客户端指纹与原调查相同。新增构造器与数值读写证据见[补查批次](../evidence/healing-negative-values-20261106/README.md)，公式和提交链直接复用既有材料。
+
 ## 1. 问题与结论
 
 问题：HP 治疗、EP 回复经过哪些共同 Modifier 时点，哪些处理独立？行医的两种回复如何组合，EP 是否取决于实际 HP 恢复量？
@@ -57,6 +59,17 @@ H=\max(0,\operatorname{ATK}\times\operatorname{healScale})
 节点默认比例为1.0；不能将其当成桑葚实际配置。桑葚分支50%有社区资料支持，本机外部 TraitData 的0.5条目未在本轮闭合。
 
 当前客户端正向 EP 提交循环元素 ID 1～5，每型各恢复同一数额并独立截断，realDelta 累加各型的实际变化。它既不是只恢复最低的一型，也不是把一个总预算分摊给各型。ArkBattle 当前支持四型，本调查不增加第五型支持。
+
+### 负数：基础求值、Modifier 数值与提交量
+
+2026-11-06 先复查 [PRTS 治疗量](https://prts.wiki/w/游戏数据基础#治疗量)与[特殊机制](https://prts.wiki/w/特殊机制)，社区资料没有闭合负数 EP 输入的行为，因而补查普通 native 分支：
+
+- HP 基础治疗的裁零发生在 ATK 与 healScale 相乘之后，即上式 `max(0, ATK × healScale)`；不能改述为先将输入 ATK 裁零。`GetFinalAtk` 65919 在乘法、附加项之后才与零取 Max，治疗构造的附加项为零。
+- 普通 EP 治疗节点直接传入 `ATK × epHealRatio`。`NewHeal` 72182 与 `NewElementHeal` 72183 均固定正向修改；`set_value` 72157 与 `get_value` 72156 的普通分支原样保存、读取数值，没有取绝对值、按负号改成损伤或负值异常。
+- 两者共用 `finalDelta` 72155：先取 `max(0, value)`，再乘声明的方向。因此，若提交时治疗 Modifier 的 value 仍为负，最终资源增量为零，不会变成伤害。
+- 这不意味着负数输入在入口就作为零取消。`get_isCancelled` 72132 检查方向 NONE 或 `MathUtil.IsZero(value)`，没有 `value < 0` 分支；不属于该零值判定的负数仍可能进入接收程序，其数值也可能被后续程序改变。最终提交量为零不能证明整次调用没有 Hook 或其他副作用。
+
+上述结论区分了基础公式、Modifier 当前数值与最终提交量，没有证实某个实际内容会产生负治疗，也未验证活跃 XLua。它不决定 ArkBattle 是否拒绝负数参数、在哪个边界裁零或如何检查 Output Hook 的结果；这些是独立的项目数值契约。
 
 ## 4. 普通医师与行医的真实配置
 

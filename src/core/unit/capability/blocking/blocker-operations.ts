@@ -30,15 +30,13 @@ export const prepare: PrepareHook = {
 export function releaseAll(battle: BattleState, reference: Ref<Unit & Blocker>): BattleState {
     const self = units.get(battle, reference);
 
-    return self === undefined ? battle : releaseCaptured(battle, self);
-}
-
-export function releaseCaptured(battle: BattleState, self: Unit & Blocker): BattleState {
-    const blocker = units.ref(self);
+    if (self === undefined) {
+        return battle;
+    }
 
     return blocking.release(
         battle,
-        self.blocker.blocked.map((blocked) => ({ blocker, blocked })),
+        self.blocker.blocked.map((blocked) => ({ blocker: reference, blocked })),
     );
 }
 
@@ -136,7 +134,7 @@ export function setLayer(layer: Layer): Change<Unit & Blocker> {
                           radius: self.definition.blocker.radius ?? DEFAULT_RADIUS[layer],
                       },
                   },
-        releaseCaptured,
+        (battle, previous) => releaseAll(battle, units.ref(previous)),
     );
 }
 

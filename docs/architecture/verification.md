@@ -44,7 +44,7 @@ Deployable 对 Occupancy 的构造依赖、入场与配对属于本轮协作边�
 | Contribution 与阵营 | 互斥选择先于动态求值，修正采用所属领域公式；阵营不隐式决定其它能力或关系资格。 | [属性与贡献](capability.md#属性与贡献)、[Allegiance](capability.md#allegiance) |
 | 数值求值 | 动态属性接收同一 BattleState 中已取得的能力对象，贡献求值返回确定数值；对象缺失与采样时点由业务入口决定。Action 时序明确区分宿主 source 与具体 Action self，基础值取 self.definition。局部公式使用显式配置与状态，不自行回查宿主。 | [数值接口](api-conventions.md#5-数值输入查询与字段写回) |
 | Blocking 资格与容量 | 双方资格、阻挡层、当前容量与体积决定取得；容量减少从后建立的关系开始裁撤，HP Applied 响应结束并确认死亡前保留旧关系。 | [Blocking](blocking.md#关键语义) |
-| Blocking 关系与站位 | 批量解除先发布双端结果再通知；旧 Ref 不清掉新关系；普通关系解除与位置计划各有生命周期，主动脱离和空间覆盖完成自身清理。自身 Layer.setType 包含同值请求的角色清理，全批新身份先于通知发布；Blocker 解除捕获的旧出向关系，Blockable 主动脱离当前入向关系并取消位置计划。 | [Blocking](blocking.md#关键语义)、[Layer](capability.md#layer-与-hitbox) |
+| Blocking 关系与站位 | 批量解除先发布双端结果再通知；旧 Ref 不清掉新关系；普通关系解除与位置计划各有生命周期，主动脱离和空间覆盖完成自身清理。自身 Layer.setType 包含同值请求的角色清理，全批新身份先于通知发布；Layer 与 Blocker.setLayer 的 Settlement 清理当前关系，包括较早 Settlement 已取得的关系；释放操作在入口固定批量候选，保留自身通知中新建的关系。Blockable 主动脱离当前入向关系并取消位置计划。 | [Blocking](blocking.md#关键语义)、[Layer](capability.md#layer-与-hitbox) |
 | Locomotion | 速度修正、下限和倍率与移动许可分开；转向使用历史速度、限力和限速；只吸附最终目标并保留速度，地形避障与目的格反射各自完成空间修正。 | [Locomotion](navigation.md#关键语义) |
 | 部署受理与消费 | 查询和执行使用完整 Request 与一致资源事实；拒绝不消费，通过后先消费再构造、登记、入场；预览不创建实例或发布消费。 | [Deployment](deployment.md#关键语义) |
 | Card 与经济 | Card 跨场上实例存续；库存、部署间隔和逐份恢复分别结算，启动时采样预算，暂停与减时不篡改其它段。DP 自然回复与主动增减分开。 | [Deployment](deployment.md#关键语义) |
@@ -103,7 +103,7 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 | HP-01 | 物理、法术、真实及元素 HP 伤害采用各自公式；公式后类型与防御采样传到 Apply，初始 Request 不变。Calculate 不构成受击，也不写入本笔 HP。 | 合法基础属性与 Formula／Output 干预，核对最终数额、类型和接收前 HP。 |
 | HP-02 | 从同一输入分别执行 Calculate 时，各自业务状态独立，调用方接续其中一个结果后只发生该次 Apply。弱点选高分支仍是具体内容待接入的规则。 | 当前只验证真实 Calculate／Apply 的独立分支和状态接续；不在夹具手写“选高”算法来证明产品已支持弱点。 |
 | APPLY-01 | BeforeReceive 可改变准入；Receiving 的取消保留已完成业务并继续独立响应，取消后不提交。BeforeCommit 位于接收后与写入前，返回后使用最新资格及资源。 | 以真实无敌 Effect 与 Skill 的 HIT 回复接入、嵌套恢复等操作组合，核对准入先于受击回复、最终资源和固定提交报告；Hook 通用排序不再逐层重复。 |
-| APPLY-02 | 四种业务均拒绝零计算输出；正数输出被接收为零或实际变化为零仍可成功。来源无 Vitality 仍可执行输出 Hook；同源同目标的两个 Applied 角色分别执行。 | 以最小合法 Unit 组合验证共同边界；治疗使用满资源，损伤使用完整吸收。 |
+| APPLY-02 | 四种业务在全部 Output Hook 后形成非负 Calculated；负输出截为零，与零输出一同在 Apply 入口拒绝，计算期间已经完成的业务保留。正数输出被接收为零或实际变化为零仍可成功。来源无 Vitality 仍可执行输出 Hook；同源同目标的两个 Applied 角色分别执行。 | 以最小合法 Unit 组合集中验证最终输出与接收边界；治疗使用满资源，损伤使用完整吸收。Formula 从请求原始参数开始，不另设 EP 负数入口异常。不按非法数值、Hook 阶段或资源种类展开防御矩阵。 |
 | HP-03 | HP 写入后先执行两侧 Applied，再按最新 HP 确认死亡，随后清理关系和注销。普通 Healing 不恢复零 HP；特殊生命干预接口仍待具体机制设计。 | 真实致死场景观察两侧响应中的零 HP、仍在场及原关系，响应结束后才注销并释放；不伪造零 HP 回正或复制 Lifetime 的整套析构测试。 |
 | HP-04 | MaxHP 修正的登记、替换与撤销按比例接续当前 HP，不构成普通治疗；正常资源保留小数。 | 从合法构造与真实损伤形成受损对象，再通过 Contribution Change 验证资源比例。不用伪造零 HP、回调排列或逐字段构造校验矩阵。 |
 | EP-01 | EP 抗性在 Calculate 采样，Apply 使用实际元素类型和最新 EP；四型独立损伤，治疗对每型应用完整数额，HP 元素抗性与 EP 抗性分离。损伤比例、恢复资格和 UI 使用同一有效 MaxEP。 | 明确的公式转换／抗性贡献和多型损伤、恢复，核对逐型结果；在已有恢复场景改变 MaxEP 贡献，验证损伤比例与元素圈一致，不另建 Getter 或 UI 矩阵，不以伪造运行状态准备场景。 |

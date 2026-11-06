@@ -131,7 +131,46 @@ test("capacity shrink releases the newest relation and observes callback changes
     );
 });
 
-test("own layer requests release old relations before hooks, including same-value requests", () => {
+test("layer settlements release current relations acquired by earlier settlements", () => {
+    for (const [change, targetLayer] of [
+        [layer.setType("GROUND"), "GROUND"],
+        [capability.setLayer("AIR"), "AIR"],
+    ]) {
+        let state = battle([
+            { definition: { ...blocker, layer: { type: "GROUND" } }, position: [2, 1] },
+            { definition: { ...enemy, allegiance: { side: "NEUTRAL" } }, position: [2.1, 1] },
+            { definition: { ...enemy, layer: { type: targetLayer } }, position: [2.2, 1] },
+        ]);
+        const owner = units.ref(get(state, 0));
+        const first = units.ref(get(state, 1));
+        const next = units.ref(get(state, 2));
+        state = blocking.acquire(state, owner, first);
+        const released = [];
+        state = unit.update(state, owner, capability.setBlockerHook("released", {
+            id: "acquire-next",
+            invoke(current, { relation }) {
+                released.push(relation.blocked.id);
+                return {
+                    state: relation.blocked.id === first.id
+                        ? blocking.acquire(current, owner, next)
+                        : current,
+                    value: undefined,
+                };
+            },
+        }));
+
+        state = unit.update(state, owner, compose(
+            capability.setBlockerRule(capability.sides("ENEMY")),
+            change,
+        ));
+
+        assert.deepEqual(released, [first.id, next.id]);
+        assert.deepEqual(blocking.blocked(state, owner), []);
+        assert.equal(blocking.blockerOf(state, next), undefined);
+    }
+});
+
+test("own layer requests release current relations before hooks, including same-value requests", () => {
     let state = battle([
         { definition: { ...blocker, layer: { type: "GROUND" } }, position: [2, 1] },
         { definition: enemy, position: [2.1, 1] },

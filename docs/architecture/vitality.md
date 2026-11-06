@@ -39,7 +39,7 @@ Damage 接收 Rule 使用 `allows(battle, ReceivingContext)`；Rules 声明 dama
 
 ## 1. Calculate 与 Apply 的语义边界
 
-HP Damage、EP Damage、HP Healing 与 EP Healing 共同采用两阶段边界：Calculate 表示输出计算，Apply 表示目标接收。两阶段均显式接续 BattleState，允许 Hook 参与；这是 ArkBattle 的明确设计选择，不以复刻原生 Hook 时序为目标。下文具体接口描述普通 HP 伤害与治疗，EP 接口仍需按此边界整理。
+HP Damage、EP Damage、HP Healing 与 EP Healing 共同采用两阶段边界：Calculate 表示输出计算，Apply 表示目标接收。两阶段均显式接续 BattleState，允许 Hook 参与；这是 ArkBattle 的明确设计选择，不以复刻原生 Hook 时序为目标。下文具体接口描述普通 HP 伤害与治疗，EP 接口见 [Elemental](elemental.md)。
 
 | 阶段 | 职责 |
 | --- | --- |
@@ -51,6 +51,8 @@ Calculate 不提交本笔输出的资源变化，也不派发本笔输出的受�
 Calculate 成功不意味着目标受击；Apply 被调用也不意味着一定发生资源变化。Apply 从传入的最新 BattleState 读取对象并确认当前资格，不因计算成功跳过接收判断。
 
 四种业务统一区分三种量：Calculate 最终形成的计算输出量、Receiving 后的接收量，以及 Capability 提交后的实际变化量。**零计算输出在 Apply 入口返回 REJECTED，不进入本笔接收或 Applied；Calculate 已完成的状态仍保留。零实际变化允许成功返回 APPLIED。** 例如正数治疗作用于满血目标，仍正常接收并通知，报告中的实际恢复量为零；不能按实际变化量倒推是否发生了接收。接收量归零与明确取消也分别处理，取消仍按取消结果结算。
+
+Formula Hook 从原始 Parameters 开始接续，不预先改写 HP 治疗的 power，也不为 EP 的负数 power 单独抛异常。各领域保留自己的基础公式；全部 Output Hook 执行后，四种 Calculate 均以 `Math.max(0, output)` 形成 Calculated.amount。因此负输出变为零，并由 Apply 拒绝，不会倒转资源增减方向；计算期间已经完成的业务仍保留。原生负数 Modifier 在提交时裁零的处理见[治疗调查](../research/cases/29-hp-and-ep-healing-settlement.md#负数基础求值modifier-数值与提交量)，项目不将这项约束推迟到 Commit。
 
 内容程序按机制语义归属，不按原生事件编号逐项映射：
 
@@ -76,6 +78,8 @@ Content 负责具体机制的采样、特殊公式和流程组合；公共 API �
 读取目标当前防御属性，按当前伤害类型计算基础公式
     ↓
 输出伤害 Hook
+    ↓
+最终输出截为非负数
     ↓
 Calculated
 ```
@@ -444,7 +448,7 @@ calculateHealing(battle, request): Result<Calculated | undefined>;
 applyHealing(request, calculation): Result<Outcome>;
 ```
 
-Calculate 依次派发来源 Formula、目标 Formula，将当前 power 与 multiplier 相乘，再派发来源数值 Output。Request 始终表示初始事实，当前 Parameters 与 Output 数值逐项接续。初始负 power 按零处理；每个完成阶段的最终数值必须有限且非负。目标缺失、LEAVING 或 HP 为零时无法计算，已完成的状态前缀仍返回。
+Calculate 依次派发来源 Formula、目标 Formula，将当前 power 与 multiplier 相乘后截零，再派发来源数值 Output。Request 始终表示初始事实，当前 Parameters 与 Output 数值逐项接续；Formula 读取原始参数，全部 Output 之后再按第 1 节形成非负 Calculated，不要求中间工作值非负。输入及 Hook 数值遵守有限数值契约。目标缺失、LEAVING 或 HP 为零时无法计算，已完成的状态前缀仍返回。
 
 Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本笔接收与 Applied。正数治疗确认目标当前存在、PRESENT 且 HP 大于零，按第 1 节的接收与提交边界执行，读取最新 HP、MaxHP 截断恢复量并提交；该 HP 发布不附带 Blocking 维护。随后依次派发 targetApplied 与 sourceApplied，即使来源与目标为同一 Unit 也分别执行；Completed 保持同一宿主不重复通知。HP Healing 不另设 ReceivingStarted。来源缺失或 LEAVING 时不运行其 Hook，但不因此取消仍可作用于有效目标的已采样治疗。
 

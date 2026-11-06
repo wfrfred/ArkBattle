@@ -81,7 +81,7 @@ EP 损伤与治疗分别通过 [damage/ep/index.ts](../../src/core/battle/damage
 
 EP Damage.Request 为 `{ source, target, parameters }`，Parameters 为可变工作值 `{ type, power }`，Calculated 保存公式确定的 `{ type, amount }`。先来源 Formula、再目标 Formula，然后按当前元素损伤抗性计算数额，最后执行来源 Output。抗性有效值在 0～95，之后的状态变化不使 Apply 重算；实际元素类型来自 Calculated，不用初始 Request.parameters.type 代替。
 
-EP Healing.Request 同样为 `{ source, target, parameters }`，Parameters 为 `{ power }`，Calculated 为 `{ amount }`。它经过自己的 Formula／Output，不应用元素损伤抗性。
+EP Healing.Request 同样为 `{ source, target, parameters }`，Parameters 为 `{ power }`，Calculated 为 `{ amount }`。它经过自己的 Formula／Output，不应用元素损伤抗性。两种 EP Calculate 均从原始 Parameters 开始，不对负数 power 单独抛异常；按[共同输出约束](vitality.md#1-calculate-与-apply-的语义边界)，在 Output Hook 全部执行后将最终输出截为非负数，零输出由 Apply 拒绝。
 
 | 接口 | 形状与结果 |
 | --- | --- |
