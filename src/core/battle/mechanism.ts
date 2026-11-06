@@ -8,7 +8,7 @@ import { removeHook } from "./unit-hook.js";
 
 export type MechanismId = number;
 
-export type Status = "ACTIVE" | "INACTIVE" | "ENDING";
+export type Lifecycle = "ACTIVE" | "INACTIVE" | "ENDING";
 
 export interface MechanismDefinition<S extends object = object> {
     readonly id: string;
@@ -28,7 +28,7 @@ export interface Mechanism<S extends object = object> extends Identified<{
 }> {
     readonly id: MechanismId;
     readonly definition: MechanismDefinition<S>;
-    readonly status: Status;
+    readonly lifecycle: Lifecycle;
     readonly state: S;
 }
 
@@ -86,12 +86,12 @@ export function setActive<M extends Mechanism<any>>(
     active: boolean,
 ): BattleState {
     const self = get(battle, reference);
-    const status = active ? "ACTIVE" : "INACTIVE";
-    if (self === undefined || self.status === "ENDING" || self.status === status) {
+    const lifecycle = active ? "ACTIVE" : "INACTIVE";
+    if (self === undefined || self.lifecycle === "ENDING" || self.lifecycle === lifecycle) {
         return battle;
     }
 
-    const next: M = { ...self, status };
+    const next: M = { ...self, lifecycle };
     battle = { ...battle, mechanisms: battle.mechanisms.replace(ref(self), next) };
 
     return !active && next.definition.onDisable !== undefined
@@ -103,8 +103,8 @@ export const lifetime = createLifetime<Mechanism, Mechanism<any>, string>({
     kind: "MECHANISM",
     address: (ref) => [ref.id],
     get,
-    isEnding: (self) => self.status === "ENDING",
-    begin: (self) => ({ ...self, status: "ENDING" }),
+    isEnding: (self) => self.lifecycle === "ENDING",
+    begin: (self) => ({ ...self, lifecycle: "ENDING" }),
     replace: (battle, _ref, next) => ({
         ...battle,
         mechanisms: battle.mechanisms.replace(ref(next), next),
@@ -112,7 +112,7 @@ export const lifetime = createLifetime<Mechanism, Mechanism<any>, string>({
     prepare: (battle, reference, initial) => {
         const self = get(battle, reference)!;
 
-        return initial.status === "ACTIVE"
+        return initial.lifecycle === "ACTIVE"
             ? (self.definition.onDisable?.(battle, self) ?? battle)
             : battle;
     },
@@ -140,7 +140,7 @@ export function advance(battle: BattleState): BattleState {
     for (const candidate of candidates) {
         const reference = ref(candidate);
         const self = get(battle, reference);
-        if (self?.status === "ACTIVE" && self.definition.onTick !== undefined) {
+        if (self?.lifecycle === "ACTIVE" && self.definition.onTick !== undefined) {
             battle = self.definition.onTick(battle, self);
         }
     }

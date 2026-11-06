@@ -24,8 +24,11 @@ import { hasSpatialPresence, disappear } from ${module("unit/capability/presence
 import { dispatch as dispatchSkill } from ${module("unit/capability/skill/hook")};
 import { dispatch as dispatchElemental } from ${module("unit/capability/elemental/hook")};
 import * as runtime from ${module("battle/runtime")};
-import type { Input as BattleInput } from ${module("battle/contract")};
-import type { UnitDefinition as CardDefinition } from ${module("battle/deployment/card/card")};
+import type { Input as BattleInput, Command } from ${module("battle/contract")};
+import type { Card, UnitDefinition as CardDefinition } from ${module("battle/deployment/card/card")};
+import type { Projectile } from ${module("projectile/projectile")};
+import * as projectiles from ${module("projectile/query")};
+import type { Route } from ${module("unit/capability/route/index")};
 import * as mechanisms from ${module("battle/mechanism")};
 import { createPredefinedDefinition } from ${module("battle/steps/predefined")};
 import * as actionCapability from ${module("unit/capability/action/index")};
@@ -83,6 +86,8 @@ const started = actions.start(battle, persistent);
 if (started.value.type === 'STARTED') {
     const execution = started.value.ref;
     const hits: number = actions.getExecution(started.state, execution)!.execution.state.hits;
+    const cancellation: Command = { type: 'CANCEL_ACTION_EXECUTION', ref: execution };
+    runtime.step(started.state, [cancellation]);
     actions.setExecutionState(started.state, execution, { hits: hits + 1 });
     // @ts-expect-error the execution identity retains its own private state type.
     actions.setExecutionState(started.state, execution, { hits: 'wrong' });
@@ -112,6 +117,22 @@ effects.setExpiration(battle, burstRef, { ...burst.expiration, elapsed: burst.ex
 // @ts-expect-error writes retain the Burst identity's duration contract.
 effects.setExpiration(battle, burstRef, { type: 'DEADLINE', tick: 10 });
 const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'bare', hooks: Hooks.empty() } }).value;
+declare const skillCommandRef: Ref<Unit & SkillCapability>;
+declare const routeCommandRef: Ref<Unit & Route>;
+declare const projectileCommandRef: Ref<Projectile<{ hits: number }>>;
+const skillCommand: Command = { type: 'ACTIVATE_SKILL', ref: skillCommandRef };
+const routeCommand: Command = { type: 'CLEAR_ALTERNATIVE_ROUTE', ref: routeCommandRef };
+const projectileCommand: Command<Card, Projectile<{ hits: number }>> = { type: 'STOP_PROJECTILE', ref: projectileCommandRef };
+runtime.step(battle, [skillCommand, routeCommand, projectileCommand]);
+// @ts-expect-error skill commands require a Skill-capable Unit.
+const missingSkillCommand: Command = { type: 'STOP_SKILL', ref: ref(bare) };
+// @ts-expect-error route commands require a Route-capable Unit.
+const missingRouteCommand: Command = { type: 'CLEAR_ALTERNATIVE_ROUTE', ref: ref(bare) };
+// @ts-expect-error a Unit reference is not a Projectile reference.
+const wrongProjectileCommand: Command = { type: 'STOP_PROJECTILE', ref: ref(bare) };
+declare const erasedProjectileCommand: Extract<Command, { type: 'STOP_PROJECTILE' }>;
+// @ts-expect-error an ordinary Command does not expose any private Projectile state.
+projectiles.get(battle, erasedProjectileCommand.ref)!.state.hits;
 declare const elementalUnit: Unit & elemental.Elemental;
 elemental.available(elementalUnit);
 // @ts-expect-error Elemental eligibility requires its resource capability.

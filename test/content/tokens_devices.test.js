@@ -102,7 +102,7 @@ test('core act2 mire and tide controller prefabs initialize nonspatial mechanism
     assert.equal(snapshot.mechanisms.size, 1);
     const [mechanism] = snapshot.mechanisms.values();
     assert.equal(mechanism.definition.id, controllerKey);
-    assert.equal(mechanism.status, 'ACTIVE');
+    assert.equal(mechanism.lifecycle, 'ACTIVE');
     assert.equal(snapshot.battlefield.units.size, 4);
     assert.ok([...snapshot.battlefield.units.values()].every(unit => unit.definition.id === 'trap_1105_accrate'));
 

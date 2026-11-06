@@ -44,7 +44,7 @@ export function create(definition: Definition): Attack<object, State> {
             battle = afterOutput?.(battle, source, self) ?? battle;
             const current = getExecution(battle, executionRef(source, self));
             const activation = current?.execution.state.data.activation;
-            if (current?.execution.status !== "RUNNING" || activation == null) {
+            if (current?.execution.lifecycle !== "RUNNING" || activation == null) {
                 return battle;
             }
 

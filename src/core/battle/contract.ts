@@ -2,7 +2,7 @@ import type { Seed } from "../common/rng.js";
 import type { Map } from "../battlefield/map/map.js";
 import type { MechanismPlacementDefinition } from "./creation/mechanism.js";
 import type { SpawnScheduleDefinition } from "./schedule/definition.js";
-import type { Id } from "../unit/unit.js";
+import type { Id, Unit } from "../unit/unit.js";
 import type { Input as DeploymentInput } from "./deployment/deployment.js";
 import type { Card } from "./deployment/card/card.js";
 import type {
@@ -14,7 +14,8 @@ import type { AlternativeRouteCommand } from "./steps/movement.js";
 import type { DeploymentCommand } from "./deployment/operations.js";
 import type { Ref } from "../common/ref.js";
 import type { Execution } from "../unit/action/execution.js";
-import type { Id as ProjectileId } from "../projectile/projectile.js";
+import type { Projectile } from "../projectile/projectile.js";
+import type { Skill } from "../unit/capability/skill/capability.js";
 
 export type { Event } from "./event.js";
 
@@ -43,17 +44,17 @@ export interface Input<
     readonly rngState: Seed;
 }
 
-export type Command<T extends Card<any> = Card> =
+export type Command<T extends Card<any> = Card, P extends Projectile<any> = Projectile> =
     | PredefinedCommand
     | AlternativeRouteCommand
     | DeploymentCommand<T>
-    | { readonly type: "ACTIVATE_SKILL"; readonly unitId: Id }
-    | { readonly type: "STOP_SKILL"; readonly unitId: Id }
+    | { readonly type: "ACTIVATE_SKILL"; readonly ref: Ref<Unit & Skill> }
+    | { readonly type: "STOP_SKILL"; readonly ref: Ref<Unit & Skill> }
     | {
           readonly type: "CANCEL_ACTION_EXECUTION";
           readonly ref: Ref<Execution>;
       }
-    | { readonly type: "STOP_PROJECTILE"; readonly projectileId: ProjectileId }
+    | { readonly type: "STOP_PROJECTILE"; readonly ref: Ref<P> }
     | { readonly type: "TRIGGER_BRANCH"; readonly branchId: string; readonly isLoop: boolean };
 
 export interface Result {

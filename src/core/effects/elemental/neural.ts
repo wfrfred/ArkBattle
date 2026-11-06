@@ -80,7 +80,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                             ?.effects.get(effectId, paralysis);
 
                         return (
-                            active?.status === "ACTIVE" &&
+                            active?.lifecycle === "ACTIVE" &&
                             active.state.used < parameters.paralysisStacks
                         );
                     },
@@ -131,7 +131,8 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                 const existing = host.effects
                     .values()
                     .find(
-                        (effect) => effect.definition === paralysis && effect.status !== "ENDING",
+                        (effect) =>
+                            effect.definition === paralysis && effect.lifecycle !== "ENDING",
                     );
                 battle =
                     existing === undefined

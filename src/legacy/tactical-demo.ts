@@ -658,7 +658,7 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
                     return;
                 }
 
-                requested = [{ type, unitId: source.id }];
+                requested = [{ type, ref: units.ref(source) }];
             } else if (type === "RETREAT_SOURCE") {
                 if (!projectileActions) {
                     return;
@@ -682,7 +682,7 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
                     .all(state)
                     .map<Command>((instance) => ({
                         type: "STOP_PROJECTILE",
-                        projectileId: instance.id,
+                        ref: projectiles.ref(instance),
                     }))
                     .toArray();
             } else if (mode === "COMBAT") {

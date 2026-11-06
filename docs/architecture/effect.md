@@ -80,7 +80,7 @@ interface Effect<S extends object = object, H extends object = object> {
     readonly source: Ref<Unit> | null;
     readonly expiration: Expiration;
     readonly enabled: boolean;
-    readonly status: "INSTALLING" | "INACTIVE" | "ACTIVE" | "ENDING";
+    readonly lifecycle: "INSTALLING" | "INACTIVE" | "ACTIVE" | "ENDING";
 }
 
 ```
@@ -176,7 +176,7 @@ stateDiagram-v2
     ENDING --> [*]: onEnd 后移除
 ```
 
-`enabled` 是外部许可，`status` 是实际生效结果。实例 enabled 为 true 时仍可能被同组实例覆写，所以两个字段表达不同事实。
+`enabled` 是外部许可，`lifecycle` 是实例当前所处的生命周期阶段。实例 enabled 为 true 时仍可能被同组实例覆写，所以两个字段表达不同事实。
 
 | 状态       | 含义                     | 时间推进与输出                                         |
 | ---------- | ------------------------ | ------------------------------------------------------ |
@@ -210,7 +210,7 @@ Hook 的 accepts 读取 Effect 的覆写结果；伤害阶段与优先级由 Dam
 | onTick    | 本轮推进时实例仍为 ACTIVE，时间状态已发布 | 根据本次前后时间状态结算周期伤害、治疗、补盾、Aura 刷新 |
 | onEnd     | 实例仍为 ENDING，依赖完整结束后，一次 | 移除稳定 Hook，执行结束业务         |
 
-安装先形成包含 INSTALLING 实例的新状态，以此调用 onInstall，接续其返回值。回调返回后重新读取当前实例和 expiration；仍为 INSTALLING 且已经到期时，通过 Lifetime 请求结束，不调用 onEnable、onTick 或 onDisable。未到期的实例转为 INACTIVE，再协调是否生效。onInstall 可以用 setExpiration 延长初始零时长或已到期期限，安装继续使用回调返回后的事实。生效协调准备启用实例时也先检查到期，不能先短暂启用再结束。生效切换先形成新 status，再运行回调并接续返回值；回调输入表达新状态。
+安装先形成包含 INSTALLING 实例的新状态，以此调用 onInstall，接续其返回值。回调返回后重新读取当前实例和 expiration；仍为 INSTALLING 且已经到期时，通过 Lifetime 请求结束，不调用 onEnable、onTick 或 onDisable。未到期的实例转为 INACTIVE，再协调是否生效。onInstall 可以用 setExpiration 延长初始零时长或已到期期限，安装继续使用回调返回后的事实。生效协调准备启用实例时也先检查到期，不能先短暂启用再结束。生效切换先形成新 lifecycle，再运行回调并接续返回值；回调输入表达新状态。
 
 install 检查已取得宿主的生命周期；生效协调排除 INSTALLING／ENDING，并通过 Lifetime.available 检查自身及全部上游资格。纯发布不会调用内容程序：初次登记后直接将新实例传给 onInstall，状态切换发布后直接将新实例传给 onEnable／onDisable，无需重新查询刚写入的实例。onInstall、onDisable 等内容程序或完整业务操作返回后，按[状态接续约定](functional-core.md#状态接续后的读取与续执行)重读后续需要的事实；安装继续前确认当前仍为 INSTALLING。结束中宿主由所有权边保护到本 Effect 完整 Finalize 返回。
 
@@ -248,7 +248,7 @@ function setExpiration<T extends Effect<any, any>>(
 ): BattleState;
 ```
 
-`setState()` 接收已经计算好的 state，从传入 BattleState 重新读取当前实例。宿主或实例缺失时抛出 RangeError；给定 state 与当前 state 引用相同时返回原 BattleState。提交只改变 state，保留当前身份、Definition、source、expiration、enabled、status 和编号进度。
+`setState()` 接收已经计算好的 state，从传入 BattleState 重新读取当前实例。宿主或实例缺失时抛出 RangeError；给定 state 与当前 state 引用相同时返回原 BattleState。提交只改变 state，保留当前身份、Definition、source、expiration、enabled、lifecycle 和编号进度。
 
 内容从当前 battle 查询 state，完成业务采样和局部计算后直接提交结果值，保留未变字段。计算和提交之间不执行其他完整操作；跨领域调用后先接续其 battle，再重读所需实时状态。INSTALLING、INACTIVE、ACTIVE、ENDING 都允许设置私有数据；onDisable／onEnd 因而可以更新清理进度，写入不会恢复生命周期或阻止最终移除。
 
@@ -258,7 +258,7 @@ function setExpiration<T extends Effect<any, any>>(
 
 `setExpiration()` 从当前 battle 按精确 Effect Ref 取得宿主与实例，只替换 expiration。新值遵守 Ref 所指类型的 expiration 约束；普通 Effect 可以切换时间类型，Burst 等已收窄类型保持自身的时间契约。DURATION 的 elapsed、total、rate 在写入入口校验为有限非负数，DEADLINE 的 tick 为非负安全整数；非法值、缺失宿主或实例抛出 RangeError。给定对象与当前 expiration 引用相同时返回原 BattleState，不修改 Lifetime 关系。
 
-时间写回保留当前 status，INSTALLING、INACTIVE、ACTIVE、ENDING 均可更新；ENDING 中写入不会恢复实例或阻止最终移除。该操作只提交结果值，不额外推进或立即结束实例。安装完成、生效协调或正常 advance 在各自的检查点决定生命周期后继。
+时间写回保留当前 lifecycle，INSTALLING、INACTIVE、ACTIVE、ENDING 均可更新；ENDING 中写入不会恢复实例或阻止最终移除。该操作只提交结果值，不额外推进或立即结束实例。安装完成、生效协调或正常 advance 在各自的检查点决定生命周期后继。
 
 ### 结束流程
 

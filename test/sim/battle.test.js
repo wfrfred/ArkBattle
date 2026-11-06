@@ -1,3 +1,4 @@
+import * as unitQueries from "../../dist/core/unit/query.js";
 import { Hooks } from "../../dist/core/hook.js";
 
 import { test } from "node:test";
@@ -263,12 +264,12 @@ test('alternative route commands suspend Main deadlines and targets until cleare
   (waiting = advanceBattle(waiting, []));
   const waitRoute = { ...waiting.battlefield.units.get(0).definition.route,
     checkpoints: [{ type: 'WAIT', tick: 30 }] };
-  (waiting = advanceBattle(waiting, [{ type: 'SET_ALTERNATIVE_ROUTE', unitId: 0, route: waitRoute }]));
+  (waiting = advanceBattle(waiting, [{ type: 'SET_ALTERNATIVE_ROUTE', ref: unitQueries.ref(waiting.battlefield.units.get(0)), route: waitRoute }]));
   const active = waiting.battlefield.units.get(0);
   assert.equal(active.route.main.phase.checkpointState.deadlineTick, 12);
   assert.equal(active.route.alternative.phase.checkpointState.deadlineTick, 31);
   (waiting = advanceBattle(waiting, []));
-  (waiting = advanceBattle(waiting, [{ type: 'CLEAR_ALTERNATIVE_ROUTE', unitId: 0 }]));
+  (waiting = advanceBattle(waiting, [{ type: 'CLEAR_ALTERNATIVE_ROUTE', ref: unitQueries.ref(waiting.battlefield.units.get(0)) }]));
   assert.equal(waiting.battlefield.units.get(0).route.alternative, null);
   assert.equal(waiting.battlefield.units.get(0).route.main.phase.checkpointState.deadlineTick, 12);
 
@@ -281,14 +282,14 @@ test('alternative route commands suspend Main deadlines and targets until cleare
   const route = { ...main.definition, startPosition: [100, 100], endPosition: [9, 10],
     checkpoints: [{ type: 'WAIT', tick: 3 }] };
   for (let tick = 1; tick < 10; tick++) {
-    const commands = tick === 1 ? [{ type: 'SET_ALTERNATIVE_ROUTE', unitId: 0, route }] : [];
+    const commands = tick === 1 ? [{ type: 'SET_ALTERNATIVE_ROUTE', ref: unitQueries.ref(runtime.battlefield.units.get(0)), route }] : [];
     runtime = advanceBattle(runtime, commands);
     const unit = runtime.battlefield.units.get(0);
     assert.deepEqual(unit.route.main.phase, main.phase);
     assert.deepEqual(unit.position, [10, 9]);
   }
   assert.equal(runtime.battlefield.units.get(0).route.alternative.phase.type, 'COMPLETED');
-  const clear = [{ type: 'CLEAR_ALTERNATIVE_ROUTE', unitId: 0 }];
+  const clear = [{ type: 'CLEAR_ALTERNATIVE_ROUTE', ref: unitQueries.ref(runtime.battlefield.units.get(0)) }];
   runtime = advanceBattle(runtime, clear);
   assert.equal(runtime.battlefield.units.get(0).route.alternative, null);
   assert.deepEqual(runtime.battlefield.units.get(0).route.main.phase, main.phase);
@@ -302,17 +303,17 @@ test('core alternative route commands execute pending teleport instructions duri
   assert.equal(runtime.battlefield.units.get(0).spatialPresence.present, false);
   const main = runtime.battlefield.units.get(0).route.main;
   const route = { ...main.definition, checkpoints: [{ type: 'WAIT', tick: 30 }] };
-  (runtime = advanceBattle(runtime, [{ type: 'SET_ALTERNATIVE_ROUTE', unitId: 0, route }]));
+  (runtime = advanceBattle(runtime, [{ type: 'SET_ALTERNATIVE_ROUTE', ref: unitQueries.ref(runtime.battlefield.units.get(0)), route }]));
   assert.equal(runtime.battlefield.units.get(0).spatialPresence.present, false);
   const teleport = { ...route, checkpoints: [
     { type: 'APPEAR_AT_POS', position: [9, 7], offset: [0, 0] },
     { type: 'WAIT', tick: 30 },
   ] };
-  (runtime = advanceBattle(runtime, [{ type: 'SET_ALTERNATIVE_ROUTE', unitId: 0, route: teleport }]));
+  (runtime = advanceBattle(runtime, [{ type: 'SET_ALTERNATIVE_ROUTE', ref: unitQueries.ref(runtime.battlefield.units.get(0)), route: teleport }]));
 
   assert.equal(runtime.battlefield.units.get(0).spatialPresence.present, true);
   assert.deepEqual(runtime.battlefield.units.get(0).position, [7, 9]);
-  (runtime = advanceBattle(runtime, [{ type: 'CLEAR_ALTERNATIVE_ROUTE', unitId: 0 }]));
+  (runtime = advanceBattle(runtime, [{ type: 'CLEAR_ALTERNATIVE_ROUTE', ref: unitQueries.ref(runtime.battlefield.units.get(0)) }]));
   const unit = runtime.battlefield.units.get(0);
   assert.equal(unit.route.alternative, null);
 });

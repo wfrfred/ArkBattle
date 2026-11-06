@@ -19,18 +19,18 @@ export function advanceSkills(state: BattleState, commands: readonly Command[]):
             continue;
         }
 
-        const unit = state.battlefield.units.get(command.unitId);
-        if (unit === undefined || !hasSkill(unit)) {
+        const unit = units.get(state, command.ref);
+        if (unit === undefined) {
             continue;
         }
 
         if (command.type === "ACTIVATE_SKILL") {
-            state = activate(state, skillRef(units.ref(unit), unit.skill.definition)).state;
+            state = activate(state, skillRef(command.ref, unit.skill.definition)).state;
         } else if (unit.skill.activation !== null) {
             state = operate(
                 state,
                 activationRef<Activation>(
-                    units.ref(unit),
+                    command.ref,
                     unit.skill as Identified<never, typeof unit.skill> as Activation,
                 ),
                 "STOP",

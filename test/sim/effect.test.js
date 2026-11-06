@@ -15,7 +15,7 @@ test("installation, participation, and destruction have distinct lifetimes and p
         id: "buff",
         initialize: () => ({ activations: 0 }),
         onInstall(state, self) {
-            observed.push(["install", self.status, offense.resolveAttack(state, units.get(state, self.host))]);
+            observed.push(["install", self.lifecycle, offense.resolveAttack(state, units.get(state, self.host))]);
             return effects.setState(state, effects.ref(self), { activations: 1 });
         },
         onEnable(state, self) {
@@ -34,7 +34,7 @@ test("installation, participation, and destruction have distinct lifetimes and p
         onEnd(state, self) {
             observed.push([
                 "end",
-                self.status,
+                self.lifecycle,
                 self.state.activations,
                 offense.resolveAttack(state, units.get(state, self.host)),
             ]);
@@ -46,7 +46,7 @@ test("installation, participation, and destruction have distinct lifetimes and p
     const source = units.ref(get(state, 0));
     const installed = effects.install(state, source, program, { enabled: false });
     state = installed.state;
-    assert.equal(effects.get(state, installed.value).status, "INACTIVE");
+    assert.equal(effects.get(state, installed.value).lifecycle, "INACTIVE");
     assert.deepEqual(observed, [["install", "INSTALLING", 100]]);
     state = effects.setEnabled(state, installed.value, true);
     assert.equal(offense.resolveAttack(state, units.get(state, source)), 120);
@@ -100,19 +100,19 @@ test("overall replacement uses priority and installation order; disabling the wi
     const high = effects.install(low.state, source, strong);
     const equal = effects.install(high.state, source, later);
     state = equal.state;
-    assert.equal(effects.get(state, low.value).status, "INACTIVE");
-    assert.equal(effects.get(state, high.value).status, "ACTIVE");
-    assert.equal(effects.get(state, equal.value).status, "INACTIVE");
+    assert.equal(effects.get(state, low.value).lifecycle, "INACTIVE");
+    assert.equal(effects.get(state, high.value).lifecycle, "ACTIVE");
+    assert.equal(effects.get(state, equal.value).lifecycle, "INACTIVE");
     assert.equal(offense.resolveAttack(state, units.get(state, source)), 120);
     state = effects.setEnabled(state, high.value, false);
-    assert.equal(effects.get(state, low.value).status, "INACTIVE");
-    assert.equal(effects.get(state, equal.value).status, "INACTIVE");
+    assert.equal(effects.get(state, low.value).lifecycle, "INACTIVE");
+    assert.equal(effects.get(state, equal.value).lifecycle, "INACTIVE");
     assert.equal(offense.resolveAttack(state, units.get(state, source)), 100);
     state = effects.end(state, high.value);
-    assert.equal(effects.get(state, equal.value).status, "ACTIVE");
+    assert.equal(effects.get(state, equal.value).lifecycle, "ACTIVE");
     assert.equal(offense.resolveAttack(state, units.get(state, source)), 130);
     state = effects.end(state, equal.value);
-    assert.equal(effects.get(state, low.value).status, "ACTIVE");
+    assert.equal(effects.get(state, low.value).lifecycle, "ACTIVE");
     assert.equal(offense.resolveAttack(state, units.get(state, source)), 110);
 });
 
@@ -203,7 +203,7 @@ test("zero expiration runs installation and cleanup; installation may replace th
         }),
     }, { expiration: { type: "DURATION", elapsed: 0, total: 0, rate: 1 } });
     state = extended.state;
-    assert.equal(effects.get(state, extended.value).status, "ACTIVE");
+    assert.equal(effects.get(state, extended.value).lifecycle, "ACTIVE");
     state = effects.advance({ ...state, tick: 1 });
     assert.equal(effects.get(state, extended.value).expiration.elapsed, 1);
     state = effects.advance({ ...state, tick: 2 });
@@ -243,7 +243,7 @@ test("duration advances only while active, publishes before callbacks, and accep
     state = effects.setEnabled({ ...state, tick: 4 }, installed.value, true);
     state = effects.advance(state);
     state = effects.advance({ ...state, tick: 5 });
-    assert.equal(effects.get(state, installed.value).status, "INACTIVE");
+    assert.equal(effects.get(state, installed.value).lifecycle, "INACTIVE");
     state = effects.setEnabled({ ...state, tick: 6 }, installed.value, true);
     state = effects.advance(state);
     assert.deepEqual(observed, [[0, 1], [1, 2], [2, 3], [3, 5]]);
@@ -282,7 +282,7 @@ test("source attribution alone does not bind lifetime, while explicit scope and 
     });
     state = remove(bound.state, source.id, "SCRIPT");
     assert.equal(effects.get(state, bound.value), undefined);
-    assert.equal(effects.get(state, attributed.value).status, "ACTIVE");
+    assert.equal(effects.get(state, attributed.value).lifecycle, "ACTIVE");
     assert.deepEqual(effects.get(state, attributed.value).source, source);
     state = remove(state, owner.id, "SCRIPT");
     assert.equal(get(state, owner.id), undefined);

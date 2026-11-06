@@ -4,6 +4,8 @@
 
 同类概念遵循一致的设计规律，包括命名、字段、类型、数据结构、函数签名、行为约定及职责组织。出现特例就必须追查，检查是否存在约束遗漏、职责错位或建模不一致；不能以当前代码、历史习惯或局部可用证明特例合理。追查后有真实领域语义差异的，应保留差异，并通过明确的概念与结构表达。
 
+Unit、Projectile、Action Execution、Skill Activation、Effect 与 Mechanism 的实例阶段统一命名为 lifecycle，各自生命周期取值和转换规则独立。state 表示私有业务数据，Effect.enabled 表示启用意图，Lifetime Pending.phase 表示结束调度进度，分别保留自己的概念与名称。
+
 要求某项 Capability 的接口应在类型上表达该要求，不因能够在内部返回空值、false 或静默跳过就放宽宿主类型。类型守卫保留输入已有的完整类型，异构参数之间的配对关系贯穿公开接口。
 
 发布后的领域状态、Definition、Ref、事件和集合遵守不可变值约定，通过各层 readonly 数据声明和只读集合接口表达；不依赖 Object.freeze，不为强制该约定新增递归只读类型包装。局部构建过程可使用可变对象和容器。
@@ -134,6 +136,8 @@ Card 的 RuleContext 按用途区分：DISPLAY／SELECT 接收 Card Ref，DEPLOY
 完整操作的主要对象身份置于 battle 之后；其余参数是业务输入。指定 Unit 使用 `Ref<U>`，指定 Effect 使用它的组合 Ref；Action / Projectile 使用各自领域的 Typed Ref，不套用 Unit Ref。伤害、治疗、元素积累的主要对象为接收 Unit，来源身份等仍是业务输入，不要求把所有 ID 都拆成位置参数。
 
 Action.cancelForUnit、forUnit 和 isCasting 均要求 `Ref<Unit & ActionCapability>`，异构 Unit 的调用方先通过 hasAction 缩窄。内部不重复检查类型已证明的能力；对象存在性和当前业务资格按各自操作处理。forUnit 从明确版本采样当前执行身份，Combat 仍使用阶段开始的版本。
+
+指向实体的 Command 统一使用 ref 字段承载 Typed Ref。Skill 启动／停止指向具有 Skill 能力的 Unit，替代路线指向具有 Route 能力的 Unit，弹体停止指向 Projectile，行动取消指向具体 Execution，部署和撤退保持各自 Card／Deployable 引用。命令从当前实例取得引用；已失效引用的处理由对应领域操作决定，不重复检查 Ref 已证明的能力。branchId、预置定义 ID 等非实体身份仍使用原本的 ID。 `Command<T, P>` 分别保留具体 Card 和 Projectile 类型，默认使用各自的公共 object 契约；Core 的统一执行入口接纳异构命令，内容声明命令时仍保留具体 Ref 的私有类型配对。
 
 完整操作使用 `battle.tick` 作为当前时间，避免同一调用同时携带 battle.tick、request.tick、context.tick。局部纯计算没有 battle，必要的 tick 参数保留。计划时点、发射采样、previousTick 等历史事实仍作为明确业务数据保存或传递。
 
@@ -382,9 +386,9 @@ Effect 实例保存 `host: Ref<Unit> & Ref<Unit & H>`，使内部 H 擦除为 an
 
 Unit 初始化不接收预装 Effects，始终建立空容器；初始内容在 enter 键下的 Unit Hook 中调用 Effect.install。Effect 的 Initial.source、实例与诊断 Snapshot 均使用 `Ref<Unit> | null` 标注施加者；来源不要求仍在场，也不隐含 Scope 或存活依赖，需要绑定时显式提供生命周期 Scope。
 
-Effect.install 在入口检查宿主 PRESENT、输入 Scope 可用性与 expiration；Initial.expiration 省略时为 INFINITE。登记实例及 Lifetime owner／显式依赖后调用 onInstall，再重读当前实例；零有效时长或已到期的实例通过 Lifetime 结束，不进入 onEnable／onTick／onDisable。回调可提交新的时间状态，后继使用最新结果；准备启用实例的生效协调同样先处理到期。后续绑定统一使用 Lifetime.bind，由该入口检查两端资格与 DAG；Effect 不再保存 scopes。setExpiration 在写回入口校验时间状态。私有 replaceEffect(battle, unit, self) 信任已取得且配对的完整对象，只提交写回，不再次查找或验证存在性；updateStatus 用 Lifetime.available 检查自身及全部上游资格。Effects.replace 信任 Core 提供的 Ref／ID／host／Definition 配对，读取当前槽位以保留缺失实例及同引用时的 no-op，不重复校验身份。Effects.add 保留 id === nextId 的登记约束，身份直接递增；get(ref) 的宿主识别和 get(id, definition) 的类型查询继续保留。完整 Unit 更新或内容程序返回后，后继业务仍按最新 battle 重读；这与重复校验同一输入属于不同职责。
+Effect.install 在入口检查宿主 PRESENT、输入 Scope 可用性与 expiration；Initial.expiration 省略时为 INFINITE。登记实例及 Lifetime owner／显式依赖后调用 onInstall，再重读当前实例；零有效时长或已到期的实例通过 Lifetime 结束，不进入 onEnable／onTick／onDisable。回调可提交新的时间状态，后继使用最新结果；准备启用实例的生效协调同样先处理到期。后续绑定统一使用 Lifetime.bind，由该入口检查两端资格与 DAG；Effect 不再保存 scopes。setExpiration 在写回入口校验时间状态。私有 replaceEffect(battle, unit, self) 信任已取得且配对的完整对象，只提交写回，不再次查找或验证存在性；updateLifecycle 用 Lifetime.available 检查自身及全部上游资格。Effects.replace 信任 Core 提供的 Ref／ID／host／Definition 配对，读取当前槽位以保留缺失实例及同引用时的 no-op，不重复校验身份。Effects.add 保留 id === nextId 的登记约束，身份直接递增；get(ref) 的宿主识别和 get(id, definition) 的类型查询继续保留。完整 Unit 更新或内容程序返回后，后继业务仍按最新 battle 重读；这与重复校验同一输入属于不同职责。
 
-`Effect.setExpiration<T>(battle, ref: Ref<T>, expiration: NoInfer<T["expiration"]>)` 返回 BattleState，T 约束为 Effect，Ref 保留实例的具体泛型与时间类型，只替换时间状态，不修改 Lifetime 图或当前 status。Expiration 为 `DURATION { elapsed, total, rate }`、`DEADLINE { tick }` 或 `INFINITE`；普通 Effect 可以切换时间类型，Burst 的 Ref 只接受 DURATION。DURATION 三项在入口校验为有限非负数，tick 校验为非负安全整数，内部计算信任这些约束。非法输入及缺失宿主／实例均抛出 RangeError；同一 expiration 引用返回原 BattleState。ENDING 可写入但不会复活，Setter 不额外推进或立即结束。
+`Effect.setExpiration<T>(battle, ref: Ref<T>, expiration: NoInfer<T["expiration"]>)` 返回 BattleState，T 约束为 Effect，Ref 保留实例的具体泛型与时间类型，只替换时间状态，不修改 Lifetime 图或当前 lifecycle。Expiration 为 `DURATION { elapsed, total, rate }`、`DEADLINE { tick }` 或 `INFINITE`；普通 Effect 可以切换时间类型，Burst 的 Ref 只接受 DURATION。DURATION 三项在入口校验为有限非负数，tick 校验为非负安全整数，内部计算信任这些约束。非法输入及缺失宿主／实例均抛出 RangeError；同一 expiration 引用返回原 BattleState。ENDING 可写入但不会复活，Setter 不额外推进或立即结束。
 
 Effect.advance 对 ACTIVE 实例先采样旧 Expiration、自动推进并发布 DURATION，再调用 `onTick(battle, self, previousExpiration)`，最后重读当前实例与时间状态判断结束。rate 为零仍调用 onTick；INACTIVE 不推进有效时长、不调用 onTick，绝对期限仍会到期，INFINITE 无到期。回调通过 setExpiration 提交结果值，可以续期或转换类型。第三参数是本次推进的历史样本，不保存为另一份持久状态。完整时间与必要回归语义见 [Effect 时间推进](effect.md#6-时间推进)。
 

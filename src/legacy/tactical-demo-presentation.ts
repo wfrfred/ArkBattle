@@ -236,10 +236,10 @@ function unitTuple(
     const blocked = hasBlockable(unit) && blockerOf(state, units.ref(unit)) !== undefined;
     const stunned = unit.effects
         .values()
-        .some((effect) => effect.definition === stun && effect.status === "ACTIVE");
+        .some((effect) => effect.definition === stun && effect.lifecycle === "ACTIVE");
     const protectedFromDamage = unit.effects
         .values()
-        .some((effect) => effect.definition === invincible && effect.status === "ACTIVE");
+        .some((effect) => effect.definition === invincible && effect.lifecycle === "ACTIVE");
     const flags =
         (blocked ? 1 : 0) |
         (isFlying(unit) ? 512 : 0) |

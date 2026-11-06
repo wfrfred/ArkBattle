@@ -1,6 +1,6 @@
 export type { Definition, Group } from "./definition.js";
 
-export type { Effect, Id, Status } from "./effect.js";
+export type { Effect, Id, Lifecycle } from "./effect.js";
 
 export type { Expiration } from "./expiration.js";
 

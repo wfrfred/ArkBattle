@@ -36,7 +36,7 @@ export function instantiateMechanismPlacement<S extends object>(
 
                 return {
                     state:
-                        mechanism?.status === "ACTIVE"
+                        mechanism?.lifecycle === "ACTIVE"
                             ? mechanism.definition.onUnitLeave!(current, mechanism, departure)
                             : current,
                     value: undefined,

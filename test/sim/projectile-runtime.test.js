@@ -185,7 +185,7 @@ test("A stationary Projectile remains ACTIVE and can continue periodic output af
 });
 
 
-test("Battle commands stop in order before survivors advance and ignore duplicate or missing IDs", () => {
+test("Battle commands stop in order before survivors advance and ignore repeated stale references", () => {
     const observed = [];
     const definition = { id: "command", onTick(battle, self) {
         observed.push(["advance", self.id]);
@@ -193,7 +193,8 @@ test("Battle commands stop in order before survivors advance and ignore duplicat
     }, onEnd(battle, self) { observed.push(["stop", self.id]); return battle; } };
     let initial = battle();
     for (let index = 0; index < 4; index++) initial = create(initial, definition).state;
-    const progressed = advanceProjectiles(initial, candidates(initial), [2, 2, 999, 0].map(projectileId => ({ type: "STOP_PROJECTILE", projectileId })));
+    const references = instances(initial).map(projectilesQuery.ref);
+    const progressed = advanceProjectiles(initial, candidates(initial), [references[2], references[2], references[0]].map(ref => ({ type: "STOP_PROJECTILE", ref })));
 
     assert.deepEqual(observed, [["stop", 2], ["stop", 0], ["advance", 1], ["advance", 3]]);
     assert.deepEqual(instances(progressed).map(self => [self.id, self.position]), [[1, [1, 0]], [3, [1, 0]]]);
@@ -221,18 +222,6 @@ test("Runtime freezes Projectile candidates before Unit callbacks, Action output
     assert.deepEqual(projectilesQuery.all(rt).map(self => self.id).toArray(), [0, 1, 2]);
     rt = stepBattle(rt, []);
     assert.deepEqual(observed.slice(4), [["unit-child", 2], ["action-child", 2], ["grandchild", 2]]);
-});
-
-test("battle execution can stop a same-Tick creation explicitly without normally advancing it", () => {
-    const observed = [];
-    const definition = { id: "same-step", onStart(battle) { observed.push("create"); return battle; },
-        onTick(battle) { observed.push("advance"); return battle; },
-        onEnd(battle, _self, reason) { observed.push(reason); return battle; } };
-    let rt = runtime([unit(0, { hooks: Hooks.empty().set(unitLifecycle.tick, { id: "test/tick",  invoke(battle) { return { state: create(battle, definition).state, value: undefined }; } }) })]);
-    rt = stepBattle(rt, [{ type: "STOP_PROJECTILE", projectileId: 0 }]);
-
-    assert.deepEqual(observed, ["create", "EXPLICIT"]);
-    assert.deepEqual(projectilesQuery.all(rt).toArray(), []);
 });
 
 test("a terminal battle leaves outstanding projectiles frozen without termination callbacks", () => {

@@ -5,12 +5,12 @@ import type { Action } from "./action.js";
 
 export type Id = number;
 
-export type Status = "RUNNING" | "ENDING";
+export type Lifecycle = "RUNNING" | "ENDING";
 
 export interface State<E extends object = object> {
     readonly id: Id;
     readonly startedAtTick: number;
-    readonly status: Status;
+    readonly lifecycle: Lifecycle;
     readonly state: E;
 }
 

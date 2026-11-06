@@ -73,14 +73,14 @@ test("disable and end publish lifecycle before reentrant callbacks", () => {
     const definition = counter("cleanup", {
         onDisable(battle, self) {
             const reference = mechanisms.ref(self);
-            trace.push(["disable", mechanisms.get(battle, reference).status]);
+            trace.push(["disable", mechanisms.get(battle, reference).lifecycle]);
             assert.equal(mechanisms.setActive(battle, reference, false), battle);
             const currentState = mechanisms.get(battle, reference).state;
             return mechanisms.setState(battle, reference, { count: currentState.count + 1 });
         },
         onEnd(battle, self) {
             const reference = mechanisms.ref(self);
-            trace.push(["end", mechanisms.get(battle, reference).status, self.state.count]);
+            trace.push(["end", mechanisms.get(battle, reference).lifecycle, self.state.count]);
             assert.equal(mechanisms.remove(battle, reference), battle);
             assert.equal(mechanisms.setActive(battle, reference, true), battle);
             const currentState = mechanisms.get(battle, reference).state;
@@ -91,7 +91,7 @@ test("disable and end publish lifecycle before reentrant callbacks", () => {
     const [active, reference] = register(initial, definition);
     const inactive = mechanisms.setActive(active, reference, false);
     assert.equal(mechanisms.get(inactive, reference).state.count, 1);
-    assert.equal(mechanisms.get(active, reference).status, "ACTIVE");
+    assert.equal(mechanisms.get(active, reference).lifecycle, "ACTIVE");
     assert.equal(mechanisms.setActive(inactive, reference, false), inactive);
     const removed = mechanisms.remove(inactive, reference);
     assert.deepEqual(trace, [["disable", "INACTIVE"], ["end", "ENDING", 1]]);
@@ -99,7 +99,7 @@ test("disable and end publish lifecycle before reentrant callbacks", () => {
     assert.equal(mechanisms.get(removed, sibling).state.count, 7);
     assert.equal(mechanisms.remove(removed, reference), removed);
     assert.equal(mechanisms.get(active, sibling).state.count, 0);
-    assert.equal(mechanisms.get(inactive, reference).status, "INACTIVE");
+    assert.equal(mechanisms.get(inactive, reference).lifecycle, "INACTIVE");
 });
 
 test("removing an active mechanism disables output before its single Finalize", () => {
@@ -151,7 +151,7 @@ test("advance fixes identities, rechecks latest state, and does not restore a re
     assert.equal(mechanisms.get(battle, removed), undefined);
     assert.equal(mechanisms.get(battle, activated).state.count, 1);
     assert.equal(mechanisms.get(battle, created).state.count, 0);
-    assert.equal(mechanisms.get(before, activated).status, "INACTIVE");
+    assert.equal(mechanisms.get(before, activated).lifecycle, "INACTIVE");
     battle = mechanisms.advance(battle);
     assert.equal(mechanisms.get(battle, created).state.count, 1);
 });

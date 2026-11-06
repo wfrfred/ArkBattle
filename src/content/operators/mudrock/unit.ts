@@ -89,7 +89,7 @@ export function readShield(
     unit: Unit,
 ): { readonly layers: number; readonly timer: number } | undefined {
     const effect = unit.effects.values().find((entry) => entry.definition.id === SHIELD_ID);
-    if (effect?.status !== "ACTIVE") {
+    if (effect?.lifecycle !== "ACTIVE") {
         return undefined;
     }
 
@@ -159,7 +159,7 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
                         if (
                             pending.cancellation !== null ||
                             pending.amount <= 0 ||
-                            shield?.status !== "ACTIVE" ||
+                            shield?.lifecycle !== "ACTIVE" ||
                             host === undefined
                         ) {
                             return { state, value: pending };

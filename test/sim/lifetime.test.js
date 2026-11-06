@@ -58,7 +58,7 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
                 current = effects.end(current, parent, "SECOND");
                 current = remove(current, owner.id, "DEATH");
                 assert.equal(units.get(current, owner).lifecycle, "LEAVING");
-                assert.equal(effects.get(current, parent).status, "ENDING");
+                assert.equal(effects.get(current, parent).lifecycle, "ENDING");
                 const previous = effects.get(current, parent);
                 current = effects.setState(current, parent, { total: previous.state.total + 2 });
                 calls.push("child-ended");
@@ -109,7 +109,7 @@ test("an ending ancestor rejects new dependents before its running Action receiv
 
                         invoke(current) {
                             assert.equal(
-                                actions.getExecution(current, execution).execution.status,
+                                actions.getExecution(current, execution).execution.lifecycle,
                                 "RUNNING",
                             );
                             const recipient = units

@@ -47,7 +47,7 @@ export function install<S extends object, H extends object>(
         source: initial.source ?? null,
         expiration,
         enabled: initial.enabled ?? true,
-        status: "INSTALLING",
+        lifecycle: "INSTALLING",
     };
     const ref = effectRef(instance);
     let currentUnit: Unit | undefined = { ...unit, effects: unit.effects.add(instance) };
@@ -60,15 +60,15 @@ export function install<S extends object, H extends object>(
         currentUnit = units.get(battle, host);
         installed = currentUnit?.effects.get(ref);
     }
-    if (installed?.status === "INSTALLING") {
+    if (installed?.lifecycle === "INSTALLING") {
         if (expired(installed.expiration, battle.tick)) {
             return { state: end(battle, ref, "EXPIRED"), value: ref };
         }
 
-        battle = replaceEffect(battle, currentUnit!, { ...installed, status: "INACTIVE" });
+        battle = replaceEffect(battle, currentUnit!, { ...installed, lifecycle: "INACTIVE" });
         battle =
             definition.group === undefined
-                ? updateStatus(battle, ref)
+                ? updateLifecycle(battle, ref)
                 : reconcileGroupActivity(battle, unit.id, definition.group.id);
     }
 
@@ -122,25 +122,25 @@ export function setEnabled<T extends Effect<any, any>>(
 ): BattleState {
     const unit = units.get<Unit>(battle, ref.host);
     const instance = unit?.effects.get(ref.id);
-    if (instance === undefined || instance.status === "ENDING" || instance.enabled === enabled) {
+    if (instance === undefined || instance.lifecycle === "ENDING" || instance.enabled === enabled) {
         return battle;
     }
 
     battle = replaceEffect(battle, unit!, { ...instance, enabled });
 
-    return updateStatus(battle, ref);
+    return updateLifecycle(battle, ref);
 }
 
 export const lifetime: Lifetime<Effect, Effect<any, any>, string> = create({
     kind: "EFFECT",
     address: (reference) => [reference.host.id, reference.id],
     get: (battle, reference) => units.get<Unit>(battle, reference.host)?.effects.get(reference.id),
-    isEnding: (self) => self.status === "ENDING",
-    begin: (self) => ({ ...self, status: "ENDING" }),
+    isEnding: (self) => self.lifecycle === "ENDING",
+    begin: (self) => ({ ...self, lifecycle: "ENDING" }),
     replace: (battle, reference, next) =>
         replaceEffect(battle, units.get<Unit>(battle, reference.host)!, next),
     prepare(battle, reference, initial) {
-        if (initial.status === "ACTIVE" && initial.definition.onDisable !== undefined) {
+        if (initial.lifecycle === "ACTIVE" && initial.definition.onDisable !== undefined) {
             const self = units.get<Unit>(battle, reference.host)!.effects.get(reference.id)!;
             battle = initial.definition.onDisable(battle, self);
         }
@@ -177,7 +177,7 @@ export function advance(battle: BattleState): BattleState {
         const ref = effectRef(candidate);
         const unit = units.get(battle, ref.host);
         let instance = unit?.effects.get(ref.id);
-        if (instance?.status === "ACTIVE") {
+        if (instance?.lifecycle === "ACTIVE") {
             const previous = instance.expiration;
             if (previous.type === "DURATION") {
                 const elapsed = Math.min(previous.total, previous.elapsed + previous.rate);
@@ -195,7 +195,7 @@ export function advance(battle: BattleState): BattleState {
         const current = get(battle, ref);
         if (
             current !== undefined &&
-            current.status !== "ENDING" &&
+            current.lifecycle !== "ENDING" &&
             expired(current.expiration, battle.tick)
         ) {
             battle = end(battle, ref, "EXPIRED");
@@ -215,14 +215,17 @@ function replaceEffect<S extends object, H extends object>(
     ]);
 }
 
-function updateStatus<T extends Effect<any, any>>(battle: BattleState, ref: Ref<T>): BattleState {
+function updateLifecycle<T extends Effect<any, any>>(
+    battle: BattleState,
+    ref: Ref<T>,
+): BattleState {
     const unit = units.get<Unit>(battle, ref.host);
     const instance = unit?.effects.get(ref.id);
     if (
         unit === undefined ||
         instance === undefined ||
-        instance.status === "ENDING" ||
-        instance.status === "INSTALLING"
+        instance.lifecycle === "ENDING" ||
+        instance.lifecycle === "INSTALLING"
     ) {
         return battle;
     }
@@ -236,13 +239,13 @@ function updateStatus<T extends Effect<any, any>>(battle: BattleState, ref: Ref<
                 .values()
                 .some(
                     (other) =>
-                        other.status !== "ENDING" &&
+                        other.lifecycle !== "ENDING" &&
                         other.definition.group?.id === group.id &&
                         (other.definition.group.priority > group.priority ||
                             (other.definition.group.priority === group.priority &&
                                 other.id < instance.id)),
                 ));
-    if (active === (instance.status === "ACTIVE")) {
+    if (active === (instance.lifecycle === "ACTIVE")) {
         return battle;
     }
     if (active && expired(instance.expiration, battle.tick)) {
@@ -251,7 +254,7 @@ function updateStatus<T extends Effect<any, any>>(battle: BattleState, ref: Ref<
 
     const next: Effect = {
         ...instance,
-        status: active ? "ACTIVE" : "INACTIVE",
+        lifecycle: active ? "ACTIVE" : "INACTIVE",
     };
     battle = replaceEffect(battle, unit, next);
 
@@ -269,14 +272,14 @@ function reconcileGroupActivity(battle: BattleState, unitId: Id, groupId: string
 
     for (const candidate of candidates) {
         const ref = effectRef(candidate);
-        if (get(battle, ref)?.status === "ACTIVE") {
-            battle = updateStatus(battle, ref);
+        if (get(battle, ref)?.lifecycle === "ACTIVE") {
+            battle = updateLifecycle(battle, ref);
         }
     }
     for (const candidate of candidates) {
         const ref = effectRef(candidate);
-        if (get(battle, ref)?.status === "INACTIVE") {
-            battle = updateStatus(battle, ref);
+        if (get(battle, ref)?.lifecycle === "INACTIVE") {
+            battle = updateLifecycle(battle, ref);
         }
     }
 

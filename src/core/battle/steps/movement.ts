@@ -3,6 +3,7 @@ import {
     isCompleted,
     pathMotionMode,
     type Definition as RouteDefinition,
+    type Route,
 } from "../../unit/capability/route/capability.js";
 import * as route from "../../unit/capability/route/operations.js";
 import { movementTarget } from "../../unit/capability/route/query.js";
@@ -11,7 +12,8 @@ import { hasBlockable } from "../../unit/capability/blocking/blockable.js";
 import * as blockable from "../../unit/capability/blocking/blockable-operations.js";
 import * as locomotion from "../../unit/capability/locomotion/operations.js";
 import * as units from "../../unit/query.js";
-import type { Id } from "../../unit/unit.js";
+import type { Ref } from "../../common/ref.js";
+import type { Unit } from "../../unit/unit.js";
 import type { Command } from "../contract.js";
 import { appendEvents, type State as BattleState } from "../state.js";
 import { remove } from "../unit.js";
@@ -19,10 +21,10 @@ import { remove } from "../unit.js";
 export type AlternativeRouteCommand =
     | {
           readonly type: "SET_ALTERNATIVE_ROUTE";
-          readonly unitId: Id;
+          readonly ref: Ref<Unit & Route>;
           readonly route: RouteDefinition;
       }
-    | { readonly type: "CLEAR_ALTERNATIVE_ROUTE"; readonly unitId: Id };
+    | { readonly type: "CLEAR_ALTERNATIVE_ROUTE"; readonly ref: Ref<Unit & Route> };
 
 export function advanceRouteCommands(
     battle: BattleState,
@@ -36,18 +38,14 @@ export function advanceRouteCommands(
             continue;
         }
 
-        const unit = battle.battlefield.units.get(command.unitId);
-        if (unit === undefined) {
-            throw new RangeError(`unknown alternative route unit: ${command.unitId}`);
-        }
-        if (!hasRoute(unit)) {
-            throw new RangeError(`unit has no route: ${command.unitId}`);
+        if (units.get(battle, command.ref) === undefined) {
+            throw new RangeError(`unknown alternative route unit: ${command.ref.id}`);
         }
 
         battle =
             command.type === "SET_ALTERNATIVE_ROUTE"
-                ? route.setAlternative(battle, units.ref(unit), command.route)
-                : route.clearAlternative(battle, units.ref(unit));
+                ? route.setAlternative(battle, command.ref, command.route)
+                : route.clearAlternative(battle, command.ref);
     }
 
     return battle;

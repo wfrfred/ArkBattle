@@ -134,7 +134,7 @@ function create<P extends object>(
             }
 
             for (const candidate of candidates) {
-                if (mechanisms.get(battle, reference)?.status !== "ACTIVE") {
+                if (mechanisms.get(battle, reference)?.lifecycle !== "ACTIVE") {
                     return battle;
                 }
 
@@ -153,7 +153,7 @@ function create<P extends object>(
                         previous.effect === undefined
                             ? undefined
                             : effects.get(battle, previous.effect);
-                    const effectExists = effect !== undefined && effect.status !== "ENDING";
+                    const effectExists = effect !== undefined && effect.lifecycle !== "ENDING";
                     if (previous.index === index && effectExists) {
                         continue;
                     }
@@ -178,7 +178,7 @@ function create<P extends object>(
                 if (
                     latest === undefined ||
                     indexOf(latest) !== index ||
-                    mechanisms.get(battle, reference)?.status !== "ACTIVE"
+                    mechanisms.get(battle, reference)?.lifecycle !== "ACTIVE"
                 ) {
                     continue;
                 }
@@ -191,7 +191,7 @@ function create<P extends object>(
                 );
                 battle = installed.state;
 
-                if (mechanisms.get(battle, reference)?.status !== "ACTIVE") {
+                if (mechanisms.get(battle, reference)?.lifecycle !== "ACTIVE") {
                     return !behaviour.retainOnLeave && installed.value !== undefined
                         ? effects.end(battle, installed.value, "TERRAIN_UNAVAILABLE")
                         : battle;
@@ -224,7 +224,7 @@ function create<P extends object>(
                 contacts: new Map(),
             });
 
-            if (!behaviour.retainOnLeave && self.status !== "ENDING") {
+            if (!behaviour.retainOnLeave && self.lifecycle !== "ENDING") {
                 for (const contact of owned) {
                     if (contact.effect !== undefined) {
                         battle = effects.end(battle, contact.effect, "TERRAIN_UNAVAILABLE");
@@ -252,7 +252,7 @@ export function createTerrainMechanism(
                     .find(
                         (effect) =>
                             effect.definition.id === "terrain/infection" &&
-                            effect.status !== "ENDING",
+                            effect.lifecycle !== "ENDING",
                     );
                 if (previous !== undefined) {
                     return { state: battle, value: effectRef(previous) };

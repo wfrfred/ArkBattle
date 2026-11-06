@@ -74,7 +74,11 @@ export function consume<X extends Activation<any, any>>(
     }
 
     const active = self.skill.activation;
-    if (self.lifecycle !== "PRESENT" || active?.id !== reference.id || active.status !== "ACTIVE") {
+    if (
+        self.lifecycle !== "PRESENT" ||
+        active?.id !== reference.id ||
+        active.lifecycle !== "ACTIVE"
+    ) {
         return rejected(battle, "UNAVAILABLE");
     }
     if (active.sustain.type !== "AMMO") {
@@ -125,7 +129,7 @@ export function check<X extends Activation<any, any>>(
 ): BattleState {
     const active = query.getActivation(battle, reference)?.activation;
 
-    return active?.status === "ACTIVE" &&
+    return active?.lifecycle === "ACTIVE" &&
         active.sustain.type === "AMMO" &&
         active.sustain.remaining <= 0
         ? finish(battle, reference)
@@ -146,7 +150,11 @@ function add<X extends Activation<any, any>>(
     }
 
     const active = self.skill.activation;
-    if (self.lifecycle !== "PRESENT" || active?.id !== reference.id || active.status !== "ACTIVE") {
+    if (
+        self.lifecycle !== "PRESENT" ||
+        active?.id !== reference.id ||
+        active.lifecycle !== "ACTIVE"
+    ) {
         return rejected(battle, "UNAVAILABLE");
     }
     if (active.sustain.type !== "AMMO") {

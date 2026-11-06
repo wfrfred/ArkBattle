@@ -43,7 +43,7 @@ SP 容量、门槛和默认费用直接读取 Skill Definition；发动实际费
 | self.definition | 完整 Skill Definition，与该聚合的 S／A 配对 |
 | self.state | 跨多次激活保留的私有 S |
 | self.sp | 当前 SP 或 null |
-| self.activation | 本轮 id、startedAtTick、status、Sustain、私有 state: A，或 null |
+| self.activation | 本轮 id、startedAtTick、lifecycle、Sustain、私有 state: A，或 null |
 | Capability.nextActivationId | 宿主内单调分配的轮次身份 |
 | Capability.ammo／Rules／Hooks | 持久登记的 Ammo 容量贡献、许可和通知 |
 

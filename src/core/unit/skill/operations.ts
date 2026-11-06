@@ -96,7 +96,7 @@ export function setActivationState<X extends Activation<any, any>>(
     }
 
     const active = self.activation;
-    if (active.status === "ENDING") {
+    if (active.lifecycle === "ENDING") {
         throw new TypeError("cannot update an ending skill activation");
     }
 
@@ -162,7 +162,7 @@ export function activate<S extends object, A extends object>(
         activation: {
             id: unit.skill.nextActivationId,
             startedAtTick: battle.tick,
-            status: "ACTIVE",
+            lifecycle: "ACTIVE",
             sustain,
             state: definition.initialize(battle, source, self),
         },
@@ -210,7 +210,7 @@ export function activate<S extends object, A extends object>(
     if (
         currentUnit?.lifecycle === "PRESENT" &&
         (!hasVitality(currentUnit) || currentUnit.vitality.hp > 0) &&
-        current?.activation.status === "ACTIVE" &&
+        current?.activation.lifecycle === "ACTIVE" &&
         definition.onStart !== undefined
     ) {
         battle = definition.onStart(battle, source, current);
@@ -218,7 +218,7 @@ export function activate<S extends object, A extends object>(
 
     const after = query.getActivation(battle, activatedRef);
     if (
-        after?.activation.status === "ACTIVE" &&
+        after?.activation.lifecycle === "ACTIVE" &&
         after.activation.sustain.type === "TIME" &&
         after.activation.sustain.endsAtTick <= battle.tick
     ) {
@@ -232,8 +232,8 @@ export const lifetime = lifetimes.create<Activation, Activation<any, any>, End>(
     kind: "SKILL",
     address: (reference) => [reference.host.id, reference.id],
     get: (battle, reference) => query.getActivation(battle, reference),
-    isEnding: (self) => self.activation.status === "ENDING",
-    begin: (self) => ({ ...self, activation: { ...self.activation, status: "ENDING" } }),
+    isEnding: (self) => self.activation.lifecycle === "ENDING",
+    begin: (self) => ({ ...self, activation: { ...self.activation, lifecycle: "ENDING" } }),
     replace(battle, reference, next) {
         const host = units.get(battle, reference.host)!;
 
@@ -294,7 +294,7 @@ export function operate<X extends Activation<any, any>>(
     }
 
     const self = query.getActivation(battle, reference);
-    if (self?.activation.status !== "ACTIVE") {
+    if (self?.activation.lifecycle !== "ACTIVE") {
         return reject("UNAVAILABLE");
     }
 
@@ -324,7 +324,7 @@ export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>):
 
     unit = units.get(battle, host);
 
-    if (unit?.lifecycle === "PRESENT" && unit.skill.activation?.status === "ACTIVE") {
+    if (unit?.lifecycle === "PRESENT" && unit.skill.activation?.lifecycle === "ACTIVE") {
         const active = unit.skill as Identified<never, typeof unit.skill> as Activation;
         if (
             active.activation.sustain.type === "TIME" &&
@@ -397,7 +397,7 @@ export function extendTime<X extends Activation<any, any>>(
     const active = unit.skill.activation;
     if (
         active?.id !== reference.id ||
-        active.status !== "ACTIVE" ||
+        active.lifecycle !== "ACTIVE" ||
         active.sustain.type !== "TIME"
     ) {
         return battle;

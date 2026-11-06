@@ -103,7 +103,9 @@ export function createSkill(
             state = healSelf(state, source.id, healRatio);
 
             for (const targetRef of self.execution.state.bindings.primary ?? []) {
-                if (getExecution(state, executionRef(host, self))?.execution.status !== "RUNNING") {
+                if (
+                    getExecution(state, executionRef(host, self))?.execution.lifecycle !== "RUNNING"
+                ) {
                     return state;
                 }
 

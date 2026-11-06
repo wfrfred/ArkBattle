@@ -67,7 +67,7 @@ interface Burst extends Effect<BurstState, Elemental> {
 
 Core 提供八个具体 Effect：神经眩晕／麻痹、物理／元素侵蚀、法术／元素灼燃，以及消耗 SP／恢复攻击力的凋亡。每个实现只接收自身所需的数值参数，并明确描述行为，不通过共同的大参数表或一串开关解释效果组合。Data 在模块初始化时传入数值，构建并保存完整静态 Definition；每轮只查表复用。initialize 返回 `{ type }`，state 不重复保存时间进度。BurstDefinition 是普通 Effect Definition 加共同的只读 durationTicks 恢复预算；onInstall 接收尚未初始化时间的普通 Effect，以此预算建立 DURATION 后形成 Burst，后续程序在领域回调边界恢复该类型。Burst 的 Typed Ref 保留 DURATION 写入约束，不另保存 remainingTicks、周期 Clock 或攻击力恢复 scaler。
 
-Burst 的 id、host、source、enabled、status 由 Effect 提供，Elemental 的 burst 槽位只保存它的 Typed Ref。`ref(self)` 复用 Effect Ref，地址为 host + Effect ID；没有独立 Burst ID 分配器或 Lifetime。旧引用不能操作后来的爆发。来源引用保存历史身份，不要求来源仍在场，也不隐含生命周期绑定；跨 Battle 使用 Ref 仍属于调用契约错误。
+Burst 的 id、host、source、enabled、lifecycle 由 Effect 提供，Elemental 的 burst 槽位只保存它的 Typed Ref。`ref(self)` 复用 Effect Ref，地址为 host + Effect ID；没有独立 Burst ID 分配器或 Lifetime。旧引用不能操作后来的爆发。来源引用保存历史身份，不要求来源仍在场，也不隐含生命周期绑定；跨 Battle 使用 Ref 仍属于调用契约错误。
 
 [data/arknights/elemental.ts](../../src/data/arknights/elemental.ts) 保存原始类型映射、八套数值和具体 Effect 的选择表。新增元素时新增对应 Effect 实现，补充元素类型与映射表；通用 EP 的 Calculate／Apply／Commit 以及已有爆发程序不需要为新机制增加分支。共享函数只处理进度、EP 恢复和结束收尾。通用控制实现在 [effects/control.ts](../../src/core/effects/control.ts)，Content 直接复用；通用 Effect 引擎不解释元素规则。
 

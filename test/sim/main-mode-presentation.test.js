@@ -107,7 +107,7 @@ test("projectile release uses its registered trace target and later damage does 
     ]), [["dmg", 2, 80, "phys"]]);
 });
 
-test("attack skills decorate attack cues while buff skills keep a separate active status", () => {
+test("attack skills decorate attack cues while buff skills keep a separate activation indicator", () => {
     const view = presentation();
     let state = battle([
         { definition: definition("char_311_mudrok", { skill: skillCapability }), position: [1, 1] },

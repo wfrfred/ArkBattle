@@ -23,7 +23,7 @@ test('main-mode preparation connects real operators and enemies through a comple
   while (battle.result === null) {
     const guard = unitQueries.all(battle).find(unit => unit.id === 1);
     const commands = !triggeredMelantha && (guard?.skill.sp?.value ?? 0) >= (guard?.skill.definition.sp?.requirement ?? Infinity)
-      ? [{ type: 'ACTIVATE_SKILL', unitId: 1 }] : [];
+      ? [{ type: 'ACTIVATE_SKILL', ref: unitQueries.ref(guard) }] : [];
     if (commands.length) triggeredMelantha = true;
     const before = battle;
     battle = stepBattle(battle, commands);

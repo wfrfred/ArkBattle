@@ -355,7 +355,10 @@ export function createWithState<P extends object, E extends object>(
                             self.execution.state.previousReadyAtTick + self.cooldown.periodTicks,
                     });
                     const current = actions.getExecution(battle, identity);
-                    if (current?.execution.status !== "RUNNING" || !sourcePresent(battle, source)) {
+                    if (
+                        current?.execution.lifecycle !== "RUNNING" ||
+                        !sourcePresent(battle, source)
+                    ) {
                         return {
                             state: actions.cancel(battle, identity, "SOURCE_ABSENT"),
                             value: true,
@@ -370,7 +373,7 @@ export function createWithState<P extends object, E extends object>(
                     cooldownAdjusted: true,
                 });
                 const current = actions.getExecution(battle, identity);
-                if (current?.execution.status !== "RUNNING" || !sourcePresent(battle, source)) {
+                if (current?.execution.lifecycle !== "RUNNING" || !sourcePresent(battle, source)) {
                     return {
                         state: actions.cancel(battle, identity, "SOURCE_ABSENT"),
                         value: true,
@@ -397,7 +400,10 @@ export function createWithState<P extends object, E extends object>(
                     released: true,
                 });
                 const releasing = actions.getExecution(battle, identity);
-                if (releasing?.execution.status !== "RUNNING" || !sourcePresent(battle, source)) {
+                if (
+                    releasing?.execution.lifecycle !== "RUNNING" ||
+                    !sourcePresent(battle, source)
+                ) {
                     return {
                         state: actions.cancel(battle, identity, "SOURCE_ABSENT"),
                         value: true,
@@ -408,7 +414,7 @@ export function createWithState<P extends object, E extends object>(
                 const permission = beforeRelease(battle, identity);
                 battle = permission.state;
                 const current = actions.getExecution(battle, identity);
-                if (current?.execution.status !== "RUNNING" || !sourcePresent(battle, source)) {
+                if (current?.execution.lifecycle !== "RUNNING" || !sourcePresent(battle, source)) {
                     return {
                         state: actions.cancel(battle, identity, "SOURCE_ABSENT"),
                         value: true,
@@ -438,7 +444,7 @@ export function createWithState<P extends object, E extends object>(
                 battle = released(battle, identity);
 
                 const output = actions.getExecution(battle, identity);
-                if (output?.execution.status !== "RUNNING" || !sourcePresent(battle, source)) {
+                if (output?.execution.lifecycle !== "RUNNING" || !sourcePresent(battle, source)) {
                     return {
                         state: actions.cancel(battle, identity, "SOURCE_ABSENT"),
                         value: true,
@@ -452,7 +458,7 @@ export function createWithState<P extends object, E extends object>(
                         for (const operation of group.operations) {
                             for (const target of output.execution.state.bindings[group.id] ?? []) {
                                 if (
-                                    actions.getExecution(battle, identity)?.execution.status !==
+                                    actions.getExecution(battle, identity)?.execution.lifecycle !==
                                     "RUNNING"
                                 ) {
                                     return { state: battle, value: true };
@@ -468,7 +474,7 @@ export function createWithState<P extends object, E extends object>(
                             : (output.execution.state.bindings[followUp.receiver.bindingId] ??
                               [])) {
                             if (
-                                actions.getExecution(battle, identity)?.execution.status !==
+                                actions.getExecution(battle, identity)?.execution.lifecycle !==
                                 "RUNNING"
                             ) {
                                 return { state: battle, value: true };
@@ -480,7 +486,7 @@ export function createWithState<P extends object, E extends object>(
                 }
 
                 const completed = actions.getExecution(battle, identity);
-                if (completed?.execution.status !== "RUNNING") {
+                if (completed?.execution.lifecycle !== "RUNNING") {
                     return { state: battle, value: true };
                 }
 

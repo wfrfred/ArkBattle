@@ -29,7 +29,7 @@ Action 需要保障的结果是：
 | Unit Action Capability State | 单一 Actions 容器、宿主内 nextExecutionId、interval／speed 贡献、启动 Rule、释放前拦截与成功释放通知 |
 | Action | 一种配置行动在某 Unit 上的 Definition、持久 state、Cooldown 和当前 execution |
 | Execution | 以本轮执行身份读取同一聚合条目的完整视图，execution 确定非空 |
-| execution.State | 聚合条目内本次执行的 id、startedAtTick、status 和私有 state |
+| execution.State | 聚合条目内本次执行的 id、startedAtTick、lifecycle 和私有 state |
 | Runtime | 固定候选、逐项推进与启动、接续状态，成功后发布整 Tick |
 
 Cooldown 表达同种行动何时可以再次启动；execution 非空表示本轮尚未完成终止。同 Unit 同配置 Definition 同时最多有一个 Execution，RUNNING／ENDING 均占用该启动位置。不同 Definition 可以同时执行；互斥、抢占与等待由内容选择、启动 Rule 和明确取消表达。
@@ -113,7 +113,7 @@ export interface Execution<P extends object = object, E extends object = object>
 }
 ```
 
-Action<P, E> 表达持久行动，Execution<P, E> 表达其中某一轮执行的完整视图；两者读取同一个聚合条目，但声明不同的引用身份。Execution 的 execution 确定非空，onTick／onEnd 直接读取 self.execution.state，持久数据读取 self.state。内部 execution.State<E> 仍只保存 id、startedAtTick、status 和 E，不从公共 index 导出。宿主引用由回调的 source 参数提供，聚合条目不重复保存 host。
+Action<P, E> 表达持久行动，Execution<P, E> 表达其中某一轮执行的完整视图；两者读取同一个聚合条目，但声明不同的引用身份。Execution 的 execution 确定非空，onTick／onEnd 直接读取 self.execution.state，持久数据读取 self.state。内部 execution.State<E> 仍只保存 id、startedAtTick、lifecycle 和 E，不从公共 index 导出。宿主引用由回调的 source 参数提供，聚合条目不重复保存 host。
 
 具体内容将 Definition<P, E> 交给公共入口的 create，得到创建行动的初始化函数；其实现位于 [initialize.ts](../../src/core/unit/action/initialize.ts)，类型配对在这个具体创建位置建立。Unit 的 Action Capability.initialize 调用内容提供的 initialize，内容使用 createActions 按顺序执行这些函数，接续每项 Result.state，并将完整聚合条目加入 Actions。
 

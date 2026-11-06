@@ -106,7 +106,7 @@ export function start<P extends object, E extends object>(
         execution: {
             id: unit.action.nextExecutionId,
             startedAtTick: battle.tick,
-            status: "RUNNING",
+            lifecycle: "RUNNING",
             state: initialized.value,
         },
     };
@@ -144,7 +144,7 @@ export function setExecutionState<X extends Execution<any, any>>(
     if (current === undefined) {
         throw new RangeError(`unknown action execution: ${reference.id}`);
     }
-    if (current.execution.status === "ENDING") {
+    if (current.execution.lifecycle === "ENDING") {
         throw new TypeError("cannot update an ending action");
     }
 
@@ -161,8 +161,8 @@ export const lifetime = lifetimes.create<Execution, Execution<any, any>, End>({
     address: (reference) => [reference.host.id, reference.id],
     get: (battle, reference) =>
         units.get(battle, reference.host)?.action.actions.getExecution(reference.id),
-    isEnding: (self) => self.execution.status === "ENDING",
-    begin: (self) => ({ ...self, execution: { ...self.execution, status: "ENDING" } }),
+    isEnding: (self) => self.execution.lifecycle === "ENDING",
+    begin: (self) => ({ ...self, execution: { ...self.execution, lifecycle: "ENDING" } }),
     replace: (battle, reference, next) =>
         replaceAction(battle, units.get(battle, reference.host)!, next),
     finalize(battle, reference, result) {
@@ -225,7 +225,7 @@ export function advance<X extends Execution<any, any>>(
     }
 
     const self = source.action.actions.getExecution(reference.id);
-    if (self?.execution.status !== "RUNNING") {
+    if (self?.execution.lifecycle !== "RUNNING") {
         return battle;
     }
     if (source.lifecycle !== "PRESENT") {

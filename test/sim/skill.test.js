@@ -76,7 +76,7 @@ test("activation publishes payment before onStart and clears only the completed 
     state = update(state, source, presence.appear([1, 1]));
     const second = skills.activate(state, reference);
     state = skills.finish(second.state, first.value.ref);
-    assert.equal(skills.getActivation(state, second.value.ref).activation.status, "ACTIVE");
+    assert.equal(skills.getActivation(state, second.value.ref).activation.lifecycle, "ACTIVE");
     state = skills.cancel(state, second.value.ref, "STOPPED");
     assert.equal(get(state, 0).skill.sp.value, 10);
     assert.equal(skills.getSkill(state, reference).state.completed, 2);

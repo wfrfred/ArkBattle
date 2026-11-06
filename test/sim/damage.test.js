@@ -656,7 +656,7 @@ test("EP-02: depletion registers the Burst and completes standard output before 
     assert.equal(vitality.resolveResistance(result.state, get(result.state, 0)), 30);
     assert.deepEqual(elemental.get(result.state, result.value.application.burst).source, source);
     const sourceRemoved = remove(result.state, source.id, "SCRIPT");
-    assert.equal(elemental.get(sourceRemoved, result.value.application.burst).status, "ACTIVE");
+    assert.equal(elemental.get(sourceRemoved, result.value.application.burst).lifecycle, "ACTIVE");
     const removed = remove(sourceRemoved, target.id, "SCRIPT");
     assert.equal(get(removed, 0), undefined);
     assert.equal(elemental.get(removed, result.value.application.burst), undefined);

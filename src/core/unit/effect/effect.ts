@@ -5,7 +5,7 @@ import type { Expiration } from "./expiration.js";
 
 export type Id = number;
 
-export type Status = "INSTALLING" | "INACTIVE" | "ACTIVE" | "ENDING";
+export type Lifecycle = "INSTALLING" | "INACTIVE" | "ACTIVE" | "ENDING";
 
 export interface Effect<S extends object = object, H extends object = object> extends Identified<{
     readonly host: Ref<Unit> & Ref<Unit & H>;
@@ -18,7 +18,7 @@ export interface Effect<S extends object = object, H extends object = object> ex
     readonly source: Ref<Unit> | null;
     readonly expiration: Expiration;
     readonly enabled: boolean;
-    readonly status: Status;
+    readonly lifecycle: Lifecycle;
 }
 
 export interface Snapshot extends Omit<Effect, "state" | "definition"> {

@@ -57,7 +57,7 @@ export interface Definition<S extends object, A extends object> {
 export interface State<A extends object = object> {
     readonly id: number;
     readonly startedAtTick: number;
-    readonly status: "ACTIVE" | "ENDING";
+    readonly lifecycle: "ACTIVE" | "ENDING";
     readonly sustain: SustainState;
     readonly state: A;
 }

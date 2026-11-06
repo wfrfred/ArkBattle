@@ -60,7 +60,7 @@ export class Mechanisms {
             id,
             definition,
             state: definition.initialize(),
-            status: active ? "ACTIVE" : "INACTIVE",
+            lifecycle: active ? "ACTIVE" : "INACTIVE",
         };
 
         return {

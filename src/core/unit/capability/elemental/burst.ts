@@ -142,9 +142,11 @@ export function availableHost(
     reference: Ref<Effect<State, Elemental>>,
 ): (Unit & Elemental) | undefined {
     const host = units.get(battle, reference.host);
-    const status = getEffect(battle, reference)?.status;
+    const lifecycle = getEffect(battle, reference)?.lifecycle;
 
-    return host !== undefined && available(host) && (status === "ACTIVE" || status === "INSTALLING")
+    return host !== undefined &&
+        available(host) &&
+        (lifecycle === "ACTIVE" || lifecycle === "INSTALLING")
         ? host
         : undefined;
 }
