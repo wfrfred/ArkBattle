@@ -300,12 +300,10 @@ battle = update(battle, reference, compose(
 ));
 ```
 
-Change 直接表达保留完整宿主类型的纯应用协议，不绑定运行身份：
+Change 是保留完整宿主类型的纯函数，不绑定运行身份：
 
 ```typescript
-interface Change<in C extends Unit> {
-    readonly apply: <U extends C>(self: U) => Applied<U>;
-}
+type Change<in C extends Unit> = <U extends C>(self: U) => Applied<U>;
 interface Applied<U extends Unit> {
     readonly next: U;
     readonly settlements: readonly Settlement[];
@@ -318,11 +316,11 @@ compose<A extends Unit, B extends Unit>(
 ): Change<A & B>;
 ```
 
-apply 不读取 BattleState、不执行业务回调，只返回下一宿主值与已经捕获旧事实的结算程序。泛型 U 保留输入中超出最低能力 C 的字段，`in C` 明确能力要求的逆变关系。Applied 是本次纯应用结果，尚未发布或结算；Settlement 不再接收 Unit 参数，其闭包已经保存所属变换的 previous。
+直接调用 `change(self)`，不读取 BattleState、不执行业务回调，只返回下一宿主值与已经捕获旧事实的结算程序。泛型 U 保留输入中超出最低能力 C 的字段，`in C` 明确能力要求的逆变关系。Applied 是本次纯应用结果，尚未发布或结算；Settlement 不再接收 Unit 参数，其闭包已经保存所属变换的 previous。
 
-Core 内部的 `createChange<C extends Unit>(transform, settle?)` 将纯变换与可选结算配对。transform 为 `<U extends C>(self: U) => U`，settle 为 `(battle, previous: C) => BattleState`。apply 先计算 next；当 next 与输入 self 为同一引用，或没有 settle 时，不登记本项结算；否则用闭包捕获本项输入 self。无变化转换必须返回原对象，不做字段深比较。Content 使用所属领域工厂，不提交完整旧 Unit。
+Core 内部的 `createChange<C extends Unit>(transform, settle?)` 将纯变换与可选结算配对。transform 为 `<U extends C>(self: U) => U`，settle 为 `(battle, previous: C) => BattleState`。返回的 Change 函数先计算 next；当 next 与输入 self 为同一引用，或没有 settle 时，不登记本项结算；否则用闭包捕获本项输入 self。无变化转换必须返回原对象，不做字段深比较。Content 使用所属领域工厂，不提交完整旧 Unit。
 
-compose 是二元、有序的组合：先把 first 应用于 self，再把 second 应用于 first 的 next，返回最终 next，并依次连接两者 settlements。组合满足结合律，不满足交换律；组合本身不增加发布或结算边界。需要条件组合时，领域 Change 的 apply 根据当前位置的当前 self 选择并应用已有 Change，不增加展开节点、嵌套 update 或另一套条件构建 API。
+compose 是二元、有序的组合：先调用 `first(self)`，再用其 next 调用 second，返回最终 next，并依次连接两者 settlements。组合满足结合律，不满足交换律；组合本身不增加发布或结算边界。需要条件组合时，领域 Change 函数根据当前位置的当前 self 选择并调用已有 Change，不增加展开节点、嵌套 update 或另一套条件构建 API。
 
 普通数组注册由内部 [registration.ts](../../src/core/unit/registration.ts) 的 `createRegistrationOperations<U, P, K>(property)` 生成 set／remove Change。Capability 用 Rules、Contributions、Hooks 分组声明普通登记字段，State 直接继承这些分组；K 取 `keyof` 分组，Entry 直接从真实 U[P][K] 提取。set 由具体 Key 推断内联回调类型，再与字段／Entry 的映射元组联合交叉，保持联合 Key 的配对。返回的 Change 只要求相应宿主能力，不要求调用者提前绑定 Ref。单字段接口通过工厂的 `(property, key)` 重载固定字段，生成省略 key 的 set／remove，无需各领域重复数组修改逻辑。工厂复用按 ID 替换保序的数组操作，只完成纯变换和不可变复制，不增加运行时字段清单、能力校验、初始化、求值或派发。
 
@@ -330,7 +328,7 @@ Vitality 的 damageRules、普通贡献与专属 Hook，Elemental 的 Rules／Co
 
 update 每次只处理 Ref 指向的一个 Unit：
 
-1. 从传入 BattleState 读取宿主，缺失时抛出 RangeError，再执行 Change.apply。组合中的各项依次读取前项产生的最新宿主值；此阶段不执行 Hook 或完整领域操作。
+1. 从传入 BattleState 读取宿主，缺失时抛出 RangeError，再调用 `change(self)`。组合中的各项依次读取前项产生的最新宿主值；此阶段不执行 Hook 或完整领域操作。
 2. 一次发布最终 next，Field 维护 Unit 存储和 Occupancy 双槽。普通 update／replace 不扫描能力槽位或更新 Lifetime 关系。
 3. 按 Applied.settlements 的顺序执行结算，每项接续最新 BattleState。各项 previous 在自己的纯变换前捕获，只表示有意采样的旧事实；实时对象必须重新查询，不整体回填 previous。
 

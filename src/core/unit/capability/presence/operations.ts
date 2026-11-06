@@ -39,20 +39,18 @@ export function disappear(): Change<Unit & SpatialPresence> {
         },
     );
 
-    return {
-        apply(self) {
-            if (self.lifecycle !== "PRESENT") {
-                return { next: self, settlements: [] };
-            }
+    return (self) => {
+        if (self.lifecycle !== "PRESENT") {
+            return { next: self, settlements: [] };
+        }
 
-            const applied = spatial.apply(self);
-            const restricted = restrictions(applied.next, false);
+        const applied = spatial(self);
+        const restricted = restrictions(applied.next, false);
 
-            return {
-                next: restricted.next,
-                settlements: [...applied.settlements, ...restricted.settlements],
-            };
-        },
+        return {
+            next: restricted.next,
+            settlements: [...applied.settlements, ...restricted.settlements],
+        };
     };
 }
 
@@ -65,20 +63,18 @@ export function appear(position: WorldPosition): Change<Unit & SpatialPresence> 
             : next;
     }, releaseOldBlocking);
 
-    return {
-        apply(self) {
-            if (self.lifecycle !== "PRESENT") {
-                return { next: self, settlements: [] };
-            }
+    return (self) => {
+        if (self.lifecycle !== "PRESENT") {
+            return { next: self, settlements: [] };
+        }
 
-            const applied = spatial.apply(self);
-            const restricted = restrictions(applied.next, true);
+        const applied = spatial(self);
+        const restricted = restrictions(applied.next, true);
 
-            return {
-                next: restricted.next,
-                settlements: [...applied.settlements, ...restricted.settlements],
-            };
-        },
+        return {
+            next: restricted.next,
+            settlements: [...applied.settlements, ...restricted.settlements],
+        };
     };
 }
 
@@ -87,9 +83,9 @@ function restrictions<U extends Unit>(self: U, present: boolean): Applied<U> {
     const settlements: Settlement[] = [];
 
     if (action.hasAction(next)) {
-        const applied = (
-            present ? action.removeRule(restriction.id) : action.setRule(restriction)
-        ).apply(next);
+        const applied = (present ? action.removeRule(restriction.id) : action.setRule(restriction))(
+            next,
+        );
         next = applied.next;
         settlements.push(...applied.settlements);
     }
@@ -98,34 +94,34 @@ function restrictions<U extends Unit>(self: U, present: boolean): Applied<U> {
             present
                 ? skill.removeRule("activationRules", restriction.id)
                 : skill.setRule("activationRules", restriction)
-        ).apply(next);
+        )(next);
         next = applied.next;
         settlements.push(...applied.settlements);
     }
     if (locomotion.hasLocomotion(next)) {
         const applied = (
             present ? locomotion.removeRule(restriction.id) : locomotion.setRule(restriction)
-        ).apply(next);
+        )(next);
         next = applied.next;
         settlements.push(...applied.settlements);
     }
     if (hasBlocker(next)) {
         const applied = (
             present ? blocker.removeRule(restriction.id) : blocker.setRule(restriction)
-        ).apply(next);
+        )(next);
         next = applied.next;
         settlements.push(...applied.settlements);
     } else if (hasBlockable(next)) {
         const applied = (
             present ? blockable.removeRule(restriction.id) : blockable.setRule(restriction)
-        ).apply(next);
+        )(next);
         next = applied.next;
         settlements.push(...applied.settlements);
     }
     if (vitality.hasVitality(next)) {
         const applied = (
             present ? vitality.removeRule(restriction.id) : vitality.setRule(restriction)
-        ).apply(next);
+        )(next);
         next = applied.next;
         settlements.push(...applied.settlements);
     }
@@ -134,7 +130,7 @@ function restrictions<U extends Unit>(self: U, present: boolean): Applied<U> {
             present
                 ? elemental.removeRule("damageRules", restriction.id)
                 : elemental.setRule("damageRules", restriction)
-        ).apply(next);
+        )(next);
         next = applied.next;
         settlements.push(...applied.settlements);
     }

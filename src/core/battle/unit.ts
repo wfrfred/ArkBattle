@@ -36,7 +36,7 @@ export function update<U extends Unit>(
         throw new RangeError(`unknown unit: ${reference.id}`);
     }
 
-    const { next, settlements } = change.apply(self);
+    const { next, settlements } = change(self);
     battle = replace(battle, [next]);
 
     for (const settle of settlements) {

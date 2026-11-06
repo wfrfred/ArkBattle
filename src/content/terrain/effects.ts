@@ -116,41 +116,39 @@ function changeModifiers(
         return battle;
     }
 
-    return updateUnit(battle, units.ref(unit), {
-        apply(self) {
-            let next = self;
-            const settlements: Settlement[] = [];
+    return updateUnit(battle, units.ref(unit), (self) => {
+        let next = self;
+        const settlements: Settlement[] = [];
 
-            if (offense.hasOffense(next)) {
-                const applied = (
-                    modifiers?.attack === undefined
-                        ? offense.removeAttackContribution(id)
-                        : offense.setAttackContribution({ id, value: [modifiers.attack] })
-                ).apply(next);
-                next = applied.next;
-                settlements.push(...applied.settlements);
-            }
-            if (action.hasAction(next)) {
-                const applied = (
-                    modifiers?.attackSpeed === undefined
-                        ? action.removeSpeedContribution(id)
-                        : action.setSpeedContribution({ id, value: [modifiers.attackSpeed] })
-                ).apply(next);
-                next = applied.next;
-                settlements.push(...applied.settlements);
-            }
-            if (hasLocomotion(next)) {
-                const applied = (
-                    modifiers?.movementSpeed === undefined
-                        ? locomotion.removeSpeedContribution(id)
-                        : locomotion.setSpeedContribution({ id, value: [modifiers.movementSpeed] })
-                ).apply(next);
-                next = applied.next;
-                settlements.push(...applied.settlements);
-            }
+        if (offense.hasOffense(next)) {
+            const applied = (
+                modifiers?.attack === undefined
+                    ? offense.removeAttackContribution(id)
+                    : offense.setAttackContribution({ id, value: [modifiers.attack] })
+            )(next);
+            next = applied.next;
+            settlements.push(...applied.settlements);
+        }
+        if (action.hasAction(next)) {
+            const applied = (
+                modifiers?.attackSpeed === undefined
+                    ? action.removeSpeedContribution(id)
+                    : action.setSpeedContribution({ id, value: [modifiers.attackSpeed] })
+            )(next);
+            next = applied.next;
+            settlements.push(...applied.settlements);
+        }
+        if (hasLocomotion(next)) {
+            const applied = (
+                modifiers?.movementSpeed === undefined
+                    ? locomotion.removeSpeedContribution(id)
+                    : locomotion.setSpeedContribution({ id, value: [modifiers.movementSpeed] })
+            )(next);
+            next = applied.next;
+            settlements.push(...applied.settlements);
+        }
 
-            return { next, settlements };
-        },
+        return { next, settlements };
     });
 }
 

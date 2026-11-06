@@ -96,7 +96,7 @@ Unit 初始化始终建立空 Effects，不接受预装实例输入。初始护�
 
 阵营、当前玩家归属、创建者和来源分别表达，按需求存在。Unit 的生命周期状态与战场成员关系共同表达它是否仍可参与新的生命周期绑定。
 
-Rule、Hook、Contribution 与 Blocker.layer 的公开工厂只接收业务输入，返回要求最低宿主能力的 `Change<C>`；Content 通过 compose 有序组合，再交 battle/unit.update(battle, ref, change) 提交，不重建完整 Unit。Change.apply 依次产生下一宿主及已捕获逐项 previous 的结算列表，完成全部纯应用后一次发布，再接续最新 BattleState 顺序结算，见 [变更协议](api-conventions.md#51-unit-完整操作与批量变更)。Ref 只在 update 证明宿主能力，工厂不绑定目标。MaxHP 比例响应属于纯转换。内部 replace 只发布合法完整对象，不执行内容 Hook。纯数值／几何计算仍直接接收值，精确私有 state 写回与完整生命周期操作维持原协议。Route 与 Locomotion 的独立职责见 [Navigation](navigation.md)。
+Rule、Hook、Contribution 与 Blocker.layer 的公开工厂只接收业务输入，返回要求最低宿主能力的 `Change<C>`；Content 通过 compose 有序组合，再交 battle/unit.update(battle, ref, change) 提交，不重建完整 Unit。Change 函数依次产生下一宿主及已捕获逐项 previous 的结算列表，完成全部纯应用后一次发布，再接续最新 BattleState 顺序结算，见 [变更协议](api-conventions.md#51-unit-完整操作与批量变更)。Ref 只在 update 证明宿主能力，工厂不绑定目标。MaxHP 比例响应属于纯转换。内部 replace 只发布合法完整对象，不执行内容 Hook。纯数值／几何计算仍直接接收值，精确私有 state 写回与完整生命周期操作维持原协议。Route 与 Locomotion 的独立职责见 [Navigation](navigation.md)。
 
 ## Subsystem 的责任与调用
 

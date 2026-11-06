@@ -158,7 +158,7 @@ Battlefield 的通用空间查询领域使用 battlefield/spatial/ 命名，与�
 
 ## SpatialPresence
 
-[空间存在](presence.md)只保存身体的 present 事实；暂时消失保留身份、真实坐标及生命周期登记。appear／disappear 返回在 apply 中按当前宿主能力组合的 Change，自身叶子修改空间事实与旧偏移，其余子项直接复用所属能力的 Rule 工厂；发布后按自身叶子的 previous 清理旧关系和 Execution。各能力消费自己的 Rule，不反向读取 Presence；空间查询、普通索敌和接触程序直接使用空间存在事实。Skill、Effect 和 Burst 不因此统一结束或暂停。
+[空间存在](presence.md)只保存身体的 present 事实；暂时消失保留身份、真实坐标及生命周期登记。appear／disappear 返回在调用时按当前宿主能力组合的 Change，自身叶子修改空间事实与旧偏移，其余子项直接复用所属能力的 Rule 工厂；发布后按自身叶子的 previous 清理旧关系和 Execution。各能力消费自己的 Rule，不反向读取 Presence；空间查询、普通索敌和接触程序直接使用空间存在事实。Skill、Effect 和 Burst 不因此统一结束或暂停。
 
 ## Blocking
 

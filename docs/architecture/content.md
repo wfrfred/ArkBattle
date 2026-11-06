@@ -69,4 +69,4 @@ Occupancy 初始化自行登记 enter／leave 程序，直接调用 SUPPORT Defi
 
 基础 Unit 只声明身份、生命周期、Definition、位置和 Effects。每个 Capability 同时声明自身的配置与运行状态；业务通过 `Unit & Vitality & Offense` 等组合表达需要的能力。初始化工厂由具体 Definition 推导所创建的标准状态，异构战场查询则通过 `hasX` 收窄为实际需要的能力。能力集合用于装配和快照投影，不作为基础 Unit 的可选字段聚合。
 
-Content 通过 Rule／Hook／Contribution／Blocker.layer 工厂构造要求相应宿主能力的 Change，再调用 battle/unit.update(battle, ref, change)。同宿主的多项使用 compose 有序组合，全部纯应用完成后一次发布，再顺序结算后继；需要按能力选择时，在领域 Change.apply 中读取当前位置的当前宿主。Content 不手工重建 Unit、不传任意 Unit Transformation，也不调用 Core 内部 replace。精确私有 state 写回与完整生命周期操作维持原接口。完整组合契约见 [Unit 批量变更](api-conventions.md#51-unit-完整操作与批量变更)。统一构造入口建立能力配对，登记后能力组成稳定，不为约束内部调用者增加所有权框架或防御复制。
+Content 通过 Rule／Hook／Contribution／Blocker.layer 工厂构造要求相应宿主能力的 Change，再调用 battle/unit.update(battle, ref, change)。同宿主的多项使用 compose 有序组合，全部纯应用完成后一次发布，再顺序结算后继；需要按能力选择时，在调用领域 Change 时读取当前位置的当前宿主。Content 不手工重建 Unit、不传任意 Unit Transformation，也不调用 Core 内部 replace。精确私有 state 写回与完整生命周期操作维持原接口。完整组合契约见 [Unit 批量变更](api-conventions.md#51-unit-完整操作与批量变更)。统一构造入口建立能力配对，登记后能力组成稳定，不为约束内部调用者增加所有权框架或防御复制。

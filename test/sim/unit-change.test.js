@@ -54,10 +54,10 @@ test("composition associates without commuting, publishes the final Unit and pre
     const left = units.compose(units.compose(increment, scale), offset);
     const right = units.compose(increment, units.compose(scale, offset));
     const source = units.get(before, first);
-    assert.deepEqual(left.apply(source).next, right.apply(source).next);
+    assert.deepEqual(left(source).next, right(source).next);
     assert.notDeepEqual(
-        units.compose(increment, scale).apply(source).next.position,
-        units.compose(scale, increment).apply(source).next.position,
+        units.compose(increment, scale)(source).next.position,
+        units.compose(scale, increment)(source).next.position,
     );
     assert.deepEqual(order, []);
 

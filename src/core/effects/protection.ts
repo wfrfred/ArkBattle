@@ -93,29 +93,25 @@ export const healFree: Definition<object, targetable.Targetable> = {
 function receptionRules(id: string, enabled: boolean): Change<units.Unit> {
     const rule = { id, allows: () => false };
 
-    return {
-        apply(self) {
-            let next = self;
-            const settlements: Settlement[] = [];
+    return (self) => {
+        let next = self;
+        const settlements: Settlement[] = [];
 
-            if (elemental.hasElemental(next)) {
-                const applied = (
-                    enabled
-                        ? elemental.setRule("damageRules", rule)
-                        : elemental.removeRule("damageRules", id)
-                ).apply(next);
-                next = applied.next;
-                settlements.push(...applied.settlements);
-            }
-            if (vitality.hasVitality(next)) {
-                const applied = (enabled ? vitality.setRule(rule) : vitality.removeRule(id)).apply(
-                    next,
-                );
-                next = applied.next;
-                settlements.push(...applied.settlements);
-            }
+        if (elemental.hasElemental(next)) {
+            const applied = (
+                enabled
+                    ? elemental.setRule("damageRules", rule)
+                    : elemental.removeRule("damageRules", id)
+            )(next);
+            next = applied.next;
+            settlements.push(...applied.settlements);
+        }
+        if (vitality.hasVitality(next)) {
+            const applied = (enabled ? vitality.setRule(rule) : vitality.removeRule(id))(next);
+            next = applied.next;
+            settlements.push(...applied.settlements);
+        }
 
-            return { next, settlements };
-        },
+        return { next, settlements };
     };
 }

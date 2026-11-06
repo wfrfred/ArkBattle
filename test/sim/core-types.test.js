@@ -109,7 +109,7 @@ const change: Change<Unit & Offense> = setAttackContribution({ id: 'bonus', valu
 const actionChange = actionCapability.setRule({ id: 'ready', allows: () => true });
 const combined = compose(change, actionChange);
 const intersection: Change<Unit & Offense & actionCapability.Action> = combined;
-const applied = combined.apply(host);
+const applied = combined(host);
 const completeHost: typeof host = applied.next;
 const extraLayer: 'GROUND' | 'AIR' = applied.next.layer.type;
 update(battle, reference, combined);
@@ -122,7 +122,7 @@ update(battle, actionOnly, combined);
 declare const skillChange: Change<Unit & SkillCapability>;
 // @ts-expect-error requiring Skill cannot be weakened into requiring only Action.
 const wrongRequirement: Change<Unit & actionCapability.Action> = skillChange;
-const general: Change<Unit> = { apply: self => ({ next: self, settlements: [] }) };
+const general: Change<Unit> = self => ({ next: self, settlements: [] });
 const usableWithAction: Change<Unit & actionCapability.Action> = general;
 const attack: number = resolveAttack(battle, host);
 // @ts-expect-error value computation accepts the current object rather than its address.

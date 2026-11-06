@@ -33,7 +33,7 @@ Deployable 对 Occupancy 的构造依赖、入场与配对属于本轮协作边�
 | 地图、导航与空间查询 | Tile 与 Overlay 决定当前可达性和导航结果；缓存不改变结果。身体位置、空间存在、占格和命中几何分别表达，空间接触不等于业务命中。 | [Battlefield](battlefield.md#关键语义)、[Spatial](spatial.md) |
 | 空间存在 | 暂时消失保留身份、位置、占格、部署与生命周期；Presence Change 可位于组合批次任意位置，全部空间事实及限制先发布，再接续旧关系与旧执行清理。已成立的 Skill、Effect、Burst 与独立 Projectile 不统一结束，伤害、恢复、选择与锁定命中分别判断。 | [Presence](presence.md) |
 | Unit 构造与能力 | 静态 Definition 决定能力组成，构造后配置与状态配对、组成稳定；初始 Effect 通过登记后的正常安装形成。 | [构造与装配](capability.md#初始化与装配) |
-| Unit 组合变更 | update(battle, ref, change) 只更新一个目标。二元 compose 左到右接续同一 Unit，组合满足结合律但不交换；各项保留自己的 previous、no-op 与 Settlement 顺序。全部 apply 完成后一次发布最终 next，再按序结算；Settlement 中的嵌套 update 可以改变其它 Unit，后续结算接续最新状态。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
+| Unit 组合变更 | update(battle, ref, change) 只更新一个目标。二元 compose 左到右接续同一 Unit，组合满足结合律但不交换；各项保留自己的 previous、no-op 与 Settlement 顺序。全部纯应用完成后一次发布最终 next，再按序结算；Settlement 中的嵌套 update 可以改变其它 Unit，后续结算接续最新状态。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
 | 普通注册 Change | Capability 用扁平 Rules／Contributions／Hooks 分组明确选择自动字段；工厂不绑定 Ref，按 Key 和固定字段两种接口均保持字段、Entry 与所需能力的类型关联，由 update 的目标 Ref 满足能力要求。注册遵守按 ID 替换保序和无变化不结算，特殊字段由领域完成自身变换与后继。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
 | 状态接续与 Hook | 同步业务接续最新状态；有意采样的历史事实保留。一次派发不吸收后来新增的候选，执行时使用最新登记与资格，嵌套派发独立。 | [状态接续](functional-core.md#状态接续后的读取与续执行)、[同步候选](functional-core.md#7-同步候选范围) |
 | 身份与结束 | 持久对象与本轮执行身份不同，旧轮次不操作新轮次；结束立即拒收新的依赖，依赖者完整结束后宿主才注销，收尾不重复执行或覆盖首次原因。 | [Lifetime](lifetime.md)、[Action](action.md#关键语义)、[Skill](skill.md#关键语义) |
@@ -68,7 +68,7 @@ Deployable 对 Occupancy 的构造依赖、入场与配对属于本轮协作边�
 | Card、部署、离场与占格 | Deployment：Request 与资源消费、主动／被动离场账务、一次旧占格配对不清理继任者、逐份恢复预算和 DP。删除旧 Battle 中相同构造与重入矩阵。 |
 | Action、Skill、Effect 与 Contribution | 各自主套件。共有身份、候选、输入校验和不可变版本由公共套件承担，不因更换内容宿主再测一遍。 |
 | 公共容器、Query 与类型关系 | 公共套件集中验证有序不可变写入、独立可重复遍历和必要的类型推断。删除逐方法空值／同引用／存储形状与极端数值矩阵。 |
-| 普通注册工厂与变更类型 | core-types 集中证明自动字段、Entry 与能力要求的关联，包含不同 Hook 载荷及联合 Key 的代表。Change 的能力参数逆变，compose 合并两侧要求为交集；泛型 apply 保留输入完整宿主类型，update 拒绝能力不足的目标 Ref。运行行为复用已有 Contribution、Hook、Unit Change 与伤害／治疗场景，不为每个 Capability、字段或生成函数新增测试。MaxHP 比例、Ammo 发动采样、Action 冷却和 Blocking 容量后继继续归各自主场景。 |
+| 普通注册工厂与变更类型 | core-types 集中证明自动字段、Entry 与能力要求的关联，包含不同 Hook 载荷及联合 Key 的代表。Change 的能力参数逆变，compose 合并两侧要求为交集；Change 的泛型调用保留输入完整宿主类型，update 拒绝能力不足的目标 Ref。运行行为复用已有 Contribution、Hook、Unit Change 与伤害／治疗场景，不为每个 Capability、字段或生成函数新增测试。MaxHP 比例、Ammo 发动采样、Action 冷却和 Blocking 容量后继继续归各自主场景。 |
 | 属性求值边界 | Contribution 主场景验证动态输入取得本次 Battle 和宿主，core-types 集中证明能力对象和可空 SP 的类型边界；多目标间重新采样、弹体来源离场缓存继续归实际攻击／弹体场景，不按属性重复建立缺失矩阵。 |
 | 几何与空间算法 | Coordinate 集中验证坐标转换与四向旋转；Range 用一次非默认朝向、连续原点与不连续并集验证组合。Geometry 保留圆、盒及混合圆角的独立相交／首次扫掠公式、局部偏移与必要接触边界，不按方向、尺寸或微小数值变体复制。输入校验只留真正边界的代表。Battlefield 验证位置与 Hitbox 的区别、空间资格和接触顺序，不重复精确交点或旧版本不可变性。 |
 | UI 输出与具体内容 | Event 清单；内容只保留真实角色、装置或原生数据的独立结果，不自写护盾、Aura 等算法来重复证明公共结算。 |

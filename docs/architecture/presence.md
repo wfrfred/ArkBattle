@@ -23,7 +23,7 @@ Presence 根据宿主实际拥有的能力，登记或撤销自己持有的限�
 | Blocker／Blockable | 禁止取得或维持阻挡关系。 |
 | Vitality／Elemental | 拒收普通 HP／EP Damage；不附带普通 Healing 或资源自然恢复限制。 |
 
-两个入口的 apply 根据当前位置的当前宿主能力选择已有 Change，并按顺序应用。自身空间变更排在首位，随后直接复用各能力的 setRule／removeRule 工厂，不手写其它能力的 Rule State。全部变换共同参与一次发布，组合不增加发布或结算边界。恢复出现只移除 Presence 自己的登记，其它 Rule 继续生效。Capability 和 Action／Skill 的业务不反向读取 Presence。
+两个入口返回的 Change 函数根据当前位置的当前宿主能力选择已有 Change，并按顺序调用。自身空间变更排在首位，随后直接复用各能力的 setRule／removeRule 工厂，不手写其它能力的 Rule State。全部变换共同参与一次发布，组合不增加发布或结算边界。恢复出现只移除 Presence 自己的登记，其它 Rule 继续生效。Capability 和 Action／Skill 的业务不反向读取 Presence。
 
 空间查询、普通 Targeting 和 Terrain 接触直接消费空间存在事实。Combat 在调用可能消费 RNG 的 select 之前排除消失来源，不靠启动 Rule 补救已经发生的选择。已经锁定的 tracking Projectile 继续读取现存目标的真实位置；身份失效后才使用记忆位置。命中、重新索敌和伤害接收分别判断。
 
@@ -31,9 +31,9 @@ Presence 根据宿主实际拥有的能力，登记或撤销自己持有的限�
 
 Presence Change 可以通过 compose 与同宿主的其它变更组合，遵守[统一变更协议](api-conventions.md#51-unit-完整操作与批量变更)：
 
-1. apply 读取当前位置的当前宿主；LEAVING 宿主返回原值与空结算列表，不产生空间变更。
+1. Change 函数读取当前位置的当前宿主；LEAVING 宿主返回原值与空结算列表，不产生空间变更。
 2. 自身叶子的 Transformation 更新 present／position，并取消自身 Blockable 的未完成偏移；后续所属能力的 Rule Change 各自完成纯登记或撤销。
-3. 整个 Change.apply 完成后一次发布，再按捕获的 settlements 顺序结算；不为 Presence 另设全批优先级。
+3. 整个 Change 函数返回后一次发布，再按捕获的 settlements 顺序结算；不为 Presence 另设全批优先级。
 4. 自身叶子的 Settlement 从该项 `previous` 快照识别旧关系和旧 Execution，先解除仍成立的旧关系；disappear 随后按启动顺序取消旧 Execution，appear 不取消执行。后续 Rule Settlement 接续最新状态。
 
 Presence 自己发出的第一次 RELEASED 回调已能读取本批最终空间事实、限制、自身偏移取消及此次整批关系解除结果。其它 Change 的先行 Settlement 仍遵守其自身契约。Blocker 使用旧 blocked Ref 批量解除，不取消其原目标的独立偏移；Blockable 仅解除仍属旧轮次的入向关系，已经换轮的关系和新计划保留。

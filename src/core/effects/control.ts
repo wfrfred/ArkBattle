@@ -21,9 +21,7 @@ export const stun: Definition<object> = {
     onEnable(state, self) {
         const unit = units.get(state, self.host)!;
         const id = `@effect/${self.id}/stun`;
-        state = updateUnit(state, units.ref(unit), {
-            apply: (self) => restrictions(self, id, true),
-        });
+        state = updateUnit(state, units.ref(unit), (self) => restrictions(self, id, true));
 
         return cancelForUnit(state, self.host, "INTERRUPTED");
     },
@@ -31,9 +29,7 @@ export const stun: Definition<object> = {
         const unit = units.get(state, self.host)!;
         const id = `@effect/${self.id}/stun`;
 
-        return updateUnit(state, units.ref(unit), {
-            apply: (self) => restrictions(self, id, false),
-        });
+        return updateUnit(state, units.ref(unit), (self) => restrictions(self, id, false));
     },
 };
 
@@ -103,14 +99,12 @@ function restrictions<U extends Unit>(self: U, id: string, enabled: boolean): Ap
     const settlements: Settlement[] = [];
 
     if (action.hasAction(next)) {
-        const applied = (enabled ? action.setRule(rule) : action.removeRule(id)).apply(next);
+        const applied = (enabled ? action.setRule(rule) : action.removeRule(id))(next);
         next = applied.next;
         settlements.push(...applied.settlements);
     }
     if (locomotion.hasLocomotion(next)) {
-        const applied = (enabled ? locomotion.setRule(rule) : locomotion.removeRule(id)).apply(
-            next,
-        );
+        const applied = (enabled ? locomotion.setRule(rule) : locomotion.removeRule(id))(next);
         next = applied.next;
         settlements.push(...applied.settlements);
     }
@@ -119,12 +113,12 @@ function restrictions<U extends Unit>(self: U, id: string, enabled: boolean): Ap
             enabled
                 ? skill.setRule("activationRules", rule)
                 : skill.removeRule("activationRules", id)
-        ).apply(next);
+        )(next);
         next = applied.next;
         settlements.push(...applied.settlements);
     }
     if (hasBlocker(next)) {
-        const applied = (enabled ? setBlockerRule(rule) : removeBlockerRule(id)).apply(next);
+        const applied = (enabled ? setBlockerRule(rule) : removeBlockerRule(id))(next);
         next = applied.next;
         settlements.push(...applied.settlements);
     }

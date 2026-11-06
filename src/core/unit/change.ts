@@ -8,9 +8,7 @@ export interface Applied<U extends Unit> {
     readonly settlements: readonly Settlement[];
 }
 
-export interface Change<in C extends Unit> {
-    readonly apply: <U extends C>(self: U) => Applied<U>;
-}
+export type Change<in C extends Unit> = <U extends C>(self: U) => Applied<U>;
 
 export type Transformation<C extends Unit> = <U extends C>(self: U) => U;
 
@@ -18,16 +16,14 @@ export function createChange<C extends Unit>(
     transform: Transformation<C>,
     settle?: (battle: BattleState, previous: C) => BattleState,
 ): Change<C> {
-    return {
-        apply(self) {
-            const next = transform(self);
+    return (self) => {
+        const next = transform(self);
 
-            return {
-                next,
-                settlements:
-                    next === self || settle === undefined ? [] : [(battle) => settle(battle, self)],
-            };
-        },
+        return {
+            next,
+            settlements:
+                next === self || settle === undefined ? [] : [(battle) => settle(battle, self)],
+        };
     };
 }
 
@@ -35,12 +31,10 @@ export function compose<A extends Unit, B extends Unit>(
     first: Change<A>,
     second: Change<B>,
 ): Change<A & B> {
-    return {
-        apply(self) {
-            const a = first.apply(self);
-            const b = second.apply(a.next);
+    return (self) => {
+        const a = first(self);
+        const b = second(a.next);
 
-            return { next: b.next, settlements: [...a.settlements, ...b.settlements] };
-        },
+        return { next: b.next, settlements: [...a.settlements, ...b.settlements] };
     };
 }
