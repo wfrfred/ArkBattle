@@ -90,13 +90,6 @@ export function createInput(input: Input): Input {
     return input;
 }
 
-function deadline(start: number, elapsed: number): number {
-    const tick = start + elapsed;
-    assertNonnegativeSafeInteger(tick, "route wait deadline");
-
-    return tick;
-}
-
 export function normalize(
     input: Input,
     timing: Timing,
@@ -148,14 +141,14 @@ export function normalize(
             case "WAIT_CURRENT_FRAGMENT_TICKS":
                 checkpoints.push({
                     type: "WAIT_UNTIL",
-                    tick: deadline(timing.fragmentStartedAtTick, checkpoint.targetElapsedTicks),
+                    tick: timing.fragmentStartedAtTick + checkpoint.targetElapsedTicks,
                 });
                 break;
 
             case "WAIT_CURRENT_WAVE_TICKS":
                 checkpoints.push({
                     type: "WAIT_UNTIL",
-                    tick: deadline(timing.waveStartedAtTick, checkpoint.targetElapsedTicks),
+                    tick: timing.waveStartedAtTick + checkpoint.targetElapsedTicks,
                 });
                 break;
 
@@ -179,7 +172,7 @@ export function normalize(
         startPosition: input.startPosition,
         endPosition: input.endPosition,
         offset,
-        checkpoints: checkpoints.map((checkpoint) => checkpoint),
+        checkpoints,
         requireAllCheckpoints: input.visitEveryCheckPoint,
         alwaysCheckCurrentPoint,
     };

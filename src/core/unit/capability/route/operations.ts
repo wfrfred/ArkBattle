@@ -1,6 +1,5 @@
 import { Vec2 } from "../../../common/vector.js";
 import { replace as replaceUnit, update } from "../../../battle/unit.js";
-import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import * as navigation from "../../../battlefield/navigation/state.js";
@@ -121,12 +120,14 @@ export function advance(battle: BattleState, ref: Ref<Unit & Route>): BattleStat
             return battle;
         }
         if (atEnd(self, self.route.main)) {
-            battle = replace(battle, self, self.route.main, { type: "COMPLETED" });
-            self = units.get(battle, ref);
-
-            if (self?.lifecycle !== "PRESENT") {
-                return battle;
-            }
+            self = {
+                ...self,
+                route: {
+                    ...self.route,
+                    main: { ...self.route.main, phase: { type: "COMPLETED" } },
+                },
+            };
+            battle = replaceUnit(battle, [self]);
         }
 
         const progress = self.route.alternative ?? self.route.main;
@@ -180,7 +181,6 @@ export function advance(battle: BattleState, ref: Ref<Unit & Route>): BattleStat
             });
         } else if (checkpoint.type === "WAIT" || checkpoint.type === "WAIT_UNTIL") {
             const deadlineTick = checkpoint.tick + (checkpoint.type === "WAIT" ? battle.tick : 0);
-            assertNonnegativeSafeInteger(deadlineTick, "route wait deadline");
             battle = replace(battle, self, progress, {
                 ...phase,
                 checkpointState: { type: "WAITING", deadlineTick },

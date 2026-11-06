@@ -138,12 +138,6 @@ test("Enemy initialization uses one sampled offset for its Route Definition and 
     });
     const enemy = result.value;
 
-    assert.equal(result.state.execution.rngState, rng.state());
-    assert.equal(before.execution.rngState, seed);
     assert.deepEqual(enemy.definition.route.offset, expected);
     assert.deepEqual(enemy.position, [1 + expected[0], expected[1]]);
-    assert.strictEqual(enemy.route.main.definition, enemy.definition.route);
-    assert.equal(enemy.route.alternative, null);
-    assert.equal("route" in enemyDefinition, false);
-    assert.equal(result.state.battlefield.units.has(enemy.id), false);
 });

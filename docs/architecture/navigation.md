@@ -296,6 +296,8 @@ Locomotion
 
 Route 初始化遵循 [Capability 约定](capability.md)，统一使用 initialize(battle, unit): Result<U & Route>，从 unit.definition.route 读取配置并在输入 Unit 上装配进度。Spawn 负责采样并接续更新后的 BattleState；Route.initialize 不再采样。初始 Unit.position 与路线查询使用同一份 Definition.offset。
 
+创建入口建立偏移、等待与跳转的输入约束；内部按游戏尺度计算采样范围和等待截止时间，信任合法输入，不为极端算术溢出追加结果断言。纯进度发布不执行回调，后续可直接使用已构造的新值；Presence／Blocking 等完整操作返回后，仍按续执行条件读取最新宿主和进度。
+
 Alternative 的业务所有者同样提供已经规范化、偏移已经确定的 Definition，再调用 setAlternative。
 
 ### Alternative 操作

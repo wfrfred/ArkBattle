@@ -20,23 +20,6 @@ export interface Input<D extends Definition & Partial<Definitions> = Definition>
 type RoutedDefinition<D> = D extends unknown ? Omit<D, "route"> & Route["definition"] : never;
 
 function sampleOffset(input: RouteInput, next: () => number): WorldPosition {
-    const center = Tile.center(input.startPosition);
-
-    for (let axis = 0; axis < 2; axis++) {
-        const range = input.spawnRandomRange[axis]!;
-        const offset = input.spawnOffset[axis]!;
-        const coordinate = center[axis]!;
-        if (
-            !Number.isFinite(range * 2) ||
-            !Number.isFinite(offset - range) ||
-            !Number.isFinite(offset + range) ||
-            !Number.isFinite(coordinate + offset - range) ||
-            !Number.isFinite(coordinate + offset + range)
-        ) {
-            throw new RangeError("route spawn bounds must be finite");
-        }
-    }
-
     return [
         input.spawnOffset[0] +
             (-input.spawnRandomRange[0] + next() * (2 * input.spawnRandomRange[0])),
@@ -58,14 +41,10 @@ export function initialize(battle: BattleState, spawn: Input): Result<Unit & Rou
     const route = normalize(input, spawn.timing, offset, spawn.alwaysCheckCurrentPoint);
 
     battle = { ...battle, execution: { ...battle.execution, rngState: rng.state() } };
-    const initialized = initializeUnit(battle, {
+
+    return initializeUnit(battle, {
         id: spawn.id,
         definition: { ...spawn.definition, route },
         position: Vec2.add(Tile.center(route.startPosition), route.offset),
     });
-
-    return {
-        state: initialized.state,
-        value: initialized.value,
-    };
 }
