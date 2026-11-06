@@ -69,9 +69,8 @@ export function settleCapacity(battle: BattleState, reference: Ref<Unit & Blocke
     return battle;
 }
 
-export function setRule(reference: Ref<Unit & Blocker>, rule: Rule): Change {
-    return createChange(
-        reference,
+export function setRule(rule: Rule): Change<Unit & Blocker> {
+    return createChange<Unit & Blocker>(
         (self) => {
             const rules = registry.set(self.blocker.rules, rule);
 
@@ -79,13 +78,12 @@ export function setRule(reference: Ref<Unit & Blocker>, rule: Rule): Change {
                 ? self
                 : { ...self, blocker: { ...self.blocker, rules } };
         },
-        (battle) => settleRules(battle, reference),
+        (battle, previous) => settleRules(battle, units.ref(previous)),
     );
 }
 
-export function removeRule(reference: Ref<Unit & Blocker>, id: string): Change {
-    return createChange(
-        reference,
+export function removeRule(id: string): Change<Unit & Blocker> {
+    return createChange<Unit & Blocker>(
         (self) => {
             const rules = registry.remove(self.blocker.rules, id);
 
@@ -93,16 +91,14 @@ export function removeRule(reference: Ref<Unit & Blocker>, id: string): Change {
                 ? self
                 : { ...self, blocker: { ...self.blocker, rules } };
         },
-        (battle) => settleRules(battle, reference),
+        (battle, previous) => settleRules(battle, units.ref(previous)),
     );
 }
 
 export function setCapacityContribution(
-    reference: Ref<Unit & Blocker>,
     entry: contribution.Contribution<readonly Modifier[]>,
-): Change {
-    return createChange(
-        reference,
+): Change<Unit & Blocker> {
+    return createChange<Unit & Blocker>(
         (self) => {
             const capacity = contribution.set(self.blocker.capacity, entry);
 
@@ -110,13 +106,12 @@ export function setCapacityContribution(
                 ? self
                 : { ...self, blocker: { ...self.blocker, capacity } };
         },
-        (battle) => settleCapacity(battle, reference),
+        (battle, previous) => settleCapacity(battle, units.ref(previous)),
     );
 }
 
-export function removeCapacityContribution(reference: Ref<Unit & Blocker>, id: string): Change {
-    return createChange(
-        reference,
+export function removeCapacityContribution(id: string): Change<Unit & Blocker> {
+    return createChange<Unit & Blocker>(
         (self) => {
             const capacity = contribution.remove(self.blocker.capacity, id);
 
@@ -124,13 +119,12 @@ export function removeCapacityContribution(reference: Ref<Unit & Blocker>, id: s
                 ? self
                 : { ...self, blocker: { ...self.blocker, capacity } };
         },
-        (battle) => settleCapacity(battle, reference),
+        (battle, previous) => settleCapacity(battle, units.ref(previous)),
     );
 }
 
-export function setLayer(reference: Ref<Unit & Blocker>, layer: Layer): Change {
-    return createChange(
-        reference,
+export function setLayer(layer: Layer): Change<Unit & Blocker> {
+    return createChange<Unit & Blocker>(
         (self) =>
             self.blocker.layer === layer
                 ? self

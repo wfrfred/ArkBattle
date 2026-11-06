@@ -88,16 +88,14 @@ Deployment 的初始程序、Card.unitHooks、Request.hooks 及 Predefined 创�
 
 ```typescript
 declare function setHook<H extends Entry>(
-    host: Ref<Unit>,
     key: Key<H>,
     entry: NoInfer<H>,
-): Change;
+): Change<Unit>;
 
 declare function removeHook<H extends Entry>(
-    host: Ref<Unit>,
     key: Key<H>,
     id: string,
-): Change;
+): Change<Unit>;
 ```
 
 通用 Unit 接口允许修改所有已公开的 Hook 键，包括生命周期键。Change 只转换 Unit.hooks，经 Unit.update 批量发布，不因登记或撤销自动执行业务。Capability 专属 Hook 继续通过相应能力的 Change API 修改。

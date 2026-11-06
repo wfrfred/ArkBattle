@@ -87,9 +87,8 @@ export function advancePosition(
     ]);
 }
 
-export function setRule(reference: Ref<Unit & Blockable>, rule: Rule): Change {
-    return createChange(
-        reference,
+export function setRule(rule: Rule): Change<Unit & Blockable> {
+    return createChange<Unit & Blockable>(
         (self) => {
             const rules = registry.set(self.blockable.rules, rule);
 
@@ -97,13 +96,12 @@ export function setRule(reference: Ref<Unit & Blockable>, rule: Rule): Change {
                 ? self
                 : { ...self, blockable: { ...self.blockable, rules } };
         },
-        (battle) => settleRules(battle, reference),
+        (battle, previous) => settleRules(battle, units.ref(previous)),
     );
 }
 
-export function removeRule(reference: Ref<Unit & Blockable>, id: string): Change {
-    return createChange(
-        reference,
+export function removeRule(id: string): Change<Unit & Blockable> {
+    return createChange<Unit & Blockable>(
         (self) => {
             const rules = registry.remove(self.blockable.rules, id);
 
@@ -111,18 +109,16 @@ export function removeRule(reference: Ref<Unit & Blockable>, id: string): Change
                 ? self
                 : { ...self, blockable: { ...self.blockable, rules } };
         },
-        (battle) => settleRules(battle, reference),
+        (battle, previous) => settleRules(battle, units.ref(previous)),
     );
 }
 
 export function setVolumeContribution(
-    reference: Ref<Unit & Blockable>,
     entry: contribution.Contribution<number>,
-): Change {
+): Change<Unit & Blockable> {
     assertSafeInteger(entry.value, "blocking volume addition");
 
-    return createChange(
-        reference,
+    return createChange<Unit & Blockable>(
         (self) => {
             const volume = contribution.set(self.blockable.volume, entry);
 
@@ -130,17 +126,16 @@ export function setVolumeContribution(
                 ? self
                 : { ...self, blockable: { ...self.blockable, volume } };
         },
-        (battle) => {
-            const owner = units.get(battle, reference)?.blockable.blocker;
+        (battle, previous) => {
+            const owner = units.get(battle, units.ref(previous))?.blockable.blocker;
 
             return owner == null ? battle : settleCapacity(battle, owner);
         },
     );
 }
 
-export function removeVolumeContribution(reference: Ref<Unit & Blockable>, id: string): Change {
-    return createChange(
-        reference,
+export function removeVolumeContribution(id: string): Change<Unit & Blockable> {
+    return createChange<Unit & Blockable>(
         (self) => {
             const volume = contribution.remove(self.blockable.volume, id);
 
@@ -148,8 +143,8 @@ export function removeVolumeContribution(reference: Ref<Unit & Blockable>, id: s
                 ? self
                 : { ...self, blockable: { ...self.blockable, volume } };
         },
-        (battle) => {
-            const owner = units.get(battle, reference)?.blockable.blocker;
+        (battle, previous) => {
+            const owner = units.get(battle, units.ref(previous))?.blockable.blocker;
 
             return owner == null ? battle : settleCapacity(battle, owner);
         },

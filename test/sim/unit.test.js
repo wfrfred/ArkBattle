@@ -90,13 +90,9 @@ test("lifecycle dispatch reads current registrations and captures final leave pr
                     assert.ok(units.get(state, units.ref(self)).hooks.find(damageOutput, "intrinsic-output"));
                     observed.push("first");
                     return {
-                        state: update(state, units.combine([
-                            units.removeHook(units.ref(self), unitLifecycle.enter, "removed"),
-                            units.setHook(units.ref(self), unitLifecycle.enter, record("new")),
-                            units.setHook(units.ref(self), unitLifecycle.enter, {
+                        state: update(state, units.ref(self), units.compose(units.compose(units.removeHook(unitLifecycle.enter, "removed"), units.setHook(unitLifecycle.enter, record("new"))), units.setHook(unitLifecycle.enter, {
                                 ...record("replacement"), id: "existing",
-                            }),
-                        ])),
+                            }))),
                         value: undefined,
                     };
                 },
@@ -107,8 +103,7 @@ test("lifecycle dispatch reads current registrations and captures final leave pr
                 id: "prepare",
                 invoke(state, departure) {
                     return {
-                        state: update(state,
-                            units.setHook(units.ref(departure.unit), unitLifecycle.leave, {
+                        state: update(state, units.ref(departure.unit), units.setHook(unitLifecycle.leave, {
                                 id: "late-leave",
                                 invoke(current, original) {
                                     assert.equal(units.get(current, units.ref(original.unit)), undefined);
@@ -116,8 +111,7 @@ test("lifecycle dispatch reads current registrations and captures final leave pr
                                     observed.push("late-leave");
                                     return { state: current, value: undefined };
                                 },
-                            })
-                        ),
+                            })),
                         value: undefined,
                     };
                 },

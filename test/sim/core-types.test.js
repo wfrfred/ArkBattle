@@ -11,7 +11,7 @@ test("typed identities retain private data and capability proofs across erased C
 import type { Ref } from ${module("common/ref")};
 import type { State } from ${module("battle/state")};
 import { Hooks, key, type Hook } from ${module("hook")};
-import { initialize, ref, get, combine, type Unit, type Change } from ${module("unit/index")};
+import { initialize, ref, get, compose, type Unit, type Change } from ${module("unit/index")};
 import { update } from ${module("battle/unit")};
 import * as actions from ${module("unit/action/index")};
 import * as effects from ${module("unit/effect/index")};
@@ -53,7 +53,7 @@ const program: actions.Definition<{ uses: number }, { hits: number }> = {
     onTick: state => ({ state, value: true }),
 };
 const host = initialize(battle, { id: 0, position: [0, 0], definition: {
-    id: 'armed', hooks: Hooks.empty(), offense: { attack: 100 },
+    id: 'armed', hooks: Hooks.empty(), offense: { attack: 100 }, layer: { type: 'GROUND' },
     action: { initialize: state => actions.createActions(state, actions.create(program)) },
 } }).value;
 const reference = ref(host);
@@ -61,12 +61,12 @@ const currentAction = host.action.actions.get(program.id, program)!;
 const currentPeriod: number = actionCapability.resolvePeriod(host, currentAction);
 // @ts-expect-error an Action calculation takes the instance rather than a detached Definition.
 actionCapability.resolvePeriod(host, program);
-actionCapability.setSpeedContribution(reference, { id: 'fixed-speed', value: [] });
+actionCapability.setSpeedContribution({ id: 'fixed-speed', value: [] });
 const dynamicModifiers = (_state: State, _self: Unit & actionCapability.Action) => [];
 // @ts-expect-error Action time contributions publish fixed values through a Change.
-actionCapability.setSpeedContribution(reference, { id: 'dynamic-speed', value: dynamicModifiers });
+actionCapability.setSpeedContribution({ id: 'dynamic-speed', value: dynamicModifiers });
 // @ts-expect-error interval changes use the same fixed contribution contract as speed.
-actionCapability.setIntervalContribution(reference, { id: 'dynamic-interval', value: dynamicModifiers });
+actionCapability.setIntervalContribution({ id: 'dynamic-interval', value: dynamicModifiers });
 const persistent = actions.ref(reference, program);
 const uses: number = actions.getAction(battle, persistent)!.state.uses;
 actions.setState(battle, persistent, { uses: uses + 1 });
@@ -105,16 +105,25 @@ effects.setExpiration(battle, burstRef, { type: 'DEADLINE', tick: 10 });
 const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'bare', hooks: Hooks.empty() } }).value;
 // @ts-expect-error the host has not established the required capability.
 effects.install(battle, ref(bare), shield);
-const change: Change = setAttackContribution(reference, { id: 'bonus', value: [] });
-const combined: Change = combine([change, combine([])]);
-// @ts-expect-error updates accept one opaque Change; batches require combine.
-update(battle, [change]);
-update(battle, combine([combined, combine(reference, self => {
-    const attack: number = self.definition.offense.attack;
-    return [setAttackContribution(ref(self), { id: 'prepared', value: [] })];
-})]));
-// @ts-expect-error a callback cannot add capabilities absent from the supplied Ref.
-combine(ref(bare), (self: Unit & Offense) => [setAttackContribution(ref(self), { id: 'wrong', value: [] })]);
+const change: Change<Unit & Offense> = setAttackContribution({ id: 'bonus', value: [] });
+const actionChange = actionCapability.setRule({ id: 'ready', allows: () => true });
+const combined = compose(change, actionChange);
+const intersection: Change<Unit & Offense & actionCapability.Action> = combined;
+const applied = combined.apply(host);
+const completeHost: typeof host = applied.next;
+const extraLayer: 'GROUND' | 'AIR' = applied.next.layer.type;
+update(battle, reference, combined);
+declare const offenseOnly: Ref<Unit & Offense>;
+declare const actionOnly: Ref<Unit & actionCapability.Action>;
+// @ts-expect-error the composed Action requirement cannot be supplied by an Offense-only Ref.
+update(battle, offenseOnly, combined);
+// @ts-expect-error the composed Offense requirement cannot be supplied by an Action-only Ref.
+update(battle, actionOnly, combined);
+declare const skillChange: Change<Unit & SkillCapability>;
+// @ts-expect-error requiring Skill cannot be weakened into requiring only Action.
+const wrongRequirement: Change<Unit & actionCapability.Action> = skillChange;
+const general: Change<Unit> = { apply: self => ({ next: self, settlements: [] }) };
+const usableWithAction: Change<Unit & actionCapability.Action> = general;
 const attack: number = resolveAttack(battle, host);
 // @ts-expect-error value computation accepts the current object rather than its address.
 resolveAttack(battle, reference);
@@ -132,30 +141,29 @@ const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
     vitality: { maxHp: 100, defense: 10, resistance: 0 },
 } }).value;
 const patientRef = ref(patient);
-vitality.setRule(patientRef, {
+update(battle, patientRef, vitality.setRule({
     id: 'damage-permission', allows: (_state, context) => context.calculated.amount > 0,
-});
-declare const elementalRef: Ref<Unit & elemental.Elemental>;
+}));
 const injuryType: elemental.Type = 'NEURAL';
-elemental.setRule(elementalRef, 'damageRules', {
+elemental.setRule('damageRules', {
     id: 'injury-permission', allows: (_state, context) => context.type === 'NEURAL',
 });
 declare const elementalRule: elemental.DamageRule;
 declare const elementalRuleKey: 'damageRules' | 'healingRules';
 // @ts-expect-error a Rule cannot be registered against an unrelated field Context.
-elemental.setRule(elementalRef, 'healingRules', elementalRule);
+elemental.setRule('healingRules', elementalRule);
 const fixedRule = createRegistrationOperations<
     Unit & elemental.Elemental, 'elemental', typeof elementalRuleKey
 >('elemental', elementalRuleKey);
 // @ts-expect-error fixing an uncertain field does not erase its Entry pairing.
-fixedRule.set(elementalRef, elementalRule);
-vitality.setContribution(patientRef, 'defense', {
+fixedRule.set(elementalRule);
+vitality.setContribution('defense', {
     id: 'armor', value: (_state, self) => {
         const defense: number = self.definition.vitality.defense;
         return [];
     },
 });
-vitality.setHook(patientRef, 'damageReceiving', {
+vitality.setHook('damageReceiving', {
     id: 'cancel',
     invoke: (state, context, pending) => {
         const amount: number = context.calculated.amount;
@@ -164,7 +172,7 @@ vitality.setHook(patientRef, 'damageReceiving', {
         return { state, value: hpDamage.cancel(pending, 'EVADE') };
     },
 });
-actionCapability.setHook(reference, 'beforeRelease', {
+actionCapability.setHook('beforeRelease', {
     id: 'interrupt',
     invoke: (state, context) => {
         const source: Ref<Unit> = context.source;
@@ -172,29 +180,27 @@ actionCapability.setHook(reference, 'beforeRelease', {
     },
 });
 // @ts-expect-error automatic operations cannot write a special field.
-vitality.setContribution(patientRef, 'maxHp', { id: 'wrong', value: [] });
+vitality.setContribution('maxHp', { id: 'wrong', value: [] });
 // @ts-expect-error an Entry cannot establish a missing host capability.
-vitality.setContribution(ref(bare), 'defense', { id: 'wrong', value: [] });
+update(battle, ref(bare), vitality.setContribution('defense', { id: 'wrong', value: [] }));
 declare const damageReceiving: hpDamage.ReceivingHook;
 declare const pairedRegistration:
     | [key: 'damageReceiving', hook: hpDamage.ReceivingHook]
     | [key: 'damageReceivingStarted', hook: hpDamage.ReceivingStartedHook];
-vitality.setHook(patientRef, ...pairedRegistration);
+vitality.setHook(...pairedRegistration);
 // @ts-expect-error each field retains its corresponding Hook type.
-vitality.setHook(patientRef, 'healingReceiving', damageReceiving);
+vitality.setHook('healingReceiving', damageReceiving);
 declare const receivingStage: 'damageReceiving' | 'healingReceiving';
 // @ts-expect-error a union key and an unrelated Entry are not a paired argument.
-vitality.setHook(patientRef, receivingStage, damageReceiving);
+vitality.setHook(receivingStage, damageReceiving);
 // @ts-expect-error a factory can select only actual registration fields.
 createRegistrationOperations<Unit & vitality.Vitality, 'vitality', 'unknown'>('vitality');
 // @ts-expect-error ordinary resource values are not registration arrays.
 createRegistrationOperations<Unit & vitality.Vitality, 'vitality', 'hp'>('vitality');
 // @ts-expect-error a different capability cannot be inferred from an unrelated proof.
-setLayer(reference, 'AIR');
-// @ts-expect-error public writes accept constructed Changes rather than complete snapshots.
-update(battle, host);
-// @ts-expect-error callers cannot fabricate an opaque Change.
-const fabricated: Change = {};
+update(battle, reference, setLayer('AIR'));
+// @ts-expect-error public updates take Change behavior rather than complete snapshots.
+update(battle, reference, host);
 // @ts-expect-error a numeric address alone does not establish a Unit proof.
 const forged: Ref<Unit> = { id: 0 };
 `;

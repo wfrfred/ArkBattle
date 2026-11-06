@@ -19,9 +19,9 @@ export type { Input } from "./initialize.js";
 
 export type { Initial } from "./capability/catalog.js";
 
-export type { Change } from "./change.js";
+export type { Change, Applied, Settlement } from "./change.js";
 
-export { combine } from "./change.js";
+export { compose } from "./change.js";
 
 export { initialize } from "./initialize.js";
 

@@ -395,16 +395,15 @@ export function advance(
     context: MovementContext,
 ): BattleState;
 
-export function setRule(ref: Ref<Unit & Locomotion>, rule: Rule): Change;
-export function removeRule(ref: Ref<Unit & Locomotion>, id: string): Change;
+export function setRule(rule: Rule): Change<Unit & Locomotion>;
+export function removeRule(id: string): Change<Unit & Locomotion>;
 export function setSpeedContribution(
-    ref: Ref<Unit & Locomotion>,
     entry: Contribution<Input>,
-): Change;
-export function removeSpeedContribution(ref: Ref<Unit & Locomotion>, id: string): Change;
+): Change<Unit & Locomotion>;
+export function removeSpeedContribution(id: string): Change<Unit & Locomotion>;
 ```
 
-类型、初始化、守卫及 Rule／速度贡献 Change 工厂位于 locomotion/capability.ts；工厂绑定 Ref<Unit & Locomotion>，由 Unit.update 组合发布，不附带 Blocking 后继。operations.ts 提供完整推进，不转发工厂。初始化验证速度、下限、几何半宽和转向参数非负，不要求基础速度大于 minSpeed。
+类型、初始化、守卫及 Rule／速度贡献 Change 工厂位于 locomotion/capability.ts；工厂不接收 Ref，返回 `Change<Unit & Locomotion>`，由 Unit.update 组合发布，不附带 Blocking 后继。operations.ts 提供完整推进，不转发工厂。初始化验证速度、下限、几何半宽和转向参数非负，不要求基础速度大于 minSpeed。
 
 SteeringParameters 是普通配置值，不提供只校验并复制对象的构造工厂。Data 解析原始 Prefab 并完成 Tick 换算，Ground Enemy 内容工厂显式接收 halfBodyWidth 与 steeringParameters，不隐藏一组固定转向参数；演示调用方自行提供其示例配置。
 

@@ -1,4 +1,4 @@
-import { combine } from "../../dist/core/unit/index.js";
+import { compose } from "../../dist/core/unit/index.js";
 import { Hooks } from "../../dist/core/hook.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -19,21 +19,17 @@ test("exclusive selection precedes dynamic input evaluation and the attribute fo
     ]);
     const host = ref(get(state, 0));
     const group = { id: "inspiration", priority: 2 };
-    state = update(state, combine([
-        setAttackContribution(host, { id: "flat", value: [create({ addition: 20 })] }),
-        setAttackContribution(host, {
+    state = update(state, host, compose(compose(compose(setAttackContribution({ id: "flat", value: [create({ addition: 20 })] }), setAttackContribution({
             id: "ratio",
             value: [create({ multiplier: 0.5, finalScaler: 2 })],
-        }),
-        setAttackContribution(host, {
+        })), setAttackContribution({
             id: "inspiration/z",
             group,
             value: () => {
                 calls.push("z");
                 return [create({ finalAddition: 10 })];
             },
-        }),
-        setAttackContribution(host, {
+        })), setAttackContribution({
             id: "inspiration/a",
             group,
             value: (current, self) => {
@@ -41,21 +37,18 @@ test("exclusive selection precedes dynamic input evaluation and the attribute fo
                 assert.equal(get(current, self.id), self);
                 return [create({ finalAddition: self.definition.offense.attack / 2 })];
             },
-        }),
-    ]));
+        })));
     assert.equal(resolveAttack(state, get(state, host.id)), 460);
     assert.deepEqual(calls, ["a"]);
 
-    state = update(state, removeAttackContribution(host, "inspiration/a"));
+    state = update(state, host, removeAttackContribution("inspiration/a"));
     assert.equal(resolveAttack(state, get(state, host.id)), 380);
     assert.deepEqual(calls, ["a", "z"]);
-    state = update(state,
-        setAttackContribution(host, {
+    state = update(state, host, setAttackContribution({
             id: "stronger",
             group: { ...group, priority: 3 },
             value: [create({ finalAddition: 100 })],
-        })
-    );
+        }));
     assert.equal(resolveAttack(state, get(state, host.id)), 560);
     assert.deepEqual(calls, ["a", "z"]);
 });

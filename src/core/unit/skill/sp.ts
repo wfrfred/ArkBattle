@@ -90,11 +90,10 @@ export type Outcome =
       };
 
 export function setContribution(
-    reference: Ref<Unit & Skill>,
     key: Parameter,
     entry: contribution.Contribution<Input>,
-): Change {
-    return createChange(reference, (self) => {
+): Change<Unit & Skill> {
+    return createChange<Unit & Skill>((self) => {
         const sp = self.skill.sp;
         if (sp === null) {
             return self;
@@ -108,12 +107,8 @@ export function setContribution(
     });
 }
 
-export function removeContribution(
-    reference: Ref<Unit & Skill>,
-    key: Parameter,
-    id: string,
-): Change {
-    return createChange(reference, (self) => {
+export function removeContribution(key: Parameter, id: string): Change<Unit & Skill> {
+    return createChange<Unit & Skill>((self) => {
         const sp = self.skill.sp;
         if (sp === null) {
             return self;

@@ -174,11 +174,11 @@ test("smog uses invisibility, cleans disappearing contacts and reinstalls dispel
     battle = effects.end(battle, { host: installed.host, id: installed.id });
     battle = at(battle, 1);
     assert.notEqual(effect(battle).id, installed.id);
-    battle = changeUnit(battle, presence.disappear(units.ref(current(battle))));
+    battle = changeUnit(battle, units.ref(current(battle)), presence.disappear());
     battle = at(battle, 2);
     assert.equal(current(battle).effects.size, 0);
     assert.equal(current(battle).targetable.restrictions.length, 0);
-    battle = changeUnit(battle, presence.appear(units.ref(current(battle)), current(battle).position));
+    battle = changeUnit(battle, units.ref(current(battle)), presence.appear(current(battle).position));
     battle = at(battle, 3);
     battle = mechanisms.setActive(battle, configured.mechanism, false);
     assert.equal(current(battle).effects.size, 0);

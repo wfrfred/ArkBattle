@@ -1,9 +1,8 @@
-import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
-import { combine, createChange, type Change } from "../../change.js";
+import { createChange, type Applied, type Change, type Settlement } from "../../change.js";
 import { executionRefs } from "../../action/query.js";
 import { cancel } from "../../action/operations.js";
 import * as action from "../action/capability.js";
@@ -19,114 +18,128 @@ import type { SpatialPresence } from "./capability.js";
 
 const restriction = { id: "@presence/absent", allows: () => false };
 
-export function disappear(reference: Ref<Unit & SpatialPresence>): Change {
-    return combine(reference, (self) => {
-        if (self.lifecycle !== "PRESENT") {
-            return [];
-        }
+export function disappear(): Change<Unit & SpatialPresence> {
+    const spatial = createChange<Unit & SpatialPresence>(
+        (self) => {
+            const next = { ...self, spatialPresence: { present: false } };
 
-        return [
-            createChange(
-                reference,
-                (current) => {
-                    const next = { ...current, spatialPresence: { present: false } };
+            return hasBlockable(next)
+                ? { ...next, blockable: { ...next.blockable, adjustment: null } }
+                : next;
+        },
+        (battle, previous) => {
+            const executions = action.hasAction(previous) ? executionRefs(previous) : [];
+            battle = releaseOldBlocking(battle, previous);
 
-                    return hasBlockable(next)
-                        ? { ...next, blockable: { ...next.blockable, adjustment: null } }
-                        : next;
-                },
-                (battle, previous) => {
-                    const executions = action.hasAction(previous) ? executionRefs(previous) : [];
-                    battle = releaseOldBlocking(battle, previous);
+            for (const execution of executions) {
+                battle = cancel(battle, execution, "SOURCE_ABSENT");
+            }
 
-                    for (const execution of executions) {
-                        battle = cancel(battle, execution, "SOURCE_ABSENT");
-                    }
+            return battle;
+        },
+    );
 
-                    return battle;
-                },
-            ),
-            ...restrictions(self, false),
-        ];
-    });
+    return {
+        apply(self) {
+            if (self.lifecycle !== "PRESENT") {
+                return { next: self, settlements: [] };
+            }
+
+            const applied = spatial.apply(self);
+            const restricted = restrictions(applied.next, false);
+
+            return {
+                next: restricted.next,
+                settlements: [...applied.settlements, ...restricted.settlements],
+            };
+        },
+    };
 }
 
-export function appear(reference: Ref<Unit & SpatialPresence>, position: WorldPosition): Change {
-    return combine(reference, (self) => {
-        if (self.lifecycle !== "PRESENT") {
-            return [];
-        }
+export function appear(position: WorldPosition): Change<Unit & SpatialPresence> {
+    const spatial = createChange<Unit & SpatialPresence>((self) => {
+        const next = { ...self, position, spatialPresence: { present: true } };
 
-        return [
-            createChange(
-                reference,
-                (current) => {
-                    const next = { ...current, position, spatialPresence: { present: true } };
+        return hasBlockable(next)
+            ? { ...next, blockable: { ...next.blockable, adjustment: null } }
+            : next;
+    }, releaseOldBlocking);
 
-                    return hasBlockable(next)
-                        ? { ...next, blockable: { ...next.blockable, adjustment: null } }
-                        : next;
-                },
-                releaseOldBlocking,
-            ),
-            ...restrictions(self, true),
-        ];
-    });
+    return {
+        apply(self) {
+            if (self.lifecycle !== "PRESENT") {
+                return { next: self, settlements: [] };
+            }
+
+            const applied = spatial.apply(self);
+            const restricted = restrictions(applied.next, true);
+
+            return {
+                next: restricted.next,
+                settlements: [...applied.settlements, ...restricted.settlements],
+            };
+        },
+    };
 }
 
-function restrictions(self: Unit, present: boolean): readonly Change[] {
-    const changes: Change[] = [];
+function restrictions<U extends Unit>(self: U, present: boolean): Applied<U> {
+    let next = self;
+    const settlements: Settlement[] = [];
 
-    if (action.hasAction(self)) {
-        changes.push(
-            present
-                ? action.removeRule(units.ref(self), restriction.id)
-                : action.setRule(units.ref(self), restriction),
-        );
+    if (action.hasAction(next)) {
+        const applied = (
+            present ? action.removeRule(restriction.id) : action.setRule(restriction)
+        ).apply(next);
+        next = applied.next;
+        settlements.push(...applied.settlements);
     }
-    if (skill.hasSkill(self)) {
-        changes.push(
+    if (skill.hasSkill(next)) {
+        const applied = (
             present
-                ? skill.removeRule(units.ref(self), "activationRules", restriction.id)
-                : skill.setRule(units.ref(self), "activationRules", restriction),
-        );
+                ? skill.removeRule("activationRules", restriction.id)
+                : skill.setRule("activationRules", restriction)
+        ).apply(next);
+        next = applied.next;
+        settlements.push(...applied.settlements);
     }
-    if (locomotion.hasLocomotion(self)) {
-        changes.push(
-            present
-                ? locomotion.removeRule(units.ref(self), restriction.id)
-                : locomotion.setRule(units.ref(self), restriction),
-        );
+    if (locomotion.hasLocomotion(next)) {
+        const applied = (
+            present ? locomotion.removeRule(restriction.id) : locomotion.setRule(restriction)
+        ).apply(next);
+        next = applied.next;
+        settlements.push(...applied.settlements);
     }
-    if (hasBlocker(self)) {
-        changes.push(
-            present
-                ? blocker.removeRule(units.ref(self), restriction.id)
-                : blocker.setRule(units.ref(self), restriction),
-        );
-    } else if (hasBlockable(self)) {
-        changes.push(
-            present
-                ? blockable.removeRule(units.ref(self), restriction.id)
-                : blockable.setRule(units.ref(self), restriction),
-        );
+    if (hasBlocker(next)) {
+        const applied = (
+            present ? blocker.removeRule(restriction.id) : blocker.setRule(restriction)
+        ).apply(next);
+        next = applied.next;
+        settlements.push(...applied.settlements);
+    } else if (hasBlockable(next)) {
+        const applied = (
+            present ? blockable.removeRule(restriction.id) : blockable.setRule(restriction)
+        ).apply(next);
+        next = applied.next;
+        settlements.push(...applied.settlements);
     }
-    if (vitality.hasVitality(self)) {
-        changes.push(
-            present
-                ? vitality.removeRule(units.ref(self), restriction.id)
-                : vitality.setRule(units.ref(self), restriction),
-        );
+    if (vitality.hasVitality(next)) {
+        const applied = (
+            present ? vitality.removeRule(restriction.id) : vitality.setRule(restriction)
+        ).apply(next);
+        next = applied.next;
+        settlements.push(...applied.settlements);
     }
-    if (elemental.hasElemental(self)) {
-        changes.push(
+    if (elemental.hasElemental(next)) {
+        const applied = (
             present
-                ? elemental.removeRule(units.ref(self), "damageRules", restriction.id)
-                : elemental.setRule(units.ref(self), "damageRules", restriction),
-        );
+                ? elemental.removeRule("damageRules", restriction.id)
+                : elemental.setRule("damageRules", restriction)
+        ).apply(next);
+        next = applied.next;
+        settlements.push(...applied.settlements);
     }
 
-    return changes;
+    return { next, settlements };
 }
 
 function releaseOldBlocking(battle: BattleState, previous: Unit): BattleState {

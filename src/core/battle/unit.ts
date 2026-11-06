@@ -6,7 +6,7 @@ import { appendEvents, type State as BattleState } from "./state.js";
 import { create as createLifetime } from "../lifetime/operations.js";
 import type { Ref } from "../common/ref.js";
 import { dispatch as dispatchObservers } from "./unit-hook.js";
-import type { Change, Transformation, Settlement } from "../unit/change.js";
+import type { Change } from "../unit/change.js";
 import * as lifecycle from "../unit/hook.js";
 import { dispatch } from "../hook.js";
 
@@ -26,62 +26,18 @@ export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
     }).state;
 }
 
-export function update(battle: BattleState, change: Change): BattleState {
-    const prepared = new Map<Id, Unit>();
-    const settlements: ((state: BattleState) => BattleState)[] = [];
-
-    function prepare(current: Change): void {
-        const node = current as Change &
-            (
-                | { readonly changes: readonly Change[] }
-                | {
-                      readonly ref: Ref<Unit>;
-                      readonly expand: (self: Unit) => readonly Change[];
-                  }
-                | {
-                      readonly ref: Ref<Unit>;
-                      readonly transform: Transformation<Unit>;
-                      readonly settle: Settlement<Unit> | undefined;
-                  }
-            );
-
-        if ("changes" in node) {
-            for (const child of node.changes) {
-                prepare(child);
-            }
-
-            return;
-        }
-
-        const previous = prepared.get(node.ref.id) ?? units.get(battle, node.ref);
-        if (previous === undefined) {
-            throw new RangeError(`unknown unit: ${node.ref.id}`);
-        }
-
-        if ("expand" in node) {
-            for (const child of node.expand(previous)) {
-                prepare(child);
-            }
-
-            return;
-        }
-
-        const next = node.transform(previous);
-        if (next === previous) {
-            return;
-        }
-
-        prepared.set(node.ref.id, next);
-
-        const settle = node.settle;
-        if (settle !== undefined) {
-            settlements.push((state) => settle(state, previous));
-        }
+export function update<U extends Unit>(
+    battle: BattleState,
+    reference: Ref<U>,
+    change: Change<NoInfer<U>>,
+): BattleState {
+    const self = units.get(battle, reference);
+    if (self === undefined) {
+        throw new RangeError(`unknown unit: ${reference.id}`);
     }
 
-    prepare(change);
-
-    battle = replace(battle, [...prepared.values()]);
+    const { next, settlements } = change.apply(self);
+    battle = replace(battle, [next]);
 
     for (const settle of settlements) {
         battle = settle(battle);

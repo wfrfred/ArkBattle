@@ -148,7 +148,8 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
 
             return updateUnit(
                 state,
-                setVitalityHook(unitRef(unit), "damageReceiving", {
+                unitRef(unit),
+                setVitalityHook("damageReceiving", {
                     id: `${SHIELD_ID}/${self.id}`,
                     priority: 100,
                     accepts: () => true,
@@ -211,11 +212,8 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
                 ? state
                 : updateUnit(
                       state,
-                      removeVitalityHook(
-                          unitRef(unit),
-                          "damageReceiving",
-                          `${SHIELD_ID}/${self.id}`,
-                      ),
+                      unitRef(unit),
+                      removeVitalityHook("damageReceiving", `${SHIELD_ID}/${self.id}`),
                   );
         },
         onTick(state, self) {

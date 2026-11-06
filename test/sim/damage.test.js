@@ -67,35 +67,56 @@ test("HP-01: formulas use the calculated type and sampled defenses without begin
     }
 
     let receptions = 0;
-    state = update(state, units.combine([
-        units.setHook(source, hpDamage.sourceFormula, {
-            id: "stronger-output",
-            invoke: (current, _context, parameters) => ({ state: current, value: {
-                ...parameters, attack: { ...parameters.attack, multiplier: 2 },
-            } }),
-        }),
-        units.setHook(target, hpDamage.targetFormula, {
-            id: "arts-conversion",
-            invoke: (current, _context, parameters) => ({ state: current, value: {
-                type: "ARTS", attack: { ...parameters.attack, power: parameters.attack.power + 50 },
-                penetration: { fixed: 10, proportional: 0.5 },
-            } }),
-        }),
-        units.setHook(source, hpDamage.output, {
-            id: "final-output",
-            invoke: (current, _context, amount) => ({ state: current, value: amount + 5 }),
-        }),
-        vitality.setHook(target, "damageReceiving", {
-            id: "receive",
-            invoke(current, _context, pending) {
-                receptions++;
-                return { state: current, value: pending };
-            },
-        }),
-        vitality.setRule(target, {
-            id: "arts-only", allows: (_current, context) => context.calculated.type === "ARTS",
-        }),
-    ]));
+    state = update(
+        state,
+        source,
+        units.compose(
+            units.setHook(hpDamage.sourceFormula, {
+                id: "stronger-output",
+                invoke: (current, _context, parameters) => ({
+                    state: current,
+                    value: {
+                        ...parameters,
+                        attack: { ...parameters.attack, multiplier: 2 },
+                    },
+                }),
+            }),
+            units.setHook(hpDamage.output, {
+                id: "final-output",
+                invoke: (current, _context, amount) => ({ state: current, value: amount + 5 }),
+            }),
+        ),
+    );
+    state = update(
+        state,
+        target,
+        units.compose(
+            units.compose(
+                units.setHook(hpDamage.targetFormula, {
+                    id: "arts-conversion",
+                    invoke: (current, _context, parameters) => ({
+                        state: current,
+                        value: {
+                            type: "ARTS",
+                            attack: { ...parameters.attack, power: parameters.attack.power + 50 },
+                            penetration: { fixed: 10, proportional: 0.5 },
+                        },
+                    }),
+                }),
+                vitality.setHook("damageReceiving", {
+                    id: "receive",
+                    invoke(current, _context, pending) {
+                        receptions++;
+                        return { state: current, value: pending };
+                    },
+                }),
+            ),
+            vitality.setRule({
+                id: "arts-only",
+                allows: (_current, context) => context.calculated.type === "ARTS",
+            }),
+        ),
+    );
     const request = damageRequest(source, target, 100, "PHYSICAL");
     const calculated = hpDamage.calculateDamage(state, request);
     assert.deepEqual(calculated.value, { type: "ARTS", amount: 200 });
@@ -103,7 +124,7 @@ test("HP-01: formulas use the calculated type and sampled defenses without begin
     assert.equal(request.parameters.attack.multiplier, 1);
     assert.equal(get(calculated.state, 1).vitality.hp, 1000);
     assert.equal(receptions, 0);
-    state = update(calculated.state, vitality.setContribution(target, "resistance", {
+    state = update(calculated.state, target, vitality.setContribution("resistance", {
         id: "later-resistance", value: [attribute.create({ finalAddition: 20 })],
     }));
     const applied = hpDamage.applyDamage(request, { ...calculated, state });
@@ -134,7 +155,7 @@ test("HP-02: independent Calculate results retain their own business state and o
     const preparation = damageRequest(null, source, 100);
     state = hpDamage.applyDamage(preparation, hpDamage.calculateDamage(state, preparation)).state;
     let receptions = 0;
-    state = update(state, vitality.setHook(target, "damageReceivingStarted", {
+    state = update(state, target, vitality.setHook("damageReceivingStarted", {
         id: "count-receptions",
         invoke(current) { receptions++; return { state: current, value: undefined }; },
     }));
@@ -172,26 +193,38 @@ test("APPLY-01: invincibility installed before reception rejects HIT recovery un
     let protection;
     const receivedSp = [];
     let commits = 0;
-    state = update(state, units.combine([
-        units.setHook(target, hpDamage.beforeReceive, {
-            id: "enable-immunity",
+    state = update(
+        state,
+        target,
+        units.compose(
+            units.setHook(hpDamage.beforeReceive, {
+                id: "enable-immunity",
+                invoke(current) {
+                    const installed = effects.install(current, target, invincible);
+                    protection = installed.value;
+                    return { state: installed.state, value: undefined };
+                },
+            }),
+            vitality.setHook("damageReceiving", {
+                id: "receiving",
+                invoke(current, _context, pending) {
+                    receivedSp.push(get(current, 1).skill.sp.value);
+                    return { state: current, value: pending };
+                },
+            }),
+        ),
+    );
+    state = update(
+        state,
+        source,
+        units.setHook(hpDamage.beforeCommit, {
+            id: "commit",
             invoke(current) {
-                const installed = effects.install(current, target, invincible);
-                protection = installed.value;
-                return { state: installed.state, value: undefined };
+                commits++;
+                return { state: current, value: undefined };
             },
         }),
-        vitality.setHook(target, "damageReceiving", {
-            id: "receiving",
-            invoke(current, _context, pending) {
-                receivedSp.push(get(current, 1).skill.sp.value);
-                return { state: current, value: pending };
-            },
-        }),
-        units.setHook(source, hpDamage.beforeCommit, {
-            id: "commit", invoke(current) { commits++; return { state: current, value: undefined }; },
-        }),
-    ]));
+    );
     const request = damageRequest(source, target, 30);
     const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.equal(result.value.kind, "REJECTED");
@@ -200,7 +233,7 @@ test("APPLY-01: invincibility installed before reception rejects HIT recovery un
     assert.deepEqual(receivedSp, []);
     assert.equal(commits, 0);
 
-    state = update(result.state, units.removeHook(target, hpDamage.beforeReceive, "enable-immunity"));
+    state = update(result.state, target, units.removeHook(hpDamage.beforeReceive, "enable-immunity"));
     state = effects.end(state, protection);
     const accepted = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.equal(accepted.value.application.hpLoss, 30);
@@ -221,49 +254,90 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
     const calls = [];
     let observed;
     let healingNotifications = 0;
-    state = update(state, units.combine([
-        units.setHook(target, hpHealing.targetApplied, {
-            id: "ordinary-healing",
-            invoke(current) { healingNotifications++; return { state: current, value: undefined }; },
-        }),
-        vitality.setHook(target, "damageReceivingStarted", {
-            id: "started", invoke(current) { calls.push("started"); return { state: current, value: undefined }; },
-        }),
-        vitality.setHook(target, "damageReceiving", {
-            id: "larger-hp-pool",
-            invoke(current, _context, pending) {
-                calls.push("receiving");
-                return { state: update(current, vitality.setMaxHpContribution(target, {
-                    id: "larger-hp", value: [attribute.create({ multiplier: 1 })],
-                })), value: pending };
-            },
-        }),
-        units.setHook(source, hpDamage.beforeCommit, {
-            id: "recover-before-commit",
-            invoke(current) {
-                calls.push("beforeCommit");
-                const request = healingRequest(null, target, 25);
-                return { state: hpHealing.applyHealing(request, hpHealing.calculateHealing(current, request)).state, value: undefined };
-            },
-        }),
-        units.setHook(target, hpDamage.targetApplied, {
-            id: "recover-after-commit",
-            invoke(current, { application }) {
-                calls.push("targetApplied");
-                observed = application;
-                const request = healingRequest(null, target, 10);
-                return { state: hpHealing.applyHealing(request, hpHealing.calculateHealing(current, request)).state, value: undefined };
-            },
-        }),
-        units.setHook(source, hpDamage.sourceApplied, {
-            id: "observe-source",
-            invoke(current, { application }) {
-                calls.push("sourceApplied");
-                assert.equal(application, observed);
-                return { state: current, value: undefined };
-            },
-        }),
-    ]));
+    state = update(
+        state,
+        target,
+        units.compose(
+            units.compose(
+                units.compose(
+                    units.setHook(hpHealing.targetApplied, {
+                        id: "ordinary-healing",
+                        invoke(current) {
+                            healingNotifications++;
+                            return { state: current, value: undefined };
+                        },
+                    }),
+                    vitality.setHook("damageReceivingStarted", {
+                        id: "started",
+                        invoke(current) {
+                            calls.push("started");
+                            return { state: current, value: undefined };
+                        },
+                    }),
+                ),
+                vitality.setHook("damageReceiving", {
+                    id: "larger-hp-pool",
+                    invoke(current, _context, pending) {
+                        calls.push("receiving");
+                        return {
+                            state: update(
+                                current,
+                                target,
+                                vitality.setMaxHpContribution({
+                                    id: "larger-hp",
+                                    value: [attribute.create({ multiplier: 1 })],
+                                }),
+                            ),
+                            value: pending,
+                        };
+                    },
+                }),
+            ),
+            units.setHook(hpDamage.targetApplied, {
+                id: "recover-after-commit",
+                invoke(current, { application }) {
+                    calls.push("targetApplied");
+                    observed = application;
+                    const request = healingRequest(null, target, 10);
+                    return {
+                        state: hpHealing.applyHealing(
+                            request,
+                            hpHealing.calculateHealing(current, request),
+                        ).state,
+                        value: undefined,
+                    };
+                },
+            }),
+        ),
+    );
+    state = update(
+        state,
+        source,
+        units.compose(
+            units.setHook(hpDamage.beforeCommit, {
+                id: "recover-before-commit",
+                invoke(current) {
+                    calls.push("beforeCommit");
+                    const request = healingRequest(null, target, 25);
+                    return {
+                        state: hpHealing.applyHealing(
+                            request,
+                            hpHealing.calculateHealing(current, request),
+                        ).state,
+                        value: undefined,
+                    };
+                },
+            }),
+            units.setHook(hpDamage.sourceApplied, {
+                id: "observe-source",
+                invoke(current, { application }) {
+                    calls.push("sourceApplied");
+                    assert.equal(application, observed);
+                    return { state: current, value: undefined };
+                },
+            }),
+        ),
+    );
     const request = damageRequest(source, target, 30);
     const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.deepEqual(calls, ["started", "receiving", "beforeCommit", "targetApplied", "sourceApplied"]);
@@ -272,12 +346,12 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
     assert.equal(get(result.state, 1).vitality.hp, 125);
     assert.equal(healingNotifications, 2);
 
-    state = update(result.state, vitality.setMaxHpContribution(target, {
+    state = update(result.state, target, vitality.setMaxHpContribution({
         id: "larger-hp", value: [attribute.create({ multiplier: 2 })],
     }));
     assert.equal(get(state, 1).vitality.hp, 187.5);
     assert.equal(vitality.resolveMaxHp(get(state, 1).definition.vitality, get(state, 1).vitality), 300);
-    state = update(state, vitality.removeMaxHpContribution(target, "larger-hp"));
+    state = update(state, target, vitality.removeMaxHpContribution("larger-hp"));
     assert.equal(get(state, 1).vitality.hp, 62.5);
     assert.equal(vitality.resolveMaxHp(get(state, 1).definition.vitality, get(state, 1).vitality), 100);
     assert.equal(healingNotifications, 2);
@@ -292,26 +366,52 @@ test("APPLY-01: cancellation retains recovery and reflection but skips the origi
     const target = units.ref(get(state, 1));
     const preparation = damageRequest(null, source, 40);
     state = hpDamage.applyDamage(preparation, hpDamage.calculateDamage(state, preparation)).state;
-    state = update(state, units.combine([
-        vitality.setHook(target, "damageReceiving", {
-            id: "evade", priority: 10,
-            invoke(current, _context, pending) {
-                const recovery = healingRequest(null, source, 6);
-                current = hpHealing.applyHealing(recovery, hpHealing.calculateHealing(current, recovery)).state;
-                return { state: current, value: hpDamage.cancel(pending, "EVADE") };
-            },
+    state = update(
+        state,
+        target,
+        units.compose(
+            units.compose(
+                vitality.setHook("damageReceiving", {
+                    id: "evade",
+                    priority: 10,
+                    invoke(current, _context, pending) {
+                        const recovery = healingRequest(null, source, 6);
+                        current = hpHealing.applyHealing(
+                            recovery,
+                            hpHealing.calculateHealing(current, recovery),
+                        ).state;
+                        return { state: current, value: hpDamage.cancel(pending, "EVADE") };
+                    },
+                }),
+                vitality.setHook("damageReceiving", {
+                    id: "reflect",
+                    invoke(current, _context, pending) {
+                        assert.equal(pending.cancellation.reason, "EVADE");
+                        const reflection = damageRequest(target, source, 10);
+                        return {
+                            state: hpDamage.applyDamage(
+                                reflection,
+                                hpDamage.calculateDamage(current, reflection),
+                            ).state,
+                            value: pending,
+                        };
+                    },
+                }),
+            ),
+            units.setHook(hpDamage.targetApplied, {
+                id: "applied",
+                invoke: () => assert.fail("cancelled request cannot produce Applied"),
+            }),
+        ),
+    );
+    state = update(
+        state,
+        source,
+        units.setHook(hpDamage.beforeCommit, {
+            id: "commit",
+            invoke: () => assert.fail("cancelled request cannot reach BeforeCommit"),
         }),
-        vitality.setHook(target, "damageReceiving", {
-            id: "reflect",
-            invoke(current, _context, pending) {
-                assert.equal(pending.cancellation.reason, "EVADE");
-                const reflection = damageRequest(target, source, 10);
-                return { state: hpDamage.applyDamage(reflection, hpDamage.calculateDamage(current, reflection)).state, value: pending };
-            },
-        }),
-        units.setHook(source, hpDamage.beforeCommit, { id: "commit", invoke: () => assert.fail("cancelled request cannot reach BeforeCommit") }),
-        units.setHook(target, hpDamage.targetApplied, { id: "applied", invoke: () => assert.fail("cancelled request cannot produce Applied") }),
-    ]));
+    );
     const request = damageRequest(source, target, 20);
     const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.deepEqual(result.value, { kind: "CANCELLED", received: { amount: 20, cancellation: { reason: "EVADE" } } });
@@ -329,11 +429,37 @@ test("APPLY-02: HP zero output rejects while full absorption still commits and n
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
-    state = update(state, units.combine([
-        vitality.setHook(target, "damageReceiving", { id: "absorb", invoke: (current, _context, pending) => ({ state: current, value: { ...pending, amount: 0 } }) }),
-        units.setHook(target, hpDamage.targetApplied, { id: "target", invoke(current) { calls.push("targetApplied"); return { state: current, value: undefined }; } }),
-        units.setHook(source, hpDamage.sourceApplied, { id: "source", invoke(current) { calls.push("sourceApplied"); return { state: current, value: undefined }; } }),
-    ]));
+    state = update(
+        state,
+        target,
+        units.compose(
+            vitality.setHook("damageReceiving", {
+                id: "absorb",
+                invoke: (current, _context, pending) => ({
+                    state: current,
+                    value: { ...pending, amount: 0 },
+                }),
+            }),
+            units.setHook(hpDamage.targetApplied, {
+                id: "target",
+                invoke(current) {
+                    calls.push("targetApplied");
+                    return { state: current, value: undefined };
+                },
+            }),
+        ),
+    );
+    state = update(
+        state,
+        source,
+        units.setHook(hpDamage.sourceApplied, {
+            id: "source",
+            invoke(current) {
+                calls.push("sourceApplied");
+                return { state: current, value: undefined };
+            },
+        }),
+    );
     const zeroDamage = damageRequest(source, target, 0);
     assert.equal(hpDamage.applyDamage(zeroDamage, hpDamage.calculateDamage(state, zeroDamage)).value.kind, "REJECTED");
     assert.deepEqual(calls, ["output"]);
@@ -359,25 +485,44 @@ test("HP-03: lethal HP remains present and blocking through both Applied roles, 
     const enemy = units.ref(get(state, 2));
     state = blocking.acquire(state, target, enemy);
     const calls = [];
-    state = update(state, units.combine([
-        units.setHook(target, hpDamage.targetApplied, {
+    state = update(
+        state,
+        target,
+        units.setHook(hpDamage.targetApplied, {
             id: "target-observer",
             invoke(current) {
-                calls.push(["target", get(current, 1).vitality.hp, get(current, 1).lifecycle, blocking.blockerOf(current, enemy).id]);
+                calls.push([
+                    "target",
+                    get(current, 1).vitality.hp,
+                    get(current, 1).lifecycle,
+                    blocking.blockerOf(current, enemy).id,
+                ]);
                 const recovery = healingRequest(null, target, 20);
-                const attempted = hpHealing.applyHealing(recovery, hpHealing.calculateHealing(current, recovery));
+                const attempted = hpHealing.applyHealing(
+                    recovery,
+                    hpHealing.calculateHealing(current, recovery),
+                );
                 assert.equal(attempted.value.kind, "REJECTED");
                 return { state: attempted.state, value: undefined };
             },
         }),
-        units.setHook(source, hpDamage.sourceApplied, {
+    );
+    state = update(
+        state,
+        source,
+        units.setHook(hpDamage.sourceApplied, {
             id: "source-observer",
             invoke(current) {
-                calls.push(["source", get(current, 1).vitality.hp, get(current, 1).lifecycle, blocking.blockerOf(current, enemy).id]);
+                calls.push([
+                    "source",
+                    get(current, 1).vitality.hp,
+                    get(current, 1).lifecycle,
+                    blocking.blockerOf(current, enemy).id,
+                ]);
                 return { state: current, value: undefined };
             },
         }),
-    ]));
+    );
     const request = damageRequest(source, target, 100);
     const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.deepEqual(calls, [["target", 0, "PRESENT", 1], ["source", 0, "PRESENT", 1]]);
@@ -412,14 +557,11 @@ test("EP-01: calculated resistance and element survive later state changes; HP e
     assert.deepEqual(calculated.value, { type: "NEURAL", amount: 120 });
     assert.equal(incoming.type, "BURN");
     assert.deepEqual(get(calculated.state, 0).elemental.ep, elemental.elementValues(1000));
-    state = update(calculated.state, units.combine([
-        elemental.setContribution(target, "elementResistance", {
+    state = update(calculated.state, target, units.compose(elemental.setContribution("elementResistance", {
             id: "changed-after-calculation", value: [attribute.create({ finalScaler: 0 })],
-        }),
-        elemental.setRule(target, "damageRules", {
+        }), elemental.setRule("damageRules", {
             id: "only-neural", allows: (_current, { type }) => type === "NEURAL",
-        }),
-    ]));
+        })));
     const preceding = injuryRequest(target, "NEURAL", 50);
     state = epDamage.applyDamage(preceding, epDamage.calculateDamage(state, preceding)).state;
     const applied = epDamage.applyDamage(incoming, { ...calculated, state });
@@ -438,7 +580,7 @@ test("EP-01: calculated resistance and element survive later state changes; HP e
 
     const zero = injuryRequest(target, "NEURAL", 0);
     assert.equal(epDamage.applyDamage(zero, epDamage.calculateDamage(hp.state, zero)).value.kind, "REJECTED");
-    const protectedState = update(hp.state, elemental.setHook(target, "damageReceiving", {
+    const protectedState = update(hp.state, target, elemental.setHook("damageReceiving", {
         id: "full-barrier",
         invoke: (current, _context, pending) => ({ state: current, value: { ...pending, amount: 0 } }),
     }));
@@ -471,8 +613,7 @@ test("EP-02: depletion registers the Burst and completes standard output before 
     ]);
     const target = units.ref(get(state, 0));
     const source = units.ref(get(state, 1));
-    state = update(state, units.combine([
-        elemental.setHook(target, "burstStarted", {
+    state = update(state, target, units.compose(units.compose(elemental.setHook("burstStarted", {
             id: "creation", invoke(current, { event }) {
                 order.push("started");
                 const reference = effects.ref(event);
@@ -480,18 +621,15 @@ test("EP-02: depletion registers the Burst and completes standard output before 
                 assert.equal(lifetime.available(current, lifetime.scope(effects.lifetime, reference)), true);
                 return { state: current, value: undefined };
             },
-        }),
-        elemental.setHook(target, "damaged", {
+        }), elemental.setHook("damaged", {
             id: "loss", invoke(current) { order.push("damaged"); return { state: current, value: undefined }; },
-        }),
-        elemental.setHook(target, "burstEnded", {
+        })), elemental.setHook("burstEnded", {
             id: "end", invoke(current) {
                 ended++;
                 assert.equal(get(current, 0).elemental.burst, null);
                 return { state: current, value: undefined };
             },
-        }),
-    ]));
+        })));
     const preceding = injuryRequest(target, "NEURAL", 200);
     state = epDamage.applyDamage(preceding, epDamage.calculateDamage(state, preceding)).state;
     order.length = 0;
@@ -526,24 +664,20 @@ test("EP-02: cancelling a newly registered Burst suppresses standard output with
         vitality: { maxHp: 10000, defense: 0, resistance: 50 },
     }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
-    state = update(state, units.combine([
-        elemental.setHook(target, "burstStarted", {
+    state = update(state, target, units.compose(units.compose(elemental.setHook("burstStarted", {
             id: "cancel", invoke(current, { event }) {
                 order.push("started");
                 return { state: elemental.cancel(current, effects.ref(event), "CONTENT"), value: undefined };
             },
-        }),
-        elemental.setHook(target, "burstEnded", {
+        }), elemental.setHook("burstEnded", {
             id: "end", invoke(current) { order.push("ended"); return { state: current, value: undefined }; },
-        }),
-        elemental.setHook(target, "damaged", {
+        })), elemental.setHook("damaged", {
             id: "loss", invoke(current, { event }) {
                 order.push("damaged");
                 assert.equal(event.epLoss, 1000);
                 return { state: current, value: undefined };
             },
-        }),
-    ]));
+        })));
     const incoming = injuryRequest(target, "BURN", 1000);
     const result = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming));
     assert.deepEqual(order, ["started", "ended", "damaged", "applied"]);

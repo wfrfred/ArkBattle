@@ -108,29 +108,24 @@ test("static speed and interval changes synchronously preserve independent coold
     assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 10);
     assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 20);
 
-    state = update({ ...state, tick: 2 },
-        action.setSpeedContribution(source, {
+    state = update({ ...state, tick: 2 }, source, action.setSpeedContribution({
             id: "speed",
             value: [modifier({ addition: 100 })],
-        })
-    );
+        }));
     assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 6);
     assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 11);
 
-    state = update({ ...state, tick: 3 }, action.removeSpeedContribution(source, "speed"));
+    state = update({ ...state, tick: 3 }, source, action.removeSpeedContribution("speed"));
     assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 9);
     assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 19);
 
-    state = update(state, units.combine([
-        action.setIntervalContribution(source, {
+    state = update(state, source, units.compose(action.setIntervalContribution({
             id: "interval",
             value: [modifier({ addition: 10 })],
-        }),
-        action.setSpeedContribution(source, {
+        }), action.setSpeedContribution({
             id: "speed",
             value: [modifier({ addition: 100 })],
-        }),
-    ]));
+        })));
     assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 9);
     assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 15);
 
@@ -194,28 +189,23 @@ test("interrupted attack, successful release, and damage output are separate bus
     ]);
     const source = units.ref(get(state, 0));
     const reference = actions.ref(source, program);
-    state = update(state,
-        action.setHook(source, "beforeRelease", {
+    state = update(state, source, action.setHook("beforeRelease", {
             id: "interrupt",
             invoke: (state) => ({ state, value: { type: "INTERRUPT", recoveryTicks: 2 } }),
-        })
-    );
+        }));
     let started = actions.start(state, reference);
     state = actions.advance(started.state, started.value.ref);
     assert.equal(get(state, 0).skill.sp.value, 0);
     assert.equal(get(state, 1).vitality.hp, 100);
 
 
-    state = update({ ...state, tick: 10 }, units.combine([
-        action.removeHook(source, "beforeRelease", "interrupt"),
-        action.setHook(source, "released", {
+    state = update({ ...state, tick: 10 }, source, units.compose(action.removeHook("beforeRelease", "interrupt"), action.setHook("released", {
             id: "hide-after-release",
             invoke: (state, { execution }) => ({
-                state: update(state, presence.disappear(execution.host)),
+                state: update(state, execution.host, presence.disappear()),
                 value: undefined,
             }),
-        }),
-    ]));
+        })));
     started = actions.start(state, reference);
     state = actions.advance(started.state, started.value.ref);
     assert.equal(get(state, 0).skill.sp.value, 1);
@@ -224,8 +214,8 @@ test("interrupted attack, successful release, and damage output are separate bus
 
     state = { ...state, tick: 20 };
     assert.equal(actions.start(state, reference).value.reason, "RULE");
-    state = update(state, presence.appear(source, [1, 1]));
-    state = update(state, action.removeHook(source, "released", "hide-after-release"));
+    state = update(state, source, presence.appear([1, 1]));
+    state = update(state, source, action.removeHook("released", "hide-after-release"));
     started = actions.start(state, reference);
     state = actions.advance(started.state, started.value.ref);
     assert.equal(get(state, 0).skill.sp.value, 2);
@@ -281,7 +271,7 @@ test("Combat advances a zero-period action once per Tick with deterministic resu
         actions.getAction(repeated, reference),
     );
     assert.equal(firstRun.execution.rngState, repeated.execution.rngState);
-    const hidden = update(firstRun, presence.disappear(units.ref(get(firstRun, 0))));
+    const hidden = update(firstRun, units.ref(get(firstRun, 0)), presence.disappear());
     const after = step(hidden, []);
     assert.equal(selections, 2);
     assert.equal(actions.getAction(after, reference).state.completed, 1);

@@ -57,7 +57,7 @@ test("EVENT-02: a Burst keeps its original position through movement and death i
     const target = units.ref(get(state, 0));
     const injury = { source: null, target, type: "BURN", power: 1000 };
     state = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury)).state;
-    state = update(state, presence.appear(target, [4, 1]));
+    state = update(state, target, presence.appear([4, 1]));
     const lethal = {
         source: null, target,
         parameters: { type: "TRUE", attack: { power: 2000, multiplier: 1, addition: 0 } },

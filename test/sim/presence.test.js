@@ -78,7 +78,7 @@ test("disappearance preserves deployment and lifetimes, publishes restrictions b
     state = installed.state;
     for (const target of targets) state = blocking.acquire(state, owner, target);
     let notifications = 0;
-    state = update(state, units.combine([block.setBlockerHook(owner, "released", {
+    state = update(state, owner, units.compose(block.setBlockerHook("released", {
         id: "observe-published-restrictions",
         invoke(current) {
             notifications++;
@@ -90,7 +90,7 @@ test("disappearance preserves deployment and lifetimes, publishes restrictions b
             assert.deepEqual(blocking.blocked(current, owner), []);
             return { state: current, value: undefined };
         },
-    }), presence.disappear(owner)]));
+    }), presence.disappear()));
     assert.equal(notifications, 2);
     assert.equal(get(state, owner.id).lifecycle, "PRESENT");
     assert.deepEqual(get(state, owner.id).position, [2, 1]);
@@ -110,24 +110,24 @@ test("disappearance preserves deployment and lifetimes, publishes restrictions b
     assert.equal(effects.get(state, installed.value), undefined);
     assert.equal(get(state, owner.id).lifecycle, "PRESENT");
 
-    state = update(state, action.setRule(owner, { id: "other-source", allows: () => false }));
-    state = update(state, presence.appear(owner, [2, 1]));
+    state = update(state, owner, action.setRule({ id: "other-source", allows: () => false }));
+    state = update(state, owner, presence.appear([2, 1]));
     assert.equal(actions.start(state, nextAction).value.reason, "RULE");
-    state = update(state, action.removeRule(owner, "other-source"));
+    state = update(state, owner, action.removeRule("other-source"));
     const old = actions.start(state, actionRef);
     state = old.state;
     for (const target of targets) state = blocking.acquire(state, owner, target);
     let resumed;
     notifications = 0;
-    state = update(state, units.combine([block.setBlockerHook(owner, "released", {
+    state = update(state, owner, units.compose(units.compose(block.setBlockerHook("released", {
         id: "observe-published-restrictions",
         invoke(current) {
             notifications++;
             if (notifications === 1) {
-                current = update(current, units.combine([
-                    presence.appear(owner, [2, 1]),
-                    block.removeBlockerRule(owner, "earlier-release"),
-                ]));
+                current = update(current, owner, units.compose(
+                    presence.appear([2, 1]),
+                    block.removeBlockerRule("earlier-release"),
+                ));
                 const next = actions.start(current, nextAction);
                 assert.equal(next.value.type, "STARTED");
                 resumed = next.value.ref;
@@ -135,7 +135,7 @@ test("disappearance preserves deployment and lifetimes, publishes restrictions b
             }
             return { state: current, value: undefined };
         },
-    }), block.setBlockerRule(owner, { id: "earlier-release", allows: () => false }), presence.disappear(owner)]));
+    }), block.setBlockerRule({ id: "earlier-release", allows: () => false })), presence.disappear()));
     assert.equal(notifications, 2);
     assert.equal(get(state, owner.id).spatialPresence.present, true);
     assert.equal(actions.getExecution(state, old.value.ref), undefined);

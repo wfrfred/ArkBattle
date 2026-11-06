@@ -5,7 +5,6 @@ import type { Skill as SkillState } from "../../skill/skill.js";
 import type { Events, Hook } from "./hook.js";
 import type { Input as AmmoInput } from "../../skill/ammo.js";
 import type { Rules } from "./rule.js";
-import type { Ref } from "../../../common/ref.js";
 import { createChange, type Change } from "../../change.js";
 import { createRegistrationOperations } from "../../registration.js";
 import { enter } from "../../skill/operations.js";
@@ -85,10 +84,9 @@ export const { set: setHook, remove: removeHook } = createRegistrationOperations
 >("skill");
 
 export function setAmmoContribution(
-    reference: Ref<Unit & Skill>,
     entry: contribution.Contribution<AmmoInput>,
-): Change {
-    return createChange(reference, (self) => {
+): Change<Unit & Skill> {
+    return createChange<Unit & Skill>((self) => {
         if (self.skill.definition.activation?.sustain.type !== "AMMO") {
             return self;
         }
@@ -99,8 +97,8 @@ export function setAmmoContribution(
     });
 }
 
-export function removeAmmoContribution(reference: Ref<Unit & Skill>, id: string): Change {
-    return createChange(reference, (self) => {
+export function removeAmmoContribution(id: string): Change<Unit & Skill> {
+    return createChange<Unit & Skill>((self) => {
         if (self.skill.definition.activation?.sustain.type !== "AMMO") {
             return self;
         }

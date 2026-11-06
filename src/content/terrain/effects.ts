@@ -7,7 +7,7 @@ import * as effects from "../../core/unit/effect/index.js";
 import { type Definition, ref as effectRef, type Effect } from "../../core/unit/effect/index.js";
 
 import * as units from "../../core/unit/index.js";
-import type { Unit } from "../../core/unit/index.js";
+import type { Unit, Settlement } from "../../core/unit/index.js";
 
 import * as offense from "../../core/unit/capability/offense/index.js";
 import * as action from "../../core/unit/capability/action/index.js";
@@ -55,7 +55,8 @@ export const smogEffect: Definition<SmogState, targetable.Targetable> = {
 
         return updateUnit(
             battle,
-            targetable.removeRestriction(units.ref(unit), `terrain/${self.id}`),
+            units.ref(unit),
+            targetable.removeRestriction(`terrain/${self.id}`),
         );
     },
 };
@@ -97,9 +98,10 @@ function reconcileSmog(
 
     return updateUnit(
         battle,
+        units.ref(unit),
         active
-            ? targetable.setRestriction(units.ref(unit), { id, value: invisibleRestriction })
-            : targetable.removeRestriction(units.ref(unit), id),
+            ? targetable.setRestriction({ id, value: invisibleRestriction })
+            : targetable.removeRestriction(id),
     );
 }
 
@@ -114,41 +116,42 @@ function changeModifiers(
         return battle;
     }
 
-    return updateUnit(
-        battle,
-        units.combine([
-            ...(offense.hasOffense(unit)
-                ? [
-                      modifiers?.attack === undefined
-                          ? offense.removeAttackContribution(units.ref(unit), id)
-                          : offense.setAttackContribution(units.ref(unit), {
-                                id,
-                                value: [modifiers.attack],
-                            }),
-                  ]
-                : []),
-            ...(action.hasAction(unit)
-                ? [
-                      modifiers?.attackSpeed === undefined
-                          ? action.removeSpeedContribution(units.ref(unit), id)
-                          : action.setSpeedContribution(units.ref(unit), {
-                                id,
-                                value: [modifiers.attackSpeed],
-                            }),
-                  ]
-                : []),
-            ...(hasLocomotion(unit)
-                ? [
-                      modifiers?.movementSpeed === undefined
-                          ? locomotion.removeSpeedContribution(units.ref(unit), id)
-                          : locomotion.setSpeedContribution(units.ref(unit), {
-                                id,
-                                value: [modifiers.movementSpeed],
-                            }),
-                  ]
-                : []),
-        ]),
-    );
+    return updateUnit(battle, units.ref(unit), {
+        apply(self) {
+            let next = self;
+            const settlements: Settlement[] = [];
+
+            if (offense.hasOffense(next)) {
+                const applied = (
+                    modifiers?.attack === undefined
+                        ? offense.removeAttackContribution(id)
+                        : offense.setAttackContribution({ id, value: [modifiers.attack] })
+                ).apply(next);
+                next = applied.next;
+                settlements.push(...applied.settlements);
+            }
+            if (action.hasAction(next)) {
+                const applied = (
+                    modifiers?.attackSpeed === undefined
+                        ? action.removeSpeedContribution(id)
+                        : action.setSpeedContribution({ id, value: [modifiers.attackSpeed] })
+                ).apply(next);
+                next = applied.next;
+                settlements.push(...applied.settlements);
+            }
+            if (hasLocomotion(next)) {
+                const applied = (
+                    modifiers?.movementSpeed === undefined
+                        ? locomotion.removeSpeedContribution(id)
+                        : locomotion.setSpeedContribution({ id, value: [modifiers.movementSpeed] })
+                ).apply(next);
+                next = applied.next;
+                settlements.push(...applied.settlements);
+            }
+
+            return { next, settlements };
+        },
+    });
 }
 
 function damage(battle: BattleState, host: Ref<Unit>, amount: number): BattleState {

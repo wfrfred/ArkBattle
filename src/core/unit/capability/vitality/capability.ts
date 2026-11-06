@@ -9,7 +9,6 @@ import type {
 } from "../../../battle/damage/hp/hook.js";
 import type { ReceivingHook as HealingReceivingHook } from "../../../battle/healing/hp/hook.js";
 import type { DamageReceptionRule } from "./rule.js";
-import type { Ref } from "../../../common/ref.js";
 import { createChange, type Change } from "../../change.js";
 import { createRegistrationOperations } from "../../registration.js";
 
@@ -94,10 +93,9 @@ function preserveHpRatio(hp: number, previousMax: number, nextMax: number): numb
 }
 
 export function setMaxHpContribution(
-    reference: Ref<Unit & Vitality>,
     entry: contribution.Contribution<readonly attribute.Modifier[]>,
-): Change {
-    return createChange(reference, (self) => {
+): Change<Unit & Vitality> {
+    return createChange<Unit & Vitality>((self) => {
         const maxHp = contribution.set(self.vitality.maxHp, entry);
         if (maxHp === self.vitality.maxHp) {
             return self;
@@ -114,8 +112,8 @@ export function setMaxHpContribution(
     });
 }
 
-export function removeMaxHpContribution(reference: Ref<Unit & Vitality>, id: string): Change {
-    return createChange(reference, (self) => {
+export function removeMaxHpContribution(id: string): Change<Unit & Vitality> {
+    return createChange<Unit & Vitality>((self) => {
         const maxHp = contribution.remove(self.vitality.maxHp, id);
         if (maxHp === self.vitality.maxHp) {
             return self;

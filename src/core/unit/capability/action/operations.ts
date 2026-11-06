@@ -1,53 +1,47 @@
-import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
+import * as units from "../../query.js";
 import { createChange, type Change } from "../../change.js";
 import * as contribution from "../../contribution/contribution.js";
 import { refreshCooldowns } from "../../action/operations.js";
 import type { Action, Input, State } from "./capability.js";
 
 export function setIntervalContribution(
-    reference: Ref<Unit & Action>,
     entry: contribution.Contribution<Input>,
-): Change {
-    return createChange(
-        reference,
+): Change<Unit & Action> {
+    return createChange<Unit & Action>(
         (self) => setContributions(self, "interval", contribution.set(self.action.interval, entry)),
-        (battle) => refreshCooldowns(battle, reference),
+        (battle, previous) => refreshCooldowns(battle, units.ref(previous)),
     );
 }
 
-export function removeIntervalContribution(reference: Ref<Unit & Action>, id: string): Change {
-    return createChange(
-        reference,
+export function removeIntervalContribution(id: string): Change<Unit & Action> {
+    return createChange<Unit & Action>(
         (self) => setContributions(self, "interval", contribution.remove(self.action.interval, id)),
-        (battle) => refreshCooldowns(battle, reference),
+        (battle, previous) => refreshCooldowns(battle, units.ref(previous)),
     );
 }
 
 export function setSpeedContribution(
-    reference: Ref<Unit & Action>,
     entry: contribution.Contribution<Input>,
-): Change {
-    return createChange(
-        reference,
+): Change<Unit & Action> {
+    return createChange<Unit & Action>(
         (self) => setContributions(self, "speed", contribution.set(self.action.speed, entry)),
-        (battle) => refreshCooldowns(battle, reference),
+        (battle, previous) => refreshCooldowns(battle, units.ref(previous)),
     );
 }
 
-export function removeSpeedContribution(reference: Ref<Unit & Action>, id: string): Change {
-    return createChange(
-        reference,
+export function removeSpeedContribution(id: string): Change<Unit & Action> {
+    return createChange<Unit & Action>(
         (self) => setContributions(self, "speed", contribution.remove(self.action.speed, id)),
-        (battle) => refreshCooldowns(battle, reference),
+        (battle, previous) => refreshCooldowns(battle, units.ref(previous)),
     );
 }
 
-function setContributions(
-    self: Unit & Action,
+function setContributions<U extends Unit & Action>(
+    self: U,
     key: "interval" | "speed",
     entries: State["interval"],
-): Unit & Action {
+): U {
     return entries === self.action[key]
         ? self
         : { ...self, action: { ...self.action, [key]: entries } };

@@ -12,11 +12,11 @@ test("effective attack keeps fractional values and applies its nonnegative bound
         id: "attacker", hooks: Hooks.empty(), offense: { attack: 100.25 },
     }, position: [0, 0] }]);
     const host = ref(get(state, 0));
-    state = update(state, setAttackContribution(host, { id: "power", value: [
+    state = update(state, host, setAttackContribution({ id: "power", value: [
         create({ addition: 0.25, multiplier: 0.5, finalAddition: 0.75, finalScaler: 1.2 }),
     ] }));
     assert.ok(Math.abs(resolveAttack(state, get(state, host.id)) - 181.8) < 1e-9);
-    state = update(state, setAttackContribution(host, {
+    state = update(state, host, setAttackContribution({
         id: "power", value: [create({ finalAddition: -101 })],
     }));
     assert.equal(resolveAttack(state, get(state, host.id)), 0);

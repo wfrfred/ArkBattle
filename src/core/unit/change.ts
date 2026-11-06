@@ -1,40 +1,46 @@
 import type { State as BattleState } from "../battle/state.js";
-import type { Ref } from "../common/ref.js";
 import type { Unit } from "./unit.js";
 
-const Brand = Symbol("Unit.Change");
+export type Settlement = (battle: BattleState) => BattleState;
 
-export interface Change {
-    readonly [Brand]: true;
+export interface Applied<U extends Unit> {
+    readonly next: U;
+    readonly settlements: readonly Settlement[];
 }
 
-export type Transformation<U extends Unit> = (unit: U) => U;
-
-export type Settlement<U extends Unit> = (battle: BattleState, previous: U) => BattleState;
-
-export function createChange<U extends Unit>(
-    ref: Ref<U>,
-    transform: Transformation<NoInfer<U>>,
-    settle?: Settlement<NoInfer<U>>,
-): Change {
-    const change = { [Brand]: true as const, ref, transform, settle };
-
-    return change;
+export interface Change<in C extends Unit> {
+    readonly apply: <U extends C>(self: U) => Applied<U>;
 }
 
-export function combine(changes: readonly Change[]): Change;
-export function combine<U extends Unit>(
-    reference: Ref<U>,
-    expand: (self: NoInfer<U>) => readonly Change[],
-): Change;
-export function combine<U extends Unit>(
-    source: readonly Change[] | Ref<U>,
-    expand?: (self: NoInfer<U>) => readonly Change[],
-): Change {
-    const change =
-        expand === undefined
-            ? { [Brand]: true as const, changes: source }
-            : { [Brand]: true as const, ref: source, expand };
+export type Transformation<C extends Unit> = <U extends C>(self: U) => U;
 
-    return change;
+export function createChange<C extends Unit>(
+    transform: Transformation<C>,
+    settle?: (battle: BattleState, previous: C) => BattleState,
+): Change<C> {
+    return {
+        apply(self) {
+            const next = transform(self);
+
+            return {
+                next,
+                settlements:
+                    next === self || settle === undefined ? [] : [(battle) => settle(battle, self)],
+            };
+        },
+    };
+}
+
+export function compose<A extends Unit, B extends Unit>(
+    first: Change<A>,
+    second: Change<B>,
+): Change<A & B> {
+    return {
+        apply(self) {
+            const a = first.apply(self);
+            const b = second.apply(a.next);
+
+            return { next: b.next, settlements: [...a.settlements, ...b.settlements] };
+        },
+    };
 }

@@ -358,10 +358,11 @@ export const enter: EnterHook = {
         if (hasVitality(unit) && definition.sp?.recovery.type === "HIT") {
             battle = update(
                 battle,
-                setVitalityHook(units.ref(unit), "damageReceivingStarted", hitRecovery),
+                units.ref(unit),
+                setVitalityHook("damageReceivingStarted", hitRecovery),
             );
         } else if (hasAction(unit) && definition.sp?.recovery.type === "ACTION") {
-            battle = update(battle, setActionHook(units.ref(unit), "released", actionRecovery));
+            battle = update(battle, units.ref(unit), setActionHook("released", actionRecovery));
         }
 
         unit = units.get(battle, host)!;

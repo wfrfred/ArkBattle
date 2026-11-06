@@ -222,7 +222,7 @@ interface State {
 }
 ```
 
-setIntervalContribution／setSpeedContribution 及对应 remove 绑定 Ref<Unit & ActionCapability> 返回 Change，实现在 capability/action/operations.ts。贡献只接收静态 Modifier 数组，不接收依赖 BattleState 的求值函数。transform 只修改贡献集合，无变化时返回原 Unit，由 update 统一跳过 settle；实际变化的 settle 从最新 battle 调用 refreshCooldowns，按全批最终周期及当前完成比例换算冷却。Content 不补一次手工刷新，Combat 也不每 Tick 刷新。依赖 HP、技能阶段等事实的速率变化，由拥有该机制的程序在相应业务时点提交新的修正列表。
+setIntervalContribution／setSpeedContribution 及对应 remove 不接收 Ref，返回 `Change<Unit & ActionCapability>`，实现在 capability/action/operations.ts。贡献只接收静态 Modifier 数组，不接收依赖 BattleState 的求值函数。transform 只修改贡献集合，无变化时返回原 Unit，由 createChange 不登记 settle；实际变化的 settle 从最新 battle 调用 refreshCooldowns，按全批最终周期及当前完成比例换算冷却。Content 不补一次手工刷新，Combat 也不每 Tick 刷新。依赖 HP、技能阶段等事实的速率变化，由拥有该机制的程序在相应业务时点提交新的修正列表。
 
 Rule／释放 Hook 登记也返回 Change，但不附带冷却或 Blocking 后继。属性查询使用 resolveBaseInterval／resolveSpeed／resolvePeriod(source: Unit & ActionCapability, self: Action)，直接接收已取得的宿主与具体 Action 并返回 number。共享贡献使用 source，基础时序取 self.definition。resolveBaseInterval 是速度换算前的间隔，resolvePeriod 是用于 Cooldown 的实际周期；创建实例前的初始冷却仍使用局部公式 period(intervalTicks, speed)。
 

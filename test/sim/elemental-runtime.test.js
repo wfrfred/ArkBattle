@@ -135,20 +135,20 @@ test('elemental execution: enemy necrosis damage is elemental and its attack red
 test('elemental execution: periodic output follows burst speed and does not pay out unused time on early exit', () => {
   let work = receiverBattle('ENEMY');
   work = element(work, 'NECROSIS').state;
-  const speed = value => setContribution(unitRef(getUnit(work, 0)), 'burstRecoverySpeed', {
+  const speed = value => setContribution('burstRecoverySpeed', {
     id:'burst-speed', value:[modifier({finalScaler:value})],
   });
-  work = applyUnitChanges(work, speed(0));
+  work = applyUnitChanges(work, unitRef(getUnit(work, 0)), speed(0));
   work = advance(work, 60);
   assert.equal(getUnit(work, 0).vitality.hp, 100000);
   assert.equal(getBurst(work, getUnit(work, 0).elemental.burst).expiration.elapsed, 0);
   assert.deepEqual(getUnit(work, 0).elemental.ep, elementValues(0));
-  work = applyUnitChanges(work, unitQueries.combine([
+  work = applyUnitChanges(work, unitRef(getUnit(work, 0)), unitQueries.compose(
     speed(2),
-    setContribution(unitRef(getUnit(work, 0)), 'maxEp', {
+    setContribution('maxEp', {
       id: 'larger-ep', value: [modifier({ finalScaler: 2 })],
     }),
-  ]));
+  ));
   work = advance(work, 210);
   assert.equal(getUnit(work, 0).vitality.hp, 92000);
   for (const value of Object.values(getUnit(work, 0).elemental.ep)) near(value, 4000 / 3);
@@ -218,7 +218,7 @@ test('elemental runtime: Unit and Effect tick triggers preserve every necrosis p
       hooks: source === 'Unit' ? Hooks.empty().set(unitLifecycle.tick, {
         id: 'burst-trigger',
         invoke(state, self) {
-          state = applyUnitChanges(state, unitLifecycle.removeHook(unitRef(self), unitLifecycle.tick, 'burst-trigger'));
+          state = applyUnitChanges(state, unitRef(self), unitLifecycle.removeHook(unitLifecycle.tick, 'burst-trigger'));
           const request = { target: unitRef(self), type: 'NECROSIS', power: 1000, source: null };
           return { state: epDamage.applyDamage(request, epDamage.calculateDamage(state, request)).state, value: undefined };
         },

@@ -30,7 +30,7 @@ Skill 需要保障的结果是：
 
 领域 index 提供 create、Skill／Activation、ref／activationRef、getSkill／getActivation、字段写回及 SP／Ammo／激活业务，不转发能力守卫、Rule／Hook 与 Ammo 贡献登记。Capability index 提供对应能力 API。Core 已取得当前宿主时直接读取 unit.skill，不解释私有 state；完整聚合替换只供领域内部使用。
 
-SP 的 setContribution／removeContribution 仅登记 recoverySpeed／recoveryMultiplier，绑定 Ref<Unit & SkillCapability> 返回 Change，经领域入口以 setSpContribution／removeSpContribution 导出。它们与 SP State／Input 保持同一模块，不增加 Capability 转发，不附带资源支付或延时。容量、门槛、支付和 TIME 时长没有通用 Contribution 注册表。
+SP 的 setContribution／removeContribution 仅登记 recoverySpeed／recoveryMultiplier，不接收 Ref，返回 `Change<Unit & SkillCapability>`，经领域入口以 setSpContribution／removeSpContribution 导出。它们与 SP State／Input 保持同一模块，不增加 Capability 转发，不附带资源支付或延时。容量、门槛、支付和 TIME 时长没有通用 Contribution 注册表。
 
 SP 容量、门槛和默认费用直接读取 Skill Definition；发动实际费用优先采用 Activation.cost 程序。Skill 可以没有 SP，资源操作在入口通过 hasSp 确认槽位并建立 Definition／State 配对的非空类型证明，内部不重复检查。resolveRecoverySpeed／resolveRecoveryMultiplier 接收 battle 与已证明具有 SP 的当前宿主，直接求值贡献并返回 number，不再承担 Ref 定位或缺失兜底。
 
@@ -119,7 +119,7 @@ sp.advance 对 ACTION／HIT／NONE 回复直接返回原 battle，不更新 last
 
 SP 自然回复在正速度分支直接计算周期，并按当前剩余容量限制回复脉冲数，不为这些内部结果追加极端算术断言。
 
-默认激活期间阻回由 recoveryRules 中的 `@skill/active-recovery` Rule 表达，可通过 `removeRule(ref, "recoveryRules", "@skill/active-recovery")` Change 移除；SP 操作没有“active 必然禁止回复或支付”的硬编码。
+默认激活期间阻回由 recoveryRules 中的 `@skill/active-recovery` Rule 表达，可通过 `removeRule("recoveryRules", "@skill/active-recovery")` Change 移除；SP 操作没有“active 必然禁止回复或支付”的硬编码。
 
 ## 3. Sustain 与弹药
 
@@ -145,11 +145,11 @@ AMMO 描述资源和耗尽结束政策，不代表所有“弹药类技能”加
 
 ## 4. Rule、程序与 Hook
 
-Operation（STOP／RETRIGGER）归领域 activation.ts，由 unit/skill/index.ts 导出；Capability 的 rule.ts 只引用该类型。Rules 声明 activationRules／operationRules／recoveryRules，State 直接继承 Rules 和 Hooks。各 Rule 统一使用 `allows(battle, context)`：Context 都有 self，operationRules 另有 operation，recoveryRules 另有 source。普通登记工厂生成 `setRule(ref, key, rule)`／`removeRule(ref, key, id)`，返回 Change，key 保留具体 Context 类型；同 ID 在不同字段互不影响。它们提供额外业务许可；内部完成、到期结束及宿主离场清理不受主动操作 Rule 否决。
+Operation（STOP／RETRIGGER）归领域 activation.ts，由 unit/skill/index.ts 导出；Capability 的 rule.ts 只引用该类型。Rules 声明 activationRules／operationRules／recoveryRules，State 直接继承 Rules 和 Hooks。各 Rule 统一使用 `allows(battle, context)`：Context 都有 self，operationRules 另有 operation，recoveryRules 另有 source。普通登记工厂生成 `setRule(key, rule)`／`removeRule(key, id)`，返回 Change，key 保留具体 Context 类型；同 ID 在不同字段互不影响。它们提供额外业务许可；内部完成、到期结束及宿主离场清理不受主动操作 Rule 否决。
 
 activate 要求宿主 PRESENT，具有 Vitality 时 HP 大于零，并通过 activationRules；[Presence](presence.md) 在消失时登记这一启动限制，Skill 不直接读取空间存在字段。operate 则保留 PRESENT、同一 Activation ACTIVE 与 Rule 准入，不附加空间或 HP 条件。当前 Activation 已存在时，内部信任对应 Activation Definition 已配置。Skill 的 enter 是普通 Unit EnterHook，装配 Skill 能力时自动登记到实例 hooks；Unit.add 按统一注册序派发。该 Hook 从最新 BattleState 读取宿主，先登记回复监听，再执行 Definition.onEnter，最后重新读取仍为 PRESENT 的宿主并尝试发动 PASSIVE 技能；onEnter 同步移除宿主后不发动。与其它 Unit Hook 一样，本次派发的 Context 固定，后继需要当前 Skill／HP 时重新查询 BattleState。持久 Skill.onTick 按 PRESENT 推进，Activation.onTick 另要求本轮 ACTIVE；它们不自动采用自然 SP 回复的暂停条件。已有技能的 STOP／RETRIGGER、计时或内部进度可以在不具备新发动资格时继续，这是各入口明确的规则选择，不合并为通用 available。
 
-Hook 登记使用 capability/skill 的 `setHook(reference, key, hook): Change`／`removeHook(reference, key, id): Change`，Key 与事件载荷保持类型配对，由 Unit.update 提交。Rule 和 Ammo 贡献同样绑定 Skill Capability Ref 返回 Change；精确私有 state 写回、SP 消费、激活与结束使用各自领域操作。
+Hook 登记使用 capability/skill 的 `setHook(key, hook): Change<Unit & SkillCapability>`／`removeHook(key, id): Change<Unit & SkillCapability>`，Key 与事件载荷保持类型配对，由 Unit.update 提交。Rule 和 Ammo 贡献同样返回 `Change<Unit & SkillCapability>`；精确私有 state 写回、SP 消费、激活与结束使用各自领域操作。
 
 enter Hook 仅供 Unit 装配内部登记；完整入场由 battle/unit.add 负责。
 

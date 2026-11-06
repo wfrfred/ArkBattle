@@ -77,7 +77,7 @@ test("exempting a mechanism ignores all of its instances but preserves independe
 
     assert.equal(targetable.allowsRestrictions(battle, input, target, kind => kind === invisibilityKind), true);
     assert.equal(targetable.allowsRestrictions(battle, input, target), false);
-    battle = applyUnitChanges(battle, targetable.setRestriction(units.ref(target), { id: "other", value: untargetableRestriction }));
+    battle = applyUnitChanges(battle, units.ref(target), targetable.setRestriction({ id: "other", value: untargetableRestriction }));
     target = units.get(battle, units.ref(target));
     assert.equal(targetable.allowsRestrictions(battle, input, target, kind => kind === invisibilityKind), false);
 });

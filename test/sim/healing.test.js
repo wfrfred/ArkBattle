@@ -31,17 +31,13 @@ test("HP Healing accepts full resources and absent patients while damage require
     }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     assert.equal(get(state, 0).vitality.hp, 100.5);
-    state = update(state, units.combine([
-        vitality.setHook(target, "healingReceiving", {
+    state = update(state, target, units.compose(units.compose(vitality.setHook("healingReceiving", {
             id: "receive", invoke(current, _context, pending) { calls.push("receive"); return { state: current, value: pending }; },
-        }),
-        units.setHook(target, hpHealing.targetApplied, {
+        }), units.setHook(hpHealing.targetApplied, {
             id: "target", invoke(current) { calls.push("target"); return { state: current, value: undefined }; },
-        }),
-        units.setHook(target, hpHealing.sourceApplied, {
+        })), units.setHook(hpHealing.sourceApplied, {
             id: "source", invoke(current) { calls.push("source"); return { state: current, value: undefined }; },
-        }),
-    ]));
+        })));
     const zero = { source: target, target, parameters: { power: 0, multiplier: 1 } };
     assert.equal(hpHealing.applyHealing(zero, hpHealing.calculateHealing(state, zero)).value.kind, "REJECTED");
     assert.deepEqual(calls, []);
@@ -64,7 +60,7 @@ test("HP Healing accepts full resources and absent patients while damage require
     assert.equal(get(state, 0).vitality.hp, 70.5);
     assert.equal(get(state, 0).elemental.ep.NEURAL, 800);
 
-    state = update(state, presence.disappear(target));
+    state = update(state, target, presence.disappear());
     assert.equal(hpDamage.applyDamage(hpLoss, hpDamage.calculateDamage(state, hpLoss)).value.kind, "REJECTED");
     assert.equal(epDamage.applyDamage(epLoss, epDamage.calculateDamage(state, epLoss)).value.kind, "REJECTED");
     const hpRestored = hpHealing.applyHealing(request, hpHealing.calculateHealing(state, request));
@@ -75,7 +71,7 @@ test("HP Healing accepts full resources and absent patients while damage require
     state = elemental.advance({ ...epRestored.state, tick: 1 }, target);
     assert.equal(get(state, 0).elemental.ep.NEURAL, 900.5);
 
-    state = update(state, presence.appear(target, [0, 0]));
+    state = update(state, target, presence.appear([0, 0]));
     const hpAccepted = hpDamage.applyDamage(hpLoss, hpDamage.calculateDamage(state, hpLoss));
     assert.equal(hpAccepted.value.application.hpLoss, 30);
     const epAccepted = epDamage.applyDamage(epLoss, epDamage.calculateDamage(hpAccepted.state, epLoss));
@@ -124,7 +120,7 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
         filter: elementHealing({ power: 100 }), selector: first(1, () => 0),
     };
     assert.deepEqual(select(full.state, selection).value, []);
-    state = update(full.state, elemental.setContribution(target, "maxEp", {
+    state = update(full.state, target, elemental.setContribution("maxEp", {
         id: "larger-pool", value: [modifier({ multiplier: 1 })],
     }));
     const current = get(state, 0);

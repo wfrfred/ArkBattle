@@ -1,4 +1,3 @@
-import type { Ref } from "../../../common/ref.js";
 import { createChange, type Change } from "../../change.js";
 import { ref } from "../../query.js";
 import type { Unit } from "../../unit.js";
@@ -8,9 +7,8 @@ import { hasBlockable } from "../blocking/blockable.js";
 import { release } from "../blocking/blockable-operations.js";
 import type { Layer, Type } from "./capability.js";
 
-export function setType(reference: Ref<Unit & Layer>, type: Type): Change {
-    return createChange(
-        reference,
+export function setType(type: Type): Change<Unit & Layer> {
+    return createChange<Unit & Layer>(
         (unit) => ({ ...unit, layer: { type } }),
         (battle, previous) => {
             if (hasBlocker(previous)) {

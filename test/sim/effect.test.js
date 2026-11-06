@@ -20,15 +20,13 @@ test("installation, participation, and destruction have distinct lifetimes and p
         },
         onEnable(state, self) {
             observed.push(["enable", self.data.activations]);
-            return update(state,
-                offense.setAttackContribution(self.host, {
+            return update(state, self.host, offense.setAttackContribution({
                     id: "buff",
                     value: [modifier({ addition: 20 })],
-                })
-            );
+                }));
         },
         onDisable(state, self) {
-            state = update(state, offense.removeAttackContribution(self.host, "buff"));
+            state = update(state, self.host, offense.removeAttackContribution("buff"));
             return effects.setData(state, effects.ref(self), {
                 activations: self.data.activations + 1,
             });
@@ -76,14 +74,12 @@ test("overall replacement uses priority and installation order; disabling the wi
         group: { id: "overall", priority: 1 },
         initialize: () => ({ bonus: 10 }),
         onEnable: (state, self) =>
-            update(state,
-                offense.setAttackContribution(self.host, {
+            update(state, self.host, offense.setAttackContribution({
                     id: "overall",
                     value: [modifier({ addition: self.data.bonus })],
-                })
-            ),
+                })),
         onDisable: (state, self) =>
-            update(state, offense.removeAttackContribution(self.host, "overall")),
+            update(state, self.host, offense.removeAttackContribution("overall")),
     };
     const strong = {
         ...weak,

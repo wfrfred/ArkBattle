@@ -85,7 +85,8 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
             return hasOffense(unit)
                 ? update(
                       battle,
-                      setAttackContribution(units.ref(unit), {
+                      units.ref(unit),
+                      setAttackContribution({
                           id: `@effect/${self.id}/attack`,
                           value: [
                               attribute.create({
@@ -102,7 +103,8 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
             return hasOffense(unit)
                 ? update(
                       battle,
-                      removeAttackContribution(units.ref(unit), `@effect/${self.id}/attack`),
+                      units.ref(unit),
+                      removeAttackContribution(`@effect/${self.id}/attack`),
                   )
                 : battle;
         },
@@ -121,7 +123,8 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
                             Math.max(0, 1 - second / (parameters.durationTicks / TICKS_PER_SECOND));
                     current = update(
                         current,
-                        setAttackContribution(units.ref(unit), {
+                        units.ref(unit),
+                        setAttackContribution({
                             id: `@effect/${self.id}/attack`,
                             value: [attribute.create({ finalScaler: scaler })],
                         }),

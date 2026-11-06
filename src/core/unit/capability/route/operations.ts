@@ -192,12 +192,12 @@ export function advance(battle: BattleState, ref: Ref<Unit & Route>): BattleStat
 
             if (checkpoint.type === "DISAPPEAR") {
                 if (hasSpatialPresence(self)) {
-                    battle = update(battle, presence.disappear(units.ref(self)));
+                    battle = update(battle, units.ref(self), presence.disappear());
                 }
             } else if (checkpoint.type === "APPEAR_AT_POS") {
                 const position = Vec2.add(Tile.center(checkpoint.position), checkpoint.offset);
                 if (hasSpatialPresence(self)) {
-                    battle = update(battle, presence.appear(units.ref(self), position));
+                    battle = update(battle, units.ref(self), presence.appear(position));
                 } else {
                     const current = units.get(battle, ref)!;
                     const next = hasBlockable(current)

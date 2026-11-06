@@ -50,7 +50,8 @@ export function createTacticalProjectileDemo(
 
             return updateUnit(
                 state,
-                setAttackContribution(unitRef(unit), {
+                unitRef(unit),
+                setAttackContribution({
                     id: `@effect/${self.id}/attack`,
                     value: [attribute.create({ addition: 60 })],
                     group: { id: "demo-attack-boost", priority: 1 },
@@ -65,7 +66,8 @@ export function createTacticalProjectileDemo(
 
             return updateUnit(
                 state,
-                removeAttackContribution(unitRef(unit), `@effect/${self.id}/attack`),
+                unitRef(unit),
+                removeAttackContribution(`@effect/${self.id}/attack`),
             );
         },
     };

@@ -59,7 +59,8 @@ export function createDefinition(
                         ? battle
                         : updateUnit(
                               battle,
-                              setRule(unitRef(self), {
+                              unitRef(self),
+                              setRule({
                                   id: "attack-casting",
                                   allows: (current, { self }) => !isCasting(current, unitRef(self)),
                               }),

@@ -71,7 +71,8 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
 
             return update(
                 battle,
-                setHook(self.host, "beforeRelease", {
+                self.host,
+                setHook("beforeRelease", {
                     id: `@effect/${effectId}/paralysis`,
                     accepts(current) {
                         const active = units
@@ -112,7 +113,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
             );
         },
         onEnd: (battle, self) =>
-            update(battle, removeHook(self.host, "beforeRelease", `@effect/${self.id}/paralysis`)),
+            update(battle, self.host, removeHook("beforeRelease", `@effect/${self.id}/paralysis`)),
     };
 
     return {

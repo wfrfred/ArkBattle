@@ -49,7 +49,7 @@ Slot 来自静态 Definition，实例生命周期内不变。SUPPORT 按内容�
 
 Catalog 先初始化 Occupancy，再初始化依赖它的 Deployable。Occupancy 保留已有程序并追加自己的 enter／leave。Deployment 在 fold 前已经登记的程序仍先执行；这里遵守普通登记顺序，不引入能力优先级。
 
-setDirection 接收 Occupancy Typed Ref，返回只改方向的 Change，不修改地块或产生配对通知。hasDirection 仅缩窄 direction 非 null 的对象。方向范围由 Targeting 根据当前值旋转。
+setDirection 只接收方向，返回只改方向的 `Change<Unit & Occupancy>`，不修改地块或产生配对通知。hasDirection 仅缩窄 direction 非 null 的对象。方向范围由 Targeting 根据当前值旋转。
 
 ## 结构索引
 

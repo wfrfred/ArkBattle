@@ -1,4 +1,3 @@
-import type { Ref } from "../common/ref.js";
 import { type Entry, set, remove } from "../hook.js";
 import { createChange, type Change } from "./change.js";
 import type { Unit } from "./unit.js";
@@ -15,16 +14,15 @@ type SetArguments<S, K extends RegistrationKey<S>> = {
 
 interface KeyedOperations<U extends Unit, P extends keyof U, K extends RegistrationKey<U[P]>> {
     readonly set: <Q extends K>(
-        reference: Ref<U>,
         ...args: [key: Q, entry: RegistrationEntry<U[P][NoInfer<Q>]>] & SetArguments<U[P], K>
-    ) => Change;
-    readonly remove: (reference: Ref<U>, key: K, id: string) => Change;
+    ) => Change<U>;
+    readonly remove: (key: K, id: string) => Change<U>;
 }
 
 type FieldOperations<U extends Unit, P extends keyof U, K extends RegistrationKey<U[P]>> = {
     [F in K]: {
-        readonly set: (reference: Ref<U>, entry: RegistrationEntry<U[P][F]>) => Change;
-        readonly remove: (reference: Ref<U>, id: string) => Change;
+        readonly set: (entry: RegistrationEntry<U[P][F]>) => Change<U>;
+        readonly remove: (id: string) => Change<U>;
     };
 }[K];
 
@@ -44,11 +42,11 @@ export function createRegistrationOperations<
     K extends RegistrationKey<U[P]>,
 >(property: P, field?: K): KeyedOperations<U, P, K> | FieldOperations<U, P, K> {
     return {
-        set(reference: Ref<U>, ...args: [K, Entry] | [Entry]) {
+        set(...args: [K, Entry] | [Entry]) {
             const key = (field ?? args[0]) as K;
             const entry = (field === undefined ? args[1] : args[0]) as Entry;
 
-            return createChange(reference, (self) => {
+            return createChange<U>((self) => {
                 const state = self[property] as U[P] & Record<K, readonly Entry[]>;
                 const entries = set(state[key], entry);
 
@@ -57,11 +55,11 @@ export function createRegistrationOperations<
                     : { ...self, [property]: { ...state, [key]: entries } };
             });
         },
-        remove(reference: Ref<U>, ...args: [K, string] | [string]) {
+        remove(...args: [K, string] | [string]) {
             const key = (field ?? args[0]) as K;
             const id = (field === undefined ? args[1] : args[0]) as string;
 
-            return createChange(reference, (self) => {
+            return createChange<U>((self) => {
                 const state = self[property] as U[P] & Record<K, readonly Entry[]>;
                 const entries = remove(state[key], id);
 

@@ -34,7 +34,8 @@ function resistanceReduction(amount: number): EffectDefinition<object, Vitality>
         onEnable: (battle, self) =>
             update(
                 battle,
-                setContribution(self.host, "resistance", {
+                self.host,
+                setContribution("resistance", {
                     id: `@effect/${self.id}/resistance`,
                     value: [attribute.create({ addition: -amount })],
                 }),
@@ -42,7 +43,8 @@ function resistanceReduction(amount: number): EffectDefinition<object, Vitality>
         onDisable: (battle, self) =>
             update(
                 battle,
-                removeContribution(self.host, "resistance", `@effect/${self.id}/resistance`),
+                self.host,
+                removeContribution("resistance", `@effect/${self.id}/resistance`),
             ),
     };
 }

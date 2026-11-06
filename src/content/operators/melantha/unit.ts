@@ -68,7 +68,8 @@ function attackBonus(id: string, amount: number): EffectDefinition<object, Offen
                 ? state
                 : updateUnit(
                       state,
-                      setAttackContribution(unitRef(unit), {
+                      unitRef(unit),
+                      setAttackContribution({
                           id: `effect/${self.id}/attack`,
                           value: [attribute.create({ multiplier: amount })],
                       }),
@@ -81,7 +82,8 @@ function attackBonus(id: string, amount: number): EffectDefinition<object, Offen
                 ? state
                 : updateUnit(
                       state,
-                      removeAttackContribution(unitRef(unit), `effect/${self.id}/attack`),
+                      unitRef(unit),
+                      removeAttackContribution(`effect/${self.id}/attack`),
                   );
         },
     };

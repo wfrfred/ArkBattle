@@ -1,4 +1,4 @@
-import { combine } from "../../dist/core/unit/index.js";
+import { compose } from "../../dist/core/unit/index.js";
 import { Hooks } from "../../dist/core/hook.js";
 import { predefinedUnits } from "../helpers/predefined.js";
 import assert from 'node:assert/strict';
@@ -47,7 +47,7 @@ test('locked arrows follow a disappeared target position and separate identity h
   const launched = projectiles.create(fixture.battle, createArrow(), {
     position: [0, 0], state: { ...fixture.state, stopDelayTicks: 1 },
   });
-  let state = updateUnits(launched.state, combine([appear(ref(fixture.target), [3, 0]), disappear(ref(fixture.target))]));
+  let state = updateUnits(launched.state, ref(fixture.target), compose(appear([3, 0]), disappear()));
   state = step(state, 1);
   assert.deepEqual(projectilesQuery.get(state, launched.value).position, [1, 0]);
   assert.deepEqual(projectilesQuery.get(state, launched.value).state.destination, [3, 0]);
@@ -58,7 +58,7 @@ test('locked arrows follow a disappeared target position and separate identity h
   state = step(state, 4);
   assert.equal(projectilesQuery.get(state, launched.value), undefined);
 
-  state = updateUnits(state, appear(ref(fixture.target), [3, 0]));
+  state = updateUnits(state, ref(fixture.target), appear([3, 0]));
   const visible = projectiles.create(state, createArrow(), { position: [3, 0], state: fixture.state });
   state = step(visible.state, 5);
   assert.equal(getUnit(state, 1).vitality.hp, 960);

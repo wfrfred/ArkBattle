@@ -39,7 +39,8 @@ export function create(configuration: Configuration): Definition {
                 return hasBlocker(occupant)
                     ? update(
                           battle,
-                          setRule(unitRef(occupant), {
+                          unitRef(occupant),
+                          setRule({
                               id: ruleId,
                               allows: (_battle, { blocker }) => blocker.blocker.layer === "AIR",
                           }),
@@ -51,7 +52,8 @@ export function create(configuration: Configuration): Definition {
                 if (current !== undefined && hasBlocker(current)) {
                     battle = update(
                         battle,
-                        removeRule(unitRef(current), `shooting-platform/${support.id}/block-free`),
+                        unitRef(current),
+                        removeRule(`shooting-platform/${support.id}/block-free`),
                     );
                 }
 

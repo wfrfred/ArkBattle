@@ -42,7 +42,8 @@ export function compileArknightsAttackBuffSkill(value: unknown, level: number): 
 
             return updateUnit(
                 state,
-                setAttackContribution(unitRef(unit), {
+                unitRef(unit),
+                setAttackContribution({
                     id: `@effect/${self.id}/attack`,
                     value: [attribute.create({ multiplier: self.data.attackIncrease })],
                 }),
@@ -56,7 +57,8 @@ export function compileArknightsAttackBuffSkill(value: unknown, level: number): 
 
             return updateUnit(
                 state,
-                removeAttackContribution(unitRef(unit), `@effect/${self.id}/attack`),
+                unitRef(unit),
+                removeAttackContribution(`@effect/${self.id}/attack`),
             );
         },
     };

@@ -4,7 +4,7 @@ Blocking 负责阻挡关系的建立、解除、站位计算及必要维护；Bl
 
 Blocker／Blockable 的数值、能力 Change 工厂与完整操作见 [Capability API](capability.md#blocking)。状态归属与同步返回契约见 [函数式内核](functional-core.md)。
 
-关系查询、acquire／release、maintain／maintainAll 与搜索从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入；Layer、Rule、容量、volume 与 Hook 的 Change 工厂从 [capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入。Blocking 自己定义 Layer 与容量 Modifier，公共类型也由 Capability 入口导出。工厂绑定 Typed Ref，由 Unit.update 执行；完整关系业务由 battle/blocking/operations.ts 组织，hook.ts 只派发。Blocker 的 releaseAll、Blockable 的 advancePosition／releaseBlockable 完整操作及 stableBlockPosition 查询由 Capability 入口导出。关系解除统一使用接收 Relation 数组的 release，字段发布仍由所属领域负责。
+关系查询、acquire／release、maintain／maintainAll 与搜索从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入；Layer、Rule、容量、volume 与 Hook 的 Change 工厂从 [capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入。Blocking 自己定义 Layer 与容量 Modifier，公共类型也由 Capability 入口导出。工厂不接收 Ref，返回要求相应宿主能力的 Change，由 Unit.update 接收 Ref 后执行；完整关系业务由 battle/blocking/operations.ts 组织，hook.ts 只派发。Blocker 的 releaseAll、Blockable 的 advancePosition／releaseBlockable 完整操作及 stableBlockPosition 查询由 Capability 入口导出。关系解除统一使用接收 Relation 数组的 release，字段发布仍由所属领域负责。
 
 ## 关键语义
 
@@ -86,7 +86,7 @@ interface BlockerState {
 }
 ```
 
-容量贡献使用 Blocking 自己的 Modifier：ADD 追加数值，ZERO 将最终容量置零。setCapacityContribution(reference, entry) 接收 Contribution<readonly Modifier[]>，返回 Change，在发布后局部完成必要裁撤与通知；通用 Contribution 只负责按来源登记、替换、移除及互斥选择。Blocking 的 resolveCapacity 先选择生效来源，再展平其 Modifier 数组；出现任一有效 ZERO 时直接返回 0，否则在 Definition.capacity 上累加全部 ADD，再按既有 ties-to-even 整数化和下限 0 求值。未胜出来源里的 ZERO 不影响结果；撤销有效 ZERO 后按剩余生效贡献重新计算。
+容量贡献使用 Blocking 自己的 Modifier：ADD 追加数值，ZERO 将最终容量置零。setCapacityContribution(entry) 接收 Contribution<readonly Modifier[]>，返回 Change，在发布后局部完成必要裁撤与通知；通用 Contribution 只负责按来源登记、替换、移除及互斥选择。Blocking 的 resolveCapacity 先选择生效来源，再展平其 Modifier 数组；出现任一有效 ZERO 时直接返回 0，否则在 Definition.capacity 上累加全部 ADD，再按既有 ties-to-even 整数化和下限 0 求值。未胜出来源里的 ZERO 不影响结果；撤销有效 ZERO 后按剩余生效贡献重新计算。
 
 这项 ADD／ZERO 协议是项目对容量修正接口的收紧，不作为原生全体阻挡数公式的调查结论，也不改变其他领域的 Attribute 修正协议。Blockable 的 volume 仍使用整数追加量与下限 1。
 
@@ -137,7 +137,7 @@ Blocking 结算不要求双方具有 Allegiance，也不内置 `areHostile` 条�
 export function sides(...sides: readonly Side[]): Rule;
 ```
 
-它以 `blocking/sides` 为 ID，仅检查目标当前具有 Allegiance 且其 `allegiance.side` 在指定集合内，不要求阻挡者具有 Allegiance。多个阵营可在同一规则内声明，例如 `sides("ALLY", "NEUTRAL")`。`setBlockerRule(reference, sides(...))` 生成替换策略的 Change，Unit.update 发布后同步维护自身旧关系。未选择该规则时，没有隐含的阵营限制。
+它以 `blocking/sides` 为 ID，仅检查目标当前具有 Allegiance 且其 `allegiance.side` 在指定集合内，不要求阻挡者具有 Allegiance。多个阵营可在同一规则内声明，例如 `sides("ALLY", "NEUTRAL")`。`setBlockerRule(sides(...))` 生成替换策略的 Change，Unit.update 发布后同步维护自身旧关系。未选择该规则时，没有隐含的阵营限制。
 
 Blocker Definition 的必填 `rules` 在初始化时进入当前 State，之后只读取当前 `blocker.rules`。普通干员和 Legacy 干员适配显式声明：
 
@@ -235,19 +235,19 @@ Blocker Capability 提供完整操作 `releaseAll(battle, reference: Ref<Unit & 
 
 | 工厂 | 主要对象与输入 |
 | --- | --- |
-| setLayer | `(Ref<Unit & Blocker>, Layer): Change` |
-| setBlockerRule／removeBlockerRule | `(Ref<Unit & Blocker>, Rule / id): Change` |
-| setCapacityContribution／removeCapacityContribution | `(Ref<Unit & Blocker>, Contribution<readonly Modifier[]> / id): Change` |
-| setBlockableRule／removeBlockableRule | `(Ref<Unit & Blockable>, Rule / id): Change` |
-| setVolumeContribution／removeVolumeContribution | `(Ref<Unit & Blockable>, Contribution<number> / id): Change` |
-| setBlockerHook／removeBlockerHook | `(Ref<Unit & Blocker>, Key, Hook / id): Change` |
-| setBlockableHook／removeBlockableHook | `(Ref<Unit & Blockable>, Key, Hook / id): Change` |
+| setLayer | `(Layer): Change<Unit & Blocker>` |
+| setBlockerRule／removeBlockerRule | `(Rule / id): Change<Unit & Blocker>` |
+| setCapacityContribution／removeCapacityContribution | `(Contribution<readonly Modifier[]> / id): Change<Unit & Blocker>` |
+| setBlockableRule／removeBlockableRule | `(Rule / id): Change<Unit & Blockable>` |
+| setVolumeContribution／removeVolumeContribution | `(Contribution<number> / id): Change<Unit & Blockable>` |
+| setBlockerHook／removeBlockerHook | `(Key, Hook / id): Change<Unit & Blocker>` |
+| setBlockableHook／removeBlockableHook | `(Key, Hook / id): Change<Unit & Blockable>` |
 
-工厂绑定 Ref，不接收 battle，也不自行提交。Unit.update 在整批准备时确认宿主存在，缺失时抛出 RangeError；存储中的 LEAVING 宿主仍可清理。Rule、容量和 volume 附带各自的局部后继，Hook Change 只登记集合。相同条目或移除不存在 ID 的本项转换返回原 Unit，由 update 统一跳过 Settlement，不借无变化输入触发裁撤。
+工厂不接收 Ref 或 battle，也不自行提交。Unit.update 从传入 Ref 确认宿主存在，缺失时抛出 RangeError；存储中的 LEAVING 宿主仍可清理。Rule、容量和 volume 附带各自的局部后继，Hook Change 只登记集合。相同条目或移除不存在 ID 的本项转换返回原 Unit，由 createChange 不登记 Settlement，不借无变化输入触发裁撤。
 
 工厂实现在 [blocker-operations.ts](../../src/core/unit/capability/blocking/blocker-operations.ts) 和 [blockable-operations.ts](../../src/core/unit/capability/blocking/blockable-operations.ts)。blocker.ts／blockable.ts 保留模型、初始化、守卫和数值查询，Catalog 与只读查询可精确依赖模型。公共入口直接导出工厂，不增加包装。
 
-setLayer 的 transform 只设置 layer 与实际 radius，不修改关系。同层请求由 transform 返回原 Unit，update 统一跳过其 settle。真实切层的 settle 调用 releaseCaptured(battle, previous)，按 previous.blocker.blocked 中的原 Ref 捕获旧集合；Blocking.release 按当前 BattleState 过滤旧身份后批量解除并通知。自身 Layer.setType 的 Blocker 分支使用同一内部操作。后继不重调 setLayer 或公开的 releaseAll，也不把 previous 整体发布；本批其他字段和嵌套操作的新值因此保留。
+setLayer 的 transform 只设置 layer 与实际 radius，不修改关系。同层请求由 transform 返回原 Unit，createChange 不登记其 settle。真实切层的 settle 调用 releaseCaptured(battle, previous)，按 previous.blocker.blocked 中的原 Ref 捕获旧集合；Blocking.release 按当前 BattleState 过滤旧身份后批量解除并通知。自身 Layer.setType 的 Blocker 分支使用同一内部操作。后继不重调 setLayer 或公开的 releaseAll，也不把 previous 整体发布；本批其他字段和嵌套操作的新值因此保留。
 
 setLayer 不因旧关系在最终层下仍合法而保留它。新建立的同 ID 关系有新的 Ref 条目，不属于旧候选；该项解除不再额外维护新集合。它不自动 search、不新增 layerChanged Hook、不改变自身 Unit Layer。内容在对应 Effect 生命周期程序中提交该 Change，不机械绑定所有 Skill 开始或结束。
 
@@ -322,7 +322,7 @@ Blocking 保证每个 ACQUIRED Hook 开始时原关联 Ref 条目仍然有效。
 
 battle/blocking/query.ts 提供 blockerOf(battle, ref)、blocked(battle, ref)、usedCapacity(battle, ref)；输入保留相应 Capability 的 Typed Ref。按 Ref 读取后检查对象是否仍存在，不重复检查 Ref 已证明的稳定能力。`relations(battle, reference?)` 返回只读 Relation 数组：省略 reference 时按 Unit 顺序投影全场当前关联；提供 Unit Ref 时直接读取该 Unit 的角色与关联，不扫描全场。Blocker 按自身 blocked 顺序返回关系，Blockable 从当前 owner 列表取原条目；无能力、无关系或宿主已不存在时返回空数组。查询保留正向列表中的原 blocked Ref，hasRelation 据此判断某次旧关联是否仍有效，区分解除后重建的同双方关系。不存在独立的持久 Relation 实例。
 
-Blocker／Blockable State 各自持有 acquired、released Hook 数组，使用绑定对应 Typed Ref 的 setHook(reference, key, hook)／removeHook(reference, key, id) 返回 Change，再由 Unit.update 登记。每条关系在其第一个业务回调前同时固定两侧候选 ID，逐项恢复最新同 ID 登记并检查 accepts；新增 ID 不参加该条通知，同 ID 替换使用最新登记。先 Blocker，后 Blockable；Context 固定原关系事实，BattleState 每项接续最新版本。ACQUIRED 每项执行前通过原关联 Ref 条目身份确认关系仍存在，RELEASED 是历史通知，不要求旧关系仍存在。取得和解除直接派发各自业务 Hook，不输出诊断 Event；release 在整批发布后逐条开始派发，各条 Hook 候选在轮到该条时固定，不提前冻结后续关系的监听登记。
+Blocker／Blockable State 各自持有 acquired、released Hook 数组，使用 setHook(key, hook)／removeHook(key, id) 返回要求对应宿主能力的 Change，再由 Unit.update 登记。每条关系在其第一个业务回调前同时固定两侧候选 ID，逐项恢复最新同 ID 登记并检查 accepts；新增 ID 不参加该条通知，同 ID 替换使用最新登记。先 Blocker，后 Blockable；Context 固定原关系事实，BattleState 每项接续最新版本。ACQUIRED 每项执行前通过原关联 Ref 条目身份确认关系仍存在，RELEASED 是历史通知，不要求旧关系仍存在。取得和解除直接派发各自业务 Hook，不输出诊断 Event；release 在整批发布后逐条开始派发，各条 Hook 候选在轮到该条时固定，不提前冻结后续关系的监听登记。
 
 Runtime 执行 Movement → Mechanism.advance → Blocking.advance → resolveRouteCompletion。最后一步只检查路线是否已完成和能否离场，不再次推进 Route。消费侧通过 relations(battle) 从两端状态取得 Typed Ref 关系，按需生成输出；不保存额外的全局权威关系。Movement 根据 Blockable 的当前归属决定是否推进自主 Locomotion。
 

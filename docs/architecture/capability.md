@@ -23,7 +23,7 @@ Definition 保存静态参数与行为描述，State 保存本领域当前事实
 
 ## 操作范围
 
-纯数值与几何等局部计算仍直接接收值、返回值。对已登记 Unit 的公开 Rule、Hook、Contribution、Layer.type 与 Blocker.layer 写入则统一为 `setXxx(ref, value): Change`／`removeXxx(ref, id): Change` 工厂；Content 不接触任意 Unit Transformation。Core 用 createChange 将目标、纯 transform 与可选 settle 配对，combine 将已有 Change 或按 Ref 从当前暂存宿主生成的子项组合起来。Unit.update 只收一个 Change，先完成所有叶子的转换、一次发布，再原顺序结算。跨能力 Rule 仍可只读完整 Unit 与 BattleState，不把真实业务输入压成通用上下文。
+纯数值与几何等局部计算仍直接接收值、返回值。对已登记 Unit 的公开 Rule、Hook、Contribution、Layer.type 与 Blocker.layer 写入统一为 `setXxx(value): Change<C>`／`removeXxx(id): Change<C>` 工厂；C 只要求该操作需要的宿主能力。Core 用 createChange 将纯变换与可选结算配对，compose 从左到右应用已有 Change。Unit.update 接收一个 Typed Ref 和一个 Change，先完成同一宿主的全部纯应用、一次发布，再原顺序结算；Ref 由提交入口证明能力，不由工厂绑定。跨能力 Rule 仍可只读完整 Unit 与 BattleState，不把真实业务输入压成通用上下文。
 
 Capability 也可提供接收 BattleState 与 Typed Ref 的完整操作，例如 Locomotion.advance；是否需要时间推进、资格判断或领域结算由实际业务决定。Rule、Hook、Contribution、Layer.type、Blocker.layer 与 SpatialPresence.appear／disappear 的 Change 工厂不自行提交；有后继的 Change 在发布后同步结算，无后继的 Hook Change 只改变集合。完整私有 state／生命周期操作保持各自原协议，见 [批量变更](api-conventions.md#51-unit-完整操作与批量变更)。
 
@@ -110,7 +110,7 @@ Core 不提供干员或敌人 Archetype 层；内容直接组合 Unit Definition
 - Capability Definition 由 Content 直接构造，必要的领域不变量校验放在 initialize。Action 的 Definition 提供 initialize 与可选 select；Elemental 的标准爆发由 Core 的具体 Effect 实现，Data 选择具体实现并绑定数值，能力初始化校验基础数值和各型爆发时长。几何构造等局部值转换由内容按需调用。
 - Capability.initialize 使用当前 battle 和正在装配的 Unit，读取自身 Definition，返回 Result<U & Capability>；内部纯值模型保留自己的自然初始化参数。
 - validateState 验证已有值，返回 void，不伪装成构造。
-- Rule、Hook、Contribution 与 Blocker.layer 的 set／remove 工厂绑定 Ref 返回 Change；add、生命周期与精确私有 state 写回维持所属领域完整操作；resolve 查询有效值，advance 表达时间推进。Change 的后继由领域明确提供，不由 Unit 发布推断。
+- Rule、Hook、Contribution 与 Blocker.layer 的 set／remove 工厂返回要求相应宿主能力的 Change；add、生命周期与精确私有 state 写回维持所属领域完整操作；resolve 查询有效值，advance 表达时间推进。Change 的后继由领域明确提供，不由 Unit 发布推断。
 
 不为统一前缀增加 normalize，不保留无工作转发，不以 Object.freeze 证明内部调用者遵守不可变约定。外部格式检查在 Data／I/O 边界，领域不变量由对应领域维护。跨模块出现同名类型和函数时，使用命名空间或有角色含义的导入别名。
 
@@ -134,7 +134,7 @@ MaxHP 只接收明确采样的属性修正，在贡献变更时协调当前 HP �
 
 Offense Definition 保存基础 attack，State 保存 Contribution<Input>[]。Input 为静态 Modifier 数组，或只读的 `(battle, self: Unit & Offense) => readonly Modifier[]`。动态输入直接取得本次查询的 BattleState 与当前宿主，直接使用领域实体与战场事实，不依赖通用 Context 包装。
 
-initialize(battle, unit) 校验 unit.definition.offense.attack 为有限非负数，在保留输入 Unit 的同时建立空攻击贡献状态；Definition 由内容直接构造。setAttackContribution／removeAttackContribution 绑定 Ref<Unit & Offense> 返回 Change，沿用 Contribution 的 ID 替换与互斥组规则；无额外结算，不启动 Blocking。
+initialize(battle, unit) 校验 unit.definition.offense.attack 为有限非负数，在保留输入 Unit 的同时建立空攻击贡献状态；Definition 由内容直接构造。setAttackContribution／removeAttackContribution 不接收 Ref，返回 `Change<Unit & Offense>`，沿用 Contribution 的 ID 替换与互斥组规则；无额外结算，不启动 Blocking。
 
 公开求值为 query.resolveAttack(battle, self: Unit & Offense): number。调用业务先取得当前宿主并确认能力，求值直接使用该对象，不重复定位或判空，也不附加生命值、空间存在或生命周期检查。计算先选择有效贡献，只求值胜出项，再按 Attribute 公式求值并限制下限为 0，不取整。
 
@@ -142,13 +142,13 @@ initialize(battle, unit) 校验 unit.definition.offense.attack 为有限非负�
 
 ## Layer 与 Hitbox
 
-四向摆放朝向归 Occupancy，occupancy.direction 为 Direction 或 null；本次摆放方向通过 initial.occupancy.direction 建立，不写入 Content 的静态 Definition。部署路径从 Request.direction 提供该输入，其它创建路径由对应入口提供。占格不意味着一定有朝向，装置可以为 null；基础 Unit 不增加字段，也不建立独立 Direction Capability。setDirection 返回绑定 Occupancy Ref 的 Change，hasDirection 只缩窄非 null 的字段。方向相关索敌读取当前实例，不在共享 Action 程序里捕获本次方向。几何 Direction 类型和坐标旋转仍属于 Geometry，不反向依赖 Unit；当前领域选择不预设未来所有方向需求都必须占格。
+四向摆放朝向归 Occupancy，occupancy.direction 为 Direction 或 null；本次摆放方向通过 initial.occupancy.direction 建立，不写入 Content 的静态 Definition。部署路径从 Request.direction 提供该输入，其它创建路径由对应入口提供。占格不意味着一定有朝向，装置可以为 null；基础 Unit 不增加字段，也不建立独立 Direction Capability。setDirection 接收方向，返回 `Change<Unit & Occupancy>`，hasDirection 只缩窄非 null 的字段。方向相关索敌读取当前实例，不在共享 Action 程序里捕获本次方向。几何 Direction 类型和坐标旋转仍属于 Geometry，不反向依赖 Unit；当前领域选择不预设未来所有方向需求都必须占格。
 
 Unit.position 表达当前世界坐标；Layer 表达 GROUND／AIR 空地身份，Route.pathMotionMode 表达 WALK／FLY 通行方式。这三者独立，升空不自动改变坐标或寻路模式。
 
 unit/capability/layer/capability.ts 的 Definition.type 提供初始身份，State.type 保存当前身份；领域消费者读取 unit.layer.type。Unit.position 与 SpatialPresence 表达位置和空间存在事实，不承担空地身份。Battlefield 不保存另一份位置索引。
 
-Layer 的 `setType(reference: Ref<Unit & Layer>, type: Type): Change` 归 operations.ts，经 index.ts 与模型、守卫和 initialize 显式导出；Core 只需模型时继续直接依赖 capability.ts。它设置自身空地身份，与 Blocking.setLayer 调整可阻挡目标层的操作不同。setType 同时主动脱离阻挡，即使 type 相同也执行清理，每次形成新的 Layer State 和 Unit，不改变通用 update 的同引用跳过协议。全批 transform 先发布，settle 再按 previous 的稳定角色分支：Blocker 调用内部 releaseCaptured(battle, previous)，批量解除 previous.blocker.blocked 中原 Ref 对应的旧出向关系，Hook 重建的新 Ref 不受旧请求影响；Blockable 调用自身 release，按最新状态解除入向关系并取消位置计划，后续独立请求仍可再次脱离当前关系；两种角色皆无时只更新身份。该操作不自动搜索，不修改 Definition、position、Route.pathMotionMode 或 Blocker 自己的 layer／radius，也不代替浮空效果的其他业务。原生边界见[运动调查](../research/cases/15-locomotion-native-semantics.md)和[蒂比起飞调查](../research/cases/21-tippi-air-blocking.md)。
+Layer 的 `setType(type: Type): Change<Unit & Layer>` 归 operations.ts，经 index.ts 与模型、守卫和 initialize 显式导出；Core 只需模型时继续直接依赖 capability.ts。它设置自身空地身份，与 Blocking.setLayer 调整可阻挡目标层的操作不同。setType 同时主动脱离阻挡，即使 type 相同也执行清理，每次形成新的 Layer State 和 Unit，不改变createChange 的同引用不登记结算协议。全批 transform 先发布，settle 再按 previous 的稳定角色分支：Blocker 调用内部 releaseCaptured(battle, previous)，批量解除 previous.blocker.blocked 中原 Ref 对应的旧出向关系，Hook 重建的新 Ref 不受旧请求影响；Blockable 调用自身 release，按最新状态解除入向关系并取消位置计划，后续独立请求仍可再次脱离当前关系；两种角色皆无时只更新身份。该操作不自动搜索，不修改 Definition、position、Route.pathMotionMode 或 Blocker 自己的 layer／radius，也不代替浮空效果的其他业务。原生边界见[运动调查](../research/cases/15-locomotion-native-semantics.md)和[蒂比起飞调查](../research/cases/21-tippi-air-blocking.md)。
 
 unit/capability/hitbox/capability.ts 的 Definition.shape 保存单个静态 Shape，State 为空实现；Spatial 与采用相交判定的 Targeting 读取 unit.definition.hitbox.shape。initialize 校验有限偏移、非负有限半径或半宽高；不复制几何到 State，不提供运行时形状修改接口。公开 API 只有 hasHitbox 与 initialize。
 
@@ -158,7 +158,7 @@ Battlefield 的通用空间查询领域使用 battlefield/spatial/ 命名，与�
 
 ## SpatialPresence
 
-[空间存在](presence.md)只保存身体的 present 事实；暂时消失保留身份、真实坐标及生命周期登记。appear／disappear 返回按 Ref 展开的组合 Change，自身叶子修改空间事实与旧偏移，其余子项直接复用所属能力的 Rule 工厂；发布后按自身叶子的 previous 清理旧关系和 Execution。各能力消费自己的 Rule，不反向读取 Presence；空间查询、普通索敌和接触程序直接使用空间存在事实。Skill、Effect 和 Burst 不因此统一结束或暂停。
+[空间存在](presence.md)只保存身体的 present 事实；暂时消失保留身份、真实坐标及生命周期登记。appear／disappear 返回在 apply 中按当前宿主能力组合的 Change，自身叶子修改空间事实与旧偏移，其余子项直接复用所属能力的 Rule 工厂；发布后按自身叶子的 previous 清理旧关系和 Execution。各能力消费自己的 Rule，不反向读取 Presence；空间查询、普通索敌和接触程序直接使用空间存在事实。Skill、Effect 和 Burst 不因此统一结束或暂停。
 
 ## Blocking
 
@@ -166,11 +166,11 @@ Blocker 的 capacity 表示可用阻挡数，Blockable 的 volume 表示占用�
 
 两端 Definition 保存基础数值，State 保存按来源登记的静态 Contribution 与 Rule。Blocker 自己定义 Layer = GROUND | AIR，表示能够阻挡的目标层，不依赖宿主自身的 Layer Capability。Blocker Definition 的 layer、rules 必填；无规则时明确写 []。radius 可选，省略时 Core 为 GROUND 提供半径 0.7071、为 AIR 提供 0.8944；State 保存当前 layer 与实际 radius。初始化和切层均采用 definition.radius ?? DEFAULT_RADIUS[layer]，显式半径覆盖在切层后仍保持。普通 Content 不再重复配置标准半径，内部默认半径常量不作为公共配置导出。
 
-capacity／volume 由 resolveCapacity／resolveVolume 求值。Blocking 容量 Modifier 为 `{ type: "ADD", value: number } | { type: "ZERO" }`，State.capacity 保存 Contribution<readonly Modifier[]>；setCapacityContribution(reference, entry) 返回带本 Blocker 容量裁撤 Settlement 的 Change。通用 Contribution 只选生效来源，Blocking 展平 Modifier：任一有效 ZERO 使容量为 0，否则全部 ADD 加到基础 capacity，再 ties-to-even 整数化并限制下限 0。互斥未胜出的 ZERO 不生效，撤销有效 ZERO 后按剩余来源计算。这是项目接口选择，不追加原生公式结论。
+capacity／volume 由 resolveCapacity／resolveVolume 求值。Blocking 容量 Modifier 为 `{ type: "ADD", value: number } | { type: "ZERO" }`，State.capacity 保存 Contribution<readonly Modifier[]>；setCapacityContribution(entry) 返回带本 Blocker 容量裁撤 Settlement 的 Change。通用 Contribution 只选生效来源，Blocking 展平 Modifier：任一有效 ZERO 使容量为 0，否则全部 ADD 加到基础 capacity，再 ties-to-even 整数化并限制下限 0。互斥未胜出的 ZERO 不生效，撤销有效 ZERO 后按剩余来源计算。这是项目接口选择，不追加原生公式结论。
 
 volume 使用 Contribution<number>，筛选互斥胜者后累加整数追加量。项目约定 volume 下限为 1，基础值要求正整数；贡献将占用数降到 0 或负值时仍占用 1，不借零占用表达不可被阻挡。
 
-公共 Relation、Context、Hook、Key 归 unit/capability/blocking/contract.ts，与模型及 Change 工厂一起由 capability/blocking/index.ts 导出。blocker-operations.ts／blockable-operations.ts 提供 setLayer、两端 Rule／Hook、容量／volume 的工厂，接收相应 Typed Ref 与业务输入，返回 Change。blocker.ts／blockable.ts 保留模型与 initialize／resolve／has，Blockable 模型还提供 stableBlockPosition 查询；Catalog 和查询直接依赖模型；公共入口不增加包装。宿主存在性在 Unit.update 准备时统一确认，允许存储中的 LEAVING 对象清理。battle/blocking/index.ts 提供关系查询及 acquire／release／maintain／maintainAll／search／advance，不重复导出 setLayer。relations(battle, ref?) 支持直接读取局部关联并保留原 Ref；release 接收 readonly Relation[]，maintain 接收单条 Relation，均保留双方 Typed Ref 与原关系身份。内部共享的 settleCapacity 不经公共入口导出。
+公共 Relation、Context、Hook、Key 归 unit/capability/blocking/contract.ts，与模型及 Change 工厂一起由 capability/blocking/index.ts 导出。blocker-operations.ts／blockable-operations.ts 提供 setLayer、两端 Rule／Hook、容量／volume 的工厂，只接收业务输入，返回要求相应宿主能力的 Change。blocker.ts／blockable.ts 保留模型与 initialize／resolve／has，Blockable 模型还提供 stableBlockPosition 查询；Catalog 和查询直接依赖模型；公共入口不增加包装。宿主存在性在 Unit.update 应用前统一确认，允许存储中的 LEAVING 对象清理。battle/blocking/index.ts 提供关系查询及 acquire／release／maintain／maintainAll／search／advance，不重复导出 setLayer。relations(battle, ref?) 支持直接读取局部关联并保留原 Ref；release 接收 readonly Relation[]，maintain 接收单条 Relation，均保留双方 Typed Ref 与原关系身份。内部共享的 settleCapacity 不经公共入口导出。
 
 两端共享 unit/capability/blocking/rule.ts 的 Rule，经 capability/blocking/index.ts 导出。唯一签名为 `allows(battle, blocker, blockable)`，参数分别是 BattleState、完整的 Unit & Blocker 和 Unit & Blockable；规则可以查询双方其他能力，不执行状态写入。两端 rules 只表达登记所有者，Blocking 的 canRetain 按相同参数顺序检查双方规则，不提供一元资格查询或各端同义 Rule 类型。Capability 不维护第二个 enabled 开关，Battlefield 也不保存从二元资格投影出的单体 enabled；多个限制按独立 ID 登记与撤销。完整签名及取得、保留与容量的边界见 [关系资格与 Rule](blocking.md#关系资格与-rule)。
 
@@ -180,7 +180,7 @@ Rule 可以读取时间、第三方单位等任意 Battle 事实，系统不跟�
 
 Blocker 的完整 `releaseAll(battle, Ref<Unit & Blocker>): BattleState` 归 blocker-operations.ts，经 Capability index.ts 原名导出。入口读取一次当前宿主，缺失时返回原 BattleState；将当前 blocked 的原 Ref 交给 Blocking.release 批量解除。内部共享的 releaseCaptured(battle, self: Unit & Blocker) 接收已取得的对象，不重新查询宿主，也不经过公共 index.ts。Blocker.prepare 通过公开 releaseAll 清理当前关系，Departure.unit 仅用于取得 Ref；不以离场历史快照恢复当前列表。解除不取消目标的位置计划，不自动维护或搜索。
 
-切换阻挡层使用 `setLayer(Ref<Unit & Blocker>, layer): Change`。transform 只更新 layer／radius；同层请求返回原 Unit，由 update 统一跳过后继；实际变化的 settle 调用 releaseCaptured(battle, previous)，保留 previous.blocker.blocked 的原 Ref 范围。后继不重做 transform、不写回旧 Unit；首个 RELEASED 前本次有效旧集合的双端解除已发布，不附加维护或搜索。混合批次中较早的其他后继可能先处理部分旧关系，不能把切层自身的批量可见性扩为全批首个 RELEASED 的保证。切换不改变自身 Layer、不增加 Hook 或 Contribution；细节见 [Blocking 批次契约](blocking.md#显式关系操作与同步维护)。
+切换阻挡层使用 `setLayer(layer): Change<Unit & Blocker>`。transform 只更新 layer／radius；同层请求返回原 Unit，由 createChange 不登记后继；实际变化的 settle 调用 releaseCaptured(battle, previous)，保留 previous.blocker.blocked 的原 Ref 范围。后继不重做 transform、不写回旧 Unit；首个 RELEASED 前本次有效旧集合的双端解除已发布，不附加维护或搜索。混合批次中较早的其他后继可能先处理部分旧关系，不能把切层自身的批量可见性扩为全批首个 RELEASED 的保证。切换不改变自身 Layer、不增加 Hook 或 Contribution；细节见 [Blocking 批次契约](blocking.md#显式关系操作与同步维护)。
 
 关系归属与关联由两端 State 保存：Blockable.blocker 是唯一 owner 或 null，Blocker.blocked 是按建立顺序保留的目标 Ref 数组。acquire 发布双端与新计划后通知，再复核本次新 Relation 的资格；不扫描整个阻挡组或裁容量。release 入口过滤失效旧身份与重复项，整批发布双端解除，再按首次输入顺序逐条通知；每条仍先 Blocker、后 Blockable，双方 Hook 候选在该条通知开始时同时固定。release 不附加维护、搜索或计划取消。通用发布不补齐或比较关系。同一次关系的身份由正向列表中的 Ref 条目对象承担，重建必须创建新条目，普通字段更新共享既有引用。转移使用完整 Release 和新 Acquire。
 
@@ -202,7 +202,7 @@ Skill 激活先一次性提交支付与新 Activation，再记录 SKILL_ACTIVATE
 
 ## 文件职责
 
-Skill 的程序定义、Activation、SP／Ammo 与完整业务位于 [unit/skill](../../src/core/unit/skill/index.ts)；[capability/skill](../../src/core/unit/capability/skill/index.ts) 保留能力、守卫、initialize 及 Rule／Hook／Ammo 贡献 Change 工厂。Capability Definition 只提供 initialize，State 扩展默认 Skill；程序由 unit.skill.definition 持有。setHook／removeHook 按 Key 保留载荷配对并绑定 Ref；SP 的 setContribution／removeContribution 同样返回 Change，仍归 sp.ts，只登记 recoverySpeed／recoveryMultiplier，不套 Capability 转发。数值输入复用 Input<M,H>，SP 自然回复用 Attribute，Ammo 保留独立公式；配置切换、消费和本轮延时不通过贡献登记。
+Skill 的程序定义、Activation、SP／Ammo 与完整业务位于 [unit/skill](../../src/core/unit/skill/index.ts)；[capability/skill](../../src/core/unit/capability/skill/index.ts) 保留能力、守卫、initialize 及 Rule／Hook／Ammo 贡献 Change 工厂。Capability Definition 只提供 initialize，State 扩展默认 Skill；程序由 unit.skill.definition 持有。setHook／removeHook 按 Key 保留载荷配对并返回要求 Skill Capability 的 Change；SP 的 setContribution／removeContribution 同样返回 Change，仍归 sp.ts，只登记 recoverySpeed／recoveryMultiplier，不套 Capability 转发。数值输入复用 Input<M,H>，SP 自然回复用 Attribute，Ammo 保留独立公式；配置切换、消费和本轮延时不通过贡献登记。
 
 文件按真实领域职责和代码规模划分。完整结算也是纯函数，纯度和参数大小都不能单独决定拆文件。小型内部步骤可以与完整操作同处；具有独立使用与理解价值的规则才单独组织。删除只转发的跳转层，保留 Unit 离场等确有业务顺序的分阶段操作。
 

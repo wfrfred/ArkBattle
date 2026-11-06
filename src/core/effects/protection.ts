@@ -1,4 +1,4 @@
-import { combine } from "../unit/change.js";
+import { compose, type Change, type Settlement } from "../unit/change.js";
 import { update as updateUnit } from "../battle/unit.js";
 
 import type { Definition } from "../unit/effect/index.js";
@@ -35,28 +35,11 @@ export const invincible: Definition<object, targetable.Targetable> = {
 
         return updateUnit(
             state,
-            combine([
-                targetable.setRestriction(units.ref(unit), {
-                    id,
-                    value: invincibleRestriction,
-                }),
-                ...(elemental.hasElemental(unit)
-                    ? [
-                          elemental.setRule(units.ref(unit), "damageRules", {
-                              id,
-                              allows: () => false,
-                          }),
-                      ]
-                    : []),
-                ...(vitality.hasVitality(unit)
-                    ? [
-                          vitality.setRule(units.ref(unit), {
-                              id,
-                              allows: () => false,
-                          }),
-                      ]
-                    : []),
-            ]),
+            units.ref(unit),
+            compose(
+                targetable.setRestriction({ id, value: invincibleRestriction }),
+                receptionRules(id, true),
+            ),
         );
     },
     onDisable(state, self) {
@@ -69,13 +52,8 @@ export const invincible: Definition<object, targetable.Targetable> = {
 
         return updateUnit(
             state,
-            combine([
-                targetable.removeRestriction(units.ref(unit), id),
-                ...(elemental.hasElemental(unit)
-                    ? [elemental.removeRule(units.ref(unit), "damageRules", id)]
-                    : []),
-                ...(vitality.hasVitality(unit) ? [vitality.removeRule(units.ref(unit), id)] : []),
-            ]),
+            units.ref(unit),
+            compose(targetable.removeRestriction(id), receptionRules(id, false)),
         );
     },
 };
@@ -91,7 +69,8 @@ export const healFree: Definition<object, targetable.Targetable> = {
 
         return updateUnit(
             state,
-            targetable.setRestriction(units.ref(unit), {
+            units.ref(unit),
+            targetable.setRestriction({
                 id: `@effect/${self.id}/heal-free`,
                 value: healFreeRestriction,
             }),
@@ -105,7 +84,38 @@ export const healFree: Definition<object, targetable.Targetable> = {
 
         return updateUnit(
             state,
-            targetable.removeRestriction(units.ref(unit), `@effect/${self.id}/heal-free`),
+            units.ref(unit),
+            targetable.removeRestriction(`@effect/${self.id}/heal-free`),
         );
     },
 };
+
+function receptionRules(id: string, enabled: boolean): Change<units.Unit> {
+    const rule = { id, allows: () => false };
+
+    return {
+        apply(self) {
+            let next = self;
+            const settlements: Settlement[] = [];
+
+            if (elemental.hasElemental(next)) {
+                const applied = (
+                    enabled
+                        ? elemental.setRule("damageRules", rule)
+                        : elemental.removeRule("damageRules", id)
+                ).apply(next);
+                next = applied.next;
+                settlements.push(...applied.settlements);
+            }
+            if (vitality.hasVitality(next)) {
+                const applied = (enabled ? vitality.setRule(rule) : vitality.removeRule(id)).apply(
+                    next,
+                );
+                next = applied.next;
+                settlements.push(...applied.settlements);
+            }
+
+            return { next, settlements };
+        },
+    };
+}
