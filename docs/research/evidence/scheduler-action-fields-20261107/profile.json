@@ -1,0 +1,3493 @@
+{
+  "provenance": {
+    "scope": "Finite selected level configurations, not all playable stages or runtime overrides.",
+    "inputs": [
+      "docs/research/evidence/scheduler-action-fields-20261107/action-configs.json",
+      "docs/research/evidence/scheduler-action-fields-20261107/action-types.json"
+    ]
+  },
+  "result": {
+    "files": 39,
+    "actions": 473,
+    "fields": {
+      "actionType": {
+        "missing": 0,
+        "values": [
+          {
+            "value": "SPAWN",
+            "count": 449,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": "ACTIVATE_PREDEFINED",
+            "count": 24,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/branches/dslily_dstnta/phases/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/branches/dslily_dstnta/phases/1/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/branches/dslily_dstnta/phases/2/actions/0"
+              }
+            ]
+          }
+        ]
+      },
+      "managedByScheduler": {
+        "missing": 0,
+        "values": [
+          {
+            "value": true,
+            "count": 473,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          }
+        ]
+      },
+      "key": {
+        "missing": 0,
+        "values": [
+          {
+            "value": "enemy_1005_yokai",
+            "count": 79,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              }
+            ]
+          },
+          {
+            "value": "enemy_1422_lrsldr",
+            "count": 71,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              }
+            ]
+          },
+          {
+            "value": "enemy_1427_lrnazg",
+            "count": 58,
+            "examples": [
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": "enemy_1042_frostd",
+            "count": 57,
+            "examples": [
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9012_acloon",
+            "count": 35,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/branches/dragon/phases/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/branches/dragon/phases/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/branches/dragon/phases/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": "enemy_1425_lrcmra",
+            "count": 24,
+            "examples": [
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              }
+            ]
+          },
+          {
+            "value": "enemy_1040_bombd",
+            "count": 24,
+            "examples": [
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              },
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/9"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/10"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9023_acdums",
+            "count": 9,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_03.json",
+                "pointer": "/waves/0/fragments/0/actions/9"
+              },
+              {
+                "file": "level_act1autochess_h07_03.json",
+                "pointer": "/branches/summon_enemy/phases/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h07_03_s.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              }
+            ]
+          },
+          {
+            "value": "enemy_1006_shield_2",
+            "count": 8,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_01.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              },
+              {
+                "file": "level_act1autochess_h07_01.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              },
+              {
+                "file": "level_act1autochess_h07_01.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              }
+            ]
+          },
+          {
+            "value": "enemy_1000_gopro_2",
+            "count": 7,
+            "examples": [
+              {
+                "file": "level_act1autochess_escaped_multi.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act1autochess_escaped_single.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act2autochess_m01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": "enemy_1438_dspred",
+            "count": 6,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": "trap_039_dstnta#1",
+            "count": 6,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/branches/dslily_dstnta/phases/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/branches/dslily_dstnta/phases/5/actions/1"
+              },
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/branches/dslily_dstnta/phases/6/actions/3"
+              }
+            ]
+          },
+          {
+            "value": "trap_039_dstnta#2",
+            "count": 6,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/branches/dslily_dstnta/phases/1/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/branches/dslily_dstnta/phases/5/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/branches/dslily_dstnta/phases/6/actions/2"
+              }
+            ]
+          },
+          {
+            "value": "trap_039_dstnta#3",
+            "count": 6,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/branches/dslily_dstnta/phases/2/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/branches/dslily_dstnta/phases/4/actions/1"
+              },
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/branches/dslily_dstnta/phases/6/actions/1"
+              }
+            ]
+          },
+          {
+            "value": "trap_039_dstnta#4",
+            "count": 6,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/branches/dslily_dstnta/phases/3/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/branches/dslily_dstnta/phases/4/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/branches/dslily_dstnta/phases/6/actions/0"
+              }
+            ]
+          },
+          {
+            "value": "enemy_1430_lrrook",
+            "count": 4,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_02.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_h07_02.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_h07_02_s.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              }
+            ]
+          },
+          {
+            "value": "enemy_10085_hllevi_2",
+            "count": 4,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_06.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              },
+              {
+                "file": "level_act1autochess_h07_06.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              },
+              {
+                "file": "level_act1autochess_h07_06_s.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9010_acpupp",
+            "count": 4,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_03.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_h08_03.json",
+                "pointer": "/waves/0/fragments/0/actions/9"
+              },
+              {
+                "file": "level_act1autochess_h08_03_s.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9017_achunt",
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_02.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act1autochess_h07_02.json",
+                "pointer": "/branches/boss_battle_multi_player/phases/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h07_02_s.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              }
+            ]
+          },
+          {
+            "value": "enemy_1209_sfden_2",
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_03.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act1autochess_h07_03.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              },
+              {
+                "file": "level_act1autochess_h07_03_s.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              }
+            ]
+          },
+          {
+            "value": "enemy_1067_snslime",
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_07.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              },
+              {
+                "file": "level_act1autochess_h07_07.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act1autochess_h07_07_s.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              }
+            ]
+          },
+          {
+            "value": "enemy_1081_sotisd",
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_07.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              },
+              {
+                "file": "level_act1autochess_h07_07.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              },
+              {
+                "file": "level_act1autochess_h07_07_s.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              }
+            ]
+          },
+          {
+            "value": "enemy_10027_vtsk",
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_01.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              },
+              {
+                "file": "level_act1autochess_h08_01.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              },
+              {
+                "file": "level_act1autochess_h08_01_s.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9017_achunt_2",
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_02.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h08_02.json",
+                "pointer": "/branches/boss_battle_multi_player/phases/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h08_02_s.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9007_acelem",
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_02.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_h08_02.json",
+                "pointer": "/waves/0/fragments/0/actions/9"
+              },
+              {
+                "file": "level_act1autochess_h08_02_s.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              }
+            ]
+          },
+          {
+            "value": "enemy_2009_csaudc",
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act2autochess_h07_05.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act2autochess_h07_05.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              },
+              {
+                "file": "level_act2autochess_h07_05_s.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              }
+            ]
+          },
+          {
+            "value": "enemy_2010_csdcr",
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act2autochess_h07_05.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act2autochess_h07_05.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              },
+              {
+                "file": "level_act2autochess_h07_05_s.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": "enemy_2016_csphtm",
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act2autochess_h07_05.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act2autochess_h07_05.json",
+                "pointer": "/branches/boss_battle_multi_player/phases/0/actions/0"
+              },
+              {
+                "file": "level_act2autochess_h07_05_s.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              }
+            ]
+          },
+          {
+            "value": "enemy_1041_lazerd",
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_escaped_multi.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              },
+              {
+                "file": "level_act1autochess_escaped_single.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9013_acstmk",
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_01.json",
+                "pointer": "/waves/0/fragments/0/actions/10"
+              },
+              {
+                "file": "level_act1autochess_h07_01_s.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9021_acduml",
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_03.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_h07_03_s.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": "enemy_1521_dslily",
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_h07_04_s.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9032_aclionk",
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_06.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act1autochess_h07_06_s.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9033_acdeer",
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_07.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_h07_07_s.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9013_acstmk_2",
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_01.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act1autochess_h08_01_s.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9014_acstma",
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_01.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              },
+              {
+                "file": "level_act1autochess_h08_01_s.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9015_acstmb",
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_01.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_h08_01_s.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9018_actrpa",
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_02.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_h08_02_s.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9019_actrpb",
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_02.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_h08_02_s.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9020_actrpc",
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_02.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_h08_02_s.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9021_acduml_2",
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_03.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h08_03_s.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": "enemy_9022_acdumm",
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_03.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_h08_03_s.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              }
+            ]
+          },
+          {
+            "value": "enemy_1007_slime",
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              }
+            ]
+          }
+        ]
+      },
+      "count": {
+        "missing": 0,
+        "values": [
+          {
+            "value": 1,
+            "count": 237,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/branches/dragon/phases/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/branches/dragon/phases/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              }
+            ]
+          },
+          {
+            "value": 2,
+            "count": 102,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": 3,
+            "count": 88,
+            "examples": [
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": 4,
+            "count": 24,
+            "examples": [
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": 5,
+            "count": 19,
+            "examples": [
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_escaped_multi.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_escaped_multi.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              }
+            ]
+          },
+          {
+            "value": 10,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": 9,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": 8,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/14"
+              }
+            ]
+          }
+        ]
+      },
+      "preDelay": {
+        "missing": 0,
+        "values": [
+          {
+            "value": 0.0,
+            "count": 145,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/branches/dragon/phases/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/branches/dragon/phases/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/branches/dragon/phases/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": 10.0,
+            "count": 42,
+            "examples": [
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_escaped_multi.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_escaped_multi.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              }
+            ]
+          },
+          {
+            "value": 3.0,
+            "count": 40,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": 5.0,
+            "count": 24,
+            "examples": [
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/10"
+              },
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              }
+            ]
+          },
+          {
+            "value": 25.0,
+            "count": 18,
+            "examples": [
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_h01.json",
+                "pointer": "/waves/0/fragments/0/actions/9"
+              },
+              {
+                "file": "level_act1autochess_h03.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              }
+            ]
+          },
+          {
+            "value": 15.0,
+            "count": 17,
+            "examples": [
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/19"
+              }
+            ]
+          },
+          {
+            "value": 17.0,
+            "count": 17,
+            "examples": [
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/9"
+              }
+            ]
+          },
+          {
+            "value": 7.0,
+            "count": 16,
+            "examples": [
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": 12.0,
+            "count": 10,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": 13.0,
+            "count": 8,
+            "examples": [
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/11"
+              },
+              {
+                "file": "level_act1autochess_h01.json",
+                "pointer": "/waves/0/fragments/0/actions/12"
+              }
+            ]
+          },
+          {
+            "value": 22.0,
+            "count": 8,
+            "examples": [
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              },
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/11"
+              },
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              }
+            ]
+          },
+          {
+            "value": 28.0,
+            "count": 8,
+            "examples": [
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_h01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_h01.json",
+                "pointer": "/waves/0/fragments/0/actions/15"
+              }
+            ]
+          },
+          {
+            "value": 2.0,
+            "count": 8,
+            "examples": [
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": 27.0,
+            "count": 7,
+            "examples": [
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/14"
+              }
+            ]
+          },
+          {
+            "value": 20.0,
+            "count": 7,
+            "examples": [
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              },
+              {
+                "file": "level_act1autochess_h02.json",
+                "pointer": "/waves/0/fragments/0/actions/11"
+              }
+            ]
+          },
+          {
+            "value": 21.0,
+            "count": 7,
+            "examples": [
+              {
+                "file": "level_act1autochess_h02.json",
+                "pointer": "/waves/0/fragments/0/actions/14"
+              },
+              {
+                "file": "level_act1autochess_h04.json",
+                "pointer": "/waves/0/fragments/0/actions/20"
+              },
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/13"
+              }
+            ]
+          },
+          {
+            "value": 1.0,
+            "count": 6,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_03.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_h07_03_s.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              },
+              {
+                "file": "level_act1autochess_h08_03.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": 41.0,
+            "count": 5,
+            "examples": [
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/12"
+              },
+              {
+                "file": "level_act1autochess_h02.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_h02.json",
+                "pointer": "/waves/0/fragments/0/actions/12"
+              }
+            ]
+          },
+          {
+            "value": 42.0,
+            "count": 5,
+            "examples": [
+              {
+                "file": "level_act1autochess_h01.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              },
+              {
+                "file": "level_act1autochess_h02.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_h04.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              }
+            ]
+          },
+          {
+            "value": 55.0,
+            "count": 5,
+            "examples": [
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/21"
+              },
+              {
+                "file": "level_act1autochess_h07_03.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": 6.0,
+            "count": 4,
+            "examples": [
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_escaped_single.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              }
+            ]
+          },
+          {
+            "value": 18.0,
+            "count": 4,
+            "examples": [
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              },
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              }
+            ]
+          },
+          {
+            "value": 11.0,
+            "count": 4,
+            "examples": [
+              {
+                "file": "level_act1autochess_h01.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              },
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              },
+              {
+                "file": "level_act1autochess_h08_01.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              }
+            ]
+          },
+          {
+            "value": 35.0,
+            "count": 4,
+            "examples": [
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/27"
+              },
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/24"
+              }
+            ]
+          },
+          {
+            "value": 30.0,
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_h07_02_s.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              }
+            ]
+          },
+          {
+            "value": 9.0,
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/10"
+              },
+              {
+                "file": "level_act1autochess_h01.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              },
+              {
+                "file": "level_act1autochess_h04.json",
+                "pointer": "/waves/0/fragments/0/actions/17"
+              }
+            ]
+          },
+          {
+            "value": 37.0,
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_h01.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": 39.0,
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_h01.json",
+                "pointer": "/waves/0/fragments/0/actions/13"
+              },
+              {
+                "file": "level_act1autochess_h02.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": 45.0,
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_h04.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_h07_04_s.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_h07_07_s.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              }
+            ]
+          },
+          {
+            "value": 60.0,
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_h07_06_s.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act2autochess_h07_05_s.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": 29.0,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/10"
+              }
+            ]
+          },
+          {
+            "value": 16.0,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              }
+            ]
+          },
+          {
+            "value": 31.0,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/9"
+              },
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/10"
+              }
+            ]
+          },
+          {
+            "value": 8.0,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/15"
+              }
+            ]
+          },
+          {
+            "value": 40.0,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              },
+              {
+                "file": "level_act1autochess_h02.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              }
+            ]
+          },
+          {
+            "value": 62.0,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              }
+            ]
+          },
+          {
+            "value": 65.0,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h02.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act2autochess_h07_05.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": 50.0,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h04.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/15"
+              }
+            ]
+          },
+          {
+            "value": 90.0,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_02_s.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_h08_03_s.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              }
+            ]
+          },
+          {
+            "value": 0.1,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_02.json",
+                "pointer": "/branches/boss_battle_multi_player/phases/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h08_02_s.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": 26.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": 14.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": 19.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": 49.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h03.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": 57.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h03.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": 54.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h04.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": 52.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h04.json",
+                "pointer": "/waves/0/fragments/0/actions/13"
+              }
+            ]
+          },
+          {
+            "value": 51.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              }
+            ]
+          },
+          {
+            "value": 53.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              }
+            ]
+          },
+          {
+            "value": 43.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/17"
+              }
+            ]
+          },
+          {
+            "value": 47.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/24"
+              }
+            ]
+          },
+          {
+            "value": 32.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/9"
+              }
+            ]
+          },
+          {
+            "value": 66.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_04.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              }
+            ]
+          },
+          {
+            "value": 70.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_03.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": 110.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_03.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              }
+            ]
+          },
+          {
+            "value": 58.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act2autochess_h07_05.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              }
+            ]
+          }
+        ]
+      },
+      "interval": {
+        "missing": 0,
+        "values": [
+          {
+            "value": 1.0,
+            "count": 153,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/branches/dragon/phases/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/branches/dragon/phases/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/branches/dragon/phases/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": 5.0,
+            "count": 62,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": 10.0,
+            "count": 35,
+            "examples": [
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              }
+            ]
+          },
+          {
+            "value": 20.0,
+            "count": 34,
+            "examples": [
+              {
+                "file": "level_act1autochess_h01.json",
+                "pointer": "/waves/0/fragments/0/actions/14"
+              },
+              {
+                "file": "level_act1autochess_h04.json",
+                "pointer": "/waves/0/fragments/0/actions/10"
+              },
+              {
+                "file": "level_act1autochess_h07_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": 12.0,
+            "count": 23,
+            "examples": [
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/10"
+              }
+            ]
+          },
+          {
+            "value": 8.0,
+            "count": 19,
+            "examples": [
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": 7.0,
+            "count": 17,
+            "examples": [
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              }
+            ]
+          },
+          {
+            "value": 6.0,
+            "count": 14,
+            "examples": [
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              }
+            ]
+          },
+          {
+            "value": 25.0,
+            "count": 12,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_h07_01.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_h07_02_s.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": 30.0,
+            "count": 12,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_02_s.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_h07_06_s.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h07_06_s.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              }
+            ]
+          },
+          {
+            "value": 3.0,
+            "count": 11,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_h01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": 9.0,
+            "count": 11,
+            "examples": [
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              },
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              }
+            ]
+          },
+          {
+            "value": 15.0,
+            "count": 11,
+            "examples": [
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/12"
+              },
+              {
+                "file": "level_act1autochess_h07_02_s.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_h07_06.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              }
+            ]
+          },
+          {
+            "value": 2.0,
+            "count": 10,
+            "examples": [
+              {
+                "file": "level_act1autochess_h04.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h04.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_h04.json",
+                "pointer": "/waves/0/fragments/0/actions/11"
+              }
+            ]
+          },
+          {
+            "value": 50.0,
+            "count": 10,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_02.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_h07_02.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_h07_06_s.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              }
+            ]
+          },
+          {
+            "value": 4.0,
+            "count": 9,
+            "examples": [
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/14"
+              },
+              {
+                "file": "level_act1autochess_h03.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              }
+            ]
+          },
+          {
+            "value": 35.0,
+            "count": 4,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_01.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              },
+              {
+                "file": "level_act1autochess_h07_01.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act1autochess_h07_01.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              }
+            ]
+          },
+          {
+            "value": 0.0,
+            "count": 4,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_02.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act1autochess_h07_02_s.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              },
+              {
+                "file": "level_act2autochess_h07_05.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              }
+            ]
+          },
+          {
+            "value": 40.0,
+            "count": 4,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_03.json",
+                "pointer": "/waves/0/fragments/0/actions/9"
+              },
+              {
+                "file": "level_act1autochess_h07_03_s.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              },
+              {
+                "file": "level_act1autochess_h08_03.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              }
+            ]
+          },
+          {
+            "value": 14.0,
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              }
+            ]
+          },
+          {
+            "value": 11.0,
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/9"
+              },
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/12"
+              },
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/18"
+              }
+            ]
+          },
+          {
+            "value": 17.0,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_h07_07_s.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              }
+            ]
+          },
+          {
+            "value": 21.0,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_04_s.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              },
+              {
+                "file": "level_act1autochess_h07_07_s.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              }
+            ]
+          },
+          {
+            "value": 22.0,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_07.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              },
+              {
+                "file": "level_act1autochess_h07_07.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              }
+            ]
+          },
+          {
+            "value": 27.0,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_07.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              },
+              {
+                "file": "level_act1autochess_h07_07.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              }
+            ]
+          },
+          {
+            "value": 6.5,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": 16.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h02.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              }
+            ]
+          },
+          {
+            "value": 13.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h03.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              }
+            ]
+          },
+          {
+            "value": 18.0,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_01_s.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              }
+            ]
+          }
+        ]
+      },
+      "useExtraRoute": {
+        "missing": 473,
+        "values": []
+      },
+      "routeIndex": {
+        "missing": 0,
+        "values": [
+          {
+            "value": 0,
+            "count": 74,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/branches/dragon/phases/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": 1,
+            "count": 56,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              }
+            ]
+          },
+          {
+            "value": 2,
+            "count": 55,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": 3,
+            "count": 47,
+            "examples": [
+              {
+                "file": "level_act1autochess_02.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              },
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/3"
+              }
+            ]
+          },
+          {
+            "value": 4,
+            "count": 36,
+            "examples": [
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              },
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              }
+            ]
+          },
+          {
+            "value": 5,
+            "count": 34,
+            "examples": [
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              },
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": 6,
+            "count": 28,
+            "examples": [
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              }
+            ]
+          },
+          {
+            "value": 7,
+            "count": 24,
+            "examples": [
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              },
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              }
+            ]
+          },
+          {
+            "value": 8,
+            "count": 20,
+            "examples": [
+              {
+                "file": "level_act1autochess_04.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              }
+            ]
+          },
+          {
+            "value": 9,
+            "count": 15,
+            "examples": [
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/9"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/9"
+              },
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/9"
+              }
+            ]
+          },
+          {
+            "value": 10,
+            "count": 12,
+            "examples": [
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/10"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/10"
+              },
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/10"
+              }
+            ]
+          },
+          {
+            "value": 11,
+            "count": 11,
+            "examples": [
+              {
+                "file": "level_act1autochess_05.json",
+                "pointer": "/waves/0/fragments/0/actions/11"
+              },
+              {
+                "file": "level_act1autochess_06.json",
+                "pointer": "/waves/0/fragments/0/actions/11"
+              },
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/11"
+              }
+            ]
+          },
+          {
+            "value": 12,
+            "count": 9,
+            "examples": [
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/12"
+              },
+              {
+                "file": "level_act1autochess_h01.json",
+                "pointer": "/waves/0/fragments/0/actions/12"
+              },
+              {
+                "file": "level_act1autochess_h02.json",
+                "pointer": "/waves/0/fragments/0/actions/12"
+              }
+            ]
+          },
+          {
+            "value": 13,
+            "count": 9,
+            "examples": [
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/13"
+              },
+              {
+                "file": "level_act1autochess_h01.json",
+                "pointer": "/waves/0/fragments/0/actions/13"
+              },
+              {
+                "file": "level_act1autochess_h02.json",
+                "pointer": "/waves/0/fragments/0/actions/13"
+              }
+            ]
+          },
+          {
+            "value": 14,
+            "count": 9,
+            "examples": [
+              {
+                "file": "level_act1autochess_07.json",
+                "pointer": "/waves/0/fragments/0/actions/14"
+              },
+              {
+                "file": "level_act1autochess_h01.json",
+                "pointer": "/waves/0/fragments/0/actions/14"
+              },
+              {
+                "file": "level_act1autochess_h02.json",
+                "pointer": "/waves/0/fragments/0/actions/14"
+              }
+            ]
+          },
+          {
+            "value": 15,
+            "count": 6,
+            "examples": [
+              {
+                "file": "level_act1autochess_h01.json",
+                "pointer": "/waves/0/fragments/0/actions/15"
+              },
+              {
+                "file": "level_act1autochess_h02.json",
+                "pointer": "/waves/0/fragments/0/actions/15"
+              },
+              {
+                "file": "level_act1autochess_h03.json",
+                "pointer": "/waves/0/fragments/0/actions/15"
+              }
+            ]
+          },
+          {
+            "value": 16,
+            "count": 5,
+            "examples": [
+              {
+                "file": "level_act1autochess_h02.json",
+                "pointer": "/waves/0/fragments/0/actions/16"
+              },
+              {
+                "file": "level_act1autochess_h03.json",
+                "pointer": "/waves/0/fragments/0/actions/16"
+              },
+              {
+                "file": "level_act1autochess_h04.json",
+                "pointer": "/waves/0/fragments/0/actions/16"
+              }
+            ]
+          },
+          {
+            "value": 17,
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_h04.json",
+                "pointer": "/waves/0/fragments/0/actions/17"
+              },
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/17"
+              },
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/17"
+              }
+            ]
+          },
+          {
+            "value": 18,
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_h04.json",
+                "pointer": "/waves/0/fragments/0/actions/18"
+              },
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/18"
+              },
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/18"
+              }
+            ]
+          },
+          {
+            "value": 19,
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_h04.json",
+                "pointer": "/waves/0/fragments/0/actions/19"
+              },
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/19"
+              },
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/19"
+              }
+            ]
+          },
+          {
+            "value": 20,
+            "count": 3,
+            "examples": [
+              {
+                "file": "level_act1autochess_h04.json",
+                "pointer": "/waves/0/fragments/0/actions/20"
+              },
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/20"
+              },
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/20"
+              }
+            ]
+          },
+          {
+            "value": 21,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/21"
+              },
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/21"
+              }
+            ]
+          },
+          {
+            "value": 22,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/22"
+              },
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/22"
+              }
+            ]
+          },
+          {
+            "value": 23,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/23"
+              },
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/23"
+              }
+            ]
+          },
+          {
+            "value": 24,
+            "count": 2,
+            "examples": [
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/24"
+              },
+              {
+                "file": "level_act1autochess_h06.json",
+                "pointer": "/waves/0/fragments/0/actions/24"
+              }
+            ]
+          },
+          {
+            "value": 25,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/25"
+              }
+            ]
+          },
+          {
+            "value": 26,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/26"
+              }
+            ]
+          },
+          {
+            "value": 27,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h05.json",
+                "pointer": "/waves/0/fragments/0/actions/27"
+              }
+            ]
+          }
+        ]
+      },
+      "blockFragment": {
+        "missing": 0,
+        "values": [
+          {
+            "value": false,
+            "count": 473,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          }
+        ]
+      },
+      "autoPreviewRoute": {
+        "missing": 0,
+        "values": [
+          {
+            "value": false,
+            "count": 427,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/branches/dragon/phases/0/actions/0"
+              }
+            ]
+          },
+          {
+            "value": true,
+            "count": 46,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_03.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          }
+        ]
+      },
+      "autoDisplayEnemyInfo": {
+        "missing": 0,
+        "values": [
+          {
+            "value": false,
+            "count": 448,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": true,
+            "count": 25,
+            "examples": [
+              {
+                "file": "level_act1autochess_h07_01.json",
+                "pointer": "/waves/0/fragments/0/actions/10"
+              },
+              {
+                "file": "level_act1autochess_h07_01_s.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              },
+              {
+                "file": "level_act1autochess_h07_02.json",
+                "pointer": "/waves/0/fragments/0/actions/6"
+              }
+            ]
+          }
+        ]
+      },
+      "isUnharmfulAndAlwaysCountAsKilled": {
+        "missing": 0,
+        "values": [
+          {
+            "value": false,
+            "count": 461,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": true,
+            "count": 12,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_01.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              },
+              {
+                "file": "level_act1autochess_h08_01.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_h08_01.json",
+                "pointer": "/branches/left_hand_blink/phases/0/actions/0"
+              }
+            ]
+          }
+        ]
+      },
+      "hiddenGroup": {
+        "missing": 0,
+        "values": [
+          {
+            "value": null,
+            "count": 473,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          }
+        ]
+      },
+      "randomSpawnGroupKey": {
+        "missing": 0,
+        "values": [
+          {
+            "value": null,
+            "count": 459,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": "local",
+            "count": 14,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_01.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              },
+              {
+                "file": "level_act1autochess_h08_01.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_h08_01_s.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              }
+            ]
+          }
+        ]
+      },
+      "randomSpawnGroupPackKey": {
+        "missing": 0,
+        "values": [
+          {
+            "value": null,
+            "count": 459,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": "1",
+            "count": 13,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_01.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              },
+              {
+                "file": "level_act1autochess_h08_01.json",
+                "pointer": "/waves/0/fragments/0/actions/8"
+              },
+              {
+                "file": "level_act1autochess_h08_01_s.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              }
+            ]
+          },
+          {
+            "value": "50",
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_03_s.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              }
+            ]
+          }
+        ]
+      },
+      "randomType": {
+        "missing": 0,
+        "values": [
+          {
+            "value": "ALWAYS",
+            "count": 473,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          }
+        ]
+      },
+      "refreshType": {
+        "missing": 0,
+        "values": [
+          {
+            "value": "ALWAYS",
+            "count": 473,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          }
+        ]
+      },
+      "weight": {
+        "missing": 0,
+        "values": [
+          {
+            "value": 0,
+            "count": 443,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          },
+          {
+            "value": 50,
+            "count": 29,
+            "examples": [
+              {
+                "file": "level_act1autochess_h01.json",
+                "pointer": "/waves/0/fragments/0/actions/7"
+              },
+              {
+                "file": "level_act1autochess_h02.json",
+                "pointer": "/waves/0/fragments/0/actions/4"
+              },
+              {
+                "file": "level_act1autochess_h02.json",
+                "pointer": "/waves/0/fragments/0/actions/5"
+              }
+            ]
+          },
+          {
+            "value": 1,
+            "count": 1,
+            "examples": [
+              {
+                "file": "level_act1autochess_h08_03_s.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              }
+            ]
+          }
+        ]
+      },
+      "dontBlockWave": {
+        "missing": 0,
+        "values": [
+          {
+            "value": false,
+            "count": 473,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          }
+        ]
+      },
+      "forceBlockWaveInBranch": {
+        "missing": 0,
+        "values": [
+          {
+            "value": false,
+            "count": 473,
+            "examples": [
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/0"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/1"
+              },
+              {
+                "file": "level_act1autochess_01.json",
+                "pointer": "/waves/0/fragments/0/actions/2"
+              }
+            ]
+          }
+        ]
+      },
+      "isValid": {
+        "missing": 473,
+        "values": []
+      },
+      "notCountInTotal": {
+        "missing": 473,
+        "values": []
+      },
+      "extraMeta": {
+        "missing": 473,
+        "values": []
+      },
+      "actionId": {
+        "missing": 473,
+        "values": []
+      }
+    },
+    "unknownJsonFields": [],
+    "actionTypes": {
+      "SPAWN": 449,
+      "ACTIVATE_PREDEFINED": 24
+    },
+    "randomActions": [
+      {
+        "file": "level_act1autochess_h08_01.json",
+        "pointer": "/waves/0/fragments/0/actions/7",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_9014_acstma",
+          "count": 1,
+          "preDelay": 0.0,
+          "interval": 1.0,
+          "routeIndex": 7,
+          "blockFragment": false,
+          "autoPreviewRoute": false,
+          "autoDisplayEnemyInfo": true,
+          "isUnharmfulAndAlwaysCountAsKilled": true,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": "local",
+          "randomSpawnGroupPackKey": "1",
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 50,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      },
+      {
+        "file": "level_act1autochess_h08_01.json",
+        "pointer": "/waves/0/fragments/0/actions/8",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_9015_acstmb",
+          "count": 1,
+          "preDelay": 0.0,
+          "interval": 1.0,
+          "routeIndex": 8,
+          "blockFragment": false,
+          "autoPreviewRoute": false,
+          "autoDisplayEnemyInfo": false,
+          "isUnharmfulAndAlwaysCountAsKilled": true,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": "local",
+          "randomSpawnGroupPackKey": "1",
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 50,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      },
+      {
+        "file": "level_act1autochess_h08_01_s.json",
+        "pointer": "/waves/0/fragments/0/actions/4",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_9014_acstma",
+          "count": 1,
+          "preDelay": 0.0,
+          "interval": 1.0,
+          "routeIndex": 4,
+          "blockFragment": false,
+          "autoPreviewRoute": false,
+          "autoDisplayEnemyInfo": true,
+          "isUnharmfulAndAlwaysCountAsKilled": true,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": "local",
+          "randomSpawnGroupPackKey": "1",
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 50,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      },
+      {
+        "file": "level_act1autochess_h08_01_s.json",
+        "pointer": "/waves/0/fragments/0/actions/5",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_9015_acstmb",
+          "count": 1,
+          "preDelay": 0.0,
+          "interval": 1.0,
+          "routeIndex": 5,
+          "blockFragment": false,
+          "autoPreviewRoute": false,
+          "autoDisplayEnemyInfo": false,
+          "isUnharmfulAndAlwaysCountAsKilled": true,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": "local",
+          "randomSpawnGroupPackKey": "1",
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 50,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      },
+      {
+        "file": "level_act1autochess_h08_02.json",
+        "pointer": "/waves/0/fragments/0/actions/1",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_9018_actrpa",
+          "count": 1,
+          "preDelay": 0.0,
+          "interval": 1.0,
+          "routeIndex": 1,
+          "blockFragment": false,
+          "autoPreviewRoute": false,
+          "autoDisplayEnemyInfo": true,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": "local",
+          "randomSpawnGroupPackKey": "1",
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 50,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      },
+      {
+        "file": "level_act1autochess_h08_02.json",
+        "pointer": "/waves/0/fragments/0/actions/2",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_9019_actrpb",
+          "count": 1,
+          "preDelay": 0.0,
+          "interval": 1.0,
+          "routeIndex": 2,
+          "blockFragment": false,
+          "autoPreviewRoute": false,
+          "autoDisplayEnemyInfo": false,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": "local",
+          "randomSpawnGroupPackKey": "1",
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 50,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      },
+      {
+        "file": "level_act1autochess_h08_02.json",
+        "pointer": "/waves/0/fragments/0/actions/3",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_9020_actrpc",
+          "count": 1,
+          "preDelay": 0.0,
+          "interval": 1.0,
+          "routeIndex": 3,
+          "blockFragment": false,
+          "autoPreviewRoute": false,
+          "autoDisplayEnemyInfo": false,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": "local",
+          "randomSpawnGroupPackKey": "1",
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 50,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      },
+      {
+        "file": "level_act1autochess_h08_02_s.json",
+        "pointer": "/waves/0/fragments/0/actions/1",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_9018_actrpa",
+          "count": 1,
+          "preDelay": 0.0,
+          "interval": 1.0,
+          "routeIndex": 1,
+          "blockFragment": false,
+          "autoPreviewRoute": false,
+          "autoDisplayEnemyInfo": true,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": "local",
+          "randomSpawnGroupPackKey": "1",
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 50,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      },
+      {
+        "file": "level_act1autochess_h08_02_s.json",
+        "pointer": "/waves/0/fragments/0/actions/2",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_9019_actrpb",
+          "count": 1,
+          "preDelay": 0.0,
+          "interval": 1.0,
+          "routeIndex": 2,
+          "blockFragment": false,
+          "autoPreviewRoute": false,
+          "autoDisplayEnemyInfo": false,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": "local",
+          "randomSpawnGroupPackKey": "1",
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 50,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      },
+      {
+        "file": "level_act1autochess_h08_02_s.json",
+        "pointer": "/waves/0/fragments/0/actions/3",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_9020_actrpc",
+          "count": 1,
+          "preDelay": 0.0,
+          "interval": 1.0,
+          "routeIndex": 3,
+          "blockFragment": false,
+          "autoPreviewRoute": false,
+          "autoDisplayEnemyInfo": false,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": "local",
+          "randomSpawnGroupPackKey": "1",
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 50,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      },
+      {
+        "file": "level_act1autochess_h08_03.json",
+        "pointer": "/waves/0/fragments/0/actions/1",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_9022_acdumm",
+          "count": 1,
+          "preDelay": 1.0,
+          "interval": 1.0,
+          "routeIndex": 1,
+          "blockFragment": false,
+          "autoPreviewRoute": false,
+          "autoDisplayEnemyInfo": true,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": "local",
+          "randomSpawnGroupPackKey": "1",
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 50,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      },
+      {
+        "file": "level_act1autochess_h08_03.json",
+        "pointer": "/waves/0/fragments/0/actions/6",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_9023_acdums",
+          "count": 2,
+          "preDelay": 0.0,
+          "interval": 40.0,
+          "routeIndex": 6,
+          "blockFragment": false,
+          "autoPreviewRoute": false,
+          "autoDisplayEnemyInfo": false,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": "local",
+          "randomSpawnGroupPackKey": "1",
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 50,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      },
+      {
+        "file": "level_act1autochess_h08_03.json",
+        "pointer": "/waves/0/fragments/0/actions/7",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_9023_acdums",
+          "count": 2,
+          "preDelay": 110.0,
+          "interval": 20.0,
+          "routeIndex": 7,
+          "blockFragment": false,
+          "autoPreviewRoute": false,
+          "autoDisplayEnemyInfo": false,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": "local",
+          "randomSpawnGroupPackKey": "1",
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 50,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      },
+      {
+        "file": "level_act1autochess_h08_03_s.json",
+        "pointer": "/waves/0/fragments/0/actions/1",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_9022_acdumm",
+          "count": 1,
+          "preDelay": 1.0,
+          "interval": 1.0,
+          "routeIndex": 1,
+          "blockFragment": false,
+          "autoPreviewRoute": false,
+          "autoDisplayEnemyInfo": true,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": "local",
+          "randomSpawnGroupPackKey": "50",
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 1,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      }
+    ]
+  }
+}

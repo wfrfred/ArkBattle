@@ -1,0 +1,3539 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "Torappu.Common.dll": {
+          "address": 6577712928,
+          "methodPointers": 6592562080,
+          "count": 6004,
+          "fileBacked": true
+        },
+        "ThirdPartyAssembly.dll": {
+          "address": 6577712272,
+          "methodPointers": 6592454304,
+          "count": 12660,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        },
+        "UnityEngine.UIElementsModule.dll": {
+          "address": 6577900992,
+          "methodPointers": 6592933968,
+          "count": 6132,
+          "fileBacked": true
+        },
+        "System.dll": {
+          "address": 6577628368,
+          "methodPointers": 6592396096,
+          "count": 7003,
+          "fileBacked": true
+        },
+        "Unity.InputSystem.dll": {
+          "address": 6577776016,
+          "methodPointers": 6592616544,
+          "count": 5703,
+          "fileBacked": true
+        },
+        "Unity.Mathematics.dll": {
+          "address": 6577838608,
+          "methodPointers": 6592682032,
+          "count": 9336,
+          "fileBacked": true
+        },
+        "UnityEngine.CoreModule.dll": {
+          "address": 6577886944,
+          "methodPointers": 6592866352,
+          "count": 4154,
+          "fileBacked": true
+        },
+        "System.Xml.dll": {
+          "address": 6577618416,
+          "methodPointers": 6592367840,
+          "count": 3283,
+          "fileBacked": true
+        },
+        "Newtonsoft.Json.dll": {
+          "address": 6577473344,
+          "methodPointers": 6592259616,
+          "count": 2998,
+          "fileBacked": true
+        },
+        "Unity.TextMeshPro.dll": {
+          "address": 6577852240,
+          "methodPointers": 6592835600,
+          "count": 1618,
+          "fileBacked": true
+        },
+        "Sirenix.Serialization.dll": {
+          "address": 6577530576,
+          "methodPointers": 6592309936,
+          "count": 1885,
+          "fileBacked": true
+        },
+        "spine-unity.dll": {
+          "address": 6577560208,
+          "methodPointers": 6592332928,
+          "count": 1982,
+          "fileBacked": true
+        },
+        "protobuf-net.Core.dll": {
+          "address": 6577475616,
+          "methodPointers": 6592285904,
+          "count": 1952,
+          "fileBacked": true
+        },
+        "CriMw.CriWare.Runtime.dll": {
+          "address": 6565019472,
+          "methodPointers": 6587703856,
+          "count": 2565,
+          "fileBacked": true
+        },
+        "UnityEngine.UI.dll": {
+          "address": 6577955760,
+          "methodPointers": 6592996064,
+          "count": 2041,
+          "fileBacked": true
+        },
+        "Cinemachine.dll": {
+          "address": 6564996672,
+          "methodPointers": 6587684464,
+          "count": 1160,
+          "fileBacked": true
+        },
+        "ICSharpCode.SharpZipLib.dll": {
+          "address": 6565040576,
+          "methodPointers": 6587747952,
+          "count": 1256,
+          "fileBacked": true
+        },
+        "DOTween.dll": {
+          "address": 6565028192,
+          "methodPointers": 6587727808,
+          "count": 1188,
+          "fileBacked": true
+        },
+        "System.Core.dll": {
+          "address": 6577602800,
+          "methodPointers": 6592356000,
+          "count": 1117,
+          "fileBacked": true
+        },
+        "UnityEngine.TextCoreTextEngineModule.dll": {
+          "address": 6577900064,
+          "methodPointers": 6592929888,
+          "count": 370,
+          "fileBacked": true
+        },
+        "Unity.Postprocessing.Runtime.dll": {
+          "address": 6577843136,
+          "methodPointers": 6592828752,
+          "count": 810,
+          "fileBacked": true
+        },
+        "Sirenix.Utilities.dll": {
+          "address": 6577549328,
+          "methodPointers": 6592325136,
+          "count": 968,
+          "fileBacked": true
+        },
+        "Mono.Security.dll": {
+          "address": 6577363904,
+          "methodPointers": 6592127104,
+          "count": 562,
+          "fileBacked": true
+        },
+        "UnityEngine.IMGUIModule.dll": {
+          "address": 6577890704,
+          "methodPointers": 6592908944,
+          "count": 724,
+          "fileBacked": true
+        },
+        "Unity.Timeline.dll": {
+          "address": 6577856512,
+          "methodPointers": 6592850304,
+          "count": 876,
+          "fileBacked": true
+        },
+        "Sirenix.OdinInspector.Attributes.dll": {
+          "address": 6577507296,
+          "methodPointers": 6592305952,
+          "count": 462,
+          "fileBacked": true
+        },
+        "System.Collections.Immutable.dll": {
+          "address": 6577584240,
+          "methodPointers": 6592349104,
+          "count": 825,
+          "fileBacked": true
+        },
+        "Hypergryph.OneChannel.dll": {
+          "address": 6565035376,
+          "methodPointers": 6587741424,
+          "count": 755,
+          "fileBacked": true
+        },
+        "ConsolePro.dll": {
+          "address": 6565008736,
+          "methodPointers": 6587697344,
+          "count": 793,
+          "fileBacked": true
+        },
+        "Assembly-CSharp-firstpass.dll": {
+          "address": 6563861904,
+          "methodPointers": 6585841648,
+          "count": 747,
+          "fileBacked": true
+        },
+        "P31RestKit.dll": {
+          "address": 6577475456,
+          "methodPointers": 6592283600,
+          "count": 287,
+          "fileBacked": true
+        },
+        "UnityEngine.ParticleSystemModule.dll": {
+          "address": 6577893824,
+          "methodPointers": 6592916384,
+          "count": 491,
+          "fileBacked": true
+        },
+        "clipper_library.dll": {
+          "address": 6564997696,
+          "methodPointers": 6587695360,
+          "count": 216,
+          "fileBacked": true
+        },
+        "torappu.CrashSight.Standalone.dll": {
+          "address": 6577764784,
+          "methodPointers": 6592613760,
+          "count": 280,
+          "fileBacked": true
+        },
+        "UnityEngine.AnimationModule.dll": {
+          "address": 6577860928,
+          "methodPointers": 6592861456,
+          "count": 366,
+          "fileBacked": true
+        },
+        "UnityEngine.AndroidJNIModule.dll": {
+          "address": 6577859152,
+          "methodPointers": 6592859440,
+          "count": 252,
+          "fileBacked": true
+        },
+        "UnityEngine.UIElementsNativeModule.dll": {
+          "address": 6577945600,
+          "methodPointers": 6592993088,
+          "count": 245,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestModule.dll": {
+          "address": 6577956752,
+          "methodPointers": 6593013680,
+          "count": 143,
+          "fileBacked": true
+        },
+        "DOTween.Modules.dll": {
+          "address": 6565020800,
+          "methodPointers": 6587725728,
+          "count": 235,
+          "fileBacked": true
+        },
+        "System.Xml.Linq.dll": {
+          "address": 6577604992,
+          "methodPointers": 6592365952,
+          "count": 210,
+          "fileBacked": true
+        },
+        "XNode.dll": {
+          "address": 6577960256,
+          "methodPointers": 6593016992,
+          "count": 199,
+          "fileBacked": true
+        },
+        "UnityEngine.PhysicsModule.dll": {
+          "address": 6577895584,
+          "methodPointers": 6592924848,
+          "count": 182,
+          "fileBacked": true
+        },
+        "UnityEngine.Physics2DModule.dll": {
+          "address": 6577894672,
+          "methodPointers": 6592923088,
+          "count": 168,
+          "fileBacked": true
+        },
+        "UnityEngine.TextCoreFontEngineModule.dll": {
+          "address": 6577898160,
+          "methodPointers": 6592927760,
+          "count": 121,
+          "fileBacked": true
+        },
+        "System.Numerics.dll": {
+          "address": 6577603280,
+          "methodPointers": 6592364992,
+          "count": 77,
+          "fileBacked": true
+        },
+        "UnityEngine.AIModule.dll": {
+          "address": 6577857296,
+          "methodPointers": 6592857856,
+          "count": 153,
+          "fileBacked": true
+        },
+        "UnityEngine.AudioModule.dll": {
+          "address": 6577861936,
+          "methodPointers": 6592865360,
+          "count": 96,
+          "fileBacked": true
+        },
+        "UnityEngine.UIModule.dll": {
+          "address": 6577946240,
+          "methodPointers": 6592995136,
+          "count": 116,
+          "fileBacked": true
+        },
+        "Hypergryph.Browser.dll": {
+          "address": 6565029568,
+          "methodPointers": 6587737712,
+          "count": 196,
+          "fileBacked": true
+        },
+        "UnityEngine.XRModule.dll": {
+          "address": 6577958704,
+          "methodPointers": 6593015712,
+          "count": 67,
+          "fileBacked": true
+        },
+        "Torappu.CETest.dll": {
+          "address": 6577712768,
+          "methodPointers": 6592561408,
+          "count": 84,
+          "fileBacked": true
+        },
+        "UnityEngine.TextRenderingModule.dll": {
+          "address": 6577900464,
+          "methodPointers": 6592933088,
+          "count": 50,
+          "fileBacked": true
+        },
+        "UnityEngine.InputLegacyModule.dll": {
+          "address": 6577891168,
+          "methodPointers": 6592915328,
+          "count": 71,
+          "fileBacked": true
+        },
+        "UnityEngine.TerrainModule.dll": {
+          "address": 6577897184,
+          "methodPointers": 6592927408,
+          "count": 41,
+          "fileBacked": true
+        },
+        "UnityEngine.SharedInternalsModule.dll": {
+          "address": 6577896208,
+          "methodPointers": 6592926640,
+          "count": 68,
+          "fileBacked": true
+        },
+        "UnityEngine.TilemapModule.dll": {
+          "address": 6577900816,
+          "methodPointers": 6592933536,
+          "count": 42,
+          "fileBacked": true
+        },
+        "UnityEngine.VFXModule.dll": {
+          "address": 6577957568,
+          "methodPointers": 6593015056,
+          "count": 33,
+          "fileBacked": true
+        },
+        "Sirenix.Serialization.Config.dll": {
+          "address": 6577507568,
+          "methodPointers": 6592309760,
+          "count": 22,
+          "fileBacked": true
+        },
+        "UnityEngine.AssetBundleModule.dll": {
+          "address": 6577861376,
+          "methodPointers": 6592865136,
+          "count": 28,
+          "fileBacked": true
+        },
+        "UnityEngine.SubsystemsModule.dll": {
+          "address": 6577896832,
+          "methodPointers": 6592927184,
+          "count": 28,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestWWWModule.dll": {
+          "address": 6577957232,
+          "methodPointers": 6593014928,
+          "count": 15,
+          "fileBacked": true
+        },
+        "UnityEngine.VideoModule.dll": {
+          "address": 6577957824,
+          "methodPointers": 6593015344,
+          "count": 18,
+          "fileBacked": true
+        },
+        "UnityEngine.DirectorModule.dll": {
+          "address": 6577887264,
+          "methodPointers": 6592908624,
+          "count": 34,
+          "fileBacked": true
+        },
+        "UnityEngine.InputModule.dll": {
+          "address": 6577891424,
+          "methodPointers": 6592916192,
+          "count": 17,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityAnalyticsModule.dll": {
+          "address": 6577955968,
+          "methodPointers": 6593013584,
+          "count": 12,
+          "fileBacked": true
+        },
+        "Hypergryph.EventLogSDK.dll": {
+          "address": 6565030464,
+          "methodPointers": 6587739280,
+          "count": 181,
+          "fileBacked": true
+        },
+        "UnityEngine.JSONSerializeModule.dll": {
+          "address": 6577891680,
+          "methodPointers": 6592916328,
+          "count": 7,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestTextureModule.dll": {
+          "address": 6577956976,
+          "methodPointers": 6593014832,
+          "count": 12,
+          "fileBacked": true
+        },
+        "UnityEngine.VRModule.dll": {
+          "address": 6577958032,
+          "methodPointers": 6593015520,
+          "count": 10,
+          "fileBacked": true
+        },
+        "Torappu.Sofdec.dll": {
+          "address": 6577765232,
+          "methodPointers": 6592616000,
+          "count": 66,
+          "fileBacked": true
+        },
+        "UnityEngine.ImageConversionModule.dll": {
+          "address": 6577887632,
+          "methodPointers": 6592908904,
+          "count": 4,
+          "fileBacked": true
+        },
+        "UnityEngine.WindModule.dll": {
+          "address": 6577958256,
+          "methodPointers": 6593015600,
+          "count": 13,
+          "fileBacked": true
+        },
+        "UnityEngine.GridModule.dll": {
+          "address": 6577887440,
+          "methodPointers": 6592908896,
+          "count": 1,
+          "fileBacked": true
+        },
+        "UnityEngine.ScreenCaptureModule.dll": {
+          "address": 6577895760,
+          "methodPointers": 6592926624,
+          "count": 1,
+          "fileBacked": true
+        },
+        "Hypergryph.GameUpdate.dll": {
+          "address": 6565030928,
+          "methodPointers": 6587740736,
+          "count": 71,
+          "fileBacked": true
+        },
+        "Unity.Profiling.Core.dll": {
+          "address": 6577843520,
+          "methodPointers": 6592835264,
+          "count": 41,
+          "fileBacked": true
+        },
+        "System.Configuration.dll": {
+          "address": 6577584560,
+          "methodPointers": 6592355712,
+          "count": 35,
+          "fileBacked": true
+        },
+        "System.Runtime.Serialization.dll": {
+          "address": 6577603664,
+          "methodPointers": 6592365904,
+          "count": 6,
+          "fileBacked": true
+        },
+        "System.Runtime.CompilerServices.Unsafe.dll": {
+          "address": 6577603456,
+          "methodPointers": 6592365888,
+          "count": 2,
+          "fileBacked": true
+        },
+        "Unity.MemoryProfiler.dll": {
+          "address": 6577838800,
+          "methodPointers": 6592828688,
+          "count": 8,
+          "fileBacked": true
+        },
+        "CriMw.CriWare.Vp9.Runtime.dll": {
+          "address": 6565019680,
+          "methodPointers": 6587725648,
+          "count": 10,
+          "fileBacked": true
+        },
+        "Hypergryph.Log.dll": {
+          "address": 6565031152,
+          "methodPointers": 6587741312,
+          "count": 14,
+          "fileBacked": true
+        },
+        "XNode.Groups.dll": {
+          "address": 6577959056,
+          "methodPointers": 6593016960,
+          "count": 3,
+          "fileBacked": true
+        },
+        "AntiSDK.dll": {
+          "address": 6563858064,
+          "methodPointers": 6585841616,
+          "count": 3,
+          "fileBacked": true
+        },
+        "Torappu.UICommonEditor.dll": {
+          "address": 6577765408,
+          "methodPointers": 6592616528,
+          "count": 2,
+          "fileBacked": true
+        },
+        "enum2int.dll": {
+          "address": 6565028352,
+          "methodPointers": 6593280072,
+          "count": 2,
+          "fileBacked": false
+        },
+        "__Generated": {
+          "address": 6577960432,
+          "methodPointers": 6593018584,
+          "count": 3,
+          "fileBacked": true
+        }
+      }
+    }
+  },
+  "result": [
+    {
+      "nameIndex": 3070468,
+      "namespaceIndex": 16,
+      "byvalTypeIndex": 98923,
+      "declaringTypeIndex": 55833,
+      "parentIndex": 98931,
+      "elementTypeIndex": 98923,
+      "genericContainerIndex": -1,
+      "flags": 1048578,
+      "fieldStart": 94836,
+      "methodStart": 82865,
+      "eventStart": -1,
+      "propertyStart": 10923,
+      "nestedTypesStart": 5272,
+      "interfacesStart": -1,
+      "vtableStart": 116151,
+      "interfaceOffsetsStart": 12852,
+      "reserved": 2530,
+      "methodCount": 86,
+      "propertyCount": 14,
+      "fieldCount": 48,
+      "eventCount": 0,
+      "nestedTypeCount": 17,
+      "vtableCount": 234,
+      "interfacesCount": 0,
+      "interfaceOffsetsCount": 2,
+      "bitfield": 3080,
+      "token": 33566588,
+      "index": 12190,
+      "name": "AutoChessGameMode",
+      "namespace": "",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode",
+      "fields": [
+        {
+          "nameIndex": 3071711,
+          "typeIndex": 45648,
+          "token": 67203701,
+          "index": 94836,
+          "name": "OUTLINE_CONFIG",
+          "typeName": "Torappu.BattleOutlineConfig",
+          "static": true,
+          "offset": 0,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3071726,
+          "typeIndex": 78554,
+          "token": 67203702,
+          "index": 94837,
+          "name": "AUTOCHESS_VALID_HANDTILE_CUSTOM_HIGHLIGHT",
+          "typeName": "string",
+          "static": true,
+          "offset": 24,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3071768,
+          "typeIndex": 78554,
+          "token": 67203703,
+          "index": 94838,
+          "name": "AUTOCHESS_VALID_HANDTILE_CUSTOM_EMISSION",
+          "typeName": "string",
+          "static": true,
+          "offset": 32,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3062,
+          "typeIndex": 52361,
+          "token": 67203704,
+          "index": 94839,
+          "name": "_c__Hotfix0_ctor",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 40,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3062813,
+          "typeIndex": 52361,
+          "token": 67203705,
+          "index": 94840,
+          "name": "__Hotfix0_get_gameModeType",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 48,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3071809,
+          "typeIndex": 52361,
+          "token": 67203706,
+          "index": 94841,
+          "name": "__Hotfix0_get_allowPoolManagerUnload",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 56,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3071846,
+          "typeIndex": 52361,
+          "token": 67203707,
+          "index": 94842,
+          "name": "__Hotfix0_get_allowPoolManagerReleasePolicy",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 64,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3071890,
+          "typeIndex": 52361,
+          "token": 67203708,
+          "index": 94843,
+          "name": "__Hotfix0_get_isLargeMap",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 72,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3009448,
+          "typeIndex": 52361,
+          "token": 67203709,
+          "index": 94844,
+          "name": "__Hotfix0_get_isMultiLayerMap",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 80,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3071915,
+          "typeIndex": 52361,
+          "token": 67203710,
+          "index": 94845,
+          "name": "__Hotfix0_get_isLowMemoryGameMode",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 88,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3071949,
+          "typeIndex": 52361,
+          "token": 67203711,
+          "index": 94846,
+          "name": "__Hotfix0_get_outlineConfig",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 96,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3069751,
+          "typeIndex": 52361,
+          "token": 67203712,
+          "index": 94847,
+          "name": "__Hotfix0_get_hasExtraBuildCondition",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 104,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3071977,
+          "typeIndex": 52361,
+          "token": 67203713,
+          "index": 94848,
+          "name": "__Hotfix0_get_useLevelBgm",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 112,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3072003,
+          "typeIndex": 52361,
+          "token": 67203714,
+          "index": 94849,
+          "name": "__Hotfix0_get_doDefaultSchedule",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 120,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3072035,
+          "typeIndex": 52361,
+          "token": 67203715,
+          "index": 94850,
+          "name": "__Hotfix0_get_isSupportSlowMotion",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 128,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3069632,
+          "typeIndex": 52361,
+          "token": 67203716,
+          "index": 94851,
+          "name": "__Hotfix0_get_allowManualTick",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 136,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2490844,
+          "typeIndex": 52361,
+          "token": 67203717,
+          "index": 94852,
+          "name": "__Hotfix0_get_enablePause",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 144,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3072069,
+          "typeIndex": 52361,
+          "token": 67203718,
+          "index": 94853,
+          "name": "__Hotfix0_get_enableParticleEffectManager",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 152,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2491112,
+          "typeIndex": 52361,
+          "token": 67203719,
+          "index": 94854,
+          "name": "__Hotfix0_FinishGame",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 160,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3069788,
+          "typeIndex": 52361,
+          "token": 67203720,
+          "index": 94855,
+          "name": "__Hotfix0_GetCompleteProgress",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 168,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1384293,
+          "typeIndex": 52361,
+          "token": 67203721,
+          "index": 94856,
+          "name": "__Hotfix0_Tick",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 176,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1839448,
+          "typeIndex": 52361,
+          "token": 67203722,
+          "index": 94857,
+          "name": "__Hotfix0_CheckBuildable",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 184,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3072111,
+          "typeIndex": 52361,
+          "token": 67203723,
+          "index": 94858,
+          "name": "__Hotfix0__CheckBuildableInPrepare",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 192,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3072146,
+          "typeIndex": 52361,
+          "token": 67203724,
+          "index": 94859,
+          "name": "__Hotfix0__CheckBuildableInBattle",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 200,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3072180,
+          "typeIndex": 52361,
+          "token": 67203725,
+          "index": 94860,
+          "name": "__Hotfix0_IsSkillClickable",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 208,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3064680,
+          "typeIndex": 52361,
+          "token": 67203726,
+          "index": 94861,
+          "name": "__Hotfix0_HookEnemyReachedExitAudio",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 216,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1930507,
+          "typeIndex": 52361,
+          "token": 67203727,
+          "index": 94862,
+          "name": "__Hotfix0_OnPostInit",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 224,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1395177,
+          "typeIndex": 52361,
+          "token": 67203728,
+          "index": 94863,
+          "name": "__Hotfix0_StartGame",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 232,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3072207,
+          "typeIndex": 52361,
+          "token": 67203729,
+          "index": 94864,
+          "name": "__Hotfix0__RegisterBattleTasks",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 240,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3064618,
+          "typeIndex": 52361,
+          "token": 67203730,
+          "index": 94865,
+          "name": "__Hotfix0_GameNotFinishCondition",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 248,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3066371,
+          "typeIndex": 52361,
+          "token": 67203731,
+          "index": 94866,
+          "name": "__Hotfix0_GetActMeta",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 256,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3066339,
+          "typeIndex": 52361,
+          "token": 67203732,
+          "index": 94867,
+          "name": "__Hotfix0_GetBattleCompleteRank",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 264,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3064556,
+          "typeIndex": 52361,
+          "token": 67203733,
+          "index": 94868,
+          "name": "__Hotfix0_PreprocessLevelData",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 272,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3010186,
+          "typeIndex": 52361,
+          "token": 67203734,
+          "index": 94869,
+          "name": "__Hotfix0_PreprocessEnemy",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 280,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3072238,
+          "typeIndex": 52361,
+          "token": 67203735,
+          "index": 94870,
+          "name": "__Hotfix0_EnableGlobalBuffExtraData",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 288,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2349300,
+          "typeIndex": 52361,
+          "token": 67203736,
+          "index": 94871,
+          "name": "__Hotfix0_DestroyEntity",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 296,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3010212,
+          "typeIndex": 52361,
+          "token": 67203737,
+          "index": 94872,
+          "name": "__Hotfix0_OnEntityApplyModifier",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 304,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2496006,
+          "typeIndex": 52361,
+          "token": 67203738,
+          "index": 94873,
+          "name": "__Hotfix0_OnEnemyFinished",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 312,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3010323,
+          "typeIndex": 52361,
+          "token": 67203739,
+          "index": 94874,
+          "name": "__Hotfix0_OnEnemyReachExit",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 320,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3010244,
+          "typeIndex": 52361,
+          "token": 67203740,
+          "index": 94875,
+          "name": "__Hotfix0_OnUnitRegistered",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 328,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3072274,
+          "typeIndex": 52361,
+          "token": 67203741,
+          "index": 94876,
+          "name": "__Hotfix0_HookSpeedLevel",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 336,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3064651,
+          "typeIndex": 52361,
+          "token": 67203742,
+          "index": 94877,
+          "name": "__Hotfix0_OnPlayerLifeToZero",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 344,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3072299,
+          "typeIndex": 52361,
+          "token": 67203743,
+          "index": 94878,
+          "name": "__Hotfix0_TrySetTileHighlightType",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 352,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3072333,
+          "typeIndex": 52361,
+          "token": 67203744,
+          "index": 94879,
+          "name": "__Hotfix0_TryGetCustomTileHighlightColor",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 360,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3072374,
+          "typeIndex": 52361,
+          "token": 67203745,
+          "index": 94880,
+          "name": "__Hotfix0_FetchValidMapGrids",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 368,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3072403,
+          "typeIndex": 52361,
+          "token": 67203746,
+          "index": 94881,
+          "name": "__Hotfix0_GetPlayerSideOnMap",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 376,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3072432,
+          "typeIndex": 52361,
+          "token": 67203747,
+          "index": 94882,
+          "name": "__Hotfix0__GetPlayerSideOnMap",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 384,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3072462,
+          "typeIndex": 52361,
+          "token": 67203748,
+          "index": 94883,
+          "name": "__Hotfix0_CheckRenderInvisible",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 392,
+          "unboxedOffset": null
+        }
+      ],
+      "methods": [
+        {
+          "nameIndex": 107,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81141,
+          "genericContainerIndex": -1,
+          "token": 100746162,
+          "flags": 6278,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 82865,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455446048,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode..ctor",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 20632,
+              "token": 134298877,
+              "typeIndex": 31847,
+              "index": 81141,
+              "name": "meta",
+              "typeName": "Torappu.Battle.GameModeMeta&"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3062675,
+          "declaringType": 12190,
+          "returnType": 98970,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746163,
+          "flags": 2246,
+          "iflags": 0,
+          "slot": 137,
+          "parameterCount": 0,
+          "index": 82866,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455446944,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_gameModeType",
+          "returnTypeName": "Torappu.Battle.GameModeMeta/GameModeType",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3070486,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746164,
+          "flags": 2246,
+          "iflags": 0,
+          "slot": 139,
+          "parameterCount": 0,
+          "index": 82867,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455446496,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_allowPoolManagerUnload",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3070513,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746165,
+          "flags": 2246,
+          "iflags": 0,
+          "slot": 140,
+          "parameterCount": 0,
+          "index": 82868,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455446304,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_allowPoolManagerReleasePolicy",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3070547,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746166,
+          "flags": 2246,
+          "iflags": 0,
+          "slot": 121,
+          "parameterCount": 0,
+          "index": 82869,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455447168,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_isLargeMap",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3007292,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746167,
+          "flags": 2246,
+          "iflags": 0,
+          "slot": 122,
+          "parameterCount": 0,
+          "index": 82870,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455447392,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_isMultiLayerMap",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3070562,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746168,
+          "flags": 2246,
+          "iflags": 0,
+          "slot": 127,
+          "parameterCount": 0,
+          "index": 82871,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455447280,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_isLowMemoryGameMode",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3070586,
+          "declaringType": 12190,
+          "returnType": 45645,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746169,
+          "flags": 2246,
+          "iflags": 0,
+          "slot": 128,
+          "parameterCount": 0,
+          "index": 82872,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455447696,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_outlineConfig",
+          "returnTypeName": "Torappu.BattleOutlineConfig",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3068841,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746170,
+          "flags": 2246,
+          "iflags": 0,
+          "slot": 123,
+          "parameterCount": 0,
+          "index": 82873,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455447056,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_hasExtraBuildCondition",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3070604,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746171,
+          "flags": 2246,
+          "iflags": 0,
+          "slot": 126,
+          "parameterCount": 0,
+          "index": 82874,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455447872,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_useLevelBgm",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3070620,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746172,
+          "flags": 2246,
+          "iflags": 0,
+          "slot": 125,
+          "parameterCount": 0,
+          "index": 82875,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455446608,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_doDefaultSchedule",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3070642,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746173,
+          "flags": 2246,
+          "iflags": 0,
+          "slot": 124,
+          "parameterCount": 0,
+          "index": 82876,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455447584,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_isSupportSlowMotion",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3068752,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746174,
+          "flags": 2246,
+          "iflags": 0,
+          "slot": 119,
+          "parameterCount": 0,
+          "index": 82877,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455446192,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_allowManualTick",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2478596,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746175,
+          "flags": 2246,
+          "iflags": 0,
+          "slot": 134,
+          "parameterCount": 0,
+          "index": 82878,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455446832,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_enablePause",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3070666,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746176,
+          "flags": 2246,
+          "iflags": 0,
+          "slot": 129,
+          "parameterCount": 0,
+          "index": 82879,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455446720,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_enableParticleEffectManager",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2478773,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81142,
+          "genericContainerIndex": -1,
+          "token": 100746177,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 206,
+          "parameterCount": 3,
+          "index": 82880,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455435552,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.FinishGame",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 3070698,
+              "token": 134298878,
+              "typeIndex": 6867,
+              "index": 81142,
+              "name": "gameFinishCallback",
+              "typeName": "type(kind=0x15, data=0x188d91308)"
+            },
+            {
+              "nameIndex": 4554,
+              "token": 134298879,
+              "typeIndex": 93068,
+              "index": 81143,
+              "name": "result",
+              "typeName": "Torappu.Battle.BattleController/GameResult"
+            },
+            {
+              "nameIndex": 2478745,
+              "token": 134298880,
+              "typeIndex": 46049,
+              "index": 81144,
+              "name": "silent",
+              "typeName": "bool"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3068868,
+          "declaringType": 12190,
+          "returnType": 76377,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746178,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 149,
+          "parameterCount": 0,
+          "index": 82881,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455436592,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.GetCompleteProgress",
+          "returnTypeName": "float",
+          "parameters": []
+        },
+        {
+          "nameIndex": 391641,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81145,
+          "genericContainerIndex": -1,
+          "token": 100746179,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 147,
+          "parameterCount": 1,
+          "index": 82882,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455440784,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.Tick",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 3007611,
+              "token": 134298881,
+              "typeIndex": 40685,
+              "index": 81145,
+              "name": "doDefaultTick",
+              "typeName": "System.Action"
+            }
+          ]
+        },
+        {
+          "nameIndex": 1837498,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": 81146,
+          "genericContainerIndex": -1,
+          "token": 100746180,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 174,
+          "parameterCount": 7,
+          "index": 82883,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455433696,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.CheckBuildable",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2542459,
+              "token": 134298882,
+              "typeIndex": 46385,
+              "index": 81146,
+              "name": "buildCondition",
+              "typeName": "Torappu.Battle.BuildCondition"
+            },
+            {
+              "nameIndex": 1957,
+              "token": 134298883,
+              "typeIndex": 80093,
+              "index": 81147,
+              "name": "tile",
+              "typeName": "Torappu.Battle.Tile"
+            },
+            {
+              "nameIndex": 523294,
+              "token": 134298884,
+              "typeIndex": 109140,
+              "index": 81148,
+              "name": "direction",
+              "typeName": "Torappu.SharedConsts/Direction"
+            },
+            {
+              "nameIndex": 2481000,
+              "token": 134298885,
+              "typeIndex": 46024,
+              "index": 81149,
+              "name": "spawnManually",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2479409,
+              "token": 134298886,
+              "typeIndex": 46024,
+              "index": 81150,
+              "name": "overflowOccupiedCnt",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2479398,
+              "token": 134298887,
+              "typeIndex": 45448,
+              "index": 81151,
+              "name": "sourceData",
+              "typeName": "Torappu.Battle.BattleCharacterData"
+            },
+            {
+              "nameIndex": 2788598,
+              "token": 134298888,
+              "typeIndex": 65995,
+              "index": 81152,
+              "name": "operationSide",
+              "typeName": "Torappu.PlayerSide"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3070717,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": 81153,
+          "genericContainerIndex": -1,
+          "token": 100746181,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 6,
+          "index": 82884,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455442608,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode._CheckBuildableInPrepare",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2542459,
+              "token": 134298889,
+              "typeIndex": 46385,
+              "index": 81153,
+              "name": "buildCondition",
+              "typeName": "Torappu.Battle.BuildCondition"
+            },
+            {
+              "nameIndex": 1957,
+              "token": 134298890,
+              "typeIndex": 80093,
+              "index": 81154,
+              "name": "tile",
+              "typeName": "Torappu.Battle.Tile"
+            },
+            {
+              "nameIndex": 523294,
+              "token": 134298891,
+              "typeIndex": 109140,
+              "index": 81155,
+              "name": "direction",
+              "typeName": "Torappu.SharedConsts/Direction"
+            },
+            {
+              "nameIndex": 2481000,
+              "token": 134298892,
+              "typeIndex": 46024,
+              "index": 81156,
+              "name": "spawnManually",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2479409,
+              "token": 134298893,
+              "typeIndex": 46024,
+              "index": 81157,
+              "name": "overflowOccupiedCnt",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2479398,
+              "token": 134298894,
+              "typeIndex": 45448,
+              "index": 81158,
+              "name": "sourceData",
+              "typeName": "Torappu.Battle.BattleCharacterData"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3070742,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": 81159,
+          "genericContainerIndex": -1,
+          "token": 100746182,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 6,
+          "index": 82885,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441920,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode._CheckBuildableInBattle",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2542459,
+              "token": 134298895,
+              "typeIndex": 46385,
+              "index": 81159,
+              "name": "buildCondition",
+              "typeName": "Torappu.Battle.BuildCondition"
+            },
+            {
+              "nameIndex": 1957,
+              "token": 134298896,
+              "typeIndex": 80093,
+              "index": 81160,
+              "name": "tile",
+              "typeName": "Torappu.Battle.Tile"
+            },
+            {
+              "nameIndex": 523294,
+              "token": 134298897,
+              "typeIndex": 109140,
+              "index": 81161,
+              "name": "direction",
+              "typeName": "Torappu.SharedConsts/Direction"
+            },
+            {
+              "nameIndex": 2481000,
+              "token": 134298898,
+              "typeIndex": 46024,
+              "index": 81162,
+              "name": "spawnManually",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2479409,
+              "token": 134298899,
+              "typeIndex": 46024,
+              "index": 81163,
+              "name": "overflowOccupiedCnt",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2479398,
+              "token": 134298900,
+              "typeIndex": 45448,
+              "index": 81164,
+              "name": "sourceData",
+              "typeName": "Torappu.Battle.BattleCharacterData"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3070766,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746183,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 176,
+          "parameterCount": 0,
+          "index": 82886,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455437776,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.IsSkillClickable",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3063522,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": 81165,
+          "genericContainerIndex": -1,
+          "token": 100746184,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 198,
+          "parameterCount": 1,
+          "index": 82887,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455437056,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.HookEnemyReachedExitAudio",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 5972,
+              "token": 134298901,
+              "typeIndex": 53407,
+              "index": 81165,
+              "name": "enemy",
+              "typeName": "Torappu.Battle.Enemy"
+            }
+          ]
+        },
+        {
+          "nameIndex": 1929782,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746185,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 144,
+          "parameterCount": 0,
+          "index": 82888,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455438768,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.OnPostInit",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        {
+          "nameIndex": 1395009,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81166,
+          "genericContainerIndex": -1,
+          "token": 100746186,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 145,
+          "parameterCount": 1,
+          "index": 82889,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455440368,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.StartGame",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 3063465,
+              "token": 134298902,
+              "typeIndex": 40685,
+              "index": 81166,
+              "name": "doDefaultStart",
+              "typeName": "System.Action"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3070783,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746187,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82890,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455443984,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode._RegisterBattleTasks",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3063480,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746188,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 173,
+          "parameterCount": 0,
+          "index": 82891,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455435808,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.GameNotFinishCondition",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3065358,
+          "declaringType": 12190,
+          "returnType": 64329,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746189,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 207,
+          "parameterCount": 0,
+          "index": 82892,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455436000,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.GetActMeta",
+          "returnTypeName": "object",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3065336,
+          "declaringType": 12190,
+          "returnType": 65527,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746190,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 208,
+          "parameterCount": 0,
+          "index": 82893,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455436384,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.GetBattleCompleteRank",
+          "returnTypeName": "Torappu.PlayerBattleRank",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3063409,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81167,
+          "genericContainerIndex": -1,
+          "token": 100746191,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 158,
+          "parameterCount": 1,
+          "index": 82894,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455440176,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.PreprocessLevelData",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 1037564,
+              "token": 134298903,
+              "typeIndex": 61373,
+              "index": 81167,
+              "name": "levelData",
+              "typeName": "Torappu.LevelData"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3007780,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81168,
+          "genericContainerIndex": -1,
+          "token": 100746192,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 169,
+          "parameterCount": 1,
+          "index": 82895,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455439952,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.PreprocessEnemy",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 1749,
+              "token": 134298904,
+              "typeIndex": 100824,
+              "index": 81168,
+              "name": "data",
+              "typeName": "Torappu.LevelData/EnemyData"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3070804,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": 81169,
+          "genericContainerIndex": -1,
+          "token": 100746193,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 199,
+          "parameterCount": 2,
+          "index": 82896,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455434992,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.EnableGlobalBuffExtraData",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 382745,
+              "token": 134298905,
+              "typeIndex": 56085,
+              "index": 81169,
+              "name": "buff",
+              "typeName": "Torappu.Battle.GlobalBuff"
+            },
+            {
+              "nameIndex": 1749,
+              "token": 134298906,
+              "typeIndex": 100828,
+              "index": 81170,
+              "name": "data",
+              "typeName": "Torappu.LevelData/GlobalBuffData"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2349132,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81171,
+          "genericContainerIndex": -1,
+          "token": 100746194,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 215,
+          "parameterCount": 2,
+          "index": 82897,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455434720,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.DestroyEntity",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 5934,
+              "token": 134298907,
+              "typeIndex": 53921,
+              "index": 81171,
+              "name": "entity",
+              "typeName": "Torappu.Battle.Entity"
+            },
+            {
+              "nameIndex": 16408,
+              "token": 134298908,
+              "typeIndex": 98014,
+              "index": 81172,
+              "name": "reason",
+              "typeName": "Torappu.Battle.Entity/FinishReason"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3007796,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": 81173,
+          "genericContainerIndex": -1,
+          "token": 100746195,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 213,
+          "parameterCount": 2,
+          "index": 82898,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455438384,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.OnEntityApplyModifier",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 5934,
+              "token": 134298909,
+              "typeIndex": 53921,
+              "index": 81173,
+              "name": "entity",
+              "typeName": "Torappu.Battle.Entity"
+            },
+            {
+              "nameIndex": 512949,
+              "token": 134298910,
+              "typeIndex": 31991,
+              "index": 81174,
+              "name": "modifier",
+              "typeName": "Torappu.Battle.Modifier&"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2482703,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81175,
+          "genericContainerIndex": -1,
+          "token": 100746196,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 187,
+          "parameterCount": 2,
+          "index": 82899,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455437888,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.OnEnemyFinished",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 5972,
+              "token": 134298911,
+              "typeIndex": 53407,
+              "index": 81175,
+              "name": "enemy",
+              "typeName": "Torappu.Battle.Enemy"
+            },
+            {
+              "nameIndex": 16408,
+              "token": 134298912,
+              "typeIndex": 98014,
+              "index": 81176,
+              "name": "reason",
+              "typeName": "Torappu.Battle.Entity/FinishReason"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3007867,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81177,
+          "genericContainerIndex": -1,
+          "token": 100746197,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 217,
+          "parameterCount": 2,
+          "index": 82900,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455438144,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.OnEnemyReachExit",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 5972,
+              "token": 134298913,
+              "typeIndex": 53407,
+              "index": 81177,
+              "name": "enemy",
+              "typeName": "Torappu.Battle.Enemy"
+            },
+            {
+              "nameIndex": 3065326,
+              "token": 134298914,
+              "typeIndex": 80093,
+              "index": 81178,
+              "name": "cacheTile",
+              "typeName": "Torappu.Battle.Tile"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3007818,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81179,
+          "genericContainerIndex": -1,
+          "token": 100746198,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 184,
+          "parameterCount": 1,
+          "index": 82901,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455439728,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.OnUnitRegistered",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 888822,
+              "token": 134298915,
+              "typeIndex": 83419,
+              "index": 81179,
+              "name": "unit",
+              "typeName": "Torappu.Battle.Unit"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3070847,
+          "declaringType": 12190,
+          "returnType": 77396,
+          "parameterStart": 81180,
+          "genericContainerIndex": -1,
+          "token": 100746199,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 182,
+          "parameterCount": 1,
+          "index": 82902,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455437568,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.HookSpeedLevel",
+          "returnTypeName": "Torappu.Battle.SpeedLevel",
+          "parameters": [
+            {
+              "nameIndex": 3070830,
+              "token": 134298916,
+              "typeIndex": 77396,
+              "index": 81180,
+              "name": "originSpeedLevel",
+              "typeName": "Torappu.Battle.SpeedLevel"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3063503,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81181,
+          "genericContainerIndex": -1,
+          "token": 100746200,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 216,
+          "parameterCount": 1,
+          "index": 82903,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455438640,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.OnPlayerLifeToZero",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 1412069,
+              "token": 134298917,
+              "typeIndex": 65990,
+              "index": 81181,
+              "name": "side",
+              "typeName": "Torappu.PlayerSide"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3070862,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": 81182,
+          "genericContainerIndex": -1,
+          "token": 100746201,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 219,
+          "parameterCount": 3,
+          "index": 82904,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441296,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.TrySetTileHighlightType",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 1957,
+              "token": 134298918,
+              "typeIndex": 80093,
+              "index": 81182,
+              "name": "tile",
+              "typeName": "Torappu.Battle.Tile"
+            },
+            {
+              "nameIndex": 2479455,
+              "token": 134298919,
+              "typeIndex": 46024,
+              "index": 81183,
+              "name": "isBuildable",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2479398,
+              "token": 134298920,
+              "typeIndex": 45448,
+              "index": 81184,
+              "name": "sourceData",
+              "typeName": "Torappu.Battle.BattleCharacterData"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3070898,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": 81185,
+          "genericContainerIndex": -1,
+          "token": 100746202,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 220,
+          "parameterCount": 2,
+          "index": 82905,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441008,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.TryGetCustomTileHighlightColor",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 3070886,
+              "token": 134298921,
+              "typeIndex": 31743,
+              "index": 81185,
+              "name": "customColor",
+              "typeName": "UnityEngine.Color&"
+            },
+            {
+              "nameIndex": 1295811,
+              "token": 134298922,
+              "typeIndex": 31743,
+              "index": 81186,
+              "name": "emissionColor",
+              "typeName": "UnityEngine.Color&"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3070929,
+          "declaringType": 12190,
+          "returnType": 14725,
+          "parameterStart": 81187,
+          "genericContainerIndex": -1,
+          "token": 100746203,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 227,
+          "parameterCount": 1,
+          "index": 82906,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455435296,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.FetchValidMapGrids",
+          "returnTypeName": "type(kind=0x15, data=0x188d21ed8)",
+          "parameters": [
+            {
+              "nameIndex": 2477975,
+              "token": 134298923,
+              "typeIndex": 62244,
+              "index": 81187,
+              "name": "mapLayer",
+              "typeName": "Torappu.MapLayer"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3070959,
+          "declaringType": 12190,
+          "returnType": 65990,
+          "parameterStart": 81188,
+          "genericContainerIndex": -1,
+          "token": 100746204,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 233,
+          "parameterCount": 2,
+          "index": 82907,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455436752,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.GetPlayerSideOnMap",
+          "returnTypeName": "Torappu.PlayerSide",
+          "parameters": [
+            {
+              "nameIndex": 6665,
+              "token": 134298924,
+              "typeIndex": 53921,
+              "index": 81188,
+              "name": "target",
+              "typeName": "Torappu.Battle.Entity"
+            },
+            {
+              "nameIndex": 3070948,
+              "token": 134298925,
+              "typeIndex": 80093,
+              "index": 81189,
+              "name": "locateTile",
+              "typeName": "Torappu.Battle.Tile"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3070978,
+          "declaringType": 12190,
+          "returnType": 65990,
+          "parameterStart": 81190,
+          "genericContainerIndex": -1,
+          "token": 100746205,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 82908,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455443536,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode._GetPlayerSideOnMap",
+          "returnTypeName": "Torappu.PlayerSide",
+          "parameters": [
+            {
+              "nameIndex": 6665,
+              "token": 134298926,
+              "typeIndex": 53921,
+              "index": 81190,
+              "name": "target",
+              "typeName": "Torappu.Battle.Entity"
+            },
+            {
+              "nameIndex": 3070948,
+              "token": 134298927,
+              "typeIndex": 80093,
+              "index": 81191,
+              "name": "locateTile",
+              "typeName": "Torappu.Battle.Tile"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3070998,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": 81192,
+          "genericContainerIndex": -1,
+          "token": 100746206,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 204,
+          "parameterCount": 2,
+          "index": 82909,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455434448,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.CheckRenderInvisible",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 5934,
+              "token": 134298928,
+              "typeIndex": 53921,
+              "index": 81192,
+              "name": "entity",
+              "typeName": "Torappu.Battle.Entity"
+            },
+            {
+              "nameIndex": 71303,
+              "token": 134298929,
+              "typeIndex": 45667,
+              "index": 81193,
+              "name": "mask",
+              "typeName": "Torappu.BattleRenderInvisibleMask"
+            }
+          ]
+        },
+        {
+          "nameIndex": 1088,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746207,
+          "flags": 6289,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82910,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455445744,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode..cctor",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3062731,
+          "declaringType": 12190,
+          "returnType": 98970,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746208,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82911,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455353312,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_gameModeType",
+          "returnTypeName": "Torappu.Battle.GameModeMeta/GameModeType",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3071019,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746209,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82912,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441728,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_allowPoolManagerUnload",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3071062,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746210,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82913,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441712,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_allowPoolManagerReleasePolicy",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3071112,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746211,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82914,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441792,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_isLargeMap",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3071143,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746212,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82915,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441824,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_isMultiLayerMap",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3071179,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746213,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82916,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441808,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_isLowMemoryGameMode",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3071219,
+          "declaringType": 12190,
+          "returnType": 45645,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746214,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82917,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441856,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_outlineConfig",
+          "returnTypeName": "Torappu.BattleOutlineConfig",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3069297,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746215,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82918,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455414816,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_hasExtraBuildCondition",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3071253,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746216,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82919,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441904,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_useLevelBgm",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3071285,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746217,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82920,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441744,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_doDefaultSchedule",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3071323,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746218,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82921,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441840,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_isSupportSlowMotion",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3069160,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746219,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82922,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455414784,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_allowManualTick",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2946474,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746220,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82923,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441776,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_enablePause",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3071363,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746221,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82924,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441760,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_enableParticleEffectManager",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3069418,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81194,
+          "genericContainerIndex": -1,
+          "token": 100746222,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 3,
+          "index": 82925,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455414672,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_FinishGame",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298930,
+              "typeIndex": 6867,
+              "index": 81194,
+              "name": "P0",
+              "typeName": "type(kind=0x15, data=0x188d91308)"
+            },
+            {
+              "nameIndex": 2175,
+              "token": 134298931,
+              "typeIndex": 93068,
+              "index": 81195,
+              "name": "P1",
+              "typeName": "Torappu.Battle.BattleController/GameResult"
+            },
+            {
+              "nameIndex": 1965770,
+              "token": 134298932,
+              "typeIndex": 46024,
+              "index": 81196,
+              "name": "P2",
+              "typeName": "bool"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3069340,
+          "declaringType": 12190,
+          "returnType": 76377,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746223,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82926,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455414688,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_GetCompleteProgress",
+          "returnTypeName": "float",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2258846,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81197,
+          "genericContainerIndex": -1,
+          "token": 100746224,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 82927,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455353296,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_Tick",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298933,
+              "typeIndex": 40685,
+              "index": 81197,
+              "name": "P0",
+              "typeName": "System.Action"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2546052,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": 81198,
+          "genericContainerIndex": -1,
+          "token": 100746225,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 7,
+          "index": 82928,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455414512,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_CheckBuildable",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298934,
+              "typeIndex": 46385,
+              "index": 81198,
+              "name": "P0",
+              "typeName": "Torappu.Battle.BuildCondition"
+            },
+            {
+              "nameIndex": 2175,
+              "token": 134298935,
+              "typeIndex": 80093,
+              "index": 81199,
+              "name": "P1",
+              "typeName": "Torappu.Battle.Tile"
+            },
+            {
+              "nameIndex": 1965770,
+              "token": 134298936,
+              "typeIndex": 109140,
+              "index": 81200,
+              "name": "P2",
+              "typeName": "Torappu.SharedConsts/Direction"
+            },
+            {
+              "nameIndex": 1967701,
+              "token": 134298937,
+              "typeIndex": 46024,
+              "index": 81201,
+              "name": "P3",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2757536,
+              "token": 134298938,
+              "typeIndex": 46024,
+              "index": 81202,
+              "name": "P4",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 3069445,
+              "token": 134298939,
+              "typeIndex": 45448,
+              "index": 81203,
+              "name": "P5",
+              "typeName": "Torappu.Battle.BattleCharacterData"
+            },
+            {
+              "nameIndex": 3069448,
+              "token": 134298940,
+              "typeIndex": 65990,
+              "index": 81204,
+              "name": "P6",
+              "typeName": "Torappu.PlayerSide"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3071411,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746226,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82929,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441648,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_IsSkillClickable",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3064036,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": 81205,
+          "genericContainerIndex": -1,
+          "token": 100746227,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 82930,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455361488,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_HookEnemyReachedExitAudio",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298941,
+              "typeIndex": 53407,
+              "index": 81205,
+              "name": "P0",
+              "typeName": "Torappu.Battle.Enemy"
+            }
+          ]
+        },
+        {
+          "nameIndex": 1930094,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746228,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82931,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441664,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_OnPostInit",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3063871,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81206,
+          "genericContainerIndex": -1,
+          "token": 100746229,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 82932,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455361600,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_StartGame",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298942,
+              "typeIndex": 40685,
+              "index": 81206,
+              "name": "P0",
+              "typeName": "System.Action"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3063962,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746230,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82933,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455361472,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_GameNotFinishCondition",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3065702,
+          "declaringType": 12190,
+          "returnType": 64329,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746231,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82934,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455375632,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_GetActMeta",
+          "returnTypeName": "object",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3065664,
+          "declaringType": 12190,
+          "returnType": 65527,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746232,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82935,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455375648,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_GetBattleCompleteRank",
+          "returnTypeName": "Torappu.PlayerBattleRank",
+          "parameters": []
+        },
+        {
+          "nameIndex": 3063797,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81207,
+          "genericContainerIndex": -1,
+          "token": 100746233,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 82936,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455361584,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_PreprocessLevelData",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298943,
+              "typeIndex": 61373,
+              "index": 81207,
+              "name": "P0",
+              "typeName": "Torappu.LevelData"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3069567,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81208,
+          "genericContainerIndex": -1,
+          "token": 100746234,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 82937,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455414752,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_PreprocessEnemy",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298944,
+              "typeIndex": 100824,
+              "index": 81208,
+              "name": "P0",
+              "typeName": "Torappu.LevelData/EnemyData"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3071444,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": 81209,
+          "genericContainerIndex": -1,
+          "token": 100746235,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 82938,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441584,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_EnableGlobalBuffExtraData",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298945,
+              "typeIndex": 56085,
+              "index": 81209,
+              "name": "P0",
+              "typeName": "Torappu.Battle.GlobalBuff"
+            },
+            {
+              "nameIndex": 2175,
+              "token": 134298946,
+              "typeIndex": 100828,
+              "index": 81210,
+              "name": "P1",
+              "typeName": "Torappu.LevelData/GlobalBuffData"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2349153,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81211,
+          "genericContainerIndex": -1,
+          "token": 100746236,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 82939,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441568,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_DestroyEntity",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298947,
+              "typeIndex": 53921,
+              "index": 81211,
+              "name": "P0",
+              "typeName": "Torappu.Battle.Entity"
+            },
+            {
+              "nameIndex": 2175,
+              "token": 134298948,
+              "typeIndex": 98014,
+              "index": 81212,
+              "name": "P1",
+              "typeName": "Torappu.Battle.Entity/FinishReason"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3065557,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": 81213,
+          "genericContainerIndex": -1,
+          "token": 100746237,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 82940,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455375760,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_OnEntityApplyModifier",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298949,
+              "typeIndex": 53921,
+              "index": 81213,
+              "name": "P0",
+              "typeName": "Torappu.Battle.Entity"
+            },
+            {
+              "nameIndex": 2175,
+              "token": 134298950,
+              "typeIndex": 31991,
+              "index": 81214,
+              "name": "P1",
+              "typeName": "Torappu.Battle.Modifier&"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3063930,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81215,
+          "genericContainerIndex": -1,
+          "token": 100746238,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 82941,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455361536,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_OnEnemyFinished",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298951,
+              "typeIndex": 53407,
+              "index": 81215,
+              "name": "P0",
+              "typeName": "Torappu.Battle.Enemy"
+            },
+            {
+              "nameIndex": 2175,
+              "token": 134298952,
+              "typeIndex": 98014,
+              "index": 81216,
+              "name": "P1",
+              "typeName": "Torappu.Battle.Entity/FinishReason"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3065595,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81217,
+          "genericContainerIndex": -1,
+          "token": 100746239,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 82942,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455375744,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_OnEnemyReachExit",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298953,
+              "typeIndex": 53407,
+              "index": 81217,
+              "name": "P0",
+              "typeName": "Torappu.Battle.Enemy"
+            },
+            {
+              "nameIndex": 2175,
+              "token": 134298954,
+              "typeIndex": 80093,
+              "index": 81218,
+              "name": "P1",
+              "typeName": "Torappu.Battle.Tile"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3063897,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81219,
+          "genericContainerIndex": -1,
+          "token": 100746240,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 82943,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455361568,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_OnUnitRegistered",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298955,
+              "typeIndex": 83419,
+              "index": 81219,
+              "name": "P0",
+              "typeName": "Torappu.Battle.Unit"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3071486,
+          "declaringType": 12190,
+          "returnType": 77396,
+          "parameterStart": 81220,
+          "genericContainerIndex": -1,
+          "token": 100746241,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 82944,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441632,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_HookSpeedLevel",
+          "returnTypeName": "Torappu.Battle.SpeedLevel",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298956,
+              "typeIndex": 77396,
+              "index": 81220,
+              "name": "P0",
+              "typeName": "Torappu.Battle.SpeedLevel"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3064001,
+          "declaringType": 12190,
+          "returnType": 84484,
+          "parameterStart": 81221,
+          "genericContainerIndex": -1,
+          "token": 100746242,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 82945,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455361552,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_OnPlayerLifeToZero",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298957,
+              "typeIndex": 65990,
+              "index": 81221,
+              "name": "P0",
+              "typeName": "Torappu.PlayerSide"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3071517,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": 81222,
+          "genericContainerIndex": -1,
+          "token": 100746243,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 3,
+          "index": 82946,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441696,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_TrySetTileHighlightType",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298958,
+              "typeIndex": 80093,
+              "index": 81222,
+              "name": "P0",
+              "typeName": "Torappu.Battle.Tile"
+            },
+            {
+              "nameIndex": 2175,
+              "token": 134298959,
+              "typeIndex": 46024,
+              "index": 81223,
+              "name": "P1",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 1965770,
+              "token": 134298960,
+              "typeIndex": 45448,
+              "index": 81224,
+              "name": "P2",
+              "typeName": "Torappu.Battle.BattleCharacterData"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3071557,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": 81225,
+          "genericContainerIndex": -1,
+          "token": 100746244,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 82947,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441680,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_TryGetCustomTileHighlightColor",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298961,
+              "typeIndex": 31743,
+              "index": 81225,
+              "name": "P0",
+              "typeName": "UnityEngine.Color&"
+            },
+            {
+              "nameIndex": 2175,
+              "token": 134298962,
+              "typeIndex": 31743,
+              "index": 81226,
+              "name": "P1",
+              "typeName": "UnityEngine.Color&"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3071604,
+          "declaringType": 12190,
+          "returnType": 14725,
+          "parameterStart": 81227,
+          "genericContainerIndex": -1,
+          "token": 100746245,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 82948,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441600,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_FetchValidMapGrids",
+          "returnTypeName": "type(kind=0x15, data=0x188d21ed8)",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298963,
+              "typeIndex": 62244,
+              "index": 81227,
+              "name": "P0",
+              "typeName": "Torappu.MapLayer"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3071639,
+          "declaringType": 12190,
+          "returnType": 65990,
+          "parameterStart": 81228,
+          "genericContainerIndex": -1,
+          "token": 100746246,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 82949,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441616,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_GetPlayerSideOnMap",
+          "returnTypeName": "Torappu.PlayerSide",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298964,
+              "typeIndex": 53921,
+              "index": 81228,
+              "name": "P0",
+              "typeName": "Torappu.Battle.Entity"
+            },
+            {
+              "nameIndex": 2175,
+              "token": 134298965,
+              "typeIndex": 80093,
+              "index": 81229,
+              "name": "P1",
+              "typeName": "Torappu.Battle.Tile"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3071674,
+          "declaringType": 12190,
+          "returnType": 46024,
+          "parameterStart": 81230,
+          "genericContainerIndex": -1,
+          "token": 100746247,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 82950,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455441552,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_CheckRenderInvisible",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2172,
+              "token": 134298966,
+              "typeIndex": 53921,
+              "index": 81230,
+              "name": "P0",
+              "typeName": "Torappu.Battle.Entity"
+            },
+            {
+              "nameIndex": 2175,
+              "token": 134298967,
+              "typeIndex": 45667,
+              "index": 81231,
+              "name": "P1",
+              "typeName": "Torappu.BattleRenderInvisibleMask"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

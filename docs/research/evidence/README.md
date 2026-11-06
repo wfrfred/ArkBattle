@@ -86,3 +86,6 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | [ep-modifier-events-20261103](ep-modifier-events-20261103/README.md) | EP 的通用 Modifier 与专属接收／后置事件；浮空信件同时观察 HP／EP 前置时点的实际资源绑定 |
 | [healing-settlement-20261103](healing-settlement-20261103/README.md) | HP／EP 治疗的计算、共用 Modifier、专属接收／后置、逐型恢复与医师／行医的真实命中组合 |
 | [damage-output-order-20261103](damage-output-order-20261103/README.md) | 目标前置与来源输出的有限反例查找；羽毛笔／禁闭所真实选取资格、事件位置与候选排除 |
+| [schedule-level-structure-20261106](schedule-level-structure-20261106/README.md) | 两份关卡的主线、Fragment 与命名 Branch 配置 |
+| [scheduler-native-20261107](scheduler-native-20261107/README.md) | 分支启动、Phase 随机、隐藏组、出生及调度账本 |
+| [scheduler-action-fields-20261107](scheduler-action-fields-20261107/README.md) | ActionData 24 字段及 39 份配置；分支出生选项、预处理与卫戍模板替换，未闭合项见案例 30 |

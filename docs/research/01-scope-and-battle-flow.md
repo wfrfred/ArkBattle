@@ -151,6 +151,8 @@ Buff 派发期间增删实例的完整可见性、延迟命中与技能切换同
 
 ## 6. 官方 Scheduler 已确认的语义
 
+ActionData 的逐字段证据、配置覆盖与 Data 接入前缺口集中维护在[案例 30](cases/30-scheduler-action-data-fields.md)。以下执行链摘要不表示所有字段已完成调查。
+
 主波次 `_DealWave`（71369）记录 `userFixedPlayTime`，执行 preDelay，逐片段执行，之后检查波次阻塞，最后执行 postDelay。
 `maxTimeWaitingForNextWave` 的计时起点是片段／队列执行完成后进入等待时，不是 wave 开始时。
 最后一波不靠该最大等待时间提前放行；超时只释放本波阻塞集合，不移除存活敌人。

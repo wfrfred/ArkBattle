@@ -1,0 +1,206 @@
+{
+  "provenance": {
+    "repository": "Kengxxiao/ArknightsGameData",
+    "revision": "bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d",
+    "transport": "GitHub connector; whitespace may be reformatted",
+    "hashDefinition": "Complete parsed source, JSON ensure_ascii=False, sort_keys=True, separators=(',', ':'); not Git raw blob hash.",
+    "selection": "All 6 files in act2autochess plus 33 act1autochess files excluding maps, training and enemy_data; not a proof that all files are active this season."
+  },
+  "result": [
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_01.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_01.json",
+      "canonicalJsonSha256": "a1e4378127fe1d6c66c181ad4e5cf5ed1fa7da74d7cff601753675740106d8ac"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_02.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_02.json",
+      "canonicalJsonSha256": "a38456cd6241d5e44698bbd0cdcfe5ba0563f8894143b5fb7e7cc5c739b1e956"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_03.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_03.json",
+      "canonicalJsonSha256": "20fbb16b925b760a1814eca012cd5381d892a03465807979e3720c3e1ef36af2"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_04.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_04.json",
+      "canonicalJsonSha256": "42d2a24010d9628a3556101da6a3b6ca10c170dfd01323b27fd79581570f65f8"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_05.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_05.json",
+      "canonicalJsonSha256": "aa05fa0d0fdc781366d327d372171341805a1dd8a46a928d42af7b88dc04b34f"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_06.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_06.json",
+      "canonicalJsonSha256": "922041db343883ba458e17bf61a021e9c2ab40741f8ec2c98bf28c1677d5b3b3"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_07.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_07.json",
+      "canonicalJsonSha256": "151f36af420641470b1a299f3b6a55b0be3c13940e6e3aeed12938d04f46b9e2"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_escaped_multi.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_escaped_multi.json",
+      "canonicalJsonSha256": "9339f40b447e088a94406261644070553d4edb47f5d6793081d618076fd9e1b3"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_escaped_single.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_escaped_single.json",
+      "canonicalJsonSha256": "4edd2365e279fde02f941ffcf566a8001ca64ce3f3c402a8f2a8ff7b8f619b96"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h01.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h01.json",
+      "canonicalJsonSha256": "1a2487bea6d8609a9bbfcd2a89e25c23232b9afd8fc0ec87bf8a7e1271022cf2"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h02.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h02.json",
+      "canonicalJsonSha256": "73de557b9cf1f271fed3e2cc0ad9e4ba79c762ab2f854f9a6278ec3de348e267"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h03.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h03.json",
+      "canonicalJsonSha256": "2f0ff42efa6b57301be54dab217783cbc614c7999277b8d03c6d50660fc941f2"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h04.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h04.json",
+      "canonicalJsonSha256": "a6e8a7815a6e8638842b7f24ea635a8d08061c3defdd5181a3adaa0b83653866"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h05.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h05.json",
+      "canonicalJsonSha256": "79d4533b295616f911d4cf374c486a4513a244f0206431bfbd3a17e77f8f9ca8"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h06.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h06.json",
+      "canonicalJsonSha256": "5211b1c87cbe6746ec1e1c0b972f34a72ddb9e0cba31a8eca9fe2f2215a605c1"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_01.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_01.json",
+      "canonicalJsonSha256": "2cecf93ca9604f0b73c037f89e24c82e29883fcfe7b269b1ae018c1f7ac956ed"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_01_s.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_01_s.json",
+      "canonicalJsonSha256": "eeccb7d033250acbd6d1acafa80987599a23304fc2da04f747294af9c0e0421d"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_02.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_02.json",
+      "canonicalJsonSha256": "460f7a35add14bdb6d9fd1247efe09341bce8c0ef4054b90c0c01580533b0de1"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_02_s.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_02_s.json",
+      "canonicalJsonSha256": "40bdcc2b6048ceab27769fda56707e115a88d1a826aab30fecaabef00fc1e2ec"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_03.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_03.json",
+      "canonicalJsonSha256": "28dca008ad0daf36a195238aa2b55e135f434de5946819f9d3ae27bd254e8d17"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_03_s.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_03_s.json",
+      "canonicalJsonSha256": "fa0fc9210bd19452171288536dd79b7d0cd40a6ea25e030ca58073e17aabbde0"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_04.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_04.json",
+      "canonicalJsonSha256": "9bfdf9bea271dfbe3ca46071fd00d55dc96d5b127373259baf253d65d6425fe6"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_04_s.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_04_s.json",
+      "canonicalJsonSha256": "960a8b82f2374a7ab3739dbc2e1960e52cd8fb08a6c46b104930cb3a390cb397"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_06.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_06.json",
+      "canonicalJsonSha256": "5668c687087499248c5d1ed7afb7495542b1b74f5a0d1232426304ec73de3841"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_06_s.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_06_s.json",
+      "canonicalJsonSha256": "e18906b16dc0c2133856f04b5e1961eeae6e3dd6f7256fed6440493858738ce4"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_07.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_07.json",
+      "canonicalJsonSha256": "06b4178a603406cb2af3ae7767e4149aff08ceb9d585cd8ee67b3fbc012f4820"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_07_s.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_07_s.json",
+      "canonicalJsonSha256": "567214cf0bebbcc01e5c0aa1fa43ddb00af6c5fdbdd4694747b2a5b21c451dcc"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h08_01.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h08_01.json",
+      "canonicalJsonSha256": "4369f05dc8a93e207dcd6cd04d39efa8abf1c10915d60fca241cc6ab62e1f035"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h08_01_s.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h08_01_s.json",
+      "canonicalJsonSha256": "65f8df9449da56da7f89e3253be3904b82d39b91caa2ae866eb03b91d30013ba"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h08_02.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h08_02.json",
+      "canonicalJsonSha256": "ff3c13affc9c84cdbd2dfc46a0170f8cb9bce8122c0674a61f7ab6355bc620bf"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h08_02_s.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h08_02_s.json",
+      "canonicalJsonSha256": "8a17f9530c174f193fd3b1cd960b34dee3f0e18f30d544128e421c3f220f8dc9"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h08_03.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h08_03.json",
+      "canonicalJsonSha256": "6047dc099eacd53a54eb8b76482468236c8aedf20cc20b19c74fd2e21d579285"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h08_03_s.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h08_03_s.json",
+      "canonicalJsonSha256": "d1c46c26cfa4396dcf03eb9e597ec511fa8296efc9099e75b2dcff1ccc0d438f"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_h07_05.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_h07_05.json",
+      "canonicalJsonSha256": "41ea3b472c9d34766e8a3a35d129025af3ca0f8d472372e0931151c94931ca2a"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_h07_05_s.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_h07_05_s.json",
+      "canonicalJsonSha256": "cc2ae0ba94b9fb51786248a22b2326a1f94b1a4831a9801b49b199897b348b8d"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m01.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m01.json",
+      "canonicalJsonSha256": "64508c6e873a2a335184001edd3366c13855870807c021a76365c6798d7c6d8c"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m02.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m02.json",
+      "canonicalJsonSha256": "072a80cfa7c5eae5570b96081b732e97ed88c95b5c8de33e852a1c29d86c2633"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m03.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m03.json",
+      "canonicalJsonSha256": "346d90f1a31ee56a5a366800a6cb572b65b16702e88baef0e675bccfc63a8c6a"
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+      "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+      "canonicalJsonSha256": "8216622aecebfb20c36d24f35c329697c1542dd12ede2743a203231cbae56d1f"
+    }
+  ]
+}
