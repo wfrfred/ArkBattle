@@ -38,7 +38,7 @@ Navigation 内部维护可变派生缓存，不进入 BattleState，也不需要
 - 不可达时返回 null；能够追踪目标时保留精确世界坐标，实际移动与到达由消费方判断。
 - 路径计算及缓存保持确定结果。Hash 数值、缓存键、对象共享和命中次数属于内部实现，不形成独立玩法验收目标。
 
-Battlefield 的纯存储、地块写回与完整 Battle 操作边界见 [Battlefield](battlefield.md)。下文的类型与算法说明用于解释这些语义，不要求按每个字段或内部函数分别建立验收场景。Route／Locomotion 的既有章节保留其各自的执行契约。
+Battlefield 的纯存储、地块写回与完整 Battle 操作边界见 [Battlefield](battlefield.md)。下文的类型与算法说明用于解释这些语义，不要求按每个字段或内部函数分别建立验收场景。Route 与 [Schedule](schedule.md) 一并重设计，已确认初始化与数据归属边界；完整 Checkpoint／Progress 和替代路线接口仍需逐项审查。Navigation、Locomotion 的已审查职责不因此改变。
 
 ## State 与公共操作
 
@@ -127,110 +127,28 @@ Field、build、queryField 均不属于调用方使用 Navigation 所需的公�
 - 地图内的不可达路点直接利用 nextPoint 的 null 结果反馈给 Route，决定等待或跳过。当前不增加独立可达性查询、失败原因联合类型或额外的 Navigation API。
 - 地图外的位置恢复目标由 Route 的追踪点查询协调，Locomotion 负责实际位移及空间约束，不要求 Navigation 为此扩张返回类型。
 - 每 Tick 等待最多计时一次、路点可以连续推进、移动只消费一次预算。移动前后如何组织 Route 结算可以采用简单、确定的项目顺序，不强制复制客户端调用位置。
-- 路线出生偏移在 Spawn 构造最终 Definition 前采样，保存在 Definition.offset 中。移动路点仅使用固定 position 与 offset，不保留尚无配置需求的路点随机开关和可配置到达半径。
+- 静态 Route Definition 保存固定偏移与随机范围；每次出生采样的偏移保存于 Route 实例状态，初始 Unit.position 与路线计算使用同一样本。主路线与临时替代路线的样本各自配对，不将一个样本无条件应用于所有路线。
 - Route Definition 不保留 allowDiagonalMove、visitEveryTileCenter、visitEveryNodeCenter。Locomotion 若需要其他运动执行进度，由 Unit 持有，不藏进导航缓存。
 
 Locomotion 使用原生 Steering、八邻域地形避障和目的格反射。局部力每次积分时计算，不保存刷新缓存或计数器；完整 Unity 刚体系统及推拉不属于普通自主移动。
 
 ## Route 定义与进度
 
-Route 将不可变指令与对应执行进度配对。主路线和临时替代路线使用同一结构，各自引用对应的不可变 Definition；相同定义在实例与快照之间直接共享：
+Route 将不可变规则与对应实例事实配对：Definition 保存起终点、运动方式、Checkpoints、固定偏移、随机范围和完成政策；实例保存本次偏移、出生时间锚点、当前通行方式及执行进度。UnitDefinition 在出生前已经完整，实例化不改变其对象身份。
+
+等待指令保留相对时间语义，以下为表达示例；完整 Checkpoint 和 Progress 结构继续审查：
 
 ```typescript
-export type Checkpoint =
-    | {
-          readonly type: "MOVE";
-          readonly position: TilePosition;
-          readonly offset: WorldPosition;
-      }
-    | { readonly type: "WAIT"; readonly tick: number }
+type Checkpoint =
+    | { readonly type: "WAIT"; readonly durationTicks: number }
     | { readonly type: "WAIT_UNTIL"; readonly tick: number }
-    | {
-          readonly type: "APPEAR_AT_POS";
-          readonly position: TilePosition;
-          readonly offset: WorldPosition;
-      }
-    | { readonly type: "DISAPPEAR" }
-    | { readonly type: "ALERT" }
-    | { readonly type: "GOTO"; readonly index: number };
-
-export interface Definition {
-    readonly motionMode: MotionMode;
-    readonly startPosition: TilePosition;
-    readonly endPosition: TilePosition;
-    readonly offset: WorldPosition;
-    readonly checkpoints: readonly Checkpoint[];
-    readonly requireAllCheckpoints: boolean;
-    readonly alwaysCheckCurrentPoint: boolean;
-}
-
-export type CheckpointState =
-    | { readonly type: "PENDING" }
-    | { readonly type: "MOVING" }
-    | {
-          readonly type: "WAITING";
-          readonly deadlineTick: number;
-      }
-    | { readonly type: "CONSUMED" };
-
-export type Phase =
-    | {
-          readonly type: "CHECKPOINT";
-          readonly index: number;
-          readonly checkpointState: CheckpointState;
-      }
-    | { readonly type: "END" }
-    | { readonly type: "COMPLETED" };
-
-export interface Progress {
-    readonly definition: Definition;
-    readonly motionMode: MotionMode;
-    readonly phase: Phase;
-}
-
-export interface State {
-    readonly main: Progress;
-    readonly alternative: Progress | null;
-}
-
-export interface Route {
-    readonly definition: {
-        readonly route: Definition;
-    };
-    readonly route: State;
-}
-
-export function initialize<U extends Unit & Pick<Route, "definition">>(
-    battle: BattleState,
-    unit: U,
-): Result<U & Route>;
-
-export function advance(
-    battle: BattleState,
-    ref: Ref<Unit & Route>,
-): BattleState;
-
-export function isCompleted(state: State): boolean;
-
-export function movementTarget(
-    battle: BattleState,
-    ref: Ref<Unit & Route>,
-): MovementTarget | null;
-
-export function motionMode(state: State): MotionMode;
-
-export function setMotionMode(
-    mode: MotionMode,
-): Change<Unit & Route>;
-
-export function setAlternative(
-    definition: Definition,
-): Change<Unit & Route>;
-
-export function clearAlternative(): Change<Unit & Route>;
+    | { readonly type: "WAIT_WAVE"; readonly atTick: number }
+    | { readonly type: "WAIT_FRAGMENT"; readonly atTick: number };
 ```
 
-三个设置工厂返回不绑定 Ref 的 Change，由 `unit.update(battle, ref, change)` 统一应用，只修改 PRESENT 宿主。它们没有发布后结算；可以通过 compose 按顺序组合，后项读取前项形成的当前路线状态。宿主存在性和能力要求由 update 的 Typed Ref 入口确认，advance 仍负责完整路线推进。
+偏移和时间锚点在 main／alternative 中的具体字段归属继续确定。原生主路线保留出生样本，恐惧／吸引临时 Cursor 可以使用零偏移，不能为了字段方便强制共享，见[原生偏移证据](../research/cases/14-route-definition-fields.md#3-出生偏移持续作用于整条路线)。
+
+setMotionMode／setAlternative／clearAlternative 三个设置工厂返回不绑定 Ref 的 Change，由 `unit.update(battle, ref, change)` 统一应用，只修改 PRESENT 宿主。它们没有发布后结算；可以通过 compose 按顺序组合，后项读取前项形成的当前路线状态。宿主存在性和能力要求由 update 的 Typed Ref 入口确认，advance 仍负责完整路线推进。
 
 当前执行路线取 `state.alternative ?? state.main`。已完成的 Alternative 仍然占用活动路线位置；此时 movementTarget 返回 null，不回退到 Main。切换替代路线保留 main 的进度；恢复时依据单位的实际当前位置继续。替代路线取得执行权不自动意味着主路线的全部等待时钟暂停，等待所用时钟由指令语义决定。
 
@@ -240,26 +158,28 @@ Route.movementTarget 从最新 BattleState 读取单位并选择活动路线。M
 
 Route 不对 Navigation 返回的追踪点追加整段射线筛选，也不回退到当前格中心。追踪点与当前实际位置之间的完整直线未必可通行；实际位移的合法性在运动结算中检查，不能借此替换导航目标或提前拒绝整段导航建议。
 
-Definition.motionMode 是初始通行模式，Progress.motionMode 是当前模式。setMotionMode 更新当前活动 Progress，保留 Definition 和 Phase；Main 与 Alternative 各自保存模式，clearAlternative 恢复 Main 原有模式。Route 查询与传给 Locomotion 的 mode 读取同一当前值。Layer 的 State.type（unit.layer.type）独立表达空地身份，升空不自动改变寻路方式。startPosition 用于初始位置及路线相关查询；Definition.offset 是构造最终 Definition 前已经采样的总路线偏移，Progress 不重复保存。原始 offset 与 randomRange 只作为 Spawn 构造输入，不将 randomRange 保留在最终 Definition 中。
+Definition.motionMode 是初始通行模式，实例保存当前模式。setMotionMode 更新当前活动路线，Main 与 Alternative 各自保存模式，clearAlternative 恢复 Main 原有模式。Route 查询与传给 Locomotion 的 mode 读取同一当前值。Layer 的 State.type（unit.layer.type）独立表达空地身份，升空不自动改变寻路方式。startPosition 用于初始位置及路线相关查询；固定偏移与随机范围属于静态配置，采样结果属于具体路线实例。
 
 requireAllCheckpoints 承接原 visitEveryCheckPoint 的语义，控制是否允许在尚未逐个完成路点时，因抵达终点而提前完成路线。alwaysCheckCurrentPoint 同样是固定执行政策，由 Definition 持有。CONSUMED 表示当前指令已经消费，用于同步重入时避免重复执行，不表示整条路线完成。类型、初始化及 isCompleted／motionMode 的局部读取归 route/capability.ts；movementTarget 及其 target／recoveryPoint 辅助查询归 route/query.ts，target 仅供领域内部共享，不从 index 导出。设置 Change 工厂与完整路线推进由 route/operations.ts 提供。
 
-### 指令归一化
+### 指令与实例求值
 
-敌人实例化时已经拥有原始路线及该次出生的完整时间上下文。在构造 Unit Definition 之前完成 Route Definition 规范化，再初始化 Route State 并登记单位。带路线的创建结果保留原 Unit Definition 的内容字段及联合分支信息，仅将 route 替换为规范化后的 Route.Definition。Main 的 Progress.definition 与 unit.definition.route 引用同一份不可变 Definition；Alternative 引用设置时传入的规范化 Definition。Unit 不同时保存原始路线和展开后的主路线，也不修改共享敌人内容 Definition。
+纯静态的指令编译在 Data 阶段完成。出生代码沿用完整 UnitDefinition，通过 initial.route 传入本次偏移；Route initializer 捕获本次出生的时间基准。Route 在自己的执行状态机中求值等待期限，不在出生时复制、改写 Checkpoints 或重新合成 UnitDefinition。
 
 PATROL_MOVE 归一化为 MOVE 与显式 GOTO。不保留 MAP_OFFSET_MOVE、allowDiagonalMove、visitEveryTileCenter、visitEveryNodeCenter、MOVE 的随机开关及可配置到达半径。引航者试炼不在支持范围内，不保留 Boss 波次等待指令及其计数状态。
 
-规范化后的等待仅有 WAIT 与 WAIT_UNTIL：
+等待期限由指令与本次执行状态决定：
 
 ```text
-WAIT_CURRENT_WAVE_TICKS(n)     → WAIT_UNTIL(waveStartedAtTick + n)
-WAIT_CURRENT_FRAGMENT_TICKS(n) → WAIT_UNTIL(fragmentStartedAtTick + n)
+WAIT(durationTicks)    → 进入路点的 battle.tick + durationTicks
+WAIT_UNTIL(tick)      → tick
+WAIT_WAVE(atTick)     → 出生时捕获的 Wave 基准 + atTick
+WAIT_FRAGMENT(atTick) → 出生时捕获的 Fragment 基准 + atTick
 ```
 
-波次与片段起点使用该次 Spawn 已确定的上下文；分支 CURRENT_MAIN 在实际派发时取得这些起点，不能提前到关卡解析或分支队列建立时绑定。规范化属于 Spawn／Content 构造层，Route.initialize 只消费最终 Definition，Progress 不保存 Timing，advance 不处理波次或片段换算。
+Wave／Fragment 基准在实际出生时捕获；分支采用当时的主线时间上下文，不能在解析关卡或选择 Phase 时提前固定。Route 运行时使用自身保存的快照，不重新查询已推进的 Schedule 主线。Fragment 基准计入 Fragment 前延迟，其历史 Definition 的查询规则见 [Schedule](schedule.md#route-的主流程时间上下文)。
 
-进入 WAIT 时记录 deadlineTick = battle.tick + checkpoint.tick；进入 WAIT_UNTIL 时记录 deadlineTick = checkpoint.tick。到期判断统一为 battle.tick >= deadlineTick；已经过期的等待立即满足。普通相对等待不能在出生时提前换算，因为进入时间取决于移动、阻挡及循环。
+进入等待路点时，将所需期限保存在该路点的执行状态。到期判断统一为 battle.tick >= deadlineTick；已经过期的等待立即满足。普通相对等待不能在出生时提前换算，因为进入时间取决于移动、阻挡及循环。
 
 跳转目标按归一化后的完整指令序列确定。执行 GOTO 时更新 index，将 checkpointState 重置为 PENDING，同 Tick 继续处理，不消耗时间或移动预算，不增加 GOTO 运行阶段。GOTO 重新进入 WAIT 时重新计算截止时间；WAIT_UNTIL 的绝对时间保持不变。切换 Alternative 后恢复 Main 保留已进入等待的 deadlineTick。阻挡、眩晕与恐惧不暂停已进入等待所使用的战斗时钟。
 
@@ -271,29 +191,33 @@ advance 直接通过领域公开操作结算 DISAPPEAR、APPEAR_AT_POS 等即时
 
 ### 初始化
 
-初始化流程已经确定：
+初始化使用统一 Unit 入口：
 
 ```text
-Spawn 提供原始路线及波次、片段起始时间
+Spawn.definition 已包含完整静态 Route Definition
     ↓
-规范化指令、采样总路线偏移，构造最终 Route Definition
+出生代码采样一次 offset，并接续更新后的 BattleState
     ↓
-根据 Definition.startPosition 与 Definition.offset 确定初始 Unit.position
+position = center(startPosition) + offset
     ↓
-Unit 初始化各 Capability，包括 Route State
+unit.initialize(battle, { id, definition, position, initial: { route: offset } })
+    → Capability fold
+    → Route initializer 接收样本，捕获出生时的时间锚点并构造 State
     ↓
-登记 Unit
+Schedule 登记等待关系 → unit.add 登记 Unit 并执行 enter
     ↓
 Route.advance()
     ↓
 Locomotion
 ```
 
-Route 初始化遵循 [Capability 约定](capability.md)，统一使用 initialize(battle, unit): Result<U & Route>，从 unit.definition.route 读取配置并在输入 Unit 上装配进度。Spawn 负责采样并接续更新后的 BattleState；Route.initialize 不再采样。初始 Unit.position 与路线查询使用同一份 Definition.offset。
+Route 初始化遵循 [Capability 约定](capability.md)，通过 Catalog 的已有创建输入通道接收 initial.route，值就是本次 offset，不接受预装的 Route State。Route initializer 读取 unit.definition.route，在输入 Unit 上装配自己的状态，不再次采样；初始 Unit.position 与路线计算共用一个样本。
+
+unit.add 接收完整 Unit，只负责登记和 enter，不解释 Route Definition。重构时删除 creation/routed-unit.ts；不保留出生时重新生成、合成 UnitDefinition 的包装，不另建通用 RouteInput 或创建工厂层。
 
 创建入口建立偏移、等待与跳转的输入约束；内部按游戏尺度计算采样范围和等待截止时间，信任合法输入，不为极端算术溢出追加结果断言。纯进度发布不执行回调，后续可直接使用已构造的新值；Presence／Blocking 等完整操作返回后，仍按续执行条件读取最新宿主和进度。
 
-Alternative 的业务所有者同样提供已经规范化、偏移已经确定的 Definition，再将 setAlternative(definition) 交给 unit.update 应用。
+Alternative 的 Definition 与执行实例也需要区分，初始化接口及运行字段随 Progress 一起审查；不再假定 Definition 必须携带已采样偏移或出生时钟。
 
 ### Alternative 操作
 

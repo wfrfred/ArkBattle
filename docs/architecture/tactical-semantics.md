@@ -83,8 +83,8 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | DEPLOY-05 免费与特殊部署 | 实际扣账、场上费用属性、返费资格与来源分别决定。[可返费](https://prts.wiki/w/部署费用#可返费) | 完整 Request 携带 Quote、附加 Rule 和普通 Unit Hook；规则合并后统一资格，先消费 DP／库存／部署位，再构造、登记并按登记序执行 enter。quote.dp 的 0 与 null 区分正常零费和无支付。卫戍及具体免费来源仍由 Content／Mechanism 实现，完整移动重部署尚未接入。 | 普通协议已实现；特殊来源待接入／P1 |
 | DEPLOY-06 Card 多实例回收 | 每个有效回收保留供给事实，来源明确选择冷却与补回方式。[待部署区](https://prts.wiki/w/待部署区) | 使用冷却与串行 recovery 分开；每次 enqueueRecovery 累加份数，下一段读取当前有效时长，消除旧 RETURN 覆盖丢库存。追加保留本段是项目通用操作契约，特定原生 Reset 路径仍未闭合。 | 通用恢复已实现；来源特化待接入／P2 |
 | DEPLOY-07 场下属性与冷却 | 跨部署资源由 Card 保存，当前周期与未来时长分别操作。[待部署区](https://prts.wiki/w/待部署区) | Card 私有 Definition、Typed Ref、暂停及当前段操作已接入；负 DP 每次推进自然回复乘 0.5、跨零保留进度，主动加费不减半。特殊暂停组合及更多场下资源仍待具体内容。 | 通用能力已实现；特殊内容待接入／P2 |
-| SCHEDULE-01 波次与预置动作 | 出兵进度、存活等待、最终计数和关卡动作分别表达。[波次](https://prts.wiki/w/作战机制#扩展阅读：波次) | 波次／分支基础已有，预置通过 appear／remove 领域操作控制；原始 ACTIVATE / WITHDRAW / BATTLE_EVENTS 等尚未全部接调度链。 | 部分实现／P1 |
-| RESULT-01 漏怪与结束 | 区分击杀、漏怪、非首要目标和模式结束条件；按所属目标／玩家反馈结果。[作战机制](https://prts.wiki/w/作战机制)、[卫戍帮助](https://prts.wiki/w/卫戍协议/帮助) | Runtime 主要按 SCHEDULE_COMPLETED / TIME_LIMIT 结束，无完整关卡生命与模式胜负结算。 | 部分实现／P0 |
+| SCHEDULE-01 波次与预置动作 | 出生、Fragment 动作等待、Wave Unit 等待、最终管理集合与全局统计分别表达；主 Wave 随机组及 Total 已在预处理确定，Branch Phase 随机组每次执行时选择。[重设计约定](schedule.md) | 调度契约与直接 Unit 初始化链已定；触发先提交索引、RNG 与实例，出生共用位置／Route 样本并保持 Definition 引用；完整 Route 结构、个体结算与等待关系边界继续审查。 | 待重构／P1 |
+| RESULT-01 漏怪与结束 | 蓝门扣血、Finished、Killed 分别结算；外部 Content／规则综合 Schedule 与其他领域事实决定胜负。[职责约定](schedule.md#战斗结束) | Runtime 仍按 SCHEDULE_COMPLETED / TIME_LIMIT 结束，尚未迁移到外部规则，无完整关卡生命与模式胜负结算。 | 部分实现／P0 |
 | CONTENT-01 干员与敌人接入 | 主模式等级、精英、潜能、信赖、模组与具体天赋／技能共同生成行为。[玫兰莎](https://prts.wiki/w/玫兰莎)、[泥岩](https://prts.wiki/w/泥岩) | Data 配置和四个代表内容已跑通；不能推定所有天赋、技能、敌人及分支模板已实现。 | 部分实现／P1 |
 | MODE-01 卫戍接入与归属 | 模式机制处理倒下、原地保留、自动部署、共享额度和本场收益；阵营、地图区域、控制方、敌人来源分别保存。[卫戍帮助](https://prts.wiki/w/卫戍协议/帮助) | Mechanism 有退场接入点，但实际模式内容未接齐；SIDE_A / SIDE_B 不是玩家或结算来源 ID。 | 部分实现／P1 |
 | MODE-02 Meta 与新 Tactical | 旧经营／回合规则通过新战斗输入与结果接入；联防与领袖战保留自身规则。[卫戍帮助](https://prts.wiki/w/卫戍协议/帮助) | [server/match/Match.js:123](../../external/upstream/server/match/Match.js#L123) 仍调用旧 Battle；旧版能力不计为新链路覆盖。 | 部分实现／P1 |

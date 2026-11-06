@@ -104,7 +104,7 @@ Rule、Hook、Contribution 与 Blocker.layer 的公开工厂只接收业务输�
 
 | 领域               | 拥有的语义                                     | 主要事实与边界                                                                    |
 | ------------------ | ---------------------------------------------- | --------------------------------------------------------------------------------- |
-| Schedule           | 出生、波次、分支、等待与完成统计               | 定义和进度在创建及后续调用链保持关联                                              |
+| Schedule           | 出生、波次、分支及调度等待；全局统计与战斗胜负分别由其他领域及外部规则处理 | [定义、State、三个公开操作与同步重入顺序已定，路线接入及等待边界待补齐](schedule.md) |
 | Action             | 启动周期、运行实例、推进、取消与完成 | Definition 保存基础间隔、速度与程序；Unit.action.actions 按配置 ID 保存持久 state、Cooldown 与当前 Execution；nextExecutionId、贡献与 Rule 归 Capability |
 | Skill              | SP 获取与支付、激活许可、持续、结束和弹药消耗  | unit/skill 保存领域程序与资源操作；capability/skill 定义宿主能力与 Change 工厂，事实仍存于 Unit.skill；Effect 通过本轮 Skill Lifetime 关联 |
 | Targeting          | 候选、查询资格、优先级与确定性选择             | 读取当前事实；比较器纯函数并追加确定性 tie-break                                  |
@@ -114,7 +114,7 @@ Rule、Hook、Contribution 与 Blocker.layer 的公开工厂只接收业务输�
 | Effect             | 附着实例、私有状态、生效切换、覆写与结束       | Unit 持有实例与 expiration；时间归 Effect，依赖归 Lifetime；具体 Definition 登记 Hook 和 Contribution |
 | Lifetime           | 结束幂等、依赖传播与完成调度 | 静态描述符配对 Typed Ref；图保存 owner 与显式依赖；Pending 保存本次请求与阶段，owner 等全部依赖者完整 Finalize |
 | Projectile         | 独立空间执行实例、内容程序与终止请求／Finalize | 根实例保存身份、Definition、位置、ACTIVE／ENDING 与私有 state；运动、命中、采样和计时按内容组合，见 [Projectile 设计](projectile.md) |
-| Route              | 路线脚本、活动目标、等待和后继                 | 主／替代路线各自保存 Definition、当前 motionMode 与 Phase；Spawn 规范化并采样偏移 |
+| Route              | 静态路线规则、实例偏移与出生时间基准、活动目标、等待和后继 | 出生通过统一 Unit 初始化传入 initial.route 样本，Route 自建 State；不在出生时重造 Definition，完整 Progress／Alternative 结构继续审查 |
 | Navigation         | 基础通行图、Overlay 与建议移动点查询           | Battlefield 持有 Navigation State；有效 Map 和 Field 在内部派生并缓存 |
 | Locomotion         | 按速度与运动规则执行自主移动、避障及目的格反射 | 保存历史速度、移速贡献与规则；消费 Route 已准备好的世界坐标目标和当前模式 |
 | SpatialPresence    | 身体空间存在与主动位置覆盖 | 以 Change 变换 present 与各能力的限制 Rule，调用阻挡释放并委托 Action 取消当前执行；不改变实例身份或统一暂停持续程序 |
