@@ -1,6 +1,6 @@
 # Skill 开始、同步结束与内容后继
 
-核查日期：2026-10-13。当前已安装官方客户端普通原生路径；未核对运行中的 XLua 替换和全部内容派生类。结论依据 DLL／metadata，不依据项目测试。
+原始核查日期：2026-10-13；2026-11-06 补查开始通知中的宿主消失。各批次对应的客户端指纹分别记录；未核对运行中的 XLua 替换和全部内容派生类。结论依据 DLL／metadata，不依据项目测试。
 
 ## 来源
 
@@ -21,6 +21,30 @@ GameAssembly.dll SHA256：`583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d8
 结束或宿主退场没有一个通用机制来撤销已经进入的同步内容栈。同步结束完成后，控制流可以返回外层内容并继续；未来过程的取消、后继节点自身的执行资格与当前同步调用是不同的边界。以上不证明所有内容节点在来源失效后都能执行，也未核对弹药耗尽的全部派生路径与本季具体可达链。
 
 2026-11-05 对灰烬 S2 的新客户端补查已确认：其普通弹药消费发生在目标输出前的 ON_SPELL_ON，普通攻击中断的结束链不补发该消费事件，也没有按 INTERRUPTED 回滚该次消费的分支。该特定内容证据与同步程序能否继续分别判断，见[案例 09 的消费／中断复核](09-skill-mechanisms-and-requirements.md#32-2026-11-05灰烬-s2-的消费节点与攻击中断)，不将其扩大为所有技能的消费规则。
+
+## 2026-11-06复核：开始通知中的宿主消失
+
+本轮区分两个问题：消失是否结束已经成立的持续技能，以及开始通知令宿主消失后，已进入的开始程序是否继续。PRTS 的技能及传送说明不能给出这个同步边界，故补查当前客户端。证据、完整选择器和复跑命令见[新批次](../evidence/skill-start-presence-20261106/README.md)。DLL SHA-256 为 `cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff`，metadata 为 `e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5`；下面使用新客户端编号。
+
+**消失与技能结束不是一条无条件规则。** `Character.OnDisappearChanged` 77343 先发实体消失通知，再在消失时请求进入 `DisappearState`。若这次切换退出了 `SkillState`，该状态的退出程序会中断准备开始的程序及当前 Ability casting。`BasicSkill.InterruptIfNot` 73868 另受 `_stopAffectOnInterrupt` 配置控制，决定是否额外停止持续效果。`OnCastFinish` 73902 再查询 `isAffecting`：已经不生效才立即进入 `OnSkillEnd`；仍生效只标记等待其结束。因此不能把一次 casting 中断直接等同整个持续技能终止，也不能反过来声称所有技能在消失后都保留。
+
+**已进入的开始通知返回后，没有按消失状态整体跳过后续开始行为。** 普通调用链是：
+
+```text
+Ability.StartCastingInternal：先设置 casting
+→ Ability 开始回调
+→ BasicSkill.OnSkillStart
+    → Character.OnSkillStart：Buff 通知、实体事件通知
+    → 按顺序调用 Skill Behaviour.OnSkillStart
+```
+
+`AssignData` 73860 的实际 delegate 绑定闭合了这条链。`BasicSkill.OnSkillStart` 73864 在 Character 通知返回后直接进入行为循环，中间及循环边界没有 Presence、casting 或 affecting 重新检查。同步通知可以经其它业务中断 casting，但这不会自动撤销已经进入的调用栈；具体行为节点仍可自行检查资格，不能据此保证每个技能的全部开始效果都必然发生。
+
+**后续推进也没有按消失统一暂停。** 所查 `Character.OnTick → BasicSkill.Tick` 及开始行为之外的普通 Tick 派发没有消失门禁。Skill 自身仍有存活、沉默、持续期等条件；这不证明所有派生技能或行为在消失期间都执行同样业务。
+
+对应项目当前问题：`activate` 在通知后因 Presence 消失而跳过 `onStart`，却保留 ACTIVE Activation，并不能由上述原生链证明合理。应分别判断这次变化是否真正结束了本轮 Activation，以及仍成立的本轮开始程序应执行什么；不能仅用消失状态代替两项判断。本轮只记录证据与差异，未改动项目的取消策略、开始接口或 Lifetime。
+
+范围限制：没有实际运行或绑定一个 Character 内容来复现“开始通知令自身消失”；结论是普通 native 调用链及条件分析，不是全部内容的运行时保证。
 
 ## 项目事件协议
 

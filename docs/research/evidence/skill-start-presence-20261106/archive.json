@@ -1,0 +1,568 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-06"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-06",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "native/native.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "native/native.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "native/native.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12589,
+        "sha256": "1a85248a6a48d92d61c65f5ba044d079954866ff0c1672488b92f0cf1366af9a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "native/extract.py",
+        "kind": "historical-script",
+        "bytes": 6833,
+        "sha256": "0cf19c77de511eb8a35d231d7ee3844c7ce1f1a1881c806c7fdc16e8314a2685"
+      },
+      {
+        "path": "native/extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "native/native.json",
+        "kind": "record",
+        "bytes": 1139290,
+        "sha256": "62ae30548e977d5ec31019b329bc00731510e41fe60e881ea0b2380920e1908e"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 63992,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/19/method",
+            "native/native.json#/result/bodies/19/fragments/0",
+            "native/native.json#/result/bodies/19/fragments/0/method",
+            "native/native.json#/result/types/6/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_isAffecting",
+          "address": "0x180605210"
+        },
+        {
+          "index": 64025,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/12/method",
+            "native/native.json#/result/bodies/12/fragments/0",
+            "native/native.json#/result/bodies/12/fragments/0/method",
+            "native/native.json#/result/types/6/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Ability.InterruptIfNot",
+          "address": "0x1806035e0"
+        },
+        {
+          "index": 64032,
+          "mode": "metadata",
+          "records": [
+            "native/native.json#/result/types/6/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Ability.StopAffect",
+          "address": "0x180604320"
+        },
+        {
+          "index": 64045,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/18/method",
+            "native/native.json#/result/bodies/18/fragments/0",
+            "native/native.json#/result/bodies/18/fragments/0/method",
+            "native/native.json#/result/types/6/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Ability.OnCastStart",
+          "address": "0x180603980"
+        },
+        {
+          "index": 64049,
+          "mode": "metadata",
+          "records": [
+            "native/native.json#/result/types/6/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Ability.OnTick",
+          "address": "0x180603ac0"
+        },
+        {
+          "index": 64062,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/17/method",
+            "native/native.json#/result/bodies/17/fragments/0",
+            "native/native.json#/result/bodies/17/fragments/0/method",
+            "native/native.json#/result/types/6/methods/5"
+          ],
+          "fullname": "Torappu.Battle.Ability.StartCastingInternal",
+          "address": "0x180604270"
+        },
+        {
+          "index": 64099,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/21/method",
+            "native/native.json#/result/bodies/21/fragments/0",
+            "native/native.json#/result/bodies/21/fragments/0/method",
+            "native/native.json#/result/types/7/methods/0"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.CastDirectly",
+          "address": "0x1805fb8a0"
+        },
+        {
+          "index": 64102,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/13/method",
+            "native/native.json#/result/bodies/13/fragments/0",
+            "native/native.json#/result/bodies/13/fragments/0/method",
+            "native/native.json#/result/types/7/methods/1"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.StopAffect",
+          "address": "0x180600360"
+        },
+        {
+          "index": 64121,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/20/method",
+            "native/native.json#/result/bodies/20/fragments/0",
+            "native/native.json#/result/bodies/20/fragments/0/method",
+            "native/native.json#/result/types/7/methods/2"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnCastStart",
+          "address": "0x1805fef90"
+        },
+        {
+          "index": 64130,
+          "mode": "metadata",
+          "records": [
+            "native/native.json#/result/types/7/methods/3"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.OnTick",
+          "address": "0x1805ffe50"
+        },
+        {
+          "index": 66007,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/0/method",
+            "native/native.json#/result/bodies/0/fragments/0",
+            "native/native.json#/result/bodies/0/fragments/0/method",
+            "native/native.json#/result/types/0/methods/0"
+          ],
+          "fullname": "Torappu.Battle.BObject.SetDisappeared",
+          "address": "0x1806afec0"
+        },
+        {
+          "index": 66016,
+          "mode": "metadata",
+          "records": [
+            "native/native.json#/result/types/0/methods/1"
+          ],
+          "fullname": "Torappu.Battle.BObject.OnTick",
+          "address": "0x18051df60"
+        },
+        {
+          "index": 67348,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/26/method",
+            "native/native.json#/result/bodies/26/fragments/0",
+            "native/native.json#/result/bodies/26/fragments/0/method",
+            "native/native.json#/result/types/1/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_alive",
+          "address": "0x1807330c0"
+        },
+        {
+          "index": 67655,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/1/method",
+            "native/native.json#/result/bodies/1/fragments/0",
+            "native/native.json#/result/bodies/1/fragments/0/method",
+            "native/native.json#/result/types/1/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnBeforeDisappearChanged",
+          "address": "0x180728ea0"
+        },
+        {
+          "index": 67656,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/2/method",
+            "native/native.json#/result/bodies/2/fragments/0",
+            "native/native.json#/result/bodies/2/fragments/0/method",
+            "native/native.json#/result/types/1/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnDisappearChanged",
+          "address": "0x180729bb0"
+        },
+        {
+          "index": 67697,
+          "mode": "metadata",
+          "records": [
+            "native/native.json#/result/types/1/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnTick",
+          "address": "0x18072c290"
+        },
+        {
+          "index": 73806,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/11/method",
+            "native/native.json#/result/bodies/11/fragments/0",
+            "native/native.json#/result/bodies/11/fragments/0/method",
+            "native/native.json#/result/types/3/methods/0"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_isAffecting",
+          "address": "0x180999f90"
+        },
+        {
+          "index": 73860,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/14/method",
+            "native/native.json#/result/bodies/14/fragments/0",
+            "native/native.json#/result/bodies/14/fragments/0/method",
+            "native/native.json#/result/types/3/methods/1"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.AssignData",
+          "address": "0x180992700"
+        },
+        {
+          "index": 73862,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/23/method",
+            "native/native.json#/result/bodies/23/fragments/0",
+            "native/native.json#/result/bodies/23/fragments/0/method",
+            "native/native.json#/result/types/3/methods/2"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.Tick",
+          "address": "0x180998320"
+        },
+        {
+          "index": 73864,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/15/method",
+            "native/native.json#/result/bodies/15/fragments/0",
+            "native/native.json#/result/bodies/15/fragments/0/method",
+            "native/native.json#/result/types/3/methods/3",
+            "native/native.json#/result/methodUsages/0/method",
+            "native/native.json#/result/methodUsages/1/method"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnSkillStart",
+          "address": "0x180996d20"
+        },
+        {
+          "index": 73865,
+          "mode": "metadata",
+          "records": [
+            "native/native.json#/result/types/3/methods/4"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnSkillEnd",
+          "address": "0x1809967a0"
+        },
+        {
+          "index": 73868,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/8/method",
+            "native/native.json#/result/bodies/8/fragments/0",
+            "native/native.json#/result/bodies/8/fragments/0/method",
+            "native/native.json#/result/types/3/methods/5"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.InterruptIfNot",
+          "address": "0x180994420"
+        },
+        {
+          "index": 73885,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/7/method",
+            "native/native.json#/result/bodies/7/fragments/0",
+            "native/native.json#/result/bodies/7/fragments/0/method",
+            "native/native.json#/result/types/3/methods/6"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.InterruptStartIfNot",
+          "address": "0x180994560"
+        },
+        {
+          "index": 73898,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/24/method",
+            "native/native.json#/result/bodies/24/fragments/0",
+            "native/native.json#/result/bodies/24/fragments/0/method",
+            "native/native.json#/result/types/3/methods/7"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnTick",
+          "address": "0x180997220"
+        },
+        {
+          "index": 73901,
+          "mode": "metadata",
+          "records": [
+            "native/native.json#/result/types/3/methods/8"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.UpdateSpRecovery",
+          "address": "0x180998830"
+        },
+        {
+          "index": 73902,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/10/method",
+            "native/native.json#/result/bodies/10/fragments/0",
+            "native/native.json#/result/bodies/10/fragments/0/method",
+            "native/native.json#/result/types/3/methods/9"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnCastFinish",
+          "address": "0x180995cb0"
+        },
+        {
+          "index": 73905,
+          "mode": "metadata",
+          "records": [
+            "native/native.json#/result/methodUsages/2/method",
+            "native/native.json#/result/methodUsages/3/method"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill._OnReceiveAttackFinishEvent",
+          "address": "0x180998c40"
+        },
+        {
+          "index": 73929,
+          "mode": "metadata",
+          "records": [
+            "native/native.json#/result/types/5/methods/0"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill/Behaviour.OnSkillStart",
+          "address": "0x1809a70f0"
+        },
+        {
+          "index": 73930,
+          "mode": "metadata",
+          "records": [
+            "native/native.json#/result/types/5/methods/1"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill/Behaviour.OnSkillEnd",
+          "address": "0x1809a7090"
+        },
+        {
+          "index": 73935,
+          "mode": "metadata",
+          "records": [
+            "native/native.json#/result/types/5/methods/2"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill/Behaviour.OnTick",
+          "address": "0x1809a7150"
+        },
+        {
+          "index": 74111,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/9/method",
+            "native/native.json#/result/bodies/9/fragments/0",
+            "native/native.json#/result/bodies/9/fragments/0/method",
+            "native/native.json#/result/types/4/methods/0"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.InterruptIfNot",
+          "address": "0x1809adb20"
+        },
+        {
+          "index": 74113,
+          "mode": "metadata",
+          "records": [
+            "native/native.json#/result/types/4/methods/1"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.OnTick",
+          "address": "0x1809ae2d0"
+        },
+        {
+          "index": 77129,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/25/method",
+            "native/native.json#/result/bodies/25/fragments/0",
+            "native/native.json#/result/bodies/25/fragments/0/method",
+            "native/native.json#/result/types/2/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Character.get_alive",
+          "address": "0x180aae990"
+        },
+        {
+          "index": 77227,
+          "mode": "metadata",
+          "records": [
+            "native/native.json#/result/types/2/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Character.get_isInDyingState",
+          "address": "0x180ab0ca0"
+        },
+        {
+          "index": 77329,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/22/method",
+            "native/native.json#/result/bodies/22/fragments/0",
+            "native/native.json#/result/bodies/22/fragments/0/method",
+            "native/native.json#/result/types/2/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Character.OnTick",
+          "address": "0x180aa4570"
+        },
+        {
+          "index": 77343,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/3/method",
+            "native/native.json#/result/bodies/3/fragments/0",
+            "native/native.json#/result/bodies/3/fragments/0/method",
+            "native/native.json#/result/types/2/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Character.OnDisappearChanged",
+          "address": "0x180aa2fa0"
+        },
+        {
+          "index": 77349,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/16/method",
+            "native/native.json#/result/bodies/16/fragments/0",
+            "native/native.json#/result/bodies/16/fragments/0/method",
+            "native/native.json#/result/types/2/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Character.OnSkillStart",
+          "address": "0x180aa4460"
+        },
+        {
+          "index": 77455,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/4/method",
+            "native/native.json#/result/bodies/4/fragments/0",
+            "native/native.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Character/States.ConstructStateMachine",
+          "address": "0x180ab3d40"
+        },
+        {
+          "index": 77512,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/5/method",
+            "native/native.json#/result/bodies/5/fragments/0",
+            "native/native.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Character/States/SkillState.OnExit",
+          "address": "0x180ad21a0"
+        },
+        {
+          "index": 77523,
+          "mode": "disasm",
+          "records": [
+            "native/native.json#/result/bodies/6/method",
+            "native/native.json#/result/bodies/6/fragments/0",
+            "native/native.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Character/States/DisappearState.OnTick",
+          "address": "0x180ab72f0"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Ability",
+          "records": [
+            "native/native.json#/result/types/6"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.AbilityStandard",
+          "records": [
+            "native/native.json#/result/types/7"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BObject",
+          "records": [
+            "native/native.json#/result/types/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BasicSkill",
+          "records": [
+            "native/native.json#/result/types/3"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BasicSkill/Behaviour",
+          "records": [
+            "native/native.json#/result/types/5"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.CastSkill",
+          "records": [
+            "native/native.json#/result/types/4"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Character",
+          "records": [
+            "native/native.json#/result/types/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Entity",
+          "records": [
+            "native/native.json#/result/types/1"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}
