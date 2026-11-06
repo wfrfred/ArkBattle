@@ -9,7 +9,7 @@ Unit Definition 直接关联共享的 Elemental Definition。bursts 按元素类
 ## 关键语义
 
 - EP 提交、burstStarted、onInstall 的一次性爆发输出、damaged、Battle Applied 依次发生。零恢复预算仍执行安装业务，随后由通用 Effect 安装流程正常结束，不补发周期输出。
-- 恢复进度只保存在根 Effect 的 DURATION expiration。根的 rate 为零，内容 onTick 按当前恢复速度推进同一 elapsed，并与四型真实 EP 一次发布；自然到期交给 Effect 框架。
+- 恢复进度只保存在根 Effect 的 DURATION expiration。根的 rate 为零，内容 onTick 按当前恢复速度推进同一 elapsed；Elemental 写回四型真实 EP，恢复进度通过 Effect.setExpiration 提交，周期业务前两项均已完成；自然到期交给 Effect 框架。
 - 神经眩晕使用独立期限，不绑定根恢复时间；永久侵蚀减防与剩余麻痹也独立保留。灼燃减抗、封技与阻回依赖根结束。
 - 最后一次正常推进先结算预算内周期业务，再结束；取消、提前完成与离场不补未来输出。时间协议由 Effect 集中验收，Elemental 只验证这些资源与业务结果。
 
@@ -147,7 +147,7 @@ EP 损伤的爆发分支在同一次 commitDamage 内按以下顺序执行：
 ```text
 提交本次 EP 扣减并将四型归零，记录 ELEMENTAL_INJURY
 → effects.install 登记标准 Burst Effect 及 Unit owner
-    → onInstall 同时写入 DURATION { elapsed: 0, total: durationTicks, rate: 0 } 和 Elemental 的 Burst 引用
+    → onInstall 写入 Elemental 的 Burst 引用，再通过 Effect.setExpiration 提交 DURATION { elapsed: 0, total: durationTicks, rate: 0 }
     → 记录 ELEMENTAL_BURST，派发 burstStarted
     → 重新读取仍可执行的本轮实例，执行一次性爆发输出
     → 通用安装流程处理到期；未到期时启用持续输出
@@ -188,7 +188,7 @@ Unit 请求离场发布 LEAVING 后，通过所有权边自动结束根 Burst Ef
 
 原生恢复顺序与 EP 写回的证据见[案例 25](../research/cases/25-elemental-burst-recovery-timing.md)。Core 采用固定步长的全场阶段调度，按项目语义尺度忽略创建时点造成的帧内微时序差异，不增加创建 Tick 跳过或 lastAdvancedTick。
 
-根 Burst Effect 的 onTick 是唯一爆发推进入口。expiration 保存唯一有效进度，rate 固定为零，通用自动推进不另加一份时间。对正时长配置，每次宿主获准推进时，内容程序使用当前 burstRecoverySpeed 更新 expiration.elapsed，并按最新有效上限回填全部 EP，两者在同一 Unit 写回中发布：
+根 Burst Effect 的 onTick 是唯一爆发推进入口。expiration 保存唯一有效进度，rate 固定为零，通用自动推进不另加一份时间。对正时长配置，每次宿主获准推进时，内容程序按当前 burstRecoverySpeed 计算 expiration.elapsed，并按最新有效上限回填全部 EP。Elemental 先提交 EP，再通过 Effect.setExpiration 提交恢复进度；两项在周期业务前均已完成：
 
 ```text
 elapsed' = min(duration, elapsed + currentBurstRecoverySpeed)

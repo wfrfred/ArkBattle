@@ -23,7 +23,7 @@
 | 套件 | 需要保障的结果 |
 | --- | --- |
 | [battlefield](sim/battlefield.test.js) | 不可变版本、全批最终占格；Tile／Overlay 决定导航和代价选择；身体位置、空间存在和命中几何分离。 |
-| [presence](sim/presence.test.js) | 暂时消失保留 Unit、部署与 Occupancy、普通 Effect／Lifetime；无 Ref 的 appear／disappear 工厂产生同目标 Change，经 compose 组合后先发布最终 Unit，再清理本项 previous 的旧关系／执行。较早 Settlement 的合法通知中重新出现和启动的新执行保留，不重复公共 Rule／Hook／Ref 协议。 |
+| [presence](sim/presence.test.js) | 暂时消失保留 Unit、部署与 Occupancy、普通 Effect／Lifetime；无 Ref 的 appear／disappear 工厂产生同目标 Change，经 compose 组合后先发布最终 Unit，再在自身 Settlement 调用 Blocking 的 releaseAll／release 清理当前关系及自身计划，最后取消 previous 采样的旧执行。同次批量解除 Hook 中重新出现、新建关系和启动的新执行保留；不要求更早的其它 Settlement 已取消计划或保护其新建关系，不重复公共 Rule／Hook／Ref 协议。 |
 | [坐标](sim/coordinate.test.js)、[范围](sim/geometry-range.test.js)、[扫掠](sim/geometry-sweep.test.js) | 坐标旋转、连续范围并集、圆／盒／混合圆角的独立公式与首次接触边界集中验证，不向空间查询和具体内容复制数值矩阵。 |
 | [unit](sim/unit.test.js) | 正常构造建立能力配对并拒绝双重阻挡角色；初始 Effect 在登记后安装。 |
 | [unit-change](sim/unit-change.test.js) | update(battle, ref, change) 单目标写入；一个主场景集中验证二元 compose 的结合律与非交换、逐项 previous／no-op／Settlement，以及 optional 的 false 原对象／空后继和 guard 读取前序变换后的输入。最终 next 一次发布后才按序结算，嵌套 update 对第二 Unit 的结果不丢失，不建立跨 Unit 批次或守卫矩阵。 |

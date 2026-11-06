@@ -5,6 +5,7 @@ import { TICKS_PER_SECOND } from "../../../tick.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import { get as getEffect } from "../../effect/query.js";
+import { setExpiration } from "../../effect/operations.js";
 import { ref, type Effect } from "../../effect/effect.js";
 import type { Definition as EffectDefinition } from "../../effect/definition.js";
 import type { Expiration } from "../../effect/expiration.js";
@@ -45,10 +46,10 @@ export function onInstall(battle: BattleState, self: Effect<State, Elemental>): 
     battle = replace(battle, [
         {
             ...host,
-            effects: host.effects.replace(ref(current), current),
             elemental: { ...host.elemental, burst: ref(current) },
         },
     ]);
+    battle = setExpiration(battle, ref(current), current.expiration);
     battle = appendEvents(battle, [
         {
             type: "ELEMENTAL_BURST",
@@ -85,15 +86,14 @@ export function advance(
         expiration.elapsed + resolveBurstRecoverySpeed(battle, host),
     );
     const maximum = resolveMaxEp(battle, host);
-    const current = { ...self, expiration: { ...expiration, elapsed } };
     const ep = elementValues((maximum * elapsed) / expiration.total);
     battle = replace(battle, [
         {
             ...host,
-            effects: host.effects.replace(reference, current),
             elemental: { ...host.elemental, ep },
         },
     ]);
+    battle = setExpiration(battle, reference, { ...expiration, elapsed });
 
     if (onSecond !== undefined) {
         const previousSecond = Math.floor((expiration.elapsed + 1e-8) / TICKS_PER_SECOND);

@@ -31,7 +31,7 @@ Deployable 对 Occupancy 的构造依赖、入场与配对属于本轮协作边�
 | --- | --- | --- |
 | Battlefield 版本与结构 | 写回不改写旧版本；全批最终布局决定同格双槽的唯一归属；结构发布不代办业务回调。 | [Battlefield](battlefield.md#关键语义) |
 | 地图、导航与空间查询 | Tile 与 Overlay 决定当前可达性和导航结果；缓存不改变结果。身体位置、空间存在、占格和命中几何分别表达，空间接触不等于业务命中。 | [Battlefield](battlefield.md#关键语义)、[Spatial](spatial.md) |
-| 空间存在 | 暂时消失保留身份、位置、占格、部署与生命周期；Presence Change 可位于组合批次任意位置，全部空间事实及限制先发布，再接续旧关系与旧执行清理。已成立的 Skill、Effect、Burst 与独立 Projectile 不统一结束，伤害、恢复、选择与锁定命中分别判断。 | [Presence](presence.md) |
+| 空间存在 | 暂时消失保留身份、位置、占格、部署与生命周期；Presence Change 可位于组合任意位置，全部空间事实及限制先发布，再由自身 Settlement 调用 Blocking 完整操作清理当前关系及自身计划，之后取消 previous 采样的旧执行。已成立的 Skill、Effect、Burst 与独立 Projectile 不统一结束，伤害、恢复、选择与锁定命中分别判断。 | [Presence](presence.md) |
 | Unit 构造与能力 | 静态 Definition 决定能力组成，构造后配置与状态配对、组成稳定；初始 Effect 通过登记后的正常安装形成。 | [构造与装配](capability.md#初始化与装配) |
 | Unit 组合变更 | update(battle, ref, change) 只更新一个目标。二元 compose 左到右接续同一 Unit，组合满足结合律但不交换；各项保留自己的 previous、no-op 与 Settlement 顺序。optional 在实际执行时判断当前输入，包括前序变换后的值；false 保留原对象且无后继，true 转发原 Change 的结果。全部纯应用完成后一次发布最终 next，再按序结算；Settlement 中的嵌套 update 可以改变其它 Unit，后续结算接续最新状态。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
 | 普通注册 Change | Capability 用扁平 Rules／Contributions／Hooks 分组明确选择自动字段；工厂不绑定 Ref，按 Key 和固定字段两种接口均保持字段、Entry 与所需能力的类型关联，由 update 的目标 Ref 满足能力要求。注册遵守按 ID 替换保序和无变化不结算，特殊字段由领域完成自身变换与后继。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
@@ -63,7 +63,7 @@ Deployable 对 Occupancy 的构造依赖、入场与配对属于本轮协作边�
 | Runtime 组合 | 集中验证完整初始化／出生账簿先于 enter、一次正常预置替换保留最新绑定，以及 Tick 的阶段顺序／不可变发布与失败不发布。以公开创建、部署、资源和离场操作构造，不另写 marker、身份进度或内部存储夹具。 |
 | HP／EP 接收与死亡 | 伤害／治疗回归清单。死亡确认前保留 Blocking 只归 HP-03，不在 Blocking／Combat 再做同构场景。 |
 | 阻挡及位置计划 | Blocking：资格与层、容量尾部裁撤、批量通知与旧身份、独立位置计划。自身空地设置的清理（含同值）复用批量解除与位置计划代表场景，通知读取已发布的新身份；主动空间覆盖取消计划并解除旧关系，首个通知可见新位置。不按字段、角色或切换方向另建矩阵。 |
-| 空间存在及其协作 | Presence 集中验证保留身份、部署与 Occupancy、Effect／Lifetime，以及全部限制先于批量解除通知；合法通知中重新出现并启动的新执行不受旧捕获集合清理。Blocking 保留自身偏移与目标独立计划的区别；Action／Skill、资源接收、Burst 和 tracking 弹道只在各自主场景验证新增的业务结果，不复制 Rule 登记、Hook 或生命周期矩阵。 |
+| 空间存在及其协作 | Presence 集中验证保留身份、部署与 Occupancy、Effect／Lifetime，以及全部限制先于自身批量解除通知；该次解除 Hook 中重新出现、新建关系及启动的新执行保留。Blocking 保留自身偏移与目标独立计划的区别；Action／Skill、资源接收、Burst 和 tracking 弹道只在各自主场景验证新增的业务结果，不复制 Rule 登记、Hook 或生命周期矩阵。 |
 | 自主运动 | Locomotion：纯算法集中验证转向、直邻／斜邻避障及反射公式；真实移动场景验证当前速度、最终目标吸附和暂停后的历史速度。半身宽、WALK 高代价格／FLY 硬障碍、方向投影与速度比例、不可通格恢复各保留独立结果，不枚举八方向及微小数值变体。Route 集成只保留等待、当前导航方式与 Layer 分离、阻挡解除后路线完成等协作结果；历史速度通过实际推进建立，不直接注入 Unit。 |
 | Card、部署、离场与占格 | Deployment：Request 与资源消费、主动／被动离场账务、一次旧占格配对不清理继任者、逐份恢复预算和 DP。删除旧 Battle 中相同构造与重入矩阵。 |
 | Action、Skill、Effect 与 Contribution | 各自主套件。共有身份、候选、输入校验和不可变版本由公共套件承担，不因更换内容宿主再测一遍。 |
@@ -81,11 +81,11 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 
 ## Presence 的回归语义
 
-以下结果依据 [Presence 契约](presence.md)确定；场景通过正常构造、部署、阻挡取得、启动与资源结算建立事实。`appear(position)`／`disappear()` 返回要求 SpatialPresence 的 Change，由 `unit.update(battle, ref, change)` 提交；同目标变更通过二元 compose 组合，Presence 可以在组合中的任意位置，最终 Unit 先发布，不要求它排在首位。
+以下结果依据 [Presence 契约](presence.md)确定；场景通过正常构造、部署、阻挡取得、启动与资源结算建立事实。`appear(position)`／`disappear()` 返回要求 SpatialPresence 的 Change，由 `unit.update(battle, ref, change)` 提交；同目标变更通过二元 compose 组合，Presence 可以在组合中的任意位置，最终 Unit 先发布，不要求它排在首位。关系与自身计划在 Presence 自身 Settlement 中由 `releaseAll`／`release` 完成，领域操作先清理再通知；不要求较早的其它 Settlement 已看见计划取消，也不保护那些 Settlement 新建的关系免于后续释放。
 
 | 必须保障的业务结果 | 集中归属 |
 | --- | --- |
-| 消失保留原 Unit、占格、部署额度及普通 Effect／Lifetime，不派发入场或离场；全部限制先发布，Presence 的解除通知可见整批双端解除。后继从本项 previous 固定旧关系与旧执行，不把较早 Settlement 的通知中新建的执行捕入清理。 | Presence 主场景；公共旧 Ref、Hook 候选和析构协议不重测。 |
+| 消失保留原 Unit、占格、部署额度及普通 Effect／Lifetime，不派发入场或离场；全部限制先发布，自身 Settlement 调用的 Blocking 操作先清理当前整组双端关系再通知。同次解除固定本次旧关系，Hook 中重新出现并取得的新关系保留；之后只取消本项 previous 采样的旧执行，保留 Hook 中启动的新执行。 | Presence 主场景；公共旧 Ref、Hook 候选和析构协议不重测。 |
 | 自身 Blockable 偏移随主动空间覆盖取消；Blocker 消失只解除关系，原目标的独立偏移继续。已 present 的 appear 仍执行位置覆盖及自身清理。 | Blocking 原位置计划场景。 |
 | 消失禁止新的 Action／Activation，取消旧 Action 并停止旧输出；已完成释放前缀保留。开始通知中消失但仍 ACTIVE 的同轮 Skill 执行 onStart，既有持续技能仍正常推进及到期。 | Action／Skill 原代表场景；不据此增加弹药消费政策。 |
 | 消失期间普通 HP／EP Damage 拒收；明确目标的 HP／EP Healing 仍遵守各自条件。自然 EP 回复与已启动 Burst 的恢复预算继续，消失不取消其 Effect。 | 一次双资源接收场景及 Elemental 原恢复场景，不重复四条管线的公式与通知矩阵。 |

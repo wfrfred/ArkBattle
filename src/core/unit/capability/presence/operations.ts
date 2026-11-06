@@ -1,4 +1,3 @@
-import type { State as BattleState } from "../../../battle/state.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
@@ -20,16 +19,14 @@ const restriction = { id: "@presence/absent", allows: () => false };
 
 export function disappear(): Change<Unit & SpatialPresence> {
     const spatial = createChange<Unit & SpatialPresence>(
-        (self) => {
-            const next = { ...self, spatialPresence: { present: false } };
-
-            return hasBlockable(next)
-                ? { ...next, blockable: { ...next.blockable, adjustment: null } }
-                : next;
-        },
+        (self) => ({ ...self, spatialPresence: { present: false } }),
         (battle, previous) => {
             const executions = action.hasAction(previous) ? executionRefs(previous) : [];
-            battle = releaseOldBlocking(battle, previous);
+            if (hasBlocker(previous)) {
+                battle = blocker.releaseAll(battle, units.ref(previous));
+            } else if (hasBlockable(previous)) {
+                battle = blockable.release(battle, units.ref(previous));
+            }
 
             for (const execution of executions) {
                 battle = cancel(battle, execution, "SOURCE_ABSENT");
@@ -46,13 +43,19 @@ export function disappear(): Change<Unit & SpatialPresence> {
 }
 
 export function appear(position: WorldPosition): Change<Unit & SpatialPresence> {
-    const spatial = createChange<Unit & SpatialPresence>((self) => {
-        const next = { ...self, position, spatialPresence: { present: true } };
+    const spatial = createChange<Unit & SpatialPresence>(
+        (self) => ({ ...self, position, spatialPresence: { present: true } }),
+        (battle, previous) => {
+            if (hasBlocker(previous)) {
+                return blocker.releaseAll(battle, units.ref(previous));
+            }
+            if (hasBlockable(previous)) {
+                return blockable.release(battle, units.ref(previous));
+            }
 
-        return hasBlockable(next)
-            ? { ...next, blockable: { ...next.blockable, adjustment: null } }
-            : next;
-    }, releaseOldBlocking);
+            return battle;
+        },
+    );
 
     const change = compose(spatial, restrictions(true));
 
@@ -95,20 +98,4 @@ function restrictions(present: boolean): Change<Unit> {
                 : elemental.setRule("damageRules", restriction),
         ),
     ].reduce(compose);
-}
-
-function releaseOldBlocking(battle: BattleState, previous: Unit): BattleState {
-    if (hasBlocker(previous)) {
-        return blocker.releaseCaptured(battle, previous);
-    }
-    if (hasBlockable(previous)) {
-        const owner = previous.blockable.blocker;
-        const current = units.get(battle, units.ref(previous));
-
-        return owner !== null && current?.blockable.blocker === owner
-            ? blockable.release(battle, units.ref(previous))
-            : battle;
-    }
-
-    return battle;
 }

@@ -24,6 +24,8 @@ field.map 持有当前地块。battlefield/tile.update 是运行态地块变更�
 
 按操作职责决定参数和返回值。领域负责自己的完整操作，其他领域依赖公开业务契约；跨领域流程负责组合与顺序，调度负责何时推进。
 
+业务状态按逻辑领域归属。任何领域修改其它领域拥有的业务状态，都只能使用所属领域提供的合法 Change 或完整操作；Core 协调层同样遵守，不得直接重建、spread 或写入其它领域的 State 字段，再借 update／replace 发布。领域按业务职责划分，不按目录划分；构造装配与底层存储发布不接管领域业务状态的修改权。
+
 | 类别 | 基本形状 | 约束 |
 | --- | --- | --- |
 | 局部值转换 | `f(state / self, ...) => 新值` | 只处理传入的值，不涉及完整战斗结算；包括局部查询、数值计算、不可变值更新。 |
@@ -352,7 +354,7 @@ Layer 的 `setType(type: Type): Change<Unit & Layer>` 是设置自身身份并�
 
 Unit.initialize 将 Blocker／Blockable 的组合限制为至多一种，两者皆无合法；内部信任该构造约束及能力身份稳定，不在各操作重复检查。角色不决定阵营、宿主 Layer、Route 或 Locomotion，临时容量为 0 或禁挡也不改变角色。
 
-Blocking.release(battle, readonly Relation[]) 在入口过滤失效旧身份与重复项，先发布整批双端解除结果，再按首次输入顺序逐条派发 Hook。每条开始时同时固定两端候选 ID，后续读取最新登记；ACQUIRED 按旧身份失效停止，RELEASED 作为历史通知继续。release 不接受额外 Unit 更新值，不自动维护、搜索或取消偏移。空间业务先纯发布字段和自身计划取消，再调用 release(battle, relations(battle, ref))；两步间没有回调，首个通知已经可以读取完整结果。
+Blocking.release(battle, readonly Relation[]) 在入口过滤失效旧身份与重复项，先发布整批双端解除结果，再按首次输入顺序逐条派发 Hook。每条开始时同时固定两端候选 ID，后续读取最新登记；ACQUIRED 按旧身份失效停止，RELEASED 作为历史通知继续。release 不接受额外 Unit 更新值，不自动维护、搜索或取消偏移。Presence 与 Route 的主动空间变更先纯发布空间字段，再按角色调用 Blockable.release 或 Blocker.releaseAll；前者自行取消当前计划并解除当前关系，后者批量解除当前出向关系并保留目标计划。各完整释放操作在首个通知前完成本次清理。
 
 Blocker Capability 公开 `releaseAll(battle, reference: Ref<Unit & Blocker>): BattleState`，从当前 BattleState 读取一次宿主；缺失返回原状态，存在则调用内部 releaseCaptured(battle, self)，将其 blocked 原 Ref 组成关系交给 Blocking.release。该共享函数不重新查询宿主，不经 index.ts 导出，也不取消目标计划或附加搜索／维护。Blocker.prepare 调用公开 releaseAll；Departure.unit 只提供身份，不能把它的历史关系当作当前列表。
 

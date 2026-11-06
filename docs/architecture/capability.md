@@ -158,7 +158,7 @@ Battlefield 的通用空间查询领域使用 battlefield/spatial/ 命名，与�
 
 ## SpatialPresence
 
-[空间存在](presence.md)只保存身体的 present 事实；暂时消失保留身份、真实坐标及生命周期登记。appear／disappear 返回在调用时按当前宿主能力组合的 Change，自身叶子修改空间事实与旧偏移，其余子项直接复用所属能力的 Rule 工厂；发布后按自身叶子的 previous 清理旧关系和 Execution。各能力消费自己的 Rule，不反向读取 Presence；空间查询、普通索敌和接触程序直接使用空间存在事实。Skill、Effect 和 Burst 不因此统一结束或暂停。
+[空间存在](presence.md)只保存身体的 present 事实；暂时消失保留身份、真实坐标及生命周期登记。appear／disappear 返回在调用时按当前宿主能力组合的 Change，自身叶子只修改空间事实，其余子项直接复用所属能力的 Rule 工厂；发布后按 previous 的稳定角色调用 Blockable.release 或 Blocker.releaseAll，并在消失时取消 previous 中的旧 Execution。各能力消费自己的 Rule，不反向读取 Presence；空间查询、普通索敌和接触程序直接使用空间存在事实。Skill、Effect 和 Burst 不因此统一结束或暂停。
 
 ## Blocking
 
@@ -188,7 +188,7 @@ Blockable.State 另保存 `adjustment: PositionAdjustment | null`，计划只有
 
 `blockable-operations.ts` 提供完整的 `advancePosition(battle, Ref<Unit & Blockable>)` 与 `release(battle, Ref<Unit & Blockable>)`，公共入口分别导出 advancePosition 和 releaseBlockable，并导出模型查询 stableBlockPosition。前者只推进并提交自身位置与计划，不调用关系维护；依赖位置的 Rule 在 Blocking 检查点复核。后者先纯发布自身计划取消，再以 relations(battle, ref) 的局部结果调用 Blocking.release。两步之间没有回调，首次 RELEASED 已可见完整结果。Blocking.release 只解除关系，Blocker 离场／切层／容量裁撤也保留目标计划；孤立计划可由 Blockable.release 单独取消。
 
-Movement 绑定本轮起始的 Unit Query，分两遍先推进 Blockable 偏移，再推进 Route 与符合资格的 Locomotion；每步单独过滤，不为固定枚举提前生成 Ref 数组或调用 toArray()。偏移存在或刚完成不构成自主禁移条件，偏移不借用 Locomotion Rule 或重置自主速度。Presence 以 Change 批次发布空间事实、限制和自身计划取消，再整批解除旧关系；Route 无 Presence 分支的主动覆盖及自身 Unit 离场同样先发布所属字段与自身计划取消，再解除局部关系。首个 Hook 可见各操作规定的完整结果，通用 replace 不代办业务。项目保留当前 Movement 阶段位置，不声称完全复制原生全局 Tween 调度。
+Movement 绑定本轮起始的 Unit Query，分两遍先推进 Blockable 偏移，再推进 Route 与符合资格的 Locomotion；每步单独过滤，不为固定枚举提前生成 Ref 数组或调用 toArray()。偏移存在或刚完成不构成自主禁移条件，偏移不借用 Locomotion Rule 或重置自主速度。Presence 以 Change 发布空间事实和限制，再按角色调用 Blockable.release 或 Blocker.releaseAll，由所属完整操作取消自身计划、解除当前关系。Route 无 Presence 分支的主动覆盖先发布位置，再调用相同完整操作；Unit 离场由所属能力的 prepare 完成清理。首个 Hook 可见各操作规定的完整结果，通用 replace 不代办业务。项目保留当前 Movement 阶段位置，不声称完全复制原生全局 Tween 调度。
 
 大君之触／大君之赐等“被阻挡后增加阻挡者容量”的内容尚未接入。满容量是否应继续尝试、关系结算后如何接续新容量，见 [Blocking 专项记录](blocking.md#满阻挡筛选与关系引起的容量变化)。
 

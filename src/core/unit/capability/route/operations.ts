@@ -1,7 +1,5 @@
 import { Vec2 } from "../../../common/vector.js";
 import { replace as replaceUnit, update } from "../../../battle/unit.js";
-import { release } from "../../../battle/blocking/operations.js";
-import { relations } from "../../../battle/blocking/query.js";
 import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../../battle/state.js";
@@ -12,6 +10,9 @@ import type { Unit } from "../../unit.js";
 import * as presence from "../presence/operations.js";
 import { hasSpatialPresence } from "../presence/capability.js";
 import { hasBlockable } from "../blocking/blockable.js";
+import { release } from "../blocking/blockable-operations.js";
+import { hasBlocker } from "../blocking/blocker.js";
+import { releaseAll } from "../blocking/blocker-operations.js";
 import {
     createProgress,
     type Definition,
@@ -200,16 +201,13 @@ export function advance(battle: BattleState, ref: Ref<Unit & Route>): BattleStat
                     battle = update(battle, units.ref(self), presence.appear(position));
                 } else {
                     const current = units.get(battle, ref)!;
-                    const next = hasBlockable(current)
-                        ? {
-                              ...current,
-                              position,
-                              blockable: { ...current.blockable, adjustment: null },
-                          }
-                        : { ...current, position };
+                    battle = replaceUnit(battle, [{ ...current, position }]);
 
-                    battle = replaceUnit(battle, [next]);
-                    battle = release(battle, relations(battle, ref));
+                    if (hasBlocker(current)) {
+                        battle = releaseAll(battle, units.ref(current));
+                    } else if (hasBlockable(current)) {
+                        battle = release(battle, units.ref(current));
+                    }
                 }
             }
         }

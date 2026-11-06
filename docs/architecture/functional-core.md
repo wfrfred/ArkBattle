@@ -4,6 +4,8 @@
 
 本文规定 Tactical 的函数契约与状态归属。领域计算与结算显式接续不可变状态，外部驱动负责状态发布与 I/O。
 
+每个逻辑领域只修改自己拥有的业务状态；跨领域协作必须使用状态所属领域提供的合法 Change 或完整操作，Core 没有直接修改其它领域 State 的例外。内部 replace 仅发布合法构造的结果，不能把跨领域手写字段变成合法业务。初始化按各领域构造协议装配状态，存储层维护自身存储与索引，均不代替运行态领域操作。
+
 总体领域划分见 [总体架构](ARCHITECTURE.md)，行动接口见 [Action 设计](action.md)，附着实例模型见 [Effect 设计](effect.md)。Action 推进只由调度器调用，内容通过启动、取消与具体结算接口交互。
 
 ## 状态接续后的读取与续执行
@@ -194,7 +196,7 @@ Capability 的 Rule、Hook、Contribution 与 Blocker.layer 工厂只接收业�
 
 unit.update 与内部 replace 不准备、校验或推断 Blocking 关系，也不派发 Blocking／Occupancy 通知。acquire／release 明确构造关系双端并发布，acquire 通知后只复核本次新 Relation；release 统一接收 Relation 数组，入口过滤旧身份与重复项，整批解除，再按输入顺序通知，不附加维护、搜索或计划取消。Capacity 的 Settlement 只按当前容量从本 Blocker 的末尾裁撤；volume 在 settle 读取当前 owner，结算该阻挡组，不追随 Hook 中的新归属；两者共享内部 settleCapacity，每条通知后重新读取容量与占用，不夹带资格扫描。Rule 的 Settlement 固定自身相关关系，逐条 maintain 复核资格，不维护其他关系或裁容量。setLayer 将本项 previous.blocked 中的原 Ref 交给 release，不回填旧 Unit。普通私有 state 写回与 Hook Change 没有 Blocking 后继。
 
-[SpatialPresence](presence.md) 返回在调用时按当前宿主能力组合的 Change：自身叶子处理空间事实与偏移，随后复用各能力的 Rule 工厂，遵守全批发布后按序结算的协议。自身叶子的 Settlement 从本项 previous 识别旧关系与 Execution，只解除仍属旧轮次的关系，并在 disappear 中取消旧执行；更早的 Settlement 或本次回调中新建的实例不在旧清理范围。Presence 自己发出的 RELEASED 可见此次整批解除结果，其它先行操作仍遵守各自契约。Route 无 Presence 分支的主动位置覆盖先纯发布位置及自身计划取消，再解除局部关系；两步间无回调，不要求挤入同一次 replace。
+[SpatialPresence](presence.md) 返回在调用时按当前宿主能力组合的 Change：自身叶子只处理空间事实，随后复用各能力的 Rule 工厂，遵守全批发布后按序结算的协议。自身 Settlement 按 previous 的稳定角色调用 Blockable.release 或 Blocker.releaseAll，由完整操作读取并释放当前关系，Blockable 同时取消自身位置计划。disappear 另从 previous 固定旧 Execution，在释放后取消，不把后续新执行纳入范围。各释放操作在自己的首个 RELEASED 前完成本次计划清理和整批双端解除，通知中新建的关系不属于该次释放候选。Route 无 Presence 分支的主动位置覆盖先纯发布位置，再按角色调用相同完整操作。
 
 Locomotion 和阻挡站位推进只发布位置、速度或计划，不调用 Blocking 维护；依赖位置的 Rule 在关系检查点求值。Route 的 APPEAR_AT_POS 是主动空间覆盖，明确解除当前关系。地块完整更新调用 maintainAll，固定入口旧关系、按 Unit 及其 blocked 顺序各复核一次资格，不重新收集候选、回头重扫或裁容量。maintain 接收 Relation，确认原身份仍存在后读取最新双方并复核资格；失效时仅解除这一条。Damage／Healing 的 HP 写入不启动 Blocking；旧关系不因临时 HP 为 0 失效，普通 Damage 在全部 HP Applied 响应后仍满足死亡条件才进入 Unit.remove 的显式释放。
 
