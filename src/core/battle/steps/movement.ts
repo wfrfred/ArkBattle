@@ -16,7 +16,7 @@ import type { Ref } from "../../common/ref.js";
 import type { Unit } from "../../unit/unit.js";
 import type { Command } from "../contract.js";
 import { appendEvents, type State as BattleState } from "../state.js";
-import { remove } from "../unit.js";
+import { remove, update } from "../unit.js";
 
 export type AlternativeRouteCommand =
     | {
@@ -38,14 +38,13 @@ export function advanceRouteCommands(
             continue;
         }
 
-        if (units.get(battle, command.ref) === undefined) {
-            throw new RangeError(`unknown alternative route unit: ${command.ref.id}`);
-        }
-
-        battle =
+        battle = update(
+            battle,
+            command.ref,
             command.type === "SET_ALTERNATIVE_ROUTE"
-                ? route.setAlternative(battle, command.ref, command.route)
-                : route.clearAlternative(battle, command.ref);
+                ? route.setAlternative(command.route)
+                : route.clearAlternative(),
+        );
     }
 
     return battle;

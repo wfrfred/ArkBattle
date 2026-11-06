@@ -220,22 +220,17 @@ export function movementTarget(
 export function pathMotionMode(state: State): MotionMode;
 
 export function setPathMotionMode(
-    battle: BattleState,
-    ref: Ref<Unit & Route>,
     mode: MotionMode,
-): BattleState;
+): Change<Unit & Route>;
 
 export function setAlternative(
-    battle: BattleState,
-    ref: Ref<Unit & Route>,
     definition: Definition,
-): BattleState;
+): Change<Unit & Route>;
 
-export function clearAlternative(
-    battle: BattleState,
-    ref: Ref<Unit & Route>,
-): BattleState;
+export function clearAlternative(): Change<Unit & Route>;
 ```
+
+三个设置工厂返回不绑定 Ref 的 Change，由 `unit.update(battle, ref, change)` 统一应用，只修改 PRESENT 宿主。它们没有发布后结算；可以通过 compose 按顺序组合，后项读取前项形成的当前路线状态。宿主存在性和能力要求由 update 的 Typed Ref 入口确认，advance 仍负责完整路线推进。
 
 当前执行路线取 `state.alternative ?? state.main`。已完成的 Alternative 仍然占用活动路线位置；此时 movementTarget 返回 null，不回退到 Main。切换替代路线保留 main 的进度；恢复时依据单位的实际当前位置继续。替代路线取得执行权不自动意味着主路线的全部等待时钟暂停，等待所用时钟由指令语义决定。
 
@@ -247,7 +242,7 @@ Route 不对 Navigation 返回的追踪点追加整段射线筛选，也不回�
 
 Definition.pathMotionMode 是初始通行模式，Progress.pathMotionMode 是当前模式。setPathMotionMode 更新当前活动 Progress，保留 Definition 和 Phase；Main 与 Alternative 各自保存模式，clearAlternative 恢复 Main 原有模式。Route 查询与传给 Locomotion 的 mode 读取同一当前值。Layer 的 State.type（unit.layer.type）独立表达空地身份，升空不自动改变寻路方式。startPosition 用于初始位置及路线相关查询；Definition.offset 是构造最终 Definition 前已经采样的总路线偏移，Progress 不重复保存。原始 offset 与 randomRange 只作为 Spawn 构造输入，不将 randomRange 保留在最终 Definition 中。
 
-requireAllCheckpoints 承接原 visitEveryCheckPoint 的语义，控制是否允许在尚未逐个完成路点时，因抵达终点而提前完成路线。alwaysCheckCurrentPoint 同样是固定执行政策，由 Definition 持有。CONSUMED 表示当前指令已经消费，用于同步重入时避免重复执行，不表示整条路线完成。类型、初始化及 isCompleted／pathMotionMode 的局部读取归 route/capability.ts；movementTarget 及其 target／recoveryPoint 辅助查询归 route/query.ts，target 仅供领域内部共享，不从 index 导出。完整路线操作仍由 route/operations.ts 提供，公共入口名字与业务契约不变。
+requireAllCheckpoints 承接原 visitEveryCheckPoint 的语义，控制是否允许在尚未逐个完成路点时，因抵达终点而提前完成路线。alwaysCheckCurrentPoint 同样是固定执行政策，由 Definition 持有。CONSUMED 表示当前指令已经消费，用于同步重入时避免重复执行，不表示整条路线完成。类型、初始化及 isCompleted／pathMotionMode 的局部读取归 route/capability.ts；movementTarget 及其 target／recoveryPoint 辅助查询归 route/query.ts，target 仅供领域内部共享，不从 index 导出。设置 Change 工厂与完整路线推进由 route/operations.ts 提供。
 
 ### 指令归一化
 
@@ -298,7 +293,7 @@ Route 初始化遵循 [Capability 约定](capability.md)，统一使用 initiali
 
 创建入口建立偏移、等待与跳转的输入约束；内部按游戏尺度计算采样范围和等待截止时间，信任合法输入，不为极端算术溢出追加结果断言。纯进度发布不执行回调，后续可直接使用已构造的新值；Presence／Blocking 等完整操作返回后，仍按续执行条件读取最新宿主和进度。
 
-Alternative 的业务所有者同样提供已经规范化、偏移已经确定的 Definition，再调用 setAlternative。
+Alternative 的业务所有者同样提供已经规范化、偏移已经确定的 Definition，再将 setAlternative(definition) 交给 unit.update 应用。
 
 ### Alternative 操作
 
@@ -308,7 +303,7 @@ Alternative 的业务所有者同样提供已经规范化、偏移已经确定�
 | 已有 Alternative，再次调用 setAlternative | 替换旧路线，从头开始执行。 |
 | 重复设置同一个 Definition | 仍然重新开始，不按对象身份跳过。 |
 | 调用 clearAlternative | 删除 Alternative，恢复 Main 原有进度。 |
-| 没有 Alternative 时调用 clearAlternative | 返回原 BattleState。 |
+| 没有 Alternative 时应用 clearAlternative | 保留原 Unit，update 返回原 BattleState。 |
 | Alternative 抵达终点 | 标记 COMPLETED，不自动清除。 |
 
 Alternative 是否存在由业务所有者控制，执行完成只改变其 Progress.phase。例如恐惧安装临时路线，抵达终点后保持 Alternative 为 COMPLETED，暂时没有移动目标；恐惧结束时调用 clearAlternative，单位才恢复 Main。

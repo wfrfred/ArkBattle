@@ -3,7 +3,8 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { initialize } from "../../dist/core/unit/capability/route/capability.js";
 import * as route from "../../dist/core/unit/capability/route/index.js";
-import { add as addUnit, replace as updateUnit } from "../../dist/core/battle/unit.js";
+import { add as addUnit, replace as updateUnit, update } from "../../dist/core/battle/unit.js";
+import { compose } from "../../dist/core/unit/change.js";
 import { getUnit } from "../helpers/unit.js";
 import { setOverlay } from "../../dist/core/battlefield/navigation/state.js";
 import { baseUnit, fixtureBattle } from "../helpers/unit.js";
@@ -84,17 +85,17 @@ test("Alternative replacement always starts over and clear preserves Main deadli
     const entered = route.advance(battle, ref);
     const main = current(entered, ref).route.main;
     const alternate = definition({ checkpoints: [{ type: "WAIT", tick: 2 }] });
-    const installed = route.setAlternative(entered, ref, alternate);
+    const installed = update(entered, ref, route.setAlternative(alternate));
     const advanced = route.advance(installed, ref);
     const previousAlternative = current(advanced, ref).route.alternative;
-    const repeated = route.setAlternative(advanced, ref, alternate);
+    const repeated = update(advanced, ref, route.setAlternative(alternate));
     assert.notEqual(current(repeated, ref).route.alternative, previousAlternative);
     assert.equal(current(repeated, ref).route.main, main);
     assert.equal(current(repeated, ref).route.alternative.phase.checkpointState.type, "PENDING");
-    const cleared = route.clearAlternative({ ...repeated, tick: 16 }, ref);
+    const cleared = update({ ...repeated, tick: 16 }, ref, route.clearAlternative());
     assert.equal(current(cleared, ref).route.main, main);
     assert.equal(current(cleared, ref).route.alternative, null);
-    assert.equal(route.clearAlternative(cleared, ref), cleared);
+    assert.equal(update(cleared, ref, route.clearAlternative()), cleared);
     const resumed = route.advance(cleared, ref);
     assert.equal(current(resumed, ref).route.main.phase.type, "END");
 });
@@ -103,40 +104,41 @@ test("path mode changes preserve route progress and each route retains its curre
     const { battle, ref } = fixture(definition({ checkpoints: [{ type: "WAIT", tick: 5 }] }), 10);
     const entered = route.advance(battle, ref);
     const phase = current(entered, ref).route.main.phase;
-    const changed = route.setPathMotionMode(entered, ref, "FLY");
+    const changed = update(entered, ref, route.setPathMotionMode("FLY"));
     const main = current(changed, ref).route.main;
     assert.equal(route.pathMotionMode(current(changed, ref).route), "FLY");
     assert.equal(main.definition.pathMotionMode, "WALK");
     assert.equal(main.phase, phase);
-    assert.equal(route.setPathMotionMode(changed, ref, "FLY"), changed);
+    assert.equal(update(changed, ref, route.setPathMotionMode("FLY")), changed);
 
     const alternate = definition({ checkpoints: [{ type: "WAIT", tick: 2 }] });
-    const installed = route.advance(route.setAlternative(changed, ref, alternate), ref);
-    const alternativePhase = current(installed, ref).route.alternative.phase;
-    assert.equal(route.pathMotionMode(current(installed, ref).route), "WALK");
-    const alternateChanged = route.setPathMotionMode(installed, ref, "FLY");
-    assert.equal(current(alternateChanged, ref).route.main, main);
-    assert.equal(current(alternateChanged, ref).route.alternative.phase, alternativePhase);
-    assert.equal(route.pathMotionMode(current(alternateChanged, ref).route), "FLY");
+    const installed = route.advance(update(changed, ref, compose(
+        route.setAlternative(alternate), route.setPathMotionMode("FLY"),
+    )), ref);
+    assert.equal(current(installed, ref).route.main, main);
+    assert.equal(route.pathMotionMode(current(installed, ref).route), "FLY");
 
-    const restarted = route.setAlternative(alternateChanged, ref, alternate);
+    const restarted = update(installed, ref, route.setAlternative(alternate));
     assert.equal(route.pathMotionMode(current(restarted, ref).route), "WALK");
-    const restored = route.clearAlternative(restarted, ref);
-    assert.equal(current(restored, ref).route.main, main);
-    assert.equal(route.pathMotionMode(current(restored, ref).route), "FLY");
+    const restored = update(restarted, ref, compose(
+        route.clearAlternative(), route.setPathMotionMode("WALK"),
+    ));
+    assert.equal(current(restored, ref).route.alternative, null);
+    assert.equal(current(restored, ref).route.main.phase, phase);
+    assert.equal(route.pathMotionMode(current(restored, ref).route), "WALK");
 });
 
 test("completed Alternative remains active until its owner clears it", () => {
     const { battle, ref } = fixture();
     const main = current(battle, ref).route.main;
-    const installed = route.setAlternative(battle, ref, definition({ endPosition: [0, 0] }));
+    const installed = update(battle, ref, route.setAlternative(definition({ endPosition: [0, 0] })));
     const completed = route.advance(installed, ref);
     assert.equal(current(completed, ref).route.alternative.phase.type, "COMPLETED");
     assert.equal(current(completed, ref).route.main, main);
     assert.equal(route.movementTarget(completed, ref), null);
     assert.equal(route.isCompleted(current(completed, ref).route), false);
     assert.equal(route.advance(completed, ref), completed);
-    assert.deepEqual(route.movementTarget(route.clearAlternative(completed, ref), ref), { nextPoint: [8, 0], goal: [8, 0] });
+    assert.deepEqual(route.movementTarget(update(completed, ref, route.clearAlternative()), ref), { nextPoint: [8, 0], goal: [8, 0] });
 });
 
 test("Main early completion is controlled by requireAllCheckpoints even while Alternative is active", () => {
@@ -145,7 +147,7 @@ test("Main early completion is controlled by requireAllCheckpoints even while Al
             requireAllCheckpoints,
             checkpoints: [{ type: "WAIT", tick: 100 }],
         }), 0, [8, 0]);
-        const installed = route.setAlternative(battle, ref, definition({ endPosition: [0, 12] }));
+        const installed = update(battle, ref, route.setAlternative(definition({ endPosition: [0, 12] })));
         const advanced = route.advance(installed, ref);
         assert.equal(route.isCompleted(current(advanced, ref).route), !requireAllCheckpoints);
 
@@ -170,15 +172,15 @@ test("route tracking applies the same sampled offset to MOVE and end targets", (
 
 test("Alternative movement targets use their own goal and offset until cleared", () => {
     const { battle, ref } = fixture(definition({ offset: [0.2, 0] }), 0, [0.2, 0]);
-    const installed = route.setAlternative(battle, ref, definition({
+    const installed = update(battle, ref, route.setAlternative(definition({
         offset: [-0.1, 0.2],
         checkpoints: [{ type: "MOVE", position: [0, 4], offset: [0.25, 0] }],
-    }));
+    })));
     const advanced = route.advance(installed, ref);
     assert.deepEqual(route.movementTarget(advanced, ref), {
         nextPoint: [4.15, 0.2], goal: [4.15, 0.2],
     });
-    assert.deepEqual(route.movementTarget(route.clearAlternative(advanced, ref), ref), {
+    assert.deepEqual(route.movementTarget(update(advanced, ref, route.clearAlternative()), ref), {
         nextPoint: [8.2, 0], goal: [8.2, 0],
     });
 });
@@ -206,10 +208,10 @@ test("navigation and unreachable checks use the current path mode", () => {
         id: 1, cells: [[0, 4]], denyPassage: true, denyDepartures: [],
     });
     const blocked = { ...battle, battlefield: { ...battle.battlefield, navigation } };
-    const flying = route.advance(route.setPathMotionMode(blocked, ref, "FLY"), ref);
+    const flying = route.advance(update(blocked, ref, route.setPathMotionMode("FLY")), ref);
     assert.equal(current(flying, ref).route.main.phase.type, "CHECKPOINT");
     assert.deepEqual(route.movementTarget(flying, ref), { nextPoint: [4, 0], goal: [4, 0] });
-    const walking = route.setPathMotionMode(flying, ref, "WALK");
+    const walking = update(flying, ref, route.setPathMotionMode("WALK"));
     assert.equal(route.movementTarget(walking, ref), null);
     assert.equal(current(route.advance(walking, ref), ref).route.main.phase.type, "END");
 });

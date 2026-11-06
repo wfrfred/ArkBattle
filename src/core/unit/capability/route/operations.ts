@@ -6,6 +6,7 @@ import * as navigation from "../../../battlefield/navigation/state.js";
 import { Tile, World } from "../../../geometry/coordinate.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
+import { createChange, type Change } from "../../change.js";
 import * as presence from "../presence/operations.js";
 import { hasSpatialPresence } from "../presence/capability.js";
 import { hasBlockable } from "../blocking/blockable.js";
@@ -24,53 +25,41 @@ import { target } from "./query.js";
 const RADIUS = 0.05;
 const TRANSITION_BUDGET = 128;
 
-export function setPathMotionMode(
-    battle: BattleState,
-    ref: Ref<Unit & Route>,
-    mode: navigation.MotionMode,
-): BattleState {
-    const self = units.get(battle, ref);
-    if (self?.lifecycle !== "PRESENT") {
-        return battle;
-    }
+export function setPathMotionMode(mode: navigation.MotionMode): Change<Unit & Route> {
+    return createChange<Unit & Route>((self) => {
+        if (self.lifecycle !== "PRESENT") {
+            return self;
+        }
 
-    const slot = self.route.alternative === null ? "main" : "alternative";
-    const progress = self.route[slot]!;
+        const slot = self.route.alternative === null ? "main" : "alternative";
+        const progress = self.route[slot]!;
 
-    return progress.pathMotionMode === mode
-        ? battle
-        : replaceUnit(battle, [
-              {
+        return progress.pathMotionMode === mode
+            ? self
+            : {
                   ...self,
                   route: { ...self.route, [slot]: { ...progress, pathMotionMode: mode } },
+              };
+    });
+}
+
+export function setAlternative(definition: Definition): Change<Unit & Route> {
+    return createChange<Unit & Route>((self) =>
+        self.lifecycle !== "PRESENT"
+            ? self
+            : {
+                  ...self,
+                  route: { ...self.route, alternative: createProgress(definition) },
               },
-          ]);
+    );
 }
 
-export function setAlternative(
-    battle: BattleState,
-    ref: Ref<Unit & Route>,
-    definition: Definition,
-): BattleState {
-    const self = units.get(battle, ref);
-    if (self?.lifecycle !== "PRESENT") {
-        return battle;
-    }
-
-    return replaceUnit(battle, [
-        {
-            ...self,
-            route: { ...self.route, alternative: createProgress(definition) },
-        },
-    ]);
-}
-
-export function clearAlternative(battle: BattleState, ref: Ref<Unit & Route>): BattleState {
-    const self = units.get(battle, ref);
-
-    return self?.lifecycle !== "PRESENT" || self.route.alternative === null
-        ? battle
-        : replaceUnit(battle, [{ ...self, route: { ...self.route, alternative: null } }]);
+export function clearAlternative(): Change<Unit & Route> {
+    return createChange<Unit & Route>((self) =>
+        self.lifecycle !== "PRESENT" || self.route.alternative === null
+            ? self
+            : { ...self, route: { ...self.route, alternative: null } },
+    );
 }
 
 function atEnd(self: Unit, progress: Progress): boolean {

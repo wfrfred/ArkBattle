@@ -115,7 +115,7 @@ test("Runtime consumes the current path mode without changing the unit's ground 
     const host = ref(get(state, 0));
     state = step(state);
     assert.deepEqual(get(state, 0).position, [0, 1]);
-    state = step({ ...routeOperations.setPathMotionMode(state, host, "FLY"), tick: 1 });
+    state = step({ ...update(state, host, routeOperations.setPathMotionMode("FLY")), tick: 1 });
     assert.ok(get(state, 0).position[0] > 0);
     assert.equal(get(state, 0).layer.type, "GROUND");
 });

@@ -23,9 +23,9 @@ Definition 保存静态参数与行为描述，State 保存本领域当前事实
 
 ## 操作范围
 
-纯数值与几何等局部计算仍直接接收值、返回值。对已登记 Unit 的公开 Rule、Hook、Contribution、Layer.type 与 Blocker.layer 写入统一为 `setXxx(value): Change<C>`／`removeXxx(id): Change<C>` 工厂；C 只要求该操作需要的宿主能力。Core 用 createChange 将纯变换与可选结算配对，compose 从左到右应用已有 Change。Unit.update 接收一个 Typed Ref 和一个 Change，先完成同一宿主的全部纯应用、一次发布，再原顺序结算；Ref 由提交入口证明能力，不由工厂绑定。跨能力 Rule 仍可只读完整 Unit 与 BattleState，不把真实业务输入压成通用上下文。
+纯数值与几何等局部计算仍直接接收值、返回值。对已登记 Unit 的公开 Rule、Hook、Contribution、Layer.type、Blocker.layer 与 Route 的模式／替代路线写入统一为 `setXxx(value): Change<C>`／`removeXxx(id): Change<C>`／`clearXxx(): Change<C>` 工厂；C 只要求该操作需要的宿主能力。Core 用 createChange 将纯变换与可选结算配对，compose 从左到右应用已有 Change。Unit.update 接收一个 Typed Ref 和一个 Change，先完成同一宿主的全部纯应用、一次发布，再原顺序结算；Ref 由提交入口证明能力，不由工厂绑定。跨能力 Rule 仍可只读完整 Unit 与 BattleState，不把真实业务输入压成通用上下文。
 
-Capability 也可提供接收 BattleState 与 Typed Ref 的完整操作，例如 Locomotion.advance；是否需要时间推进、资格判断或领域结算由实际业务决定。Rule、Hook、Contribution、Layer.type、Blocker.layer 与 SpatialPresence.appear／disappear 的 Change 工厂不自行提交；有后继的 Change 在发布后同步结算，无后继的 Hook Change 只改变集合。完整私有 state／生命周期操作保持各自原协议，见 [批量变更](api-conventions.md#51-unit-完整操作与批量变更)。
+Capability 也可提供接收 BattleState 与 Typed Ref 的完整操作，例如 Locomotion.advance；是否需要时间推进、资格判断或领域结算由实际业务决定。Rule、Hook、Contribution、Layer.type、Blocker.layer、Route 的模式／替代路线与 SpatialPresence.appear／disappear 的 Change 工厂不自行提交；有后继的 Change 在发布后同步结算，无后继的 Hook Change 只改变集合。完整私有 state／生命周期操作保持各自原协议，见 [批量变更](api-conventions.md#51-unit-完整操作与批量变更)。
 
 完整结算接收当前 BattleState，按业务顺序返回已结算的新版本。有额外拒绝原因、结算报告或新身份时返回 `{ state, value }`，否则直接返回 State。普通查询不推进世界。所谓提交指生成并接续后继值；Tick 成功后，Runtime 才发布最终版本。
 

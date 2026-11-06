@@ -306,7 +306,7 @@ remove(battle: BattleState, unitId: Id, reason: LeaveReason): BattleState;
 advance(battle: BattleState): BattleState;
 ```
 
-Rule、Hook、Contribution、Layer.type、Blocker.layer 与 Occupancy.direction 的公开工厂不接收 Ref，返回只要求相应能力的 `Change<C>`。Ref 由 update 接收，证明宿主满足所需能力；NoInfer 防止 Change 反向放宽目标类型。工厂不读取 BattleState，也不自行发布：
+Rule、Hook、Contribution、Layer.type、Blocker.layer、Occupancy.direction 与 Route 的模式／替代路线公开工厂不接收 Ref，返回只要求相应能力的 `Change<C>`。Ref 由 update 接收，证明宿主满足所需能力；NoInfer 防止 Change 反向放宽目标类型。工厂不读取 BattleState，也不自行发布：
 
 ```typescript
 battle = update(battle, reference, setLayer("AIR"));

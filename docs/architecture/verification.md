@@ -81,6 +81,12 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 
 尚未完整审查的 Schedule／Data 解析、Route 执行、Targeting、完整 Projectile／Mechanism 等独立业务按现有范围保留；这些套件中夹带的上述已审查语义仍须去重，不能整文件豁免。测试数量是整理结果，不作为删减目标。
 
+## Route 变更接口的回归语义
+
+`setPathMotionMode(mode)`、`setAlternative(definition)` 与 `clearAlternative()` 返回 `Change<Unit & Route>`，通过 `unit.update` 应用。组合按顺序读取前项结果：设置 Alternative 后修改模式应作用于 Alternative；清除后修改模式应作用于 Main。仅修改 PRESENT 宿主，模式同值和无 Alternative 的清除不改变状态；重复设置同一 Alternative Definition 仍从头开始，Main 的进度与模式独立保留。
+
+沿用 Route 的替代路线重启、恢复 Main 和独立模式代表场景验证这些结果，加入同宿主组合应用；能力要求及组合保留完整宿主类型在 core-types 集中验证。不为三个工厂分别增加空值、同引用或生命周期矩阵。Route 其余执行语义与旧测试的整体收敛仍待后续审查。
+
 ## Presence 的回归语义
 
 以下结果依据 [Presence 契约](presence.md)确定；场景通过正常构造、部署、阻挡取得、启动与资源结算建立事实。`appear(position)`／`disappear()` 返回要求 SpatialPresence 的 Change，由 `unit.update(battle, ref, change)` 提交；同目标变更通过二元 compose 组合，Presence 可以在组合中的任意位置，最终 Unit 先发布，不要求它排在首位。关系与自身计划在 Presence 自身 Settlement 中由 `releaseAll`／`release` 完成，领域操作先清理再通知；消失随后调用 `Action.cancelForUnit`，由 Action 领域读取当前执行并完成取消。
