@@ -73,17 +73,14 @@ export function commitDamage(
     const maximum = query.resolveMaxEp(battle, self);
     const epBefore = Math.min(maximum, self.elemental.ep[type]);
     const epLoss = Math.min(epBefore, received.amount);
-    if (epLoss === 0) {
-        return {
-            state: battle,
-            value: { type, epBefore, epAfter: epBefore, epLoss, burst: null },
-        };
-    }
-
     const epAfter = epBefore - epLoss;
     const depleted = epAfter === 0;
-    const ep = depleted ? elementValues(0) : { ...normalizedEp(self, maximum), [type]: epAfter };
-    battle = replaceUnits(battle, [{ ...self, elemental: { ...self.elemental, ep } }]);
+    if (epLoss > 0) {
+        const ep = depleted
+            ? elementValues(0)
+            : { ...normalizedEp(self, maximum), [type]: epAfter };
+        battle = replaceUnits(battle, [{ ...self, elemental: { ...self.elemental, ep } }]);
+    }
 
     battle = appendEvents(battle, [
         {
@@ -94,6 +91,13 @@ export function commitDamage(
             tick: battle.tick,
         },
     ]);
+
+    if (epLoss === 0) {
+        return {
+            state: battle,
+            value: { type, epBefore, epAfter, epLoss, burst: null },
+        };
+    }
 
     let reference: Ref<Burst> | null = null;
     if (depleted) {
@@ -127,20 +131,23 @@ export function commitHealing(
     }
 
     const application: HealingApplication = { epBefore, epAfter, epGain };
-    if (!ELEMENT_TYPES.some((type) => epGain[type] > 0)) {
-        return { state: battle, value: application };
+    const amount = Object.values(epGain).reduce((total, gain) => total + gain, 0);
+    if (amount > 0) {
+        battle = replaceUnits(battle, [{ ...self, elemental: { ...self.elemental, ep: epAfter } }]);
     }
 
-    battle = replaceUnits(battle, [{ ...self, elemental: { ...self.elemental, ep: epAfter } }]);
     battle = appendEvents(battle, [
         {
             type: "ELEMENTAL_INJURY_HEALED",
             targetUnitId: target.id,
-            amount: Object.values(epGain).reduce((total, amount) => total + amount, 0),
+            amount,
             tick: battle.tick,
         },
     ]);
-    battle = dispatch(battle, target, "healed", { request, ...application });
+
+    if (amount > 0) {
+        battle = dispatch(battle, target, "healed", { request, ...application });
+    }
 
     return { state: battle, value: application };
 }

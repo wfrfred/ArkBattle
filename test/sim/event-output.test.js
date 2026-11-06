@@ -7,6 +7,7 @@ import * as hpDamage from "../../dist/core/battle/damage/hp/index.js";
 import * as hpHealing from "../../dist/core/battle/healing/hp/index.js";
 import * as epDamage from "../../dist/core/battle/damage/ep/index.js";
 import * as epHealing from "../../dist/core/battle/healing/ep/index.js";
+import * as elementalCapability from "../../dist/core/unit/capability/elemental/index.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { appendEvents } from "../../dist/core/battle/state.js";
 import { step } from "../../dist/core/battle/runtime.js";
@@ -31,19 +32,38 @@ test("EVENT-01: real HP and EP damage and healing produce the corresponding floa
         parameters: { type: "ELEMENTAL", attack: { power: 50, multiplier: 1, addition: 0 } },
     };
     state = hpDamage.applyDamage(hp, hpDamage.calculateDamage(state, hp)).state;
+    const elementalRecovery = { source: null, target, parameters: { power: 40 } };
+    const fullRecovery = epHealing.applyHealing(
+        elementalRecovery, epHealing.calculateHealing(state, elementalRecovery),
+    );
+    assert.equal(fullRecovery.value.type, "APPLIED");
+    assert.equal(Object.values(fullRecovery.value.application.epGain).every(amount => amount === 0), true);
+    state = fullRecovery.state;
     const injury = { source: null, target, parameters: { type: "NEURAL", power: 100 } };
     state = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury)).state;
-    const elementalRecovery = { source: null, target, parameters: { power: 40 } };
     state = epHealing.applyHealing(elementalRecovery, epHealing.calculateHealing(state, elementalRecovery)).state;
     const recovery = { source: null, target, parameters: { power: 30, multiplier: 1 } };
     state = hpHealing.applyHealing(recovery, hpHealing.calculateHealing(state, recovery)).state;
+    state = update(state, target, elementalCapability.setHook("damageReceiving", {
+        id: "reduction",
+        invoke: (current, _context, pending) => ({
+            state: current,
+            value: { ...pending, amount: pending.amount - 200 },
+        }),
+    }));
+    const absorbed = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury));
+    assert.equal(absorbed.value.type, "APPLIED");
+    assert.equal(absorbed.value.application.epLoss, 0);
+    state = absorbed.state;
 
     const view = new TacticalDemoPresentation(data);
     assert.deepEqual(view.advance(state, state.events), [
         ["dmg", 0, 50, "true"],
+        ["heal", 0, 0],
         ["dmg", 0, 100, "neural"],
         ["heal", 0, 40],
         ["heal", 0, 30],
+        ["dmg", 0, 0, "neural"],
     ]);
     assert.equal(get(state, 0).vitality.hp, 980);
     assert.equal(get(state, 0).elemental.ep.NEURAL, 940);

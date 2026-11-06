@@ -125,7 +125,7 @@ interface HealingApplication {
 
 Damage 的 before／after／loss 描述本次元素类型，Burst 身份描述本次创建事实；治疗对四型各应用完整接收量，分别限制到当前上限，不在四型间分摊。某型 EP 耗尽时同步将四型 EP 置零并创建 Burst。动态上限贡献本身不立即改写 EP；后续资源操作和自然回复按最新上限结算，爆发恢复则按最新上限与当前有效进度回填。
 
-报告在写入时采样；Battle 的 Application 直接引用同一类型，并放入 APPLIED Outcome。Outcome 统一以 type 判别：损伤有 REJECTED／CANCELLED／UNAVAILABLE／APPLIED；EP Healing 没有取消工作值阶段，只提供 REJECTED／UNAVAILABLE／APPLIED。成功但实际变化为零时，不派发能力 damaged／healed，Battle 仍派发通用 Applied。
+报告在写入时采样；Battle 的 Application 直接引用同一类型，并放入 APPLIED Outcome。Outcome 统一以 type 判别：损伤有 REJECTED／CANCELLED／UNAVAILABLE／APPLIED；EP Healing 没有取消工作值阶段，只提供 REJECTED／UNAVAILABLE／APPLIED。成功但实际变化为零时，仍输出 amount 为零的 ELEMENTAL_INJURY／ELEMENTAL_INJURY_HEALED，Battle 仍派发通用 Applied；能力 damaged／healed 只通知实际变化大于零的业务。自然回复不经过该成功输出路径。
 
 ## 4. Hook、提交事实与同步重入
 

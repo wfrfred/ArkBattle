@@ -22,6 +22,8 @@ UI 的实际需要决定输出哪些事实与字段。领域操作没有记录�
 
 以上输出包含发生 Tick。元素损伤对应 Elemental Injury，元素 HP 伤害对应 Elemental Damage；后者仍是 `DAMAGE` 的 `ELEMENTAL` 伤害类型，两者不得混用。
 
+四种伤害与治疗在成功提交时均输出对应 Event，实际资源变化为零也记录 amount 为零。零计算输出在 Apply 入口拒绝，不产生成功输出；取消表现仍按各业务已有约定处理。Elemental 的 damaged／healed 只通知实际变化大于零的业务，与 UI Event 的成功输出条件分开。
+
 伤害与治疗 Event 不复制接收量、取消报告或提交后的资源值。Burst Event 不携带整个运行实例，使用发生时采样的位置，避免 UI 查询最终 State 得到移动后的位置或找不到同 Tick 已注销的宿主。
 
 各领域直接调用 `appendEvents`，队列只保存在 `BattleState.events`。不建立事件总线、注册表、订阅或 Event 生命周期，也不保留并行的 Signal 输出类型。公共 Event 仅使用类型导入聚合。
