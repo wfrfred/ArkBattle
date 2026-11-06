@@ -39,7 +39,7 @@
 | [27 一次攻击的索敌、弹道与伤害结算](27-attack-additions-and-damage-events.md) | 妮芙 S1 的目标取得、弹道身份与采样、前置 Buff、HP／EP、通知和普通死亡短链 | 区分攻击、命中、计算、受伤与击杀时点；已有爆发和本击新爆发、value 与 HP 变化、业务结束与物理回收 |
 | [28 伤害扩展时点与事件粒度](28-damage-hooks-and-event-granularity.md) | 计算、输出、接收、成功闪避、HP 应用、成功伤害与击杀的代表内容，复用前案并补核接收节点 | 用实际玩法判断 Hook 必要性；区分语义机会、直接编排、事实通知与暂缺依据的独立 API |
 | [29 HP 与 EP 治疗结算](29-hp-and-ep-healing-settlement.md) | HP／EP 治疗公式、共享 Modifier 与专属事件、末药／桑葚默认治疗资源 | 区分基本量与实际回复、满血正治疗、逐型 EP 回复、附件前置组合及 skip 与普通治疗的边界 |
-| [30 Scheduler ActionData 字段](30-scheduler-action-data-fields.md) | 24 个客户端字段、39 份卫戍相关配置、出生选项及模板替换 | 区分配置与预处理／运行时标记，纠正分支统计和 extraMeta 简化解释；明确主线随机实际入口与非空载荷来源的接入缺口 |
+| [30 Scheduler ActionData 字段](30-scheduler-action-data-fields.md) | 24 个客户端字段、39 份卫戍相关配置、出生选项及模板替换 | 区分配置与运行时标记，纠正分支统计和 extraMeta 简化解释；主线随机归 Meta 准备，不作为 Schedule 设计前置 |
 
 证据文件及复现范围见[批次索引](../evidence/README.md)。案例负责维护问题、结论及适用条件、直接证据／调用链推断、未决项和项目关联；批次 README 负责版本、指纹、文件用途和实际复现入口。
 
