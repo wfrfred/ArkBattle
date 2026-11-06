@@ -273,7 +273,7 @@ Action 时序的必要回归语义是：静态贡献增删会在完整更新返�
 
 纯公式只接收实际需要的局部值：MaxHP 与 Blocking 的容量／体积统一为 `(definition, state)`；Ammo 使用 `(base, modifiers)`；Card 持有自身 Definition 与 State，继续接收 Card 值。局部公式不为形式一致增加 Battle 或 Ref。普通配置字段直接读取，不包装 Getter；SP 容量、门槛和默认费用直接来自 Definition，本次发动费用仍由 Activation.cost 程序与默认配置共同决定。SP 可空槽位在资源入口通过 hasSp 收窄后求值，两项回复属性同样返回 number。属性公式模块只保留 Modifier、create、apply。
 
-战场查询直接归所属领域，返回完整实体或确有用途的关系投影。Unit 使用 all／get，Blocking 使用 blockerOf／blocked／usedCapacity／relations；relations(battle, ref?) 省略 Ref 时投影全场，提供 Ref 时直接读取局部关联并保留原 BlockedRef 句柄，不扫描全场后过滤。BlockedRef 由 acquire 建立，保存在 Blocker.blocked 中；普通 Unit Ref 可以定位目标，但不能代替 Relation.blocked 的关联轮次身份。Projectile 使用 get 及容器查询。Occupancy.at(field, tile) 返回 occupant／support 双槽登记，消费方直接读取并按需取得当前 Unit；map 与 navigation 可直接读取 Field 的只读字段。战斗入口为 initialize(input) 与 step(battle, commands)，直接返回不可变 BattleState，commands 是必填数组；消费侧按所需语义形成局部输出，不提供第二套完整 Snapshot 或 Runtime 对象。
+战场查询直接归所属领域，返回完整实体或确有用途的关系投影。Unit 使用 all／get，Blocking 使用 blockerOf／blocked／usedCapacity／relations；relations(battle, ref?) 省略 Ref 时汇集全场 Relation，提供 Ref 时直接读取局部关联并保留原 Relation 对象，不扫描全场后过滤。Relation 由 acquire 创建并在 Blocker.relations 与 Blockable.relation 中共享，端点使用普通 Typed Ref；blockerOf／blocked 只投影端点身份。Projectile 使用 get 及容器查询。Occupancy.at(field, tile) 返回 occupant／support 双槽登记，消费方直接读取并按需取得当前 Unit；map 与 navigation 可直接读取 Field 的只读字段。战斗入口为 initialize(input) 与 step(battle, commands)，直接返回不可变 BattleState，commands 是必填数组；消费侧按所需语义形成局部输出，不提供第二套完整 Snapshot 或 Runtime 对象。
 
 Tactical 的导出函数、Definition 回调、Change 工厂与容器公共方法遵循上述职责分类。Hook 的固定事件 Context、MovementContext 业务输入、创建时的宿主身份、容器内部数字键、私有状态结果值、纯 Geometry／Navigation／Card／Cooldown 计算均有明确职责，不能机械升级为 Battle 操作。battle/deployment/query.ts 的 evaluate(battle, request) 读取部署资源和 Battlefield 的当前地块与占格事实；归属按业务职责划分，参数按实际数据需求选择，不因位于 Battle 目录就增加包装。
 
@@ -366,7 +366,7 @@ Unit.initialize 将 Blocker／Blockable 的组合限制为至多一种，两者�
 
 Blocking.release(battle, readonly Relation[]) 在入口过滤失效旧身份与重复项，先发布整批双端解除结果，再按首次输入顺序逐条派发 Hook。每条开始时同时固定两端候选 ID，后续读取最新登记；ACQUIRED 按旧身份失效停止，RELEASED 作为历史通知继续。release 不接受额外 Unit 更新值，不自动维护、搜索或取消偏移。Presence 与 Route 的主动空间变更先纯发布空间字段，再按角色调用 Blockable.release 或 Blocker.releaseAll；前者自行取消当前计划并解除当前关系，后者批量解除当前出向关系并保留目标计划。各完整释放操作在首个通知前完成本次清理。
 
-Blocker Capability 公开 `releaseAll(battle, reference: Ref<Unit & Blocker>): BattleState`，从当前 BattleState 读取一次宿主；缺失返回原状态，存在则将当前 blocked 原 Ref 组成关系交给 Blocking.release，不取消目标计划或附加搜索／维护。Blocker.prepare 调用公开 releaseAll；Departure.unit 只提供身份，不能把它的历史关系当作当前列表。
+Blocker Capability 公开 `releaseAll(battle, reference: Ref<Unit & Blocker>): BattleState`，从当前 BattleState 读取一次宿主；缺失返回原状态，存在则将当前 relations 直接交给 Blocking.release，不取消目标计划或附加搜索／维护。Blocker.prepare 调用公开 releaseAll；Departure.unit 只提供身份，不能把它的历史关系当作当前列表。
 
 add 接收创建方完成初始化的完整 Unit，登记后按顺序执行 enter。Deployment 在初始化 fold 前登记自己的 enter，Occupancy 随后追加配对程序，各程序按登记顺序执行。Unit Definition.hooks 必填，无监听传 Hooks.empty()；同键同 ID 替换保留首次位置。全部固有 Hook 在 add 前就绪，生命周期键也允许运行时修改；enter／tick／prepare 按固定候选 ID 读取最新登记，enter／tick 每项前确认 PRESENT。prepare／leave 使用固定 Departure，leave 的程序快照在物理注销前从最新 Unit 捕获，注销后执行。能力创建输入保持可选；Deployable 在初始化入口要求已有 Occupancy。实际部署在初始化前提交 DP／库存／额度，通过 Deployable.setDeployment 在未登记 Unit 上构造本次部署事实，再由 add 登记并执行已组装的 enter 程序。
 

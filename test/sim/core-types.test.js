@@ -32,7 +32,7 @@ import * as actionCapability from ${module("unit/capability/action/index")};
 import { createRegistrationOperations } from ${module("unit/registration")};
 import type { Offense } from ${module("unit/capability/offense/index")};
 import { setAttackContribution, resolveAttack } from ${module("unit/capability/offense/index")};
-import { setLayer, type Blocker, type Blockable, type BlockedRef, type Relation, type Hook as BlockingHook } from ${module("unit/capability/blocking/index")};
+import { setLayer, type Blocker, type Blockable, type Relation, type Hook as BlockingHook } from ${module("unit/capability/blocking/index")};
 import * as blocking from ${module("battle/blocking/index")};
 declare const battle: State;
 const outputKey = key<Hook<{ amount: number }, number>>('output');
@@ -117,14 +117,13 @@ elemental.available(elementalUnit);
 // @ts-expect-error Elemental eligibility requires its resource capability.
 elemental.available(bare);
 declare const blockerRef: Ref<Unit & Blocker>;
-declare const blockableRef: Ref<Unit & Blockable>;
-const blockedRef: BlockedRef = blocking.blocked(battle, blockerRef)[0]!;
-const targetRef: Ref<Unit & Blockable> = blockedRef;
-const relation: Relation = { blocker: blockerRef, blocked: blockedRef };
+const relation: Relation = blocking.relations(battle, blockerRef)[0]!;
+const targetRef: Ref<Unit & Blockable> = relation.blocked;
+const ownerRef: Ref<Unit & Blocker> = relation.blocker;
 blocking.release(battle, [relation]);
 blocking.maintain(battle, blocking.relations(battle, blockerRef)[0]!);
-// @ts-expect-error an ordinary Unit Ref does not identify a Blocking relation round.
-const unpaired: Relation = { blocker: blockerRef, blocked: blockableRef };
+// @ts-expect-error each relation endpoint retains its required capability.
+const invalidRelation: Relation = { blocker: blockerRef, blocked: blockerRef };
 const relationshipHook: BlockingHook<Unit & Blocker> = {
     id: 'relationship',
     invoke: (state, context) => ({ state: blocking.release(state, [context.relation]), value: undefined }),

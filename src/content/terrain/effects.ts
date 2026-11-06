@@ -70,7 +70,7 @@ function reconcileSmog(
         return battle;
     }
 
-    const blocked = hasBlocker(unit) && unit.blocker.blocked.length > 0;
+    const blocked = hasBlocker(unit) && unit.blocker.relations.length > 0;
     let restoreAt = self.state.restoreAt;
 
     if (blocked) {

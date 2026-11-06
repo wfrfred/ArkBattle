@@ -4,13 +4,9 @@ import type { Unit } from "../../unit.js";
 import type { Blocker } from "./blocker.js";
 import type { Blockable } from "./blockable.js";
 
-declare const relation: unique symbol;
-
-export type BlockedRef = Ref<Unit & Blockable> & { readonly [relation]: true };
-
 export interface Relation {
     readonly blocker: Ref<Unit & Blocker>;
-    readonly blocked: BlockedRef;
+    readonly blocked: Ref<Unit & Blockable>;
 }
 
 export type Key = "acquired" | "released";

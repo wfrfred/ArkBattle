@@ -205,7 +205,7 @@ test("smog loses invisibility while blocking and restores it three seconds after
     let battle = at(configured.battle, 0);
     assert.equal(current(battle).targetable.restrictions.length, 1);
     battle = blocking.advance(battle);
-    assert.equal(current(battle).blocker.blocked.length, 1);
+    assert.equal(current(battle).blocker.relations.length, 1);
     battle = at(battle, 1);
     assert.equal(current(battle).targetable.restrictions.length, 0);
     battle = blocking.release(battle, blocking.relations(battle, units.ref(current(battle, 1))));

@@ -2,9 +2,7 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import { assertPositiveSafeInteger } from "../../../common/assert.js";
 import * as contribution from "../../contribution/contribution.js";
 import type { Unit } from "../../unit.js";
-import type { Ref } from "../../../common/ref.js";
-import type { Blocker } from "./blocker.js";
-import type { Hook } from "./contract.js";
+import type { Relation, Hook } from "./contract.js";
 import type { Rule } from "./rule.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
 import { prepare } from "./blockable-operations.js";
@@ -28,7 +26,7 @@ export interface Hooks {
 }
 
 export interface State extends Hooks {
-    readonly blocker: Ref<Unit & Blocker> | null;
+    readonly relation: Relation | null;
     readonly adjustment: PositionAdjustment | null;
     readonly volume: readonly contribution.Contribution<number>[];
     readonly rules: readonly Rule[];
@@ -57,7 +55,7 @@ export function initialize<U extends Unit & Pick<Blockable, "definition">>(
             ...unit,
             hooks: UnitHooks.empty().set(prepareKey, prepare).merge(unit.hooks),
             blockable: {
-                blocker: null,
+                relation: null,
                 adjustment: null,
                 volume: [],
                 rules: unit.definition.blockable.rules,
@@ -69,7 +67,7 @@ export function initialize<U extends Unit & Pick<Blockable, "definition">>(
 }
 
 export function stableBlockPosition(unit: Unit & Blockable): WorldPosition {
-    return unit.blockable.blocker === null
+    return unit.blockable.relation === null
         ? unit.position
         : (unit.blockable.adjustment?.to ?? unit.position);
 }

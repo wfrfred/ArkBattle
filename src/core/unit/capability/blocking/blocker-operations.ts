@@ -34,10 +34,7 @@ export function releaseAll(battle: BattleState, reference: Ref<Unit & Blocker>):
         return battle;
     }
 
-    return blocking.release(
-        battle,
-        self.blocker.blocked.map((blocked) => ({ blocker: reference, blocked })),
-    );
+    return blocking.release(battle, self.blocker.relations);
 }
 
 function settleRules(battle: BattleState, reference: Ref<Unit & Blocker>): BattleState {
@@ -59,8 +56,8 @@ export function settleCapacity(battle: BattleState, reference: Ref<Unit & Blocke
             return battle;
         }
 
-        const blocked = current.blocker.blocked.at(-1)!;
-        battle = blocking.release(battle, [{ blocker: reference, blocked }]);
+        const relation = current.blocker.relations.at(-1)!;
+        battle = blocking.release(battle, [relation]);
         current = units.get(battle, reference);
     }
 

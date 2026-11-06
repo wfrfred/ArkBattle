@@ -11,7 +11,7 @@ Blocker／Blockable 的数值、能力 Change 工厂与完整操作见 [Capabili
 验收围绕以下独立结果选择代表场景；后文的类型、接口和内部步骤是接入说明，不逐项构成测试要求。
 
 1. **关系资格正确。** Blocker 与 Blockable 在构造入口互斥；阵营限制由二元 Rule 选择，空地、地块、存活及容量条件共同决定能否取得关系。临时 HP 归零后被 HP Applied 响应救活，不提前解除旧关系。
-2. **关系完整且排他。** 一个目标至多属于一个阻挡者；双端关联和取得时的位置计划先一起发布，再通知。旧 Ref 只能结束对应旧关系，不能误解除后来重建的同双方关系。
+2. **关系完整且排他。** 一个目标至多属于一个阻挡者；双端关联和取得时的位置计划先一起发布，再通知。旧 Relation 只能结束对应旧关系，不能误解除后来重建的同双方关系。
 3. **容量缩减保留前序目标。** 从已阻挡列表末尾逐项裁撤；每项通知后按最新容量与占用决定是否继续，不提前冻结整组裁撤名单。
 4. **明确解除同步完成。** Layer 与 Blocker.setLayer 的 Settlement 清理当时的当前关系，包括较早 Settlement 已建立的关系。每次批量释放在操作入口固定本次集合，先发布整批双端解除结果再通知；本次通知中新建的关系不追溯清理，不自动搜索替代目标。后继业务遵守[状态接续契约](functional-core.md#状态接续后的读取与续执行)，不恢复旧关联。
 5. **位置计划与关系独立。** 站位计算使用真实几何及前序目标的稳定位置；位置计划推进真实 Unit.position。普通关系解除保留计划，目标主动脱离或明确覆盖位置时取消计划；阻挡不停止路线等待。
@@ -79,7 +79,7 @@ interface PositionAdjustment {
 }
 
 interface BlockableState {
-    readonly blocker: Ref<Unit & Blocker> | null;
+    readonly relation: Relation | null;
     readonly adjustment: PositionAdjustment | null;
 }
 
@@ -87,7 +87,7 @@ interface BlockerState {
     readonly layer: Layer;
     readonly radius: number;
     readonly capacity: readonly Contribution<readonly Modifier[]>[];
-    readonly blocked: readonly BlockedRef[];
+    readonly relations: readonly Relation[];
 }
 ```
 
@@ -99,18 +99,18 @@ interface BlockerState {
 
 | Blocking 操作形成的归属变化 | 同次操作构造的 Blocker 关联 |
 | --- | --- |
-| null → A | 创建新的目标 Ref 对象，在 A 的列表末尾追加 |
+| null → A | 创建一个新的 Relation，两端共享，并追加到 A 的列表末尾 |
 | A → null | 移除 A 列表中的本次关联条目，其余保序 |
 | A → A | 已有归属时 acquire 不重建关系，保留列表顺序和既有条目对象 |
 | A → B | 不支持普通单次更新，先完整 Release，再执行新的 Acquire |
 
-Blocker 的 blocked[] 包含建立顺序这一历史事实，不能每次按 Unit 枚举顺序重新生成。取得追加新条目，解除只移除对应旧条目，其余保序。Blocking 先基于当前对象准备两侧新值，再通过内部 replace 发布，之后执行对应通知；通用发布层不扫描、补齐或重新构造关联。
+Blocker 的 relations[] 包含建立顺序这一历史事实，不能每次按 Unit 枚举顺序重新生成。取得追加新条目，解除只移除对应旧条目，其余保序。Blocking 先基于当前对象准备两侧新值，再通过内部 replace 发布，之后执行对应通知；通用发布层不扫描、补齐或重新构造关联。
 
-本次关系身份由 Blocker 列表中保存的目标 Ref 条目对象承担，类型为 `BlockedRef`。它保留普通 `Ref<Unit & Blockable>` 的定位能力，并带有只在 acquire 建立新关联时授予的类型标记。`Relation.blocked` 要求该句柄；普通 Unit Ref 不能构造 Relation。blocked／relations 查询和关系 Hook 保留原句柄，内容从这些入口取得关系，不提供普通 Ref 转句柄的公共构造函数。
+acquire 为每次新关联创建一个不可变 Relation，blocker／blocked 字段使用普通 Typed Ref 定位端点；Blocker.relations 与 Blockable.relation 保存同一个对象。Relation 对象本身标识本轮关系，查询和 Hook 直接返回它，不重建投影。对象存续期间，普通字段更新和不可变状态版本共享原 Relation；相同双方重新取得关系时创建新对象。
 
-固定旧候选时捕获所属 Blocker 与该条目；解除前在当前 Blocker 列表中通过 ===／includes 确认条目仍存在，不重新构造 Ref 来作对象比较。每次重新建立创建新条目，未解除的条目保留原对象。若 Hook 已解除旧关系并重建相同双方，外层旧候选跳过它；再次解除同一旧条目不重复通知。不增加全局关系集合、关系 ID 或独立 Relation 实例。
+固定旧候选时保存原 Relation；解除前在当前 Blocker.relations 中通过 ===／includes 确认它仍存在。若 Hook 已解除旧关系并重建相同双方，外层旧候选跳过它；再次解除同一旧对象不重复通知。内容从关系查询或 Hook 取得原对象，自行构造相同端点的对象不表示已有关系。两端共享 Relation，不另建全局关系集合或关系 ID。
 
-归属由 Blocker 的 Unit ID 定位，本次关系是否仍存在按正向条目对象比较。不涉及关系业务的普通更新共享既有关系字段，不创建新条目或产生关系通知。
+归属由 Blocker 的 Unit ID 定位，本次关系是否仍存在按 Relation 对象比较。不涉及关系业务的普通更新共享既有关系字段，不创建新条目或产生关系通知。
 
 advance(battle) 由 Runtime 每 Tick 调度一次。search(battle, blocker) 指定 Blocker 立即搜索一次，显式调用不受普通阶段限制；Blocking.release 解除关系，不取消目标已有的位置计划，也不隐式重新搜索。Blockable 自身主动解除使用 releaseBlockable，同时取消自己的计划并解除入向关系。
 
@@ -180,7 +180,7 @@ Blocking 将资格与其他取得条件分开处理：
 ```typescript
 interface Relation {
     readonly blocker: Ref<Unit & Blocker>;
-    readonly blocked: BlockedRef;
+    readonly blocked: Ref<Unit & Blockable>;
 }
 
 export function relations(
@@ -235,7 +235,7 @@ return battle;
 
 acquire 失败时返回原 BattleState，不产生临时关系或通知。成功时在首次 Hook 前发布明确构造的双端状态与新 adjustment，再按 Blocker、Blockable 顺序通知，最后以 maintain 复核本次新 Relation 的当前资格；旧身份已被解除时跳过，不复核其他关系或裁撤整个阻挡组。Hook 中的容量／volume 操作由各自 Settlement 完成裁撤。它不绕过任何普通取得条件。
 
-双端关系解除统一由 `release(battle, captured)` 结算，输入可以跨多个 owner。入口按正向列表中的原 Ref 条目过滤已失效的旧关系，重复的同一旧身份只处理一次，并保留首次出现的输入顺序。它先准备并发布整批双端解除结果，再按该顺序逐条派发双方 RELEASED Hook。首个 Hook 已能读取整批解除结果。
+双端关系解除统一由 `release(battle, captured)` 结算，输入可以跨多个 owner。入口按正向列表中的原 Relation 对象过滤已失效的旧关系，重复的同一旧身份只处理一次，并保留首次出现的输入顺序。它先准备并发布整批双端解除结果，再按该顺序逐条派发双方 RELEASED Hook。首个 Hook 已能读取整批解除结果。
 
 release 只处理传入的旧集合，不自动 maintain、搜索或取消位置计划；Hook 新建立的条目不属于本次解除。过期集合或空集合返回原状态。旧身份在入口确认后，内部纯构造信任该事实；其他领域先完成自己的字段发布，再提交关系集合。调用方可使用 `relations(battle, reference)` 取得当前局部集合，或按具体业务提交已有的旧 Relation。
 
@@ -269,7 +269,7 @@ Blocker.layer 的 Change 先在全批发布时设置 layer／radius，等轮到�
 
 例如同批先设置 capacity=1，再 GROUND→AIR，所有 Hook 都看到最终 AIR；容量后继可能先逐项解除 GROUND 旧关系，首个通知时其他旧关系仍存在。反向排列则先由切层后继批量清除。批内 GROUND→AIR→GROUND 最终仍为 GROUND，但旧出向关系应清理，通知不观察中间 AIR。拆成两次 update 则各自完成一轮发布和结算。
 
-释放候选只在对应操作入口固定，携带原 Ref 身份，不保留可重新提交的旧 Unit。本次 Hook 新建的关系不被该次候选覆盖；后续另一项 Settlement 可以再次清理当时的当前关系。每项通知接续最新 BattleState。普通移动仍不因超出初次接敌半径而自动解除关系。
+释放候选只在对应操作入口固定，携带原 Relation 身份，不保留可重新提交的旧 Unit。本次 Hook 新建的关系不被该次候选覆盖；后续另一项 Settlement 可以再次清理当时的当前关系。每项通知接续最新 BattleState。普通移动仍不因超出初次接敌半径而自动解除关系。
 
 ## 显式关系操作与同步维护
 
@@ -283,12 +283,12 @@ Blocker.layer 的 Change 先在全批发布时设置 layer／radius，等轮到�
 | acquire | 通知完成后只复核本次新 Relation。 |
 | release、setLayer、SpatialPresence／Unit.remove | release 仅解除各操作交入的关系集合，不附带维护或搜索。 |
 | Locomotion／Blockable 偏移位置提交 | 只推进位置或计划，不调用 Blocking；依赖位置的 Rule 在关系检查点求值。Route 主动覆盖位置则明确解除关系。 |
-| maintainAll、完整地块更新 | 固定入口关系列表，按 Unit 及其 blocked 顺序各复核一次资格，不裁容量。 |
+| maintainAll、完整地块更新 | 固定入口关系列表，按 Unit 顺序及各 Blocker 内的关系顺序各复核一次资格，不裁容量。 |
 | 每 Tick 的 Blocking 阶段 | 先固定 Blocker 候选、执行 maintainAll，再搜索新关系。 |
 
-`maintain(battle, relation)` 接收已经配对的双方 Typed Ref 及原关系身份。先确认原 Ref 条目仍在当前正向列表中，再从最新 BattleState 读取双方并检查 canRetain；失效时调用 release 解除这一条关系，否则返回当前状态。它不判断输入 Unit 属于哪种角色，不维护 owner 的其他关系，不检查容量。旧关系已被解除或同双方已经重建时，不能将旧 Relation 应用到新条目。
+`maintain(battle, relation)` 接收已经配对的双方 Typed Ref 及原关系身份。先确认该 Relation 对象仍在当前正向列表中，再从最新 BattleState 读取双方并检查 canRetain；失效时调用 release 解除这一条关系，否则返回当前状态。它不判断输入 Unit 属于哪种角色，不维护 owner 的其他关系，不检查容量。旧关系已被解除或同双方已经重建时，不能将旧 Relation 应用到新条目。
 
-`maintainAll(battle)` 固定调用入口的 relations(battle) 集合，按既定 Unit 顺序及各 blocked 的建立顺序逐条 maintain。每次接续 Hook 返回的新状态，但不重新收集候选或回头复核已访问项，也不搜索新目标。Hook 新建的关系不属于本轮旧集合；本轮后续间接变化使已访问关系失效时，下一检查点再处理。它与普通搜索共同组成确定的阶段顺序，不承诺返回时对任意 Battle 依赖已经全场收敛。
+`maintainAll(battle)` 固定调用入口的 relations(battle) 集合，按既定 Unit 顺序及各 Blocker 内的关系建立顺序逐条 maintain。每次接续 Hook 返回的新状态，但不重新收集候选或回头复核已访问项，也不搜索新目标。Hook 新建的关系不属于本轮旧集合；本轮后续间接变化使已访问关系失效时，下一检查点再处理。它与普通搜索共同组成确定的阶段顺序，不承诺返回时对任意 Battle 依赖已经全场收敛。
 
 容量／volume Change 的 Settlement 共享 blocker-operations.ts 内部的 `settleCapacity(battle, Ref<Unit & Blocker>)`，该函数不经过公共 index.ts 导出。它读取当前总占用与容量，超额时 release 当前列表末尾的一条关系，完成同步 Hook 后重新读取，再决定是否继续。容量后继不先挑选资格失效项，资格复核也不接管其他项尚未执行的容量后继。
 
@@ -307,7 +307,7 @@ Unit 的真实离场由 Lifetime 先纯发布 LEAVING，再派发统一 prepare 
     ↓
 计算 E 的目标站位和新 adjustment
     ↓
-一次发布 E.blockable.blocker、A.blocker.blocked 与 E.blockable.adjustment
+一次发布 E.blockable.relation、A.blocker.relations 与 E.blockable.adjustment
     ↓
 A 的 ACQUIRED Hook
     ↓
@@ -330,7 +330,7 @@ Blocking 保证每个 ACQUIRED Hook 开始时原关联 Ref 条目仍然有效。
 
 ## 查询、Hook 与 Runtime 接入
 
-battle/blocking/query.ts 提供 blockerOf(battle, ref)、blocked(battle, ref)、usedCapacity(battle, ref)；输入保留相应 Capability 的 Typed Ref。按 Ref 读取后检查对象是否仍存在，不重复检查 Ref 已证明的稳定能力。`relations(battle, reference?)` 返回只读 Relation 数组：省略 reference 时按 Unit 顺序投影全场当前关联；提供 Unit Ref 时直接读取该 Unit 的角色与关联，不扫描全场。Blocker 按自身 blocked 顺序返回关系，Blockable 从当前 owner 列表取原条目；无能力、无关系或宿主已不存在时返回空数组。查询保留正向列表中的原 blocked Ref，hasRelation 据此判断某次旧关联是否仍有效，区分解除后重建的同双方关系。不存在独立的持久 Relation 实例。
+battle/blocking/query.ts 提供 blockerOf(battle, ref)、blocked(battle, ref)、usedCapacity(battle, ref)；输入保留相应 Capability 的 Typed Ref。按 Ref 读取后检查对象是否仍存在，不重复检查 Ref 已证明的稳定能力。`relations(battle, reference?)` 返回只读 Relation 数组：省略 reference 时按 Unit 顺序汇集全场当前 Relation；提供 Unit Ref 时直接读取该 Unit 的角色与关联，不扫描全场。Blocker 按自身 relations 顺序返回原对象，Blockable 直接返回自身保存的 Relation；无能力、无关系或宿主已不存在时返回空数组。hasRelation 按 Relation 对象身份判断旧关联是否仍有效，区分解除后重建的同双方关系。blockerOf 读取 relation.blocker，blocked 从 relations 投影普通目标 Ref，不将端点引用作为关系身份。
 
 Blocker／Blockable State 各自持有 acquired、released Hook 数组，使用 setHook(key, hook)／removeHook(key, id) 返回要求对应宿主能力的 Change，再由 Unit.update 登记。每条关系在其第一个业务回调前同时固定两侧候选 ID，逐项恢复最新同 ID 登记并检查 accepts；新增 ID 不参加该条通知，同 ID 替换使用最新登记。先 Blocker，后 Blockable；Context 固定原关系事实，BattleState 每项接续最新版本。ACQUIRED 每项执行前通过原关联 Ref 条目身份确认关系仍存在，RELEASED 是历史通知，不要求旧关系仍存在。取得和解除直接派发各自业务 Hook，不输出诊断 Event；release 在整批发布后逐条开始派发，各条 Hook 候选在轮到该条时固定，不提前冻结后续关系的监听登记。
 
@@ -361,7 +361,7 @@ GROUND 搜索只选一个当前根格：有非空 `occupancy.tile` 时使用登�
 | 阻挡者 `blockMode` | 项目以 blocker.layer 表示能够阻挡的目标层，并由 blocking.setLayer 执行切换；不从宿主自身 Layer 推导，也不把原生名称引入项目状态。 |
 | `BlockFree` 等禁挡状态 | 现有双端二元 Rule 可表达，不需要第三个模式或新的 enabled 字段。 |
 
-“被阻挡后停止自主移动”已经由 Movement 根据 `blockable.blocker !== null` 跳过 Locomotion 推进实现，不安装另一条禁移动 Rule，也不新增 blocked 状态或 BlockMode。
+“被阻挡后停止自主移动”已经由 Movement 根据 `blockable.relation !== null` 跳过 Locomotion 推进实现，不安装另一条禁移动 Rule，也不新增 blocked 状态或 BlockMode。
 
 通用 Blocking 支持 GROUND／AIR 目标匹配、Core 默认半径、AIR 地块豁免，以及切层时清除全部旧出向关系。规则仍处理阵营和其他资格；禁挡不增加第三个层值或新的状态机。具体干员的起降程序继续由 Content 实现。
 
@@ -373,7 +373,7 @@ GROUND 搜索只选一个当前根格：有非空 `occupancy.tile` 时使用登�
 
 `battle/blocking/position.ts` 提供普通阻挡站位计算。acquire 从目标的当前真实位置与 Blocker 位置形成偏移，距离小于 0.5 时沿两者连线推到最小间距；归一化的近零向量不产生新方向。0.5 是站位间距，与接敌半径分开，不从 Hitbox 推导。
 
-计算先以该径向位置检查先前阻挡目标的稳定位置：若有距离平方小于 0.01 的点，再累加分散修正。距离小于 0.1 时采用该先前目标相对 Blocker 的顺时针垂线方向；`0.1 ≤ d < 0.4` 时采用沿分离方向的加权贡献，距离达到 0.4 时不贡献。最后用归一化分散方向的 0.2 修正偏移方向并保留原径向距离。前序坐标按 blocked[] 的建立顺序消费，支持惰性 Iterable，不另建位置容器。
+计算先以该径向位置检查先前阻挡目标的稳定位置：若有距离平方小于 0.01 的点，再累加分散修正。距离小于 0.1 时采用该先前目标相对 Blocker 的顺时针垂线方向；`0.1 ≤ d < 0.4` 时采用沿分离方向的加权贡献，距离达到 0.4 时不贡献。最后用归一化分散方向的 0.2 修正偏移方向并保留原径向距离。前序坐标按 relations[] 的建立顺序消费，支持惰性 Iterable，不另建位置容器。
 
 `stableBlockPosition(unit)` 在当前仍有 blocker 时返回 `adjustment?.to ?? unit.position`，无关系时返回当前真实位置。后续取得因此使用先前目标的预定站位，而不只看它尚未完成的插值位置。稳定位置是查询结果，不在 State 中再保存一份。
 

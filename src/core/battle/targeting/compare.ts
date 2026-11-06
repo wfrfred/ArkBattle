@@ -46,12 +46,12 @@ export const blockedFirst: Comparator = (battle, request, left, right) => {
         if (source === undefined) {
             return -1;
         }
-        if (hasBlockable(source) && source.blockable.blocker?.id === id) {
+        if (hasBlockable(source) && source.blockable.relation?.blocker.id === id) {
             return 0;
         }
 
         const index = hasBlocker(source)
-            ? source.blocker.blocked.findIndex((ref) => ref.id === id)
+            ? source.blocker.relations.findIndex((relation) => relation.blocked.id === id)
             : -1;
 
         return index < 0 ? -1 : index + 1;

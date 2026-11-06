@@ -44,7 +44,7 @@ Deployable 对 Occupancy 的构造依赖、入场与配对属于本轮协作边�
 | Contribution 与阵营 | 互斥选择先于动态求值，修正采用所属领域公式；阵营不隐式决定其它能力或关系资格。 | [属性与贡献](capability.md#属性与贡献)、[Allegiance](capability.md#allegiance) |
 | 数值求值 | 动态属性接收同一 BattleState 中已取得的能力对象，贡献求值返回确定数值；对象缺失与采样时点由业务入口决定。Action 时序明确区分宿主 source 与具体 Action self，基础值取 self.definition。局部公式使用显式配置与状态，不自行回查宿主。 | [数值接口](api-conventions.md#5-数值输入查询与字段写回) |
 | Blocking 资格与容量 | 双方资格、阻挡层、当前容量与体积决定取得；容量减少从后建立的关系开始裁撤，HP Applied 响应结束并确认死亡前保留旧关系。 | [Blocking](blocking.md#关键语义) |
-| Blocking 关系与站位 | 批量解除先发布双端结果再通知；旧 Ref 不清掉新关系；普通关系解除与位置计划各有生命周期，主动脱离和空间覆盖完成自身清理。自身 Layer.setType 包含同值请求的角色清理，全批新身份先于通知发布；Layer 与 Blocker.setLayer 的 Settlement 清理当前关系，包括较早 Settlement 已取得的关系；释放操作在入口固定批量候选，保留自身通知中新建的关系。Blockable 主动脱离当前入向关系并取消位置计划。 | [Blocking](blocking.md#关键语义)、[Layer](capability.md#layer-与-hitbox) |
+| Blocking 关系与站位 | 批量解除先发布双端结果再通知；旧 Relation 不清掉新关系；普通关系解除与位置计划各有生命周期，主动脱离和空间覆盖完成自身清理。自身 Layer.setType 包含同值请求的角色清理，全批新身份先于通知发布；Layer 与 Blocker.setLayer 的 Settlement 清理当前关系，包括较早 Settlement 已取得的关系；释放操作在入口固定批量候选，保留自身通知中新建的关系。Blockable 主动脱离当前入向关系并取消位置计划。 | [Blocking](blocking.md#关键语义)、[Layer](capability.md#layer-与-hitbox) |
 | Locomotion | 速度修正、下限和倍率与移动许可分开；转向使用历史速度、限力和限速；只吸附最终目标并保留速度，地形避障与目的格反射各自完成空间修正。 | [Locomotion](navigation.md#关键语义) |
 | 部署受理与消费 | 查询和执行使用完整 Request 与一致资源事实；公开入口共用 Quote 数值契约，非法报价一致抛异常，不能预览允许而执行失败。业务拒绝不消费，通过后先消费再构造、登记、入场；预览不创建实例或发布消费。 | [Deployment](deployment.md#关键语义) |
 | Card 与经济 | Card 跨场上实例存续；库存、部署间隔和逐份恢复分别结算，启动时采样预算，暂停与减时不篡改其它段。DP 自然回复与主动增减分开。 | [Deployment](deployment.md#关键语义) |
@@ -69,7 +69,7 @@ Deployable 对 Occupancy 的构造依赖、入场与配对属于本轮协作边�
 | 自主运动 | Locomotion：纯算法集中验证转向、直邻／斜邻避障及反射公式；真实移动场景验证当前速度、最终目标吸附和暂停后的历史速度。半身宽、WALK 高代价格／FLY 硬障碍、方向投影与速度比例、不可通格恢复各保留独立结果，不枚举八方向及微小数值变体。Route 集成只保留等待、当前导航方式与 Layer 分离、阻挡解除后路线完成等协作结果；历史速度通过实际推进建立，不直接注入 Unit。 |
 | Card、部署、离场与占格 | Deployment：Request 与资源消费、主动／被动离场账务、一次旧占格配对不清理继任者、逐份恢复预算和 DP。在原受理场景用一个非法 Quote 验证查询与执行入口一致，不按字段扩异常矩阵；部署事实、退款和额度释放通过所属领域操作完成，沿用原时序场景，不单测转发或局部 setter。删除旧 Battle 中相同构造与重入矩阵。 |
 | Action、Skill、Effect 与 Contribution | 各自主套件。共有身份、候选、输入校验和不可变版本由公共套件承担，不因更换内容宿主再测一遍。 |
-| 公共容器、Query 与类型关系 | 公共套件集中验证有序不可变写入、独立可重复遍历和必要的类型推断。Blocking 的关联目标句柄由 acquire 建立，普通 Unit Ref 不能拼成 Relation，查询及 Hook 保留原句柄类型；Elemental.available 要求已有 Elemental。均在 core-types 集中证明，不复制运行时关系身份保护。删除逐方法空值／同引用／存储形状与极端数值矩阵。 |
+| 公共容器、Query 与类型关系 | 公共套件集中验证有序不可变写入、独立可重复遍历和必要的类型推断。Blocking 的 Relation 端点保留能力类型，Elemental.available 要求已有 Elemental，在 core-types 集中证明。共享 Relation 身份在原 Blocking 轮次保护场景中验证：两端、查询与 Hook 取得同一对象，重建生成新对象，不新增字段或查询矩阵。删除逐方法空值／同引用／存储形状与极端数值矩阵。 |
 | 普通注册工厂与变更类型 | core-types 集中证明自动字段、Entry 与能力要求的关联，包含不同 Hook 载荷及联合 Key 的代表。Change 的能力参数逆变，compose 合并两侧要求为交集；optional 的守卫必须证明被包装 Change 所需能力，结果只要求 Unit。两种组合的泛型调用保留输入完整宿主类型，update 拒绝能力不足的目标 Ref，cancelForUnit 要求具有 Action 能力的 Ref。运行行为复用已有 Contribution、Hook、Unit Change 与伤害／治疗场景，不为每个 Capability、字段或生成函数新增测试。MaxHP 比例、Ammo 发动采样、Action 冷却和 Blocking 容量后继继续归各自主场景。 |
 | 属性求值边界 | Contribution 主场景验证动态输入取得本次 Battle 和宿主，core-types 集中证明能力对象和可空 SP 的类型边界；多目标间重新采样、弹体来源离场缓存继续归实际攻击／弹体场景，不按属性重复建立缺失矩阵。 |
 | 几何与空间算法 | Coordinate 集中验证坐标转换与四向旋转；Range 用一次非默认朝向、连续原点与不连续并集验证组合。Geometry 保留圆、盒及混合圆角的独立相交／首次扫掠公式、局部偏移与必要接触边界，不按方向、尺寸或微小数值变体复制。输入校验只留真正边界的代表。Battlefield 验证位置与 Hitbox 的区别、空间资格和接触顺序，不重复精确交点或旧版本不可变性。 |
@@ -87,7 +87,7 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 
 | 必须保障的业务结果 | 集中归属 |
 | --- | --- |
-| 消失保留原 Unit、占格、部署额度及普通 Effect／Lifetime，不派发入场或离场；全部限制先发布，自身 Settlement 调用的 Blocking 操作先清理当前整组双端关系再通知，释放结束后委托 Action 领域取消宿主执行。appear 只移除 Presence 自身限制，其它来源的 Rule 仍生效，独立限制移除后可以正常启动。 | Presence 主场景；公共旧 Ref、Hook 候选和析构协议不重测。 |
+| 消失保留原 Unit、占格、部署额度及普通 Effect／Lifetime，不派发入场或离场；全部限制先发布，自身 Settlement 调用的 Blocking 操作先清理当前整组双端关系再通知，释放结束后委托 Action 领域取消宿主执行。appear 只移除 Presence 自身限制，其它来源的 Rule 仍生效，独立限制移除后可以正常启动。 | Presence 主场景；公共旧 Relation、Hook 候选和析构协议不重测。 |
 | 自身 Blockable 偏移随主动空间覆盖取消；Blocker 消失只解除关系，原目标的独立偏移继续。已 present 的 appear 仍执行位置覆盖及自身清理。 | Blocking 原位置计划场景。 |
 | 消失禁止新的 Action／Activation，取消旧 Action 并停止旧输出；已完成释放前缀保留。开始通知中消失但仍 ACTIVE 的同轮 Skill 执行 onStart，既有持续技能仍正常推进及到期。 | Action／Skill 原代表场景；不据此增加弹药消费政策。 |
 | 消失期间普通 HP／EP Damage 拒收；明确目标的 HP／EP Healing 仍遵守各自条件。自然 EP 回复与已启动 Burst 的恢复预算继续，消失不取消其 Effect。 | 一次双资源接收场景及 Elemental 原恢复场景，不重复四条管线的公式与通知矩阵。 |

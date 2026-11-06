@@ -20,7 +20,7 @@ import { hasVitality } from "../../unit/capability/vitality/capability.js";
 import * as units from "../../unit/query.js";
 import type { Id, Unit } from "../../unit/unit.js";
 import type { State as BattleState } from "../state.js";
-import type { BlockedRef, Relation } from "../../unit/capability/blocking/contract.js";
+import type { Relation } from "../../unit/capability/blocking/contract.js";
 import * as hooks from "./hook.js";
 import { relations, usedCapacity } from "./query.js";
 import { calculate as calculatePosition } from "./position.js";
@@ -95,7 +95,7 @@ export function release(battle: BattleState, relations: readonly Relation[]): Ba
     for (const relation of relations) {
         const owner = (prepared.get(relation.blocker.id) ?? units.get(battle, relation.blocker)) as
             (Unit & Blocker) | undefined;
-        if (!owner?.blocker.blocked.includes(relation.blocked)) {
+        if (!owner?.blocker.relations.includes(relation)) {
             continue;
         }
 
@@ -104,12 +104,12 @@ export function release(battle: BattleState, relations: readonly Relation[]): Ba
             ...owner,
             blocker: {
                 ...owner.blocker,
-                blocked: owner.blocker.blocked.filter((entry) => entry !== relation.blocked),
+                relations: owner.blocker.relations.filter((entry) => entry !== relation),
             },
         };
         const nextTarget: Unit & Blockable = {
             ...target,
-            blockable: { ...target.blockable, blocker: null },
+            blockable: { ...target.blockable, relation: null },
         };
         prepared.set(owner.id, nextOwner);
         prepared.set(target.id, nextTarget);
@@ -131,7 +131,7 @@ export function release(battle: BattleState, relations: readonly Relation[]): Ba
 
 export function maintain(battle: BattleState, relation: Relation): BattleState {
     const blocker = units.get(battle, relation.blocker);
-    if (!blocker?.blocker.blocked.includes(relation.blocked)) {
+    if (!blocker?.blocker.relations.includes(relation)) {
         return battle;
     }
 
@@ -157,34 +157,35 @@ export function acquire(
     const target = units.get(battle, targetRef);
     if (
         blocker === undefined ||
-        target?.blockable.blocker !== null ||
+        target?.blockable.relation !== null ||
         !canAcquire(battle, blocker, target)
     ) {
         return battle;
     }
 
-    const reference = units.ref(target) as BlockedRef;
+    const relation: Relation = { blocker: units.ref(blocker), blocked: units.ref(target) };
     const to = calculatePosition(
         blocker.position,
         target.position,
-        blocker.blocker.blocked.map((blocked) => stableBlockPosition(units.get(battle, blocked)!)),
+        blocker.blocker.relations.map((entry) =>
+            stableBlockPosition(units.get(battle, entry.blocked)!),
+        ),
     );
 
     battle = replace(battle, [
         {
             ...blocker,
-            blocker: { ...blocker.blocker, blocked: [...blocker.blocker.blocked, reference] },
+            blocker: { ...blocker.blocker, relations: [...blocker.blocker.relations, relation] },
         },
         {
             ...target,
             blockable: {
                 ...target.blockable,
-                blocker: units.ref(blocker),
+                relation,
                 adjustment: { from: target.position, to, startTick: battle.tick },
             },
         },
     ]);
-    const relation = { blocker: blockerRef, blocked: reference };
     battle = hooks.dispatch(battle, "acquired", relation);
 
     return maintain(battle, relation);

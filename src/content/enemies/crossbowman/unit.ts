@@ -60,7 +60,7 @@ export function create(
                 value: isCasting(battle, ref(self))
                     ? []
                     : [
-                          hasBlockable(self) && self.blockable.blocker !== null
+                          hasBlockable(self) && self.blockable.relation !== null
                               ? melee.id
                               : ranged.id,
                       ],

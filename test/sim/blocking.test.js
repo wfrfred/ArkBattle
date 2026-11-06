@@ -180,11 +180,19 @@ test("own layer requests release current relations before hooks, including same-
     const targets = [1, 2].map((id) => units.ref(get(state, id)));
     for (const target of targets) state = blocking.acquire(state, owner, target);
     const original = blocking.relations(state, owner);
+    assert.equal(original[0], get(state, 0).blocker.relations[0]);
+    for (const relation of original) {
+        assert.equal(get(state, relation.blocked.id).blockable.relation, relation);
+        assert.equal(blocking.relations(state, relation.blocked)[0], relation);
+    }
     let notifications = 0;
     state = unit.update(state, owner, capability.setBlockerHook("released", {
             id: "reacquire",
-            invoke: (current) => {
+            invoke: (current, { relation }) => {
                 notifications++;
+                if (notifications <= original.length) {
+                    assert.equal(relation, original[notifications - 1]);
+                }
                 if (notifications === 1) {
                     assert.equal(get(current, 0).layer.type, "AIR");
                     assert.equal(get(current, 0).blocker.layer, "GROUND");
@@ -206,7 +214,7 @@ test("own layer requests release current relations before hooks, including same-
         blocking.blocked(state, owner).map(({ id }) => id),
         [1, 2],
     );
-    assert.notEqual(blocking.relations(state, owner)[0].blocked, original[0].blocked);
+    assert.notEqual(blocking.relations(state, owner)[0], original[0]);
     state = blocking.release(state, original);
     assert.deepEqual(
         blocking.blocked(state, owner).map(({ id }) => id),

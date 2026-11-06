@@ -70,7 +70,7 @@ export function advanceMovement(
         if (
             unit?.lifecycle !== "PRESENT" ||
             isCompleted(unit.route) ||
-            (hasBlockable(unit) && unit.blockable.blocker !== null) ||
+            (hasBlockable(unit) && unit.blockable.relation !== null) ||
             !hasLocomotion(unit)
         ) {
             continue;
@@ -97,7 +97,7 @@ export function resolveRouteCompletion(battle: BattleState): BattleState {
         if (
             unit?.lifecycle !== "PRESENT" ||
             !isCompleted(unit.route) ||
-            (hasBlockable(unit) && unit.blockable.blocker !== null)
+            (hasBlockable(unit) && unit.blockable.relation !== null)
         ) {
             continue;
         }

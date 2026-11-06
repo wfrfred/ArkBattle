@@ -8,25 +8,27 @@ import {
     resolveVolume,
     type Blockable,
 } from "../../unit/capability/blocking/blockable.js";
-import type { BlockedRef, Relation } from "../../unit/capability/blocking/contract.js";
+import type { Relation } from "../../unit/capability/blocking/contract.js";
 
 export function blockerOf(
     battle: BattleState,
     reference: Ref<Unit & Blockable>,
 ): Ref<Unit & Blocker> | undefined {
-    return units.get(battle, reference)?.blockable.blocker ?? undefined;
+    return units.get(battle, reference)?.blockable.relation?.blocker;
 }
 
 export function blocked(
     battle: BattleState,
     reference: Ref<Unit & Blocker>,
-): readonly BlockedRef[] {
-    return units.get(battle, reference)?.blocker.blocked ?? [];
+): readonly Ref<Unit & Blockable>[] {
+    return (
+        units.get(battle, reference)?.blocker.relations.map((relation) => relation.blocked) ?? []
+    );
 }
 
 export function usedCapacity(battle: BattleState, reference: Ref<Unit & Blocker>): number {
-    return blocked(battle, reference).reduce((used, target) => {
-        const unit = units.get(battle, target)!;
+    return (units.get(battle, reference)?.blocker.relations ?? []).reduce((used, relation) => {
+        const unit = units.get(battle, relation.blocked)!;
 
         return used + resolveVolume(unit.definition.blockable, unit.blockable);
     }, 0);
@@ -39,17 +41,10 @@ export function relations(battle: BattleState, reference?: Ref<Unit>): readonly 
             return [];
         }
         if (hasBlocker(unit)) {
-            const blocker = units.ref(unit);
-
-            return unit.blocker.blocked.map((blocked) => ({ blocker, blocked }));
+            return unit.blocker.relations;
         }
-        if (hasBlockable(unit) && unit.blockable.blocker !== null) {
-            const blocker = unit.blockable.blocker;
-            const blocked = units
-                .get(battle, blocker)!
-                .blocker.blocked.find((entry) => entry.id === unit.id)!;
-
-            return [{ blocker, blocked }];
+        if (hasBlockable(unit) && unit.blockable.relation !== null) {
+            return [unit.blockable.relation];
         }
 
         return [];
@@ -58,9 +53,7 @@ export function relations(battle: BattleState, reference?: Ref<Unit>): readonly 
     return units
         .all(battle)
         .filter(hasBlocker)
-        .flatMap((unit) =>
-            unit.blocker.blocked.map((target) => ({ blocker: units.ref(unit), blocked: target })),
-        )
+        .flatMap((unit) => unit.blocker.relations)
         .toArray();
 }
 
@@ -70,8 +63,7 @@ export function hasRelation(battle: BattleState, relation: Relation): boolean {
 
     return (
         owner !== undefined &&
-        owner.blocker.blocked.includes(relation.blocked) &&
-        target !== undefined &&
-        target.blockable.blocker?.id === owner.id
+        owner.blocker.relations.includes(relation) &&
+        target?.blockable.relation === relation
     );
 }
