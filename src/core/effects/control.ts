@@ -12,7 +12,7 @@ import * as locomotion from "../unit/capability/locomotion/capability.js";
 import * as skill from "../unit/capability/skill/capability.js";
 import { cancelForUnit } from "../unit/action/operations.js";
 import * as units from "../unit/query.js";
-import type { Change } from "../unit/change.js";
+import { combine, type Change } from "../unit/change.js";
 
 export const stun: Definition<object> = {
     id: "control/stun",
@@ -36,7 +36,7 @@ export const stun: Definition<object> = {
             changes.push(setBlockerRule(units.ref(unit), rule));
         }
 
-        state = updateUnit(state, changes);
+        state = updateUnit(state, combine(changes));
 
         return cancelForUnit(state, self.host, "INTERRUPTED");
     },
@@ -58,7 +58,7 @@ export const stun: Definition<object> = {
             changes.push(removeBlockerRule(units.ref(unit), id));
         }
 
-        return updateUnit(state, changes);
+        return updateUnit(state, combine(changes));
     },
 };
 
@@ -69,25 +69,27 @@ export const silence: Definition<object> = {
         const unit = units.get(state, self.host)!;
 
         return skill.hasSkill(unit)
-            ? updateUnit(state, [
+            ? updateUnit(
+                  state,
                   skill.setRule(units.ref(unit), "activationRules", {
                       id: `@effect/${self.id}/silence`,
                       allows: () => false,
                   }),
-              ])
+              )
             : state;
     },
     onDisable(state, self) {
         const unit = units.get(state, self.host)!;
 
         return skill.hasSkill(unit)
-            ? updateUnit(state, [
+            ? updateUnit(
+                  state,
                   skill.removeRule(
                       units.ref(unit),
                       "activationRules",
                       `@effect/${self.id}/silence`,
                   ),
-              ])
+              )
             : state;
     },
 };
@@ -99,25 +101,27 @@ export const blockSpRecovery: Definition<object> = {
         const unit = units.get(state, self.host)!;
 
         return skill.hasSkill(unit)
-            ? updateUnit(state, [
+            ? updateUnit(
+                  state,
                   skill.setRule(units.ref(unit), "recoveryRules", {
                       id: `@effect/${self.id}/sp-recovery`,
                       allows: () => false,
                   }),
-              ])
+              )
             : state;
     },
     onDisable(state, self) {
         const unit = units.get(state, self.host)!;
 
         return skill.hasSkill(unit)
-            ? updateUnit(state, [
+            ? updateUnit(
+                  state,
                   skill.removeRule(
                       units.ref(unit),
                       "recoveryRules",
                       `@effect/${self.id}/sp-recovery`,
                   ),
-              ])
+              )
             : state;
     },
 };

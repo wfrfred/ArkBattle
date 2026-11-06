@@ -98,9 +98,9 @@ test("module X uses current max HP for shield healing and distinguishes blocked 
         enemy(2, [5, 0], { profile: { tags: ["sarkaz"] } }),
         enemy(3, [6, 0]),
     ]);
-    let battle = update(fixture.battle, [setMaxHpContribution(ref(fixture.unit), {
+    let battle = update(fixture.battle, setMaxHpContribution(ref(fixture.unit), {
         id: "max-hp", value: [modifier({ addition: 1000 })],
-    })]);
+    }));
     battle = advanceEffects({ ...wound(battle), tick: 270 });
     const shielded = hit(battle);
     approximate(getUnit(shielded.state, 0).vitality.hp, 1000 + (fixture.prepared.attributes.maxHp + 1000) * 0.23);
@@ -128,9 +128,9 @@ test("S2 replaces normal attack recovery, heals once, strikes ground targets and
     battle = advanceAction(ordinary.state, ordinary.value.ref);
     assert.ok(getUnit(battle, 0).action.actions.get(normal.id).cooldown.readyAtTick > battle.tick);
     battle = modify(battle, ref(fixture.unit), 5).state;
-    battle = update(battle, [setAttackContribution(ref(fixture.unit), {
+    battle = update(battle, setAttackContribution(ref(fixture.unit), {
         id: "attack", value: [modifier({ addition: 100 })],
-    })]);
+    }));
     const beforeFirst = getUnit(battle, 1).vitality.hp;
     const beforeSecond = getUnit(battle, 2).vitality.hp;
     battle = advanceSkill(battle, ref(fixture.unit));

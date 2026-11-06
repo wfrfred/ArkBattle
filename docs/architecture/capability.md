@@ -23,7 +23,7 @@ Definition 保存静态参数与行为描述，State 保存本领域当前事实
 
 ## 操作范围
 
-纯数值与几何等局部计算仍直接接收值、返回值。对已登记 Unit 的公开 Rule、Hook、Contribution、Layer.type 与 Blocker.layer 写入则统一为 `setXxx(ref, value): Change`／`removeXxx(ref, id): Change` 工厂；Content 不接触任意 Unit 转换函数。Core 用 createChange 将目标、纯 transform 与可选 settle 配对，Unit.update 先完成全批转换、一次发布，再原顺序结算。跨能力 Rule 仍可只读完整 Unit 与 BattleState，不把真实业务输入压成通用上下文。
+纯数值与几何等局部计算仍直接接收值、返回值。对已登记 Unit 的公开 Rule、Hook、Contribution、Layer.type 与 Blocker.layer 写入则统一为 `setXxx(ref, value): Change`／`removeXxx(ref, id): Change` 工厂；Content 不接触任意 Unit Transformation。Core 用 createChange 将目标、纯 transform 与可选 settle 配对，combine 将已有 Change 或按 Ref 从当前暂存宿主生成的子项组合起来。Unit.update 只收一个 Change，先完成所有叶子的转换、一次发布，再原顺序结算。跨能力 Rule 仍可只读完整 Unit 与 BattleState，不把真实业务输入压成通用上下文。
 
 Capability 也可提供接收 BattleState 与 Typed Ref 的完整操作，例如 Locomotion.advance；是否需要时间推进、资格判断或领域结算由实际业务决定。Rule、Hook、Contribution、Layer.type、Blocker.layer 与 SpatialPresence.appear／disappear 的 Change 工厂不自行提交；有后继的 Change 在发布后同步结算，无后继的 Hook Change 只改变集合。完整私有 state／生命周期操作保持各自原协议，见 [批量变更](api-conventions.md#51-unit-完整操作与批量变更)。
 
@@ -158,7 +158,7 @@ Battlefield 的通用空间查询领域使用 battlefield/spatial/ 命名，与�
 
 ## SpatialPresence
 
-[空间存在](presence.md)只保存身体的 present 事实；暂时消失保留身份、真实坐标及生命周期登记。appear／disappear 返回 Change，在自身 Transformation 中同时修改空间事实、所需的 Rule 登记及自身旧偏移，发布后依据本项 previous 清理旧关系和 Execution。各能力消费自己的 Rule，不反向读取 Presence；空间查询、普通索敌和接触程序直接使用空间存在事实。Skill、Effect 和 Burst 不因此统一结束或暂停。
+[空间存在](presence.md)只保存身体的 present 事实；暂时消失保留身份、真实坐标及生命周期登记。appear／disappear 返回按 Ref 展开的组合 Change，自身叶子修改空间事实与旧偏移，其余子项直接复用所属能力的 Rule 工厂；发布后按自身叶子的 previous 清理旧关系和 Execution。各能力消费自己的 Rule，不反向读取 Presence；空间查询、普通索敌和接触程序直接使用空间存在事实。Skill、Effect 和 Burst 不因此统一结束或暂停。
 
 ## Blocking
 

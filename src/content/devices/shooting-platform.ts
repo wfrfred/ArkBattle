@@ -37,20 +37,22 @@ export function create(configuration: Configuration): Definition {
                 const ruleId = `shooting-platform/${support.id}/block-free`;
 
                 return hasBlocker(occupant)
-                    ? update(battle, [
+                    ? update(
+                          battle,
                           setRule(unitRef(occupant), {
                               id: ruleId,
                               allows: (_battle, { blocker }) => blocker.blocker.layer === "AIR",
                           }),
-                      ])
+                      )
                     : battle;
             },
             onOccupantRemoved(battle, { support, occupant }) {
                 const current = battle.battlefield.units.get(occupant.id);
                 if (current !== undefined && hasBlocker(current)) {
-                    battle = update(battle, [
+                    battle = update(
+                        battle,
                         removeRule(unitRef(current), `shooting-platform/${support.id}/block-free`),
-                    ]);
+                    );
                 }
 
                 return battle;

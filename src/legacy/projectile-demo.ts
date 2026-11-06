@@ -48,13 +48,14 @@ export function createTacticalProjectileDemo(
                 return state;
             }
 
-            return updateUnit(state, [
+            return updateUnit(
+                state,
                 setAttackContribution(unitRef(unit), {
                     id: `@effect/${self.id}/attack`,
                     value: [attribute.create({ addition: 60 })],
                     group: { id: "demo-attack-boost", priority: 1 },
                 }),
-            ]);
+            );
         },
         onDisable: (state, self) => {
             const unit = getCurrentUnit(state, self.host);
@@ -62,9 +63,10 @@ export function createTacticalProjectileDemo(
                 return state;
             }
 
-            return updateUnit(state, [
+            return updateUnit(
+                state,
                 removeAttackContribution(unitRef(unit), `@effect/${self.id}/attack`),
-            ]);
+            );
         },
     };
     const hit = (battle: BattleState, self: Projectile<tracking.State>): BattleState =>

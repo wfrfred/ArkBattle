@@ -90,13 +90,13 @@ test("lifecycle dispatch reads current registrations and captures final leave pr
                     assert.ok(units.get(state, units.ref(self)).hooks.find(damageOutput, "intrinsic-output"));
                     observed.push("first");
                     return {
-                        state: update(state, [
+                        state: update(state, units.combine([
                             units.removeHook(units.ref(self), unitLifecycle.enter, "removed"),
                             units.setHook(units.ref(self), unitLifecycle.enter, record("new")),
                             units.setHook(units.ref(self), unitLifecycle.enter, {
                                 ...record("replacement"), id: "existing",
                             }),
-                        ]),
+                        ])),
                         value: undefined,
                     };
                 },
@@ -107,7 +107,7 @@ test("lifecycle dispatch reads current registrations and captures final leave pr
                 id: "prepare",
                 invoke(state, departure) {
                     return {
-                        state: update(state, [
+                        state: update(state,
                             units.setHook(units.ref(departure.unit), unitLifecycle.leave, {
                                 id: "late-leave",
                                 invoke(current, original) {
@@ -116,8 +116,8 @@ test("lifecycle dispatch reads current registrations and captures final leave pr
                                     observed.push("late-leave");
                                     return { state: current, value: undefined };
                                 },
-                            }),
-                        ]),
+                            })
+                        ),
                         value: undefined,
                     };
                 },

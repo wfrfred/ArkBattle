@@ -6,11 +6,11 @@ SpatialPresence 表示身体是否参与普通空间交互。无此 Capability �
 
 ## 操作与职责
 
-`disappear(ref): Change` 和 `appear(ref, position): Change` 绑定具有 SpatialPresence 的 Typed Ref，由 `unit.update(battle, changes)` 提交。工厂不读取 BattleState，也不自行发布。appear 同时主动覆盖位置，即使当前已 present，也要清理本次空间覆盖所涉及的旧关系和自身偏移。
+`disappear(ref): Change` 和 `appear(ref, position): Change` 绑定具有 SpatialPresence 的 Typed Ref，由 `unit.update(battle, change)` 提交。工厂不读取 BattleState，也不自行发布。appear 同时主动覆盖位置，即使当前已 present，也要清理本次空间覆盖所涉及的旧关系和自身偏移。
 
 ```typescript
-battle = update(battle, [presence.disappear(reference)]);
-battle = update(battle, [presence.appear(reference, position)]);
+battle = update(battle, presence.disappear(reference));
+battle = update(battle, presence.appear(reference, position));
 ```
 
 Presence 根据宿主实际拥有的能力，登记或撤销自己持有的限制 Rule：
@@ -23,17 +23,18 @@ Presence 根据宿主实际拥有的能力，登记或撤销自己持有的限�
 | Blocker／Blockable | 禁止取得或维持阻挡关系。 |
 | Vitality／Elemental | 拒收普通 HP／EP Damage；不附带普通 Healing 或资源自然恢复限制。 |
 
-这些限制使用所属领域已有的 Rule 类型与按 ID 登记协议，和空间事实在同一个 Change 中纯转换，不增加 Rule 种类、额外 Change 列表或并行资格系统。恢复出现只移除 Presence 自己的登记，其它 Rule 继续生效。Capability 和 Action／Skill 的业务不反向读取 Presence。
+两个入口分别使用 `combine(ref, self => …)`，应用时根据当前暂存宿主的能力生成子 Change。自身空间变更排在组合内部首位，随后直接复用各能力的 setRule／removeRule 工厂，不手写其它能力的 Rule State。全部子项共同参与一次发布，组合不建立另一层事务。恢复出现只移除 Presence 自己的登记，其它 Rule 继续生效。Capability 和 Action／Skill 的业务不反向读取 Presence。
 
 空间查询、普通 Targeting 和 Terrain 接触直接消费空间存在事实。Combat 在调用可能消费 RNG 的 select 之前排除消失来源，不靠启动 Rule 补救已经发生的选择。已经锁定的 tracking Projectile 继续读取现存目标的真实位置；身份失效后才使用记忆位置。命中、重新索敌和伤害接收分别判断。
 
 ## 发布与同步结算
 
-Presence Change 可以与其它变更组合，遵守 `unit.update` 的统一协议：
+Presence Change 可以通过 combine 与其它变更组合，遵守[统一变更协议](api-conventions.md#51-unit-完整操作与批量变更)：
 
-1. Transformation 读取该项之前的暂存 Unit，更新 present／position、各能力的自有 Rule，并取消自身 Blockable 的未完成偏移。LEAVING 宿主不再接受空间变更。
-2. 全部 Change 的 Transformation 完成后一次发布；之后按 Change 顺序执行 Settlement，不为 Presence 另设优先级。
-3. Presence Settlement 从本项 `previous` 快照识别旧关系和旧 Execution，先解除仍成立的旧关系，再按启动顺序取消旧 Execution。
+1. 按 Ref 展开时读取该位置的暂存 Unit；LEAVING 宿主返回空组合，不产生空间变更。
+2. 自身叶子的 Transformation 更新 present／position，并取消自身 Blockable 的未完成偏移；后续所属能力的 Rule Change 各自完成纯登记或撤销。
+3. 整个传入组合的全部 Transformation 完成后一次发布，再按展开后的叶子顺序结算；不为 Presence 另设全批优先级。
+4. 自身叶子的 Settlement 从该项 `previous` 快照识别旧关系和旧 Execution，先解除仍成立的旧关系；disappear 随后按启动顺序取消旧 Execution，appear 不取消执行。后续 Rule Settlement 接续最新状态。
 
 Presence 自己发出的第一次 RELEASED 回调已能读取本批最终空间事实、限制、自身偏移取消及此次整批关系解除结果。其它 Change 的先行 Settlement 仍遵守其自身契约。Blocker 使用旧 blocked Ref 批量解除，不取消其原目标的独立偏移；Blockable 仅解除仍属旧轮次的入向关系，已经换轮的关系和新计划保留。
 

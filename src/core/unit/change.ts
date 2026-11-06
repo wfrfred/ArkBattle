@@ -21,3 +21,20 @@ export function createChange<U extends Unit>(
 
     return change;
 }
+
+export function combine(changes: readonly Change[]): Change;
+export function combine<U extends Unit>(
+    reference: Ref<U>,
+    expand: (self: NoInfer<U>) => readonly Change[],
+): Change;
+export function combine<U extends Unit>(
+    source: readonly Change[] | Ref<U>,
+    expand?: (self: NoInfer<U>) => readonly Change[],
+): Change {
+    const change =
+        expand === undefined
+            ? { [Brand]: true as const, changes: source }
+            : { [Brand]: true as const, ref: source, expand };
+
+    return change;
+}

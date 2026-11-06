@@ -18,12 +18,13 @@ function restriction(
                 return state;
             }
 
-            return updateUnit(state, [
+            return updateUnit(
+                state,
                 targetable.setRestriction(units.ref(unit), {
                     id: `@effect/${self.id}/targeting`,
                     value,
                 }),
-            ]);
+            );
         },
         onDisable(state, self) {
             const unit = units.get(state, self.host);
@@ -31,9 +32,10 @@ function restriction(
                 return state;
             }
 
-            return updateUnit(state, [
+            return updateUnit(
+                state,
                 targetable.removeRestriction(units.ref(unit), `@effect/${self.id}/targeting`),
-            ]);
+            );
         },
     };
 }

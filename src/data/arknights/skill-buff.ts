@@ -40,12 +40,13 @@ export function compileArknightsAttackBuffSkill(value: unknown, level: number): 
                 return state;
             }
 
-            return updateUnit(state, [
+            return updateUnit(
+                state,
                 setAttackContribution(unitRef(unit), {
                     id: `@effect/${self.id}/attack`,
                     value: [attribute.create({ multiplier: self.data.attackIncrease })],
                 }),
-            ]);
+            );
         },
         onDisable: (state, self) => {
             const unit = getUnit(state, self.host);
@@ -53,9 +54,10 @@ export function compileArknightsAttackBuffSkill(value: unknown, level: number): 
                 return state;
             }
 
-            return updateUnit(state, [
+            return updateUnit(
+                state,
                 removeAttackContribution(unitRef(unit), `@effect/${self.id}/attack`),
-            ]);
+            );
         },
     };
 

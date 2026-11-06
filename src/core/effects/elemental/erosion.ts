@@ -31,16 +31,15 @@ function reduction(amount: number): EffectDefinition<object, Vitality> {
         id: "elemental/erosion/reduction",
         initialize: () => ({}),
         onEnable: (battle, self) =>
-            update(battle, [
+            update(
+                battle,
                 setContribution(self.host, "defense", {
                     id: `@effect/${self.id}/defense`,
                     value: [attribute.create({ addition: -amount })],
                 }),
-            ]),
+            ),
         onDisable: (battle, self) =>
-            update(battle, [
-                removeContribution(self.host, "defense", `@effect/${self.id}/defense`),
-            ]),
+            update(battle, removeContribution(self.host, "defense", `@effect/${self.id}/defense`)),
     };
 }
 

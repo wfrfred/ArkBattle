@@ -134,7 +134,7 @@ test("outside-map displacement recovers within the movement budget and keeps its
     const host = ref(get(state, 0));
     state = advanceMovement(state, { routeMoveMultiplier: 1 });
     const moving = get(state, 0);
-    state = update(state, [appear(host, [moving.position[0] - 1, moving.position[1]])]);
+    state = update(state, appear(host, [moving.position[0] - 1, moving.position[1]]));
     const displaced = get(state, 0).position;
     state = advanceMovement({ ...state, tick: 1 }, { routeMoveMultiplier: 1 });
     const resumed = get(state, 0);

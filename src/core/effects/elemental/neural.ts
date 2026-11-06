@@ -69,7 +69,8 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
         onInstall(battle, self) {
             const effectId = self.id;
 
-            return update(battle, [
+            return update(
+                battle,
                 setHook(self.host, "beforeRelease", {
                     id: `@effect/${effectId}/paralysis`,
                     accepts(current) {
@@ -108,12 +109,10 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                         return { state: current, value: { type: "INTERRUPT", recoveryTicks } };
                     },
                 }),
-            ]);
+            );
         },
         onEnd: (battle, self) =>
-            update(battle, [
-                removeHook(self.host, "beforeRelease", `@effect/${self.id}/paralysis`),
-            ]),
+            update(battle, removeHook(self.host, "beforeRelease", `@effect/${self.id}/paralysis`)),
     };
 
     return {

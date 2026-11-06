@@ -57,12 +57,13 @@ export function createDefinition(
                 return {
                     state: !hasLocomotion(self)
                         ? battle
-                        : updateUnit(battle, [
+                        : updateUnit(
+                              battle,
                               setRule(unitRef(self), {
                                   id: "attack-casting",
                                   allows: (current, { self }) => !isCasting(current, unitRef(self)),
                               }),
-                          ]),
+                          ),
                     value: undefined,
                 };
             },

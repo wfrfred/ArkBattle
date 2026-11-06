@@ -66,21 +66,23 @@ function attackBonus(id: string, amount: number): EffectDefinition<object, Offen
 
             return unit === undefined
                 ? state
-                : updateUnit(state, [
+                : updateUnit(
+                      state,
                       setAttackContribution(unitRef(unit), {
                           id: `effect/${self.id}/attack`,
                           value: [attribute.create({ multiplier: amount })],
                       }),
-                  ]);
+                  );
         },
         onDisable: (state, self) => {
             const unit = getCurrentUnit(state, self.host);
 
             return unit === undefined
                 ? state
-                : updateUnit(state, [
+                : updateUnit(
+                      state,
                       removeAttackContribution(unitRef(unit), `effect/${self.id}/attack`),
-                  ]);
+                  );
         },
     };
 }

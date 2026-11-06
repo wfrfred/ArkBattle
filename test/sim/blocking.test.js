@@ -1,3 +1,4 @@
+import { combine } from "../../dist/core/unit/index.js";
 import { Hooks } from "../../dist/core/hook.js";
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -50,12 +51,12 @@ test("search applies pair rules, current volume, target layer and ground tile el
         [3],
     );
     assert.equal(blocking.usedCapacity(state, owner), 2);
-    state = unit.update(state, [
+    state = unit.update(state,
         capability.setBlockableRule(units.ref(get(state, 3)), {
             id: "cannot-be-held",
             allows: () => false,
-        }),
-    ]);
+        })
+    );
     state = blocking.search(state, owner);
     assert.deepEqual(
         blocking.blocked(state, owner).map(({ id }) => id),
@@ -66,7 +67,7 @@ test("search applies pair rules, current volume, target layer and ground tile el
     state = tiles.update(state, [1, 2], { ...tile.state, allowsBlocking: false });
     state = blocking.search(state, owner);
     assert.deepEqual(blocking.blocked(state, owner), []);
-    state = unit.update(state, [capability.setLayer(owner, "AIR")]);
+    state = unit.update(state, capability.setLayer(owner, "AIR"));
     state = blocking.search(state, owner);
     assert.equal(get(state, 0).blocker.radius, 0.8944);
     assert.deepEqual(
@@ -85,7 +86,7 @@ test("capacity shrink releases the newest relation and observes callback changes
         state = blocking.acquire(state, owner, units.ref(get(state, id)));
     }
     const released = [];
-    state = unit.update(state, [
+    state = unit.update(state, combine([
         capability.setBlockerHook(owner, "released", {
             id: "restore-one-slot",
             invoke: (current, { relation }) => {
@@ -99,12 +100,12 @@ test("capacity shrink releases the newest relation and observes callback changes
                     1,
                 );
                 return {
-                    state: unit.update(current, [
+                    state: unit.update(current,
                         capability.setCapacityContribution(owner, {
                             id: "capacity-change",
                             value: [{ type: "ADD", value: -1 }],
-                        }),
-                    ]),
+                        })
+                    ),
                     value: undefined,
                 };
             },
@@ -113,7 +114,7 @@ test("capacity shrink releases the newest relation and observes callback changes
             id: "capacity-change",
             value: [{ type: "ADD", value: -2 }],
         }),
-    ]);
+    ]));
     assert.deepEqual(released, [3]);
     assert.deepEqual(
         blocking.blocked(state, owner).map(({ id }) => id),
@@ -132,7 +133,7 @@ test("own layer requests release old relations before hooks, including same-valu
     for (const target of targets) state = blocking.acquire(state, owner, target);
     const original = blocking.relations(state, owner);
     let notifications = 0;
-    state = unit.update(state, [
+    state = unit.update(state,
         capability.setBlockerHook(owner, "released", {
             id: "reacquire",
             invoke: (current) => {
@@ -151,9 +152,9 @@ test("own layer requests release old relations before hooks, including same-valu
                 }
                 return { state: current, value: undefined };
             },
-        }),
-    ]);
-    state = unit.update(state, [layer.setType(owner, "AIR")]);
+        })
+    );
+    state = unit.update(state, layer.setType(owner, "AIR"));
     assert.equal(notifications, 2);
     assert.deepEqual(
         blocking.blocked(state, owner).map(({ id }) => id),
@@ -167,13 +168,13 @@ test("own layer requests release old relations before hooks, including same-valu
     );
     assert.equal(notifications, 2);
 
-    state = unit.update(state, [layer.setType(owner, "AIR")]);
+    state = unit.update(state, layer.setType(owner, "AIR"));
     assert.equal(notifications, 4);
     assert.deepEqual(blocking.blocked(state, owner), []);
     state = blocking.search(state, owner);
 
     let removedNotifications = 0;
-    state = unit.update(state, [
+    state = unit.update(state,
         capability.setBlockerHook(owner, "released", {
             id: "reacquire",
             invoke: (current) => {
@@ -185,8 +186,8 @@ test("own layer requests release old relations before hooks, including same-valu
                 );
                 return { state: current, value: undefined };
             },
-        }),
-    ]);
+        })
+    );
     state = unit.remove(state, owner.id, "RETREAT");
     assert.equal(removedNotifications, 2);
     assert.ok(targets.every((target) => blocking.blockerOf(state, target) === undefined));
@@ -211,7 +212,7 @@ test("position plans survive relation release while active departure and spatial
     assert.notDeepEqual(separated, get(state, 1).blockable.adjustment.to);
     assert.ok(separated[1] < 1);
     assert.ok(Math.abs(Vec2.distanceSquared(separated, get(state, 0).position) - 0.25) < 1e-12);
-    state = unit.update(state, [layer.setType(departing, "AIR")]);
+    state = unit.update(state, layer.setType(departing, "AIR"));
     assert.equal(blocking.blockerOf(state, departing), undefined);
     assert.equal(get(state, 2).blockable.adjustment, null);
 
@@ -223,21 +224,21 @@ test("position plans survive relation release while active departure and spatial
     assert.deepEqual(get(state, 1).position, [2.5, 1]);
     assert.equal(get(state, 1).blockable.adjustment, null);
 
-    state = unit.update(state, [layer.setType(departing, "GROUND")]);
+    state = unit.update(state, layer.setType(departing, "GROUND"));
     state = blocking.acquire(state, owner, departing);
     assert.notEqual(get(state, 2).blockable.adjustment, null);
     const independentPlan = get(state, 2).blockable.adjustment;
-    state = unit.update(state, [presence.disappear(owner)]);
+    state = unit.update(state, presence.disappear(owner));
     assert.equal(blocking.blockerOf(state, departing), undefined);
     assert.equal(get(state, 2).blockable.adjustment, independentPlan);
     state = advanceMovement({ ...state, tick: 9 }, { routeMoveMultiplier: 1 });
     assert.notDeepEqual(get(state, 2).position, independentPlan.from);
-    state = unit.update(state, [presence.disappear(departing)]);
+    state = unit.update(state, presence.disappear(departing));
     assert.equal(get(state, 2).blockable.adjustment, null);
-    state = unit.update(state, [presence.appear(owner, [2, 1]), presence.appear(departing, [2.3, 1])]);
+    state = unit.update(state, combine([presence.appear(owner, [2, 1]), presence.appear(departing, [2.3, 1])]));
     state = blocking.acquire(state, owner, departing);
     let observed = false;
-    state = unit.update(state, [
+    state = unit.update(state,
         capability.setBlockableHook(departing, "released", {
             id: "observe-space-override",
             invoke(current) {
@@ -249,9 +250,9 @@ test("position plans survive relation release while active departure and spatial
                 assert.deepEqual(blocking.blocked(current, owner), []);
                 return { state: current, value: undefined };
             },
-        }),
-    ]);
-    state = unit.update(state, [presence.appear(departing, [5, 1])]);
+        })
+    );
+    state = unit.update(state, presence.appear(departing, [5, 1]));
     assert.equal(observed, true);
     assert.deepEqual(get(state, 2).position, [5, 1]);
     assert.equal(get(state, 2).blockable.adjustment, null);

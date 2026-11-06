@@ -83,7 +83,8 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
             const unit = units.get(battle, self.host)!;
 
             return hasOffense(unit)
-                ? update(battle, [
+                ? update(
+                      battle,
                       setAttackContribution(units.ref(unit), {
                           id: `@effect/${self.id}/attack`,
                           value: [
@@ -92,16 +93,17 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
                               }),
                           ],
                       }),
-                  ])
+                  )
                 : battle;
         },
         onDisable(battle, self) {
             const unit = units.get(battle, self.host)!;
 
             return hasOffense(unit)
-                ? update(battle, [
+                ? update(
+                      battle,
                       removeAttackContribution(units.ref(unit), `@effect/${self.id}/attack`),
-                  ])
+                  )
                 : battle;
         },
         onTick: (battle, self) =>
@@ -117,12 +119,13 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
                         1 -
                         parameters.attackReductionRatio *
                             Math.max(0, 1 - second / (parameters.durationTicks / TICKS_PER_SECOND));
-                    current = update(current, [
+                    current = update(
+                        current,
                         setAttackContribution(units.ref(unit), {
                             id: `@effect/${self.id}/attack`,
                             value: [attribute.create({ finalScaler: scaler })],
                         }),
-                    ]);
+                    );
                 }
 
                 return current;

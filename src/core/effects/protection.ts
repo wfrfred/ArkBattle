@@ -1,3 +1,4 @@
+import { combine } from "../unit/change.js";
 import { update as updateUnit } from "../battle/unit.js";
 
 import type { Definition } from "../unit/effect/index.js";
@@ -32,28 +33,31 @@ export const invincible: Definition<object, targetable.Targetable> = {
 
         const id = `@effect/${self.id}/invincible`;
 
-        return updateUnit(state, [
-            targetable.setRestriction(units.ref(unit), {
-                id,
-                value: invincibleRestriction,
-            }),
-            ...(elemental.hasElemental(unit)
-                ? [
-                      elemental.setRule(units.ref(unit), "damageRules", {
-                          id,
-                          allows: () => false,
-                      }),
-                  ]
-                : []),
-            ...(vitality.hasVitality(unit)
-                ? [
-                      vitality.setRule(units.ref(unit), {
-                          id,
-                          allows: () => false,
-                      }),
-                  ]
-                : []),
-        ]);
+        return updateUnit(
+            state,
+            combine([
+                targetable.setRestriction(units.ref(unit), {
+                    id,
+                    value: invincibleRestriction,
+                }),
+                ...(elemental.hasElemental(unit)
+                    ? [
+                          elemental.setRule(units.ref(unit), "damageRules", {
+                              id,
+                              allows: () => false,
+                          }),
+                      ]
+                    : []),
+                ...(vitality.hasVitality(unit)
+                    ? [
+                          vitality.setRule(units.ref(unit), {
+                              id,
+                              allows: () => false,
+                          }),
+                      ]
+                    : []),
+            ]),
+        );
     },
     onDisable(state, self) {
         const unit = units.get(state, self.host);
@@ -63,13 +67,16 @@ export const invincible: Definition<object, targetable.Targetable> = {
 
         const id = `@effect/${self.id}/invincible`;
 
-        return updateUnit(state, [
-            targetable.removeRestriction(units.ref(unit), id),
-            ...(elemental.hasElemental(unit)
-                ? [elemental.removeRule(units.ref(unit), "damageRules", id)]
-                : []),
-            ...(vitality.hasVitality(unit) ? [vitality.removeRule(units.ref(unit), id)] : []),
-        ]);
+        return updateUnit(
+            state,
+            combine([
+                targetable.removeRestriction(units.ref(unit), id),
+                ...(elemental.hasElemental(unit)
+                    ? [elemental.removeRule(units.ref(unit), "damageRules", id)]
+                    : []),
+                ...(vitality.hasVitality(unit) ? [vitality.removeRule(units.ref(unit), id)] : []),
+            ]),
+        );
     },
 };
 
@@ -82,12 +89,13 @@ export const healFree: Definition<object, targetable.Targetable> = {
             return state;
         }
 
-        return updateUnit(state, [
+        return updateUnit(
+            state,
             targetable.setRestriction(units.ref(unit), {
                 id: `@effect/${self.id}/heal-free`,
                 value: healFreeRestriction,
             }),
-        ]);
+        );
     },
     onDisable(state, self) {
         const unit = units.get(state, self.host);
@@ -95,8 +103,9 @@ export const healFree: Definition<object, targetable.Targetable> = {
             return state;
         }
 
-        return updateUnit(state, [
+        return updateUnit(
+            state,
             targetable.removeRestriction(units.ref(unit), `@effect/${self.id}/heal-free`),
-        ]);
+        );
     },
 };

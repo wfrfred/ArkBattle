@@ -33,27 +33,27 @@ test("EP-03: Burst recovery continues while absent, refills EP with the current 
     assert.equal(epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming)).value.kind, "REJECTED");
     const heal = { target, source: null, power: 100 };
     assert.equal(epHealing.applyHealing(heal, epHealing.calculateHealing(state, heal)).value.kind, "REJECTED");
-    state = update(state, [presence.disappear(target)]);
+    state = update(state, presence.disappear(target));
     state = effects.advance({ ...state, tick: 1 });
     assert.equal(elemental.get(state, burst).expiration.elapsed, 1);
     for (const value of Object.values(get(state, 0).elemental.ep)) {
         assert.ok(Math.abs(value - 1000 / 300) < 1e-8);
     }
-    state = update(state, [elemental.setContribution(target, "burstRecoverySpeed", {
+    state = update(state, elemental.setContribution(target, "burstRecoverySpeed", {
         id: "clock", value: [modifier({ finalScaler: 0 })],
-    })]);
+    }));
     for (let tick = 2; tick <= 4; tick++) {
         state = effects.advance({ ...state, tick });
     }
     assert.equal(elemental.get(state, burst).expiration.elapsed, 1);
-    state = update(state, [
+    state = update(state, units.combine([
         elemental.setContribution(target, "burstRecoverySpeed", {
             id: "clock", value: [modifier({ finalScaler: 2 })],
         }),
         elemental.setContribution(target, "maxEp", {
             id: "capacity", value: [modifier({ addition: 1000 })],
         }),
-    ]);
+    ]));
     state = effects.advance({ ...state, tick: 5 });
     assert.equal(elemental.get(state, burst).expiration.elapsed, 3);
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(20));
@@ -64,7 +64,7 @@ test("EP-03: Burst recovery continues while absent, refills EP with the current 
     assert.equal(get(state, 0).elemental.burst, null);
     assert.equal(elemental.get(state, burst), undefined);
     assert.equal(vitality.resolveResistance(state, get(state, 0)), 50);
-    state = update(state, [presence.appear(target, [0, 0])]);
+    state = update(state, presence.appear(target, [0, 0]));
     const restart = { ...incoming, power: 2000 };
     const restarted = epDamage.applyDamage(restart, epDamage.calculateDamage(state, restart));
     state = elemental.cancel(restarted.state, restarted.value.application.burst, "CONTENT");

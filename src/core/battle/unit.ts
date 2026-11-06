@@ -26,32 +26,60 @@ export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
     }).state;
 }
 
-export function update(battle: BattleState, changes: readonly Change[]): BattleState {
+export function update(battle: BattleState, change: Change): BattleState {
     const prepared = new Map<Id, Unit>();
     const settlements: ((state: BattleState) => BattleState)[] = [];
 
-    for (const change of changes) {
-        const { ref, transform, settle } = change as Change & {
-            readonly ref: Ref<Unit>;
-            readonly transform: Transformation<Unit>;
-            readonly settle: Settlement<Unit> | undefined;
-        };
-        const previous = prepared.get(ref.id) ?? units.get(battle, ref);
+    function prepare(current: Change): void {
+        const node = current as Change &
+            (
+                | { readonly changes: readonly Change[] }
+                | {
+                      readonly ref: Ref<Unit>;
+                      readonly expand: (self: Unit) => readonly Change[];
+                  }
+                | {
+                      readonly ref: Ref<Unit>;
+                      readonly transform: Transformation<Unit>;
+                      readonly settle: Settlement<Unit> | undefined;
+                  }
+            );
+
+        if ("changes" in node) {
+            for (const child of node.changes) {
+                prepare(child);
+            }
+
+            return;
+        }
+
+        const previous = prepared.get(node.ref.id) ?? units.get(battle, node.ref);
         if (previous === undefined) {
-            throw new RangeError(`unknown unit: ${ref.id}`);
+            throw new RangeError(`unknown unit: ${node.ref.id}`);
         }
 
-        const next = transform(previous);
+        if ("expand" in node) {
+            for (const child of node.expand(previous)) {
+                prepare(child);
+            }
+
+            return;
+        }
+
+        const next = node.transform(previous);
         if (next === previous) {
-            continue;
+            return;
         }
 
-        prepared.set(ref.id, next);
+        prepared.set(node.ref.id, next);
 
+        const settle = node.settle;
         if (settle !== undefined) {
             settlements.push((state) => settle(state, previous));
         }
     }
+
+    prepare(change);
 
     battle = replace(battle, [...prepared.values()]);
 

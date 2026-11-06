@@ -53,9 +53,10 @@ export const smogEffect: Definition<SmogState, targetable.Targetable> = {
             return battle;
         }
 
-        return updateUnit(battle, [
+        return updateUnit(
+            battle,
             targetable.removeRestriction(units.ref(unit), `terrain/${self.id}`),
-        ]);
+        );
     },
 };
 
@@ -94,11 +95,12 @@ function reconcileSmog(
         return battle;
     }
 
-    return updateUnit(battle, [
+    return updateUnit(
+        battle,
         active
             ? targetable.setRestriction(units.ref(unit), { id, value: invisibleRestriction })
             : targetable.removeRestriction(units.ref(unit), id),
-    ]);
+    );
 }
 
 function changeModifiers(
@@ -112,38 +114,41 @@ function changeModifiers(
         return battle;
     }
 
-    return updateUnit(battle, [
-        ...(offense.hasOffense(unit)
-            ? [
-                  modifiers?.attack === undefined
-                      ? offense.removeAttackContribution(units.ref(unit), id)
-                      : offense.setAttackContribution(units.ref(unit), {
-                            id,
-                            value: [modifiers.attack],
-                        }),
-              ]
-            : []),
-        ...(action.hasAction(unit)
-            ? [
-                  modifiers?.attackSpeed === undefined
-                      ? action.removeSpeedContribution(units.ref(unit), id)
-                      : action.setSpeedContribution(units.ref(unit), {
-                            id,
-                            value: [modifiers.attackSpeed],
-                        }),
-              ]
-            : []),
-        ...(hasLocomotion(unit)
-            ? [
-                  modifiers?.movementSpeed === undefined
-                      ? locomotion.removeSpeedContribution(units.ref(unit), id)
-                      : locomotion.setSpeedContribution(units.ref(unit), {
-                            id,
-                            value: [modifiers.movementSpeed],
-                        }),
-              ]
-            : []),
-    ]);
+    return updateUnit(
+        battle,
+        units.combine([
+            ...(offense.hasOffense(unit)
+                ? [
+                      modifiers?.attack === undefined
+                          ? offense.removeAttackContribution(units.ref(unit), id)
+                          : offense.setAttackContribution(units.ref(unit), {
+                                id,
+                                value: [modifiers.attack],
+                            }),
+                  ]
+                : []),
+            ...(action.hasAction(unit)
+                ? [
+                      modifiers?.attackSpeed === undefined
+                          ? action.removeSpeedContribution(units.ref(unit), id)
+                          : action.setSpeedContribution(units.ref(unit), {
+                                id,
+                                value: [modifiers.attackSpeed],
+                            }),
+                  ]
+                : []),
+            ...(hasLocomotion(unit)
+                ? [
+                      modifiers?.movementSpeed === undefined
+                          ? locomotion.removeSpeedContribution(units.ref(unit), id)
+                          : locomotion.setSpeedContribution(units.ref(unit), {
+                                id,
+                                value: [modifiers.movementSpeed],
+                            }),
+                  ]
+                : []),
+        ]),
+    );
 }
 
 function damage(battle: BattleState, host: Ref<Unit>, amount: number): BattleState {

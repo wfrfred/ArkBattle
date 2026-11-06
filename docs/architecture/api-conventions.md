@@ -35,7 +35,7 @@ field.map 持有当前地块。battlefield/tile.update 是运行态地块变更�
 
 分类按职责划分，不按函数名、返回值或是否带一个对象参数机械判断。`currentTarget(progress)` 这类局部查询直接读取输入值，不要求传入 battle 或 ref。完整伤害结算可以返回报告；`card/state.advance(card, tick)` 仍是内部局部值转换，不是调度入口。
 
-Capability 可以提供完整领域操作，例如 Locomotion.advance。Rule、Hook、Contribution、Blocker.layer 以及 SpatialPresence.appear／disappear 的状态变更统一为绑定 Typed Ref 的 Change 工厂，由 `battle/unit.update(battle, changes)` 完成整批纯转换、一次发布及顺序结算；是否附带结算由所属领域决定。无业务后继的 Hook 登记同样返回 Change，不再要求 Content 重建 Unit。取得、解除及通知仍由明确 Blocking 操作负责，通用发布不推断关系。
+Capability 可以提供完整领域操作，例如 Locomotion.advance。Rule、Hook、Contribution、Blocker.layer 以及 SpatialPresence.appear／disappear 的状态变更统一为绑定 Typed Ref 的 Change 工厂，由 `battle/unit.update(battle, change)` 完成纯转换、一次发布及顺序结算；多项通过 combine 组合为一个 Change。是否附带结算由所属领域决定，无业务后继的 Hook 登记同样返回 Change，不再要求 Content 重建 Unit。取得、解除及通知仍由明确 Blocking 操作负责，通用发布不推断关系。
 
 命名按实际调用时点区分：初始化使用 initialize，执行前准备使用 prepare；生命周期回调使用 onXxx，主动领域操作保留 start、advance、cancel、stop 等动词。initialize 构造初始私有数据，prepare 准备一次执行并允许拒绝，两者均不要求运行实例已登记。onStart 在成功登记后执行启动业务，onTick 表示一次由调度器安排的执行机会，onEnd 用于正常完成和取消的收尾。
 
@@ -277,23 +277,36 @@ Card 的 state.ts 与 Action 的局部 Cooldown 计算只处理显式传入的�
 
 ### 5.1 Unit 完整操作与批量变更
 
-`battle/unit.ts` 提供完整 Unit 操作；变更协议从 `unit/index.ts` 只导出 Change 类型，update 不由该入口转发：
+`battle/unit.ts` 提供完整 Unit 操作；`unit/index.ts` 导出 Change 类型与 combine，update 不由该入口转发：
 
 ```typescript
 add(battle: BattleState, unit: Unit): BattleState;
-update(battle: BattleState, changes: readonly Change[]): BattleState;
+update(battle: BattleState, change: Change): BattleState;
 remove(battle: BattleState, unitId: Id, reason: LeaveReason): BattleState;
 advance(battle: BattleState): BattleState;
 ```
 
-Rule、Hook、Contribution、Layer.type、Blocker.layer 与 Occupancy.direction 的公开写入工厂统一为 `setXxx(ref, value): Change`／`removeXxx(ref, id): Change`。Ref 确定所需能力，工厂不接收 battle。Content 组合已经构造好的 Change，不提交完整 Unit，也不传任意 Unit 转换函数：
+Rule、Hook、Contribution、Layer.type、Blocker.layer 与 Occupancy.direction 的公开写入工厂统一为 `setXxx(ref, value): Change`／`removeXxx(ref, id): Change`。Ref 确定所需能力，工厂不接收 battle。单项直接提交；多项使用 combine，仍只向 update 提供一个 Change：
 
 ```typescript
-battle = update(battle, [
+battle = update(battle, setLayer(reference, "AIR"));
+battle = update(battle, combine([
     setBlockerRule(reference, rule),
     setLayer(reference, "AIR"),
-]);
+]));
 ```
+
+combine 支持静态组合与应用时展开：
+
+```typescript
+combine(changes: readonly Change[]): Change;
+combine<U extends Unit>(
+    reference: Ref<U>,
+    expand: (self: NoInfer<U>) => readonly Change[],
+): Change;
+```
+
+静态组合按列表顺序处理子 Change；按 Ref 的组合在应用到自身位置时，从本批暂存的当前 Unit 生成子 Change。展开程序只读 self、返回所属领域的 Change，不接收 BattleState、不发布状态或执行嵌套 update。组合可嵌套，按声明顺序递归展开；所有叶子共用同一暂存表和后继队列，不增加发布或结算边界。Content 不提交完整 Unit，也不取得任意 Unit Transformation 的入口。
 
 Change 是带必需品牌的 opaque 描述；构造实现 `createChange(ref, transform, settle?)` 只供 Core 内部使用。Transformation<U> 是纯 `(unit: U) => U`，Settlement<U> 是 `(battle, previous: U) => BattleState`；两个程序的 U 均从 Ref 经 NoInfer 确定，不由回调反推放宽。构造边界配对后才擦除异构类型，不增加公开 InternalChange、Prepared 或另一套转换协议。品牌表达构造契约，不作为恶意 Content 的安全隔离。
 
@@ -301,15 +314,15 @@ Change 是带必需品牌的 opaque 描述；构造实现 `createChange(ref, tra
 
 Vitality 的 damageRules、普通贡献与专属 Hook，Elemental 的 Rules／Contributions／Hooks，Skill 的 Rules／Hooks，Action 的 Rules／Hooks，以及 Deployable、Locomotion、Offense、Targetable 的普通登记共用此工厂；Blocking 两侧的普通 Hook 也使用同一工厂。它不经 Unit 公共入口导出。MaxHP 的贡献与 HP 比例在同一次手写变换中更新；Ammo 注册保留 AMMO 适用条件，发动时采样容量，当前轮次仍由资源操作改变；Action interval／speed 与 Blocking Rule／容量／体积保留所属领域 Settlement。可空 SP、Unit Typed Key Hooks、Card／Battle 登记保持各自明确的状态和写回协议，不扩展通用路径或后继配置。
 
-update 按以下顺序处理整批，允许同一 Unit 多个 Change，也允许跨多个 Unit：
+update 按以下顺序处理传入的 Change 及其组合，允许同一 Unit 多个叶子，也允许跨多个 Unit：
 
-1. 按 Change 顺序从本批暂存的最新 Unit 执行全部 transform；首次触及的目标必须已登记，缺失时抛出 RangeError。每项返回值与其输入 Unit 引用相同时，update 统一跳过该项发布和 settle；整项 Change 没有业务动作时，Transformation 必须返回原 Unit，不做字段深比较。此阶段不执行 Hook 或完整领域操作。
+1. 按组合的声明顺序递归准备各叶子；按 Ref 展开时与叶子 transform 都读取本批暂存的最新 Unit。目标必须已登记，缺失时抛出 RangeError。每项 transform 返回值与其输入 Unit 引用相同时，update 统一跳过该项发布和 settle；整项没有业务动作时，Transformation 必须返回原 Unit，不做字段深比较。此阶段不执行 Hook 或完整领域操作。
 2. 一次发布所有最终 Unit；Field 维护 Unit 存储和 Occupancy 双槽。普通 update／replace 不扫描能力槽位或更新 Lifetime 关系。
-3. 按原 Change 顺序执行实际发生变换的各项 settle，每次接续最新 BattleState。previous 固定为该项 transform 前的暂存 Unit，只表示有意采样的旧事实；实时对象必须重新查询，不整体回填 previous。
+3. 按展开后的叶子顺序执行实际发生变换的各项 settle，每次接续最新 BattleState。previous 固定为该项 transform 前的暂存 Unit，只表示有意采样的旧事实；实时对象必须重新查询，不整体回填 previous。
 
-先完成所有纯转换，再执行任何结算。较早结算的 Hook 能看到全批最终字段，也能看到较晚结算尚未清理的关系。批内先降容量再恢复只按最终容量裁撤；跨两次 update 则先完成第一次的解除。批内 GROUND→AIR→GROUND 仍保留两次真实切层对应的旧关系清理，不能因为最终字段值等于批前值而省略已有结算。相同条目或缺失 ID 等无变化输入由 transform 返回原 Unit，update 统一省略该项后继，Settlement 不重复判断。空批次或全部 transform 复用原 Unit 时返回原 battle。该判断针对每项暂存输入，不比较整批最终值来丢弃此前已登记的结算。
+先完成所有纯转换，再执行任何结算。较早结算的 Hook 能看到全批最终字段，也能看到较晚结算尚未清理的关系。批内先降容量再恢复只按最终容量裁撤；跨两次 update 则先完成第一次的解除。批内 GROUND→AIR→GROUND 仍保留两次真实切层对应的旧关系清理，不能因为最终字段值等于批前值而省略已有结算。相同条目或缺失 ID 等无变化输入由 transform 返回原 Unit，update 统一省略该项后继，Settlement 不重复判断。空组合或全部 transform 复用原 Unit 时返回原 battle。该判断针对每个叶子的暂存输入，不比较整批最终值来丢弃此前已登记的结算。
 
-每次嵌套 update 独立准备与结算自己的 Change 列表，不调度外层尚未执行的项，不保存全局 pending、updating 或隐式事务。领域后继还必须限制作用范围：Blocking 的容量 Settlement 只按最新容量从本 Blocker 列表末尾裁撤，volume 在 settle 读取当前 owner 并结算该阻挡组，不追随 Hook 中的新归属；两者共享内部 settleCapacity，完成每条解除的 Hook 后重读，不夹带资格扫描。Rule 后继固定自身关系列表，逐条 maintain 复核资格，不裁容量或维护其他关系。release 只执行给定旧集合，不自动维护。嵌套操作确实修改同一对象或关联时，双方接续同一最新事实，不承诺隔离。显式全场操作如地块更新使用 maintainAll，固定入口关系、按顺序各复核一次资格，不回头重扫或处理容量。
+每次业务回调中的嵌套 update 独立准备与结算自己的 Change，不调度外层尚未执行的项；combine 只展开子项，不发起这种嵌套操作。系统不保存全局 pending、updating 或隐式事务。领域后继还必须限制作用范围：Blocking 的容量 Settlement 只按最新容量从本 Blocker 列表末尾裁撤，volume 在 settle 读取当前 owner 并结算该阻挡组，不追随 Hook 中的新归属；两者共享内部 settleCapacity，完成每条解除的 Hook 后重读，不夹带资格扫描。Rule 后继固定自身关系列表，逐条 maintain 复核资格，不裁容量或维护其他关系。release 只执行给定旧集合，不自动维护。嵌套操作确实修改同一对象或关联时，双方接续同一最新事实，不承诺隔离。显式全场操作如地块更新使用 maintainAll，固定入口关系、按顺序各复核一次资格，不回头重扫或处理容量。
 
 Rule 可读取任意 Battle 事实，但读取范围不表示自动订阅每次字段写入。每 Tick 的 Blocking 阶段先固定阶段初 Blocker 候选，再 maintainAll 复核旧关系，最后搜索新关系；晚于某条复核才发生的间接条件变化留到下一检查点，需要同步生效的业务明确调用关系操作。acquire 的 Hook 返回后只复核本次新 Relation；Locomotion 与 Blockable 位置推进只提交位置／计划，不调用 Blocking 维护。
 
@@ -329,7 +342,7 @@ add 接收创建方完成初始化的完整 Unit，登记后按顺序执行 ente
 
 remove 按 Unit ID 请求 Lifetime 结束，首次请求保存 Departure、发布 LEAVING，再执行已登记 prepare。Blocking 自行清理关系与位置计划。真实依赖者完整 Finalize 后才注销 Unit、记录移除事实，执行本地 leave，最后派发全局 leave；Unit 不识别能力或扫描领域状态补救。主动撤退由 Deployable 接口在 remove 前直接结算退款、Card 费用阶段与库存恢复；被动死亡程序只接受已确认死亡，不对所有 leave 无条件回收。Occupancy 用已通知的旧 pair 清理，不把同格新实例当旧对端；Deployable 在本地 leave 归还该实例额度。嵌套 remove 只保证请求／Prepare，最外层结算结束才保证完成；主动撤退的资源结算不等待物理注销。advance 固定入口候选，再逐项读取最新 PRESENT Unit 执行 tick。
 
-battlefield/unit.ts 的 add／update／remove 是纯存储与索引转换，Field.update 接收完整 Unit 数组，Battle.update 接收 Change 数组。特殊撤退—再部署的支持范围见 [Deployment](deployment.md#支持范围)。
+battlefield/unit.ts 的 add／update／remove 是纯存储与索引转换，Field.update 接收完整 Unit 数组，battle/unit.update 只接收一个 Change，批量组合由 combine 表达。特殊撤退—再部署的支持范围见 [Deployment](deployment.md#支持范围)。
 
 ## 6. Effect self 的身份与宿主约束
 

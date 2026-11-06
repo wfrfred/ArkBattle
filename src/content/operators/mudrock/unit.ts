@@ -146,7 +146,8 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
 
             const ref = effectRef(self);
 
-            return updateUnit(state, [
+            return updateUnit(
+                state,
                 setVitalityHook(unitRef(unit), "damageReceiving", {
                     id: `${SHIELD_ID}/${self.id}`,
                     priority: 100,
@@ -201,20 +202,21 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
                         };
                     },
                 }),
-            ]);
+            );
         },
         onDisable: (state, self) => {
             const unit = getCurrentUnit(state, self.host);
 
             return unit === undefined
                 ? state
-                : updateUnit(state, [
+                : updateUnit(
+                      state,
                       removeVitalityHook(
                           unitRef(unit),
                           "damageReceiving",
                           `${SHIELD_ID}/${self.id}`,
                       ),
-                  ]);
+                  );
         },
         onTick(state, self) {
             const elapsed = state.tick - self.data.lastTick;

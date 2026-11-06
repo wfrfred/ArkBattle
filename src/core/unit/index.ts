@@ -21,6 +21,8 @@ export type { Initial } from "./capability/catalog.js";
 
 export type { Change } from "./change.js";
 
+export { combine } from "./change.js";
+
 export { initialize } from "./initialize.js";
 
 export { ref, all, get } from "./query.js";

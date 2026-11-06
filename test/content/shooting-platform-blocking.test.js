@@ -54,7 +54,7 @@ test("an airborne passenger can block from a platform, and landing restores its 
         target(20, { layer: "AIR" }), target(21)]));
     assert.equal(ownerId(battle, 20), 10);
     assert.equal(ownerId(battle, 21), undefined);
-    battle = update(battle, [setLayer({ id: 10 }, "GROUND")]);
+    battle = update(battle, setLayer({ id: 10 }, "GROUND"));
     assert.equal(ownerId(battle, 20), undefined);
     battle = acquire(battle);
     assert.equal(ownerId(battle, 21), undefined);

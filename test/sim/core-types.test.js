@@ -11,7 +11,7 @@ test("typed identities retain private data and capability proofs across erased C
 import type { Ref } from ${module("common/ref")};
 import type { State } from ${module("battle/state")};
 import { Hooks, key, type Hook } from ${module("hook")};
-import { initialize, ref, get, type Unit, type Change } from ${module("unit/index")};
+import { initialize, ref, get, combine, type Unit, type Change } from ${module("unit/index")};
 import { update } from ${module("battle/unit")};
 import * as actions from ${module("unit/action/index")};
 import * as effects from ${module("unit/effect/index")};
@@ -106,7 +106,15 @@ const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'ba
 // @ts-expect-error the host has not established the required capability.
 effects.install(battle, ref(bare), shield);
 const change: Change = setAttackContribution(reference, { id: 'bonus', value: [] });
+const combined: Change = combine([change, combine([])]);
+// @ts-expect-error updates accept one opaque Change; batches require combine.
 update(battle, [change]);
+update(battle, combine([combined, combine(reference, self => {
+    const attack: number = self.definition.offense.attack;
+    return [setAttackContribution(ref(self), { id: 'prepared', value: [] })];
+})]));
+// @ts-expect-error a callback cannot add capabilities absent from the supplied Ref.
+combine(ref(bare), (self: Unit & Offense) => [setAttackContribution(ref(self), { id: 'wrong', value: [] })]);
 const attack: number = resolveAttack(battle, host);
 // @ts-expect-error value computation accepts the current object rather than its address.
 resolveAttack(battle, reference);
@@ -184,7 +192,7 @@ createRegistrationOperations<Unit & vitality.Vitality, 'vitality', 'hp'>('vitali
 // @ts-expect-error a different capability cannot be inferred from an unrelated proof.
 setLayer(reference, 'AIR');
 // @ts-expect-error public writes accept constructed Changes rather than complete snapshots.
-update(battle, [host]);
+update(battle, host);
 // @ts-expect-error callers cannot fabricate an opaque Change.
 const fabricated: Change = {};
 // @ts-expect-error a numeric address alone does not establish a Unit proof.

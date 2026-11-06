@@ -253,7 +253,7 @@ setLayer 不因旧关系在最终层下仍合法而保留它。新建立的同 I
 
 ## 要求解除旧阻挡的空间操作
 
-[SpatialPresence](presence.md) 的 appear／disappear 返回 Change：纯转换同时更新空间事实、自身 adjustment 及各能力限制，Settlement 根据本项 previous 只解除仍属旧轮次的关系。Presence 自己的首个 RELEASED Hook 已能读取此次整批解除结果；更早的 Settlement 重入建立的新关系或计划不会被旧清理误伤。Route 主动覆盖位置时通过 unit.update 提交 Presence Change；没有该能力时自行纯发布位置及计划取消，再解除局部关系。两种路径均不向 release 传入额外更新值。
+[SpatialPresence](presence.md) 的 appear／disappear 返回组合 Change：自身叶子修改空间事实与 adjustment，限制直接复用所属能力的 Rule Change；自身 Settlement 根据该叶子的 previous 只解除仍属旧轮次的关系。Presence 自己的首个 RELEASED Hook 已能读取此次整批解除结果；更早的 Settlement 重入建立的新关系或计划不会被旧清理误伤。Route 主动覆盖位置时通过 unit.update 提交 Presence Change；没有该能力时自行纯发布位置及计划取消，再解除局部关系。两种路径均不向 release 传入额外更新值。
 
 Blocker.layer 的 Change 先在全批发布时设置 layer／radius，等轮到自己的 settle 才通过 release 批量清理 previous 中的旧集合。该 settle 开始后仍存在的全部旧候选，在它自己的首个 RELEASED Hook 前一并清除。若较早 settle 已解除部分关系，那些较早通知遵守自己的结算语义，不能承诺全批第一个 RELEASED 前切层旧关系已全清空。
 

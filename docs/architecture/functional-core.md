@@ -177,24 +177,24 @@ fieldUnit.update(field, units) → nextField
 fieldUnit.remove(field, ref) → nextField
 
 unit.add(battle, unit) → nextBattle
-unit.update(battle, changes) → nextBattle
+unit.update(battle, change) → nextBattle
 unit.remove(battle, id, reason) → nextBattle
 unit.advance(battle) → nextBattle
 ```
 
 battlefield/unit.ts 的 add／update／remove 只完成纯状态转换；完整 Unit 业务统一位于 battle/unit.ts，提供 add／update／remove／advance。Blocking 在自身构造入口建立 Blocker／Blockable 至多一种的约束，内部信任，不由角色推导阵营、Layer 或移动能力。remove 委托 Unit Lifetime，在请求阶段纯发布 LEAVING，再派发能力自行登记的 prepare Hook，由 Blocking 清理本 Unit 的关系与自身计划。已登记 owner 与 Scope 依赖者完整 Finalize 后，Unit 注销并记录移除事实，再按登记序执行本地 leave 与全局 leave。Occupancy 自己处理旧配对，Deployable 的本地 leave 归还实际占用；部署时预装的死亡响应只处理确认死亡。主动撤退由其领域操作在请求离场前直接结算退款、Card 费用阶段与库存恢复。Unit 不识别具体能力，也不全场扫描补救领域清理；调用方不拼接这些内部步骤，BattleState 不另提供 Unit 登记或注销入口。部署契约见 [Deployment](deployment.md)。
 
-add 拒绝重复身份。公开 Unit.update 只接收 opaque Change 数组，在执行任何内容程序前确认每个目标已登记，缺失时抛出 RangeError；同一目标可在本批出现多次。各项 transform 按顺序读取暂存的最新 Unit；返回原 Unit 引用时由 update 统一跳过本项后继，Settlement 不重复判断 no-op。完成全部转换后一次发布 Field，再按原 Change 顺序执行实际变换项的 settle。Field 内部 update 仍接收完整 Unit 数组，信任 Core 构造的身份与 Definition，不重复校验；替换保持登记顺序。Unit 身体所属格由 position 与 SpatialPresence 查询，不另存位置索引或空间依赖分类。
+add 拒绝重复身份。公开 Unit.update 只接收一个 opaque Change；多个变更用 combine 组成一个 Change，可嵌套，也可按 Ref 在应用位置读取当前暂存 Unit 后生成子项。update 按声明顺序递归准备全部叶子，共用暂存表与后继队列；目标缺失时在准备阶段抛出 RangeError，此阶段不执行业务回调。各叶子的 transform 读取暂存的最新 Unit；返回原 Unit 引用时统一跳过本项后继，Settlement 不重复判断 no-op。完成全部转换后一次发布 Field，再按展开顺序执行实际变换项的 settle。Field 内部 update 仍接收完整 Unit 数组，信任 Core 构造的身份与 Definition，不重复校验；替换保持登记顺序。Unit 身体所属格由 position 与 SpatialPresence 查询，不另存位置索引或空间依赖分类。
 
 Capability 的 Rule、Hook、Contribution 与 Blocker.layer 工厂接收 Typed Ref 和业务输入，返回 Change；Content 将其交给 unit.update，不手工重建 Unit。纯转换不读取 battle、不调用业务程序，必要后继由所属领域附带 settle。previous 是本项转换前的暂存 Unit；settle 始终从最新 battle 继续，不能回填整份 previous。内部 replace 接收合法完整 Unit 数组，仅发布数据与派生索引，不执行内容 Hook。Field 的私有变更记录继续负责 Unit 存储与 Occupancy 双槽维护，与公开 Change 描述分别承担存储和业务职责。详细签名见 [Unit 批量变更](api-conventions.md#51-unit-完整操作与批量变更)。
 
-一次 update 可以组合多个 Unit 的 Change；所有最终字段先发布，之后原顺序结算。较早后继的 Hook 可见较晚 Change 的最终字段和未完成的清理，这属于明确的批次语义。嵌套 update 只有自己的局部队列，不调度外层剩余项；领域后继按受影响对象限定范围，同对象交叠则读取共同最新事实。本项 transform 返回原引用时不登记结算；整批最终恢复批前值或原对象时，仍保留此前真实变换已经登记的结算。Tick 成功后 Runtime 发布最终 BattleState，不需要调用方另行执行 settle。
+一次 update 可提交跨多个 Unit 的组合 Change；所有最终字段先发布，之后原顺序结算。combine 不执行嵌套 update，组合本身不增加发布或结算边界。较早后继的 Hook 可见较晚叶子的最终字段和未完成的清理，这属于明确的批次语义。业务回调中的嵌套 update 只有自己的局部队列，不调度外层剩余项；领域后继按受影响对象限定范围，同对象交叠则读取共同最新事实。本项 transform 返回原引用时不登记结算；整批最终恢复批前值或原对象时，仍保留此前真实变换已经登记的结算。Tick 成功后 Runtime 发布最终 BattleState，不需要调用方另行执行 settle。
 
 初始化、刷怪和预定义出现逐个完成创建、登记与入场，接续 Hook 返回的最新 BattleState 后才处理下一个对象，不预先分配后续实例身份。刷怪按当前实例逐个登记调度归属后再执行 enter Hook；待生成数量随实际生成递减。纯集合批量写入不定义批量入场语义。Unit.add 只登记并派发普通 enter Hook；Deployment 预先登记部署通知，Occupancy 初始化随后追加配对程序，先登记先执行，不再经登记差分广播处理 Occupancy。Unit 不识别这些具体能力或扫描全场 Blocking。入场内容需要取得、搜索或修改资格时，调用明确的 Blocking 操作。
 
 unit.update 与内部 replace 不准备、校验或推断 Blocking 关系，也不派发 Blocking／Occupancy 通知。acquire／release 明确构造关系双端并发布，acquire 通知后只复核本次新 Relation；release 统一接收 Relation 数组，入口过滤旧身份与重复项，整批解除，再按输入顺序通知，不附加维护、搜索或计划取消。Capacity 的 Settlement 只按当前容量从本 Blocker 的末尾裁撤；volume 在 settle 读取当前 owner，结算该阻挡组，不追随 Hook 中的新归属；两者共享内部 settleCapacity，每条通知后重新读取容量与占用，不夹带资格扫描。Rule 的 Settlement 固定自身相关关系，逐条 maintain 复核资格，不维护其他关系或裁容量。setLayer 将本项 previous.blocked 中的原 Ref 交给 release，不回填旧 Unit。普通私有 state 写回与 Hook Change 没有 Blocking 后继。
 
-[SpatialPresence](presence.md) 的单项 Change 纯转换空间事实、自身偏移及各能力限制，遵守全批发布后按序结算的协议。其 Settlement 从本项 previous 识别旧关系与 Execution，只解除仍属旧轮次的关系、取消旧执行；更早的 Settlement 或本次回调中新建的实例不在旧清理范围。Presence 自己发出的 RELEASED 可见此次整批解除结果，其它先行操作仍遵守各自契约。Route 无 Presence 分支的主动位置覆盖先纯发布位置及自身计划取消，再解除局部关系；两步间无回调，不要求挤入同一次 replace。
+[SpatialPresence](presence.md) 返回按 Ref 展开的组合 Change：自身叶子处理空间事实与偏移，随后复用各能力的 Rule 工厂，遵守全批发布后按序结算的协议。自身叶子的 Settlement 从本项 previous 识别旧关系与 Execution，只解除仍属旧轮次的关系，并在 disappear 中取消旧执行；更早的 Settlement 或本次回调中新建的实例不在旧清理范围。Presence 自己发出的 RELEASED 可见此次整批解除结果，其它先行操作仍遵守各自契约。Route 无 Presence 分支的主动位置覆盖先纯发布位置及自身计划取消，再解除局部关系；两步间无回调，不要求挤入同一次 replace。
 
 Locomotion 和阻挡站位推进只发布位置、速度或计划，不调用 Blocking 维护；依赖位置的 Rule 在关系检查点求值。Route 的 APPEAR_AT_POS 是主动空间覆盖，明确解除当前关系。地块完整更新调用 maintainAll，固定入口旧关系、按 Unit 及其 blocked 顺序各复核一次资格，不重新收集候选、回头重扫或裁容量。maintain 接收 Relation，确认原身份仍存在后读取最新双方并复核资格；失效时仅解除这一条。Damage／Healing 的 HP 写入不启动 Blocking；旧关系不因临时 HP 为 0 失效，普通 Damage 在全部 HP Applied 响应后仍满足死亡条件才进入 Unit.remove 的显式释放。
 

@@ -96,7 +96,7 @@ Unit 初始化始终建立空 Effects，不接受预装实例输入。初始护�
 
 阵营、当前玩家归属、创建者和来源分别表达，按需求存在。Unit 的生命周期状态与战场成员关系共同表达它是否仍可参与新的生命周期绑定。
 
-Rule、Hook、Contribution 与 Blocker.layer 的公开写入绑定 Typed Ref，返回 opaque Change；Content 通过 battle/unit.update 组合，不重建完整 Unit。Core 内部 transform 从 Ref 确定能力，全部纯转换完成后一次发布 Field，再按原 Change 顺序执行同步 settle；MaxHP 比例响应属于纯转换。内部 replace 只发布合法完整对象，不执行内容 Hook。纯数值／几何计算仍直接接收值，精确私有 state 写回与完整生命周期操作维持原协议。Route 与 Locomotion 的独立职责见 [Navigation](navigation.md)。
+Rule、Hook、Contribution 与 Blocker.layer 的公开写入绑定 Typed Ref，返回 opaque Change；Content 通过 combine 组合，再交 battle/unit.update 以单个 Change 提交，不重建完整 Unit。组合可静态给出子项，也可按 Ref 从应用位置的当前暂存 Unit 生成子项；全部叶子共用一次发布及顺序结算，见 [变更协议](api-conventions.md#51-unit-完整操作与批量变更)。Core 内部 transform 从 Ref 确定能力，MaxHP 比例响应属于纯转换。内部 replace 只发布合法完整对象，不执行内容 Hook。纯数值／几何计算仍直接接收值，精确私有 state 写回与完整生命周期操作维持原协议。Route 与 Locomotion 的独立职责见 [Navigation](navigation.md)。
 
 ## Subsystem 的责任与调用
 

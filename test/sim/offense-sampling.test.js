@@ -31,9 +31,9 @@ test("source attack samples current Offense separately for each target after nes
             id: "boost-next-target", priority: 0,
             invoke(state) {
                 return {
-                    state: applyUnitChanges(state, [setAttackContribution(sourceRef, {
+                    state: applyUnitChanges(state, setAttackContribution(sourceRef, {
                             id: "reaction", value: [modifier({ addition: 15 })],
-                        })]),
+                        })),
                     value: undefined,
                 };
             },

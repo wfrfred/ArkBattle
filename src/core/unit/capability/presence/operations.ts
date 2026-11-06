@@ -1,129 +1,146 @@
-import type { Identified, Ref } from "../../../common/ref.js";
-import { sort } from "../../../common/collection.js";
-import * as registry from "../../../hook.js";
-import type { Rule } from "../../../rule.js";
+import type { Ref } from "../../../common/ref.js";
+import type { State as BattleState } from "../../../battle/state.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
-import { createChange, type Change } from "../../change.js";
-import { ref as executionRef, type Execution } from "../../action/execution.js";
+import { combine, createChange, type Change } from "../../change.js";
+import { executionRefs } from "../../action/query.js";
 import { cancel } from "../../action/operations.js";
-import { hasAction } from "../action/capability.js";
-import { hasSkill } from "../skill/capability.js";
-import { hasLocomotion } from "../locomotion/capability.js";
-import { hasVitality } from "../vitality/capability.js";
-import { hasElemental } from "../elemental/capability.js";
+import * as action from "../action/capability.js";
+import * as skill from "../skill/capability.js";
+import * as locomotion from "../locomotion/capability.js";
+import * as vitality from "../vitality/capability.js";
+import * as elemental from "../elemental/capability.js";
 import { hasBlocker } from "../blocking/blocker.js";
 import { hasBlockable } from "../blocking/blockable.js";
-import { releaseCaptured } from "../blocking/blocker-operations.js";
-import { release as releaseBlockable } from "../blocking/blockable-operations.js";
+import * as blocker from "../blocking/blocker-operations.js";
+import * as blockable from "../blocking/blockable-operations.js";
 import type { SpatialPresence } from "./capability.js";
 
 const restriction = { id: "@presence/absent", allows: () => false };
 
 export function disappear(reference: Ref<Unit & SpatialPresence>): Change {
-    return changePresence(reference, false);
+    return combine(reference, (self) => {
+        if (self.lifecycle !== "PRESENT") {
+            return [];
+        }
+
+        return [
+            createChange(
+                reference,
+                (current) => {
+                    const next = { ...current, spatialPresence: { present: false } };
+
+                    return hasBlockable(next)
+                        ? { ...next, blockable: { ...next.blockable, adjustment: null } }
+                        : next;
+                },
+                (battle, previous) => {
+                    const executions = action.hasAction(previous) ? executionRefs(previous) : [];
+                    battle = releaseOldBlocking(battle, previous);
+
+                    for (const execution of executions) {
+                        battle = cancel(battle, execution, "SOURCE_ABSENT");
+                    }
+
+                    return battle;
+                },
+            ),
+            ...restrictions(self, false),
+        ];
+    });
 }
 
 export function appear(reference: Ref<Unit & SpatialPresence>, position: WorldPosition): Change {
-    return changePresence(reference, true, position);
+    return combine(reference, (self) => {
+        if (self.lifecycle !== "PRESENT") {
+            return [];
+        }
+
+        return [
+            createChange(
+                reference,
+                (current) => {
+                    const next = { ...current, position, spatialPresence: { present: true } };
+
+                    return hasBlockable(next)
+                        ? { ...next, blockable: { ...next.blockable, adjustment: null } }
+                        : next;
+                },
+                releaseOldBlocking,
+            ),
+            ...restrictions(self, true),
+        ];
+    });
 }
 
-function changePresence(
-    reference: Ref<Unit & SpatialPresence>,
-    present: boolean,
-    position?: WorldPosition,
-): Change {
-    return createChange(
-        reference,
-        (self) => {
-            if (self.lifecycle !== "PRESENT") {
-                return self;
-            }
+function restrictions(self: Unit, present: boolean): readonly Change[] {
+    const changes: Change[] = [];
 
-            const rules = <C>(entries: readonly Rule<C>[]) =>
-                present
-                    ? registry.remove(entries, restriction.id)
-                    : registry.set(entries, restriction);
+    if (action.hasAction(self)) {
+        changes.push(
+            present
+                ? action.removeRule(units.ref(self), restriction.id)
+                : action.setRule(units.ref(self), restriction),
+        );
+    }
+    if (skill.hasSkill(self)) {
+        changes.push(
+            present
+                ? skill.removeRule(units.ref(self), "activationRules", restriction.id)
+                : skill.setRule(units.ref(self), "activationRules", restriction),
+        );
+    }
+    if (locomotion.hasLocomotion(self)) {
+        changes.push(
+            present
+                ? locomotion.removeRule(units.ref(self), restriction.id)
+                : locomotion.setRule(units.ref(self), restriction),
+        );
+    }
+    if (hasBlocker(self)) {
+        changes.push(
+            present
+                ? blocker.removeRule(units.ref(self), restriction.id)
+                : blocker.setRule(units.ref(self), restriction),
+        );
+    } else if (hasBlockable(self)) {
+        changes.push(
+            present
+                ? blockable.removeRule(units.ref(self), restriction.id)
+                : blockable.setRule(units.ref(self), restriction),
+        );
+    }
+    if (vitality.hasVitality(self)) {
+        changes.push(
+            present
+                ? vitality.removeRule(units.ref(self), restriction.id)
+                : vitality.setRule(units.ref(self), restriction),
+        );
+    }
+    if (elemental.hasElemental(self)) {
+        changes.push(
+            present
+                ? elemental.removeRule(units.ref(self), "damageRules", restriction.id)
+                : elemental.setRule(units.ref(self), "damageRules", restriction),
+        );
+    }
 
-            return {
-                ...self,
-                position: position ?? self.position,
-                spatialPresence: { present },
-                ...(hasAction(self)
-                    ? { action: { ...self.action, rules: rules(self.action.rules) } }
-                    : {}),
-                ...(hasSkill(self)
-                    ? {
-                          skill: {
-                              ...self.skill,
-                              activationRules: rules(self.skill.activationRules),
-                          },
-                      }
-                    : {}),
-                ...(hasLocomotion(self)
-                    ? { locomotion: { ...self.locomotion, rules: rules(self.locomotion.rules) } }
-                    : {}),
-                ...(hasBlocker(self)
-                    ? { blocker: { ...self.blocker, rules: rules(self.blocker.rules) } }
-                    : {}),
-                ...(hasBlockable(self)
-                    ? {
-                          blockable: {
-                              ...self.blockable,
-                              adjustment: null,
-                              rules: rules(self.blockable.rules),
-                          },
-                      }
-                    : {}),
-                ...(hasVitality(self)
-                    ? {
-                          vitality: {
-                              ...self.vitality,
-                              damageRules: rules(self.vitality.damageRules),
-                          },
-                      }
-                    : {}),
-                ...(hasElemental(self)
-                    ? {
-                          elemental: {
-                              ...self.elemental,
-                              damageRules: rules(self.elemental.damageRules),
-                          },
-                      }
-                    : {}),
-            };
-        },
-        (battle, previous) => {
-            const executions =
-                !present && hasAction(previous)
-                    ? sort(
-                          previous.action.actions
-                              .values()
-                              .filter(
-                                  (self): self is Identified<never, Execution> =>
-                                      self.execution !== null,
-                              )
-                              .map((self) => executionRef<Execution>(units.ref(previous), self)),
-                          (left, right) => left.id - right.id,
-                      )
-                    : [];
+    return changes;
+}
 
-            if (hasBlocker(previous)) {
-                battle = releaseCaptured(battle, previous);
-            } else if (hasBlockable(previous)) {
-                const owner = previous.blockable.blocker;
-                const current = units.get(battle, units.ref(previous));
-                if (owner !== null && current?.blockable.blocker === owner) {
-                    battle = releaseBlockable(battle, units.ref(previous));
-                }
-            }
+function releaseOldBlocking(battle: BattleState, previous: Unit): BattleState {
+    if (hasBlocker(previous)) {
+        return blocker.releaseCaptured(battle, previous);
+    }
+    if (hasBlockable(previous)) {
+        const owner = previous.blockable.blocker;
+        const current = units.get(battle, units.ref(previous));
 
-            for (const execution of executions) {
-                battle = cancel(battle, execution, "SOURCE_ABSENT");
-            }
+        return owner !== null && current?.blockable.blocker === owner
+            ? blockable.release(battle, units.ref(previous))
+            : battle;
+    }
 
-            return battle;
-        },
-    );
+    return battle;
 }

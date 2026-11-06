@@ -240,14 +240,14 @@ test("explicit geometry uses hitboxes while ground eligibility reads current lay
         { definition: { ...living, hitbox, route: route("WALK") }, position: [2.6, 1] },
         { definition: { ...living, spatialPresence: {} }, position: [2.6, 1] },
     ]);
-    state = update(state, [setType(ref(get(state, 2)), "AIR")]);
+    state = update(state, setType(ref(get(state, 2)), "AIR"));
     const source = ref(get(state, 0));
     const inRange = filters.and(filters.damage, filters.range([{ type: "CIRCLE", offset: [0, 0], radius: 1 }]));
     const query = { source, purposes: ["DAMAGE"], filter: inRange, selector: selectors.first(3, compare.distance) };
     assert.deepEqual(select(state, { ...query, filter: filters.damage }).value.map(target => target.id), [1, 2, 3]);
     assert.deepEqual(select(state, query).value.map(target => target.id), [1, 2]);
     assert.deepEqual(select(state, { ...query, filter: filters.and(inRange, filters.ground) }).value.map(target => target.id), [1]);
-    state = update(state, [disappear(ref(get(state, 3)))]);
+    state = update(state, disappear(ref(get(state, 3))));
     assert.deepEqual(select(state, { ...query, filter: filters.damage }).value.map(target => target.id), [1, 2]);
 });
 
@@ -263,9 +263,9 @@ test("healing eligibility and priority use effective MaxHP after real resource c
     ]);
     const source = ref(get(state, 0));
     const enlarged = ref(get(state, 1));
-    state = update(state, [setMaxHpContribution(enlarged, {
+    state = update(state, setMaxHpContribution(enlarged, {
         id: "larger-hp", value: [modifier({ finalAddition: 300 })],
-    })]);
+    }));
     for (const [id, amount] of [[1, 300], [2, 60]]) {
         const request = { source: null, target: ref(get(state, id)), parameters: { type: "TRUE", attack: { power: amount, multiplier: 1, addition: 0 } } };
         state = damage.applyDamage(request, damage.calculateDamage(state, request)).state;

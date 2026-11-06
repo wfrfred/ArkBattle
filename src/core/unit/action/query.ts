@@ -3,39 +3,29 @@ import { sort } from "../../common/collection.js";
 import type { Identified, Ref } from "../../common/ref.js";
 import * as units from "../query.js";
 import type { Unit } from "../unit.js";
-import { hasAction } from "../capability/action/capability.js";
+import { hasAction, type Action as ActionCapability } from "../capability/action/capability.js";
 import type { Action } from "./action.js";
 import { ref, type Execution } from "./execution.js";
 import type { Id as DefinitionId } from "./definition.js";
 
 export function all(battle: BattleState): readonly Ref<Execution>[] {
-    return units
-        .all(battle)
-        .filter(hasAction)
-        .flatMap((host) =>
-            sort(
-                host.action.actions
-                    .values()
-                    .filter((self): self is Identified<never, Execution> => self.execution !== null)
-                    .map((self) => ref<Execution>(units.ref(host), self)),
-                (left, right) => left.id - right.id,
-            ),
-        )
-        .toArray();
+    return units.all(battle).filter(hasAction).flatMap(executionRefs).toArray();
 }
 
 export function forUnit(battle: BattleState, source: Ref<Unit>): readonly Ref<Execution>[] {
     const unit = units.get(battle, source);
 
-    return unit !== undefined && hasAction(unit)
-        ? sort(
-              unit.action.actions
-                  .values()
-                  .filter((self): self is Identified<never, Execution> => self.execution !== null)
-                  .map((self) => ref<Execution>(units.ref(unit), self)),
-              (left, right) => left.id - right.id,
-          )
-        : [];
+    return unit !== undefined && hasAction(unit) ? executionRefs(unit) : [];
+}
+
+export function executionRefs(self: Unit & ActionCapability): readonly Ref<Execution>[] {
+    return sort(
+        self.action.actions
+            .values()
+            .filter((action): action is Identified<never, Execution> => action.execution !== null)
+            .map((action) => ref<Execution>(units.ref(self), action)),
+        (left, right) => left.id - right.id,
+    );
 }
 
 export function getExecution<X extends Execution<any, any>>(
