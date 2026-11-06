@@ -13,6 +13,7 @@ import * as skill from "../unit/capability/skill/capability.js";
 import { cancelForUnit } from "../unit/action/operations.js";
 import { compose, optional, type Change } from "../unit/change.js";
 import type { Unit } from "../unit/unit.js";
+import * as units from "../unit/query.js";
 
 export const stun: Definition<object> = {
     id: "control/stun",
@@ -21,7 +22,11 @@ export const stun: Definition<object> = {
         const id = `@effect/${self.id}/stun`;
         state = updateUnit(state, self.host, restrictions(id, true));
 
-        return cancelForUnit(state, self.host, "INTERRUPTED");
+        const unit = units.get(state, self.host);
+
+        return unit !== undefined && action.hasAction(unit)
+            ? cancelForUnit(state, units.ref(unit), "INTERRUPTED")
+            : state;
     },
     onDisable(state, self) {
         const id = `@effect/${self.id}/stun`;

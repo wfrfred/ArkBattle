@@ -2,8 +2,7 @@ import type { WorldPosition } from "../../../geometry/coordinate.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import { compose, createChange, optional, type Change } from "../../change.js";
-import { executionRefs } from "../../action/query.js";
-import { cancel } from "../../action/operations.js";
+import { cancelForUnit } from "../../action/operations.js";
 import * as action from "../action/capability.js";
 import * as skill from "../skill/capability.js";
 import * as locomotion from "../locomotion/capability.js";
@@ -21,18 +20,15 @@ export function disappear(): Change<Unit & SpatialPresence> {
     const spatial = createChange<Unit & SpatialPresence>(
         (self) => ({ ...self, spatialPresence: { present: false } }),
         (battle, previous) => {
-            const executions = action.hasAction(previous) ? executionRefs(previous) : [];
             if (hasBlocker(previous)) {
                 battle = blocker.releaseAll(battle, units.ref(previous));
             } else if (hasBlockable(previous)) {
                 battle = blockable.release(battle, units.ref(previous));
             }
 
-            for (const execution of executions) {
-                battle = cancel(battle, execution, "SOURCE_ABSENT");
-            }
-
-            return battle;
+            return action.hasAction(previous)
+                ? cancelForUnit(battle, units.ref(previous), "SOURCE_ABSENT")
+                : battle;
         },
     );
 

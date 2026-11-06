@@ -12,7 +12,7 @@ import type { Action } from "./action.js";
 import { ref, type Execution } from "./execution.js";
 import type { End } from "./definition.js";
 import * as cooldown from "./cooldown.js";
-import { forUnit } from "./query.js";
+import { executionRefs } from "./query.js";
 
 export type StartOutcome<P extends object, E extends object> =
     | { readonly type: "STARTED"; readonly ref: Ref<Execution<P, E>> }
@@ -199,13 +199,16 @@ export function cancel<X extends Execution<any, any>>(
 
 export function cancelForUnit(
     battle: BattleState,
-    source: Ref<Unit>,
+    source: Ref<Unit & ActionCapability>,
     reason: string,
     lifetimeReason = reason,
 ): BattleState {
-    const candidates = forUnit(battle, source);
+    const unit = units.get(battle, source);
+    if (unit === undefined) {
+        return battle;
+    }
 
-    for (const reference of candidates) {
+    for (const reference of executionRefs(unit)) {
         battle = lifetime.end(battle, reference, { type: "CANCELLED", reason }, lifetimeReason);
     }
 

@@ -292,7 +292,7 @@ Core 的完整写回信任已有宿主、Definition 与执行身份，不再恢�
 
 Unit 对 Execution 的所有权保护宿主到本轮整个 Finalize 返回。onEnd 内请求宿主离场会先使 Unit LEAVING，但 Unit 不会在该回调中途注销。onEnd 返回后从最新状态读取配对 Action，再清空本轮 execution，保留回调修改的持久 state 与 Cooldown。持久状态不隐含跨部署保存。
 
-首次嵌套 cancel 同步完成请求与 Prepare，不保证 execution 已清空或结束事件已记录；同一结算范围内 cancel 后立即 start 同配置可能仍被占位拒绝。无活动结算时，结束入口在本次调用内 drain 完再返回。已经进入的 onTick 继续普通控制流，后继按需要重读当前资格；等待边不来自函数调用栈。cancelForUnit 固定执行 Ref，依次请求取消；Unit 退场改由所有权边传播，无须手工调用这套批量入口。Action.onEnd／事件的 SOURCE_ABSENT 与依赖者接收的原离场原因分别保留。
+首次嵌套 cancel 同步完成请求与 Prepare，不保证 execution 已清空或结束事件已记录；同一结算范围内 cancel 后立即 start 同配置可能仍被占位拒绝。无活动结算时，结束入口在本次调用内 drain 完再返回。已经进入的 onTick 继续普通控制流，后继按需要重读当前资格；等待边不来自函数调用栈。cancelForUnit 接收具有 Action Capability 的 Typed Ref，从最新 BattleState 读取宿主并固定当前执行 Ref，依次请求取消；Unit 退场改由所有权边传播，无须手工调用这套批量入口。Action.onEnd／事件的 SOURCE_ABSENT 与依赖者接收的原离场原因分别保留。
 
 ## 7. 调度
 
@@ -306,7 +306,7 @@ Runtime 采用以下候选政策：
 6. 本轮自动候选只尝试一次，不按“仍然就绪”循环重启即时完成的同一行动。
 7. 内容直接 start 或回调内嵌套 start 只登记执行，等待调度器推进。调度入口前已登记的执行可以在本次调度中推进；调度内嵌套登记的执行不在已固定快照中，等待后续调度。
 
-advance(battle, ref) 由 operations.ts 实现，index.ts 继续导出供调度协作；仍仅由调度器主动调用，start 不隐式推进。它通过同一 Actions 容器的 getExecution 直接取得当前执行，再调用该执行 Definition 的 onTick，并显式传入宿主引用；完成与取消直接调用 lifetime.end 请求结束，可选 onEnd 在 Finalize 中调用。Action Rule 控制新的执行；[Presence](presence.md) 登记启动限制，并在消失操作中同步取消事先捕获的旧 Execution，advance 不直接读取 Presence。跨完整操作后的实时读取仍遵守状态接续约定。首次推进中的即时完成或同步取消按通常终止流程结算；内容不主动推进执行，不保存实例级同 Tick 去重字段。
+advance(battle, ref) 由 operations.ts 实现，index.ts 继续导出供调度协作；仍仅由调度器主动调用，start 不隐式推进。它通过同一 Actions 容器的 getExecution 直接取得当前执行，再调用该执行 Definition 的 onTick，并显式传入宿主引用；完成与取消直接调用 lifetime.end 请求结束，可选 onEnd 在 Finalize 中调用。Action Rule 控制新的执行；[Presence](presence.md) 登记启动限制，并在消失操作中委托 cancelForUnit 取消当前执行，advance 不直接读取 Presence。跨完整操作后的实时读取仍遵守状态接续约定。首次推进中的即时完成或同步取消按通常终止流程结算；内容不主动推进执行，不保存实例级同 Tick 去重字段。
 
 ## 8. 普通攻击、释放 Hook 与移动
 

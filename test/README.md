@@ -23,7 +23,7 @@
 | 套件 | 需要保障的结果 |
 | --- | --- |
 | [battlefield](sim/battlefield.test.js) | 不可变版本、全批最终占格；Tile／Overlay 决定导航和代价选择；身体位置、空间存在和命中几何分离。 |
-| [presence](sim/presence.test.js) | 暂时消失保留 Unit、部署与 Occupancy、普通 Effect／Lifetime；无 Ref 的 appear／disappear 工厂产生同目标 Change，经 compose 组合后先发布最终 Unit，再在自身 Settlement 调用 Blocking 的 releaseAll／release 清理当前关系及自身计划，最后取消 previous 采样的旧执行。同次批量解除 Hook 中重新出现、新建关系和启动的新执行保留；不要求更早的其它 Settlement 已取消计划或保护其新建关系，不重复公共 Rule／Hook／Ref 协议。 |
+| [presence](sim/presence.test.js) | 暂时消失保留 Unit、部署与 Occupancy、普通 Effect／Lifetime；无 Ref 的 appear／disappear 工厂产生同目标 Change，经 compose 组合后先发布最终 Unit，再在自身 Settlement 调用 Blocking 的 releaseAll／release 清理当前关系及自身计划，释放结束后委托 Action.cancelForUnit 取消宿主执行。appear 只移除自身 Rule，其它限制仍生效；独立限制移除后正常启动，不重复公共 Rule／Hook／Ref 协议。 |
 | [坐标](sim/coordinate.test.js)、[范围](sim/geometry-range.test.js)、[扫掠](sim/geometry-sweep.test.js) | 坐标旋转、连续范围并集、圆／盒／混合圆角的独立公式与首次接触边界集中验证，不向空间查询和具体内容复制数值矩阵。 |
 | [unit](sim/unit.test.js) | 正常构造建立能力配对并拒绝双重阻挡角色；初始 Effect 在登记后安装。 |
 | [unit-change](sim/unit-change.test.js) | update(battle, ref, change) 单目标写入；一个主场景集中验证二元 compose 的结合律与非交换、逐项 previous／no-op／Settlement，以及 optional 的 false 原对象／空后继和 guard 读取前序变换后的输入。最终 next 一次发布后才按序结算，嵌套 update 对第二 Unit 的结果不丢失，不建立跨 Unit 批次或守卫矩阵。 |
@@ -38,7 +38,7 @@
 | [blocking](sim/blocking.test.js) | 成对资格、层与地块、容量尾部裁撤、批量解除与旧 Ref、多目标分散及独立位置计划；自身空地设置（含同值）完成角色对应的关系／偏移清理，通知可见已发布的新身份；主动空间覆盖先发布新位置和解除结果，再通知。复用代表场景，不展开字段／角色矩阵。 |
 | [locomotion](sim/locomotion.test.js)、[避障](sim/locomotion-avoidance.test.js)、[速度贡献](sim/move-speed-contributions.test.js) | 按 Locomotion 关键语义集中验证转向、限力／限速、速度与许可、最终目标吸附、地形避障和目的格反射。算法使用合法局部值，运行场景使用真实地图与领域操作，不注入速度，不复制公共不可变性或方向／缺失对象矩阵。Route／Battle 集成只保留新增的跨领域结果。 |
 | [deployment](sim/deployment.test.js) | Request 预览与执行一致、拒绝不消费、消费先于入场；撤退／死亡账务与 Card 延续；离场注销、结构占格和部署额度释放先于本地内容通知，死亡 Card 先于 Card／Request 通知结算；旧 Occupancy 配对清理、逐份恢复预算及 DP。 |
-| [core-types](sim/core-types.test.js) | Typed Ref 保留身份和私有数据配对，普通擦除查询不泄漏 `any`；Change 能力逆变、compose 合并交集、optional 只接受守卫已证明的能力并返回 `Change<Unit>`，泛型函数调用保留完整宿主，update 拒绝能力不足的 Ref；普通注册的按 Key 和固定字段接口均保留 Entry 与能力要求的类型关联。 |
+| [core-types](sim/core-types.test.js) | Typed Ref 保留身份和私有数据配对，普通擦除查询不泄漏 `any`；Change 能力逆变、compose 合并交集、optional 只接受守卫已证明的能力并返回 `Change<Unit>`，泛型函数调用保留完整宿主，update 拒绝能力不足的 Ref，cancelForUnit 要求 Action 能力；普通注册的按 Key 和固定字段接口均保留 Entry 与能力要求的类型关联。 |
 | [damage](sim/damage.test.js) | 按[伤害／治疗回归清单](../docs/architecture/verification.md#hook-与伤害治疗的回归语义)保障 HP／EP 公式与采样、独立 Calculate 状态、接收与提交、零值和取消、最新资源、Applied 后死亡及同步 Burst。 |
 | [healing](sim/healing.test.js) | HP／EP 治疗公式、四型恢复、满资源仍成功、双侧 Applied 和自然恢复的区别；一次双资源场景区分消失期间 Damage 拒收与 Healing 接收。 |
 | [elemental](sim/elemental.test.js) | rate 为零的标准 Burst 手动推进唯一时间进度，恢复期间四型 EP 逐步回填；动态与暂停预算、完整周期、零预算的一次性输出和独立产物、完成／取消后的资源与作用生命周期；自然 EP 回复及既有 Burst 不因消失冻结，不复制公共时间或 Lifetime 矩阵。 |

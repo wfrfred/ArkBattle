@@ -14,22 +14,21 @@ import * as effects from "../../dist/core/unit/effect/index.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
 
-test("disappearance preserves deployment and lifetimes, publishes restrictions before release, and cleans only captured executions", () => {
+test("disappearance preserves deployment and lifetimes, releases blocking before cancelling actions, and removes only its rules", () => {
     const departures = [];
     const ended = [];
     let entries = 0;
-    const program = (id) => ({
-        id, intervalTicks: 0, speed: 100,
+    const program = {
+        id: "attack", intervalTicks: 0, speed: 100,
         initialize: (state) => ({ state, value: {} }),
         prepare: (state) => ({ state, value: {} }),
         onTick: (state) => ({ state, value: false }),
         onEnd(state, _source, _self, end) {
-            ended.push([id, end]);
+            ended.push(end);
             return state;
         },
-    });
-    const original = program("original");
-    const replacement = program("replacement");
+    };
+    const idle = { ...program, id: "idle" };
     const operator = {
         id: "operator", spatialPresence: {},
         hooks: Hooks.empty().set(lifecycle.enter, {
@@ -40,7 +39,7 @@ test("disappearance preserves deployment and lifetimes, publishes restrictions b
         occupancy: { slot: "OCCUPANT" },
         deployable: { retreatRules: [] },
         blocker: { capacity: 2, layer: "GROUND", rules: [] },
-        action: { initialize: (state) => actions.createActions(state, actions.create(original), actions.create(replacement)) },
+        action: { initialize: (state) => actions.createActions(state, actions.create(program), actions.create(idle)) },
         card: {
             cost: 10, redeployTicks: 10, slots: 1, stock: 1, stockLimit: 1, activeLimit: 1,
             cooldownOnDeploy: false, recoverOnLeave: true, increaseCostOnLeave: true,
@@ -68,8 +67,8 @@ test("disappearance preserves deployment and lifetimes, publishes restrictions b
     const targets = [1, 2].map((id) => units.ref(get(state, id)));
     const pair = get(state, owner.id).occupancy.pair;
     assert.ok(pair);
-    const actionRef = actions.ref(owner, original);
-    const nextAction = actions.ref(owner, replacement);
+    const actionRef = actions.ref(owner, program);
+    const idleAction = actions.ref(owner, idle);
     const started = actions.start(state, actionRef);
     state = started.state;
     const installed = effects.install(state, owner, {
@@ -85,7 +84,8 @@ test("disappearance preserves deployment and lifetimes, publishes restrictions b
             assert.equal(get(current, owner.id).spatialPresence.present, false);
             assert.deepEqual(blocking.blocked(current, owner), []);
             assert.ok(targets.every((target) => blocking.blockerOf(current, target) === undefined));
-            assert.equal(actions.start(current, nextAction).value.reason, "RULE");
+            assert.equal(actions.getExecution(current, started.value.ref).execution.status, "RUNNING");
+            assert.equal(actions.start(current, idleAction).value.reason, "RULE");
             current = blocking.acquire(current, owner, targets[0]);
             assert.deepEqual(blocking.blocked(current, owner), []);
             return { state: current, value: undefined };
@@ -102,7 +102,7 @@ test("disappearance preserves deployment and lifetimes, publishes restrictions b
     assert.equal(entries, 1);
     assert.deepEqual(departures, []);
     assert.equal(actions.getExecution(state, started.value.ref), undefined);
-    assert.deepEqual(ended, [["original", { type: "CANCELLED", reason: "SOURCE_ABSENT" }]]);
+    assert.deepEqual(ended, [{ type: "CANCELLED", reason: "SOURCE_ABSENT" }]);
     state = effects.advance({ ...state, tick: 1 });
     assert.equal(effects.get(state, installed.value).expiration.elapsed, 1);
     state = effects.advance({ ...state, tick: 2 });
@@ -112,37 +112,9 @@ test("disappearance preserves deployment and lifetimes, publishes restrictions b
 
     state = update(state, owner, action.setRule({ id: "other-source", allows: () => false }));
     state = update(state, owner, presence.appear([2, 1]));
-    assert.equal(actions.start(state, nextAction).value.reason, "RULE");
+    assert.equal(actions.start(state, actionRef).value.reason, "RULE");
     state = update(state, owner, action.removeRule("other-source"));
-    const old = actions.start(state, actionRef);
-    state = old.state;
-    for (const target of targets) state = blocking.acquire(state, owner, target);
-    let resumed;
-    notifications = 0;
-    state = update(state, owner, units.compose(block.setBlockerHook("released", {
-        id: "observe-published-restrictions",
-        invoke(current) {
-            notifications++;
-            if (notifications === 1) {
-                assert.equal(get(current, owner.id).spatialPresence.present, false);
-                assert.deepEqual(blocking.blocked(current, owner), []);
-                assert.ok(targets.every((target) => blocking.blockerOf(current, target) === undefined));
-                assert.equal(actions.getExecution(current, old.value.ref).execution.status, "RUNNING");
-                current = update(current, owner, presence.appear([2, 1]));
-                const next = actions.start(current, nextAction);
-                assert.equal(next.value.type, "STARTED");
-                resumed = next.value.ref;
-                current = blocking.acquire(next.state, owner, targets[0]);
-            }
-            return { state: current, value: undefined };
-        },
-    }), presence.disappear()));
-    assert.equal(notifications, 2);
-    assert.equal(get(state, owner.id).spatialPresence.present, true);
-    assert.equal(actions.getExecution(state, old.value.ref), undefined);
-    assert.equal(actions.getExecution(state, resumed).execution.status, "RUNNING");
-    assert.deepEqual(blocking.blocked(state, owner).map(({ id }) => id), [targets[0].id]);
-    assert.equal(get(state, owner.id).occupancy.pair, pair);
-    assert.equal(entries, 1);
-    assert.deepEqual(departures, []);
+    const restarted = actions.start(state, actionRef);
+    assert.equal(restarted.value.type, "STARTED");
+    assert.equal(actions.getExecution(restarted.state, restarted.value.ref).execution.status, "RUNNING");
 });

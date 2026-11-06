@@ -103,6 +103,9 @@ effects.setExpiration(battle, burstRef, { ...burst.expiration, elapsed: burst.ex
 // @ts-expect-error writes retain the Burst identity's duration contract.
 effects.setExpiration(battle, burstRef, { type: 'DEADLINE', tick: 10 });
 const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'bare', hooks: Hooks.empty() } }).value;
+actions.cancelForUnit(battle, reference, 'SOURCE_ABSENT');
+// @ts-expect-error cancelling a Unit's Actions requires its Action capability.
+actions.cancelForUnit(battle, ref(bare), 'SOURCE_ABSENT');
 // @ts-expect-error the host has not established the required capability.
 effects.install(battle, ref(bare), shield);
 const change: Change<Unit & Offense> = setAttackContribution({ id: 'bonus', value: [] });

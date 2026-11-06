@@ -34,11 +34,11 @@ Presence Change 可以通过 compose 与同宿主的其它变更组合，遵守[
 1. Change 函数读取当前位置的当前宿主；LEAVING 宿主返回原值与空结算列表，不产生空间变更。
 2. 自身叶子的 Transformation 只更新 present／position；后续所属能力的 Rule Change 各自完成纯登记或撤销。
 3. 整个 Change 函数返回后一次发布，再按捕获的 settlements 顺序结算；不为 Presence 另设全批优先级。
-4. 自身叶子的 Settlement 按 `previous` 的稳定能力角色，调用 Blockable.release 或 Blocker.releaseAll；完整操作从最新 BattleState 读取当前关系，Blockable 同时取消自身位置计划。disappear 从 previous 固定旧 Execution，在释放后按启动顺序取消；appear 不取消执行。后续 Rule Settlement 接续最新状态。
+4. 自身叶子的 Settlement 按 `previous` 的稳定能力角色，调用 Blockable.release 或 Blocker.releaseAll；完整操作从最新 BattleState 读取当前关系，Blockable 同时取消自身位置计划。disappear 在释放后调用 Action.cancelForUnit，由 Action 从最新 BattleState 读取当前执行并取消；appear 不取消执行。后续 Rule Settlement 接续最新状态。
 
 Presence 调用的释放操作在自己的第一次 RELEASED 回调前完成当前关系的整批双端解除；Blockable 自身计划也已取消，Blocker 不取消其原目标的独立偏移。回调同时可以读取本批最终空间事实与限制。其它 Change 的先行 Settlement 仍遵守其自身契约。
 
-释放操作按自身入口固定关系集合，通知中新建的关系不属于该次释放候选。Action 取消范围独立从本项 previous 固定，不重新扫描当前执行；更早的 Settlement 或释放回调中新启动的 Execution 不会被此次旧执行取消误伤。
+释放操作按自身入口固定关系集合，通知中新建的关系不属于该次释放候选。
 
 Skill 的 activationStarted／spPaid 通知后，仍按最新宿主和本轮 Activation 的身份及生命周期决定是否执行 onStart；暂时消失本身不单独跳过开始程序。持续技能后续推进不以 Presence 作为统一门禁。Action 已经发生的输出、弹药消费和后继由具体内容决定，不从本轮取消推导统一消费政策。
 

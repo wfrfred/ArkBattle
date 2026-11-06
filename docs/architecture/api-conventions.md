@@ -127,6 +127,8 @@ Card 的 RuleContext 按用途区分：DISPLAY／SELECT 接收 Card Ref，DEPLOY
 
 完整操作的主要对象身份置于 battle 之后；其余参数是业务输入。指定 Unit 使用 `Ref<U>`，指定 Effect 使用它的组合 Ref；Action / Projectile 使用各自领域的 Typed Ref，不套用 Unit Ref。伤害、治疗、元素积累的主要对象为接收 Unit，来源身份等仍是业务输入，不要求把所有 ID 都拆成位置参数。
 
+Action.cancelForUnit 要求 `Ref<Unit & ActionCapability>`，从最新 BattleState 读取宿主并固定当前执行的取消候选，内部不重复检查类型已证明的能力。普通 forUnit 查询仍接收 `Ref<Unit>`，用于 Combat 对异构 Unit 的枚举。
+
 完整操作使用 `battle.tick` 作为当前时间，避免同一调用同时携带 battle.tick、request.tick、context.tick。局部纯计算没有 battle，必要的 tick 参数保留。计划时点、发射采样、previousTick 等历史事实仍作为明确业务数据保存或传递。
 
 程序回调直接取得 self。结束原因、伤害请求、目标身份、阶段输入等作为普通业务参数，不再与当前 Unit、战场状态、tick、调用范围混装成通用 Context。
