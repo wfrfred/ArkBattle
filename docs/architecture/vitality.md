@@ -143,7 +143,7 @@ Calculate 的参数派发使用三个通道：
 | 动态 BattleState | 前一个 Hook 返回的最新战斗状态。 |
 | 可接续 current | 前一个 Hook 返回的当前 Parameters。 |
 
-Request 可以直接携带初始 Parameters，不必额外复制一份请求。Hook 通过返回新工作值修改参数，不能改写原始请求的历史含义。
+四种结算的 Request 统一通过 parameters 携带初始 Parameters，不必额外复制一份请求。Hook 通过返回新工作值修改参数，不能改写原始请求的历史含义。
 
 例如 Request 初始类型为 PHYSICAL，Hook 将 current 转为 ARTS 后，后续依赖实际类型的筛选与公式读取 current.type；输出阶段使用公式阶段确定的类型，Apply 使用 Calculated.type。不能重新读取 Request 的初始类型来代表后续阶段的实际类型。
 
@@ -160,11 +160,11 @@ calculateDamage(battle, request): Result<Calculated | undefined>;
 applyDamage(request, calculated: Result<Calculated | undefined>): Result<Outcome>;
 
 type Outcome =
-    | { readonly kind: "REJECTED" }
-    | { readonly kind: "CANCELLED"; readonly received: Pending }
-    | { readonly kind: "UNAVAILABLE"; readonly received: Pending }
+    | { readonly type: "REJECTED" }
+    | { readonly type: "CANCELLED"; readonly received: Pending }
+    | { readonly type: "UNAVAILABLE"; readonly received: Pending }
     | {
-          readonly kind: "APPLIED";
+          readonly type: "APPLIED";
           readonly received: Pending;
           readonly application: Application;
       };

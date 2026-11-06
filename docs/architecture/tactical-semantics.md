@@ -64,7 +64,7 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | SKILL-01 特殊技能 | 需求和消费可分离；充能、蓄力及二次触发保留可观测语义。[技能](https://prts.wiki/w/技能#特殊属性) | [Skill 设计](skill.md) 已提供单 Skill 的持久 S、本次 A、独立 SP 支付、主动操作和完整终止；敌人多技能由 Action 等领域表达。具体特殊技能见覆盖审查。 | 基础模型已实现，特殊内容／P1 |
 | SKILL-02 弹药耗尽检查 | 消费与耗尽检查分离；普通弹药技能的下一次普攻检查结束语义应由对应内容表达。[弹药](https://prts.wiki/w/技能#特殊属性) | 现有内容组合器在本次 afterOutput 连续调用 consume／check，尚需用代表内容核对其与目标检查时点的差异及影响。 | 内容时点待核对／P1 |
 | EFFECT-02 叠加与续期 | DEFAULT / STACK / UNIQUE / EXTEND / EXTEND_TIME 等按内容实施，不能用同一组赢家替代。[叠加策略](https://prts.wiki/w/BUFF#叠加策略) | [data/arknights/buff-stacking.ts](../../src/data/arknights/buff-stacking.ts) 有计划计算，但没有生产调用链；实际安装尚未覆盖五类策略。 | 部分实现／P1 |
-| EFFECT-03 Aura 与周期业务 | Effect 保存刷新进度和目标到接收实例的关联；范围查询不等于安装事实；每个领域消费自己的输出。[BUFF](https://prts.wiki/w/BUFF) | onTick、data、子 scope 可承载，但缺代表性生产 Aura 链路及其刷新、暂停、离开验证。 | 部分实现／P1 |
+| EFFECT-03 Aura 与周期业务 | Effect 保存刷新进度和目标到接收实例的关联；范围查询不等于安装事实；每个领域消费自己的输出。[BUFF](https://prts.wiki/w/BUFF) | onTick、state、子 scope 可承载，但缺代表性生产 Aura 链路及其刷新、暂停、离开验证。 | 部分实现／P1 |
 | ABNORMAL-02 沉默／静默 | 沉默只作用可沉默的技能、能力与 Buff；静默另有无条件限制。[异常效果](https://prts.wiki/w/异常效果) | [effects/control.ts](../../src/core/effects/control.ts) 的 silence 无条件禁止 Skill 激活，也未暂停已有可沉默 Effect。 | 明确不一致／P1 |
 | ABNORMAL-03 免疫、反制、抵抗 | 区分安装限制、使效果失效、清除相关 Buff 和持续时间变化；不能统一为删除实例。[BUFF](https://prts.wiki/w/BUFF)、[异常效果](https://prts.wiki/w/异常效果) | 通用行为尚未接入；当前地面敌人工厂拒绝未支持的 stunImmune 配置。 | 部分实现／P1 |
 | ABNORMAL-04 其他异常组合 | 寒冷、冻结、缴械、束缚、沉睡、浮空等按内容组合规则，并保留必要的可查询语义。[异常效果](https://prts.wiki/w/异常效果) | 现有 Capability / Effect 接口提供部分组合基础，具体机制未完整接入。 | 部分实现／P2 |

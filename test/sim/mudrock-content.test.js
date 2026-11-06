@@ -94,7 +94,7 @@ test("Mudrock's shield keeps recharging while capped", () => {
 
 test("module X uses current max HP for shield healing and distinguishes blocked Sarkaz sources", () => {
     const fixture = setup({ module: { id: moduleX, level: 3 } }, [
-        enemy(1, [0.6, 0], { blockable: { volume: 1 }, profile: { tags: ["sarkaz"] } }),
+        enemy(1, [0.6, 0], { blockable: { volume: 1, rules: [] }, profile: { tags: ["sarkaz"] } }),
         enemy(2, [5, 0], { profile: { tags: ["sarkaz"] } }),
         enemy(3, [6, 0]),
     ]);

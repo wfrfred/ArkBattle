@@ -5,6 +5,7 @@ import { createArknightsElementalDefinition } from "../../data/arknights/element
 
 import { ref as unitRef, type Definition as UnitDefinition } from "../../core/unit/index.js";
 import { isCasting } from "../../core/unit/action/index.js";
+import { hasAction } from "../../core/unit/capability/action/index.js";
 import { hasLocomotion, setRule } from "../../core/unit/capability/locomotion/index.js";
 
 import type { Profile } from "../../data/arknights/enemy.js";
@@ -62,7 +63,8 @@ export function createDefinition(
                               unitRef(self),
                               setRule({
                                   id: "attack-casting",
-                                  allows: (current, { self }) => !isCasting(current, unitRef(self)),
+                                  allows: (current, { self }) =>
+                                      !hasAction(self) || !isCasting(current, unitRef(self)),
                               }),
                           ),
                     value: undefined,
@@ -81,7 +83,7 @@ export function createDefinition(
         hitbox: {
             shape: { type: "CIRCLE", offset: [0, 0], radius: hitRadius },
         },
-        blockable: { volume: profile.blockVolume },
+        blockable: { volume: profile.blockVolume, rules: [] },
         locomotion: {
             speed: perSecondToPerTick(profile.moveSpeedPerSecond),
             minSpeed: perSecondToPerTick(0.1),

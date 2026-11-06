@@ -51,7 +51,7 @@ interface Definition {
 
 标准爆发组装 HP 伤害请求的共享程序位于 `effects/elemental/damage.ts`，由具体效果调用 Battle 的 Calculate／Apply；Elemental Capability 不承担 HP 伤害输出。
 
-[burst.ts](../../src/core/unit/capability/elemental/burst.ts) 定义共同的 Burst 类型、进度、EP 恢复与结束收尾；[neural.ts](../../src/core/effects/elemental/neural.ts)、[erosion.ts](../../src/core/effects/elemental/erosion.ts)、[burn.ts](../../src/core/effects/elemental/burn.ts)、[necrosis.ts](../../src/core/effects/elemental/necrosis.ts) 分别实现神经、侵蚀、灼燃和凋亡的具体标准 Effect。其 data 只保存元素类型：
+[burst.ts](../../src/core/unit/capability/elemental/burst.ts) 定义共同的 Burst 类型、进度、EP 恢复与结束收尾；[neural.ts](../../src/core/effects/elemental/neural.ts)、[erosion.ts](../../src/core/effects/elemental/erosion.ts)、[burn.ts](../../src/core/effects/elemental/burn.ts)、[necrosis.ts](../../src/core/effects/elemental/necrosis.ts) 分别实现神经、侵蚀、灼燃和凋亡的具体标准 Effect。其 state 只保存元素类型：
 
 ```typescript
 interface BurstState {
@@ -65,7 +65,7 @@ interface Burst extends Effect<BurstState, Elemental> {
 }
 ```
 
-Core 提供八个具体 Effect：神经眩晕／麻痹、物理／元素侵蚀、法术／元素灼燃，以及消耗 SP／恢复攻击力的凋亡。每个实现只接收自身所需的数值参数，并明确描述行为，不通过共同的大参数表或一串开关解释效果组合。Data 在模块初始化时传入数值，构建并保存完整静态 Definition；每轮只查表复用。initialize 返回 `{ type }`，data 不重复保存时间进度。BurstDefinition 是普通 Effect Definition 加共同的只读 durationTicks 恢复预算；onInstall 接收尚未初始化时间的普通 Effect，以此预算建立 DURATION 后形成 Burst，后续程序在领域回调边界恢复该类型。Burst 的 Typed Ref 保留 DURATION 写入约束，不另保存 remainingTicks、周期 Clock 或攻击力恢复 scaler。
+Core 提供八个具体 Effect：神经眩晕／麻痹、物理／元素侵蚀、法术／元素灼燃，以及消耗 SP／恢复攻击力的凋亡。每个实现只接收自身所需的数值参数，并明确描述行为，不通过共同的大参数表或一串开关解释效果组合。Data 在模块初始化时传入数值，构建并保存完整静态 Definition；每轮只查表复用。initialize 返回 `{ type }`，state 不重复保存时间进度。BurstDefinition 是普通 Effect Definition 加共同的只读 durationTicks 恢复预算；onInstall 接收尚未初始化时间的普通 Effect，以此预算建立 DURATION 后形成 Burst，后续程序在领域回调边界恢复该类型。Burst 的 Typed Ref 保留 DURATION 写入约束，不另保存 remainingTicks、周期 Clock 或攻击力恢复 scaler。
 
 Burst 的 id、host、source、enabled、status 由 Effect 提供，Elemental 的 burst 槽位只保存它的 Typed Ref。`ref(self)` 复用 Effect Ref，地址为 host + Effect ID；没有独立 Burst ID 分配器或 Lifetime。旧引用不能操作后来的爆发。来源引用保存历史身份，不要求来源仍在场，也不隐含生命周期绑定；跨 Battle 使用 Ref 仍属于调用契约错误。
 
@@ -79,9 +79,9 @@ Burst 的 id、host、source、enabled、status 由 Effect 提供，Elemental �
 
 EP 损伤与治疗分别通过 [damage/ep/index.ts](../../src/core/battle/damage/ep/index.ts) 和 [healing/ep/index.ts](../../src/core/battle/healing/ep/index.ts) 使用两阶段接口。Damage／Healing 顶层仅导出 hp、ep 命名空间。Calculate 形成输出，Apply 才开始接收；零计算输出在 Apply 入口拒绝，零实际变化允许成功。完整边界见 [Vitality／Elemental 接口](vitality.md#18-已定稿的接收与资源提交接口)。
 
-EP Damage.Request 为 `{ source, target, type, power }`，Parameters 为可变工作值 `{ type, power }`，Calculated 保存公式确定的 `{ type, amount }`。先来源 Formula、再目标 Formula，然后按当前元素损伤抗性计算数额，最后执行来源 Output。抗性有效值在 0～95，之后的状态变化不使 Apply 重算；实际元素类型来自 Calculated，不用初始 Request.type 代替。
+EP Damage.Request 为 `{ source, target, parameters }`，Parameters 为可变工作值 `{ type, power }`，Calculated 保存公式确定的 `{ type, amount }`。先来源 Formula、再目标 Formula，然后按当前元素损伤抗性计算数额，最后执行来源 Output。抗性有效值在 0～95，之后的状态变化不使 Apply 重算；实际元素类型来自 Calculated，不用初始 Request.parameters.type 代替。
 
-EP Healing.Request 为 `{ source, target, power }`，Parameters 为 `{ power }`，Calculated 为 `{ amount }`。它经过自己的 Formula／Output，不应用元素损伤抗性。
+EP Healing.Request 同样为 `{ source, target, parameters }`，Parameters 为 `{ power }`，Calculated 为 `{ amount }`。它经过自己的 Formula／Output，不应用元素损伤抗性。
 
 | 接口 | 形状与结果 |
 | --- | --- |
@@ -89,7 +89,7 @@ EP Healing.Request 为 `{ source, target, power }`，Parameters 为 `{ power }`�
 | damage.ep.applyDamage | `(request, calculation) => Result<Outcome>` |
 | healing.ep.calculateHealing | `(battle, request) => Result<Calculated \| undefined>` |
 | healing.ep.applyHealing | `(request, calculation) => Result<Outcome>` |
-| canReceiveDamage | `(battle, request, type = request.type) => boolean`；资格查询不要求 Calculated |
+| canReceiveDamage | `(battle, request, type = request.parameters.type) => boolean`；资格查询不要求 Calculated |
 | canReceiveHealing | `(battle, request) => boolean` |
 | receiveDamage | `(battle, context: damage.ep.ReceivingContext, pending) => Result<Pending>` |
 | commitDamage／commitHealing | `(battle, context: 对应业务的 CommitContext) => Result<对应资源报告>` |
@@ -125,7 +125,7 @@ interface HealingApplication {
 
 Damage 的 before／after／loss 描述本次元素类型，Burst 身份描述本次创建事实；治疗对四型各应用完整接收量，分别限制到当前上限，不在四型间分摊。某型 EP 耗尽时同步将四型 EP 置零并创建 Burst。动态上限贡献本身不立即改写 EP；后续资源操作和自然回复按最新上限结算，爆发恢复则按最新上限与当前有效进度回填。
 
-报告在写入时采样；Battle 的 Application 直接引用同一类型，并放入 APPLIED Outcome。损伤有 REJECTED／CANCELLED／UNAVAILABLE／APPLIED；EP Healing 没有取消工作值阶段，只提供 REJECTED／UNAVAILABLE／APPLIED。成功但实际变化为零时，不派发能力 damaged／healed，Battle 仍派发通用 Applied。
+报告在写入时采样；Battle 的 Application 直接引用同一类型，并放入 APPLIED Outcome。Outcome 统一以 type 判别：损伤有 REJECTED／CANCELLED／UNAVAILABLE／APPLIED；EP Healing 没有取消工作值阶段，只提供 REJECTED／UNAVAILABLE／APPLIED。成功但实际变化为零时，不派发能力 damaged／healed，Battle 仍派发通用 Applied。
 
 ## 4. Hook、提交事实与同步重入
 
@@ -199,7 +199,7 @@ allEP = currentMaxEP × elapsed' / duration
 
 同一份有效进度决定跨过的周期边界与凋亡攻击力恢复。内容程序完成预算内最后一次周期业务后返回，由通用 Effect 框架按最新 expiration 处理到期，Burst 不再重复判断普通自然终止；取消、提前 finish 或宿主离场不补未来输出。不另装一枚周期 Effect 保存同类时钟，也不在 onEnd 补发另一个调度器遗漏的周期。
 
-Elemental 的 Runtime 推进只负责无 Burst 时的自然回复，量为 `当前 recoverySpeed / TICKS_PER_SECOND`，保留小数，不派发显式 heal 的 healed Hook 或普通治疗通知。Effect 与自然回复分别由既有调度阶段安排；阶段之前创建的实例可以参与当次推进，阶段之后创建的实例等下一次候选，不新增首 Tick 特判。
+Elemental 的 Runtime 推进只负责无 Burst 时的自然回复，量为 `当前 recoverySpeed / TICKS_PER_SECOND`，保留小数，不派发显式 heal 的 healed Hook 或普通治疗通知。按当前有效 MaxEP 完成归一化与回复后，四型 EP 均未变化则返回原 BattleState；速度为零仍需处理上限降低。Effect 与自然回复分别由既有调度阶段安排；阶段之前创建的实例可以参与当次推进，阶段之后创建的实例等下一次候选，不新增首 Tick 特判。
 
 Core 同一宿主只允许一个 Burst。少数多种元素爆发的特殊内容由 Content 组合输出和生命周期，不引入通用多阶段爆发或启动免疫窗口。狂躁及其余角色特例的内容覆盖仍需补充；这不改变上述四型与单 Burst 契约。
 

@@ -54,7 +54,7 @@ export function onInstall(battle: BattleState, self: Effect<State, Elemental>): 
         {
             type: "ELEMENTAL_BURST",
             unitId: host.id,
-            elementType: self.data.type,
+            elementType: self.state.type,
             position: host.position,
             tick: battle.tick,
         },

@@ -6,7 +6,7 @@ import {
 } from "../../core/common/assert.js";
 import {
     createPredefinedDefinition,
-    type PredefinedDefinition,
+    type StoredPredefinedDefinition,
 } from "../../core/battle/steps/predefined.js";
 import { createMechanismDefinition } from "../../core/battle/mechanism.js";
 import { createTerrainMechanism } from "../../content/terrain/mechanism.js";
@@ -146,8 +146,8 @@ function unitDefinition(
             stockLimit: 1,
             activeLimit: 1,
             cooldownOnDeploy: false,
-            recoverOnLeave: false,
-            increaseCostOnLeave: false,
+            recoverOnRetreatOrDeath: false,
+            increaseCostOnRetreatOrDeath: false,
             refund: { rate: 0.5, limit: "BASE_COST" },
             deploymentRules: [
                 {
@@ -191,7 +191,7 @@ export function parsePredefinedDefinition(
     instance: ArknightsPredefinedInstance,
     profile: PredefinedPrefab,
     characterValue: unknown,
-): PredefinedDefinition {
+): StoredPredefinedDefinition {
     const phase = predefinedCharacter(instance, profile, characterValue);
 
     if (profile.type === "MECHANISM") {

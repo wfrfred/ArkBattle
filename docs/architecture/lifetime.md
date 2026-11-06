@@ -121,6 +121,6 @@ Damage.completed 表达该次伤害结算完成，不承诺目标的全部离场
 
 业务调用不自动生成等待边。例如 Effect.onEnd 请求 Unit.remove，Unit 等待已有 Effect→Unit 关系，但 Effect 不因为调用了 remove 又反向等待 Unit。独立 Projectile 不随来源 Unit／Action 自动结束，普通 source、目标跟踪、Occupancy、Blocking、Card 冷却不自动转为 Lifetime 关系。
 
-字段写回沿用各领域合同：Effect 私有 data／expiration、Projectile 位置／state 和 Action 持久 state／Cooldown 可供清理使用；Action ENDING 的 execution.state 不接受普通写入。Mechanism disable 是可逆参与变化，与最终析构分开：ACTIVE remove 的 Prepare 以 ENDING self 调用已有 onDisable，INACTIVE remove 不重复调用，Finalize 再执行 onEnd。
+字段写回沿用各领域合同：Effect 私有 state／expiration、Projectile 位置／state 和 Action 持久 state／Cooldown 可供清理使用；Action ENDING 的 execution.state 不接受普通写入。Mechanism disable 是可逆参与变化，与最终析构分开：ACTIVE remove 的 Prepare 以 ENDING self 调用已有 onDisable，INACTIVE remove 不重复调用，Finalize 再执行 onEnd。
 
 实现职责分别位于 `core/lifetime/lifetime.ts`（模型与类型）、`dependency.ts`（关系图与反向查询）、`operations.ts`（登记、绑定、组合器、请求与析构）、`index.ts`（显式公共入口）。领域按真实共享需要选择已有操作文件或 lifetime.ts，不套目录模板。

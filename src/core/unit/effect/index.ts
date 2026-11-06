@@ -12,7 +12,7 @@ export type { Initial } from "./operations.js";
 
 export {
     install,
-    setData,
+    setState,
     setExpiration,
     setEnabled,
     lifetime,

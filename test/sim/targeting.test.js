@@ -204,8 +204,8 @@ test("blocked targets outrank nearer candidates and remain selectable outside or
             blocker: { layer: "GROUND", rules: [], capacity: 2, radius: 1 },
         }, position: [2, 1] },
         { definition: living, position: [1.95, 1] },
-        { definition: { ...living, blockable: { volume: 1 } }, position: [2.5, 1] },
-        { definition: { ...living, blockable: { volume: 1 } }, position: [2.25, 1] },
+        { definition: { ...living, blockable: { volume: 1, rules: [] } }, position: [2.5, 1] },
+        { definition: { ...living, blockable: { volume: 1, rules: [] } }, position: [2.25, 1] },
     ]);
     const source = ref(get(state, 0));
     state = searchBlocking(state, source);

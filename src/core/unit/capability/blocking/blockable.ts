@@ -13,6 +13,7 @@ import { prepare as prepareKey } from "../../hook.js";
 
 export interface Definition {
     readonly volume: number;
+    readonly rules: readonly Rule[];
 }
 
 export interface PositionAdjustment {
@@ -59,7 +60,7 @@ export function initialize<U extends Unit & Pick<Blockable, "definition">>(
                 blocker: null,
                 adjustment: null,
                 volume: [],
-                rules: [],
+                rules: unit.definition.blockable.rules,
                 acquired: [],
                 released: [],
             },

@@ -14,16 +14,16 @@ export interface Effect<S extends object = object, H extends object = object> ex
     readonly id: Id;
     readonly host: Ref<Unit> & Ref<Unit & H>;
     readonly definition: Definition<S, H>;
-    readonly data: S;
+    readonly state: S;
     readonly source: Ref<Unit> | null;
     readonly expiration: Expiration;
     readonly enabled: boolean;
     readonly status: Status;
 }
 
-export interface Snapshot extends Omit<Effect, "data" | "definition"> {
+export interface Snapshot extends Omit<Effect, "state" | "definition"> {
     readonly definition: Pick<Definition<object>, "id" | "group">;
-    readonly data: unknown;
+    readonly state: unknown;
 }
 
 export function ref<E extends Effect<any, any>>(effect: E): Ref<E> {

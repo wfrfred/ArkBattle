@@ -15,7 +15,7 @@ export function advanceSkills(state: BattleState, commands: readonly Command[]):
     }
 
     for (const command of commands) {
-        if (command.type !== "ACTIVATE_SKILL" && command.type !== "FINISH_SKILL") {
+        if (command.type !== "ACTIVATE_SKILL" && command.type !== "STOP_SKILL") {
             continue;
         }
 

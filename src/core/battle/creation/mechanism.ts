@@ -1,29 +1,18 @@
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import type { Ref } from "../../common/ref.js";
-import type { CreationDefinition, Mechanism, MechanismDefinition } from "../mechanism.js";
+import type { Mechanism, MechanismDefinition } from "../mechanism.js";
 import type { Result, State as BattleState } from "../state.js";
 import { setHook } from "../unit-hook.js";
 
-export interface MechanismPlacementDefinition {
-    readonly definition: CreationDefinition;
+export interface MechanismPlacementDefinition<S extends object = object> {
+    readonly definition: MechanismDefinition<S>;
     readonly active?: boolean;
 }
 
 export function instantiateMechanismPlacement<S extends object>(
     battle: BattleState,
-    placement: {
-        readonly definition: MechanismDefinition<S>;
-        readonly active?: boolean;
-    },
-): Result<Ref<Mechanism<S>>>;
-export function instantiateMechanismPlacement(
-    battle: BattleState,
-    placement: MechanismPlacementDefinition,
-): Result<Ref<Mechanism>>;
-export function instantiateMechanismPlacement(
-    battle: BattleState,
-    placement: MechanismPlacementDefinition,
-): Result<Ref<Mechanism>> {
+    placement: MechanismPlacementDefinition<S>,
+): Result<Ref<Mechanism<S>>> {
     const id = battle.execution.nextMechanismId;
     assertNonnegativeSafeInteger(id, "mechanism id");
     const nextMechanismId = id + 1;

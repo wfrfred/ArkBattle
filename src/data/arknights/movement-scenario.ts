@@ -1,7 +1,7 @@
 import type { Seed } from "../../core/common/rng.js";
 import type { Input } from "../../core/battle/index.js";
 import type { Definition as TerrainDefinition } from "../../core/battlefield/map/terrain.js";
-import type { PredefinedDefinition } from "../../core/battle/steps/predefined.js";
+import type { StoredPredefinedDefinition } from "../../core/battle/steps/predefined.js";
 import type { ArknightsBlackboardEntry } from "./blackboard.js";
 import type { ArknightsMapOptions, ArknightsTileContext } from "./map.js";
 import {
@@ -29,7 +29,7 @@ import { resolvePredefinedSkillBlackboard, resolvePredefinedSkillId } from "./sk
 import { resolveTerrainControllers, type ArknightsTerrainController } from "./terrain.js";
 import { secondsToTicks } from "./tick.js";
 import { normal, mire, deepsea } from "../../content/terrain/definition.js";
-import { createTerrainMechanism } from "../../content/terrain/mechanism.js";
+import { createTerrainMechanism, type ContactState } from "../../content/terrain/mechanism.js";
 
 export interface ArknightsMovementCatalog {
     readonly character: (key: string) => unknown;
@@ -50,7 +50,9 @@ export interface ArknightsMovementSelection extends ArknightsScheduleSelection {
 
 export interface ArknightsMovementScenario {
     readonly level: ArknightsLevelDefinition;
-    readonly spec: Input;
+    readonly spec: Omit<Input<readonly object[], readonly ContactState[]>, "predefines"> & {
+        readonly predefines: readonly StoredPredefinedDefinition[];
+    };
     readonly omittedActions: readonly string[];
     readonly inactiveBranches: readonly string[];
     readonly omittedPredefines: readonly string[];
@@ -120,7 +122,7 @@ function selectPredefines(
 }
 
 function loadPredefines(selected: readonly LocatedPredefined[], catalog: ArknightsMovementCatalog) {
-    const predefines: PredefinedDefinition[] = [];
+    const predefines: StoredPredefinedDefinition[] = [];
     const controllers: (ArknightsTerrainController & { readonly path: string })[] = [];
     const unsupportedRules: ArknightsContentIssue[] = [];
 
@@ -258,7 +260,7 @@ export function loadMovementScenario(
             maxTicks: secondsToTicks(level.options.maxPlayTime),
             routeMoveMultiplier: level.options.moveMultiplier,
             rngState,
-        } satisfies Input,
+        } satisfies ArknightsMovementScenario["spec"],
         omittedActions: compiled.omittedActions,
         inactiveBranches: compiled.inactiveBranches,
         omittedPredefines: predefinedSelection.omitted,

@@ -33,7 +33,7 @@ test("Main completion stops motion while blocked and departure waits for release
         }, position: [0, 0] },
         { definition: mover({
             route: route({ endPosition: [0, 0] }), allegiance: { side: "ENEMY" },
-            layer: { type: "GROUND" }, blockable: { volume: 1 },
+            layer: { type: "GROUND" }, blockable: { volume: 1, rules: [] },
         }), position: [0, 0] },
     ]);
     state = searchBlocking(state, ref(get(state, 0)));

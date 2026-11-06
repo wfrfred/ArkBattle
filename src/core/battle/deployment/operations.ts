@@ -115,10 +115,10 @@ export function deploy<T extends Card<any>>(
                 id: "@deployment/death",
                 accepts: (_state, departure) => departure.reason === "DEATH",
                 invoke: (state) => {
-                    if (definition.increaseCostOnLeave) {
+                    if (definition.increaseCostOnRetreatOrDeath) {
                         state = cards.incrementCostStage(state, request.card);
                     }
-                    if (definition.recoverOnLeave) {
+                    if (definition.recoverOnRetreatOrDeath) {
                         state = cards.enqueueRecovery(state, request.card);
                     }
 

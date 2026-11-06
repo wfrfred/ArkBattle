@@ -56,7 +56,7 @@ type WithSp = Unit &
         };
     };
 
-export function hasSp(self: Unit & Skill): self is WithSp {
+export function hasSp<U extends Unit & Skill>(self: U): self is U & WithSp {
     return self.skill.sp !== null;
 }
 

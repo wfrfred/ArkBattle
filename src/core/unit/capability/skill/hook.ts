@@ -29,6 +29,10 @@ export interface Events {
 
 export type Key = keyof Events;
 
+type DispatchArguments = {
+    [K in Key]: [key: K, event: Events[K]];
+}[Key];
+
 export interface Context<E> {
     readonly host: Ref<Unit & Skill>;
     readonly event: E;
@@ -39,8 +43,7 @@ export type Hook<E> = hooks.Hook<Context<E>, void>;
 export function dispatch<K extends Key>(
     battle: BattleState,
     host: Ref<Unit & Skill>,
-    key: K,
-    event: Events[K],
+    ...[key, event]: [key: K, event: Events[K]] & DispatchArguments
 ): BattleState {
     return hooks.dispatch(battle, { host, event }, undefined, {
         candidates: (current) => units.get(current, host)?.skill[key].map(({ id }) => id) ?? [],

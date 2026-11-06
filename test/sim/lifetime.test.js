@@ -35,11 +35,11 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
         initialize: () => ({ total: 0 }),
         onDisable(current, self) {
             calls.push("parent-disabled");
-            return effects.setData(current, effects.ref(self), { total: 1 });
+            return effects.setState(current, effects.ref(self), { total: 1 });
         },
         onEnd(current, self, reason) {
             assert.equal(reason, "FIRST");
-            assert.equal(self.data.total, 3);
+            assert.equal(self.state.total, 3);
             assert.equal(units.get(current, owner).lifecycle, "LEAVING");
             calls.push("parent-ended");
             return remove(current, owner.id, "SCRIPT");
@@ -60,7 +60,7 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
                 assert.equal(units.get(current, owner).lifecycle, "LEAVING");
                 assert.equal(effects.get(current, parent).status, "ENDING");
                 const previous = effects.get(current, parent);
-                current = effects.setData(current, parent, { total: previous.data.total + 2 });
+                current = effects.setState(current, parent, { total: previous.state.total + 2 });
                 calls.push("child-ended");
                 return current;
             },

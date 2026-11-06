@@ -232,8 +232,7 @@ function apply(
             const request: epDamage.Request = {
                 source,
                 target: units.ref(receiver),
-                type: operation.elementType,
-                power: operation.power,
+                parameters: { type: operation.elementType, power: operation.power },
             };
 
             return epDamage.applyDamage(request, epDamage.calculateDamage(battle, request)).state;
@@ -248,7 +247,7 @@ function apply(
             const request: epHealing.Request = {
                 source,
                 target: units.ref(receiver),
-                power: operation.power,
+                parameters: { power: operation.power },
             };
 
             return epHealing.applyHealing(request, epHealing.calculateHealing(battle, request))

@@ -137,8 +137,8 @@ export function create(profile: Profile): Definition {
             stockLimit: 1,
             activeLimit: 1,
             cooldownOnDeploy: false,
-            recoverOnLeave: true,
-            increaseCostOnLeave: true,
+            recoverOnRetreatOrDeath: true,
+            increaseCostOnRetreatOrDeath: true,
             refund: { rate: 0.5, limit: "BASE_COST" },
             deploymentRules: [
                 {

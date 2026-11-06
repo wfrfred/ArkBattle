@@ -5,7 +5,11 @@ import type { SpawnScheduleDefinition } from "./schedule/definition.js";
 import type { Id } from "../unit/unit.js";
 import type { Input as DeploymentInput } from "./deployment/deployment.js";
 import type { Card } from "./deployment/card/card.js";
-import type { PredefinedDefinition, PredefinedCommand } from "./steps/predefined.js";
+import type {
+    StoredPredefinedDefinition,
+    PredefinedDefinition,
+    PredefinedCommand,
+} from "./steps/predefined.js";
 import type { AlternativeRouteCommand } from "./steps/movement.js";
 import type { DeploymentCommand } from "./deployment/operations.js";
 import type { Ref } from "../common/ref.js";
@@ -17,16 +21,25 @@ export type { Event } from "./event.js";
 export type { UnitRemoval } from "../unit/unit.js";
 
 export interface Definition {
-    readonly predefines: readonly PredefinedDefinition[];
+    readonly predefines: readonly StoredPredefinedDefinition[];
     readonly maxTicks: number;
     readonly routeMoveMultiplier: number;
 }
 
-export interface Input extends Definition {
-    readonly deployment?: DeploymentInput;
+export interface Input<
+    CardStates extends readonly object[] = readonly object[],
+    MechanismStates extends readonly object[] = readonly object[],
+    PredefinedTypes extends readonly object[] = readonly object[],
+> extends Definition {
+    readonly predefines: {
+        readonly [K in keyof PredefinedTypes]: PredefinedDefinition<PredefinedTypes[K]>;
+    };
+    readonly deployment?: DeploymentInput<CardStates>;
     readonly map: Map;
     readonly schedule: SpawnScheduleDefinition;
-    readonly initialMechanisms: readonly MechanismPlacementDefinition[];
+    readonly initialMechanisms: {
+        readonly [K in keyof MechanismStates]: MechanismPlacementDefinition<MechanismStates[K]>;
+    };
     readonly rngState: Seed;
 }
 
@@ -35,7 +48,7 @@ export type Command<T extends Card<any> = Card> =
     | AlternativeRouteCommand
     | DeploymentCommand<T>
     | { readonly type: "ACTIVATE_SKILL"; readonly unitId: Id }
-    | { readonly type: "FINISH_SKILL"; readonly unitId: Id }
+    | { readonly type: "STOP_SKILL"; readonly unitId: Id }
     | {
           readonly type: "CANCEL_ACTION_EXECUTION";
           readonly ref: Ref<Execution>;

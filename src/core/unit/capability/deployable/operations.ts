@@ -35,10 +35,10 @@ export function retreat(battle: BattleState, reference: Ref<Unit & Deployable>):
     const card = self.deployable.card;
     if (card !== null) {
         const definition = getCard(battle, card)!.definition.card;
-        if (definition.increaseCostOnLeave) {
+        if (definition.increaseCostOnRetreatOrDeath) {
             battle = cards.incrementCostStage(battle, card);
         }
-        if (definition.recoverOnLeave) {
+        if (definition.recoverOnRetreatOrDeath) {
             battle = cards.enqueueRecovery(battle, card);
         }
     }

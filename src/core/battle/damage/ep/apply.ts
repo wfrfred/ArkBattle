@@ -13,14 +13,14 @@ export function applyDamage(
     const damage = calculated.value;
     const target = units.get(battle, request.target);
     if (damage === undefined || damage.amount === 0 || target === undefined || !available(target)) {
-        return { state: battle, value: { kind: "REJECTED" } };
+        return { state: battle, value: { type: "REJECTED" } };
     }
 
     const context = { target: request.target, request, calculated: damage };
     battle = dispatch(battle, request.target, beforeReceive, context, undefined).state;
 
     if (!canReceiveDamage(battle, request, damage.type)) {
-        return { state: battle, value: { kind: "REJECTED" } };
+        return { state: battle, value: { type: "REJECTED" } };
     }
 
     const receiving = receiveDamage(battle, context, {
@@ -30,17 +30,17 @@ export function applyDamage(
     battle = receiving.state;
     const received = receiving.value;
     if (received.cancellation !== null) {
-        return { state: battle, value: { kind: "CANCELLED", received } };
+        return { state: battle, value: { type: "CANCELLED", received } };
     }
     if (!canReceiveDamage(battle, request, damage.type)) {
-        return { state: battle, value: { kind: "UNAVAILABLE", received } };
+        return { state: battle, value: { type: "UNAVAILABLE", received } };
     }
 
     const commit = { ...context, received };
     battle = dispatch(battle, request.source, beforeCommit, commit, undefined).state;
 
     if (!canReceiveDamage(battle, request, damage.type)) {
-        return { state: battle, value: { kind: "UNAVAILABLE", received } };
+        return { state: battle, value: { type: "UNAVAILABLE", received } };
     }
 
     const result = commitDamage(battle, commit);
@@ -51,6 +51,6 @@ export function applyDamage(
 
     return {
         state: battle,
-        value: { kind: "APPLIED", received, application: result.value },
+        value: { type: "APPLIED", received, application: result.value },
     };
 }

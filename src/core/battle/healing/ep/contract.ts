@@ -14,9 +14,10 @@ export interface Parameters {
     readonly power: number;
 }
 
-export interface Request extends Parameters {
+export interface Request {
     readonly source: Ref<Unit> | null;
     readonly target: Ref<Unit & Elemental>;
+    readonly parameters: Parameters;
 }
 
 export interface Calculated {
@@ -31,6 +32,6 @@ export interface Pending {
 export type Application = HealingApplication;
 
 export type Outcome =
-    | { readonly kind: "REJECTED" }
-    | { readonly kind: "UNAVAILABLE"; readonly received: Pending }
-    | { readonly kind: "APPLIED"; readonly received: Pending; readonly application: Application };
+    | { readonly type: "REJECTED" }
+    | { readonly type: "UNAVAILABLE"; readonly received: Pending }
+    | { readonly type: "APPLIED"; readonly received: Pending; readonly application: Application };

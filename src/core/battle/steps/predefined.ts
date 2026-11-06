@@ -1,12 +1,12 @@
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import type { Definition as UnitDefinition, LeaveReason } from "../../unit/unit.js";
-import { initialize as initializeUnit, type Input as UnitInput } from "../../unit/initialize.js";
+import { initialize as initializeUnit } from "../../unit/initialize.js";
 import type { WorldPosition } from "../../geometry/coordinate.js";
 import type { Hooks } from "../../hook.js";
 import {
     get as getMechanism,
     remove as removeMechanism,
-    type CreationDefinition,
+    type MechanismDefinition,
     type Mechanism,
 } from "../mechanism.js";
 import type { Ref } from "../../common/ref.js";
@@ -14,31 +14,33 @@ import { instantiateMechanismPlacement } from "../creation/mechanism.js";
 import type { Command } from "../contract.js";
 import { add, remove } from "../unit.js";
 import type { State as BattleState } from "../state.js";
-import type { Inputs } from "../../unit/capability/catalog.js";
+import type { Definitions, Initial } from "../../unit/capability/catalog.js";
 
-export interface PredefinedUnitCreation {
+export interface PredefinedUnitCreation<D extends object = UnitDefinition & Partial<Definitions>> {
     readonly type: "UNIT";
-    readonly definition: UnitDefinition;
+    readonly definition: D & UnitDefinition & Partial<Definitions>;
     readonly position: WorldPosition;
-    readonly initial?: Partial<Inputs>;
+    readonly initial?: Initial<NoInfer<D>>;
     readonly hooks?: Hooks;
 }
 
-export interface PredefinedMechanismCreation {
+export interface PredefinedMechanismCreation<S extends object = object> {
     readonly type: "MECHANISM";
-    readonly definition: CreationDefinition;
+    readonly definition: MechanismDefinition<S>;
 }
 
 export type Source =
     | { readonly type: "UNIT"; readonly unitId: number }
     | { readonly type: "MECHANISM"; readonly ref: Ref<Mechanism> };
 
-export interface PredefinedDefinition {
+export interface PredefinedDefinition<T extends object = object> {
     readonly id: number;
     readonly alias: string | null;
     readonly initiallyPresent: boolean;
-    readonly creation: PredefinedUnitCreation | PredefinedMechanismCreation;
+    readonly creation: PredefinedUnitCreation<T> | PredefinedMechanismCreation<T>;
 }
+
+export type StoredPredefinedDefinition = PredefinedDefinition<any>;
 
 export interface PredefinedPresence {
     readonly definitionId: number;
@@ -53,14 +55,16 @@ export type PredefinedCommand =
           readonly reason: LeaveReason;
       };
 
-export function createPredefinedDefinition(definition: PredefinedDefinition): PredefinedDefinition {
+export function createPredefinedDefinition<T extends object>(
+    definition: PredefinedDefinition<T>,
+): PredefinedDefinition<T> {
     assertNonnegativeSafeInteger(definition.id, "predefined definition id");
 
     return definition;
 }
 
 export function predefinedIdsForAlias(
-    definitions: readonly PredefinedDefinition[],
+    definitions: readonly StoredPredefinedDefinition[],
     alias: string,
 ): readonly number[] {
     return definitions
@@ -81,7 +85,7 @@ export function reconcilePredefinedPresence(battle: BattleState): readonly Prede
 
 export function advancePredefined(
     state: BattleState,
-    definitions: readonly PredefinedDefinition[],
+    definitions: readonly StoredPredefinedDefinition[],
     commands: readonly Command[],
 ): BattleState {
     for (const command of commands) {
@@ -128,7 +132,7 @@ export function advancePredefined(
         if (creation.type === "UNIT") {
             const id = state.execution.nextUnitId;
             state = { ...state, execution: { ...state.execution, nextUnitId: id + 1 } };
-            const initialized = initializeUnit(state, { ...creation, id } as UnitInput<any>);
+            const initialized = initializeUnit(state, { ...creation, id });
             state = initialized.state;
             const unit = initialized.value;
             state = {

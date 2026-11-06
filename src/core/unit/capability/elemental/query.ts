@@ -66,7 +66,7 @@ export function available(self: Unit): boolean {
 export function canReceiveDamage(
     battle: BattleState,
     request: DamageRequest,
-    type: Type = request.type,
+    type: Type = request.parameters.type,
 ): boolean {
     const self = units.get(battle, request.target);
 

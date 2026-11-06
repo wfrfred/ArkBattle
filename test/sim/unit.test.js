@@ -38,7 +38,7 @@ test("Unit construction pairs declared capabilities and installs initial effects
                     id: "conflicting-roles",
                     hooks: Hooks.empty(),
                     blocker: { capacity: 1, layer: "GROUND", rules: [] },
-                    blockable: { volume: 1 },
+                    blockable: { volume: 1, rules: [] },
                 },
             }),
         TypeError,
@@ -62,7 +62,7 @@ test("Unit construction pairs declared capabilities and installs initial effects
     const current = units.all(state).find((unit) => unit.definition === definition);
     assert.deepEqual(entries, [0]);
     assert.equal(
-        current.effects.values().find((effect) => effect.definition === entryEffect).data.charges,
+        current.effects.values().find((effect) => effect.definition === entryEffect).state.charges,
         2,
     );
     assert.equal(

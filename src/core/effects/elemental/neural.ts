@@ -81,7 +81,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
 
                         return (
                             active?.status === "ACTIVE" &&
-                            active.data.used < parameters.paralysisStacks
+                            active.state.used < parameters.paralysisStacks
                         );
                     },
                     invoke(current) {
@@ -89,8 +89,8 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                             .get(current, self.host)!
                             .effects.get(effectId, paralysis)!;
                         const reference = ref(active);
-                        const used = active.data.used + 1;
-                        current = effects.setData(current, reference, { used });
+                        const used = active.state.used + 1;
+                        current = effects.setState(current, reference, { used });
 
                         if (used === parameters.paralysisStacks) {
                             current = effects.end(current, reference);
@@ -136,7 +136,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                 battle =
                     existing === undefined
                         ? effects.install(battle, units.ref(host), paralysis).state
-                        : effects.setData(
+                        : effects.setState(
                               battle,
                               ref(existing as Effect<{ used: number }, Action>),
                               {

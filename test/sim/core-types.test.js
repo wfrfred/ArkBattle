@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
-test("typed identities retain private data and capability proofs across erased Core storage", async () => {
+test("typed construction and identities retain private state and capability proofs", async () => {
     const { default: ts } = await import("typescript");
     const module = (name) =>
         JSON.stringify(fileURLToPath(new URL(`../../src/core/${name}.js`, import.meta.url)));
@@ -11,7 +11,7 @@ test("typed identities retain private data and capability proofs across erased C
 import type { Ref } from ${module("common/ref")};
 import type { State } from ${module("battle/state")};
 import { Hooks, key, type Hook } from ${module("hook")};
-import { initialize, ref, get, compose, optional, type Unit, type Change } from ${module("unit/index")};
+import { initialize, ref, get, all as allUnits, compose, optional, type Unit, type Change } from ${module("unit/index")};
 import { update } from ${module("battle/unit")};
 import * as actions from ${module("unit/action/index")};
 import * as effects from ${module("unit/effect/index")};
@@ -19,7 +19,15 @@ import * as hpDamage from ${module("battle/damage/hp/index")};
 import * as vitality from ${module("unit/capability/vitality/index")};
 import * as elemental from ${module("unit/capability/elemental/index")};
 import * as skills from ${module("unit/skill/index")};
-import type { Skill as SkillCapability } from ${module("unit/capability/skill/index")};
+import { hasSkill, type Skill as SkillCapability } from ${module("unit/capability/skill/index")};
+import { hasSpatialPresence, disappear } from ${module("unit/capability/presence/index")};
+import { dispatch as dispatchSkill } from ${module("unit/capability/skill/hook")};
+import { dispatch as dispatchElemental } from ${module("unit/capability/elemental/hook")};
+import * as runtime from ${module("battle/runtime")};
+import type { Input as BattleInput } from ${module("battle/contract")};
+import type { UnitDefinition as CardDefinition } from ${module("battle/deployment/card/card")};
+import * as mechanisms from ${module("battle/mechanism")};
+import { createPredefinedDefinition } from ${module("battle/steps/predefined")};
 import * as actionCapability from ${module("unit/capability/action/index")};
 import { createRegistrationOperations } from ${module("unit/registration")};
 import type { Offense } from ${module("unit/capability/offense/index")};
@@ -87,15 +95,15 @@ const shield: effects.Definition<{ charges: number }, Offense> = {
     id: 'shield', initialize: () => ({ charges: 1 }),
     onTick(state, self) {
         const attack: number = get(state, self.host)!.definition.offense.attack;
-        return effects.setData(state, effects.ref(self), { charges: self.data.charges + attack });
+        return effects.setState(state, effects.ref(self), { charges: self.state.charges + attack });
     },
 };
 const installed = effects.install(battle, reference, shield);
 if (installed.value !== undefined) {
-    const charges: number = effects.get(installed.state, installed.value)!.data.charges;
+    const charges: number = effects.get(installed.state, installed.value)!.state.charges;
     effects.setExpiration(installed.state, installed.value, { type: 'DEADLINE', tick: 10 });
     // @ts-expect-error writes cannot widen the identity's private data pairing.
-    effects.setData(installed.state, installed.value, { charges: 'wrong' });
+    effects.setState(installed.state, installed.value, { charges: 'wrong' });
 }
 declare const burstRef: Ref<elemental.Burst>;
 const burst = elemental.get(battle, burstRef)!;
@@ -104,13 +112,20 @@ effects.setExpiration(battle, burstRef, { ...burst.expiration, elapsed: burst.ex
 effects.setExpiration(battle, burstRef, { type: 'DEADLINE', tick: 10 });
 const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'bare', hooks: Hooks.empty() } }).value;
 actions.cancelForUnit(battle, reference, 'SOURCE_ABSENT');
+actions.forUnit(battle, reference);
+actions.isCasting(battle, reference);
 // @ts-expect-error cancelling a Unit's Actions requires its Action capability.
 actions.cancelForUnit(battle, ref(bare), 'SOURCE_ABSENT');
+// @ts-expect-error querying Actions requires the same host capability.
+actions.forUnit(battle, ref(bare));
+// @ts-expect-error casting queries cannot silently accept a different host kind.
+actions.isCasting(battle, ref(bare));
 // @ts-expect-error the host has not established the required capability.
 effects.install(battle, ref(bare), shield);
 const change: Change<Unit & Offense> = setAttackContribution({ id: 'bonus', value: [] });
 const actionChange = actionCapability.setRule({ id: 'ready', allows: () => true });
 const optionalAction: Change<Unit> = optional(actionCapability.hasAction, actionChange);
+const optionalPresence: Change<Unit> = optional(hasSpatialPresence, disappear());
 update(battle, ref(bare), optionalAction);
 const optionalResult = optionalAction(host);
 const optionalHost: typeof host = optionalResult.next;
@@ -147,6 +162,14 @@ skills.resolveRecoverySpeed(battle, skillHost);
 if (skills.hasSp(skillHost)) {
     const speed: number = skills.resolveRecoverySpeed(battle, skillHost);
     const multiplier: number = skills.resolveRecoveryMultiplier(battle, skillHost);
+}
+for (const self of allUnits(battle).filter(actionCapability.hasAction).filter(hasSpatialPresence)) {
+    const present: boolean = self.spatialPresence.present;
+    const action: actionCapability.Action = self;
+}
+for (const self of allUnits(battle).filter(actionCapability.hasAction).filter(hasSkill).filter(skills.hasSp)) {
+    const action: actionCapability.Action = self;
+    const speed: number = skills.resolveRecoverySpeed(battle, self);
 }
 const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
     id: 'patient', hooks: Hooks.empty(),
@@ -215,6 +238,73 @@ update(battle, reference, setLayer('AIR'));
 update(battle, reference, host);
 // @ts-expect-error a numeric address alone does not establish a Unit proof.
 const forged: Ref<Unit> = { id: 0 };
+
+declare const elementalHost: Ref<Unit & elemental.Elemental>;
+declare const elementalStage: 'damaged' | 'burstStarted';
+declare const pairedElementalEvent:
+    | [stage: 'damaged', event: elemental.Damaged]
+    | [stage: 'burstStarted', event: elemental.Burst];
+dispatchElemental(battle, elementalHost, ...pairedElementalEvent);
+// @ts-expect-error an independent union stage cannot prove the event matches.
+dispatchElemental(battle, elementalHost, elementalStage, burst);
+declare const skillStage: 'spPaid' | 'activationStarted';
+declare const startedEvent: { readonly ref: Ref<skills.Activation> };
+// @ts-expect-error Skill dispatch preserves the same key/event association.
+dispatchSkill(battle, ref(skillHost), skillStage, startedEvent);
+
+declare const baseInput: Omit<BattleInput, 'deployment' | 'predefines' | 'initialMechanisms'>;
+declare const cardBase: Omit<CardDefinition, 'card'>;
+declare const cardConfiguration: Omit<CardDefinition['card'], 'initialize' | 'onTick'>;
+const counterCard: CardDefinition<{ count: number }> = {
+    ...cardBase,
+    card: {
+        ...cardConfiguration,
+        initialize: state => ({ state, value: { count: 0 } }),
+        onTick(state, self) {
+            const count: number = self.state.count;
+            // @ts-expect-error a complete Card Definition retains its private state.
+            self.state.label;
+            return state;
+        },
+    },
+};
+const counterMechanism = mechanisms.createMechanismDefinition({
+    id: 'counter', initialize: () => ({ count: 0 }),
+    onTick(state, self) {
+        return mechanisms.setState(state, mechanisms.ref(self), { count: self.state.count + 1 });
+    },
+});
+const predefined = createPredefinedDefinition({
+    id: 0, alias: null, initiallyPresent: true,
+    creation: { type: 'UNIT', definition: patient.definition, position: [0, 0] },
+});
+const account = { initialDp: 0, maxDp: 99, dpRecoveryTicks: null, slotLimit: null };
+runtime.initialize({ ...baseInput,
+    deployment: { definition: account, cards: [counterCard] },
+    initialMechanisms: [{ definition: counterMechanism }],
+    predefines: [predefined, createPredefinedDefinition({
+        id: 1, alias: null, initiallyPresent: true,
+        creation: { type: 'MECHANISM', definition: counterMechanism },
+    })],
+});
+const mismatchedMechanism = { ...counterMechanism, initialize: () => ({ label: 'wrong' }) };
+// @ts-expect-error predefined construction cannot erase a mismatch rejected by ordinary creation.
+createPredefinedDefinition({ id: 0, alias: null, initiallyPresent: true, creation: { type: 'MECHANISM', definition: mismatchedMechanism } });
+const mismatchedCard = { ...counterCard, card: { ...counterCard.card, initialize: (state: State) => ({ state, value: { label: 'wrong' } }) } };
+// @ts-expect-error aggregating a Card cannot weaken initialize/callback pairing.
+runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [mismatchedCard] }, initialMechanisms: [], predefines: [] });
+const missingOccupancy = { id: 0, alias: null, initiallyPresent: true, creation: { type: 'UNIT' as const, definition: bare.definition, position: [0, 0] as const, initial: { occupancy: { tile: [0, 0] as const } } } };
+// @ts-expect-error a predefined Unit cannot initialize an undeclared capability.
+createPredefinedDefinition(missingOccupancy);
+// @ts-expect-error raw Runtime input obeys the same construction constraint.
+runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [] }, initialMechanisms: [], predefines: [missingOccupancy] });
+runtime.initialize({ ...baseInput, initialMechanisms: [], predefines: [], deployment: { definition: account, cards: [{ ...counterCard, card: { ...counterCard.card,
+    onTick(state, self) {
+        // @ts-expect-error aggregation must not supply an any private-state context.
+        self.state.missing.deeply;
+        return state;
+    },
+} }] } });
 `;
     const options = {
         noEmit: true,

@@ -92,7 +92,7 @@ applyDamage(request, calculation) → Result<DamageOutcome>
 calculateHealing(battle, request) → Result<CalculatedHealing | undefined>
 applyHealing(request, calculation) → Result<HealingOutcome>
 install(battle, hostRef, definition, initial) → Result<Ref<Effect<S, H>> | undefined>
-effects.setData(battle, effectRef, nextData) → BattleState
+effects.setState(battle, effectRef, nextState) → BattleState
 actions.start(battle, actionRef) → Result<StartOutcome<P, E>>
 actions.setState(battle, actionRef, nextState) → BattleState
 actions.setExecutionState(battle, executionRef, nextState) → BattleState
@@ -145,7 +145,7 @@ Tick 的执行顺序在 step() 中直接可读。Combat、Movement 与路线完�
 | Unit.occupancy | 当前登记格、实例朝向、已通知的 pair 绑定；绑定快照不代表实时 Unit 数据 |
 | Unit.blocker／Unit.blockable | 初始化至多选择一种，也允许两者皆无；保存唯一归属或有序关联，Blockable 另有独立站位计划；接敌、解除及维护由 Blocking 执行，真实坐标仍只有 Unit.position |
 | Unit／Capability                   | HP、控制状态、行动就绪、技能状态、路线、各自 Hook 与 Contribution 集合   |
-| Unit.effects                       | Effects 容器保存实例身份、Definition、私有 data、生效状态、来源 Ref 与 expiration；DURATION／DEADLINE／INFINITE 互斥，Scope 关系归 Lifetime |
+| Unit.effects                       | Effects 容器保存实例身份、Definition、私有 state、生效状态、来源 Ref 与 expiration；DURATION／DEADLINE／INFINITE 互斥，Scope 关系归 Lifetime |
 | Battle.deployment | DP、usedSlots 账户、Card 记录与手牌顺序、部署观察 Hook；各 Card 保存当前库存、计时及私有 state |
 | Schedule                           | 波次、片段、出生与完成账本                                               |
 | Unit.action.actions                | 按配置 ID 聚合 Definition、持久 state、Cooldown 和当前 Execution；执行身份进度由 Capability.nextExecutionId 保存 |
@@ -236,13 +236,13 @@ candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定�
 
 不需要操作值的通知使用 T=void，仍返回 Result<void>，C 也可为 void。需要终止后续通知时，领域定义自己的控制值，不把业务取消、停止派发和生命周期终结混为同一个布尔值。Vitality 的阶段控制只在本节点生效，不能成为后续业务事实的一部分。
 
-公共 API 为 set、remove、dispatch；set/remove 按 ID 登记、替换与撤销，保留结构共享。领域持有登记集合，定义节点、排序、资格与停止条件。Effect 与 [Projectile](projectile.md) 的 Definition 回调直接接收完整 self；异构容器内部擦除私有参数，Core 调用同一实例自身 Definition 的程序，不解释未知 data。Definition 程序与本次 Hook 派发的固定 Context 分别定义。
+公共 API 为 set、remove、dispatch；set/remove 按 ID 登记、替换与撤销，保留结构共享。领域持有登记集合，定义节点、排序、资格与停止条件。Effect 与 [Projectile](projectile.md) 的 Definition 回调直接接收完整 self；异构容器内部擦除私有参数，Core 调用同一实例自身 Definition 的程序，不解释未知 state。Definition 程序与本次 Hook 派发的固定 Context 分别定义。
 
-Unit 持有不可变 Effects 容器，内部 Store<Id, Effect<any, any>> 保存异构完整实例及 ID 进度。普通 get(id)／values() 返回默认 object／object 的完整 Effect，包含 data 与原 Definition；精确 Ref／Definition 查询保留已有类型证明。values／keys 返回绑定容器版本的 Query；Core 同样使用 get(id) 返回的默认 object 完整实例调用自身 Definition。Core 不解释未知 data 或 H；跨完整操作后仍读取最新实例。真实所有权保护结束中的宿主与存储，不保留通用终止 fallback；Departure 等明确历史载荷按本领域业务输入保存。
+Unit 持有不可变 Effects 容器，内部 Store<Id, Effect<any, any>> 保存异构完整实例及 ID 进度。普通 get(id)／values() 返回默认 object／object 的完整 Effect，包含 state 与原 Definition；精确 Ref／Definition 查询保留已有类型证明。values／keys 返回绑定容器版本的 Query；Core 同样使用 get(id) 返回的默认 object 完整实例调用自身 Definition。Core 不解释未知 state 或 H；跨完整操作后仍读取最新实例。真实所有权保护结束中的宿主与存储，不保留通用终止 fallback；Departure 等明确历史载荷按本领域业务输入保存。
 
 Unit.initialize 始终创建空 Effects；初始内容在宿主登记后，通过 enter 键下的 Unit Hook 调用 install。各领域在完整创建／启动与结束操作中登记／注销关系，不由普通 Unit update／replace 投影。createBattleState 建立空 Lifetime 图，不扫描预置 Unit；初始对象通过完整 add 入场。Effect.source 仅以 `Ref<Unit> | null` 表达施加者，来源存活与生命周期 Scope 分开，来源离场本身不终结 Effect。
 
-容器不接收战斗状态，也不决定生命周期阶段；完整 replace 由 Core 提交已经配对的值。Effect 容器保存宿主内 ID 进度，Action 的 nextExecutionId 保存于 Capability；Actions 按配置 ID 保存聚合条目，本轮终结只清空 execution。普通内容通过 `effects.setData(battle, ref, nextData)` 提交私有 data，Action 的 setExecutionState 通过本轮 Execution Ref 使用同样形式设置 execution.state，setState／setCooldown 通过持久 Action Ref 分别设置持久 state／Cooldown。Action Ref 由 host 与 Definition 定位，保留私有类型配对；Execution Ref 仍由 host 与本轮 execution.id 定位。两种引用读取同一聚合条目，不增加运行容器或 ID 分配。操作从最新 battle 读取当前实例，只替换指定字段；给定载荷与当前字段引用相同时不生成新 battle。Action 的 execution 为 ENDING 时不允许普通执行写入；持久字段和 Effect 的结束清理仍按各自协议更新。
+容器不接收战斗状态，也不决定生命周期阶段；完整 replace 由 Core 提交已经配对的值。Effect 容器保存宿主内 ID 进度，Action 的 nextExecutionId 保存于 Capability；Actions 按配置 ID 保存聚合条目，本轮终结只清空 execution。普通内容通过 `effects.setState(battle, ref, nextState)` 提交私有 state，Action 的 setExecutionState 通过本轮 Execution Ref 使用同样形式设置 execution.state，setState／setCooldown 通过持久 Action Ref 分别设置持久 state／Cooldown。Action Ref 由 host 与 Definition 定位，保留私有类型配对；Execution Ref 仍由 host 与本轮 execution.id 定位。两种引用读取同一聚合条目，不增加运行容器或 ID 分配。操作从最新 battle 读取当前实例，只替换指定字段；给定载荷与当前字段引用相同时不生成新 battle。Action 的 execution 为 ENDING 时不允许普通执行写入；持久字段和 Effect 的结束清理仍按各自协议更新。
 
 Projectile 的异构容器归 projectile/projectiles.ts，状态仍由 Battlefield 持有，完整 battle/projectile.ts 操作直接替换容器。Projectile 的 update 接收已经计算好的 `{ position?, state? }`；Core 从当前实例保留未提供字段，只提取允许写入的 position／state，ACTIVE 与 ENDING 均可写。Runtime 在整个 Step 的阶段回调开始前保留 Projectile Query 快照，推进时按需生成 Ref 并逐项读取最新 ACTIVE 实例，本次新建实例不参与正常推进。
 
@@ -258,7 +258,7 @@ Effect 的 expiration 选择 DURATION、DEADLINE、INFINITE 之一。ACTIVE 实�
 
 已经进入的内容程序按自身控制流继续，明确采样载荷可保留为本次函数局部值。需要槽位释放或最终通知的后继业务使用领域完成时点，不能从嵌套 end 返回推断 Finalize 已完成。Pending 只保存当前同步结算工作，不保存通用最后载荷表、恢复调度或跨 Tick 删除队列。
 
-普通私有 data 转换不自动刷新 Contribution。静态、周期采样、状态响应更新和实时只读求值分别由具体内容与 Capability 表达。Effect 覆写、Contribution 分组、Hook 执行顺序和本次业务条件仍是四件事。
+普通私有 state 转换不自动刷新 Contribution。静态、周期采样、状态响应更新和实时只读求值分别由具体内容与 Capability 表达。Effect 覆写、Contribution 分组、Hook 执行顺序和本次业务条件仍是四件事。
 
 ## 7. 同步候选范围
 
@@ -280,15 +280,15 @@ Effect 的 expiration 选择 DURATION、DEADLINE、INFINITE 之一。ACTIVE 实�
 
 以吸收伤害后触发治疗的盾程序为例，派发方传入确定类型的 self 与伤害输入，程序按以下顺序接续：
 
-1. 从当前 battle 按 typed Ref 取得 Effect，使用当前 data 局部计算吸收结果。
-2. 用 `effects.setData(battle, ref, nextData)` 提交本次盾数消耗的结果值；计算与写入之间不推进 battle。
+1. 从当前 battle 按 typed Ref 取得 Effect，使用当前 state 局部计算吸收结果。
+2. 用 `effects.setState(battle, ref, nextState)` 提交本次盾数消耗的结果值；计算与写入之间不推进 battle。
 3. 调用 Healing 的完整操作，并接续返回的 battle。
 4. 用 Effect 身份从新 battle 读取当前实例；若内容条件要求结束，调用 end 并接续其返回值。
 5. 返回最终 battle 与本次吸收结果。
 
 这不规定所有次数盾都在零层时结束，也不宣称所有盾的治疗、结束顺序相同。Effect self 已保存 typed host Ref，定位引用由实例产生，不为示例引入另一种通用 Context。
 
-`effects.setData` 只写私有 data，不自动刷新 Contribution；需要修改已登记贡献的内容显式执行对应刷新。安装／启停／绑定／结束仍由生命周期操作完成，不通过私有数据转换绕过这些规则。
+`effects.setState` 只写私有 state，不自动刷新 Contribution；需要修改已登记贡献的内容显式执行对应刷新。安装／启停／绑定／结束仍由生命周期操作完成，不通过私有数据转换绕过这些规则。
 
 Healing 中若嵌套 Damage，Damage 必须把冷却消耗、HP、致死裁决与已执行的退场请求／Effect Prepare 返回给 Healing，再返回外层盾程序。若当前已有 Lifetime 结算范围，Damage.completed 不保证目标的离场 Finalize 已完成；最外层结算器随后完成这些工作。每层报告描述本次操作，不用最终 HP 净变化反推本次伤害／治疗量。
 

@@ -48,8 +48,8 @@ interface Definition<S extends object = object> {
     readonly activeLimit: number | null;
     readonly refund: Refund | null;
     readonly cooldownOnDeploy: boolean;
-    readonly recoverOnLeave: boolean;
-    readonly increaseCostOnLeave: boolean;
+    readonly recoverOnRetreatOrDeath: boolean;
+    readonly increaseCostOnRetreatOrDeath: boolean;
     readonly deploymentRules: readonly deployment.Rule[];
     readonly unitHooks: Hooks;
     readonly initialize: (battle: BattleState) => Result<S>;
@@ -57,15 +57,17 @@ interface Definition<S extends object = object> {
 }
 ```
 
-基础属性、初始库存、固定上限及供给行为在 Card 静态配置中明确声明。cooldownOnDeploy 控制部署时启动间隔，recoverOnLeave 和 increaseCostOnLeave 分别控制普通撤退／死亡的库存恢复与费用阶段推进。手动撤退资格由 Deployable 的撤退规则决定。
+基础属性、初始库存、固定上限及供给行为在 Card 静态配置中明确声明。cooldownOnDeploy 控制部署时启动间隔，recoverOnRetreatOrDeath 和 increaseCostOnRetreatOrDeath 分别控制普通撤退／死亡的库存恢复与费用阶段推进。手动撤退资格由 Deployable 的撤退规则决定。
 
-| 配置 | cooldownOnDeploy | recoverOnLeave | increaseCostOnLeave |
+| 配置 | cooldownOnDeploy | recoverOnRetreatOrDeath | increaseCostOnRetreatOrDeath |
 | --- | --- | --- | --- |
 | 普通干员 | false | true | true |
 | 队列恢复装置 | false | true | false |
 | 有部署间隔的消耗品 | true | false | false |
 
 Card 创建为 addCard(battle, definition)，Battle 输入的 cards 保存完整静态 Definition 数组。相同 Definition 出现多次会创建多张独立 Card。入口校验静态数值配置，并在登记前执行 initialize；没有私有状态时也显式提供返回空对象的初始化程序。Card.initialize 只执行一次，Card 在部署和返手之间持续存在。
+
+Card 的完整 Definition<S> 在内容声明处建立 initialize 与 onTick 的类型配对；Deployment.Input 按数组各项保留 S，Runtime 在进入内部异构执行后才擦除，不以 UnitDefinition<any>[] 作为公开输入上下文。
 
 实例保留 definition、state、当前 stock、cooldown、recovery、costStage、贡献、动态 rules 和 unitHooks；固定上限从 Definition 读取。unitHooks 使用[统一 Hooks 集合](hook.md)，注入以后部署的实例，通过 setUnitHook／removeUnitHook 按类型化键与 ID 登记、替换和移除。Card 的修改不追溯改变已创建 Unit；这些实例仍可独立通过通用 Hook Change 修改自身登记。
 

@@ -42,14 +42,14 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         action: { initialize: (state) => actions.createActions(state, actions.create(program), actions.create(idle)) },
         card: {
             cost: 10, redeployTicks: 10, slots: 1, stock: 1, stockLimit: 1, activeLimit: 1,
-            cooldownOnDeploy: false, recoverOnLeave: true, increaseCostOnLeave: true,
+            cooldownOnDeploy: false, recoverOnRetreatOrDeath: true, increaseCostOnRetreatOrDeath: true,
             refund: { rate: 0.5, limit: "BASE_COST" }, deploymentRules: [], unitHooks: Hooks.empty(),
             initialize: (state) => ({ state, value: {} }),
         },
     };
     const enemy = {
         id: "enemy", hooks: Hooks.empty(), spatialPresence: {},
-        blockable: { volume: 1 }, layer: { type: "GROUND" },
+        blockable: { volume: 1, rules: [] }, layer: { type: "GROUND" },
     };
     let state = battle([
         { definition: { id: "support", hooks: Hooks.empty(), occupancy: { slot: "SUPPORT" } }, position: [2, 1], initial: { occupancy: { tile: [1, 2] } } },
@@ -96,7 +96,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     assert.deepEqual(get(state, owner.id).position, [2, 1]);
     assert.equal(get(state, owner.id).occupancy.pair, pair);
     assert.equal(get(state, 0).occupancy.pair, pair);
-    assert.equal(deployment.usedSlots(state), 1);
+    assert.equal(state.deployment.usedSlots, 1);
     assert.equal(state.deployment.dp, 10);
     assert.equal(cards.get(state, card).stock, 0);
     assert.equal(entries, 1);

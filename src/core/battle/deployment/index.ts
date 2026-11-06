@@ -14,15 +14,7 @@ export type { Hook, Deployed } from "./hook.js";
 
 export { setHook, removeHook } from "./hook.js";
 
-export {
-    usedSlots,
-    activeCount,
-    createRequest,
-    evaluate,
-    preview,
-    positions,
-    defaultRules,
-} from "./query.js";
+export { activeCount, createRequest, evaluate, preview, positions, defaultRules } from "./query.js";
 
 export { addCard, advance } from "./resources.js";
 

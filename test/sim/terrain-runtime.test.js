@@ -115,7 +115,7 @@ test("infection re-entry and crossing differently configured tiles keep the acti
     battle = update(battle, [{ ...current(battle), position: [1, 0] }]);
     battle = at(battle, 2);
     assert.equal(effect(battle).id, installed.id);
-    assert.equal(effect(battle).data.nextTick, 30);
+    assert.equal(effect(battle).state.nextTick, 30);
     assert.deepEqual(effect(battle).expiration, { type: "DEADLINE", tick: 65 });
     battle = through(battle, 3, 30);
     assert.equal(current(battle).vitality.hp, 920, "existing infection retains its sampled damage");
@@ -129,15 +129,15 @@ test("mire preserves its clock across adjacent tiles and weights heavy enemies",
     ], terrain.mire);
     let battle = through(configured.battle, 0, 1);
     const installed = effect(battle);
-    assert.equal(effect(battle).data.stacks, 2);
-    assert.equal(effect(battle, 1).data.stacks, 1);
+    assert.equal(effect(battle).state.stacks, 2);
+    assert.equal(effect(battle, 1).state.stacks, 1);
     assert.equal(attackSpeed(battle), 90);
     battle = update(battle, [{ ...current(battle), position: [1, 0] }]);
     battle = through(battle, 2, 30);
     assert.equal(effect(battle).id, installed.id);
-    assert.equal(effect(battle).data.stacks, 2);
+    assert.equal(effect(battle).state.stacks, 2);
     battle = at(battle, 31);
-    assert.equal(effect(battle).data.stacks, 4);
+    assert.equal(effect(battle).state.stacks, 4);
     battle = update(battle, [{ ...current(battle), position: [2, 0] }]);
     battle = through(battle, 32, 33);
     assert.equal(current(battle).effects.size, 0);
@@ -158,7 +158,7 @@ test("deepsea applies only to enemy ground contacts and controller removal clear
     const installed = effect(battle);
     battle = through(battle, 2, 12);
     assert.equal(effect(battle).id, installed.id);
-    assert.equal(effect(battle).data.nextTick, 31);
+    assert.equal(effect(battle).state.nextTick, 31);
     battle = mechanisms.remove(battle, configured.mechanism);
     assert.equal(current(battle).effects.size, 0);
     assert.equal(attackSpeed(battle), 100);
@@ -200,7 +200,7 @@ test("hole removes eligible enemies while preserving allies and airborne units",
 test("smog loses invisibility while blocking and restores it three seconds after release", () => {
     const configured = setup([terrain.smog.create({}), terrain.normal.create({})], [
         unit(0, 0, { blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 0.7 } }),
-        unit(1, 0, { allegiance: { side: "ENEMY" }, blockable: { volume: 1 } }),
+        unit(1, 0, { allegiance: { side: "ENEMY" }, blockable: { volume: 1, rules: [] } }),
     ], terrain.smog);
     let battle = at(configured.battle, 0);
     assert.equal(current(battle).targetable.restrictions.length, 1);

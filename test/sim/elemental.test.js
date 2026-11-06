@@ -25,14 +25,14 @@ const elementalReceiver = {
 test("EP-03: Burst recovery continues while absent, refills EP with the current budget and releases its output", () => {
     let state = battle([{ definition: elementalReceiver, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
-    const incoming = { target, type: "BURN", power: 1000, source: null };
+    const incoming = { target, source: null, parameters: { type: "BURN", power: 1000 } };
     const started = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming));
     const burst = started.value.application.burst;
     state = started.state;
     assert.equal(vitality.resolveResistance(state, get(state, 0)), 30);
-    assert.equal(epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming)).value.kind, "REJECTED");
-    const heal = { target, source: null, power: 100 };
-    assert.equal(epHealing.applyHealing(heal, epHealing.calculateHealing(state, heal)).value.kind, "REJECTED");
+    assert.equal(epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming)).value.type, "REJECTED");
+    const heal = { target, source: null, parameters: { power: 100 } };
+    assert.equal(epHealing.applyHealing(heal, epHealing.calculateHealing(state, heal)).value.type, "REJECTED");
     state = update(state, target, presence.disappear());
     state = effects.advance({ ...state, tick: 1 });
     assert.equal(elemental.get(state, burst).expiration.elapsed, 1);
@@ -62,7 +62,7 @@ test("EP-03: Burst recovery continues while absent, refills EP with the current 
     assert.equal(elemental.get(state, burst), undefined);
     assert.equal(vitality.resolveResistance(state, get(state, 0)), 50);
     state = update(state, target, presence.appear([0, 0]));
-    const restart = { ...incoming, power: 2000 };
+    const restart = { ...incoming, parameters: { ...incoming.parameters, power: 2000 } };
     const restarted = epDamage.applyDamage(restart, epDamage.calculateDamage(state, restart));
     state = elemental.cancel(restarted.state, restarted.value.application.burst, "CONTENT");
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(2000));
@@ -87,7 +87,7 @@ test("EP-03: zero recovery budgets keep installation output and independent stun
     };
     let state = battle([{ definition, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
-    const neural = { target, type: "NEURAL", power: 1000, source: null };
+    const neural = { target, source: null, parameters: { type: "NEURAL", power: 1000 } };
     const result = epDamage.applyDamage(neural, epDamage.calculateDamage(state, neural));
     state = result.state;
     assert.equal(get(state, 0).vitality.hp, 9000);
@@ -101,7 +101,7 @@ test("EP-03: zero recovery budgets keep installation output and independent stun
     state = locomotion.advance(state, target, goal, movement);
     assert.deepEqual(get(state, 0).position, goal.goal);
 
-    const necrosis = { target, type: "NECROSIS", power: 1000, source: null };
+    const necrosis = { target, source: null, parameters: { type: "NECROSIS", power: 1000 } };
     state = epDamage.applyDamage(necrosis, epDamage.calculateDamage(state, necrosis)).state;
     state = effects.advance({ ...state, tick: 750 });
     assert.equal(get(state, 0).vitality.hp, 9000);

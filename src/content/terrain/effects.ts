@@ -71,18 +71,18 @@ function reconcileSmog(
     }
 
     const blocked = hasBlocker(unit) && unit.blocker.blocked.length > 0;
-    let restoreAt = self.data.restoreAt;
+    let restoreAt = self.state.restoreAt;
 
     if (blocked) {
         restoreAt = null;
-    } else if (self.data.wasBlocking) {
+    } else if (self.state.wasBlocking) {
         restoreAt = battle.tick + 3 * TICKS_PER_SECOND;
     } else if (restoreAt !== null && battle.tick >= restoreAt) {
         restoreAt = null;
     }
 
-    if (blocked !== self.data.wasBlocking || restoreAt !== self.data.restoreAt) {
-        battle = effects.setData(battle, effectRef(self), {
+    if (blocked !== self.state.wasBlocking || restoreAt !== self.state.restoreAt) {
+        battle = effects.setState(battle, effectRef(self), {
             wasBlocking: blocked,
             restoreAt,
         });
@@ -172,12 +172,12 @@ export function createInfectionEffect(params: InfectionParams): Definition<Perio
         },
         onDisable: (battle, self) => changeModifiers(battle, self.host, `terrain/${self.id}`),
         onTick(battle, self) {
-            if (battle.tick < self.data.nextTick) {
+            if (battle.tick < self.state.nextTick) {
                 return battle;
             }
 
-            battle = effects.setData(battle, effectRef(self), {
-                ...self.data,
+            battle = effects.setState(battle, effectRef(self), {
+                ...self.state,
                 nextTick: battle.tick + TICKS_PER_SECOND,
             });
 
@@ -198,12 +198,12 @@ export function createDeepseaEffect(params: DeepseaParams): Definition<PeriodicS
         },
         onDisable: (battle, self) => changeModifiers(battle, self.host, `terrain/${self.id}`),
         onTick(battle, self) {
-            if (battle.tick < self.data.nextTick) {
+            if (battle.tick < self.state.nextTick) {
                 return battle;
             }
 
-            battle = effects.setData(battle, effectRef(self), {
-                ...self.data,
+            battle = effects.setState(battle, effectRef(self), {
+                ...self.state,
                 nextTick: battle.tick + TICKS_PER_SECOND,
             });
 
@@ -225,7 +225,7 @@ export function createMireEffect(params: MireParams): Definition<MireState> {
         id: "terrain/mire",
         initialize: () => ({ nextTick: 0, stacks: 0 }),
         onTick(battle, self) {
-            if (battle.tick < self.data.nextTick) {
+            if (battle.tick < self.state.nextTick) {
                 return battle;
             }
 
@@ -237,8 +237,8 @@ export function createMireEffect(params: MireParams): Definition<MireState> {
             const enemy = hasAllegiance(unit) && unit.allegiance.side === "ENEMY";
             const gain =
                 enemy && hasMass(unit) && unit.definition.massLevel >= params.massThreshold ? 2 : 1;
-            const stacks = Math.min(params.maxStacks, self.data.stacks + gain);
-            battle = effects.setData(battle, effectRef(self), {
+            const stacks = Math.min(params.maxStacks, self.state.stacks + gain);
+            battle = effects.setState(battle, effectRef(self), {
                 stacks,
                 nextTick: battle.tick + params.stackIntervalTicks,
             });

@@ -44,7 +44,7 @@ export function target(id = 20, { position = [2.25, 1], volume = 1, layer = "GRO
             hooks: Hooks.empty(),
             ...(side === undefined ? {} : { allegiance: { side } }),
             spatialPresence: {}, vitality: { maxHp: 100, defense: 0, resistance: 0 },
-            layer: { type: layer }, blockable: { volume },
+            layer: { type: layer }, blockable: { volume, rules: [] },
             ...definition,
         },
     });

@@ -10,12 +10,8 @@ export type MechanismId = number;
 
 export type Status = "ACTIVE" | "INACTIVE" | "ENDING";
 
-export interface CreationDefinition {
+export interface MechanismDefinition<S extends object = object> {
     readonly id: string;
-    readonly initialize: () => object;
-}
-
-export interface MechanismDefinition<S extends object = object> extends CreationDefinition {
     readonly initialize: () => S;
     readonly onTick?: (battle: BattleState, self: Mechanism<S>) => BattleState;
     readonly onUnitLeave?: (

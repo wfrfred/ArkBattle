@@ -99,7 +99,7 @@ export type TacticalDemoCommand =
     | "RETREAT_SOURCE"
     | "STOP_PROJECTILES"
     | "ACTIVATE_SKILL"
-    | "FINISH_SKILL";
+    | "STOP_SKILL";
 
 const STAGE_IDS = new Set([
     "act1autochess_01",
@@ -652,7 +652,7 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
             const tick = state.tick;
             let requested: readonly Command[];
 
-            if (type === "ACTIVATE_SKILL" || type === "FINISH_SKILL") {
+            if (type === "ACTIVATE_SKILL" || type === "STOP_SKILL") {
                 const source = manualSkillUnit();
                 if (source === undefined) {
                     return;

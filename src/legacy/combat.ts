@@ -1,3 +1,4 @@
+import { createPredefinedDefinition } from "../core/battle/steps/predefined.js";
 import { Hooks } from "../core/hook.js";
 import { createArknightsElementalDefinition } from "../data/arknights/elemental.js";
 import { create as createAction, createActions } from "../core/unit/action/index.js";
@@ -6,7 +7,6 @@ import * as targeting from "../core/battle/targeting/index.js";
 import { first } from "../core/battle/targeting/index.js";
 
 import { assertFiniteNumber, assertPositiveSafeInteger } from "../core/common/assert.js";
-import type { Input } from "../core/battle/index.js";
 import { create as createMap, type Map } from "../core/battlefield/map/map.js";
 import { create as createTile } from "../core/battlefield/map/tile.js";
 import { Tiles } from "../core/battlefield/map/tiles.js";
@@ -329,7 +329,7 @@ function enemyDefinition(value: unknown) {
             shape: { type: "CIRCLE", offset: [0, 0], radius: LEGACY_ENEMY_HIT_RADIUS },
         },
 
-        blockable: { volume: numberField(stats.blockCnt, "block volume") },
+        blockable: { volume: numberField(stats.blockCnt, "block volume"), rules: [] },
         attack,
         action: {
             initialize: (battle) => createActions(battle, initializeAttack),
@@ -380,22 +380,27 @@ function combatMap(options: LegacyCombatOptions): Map {
 }
 
 export function createLegacyCombatSpec(options: LegacyCombatOptions) {
-    const predefines = options.operators.map((operator, id) => ({
-        id,
-        alias: null,
-        initiallyPresent: true,
-        creation: {
-            type: "UNIT" as const,
-            definition: operatorDefinition(operator.definition),
-            position: Tile.center(operator.position),
-            initial: {
-                occupancy: {
-                    tile: operator.position,
-                    direction: operator.direction ?? ("RIGHT" as const),
+    const predefines = options.operators.map((operator, id) => {
+        const predefined = {
+            id,
+            alias: null,
+            initiallyPresent: true,
+            creation: {
+                type: "UNIT" as const,
+                definition: operatorDefinition(operator.definition),
+                position: Tile.center(operator.position),
+                initial: {
+                    occupancy: {
+                        tile: operator.position,
+                        direction: operator.direction ?? ("RIGHT" as const),
+                    },
                 },
             },
-        },
-    }));
+        };
+        createPredefinedDefinition(predefined);
+
+        return predefined;
+    });
     const spawns = options.enemies.map((enemy) => ({
         definition: enemyDefinition(enemy.definition),
         route: enemy.route,
@@ -407,11 +412,11 @@ export function createLegacyCombatSpec(options: LegacyCombatOptions) {
 
     return {
         map: combatMap(options),
-        schedule: { type: "TIMELINE", spawns },
+        schedule: { type: "TIMELINE" as const, spawns },
         predefines,
         initialMechanisms: [],
         maxTicks: options.maxTicks ?? 600,
         routeMoveMultiplier: 1,
         rngState: options.seed ?? 1,
-    } satisfies Input;
+    };
 }

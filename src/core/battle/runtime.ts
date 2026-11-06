@@ -27,7 +27,12 @@ import { initialize as initializeDeployment } from "./deployment/deployment.js";
 
 export type { Input, Command, Event, Result } from "./contract.js";
 
-export function initialize(input: Input): State {
+export function initialize<
+    CardStates extends readonly object[],
+    MechanismStates extends readonly object[],
+    PredefinedTypes extends readonly object[],
+>(input: Input<CardStates, MechanismStates, PredefinedTypes>): State;
+export function initialize(input: Input<readonly any[], readonly any[], readonly any[]>): State {
     assertPositiveSafeInteger(input.maxTicks, "battle tick budget");
     assertNonnegativeNumber(input.routeMoveMultiplier, "routeMoveMultiplier");
     assert(
@@ -155,7 +160,11 @@ export function step(battle: State, commands: readonly Command<Card<any>>[]): St
     return state;
 }
 
-export function simulateBattle(input: Input): Result {
+export function simulateBattle<
+    CardStates extends readonly object[],
+    MechanismStates extends readonly object[],
+    PredefinedTypes extends readonly object[],
+>(input: Input<CardStates, MechanismStates, PredefinedTypes>): Result {
     let battle = initialize(input);
 
     while (battle.result === null) {

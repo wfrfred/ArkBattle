@@ -39,7 +39,7 @@ test("HP Healing accepts full resources and absent patients while damage require
             id: "source", invoke(current) { calls.push("source"); return { state: current, value: undefined }; },
         })));
     const zero = { source: target, target, parameters: { power: 0, multiplier: 1 } };
-    assert.equal(hpHealing.applyHealing(zero, hpHealing.calculateHealing(state, zero)).value.kind, "REJECTED");
+    assert.equal(hpHealing.applyHealing(zero, hpHealing.calculateHealing(state, zero)).value.type, "REJECTED");
     assert.deepEqual(calls, []);
     const request = { source: target, target, parameters: { power: 25, multiplier: 2 } };
     const calculated = hpHealing.calculateHealing(state, request);
@@ -47,25 +47,25 @@ test("HP Healing accepts full resources and absent patients while damage require
     assert.equal(get(calculated.state, 0).vitality.hp, 100.5);
     assert.deepEqual(calls, []);
     const full = hpHealing.applyHealing(request, calculated);
-    assert.equal(full.value.kind, "APPLIED");
+    assert.equal(full.value.type, "APPLIED");
     assert.deepEqual(full.value.application, { hpBefore: 100.5, hpAfter: 100.5, hpGain: 0 });
     assert.deepEqual(calls, ["receive", "target", "source"]);
 
     const hpLoss = { source: null, target, parameters: {
         type: "TRUE", attack: { power: 30, multiplier: 1, addition: 0 },
     } };
-    const epLoss = { target, source: null, type: "NEURAL", power: 200 };
+    const epLoss = { target, source: null, parameters: { type: "NEURAL", power: 200 } };
     state = hpDamage.applyDamage(hpLoss, hpDamage.calculateDamage(full.state, hpLoss)).state;
     state = epDamage.applyDamage(epLoss, epDamage.calculateDamage(state, epLoss)).state;
     assert.equal(get(state, 0).vitality.hp, 70.5);
     assert.equal(get(state, 0).elemental.ep.NEURAL, 800);
 
     state = update(state, target, presence.disappear());
-    assert.equal(hpDamage.applyDamage(hpLoss, hpDamage.calculateDamage(state, hpLoss)).value.kind, "REJECTED");
-    assert.equal(epDamage.applyDamage(epLoss, epDamage.calculateDamage(state, epLoss)).value.kind, "REJECTED");
+    assert.equal(hpDamage.applyDamage(hpLoss, hpDamage.calculateDamage(state, hpLoss)).value.type, "REJECTED");
+    assert.equal(epDamage.applyDamage(epLoss, epDamage.calculateDamage(state, epLoss)).value.type, "REJECTED");
     const hpRestored = hpHealing.applyHealing(request, hpHealing.calculateHealing(state, request));
     assert.equal(hpRestored.value.application.hpGain, 30);
-    const epRequest = { target, source: null, power: 100 };
+    const epRequest = { target, source: null, parameters: { power: 100 } };
     const epRestored = epHealing.applyHealing(epRequest, epHealing.calculateHealing(hpRestored.state, epRequest));
     assert.equal(epRestored.value.application.epGain.NEURAL, 100);
     state = elemental.advance({ ...epRestored.state, tick: 1 }, target);
@@ -90,15 +90,15 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     let state = battle([{ definition: { ...elementalReceiver, hooks }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     for (const [type, power] of [["NEURAL", 200], ["EROSION", 80], ["BURN", 40]]) {
-        const incoming = { target, type, power, source: null };
+        const incoming = { target, source: null, parameters: { type, power } };
         state = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming)).state;
     }
     assert.deepEqual(get(state, 0).elemental.ep, {
         NEURAL: 800, EROSION: 920, BURN: 960, NECROSIS: 1000,
     });
-    const incoming = { target, source: null, power: 100 };
-    const zero = { ...incoming, power: 0 };
-    assert.equal(epHealing.applyHealing(zero, epHealing.calculateHealing(state, zero)).value.kind, "REJECTED");
+    const incoming = { target, source: null, parameters: { power: 100 } };
+    const zero = { ...incoming, parameters: { ...incoming.parameters, power: 0 } };
+    assert.equal(epHealing.applyHealing(zero, epHealing.calculateHealing(state, zero)).value.type, "REJECTED");
     assert.equal(healingNotices, 0);
     const restored = epHealing.applyHealing(incoming, epHealing.calculateHealing(state, incoming));
     assert.deepEqual(restored.value.application.epGain, {
@@ -111,13 +111,13 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
 
     const toppedUp = epHealing.applyHealing(incoming, epHealing.calculateHealing(state, incoming));
     const full = epHealing.applyHealing(incoming, epHealing.calculateHealing(toppedUp.state, incoming));
-    assert.equal(full.value.kind, "APPLIED");
+    assert.equal(full.value.type, "APPLIED");
     assert.deepEqual(full.value.application.epGain, elemental.elementValues(0));
     assert.equal(healingNotices, 3);
 
     const selection = {
         source: target, purposes: ["ELEMENTAL_INJURY_HEALED"],
-        filter: elementHealing({ power: 100 }), selector: first(1, () => 0),
+        filter: elementHealing({ parameters: { power: 100 } }), selector: first(1, () => 0),
     };
     assert.deepEqual(select(full.state, selection).value, []);
     state = update(full.state, target, elemental.setContribution("maxEp", {

@@ -20,7 +20,7 @@ export interface Initial<S extends object> {
     readonly source?: Ref<Unit> | null;
     readonly scopes?: readonly LifetimeScope[];
     readonly expiration?: Expiration;
-    readonly data?: S;
+    readonly state?: S;
     readonly enabled?: boolean;
 }
 
@@ -43,7 +43,7 @@ export function install<S extends object, H extends object>(
         id: unit.effects.nextId,
         host,
         definition,
-        data: initial.data ?? definition.initialize(),
+        state: initial.state ?? definition.initialize(),
         source: initial.source ?? null,
         expiration,
         enabled: initial.enabled ?? true,
@@ -75,10 +75,10 @@ export function install<S extends object, H extends object>(
     return { state: battle, value: ref };
 }
 
-export function setData<T extends Effect<any, any>>(
+export function setState<T extends Effect<any, any>>(
     battle: BattleState,
     ref: Ref<T>,
-    data: NoInfer<T["data"]>,
+    state: NoInfer<T["state"]>,
 ): BattleState {
     const unit = units.get<Unit>(battle, ref.host);
     if (unit === undefined) {
@@ -90,7 +90,7 @@ export function setData<T extends Effect<any, any>>(
         throw new RangeError(`unknown effect: ${ref.id}`);
     }
 
-    return data === self.data ? battle : replaceEffect(battle, unit, { ...self, data });
+    return state === self.state ? battle : replaceEffect(battle, unit, { ...self, state });
 }
 
 export function setExpiration<T extends Effect<any, any>>(

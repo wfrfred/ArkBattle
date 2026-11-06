@@ -128,7 +128,7 @@ test("Tick phases publish complete results while a failed or completed Tick pres
         card: {
             cost: 5, redeployTicks: 0, slots: 1,
             stock: 1, stockLimit: 1, activeLimit: 1,
-            cooldownOnDeploy: false, recoverOnLeave: true, increaseCostOnLeave: false,
+            cooldownOnDeploy: false, recoverOnRetreatOrDeath: true, increaseCostOnRetreatOrDeath: false,
             refund: null, deploymentRules: [], unitHooks: Hooks.empty(),
             initialize: (current) => ({ state: current, value: {} }),
         },

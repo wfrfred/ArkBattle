@@ -49,7 +49,7 @@ import {
     ref as effectRef,
     get,
     install,
-    setData,
+    setState,
 } from "../../../core/unit/effect/index.js";
 
 import { createNormal, createSkill as createSkillAction } from "./action.js";
@@ -93,7 +93,7 @@ export function readShield(
         return undefined;
     }
 
-    const { layers, timer } = (effect as Effect<ShieldState>).data;
+    const { layers, timer } = (effect as Effect<ShieldState>).state;
 
     return { layers, timer };
 }
@@ -137,7 +137,7 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
         id: SHIELD_ID,
         initialize: () => ({ layers: initialLayers, timer: interval, lastTick: 0 }),
         onInstall: (state, self) =>
-            setData(state, effectRef(self), { ...self.data, lastTick: state.tick }),
+            setState(state, effectRef(self), { ...self.state, lastTick: state.tick }),
         onEnable: (state, self) => {
             const unit = getCurrentUnit(state, self.host);
             if (unit === undefined) {
@@ -164,10 +164,10 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
                         ) {
                             return { state, value: pending };
                         }
-                        if (shield.data.layers > 0) {
-                            state = setData(state, ref, {
-                                ...shield.data,
-                                layers: shield.data.layers - 1,
+                        if (shield.state.layers > 0) {
+                            state = setState(state, ref, {
+                                ...shield.state,
+                                layers: shield.state.layers - 1,
                             });
                             state = healSelf(state, self.host.id, healRatio);
                             const current = getCurrentUnit(state, self.host);
@@ -217,17 +217,17 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
                   );
         },
         onTick(state, self) {
-            const elapsed = state.tick - self.data.lastTick;
+            const elapsed = state.tick - self.state.lastTick;
             if (elapsed <= 0) {
                 return state;
             }
 
-            const remaining = self.data.timer - elapsed;
+            const remaining = self.state.timer - elapsed;
             const pulses = remaining <= 0 ? Math.floor(-remaining / interval) + 1 : 0;
 
-            return setData(state, effectRef(self), {
-                ...self.data,
-                layers: Math.min(capacity, self.data.layers + pulses),
+            return setState(state, effectRef(self), {
+                ...self.state,
+                layers: Math.min(capacity, self.state.layers + pulses),
                 timer: remaining + pulses * interval,
                 lastTick: state.tick,
             });
@@ -305,8 +305,8 @@ export function create(
             stockLimit: 1,
             activeLimit: 1,
             cooldownOnDeploy: false,
-            recoverOnLeave: true,
-            increaseCostOnLeave: true,
+            recoverOnRetreatOrDeath: true,
+            increaseCostOnRetreatOrDeath: true,
             refund: { rate: 0.5, limit: "BASE_COST" },
             deploymentRules: [
                 {

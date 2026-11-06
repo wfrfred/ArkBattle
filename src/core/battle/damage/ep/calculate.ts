@@ -2,14 +2,14 @@ import { assertNonnegativeNumber } from "../../../common/assert.js";
 import type { State as BattleState, Result } from "../../state.js";
 import * as units from "../../../unit/query.js";
 import { available, resolveElementResistance } from "../../../unit/capability/elemental/query.js";
-import type { Calculated, Parameters, Request } from "./contract.js";
+import type { Calculated, Request } from "./contract.js";
 import { dispatch, sourceFormula, targetFormula, output } from "./hook.js";
 
 export function calculateDamage(
     battle: BattleState,
     request: Request,
 ): Result<Calculated | undefined> {
-    assertNonnegativeNumber(request.power, "element damage power");
+    assertNonnegativeNumber(request.parameters.power, "element damage power");
 
     const unavailable = (current: BattleState) => {
         const target = units.get(current, request.target);
@@ -21,7 +21,7 @@ export function calculateDamage(
     }
 
     const context = { target: request.target, request };
-    let parameters: Parameters = { type: request.type, power: request.power };
+    let parameters = request.parameters;
 
     for (const [owner, key] of [
         [request.source, sourceFormula],

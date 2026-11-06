@@ -259,7 +259,7 @@ export function createTerrainMechanism(
                 }
 
                 return effects.install(battle, units.ref(unit), createInfectionEffect(params), {
-                    data: { nextTick: battle.tick + TICKS_PER_SECOND },
+                    state: { nextTick: battle.tick + TICKS_PER_SECOND },
                     expiration: { type: "DEADLINE", tick: battle.tick + params.durationTicks },
                 });
             },
@@ -272,7 +272,7 @@ export function createTerrainMechanism(
             enter: (battle, unit, params, scopes) =>
                 effects.install(battle, units.ref(unit), createMireEffect(params), {
                     scopes,
-                    data: { nextTick: battle.tick, stacks: 0 },
+                    state: { nextTick: battle.tick, stacks: 0 },
                 }),
         });
     }
@@ -284,7 +284,7 @@ export function createTerrainMechanism(
             enter: (battle, unit, params, scopes) =>
                 effects.install(battle, units.ref(unit), createDeepseaEffect(params), {
                     scopes,
-                    data: { nextTick: battle.tick },
+                    state: { nextTick: battle.tick },
                 }),
         });
     }

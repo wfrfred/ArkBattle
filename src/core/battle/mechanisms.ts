@@ -1,12 +1,7 @@
 import { Store } from "../common/collection/store.js";
 import type { Query } from "../common/query.js";
 import type { Ref } from "../common/ref.js";
-import type {
-    CreationDefinition,
-    Mechanism,
-    MechanismDefinition,
-    MechanismId,
-} from "./mechanism.js";
+import type { Mechanism, MechanismDefinition, MechanismId } from "./mechanism.js";
 
 export class Mechanisms {
     static readonly #empty = new Mechanisms(Store.empty<MechanismId, Mechanism<any>>());
@@ -60,29 +55,17 @@ export class Mechanisms {
         id: MechanismId,
         definition: MechanismDefinition<S>,
         active: boolean,
-    ): { readonly mechanisms: Mechanisms; readonly reference: Ref<Mechanism<S>> };
-    create(
-        id: MechanismId,
-        definition: CreationDefinition,
-        active: boolean,
-    ): { readonly mechanisms: Mechanisms; readonly reference: Ref<Mechanism> };
-    create(
-        id: MechanismId,
-        definition: CreationDefinition,
-        active: boolean,
-    ): { readonly mechanisms: Mechanisms; readonly reference: Ref<Mechanism> } {
-        // The trusted placement preserves one Definition's initialize/callback pairing.
-        const restored = definition as MechanismDefinition;
-        const self: Mechanism = {
+    ): { readonly mechanisms: Mechanisms; readonly reference: Ref<Mechanism<S>> } {
+        const self: Mechanism<S> = {
             id,
-            definition: restored,
-            state: restored.initialize(),
+            definition,
+            state: definition.initialize(),
             status: active ? "ACTIVE" : "INACTIVE",
         };
 
         return {
             mechanisms: new Mechanisms(this.#entries.add(id, self)),
-            reference: { id } as Ref<Mechanism>,
+            reference: { id } as Ref<Mechanism<S>>,
         };
     }
 

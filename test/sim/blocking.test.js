@@ -23,7 +23,7 @@ const enemy = {
     id: "enemy",
     spatialPresence: {},
     hooks: Hooks.empty(),
-    blockable: { volume: 1 },
+    blockable: { volume: 1, rules: [] },
     layer: { type: "GROUND" },
     allegiance: { side: "ENEMY" },
 };
@@ -39,8 +39,17 @@ test("search applies pair rules, current volume, target layer and ground tile el
         },
         { definition: { ...enemy, allegiance: { side: "ALLY" } }, position: [2.1, 1] },
         { definition: { ...enemy, layer: { type: "AIR" } }, position: [2.15, 1] },
-        { definition: { ...enemy, blockable: { volume: 2 } }, position: [2.2, 1] },
-        { definition: enemy, position: [2.3, 1] },
+        { definition: { ...enemy, blockable: { volume: 2, rules: [] } }, position: [2.2, 1] },
+        {
+            definition: {
+                ...enemy,
+                blockable: {
+                    volume: 1,
+                    rules: [{ id: "cannot-be-held", allows: () => false }],
+                },
+            },
+            position: [2.3, 1],
+        },
     ]);
     const owner = units.ref(get(state, 0));
     assert.equal(get(state, 0).blocker.radius, 0.7071);
@@ -55,6 +64,13 @@ test("search applies pair rules, current volume, target layer and ground tile el
             id: "cannot-be-held",
             allows: () => false,
         }));
+    state = blocking.search(state, owner);
+    assert.deepEqual(blocking.blocked(state, owner), []);
+    state = unit.update(
+        state,
+        units.ref(get(state, 4)),
+        capability.removeBlockableRule("cannot-be-held"),
+    );
     state = blocking.search(state, owner);
     assert.deepEqual(
         blocking.blocked(state, owner).map(({ id }) => id),

@@ -2,14 +2,14 @@ import { assertNonnegativeNumber } from "../../../common/assert.js";
 import type { State as BattleState, Result } from "../../state.js";
 import * as units from "../../../unit/query.js";
 import { available } from "../../../unit/capability/elemental/query.js";
-import type { Calculated, Parameters, Request } from "./contract.js";
+import type { Calculated, Request } from "./contract.js";
 import { dispatch, sourceFormula, targetFormula, output } from "./hook.js";
 
 export function calculateHealing(
     battle: BattleState,
     request: Request,
 ): Result<Calculated | undefined> {
-    assertNonnegativeNumber(request.power, "element healing power");
+    assertNonnegativeNumber(request.parameters.power, "element healing power");
 
     const unavailable = (current: BattleState) => {
         const target = units.get(current, request.target);
@@ -21,7 +21,7 @@ export function calculateHealing(
     }
 
     const context = { target: request.target, request };
-    let parameters: Parameters = { power: request.power };
+    let parameters = request.parameters;
 
     for (const [owner, key] of [
         [request.source, sourceFormula],

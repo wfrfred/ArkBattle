@@ -58,9 +58,14 @@ interface Definition {
     readonly radius?: number;
     readonly rules: readonly Rule[];
 }
+
+interface BlockableDefinition {
+    readonly volume: number;
+    readonly rules: readonly Rule[];
+}
 ```
 
-layer 表示该 Blocker 能阻挡的目标层，与宿主自身的 Unit Layer 分开，类型由 Blocking 自己定义，不依赖 Unit Layer Capability。Definition.layer 和 rules 都必填；没有额外规则时明确写 rules: []。State.layer 与 State.radius 保存当前阻挡层及实际半径，不保存另一份派生层或通过查询临时恢复半径。
+layer 表示该 Blocker 能阻挡的目标层，与宿主自身的 Unit Layer 分开，类型由 Blocking 自己定义，不依赖 Unit Layer Capability。Blocker 的 Definition.layer 必填；两端 Definition.rules 都必填，初始化装配到各自的 rules，沿相同二元 Rule 契约求值。没有额外规则时明确写 rules: []。State.layer 与 State.radius 保存当前阻挡层及实际半径，不保存另一份派生层或通过查询临时恢复半径。
 
 Core 提供 GROUND 半径 0.7071、AIR 半径 0.8944。初始化和 setLayer 切换时均选择 definition.radius ?? DEFAULT_RADIUS[layer]；Definition 显式提供的 radius 始终覆盖默认值，切层不改变该覆盖。DEFAULT_RADIUS 是类型为 Readonly<Record<Layer, number>> 的内部共享常量，不经过公共入口导出。普通干员省略 radius；特殊对象按需声明明确半径。
 

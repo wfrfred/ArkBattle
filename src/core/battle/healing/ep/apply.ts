@@ -18,14 +18,14 @@ export function applyHealing(
         target === undefined ||
         !available(target)
     ) {
-        return { state: battle, value: { kind: "REJECTED" } };
+        return { state: battle, value: { type: "REJECTED" } };
     }
 
     const context = { target: request.target, request, calculated: healing };
     battle = dispatch(battle, request.target, beforeReceive, context, undefined).state;
 
     if (!canReceiveHealing(battle, request)) {
-        return { state: battle, value: { kind: "REJECTED" } };
+        return { state: battle, value: { type: "REJECTED" } };
     }
 
     const received: Pending = { amount: healing.amount, cancellation: null };
@@ -33,7 +33,7 @@ export function applyHealing(
     battle = dispatch(battle, request.source, beforeCommit, commit, undefined).state;
 
     if (!canReceiveHealing(battle, request)) {
-        return { state: battle, value: { kind: "UNAVAILABLE", received } };
+        return { state: battle, value: { type: "UNAVAILABLE", received } };
     }
 
     const result = commitHealing(battle, commit);
@@ -44,6 +44,6 @@ export function applyHealing(
 
     return {
         state: battle,
-        value: { kind: "APPLIED", received, application: result.value },
+        value: { type: "APPLIED", received, application: result.value },
     };
 }

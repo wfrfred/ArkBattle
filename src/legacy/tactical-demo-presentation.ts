@@ -590,7 +590,7 @@ export class TacticalDemoPresentation {
                 const remainingTicks = expiration.total - expiration.elapsed;
                 gauges.push([
                     unit.id,
-                    ELEMENT_TYPE[recovery.data.type],
+                    ELEMENT_TYPE[recovery.state.type],
                     1,
                     (state.tick + remainingTicks) / TICKS_PER_SECOND,
                     expiration.total / TICKS_PER_SECOND,

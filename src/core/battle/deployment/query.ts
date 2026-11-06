@@ -14,10 +14,6 @@ import type { DeployRequest, Quote, Rejected, Rejection } from "./request.js";
 import { advanceResources } from "./resources.js";
 import { Hooks } from "../../hook.js";
 
-export function usedSlots(battle: BattleState): number {
-    return battle.deployment.usedSlots;
-}
-
 export function activeCount(battle: BattleState, reference: Ref<Card<any>>): number {
     let count = 0;
 

@@ -246,8 +246,8 @@ const definition = mechanisms.createMechanismDefinition({
     return mechanisms.setState(battle, mechanisms.ref(self), { count: self.state.count + 1 });
   },
 });
-const placed: Pick<Input, 'initialMechanisms'> = { initialMechanisms: [{ definition }] };
-const predefined: PredefinedDefinition = {
+const placed: Pick<Input<readonly object[], readonly { count: number }[]>, 'initialMechanisms'> = { initialMechanisms: [{ definition }] };
+const predefined: PredefinedDefinition<{ count: number }> = {
   id: 0, alias: null, initiallyPresent: true, creation: { type: 'MECHANISM', definition },
 };
 const created = mechanisms.create(battle, definition);

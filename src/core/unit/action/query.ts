@@ -3,19 +3,18 @@ import { sort } from "../../common/collection.js";
 import type { Identified, Ref } from "../../common/ref.js";
 import * as units from "../query.js";
 import type { Unit } from "../unit.js";
-import { hasAction, type Action as ActionCapability } from "../capability/action/capability.js";
+import type { Action as ActionCapability } from "../capability/action/capability.js";
 import type { Action } from "./action.js";
 import { ref, type Execution } from "./execution.js";
 import type { Id as DefinitionId } from "./definition.js";
 
-export function all(battle: BattleState): readonly Ref<Execution>[] {
-    return units.all(battle).filter(hasAction).flatMap(executionRefs).toArray();
-}
-
-export function forUnit(battle: BattleState, source: Ref<Unit>): readonly Ref<Execution>[] {
+export function forUnit(
+    battle: BattleState,
+    source: Ref<Unit & ActionCapability>,
+): readonly Ref<Execution>[] {
     const unit = units.get(battle, source);
 
-    return unit !== undefined && hasAction(unit) ? executionRefs(unit) : [];
+    return unit === undefined ? [] : executionRefs(unit);
 }
 
 export function executionRefs(self: Unit & ActionCapability): readonly Ref<Execution>[] {
@@ -47,14 +46,13 @@ export function getAction<X extends Action<any, any>>(
 
 export function isCasting(
     battle: BattleState,
-    source: Ref<Unit>,
+    source: Ref<Unit & ActionCapability>,
     definitionId?: DefinitionId,
 ): boolean {
     const unit = units.get(battle, source);
 
     return (
         unit !== undefined &&
-        hasAction(unit) &&
         (definitionId === undefined
             ? unit.action.actions.values().some((self) => self.execution !== null)
             : unit.action.actions.get(definitionId)?.execution != null)

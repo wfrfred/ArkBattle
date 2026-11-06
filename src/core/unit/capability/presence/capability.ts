@@ -12,7 +12,7 @@ export interface SpatialPresence {
     readonly spatialPresence: State;
 }
 
-export function hasSpatialPresence(unit: Unit): unit is Unit & SpatialPresence {
+export function hasSpatialPresence<U extends Unit>(unit: U): unit is U & SpatialPresence {
     return "spatialPresence" in unit && "spatialPresence" in unit.definition;
 }
 

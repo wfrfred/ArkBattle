@@ -163,7 +163,7 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
     }
 
     const power = query.resolveRecoverySpeed(battle, self) / TICKS_PER_SECOND;
-    const request: HealingRequest = { target: host, source: null, power };
+    const request: HealingRequest = { target: host, source: null, parameters: { power } };
     if (!self.elemental.healingRules.every((rule) => rule.allows(battle, { self, request }))) {
         return battle;
     }
@@ -173,6 +173,10 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
 
     for (const type of ELEMENT_TYPES) {
         ep[type] = Math.min(maximum, ep[type] + power);
+    }
+
+    if (ELEMENT_TYPES.every((type) => ep[type] === self.elemental.ep[type])) {
+        return battle;
     }
 
     return replaceUnits(battle, [{ ...self, elemental: { ...self.elemental, ep } }]);

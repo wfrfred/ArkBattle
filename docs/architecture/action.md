@@ -46,11 +46,11 @@ Rule 只负责启动准入，不自动中断现有执行。眩晕等需要中断
 | --- | --- |
 | 身份与类型 | ref、executionRef、lifetime；Action、Execution、Definition、Event、StartOutcome |
 | 创建 | create、createActions |
-| 查询 | all、forUnit、getExecution、getAction、isCasting |
+| 查询 | forUnit、getExecution、getAction、isCasting |
 | 业务操作 | start、setExecutionState、setState、setCooldown、cancel、cancelForUnit、refreshCooldowns、resetCooldown、clearCooldown |
 | 调度协作 | advance，仅由调度器主动调用 |
 
-五个查询实现在 [query.ts](../../src/core/unit/action/query.ts)；启动、写回、advance 推进与终止适配统一由 [operations.ts](../../src/core/unit/action/operations.ts) 实现，执行请求和依赖调度归 [公共 Lifetime](lifetime.md)。advance 派发执行程序，并按完成结果请求本轮结束，由 index.ts 显式导出供调度器调用。lifetime 的公开协作不授予 Content 任意正常完成或推进权限。
+查询实现在 [query.ts](../../src/core/unit/action/query.ts)；启动、写回、advance 推进与终止适配统一由 [operations.ts](../../src/core/unit/action/operations.ts) 实现，执行请求和依赖调度归 [公共 Lifetime](lifetime.md)。advance 派发执行程序，并按完成结果请求本轮结束，由 index.ts 显式导出供调度器调用。lifetime 的公开协作不授予 Content 任意正常完成或推进权限。
 
 ```typescript
 import {
@@ -165,10 +165,9 @@ export declare function executionRef<X extends Execution<any, any>>(
     host: Ref<Unit & ActionCapability>,
     self: X,
 ): Ref<X>;
-export declare function all(battle: BattleState): readonly Ref<Execution>[];
 export declare function forUnit(
     battle: BattleState,
-    source: Ref<Unit>,
+    source: Ref<Unit & ActionCapability>,
 ): readonly Ref<Execution>[];
 export declare function getExecution<X extends Execution<any, any>>(
     battle: BattleState,
@@ -180,16 +179,16 @@ export declare function getAction<T extends Action<any, any>>(
 ): T | undefined;
 export declare function isCasting(
     battle: BattleState,
-    source: Ref<Unit>,
+    source: Ref<Unit & ActionCapability>,
     definitionId?: string,
 ): boolean;
 ```
 
-Execution 是按本轮身份读取的完整聚合，execution 确定非空；普通查询的 P／E 默认为 object，精确 Ref 保留具体类型。all／forUnit 返回本次已经物化的执行 Ref 候选，包含 ENDING；isCasting 同样保留 ENDING 占位，直到 execution 被清空。
+Execution 是按本轮身份读取的完整聚合，execution 确定非空；普通查询的 P／E 默认为 object，精确 Ref 保留具体类型。forUnit 返回本次已经物化的执行 Ref 候选，包含 ENDING；isCasting 同样保留 ENDING 占位，直到 execution 被清空。
 
 Actions.toJSON 直接物化容器条目并返回诊断 Snapshot 数组，以 unknown 声明持久 state 与 execution.state，Definition 只承诺诊断字段。nextExecutionId 由 Capability State 单独保存。该真实诊断表示不替代完整 Action，也不承担恢复 Definition、回调或容器的协议。
 
-BattleState 不另存全场 Action 集合。all 按 Unit 集合顺序展平当前执行，各宿主内按 execution.id 升序枚举，保留本宿主的启动顺序；不承诺全场启动顺序。保留旧 BattleState 即保留旧聚合条目、执行进度及 nextExecutionId。Definition 直接共享；执行身份使用 sourceUnitId 与宿主内 executionId；UI 行动提示只携带当前动画需要的宿主、目标与发生 Tick，详见 [Event](event.md)。
+BattleState 不另存全场 Action 集合。forUnit 按 execution.id 升序枚举当前宿主的执行，保留本宿主的启动顺序。保留旧 BattleState 即保留旧聚合条目、执行进度及 nextExecutionId。Definition 直接共享；执行身份使用 sourceUnitId 与宿主内 executionId；UI 行动提示只携带当前动画需要的宿主、目标与发生 Tick，详见 [Event](event.md)。
 
 ## 5. Capability 与冷却
 

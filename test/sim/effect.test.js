@@ -9,17 +9,17 @@ import { create as modifier } from "../../dist/core/unit/contribution/attribute.
 import { update, remove, lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
 import { scope } from "../../dist/core/lifetime/index.js";
 
-test("installation, participation, and destruction have distinct lifetimes and preserve current private data", () => {
+test("installation, participation, and destruction have distinct lifetimes and preserve current private state", () => {
     const observed = [];
     const program = {
         id: "buff",
         initialize: () => ({ activations: 0 }),
         onInstall(state, self) {
             observed.push(["install", self.status, offense.resolveAttack(state, units.get(state, self.host))]);
-            return effects.setData(state, effects.ref(self), { activations: 1 });
+            return effects.setState(state, effects.ref(self), { activations: 1 });
         },
         onEnable(state, self) {
-            observed.push(["enable", self.data.activations]);
+            observed.push(["enable", self.state.activations]);
             return update(state, self.host, offense.setAttackContribution({
                     id: "buff",
                     value: [modifier({ addition: 20 })],
@@ -27,15 +27,15 @@ test("installation, participation, and destruction have distinct lifetimes and p
         },
         onDisable(state, self) {
             state = update(state, self.host, offense.removeAttackContribution("buff"));
-            return effects.setData(state, effects.ref(self), {
-                activations: self.data.activations + 1,
+            return effects.setState(state, effects.ref(self), {
+                activations: self.state.activations + 1,
             });
         },
         onEnd(state, self) {
             observed.push([
                 "end",
                 self.status,
-                self.data.activations,
+                self.state.activations,
                 offense.resolveAttack(state, units.get(state, self.host)),
             ]);
             return state;
@@ -52,7 +52,7 @@ test("installation, participation, and destruction have distinct lifetimes and p
     assert.equal(offense.resolveAttack(state, units.get(state, source)), 120);
     state = effects.setEnabled(state, installed.value, false);
     assert.equal(offense.resolveAttack(state, units.get(state, source)), 100);
-    assert.equal(effects.get(state, installed.value).data.activations, 2);
+    assert.equal(effects.get(state, installed.value).state.activations, 2);
     state = effects.setEnabled(state, installed.value, true);
     state = effects.end(state, installed.value);
     assert.equal(effects.get(state, installed.value), undefined);
@@ -76,7 +76,7 @@ test("overall replacement uses priority and installation order; disabling the wi
         onEnable: (state, self) =>
             update(state, self.host, offense.setAttackContribution({
                     id: "overall",
-                    value: [modifier({ addition: self.data.bonus })],
+                    value: [modifier({ addition: self.state.bonus })],
                 })),
         onDisable: (state, self) =>
             update(state, self.host, offense.removeAttackContribution("overall")),
@@ -122,21 +122,21 @@ test("absolute deadlines continue while inactive and the final callback can exte
         id: "periodic",
         initialize: () => ({ ticks: 0, extended: false }),
         onTick(state, self) {
-            state = effects.setData(state, effects.ref(self), {
-                ...self.data,
-                ticks: self.data.ticks + 1,
+            state = effects.setState(state, effects.ref(self), {
+                ...self.state,
+                ticks: self.state.ticks + 1,
             });
             if (state.tick === 6) {
                 state = effects.setExpiration(state, effects.ref(self), { type: "DEADLINE", tick: 9 });
-                state = effects.setData(state, effects.ref(self), {
-                    ticks: self.data.ticks + 1,
+                state = effects.setState(state, effects.ref(self), {
+                    ticks: self.state.ticks + 1,
                     extended: true,
                 });
             }
             return state;
         },
         onEnd(state, self, reason) {
-            ended.push({ id: self.definition.id, tick: state.tick, data: self.data, reason });
+            ended.push({ id: self.definition.id, tick: state.tick, state: self.state, reason });
             return state;
         },
     };
@@ -149,18 +149,18 @@ test("absolute deadlines continue while inactive and the final callback can exte
     state = effects.advance(paused.state);
     state = effects.setEnabled({ ...state, tick: 1 }, active.value, false);
     for (let tick = 1; tick <= 4; tick++) state = effects.advance({ ...state, tick });
-    assert.equal(effects.get(state, active.value).data.ticks, 1);
+    assert.equal(effects.get(state, active.value).state.ticks, 1);
     assert.equal(effects.get(state, paused.value), undefined);
     state = effects.setEnabled({ ...state, tick: 5 }, active.value, true);
     state = effects.advance(state);
     state = effects.advance({ ...state, tick: 6 });
     assert.deepEqual(effects.get(state, active.value).expiration, { type: "DEADLINE", tick: 9 });
-    assert.equal(effects.get(state, active.value).data.ticks, 3);
+    assert.equal(effects.get(state, active.value).state.ticks, 3);
     for (let tick = 7; tick <= 9; tick++) state = effects.advance({ ...state, tick });
     assert.equal(effects.get(state, active.value), undefined);
     assert.deepEqual(ended, [
-        { id: "inactive", tick: 3, data: { ticks: 0, extended: false }, reason: "EXPIRED" },
-        { id: "periodic", tick: 9, data: { ticks: 6, extended: true }, reason: "EXPIRED" },
+        { id: "inactive", tick: 3, state: { ticks: 0, extended: false }, reason: "EXPIRED" },
+        { id: "periodic", tick: 9, state: { ticks: 6, extended: true }, reason: "EXPIRED" },
     ]);
 });
 
@@ -174,13 +174,13 @@ test("zero expiration runs installation and cleanup; installation may replace th
         initialize: () => ({ installed: false }),
         onInstall(state, self) {
             observed.push("install");
-            return effects.setData(state, effects.ref(self), { installed: true });
+            return effects.setState(state, effects.ref(self), { installed: true });
         },
         onEnable: () => assert.fail("expired installation must not enable"),
         onTick: () => assert.fail("expired installation must not tick"),
         onDisable: () => assert.fail("an instance that never enabled must not disable"),
         onEnd(state, self) {
-            assert.equal(self.data.installed, true);
+            assert.equal(self.state.installed, true);
             observed.push("end");
             return state;
         },

@@ -44,7 +44,7 @@ function receiverBattle(receiver = 'CHARACTER', overrides = {}, elementOptions =
   return createBattle([{ position: [1, 0], definition: definition(receiver, overrides, elementOptions) }]);
 }
 function element(work, type, tick = work.tick, power = 1000) {
-  const request = { target: unitRef(getUnit(work, 0)), type, power, source: null };
+  const request = { target: unitRef(getUnit(work, 0)), source: null, parameters: { type, power } };
   return epDamage.applyDamage(request, epDamage.calculateDamage({ ...work, tick }, request));
 }
 function advance(work, tick) {
@@ -65,7 +65,7 @@ function near(actual, expected) { assert.ok(Math.abs(actual - expected) < 1e-8, 
 test('elemental execution: burn lowers resistance before its immediate damage and withdraws the reduction on recovery', () => {
   const original = receiverBattle();
   const result = element(original, 'BURN');
-  assert.equal(result.value.kind, 'APPLIED');
+  assert.equal(result.value.type, 'APPLIED');
   assert.equal(getBurst(result.state, result.value.application.burst).source, null);
   assert.equal(getUnit(result.state, 0).vitality.hp, 99160);
   assert.equal(resolveResistance(result.state, getUnit(result.state, 0)), 30);
@@ -190,7 +190,7 @@ function battle(receiver, type, { moving = false } = {}) {
     action: actionCapability(casterAttack) });
   const victim = definition(receiver, { hooks: Hooks.empty(), id: 'victim', allegiance: { side: 'ENEMY' },
     action: actionCapability(action(1)),
-    ...(moving ? { locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0.001, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } }, blockable: { volume: 1 } } : {}) });
+    ...(moving ? { locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0.001, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } }, blockable: { volume: 1, rules: [] } } : {}) });
   const keepOpen = { hooks: Hooks.empty(), id: 'future', vitality: { maxHp: 1, defense: 0, resistance: 0 }, locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } } };
   const runtime = createBattle([
     { definition: caster, position: [0, 0] },
@@ -209,7 +209,7 @@ test('elemental runtime: Unit and Effect tick triggers preserve every necrosis p
       id: 'burst-trigger', initialize: () => ({}),
       onTick(state, self) {
         state = effects.end(state, effects.ref(self));
-        const request = { target: self.host, type: 'NECROSIS', power: 1000, source: null };
+        const request = { target: self.host, source: null, parameters: { type: 'NECROSIS', power: 1000 } };
         return epDamage.applyDamage(request, epDamage.calculateDamage(state, request)).state;
       },
     };
@@ -219,7 +219,7 @@ test('elemental runtime: Unit and Effect tick triggers preserve every necrosis p
         id: 'burst-trigger',
         invoke(state, self) {
           state = applyUnitChanges(state, unitRef(self), unitLifecycle.removeHook(unitLifecycle.tick, 'burst-trigger'));
-          const request = { target: unitRef(self), type: 'NECROSIS', power: 1000, source: null };
+          const request = { target: unitRef(self), source: null, parameters: { type: 'NECROSIS', power: 1000 } };
           return { state: epDamage.applyDamage(request, epDamage.calculateDamage(state, request)).state, value: undefined };
         },
       }) : Hooks.empty().set(unitLifecycle.enter, {
@@ -273,7 +273,7 @@ test('elemental runtime: unused neural paralysis survives recovery and the next 
   events.push(...(runtime = stepBattle(runtime, [])).events);
   assert.equal(events.filter(event => event.type === 'ACTION_CANCELLED' && event.sourceUnitId === 1).length, 1);
 
-  const request = { target: unitRef(victim(runtime)), type: 'NEURAL', power: 1000, source: null };
+  const request = { target: unitRef(victim(runtime)), source: null, parameters: { type: 'NEURAL', power: 1000 } };
   runtime = epDamage.applyDamage(request, epDamage.calculateDamage(runtime, request)).state;
   while (runtime.tick <= 365) events.push(...(runtime = stepBattle(runtime, [])).events);
   const cancelled = events.filter(event => event.type === 'ACTION_CANCELLED' && event.sourceUnitId === 1);

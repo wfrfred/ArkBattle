@@ -18,9 +18,9 @@ export interface Definition {
     readonly slotLimit: number | null;
 }
 
-export interface Input {
+export interface Input<States extends readonly object[] = readonly object[]> {
     readonly definition: Definition;
-    readonly cards: readonly card.UnitDefinition<any>[];
+    readonly cards: { readonly [K in keyof States]: card.UnitDefinition<States[K]> };
 }
 
 export interface State {

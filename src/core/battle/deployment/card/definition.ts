@@ -16,11 +16,11 @@ export interface Definition<S extends object = object> {
     readonly stockLimit: number | null;
     readonly activeLimit: number | null;
     readonly cooldownOnDeploy: boolean;
-    readonly recoverOnLeave: boolean;
-    readonly increaseCostOnLeave: boolean;
+    readonly recoverOnRetreatOrDeath: boolean;
+    readonly increaseCostOnRetreatOrDeath: boolean;
     readonly refund: Refund | null;
     readonly deploymentRules: readonly Rule[];
     readonly unitHooks: Hooks;
     readonly initialize: (battle: BattleState) => Result<S>;
-    readonly onTick?: (battle: BattleState, self: Card<S>) => BattleState;
+    readonly onTick?: (battle: BattleState, self: Card<NoInfer<S>>) => BattleState;
 }

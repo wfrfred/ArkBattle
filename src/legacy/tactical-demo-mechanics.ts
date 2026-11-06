@@ -1,8 +1,8 @@
+import { createPredefinedDefinition } from "../core/battle/steps/predefined.js";
 import { create as createAction, createActions } from "../core/unit/action/index.js";
 import { create as createSkill } from "../core/unit/skill/index.js";
 import type { Definitions as CapabilityDefinitions } from "../core/unit/capability/catalog.js";
 import { create as createAttack } from "../content/actions/attack.js";
-import type { Input } from "../core/battle/index.js";
 
 import type { Map } from "../core/battlefield/map/map.js";
 import { TICKS_PER_SECOND } from "../core/tick.js";
@@ -35,10 +35,7 @@ export function createTacticalMechanicsDemo(
     seed: number,
     scenario: TacticalMechanicsScenario,
     rawSkill?: unknown,
-): {
-    readonly input: Input;
-    readonly elementType: ElementType | null;
-} {
+) {
     const base = createTacticalCombatDemoSpec(map, route, data, seed, "PROJECTILE");
     const predefined = base.predefines[0]!;
     const source = predefined.creation;
@@ -110,9 +107,14 @@ export function createTacticalMechanicsDemo(
     return {
         input: {
             ...base,
-            predefines: [{ ...predefined, creation: { ...source, definition } }],
+            predefines: [
+                createPredefinedDefinition({
+                    ...predefined,
+                    creation: { ...source, definition },
+                }),
+            ],
             schedule: {
-                type: "TIMELINE",
+                type: "TIMELINE" as const,
                 spawns: [{ ...spawn, definition: target, route: targetRoute, tick: 0 }],
             },
             maxTicks,

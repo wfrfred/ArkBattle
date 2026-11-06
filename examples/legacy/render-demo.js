@@ -111,7 +111,7 @@ async function main() {
   $('stop-projectiles').onclick = () => { setPlay(false); current?.command?.('STOP_PROJECTILES'); };
   $('next-skill-ready').onclick = () => { setPlay(false); current?.nextSkillReady?.(); };
   $('activate-skill').onclick = () => { setPlay(false); current?.command?.('ACTIVATE_SKILL'); };
-  $('finish-skill').onclick = () => { setPlay(false); current?.command?.('FINISH_SKILL'); };
+  $('stop-skill').onclick = () => { setPlay(false); current?.command?.('STOP_SKILL'); };
   function contentConfiguration() {
     const module = $('content-module').value;
     return { mudrock: {
@@ -194,7 +194,7 @@ async function main() {
     }
     const selectedStage = core && !stageIds.includes(requestedStage) ? stageIds[0] : requestedStage;
     if (core) stageSel.value = selectedStage;
-    for (const id of ['step', 'reset', 'appear-crates', 'remove-crates', 'trigger-dragon', 'next-release', 'retreat-source', 'stop-projectiles', 'next-skill-ready', 'activate-skill', 'finish-skill']) $(id).disabled = true;
+    for (const id of ['step', 'reset', 'appear-crates', 'remove-crates', 'trigger-dragon', 'next-release', 'retreat-source', 'stop-projectiles', 'next-skill-ready', 'activate-skill', 'stop-skill']) $(id).disabled = true;
     sceneLoad = sceneLoad.catch(() => {}).then(async () => {
       if (request !== sceneRequest) return current;
       try { current?.stop?.(); } catch { /* ignore */ }
@@ -231,7 +231,7 @@ async function main() {
       $('content-controls').hidden = !content;
       $('next-skill-ready').textContent = content ? '玫兰莎充满 SP' : '充满 SP';
       $('activate-skill').textContent = content ? '玫兰莎释放技能' : '释放技能';
-      $('finish-skill').textContent = content ? '玫兰莎结束技能' : '结束技能';
+      $('stop-skill').textContent = content ? '玫兰莎停止技能' : '停止技能';
       if (projectiles) $('core-scope').textContent = `地灵普攻弹道测试：蓄力 6 tick，发射后 ATK +60；${s.combatScenario === 'PROJECTILE_CACHED' ? '伤害读发射缓存' : '伤害读当前来源 ATK，缺席则回退缓存'}，命中附着 45 tick 禁疗标记`;
       if (s.combatScenario === 'SKILL') $('core-scope').textContent = '地灵 · 攻击力强化β：自动回复 37 SP，手动释放，攻击力 +35%，持续 25 秒；固定靶用于观察技能前后的数值。';
       if (content) $('core-scope').textContent = '泥岩护盾与二技能自动触发，玫兰莎一技能手动释放；敌人为猎狗和弩手。泥岩配置修改后应用并重置。';
@@ -300,7 +300,7 @@ async function main() {
         if (skill.remainingAmmo !== undefined && skill.remainingAmmo !== null) $('stats').textContent += `  弹药 ${skill.remainingAmmo}`;
         $('next-skill-ready').disabled = core.result !== null || skill.active || skill.ready;
         $('activate-skill').disabled = core.result !== null || skill.active || !skill.ready;
-        $('finish-skill').disabled = core.result !== null || !skill.active;
+        $('stop-skill').disabled = core.result !== null || !skill.active;
       }
       if (core.content) {
         for (const [key, name] of [['mudrock', '泥岩'], ['melantha', '玫兰莎']]) {

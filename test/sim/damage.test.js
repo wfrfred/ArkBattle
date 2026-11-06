@@ -39,7 +39,7 @@ function elementalDefinition(config = {}, hooks = Hooks.empty()) {
 }
 
 function injuryRequest(target, type, power, source = null) {
-    return { target, type, power, source };
+    return { target, source, parameters: { type, power } };
 }
 
 test("HP-01: formulas use the calculated type and sampled defenses without beginning reception", () => {
@@ -227,7 +227,7 @@ test("APPLY-01: invincibility installed before reception rejects HIT recovery un
     );
     const request = damageRequest(source, target, 30);
     const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
-    assert.equal(result.value.kind, "REJECTED");
+    assert.equal(result.value.type, "REJECTED");
     assert.equal(get(result.state, 1).vitality.hp, 100);
     assert.equal(get(result.state, 1).skill.sp.value, 0);
     assert.deepEqual(receivedSp, []);
@@ -414,7 +414,7 @@ test("APPLY-01: cancellation retains recovery and reflection but skips the origi
     );
     const request = damageRequest(source, target, 20);
     const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
-    assert.deepEqual(result.value, { kind: "CANCELLED", received: { amount: 20, cancellation: { reason: "EVADE" } } });
+    assert.deepEqual(result.value, { type: "CANCELLED", received: { amount: 20, cancellation: { reason: "EVADE" } } });
     assert.equal(get(result.state, 0).vitality.hp, 56);
     assert.equal(get(result.state, 1).vitality.hp, 100);
 });
@@ -461,12 +461,12 @@ test("APPLY-02: HP zero output rejects while full absorption still commits and n
         }),
     );
     const zeroDamage = damageRequest(source, target, 0);
-    assert.equal(hpDamage.applyDamage(zeroDamage, hpDamage.calculateDamage(state, zeroDamage)).value.kind, "REJECTED");
+    assert.equal(hpDamage.applyDamage(zeroDamage, hpDamage.calculateDamage(state, zeroDamage)).value.type, "REJECTED");
     assert.deepEqual(calls, ["output"]);
     calls.length = 0;
     const positiveDamage = damageRequest(source, target, 10);
     const absorbed = hpDamage.applyDamage(positiveDamage, hpDamage.calculateDamage(state, positiveDamage));
-    assert.equal(absorbed.value.kind, "APPLIED");
+    assert.equal(absorbed.value.type, "APPLIED");
     assert.equal(absorbed.value.application.hpLoss, 0);
     assert.deepEqual(calls, ["output", "targetApplied", "sourceApplied"]);
 });
@@ -478,7 +478,7 @@ test("HP-03: lethal HP remains present and blocking through both Applied roles, 
             id: "guard", hooks: Hooks.empty(), vitality: { maxHp: 40, defense: 0, resistance: 0 },
             blocker: { capacity: 1, layer: "GROUND", rules: [] },
         }, position: [2, 1] },
-        { definition: { id: "enemy", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1 } }, position: [2.2, 1] },
+        { definition: { id: "enemy", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1, rules: [] } }, position: [2.2, 1] },
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
@@ -502,7 +502,7 @@ test("HP-03: lethal HP remains present and blocking through both Applied roles, 
                     recovery,
                     hpHealing.calculateHealing(current, recovery),
                 );
-                assert.equal(attempted.value.kind, "REJECTED");
+                assert.equal(attempted.value.type, "REJECTED");
                 return { state: attempted.state, value: undefined };
             },
         }),
@@ -555,7 +555,7 @@ test("EP-01: calculated resistance and element survive later state changes; HP e
     const incoming = injuryRequest(target, "BURN", 100, source);
     const calculated = epDamage.calculateDamage(state, incoming);
     assert.deepEqual(calculated.value, { type: "NEURAL", amount: 120 });
-    assert.equal(incoming.type, "BURN");
+    assert.equal(incoming.parameters.type, "BURN");
     assert.deepEqual(get(calculated.state, 0).elemental.ep, elemental.elementValues(1000));
     state = update(calculated.state, target, units.compose(elemental.setContribution("elementResistance", {
             id: "changed-after-calculation", value: [attribute.create({ finalScaler: 0 })],
@@ -579,14 +579,14 @@ test("EP-01: calculated resistance and element survive later state changes; HP e
     assert.equal(get(hp.state, 0).elemental.ep.NEURAL, 830);
 
     const zero = injuryRequest(target, "NEURAL", 0);
-    assert.equal(epDamage.applyDamage(zero, epDamage.calculateDamage(hp.state, zero)).value.kind, "REJECTED");
+    assert.equal(epDamage.applyDamage(zero, epDamage.calculateDamage(hp.state, zero)).value.type, "REJECTED");
     const protectedState = update(hp.state, target, elemental.setHook("damageReceiving", {
         id: "full-barrier",
         invoke: (current, _context, pending) => ({ state: current, value: { ...pending, amount: 0 } }),
     }));
     const positive = injuryRequest(target, "NEURAL", 100);
     const absorbed = epDamage.applyDamage(positive, epDamage.calculateDamage(protectedState, positive));
-    assert.equal(absorbed.value.kind, "APPLIED");
+    assert.equal(absorbed.value.type, "APPLIED");
     assert.equal(absorbed.value.application.epLoss, 0);
     assert.equal(get(absorbed.state, 0).elemental.ep.NEURAL, 830);
 });

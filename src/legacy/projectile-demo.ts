@@ -34,10 +34,11 @@ import { healFree } from "../core/effects/protection.js";
 import { hasVitality } from "../core/unit/capability/vitality/index.js";
 import { hasTargetable } from "../core/unit/capability/targetable/capability.js";
 
-export function createTacticalProjectileDemo(
-    input: Input,
-    cachedOnly = false,
-): { readonly input: Input } {
+export function createTacticalProjectileDemo<
+    CardStates extends readonly object[],
+    MechanismStates extends readonly object[],
+    PredefinedTypes extends readonly object[],
+>(input: Input<CardStates, MechanismStates, PredefinedTypes>, cachedOnly = false) {
     const marker = { ...healFree, id: "contact-mark" };
     const boost: Definition<object, Offense> = {
         id: "post-launch-attack-boost",

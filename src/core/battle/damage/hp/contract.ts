@@ -69,11 +69,11 @@ export function cancel<C extends Cancellation | null>(
 export type Application = DamageApplication;
 
 export type Outcome =
-    | { readonly kind: "REJECTED" }
-    | { readonly kind: "CANCELLED"; readonly received: Pending }
-    | { readonly kind: "UNAVAILABLE"; readonly received: Pending }
+    | { readonly type: "REJECTED" }
+    | { readonly type: "CANCELLED"; readonly received: Pending }
+    | { readonly type: "UNAVAILABLE"; readonly received: Pending }
     | {
-          readonly kind: "APPLIED";
+          readonly type: "APPLIED";
           readonly received: Pending;
           readonly application: Application;
       };

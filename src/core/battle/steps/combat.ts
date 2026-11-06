@@ -31,7 +31,7 @@ export function advance(battle: BattleState): BattleState {
         }
     }
 
-    for (const candidate of candidates) {
+    for (const candidate of candidates.filter(hasAction)) {
         const source = units.ref(candidate);
 
         for (const reference of forUnit(initial, source)) {
@@ -39,12 +39,7 @@ export function advance(battle: BattleState): BattleState {
         }
 
         const unit = units.get(battle, source);
-        if (
-            unit === undefined ||
-            !hasAction(unit) ||
-            unit.lifecycle !== "PRESENT" ||
-            !isSpatiallyPresent(unit)
-        ) {
+        if (unit?.lifecycle !== "PRESENT" || !isSpatiallyPresent(unit)) {
             continue;
         }
 

@@ -10,7 +10,7 @@ export function createCardDefinition({
     cost = 0, redeployTicks = 0, slots = 0,
     stock = 1, stockLimit = 1, activeLimit = 1,
     refund = { rate: 0.5, limit: "BASE_COST" },
-    cooldownOnDeploy = false, recoverOnLeave = true, increaseCostOnLeave = true,
+    cooldownOnDeploy = false, recoverOnRetreatOrDeath = true, increaseCostOnRetreatOrDeath = true,
     placement, buildableType, advancedBuildableMask = 1,
     allowedSiteConditions, deploymentRules = [], unitHooks = Hooks.empty(),
     initialize = battle => ({ state: battle, value: {} }),
@@ -23,7 +23,7 @@ export function createCardDefinition({
 
     return {
         cost, redeployTicks, slots, stock, stockLimit, activeLimit, refund,
-        cooldownOnDeploy, recoverOnLeave, increaseCostOnLeave,
+        cooldownOnDeploy, recoverOnRetreatOrDeath, increaseCostOnRetreatOrDeath,
         deploymentRules: [{
             id: "deployment/site",
             allows(battle, { request }) {

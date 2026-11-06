@@ -1,3 +1,4 @@
+import { createPredefinedDefinition } from "../core/battle/steps/predefined.js";
 import type { Input } from "../core/battle/index.js";
 import type { Map } from "../core/battlefield/map/map.js";
 import { createInput, type Input as RouteInput } from "../core/battle/creation/route.js";
@@ -125,11 +126,11 @@ export function createTacticalContentDemo(
         });
     }
 
-    const input: Input = {
+    const input = {
         map,
-        schedule: { type: "TIMELINE", spawns },
+        schedule: { type: "TIMELINE" as const, spawns },
         predefines: [
-            {
+            createPredefinedDefinition({
                 id: 0,
                 alias: null,
                 initiallyPresent: true,
@@ -141,8 +142,8 @@ export function createTacticalContentDemo(
                         occupancy: { tile: [5, 6], direction: "RIGHT" },
                     },
                 },
-            },
-            {
+            }),
+            createPredefinedDefinition({
                 id: 1,
                 alias: null,
                 initiallyPresent: true,
@@ -154,7 +155,7 @@ export function createTacticalContentDemo(
                         occupancy: { tile: [3, 8], direction: "RIGHT" },
                     },
                 },
-            },
+            }),
         ],
         initialMechanisms: [],
         maxTicks: 80 * TICKS_PER_SECOND,

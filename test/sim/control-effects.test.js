@@ -46,7 +46,7 @@ test("stun interrupts the current action, suppresses four capabilities, and with
     const content = actor((state, _source, _self, end) => { endings.push(end); return state; });
     let state = battle([
         { definition: content.definition, position: [1, 1] },
-        { definition: { id: "blockable", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1 } }, position: [1.5, 1] },
+        { definition: { id: "blockable", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1, rules: [] } }, position: [1.5, 1] },
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
