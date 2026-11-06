@@ -2,9 +2,7 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import * as contribution from "../../contribution/contribution.js";
 import type { Unit } from "../../unit.js";
-import type { Ref } from "../../../common/ref.js";
-import type { Blockable } from "./blockable.js";
-import type { Hook } from "./contract.js";
+import type { BlockedRef, Hook } from "./contract.js";
 import type { Rule } from "./rule.js";
 import { prepare } from "./blocker-operations.js";
 import { Hooks as UnitHooks } from "../../../hook.js";
@@ -32,7 +30,7 @@ export interface Hooks {
 }
 
 export interface State extends Hooks {
-    readonly blocked: readonly Ref<Unit & Blockable>[];
+    readonly blocked: readonly BlockedRef[];
     readonly capacity: readonly contribution.Contribution<readonly Modifier[]>[];
     readonly layer: Layer;
     readonly radius: number;

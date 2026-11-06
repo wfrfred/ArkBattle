@@ -32,7 +32,8 @@ import * as actionCapability from ${module("unit/capability/action/index")};
 import { createRegistrationOperations } from ${module("unit/registration")};
 import type { Offense } from ${module("unit/capability/offense/index")};
 import { setAttackContribution, resolveAttack } from ${module("unit/capability/offense/index")};
-import { setLayer } from ${module("unit/capability/blocking/index")};
+import { setLayer, type Blocker, type Blockable, type BlockedRef, type Relation, type Hook as BlockingHook } from ${module("unit/capability/blocking/index")};
+import * as blocking from ${module("battle/blocking/index")};
 declare const battle: State;
 const outputKey = key<Hook<{ amount: number }, number>>('output');
 const textKey = key<Hook<{ text: string }, number>>('text');
@@ -111,6 +112,23 @@ effects.setExpiration(battle, burstRef, { ...burst.expiration, elapsed: burst.ex
 // @ts-expect-error writes retain the Burst identity's duration contract.
 effects.setExpiration(battle, burstRef, { type: 'DEADLINE', tick: 10 });
 const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'bare', hooks: Hooks.empty() } }).value;
+declare const elementalUnit: Unit & elemental.Elemental;
+elemental.available(elementalUnit);
+// @ts-expect-error Elemental eligibility requires its resource capability.
+elemental.available(bare);
+declare const blockerRef: Ref<Unit & Blocker>;
+declare const blockableRef: Ref<Unit & Blockable>;
+const blockedRef: BlockedRef = blocking.blocked(battle, blockerRef)[0]!;
+const targetRef: Ref<Unit & Blockable> = blockedRef;
+const relation: Relation = { blocker: blockerRef, blocked: blockedRef };
+blocking.release(battle, [relation]);
+blocking.maintain(battle, blocking.relations(battle, blockerRef)[0]!);
+// @ts-expect-error an ordinary Unit Ref does not identify a Blocking relation round.
+const unpaired: Relation = { blocker: blockerRef, blocked: blockableRef };
+const relationshipHook: BlockingHook<Unit & Blocker> = {
+    id: 'relationship',
+    invoke: (state, context) => ({ state: blocking.release(state, [context.relation]), value: undefined }),
+};
 actions.cancelForUnit(battle, reference, 'SOURCE_ABSENT');
 actions.forUnit(battle, reference);
 actions.isCasting(battle, reference);

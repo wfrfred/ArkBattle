@@ -20,7 +20,7 @@ import { hasVitality } from "../../unit/capability/vitality/capability.js";
 import * as units from "../../unit/query.js";
 import type { Id, Unit } from "../../unit/unit.js";
 import type { State as BattleState } from "../state.js";
-import type { Relation } from "../../unit/capability/blocking/contract.js";
+import type { BlockedRef, Relation } from "../../unit/capability/blocking/contract.js";
 import * as hooks from "./hook.js";
 import { relations, usedCapacity } from "./query.js";
 import { calculate as calculatePosition } from "./position.js";
@@ -163,7 +163,7 @@ export function acquire(
         return battle;
     }
 
-    const reference = units.ref(target);
+    const reference = units.ref(target) as BlockedRef;
     const to = calculatePosition(
         blocker.position,
         target.position,

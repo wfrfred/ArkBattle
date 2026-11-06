@@ -59,7 +59,7 @@ function resolve(battle: BattleState, self: Unit & Elemental, parameter: Paramet
     return Math.max(0, value);
 }
 
-export function available(self: Unit): boolean {
+export function available(self: Unit & Elemental): boolean {
     return self.lifecycle === "PRESENT" && (!hasVitality(self) || self.vitality.hp > 0);
 }
 

@@ -105,7 +105,7 @@ Core 不提供干员或敌人 Archetype 层；内容直接组合 Unit Definition
 
 ## 构造、校验与命名
 
-合法构造入口建立 Definition／State 配对、能力依赖和身份约束；登记后的内部操作信任这些不变量，不把内容私有状态重新视作未知 JSON，也不重复检查 Typed Ref 已证明的能力。初值与写回遵守所属领域的职责，不能绕过领域操作，靠任意 State 覆写补出缺失能力或部署事实。Deployment 在 Unit 初始化后、登记前写入本次部署事实属于合法的领域创建流程。测试夹具同样遵守这些边界。
+合法构造入口建立 Definition／State 配对、能力依赖和身份约束；登记后的内部操作信任这些不变量，不把内容私有状态重新视作未知 JSON，也不重复检查 Typed Ref 已证明的能力。初值与写回遵守所属领域的职责，不能绕过领域操作，靠任意 State 覆写补出缺失能力或部署事实。Deployment 在 Unit 初始化后、登记前调用 Deployable.setDeployment 构造本次部署事实，保留完整宿主类型；构造阶段同样通过状态所属领域的接口写入。测试夹具同样遵守这些边界。
 
 - Capability Definition 由 Content 直接构造，必要的领域不变量校验放在 initialize。Action 的 Definition 提供 initialize 与可选 select；Elemental 的标准爆发由 Core 的具体 Effect 实现，Data 选择具体实现并绑定数值，能力初始化校验基础数值和各型爆发时长。几何构造等局部值转换由内容按需调用。
 - Capability.initialize 使用当前 battle 和正在装配的 Unit，读取自身 Definition，返回 Result<U & Capability>；内部纯值模型保留自己的自然初始化参数。
@@ -170,7 +170,7 @@ capacity／volume 由 resolveCapacity／resolveVolume 求值。Blocking 容量 M
 
 volume 使用 Contribution<number>，筛选互斥胜者后累加整数追加量。项目约定 volume 下限为 1，基础值要求正整数；贡献将占用数降到 0 或负值时仍占用 1，不借零占用表达不可被阻挡。
 
-公共 Relation、Context、Hook、Key 归 unit/capability/blocking/contract.ts，与模型及 Change 工厂一起由 capability/blocking/index.ts 导出。blocker-operations.ts／blockable-operations.ts 提供 setLayer、两端 Rule／Hook、容量／volume 的工厂，只接收业务输入，返回要求相应宿主能力的 Change。blocker.ts／blockable.ts 保留模型与 initialize／resolve／has，Blockable 模型还提供 stableBlockPosition 查询；Catalog 和查询直接依赖模型；公共入口不增加包装。宿主存在性在 Unit.update 应用前统一确认，允许存储中的 LEAVING 对象清理。battle/blocking/index.ts 提供关系查询及 acquire／release／maintain／maintainAll／search／advance，不重复导出 setLayer。relations(battle, ref?) 支持直接读取局部关联并保留原 Ref；release 接收 readonly Relation[]，maintain 接收单条 Relation，均保留双方 Typed Ref 与原关系身份。内部共享的 settleCapacity 不经公共入口导出。
+公共 BlockedRef、Relation、Context、Hook、Key 归 unit/capability/blocking/contract.ts，与模型及 Change 工厂一起由 capability/blocking/index.ts 导出。blocker-operations.ts／blockable-operations.ts 提供 setLayer、两端 Rule／Hook、容量／volume 的工厂，只接收业务输入，返回要求相应宿主能力的 Change。blocker.ts／blockable.ts 保留模型与 initialize／resolve／has，Blockable 模型还提供 stableBlockPosition 查询；Catalog 和查询直接依赖模型；公共入口不增加包装。宿主存在性在 Unit.update 应用前统一确认，允许存储中的 LEAVING 对象清理。battle/blocking/index.ts 提供关系查询及 acquire／release／maintain／maintainAll／search／advance，不重复导出 setLayer。relations(battle, ref?) 支持直接读取局部关联并保留原 BlockedRef 句柄；release 接收 readonly Relation[]，maintain 接收单条 Relation，普通 Unit Ref 不能代替该轮关联身份。内部共享的 settleCapacity 不经公共入口导出。
 
 两端共享 unit/capability/blocking/rule.ts 的 Rule，经 capability/blocking/index.ts 导出。唯一签名为 `allows(battle, blocker, blockable)`，参数分别是 BattleState、完整的 Unit & Blocker 和 Unit & Blockable；规则可以查询双方其他能力，不执行状态写入。两端 rules 只表达登记所有者，Blocking 的 canRetain 按相同参数顺序检查双方规则，不提供一元资格查询或各端同义 Rule 类型。Capability 不维护第二个 enabled 开关，Battlefield 也不保存从二元资格投影出的单体 enabled；多个限制按独立 ID 登记与撤销。完整签名及取得、保留与容量的边界见 [关系资格与 Rule](blocking.md#关系资格与-rule)。
 

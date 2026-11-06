@@ -268,6 +268,8 @@ declare function cancel<C extends Cancellation | null>(
 
 amount 与 cancellation 独立：接收量可以归零而未取消，取消也可以保留非零数值。取消一旦成立，后续 Hook 保留已有取消及原因，仍可修改 amount 或按自身资格执行独立业务。Receiving 结束时若已取消，返回 CANCELLED，不执行 BeforeCommit、资源提交或 Applied；先前完成的业务仍接续，最终 Pending 保存在取消结果中。
 
+Receiving 的各 Hook 按顺序接续原工作值，不在每项之后截零；全部 Hook 结束后，所属能力的 receive 操作以 `Math.max(0, amount)` 形成最终 Pending，保留 cancellation 及其原因。BeforeCommit、Commit、Applied 与 Outcome 使用这同一份非负接收量。负工作值不会反转损伤或治疗方向；最终接收量归零仍可正常提交，不等同于零计算输出的入口拒绝。
+
 Next 在输入未取消时允许首次取消，输入已有取消时只允许返回原取消类型；amount 始终为 number。ReceivingHook 可作为普通 `Hook<ReceivingContext, Pending>` 交给现有派发器，不增加运行时取消校验。
 
 领域提供纯工作值构造函数 cancel，内容在 invoke 的返回值中使用 `value: cancel(current, "EVADE")`。cancel 保留当前 amount，已有 cancellation 则原样保留，否则写入新原因；必要的条件类型断言集中在此构造函数内部。内容不需要显式操作 Next 或编写类型断言，普通改量继续使用 `{ ...current, amount: nextAmount }`。
@@ -311,7 +313,7 @@ receiveHealing(
 ): Result<HpHealing.Pending>;
 ```
 
-HP Damage 的 receive 包含 ReceivingStarted 和有序 Receiving，HP Healing 只执行自己的 Receiving；EP Damage 执行 EP 专属 Receiving。它们都可能发生同步业务，不能退化为只返回数值的局部计算。取消继续遵守第 1.6 节的 Pending 契约。
+HP Damage 的 receive 包含 ReceivingStarted 和有序 Receiving，HP Healing 只执行自己的 Receiving；EP Damage 执行 EP 专属 Receiving。它们都可能发生同步业务，不能退化为只返回数值的局部计算；返回前统一将最终接收量截为非负数，Commit 信任该边界建立的约束，不再单独归一。取消继续遵守第 1.6 节的 Pending 契约。
 
 commit 直接复用已经定义的精确 CommitContext，不再拆出目标、原始请求和最终接收量作为另一组参数。该 Context 已提供本次固定请求、计算结果与 received，足以支持资源写入、Burst 归因和能力通知。两种能力分别提供：
 

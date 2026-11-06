@@ -88,6 +88,8 @@ Rule 使用公共 `Rule<C>` 类型，只有登记身份 `id` 和纯资格判断 
 
 Card 的 RuleContext 按用途区分：DISPLAY／SELECT 接收 Card Ref，DEPLOY 接收真实 Request；Card.allows 仅接受前两种查询，部署资格统一由 Deployment 的 evaluate／preview 计算。注册的 Card Rule 仍可参与完整 DEPLOY 判断，不为展示或点选伪造落点。普通规则只知道公开的 Card 类型，查询入口仍接纳具体私有状态的 Typed Ref。
 
+部署请求的 Quote 由 evaluate／preview／positions／deploy 在各自公开入口共用 validateQuote 校验一次：DP 为 null 或有限非负数，stock／slots 为非负安全整数。非法数值统一抛出 RangeError，不作为可覆盖 Rule；内部规则求值与消费信任该前提。Deployable.setDeployment 是未登记实例的纯构造操作，保留完整宿主类型；运行态规则修改仍使用 Change，账户修改由 Deployment 的完整操作负责。
+
 这项约定统一接口与登记语义，不新增公共集合工具、规则运行时类或执行引擎。Targetable Restriction 仍按 Contribution 的登记与互斥规则组合，其 allows 同样采用 `(battle, context)`，kind 豁免语义保持独立。
 
 ### 模块与公共入口
@@ -271,7 +273,7 @@ Action 时序的必要回归语义是：静态贡献增删会在完整更新返�
 
 纯公式只接收实际需要的局部值：MaxHP 与 Blocking 的容量／体积统一为 `(definition, state)`；Ammo 使用 `(base, modifiers)`；Card 持有自身 Definition 与 State，继续接收 Card 值。局部公式不为形式一致增加 Battle 或 Ref。普通配置字段直接读取，不包装 Getter；SP 容量、门槛和默认费用直接来自 Definition，本次发动费用仍由 Activation.cost 程序与默认配置共同决定。SP 可空槽位在资源入口通过 hasSp 收窄后求值，两项回复属性同样返回 number。属性公式模块只保留 Modifier、create、apply。
 
-战场查询直接归所属领域，返回完整实体或确有用途的关系投影。Unit 使用 all／get，Blocking 使用 blockerOf／blocked／usedCapacity／relations；relations(battle, ref?) 省略 Ref 时投影全场，提供 Ref 时直接读取局部关联并保留原 blocked Ref，不扫描全场后过滤。Projectile 使用 get 及容器查询。Occupancy.at(field, tile) 返回 occupant／support 双槽登记，消费方直接读取并按需取得当前 Unit；map 与 navigation 可直接读取 Field 的只读字段。战斗入口为 initialize(input) 与 step(battle, commands)，直接返回不可变 BattleState，commands 是必填数组；消费侧按所需语义形成局部输出，不提供第二套完整 Snapshot 或 Runtime 对象。
+战场查询直接归所属领域，返回完整实体或确有用途的关系投影。Unit 使用 all／get，Blocking 使用 blockerOf／blocked／usedCapacity／relations；relations(battle, ref?) 省略 Ref 时投影全场，提供 Ref 时直接读取局部关联并保留原 BlockedRef 句柄，不扫描全场后过滤。BlockedRef 由 acquire 建立，保存在 Blocker.blocked 中；普通 Unit Ref 可以定位目标，但不能代替 Relation.blocked 的关联轮次身份。Projectile 使用 get 及容器查询。Occupancy.at(field, tile) 返回 occupant／support 双槽登记，消费方直接读取并按需取得当前 Unit；map 与 navigation 可直接读取 Field 的只读字段。战斗入口为 initialize(input) 与 step(battle, commands)，直接返回不可变 BattleState，commands 是必填数组；消费侧按所需语义形成局部输出，不提供第二套完整 Snapshot 或 Runtime 对象。
 
 Tactical 的导出函数、Definition 回调、Change 工厂与容器公共方法遵循上述职责分类。Hook 的固定事件 Context、MovementContext 业务输入、创建时的宿主身份、容器内部数字键、私有状态结果值、纯 Geometry／Navigation／Card／Cooldown 计算均有明确职责，不能机械升级为 Battle 操作。battle/deployment/query.ts 的 evaluate(battle, request) 读取部署资源和 Battlefield 的当前地块与占格事实；归属按业务职责划分，参数按实际数据需求选择，不因位于 Battle 目录就增加包装。
 
@@ -366,9 +368,9 @@ Blocking.release(battle, readonly Relation[]) 在入口过滤失效旧身份与�
 
 Blocker Capability 公开 `releaseAll(battle, reference: Ref<Unit & Blocker>): BattleState`，从当前 BattleState 读取一次宿主；缺失返回原状态，存在则将当前 blocked 原 Ref 组成关系交给 Blocking.release，不取消目标计划或附加搜索／维护。Blocker.prepare 调用公开 releaseAll；Departure.unit 只提供身份，不能把它的历史关系当作当前列表。
 
-add 接收创建方完成初始化的完整 Unit，登记后按顺序执行 enter。Deployment 在初始化 fold 前登记自己的 enter，Occupancy 随后追加配对程序，各程序按登记顺序执行。Unit Definition.hooks 必填，无监听传 Hooks.empty()；同键同 ID 替换保留首次位置。全部固有 Hook 在 add 前就绪，生命周期键也允许运行时修改；enter／tick／prepare 按固定候选 ID 读取最新登记，enter／tick 每项前确认 PRESENT。prepare／leave 使用固定 Departure，leave 的程序快照在物理注销前从最新 Unit 捕获，注销后执行。能力创建输入保持可选；Deployable 在初始化入口要求已有 Occupancy。实际部署在初始化前提交 DP／库存／额度，在未登记 Unit 上写入本次部署事实，再由 add 登记并执行已组装的 enter 程序。
+add 接收创建方完成初始化的完整 Unit，登记后按顺序执行 enter。Deployment 在初始化 fold 前登记自己的 enter，Occupancy 随后追加配对程序，各程序按登记顺序执行。Unit Definition.hooks 必填，无监听传 Hooks.empty()；同键同 ID 替换保留首次位置。全部固有 Hook 在 add 前就绪，生命周期键也允许运行时修改；enter／tick／prepare 按固定候选 ID 读取最新登记，enter／tick 每项前确认 PRESENT。prepare／leave 使用固定 Departure，leave 的程序快照在物理注销前从最新 Unit 捕获，注销后执行。能力创建输入保持可选；Deployable 在初始化入口要求已有 Occupancy。实际部署在初始化前提交 DP／库存／额度，通过 Deployable.setDeployment 在未登记 Unit 上构造本次部署事实，再由 add 登记并执行已组装的 enter 程序。
 
-remove 按 Unit ID 请求 Lifetime 结束，首次请求保存 Departure、发布 LEAVING，再执行已登记 prepare。Blocking 自行清理关系与位置计划。真实依赖者完整 Finalize 后才注销 Unit、记录移除事实，执行本地 leave，最后派发全局 leave；Unit 不识别能力或扫描领域状态补救。主动撤退由 Deployable 接口在 remove 前直接结算退款、Card 费用阶段与库存恢复；被动死亡程序只接受已确认死亡，不对所有 leave 无条件回收。Occupancy 用已通知的旧 pair 清理，不把同格新实例当旧对端；Deployable 在本地 leave 归还该实例额度。嵌套 remove 只保证请求／Prepare，最外层结算结束才保证完成；主动撤退的资源结算不等待物理注销。advance 固定入口候选，再逐项读取最新 PRESENT Unit 执行 tick。
+remove 按 Unit ID 请求 Lifetime 结束，首次请求保存 Departure、发布 LEAVING，再执行已登记 prepare。Blocking 自行清理关系与位置计划。真实依赖者完整 Finalize 后才注销 Unit、记录移除事实，执行本地 leave，最后派发全局 leave；Unit 不识别能力或扫描领域状态补救。主动撤退由 Deployable 接口在 remove 前直接结算退款、Card 费用阶段与库存恢复；被动死亡程序只接受已确认死亡，不对所有 leave 无条件回收。Occupancy 用已通知的旧 pair 清理，不把同格新实例当旧对端；Deployable 在本地 leave 调用 Deployment 的内部 releaseSlots 操作归还该实例额度；主动撤退退款调用 DP.recover，不直接修改账户 State。嵌套 remove 只保证请求／Prepare，最外层结算结束才保证完成；主动撤退的资源结算不等待物理注销。advance 固定入口候选，再逐项读取最新 PRESENT Unit 执行 tick。
 
 battlefield/unit.ts 的 add／update／remove 是纯存储与索引转换，Field.update 接收完整 Unit 数组，battle/unit.update 接收一个 Unit Ref 和一个 Change，同宿主组合由 compose 表达。特殊撤退—再部署的支持范围见 [Deployment](deployment.md#支持范围)。
 

@@ -10,7 +10,13 @@ import { get } from "./card/query.js";
 import { resolveCost } from "./card/state.js";
 import type { Rule as CardRule } from "./card/rule.js";
 import type { Rule } from "./rule.js";
-import type { DeployRequest, Quote, Rejected, Rejection } from "./request.js";
+import {
+    validateQuote,
+    type DeployRequest,
+    type Quote,
+    type Rejected,
+    type Rejection,
+} from "./request.js";
 import { advanceResources } from "./resources.js";
 import { Hooks } from "../../hook.js";
 
@@ -182,6 +188,8 @@ export function evaluate<T extends Card<any>>(
     battle: BattleState,
     request: DeployRequest<T>,
 ): Rejected | null {
+    validateQuote(request.quote);
+
     const input = request as object as DeployRequest;
     const self = get(battle, input.card);
     if (self === undefined) {
@@ -203,6 +211,8 @@ export function preview<T extends Card<any>>(
           readonly cost: number;
           readonly quote: Quote;
       } {
+    validateQuote(request.quote);
+
     const input = request as object as DeployRequest;
     const self = get(battle, input.card);
     if (self === undefined) {
@@ -229,6 +239,8 @@ export function positions<T extends Card<any>>(
     battle: BattleState,
     request: DeployRequest<T>,
 ): readonly TilePosition[] {
+    validateQuote(request.quote);
+
     const result: TilePosition[] = [];
     const input = request as object as DeployRequest;
     const self = get(battle, input.card);

@@ -49,13 +49,18 @@ export function receiveDamage(
         (unit) => unit.vitality.damageReceivingStarted,
     ).state;
 
-    return dispatchReceiving(
+    const result = dispatchReceiving(
         battle,
         context.target,
         context,
         pending,
         (unit) => unit.vitality.damageReceiving,
     );
+
+    return {
+        state: result.state,
+        value: { ...result.value, amount: Math.max(0, result.value.amount) },
+    };
 }
 
 export function receiveHealing(
@@ -63,13 +68,18 @@ export function receiveHealing(
     context: healing.ReceivingContext,
     pending: healing.Pending,
 ): Result<healing.Pending> {
-    return dispatchReceiving(
+    const result = dispatchReceiving(
         battle,
         context.target,
         context,
         pending,
         (unit) => unit.vitality.healingReceiving,
     );
+
+    return {
+        state: result.state,
+        value: { ...result.value, amount: Math.max(0, result.value.amount) },
+    };
 }
 
 export function commitDamage(

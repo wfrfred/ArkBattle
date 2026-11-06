@@ -1,7 +1,7 @@
 import type { Ref } from "../../common/ref.js";
 import type { Unit } from "../../unit/unit.js";
 import type { Deployable } from "../../unit/capability/deployable/capability.js";
-import { canRetreat, retreat } from "../../unit/capability/deployable/operations.js";
+import { setDeployment, canRetreat, retreat } from "../../unit/capability/deployable/operations.js";
 import type { Command } from "../contract.js";
 import { add } from "../unit.js";
 import type { State as BattleState, Result } from "../state.js";
@@ -15,8 +15,7 @@ import * as card from "./card/state.js";
 import * as cards from "./card/operations.js";
 import { advanceResources, replaceCard } from "./resources.js";
 import { evaluateRules, resolveRules, createRequest } from "./query.js";
-import type { DeployRequest, DeployOutcome } from "./request.js";
-import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../common/assert.js";
+import { validateQuote, type DeployRequest, type DeployOutcome } from "./request.js";
 import { Hooks } from "../../hook.js";
 import * as lifecycle from "../../unit/hook.js";
 
@@ -37,12 +36,8 @@ export function deploy<T extends Card<any>>(
     battle: BattleState,
     request: DeployRequest<T>,
 ): Result<DeployOutcome> {
-    if (request.quote.dp !== null) {
-        assertNonnegativeNumber(request.quote.dp, "deployment payment");
-    }
+    validateQuote(request.quote);
 
-    assertNonnegativeSafeInteger(request.quote.stock, "deployment stock consumption");
-    assertNonnegativeSafeInteger(request.quote.slots, "deployment slot consumption");
     const input = request as object as DeployRequest;
     const previous = battle;
     let self = get(battle, request.card);
@@ -128,16 +123,12 @@ export function deploy<T extends Card<any>>(
             .merge(self.unitHooks)
             .merge(request.hooks),
     });
-    const unit = {
-        ...initialized.value,
-        deployable: {
-            ...initialized.value.deployable,
-            card: input.card,
-            cost,
-            slots: request.quote.slots,
-            refund,
-        },
-    };
+    const unit = setDeployment(initialized.value, {
+        card: input.card,
+        cost,
+        slots: request.quote.slots,
+        refund,
+    });
     battle = add(initialized.state, unit);
 
     return {

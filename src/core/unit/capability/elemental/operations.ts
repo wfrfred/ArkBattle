@@ -43,7 +43,7 @@ export function receiveDamage(
     context: ReceivingContext,
     pending: damage.Pending,
 ): Result<damage.Pending> {
-    return hooks.dispatch(battle, context, pending, {
+    const result = hooks.dispatch(battle, context, pending, {
         candidates: (current) =>
             [...(units.get(current, context.target)?.elemental.damageReceiving ?? [])]
                 .sort((left, right) => (right.priority ?? 0) - (left.priority ?? 0))
@@ -56,6 +56,11 @@ export function receiveDamage(
                 : undefined;
         },
     });
+
+    return {
+        state: result.state,
+        value: { ...result.value, amount: Math.max(0, result.value.amount) },
+    };
 }
 
 export function commitDamage(

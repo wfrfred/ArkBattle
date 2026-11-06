@@ -27,8 +27,13 @@ export function setOverlay(state: State, mode: MotionMode, overlay: Overlay): St
         throw new RangeError("FLY navigation overlay cost must be 1");
     }
 
-    const entries = [...state.overlays[mode]];
-    const index = entries.findIndex((entry) => entry.id === overlay.id);
+    const current = state.overlays[mode];
+    const index = current.findIndex((entry) => entry.id === overlay.id);
+    if (current[index] === overlay) {
+        return state;
+    }
+
+    const entries = [...current];
     if (index === -1) {
         entries.push(overlay);
     } else {

@@ -24,7 +24,7 @@ export type {
 
 export { sides, type Rule, type RuleContext } from "./rule.js";
 
-export type { Relation, Context, Hook, Key } from "./contract.js";
+export type { BlockedRef, Relation, Context, Hook, Key } from "./contract.js";
 
 export {
     setRule as setBlockerRule,

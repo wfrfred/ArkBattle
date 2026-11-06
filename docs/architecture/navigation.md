@@ -90,11 +90,12 @@ create 信任来自同一战场地块地图的 WALK／FLY 投影，不重复验�
 | 操作 | 行为 |
 | --- | --- |
 | setOverlay，ID 不存在 | 新增 Overlay。 |
-| setOverlay，ID 已存在 | 替换原 Overlay，保留 ID。 |
+| setOverlay，ID 已存在且为同一对象 | 返回原 State。 |
+| setOverlay，ID 已存在且为新对象 | 替换原 Overlay，保留登记位置。 |
 | removeOverlay，ID 存在 | 删除对应 Overlay。 |
 | removeOverlay，ID 不存在 | 返回原 State。 |
 
-操作不修改输入 State，以新集合保存变更。setOverlay 在实际登记入口建立 ID 与代价约束：ID 为非负安全整数，提供 cost 时须为正安全整数；FLY 的 cost 只能省略或为 1。内部 apply 信任已登记的数据，按下面的合并规则计算。
+操作不修改输入 State，以新集合保存实际变更。同一 Overlay 对象重复登记没有刷新语义，沿用普通登记操作的同引用不变约定。setOverlay 在实际登记入口建立 ID 与代价约束：ID 为非负安全整数，提供 cost 时须为正安全整数；FLY 的 cost 只能省略或为 1。内部 apply 信任已登记的数据，按下面的合并规则计算。
 
 ### nextPoint
 

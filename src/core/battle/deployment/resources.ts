@@ -7,6 +7,18 @@ import * as card from "./card/state.js";
 import * as dp from "./dp.js";
 import { refreshOrder } from "./order.js";
 
+export function releaseSlots(battle: BattleState, amount: number): BattleState {
+    return amount === 0
+        ? battle
+        : {
+              ...battle,
+              deployment: {
+                  ...battle.deployment,
+                  usedSlots: battle.deployment.usedSlots - amount,
+              },
+          };
+}
+
 export function replaceCard(state: BattleState, value: Card<any>): BattleState {
     const index = state.deployment.cards.findIndex((current) => current.id === value.id);
     if (state.deployment.cards[index] === value) {

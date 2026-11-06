@@ -8,7 +8,7 @@ import {
     resolveVolume,
     type Blockable,
 } from "../../unit/capability/blocking/blockable.js";
-import type { Relation } from "../../unit/capability/blocking/contract.js";
+import type { BlockedRef, Relation } from "../../unit/capability/blocking/contract.js";
 
 export function blockerOf(
     battle: BattleState,
@@ -20,7 +20,7 @@ export function blockerOf(
 export function blocked(
     battle: BattleState,
     reference: Ref<Unit & Blocker>,
-): readonly Ref<Unit & Blockable>[] {
+): readonly BlockedRef[] {
     return units.get(battle, reference)?.blocker.blocked ?? [];
 }
 

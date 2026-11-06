@@ -85,7 +85,10 @@ test("HP Healing accepts full resources and absent patients while damage require
     const target = units.ref(get(state, 0));
     assert.equal(get(state, 0).vitality.hp, 100.5);
     state = update(state, target, units.compose(units.compose(vitality.setHook("healingReceiving", {
-            id: "receive", invoke(current, _context, pending) { calls.push("receive"); return { state: current, value: pending }; },
+            id: "receive", invoke(current, _context, pending) {
+                calls.push("receive");
+                return { state: current, value: { ...pending, amount: pending.amount - 10 } };
+            },
         }), units.setHook(hpHealing.targetApplied, {
             id: "target", invoke(current) { calls.push("target"); return { state: current, value: undefined }; },
         })), units.setHook(hpHealing.sourceApplied, {
@@ -101,6 +104,7 @@ test("HP Healing accepts full resources and absent patients while damage require
     assert.deepEqual(calls, []);
     const full = hpHealing.applyHealing(request, calculated);
     assert.equal(full.value.type, "APPLIED");
+    assert.equal(full.value.received.amount, 40);
     assert.deepEqual(full.value.application, { hpBefore: 100.5, hpAfter: 100.5, hpGain: 0 });
     assert.deepEqual(calls, ["receive", "target", "source"]);
 
@@ -112,6 +116,14 @@ test("HP Healing accepts full resources and absent patients while damage require
     state = epDamage.applyDamage(epLoss, epDamage.calculateDamage(state, epLoss)).state;
     assert.equal(get(state, 0).vitality.hp, 70.5);
     assert.equal(get(state, 0).elemental.ep.NEURAL, 800);
+
+    const reducedRequest = { ...request, parameters: { power: 5, multiplier: 1 } };
+    const reduced = hpHealing.applyHealing(reducedRequest, hpHealing.calculateHealing(state, reducedRequest));
+    assert.equal(reduced.value.type, "APPLIED");
+    assert.equal(reduced.value.received.amount, 0);
+    assert.equal(reduced.value.application.hpGain, 0);
+    assert.equal(get(reduced.state, 0).vitality.hp, 70.5);
+    state = reduced.state;
 
     state = update(state, target, presence.disappear());
     assert.equal(hpDamage.applyDamage(hpLoss, hpDamage.calculateDamage(state, hpLoss)).value.type, "REJECTED");

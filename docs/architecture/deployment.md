@@ -8,8 +8,8 @@ Deployment 完成一次部署的资格判断、资源消费、实例创建和部
 
 验收按以下业务结果选择代表场景，不为每个字段、资源 Setter 或 Hook 节点分别建立矩阵。通用状态接续与依赖完成要求见[函数式内核](functional-core.md#状态接续后的读取与续执行)和 [Lifetime](lifetime.md)。
 
-1. **资格与消费一致。** 预览和实际部署使用同一完整 Request、规则合并方式和当前资源事实。预览不消费资源或创建实例；拒绝部署不消费；规则通过后先提交 DP、库存及部署额度，再构造、登记和执行入场程序。
-2. **部署事实属于本次实例。** 本次 COST、退款依据、占用额度和来源 Card 在登记前确定；朝向和地块是实例输入。Card 跨场上实例存续，持久资源不因每次部署重新初始化。
+1. **资格与消费一致。** evaluate、preview、positions 和 deploy 对公开 Request 的 Quote 使用同一数值入口契约，再按相同规则与当前资源事实判断资格。预览不消费资源或创建实例；拒绝部署不消费；规则通过后先提交 DP、库存及部署额度，再构造、登记和执行入场程序。
+2. **部署事实属于本次实例。** 本次 COST、退款依据、占用额度和来源 Card 在登记前由 Deployable 自身的构造操作确定；朝向和地块是实例输入。Deployment 管账户，Deployable 管实例事实，跨领域修改调用所属领域的操作。Card 跨场上实例存续，持久资源不因每次部署重新初始化。
 3. **主动撤退与死亡分别结账。** 撤退先按本次部署事实退款、处理 Card，再请求 Unit 结束；被动死亡只在确认死亡后通过已登记程序处理。普通 SCRIPT／EXPIRED 离场不冒充死亡，也不重复执行主动撤退的账务。
 4. **离场先清理结构与额度，再通知内容。** 真实依赖者完整结束后，注销 Unit 并释放结构占格，再归还本次占用的部署额度、结算死亡 Card，随后执行内容与配对通知。嵌套结束只完成请求时，不提前宣称对象已注销或额度已归还。
 5. **库存与时间不凭空增减。** 部署间隔和库存恢复相互独立；逐份恢复按各段启动时采样预算，暂停保存剩余时间，修改当前段不消费后段预算，补库存不重置时钟。
@@ -96,7 +96,7 @@ createRequest(battle, cardRef, tilePosition, direction?) 生成普通请求；�
 
 Command 默认使用 Card；显式声明可以用 Command<Card<S>> 保留具体 Card 类型。step 与命令处理器在 Core 统一执行边界接纳不同私有类型的 Card 引用，不读取其私有 state。
 
-Quote 表示实际支付与消费。dp:null 跳过支付，dp:0 是正常零费支付；stock 和 slots 可以为 0。本次 COST 与退费上限在消费前独立采样，分别保存在 Deployable 的部署事实中。
+Quote 表示实际支付与消费。dp:null 跳过支付，dp:0 是正常零费支付；stock 和 slots 可以为 0。公开的 evaluate、preview、positions 和 deploy 在入口共用 validateQuote：dp 为 null 或有限非负数，stock／slots 为非负安全整数；非法报价统一抛出 RangeError，不进入可覆盖的业务 Rule。每次调用只校验一次，内部规则求值和消费信任该前提。合法请求引用不存在的 Card 时，evaluate／preview／deploy 仍按 UNKNOWN_CARD 拒绝，positions 返回空列表。本次 COST 与退费上限在消费前独立采样，分别保存在 Deployable 的部署事实中。
 
 Deployment Rule 为 { id, allows(battle, { request }) }。evaluate 按以下顺序合并并执行一次：
 
@@ -120,14 +120,14 @@ Card 动态 Rule 按 DISPLAY／SELECT／DEPLOY 区分上下文；DEPLOY 时传�
 → 采样 COST 与退费依据
 → 提交 DP、usedSlots、Card 库存，按配置启动部署间隔
 → 分配 Unit ID，调用 unit.initialize
-→ 在未登记 Unit 上写入本次部署事实
+→ 调用 Deployable.setDeployment 构造本次部署事实
 → 登记 Unit 与占格结构索引
 → 顺序执行已登记 enter
 ```
 
 付款同时维护 DP 回复的计时基准，不能把满额期间停留的时间在消费后补算成回复。部署间隔在统一资源提交时启动，先于 Unit 初始化，也不依赖是否支付 DP。
 
-部署把落点和本次方向传入 Occupancy 的可选创建输入。Unit.initialize 完成后，Deployment 在尚未登记的 Unit 上写入 card、cost、slots、refund，再交给 add 登记完整结果。本次方向属于实例事实。
+部署把落点和本次方向传入 Occupancy 的可选创建输入。Unit.initialize 完成后，Deployment 调用 Deployable.setDeployment，在尚未登记的 Unit 上设置 card、cost、slots、refund，再交给 add 登记完整结果。该纯构造操作保留 Unit 的完整类型，Deployment 不直接重建 Deployable State。本次方向属于实例事实。
 
 Deployment 先登记派发部署事实的 enter 程序，再登记 Card.unitHooks 和 Request.hooks，随后交给 Capability fold。Occupancy 追加自己的配对程序，各程序按登记顺序执行。
 
@@ -190,15 +190,20 @@ function initialize<
         readonly definition: { readonly deployable: Definition };
     },
 >(battle: BattleState, unit: U): Result<U & Deployable>;
+
+function setDeployment<U extends Unit & Deployable>(
+    self: U,
+    deployment: Pick<State, "card" | "cost" | "slots" | "refund">,
+): U;
 ```
 
-Catalog 先构造 Occupancy、再构造 Deployable；Deployable 在初始化入口确认 Occupancy 依赖。初始化建立 card:null、cost:0、slots:0、refund:null 和固有撤退规则，表示尚未关联一次部署；本次部署事实由 Deployment 在登记前写入。Deployment 预先登记的 Hook 保留原位置。
+Catalog 先构造 Occupancy、再构造 Deployable；Deployable 在初始化入口确认 Occupancy 依赖。初始化建立 card:null、cost:0、slots:0、refund:null 和固有撤退规则，表示尚未关联一次部署；本次部署事实在完整初始化后、登记前通过 setDeployment 设置，不改变各 Capability 初始化时点或增加专属 Initial 协议。Deployment 预先登记的 Hook 保留原位置。
 
-公开入口为 hasDeployable、initialize、canRetreat、retreat、setRule、removeRule，以及相应模型类型。Ref<Unit & Deployable> 已保证 Occupancy，无需内部重复能力检查。临时撤退规则按 ID 登记和移除，不清除其他来源。
+公开入口为 hasDeployable、initialize、setDeployment、canRetreat、retreat、setRule、removeRule，以及相应模型类型。setDeployment 只负责未登记实例的部署事实构造，运行态规则仍经 Change 修改。Ref<Unit & Deployable> 已保证 Occupancy，无需内部重复能力检查。临时撤退规则按 ID 登记和移除，不清除其他来源。
 
 ## 主动操作与被动死亡
 
-retreat 位于 Deployable 的 operations.ts，接收 Typed Ref，确认 PRESENT 和当前撤退规则后，依次按本次依据退款、根据 Card 配置推进费用阶段并登记库存恢复，再请求 Unit 正常结束。Deployment 公共入口重导出同一实现；canRetreat 独立查询当前撤退资格。
+retreat 位于 Deployable 的 operations.ts，接收 Typed Ref，确认 PRESENT 和当前撤退规则后，依次按本次依据调用 Deployment.dp.recover 退款、根据 Card 配置推进费用阶段并登记库存恢复，再请求 Unit 正常结束。Deployment 公共入口重导出同一实现；canRetreat 独立查询当前撤退资格。
 
 Card 贡献、费用阶段和恢复计时归 Card，跨对应场上实例存续。需要新启动恢复段时，retreat 按 Card 当前有效时长建立预算；追加已有队列保留当前段，后续段按计时规则启动。后续离场程序能够读取已结算的 DP 与 Card 状态。嵌套 Lifetime 请求可能只同步进入 LEAVING，此时 retreat 的资源结算已完成，物理注销与共有清理由外层 Lifetime 结算继续处理。
 
@@ -225,7 +230,7 @@ Unit 请求结束并发布 LEAVING
 
 本地 leave 按注销前捕获的快照顺序执行，Context 仍为离场开始时确定的 Departure；准备和依赖者析构期间对 leave 登记的修改可以生效。上述是内建清理与内容的必要偏序，动态组合仍遵守这一业务契约。Card、Request 与 Definition 的内容程序均能观察到 Unit 已注销、结构占格已释放和部署额度已归还；死亡时，Card 账务也已完成。Occupancy 继续读取 Departure 中的旧业务配对，不影响替代实例的新配对。
 
-普通 deploy 在资源提交时增加 usedSlots，并将相同份额写入本次 Deployable State；离场按该份额归还。关卡预置直接初始化 Unit，部署位份额为 0。usedSlots 是独立账户，在 prepare 与依赖者析构期间仍计入该份额；Unit 物理注销后，由 @deployable/release-slots 在本地内容 leave 之前归还。activeCount 按当前仍登记的实例及其来源 Card 统计，因此包含尚未注销的 LEAVING 实例。
+普通 deploy 在资源提交时增加 usedSlots，并通过 Deployable.setDeployment 保存本次份额；离场按该份额归还。关卡预置直接初始化 Unit，部署位份额为 0。usedSlots 是独立账户，在 prepare 与依赖者析构期间仍计入该份额；Unit 物理注销后，由 @deployable/release-slots 调用 Deployment 的内部资源操作 releaseSlots，在本地内容 leave 之前归还，Deployable 不直接写账户。releaseSlots 接收已建立的实例占用份额，零份额不产生变更。activeCount 按当前仍登记的实例及其来源 Card 统计，因此包含尚未注销的 LEAVING 实例。
 
 Unit 执行已登记的生命周期程序；Lifetime 关系由各实例所属领域维护。Deployable.card 只表示来源地址，不构成 Lifetime 依赖；Lifetime 所有权由显式登记的 owner 关系决定，回收行为由 Card 的供给配置与对应领域操作决定。
 

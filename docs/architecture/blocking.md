@@ -87,7 +87,7 @@ interface BlockerState {
     readonly layer: Layer;
     readonly radius: number;
     readonly capacity: readonly Contribution<readonly Modifier[]>[];
-    readonly blocked: readonly Ref<Unit & Blockable>[];
+    readonly blocked: readonly BlockedRef[];
 }
 ```
 
@@ -106,7 +106,9 @@ interface BlockerState {
 
 Blocker 的 blocked[] 包含建立顺序这一历史事实，不能每次按 Unit 枚举顺序重新生成。取得追加新条目，解除只移除对应旧条目，其余保序。Blocking 先基于当前对象准备两侧新值，再通过内部 replace 发布，之后执行对应通知；通用发布层不扫描、补齐或重新构造关联。
 
-本次关系身份由 Blocker 列表中保存的目标 Ref 条目对象承担。固定旧候选时捕获所属 Blocker 与该条目；解除前在当前 Blocker 列表中通过 ===／includes 确认条目仍存在，不重新构造 Ref 来作对象比较。每次重新建立创建新条目，未解除的条目保留原对象。若 Hook 已解除旧关系并重建相同双方，外层旧候选跳过它；再次解除同一旧条目不重复通知。不增加全局关系集合、关系 ID 或独立 Relation 实例。
+本次关系身份由 Blocker 列表中保存的目标 Ref 条目对象承担，类型为 `BlockedRef`。它保留普通 `Ref<Unit & Blockable>` 的定位能力，并带有只在 acquire 建立新关联时授予的类型标记。`Relation.blocked` 要求该句柄；普通 Unit Ref 不能构造 Relation。blocked／relations 查询和关系 Hook 保留原句柄，内容从这些入口取得关系，不提供普通 Ref 转句柄的公共构造函数。
+
+固定旧候选时捕获所属 Blocker 与该条目；解除前在当前 Blocker 列表中通过 ===／includes 确认条目仍存在，不重新构造 Ref 来作对象比较。每次重新建立创建新条目，未解除的条目保留原对象。若 Hook 已解除旧关系并重建相同双方，外层旧候选跳过它；再次解除同一旧条目不重复通知。不增加全局关系集合、关系 ID 或独立 Relation 实例。
 
 归属由 Blocker 的 Unit ID 定位，本次关系是否仍存在按正向条目对象比较。不涉及关系业务的普通更新共享既有关系字段，不创建新条目或产生关系通知。
 
@@ -176,6 +178,11 @@ Blocking 将资格与其他取得条件分开处理：
 ## 已确定的操作接口
 
 ```typescript
+interface Relation {
+    readonly blocker: Ref<Unit & Blocker>;
+    readonly blocked: BlockedRef;
+}
+
 export function relations(
     battle: BattleState,
     reference?: Ref<Unit>,

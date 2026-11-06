@@ -57,6 +57,12 @@ test("preview, evaluation and deployment use one request; rejection consumes not
     let state = battle([], { deployment: { definition: account, cards: [definition] } });
     const card = cards.ref([...cards.all(state)][0]);
     const request = deployment.createRequest(state, card, [1, 2], "LEFT");
+    const invalid = { ...request, quote: { ...request.quote, dp: -1 } };
+    for (const operation of [
+        deployment.preview, deployment.evaluate, deployment.positions, deployment.deploy,
+    ]) {
+        assert.throws(() => operation(state, invalid), RangeError);
+    }
     const rejected = {
         ...request,
         rules: [

@@ -99,7 +99,7 @@ EP Healing.Request 同样为 `{ source, target, parameters }`，Parameters 为 `
 | resolveMaxEp／resolveRecoverySpeed／resolveElementResistance／resolveDamageResistance／resolveBurstRecoverySpeed | `(battle, self: Unit & Elemental) => number` |
 | resolveDamageRatio | `(battle, self: Unit & Elemental) => number`，使用有效 MaxEP |
 | currentType／damageRatio | `(self: Unit & Elemental, maxEp: number)`，显式接收有效上限，不回落到静态 Definition |
-| available | 已知 Unit 的基础生命周期与生命资格查询，不包含空间存在性 |
+| available | `(self: Unit & Elemental) => boolean`，已知 Elemental 宿主的基础生命周期与生命资格查询，不包含空间存在性 |
 
 接收要求宿主生命周期为 PRESENT，具有 Vitality 时 HP 大于零。Burst 存在期间，包括 ENDING，拒绝损伤和治疗；中立阵营默认拒绝损伤。Rules 声明 damageRules／healingRules 两个数组，State 直接继承 Rules、Contributions、Hooks。damageRules 使用 `allows(battle, { self, request, type })`，type 是本次实际元素类型；healingRules 使用 `{ self, request }`。两者均由普通登记工厂生成的 `setRule(key, rule)`／`removeRule(key, id)` 修改，key 与对应 Context 类型配对。无敌通过 damageRules 拒绝，不查询 Vitality 内部接收规则；HP 禁疗不隐式决定 EP 接收。[Presence](presence.md) 同样通过 damageRules 拒收消失宿主的普通 EP 损伤，不直接限制显式回复、自然回复或 Burst 推进；普通索敌仍独立检查空间存在。
 
@@ -131,7 +131,7 @@ Damage 的 before／after／loss 描述本次元素类型，Burst 身份描述�
 
 通用 Formula、Output、BeforeReceive、BeforeCommit、targetApplied、sourceApplied 存于 [Unit.hooks](hook.md)，由对应 Battle 子域定义键与派发。基础目标资格成立后执行 beforeReceive，再读取最新 Rule；取消、失效及已提交结果按各业务 Outcome 表达。
 
-Elemental 仅保存专属 DamageReceivingHook 和实际资源／Burst 通知，统一由 Hooks 分组声明。专属接收使用 `setHook("damageReceiving", hook)`／`removeHook("damageReceiving", id)`，与事实通知共用普通登记工厂并返回 Change。接收 Context 固定 `{ target, request, calculated }`，工作值为 Pending；取消后仍派发后续 Hook，但保留已有取消及原因。领域 cancel 构造函数封装类型断言，不新增运行时取消检查。EP Healing 没有专属 Receiving，不导出取消构造器。
+Elemental 仅保存专属 DamageReceivingHook 和实际资源／Burst 通知，统一由 Hooks 分组声明。专属接收使用 `setHook("damageReceiving", hook)`／`removeHook("damageReceiving", id)`，与事实通知共用普通登记工厂并返回 Change。接收 Context 固定 `{ target, request, calculated }`，工作值为 Pending；取消后仍派发后续 Hook，但保留已有取消及原因。全部接收 Hook 完成后，receiveDamage 将最终 amount 截为非负数，再交给 Battle 构造 CommitContext；BeforeCommit、资源提交及报告使用同一份接收量，零接收量仍可成功。中间各 Hook 不单独截零。领域 cancel 构造函数封装类型断言，不新增运行时取消检查。EP Healing 没有专属 Receiving，不导出取消构造器。
 
 事实通知固定 `{ host, event }`，T=void；以下 event 在资源写入或生命周期转移处确定：
 

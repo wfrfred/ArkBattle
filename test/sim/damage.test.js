@@ -419,7 +419,7 @@ test("APPLY-01: cancellation retains recovery and reflection but skips the origi
     assert.equal(get(result.state, 1).vitality.hp, 100);
 });
 
-test("APPLY-02: HP zero output rejects while full absorption still commits and notifies", () => {
+test("APPLY-02: HP zero output rejects while excess receiving reduction still commits and notifies", () => {
     const calls = [];
     let state = battle([
         { definition: { id: "source-without-vitality", hooks: Hooks.empty().set(hpDamage.output, {
@@ -437,12 +437,13 @@ test("APPLY-02: HP zero output rejects while full absorption still commits and n
                 id: "absorb",
                 invoke: (current, _context, pending) => ({
                     state: current,
-                    value: { ...pending, amount: 0 },
+                    value: { ...pending, amount: pending.amount - 100 },
                 }),
             }),
             units.setHook(hpDamage.targetApplied, {
                 id: "target",
-                invoke(current) {
+                invoke(current, { received }) {
+                    assert.equal(received.amount, 0);
                     calls.push("targetApplied");
                     return { state: current, value: undefined };
                 },
@@ -452,13 +453,24 @@ test("APPLY-02: HP zero output rejects while full absorption still commits and n
     state = update(
         state,
         source,
-        units.setHook(hpDamage.sourceApplied, {
-            id: "source",
-            invoke(current) {
-                calls.push("sourceApplied");
-                return { state: current, value: undefined };
-            },
-        }),
+        units.compose(
+            units.setHook(hpDamage.beforeCommit, {
+                id: "commit",
+                invoke(current, { received }) {
+                    assert.equal(received.amount, 0);
+                    calls.push("beforeCommit");
+                    return { state: current, value: undefined };
+                },
+            }),
+            units.setHook(hpDamage.sourceApplied, {
+                id: "source",
+                invoke(current, { received }) {
+                    assert.equal(received.amount, 0);
+                    calls.push("sourceApplied");
+                    return { state: current, value: undefined };
+                },
+            }),
+        ),
     );
     const zeroDamage = damageRequest(source, target, 0);
     assert.equal(hpDamage.applyDamage(zeroDamage, hpDamage.calculateDamage(state, zeroDamage)).value.type, "REJECTED");
@@ -467,8 +479,10 @@ test("APPLY-02: HP zero output rejects while full absorption still commits and n
     const positiveDamage = damageRequest(source, target, 10);
     const absorbed = hpDamage.applyDamage(positiveDamage, hpDamage.calculateDamage(state, positiveDamage));
     assert.equal(absorbed.value.type, "APPLIED");
+    assert.equal(absorbed.value.received.amount, 0);
     assert.equal(absorbed.value.application.hpLoss, 0);
-    assert.deepEqual(calls, ["output", "targetApplied", "sourceApplied"]);
+    assert.equal(get(absorbed.state, 1).vitality.hp, 100);
+    assert.deepEqual(calls, ["output", "beforeCommit", "targetApplied", "sourceApplied"]);
 });
 
 test("HP-03: lethal HP remains present and blocking through both Applied roles, then death releases the relation", () => {
@@ -582,11 +596,12 @@ test("EP-01: calculated resistance and element survive later state changes; HP e
     assert.equal(epDamage.applyDamage(zero, epDamage.calculateDamage(hp.state, zero)).value.type, "REJECTED");
     const protectedState = update(hp.state, target, elemental.setHook("damageReceiving", {
         id: "full-barrier",
-        invoke: (current, _context, pending) => ({ state: current, value: { ...pending, amount: 0 } }),
+        invoke: (current, _context, pending) => ({ state: current, value: { ...pending, amount: pending.amount - 200 } }),
     }));
     const positive = injuryRequest(target, "NEURAL", 100);
     const absorbed = epDamage.applyDamage(positive, epDamage.calculateDamage(protectedState, positive));
     assert.equal(absorbed.value.type, "APPLIED");
+    assert.equal(absorbed.value.received.amount, 0);
     assert.equal(absorbed.value.application.epLoss, 0);
     assert.equal(get(absorbed.state, 0).elemental.ep.NEURAL, 830);
 });

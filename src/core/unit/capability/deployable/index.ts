@@ -4,4 +4,4 @@ export type { Definition, State, Deployable, RuleContext, Rule, Refund } from ".
 
 export { setRule, removeRule } from "./rule.js";
 
-export { canRetreat, retreat } from "./operations.js";
+export { setDeployment, canRetreat, retreat } from "./operations.js";

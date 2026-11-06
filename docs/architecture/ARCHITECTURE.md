@@ -82,7 +82,7 @@ Mechanism 是没有独立场上空间实体的机制实例，由 `battle.State.m
 
 Capability 接口同时描述对应的静态 Definition 与运行时 State，组合 Unit & Vitality & Offense 即可同时访问这些能力的配置与状态。单位可以拥有 Vitality、Offense、Action、Skill、Elemental、Locomotion、Targetable、空间几何、部署、占用或阻挡能力。每项已声明能力必须同时提供 Definition 与 State；没有内容的一侧使用空实现。Unit 登记后不能增加或删除能力，只更新其当前状态。
 
-Definition 保存不可变基础值、参数和行为描述。Capability State 保存当前已经生效的事实、贡献、冷却和进度。Catalog 提供 initializer 字典，并从签名派生 Definitions／States／Product 及可选创建输入；装配归 unit/initialize.ts。Deployable 单向依赖 Occupancy，先初始化 Occupancy，再建立未关联部署的 Deployable 初态。Deployment 在资源消费后直接调用 unit.initialize，在未登记 Unit 上写入本次部署事实，然后登记与 enter。Predefined 同样直接复用 Unit 初始化，不另设创建包装或配对框架。统一构造入口建立能力配对，内部更新遵守组成稳定的契约，存储层不反复遍历能力校验。领域规则留在所属模块。
+Definition 保存不可变基础值、参数和行为描述。Capability State 保存当前已经生效的事实、贡献、冷却和进度。Catalog 提供 initializer 字典，并从签名派生 Definitions／States／Product 及可选创建输入；装配归 unit/initialize.ts。Deployable 单向依赖 Occupancy，先初始化 Occupancy，再建立未关联部署的 Deployable 初态。Deployment 在资源消费后直接调用 unit.initialize，调用 Deployable.setDeployment 构造未登记 Unit 的本次部署事实，然后登记与 enter。Predefined 同样直接复用 Unit 初始化，不另设创建包装或配对框架。统一构造入口建立能力配对，内部更新遵守组成稳定的契约，存储层不反复遍历能力校验。领域规则留在所属模块。
 
 Content 直接组合 Unit Definition 与所需的 Catalog Definitions，不经过干员或敌人 Archetype 工厂；必要的领域校验放在 initialize。静态内容可用 satisfies 声明具体能力；动态加载结果使用标准 Definition，并在需要可选能力时通过守卫缩窄。
 

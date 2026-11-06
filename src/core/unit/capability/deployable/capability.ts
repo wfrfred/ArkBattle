@@ -6,6 +6,7 @@ import type { Rule as BaseRule } from "../../../rule.js";
 import { hasOccupancy, type Occupancy } from "../occupancy/capability.js";
 import { Hooks } from "../../../hook.js";
 import { leave } from "../../hook.js";
+import { releaseSlots } from "../../../battle/deployment/resources.js";
 
 export interface Refund {
     readonly rate: number;
@@ -54,17 +55,8 @@ export function initialize<
                     id: "@deployable/release-slots",
                     invoke: (current, departure) => {
                         const { slots } = (departure.unit as Unit & Deployable).deployable;
-                        if (slots !== 0) {
-                            current = {
-                                ...current,
-                                deployment: {
-                                    ...current.deployment,
-                                    usedSlots: current.deployment.usedSlots - slots,
-                                },
-                            };
-                        }
 
-                        return { state: current, value: undefined };
+                        return { state: releaseSlots(current, slots), value: undefined };
                     },
                 })
                 .merge(unit.hooks),
