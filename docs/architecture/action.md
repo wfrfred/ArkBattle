@@ -306,13 +306,13 @@ Runtime 采用以下候选政策：
 6. 本轮自动候选只尝试一次，不按“仍然就绪”循环重启即时完成的同一行动。
 7. 内容直接 start 或回调内嵌套 start 只登记执行，等待调度器推进。调度入口前已登记的执行可以在本次调度中推进；调度内嵌套登记的执行不在已固定快照中，等待后续调度。
 
-advance(battle, ref) 由 operations.ts 实现，index.ts 继续导出供调度协作；仍仅由调度器主动调用，start 不隐式推进。它通过同一 Actions 容器的 getExecution 直接取得当前执行，再调用该执行 Definition 的 onTick，并显式传入宿主引用；完成与取消直接调用 lifetime.end 请求结束，可选 onEnd 在 Finalize 中调用。跨完整操作后的实时读取仍遵守状态接续约定。首次推进中的即时完成或同步取消按通常终止流程结算；内容不主动推进执行，不保存实例级同 Tick 去重字段。
+advance(battle, ref) 由 operations.ts 实现，index.ts 继续导出供调度协作；仍仅由调度器主动调用，start 不隐式推进。它通过同一 Actions 容器的 getExecution 直接取得当前执行，再调用该执行 Definition 的 onTick，并显式传入宿主引用；完成与取消直接调用 lifetime.end 请求结束，可选 onEnd 在 Finalize 中调用。Action Rule 控制新的执行；[Presence](presence.md) 登记启动限制，并在消失操作中同步取消事先捕获的旧 Execution，advance 不直接读取 Presence。跨完整操作后的实时读取仍遵守状态接续约定。首次推进中的即时完成或同步取消按通常终止流程结算；内容不主动推进执行，不保存实例级同 Tick 去重字段。
 
 ## 8. 普通攻击、释放 Hook 与移动
 
 可复用普通攻击程序位于 content/actions/attack.ts，直接调用 Damage、Healing 与 Elemental 的公开操作。它在 prepare 绑定目标并保存 releaseAtTick／finishAtTick、released 等执行进度；到点执行输出并在恢复结束后完成。create 提供空持久／执行数据的入口；createWithState<P, E> 明确区分 initialize(battle) → Result<P> 与 prepare(battle, source, self) → Result<E>。output／afterOutput／onEnd 接收显式 source 与 execution 非空的 Execution<P, State<E>>，模板私有数据位于 self.execution.state.data。
 
-CD 补偿、cooldownAdjusted 与 released 的私有字段写回继续由完整 Action 操作经内部 replace 发布，不改为公开 Change，也不隐式触发 Blocking。Rule 可读取双方 Action 状态不表示自动订阅其所有字段；改变阻挡资格的内容在对应业务流程中显式复核关系。Attack 在真正执行 Hook、伤害等领域操作后按同一 Execution Ref 恢复当前 RUNNING 执行，并确认宿主 PRESENT 与空间存在；不把原始发布本身当成内容回调。Combat 的 select 使用原有执行推进后重新读取的当前来源。
+CD 补偿、cooldownAdjusted 与 released 的私有字段写回继续由完整 Action 操作经内部 replace 发布，不改为公开 Change，也不隐式触发 Blocking。Rule 可读取双方 Action 状态不表示自动订阅其所有字段；改变阻挡资格的内容在对应业务流程中显式复核关系。Attack 在真正执行 Hook、伤害等领域操作后按同一 Execution Ref 恢复当前 RUNNING 执行，并确认宿主 PRESENT；不重复读取 Presence，也不把原始发布本身当成内容回调。Combat 的 select 使用原有执行推进后重新读取的当前来源，并在选择前检查空间存在，避免已经消失的来源消费选择 RNG。
 
 Attack 模板统一校验前后摇、操作数值和绑定关系，上层内容不重复校验原样传入的同一字段。只读配置直接共享，公开 attack 配置只投影配置字段，不携带程序私有回调，也不额外复制、冻结其子对象。
 

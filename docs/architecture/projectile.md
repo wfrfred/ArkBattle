@@ -214,6 +214,8 @@ Finalize 从当前实例调用 onEnd(battle, self, reason)
 
 命中过程不统一要求 Targetable、Hitbox 或 Vitality；这些要求由取得接收者的入口与最终 Damage／Healing／Effect 操作声明。Hit 入场与实际 HP 变化分别观察。
 
+已锁定的 tracking Projectile 只要还能按身份取得目标，就继续使用目标的真实位置；目标暂时[空间消失](presence.md)不改用记忆坐标，身份失效后才回退。原目标命中程序与普通重新索敌分别判断，命中回调被调用不保证最终 Damage 会被接收。
+
 | 内容 | 私有状态与执行方式 |
 | --- | --- |
 | 普通弩箭 | 保存原目标、记忆位置、来源、速度、ATK 样本和必要的命中记录；推进追踪，在到达与普通停止入口协调原目标命中。 |

@@ -11,7 +11,6 @@ import { stop, update } from "../../core/battle/projectile.js";
 import { type WorldPosition } from "../../core/geometry/coordinate.js";
 import { hasOffense, resolveAttack } from "../../core/unit/capability/offense/index.js";
 
-import { isSpatiallyPresent } from "../../core/unit/capability/presence/index.js";
 import type { Vitality } from "../../core/unit/capability/vitality/index.js";
 import * as units from "../../core/unit/index.js";
 import type { Unit } from "../../core/unit/index.js";
@@ -109,10 +108,7 @@ export function advance<S extends State>(
     }
 
     const target = units.get(battle, self.state.target);
-    const destination =
-        target !== undefined && isSpatiallyPresent(target)
-            ? target.position
-            : self.state.destination;
+    const destination = target?.position ?? self.state.destination;
     const reached =
         Vec2.distanceSquared(self.position, destination) <=
         self.state.speedPerTick * self.state.speedPerTick;

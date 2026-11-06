@@ -9,7 +9,6 @@ import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import * as contribution from "../../contribution/contribution.js";
 import * as attribute from "../../contribution/attribute.js";
-import { isSpatiallyPresent } from "../presence/capability.js";
 import type { Locomotion, MovementContext, MovementTarget } from "./capability.js";
 import { calculate as avoidance } from "./avoidance.js";
 import { reflect } from "./motion.js";
@@ -38,7 +37,6 @@ export function advance(
     const self = units.get(battle, ref);
     if (
         self?.lifecycle !== "PRESENT" ||
-        !isSpatiallyPresent(self) ||
         !self.locomotion.rules.every((rule) => rule.allows(battle, { self }))
     ) {
         return battle;

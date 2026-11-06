@@ -6,7 +6,6 @@ import { register, unregister } from "../../lifetime/operations.js";
 import * as units from "../query.js";
 import type { Unit } from "../unit.js";
 import type { Action as ActionCapability } from "../capability/action/capability.js";
-import { isSpatiallyPresent } from "../capability/presence/capability.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import { resolvePeriod } from "../capability/action/timing.js";
 import type { Action } from "./action.js";
@@ -56,11 +55,7 @@ export function start<P extends object, E extends object>(
 
     function check(battle: BattleState) {
         const unit = units.get(battle, source);
-        if (
-            unit?.lifecycle !== "PRESENT" ||
-            !isSpatiallyPresent(unit) ||
-            (hasVitality(unit) && unit.vitality.hp <= 0)
-        ) {
+        if (unit?.lifecycle !== "PRESENT" || (hasVitality(unit) && unit.vitality.hp <= 0)) {
             return reject("SOURCE_UNAVAILABLE");
         }
 
@@ -230,7 +225,7 @@ export function advance<X extends Execution<any, any>>(
     if (self?.execution.status !== "RUNNING") {
         return battle;
     }
-    if (source.lifecycle !== "PRESENT" || !isSpatiallyPresent(source)) {
+    if (source.lifecycle !== "PRESENT") {
         return lifetime.end(battle, reference, { type: "CANCELLED", reason: "SOURCE_ABSENT" });
     }
 

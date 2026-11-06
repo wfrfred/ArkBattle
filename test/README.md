@@ -23,14 +23,15 @@
 | 套件 | 需要保障的结果 |
 | --- | --- |
 | [battlefield](sim/battlefield.test.js) | 不可变版本、全批最终占格；Tile／Overlay 决定导航和代价选择；身体位置、空间存在和命中几何分离。 |
+| [presence](sim/presence.test.js) | 暂时消失保留 Unit、部署与 Occupancy、普通 Effect／Lifetime；appear／disappear 产生 Change，可位于组合批次任意位置，所有变换先发布，再清理本项 previous 的旧关系／执行。较早 Settlement 的合法通知中重新出现和启动的新执行保留，不重复公共 Rule／Hook／Ref 协议。 |
 | [坐标](sim/coordinate.test.js)、[范围](sim/geometry-range.test.js)、[扫掠](sim/geometry-sweep.test.js) | 坐标旋转、连续范围并集、圆／盒／混合圆角的独立公式与首次接触边界集中验证，不向空间查询和具体内容复制数值矩阵。 |
 | [unit](sim/unit.test.js) | 正常构造建立能力配对并拒绝双重阻挡角色；初始 Effect 在登记后安装。 |
 | [unit-change](sim/unit-change.test.js) | 全批变换先发布，Settlement 按序接续最新事实，嵌套操作的结果不丢失。 |
 | [hook](sim/hook.test.js) | 公共 Hook 固定候选、读取最新登记、独立嵌套派发。 |
 | [runtime](sim/runtime.test.js) | 初始化／出生事实先于 enter；正常预置替换接续最新绑定；Tick 阶段有序、失败不发布。 |
 | [lifetime](sim/lifetime.test.js) | 依赖者完整结束后宿主才注销；首次原因和收尾唯一；祖先开始结束后拒收新依赖。 |
-| [action](sim/action.test.js) | 启动拒绝、持久与执行身份、静态时序贡献变更时同步保留冷却进度、攻击中断／释放／输出、Combat 推进及确定性。 |
-| [skill](sim/skill.test.js) | 持久与本轮状态、SP 门槛／支付／回复许可、TIME 当轮延时、Ammo 公式／采样／补弹额度／耗尽。 |
+| [action](sim/action.test.js) | 启动拒绝、持久与执行身份、静态时序贡献变更时同步保留冷却进度、攻击中断／释放／输出、Combat 推进及确定性；释放通知中消失保留前缀并停止旧输出，出现后可恢复行动，不推导弹药消费政策。 |
+| [skill](sim/skill.test.js) | 持久与本轮状态、SP 门槛／支付／回复许可、TIME 当轮延时、Ammo 公式／采样／补弹额度／耗尽；开始通知中消失仍 ACTIVE 时执行 onStart，既有持续期照常推进。 |
 | [effect](sim/effect.test.js) | 安装与启停输出、零时长安装、覆写赢家、三种互斥时间、有效时长暂停与手动推进、末次回调续期、来源与生命周期依赖分离。 |
 | [contribution](sim/contribution.test.js) | 先选互斥赢家再动态求值，真实属性输出遵循领域公式。 |
 | [allegiance](sim/allegiance.test.js) | ALLY／ENEMY／NEUTRAL 的敌对关系。 |
@@ -39,8 +40,9 @@
 | [deployment](sim/deployment.test.js) | Request 预览与执行一致、拒绝不消费、消费先于入场；撤退／死亡账务与 Card 延续；离场注销、结构占格和部署额度释放先于本地内容通知，死亡 Card 先于 Card／Request 通知结算；旧 Occupancy 配对清理、逐份恢复预算及 DP。 |
 | [core-types](sim/core-types.test.js) | Typed Ref 保留身份和私有数据配对，普通擦除查询不泄漏 `any`；能力证明与不透明 Change 约束写入；普通注册的按 Key 和固定字段接口均保留 Entry 与能力 Ref 的类型关联。 |
 | [damage](sim/damage.test.js) | 按[伤害／治疗回归清单](../docs/architecture/verification.md#hook-与伤害治疗的回归语义)保障 HP／EP 公式与采样、独立 Calculate 状态、接收与提交、零值和取消、最新资源、Applied 后死亡及同步 Burst。 |
-| [healing](sim/healing.test.js) | HP／EP 治疗公式、四型恢复、满资源仍成功、双侧 Applied 和自然恢复的区别。 |
-| [elemental](sim/elemental.test.js) | rate 为零的标准 Burst 手动推进唯一时间进度，恢复期间四型 EP 逐步回填；动态与暂停预算、完整周期、零预算的一次性输出和独立产物、完成／取消后的资源与作用生命周期；不复制公共时间或 Lifetime 矩阵。 |
+| [healing](sim/healing.test.js) | HP／EP 治疗公式、四型恢复、满资源仍成功、双侧 Applied 和自然恢复的区别；一次双资源场景区分消失期间 Damage 拒收与 Healing 接收。 |
+| [elemental](sim/elemental.test.js) | rate 为零的标准 Burst 手动推进唯一时间进度，恢复期间四型 EP 逐步回填；动态与暂停预算、完整周期、零预算的一次性输出和独立产物、完成／取消后的资源与作用生命周期；自然 EP 回复及既有 Burst 不因消失冻结，不复制公共时间或 Lifetime 矩阵。 |
+| [tracking 弹道](sim/projectile-tracking.test.js) | 已锁定目标消失后仍追真实位置；身份命中不依赖 Targetable／Hitbox，Damage 接收独立判断。保留原目标失效、来源采样和具体终止结果，不为 Presence 新增通用 Projectile Rule。 |
 | [UI瞬时输出](sim/event-output.test.js) | 按EVENT清单集中验证真实结算飘字、爆发位置与注销快照、路线计数独立和Tick输出清空。 |
 | [标准元素爆发](sim/elemental-runtime.test.js) | Core 具体 Effect 使用 Data 绑定的真实数值产生伤害、异常、永久输出和周期累计结果；不重写夹具算法或按八套配置逐字段扩展。 |
 

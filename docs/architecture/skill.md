@@ -135,7 +135,7 @@ AMMO 的 setAmmoContribution 使用 `contribution.Input<ammo.Modifier, Unit & Sk
 
 弹药消费按完整指定数额结算，允许负余量。`consume` 不自动结束，`check` 独立检查最新同一 Activation 的余量并结束。具体行动决定调用耗尽检查的业务节点。
 
-普通攻击程序只保存自身执行状态与泛型内容 data，不读取 Skill。弹药行动的内容组合器在每次行动启动时采样 Activation Ref，在 afterOutput 调用该激活的 consume／check；旧行动不能消费后来激活的弹药。输出完成后仅隐藏宿主不撤销已产生的消费责任，宿主实际离场则由完整清理取消行动。
+普通攻击程序只保存自身执行状态与泛型内容 data，不读取 Skill。弹药行动的内容组合器在每次行动启动时采样 Activation Ref，在 afterOutput 调用该激活的 consume／check；旧行动不能消费后来激活的弹药。这是该组合器的具体消费节点，不构成全部弹药技能的统一时序。消失或离场可以取消 Execution；是否已消费、后继是否继续按具体内容已经发生的事实及当前执行资格判断，不从取消本身推导额外消费或返还。
 
 普通 `replenish` 同时受本次容量与累计补弹额度限制；`grant` 表达内容自身增加弹药，不占用普通补弹额度，但仍受本次容量限制。结束时丢弃剩余弹药不算消费。
 
@@ -147,7 +147,7 @@ AMMO 描述资源和耗尽结束政策，不代表所有“弹药类技能”加
 
 Operation（STOP／RETRIGGER）归领域 activation.ts，由 unit/skill/index.ts 导出；Capability 的 rule.ts 只引用该类型。Rules 声明 activationRules／operationRules／recoveryRules，State 直接继承 Rules 和 Hooks。各 Rule 统一使用 `allows(battle, context)`：Context 都有 self，operationRules 另有 operation，recoveryRules 另有 source。普通登记工厂生成 `setRule(ref, key, rule)`／`removeRule(ref, key, id)`，返回 Change，key 保留具体 Context 类型；同 ID 在不同字段互不影响。它们提供额外业务许可；内部完成、到期结束及宿主离场清理不受主动操作 Rule 否决。
 
-activate 要求宿主 PRESENT、空间在场，具有 Vitality 时 HP 大于零；operate 则保留 PRESENT、同一 Activation ACTIVE 与 Rule 准入，不附加空间或 HP 条件。当前 Activation 已存在时，内部信任对应 Activation Definition 已配置。Skill 的 enter 是普通 Unit EnterHook，装配 Skill 能力时自动登记到实例 hooks；Unit.add 按统一注册序派发。该 Hook 从最新 BattleState 读取宿主，先登记回复监听，再执行 Definition.onEnter，最后重新读取仍为 PRESENT 的宿主并尝试发动 PASSIVE 技能；onEnter 同步移除宿主后不发动。与其它 Unit Hook 一样，本次派发的 Context 固定，后继需要当前 Skill／HP 时重新查询 BattleState。持久 Skill.onTick 按 PRESENT 推进，Activation.onTick 另要求本轮 ACTIVE；它们不自动采用自然 SP 回复的暂停条件。已有技能的 STOP／RETRIGGER、计时或内部进度可以在不具备新发动资格时继续，这是各入口明确的规则选择，不合并为通用 available。
+activate 要求宿主 PRESENT，具有 Vitality 时 HP 大于零，并通过 activationRules；[Presence](presence.md) 在消失时登记这一启动限制，Skill 不直接读取空间存在字段。operate 则保留 PRESENT、同一 Activation ACTIVE 与 Rule 准入，不附加空间或 HP 条件。当前 Activation 已存在时，内部信任对应 Activation Definition 已配置。Skill 的 enter 是普通 Unit EnterHook，装配 Skill 能力时自动登记到实例 hooks；Unit.add 按统一注册序派发。该 Hook 从最新 BattleState 读取宿主，先登记回复监听，再执行 Definition.onEnter，最后重新读取仍为 PRESENT 的宿主并尝试发动 PASSIVE 技能；onEnter 同步移除宿主后不发动。与其它 Unit Hook 一样，本次派发的 Context 固定，后继需要当前 Skill／HP 时重新查询 BattleState。持久 Skill.onTick 按 PRESENT 推进，Activation.onTick 另要求本轮 ACTIVE；它们不自动采用自然 SP 回复的暂停条件。已有技能的 STOP／RETRIGGER、计时或内部进度可以在不具备新发动资格时继续，这是各入口明确的规则选择，不合并为通用 available。
 
 Hook 登记使用 capability/skill 的 `setHook(reference, key, hook): Change`／`removeHook(reference, key, id): Change`，Key 与事件载荷保持类型配对，由 Unit.update 提交。Rule 和 Ammo 贡献同样绑定 Skill Capability Ref 返回 Change；精确私有 state 写回、SP 消费、激活与结束使用各自领域操作。
 
@@ -186,7 +186,7 @@ HIT 回复由 Skill 的 enter Hook 在 Damage 的 receivingStarted 扩展点登�
 
 ## 5. 发动与完整结束
 
-发动先检查当前宿主、触发方式、许可、门槛与足额支付，采样数据与持续预算，再一次性写入扣费和新 Activation，并登记 Activation→Unit 的 Lifetime owner 关系。随后依次记录 SKILL_ACTIVATED、派发 activationStarted、通知 spPaid，再执行仍有资格的 onStart。支付 Hook 可以终止已创建的激活；后续启动程序必须重读同一身份、ACTIVE 状态和宿主当前资格，创建事实不会被撤销，支付报告保留已提交时的前后值。
+发动先检查当前宿主、触发方式、许可、门槛与足额支付，采样数据与持续预算，再一次性写入扣费和新 Activation，并登记 Activation→Unit 的 Lifetime owner 关系。随后依次记录 SKILL_ACTIVATED、派发 activationStarted、通知 spPaid，再执行仍有资格的 onStart。支付 Hook 可以终止已创建的激活；后续启动程序必须重读同一身份、ACTIVE 状态和宿主当前生命周期及生命资格。暂时消失本身不单独跳过仍成立的开始程序，也不统一结束持续技能；具体机制仍可明确结束该 Activation。创建事实不会被撤销，支付报告保留已提交时的前后值。
 
 accepts、门槛与本次支付在 Activation 创建之前确定，不能依赖尚未建立的本轮私有 state。需要本轮身份的业务放在已登记后的程序中；不能为了前置判断提前复制一套激活状态。
 

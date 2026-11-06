@@ -11,6 +11,7 @@ import { update } from "../../dist/core/battle/unit.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { first } from "../../dist/core/battle/targeting/index.js";
 import { create as attack } from "../../dist/content/actions/attack.js";
+import * as presence from "../../dist/core/unit/capability/presence/index.js";
 
 test("prepare can reject without allocating a round; ending preserves the latest persistent state", () => {
     const program = {
@@ -177,6 +178,7 @@ test("interrupted attack, successful release, and damage output are separate bus
     const definition = {
         id: "actor",
         hooks: Hooks.empty(),
+        spatialPresence: {},
         action: { initialize: (state) => actions.createActions(state, actions.create(program)) },
         skill: { initialize: (state) => skills.create(state, resource) },
     };
@@ -207,9 +209,9 @@ test("interrupted attack, successful release, and damage output are separate bus
     state = update({ ...state, tick: 10 }, [
         action.removeHook(source, "beforeRelease", "interrupt"),
         action.setHook(source, "released", {
-            id: "cancel-output",
+            id: "hide-after-release",
             invoke: (state, { execution }) => ({
-                state: actions.cancel(state, execution, "STOP_OUTPUT"),
+                state: update(state, [presence.disappear(execution.host)]),
                 value: undefined,
             }),
         }),
@@ -218,9 +220,12 @@ test("interrupted attack, successful release, and damage output are separate bus
     state = actions.advance(started.state, started.value.ref);
     assert.equal(get(state, 0).skill.sp.value, 1);
     assert.equal(get(state, 1).vitality.hp, 100);
+    assert.equal(actions.getExecution(state, started.value.ref), undefined);
 
-
-    state = update({ ...state, tick: 20 }, [action.removeHook(source, "released", "cancel-output")]);
+    state = { ...state, tick: 20 };
+    assert.equal(actions.start(state, reference).value.reason, "RULE");
+    state = update(state, [presence.appear(source, [1, 1])]);
+    state = update(state, [action.removeHook(source, "released", "hide-after-release")]);
     started = actions.start(state, reference);
     state = actions.advance(started.state, started.value.ref);
     assert.equal(get(state, 0).skill.sp.value, 2);
@@ -228,6 +233,7 @@ test("interrupted attack, successful release, and damage output are separate bus
 });
 
 test("Combat advances a zero-period action once per Tick with deterministic results", () => {
+    let selections = 0;
     const program = {
         id: "instant",
         intervalTicks: 0,
@@ -252,7 +258,14 @@ test("Combat advances a zero-period action once per Tick with deterministic resu
     const definition = {
         id: "actor",
         hooks: Hooks.empty(),
-        action: { initialize: (state) => actions.createActions(state, actions.create(program)) },
+        spatialPresence: {},
+        action: {
+            initialize: (state) => actions.createActions(state, actions.create(program)),
+            select(state) {
+                selections++;
+                return { state, value: [program.id] };
+            },
+        },
         skill: { initialize: (state) => skills.create(state, resource) },
     };
     const firstRun = step(battle([{ definition, position: [1, 1] }], { rngState: 42 }), []);
@@ -268,4 +281,8 @@ test("Combat advances a zero-period action once per Tick with deterministic resu
         actions.getAction(repeated, reference),
     );
     assert.equal(firstRun.execution.rngState, repeated.execution.rngState);
+    const hidden = update(firstRun, [presence.disappear(units.ref(get(firstRun, 0)))]);
+    const after = step(hidden, []);
+    assert.equal(selections, 2);
+    assert.equal(actions.getAction(after, reference).state.completed, 1);
 });

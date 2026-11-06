@@ -3,11 +3,13 @@ import { test } from "node:test";
 import { battle, get } from "../helpers/battle.js";
 import { Hooks } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
+import * as hpDamage from "../../dist/core/battle/damage/hp/index.js";
 import * as epDamage from "../../dist/core/battle/damage/ep/index.js";
 import * as hpHealing from "../../dist/core/battle/healing/hp/index.js";
 import * as epHealing from "../../dist/core/battle/healing/ep/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
+import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { update } from "../../dist/core/battle/unit.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { TacticalDemoPresentation } from "../../dist/legacy/tactical-demo-presentation.js";
@@ -20,10 +22,12 @@ const elementalReceiver = {
     elemental: createArknightsElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
 };
 
-test("HP Healing calculates output before reception and full HP still notifies both self-target roles", () => {
+test("HP Healing accepts full resources and absent patients while damage requires presence", () => {
     const calls = [];
     let state = battle([{ definition: {
-        id: "patient", hooks: Hooks.empty(), vitality: { maxHp: 100.5, defense: 0, resistance: 0 },
+        id: "patient", hooks: Hooks.empty(), spatialPresence: {},
+        vitality: { maxHp: 100.5, defense: 0, resistance: 0 },
+        elemental: createArknightsElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
     }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     assert.equal(get(state, 0).vitality.hp, 100.5);
@@ -50,6 +54,32 @@ test("HP Healing calculates output before reception and full HP still notifies b
     assert.equal(full.value.kind, "APPLIED");
     assert.deepEqual(full.value.application, { hpBefore: 100.5, hpAfter: 100.5, hpGain: 0 });
     assert.deepEqual(calls, ["receive", "target", "source"]);
+
+    const hpLoss = { source: null, target, parameters: {
+        type: "TRUE", attack: { power: 30, multiplier: 1, addition: 0 },
+    } };
+    const epLoss = { target, source: null, type: "NEURAL", power: 200 };
+    state = hpDamage.applyDamage(hpLoss, hpDamage.calculateDamage(full.state, hpLoss)).state;
+    state = epDamage.applyDamage(epLoss, epDamage.calculateDamage(state, epLoss)).state;
+    assert.equal(get(state, 0).vitality.hp, 70.5);
+    assert.equal(get(state, 0).elemental.ep.NEURAL, 800);
+
+    state = update(state, [presence.disappear(target)]);
+    assert.equal(hpDamage.applyDamage(hpLoss, hpDamage.calculateDamage(state, hpLoss)).value.kind, "REJECTED");
+    assert.equal(epDamage.applyDamage(epLoss, epDamage.calculateDamage(state, epLoss)).value.kind, "REJECTED");
+    const hpRestored = hpHealing.applyHealing(request, hpHealing.calculateHealing(state, request));
+    assert.equal(hpRestored.value.application.hpGain, 30);
+    const epRequest = { target, source: null, power: 100 };
+    const epRestored = epHealing.applyHealing(epRequest, epHealing.calculateHealing(hpRestored.state, epRequest));
+    assert.equal(epRestored.value.application.epGain.NEURAL, 100);
+    state = elemental.advance({ ...epRestored.state, tick: 1 }, target);
+    assert.equal(get(state, 0).elemental.ep.NEURAL, 900.5);
+
+    state = update(state, [presence.appear(target, [0, 0])]);
+    const hpAccepted = hpDamage.applyDamage(hpLoss, hpDamage.calculateDamage(state, hpLoss));
+    assert.equal(hpAccepted.value.application.hpLoss, 30);
+    const epAccepted = epDamage.applyDamage(epLoss, epDamage.calculateDamage(hpAccepted.state, epLoss));
+    assert.equal(epAccepted.value.application.epLoss, 200);
 });
 
 test("EP-01/03: losses stay per element, healing gives every bar the full amount, and natural recovery is separate", () => {

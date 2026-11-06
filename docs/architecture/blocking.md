@@ -155,12 +155,14 @@ Blocking 将资格与其他取得条件分开处理：
 
 | 阶段 | 检查内容 |
 | --- | --- |
-| `canSearch` | 不依赖具体目标的基础资格，包括阻挡者在场、存活、空间存在；GROUND 另要求当前根格的阻挡许可，AIR 跳过该地块条件；不提前求值二元 Rule。 |
-| `canRetain` | 双方 PRESENT 且空间存在，阻挡层与目标空地身份匹配，以及两端所有 `Rule.allows(battle, { blocker, blockable })`；GROUND 还要求当前根格允许阻挡，AIR 豁免。临时 HP 为 0 不作为默认保持资格的退出条件。 |
+| `canSearch` | 不依赖具体目标的基础资格，包括阻挡者在场、存活；GROUND 另要求当前根格的阻挡许可，AIR 跳过该地块条件；不提前求值二元 Rule。 |
+| `canRetain` | 双方 PRESENT，阻挡层与目标空地身份匹配，以及两端所有 `Rule.allows(battle, { blocker, blockable })`；GROUND 还要求当前根格允许阻挡，AIR 豁免。临时 HP 为 0 不作为默认保持资格的退出条件。 |
 | 新关系取得 | 在搜索和关系资格之外，双方有 Vitality 时 HP 必须大于 0，确认目标尚无归属、双方在接敌距离内，且当前占用加目标 volume 不超过 capacity。 |
 | 容量裁撤 | 独立比较当前总占用与容量，超出时从既有有序关联末尾逐项解除；每项通知后接续最新状态。 |
 
 距离只约束新取得，普通移动超出起始半径不使旧关系失效。目标是否已有归属在取得入口检查，不属于 `canRetain`；当前容量已满也不使每条既有关系分别变成不合格。Capability 不保存第二个 enabled 状态，也不将二元 Rule 压成单个 Unit 的 enabled 投影。
+
+[空间消失](presence.md)通过两端已有的 Rule 限制关系资格，由 Presence Change 的 Settlement 解除本项 previous 所记录的旧关系。Blocking 不直接读取 Presence。
 
 正常空地匹配要求目标实际具有 Unit Layer，且 blocker.layer === target.layer.type；没有 Layer 的 Blockable 不参与正常阻挡，不隐式视为 GROUND。生产敌人装配均提供该身份，测试参与关系的对象也应明确配置；Blockable 自身的类型与构造不因此强制依赖 Layer Capability。
 
@@ -251,7 +253,7 @@ setLayer 不因旧关系在最终层下仍合法而保留它。新建立的同 I
 
 ## 要求解除旧阻挡的空间操作
 
-SpatialPresence 仍是完整领域操作，先纯发布新位置／空间存在性并取消自身 adjustment，再调用 `release(battle, relations(battle, ref))`。Route 主动覆盖位置时同样取消自身计划并解除当前关系；有 Presence 时使用该完整空间操作，没有 Presence 时自行纯发布后调用 release。字段发布与关系解除之间没有业务回调，因此首个 RELEASED Hook 已能读取新空间事实、计划取消与整批双端解除结果，无需将所有字段挤入同一次 replace，也不向 release 传入额外更新值。
+[SpatialPresence](presence.md) 的 appear／disappear 返回 Change：纯转换同时更新空间事实、自身 adjustment 及各能力限制，Settlement 根据本项 previous 只解除仍属旧轮次的关系。Presence 自己的首个 RELEASED Hook 已能读取此次整批解除结果；更早的 Settlement 重入建立的新关系或计划不会被旧清理误伤。Route 主动覆盖位置时通过 unit.update 提交 Presence Change；没有该能力时自行纯发布位置及计划取消，再解除局部关系。两种路径均不向 release 传入额外更新值。
 
 Blocker.layer 的 Change 先在全批发布时设置 layer／radius，等轮到自己的 settle 才通过 release 批量清理 previous 中的旧集合。该 settle 开始后仍存在的全部旧候选，在它自己的首个 RELEASED Hook 前一并清除。若较早 settle 已解除部分关系，那些较早通知遵守自己的结算语义，不能承诺全批第一个 RELEASED 前切层旧关系已全清空。
 

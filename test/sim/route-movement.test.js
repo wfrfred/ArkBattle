@@ -5,7 +5,7 @@ import { Hooks } from "../../dist/core/hook.js";
 import { ref } from "../../dist/core/unit/query.js";
 import { advance as advanceBlocking, search as searchBlocking } from "../../dist/core/battle/blocking/operations.js";
 import { advanceMovement, resolveRouteCompletion } from "../../dist/core/battle/steps/movement.js";
-import { remove } from "../../dist/core/battle/unit.js";
+import { remove, update } from "../../dist/core/battle/unit.js";
 import { get as getTile } from "../../dist/core/battlefield/map/map.js";
 import { update as updateTile } from "../../dist/core/battle/tile.js";
 import { nextPoint as nextNavigationPoint } from "../../dist/core/battlefield/navigation/state.js";
@@ -134,7 +134,7 @@ test("outside-map displacement recovers within the movement budget and keeps its
     const host = ref(get(state, 0));
     state = advanceMovement(state, { routeMoveMultiplier: 1 });
     const moving = get(state, 0);
-    state = appear(state, host, [moving.position[0] - 1, moving.position[1]]);
+    state = update(state, [appear(host, [moving.position[0] - 1, moving.position[1]])]);
     const displaced = get(state, 0).position;
     state = advanceMovement({ ...state, tick: 1 }, { routeMoveMultiplier: 1 });
     const resumed = get(state, 0);

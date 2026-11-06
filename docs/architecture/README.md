@@ -16,7 +16,7 @@
 
 各领域文档记录有效的数据模型、API 和执行语义。尚未完成的重构、开放问题和验收要求保留在对应章节；[接口约定](api-conventions.md)汇总尚未统一的接口，[目标语义与实现缺口](tactical-semantics.md)记录未完成的玩法接入。
 
-已审查部分先按[语义验收](verification.md)确定保留目标，再重新选择最小测试。当前范围为 Battlefield、Unit 独立领域、Action／Allegiance／Blocking／Deployable／Hitbox／Layer Capability 及对应 Battle 协作，以及 Unit 本地 Hook、HP／EP 结算和 Vitality／Elemental 的资源提交与 Burst 协作。领域文档的关键语义、接入／实现说明与未决内容分别阅读，接口和字段列表不自动成为测试清单。
+已审查部分先按[语义验收](verification.md)确定保留目标，再重新选择最小测试。当前范围为 Battlefield、Unit 独立领域、Action／Allegiance／Blocking／Deployable／Hitbox／Layer／Locomotion／Presence Capability 及对应 Battle 协作，以及 Unit 本地 Hook、HP／EP 结算和 Vitality／Elemental 的资源提交与 Burst 协作。领域文档的关键语义、接入／实现说明与未决内容分别阅读，接口和字段列表不自动成为测试清单。
 
 | 文档                                      | 内容                                                                               |
 | ----------------------------------------- | ---------------------------------------------------------------------------------- |
@@ -35,6 +35,7 @@
 | [Elemental 设计](elemental.md) | 四型 EP、动态属性、稳定 Burst 身份、请求与损失通知、完整终止及内容边界 |
 | [Targeting 与 Targetable 设计](targeting.md) | 显式请求与选择入口、只读 Filter／Comparator、支持随机的 Selector、固有与动态限制 API |
 | [Spatial Query](spatial.md) | 命中几何、离散／连续范围、形状扫掠及只读候选查询 |
+| [空间存在](presence.md) | 暂时消失、所属能力 Rule、旧关系与执行清理，以及持续程序和锁定弹道的边界 |
 | [几何与坐标 API](geometry.md) | Tile／World、Shape／Range、坐标转换与纯几何相交及首次接触 |
 | [Terrain 与 Mechanism](terrain.md) | 逐格参数、类型化 Tiles、地形轮询、控制器与 Unit Effect 的职责 |
 | [Navigation、Route 与 Locomotion 设计](navigation.md) | 地图、Overlay、寻路查询、路线执行与运动结算的职责划分 |

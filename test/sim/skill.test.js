@@ -7,6 +7,7 @@ import * as skills from "../../dist/core/unit/skill/index.js";
 import * as skill from "../../dist/core/unit/capability/skill/index.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { update } from "../../dist/core/battle/unit.js";
+import * as presence from "../../dist/core/unit/capability/presence/index.js";
 
 test("activation publishes payment before onStart and clears only the completed round before notification", () => {
     const observed = [];
@@ -40,12 +41,17 @@ test("activation publishes payment before onStart and clears only the completed 
     const definition = {
         id: "operator",
         hooks: Hooks.empty(),
+        spatialPresence: {},
         skill: { initialize: (state) => skills.create(state, program) },
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
     const reference = skills.ref(source, program);
     state = update(state, [
+        skill.setHook(source, "activationStarted", {
+            id: "hide-on-start",
+            invoke: (state, { host }) => ({ state: update(state, [presence.disappear(host)]), value: undefined }),
+        }),
         skill.setHook(source, "activationEnded", {
             id: "observe-end",
             invoke(state, { host, event }) {
@@ -69,6 +75,8 @@ test("activation publishes payment before onStart and clears only the completed 
     ]);
     assert.equal(skills.getSkill(state, reference).state.completed, 1);
 
+    assert.equal(skills.activate(state, reference).value.reason, "CONDITION");
+    state = update(state, [presence.appear(source, [1, 1])]);
     const second = skills.activate(state, reference);
     state = skills.finish(second.state, first.value.ref);
     assert.equal(skills.getActivation(state, second.value.ref).activation.status, "ACTIVE");
@@ -180,12 +188,18 @@ test("TIME extension changes this activation rather than the next activation's b
         activation: {
             trigger: "MANUAL",
             sustain: { type: "TIME", durationTicks: 5 },
-            initialize: () => ({}),
+            initialize: () => ({ ticks: 0 }),
+            onTick(state, source, self) {
+                return skills.setActivationState(state, skills.activationRef(source, self), {
+                    ticks: self.activation.state.ticks + 1,
+                });
+            },
         },
     };
     const definition = {
         id: "operator",
         hooks: Hooks.empty(),
+        spatialPresence: {},
         skill: { initialize: (state) => skills.create(state, program) },
     };
     let state = battle([{ definition, position: [1, 1] }]);
@@ -193,10 +207,13 @@ test("TIME extension changes this activation rather than the next activation's b
     const reference = skills.ref(source, program);
     const first = skills.activate(state, reference);
     state = skills.extendTime({ ...first.state, tick: 2 }, first.value.ref, 3);
+    state = update(state, [presence.disappear(source)]);
     state = skills.advance({ ...state, tick: 5 }, source);
     assert.equal(skills.getActivation(state, first.value.ref).activation.sustain.endsAtTick, 8);
+    assert.equal(skills.getActivation(state, first.value.ref).activation.state.ticks, 1);
     state = skills.advance({ ...state, tick: 8 }, source);
     assert.equal(get(state, 0).skill.activation, null);
+    state = update(state, [presence.appear(source, [1, 1])]);
     const second = skills.activate(state, reference);
     state = skills.extendTime(second.state, first.value.ref, 10);
     assert.equal(skills.getActivation(state, second.value.ref).activation.sustain.endsAtTick, 13);

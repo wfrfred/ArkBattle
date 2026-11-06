@@ -15,6 +15,7 @@ import { advanceMovement, resolveRouteCompletion } from "../../dist/core/battle/
 import { TacticalDemoPresentation } from "../../dist/legacy/tactical-demo-presentation.js";
 
 import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
+import { update } from "../../dist/core/battle/unit.js";
 
 const elemental = createArknightsElementalDefinition({ receiver: "CHARACTER" });
 const data = { lookup() {} };
@@ -56,7 +57,7 @@ test("EVENT-02: a Burst keeps its original position through movement and death i
     const target = units.ref(get(state, 0));
     const injury = { source: null, target, type: "BURN", power: 1000 };
     state = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury)).state;
-    state = presence.appear(state, target, [4, 1]);
+    state = update(state, [presence.appear(target, [4, 1])]);
     const lethal = {
         source: null, target,
         parameters: { type: "TRUE", attack: { power: 2000, multiplier: 1, addition: 0 } },

@@ -5,7 +5,6 @@ import * as units from "../../query.js";
 import * as contribution from "../../contribution/contribution.js";
 import * as attribute from "../../contribution/attribute.js";
 import { hasAllegiance } from "../allegiance/capability.js";
-import { isSpatiallyPresent } from "../presence/capability.js";
 import { hasVitality } from "../vitality/capability.js";
 import { ELEMENT_TYPES, type Elemental, type Parameter, type Type } from "./capability.js";
 import type { Burst } from "./burst.js";
@@ -61,11 +60,7 @@ function resolve(battle: BattleState, self: Unit & Elemental, parameter: Paramet
 }
 
 export function available(self: Unit): boolean {
-    return (
-        self.lifecycle === "PRESENT" &&
-        isSpatiallyPresent(self) &&
-        (!hasVitality(self) || self.vitality.hp > 0)
-    );
+    return self.lifecycle === "PRESENT" && (!hasVitality(self) || self.vitality.hp > 0);
 }
 
 export function canReceiveDamage(

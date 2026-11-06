@@ -14,7 +14,6 @@ import type { State as BattleState } from "../../../battle/state.js";
 import { replace } from "../../../battle/unit.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
 import * as units from "../../query.js";
-import { isSpatiallyPresent } from "../presence/capability.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
 import { Vec2 } from "../../../common/vector.js";
 import { settleCapacity } from "./blocker-operations.js";
@@ -55,7 +54,7 @@ export function advancePosition(
     reference: Ref<Unit & Blockable>,
 ): BattleState {
     const self = units.get(battle, reference);
-    if (self?.lifecycle !== "PRESENT" || !isSpatiallyPresent(self)) {
+    if (self?.lifecycle !== "PRESENT") {
         return battle;
     }
 

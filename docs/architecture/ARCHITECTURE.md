@@ -117,6 +117,7 @@ Rule、Hook、Contribution 与 Blocker.layer 的公开写入绑定 Typed Ref，�
 | Route              | 路线脚本、活动目标、等待和后继                 | 主／替代路线各自保存 Definition、当前 pathMotionMode 与 Phase；Spawn 规范化并采样偏移 |
 | Navigation         | 基础通行图、Overlay 与建议移动点查询           | Battlefield 持有 Navigation State；有效 Map 和 Field 在内部派生并缓存 |
 | Locomotion         | 按速度与运动规则执行自主移动、避障及目的格反射 | 保存历史速度、移速贡献与规则；消费 Route 已准备好的世界坐标目标和当前模式 |
+| SpatialPresence    | 身体空间存在与主动位置覆盖 | 以 Change 变换 present 与各能力的限制 Rule，结算旧关系／执行清理；不改变实例身份或统一暂停持续程序 |
 | Blocking / Support | 建立、保留和解除领域关系                       | 资格规则与依赖复用判断共享领域事实提取                                            |
 
 Action 程序在实际业务位置调用伤害、治疗等领域操作；Effect 表示有生命周期的附着实例。Action 聚合条目存在所属 Unit.action.actions，当前 Execution 的 Ref 携带 host 与宿主内执行 id；Projectile 独立存于 Battlefield，不因 Action 结束自动终结，显式生命周期依赖由内容结算。Aura 用宿主 Unit 上的 Effect 表示，目标登记与刷新进度保存在其私有 State，接收 Effect 存在各自 Unit 上。
@@ -133,7 +134,9 @@ Skill 的 Definition／create、单槽聚合、Activation 非空视图、查询�
 
 技能结束与单位退场委托同一 Lifetime 请求／析构协议。Unit 的所有权边保护 Execution、Activation 和 Effects，标准 Burst 复用 Effect 的身份与 Lifetime；全部子项完成 Finalize 后才能移除 Unit。已经进入的内容仍按普通控制流继续，后继按最新状态确认资格；不能重建已结束实例，新的真正依赖也不能绑定到 Pending／ENDING 对象。
 
-弹药消耗属于实际攻击输出，准备步骤与取消的前摇不消耗弹药；同一次攻击的多目标输出只消费一次。消耗与耗尽检查由内容在明确节点分别调用；普通弹药技能检查时点的内容对照见 [待完成机制](tactical-semantics.md)。已经释放的 Projectile 具有独立生命周期，技能结束或 Action 取消不会删除它。
+弹药消费与耗尽检查由内容在明确节点分别调用，取消本身不制造额外消费或返还。当前弹药行动模板在一次行动的 afterOutput 消费一次，其它内容按自身机制安排，见 [Skill](skill.md#3-sustain-与弹药)。已经释放的 Projectile 具有独立生命周期，技能结束或 Action 取消不会删除它。
+
+[空间消失](presence.md)保留身份、真实坐标及生命周期登记。Presence 通过所属能力的 Rule 限制新业务，并在同批发布后解除旧关系、取消捕获的旧 Action；各能力不反向读取 Presence。空间查询、普通索敌和 Combat 选择前的检查直接消费空间存在事实，锁定弹道仍可读取现存目标的真实位置。
 
 干员和敌人内容按需组合 Vitality 与 Elemental；Core 的基础 Unit 不隐含这些能力，也不提供干员或敌人 Archetype 层。免疫通过 Elemental Rule 表达，不通过删除能力表达。神经、侵蚀、灼燃和凋亡分别积累，Elemental 只保存当前标准 Burst Effect 的引用；该 Effect 以一份有效进度推进动态恢复预算、四型 EP 回填和周期输出。Core 用八个具体 Effect 实现各套标准规则，Data 选择对应实现并绑定数值，形成按元素枚举查找的静态表；不保留大参数表与开关解释器。接收者类别不依赖当前阵营或 Core 注册表。EP Commit 同步安装 Burst，先派发 burstStarted，再执行 onInstall 的一次性爆发输出，随后 damaged，返回后才执行 Battle Applied；damaged／healed 保留各自资源通知职责。EP 损伤与 HP 元素伤害调用不同操作，元素治疗有自己的接收资格，HP 禁疗不隐式决定 EP 接收。少数多爆发特例由 Content 组合实际语义，详见 [Elemental 设计](elemental.md)。
 

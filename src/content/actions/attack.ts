@@ -25,7 +25,6 @@ import {
     beforeRelease,
     released,
 } from "../../core/unit/capability/action/index.js";
-import { isSpatiallyPresent } from "../../core/unit/capability/presence/index.js";
 
 import { hasOffense, resolveAttack } from "../../core/unit/capability/offense/index.js";
 
@@ -145,7 +144,7 @@ export function isAttack(value: unknown): value is Stored {
 function sourcePresent(battle: BattleState, source: Ref<Unit>): boolean {
     const current = units.get(battle, source);
 
-    return current?.lifecycle === "PRESENT" && isSpatiallyPresent(current);
+    return current?.lifecycle === "PRESENT";
 }
 
 export function chooseTargets(

@@ -1,5 +1,5 @@
 import { Vec2 } from "../../../common/vector.js";
-import { replace as replaceUnit } from "../../../battle/unit.js";
+import { replace as replaceUnit, update } from "../../../battle/unit.js";
 import { release } from "../../../battle/blocking/operations.js";
 import { relations } from "../../../battle/blocking/query.js";
 import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
@@ -192,12 +192,12 @@ export function advance(battle: BattleState, ref: Ref<Unit & Route>): BattleStat
 
             if (checkpoint.type === "DISAPPEAR") {
                 if (hasSpatialPresence(self)) {
-                    battle = presence.disappear(battle, units.ref(self));
+                    battle = update(battle, [presence.disappear(units.ref(self))]);
                 }
             } else if (checkpoint.type === "APPEAR_AT_POS") {
                 const position = Vec2.add(Tile.center(checkpoint.position), checkpoint.offset);
                 if (hasSpatialPresence(self)) {
-                    battle = presence.appear(battle, units.ref(self), position);
+                    battle = update(battle, [presence.appear(units.ref(self), position)]);
                 } else {
                     const current = units.get(battle, ref)!;
                     const next = hasBlockable(current)

@@ -10,6 +10,7 @@ import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as locomotion from "../../dist/core/unit/capability/locomotion/index.js";
+import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { createStun } from "../../dist/core/effects/elemental/neural.js";
 import { createSpDrain } from "../../dist/core/effects/elemental/necrosis.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
@@ -21,7 +22,7 @@ const elementalReceiver = {
     elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
 };
 
-test("EP-03: Burst recovery refills all EP with the current budget and releases its scoped output", () => {
+test("EP-03: Burst recovery continues while absent, refills EP with the current budget and releases its output", () => {
     let state = battle([{ definition: elementalReceiver, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     const incoming = { target, type: "BURN", power: 1000, source: null };
@@ -32,6 +33,7 @@ test("EP-03: Burst recovery refills all EP with the current budget and releases 
     assert.equal(epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming)).value.kind, "REJECTED");
     const heal = { target, source: null, power: 100 };
     assert.equal(epHealing.applyHealing(heal, epHealing.calculateHealing(state, heal)).value.kind, "REJECTED");
+    state = update(state, [presence.disappear(target)]);
     state = effects.advance({ ...state, tick: 1 });
     assert.equal(elemental.get(state, burst).expiration.elapsed, 1);
     for (const value of Object.values(get(state, 0).elemental.ep)) {
@@ -62,6 +64,7 @@ test("EP-03: Burst recovery refills all EP with the current budget and releases 
     assert.equal(get(state, 0).elemental.burst, null);
     assert.equal(elemental.get(state, burst), undefined);
     assert.equal(vitality.resolveResistance(state, get(state, 0)), 50);
+    state = update(state, [presence.appear(target, [0, 0])]);
     const restart = { ...incoming, power: 2000 };
     const restarted = epDamage.applyDamage(restart, epDamage.calculateDamage(state, restart));
     state = elemental.cancel(restarted.state, restarted.value.application.burst, "CONTENT");

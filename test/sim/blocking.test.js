@@ -194,7 +194,7 @@ test("own layer requests release old relations before hooks, including same-valu
 
 test("position plans survive relation release while active departure and spatial overrides cancel them", () => {
     let state = battle([
-        { definition: blocker, position: [2, 1] },
+        { definition: { ...blocker, spatialPresence: {} }, position: [2, 1] },
         { definition: enemy, position: [2.2, 1] },
         { definition: enemy, position: [2.3, 1] },
     ]);
@@ -226,6 +226,16 @@ test("position plans survive relation release while active departure and spatial
     state = unit.update(state, [layer.setType(departing, "GROUND")]);
     state = blocking.acquire(state, owner, departing);
     assert.notEqual(get(state, 2).blockable.adjustment, null);
+    const independentPlan = get(state, 2).blockable.adjustment;
+    state = unit.update(state, [presence.disappear(owner)]);
+    assert.equal(blocking.blockerOf(state, departing), undefined);
+    assert.equal(get(state, 2).blockable.adjustment, independentPlan);
+    state = advanceMovement({ ...state, tick: 9 }, { routeMoveMultiplier: 1 });
+    assert.notDeepEqual(get(state, 2).position, independentPlan.from);
+    state = unit.update(state, [presence.disappear(departing)]);
+    assert.equal(get(state, 2).blockable.adjustment, null);
+    state = unit.update(state, [presence.appear(owner, [2, 1]), presence.appear(departing, [2.3, 1])]);
+    state = blocking.acquire(state, owner, departing);
     let observed = false;
     state = unit.update(state, [
         capability.setBlockableHook(departing, "released", {
@@ -241,7 +251,7 @@ test("position plans survive relation release while active departure and spatial
             },
         }),
     ]);
-    state = presence.appear(state, departing, [5, 1]);
+    state = unit.update(state, [presence.appear(departing, [5, 1])]);
     assert.equal(observed, true);
     assert.deepEqual(get(state, 2).position, [5, 1]);
     assert.equal(get(state, 2).blockable.adjustment, null);

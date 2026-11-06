@@ -3,7 +3,7 @@ import { predefinedUnits } from "../helpers/predefined.js";
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { fixtureBattle, initialize } from '../helpers/unit.js';
-import { add as addUnit, remove as removeUnit } from '../../dist/core/battle/unit.js';
+import { add as addUnit, remove as removeUnit, update as updateUnits } from '../../dist/core/battle/unit.js';
 import { appear, disappear } from '../../dist/core/unit/capability/presence/index.js';
 import { getUnit } from '../helpers/unit.js';
 import * as projectiles from '../../dist/core/battle/projectile.js';
@@ -41,14 +41,26 @@ function step(battle, tick) {
   return advance({ ...battle, tick }, projectilesQuery.all(battle).map(projectilesQuery.ref));
 }
 
-test('locked arrow hit uses identity without requiring targetability, hitbox or spatial presence', () => {
+test('locked arrows follow a disappeared target position and separate identity hits from damage reception', () => {
   const fixture = setup();
-  const launched = projectiles.create(fixture.battle, createArrow(), { position: [0, 0], state: fixture.state });
-  const hidden = disappear(appear(launched.state, ref(fixture.target), [10, 0]), ref(fixture.target));
-  const after = step(hidden, 1);
+  const launched = projectiles.create(fixture.battle, createArrow(), {
+    position: [0, 0], state: { ...fixture.state, stopDelayTicks: 1 },
+  });
+  let state = updateUnits(launched.state, [appear(ref(fixture.target), [3, 0]), disappear(ref(fixture.target))]);
+  state = step(state, 1);
+  assert.deepEqual(projectilesQuery.get(state, launched.value).position, [1, 0]);
+  assert.deepEqual(projectilesQuery.get(state, launched.value).state.destination, [3, 0]);
+  state = step(state, 2);
+  state = step(state, 3);
+  assert.equal(projectilesQuery.get(state, launched.value).state.hitAttempted, true);
+  assert.equal(getUnit(state, 1).vitality.hp, 1000);
+  state = step(state, 4);
+  assert.equal(projectilesQuery.get(state, launched.value), undefined);
 
-  assert.equal(getUnit(after, 1).vitality.hp, 960);
-  assert.equal(after.battlefield.projectiles.size, 0);
+  state = updateUnits(state, [appear(ref(fixture.target), [3, 0])]);
+  const visible = projectiles.create(state, createArrow(), { position: [3, 0], state: fixture.state });
+  state = step(visible.state, 5);
+  assert.equal(getUnit(state, 1).vitality.hp, 960);
 });
 
 test('dispel skips the ordinary arrow fallback hit while explicit stop performs it once', () => {

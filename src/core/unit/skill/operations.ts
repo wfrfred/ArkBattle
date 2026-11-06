@@ -8,7 +8,6 @@ import * as units from "../query.js";
 import type { Unit } from "../unit.js";
 import type { EnterHook } from "../hook.js";
 import * as contribution from "../contribution/contribution.js";
-import { isSpatiallyPresent } from "../capability/presence/capability.js";
 import { hasVitality, setHook as setVitalityHook } from "../capability/vitality/capability.js";
 import { hasAction, setHook as setActionHook } from "../capability/action/capability.js";
 import type { ReleasedHook } from "../capability/action/release.js";
@@ -117,11 +116,7 @@ export function activate<S extends object, A extends object>(
         state: battle,
         value: { type: "REJECTED", reason },
     });
-    if (
-        unit?.lifecycle !== "PRESENT" ||
-        !isSpatiallyPresent(unit) ||
-        (hasVitality(unit) && unit.vitality.hp <= 0)
-    ) {
+    if (unit?.lifecycle !== "PRESENT" || (hasVitality(unit) && unit.vitality.hp <= 0)) {
         return reject("UNAVAILABLE");
     }
 
@@ -214,7 +209,6 @@ export function activate<S extends object, A extends object>(
     const currentUnit = units.get(battle, source);
     if (
         currentUnit?.lifecycle === "PRESENT" &&
-        isSpatiallyPresent(currentUnit) &&
         (!hasVitality(currentUnit) || currentUnit.vitality.hp > 0) &&
         current?.activation.status === "ACTIVE" &&
         definition.onStart !== undefined

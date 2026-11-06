@@ -6,7 +6,7 @@
 
 - `core/battlefield/`：地图与地块、Unit 存储、结构占格、Navigation 和 Spatial 查询。
 - `core/unit/` 的基础 Unit、构造、查询、Change，以及独立的 Action、Skill、Effect、Contribution 领域。
-- `core/unit/capability/` 已审查 Action、Allegiance、Blocking、Deployable、Hitbox、Layer 与 Locomotion。
+- `core/unit/capability/` 已审查 Action、Allegiance、Blocking、Deployable、Hitbox、Layer、Locomotion 与 Presence。
 - 对应的 `core/battle/unit.ts`、Tile、Blocking、Deployment／Card、Occupancy 协作，以及调度器对上述领域的调用。
 - Unit 本地类型化 Hooks、HP／EP 的 Damage／Healing 两阶段结算，以及 Vitality／Elemental 的专属接收、资源提交与 Burst 协作。
 - 公共 Hook、Typed Ref 和 Lifetime 只承担上述领域共享的契约，不按每个消费者重复展开。
@@ -31,6 +31,7 @@ Deployable 对 Occupancy 的构造依赖、入场与配对属于本轮协作边�
 | --- | --- | --- |
 | Battlefield 版本与结构 | 写回不改写旧版本；全批最终布局决定同格双槽的唯一归属；结构发布不代办业务回调。 | [Battlefield](battlefield.md#关键语义) |
 | 地图、导航与空间查询 | Tile 与 Overlay 决定当前可达性和导航结果；缓存不改变结果。身体位置、空间存在、占格和命中几何分别表达，空间接触不等于业务命中。 | [Battlefield](battlefield.md#关键语义)、[Spatial](spatial.md) |
+| 空间存在 | 暂时消失保留身份、位置、占格、部署与生命周期；Presence Change 可位于组合批次任意位置，全部空间事实及限制先发布，再接续旧关系与旧执行清理。已成立的 Skill、Effect、Burst 与独立 Projectile 不统一结束，伤害、恢复、选择与锁定命中分别判断。 | [Presence](presence.md) |
 | Unit 构造与能力 | 静态 Definition 决定能力组成，构造后配置与状态配对、组成稳定；初始 Effect 通过登记后的正常安装形成。 | [构造与装配](capability.md#初始化与装配) |
 | Unit 批量变更 | 同目标的变换顺序接续，全部最终字段先发布，再执行各自的业务后继；嵌套结算不丢失已完成事实。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
 | 普通注册 Change | Capability 用扁平 Rules／Contributions／Hooks 分组明确选择自动字段；按 Key 和固定字段两种接口均保持字段、Entry 与宿主 Ref 的类型关联，注册遵守按 ID 替换保序和无变化不结算。特殊字段由领域完成自身变换与后继。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
@@ -62,6 +63,7 @@ Deployable 对 Occupancy 的构造依赖、入场与配对属于本轮协作边�
 | Runtime 组合 | 集中验证完整初始化／出生账簿先于 enter、一次正常预置替换保留最新绑定，以及 Tick 的阶段顺序／不可变发布与失败不发布。以公开创建、部署、资源和离场操作构造，不另写 marker、身份进度或内部存储夹具。 |
 | HP／EP 接收与死亡 | 伤害／治疗回归清单。死亡确认前保留 Blocking 只归 HP-03，不在 Blocking／Combat 再做同构场景。 |
 | 阻挡及位置计划 | Blocking：资格与层、容量尾部裁撤、批量通知与旧身份、独立位置计划。自身空地设置的清理（含同值）复用批量解除与位置计划代表场景，通知读取已发布的新身份；主动空间覆盖取消计划并解除旧关系，首个通知可见新位置。不按字段、角色或切换方向另建矩阵。 |
+| 空间存在及其协作 | Presence 集中验证保留身份、部署与 Occupancy、Effect／Lifetime，以及全部限制先于批量解除通知；合法通知中重新出现并启动的新执行不受旧捕获集合清理。Blocking 保留自身偏移与目标独立计划的区别；Action／Skill、资源接收、Burst 和 tracking 弹道只在各自主场景验证新增的业务结果，不复制 Rule 登记、Hook 或生命周期矩阵。 |
 | 自主运动 | Locomotion：纯算法集中验证转向、直邻／斜邻避障及反射公式；真实移动场景验证当前速度、最终目标吸附和暂停后的历史速度。半身宽、WALK 高代价格／FLY 硬障碍、方向投影与速度比例、不可通格恢复各保留独立结果，不枚举八方向及微小数值变体。Route 集成只保留等待、当前导航方式与 Layer 分离、阻挡解除后路线完成等协作结果；历史速度通过实际推进建立，不直接注入 Unit。 |
 | Card、部署、离场与占格 | Deployment：Request 与资源消费、主动／被动离场账务、一次旧占格配对不清理继任者、逐份恢复预算和 DP。删除旧 Battle 中相同构造与重入矩阵。 |
 | Action、Skill、Effect 与 Contribution | 各自主套件。共有身份、候选、输入校验和不可变版本由公共套件承担，不因更换内容宿主再测一遍。 |
@@ -76,6 +78,18 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 收敛完成要求是：已审查语义有明确且集中的测试归属，旧套件中的相同覆盖已移除，仍必要的独立结果已归回其领域，失去用途的夹具和导入已删除。仅写出清单或新增主套件不算完成。
 
 尚未完整审查的 Schedule／Data 解析、Route 执行、Targeting、完整 Projectile／Mechanism 等独立业务按现有范围保留；这些套件中夹带的上述已审查语义仍须去重，不能整文件豁免。测试数量是整理结果，不作为删减目标。
+
+## Presence 的回归语义
+
+以下结果依据 [Presence 契约](presence.md)确定；场景通过正常构造、部署、阻挡取得、启动与资源结算建立事实。`appear(ref, position)`／`disappear(ref)` 返回 Change，由 `unit.update(battle, changes)` 提交；Presence 可以在组合批次任意位置，所有变换先发布，不要求它排在首位。
+
+| 必须保障的业务结果 | 集中归属 |
+| --- | --- |
+| 消失保留原 Unit、占格、部署额度及普通 Effect／Lifetime，不派发入场或离场；全部限制先发布，Presence 的解除通知可见整批双端解除。后继从本项 previous 固定旧关系与旧执行，不把较早 Settlement 的通知中新建的执行捕入清理。 | Presence 主场景；公共旧 Ref、Hook 候选和析构协议不重测。 |
+| 自身 Blockable 偏移随主动空间覆盖取消；Blocker 消失只解除关系，原目标的独立偏移继续。已 present 的 appear 仍执行位置覆盖及自身清理。 | Blocking 原位置计划场景。 |
+| 消失禁止新的 Action／Activation，取消旧 Action 并停止旧输出；已完成释放前缀保留。开始通知中消失但仍 ACTIVE 的同轮 Skill 执行 onStart，既有持续技能仍正常推进及到期。 | Action／Skill 原代表场景；不据此增加弹药消费政策。 |
+| 消失期间普通 HP／EP Damage 拒收；明确目标的 HP／EP Healing 仍遵守各自条件。自然 EP 回复与已启动 Burst 的恢复预算继续，消失不取消其 Effect。 | 一次双资源接收场景及 Elemental 原恢复场景，不重复四条管线的公式与通知矩阵。 |
+| 普通空间查询、Targeting 与 Terrain 排除消失对象；已锁定 tracking 弹道仍追现存目标的真实位置，身份命中与 Damage 接收分开。 | 原空间／目标／Terrain 场景与真实弩箭追踪场景，不新增 Projectile Rule 或每个消费者的隐藏版本。 |
 
 ## Hook 与伤害／治疗的回归语义
 

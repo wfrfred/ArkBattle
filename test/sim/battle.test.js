@@ -258,17 +258,6 @@ test('core route disappearance and appearance preserve identity and scheduler ow
   assert.deepEqual(runtime.result.remainingUnitIds, [0]);
 });
 
-test('core route instructions apply teleportation before hiding the unit', () => {
-  let runtime = initializeBattle(routeCommandBattle([
-    { type: 'ALERT' }, { type: 'APPEAR_AT_POS', position: [9, 6], reachOffset: [-0.25, 0] },
-    { type: 'DISAPPEAR' }, { type: 'WAIT_FOR_TICKS', durationTicks: 30 },
-  ]));
-  (runtime = advanceBattle(runtime, []));
-
-  assert.equal(runtime.battlefield.units.get(0).spatialPresence.present, false);
-  assert.deepEqual(runtime.battlefield.units.get(0).position, [5.75, 9]);
-});
-
 test('alternative route commands suspend Main deadlines and targets until cleared', () => {
   let waiting = initializeBattle(routeCommandBattle([{ type: 'WAIT_FOR_TICKS', durationTicks: 12 }]));
   (waiting = advanceBattle(waiting, []));

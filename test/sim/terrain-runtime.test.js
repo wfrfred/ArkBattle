@@ -13,7 +13,7 @@ import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { create as createField } from "../../dist/core/battlefield/state.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { initialize as initializeUnit } from "../../dist/core/unit/initialize.js";
-import { add, replace as update } from "../../dist/core/battle/unit.js";
+import { add, replace as update, update as changeUnit } from "../../dist/core/battle/unit.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { actionCapability } from "../helpers/actions.js";
 import { actionDefinition } from "../helpers/action-fixture.js";
@@ -21,6 +21,7 @@ import { resolveAttack } from "../../dist/core/unit/capability/offense/query.js"
 import { resolveSpeed } from "../../dist/core/unit/capability/action/timing.js";
 import { invisibilityKind } from "../../dist/core/effects/visibility.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
+import * as presence from "../../dist/core/unit/capability/presence/index.js";
 
 const infectionParams = (damage = 80) => ({
     damage, attackBonusRatio: 0.2, attackSpeedBonus: 20, durationTicks: 65,
@@ -173,11 +174,11 @@ test("smog uses invisibility, cleans disappearing contacts and reinstalls dispel
     battle = effects.end(battle, { host: installed.host, id: installed.id });
     battle = at(battle, 1);
     assert.notEqual(effect(battle).id, installed.id);
-    battle = update(battle, [{ ...current(battle), spatialPresence: { present: false } }]);
+    battle = changeUnit(battle, [presence.disappear(units.ref(current(battle)))]);
     battle = at(battle, 2);
     assert.equal(current(battle).effects.size, 0);
     assert.equal(current(battle).targetable.restrictions.length, 0);
-    battle = update(battle, [{ ...current(battle), spatialPresence: { present: true } }]);
+    battle = changeUnit(battle, [presence.appear(units.ref(current(battle)), current(battle).position)]);
     battle = at(battle, 3);
     battle = mechanisms.setActive(battle, configured.mechanism, false);
     assert.equal(current(battle).effects.size, 0);

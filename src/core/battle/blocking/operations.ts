@@ -15,7 +15,6 @@ import {
     type Blockable,
 } from "../../unit/capability/blocking/blockable.js";
 import { hasLayer } from "../../unit/capability/layer/capability.js";
-import { isSpatiallyPresent } from "../../unit/capability/presence/capability.js";
 import { hasOccupancy } from "../../unit/capability/occupancy/capability.js";
 import { hasVitality } from "../../unit/capability/vitality/capability.js";
 import * as units from "../../unit/query.js";
@@ -25,10 +24,6 @@ import type { Relation } from "../../unit/capability/blocking/contract.js";
 import * as hooks from "./hook.js";
 import { relations, usedCapacity } from "./query.js";
 import { calculate as calculatePosition } from "./position.js";
-
-function isPresent(unit: Unit): boolean {
-    return unit.lifecycle === "PRESENT" && isSpatiallyPresent(unit);
-}
 
 function allowsTile(battle: BattleState, unit: Unit & Blocker): boolean {
     if (unit.blocker.layer === "AIR") {
@@ -46,7 +41,9 @@ function allowsTile(battle: BattleState, unit: Unit & Blocker): boolean {
 
 function canSearch(battle: BattleState, unit: Unit & Blocker): boolean {
     return (
-        isPresent(unit) && (!hasVitality(unit) || unit.vitality.hp > 0) && allowsTile(battle, unit)
+        unit.lifecycle === "PRESENT" &&
+        (!hasVitality(unit) || unit.vitality.hp > 0) &&
+        allowsTile(battle, unit)
     );
 }
 
@@ -56,8 +53,8 @@ function canRetain(
     target: Unit & Blockable,
 ): boolean {
     return (
-        isPresent(blocker) &&
-        isPresent(target) &&
+        blocker.lifecycle === "PRESENT" &&
+        target.lifecycle === "PRESENT" &&
         allowsTile(battle, blocker) &&
         hasLayer(target) &&
         blocker.blocker.layer === target.layer.type &&

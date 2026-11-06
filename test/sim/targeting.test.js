@@ -247,7 +247,7 @@ test("explicit geometry uses hitboxes while ground eligibility reads current lay
     assert.deepEqual(select(state, { ...query, filter: filters.damage }).value.map(target => target.id), [1, 2, 3]);
     assert.deepEqual(select(state, query).value.map(target => target.id), [1, 2]);
     assert.deepEqual(select(state, { ...query, filter: filters.and(inRange, filters.ground) }).value.map(target => target.id), [1]);
-    state = disappear(state, ref(get(state, 3)));
+    state = update(state, [disappear(ref(get(state, 3)))]);
     assert.deepEqual(select(state, { ...query, filter: filters.damage }).value.map(target => target.id), [1, 2]);
 });
 
