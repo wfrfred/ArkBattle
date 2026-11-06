@@ -186,6 +186,21 @@ Buff 派发期间增删实例的完整可见性、延迟命中与技能切换同
 普通回合选定特训条目后保留相应移动类别，并按战斗效能计算 count；另一移动类别占位动作不生成。
 此投影属于卫戍内容准备，通用 Scheduler 不能自己猜 N／NF 模板的替换结果。
 
+### 2026-11-06：两份关卡的主线与分支结构
+
+**原始配置确认：** 对照 PRTS [作战机制·波次](https://prts.wiki/w/作战机制#扩展阅读：波次)，读取客户端配置镜像固定提交 `bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d` 的两份文件。选择器、完整源 JSON 的规范化指纹与必要原值摘录归档于[本批证据](evidence/schedule-level-structure-20261106/README.md)。
+
+| 样本 | 主线 | 分支 |
+| --- | --- | --- |
+| `level_hard_08-01.json`（H8-1） | 一波、六个 Fragment；Fragment 使用 preDelay 与 actions | branches 为 null |
+| `level_act1autochess_h07_02.json` | 一波、一个 Fragment，七条出生动作 | dragon、boss_escaped_walk、boss_escaped_fly、boss_battle_multi_player，各有一个 phase |
+
+H8-1 的 `/waves/0/fragments/1` 有 preDelay=5，三条出生动作的 preDelay 分别为 5、15、25，分别使用 routes[5]、routes[6]、routes[7]。`/waves/0/fragments/5/actions/4` 则为 count=2、preDelay=20、interval=8，展示同一动作重复出生的静态配置；按项目 30 Hz，配置层的两次名义动作偏移可转换为相对该片段时间锚点 600、840 Tick，片段本身的前延迟另外处理。实际客户端的 delayToBorn 修正及 coroutine 唤醒时点见前文，不能用这组配置数字冒充最终出生帧。
+
+卫戍模板的 `/branches/dragon/phases/0` 使用 preDelay=0，包含一条 enemy_9012_acloon 的 SPAWN，count=1、preDelay=0、routeIndex=0；其路线对应 extraRoutes[0]，主线动作的 routeIndex 则指向 routes。四个 Branch 的结构键都是 phases，phase 的键都是 preDelay、actions。分支配置未携带触发器；本次仍未核实这四个具体分支在实际玩法中的调用来源，不能将配置存在写成必然出生。
+
+**项目关联：** 两份原始 JSON 都没有顶层 timeline 字段；现有 Core 的 TIMELINE 是项目输入接口，不能当作已证实的原生关卡结构。主线与命名 Branch 可以同时存在，Branch 的 phase 与主线 Fragment 共享配置形状。是否统一项目输入形式、如何提供分支领域操作属于架构选择，本调查不代为确定。
+
 ## 7. 地图、设备与隐藏内容的可达性
 
 本次有 17 份原始关卡样本，均为单 wave／单 fragment，但包括地图骨架、普通、联合防御与部分领袖模板；不能代表全部 38 份模板。

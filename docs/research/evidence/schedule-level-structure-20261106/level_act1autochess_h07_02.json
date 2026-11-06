@@ -1,0 +1,409 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-06",
+    "scope": "Pinned extracted game configuration; no new native-code or runtime observation.",
+    "repository": "Kengxxiao/ArknightsGameData",
+    "commit": "bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d",
+    "path": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_02.json",
+    "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_02.json",
+    "canonicalJsonSha256": "460f7a35add14bdb6d9fd1247efe09341bce8c0ef4054b90c0c01580533b0de1",
+    "hashDefinition": "SHA-256 of complete parsed source, JSON ensure_ascii=False, sort_keys=True, separators=(',', ':'); not a raw Git blob hash.",
+    "selectors": [
+      "/waves/0",
+      "/branches",
+      "/extraRoutes/0"
+    ]
+  },
+  "result": {
+    "name": "level_act1autochess_h07_02.json",
+    "topLevelKeys": [
+      "options",
+      "levelId",
+      "mapId",
+      "bgmEvent",
+      "environmentSe",
+      "mapData",
+      "tilesDisallowToLocate",
+      "runes",
+      "optionalRunes",
+      "globalBuffs",
+      "routes",
+      "extraRoutes",
+      "enemies",
+      "enemyDbRefs",
+      "waves",
+      "branches",
+      "predefines",
+      "hardPredefines",
+      "excludeCharIdList",
+      "randomSeed",
+      "operaConfig",
+      "cameraPlugin"
+    ],
+    "hasTimelineField": false,
+    "waveCount": 1,
+    "fragmentCounts": [
+      1
+    ],
+    "routeCount": 7,
+    "extraRouteCount": 4,
+    "branches": {
+      "dragon": {
+        "keys": [
+          "phases"
+        ],
+        "phaseCount": 1,
+        "phaseKeys": [
+          [
+            "preDelay",
+            "actions"
+          ]
+        ]
+      },
+      "boss_escaped_walk": {
+        "keys": [
+          "phases"
+        ],
+        "phaseCount": 1,
+        "phaseKeys": [
+          [
+            "preDelay",
+            "actions"
+          ]
+        ]
+      },
+      "boss_escaped_fly": {
+        "keys": [
+          "phases"
+        ],
+        "phaseCount": 1,
+        "phaseKeys": [
+          [
+            "preDelay",
+            "actions"
+          ]
+        ]
+      },
+      "boss_battle_multi_player": {
+        "keys": [
+          "phases"
+        ],
+        "phaseCount": 1,
+        "phaseKeys": [
+          [
+            "preDelay",
+            "actions"
+          ]
+        ]
+      }
+    },
+    "excerpts": {
+      "/waves/0": {
+        "preDelay": 0.0,
+        "postDelay": 0.0,
+        "maxTimeWaitingForNextWave": -1.0,
+        "fragments": [
+          {
+            "preDelay": 0.0,
+            "actions": [
+              {
+                "actionType": "SPAWN",
+                "managedByScheduler": true,
+                "key": "enemy_1427_lrnazg",
+                "count": 1,
+                "preDelay": 10.0,
+                "interval": 50.0,
+                "routeIndex": 0,
+                "blockFragment": false,
+                "autoPreviewRoute": false,
+                "autoDisplayEnemyInfo": false,
+                "isUnharmfulAndAlwaysCountAsKilled": false,
+                "hiddenGroup": null,
+                "randomSpawnGroupKey": null,
+                "randomSpawnGroupPackKey": null,
+                "randomType": "ALWAYS",
+                "refreshType": "ALWAYS",
+                "weight": 0,
+                "dontBlockWave": false,
+                "forceBlockWaveInBranch": false
+              },
+              {
+                "actionType": "SPAWN",
+                "managedByScheduler": true,
+                "key": "enemy_1427_lrnazg",
+                "count": 1,
+                "preDelay": 10.0,
+                "interval": 50.0,
+                "routeIndex": 1,
+                "blockFragment": false,
+                "autoPreviewRoute": false,
+                "autoDisplayEnemyInfo": false,
+                "isUnharmfulAndAlwaysCountAsKilled": false,
+                "hiddenGroup": null,
+                "randomSpawnGroupKey": null,
+                "randomSpawnGroupPackKey": null,
+                "randomType": "ALWAYS",
+                "refreshType": "ALWAYS",
+                "weight": 0,
+                "dontBlockWave": false,
+                "forceBlockWaveInBranch": false
+              },
+              {
+                "actionType": "SPAWN",
+                "managedByScheduler": true,
+                "key": "enemy_1430_lrrook",
+                "count": 1,
+                "preDelay": 25.0,
+                "interval": 12.0,
+                "routeIndex": 2,
+                "blockFragment": false,
+                "autoPreviewRoute": false,
+                "autoDisplayEnemyInfo": false,
+                "isUnharmfulAndAlwaysCountAsKilled": false,
+                "hiddenGroup": null,
+                "randomSpawnGroupKey": null,
+                "randomSpawnGroupPackKey": null,
+                "randomType": "ALWAYS",
+                "refreshType": "ALWAYS",
+                "weight": 0,
+                "dontBlockWave": false,
+                "forceBlockWaveInBranch": false
+              },
+              {
+                "actionType": "SPAWN",
+                "managedByScheduler": true,
+                "key": "enemy_1430_lrrook",
+                "count": 1,
+                "preDelay": 25.0,
+                "interval": 12.0,
+                "routeIndex": 3,
+                "blockFragment": false,
+                "autoPreviewRoute": false,
+                "autoDisplayEnemyInfo": false,
+                "isUnharmfulAndAlwaysCountAsKilled": false,
+                "hiddenGroup": null,
+                "randomSpawnGroupKey": null,
+                "randomSpawnGroupPackKey": null,
+                "randomType": "ALWAYS",
+                "refreshType": "ALWAYS",
+                "weight": 0,
+                "dontBlockWave": false,
+                "forceBlockWaveInBranch": false
+              },
+              {
+                "actionType": "SPAWN",
+                "managedByScheduler": true,
+                "key": "enemy_1042_frostd",
+                "count": 1,
+                "preDelay": 10.0,
+                "interval": 20.0,
+                "routeIndex": 4,
+                "blockFragment": false,
+                "autoPreviewRoute": false,
+                "autoDisplayEnemyInfo": false,
+                "isUnharmfulAndAlwaysCountAsKilled": false,
+                "hiddenGroup": null,
+                "randomSpawnGroupKey": null,
+                "randomSpawnGroupPackKey": null,
+                "randomType": "ALWAYS",
+                "refreshType": "ALWAYS",
+                "weight": 0,
+                "dontBlockWave": false,
+                "forceBlockWaveInBranch": false
+              },
+              {
+                "actionType": "SPAWN",
+                "managedByScheduler": true,
+                "key": "enemy_1042_frostd",
+                "count": 2,
+                "preDelay": 10.0,
+                "interval": 20.0,
+                "routeIndex": 5,
+                "blockFragment": false,
+                "autoPreviewRoute": false,
+                "autoDisplayEnemyInfo": false,
+                "isUnharmfulAndAlwaysCountAsKilled": false,
+                "hiddenGroup": null,
+                "randomSpawnGroupKey": null,
+                "randomSpawnGroupPackKey": null,
+                "randomType": "ALWAYS",
+                "refreshType": "ALWAYS",
+                "weight": 0,
+                "dontBlockWave": false,
+                "forceBlockWaveInBranch": false
+              },
+              {
+                "actionType": "SPAWN",
+                "managedByScheduler": true,
+                "key": "enemy_9017_achunt",
+                "count": 1,
+                "preDelay": 0.0,
+                "interval": 0.0,
+                "routeIndex": 6,
+                "blockFragment": false,
+                "autoPreviewRoute": false,
+                "autoDisplayEnemyInfo": true,
+                "isUnharmfulAndAlwaysCountAsKilled": false,
+                "hiddenGroup": null,
+                "randomSpawnGroupKey": null,
+                "randomSpawnGroupPackKey": null,
+                "randomType": "ALWAYS",
+                "refreshType": "ALWAYS",
+                "weight": 0,
+                "dontBlockWave": false,
+                "forceBlockWaveInBranch": false
+              }
+            ]
+          }
+        ],
+        "advancedWaveTag": null
+      },
+      "/branches": {
+        "dragon": {
+          "phases": [
+            {
+              "preDelay": 0.0,
+              "actions": [
+                {
+                  "actionType": "SPAWN",
+                  "managedByScheduler": true,
+                  "key": "enemy_9012_acloon",
+                  "count": 1,
+                  "preDelay": 0.0,
+                  "interval": 1.0,
+                  "routeIndex": 0,
+                  "blockFragment": false,
+                  "autoPreviewRoute": false,
+                  "autoDisplayEnemyInfo": false,
+                  "isUnharmfulAndAlwaysCountAsKilled": false,
+                  "hiddenGroup": null,
+                  "randomSpawnGroupKey": null,
+                  "randomSpawnGroupPackKey": null,
+                  "randomType": "ALWAYS",
+                  "refreshType": "ALWAYS",
+                  "weight": 0,
+                  "dontBlockWave": false,
+                  "forceBlockWaveInBranch": false
+                }
+              ]
+            }
+          ]
+        },
+        "boss_escaped_walk": {
+          "phases": [
+            {
+              "preDelay": 0.0,
+              "actions": [
+                {
+                  "actionType": "SPAWN",
+                  "managedByScheduler": true,
+                  "key": "enemy_1422_lrsldr",
+                  "count": 1,
+                  "preDelay": 0.0,
+                  "interval": 1.0,
+                  "routeIndex": 1,
+                  "blockFragment": false,
+                  "autoPreviewRoute": false,
+                  "autoDisplayEnemyInfo": false,
+                  "isUnharmfulAndAlwaysCountAsKilled": false,
+                  "hiddenGroup": null,
+                  "randomSpawnGroupKey": null,
+                  "randomSpawnGroupPackKey": null,
+                  "randomType": "ALWAYS",
+                  "refreshType": "ALWAYS",
+                  "weight": 0,
+                  "dontBlockWave": false,
+                  "forceBlockWaveInBranch": false
+                }
+              ]
+            }
+          ]
+        },
+        "boss_escaped_fly": {
+          "phases": [
+            {
+              "preDelay": 0.0,
+              "actions": [
+                {
+                  "actionType": "SPAWN",
+                  "managedByScheduler": true,
+                  "key": "enemy_1005_yokai",
+                  "count": 1,
+                  "preDelay": 0.0,
+                  "interval": 1.0,
+                  "routeIndex": 2,
+                  "blockFragment": false,
+                  "autoPreviewRoute": false,
+                  "autoDisplayEnemyInfo": false,
+                  "isUnharmfulAndAlwaysCountAsKilled": false,
+                  "hiddenGroup": null,
+                  "randomSpawnGroupKey": null,
+                  "randomSpawnGroupPackKey": null,
+                  "randomType": "ALWAYS",
+                  "refreshType": "ALWAYS",
+                  "weight": 0,
+                  "dontBlockWave": false,
+                  "forceBlockWaveInBranch": false
+                }
+              ]
+            }
+          ]
+        },
+        "boss_battle_multi_player": {
+          "phases": [
+            {
+              "preDelay": 0.0,
+              "actions": [
+                {
+                  "actionType": "SPAWN",
+                  "managedByScheduler": true,
+                  "key": "enemy_9017_achunt",
+                  "count": 1,
+                  "preDelay": 0.0,
+                  "interval": 1.0,
+                  "routeIndex": 3,
+                  "blockFragment": false,
+                  "autoPreviewRoute": false,
+                  "autoDisplayEnemyInfo": false,
+                  "isUnharmfulAndAlwaysCountAsKilled": false,
+                  "hiddenGroup": null,
+                  "randomSpawnGroupKey": null,
+                  "randomSpawnGroupPackKey": null,
+                  "randomType": "ALWAYS",
+                  "refreshType": "ALWAYS",
+                  "weight": 0,
+                  "dontBlockWave": false,
+                  "forceBlockWaveInBranch": false
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "/extraRoutes/0": {
+        "motionMode": "FLY",
+        "startPosition": {
+          "row": 4,
+          "col": 10
+        },
+        "endPosition": {
+          "row": 2,
+          "col": 2
+        },
+        "spawnRandomRange": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "spawnOffset": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "checkpoints": [],
+        "allowDiagonalMove": true,
+        "visitEveryTileCenter": false,
+        "visitEveryNodeCenter": false,
+        "visitEveryCheckPoint": false
+      }
+    }
+  }
+}

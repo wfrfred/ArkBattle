@@ -1,0 +1,60 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-06"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-06",
+    "client": {
+      "dll": null,
+      "metadata": null
+    },
+    "sourceRecords": [
+      "level_act1autochess_h07_02.json",
+      "level_hard_08-01.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12589,
+        "sha256": "1a85248a6a48d92d61c65f5ba044d079954866ff0c1672488b92f0cf1366af9a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 3820,
+        "sha256": "1473c0f2456b9f12d9a69eb430f775de7a32091967e4de8e07aeccc8edf7d971"
+      },
+      {
+        "path": "level_act1autochess_h07_02.json",
+        "kind": "record",
+        "bytes": 13045,
+        "sha256": "eec5b89ee567d6df0d26d7e6678e363251ccbed334dd9f5ad370198385316328"
+      },
+      {
+        "path": "level_hard_08-01.json",
+        "kind": "record",
+        "bytes": 4729,
+        "sha256": "ab3e261de4f0f95ec19ff360c3b1fad54362b3285544666074a42b7df6c86f4c"
+      }
+    ],
+    "replay": {
+      "methods": [],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}
