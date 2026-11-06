@@ -1,0 +1,164 @@
+# Torappu.Battle.Scheduler.SpawnEnemyWithRoute @ 0x180980890
+Source: .cache/native-research/scheduler-general-20261107/native-paths.json
+Parameters: [('enemyKey', 'string'), ('host', 'Torappu.Battle.Entity'), ('route', 'Torappu.Battle.Route'), ('unharmful', 'bool'), ('alwaysCountAsKilled', 'bool'), ('managedByScheduler', 'bool'), ('addBuffToEnemy', 'bool'), ('blackboard', 'Torappu.Blackboard'), ('buffData', 'Torappu.BuffData')]
+0x180980890 mov qword ptr [rsp + 0x10], rbx
+0x180980895 mov qword ptr [rsp + 0x18], rbp
+0x18098089a mov qword ptr [rsp + 0x20], rdi
+0x18098089f push r14
+0x1809808a1 sub rsp, 0xe0
+0x1809808a8 cmp byte ptr [rip + 0x861c25b], 0
+0x1809808af mov rbx, r9
+0x1809808b2 mov rdi, r8
+0x1809808b5 mov r14, rdx
+0x1809808b8 mov rbp, rcx
+0x1809808bb jne 0x1809808f4
+0x1809808bd lea rcx, [rip + 0x825f684]
+0x1809808c4 call 0x18049c210
+0x1809808c9 lea rcx, [rip + 0x819f780]
+0x1809808d0 call 0x18049c210
+0x1809808d5 lea rcx, [rip + 0x8188e4c]
+0x1809808dc call 0x18049c210
+0x1809808e1 lea rcx, [rip + 0x8231278]
+0x1809808e8 call 0x18049c210
+0x1809808ed mov byte ptr [rip + 0x861c216], 1
+0x1809808f4 mov rax, qword ptr [rip + 0x8188e2d]
+0x1809808fb mov qword ptr [rsp + 0xf0], rsi
+0x180980903 xor esi, esi
+0x180980905 mov rcx, qword ptr [rax + 0xb8]
+0x18098090c mov rcx, qword ptr [rcx + 0x248]
+0x180980913 test rcx, rcx
+0x180980916 jne 0x180980ae4
+0x18098091c xor eax, eax
+0x18098091e mov qword ptr [rsp + 0x20], rsi
+0x180980923 mov qword ptr [rsp + 0x90], rax
+0x18098092b lea r9, [rsp + 0xa0]
+0x180980933 movzx eax, byte ptr [rsp + 0x110]
+0x18098093b xorps xmm1, xmm1
+0x18098093e movups xmmword ptr [rsp + 0x60], xmm1
+0x180980943 mov byte ptr [rsp + 0x60], al
+0x180980947 mov r8, rbx
+0x18098094a movzx eax, byte ptr [rsp + 0x118]
+0x180980952 mov rdx, r14
+0x180980955 mov byte ptr [rsp + 0x61], al
+0x180980959 mov rcx, rbp
+0x18098095c mov eax, dword ptr [rbp + 0x24]
+0x18098095f inc eax
+0x180980961 mov byte ptr [rsp + 0x68], 1
+0x180980966 mov dword ptr [rsp + 0x64], eax
+0x18098096a movups xmm0, xmmword ptr [rsp + 0x60]
+0x18098096f mov dword ptr [rbp + 0x24], eax
+0x180980972 movaps xmmword ptr [rsp + 0xb0], xmm1
+0x18098097a movaps xmmword ptr [rsp + 0xa0], xmm0
+0x180980982 movsd xmm0, qword ptr [rsp + 0x90]
+0x18098098b movsd qword ptr [rsp + 0xd0], xmm0
+0x180980994 movaps xmmword ptr [rsp + 0xc0], xmm1
+0x18098099c call 0x180986290; ['Torappu.Battle.Scheduler._DoSpawnEnemyInternal']
+0x1809809a1 mov rcx, qword ptr [rip + 0x819f6a8]
+0x1809809a8 mov rbx, rax
+0x1809809ab cmp dword ptr [rcx + 0xe0], esi
+0x1809809b1 jne 0x1809809b8
+0x1809809b3 call 0x18049c450
+0x1809809b8 xor r8d, r8d
+0x1809809bb xor edx, edx
+0x1809809bd mov rcx, rbx
+0x1809809c0 call 0x186dcf290; ['UnityEngine.Object.op_Equality']
+0x1809809c5 test al, al
+0x1809809c7 jne 0x180980ae0
+0x1809809cd mov rcx, qword ptr [rip + 0x819f67c]
+0x1809809d4 cmp dword ptr [rcx + 0xe0], esi
+0x1809809da jne 0x1809809e1
+0x1809809dc call 0x18049c450
+0x1809809e1 xor r8d, r8d
+0x1809809e4 xor edx, edx
+0x1809809e6 mov rcx, rdi
+0x1809809e9 call 0x186dcf430; ['UnityEngine.Object.op_Inequality']
+0x1809809ee test al, al
+0x1809809f0 je 0x180980a2a
+0x1809809f2 test rdi, rdi
+0x1809809f5 je 0x180980b68
+0x1809809fb xor edx, edx
+0x1809809fd mov rcx, rdi
+0x180980a00 call 0x180b23080; ['Torappu.Battle.VisualObject.get_mapPosition']
+0x180980a05 test rbx, rbx
+0x180980a08 je 0x180980b68
+0x180980a0e xor r8d, r8d
+0x180980a11 mov rdx, rax
+0x180980a14 mov rcx, rbx
+0x180980a17 call 0x180b22bf0; ['Torappu.Battle.VisualObject.SetPosition']
+0x180980a1c mov edx, dword ptr [rdi + 0x18]
+0x180980a1f xor r8d, r8d
+0x180980a22 mov rcx, rbx
+0x180980a25 call 0x180acfef0; ['Torappu.Battle.Enemy.set_hostUid']
+0x180980a2a cmp byte ptr [rsp + 0x120], sil
+0x180980a32 je 0x180980a53
+0x180980a34 mov rcx, qword ptr [rbp + 0xc8]
+0x180980a3b test rcx, rcx
+0x180980a3e je 0x180980b68
+0x180980a44 mov r8, qword ptr [rip + 0x825f4fd]
+0x180980a4b mov rdx, rbx
+0x180980a4e call 0x1805182d0
+0x180980a53 cmp byte ptr [rsp + 0x128], sil
+0x180980a5b je 0x180980aa2
+0x180980a5d mov rdx, qword ptr [rsp + 0x138]
+0x180980a65 test rdx, rdx
+0x180980a68 je 0x180980aa2
+0x180980a6a test rbx, rbx
+0x180980a6d je 0x180980b68
+0x180980a73 mov rax, qword ptr [rsp + 0x130]
+0x180980a7b xor r9d, r9d
+0x180980a7e mov qword ptr [rsp + 0x40], rsi
+0x180980a83 xor r8d, r8d
+0x180980a86 mov qword ptr [rsp + 0x38], rsi
+0x180980a8b mov rcx, rbx
+0x180980a8e mov qword ptr [rsp + 0x30], rsi
+0x180980a93 mov qword ptr [rsp + 0x28], rsi
+0x180980a98 mov qword ptr [rsp + 0x20], rax
+0x180980a9d call 0x1807208c0; ['Torappu.Battle.Entity.AddBuff']
+0x180980aa2 mov rcx, qword ptr [rip + 0x82310b7]
+0x180980aa9 call 0x18558e720
+0x180980aae test rax, rax
+0x180980ab1 je 0x180980b68
+0x180980ab7 xor edx, edx
+0x180980ab9 mov rcx, rax
+0x180980abc call 0x180670490; ['Torappu.Battle.BattleController.get_gameMode']
+0x180980ac1 test rax, rax
+0x180980ac4 je 0x180980b68
+0x180980aca xor r9d, r9d
+0x180980acd mov r8, rbx
+0x180980ad0 mov rdx, rdi
+0x180980ad3 mov rcx, rax
+0x180980ad6 call 0x180978200
+0x180980adb mov rax, rbx
+0x180980ade jmp 0x180980b46
+0x180980ae0 xor eax, eax
+0x180980ae2 jmp 0x180980b46
+0x180980ae4 mov rax, qword ptr [rsp + 0x138]
+0x180980aec mov r9, rdi
+0x180980aef mov qword ptr [rsp + 0x58], rsi
+0x180980af4 mov r8, r14
+0x180980af7 mov qword ptr [rsp + 0x50], rax
+0x180980afc mov rdx, rbp
+0x180980aff mov rax, qword ptr [rsp + 0x130]
+0x180980b07 mov qword ptr [rsp + 0x48], rax
+0x180980b0c movzx eax, byte ptr [rsp + 0x128]
+0x180980b14 mov byte ptr [rsp + 0x40], al
+0x180980b18 movzx eax, byte ptr [rsp + 0x120]
+0x180980b20 mov byte ptr [rsp + 0x38], al
+0x180980b24 movzx eax, byte ptr [rsp + 0x118]
+0x180980b2c mov byte ptr [rsp + 0x30], al
+0x180980b30 movzx eax, byte ptr [rsp + 0x110]
+0x180980b38 mov byte ptr [rsp + 0x28], al
+0x180980b3c mov qword ptr [rsp + 0x20], rbx
+0x180980b41 call 0x18344b400; ['XLua.DelegateBridge.__Gen_Delegate_Imp3620']
+0x180980b46 mov rsi, qword ptr [rsp + 0xf0]
+0x180980b4e lea r11, [rsp + 0xe0]
+0x180980b56 mov rbx, qword ptr [r11 + 0x18]
+0x180980b5a mov rbp, qword ptr [r11 + 0x20]
+0x180980b5e mov rdi, qword ptr [r11 + 0x28]
+0x180980b62 mov rsp, r11
+0x180980b65 pop r14
+0x180980b67 ret
+0x180980b68 call 0x18049c3c0
+0x180980b6d int3
+0x180980b6e int3
+0x180980b6f int3

@@ -1,0 +1,207 @@
+# Torappu.Battle.Scheduler.SpawnSummonedEnemyWithRuntimeRoute @ 0x180982c40
+Source: .cache/native-research/scheduler-general-20261107/native-paths.json
+Parameters: [('enemyKey', 'string'), ('host', 'Torappu.Battle.Entity'), ('startGridPos', 'Torappu.GridPosition'), ('endGridPos', 'Torappu.GridPosition'), ('motionMode', 'Torappu.MotionMode'), ('unharmful', 'bool'), ('alwaysCountAsKilled', 'bool'), ('checkPointDataArray', 'Torappu.RouteData/CheckpointData[]'), ('addBuffToEnemy', 'bool'), ('blackboard', 'Torappu.Blackboard'), ('buffData', 'Torappu.BuffData')]
+0x180982c40 mov qword ptr [rsp + 0x18], rbx
+0x180982c45 push rbp
+0x180982c46 push rsi
+0x180982c47 push r15
+0x180982c49 sub rsp, 0x100
+0x180982c50 cmp byte ptr [rip + 0x8619eb4], 0
+0x180982c57 mov rbx, r9
+0x180982c5a mov rsi, r8
+0x180982c5d mov r15, rdx
+0x180982c60 mov rbp, rcx
+0x180982c63 jne 0x180982ca8
+0x180982c65 lea rcx, [rip + 0x819d3e4]
+0x180982c6c call 0x18049c210
+0x180982c71 lea rcx, [rip + 0x8209b40]
+0x180982c78 call 0x18049c210
+0x180982c7d lea rcx, [rip + 0x8186aa4]
+0x180982c84 call 0x18049c210
+0x180982c89 lea rcx, [rip + 0x823bb38]
+0x180982c90 call 0x18049c210
+0x180982c95 lea rcx, [rip + 0x822eec4]
+0x180982c9c call 0x18049c210
+0x180982ca1 mov byte ptr [rip + 0x8619e63], 1
+0x180982ca8 mov rax, qword ptr [rip + 0x8186a79]
+0x180982caf mov qword ptr [rsp + 0x120], rdi
+0x180982cb7 mov rcx, qword ptr [rax + 0xb8]
+0x180982cbe mov rcx, qword ptr [rcx + 0x250]
+0x180982cc5 test rcx, rcx
+0x180982cc8 jne 0x180982f4b
+0x180982cce mov qword ptr [rsp + 0x128], r14
+0x180982cd6 mov r14d, dword ptr [rbp + 0x24]
+0x180982cda inc r14d
+0x180982cdd mov dword ptr [rbp + 0x24], r14d
+0x180982ce1 mov rcx, qword ptr [rip + 0x8209ad0]
+0x180982ce8 call 0x18046d2f0
+0x180982ced mov rdi, rax
+0x180982cf0 test rax, rax
+0x180982cf3 je 0x180982fcd
+0x180982cf9 xor edx, edx
+0x180982cfb mov rcx, rax
+0x180982cfe call 0x181c4f5a0; ['Torappu.RouteData..ctor', 'Torappu.UI.RoguelikeTopic.RoguelikeTopicMonthSquadRewardView/Input..ctor']
+0x180982d03 mov ecx, dword ptr [rsp + 0x148]
+0x180982d0a mov dword ptr [rdi + 0x10], ecx
+0x180982d0d mov rcx, qword ptr [rsp + 0x140]
+0x180982d15 mov qword ptr [rdi + 0x1c], rcx
+0x180982d19 mov qword ptr [rdi + 0x14], rbx
+0x180982d1d cmp byte ptr [rip + 0x86176d1], 0
+0x180982d24 jne 0x180982d39
+0x180982d26 lea rcx, [rip + 0x821bbd3]
+0x180982d2d call 0x18049c210
+0x180982d32 mov byte ptr [rip + 0x86176bc], 1
+0x180982d39 mov rax, qword ptr [rip + 0x821bbc0]
+0x180982d40 mov rcx, qword ptr [rax + 0xb8]
+0x180982d47 movss xmm0, dword ptr [rcx]
+0x180982d4b movss xmm1, dword ptr [rcx + 4]
+0x180982d50 mov rdx, qword ptr [rsp + 0x160]
+0x180982d58 lea rcx, [rdi + 0x38]
+0x180982d5c mov qword ptr [rdi + 0x38], rdx
+0x180982d60 movss dword ptr [rdi + 0x2c], xmm0
+0x180982d65 movss dword ptr [rdi + 0x30], xmm1
+0x180982d6a mov byte ptr [rdi + 0x43], 1
+0x180982d6e call 0x18049bcf0
+0x180982d73 mov rcx, qword ptr [rip + 0x823ba4e]
+0x180982d7a call 0x18558e720
+0x180982d7f test rax, rax
+0x180982d82 je 0x180982fcd
+0x180982d88 xor ecx, ecx
+0x180982d8a movaps xmmword ptr [rsp + 0xf0], xmm6
+0x180982d92 mov qword ptr [rsp + 0xa0], rcx
+0x180982d9a xorps xmm6, xmm6
+0x180982d9d movzx ecx, byte ptr [rsp + 0x150]
+0x180982da5 xor r9d, r9d
+0x180982da8 movups xmmword ptr [rsp + 0x70], xmm6
+0x180982dad mov byte ptr [rsp + 0x70], cl
+0x180982db1 mov r8, rdi
+0x180982db4 movzx ecx, byte ptr [rsp + 0x158]
+0x180982dbc mov edx, r14d
+0x180982dbf mov byte ptr [rsp + 0x71], cl
+0x180982dc3 mov rcx, rax
+0x180982dc6 mov dword ptr [rsp + 0x74], r14d
+0x180982dcb mov byte ptr [rsp + 0x78], 1
+0x180982dd0 call 0x1808b2a90; ['Torappu.Battle.Map.GenerateRuntimeRoute']
+0x180982dd5 movups xmm0, xmmword ptr [rsp + 0x70]
+0x180982dda xor edi, edi
+0x180982ddc lea r9, [rsp + 0xb0]
+0x180982de4 mov r8, rax
+0x180982de7 movaps xmmword ptr [rsp + 0xc0], xmm6
+0x180982def movaps xmmword ptr [rsp + 0xb0], xmm0
+0x180982df7 mov rdx, r15
+0x180982dfa movsd xmm0, qword ptr [rsp + 0xa0]
+0x180982e03 mov rcx, rbp
+0x180982e06 movsd qword ptr [rsp + 0xe0], xmm0
+0x180982e0f movaps xmmword ptr [rsp + 0xd0], xmm6
+0x180982e17 mov qword ptr [rsp + 0x20], rdi
+0x180982e1c call 0x180986290; ['Torappu.Battle.Scheduler._DoSpawnEnemyInternal']
+0x180982e21 mov rcx, qword ptr [rip + 0x819d228]
+0x180982e28 mov rbx, rax
+0x180982e2b movaps xmm6, xmmword ptr [rsp + 0xf0]
+0x180982e33 cmp dword ptr [rcx + 0xe0], edi
+0x180982e39 jne 0x180982e40
+0x180982e3b call 0x18049c450
+0x180982e40 xor r8d, r8d
+0x180982e43 xor edx, edx
+0x180982e45 mov rcx, rbx
+0x180982e48 call 0x186dcf290; ['UnityEngine.Object.op_Equality']
+0x180982e4d test al, al
+0x180982e4f jne 0x180982f27
+0x180982e55 mov rcx, qword ptr [rip + 0x819d1f4]
+0x180982e5c cmp dword ptr [rcx + 0xe0], edi
+0x180982e62 jne 0x180982e69
+0x180982e64 call 0x18049c450
+0x180982e69 xor r8d, r8d
+0x180982e6c xor edx, edx
+0x180982e6e mov rcx, rsi
+0x180982e71 call 0x186dcf430; ['UnityEngine.Object.op_Inequality']
+0x180982e76 test al, al
+0x180982e78 je 0x180982e9a
+0x180982e7a test rsi, rsi
+0x180982e7d je 0x180982fcd
+0x180982e83 test rbx, rbx
+0x180982e86 je 0x180982fcd
+0x180982e8c mov edx, dword ptr [rsi + 0x18]
+0x180982e8f xor r8d, r8d
+0x180982e92 mov rcx, rbx
+0x180982e95 call 0x180acfef0; ['Torappu.Battle.Enemy.set_hostUid']
+0x180982e9a cmp byte ptr [rsp + 0x168], dil
+0x180982ea2 je 0x180982eee
+0x180982ea4 mov rax, qword ptr [rsp + 0x170]
+0x180982eac test rax, rax
+0x180982eaf je 0x180982eee
+0x180982eb1 mov rdx, qword ptr [rsp + 0x178]
+0x180982eb9 test rdx, rdx
+0x180982ebc je 0x180982eee
+0x180982ebe test rbx, rbx
+0x180982ec1 je 0x180982fcd
+0x180982ec7 mov qword ptr [rsp + 0x40], rdi
+0x180982ecc xor r9d, r9d
+0x180982ecf mov qword ptr [rsp + 0x38], rdi
+0x180982ed4 xor r8d, r8d
+0x180982ed7 mov qword ptr [rsp + 0x30], rdi
+0x180982edc mov rcx, rbx
+0x180982edf mov qword ptr [rsp + 0x28], rdi
+0x180982ee4 mov qword ptr [rsp + 0x20], rax
+0x180982ee9 call 0x1807208c0; ['Torappu.Battle.Entity.AddBuff']
+0x180982eee mov rcx, qword ptr [rip + 0x822ec6b]
+0x180982ef5 call 0x18558e720
+0x180982efa test rax, rax
+0x180982efd je 0x180982fcd
+0x180982f03 xor edx, edx
+0x180982f05 mov rcx, rax
+0x180982f08 call 0x180670490; ['Torappu.Battle.BattleController.get_gameMode']
+0x180982f0d test rax, rax
+0x180982f10 je 0x180982fcd
+0x180982f16 xor r9d, r9d
+0x180982f19 mov r8, rbx
+0x180982f1c mov rdx, rsi
+0x180982f1f mov rcx, rax
+0x180982f22 call 0x180978200
+0x180982f27 mov r14, qword ptr [rsp + 0x128]
+0x180982f2f mov rdi, qword ptr [rsp + 0x120]
+0x180982f37 mov rbx, qword ptr [rsp + 0x130]
+0x180982f3f add rsp, 0x100
+0x180982f46 pop r15
+0x180982f48 pop rsi
+0x180982f49 pop rbp
+0x180982f4a ret
+0x180982f4b mov rax, qword ptr [rsp + 0x178]
+0x180982f53 xor edi, edi
+0x180982f55 mov qword ptr [rsp + 0x68], rdi
+0x180982f5a mov r9, rsi
+0x180982f5d mov qword ptr [rsp + 0x60], rax
+0x180982f62 mov r8, r15
+0x180982f65 mov rax, qword ptr [rsp + 0x170]
+0x180982f6d mov rdx, rbp
+0x180982f70 mov qword ptr [rsp + 0x58], rax
+0x180982f75 movzx eax, byte ptr [rsp + 0x168]
+0x180982f7d mov byte ptr [rsp + 0x50], al
+0x180982f81 mov rax, qword ptr [rsp + 0x160]
+0x180982f89 mov qword ptr [rsp + 0x48], rax
+0x180982f8e movzx eax, byte ptr [rsp + 0x158]
+0x180982f96 mov byte ptr [rsp + 0x40], al
+0x180982f9a movzx eax, byte ptr [rsp + 0x150]
+0x180982fa2 mov byte ptr [rsp + 0x38], al
+0x180982fa6 mov eax, dword ptr [rsp + 0x148]
+0x180982fad mov dword ptr [rsp + 0x30], eax
+0x180982fb1 mov rax, qword ptr [rsp + 0x140]
+0x180982fb9 mov qword ptr [rsp + 0x28], rax
+0x180982fbe mov qword ptr [rsp + 0x20], rbx
+0x180982fc3 call 0x18344b730; ['XLua.DelegateBridge.__Gen_Delegate_Imp3621']
+0x180982fc8 jmp 0x180982f2f
+0x180982fcd call 0x18049c3c0
+0x180982fd2 int3
+0x180982fd3 int3
+0x180982fd4 int3
+0x180982fd5 int3
+0x180982fd6 int3
+0x180982fd7 int3
+0x180982fd8 int3
+0x180982fd9 int3
+0x180982fda int3
+0x180982fdb int3
+0x180982fdc int3
+0x180982fdd int3
+0x180982fde int3
+0x180982fdf int3

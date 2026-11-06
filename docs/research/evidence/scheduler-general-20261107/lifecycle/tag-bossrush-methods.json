@@ -1,0 +1,1893 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "Torappu.Common.dll": {
+          "address": 6577712928,
+          "methodPointers": 6592562080,
+          "count": 6004,
+          "fileBacked": true
+        },
+        "ThirdPartyAssembly.dll": {
+          "address": 6577712272,
+          "methodPointers": 6592454304,
+          "count": 12660,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        },
+        "UnityEngine.UIElementsModule.dll": {
+          "address": 6577900992,
+          "methodPointers": 6592933968,
+          "count": 6132,
+          "fileBacked": true
+        },
+        "System.dll": {
+          "address": 6577628368,
+          "methodPointers": 6592396096,
+          "count": 7003,
+          "fileBacked": true
+        },
+        "Unity.InputSystem.dll": {
+          "address": 6577776016,
+          "methodPointers": 6592616544,
+          "count": 5703,
+          "fileBacked": true
+        },
+        "Unity.Mathematics.dll": {
+          "address": 6577838608,
+          "methodPointers": 6592682032,
+          "count": 9336,
+          "fileBacked": true
+        },
+        "UnityEngine.CoreModule.dll": {
+          "address": 6577886944,
+          "methodPointers": 6592866352,
+          "count": 4154,
+          "fileBacked": true
+        },
+        "System.Xml.dll": {
+          "address": 6577618416,
+          "methodPointers": 6592367840,
+          "count": 3283,
+          "fileBacked": true
+        },
+        "Newtonsoft.Json.dll": {
+          "address": 6577473344,
+          "methodPointers": 6592259616,
+          "count": 2998,
+          "fileBacked": true
+        },
+        "Unity.TextMeshPro.dll": {
+          "address": 6577852240,
+          "methodPointers": 6592835600,
+          "count": 1618,
+          "fileBacked": true
+        },
+        "Sirenix.Serialization.dll": {
+          "address": 6577530576,
+          "methodPointers": 6592309936,
+          "count": 1885,
+          "fileBacked": true
+        },
+        "spine-unity.dll": {
+          "address": 6577560208,
+          "methodPointers": 6592332928,
+          "count": 1982,
+          "fileBacked": true
+        },
+        "protobuf-net.Core.dll": {
+          "address": 6577475616,
+          "methodPointers": 6592285904,
+          "count": 1952,
+          "fileBacked": true
+        },
+        "CriMw.CriWare.Runtime.dll": {
+          "address": 6565019472,
+          "methodPointers": 6587703856,
+          "count": 2565,
+          "fileBacked": true
+        },
+        "UnityEngine.UI.dll": {
+          "address": 6577955760,
+          "methodPointers": 6592996064,
+          "count": 2041,
+          "fileBacked": true
+        },
+        "Cinemachine.dll": {
+          "address": 6564996672,
+          "methodPointers": 6587684464,
+          "count": 1160,
+          "fileBacked": true
+        },
+        "ICSharpCode.SharpZipLib.dll": {
+          "address": 6565040576,
+          "methodPointers": 6587747952,
+          "count": 1256,
+          "fileBacked": true
+        },
+        "DOTween.dll": {
+          "address": 6565028192,
+          "methodPointers": 6587727808,
+          "count": 1188,
+          "fileBacked": true
+        },
+        "System.Core.dll": {
+          "address": 6577602800,
+          "methodPointers": 6592356000,
+          "count": 1117,
+          "fileBacked": true
+        },
+        "UnityEngine.TextCoreTextEngineModule.dll": {
+          "address": 6577900064,
+          "methodPointers": 6592929888,
+          "count": 370,
+          "fileBacked": true
+        },
+        "Unity.Postprocessing.Runtime.dll": {
+          "address": 6577843136,
+          "methodPointers": 6592828752,
+          "count": 810,
+          "fileBacked": true
+        },
+        "Sirenix.Utilities.dll": {
+          "address": 6577549328,
+          "methodPointers": 6592325136,
+          "count": 968,
+          "fileBacked": true
+        },
+        "Mono.Security.dll": {
+          "address": 6577363904,
+          "methodPointers": 6592127104,
+          "count": 562,
+          "fileBacked": true
+        },
+        "UnityEngine.IMGUIModule.dll": {
+          "address": 6577890704,
+          "methodPointers": 6592908944,
+          "count": 724,
+          "fileBacked": true
+        },
+        "Unity.Timeline.dll": {
+          "address": 6577856512,
+          "methodPointers": 6592850304,
+          "count": 876,
+          "fileBacked": true
+        },
+        "Sirenix.OdinInspector.Attributes.dll": {
+          "address": 6577507296,
+          "methodPointers": 6592305952,
+          "count": 462,
+          "fileBacked": true
+        },
+        "System.Collections.Immutable.dll": {
+          "address": 6577584240,
+          "methodPointers": 6592349104,
+          "count": 825,
+          "fileBacked": true
+        },
+        "Hypergryph.OneChannel.dll": {
+          "address": 6565035376,
+          "methodPointers": 6587741424,
+          "count": 755,
+          "fileBacked": true
+        },
+        "ConsolePro.dll": {
+          "address": 6565008736,
+          "methodPointers": 6587697344,
+          "count": 793,
+          "fileBacked": true
+        },
+        "Assembly-CSharp-firstpass.dll": {
+          "address": 6563861904,
+          "methodPointers": 6585841648,
+          "count": 747,
+          "fileBacked": true
+        },
+        "P31RestKit.dll": {
+          "address": 6577475456,
+          "methodPointers": 6592283600,
+          "count": 287,
+          "fileBacked": true
+        },
+        "UnityEngine.ParticleSystemModule.dll": {
+          "address": 6577893824,
+          "methodPointers": 6592916384,
+          "count": 491,
+          "fileBacked": true
+        },
+        "clipper_library.dll": {
+          "address": 6564997696,
+          "methodPointers": 6587695360,
+          "count": 216,
+          "fileBacked": true
+        },
+        "torappu.CrashSight.Standalone.dll": {
+          "address": 6577764784,
+          "methodPointers": 6592613760,
+          "count": 280,
+          "fileBacked": true
+        },
+        "UnityEngine.AnimationModule.dll": {
+          "address": 6577860928,
+          "methodPointers": 6592861456,
+          "count": 366,
+          "fileBacked": true
+        },
+        "UnityEngine.AndroidJNIModule.dll": {
+          "address": 6577859152,
+          "methodPointers": 6592859440,
+          "count": 252,
+          "fileBacked": true
+        },
+        "UnityEngine.UIElementsNativeModule.dll": {
+          "address": 6577945600,
+          "methodPointers": 6592993088,
+          "count": 245,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestModule.dll": {
+          "address": 6577956752,
+          "methodPointers": 6593013680,
+          "count": 143,
+          "fileBacked": true
+        },
+        "DOTween.Modules.dll": {
+          "address": 6565020800,
+          "methodPointers": 6587725728,
+          "count": 235,
+          "fileBacked": true
+        },
+        "System.Xml.Linq.dll": {
+          "address": 6577604992,
+          "methodPointers": 6592365952,
+          "count": 210,
+          "fileBacked": true
+        },
+        "XNode.dll": {
+          "address": 6577960256,
+          "methodPointers": 6593016992,
+          "count": 199,
+          "fileBacked": true
+        },
+        "UnityEngine.PhysicsModule.dll": {
+          "address": 6577895584,
+          "methodPointers": 6592924848,
+          "count": 182,
+          "fileBacked": true
+        },
+        "UnityEngine.Physics2DModule.dll": {
+          "address": 6577894672,
+          "methodPointers": 6592923088,
+          "count": 168,
+          "fileBacked": true
+        },
+        "UnityEngine.TextCoreFontEngineModule.dll": {
+          "address": 6577898160,
+          "methodPointers": 6592927760,
+          "count": 121,
+          "fileBacked": true
+        },
+        "System.Numerics.dll": {
+          "address": 6577603280,
+          "methodPointers": 6592364992,
+          "count": 77,
+          "fileBacked": true
+        },
+        "UnityEngine.AIModule.dll": {
+          "address": 6577857296,
+          "methodPointers": 6592857856,
+          "count": 153,
+          "fileBacked": true
+        },
+        "UnityEngine.AudioModule.dll": {
+          "address": 6577861936,
+          "methodPointers": 6592865360,
+          "count": 96,
+          "fileBacked": true
+        },
+        "UnityEngine.UIModule.dll": {
+          "address": 6577946240,
+          "methodPointers": 6592995136,
+          "count": 116,
+          "fileBacked": true
+        },
+        "Hypergryph.Browser.dll": {
+          "address": 6565029568,
+          "methodPointers": 6587737712,
+          "count": 196,
+          "fileBacked": true
+        },
+        "UnityEngine.XRModule.dll": {
+          "address": 6577958704,
+          "methodPointers": 6593015712,
+          "count": 67,
+          "fileBacked": true
+        },
+        "Torappu.CETest.dll": {
+          "address": 6577712768,
+          "methodPointers": 6592561408,
+          "count": 84,
+          "fileBacked": true
+        },
+        "UnityEngine.TextRenderingModule.dll": {
+          "address": 6577900464,
+          "methodPointers": 6592933088,
+          "count": 50,
+          "fileBacked": true
+        },
+        "UnityEngine.InputLegacyModule.dll": {
+          "address": 6577891168,
+          "methodPointers": 6592915328,
+          "count": 71,
+          "fileBacked": true
+        },
+        "UnityEngine.TerrainModule.dll": {
+          "address": 6577897184,
+          "methodPointers": 6592927408,
+          "count": 41,
+          "fileBacked": true
+        },
+        "UnityEngine.SharedInternalsModule.dll": {
+          "address": 6577896208,
+          "methodPointers": 6592926640,
+          "count": 68,
+          "fileBacked": true
+        },
+        "UnityEngine.TilemapModule.dll": {
+          "address": 6577900816,
+          "methodPointers": 6592933536,
+          "count": 42,
+          "fileBacked": true
+        },
+        "UnityEngine.VFXModule.dll": {
+          "address": 6577957568,
+          "methodPointers": 6593015056,
+          "count": 33,
+          "fileBacked": true
+        },
+        "Sirenix.Serialization.Config.dll": {
+          "address": 6577507568,
+          "methodPointers": 6592309760,
+          "count": 22,
+          "fileBacked": true
+        },
+        "UnityEngine.AssetBundleModule.dll": {
+          "address": 6577861376,
+          "methodPointers": 6592865136,
+          "count": 28,
+          "fileBacked": true
+        },
+        "UnityEngine.SubsystemsModule.dll": {
+          "address": 6577896832,
+          "methodPointers": 6592927184,
+          "count": 28,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestWWWModule.dll": {
+          "address": 6577957232,
+          "methodPointers": 6593014928,
+          "count": 15,
+          "fileBacked": true
+        },
+        "UnityEngine.VideoModule.dll": {
+          "address": 6577957824,
+          "methodPointers": 6593015344,
+          "count": 18,
+          "fileBacked": true
+        },
+        "UnityEngine.DirectorModule.dll": {
+          "address": 6577887264,
+          "methodPointers": 6592908624,
+          "count": 34,
+          "fileBacked": true
+        },
+        "UnityEngine.InputModule.dll": {
+          "address": 6577891424,
+          "methodPointers": 6592916192,
+          "count": 17,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityAnalyticsModule.dll": {
+          "address": 6577955968,
+          "methodPointers": 6593013584,
+          "count": 12,
+          "fileBacked": true
+        },
+        "Hypergryph.EventLogSDK.dll": {
+          "address": 6565030464,
+          "methodPointers": 6587739280,
+          "count": 181,
+          "fileBacked": true
+        },
+        "UnityEngine.JSONSerializeModule.dll": {
+          "address": 6577891680,
+          "methodPointers": 6592916328,
+          "count": 7,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestTextureModule.dll": {
+          "address": 6577956976,
+          "methodPointers": 6593014832,
+          "count": 12,
+          "fileBacked": true
+        },
+        "UnityEngine.VRModule.dll": {
+          "address": 6577958032,
+          "methodPointers": 6593015520,
+          "count": 10,
+          "fileBacked": true
+        },
+        "Torappu.Sofdec.dll": {
+          "address": 6577765232,
+          "methodPointers": 6592616000,
+          "count": 66,
+          "fileBacked": true
+        },
+        "UnityEngine.ImageConversionModule.dll": {
+          "address": 6577887632,
+          "methodPointers": 6592908904,
+          "count": 4,
+          "fileBacked": true
+        },
+        "UnityEngine.WindModule.dll": {
+          "address": 6577958256,
+          "methodPointers": 6593015600,
+          "count": 13,
+          "fileBacked": true
+        },
+        "UnityEngine.GridModule.dll": {
+          "address": 6577887440,
+          "methodPointers": 6592908896,
+          "count": 1,
+          "fileBacked": true
+        },
+        "UnityEngine.ScreenCaptureModule.dll": {
+          "address": 6577895760,
+          "methodPointers": 6592926624,
+          "count": 1,
+          "fileBacked": true
+        },
+        "Hypergryph.GameUpdate.dll": {
+          "address": 6565030928,
+          "methodPointers": 6587740736,
+          "count": 71,
+          "fileBacked": true
+        },
+        "Unity.Profiling.Core.dll": {
+          "address": 6577843520,
+          "methodPointers": 6592835264,
+          "count": 41,
+          "fileBacked": true
+        },
+        "System.Configuration.dll": {
+          "address": 6577584560,
+          "methodPointers": 6592355712,
+          "count": 35,
+          "fileBacked": true
+        },
+        "System.Runtime.Serialization.dll": {
+          "address": 6577603664,
+          "methodPointers": 6592365904,
+          "count": 6,
+          "fileBacked": true
+        },
+        "System.Runtime.CompilerServices.Unsafe.dll": {
+          "address": 6577603456,
+          "methodPointers": 6592365888,
+          "count": 2,
+          "fileBacked": true
+        },
+        "Unity.MemoryProfiler.dll": {
+          "address": 6577838800,
+          "methodPointers": 6592828688,
+          "count": 8,
+          "fileBacked": true
+        },
+        "CriMw.CriWare.Vp9.Runtime.dll": {
+          "address": 6565019680,
+          "methodPointers": 6587725648,
+          "count": 10,
+          "fileBacked": true
+        },
+        "Hypergryph.Log.dll": {
+          "address": 6565031152,
+          "methodPointers": 6587741312,
+          "count": 14,
+          "fileBacked": true
+        },
+        "XNode.Groups.dll": {
+          "address": 6577959056,
+          "methodPointers": 6593016960,
+          "count": 3,
+          "fileBacked": true
+        },
+        "AntiSDK.dll": {
+          "address": 6563858064,
+          "methodPointers": 6585841616,
+          "count": 3,
+          "fileBacked": true
+        },
+        "Torappu.UICommonEditor.dll": {
+          "address": 6577765408,
+          "methodPointers": 6592616528,
+          "count": 2,
+          "fileBacked": true
+        },
+        "enum2int.dll": {
+          "address": 6565028352,
+          "methodPointers": 6593280072,
+          "count": 2,
+          "fileBacked": false
+        },
+        "__Generated": {
+          "address": 6577960432,
+          "methodPointers": 6593018584,
+          "count": 3,
+          "fileBacked": true
+        }
+      }
+    }
+  },
+  "result": [
+    {
+      "nameIndex": 3074630,
+      "declaringType": 12192,
+      "returnType": 60309,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746459,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83162,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455478416,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.get_maxBossWaveCnt",
+      "returnTypeName": "int",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3074649,
+      "declaringType": 12192,
+      "returnType": 60309,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746460,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83163,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455477552,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.get_currBossWaveKillCnt",
+      "returnTypeName": "int",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3074673,
+      "declaringType": 12192,
+      "returnType": 60309,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746461,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83164,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455477712,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.get_currBossWaveTotalCnt",
+      "returnTypeName": "int",
+      "parameters": []
+    },
+    {
+      "nameIndex": 2504353,
+      "declaringType": 12192,
+      "returnType": 25610,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746462,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83165,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455478528,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.get_waveDatas",
+      "returnTypeName": "type(kind=0x15, data=0x188c93e28)",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3074698,
+      "declaringType": 12192,
+      "returnType": 60309,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746463,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83166,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455477360,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.get_battleAreaBegin",
+      "returnTypeName": "int",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3074718,
+      "declaringType": 12192,
+      "returnType": 60309,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746464,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83167,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455477456,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.get_battleAreaEnd",
+      "returnTypeName": "int",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3074736,
+      "declaringType": 12192,
+      "returnType": 46024,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746465,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83168,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455478224,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.get_isInBossWave",
+      "returnTypeName": "bool",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3074753,
+      "declaringType": 12192,
+      "returnType": 46024,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746466,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83169,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455478128,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.get_isInBonusWave",
+      "returnTypeName": "bool",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3068841,
+      "declaringType": 12192,
+      "returnType": 46024,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746467,
+      "flags": 2246,
+      "iflags": 0,
+      "slot": 123,
+      "parameterCount": 0,
+      "index": 83170,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455477936,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.get_hasExtraBuildCondition",
+      "returnTypeName": "bool",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3070547,
+      "declaringType": 12192,
+      "returnType": 46024,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746468,
+      "flags": 2246,
+      "iflags": 0,
+      "slot": 121,
+      "parameterCount": 0,
+      "index": 83171,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455478320,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.get_isLargeMap",
+      "returnTypeName": "bool",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3062675,
+      "declaringType": 12192,
+      "returnType": 98970,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746469,
+      "flags": 2246,
+      "iflags": 0,
+      "slot": 137,
+      "parameterCount": 0,
+      "index": 83172,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455477840,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.get_gameModeType",
+      "returnTypeName": "Torappu.Battle.GameModeMeta/GameModeType",
+      "parameters": []
+    },
+    {
+      "nameIndex": 107,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": 81271,
+      "genericContainerIndex": -1,
+      "token": 100746470,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 83173,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455476960,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode..ctor",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 20632,
+          "token": 134299007,
+          "typeIndex": 31847,
+          "index": 81271,
+          "name": "meta",
+          "typeName": "Torappu.Battle.GameModeMeta&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3074771,
+      "declaringType": 12192,
+      "returnType": 46024,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746471,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83174,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455478032,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.get_hasFinishedDangerArea",
+      "returnTypeName": "bool",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3074797,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": 81272,
+      "genericContainerIndex": -1,
+      "token": 100746472,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 83175,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455478640,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.set_hasFinishedDangerArea",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 113,
+          "token": 134299008,
+          "typeIndex": 46024,
+          "index": 81272,
+          "name": "value",
+          "typeName": "bool"
+        }
+      ]
+    },
+    {
+      "nameIndex": 1820,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": 81273,
+      "genericContainerIndex": -1,
+      "token": 100746473,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 141,
+      "parameterCount": 4,
+      "index": 83176,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455470864,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.Init",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 20632,
+          "token": 134299009,
+          "typeIndex": 31847,
+          "index": 81273,
+          "name": "meta",
+          "typeName": "Torappu.Battle.GameModeMeta&"
+        },
+        {
+          "nameIndex": 1227199,
+          "token": 134299010,
+          "typeIndex": 31927,
+          "index": 81274,
+          "name": "randomSeed",
+          "typeName": "int&"
+        },
+        {
+          "nameIndex": 1120566,
+          "token": 134299011,
+          "typeIndex": 45655,
+          "index": 81275,
+          "name": "playerData",
+          "typeName": "Torappu.Battle.BattlePlayerData"
+        },
+        {
+          "nameIndex": 1037564,
+          "token": 134299012,
+          "typeIndex": 61373,
+          "index": 81276,
+          "name": "levelData",
+          "typeName": "Torappu.LevelData"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2767024,
+      "declaringType": 12192,
+      "returnType": 108825,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746474,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 177,
+      "parameterCount": 0,
+      "index": 83177,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455470144,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.GetSchedulerPreprocessor",
+      "returnTypeName": "Torappu.Battle.Scheduler/SchedulerPreprocessor",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3074823,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746475,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83178,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455476768,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode._OnInitNextBossWave",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3074843,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": 81277,
+      "genericContainerIndex": -1,
+      "token": 100746476,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 83179,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455470240,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.InitBossRushController",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 5934,
+          "token": 134299013,
+          "typeIndex": 53921,
+          "index": 81277,
+          "name": "entity",
+          "typeName": "Torappu.Battle.Entity"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3074866,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": 81278,
+      "genericContainerIndex": -1,
+      "token": 100746477,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 83180,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455470704,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.InitBossRushRecodr",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 5934,
+          "token": 134299014,
+          "typeIndex": 53921,
+          "index": 81278,
+          "name": "entity",
+          "typeName": "Torappu.Battle.Entity"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3074885,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": 81279,
+      "genericContainerIndex": -1,
+      "token": 100746478,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 83181,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455471248,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.ModifyBattleAreaData",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 3124,
+          "token": 134299015,
+          "typeIndex": 45909,
+          "index": 81279,
+          "name": "blackboard",
+          "typeName": "Torappu.Blackboard"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3074924,
+      "declaringType": 12192,
+      "returnType": 84174,
+      "parameterStart": 81280,
+      "genericContainerIndex": -1,
+      "token": 100746479,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 83182,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455469808,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.GetDangerAreaEffectPosition",
+      "returnTypeName": "UnityEngine.Vector3",
+      "parameters": [
+        {
+          "nameIndex": 3074906,
+          "token": 134299016,
+          "typeIndex": 84174,
+          "index": 81280,
+          "name": "trapLocalPosition",
+          "typeName": "UnityEngine.Vector3"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3074952,
+      "declaringType": 12192,
+      "returnType": 84174,
+      "parameterStart": 81281,
+      "genericContainerIndex": -1,
+      "token": 100746480,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 83183,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455469136,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.GetBattleAreaBeginEffectPosition",
+      "returnTypeName": "UnityEngine.Vector3",
+      "parameters": [
+        {
+          "nameIndex": 3074906,
+          "token": 134299017,
+          "typeIndex": 84174,
+          "index": 81281,
+          "name": "trapLocalPosition",
+          "typeName": "UnityEngine.Vector3"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3074985,
+      "declaringType": 12192,
+      "returnType": 84174,
+      "parameterStart": 81282,
+      "genericContainerIndex": -1,
+      "token": 100746481,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 83184,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455469472,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.GetBattleAreaEndEffectPosition",
+      "returnTypeName": "UnityEngine.Vector3",
+      "parameters": [
+        {
+          "nameIndex": 3074906,
+          "token": 134299018,
+          "typeIndex": 84174,
+          "index": 81282,
+          "name": "trapLocalPosition",
+          "typeName": "UnityEngine.Vector3"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2482867,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": 81283,
+      "genericContainerIndex": -1,
+      "token": 100746482,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 170,
+      "parameterCount": 1,
+      "index": 83185,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455473088,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.OnWaveWillStart",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 3075016,
+          "token": 134299019,
+          "typeIndex": 100839,
+          "index": 81283,
+          "name": "waveData",
+          "typeName": "Torappu.LevelData/WaveData"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2482883,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": 81284,
+      "genericContainerIndex": -1,
+      "token": 100746483,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 171,
+      "parameterCount": 1,
+      "index": 83186,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455472320,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.OnWaveWillFinish",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 3075016,
+          "token": 134299020,
+          "typeIndex": 100839,
+          "index": 81284,
+          "name": "waveData",
+          "typeName": "Torappu.LevelData/WaveData"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2507092,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": 81285,
+      "genericContainerIndex": -1,
+      "token": 100746484,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 83187,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455471872,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.OnBossWaveWillStart",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 16936,
+          "token": 134299021,
+          "typeIndex": 64329,
+          "index": 81285,
+          "name": "args",
+          "typeName": "object"
+        }
+      ]
+    },
+    {
+      "nameIndex": 1837498,
+      "declaringType": 12192,
+      "returnType": 46024,
+      "parameterStart": 81286,
+      "genericContainerIndex": -1,
+      "token": 100746485,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 174,
+      "parameterCount": 7,
+      "index": 83188,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455468384,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.CheckBuildable",
+      "returnTypeName": "bool",
+      "parameters": [
+        {
+          "nameIndex": 2542459,
+          "token": 134299022,
+          "typeIndex": 46385,
+          "index": 81286,
+          "name": "buildCondition",
+          "typeName": "Torappu.Battle.BuildCondition"
+        },
+        {
+          "nameIndex": 1957,
+          "token": 134299023,
+          "typeIndex": 80093,
+          "index": 81287,
+          "name": "tile",
+          "typeName": "Torappu.Battle.Tile"
+        },
+        {
+          "nameIndex": 523294,
+          "token": 134299024,
+          "typeIndex": 109140,
+          "index": 81288,
+          "name": "direction",
+          "typeName": "Torappu.SharedConsts/Direction"
+        },
+        {
+          "nameIndex": 2481000,
+          "token": 134299025,
+          "typeIndex": 46024,
+          "index": 81289,
+          "name": "spawnManually",
+          "typeName": "bool"
+        },
+        {
+          "nameIndex": 2479409,
+          "token": 134299026,
+          "typeIndex": 46024,
+          "index": 81290,
+          "name": "overflowOccupiedCnt",
+          "typeName": "bool"
+        },
+        {
+          "nameIndex": 2479398,
+          "token": 134299027,
+          "typeIndex": 45448,
+          "index": 81291,
+          "name": "sourceData",
+          "typeName": "Torappu.Battle.BattleCharacterData"
+        },
+        {
+          "nameIndex": 2788598,
+          "token": 134299028,
+          "typeIndex": 65995,
+          "index": 81292,
+          "name": "operationSide",
+          "typeName": "Torappu.PlayerSide"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3068904,
+      "declaringType": 12192,
+      "returnType": 46024,
+      "parameterStart": 81293,
+      "genericContainerIndex": -1,
+      "token": 100746486,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 200,
+      "parameterCount": 2,
+      "index": 83189,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455475472,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.TryHookCheckWaveNotFinish",
+      "returnTypeName": "bool",
+      "parameters": [
+        {
+          "nameIndex": 3068888,
+          "token": 134299029,
+          "typeIndex": 46024,
+          "index": 81293,
+          "name": "schedulerResult",
+          "typeName": "bool"
+        },
+        {
+          "nameIndex": 4554,
+          "token": 134299030,
+          "typeIndex": 31693,
+          "index": 81294,
+          "name": "result",
+          "typeName": "bool&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3075025,
+      "declaringType": 12192,
+      "returnType": 46024,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746487,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83190,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455476384,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode._CheckCanMoveToBonusWave",
+      "returnTypeName": "bool",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3075050,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746488,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 201,
+      "parameterCount": 0,
+      "index": 83191,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455472224,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.OnSpawnSummonedEnemy",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3075071,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746489,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 202,
+      "parameterCount": 0,
+      "index": 83192,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455472128,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.OnSpawnSummonedEnemyFinished",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3075100,
+      "declaringType": 12192,
+      "returnType": 46024,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746490,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83193,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455471504,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.NextWaveIsBonusWave",
+      "returnTypeName": "bool",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3075120,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": 81295,
+      "genericContainerIndex": -1,
+      "token": 100746491,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "index": 83194,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455474912,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.TrackRecycleEnemyAtWave",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 5972,
+          "token": 134299031,
+          "typeIndex": 53407,
+          "index": 81295,
+          "name": "enemy",
+          "typeName": "Torappu.Battle.Enemy"
+        },
+        {
+          "nameIndex": 2776886,
+          "token": 134299032,
+          "typeIndex": 60309,
+          "index": 81296,
+          "name": "waveDelta",
+          "typeName": "int"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3075144,
+      "declaringType": 12192,
+      "returnType": 108820,
+      "parameterStart": 81297,
+      "genericContainerIndex": -1,
+      "token": 100746492,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 138,
+      "parameterCount": 1,
+      "index": 83195,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455468896,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.CreateWaveHandler",
+      "returnTypeName": "Torappu.Battle.Scheduler/DefaultWaveHandler",
+      "parameters": [
+        {
+          "nameIndex": 2498457,
+          "token": 134299033,
+          "typeIndex": 75123,
+          "index": 81297,
+          "name": "scheduler",
+          "typeName": "Torappu.Battle.Scheduler"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3069297,
+      "declaringType": 12192,
+      "returnType": 46024,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746493,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83196,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455414816,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.<>xLuaBaseProxy_get_hasExtraBuildCondition",
+      "returnTypeName": "bool",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3071112,
+      "declaringType": 12192,
+      "returnType": 46024,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746494,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83197,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455441792,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.<>xLuaBaseProxy_get_isLargeMap",
+      "returnTypeName": "bool",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3062731,
+      "declaringType": 12192,
+      "returnType": 98970,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746495,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83198,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455353312,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.<>xLuaBaseProxy_get_gameModeType",
+      "returnTypeName": "Torappu.Battle.GameModeMeta/GameModeType",
+      "parameters": []
+    },
+    {
+      "nameIndex": 2178,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": 81298,
+      "genericContainerIndex": -1,
+      "token": 100746496,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 4,
+      "index": 83199,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455353280,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.<>xLuaBaseProxy_Init",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 2172,
+          "token": 134299034,
+          "typeIndex": 31847,
+          "index": 81298,
+          "name": "P0",
+          "typeName": "Torappu.Battle.GameModeMeta&"
+        },
+        {
+          "nameIndex": 2175,
+          "token": 134299035,
+          "typeIndex": 31927,
+          "index": 81299,
+          "name": "P1",
+          "typeName": "int&"
+        },
+        {
+          "nameIndex": 1965770,
+          "token": 134299036,
+          "typeIndex": 45655,
+          "index": 81300,
+          "name": "P2",
+          "typeName": "Torappu.Battle.BattlePlayerData"
+        },
+        {
+          "nameIndex": 1967701,
+          "token": 134299037,
+          "typeIndex": 61373,
+          "index": 81301,
+          "name": "P3",
+          "typeName": "Torappu.LevelData"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3062764,
+      "declaringType": 12192,
+      "returnType": 108825,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746497,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83200,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455353264,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.<>xLuaBaseProxy_GetSchedulerPreprocessor",
+      "returnTypeName": "Torappu.Battle.Scheduler/SchedulerPreprocessor",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3075162,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": 81302,
+      "genericContainerIndex": -1,
+      "token": 100746498,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 83201,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455476368,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.<>xLuaBaseProxy_OnWaveWillStart",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 2172,
+          "token": 134299038,
+          "typeIndex": 100839,
+          "index": 81302,
+          "name": "P0",
+          "typeName": "Torappu.LevelData/WaveData"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3075194,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": 81303,
+      "genericContainerIndex": -1,
+      "token": 100746499,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 83202,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455476352,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.<>xLuaBaseProxy_OnWaveWillFinish",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 2172,
+          "token": 134299039,
+          "typeIndex": 100839,
+          "index": 81303,
+          "name": "P0",
+          "typeName": "Torappu.LevelData/WaveData"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2546052,
+      "declaringType": 12192,
+      "returnType": 46024,
+      "parameterStart": 81304,
+      "genericContainerIndex": -1,
+      "token": 100746500,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 7,
+      "index": 83203,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455414512,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.<>xLuaBaseProxy_CheckBuildable",
+      "returnTypeName": "bool",
+      "parameters": [
+        {
+          "nameIndex": 2172,
+          "token": 134299040,
+          "typeIndex": 46385,
+          "index": 81304,
+          "name": "P0",
+          "typeName": "Torappu.Battle.BuildCondition"
+        },
+        {
+          "nameIndex": 2175,
+          "token": 134299041,
+          "typeIndex": 80093,
+          "index": 81305,
+          "name": "P1",
+          "typeName": "Torappu.Battle.Tile"
+        },
+        {
+          "nameIndex": 1965770,
+          "token": 134299042,
+          "typeIndex": 109140,
+          "index": 81306,
+          "name": "P2",
+          "typeName": "Torappu.SharedConsts/Direction"
+        },
+        {
+          "nameIndex": 1967701,
+          "token": 134299043,
+          "typeIndex": 46024,
+          "index": 81307,
+          "name": "P3",
+          "typeName": "bool"
+        },
+        {
+          "nameIndex": 2757536,
+          "token": 134299044,
+          "typeIndex": 46024,
+          "index": 81308,
+          "name": "P4",
+          "typeName": "bool"
+        },
+        {
+          "nameIndex": 3069445,
+          "token": 134299045,
+          "typeIndex": 45448,
+          "index": 81309,
+          "name": "P5",
+          "typeName": "Torappu.Battle.BattleCharacterData"
+        },
+        {
+          "nameIndex": 3069448,
+          "token": 134299046,
+          "typeIndex": 65990,
+          "index": 81310,
+          "name": "P6",
+          "typeName": "Torappu.PlayerSide"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3069376,
+      "declaringType": 12192,
+      "returnType": 46024,
+      "parameterStart": 81311,
+      "genericContainerIndex": -1,
+      "token": 100746501,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "index": 83204,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455414768,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.<>xLuaBaseProxy_TryHookCheckWaveNotFinish",
+      "returnTypeName": "bool",
+      "parameters": [
+        {
+          "nameIndex": 2172,
+          "token": 134299047,
+          "typeIndex": 46024,
+          "index": 81311,
+          "name": "P0",
+          "typeName": "bool"
+        },
+        {
+          "nameIndex": 2175,
+          "token": 134299048,
+          "typeIndex": 31693,
+          "index": 81312,
+          "name": "P1",
+          "typeName": "bool&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3075227,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746502,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83205,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455476336,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.<>xLuaBaseProxy_OnSpawnSummonedEnemy",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3075264,
+      "declaringType": 12192,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746503,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83206,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455476320,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.<>xLuaBaseProxy_OnSpawnSummonedEnemyFinished",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3075309,
+      "declaringType": 12192,
+      "returnType": 108820,
+      "parameterStart": 81313,
+      "genericContainerIndex": -1,
+      "token": 100746504,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 83207,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455476304,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.<>xLuaBaseProxy_CreateWaveHandler",
+      "returnTypeName": "Torappu.Battle.Scheduler/DefaultWaveHandler",
+      "parameters": [
+        {
+          "nameIndex": 2172,
+          "token": 134299049,
+          "typeIndex": 75123,
+          "index": 81313,
+          "name": "P0",
+          "typeName": "Torappu.Battle.Scheduler"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2096882,
+      "declaringType": 12191,
+      "returnType": 98924,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746505,
+      "flags": 2180,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83208,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455478864,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode/BossrushGameModeWaveHandler.get_gameMode",
+      "returnTypeName": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode",
+      "parameters": []
+    },
+    {
+      "nameIndex": 2782924,
+      "declaringType": 12191,
+      "returnType": 46024,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746506,
+      "flags": 2246,
+      "iflags": 0,
+      "slot": 4,
+      "parameterCount": 0,
+      "index": 83209,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455479152,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode/BossrushGameModeWaveHandler.get_skipCurWave",
+      "returnTypeName": "bool",
+      "parameters": []
+    },
+    {
+      "nameIndex": 107,
+      "declaringType": 12191,
+      "returnType": 84484,
+      "parameterStart": 81314,
+      "genericContainerIndex": -1,
+      "token": 100746507,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 83210,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455478752,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode/BossrushGameModeWaveHandler..ctor",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 2498457,
+          "token": 134299050,
+          "typeIndex": 75123,
+          "index": 81314,
+          "name": "scheduler",
+          "typeName": "Torappu.Battle.Scheduler"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2787385,
+      "declaringType": 12191,
+      "returnType": 46024,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100746508,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 83211,
+      "image": "Assembly-CSharp.dll",
+      "address": 6452528080,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode/BossrushGameModeWaveHandler.<>xLuaBaseProxy_get_skipCurWave",
+      "returnTypeName": "bool",
+      "parameters": []
+    }
+  ]
+}

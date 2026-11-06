@@ -1,0 +1,90 @@
+Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.Init 0x180c6ab10
+0x180c6ab10 mov qword ptr [rsp + 8], rbx
+0x180c6ab15 mov qword ptr [rsp + 0x10], rbp
+0x180c6ab1a mov qword ptr [rsp + 0x18], rsi
+0x180c6ab1f push rdi
+0x180c6ab20 sub rsp, 0x40
+0x180c6ab24 cmp byte ptr [rip + 0x8333e0e], 0
+0x180c6ab2b mov rdi, r9
+0x180c6ab2e mov rsi, r8
+0x180c6ab31 mov rbp, rdx
+0x180c6ab34 mov rbx, rcx
+0x180c6ab37 jne 0x180c6ab88 []
+0x180c6ab39 lea rcx, [rip + 0x7f6c848]
+0x180c6ab40 call 0x18049c210 []
+0x180c6ab45 lea rcx, [rip + 0x7fd4bb4]
+0x180c6ab4c call 0x18049c210 []
+0x180c6ab51 lea rcx, [rip + 0x7ecaf90]
+0x180c6ab58 call 0x18049c210 []
+0x180c6ab5d lea rcx, [rip + 0x7fa4bec]
+0x180c6ab64 call 0x18049c210 []
+0x180c6ab69 lea rcx, [rip + 0x7f9f1b0]
+0x180c6ab70 call 0x18049c210 []
+0x180c6ab75 lea rcx, [rip + 0x7f5fd2c]
+0x180c6ab7c call 0x18049c210 []
+0x180c6ab81 mov byte ptr [rip + 0x8333db1], 1
+0x180c6ab88 mov rax, qword ptr [rip + 0x7fd4b71]
+0x180c6ab8f mov rcx, qword ptr [rax + 0xb8]
+0x180c6ab96 mov rcx, qword ptr [rcx + 0x70]
+0x180c6ab9a test rcx, rcx
+0x180c6ab9d jne 0x180c6ac49 []
+0x180c6aba3 xor edx, edx
+0x180c6aba5 mov rcx, rbx
+0x180c6aba8 call 0x180c6c220 ['Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode._OnInitNextBossWave']
+0x180c6abad mov dword ptr [rbx + 0x50], 0
+0x180c6abb4 mov word ptr [rbx + 0x84], 1
+0x180c6abbd mov rcx, qword ptr [rip + 0x7f5fce4]
+0x180c6abc4 call 0x18558e720 []
+0x180c6abc9 test rax, rax
+0x180c6abcc je 0x180c6ac84 []
+0x180c6abd2 xor edx, edx
+0x180c6abd4 mov rcx, rax
+0x180c6abd7 call 0x18132b490 ['Torappu.Battle.UI.UIController.get_eventPool']
+0x180c6abdc mov rcx, qword ptr [rip + 0x7ecaf05]
+0x180c6abe3 mov rsi, rax
+0x180c6abe6 cmp dword ptr [rcx + 0xe0], 0
+0x180c6abed jne 0x180c6abfb []
+0x180c6abef call 0x18049c450 []
+0x180c6abf4 mov rcx, qword ptr [rip + 0x7ecaeed]
+0x180c6abfb mov rcx, qword ptr [rcx + 0xb8]
+0x180c6ac02 mov ebp, dword ptr [rcx + 4]
+0x180c6ac05 mov rcx, qword ptr [rip + 0x7fa4b44]
+0x180c6ac0c call 0x18046d2f0 []
+0x180c6ac11 mov rdi, rax
+0x180c6ac14 test rax, rax
+0x180c6ac17 je 0x180c6ac84 []
+0x180c6ac19 mov r8, qword ptr [rip + 0x7f6c768]
+0x180c6ac20 xor r9d, r9d
+0x180c6ac23 mov rdx, rbx
+0x180c6ac26 mov rcx, rax
+0x180c6ac29 call 0x18052c7e0 ['Torappu.Building.DIY.UI.DIYViewListModel/PostHandler..ctor', 'Torappu.UI.UIPushMessageHandler/MsgLuaHandler/LuaMsgHandlerCallback..ctor', 'Torappu.UI.SandboxPerm.SandboxPermTradeCallback..ctor', 'Torappu.UI.TemplateCharSelect.TemplateCharSelectTroopFetcher..ctor', 'Torappu.EventPool/EventCallbackDelegate..ctor', 'XLua.__XLua_Gen_Delegate1..ctor', 'BestHTTP.HTTPConnectionRecycledDelegate..ctor', 'BestHTTP.ServerSentEvents.OnGeneralEventDelegate..ctor', 'BestHTTP.SignalR.Authentication.OnAuthenticationSuccededDelegate..ctor', 'System.AsyncCallback..ctor', 'System.Runtime.Serialization.DeserializationEventHandler..ctor', 'System.ComponentModel.RefreshEventHandler..ctor', 'System.Xml.OnRemoveWriter..ctor', 'Spine.Unity.SkeletonGraphic/SkeletonRendererDelegate..ctor', 'CriWare.CriFsRequest/DoneDelegate..ctor', 'XLua.__XLua_Gen_Delegate6..ctor', 'U8.SDK.U8SDKInterface/ReceiverProductListResult..ctor', 'AdvancedInspector.SenderEventHandler..ctor']
+0x180c6ac2e test rsi, rsi
+0x180c6ac31 je 0x180c6ac84 []
+0x180c6ac33 mov r9, qword ptr [rip + 0x7f9f0e6]
+0x180c6ac3a mov r8, rdi
+0x180c6ac3d mov edx, ebp
+0x180c6ac3f mov rcx, rsi
+0x180c6ac42 call 0x184af4e40 []
+0x180c6ac47 jmp 0x180c6ac6f []
+0x180c6ac49 mov rax, qword ptr [rsp + 0x70]
+0x180c6ac4e mov r9, rsi
+0x180c6ac51 mov qword ptr [rsp + 0x30], 0
+0x180c6ac5a mov r8, rbp
+0x180c6ac5d mov qword ptr [rsp + 0x28], rax
+0x180c6ac62 mov rdx, rbx
+0x180c6ac65 mov qword ptr [rsp + 0x20], rdi
+0x180c6ac6a call 0x1831a9a20 ['XLua.DelegateBridge.__Gen_Delegate_Imp11289']
+0x180c6ac6f mov rbx, qword ptr [rsp + 0x50]
+0x180c6ac74 mov rbp, qword ptr [rsp + 0x58]
+0x180c6ac79 mov rsi, qword ptr [rsp + 0x60]
+0x180c6ac7e add rsp, 0x40
+0x180c6ac82 pop rdi
+0x180c6ac83 ret
+0x180c6ac84 call 0x18049c3c0 []
+0x180c6ac89 int3
+0x180c6ac8a int3
+0x180c6ac8b int3
+0x180c6ac8c int3
+0x180c6ac8d int3
+0x180c6ac8e int3
+0x180c6ac8f int3

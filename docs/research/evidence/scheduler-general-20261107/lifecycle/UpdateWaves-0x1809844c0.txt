@@ -1,0 +1,42 @@
+# Torappu.Battle.Scheduler.UpdateWaves @ 0x1809844c0
+Source: .cache/native-research/scheduler-general-20261107/native-paths.json
+Parameters: [('newWaves', 'Torappu.LevelData/WaveData[]')]
+0x1809844c0 mov qword ptr [rsp + 8], rbx
+0x1809844c5 push rdi
+0x1809844c6 sub rsp, 0x20
+0x1809844ca cmp byte ptr [rip + 0x861860f], 0
+0x1809844d1 mov rbx, rdx
+0x1809844d4 mov rdi, rcx
+0x1809844d7 jne 0x1809844f8
+0x1809844d9 lea rcx, [rip + 0x81b70c8]
+0x1809844e0 call 0x18049c210
+0x1809844e5 lea rcx, [rip + 0x818523c]
+0x1809844ec call 0x18049c210
+0x1809844f1 mov byte ptr [rip + 0x86185e8], 1
+0x1809844f8 mov rax, qword ptr [rip + 0x8185229]
+0x1809844ff mov r8, qword ptr [rax + 0xb8]
+0x180984506 mov rcx, qword ptr [r8 + 0xf8]
+0x18098450d test rcx, rcx
+0x180984510 jne 0x180984545
+0x180984512 mov rdx, qword ptr [rip + 0x81b708f]
+0x180984519 mov rcx, rbx
+0x18098451c call 0x184696030
+0x180984521 test al, al
+0x180984523 jne 0x180984553
+0x180984525 lea rcx, [rdi + 0xa0]
+0x18098452c mov qword ptr [rdi + 0xa0], rbx
+0x180984533 mov rdx, rbx
+0x180984536 mov rbx, qword ptr [rsp + 0x30]
+0x18098453b add rsp, 0x20
+0x18098453f pop rdi
+0x180984540 jmp 0x18049bcf0
+0x180984545 xor r9d, r9d
+0x180984548 mov r8, rbx
+0x18098454b mov rdx, rdi
+0x18098454e call 0x18338c7c0; ['XLua.DelegateBridge.__Gen_Delegate_Imp23']
+0x180984553 mov rbx, qword ptr [rsp + 0x30]
+0x180984558 add rsp, 0x20
+0x18098455c pop rdi
+0x18098455d ret
+0x18098455e int3
+0x18098455f int3

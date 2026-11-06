@@ -1,0 +1,70 @@
+Torappu.Battle.GameMode.GameModeFactory/BossRushGameMode.CreateWaveHandler 0x180c6a360
+0x180c6a360 mov qword ptr [rsp + 8], rbx
+0x180c6a365 push rdi
+0x180c6a366 sub rsp, 0x20
+0x180c6a36a cmp byte ptr [rip + 0x83345db], 0
+0x180c6a371 mov rdi, rdx
+0x180c6a374 mov rbx, rcx
+0x180c6a377 jne 0x180c6a398 []
+0x180c6a379 lea rcx, [rip + 0x7fd5380]
+0x180c6a380 call 0x18049c210 []
+0x180c6a385 lea rcx, [rip + 0x7fd2394]
+0x180c6a38c call 0x18049c210 []
+0x180c6a391 mov byte ptr [rip + 0x83345b4], 1
+0x180c6a398 mov rax, qword ptr [rip + 0x7fd5361]
+0x180c6a39f mov rdx, qword ptr [rax + 0xb8]
+0x180c6a3a6 mov rcx, qword ptr [rdx + 0x108]
+0x180c6a3ad test rcx, rcx
+0x180c6a3b0 jne 0x180c6a423 []
+0x180c6a3b2 mov rcx, qword ptr [rip + 0x7fd2367]
+0x180c6a3b9 call 0x18046d2f0 []
+0x180c6a3be mov rbx, rax
+0x180c6a3c1 test rax, rax
+0x180c6a3c4 je 0x180c6a43b []
+0x180c6a3c6 cmp byte ptr [rip + 0x8334582], 0
+0x180c6a3cd jne 0x180c6a3e2 []
+0x180c6a3cf lea rcx, [rip + 0x7fd234a]
+0x180c6a3d6 call 0x18049c210 []
+0x180c6a3db mov byte ptr [rip + 0x833456d], 1
+0x180c6a3e2 xor r8d, r8d
+0x180c6a3e5 mov rdx, rdi
+0x180c6a3e8 mov rcx, rbx
+0x180c6a3eb call 0x180978fc0 ['Torappu.Battle.Scheduler/DefaultWaveHandler..ctor']
+0x180c6a3f0 mov rax, qword ptr [rip + 0x7fd2329]
+0x180c6a3f7 mov rcx, qword ptr [rax + 0xb8]
+0x180c6a3fe mov rcx, qword ptr [rcx + 0x10]
+0x180c6a402 test rcx, rcx
+0x180c6a405 je 0x180c6a415 []
+0x180c6a407 xor r9d, r9d
+0x180c6a40a mov r8, rdi
+0x180c6a40d mov rdx, rbx
+0x180c6a410 call 0x18338c7c0 ['XLua.DelegateBridge.__Gen_Delegate_Imp23']
+0x180c6a415 mov rax, rbx
+0x180c6a418 mov rbx, qword ptr [rsp + 0x30]
+0x180c6a41d add rsp, 0x20
+0x180c6a421 pop rdi
+0x180c6a422 ret
+0x180c6a423 xor r9d, r9d
+0x180c6a426 mov r8, rdi
+0x180c6a429 mov rdx, rbx
+0x180c6a42c mov rbx, qword ptr [rsp + 0x30]
+0x180c6a431 add rsp, 0x20
+0x180c6a435 pop rdi
+0x180c6a436 jmp 0x1831ad3b0 ['XLua.DelegateBridge.__Gen_Delegate_Imp11311']
+0x180c6a43b call 0x18049c3c0 []
+0x180c6a440 int3
+0x180c6a441 int3
+0x180c6a442 int3
+0x180c6a443 int3
+0x180c6a444 int3
+0x180c6a445 int3
+0x180c6a446 int3
+0x180c6a447 int3
+0x180c6a448 int3
+0x180c6a449 int3
+0x180c6a44a int3
+0x180c6a44b int3
+0x180c6a44c int3
+0x180c6a44d int3
+0x180c6a44e int3
+0x180c6a44f int3

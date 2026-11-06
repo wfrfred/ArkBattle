@@ -1,0 +1,56 @@
+Torappu.Battle.Enemy.DontCountAsFinished 0x180abada0
+0x180abada0 push rbx
+0x180abada2 sub rsp, 0xa0
+0x180abada9 cmp byte ptr [rip + 0x84e2ac2], 0
+0x180abadb0 mov rbx, rcx
+0x180abadb3 jne 0x180abadc8 []
+0x180abadb5 lea rcx, [rip + 0x80ca404]
+0x180abadbc call 0x18049c210 []
+0x180abadc1 mov byte ptr [rip + 0x84e2aaa], 1
+0x180abadc8 mov rax, qword ptr [rip + 0x80ca3f1]
+0x180abadcf cmp dword ptr [rax + 0xe0], 0
+0x180abadd6 jne 0x180abade7 []
+0x180abadd8 mov rcx, rax
+0x180abaddb call 0x18049c450 []
+0x180abade0 mov rax, qword ptr [rip + 0x80ca3d9]
+0x180abade7 mov rax, qword ptr [rax + 0xb8]
+0x180abadee mov rcx, qword ptr [rax + 0x318]
+0x180abadf5 xor r8d, r8d
+0x180abadf8 mov rdx, rbx
+0x180abadfb test rcx, rcx
+0x180abadfe jne 0x180abae57 []
+0x180abae00 lea rcx, [rsp + 0x60]
+0x180abae05 call 0x180ace170 ['Torappu.Battle.Enemy.get_options']
+0x180abae0a xor r8d, r8d
+0x180abae0d lea rdx, [rsp + 0x20]
+0x180abae12 mov rcx, rbx
+0x180abae15 movups xmm0, xmmword ptr [rax]
+0x180abae18 movups xmm2, xmmword ptr [rax + 0x10]
+0x180abae1c movups xmm3, xmmword ptr [rax + 0x20]
+0x180abae20 movsd xmm1, qword ptr [rax + 0x30]
+0x180abae25 movups xmmword ptr [rsp + 0x20], xmm0
+0x180abae2a mov byte ptr [rsp + 0x22], 1
+0x180abae2f movups xmm0, xmmword ptr [rsp + 0x20]
+0x180abae34 movaps xmmword ptr [rsp + 0x30], xmm2
+0x180abae39 movaps xmmword ptr [rsp + 0x20], xmm0
+0x180abae3e movaps xmmword ptr [rsp + 0x40], xmm3
+0x180abae43 movsd qword ptr [rsp + 0x50], xmm1
+0x180abae49 call 0x180ad00c0 ['Torappu.Battle.Enemy.set_options']
+0x180abae4e add rsp, 0xa0
+0x180abae55 pop rbx
+0x180abae56 ret
+0x180abae57 add rsp, 0xa0
+0x180abae5e pop rbx
+0x180abae5f jmp 0x1833c9ac0 ['XLua.DelegateBridge.__Gen_Delegate_Imp27']
+0x180abae64 int3
+0x180abae65 int3
+0x180abae66 int3
+0x180abae67 int3
+0x180abae68 int3
+0x180abae69 int3
+0x180abae6a int3
+0x180abae6b int3
+0x180abae6c int3
+0x180abae6d int3
+0x180abae6e int3
+0x180abae6f int3

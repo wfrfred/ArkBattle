@@ -1,0 +1,150 @@
+# Torappu.Battle.Scheduler.CalculateStates @ 0x18097d950
+Source: .cache/native-research/scheduler-general-20261107/native-paths.json
+Parameters: [('levelData', 'Torappu.LevelData')]
+0x18097d950 push rbx
+0x18097d952 push r14
+0x18097d954 sub rsp, 0x48
+0x18097d958 cmp byte ptr [rip + 0x861f17f], 0
+0x18097d95f mov rbx, rdx
+0x18097d962 mov r14, rcx
+0x18097d965 jne 0x18097d97a
+0x18097d967 lea rcx, [rip + 0x818bdba]
+0x18097d96e call 0x18049c210
+0x18097d973 mov byte ptr [rip + 0x861f164], 1
+0x18097d97a mov rax, qword ptr [rip + 0x818bda7]
+0x18097d981 mov r8, qword ptr [rax + 0xb8]
+0x18097d988 mov rcx, qword ptr [r8 + 0xe8]
+0x18097d98f test rcx, rcx
+0x18097d992 jne 0x18097db68
+0x18097d998 mov qword ptr [rsp + 0x60], rbp
+0x18097d99d mov qword ptr [rsp + 0x68], rsi
+0x18097d9a2 mov qword ptr [rsp + 0x70], rdi
+0x18097d9a7 mov qword ptr [rsp + 0x40], r12
+0x18097d9ac mov qword ptr [rsp + 0x38], r13
+0x18097d9b1 mov qword ptr [rsp + 0x30], r15
+0x18097d9b6 test rbx, rbx
+0x18097d9b9 je 0x18097dba3
+0x18097d9bf mov rdx, qword ptr [rbx + 0x80]
+0x18097d9c6 lea rcx, [r14 + 0xa0]
+0x18097d9cd mov qword ptr [r14 + 0xa0], rdx
+0x18097d9d4 call 0x18049bcf0
+0x18097d9d9 cmp byte ptr [rip + 0x861f0e4], 0
+0x18097d9e0 jne 0x18097d9f5
+0x18097d9e2 lea rcx, [rip + 0x818bd3f]
+0x18097d9e9 call 0x18049c210
+0x18097d9ee mov byte ptr [rip + 0x861f0cf], 1
+0x18097d9f5 mov rax, qword ptr [rip + 0x818bd2c]
+0x18097d9fc mov rcx, qword ptr [rax + 0xb8]
+0x18097da03 mov rcx, qword ptr [rcx + 0x18]
+0x18097da07 test rcx, rcx
+0x18097da0a jne 0x18097da15
+0x18097da0c mov dword ptr [r14 + 0x12c], ecx
+0x18097da13 jmp 0x18097da23
+0x18097da15 xor r9d, r9d
+0x18097da18 xor r8d, r8d
+0x18097da1b mov rdx, r14
+0x18097da1e call 0x18357d440; ['XLua.DelegateBridge.__Gen_Delegate_Imp55']
+0x18097da23 mov rax, qword ptr [r14 + 0xa0]
+0x18097da2a xor edx, edx
+0x18097da2c xor ecx, ecx
+0x18097da2e mov dword ptr [rsp + 0x78], edx
+0x18097da32 test rax, rax
+0x18097da35 je 0x18097dba3
+0x18097da3b mov r8d, 0x20
+0x18097da41 mov qword ptr [rsp + 0x20], r8
+0x18097da46 cmp ecx, dword ptr [rax + 0x18]
+0x18097da49 jge 0x18097db7d
+0x18097da4f mov rax, qword ptr [r14 + 0xa0]
+0x18097da56 test rax, rax
+0x18097da59 je 0x18097dba3
+0x18097da5f cmp edx, dword ptr [rax + 0x18]
+0x18097da62 jae 0x18097dba9
+0x18097da68 mov r13, qword ptr [r8 + rax]
+0x18097da6c nop dword ptr [rax]
+0x18097da70 xor r15d, r15d
+0x18097da73 mov r12d, 0x20
+0x18097da79 test r13, r13
+0x18097da7c je 0x18097dba3
+0x18097da82 mov rax, qword ptr [r13 + 0x20]
+0x18097da86 test rax, rax
+0x18097da89 je 0x18097dba3
+0x18097da8f cmp r15d, dword ptr [rax + 0x18]
+0x18097da93 jge 0x18097db3d
+0x18097da99 jae 0x18097dba9
+0x18097da9f mov rbp, qword ptr [r12 + rax]
+0x18097daa3 nop dword ptr [rax]
+0x18097daa7 nop word ptr [rax + rax]
+0x18097dab0 xor edi, edi
+0x18097dab2 mov esi, 0x20
+0x18097dab7 test rbp, rbp
+0x18097daba je 0x18097dba3
+0x18097dac0 mov rax, qword ptr [rbp + 0x18]
+0x18097dac4 test rax, rax
+0x18097dac7 je 0x18097dba3
+0x18097dacd cmp edi, dword ptr [rax + 0x18]
+0x18097dad0 jge 0x18097db31
+0x18097dad2 jae 0x18097dba9
+0x18097dad8 mov rbx, qword ptr [rsi + rax]
+0x18097dadc xor r8d, r8d
+0x18097dadf mov rdx, rbx
+0x18097dae2 mov rcx, r14
+0x18097dae5 call 0x18097dbb0; ['Torappu.Battle.Scheduler.CheckActionEnabled']
+0x18097daea test al, al
+0x18097daec je 0x18097db29
+0x18097daee test rbx, rbx
+0x18097daf1 je 0x18097dba3
+0x18097daf7 cmp dword ptr [rbx + 0x10], 0
+0x18097dafb jne 0x18097db29
+0x18097dafd xor r8d, r8d
+0x18097db00 mov rdx, rbx
+0x18097db03 mov rcx, r14
+0x18097db06 call 0x180986960; ['Torappu.Battle.Scheduler._NotCountInTotal']
+0x18097db0b test al, al
+0x18097db0d jne 0x18097db29
+0x18097db0f xor edx, edx
+0x18097db11 mov rcx, r14
+0x18097db14 call 0x180988890; ['Torappu.Battle.Scheduler.get_totalEnemiesCnt']
+0x18097db19 mov edx, dword ptr [rbx + 0x20]
+0x18097db1c xor r8d, r8d
+0x18097db1f add edx, eax
+0x18097db21 mov rcx, r14
+0x18097db24 call 0x180988e50; ['Torappu.Battle.Scheduler.set_totalEnemiesCnt']
+0x18097db29 inc edi
+0x18097db2b add rsi, 8
+0x18097db2f jmp 0x18097dac0
+0x18097db31 inc r15d
+0x18097db34 add r12, 8
+0x18097db38 jmp 0x18097da82
+0x18097db3d mov edx, dword ptr [rsp + 0x78]
+0x18097db41 mov r8, qword ptr [rsp + 0x20]
+0x18097db46 inc edx
+0x18097db48 mov rax, qword ptr [r14 + 0xa0]
+0x18097db4f add r8, 8
+0x18097db53 mov dword ptr [rsp + 0x78], edx
+0x18097db57 mov ecx, edx
+0x18097db59 mov qword ptr [rsp + 0x20], r8
+0x18097db5e test rax, rax
+0x18097db61 je 0x18097dba3
+0x18097db63 jmp 0x18097da46
+0x18097db68 xor r9d, r9d
+0x18097db6b mov r8, rbx
+0x18097db6e mov rdx, r14
+0x18097db71 add rsp, 0x48
+0x18097db75 pop r14
+0x18097db77 pop rbx
+0x18097db78 jmp 0x18338c7c0; ['XLua.DelegateBridge.__Gen_Delegate_Imp23']
+0x18097db7d mov r13, qword ptr [rsp + 0x38]
+0x18097db82 mov r12, qword ptr [rsp + 0x40]
+0x18097db87 mov rdi, qword ptr [rsp + 0x70]
+0x18097db8c mov rsi, qword ptr [rsp + 0x68]
+0x18097db91 mov rbp, qword ptr [rsp + 0x60]
+0x18097db96 mov r15, qword ptr [rsp + 0x30]
+0x18097db9b add rsp, 0x48
+0x18097db9f pop r14
+0x18097dba1 pop rbx
+0x18097dba2 ret
+0x18097dba3 call 0x18049c3c0
+0x18097dba8 int3
+0x18097dba9 call 0x18049c3b0
+0x18097dbae int3
+0x18097dbaf int3

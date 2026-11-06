@@ -1,0 +1,6028 @@
+{
+  "revision": "bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d",
+  "scope": "Complete source action nodes at listed pointers; configuration presence is not runtime observation.",
+  "samples": [
+    {
+      "file": "zh_CN/gamedata/levels/obt/crisis/v2/level_crisis_v2_05-01.json",
+      "pointer": "/branches/cai_fish/phases/0/actions/0",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": false,
+        "key": "enemy_10168_tjgly",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 0,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "managedByScheduler=false"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro6/level_rogue6_3-7.json",
+      "pointer": "/waves/0/fragments/11/actions/1",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": false,
+        "key": "enemy_2137_shsdgo",
+        "count": 2,
+        "preDelay": 0.0,
+        "interval": 22.0,
+        "routeIndex": 81,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": "shsdgo",
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 50,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "managedByScheduler=false"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro6/level_rogue6_3-7.json",
+      "pointer": "/waves/0/fragments/11/actions/2",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": false,
+        "key": "enemy_2137_shsdgo",
+        "count": 2,
+        "preDelay": 1.0,
+        "interval": 22.0,
+        "routeIndex": 82,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": "shsdgo2",
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 50,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "managedByScheduler=false"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1bossrush/level_bossrush1_01.json",
+      "pointer": "/waves/0/fragments/0/actions/0",
+      "action": {
+        "actionType": 6,
+        "managedByScheduler": true,
+        "key": "trap_091_brctrl#1",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 0,
+        "blockFragment": true,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "weight": 0,
+        "dontBlockWave": false
+      },
+      "reasons": [
+        "blockFragment=true"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1bossrush/level_bossrush1_01.json",
+      "pointer": "/waves/2/fragments/0/actions/0",
+      "action": {
+        "actionType": 8,
+        "managedByScheduler": true,
+        "key": "trap_091_brctrl#1:danger_area",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 26,
+        "blockFragment": true,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "weight": 0,
+        "dontBlockWave": false
+      },
+      "reasons": [
+        "blockFragment=true"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1bossrush/level_bossrush1_fin04.json",
+      "pointer": "/waves/0/fragments/0/actions/0",
+      "action": {
+        "actionType": 6,
+        "managedByScheduler": true,
+        "key": "trap_091_brctrl#1",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 0,
+        "blockFragment": true,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "weight": 0,
+        "dontBlockWave": false
+      },
+      "reasons": [
+        "blockFragment=true"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1bossrush/level_bossrush1_fin04.json",
+      "pointer": "/waves/3/fragments/0/actions/0",
+      "action": {
+        "actionType": 8,
+        "managedByScheduler": true,
+        "key": "trap_091_brctrl#1:Withdraw",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 20,
+        "blockFragment": true,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "weight": 0,
+        "dontBlockWave": false
+      },
+      "reasons": [
+        "blockFragment=true"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act6bossrush/level_bossrush6_01.json",
+      "pointer": "/waves/0/fragments/0/actions/0",
+      "action": {
+        "actionType": "ACTIVATE_PREDEFINED",
+        "managedByScheduler": true,
+        "key": "trap_091_brctrl#1",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 0,
+        "blockFragment": true,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "blockFragment=true"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act6bossrush/level_bossrush6_01.json",
+      "pointer": "/waves/1/fragments/0/actions/0",
+      "action": {
+        "actionType": "TRIGGER_PREDEFINED",
+        "managedByScheduler": true,
+        "key": "trap_091_brctrl#1:empty",
+        "count": 1,
+        "preDelay": 5.0,
+        "interval": 1.0,
+        "routeIndex": 10,
+        "blockFragment": true,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "blockFragment=true"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/guide/level_guide_01.json",
+      "pointer": "/waves/3/fragments/0/actions/0",
+      "action": {
+        "actionType": "STORY",
+        "managedByScheduler": true,
+        "key": "obt/tutorial/level/guide_01_d",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 7,
+        "blockFragment": true,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "blockFragment=true"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/guide/level_guide_02.json",
+      "pointer": "/waves/0/fragments/0/actions/0",
+      "action": {
+        "actionType": "STORY",
+        "managedByScheduler": true,
+        "key": "obt/tutorial/level/guide_02_a",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 0,
+        "blockFragment": true,
+        "autoPreviewRoute": true,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "blockFragment=true"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/main/level_main_14-02.json",
+      "pointer": "/waves/0/fragments/0/actions/0",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1420_lrmm",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 10.0,
+        "routeIndex": 0,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": true,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "dontBlockWave=true"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/main/level_main_17-17.json",
+      "pointer": "/waves/0/fragments/0/actions/2",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_10211_murad",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 2,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": true,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "dontBlockWave=true",
+        "comparison/context sample"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro1/level_rogue1_b-9.json",
+      "pointer": "/waves/0/fragments/2/actions/1",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_2020_cswrtr",
+        "count": 1,
+        "preDelay": 3.0,
+        "interval": 1.0,
+        "routeIndex": 9,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": true,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "dontBlockWave=true"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro3/level_rogue3_1-1.json",
+      "pointer": "/waves/0/fragments/1/actions/19",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1106_byokai_b",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 28,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": "totem1",
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": true,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "dontBlockWave=true"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro3/level_rogue3_b-4.json",
+      "pointer": "/waves/0/fragments/2/actions/0",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1106_byokai_b",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 3,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": "totem1",
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": true,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "dontBlockWave=true"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro3/level_rogue3_ev-1.json",
+      "pointer": "/waves/0/fragments/1/actions/2",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1106_byokai_b",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 5,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": "totem1",
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": true,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "dontBlockWave=true"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro3/level_rogue3_ev-6.json",
+      "pointer": "/waves/0/fragments/2/actions/0",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1106_byokai_b",
+        "count": 1,
+        "preDelay": 7.0,
+        "interval": 1.0,
+        "routeIndex": 2,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": "totem1",
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": true,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "dontBlockWave=true"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro3/level_rogue3_t-1.json",
+      "pointer": "/waves/0/fragments/1/actions/2",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1106_byokai_b",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 13,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": "totem1",
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": true,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "dontBlockWave=true"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1lock/level_act1lock_c-01.json",
+      "pointer": "/waves/0/fragments/0/actions/0",
+      "action": {
+        "actionType": 0,
+        "managedByScheduler": true,
+        "key": "enemy_1157_hymwr",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 0,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": "hidden_wave_2",
+        "randomSpawnGroupKey": null,
+        "weight": 0,
+        "dontBlockWave": false
+      },
+      "reasons": [
+        "hiddenGroup nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1lock/level_act1lock_c-01.json",
+      "pointer": "/waves/0/fragments/0/actions/1",
+      "action": {
+        "actionType": 5,
+        "managedByScheduler": true,
+        "key": "enemy_1157_hymwr",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 1,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": "hidden_wave_2",
+        "randomSpawnGroupKey": null,
+        "weight": 0,
+        "dontBlockWave": false
+      },
+      "reasons": [
+        "hiddenGroup nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1lock/level_act1lock_c-01.json",
+      "pointer": "/waves/0/fragments/4/actions/0",
+      "action": {
+        "actionType": 0,
+        "managedByScheduler": true,
+        "key": "enemy_1156_hymhr",
+        "count": 1,
+        "preDelay": 3.0,
+        "interval": 1.0,
+        "routeIndex": 10,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": "hidden_wave_1",
+        "randomSpawnGroupKey": null,
+        "weight": 0,
+        "dontBlockWave": false
+      },
+      "reasons": [
+        "hiddenGroup nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1lock/level_act1lock_c-01.json",
+      "pointer": "/waves/0/fragments/4/actions/1",
+      "action": {
+        "actionType": 5,
+        "managedByScheduler": true,
+        "key": "enemy_1156_hymhr",
+        "count": 1,
+        "preDelay": 3.0,
+        "interval": 1.0,
+        "routeIndex": 11,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": "hidden_wave_1",
+        "randomSpawnGroupKey": null,
+        "weight": 0,
+        "dontBlockWave": false
+      },
+      "reasons": [
+        "hiddenGroup nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1lock/level_act1lock_c-01.json",
+      "pointer": "/waves/0/fragments/11/actions/0",
+      "action": {
+        "actionType": 0,
+        "managedByScheduler": true,
+        "key": "enemy_1157_hymwr",
+        "count": 1,
+        "preDelay": 3.0,
+        "interval": 1.0,
+        "routeIndex": 30,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": "hidden_wave_4",
+        "randomSpawnGroupKey": null,
+        "weight": 0,
+        "dontBlockWave": false
+      },
+      "reasons": [
+        "hiddenGroup nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1lock/level_act1lock_c-01.json",
+      "pointer": "/waves/0/fragments/11/actions/1",
+      "action": {
+        "actionType": 5,
+        "managedByScheduler": true,
+        "key": "enemy_1157_hymwr",
+        "count": 1,
+        "preDelay": 3.0,
+        "interval": 1.0,
+        "routeIndex": 31,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": "hidden_wave_4",
+        "randomSpawnGroupKey": null,
+        "weight": 0,
+        "dontBlockWave": false
+      },
+      "reasons": [
+        "hiddenGroup nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1lock/level_act1lock_c-01.json",
+      "pointer": "/waves/0/fragments/14/actions/0",
+      "action": {
+        "actionType": 0,
+        "managedByScheduler": true,
+        "key": "enemy_1156_hymhr",
+        "count": 1,
+        "preDelay": 3.0,
+        "interval": 1.0,
+        "routeIndex": 44,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": "hidden_wave_3",
+        "randomSpawnGroupKey": null,
+        "weight": 0,
+        "dontBlockWave": false
+      },
+      "reasons": [
+        "hiddenGroup nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1lock/level_act1lock_c-01.json",
+      "pointer": "/waves/0/fragments/14/actions/1",
+      "action": {
+        "actionType": 5,
+        "managedByScheduler": true,
+        "key": "enemy_1156_hymhr",
+        "count": 1,
+        "preDelay": 3.0,
+        "interval": 1.0,
+        "routeIndex": 45,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": "hidden_wave_3",
+        "randomSpawnGroupKey": null,
+        "weight": 0,
+        "dontBlockWave": false
+      },
+      "reasons": [
+        "hiddenGroup nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1multi/level_act1multi_01.json",
+      "pointer": "/waves/1/fragments/0/actions/0",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_3001_upeopl",
+        "count": 1,
+        "preDelay": 6.0,
+        "interval": 69.0,
+        "routeIndex": 1,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "autoDisplayEnemyInfo": true,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "g1",
+        "randomSpawnGroupPackKey": "a1",
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 33,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomSpawnGroupKey nonempty",
+        "randomSpawnGroupPackKey nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1multi/level_act1multi_fortress_01.json",
+      "pointer": "/waves/7/fragments/0/actions/0",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_4035_mufbsa",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 203,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "autoDisplayEnemyInfo": true,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "boss_f",
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 5,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomSpawnGroupKey nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act4fun/level_act4fun_01.json",
+      "pointer": "/waves/0/fragments/0/actions/14",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_5014_dmanfd",
+        "count": 1,
+        "preDelay": 75.0,
+        "interval": 1.0,
+        "routeIndex": 14,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "g1",
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 10,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomSpawnGroupKey nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act4fun/level_act4fun_02.json",
+      "pointer": "/waves/0/fragments/0/actions/30",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1200_msfjin",
+        "count": 1,
+        "preDelay": 100.0,
+        "interval": 10.0,
+        "routeIndex": 30,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "g1",
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 65,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomSpawnGroupKey nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act4fun/level_act4fun_03.json",
+      "pointer": "/waves/0/fragments/0/actions/29",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1522_captan",
+        "count": 1,
+        "preDelay": 152.0,
+        "interval": 1.0,
+        "routeIndex": 29,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "g1",
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 50,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomSpawnGroupKey nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro1/level_rogue1_1-1.json",
+      "pointer": "/waves/0/fragments/0/actions/0",
+      "action": {
+        "actionType": "ACTIVATE_PREDEFINED",
+        "managedByScheduler": true,
+        "key": "",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 0,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "g1",
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 70,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomSpawnGroupKey nonempty",
+        "empty key"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro1/level_rogue1_1-1.json",
+      "pointer": "/waves/0/fragments/5/actions/3",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1007_slime",
+        "count": 3,
+        "preDelay": 5.0,
+        "interval": 12.0,
+        "routeIndex": 26,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "g1",
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 50,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomSpawnGroupKey nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro1/level_rogue1_5-1.json",
+      "pointer": "/waves/0/fragments/0/actions/0",
+      "action": {
+        "actionType": "ACTIVATE_PREDEFINED",
+        "managedByScheduler": true,
+        "key": "",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 0,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "g1",
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 50,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomSpawnGroupKey nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1multi/level_act1multi_01.json",
+      "pointer": "/waves/1/fragments/0/actions/4",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_3001_upeopl",
+        "count": 1,
+        "preDelay": 75.0,
+        "interval": 30.0,
+        "routeIndex": 5,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": "normal",
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": "a1",
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 50,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomSpawnGroupPackKey nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1multi/level_act1multi_01.json",
+      "pointer": "/waves/3/fragments/0/actions/38",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1406_chghmr_2",
+        "count": 2,
+        "preDelay": 77.0,
+        "interval": 20.0,
+        "routeIndex": 106,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": "raid",
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": "a1",
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 50,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomSpawnGroupPackKey nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+      "pointer": "/branches/dysuib_relic_branch/phases/0/actions/0",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_2105_dyrnge",
+        "count": 1,
+        "preDelay": 5.0,
+        "interval": 1.0,
+        "routeIndex": 7,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "r1",
+        "randomSpawnGroupPackKey": "wa1",
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 5,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomSpawnGroupPackKey nonempty",
+        "comparison/context sample"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro6/level_rogue6_3-7.json",
+      "pointer": "/waves/0/fragments/1/actions/2",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_10229_agactr_2",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 12,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": "normal",
+        "randomSpawnGroupKey": "g1",
+        "randomSpawnGroupPackKey": "mag",
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 50,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomSpawnGroupPackKey nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro6/level_rogue6_3-7.json",
+      "pointer": "/waves/0/fragments/4/actions/0",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_10224_agmess_2",
+        "count": 1,
+        "preDelay": 3.0,
+        "interval": 5.0,
+        "routeIndex": 30,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "g2",
+        "randomSpawnGroupPackKey": "up",
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 50,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomSpawnGroupPackKey nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/sandbox/sandbox_1/level_sandbox1_102.json",
+      "pointer": "/waves/0/fragments/1/actions/0",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1047_sagent_2",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 11,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "g5",
+        "randomSpawnGroupPackKey": "c1",
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 50,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomSpawnGroupPackKey nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/sandbox/sandbox_1/level_sandbox1_12.json",
+      "pointer": "/waves/0/fragments/2/actions/0",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_7006_xbcrab",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 2,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "g1",
+        "randomSpawnGroupPackKey": "a1",
+        "randomType": "PER_DAY",
+        "refreshType": "PER_DAY",
+        "weight": 100,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomSpawnGroupPackKey nonempty"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/sandbox/sandbox_1/level_sandbox1_102.json",
+      "pointer": "/waves/0/fragments/0/actions/5",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_7015_xbcrab2",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 5,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "g1",
+        "randomSpawnGroupPackKey": null,
+        "randomType": "PER_SEASON",
+        "refreshType": "PER_SETTLE_DAY",
+        "weight": 70,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomType non-ALWAYS",
+        "refreshType non-ALWAYS"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/sandbox/sandbox_1/level_sandbox1_102.json",
+      "pointer": "/waves/0/fragments/0/actions/7",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1001_bigbo",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 7,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "g10",
+        "randomSpawnGroupPackKey": null,
+        "randomType": "PER_SEASON",
+        "refreshType": "PER_SEASON",
+        "weight": 70,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomType non-ALWAYS",
+        "refreshType non-ALWAYS"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/sandbox/sandbox_1/level_sandbox1_12.json",
+      "pointer": "/waves/0/fragments/1/actions/0",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_7015_xbcrab2",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 1,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "g0",
+        "randomSpawnGroupPackKey": null,
+        "randomType": "PER_DAY",
+        "refreshType": "PER_DAY",
+        "weight": 100,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomType non-ALWAYS",
+        "refreshType non-ALWAYS"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/sandbox/sandbox_1/level_sandbox1_12.json",
+      "pointer": "/waves/0/fragments/3/actions/3",
+      "action": {
+        "actionType": "ACTIVATE_PREDEFINED",
+        "managedByScheduler": true,
+        "key": "trap_437_poachr#1",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 13,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": "a2",
+        "randomType": "PER_DAY",
+        "refreshType": "PER_DAY",
+        "weight": 100,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomType non-ALWAYS",
+        "refreshType non-ALWAYS"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/sandbox/sandbox_1/level_sandbox1_21.json",
+      "pointer": "/waves/0/fragments/0/actions/0",
+      "action": {
+        "actionType": "ACTIVATE_PREDEFINED",
+        "managedByScheduler": true,
+        "key": "trap_411_xbiron#1",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 0,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "a0",
+        "randomSpawnGroupPackKey": "c",
+        "randomType": "PER_SEASON",
+        "refreshType": "PER_SEASON",
+        "weight": 100,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomType non-ALWAYS",
+        "refreshType non-ALWAYS"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/sandbox/sandbox_1/level_sandbox1_21.json",
+      "pointer": "/waves/0/fragments/1/actions/0",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_2003_rockman_1",
+        "count": 1,
+        "preDelay": 3.0,
+        "interval": 1.0,
+        "routeIndex": 5,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "a1",
+        "randomSpawnGroupPackKey": null,
+        "randomType": "PER_DAY",
+        "refreshType": "PER_DAY",
+        "weight": 100,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomType non-ALWAYS",
+        "refreshType non-ALWAYS"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/sandbox/sandbox_1/level_sandbox1_21.json",
+      "pointer": "/waves/0/fragments/1/actions/3",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_7026_xbele",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 8,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": true,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "r1",
+        "randomSpawnGroupPackKey": "s1",
+        "randomType": "NEVER",
+        "refreshType": "NEVER",
+        "weight": 100,
+        "dontBlockWave": true,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomType non-ALWAYS",
+        "refreshType non-ALWAYS"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/sandbox/sandbox_1/level_sandbox1_21.json",
+      "pointer": "/waves/0/fragments/1/actions/4",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1092_mdgint",
+        "count": 1,
+        "preDelay": 23.0,
+        "interval": 1.0,
+        "routeIndex": 9,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": "s1",
+        "randomType": "NEVER",
+        "refreshType": "PER_DAY",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "randomType non-ALWAYS",
+        "refreshType non-ALWAYS"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act14side/level_act14side_01.json",
+      "pointer": "/waves/0/fragments/0/actions/0",
+      "action": {
+        "actionType": "DISPLAY_ENEMY_INFO",
+        "managedByScheduler": true,
+        "key": "enemy_1187_krghd",
+        "count": 1,
+        "preDelay": 3.0,
+        "interval": 5.0,
+        "routeIndex": 0,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "non-SPAWN named enum",
+        "named action kind DISPLAY_ENEMY_INFO"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act14side/level_act14side_08.json",
+      "pointer": "/waves/0/fragments/0/actions/1",
+      "action": {
+        "actionType": "DISPLAY_ENEMY_INFO",
+        "managedByScheduler": true,
+        "key": "enemy_1525_blkswb",
+        "count": 1,
+        "preDelay": 60.0,
+        "interval": 1.0,
+        "routeIndex": 1,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "non-SPAWN named enum"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act14side/level_act14side_08.json",
+      "pointer": "/waves/0/fragments/0/actions/8",
+      "action": {
+        "actionType": "ACTIVATE_PREDEFINED",
+        "managedByScheduler": true,
+        "key": "trap_050_blizzard#1",
+        "count": 1,
+        "preDelay": 135.0,
+        "interval": 1.0,
+        "routeIndex": 8,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "non-SPAWN named enum",
+        "named action kind ACTIVATE_PREDEFINED"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act14side/level_act14side_ex08.json",
+      "pointer": "/waves/0/fragments/1/actions/1",
+      "action": {
+        "actionType": "DISPLAY_ENEMY_INFO",
+        "managedByScheduler": true,
+        "key": "enemy_1525_blkswb",
+        "count": 1,
+        "preDelay": 3.0,
+        "interval": 1.0,
+        "routeIndex": 5,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "non-SPAWN named enum"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act14side/level_act14side_ex08.json",
+      "pointer": "/waves/0/fragments/3/actions/3",
+      "action": {
+        "actionType": "ACTIVATE_PREDEFINED",
+        "managedByScheduler": true,
+        "key": "trap_050_blizzard#1",
+        "count": 1,
+        "preDelay": 40.0,
+        "interval": 1.0,
+        "routeIndex": 12,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "non-SPAWN named enum"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act14side/level_act14side_tr01.json",
+      "pointer": "/waves/0/fragments/0/actions/0",
+      "action": {
+        "actionType": "STORY",
+        "managedByScheduler": true,
+        "key": "Activities/act14side/Training/training_act14side_01_a",
+        "count": 1,
+        "preDelay": 1.0,
+        "interval": 1.0,
+        "routeIndex": 0,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "non-SPAWN named enum",
+        "named action kind STORY"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act14side/level_act14side_tr01.json",
+      "pointer": "/waves/0/fragments/0/actions/3",
+      "action": {
+        "actionType": "ACTIVATE_PREDEFINED",
+        "managedByScheduler": true,
+        "key": "char_124_kroos",
+        "count": 1,
+        "preDelay": 1.5,
+        "interval": 1.0,
+        "routeIndex": 3,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "non-SPAWN named enum"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act14side/level_act14side_tr02.json",
+      "pointer": "/waves/0/fragments/0/actions/0",
+      "action": {
+        "actionType": "STORY",
+        "managedByScheduler": true,
+        "key": "Activities/act14side/Training/training_act14side_02_a",
+        "count": 1,
+        "preDelay": 2.0,
+        "interval": 1.0,
+        "routeIndex": 0,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "non-SPAWN named enum"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/main/level_main_00-01.json",
+      "pointer": "/waves/0/fragments/2/actions/0",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1007_slime",
+        "count": 2,
+        "preDelay": 3.0,
+        "interval": 2.0,
+        "routeIndex": 3,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "count>1",
+        "preDelay>0",
+        "interval>0",
+        "routeIndex>0",
+        "autoPreviewRoute=true on named SPAWN"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/main/level_main_12-18.json",
+      "pointer": "/waves/0/fragments/0/actions/0",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1542_wdslm",
+        "count": 1,
+        "preDelay": 3.0,
+        "interval": 1.0,
+        "routeIndex": 0,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "autoDisplayEnemyInfo": true,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "autoDisplayEnemyInfo=true on named SPAWN"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/main/level_main_06-15.json",
+      "pointer": "/waves/0/fragments/0/actions/0",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1510_frstar2_s",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 0,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": true,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "isUnharmfulAndAlwaysCountAsKilled=true"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/main/level_main_14-20.json",
+      "pointer": "/waves/0/fragments/0/actions/21",
+      "action": {
+        "actionType": "DIALOG",
+        "managedByScheduler": true,
+        "key": "Obt/Tutorial/Level/main_14-20_a",
+        "count": 1,
+        "preDelay": 2.0,
+        "interval": 1.0,
+        "routeIndex": 21,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "named action kind DIALOG"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_1-1.json",
+      "pointer": "/waves/2/fragments/0/actions/0",
+      "action": {
+        "actionType": "EMPTY",
+        "managedByScheduler": true,
+        "key": "",
+        "count": 1,
+        "preDelay": 5.0,
+        "interval": 1.0,
+        "routeIndex": 27,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "autoDisplayEnemyInfo": true,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": "copper_d",
+        "randomSpawnGroupKey": "te2",
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 80,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "named action kind EMPTY"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/main/level_main_17-17.json",
+      "pointer": "/waves/2/fragments/0/actions/0",
+      "action": {
+        "actionType": "PLAY_BGM",
+        "managedByScheduler": true,
+        "key": "act4mainss_boss2",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 29,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "named action kind PLAY_BGM"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/guide/level_guide_01.json",
+      "pointer": "/waves/0/fragments/1/actions/0",
+      "action": {
+        "actionType": "PREVIEW_CURSOR",
+        "managedByScheduler": true,
+        "key": "",
+        "count": 1,
+        "preDelay": 1.0,
+        "interval": 1.0,
+        "routeIndex": 1,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "named action kind PREVIEW_CURSOR"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act14side/level_act14side_tr02.json",
+      "pointer": "/waves/0/fragments/0/actions/8",
+      "action": {
+        "actionType": "TRIGGER_PREDEFINED",
+        "managedByScheduler": true,
+        "key": "trap_050_blizzard#1:Up",
+        "count": 1,
+        "preDelay": 11.0,
+        "interval": 1.0,
+        "routeIndex": 8,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "named action kind TRIGGER_PREDEFINED"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1multi/level_act1multi_01.json",
+      "pointer": "/waves/3/fragments/0/actions/93",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1389_winbab_2",
+        "count": 4,
+        "preDelay": 45.0,
+        "interval": 16.0,
+        "routeIndex": 161,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": "a3",
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 50,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "comparison/context sample"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/activities/act1multi/level_act1multi_01.json",
+      "pointer": "/waves/3/fragments/0/actions/94",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1389_winbab_2",
+        "count": 4,
+        "preDelay": 40.0,
+        "interval": 16.0,
+        "routeIndex": 162,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": "a3",
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 50,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "comparison/context sample"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/guide/level_guide_02.json",
+      "pointer": "/waves/0/fragments/2/actions/2",
+      "action": {
+        "actionType": "ACTIVATE_PREDEFINED",
+        "managedByScheduler": true,
+        "key": "char_130_doberm",
+        "count": 1,
+        "preDelay": 7.0,
+        "interval": 1.0,
+        "routeIndex": 7,
+        "blockFragment": true,
+        "autoPreviewRoute": true,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "comparison/context sample"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/main/level_main_00-01.json",
+      "pointer": "/waves/0/fragments/0/actions/0",
+      "action": {
+        "actionType": "STORY",
+        "managedByScheduler": true,
+        "key": "obt/tutorial/level/main_00-01",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 0,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "comparison/context sample"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/main/level_main_00-01.json",
+      "pointer": "/waves/0/fragments/1/actions/0",
+      "action": {
+        "actionType": "DISPLAY_ENEMY_INFO",
+        "managedByScheduler": true,
+        "key": "enemy_1007_slime",
+        "count": 1,
+        "preDelay": 3.0,
+        "interval": 1.0,
+        "routeIndex": 1,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "comparison/context sample"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro1/level_rogue1_t-1.json",
+      "pointer": "/waves/0/fragments/0/actions/0",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1047_sagent_2",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 0,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "g1",
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 50,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "comparison/context sample"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro1/level_rogue1_t-1.json",
+      "pointer": "/waves/0/fragments/0/actions/1",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1047_sagent_2",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 1,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "g1",
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 50,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "comparison/context sample"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro1/level_rogue1_t-1.json",
+      "pointer": "/waves/0/fragments/1/actions/1",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_2001_duckmi",
+        "count": 1,
+        "preDelay": 3.0,
+        "interval": 1.0,
+        "routeIndex": 6,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": "g1",
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 50,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "comparison/context sample"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro4/level_rogue4_1-1.json",
+      "pointer": "/waves/0/fragments/0/actions/8",
+      "action": {
+        "actionType": "ACTIVATE_PREDEFINED",
+        "managedByScheduler": true,
+        "key": "trap_764_skzshp",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 8,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": "cargo",
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "comparison/context sample"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro4/level_rogue4_1-1.json",
+      "pointer": "/waves/0/fragments/0/actions/9",
+      "action": {
+        "actionType": "ACTIVATE_PREDEFINED",
+        "managedByScheduler": true,
+        "key": "trap_760_skztzs#2",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 9,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": "calamity",
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "comparison/context sample"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro4/level_rogue4_1-1.json",
+      "pointer": "/waves/0/fragments/1/actions/2",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1243_ltswar",
+        "count": 1,
+        "preDelay": 75.0,
+        "interval": 1.0,
+        "routeIndex": 12,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": "hidden",
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "comparison/context sample"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro4/level_rogue4_1-1.json",
+      "pointer": "/waves/0/fragments/1/actions/3",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_1012_dcross",
+        "count": 2,
+        "preDelay": 60.0,
+        "interval": 50.0,
+        "routeIndex": 13,
+        "blockFragment": false,
+        "autoPreviewRoute": true,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": "normal",
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "comparison/context sample"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+      "pointer": "/branches/dysuib_relic_branch/phases/0/actions/1",
+      "action": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_2105_dyrnge",
+        "count": 1,
+        "preDelay": 5.0,
+        "interval": 1.0,
+        "routeIndex": 8,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": "wa1",
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "reasons": [
+        "comparison/context sample"
+      ]
+    }
+  ],
+  "enemyNotCountInTotalOverrides": [
+    {
+      "file": "zh_CN/gamedata/levels/obt/main/level_main_17-17.json",
+      "pointer": "/enemyDbRefs/10",
+      "value": {
+        "useDb": false,
+        "id": "enemy_10201_muinf_2_a",
+        "level": 0,
+        "overwrittenData": {
+          "name": {
+            "m_defined": true,
+            "m_value": "失控的F-009"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "受到“热病”之源的影响时，回复一定生命值"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_10201_muinf_2"
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": true,
+              "m_value": 5000
+            },
+            "atk": {
+              "m_defined": true,
+              "m_value": 300
+            },
+            "def": {
+              "m_defined": true,
+              "m_value": 20
+            },
+            "magicResistance": {
+              "m_defined": true,
+              "m_value": 20.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": true,
+              "m_value": 1.2
+            },
+            "attackSpeed": {
+              "m_defined": true,
+              "m_value": 100.0
+            },
+            "baseAttackTime": {
+              "m_defined": true,
+              "m_value": 2.0
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "silenceImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "sleepImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "frozenImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "levitateImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "disarmedCombatImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "fearedImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "palsyImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "attractImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": true,
+            "m_value": "MELEE"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "WALK"
+          },
+          "enemyTags": {
+            "m_defined": true,
+            "m_value": []
+          },
+          "lifePointReduce": {
+            "m_defined": true,
+            "m_value": 1
+          },
+          "levelType": {
+            "m_defined": true,
+            "m_value": "NORMAL"
+          },
+          "rangeRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "numOfExtraDrops": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": true,
+            "m_value": 0.0
+          },
+          "notCountInTotal": {
+            "m_defined": true,
+            "m_value": true
+          },
+          "talentBlackboard": [
+            {
+              "key": "MuradPollut.hp_ratio",
+              "value": 0.2,
+              "valueStr": null
+            }
+          ],
+          "skills": null,
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "maxSp": 0,
+            "initSp": 0,
+            "increment": 1.0
+          }
+        }
+      },
+      "spawnActionPointers": [
+        "/waves/1/fragments/2/actions/0",
+        "/waves/2/fragments/0/actions/1",
+        "/waves/2/fragments/0/actions/2",
+        "/waves/2/fragments/0/actions/4",
+        "/waves/2/fragments/0/actions/7"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/main/level_main_17-17.json",
+      "pointer": "/enemyDbRefs/11",
+      "value": {
+        "useDb": false,
+        "id": "enemy_10207_mubrut_2_a",
+        "level": 0,
+        "overwrittenData": {
+          "name": {
+            "m_defined": true,
+            "m_value": "愤怒的“希希加”"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "受到“热病”之源的影响后，下一次攻击变为三连击"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_10207_mubrut_2"
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": true,
+              "m_value": 12000
+            },
+            "atk": {
+              "m_defined": true,
+              "m_value": 2100
+            },
+            "def": {
+              "m_defined": true,
+              "m_value": 800
+            },
+            "magicResistance": {
+              "m_defined": true,
+              "m_value": 25.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": true,
+              "m_value": 0.5
+            },
+            "attackSpeed": {
+              "m_defined": true,
+              "m_value": 100.0
+            },
+            "baseAttackTime": {
+              "m_defined": true,
+              "m_value": 6.0
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": true,
+              "m_value": 3
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "silenceImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "sleepImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "frozenImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "levitateImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "disarmedCombatImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "fearedImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "palsyImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "attractImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": true,
+            "m_value": "MELEE"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "WALK"
+          },
+          "enemyTags": {
+            "m_defined": true,
+            "m_value": []
+          },
+          "lifePointReduce": {
+            "m_defined": true,
+            "m_value": 1
+          },
+          "levelType": {
+            "m_defined": true,
+            "m_value": "ELITE"
+          },
+          "rangeRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "numOfExtraDrops": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": true,
+            "m_value": 0.0
+          },
+          "notCountInTotal": {
+            "m_defined": true,
+            "m_value": true
+          },
+          "talentBlackboard": null,
+          "skills": null,
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "maxSp": 0,
+            "initSp": 0,
+            "increment": 1.0
+          }
+        }
+      },
+      "spawnActionPointers": [
+        "/waves/1/fragments/2/actions/2",
+        "/waves/1/fragments/2/actions/4",
+        "/waves/2/fragments/0/actions/6",
+        "/branches/boss/phases/0/actions/1",
+        "/branches/boss/phases/0/actions/2"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/main/level_main_17-17.json",
+      "pointer": "/enemyDbRefs/12",
+      "value": {
+        "useDb": false,
+        "id": "enemy_10204_mudia_2_a",
+        "level": 0,
+        "overwrittenData": {
+          "name": {
+            "m_defined": true,
+            "m_value": "血色破石草"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "受到“热病”之源的影响时，分裂自身"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_10204_mudia_2"
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": true,
+              "m_value": 6000
+            },
+            "atk": {
+              "m_defined": true,
+              "m_value": 500
+            },
+            "def": {
+              "m_defined": true,
+              "m_value": 1300
+            },
+            "magicResistance": {
+              "m_defined": true,
+              "m_value": 60.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": true,
+              "m_value": 0.75
+            },
+            "attackSpeed": {
+              "m_defined": true,
+              "m_value": 100.0
+            },
+            "baseAttackTime": {
+              "m_defined": true,
+              "m_value": 2.3
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": true,
+              "m_value": 1
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "silenceImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "sleepImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "frozenImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "levitateImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "disarmedCombatImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "fearedImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "palsyImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "attractImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": true,
+            "m_value": "MELEE"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "WALK"
+          },
+          "enemyTags": {
+            "m_defined": true,
+            "m_value": null
+          },
+          "lifePointReduce": {
+            "m_defined": true,
+            "m_value": 1
+          },
+          "levelType": {
+            "m_defined": true,
+            "m_value": "NORMAL"
+          },
+          "rangeRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "numOfExtraDrops": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": true,
+            "m_value": 0.0
+          },
+          "notCountInTotal": {
+            "m_defined": true,
+            "m_value": true
+          },
+          "talentBlackboard": null,
+          "skills": null,
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "maxSp": 0,
+            "initSp": 0,
+            "increment": 1.0
+          }
+        }
+      },
+      "spawnActionPointers": [
+        "/waves/1/fragments/2/actions/3",
+        "/waves/2/fragments/0/actions/3",
+        "/waves/2/fragments/0/actions/5"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/main/level_main_17-17.json",
+      "pointer": "/enemyDbRefs/13",
+      "value": {
+        "useDb": false,
+        "id": "enemy_10203_mumag_2_a",
+        "level": 0,
+        "overwrittenData": {
+          "name": {
+            "m_defined": true,
+            "m_value": "血色异种菌"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "对攻击范围内的泄露标记持续施法，使其更快产生“热病”之源，期间自身防御力提升"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_10203_mumag_2"
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": true,
+              "m_value": 6250
+            },
+            "atk": {
+              "m_defined": true,
+              "m_value": 130
+            },
+            "def": {
+              "m_defined": true,
+              "m_value": 700
+            },
+            "magicResistance": {
+              "m_defined": true,
+              "m_value": 10.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": true,
+              "m_value": 0.6
+            },
+            "attackSpeed": {
+              "m_defined": true,
+              "m_value": 100.0
+            },
+            "baseAttackTime": {
+              "m_defined": true,
+              "m_value": 5.0
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": true,
+              "m_value": 1
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "silenceImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "sleepImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "frozenImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "levitateImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "disarmedCombatImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "fearedImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "palsyImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "attractImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": true,
+            "m_value": "RANGED"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "WALK"
+          },
+          "enemyTags": {
+            "m_defined": true,
+            "m_value": []
+          },
+          "lifePointReduce": {
+            "m_defined": true,
+            "m_value": 1
+          },
+          "levelType": {
+            "m_defined": true,
+            "m_value": "NORMAL"
+          },
+          "rangeRadius": {
+            "m_defined": true,
+            "m_value": 2.3
+          },
+          "numOfExtraDrops": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": true,
+            "m_value": 0.0
+          },
+          "notCountInTotal": {
+            "m_defined": true,
+            "m_value": true
+          },
+          "talentBlackboard": null,
+          "skills": [
+            {
+              "prefabKey": "ChargeRift",
+              "priority": 0,
+              "cooldown": 10.0,
+              "initCooldown": 5.0,
+              "spCost": 0,
+              "blackboard": [
+                {
+                  "key": "def",
+                  "value": 2.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "sp",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "duration",
+                  "value": 15.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "hit_duration",
+                  "value": 15.0,
+                  "valueStr": null
+                }
+              ]
+            }
+          ],
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "maxSp": 0,
+            "initSp": 0,
+            "increment": 1.0
+          }
+        }
+      },
+      "spawnActionPointers": [
+        "/waves/1/fragments/1/actions/0",
+        "/waves/1/fragments/1/actions/1",
+        "/waves/1/fragments/1/actions/2",
+        "/waves/1/fragments/2/actions/1"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro3/level_rogue3_1-1.json",
+      "pointer": "/enemyDbRefs/7",
+      "value": {
+        "useDb": false,
+        "id": "enemy_1106_byokai_b",
+        "level": 0,
+        "overwrittenData": {
+          "name": {
+            "m_defined": true,
+            "m_value": "斗志昂扬无人机"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "艾伦精选科技公司感谢您的赞助！骑士们，击落它会使你<@eb.key>防御力</>与<@eb.key>攻击速度</>大幅提升哦！"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_1106_byokai"
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": true,
+              "m_value": 5000
+            },
+            "atk": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "def": {
+              "m_defined": true,
+              "m_value": 150
+            },
+            "magicResistance": {
+              "m_defined": true,
+              "m_value": 20.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "attackSpeed": {
+              "m_defined": true,
+              "m_value": 100.0
+            },
+            "baseAttackTime": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "silenceImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "sleepImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "frozenImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "levitateImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "disarmedCombatImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "fearedImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "palsyImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "attractImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": true,
+            "m_value": "NONE"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "FLY"
+          },
+          "enemyTags": {
+            "m_defined": true,
+            "m_value": [
+              "drone"
+            ]
+          },
+          "lifePointReduce": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "levelType": {
+            "m_defined": true,
+            "m_value": "NORMAL"
+          },
+          "rangeRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "numOfExtraDrops": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "notCountInTotal": {
+            "m_defined": true,
+            "m_value": true
+          },
+          "talentBlackboard": [
+            {
+              "key": "buff.duration",
+              "value": 60.0,
+              "valueStr": null
+            },
+            {
+              "key": "buff.attack_speed",
+              "value": 100.0,
+              "valueStr": null
+            },
+            {
+              "key": "buff.def",
+              "value": 0.5,
+              "valueStr": null
+            }
+          ],
+          "skills": null,
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "maxSp": 0,
+            "initSp": 0,
+            "increment": 1.0
+          }
+        }
+      },
+      "spawnActionPointers": [
+        "/waves/0/fragments/1/actions/19"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro3/level_rogue3_b-4.json",
+      "pointer": "/enemyDbRefs/8",
+      "value": {
+        "useDb": false,
+        "id": "enemy_1106_byokai_b",
+        "level": 0,
+        "overwrittenData": {
+          "name": {
+            "m_defined": true,
+            "m_value": "斗志昂扬无人机"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "艾伦精选科技公司感谢您的赞助！骑士们，击落它会使你<@eb.key>防御力</>与<@eb.key>攻击速度</>大幅提升哦！"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_1106_byokai"
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": true,
+              "m_value": 5000
+            },
+            "atk": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "def": {
+              "m_defined": true,
+              "m_value": 150
+            },
+            "magicResistance": {
+              "m_defined": true,
+              "m_value": 20.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "attackSpeed": {
+              "m_defined": true,
+              "m_value": 100.0
+            },
+            "baseAttackTime": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "silenceImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "sleepImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "frozenImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "levitateImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "disarmedCombatImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "fearedImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "palsyImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "attractImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": true,
+            "m_value": "NONE"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "FLY"
+          },
+          "enemyTags": {
+            "m_defined": true,
+            "m_value": [
+              "drone"
+            ]
+          },
+          "lifePointReduce": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "levelType": {
+            "m_defined": true,
+            "m_value": "NORMAL"
+          },
+          "rangeRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "numOfExtraDrops": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "notCountInTotal": {
+            "m_defined": true,
+            "m_value": true
+          },
+          "talentBlackboard": [
+            {
+              "key": "buff.duration",
+              "value": 60.0,
+              "valueStr": null
+            },
+            {
+              "key": "buff.attack_speed",
+              "value": 100.0,
+              "valueStr": null
+            },
+            {
+              "key": "buff.def",
+              "value": 0.5,
+              "valueStr": null
+            }
+          ],
+          "skills": null,
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "maxSp": 0,
+            "initSp": 0,
+            "increment": 1.0
+          }
+        }
+      },
+      "spawnActionPointers": [
+        "/waves/0/fragments/2/actions/0",
+        "/waves/0/fragments/2/actions/1"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro3/level_rogue3_ev-1.json",
+      "pointer": "/enemyDbRefs/3",
+      "value": {
+        "useDb": false,
+        "id": "enemy_1106_byokai_b",
+        "level": 0,
+        "overwrittenData": {
+          "name": {
+            "m_defined": true,
+            "m_value": "斗志昂扬无人机"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "艾伦精选科技公司感谢您的赞助！骑士们，击落它会使你<@eb.key>防御力</>与<@eb.key>攻击速度</>大幅提升哦！"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_1106_byokai"
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": true,
+              "m_value": 5000
+            },
+            "atk": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "def": {
+              "m_defined": true,
+              "m_value": 150
+            },
+            "magicResistance": {
+              "m_defined": true,
+              "m_value": 20.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "attackSpeed": {
+              "m_defined": true,
+              "m_value": 100.0
+            },
+            "baseAttackTime": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "silenceImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "sleepImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "frozenImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "levitateImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "disarmedCombatImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "fearedImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "palsyImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "attractImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": true,
+            "m_value": "NONE"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "FLY"
+          },
+          "enemyTags": {
+            "m_defined": true,
+            "m_value": [
+              "drone"
+            ]
+          },
+          "lifePointReduce": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "levelType": {
+            "m_defined": true,
+            "m_value": "NORMAL"
+          },
+          "rangeRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "numOfExtraDrops": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "notCountInTotal": {
+            "m_defined": true,
+            "m_value": false
+          },
+          "talentBlackboard": [
+            {
+              "key": "buff.duration",
+              "value": 60.0,
+              "valueStr": null
+            },
+            {
+              "key": "buff.attack_speed",
+              "value": 100.0,
+              "valueStr": null
+            },
+            {
+              "key": "buff.def",
+              "value": 0.5,
+              "valueStr": null
+            }
+          ],
+          "skills": null,
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "maxSp": 0,
+            "initSp": 0,
+            "increment": 1.0
+          }
+        }
+      },
+      "spawnActionPointers": [
+        "/waves/0/fragments/1/actions/2",
+        "/waves/0/fragments/1/actions/3",
+        "/waves/0/fragments/1/actions/4",
+        "/waves/0/fragments/4/actions/1",
+        "/waves/0/fragments/4/actions/2",
+        "/waves/0/fragments/4/actions/4",
+        "/waves/0/fragments/4/actions/5",
+        "/waves/0/fragments/4/actions/7",
+        "/waves/0/fragments/4/actions/9"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro3/level_rogue3_ev-6.json",
+      "pointer": "/enemyDbRefs/8",
+      "value": {
+        "useDb": false,
+        "id": "enemy_1106_byokai_b",
+        "level": 0,
+        "overwrittenData": {
+          "name": {
+            "m_defined": true,
+            "m_value": "斗志昂扬无人机"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "艾伦精选科技公司感谢您的赞助！骑士们，击落它会使你<@eb.key>防御力</>与<@eb.key>攻击速度</>大幅提升哦！"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_1106_byokai"
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": true,
+              "m_value": 5000
+            },
+            "atk": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "def": {
+              "m_defined": true,
+              "m_value": 150
+            },
+            "magicResistance": {
+              "m_defined": true,
+              "m_value": 20.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "attackSpeed": {
+              "m_defined": true,
+              "m_value": 100.0
+            },
+            "baseAttackTime": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "silenceImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "sleepImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "frozenImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "levitateImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "disarmedCombatImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "fearedImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "palsyImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "attractImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": true,
+            "m_value": "NONE"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "FLY"
+          },
+          "enemyTags": {
+            "m_defined": true,
+            "m_value": [
+              "drone"
+            ]
+          },
+          "lifePointReduce": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "levelType": {
+            "m_defined": true,
+            "m_value": "NORMAL"
+          },
+          "rangeRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "numOfExtraDrops": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "notCountInTotal": {
+            "m_defined": true,
+            "m_value": true
+          },
+          "talentBlackboard": [
+            {
+              "key": "buff.duration",
+              "value": 60.0,
+              "valueStr": null
+            },
+            {
+              "key": "buff.attack_speed",
+              "value": 100.0,
+              "valueStr": null
+            },
+            {
+              "key": "buff.def",
+              "value": 0.5,
+              "valueStr": null
+            }
+          ],
+          "skills": null,
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "maxSp": 0,
+            "initSp": 0,
+            "increment": 1.0
+          }
+        }
+      },
+      "spawnActionPointers": [
+        "/waves/0/fragments/2/actions/0"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro3/level_rogue3_t-1.json",
+      "pointer": "/enemyDbRefs/5",
+      "value": {
+        "useDb": false,
+        "id": "enemy_1106_byokai_b",
+        "level": 0,
+        "overwrittenData": {
+          "name": {
+            "m_defined": true,
+            "m_value": "斗志昂扬无人机"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "艾伦精选科技公司感谢您的赞助！骑士们，击落它会使你<@eb.key>防御力</>与<@eb.key>攻击速度</>大幅提升哦！"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_1106_byokai"
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": true,
+              "m_value": 5000
+            },
+            "atk": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "def": {
+              "m_defined": true,
+              "m_value": 150
+            },
+            "magicResistance": {
+              "m_defined": true,
+              "m_value": 20.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "attackSpeed": {
+              "m_defined": true,
+              "m_value": 100.0
+            },
+            "baseAttackTime": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "silenceImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "sleepImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "frozenImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "levitateImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "disarmedCombatImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "fearedImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "palsyImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "attractImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": true,
+            "m_value": "NONE"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "FLY"
+          },
+          "enemyTags": {
+            "m_defined": true,
+            "m_value": [
+              "drone"
+            ]
+          },
+          "lifePointReduce": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "levelType": {
+            "m_defined": true,
+            "m_value": "NORMAL"
+          },
+          "rangeRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "numOfExtraDrops": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "notCountInTotal": {
+            "m_defined": true,
+            "m_value": true
+          },
+          "talentBlackboard": [
+            {
+              "key": "buff.duration",
+              "value": 60.0,
+              "valueStr": null
+            },
+            {
+              "key": "buff.attack_speed",
+              "value": 100.0,
+              "valueStr": null
+            },
+            {
+              "key": "buff.def",
+              "value": 0.5,
+              "valueStr": null
+            }
+          ],
+          "skills": null,
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "maxSp": 0,
+            "initSp": 0,
+            "increment": 1.0
+          }
+        }
+      },
+      "spawnActionPointers": [
+        "/waves/0/fragments/1/actions/2",
+        "/waves/0/fragments/1/actions/3",
+        "/waves/0/fragments/1/actions/4",
+        "/waves/0/fragments/1/actions/5"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro3/level_rogue3_t-4.json",
+      "pointer": "/enemyDbRefs/7",
+      "value": {
+        "useDb": false,
+        "id": "enemy_1106_byokai_b",
+        "level": 0,
+        "overwrittenData": {
+          "name": {
+            "m_defined": true,
+            "m_value": "斗志昂扬无人机"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "艾伦精选科技公司感谢您的赞助！骑士们，击落它会使你<@eb.key>防御力</>与<@eb.key>攻击速度</>大幅提升哦！"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_1106_byokai"
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": true,
+              "m_value": 5000
+            },
+            "atk": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "def": {
+              "m_defined": true,
+              "m_value": 150
+            },
+            "magicResistance": {
+              "m_defined": true,
+              "m_value": 20.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "attackSpeed": {
+              "m_defined": true,
+              "m_value": 100.0
+            },
+            "baseAttackTime": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "silenceImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "sleepImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "frozenImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "levitateImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "disarmedCombatImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "fearedImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "palsyImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "attractImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": true,
+            "m_value": "NONE"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "FLY"
+          },
+          "enemyTags": {
+            "m_defined": true,
+            "m_value": [
+              "drone"
+            ]
+          },
+          "lifePointReduce": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "levelType": {
+            "m_defined": true,
+            "m_value": "NORMAL"
+          },
+          "rangeRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "numOfExtraDrops": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "notCountInTotal": {
+            "m_defined": true,
+            "m_value": true
+          },
+          "talentBlackboard": [
+            {
+              "key": "buff.duration",
+              "value": 60.0,
+              "valueStr": null
+            },
+            {
+              "key": "buff.attack_speed",
+              "value": 100.0,
+              "valueStr": null
+            },
+            {
+              "key": "buff.def",
+              "value": 0.5,
+              "valueStr": null
+            }
+          ],
+          "skills": null,
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "maxSp": 0,
+            "initSp": 0,
+            "increment": 1.0
+          }
+        }
+      },
+      "spawnActionPointers": [
+        "/waves/0/fragments/1/actions/5",
+        "/waves/0/fragments/1/actions/6",
+        "/waves/0/fragments/1/actions/7",
+        "/waves/0/fragments/1/actions/8",
+        "/waves/0/fragments/1/actions/9",
+        "/waves/0/fragments/1/actions/10",
+        "/waves/0/fragments/1/actions/11",
+        "/waves/0/fragments/1/actions/12",
+        "/waves/0/fragments/1/actions/13",
+        "/waves/0/fragments/1/actions/14",
+        "/waves/0/fragments/1/actions/15",
+        "/waves/0/fragments/4/actions/2",
+        "/waves/0/fragments/6/actions/1",
+        "/waves/0/fragments/8/actions/3"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro4/level_rogue4_5-1.json",
+      "pointer": "/enemyDbRefs/9",
+      "value": {
+        "useDb": false,
+        "id": "enemy_3001_upeopl_a",
+        "level": 0,
+        "overwrittenData": {
+          "name": {
+            "m_defined": true,
+            "m_value": "乌萨斯平民"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "<@eb.key>友好单位</>撤回保护目标时不扣除关卡生命值，死亡时扣除关卡生命值;不计入歼灭数"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_3001_upeopl"
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": true,
+              "m_value": 3500
+            },
+            "atk": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "def": {
+              "m_defined": true,
+              "m_value": 50
+            },
+            "magicResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": true,
+              "m_value": 0.65
+            },
+            "attackSpeed": {
+              "m_defined": true,
+              "m_value": 100.0
+            },
+            "baseAttackTime": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": true,
+              "m_value": 1
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "silenceImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "sleepImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "frozenImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "levitateImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "disarmedCombatImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "fearedImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "palsyImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "attractImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": true,
+            "m_value": "NONE"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "WALK"
+          },
+          "enemyTags": {
+            "m_defined": true,
+            "m_value": []
+          },
+          "lifePointReduce": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "levelType": {
+            "m_defined": true,
+            "m_value": "NORMAL"
+          },
+          "rangeRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "numOfExtraDrops": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "notCountInTotal": {
+            "m_defined": true,
+            "m_value": false
+          },
+          "talentBlackboard": [
+            {
+              "key": "parasitic",
+              "value": 0.0,
+              "valueStr": "true"
+            },
+            {
+              "key": "dead.value",
+              "value": -1.0,
+              "valueStr": null
+            }
+          ],
+          "skills": null,
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "maxSp": 0,
+            "initSp": 0,
+            "increment": 1.0
+          }
+        }
+      },
+      "spawnActionPointers": [
+        "/waves/0/fragments/0/actions/3",
+        "/waves/0/fragments/0/actions/26",
+        "/waves/0/fragments/0/actions/27",
+        "/waves/0/fragments/0/actions/28",
+        "/waves/0/fragments/0/actions/29",
+        "/waves/0/fragments/2/actions/0",
+        "/waves/0/fragments/2/actions/1",
+        "/waves/0/fragments/4/actions/0",
+        "/waves/0/fragments/4/actions/1",
+        "/waves/0/fragments/4/actions/2",
+        "/waves/0/fragments/4/actions/3",
+        "/waves/0/fragments/4/actions/4"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro4/level_rogue4_b-4.json",
+      "pointer": "/enemyDbRefs/11",
+      "value": {
+        "useDb": false,
+        "id": "enemy_2064_skzwdd_a",
+        "level": 0,
+        "overwrittenData": {
+          "name": {
+            "m_defined": true,
+            "m_value": "温迪戈大盾"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "处于凋亡区域时，攻击变为2连击"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_2064_skzwdd"
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": true,
+              "m_value": 10000
+            },
+            "atk": {
+              "m_defined": true,
+              "m_value": 750
+            },
+            "def": {
+              "m_defined": true,
+              "m_value": 700
+            },
+            "magicResistance": {
+              "m_defined": true,
+              "m_value": 20.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": true,
+              "m_value": 0.6
+            },
+            "attackSpeed": {
+              "m_defined": true,
+              "m_value": 100.0
+            },
+            "baseAttackTime": {
+              "m_defined": true,
+              "m_value": 3.5
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": true,
+              "m_value": 3
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "silenceImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "sleepImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "frozenImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "levitateImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "disarmedCombatImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "fearedImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "palsyImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "attractImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": true,
+            "m_value": "MELEE"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "WALK"
+          },
+          "enemyTags": {
+            "m_defined": true,
+            "m_value": [
+              "sarkaz"
+            ]
+          },
+          "lifePointReduce": {
+            "m_defined": true,
+            "m_value": 1
+          },
+          "levelType": {
+            "m_defined": true,
+            "m_value": "NORMAL"
+          },
+          "rangeRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "numOfExtraDrops": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "notCountInTotal": {
+            "m_defined": true,
+            "m_value": false
+          },
+          "talentBlackboard": [
+            {
+              "key": "parasitic",
+              "value": 0.0,
+              "valueStr": "true"
+            }
+          ],
+          "skills": null,
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "maxSp": 0,
+            "initSp": 0,
+            "increment": 1.0
+          }
+        }
+      },
+      "spawnActionPointers": [
+        "/waves/1/fragments/0/actions/1"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+      "pointer": "/enemyDbRefs/25",
+      "value": {
+        "useDb": false,
+        "id": "enemy_2122_dybgzd_b",
+        "level": 0,
+        "overwrittenData": {
+          "name": {
+            "m_defined": true,
+            "m_value": "梁"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "易的造物，为其负担各类琐事。好让其能隐逸人间，不被官府打搅。"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_2122_dybgzd"
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": true,
+              "m_value": 10
+            },
+            "atk": {
+              "m_defined": true,
+              "m_value": 500
+            },
+            "def": {
+              "m_defined": true,
+              "m_value": 400
+            },
+            "magicResistance": {
+              "m_defined": true,
+              "m_value": 20.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": true,
+              "m_value": 1.2
+            },
+            "attackSpeed": {
+              "m_defined": true,
+              "m_value": 100.0
+            },
+            "baseAttackTime": {
+              "m_defined": true,
+              "m_value": 2.0
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": true,
+              "m_value": 3
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "silenceImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "sleepImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "frozenImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "levitateImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "disarmedCombatImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "fearedImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "palsyImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "attractImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": true,
+            "m_value": "NONE"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "FLY"
+          },
+          "enemyTags": {
+            "m_defined": true,
+            "m_value": [
+              "animated"
+            ]
+          },
+          "lifePointReduce": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "levelType": {
+            "m_defined": true,
+            "m_value": "NORMAL"
+          },
+          "rangeRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "numOfExtraDrops": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "notCountInTotal": {
+            "m_defined": true,
+            "m_value": false
+          },
+          "talentBlackboard": [
+            {
+              "key": "Boom.atk_scale",
+              "value": 2.0,
+              "valueStr": null
+            },
+            {
+              "key": "BoomAura.range_radius",
+              "value": 0.3,
+              "valueStr": null
+            },
+            {
+              "key": "BoomAura[YinYang].range_radius",
+              "value": 0.3,
+              "valueStr": null
+            },
+            {
+              "key": "YinYang.dynamic",
+              "value": 0.0,
+              "valueStr": null
+            },
+            {
+              "key": "Boom.atk_scale_2",
+              "value": 3.0,
+              "valueStr": null
+            },
+            {
+              "key": "BoomToSame.atk_scale",
+              "value": 0.6,
+              "valueStr": null
+            },
+            {
+              "key": "BoomToDiff.atk_scale",
+              "value": 1.4,
+              "valueStr": null
+            },
+            {
+              "key": "BoomToSame.atk_scale_2",
+              "value": 1.8,
+              "valueStr": null
+            },
+            {
+              "key": "BoomToDiff.atk_scale_2",
+              "value": 4.2,
+              "valueStr": null
+            }
+          ],
+          "skills": null,
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "maxSp": 0,
+            "initSp": 0,
+            "increment": 1.0
+          }
+        }
+      },
+      "spawnActionPointers": [
+        "/branches/yang/phases/0/actions/0",
+        "/branches/yang/phases/0/actions/1",
+        "/branches/yang/phases/0/actions/2",
+        "/branches/yang/phases/0/actions/3",
+        "/branches/yang/phases/0/actions/4",
+        "/branches/yang/phases/0/actions/5",
+        "/branches/yang/phases/0/actions/6",
+        "/branches/yang/phases/0/actions/7",
+        "/branches/yang/phases/0/actions/8"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+      "pointer": "/enemyDbRefs/28",
+      "value": {
+        "useDb": false,
+        "id": "enemy_2128_dysuib_sp",
+        "level": 0,
+        "overwrittenData": {
+          "name": {
+            "m_defined": true,
+            "m_value": "身形sp"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "祂最不似人的部分。"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_2128_dysuib"
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": true,
+              "m_value": 160000
+            },
+            "atk": {
+              "m_defined": true,
+              "m_value": 200
+            },
+            "def": {
+              "m_defined": true,
+              "m_value": 1000
+            },
+            "magicResistance": {
+              "m_defined": true,
+              "m_value": 30.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": true,
+              "m_value": 0.6
+            },
+            "attackSpeed": {
+              "m_defined": true,
+              "m_value": 100.0
+            },
+            "baseAttackTime": {
+              "m_defined": true,
+              "m_value": 5.0
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": true,
+              "m_value": 13
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "silenceImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "sleepImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "frozenImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "levitateImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "disarmedCombatImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "fearedImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "palsyImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "attractImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": true,
+            "m_value": "RANGED"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "WALK"
+          },
+          "enemyTags": {
+            "m_defined": true,
+            "m_value": [
+              "animated"
+            ]
+          },
+          "lifePointReduce": {
+            "m_defined": true,
+            "m_value": 1
+          },
+          "levelType": {
+            "m_defined": true,
+            "m_value": "BOSS"
+          },
+          "rangeRadius": {
+            "m_defined": true,
+            "m_value": 2.5
+          },
+          "numOfExtraDrops": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "notCountInTotal": {
+            "m_defined": true,
+            "m_value": false
+          },
+          "talentBlackboard": [
+            {
+              "key": "WithdrawAlly.attack@respawn_time",
+              "value": 0.15,
+              "valueStr": null
+            },
+            {
+              "key": "DysuihAura.damage_resistance",
+              "value": 0.5,
+              "valueStr": null
+            },
+            {
+              "key": "DysuihAura.stun",
+              "value": 15.0,
+              "valueStr": null
+            },
+            {
+              "key": "SecondRelicTalent.def",
+              "value": 1500.0,
+              "valueStr": null
+            },
+            {
+              "key": "SecondRelicTalent.enemy_dysuib_second_relic_t[summon_enemy].interval",
+              "value": 30.0,
+              "valueStr": null
+            },
+            {
+              "key": "SecondRelicTalent.active_relic_a",
+              "value": 0.0,
+              "valueStr": null
+            },
+            {
+              "key": "SecondRelicTalent.active_relic_b",
+              "value": 1.0,
+              "valueStr": null
+            },
+            {
+              "key": "SecondRelicTalent.enemy_dysuib_second_relic_t[summon_enemy].branch_id",
+              "value": 0.0,
+              "valueStr": "dysuib_relic_branch"
+            },
+            {
+              "key": "inverseDamage.atk_scale",
+              "value": 0.1,
+              "valueStr": null
+            }
+          ],
+          "skills": null,
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "maxSp": 0,
+            "initSp": 0,
+            "increment": 1.0
+          }
+        }
+      },
+      "spawnActionPointers": [
+        "/branches/dycyue_body/phases/0/actions/1",
+        "/branches/dysuih_body/phases/0/actions/2",
+        "/branches/dysuih_hp_body_2/phases/0/actions/0",
+        "/branches/dysuih_hp_body_3/phases/0/actions/0"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-e.json",
+      "pointer": "/enemyDbRefs/21",
+      "value": {
+        "useDb": false,
+        "id": "enemy_2122_dybgzd_b",
+        "level": 0,
+        "overwrittenData": {
+          "name": {
+            "m_defined": true,
+            "m_value": "梁"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "易的造物，为其负担各类琐事。好让其能隐逸人间，不被官府打搅。"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_2122_dybgzd"
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": true,
+              "m_value": 10
+            },
+            "atk": {
+              "m_defined": true,
+              "m_value": 800
+            },
+            "def": {
+              "m_defined": true,
+              "m_value": 400
+            },
+            "magicResistance": {
+              "m_defined": true,
+              "m_value": 20.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": true,
+              "m_value": 1.2
+            },
+            "attackSpeed": {
+              "m_defined": true,
+              "m_value": 100.0
+            },
+            "baseAttackTime": {
+              "m_defined": true,
+              "m_value": 2.0
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 1.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": true,
+              "m_value": 3
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "silenceImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "sleepImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "frozenImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "levitateImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "disarmedCombatImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "fearedImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "palsyImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "attractImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": true,
+            "m_value": "NONE"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "FLY"
+          },
+          "enemyTags": {
+            "m_defined": true,
+            "m_value": [
+              "animated"
+            ]
+          },
+          "lifePointReduce": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "levelType": {
+            "m_defined": true,
+            "m_value": "NORMAL"
+          },
+          "rangeRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "numOfExtraDrops": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "notCountInTotal": {
+            "m_defined": true,
+            "m_value": false
+          },
+          "talentBlackboard": [
+            {
+              "key": "Boom.atk_scale",
+              "value": 2.0,
+              "valueStr": null
+            },
+            {
+              "key": "BoomAura.range_radius",
+              "value": 0.3,
+              "valueStr": null
+            },
+            {
+              "key": "BoomAura[YinYang].range_radius",
+              "value": 0.3,
+              "valueStr": null
+            },
+            {
+              "key": "YinYang.dynamic",
+              "value": 0.0,
+              "valueStr": null
+            },
+            {
+              "key": "Boom.atk_scale_2",
+              "value": 3.0,
+              "valueStr": null
+            },
+            {
+              "key": "BoomToSame.atk_scale",
+              "value": 0.6,
+              "valueStr": null
+            },
+            {
+              "key": "BoomToDiff.atk_scale",
+              "value": 1.4,
+              "valueStr": null
+            },
+            {
+              "key": "BoomToSame.atk_scale_2",
+              "value": 1.8,
+              "valueStr": null
+            },
+            {
+              "key": "BoomToDiff.atk_scale_2",
+              "value": 4.2,
+              "valueStr": null
+            }
+          ],
+          "skills": null,
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "maxSp": 0,
+            "initSp": 0,
+            "increment": 1.0
+          }
+        }
+      },
+      "spawnActionPointers": [
+        "/branches/yang/phases/0/actions/0",
+        "/branches/yang/phases/0/actions/1",
+        "/branches/yang/phases/0/actions/2",
+        "/branches/yang/phases/0/actions/3",
+        "/branches/yang/phases/0/actions/4",
+        "/branches/yang/phases/0/actions/5",
+        "/branches/yang/phases/0/actions/6",
+        "/branches/yang/phases/0/actions/7",
+        "/branches/yang/phases/0/actions/8"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-e.json",
+      "pointer": "/enemyDbRefs/24",
+      "value": {
+        "useDb": false,
+        "id": "enemy_2128_dysuib_sp",
+        "level": 0,
+        "overwrittenData": {
+          "name": {
+            "m_defined": true,
+            "m_value": "身形sp"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "祂最不似人的部分。"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_2128_dysuib"
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": true,
+              "m_value": 160000
+            },
+            "atk": {
+              "m_defined": true,
+              "m_value": 200
+            },
+            "def": {
+              "m_defined": true,
+              "m_value": 1000
+            },
+            "magicResistance": {
+              "m_defined": true,
+              "m_value": 30.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": true,
+              "m_value": 0.6
+            },
+            "attackSpeed": {
+              "m_defined": true,
+              "m_value": 100.0
+            },
+            "baseAttackTime": {
+              "m_defined": true,
+              "m_value": 5.0
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": true,
+              "m_value": 13
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "silenceImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "sleepImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "frozenImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "levitateImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "disarmedCombatImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "fearedImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "palsyImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "attractImmune": {
+              "m_defined": true,
+              "m_value": true
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": true,
+            "m_value": "RANGED"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "WALK"
+          },
+          "enemyTags": {
+            "m_defined": true,
+            "m_value": [
+              "animated"
+            ]
+          },
+          "lifePointReduce": {
+            "m_defined": true,
+            "m_value": 1
+          },
+          "levelType": {
+            "m_defined": true,
+            "m_value": "BOSS"
+          },
+          "rangeRadius": {
+            "m_defined": true,
+            "m_value": 2.5
+          },
+          "numOfExtraDrops": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "notCountInTotal": {
+            "m_defined": true,
+            "m_value": false
+          },
+          "talentBlackboard": [
+            {
+              "key": "WithdrawAlly.attack@respawn_time",
+              "value": 0.15,
+              "valueStr": null
+            },
+            {
+              "key": "DysuihAura.damage_resistance",
+              "value": 0.5,
+              "valueStr": null
+            },
+            {
+              "key": "DysuihAura.stun",
+              "value": 15.0,
+              "valueStr": null
+            },
+            {
+              "key": "SecondRelicTalent.def",
+              "value": 1500.0,
+              "valueStr": null
+            },
+            {
+              "key": "SecondRelicTalent.enemy_dysuib_second_relic_t[summon_enemy].interval",
+              "value": 8.0,
+              "valueStr": null
+            },
+            {
+              "key": "SecondRelicTalent.active_relic_a",
+              "value": 0.0,
+              "valueStr": null
+            },
+            {
+              "key": "SecondRelicTalent.active_relic_b",
+              "value": 1.0,
+              "valueStr": null
+            },
+            {
+              "key": "SecondRelicTalent.enemy_dysuib_second_relic_t[summon_enemy].branch_id",
+              "value": 0.0,
+              "valueStr": "dysuib_relic_branch"
+            },
+            {
+              "key": "inverseDamage.atk_scale",
+              "value": 0.2,
+              "valueStr": null
+            }
+          ],
+          "skills": null,
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "maxSp": 0,
+            "initSp": 0,
+            "increment": 1.0
+          }
+        }
+      },
+      "spawnActionPointers": [
+        "/waves/1/fragments/0/actions/13",
+        "/branches/dycyue_body/phases/0/actions/0",
+        "/branches/dycyue_body/phases/0/actions/1",
+        "/branches/dysuih_body/phases/0/actions/0",
+        "/branches/dysuih_hp_body_1/phases/0/actions/0",
+        "/branches/dysuih_hp_body_1/phases/0/actions/1",
+        "/branches/dysuih_hp_body_2/phases/0/actions/0",
+        "/branches/dysuih_hp_body_2/phases/0/actions/1",
+        "/branches/dysuih_hp_body_3/phases/0/actions/0",
+        "/branches/dysuih_hp_body_3/phases/0/actions/1",
+        "/branches/dysuih_s_body/phases/0/actions/0",
+        "/branches/dysuih_s_body/phases/0/actions/1",
+        "/branches/dysuih_s_body/phases/0/actions/2"
+      ]
+    },
+    {
+      "file": "zh_CN/gamedata/levels/obt/roguelike/ro6/level_rogue6_t-12.json",
+      "pointer": "/enemyDbRefs/2",
+      "value": {
+        "useDb": false,
+        "id": "enemy_2133_shdopl_a",
+        "level": 0,
+        "overwrittenData": {
+          "name": {
+            "m_defined": true,
+            "m_value": "空植体A"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "出生时模仿一个敌人，受攻击时解除"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_2133_shdopl"
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": true,
+              "m_value": 6000
+            },
+            "atk": {
+              "m_defined": true,
+              "m_value": 400
+            },
+            "def": {
+              "m_defined": true,
+              "m_value": 200
+            },
+            "magicResistance": {
+              "m_defined": true,
+              "m_value": 20.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": true,
+              "m_value": 1.5
+            },
+            "attackSpeed": {
+              "m_defined": true,
+              "m_value": 100.0
+            },
+            "baseAttackTime": {
+              "m_defined": true,
+              "m_value": 1.4
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": true,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": true,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "silenceImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "sleepImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "frozenImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "levitateImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "disarmedCombatImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "fearedImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "palsyImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "attractImmune": {
+              "m_defined": true,
+              "m_value": false
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": true,
+            "m_value": "NONE"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "WALK"
+          },
+          "enemyTags": {
+            "m_defined": true,
+            "m_value": []
+          },
+          "lifePointReduce": {
+            "m_defined": true,
+            "m_value": 1
+          },
+          "levelType": {
+            "m_defined": true,
+            "m_value": "NORMAL"
+          },
+          "rangeRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "numOfExtraDrops": {
+            "m_defined": true,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": true,
+            "m_value": -1.0
+          },
+          "notCountInTotal": {
+            "m_defined": true,
+            "m_value": false
+          },
+          "talentBlackboard": [
+            {
+              "key": "summon.enemy_key",
+              "value": 0.0,
+              "valueStr": "enemy_1283_sgkill_2"
+            }
+          ],
+          "skills": null,
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "maxSp": 0,
+            "initSp": 0,
+            "increment": 1.0
+          }
+        }
+      },
+      "spawnActionPointers": [
+        "/waves/0/fragments/1/actions/6",
+        "/waves/0/fragments/2/actions/1",
+        "/waves/0/fragments/3/actions/9",
+        "/waves/0/fragments/3/actions/10",
+        "/waves/0/fragments/3/actions/11"
+      ]
+    }
+  ]
+}

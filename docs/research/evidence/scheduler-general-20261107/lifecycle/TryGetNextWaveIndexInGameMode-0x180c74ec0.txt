@@ -1,0 +1,53 @@
+Torappu.Battle.GameMode.GameModeFactory/CooperateGameMode.TryGetNextWaveIndexInGameMode 0x180c74ec0
+0x180c74ec0 mov qword ptr [rsp + 8], rbx
+0x180c74ec5 push rdi
+0x180c74ec6 sub rsp, 0x20
+0x180c74eca cmp byte ptr [rip + 0x8329aff], 0
+0x180c74ed1 mov rdi, rdx
+0x180c74ed4 mov rbx, rcx
+0x180c74ed7 jne 0x180c74eec []
+0x180c74ed9 lea rcx, [rip + 0x7fcaa68]
+0x180c74ee0 call 0x18049c210 []
+0x180c74ee5 mov byte ptr [rip + 0x8329ae4], 1
+0x180c74eec mov rax, qword ptr [rip + 0x7fcaa55]
+0x180c74ef3 cmp dword ptr [rax + 0xe0], 0
+0x180c74efa jne 0x180c74f0b []
+0x180c74efc mov rcx, rax
+0x180c74eff call 0x18049c450 []
+0x180c74f04 mov rax, qword ptr [rip + 0x7fcaa3d]
+0x180c74f0b mov rax, qword ptr [rax + 0xb8]
+0x180c74f12 mov rcx, qword ptr [rax + 0x418]
+0x180c74f19 test rcx, rcx
+0x180c74f1c jne 0x180c74f5b []
+0x180c74f1e mov rbx, qword ptr [rbx + 0x38]
+0x180c74f22 test rbx, rbx
+0x180c74f25 je 0x180c74f73 []
+0x180c74f27 cmp byte ptr [rip + 0x8363b43], cl
+0x180c74f2d jbe 0x180c74f37 []
+0x180c74f2f mov rcx, qword ptr [rbx]
+0x180c74f32 call 0x180457010 []
+0x180c74f37 mov r8, qword ptr [rbx]
+0x180c74f3a mov rdx, rdi
+0x180c74f3d mov rcx, rbx
+0x180c74f40 mov rax, qword ptr [r8 + 0x1a0]
+0x180c74f47 mov r8, qword ptr [r8 + 0x1a8]
+0x180c74f4e mov rbx, qword ptr [rsp + 0x30]
+0x180c74f53 add rsp, 0x20
+0x180c74f57 pop rdi
+0x180c74f58 jmp rax
+0x180c74f5b xor r9d, r9d
+0x180c74f5e mov r8, rdi
+0x180c74f61 mov rdx, rbx
+0x180c74f64 mov rbx, qword ptr [rsp + 0x30]
+0x180c74f69 add rsp, 0x20
+0x180c74f6d pop rdi
+0x180c74f6e jmp 0x1834d5180 ['XLua.DelegateBridge.__Gen_Delegate_Imp4490']
+0x180c74f73 call 0x18049c3c0 []
+0x180c74f78 int3
+0x180c74f79 int3
+0x180c74f7a int3
+0x180c74f7b int3
+0x180c74f7c int3
+0x180c74f7d int3
+0x180c74f7e int3
+0x180c74f7f int3

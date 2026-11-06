@@ -1,0 +1,71 @@
+Torappu.Battle.Scheduler._NotCountInTotal 0x180986960
+0x180986960 mov qword ptr [rsp + 0x10], rbx
+0x180986965 push rsi
+0x180986966 sub rsp, 0x40
+0x18098696a cmp byte ptr [rip + 0x8616170], 0
+0x180986971 mov rbx, rdx
+0x180986974 mov rsi, rcx
+0x180986977 jne 0x180986998 []
+0x180986979 lea rcx, [rip + 0x81813f0]
+0x180986980 call 0x18049c210 []
+0x180986985 lea rcx, [rip + 0x8182d9c]
+0x18098698c call 0x18049c210 []
+0x180986991 mov byte ptr [rip + 0x8616149], 1
+0x180986998 xor eax, eax
+0x18098699a xorps xmm0, xmm0
+0x18098699d mov qword ptr [rsp + 0x30], rax
+0x1809869a2 mov rax, qword ptr [rip + 0x8182d7f]
+0x1809869a9 movups xmmword ptr [rsp + 0x20], xmm0
+0x1809869ae mov rcx, qword ptr [rax + 0xb8]
+0x1809869b5 mov rcx, qword ptr [rcx + 0x100]
+0x1809869bc test rcx, rcx
+0x1809869bf jne 0x180986a3d []
+0x1809869c1 mov qword ptr [rsp + 0x50], rdi
+0x1809869c6 test rbx, rbx
+0x1809869c9 je 0x180986a56 []
+0x1809869cf mov rcx, qword ptr [rbx + 0x18]
+0x1809869d3 xor edx, edx
+0x1809869d5 call 0x18601a180 ['System.String.IsNullOrEmpty']
+0x1809869da test al, al
+0x1809869dc jne 0x180986a2b []
+0x1809869de mov rcx, qword ptr [rsi + 0xa8]
+0x1809869e5 xor dil, dil
+0x1809869e8 test rcx, rcx
+0x1809869eb je 0x180986a56 []
+0x1809869ed mov r9, qword ptr [rip + 0x818137c]
+0x1809869f4 lea r8, [rsp + 0x20]
+0x1809869f9 mov rdx, qword ptr [rbx + 0x18]
+0x1809869fd call 0x185adf510 []
+0x180986a02 test al, al
+0x180986a04 je 0x180986a14 []
+0x180986a06 mov rdi, qword ptr [rsp + 0x20]
+0x180986a0b test rdi, rdi
+0x180986a0e je 0x180986a56 []
+0x180986a10 movzx edi, byte ptr [rdi + 0x40]
+0x180986a14 or dil, byte ptr [rbx + 0x5f]
+0x180986a18 mov rdi, qword ptr [rsp + 0x50]
+0x180986a1d setne al
+0x180986a20 mov rbx, qword ptr [rsp + 0x58]
+0x180986a25 add rsp, 0x40
+0x180986a29 pop rsi
+0x180986a2a ret
+0x180986a2b mov rdi, qword ptr [rsp + 0x50]
+0x180986a30 xor al, al
+0x180986a32 mov rbx, qword ptr [rsp + 0x58]
+0x180986a37 add rsp, 0x40
+0x180986a3b pop rsi
+0x180986a3c ret
+0x180986a3d xor r9d, r9d
+0x180986a40 mov r8, rbx
+0x180986a43 mov rdx, rsi
+0x180986a46 call 0x1833e9f80 ['XLua.DelegateBridge.__Gen_Delegate_Imp29']
+0x180986a4b mov rbx, qword ptr [rsp + 0x58]
+0x180986a50 add rsp, 0x40
+0x180986a54 pop rsi
+0x180986a55 ret
+0x180986a56 call 0x18049c3c0 []
+0x180986a5b int3
+0x180986a5c int3
+0x180986a5d int3
+0x180986a5e int3
+0x180986a5f int3

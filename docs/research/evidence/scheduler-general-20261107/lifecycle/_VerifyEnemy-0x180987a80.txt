@@ -1,0 +1,138 @@
+# Torappu.Battle.Scheduler._VerifyEnemy @ 0x180987a80
+Source: .cache/native-research/scheduler-general-20261107/native-paths.json
+Parameters: [('enemy', 'Torappu.Battle.Enemy')]
+0x180987a80 mov qword ptr [rsp + 8], rbx
+0x180987a85 push rdi
+0x180987a86 sub rsp, 0x20
+0x180987a8a cmp byte ptr [rip + 0x8615098], 0
+0x180987a91 mov rdi, rdx
+0x180987a94 mov rbx, rcx
+0x180987a97 jne 0x180987ac4
+0x180987a99 lea rcx, [rip + 0x81985b0]
+0x180987aa0 call 0x18049c210
+0x180987aa5 lea rcx, [rip + 0x8181c7c]
+0x180987aac call 0x18049c210
+0x180987ab1 lea rcx, [rip + 0x822a0a8]
+0x180987ab8 call 0x18049c210
+0x180987abd mov byte ptr [rip + 0x8615065], 1
+0x180987ac4 mov rax, qword ptr [rip + 0x8181c5d]
+0x180987acb mov rcx, qword ptr [rax + 0xb8]
+0x180987ad2 mov rcx, qword ptr [rcx + 0x340]
+0x180987ad9 test rcx, rcx
+0x180987adc jne 0x180987c24
+0x180987ae2 mov rcx, qword ptr [rip + 0x8198567]
+0x180987ae9 cmp dword ptr [rcx + 0xe0], 0
+0x180987af0 jne 0x180987af7
+0x180987af2 call 0x18049c450
+0x180987af7 xor r8d, r8d
+0x180987afa xor edx, edx
+0x180987afc mov rcx, rdi
+0x180987aff call 0x186dcf290; ['UnityEngine.Object.op_Equality']
+0x180987b04 test al, al
+0x180987b06 jne 0x180987c17
+0x180987b0c mov rcx, qword ptr [rip + 0x822a04d]
+0x180987b13 call 0x18558e720
+0x180987b18 test rax, rax
+0x180987b1b je 0x180987c3c
+0x180987b21 xor edx, edx
+0x180987b23 mov rcx, rax
+0x180987b26 call 0x180670490; ['Torappu.Battle.BattleController.get_gameMode']
+0x180987b2b test rax, rax
+0x180987b2e je 0x180987c3c
+0x180987b34 mov rcx, qword ptr [rax]
+0x180987b37 mov edx, dword ptr [rcx + 0x11c]
+0x180987b3d add edx, 0xfffff625
+0x180987b43 cmp edx, 0x1a
+0x180987b46 ja 0x180987b8c
+0x180987b48 movsxd rcx, edx
+0x180987b4b lea r8, [rip - 0x987b52]
+0x180987b52 movzx ecx, byte ptr [r8 + rcx + 0x987c50]
+0x180987b5b mov edx, dword ptr [r8 + rcx*4 + 0x987c44]
+0x180987b63 add rdx, r8
+0x180987b66 jmp rdx
+0x180987b68 xor edx, edx
+0x180987b6a mov rcx, rax
+0x180987b6d call 0x180c9f970; ['Torappu.Battle.GameMode.GameModeFactory/DefaultGameMode.get_isMultiLayerMap']
+0x180987b72 jmp 0x180987ba0
+0x180987b74 xor edx, edx
+0x180987b76 mov rcx, rax
+0x180987b79 call 0x180c64f60; ['Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_isMultiLayerMap']
+0x180987b7e jmp 0x180987ba0
+0x180987b80 xor edx, edx
+0x180987b82 mov rcx, rax
+0x180987b85 call 0x180cee9f0; ['Torappu.Battle.GameMode.GameModeFactory/MultiplayerGameMode.get_isMultiLayerMap']
+0x180987b8a jmp 0x180987ba0
+0x180987b8c mov rdx, qword ptr [rip + 0x81c5255]
+0x180987b93 mov ecx, 3
+0x180987b98 mov r8, rax
+0x180987b9b call 0x180005310
+0x180987ba0 test al, al
+0x180987ba2 jne 0x180987bb1
+0x180987ba4 mov al, 1
+0x180987ba6 mov rbx, qword ptr [rsp + 0x30]
+0x180987bab add rsp, 0x20
+0x180987baf pop rdi
+0x180987bb0 ret
+0x180987bb1 cmp byte ptr [rip + 0x8614f09], 0
+0x180987bb8 jne 0x180987bcd
+0x180987bba lea rcx, [rip + 0x8181b67]
+0x180987bc1 call 0x18049c210
+0x180987bc6 mov byte ptr [rip + 0x8614ef4], 1
+0x180987bcd mov rax, qword ptr [rip + 0x8181b54]
+0x180987bd4 mov rcx, qword ptr [rax + 0xb8]
+0x180987bdb mov rcx, qword ptr [rcx]
+0x180987bde test rcx, rcx
+0x180987be1 jne 0x180987beb
+0x180987be3 mov ebx, dword ptr [rbx + 0x128]
+0x180987be9 jmp 0x180987bf8
+0x180987beb xor r8d, r8d
+0x180987bee mov rdx, rbx
+0x180987bf1 call 0x1833caa50; ['XLua.DelegateBridge.__Gen_Delegate_Imp2806']
+0x180987bf6 mov ebx, eax
+0x180987bf8 test rdi, rdi
+0x180987bfb je 0x180987c3c
+0x180987bfd xor edx, edx
+0x180987bff mov rcx, rdi
+0x180987c02 call 0x180738760; ['Torappu.Battle.Entity.get_mapLayer']
+0x180987c07 cmp ebx, eax
+0x180987c09 sete al
+0x180987c0c mov rbx, qword ptr [rsp + 0x30]
+0x180987c11 add rsp, 0x20
+0x180987c15 pop rdi
+0x180987c16 ret
+0x180987c17 xor al, al
+0x180987c19 mov rbx, qword ptr [rsp + 0x30]
+0x180987c1e add rsp, 0x20
+0x180987c22 pop rdi
+0x180987c23 ret
+0x180987c24 xor r9d, r9d
+0x180987c27 mov r8, rdi
+0x180987c2a mov rdx, rbx
+0x180987c2d mov rbx, qword ptr [rsp + 0x30]
+0x180987c32 add rsp, 0x20
+0x180987c36 pop rdi
+0x180987c37 jmp 0x1833e9f80; ['XLua.DelegateBridge.__Gen_Delegate_Imp29']
+0x180987c3c call 0x18049c3c0
+0x180987c41 int3
+0x180987c42 nop
+0x180987c44 push 0x7400987b
+0x180987c49 jnp 0x180987be3
+0x180987c4b add byte ptr [rax + 0x987b], al
+0x180987c51 add byte ptr [rax], al
+0x180987c53 add byte ptr [rax], al
+0x180987c55 add byte ptr [rax], al
+0x180987c57 add dword ptr [rax], eax
+0x180987c59 add byte ptr [rax], al
+0x180987c5b add byte ptr [rax], al
+0x180987c5d add byte ptr [rax], al
+0x180987c5f add byte ptr [rax], al
+0x180987c61 add byte ptr [rdx], al
+0x180987c63 add byte ptr [rax], al
+0x180987c65 add byte ptr [rax], al
+0x180987c67 add byte ptr [rax], al
+0x180987c69 add byte ptr [rax], al
+0x180987c6b int3
+0x180987c6c int3
+0x180987c6d int3
+0x180987c6e int3
+0x180987c6f int3

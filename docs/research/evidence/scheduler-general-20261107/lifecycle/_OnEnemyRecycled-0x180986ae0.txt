@@ -1,0 +1,78 @@
+# Torappu.Battle.Scheduler._OnEnemyRecycled @ 0x180986ae0
+Source: docs/research/evidence/scheduler-native-20261107/spawn-bodies.json
+Parameters: [('arg', 'object')]
+0x180986ae0 mov qword ptr [rsp + 0x10], rsi
+0x180986ae5 push rdi
+0x180986ae6 sub rsp, 0x20
+0x180986aea cmp byte ptr [rip + 0x8616035], 0
+0x180986af1 mov rdi, rdx
+0x180986af4 mov rsi, rcx
+0x180986af7 jne 0x180986b24
+0x180986af9 lea rcx, [rip + 0x81fe6c0]
+0x180986b00 call 0x18049c210
+0x180986b05 lea rcx, [rip + 0x8259fb4]
+0x180986b0c call 0x18049c210
+0x180986b11 lea rcx, [rip + 0x8182c10]
+0x180986b18 call 0x18049c210
+0x180986b1d mov byte ptr [rip + 0x8616002], 1
+0x180986b24 mov rax, qword ptr [rip + 0x8182bfd]
+0x180986b2b mov rcx, qword ptr [rax + 0xb8]
+0x180986b32 mov rcx, qword ptr [rcx + 0x328]
+0x180986b39 test rcx, rcx
+0x180986b3c jne 0x180986bde
+0x180986b42 mov qword ptr [rsp + 0x30], rbx
+0x180986b47 mov rdx, qword ptr [rip + 0x81fe672]
+0x180986b4e test rdi, rdi
+0x180986b51 jne 0x180986b57
+0x180986b53 xor ebx, ebx
+0x180986b55 jmp 0x180986ba1
+0x180986b57 cmp byte ptr [rip + 0x8651f12], 0
+0x180986b5e mov r8, qword ptr [rdi]
+0x180986b61 jbe 0x180986b71
+0x180986b63 mov rcx, r8
+0x180986b66 call 0x1804566f0
+0x180986b6b xor ebx, ebx
+0x180986b6d test al, al
+0x180986b6f jmp 0x180986b9d
+0x180986b71 movzx eax, byte ptr [rdx + 0x130]
+0x180986b78 xor ebx, ebx
+0x180986b7a cmp byte ptr [r8 + 0x130], al
+0x180986b81 jb 0x180986b99
+0x180986b83 movzx ecx, al
+0x180986b86 mov rax, qword ptr [r8 + 0xc8]
+0x180986b8d cmp qword ptr [rax + rcx*8 - 8], rdx
+0x180986b92 mov eax, 1
+0x180986b97 je 0x180986b9b
+0x180986b99 mov eax, ebx
+0x180986b9b test eax, eax
+0x180986b9d cmovne rbx, rdi
+0x180986ba1 xor r8d, r8d
+0x180986ba4 mov rdx, rbx
+0x180986ba7 mov rcx, rsi
+0x180986baa call 0x180987a80; ['Torappu.Battle.Scheduler._VerifyEnemy']
+0x180986baf test al, al
+0x180986bb1 je 0x180986bce
+0x180986bb3 mov rcx, qword ptr [rsi + 0xc8]
+0x180986bba test rcx, rcx
+0x180986bbd je 0x180986bf6
+0x180986bbf mov r8, qword ptr [rip + 0x8259efa]
+0x180986bc6 mov rdx, rbx
+0x180986bc9 call 0x184f4ca00
+0x180986bce mov rbx, qword ptr [rsp + 0x30]
+0x180986bd3 mov rsi, qword ptr [rsp + 0x38]
+0x180986bd8 add rsp, 0x20
+0x180986bdc pop rdi
+0x180986bdd ret
+0x180986bde xor r9d, r9d
+0x180986be1 mov r8, rdi
+0x180986be4 mov rdx, rsi
+0x180986be7 mov rsi, qword ptr [rsp + 0x38]
+0x180986bec add rsp, 0x20
+0x180986bf0 pop rdi
+0x180986bf1 jmp 0x18338c7c0; ['XLua.DelegateBridge.__Gen_Delegate_Imp23']
+0x180986bf6 call 0x18049c3c0
+0x180986bfb int3
+0x180986bfc int3
+0x180986bfd int3
+0x180986bfe int3
+0x180986bff int3

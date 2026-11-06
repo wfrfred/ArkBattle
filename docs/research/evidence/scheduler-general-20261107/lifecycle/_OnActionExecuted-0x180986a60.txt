@@ -1,0 +1,40 @@
+# Torappu.Battle.Scheduler._OnActionExecuted @ 0x180986a60
+Source: docs/research/evidence/scheduler-native-20261107/spawn-bodies.json
+Parameters: [('data', 'Torappu.LevelData/WaveData/FragmentData/ActionData')]
+0x180986a60 mov qword ptr [rsp + 8], rbx
+0x180986a65 push rdi
+0x180986a66 sub rsp, 0x20
+0x180986a6a cmp byte ptr [rip + 0x86160b0], 0
+0x180986a71 mov rbx, rdx
+0x180986a74 mov rdi, rcx
+0x180986a77 jne 0x180986a8c
+0x180986a79 lea rcx, [rip + 0x8182ca8]
+0x180986a80 call 0x18049c210
+0x180986a85 mov byte ptr [rip + 0x8616095], 1
+0x180986a8c mov rax, qword ptr [rip + 0x8182c95]
+0x180986a93 mov r8, qword ptr [rax + 0xb8]
+0x180986a9a mov rcx, qword ptr [r8 + 0x300]
+0x180986aa1 test rcx, rcx
+0x180986aa4 jne 0x180986abe
+0x180986aa6 test rbx, rbx
+0x180986aa9 je 0x180986ad7
+0x180986aab cmp byte ptr [rbx + 0x34], cl
+0x180986aae je 0x180986acc
+0x180986ab0 dec dword ptr [rdi + 0x20]
+0x180986ab3 mov rbx, qword ptr [rsp + 0x30]
+0x180986ab8 add rsp, 0x20
+0x180986abc pop rdi
+0x180986abd ret
+0x180986abe xor r9d, r9d
+0x180986ac1 mov r8, rbx
+0x180986ac4 mov rdx, rdi
+0x180986ac7 call 0x18338c7c0; ['XLua.DelegateBridge.__Gen_Delegate_Imp23']
+0x180986acc mov rbx, qword ptr [rsp + 0x30]
+0x180986ad1 add rsp, 0x20
+0x180986ad5 pop rdi
+0x180986ad6 ret
+0x180986ad7 call 0x18049c3c0
+0x180986adc int3
+0x180986add int3
+0x180986ade int3
+0x180986adf int3

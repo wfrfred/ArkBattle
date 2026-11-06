@@ -1,0 +1,117 @@
+Torappu.Battle.Scheduler.ReleaseEnemyFromCurrentWave 0x18097f830
+0x18097f830 mov qword ptr [rsp + 8], rbx
+0x18097f835 mov qword ptr [rsp + 0x10], rsi
+0x18097f83a push rdi
+0x18097f83b sub rsp, 0xa0
+0x18097f842 movzx esi, r8b
+0x18097f846 mov rdi, rdx
+0x18097f849 mov rbx, rcx
+0x18097f84c cmp byte ptr [rip + 0x861d2a0], 0
+0x18097f853 jne 0x18097f8bc []
+0x18097f855 lea rcx, [rip + 0x82af5bc]
+0x18097f85c call 0x18049c210 []
+0x18097f861 lea rcx, [rip + 0x826ed48]
+0x18097f868 call 0x18049c210 []
+0x18097f86d lea rcx, [rip + 0x826ef84]
+0x18097f874 call 0x18049c210 []
+0x18097f879 lea rcx, [rip + 0x826f1c8]
+0x18097f880 call 0x18049c210 []
+0x18097f885 lea rcx, [rip + 0x81d2e84]
+0x18097f88c call 0x18049c210 []
+0x18097f891 lea rcx, [rip + 0x82b68c0]
+0x18097f898 call 0x18049c210 []
+0x18097f89d lea rcx, [rip + 0x826121c]
+0x18097f8a4 call 0x18049c210 []
+0x18097f8a9 lea rcx, [rip + 0x8189e78]
+0x18097f8b0 call 0x18049c210 []
+0x18097f8b5 mov byte ptr [rip + 0x861d237], 1
+0x18097f8bc mov rax, qword ptr [rip + 0x8189e65]
+0x18097f8c3 mov rcx, qword ptr [rax + 0xb8]
+0x18097f8ca mov rcx, qword ptr [rcx + 0x190]
+0x18097f8d1 test rcx, rcx
+0x18097f8d4 jne 0x18097f9f8 []
+0x18097f8da mov rcx, qword ptr [rbx + 0xc0]
+0x18097f8e1 test rcx, rcx
+0x18097f8e4 je 0x18097fa31 []
+0x18097f8ea mov r8, qword ptr [rip + 0x82611cf]
+0x18097f8f1 mov rdx, rdi
+0x18097f8f4 call 0x184f4ca00 []
+0x18097f8f9 test sil, sil
+0x18097f8fc je 0x18097fa10 []
+0x18097f902 mov rcx, qword ptr [rbx + 0xe0]
+0x18097f909 test rcx, rcx
+0x18097f90c je 0x18097fa31 []
+0x18097f912 mov r8, qword ptr [rip + 0x82b683f]
+0x18097f919 mov rdx, rdi
+0x18097f91c call 0x184cde120 []
+0x18097f921 test al, al
+0x18097f923 jne 0x18097fa10 []
+0x18097f929 mov rdx, qword ptr [rbx + 0xf0]
+0x18097f930 test rdx, rdx
+0x18097f933 je 0x18097fa31 []
+0x18097f939 mov r8, qword ptr [rip + 0x82af4d8]
+0x18097f940 lea rcx, [rsp + 0x70]
+0x18097f945 call 0x1859c53b0 []
+0x18097f94a movups xmm0, xmmword ptr [rsp + 0x70]
+0x18097f94f movups xmmword ptr [rsp + 0x48], xmm0
+0x18097f954 movups xmm1, xmmword ptr [rsp + 0x80]
+0x18097f95c movups xmmword ptr [rsp + 0x58], xmm1
+0x18097f961 movsd xmm0, qword ptr [rsp + 0x90]
+0x18097f96a movsd qword ptr [rsp + 0x68], xmm0
+0x18097f970 mov qword ptr [rsp + 0x38], 0
+0x18097f979 lea rbx, [rsp + 0x48]
+0x18097f97e mov qword ptr [rsp + 0x40], rbx
+0x18097f983 mov rdx, qword ptr [rip + 0x826ee6e]
+0x18097f98a lea rcx, [rsp + 0x48]
+0x18097f98f call 0x1848e9720 []
+0x18097f994 test al, al
+0x18097f996 je 0x18097f9ca []
+0x18097f998 mov rcx, qword ptr [rsp + 0x60]
+0x18097f99d test rcx, rcx
+0x18097f9a0 je 0x18097fa25 []
+0x18097f9a6 mov r8, qword ptr [rip + 0x82b67ab]
+0x18097f9ad mov rdx, rdi
+0x18097f9b0 call 0x184cde120 []
+0x18097f9b5 test al, al
+0x18097f9b7 je 0x18097f983 []
+0x18097f9b9 mov rdx, qword ptr [rip + 0x826ebf0]
+0x18097f9c0 mov rcx, rbx
+0x18097f9c3 call 0x18051df60
+0x18097f9c8 jmp 0x18097fa10 []
+0x18097f9ca mov rdx, qword ptr [rip + 0x826ebdf]
+0x18097f9d1 mov rcx, rbx
+0x18097f9d4 call 0x18051df60
+0x18097f9d9 jmp 0x18097fa10 []
+0x18097f9db mov rdx, qword ptr [rip + 0x826ebce]
+0x18097f9e2 mov rcx, qword ptr [rsp + 0x40]
+0x18097f9e7 call 0x18051df60
+0x18097f9ec mov rcx, qword ptr [rsp + 0x38]
+0x18097f9f1 test rcx, rcx
+0x18097f9f4 jne 0x18097fa2b []
+0x18097f9f6 jmp 0x18097fa10 []
+0x18097f9f8 mov qword ptr [rsp + 0x20], 0
+0x18097fa01 movzx r9d, sil
+0x18097fa05 mov r8, rdi
+0x18097fa08 mov rdx, rbx
+0x18097fa0b call 0x1833b46c0 ['XLua.DelegateBridge.__Gen_Delegate_Imp265']
+0x18097fa10 lea r11, [rsp + 0xa0]
+0x18097fa18 mov rbx, qword ptr [r11 + 0x10]
+0x18097fa1c mov rsi, qword ptr [r11 + 0x18]
+0x18097fa20 mov rsp, r11
+0x18097fa23 pop rdi
+0x18097fa24 ret
+0x18097fa25 call 0x18049c3c0 []
+0x18097fa2a nop
+0x18097fa2b call 0x180483060 []
+0x18097fa30 int3
+0x18097fa31 call 0x18049c3c0 []
+0x18097fa36 int3
+0x18097fa37 int3
+0x18097fa38 int3
+0x18097fa39 int3
+0x18097fa3a int3
+0x18097fa3b int3
+0x18097fa3c int3
+0x18097fa3d int3
+0x18097fa3e int3
+0x18097fa3f int3

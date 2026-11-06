@@ -1,0 +1,78 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [],
+    "collectionDateSource": "not recorded",
+    "organizedOn": "2026-11-07",
+    "client": {
+      "dll": null,
+      "metadata": null
+    },
+    "sourceRecords": [
+      "navigation.json",
+      "profile.json",
+      "samples.json",
+      "sources.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "navigation.json",
+        "kind": "record",
+        "bytes": 855,
+        "sha256": "382d877d32c0c0f1dd0f375c602016ebff4e9ee41910983c8f7fcc69e9c43f78"
+      },
+      {
+        "path": "profile.json",
+        "kind": "record",
+        "bytes": 250947,
+        "sha256": "5f9f259fcb6088561b6a4c4db8def8717cdcc4da1d2c6c216c0f980eab5d33c8"
+      },
+      {
+        "path": "profile.py",
+        "kind": "historical-script",
+        "bytes": 12267,
+        "sha256": "063cab38674506ba304602363e19b54cbe1ab7c7e58a1996d4db7ecb38eceb7b"
+      },
+      {
+        "path": "refetch.py",
+        "kind": "historical-script",
+        "bytes": 915,
+        "sha256": "bf5986392a0ab3ec1b455ff7de452765463a93cbd82538ef93ea916e7299a919"
+      },
+      {
+        "path": "samples.json",
+        "kind": "record",
+        "bytes": 171249,
+        "sha256": "1b1a7cd3fd27153d954ffd5aed72e25803fcd305595fbc4c3277362410523ad6"
+      },
+      {
+        "path": "sources.json",
+        "kind": "record",
+        "bytes": 65451,
+        "sha256": "cceb23c1fa61e529896c48f557ce168cb40966aa42ca87a04376fdd452ec3a5d"
+      }
+    ],
+    "replay": {
+      "methods": [],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

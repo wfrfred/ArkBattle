@@ -1,0 +1,71 @@
+Torappu.Battle.Scheduler.get_remainingEnemiesCnt 0x180988670
+0x180988670 push rbx
+0x180988672 sub rsp, 0x40
+0x180988676 cmp byte ptr [rip + 0x861444a], 0
+0x18098867d mov rbx, rcx
+0x180988680 jne 0x1809886a1 []
+0x180988682 lea rcx, [rip + 0x819c99f]
+0x180988689 call 0x18049c210 []
+0x18098868e lea rcx, [rip + 0x8181093]
+0x180988695 call 0x18049c210 []
+0x18098869a mov byte ptr [rip + 0x8614426], 1
+0x1809886a1 mov rdx, qword ptr [rip + 0x8181080]
+0x1809886a8 mov rax, qword ptr [rdx + 0xb8]
+0x1809886af mov rcx, qword ptr [rax + 0x30]
+0x1809886b3 test rcx, rcx
+0x1809886b6 jne 0x180988752 []
+0x1809886bc mov qword ptr [rsp + 0x50], rdi
+0x1809886c1 cmp byte ptr [rip + 0x86143fc], cl
+0x1809886c7 jne 0x1809886e3 []
+0x1809886c9 lea rcx, [rip + 0x8181058]
+0x1809886d0 call 0x18049c210 []
+0x1809886d5 mov rdx, qword ptr [rip + 0x818104c]
+0x1809886dc mov byte ptr [rip + 0x86143e0], 1
+0x1809886e3 mov rax, qword ptr [rdx + 0xb8]
+0x1809886ea mov rcx, qword ptr [rax + 0x10]
+0x1809886ee test rcx, rcx
+0x1809886f1 jne 0x1809886fb []
+0x1809886f3 mov edi, dword ptr [rbx + 0x12c]
+0x1809886f9 jmp 0x180988708 []
+0x1809886fb xor r8d, r8d
+0x1809886fe mov rdx, rbx
+0x180988701 call 0x18356e600 ['XLua.DelegateBridge.__Gen_Delegate_Imp54']
+0x180988706 mov edi, eax
+0x180988708 movups xmm0, xmmword ptr [rbx + 0x2c]
+0x18098870c mov rcx, qword ptr [rip + 0x819c915]
+0x180988713 mov ebx, dword ptr [rbx + 0x3c]
+0x180988716 movups xmmword ptr [rsp + 0x20], xmm0
+0x18098871b cmp dword ptr [rcx + 0xe0], 0
+0x180988722 jne 0x18098872e []
+0x180988724 call 0x18049c450 []
+0x180988729 movups xmm0, xmmword ptr [rsp + 0x20]
+0x18098872e xor edx, edx
+0x180988730 movaps xmmword ptr [rsp + 0x20], xmm0
+0x180988735 lea rcx, [rsp + 0x20]
+0x18098873a mov dword ptr [rsp + 0x30], ebx
+0x18098873e call 0x18686bef0 ['CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.op_Implicit']
+0x180988743 sub edi, eax
+0x180988745 mov eax, edi
+0x180988747 mov rdi, qword ptr [rsp + 0x50]
+0x18098874c add rsp, 0x40
+0x180988750 pop rbx
+0x180988751 ret
+0x180988752 xor r8d, r8d
+0x180988755 mov rdx, rbx
+0x180988758 add rsp, 0x40
+0x18098875c pop rbx
+0x18098875d jmp 0x18356e600 ['XLua.DelegateBridge.__Gen_Delegate_Imp54']
+0x180988762 int3
+0x180988763 int3
+0x180988764 int3
+0x180988765 int3
+0x180988766 int3
+0x180988767 int3
+0x180988768 int3
+0x180988769 int3
+0x18098876a int3
+0x18098876b int3
+0x18098876c int3
+0x18098876d int3
+0x18098876e int3
+0x18098876f int3

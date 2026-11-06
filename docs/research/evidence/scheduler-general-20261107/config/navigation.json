@@ -1,0 +1,22 @@
+{
+  "note": "GitHub code search operates on repository default branch (returned ref 63c7cec73c3858d0ae913f85cc89af3cef4d744f), used for candidate navigation only; every positive sample fetched at pinned ref. Search zero does not prove absence at pin.",
+  "queries": [
+    {
+      "query": "repo:Kengxxiao/ArknightsGameData \"managedByScheduler\\\": false\"",
+      "total_count": 2,
+      "incomplete_results": false,
+      "paths": [
+        "zh_CN/gamedata/levels/obt/roguelike/ro6/level_rogue6_3-7.json",
+        "zh_CN/gamedata/levels/obt/crisis/v2/level_crisis_v2_05-01.json"
+      ],
+      "ref": "63c7cec73c3858d0ae913f85cc89af3cef4d744f"
+    },
+    {
+      "query": "repo:Kengxxiao/ArknightsGameData \"forceBlockWaveInBranch\\\": true\"",
+      "total_count": 0,
+      "incomplete_results": false,
+      "paths": [],
+      "ref": null
+    }
+  ]
+}

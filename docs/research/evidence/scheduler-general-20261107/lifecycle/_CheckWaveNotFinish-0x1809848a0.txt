@@ -1,0 +1,82 @@
+# Torappu.Battle.Scheduler._CheckWaveNotFinish @ 0x1809848a0
+Source: docs/research/evidence/scheduler-native-20261107/spawn-bodies.json
+Parameters: []
+0x1809848a0 push rbx
+0x1809848a2 sub rsp, 0x20
+0x1809848a6 cmp byte ptr [rip + 0x8618275], 0
+0x1809848ad mov rbx, rcx
+0x1809848b0 jne 0x1809848d1
+0x1809848b2 lea rcx, [rip + 0x825c457]
+0x1809848b9 call 0x18049c210
+0x1809848be lea rcx, [rip + 0x8184e63]
+0x1809848c5 call 0x18049c210
+0x1809848ca mov byte ptr [rip + 0x8618251], 1
+0x1809848d1 mov rdx, qword ptr [rip + 0x8184e50]
+0x1809848d8 mov rax, qword ptr [rdx + 0xb8]
+0x1809848df mov rcx, qword ptr [rax + 0x308]
+0x1809848e6 test rcx, rcx
+0x1809848e9 jne 0x18098499c
+0x1809848ef mov qword ptr [rsp + 0x30], rdi
+0x1809848f4 mov rax, qword ptr [rbx + 0xc0]
+0x1809848fb mov byte ptr [rsp + 0x40], cl
+0x1809848ff test rax, rax
+0x180984902 je 0x1809849ad
+0x180984908 cmp dword ptr [rax + 0x18], ecx
+0x18098490b setg dil
+0x18098490f cmp byte ptr [rip + 0x86181bf], cl
+0x180984915 jne 0x180984931
+0x180984917 lea rcx, [rip + 0x8184e0a]
+0x18098491e call 0x18049c210
+0x180984923 mov rdx, qword ptr [rip + 0x8184dfe]
+0x18098492a mov byte ptr [rip + 0x86181a3], 1
+0x180984931 mov rax, qword ptr [rdx + 0xb8]
+0x180984938 mov rcx, qword ptr [rax + 0x98]
+0x18098493f test rcx, rcx
+0x180984942 jne 0x18098494d
+0x180984944 mov rax, qword ptr [rbx + 0x130]
+0x18098494b jmp 0x180984958
+0x18098494d xor r8d, r8d
+0x180984950 mov rdx, rbx
+0x180984953 call 0x183448150; ['XLua.DelegateBridge.__Gen_Delegate_Imp3604']
+0x180984958 test rax, rax
+0x18098495b je 0x1809849ad
+0x18098495d xor edx, edx
+0x18098495f mov rcx, rax
+0x180984962 call 0x180670490; ['Torappu.Battle.BattleController.get_gameMode']
+0x180984967 test rax, rax
+0x18098496a je 0x1809849ad
+0x18098496c xor r9d, r9d
+0x18098496f lea r8, [rsp + 0x40]
+0x180984974 movzx edx, dil
+0x180984978 mov rcx, rax
+0x18098497b call 0x180978360
+0x180984980 movzx edx, byte ptr [rsp + 0x40]
+0x180984985 test al, al
+0x180984987 movzx ecx, dil
+0x18098498b mov rdi, qword ptr [rsp + 0x30]
+0x180984990 cmove edx, ecx
+0x180984993 movzx eax, dl
+0x180984996 add rsp, 0x20
+0x18098499a pop rbx
+0x18098499b ret
+0x18098499c xor r8d, r8d
+0x18098499f mov rdx, rbx
+0x1809849a2 call 0x18336d5f0; ['XLua.DelegateBridge.__Gen_Delegate_Imp21']
+0x1809849a7 add rsp, 0x20
+0x1809849ab pop rbx
+0x1809849ac ret
+0x1809849ad call 0x18049c3c0
+0x1809849b2 int3
+0x1809849b3 int3
+0x1809849b4 int3
+0x1809849b5 int3
+0x1809849b6 int3
+0x1809849b7 int3
+0x1809849b8 int3
+0x1809849b9 int3
+0x1809849ba int3
+0x1809849bb int3
+0x1809849bc int3
+0x1809849bd int3
+0x1809849be int3
+0x1809849bf int3

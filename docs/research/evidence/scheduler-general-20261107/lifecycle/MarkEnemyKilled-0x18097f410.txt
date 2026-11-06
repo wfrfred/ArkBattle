@@ -1,0 +1,203 @@
+# Torappu.Battle.Scheduler.MarkEnemyKilled @ 0x18097f410
+Source: .cache/native-research/scheduler-general-20261107/native-paths.json
+Parameters: [('enemy', 'Torappu.Battle.Enemy'), ('markAsNotManaged', 'bool')]
+0x18097f410 mov qword ptr [rsp + 0x20], rbx
+0x18097f415 mov byte ptr [rsp + 0x18], r8b
+0x18097f41a mov qword ptr [rsp + 0x10], rdx
+0x18097f41f mov qword ptr [rsp + 8], rcx
+0x18097f424 push rsi
+0x18097f425 push rdi
+0x18097f426 push r14
+0x18097f428 sub rsp, 0xf0
+0x18097f42f movzx r14d, r8b
+0x18097f433 mov rdi, rdx
+0x18097f436 mov rsi, rcx
+0x18097f439 cmp byte ptr [rip + 0x861d6e5], 0
+0x18097f440 jne 0x18097f4c1
+0x18097f442 lea rcx, [rip + 0x82af9cf]
+0x18097f449 call 0x18049c210
+0x18097f44e lea rcx, [rip + 0x826f15b]
+0x18097f455 call 0x18049c210
+0x18097f45a lea rcx, [rip + 0x826f397]
+0x18097f461 call 0x18049c210
+0x18097f466 lea rcx, [rip + 0x826f5db]
+0x18097f46d call 0x18049c210
+0x18097f472 lea rcx, [rip + 0x81d3297]
+0x18097f479 call 0x18049c210
+0x18097f47e lea rcx, [rip + 0x82b6cd3]
+0x18097f485 call 0x18049c210
+0x18097f48a lea rcx, [rip + 0x826162f]
+0x18097f491 call 0x18049c210
+0x18097f496 lea rcx, [rip + 0x81a5b8b]
+0x18097f49d call 0x18049c210
+0x18097f4a2 lea rcx, [rip + 0x818a27f]
+0x18097f4a9 call 0x18049c210
+0x18097f4ae lea rcx, [rip + 0x8266ca3]
+0x18097f4b5 call 0x18049c210
+0x18097f4ba mov byte ptr [rip + 0x861d664], 1
+0x18097f4c1 mov rax, qword ptr [rip + 0x818a260]
+0x18097f4c8 mov rcx, qword ptr [rax + 0xb8]
+0x18097f4cf mov rcx, qword ptr [rcx + 0x320]
+0x18097f4d6 test rcx, rcx
+0x18097f4d9 jne 0x18097f744
+0x18097f4df xor r8d, r8d
+0x18097f4e2 mov rdx, rdi
+0x18097f4e5 mov rcx, rsi
+0x18097f4e8 call 0x180987a80; ['Torappu.Battle.Scheduler._VerifyEnemy']
+0x18097f4ed test al, al
+0x18097f4ef je 0x18097f75c
+0x18097f4f5 test rdi, rdi
+0x18097f4f8 je 0x18097f77c
+0x18097f4fe xor r8d, r8d
+0x18097f501 mov rdx, rdi
+0x18097f504 lea rcx, [rsp + 0xb8]
+0x18097f50c call 0x180ace170; ['Torappu.Battle.Enemy.get_options']
+0x18097f511 movups xmm0, xmmword ptr [rax + 0x10]
+0x18097f515 movups xmmword ptr [rsp + 0x60], xmm0
+0x18097f51a movups xmm1, xmmword ptr [rax + 0x20]
+0x18097f51e movups xmmword ptr [rsp + 0x70], xmm1
+0x18097f523 movsd xmm0, qword ptr [rax + 0x30]
+0x18097f528 movsd qword ptr [rsp + 0x80], xmm0
+0x18097f531 mov rax, qword ptr [rax]
+0x18097f534 shr rax, 0x10
+0x18097f538 test al, al
+0x18097f53a jne 0x18097f5c7
+0x18097f540 movups xmm0, xmmword ptr [rsi + 0x2c]
+0x18097f544 movups xmmword ptr [rsp + 0x30], xmm0
+0x18097f549 mov ebx, dword ptr [rsi + 0x3c]
+0x18097f54c mov rcx, qword ptr [rip + 0x81a5ad5]
+0x18097f553 cmp dword ptr [rcx + 0xe0], 0
+0x18097f55a jne 0x18097f566
+0x18097f55c call 0x18049c450
+0x18097f561 movups xmm0, xmmword ptr [rsp + 0x30]
+0x18097f566 movaps xmmword ptr [rsp + 0x30], xmm0
+0x18097f56b mov dword ptr [rsp + 0x40], ebx
+0x18097f56f xor r8d, r8d
+0x18097f572 lea rdx, [rsp + 0x30]
+0x18097f577 lea rcx, [rsp + 0x50]
+0x18097f57c call 0x18686bf40; ['CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.op_Increment']
+0x18097f581 movups xmm0, xmmword ptr [rax]
+0x18097f584 mov ecx, dword ptr [rax + 0x10]
+0x18097f587 movups xmmword ptr [rsi + 0x2c], xmm0
+0x18097f58b mov dword ptr [rsi + 0x3c], ecx
+0x18097f58e movups xmm0, xmmword ptr [rsi + 0x40]
+0x18097f592 movaps xmmword ptr [rsp + 0x30], xmm0
+0x18097f597 mov eax, dword ptr [rsi + 0x50]
+0x18097f59a mov dword ptr [rsp + 0x40], eax
+0x18097f59e xor r8d, r8d
+0x18097f5a1 lea rdx, [rsp + 0x30]
+0x18097f5a6 lea rcx, [rsp + 0x50]
+0x18097f5ab call 0x18686bf40; ['CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.op_Increment']
+0x18097f5b0 movups xmm0, xmmword ptr [rax]
+0x18097f5b3 mov ecx, dword ptr [rax + 0x10]
+0x18097f5b6 movups xmmword ptr [rsi + 0x40], xmm0
+0x18097f5ba mov dword ptr [rsi + 0x50], ecx
+0x18097f5bd xor edx, edx
+0x18097f5bf mov rcx, rdi
+0x18097f5c2 call 0x180abada0; ['Torappu.Battle.Enemy.DontCountAsFinished']
+0x18097f5c7 mov rcx, qword ptr [rsi + 0xe0]
+0x18097f5ce test rcx, rcx
+0x18097f5d1 je 0x18097f77c
+0x18097f5d7 mov r8, qword ptr [rip + 0x82b6b7a]
+0x18097f5de mov rdx, rdi
+0x18097f5e1 call 0x184cde120
+0x18097f5e6 mov rdx, qword ptr [rsi + 0xf0]
+0x18097f5ed test rdx, rdx
+0x18097f5f0 je 0x18097f77c
+0x18097f5f6 mov r8, qword ptr [rip + 0x82af81b]
+0x18097f5fd lea rcx, [rsp + 0x50]
+0x18097f602 call 0x1859c53b0
+0x18097f607 movups xmm0, xmmword ptr [rsp + 0x50]
+0x18097f60c movups xmmword ptr [rsp + 0x88], xmm0
+0x18097f614 movups xmm1, xmmword ptr [rsp + 0x60]
+0x18097f619 movups xmmword ptr [rsp + 0x98], xmm1
+0x18097f621 movsd xmm0, qword ptr [rsp + 0x70]
+0x18097f627 movsd qword ptr [rsp + 0xa8], xmm0
+0x18097f630 mov qword ptr [rsp + 0x30], 0
+0x18097f639 lea rbx, [rsp + 0x88]
+0x18097f641 mov qword ptr [rsp + 0x38], rbx
+0x18097f646 nop word ptr [rax + rax]
+0x18097f650 mov rdx, qword ptr [rip + 0x826f1a1]
+0x18097f657 lea rcx, [rsp + 0x88]
+0x18097f65f call 0x1848e9720
+0x18097f664 test al, al
+0x18097f666 je 0x18097f69d
+0x18097f668 mov rcx, qword ptr [rsp + 0xa0]
+0x18097f670 test rcx, rcx
+0x18097f673 je 0x18097f770
+0x18097f679 mov r8, qword ptr [rip + 0x82b6ad8]
+0x18097f680 mov rdx, rdi
+0x18097f683 call 0x184cde120
+0x18097f688 test al, al
+0x18097f68a je 0x18097f650
+0x18097f68c mov rdx, qword ptr [rip + 0x826ef1d]
+0x18097f693 mov rcx, rbx
+0x18097f696 call 0x18051df60
+0x18097f69b jmp 0x18097f6e6
+0x18097f69d mov rdx, qword ptr [rip + 0x826ef0c]
+0x18097f6a4 mov rcx, rbx
+0x18097f6a7 call 0x18051df60
+0x18097f6ac jmp 0x18097f6e6
+0x18097f6ae mov rdx, qword ptr [rip + 0x826eefb]
+0x18097f6b5 mov rcx, qword ptr [rsp + 0x38]
+0x18097f6ba call 0x18051df60
+0x18097f6bf mov rcx, qword ptr [rsp + 0x30]
+0x18097f6c4 test rcx, rcx
+0x18097f6c7 jne 0x18097f776
+0x18097f6cd movzx r14d, byte ptr [rsp + 0x120]
+0x18097f6d6 mov rdi, qword ptr [rsp + 0x118]
+0x18097f6de mov rsi, qword ptr [rsp + 0x110]
+0x18097f6e6 mov rcx, qword ptr [rsi + 0xc0]
+0x18097f6ed test rcx, rcx
+0x18097f6f0 je 0x18097f77c
+0x18097f6f6 mov r8, qword ptr [rip + 0x82613c3]
+0x18097f6fd mov rdx, rdi
+0x18097f700 call 0x184f4ca00
+0x18097f705 mov rcx, qword ptr [rip + 0x8266a4c]
+0x18097f70c call 0x18558ff60
+0x18097f711 test rax, rax
+0x18097f714 je 0x18097f77c
+0x18097f716 xor edx, edx
+0x18097f718 mov rcx, rax
+0x18097f71b call 0x183e52640; ['Torappu.Config.DynamicConfig.get_useRecycleToFinishScheduler']
+0x18097f720 xor al, 1
+0x18097f722 or al, r14b
+0x18097f725 je 0x18097f75c
+0x18097f727 mov rcx, qword ptr [rsi + 0xc8]
+0x18097f72e test rcx, rcx
+0x18097f731 je 0x18097f77c
+0x18097f733 mov r8, qword ptr [rip + 0x8261386]
+0x18097f73a mov rdx, rdi
+0x18097f73d call 0x184f4ca00
+0x18097f742 jmp 0x18097f75c
+0x18097f744 mov qword ptr [rsp + 0x20], 0
+0x18097f74d movzx r9d, r14b
+0x18097f751 mov r8, rdi
+0x18097f754 mov rdx, rsi
+0x18097f757 call 0x1833b46c0; ['XLua.DelegateBridge.__Gen_Delegate_Imp265']
+0x18097f75c mov rbx, qword ptr [rsp + 0x128]
+0x18097f764 add rsp, 0xf0
+0x18097f76b pop r14
+0x18097f76d pop rdi
+0x18097f76e pop rsi
+0x18097f76f ret
+0x18097f770 call 0x18049c3c0
+0x18097f775 nop
+0x18097f776 call 0x180483060
+0x18097f77b int3
+0x18097f77c call 0x18049c3c0
+0x18097f781 int3
+0x18097f782 int3
+0x18097f783 int3
+0x18097f784 int3
+0x18097f785 int3
+0x18097f786 int3
+0x18097f787 int3
+0x18097f788 int3
+0x18097f789 int3
+0x18097f78a int3
+0x18097f78b int3
+0x18097f78c int3
+0x18097f78d int3
+0x18097f78e int3
+0x18097f78f int3
