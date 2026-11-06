@@ -11,7 +11,7 @@ test("typed identities retain private data and capability proofs across erased C
 import type { Ref } from ${module("common/ref")};
 import type { State } from ${module("battle/state")};
 import { Hooks, key, type Hook } from ${module("hook")};
-import { initialize, ref, get, compose, type Unit, type Change } from ${module("unit/index")};
+import { initialize, ref, get, compose, optional, type Unit, type Change } from ${module("unit/index")};
 import { update } from ${module("battle/unit")};
 import * as actions from ${module("unit/action/index")};
 import * as effects from ${module("unit/effect/index")};
@@ -107,6 +107,11 @@ const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'ba
 effects.install(battle, ref(bare), shield);
 const change: Change<Unit & Offense> = setAttackContribution({ id: 'bonus', value: [] });
 const actionChange = actionCapability.setRule({ id: 'ready', allows: () => true });
+const optionalAction: Change<Unit> = optional(actionCapability.hasAction, actionChange);
+update(battle, ref(bare), optionalAction);
+const optionalResult = optionalAction(host);
+const optionalHost: typeof host = optionalResult.next;
+const optionalLayer: 'GROUND' | 'AIR' = optionalResult.next.layer.type;
 const combined = compose(change, actionChange);
 const intersection: Change<Unit & Offense & actionCapability.Action> = combined;
 const applied = combined(host);
@@ -120,6 +125,10 @@ update(battle, offenseOnly, combined);
 // @ts-expect-error the composed Offense requirement cannot be supplied by an Action-only Ref.
 update(battle, actionOnly, combined);
 declare const skillChange: Change<Unit & SkillCapability>;
+// @ts-expect-error an Action guard does not establish Skill.
+optional(actionCapability.hasAction, skillChange);
+// @ts-expect-error an Action guard does not establish every composed requirement.
+optional(actionCapability.hasAction, compose(actionChange, skillChange));
 // @ts-expect-error requiring Skill cannot be weakened into requiring only Action.
 const wrongRequirement: Change<Unit & actionCapability.Action> = skillChange;
 const general: Change<Unit> = self => ({ next: self, settlements: [] });

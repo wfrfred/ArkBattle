@@ -23,7 +23,7 @@ Presence 根据宿主实际拥有的能力，登记或撤销自己持有的限�
 | Blocker／Blockable | 禁止取得或维持阻挡关系。 |
 | Vitality／Elemental | 拒收普通 HP／EP Damage；不附带普通 Healing 或资源自然恢复限制。 |
 
-两个入口返回的 Change 函数根据当前位置的当前宿主能力选择已有 Change，并按顺序调用。自身空间变更排在首位，随后直接复用各能力的 setRule／removeRule 工厂，不手写其它能力的 Rule State。全部变换共同参与一次发布，组合不增加发布或结算边界。恢复出现只移除 Presence 自己的登记，其它 Rule 继续生效。Capability 和 Action／Skill 的业务不反向读取 Presence。
+两个入口返回的 Change 以 compose 排序，自身空间变更排在首位，随后用 optional 按当前宿主能力应用各能力的 setRule／removeRule Change，不手写其它能力的 Rule State 或结算列表。optional 在实际应用时读取前序变换的 next。全部变换共同参与一次发布，组合不增加发布或结算边界。恢复出现只移除 Presence 自己的登记，其它 Rule 继续生效。Capability 和 Action／Skill 的业务不反向读取 Presence。
 
 空间查询、普通 Targeting 和 Terrain 接触直接消费空间存在事实。Combat 在调用可能消费 RNG 的 select 之前排除消失来源，不靠启动 Rule 补救已经发生的选择。已经锁定的 tracking Projectile 继续读取现存目标的真实位置；身份失效后才使用记忆位置。命中、重新索敌和伤害接收分别判断。
 

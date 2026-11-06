@@ -7,7 +7,7 @@ import * as effects from "../../core/unit/effect/index.js";
 import { type Definition, ref as effectRef, type Effect } from "../../core/unit/effect/index.js";
 
 import * as units from "../../core/unit/index.js";
-import type { Unit, Settlement } from "../../core/unit/index.js";
+import type { Unit } from "../../core/unit/index.js";
 
 import * as offense from "../../core/unit/capability/offense/index.js";
 import * as action from "../../core/unit/capability/action/index.js";
@@ -116,40 +116,30 @@ function changeModifiers(
         return battle;
     }
 
-    return updateUnit(battle, units.ref(unit), (self) => {
-        let next = self;
-        const settlements: Settlement[] = [];
-
-        if (offense.hasOffense(next)) {
-            const applied = (
+    return updateUnit(
+        battle,
+        units.ref(unit),
+        [
+            units.optional(
+                offense.hasOffense,
                 modifiers?.attack === undefined
                     ? offense.removeAttackContribution(id)
-                    : offense.setAttackContribution({ id, value: [modifiers.attack] })
-            )(next);
-            next = applied.next;
-            settlements.push(...applied.settlements);
-        }
-        if (action.hasAction(next)) {
-            const applied = (
+                    : offense.setAttackContribution({ id, value: [modifiers.attack] }),
+            ),
+            units.optional(
+                action.hasAction,
                 modifiers?.attackSpeed === undefined
                     ? action.removeSpeedContribution(id)
-                    : action.setSpeedContribution({ id, value: [modifiers.attackSpeed] })
-            )(next);
-            next = applied.next;
-            settlements.push(...applied.settlements);
-        }
-        if (hasLocomotion(next)) {
-            const applied = (
+                    : action.setSpeedContribution({ id, value: [modifiers.attackSpeed] }),
+            ),
+            units.optional(
+                hasLocomotion,
                 modifiers?.movementSpeed === undefined
                     ? locomotion.removeSpeedContribution(id)
-                    : locomotion.setSpeedContribution({ id, value: [modifiers.movementSpeed] })
-            )(next);
-            next = applied.next;
-            settlements.push(...applied.settlements);
-        }
-
-        return { next, settlements };
-    });
+                    : locomotion.setSpeedContribution({ id, value: [modifiers.movementSpeed] }),
+            ),
+        ].reduce(units.compose),
+    );
 }
 
 function damage(battle: BattleState, host: Ref<Unit>, amount: number): BattleState {

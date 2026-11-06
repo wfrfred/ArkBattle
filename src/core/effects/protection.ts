@@ -1,4 +1,4 @@
-import { compose, type Change, type Settlement } from "../unit/change.js";
+import { compose, optional, type Change } from "../unit/change.js";
 import { update as updateUnit } from "../battle/unit.js";
 
 import type { Definition } from "../unit/effect/index.js";
@@ -93,25 +93,13 @@ export const healFree: Definition<object, targetable.Targetable> = {
 function receptionRules(id: string, enabled: boolean): Change<units.Unit> {
     const rule = { id, allows: () => false };
 
-    return (self) => {
-        let next = self;
-        const settlements: Settlement[] = [];
-
-        if (elemental.hasElemental(next)) {
-            const applied = (
-                enabled
-                    ? elemental.setRule("damageRules", rule)
-                    : elemental.removeRule("damageRules", id)
-            )(next);
-            next = applied.next;
-            settlements.push(...applied.settlements);
-        }
-        if (vitality.hasVitality(next)) {
-            const applied = (enabled ? vitality.setRule(rule) : vitality.removeRule(id))(next);
-            next = applied.next;
-            settlements.push(...applied.settlements);
-        }
-
-        return { next, settlements };
-    };
+    return compose(
+        optional(
+            elemental.hasElemental,
+            enabled
+                ? elemental.setRule("damageRules", rule)
+                : elemental.removeRule("damageRules", id),
+        ),
+        optional(vitality.hasVitality, enabled ? vitality.setRule(rule) : vitality.removeRule(id)),
+    );
 }

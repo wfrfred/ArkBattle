@@ -21,7 +21,7 @@ export type { Initial } from "./capability/catalog.js";
 
 export type { Change, Applied, Settlement } from "./change.js";
 
-export { compose } from "./change.js";
+export { compose, optional } from "./change.js";
 
 export { initialize } from "./initialize.js";
 

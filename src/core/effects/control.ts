@@ -11,25 +11,22 @@ import * as locomotion from "../unit/capability/locomotion/capability.js";
 
 import * as skill from "../unit/capability/skill/capability.js";
 import { cancelForUnit } from "../unit/action/operations.js";
-import * as units from "../unit/query.js";
-import type { Applied, Settlement } from "../unit/change.js";
+import { compose, optional, type Change } from "../unit/change.js";
 import type { Unit } from "../unit/unit.js";
 
 export const stun: Definition<object> = {
     id: "control/stun",
     initialize: () => ({}),
     onEnable(state, self) {
-        const unit = units.get(state, self.host)!;
         const id = `@effect/${self.id}/stun`;
-        state = updateUnit(state, units.ref(unit), (self) => restrictions(self, id, true));
+        state = updateUnit(state, self.host, restrictions(id, true));
 
         return cancelForUnit(state, self.host, "INTERRUPTED");
     },
     onDisable(state, self) {
-        const unit = units.get(state, self.host)!;
         const id = `@effect/${self.id}/stun`;
 
-        return updateUnit(state, units.ref(unit), (self) => restrictions(self, id, false));
+        return updateUnit(state, self.host, restrictions(id, false));
     },
 };
 
@@ -37,29 +34,27 @@ export const silence: Definition<object> = {
     id: "control/silence",
     initialize: () => ({}),
     onEnable(state, self) {
-        const unit = units.get(state, self.host)!;
-
-        return skill.hasSkill(unit)
-            ? updateUnit(
-                  state,
-                  units.ref(unit),
-                  skill.setRule("activationRules", {
-                      id: `@effect/${self.id}/silence`,
-                      allows: () => false,
-                  }),
-              )
-            : state;
+        return updateUnit(
+            state,
+            self.host,
+            optional(
+                skill.hasSkill,
+                skill.setRule("activationRules", {
+                    id: `@effect/${self.id}/silence`,
+                    allows: () => false,
+                }),
+            ),
+        );
     },
     onDisable(state, self) {
-        const unit = units.get(state, self.host)!;
-
-        return skill.hasSkill(unit)
-            ? updateUnit(
-                  state,
-                  units.ref(unit),
-                  skill.removeRule("activationRules", `@effect/${self.id}/silence`),
-              )
-            : state;
+        return updateUnit(
+            state,
+            self.host,
+            optional(
+                skill.hasSkill,
+                skill.removeRule("activationRules", `@effect/${self.id}/silence`),
+            ),
+        );
     },
 };
 
@@ -67,61 +62,45 @@ export const blockSpRecovery: Definition<object> = {
     id: "control/block-sp-recovery",
     initialize: () => ({}),
     onEnable(state, self) {
-        const unit = units.get(state, self.host)!;
-
-        return skill.hasSkill(unit)
-            ? updateUnit(
-                  state,
-                  units.ref(unit),
-                  skill.setRule("recoveryRules", {
-                      id: `@effect/${self.id}/sp-recovery`,
-                      allows: () => false,
-                  }),
-              )
-            : state;
+        return updateUnit(
+            state,
+            self.host,
+            optional(
+                skill.hasSkill,
+                skill.setRule("recoveryRules", {
+                    id: `@effect/${self.id}/sp-recovery`,
+                    allows: () => false,
+                }),
+            ),
+        );
     },
     onDisable(state, self) {
-        const unit = units.get(state, self.host)!;
-
-        return skill.hasSkill(unit)
-            ? updateUnit(
-                  state,
-                  units.ref(unit),
-                  skill.removeRule("recoveryRules", `@effect/${self.id}/sp-recovery`),
-              )
-            : state;
+        return updateUnit(
+            state,
+            self.host,
+            optional(
+                skill.hasSkill,
+                skill.removeRule("recoveryRules", `@effect/${self.id}/sp-recovery`),
+            ),
+        );
     },
 };
 
-function restrictions<U extends Unit>(self: U, id: string, enabled: boolean): Applied<U> {
+function restrictions(id: string, enabled: boolean): Change<Unit> {
     const rule = { id, allows: () => false };
-    let next = self;
-    const settlements: Settlement[] = [];
 
-    if (action.hasAction(next)) {
-        const applied = (enabled ? action.setRule(rule) : action.removeRule(id))(next);
-        next = applied.next;
-        settlements.push(...applied.settlements);
-    }
-    if (locomotion.hasLocomotion(next)) {
-        const applied = (enabled ? locomotion.setRule(rule) : locomotion.removeRule(id))(next);
-        next = applied.next;
-        settlements.push(...applied.settlements);
-    }
-    if (skill.hasSkill(next)) {
-        const applied = (
+    return [
+        optional(action.hasAction, enabled ? action.setRule(rule) : action.removeRule(id)),
+        optional(
+            locomotion.hasLocomotion,
+            enabled ? locomotion.setRule(rule) : locomotion.removeRule(id),
+        ),
+        optional(
+            skill.hasSkill,
             enabled
                 ? skill.setRule("activationRules", rule)
-                : skill.removeRule("activationRules", id)
-        )(next);
-        next = applied.next;
-        settlements.push(...applied.settlements);
-    }
-    if (hasBlocker(next)) {
-        const applied = (enabled ? setBlockerRule(rule) : removeBlockerRule(id))(next);
-        next = applied.next;
-        settlements.push(...applied.settlements);
-    }
-
-    return { next, settlements };
+                : skill.removeRule("activationRules", id),
+        ),
+        optional(hasBlocker, enabled ? setBlockerRule(rule) : removeBlockerRule(id)),
+    ].reduce(compose);
 }

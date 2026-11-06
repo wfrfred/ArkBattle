@@ -38,3 +38,10 @@ export function compose<A extends Unit, B extends Unit>(
         return { next: b.next, settlements: [...a.settlements, ...b.settlements] };
     };
 }
+
+export function optional<C extends Unit>(
+    has: <U extends Unit>(self: U) => self is U & C,
+    change: Change<C>,
+): Change<Unit> {
+    return (self) => (has(self) ? change(self) : { next: self, settlements: [] });
+}

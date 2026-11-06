@@ -51,9 +51,13 @@ test("composition associates without commuting, publishes the final Unit and pre
         (self) => self,
         () => assert.fail("unchanged input must not settle"),
     );
-    const left = units.compose(units.compose(increment, scale), offset);
-    const right = units.compose(increment, units.compose(scale, offset));
+    const guardedScale = units.optional((self) => self.position[0] > 0, scale);
+    const left = units.compose(units.compose(increment, guardedScale), offset);
+    const right = units.compose(increment, units.compose(guardedScale, offset));
     const source = units.get(before, first);
+    const skipped = guardedScale(source);
+    assert.equal(skipped.next, source);
+    assert.deepEqual(skipped.settlements, []);
     assert.deepEqual(left(source).next, right(source).next);
     assert.notDeepEqual(
         units.compose(increment, scale)(source).next.position,

@@ -100,7 +100,7 @@ Card 的 RuleContext 按用途区分：DISPLAY／SELECT 接收 Card Ref，DEPLOY
 | 领域 | 公共入口 | 保留边界 |
 | --- | --- | --- |
 | 战斗运行 | [battle/index.ts](../../src/core/battle/index.ts) | 仅 initialize／step／simulateBattle、战斗契约类型、State／OperationResult 与 appendEvents；不聚合 Unit、Projectile、Creation 等独立操作。 |
-| Unit | [unit/index.ts](../../src/core/unit/index.ts) | 模型、生命周期 Hook 键、通用 setHook／removeHook Change 工厂、Change／compose、initialize 与 ref／all／get；Hook 集合迁移见[已定稿契约](hook.md)。完整登记、更新、离场、推进与 Unit lifetime 仍归 battle/unit.ts，Field 的纯存储操作仍归 battlefield/unit.ts。 |
+| Unit | [unit/index.ts](../../src/core/unit/index.ts) | 模型、生命周期 Hook 键、通用 setHook／removeHook Change 工厂、Change／compose／optional、initialize 与 ref／all／get；Hook 集合迁移见[已定稿契约](hook.md)。完整登记、更新、离场、推进与 Unit lifetime 仍归 battle/unit.ts，Field 的纯存储操作仍归 battlefield/unit.ts。 |
 | Action | [unit/action/index.ts](../../src/core/unit/action/index.ts) | 创建、查询、字段更新、lifetime、业务操作与调度协作；advance 由 operations.ts 实现，经 index 导出且仅由调度器调用。Actions、execution.State 与 Cooldown 按职责深导，不扩大内容写回或推进权限。 |
 | Skill | [unit/skill/index.ts](../../src/core/unit/skill/index.ts) | create、Skill／Activation、两种 Ref 与 getSkill／getActivation、setState／setActivationState、资源与激活业务、lifetime；不转发 Capability guards 或 Rule／Hook／Ammo 贡献 Change 工厂。 |
 | Effect | [unit/effect/index.ts](../../src/core/unit/effect/index.ts) | 类型、ref、get、lifetime 与生命周期操作；get 归 query.ts，Effects 容器保持内部职责。 |
@@ -277,7 +277,7 @@ Card 的 state.ts 与 Action 的局部 Cooldown 计算只处理显式传入的�
 
 ### 5.1 Unit 完整操作与批量变更
 
-`battle/unit.ts` 提供完整 Unit 操作；`unit/index.ts` 导出 Change 与 compose，update 不由该入口转发：
+`battle/unit.ts` 提供完整 Unit 操作；`unit/index.ts` 导出 Change、compose 与 optional，update 不由该入口转发：
 
 ```typescript
 add(battle: BattleState, unit: Unit): BattleState;
@@ -314,13 +314,19 @@ compose<A extends Unit, B extends Unit>(
     first: Change<A>,
     second: Change<B>,
 ): Change<A & B>;
+optional<C extends Unit>(
+    has: <U extends Unit>(self: U) => self is U & C,
+    change: Change<C>,
+): Change<Unit>;
 ```
 
 直接调用 `change(self)`，不读取 BattleState、不执行业务回调，只返回下一宿主值与已经捕获旧事实的结算程序。泛型 U 保留输入中超出最低能力 C 的字段，`in C` 明确能力要求的逆变关系。Applied 是本次纯应用结果，尚未发布或结算；Settlement 不再接收 Unit 参数，其闭包已经保存所属变换的 previous。
 
 Core 内部的 `createChange<C extends Unit>(transform, settle?)` 将纯变换与可选结算配对。transform 为 `<U extends C>(self: U) => U`，settle 为 `(battle, previous: C) => BattleState`。返回的 Change 函数先计算 next；当 next 与输入 self 为同一引用，或没有 settle 时，不登记本项结算；否则用闭包捕获本项输入 self。无变化转换必须返回原对象，不做字段深比较。Content 使用所属领域工厂，不提交完整旧 Unit。
 
-compose 是二元、有序的组合：先调用 `first(self)`，再用其 next 调用 second，返回最终 next，并依次连接两者 settlements。组合满足结合律，不满足交换律；组合本身不增加发布或结算边界。需要条件组合时，领域 Change 函数根据当前位置的当前 self 选择并调用已有 Change，不增加展开节点、嵌套 update 或另一套条件构建 API。
+compose 是二元、有序的组合：先调用 `first(self)`，再用其 next 调用 second，返回最终 next，并依次连接两者 settlements。组合满足结合律，不满足交换律；组合本身不增加发布或结算边界。
+
+optional 用能力守卫限定已有 Change 的应用：实际调用时检查当前位置的 self，通过时直接返回 `change(self)`，否则返回原 self 与空结算列表。放在 compose 中时，守卫读取前序变换产生的 next，不在构造组合时提前采样。它仍是普通 Change，不引入展开节点，也不改变逐项 previous、no-op、发布与结算顺序。
 
 普通数组注册由内部 [registration.ts](../../src/core/unit/registration.ts) 的 `createRegistrationOperations<U, P, K>(property)` 生成 set／remove Change。Capability 用 Rules、Contributions、Hooks 分组声明普通登记字段，State 直接继承这些分组；K 取 `keyof` 分组，Entry 直接从真实 U[P][K] 提取。set 由具体 Key 推断内联回调类型，再与字段／Entry 的映射元组联合交叉，保持联合 Key 的配对。返回的 Change 只要求相应宿主能力，不要求调用者提前绑定 Ref。单字段接口通过工厂的 `(property, key)` 重载固定字段，生成省略 key 的 set／remove，无需各领域重复数组修改逻辑。工厂复用按 ID 替换保序的数组操作，只完成纯变换和不可变复制，不增加运行时字段清单、能力校验、初始化、求值或派发。
 
