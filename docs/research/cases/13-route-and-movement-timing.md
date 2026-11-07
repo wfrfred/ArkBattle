@@ -154,3 +154,69 @@ return withinDistance(locator, sampledTarget, reachDistance);
 **N：** 原生另有每个 PatrolCheckpoint 自身的重复切换计数；计数大于 50 时记录错误并前进，OnTick 将计数清零。这是该实现的局部防循环保护，不能据此宣称原生每 Tick 有统一的 50 次或 128 次 Route 推进额度。
 
 **U：** 以上来自当前静态普通 native 分支，未验证活跃 XLua、特殊 Cursor 或实机行为；本轮不据此决定项目的推进预算、表现 Event 或公开 API。
+
+## 9. Checkpoint 参数与首路点时序（2026-11-07 补核）
+
+本轮只补 MOVE 的三个目标／到达参数及首个即时指令，不重新调查全部 Checkpoint。客户端与配置分别记录版本；原件、指纹与复跑见[Checkpoint 批次](../evidence/checkpoint-semantics-20261107/README.md)。N 为静态普通原生分支，D 为固定镜像配置及引用，I 为据此推导，U 为未闭合项。
+
+### MOVE：目标偏移与到达半径
+
+**N：** `MoveCheckpoint.OnBegin` 在每次进入时决定本次实例目标偏移：randomizeReachOffset=false 时直接复制 reachOffset；为 true 时，以 reachOffset 的各轴值作为随机半宽，取得各轴 `[-range, +range]` 的样本。两者是互斥解释，**不是固定偏移再加一份随机偏移**。后续 targetPos 为路点格中心加这次偏移；与整个路线实例的出生偏移属于不同层。[当前方法及类型](../evidence/checkpoint-semantics-20261107/move/native-bodies.json)、[随机分派及续段](../evidence/checkpoint-semantics-20261107/move/random-wrapper-body.json)。重新进入会重新执行 OnBegin，已有巡逻回边结论不变。
+
+**N：** 在地图／导航资格允许进行距离判断的分支，`CheckReached(Vector2)` 使用：
+
+```text
+radius = max(0.05, checkpoint.reachDistance)
+reached = squaredDistance(locator, sampledTarget) <= radius * radius
+```
+
+固定下限的原始字节是 `cd cc 4c 3d`（float32，约 0.05），不是从配置默认值猜测。[常量](../evidence/checkpoint-semantics-20261107/move/reach-distance-floor.json)、[CheckReached 与 CheckDistance](../evidence/checkpoint-semantics-20261107/move/native-bodies.json)。因此 reachDistance=0 不表示必须精确到达一个点；更大的值会提前满足距离条件。第 4 节的不可达跳过分支仍可先于这个距离条件成立，不能用半径公式替代完整资格。
+
+**D：** 复用固定提交 `bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d` 的 82 份完整关卡。排除三份 sandbox 对照后为 79 份、8,278 个 MOVE，其中 643 项 reachOffset 非零。两个直接出生引用见证：
+
+| 关卡 | 路点原值 | 普通 SPAWN 引用 |
+| --- | --- | --- |
+| 主线 3-4 | `/routes/40/checkpoints/0`，reachOffset=(0.48, -0.49) | `/waves/1/fragments/0/actions/1`，enemy_1501_demonk |
+| 主线 10-15 | `/routes/9/checkpoints/4`，reachOffset=(-0.5, -0.47) | `/waves/0/fragments/2/actions/1`，enemy_1528_manfri |
+
+[源文件身份、原值、Pointer 与统计](../evidence/checkpoint-semantics-20261107/move/config-summary.json)。这些固定偏移不能只当成显示坐标或无用字段。
+
+**U：** 上述有限样本的 randomizeReachOffset 均为 false、reachDistance 均为 0，尚无这两个参数非默认启用的关卡正例。它不是全量镜像扫描，不能推导全局不用。**N：** Fear 的 `_InitializeFearRouteData` 会在生成临时路点时先取随机样本，再写入 reachOffset；所查方法没有将 randomizeReachOffset 设为 true。[生成原件](../evidence/checkpoint-semantics-20261107/move/fear-and-random-continuations.json)。因此“恐惧目标有随机偏移”也不能充当该开关启用的证明。
+
+### 首个即时指令：身份、位置与出生登记
+
+**N：** 普通创建链区分 BObject 身份索引与 UnitManager 场上登记。沿成功、未被嵌套回调改变的路径，顺序如下：
+
+```text
+Factory 分配／取得 Enemy
+  → OnAllocate：分配 UID、清消失标志、RegisterBObject
+  → Enemy.Spawn → Enemy.Init
+      → Entity.Init：建立初始位置，执行 OnInit 等初始化
+      → 构造 Cursor，进入首个 Checkpoint.OnBegin
+      → 构造返回，新 Cursor 写回 Enemy
+  → Born／OnBorn
+      → Entity.OnBorn：启动状态机，执行出生事件及 Buff 程序
+      → Unit.OnBorn：RegisterUnit，再执行其余出生业务
+  → 最外层 BObject.Born 返回前标记 born
+```
+
+Factory 的默认分配路径在 `0x18476ff16` 调用分配回调，经过 Unit.OnAllocate，最终由 BObject.OnAllocate 在 `0x1806afc18` 写 UID、`0x1806afc23` 清消失标志、`0x1806afc72` 调用 RegisterBObject。[分配链](../evidence/checkpoint-semantics-20261107/allocation/README.md)、[基础初始化](../evidence/checkpoint-semantics-20261107/initialization-bodies.json)。
+
+BObject.Init 在 `0x1806afb63` 建立位置，早于 Enemy.Init 随后的 Cursor 构造；首次 OnBegin 与 Cursor 写回时点复用[案例 14](14-route-definition-fields.md#64-初始执行与临时-cursor-不是同一初始化政策)。Entity.OnBorn 在 `0x180729293` 才调用 StateMachine.Start；Unit.OnBorn 在它返回后的 `0x180b189b5` 调用 RegisterUnit；BObject.Born 到 `0x1806af830` 才写 born 标志。[初始化及出生原件](../evidence/checkpoint-semantics-20261107/initialization-bodies.json)、[Enemy 与登记入口](../evidence/checkpoint-semantics-20261107/entry-bodies.json)。所以首次 OnBegin 执行时已有有效 UID 与初始位置，但不能当成已在普通场上单位列表中登记。
+
+**N：** 两个指令的即时行为还需要分别判断：
+
+| 指令 | OnBegin 与首次执行的区别 |
+| --- | --- |
+| DISAPPEAR | 直接调用 SetDisappeared(true)。setter 只要求 UID>0 且标志不同，不要求 born 或 UnitManager 登记；依次执行前回调、写标志、后回调。Enemy 的前回调包含同步事件与 Buff 程序，因此初始化阶段存在真实的副作用机会。 |
+| APPEAR_AT_POS | 先把同一单位的位置设为路点格中心加 **reachOffset**，再调用 SetDisappeared(false)。目标 getter 不使用 Cursor 出生偏移，也不按 randomizeReachOffset 采样。普通新实例的消失标志已是 false，因此首次执行可以只有位置写入，而没有出现前后回调。 |
+
+[OnBegin 与 setter](../evidence/checkpoint-semantics-20261107/presence/checkpoint-presence-bodies.json)、[出现目标计算](../evidence/checkpoint-semantics-20261107/presence/appear-target-bodies.json)、[同步回调](../evidence/checkpoint-semantics-20261107/presence/entity-presence-bodies.json)。位置写入发生在 setter 的资格与同值判断之前，不能因后者 no-op 而跳过整个 APPEAR 指令。
+
+**N／I：** 消失标志改变不等于已经进入 DisappearState。Enemy 的后回调会请求该状态；普通 SwitchState 在 currentStateId<=0 时拒绝转换，而未启动的新 StateMachine 的该字段为默认零。因此，初始化首 DISAPPEAR 可以已写标志并执行同步回调，却尚未施加 DisappearState 的渐隐和状态效果。后面的 Start 使用强制切换进入 Enemy 的初始状态；所查 BornState.OnEnter 初始化出生动画和等待，并不检查该标志。[普通切换](../evidence/checkpoint-semantics-20261107/state-switch-internal.json)、[构造](../evidence/checkpoint-semantics-20261107/state-constructor-body.json)、[Start](../evidence/checkpoint-semantics-20261107/state-start-bodies.json)、[初始状态](../evidence/checkpoint-semantics-20261107/init-state-body.json)、[BornState](../evidence/checkpoint-semantics-20261107/presence/born-state-enter-body.json)。本轮不据此推导之后永远不进入消失状态。
+
+**U：** 82 份完整源文件的 routes／extraRoutes 中，未找到首个 Checkpoint 为 DISAPPEAR／APPEAR_AT_POS 的配置；不能将这种静态允许的调用链冒充已验证的实际关卡行为，也不能宣称全局没有此类路线。未运行游戏、核实活跃 XLua、穷举 OnInit 已安装的监听器，或继续展开出生结束后的全部状态选择。
+
+### 对后续设计的约束
+
+首路点进入可能包含随机采样、位置写入和同步业务，不能把“构造 Route State”和“进入首路点”混成纯字段初始化，也不能未经判断统一推迟到首个移动 Tick。原生两层登记及类方法顺序不是项目必须照搬的结构；应据实际观察语义决定完整创建／Enter 的边界。当前 Data 接受参数却未传递的现状，不构成字段无用的证据；非默认使用尚未闭合的部分继续保留为调查缺口，不据此提前扩大公开接口。

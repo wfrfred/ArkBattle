@@ -130,6 +130,8 @@ Enemy.OnTick（76531）每 Tick 经 Enemy.get_cursor（76397）取得主 Cursor 
 
 **N：** 当前 Fear.UpdateFearCursor 在 `0x180adf517` 读取宿主所提供 Cursor 的 snapshot，再于 `0x180adf585` 传给新 DirectionCursor；Attract 对应 `0x180ad5024／0x180ad509b`。两者同时传入零路线偏移，不重新调用 Scheduler.TakeSnapshot。[临时 Cursor 原件](../evidence/route-creation-20261107/timing/temporary-cursor-clocks.json)。这只证明这两个创建路径：不能规定一切动态／替代 Route 都重新采样主偏移，或一律重新绑定当前 Scheduler 时钟。
 
+首 DISAPPEAR／APPEAR 的位置、标志、同步回调与两层登记的进一步区别，见[案例 13 第 9 节](13-route-and-movement-timing.md#9-checkpoint-参数与首路点时序2026-11-07-补核)；OnBegin 被调用并不保证已经成功进入相应状态机状态。
+
 ### 6.5 本轮边界
 
 已能作为后续设计依据的事实是：路线创建不只来自 Schedule；出生源格和 host 归属独立；每个执行实例需要位置／偏移配对；出生时间快照与临时 Cursor 的继承有不同来源；初始路点有明确进入时点。

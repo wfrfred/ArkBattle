@@ -1,0 +1,1023 @@
+{
+  "provenance": {
+    "scope": "Finite reuse of 82 pinned full level files selected for prior Scheduler research; not all game levels.",
+    "repository": "Kengxxiao/ArknightsGameData",
+    "revision": "bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d",
+    "sourceManifest": "docs/research/evidence/scheduler-general-20261107/config/sources.json",
+    "sourceManifestSha256": "cceb23c1fa61e529896c48f557ce168cb40966aa42ca87a04376fdd452ec3a5d",
+    "selector": {
+      "collectedAt": "2026-11-07T10:07:46.888437+00:00",
+      "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+      "tool": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+        "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "argv": [
+        ".cache/native-research/scheduler-general-20261107/levels",
+        "--glob",
+        "level_*.json",
+        "--source-url",
+        "https://github.com/Kengxxiao/ArknightsGameData",
+        "--revision",
+        "bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d",
+        "--out",
+        ".cache/native-research/checkpoint-semantics-20261107/move/checkpoints.json",
+        "select",
+        "/**/checkpoints/*"
+      ],
+      "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData",
+      "revision": "bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d",
+      "inputs": [
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_act14side_01.json",
+          "bytes": 48357,
+          "sha256": "d9d8d69ed473bbef681943768a2bdc9b73f45fae8ecf7dd586a0620c2c594841",
+          "status": "ok",
+          "matched": 44
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_act14side_08.json",
+          "bytes": 48568,
+          "sha256": "733f9d5475d8057073004dde064a2852558af8036e0c256a54bbf086b58bf7fa",
+          "status": "ok",
+          "matched": 27
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_act14side_ex08.json",
+          "bytes": 77275,
+          "sha256": "0dd52b6c02f1c60085eb21ee18c69562064d4d41a3049d0104386e7d3d4502da",
+          "status": "ok",
+          "matched": 59
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_act14side_tr01.json",
+          "bytes": 53206,
+          "sha256": "6a328da9273433aeea511f191341e4be8c7ed2c2c4df0e834e46d3f948c4372d",
+          "status": "ok",
+          "matched": 10
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_act14side_tr02.json",
+          "bytes": 60703,
+          "sha256": "1a49d1c55312c14345707aef457fd4372a9e8ea704d5f787a2600def29c73014",
+          "status": "ok",
+          "matched": 33
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_act17side_01.json",
+          "bytes": 77644,
+          "sha256": "f313e361527f1b23793448f0ac063164c2506574e56e6f980490ffbdb59d5be7",
+          "status": "ok",
+          "matched": 73
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_act17side_10.json",
+          "bytes": 149256,
+          "sha256": "87623c51772bc4d07412c3482b2206a0a0c3d04f6b11108629b4699846e47533",
+          "status": "ok",
+          "matched": 181
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_act17side_ex08.json",
+          "bytes": 133616,
+          "sha256": "5878674efde10620a578682b81feea39b83f2af062a5c0af993540c008af5678",
+          "status": "ok",
+          "matched": 132
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_act1lock_c-01.json",
+          "bytes": 129155,
+          "sha256": "61a6c187d3e45e312b0579a66ff6b9457c116b5d4d06dc0ca2550cb3b93d418f",
+          "status": "ok",
+          "matched": 146
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_act1multi_01.json",
+          "bytes": 350867,
+          "sha256": "6e343da41d33ebde018646a0eb2393d87699992983a8235644566d0f5c2cd13f",
+          "status": "ok",
+          "matched": 322
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_act1multi_fortress_01.json",
+          "bytes": 737281,
+          "sha256": "42f26f6a1e59098ce2689784e452da2024496d9db51f6391bbf29ad45976671d",
+          "status": "ok",
+          "matched": 965
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_act4fun_01.json",
+          "bytes": 147442,
+          "sha256": "14514befac73789e7549dad599b985b325f8c1dff73e8cb038547b42143ab165",
+          "status": "ok",
+          "matched": 174
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_act4fun_02.json",
+          "bytes": 225679,
+          "sha256": "a69faf5be8a6abe8b384970780da56c63882ebcfd7f006d24b2b04ccb9702204",
+          "status": "ok",
+          "matched": 272
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_act4fun_03.json",
+          "bytes": 170116,
+          "sha256": "35965b6d8745cf522270537ff41518abecc104a3987618b5fb55eb54faf31a25",
+          "status": "ok",
+          "matched": 179
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_act4fun_tr01.json",
+          "bytes": 50120,
+          "sha256": "f8b89d8b12c73913ae03a82d68dd184d2145b06fafc624ca7deaef882b43a2a0",
+          "status": "ok",
+          "matched": 20
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_bossrush1_01.json",
+          "bytes": 163357,
+          "sha256": "333176ae1f8c90c9efa5e12bc34312816868bfb75e9462967bbc9af6b1ca10ea",
+          "status": "ok",
+          "matched": 193
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_bossrush1_fin04.json",
+          "bytes": 302442,
+          "sha256": "e65f5eb461d07a14d0bf107cb2e14584be7b20774bbef3a9ea778993ed919353",
+          "status": "ok",
+          "matched": 327
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_bossrush6_01.json",
+          "bytes": 126821,
+          "sha256": "1c9decae1e74826410a7470bee8cec4e9adfa6eae9489083c073c99509a1906b",
+          "status": "ok",
+          "matched": 109
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_bossrush6_fin04.json",
+          "bytes": 278215,
+          "sha256": "a24640009c7d22aff454002ac2ca05591d4394bfb777f9726786b8a5305e6b95",
+          "status": "ok",
+          "matched": 278
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_crisis_v2_05-01.json",
+          "bytes": 173563,
+          "sha256": "a95a88fe5af5da9db7c7e3fcad351053113223f3170930e50c083349652db60e",
+          "status": "ok",
+          "matched": 180
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_guide_01.json",
+          "bytes": 40111,
+          "sha256": "ce69e4acc31e821e1058c67961966bf9a14f9d5fd4e4a8255123382470f41482",
+          "status": "ok",
+          "matched": 0
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_guide_02.json",
+          "bytes": 82945,
+          "sha256": "3cb8a85b15a3ac8f4e2be696de21eff336ff4638b5992f709aa9198d8338785e",
+          "status": "ok",
+          "matched": 42
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_hard_08-01.json",
+          "bytes": 134168,
+          "sha256": "bfbc0616b034d53df55a1cd5057e38b207c62566c45146d0938e5296c9695a42",
+          "status": "ok",
+          "matched": 171
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_hard_13-04.json",
+          "bytes": 137153,
+          "sha256": "cd33c0ba37759a70d84928825fda8bfe2f1723345e651e91b9b626c382e87e24",
+          "status": "ok",
+          "matched": 120
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_main_00-01.json",
+          "bytes": 42804,
+          "sha256": "86ee68af1a7d40924ee8ead0e30e3969ad1cb0fd68e2564c8f694716b5d3ee4d",
+          "status": "ok",
+          "matched": 30
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_main_00-02.json",
+          "bytes": 42711,
+          "sha256": "4f81eaafc171e1700df0667e4bbb20f0ae87706e690ada14b3b5e7e3812e47f1",
+          "status": "ok",
+          "matched": 20
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_main_01-01.json",
+          "bytes": 44822,
+          "sha256": "3ef3e54e2925ab02ca1b85cbf20b8e71279b4b2895d978ef12352cb205380d07",
+          "status": "ok",
+          "matched": 6
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_main_03-04.json",
+          "bytes": 101438,
+          "sha256": "3502c840e570bdcf0ff173fe84aac2655f1e0ef157e5df024dfd96bbc1315d3a",
+          "status": "ok",
+          "matched": 55
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_main_04-10.json",
+          "bytes": 54675,
+          "sha256": "8e9f33788b895cafaa800131e01aa4ca65e79307d7f734bb37dcbcb320e97933",
+          "status": "ok",
+          "matched": 21
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_main_06-15.json",
+          "bytes": 30851,
+          "sha256": "5f7b18faecd61037b989e6b5b1c0681d72e6d116cf71db4d2391c65b2581703f",
+          "status": "ok",
+          "matched": 0
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_main_07-16.json",
+          "bytes": 126677,
+          "sha256": "bc09233c10c1694460374b47e7aa34060c40866332d29e457829fc9233ee859f",
+          "status": "ok",
+          "matched": 162
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_main_08-01.json",
+          "bytes": 81330,
+          "sha256": "8819c9cab57bd85005416d6262f9d52d07237c9b2a1a044d0ca17f8e408881b6",
+          "status": "ok",
+          "matched": 38
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_main_08-16.json",
+          "bytes": 137624,
+          "sha256": "0e845b4b54b35d556850af5c8addf1e13ff866154366986164292bb4a6df0788",
+          "status": "ok",
+          "matched": 97
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_main_09-17.json",
+          "bytes": 93425,
+          "sha256": "96164f1004b73a97ab2753a35e05d1b2bd5b7e1e591109676cf985e1964a68c5",
+          "status": "ok",
+          "matched": 39
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_main_10-15.json",
+          "bytes": 113146,
+          "sha256": "387d32d46ef0bc7d33f3025c38fd50075248904771ae6a3030a98ff0be2a8702",
+          "status": "ok",
+          "matched": 138
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_main_12-18.json",
+          "bytes": 86645,
+          "sha256": "bdf08f76648fba54af812af04dd5e5897df15628c73009c39cd443c848ac3d4e",
+          "status": "ok",
+          "matched": 30
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_main_14-02.json",
+          "bytes": 51598,
+          "sha256": "8445c47937ba113d33974a284a915e8832214f2ff5bdc62a81e2591ab083e8c0",
+          "status": "ok",
+          "matched": 25
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_main_14-20.json",
+          "bytes": 64209,
+          "sha256": "815167a68978aff8729e95a2a99f65fd1eaebc2e0e87dfd5bd84e524c321591a",
+          "status": "ok",
+          "matched": 5
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_main_17-17.json",
+          "bytes": 153991,
+          "sha256": "e44a481db952ac03e99925b5843295653905ed7f0cbd48f799318924fdd01e39",
+          "status": "ok",
+          "matched": 64
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue1_1-1.json",
+          "bytes": 124561,
+          "sha256": "ef2950ed2132e76a31d5d74256955cb8af2e5518b5420652943971e2dea88abf",
+          "status": "ok",
+          "matched": 156
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue1_5-1.json",
+          "bytes": 172998,
+          "sha256": "ba54a206df591fe2a8855b7f62ccec0720b3def18c77c289114611f90dfef21b",
+          "status": "ok",
+          "matched": 170
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue1_b-1.json",
+          "bytes": 144757,
+          "sha256": "7f305156ae2ce0f3fd4d343f6070b287756c24b2ce6227fb2e224ef382de7364",
+          "status": "ok",
+          "matched": 193
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue1_b-9.json",
+          "bytes": 265333,
+          "sha256": "6febe68c5104e6944dbc120cff4055ce55ecb548f38452ec8ba16d5e1c00b33d",
+          "status": "ok",
+          "matched": 395
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue1_ev-1.json",
+          "bytes": 87091,
+          "sha256": "88d1dd47fd27d50aff2328c5cf16bdf98c1ba156519f59e57f3e89b65b1b188a",
+          "status": "ok",
+          "matched": 94
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue1_ev-2.json",
+          "bytes": 39989,
+          "sha256": "a7fd9a792463067f154a351643501c414e5ca58f7cdfab5387a40b54177f3ec7",
+          "status": "ok",
+          "matched": 11
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue1_t-1.json",
+          "bytes": 67401,
+          "sha256": "7e9a16fccc6d62d98e3dac1344758f31b0f13e620696644710d225c4dbd85e30",
+          "status": "ok",
+          "matched": 82
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue2_1-1.json",
+          "bytes": 105002,
+          "sha256": "29956c5c12e46ac82a5023f87f16e197e8620b71f62a564aff204ecd38634336",
+          "status": "ok",
+          "matched": 86
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue2_5-1.json",
+          "bytes": 151213,
+          "sha256": "50771cebc5adcf30b3a4fd57785853c409631c5af570afe90cd84f9ec6e74325",
+          "status": "ok",
+          "matched": 211
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue2_b-1.json",
+          "bytes": 76826,
+          "sha256": "bae6c952d7dc091a435b7d6fa3ea6dc0fbbd8d909e88fa9d67267e78a4e4fd1b",
+          "status": "ok",
+          "matched": 70
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue2_b-10.json",
+          "bytes": 181823,
+          "sha256": "3ec5d92e69263a0b5f151917046612c482431cc3801ba3ad8d191922bfadd56a",
+          "status": "ok",
+          "matched": 224
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue2_ev-1.json",
+          "bytes": 71476,
+          "sha256": "81d7e5b133890f5e692cf1c8aeab6898ad58c0cd5bc637c71f8ad71539f01abe",
+          "status": "ok",
+          "matched": 104
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue2_t-1.json",
+          "bytes": 66679,
+          "sha256": "d878542858d7451886b2764d65c58ea86a02e8698ac1726cce7cf50e93d329ec",
+          "status": "ok",
+          "matched": 85
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue3_1-1.json",
+          "bytes": 130276,
+          "sha256": "1e4c4ac177a467ebfaab5f001857d19de9b1d92d6dd9572ee46b02a6ba9409f4",
+          "status": "ok",
+          "matched": 121
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue3_b-4.json",
+          "bytes": 142685,
+          "sha256": "624b287b7932cb3ffa1ba5e4857d0106ed604ae227452b642d80c589fc883ba5",
+          "status": "ok",
+          "matched": 50
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue3_ev-1.json",
+          "bytes": 110192,
+          "sha256": "dd511c7fce9bd3bddfc8b6e1d3e70a9765fadcbafa527a58e23fe3fadc4ac0ed",
+          "status": "ok",
+          "matched": 128
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue3_ev-6.json",
+          "bytes": 111478,
+          "sha256": "73cbca73a0ed3ecfa781dcc7c52873f60f2276e2b2bc84162e17294807953973",
+          "status": "ok",
+          "matched": 111
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue3_t-1.json",
+          "bytes": 92664,
+          "sha256": "08b8fce11826872831c365cddc632d22ad6fa86bcdaca7cc3a657c6e443e7f57",
+          "status": "ok",
+          "matched": 38
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue3_t-4.json",
+          "bytes": 150883,
+          "sha256": "8a9dc851b52781b0c7b7511f14901d5d526c568a948ed53809360e5f96196fc9",
+          "status": "ok",
+          "matched": 145
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue4_1-1.json",
+          "bytes": 97226,
+          "sha256": "2736e0800d07afe3288f73a085d43b4a91b59937aeb2ebabe3e22179fe65d04f",
+          "status": "ok",
+          "matched": 80
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue4_5-1.json",
+          "bytes": 215024,
+          "sha256": "c87b75fc660a80c827adc494c24f6a4255333fa14124a83c4160d8449fdcd065",
+          "status": "ok",
+          "matched": 181
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue4_b-1.json",
+          "bytes": 94897,
+          "sha256": "26e5dd8c9b070ee0386f24e6e43735119afda470835bc8e2b2a6fb185e1730ee",
+          "status": "ok",
+          "matched": 102
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue4_b-4.json",
+          "bytes": 119506,
+          "sha256": "fef525dc2fcc3b7f382c68c6609755240d352c9283ab98204abf53a97b527e57",
+          "status": "ok",
+          "matched": 114
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue4_t-1.json",
+          "bytes": 87971,
+          "sha256": "99772e514f6b9c2419ea2ee0d460ca9e73edb4b419c5627065e74f24a365dbf4",
+          "status": "ok",
+          "matched": 88
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue4_t-3.json",
+          "bytes": 53337,
+          "sha256": "092c4e9faf565bb28e4a7dc4dacb1d8e9f6644d47d4cb5e117473a046644e892",
+          "status": "ok",
+          "matched": 37
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue5_1-1.json",
+          "bytes": 203099,
+          "sha256": "25b295ee0d139ab044abf075a6928f8ac1172227d1869319fcfe6ec056be4af1",
+          "status": "ok",
+          "matched": 401
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue5_b-9-a.json",
+          "bytes": 569219,
+          "sha256": "2d71d4be0addfc65a9c61f8d3c55dc4c06d36cf1294d236efe6eabdfb302fe56",
+          "status": "ok",
+          "matched": 525
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue5_b-9-e.json",
+          "bytes": 381272,
+          "sha256": "82201208af40b84fb88d1640599852058164227657cdb5e34c98d8a71daf4a71",
+          "status": "ok",
+          "matched": 176
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue5_ev-1.json",
+          "bytes": 131279,
+          "sha256": "6e5d7dc2b4d5af7534706cd4e9a0deeb5ae10c72ed42af2f18e3270edb8a2574",
+          "status": "ok",
+          "matched": 139
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue5_t-1.json",
+          "bytes": 58495,
+          "sha256": "afdc7dcf44201dc9d413b85b1b38e16e8b857cf8eee3d4fbf89b98c20cabf2c5",
+          "status": "ok",
+          "matched": 20
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue5_t-9-c.json",
+          "bytes": 114231,
+          "sha256": "aa3bfd9ea021be7bf66e5149fcdcbecdf4b57231b86f77da0c2cbfbb2023ccf8",
+          "status": "ok",
+          "matched": 121
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue6_1-1.json",
+          "bytes": 133058,
+          "sha256": "b9b632f7cd1c73da5e6cd107eec81c5d45d44b8cb934e6989db73095ec44c0a8",
+          "status": "ok",
+          "matched": 158
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue6_3-7.json",
+          "bytes": 270974,
+          "sha256": "cfdf1d481daa2e534cdb914d57cee6b404f124012ca3e3a09b290694366e3196",
+          "status": "ok",
+          "matched": 346
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue6_b-7.json",
+          "bytes": 217536,
+          "sha256": "dddd6d6d8bac7bba6e31963e6d898f51fac3ab26b476595948d9368eb1b7e358",
+          "status": "ok",
+          "matched": 287
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue6_t-1.json",
+          "bytes": 38834,
+          "sha256": "d922f82be814216bcf09cfb4e8252457f8329582e5a987e25db505b2f75ab9e7",
+          "status": "ok",
+          "matched": 24
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue6_t-12.json",
+          "bytes": 173520,
+          "sha256": "9a5a8db752868ff1dd9e436c7143bb2e599e3d43906f539e42b84add26c2c1ba",
+          "status": "ok",
+          "matched": 309
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_rogue6_t-8-c.json",
+          "bytes": 45889,
+          "sha256": "5ebb433ed9a26332abb2a6bba394c849b8df8490e5d4c887769263521797ccd6",
+          "status": "ok",
+          "matched": 12
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_sandbox1_102.json",
+          "bytes": 143737,
+          "sha256": "f5ce4fd3f585ef056cfbe124ba50c09bd40d89c72b67705ed05c87a5b9fad916",
+          "status": "ok",
+          "matched": 56
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_sandbox1_12.json",
+          "bytes": 142544,
+          "sha256": "f26dbf1c8914e1505bd55223056eb0f9ab7f03d22e32199fcb61e9213fba16c0",
+          "status": "ok",
+          "matched": 72
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_sandbox1_21.json",
+          "bytes": 257278,
+          "sha256": "9a5f22497ae617eb7ed53ce594f84c622ed290b4e66b9f859fcd069c8ece7e52",
+          "status": "ok",
+          "matched": 200
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_training_7.json",
+          "bytes": 27858,
+          "sha256": "793b1e1b5e9d2397223d12e877bc36ab743572cf7a9beb036c80d4c9e658c989",
+          "status": "ok",
+          "matched": 2
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_weekly_killcost_6.json",
+          "bytes": 76472,
+          "sha256": "cb028bbc90cc068074417df7b6c33f7249d2c999d04b10d59e80a423dd943534",
+          "status": "ok",
+          "matched": 49
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/scheduler-general-20261107/levels/level_weekly_melee_6.json",
+          "bytes": 51759,
+          "sha256": "b2b81261287af3c0593d5e72161432ff4ecbde82cf711dbc6e729a51e6a2b751",
+          "status": "ok",
+          "matched": 8
+        }
+      ]
+    },
+    "excludedControls": [
+      "zh_CN/gamedata/levels/obt/sandbox/sandbox_1/level_sandbox1_102.json",
+      "zh_CN/gamedata/levels/obt/sandbox/sandbox_1/level_sandbox1_12.json",
+      "zh_CN/gamedata/levels/obt/sandbox/sandbox_1/level_sandbox1_21.json"
+    ],
+    "validation": "All source byte strings reproduce the upstream Git blob SHA-1. MOVE includes numeric type 0."
+  },
+  "result": {
+    "sourceFiles": 82,
+    "supportedSourceFiles": 79,
+    "all": {
+      "checkpoints": 10768,
+      "types": {
+        "MOVE": 7926,
+        "WAIT_FOR_SECONDS": 1567,
+        "DISAPPEAR": 212,
+        "APPEAR_AT_POS": 212,
+        "WAIT_CURRENT_FRAGMENT_TIME": 118,
+        "1": 106,
+        "0": 502,
+        "5": 29,
+        "6": 29,
+        "PATROL_MOVE": 67
+      },
+      "randomizeReachOffset": {
+        "false": 10768
+      },
+      "reachDistance": {
+        "0.0": 10768
+      },
+      "nonzeroReachOffset": 643
+    },
+    "excludingUnsupportedControls": {
+      "checkpoints": 10440,
+      "types": {
+        "MOVE": 7776,
+        "WAIT_FOR_SECONDS": 1504,
+        "DISAPPEAR": 188,
+        "APPEAR_AT_POS": 188,
+        "WAIT_CURRENT_FRAGMENT_TIME": 118,
+        "1": 106,
+        "0": 502,
+        "5": 29,
+        "6": 29
+      },
+      "randomizeReachOffset": {
+        "false": 10440
+      },
+      "reachDistance": {
+        "0.0": 10440
+      },
+      "nonzeroReachOffset": 643
+    },
+    "supportedMove": {
+      "checkpoints": 8278,
+      "types": {
+        "MOVE": 7776,
+        "0": 502
+      },
+      "randomizeReachOffset": {
+        "false": 8278
+      },
+      "reachDistance": {
+        "0.0": 8278
+      },
+      "nonzeroReachOffset": 643
+    },
+    "witnesses": [
+      {
+        "source": {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_03-04.json",
+          "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/obt/main/level_main_03-04.json",
+          "githubBlobSha": "85261fb39e91dae9ec77fb547c1d6341f78a1fbb",
+          "bytes": 101438,
+          "connectorTextSha256": "3502c840e570bdcf0ff173fe84aac2655f1e0ef157e5df024dfd96bbc1315d3a"
+        },
+        "routePointer": "/routes/40",
+        "route": {
+          "motionMode": "WALK",
+          "startPosition": {
+            "row": 0,
+            "col": 4
+          },
+          "endPosition": {
+            "row": 7,
+            "col": 4
+          },
+          "spawnRandomRange": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "spawnOffset": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "checkpoints": [
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 1,
+                "col": 4
+              },
+              "reachOffset": {
+                "x": 0.48,
+                "y": -0.49
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 2,
+                "col": 4
+              },
+              "reachOffset": {
+                "x": 0.48,
+                "y": 0.18
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "WAIT_FOR_SECONDS",
+              "time": 30.0,
+              "position": {
+                "row": 0,
+                "col": 0
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 7,
+                "col": 4
+              },
+              "reachOffset": {
+                "x": 0.49,
+                "y": -0.47
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            }
+          ],
+          "allowDiagonalMove": true,
+          "visitEveryTileCenter": false,
+          "visitEveryNodeCenter": false,
+          "visitEveryCheckPoint": false
+        },
+        "checkpointPointer": "/routes/40/checkpoints/0",
+        "checkpoint": {
+          "type": "MOVE",
+          "time": 0.0,
+          "position": {
+            "row": 1,
+            "col": 4
+          },
+          "reachOffset": {
+            "x": 0.48,
+            "y": -0.49
+          },
+          "randomizeReachOffset": false,
+          "reachDistance": 0.0
+        },
+        "actionPointer": "/waves/1/fragments/0/actions/1",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_1501_demonk",
+          "count": 1,
+          "preDelay": 3.0,
+          "interval": 1.0,
+          "routeIndex": 40,
+          "blockFragment": false,
+          "autoPreviewRoute": true,
+          "autoDisplayEnemyInfo": false,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": null,
+          "randomSpawnGroupPackKey": null,
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 0,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      },
+      {
+        "source": {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_10-15.json",
+          "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/obt/main/level_main_10-15.json",
+          "githubBlobSha": "0617e2a7407f1c5ddc377cc1888a95387fa05166",
+          "bytes": 113146,
+          "connectorTextSha256": "387d32d46ef0bc7d33f3025c38fd50075248904771ae6a3030a98ff0be2a8702"
+        },
+        "routePointer": "/routes/9",
+        "route": {
+          "motionMode": "WALK",
+          "startPosition": {
+            "row": 1,
+            "col": 5
+          },
+          "endPosition": {
+            "row": 4,
+            "col": 11
+          },
+          "spawnRandomRange": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "spawnOffset": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "checkpoints": [
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 2,
+                "col": 5
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "WAIT_FOR_SECONDS",
+              "time": 2.0,
+              "position": {
+                "row": 0,
+                "col": 0
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 4,
+                "col": 5
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": -0.48
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "WAIT_FOR_SECONDS",
+              "time": 25.0,
+              "position": {
+                "row": 0,
+                "col": 0
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 4,
+                "col": 8
+              },
+              "reachOffset": {
+                "x": -0.5,
+                "y": -0.47
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "WAIT_FOR_SECONDS",
+              "time": 30.0,
+              "position": {
+                "row": 0,
+                "col": 0
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 5,
+                "col": 8
+              },
+              "reachOffset": {
+                "x": -0.5,
+                "y": -0.48
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "WAIT_FOR_SECONDS",
+              "time": 25.0,
+              "position": {
+                "row": 0,
+                "col": 0
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 5,
+                "col": 11
+              },
+              "reachOffset": {
+                "x": -0.5,
+                "y": -0.47
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            }
+          ],
+          "allowDiagonalMove": true,
+          "visitEveryTileCenter": false,
+          "visitEveryNodeCenter": false,
+          "visitEveryCheckPoint": false
+        },
+        "checkpointPointer": "/routes/9/checkpoints/4",
+        "checkpoint": {
+          "type": "MOVE",
+          "time": 0.0,
+          "position": {
+            "row": 4,
+            "col": 8
+          },
+          "reachOffset": {
+            "x": -0.5,
+            "y": -0.47
+          },
+          "randomizeReachOffset": false,
+          "reachDistance": 0.0
+        },
+        "actionPointer": "/waves/0/fragments/2/actions/1",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_1528_manfri",
+          "count": 1,
+          "preDelay": 3.0,
+          "interval": 1.0,
+          "routeIndex": 9,
+          "blockFragment": false,
+          "autoPreviewRoute": true,
+          "autoDisplayEnemyInfo": false,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": null,
+          "randomSpawnGroupPackKey": null,
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 0,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      }
+    ],
+    "firstCheckpointTypes": {
+      "routes": {
+        "MOVE": 1778,
+        "WAIT_FOR_SECONDS": 224,
+        "0": 139,
+        "1": 3,
+        "WAIT_CURRENT_FRAGMENT_TIME": 10,
+        "PATROL_MOVE": 15
+      },
+      "extraRoutes": {
+        "WAIT_FOR_SECONDS": 66,
+        "MOVE": 227
+      }
+    },
+    "firstPresenceInstructions": [],
+    "limitations": [
+      "No true randomizeReachOffset or nonzero reachDistance in this finite sample; no global absence conclusion.",
+      "A SPAWN-to-route reference establishes configured use, not a live game observation."
+    ]
+  }
+}

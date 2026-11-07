@@ -1,0 +1,2807 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-07"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-07",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "allocation/allocate-dispatch.json#/provenance/client/dll",
+          "allocation/creation-helper-continuation.json#/provenance/client/dll",
+          "allocation/creation-helper-entry.json#/provenance/client/dll",
+          "allocation/generic-allocation.json#/provenance/client/dll",
+          "allocation/unit-allocation.json#/provenance/client/dll",
+          "entry-bodies.json#/provenance/client/dll",
+          "init-state-body.json#/provenance/client/dll",
+          "initialization-bodies.json#/provenance/client/dll",
+          "move/checkpoint-data-type.json#/provenance/client/dll",
+          "move/fear-and-random-continuations.json#/provenance/client/dll",
+          "move/native-bodies.json#/provenance/client/dll",
+          "move/random-constants.json#/provenance/client/dll",
+          "move/random-vector-body.json#/provenance/client/dll",
+          "move/random-wrapper-body.json#/provenance/client/dll",
+          "move/reach-distance-floor.json#/provenance/client/dll",
+          "presence/appear-target-bodies.json#/provenance/client/dll",
+          "presence/born-state-enter-body.json#/provenance/client/dll",
+          "presence/checkpoint-presence-bodies.json#/provenance/client/dll",
+          "presence/entity-presence-bodies.json#/provenance/client/dll",
+          "presence/state-switch-body.json#/provenance/client/dll",
+          "state-constructor-body.json#/provenance/client/dll",
+          "state-start-bodies.json#/provenance/client/dll",
+          "state-switch-internal.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "allocation/allocate-dispatch.json#/provenance/client/metadata",
+          "allocation/creation-helper-continuation.json#/provenance/client/metadata",
+          "allocation/creation-helper-entry.json#/provenance/client/metadata",
+          "allocation/generic-allocation.json#/provenance/client/metadata",
+          "allocation/unit-allocation.json#/provenance/client/metadata",
+          "entry-bodies.json#/provenance/client/metadata",
+          "init-state-body.json#/provenance/client/metadata",
+          "initialization-bodies.json#/provenance/client/metadata",
+          "move/checkpoint-data-type.json#/provenance/client/metadata",
+          "move/fear-and-random-continuations.json#/provenance/client/metadata",
+          "move/native-bodies.json#/provenance/client/metadata",
+          "move/random-constants.json#/provenance/client/metadata",
+          "move/random-vector-body.json#/provenance/client/metadata",
+          "move/random-wrapper-body.json#/provenance/client/metadata",
+          "move/reach-distance-floor.json#/provenance/client/metadata",
+          "presence/appear-target-bodies.json#/provenance/client/metadata",
+          "presence/born-state-enter-body.json#/provenance/client/metadata",
+          "presence/checkpoint-presence-bodies.json#/provenance/client/metadata",
+          "presence/entity-presence-bodies.json#/provenance/client/metadata",
+          "presence/state-switch-body.json#/provenance/client/metadata",
+          "state-constructor-body.json#/provenance/client/metadata",
+          "state-start-bodies.json#/provenance/client/metadata",
+          "state-switch-internal.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "allocation/allocate-dispatch.json",
+      "allocation/creation-helper-continuation.json",
+      "allocation/creation-helper-entry.json",
+      "allocation/generic-allocation.json",
+      "allocation/unit-allocation.json",
+      "entry-bodies.json",
+      "init-state-body.json",
+      "initialization-bodies.json",
+      "move/checkpoint-data-type.json",
+      "move/config-summary.json",
+      "move/fear-and-random-continuations.json",
+      "move/native-bodies.json",
+      "move/random-constants.json",
+      "move/random-vector-body.json",
+      "move/random-wrapper-body.json",
+      "move/reach-distance-floor.json",
+      "presence/appear-target-bodies.json",
+      "presence/born-state-enter-body.json",
+      "presence/checkpoint-presence-bodies.json",
+      "presence/entity-presence-bodies.json",
+      "presence/state-switch-body.json",
+      "state-constructor-body.json",
+      "state-start-bodies.json",
+      "state-switch-internal.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "allocation/allocate-dispatch.json",
+        "kind": "record",
+        "bytes": 2719256,
+        "sha256": "04f558465a1a7259da1cd28918aa98cf933ea4b2b12c1d0d9825cb9d8ef39d49"
+      },
+      {
+        "path": "allocation/creation-helper-continuation.json",
+        "kind": "record",
+        "bytes": 24819,
+        "sha256": "33db44c673a51a3f71098255108ef6982ffc211f042fd9bacfdced4961c652c5"
+      },
+      {
+        "path": "allocation/creation-helper-entry.json",
+        "kind": "record",
+        "bytes": 102837,
+        "sha256": "23bd94191261d75c276abce021d36f1291134d354ece962f5caeda7d45e237b7"
+      },
+      {
+        "path": "allocation/generic-allocation.json",
+        "kind": "record",
+        "bytes": 53394,
+        "sha256": "9ddefbd331b7526f0d9062e20720b92515677135432fa109e550335c2c4e2eb3"
+      },
+      {
+        "path": "allocation/unit-allocation.json",
+        "kind": "record",
+        "bytes": 97184,
+        "sha256": "afe5f736ed085e2345b0f804a050c5d443183e54625b01bbe9e6fa1b4669bb40"
+      },
+      {
+        "path": "entry-bodies.json",
+        "kind": "record",
+        "bytes": 307591,
+        "sha256": "6381449b7c2c82437c591ee654d57a140027236cf15149957804a8613d4ae5ce"
+      },
+      {
+        "path": "init-state-body.json",
+        "kind": "record",
+        "bytes": 95496,
+        "sha256": "1c04abb8e75552b3bc0e9c4c1b575587c8a309c3dc1214fcee93795c89172c04"
+      },
+      {
+        "path": "initialization-bodies.json",
+        "kind": "record",
+        "bytes": 404127,
+        "sha256": "5b50b2b0aa2504df55e8b9a7dd3114ae9323f46954e0af0634bde4e0b0a8e544"
+      },
+      {
+        "path": "move/checkpoint-data-type.json",
+        "kind": "record",
+        "bytes": 20757,
+        "sha256": "78014685d6c059ada9d9e519a346f77df02092364ac6abb881e56b62d87d8ed7"
+      },
+      {
+        "path": "move/config-summary.json",
+        "kind": "record",
+        "bytes": 39453,
+        "sha256": "18659aaa8802de06606bede328230e1f53ec822e167e51e750f64c57d987ecfe"
+      },
+      {
+        "path": "move/fear-and-random-continuations.json",
+        "kind": "record",
+        "bytes": 152283,
+        "sha256": "c82b27558eb878e218eab7ba057cc039baf4fe62677d14fc2e283771d0957031"
+      },
+      {
+        "path": "move/native-bodies.json",
+        "kind": "record",
+        "bytes": 206338,
+        "sha256": "dcf08611f69d17c1249fdad2f7742deb6125fe5ad103eab7a6520c36f497eab3"
+      },
+      {
+        "path": "move/profile.py",
+        "kind": "historical-script",
+        "bytes": 5572,
+        "sha256": "7f67fba500e3108e61dbb3785ce474971691713cfececa8e806f03ab22ca6c2c"
+      },
+      {
+        "path": "move/random-constants.json",
+        "kind": "record",
+        "bytes": 17980,
+        "sha256": "0ee3084d56a5c14119c5e15c3cc7f0dd8de2ec7f3972917f4582c1b51b5ae4bd"
+      },
+      {
+        "path": "move/random-vector-body.json",
+        "kind": "record",
+        "bytes": 138650,
+        "sha256": "54ff62172935e601d4794d2417aee615f47c205f64096fa9ff1a96df04144295"
+      },
+      {
+        "path": "move/random-wrapper-body.json",
+        "kind": "record",
+        "bytes": 154492,
+        "sha256": "c235590b9c0da691ff62f0b92eff32d6057acaf791690a6556738ce0ce9fd84e"
+      },
+      {
+        "path": "move/reach-distance-floor.json",
+        "kind": "record",
+        "bytes": 16961,
+        "sha256": "2455df943c790778f08053690bcd94d382f0b952a26e106a0119a77b816264ac"
+      },
+      {
+        "path": "presence/appear-target-bodies.json",
+        "kind": "record",
+        "bytes": 106204,
+        "sha256": "33e38039830841a3f02b2badba53942ea6dfcc1ccdfbd2516e079d45da99c9b4"
+      },
+      {
+        "path": "presence/born-state-enter-body.json",
+        "kind": "record",
+        "bytes": 132114,
+        "sha256": "803b16624ae24de2f2a78eda6eb2b2bf5faf682f9db99f9d084fe7ca1d36cea4"
+      },
+      {
+        "path": "presence/checkpoint-presence-bodies.json",
+        "kind": "record",
+        "bytes": 153920,
+        "sha256": "bbc8a3737974892e83a4b9e61f01043c0ab6a572c48bff60badd423a0e288bbe"
+      },
+      {
+        "path": "presence/entity-presence-bodies.json",
+        "kind": "record",
+        "bytes": 142947,
+        "sha256": "12a1d47c6b634978f02eb1104cb79033aa438bc7da4a7ac414c0909fb538ae38"
+      },
+      {
+        "path": "presence/state-switch-body.json",
+        "kind": "record",
+        "bytes": 88553,
+        "sha256": "b81f5075aa3cb04fa78f5ed195db1dcd2e277671935c69367ddb50752fda1676"
+      },
+      {
+        "path": "state-constructor-body.json",
+        "kind": "record",
+        "bytes": 106680,
+        "sha256": "bda2a7226eb145ddfbdb1b3aa9cc2d71abc70fd6c6f2e18460d7bbe5707bbda8"
+      },
+      {
+        "path": "state-start-bodies.json",
+        "kind": "record",
+        "bytes": 178867,
+        "sha256": "3ba9d0f70577232722bee71a5718dd2ed72abac631c5374325b9cbb9dee9fc0c"
+      },
+      {
+        "path": "state-switch-internal.json",
+        "kind": "record",
+        "bytes": 146529,
+        "sha256": "d8d7464a547fcc8f3ed41ca3c0ba249d970de998bfeacbf994eafb68351e0046"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 18333,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/0",
+            "allocation/unit-allocation.json#/result/relatedMethods/0",
+            "entry-bodies.json#/result/relatedMethods/0",
+            "init-state-body.json#/result/relatedMethods/0",
+            "initialization-bodies.json#/result/relatedMethods/0",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/0",
+            "move/native-bodies.json#/result/relatedMethods/0",
+            "move/random-vector-body.json#/result/relatedMethods/0",
+            "move/random-wrapper-body.json#/result/relatedMethods/0",
+            "presence/appear-target-bodies.json#/result/relatedMethods/0",
+            "presence/born-state-enter-body.json#/result/relatedMethods/0",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/0",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/0",
+            "presence/state-switch-body.json#/result/relatedMethods/0",
+            "state-constructor-body.json#/result/relatedMethods/0",
+            "state-start-bodies.json#/result/relatedMethods/0",
+            "state-switch-internal.json#/result/relatedMethods/0"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleModifierWrap._m_NewElementDamageModifierAfterCalculate_xlua_st_",
+          "address": "0x180a616a0"
+        },
+        {
+          "index": 18350,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/1",
+            "allocation/unit-allocation.json#/result/relatedMethods/1",
+            "entry-bodies.json#/result/relatedMethods/1",
+            "init-state-body.json#/result/relatedMethods/1",
+            "initialization-bodies.json#/result/relatedMethods/1",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/1",
+            "move/native-bodies.json#/result/relatedMethods/1",
+            "move/random-vector-body.json#/result/relatedMethods/1",
+            "move/random-wrapper-body.json#/result/relatedMethods/1",
+            "presence/appear-target-bodies.json#/result/relatedMethods/1",
+            "presence/born-state-enter-body.json#/result/relatedMethods/1",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/1",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/1",
+            "presence/state-switch-body.json#/result/relatedMethods/1",
+            "state-constructor-body.json#/result/relatedMethods/1",
+            "state-start-bodies.json#/result/relatedMethods/1",
+            "state-switch-internal.json#/result/relatedMethods/1"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleModifierWrap._g_get_isElementDamage",
+          "address": "0x180a5db40"
+        },
+        {
+          "index": 22841,
+          "mode": "disasm",
+          "records": [
+            "move/random-vector-body.json#/result/methods/0",
+            "move/random-vector-body.json#/result/bodies/0/method",
+            "move/random-vector-body.json#/result/bodies/0/fragments/0",
+            "move/random-vector-body.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.RandomExtensions.RandomVector2",
+          "address": "0x181ad8c50"
+        },
+        {
+          "index": 22842,
+          "mode": "disasm",
+          "records": [
+            "move/random-vector-body.json#/result/methods/1",
+            "move/random-vector-body.json#/result/bodies/1/method",
+            "move/random-vector-body.json#/result/bodies/1/fragments/0",
+            "move/random-vector-body.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.RandomExtensions.RandomVector2",
+          "address": "0x181ad8af0"
+        },
+        {
+          "index": 32160,
+          "mode": "metadata",
+          "records": [
+            "move/checkpoint-data-type.json#/result/0/methods/0"
+          ],
+          "fullname": "Torappu.RouteData/CheckpointData.Duplicate",
+          "address": "0x182465000"
+        },
+        {
+          "index": 32161,
+          "mode": "metadata",
+          "records": [
+            "move/checkpoint-data-type.json#/result/0/methods/1"
+          ],
+          "fullname": "Torappu.RouteData/CheckpointData..ctor",
+          "address": "0x180520cc0"
+        },
+        {
+          "index": 33937,
+          "mode": "disasm",
+          "records": [
+            "state-start-bodies.json#/result/methods/0",
+            "state-start-bodies.json#/result/bodies/0/method",
+            "state-start-bodies.json#/result/bodies/0/fragments/0",
+            "state-start-bodies.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.StateMachine.Start",
+          "address": "0x1826a5e70"
+        },
+        {
+          "index": 33938,
+          "mode": "disasm",
+          "records": [
+            "state-constructor-body.json#/result/methods/0",
+            "state-constructor-body.json#/result/bodies/0/method",
+            "state-constructor-body.json#/result/bodies/0/fragments/0",
+            "state-constructor-body.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.StateMachine.Stop",
+          "address": "0x1826a5fc0"
+        },
+        {
+          "index": 33940,
+          "mode": "disasm",
+          "records": [
+            "presence/state-switch-body.json#/result/methods/0",
+            "presence/state-switch-body.json#/result/bodies/0/method",
+            "presence/state-switch-body.json#/result/bodies/0/fragments/0",
+            "presence/state-switch-body.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.StateMachine.SwitchState",
+          "address": "0x1826a5fd0"
+        },
+        {
+          "index": 33944,
+          "mode": "disasm",
+          "records": [
+            "state-constructor-body.json#/result/methods/1",
+            "state-constructor-body.json#/result/bodies/1/method",
+            "state-constructor-body.json#/result/bodies/1/fragments/0",
+            "state-constructor-body.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.StateMachine..ctor",
+          "address": "0x1826a6550"
+        },
+        {
+          "index": 33949,
+          "mode": "disasm",
+          "records": [
+            "state-switch-internal.json#/result/methods/0",
+            "state-switch-internal.json#/result/bodies/0/method",
+            "state-switch-internal.json#/result/bodies/0/fragments/0",
+            "state-switch-internal.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.StateMachine._SwitchStateInternal",
+          "address": "0x1826a6140"
+        },
+        {
+          "index": 65643,
+          "mode": "disasm",
+          "records": [
+            "entry-bodies.json#/result/methods/0",
+            "entry-bodies.json#/result/bodies/0/method",
+            "entry-bodies.json#/result/bodies/0/fragments/0",
+            "entry-bodies.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.RegisterBObject",
+          "address": "0x18065d4e0"
+        },
+        {
+          "index": 65645,
+          "mode": "disasm",
+          "records": [
+            "entry-bodies.json#/result/methods/1",
+            "entry-bodies.json#/result/bodies/1/method",
+            "entry-bodies.json#/result/bodies/1/fragments/0",
+            "entry-bodies.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.RegisterUnit",
+          "address": "0x18065d790"
+        },
+        {
+          "index": 65738,
+          "mode": "disasm",
+          "records": [
+            "entry-bodies.json#/result/methods/2",
+            "entry-bodies.json#/result/bodies/2/method",
+            "entry-bodies.json#/result/bodies/2/fragments/0",
+            "entry-bodies.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.OnUnitBorn",
+          "address": "0x18065b930"
+        },
+        {
+          "index": 65902,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/2",
+            "allocation/unit-allocation.json#/result/relatedMethods/2",
+            "entry-bodies.json#/result/relatedMethods/2",
+            "init-state-body.json#/result/relatedMethods/2",
+            "initialization-bodies.json#/result/relatedMethods/2",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/2",
+            "move/native-bodies.json#/result/relatedMethods/2",
+            "move/random-vector-body.json#/result/relatedMethods/2",
+            "move/random-wrapper-body.json#/result/relatedMethods/2",
+            "presence/appear-target-bodies.json#/result/relatedMethods/2",
+            "presence/born-state-enter-body.json#/result/relatedMethods/2",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/2",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/2",
+            "presence/state-switch-body.json#/result/relatedMethods/2",
+            "state-constructor-body.json#/result/relatedMethods/2",
+            "state-start-bodies.json#/result/relatedMethods/2",
+            "state-switch-internal.json#/result/relatedMethods/2"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686700"
+        },
+        {
+          "index": 65903,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/3",
+            "allocation/unit-allocation.json#/result/relatedMethods/3",
+            "entry-bodies.json#/result/relatedMethods/3",
+            "init-state-body.json#/result/relatedMethods/3",
+            "initialization-bodies.json#/result/relatedMethods/3",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/3",
+            "move/native-bodies.json#/result/relatedMethods/3",
+            "move/random-vector-body.json#/result/relatedMethods/3",
+            "move/random-wrapper-body.json#/result/relatedMethods/3",
+            "presence/appear-target-bodies.json#/result/relatedMethods/3",
+            "presence/born-state-enter-body.json#/result/relatedMethods/3",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/3",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/3",
+            "presence/state-switch-body.json#/result/relatedMethods/3",
+            "state-constructor-body.json#/result/relatedMethods/3",
+            "state-start-bodies.json#/result/relatedMethods/3",
+            "state-switch-internal.json#/result/relatedMethods/3"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686440"
+        },
+        {
+          "index": 65904,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/4",
+            "allocation/unit-allocation.json#/result/relatedMethods/4",
+            "entry-bodies.json#/result/relatedMethods/4",
+            "init-state-body.json#/result/relatedMethods/4",
+            "initialization-bodies.json#/result/relatedMethods/4",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/4",
+            "move/native-bodies.json#/result/relatedMethods/4",
+            "move/random-vector-body.json#/result/relatedMethods/4",
+            "move/random-wrapper-body.json#/result/relatedMethods/4",
+            "presence/appear-target-bodies.json#/result/relatedMethods/4",
+            "presence/born-state-enter-body.json#/result/relatedMethods/4",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/4",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/4",
+            "presence/state-switch-body.json#/result/relatedMethods/4",
+            "state-constructor-body.json#/result/relatedMethods/4",
+            "state-start-bodies.json#/result/relatedMethods/4",
+            "state-switch-internal.json#/result/relatedMethods/4"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686530"
+        },
+        {
+          "index": 66006,
+          "mode": "disasm",
+          "records": [
+            "initialization-bodies.json#/result/methods/0",
+            "initialization-bodies.json#/result/bodies/0/method",
+            "initialization-bodies.json#/result/bodies/0/fragments/0",
+            "initialization-bodies.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BObject.Born",
+          "address": "0x1806af800"
+        },
+        {
+          "index": 66007,
+          "mode": "disasm",
+          "records": [
+            "presence/checkpoint-presence-bodies.json#/result/methods/0",
+            "presence/checkpoint-presence-bodies.json#/result/bodies/0/method",
+            "presence/checkpoint-presence-bodies.json#/result/bodies/0/fragments/0",
+            "presence/checkpoint-presence-bodies.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BObject.SetDisappeared",
+          "address": "0x1806afec0"
+        },
+        {
+          "index": 66008,
+          "mode": "disasm",
+          "records": [
+            "initialization-bodies.json#/result/methods/1",
+            "initialization-bodies.json#/result/bodies/1/method",
+            "initialization-bodies.json#/result/bodies/1/fragments/0",
+            "initialization-bodies.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BObject.PreInit",
+          "address": "0x1806afd10"
+        },
+        {
+          "index": 66009,
+          "mode": "disasm",
+          "records": [
+            "initialization-bodies.json#/result/methods/2",
+            "initialization-bodies.json#/result/bodies/2/method",
+            "initialization-bodies.json#/result/bodies/2/fragments/0",
+            "initialization-bodies.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BObject.Init",
+          "address": "0x1806afb40"
+        },
+        {
+          "index": 66014,
+          "mode": "disasm",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/methods/0",
+            "allocation/creation-helper-entry.json#/result/bodies/0/method",
+            "allocation/creation-helper-entry.json#/result/bodies/0/fragments/0",
+            "allocation/creation-helper-entry.json#/result/bodies/0/fragments/0/method",
+            "initialization-bodies.json#/result/methods/3",
+            "initialization-bodies.json#/result/bodies/3/method",
+            "initialization-bodies.json#/result/bodies/3/fragments/0",
+            "initialization-bodies.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BObject.OnAllocate",
+          "address": "0x1806afbd0"
+        },
+        {
+          "index": 66023,
+          "mode": "disasm",
+          "records": [
+            "presence/checkpoint-presence-bodies.json#/result/methods/1",
+            "presence/checkpoint-presence-bodies.json#/result/bodies/1/method",
+            "presence/checkpoint-presence-bodies.json#/result/bodies/1/fragments/0",
+            "presence/checkpoint-presence-bodies.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BObject.OnDisappearChanged",
+          "address": "0x1806afc80"
+        },
+        {
+          "index": 66147,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/5",
+            "allocation/unit-allocation.json#/result/relatedMethods/5",
+            "entry-bodies.json#/result/relatedMethods/5",
+            "init-state-body.json#/result/relatedMethods/5",
+            "initialization-bodies.json#/result/relatedMethods/5",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/5",
+            "move/native-bodies.json#/result/relatedMethods/5",
+            "move/random-vector-body.json#/result/relatedMethods/5",
+            "move/random-wrapper-body.json#/result/relatedMethods/5",
+            "presence/appear-target-bodies.json#/result/relatedMethods/5",
+            "presence/born-state-enter-body.json#/result/relatedMethods/5",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/5",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/5",
+            "presence/state-switch-body.json#/result/relatedMethods/5",
+            "state-constructor-body.json#/result/relatedMethods/5",
+            "state-start-bodies.json#/result/relatedMethods/5",
+            "state-switch-internal.json#/result/relatedMethods/5"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAfterOutputElementDamage",
+          "address": "0x1806d0180"
+        },
+        {
+          "index": 66153,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/6",
+            "allocation/unit-allocation.json#/result/relatedMethods/6",
+            "entry-bodies.json#/result/relatedMethods/6",
+            "init-state-body.json#/result/relatedMethods/6",
+            "initialization-bodies.json#/result/relatedMethods/6",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/6",
+            "move/native-bodies.json#/result/relatedMethods/6",
+            "move/random-vector-body.json#/result/relatedMethods/6",
+            "move/random-wrapper-body.json#/result/relatedMethods/6",
+            "presence/appear-target-bodies.json#/result/relatedMethods/6",
+            "presence/born-state-enter-body.json#/result/relatedMethods/6",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/6",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/6",
+            "presence/state-switch-body.json#/result/relatedMethods/6",
+            "state-constructor-body.json#/result/relatedMethods/6",
+            "state-start-bodies.json#/result/relatedMethods/6",
+            "state-switch-internal.json#/result/relatedMethods/6"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnTakeEPDamage",
+          "address": "0x1806d5250"
+        },
+        {
+          "index": 66380,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/7",
+            "allocation/unit-allocation.json#/result/relatedMethods/7",
+            "entry-bodies.json#/result/relatedMethods/7",
+            "init-state-body.json#/result/relatedMethods/7",
+            "initialization-bodies.json#/result/relatedMethods/7",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/7",
+            "move/native-bodies.json#/result/relatedMethods/7",
+            "move/random-vector-body.json#/result/relatedMethods/7",
+            "move/random-wrapper-body.json#/result/relatedMethods/7",
+            "presence/appear-target-bodies.json#/result/relatedMethods/7",
+            "presence/born-state-enter-body.json#/result/relatedMethods/7",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/7",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/7",
+            "presence/state-switch-body.json#/result/relatedMethods/7",
+            "state-constructor-body.json#/result/relatedMethods/7",
+            "state-start-bodies.json#/result/relatedMethods/7",
+            "state-switch-internal.json#/result/relatedMethods/7"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnAfterOutputElementDamage",
+          "address": "0x1806b8c90"
+        },
+        {
+          "index": 66384,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/8",
+            "allocation/unit-allocation.json#/result/relatedMethods/8",
+            "entry-bodies.json#/result/relatedMethods/8",
+            "init-state-body.json#/result/relatedMethods/8",
+            "initialization-bodies.json#/result/relatedMethods/8",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/8",
+            "move/native-bodies.json#/result/relatedMethods/8",
+            "move/random-vector-body.json#/result/relatedMethods/8",
+            "move/random-wrapper-body.json#/result/relatedMethods/8",
+            "presence/appear-target-bodies.json#/result/relatedMethods/8",
+            "presence/born-state-enter-body.json#/result/relatedMethods/8",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/8",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/8",
+            "presence/state-switch-body.json#/result/relatedMethods/8",
+            "state-constructor-body.json#/result/relatedMethods/8",
+            "state-start-bodies.json#/result/relatedMethods/8",
+            "state-switch-internal.json#/result/relatedMethods/8"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnTakeEPDamage",
+          "address": "0x1806c76c0"
+        },
+        {
+          "index": 67460,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/9",
+            "allocation/unit-allocation.json#/result/relatedMethods/9",
+            "entry-bodies.json#/result/relatedMethods/9",
+            "init-state-body.json#/result/relatedMethods/9",
+            "initialization-bodies.json#/result/relatedMethods/9",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/9",
+            "move/native-bodies.json#/result/relatedMethods/9",
+            "move/random-vector-body.json#/result/relatedMethods/9",
+            "move/random-wrapper-body.json#/result/relatedMethods/9",
+            "presence/appear-target-bodies.json#/result/relatedMethods/9",
+            "presence/born-state-enter-body.json#/result/relatedMethods/9",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/9",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/9",
+            "presence/state-switch-body.json#/result/relatedMethods/9",
+            "state-constructor-body.json#/result/relatedMethods/9",
+            "state-start-bodies.json#/result/relatedMethods/9",
+            "state-switch-internal.json#/result/relatedMethods/9"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_epDamageResistance",
+          "address": "0x180734bb0"
+        },
+        {
+          "index": 67623,
+          "mode": "disasm",
+          "records": [
+            "initialization-bodies.json#/result/methods/4",
+            "initialization-bodies.json#/result/bodies/4/method",
+            "initialization-bodies.json#/result/bodies/4/fragments/0",
+            "initialization-bodies.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.Init",
+          "address": "0x180726370"
+        },
+        {
+          "index": 67624,
+          "mode": "disasm",
+          "records": [
+            "initialization-bodies.json#/result/methods/5",
+            "initialization-bodies.json#/result/bodies/5/method",
+            "initialization-bodies.json#/result/bodies/5/fragments/0",
+            "initialization-bodies.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.Init",
+          "address": "0x1807264b0"
+        },
+        {
+          "index": 67647,
+          "mode": "disasm",
+          "records": [
+            "initialization-bodies.json#/result/methods/6",
+            "initialization-bodies.json#/result/bodies/6/method",
+            "initialization-bodies.json#/result/bodies/6/fragments/0",
+            "initialization-bodies.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnBorn",
+          "address": "0x180729200"
+        },
+        {
+          "index": 67654,
+          "mode": "disasm",
+          "records": [
+            "presence/entity-presence-bodies.json#/result/methods/0",
+            "presence/entity-presence-bodies.json#/result/bodies/0/method",
+            "presence/entity-presence-bodies.json#/result/bodies/0/fragments/0",
+            "presence/entity-presence-bodies.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.CheckCanSwitchToDisappearState",
+          "address": "0x180721f20"
+        },
+        {
+          "index": 67655,
+          "mode": "disasm",
+          "records": [
+            "presence/entity-presence-bodies.json#/result/methods/1",
+            "presence/entity-presence-bodies.json#/result/bodies/1/method",
+            "presence/entity-presence-bodies.json#/result/bodies/1/fragments/0",
+            "presence/entity-presence-bodies.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnBeforeDisappearChanged",
+          "address": "0x180728ea0"
+        },
+        {
+          "index": 67656,
+          "mode": "disasm",
+          "records": [
+            "presence/entity-presence-bodies.json#/result/methods/2",
+            "presence/entity-presence-bodies.json#/result/bodies/2/method",
+            "presence/entity-presence-bodies.json#/result/bodies/2/fragments/0",
+            "presence/entity-presence-bodies.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnDisappearChanged",
+          "address": "0x180729bb0"
+        },
+        {
+          "index": 67675,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/10",
+            "allocation/unit-allocation.json#/result/relatedMethods/10",
+            "entry-bodies.json#/result/relatedMethods/10",
+            "init-state-body.json#/result/relatedMethods/10",
+            "initialization-bodies.json#/result/relatedMethods/10",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/10",
+            "move/native-bodies.json#/result/relatedMethods/10",
+            "move/random-vector-body.json#/result/relatedMethods/10",
+            "move/random-wrapper-body.json#/result/relatedMethods/10",
+            "presence/appear-target-bodies.json#/result/relatedMethods/10",
+            "presence/born-state-enter-body.json#/result/relatedMethods/10",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/10",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/10",
+            "presence/state-switch-body.json#/result/relatedMethods/10",
+            "state-constructor-body.json#/result/relatedMethods/10",
+            "state-start-bodies.json#/result/relatedMethods/10",
+            "state-switch-internal.json#/result/relatedMethods/10"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnAfterOutputElementDamage",
+          "address": "0x180727b50"
+        },
+        {
+          "index": 67684,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/11",
+            "allocation/unit-allocation.json#/result/relatedMethods/11",
+            "entry-bodies.json#/result/relatedMethods/11",
+            "init-state-body.json#/result/relatedMethods/11",
+            "initialization-bodies.json#/result/relatedMethods/11",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/11",
+            "move/native-bodies.json#/result/relatedMethods/11",
+            "move/random-vector-body.json#/result/relatedMethods/11",
+            "move/random-wrapper-body.json#/result/relatedMethods/11",
+            "presence/appear-target-bodies.json#/result/relatedMethods/11",
+            "presence/born-state-enter-body.json#/result/relatedMethods/11",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/11",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/11",
+            "presence/state-switch-body.json#/result/relatedMethods/11",
+            "state-constructor-body.json#/result/relatedMethods/11",
+            "state-start-bodies.json#/result/relatedMethods/11",
+            "state-switch-internal.json#/result/relatedMethods/11"
+          ],
+          "fullname": "Torappu.Battle.Entity._DoApplyEPModifierInternal",
+          "address": "0x180730be0"
+        },
+        {
+          "index": 67711,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/12",
+            "allocation/unit-allocation.json#/result/relatedMethods/12",
+            "entry-bodies.json#/result/relatedMethods/12",
+            "init-state-body.json#/result/relatedMethods/12",
+            "initialization-bodies.json#/result/relatedMethods/12",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/12",
+            "move/native-bodies.json#/result/relatedMethods/12",
+            "move/random-vector-body.json#/result/relatedMethods/12",
+            "move/random-wrapper-body.json#/result/relatedMethods/12",
+            "presence/appear-target-bodies.json#/result/relatedMethods/12",
+            "presence/born-state-enter-body.json#/result/relatedMethods/12",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/12",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/12",
+            "presence/state-switch-body.json#/result/relatedMethods/12",
+            "state-constructor-body.json#/result/relatedMethods/12",
+            "state-start-bodies.json#/result/relatedMethods/12",
+            "state-switch-internal.json#/result/relatedMethods/12"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnTakeEPDamage",
+          "address": "0x18072be40"
+        },
+        {
+          "index": 67982,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/13",
+            "allocation/unit-allocation.json#/result/relatedMethods/13",
+            "entry-bodies.json#/result/relatedMethods/13",
+            "init-state-body.json#/result/relatedMethods/13",
+            "initialization-bodies.json#/result/relatedMethods/13",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/13",
+            "move/native-bodies.json#/result/relatedMethods/13",
+            "move/random-vector-body.json#/result/relatedMethods/13",
+            "move/random-wrapper-body.json#/result/relatedMethods/13",
+            "presence/appear-target-bodies.json#/result/relatedMethods/13",
+            "presence/born-state-enter-body.json#/result/relatedMethods/13",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/13",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/13",
+            "presence/state-switch-body.json#/result/relatedMethods/13",
+            "state-constructor-body.json#/result/relatedMethods/13",
+            "state-start-bodies.json#/result/relatedMethods/13",
+            "state-switch-internal.json#/result/relatedMethods/13"
+          ],
+          "fullname": "Torappu.Battle.BattleLogger.LogEpModifier",
+          "address": "0x180741920"
+        },
+        {
+          "index": 68032,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/14",
+            "allocation/unit-allocation.json#/result/relatedMethods/14",
+            "entry-bodies.json#/result/relatedMethods/14",
+            "init-state-body.json#/result/relatedMethods/14",
+            "initialization-bodies.json#/result/relatedMethods/14",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/14",
+            "move/native-bodies.json#/result/relatedMethods/14",
+            "move/random-vector-body.json#/result/relatedMethods/14",
+            "move/random-wrapper-body.json#/result/relatedMethods/14",
+            "presence/appear-target-bodies.json#/result/relatedMethods/14",
+            "presence/born-state-enter-body.json#/result/relatedMethods/14",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/14",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/14",
+            "presence/state-switch-body.json#/result/relatedMethods/14",
+            "state-constructor-body.json#/result/relatedMethods/14",
+            "state-start-bodies.json#/result/relatedMethods/14",
+            "state-switch-internal.json#/result/relatedMethods/14"
+          ],
+          "fullname": "Torappu.Battle.BattleLogger/BattleStats/CharAdvancedStats.ToListElementDamage",
+          "address": "0x18074c630"
+        },
+        {
+          "index": 69081,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/15",
+            "allocation/unit-allocation.json#/result/relatedMethods/15",
+            "entry-bodies.json#/result/relatedMethods/15",
+            "init-state-body.json#/result/relatedMethods/15",
+            "initialization-bodies.json#/result/relatedMethods/15",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/15",
+            "move/native-bodies.json#/result/relatedMethods/15",
+            "move/random-vector-body.json#/result/relatedMethods/15",
+            "move/random-wrapper-body.json#/result/relatedMethods/15",
+            "presence/appear-target-bodies.json#/result/relatedMethods/15",
+            "presence/born-state-enter-body.json#/result/relatedMethods/15",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/15",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/15",
+            "presence/state-switch-body.json#/result/relatedMethods/15",
+            "state-constructor-body.json#/result/relatedMethods/15",
+            "state-start-bodies.json#/result/relatedMethods/15",
+            "state-switch-internal.json#/result/relatedMethods/15"
+          ],
+          "fullname": "Torappu.Battle.Act33SideManager.ApplyElementDamageCharactersWithRope",
+          "address": "0x1807a6a90"
+        },
+        {
+          "index": 69083,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/16",
+            "allocation/unit-allocation.json#/result/relatedMethods/16",
+            "entry-bodies.json#/result/relatedMethods/16",
+            "init-state-body.json#/result/relatedMethods/16",
+            "initialization-bodies.json#/result/relatedMethods/16",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/16",
+            "move/native-bodies.json#/result/relatedMethods/16",
+            "move/random-vector-body.json#/result/relatedMethods/16",
+            "move/random-wrapper-body.json#/result/relatedMethods/16",
+            "presence/appear-target-bodies.json#/result/relatedMethods/16",
+            "presence/born-state-enter-body.json#/result/relatedMethods/16",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/16",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/16",
+            "presence/state-switch-body.json#/result/relatedMethods/16",
+            "state-constructor-body.json#/result/relatedMethods/16",
+            "state-start-bodies.json#/result/relatedMethods/16",
+            "state-switch-internal.json#/result/relatedMethods/16"
+          ],
+          "fullname": "Torappu.Battle.Act33SideManager._ApplyElementDamageModifier",
+          "address": "0x1807aa610"
+        },
+        {
+          "index": 71328,
+          "mode": "disasm",
+          "records": [
+            "move/native-bodies.json#/result/methods/0",
+            "move/native-bodies.json#/result/bodies/0/method",
+            "move/native-bodies.json#/result/bodies/0/fragments/0",
+            "move/native-bodies.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/MoveCheckpoint.get_targetPos",
+          "address": "0x1808db250"
+        },
+        {
+          "index": 71334,
+          "mode": "disasm",
+          "records": [
+            "move/native-bodies.json#/result/methods/1",
+            "move/native-bodies.json#/result/bodies/1/method",
+            "move/native-bodies.json#/result/bodies/1/fragments/0",
+            "move/native-bodies.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/MoveCheckpoint.CheckReached",
+          "address": "0x1808da680"
+        },
+        {
+          "index": 71335,
+          "mode": "disasm",
+          "records": [
+            "move/native-bodies.json#/result/methods/2",
+            "move/native-bodies.json#/result/bodies/2/method",
+            "move/native-bodies.json#/result/bodies/2/fragments/0",
+            "move/native-bodies.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/MoveCheckpoint.CheckReached",
+          "address": "0x1808da4c0"
+        },
+        {
+          "index": 71338,
+          "mode": "disasm",
+          "records": [
+            "move/native-bodies.json#/result/methods/3",
+            "move/native-bodies.json#/result/bodies/3/method",
+            "move/native-bodies.json#/result/bodies/3/fragments/0",
+            "move/native-bodies.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/MoveCheckpoint.OnBegin",
+          "address": "0x1808daeb0"
+        },
+        {
+          "index": 71348,
+          "mode": "disasm",
+          "records": [
+            "presence/checkpoint-presence-bodies.json#/result/methods/2",
+            "presence/checkpoint-presence-bodies.json#/result/bodies/2/method",
+            "presence/checkpoint-presence-bodies.json#/result/bodies/2/fragments/0",
+            "presence/checkpoint-presence-bodies.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/DisappearCheckpoint.OnBegin",
+          "address": "0x1808d5480"
+        },
+        {
+          "index": 71349,
+          "mode": "disasm",
+          "records": [
+            "presence/appear-target-bodies.json#/result/methods/0",
+            "presence/appear-target-bodies.json#/result/bodies/0/method",
+            "presence/appear-target-bodies.json#/result/bodies/0/fragments/0",
+            "presence/appear-target-bodies.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/AppearAtPosCheckpoint.get_targetGrid",
+          "address": "0x1808cc310"
+        },
+        {
+          "index": 71350,
+          "mode": "disasm",
+          "records": [
+            "presence/appear-target-bodies.json#/result/methods/1",
+            "presence/appear-target-bodies.json#/result/bodies/1/method",
+            "presence/appear-target-bodies.json#/result/bodies/1/fragments/0",
+            "presence/appear-target-bodies.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/AppearAtPosCheckpoint.get_targetPos",
+          "address": "0x1808cc330"
+        },
+        {
+          "index": 71357,
+          "mode": "disasm",
+          "records": [
+            "presence/checkpoint-presence-bodies.json#/result/methods/3",
+            "presence/checkpoint-presence-bodies.json#/result/bodies/3/method",
+            "presence/checkpoint-presence-bodies.json#/result/bodies/3/fragments/0",
+            "presence/checkpoint-presence-bodies.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/AppearAtPosCheckpoint.OnBegin",
+          "address": "0x1808cc290"
+        },
+        {
+          "index": 72114,
+          "mode": "disasm",
+          "records": [
+            "move/random-wrapper-body.json#/result/methods/0",
+            "move/random-wrapper-body.json#/result/bodies/0/method",
+            "move/random-wrapper-body.json#/result/bodies/0/fragments/0",
+            "move/random-wrapper-body.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleRandomWrapper.RandomVector2",
+          "address": "0x1809041b0"
+        },
+        {
+          "index": 72115,
+          "mode": "disasm",
+          "records": [
+            "move/random-wrapper-body.json#/result/methods/1",
+            "move/random-wrapper-body.json#/result/bodies/1/method",
+            "move/random-wrapper-body.json#/result/bodies/1/fragments/0",
+            "move/random-wrapper-body.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleRandomWrapper.RandomVector2",
+          "address": "0x180904250"
+        },
+        {
+          "index": 72136,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/17",
+            "allocation/unit-allocation.json#/result/relatedMethods/17",
+            "entry-bodies.json#/result/relatedMethods/17",
+            "init-state-body.json#/result/relatedMethods/17",
+            "initialization-bodies.json#/result/relatedMethods/17",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/17",
+            "move/native-bodies.json#/result/relatedMethods/17",
+            "move/random-vector-body.json#/result/relatedMethods/17",
+            "move/random-wrapper-body.json#/result/relatedMethods/17",
+            "presence/appear-target-bodies.json#/result/relatedMethods/17",
+            "presence/born-state-enter-body.json#/result/relatedMethods/17",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/17",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/17",
+            "presence/state-switch-body.json#/result/relatedMethods/17",
+            "state-constructor-body.json#/result/relatedMethods/17",
+            "state-start-bodies.json#/result/relatedMethods/17",
+            "state-switch-internal.json#/result/relatedMethods/17"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isElementDamage",
+          "address": "0x18090d630"
+        },
+        {
+          "index": 72181,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/18",
+            "allocation/unit-allocation.json#/result/relatedMethods/18",
+            "entry-bodies.json#/result/relatedMethods/18",
+            "init-state-body.json#/result/relatedMethods/18",
+            "initialization-bodies.json#/result/relatedMethods/18",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/18",
+            "move/native-bodies.json#/result/relatedMethods/18",
+            "move/random-vector-body.json#/result/relatedMethods/18",
+            "move/random-wrapper-body.json#/result/relatedMethods/18",
+            "presence/appear-target-bodies.json#/result/relatedMethods/18",
+            "presence/born-state-enter-body.json#/result/relatedMethods/18",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/18",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/18",
+            "presence/state-switch-body.json#/result/relatedMethods/18",
+            "state-constructor-body.json#/result/relatedMethods/18",
+            "state-start-bodies.json#/result/relatedMethods/18",
+            "state-switch-internal.json#/result/relatedMethods/18"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewElementDamageModifierAfterCalculate",
+          "address": "0x18090a8e0"
+        },
+        {
+          "index": 72799,
+          "mode": "disasm",
+          "records": [
+            "entry-bodies.json#/result/methods/3",
+            "entry-bodies.json#/result/bodies/3/method",
+            "entry-bodies.json#/result/bodies/3/fragments/0",
+            "entry-bodies.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFactory.CreateEnemy",
+          "address": "0x180925f50"
+        },
+        {
+          "index": 77688,
+          "mode": "disasm",
+          "records": [
+            "init-state-body.json#/result/methods/0",
+            "init-state-body.json#/result/bodies/0/method",
+            "init-state-body.json#/result/bodies/0/fragments/0",
+            "init-state-body.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_initState",
+          "address": "0x180acc730"
+        },
+        {
+          "index": 77732,
+          "mode": "disasm",
+          "records": [
+            "entry-bodies.json#/result/methods/4",
+            "entry-bodies.json#/result/bodies/4/method",
+            "entry-bodies.json#/result/bodies/4/fragments/0",
+            "entry-bodies.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.Born",
+          "address": "0x180ab9840"
+        },
+        {
+          "index": 77785,
+          "mode": "disasm",
+          "records": [
+            "entry-bodies.json#/result/methods/5",
+            "entry-bodies.json#/result/bodies/5/method",
+            "entry-bodies.json#/result/bodies/5/fragments/0",
+            "entry-bodies.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnBorn",
+          "address": "0x180abe720"
+        },
+        {
+          "index": 77792,
+          "mode": "disasm",
+          "records": [
+            "presence/checkpoint-presence-bodies.json#/result/methods/4",
+            "presence/checkpoint-presence-bodies.json#/result/bodies/4/method",
+            "presence/checkpoint-presence-bodies.json#/result/bodies/4/fragments/0",
+            "presence/checkpoint-presence-bodies.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnDisappearChanged",
+          "address": "0x180abec30"
+        },
+        {
+          "index": 77842,
+          "mode": "disasm",
+          "records": [
+            "state-start-bodies.json#/result/methods/1",
+            "state-start-bodies.json#/result/bodies/1/method",
+            "state-start-bodies.json#/result/bodies/1/fragments/0",
+            "state-start-bodies.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnInit",
+          "address": "0x180abf5f0"
+        },
+        {
+          "index": 77957,
+          "mode": "disasm",
+          "records": [
+            "presence/born-state-enter-body.json#/result/methods/0",
+            "presence/born-state-enter-body.json#/result/bodies/0/method",
+            "presence/born-state-enter-body.json#/result/bodies/0/fragments/0",
+            "presence/born-state-enter-body.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/BornState.OnEnter",
+          "address": "0x180ad6030"
+        },
+        {
+          "index": 77959,
+          "mode": "disasm",
+          "records": [
+            "presence/born-state-enter-body.json#/result/methods/1",
+            "presence/born-state-enter-body.json#/result/bodies/1/method",
+            "presence/born-state-enter-body.json#/result/bodies/1/fragments/0",
+            "presence/born-state-enter-body.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/BornState.OnTick",
+          "address": "0x180ad6310"
+        },
+        {
+          "index": 78210,
+          "mode": "disasm",
+          "records": [
+            "move/fear-and-random-continuations.json#/result/methods/0",
+            "move/fear-and-random-continuations.json#/result/bodies/0/method",
+            "move/fear-and-random-continuations.json#/result/bodies/0/fragments/0",
+            "move/fear-and-random-continuations.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/FearController._InitializeFearRouteData",
+          "address": "0x180adf5b0"
+        },
+        {
+          "index": 79022,
+          "mode": "disasm",
+          "records": [
+            "initialization-bodies.json#/result/methods/7",
+            "initialization-bodies.json#/result/bodies/7/method",
+            "initialization-bodies.json#/result/bodies/7/fragments/0",
+            "initialization-bodies.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Unit.OnBorn",
+          "address": "0x180b18920"
+        },
+        {
+          "index": 79023,
+          "mode": "disasm",
+          "records": [
+            "allocation/unit-allocation.json#/result/methods/0",
+            "allocation/unit-allocation.json#/result/bodies/0/method",
+            "allocation/unit-allocation.json#/result/bodies/0/fragments/0",
+            "allocation/unit-allocation.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Unit.OnAllocate",
+          "address": "0x180b183d0"
+        },
+        {
+          "index": 82066,
+          "mode": "disasm",
+          "records": [
+            "move/random-wrapper-body.json#/result/methods/2",
+            "move/random-wrapper-body.json#/result/bodies/2/method",
+            "move/random-wrapper-body.json#/result/bodies/2/fragments/0",
+            "move/random-wrapper-body.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessRandomWrapper.RandomVector2",
+          "address": "0x180c28d20"
+        },
+        {
+          "index": 82067,
+          "mode": "disasm",
+          "records": [
+            "move/random-wrapper-body.json#/result/methods/3",
+            "move/random-wrapper-body.json#/result/bodies/3/method",
+            "move/random-wrapper-body.json#/result/bodies/3/fragments/0",
+            "move/random-wrapper-body.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessRandomWrapper.RandomVector2",
+          "address": "0x180c28bf0"
+        },
+        {
+          "index": 92284,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/19",
+            "allocation/unit-allocation.json#/result/relatedMethods/19",
+            "entry-bodies.json#/result/relatedMethods/19",
+            "init-state-body.json#/result/relatedMethods/19",
+            "initialization-bodies.json#/result/relatedMethods/19",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/19",
+            "move/native-bodies.json#/result/relatedMethods/19",
+            "move/random-vector-body.json#/result/relatedMethods/19",
+            "move/random-wrapper-body.json#/result/relatedMethods/19",
+            "presence/appear-target-bodies.json#/result/relatedMethods/19",
+            "presence/born-state-enter-body.json#/result/relatedMethods/19",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/19",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/19",
+            "presence/state-switch-body.json#/result/relatedMethods/19",
+            "state-constructor-body.json#/result/relatedMethods/19",
+            "state-start-bodies.json#/result/relatedMethods/19",
+            "state-switch-internal.json#/result/relatedMethods/19"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_hasEpDamage",
+          "address": "0x180f3fd80"
+        },
+        {
+          "index": 92287,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/20",
+            "allocation/unit-allocation.json#/result/relatedMethods/20",
+            "entry-bodies.json#/result/relatedMethods/20",
+            "init-state-body.json#/result/relatedMethods/20",
+            "initialization-bodies.json#/result/relatedMethods/20",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/20",
+            "move/native-bodies.json#/result/relatedMethods/20",
+            "move/random-vector-body.json#/result/relatedMethods/20",
+            "move/random-wrapper-body.json#/result/relatedMethods/20",
+            "presence/appear-target-bodies.json#/result/relatedMethods/20",
+            "presence/born-state-enter-body.json#/result/relatedMethods/20",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/20",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/20",
+            "presence/state-switch-body.json#/result/relatedMethods/20",
+            "state-constructor-body.json#/result/relatedMethods/20",
+            "state-start-bodies.json#/result/relatedMethods/20",
+            "state-switch-internal.json#/result/relatedMethods/20"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_elementDamageType",
+          "address": "0x180f3fd20"
+        },
+        {
+          "index": 92294,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/21",
+            "allocation/unit-allocation.json#/result/relatedMethods/21",
+            "entry-bodies.json#/result/relatedMethods/21",
+            "init-state-body.json#/result/relatedMethods/21",
+            "initialization-bodies.json#/result/relatedMethods/21",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/21",
+            "move/native-bodies.json#/result/relatedMethods/21",
+            "move/random-vector-body.json#/result/relatedMethods/21",
+            "move/random-wrapper-body.json#/result/relatedMethods/21",
+            "presence/appear-target-bodies.json#/result/relatedMethods/21",
+            "presence/born-state-enter-body.json#/result/relatedMethods/21",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/21",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/21",
+            "presence/state-switch-body.json#/result/relatedMethods/21",
+            "state-constructor-body.json#/result/relatedMethods/21",
+            "state-start-bodies.json#/result/relatedMethods/21",
+            "state-switch-internal.json#/result/relatedMethods/21"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.ApplyElementDamageScale",
+          "address": "0x180f3ec10"
+        },
+        {
+          "index": 93348,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/22",
+            "allocation/unit-allocation.json#/result/relatedMethods/22",
+            "entry-bodies.json#/result/relatedMethods/22",
+            "init-state-body.json#/result/relatedMethods/22",
+            "initialization-bodies.json#/result/relatedMethods/22",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/22",
+            "move/native-bodies.json#/result/relatedMethods/22",
+            "move/random-vector-body.json#/result/relatedMethods/22",
+            "move/random-wrapper-body.json#/result/relatedMethods/22",
+            "presence/appear-target-bodies.json#/result/relatedMethods/22",
+            "presence/born-state-enter-body.json#/result/relatedMethods/22",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/22",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/22",
+            "presence/state-switch-body.json#/result/relatedMethods/22",
+            "state-constructor-body.json#/result/relatedMethods/22",
+            "state-start-bodies.json#/result/relatedMethods/22",
+            "state-switch-internal.json#/result/relatedMethods/22"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ProjectileToTileAbility.get_hasEpDamage",
+          "address": "0x180f7baf0"
+        },
+        {
+          "index": 93359,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/23",
+            "allocation/unit-allocation.json#/result/relatedMethods/23",
+            "entry-bodies.json#/result/relatedMethods/23",
+            "init-state-body.json#/result/relatedMethods/23",
+            "initialization-bodies.json#/result/relatedMethods/23",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/23",
+            "move/native-bodies.json#/result/relatedMethods/23",
+            "move/random-vector-body.json#/result/relatedMethods/23",
+            "move/random-wrapper-body.json#/result/relatedMethods/23",
+            "presence/appear-target-bodies.json#/result/relatedMethods/23",
+            "presence/born-state-enter-body.json#/result/relatedMethods/23",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/23",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/23",
+            "presence/state-switch-body.json#/result/relatedMethods/23",
+            "state-constructor-body.json#/result/relatedMethods/23",
+            "state-start-bodies.json#/result/relatedMethods/23",
+            "state-switch-internal.json#/result/relatedMethods/23"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ProjectileToTileAbility.ApplyElementDamageScale",
+          "address": "0x180f7a260"
+        },
+        {
+          "index": 93894,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/24",
+            "allocation/unit-allocation.json#/result/relatedMethods/24",
+            "entry-bodies.json#/result/relatedMethods/24",
+            "init-state-body.json#/result/relatedMethods/24",
+            "initialization-bodies.json#/result/relatedMethods/24",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/24",
+            "move/native-bodies.json#/result/relatedMethods/24",
+            "move/random-vector-body.json#/result/relatedMethods/24",
+            "move/random-wrapper-body.json#/result/relatedMethods/24",
+            "presence/appear-target-bodies.json#/result/relatedMethods/24",
+            "presence/born-state-enter-body.json#/result/relatedMethods/24",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/24",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/24",
+            "presence/state-switch-body.json#/result/relatedMethods/24",
+            "state-constructor-body.json#/result/relatedMethods/24",
+            "state-start-bodies.json#/result/relatedMethods/24",
+            "state-switch-internal.json#/result/relatedMethods/24"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.CreateElementDamageNode",
+          "address": "0x180f90230"
+        },
+        {
+          "index": 93895,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/25",
+            "allocation/unit-allocation.json#/result/relatedMethods/25",
+            "entry-bodies.json#/result/relatedMethods/25",
+            "init-state-body.json#/result/relatedMethods/25",
+            "initialization-bodies.json#/result/relatedMethods/25",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/25",
+            "move/native-bodies.json#/result/relatedMethods/25",
+            "move/random-vector-body.json#/result/relatedMethods/25",
+            "move/random-wrapper-body.json#/result/relatedMethods/25",
+            "presence/appear-target-bodies.json#/result/relatedMethods/25",
+            "presence/born-state-enter-body.json#/result/relatedMethods/25",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/25",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/25",
+            "presence/state-switch-body.json#/result/relatedMethods/25",
+            "state-constructor-body.json#/result/relatedMethods/25",
+            "state-start-bodies.json#/result/relatedMethods/25",
+            "state-switch-internal.json#/result/relatedMethods/25"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.NewElementDamageNode",
+          "address": "0x180f90cc0"
+        },
+        {
+          "index": 97423,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/26",
+            "allocation/unit-allocation.json#/result/relatedMethods/26",
+            "entry-bodies.json#/result/relatedMethods/26",
+            "init-state-body.json#/result/relatedMethods/26",
+            "initialization-bodies.json#/result/relatedMethods/26",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/26",
+            "move/native-bodies.json#/result/relatedMethods/26",
+            "move/random-vector-body.json#/result/relatedMethods/26",
+            "move/random-wrapper-body.json#/result/relatedMethods/26",
+            "presence/appear-target-bodies.json#/result/relatedMethods/26",
+            "presence/born-state-enter-body.json#/result/relatedMethods/26",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/26",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/26",
+            "presence/state-switch-body.json#/result/relatedMethods/26",
+            "state-constructor-body.json#/result/relatedMethods/26",
+            "state-start-bodies.json#/result/relatedMethods/26",
+            "state-switch-internal.json#/result/relatedMethods/26"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/Act33SideBurnCharactersWithRope.get_isFixedEpDamage",
+          "address": "0x18106aee0"
+        },
+        {
+          "index": 99204,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/27",
+            "allocation/unit-allocation.json#/result/relatedMethods/27",
+            "entry-bodies.json#/result/relatedMethods/27",
+            "init-state-body.json#/result/relatedMethods/27",
+            "initialization-bodies.json#/result/relatedMethods/27",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/27",
+            "move/native-bodies.json#/result/relatedMethods/27",
+            "move/random-vector-body.json#/result/relatedMethods/27",
+            "move/random-wrapper-body.json#/result/relatedMethods/27",
+            "presence/appear-target-bodies.json#/result/relatedMethods/27",
+            "presence/born-state-enter-body.json#/result/relatedMethods/27",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/27",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/27",
+            "presence/state-switch-body.json#/result/relatedMethods/27",
+            "state-constructor-body.json#/result/relatedMethods/27",
+            "state-start-bodies.json#/result/relatedMethods/27",
+            "state-switch-internal.json#/result/relatedMethods/27"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/UpdateAttackElementDamageScale.get_allowedSource",
+          "address": "0x1811089f0"
+        },
+        {
+          "index": 99205,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/28",
+            "allocation/unit-allocation.json#/result/relatedMethods/28",
+            "entry-bodies.json#/result/relatedMethods/28",
+            "init-state-body.json#/result/relatedMethods/28",
+            "initialization-bodies.json#/result/relatedMethods/28",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/28",
+            "move/native-bodies.json#/result/relatedMethods/28",
+            "move/random-vector-body.json#/result/relatedMethods/28",
+            "move/random-wrapper-body.json#/result/relatedMethods/28",
+            "presence/appear-target-bodies.json#/result/relatedMethods/28",
+            "presence/born-state-enter-body.json#/result/relatedMethods/28",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/28",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/28",
+            "presence/state-switch-body.json#/result/relatedMethods/28",
+            "state-constructor-body.json#/result/relatedMethods/28",
+            "state-start-bodies.json#/result/relatedMethods/28",
+            "state-switch-internal.json#/result/relatedMethods/28"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/UpdateAttackElementDamageScale.Execute",
+          "address": "0x181108730"
+        },
+        {
+          "index": 99206,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/29",
+            "allocation/unit-allocation.json#/result/relatedMethods/29",
+            "entry-bodies.json#/result/relatedMethods/29",
+            "init-state-body.json#/result/relatedMethods/29",
+            "initialization-bodies.json#/result/relatedMethods/29",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/29",
+            "move/native-bodies.json#/result/relatedMethods/29",
+            "move/random-vector-body.json#/result/relatedMethods/29",
+            "move/random-wrapper-body.json#/result/relatedMethods/29",
+            "presence/appear-target-bodies.json#/result/relatedMethods/29",
+            "presence/born-state-enter-body.json#/result/relatedMethods/29",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/29",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/29",
+            "presence/state-switch-body.json#/result/relatedMethods/29",
+            "state-constructor-body.json#/result/relatedMethods/29",
+            "state-start-bodies.json#/result/relatedMethods/29",
+            "state-switch-internal.json#/result/relatedMethods/29"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/UpdateAttackElementDamageScale..ctor",
+          "address": "0x181108940"
+        },
+        {
+          "index": 99223,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/30",
+            "allocation/unit-allocation.json#/result/relatedMethods/30",
+            "entry-bodies.json#/result/relatedMethods/30",
+            "init-state-body.json#/result/relatedMethods/30",
+            "initialization-bodies.json#/result/relatedMethods/30",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/30",
+            "move/native-bodies.json#/result/relatedMethods/30",
+            "move/random-vector-body.json#/result/relatedMethods/30",
+            "move/random-wrapper-body.json#/result/relatedMethods/30",
+            "presence/appear-target-bodies.json#/result/relatedMethods/30",
+            "presence/born-state-enter-body.json#/result/relatedMethods/30",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/30",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/30",
+            "presence/state-switch-body.json#/result/relatedMethods/30",
+            "state-constructor-body.json#/result/relatedMethods/30",
+            "state-start-bodies.json#/result/relatedMethods/30",
+            "state-switch-internal.json#/result/relatedMethods/30"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage.get_allowedSource",
+          "address": "0x1810fb000"
+        },
+        {
+          "index": 99224,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/31",
+            "allocation/unit-allocation.json#/result/relatedMethods/31",
+            "entry-bodies.json#/result/relatedMethods/31",
+            "init-state-body.json#/result/relatedMethods/31",
+            "initialization-bodies.json#/result/relatedMethods/31",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/31",
+            "move/native-bodies.json#/result/relatedMethods/31",
+            "move/random-vector-body.json#/result/relatedMethods/31",
+            "move/random-wrapper-body.json#/result/relatedMethods/31",
+            "presence/appear-target-bodies.json#/result/relatedMethods/31",
+            "presence/born-state-enter-body.json#/result/relatedMethods/31",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/31",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/31",
+            "presence/state-switch-body.json#/result/relatedMethods/31",
+            "state-constructor-body.json#/result/relatedMethods/31",
+            "state-start-bodies.json#/result/relatedMethods/31",
+            "state-switch-internal.json#/result/relatedMethods/31"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage.get_shieldByAnotherSource",
+          "address": "0x1810fb060"
+        },
+        {
+          "index": 99225,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/32",
+            "allocation/unit-allocation.json#/result/relatedMethods/32",
+            "entry-bodies.json#/result/relatedMethods/32",
+            "init-state-body.json#/result/relatedMethods/32",
+            "initialization-bodies.json#/result/relatedMethods/32",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/32",
+            "move/native-bodies.json#/result/relatedMethods/32",
+            "move/random-vector-body.json#/result/relatedMethods/32",
+            "move/random-wrapper-body.json#/result/relatedMethods/32",
+            "presence/appear-target-bodies.json#/result/relatedMethods/32",
+            "presence/born-state-enter-body.json#/result/relatedMethods/32",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/32",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/32",
+            "presence/state-switch-body.json#/result/relatedMethods/32",
+            "state-constructor-body.json#/result/relatedMethods/32",
+            "state-start-bodies.json#/result/relatedMethods/32",
+            "state-switch-internal.json#/result/relatedMethods/32"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage.Execute",
+          "address": "0x1810fab10"
+        },
+        {
+          "index": 99226,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/33",
+            "allocation/unit-allocation.json#/result/relatedMethods/33",
+            "entry-bodies.json#/result/relatedMethods/33",
+            "init-state-body.json#/result/relatedMethods/33",
+            "initialization-bodies.json#/result/relatedMethods/33",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/33",
+            "move/native-bodies.json#/result/relatedMethods/33",
+            "move/random-vector-body.json#/result/relatedMethods/33",
+            "move/random-wrapper-body.json#/result/relatedMethods/33",
+            "presence/appear-target-bodies.json#/result/relatedMethods/33",
+            "presence/born-state-enter-body.json#/result/relatedMethods/33",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/33",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/33",
+            "presence/state-switch-body.json#/result/relatedMethods/33",
+            "state-constructor-body.json#/result/relatedMethods/33",
+            "state-start-bodies.json#/result/relatedMethods/33",
+            "state-switch-internal.json#/result/relatedMethods/33"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage..ctor",
+          "address": "0x1810faf50"
+        },
+        {
+          "index": 99250,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/34",
+            "allocation/unit-allocation.json#/result/relatedMethods/34",
+            "entry-bodies.json#/result/relatedMethods/34",
+            "init-state-body.json#/result/relatedMethods/34",
+            "initialization-bodies.json#/result/relatedMethods/34",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/34",
+            "move/native-bodies.json#/result/relatedMethods/34",
+            "move/random-vector-body.json#/result/relatedMethods/34",
+            "move/random-wrapper-body.json#/result/relatedMethods/34",
+            "presence/appear-target-bodies.json#/result/relatedMethods/34",
+            "presence/born-state-enter-body.json#/result/relatedMethods/34",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/34",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/34",
+            "presence/state-switch-body.json#/result/relatedMethods/34",
+            "state-constructor-body.json#/result/relatedMethods/34",
+            "state-start-bodies.json#/result/relatedMethods/34",
+            "state-switch-internal.json#/result/relatedMethods/34"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/EpDamageScale.get_allowedSource",
+          "address": "0x1811010e0"
+        },
+        {
+          "index": 99251,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/35",
+            "allocation/unit-allocation.json#/result/relatedMethods/35",
+            "entry-bodies.json#/result/relatedMethods/35",
+            "init-state-body.json#/result/relatedMethods/35",
+            "initialization-bodies.json#/result/relatedMethods/35",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/35",
+            "move/native-bodies.json#/result/relatedMethods/35",
+            "move/random-vector-body.json#/result/relatedMethods/35",
+            "move/random-wrapper-body.json#/result/relatedMethods/35",
+            "presence/appear-target-bodies.json#/result/relatedMethods/35",
+            "presence/born-state-enter-body.json#/result/relatedMethods/35",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/35",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/35",
+            "presence/state-switch-body.json#/result/relatedMethods/35",
+            "state-constructor-body.json#/result/relatedMethods/35",
+            "state-start-bodies.json#/result/relatedMethods/35",
+            "state-switch-internal.json#/result/relatedMethods/35"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/EpDamageScale.Execute",
+          "address": "0x181100b60"
+        },
+        {
+          "index": 99252,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/36",
+            "allocation/unit-allocation.json#/result/relatedMethods/36",
+            "entry-bodies.json#/result/relatedMethods/36",
+            "init-state-body.json#/result/relatedMethods/36",
+            "initialization-bodies.json#/result/relatedMethods/36",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/36",
+            "move/native-bodies.json#/result/relatedMethods/36",
+            "move/random-vector-body.json#/result/relatedMethods/36",
+            "move/random-wrapper-body.json#/result/relatedMethods/36",
+            "presence/appear-target-bodies.json#/result/relatedMethods/36",
+            "presence/born-state-enter-body.json#/result/relatedMethods/36",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/36",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/36",
+            "presence/state-switch-body.json#/result/relatedMethods/36",
+            "state-constructor-body.json#/result/relatedMethods/36",
+            "state-start-bodies.json#/result/relatedMethods/36",
+            "state-switch-internal.json#/result/relatedMethods/36"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/EpDamageScale..ctor",
+          "address": "0x181101050"
+        },
+        {
+          "index": 99321,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/37",
+            "allocation/unit-allocation.json#/result/relatedMethods/37",
+            "entry-bodies.json#/result/relatedMethods/37",
+            "init-state-body.json#/result/relatedMethods/37",
+            "initialization-bodies.json#/result/relatedMethods/37",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/37",
+            "move/native-bodies.json#/result/relatedMethods/37",
+            "move/random-vector-body.json#/result/relatedMethods/37",
+            "move/random-wrapper-body.json#/result/relatedMethods/37",
+            "presence/appear-target-bodies.json#/result/relatedMethods/37",
+            "presence/born-state-enter-body.json#/result/relatedMethods/37",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/37",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/37",
+            "presence/state-switch-body.json#/result/relatedMethods/37",
+            "state-constructor-body.json#/result/relatedMethods/37",
+            "state-start-bodies.json#/result/relatedMethods/37",
+            "state-switch-internal.json#/result/relatedMethods/37"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_multiplyWithBuffValidStackCnt",
+          "address": "0x1810f8890"
+        },
+        {
+          "index": 99322,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/38",
+            "allocation/unit-allocation.json#/result/relatedMethods/38",
+            "entry-bodies.json#/result/relatedMethods/38",
+            "init-state-body.json#/result/relatedMethods/38",
+            "initialization-bodies.json#/result/relatedMethods/38",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/38",
+            "move/native-bodies.json#/result/relatedMethods/38",
+            "move/random-vector-body.json#/result/relatedMethods/38",
+            "move/random-wrapper-body.json#/result/relatedMethods/38",
+            "presence/appear-target-bodies.json#/result/relatedMethods/38",
+            "presence/born-state-enter-body.json#/result/relatedMethods/38",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/38",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/38",
+            "presence/state-switch-body.json#/result/relatedMethods/38",
+            "state-constructor-body.json#/result/relatedMethods/38",
+            "state-start-bodies.json#/result/relatedMethods/38",
+            "state-switch-internal.json#/result/relatedMethods/38"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_isFixedEpDamage",
+          "address": "0x1810f8830"
+        },
+        {
+          "index": 99323,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/39",
+            "allocation/unit-allocation.json#/result/relatedMethods/39",
+            "entry-bodies.json#/result/relatedMethods/39",
+            "init-state-body.json#/result/relatedMethods/39",
+            "initialization-bodies.json#/result/relatedMethods/39",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/39",
+            "move/native-bodies.json#/result/relatedMethods/39",
+            "move/random-vector-body.json#/result/relatedMethods/39",
+            "move/random-wrapper-body.json#/result/relatedMethods/39",
+            "presence/appear-target-bodies.json#/result/relatedMethods/39",
+            "presence/born-state-enter-body.json#/result/relatedMethods/39",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/39",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/39",
+            "presence/state-switch-body.json#/result/relatedMethods/39",
+            "state-constructor-body.json#/result/relatedMethods/39",
+            "state-start-bodies.json#/result/relatedMethods/39",
+            "state-switch-internal.json#/result/relatedMethods/39"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_epDamageScale",
+          "address": "0x1810f87d0"
+        },
+        {
+          "index": 99324,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/40",
+            "allocation/unit-allocation.json#/result/relatedMethods/40",
+            "entry-bodies.json#/result/relatedMethods/40",
+            "init-state-body.json#/result/relatedMethods/40",
+            "initialization-bodies.json#/result/relatedMethods/40",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/40",
+            "move/native-bodies.json#/result/relatedMethods/40",
+            "move/random-vector-body.json#/result/relatedMethods/40",
+            "move/random-wrapper-body.json#/result/relatedMethods/40",
+            "presence/appear-target-bodies.json#/result/relatedMethods/40",
+            "presence/born-state-enter-body.json#/result/relatedMethods/40",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/40",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/40",
+            "presence/state-switch-body.json#/result/relatedMethods/40",
+            "state-constructor-body.json#/result/relatedMethods/40",
+            "state-start-bodies.json#/result/relatedMethods/40",
+            "state-switch-internal.json#/result/relatedMethods/40"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.set_epDamageScale",
+          "address": "0x1810f8950"
+        },
+        {
+          "index": 99325,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/41",
+            "allocation/unit-allocation.json#/result/relatedMethods/41",
+            "entry-bodies.json#/result/relatedMethods/41",
+            "init-state-body.json#/result/relatedMethods/41",
+            "initialization-bodies.json#/result/relatedMethods/41",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/41",
+            "move/native-bodies.json#/result/relatedMethods/41",
+            "move/random-vector-body.json#/result/relatedMethods/41",
+            "move/random-wrapper-body.json#/result/relatedMethods/41",
+            "presence/appear-target-bodies.json#/result/relatedMethods/41",
+            "presence/born-state-enter-body.json#/result/relatedMethods/41",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/41",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/41",
+            "presence/state-switch-body.json#/result/relatedMethods/41",
+            "state-constructor-body.json#/result/relatedMethods/41",
+            "state-start-bodies.json#/result/relatedMethods/41",
+            "state-switch-internal.json#/result/relatedMethods/41"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_epDamageRatio",
+          "address": "0x1810f8770"
+        },
+        {
+          "index": 99326,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/42",
+            "allocation/unit-allocation.json#/result/relatedMethods/42",
+            "entry-bodies.json#/result/relatedMethods/42",
+            "init-state-body.json#/result/relatedMethods/42",
+            "initialization-bodies.json#/result/relatedMethods/42",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/42",
+            "move/native-bodies.json#/result/relatedMethods/42",
+            "move/random-vector-body.json#/result/relatedMethods/42",
+            "move/random-wrapper-body.json#/result/relatedMethods/42",
+            "presence/appear-target-bodies.json#/result/relatedMethods/42",
+            "presence/born-state-enter-body.json#/result/relatedMethods/42",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/42",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/42",
+            "presence/state-switch-body.json#/result/relatedMethods/42",
+            "state-constructor-body.json#/result/relatedMethods/42",
+            "state-start-bodies.json#/result/relatedMethods/42",
+            "state-switch-internal.json#/result/relatedMethods/42"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_allowedSource",
+          "address": "0x1810f8710"
+        },
+        {
+          "index": 99327,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/43",
+            "allocation/unit-allocation.json#/result/relatedMethods/43",
+            "entry-bodies.json#/result/relatedMethods/43",
+            "init-state-body.json#/result/relatedMethods/43",
+            "initialization-bodies.json#/result/relatedMethods/43",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/43",
+            "move/native-bodies.json#/result/relatedMethods/43",
+            "move/random-vector-body.json#/result/relatedMethods/43",
+            "move/random-wrapper-body.json#/result/relatedMethods/43",
+            "presence/appear-target-bodies.json#/result/relatedMethods/43",
+            "presence/born-state-enter-body.json#/result/relatedMethods/43",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/43",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/43",
+            "presence/state-switch-body.json#/result/relatedMethods/43",
+            "state-constructor-body.json#/result/relatedMethods/43",
+            "state-start-bodies.json#/result/relatedMethods/43",
+            "state-switch-internal.json#/result/relatedMethods/43"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_purposeMask",
+          "address": "0x1810f88f0"
+        },
+        {
+          "index": 99328,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/44",
+            "allocation/unit-allocation.json#/result/relatedMethods/44",
+            "entry-bodies.json#/result/relatedMethods/44",
+            "init-state-body.json#/result/relatedMethods/44",
+            "initialization-bodies.json#/result/relatedMethods/44",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/44",
+            "move/native-bodies.json#/result/relatedMethods/44",
+            "move/random-vector-body.json#/result/relatedMethods/44",
+            "move/random-wrapper-body.json#/result/relatedMethods/44",
+            "presence/appear-target-bodies.json#/result/relatedMethods/44",
+            "presence/born-state-enter-body.json#/result/relatedMethods/44",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/44",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/44",
+            "presence/state-switch-body.json#/result/relatedMethods/44",
+            "state-constructor-body.json#/result/relatedMethods/44",
+            "state-start-bodies.json#/result/relatedMethods/44",
+            "state-switch-internal.json#/result/relatedMethods/44"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage._CheckNodeInvalid",
+          "address": "0x1810f8340"
+        },
+        {
+          "index": 99329,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/45",
+            "allocation/unit-allocation.json#/result/relatedMethods/45",
+            "entry-bodies.json#/result/relatedMethods/45",
+            "init-state-body.json#/result/relatedMethods/45",
+            "initialization-bodies.json#/result/relatedMethods/45",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/45",
+            "move/native-bodies.json#/result/relatedMethods/45",
+            "move/random-vector-body.json#/result/relatedMethods/45",
+            "move/random-wrapper-body.json#/result/relatedMethods/45",
+            "presence/appear-target-bodies.json#/result/relatedMethods/45",
+            "presence/born-state-enter-body.json#/result/relatedMethods/45",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/45",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/45",
+            "presence/state-switch-body.json#/result/relatedMethods/45",
+            "state-constructor-body.json#/result/relatedMethods/45",
+            "state-start-bodies.json#/result/relatedMethods/45",
+            "state-switch-internal.json#/result/relatedMethods/45"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.Execute",
+          "address": "0x1810f7c20"
+        },
+        {
+          "index": 99330,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/46",
+            "allocation/unit-allocation.json#/result/relatedMethods/46",
+            "entry-bodies.json#/result/relatedMethods/46",
+            "init-state-body.json#/result/relatedMethods/46",
+            "initialization-bodies.json#/result/relatedMethods/46",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/46",
+            "move/native-bodies.json#/result/relatedMethods/46",
+            "move/random-vector-body.json#/result/relatedMethods/46",
+            "move/random-wrapper-body.json#/result/relatedMethods/46",
+            "presence/appear-target-bodies.json#/result/relatedMethods/46",
+            "presence/born-state-enter-body.json#/result/relatedMethods/46",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/46",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/46",
+            "presence/state-switch-body.json#/result/relatedMethods/46",
+            "state-constructor-body.json#/result/relatedMethods/46",
+            "state-start-bodies.json#/result/relatedMethods/46",
+            "state-switch-internal.json#/result/relatedMethods/46"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage..ctor",
+          "address": "0x1810f8610"
+        },
+        {
+          "index": 99331,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/47",
+            "allocation/unit-allocation.json#/result/relatedMethods/47",
+            "entry-bodies.json#/result/relatedMethods/47",
+            "init-state-body.json#/result/relatedMethods/47",
+            "initialization-bodies.json#/result/relatedMethods/47",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/47",
+            "move/native-bodies.json#/result/relatedMethods/47",
+            "move/random-vector-body.json#/result/relatedMethods/47",
+            "move/random-wrapper-body.json#/result/relatedMethods/47",
+            "presence/appear-target-bodies.json#/result/relatedMethods/47",
+            "presence/born-state-enter-body.json#/result/relatedMethods/47",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/47",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/47",
+            "presence/state-switch-body.json#/result/relatedMethods/47",
+            "state-constructor-body.json#/result/relatedMethods/47",
+            "state-start-bodies.json#/result/relatedMethods/47",
+            "state-switch-internal.json#/result/relatedMethods/47"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage..ctor",
+          "address": "0x1810f84e0"
+        },
+        {
+          "index": 99332,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/48",
+            "allocation/unit-allocation.json#/result/relatedMethods/48",
+            "entry-bodies.json#/result/relatedMethods/48",
+            "init-state-body.json#/result/relatedMethods/48",
+            "initialization-bodies.json#/result/relatedMethods/48",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/48",
+            "move/native-bodies.json#/result/relatedMethods/48",
+            "move/random-vector-body.json#/result/relatedMethods/48",
+            "move/random-wrapper-body.json#/result/relatedMethods/48",
+            "presence/appear-target-bodies.json#/result/relatedMethods/48",
+            "presence/born-state-enter-body.json#/result/relatedMethods/48",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/48",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/48",
+            "presence/state-switch-body.json#/result/relatedMethods/48",
+            "state-constructor-body.json#/result/relatedMethods/48",
+            "state-start-bodies.json#/result/relatedMethods/48",
+            "state-switch-internal.json#/result/relatedMethods/48"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.CreateElementDamageModifier",
+          "address": "0x1810f76d0"
+        },
+        {
+          "index": 99333,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/49",
+            "allocation/unit-allocation.json#/result/relatedMethods/49",
+            "entry-bodies.json#/result/relatedMethods/49",
+            "init-state-body.json#/result/relatedMethods/49",
+            "initialization-bodies.json#/result/relatedMethods/49",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/49",
+            "move/native-bodies.json#/result/relatedMethods/49",
+            "move/random-vector-body.json#/result/relatedMethods/49",
+            "move/random-wrapper-body.json#/result/relatedMethods/49",
+            "presence/appear-target-bodies.json#/result/relatedMethods/49",
+            "presence/born-state-enter-body.json#/result/relatedMethods/49",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/49",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/49",
+            "presence/state-switch-body.json#/result/relatedMethods/49",
+            "state-constructor-body.json#/result/relatedMethods/49",
+            "state-start-bodies.json#/result/relatedMethods/49",
+            "state-switch-internal.json#/result/relatedMethods/49"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.PreprocessForProjectile",
+          "address": "0x1810f8210"
+        },
+        {
+          "index": 99334,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/50",
+            "allocation/unit-allocation.json#/result/relatedMethods/50",
+            "entry-bodies.json#/result/relatedMethods/50",
+            "init-state-body.json#/result/relatedMethods/50",
+            "initialization-bodies.json#/result/relatedMethods/50",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/50",
+            "move/native-bodies.json#/result/relatedMethods/50",
+            "move/random-vector-body.json#/result/relatedMethods/50",
+            "move/random-wrapper-body.json#/result/relatedMethods/50",
+            "presence/appear-target-bodies.json#/result/relatedMethods/50",
+            "presence/born-state-enter-body.json#/result/relatedMethods/50",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/50",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/50",
+            "presence/state-switch-body.json#/result/relatedMethods/50",
+            "state-constructor-body.json#/result/relatedMethods/50",
+            "state-start-bodies.json#/result/relatedMethods/50",
+            "state-switch-internal.json#/result/relatedMethods/50"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.DeliverPreprocessPara",
+          "address": "0x1810f7ba0"
+        },
+        {
+          "index": 99335,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/51",
+            "allocation/unit-allocation.json#/result/relatedMethods/51",
+            "entry-bodies.json#/result/relatedMethods/51",
+            "init-state-body.json#/result/relatedMethods/51",
+            "initialization-bodies.json#/result/relatedMethods/51",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/51",
+            "move/native-bodies.json#/result/relatedMethods/51",
+            "move/random-vector-body.json#/result/relatedMethods/51",
+            "move/random-wrapper-body.json#/result/relatedMethods/51",
+            "presence/appear-target-bodies.json#/result/relatedMethods/51",
+            "presence/born-state-enter-body.json#/result/relatedMethods/51",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/51",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/51",
+            "presence/state-switch-body.json#/result/relatedMethods/51",
+            "state-constructor-body.json#/result/relatedMethods/51",
+            "state-start-bodies.json#/result/relatedMethods/51",
+            "state-switch-internal.json#/result/relatedMethods/51"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.get_allowedSource",
+          "address": "0x1810f4fc0"
+        },
+        {
+          "index": 99336,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/52",
+            "allocation/unit-allocation.json#/result/relatedMethods/52",
+            "entry-bodies.json#/result/relatedMethods/52",
+            "init-state-body.json#/result/relatedMethods/52",
+            "initialization-bodies.json#/result/relatedMethods/52",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/52",
+            "move/native-bodies.json#/result/relatedMethods/52",
+            "move/random-vector-body.json#/result/relatedMethods/52",
+            "move/random-wrapper-body.json#/result/relatedMethods/52",
+            "presence/appear-target-bodies.json#/result/relatedMethods/52",
+            "presence/born-state-enter-body.json#/result/relatedMethods/52",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/52",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/52",
+            "presence/state-switch-body.json#/result/relatedMethods/52",
+            "state-constructor-body.json#/result/relatedMethods/52",
+            "state-start-bodies.json#/result/relatedMethods/52",
+            "state-switch-internal.json#/result/relatedMethods/52"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.get_purposeMask",
+          "address": "0x1810f5020"
+        },
+        {
+          "index": 99337,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/53",
+            "allocation/unit-allocation.json#/result/relatedMethods/53",
+            "entry-bodies.json#/result/relatedMethods/53",
+            "init-state-body.json#/result/relatedMethods/53",
+            "initialization-bodies.json#/result/relatedMethods/53",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/53",
+            "move/native-bodies.json#/result/relatedMethods/53",
+            "move/random-vector-body.json#/result/relatedMethods/53",
+            "move/random-wrapper-body.json#/result/relatedMethods/53",
+            "presence/appear-target-bodies.json#/result/relatedMethods/53",
+            "presence/born-state-enter-body.json#/result/relatedMethods/53",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/53",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/53",
+            "presence/state-switch-body.json#/result/relatedMethods/53",
+            "state-constructor-body.json#/result/relatedMethods/53",
+            "state-start-bodies.json#/result/relatedMethods/53",
+            "state-switch-internal.json#/result/relatedMethods/53"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.Execute",
+          "address": "0x1810f4480"
+        },
+        {
+          "index": 99338,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/54",
+            "allocation/unit-allocation.json#/result/relatedMethods/54",
+            "entry-bodies.json#/result/relatedMethods/54",
+            "init-state-body.json#/result/relatedMethods/54",
+            "initialization-bodies.json#/result/relatedMethods/54",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/54",
+            "move/native-bodies.json#/result/relatedMethods/54",
+            "move/random-vector-body.json#/result/relatedMethods/54",
+            "move/random-wrapper-body.json#/result/relatedMethods/54",
+            "presence/appear-target-bodies.json#/result/relatedMethods/54",
+            "presence/born-state-enter-body.json#/result/relatedMethods/54",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/54",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/54",
+            "presence/state-switch-body.json#/result/relatedMethods/54",
+            "state-constructor-body.json#/result/relatedMethods/54",
+            "state-start-bodies.json#/result/relatedMethods/54",
+            "state-switch-internal.json#/result/relatedMethods/54"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage._GetTargets_DISPOSE",
+          "address": "0x1810f4b60"
+        },
+        {
+          "index": 99339,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/55",
+            "allocation/unit-allocation.json#/result/relatedMethods/55",
+            "entry-bodies.json#/result/relatedMethods/55",
+            "init-state-body.json#/result/relatedMethods/55",
+            "initialization-bodies.json#/result/relatedMethods/55",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/55",
+            "move/native-bodies.json#/result/relatedMethods/55",
+            "move/random-vector-body.json#/result/relatedMethods/55",
+            "move/random-wrapper-body.json#/result/relatedMethods/55",
+            "presence/appear-target-bodies.json#/result/relatedMethods/55",
+            "presence/born-state-enter-body.json#/result/relatedMethods/55",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/55",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/55",
+            "presence/state-switch-body.json#/result/relatedMethods/55",
+            "state-constructor-body.json#/result/relatedMethods/55",
+            "state-start-bodies.json#/result/relatedMethods/55",
+            "state-switch-internal.json#/result/relatedMethods/55"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage._DealEpDamage",
+          "address": "0x1810f4910"
+        },
+        {
+          "index": 99340,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/56",
+            "allocation/unit-allocation.json#/result/relatedMethods/56",
+            "entry-bodies.json#/result/relatedMethods/56",
+            "init-state-body.json#/result/relatedMethods/56",
+            "initialization-bodies.json#/result/relatedMethods/56",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/56",
+            "move/native-bodies.json#/result/relatedMethods/56",
+            "move/random-vector-body.json#/result/relatedMethods/56",
+            "move/random-wrapper-body.json#/result/relatedMethods/56",
+            "presence/appear-target-bodies.json#/result/relatedMethods/56",
+            "presence/born-state-enter-body.json#/result/relatedMethods/56",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/56",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/56",
+            "presence/state-switch-body.json#/result/relatedMethods/56",
+            "state-constructor-body.json#/result/relatedMethods/56",
+            "state-start-bodies.json#/result/relatedMethods/56",
+            "state-switch-internal.json#/result/relatedMethods/56"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.PreprocessForProjectile",
+          "address": "0x1810f48b0"
+        },
+        {
+          "index": 99341,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/57",
+            "allocation/unit-allocation.json#/result/relatedMethods/57",
+            "entry-bodies.json#/result/relatedMethods/57",
+            "init-state-body.json#/result/relatedMethods/57",
+            "initialization-bodies.json#/result/relatedMethods/57",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/57",
+            "move/native-bodies.json#/result/relatedMethods/57",
+            "move/random-vector-body.json#/result/relatedMethods/57",
+            "move/random-wrapper-body.json#/result/relatedMethods/57",
+            "presence/appear-target-bodies.json#/result/relatedMethods/57",
+            "presence/born-state-enter-body.json#/result/relatedMethods/57",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/57",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/57",
+            "presence/state-switch-body.json#/result/relatedMethods/57",
+            "state-constructor-body.json#/result/relatedMethods/57",
+            "state-start-bodies.json#/result/relatedMethods/57",
+            "state-switch-internal.json#/result/relatedMethods/57"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage..ctor",
+          "address": "0x1810f4f50"
+        },
+        {
+          "index": 99342,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/58",
+            "allocation/unit-allocation.json#/result/relatedMethods/58",
+            "entry-bodies.json#/result/relatedMethods/58",
+            "init-state-body.json#/result/relatedMethods/58",
+            "initialization-bodies.json#/result/relatedMethods/58",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/58",
+            "move/native-bodies.json#/result/relatedMethods/58",
+            "move/random-vector-body.json#/result/relatedMethods/58",
+            "move/random-wrapper-body.json#/result/relatedMethods/58",
+            "presence/appear-target-bodies.json#/result/relatedMethods/58",
+            "presence/born-state-enter-body.json#/result/relatedMethods/58",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/58",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/58",
+            "presence/state-switch-body.json#/result/relatedMethods/58",
+            "state-constructor-body.json#/result/relatedMethods/58",
+            "state-start-bodies.json#/result/relatedMethods/58",
+            "state-switch-internal.json#/result/relatedMethods/58"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage/<>c__DisplayClass16_0..ctor",
+          "address": "0x180520cc0"
+        },
+        {
+          "index": 99343,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/59",
+            "allocation/unit-allocation.json#/result/relatedMethods/59",
+            "entry-bodies.json#/result/relatedMethods/59",
+            "init-state-body.json#/result/relatedMethods/59",
+            "initialization-bodies.json#/result/relatedMethods/59",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/59",
+            "move/native-bodies.json#/result/relatedMethods/59",
+            "move/random-vector-body.json#/result/relatedMethods/59",
+            "move/random-wrapper-body.json#/result/relatedMethods/59",
+            "presence/appear-target-bodies.json#/result/relatedMethods/59",
+            "presence/born-state-enter-body.json#/result/relatedMethods/59",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/59",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/59",
+            "presence/state-switch-body.json#/result/relatedMethods/59",
+            "state-constructor-body.json#/result/relatedMethods/59",
+            "state-start-bodies.json#/result/relatedMethods/59",
+            "state-switch-internal.json#/result/relatedMethods/59"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage/<>c__DisplayClass16_0.<_GetTargets_DISPOSE>b__1",
+          "address": "0x1811081b0"
+        },
+        {
+          "index": 99344,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/60",
+            "allocation/unit-allocation.json#/result/relatedMethods/60",
+            "entry-bodies.json#/result/relatedMethods/60",
+            "init-state-body.json#/result/relatedMethods/60",
+            "initialization-bodies.json#/result/relatedMethods/60",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/60",
+            "move/native-bodies.json#/result/relatedMethods/60",
+            "move/random-vector-body.json#/result/relatedMethods/60",
+            "move/random-wrapper-body.json#/result/relatedMethods/60",
+            "presence/appear-target-bodies.json#/result/relatedMethods/60",
+            "presence/born-state-enter-body.json#/result/relatedMethods/60",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/60",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/60",
+            "presence/state-switch-body.json#/result/relatedMethods/60",
+            "state-constructor-body.json#/result/relatedMethods/60",
+            "state-start-bodies.json#/result/relatedMethods/60",
+            "state-switch-internal.json#/result/relatedMethods/60"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage/<>c__DisplayClass16_0.<_GetTargets_DISPOSE>b__0",
+          "address": "0x181108100"
+        },
+        {
+          "index": 99345,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/61",
+            "allocation/unit-allocation.json#/result/relatedMethods/61",
+            "entry-bodies.json#/result/relatedMethods/61",
+            "init-state-body.json#/result/relatedMethods/61",
+            "initialization-bodies.json#/result/relatedMethods/61",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/61",
+            "move/native-bodies.json#/result/relatedMethods/61",
+            "move/random-vector-body.json#/result/relatedMethods/61",
+            "move/random-wrapper-body.json#/result/relatedMethods/61",
+            "presence/appear-target-bodies.json#/result/relatedMethods/61",
+            "presence/born-state-enter-body.json#/result/relatedMethods/61",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/61",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/61",
+            "presence/state-switch-body.json#/result/relatedMethods/61",
+            "state-constructor-body.json#/result/relatedMethods/61",
+            "state-start-bodies.json#/result/relatedMethods/61",
+            "state-switch-internal.json#/result/relatedMethods/61"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.get_allowedSource",
+          "address": "0x1810f7610"
+        },
+        {
+          "index": 99346,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/62",
+            "allocation/unit-allocation.json#/result/relatedMethods/62",
+            "entry-bodies.json#/result/relatedMethods/62",
+            "init-state-body.json#/result/relatedMethods/62",
+            "initialization-bodies.json#/result/relatedMethods/62",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/62",
+            "move/native-bodies.json#/result/relatedMethods/62",
+            "move/random-vector-body.json#/result/relatedMethods/62",
+            "move/random-wrapper-body.json#/result/relatedMethods/62",
+            "presence/appear-target-bodies.json#/result/relatedMethods/62",
+            "presence/born-state-enter-body.json#/result/relatedMethods/62",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/62",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/62",
+            "presence/state-switch-body.json#/result/relatedMethods/62",
+            "state-constructor-body.json#/result/relatedMethods/62",
+            "state-start-bodies.json#/result/relatedMethods/62",
+            "state-switch-internal.json#/result/relatedMethods/62"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.get_purposeMask",
+          "address": "0x1810f7670"
+        },
+        {
+          "index": 99347,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/63",
+            "allocation/unit-allocation.json#/result/relatedMethods/63",
+            "entry-bodies.json#/result/relatedMethods/63",
+            "init-state-body.json#/result/relatedMethods/63",
+            "initialization-bodies.json#/result/relatedMethods/63",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/63",
+            "move/native-bodies.json#/result/relatedMethods/63",
+            "move/random-vector-body.json#/result/relatedMethods/63",
+            "move/random-wrapper-body.json#/result/relatedMethods/63",
+            "presence/appear-target-bodies.json#/result/relatedMethods/63",
+            "presence/born-state-enter-body.json#/result/relatedMethods/63",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/63",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/63",
+            "presence/state-switch-body.json#/result/relatedMethods/63",
+            "state-constructor-body.json#/result/relatedMethods/63",
+            "state-start-bodies.json#/result/relatedMethods/63",
+            "state-switch-internal.json#/result/relatedMethods/63"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.Execute",
+          "address": "0x1810f70b0"
+        },
+        {
+          "index": 99348,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/64",
+            "allocation/unit-allocation.json#/result/relatedMethods/64",
+            "entry-bodies.json#/result/relatedMethods/64",
+            "init-state-body.json#/result/relatedMethods/64",
+            "initialization-bodies.json#/result/relatedMethods/64",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/64",
+            "move/native-bodies.json#/result/relatedMethods/64",
+            "move/random-vector-body.json#/result/relatedMethods/64",
+            "move/random-wrapper-body.json#/result/relatedMethods/64",
+            "presence/appear-target-bodies.json#/result/relatedMethods/64",
+            "presence/born-state-enter-body.json#/result/relatedMethods/64",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/64",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/64",
+            "presence/state-switch-body.json#/result/relatedMethods/64",
+            "state-constructor-body.json#/result/relatedMethods/64",
+            "state-start-bodies.json#/result/relatedMethods/64",
+            "state-switch-internal.json#/result/relatedMethods/64"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.PreprocessForProjectile",
+          "address": "0x1810f7540"
+        },
+        {
+          "index": 99349,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/65",
+            "allocation/unit-allocation.json#/result/relatedMethods/65",
+            "entry-bodies.json#/result/relatedMethods/65",
+            "init-state-body.json#/result/relatedMethods/65",
+            "initialization-bodies.json#/result/relatedMethods/65",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/65",
+            "move/native-bodies.json#/result/relatedMethods/65",
+            "move/random-vector-body.json#/result/relatedMethods/65",
+            "move/random-wrapper-body.json#/result/relatedMethods/65",
+            "presence/appear-target-bodies.json#/result/relatedMethods/65",
+            "presence/born-state-enter-body.json#/result/relatedMethods/65",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/65",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/65",
+            "presence/state-switch-body.json#/result/relatedMethods/65",
+            "state-constructor-body.json#/result/relatedMethods/65",
+            "state-start-bodies.json#/result/relatedMethods/65",
+            "state-switch-internal.json#/result/relatedMethods/65"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue..ctor",
+          "address": "0x1810f75a0"
+        },
+        {
+          "index": 99350,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/66",
+            "allocation/unit-allocation.json#/result/relatedMethods/66",
+            "entry-bodies.json#/result/relatedMethods/66",
+            "init-state-body.json#/result/relatedMethods/66",
+            "initialization-bodies.json#/result/relatedMethods/66",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/66",
+            "move/native-bodies.json#/result/relatedMethods/66",
+            "move/random-vector-body.json#/result/relatedMethods/66",
+            "move/random-wrapper-body.json#/result/relatedMethods/66",
+            "presence/appear-target-bodies.json#/result/relatedMethods/66",
+            "presence/born-state-enter-body.json#/result/relatedMethods/66",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/66",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/66",
+            "presence/state-switch-body.json#/result/relatedMethods/66",
+            "state-constructor-body.json#/result/relatedMethods/66",
+            "state-start-bodies.json#/result/relatedMethods/66",
+            "state-switch-internal.json#/result/relatedMethods/66"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.get_allowedSource",
+          "address": "0x1810f8e40"
+        },
+        {
+          "index": 99351,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/67",
+            "allocation/unit-allocation.json#/result/relatedMethods/67",
+            "entry-bodies.json#/result/relatedMethods/67",
+            "init-state-body.json#/result/relatedMethods/67",
+            "initialization-bodies.json#/result/relatedMethods/67",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/67",
+            "move/native-bodies.json#/result/relatedMethods/67",
+            "move/random-vector-body.json#/result/relatedMethods/67",
+            "move/random-wrapper-body.json#/result/relatedMethods/67",
+            "presence/appear-target-bodies.json#/result/relatedMethods/67",
+            "presence/born-state-enter-body.json#/result/relatedMethods/67",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/67",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/67",
+            "presence/state-switch-body.json#/result/relatedMethods/67",
+            "state-constructor-body.json#/result/relatedMethods/67",
+            "state-start-bodies.json#/result/relatedMethods/67",
+            "state-switch-internal.json#/result/relatedMethods/67"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.get_purposeMask",
+          "address": "0x1810f8ea0"
+        },
+        {
+          "index": 99352,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/68",
+            "allocation/unit-allocation.json#/result/relatedMethods/68",
+            "entry-bodies.json#/result/relatedMethods/68",
+            "init-state-body.json#/result/relatedMethods/68",
+            "initialization-bodies.json#/result/relatedMethods/68",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/68",
+            "move/native-bodies.json#/result/relatedMethods/68",
+            "move/random-vector-body.json#/result/relatedMethods/68",
+            "move/random-wrapper-body.json#/result/relatedMethods/68",
+            "presence/appear-target-bodies.json#/result/relatedMethods/68",
+            "presence/born-state-enter-body.json#/result/relatedMethods/68",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/68",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/68",
+            "presence/state-switch-body.json#/result/relatedMethods/68",
+            "state-constructor-body.json#/result/relatedMethods/68",
+            "state-start-bodies.json#/result/relatedMethods/68",
+            "state-switch-internal.json#/result/relatedMethods/68"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.Execute",
+          "address": "0x1810f89c0"
+        },
+        {
+          "index": 99353,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/69",
+            "allocation/unit-allocation.json#/result/relatedMethods/69",
+            "entry-bodies.json#/result/relatedMethods/69",
+            "init-state-body.json#/result/relatedMethods/69",
+            "initialization-bodies.json#/result/relatedMethods/69",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/69",
+            "move/native-bodies.json#/result/relatedMethods/69",
+            "move/random-vector-body.json#/result/relatedMethods/69",
+            "move/random-wrapper-body.json#/result/relatedMethods/69",
+            "presence/appear-target-bodies.json#/result/relatedMethods/69",
+            "presence/born-state-enter-body.json#/result/relatedMethods/69",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/69",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/69",
+            "presence/state-switch-body.json#/result/relatedMethods/69",
+            "state-constructor-body.json#/result/relatedMethods/69",
+            "state-start-bodies.json#/result/relatedMethods/69",
+            "state-switch-internal.json#/result/relatedMethods/69"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.PreprocessForProjectile",
+          "address": "0x1810f8d80"
+        },
+        {
+          "index": 99354,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/70",
+            "allocation/unit-allocation.json#/result/relatedMethods/70",
+            "entry-bodies.json#/result/relatedMethods/70",
+            "init-state-body.json#/result/relatedMethods/70",
+            "initialization-bodies.json#/result/relatedMethods/70",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/70",
+            "move/native-bodies.json#/result/relatedMethods/70",
+            "move/random-vector-body.json#/result/relatedMethods/70",
+            "move/random-wrapper-body.json#/result/relatedMethods/70",
+            "presence/appear-target-bodies.json#/result/relatedMethods/70",
+            "presence/born-state-enter-body.json#/result/relatedMethods/70",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/70",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/70",
+            "presence/state-switch-body.json#/result/relatedMethods/70",
+            "state-constructor-body.json#/result/relatedMethods/70",
+            "state-start-bodies.json#/result/relatedMethods/70",
+            "state-switch-internal.json#/result/relatedMethods/70"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage..ctor",
+          "address": "0x1810f8de0"
+        },
+        {
+          "index": 100224,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/71",
+            "allocation/unit-allocation.json#/result/relatedMethods/71",
+            "entry-bodies.json#/result/relatedMethods/71",
+            "init-state-body.json#/result/relatedMethods/71",
+            "initialization-bodies.json#/result/relatedMethods/71",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/71",
+            "move/native-bodies.json#/result/relatedMethods/71",
+            "move/random-vector-body.json#/result/relatedMethods/71",
+            "move/random-wrapper-body.json#/result/relatedMethods/71",
+            "presence/appear-target-bodies.json#/result/relatedMethods/71",
+            "presence/born-state-enter-body.json#/result/relatedMethods/71",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/71",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/71",
+            "presence/state-switch-body.json#/result/relatedMethods/71",
+            "state-constructor-body.json#/result/relatedMethods/71",
+            "state-start-bodies.json#/result/relatedMethods/71",
+            "state-switch-internal.json#/result/relatedMethods/71"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsElementDamage.get_allowedSource",
+          "address": "0x181177a90"
+        },
+        {
+          "index": 100225,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/72",
+            "allocation/unit-allocation.json#/result/relatedMethods/72",
+            "entry-bodies.json#/result/relatedMethods/72",
+            "init-state-body.json#/result/relatedMethods/72",
+            "initialization-bodies.json#/result/relatedMethods/72",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/72",
+            "move/native-bodies.json#/result/relatedMethods/72",
+            "move/random-vector-body.json#/result/relatedMethods/72",
+            "move/random-wrapper-body.json#/result/relatedMethods/72",
+            "presence/appear-target-bodies.json#/result/relatedMethods/72",
+            "presence/born-state-enter-body.json#/result/relatedMethods/72",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/72",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/72",
+            "presence/state-switch-body.json#/result/relatedMethods/72",
+            "state-constructor-body.json#/result/relatedMethods/72",
+            "state-start-bodies.json#/result/relatedMethods/72",
+            "state-switch-internal.json#/result/relatedMethods/72"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsElementDamage.Execute",
+          "address": "0x181177970"
+        },
+        {
+          "index": 100226,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/73",
+            "allocation/unit-allocation.json#/result/relatedMethods/73",
+            "entry-bodies.json#/result/relatedMethods/73",
+            "init-state-body.json#/result/relatedMethods/73",
+            "initialization-bodies.json#/result/relatedMethods/73",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/73",
+            "move/native-bodies.json#/result/relatedMethods/73",
+            "move/random-vector-body.json#/result/relatedMethods/73",
+            "move/random-wrapper-body.json#/result/relatedMethods/73",
+            "presence/appear-target-bodies.json#/result/relatedMethods/73",
+            "presence/born-state-enter-body.json#/result/relatedMethods/73",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/73",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/73",
+            "presence/state-switch-body.json#/result/relatedMethods/73",
+            "state-constructor-body.json#/result/relatedMethods/73",
+            "state-start-bodies.json#/result/relatedMethods/73",
+            "state-switch-internal.json#/result/relatedMethods/73"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsElementDamage..ctor",
+          "address": "0x181177a30"
+        },
+        {
+          "index": 101509,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/74",
+            "allocation/unit-allocation.json#/result/relatedMethods/74",
+            "entry-bodies.json#/result/relatedMethods/74",
+            "init-state-body.json#/result/relatedMethods/74",
+            "initialization-bodies.json#/result/relatedMethods/74",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/74",
+            "move/native-bodies.json#/result/relatedMethods/74",
+            "move/random-vector-body.json#/result/relatedMethods/74",
+            "move/random-wrapper-body.json#/result/relatedMethods/74",
+            "presence/appear-target-bodies.json#/result/relatedMethods/74",
+            "presence/born-state-enter-body.json#/result/relatedMethods/74",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/74",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/74",
+            "presence/state-switch-body.json#/result/relatedMethods/74",
+            "state-constructor-body.json#/result/relatedMethods/74",
+            "state-start-bodies.json#/result/relatedMethods/74",
+            "state-switch-internal.json#/result/relatedMethods/74"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterElementDamageModifer.get_allowedSource",
+          "address": "0x1811d62e0"
+        },
+        {
+          "index": 101510,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/75",
+            "allocation/unit-allocation.json#/result/relatedMethods/75",
+            "entry-bodies.json#/result/relatedMethods/75",
+            "init-state-body.json#/result/relatedMethods/75",
+            "initialization-bodies.json#/result/relatedMethods/75",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/75",
+            "move/native-bodies.json#/result/relatedMethods/75",
+            "move/random-vector-body.json#/result/relatedMethods/75",
+            "move/random-wrapper-body.json#/result/relatedMethods/75",
+            "presence/appear-target-bodies.json#/result/relatedMethods/75",
+            "presence/born-state-enter-body.json#/result/relatedMethods/75",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/75",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/75",
+            "presence/state-switch-body.json#/result/relatedMethods/75",
+            "state-constructor-body.json#/result/relatedMethods/75",
+            "state-start-bodies.json#/result/relatedMethods/75",
+            "state-switch-internal.json#/result/relatedMethods/75"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterElementDamageModifer.Execute",
+          "address": "0x1811d6190"
+        },
+        {
+          "index": 101511,
+          "mode": "metadata",
+          "records": [
+            "allocation/creation-helper-entry.json#/result/relatedMethods/76",
+            "allocation/unit-allocation.json#/result/relatedMethods/76",
+            "entry-bodies.json#/result/relatedMethods/76",
+            "init-state-body.json#/result/relatedMethods/76",
+            "initialization-bodies.json#/result/relatedMethods/76",
+            "move/fear-and-random-continuations.json#/result/relatedMethods/76",
+            "move/native-bodies.json#/result/relatedMethods/76",
+            "move/random-vector-body.json#/result/relatedMethods/76",
+            "move/random-wrapper-body.json#/result/relatedMethods/76",
+            "presence/appear-target-bodies.json#/result/relatedMethods/76",
+            "presence/born-state-enter-body.json#/result/relatedMethods/76",
+            "presence/checkpoint-presence-bodies.json#/result/relatedMethods/76",
+            "presence/entity-presence-bodies.json#/result/relatedMethods/76",
+            "presence/state-switch-body.json#/result/relatedMethods/76",
+            "state-constructor-body.json#/result/relatedMethods/76",
+            "state-start-bodies.json#/result/relatedMethods/76",
+            "state-switch-internal.json#/result/relatedMethods/76"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterElementDamageModifer..ctor",
+          "address": "0x1811d6280"
+        },
+        {
+          "index": 226146,
+          "mode": "disasm",
+          "records": [
+            "move/native-bodies.json#/result/methods/4",
+            "move/native-bodies.json#/result/bodies/4/method",
+            "move/native-bodies.json#/result/bodies/4/fragments/0",
+            "move/native-bodies.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.MathUtil.CheckDistance",
+          "address": "0x186944270"
+        },
+        {
+          "index": 226147,
+          "mode": "disasm",
+          "records": [
+            "move/native-bodies.json#/result/methods/5",
+            "move/native-bodies.json#/result/bodies/5/method",
+            "move/native-bodies.json#/result/bodies/5/fragments/0",
+            "move/native-bodies.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.MathUtil.CheckDistance",
+          "address": "0x186944300"
+        },
+        {
+          "index": 226148,
+          "mode": "disasm",
+          "records": [
+            "move/native-bodies.json#/result/methods/6",
+            "move/native-bodies.json#/result/bodies/6/method",
+            "move/native-bodies.json#/result/bodies/6/fragments/0",
+            "move/native-bodies.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.MathUtil.CheckDistance",
+          "address": "0x1869442b0"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.RouteData/CheckpointData",
+          "records": [
+            "move/checkpoint-data-type.json#/result/0"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

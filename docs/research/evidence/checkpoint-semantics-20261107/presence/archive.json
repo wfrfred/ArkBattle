@@ -1,0 +1,1257 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [],
+    "collectionDateSource": "not recorded",
+    "organizedOn": "2026-11-07",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "appear-target-bodies.json#/provenance/client/dll",
+          "born-state-enter-body.json#/provenance/client/dll",
+          "checkpoint-presence-bodies.json#/provenance/client/dll",
+          "entity-presence-bodies.json#/provenance/client/dll",
+          "state-switch-body.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "appear-target-bodies.json#/provenance/client/metadata",
+          "born-state-enter-body.json#/provenance/client/metadata",
+          "checkpoint-presence-bodies.json#/provenance/client/metadata",
+          "entity-presence-bodies.json#/provenance/client/metadata",
+          "state-switch-body.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "appear-target-bodies.json",
+      "born-state-enter-body.json",
+      "checkpoint-presence-bodies.json",
+      "entity-presence-bodies.json",
+      "state-switch-body.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "appear-target-bodies.json",
+        "kind": "record",
+        "bytes": 106204,
+        "sha256": "33e38039830841a3f02b2badba53942ea6dfcc1ccdfbd2516e079d45da99c9b4"
+      },
+      {
+        "path": "born-state-enter-body.json",
+        "kind": "record",
+        "bytes": 132114,
+        "sha256": "803b16624ae24de2f2a78eda6eb2b2bf5faf682f9db99f9d084fe7ca1d36cea4"
+      },
+      {
+        "path": "checkpoint-presence-bodies.json",
+        "kind": "record",
+        "bytes": 153920,
+        "sha256": "bbc8a3737974892e83a4b9e61f01043c0ab6a572c48bff60badd423a0e288bbe"
+      },
+      {
+        "path": "entity-presence-bodies.json",
+        "kind": "record",
+        "bytes": 142947,
+        "sha256": "12a1d47c6b634978f02eb1104cb79033aa438bc7da4a7ac414c0909fb538ae38"
+      },
+      {
+        "path": "state-switch-body.json",
+        "kind": "record",
+        "bytes": 88553,
+        "sha256": "b81f5075aa3cb04fa78f5ed195db1dcd2e277671935c69367ddb50752fda1676"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 18333,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/0",
+            "born-state-enter-body.json#/result/relatedMethods/0",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/0",
+            "entity-presence-bodies.json#/result/relatedMethods/0",
+            "state-switch-body.json#/result/relatedMethods/0"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleModifierWrap._m_NewElementDamageModifierAfterCalculate_xlua_st_",
+          "address": "0x180a616a0"
+        },
+        {
+          "index": 18350,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/1",
+            "born-state-enter-body.json#/result/relatedMethods/1",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/1",
+            "entity-presence-bodies.json#/result/relatedMethods/1",
+            "state-switch-body.json#/result/relatedMethods/1"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleModifierWrap._g_get_isElementDamage",
+          "address": "0x180a5db40"
+        },
+        {
+          "index": 33940,
+          "mode": "disasm",
+          "records": [
+            "state-switch-body.json#/result/methods/0",
+            "state-switch-body.json#/result/bodies/0/method",
+            "state-switch-body.json#/result/bodies/0/fragments/0",
+            "state-switch-body.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.StateMachine.SwitchState",
+          "address": "0x1826a5fd0"
+        },
+        {
+          "index": 65902,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/2",
+            "born-state-enter-body.json#/result/relatedMethods/2",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/2",
+            "entity-presence-bodies.json#/result/relatedMethods/2",
+            "state-switch-body.json#/result/relatedMethods/2"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686700"
+        },
+        {
+          "index": 65903,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/3",
+            "born-state-enter-body.json#/result/relatedMethods/3",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/3",
+            "entity-presence-bodies.json#/result/relatedMethods/3",
+            "state-switch-body.json#/result/relatedMethods/3"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686440"
+        },
+        {
+          "index": 65904,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/4",
+            "born-state-enter-body.json#/result/relatedMethods/4",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/4",
+            "entity-presence-bodies.json#/result/relatedMethods/4",
+            "state-switch-body.json#/result/relatedMethods/4"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686530"
+        },
+        {
+          "index": 66007,
+          "mode": "disasm",
+          "records": [
+            "checkpoint-presence-bodies.json#/result/methods/0",
+            "checkpoint-presence-bodies.json#/result/bodies/0/method",
+            "checkpoint-presence-bodies.json#/result/bodies/0/fragments/0",
+            "checkpoint-presence-bodies.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BObject.SetDisappeared",
+          "address": "0x1806afec0"
+        },
+        {
+          "index": 66023,
+          "mode": "disasm",
+          "records": [
+            "checkpoint-presence-bodies.json#/result/methods/1",
+            "checkpoint-presence-bodies.json#/result/bodies/1/method",
+            "checkpoint-presence-bodies.json#/result/bodies/1/fragments/0",
+            "checkpoint-presence-bodies.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BObject.OnDisappearChanged",
+          "address": "0x1806afc80"
+        },
+        {
+          "index": 66147,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/5",
+            "born-state-enter-body.json#/result/relatedMethods/5",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/5",
+            "entity-presence-bodies.json#/result/relatedMethods/5",
+            "state-switch-body.json#/result/relatedMethods/5"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAfterOutputElementDamage",
+          "address": "0x1806d0180"
+        },
+        {
+          "index": 66153,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/6",
+            "born-state-enter-body.json#/result/relatedMethods/6",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/6",
+            "entity-presence-bodies.json#/result/relatedMethods/6",
+            "state-switch-body.json#/result/relatedMethods/6"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnTakeEPDamage",
+          "address": "0x1806d5250"
+        },
+        {
+          "index": 66380,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/7",
+            "born-state-enter-body.json#/result/relatedMethods/7",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/7",
+            "entity-presence-bodies.json#/result/relatedMethods/7",
+            "state-switch-body.json#/result/relatedMethods/7"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnAfterOutputElementDamage",
+          "address": "0x1806b8c90"
+        },
+        {
+          "index": 66384,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/8",
+            "born-state-enter-body.json#/result/relatedMethods/8",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/8",
+            "entity-presence-bodies.json#/result/relatedMethods/8",
+            "state-switch-body.json#/result/relatedMethods/8"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnTakeEPDamage",
+          "address": "0x1806c76c0"
+        },
+        {
+          "index": 67460,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/9",
+            "born-state-enter-body.json#/result/relatedMethods/9",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/9",
+            "entity-presence-bodies.json#/result/relatedMethods/9",
+            "state-switch-body.json#/result/relatedMethods/9"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_epDamageResistance",
+          "address": "0x180734bb0"
+        },
+        {
+          "index": 67654,
+          "mode": "disasm",
+          "records": [
+            "entity-presence-bodies.json#/result/methods/0",
+            "entity-presence-bodies.json#/result/bodies/0/method",
+            "entity-presence-bodies.json#/result/bodies/0/fragments/0",
+            "entity-presence-bodies.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.CheckCanSwitchToDisappearState",
+          "address": "0x180721f20"
+        },
+        {
+          "index": 67655,
+          "mode": "disasm",
+          "records": [
+            "entity-presence-bodies.json#/result/methods/1",
+            "entity-presence-bodies.json#/result/bodies/1/method",
+            "entity-presence-bodies.json#/result/bodies/1/fragments/0",
+            "entity-presence-bodies.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnBeforeDisappearChanged",
+          "address": "0x180728ea0"
+        },
+        {
+          "index": 67656,
+          "mode": "disasm",
+          "records": [
+            "entity-presence-bodies.json#/result/methods/2",
+            "entity-presence-bodies.json#/result/bodies/2/method",
+            "entity-presence-bodies.json#/result/bodies/2/fragments/0",
+            "entity-presence-bodies.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnDisappearChanged",
+          "address": "0x180729bb0"
+        },
+        {
+          "index": 67675,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/10",
+            "born-state-enter-body.json#/result/relatedMethods/10",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/10",
+            "entity-presence-bodies.json#/result/relatedMethods/10",
+            "state-switch-body.json#/result/relatedMethods/10"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnAfterOutputElementDamage",
+          "address": "0x180727b50"
+        },
+        {
+          "index": 67684,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/11",
+            "born-state-enter-body.json#/result/relatedMethods/11",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/11",
+            "entity-presence-bodies.json#/result/relatedMethods/11",
+            "state-switch-body.json#/result/relatedMethods/11"
+          ],
+          "fullname": "Torappu.Battle.Entity._DoApplyEPModifierInternal",
+          "address": "0x180730be0"
+        },
+        {
+          "index": 67711,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/12",
+            "born-state-enter-body.json#/result/relatedMethods/12",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/12",
+            "entity-presence-bodies.json#/result/relatedMethods/12",
+            "state-switch-body.json#/result/relatedMethods/12"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnTakeEPDamage",
+          "address": "0x18072be40"
+        },
+        {
+          "index": 67982,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/13",
+            "born-state-enter-body.json#/result/relatedMethods/13",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/13",
+            "entity-presence-bodies.json#/result/relatedMethods/13",
+            "state-switch-body.json#/result/relatedMethods/13"
+          ],
+          "fullname": "Torappu.Battle.BattleLogger.LogEpModifier",
+          "address": "0x180741920"
+        },
+        {
+          "index": 68032,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/14",
+            "born-state-enter-body.json#/result/relatedMethods/14",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/14",
+            "entity-presence-bodies.json#/result/relatedMethods/14",
+            "state-switch-body.json#/result/relatedMethods/14"
+          ],
+          "fullname": "Torappu.Battle.BattleLogger/BattleStats/CharAdvancedStats.ToListElementDamage",
+          "address": "0x18074c630"
+        },
+        {
+          "index": 69081,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/15",
+            "born-state-enter-body.json#/result/relatedMethods/15",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/15",
+            "entity-presence-bodies.json#/result/relatedMethods/15",
+            "state-switch-body.json#/result/relatedMethods/15"
+          ],
+          "fullname": "Torappu.Battle.Act33SideManager.ApplyElementDamageCharactersWithRope",
+          "address": "0x1807a6a90"
+        },
+        {
+          "index": 69083,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/16",
+            "born-state-enter-body.json#/result/relatedMethods/16",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/16",
+            "entity-presence-bodies.json#/result/relatedMethods/16",
+            "state-switch-body.json#/result/relatedMethods/16"
+          ],
+          "fullname": "Torappu.Battle.Act33SideManager._ApplyElementDamageModifier",
+          "address": "0x1807aa610"
+        },
+        {
+          "index": 71348,
+          "mode": "disasm",
+          "records": [
+            "checkpoint-presence-bodies.json#/result/methods/2",
+            "checkpoint-presence-bodies.json#/result/bodies/2/method",
+            "checkpoint-presence-bodies.json#/result/bodies/2/fragments/0",
+            "checkpoint-presence-bodies.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/DisappearCheckpoint.OnBegin",
+          "address": "0x1808d5480"
+        },
+        {
+          "index": 71349,
+          "mode": "disasm",
+          "records": [
+            "appear-target-bodies.json#/result/methods/0",
+            "appear-target-bodies.json#/result/bodies/0/method",
+            "appear-target-bodies.json#/result/bodies/0/fragments/0",
+            "appear-target-bodies.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/AppearAtPosCheckpoint.get_targetGrid",
+          "address": "0x1808cc310"
+        },
+        {
+          "index": 71350,
+          "mode": "disasm",
+          "records": [
+            "appear-target-bodies.json#/result/methods/1",
+            "appear-target-bodies.json#/result/bodies/1/method",
+            "appear-target-bodies.json#/result/bodies/1/fragments/0",
+            "appear-target-bodies.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/AppearAtPosCheckpoint.get_targetPos",
+          "address": "0x1808cc330"
+        },
+        {
+          "index": 71357,
+          "mode": "disasm",
+          "records": [
+            "checkpoint-presence-bodies.json#/result/methods/3",
+            "checkpoint-presence-bodies.json#/result/bodies/3/method",
+            "checkpoint-presence-bodies.json#/result/bodies/3/fragments/0",
+            "checkpoint-presence-bodies.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor/AppearAtPosCheckpoint.OnBegin",
+          "address": "0x1808cc290"
+        },
+        {
+          "index": 72136,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/17",
+            "born-state-enter-body.json#/result/relatedMethods/17",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/17",
+            "entity-presence-bodies.json#/result/relatedMethods/17",
+            "state-switch-body.json#/result/relatedMethods/17"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isElementDamage",
+          "address": "0x18090d630"
+        },
+        {
+          "index": 72181,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/18",
+            "born-state-enter-body.json#/result/relatedMethods/18",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/18",
+            "entity-presence-bodies.json#/result/relatedMethods/18",
+            "state-switch-body.json#/result/relatedMethods/18"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewElementDamageModifierAfterCalculate",
+          "address": "0x18090a8e0"
+        },
+        {
+          "index": 77792,
+          "mode": "disasm",
+          "records": [
+            "checkpoint-presence-bodies.json#/result/methods/4",
+            "checkpoint-presence-bodies.json#/result/bodies/4/method",
+            "checkpoint-presence-bodies.json#/result/bodies/4/fragments/0",
+            "checkpoint-presence-bodies.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnDisappearChanged",
+          "address": "0x180abec30"
+        },
+        {
+          "index": 77957,
+          "mode": "disasm",
+          "records": [
+            "born-state-enter-body.json#/result/methods/0",
+            "born-state-enter-body.json#/result/bodies/0/method",
+            "born-state-enter-body.json#/result/bodies/0/fragments/0",
+            "born-state-enter-body.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/BornState.OnEnter",
+          "address": "0x180ad6030"
+        },
+        {
+          "index": 77959,
+          "mode": "disasm",
+          "records": [
+            "born-state-enter-body.json#/result/methods/1",
+            "born-state-enter-body.json#/result/bodies/1/method",
+            "born-state-enter-body.json#/result/bodies/1/fragments/0",
+            "born-state-enter-body.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/BornState.OnTick",
+          "address": "0x180ad6310"
+        },
+        {
+          "index": 92284,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/19",
+            "born-state-enter-body.json#/result/relatedMethods/19",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/19",
+            "entity-presence-bodies.json#/result/relatedMethods/19",
+            "state-switch-body.json#/result/relatedMethods/19"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_hasEpDamage",
+          "address": "0x180f3fd80"
+        },
+        {
+          "index": 92287,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/20",
+            "born-state-enter-body.json#/result/relatedMethods/20",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/20",
+            "entity-presence-bodies.json#/result/relatedMethods/20",
+            "state-switch-body.json#/result/relatedMethods/20"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_elementDamageType",
+          "address": "0x180f3fd20"
+        },
+        {
+          "index": 92294,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/21",
+            "born-state-enter-body.json#/result/relatedMethods/21",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/21",
+            "entity-presence-bodies.json#/result/relatedMethods/21",
+            "state-switch-body.json#/result/relatedMethods/21"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.ApplyElementDamageScale",
+          "address": "0x180f3ec10"
+        },
+        {
+          "index": 93348,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/22",
+            "born-state-enter-body.json#/result/relatedMethods/22",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/22",
+            "entity-presence-bodies.json#/result/relatedMethods/22",
+            "state-switch-body.json#/result/relatedMethods/22"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ProjectileToTileAbility.get_hasEpDamage",
+          "address": "0x180f7baf0"
+        },
+        {
+          "index": 93359,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/23",
+            "born-state-enter-body.json#/result/relatedMethods/23",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/23",
+            "entity-presence-bodies.json#/result/relatedMethods/23",
+            "state-switch-body.json#/result/relatedMethods/23"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ProjectileToTileAbility.ApplyElementDamageScale",
+          "address": "0x180f7a260"
+        },
+        {
+          "index": 93894,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/24",
+            "born-state-enter-body.json#/result/relatedMethods/24",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/24",
+            "entity-presence-bodies.json#/result/relatedMethods/24",
+            "state-switch-body.json#/result/relatedMethods/24"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.CreateElementDamageNode",
+          "address": "0x180f90230"
+        },
+        {
+          "index": 93895,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/25",
+            "born-state-enter-body.json#/result/relatedMethods/25",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/25",
+            "entity-presence-bodies.json#/result/relatedMethods/25",
+            "state-switch-body.json#/result/relatedMethods/25"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.NewElementDamageNode",
+          "address": "0x180f90cc0"
+        },
+        {
+          "index": 97423,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/26",
+            "born-state-enter-body.json#/result/relatedMethods/26",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/26",
+            "entity-presence-bodies.json#/result/relatedMethods/26",
+            "state-switch-body.json#/result/relatedMethods/26"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/Act33SideBurnCharactersWithRope.get_isFixedEpDamage",
+          "address": "0x18106aee0"
+        },
+        {
+          "index": 99204,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/27",
+            "born-state-enter-body.json#/result/relatedMethods/27",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/27",
+            "entity-presence-bodies.json#/result/relatedMethods/27",
+            "state-switch-body.json#/result/relatedMethods/27"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/UpdateAttackElementDamageScale.get_allowedSource",
+          "address": "0x1811089f0"
+        },
+        {
+          "index": 99205,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/28",
+            "born-state-enter-body.json#/result/relatedMethods/28",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/28",
+            "entity-presence-bodies.json#/result/relatedMethods/28",
+            "state-switch-body.json#/result/relatedMethods/28"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/UpdateAttackElementDamageScale.Execute",
+          "address": "0x181108730"
+        },
+        {
+          "index": 99206,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/29",
+            "born-state-enter-body.json#/result/relatedMethods/29",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/29",
+            "entity-presence-bodies.json#/result/relatedMethods/29",
+            "state-switch-body.json#/result/relatedMethods/29"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/UpdateAttackElementDamageScale..ctor",
+          "address": "0x181108940"
+        },
+        {
+          "index": 99223,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/30",
+            "born-state-enter-body.json#/result/relatedMethods/30",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/30",
+            "entity-presence-bodies.json#/result/relatedMethods/30",
+            "state-switch-body.json#/result/relatedMethods/30"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage.get_allowedSource",
+          "address": "0x1810fb000"
+        },
+        {
+          "index": 99224,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/31",
+            "born-state-enter-body.json#/result/relatedMethods/31",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/31",
+            "entity-presence-bodies.json#/result/relatedMethods/31",
+            "state-switch-body.json#/result/relatedMethods/31"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage.get_shieldByAnotherSource",
+          "address": "0x1810fb060"
+        },
+        {
+          "index": 99225,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/32",
+            "born-state-enter-body.json#/result/relatedMethods/32",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/32",
+            "entity-presence-bodies.json#/result/relatedMethods/32",
+            "state-switch-body.json#/result/relatedMethods/32"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage.Execute",
+          "address": "0x1810fab10"
+        },
+        {
+          "index": 99226,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/33",
+            "born-state-enter-body.json#/result/relatedMethods/33",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/33",
+            "entity-presence-bodies.json#/result/relatedMethods/33",
+            "state-switch-body.json#/result/relatedMethods/33"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage..ctor",
+          "address": "0x1810faf50"
+        },
+        {
+          "index": 99250,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/34",
+            "born-state-enter-body.json#/result/relatedMethods/34",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/34",
+            "entity-presence-bodies.json#/result/relatedMethods/34",
+            "state-switch-body.json#/result/relatedMethods/34"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/EpDamageScale.get_allowedSource",
+          "address": "0x1811010e0"
+        },
+        {
+          "index": 99251,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/35",
+            "born-state-enter-body.json#/result/relatedMethods/35",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/35",
+            "entity-presence-bodies.json#/result/relatedMethods/35",
+            "state-switch-body.json#/result/relatedMethods/35"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/EpDamageScale.Execute",
+          "address": "0x181100b60"
+        },
+        {
+          "index": 99252,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/36",
+            "born-state-enter-body.json#/result/relatedMethods/36",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/36",
+            "entity-presence-bodies.json#/result/relatedMethods/36",
+            "state-switch-body.json#/result/relatedMethods/36"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/EpDamageScale..ctor",
+          "address": "0x181101050"
+        },
+        {
+          "index": 99321,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/37",
+            "born-state-enter-body.json#/result/relatedMethods/37",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/37",
+            "entity-presence-bodies.json#/result/relatedMethods/37",
+            "state-switch-body.json#/result/relatedMethods/37"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_multiplyWithBuffValidStackCnt",
+          "address": "0x1810f8890"
+        },
+        {
+          "index": 99322,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/38",
+            "born-state-enter-body.json#/result/relatedMethods/38",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/38",
+            "entity-presence-bodies.json#/result/relatedMethods/38",
+            "state-switch-body.json#/result/relatedMethods/38"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_isFixedEpDamage",
+          "address": "0x1810f8830"
+        },
+        {
+          "index": 99323,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/39",
+            "born-state-enter-body.json#/result/relatedMethods/39",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/39",
+            "entity-presence-bodies.json#/result/relatedMethods/39",
+            "state-switch-body.json#/result/relatedMethods/39"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_epDamageScale",
+          "address": "0x1810f87d0"
+        },
+        {
+          "index": 99324,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/40",
+            "born-state-enter-body.json#/result/relatedMethods/40",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/40",
+            "entity-presence-bodies.json#/result/relatedMethods/40",
+            "state-switch-body.json#/result/relatedMethods/40"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.set_epDamageScale",
+          "address": "0x1810f8950"
+        },
+        {
+          "index": 99325,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/41",
+            "born-state-enter-body.json#/result/relatedMethods/41",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/41",
+            "entity-presence-bodies.json#/result/relatedMethods/41",
+            "state-switch-body.json#/result/relatedMethods/41"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_epDamageRatio",
+          "address": "0x1810f8770"
+        },
+        {
+          "index": 99326,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/42",
+            "born-state-enter-body.json#/result/relatedMethods/42",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/42",
+            "entity-presence-bodies.json#/result/relatedMethods/42",
+            "state-switch-body.json#/result/relatedMethods/42"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_allowedSource",
+          "address": "0x1810f8710"
+        },
+        {
+          "index": 99327,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/43",
+            "born-state-enter-body.json#/result/relatedMethods/43",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/43",
+            "entity-presence-bodies.json#/result/relatedMethods/43",
+            "state-switch-body.json#/result/relatedMethods/43"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_purposeMask",
+          "address": "0x1810f88f0"
+        },
+        {
+          "index": 99328,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/44",
+            "born-state-enter-body.json#/result/relatedMethods/44",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/44",
+            "entity-presence-bodies.json#/result/relatedMethods/44",
+            "state-switch-body.json#/result/relatedMethods/44"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage._CheckNodeInvalid",
+          "address": "0x1810f8340"
+        },
+        {
+          "index": 99329,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/45",
+            "born-state-enter-body.json#/result/relatedMethods/45",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/45",
+            "entity-presence-bodies.json#/result/relatedMethods/45",
+            "state-switch-body.json#/result/relatedMethods/45"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.Execute",
+          "address": "0x1810f7c20"
+        },
+        {
+          "index": 99330,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/46",
+            "born-state-enter-body.json#/result/relatedMethods/46",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/46",
+            "entity-presence-bodies.json#/result/relatedMethods/46",
+            "state-switch-body.json#/result/relatedMethods/46"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage..ctor",
+          "address": "0x1810f8610"
+        },
+        {
+          "index": 99331,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/47",
+            "born-state-enter-body.json#/result/relatedMethods/47",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/47",
+            "entity-presence-bodies.json#/result/relatedMethods/47",
+            "state-switch-body.json#/result/relatedMethods/47"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage..ctor",
+          "address": "0x1810f84e0"
+        },
+        {
+          "index": 99332,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/48",
+            "born-state-enter-body.json#/result/relatedMethods/48",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/48",
+            "entity-presence-bodies.json#/result/relatedMethods/48",
+            "state-switch-body.json#/result/relatedMethods/48"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.CreateElementDamageModifier",
+          "address": "0x1810f76d0"
+        },
+        {
+          "index": 99333,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/49",
+            "born-state-enter-body.json#/result/relatedMethods/49",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/49",
+            "entity-presence-bodies.json#/result/relatedMethods/49",
+            "state-switch-body.json#/result/relatedMethods/49"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.PreprocessForProjectile",
+          "address": "0x1810f8210"
+        },
+        {
+          "index": 99334,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/50",
+            "born-state-enter-body.json#/result/relatedMethods/50",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/50",
+            "entity-presence-bodies.json#/result/relatedMethods/50",
+            "state-switch-body.json#/result/relatedMethods/50"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.DeliverPreprocessPara",
+          "address": "0x1810f7ba0"
+        },
+        {
+          "index": 99335,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/51",
+            "born-state-enter-body.json#/result/relatedMethods/51",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/51",
+            "entity-presence-bodies.json#/result/relatedMethods/51",
+            "state-switch-body.json#/result/relatedMethods/51"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.get_allowedSource",
+          "address": "0x1810f4fc0"
+        },
+        {
+          "index": 99336,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/52",
+            "born-state-enter-body.json#/result/relatedMethods/52",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/52",
+            "entity-presence-bodies.json#/result/relatedMethods/52",
+            "state-switch-body.json#/result/relatedMethods/52"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.get_purposeMask",
+          "address": "0x1810f5020"
+        },
+        {
+          "index": 99337,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/53",
+            "born-state-enter-body.json#/result/relatedMethods/53",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/53",
+            "entity-presence-bodies.json#/result/relatedMethods/53",
+            "state-switch-body.json#/result/relatedMethods/53"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.Execute",
+          "address": "0x1810f4480"
+        },
+        {
+          "index": 99338,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/54",
+            "born-state-enter-body.json#/result/relatedMethods/54",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/54",
+            "entity-presence-bodies.json#/result/relatedMethods/54",
+            "state-switch-body.json#/result/relatedMethods/54"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage._GetTargets_DISPOSE",
+          "address": "0x1810f4b60"
+        },
+        {
+          "index": 99339,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/55",
+            "born-state-enter-body.json#/result/relatedMethods/55",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/55",
+            "entity-presence-bodies.json#/result/relatedMethods/55",
+            "state-switch-body.json#/result/relatedMethods/55"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage._DealEpDamage",
+          "address": "0x1810f4910"
+        },
+        {
+          "index": 99340,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/56",
+            "born-state-enter-body.json#/result/relatedMethods/56",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/56",
+            "entity-presence-bodies.json#/result/relatedMethods/56",
+            "state-switch-body.json#/result/relatedMethods/56"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.PreprocessForProjectile",
+          "address": "0x1810f48b0"
+        },
+        {
+          "index": 99341,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/57",
+            "born-state-enter-body.json#/result/relatedMethods/57",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/57",
+            "entity-presence-bodies.json#/result/relatedMethods/57",
+            "state-switch-body.json#/result/relatedMethods/57"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage..ctor",
+          "address": "0x1810f4f50"
+        },
+        {
+          "index": 99342,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/58",
+            "born-state-enter-body.json#/result/relatedMethods/58",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/58",
+            "entity-presence-bodies.json#/result/relatedMethods/58",
+            "state-switch-body.json#/result/relatedMethods/58"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage/<>c__DisplayClass16_0..ctor",
+          "address": "0x180520cc0"
+        },
+        {
+          "index": 99343,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/59",
+            "born-state-enter-body.json#/result/relatedMethods/59",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/59",
+            "entity-presence-bodies.json#/result/relatedMethods/59",
+            "state-switch-body.json#/result/relatedMethods/59"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage/<>c__DisplayClass16_0.<_GetTargets_DISPOSE>b__1",
+          "address": "0x1811081b0"
+        },
+        {
+          "index": 99344,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/60",
+            "born-state-enter-body.json#/result/relatedMethods/60",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/60",
+            "entity-presence-bodies.json#/result/relatedMethods/60",
+            "state-switch-body.json#/result/relatedMethods/60"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage/<>c__DisplayClass16_0.<_GetTargets_DISPOSE>b__0",
+          "address": "0x181108100"
+        },
+        {
+          "index": 99345,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/61",
+            "born-state-enter-body.json#/result/relatedMethods/61",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/61",
+            "entity-presence-bodies.json#/result/relatedMethods/61",
+            "state-switch-body.json#/result/relatedMethods/61"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.get_allowedSource",
+          "address": "0x1810f7610"
+        },
+        {
+          "index": 99346,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/62",
+            "born-state-enter-body.json#/result/relatedMethods/62",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/62",
+            "entity-presence-bodies.json#/result/relatedMethods/62",
+            "state-switch-body.json#/result/relatedMethods/62"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.get_purposeMask",
+          "address": "0x1810f7670"
+        },
+        {
+          "index": 99347,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/63",
+            "born-state-enter-body.json#/result/relatedMethods/63",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/63",
+            "entity-presence-bodies.json#/result/relatedMethods/63",
+            "state-switch-body.json#/result/relatedMethods/63"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.Execute",
+          "address": "0x1810f70b0"
+        },
+        {
+          "index": 99348,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/64",
+            "born-state-enter-body.json#/result/relatedMethods/64",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/64",
+            "entity-presence-bodies.json#/result/relatedMethods/64",
+            "state-switch-body.json#/result/relatedMethods/64"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.PreprocessForProjectile",
+          "address": "0x1810f7540"
+        },
+        {
+          "index": 99349,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/65",
+            "born-state-enter-body.json#/result/relatedMethods/65",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/65",
+            "entity-presence-bodies.json#/result/relatedMethods/65",
+            "state-switch-body.json#/result/relatedMethods/65"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue..ctor",
+          "address": "0x1810f75a0"
+        },
+        {
+          "index": 99350,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/66",
+            "born-state-enter-body.json#/result/relatedMethods/66",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/66",
+            "entity-presence-bodies.json#/result/relatedMethods/66",
+            "state-switch-body.json#/result/relatedMethods/66"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.get_allowedSource",
+          "address": "0x1810f8e40"
+        },
+        {
+          "index": 99351,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/67",
+            "born-state-enter-body.json#/result/relatedMethods/67",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/67",
+            "entity-presence-bodies.json#/result/relatedMethods/67",
+            "state-switch-body.json#/result/relatedMethods/67"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.get_purposeMask",
+          "address": "0x1810f8ea0"
+        },
+        {
+          "index": 99352,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/68",
+            "born-state-enter-body.json#/result/relatedMethods/68",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/68",
+            "entity-presence-bodies.json#/result/relatedMethods/68",
+            "state-switch-body.json#/result/relatedMethods/68"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.Execute",
+          "address": "0x1810f89c0"
+        },
+        {
+          "index": 99353,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/69",
+            "born-state-enter-body.json#/result/relatedMethods/69",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/69",
+            "entity-presence-bodies.json#/result/relatedMethods/69",
+            "state-switch-body.json#/result/relatedMethods/69"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.PreprocessForProjectile",
+          "address": "0x1810f8d80"
+        },
+        {
+          "index": 99354,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/70",
+            "born-state-enter-body.json#/result/relatedMethods/70",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/70",
+            "entity-presence-bodies.json#/result/relatedMethods/70",
+            "state-switch-body.json#/result/relatedMethods/70"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage..ctor",
+          "address": "0x1810f8de0"
+        },
+        {
+          "index": 100224,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/71",
+            "born-state-enter-body.json#/result/relatedMethods/71",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/71",
+            "entity-presence-bodies.json#/result/relatedMethods/71",
+            "state-switch-body.json#/result/relatedMethods/71"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsElementDamage.get_allowedSource",
+          "address": "0x181177a90"
+        },
+        {
+          "index": 100225,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/72",
+            "born-state-enter-body.json#/result/relatedMethods/72",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/72",
+            "entity-presence-bodies.json#/result/relatedMethods/72",
+            "state-switch-body.json#/result/relatedMethods/72"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsElementDamage.Execute",
+          "address": "0x181177970"
+        },
+        {
+          "index": 100226,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/73",
+            "born-state-enter-body.json#/result/relatedMethods/73",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/73",
+            "entity-presence-bodies.json#/result/relatedMethods/73",
+            "state-switch-body.json#/result/relatedMethods/73"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsElementDamage..ctor",
+          "address": "0x181177a30"
+        },
+        {
+          "index": 101509,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/74",
+            "born-state-enter-body.json#/result/relatedMethods/74",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/74",
+            "entity-presence-bodies.json#/result/relatedMethods/74",
+            "state-switch-body.json#/result/relatedMethods/74"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterElementDamageModifer.get_allowedSource",
+          "address": "0x1811d62e0"
+        },
+        {
+          "index": 101510,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/75",
+            "born-state-enter-body.json#/result/relatedMethods/75",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/75",
+            "entity-presence-bodies.json#/result/relatedMethods/75",
+            "state-switch-body.json#/result/relatedMethods/75"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterElementDamageModifer.Execute",
+          "address": "0x1811d6190"
+        },
+        {
+          "index": 101511,
+          "mode": "metadata",
+          "records": [
+            "appear-target-bodies.json#/result/relatedMethods/76",
+            "born-state-enter-body.json#/result/relatedMethods/76",
+            "checkpoint-presence-bodies.json#/result/relatedMethods/76",
+            "entity-presence-bodies.json#/result/relatedMethods/76",
+            "state-switch-body.json#/result/relatedMethods/76"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterElementDamageModifer..ctor",
+          "address": "0x1811d6280"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}
