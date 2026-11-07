@@ -94,3 +94,4 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | [checkpoint-semantics-20261107](checkpoint-semantics-20261107/README.md) | MOVE 目标采样与到达半径、有限配置正例，以及首即时指令相对身份／位置／Born／场上登记的顺序 |
 | [checkpoint-nondefault-20261107](checkpoint-nondefault-20261107/README.md) | 两次固定修订完整关卡字段检查；马特奥运行时随机 MOVE 的技能／Prefab／模板启用链；非零半径的检索边界 |
 | [route-operations-20261107](route-operations-20261107/README.md) | Route／Enemy／Cursor 全集与槽写入审查、创建后操作调用者、内容正例及主／临时执行状态保留 |
+| [insert-patrol-20261107](insert-patrol-20261107/README.md) | Insert 目标策略与完整关卡巡逻交叉；区分算法反例、模板候选和实际配置交集 |

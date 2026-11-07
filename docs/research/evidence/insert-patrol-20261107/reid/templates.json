@@ -1,0 +1,90 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-07",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/insert-patrol-20261107/reid/extract_templates.py",
+      "bytes": 3262,
+      "sha256": "94b9d5d1ebdaab6bdb28066f3ad06274f385802338cdbcbf2b1973c6b27cb1e5"
+    },
+    "typeTreeReader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+      "bytes": 8161,
+      "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+    },
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+        "bytes": 2151020,
+        "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+      }
+    ],
+    "scope": "Complete current holder scan selecting literal references to enemy_reid_change_route; full template programs preserve guards. Existence is not prefab activation."
+  },
+  "result": {
+    "wantedNodeTypes": [
+      "InsertCheckPointInRuntimeRoute"
+    ],
+    "templates": [
+      {
+        "bundle": "config/buff_template_holder.ab",
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "templateIndex": 6255,
+        "template": {
+          "templateKey": "enemy_reid_change_route",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 0,
+                  "value": {
+                    "SerializedState": "[{\"_source\":\"BUFF_OWNER\",\"_target\":\"BUFF_SOURCE\",\"_clearRouteBeforeInsert\":false,\"_type\":\"MOVE\",\"_randomizeReachOffset\":false,\"_reachOffset\":{\"x\":0.0,\"y\":0.0},\"_time\":0.0,\"_addIntoRuntimeRoute\":false,\"_toMapPosition\":false,\"_checkReachable\":false,\"_manuallySpecifyInsertIndex\":false,\"_insertIndex\":0,\"_manuallySpecifyReassignIndex\":false,\"_reassignIndex\":0,\"$type\":\"Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "events": [
+          {
+            "event": 0,
+            "actions": [
+              {
+                "_source": "BUFF_OWNER",
+                "_target": "BUFF_SOURCE",
+                "_clearRouteBeforeInsert": false,
+                "_type": "MOVE",
+                "_randomizeReachOffset": false,
+                "_reachOffset": {
+                  "x": 0.0,
+                  "y": 0.0
+                },
+                "_time": 0.0,
+                "_addIntoRuntimeRoute": false,
+                "_toMapPosition": false,
+                "_checkReachable": false,
+                "_manuallySpecifyInsertIndex": false,
+                "_insertIndex": 0,
+                "_manuallySpecifyReassignIndex": false,
+                "_reassignIndex": 0,
+                "$type": "Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute"
+              }
+            ]
+          }
+        ],
+        "hits": [
+          {
+            "event": 0,
+            "pointer": "/0",
+            "type": "Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute"
+          }
+        ]
+      }
+    ]
+  }
+}

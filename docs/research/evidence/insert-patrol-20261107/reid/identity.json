@@ -1,0 +1,297 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-07T15:33:12.457608+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+      "--source-url",
+      "https://github.com/Kengxxiao/ArknightsGameData",
+      "--revision",
+      "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "--out",
+      "docs/research/evidence/insert-patrol-20261107/reid/identity.json",
+      "select",
+      "/enemies/1435"
+    ],
+    "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "bytes": 15721552,
+        "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "pointer": "/enemies/1435",
+        "value": {
+          "Key": "enemy_1539_reid",
+          "Value": [
+            {
+              "level": 0,
+              "enemyData": {
+                "name": {
+                  "m_defined": true,
+                  "m_value": "“复仇者”"
+                },
+                "description": {
+                  "m_defined": true,
+                  "m_value": "曾经遭遇过的整合运动干部，使用令人印象深刻的炙热长刀进行攻击"
+                },
+                "prefabKey": {
+                  "m_defined": true,
+                  "m_value": "enemy_1539_reid"
+                },
+                "attributes": {
+                  "maxHp": {
+                    "m_defined": true,
+                    "m_value": 23000
+                  },
+                  "atk": {
+                    "m_defined": true,
+                    "m_value": 800
+                  },
+                  "def": {
+                    "m_defined": true,
+                    "m_value": 650
+                  },
+                  "magicResistance": {
+                    "m_defined": true,
+                    "m_value": 60.0
+                  },
+                  "cost": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "blockCnt": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "moveSpeed": {
+                    "m_defined": true,
+                    "m_value": 0.65
+                  },
+                  "attackSpeed": {
+                    "m_defined": false,
+                    "m_value": 100.0
+                  },
+                  "baseAttackTime": {
+                    "m_defined": true,
+                    "m_value": 3.0
+                  },
+                  "respawnTime": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "hpRecoveryPerSec": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "spRecoveryPerSec": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "maxDeployCount": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "massLevel": {
+                    "m_defined": true,
+                    "m_value": 3
+                  },
+                  "baseForceLevel": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "tauntLevel": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "epDamageResistance": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "epResistance": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "damageHitratePhysical": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "damageHitrateMagical": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "epBreakRecoverSpeed": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "blockVolume": {
+                    "m_defined": false,
+                    "m_value": -1
+                  },
+                  "stunImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "silenceImmune": {
+                    "m_defined": true,
+                    "m_value": true
+                  },
+                  "sleepImmune": {
+                    "m_defined": true,
+                    "m_value": true
+                  },
+                  "frozenImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "levitateImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "disarmedCombatImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "fearedImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "palsyImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "attractImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "teleportImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "groundBoundImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  }
+                },
+                "applyWay": {
+                  "m_defined": true,
+                  "m_value": "MELEE"
+                },
+                "motion": {
+                  "m_defined": true,
+                  "m_value": "WALK"
+                },
+                "enemyTags": {
+                  "m_defined": false,
+                  "m_value": null
+                },
+                "lifePointReduce": {
+                  "m_defined": true,
+                  "m_value": 2
+                },
+                "levelType": {
+                  "m_defined": true,
+                  "m_value": "BOSS"
+                },
+                "rangeRadius": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "numOfExtraDrops": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "viewRadius": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "notCountInTotal": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "talentBlackboard": [
+                  {
+                    "key": "AtkUp.atk",
+                    "value": 1.8,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "atkup.hp_ratio",
+                    "value": 0.5,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "AtkUp.damage_resistance",
+                    "value": 0.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "Reborn.duration",
+                    "value": 5.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "Reborn.hp_ratio",
+                    "value": 0.5,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "Reborn.invincible",
+                    "value": 0.0,
+                    "valueStr": null
+                  }
+                ],
+                "skills": [
+                  {
+                    "prefabKey": "Rush",
+                    "priority": 0,
+                    "cooldown": 5.0,
+                    "initCooldown": 0.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "duration",
+                        "value": 4.5,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "move_speed",
+                        "value": 2.0,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "range_radius",
+                        "value": 1.5,
+                        "valueStr": null
+                      }
+                    ]
+                  }
+                ],
+                "spData": null
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

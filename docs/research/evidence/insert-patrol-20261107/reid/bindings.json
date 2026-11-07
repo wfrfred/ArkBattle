@@ -1,0 +1,1843 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-07",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/insert-patrol-20261107/reid/extract_bindings.py",
+      "bytes": 3780,
+      "sha256": "9605fa994da39b39f90ced5ed169ffded6485a550406cd856968f06edff2d507"
+    },
+    "typeTreeReader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+      "bytes": 8161,
+      "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+    },
+    "externalReader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+      "bytes": 6749,
+      "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+    },
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_18.ab",
+        "bytes": 895456,
+        "sha256": "7bc74aef8fbb3cbc7ce86d7e4b789e2c0daaadf076d47b0e9989e83e7ff4eb69"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      }
+    ],
+    "scope": "Selected nonvisual Rush / Enemy / UnitMode components of exactly enemy_1539_reid from enm_pfb_18.ab, with resolved external MonoScript pointers. Actor binding, not runtime cast observation; this does not associate it with another enemy in the same level."
+  },
+  "result": {
+    "components": [
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "-5460058093813162914",
+        "objectSha256": "92903d8a65af59587136478af41324c4a49ca8e7bbd42ea3ae3b0c48118a1465",
+        "hierarchy": [
+          {
+            "name": "Selector",
+            "gameObjectPathId": "-5379919470863180706",
+            "transformPathId": "-7485090041166816162"
+          },
+          {
+            "name": "Rush",
+            "gameObjectPathId": "-6995220310835520418",
+            "transformPathId": "1404552720342457438"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "3415228224969251934",
+            "transformPathId": "-6330036136321606562"
+          },
+          {
+            "name": "Reborn",
+            "gameObjectPathId": "539924674955844702",
+            "transformPathId": "-1763092964703527842"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-2567406226415084450",
+            "transformPathId": "-496300709391033250"
+          },
+          {
+            "name": "enemy_1539_reid",
+            "gameObjectPathId": "5129420624802749534",
+            "transformPathId": "3735890040468282462"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "-6058347899720317996",
+          "value": {
+            "id": "-6058347899720317996",
+            "name": "EntityOnRouteTrigger",
+            "cl": "EntityOnRouteTrigger",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -5379919470863180706
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -6058347899720317996
+          },
+          "common:427": "",
+          "_keepTarget": false,
+          "_minTargetNum": 1,
+          "_overrideSearchTargetTick": -1
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "-2478645264451298210",
+        "objectSha256": "57966e113226b145df75443a807b3af483098359648e20d850224bbf4e7f3943",
+        "hierarchy": [
+          {
+            "name": "Selector",
+            "gameObjectPathId": "-5379919470863180706",
+            "transformPathId": "-7485090041166816162"
+          },
+          {
+            "name": "Rush",
+            "gameObjectPathId": "-6995220310835520418",
+            "transformPathId": "1404552720342457438"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "3415228224969251934",
+            "transformPathId": "-6330036136321606562"
+          },
+          {
+            "name": "Reborn",
+            "gameObjectPathId": "539924674955844702",
+            "transformPathId": "-1763092964703527842"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-2567406226415084450",
+            "transformPathId": "-496300709391033250"
+          },
+          {
+            "name": "enemy_1539_reid",
+            "gameObjectPathId": "5129420624802749534",
+            "transformPathId": "3735890040468282462"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "7080728813803358465",
+          "value": {
+            "id": "7080728813803358465",
+            "name": "AdvancedSelector",
+            "cl": "AdvancedSelector",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -5379919470863180706
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 7080728813803358465
+          },
+          "common:427": "",
+          "_targetSide": 2,
+          "_targetMotion": 1,
+          "_targetCategory": 1,
+          "_postFilter": 11,
+          "_ignoreTargetFree": false,
+          "_onlyIgnoreSomeOfTargetFreeCase": false,
+          "_abnormalFlag": 29,
+          "_abnormalCombo": 2,
+          "_ignoreAllyTargetFree": false,
+          "_ignoreHealFree": false,
+          "_ignoreMotionMode": false,
+          "_forceIgnoreCamouflage": false,
+          "_needProfessionMask": false,
+          "_professionMask": 0,
+          "_excludeSomeAbnormalFlags": false,
+          "_excludeAbnormalFlag": 46,
+          "_limitTargetNum": true,
+          "_maxTargetKey": "max_target",
+          "_maxTargetExtraKey": "",
+          "_maxNum": 1,
+          "_excludeOwner": false,
+          "_sortByTauntAtLast": false,
+          "_ignoreHitRange": false,
+          "_checkUnitType": false,
+          "_unitTypeMask": 0,
+          "_abilityInputTargetAsSortSource": false,
+          "_targetOptionHookedKeys": {
+            "Array": []
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "-1709826876581667746",
+        "objectSha256": "a9d6ecfba8ab41706c87d686e7562119082313245aaf3c400149e70f7191401c",
+        "hierarchy": [
+          {
+            "name": "Rush",
+            "gameObjectPathId": "5794220737295031390",
+            "transformPathId": "6647669926815669342"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6026506168141734818",
+            "transformPathId": "6265576798130543710"
+          },
+          {
+            "name": "Default",
+            "gameObjectPathId": "-9158218075249304482",
+            "transformPathId": "1090232134627826782"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-2567406226415084450",
+            "transformPathId": "-496300709391033250"
+          },
+          {
+            "name": "enemy_1539_reid",
+            "gameObjectPathId": "5129420624802749534",
+            "transformPathId": "3735890040468282462"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "-8109327635834973011",
+          "value": {
+            "id": "-8109327635834973011",
+            "name": "BuffToOwner",
+            "cl": "BuffToOwner",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 5794220737295031390
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -8109327635834973011
+          },
+          "common:427": "",
+          "_extraCondition": 0,
+          "_extraConditionTiming": 4,
+          "_maxTarget": 1,
+          "_loadMaxTargetFromBlackboard": true,
+          "_runActionOnEvent": 5,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": [
+                      {
+                        "attributeType": 6,
+                        "formulaItem": 1,
+                        "value": 0.0,
+                        "loadFromBlackboard": true,
+                        "fetchBaseValueFromSourceEntity": false
+                      }
+                    ]
+                  }
+                },
+                "buffKey": "enemy_reid_switch_mode",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "enemy_reid_switch_mode",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "enemy_reid_skill_01",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": [
+                    {
+                      "key": "mode",
+                      "value": 1.0,
+                      "valueStr": ""
+                    }
+                  ]
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          },
+          "_onlyRunOnce": false
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "-1371710010506797986",
+        "objectSha256": "6981e07d0da4c29512cb32da5a010d7a2176989eebfa5707cb362a074fb79e22",
+        "hierarchy": [
+          {
+            "name": "Default",
+            "gameObjectPathId": "-9158218075249304482",
+            "transformPathId": "1090232134627826782"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-2567406226415084450",
+            "transformPathId": "-496300709391033250"
+          },
+          {
+            "name": "enemy_1539_reid",
+            "gameObjectPathId": "5129420624802749534",
+            "transformPathId": "3735890040468282462"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "5390319429299248724",
+          "value": {
+            "id": "5390319429299248724",
+            "name": "UnitMode",
+            "cl": "UnitMode",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -9158218075249304482
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 5390319429299248724
+          },
+          "common:427": "",
+          "_bodyTransform": {
+            "m_FileID": 0,
+            "m_PathID": -6850308331735606178
+          },
+          "_animatorHooker": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_overrideStartEffect": "",
+          "_overrideDeadEffect": "",
+          "_combat": {
+            "m_FileID": 0,
+            "m_PathID": 3130566388650941534
+          },
+          "_attack": {
+            "m_FileID": 0,
+            "m_PathID": 898987508335713374
+          },
+          "_attackTrigger": {
+            "m_FileID": 0,
+            "m_PathID": -8511781734584279970
+          },
+          "_hideUIAttackRange": false,
+          "_updateAttackRangeExtendByAttributeDirty": false,
+          "_rangeToShow": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_extraRangesToShow": {
+            "Array": []
+          },
+          "_generalAbilities": {
+            "Array": []
+          },
+          "_addIndexToSignalId": false,
+          "_includeIndexZero": false,
+          "_alwaysHideHp": {
+            "isDefined": false,
+            "value": false
+          },
+          "_alwaysHideSp": {
+            "isDefined": false,
+            "value": false
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "-450622456820065186",
+        "objectSha256": "bd65ca2326384fb06de03a0bb0da0c1584d49cc9438bafc76d0599bd34a3cb02",
+        "hierarchy": [
+          {
+            "name": "Reborn_Rush",
+            "gameObjectPathId": "-440594814623802274",
+            "transformPathId": "6918674075956747358"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-2567406226415084450",
+            "transformPathId": "-496300709391033250"
+          },
+          {
+            "name": "enemy_1539_reid",
+            "gameObjectPathId": "5129420624802749534",
+            "transformPathId": "3735890040468282462"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "5390319429299248724",
+          "value": {
+            "id": "5390319429299248724",
+            "name": "UnitMode",
+            "cl": "UnitMode",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -440594814623802274
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 5390319429299248724
+          },
+          "common:427": "",
+          "_bodyTransform": {
+            "m_FileID": 0,
+            "m_PathID": 4974029944229862494
+          },
+          "_animatorHooker": {
+            "m_FileID": 0,
+            "m_PathID": 8000482359214939230
+          },
+          "_overrideStartEffect": "",
+          "_overrideDeadEffect": "",
+          "_combat": {
+            "m_FileID": 0,
+            "m_PathID": -8880077015154221986
+          },
+          "_attack": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_attackTrigger": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_hideUIAttackRange": false,
+          "_updateAttackRangeExtendByAttributeDirty": false,
+          "_rangeToShow": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_extraRangesToShow": {
+            "Array": []
+          },
+          "_generalAbilities": {
+            "Array": []
+          },
+          "_addIndexToSignalId": true,
+          "_includeIndexZero": false,
+          "_alwaysHideHp": {
+            "isDefined": false,
+            "value": false
+          },
+          "_alwaysHideSp": {
+            "isDefined": false,
+            "value": false
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "-240757873342079906",
+        "objectSha256": "772b8b69bf527c2d0f6d2300930c9e3afd68df7b904f843b2f9da98ddc1ab689",
+        "hierarchy": [
+          {
+            "name": "Selector",
+            "gameObjectPathId": "3455723608961391710",
+            "transformPathId": "-2786045907539125154"
+          },
+          {
+            "name": "Rush",
+            "gameObjectPathId": "5794220737295031390",
+            "transformPathId": "6647669926815669342"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6026506168141734818",
+            "transformPathId": "6265576798130543710"
+          },
+          {
+            "name": "Default",
+            "gameObjectPathId": "-9158218075249304482",
+            "transformPathId": "1090232134627826782"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-2567406226415084450",
+            "transformPathId": "-496300709391033250"
+          },
+          {
+            "name": "enemy_1539_reid",
+            "gameObjectPathId": "5129420624802749534",
+            "transformPathId": "3735890040468282462"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "6185056810787956083",
+          "value": {
+            "id": "6185056810787956083",
+            "name": "CircleRange",
+            "cl": "CircleRange",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 3455723608961391710
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 6185056810787956083
+          },
+          "common:427": "",
+          "_useBlackboardRangeId": false,
+          "_extendable": false,
+          "_scaleble": true
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "-108461921457071010",
+        "objectSha256": "db31e6d176915e70abaaef31f348434e2fe9cc2b27e52ed333096983b4d145d0",
+        "hierarchy": [
+          {
+            "name": "Selector",
+            "gameObjectPathId": "-5379919470863180706",
+            "transformPathId": "-7485090041166816162"
+          },
+          {
+            "name": "Rush",
+            "gameObjectPathId": "-6995220310835520418",
+            "transformPathId": "1404552720342457438"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "3415228224969251934",
+            "transformPathId": "-6330036136321606562"
+          },
+          {
+            "name": "Reborn",
+            "gameObjectPathId": "539924674955844702",
+            "transformPathId": "-1763092964703527842"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-2567406226415084450",
+            "transformPathId": "-496300709391033250"
+          },
+          {
+            "name": "enemy_1539_reid",
+            "gameObjectPathId": "5129420624802749534",
+            "transformPathId": "3735890040468282462"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "6185056810787956083",
+          "value": {
+            "id": "6185056810787956083",
+            "name": "CircleRange",
+            "cl": "CircleRange",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -5379919470863180706
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 6185056810787956083
+          },
+          "common:427": "",
+          "_useBlackboardRangeId": false,
+          "_extendable": false,
+          "_scaleble": true
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "148811028299717726",
+        "objectSha256": "2b2ebd872809c681ddc8103a00eecb7bc3185aa8d986c712ba40728f5e105eb5",
+        "hierarchy": [
+          {
+            "name": "Rush",
+            "gameObjectPathId": "-6995220310835520418",
+            "transformPathId": "1404552720342457438"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "3415228224969251934",
+            "transformPathId": "-6330036136321606562"
+          },
+          {
+            "name": "Reborn",
+            "gameObjectPathId": "539924674955844702",
+            "transformPathId": "-1763092964703527842"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-2567406226415084450",
+            "transformPathId": "-496300709391033250"
+          },
+          {
+            "name": "enemy_1539_reid",
+            "gameObjectPathId": "5129420624802749534",
+            "transformPathId": "3735890040468282462"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "-5087399121287503180",
+          "value": {
+            "id": "-5087399121287503180",
+            "name": "EnemySkill",
+            "cl": "EnemySkill",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -6995220310835520418
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -5087399121287503180
+          },
+          "common:427": "",
+          "_familyMask": 1,
+          "_trigger": {
+            "m_FileID": 0,
+            "m_PathID": -5460058093813162914
+          },
+          "_checkParentActive": false,
+          "_maxTriggerTime": -1,
+          "_resetMainAbilityCdWhenCastEnd": false,
+          "_resetCdWaitFirstPeriod": true,
+          "_overwriteInitCooldown": -1,
+          "_ignoreSilence": true,
+          "_immuneStunWhenAffecting": true,
+          "_addEnemyIdToSignalId": false,
+          "_castLikeAttack": false
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "400789019534564446",
+        "objectSha256": "2a9e0a1b3f627d6c250d45751ad4db80a09839578459042b653a2e3ca695f222",
+        "hierarchy": [
+          {
+            "name": "enemy_1539_reid",
+            "gameObjectPathId": "5129420624802749534",
+            "transformPathId": "3735890040468282462"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "-6629209555389654693",
+          "value": {
+            "id": "-6629209555389654693",
+            "name": "Enemy",
+            "cl": "Enemy",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 5129420624802749534
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -6629209555389654693
+          },
+          "common:427": "",
+          "_animator": {
+            "m_FileID": 0,
+            "m_PathID": -2186900541256491938
+          },
+          "_modes": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -1371710010506797986
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 8904347100374375518
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 2282002391581400158
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -450622456820065186
+              }
+            ]
+          },
+          "_commonAbilities": {
+            "Array": []
+          },
+          "_uiMountPoint": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_effectTransform": {
+            "m_FileID": 0,
+            "m_PathID": -3122009744558318498
+          },
+          "_shadow": {
+            "m_FileID": 0,
+            "m_PathID": 5506498105480977502
+          },
+          "_defaultBodyColor": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "_hideShadowOnRecycle": false,
+          "_overrideGraphicBound": -1.0,
+          "_hudPluginReplacePairs": {
+            "Array": []
+          },
+          "_showDebugName": false,
+          "_sideTypeIndex": 1,
+          "_locateRange": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_disableRenderLocateRange": false,
+          "_isFixedRotation": false,
+          "_bodyDirectionPolicy": 0,
+          "_useMoveDirAsFaceDir": false,
+          "_scaleMoveBySpeed": false,
+          "_scaleMoveAnimationRange": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "_showSpAsBulletMode": false,
+          "_hideBulletSpModes": {
+            "Array": []
+          },
+          "_alwaysShowHp": false,
+          "_alwaysHideHp": false,
+          "_keepMoveAnimScale": false,
+          "_useSpecificDeadAnim": false,
+          "_useSpecificReachExitAnim": false,
+          "_disableBornTweenColor": false,
+          "_height": 0.0,
+          "_groundBoundHeightZOffset": 0.10000000149011612,
+          "_useSpineLikeHeightUpdate": false,
+          "_spineLikeHeightUpdateRatio": 0.25,
+          "_delayToBorn": 0.0,
+          "_onlyDelayToBornOnTileStart": false,
+          "_audioSignalUseId": false,
+          "_startEffect": "",
+          "_deadEffect": "",
+          "_blockVolume": 1,
+          "_specialBlockCondition": {
+            "_type": 0,
+            "_buffKeyPairs": {
+              "Array": []
+            },
+            "_filterTags": {
+              "Array": []
+            }
+          },
+          "_dontSetEnemyFaceByCursorWhenBorn": false,
+          "_idleWhenBorn": false,
+          "_canNotExit": false,
+          "_hideShadowOnReset": false,
+          "_allowFalldownWhenReborn": false,
+          "_alwaysCheckCurrentPoint": false,
+          "_ignoreBlockMode": false,
+          "_specificBlockMask": 0
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "1204238559074262110",
+        "objectSha256": "507b1e39353b25ffb8afdf32270311a774dbc75904a1949e75d857a8d0ee5656",
+        "hierarchy": [
+          {
+            "name": "Selector",
+            "gameObjectPathId": "3455723608961391710",
+            "transformPathId": "-2786045907539125154"
+          },
+          {
+            "name": "Rush",
+            "gameObjectPathId": "5794220737295031390",
+            "transformPathId": "6647669926815669342"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6026506168141734818",
+            "transformPathId": "6265576798130543710"
+          },
+          {
+            "name": "Default",
+            "gameObjectPathId": "-9158218075249304482",
+            "transformPathId": "1090232134627826782"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-2567406226415084450",
+            "transformPathId": "-496300709391033250"
+          },
+          {
+            "name": "enemy_1539_reid",
+            "gameObjectPathId": "5129420624802749534",
+            "transformPathId": "3735890040468282462"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "-6058347899720317996",
+          "value": {
+            "id": "-6058347899720317996",
+            "name": "EntityOnRouteTrigger",
+            "cl": "EntityOnRouteTrigger",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 3455723608961391710
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -6058347899720317996
+          },
+          "common:427": "",
+          "_keepTarget": false,
+          "_minTargetNum": 1,
+          "_overrideSearchTargetTick": -1
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "2282002391581400158",
+        "objectSha256": "1649bd94e37f9f30cbf867c7dbdffb595523493f96e07227f1ca65629d398216",
+        "hierarchy": [
+          {
+            "name": "Reborn",
+            "gameObjectPathId": "539924674955844702",
+            "transformPathId": "-1763092964703527842"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-2567406226415084450",
+            "transformPathId": "-496300709391033250"
+          },
+          {
+            "name": "enemy_1539_reid",
+            "gameObjectPathId": "5129420624802749534",
+            "transformPathId": "3735890040468282462"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "5390319429299248724",
+          "value": {
+            "id": "5390319429299248724",
+            "name": "UnitMode",
+            "cl": "UnitMode",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 539924674955844702
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 5390319429299248724
+          },
+          "common:427": "",
+          "_bodyTransform": {
+            "m_FileID": 0,
+            "m_PathID": 7859019377200864350
+          },
+          "_animatorHooker": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_overrideStartEffect": "",
+          "_overrideDeadEffect": "",
+          "_combat": {
+            "m_FileID": 0,
+            "m_PathID": -4320681331107029922
+          },
+          "_attack": {
+            "m_FileID": 0,
+            "m_PathID": -2049328921244328866
+          },
+          "_attackTrigger": {
+            "m_FileID": 0,
+            "m_PathID": 4480060547588758622
+          },
+          "_hideUIAttackRange": false,
+          "_updateAttackRangeExtendByAttributeDirty": false,
+          "_rangeToShow": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_extraRangesToShow": {
+            "Array": []
+          },
+          "_generalAbilities": {
+            "Array": []
+          },
+          "_addIndexToSignalId": true,
+          "_includeIndexZero": false,
+          "_alwaysHideHp": {
+            "isDefined": false,
+            "value": false
+          },
+          "_alwaysHideSp": {
+            "isDefined": false,
+            "value": false
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "2986350004330765406",
+        "objectSha256": "a9da5d7db6010fe7df9083c5d82e86fb7933f100d8a5f1fa40df2ef9b0c3af05",
+        "hierarchy": [
+          {
+            "name": "Selector",
+            "gameObjectPathId": "3455723608961391710",
+            "transformPathId": "-2786045907539125154"
+          },
+          {
+            "name": "Rush",
+            "gameObjectPathId": "5794220737295031390",
+            "transformPathId": "6647669926815669342"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6026506168141734818",
+            "transformPathId": "6265576798130543710"
+          },
+          {
+            "name": "Default",
+            "gameObjectPathId": "-9158218075249304482",
+            "transformPathId": "1090232134627826782"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-2567406226415084450",
+            "transformPathId": "-496300709391033250"
+          },
+          {
+            "name": "enemy_1539_reid",
+            "gameObjectPathId": "5129420624802749534",
+            "transformPathId": "3735890040468282462"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "7080728813803358465",
+          "value": {
+            "id": "7080728813803358465",
+            "name": "AdvancedSelector",
+            "cl": "AdvancedSelector",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 3455723608961391710
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 7080728813803358465
+          },
+          "common:427": "",
+          "_targetSide": 2,
+          "_targetMotion": 1,
+          "_targetCategory": 1,
+          "_postFilter": 11,
+          "_ignoreTargetFree": false,
+          "_onlyIgnoreSomeOfTargetFreeCase": false,
+          "_abnormalFlag": 29,
+          "_abnormalCombo": 2,
+          "_ignoreAllyTargetFree": false,
+          "_ignoreHealFree": false,
+          "_ignoreMotionMode": false,
+          "_forceIgnoreCamouflage": false,
+          "_needProfessionMask": false,
+          "_professionMask": 0,
+          "_excludeSomeAbnormalFlags": false,
+          "_excludeAbnormalFlag": 46,
+          "_limitTargetNum": true,
+          "_maxTargetKey": "max_target",
+          "_maxTargetExtraKey": "",
+          "_maxNum": 1,
+          "_excludeOwner": false,
+          "_sortByTauntAtLast": false,
+          "_ignoreHitRange": false,
+          "_checkUnitType": false,
+          "_unitTypeMask": 0,
+          "_abilityInputTargetAsSortSource": false,
+          "_targetOptionHookedKeys": {
+            "Array": []
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "3275276650861304926",
+        "objectSha256": "94e6a1c2687bffd99a55d791435bff2d538e3264e2827855722b5dd5271787ec",
+        "hierarchy": [
+          {
+            "name": "Rush",
+            "gameObjectPathId": "-6995220310835520418",
+            "transformPathId": "1404552720342457438"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "3415228224969251934",
+            "transformPathId": "-6330036136321606562"
+          },
+          {
+            "name": "Reborn",
+            "gameObjectPathId": "539924674955844702",
+            "transformPathId": "-1763092964703527842"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-2567406226415084450",
+            "transformPathId": "-496300709391033250"
+          },
+          {
+            "name": "enemy_1539_reid",
+            "gameObjectPathId": "5129420624802749534",
+            "transformPathId": "3735890040468282462"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "2702927552840241462",
+          "value": {
+            "id": "2702927552840241462",
+            "name": "AnimatedActionToOwnerAbility",
+            "cl": "AnimatedActionToOwnerAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -6995220310835520418
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 2702927552840241462
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": false,
+          "_attachPassiveBuffsOnDummy": true,
+          "_ignoreIfOwnerDead": false,
+          "_forceAsDmgOrHealAbility": false,
+          "_waitForAttackEvent": true,
+          "_interuptIfTargetDead": false,
+          "_resetCdStrategy": 1,
+          "_selectTargetSource": 2,
+          "_selectTargetTiming": 0,
+          "_timeMode": 0,
+          "_alwaysIncludeTarget": true,
+          "_allowNoTarget": false,
+          "_animKey": "Skill_Begin",
+          "_endAnimKey": "",
+          "_downAnimKey": "",
+          "_downEndAnimKey": "",
+          "_upAnimKey": "",
+          "_upEndAnimKey": "",
+          "_cooldown": 0.0,
+          "_cooldownKey": "duration",
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_faceToTarget": true,
+          "_faceToDefault": false,
+          "_faceToFront": false,
+          "_faceToFirstCastTarget": false,
+          "_checkFaceToFirstCastTargetDownAttack": false,
+          "_forceFaceToDirection": false,
+          "_activeBuffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "enemy_reid_change_route",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "enemy_reid_change_route",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": false,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          },
+          "_maxAnimScale": 1.0,
+          "_onlyPlayEndAnimWhenIsLastAbility": false,
+          "_ignorePalsyInterrupt": false,
+          "_affectedBySlowDown": true,
+          "_actions": {
+            "SerializedState": "[]",
+            "SerializedObjectReferences": {
+              "Array": []
+            }
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "3494449756850953310",
+        "objectSha256": "1be643d06d0f4c29ba74f7c781c00c19288ef306c139200296966ad0907dcbf9",
+        "hierarchy": [
+          {
+            "name": "Rush",
+            "gameObjectPathId": "5794220737295031390",
+            "transformPathId": "6647669926815669342"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6026506168141734818",
+            "transformPathId": "6265576798130543710"
+          },
+          {
+            "name": "Default",
+            "gameObjectPathId": "-9158218075249304482",
+            "transformPathId": "1090232134627826782"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-2567406226415084450",
+            "transformPathId": "-496300709391033250"
+          },
+          {
+            "name": "enemy_1539_reid",
+            "gameObjectPathId": "5129420624802749534",
+            "transformPathId": "3735890040468282462"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "-5087399121287503180",
+          "value": {
+            "id": "-5087399121287503180",
+            "name": "EnemySkill",
+            "cl": "EnemySkill",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 5794220737295031390
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -5087399121287503180
+          },
+          "common:427": "",
+          "_familyMask": 1,
+          "_trigger": {
+            "m_FileID": 0,
+            "m_PathID": 1204238559074262110
+          },
+          "_checkParentActive": false,
+          "_maxTriggerTime": -1,
+          "_resetMainAbilityCdWhenCastEnd": false,
+          "_resetCdWaitFirstPeriod": true,
+          "_overwriteInitCooldown": -1,
+          "_ignoreSilence": true,
+          "_immuneStunWhenAffecting": false,
+          "_addEnemyIdToSignalId": false,
+          "_castLikeAttack": false
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "6199624254685322334",
+        "objectSha256": "32c7e9729ce7c5b18622e247284463a1978d9cf308b4bcbc81f3269304e85876",
+        "hierarchy": [
+          {
+            "name": "Rush",
+            "gameObjectPathId": "-6995220310835520418",
+            "transformPathId": "1404552720342457438"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "3415228224969251934",
+            "transformPathId": "-6330036136321606562"
+          },
+          {
+            "name": "Reborn",
+            "gameObjectPathId": "539924674955844702",
+            "transformPathId": "-1763092964703527842"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-2567406226415084450",
+            "transformPathId": "-496300709391033250"
+          },
+          {
+            "name": "enemy_1539_reid",
+            "gameObjectPathId": "5129420624802749534",
+            "transformPathId": "3735890040468282462"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "-8109327635834973011",
+          "value": {
+            "id": "-8109327635834973011",
+            "name": "BuffToOwner",
+            "cl": "BuffToOwner",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -6995220310835520418
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -8109327635834973011
+          },
+          "common:427": "",
+          "_extraCondition": 0,
+          "_extraConditionTiming": 4,
+          "_maxTarget": 1,
+          "_loadMaxTargetFromBlackboard": true,
+          "_runActionOnEvent": 5,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": [
+                      {
+                        "attributeType": 6,
+                        "formulaItem": 1,
+                        "value": 0.0,
+                        "loadFromBlackboard": true,
+                        "fetchBaseValueFromSourceEntity": false
+                      }
+                    ]
+                  }
+                },
+                "buffKey": "enemy_reid_switch_mode[reborn]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "enemy_reid_switch_mode[reborn]",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "enemy_reid_skill_01",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": [
+                    {
+                      "key": "mode",
+                      "value": 3.0,
+                      "valueStr": ""
+                    }
+                  ]
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          },
+          "_onlyRunOnce": false
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "7946918876667845726",
+        "objectSha256": "b12561141bb98d661ed1290d57e5161e460c661429eb71d5bed2361f1344e52f",
+        "hierarchy": [
+          {
+            "name": "Rush",
+            "gameObjectPathId": "5794220737295031390",
+            "transformPathId": "6647669926815669342"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6026506168141734818",
+            "transformPathId": "6265576798130543710"
+          },
+          {
+            "name": "Default",
+            "gameObjectPathId": "-9158218075249304482",
+            "transformPathId": "1090232134627826782"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-2567406226415084450",
+            "transformPathId": "-496300709391033250"
+          },
+          {
+            "name": "enemy_1539_reid",
+            "gameObjectPathId": "5129420624802749534",
+            "transformPathId": "3735890040468282462"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "2702927552840241462",
+          "value": {
+            "id": "2702927552840241462",
+            "name": "AnimatedActionToOwnerAbility",
+            "cl": "AnimatedActionToOwnerAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 5794220737295031390
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 2702927552840241462
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": false,
+          "_attachPassiveBuffsOnDummy": true,
+          "_ignoreIfOwnerDead": false,
+          "_forceAsDmgOrHealAbility": false,
+          "_waitForAttackEvent": true,
+          "_interuptIfTargetDead": false,
+          "_resetCdStrategy": 1,
+          "_selectTargetSource": 2,
+          "_selectTargetTiming": 0,
+          "_timeMode": 0,
+          "_alwaysIncludeTarget": true,
+          "_allowNoTarget": false,
+          "_animKey": "Skill_Begin",
+          "_endAnimKey": "",
+          "_downAnimKey": "",
+          "_downEndAnimKey": "",
+          "_upAnimKey": "",
+          "_upEndAnimKey": "",
+          "_cooldown": 0.0,
+          "_cooldownKey": "duration",
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_faceToTarget": true,
+          "_faceToDefault": false,
+          "_faceToFront": false,
+          "_faceToFirstCastTarget": false,
+          "_checkFaceToFirstCastTargetDownAttack": false,
+          "_forceFaceToDirection": false,
+          "_activeBuffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "enemy_reid_change_route",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "enemy_reid_change_route",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": false,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          },
+          "_maxAnimScale": 1.0,
+          "_onlyPlayEndAnimWhenIsLastAbility": false,
+          "_ignorePalsyInterrupt": false,
+          "_affectedBySlowDown": true,
+          "_actions": {
+            "SerializedState": "[]",
+            "SerializedObjectReferences": {
+              "Array": []
+            }
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "8904347100374375518",
+        "objectSha256": "56ce56440c0c66cc3f40adfbabbfe8b6fda897c85acbd38da4910dcd652a9204",
+        "hierarchy": [
+          {
+            "name": "Default_Rush",
+            "gameObjectPathId": "3445492288186162270",
+            "transformPathId": "-5100950818173477794"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-2567406226415084450",
+            "transformPathId": "-496300709391033250"
+          },
+          {
+            "name": "enemy_1539_reid",
+            "gameObjectPathId": "5129420624802749534",
+            "transformPathId": "3735890040468282462"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "5390319429299248724",
+          "value": {
+            "id": "5390319429299248724",
+            "name": "UnitMode",
+            "cl": "UnitMode",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 3445492288186162270
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 5390319429299248724
+          },
+          "common:427": "",
+          "_bodyTransform": {
+            "m_FileID": 0,
+            "m_PathID": -2634756815284855714
+          },
+          "_animatorHooker": {
+            "m_FileID": 0,
+            "m_PathID": -4240317801074713506
+          },
+          "_overrideStartEffect": "",
+          "_overrideDeadEffect": "",
+          "_combat": {
+            "m_FileID": 0,
+            "m_PathID": -646179990603883426
+          },
+          "_attack": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_attackTrigger": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_hideUIAttackRange": false,
+          "_updateAttackRangeExtendByAttributeDirty": false,
+          "_rangeToShow": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_extraRangesToShow": {
+            "Array": []
+          },
+          "_generalAbilities": {
+            "Array": []
+          },
+          "_addIndexToSignalId": false,
+          "_includeIndexZero": false,
+          "_alwaysHideHp": {
+            "isDefined": false,
+            "value": false
+          },
+          "_alwaysHideSp": {
+            "isDefined": false,
+            "value": false
+          }
+        }
+      }
+    ]
+  }
+}

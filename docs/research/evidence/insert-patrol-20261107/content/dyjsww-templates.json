@@ -1,0 +1,546 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-07",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/insert-patrol-20261107/content/extract_dyjsww_templates.py",
+      "bytes": 2582,
+      "sha256": "bb69f30f98a53166a456c225ac4760fddc75055a949a7ca3057c3f1b78a73c28"
+    },
+    "typeTreeReader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+      "bytes": 8161,
+      "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+    },
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/assets.py",
+        "bytes": 3399,
+        "sha256": "c458702aa0e014a093c548db9100709ac6338f74cee11aceb45c661003de4a09"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      }
+    ],
+    "source": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+      "bytes": 2151020,
+      "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+    },
+    "scope": "Selected current installed dyjsww holder entries, raw SerializedState and decoded mode-transition/insertion programs; binding is separately recorded in dyjsww-prefab.json"
+  },
+  "result": [
+    {
+      "bundle": "config/buff_template_holder.ab",
+      "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "pathId": "6070581171229484677",
+      "objectSha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+      "templates": [
+        {
+          "templateKey": "enemy_dyjsww_trigger_switch",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 0,
+                  "value": {
+                    "SerializedState": "[{\"_conditionNode\":{\"_targetType\":\"BUFF_OWNER\",\"_buffKeys\":[\"enemy_dyjsww_swich_mode\"],\"isAND\":true,\"_loadFromBlackboard\":false,\"_checkBuffSource\":false,\"_buffSourceType\":\"BUFF_SOURCE\",\"_checkSourceHost\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CheckContainsBuff\"},\"_succeedNodes\":[{\"_decCntIfStack\":false,\"_updateOverrideMap\":true,\"$type\":\"Torappu.Battle.Action.Nodes+FinishBuff\"}],\"_failNodes\":[{\"_skillName\":\"DyjswwSwitch\",\"_checkSkillActive\":true,\"_checkSkillReady\":true,\"_ownerType\":\"BUFF_SOURCE\",\"_targetType\":\"BUFF_OWNER\",\"_interruptCurAbility\":true,\"_interruptCurAbilityUnlessItIsExpectedAbility\":false,\"_assignCombatAbility\":false,\"_forceFindTargetBySkillSelector\":false,\"_clearPalsyingBuffBeforeTrigger\":true,\"_tryCastDirectlyWhenNoTarget\":false,\"$type\":\"Torappu.Battle.Action.Nodes+TriggerEnemySkill\"},{\"_buff\":{\"attributes\":{\"abnormalFlags\":[],\"abnormalImmunes\":[],\"abnormalAntis\":[],\"abnormalCombos\":[],\"abnormalComboImmunes\":[],\"attributeModifiers\":[]},\"buffKey\":\"enemy_dyjsww_switch_flag\",\"loadFromDB\":false,\"isDurableBuff\":false,\"isDamageMissable\":false,\"isSilenceable\":false,\"isStunnable\":false,\"isFreezable\":false,\"isLevitatable\":false,\"isGroundBoundable\":false,\"statusResistable\":\"AUTOMATIC\",\"templateKey\":\"empty\",\"disableOverride\":false,\"overrideKey\":null,\"overrideType\":\"DEFAULT\",\"maxStackCnt\":1,\"refreshRemainingTimeWhenStackMax\":false,\"clearAllStackCntWhenTimeUp\":false,\"maxValidStackCnt\":-1,\"independentCharacterSource\":false,\"overrideEffectKey\":null,\"overrideOnEventPriority\":false,\"onEventPriority\":\"DEFAULT\",\"audioSignal\":null,\"lifeTimeType\":\"INFINITY\",\"takeSnapshotWhenExtend\":false,\"durationKey\":null,\"remainingTimeKey\":null,\"lifeTime\":0.0,\"triggerLifeType\":\"IMMEDIATELY\",\"triggerCnt\":0,\"triggerInterval\":-1.0,\"waitFirstTriggerInterval\":true,\"firstTriggerInterval\":-1.0,\"priority\":-1,\"priorityBBKeys\":[],\"stripBlackboardParamsWithBuffKey\":false,\"blackboard\":[],\"enableInitDirectionFromSource\":false},\"_buffOwner\":\"BUFF_SOURCE\",\"_useSpecialBuffSource\":false,\"_specialBuffSource\":\"BUFF_SOURCE\",\"_isDerivedBuff\":false,\"_finishDerivedBuffIfParentFinish\":false,\"_inherateSourceProjectileFromParentBuff\":false,\"_hookEffectKeyFromSourceProjectile\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CreateBuff\"},{\"_decCntIfStack\":false,\"_updateOverrideMap\":true,\"$type\":\"Torappu.Battle.Action.Nodes+FinishBuff\"}],\"$type\":\"Torappu.Battle.Action.Nodes+IfElse\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 2,
+                  "value": {
+                    "SerializedState": "[{\"_conditionNode\":{\"_targetType\":\"BUFF_OWNER\",\"_buffKeys\":[\"enemy_dyjsww_swich_mode\"],\"isAND\":true,\"_loadFromBlackboard\":false,\"_checkBuffSource\":false,\"_buffSourceType\":\"BUFF_SOURCE\",\"_checkSourceHost\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CheckContainsBuff\"},\"_succeedNodes\":[{\"_decCntIfStack\":false,\"_updateOverrideMap\":true,\"$type\":\"Torappu.Battle.Action.Nodes+FinishBuff\"}],\"_failNodes\":[{\"_skillName\":\"DyjswwSwitch\",\"_checkSkillActive\":true,\"_checkSkillReady\":true,\"_ownerType\":\"BUFF_SOURCE\",\"_targetType\":\"BUFF_OWNER\",\"_interruptCurAbility\":true,\"_interruptCurAbilityUnlessItIsExpectedAbility\":false,\"_assignCombatAbility\":false,\"_forceFindTargetBySkillSelector\":false,\"_clearPalsyingBuffBeforeTrigger\":true,\"_tryCastDirectlyWhenNoTarget\":false,\"$type\":\"Torappu.Battle.Action.Nodes+TriggerEnemySkill\"},{\"_buff\":{\"attributes\":{\"abnormalFlags\":[],\"abnormalImmunes\":[],\"abnormalAntis\":[],\"abnormalCombos\":[],\"abnormalComboImmunes\":[],\"attributeModifiers\":[]},\"buffKey\":\"enemy_dyjsww_switch_flag\",\"loadFromDB\":false,\"isDurableBuff\":false,\"isDamageMissable\":false,\"isSilenceable\":false,\"isStunnable\":false,\"isFreezable\":false,\"isLevitatable\":false,\"isGroundBoundable\":false,\"statusResistable\":\"AUTOMATIC\",\"templateKey\":\"empty\",\"disableOverride\":false,\"overrideKey\":null,\"overrideType\":\"DEFAULT\",\"maxStackCnt\":1,\"refreshRemainingTimeWhenStackMax\":false,\"clearAllStackCntWhenTimeUp\":false,\"maxValidStackCnt\":-1,\"independentCharacterSource\":false,\"overrideEffectKey\":null,\"overrideOnEventPriority\":false,\"onEventPriority\":\"DEFAULT\",\"audioSignal\":null,\"lifeTimeType\":\"INFINITY\",\"takeSnapshotWhenExtend\":false,\"durationKey\":null,\"remainingTimeKey\":null,\"lifeTime\":0.0,\"triggerLifeType\":\"IMMEDIATELY\",\"triggerCnt\":0,\"triggerInterval\":-1.0,\"waitFirstTriggerInterval\":true,\"firstTriggerInterval\":-1.0,\"priority\":-1,\"priorityBBKeys\":[],\"stripBlackboardParamsWithBuffKey\":false,\"blackboard\":[],\"enableInitDirectionFromSource\":false},\"_buffOwner\":\"BUFF_SOURCE\",\"_useSpecialBuffSource\":false,\"_specialBuffSource\":\"BUFF_SOURCE\",\"_isDerivedBuff\":false,\"_finishDerivedBuffIfParentFinish\":false,\"_inherateSourceProjectileFromParentBuff\":false,\"_hookEffectKeyFromSourceProjectile\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CreateBuff\"},{\"_decCntIfStack\":false,\"_updateOverrideMap\":true,\"$type\":\"Torappu.Battle.Action.Nodes+FinishBuff\"}],\"$type\":\"Torappu.Battle.Action.Nodes+IfElse\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "templateIndex": 8162,
+          "events": [
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_conditionNode": {
+                    "_targetType": "BUFF_OWNER",
+                    "_buffKeys": [
+                      "enemy_dyjsww_swich_mode"
+                    ],
+                    "isAND": true,
+                    "_loadFromBlackboard": false,
+                    "_checkBuffSource": false,
+                    "_buffSourceType": "BUFF_SOURCE",
+                    "_checkSourceHost": false,
+                    "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+                  },
+                  "_succeedNodes": [
+                    {
+                      "_decCntIfStack": false,
+                      "_updateOverrideMap": true,
+                      "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+                    }
+                  ],
+                  "_failNodes": [
+                    {
+                      "_skillName": "DyjswwSwitch",
+                      "_checkSkillActive": true,
+                      "_checkSkillReady": true,
+                      "_ownerType": "BUFF_SOURCE",
+                      "_targetType": "BUFF_OWNER",
+                      "_interruptCurAbility": true,
+                      "_interruptCurAbilityUnlessItIsExpectedAbility": false,
+                      "_assignCombatAbility": false,
+                      "_forceFindTargetBySkillSelector": false,
+                      "_clearPalsyingBuffBeforeTrigger": true,
+                      "_tryCastDirectlyWhenNoTarget": false,
+                      "$type": "Torappu.Battle.Action.Nodes+TriggerEnemySkill"
+                    },
+                    {
+                      "_buff": {
+                        "attributes": {
+                          "abnormalFlags": [],
+                          "abnormalImmunes": [],
+                          "abnormalAntis": [],
+                          "abnormalCombos": [],
+                          "abnormalComboImmunes": [],
+                          "attributeModifiers": []
+                        },
+                        "buffKey": "enemy_dyjsww_switch_flag",
+                        "loadFromDB": false,
+                        "isDurableBuff": false,
+                        "isDamageMissable": false,
+                        "isSilenceable": false,
+                        "isStunnable": false,
+                        "isFreezable": false,
+                        "isLevitatable": false,
+                        "isGroundBoundable": false,
+                        "statusResistable": "AUTOMATIC",
+                        "templateKey": "empty",
+                        "disableOverride": false,
+                        "overrideKey": null,
+                        "overrideType": "DEFAULT",
+                        "maxStackCnt": 1,
+                        "refreshRemainingTimeWhenStackMax": false,
+                        "clearAllStackCntWhenTimeUp": false,
+                        "maxValidStackCnt": -1,
+                        "independentCharacterSource": false,
+                        "overrideEffectKey": null,
+                        "overrideOnEventPriority": false,
+                        "onEventPriority": "DEFAULT",
+                        "audioSignal": null,
+                        "lifeTimeType": "INFINITY",
+                        "takeSnapshotWhenExtend": false,
+                        "durationKey": null,
+                        "remainingTimeKey": null,
+                        "lifeTime": 0.0,
+                        "triggerLifeType": "IMMEDIATELY",
+                        "triggerCnt": 0,
+                        "triggerInterval": -1.0,
+                        "waitFirstTriggerInterval": true,
+                        "firstTriggerInterval": -1.0,
+                        "priority": -1,
+                        "priorityBBKeys": [],
+                        "stripBlackboardParamsWithBuffKey": false,
+                        "blackboard": [],
+                        "enableInitDirectionFromSource": false
+                      },
+                      "_buffOwner": "BUFF_SOURCE",
+                      "_useSpecialBuffSource": false,
+                      "_specialBuffSource": "BUFF_SOURCE",
+                      "_isDerivedBuff": false,
+                      "_finishDerivedBuffIfParentFinish": false,
+                      "_inherateSourceProjectileFromParentBuff": false,
+                      "_hookEffectKeyFromSourceProjectile": false,
+                      "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                    },
+                    {
+                      "_decCntIfStack": false,
+                      "_updateOverrideMap": true,
+                      "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+                    }
+                  ],
+                  "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                }
+              ]
+            },
+            {
+              "event": 2,
+              "actions": [
+                {
+                  "_conditionNode": {
+                    "_targetType": "BUFF_OWNER",
+                    "_buffKeys": [
+                      "enemy_dyjsww_swich_mode"
+                    ],
+                    "isAND": true,
+                    "_loadFromBlackboard": false,
+                    "_checkBuffSource": false,
+                    "_buffSourceType": "BUFF_SOURCE",
+                    "_checkSourceHost": false,
+                    "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+                  },
+                  "_succeedNodes": [
+                    {
+                      "_decCntIfStack": false,
+                      "_updateOverrideMap": true,
+                      "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+                    }
+                  ],
+                  "_failNodes": [
+                    {
+                      "_skillName": "DyjswwSwitch",
+                      "_checkSkillActive": true,
+                      "_checkSkillReady": true,
+                      "_ownerType": "BUFF_SOURCE",
+                      "_targetType": "BUFF_OWNER",
+                      "_interruptCurAbility": true,
+                      "_interruptCurAbilityUnlessItIsExpectedAbility": false,
+                      "_assignCombatAbility": false,
+                      "_forceFindTargetBySkillSelector": false,
+                      "_clearPalsyingBuffBeforeTrigger": true,
+                      "_tryCastDirectlyWhenNoTarget": false,
+                      "$type": "Torappu.Battle.Action.Nodes+TriggerEnemySkill"
+                    },
+                    {
+                      "_buff": {
+                        "attributes": {
+                          "abnormalFlags": [],
+                          "abnormalImmunes": [],
+                          "abnormalAntis": [],
+                          "abnormalCombos": [],
+                          "abnormalComboImmunes": [],
+                          "attributeModifiers": []
+                        },
+                        "buffKey": "enemy_dyjsww_switch_flag",
+                        "loadFromDB": false,
+                        "isDurableBuff": false,
+                        "isDamageMissable": false,
+                        "isSilenceable": false,
+                        "isStunnable": false,
+                        "isFreezable": false,
+                        "isLevitatable": false,
+                        "isGroundBoundable": false,
+                        "statusResistable": "AUTOMATIC",
+                        "templateKey": "empty",
+                        "disableOverride": false,
+                        "overrideKey": null,
+                        "overrideType": "DEFAULT",
+                        "maxStackCnt": 1,
+                        "refreshRemainingTimeWhenStackMax": false,
+                        "clearAllStackCntWhenTimeUp": false,
+                        "maxValidStackCnt": -1,
+                        "independentCharacterSource": false,
+                        "overrideEffectKey": null,
+                        "overrideOnEventPriority": false,
+                        "onEventPriority": "DEFAULT",
+                        "audioSignal": null,
+                        "lifeTimeType": "INFINITY",
+                        "takeSnapshotWhenExtend": false,
+                        "durationKey": null,
+                        "remainingTimeKey": null,
+                        "lifeTime": 0.0,
+                        "triggerLifeType": "IMMEDIATELY",
+                        "triggerCnt": 0,
+                        "triggerInterval": -1.0,
+                        "waitFirstTriggerInterval": true,
+                        "firstTriggerInterval": -1.0,
+                        "priority": -1,
+                        "priorityBBKeys": [],
+                        "stripBlackboardParamsWithBuffKey": false,
+                        "blackboard": [],
+                        "enableInitDirectionFromSource": false
+                      },
+                      "_buffOwner": "BUFF_SOURCE",
+                      "_useSpecialBuffSource": false,
+                      "_specialBuffSource": "BUFF_SOURCE",
+                      "_isDerivedBuff": false,
+                      "_finishDerivedBuffIfParentFinish": false,
+                      "_inherateSourceProjectileFromParentBuff": false,
+                      "_hookEffectKeyFromSourceProjectile": false,
+                      "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                    },
+                    {
+                      "_decCntIfStack": false,
+                      "_updateOverrideMap": true,
+                      "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+                    }
+                  ],
+                  "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "templateKey": "enemy_dyjsww_check_switch",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 4,
+                  "value": {
+                    "SerializedState": "[{\"_buff\":{\"attributes\":{\"abnormalFlags\":[],\"abnormalImmunes\":[],\"abnormalAntis\":[],\"abnormalCombos\":[],\"abnormalComboImmunes\":[],\"attributeModifiers\":[]},\"buffKey\":\"enemy_dyjsww_trigger_switch\",\"loadFromDB\":false,\"isDurableBuff\":false,\"isDamageMissable\":false,\"isSilenceable\":false,\"isStunnable\":false,\"isFreezable\":false,\"isLevitatable\":false,\"isGroundBoundable\":false,\"statusResistable\":\"AUTOMATIC\",\"templateKey\":\"enemy_dyjsww_trigger_switch\",\"disableOverride\":false,\"overrideKey\":null,\"overrideType\":\"DEFAULT\",\"maxStackCnt\":1,\"refreshRemainingTimeWhenStackMax\":false,\"clearAllStackCntWhenTimeUp\":false,\"maxValidStackCnt\":-1,\"independentCharacterSource\":false,\"overrideEffectKey\":null,\"overrideOnEventPriority\":false,\"onEventPriority\":\"DEFAULT\",\"audioSignal\":null,\"lifeTimeType\":\"INFINITY\",\"takeSnapshotWhenExtend\":false,\"durationKey\":null,\"remainingTimeKey\":null,\"lifeTime\":0.0,\"triggerLifeType\":\"INFINITY\",\"triggerCnt\":0,\"triggerInterval\":0.1,\"waitFirstTriggerInterval\":true,\"firstTriggerInterval\":-1.0,\"priority\":-1,\"priorityBBKeys\":[],\"stripBlackboardParamsWithBuffKey\":false,\"blackboard\":[],\"enableInitDirectionFromSource\":false},\"_buffOwner\":\"BUFF_SOURCE\",\"_useSpecialBuffSource\":false,\"_specialBuffSource\":\"BUFF_SOURCE\",\"_isDerivedBuff\":false,\"_finishDerivedBuffIfParentFinish\":false,\"_inherateSourceProjectileFromParentBuff\":false,\"_hookEffectKeyFromSourceProjectile\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CreateBuff\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "templateIndex": 8163,
+          "events": [
+            {
+              "event": 4,
+              "actions": [
+                {
+                  "_buff": {
+                    "attributes": {
+                      "abnormalFlags": [],
+                      "abnormalImmunes": [],
+                      "abnormalAntis": [],
+                      "abnormalCombos": [],
+                      "abnormalComboImmunes": [],
+                      "attributeModifiers": []
+                    },
+                    "buffKey": "enemy_dyjsww_trigger_switch",
+                    "loadFromDB": false,
+                    "isDurableBuff": false,
+                    "isDamageMissable": false,
+                    "isSilenceable": false,
+                    "isStunnable": false,
+                    "isFreezable": false,
+                    "isLevitatable": false,
+                    "isGroundBoundable": false,
+                    "statusResistable": "AUTOMATIC",
+                    "templateKey": "enemy_dyjsww_trigger_switch",
+                    "disableOverride": false,
+                    "overrideKey": null,
+                    "overrideType": "DEFAULT",
+                    "maxStackCnt": 1,
+                    "refreshRemainingTimeWhenStackMax": false,
+                    "clearAllStackCntWhenTimeUp": false,
+                    "maxValidStackCnt": -1,
+                    "independentCharacterSource": false,
+                    "overrideEffectKey": null,
+                    "overrideOnEventPriority": false,
+                    "onEventPriority": "DEFAULT",
+                    "audioSignal": null,
+                    "lifeTimeType": "INFINITY",
+                    "takeSnapshotWhenExtend": false,
+                    "durationKey": null,
+                    "remainingTimeKey": null,
+                    "lifeTime": 0.0,
+                    "triggerLifeType": "INFINITY",
+                    "triggerCnt": 0,
+                    "triggerInterval": 0.1,
+                    "waitFirstTriggerInterval": true,
+                    "firstTriggerInterval": -1.0,
+                    "priority": -1,
+                    "priorityBBKeys": [],
+                    "stripBlackboardParamsWithBuffKey": false,
+                    "blackboard": [],
+                    "enableInitDirectionFromSource": false
+                  },
+                  "_buffOwner": "BUFF_SOURCE",
+                  "_useSpecialBuffSource": false,
+                  "_specialBuffSource": "BUFF_SOURCE",
+                  "_isDerivedBuff": false,
+                  "_finishDerivedBuffIfParentFinish": false,
+                  "_inherateSourceProjectileFromParentBuff": false,
+                  "_hookEffectKeyFromSourceProjectile": false,
+                  "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "templateKey": "enemy_dyjsww_t[modify_route]",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 0,
+                  "value": {
+                    "SerializedState": "[{\"_targetType\":\"BUFF_OWNER\",\"_filterIds\":[\"enemy_2124_dyjsfg\"],\"_isUnset\":true,\"_loadIdFromBb\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CheckEnemyId\"},{\"_targetType\":\"BUFF_SOURCE\",\"_motionMask\":\"ALL\",\"_checkTargetAlive\":true,\"_checkApplyWay\":false,\"_checkTargetUnitType\":false,\"_unitType\":\"ENEMY\",\"_applyWay\":\"NONE\",\"_checkTargetFree\":false,\"_checkMotionTargetFree\":false,\"$type\":\"Torappu.Battle.Action.Nodes+IfTarget\"},{\"_source\":\"BUFF_SOURCE\",\"_target\":\"BUFF_OWNER\",\"_clearRouteBeforeInsert\":false,\"_type\":\"MOVE\",\"_randomizeReachOffset\":false,\"_reachOffset\":{\"x\":0.0,\"y\":0.0},\"_time\":0.0,\"_addIntoRuntimeRoute\":false,\"_toMapPosition\":false,\"_checkReachable\":false,\"_manuallySpecifyInsertIndex\":false,\"_insertIndex\":0,\"_manuallySpecifyReassignIndex\":false,\"_reassignIndex\":0,\"$type\":\"Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute\"},{\"_blackboardKey\":\"route_changed\",\"_blackboardSource\":\"CURRENT\",\"_keySource\":\"CONSTANT\",\"_keyTargetType\":\"TARGET\",\"_value\":1.0,\"_copyFromKey\":null,\"_assignString\":false,\"$type\":\"Torappu.Battle.Action.Nodes+AssignValueToBB\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 1,
+                  "value": {
+                    "SerializedState": "[{\"_targetType\":\"BUFF_SOURCE\",\"_motionMask\":\"ALL\",\"_checkTargetAlive\":true,\"_checkApplyWay\":false,\"_checkTargetUnitType\":false,\"_unitType\":\"ENEMY\",\"_applyWay\":\"NONE\",\"_checkTargetFree\":false,\"_checkMotionTargetFree\":false,\"$type\":\"Torappu.Battle.Action.Nodes+IfTarget\"},{\"$type\":\"Torappu.Battle.Action.Nodes+IfNot\"},{\"_targetType\":\"BUFF_OWNER\",\"_motionMask\":\"ALL\",\"_checkTargetAlive\":true,\"_checkApplyWay\":false,\"_checkTargetUnitType\":false,\"_unitType\":\"ENEMY\",\"_applyWay\":\"NONE\",\"_checkTargetFree\":false,\"_checkMotionTargetFree\":false,\"$type\":\"Torappu.Battle.Action.Nodes+IfTarget\"},{\"_targetType\":\"BUFF_OWNER\",\"_filterIds\":[\"enemy_2124_dyjsfg\"],\"_isUnset\":true,\"_loadIdFromBb\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CheckEnemyId\"},{\"_targetType\":\"BUFF_OWNER\",\"_anotherBuff\":false,\"_buffKey\":null,\"_blackboardKey\":\"route_changed\",\"_blackboardKeyFromBb\":null,\"_valueToCompare\":1,\"_anotherKeyToCompare\":null,\"_condType\":\"EQUALS\",\"$type\":\"Torappu.Battle.Action.Nodes+FilterByBlackboardValue\"},{\"_ownerType\":\"BUFF_OWNER\",\"$type\":\"Torappu.Battle.Action.Nodes+SkipCursorCheckPoint\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 4,
+                  "value": {
+                    "SerializedState": "[{\"_targetType\":\"BUFF_OWNER\",\"_anotherBuff\":false,\"_buffKey\":null,\"_blackboardKey\":\"route_changed\",\"_blackboardKeyFromBb\":null,\"_valueToCompare\":1,\"_anotherKeyToCompare\":null,\"_condType\":\"EQUALS\",\"$type\":\"Torappu.Battle.Action.Nodes+FilterByBlackboardValue\"},{\"_ownerType\":\"BUFF_OWNER\",\"$type\":\"Torappu.Battle.Action.Nodes+SkipCursorCheckPoint\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "templateIndex": 8171,
+          "events": [
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_filterIds": [
+                    "enemy_2124_dyjsfg"
+                  ],
+                  "_isUnset": true,
+                  "_loadIdFromBb": false,
+                  "$type": "Torappu.Battle.Action.Nodes+CheckEnemyId"
+                },
+                {
+                  "_targetType": "BUFF_SOURCE",
+                  "_motionMask": "ALL",
+                  "_checkTargetAlive": true,
+                  "_checkApplyWay": false,
+                  "_checkTargetUnitType": false,
+                  "_unitType": "ENEMY",
+                  "_applyWay": "NONE",
+                  "_checkTargetFree": false,
+                  "_checkMotionTargetFree": false,
+                  "$type": "Torappu.Battle.Action.Nodes+IfTarget"
+                },
+                {
+                  "_source": "BUFF_SOURCE",
+                  "_target": "BUFF_OWNER",
+                  "_clearRouteBeforeInsert": false,
+                  "_type": "MOVE",
+                  "_randomizeReachOffset": false,
+                  "_reachOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                  },
+                  "_time": 0.0,
+                  "_addIntoRuntimeRoute": false,
+                  "_toMapPosition": false,
+                  "_checkReachable": false,
+                  "_manuallySpecifyInsertIndex": false,
+                  "_insertIndex": 0,
+                  "_manuallySpecifyReassignIndex": false,
+                  "_reassignIndex": 0,
+                  "$type": "Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute"
+                },
+                {
+                  "_blackboardKey": "route_changed",
+                  "_blackboardSource": "CURRENT",
+                  "_keySource": "CONSTANT",
+                  "_keyTargetType": "TARGET",
+                  "_value": 1.0,
+                  "_copyFromKey": null,
+                  "_assignString": false,
+                  "$type": "Torappu.Battle.Action.Nodes+AssignValueToBB"
+                }
+              ]
+            },
+            {
+              "event": 1,
+              "actions": [
+                {
+                  "_targetType": "BUFF_SOURCE",
+                  "_motionMask": "ALL",
+                  "_checkTargetAlive": true,
+                  "_checkApplyWay": false,
+                  "_checkTargetUnitType": false,
+                  "_unitType": "ENEMY",
+                  "_applyWay": "NONE",
+                  "_checkTargetFree": false,
+                  "_checkMotionTargetFree": false,
+                  "$type": "Torappu.Battle.Action.Nodes+IfTarget"
+                },
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+IfNot"
+                },
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_motionMask": "ALL",
+                  "_checkTargetAlive": true,
+                  "_checkApplyWay": false,
+                  "_checkTargetUnitType": false,
+                  "_unitType": "ENEMY",
+                  "_applyWay": "NONE",
+                  "_checkTargetFree": false,
+                  "_checkMotionTargetFree": false,
+                  "$type": "Torappu.Battle.Action.Nodes+IfTarget"
+                },
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_filterIds": [
+                    "enemy_2124_dyjsfg"
+                  ],
+                  "_isUnset": true,
+                  "_loadIdFromBb": false,
+                  "$type": "Torappu.Battle.Action.Nodes+CheckEnemyId"
+                },
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_anotherBuff": false,
+                  "_buffKey": null,
+                  "_blackboardKey": "route_changed",
+                  "_blackboardKeyFromBb": null,
+                  "_valueToCompare": 1,
+                  "_anotherKeyToCompare": null,
+                  "_condType": "EQUALS",
+                  "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+                },
+                {
+                  "_ownerType": "BUFF_OWNER",
+                  "$type": "Torappu.Battle.Action.Nodes+SkipCursorCheckPoint"
+                }
+              ]
+            },
+            {
+              "event": 4,
+              "actions": [
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_anotherBuff": false,
+                  "_buffKey": null,
+                  "_blackboardKey": "route_changed",
+                  "_blackboardKeyFromBb": null,
+                  "_valueToCompare": 1,
+                  "_anotherKeyToCompare": null,
+                  "_condType": "EQUALS",
+                  "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+                },
+                {
+                  "_ownerType": "BUFF_OWNER",
+                  "$type": "Torappu.Battle.Action.Nodes+SkipCursorCheckPoint"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

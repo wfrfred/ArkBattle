@@ -1,0 +1,1642 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [],
+    "collectionDateSource": "not recorded",
+    "organizedOn": "2026-11-07",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "aura-bodies.json#/provenance/client/dll",
+          "side-and-aura-support.json#/provenance/client/dll",
+          "target-types.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "aura-bodies.json#/provenance/client/metadata",
+          "side-and-aura-support.json#/provenance/client/metadata",
+          "target-types.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "aura-bodies.json",
+      "dyjsww-prefab.json",
+      "dyjsww-templates.json",
+      "side-and-aura-support.json",
+      "target-types.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "aura-bodies.json",
+        "kind": "record",
+        "bytes": 441937,
+        "sha256": "3c1dde812ca6dbc2315150222667f3fec3731f55979ce415755d2f6ac2d8b574"
+      },
+      {
+        "path": "dyjsww-prefab.json",
+        "kind": "record",
+        "bytes": 312112,
+        "sha256": "425ed4a8bc6fefd09564dd312e67072c25f995101ba4e2bf7f6085f7ab6e2b15"
+      },
+      {
+        "path": "dyjsww-templates.json",
+        "kind": "record",
+        "bytes": 31560,
+        "sha256": "5516c4913bd06af9e9afafb1ff137e83d55a38136cbe1a278829e117eda839c1"
+      },
+      {
+        "path": "extract_dyjsww_prefab.py",
+        "kind": "historical-script",
+        "bytes": 4056,
+        "sha256": "90ac50426b2c73ebc7951f4330b0f7006ea24fb8a8d8cd14fbd00bdc6fc3d59b"
+      },
+      {
+        "path": "extract_dyjsww_templates.py",
+        "kind": "historical-script",
+        "bytes": 2582,
+        "sha256": "bb69f30f98a53166a456c225ac4760fddc75055a949a7ca3057c3f1b78a73c28"
+      },
+      {
+        "path": "extract_target_types.py",
+        "kind": "historical-script",
+        "bytes": 2627,
+        "sha256": "88895e89297e8b630b35d9f31b70cea0027b3ec2b0e6771fb0968754300cfd60"
+      },
+      {
+        "path": "extract_target_types.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "side-and-aura-support.json",
+        "kind": "record",
+        "bytes": 179932,
+        "sha256": "9b1bb317821176a5ef6a1c3952bed72c204c3ccb9dc7318f21d3d2685209b50b"
+      },
+      {
+        "path": "target-types.json",
+        "kind": "record",
+        "bytes": 118269,
+        "sha256": "4a55d5741dac501212aa6322dec73f0e3367fa7f71ff26460b39c7d3734eb18a"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 18333,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/0",
+            "side-and-aura-support.json#/result/relatedMethods/0"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleModifierWrap._m_NewElementDamageModifierAfterCalculate_xlua_st_",
+          "address": "0x180a616a0"
+        },
+        {
+          "index": 18350,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/1",
+            "side-and-aura-support.json#/result/relatedMethods/1"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleModifierWrap._g_get_isElementDamage",
+          "address": "0x180a5db40"
+        },
+        {
+          "index": 65902,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/2",
+            "side-and-aura-support.json#/result/relatedMethods/2"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686700"
+        },
+        {
+          "index": 65903,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/3",
+            "side-and-aura-support.json#/result/relatedMethods/3"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686440"
+        },
+        {
+          "index": 65904,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/4",
+            "side-and-aura-support.json#/result/relatedMethods/4"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+          "address": "0x180686530"
+        },
+        {
+          "index": 66147,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/5",
+            "side-and-aura-support.json#/result/relatedMethods/5"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAfterOutputElementDamage",
+          "address": "0x1806d0180"
+        },
+        {
+          "index": 66153,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/6",
+            "side-and-aura-support.json#/result/relatedMethods/6"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnTakeEPDamage",
+          "address": "0x1806d5250"
+        },
+        {
+          "index": 66380,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/7",
+            "side-and-aura-support.json#/result/relatedMethods/7"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnAfterOutputElementDamage",
+          "address": "0x1806b8c90"
+        },
+        {
+          "index": 66384,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/8",
+            "side-and-aura-support.json#/result/relatedMethods/8"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnTakeEPDamage",
+          "address": "0x1806c76c0"
+        },
+        {
+          "index": 67460,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/9",
+            "side-and-aura-support.json#/result/relatedMethods/9"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_epDamageResistance",
+          "address": "0x180734bb0"
+        },
+        {
+          "index": 67675,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/10",
+            "side-and-aura-support.json#/result/relatedMethods/10"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnAfterOutputElementDamage",
+          "address": "0x180727b50"
+        },
+        {
+          "index": 67684,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/11",
+            "side-and-aura-support.json#/result/relatedMethods/11"
+          ],
+          "fullname": "Torappu.Battle.Entity._DoApplyEPModifierInternal",
+          "address": "0x180730be0"
+        },
+        {
+          "index": 67711,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/12",
+            "side-and-aura-support.json#/result/relatedMethods/12"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnTakeEPDamage",
+          "address": "0x18072be40"
+        },
+        {
+          "index": 67982,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/13",
+            "side-and-aura-support.json#/result/relatedMethods/13"
+          ],
+          "fullname": "Torappu.Battle.BattleLogger.LogEpModifier",
+          "address": "0x180741920"
+        },
+        {
+          "index": 68032,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/14",
+            "side-and-aura-support.json#/result/relatedMethods/14"
+          ],
+          "fullname": "Torappu.Battle.BattleLogger/BattleStats/CharAdvancedStats.ToListElementDamage",
+          "address": "0x18074c630"
+        },
+        {
+          "index": 69081,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/15",
+            "side-and-aura-support.json#/result/relatedMethods/15"
+          ],
+          "fullname": "Torappu.Battle.Act33SideManager.ApplyElementDamageCharactersWithRope",
+          "address": "0x1807a6a90"
+        },
+        {
+          "index": 69083,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/16",
+            "side-and-aura-support.json#/result/relatedMethods/16"
+          ],
+          "fullname": "Torappu.Battle.Act33SideManager._ApplyElementDamageModifier",
+          "address": "0x1807aa610"
+        },
+        {
+          "index": 72136,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/17",
+            "side-and-aura-support.json#/result/relatedMethods/17"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isElementDamage",
+          "address": "0x18090d630"
+        },
+        {
+          "index": 72181,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/18",
+            "side-and-aura-support.json#/result/relatedMethods/18"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewElementDamageModifierAfterCalculate",
+          "address": "0x18090a8e0"
+        },
+        {
+          "index": 76356,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/0/methods/0"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions.get_enableAdvanced",
+          "address": "0x180a411f0"
+        },
+        {
+          "index": 76357,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/0/methods/1"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions.get_ignoreTargetFreeOptions",
+          "address": "0x180a41210"
+        },
+        {
+          "index": 76358,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/0/methods/2"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions.get_onlyIgnoreSomeOfTargetFreeCaseOptions",
+          "address": "0x180a41220"
+        },
+        {
+          "index": 76359,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/0/methods/3"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions.get_forceExcludeSomeAbnormalFlags",
+          "address": "0x1805269e0"
+        },
+        {
+          "index": 76360,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/0/methods/4"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions.get_forceContainSomeAbnormalFlags",
+          "address": "0x180a41200"
+        },
+        {
+          "index": 76361,
+          "mode": "disasm",
+          "records": [
+            "aura-bodies.json#/result/methods/0",
+            "aura-bodies.json#/result/bodies/0/method",
+            "aura-bodies.json#/result/bodies/0/fragments/0",
+            "aura-bodies.json#/result/bodies/0/fragments/0/method",
+            "target-types.json#/result/0/methods/5"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions.get_targetSideMask",
+          "address": "0x180a41240"
+        },
+        {
+          "index": 76362,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/0/methods/6"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions.get_sourcePlayerSideMask",
+          "address": "0x180a41230"
+        },
+        {
+          "index": 76363,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/0/methods/7"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions.EasyOptions",
+          "address": "0x180a40780"
+        },
+        {
+          "index": 76364,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/0/methods/8"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions.AdvancedOptions",
+          "address": "0x180a40680"
+        },
+        {
+          "index": 76365,
+          "mode": "disasm",
+          "records": [
+            "aura-bodies.json#/result/methods/1",
+            "aura-bodies.json#/result/bodies/1/method",
+            "aura-bodies.json#/result/bodies/1/fragments/0",
+            "aura-bodies.json#/result/bodies/1/fragments/0/method",
+            "target-types.json#/result/0/methods/9"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions.Init",
+          "address": "0x180a40810"
+        },
+        {
+          "index": 76366,
+          "mode": "disasm",
+          "records": [
+            "aura-bodies.json#/result/methods/2",
+            "aura-bodies.json#/result/bodies/2/method",
+            "aura-bodies.json#/result/bodies/2/fragments/0",
+            "aura-bodies.json#/result/bodies/2/fragments/0/method",
+            "target-types.json#/result/0/methods/10"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions.Init",
+          "address": "0x180a407c0"
+        },
+        {
+          "index": 76367,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/0/methods/11"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions.SetPurposeMask",
+          "address": "0x180523070"
+        },
+        {
+          "index": 76368,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/0/methods/12"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions.GetLayerMask",
+          "address": "0x180a407b0"
+        },
+        {
+          "index": 76369,
+          "mode": "disasm",
+          "records": [
+            "aura-bodies.json#/result/methods/3",
+            "aura-bodies.json#/result/bodies/3/method",
+            "aura-bodies.json#/result/bodies/3/fragments/0",
+            "aura-bodies.json#/result/bodies/3/fragments/0/method",
+            "target-types.json#/result/0/methods/13"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions.VerifyTarget",
+          "address": "0x180a40a30"
+        },
+        {
+          "index": 76370,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/0/methods/14"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions.VerifyTargetWithPlayerSide",
+          "address": "0x180a40930"
+        },
+        {
+          "index": 76371,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/0/methods/15"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions.VerifyTargetWithoutCheckingTargetSide",
+          "address": "0x180a409c0"
+        },
+        {
+          "index": 76372,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/0/methods/16"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions._TryGetSourceMotionMode",
+          "address": "0x180a40db0"
+        },
+        {
+          "index": 76373,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/0/methods/17"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions._InitSourceSnapshot",
+          "address": "0x180a40c20"
+        },
+        {
+          "index": 76374,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/0/methods/18"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions._InitSourceMapLayer",
+          "address": "0x180a40ac0"
+        },
+        {
+          "index": 76375,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/0/methods/19"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions._VerifyAdvanced",
+          "address": "0x180a40eb0"
+        },
+        {
+          "index": 76376,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/0/methods/20"
+          ],
+          "fullname": "Torappu.Battle.TargetOptions._VerifyExtraProfession",
+          "address": "0x180a411e0"
+        },
+        {
+          "index": 76972,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/1/methods/0"
+          ],
+          "fullname": "Torappu.Battle.TargetValidator.get_owner",
+          "address": "0x180a97920"
+        },
+        {
+          "index": 76973,
+          "mode": "disasm",
+          "records": [
+            "side-and-aura-support.json#/result/methods/0",
+            "side-and-aura-support.json#/result/bodies/0/method",
+            "side-and-aura-support.json#/result/bodies/0/fragments/0",
+            "side-and-aura-support.json#/result/bodies/0/fragments/0/method",
+            "target-types.json#/result/1/methods/1"
+          ],
+          "fullname": "Torappu.Battle.TargetValidator.SetData",
+          "address": "0x180a97650"
+        },
+        {
+          "index": 76974,
+          "mode": "disasm",
+          "records": [
+            "aura-bodies.json#/result/methods/4",
+            "aura-bodies.json#/result/bodies/4/method",
+            "aura-bodies.json#/result/bodies/4/fragments/0",
+            "aura-bodies.json#/result/bodies/4/fragments/0/method",
+            "target-types.json#/result/1/methods/2"
+          ],
+          "fullname": "Torappu.Battle.TargetValidator.Validate",
+          "address": "0x180a97740"
+        },
+        {
+          "index": 76975,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/1/methods/3"
+          ],
+          "fullname": "Torappu.Battle.TargetValidator.GetLayerMask",
+          "address": "0x180a97590"
+        },
+        {
+          "index": 76976,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/1/methods/4"
+          ],
+          "fullname": "Torappu.Battle.TargetValidator.VerifyOnlyMotionAndCategory",
+          "address": "0x180a977d0"
+        },
+        {
+          "index": 76977,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/1/methods/5"
+          ],
+          "fullname": "Torappu.Battle.TargetValidator.VerifyTargetOptionsSideType",
+          "address": "0x180a97850"
+        },
+        {
+          "index": 76978,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/1/methods/6"
+          ],
+          "fullname": "Torappu.Battle.TargetValidator.OnTick",
+          "address": "0x180a975f0"
+        },
+        {
+          "index": 76979,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/1/methods/7"
+          ],
+          "fullname": "Torappu.Battle.TargetValidator..ctor",
+          "address": "0x180a978c0"
+        },
+        {
+          "index": 79593,
+          "mode": "disasm",
+          "records": [
+            "side-and-aura-support.json#/result/methods/1",
+            "side-and-aura-support.json#/result/bodies/1/method",
+            "side-and-aura-support.json#/result/bodies/1/fragments/0",
+            "side-and-aura-support.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleUtil.ConvertSideType",
+          "address": "0x180b41320"
+        },
+        {
+          "index": 92284,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/19",
+            "side-and-aura-support.json#/result/relatedMethods/19"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_hasEpDamage",
+          "address": "0x180f3fd80"
+        },
+        {
+          "index": 92287,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/20",
+            "side-and-aura-support.json#/result/relatedMethods/20"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_elementDamageType",
+          "address": "0x180f3fd20"
+        },
+        {
+          "index": 92294,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/21",
+            "side-and-aura-support.json#/result/relatedMethods/21"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.ApplyElementDamageScale",
+          "address": "0x180f3ec10"
+        },
+        {
+          "index": 93348,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/22",
+            "side-and-aura-support.json#/result/relatedMethods/22"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ProjectileToTileAbility.get_hasEpDamage",
+          "address": "0x180f7baf0"
+        },
+        {
+          "index": 93359,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/23",
+            "side-and-aura-support.json#/result/relatedMethods/23"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ProjectileToTileAbility.ApplyElementDamageScale",
+          "address": "0x180f7a260"
+        },
+        {
+          "index": 93894,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/24",
+            "side-and-aura-support.json#/result/relatedMethods/24"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.CreateElementDamageNode",
+          "address": "0x180f90230"
+        },
+        {
+          "index": 93895,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/25",
+            "side-and-aura-support.json#/result/relatedMethods/25"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.NewElementDamageNode",
+          "address": "0x180f90cc0"
+        },
+        {
+          "index": 94166,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.get_cooldown",
+          "address": "0x180fac2f0"
+        },
+        {
+          "index": 94167,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.get_category",
+          "address": "0x180fac290"
+        },
+        {
+          "index": 94168,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.get_selectTargetSource",
+          "address": "0x180fac430"
+        },
+        {
+          "index": 94169,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.get_alwaysIncludeTarget",
+          "address": "0x180fac230"
+        },
+        {
+          "index": 94170,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.get_removeBuffWhenAbilityDetached",
+          "address": "0x180fac3d0"
+        },
+        {
+          "index": 94171,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/5"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.GetEventActions",
+          "address": "0x180fa9ad0"
+        },
+        {
+          "index": 94172,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/6"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.GetProjectileActions",
+          "address": "0x180fa9ba0"
+        },
+        {
+          "index": 94173,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/7"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.GetPassiveBuffs",
+          "address": "0x180fa9b40"
+        },
+        {
+          "index": 94174,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/8"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.GetActiveBuffs",
+          "address": "0x180fa9a70"
+        },
+        {
+          "index": 94175,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/9"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.OnWaitForPreDelay",
+          "address": "0x180fa9f00"
+        },
+        {
+          "index": 94176,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/10"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.OnWaitForPostDelay",
+          "address": "0x180fa9e70"
+        },
+        {
+          "index": 94177,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/11"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.get_forceTick",
+          "address": "0x180fac370"
+        },
+        {
+          "index": 94178,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/12"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.OnDestroy",
+          "address": "0x180fa9c30"
+        },
+        {
+          "index": 94179,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/13"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.DoSetData",
+          "address": "0x180fa9780"
+        },
+        {
+          "index": 94180,
+          "mode": "disasm",
+          "records": [
+            "aura-bodies.json#/result/methods/5",
+            "aura-bodies.json#/result/bodies/5/method",
+            "aura-bodies.json#/result/bodies/5/fragments/0",
+            "aura-bodies.json#/result/bodies/5/fragments/0/method",
+            "target-types.json#/result/2/methods/14"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.DoAttach",
+          "address": "0x180fa8d20"
+        },
+        {
+          "index": 94181,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/15"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.DoDetach",
+          "address": "0x180fa9370"
+        },
+        {
+          "index": 94182,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/16"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.GatherEffects",
+          "address": "0x180fa99c0"
+        },
+        {
+          "index": 94183,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/17"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.GatherBuffs",
+          "address": "0x180fa9910"
+        },
+        {
+          "index": 94184,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/18"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility._ClearBuffs",
+          "address": "0x180faa320"
+        },
+        {
+          "index": 94185,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/19"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility._OnMapLayerChanged",
+          "address": "0x180faaf30"
+        },
+        {
+          "index": 94186,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/20"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility._OnDisappearChanged",
+          "address": "0x180faae70"
+        },
+        {
+          "index": 94187,
+          "mode": "disasm",
+          "records": [
+            "aura-bodies.json#/result/methods/6",
+            "aura-bodies.json#/result/bodies/6/method",
+            "aura-bodies.json#/result/bodies/6/fragments/0",
+            "aura-bodies.json#/result/bodies/6/fragments/0/method",
+            "target-types.json#/result/2/methods/21"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.DealTarget",
+          "address": "0x180fa8a30"
+        },
+        {
+          "index": 94188,
+          "mode": "disasm",
+          "records": [
+            "aura-bodies.json#/result/methods/7",
+            "aura-bodies.json#/result/bodies/7/method",
+            "aura-bodies.json#/result/bodies/7/fragments/0",
+            "aura-bodies.json#/result/bodies/7/fragments/0/method",
+            "target-types.json#/result/2/methods/22"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility._OnUnitBornOrRallyPointReborn",
+          "address": "0x180fab530"
+        },
+        {
+          "index": 94189,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/23"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility._OnRallyPointDead",
+          "address": "0x180fab070"
+        },
+        {
+          "index": 94190,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/24"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility._OnRallyPointLikeSwitch",
+          "address": "0x180fab2b0"
+        },
+        {
+          "index": 94191,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/25"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility._ClearEffects",
+          "address": "0x180faacc0"
+        },
+        {
+          "index": 94192,
+          "mode": "disasm",
+          "records": [
+            "side-and-aura-support.json#/result/methods/2",
+            "side-and-aura-support.json#/result/bodies/2/method",
+            "side-and-aura-support.json#/result/bodies/2/fragments/0",
+            "side-and-aura-support.json#/result/bodies/2/fragments/0/method",
+            "target-types.json#/result/2/methods/26"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility._UpdateTargetMap",
+          "address": "0x180fab820"
+        },
+        {
+          "index": 94193,
+          "mode": "disasm",
+          "records": [
+            "aura-bodies.json#/result/methods/8",
+            "aura-bodies.json#/result/bodies/8/method",
+            "aura-bodies.json#/result/bodies/8/fragments/0",
+            "aura-bodies.json#/result/bodies/8/fragments/0/method",
+            "target-types.json#/result/2/methods/27"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility._UpdateTargets",
+          "address": "0x180fabbd0"
+        },
+        {
+          "index": 94194,
+          "mode": "disasm",
+          "records": [
+            "aura-bodies.json#/result/methods/9",
+            "aura-bodies.json#/result/bodies/9/method",
+            "aura-bodies.json#/result/bodies/9/fragments/0",
+            "aura-bodies.json#/result/bodies/9/fragments/0/method",
+            "target-types.json#/result/2/methods/28"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.VerityTarget",
+          "address": "0x180faa100"
+        },
+        {
+          "index": 94195,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/29"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.OnTick",
+          "address": "0x180fa9cd0"
+        },
+        {
+          "index": 94196,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/30"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.RestartAuraBySideType",
+          "address": "0x180fa9f90"
+        },
+        {
+          "index": 94197,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/31"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility..ctor",
+          "address": "0x180fabfc0"
+        },
+        {
+          "index": 94198,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/32"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.<>xLuaBaseProxy_DoSetData",
+          "address": "0x18060a0b0"
+        },
+        {
+          "index": 94199,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/33"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.<>xLuaBaseProxy_DoAttach",
+          "address": "0x180f70c90"
+        },
+        {
+          "index": 94200,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/34"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.<>xLuaBaseProxy_DoDetach",
+          "address": "0x180f4ac30"
+        },
+        {
+          "index": 94201,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/35"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.<>xLuaBaseProxy_GatherEffects",
+          "address": "0x180f72880"
+        },
+        {
+          "index": 94202,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/36"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.<>xLuaBaseProxy_GatherBuffs",
+          "address": "0x180f51750"
+        },
+        {
+          "index": 94203,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/2/methods/37"
+          ],
+          "fullname": "Torappu.Battle.Abilities.GlobalAuraAbility.<>xLuaBaseProxy_OnTick",
+          "address": "0x180f45cc0"
+        },
+        {
+          "index": 97423,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/26",
+            "side-and-aura-support.json#/result/relatedMethods/26"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/Act33SideBurnCharactersWithRope.get_isFixedEpDamage",
+          "address": "0x18106aee0"
+        },
+        {
+          "index": 99204,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/27",
+            "side-and-aura-support.json#/result/relatedMethods/27"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/UpdateAttackElementDamageScale.get_allowedSource",
+          "address": "0x1811089f0"
+        },
+        {
+          "index": 99205,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/28",
+            "side-and-aura-support.json#/result/relatedMethods/28"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/UpdateAttackElementDamageScale.Execute",
+          "address": "0x181108730"
+        },
+        {
+          "index": 99206,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/29",
+            "side-and-aura-support.json#/result/relatedMethods/29"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/UpdateAttackElementDamageScale..ctor",
+          "address": "0x181108940"
+        },
+        {
+          "index": 99223,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/30",
+            "side-and-aura-support.json#/result/relatedMethods/30"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage.get_allowedSource",
+          "address": "0x1810fb000"
+        },
+        {
+          "index": 99224,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/31",
+            "side-and-aura-support.json#/result/relatedMethods/31"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage.get_shieldByAnotherSource",
+          "address": "0x1810fb060"
+        },
+        {
+          "index": 99225,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/32",
+            "side-and-aura-support.json#/result/relatedMethods/32"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage.Execute",
+          "address": "0x1810fab10"
+        },
+        {
+          "index": 99226,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/33",
+            "side-and-aura-support.json#/result/relatedMethods/33"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage..ctor",
+          "address": "0x1810faf50"
+        },
+        {
+          "index": 99250,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/34",
+            "side-and-aura-support.json#/result/relatedMethods/34"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/EpDamageScale.get_allowedSource",
+          "address": "0x1811010e0"
+        },
+        {
+          "index": 99251,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/35",
+            "side-and-aura-support.json#/result/relatedMethods/35"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/EpDamageScale.Execute",
+          "address": "0x181100b60"
+        },
+        {
+          "index": 99252,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/36",
+            "side-and-aura-support.json#/result/relatedMethods/36"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/EpDamageScale..ctor",
+          "address": "0x181101050"
+        },
+        {
+          "index": 99321,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/37",
+            "side-and-aura-support.json#/result/relatedMethods/37"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_multiplyWithBuffValidStackCnt",
+          "address": "0x1810f8890"
+        },
+        {
+          "index": 99322,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/38",
+            "side-and-aura-support.json#/result/relatedMethods/38"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_isFixedEpDamage",
+          "address": "0x1810f8830"
+        },
+        {
+          "index": 99323,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/39",
+            "side-and-aura-support.json#/result/relatedMethods/39"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_epDamageScale",
+          "address": "0x1810f87d0"
+        },
+        {
+          "index": 99324,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/40",
+            "side-and-aura-support.json#/result/relatedMethods/40"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.set_epDamageScale",
+          "address": "0x1810f8950"
+        },
+        {
+          "index": 99325,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/41",
+            "side-and-aura-support.json#/result/relatedMethods/41"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_epDamageRatio",
+          "address": "0x1810f8770"
+        },
+        {
+          "index": 99326,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/42",
+            "side-and-aura-support.json#/result/relatedMethods/42"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_allowedSource",
+          "address": "0x1810f8710"
+        },
+        {
+          "index": 99327,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/43",
+            "side-and-aura-support.json#/result/relatedMethods/43"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.get_purposeMask",
+          "address": "0x1810f88f0"
+        },
+        {
+          "index": 99328,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/44",
+            "side-and-aura-support.json#/result/relatedMethods/44"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage._CheckNodeInvalid",
+          "address": "0x1810f8340"
+        },
+        {
+          "index": 99329,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/45",
+            "side-and-aura-support.json#/result/relatedMethods/45"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.Execute",
+          "address": "0x1810f7c20"
+        },
+        {
+          "index": 99330,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/46",
+            "side-and-aura-support.json#/result/relatedMethods/46"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage..ctor",
+          "address": "0x1810f8610"
+        },
+        {
+          "index": 99331,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/47",
+            "side-and-aura-support.json#/result/relatedMethods/47"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage..ctor",
+          "address": "0x1810f84e0"
+        },
+        {
+          "index": 99332,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/48",
+            "side-and-aura-support.json#/result/relatedMethods/48"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.CreateElementDamageModifier",
+          "address": "0x1810f76d0"
+        },
+        {
+          "index": 99333,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/49",
+            "side-and-aura-support.json#/result/relatedMethods/49"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.PreprocessForProjectile",
+          "address": "0x1810f8210"
+        },
+        {
+          "index": 99334,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/50",
+            "side-and-aura-support.json#/result/relatedMethods/50"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.DeliverPreprocessPara",
+          "address": "0x1810f7ba0"
+        },
+        {
+          "index": 99335,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/51",
+            "side-and-aura-support.json#/result/relatedMethods/51"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.get_allowedSource",
+          "address": "0x1810f4fc0"
+        },
+        {
+          "index": 99336,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/52",
+            "side-and-aura-support.json#/result/relatedMethods/52"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.get_purposeMask",
+          "address": "0x1810f5020"
+        },
+        {
+          "index": 99337,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/53",
+            "side-and-aura-support.json#/result/relatedMethods/53"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.Execute",
+          "address": "0x1810f4480"
+        },
+        {
+          "index": 99338,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/54",
+            "side-and-aura-support.json#/result/relatedMethods/54"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage._GetTargets_DISPOSE",
+          "address": "0x1810f4b60"
+        },
+        {
+          "index": 99339,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/55",
+            "side-and-aura-support.json#/result/relatedMethods/55"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage._DealEpDamage",
+          "address": "0x1810f4910"
+        },
+        {
+          "index": 99340,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/56",
+            "side-and-aura-support.json#/result/relatedMethods/56"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.PreprocessForProjectile",
+          "address": "0x1810f48b0"
+        },
+        {
+          "index": 99341,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/57",
+            "side-and-aura-support.json#/result/relatedMethods/57"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage..ctor",
+          "address": "0x1810f4f50"
+        },
+        {
+          "index": 99342,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/58",
+            "side-and-aura-support.json#/result/relatedMethods/58"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage/<>c__DisplayClass16_0..ctor",
+          "address": "0x180520cc0"
+        },
+        {
+          "index": 99343,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/59",
+            "side-and-aura-support.json#/result/relatedMethods/59"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage/<>c__DisplayClass16_0.<_GetTargets_DISPOSE>b__1",
+          "address": "0x1811081b0"
+        },
+        {
+          "index": 99344,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/60",
+            "side-and-aura-support.json#/result/relatedMethods/60"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage/<>c__DisplayClass16_0.<_GetTargets_DISPOSE>b__0",
+          "address": "0x181108100"
+        },
+        {
+          "index": 99345,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/61",
+            "side-and-aura-support.json#/result/relatedMethods/61"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.get_allowedSource",
+          "address": "0x1810f7610"
+        },
+        {
+          "index": 99346,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/62",
+            "side-and-aura-support.json#/result/relatedMethods/62"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.get_purposeMask",
+          "address": "0x1810f7670"
+        },
+        {
+          "index": 99347,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/63",
+            "side-and-aura-support.json#/result/relatedMethods/63"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.Execute",
+          "address": "0x1810f70b0"
+        },
+        {
+          "index": 99348,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/64",
+            "side-and-aura-support.json#/result/relatedMethods/64"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.PreprocessForProjectile",
+          "address": "0x1810f7540"
+        },
+        {
+          "index": 99349,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/65",
+            "side-and-aura-support.json#/result/relatedMethods/65"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue..ctor",
+          "address": "0x1810f75a0"
+        },
+        {
+          "index": 99350,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/66",
+            "side-and-aura-support.json#/result/relatedMethods/66"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.get_allowedSource",
+          "address": "0x1810f8e40"
+        },
+        {
+          "index": 99351,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/67",
+            "side-and-aura-support.json#/result/relatedMethods/67"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.get_purposeMask",
+          "address": "0x1810f8ea0"
+        },
+        {
+          "index": 99352,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/68",
+            "side-and-aura-support.json#/result/relatedMethods/68"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.Execute",
+          "address": "0x1810f89c0"
+        },
+        {
+          "index": 99353,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/69",
+            "side-and-aura-support.json#/result/relatedMethods/69"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.PreprocessForProjectile",
+          "address": "0x1810f8d80"
+        },
+        {
+          "index": 99354,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/70",
+            "side-and-aura-support.json#/result/relatedMethods/70"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage..ctor",
+          "address": "0x1810f8de0"
+        },
+        {
+          "index": 100224,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/71",
+            "side-and-aura-support.json#/result/relatedMethods/71"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsElementDamage.get_allowedSource",
+          "address": "0x181177a90"
+        },
+        {
+          "index": 100225,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/72",
+            "side-and-aura-support.json#/result/relatedMethods/72"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsElementDamage.Execute",
+          "address": "0x181177970"
+        },
+        {
+          "index": 100226,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/73",
+            "side-and-aura-support.json#/result/relatedMethods/73"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsElementDamage..ctor",
+          "address": "0x181177a30"
+        },
+        {
+          "index": 101509,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/74",
+            "side-and-aura-support.json#/result/relatedMethods/74"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterElementDamageModifer.get_allowedSource",
+          "address": "0x1811d62e0"
+        },
+        {
+          "index": 101510,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/75",
+            "side-and-aura-support.json#/result/relatedMethods/75"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterElementDamageModifer.Execute",
+          "address": "0x1811d6190"
+        },
+        {
+          "index": 101511,
+          "mode": "metadata",
+          "records": [
+            "aura-bodies.json#/result/relatedMethods/76",
+            "side-and-aura-support.json#/result/relatedMethods/76"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterElementDamageModifer..ctor",
+          "address": "0x1811d6280"
+        },
+        {
+          "index": 114814,
+          "mode": "metadata",
+          "records": [
+            "target-types.json#/result/3/methods/0"
+          ],
+          "fullname": "Torappu.UI.DragAndPinchWithTargetContext/TargetOptions..cctor",
+          "address": "0x18051df60"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Abilities.AuraAbility/SelfOption",
+          "records": [
+            "target-types.json#/result/7"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.GlobalAuraAbility",
+          "records": [
+            "target-types.json#/result/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.EntityCategory",
+          "records": [
+            "target-types.json#/result/6"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.SideType",
+          "records": [
+            "target-types.json#/result/5"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.TargetOptions",
+          "records": [
+            "target-types.json#/result/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.TargetValidator",
+          "records": [
+            "target-types.json#/result/1"
+          ]
+        },
+        {
+          "name": "Torappu.MotionMask",
+          "records": [
+            "target-types.json#/result/4"
+          ]
+        },
+        {
+          "name": "Torappu.UI.DragAndPinchWithTargetContext/TargetOptions",
+          "records": [
+            "target-types.json#/result/3"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_27.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_27.ab",
+          "sha256": "71ca2e2ea0b108a93414d1141f55901d4df325295d02b00f41357e4c8715db6a",
+          "records": [
+            "dyjsww-prefab.json#/provenance/sources/0"
+          ],
+          "bytes": 494044
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "dyjsww-prefab.json#/provenance/sources/1"
+          ],
+          "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "dyjsww-templates.json#/provenance/source"
+          ],
+          "bytes": 2151020
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

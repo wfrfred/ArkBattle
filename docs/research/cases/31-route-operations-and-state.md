@@ -114,6 +114,28 @@ Fear／Attract 的目标刷新可以对各自现有临时 Cursor 调用 OnRouteC
 
 内容原件保留实际 GameObject／组件身份、外部 MonoScript PPtr、模板动作与关卡 Pointer。模板递归扫描包含 IfElse 等嵌套动作；只扫描顶层动作的首次结果已废弃。热情导游的仅终点改写另有独立[条件正例补核](../evidence/route-operations-20261107/endpoint/README.md)，以免把 `flgshp_tile_mark > 0` 当作没有来源的假设。
 
+### 4.1 Insert 是否实际改变巡逻回边
+
+2026-11-07 定向补核。先以目标资格确定该查谁的路线，再作固定关卡配置交叉，而不是只用可构造程序说明需求。[脚本、结果及补证](../evidence/insert-patrol-20261107/README.md)
+
+**N／D：** 后兽的 M2 GlobalAura 对其它同侧、DEFAULT 类别、空地不限且同 mapLayer 的存活单位生效，排自身及 dyjsfg。已有目标与后续出生都经同一安装流程；BUFF_SOURCE 是后兽，BUFF_OWNER 是受影响单位。Insert 保留受影响单位的旧路点，在其当前索引前插 MOVE，目的地是后兽所在格。因此必须检查后兽同场的其它目标路线，而不只是后兽自身。
+
+**N／D：** 复仇者的模板反过来以 BUFF_OWNER 提供位置、BUFF_SOURCE 提供被重绑的 Route；BuffSource 是 Rush 的施放者。因此相关巡逻候选必须关联复仇者自身路线，不能拿同场另一只敌人的巡逻当正例。
+
+**D：** 扫描固定修订的 4,025 个关卡 JSON，全部成功解析，发现 2,861 条含 PATROL_MOVE 的路线、2,788 个引用巡逻路线的有效正数 SPAWN 动作；ALERT 路点为 0。主要交叉结果：
+
+| 使用者／模板 | 所选配置范围 | 与 PATROL／ALERT 的交集 |
+| --- | --- | --- |
+| 后兽 | 两份 rogue5_b-7 配置；检查同场所有主／额外路线及所有主 Wave／Branch 出生引用 | 0；同场未引用路线也没有 PATROL／ALERT |
+| “复仇者” | rogue4_d-1、rune_14-01、act1multi_hard-02 三份配置；关联其自身路线，并额外检查同场全部路线 | 0 |
+| 马特奥、花匠、圣愚、狂躁异质裂兽 | 分别命中 1／2／2／8 份配置 | 同场无 PATROL／ALERT；且对应操作先清空原程序，不能证明保留旧巡逻再插入 |
+| agbmes、agmbox 等其余模板符号候选 | 对应前缀在完整目录中的字面命中及同文件全部路线；不凭前缀推定完整启用链 | 所选命中文件同样无 PATROL／ALERT |
+| acfnc | 父模板作用于新召唤物；AUTOCHESS 分支先选 Branch，再头插 MOVE | 当前目录无 acfnc、left_acfncb、right_acfncb 字面引用；启用未闭合，不作正例 |
+
+`trap_xbblure_attract` 为生息来源，不作为支持范围的正例。其它先清空再组装 MOVE／WAIT／出现消失程序的模板，也不能据其使用 Insert 就推导“必须兼容任意旧巡逻结构编辑”。
+
+**结论边界：** 目前没有找到实际启用内容中“保留既有 PATROL／ALERT 程序，再插点改变巡逻回边”的正例。先前两个 PATROL 的反例仅说明原生算法对某些合法输入会产生这种差异，尚不足以据此要求 Core 保留整套隐式分段编辑规则。这里没有证明动态生成、玩法预处理替换或 XLua 一律不会构造该组合，也没有据阴性结果直接定稿项目路线 API。
+
 ## 5. 能归并的实现与不能抹平的语义
 
 以下是依据 N／D 的需求归纳，不是已定 Core API：

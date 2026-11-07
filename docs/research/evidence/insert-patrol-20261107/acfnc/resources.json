@@ -1,0 +1,660 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-07",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/insert-patrol-20261107/acfnc/extract_acfnc.py",
+      "bytes": 4800,
+      "sha256": "1d183f4cd404f44b3bd297dec041d3be5ecd4363df6fc65a47e02497201f445d"
+    },
+    "reader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+      "bytes": 8161,
+      "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+    },
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      }
+    ],
+    "source": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+      "bytes": 2151020,
+      "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+    },
+    "scope": "Static installed resource programs and bounded literal-reference search; no game execution."
+  },
+  "result": {
+    "holderTemplateCount": 9054,
+    "selectedTemplates": [
+      {
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "holderPathId": "6070581171229484677",
+        "holderObjectSha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+        "template": {
+          "templateKey": "acfnc_t1",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 21,
+                  "value": {
+                    "SerializedState": "[{\"_source\":\"MODIFIER_TARGET\",\"_useSnapshotTile\":false,\"_enemyKey\":\"enemy_9028_acfncb\",\"_summonCount\":1,\"_motionMode\":\"WALK\",\"_unharmful\":false,\"_alwaysCountAsKilled\":false,\"_waitTime\":0.0,\"_summonOnNearestPassableTile\":true,\"_limitTilesInRange\":false,\"_rangeId\":\"x-4\",\"_spawnOffset\":0.0,\"_managedByScheduler\":false,\"_ignoreMissEndPoint\":true,\"_buffs\":[{\"attributes\":{\"abnormalFlags\":null,\"abnormalImmunes\":null,\"abnormalAntis\":null,\"abnormalCombos\":null,\"abnormalComboImmunes\":null,\"attributeModifiers\":null},\"buffKey\":\"acfnc[insert-cp]\",\"loadFromDB\":false,\"isDurableBuff\":false,\"isDamageMissable\":false,\"isSilenceable\":false,\"isStunnable\":false,\"isFreezable\":false,\"isLevitatable\":false,\"isGroundBoundable\":false,\"statusResistable\":\"AUTOMATIC\",\"templateKey\":\"acfnc[insert-cp]\",\"disableOverride\":false,\"overrideKey\":null,\"overrideType\":\"DEFAULT\",\"maxStackCnt\":1,\"refreshRemainingTimeWhenStackMax\":false,\"clearAllStackCntWhenTimeUp\":false,\"maxValidStackCnt\":-1,\"independentCharacterSource\":false,\"overrideEffectKey\":null,\"overrideOnEventPriority\":false,\"onEventPriority\":\"DEFAULT\",\"audioSignal\":null,\"lifeTimeType\":\"IMMEDIATELY\",\"takeSnapshotWhenExtend\":false,\"durationKey\":null,\"remainingTimeKey\":null,\"lifeTime\":0.0,\"triggerLifeType\":\"IMMEDIATELY\",\"triggerCnt\":0,\"triggerInterval\":-1.0,\"waitFirstTriggerInterval\":true,\"firstTriggerInterval\":-1.0,\"priority\":-1,\"priorityBBKeys\":[],\"stripBlackboardParamsWithBuffKey\":false,\"blackboard\":[],\"enableInitDirectionFromSource\":false}],\"_useSourceAsBuffSource\":true,\"_autoMotionMode\":false,\"_noCheckPoint\":false,\"_avoidObstacleLike\":true,\"$type\":\"Torappu.Battle.Action.Nodes+SummonEnemiesWithRuntimeNearestEndPointRoute\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "templateIndex": 4182,
+          "events": [
+            {
+              "event": 21,
+              "actions": [
+                {
+                  "_source": "MODIFIER_TARGET",
+                  "_useSnapshotTile": false,
+                  "_enemyKey": "enemy_9028_acfncb",
+                  "_summonCount": 1,
+                  "_motionMode": "WALK",
+                  "_unharmful": false,
+                  "_alwaysCountAsKilled": false,
+                  "_waitTime": 0.0,
+                  "_summonOnNearestPassableTile": true,
+                  "_limitTilesInRange": false,
+                  "_rangeId": "x-4",
+                  "_spawnOffset": 0.0,
+                  "_managedByScheduler": false,
+                  "_ignoreMissEndPoint": true,
+                  "_buffs": [
+                    {
+                      "attributes": {
+                        "abnormalFlags": null,
+                        "abnormalImmunes": null,
+                        "abnormalAntis": null,
+                        "abnormalCombos": null,
+                        "abnormalComboImmunes": null,
+                        "attributeModifiers": null
+                      },
+                      "buffKey": "acfnc[insert-cp]",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": "AUTOMATIC",
+                      "templateKey": "acfnc[insert-cp]",
+                      "disableOverride": false,
+                      "overrideKey": null,
+                      "overrideType": "DEFAULT",
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": null,
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": "DEFAULT",
+                      "audioSignal": null,
+                      "lifeTimeType": "IMMEDIATELY",
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": null,
+                      "remainingTimeKey": null,
+                      "lifeTime": 0.0,
+                      "triggerLifeType": "IMMEDIATELY",
+                      "triggerCnt": 0,
+                      "triggerInterval": -1.0,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": [],
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": [],
+                      "enableInitDirectionFromSource": false
+                    }
+                  ],
+                  "_useSourceAsBuffSource": true,
+                  "_autoMotionMode": false,
+                  "_noCheckPoint": false,
+                  "_avoidObstacleLike": true,
+                  "$type": "Torappu.Battle.Action.Nodes+SummonEnemiesWithRuntimeNearestEndPointRoute"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "holderPathId": "6070581171229484677",
+        "holderObjectSha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+        "template": {
+          "templateKey": "acfnc[skill]",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 0,
+                  "value": {
+                    "SerializedState": "[{\"_source\":\"BUFF_SOURCE\",\"_target\":\"BUFF_OWNER\",\"_spawnOnTarget\":true,\"_abilityName\":\"SkillSelector\",\"_summonCnt\":4,\"_enemyKey\":\"enemy_9028_acfncb\",\"_randomOffsetBound\":0.0,\"_motionMode\":\"WALK\",\"_unharmful\":false,\"_alwaysCountAsKilled\":false,\"_waitTime\":0.0,\"_managedByScheduler\":false,\"_clampInTilesCnt\":true,\"_buffs\":[],\"_buffsUseTargetAsSource\":[{\"attributes\":{\"abnormalFlags\":null,\"abnormalImmunes\":null,\"abnormalAntis\":null,\"abnormalCombos\":null,\"abnormalComboImmunes\":null,\"attributeModifiers\":null},\"buffKey\":\"acfnc[insert-cp]\",\"loadFromDB\":false,\"isDurableBuff\":false,\"isDamageMissable\":false,\"isSilenceable\":false,\"isStunnable\":false,\"isFreezable\":false,\"isLevitatable\":false,\"isGroundBoundable\":false,\"statusResistable\":\"AUTOMATIC\",\"templateKey\":\"acfnc[insert-cp]\",\"disableOverride\":false,\"overrideKey\":null,\"overrideType\":\"DEFAULT\",\"maxStackCnt\":1,\"refreshRemainingTimeWhenStackMax\":false,\"clearAllStackCntWhenTimeUp\":false,\"maxValidStackCnt\":-1,\"independentCharacterSource\":false,\"overrideEffectKey\":null,\"overrideOnEventPriority\":false,\"onEventPriority\":\"DEFAULT\",\"audioSignal\":null,\"lifeTimeType\":\"IMMEDIATELY\",\"takeSnapshotWhenExtend\":false,\"durationKey\":null,\"remainingTimeKey\":null,\"lifeTime\":0.0,\"triggerLifeType\":\"IMMEDIATELY\",\"triggerCnt\":0,\"triggerInterval\":-1.0,\"waitFirstTriggerInterval\":true,\"firstTriggerInterval\":-1.0,\"priority\":-1,\"priorityBBKeys\":[],\"stripBlackboardParamsWithBuffKey\":false,\"blackboard\":[],\"enableInitDirectionFromSource\":false}],\"$type\":\"Torappu.Battle.Action.Nodes+SummonEnemiesAverageOnTilesToNearestEndPoint\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "templateIndex": 4189,
+          "events": [
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_source": "BUFF_SOURCE",
+                  "_target": "BUFF_OWNER",
+                  "_spawnOnTarget": true,
+                  "_abilityName": "SkillSelector",
+                  "_summonCnt": 4,
+                  "_enemyKey": "enemy_9028_acfncb",
+                  "_randomOffsetBound": 0.0,
+                  "_motionMode": "WALK",
+                  "_unharmful": false,
+                  "_alwaysCountAsKilled": false,
+                  "_waitTime": 0.0,
+                  "_managedByScheduler": false,
+                  "_clampInTilesCnt": true,
+                  "_buffs": [],
+                  "_buffsUseTargetAsSource": [
+                    {
+                      "attributes": {
+                        "abnormalFlags": null,
+                        "abnormalImmunes": null,
+                        "abnormalAntis": null,
+                        "abnormalCombos": null,
+                        "abnormalComboImmunes": null,
+                        "attributeModifiers": null
+                      },
+                      "buffKey": "acfnc[insert-cp]",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": "AUTOMATIC",
+                      "templateKey": "acfnc[insert-cp]",
+                      "disableOverride": false,
+                      "overrideKey": null,
+                      "overrideType": "DEFAULT",
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": null,
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": "DEFAULT",
+                      "audioSignal": null,
+                      "lifeTimeType": "IMMEDIATELY",
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": null,
+                      "remainingTimeKey": null,
+                      "lifeTime": 0.0,
+                      "triggerLifeType": "IMMEDIATELY",
+                      "triggerCnt": 0,
+                      "triggerInterval": -1.0,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": [],
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": [],
+                      "enableInitDirectionFromSource": false
+                    }
+                  ],
+                  "$type": "Torappu.Battle.Action.Nodes+SummonEnemiesAverageOnTilesToNearestEndPoint"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "holderPathId": "6070581171229484677",
+        "holderObjectSha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+        "template": {
+          "templateKey": "acfnc[insert-cp]",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 0,
+                  "value": {
+                    "SerializedState": "[{\"_conditionsNode\":[{\"_gameModeType\":\"AUTOCHESS\",\"$type\":\"Torappu.Battle.Action.Nodes+FilterGameMode\"}],\"_succeedNodes\":[{\"_defaultSettings\":[{\"key\":\"branch_left\",\"val\":0.0,\"valStr\":\"left_acfncb\",\"overrideIfExists\":true},{\"key\":\"branch_right\",\"val\":0.0,\"valStr\":\"right_acfncb\",\"overrideIfExists\":true}],\"$type\":\"Torappu.Battle.Action.Nodes+EnsureBlackboardDefaultValue\"},{\"_conditionsNode\":[{\"_axisType\":\"HORIZONTAL\",\"_sourceType\":\"ABILITY_OWNER\",\"_targetType\":\"BUFF_OWNER\",\"_blackboardKey\":\"direction\",\"$type\":\"Torappu.Battle.Action.Nodes+AssignAxisRelativeDirectionToBB\"}],\"_succeedNodes\":[{\"_conditionsNode\":[{\"_targetType\":\"BUFF_OWNER\",\"_anotherBuff\":false,\"_buffKey\":null,\"_blackboardKey\":\"direction\",\"_blackboardKeyFromBb\":null,\"_valueToCompare\":3,\"_anotherKeyToCompare\":null,\"_condType\":\"EQUALS\",\"$type\":\"Torappu.Battle.Action.Nodes+FilterByBlackboardValue\"}],\"_succeedNodes\":[{\"_target\":\"BUFF_OWNER\",\"_branchKey\":\"branch_left\",\"_indexKey\":\"action_index\",\"_addIntoExtraRuntimeRouteStartPointAsKey\":false,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyRuntimeRouteUseBranchRoute\"},{\"_source\":\"BUFF_SOURCE\",\"_target\":\"BUFF_OWNER\",\"_clearRouteBeforeInsert\":false,\"_type\":\"MOVE\",\"_randomizeReachOffset\":false,\"_reachOffset\":{\"x\":0.0,\"y\":0.0},\"_time\":0.0,\"_addIntoRuntimeRoute\":false,\"_toMapPosition\":false,\"_checkReachable\":true,\"_manuallySpecifyInsertIndex\":true,\"_insertIndex\":0,\"_manuallySpecifyReassignIndex\":true,\"_reassignIndex\":0,\"$type\":\"Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute\"}],\"_failNodes\":[{\"_target\":\"BUFF_OWNER\",\"_branchKey\":\"branch_right\",\"_indexKey\":\"action_index\",\"_addIntoExtraRuntimeRouteStartPointAsKey\":false,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyRuntimeRouteUseBranchRoute\"},{\"_source\":\"BUFF_SOURCE\",\"_target\":\"BUFF_OWNER\",\"_clearRouteBeforeInsert\":false,\"_type\":\"MOVE\",\"_randomizeReachOffset\":false,\"_reachOffset\":{\"x\":0.0,\"y\":0.0},\"_time\":0.0,\"_addIntoRuntimeRoute\":false,\"_toMapPosition\":false,\"_checkReachable\":true,\"_manuallySpecifyInsertIndex\":true,\"_insertIndex\":0,\"_manuallySpecifyReassignIndex\":true,\"_reassignIndex\":0,\"$type\":\"Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute\"}],\"_isAnd\":false,\"$type\":\"Torappu.Battle.Action.Nodes+IfConditions\"}],\"_failNodes\":[{\"_target\":\"BUFF_OWNER\",\"_branchKey\":\"branch_right\",\"_indexKey\":\"action_index\",\"_addIntoExtraRuntimeRouteStartPointAsKey\":false,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyRuntimeRouteUseBranchRoute\"},{\"_source\":\"BUFF_SOURCE\",\"_target\":\"BUFF_OWNER\",\"_clearRouteBeforeInsert\":false,\"_type\":\"MOVE\",\"_randomizeReachOffset\":false,\"_reachOffset\":{\"x\":0.0,\"y\":0.0},\"_time\":0.0,\"_addIntoRuntimeRoute\":false,\"_toMapPosition\":false,\"_checkReachable\":true,\"_manuallySpecifyInsertIndex\":true,\"_insertIndex\":0,\"_manuallySpecifyReassignIndex\":true,\"_reassignIndex\":0,\"$type\":\"Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute\"}],\"_isAnd\":false,\"$type\":\"Torappu.Battle.Action.Nodes+IfConditions\"}],\"_failNodes\":[{\"_source\":\"BUFF_SOURCE\",\"_target\":\"BUFF_OWNER\",\"_clearRouteBeforeInsert\":true,\"_type\":\"MOVE\",\"_randomizeReachOffset\":false,\"_reachOffset\":{\"x\":0.0,\"y\":0.0},\"_time\":0.0,\"_addIntoRuntimeRoute\":false,\"_toMapPosition\":false,\"_checkReachable\":true,\"_manuallySpecifyInsertIndex\":false,\"_insertIndex\":0,\"_manuallySpecifyReassignIndex\":false,\"_reassignIndex\":0,\"$type\":\"Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute\"}],\"_isAnd\":false,\"$type\":\"Torappu.Battle.Action.Nodes+IfConditions\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "templateIndex": 4190,
+          "events": [
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_conditionsNode": [
+                    {
+                      "_gameModeType": "AUTOCHESS",
+                      "$type": "Torappu.Battle.Action.Nodes+FilterGameMode"
+                    }
+                  ],
+                  "_succeedNodes": [
+                    {
+                      "_defaultSettings": [
+                        {
+                          "key": "branch_left",
+                          "val": 0.0,
+                          "valStr": "left_acfncb",
+                          "overrideIfExists": true
+                        },
+                        {
+                          "key": "branch_right",
+                          "val": 0.0,
+                          "valStr": "right_acfncb",
+                          "overrideIfExists": true
+                        }
+                      ],
+                      "$type": "Torappu.Battle.Action.Nodes+EnsureBlackboardDefaultValue"
+                    },
+                    {
+                      "_conditionsNode": [
+                        {
+                          "_axisType": "HORIZONTAL",
+                          "_sourceType": "ABILITY_OWNER",
+                          "_targetType": "BUFF_OWNER",
+                          "_blackboardKey": "direction",
+                          "$type": "Torappu.Battle.Action.Nodes+AssignAxisRelativeDirectionToBB"
+                        }
+                      ],
+                      "_succeedNodes": [
+                        {
+                          "_conditionsNode": [
+                            {
+                              "_targetType": "BUFF_OWNER",
+                              "_anotherBuff": false,
+                              "_buffKey": null,
+                              "_blackboardKey": "direction",
+                              "_blackboardKeyFromBb": null,
+                              "_valueToCompare": 3,
+                              "_anotherKeyToCompare": null,
+                              "_condType": "EQUALS",
+                              "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+                            }
+                          ],
+                          "_succeedNodes": [
+                            {
+                              "_target": "BUFF_OWNER",
+                              "_branchKey": "branch_left",
+                              "_indexKey": "action_index",
+                              "_addIntoExtraRuntimeRouteStartPointAsKey": false,
+                              "$type": "Torappu.Battle.Action.Nodes+ModifyRuntimeRouteUseBranchRoute"
+                            },
+                            {
+                              "_source": "BUFF_SOURCE",
+                              "_target": "BUFF_OWNER",
+                              "_clearRouteBeforeInsert": false,
+                              "_type": "MOVE",
+                              "_randomizeReachOffset": false,
+                              "_reachOffset": {
+                                "x": 0.0,
+                                "y": 0.0
+                              },
+                              "_time": 0.0,
+                              "_addIntoRuntimeRoute": false,
+                              "_toMapPosition": false,
+                              "_checkReachable": true,
+                              "_manuallySpecifyInsertIndex": true,
+                              "_insertIndex": 0,
+                              "_manuallySpecifyReassignIndex": true,
+                              "_reassignIndex": 0,
+                              "$type": "Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute"
+                            }
+                          ],
+                          "_failNodes": [
+                            {
+                              "_target": "BUFF_OWNER",
+                              "_branchKey": "branch_right",
+                              "_indexKey": "action_index",
+                              "_addIntoExtraRuntimeRouteStartPointAsKey": false,
+                              "$type": "Torappu.Battle.Action.Nodes+ModifyRuntimeRouteUseBranchRoute"
+                            },
+                            {
+                              "_source": "BUFF_SOURCE",
+                              "_target": "BUFF_OWNER",
+                              "_clearRouteBeforeInsert": false,
+                              "_type": "MOVE",
+                              "_randomizeReachOffset": false,
+                              "_reachOffset": {
+                                "x": 0.0,
+                                "y": 0.0
+                              },
+                              "_time": 0.0,
+                              "_addIntoRuntimeRoute": false,
+                              "_toMapPosition": false,
+                              "_checkReachable": true,
+                              "_manuallySpecifyInsertIndex": true,
+                              "_insertIndex": 0,
+                              "_manuallySpecifyReassignIndex": true,
+                              "_reassignIndex": 0,
+                              "$type": "Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute"
+                            }
+                          ],
+                          "_isAnd": false,
+                          "$type": "Torappu.Battle.Action.Nodes+IfConditions"
+                        }
+                      ],
+                      "_failNodes": [
+                        {
+                          "_target": "BUFF_OWNER",
+                          "_branchKey": "branch_right",
+                          "_indexKey": "action_index",
+                          "_addIntoExtraRuntimeRouteStartPointAsKey": false,
+                          "$type": "Torappu.Battle.Action.Nodes+ModifyRuntimeRouteUseBranchRoute"
+                        },
+                        {
+                          "_source": "BUFF_SOURCE",
+                          "_target": "BUFF_OWNER",
+                          "_clearRouteBeforeInsert": false,
+                          "_type": "MOVE",
+                          "_randomizeReachOffset": false,
+                          "_reachOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                          },
+                          "_time": 0.0,
+                          "_addIntoRuntimeRoute": false,
+                          "_toMapPosition": false,
+                          "_checkReachable": true,
+                          "_manuallySpecifyInsertIndex": true,
+                          "_insertIndex": 0,
+                          "_manuallySpecifyReassignIndex": true,
+                          "_reassignIndex": 0,
+                          "$type": "Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute"
+                        }
+                      ],
+                      "_isAnd": false,
+                      "$type": "Torappu.Battle.Action.Nodes+IfConditions"
+                    }
+                  ],
+                  "_failNodes": [
+                    {
+                      "_source": "BUFF_SOURCE",
+                      "_target": "BUFF_OWNER",
+                      "_clearRouteBeforeInsert": true,
+                      "_type": "MOVE",
+                      "_randomizeReachOffset": false,
+                      "_reachOffset": {
+                        "x": 0.0,
+                        "y": 0.0
+                      },
+                      "_time": 0.0,
+                      "_addIntoRuntimeRoute": false,
+                      "_toMapPosition": false,
+                      "_checkReachable": true,
+                      "_manuallySpecifyInsertIndex": false,
+                      "_insertIndex": 0,
+                      "_manuallySpecifyReassignIndex": false,
+                      "_reassignIndex": 0,
+                      "$type": "Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute"
+                    }
+                  ],
+                  "_isAnd": false,
+                  "$type": "Torappu.Battle.Action.Nodes+IfConditions"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "literalParentReferences": [
+      {
+        "index": 4182,
+        "templateKey": "acfnc_t1"
+      },
+      {
+        "index": 4189,
+        "templateKey": "acfnc[skill]"
+      }
+    ],
+    "parentReferenceScope": "All entries of this one installed BuffTemplateHolder; excludes dynamic key construction, other resources and active XLua.",
+    "prefabSearch": {
+      "query": "UTF-8 bytes acfnc in GameObject and MonoBehaviour raw objects",
+      "inputGlob": "battle/enm_pfb_*.ab",
+      "counts": {
+        "bundles": 38,
+        "serializedFiles": 38,
+        "monoBehaviours": 53528,
+        "gameObjects": 51938
+      },
+      "sources": [
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_0.ab",
+          "bytes": 357205,
+          "sha256": "315c22a5cc58cd56522dd50266002383df0fd7efad606c5bac618c2e0db31785"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_1.ab",
+          "bytes": 351237,
+          "sha256": "0a054a1f686b2f324168e5a4ffaa95b0e86d9701a0ce5c8a4366652fe181388b"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_10.ab",
+          "bytes": 270254,
+          "sha256": "7d88a8815d0947b2836c8770c0ff3c2b92645696ec5e2c9d715d6d0b18148fbb"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_11.ab",
+          "bytes": 287477,
+          "sha256": "80744dfb157e052387e5e1e6bd4fef4fc339e332f8a3e17218e8f5949fa7a45e"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_12.ab",
+          "bytes": 309580,
+          "sha256": "2e9056a509d746f71fb22261f8f2daf8d41fbaebc7787f6d6a15d447576a2f2f"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_13.ab",
+          "bytes": 342400,
+          "sha256": "0b3c936babb315fa9771a7e78e4cd2b1dfdee9ce80e043fdac65122d8b424a59"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_14.ab",
+          "bytes": 337702,
+          "sha256": "0563b3209d154cf3f8a08d5efcb267a71b291668f1a44a9f56664cb3f5866c5a"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_15.ab",
+          "bytes": 327148,
+          "sha256": "2c30b08ce50e3734f945ac8efcff4f9081bc168835bd779e959a477719cf77c6"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_16.ab",
+          "bytes": 317426,
+          "sha256": "398041ca47947b74843a24bac1404175513ed25c75c7ddce915dfc0dd6946266"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_17.ab",
+          "bytes": 370630,
+          "sha256": "5cab229230f1ad686df4048a44c7d0bfb719b0993ba38e25e66bce15c1e22e7a"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_18.ab",
+          "bytes": 895456,
+          "sha256": "7bc74aef8fbb3cbc7ce86d7e4b789e2c0daaadf076d47b0e9989e83e7ff4eb69"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_19.ab",
+          "bytes": 517235,
+          "sha256": "84fdb631abc524475d7d739652267c2f8af3282c0ed5675dc2c26eceaf50b2c5"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_2.ab",
+          "bytes": 282532,
+          "sha256": "0337022537c8ea59e44173cb7bcdee8b0da8f8a4fbb30386171eb2b2c9b3d302"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_20.ab",
+          "bytes": 470562,
+          "sha256": "a8691210052bd5668850ab7b08d0926f835f17abce02503efea0556e418017ee"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_21.ab",
+          "bytes": 350685,
+          "sha256": "5366bf2b9a9c00c514c5dced0fc3780c9ebc499214aa46c66d00cd93e72338af"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_22.ab",
+          "bytes": 331034,
+          "sha256": "32f9fdfa30d2ea0b6483365b0e6c0fd2916822a7d8c478ed84877707633b23c3"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_23.ab",
+          "bytes": 424134,
+          "sha256": "b9c6f72eb80f3892aba3088697cc983345d665a75ee5b47dcc79848e69296bd2"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_24.ab",
+          "bytes": 433814,
+          "sha256": "32afebc6f67d2524fd17199003722e5a4a4d9c88d24f0f76ca1cf142cde9fa39"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_25.ab",
+          "bytes": 495075,
+          "sha256": "6dc4d397912a6f2ced6c642c87fe87aa63bf42eb1e1398d2cc57096d3fc65c80"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_26.ab",
+          "bytes": 456609,
+          "sha256": "382fad807781a318561cc1677cc883401c00f6bbd56b2bca6c58c2dbf86d62eb"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_27.ab",
+          "bytes": 494044,
+          "sha256": "71ca2e2ea0b108a93414d1141f55901d4df325295d02b00f41357e4c8715db6a"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_28.ab",
+          "bytes": 450799,
+          "sha256": "559485d435af0ebe0f4c5e3c02719db797cf691d736fd82cdaa382ec0718a0d9"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_29.ab",
+          "bytes": 412923,
+          "sha256": "a45b8db9ce6c888fbb144000a8da3fdc0b142ca8e8152da352d0ddc22f997913"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_3.ab",
+          "bytes": 148945,
+          "sha256": "c5ad2c22393decd0f59fb7bb7542cb342471ab8530e5b8de86a462ea9259e603"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_30.ab",
+          "bytes": 398250,
+          "sha256": "aebb60e02a2cac41c6a240bcaa678130c8a529c81ca1834421fe531a5a146e36"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_31.ab",
+          "bytes": 465984,
+          "sha256": "aa759aac50e6193311d7fac2a84e36109310e3711b7c8f9374bf4c6e03bb2bbf"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_32.ab",
+          "bytes": 248658,
+          "sha256": "f3dec6b9a26e6fb65a91900faece32fae4d24a195acd78ccbcc719c41ea48c27"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_33.ab",
+          "bytes": 449718,
+          "sha256": "64df05bb2d0a083aedbe724d23c1ede43a86ee1b8387f244965b056497000739"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_34.ab",
+          "bytes": 413007,
+          "sha256": "f6bae238962bc330c6cc72734f788fe09be81dd6eae8eda1305312495899bafb"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_35.ab",
+          "bytes": 382837,
+          "sha256": "144a51c4419a8d0bef7cb61b0a0452a5775051aedbd8fac5a89b3c5db5e84592"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_36.ab",
+          "bytes": 431502,
+          "sha256": "2dd8bfa465ad4c957276fbb2107a09565f9191348f2bb9aa06c9e731a344b316"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_4.ab",
+          "bytes": 212148,
+          "sha256": "eee56a7fcabb99b9464626aec0a8308e9a60fc7d3c888931ebfddfe0fcd8b66b"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_5.ab",
+          "bytes": 259915,
+          "sha256": "1fe30c2cbcc54b4548ed23bea7ebad230e53eefb29ea7d8bdb64281fea92c88f"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_6.ab",
+          "bytes": 287806,
+          "sha256": "ed001d5acdc94539ac062a3e8148a3e6ed52303442d60eae6ef4247537c4820f"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_7.ab",
+          "bytes": 298849,
+          "sha256": "8ee31c5867a7da03f7b379f486a3f2253b1d40487b728587855619d93d9cca74"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_8.ab",
+          "bytes": 294968,
+          "sha256": "df97a7de9e1da1404e46e99487e4a3a200a13d746df18cc5b5b356e1d875720e"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_9.ab",
+          "bytes": 233619,
+          "sha256": "31f435cffff8870afc44c046504ebae472851ac0c5ff818e1565ee7e39c7aef8"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "bytes": 147859,
+          "sha256": "8ad3f66ba83f9bd1b5b256009ff262eead54ac4d07bc921d1f5b7337226cf7df"
+        }
+      ],
+      "matches": [],
+      "scope": "Bounded installed enemy logic bundles; zero results is not global nonexistence or a release-status assertion."
+    }
+  }
+}
