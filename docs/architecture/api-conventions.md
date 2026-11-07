@@ -128,7 +128,7 @@ Card 的 RuleContext 按用途区分：DISPLAY／SELECT 接收 Card Ref，DEPLOY
 | Common 与 Geometry | common/、geometry/ 下现有功能模块 | Ref、Query、集合、数值、坐标与几何按用途直接导入；私有 Store 不经公共入口公开。 |
 | Map、Field 与空间查询 | battlefield/map/map.ts、tile.ts、terrain.ts；battlefield/state.ts、occupancy.ts、spatial/query.ts | 保留现有自然入口及只读／纯转换边界；Tiles 等内部容器不为 index 公开，完整地块结算仍归 battle/tile.ts。 |
 | Navigation | battlefield/navigation/ 下现有状态、缓存、寻路与射线模块 | 按实际算法和依赖直接导入，不为统一模板增加聚合入口。 |
-| Mechanism 与创建 | battle/mechanism.ts；unit/initialize.ts | Mechanism 保留单模块契约、lifetime 及内部容器。普通 Unit 直接调用 unit.initialize；创建调用者处理路线来源与出生业务，通过 initial.route 提供 `{ plan, offset }`，Route initializer 捕获时间基准并构造 Execution。共享 UnitDefinition 不绑定本次 Plan；creation/routed-unit.ts 的 Definition 合成包装待删除，不强制统一的 SpawnRoute 类型。Predefined 只管理关卡预置与当前实例绑定。 |
+| Mechanism 与创建 | battle/mechanism.ts；unit/initialize.ts | Mechanism 保留单模块契约、lifetime 及内部容器。普通 Unit 直接调用 unit.initialize；创建调用者通过 initial.route 提供 `{ plan, offset }`，Route initializer 构造 Context，在 Route State 捕获共享时间基准。共享 UnitDefinition 不绑定本次 Plan；不保留出生时合成 Definition 的包装，也不强制统一的 SpawnRoute 类型，见 [Route 设计](navigation.md#初始化)。Predefined 只管理关卡预置与当前实例绑定。 |
 | Runtime 内部协作 | battle/execution/、steps/ 及 battle/occupancy.ts 等同步协作实现 | 阶段编排和登记观察按需直接依赖，不作为独立内容入口；battle/unit-hook.ts 管理真实 leave 的全局观察；占格配对由 Occupancy 自身程序处理；共享依赖析构归 core/lifetime。 |
 
 ## 2. 参数与职责
@@ -137,7 +137,7 @@ Card 的 RuleContext 按用途区分：DISPLAY／SELECT 接收 Card Ref，DEPLOY
 
 Action.cancelForUnit、forUnit 和 isCasting 均要求 `Ref<Unit & ActionCapability>`，异构 Unit 的调用方先通过 hasAction 缩窄。内部不重复检查类型已证明的能力；对象存在性和当前业务资格按各自操作处理。forUnit 从明确版本采样当前执行身份，Combat 仍使用阶段开始的版本。
 
-指向实体的 Command 统一使用 ref 字段承载 Typed Ref。Skill 启动／停止指向具有 Skill 能力的 Unit，替代路线指向具有 Route 能力的 Unit，弹体停止指向 Projectile，行动取消指向具体 Execution，部署和撤退保持各自 Card／Deployable 引用。命令从当前实例取得引用；已失效引用的处理由对应领域操作决定，不重复检查 Ref 已证明的能力。branchId 等非实体身份仍使用原本的 ID。 `Command<T, P>` 分别保留具体 Card 和 Projectile 类型，默认使用各自的公共 object 契约；Core 的统一执行入口接纳异构命令，内容声明命令时仍保留具体 Ref 的私有类型配对。
+指向实体的 Command 统一使用 ref 字段承载 Typed Ref。Skill 启动／停止指向具有 Skill 能力的 Unit，弹体停止指向 Projectile，行动取消指向具体 Execution，部署和撤退保持各自 Card／Deployable 引用。命令从当前实例取得引用；已失效引用的处理由对应领域操作决定，不重复检查 Ref 已证明的能力。branchId 等非实体身份仍使用原本的 ID。 `Command<T, P>` 分别保留具体 Card 和 Projectile 类型，默认使用各自的公共 object 契约；Core 的统一执行入口接纳异构命令，内容声明命令时仍保留具体 Ref 的私有类型配对。
 
 完整操作使用 `battle.tick` 作为当前时间，避免同一调用同时携带 battle.tick、request.tick、context.tick。局部纯计算没有 battle，必要的 tick 参数保留。计划时点、发射采样、previousTick 等历史事实仍作为明确业务数据保存或传递。
 
@@ -148,6 +148,8 @@ Action.cancelForUnit、forUnit 和 isCasting 均要求 `Ref<Unit & ActionCapabil
 嵌套调用返回后，battle 接续新版本；self 仍是本次进入时的值。后续实时事实从新 battle 查询，已明确采样的数据继续使用，遵守 [状态接续约定](functional-core.md#状态接续后的读取与续执行)。领域在 Finalize 内注销后仍可用局部取得的 self 派发历史通知；所有权等待保护的是上游 owner，不保证已物理移除的自身仍可查询，也不维护通用最后可得快照。
 
 实例身份根据实际存储确定。Projectile 的 Typed Ref 以全场唯一的实例 ID 定位；Action 的本轮 Execution、Effect、Skill Activation 与 Elemental Burst 的实例 ID 仅在宿主内唯一，Ref 同时携带 host 与 id。Action 的 ref(source, definition) 生成跨多轮有效的 Ref<Action<P, E>>，地址为 host 与 Definition 对象，保留 P／E 配对；executionRef(source, self) 从显式宿主和当前 execution.id 生成只绑定本轮的 Ref<Execution<P, E>>。两种引用共享现有聚合条目，不要求条目保存 host，不增加存储或 ID 分配。
+
+Route Context 的长期定位需要稳定身份，不能使用数组位置，也不能使用每次 phase 更新后形成的新 Context 对象。采用 ID 还是创建者已有 Ref 等形式，随 Route 接口继续确定；不为此提前新增身份类型。
 
 ### 统一 Typed Ref 与类型恢复
 
@@ -306,7 +308,7 @@ remove(battle: BattleState, unitId: Id, reason: LeaveReason): BattleState;
 advance(battle: BattleState): BattleState;
 ```
 
-Rule、Hook、Contribution、Layer.type、Blocker.layer、Occupancy.direction 与 Route 的模式／替代路线公开工厂不接收 Ref，返回只要求相应能力的 `Change<C>`。Ref 由 update 接收，证明宿主满足所需能力；NoInfer 防止 Change 反向放宽目标类型。工厂不读取 BattleState，也不自行发布：
+Rule、Hook、Contribution、Layer.type、Blocker.layer 与 Occupancy.direction 的公开工厂不接收 Ref，返回只要求相应能力的 `Change<C>`。Ref 由 update 接收，证明宿主满足所需能力；NoInfer 防止 Change 反向放宽目标类型。工厂不读取 BattleState，也不自行发布：
 
 ```typescript
 battle = update(battle, reference, setLayer("AIR"));
@@ -315,6 +317,8 @@ battle = update(battle, reference, compose(
     setLayer("AIR"),
 ));
 ```
+
+Route 的 Context 修改与选择接口仍按[重设计](navigation.md#route-定义与进度)继续确定，不以现有模式／单替代路线工厂作为目标契约。
 
 Change 是保留完整宿主类型的纯函数，不绑定运行身份：
 

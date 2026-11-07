@@ -38,7 +38,7 @@ Navigation 内部维护可变派生缓存，不进入 BattleState，也不需要
 - 不可达时返回 null；能够追踪目标时保留精确世界坐标，实际移动与到达由消费方判断。
 - 路径计算及缓存保持确定结果。Hash 数值、缓存键、对象共享和命中次数属于内部实现，不形成独立玩法验收目标。
 
-Battlefield 的纯存储、地块写回与完整 Battle 操作边界见 [Battlefield](battlefield.md)。下文的类型与算法说明用于解释这些语义，不要求按每个字段或内部函数分别建立验收场景。Route 与 [Schedule](schedule.md) 一并重设计，已确认初始化、数据归属边界及 Checkpoint 类型与语义；Progress 和替代路线接口仍需逐项审查。Navigation、Locomotion 的已审查职责不因此改变。
+Battlefield 的纯存储、地块写回与完整 Battle 操作边界见 [Battlefield](battlefield.md)。下文的类型与算法说明用于解释这些语义，不要求按每个字段或内部函数分别建立验收场景。Route 与 [Schedule](schedule.md) 一并重设计，已确认 Definition／Plan／Initial／Context、Context 关系与稳定身份需求；Phase、State 的 Context 组织及操作接口继续讨论。Navigation、Locomotion 的已审查职责不因此改变。
 
 ## State 与公共操作
 
@@ -134,15 +134,58 @@ Locomotion 使用原生 Steering、八邻域地形避障和目的格反射。局
 
 ## Route 定义与进度
 
-本轮确认 Checkpoint 类型、时间与偏移语义，以及 Plan、初始化输入、Execution 与创建调用者的职责。Plan、Execution 和 State 的完整字段、替代路线及完整操作接口继续审查，下文相关运行结构不作为本轮定稿。
+Route 是路线解释器。同一解释器使用不同的 Plan 与 Context，不为主路线、临时路线分别建立一套指令系统。
 
-Plan 描述不可变的路线方案，可以预先配置，也可以在创建时生成。它与声明 Route 能力的 Capability Definition 分开；共享 UnitDefinition 不绑定本次出生所选的 Plan。
+### 已确认的类型
 
-initial.route 的形状为 `{ plan, offset }`，提供本次实例的初始化事实。Route initializer 据此构造 Execution，并捕获出生时间基准；执行进度由 Route 管理。创建调用者负责选取或生成 Plan、解析本次 offset 及确定出生位置，不需要统一的 SpawnRoute 类型。
+```typescript
+interface Definition {
+    readonly alwaysCheckCurrentPoint: boolean;
+}
+
+interface Plan {
+    readonly motionMode: MotionMode;
+    readonly startPosition: TilePosition;
+    readonly endPosition: TilePosition;
+    readonly checkpoints: readonly Checkpoint[];
+    readonly requireAllCheckpoints: boolean;
+}
+
+interface Initial {
+    readonly plan: Plan;
+    readonly offset: WorldPosition;
+}
+
+interface Context {
+    readonly plan: Plan;
+    readonly offset: WorldPosition;
+    readonly phase: Phase;
+    readonly alwaysCheckCurrentPoint: boolean;
+}
+```
+
+Definition 声明能力的初始化配置；Plan 描述路线程序，可以预先配置，也可以在运行时构造或修改；Initial 是本次创建输入；Context 保存单份路线的当前 Plan、实例偏移、执行政策和进度，不再并列另一个 Execution 类型。共享 UnitDefinition 不绑定本次出生所选的 Plan。
+
+Definition.alwaysCheckCurrentPoint 提供 Main 的初始值，Context.alwaysCheckCurrentPoint 保存该份执行实际使用的政策；临时控制可以明确使用 false。两者分别是初始配置与执行事实，普通 Initial 不重复传递该值。该政策只控制普通 MOVE 不可达时是否仍要求实际到达，不决定整条路线完成，依据见[案例 13 第 4.1 节](../research/cases/13-route-and-movement-timing.md#41-配置来源与-cursor-政策2026-11-08-补核)。
+
+Context.plan 直接保存当前路线描述。motionMode 由该 Plan 提供给 Navigation 和 Locomotion，不在 Context 中再保存一份；startPosition 是路线起点，不代替 Unit.position。requireAllCheckpoints 决定能否在未完成全部路点时因抵达终点而完成路线。
+
+Phase 的具体联合类型尚未定稿。它需要表达当前指令及必要执行数据，例如 MOVE 本次进入已采样的目标偏移、WAIT 截止时间和整条执行的完成状态，不保存每个历史路点的完整运行对象。
+
+State 是一个 Unit 的 Route 聚合，组织主路线、临时路线及共享时间基准。已确认共享字段为：
+
+| 字段 | 类型 | 含义 |
+| --- | --- | --- |
+| waveStartTick | number | 出生时捕获的主 Wave 进入时刻，即 Wave 前延迟开始时刻 |
+| fragmentReadyTick | number | 出生时捕获的主 Fragment 前延迟结束时刻 |
+
+多个 Context 的具体容器、Main 单独保存还是作为固定项、当前运动选择的字段及身份类型继续确定。`alternative: Context | null` 与 `Context[] + activeIndex` 都不能作为已定 State 声明；稳定定位要求见下文。
+
+initial.route 使用上述 Initial。创建调用者负责选取或生成 Plan、解析 offset 及确定出生位置，Route initializer 据此构造 Main Context 并捕获共享时间基准，不要求所有创建者使用统一的 SpawnRoute 类型。
 
 ### Checkpoint
 
-Checkpoint 类型已确认；完整 Plan、Execution 及主／临时路线的实例结构继续审查。
+Checkpoint 类型已确认；Phase 和 Context 的组织、定位与操作接口继续审查。
 
 ```typescript
 export type Checkpoint =
@@ -173,21 +216,59 @@ MOVE 的 randomizeOffset=false 时使用固定 offset；为 true 时，offset �
 
 GOTO.index 指向当前路线程序中的指令。程序修改负责明确处理跳转引用，不将原生数组插入的隐式巡逻分段作为本类型的编辑契约。兼容目标是已确认的实际内容语义，不要求任意原生序列及任意编辑组合都等价；当前 Insert 与巡逻交叉结果见[案例 31 第 4.1 节](../research/cases/31-route-operations-and-state.md#41-insert-是否实际改变巡逻回边)。
 
-偏移和时间锚点在 main／alternative 中的具体字段归属继续确定。原生主路线保留出生样本，恐惧／吸引临时 Cursor 可以使用零偏移，不能为了字段方便强制共享，见[原生偏移证据](../research/cases/14-route-definition-fields.md#3-出生偏移持续作用于整条路线)。
+原生主路线保留出生偏移，恐惧／吸引临时 Cursor 可以使用零偏移，因此偏移按 Context 保存；它们继承的出生时间基准由 State 共享，见[原生偏移证据](../research/cases/14-route-definition-fields.md#3-出生偏移持续作用于整条路线)。
 
-setMotionMode／setAlternative／clearAlternative 三个设置工厂返回不绑定 Ref 的 Change，由 `unit.update(battle, ref, change)` 统一应用，只修改 PRESENT 宿主。它们没有发布后结算；可以通过 compose 按顺序组合，后项读取前项形成的当前路线状态。宿主存在性和能力要求由 update 的 Typed Ref 入口确认，advance 仍负责完整路线推进。
-
-当前执行路线取 `state.alternative ?? state.main`。已完成的 Alternative 仍然占用活动路线位置；此时 movementTarget 返回 null，不回退到 Main。切换替代路线保留 main 的进度；恢复时依据单位的实际当前位置继续。替代路线取得执行权不自动意味着主路线的全部等待时钟暂停，等待所用时钟由指令语义决定。
-
-Alternative 接管时，Main 不推进路点，但仍独立检查终点完成资格；requireAllCheckpoints 为 true 且仍有未完成路点时，不会提前完成。符合完成条件时 Main 仍可进入 COMPLETED，由 Battle 处理正常离场。这保留了客户端恐惧／吸引分支的可观测行为，证据见 [路线字段与完成检查](../research/cases/14-route-definition-fields.md)。
-
-Route.movementTarget 从最新 BattleState 读取单位并选择活动路线。MOVE 的目标由当前指令的 position 与本次进入已确定的偏移推导，查询不重新采样；END 的目标为 definition.endPosition。查询将身体坐标减去对应路线偏移，调用 Navigation.nextPoint，再给 nextPoint 和 goal 加回路线偏移。Locomotion 不需要知道活动路线、路线偏移或 Field；MotionMode 通过 MovementContext 传入。完成由 Phase 表达，不用 null 表示完成。
+Route.movementTarget 从最新 BattleState 读取单位与当前取得运动控制权的 Context。MOVE 的目标由当前指令 position 与本次进入已确定的偏移推导，查询不重新采样；终点取 context.plan.endPosition。查询将身体坐标减去 context.offset，调用 Navigation.nextPoint，再给 nextPoint 和 goal 加回偏移。Locomotion 消费实际坐标与对应 Plan 的 motionMode，不需要知道控制来源、路线偏移或 Field。完成由 Phase 表达，不用 null 表示完成。
 
 Route 不对 Navigation 返回的追踪点追加整段射线筛选，也不回退到当前格中心。追踪点与当前实际位置之间的完整直线未必可通行；实际位移的合法性在运动结算中检查，不能借此替换导航目标或提前拒绝整段导航建议。
 
-Definition.motionMode 是初始通行模式，实例保存当前模式。setMotionMode 更新当前活动路线，Main 与 Alternative 各自保存模式，clearAlternative 恢复 Main 原有模式。Route 查询与传给 Locomotion 的 mode 读取同一当前值。Layer 的 State.type（unit.layer.type）独立表达空地身份，升空不自动改变寻路方式。startPosition 用于初始位置及路线相关查询；固定偏移与随机范围属于静态配置，采样结果属于具体路线实例。
+Layer 的 unit.layer.type 独立表达自身空地身份，修改路线的 motionMode 不自动等同于修改 Layer。跨领域副作用由对应完整操作明确组织。
 
-requireAllCheckpoints 承接原 visitEveryCheckPoint 的语义，控制是否允许在尚未逐个完成路点时，因抵达终点而提前完成路线。alwaysCheckCurrentPoint 同样是固定执行政策，由 Definition 持有。CONSUMED 表示当前指令已经消费，用于同步重入时避免重复执行，不表示整条路线完成。类型、初始化及 isCompleted／motionMode 的局部读取归 route/capability.ts；movementTarget 及其 target／recoveryPoint 辅助查询归 route/query.ts，target 仅供领域内部共享，不从 index 导出。设置 Change 工厂与完整路线推进由 route/operations.ts 提供。
+### Plan 编辑与 Context 关系
+
+Plan 是普通不可变数据。调用者可以直接构造编辑后的值，不必为每种数组编辑建立专用接口：
+
+```typescript
+const plan: Plan = {
+    ...context.plan,
+    checkpoints: [
+        ...context.plan.checkpoints.slice(0, index),
+        checkpoint,
+        ...context.plan.checkpoints.slice(index),
+    ],
+};
+```
+
+构造新 Plan 与写回运行状态分开。提交通过 Route 自己提供的合法 Change 或完整操作，并明确如何接续 phase；不能因 Plan 对象变化自动重置全部进度，也不能跨领域直接重建 Route State。编辑者按本次操作语义处理 GOTO 索引与当前指令的对应关系。
+
+已确认需要区分以下操作关系：
+
+| 情况 | Context 处理 |
+| --- | --- |
+| 普通改道 | 原 Context 更换 Plan，按指定索引重新建立所需进度 |
+| 修改路点或终点 | 构造新 Plan，按具体操作保留或重建进度，不因编辑本身新增 Context |
+| 改变寻路方式 | 存在重建 Main 并继承部分事实的需求；具体继承与进入政策由操作接口明确 |
+| 临时运动控制 | 独立 Context 可以并存，各自保留必要状态；控制业务决定当前运动来源与推进资格 |
+| 路线缓存与恢复 | 需要该机制的 Content 保存旧 Plan 与必要索引，恢复时重新建立路点状态 |
+| 地图变化 | 更新 Navigation 派生路径，不修改 Context 的程序、进度或既有目标样本 |
+
+路线缓存不保存完整旧 Cursor，也不承诺原样恢复 WAIT 剩余时间或 MOVE 已采样目标。当前证据不要求通用的“暂停整个 Context、以后原样恢复”机制，不建立暂停栈。独立 Context 并存与业务缓存恢复不能互相替代，依据见[案例 31 的状态保留与需求归纳](../research/cases/31-route-operations-and-state.md#3-状态究竟保留什么)。
+
+推进时间、推进 Checkpoint 与取得运动控制权分别处理。恐惧／诱导接管期间，Main 已进入的 WAIT 继续按战斗时钟到期，Main 的终点完成资格仍独立检查；不能让一个 activeIndex 统一决定所有 Context 是否计时、推进或完成。Trace 的控制政策不同，也不必强制包装成完整 Route Context。
+
+多份诱导 Effect 可以各自保存来源、目标和有效期，通过生命周期程序登记与撤销。已确认的诱导需求是按新到旧选择有效来源；旧来源暂未取得运动控制权不等于 Effect 被禁用，通用 Group 不承担诱导选择。多个诱导来源不要求每份 Effect 都有完整 Context；原生多个 Buff→Tile 登记共享一个当前 Attract Cursor，来源失效后的回退由诱导程序处理。Route 不认识具体 Effect 类型，控制来源和 Context 的对应方式随操作接口确定。
+
+### Context 身份与定位
+
+外部创建者需要在后续更新 Plan 或结束控制时定位原 Context，因此动态 Context 需要稳定身份。新增操作应向调用者提供可供后续更新、移除使用的标识。
+
+- 数组 index 只表示存储位置，其他 Context 被移除后可能变化，不能作为外部长期地址。
+- 当前运动选择与 Context 身份不同；若 State 持久保存当前选择，当前倾向使用稳定标识定位，具体字段仍待定，不让存储位置成为长期地址。
+- Context 随 phase 等字段的不可变更新产生新对象，旧 Context 对象引用不能直接作为长期身份。
+- Route 分配数值 ID，或复用创建者已有的稳定身份，都是候选；具体形式在操作接口审查时确定，不同时维护两套身份。
+- Main 固定存在，不要求为了与动态 Context 形式一致而经过动态登记或额外分配 ID。
+
+State 的集合形式、Main 的定位方式、身份类型与作用域、创建／更新／移除／选择签名及选择后的推进协议均未定稿。这里记录定位需求，不新增 ContextId、Ref 包装或通用注册框架。
 
 ### 指令与实例求值
 
@@ -200,19 +281,19 @@ PATROL_MOVE 归一化为 MOVE 与显式 GOTO，循环边界由显式跳转决定
 ```text
 WAIT(ENTER, ticks)    → 本路点进入时的 battle.tick + ticks
 WAIT(BATTLE, ticks)   → ticks
-WAIT(WAVE, ticks)     → 本实例出生时捕获的 Wave 基准 + ticks
-WAIT(FRAGMENT, ticks) → 本实例出生时捕获的 Fragment 基准 + ticks
+WAIT(WAVE, ticks)     → state.waveStartTick + ticks
+WAIT(FRAGMENT, ticks) → state.fragmentReadyTick + ticks
 ```
 
-Wave／Fragment 基准在实际出生时捕获；分支采用当时的主线时间上下文，不能在解析关卡或选择 Phase 时提前固定。Route 运行时使用自身保存的快照，不重新查询已推进的 Schedule 主线。Fragment 基准计入 Fragment 前延迟，其历史 Definition 的查询规则见 [Schedule](schedule.md#route-的主流程时间上下文)。
+Wave／Fragment 基准在实际出生时捕获；分支采用当时的主线时间上下文，不能在解析关卡或选择 Phase 时提前固定。它们都是从战斗 Tick 0 起算的绝对时刻，WAIT.ticks 是相对所选基准的偏移。Route 运行时使用自身保存的快照，不重新查询已推进的 Schedule 主线。Wave 基准是进入时刻，Fragment 基准是前延迟结束时刻；后者由 Schedule.fragmentStartTick 加对应 Fragment.preDelayTicks 得到，其历史 Definition 的查询规则见 [Schedule](schedule.md#route-的主流程时间上下文)。
 
 进入等待路点时，将所需期限保存在该路点的执行状态。到期判断统一为 battle.tick >= deadlineTick；已经过期的等待立即满足。普通相对等待不能在出生时提前换算，因为进入时间取决于移动、阻挡及循环。
 
-跳转目标按归一化后的完整指令序列确定。执行 GOTO 时转入 index 指定的路点，按进入语义重新初始化，同 Tick 继续处理，不消耗时间或移动预算，不增加 GOTO 运行阶段。重新进入 WAIT 时按 anchor 计算截止时间：ENTER 从这次进入重新计时，BATTLE 的绝对阈值以及 WAVE／FRAGMENT 的实例基准保持不变。切换 Alternative 后恢复 Main 保留已进入等待的 deadlineTick。阻挡、眩晕与恐惧不暂停已进入等待所使用的战斗时钟。
+跳转目标按归一化后的完整指令序列确定。执行 GOTO 时转入 index 指定的路点，按进入语义重新初始化，同 Tick 继续处理，不消耗时间或移动预算，不增加 GOTO 运行阶段。重新进入 WAIT 时按 anchor 计算截止时间：ENTER 从这次进入重新计时，BATTLE 的绝对阈值以及 WAVE／FRAGMENT 的实例基准保持不变。临时控制接管期间，Main 已进入等待的 deadlineTick 保留。阻挡、眩晕与恐惧不暂停已进入等待所使用的战斗时钟。
 
 实际形成的巡逻回边没有次数上限，但并非每个 PATROL_MOVE 都产生回边；归一化必须分析完整巡逻段，不能将每个巡逻节点转换成自循环。无限巡逻保留 GOTO 回边，不能靠有限复制展开。
 
-单次 advance 必须限制即时转换次数。耗尽预算时保留当前执行进度，后续 Tick 继续，不将合法循环拒绝为无效 Definition，也不在一次调用中无限执行。现有实现使用 128 次预算；具体数值属于实现选择，不影响公开接口。
+单次 advance 必须限制即时转换次数。耗尽预算时保留当前执行进度，后续 Tick 继续，不将合法循环拒绝为无效 Plan，也不在一次调用中无限执行；具体预算属于实现选择。
 
 advance 直接通过领域公开操作结算 DISAPPEAR、APPEAR 等即时指令，不向调用方返回待执行的信号队列。执行可能同步回调的操作前先记录指令已进入或消费，回调后重新读取最新单位与路线进度，防止重复执行或用旧进度覆盖替换结果。不在查询中隐式进入路点或执行 GOTO。
 
@@ -229,7 +310,8 @@ position = center(startPosition) + offset
     ↓
 unit.initialize(battle, { id, definition, position, initial: { route: { plan, offset } } })
     → Capability fold
-    → Route initializer 据 Plan 与 offset 构造 Execution，捕获出生时间锚点
+    → Route initializer 据 Plan、offset 与 Definition 初始政策构造 Main Context
+    → 出生时间锚点保存于 Route State
     ↓
 Schedule 登记等待关系 → unit.add 登记 Unit 并执行 enter
     ↓
@@ -238,39 +320,26 @@ Route.advance()
 Locomotion
 ```
 
-Route 初始化遵循 [Capability 约定](capability.md)，通过 Catalog 的已有创建输入通道接收 `{ plan, offset }`，在输入 Unit 上装配自己的运行状态，不再次采样或接收预装的 Execution。Plan 的来源不改变该初始化契约；复用已有 Plan 也不自动继承其他实例的执行进度。
+Route 初始化遵循 [Capability 约定](capability.md)，通过 Catalog 的已有创建输入通道接收 `{ plan, offset }`，读取 Definition.alwaysCheckCurrentPoint 建立 Main Context，不重新采样出生偏移或接收预装的 Context。Plan 的来源不改变该初始化契约；复用已有 Plan 也不自动继承其他实例的执行进度。
+
+waveStartTick／fragmentReadyTick 由 Route initializer 自行根据当时 Schedule 的主线时间取得，保存于 Route State，不由创建者通过 Initial 传入。普通出怪与技能、Buff、机制动态创建 Unit 使用同一规则；延迟创建在实际初始化时采样，不提前绑定，也不从召唤者继承。已有 Unit 新建临时 Context 继续使用该 State 的共享基准，不重新取样。原生出生与临时 Cursor 的区别见[案例 14 第 6.3—6.4 节](../research/cases/14-route-definition-fields.md#63-时间快照在实际出生链中绑定)。
 
 Unit Creation 的调用者处理各自的路线来源与出生业务。Schedule 在初始化后、unit.add 前登记等待关系；技能、Buff 或机制创建 Unit 时自行组织其出生与必要后继。各调用者不必共享强制的 SpawnRoute 包装。
 
-unit.add 接收完整 Unit，只负责登记和 enter，不解释 Plan 或构造 Execution。重构时删除 creation/routed-unit.ts，不保留出生时重新生成、合成 UnitDefinition 的包装。
+unit.add 接收完整 Unit，只负责登记和 enter，不解释 Plan 或构造 Context。重构时删除 creation/routed-unit.ts，不保留出生时重新生成、合成 UnitDefinition 的包装。
 
 创建入口建立偏移、等待与跳转的输入约束；内部按游戏尺度计算采样范围和等待截止时间，信任合法输入，不为极端算术溢出追加结果断言。纯进度发布不执行回调，后续可直接使用已构造的新值；Presence／Blocking 等完整操作返回后，仍按续执行条件读取最新宿主和进度。
 
-临时路线的 Plan 与执行实例也需要区分，初始化接口及运行字段随 Execution 一起审查；Plan 不携带其他实例已采样的偏移或出生时钟。
-
-### Alternative 操作
-
-| 情况 | 行为 |
-| --- | --- |
-| 没有 Alternative，调用 setAlternative | 创建并启用新的 Progress。 |
-| 已有 Alternative，再次调用 setAlternative | 替换旧路线，从头开始执行。 |
-| 重复设置同一个 Definition | 仍然重新开始，不按对象身份跳过。 |
-| 调用 clearAlternative | 删除 Alternative，恢复 Main 原有进度。 |
-| 没有 Alternative 时应用 clearAlternative | 保留原 Unit，update 返回原 BattleState。 |
-| Alternative 抵达终点 | 标记 COMPLETED，不自动清除。 |
-
-Alternative 是否存在由业务所有者控制，执行完成只改变其 Progress.phase。例如恐惧安装临时路线，抵达终点后保持 Alternative 为 COMPLETED，暂时没有移动目标；恐惧结束时调用 clearAlternative，单位才恢复 Main。
-
 ### Main 完成与 Battle 出口
 
-Route 将 Main 标记为 COMPLETED。isCompleted(state) 是局部查询，仅判断 state.main.phase.type === "COMPLETED"，不采用活动路线选择逻辑。Alternative 完成不表示 Main 完成，也不触发正常路线离场。
+Route 记录 Main 的完成状态。正常路线完成与离场资格始终针对 Main，不由当前运动选择决定；临时 Context 完成不表示 Main 完成，也不触发正常路线离场。Main 的具体存储位置与 Phase 类型尚未定稿。
 
 Battle 负责完成后的出口：
 
 ```text
 Route.advance()
     ↓
-Main 是否 COMPLETED？
+Main 是否已完成？
     ├─ 否 → 正常进入 Locomotion
     └─ 是
          ↓

@@ -357,7 +357,7 @@ GROUND 搜索只选一个当前根格：有非空 `occupancy.tile` 时使用登�
 | 原生事实 | 当前表达能力 |
 | --- | --- |
 | 目标当前运动身份 `changeableMotionMode` | 现有 `Layer.state.type` 的 GROUND／AIR 可表达目标当前空地身份，不需另存一份 Blockable motion。 |
-| 寻路模式 `pathMotionMode` | Route 的 Progress.motionMode 已独立保存，并有 `setMotionMode`；不得用它代替阻挡资格。Locomotion 消费此模式处理运动，但不保存第二份身份。 |
+| 寻路模式 `pathMotionMode` | Route 当前 Context 的 Plan.motionMode 表达路线通行方式；不得用它代替阻挡资格。Locomotion 消费此方式处理运动，不保存第二份身份；修改接口随 [Route 重设计](navigation.md#route-定义与进度)确定。 |
 | 阻挡者 `blockMode` | 项目以 blocker.layer 表示能够阻挡的目标层，并由 blocking.setLayer 执行切换；不从宿主自身 Layer 推导，也不把原生名称引入项目状态。 |
 | `BlockFree` 等禁挡状态 | 现有双端二元 Rule 可表达，不需要第三个模式或新的 enabled 字段。 |
 

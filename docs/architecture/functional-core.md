@@ -146,6 +146,7 @@ Tick 的执行顺序在 step() 中直接可读。Combat、Movement 与路线完�
 | Unit.blocker／Unit.blockable | 初始化至多选择一种，也允许两者皆无；保存唯一归属或有序关联，Blockable 另有独立站位计划；接敌、解除及维护由 Blocking 执行，真实坐标仍只有 Unit.position |
 | Unit／Capability                   | HP、控制状态、行动就绪、技能状态、路线、各自 Hook 与 Contribution 集合   |
 | Unit.effects                       | Effects 容器保存实例身份、Definition、私有 state、生效状态、来源 Ref 与 expiration；DURATION／DEADLINE／INFINITE 互斥，Scope 关系归 Lifetime |
+| Unit.route | Plan 描述路线方案，Context 保存本条路线的偏移、phase 与执行政策，State 共享出生 Wave／Fragment 时间基准；主／多临时 Context 的容器、稳定身份形式与选择接口待定，见 [Route 设计](navigation.md#route-定义与进度) |
 | Battle.deployment | DP、usedSlots 账户、Card 记录与手牌顺序、部署观察 Hook；各 Card 保存当前库存、计时及私有 state |
 | Schedule                           | 波次、片段、分支、出生进度及实际等待关系；[重设计](schedule.md)的具体 State 尚未定稿 |
 | Unit.action.actions                | 按配置 ID 聚合 Definition、持久 state、Cooldown 和当前 Execution；执行身份进度由 Capability.nextExecutionId 保存 |
@@ -302,7 +303,7 @@ Healing 中若嵌套 Damage，Damage 必须把冷却消耗、HP、致死裁决�
 
 伤害领域必须容纳致死裁决和到零后处理。只有实际离场才关闭 Unit 的宿主生命周期并完成其相关清理。死亡爆炸等内容接入明确的击倒／死亡协议，不能把任意 Effect.onEnd 都解释为宿主死亡。
 
-跨 Tick 保存可恢复数据；不保存同步 Hook 栈、Promise、generator 或普通调用的工作 Context。Occupancy 的 Pair 保存已经建立的业务绑定及其不可变采样，也作为 Definition 配对程序的输入，不代表实时 Unit 状态或待重放回调；需要当前事实仍从最新 BattleState 查询。Action、Projectile、Route 和周期 Effect 各自推进，不合并为统一过程框架。
+跨 Tick 保存可恢复数据；不保存同步 Hook 栈、Promise、generator 或普通同步调用的临时工作 Context。Route Context 是持久路线状态，不属于这种调用期工作对象。Occupancy 的 Pair 保存已经建立的业务绑定及其不可变采样，也作为 Definition 配对程序的输入，不代表实时 Unit 状态或待重放回调；需要当前事实仍从最新 BattleState 查询。Action、Projectile、Route 和周期 Effect 各自推进，不合并为统一过程框架。
 
 ## 10. Meta 接入边界
 

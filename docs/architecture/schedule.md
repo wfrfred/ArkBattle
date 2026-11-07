@@ -58,7 +58,7 @@ interface Spawn {
 type Wait = "NONE" | "FINAL" | "WAVE";
 ```
 
-每项描述一次出生、出生时刻与该 Unit 的调度等待政策。Data／Content 提供完整静态 UnitDefinition，路线方案由独立的 Plan 描述，不为每次路线选择重新合成 UnitDefinition。Schedule 出生操作负责取得 Plan、处理出生偏移与位置，Route initializer 负责构造 Execution。
+每项描述一次出生、出生时刻与该 Unit 的调度等待政策。Data／Content 提供完整静态 UnitDefinition，路线方案由独立的 Plan 描述，不为每次路线选择重新合成 UnitDefinition。Schedule 出生操作负责取得 Plan、处理出生偏移与位置，Route initializer 负责构造 Context 与 State，见 [Route 类型](navigation.md#route-定义与进度)。
 
 ### 从 Spawn 到 Unit
 
@@ -73,9 +73,9 @@ const created = unit.initialize(battle, {
 });
 ```
 
-Unit.initialize 接续 Capability initializer 的 fold。Route initializer 接收 initial.route 的 `{ plan, offset }`，从 Battle 捕获出生时的 Wave／Fragment 时间基准，构造 Execution，不再次采样。initial.route 提供实例初始化事实，不接收预装的 Execution。
+Unit.initialize 接续 Capability initializer 的 fold。Route initializer 接收 initial.route 的 `{ plan, offset }`，构造 Context，自行从当前 Schedule 取得主 Wave／Fragment 时间基准并保存于 Route State。普通出怪与动态创建 Unit 都由 initializer 读取，不额外向 Initial 传入时间；主路线与多临时 Context 共享这两个基准。不另设 Route Execution，也不重新采样出生偏移或接收预装的执行状态。
 
-初始化返回后，出生操作接续 created.state，按 entry.wait 登记 created.value.id 的等待关系，再调用 unit.add。Unit.add 登记已经完整的 Unit 并执行 enter，不解释 Plan 或构造 Execution。后续由 Route.advance 依据 Plan 和实例状态运行路线。
+初始化返回后，出生操作接续 created.state，按 entry.wait 登记 created.value.id 的等待关系，再调用 unit.add。Unit.add 登记已经完整的 Unit 并执行 enter，不解释 Plan 或构造 Route Context。后续由 Route.advance 依据 Plan 和实例状态运行路线。
 
 出生时沿用 entry.definition 的同一个对象，不为本次 Plan、偏移或时间基准重新生成或合成 UnitDefinition。重构时删除 creation/routed-unit.ts 这层包装，直接复用统一 Unit 初始化。其他创建者自行处理路线来源和出生业务，不强制使用统一的 SpawnRoute 类型。
 
@@ -275,7 +275,16 @@ fragmentIndex 只存在于 MainProgress.FRAGMENT。其他阶段结合当前主�
 
 ### Route 的主流程时间上下文
 
-[Route 出生上下文](navigation.md#指令与实例求值)在实际出生时取得当时主 Wave／Fragment 的时间锚点。WAIT 的 FRAGMENT 锚点使用 Fragment 前延迟结束后的基准，由保留的 fragmentStartTick 加最近进入过的 Fragment Definition.preDelayTicks 计算，并在 Route 实例中保存快照。
+[Route 初始化](navigation.md#初始化)在实际出生时取得当时主线的时间锚点，保存于 Route State 的 waveStartTick／fragmentReadyTick，由主路线与多临时 Context 共享。前者是主 Wave 进入时刻，后者是主 Fragment 前延迟结束时刻；Schedule.fragmentStartTick 仍表示进入 Fragment 的时刻。
+
+出生采样值为：
+
+```typescript
+waveStartTick = schedule.waveStartTick;
+fragmentReadyTick = schedule.fragmentStartTick + fragment.preDelayTicks;
+```
+
+这里的 fragment 是最近进入过的主线 Fragment Definition，不是触发出生的 Branch Phase。两个字段都是绝对战斗 Tick；Route 的 WAVE／FRAGMENT 等待分别在其上增加配置的 ticks。
 
 | 主流程位置 | 最近进入过的 Fragment |
 | --- | --- |
@@ -353,7 +362,7 @@ Schedule 提供调度进度与等待状态，不负责决定整个 Battle 的胜
 
 | 项目 | 待确定内容 |
 | --- | --- |
-| Route 运行结构 | Plan、initial.route 的 `{ plan, offset }`、initializer 构造 Execution、实例时间锚点及 [Checkpoint 类型](navigation.md#checkpoint)已定；Plan／Execution／State 的完整字段与临时路线继续审查 |
+| Route 运行结构 | Plan／Context／State、Definition 的 alwaysCheckCurrentPoint、initial.route 的 `{ plan, offset }`、State 共享出生时间锚点及 [Checkpoint 类型](navigation.md#checkpoint)已定；主／多临时 Context 的容器、稳定身份形式与选择接口继续审查 |
 | Spawn 出生配置 | UnitDefinition 与本次 Plan 分开；Plan、偏移采样和出生位置配置在 Spawn 中的具体绑定字段待定，不引入强制所有创建者使用的 SpawnRoute 类型 |
 | 主流程边界 | 尚未进入任何 Fragment 时的 Route 基准、COMPLETED 时 waveIndex 的含义待明确 |
 | 个体结算 | 资格的实际归属、字段及 Finished／Killed／蓝门结算接口 |

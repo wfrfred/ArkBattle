@@ -83,9 +83,11 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 
 ## Route 变更接口的回归语义
 
-`setMotionMode(mode)`、`setAlternative(definition)` 与 `clearAlternative()` 返回 `Change<Unit & Route>`，通过 `unit.update` 应用。组合按顺序读取前项结果：设置 Alternative 后修改模式应作用于 Alternative；清除后修改模式应作用于 Main。仅修改 PRESENT 宿主，模式同值和无 Alternative 的清除不改变状态；重复设置同一 Alternative Definition 仍从头开始，Main 的进度与模式独立保留。
+Route 按 [Plan／Context／State 契约](navigation.md#route-定义与进度)重设计。初始化输入、指令语义、程序修改与执行并存、业务缓存和稳定身份需求已经区分；Phase、Context 集合与选择、身份形式及操作签名继续确定。
 
-沿用 Route 的替代路线重启、恢复 Main 和独立模式代表场景验证这些结果，加入同宿主组合应用；能力要求及组合保留完整宿主类型在 core-types 集中验证。不为三个工厂分别增加空值、同引用或生命周期矩阵。Route 其余执行语义与旧测试的整体收敛仍待后续审查。
+接口定稿后，依据已确认的领域结果制定最小代表场景：初始化使用同一偏移样本与共享时间基准；进入指令时采样与计时；程序编辑按明确政策接续进度；Context 不因集合位置变化而被错操作；Main 完成与临时 Context 完成分开。缓存恢复不承诺恢复未保存的 WAIT／MOVE 私有状态。
+
+现有单槽 Alternative 的替换、占槽、清除和恢复测试不构成目标契约，不依据旧测试锁定新 State 或操作接口。组合、Typed Ref 和公共登记协议继续集中在公共套件验证，不为 Route 重复建立通用接口矩阵；完整测试清单随剩余接口定稿后收敛。
 
 ## Presence 的回归语义
 
