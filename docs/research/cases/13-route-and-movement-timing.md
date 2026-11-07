@@ -181,7 +181,7 @@ reached = squaredDistance(locator, sampledTarget) <= radius * radius
 
 [源文件身份、原值、Pointer 与统计](../evidence/checkpoint-semantics-20261107/move/config-summary.json)。这些固定偏移不能只当成显示坐标或无用字段。
 
-**U：** 上述有限样本的 randomizeReachOffset 均为 false、reachDistance 均为 0，尚无这两个参数非默认启用的关卡正例。它不是全量镜像扫描，不能推导全局不用。**N：** Fear 的 `_InitializeFearRouteData` 会在生成临时路点时先取随机样本，再写入 reachOffset；所查方法没有将 randomizeReachOffset 设为 true。[生成原件](../evidence/checkpoint-semantics-20261107/move/fear-and-random-continuations.json)。因此“恐惧目标有随机偏移”也不能充当该开关启用的证明。
+上述有限样本的 randomizeReachOffset 均为 false、reachDistance 均为 0，不能推导全局不用。后续完整目录搜索及 **randomizeReachOffset=true 的实际内容绑定**见第 10 节；非零 reachDistance 的内容需求仍未完成验证。**N：** Fear 的 `_InitializeFearRouteData` 会在生成临时路点时先取随机样本，再写入 reachOffset；所查方法没有将 randomizeReachOffset 设为 true。[生成原件](../evidence/checkpoint-semantics-20261107/move/fear-and-random-continuations.json)。因此“恐惧目标有随机偏移”也不能充当该开关启用的证明。
 
 ### 首个即时指令：身份、位置与出生登记
 
@@ -220,3 +220,53 @@ BObject.Init 在 `0x1806afb63` 建立位置，早于 Enemy.Init 随后的 Cursor
 ### 对后续设计的约束
 
 首路点进入可能包含随机采样、位置写入和同步业务，不能把“构造 Route State”和“进入首路点”混成纯字段初始化，也不能未经判断统一推迟到首个移动 Tick。原生两层登记及类方法顺序不是项目必须照搬的结构；应据实际观察语义决定完整创建／Enter 的边界。当前 Data 接受参数却未传递的现状，不构成字段无用的证据；非默认使用尚未闭合的部分继续保留为调查缺口，不据此提前扩大公开接口。
+
+## 10. 非默认参数的内容正例与搜索范围（2026-11-07 补核）
+
+这轮继续查两个参数的实际来源，不重做公式调查。完整来源、固定修订、原件与复跑见[非默认参数批次](../evidence/checkpoint-nondefault-20261107/README.md)。N 为本机静态原生消费，D 为镜像／资源直接配置，P 为社区描述；未运行战斗或验证活跃 XLua。
+
+### 完整关卡 JSON：两次固定修订均无非默认值
+
+**D：** 选择范围是镜像 `zh_CN/gamedata/levels/obt/**/*.json` 与 `activities/**/*.json`，包含不同玩法，未只挑普通主线或既有 Scheduler 样本。共享 config.py 按原文 JSON 值分组，另由 Git tree 核对完整文件集合，并逐文件校验 Git blob SHA-1、SHA-256 与输入大小。
+
+| 固定修订 | 完整关卡 JSON | Checkpoint 数 | randomizeReachOffset | reachDistance |
+| --- | --- | --- | --- | --- |
+| `bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d` | 3997 | 513890 | 全部 false | 全部 0 |
+| `63c7cec73c3858d0ae913f85cc89af3cef4d744f` | 4025 | 517501 | 全部 false | 全部 0 |
+
+没有字段缺失或解析失败。[统计、原文身份与完整性核验](../evidence/checkpoint-nondefault-20261107/config/README.md)。这是对这两个固定修订及目录的完整检查，不是对所有客户端资源或运行时构造的全局否定。
+
+### randomizeReachOffset：马特奥上尉的实际启用链
+
+**D／N：** 正例来自内容程序插入的运行时路点，而不是关卡 Route 数组。最小链为：
+
+```text
+act32side_08 的 SPAWN：enemy_1551_bolicp
+  → 正式敌人数据：马特奥上尉，技能键 CallBdguad
+  → 当前 Enemy Prefab 的 _modes[1]：Reborn
+      → Body / Skills / CallBdguad
+      → 有目标能力的 _activeBuffs[1]
+      → templateKey = enemy_bolicp_s3[call]
+  → 当前 Buff 模板的 MOVE 插入节点
+      → _randomizeReachOffset = true
+      → _reachOffset = (0.3, 0.3)
+  → InsertCheckPointInRuntimeRoute.Execute
+      → 写入 CheckpointData.randomizeReachOffset
+  → MoveCheckpoint.OnBegin 按该范围采样目标
+```
+
+关卡引用为 `/waves/0/fragments/1/actions/3`，routeIndex=10；正式敌人数据给出名称、prefabKey 和 CallBdguad 技能。[关卡摘录](../evidence/checkpoint-nondefault-20261107/search/bolicp-stage.json)、[敌人数据](../evidence/checkpoint-nondefault-20261107/search/bolicp-data.json)、[来源身份](../evidence/checkpoint-nondefault-20261107/search/identity-sources.json)。
+
+当前 `enm_pfb_18.ab` 的必要组件及层级引用已核对：能力对象 PathID `-1903693957362766850`，层级归于 Reborn UnitMode `9106343686940568574`；同一 CallBdguad 下有启用的 EnemySkill，目标 Selector 按 `enemy_bdguad_mark` 筛选亲卫。该能力直接配置召集模板，而不是仅因模板名称与敌人相似就推断使用。**资源层级不独自决定施放阶段**；本轮未追完整模式切换与施放资格，也不宣称首次出生就立即执行。[当前 Prefab／模板及节点原件](../evidence/checkpoint-nondefault-20261107/runtime/README.md)。
+
+节点普通分支在 `0x18122960b` 读取配置 bool，在 `0x181229610` 写入 CheckpointData 的 randomizeReachOffset。当前模板实际为 true，配合第 9 节已核公式，目标范围是相应格中心各轴 ±0.3，即边长 0.6 的正方形。同一模板还配置 30 秒 WAIT。**P：** [PRTS 马特奥上尉](https://prts.wiki/w/马特奥上尉)对“集合！”的描述也包含亲卫改变检查点、前往附近随机位置并停留 30 秒；这里只作内容机制对照，不替代字段与执行绑定。
+
+**D：** 当前 holder 还包含 `cledub_s3[ridicule_lpeopl]`（花匠）与 `folchr_t[attract_mcreep_core]`（第 16 章圣愚）的相同 true／(0.3, 0.3) 配置，并已核对正式敌人身份及关卡出生引用。本轮用马特奥的完整 Prefab 链作为主正例，不以另外两个模板的存在替代各自的完整执行链。[身份与引用材料](../evidence/checkpoint-nondefault-20261107/search/README.md)。生息用的 `trap_xbblure_attract` 另作资源对照，不作为本项目支持范围的需求依据。
+
+### reachDistance：仍没有实际内容正例
+
+**N／范围：** 除完整关卡目录外，本轮定向检查了当前 CheckpointData 类型信息的代码引用候选，并沿运行时创建者核对字段写入，包括 Fear／Attract、TraceAndWait、敌人目标格重建、插入路点节点及若干实际内容生成者。Fear 提前随机后写入 reachOffset；Attract 构造普通 MOVE；插入节点虽然提供随机开关，但没有对应的 reachDistance 配置字段。所查普通生成分支没有得到非零半径的启用正例。具体方法、候选定位方式、实际反编译范围和未覆盖入口见[运行时材料](../evidence/checkpoint-nondefault-20261107/runtime/README.md)。
+
+这比有限关卡样本更强，但仍不能证明所有既有 CheckpointData 的运行时修改、特殊反序列化输入或热更都不会给出非零值。当前能确定的是原生支持该参数，并且默认 0 经过公式得到 0.05 容差；**尚不能把可配置到达半径当作已经证实的 Content 需求**。
+
+本轮因此闭合了随机目标偏移的内容需求，并保持非零到达半径的证据状态独立。这里不决定后续公开字段、操作或类型的具体形式。

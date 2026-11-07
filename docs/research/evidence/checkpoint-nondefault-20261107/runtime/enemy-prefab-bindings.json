@@ -1,0 +1,817 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-07",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/runtime/extract_enemy_bindings.py",
+      "bytes": 4238,
+      "sha256": "773f9d4d87364ab49131ca21aee8914ea842947487fdaffc17342d4d28324374"
+    },
+    "typeTreeReader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+      "bytes": 8161,
+      "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+    },
+    "externalReferenceReader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+      "bytes": 6749,
+      "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+    },
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/assets.py",
+        "bytes": 3399,
+        "sha256": "c458702aa0e014a093c548db9100709ac6338f74cee11aceb45c661003de4a09"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      }
+    ],
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_18.ab",
+        "bytes": 895456,
+        "sha256": "7bc74aef8fbb3cbc7ce86d7e4b789e2c0daaadf076d47b0e9989e83e7ff4eb69"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      }
+    ],
+    "scope": "Current installed enemy prefab components below bolicp/cledub named GameObjects; hierarchy and typed data, not runtime observation"
+  },
+  "result": [
+    {
+      "bundle": "battle/enm_pfb_18.ab",
+      "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+      "pathId": "-2088189509676651522",
+      "typeId": 39,
+      "objectSha256": "8d72472d18bedd12b35a8fdb75020730d45bb892fcfbf51abee3733b40ce08c0",
+      "hierarchy": [
+        {
+          "name": "Selector",
+          "gameObjectPathId": "592803459322981374",
+          "transformPathId": "-5144064117156566018"
+        },
+        {
+          "name": "CallBdguad",
+          "gameObjectPathId": "-8442061101401986050",
+          "transformPathId": "4087851734398381054"
+        },
+        {
+          "name": "Skills",
+          "gameObjectPathId": "4257882053680081918",
+          "transformPathId": "-3306586667130246146"
+        },
+        {
+          "name": "Body",
+          "gameObjectPathId": "-4281284173653300226",
+          "transformPathId": "2040393947800579070"
+        },
+        {
+          "name": "Reborn",
+          "gameObjectPathId": "3119374631443016702",
+          "transformPathId": "-1914484539325633538"
+        },
+        {
+          "name": "Modes",
+          "gameObjectPathId": "3639771330121542654",
+          "transformPathId": "-2999815836598031362"
+        },
+        {
+          "name": "enemy_1551_bolicp",
+          "gameObjectPathId": "-3459138831348683778",
+          "transformPathId": "-5761249601627706370"
+        }
+      ],
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 592803459322981374
+        },
+        "common:349": true,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 6959540303033999559
+        },
+        "common:427": "",
+        "_targetSide": 1,
+        "_targetMotion": 3,
+        "_targetCategory": 1,
+        "_postFilter": 4,
+        "_ignoreTargetFree": true,
+        "_onlyIgnoreSomeOfTargetFreeCase": false,
+        "_abnormalFlag": 32,
+        "_abnormalCombo": 2,
+        "_ignoreAllyTargetFree": false,
+        "_ignoreHealFree": false,
+        "_ignoreMotionMode": false,
+        "_forceIgnoreCamouflage": false,
+        "_needProfessionMask": false,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": false,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": false,
+        "_maxTargetKey": "max_target",
+        "_maxTargetExtraKey": "",
+        "_maxNum": 1,
+        "_excludeOwner": false,
+        "_sortByTauntAtLast": false,
+        "_ignoreHitRange": false,
+        "_checkUnitType": false,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": false,
+        "_targetOptionHookedKeys": {
+          "Array": []
+        },
+        "_tagExcluded": false,
+        "_filterTag": "",
+        "_filterTagList": {
+          "Array": []
+        },
+        "_buffKeyExcluded": false,
+        "_buffKey": "enemy_bdguad_mark",
+        "_buffs": {
+          "Array": []
+        },
+        "_checkOrInsteadOfAnd": false,
+        "_filterBuffSource": false,
+        "_filterTokenHost": false
+      },
+      "scriptBinding": {
+        "externalReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "6959540303033999559",
+        "objectSha256": "3aefd31eca7a08dc141c7f97495c1bf640c9607990d7bac6dc1bb857b341aa80",
+        "value": {
+          "id": "6959540303033999559",
+          "name": "AdvancedSelectorWithTagAndBuffKey",
+          "cl": "AdvancedSelectorWithTagAndBuffKey",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        }
+      }
+    },
+    {
+      "bundle": "battle/enm_pfb_18.ab",
+      "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+      "pathId": "-1903693957362766850",
+      "typeId": 8,
+      "objectSha256": "4cee4b13a63a8edf5cb76afde936ad0afd80a9d82405400df8b2b8b0b1aa178f",
+      "hierarchy": [
+        {
+          "name": "CallBdguad",
+          "gameObjectPathId": "-8442061101401986050",
+          "transformPathId": "4087851734398381054"
+        },
+        {
+          "name": "Skills",
+          "gameObjectPathId": "4257882053680081918",
+          "transformPathId": "-3306586667130246146"
+        },
+        {
+          "name": "Body",
+          "gameObjectPathId": "-4281284173653300226",
+          "transformPathId": "2040393947800579070"
+        },
+        {
+          "name": "Reborn",
+          "gameObjectPathId": "3119374631443016702",
+          "transformPathId": "-1914484539325633538"
+        },
+        {
+          "name": "Modes",
+          "gameObjectPathId": "3639771330121542654",
+          "transformPathId": "-2999815836598031362"
+        },
+        {
+          "name": "enemy_1551_bolicp",
+          "gameObjectPathId": "-3459138831348683778",
+          "transformPathId": "-5761249601627706370"
+        }
+      ],
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -8442061101401986050
+        },
+        "common:349": true,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 2165892974539515790
+        },
+        "common:427": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": -2088189509676651522
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": true,
+        "_attachPassiveBuffsOnDummy": true,
+        "_ignoreIfOwnerDead": false,
+        "_forceAsDmgOrHealAbility": false,
+        "_waitForAttackEvent": true,
+        "_interuptIfTargetDead": false,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 1,
+        "_selectTargetTiming": 0,
+        "_timeMode": 0,
+        "_alwaysIncludeTarget": false,
+        "_allowNoTarget": false,
+        "_animKey": "Skill_3",
+        "_endAnimKey": "Idle",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": true,
+        "_faceToDefault": false,
+        "_faceToFront": false,
+        "_faceToFirstCastTarget": false,
+        "_checkFaceToFirstCastTargetDownAttack": false,
+        "_forceFaceToDirection": false,
+        "_activeBuffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "enemy_bolicp_s3[trigger]",
+              "loadFromDB": false,
+              "isDurableBuff": false,
+              "isDamageMissable": false,
+              "isSilenceable": false,
+              "isStunnable": false,
+              "isFreezable": false,
+              "isLevitatable": false,
+              "isGroundBoundable": false,
+              "statusResistable": true,
+              "templateKey": "empty",
+              "disableOverride": false,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": false,
+              "clearAllStackCntWhenTimeUp": false,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": false,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": false,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": true,
+              "takeSnapshotWhenExtend": false,
+              "durationKey": "duration",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": false,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": true,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": false,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": false
+            },
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "enemy_bolicp_s3[call]",
+              "loadFromDB": false,
+              "isDurableBuff": false,
+              "isDamageMissable": false,
+              "isSilenceable": false,
+              "isStunnable": false,
+              "isFreezable": false,
+              "isLevitatable": false,
+              "isGroundBoundable": false,
+              "statusResistable": true,
+              "templateKey": "enemy_bolicp_s3[call]",
+              "disableOverride": false,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": false,
+              "clearAllStackCntWhenTimeUp": false,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": false,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": false,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": false,
+              "takeSnapshotWhenExtend": false,
+              "durationKey": "duration",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": false,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": true,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": false,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": false
+            }
+          ]
+        },
+        "_maxAnimScale": 1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": false,
+        "_ignorePalsyInterrupt": false,
+        "_affectedBySlowDown": true,
+        "_actions": {
+          "SerializedState": "[]",
+          "SerializedObjectReferences": {
+            "Array": []
+          }
+        },
+        "_attackType": 1,
+        "_useDynamicAttackType": false
+      },
+      "scriptBinding": {
+        "externalReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "2165892974539515790",
+        "objectSha256": "7bee88cd6ce59153857e256d79079d977208a980734558932d7228a4e11e0260",
+        "value": {
+          "id": "2165892974539515790",
+          "name": "AnimatedActionToTargetAbility",
+          "cl": "AnimatedActionToTargetAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        }
+      }
+    },
+    {
+      "bundle": "battle/enm_pfb_18.ab",
+      "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+      "pathId": "1333684876975582206",
+      "typeId": 13,
+      "objectSha256": "60d847016437359a6c956cad18530b1d153ce9be65effb52df217e55f3a4071e",
+      "hierarchy": [
+        {
+          "name": "CallBdguad",
+          "gameObjectPathId": "-8442061101401986050",
+          "transformPathId": "4087851734398381054"
+        },
+        {
+          "name": "Skills",
+          "gameObjectPathId": "4257882053680081918",
+          "transformPathId": "-3306586667130246146"
+        },
+        {
+          "name": "Body",
+          "gameObjectPathId": "-4281284173653300226",
+          "transformPathId": "2040393947800579070"
+        },
+        {
+          "name": "Reborn",
+          "gameObjectPathId": "3119374631443016702",
+          "transformPathId": "-1914484539325633538"
+        },
+        {
+          "name": "Modes",
+          "gameObjectPathId": "3639771330121542654",
+          "transformPathId": "-2999815836598031362"
+        },
+        {
+          "name": "enemy_1551_bolicp",
+          "gameObjectPathId": "-3459138831348683778",
+          "transformPathId": "-5761249601627706370"
+        }
+      ],
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -8442061101401986050
+        },
+        "common:349": true,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -5087399121287503180
+        },
+        "common:427": "",
+        "_familyMask": 3,
+        "_trigger": {
+          "m_FileID": 0,
+          "m_PathID": 2019250468254297086
+        },
+        "_checkParentActive": false,
+        "_maxTriggerTime": -1,
+        "_resetMainAbilityCdWhenCastEnd": false,
+        "_resetCdWaitFirstPeriod": true,
+        "_overwriteInitCooldown": -1,
+        "_ignoreSilence": false,
+        "_immuneStunWhenAffecting": false,
+        "_addEnemyIdToSignalId": true,
+        "_castLikeAttack": false
+      },
+      "scriptBinding": {
+        "externalReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "-5087399121287503180",
+        "objectSha256": "e29be4b4a83e9a6a1d640f48774dbb06e346220ae9c55f2fd2e52c5aa8875100",
+        "value": {
+          "id": "-5087399121287503180",
+          "name": "EnemySkill",
+          "cl": "EnemySkill",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        }
+      }
+    },
+    {
+      "bundle": "battle/enm_pfb_18.ab",
+      "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+      "pathId": "2019250468254297086",
+      "typeId": 27,
+      "objectSha256": "41de75925d5b085bbb1fc07535a51f7a776954b78d5f2db3dea4ffb122447803",
+      "hierarchy": [
+        {
+          "name": "Selector",
+          "gameObjectPathId": "592803459322981374",
+          "transformPathId": "-5144064117156566018"
+        },
+        {
+          "name": "CallBdguad",
+          "gameObjectPathId": "-8442061101401986050",
+          "transformPathId": "4087851734398381054"
+        },
+        {
+          "name": "Skills",
+          "gameObjectPathId": "4257882053680081918",
+          "transformPathId": "-3306586667130246146"
+        },
+        {
+          "name": "Body",
+          "gameObjectPathId": "-4281284173653300226",
+          "transformPathId": "2040393947800579070"
+        },
+        {
+          "name": "Reborn",
+          "gameObjectPathId": "3119374631443016702",
+          "transformPathId": "-1914484539325633538"
+        },
+        {
+          "name": "Modes",
+          "gameObjectPathId": "3639771330121542654",
+          "transformPathId": "-2999815836598031362"
+        },
+        {
+          "name": "enemy_1551_bolicp",
+          "gameObjectPathId": "-3459138831348683778",
+          "transformPathId": "-5761249601627706370"
+        }
+      ],
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 592803459322981374
+        },
+        "common:349": true,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 8607874384982393801
+        },
+        "common:427": "",
+        "_keepTarget": false,
+        "_minTargetNum": 1,
+        "_overrideSearchTargetTick": -1
+      },
+      "scriptBinding": {
+        "externalReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "8607874384982393801",
+        "objectSha256": "cbbb96fab7f692c52fea8142567dd05431147538fdf29dfcfcd1b79663714b01",
+        "value": {
+          "id": "8607874384982393801",
+          "name": "SelectorTrigger",
+          "cl": "SelectorTrigger",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        }
+      }
+    },
+    {
+      "bundle": "battle/enm_pfb_18.ab",
+      "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+      "pathId": "5876789642265996286",
+      "typeId": 5,
+      "objectSha256": "753979e2f23b75bf81ba1c5187c84ee9a3208f3be606dc29ae9f33362819d0e8",
+      "hierarchy": [
+        {
+          "name": "enemy_1551_bolicp",
+          "gameObjectPathId": "-3459138831348683778",
+          "transformPathId": "-5761249601627706370"
+        }
+      ],
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -3459138831348683778
+        },
+        "common:349": true,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -6629209555389654693
+        },
+        "common:427": "",
+        "_animator": {
+          "m_FileID": 0,
+          "m_PathID": -6650983515331384322
+        },
+        "_modes": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": -7410074555098027010
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 9106343686940568574
+            }
+          ]
+        },
+        "_commonAbilities": {
+          "Array": []
+        },
+        "_uiMountPoint": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_effectTransform": {
+          "m_FileID": 0,
+          "m_PathID": 2452366286833626110
+        },
+        "_shadow": {
+          "m_FileID": 0,
+          "m_PathID": 1553048878346251262
+        },
+        "_defaultBodyColor": {
+          "r": 1.0,
+          "g": 1.0,
+          "b": 1.0,
+          "a": 1.0
+        },
+        "_hideShadowOnRecycle": false,
+        "_overrideGraphicBound": -1.0,
+        "_hudPluginReplacePairs": {
+          "Array": []
+        },
+        "_showDebugName": false,
+        "_sideTypeIndex": 1,
+        "_locateRange": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_disableRenderLocateRange": false,
+        "_isFixedRotation": false,
+        "_bodyDirectionPolicy": 0,
+        "_useMoveDirAsFaceDir": false,
+        "_scaleMoveBySpeed": false,
+        "_scaleMoveAnimationRange": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "_showSpAsBulletMode": true,
+        "_hideBulletSpModes": {
+          "Array": [
+            0
+          ]
+        },
+        "_alwaysShowHp": false,
+        "_alwaysHideHp": false,
+        "_keepMoveAnimScale": false,
+        "_useSpecificDeadAnim": false,
+        "_useSpecificReachExitAnim": false,
+        "_disableBornTweenColor": false,
+        "_height": 0.0,
+        "_groundBoundHeightZOffset": 0.10000000149011612,
+        "_useSpineLikeHeightUpdate": false,
+        "_spineLikeHeightUpdateRatio": 0.25,
+        "_delayToBorn": 1.0,
+        "_onlyDelayToBornOnTileStart": false,
+        "_audioSignalUseId": false,
+        "_startEffect": "enemy_bolicp_start",
+        "_deadEffect": "enemy_bolicp_die",
+        "_blockVolume": 1,
+        "_specialBlockCondition": {
+          "_type": 0,
+          "_buffKeyPairs": {
+            "Array": []
+          },
+          "_filterTags": {
+            "Array": []
+          }
+        },
+        "_dontSetEnemyFaceByCursorWhenBorn": false,
+        "_idleWhenBorn": false,
+        "_canNotExit": false,
+        "_hideShadowOnReset": false,
+        "_allowFalldownWhenReborn": false,
+        "_alwaysCheckCurrentPoint": false,
+        "_ignoreBlockMode": false,
+        "_specificBlockMask": 0
+      },
+      "scriptBinding": {
+        "externalReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "-6629209555389654693",
+        "objectSha256": "f29154cfd459f3f8cfbe54dfe80046a7657ee8699bfb8368d5b1b201a60db695",
+        "value": {
+          "id": "-6629209555389654693",
+          "name": "Enemy",
+          "cl": "Enemy",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        }
+      }
+    },
+    {
+      "bundle": "battle/enm_pfb_18.ab",
+      "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+      "pathId": "9106343686940568574",
+      "typeId": 32,
+      "objectSha256": "0bbd3e4326a84d77588b4d4fe18c6c89168500cfe07fe81fdaa7ca5d4897c9a9",
+      "hierarchy": [
+        {
+          "name": "Reborn",
+          "gameObjectPathId": "3119374631443016702",
+          "transformPathId": "-1914484539325633538"
+        },
+        {
+          "name": "Modes",
+          "gameObjectPathId": "3639771330121542654",
+          "transformPathId": "-2999815836598031362"
+        },
+        {
+          "name": "enemy_1551_bolicp",
+          "gameObjectPathId": "-3459138831348683778",
+          "transformPathId": "-5761249601627706370"
+        }
+      ],
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 3119374631443016702
+        },
+        "common:349": true,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 5390319429299248724
+        },
+        "common:427": "",
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": 2040393947800579070
+        },
+        "_animatorHooker": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_overrideStartEffect": "",
+        "_overrideDeadEffect": "",
+        "_combat": {
+          "m_FileID": 0,
+          "m_PathID": -3172340601501144066
+        },
+        "_attack": {
+          "m_FileID": 0,
+          "m_PathID": -3172340601501144066
+        },
+        "_attackTrigger": {
+          "m_FileID": 0,
+          "m_PathID": -3669829879350318082
+        },
+        "_hideUIAttackRange": false,
+        "_updateAttackRangeExtendByAttributeDirty": false,
+        "_rangeToShow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_extraRangesToShow": {
+          "Array": []
+        },
+        "_generalAbilities": {
+          "Array": []
+        },
+        "_addIndexToSignalId": true,
+        "_includeIndexZero": true,
+        "_alwaysHideHp": {
+          "isDefined": false,
+          "value": false
+        },
+        "_alwaysHideSp": {
+          "isDefined": false,
+          "value": false
+        }
+      },
+      "scriptBinding": {
+        "externalReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "5390319429299248724",
+        "objectSha256": "2ee5244adfc51fb59b433f66bc65273dde36b7c53bf8d3254174519fb65f915f",
+        "value": {
+          "id": "5390319429299248724",
+          "name": "UnitMode",
+          "cl": "UnitMode",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [],
+    "collectionDateSource": "not recorded",
+    "organizedOn": "2026-11-07",
+    "client": {
+      "dll": null,
+      "metadata": null
+    },
+    "sourceRecords": [
+      "current-profile.json",
+      "current-randomize-stats.json",
+      "current-reach-distance-stats.json",
+      "pinned-profile.json",
+      "randomize-stats.json",
+      "reach-distance-stats.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "current-profile.json",
+        "kind": "record",
+        "bytes": 1126131,
+        "sha256": "0a227ed9525a1545259441bc515df497ebcd51ae622f6b2aab54ffa03daf09af"
+      },
+      {
+        "path": "current-randomize-stats.json",
+        "kind": "record",
+        "bytes": 1453714,
+        "sha256": "2b538e5dffab096eba57851e47cfa2471260d836e7f0ea105d3452bc80ff00a6"
+      },
+      {
+        "path": "current-reach-distance-stats.json",
+        "kind": "record",
+        "bytes": 1453710,
+        "sha256": "fa695a010d5b3bac6fcbab0444cfded55d71365e5f0817cfb45f245db94f258d"
+      },
+      {
+        "path": "pinned-profile.json",
+        "kind": "record",
+        "bytes": 1118215,
+        "sha256": "58b99b15cdfafc8884d05f8a5900fa4197e51d48ee2d6801ca463cebed6b86ec"
+      },
+      {
+        "path": "profile.py",
+        "kind": "historical-script",
+        "bytes": 3618,
+        "sha256": "1789bb46c008227f41279214362af8f3d218f724d2f19d6475d1cfc8228ceab4"
+      },
+      {
+        "path": "randomize-stats.json",
+        "kind": "record",
+        "bytes": 1411549,
+        "sha256": "bd3085c5ba8e96ea90163ce09892f065e97cedf872d09e71c681bde48e16ea83"
+      },
+      {
+        "path": "reach-distance-stats.json",
+        "kind": "record",
+        "bytes": 1411545,
+        "sha256": "1a3767080648d8e87b93ef59c8c45362115ac6f3ac9364025c87a6c8a95fa87c"
+      }
+    ],
+    "replay": {
+      "methods": [],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

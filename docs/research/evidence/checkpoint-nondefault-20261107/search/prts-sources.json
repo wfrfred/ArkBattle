@@ -1,0 +1,33 @@
+{
+  "provenance": {
+    "readDate": "2026-11-07",
+    "scope": "Community descriptions identify real content and its public behavior. They do not prove native node binding or parameter conversion. No full webpage is archived."
+  },
+  "result": {
+    "sources": [
+      {
+        "url": "https://prts.wiki/w/马特奥上尉",
+        "title": "马特奥上尉",
+        "section": "技能：集合！；出场关卡",
+        "summary": "第二形态的集合技能会召集场上的马特奥亲卫；详细说明明确涉及将检查点改为自身格中心附近的随机位置，抵达后等待30秒。页面列出CR-8与CR-EX-8。",
+        "numericDescription": "页面描述随机目标区域的边长为0.6。",
+        "limitation": "该描述与序列化模板的实际绑定仍需资源／客户端证据，不能单靠中文技能名指认模板。"
+      },
+      {
+        "url": "https://prts.wiki/w/“花匠”",
+        "title": "“花匠”",
+        "section": "技能：宣讲；出场关卡",
+        "summary": "宣讲在当前格放置回答标记，并引导修道院居民，详细描述指出会替换居民的下一检查点。页面列出HE-8与HE-EX-8。",
+        "numericDescription": "社区页面将随机区域写为边长0.3；不据此将节点序列化的reachOffset=(0.3,0.3)解释成相同的边长，节点消费是否换算应另据native核对。",
+        "limitation": "此处仅核对机制归属，不判定社区数值与客户端换算孰对孰错。"
+      },
+      {
+        "url": "https://prts.wiki/w/圣愚",
+        "title": "圣愚",
+        "section": "第一形态能力；出场关卡",
+        "summary": "第一形态会持续吸引范围内的矿工游击队向自身位置移动。此页对应enemy_1572_folchr，不是时间啊向前中的最后的圣愚；页面列出16-16与H16-4。",
+        "limitation": "社区吸引描述并不单独证明randomizeReachOffset=true；需要独立绑定具体生成节点。"
+      }
+    ]
+  }
+}

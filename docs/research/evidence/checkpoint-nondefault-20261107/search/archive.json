@@ -1,0 +1,94 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [],
+    "collectionDateSource": "not recorded",
+    "organizedOn": "2026-11-07",
+    "client": {
+      "dll": null,
+      "metadata": null
+    },
+    "sourceRecords": [
+      "bolicp-data.json",
+      "bolicp-stage.json",
+      "cledub-data.json",
+      "cledub-stage.json",
+      "folchr-data.json",
+      "folchr-stage.json",
+      "identity-sources.json",
+      "prts-sources.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "bolicp-data.json",
+        "kind": "record",
+        "bytes": 5015,
+        "sha256": "3cc1e247e527f5cf0acc8c3127e6fcc8c404d09a6f193ceda4aa09ec3ddfc6c5"
+      },
+      {
+        "path": "bolicp-stage.json",
+        "kind": "record",
+        "bytes": 2863,
+        "sha256": "353f5bd53bad00780d3ec0cd5e5665dfb81ed83db6da4f3ab3a37f4f390f2bb1"
+      },
+      {
+        "path": "cledub-data.json",
+        "kind": "record",
+        "bytes": 6768,
+        "sha256": "436c654cd30ffd90144f8fa8b523fc258abe1d5c707ffd22a0dc46dd7abcfc85"
+      },
+      {
+        "path": "cledub-stage.json",
+        "kind": "record",
+        "bytes": 2821,
+        "sha256": "7ff829e5e58a31c3c9e7f4e3392e1ddf837042870549e9d836b7a952824c8a08"
+      },
+      {
+        "path": "folchr-data.json",
+        "kind": "record",
+        "bytes": 5907,
+        "sha256": "3dcf3e6cf6e35f4598d25d38d82fedfd523c17a1e4b3e19992bee19d48027146"
+      },
+      {
+        "path": "folchr-stage.json",
+        "kind": "record",
+        "bytes": 2750,
+        "sha256": "d18ccde6fbca9303acb8cdcfd487b9b99a7bbeeaf64aec9304090a1490a4bb7e"
+      },
+      {
+        "path": "identity-sources.json",
+        "kind": "record",
+        "bytes": 2098,
+        "sha256": "436a390a8e1a527027ae2a798d9a4abaf874039772794a867d8c57cf33281b8b"
+      },
+      {
+        "path": "prts-sources.json",
+        "kind": "record",
+        "bytes": 1999,
+        "sha256": "30c3d0ab7437311bf4816729ff2a06d1beaf77e5bd00f23b0c84c5f8c6ca23ee"
+      }
+    ],
+    "replay": {
+      "methods": [],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

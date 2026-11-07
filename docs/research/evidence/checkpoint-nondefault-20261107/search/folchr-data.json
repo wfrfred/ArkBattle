@@ -1,0 +1,190 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-07T11:05:32.466589+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+      "--source-url",
+      "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+      "--revision",
+      "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "--out",
+      "docs/research/evidence/checkpoint-nondefault-20261107/search/folchr-data.json",
+      "select",
+      "/enemies/1475/Value/0/enemyData",
+      "--field",
+      "/name",
+      "--field",
+      "/prefabKey",
+      "--field",
+      "/skills",
+      "--field",
+      "/talentBlackboard"
+    ],
+    "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "bytes": 15721552,
+        "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "pointer": "/enemies/1475/Value/0/enemyData",
+        "fields": {
+          "/name": {
+            "m_defined": true,
+            "m_value": "圣愚"
+          },
+          "/prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_1572_folchr"
+          },
+          "/skills": [
+            {
+              "prefabKey": "RangeAttack",
+              "priority": 1,
+              "cooldown": 20.0,
+              "initCooldown": 10.0,
+              "spCost": 0,
+              "blackboard": [
+                {
+                  "key": "atk_scale",
+                  "value": 0.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "prefabKey": "PowerAttack",
+              "priority": 0,
+              "cooldown": 0.0,
+              "initCooldown": 0.0,
+              "spCost": 3,
+              "blackboard": [
+                {
+                  "key": "atk_scale",
+                  "value": 2.0,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "prefabKey": "SummonFearpj",
+              "priority": 0,
+              "cooldown": 30.0,
+              "initCooldown": 15.0,
+              "spCost": 0,
+              "blackboard": [
+                {
+                  "key": "branch_id",
+                  "value": 0.0,
+                  "valueStr": "folchr_fearpj_route"
+                }
+              ]
+            },
+            {
+              "prefabKey": "M2AOE",
+              "priority": 0,
+              "cooldown": 0.0,
+              "initCooldown": 0.0,
+              "spCost": 0,
+              "blackboard": [
+                {
+                  "key": "atk_scale",
+                  "value": 1.5,
+                  "valueStr": null
+                }
+              ]
+            }
+          ],
+          "/talentBlackboard": [
+            {
+              "key": "MovedShadowTile.range_id",
+              "value": 0.0,
+              "valueStr": "x-2"
+            },
+            {
+              "key": "GuoDu.attack_speed",
+              "value": -70.0,
+              "valueStr": null
+            },
+            {
+              "key": "M0Reborn.duration",
+              "value": 0.766,
+              "valueStr": null
+            },
+            {
+              "key": "M0Reborn.hp_ratio",
+              "value": 1.0,
+              "valueStr": null
+            },
+            {
+              "key": "M1Passive.m1_revive_duration",
+              "value": 1.0,
+              "valueStr": null
+            },
+            {
+              "key": "M1Passive.hp_recovery_per_sec_by_max_hp_ratio",
+              "value": 1.0,
+              "valueStr": null
+            },
+            {
+              "key": "M1Passive.interval",
+              "value": 0.99,
+              "valueStr": null
+            },
+            {
+              "key": "M1Passive.branch_id",
+              "value": 0.0,
+              "valueStr": "folchr_m2_route"
+            },
+            {
+              "key": "AttributeUpdate.base_attack_time",
+              "value": 4.0,
+              "valueStr": null
+            },
+            {
+              "key": "AttributeUpdate.attack@atk_scale",
+              "value": 0.7,
+              "valueStr": null
+            },
+            {
+              "key": "HpRatioTriggerS2.hp_ratio",
+              "value": 0.2,
+              "valueStr": null
+            },
+            {
+              "key": "AttractMcreep.range_radius",
+              "value": 3.0,
+              "valueStr": null
+            },
+            {
+              "key": "AttractMcreep.range_radius",
+              "value": 3.0,
+              "valueStr": null
+            }
+          ]
+        },
+        "missingFields": []
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

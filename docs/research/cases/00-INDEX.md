@@ -22,7 +22,7 @@
 | [10 弱点伤害与概率判定](10-weak-damage-and-critical.md) | 本机 WeakDamage、AtkScaleUp、CalculateDamage 与 Buff 模板 | 已有倍率与无事件试算的区别、事件先后、概率状态及原生／热更新证据边界 |
 | [11 Damage Apply 与 HP Application](11-damage-apply-and-hp-application.md) | 本机接收／HP 原生路径、泥岩盾／玛恩纳反伤／分担模板与 PRTS 致命机制 | 分列客户端证据、Wiki 说明与项目政策；取消后资格、同步反应、普通免死竞争与其他生命干预的边界 |
 | [12 SPFA、平滑与移动消费](12-navigation-native-algorithm.md) | 当前 DLL／metadata 原生指令、射线隔离仿真与 Stronghold 对照 | 原地后继更新、Bresenham 边界、运行时移动恢复、地图重规划与最终 Field 是否需要 rawNext |
-| [13 Route、等待与实际移动时序](13-route-and-movement-timing.md) | Enemy／Cursor／Checkpoint 原生分支及固定配置样本 | 两处推进、等待、不可达跳过、目标采样／半径；首路点副作用与身份／出生／登记的边界 |
+| [13 Route、等待与实际移动时序](13-route-and-movement-timing.md) | Enemy／Cursor／Checkpoint 原生分支、完整固定关卡目录与实际技能资源 | 两处推进、等待、不可达跳过、目标采样／半径；首路点时序；马特奥运行时随机 MOVE 正例 |
 | [14 RouteDefinition 字段消费](14-route-definition-fields.md) | 出生／Cursor／完成检查原生分支、固定版本关卡 JSON；11-07 补核运行时路线与时间快照 | 字段行为、持续路线偏移、提前终点完成；不同出生入口及实例初始化的事实边界 |
 | [15 Locomotion 运动与空间约束](15-locomotion-native-semantics.md) | 当前 MoveController、Enemy 状态机、地图与物理原生分支，实际控制器 Prefab | 积分、吸附与速度保留、地形避障和反射、移动资格、分离与推拉、移速范围及 moving 观察语义 |
 | [16 Projectile 运动与命中边界](16-projectile-motion-and-hit-boundaries.md) | 当前 Projectile / Movement / HitBehaviour 原生分支，普通弩手、空爆、沿途碰撞和阿米娅实际 Prefab | 共用生命周期、运动组合与计时命中、原目标直选与附加候选资格、Targeting 调用归属 |

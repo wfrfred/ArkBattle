@@ -92,3 +92,4 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | [scheduler-general-20261107](scheduler-general-20261107/README.md) | 通用字段的构造至回收／结束链、主 Wave／Branch／外部入口差异、运行时载荷与 82 份跨玩法字段样本 |
 | [route-creation-20261107](route-creation-20261107/README.md) | 已有／运行时路线的出生入口、实例偏移、初始化时首次进入路点及 Wave／Fragment 快照绑定 |
 | [checkpoint-semantics-20261107](checkpoint-semantics-20261107/README.md) | MOVE 目标采样与到达半径、有限配置正例，以及首即时指令相对身份／位置／Born／场上登记的顺序 |
+| [checkpoint-nondefault-20261107](checkpoint-nondefault-20261107/README.md) | 两次固定修订完整关卡字段检查；马特奥运行时随机 MOVE 的技能／Prefab／模板启用链；非零半径的检索边界 |

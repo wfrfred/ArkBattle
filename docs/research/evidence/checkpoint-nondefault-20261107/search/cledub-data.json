@@ -1,0 +1,220 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-07T11:05:32.267843+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+      "--source-url",
+      "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+      "--revision",
+      "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "--out",
+      "docs/research/evidence/checkpoint-nondefault-20261107/search/cledub-data.json",
+      "select",
+      "/enemies/1443/Value/0/enemyData",
+      "--field",
+      "/name",
+      "--field",
+      "/prefabKey",
+      "--field",
+      "/skills",
+      "--field",
+      "/talentBlackboard"
+    ],
+    "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "bytes": 15721552,
+        "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "pointer": "/enemies/1443/Value/0/enemyData",
+        "fields": {
+          "/name": {
+            "m_defined": true,
+            "m_value": "“花匠”"
+          },
+          "/prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_1544_cledub"
+          },
+          "/skills": [
+            {
+              "prefabKey": "M1Ridicule",
+              "priority": 1,
+              "cooldown": 35.0,
+              "initCooldown": 4.0,
+              "spCost": 0,
+              "blackboard": [
+                {
+                  "key": "sp",
+                  "value": -20.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "sp_stop_duration",
+                  "value": 10.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "projectile_delay_time",
+                  "value": 40.0,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "prefabKey": "M1MakeTrouble",
+              "priority": 0,
+              "cooldown": 30.0,
+              "initCooldown": 25.0,
+              "spCost": 0,
+              "blackboard": [
+                {
+                  "key": "max_hp",
+                  "value": -0.3,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack_speed",
+                  "value": -0.35,
+                  "valueStr": null
+                },
+                {
+                  "key": "block_cnt",
+                  "value": -1.0,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "prefabKey": "M1ActiveRockfl",
+              "priority": 0,
+              "cooldown": 50.0,
+              "initCooldown": 15.0,
+              "spCost": 0,
+              "blackboard": []
+            },
+            {
+              "prefabKey": "M2MakeTrouble",
+              "priority": 0,
+              "cooldown": 25.0,
+              "initCooldown": 10.0,
+              "spCost": 0,
+              "blackboard": [
+                {
+                  "key": "max_hp",
+                  "value": -0.5,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack_speed",
+                  "value": -0.5,
+                  "valueStr": null
+                },
+                {
+                  "key": "block_cnt",
+                  "value": -2.0,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "prefabKey": "M2Ridicule",
+              "priority": 1,
+              "cooldown": 30.0,
+              "initCooldown": 10.0,
+              "spCost": 0,
+              "blackboard": [
+                {
+                  "key": "sp",
+                  "value": -20.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "sp_stop_duration",
+                  "value": 10.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "projectile_delay_time",
+                  "value": 40.0,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "prefabKey": "M2SummonEnemy",
+              "priority": 0,
+              "cooldown": 25.0,
+              "initCooldown": 18.0,
+              "spCost": 0,
+              "blackboard": [
+                {
+                  "key": "branch_id",
+                  "value": 0.0,
+                  "valueStr": "cledub_summon"
+                }
+              ]
+            },
+            {
+              "prefabKey": "M2Start",
+              "priority": 2,
+              "cooldown": 10000.0,
+              "initCooldown": 0.0,
+              "spCost": 0,
+              "blackboard": null
+            }
+          ],
+          "/talentBlackboard": [
+            {
+              "key": "M1_t.branch_id",
+              "value": 0.0,
+              "valueStr": "cledub_rockfl"
+            },
+            {
+              "key": "M1_t.trig_cnt",
+              "value": 6.0,
+              "valueStr": null
+            },
+            {
+              "key": "M1_t.M1_time",
+              "value": 150.0,
+              "valueStr": null
+            },
+            {
+              "key": "Dead.ban_skill_index",
+              "value": 7.0,
+              "valueStr": null
+            },
+            {
+              "key": "Dead.dead_index",
+              "value": 2.0,
+              "valueStr": null
+            }
+          ]
+        },
+        "missingFields": []
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "provenance": {
+    "date": "2026-11-07",
+    "repository": "Kengxxiao/ArknightsGameData",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "validation": "Each source byte string reproduces its pinned Git blob SHA-1; excerpts are shared config.py output."
+  },
+  "result": {
+    "sources": [
+      {
+        "path": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "bytes": 15721552,
+        "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b",
+        "gitBlobSha1": "62ab806926b9c8ca5c80524730caf0066f6c2c2f"
+      },
+      {
+        "path": "zh_CN/gamedata/levels/activities/act32side/level_act32side_08.json",
+        "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/activities/act32side/level_act32side_08.json",
+        "bytes": 105823,
+        "sha256": "0093ccdb3d03bae17d71e694811f5e0a991e18c27e7ce4740060669de25c763b",
+        "gitBlobSha1": "f402e0befa925815755e16801d6b2cf0d0a034f0"
+      },
+      {
+        "path": "zh_CN/gamedata/levels/activities/act26side/level_act26side_08.json",
+        "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/activities/act26side/level_act26side_08.json",
+        "bytes": 125772,
+        "sha256": "c1b4ae6089f7780295f13c146066f244421cc22e840e0b75e532bf9717d954c1",
+        "gitBlobSha1": "60a681460ef75d5b51123da751e83269c7704eb2"
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/main/level_main_16-15.json",
+        "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/obt/main/level_main_16-15.json",
+        "bytes": 192025,
+        "sha256": "a833b33ef171ebd20040aa7e64a27a9602ca3fc96bb82e676188eec053f233bd",
+        "gitBlobSha1": "8f0fd655377a32e9ee90b177aff6d20a85ab15b1"
+      }
+    ]
+  }
+}
