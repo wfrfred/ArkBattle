@@ -55,7 +55,7 @@ if (checkReached && currentCheckpoint.checkReached(locator)) {
 }
 ```
 
-_MoveNext（70163，`0x180876920`）调用旧路点结束接口、通过该路点的 NextCursor 计算后继，再调用新路点 OnBegin。后继不一定是简单的 index + 1；巡逻及忽略非移动路点等有各自规则。[切换路点](../evidence/route-movement-20261018/70163.asm)
+_MoveNext（70163，`0x180876920`）通过当前路点的 NextCursor 计算后继，在存在未被过滤的新路点时调用其 OnBegin。后继不一定是简单的 index + 1；巡逻及忽略非移动路点等有各自规则。[切换路点](../evidence/route-movement-20261018/70163.asm)。当前客户端的完整操作、过滤及 Reset 时序另见[案例 31](31-route-operations-and-state.md)，不根据通用生命周期习惯补入 OnEnd 时点。
 
 **结论：** “移动前统一 settle 一次，移动后再 settle 一次”是 Stronghold 可以采用的重组方案，不是官方函数时序。按项目判断标准，普通等待结束前后的一个 Tick 左右差异属于低优先级；保证等待计时和移动预算不重复消费即可。只有实际观察者产生显著业务影响时，才需要进一步细化相关时点。
 

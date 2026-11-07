@@ -1,0 +1,43 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-07",
+    "scope": "Community references read through web tools; titles and pointers, not client evidence or game observation."
+  },
+  "result": [
+    {
+      "url": "https://prts.wiki/index.php?title=诱发移动&oldid=444175",
+      "title": "诱发移动",
+      "usedFor": "恐惧与诱导的玩法名称、普通内容来源与优先级线索；具体游标及多来源变化以本批 native 为准。"
+    },
+    {
+      "url": "https://prts.wiki/w/妮芙",
+      "title": "妮芙",
+      "usedFor": "二技能怵然震爆包含恐惧的实际玩法旁证；具体绑定读取固定数据和安装资源。"
+    },
+    {
+      "url": "https://prts.wiki/w/酒神",
+      "title": "酒神",
+      "usedFor": "二技能群体性谵妄与诱导的实际玩法旁证；具体召唤物、Buff和节点由本批配置取证。"
+    },
+    {
+      "url": "https://prts.wiki/w/“炎佑”",
+      "title": "“炎佑”",
+      "usedFor": "enemy_9012_acloon 的社区名称映射；不据此补造 Branch 的原生触发链。"
+    },
+    {
+      "url": "https://prts.wiki/w/活性源石风暴",
+      "title": "活性源石风暴",
+      "usedFor": "持续追踪信标的玩法旁证；实际目标标记、出生与调用链由本批取证。"
+    },
+    {
+      "url": "https://prts.wiki/w/信标",
+      "title": "信标",
+      "usedFor": "信标作为活性源石风暴追踪目标的社区解释。"
+    },
+    {
+      "url": "https://prts.wiki/w/TR-25",
+      "title": "TR-25 特殊环境适应作战",
+      "usedFor": "玩家部署祭坛后击破会召唤信标的内容旁证；不替代本批main_14-02配置。"
+    }
+  ]
+}

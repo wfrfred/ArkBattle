@@ -1,0 +1,63 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-07",
+    "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/buff_table.json",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "gitBlobSha": "0493cd889b3c0cba25773498f1416bb41e3d2882",
+    "sourcePath": "zh_CN/gamedata/buff_table.json",
+    "selection": "/fear; filtered transport excerpt, not complete source file"
+  },
+  "result": {
+    "pointer": "/fear",
+    "value": {
+      "attributes": {
+        "abnormalFlags": [
+          "FEARED"
+        ],
+        "abnormalImmunes": null,
+        "abnormalAntis": null,
+        "abnormalCombos": null,
+        "abnormalComboImmunes": null,
+        "attributeModifiers": null
+      },
+      "buffKey": "fear",
+      "loadFromDB": false,
+      "isDurableBuff": false,
+      "isDamageMissable": true,
+      "isSilenceable": false,
+      "isStunnable": false,
+      "isFreezable": false,
+      "isLevitatable": false,
+      "isGroundBoundable": false,
+      "statusResistable": "YES",
+      "templateKey": "fear_buff",
+      "disableOverride": true,
+      "overrideKey": null,
+      "overrideType": "DEFAULT",
+      "maxStackCnt": 1,
+      "refreshRemainingTimeWhenStackMax": false,
+      "clearAllStackCntWhenTimeUp": false,
+      "maxValidStackCnt": -1,
+      "independentCharacterSource": false,
+      "overrideEffectKey": "common_buff_fear",
+      "overrideOnEventPriority": false,
+      "onEventPriority": "DEFAULT",
+      "audioSignal": null,
+      "lifeTimeType": "LIMITED",
+      "takeSnapshotWhenExtend": false,
+      "durationKey": "fear",
+      "remainingTimeKey": null,
+      "lifeTime": 0,
+      "triggerLifeType": "IMMEDIATELY",
+      "triggerCnt": 0,
+      "triggerInterval": -1,
+      "waitFirstTriggerInterval": true,
+      "firstTriggerInterval": -1,
+      "priority": -1,
+      "priorityBBKeys": null,
+      "stripBlackboardParamsWithBuffKey": false,
+      "blackboard": null,
+      "enableInitDirectionFromSource": false
+    }
+  }
+}

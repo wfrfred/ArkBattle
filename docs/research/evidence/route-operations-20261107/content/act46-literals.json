@@ -1,0 +1,40 @@
+{
+  "provenance": {
+    "queryScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/route-operations-20261107/content/extract_act46_literals.py",
+      "bytes": 1641,
+      "sha256": "3cec2617d941a17f75e49fc977b9af1098f8dd2913c8905cf02d3fe3c4f437ac"
+    },
+    "dll": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+      "bytes": 223112680,
+      "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+    },
+    "metadata": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+      "bytes": 46669332,
+      "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+    },
+    "scope": "Three IL2CPP encoded string-literal usages selected from Act46SideBattleManager._InitMapIfNot; metadata stringLiteral records/data tables, not runtime heap strings."
+  },
+  "result": [
+    {
+      "slot": "0x188c5af98",
+      "encodedUsage": "0xa000d777",
+      "literalIndex": 27579,
+      "value": "check_point_index"
+    },
+    {
+      "slot": "0x188bb5f10",
+      "encodedUsage": "0xa000ce75",
+      "literalIndex": 26426,
+      "value": "avalanche_index"
+    },
+    {
+      "slot": "0x188bb6160",
+      "encodedUsage": "0xa000ce77",
+      "literalIndex": 26427,
+      "value": "avalanche_state"
+    }
+  ]
+}

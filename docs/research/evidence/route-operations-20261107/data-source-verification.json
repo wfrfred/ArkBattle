@@ -1,0 +1,32 @@
+{
+  "provenance": {
+    "date": "2026-11-07",
+    "source": "https://github.com/Kengxxiao/ArknightsGameData",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "method": "git rev-parse <revision>:<path>; SHA1 of blob <byteLength>\\0 followed by raw file bytes; SHA256 of raw bytes",
+    "scope": "Complete table bytes, not normalized connector JSON. Tables are cached locally; selected entries archived by config.py."
+  },
+  "result": {
+    "complete": true,
+    "sources": [
+      {
+        "sourcePath": "zh_CN/gamedata/excel/character_table.json",
+        "localPath": ".cache/native-research/route-operations-20261107/data/character_table.json",
+        "bytes": 15468242,
+        "sha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1",
+        "expectedGitBlob": "5cfce5bc20be49bfcefc754cbc7efa09aa69483c",
+        "actualGitBlob": "5cfce5bc20be49bfcefc754cbc7efa09aa69483c",
+        "matches": true
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/excel/skill_table.json",
+        "localPath": ".cache/native-research/route-operations-20261107/data/skill_table.json",
+        "bytes": 11766431,
+        "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1",
+        "expectedGitBlob": "913886644cefcef46866e033656a47ac4269e9af",
+        "actualGitBlob": "913886644cefcef46866e033656a47ac4269e9af",
+        "matches": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,2993 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-07",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/route-operations-20261107/endpoint/extract_endpoint.py",
+      "bytes": 6551,
+      "sha256": "4b74ad5835aa63276c63d06b6079f56966fb372a0a20b23952ca908c77b62dbf"
+    },
+    "typeTreeReader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+      "bytes": 8161,
+      "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+    },
+    "externalReader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+      "bytes": 6749,
+      "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+    },
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+        "bytes": 2151020,
+        "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_35.ab",
+        "bytes": 382837,
+        "sha256": "144a51c4419a8d0bef7cb61b0a0452a5775051aedbd8fac5a89b3c5db5e84592"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      }
+    ],
+    "configurationSource": {
+      "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData",
+      "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "inputs": [
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/activities/act1dp/level_act1dp_sub-02.json",
+          "bytes": 66532,
+          "sha256": "885be14f374e18b056c631662cc50a19c2e3048be480cc8a3b5072445f697122"
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+          "bytes": 15721552,
+          "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b"
+        }
+      ]
+    },
+    "scope": "Complete holder search for literal flgshp_tile_mark; selected nonvisual component classes of exactly enemy_17002_flgshp, resolved external MonoScript pointers; one actual SPAWN and end-tile map witness. Serialized executable bindings and static inference, not game execution."
+  },
+  "result": {
+    "templates": [
+      {
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "templateIndex": 4318,
+        "template": {
+          "templateKey": "enemy_flgshp_allow[check]",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 2,
+                  "value": {
+                    "SerializedState": "[{\"_conditionNode\":{\"_blackboardKey\":\"flgshp_tile_mark\",\"_bbKeyFormBb\":null,\"_channel\":\"ENEMY\",\"_valueToCompare\":0.0,\"_valueKey\":\"value\",\"_condType\":\"LE\",\"$type\":\"Torappu.Battle.Action.Nodes+FilterByGlobalBlackboard\"},\"_succeedNodes\":[{\"_conditionNode\":{\"_abnormalFlag\":\"SILENCED\",\"_targetType\":\"SOURCE\",\"_isUnset\":true,\"_abnormalFlagKey\":\"\",\"$type\":\"Torappu.Battle.Action.Nodes+CheckAbnormalFlag\"},\"_succeedNodes\":[{\"_targetType\":\"BUFF_OWNER\",\"_buffKeys\":[\"enemy_flgshp_allow\"],\"isAND\":true,\"_loadFromBlackboard\":false,\"_checkBuffSource\":false,\"_buffSourceType\":\"BUFF_SOURCE\",\"_checkSourceHost\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CheckContainsBuff\"},{\"$type\":\"Torappu.Battle.Action.Nodes+IfNot\"},{\"_buff\":{\"attributes\":{\"abnormalFlags\":[],\"abnormalImmunes\":[],\"abnormalAntis\":[],\"abnormalCombos\":[],\"abnormalComboImmunes\":[],\"attributeModifiers\":[]},\"buffKey\":\"enemy_flgshp_allow\",\"loadFromDB\":false,\"isDurableBuff\":false,\"isDamageMissable\":false,\"isSilenceable\":false,\"isStunnable\":false,\"isFreezable\":false,\"isLevitatable\":false,\"isGroundBoundable\":false,\"statusResistable\":\"AUTOMATIC\",\"templateKey\":\"empty\",\"disableOverride\":false,\"overrideKey\":null,\"overrideType\":\"DEFAULT\",\"maxStackCnt\":1,\"refreshRemainingTimeWhenStackMax\":false,\"clearAllStackCntWhenTimeUp\":false,\"maxValidStackCnt\":-1,\"independentCharacterSource\":false,\"overrideEffectKey\":null,\"overrideOnEventPriority\":false,\"onEventPriority\":\"DEFAULT\",\"audioSignal\":null,\"lifeTimeType\":\"INFINITY\",\"takeSnapshotWhenExtend\":false,\"durationKey\":null,\"remainingTimeKey\":null,\"lifeTime\":0.0,\"triggerLifeType\":\"IMMEDIATELY\",\"triggerCnt\":0,\"triggerInterval\":-1.0,\"waitFirstTriggerInterval\":true,\"firstTriggerInterval\":-1.0,\"priority\":-1,\"priorityBBKeys\":[],\"stripBlackboardParamsWithBuffKey\":false,\"blackboard\":[],\"enableInitDirectionFromSource\":false},\"_buffOwner\":\"BUFF_OWNER\",\"_useSpecialBuffSource\":false,\"_specialBuffSource\":\"BUFF_SOURCE\",\"_isDerivedBuff\":false,\"_finishDerivedBuffIfParentFinish\":false,\"_inherateSourceProjectileFromParentBuff\":false,\"_hookEffectKeyFromSourceProjectile\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CreateBuff\"}],\"_failNodes\":[{\"_buffKey\":\"enemy_flgshp_allow\",\"_loadFromBlackboard\":false,\"_decCntIfStack\":false,\"_updateOverrideMap\":true,\"_targetType\":\"BUFF_OWNER\",\"_checkBuffSource\":false,\"_sourceType\":\"BUFF_SOURCE\",\"_alsoClearNullSource\":false,\"_finishHostBuff\":false,\"_excludeThisBuff\":false,\"_decCntKey\":null,\"_decCnt\":1,\"$type\":\"Torappu.Battle.Action.Nodes+FinishBuffsById\"}],\"$type\":\"Torappu.Battle.Action.Nodes+IfElse\"}],\"_failNodes\":[{\"_buffKey\":\"enemy_flgshp_allow\",\"_loadFromBlackboard\":false,\"_decCntIfStack\":false,\"_updateOverrideMap\":true,\"_targetType\":\"BUFF_OWNER\",\"_checkBuffSource\":false,\"_sourceType\":\"BUFF_SOURCE\",\"_alsoClearNullSource\":false,\"_finishHostBuff\":false,\"_excludeThisBuff\":false,\"_decCntKey\":null,\"_decCnt\":1,\"$type\":\"Torappu.Battle.Action.Nodes+FinishBuffsById\"}],\"$type\":\"Torappu.Battle.Action.Nodes+IfElse\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "events": [
+          {
+            "event": 2,
+            "actions": [
+              {
+                "_conditionNode": {
+                  "_blackboardKey": "flgshp_tile_mark",
+                  "_bbKeyFormBb": null,
+                  "_channel": "ENEMY",
+                  "_valueToCompare": 0.0,
+                  "_valueKey": "value",
+                  "_condType": "LE",
+                  "$type": "Torappu.Battle.Action.Nodes+FilterByGlobalBlackboard"
+                },
+                "_succeedNodes": [
+                  {
+                    "_conditionNode": {
+                      "_abnormalFlag": "SILENCED",
+                      "_targetType": "SOURCE",
+                      "_isUnset": true,
+                      "_abnormalFlagKey": "",
+                      "$type": "Torappu.Battle.Action.Nodes+CheckAbnormalFlag"
+                    },
+                    "_succeedNodes": [
+                      {
+                        "_targetType": "BUFF_OWNER",
+                        "_buffKeys": [
+                          "enemy_flgshp_allow"
+                        ],
+                        "isAND": true,
+                        "_loadFromBlackboard": false,
+                        "_checkBuffSource": false,
+                        "_buffSourceType": "BUFF_SOURCE",
+                        "_checkSourceHost": false,
+                        "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+                      },
+                      {
+                        "$type": "Torappu.Battle.Action.Nodes+IfNot"
+                      },
+                      {
+                        "_buff": {
+                          "attributes": {
+                            "abnormalFlags": [],
+                            "abnormalImmunes": [],
+                            "abnormalAntis": [],
+                            "abnormalCombos": [],
+                            "abnormalComboImmunes": [],
+                            "attributeModifiers": []
+                          },
+                          "buffKey": "enemy_flgshp_allow",
+                          "loadFromDB": false,
+                          "isDurableBuff": false,
+                          "isDamageMissable": false,
+                          "isSilenceable": false,
+                          "isStunnable": false,
+                          "isFreezable": false,
+                          "isLevitatable": false,
+                          "isGroundBoundable": false,
+                          "statusResistable": "AUTOMATIC",
+                          "templateKey": "empty",
+                          "disableOverride": false,
+                          "overrideKey": null,
+                          "overrideType": "DEFAULT",
+                          "maxStackCnt": 1,
+                          "refreshRemainingTimeWhenStackMax": false,
+                          "clearAllStackCntWhenTimeUp": false,
+                          "maxValidStackCnt": -1,
+                          "independentCharacterSource": false,
+                          "overrideEffectKey": null,
+                          "overrideOnEventPriority": false,
+                          "onEventPriority": "DEFAULT",
+                          "audioSignal": null,
+                          "lifeTimeType": "INFINITY",
+                          "takeSnapshotWhenExtend": false,
+                          "durationKey": null,
+                          "remainingTimeKey": null,
+                          "lifeTime": 0.0,
+                          "triggerLifeType": "IMMEDIATELY",
+                          "triggerCnt": 0,
+                          "triggerInterval": -1.0,
+                          "waitFirstTriggerInterval": true,
+                          "firstTriggerInterval": -1.0,
+                          "priority": -1,
+                          "priorityBBKeys": [],
+                          "stripBlackboardParamsWithBuffKey": false,
+                          "blackboard": [],
+                          "enableInitDirectionFromSource": false
+                        },
+                        "_buffOwner": "BUFF_OWNER",
+                        "_useSpecialBuffSource": false,
+                        "_specialBuffSource": "BUFF_SOURCE",
+                        "_isDerivedBuff": false,
+                        "_finishDerivedBuffIfParentFinish": false,
+                        "_inherateSourceProjectileFromParentBuff": false,
+                        "_hookEffectKeyFromSourceProjectile": false,
+                        "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                      }
+                    ],
+                    "_failNodes": [
+                      {
+                        "_buffKey": "enemy_flgshp_allow",
+                        "_loadFromBlackboard": false,
+                        "_decCntIfStack": false,
+                        "_updateOverrideMap": true,
+                        "_targetType": "BUFF_OWNER",
+                        "_checkBuffSource": false,
+                        "_sourceType": "BUFF_SOURCE",
+                        "_alsoClearNullSource": false,
+                        "_finishHostBuff": false,
+                        "_excludeThisBuff": false,
+                        "_decCntKey": null,
+                        "_decCnt": 1,
+                        "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+                      }
+                    ],
+                    "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                  }
+                ],
+                "_failNodes": [
+                  {
+                    "_buffKey": "enemy_flgshp_allow",
+                    "_loadFromBlackboard": false,
+                    "_decCntIfStack": false,
+                    "_updateOverrideMap": true,
+                    "_targetType": "BUFF_OWNER",
+                    "_checkBuffSource": false,
+                    "_sourceType": "BUFF_SOURCE",
+                    "_alsoClearNullSource": false,
+                    "_finishHostBuff": false,
+                    "_excludeThisBuff": false,
+                    "_decCntKey": null,
+                    "_decCnt": 1,
+                    "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+                  }
+                ],
+                "$type": "Torappu.Battle.Action.Nodes+IfElse"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "templateIndex": 4319,
+        "template": {
+          "templateKey": "enemy_flgshp[end_point]",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 0,
+                  "value": {
+                    "SerializedState": "[{\"_defaultSettings\":[{\"key\":\"col\",\"val\":0.0,\"valStr\":null,\"overrideIfExists\":false},{\"key\":\"row\",\"val\":0.0,\"valStr\":null,\"overrideIfExists\":false}],\"$type\":\"Torappu.Battle.Action.Nodes+EnsureBlackboardDefaultValue\"},{\"_conditionsNode\":[{\"_blackboardKey\":\"flgshp_tile_mark\",\"_bbKeyFormBb\":null,\"_channel\":\"ENEMY\",\"_valueToCompare\":0.0,\"_valueKey\":\"value\",\"_condType\":\"GT\",\"$type\":\"Torappu.Battle.Action.Nodes+FilterByGlobalBlackboard\"}],\"_succeedNodes\":[{\"_globalblackboardKey\":\"flgshp_tile_row\",\"_globalBbKeyFormBb\":null,\"_blackboardKey\":\"row\",\"_channel\":\"ENEMY\",\"_assignString\":false,\"$type\":\"Torappu.Battle.Action.Nodes+AssignGlobalBlackboardToBlackboard\"},{\"_globalblackboardKey\":\"flgshp_tile_col\",\"_globalBbKeyFormBb\":null,\"_blackboardKey\":\"col\",\"_channel\":\"ENEMY\",\"_assignString\":false,\"$type\":\"Torappu.Battle.Action.Nodes+AssignGlobalBlackboardToBlackboard\"},{\"_target\":\"BUFF_OWNER\",\"_colKey\":\"col\",\"_rowKey\":\"row\",\"_revertToDefault\":false,\"$type\":\"Torappu.Battle.Action.Nodes+AssignSpecialEndPointOrRevert\"}],\"_failNodes\":null,\"_isAnd\":false,\"$type\":\"Torappu.Battle.Action.Nodes+IfConditions\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 1,
+                  "value": {
+                    "SerializedState": "[{\"_target\":\"BUFF_OWNER\",\"_colKey\":\"col\",\"_rowKey\":\"row\",\"_revertToDefault\":true,\"$type\":\"Torappu.Battle.Action.Nodes+AssignSpecialEndPointOrRevert\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "events": [
+          {
+            "event": 0,
+            "actions": [
+              {
+                "_defaultSettings": [
+                  {
+                    "key": "col",
+                    "val": 0.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "row",
+                    "val": 0.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  }
+                ],
+                "$type": "Torappu.Battle.Action.Nodes+EnsureBlackboardDefaultValue"
+              },
+              {
+                "_conditionsNode": [
+                  {
+                    "_blackboardKey": "flgshp_tile_mark",
+                    "_bbKeyFormBb": null,
+                    "_channel": "ENEMY",
+                    "_valueToCompare": 0.0,
+                    "_valueKey": "value",
+                    "_condType": "GT",
+                    "$type": "Torappu.Battle.Action.Nodes+FilterByGlobalBlackboard"
+                  }
+                ],
+                "_succeedNodes": [
+                  {
+                    "_globalblackboardKey": "flgshp_tile_row",
+                    "_globalBbKeyFormBb": null,
+                    "_blackboardKey": "row",
+                    "_channel": "ENEMY",
+                    "_assignString": false,
+                    "$type": "Torappu.Battle.Action.Nodes+AssignGlobalBlackboardToBlackboard"
+                  },
+                  {
+                    "_globalblackboardKey": "flgshp_tile_col",
+                    "_globalBbKeyFormBb": null,
+                    "_blackboardKey": "col",
+                    "_channel": "ENEMY",
+                    "_assignString": false,
+                    "$type": "Torappu.Battle.Action.Nodes+AssignGlobalBlackboardToBlackboard"
+                  },
+                  {
+                    "_target": "BUFF_OWNER",
+                    "_colKey": "col",
+                    "_rowKey": "row",
+                    "_revertToDefault": false,
+                    "$type": "Torappu.Battle.Action.Nodes+AssignSpecialEndPointOrRevert"
+                  }
+                ],
+                "_failNodes": null,
+                "_isAnd": false,
+                "$type": "Torappu.Battle.Action.Nodes+IfConditions"
+              }
+            ]
+          },
+          {
+            "event": 1,
+            "actions": [
+              {
+                "_target": "BUFF_OWNER",
+                "_colKey": "col",
+                "_rowKey": "row",
+                "_revertToDefault": true,
+                "$type": "Torappu.Battle.Action.Nodes+AssignSpecialEndPointOrRevert"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "templateIndex": 4320,
+        "template": {
+          "templateKey": "enemy_flgshp_mark",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 1,
+                  "value": {
+                    "SerializedState": "[{\"_conditionNode\":{\"_targetType\":\"BUFF_OWNER\",\"_anotherBuff\":false,\"_buffKey\":null,\"_blackboardKey\":\"triggered\",\"_blackboardKeyFromBb\":null,\"_valueToCompare\":0,\"_anotherKeyToCompare\":null,\"_condType\":\"GT\",\"$type\":\"Torappu.Battle.Action.Nodes+FilterByBlackboardValue\"},\"_succeedNodes\":[{\"_blackboardKey\":\"flgshp_tile_mark\",\"_channel\":\"ENEMY\",\"$type\":\"Torappu.Battle.Action.Nodes+RemoveGlobalBlackboard\"},{\"_blackboardKey\":\"flgshp_tile_col\",\"_channel\":\"ENEMY\",\"$type\":\"Torappu.Battle.Action.Nodes+RemoveGlobalBlackboard\"},{\"_blackboardKey\":\"flgshp_tile_row\",\"_channel\":\"ENEMY\",\"$type\":\"Torappu.Battle.Action.Nodes+RemoveGlobalBlackboard\"}],\"_failNodes\":null,\"$type\":\"Torappu.Battle.Action.Nodes+IfElse\"},{\"_nodes\":[[{\"_targetType\":\"BUFF_OWNER\",\"_effectKey\":\"enemy_flgshp_mark_01\",\"_tileKeyCol\":\"col\",\"_tileKeyRow\":\"row\",\"$type\":\"Torappu.Battle.Action.Nodes+FinishSpecifiedTileHoldingEffect\"},{\"_targetType\":\"BUFF_OWNER\",\"_effectKey\":\"enemy_flgshp_attack_line_01\",\"_tileKeyCol\":\"col\",\"_tileKeyRow\":\"row\",\"$type\":\"Torappu.Battle.Action.Nodes+FinishSpecifiedTileHoldingEffect\"}],[{\"_ownerType\":\"BUFF_OWNER\",\"_abilityName\":\"ChangeRouteAura\",\"_loadFromBlackboard\":false,\"_stopAffect\":true,\"_emitAttackFinishOnly\":false,\"_useCurrentAbility\":false,\"_useBlackboardCardUidAsOwner\":false,\"$type\":\"Torappu.Battle.Action.Nodes+InterruptAbility\"}],[{\"_enemyFrom\":\"BUFF_OWNER\",\"_resetCooldown\":true,\"_checkBuffAbility\":false,\"$type\":\"Torappu.Battle.Action.Nodes+InterruptEnemyAbility\"}]],\"_failWhenOneFail\":false,\"$type\":\"Torappu.Battle.Action.Nodes+AlwaysExecuteNodeList\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 0,
+                  "value": {
+                    "SerializedState": "[{\"_defaultSettings\":[{\"key\":\"col\",\"val\":0.0,\"valStr\":null,\"overrideIfExists\":false},{\"key\":\"row\",\"val\":0.0,\"valStr\":null,\"overrideIfExists\":false},{\"key\":\"one\",\"val\":1.0,\"valStr\":null,\"overrideIfExists\":false},{\"key\":\"triggered\",\"val\":0.0,\"valStr\":null,\"overrideIfExists\":false}],\"$type\":\"Torappu.Battle.Action.Nodes+EnsureBlackboardDefaultValue\"},{\"_targetType\":\"BUFF_OWNER\",\"_motionMask\":\"ALL\",\"_checkTargetAlive\":true,\"_checkApplyWay\":false,\"_checkTargetUnitType\":false,\"_unitType\":\"ENEMY\",\"_applyWay\":\"NONE\",\"_checkTargetFree\":false,\"_checkMotionTargetFree\":false,\"$type\":\"Torappu.Battle.Action.Nodes+IfTarget\"},{\"_conditionsNode\":[{\"_blackboardKey\":\"flgshp_tile_mark\",\"_bbKeyFormBb\":null,\"_channel\":\"ENEMY\",\"_valueToCompare\":0.0,\"_valueKey\":\"value\",\"_condType\":\"LE\",\"$type\":\"Torappu.Battle.Action.Nodes+FilterByGlobalBlackboard\"}],\"_succeedNodes\":[{\"_ownerType\":\"BUFF_OWNER\",\"_abilityName\":\"TileSelect\",\"_useFirstActiveAbility\":true,\"_colKey\":\"col\",\"_rowKey\":\"row\",\"$type\":\"Torappu.Battle.Action.Nodes+AssignFirstTileToBlackboardByAbilityTileSelector\"},{\"_blackboardKey\":\"flgshp_tile_mark\",\"_bbKeyFormBb\":null,\"_channel\":\"ENEMY\",\"_value\":1.0,\"_valueBlackboardKey\":\"one\",\"_addString\":false,\"_valueStr\":null,\"_overwrite\":true,\"$type\":\"Torappu.Battle.Action.Nodes+AddGlobalBlackboard\"},{\"_blackboardKey\":\"flgshp_tile_col\",\"_bbKeyFormBb\":null,\"_channel\":\"ENEMY\",\"_value\":-1.0,\"_valueBlackboardKey\":\"col\",\"_addString\":false,\"_valueStr\":null,\"_overwrite\":true,\"$type\":\"Torappu.Battle.Action.Nodes+AddGlobalBlackboard\"},{\"_blackboardKey\":\"flgshp_tile_row\",\"_bbKeyFormBb\":null,\"_channel\":\"ENEMY\",\"_value\":-1.0,\"_valueBlackboardKey\":\"row\",\"_addString\":false,\"_valueStr\":null,\"_overwrite\":true,\"$type\":\"Torappu.Battle.Action.Nodes+AddGlobalBlackboard\"},{\"_effectKey\":\"enemy_flgshp_mark_01\",\"_holdIt\":true,\"_verifyBeforeCreate\":false,\"_hasSource\":false,\"_tileKeyCol\":\"col\",\"_tileKeyRow\":\"row\",\"_sourceType\":\"BUFF_OWNER\",\"$type\":\"Torappu.Battle.Action.Nodes+CreateTileEffect\"},{\"_effectKey\":\"enemy_flgshp_attack_line_01\",\"_ownerType\":\"BUFF_OWNER\",\"_tileKeyCol\":\"col\",\"_tileKeyRow\":\"row\",\"_verifyBeforeCreate\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CreateLineEffectToTile\"},{\"_ownerType\":\"BUFF_OWNER\",\"_targetType\":\"BUFF_OWNER\",\"_abilityName\":\"ChangeRouteAura\",\"_checkCanUseAblityFlag\":false,\"_castDirectly\":true,\"_useFirstActiveAbility\":false,\"_useCastResult\":false,\"_triggerHostAbility\":false,\"_notInterruptAbilityIfCasting\":false,\"$type\":\"Torappu.Battle.Action.Nodes+TriggerAbility\"},{\"_inputKey\":\"one\",\"_outputKey\":\"triggered\",\"_multiplyParamKey\":null,\"_dividedParamKey\":null,\"_useRemainder\":false,\"_addParamKey\":null,\"_minusParamKey\":null,\"_minValueKey\":null,\"_maxValueKey\":null,\"_finalAbs\":true,\"_finalCeil\":false,\"_finalFloor\":false,\"_finalRound\":false,\"_useAbilityBlackboard\":false,\"_abilityName\":\"\",\"$type\":\"Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams\"}],\"_failNodes\":[{\"_enemyFrom\":\"BUFF_OWNER\",\"_resetCooldown\":false,\"_checkBuffAbility\":false,\"$type\":\"Torappu.Battle.Action.Nodes+InterruptEnemyAbility\"}],\"_isAnd\":false,\"$type\":\"Torappu.Battle.Action.Nodes+IfConditions\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 25,
+                  "value": {
+                    "SerializedState": "[{\"_ownerType\":\"BUFF_OWNER\",\"_abilityName\":\"Focus\",\"_loadFromBlackboard\":false,\"_stopAffect\":false,\"_emitAttackFinishOnly\":false,\"_useCurrentAbility\":false,\"_useBlackboardCardUidAsOwner\":false,\"$type\":\"Torappu.Battle.Action.Nodes+InterruptAbility\"},{\"_buffKey\":\"enemy_flgshp_mark[keep]\",\"_loadFromBlackboard\":false,\"_decCntIfStack\":false,\"_updateOverrideMap\":true,\"_targetType\":\"BUFF_OWNER\",\"_checkBuffSource\":false,\"_sourceType\":\"BUFF_SOURCE\",\"_alsoClearNullSource\":false,\"_finishHostBuff\":false,\"_excludeThisBuff\":false,\"_decCntKey\":null,\"_decCnt\":1,\"$type\":\"Torappu.Battle.Action.Nodes+FinishBuffsById\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "events": [
+          {
+            "event": 1,
+            "actions": [
+              {
+                "_conditionNode": {
+                  "_targetType": "BUFF_OWNER",
+                  "_anotherBuff": false,
+                  "_buffKey": null,
+                  "_blackboardKey": "triggered",
+                  "_blackboardKeyFromBb": null,
+                  "_valueToCompare": 0,
+                  "_anotherKeyToCompare": null,
+                  "_condType": "GT",
+                  "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+                },
+                "_succeedNodes": [
+                  {
+                    "_blackboardKey": "flgshp_tile_mark",
+                    "_channel": "ENEMY",
+                    "$type": "Torappu.Battle.Action.Nodes+RemoveGlobalBlackboard"
+                  },
+                  {
+                    "_blackboardKey": "flgshp_tile_col",
+                    "_channel": "ENEMY",
+                    "$type": "Torappu.Battle.Action.Nodes+RemoveGlobalBlackboard"
+                  },
+                  {
+                    "_blackboardKey": "flgshp_tile_row",
+                    "_channel": "ENEMY",
+                    "$type": "Torappu.Battle.Action.Nodes+RemoveGlobalBlackboard"
+                  }
+                ],
+                "_failNodes": null,
+                "$type": "Torappu.Battle.Action.Nodes+IfElse"
+              },
+              {
+                "_nodes": [
+                  [
+                    {
+                      "_targetType": "BUFF_OWNER",
+                      "_effectKey": "enemy_flgshp_mark_01",
+                      "_tileKeyCol": "col",
+                      "_tileKeyRow": "row",
+                      "$type": "Torappu.Battle.Action.Nodes+FinishSpecifiedTileHoldingEffect"
+                    },
+                    {
+                      "_targetType": "BUFF_OWNER",
+                      "_effectKey": "enemy_flgshp_attack_line_01",
+                      "_tileKeyCol": "col",
+                      "_tileKeyRow": "row",
+                      "$type": "Torappu.Battle.Action.Nodes+FinishSpecifiedTileHoldingEffect"
+                    }
+                  ],
+                  [
+                    {
+                      "_ownerType": "BUFF_OWNER",
+                      "_abilityName": "ChangeRouteAura",
+                      "_loadFromBlackboard": false,
+                      "_stopAffect": true,
+                      "_emitAttackFinishOnly": false,
+                      "_useCurrentAbility": false,
+                      "_useBlackboardCardUidAsOwner": false,
+                      "$type": "Torappu.Battle.Action.Nodes+InterruptAbility"
+                    }
+                  ],
+                  [
+                    {
+                      "_enemyFrom": "BUFF_OWNER",
+                      "_resetCooldown": true,
+                      "_checkBuffAbility": false,
+                      "$type": "Torappu.Battle.Action.Nodes+InterruptEnemyAbility"
+                    }
+                  ]
+                ],
+                "_failWhenOneFail": false,
+                "$type": "Torappu.Battle.Action.Nodes+AlwaysExecuteNodeList"
+              }
+            ]
+          },
+          {
+            "event": 0,
+            "actions": [
+              {
+                "_defaultSettings": [
+                  {
+                    "key": "col",
+                    "val": 0.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "row",
+                    "val": 0.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "one",
+                    "val": 1.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  },
+                  {
+                    "key": "triggered",
+                    "val": 0.0,
+                    "valStr": null,
+                    "overrideIfExists": false
+                  }
+                ],
+                "$type": "Torappu.Battle.Action.Nodes+EnsureBlackboardDefaultValue"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_motionMask": "ALL",
+                "_checkTargetAlive": true,
+                "_checkApplyWay": false,
+                "_checkTargetUnitType": false,
+                "_unitType": "ENEMY",
+                "_applyWay": "NONE",
+                "_checkTargetFree": false,
+                "_checkMotionTargetFree": false,
+                "$type": "Torappu.Battle.Action.Nodes+IfTarget"
+              },
+              {
+                "_conditionsNode": [
+                  {
+                    "_blackboardKey": "flgshp_tile_mark",
+                    "_bbKeyFormBb": null,
+                    "_channel": "ENEMY",
+                    "_valueToCompare": 0.0,
+                    "_valueKey": "value",
+                    "_condType": "LE",
+                    "$type": "Torappu.Battle.Action.Nodes+FilterByGlobalBlackboard"
+                  }
+                ],
+                "_succeedNodes": [
+                  {
+                    "_ownerType": "BUFF_OWNER",
+                    "_abilityName": "TileSelect",
+                    "_useFirstActiveAbility": true,
+                    "_colKey": "col",
+                    "_rowKey": "row",
+                    "$type": "Torappu.Battle.Action.Nodes+AssignFirstTileToBlackboardByAbilityTileSelector"
+                  },
+                  {
+                    "_blackboardKey": "flgshp_tile_mark",
+                    "_bbKeyFormBb": null,
+                    "_channel": "ENEMY",
+                    "_value": 1.0,
+                    "_valueBlackboardKey": "one",
+                    "_addString": false,
+                    "_valueStr": null,
+                    "_overwrite": true,
+                    "$type": "Torappu.Battle.Action.Nodes+AddGlobalBlackboard"
+                  },
+                  {
+                    "_blackboardKey": "flgshp_tile_col",
+                    "_bbKeyFormBb": null,
+                    "_channel": "ENEMY",
+                    "_value": -1.0,
+                    "_valueBlackboardKey": "col",
+                    "_addString": false,
+                    "_valueStr": null,
+                    "_overwrite": true,
+                    "$type": "Torappu.Battle.Action.Nodes+AddGlobalBlackboard"
+                  },
+                  {
+                    "_blackboardKey": "flgshp_tile_row",
+                    "_bbKeyFormBb": null,
+                    "_channel": "ENEMY",
+                    "_value": -1.0,
+                    "_valueBlackboardKey": "row",
+                    "_addString": false,
+                    "_valueStr": null,
+                    "_overwrite": true,
+                    "$type": "Torappu.Battle.Action.Nodes+AddGlobalBlackboard"
+                  },
+                  {
+                    "_effectKey": "enemy_flgshp_mark_01",
+                    "_holdIt": true,
+                    "_verifyBeforeCreate": false,
+                    "_hasSource": false,
+                    "_tileKeyCol": "col",
+                    "_tileKeyRow": "row",
+                    "_sourceType": "BUFF_OWNER",
+                    "$type": "Torappu.Battle.Action.Nodes+CreateTileEffect"
+                  },
+                  {
+                    "_effectKey": "enemy_flgshp_attack_line_01",
+                    "_ownerType": "BUFF_OWNER",
+                    "_tileKeyCol": "col",
+                    "_tileKeyRow": "row",
+                    "_verifyBeforeCreate": false,
+                    "$type": "Torappu.Battle.Action.Nodes+CreateLineEffectToTile"
+                  },
+                  {
+                    "_ownerType": "BUFF_OWNER",
+                    "_targetType": "BUFF_OWNER",
+                    "_abilityName": "ChangeRouteAura",
+                    "_checkCanUseAblityFlag": false,
+                    "_castDirectly": true,
+                    "_useFirstActiveAbility": false,
+                    "_useCastResult": false,
+                    "_triggerHostAbility": false,
+                    "_notInterruptAbilityIfCasting": false,
+                    "$type": "Torappu.Battle.Action.Nodes+TriggerAbility"
+                  },
+                  {
+                    "_inputKey": "one",
+                    "_outputKey": "triggered",
+                    "_multiplyParamKey": null,
+                    "_dividedParamKey": null,
+                    "_useRemainder": false,
+                    "_addParamKey": null,
+                    "_minusParamKey": null,
+                    "_minValueKey": null,
+                    "_maxValueKey": null,
+                    "_finalAbs": true,
+                    "_finalCeil": false,
+                    "_finalFloor": false,
+                    "_finalRound": false,
+                    "_useAbilityBlackboard": false,
+                    "_abilityName": "",
+                    "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+                  }
+                ],
+                "_failNodes": [
+                  {
+                    "_enemyFrom": "BUFF_OWNER",
+                    "_resetCooldown": false,
+                    "_checkBuffAbility": false,
+                    "$type": "Torappu.Battle.Action.Nodes+InterruptEnemyAbility"
+                  }
+                ],
+                "_isAnd": false,
+                "$type": "Torappu.Battle.Action.Nodes+IfConditions"
+              }
+            ]
+          },
+          {
+            "event": 25,
+            "actions": [
+              {
+                "_ownerType": "BUFF_OWNER",
+                "_abilityName": "Focus",
+                "_loadFromBlackboard": false,
+                "_stopAffect": false,
+                "_emitAttackFinishOnly": false,
+                "_useCurrentAbility": false,
+                "_useBlackboardCardUidAsOwner": false,
+                "$type": "Torappu.Battle.Action.Nodes+InterruptAbility"
+              },
+              {
+                "_buffKey": "enemy_flgshp_mark[keep]",
+                "_loadFromBlackboard": false,
+                "_decCntIfStack": false,
+                "_updateOverrideMap": true,
+                "_targetType": "BUFF_OWNER",
+                "_checkBuffSource": false,
+                "_sourceType": "BUFF_SOURCE",
+                "_alsoClearNullSource": false,
+                "_finishHostBuff": false,
+                "_excludeThisBuff": false,
+                "_decCntKey": null,
+                "_decCnt": 1,
+                "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "components": [
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "file": "CAB-c33d9b6cb48df27fbe07e085005f2c6a",
+        "pathId": "-8717018290361943570",
+        "objectSha256": "338604d1535bc5bcc84718c50989cbf6157088ed3f59e87aabc57b8dc2f068b3",
+        "hierarchy": [
+          {
+            "name": "Selector",
+            "gameObjectPathId": "-2951869301748614674",
+            "transformPathId": "-6314740720136832530"
+          },
+          {
+            "name": "TileSelect",
+            "gameObjectPathId": "673781925545294318",
+            "transformPathId": "-5165311520228853266"
+          },
+          {
+            "name": "Focus",
+            "gameObjectPathId": "5274048931975248366",
+            "transformPathId": "-3434067319972644370"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6431666137845483026",
+            "transformPathId": "-154515860148274706"
+          },
+          {
+            "name": "enemy_17002_flgshp",
+            "gameObjectPathId": "-7986550053827200530",
+            "transformPathId": "-6618502331023443474"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "-7891991905135157257",
+          "value": {
+            "id": "-7891991905135157257",
+            "name": "TileSelector",
+            "cl": "TileSelector",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -2951869301748614674
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -7891991905135157257
+          },
+          "common:427": "",
+          "_options": {
+            "buildableType": 0,
+            "allowNoneBuildableType": false,
+            "passableMask": 0,
+            "allowNonePassableMask": false,
+            "checkBuildableOrPassable": false,
+            "checkExtraBuildableCheckers": false,
+            "advancedBuildableMask": 1,
+            "advancedBuildableMaskExcept": false,
+            "allowAllAdvancedBuildableMask": false,
+            "heightType": 0,
+            "checkHeightType": true,
+            "checkTileMode": false,
+            "modeIndex": 0,
+            "checkTileMoveCost": false,
+            "moveCostCompareType": 0,
+            "moveCostThreshold": 0,
+            "allowedTileBlackboardKey": "",
+            "excludeTileBlackboardKey": "",
+            "checkTileTypes": true,
+            "exceptTileTypes": false,
+            "tileTypesMask": 4,
+            "checkTileHidden": false
+          },
+          "_filterType": 23,
+          "_limitTargetNum": false,
+          "_maxNum": 1,
+          "_tileOrTokenIdListPreferred": {
+            "Array": []
+          },
+          "_tileSortType": 1,
+          "_targetSide": 2,
+          "_targetMotion": 1,
+          "_targetCategory": 1,
+          "_needProfessionMask": false,
+          "_checkUnitType": false,
+          "_unitTypeMask": 0,
+          "_excludeAllCharacter": false,
+          "_randomBeforeShrink": false,
+          "_fixedDistance": 0,
+          "_blackboardKey": "",
+          "_chrBuffKey": "",
+          "_enemyBuffKey": "",
+          "_distValue": 0,
+          "_distCompareType": 0,
+          "_enemyKeys": {
+            "Array": []
+          },
+          "_filterBlackboardKey": "",
+          "_blackboardKeys": {
+            "Array": []
+          },
+          "_excludeCamouflagCharacter": false,
+          "_alwaysSort": true,
+          "_alwaysRandomInTheEnd": false,
+          "_ignoreBlackList": false,
+          "_extraFilterTypeList": {
+            "Array": []
+          },
+          "_ignoreHitRange": false,
+          "_excludeOwnerRootTile": false,
+          "_ownerRespawnSelfBuildCheckParams": {
+            "ignoreBuildableType": false
+          },
+          "_ownerRespawnSelfIgnoreAdvancedBuildableMask": true
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "file": "CAB-c33d9b6cb48df27fbe07e085005f2c6a",
+        "pathId": "-8587123766446147090",
+        "objectSha256": "afabb869a1048adeb03b293979a7179c1568cc4e7ebf3620425ff9b6879dd0e8",
+        "hierarchy": [
+          {
+            "name": "enemy_17002_flgshp",
+            "gameObjectPathId": "-7986550053827200530",
+            "transformPathId": "-6618502331023443474"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "-6629209555389654693",
+          "value": {
+            "id": "-6629209555389654693",
+            "name": "Enemy",
+            "cl": "Enemy",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -7986550053827200530
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -6629209555389654693
+          },
+          "common:427": "",
+          "_animator": {
+            "m_FileID": 0,
+            "m_PathID": 4482506682782497262
+          },
+          "_modes": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 1582665838076213742
+              }
+            ]
+          },
+          "_commonAbilities": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -5878645556632831506
+              }
+            ]
+          },
+          "_uiMountPoint": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_effectTransform": {
+            "m_FileID": 0,
+            "m_PathID": -6997727109614945810
+          },
+          "_shadow": {
+            "m_FileID": 0,
+            "m_PathID": -4252099264087410194
+          },
+          "_defaultBodyColor": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "_hideShadowOnRecycle": false,
+          "_overrideGraphicBound": -1.0,
+          "_hudPluginReplacePairs": {
+            "Array": []
+          },
+          "_showDebugName": false,
+          "_sideTypeIndex": 1,
+          "_locateRange": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_disableRenderLocateRange": false,
+          "_isFixedRotation": false,
+          "_bodyDirectionPolicy": 0,
+          "_useMoveDirAsFaceDir": false,
+          "_scaleMoveBySpeed": true,
+          "_scaleMoveAnimationRange": {
+            "x": 1.5,
+            "y": 2.0
+          },
+          "_showSpAsBulletMode": false,
+          "_hideBulletSpModes": {
+            "Array": []
+          },
+          "_alwaysShowHp": false,
+          "_alwaysHideHp": false,
+          "_keepMoveAnimScale": false,
+          "_useSpecificDeadAnim": false,
+          "_useSpecificReachExitAnim": false,
+          "_disableBornTweenColor": false,
+          "_height": 0.0,
+          "_groundBoundHeightZOffset": 0.10000000149011612,
+          "_useSpineLikeHeightUpdate": false,
+          "_spineLikeHeightUpdateRatio": 0.25,
+          "_delayToBorn": 0.0,
+          "_onlyDelayToBornOnTileStart": false,
+          "_audioSignalUseId": false,
+          "_startEffect": "",
+          "_deadEffect": "",
+          "_blockVolume": 1,
+          "_specialBlockCondition": {
+            "_type": 0,
+            "_buffKeyPairs": {
+              "Array": []
+            },
+            "_filterTags": {
+              "Array": []
+            }
+          },
+          "_dontSetEnemyFaceByCursorWhenBorn": false,
+          "_idleWhenBorn": false,
+          "_canNotExit": false,
+          "_hideShadowOnReset": false,
+          "_allowFalldownWhenReborn": true,
+          "_alwaysCheckCurrentPoint": false,
+          "_ignoreBlockMode": false,
+          "_specificBlockMask": 0
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "file": "CAB-c33d9b6cb48df27fbe07e085005f2c6a",
+        "pathId": "-7469169149201761810",
+        "objectSha256": "5c5a9238635a5b31a73bf1024a16748c386b5b258a990d04f9065911d024957d",
+        "hierarchy": [
+          {
+            "name": "Focus",
+            "gameObjectPathId": "5274048931975248366",
+            "transformPathId": "-3434067319972644370"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6431666137845483026",
+            "transformPathId": "-154515860148274706"
+          },
+          {
+            "name": "enemy_17002_flgshp",
+            "gameObjectPathId": "-7986550053827200530",
+            "transformPathId": "-6618502331023443474"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "-5087399121287503180",
+          "value": {
+            "id": "-5087399121287503180",
+            "name": "EnemySkill",
+            "cl": "EnemySkill",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 5274048931975248366
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -5087399121287503180
+          },
+          "common:427": "",
+          "_familyMask": 3,
+          "_trigger": {
+            "m_FileID": 0,
+            "m_PathID": 3280678896622942702
+          },
+          "_checkParentActive": false,
+          "_maxTriggerTime": -1,
+          "_resetMainAbilityCdWhenCastEnd": true,
+          "_resetCdWaitFirstPeriod": true,
+          "_overwriteInitCooldown": -1,
+          "_ignoreSilence": false,
+          "_immuneStunWhenAffecting": false,
+          "_addEnemyIdToSignalId": true,
+          "_castLikeAttack": false
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "file": "CAB-c33d9b6cb48df27fbe07e085005f2c6a",
+        "pathId": "-5878645556632831506",
+        "objectSha256": "ba7043b46a2ed4358ebfd998c390b7216130d73cf1fcd3c57eb0e94efdc8377c",
+        "hierarchy": [
+          {
+            "name": "Ability0",
+            "gameObjectPathId": "4854574269123508718",
+            "transformPathId": "-8868709414065030674"
+          },
+          {
+            "name": "CommonAbilities",
+            "gameObjectPathId": "6597217103460678126",
+            "transformPathId": "-206477773616530962"
+          },
+          {
+            "name": "enemy_17002_flgshp",
+            "gameObjectPathId": "-7986550053827200530",
+            "transformPathId": "-6618502331023443474"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "3800760148018415462",
+          "value": {
+            "id": "3800760148018415462",
+            "name": "PassiveBuffAbility",
+            "cl": "PassiveBuffAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 4854574269123508718
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 3800760148018415462
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": true,
+          "_attachPassiveBuffsOnDummy": true,
+          "_ignoreIfOwnerDead": false,
+          "_forceAsDmgOrHealAbility": false,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "enemy_flgshp_allow[check]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "enemy_flgshp_allow[check]",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": true,
+                "triggerCnt": 0,
+                "triggerInterval": 0.5,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "file": "CAB-c33d9b6cb48df27fbe07e085005f2c6a",
+        "pathId": "-5832096324577740306",
+        "objectSha256": "93af450b6b0dcae682f27a6d91460699d4d3f342e4cea5c2d80c7f9828c23dde",
+        "hierarchy": [
+          {
+            "name": "Focus",
+            "gameObjectPathId": "5274048931975248366",
+            "transformPathId": "-3434067319972644370"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6431666137845483026",
+            "transformPathId": "-154515860148274706"
+          },
+          {
+            "name": "enemy_17002_flgshp",
+            "gameObjectPathId": "-7986550053827200530",
+            "transformPathId": "-6618502331023443474"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "5605707488871161295",
+          "value": {
+            "id": "5605707488871161295",
+            "name": "ExtraAbilities",
+            "cl": "ExtraAbilities",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 5274048931975248366
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 5605707488871161295
+          },
+          "common:427": "",
+          "_abilities": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 2417690534494321134
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 8587141919555303918
+              }
+            ]
+          },
+          "_useExtraAbilitySignal": false
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "file": "CAB-c33d9b6cb48df27fbe07e085005f2c6a",
+        "pathId": "-4771507022920173074",
+        "objectSha256": "e0e00c06acb47f34a6b92b283ef67d4b0313ddcc58932d4da811a507d86b1e4b",
+        "hierarchy": [
+          {
+            "name": "Selector",
+            "gameObjectPathId": "-2086648090641712658",
+            "transformPathId": "-9196517083359102482"
+          },
+          {
+            "name": "Focus",
+            "gameObjectPathId": "5274048931975248366",
+            "transformPathId": "-3434067319972644370"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6431666137845483026",
+            "transformPathId": "-154515860148274706"
+          },
+          {
+            "name": "enemy_17002_flgshp",
+            "gameObjectPathId": "-7986550053827200530",
+            "transformPathId": "-6618502331023443474"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "-928041209999387916",
+          "value": {
+            "id": "-928041209999387916",
+            "name": "SelfSelectorInCertainCondition",
+            "cl": "SelfSelectorInCertainCondition",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -2086648090641712658
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -928041209999387916
+          },
+          "common:427": "",
+          "_checkHpRatioCondition": false,
+          "_maxRatio": 0.0,
+          "_checkNotContainBuffs": false,
+          "_checkContainBuffs": true,
+          "_checkBuffStackCount": false,
+          "_buffStackCount": {
+            "type": "common:934",
+            "hex": "00000000"
+          },
+          "_buffStackCountCompareType": 2,
+          "_buffStackCountFromBB": false,
+          "_buffStackCountBBKey": "value",
+          "_buffKeys": {
+            "Array": [
+              "enemy_flgshp_allow"
+            ]
+          },
+          "_checkDistToExit": false,
+          "_distToExitCompareType": 2,
+          "_distToExitBBKey": "dist"
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "file": "CAB-c33d9b6cb48df27fbe07e085005f2c6a",
+        "pathId": "-1669719544296850962",
+        "objectSha256": "d5f6b2addc3dc46c653869b7d84284a5d65efc6e44a42e770866e63de59461eb",
+        "hierarchy": [
+          {
+            "name": "ChangeRouteAuraGlobal",
+            "gameObjectPathId": "5303728723246627310",
+            "transformPathId": "-7358416322479343122"
+          },
+          {
+            "name": "ChangeRouteAura",
+            "gameObjectPathId": "6688419513866107374",
+            "transformPathId": "2394685825549842926"
+          },
+          {
+            "name": "Focus",
+            "gameObjectPathId": "5274048931975248366",
+            "transformPathId": "-3434067319972644370"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6431666137845483026",
+            "transformPathId": "-154515860148274706"
+          },
+          {
+            "name": "enemy_17002_flgshp",
+            "gameObjectPathId": "-7986550053827200530",
+            "transformPathId": "-6618502331023443474"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "-3637692038217913187",
+          "value": {
+            "id": "-3637692038217913187",
+            "name": "TargetValidator",
+            "cl": "TargetValidator",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 5303728723246627310
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -3637692038217913187
+          },
+          "common:427": "",
+          "_targetOptions": {
+            "targetSide": 1,
+            "targetMotion": 3,
+            "targetCategory": 1,
+            "enableAdvancedOptions": false,
+            "ignoreTargetFree": false,
+            "ignoreAllyTargetFree": false,
+            "ignoreHealFree": false,
+            "ignoreMotionMode": false,
+            "ignoreTargetSide": false,
+            "excludeSomeAbnormalFlags": false,
+            "containSomeAbnormalFlags": false,
+            "excludeAbnormalFlag": 0,
+            "containAbnormalFlag": 0,
+            "purposeMask": 0,
+            "professionMask": 0,
+            "checkUnitType": false,
+            "unitTypeMask": 0,
+            "onlyIgnoreSomeOfTargetFreeCase": false,
+            "abnormalFlag": 0,
+            "abnormalCombo": 0
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "file": "CAB-c33d9b6cb48df27fbe07e085005f2c6a",
+        "pathId": "1582665838076213742",
+        "objectSha256": "f6736569314b834f58d599e57c4e0607297d45af4b7b7e76124278fc4c7dea9f",
+        "hierarchy": [
+          {
+            "name": "Default",
+            "gameObjectPathId": "-3334395641862637074",
+            "transformPathId": "-4908249244384577042"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-5010889645780190738",
+            "transformPathId": "7726525144943344110"
+          },
+          {
+            "name": "enemy_17002_flgshp",
+            "gameObjectPathId": "-7986550053827200530",
+            "transformPathId": "-6618502331023443474"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "5390319429299248724",
+          "value": {
+            "id": "5390319429299248724",
+            "name": "UnitMode",
+            "cl": "UnitMode",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -3334395641862637074
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 5390319429299248724
+          },
+          "common:427": "",
+          "_bodyTransform": {
+            "m_FileID": 0,
+            "m_PathID": -5960651750918211090
+          },
+          "_animatorHooker": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_overrideStartEffect": "",
+          "_overrideDeadEffect": "",
+          "_combat": {
+            "m_FileID": 0,
+            "m_PathID": 3334084155395521006
+          },
+          "_attack": {
+            "m_FileID": 0,
+            "m_PathID": -3106696711870170642
+          },
+          "_attackTrigger": {
+            "m_FileID": 0,
+            "m_PathID": 4229985772231178734
+          },
+          "_hideUIAttackRange": false,
+          "_updateAttackRangeExtendByAttributeDirty": false,
+          "_rangeToShow": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_extraRangesToShow": {
+            "Array": []
+          },
+          "_generalAbilities": {
+            "Array": []
+          },
+          "_addIndexToSignalId": true,
+          "_includeIndexZero": true,
+          "_alwaysHideHp": {
+            "isDefined": false,
+            "value": false
+          },
+          "_alwaysHideSp": {
+            "isDefined": false,
+            "value": false
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "file": "CAB-c33d9b6cb48df27fbe07e085005f2c6a",
+        "pathId": "2417690534494321134",
+        "objectSha256": "6b7e19709cf8eb153fc765b0a4870fcf3be3ba774db89838e63e33217e1d90d1",
+        "hierarchy": [
+          {
+            "name": "TileSelect",
+            "gameObjectPathId": "673781925545294318",
+            "transformPathId": "-5165311520228853266"
+          },
+          {
+            "name": "Focus",
+            "gameObjectPathId": "5274048931975248366",
+            "transformPathId": "-3434067319972644370"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6431666137845483026",
+            "transformPathId": "-154515860148274706"
+          },
+          {
+            "name": "enemy_17002_flgshp",
+            "gameObjectPathId": "-7986550053827200530",
+            "transformPathId": "-6618502331023443474"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "2702927552840241462",
+          "value": {
+            "id": "2702927552840241462",
+            "name": "AnimatedActionToOwnerAbility",
+            "cl": "AnimatedActionToOwnerAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 673781925545294318
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 2702927552840241462
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": -8717018290361943570
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": true,
+          "_attachPassiveBuffsOnDummy": true,
+          "_ignoreIfOwnerDead": false,
+          "_forceAsDmgOrHealAbility": false,
+          "_waitForAttackEvent": true,
+          "_interuptIfTargetDead": false,
+          "_resetCdStrategy": 1,
+          "_selectTargetSource": 2,
+          "_selectTargetTiming": 0,
+          "_timeMode": 0,
+          "_alwaysIncludeTarget": true,
+          "_allowNoTarget": false,
+          "_animKey": "",
+          "_endAnimKey": "",
+          "_downAnimKey": "",
+          "_downEndAnimKey": "",
+          "_upAnimKey": "",
+          "_upEndAnimKey": "",
+          "_cooldown": 0.0,
+          "_cooldownKey": "duration",
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_faceToTarget": true,
+          "_faceToDefault": false,
+          "_faceToFront": false,
+          "_faceToFirstCastTarget": false,
+          "_checkFaceToFirstCastTargetDownAttack": false,
+          "_forceFaceToDirection": false,
+          "_activeBuffs": {
+            "Array": []
+          },
+          "_maxAnimScale": -1.0,
+          "_onlyPlayEndAnimWhenIsLastAbility": false,
+          "_ignorePalsyInterrupt": false,
+          "_affectedBySlowDown": false,
+          "_actions": {
+            "SerializedState": "[]",
+            "SerializedObjectReferences": {
+              "Array": []
+            }
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "file": "CAB-c33d9b6cb48df27fbe07e085005f2c6a",
+        "pathId": "3280678896622942702",
+        "objectSha256": "5c5508adfbd893a47d509002e2193da9a853102ce3573e0d785b77c311e17ec4",
+        "hierarchy": [
+          {
+            "name": "Selector",
+            "gameObjectPathId": "-2086648090641712658",
+            "transformPathId": "-9196517083359102482"
+          },
+          {
+            "name": "Focus",
+            "gameObjectPathId": "5274048931975248366",
+            "transformPathId": "-3434067319972644370"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6431666137845483026",
+            "transformPathId": "-154515860148274706"
+          },
+          {
+            "name": "enemy_17002_flgshp",
+            "gameObjectPathId": "-7986550053827200530",
+            "transformPathId": "-6618502331023443474"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "8607874384982393801",
+          "value": {
+            "id": "8607874384982393801",
+            "name": "SelectorTrigger",
+            "cl": "SelectorTrigger",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -2086648090641712658
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 8607874384982393801
+          },
+          "common:427": "",
+          "_keepTarget": false,
+          "_minTargetNum": 1,
+          "_overrideSearchTargetTick": -1
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "file": "CAB-c33d9b6cb48df27fbe07e085005f2c6a",
+        "pathId": "4150116250143341038",
+        "objectSha256": "67dcb36099fb4c90234219966f5408fd91b5fccd276fe3f43f3d5b80bfa3ce07",
+        "hierarchy": [
+          {
+            "name": "Focus",
+            "gameObjectPathId": "5274048931975248366",
+            "transformPathId": "-3434067319972644370"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6431666137845483026",
+            "transformPathId": "-154515860148274706"
+          },
+          {
+            "name": "enemy_17002_flgshp",
+            "gameObjectPathId": "-7986550053827200530",
+            "transformPathId": "-6618502331023443474"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "-4234909118878081699",
+          "value": {
+            "id": "-4234909118878081699",
+            "name": "ActiveBuffAbility",
+            "cl": "ActiveBuffAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 5274048931975248366
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -4234909118878081699
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": -4771507022920173074
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": true,
+          "_attachPassiveBuffsOnDummy": true,
+          "_ignoreIfOwnerDead": false,
+          "_forceAsDmgOrHealAbility": false,
+          "_waitForAttackEvent": false,
+          "_interuptIfTargetDead": false,
+          "_resetCdStrategy": 1,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "enemy_flgshp_mark[keep]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "empty",
+                "disableOverride": true,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "mark_duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": 0.5,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          },
+          "_waitForCasting": true,
+          "_updateLifetimeWhenSpellStart": false,
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_checkBuffEarlyFinish": true,
+          "_passiveBuffs": {
+            "Array": []
+          },
+          "_ignoreInfiniteBuffCooldown": false,
+          "_enableUpdateCooldown": false
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "file": "CAB-c33d9b6cb48df27fbe07e085005f2c6a",
+        "pathId": "4721722322772212206",
+        "objectSha256": "be8fbf84590c89ab4e7115190651b915d0fc94383243f4cc7be000222033f25a",
+        "hierarchy": [
+          {
+            "name": "Focus",
+            "gameObjectPathId": "5274048931975248366",
+            "transformPathId": "-3434067319972644370"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6431666137845483026",
+            "transformPathId": "-154515860148274706"
+          },
+          {
+            "name": "enemy_17002_flgshp",
+            "gameObjectPathId": "-7986550053827200530",
+            "transformPathId": "-6618502331023443474"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "680305599797508032",
+          "value": {
+            "id": "680305599797508032",
+            "name": "ThreePartChannelingAnimation",
+            "cl": "ThreePartChannelingAnimation",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 5274048931975248366
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 680305599797508032
+          },
+          "common:427": "",
+          "_default": {
+            "beginAnim": "Skill_Begin",
+            "loopAnim": "Skill_Loop",
+            "endAnim": "Skill_End"
+          },
+          "_overrideDownAnimation": false,
+          "_down": {
+            "beginAnim": "",
+            "loopAnim": "",
+            "endAnim": ""
+          },
+          "_overrideUpAnimation": false,
+          "_up": {
+            "beginAnim": "",
+            "loopAnim": "",
+            "endAnim": ""
+          },
+          "_faceToFront": false,
+          "_faceToDefault": false,
+          "_waitForAttachFinishEvent": false,
+          "_earlyFinishEndIdleAnimation": false,
+          "_fireAttackFinishEvent": false,
+          "_delayToFireAttackSkillEvent": false,
+          "_delaySecond": 0.0,
+          "_fireAnimEndEvent": false,
+          "_dontPlayBeginAnimFromInterrupted": false,
+          "_onlyPlayBeginAnimWhenFirstAttack": false,
+          "_delayToAnimateEndAnimation": false,
+          "_delayToAnimateEndAnimationTime": 0.0,
+          "_playIdleAnimInTheEnd": false
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "file": "CAB-c33d9b6cb48df27fbe07e085005f2c6a",
+        "pathId": "5075682170954430958",
+        "objectSha256": "1e46e562861ddaa16da45303e43df8cd95578d3383cf37f5bb77131d52f250d1",
+        "hierarchy": [
+          {
+            "name": "Focus",
+            "gameObjectPathId": "5274048931975248366",
+            "transformPathId": "-3434067319972644370"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6431666137845483026",
+            "transformPathId": "-154515860148274706"
+          },
+          {
+            "name": "enemy_17002_flgshp",
+            "gameObjectPathId": "-7986550053827200530",
+            "transformPathId": "-6618502331023443474"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "1339719624887862345",
+          "value": {
+            "id": "1339719624887862345",
+            "name": "BuffDuringCastingFixed",
+            "cl": "BuffDuringCastingFixed",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 5274048931975248366
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 1339719624887862345
+          },
+          "common:427": "",
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "enemy_flgshp_mark",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": true,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "enemy_flgshp_mark",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "mark_duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": true,
+                "triggerCnt": 0,
+                "triggerInterval": 0.5,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "file": "CAB-c33d9b6cb48df27fbe07e085005f2c6a",
+        "pathId": "5119458228501133806",
+        "objectSha256": "71962136ef4cf79b94cf7e725d5c8c299b37605e007a143a6ef8b3f8cf43c9f6",
+        "hierarchy": [
+          {
+            "name": "ChangeRouteAuraGlobal",
+            "gameObjectPathId": "5303728723246627310",
+            "transformPathId": "-7358416322479343122"
+          },
+          {
+            "name": "ChangeRouteAura",
+            "gameObjectPathId": "6688419513866107374",
+            "transformPathId": "2394685825549842926"
+          },
+          {
+            "name": "Focus",
+            "gameObjectPathId": "5274048931975248366",
+            "transformPathId": "-3434067319972644370"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6431666137845483026",
+            "transformPathId": "-154515860148274706"
+          },
+          {
+            "name": "enemy_17002_flgshp",
+            "gameObjectPathId": "-7986550053827200530",
+            "transformPathId": "-6618502331023443474"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "-5793748974791823428",
+          "value": {
+            "id": "-5793748974791823428",
+            "name": "GlobalAuraAbility",
+            "cl": "GlobalAuraAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 5303728723246627310
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -5793748974791823428
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": true,
+          "_attachPassiveBuffsOnDummy": true,
+          "_ignoreIfOwnerDead": false,
+          "_forceAsDmgOrHealAbility": false,
+          "_targetValidator": {
+            "m_FileID": 0,
+            "m_PathID": -1669719544296850962
+          },
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "enemy_flgshp[end_point]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "enemy_flgshp[end_point]",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          },
+          "_passiveBuffs": {
+            "Array": []
+          },
+          "_selfOption": 0,
+          "_removeBuffWhenAbilityDetached": true,
+          "_removeBuffIncludeReborning": false,
+          "_onlyDetactTargetWhenStarted": false,
+          "_onlyDetectCurrentMapLayer": false,
+          "_listenUnitRebornEvent": true,
+          "_tryRemoveBuffFirstWhenReborn": false,
+          "_useDurableRallyPointLikeSwitch": false,
+          "_forceRemoveAllBuffsByKey": false,
+          "_effects": {
+            "Array": []
+          },
+          "_forceTick": false,
+          "_excludeReborningEntity": false,
+          "_interval": 0.0,
+          "_clearBuffsWhenDisappear": false
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "file": "CAB-c33d9b6cb48df27fbe07e085005f2c6a",
+        "pathId": "6296232418017065454",
+        "objectSha256": "b16e15ee7bbaa9d11820c1dec18daa6da58057286d353c67ff36137ebce8a4c4",
+        "hierarchy": [
+          {
+            "name": "Selector",
+            "gameObjectPathId": "-2951869301748614674",
+            "transformPathId": "-6314740720136832530"
+          },
+          {
+            "name": "TileSelect",
+            "gameObjectPathId": "673781925545294318",
+            "transformPathId": "-5165311520228853266"
+          },
+          {
+            "name": "Focus",
+            "gameObjectPathId": "5274048931975248366",
+            "transformPathId": "-3434067319972644370"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6431666137845483026",
+            "transformPathId": "-154515860148274706"
+          },
+          {
+            "name": "enemy_17002_flgshp",
+            "gameObjectPathId": "-7986550053827200530",
+            "transformPathId": "-6618502331023443474"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "6275044311115013764",
+          "value": {
+            "id": "6275044311115013764",
+            "name": "GlobalRange",
+            "cl": "GlobalRange",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -2951869301748614674
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 6275044311115013764
+          },
+          "common:427": "",
+          "_useBlackboardRangeId": false
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "file": "CAB-c33d9b6cb48df27fbe07e085005f2c6a",
+        "pathId": "8587141919555303918",
+        "objectSha256": "7f7df08f41927c6725d1736990b73829344972518d01a4a1a68bada1ee7f8b43",
+        "hierarchy": [
+          {
+            "name": "ChangeRouteAura",
+            "gameObjectPathId": "6688419513866107374",
+            "transformPathId": "2394685825549842926"
+          },
+          {
+            "name": "Focus",
+            "gameObjectPathId": "5274048931975248366",
+            "transformPathId": "-3434067319972644370"
+          },
+          {
+            "name": "Skills",
+            "gameObjectPathId": "-6431666137845483026",
+            "transformPathId": "-154515860148274706"
+          },
+          {
+            "name": "enemy_17002_flgshp",
+            "gameObjectPathId": "-7986550053827200530",
+            "transformPathId": "-6618502331023443474"
+          }
+        ],
+        "scriptBinding": {
+          "externalReference": {
+            "fileId": 1,
+            "guid": "00000000000000000000000000000000",
+            "type": 0,
+            "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+          },
+          "file": "CAB-658d74aab777086fc32b93f385be999a",
+          "pathId": "5588963537932396408",
+          "value": {
+            "id": "5588963537932396408",
+            "name": "ActiveAbilityWrapper",
+            "cl": "ActiveAbilityWrapper",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 6688419513866107374
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 5588963537932396408
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": true,
+          "_attachPassiveBuffsOnDummy": true,
+          "_ignoreIfOwnerDead": false,
+          "_forceAsDmgOrHealAbility": false,
+          "_waitForAttackEvent": false,
+          "_interuptIfTargetDead": false,
+          "_resetCdStrategy": 1,
+          "_wrappedAbilities": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 5119458228501133806
+              }
+            ]
+          },
+          "_isInfinity": false,
+          "_durationKey": "mark_duration",
+          "_preDelay": 0.0,
+          "_enableUpdateCooldown": false
+        }
+      }
+    ],
+    "level": {
+      "file": "activities/act1dp/level_act1dp_sub-02.json",
+      "spawnPointer": "/waves/0/fragments/0/actions/1",
+      "spawn": {
+        "actionType": "SPAWN",
+        "managedByScheduler": true,
+        "key": "enemy_17002_flgshp",
+        "count": 1,
+        "preDelay": 0.0,
+        "interval": 1.0,
+        "routeIndex": 1,
+        "blockFragment": false,
+        "autoPreviewRoute": false,
+        "autoDisplayEnemyInfo": false,
+        "isUnharmfulAndAlwaysCountAsKilled": false,
+        "hiddenGroup": null,
+        "randomSpawnGroupKey": null,
+        "randomSpawnGroupPackKey": null,
+        "randomType": "ALWAYS",
+        "refreshType": "ALWAYS",
+        "weight": 0,
+        "dontBlockWave": false,
+        "forceBlockWaveInBranch": false
+      },
+      "route": {
+        "motionMode": "WALK",
+        "startPosition": {
+          "row": 3,
+          "col": 7
+        },
+        "endPosition": {
+          "row": 3,
+          "col": 7
+        },
+        "spawnRandomRange": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "spawnOffset": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "checkpoints": [
+          {
+            "type": "WAIT_FOR_SECONDS",
+            "time": 600.0,
+            "position": {
+              "row": 0,
+              "col": 0
+            },
+            "reachOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "randomizeReachOffset": false,
+            "reachDistance": 0.0
+          }
+        ],
+        "allowDiagonalMove": true,
+        "visitEveryTileCenter": false,
+        "visitEveryNodeCenter": false,
+        "visitEveryCheckPoint": true
+      },
+      "endTiles": [
+        {
+          "pointer": "/mapData/tiles/11",
+          "definition": {
+            "tileKey": "tile_end",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "playerSideMask": "ALL",
+            "blackboard": null,
+            "effects": null
+          },
+          "occurrences": [
+            {
+              "jsonRowIndex": 5,
+              "jsonColIndex": 0
+            }
+          ]
+        },
+        {
+          "pointer": "/mapData/tiles/21",
+          "definition": {
+            "tileKey": "tile_end",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "playerSideMask": "ALL",
+            "blackboard": null,
+            "effects": null
+          },
+          "occurrences": [
+            {
+              "jsonRowIndex": 5,
+              "jsonColIndex": 10
+            }
+          ]
+        },
+        {
+          "pointer": "/mapData/tiles/38",
+          "definition": {
+            "tileKey": "tile_end",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "playerSideMask": "ALL",
+            "blackboard": null,
+            "effects": null
+          },
+          "occurrences": [
+            {
+              "jsonRowIndex": 3,
+              "jsonColIndex": 5
+            }
+          ]
+        },
+        {
+          "pointer": "/mapData/tiles/60",
+          "definition": {
+            "tileKey": "tile_end",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "playerSideMask": "ALL",
+            "blackboard": null,
+            "effects": null
+          },
+          "occurrences": [
+            {
+              "jsonRowIndex": 1,
+              "jsonColIndex": 5
+            }
+          ]
+        }
+      ],
+      "enemyDbRef": {
+        "useDb": true,
+        "id": "enemy_17002_flgshp",
+        "level": 1,
+        "overwrittenData": {
+          "name": {
+            "m_defined": false,
+            "m_value": null
+          },
+          "description": {
+            "m_defined": false,
+            "m_value": null
+          },
+          "prefabKey": {
+            "m_defined": false,
+            "m_value": null
+          },
+          "attributes": {
+            "maxHp": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "atk": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "def": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "magicResistance": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "cost": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "blockCnt": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "moveSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "attackSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "baseAttackTime": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "respawnTime": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "hpRecoveryPerSec": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "spRecoveryPerSec": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "maxDeployCount": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "massLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "baseForceLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "tauntLevel": {
+              "m_defined": false,
+              "m_value": 0
+            },
+            "epDamageResistance": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epResistance": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitratePhysical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "damageHitrateMagical": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "epBreakRecoverSpeed": {
+              "m_defined": false,
+              "m_value": 0.0
+            },
+            "stunImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "silenceImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "sleepImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "frozenImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "levitateImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "disarmedCombatImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "fearedImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "palsyImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "attractImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "teleportImmune": {
+              "m_defined": false,
+              "m_value": false
+            },
+            "groundBoundImmune": {
+              "m_defined": false,
+              "m_value": false
+            }
+          },
+          "applyWay": {
+            "m_defined": false,
+            "m_value": "NONE"
+          },
+          "motion": {
+            "m_defined": false,
+            "m_value": "WALK"
+          },
+          "enemyTags": {
+            "m_defined": false,
+            "m_value": null
+          },
+          "lifePointReduce": {
+            "m_defined": false,
+            "m_value": 0
+          },
+          "levelType": {
+            "m_defined": false,
+            "m_value": "NORMAL"
+          },
+          "rangeRadius": {
+            "m_defined": false,
+            "m_value": 0.0
+          },
+          "numOfExtraDrops": {
+            "m_defined": false,
+            "m_value": 0
+          },
+          "viewRadius": {
+            "m_defined": false,
+            "m_value": 0.0
+          },
+          "notCountInTotal": {
+            "m_defined": false,
+            "m_value": false
+          },
+          "talentBlackboard": null,
+          "skills": null,
+          "spData": null
+        }
+      }
+    },
+    "enemyData": {
+      "pointer": "/enemies/1506",
+      "entry": {
+        "Key": "enemy_17002_flgshp",
+        "Value": [
+          {
+            "level": 0,
+            "enemyData": {
+              "name": {
+                "m_defined": true,
+                "m_value": "风情街“热情导游”"
+              },
+              "description": {
+                "m_defined": true,
+                "m_value": "标记距离自身最近的<@eb.key>目标点</>，使所有敌人的目的地改为该目标点；场上已有其他“热情导游”标记时，不会进行标记"
+              },
+              "prefabKey": {
+                "m_defined": true,
+                "m_value": "enemy_17002_flgshp"
+              },
+              "attributes": {
+                "maxHp": {
+                  "m_defined": true,
+                  "m_value": 15000
+                },
+                "atk": {
+                  "m_defined": true,
+                  "m_value": 300
+                },
+                "def": {
+                  "m_defined": true,
+                  "m_value": 100
+                },
+                "magicResistance": {
+                  "m_defined": true,
+                  "m_value": 20.0
+                },
+                "cost": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "blockCnt": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "moveSpeed": {
+                  "m_defined": true,
+                  "m_value": 0.8
+                },
+                "attackSpeed": {
+                  "m_defined": true,
+                  "m_value": 100.0
+                },
+                "baseAttackTime": {
+                  "m_defined": true,
+                  "m_value": 3.0
+                },
+                "respawnTime": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "hpRecoveryPerSec": {
+                  "m_defined": true,
+                  "m_value": 0.0
+                },
+                "spRecoveryPerSec": {
+                  "m_defined": true,
+                  "m_value": 0.0
+                },
+                "maxDeployCount": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "massLevel": {
+                  "m_defined": true,
+                  "m_value": 0
+                },
+                "baseForceLevel": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "tauntLevel": {
+                  "m_defined": true,
+                  "m_value": 0
+                },
+                "epDamageResistance": {
+                  "m_defined": true,
+                  "m_value": 0.0
+                },
+                "epResistance": {
+                  "m_defined": true,
+                  "m_value": 0.0
+                },
+                "damageHitratePhysical": {
+                  "m_defined": true,
+                  "m_value": 1.0
+                },
+                "damageHitrateMagical": {
+                  "m_defined": true,
+                  "m_value": 1.0
+                },
+                "epBreakRecoverSpeed": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "blockVolume": {
+                  "m_defined": false,
+                  "m_value": -1
+                },
+                "stunImmune": {
+                  "m_defined": true,
+                  "m_value": false
+                },
+                "silenceImmune": {
+                  "m_defined": true,
+                  "m_value": false
+                },
+                "sleepImmune": {
+                  "m_defined": true,
+                  "m_value": false
+                },
+                "frozenImmune": {
+                  "m_defined": true,
+                  "m_value": false
+                },
+                "levitateImmune": {
+                  "m_defined": true,
+                  "m_value": false
+                },
+                "disarmedCombatImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "fearedImmune": {
+                  "m_defined": true,
+                  "m_value": false
+                },
+                "palsyImmune": {
+                  "m_defined": true,
+                  "m_value": false
+                },
+                "attractImmune": {
+                  "m_defined": true,
+                  "m_value": false
+                },
+                "teleportImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "groundBoundImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                }
+              },
+              "applyWay": {
+                "m_defined": true,
+                "m_value": "RANGED"
+              },
+              "motion": {
+                "m_defined": true,
+                "m_value": "WALK"
+              },
+              "enemyTags": {
+                "m_defined": true,
+                "m_value": []
+              },
+              "lifePointReduce": {
+                "m_defined": true,
+                "m_value": 1
+              },
+              "levelType": {
+                "m_defined": true,
+                "m_value": "ELITE"
+              },
+              "rangeRadius": {
+                "m_defined": true,
+                "m_value": 1.0
+              },
+              "numOfExtraDrops": {
+                "m_defined": true,
+                "m_value": 0
+              },
+              "viewRadius": {
+                "m_defined": false,
+                "m_value": 0.0
+              },
+              "notCountInTotal": {
+                "m_defined": false,
+                "m_value": false
+              },
+              "talentBlackboard": null,
+              "skills": [
+                {
+                  "prefabKey": "Focus",
+                  "priority": 0,
+                  "cooldown": 15.0,
+                  "initCooldown": 0.0,
+                  "spCost": 0,
+                  "blackboard": [
+                    {
+                      "key": "mark_duration",
+                      "value": 300.0,
+                      "valueStr": null
+                    }
+                  ]
+                }
+              ],
+              "spData": null
+            }
+          },
+          {
+            "level": 1,
+            "enemyData": {
+              "name": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "description": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "prefabKey": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "attributes": {
+                "maxHp": {
+                  "m_defined": true,
+                  "m_value": 20000
+                },
+                "atk": {
+                  "m_defined": true,
+                  "m_value": 400
+                },
+                "def": {
+                  "m_defined": true,
+                  "m_value": 200
+                },
+                "magicResistance": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "cost": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "blockCnt": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "moveSpeed": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "attackSpeed": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "baseAttackTime": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "respawnTime": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "hpRecoveryPerSec": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "spRecoveryPerSec": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "maxDeployCount": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "massLevel": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "baseForceLevel": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "tauntLevel": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "epDamageResistance": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "epResistance": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "damageHitratePhysical": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "damageHitrateMagical": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "epBreakRecoverSpeed": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "blockVolume": {
+                  "m_defined": false,
+                  "m_value": -1
+                },
+                "stunImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "silenceImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "sleepImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "frozenImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "levitateImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "disarmedCombatImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "fearedImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "palsyImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "attractImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "teleportImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "groundBoundImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                }
+              },
+              "applyWay": {
+                "m_defined": false,
+                "m_value": "NONE"
+              },
+              "motion": {
+                "m_defined": false,
+                "m_value": "WALK"
+              },
+              "enemyTags": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "lifePointReduce": {
+                "m_defined": false,
+                "m_value": 0
+              },
+              "levelType": {
+                "m_defined": false,
+                "m_value": "NORMAL"
+              },
+              "rangeRadius": {
+                "m_defined": false,
+                "m_value": 0.0
+              },
+              "numOfExtraDrops": {
+                "m_defined": false,
+                "m_value": 0
+              },
+              "viewRadius": {
+                "m_defined": false,
+                "m_value": 0.0
+              },
+              "notCountInTotal": {
+                "m_defined": false,
+                "m_value": false
+              },
+              "talentBlackboard": null,
+              "skills": null,
+              "spData": null
+            }
+          }
+        ]
+      }
+    }
+  }
+}

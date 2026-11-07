@@ -1,0 +1,160 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-07T14:19:21.479442+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/route-operations-20261107/data/skill_table.json",
+      "--source-url",
+      "https://github.com/Kengxxiao/ArknightsGameData",
+      "--revision",
+      "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "--out",
+      "docs/research/evidence/route-operations-20261107/temporary/skchr_phatm2_2-data.json",
+      "select",
+      "/skchr_phatm2_2",
+      "--field",
+      "/levels/0/name",
+      "--field",
+      "/levels/0/blackboard",
+      "--field",
+      "/levels/9/blackboard"
+    ],
+    "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/skill_table.json",
+        "bytes": 11766431,
+        "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/skill_table.json",
+        "pointer": "/skchr_phatm2_2",
+        "fields": {
+          "/levels/0/name": "群体性谵妄",
+          "/levels/0/blackboard": [
+            {
+              "key": "atk_scale",
+              "value": 0.85,
+              "valueStr": null
+            },
+            {
+              "key": "ep_damage_ratio_token",
+              "value": 0.15,
+              "valueStr": null
+            },
+            {
+              "key": "cnt",
+              "value": 1.0,
+              "valueStr": null
+            },
+            {
+              "key": "buff_time",
+              "value": 6.0,
+              "valueStr": null
+            },
+            {
+              "key": "sluggish",
+              "value": 6.0,
+              "valueStr": null
+            },
+            {
+              "key": "interval_damage",
+              "value": 0.5,
+              "valueStr": null
+            },
+            {
+              "key": "max_target",
+              "value": 4.0,
+              "valueStr": null
+            },
+            {
+              "key": "attack_speed",
+              "value": 15.0,
+              "valueStr": null
+            },
+            {
+              "key": "talent@range_radius",
+              "value": 1.5,
+              "valueStr": null
+            },
+            {
+              "key": "attack@projectile_range",
+              "value": 0.0,
+              "valueStr": "x-1"
+            }
+          ],
+          "/levels/9/blackboard": [
+            {
+              "key": "atk_scale",
+              "value": 1.5,
+              "valueStr": null
+            },
+            {
+              "key": "ep_damage_ratio_token",
+              "value": 0.25,
+              "valueStr": null
+            },
+            {
+              "key": "cnt",
+              "value": 1.0,
+              "valueStr": null
+            },
+            {
+              "key": "buff_time",
+              "value": 6.0,
+              "valueStr": null
+            },
+            {
+              "key": "sluggish",
+              "value": 6.0,
+              "valueStr": null
+            },
+            {
+              "key": "interval_damage",
+              "value": 0.5,
+              "valueStr": null
+            },
+            {
+              "key": "max_target",
+              "value": 4.0,
+              "valueStr": null
+            },
+            {
+              "key": "attack_speed",
+              "value": 35.0,
+              "valueStr": null
+            },
+            {
+              "key": "talent@range_radius",
+              "value": 1.5,
+              "valueStr": null
+            },
+            {
+              "key": "attack@projectile_range",
+              "value": 0.0,
+              "valueStr": "x-1"
+            }
+          ]
+        },
+        "missingFields": []
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

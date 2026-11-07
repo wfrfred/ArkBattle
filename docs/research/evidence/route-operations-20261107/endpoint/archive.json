@@ -1,0 +1,1008 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [],
+    "collectionDateSource": "not recorded",
+    "organizedOn": "2026-11-07",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "endpoint-native.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "endpoint-native.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "endpoint-native.json",
+      "endpoint-positive.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "endpoint-native.json",
+        "kind": "record",
+        "bytes": 2440522,
+        "sha256": "b6e2957c05c89cf2c87483aa4c3ce370760d8c0decb285ce134d7d611655d252"
+      },
+      {
+        "path": "endpoint-positive.json",
+        "kind": "record",
+        "bytes": 110441,
+        "sha256": "7a0fa9f7c57d0908ee5d13311eac612ef5f203ce6b1bbccd9b3d65f55d428d0f"
+      },
+      {
+        "path": "extract_endpoint.py",
+        "kind": "historical-script",
+        "bytes": 6551,
+        "sha256": "4b74ad5835aa63276c63d06b6079f56966fb372a0a20b23952ca908c77b62dbf"
+      },
+      {
+        "path": "extract_native.py",
+        "kind": "historical-script",
+        "bytes": 3966,
+        "sha256": "d5afcecf34cd1d37ed5b11271deb77c91a0cdd964dabbbf93baae1cc6d4da615"
+      },
+      {
+        "path": "extract_native.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 76491,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/0"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_limitTargetNum",
+          "address": "0x180a58600"
+        },
+        {
+          "index": 76492,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/1"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_needProfessionMask",
+          "address": "0x180a58720"
+        },
+        {
+          "index": 76493,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/2"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_needCheckUnitType",
+          "address": "0x180a586c0"
+        },
+        {
+          "index": 76494,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/3"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_isCertainTileKeyListPreferred",
+          "address": "0x180a582b0"
+        },
+        {
+          "index": 76495,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/4"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_isFixedDistInFrontLineFallbackFarthest",
+          "address": "0x180a584b0"
+        },
+        {
+          "index": 76496,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/5"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_isAct37SideEquip",
+          "address": "0x180a58250"
+        },
+        {
+          "index": 76497,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/6"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_isEnemyWithBuff",
+          "address": "0x180a58330"
+        },
+        {
+          "index": 76498,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/7"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_isFilterDistRandom",
+          "address": "0x180a583f0"
+        },
+        {
+          "index": 76499,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/8"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_isEnemyWithCertainKey",
+          "address": "0x180a58390"
+        },
+        {
+          "index": 76500,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/9"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_isFilterTileBlackboardKey",
+          "address": "0x180a58450"
+        },
+        {
+          "index": 76501,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/10"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_isOwnerRespawnSelfBuildable",
+          "address": "0x180a58510"
+        },
+        {
+          "index": 76502,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/11"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_filterType",
+          "address": "0x180a44060"
+        },
+        {
+          "index": 76503,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/12"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_maxTileNum",
+          "address": "0x180a58660"
+        },
+        {
+          "index": 76504,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/13"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.set_maxTileNum",
+          "address": "0x180a58910"
+        },
+        {
+          "index": 76505,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/14"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_targetCategory",
+          "address": "0x180a454f0"
+        },
+        {
+          "index": 76506,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/15"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_targetMotion",
+          "address": "0x180a587f0"
+        },
+        {
+          "index": 76507,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/16"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_targetSide",
+          "address": "0x180a58850"
+        },
+        {
+          "index": 76508,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/17"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_ignoreTargetFree",
+          "address": "0x180a45490"
+        },
+        {
+          "index": 76509,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/18"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_professionMask",
+          "address": "0x180a58780"
+        },
+        {
+          "index": 76510,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/19"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_checkUnitType",
+          "address": "0x180a581f0"
+        },
+        {
+          "index": 76511,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/20"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.get_unitTypeMask",
+          "address": "0x180a588b0"
+        },
+        {
+          "index": 76512,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/21"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.Reset",
+          "address": "0x180a4c0e0"
+        },
+        {
+          "index": 76513,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/22"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.SetData",
+          "address": "0x180a4c200"
+        },
+        {
+          "index": 76514,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/23"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.OnPostFilter",
+          "address": "0x180a4c020"
+        },
+        {
+          "index": 76515,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/24"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.OnPostFilter",
+          "address": "0x180a4bba0"
+        },
+        {
+          "index": 76516,
+          "mode": "disasm",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/25",
+            "endpoint-native.json#/result/bodies/0/method",
+            "endpoint-native.json#/result/bodies/0/fragments/0",
+            "endpoint-native.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.ValidateTile",
+          "address": "0x180a4cec0"
+        },
+        {
+          "index": 76517,
+          "mode": "disasm",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/26",
+            "endpoint-native.json#/result/bodies/1/method",
+            "endpoint-native.json#/result/bodies/1/fragments/0",
+            "endpoint-native.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._DoFilter",
+          "address": "0x180a4e420"
+        },
+        {
+          "index": 76518,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/27"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._FilterDistRandom",
+          "address": "0x180a56ae0"
+        },
+        {
+          "index": 76519,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/28"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._ExcludeOwnerRootTile",
+          "address": "0x180a567c0"
+        },
+        {
+          "index": 76520,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/29"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._GetNearestTile",
+          "address": "0x180a56db0"
+        },
+        {
+          "index": 76521,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/30"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._CollectSurroundTile",
+          "address": "0x180a4e010"
+        },
+        {
+          "index": 76522,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/31"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._CollectSurroundingTilesWithin3x3",
+          "address": "0x180a4e290"
+        },
+        {
+          "index": 76523,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/32"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._CheckHatredEnemyOnTile",
+          "address": "0x180a4d310"
+        },
+        {
+          "index": 76524,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/33"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._CheckHatredEntityOnTile",
+          "address": "0x180a4d6c0"
+        },
+        {
+          "index": 76525,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/34"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._FilterCharOnTileHatredDes",
+          "address": "0x180a56940"
+        },
+        {
+          "index": 76526,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/35"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._CheckMostCrowedThenHatredCharacterOnTile",
+          "address": "0x180a4dce0"
+        },
+        {
+          "index": 76527,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/36"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._CheckLeastCrowedThenHatredCharacterOnTile",
+          "address": "0x180a4d9b0"
+        },
+        {
+          "index": 76528,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/37"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._CheckCharacter",
+          "address": "0x180a4d130"
+        },
+        {
+          "index": 76529,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/38"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.ValidateTarget",
+          "address": "0x180a4ce40"
+        },
+        {
+          "index": 76530,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/39"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.CheckEnemies",
+          "address": "0x180a4b980"
+        },
+        {
+          "index": 76531,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/40"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._CheckEntities",
+          "address": "0x180a4d220"
+        },
+        {
+          "index": 76532,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/41"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.CheckEnemiesWithCertainKey",
+          "address": "0x180a4b6e0"
+        },
+        {
+          "index": 76533,
+          "mode": "disasm",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/42",
+            "endpoint-native.json#/result/bodies/2/method",
+            "endpoint-native.json#/result/bodies/2/fragments/0",
+            "endpoint-native.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._SortTiles",
+          "address": "0x180a57940"
+        },
+        {
+          "index": 76534,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/43"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._StableRandomShuffle",
+          "address": "0x180a57dc0"
+        },
+        {
+          "index": 76535,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/44"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._SortTiles_ManhattanOwnerDirCenterPerfered",
+          "address": "0x180a57850"
+        },
+        {
+          "index": 76536,
+          "mode": "disasm",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/45",
+            "endpoint-native.json#/result/bodies/3/method",
+            "endpoint-native.json#/result/bodies/3/fragments/0",
+            "endpoint-native.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._SortTiles_DistToOwnerAsc",
+          "address": "0x180a57690"
+        },
+        {
+          "index": 76537,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/46"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._SortTiles_DistToOwnerAscFixed",
+          "address": "0x180a575b0"
+        },
+        {
+          "index": 76538,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/47"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._SortTiles_DistToMapCenterDes",
+          "address": "0x180a57440"
+        },
+        {
+          "index": 76539,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/48"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._GetTileClockWiseWeight",
+          "address": "0x180a57000"
+        },
+        {
+          "index": 76540,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/49"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._SortTiles_ClockwisePartRandom",
+          "address": "0x180a57230"
+        },
+        {
+          "index": 76541,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/50"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._SortTiles_DistToOwnerDesStable",
+          "address": "0x180a57770"
+        },
+        {
+          "index": 76542,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/51"
+          ],
+          "fullname": "Torappu.Battle.TileSelector._SortTiles_DistDesFrontFirst",
+          "address": "0x180a57360"
+        },
+        {
+          "index": 76543,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/52"
+          ],
+          "fullname": "Torappu.Battle.TileSelector..ctor",
+          "address": "0x180a58010"
+        },
+        {
+          "index": 76544,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/53"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.<_SortTiles_ManhattanOwnerDirCenterPerfered>b__109_0",
+          "address": "0x180a4cab0"
+        },
+        {
+          "index": 76545,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/54"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.<_SortTiles_DistToOwnerAsc>b__110_0",
+          "address": "0x180a4c7e0"
+        },
+        {
+          "index": 76546,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/55"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.<_SortTiles_DistToOwnerAscFixed>b__111_0",
+          "address": "0x180a4c660"
+        },
+        {
+          "index": 76547,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/56"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.<_SortTiles_ClockwisePartRandom>b__114_0",
+          "address": "0x180a4c2d0"
+        },
+        {
+          "index": 76548,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/57"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.<_SortTiles_DistToOwnerDesStable>b__115_0",
+          "address": "0x180a4c930"
+        },
+        {
+          "index": 76549,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/58"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.<_SortTiles_DistDesFrontFirst>b__116_0",
+          "address": "0x180a4c320"
+        },
+        {
+          "index": 76550,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/59"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.<>xLuaBaseProxy_get_professionMask",
+          "address": "0x1809f1e40"
+        },
+        {
+          "index": 76551,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/60"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.<>xLuaBaseProxy_get_checkUnitType",
+          "address": "0x1809f1db0"
+        },
+        {
+          "index": 76552,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/61"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.<>xLuaBaseProxy_get_unitTypeMask",
+          "address": "0x1809f1e50"
+        },
+        {
+          "index": 76553,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/62"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.<>xLuaBaseProxy_Reset",
+          "address": "0x1809f1d60"
+        },
+        {
+          "index": 76554,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/63"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.<>xLuaBaseProxy_SetData",
+          "address": "0x1809f1d70"
+        },
+        {
+          "index": 76555,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/64"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.<>xLuaBaseProxy_ValidateTile",
+          "address": "0x180a4c2c0"
+        },
+        {
+          "index": 76556,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/3/methods/65"
+          ],
+          "fullname": "Torappu.Battle.TileSelector.<>xLuaBaseProxy_ValidateTarget",
+          "address": "0x1809f1d80"
+        },
+        {
+          "index": 76557,
+          "mode": "disasm",
+          "records": [
+            "endpoint-native.json#/result/types/1/methods/0",
+            "endpoint-native.json#/result/bodies/4/method",
+            "endpoint-native.json#/result/bodies/4/fragments/0",
+            "endpoint-native.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.TileSelector/Options.Verify",
+          "address": "0x180a49200"
+        },
+        {
+          "index": 76558,
+          "mode": "disasm",
+          "records": [
+            "endpoint-native.json#/result/types/1/methods/1",
+            "endpoint-native.json#/result/bodies/5/method",
+            "endpoint-native.json#/result/bodies/5/fragments/0",
+            "endpoint-native.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.TileSelector/Options._CheckTileMode",
+          "address": "0x180a49870"
+        },
+        {
+          "index": 76559,
+          "mode": "disasm",
+          "records": [
+            "endpoint-native.json#/result/types/1/methods/2",
+            "endpoint-native.json#/result/bodies/6/method",
+            "endpoint-native.json#/result/bodies/6/fragments/0",
+            "endpoint-native.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.TileSelector/Options..cctor",
+          "address": "0x180a49990"
+        },
+        {
+          "index": 96293,
+          "mode": "disasm",
+          "records": [
+            "endpoint-native.json#/result/types/4/methods/0",
+            "endpoint-native.json#/result/bodies/7/method",
+            "endpoint-native.json#/result/bodies/7/fragments/0",
+            "endpoint-native.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.BuffDuringCastingFixed.OnCastStart",
+          "address": "0x1810076b0"
+        },
+        {
+          "index": 96294,
+          "mode": "disasm",
+          "records": [
+            "endpoint-native.json#/result/types/4/methods/1",
+            "endpoint-native.json#/result/bodies/8/method",
+            "endpoint-native.json#/result/bodies/8/fragments/0",
+            "endpoint-native.json#/result/bodies/8/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.BuffDuringCastingFixed.OnCastFinish",
+          "address": "0x181007630"
+        },
+        {
+          "index": 96295,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/4/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Abilities.BuffDuringCastingFixed.GatherEffects",
+          "address": "0x1810075c0"
+        },
+        {
+          "index": 96296,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/4/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Abilities.BuffDuringCastingFixed.GatherBuffs",
+          "address": "0x181007530"
+        },
+        {
+          "index": 96297,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/4/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Abilities.BuffDuringCastingFixed._ClearBuffs",
+          "address": "0x1810078c0"
+        },
+        {
+          "index": 96298,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/4/methods/5"
+          ],
+          "fullname": "Torappu.Battle.Abilities.BuffDuringCastingFixed.OnEvent",
+          "address": "0x181007820"
+        },
+        {
+          "index": 96299,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/4/methods/6"
+          ],
+          "fullname": "Torappu.Battle.Abilities.BuffDuringCastingFixed..ctor",
+          "address": "0x1810079b0"
+        },
+        {
+          "index": 96300,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/4/methods/7"
+          ],
+          "fullname": "Torappu.Battle.Abilities.BuffDuringCastingFixed.<>xLuaBaseProxy_OnCastStart",
+          "address": "0x181005250"
+        },
+        {
+          "index": 96301,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/4/methods/8"
+          ],
+          "fullname": "Torappu.Battle.Abilities.BuffDuringCastingFixed.<>xLuaBaseProxy_OnCastFinish",
+          "address": "0x1810078b0"
+        },
+        {
+          "index": 96302,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/4/methods/9"
+          ],
+          "fullname": "Torappu.Battle.Abilities.BuffDuringCastingFixed.<>xLuaBaseProxy_OnEvent",
+          "address": "0x181005260"
+        },
+        {
+          "index": 97987,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/5/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AssignFirstTileToBlackboardByAbilityTileSelector.get_allowedSource",
+          "address": "0x18109c000"
+        },
+        {
+          "index": 97988,
+          "mode": "disasm",
+          "records": [
+            "endpoint-native.json#/result/types/5/methods/1",
+            "endpoint-native.json#/result/bodies/9/method",
+            "endpoint-native.json#/result/bodies/9/fragments/0",
+            "endpoint-native.json#/result/bodies/9/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AssignFirstTileToBlackboardByAbilityTileSelector.Execute",
+          "address": "0x18109bbf0"
+        },
+        {
+          "index": 97989,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/5/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AssignFirstTileToBlackboardByAbilityTileSelector..ctor",
+          "address": "0x18109bf40"
+        },
+        {
+          "index": 98975,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/6/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AddGlobalBlackboard.get_allowedSource",
+          "address": "0x1810dbc20"
+        },
+        {
+          "index": 98976,
+          "mode": "disasm",
+          "records": [
+            "endpoint-native.json#/result/types/6/methods/1",
+            "endpoint-native.json#/result/bodies/10/method",
+            "endpoint-native.json#/result/bodies/10/fragments/0",
+            "endpoint-native.json#/result/bodies/10/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AddGlobalBlackboard.Execute",
+          "address": "0x1810db9a0"
+        },
+        {
+          "index": 98977,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/6/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AddGlobalBlackboard..ctor",
+          "address": "0x1810dbb90"
+        },
+        {
+          "index": 101396,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/7/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterByGlobalBlackboard.get_allowedSource",
+          "address": "0x1811d3ca0"
+        },
+        {
+          "index": 101397,
+          "mode": "disasm",
+          "records": [
+            "endpoint-native.json#/result/types/7/methods/1",
+            "endpoint-native.json#/result/bodies/11/method",
+            "endpoint-native.json#/result/bodies/11/fragments/0",
+            "endpoint-native.json#/result/bodies/11/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterByGlobalBlackboard.Execute",
+          "address": "0x1811d3a20"
+        },
+        {
+          "index": 101398,
+          "mode": "metadata",
+          "records": [
+            "endpoint-native.json#/result/types/7/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterByGlobalBlackboard..ctor",
+          "address": "0x1811d3c10"
+        },
+        {
+          "index": 102055,
+          "mode": "disasm",
+          "records": [
+            "endpoint-native.json#/result/bodies/12/method",
+            "endpoint-native.json#/result/bodies/12/fragments/0",
+            "endpoint-native.json#/result/bodies/12/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/TriggerAbility.Execute",
+          "address": "0x181206180"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Abilities.BuffDuringCastingFixed",
+          "records": [
+            "endpoint-native.json#/result/types/4"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Action.Nodes/AddGlobalBlackboard",
+          "records": [
+            "endpoint-native.json#/result/types/6"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Action.Nodes/AssignFirstTileToBlackboardByAbilityTileSelector",
+          "records": [
+            "endpoint-native.json#/result/types/5"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Action.Nodes/FilterByGlobalBlackboard",
+          "records": [
+            "endpoint-native.json#/result/types/7"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.TileSelector",
+          "records": [
+            "endpoint-native.json#/result/types/3"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.TileSelector/FilterType",
+          "records": [
+            "endpoint-native.json#/result/types/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.TileSelector/Options",
+          "records": [
+            "endpoint-native.json#/result/types/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.TileSelector/TileSortType",
+          "records": [
+            "endpoint-native.json#/result/types/2"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "endpoint-positive.json#/provenance/sources/0"
+          ],
+          "bytes": 2151020
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_35.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_35.ab",
+          "sha256": "144a51c4419a8d0bef7cb61b0a0452a5775051aedbd8fac5a89b3c5db5e84592",
+          "records": [
+            "endpoint-positive.json#/provenance/sources/1"
+          ],
+          "bytes": 382837
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "endpoint-positive.json#/provenance/sources/2"
+          ],
+          "bytes": 477255
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

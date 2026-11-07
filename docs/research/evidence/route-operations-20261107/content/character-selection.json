@@ -1,0 +1,361 @@
+{
+  "provenance": {
+    "source": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/character_table.json",
+      "bytes": 15468242,
+      "sha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1"
+    },
+    "scope": "Single trap definition selected by /trap_186_cnvfwks from the pinned current public mirror character table. Root data-sources.json verifies raw Git blobs. No inferred prefab binding.",
+    "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "sourcePath": "zh_CN/gamedata/excel/character_table.json"
+  },
+  "result": {
+    "pointer": "/trap_186_cnvfwks",
+    "definition": {
+      "name": "烟花发射器",
+      "description": "狂欢时刻可以阻挡敌人，自身更容易受到攻击。\\n特殊效果：狂欢时刻使周围8格的我方单位攻击力提升50%",
+      "sortIndex": 1160,
+      "spTargetType": "NONE",
+      "spTargetId": null,
+      "canUseGeneralPotentialItem": true,
+      "canUseActivityPotentialItem": false,
+      "potentialItemId": null,
+      "activityPotentialItemId": null,
+      "classicPotentialItemId": null,
+      "nationId": null,
+      "groupId": null,
+      "teamId": null,
+      "mainPower": {
+        "nationId": null,
+        "groupId": null,
+        "teamId": null
+      },
+      "subPower": null,
+      "displayNumber": null,
+      "appellation": "Firework Launcher",
+      "position": "NONE",
+      "tagList": null,
+      "itemUsage": null,
+      "itemDesc": null,
+      "itemObtainApproach": null,
+      "isNotObtainable": false,
+      "isSpChar": false,
+      "maxPotentialLevel": 0,
+      "rarity": "TIER_1",
+      "profession": "TRAP",
+      "subProfessionId": "notchar2",
+      "trait": null,
+      "phases": [
+        {
+          "characterPrefabKey": "trap_186_cnvfwks",
+          "rangeId": "0-1",
+          "maxLevel": 30,
+          "attributesKeyFrames": [
+            {
+              "level": 1,
+              "data": {
+                "maxHp": 10000,
+                "atk": 500,
+                "def": 0,
+                "magicResistance": 0.0,
+                "cost": 5,
+                "blockCnt": 999,
+                "moveSpeed": 1.0,
+                "attackSpeed": 100.0,
+                "baseAttackTime": 5.0,
+                "respawnTime": 5,
+                "hpRecoveryPerSec": 0.0,
+                "spRecoveryPerSec": 1.0,
+                "maxDeployCount": 99,
+                "maxDeckStackCnt": 99,
+                "tauntLevel": 0,
+                "massLevel": 0,
+                "baseForceLevel": 0,
+                "blockVolume": -1,
+                "stunImmune": false,
+                "silenceImmune": false,
+                "sleepImmune": false,
+                "frozenImmune": false,
+                "levitateImmune": false,
+                "disarmedCombatImmune": false,
+                "fearedImmune": false,
+                "palsyImmune": false,
+                "attractImmune": false,
+                "teleportImmune": false,
+                "groundBoundImmune": false
+              }
+            },
+            {
+              "level": 30,
+              "data": {
+                "maxHp": 10000,
+                "atk": 500,
+                "def": 0,
+                "magicResistance": 0.0,
+                "cost": 5,
+                "blockCnt": 999,
+                "moveSpeed": 1.0,
+                "attackSpeed": 100.0,
+                "baseAttackTime": 5.0,
+                "respawnTime": 5,
+                "hpRecoveryPerSec": 0.0,
+                "spRecoveryPerSec": 1.0,
+                "maxDeployCount": 99,
+                "maxDeckStackCnt": 99,
+                "tauntLevel": 0,
+                "massLevel": 0,
+                "baseForceLevel": 0,
+                "blockVolume": -1,
+                "stunImmune": false,
+                "silenceImmune": false,
+                "sleepImmune": false,
+                "frozenImmune": false,
+                "levitateImmune": false,
+                "disarmedCombatImmune": false,
+                "fearedImmune": false,
+                "palsyImmune": false,
+                "attractImmune": false,
+                "teleportImmune": false,
+                "groundBoundImmune": false
+              }
+            }
+          ],
+          "evolveCost": null
+        }
+      ],
+      "skills": [
+        {
+          "skillId": "sktok_cnvfwks",
+          "overridePrefabKey": null,
+          "overrideTokenKey": null,
+          "levelUpCostCond": [],
+          "unlockCond": {
+            "phase": "PHASE_0",
+            "level": 1
+          }
+        }
+      ],
+      "displayTokenDict": null,
+      "talents": [
+        {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_0",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "enemy",
+              "name": null,
+              "description": null,
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "ep_damage_ratio",
+                  "value": 0.5,
+                  "valueStr": null
+                },
+                {
+                  "key": "element_type",
+                  "value": 3.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "taunt_level",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "damage",
+                  "value": 150.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "trap_cnvfwks[branch].interval",
+                  "value": 10.0,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": true
+            }
+          ]
+        },
+        {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_0",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "ally",
+              "name": null,
+              "description": null,
+              "rangeId": null,
+              "blackboard": [],
+              "tokenKey": null,
+              "isHideTalent": true
+            }
+          ]
+        },
+        {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_0",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "atkUp",
+              "name": null,
+              "description": null,
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "trap_cnvfwks[atkup1].atk",
+                  "value": 0.5,
+                  "valueStr": null
+                },
+                {
+                  "key": "trap_cnvfwks[atkup2].atk",
+                  "value": 0.7,
+                  "valueStr": null
+                },
+                {
+                  "key": "range_radius",
+                  "value": 1.5,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": true
+            }
+          ]
+        },
+        {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_0",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "reach",
+              "name": null,
+              "description": null,
+              "rangeId": "0-1",
+              "blackboard": [
+                {
+                  "key": "max_cnt",
+                  "value": 3.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "taunt_level",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "damage",
+                  "value": 150.0,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": true
+            }
+          ]
+        },
+        {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_0",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "type",
+              "name": null,
+              "description": null,
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "min_hp_ratio",
+                  "value": 0.3,
+                  "valueStr": null
+                },
+                {
+                  "key": "min_attack_speed_win",
+                  "value": 50.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "min_attack_speed_normal",
+                  "value": 50.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack_speed_win",
+                  "value": -70.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack_speed_normal",
+                  "value": -70.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "move_speed_win",
+                  "value": -0.7,
+                  "valueStr": null
+                },
+                {
+                  "key": "move_speed_normal",
+                  "value": -0.7,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@ep_damage_ratio_win",
+                  "value": 0.5,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@ep_damage_ratio_normal",
+                  "value": 0.5,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@freeze_win",
+                  "value": 4.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@freeze_normal",
+                  "value": 4.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@cold_win",
+                  "value": 4.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@cold_normal",
+                  "value": 4.0,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": true
+            }
+          ]
+        }
+      ],
+      "potentialRanks": [],
+      "favorKeyFrames": null,
+      "allSkillLvlup": []
+    }
+  }
+}

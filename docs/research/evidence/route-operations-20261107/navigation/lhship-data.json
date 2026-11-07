@@ -1,0 +1,262 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-07T14:23:43.156595+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+      "--source-url",
+      "https://github.com/Kengxxiao/ArknightsGameData",
+      "--revision",
+      "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "--preview",
+      "0",
+      "--out",
+      "docs/research/evidence/route-operations-20261107/navigation/lhship-data.json",
+      "select",
+      "/enemies/*",
+      "--where",
+      "/Key",
+      "\"enemy_18001_lhship\""
+    ],
+    "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "bytes": 15721552,
+        "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "pointer": "/enemies/1508",
+        "value": {
+          "Key": "enemy_18001_lhship",
+          "Value": [
+            {
+              "level": 0,
+              "enemyData": {
+                "name": {
+                  "m_defined": true,
+                  "m_value": "运输汽艇"
+                },
+                "description": {
+                  "m_defined": true,
+                  "m_value": "到达终点时，根据移动距离，产出资源与装备。移动一定距离后，到达时有额外奖励。"
+                },
+                "prefabKey": {
+                  "m_defined": true,
+                  "m_value": "enemy_18001_lhship"
+                },
+                "attributes": {
+                  "maxHp": {
+                    "m_defined": true,
+                    "m_value": 5500
+                  },
+                  "atk": {
+                    "m_defined": true,
+                    "m_value": 100
+                  },
+                  "def": {
+                    "m_defined": true,
+                    "m_value": 100
+                  },
+                  "magicResistance": {
+                    "m_defined": true,
+                    "m_value": 0.0
+                  },
+                  "cost": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "blockCnt": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "moveSpeed": {
+                    "m_defined": true,
+                    "m_value": 0.5
+                  },
+                  "attackSpeed": {
+                    "m_defined": true,
+                    "m_value": 100.0
+                  },
+                  "baseAttackTime": {
+                    "m_defined": true,
+                    "m_value": 0.0
+                  },
+                  "respawnTime": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "hpRecoveryPerSec": {
+                    "m_defined": true,
+                    "m_value": 0.0
+                  },
+                  "spRecoveryPerSec": {
+                    "m_defined": true,
+                    "m_value": 0.0
+                  },
+                  "maxDeployCount": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "massLevel": {
+                    "m_defined": true,
+                    "m_value": 5
+                  },
+                  "baseForceLevel": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "tauntLevel": {
+                    "m_defined": true,
+                    "m_value": 0
+                  },
+                  "epDamageResistance": {
+                    "m_defined": true,
+                    "m_value": 0.0
+                  },
+                  "epResistance": {
+                    "m_defined": true,
+                    "m_value": 0.0
+                  },
+                  "damageHitratePhysical": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "damageHitrateMagical": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "epBreakRecoverSpeed": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "blockVolume": {
+                    "m_defined": false,
+                    "m_value": -1
+                  },
+                  "stunImmune": {
+                    "m_defined": true,
+                    "m_value": false
+                  },
+                  "silenceImmune": {
+                    "m_defined": true,
+                    "m_value": false
+                  },
+                  "sleepImmune": {
+                    "m_defined": true,
+                    "m_value": false
+                  },
+                  "frozenImmune": {
+                    "m_defined": true,
+                    "m_value": false
+                  },
+                  "levitateImmune": {
+                    "m_defined": true,
+                    "m_value": false
+                  },
+                  "disarmedCombatImmune": {
+                    "m_defined": true,
+                    "m_value": false
+                  },
+                  "fearedImmune": {
+                    "m_defined": true,
+                    "m_value": false
+                  },
+                  "palsyImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "attractImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "teleportImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "groundBoundImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  }
+                },
+                "applyWay": {
+                  "m_defined": true,
+                  "m_value": "NONE"
+                },
+                "motion": {
+                  "m_defined": true,
+                  "m_value": "FLY"
+                },
+                "enemyTags": {
+                  "m_defined": true,
+                  "m_value": []
+                },
+                "lifePointReduce": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "levelType": {
+                  "m_defined": true,
+                  "m_value": "NORMAL"
+                },
+                "rangeRadius": {
+                  "m_defined": true,
+                  "m_value": 0.0
+                },
+                "numOfExtraDrops": {
+                  "m_defined": true,
+                  "m_value": 0
+                },
+                "viewRadius": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "notCountInTotal": {
+                  "m_defined": true,
+                  "m_value": true
+                },
+                "talentBlackboard": [
+                  {
+                    "key": "MoveListener.dist_delta",
+                    "value": 3.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "MoveListener.value",
+                    "value": 2.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "MoveListener.resource_pool",
+                    "value": 0.0,
+                    "valueStr": "boat"
+                  }
+                ],
+                "skills": null,
+                "spData": null
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

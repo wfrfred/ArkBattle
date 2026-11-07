@@ -1,0 +1,20 @@
+{
+  "provenance": {
+    "accessedOn": "2026-11-07",
+    "sourceKind": "PRTS community wiki, not official client documentation",
+    "query": "site:prts.wiki 烟花发射器 狂欢 路线",
+    "scope": "Selected positive gameplay description, not proof of precise checkpoint preservation or timings."
+  },
+  "result": [
+    {
+      "url": "https://prts.wiki/w/烟花发射器",
+      "title": "烟花发射器",
+      "observation": "狂欢会让符合条件且能直接抵达的敌人临时改以烟花发射器为检查点或终点；明确排除狂欢之主与节日/巡游气球。"
+    },
+    {
+      "url": "https://prts.wiki/w/揭幕者们",
+      "title": "SideStory「揭幕者们」",
+      "observation": "引线火焰使预设烟花发射器进入狂欢，敌人转向该装置尝试摧毁并结束狂欢。"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-07T14:19:42.969002+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_01.json",
+      "--source-url",
+      "https://github.com/Kengxxiao/ArknightsGameData",
+      "--revision",
+      "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "--out",
+      "docs/research/evidence/route-operations-20261107/temporary/acloon-stage.json",
+      "select",
+      "/**/actions/*",
+      "--where",
+      "/key",
+      "\"enemy_9012_acloon\""
+    ],
+    "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_01.json",
+        "bytes": 110167,
+        "sha256": "b8da4dd904d4704099eccb37e260d3f57a8b227f711905d8175234de0b7153eb",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_01.json",
+        "pointer": "/branches/dragon/phases/0/actions/0",
+        "value": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_9012_acloon",
+          "count": 1,
+          "preDelay": 0.0,
+          "interval": 1.0,
+          "routeIndex": 0,
+          "blockFragment": false,
+          "autoPreviewRoute": false,
+          "autoDisplayEnemyInfo": false,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": null,
+          "randomSpawnGroupPackKey": null,
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 0,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

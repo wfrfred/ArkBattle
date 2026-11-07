@@ -1,0 +1,31 @@
+{
+  "provenance": {
+    "date": "2026-11-07",
+    "tool": "web search; community navigation, not client execution",
+    "scope": "Selected PRTS descriptions used to identify content; not a full site search"
+  },
+  "result": {
+    "sources": [
+      {
+        "url": "https://prts.wiki/w/调箱师",
+        "claim": "普通关卡障碍物部署可改变敌人行进路线；PRTS列举4-4等关卡。",
+        "level": "P; this description alone does not bind the native Tile caller"
+      },
+      {
+        "url": "https://prts.wiki/w/运输汽艇",
+        "claim": "运输汽艇只沿河流移动，目的地为另一台装卸机。",
+        "level": "P; no complete enabled Prefab chain archived here"
+      },
+      {
+        "url": "https://prts.wiki/w/装卸机",
+        "claim": "装卸机在存在河流连通的其他装卸机时生成运输汽艇。",
+        "level": "P"
+      },
+      {
+        "url": "https://prts.wiki/w/次生预案/ZOOT重建记录",
+        "claim": "装卸机及运输汽艇属于次生预案模块内容。",
+        "level": "P; used to avoid guessing game-mode scope from Lhship identifiers"
+      }
+    ]
+  }
+}

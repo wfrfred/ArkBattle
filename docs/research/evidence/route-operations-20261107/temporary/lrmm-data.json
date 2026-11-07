@@ -1,0 +1,103 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-07T14:34:30.960573+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/route-operations-20261107/data/enemy_database.json",
+      "--source-url",
+      "https://github.com/Kengxxiao/ArknightsGameData",
+      "--revision",
+      "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "--out",
+      "docs/research/evidence/route-operations-20261107/temporary/lrmm-data.json",
+      "select",
+      "/enemies/1265/Value/0",
+      "--field",
+      "/level",
+      "--field",
+      "/enemyData/name",
+      "--field",
+      "/enemyData/prefabKey",
+      "--field",
+      "/enemyData/talentBlackboard"
+    ],
+    "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/enemy_database.json",
+        "bytes": 15721552,
+        "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/enemy_database.json",
+        "pointer": "/enemies/1265/Value/0",
+        "fields": {
+          "/level": 0,
+          "/enemyData/name": {
+            "m_defined": true,
+            "m_value": "活性源石风暴"
+          },
+          "/enemyData/prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_1420_lrmm"
+          },
+          "/enemyData/talentBlackboard": [
+            {
+              "key": "StormAura.sp_recover_ratio",
+              "value": -0.8,
+              "valueStr": null
+            },
+            {
+              "key": "StormAura.damage",
+              "value": 50.0,
+              "valueStr": null
+            },
+            {
+              "key": "StormAura.damage_step",
+              "value": 25.0,
+              "valueStr": null
+            },
+            {
+              "key": "StormAura.max_damage",
+              "value": 200.0,
+              "valueStr": null
+            },
+            {
+              "key": "StormAura.radius_step",
+              "value": 0.2,
+              "valueStr": null
+            },
+            {
+              "key": "StormAura.max_radius",
+              "value": 8.0,
+              "valueStr": null
+            },
+            {
+              "key": "StormAura.range_radius",
+              "value": 0.8,
+              "valueStr": null
+            }
+          ]
+        },
+        "missingFields": []
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

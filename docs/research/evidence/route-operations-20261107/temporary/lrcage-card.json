@@ -1,0 +1,67 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-07T14:34:30.819825+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/obt/main/level_main_14-02.json",
+      "--source-url",
+      "https://github.com/Kengxxiao/ArknightsGameData",
+      "--revision",
+      "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "--out",
+      "docs/research/evidence/route-operations-20261107/temporary/lrcage-card.json",
+      "select",
+      "/predefines/tokenCards/0"
+    ],
+    "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/obt/main/level_main_14-02.json",
+        "bytes": 51598,
+        "sha256": "8445c47937ba113d33974a284a915e8832214f2ff5bdc62a81e2591ab083e8c0",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/obt/main/level_main_14-02.json",
+        "pointer": "/predefines/tokenCards/0",
+        "value": {
+          "initialCnt": 1,
+          "hidden": false,
+          "alias": "trap_161_lrcage#1",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_161_lrcage",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}
