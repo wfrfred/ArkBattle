@@ -1,0 +1,126 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-08",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/always-check-point-20261108/runtime/extract_fear_selector.py",
+      "bytes": 4056,
+      "sha256": "89b6fd879ca9cb930bf65c505a52f4e6cf1007ce9a0f54160433a38771904b08"
+    },
+    "typeTreeReader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+      "bytes": 8161,
+      "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+    },
+    "externalReferenceReader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+      "bytes": 6749,
+      "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+    },
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/assets.py",
+        "bytes": 3399,
+        "sha256": "c458702aa0e014a093c548db9100709ac6338f74cee11aceb45c661003de4a09"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      }
+    ],
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+        "bytes": 1367500,
+        "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      }
+    ],
+    "scope": "Current installed Nymph S2 selector component; selected by RangedAttack._selector PPtr from prior archived binding. Static eligibility, not game observation"
+  },
+  "result": [
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "-1113161849908813312",
+      "typeId": 9,
+      "objectSha256": "1e0a7217a9aa3ca2ab279ca23ccac355be57c77cc6e52653cb1550add8346a3c",
+      "hierarchy": [
+        {
+          "name": "SkillTrigger",
+          "gameObjectPathId": "-2885123550179614208",
+          "transformPathId": "942291592168940032"
+        },
+        {
+          "name": "skchr_nymph_2",
+          "gameObjectPathId": "-8067974099479682560",
+          "transformPathId": "1542394061958619648"
+        }
+      ],
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -2885123550179614208
+        },
+        "common:349": true,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 7080728813803358465
+        },
+        "common:427": "",
+        "_targetSide": 2,
+        "_targetMotion": 3,
+        "_targetCategory": 1,
+        "_postFilter": 4,
+        "_ignoreTargetFree": false,
+        "_onlyIgnoreSomeOfTargetFreeCase": false,
+        "_abnormalFlag": 34,
+        "_abnormalCombo": 2,
+        "_ignoreAllyTargetFree": false,
+        "_ignoreHealFree": false,
+        "_ignoreMotionMode": false,
+        "_forceIgnoreCamouflage": false,
+        "_needProfessionMask": false,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": false,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": true,
+        "_maxTargetKey": "max_target",
+        "_maxTargetExtraKey": "",
+        "_maxNum": 1,
+        "_excludeOwner": false,
+        "_sortByTauntAtLast": false,
+        "_ignoreHitRange": false,
+        "_checkUnitType": false,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": false,
+        "_targetOptionHookedKeys": {
+          "Array": []
+        }
+      },
+      "scriptBinding": {
+        "externalReference": {
+          "fileId": 1,
+          "guid": "00000000000000000000000000000000",
+          "type": 0,
+          "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+        },
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "file": "CAB-658d74aab777086fc32b93f385be999a",
+        "pathId": "7080728813803358465",
+        "objectSha256": "4b73be155a7cc1416f19b5e9b511964e9587303d03acfb486404b75d84593311",
+        "value": {
+          "id": "7080728813803358465",
+          "name": "AdvancedSelector",
+          "cl": "AdvancedSelector",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        }
+      }
+    }
+  ]
+}

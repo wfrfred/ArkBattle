@@ -1,0 +1,686 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-08"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-08",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "config/prefabs.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "config/prefabs.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "config/prefabs.json",
+      "content/community.json",
+      "content/content.json",
+      "runtime/fear-selector.json",
+      "runtime/parameter-evidence.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "config/prefabs.json",
+        "kind": "record",
+        "bytes": 2856625,
+        "sha256": "3a63988408889396dae728f9662356b11fef3dfe29f1d759bebc8f9e05c44539"
+      },
+      {
+        "path": "config/scan_prefabs.py",
+        "kind": "historical-script",
+        "bytes": 10460,
+        "sha256": "21f6c25f2de3afde1b4b54516f3e543a723640cff02f65f35d76cd340a019193"
+      },
+      {
+        "path": "config/scan_prefabs.py.lock",
+        "kind": "artifact",
+        "bytes": 52,
+        "sha256": "87b323d3e2572bcaa81cbb098e0e97bf27591738562d5f21247237a29a807148"
+      },
+      {
+        "path": "content/community.json",
+        "kind": "record",
+        "bytes": 886,
+        "sha256": "50438e61468c058837fb254e9f1eafcb158b20ba2970eb42f0b6b3e8f2e659d7"
+      },
+      {
+        "path": "content/content.json",
+        "kind": "record",
+        "bytes": 27865,
+        "sha256": "bf64545c4783afe8f466d614a07d571d472b3061e1fb1ff0ff4630f83857c672"
+      },
+      {
+        "path": "content/extract_content.py",
+        "kind": "historical-script",
+        "bytes": 8904,
+        "sha256": "6a4e5c853a94a00dbafe5cdb9dc79eb7a8da7ec18003d29d8bd01362104baf0d"
+      },
+      {
+        "path": "runtime/extract_fear_selector.py",
+        "kind": "historical-script",
+        "bytes": 4056,
+        "sha256": "89b6fd879ca9cb930bf65c505a52f4e6cf1007ce9a0f54160433a38771904b08"
+      },
+      {
+        "path": "runtime/fear-selector.json",
+        "kind": "record",
+        "bytes": 4758,
+        "sha256": "ae37e2f4d18f0d97af839001dc903629f87689c39953c6d54793cd51e108c8cf"
+      },
+      {
+        "path": "runtime/parameter-evidence.json",
+        "kind": "record",
+        "bytes": 108729,
+        "sha256": "b537019e14164064af55861d26c6be563946eee41fdf41eb62ce3969bd333c70"
+      },
+      {
+        "path": "runtime/select_parameter_evidence.py",
+        "kind": "historical-script",
+        "bytes": 2893,
+        "sha256": "197c9b26a1d65d2d3b4a494f3129ecfaec366cdd3aab1c89466e19946f5669ae"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 71299,
+          "mode": "disasm",
+          "records": [
+            "runtime/parameter-evidence.json#/result/6",
+            "runtime/parameter-evidence.json#/result/6/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor.OnRouteChanged",
+          "address": "0x1808ccb80"
+        },
+        {
+          "index": 71300,
+          "mode": "disasm",
+          "records": [
+            "runtime/parameter-evidence.json#/result/8",
+            "runtime/parameter-evidence.json#/result/8/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor.Reset",
+          "address": "0x1808ccec0"
+        },
+        {
+          "index": 71407,
+          "mode": "disasm",
+          "records": [
+            "runtime/parameter-evidence.json#/result/5",
+            "runtime/parameter-evidence.json#/result/5/method"
+          ],
+          "fullname": "Torappu.Battle.DirectionCursor.get_alwaysCheckCurrentPoint",
+          "address": "0x1808d4c70"
+        },
+        {
+          "index": 71411,
+          "mode": "disasm",
+          "records": [
+            "runtime/parameter-evidence.json#/result/4",
+            "runtime/parameter-evidence.json#/result/4/method"
+          ],
+          "fullname": "Torappu.Battle.DirectionCursor..ctor",
+          "address": "0x1808d4a70"
+        },
+        {
+          "index": 71412,
+          "mode": "disasm",
+          "records": [
+            "runtime/parameter-evidence.json#/result/7",
+            "runtime/parameter-evidence.json#/result/7/method"
+          ],
+          "fullname": "Torappu.Battle.DirectionCursor.Reset",
+          "address": "0x1808d31a0"
+        },
+        {
+          "index": 77782,
+          "mode": "disasm",
+          "records": [
+            "runtime/parameter-evidence.json#/result/0",
+            "runtime/parameter-evidence.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.Init",
+          "address": "0x180abca30"
+        },
+        {
+          "index": 77783,
+          "mode": "disasm",
+          "records": [
+            "runtime/parameter-evidence.json#/result/3",
+            "runtime/parameter-evidence.json#/result/3/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.ChangePathMotionMode",
+          "address": "0x180ab9bb0"
+        },
+        {
+          "index": 78209,
+          "mode": "disasm",
+          "records": [
+            "runtime/parameter-evidence.json#/result/1",
+            "runtime/parameter-evidence.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/FearController.UpdateFearCursor",
+          "address": "0x180adf2a0"
+        },
+        {
+          "index": 78219,
+          "mode": "disasm",
+          "records": [
+            "runtime/parameter-evidence.json#/result/2",
+            "runtime/parameter-evidence.json#/result/2/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/AttractController.UpdateAttractCursor",
+          "address": "0x180ad4d00"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_0.ab",
+          "sha256": "315c22a5cc58cd56522dd50266002383df0fd7efad606c5bac618c2e0db31785",
+          "records": [
+            "config/prefabs.json#/provenance/sources/0"
+          ],
+          "bytes": 357205
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_1.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_1.ab",
+          "sha256": "0a054a1f686b2f324168e5a4ffaa95b0e86d9701a0ce5c8a4366652fe181388b",
+          "records": [
+            "config/prefabs.json#/provenance/sources/1"
+          ],
+          "bytes": 351237
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_10.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_10.ab",
+          "sha256": "7d88a8815d0947b2836c8770c0ff3c2b92645696ec5e2c9d715d6d0b18148fbb",
+          "records": [
+            "config/prefabs.json#/provenance/sources/2"
+          ],
+          "bytes": 270254
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_11.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_11.ab",
+          "sha256": "80744dfb157e052387e5e1e6bd4fef4fc339e332f8a3e17218e8f5949fa7a45e",
+          "records": [
+            "config/prefabs.json#/provenance/sources/3"
+          ],
+          "bytes": 287477
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_12.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_12.ab",
+          "sha256": "2e9056a509d746f71fb22261f8f2daf8d41fbaebc7787f6d6a15d447576a2f2f",
+          "records": [
+            "config/prefabs.json#/provenance/sources/4"
+          ],
+          "bytes": 309580
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_13.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_13.ab",
+          "sha256": "0b3c936babb315fa9771a7e78e4cd2b1dfdee9ce80e043fdac65122d8b424a59",
+          "records": [
+            "config/prefabs.json#/provenance/sources/5"
+          ],
+          "bytes": 342400
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_14.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_14.ab",
+          "sha256": "0563b3209d154cf3f8a08d5efcb267a71b291668f1a44a9f56664cb3f5866c5a",
+          "records": [
+            "config/prefabs.json#/provenance/sources/6"
+          ],
+          "bytes": 337702
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_15.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_15.ab",
+          "sha256": "2c30b08ce50e3734f945ac8efcff4f9081bc168835bd779e959a477719cf77c6",
+          "records": [
+            "config/prefabs.json#/provenance/sources/7"
+          ],
+          "bytes": 327148
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_16.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_16.ab",
+          "sha256": "398041ca47947b74843a24bac1404175513ed25c75c7ddce915dfc0dd6946266",
+          "records": [
+            "config/prefabs.json#/provenance/sources/8"
+          ],
+          "bytes": 317426
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_17.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_17.ab",
+          "sha256": "5cab229230f1ad686df4048a44c7d0bfb719b0993ba38e25e66bce15c1e22e7a",
+          "records": [
+            "config/prefabs.json#/provenance/sources/9"
+          ],
+          "bytes": 370630
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_18.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_18.ab",
+          "sha256": "7bc74aef8fbb3cbc7ce86d7e4b789e2c0daaadf076d47b0e9989e83e7ff4eb69",
+          "records": [
+            "config/prefabs.json#/provenance/sources/10"
+          ],
+          "bytes": 895456
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_19.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_19.ab",
+          "sha256": "84fdb631abc524475d7d739652267c2f8af3282c0ed5675dc2c26eceaf50b2c5",
+          "records": [
+            "config/prefabs.json#/provenance/sources/11"
+          ],
+          "bytes": 517235
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_2.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_2.ab",
+          "sha256": "0337022537c8ea59e44173cb7bcdee8b0da8f8a4fbb30386171eb2b2c9b3d302",
+          "records": [
+            "config/prefabs.json#/provenance/sources/12"
+          ],
+          "bytes": 282532
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_20.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_20.ab",
+          "sha256": "a8691210052bd5668850ab7b08d0926f835f17abce02503efea0556e418017ee",
+          "records": [
+            "config/prefabs.json#/provenance/sources/13"
+          ],
+          "bytes": 470562
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_21.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_21.ab",
+          "sha256": "5366bf2b9a9c00c514c5dced0fc3780c9ebc499214aa46c66d00cd93e72338af",
+          "records": [
+            "config/prefabs.json#/provenance/sources/14"
+          ],
+          "bytes": 350685
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_22.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_22.ab",
+          "sha256": "32f9fdfa30d2ea0b6483365b0e6c0fd2916822a7d8c478ed84877707633b23c3",
+          "records": [
+            "config/prefabs.json#/provenance/sources/15"
+          ],
+          "bytes": 331034
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_23.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_23.ab",
+          "sha256": "b9c6f72eb80f3892aba3088697cc983345d665a75ee5b47dcc79848e69296bd2",
+          "records": [
+            "config/prefabs.json#/provenance/sources/16"
+          ],
+          "bytes": 424134
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_24.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_24.ab",
+          "sha256": "32afebc6f67d2524fd17199003722e5a4a4d9c88d24f0f76ca1cf142cde9fa39",
+          "records": [
+            "config/prefabs.json#/provenance/sources/17"
+          ],
+          "bytes": 433814
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_25.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_25.ab",
+          "sha256": "6dc4d397912a6f2ced6c642c87fe87aa63bf42eb1e1398d2cc57096d3fc65c80",
+          "records": [
+            "config/prefabs.json#/provenance/sources/18"
+          ],
+          "bytes": 495075
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_26.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_26.ab",
+          "sha256": "382fad807781a318561cc1677cc883401c00f6bbd56b2bca6c58c2dbf86d62eb",
+          "records": [
+            "config/prefabs.json#/provenance/sources/19"
+          ],
+          "bytes": 456609
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_27.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_27.ab",
+          "sha256": "71ca2e2ea0b108a93414d1141f55901d4df325295d02b00f41357e4c8715db6a",
+          "records": [
+            "config/prefabs.json#/provenance/sources/20"
+          ],
+          "bytes": 494044
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_28.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_28.ab",
+          "sha256": "559485d435af0ebe0f4c5e3c02719db797cf691d736fd82cdaa382ec0718a0d9",
+          "records": [
+            "config/prefabs.json#/provenance/sources/21"
+          ],
+          "bytes": 450799
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_29.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_29.ab",
+          "sha256": "a45b8db9ce6c888fbb144000a8da3fdc0b142ca8e8152da352d0ddc22f997913",
+          "records": [
+            "config/prefabs.json#/provenance/sources/22"
+          ],
+          "bytes": 412923
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_3.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_3.ab",
+          "sha256": "c5ad2c22393decd0f59fb7bb7542cb342471ab8530e5b8de86a462ea9259e603",
+          "records": [
+            "config/prefabs.json#/provenance/sources/23"
+          ],
+          "bytes": 148945
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_30.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_30.ab",
+          "sha256": "aebb60e02a2cac41c6a240bcaa678130c8a529c81ca1834421fe531a5a146e36",
+          "records": [
+            "config/prefabs.json#/provenance/sources/24"
+          ],
+          "bytes": 398250
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_31.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_31.ab",
+          "sha256": "aa759aac50e6193311d7fac2a84e36109310e3711b7c8f9374bf4c6e03bb2bbf",
+          "records": [
+            "config/prefabs.json#/provenance/sources/25"
+          ],
+          "bytes": 465984
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_32.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_32.ab",
+          "sha256": "f3dec6b9a26e6fb65a91900faece32fae4d24a195acd78ccbcc719c41ea48c27",
+          "records": [
+            "config/prefabs.json#/provenance/sources/26"
+          ],
+          "bytes": 248658
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_33.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_33.ab",
+          "sha256": "64df05bb2d0a083aedbe724d23c1ede43a86ee1b8387f244965b056497000739",
+          "records": [
+            "config/prefabs.json#/provenance/sources/27"
+          ],
+          "bytes": 449718
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_34.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_34.ab",
+          "sha256": "f6bae238962bc330c6cc72734f788fe09be81dd6eae8eda1305312495899bafb",
+          "records": [
+            "config/prefabs.json#/provenance/sources/28"
+          ],
+          "bytes": 413007
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_35.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_35.ab",
+          "sha256": "144a51c4419a8d0bef7cb61b0a0452a5775051aedbd8fac5a89b3c5db5e84592",
+          "records": [
+            "config/prefabs.json#/provenance/sources/29"
+          ],
+          "bytes": 382837
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_36.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_36.ab",
+          "sha256": "2dd8bfa465ad4c957276fbb2107a09565f9191348f2bb9aa06c9e731a344b316",
+          "records": [
+            "config/prefabs.json#/provenance/sources/30"
+          ],
+          "bytes": 431502
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_4.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_4.ab",
+          "sha256": "eee56a7fcabb99b9464626aec0a8308e9a60fc7d3c888931ebfddfe0fcd8b66b",
+          "records": [
+            "config/prefabs.json#/provenance/sources/31"
+          ],
+          "bytes": 212148
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_5.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_5.ab",
+          "sha256": "1fe30c2cbcc54b4548ed23bea7ebad230e53eefb29ea7d8bdb64281fea92c88f",
+          "records": [
+            "config/prefabs.json#/provenance/sources/32"
+          ],
+          "bytes": 259915
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_6.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_6.ab",
+          "sha256": "ed001d5acdc94539ac062a3e8148a3e6ed52303442d60eae6ef4247537c4820f",
+          "records": [
+            "config/prefabs.json#/provenance/sources/33"
+          ],
+          "bytes": 287806
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_7.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_7.ab",
+          "sha256": "8ee31c5867a7da03f7b379f486a3f2253b1d40487b728587855619d93d9cca74",
+          "records": [
+            "config/prefabs.json#/provenance/sources/34"
+          ],
+          "bytes": 298849
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_8.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_8.ab",
+          "sha256": "df97a7de9e1da1404e46e99487e4a3a200a13d746df18cc5b5b356e1d875720e",
+          "records": [
+            "config/prefabs.json#/provenance/sources/35"
+          ],
+          "bytes": 294968
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_9.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_9.ab",
+          "sha256": "31f435cffff8870afc44c046504ebae472851ac0c5ff818e1565ee7e39c7aef8",
+          "records": [
+            "config/prefabs.json#/provenance/sources/36"
+          ],
+          "bytes": 233619
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "sha256": "8ad3f66ba83f9bd1b5b256009ff262eead54ac4d07bc921d1f5b7337226cf7df",
+          "records": [
+            "config/prefabs.json#/provenance/sources/37"
+          ],
+          "bytes": 147859
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+          "sha256": "adcf77f260748418d57e08d2539993232de53053bf4a5ec2292ff9a4c7865f1d",
+          "records": [
+            "config/prefabs.json#/provenance/sources/38"
+          ],
+          "bytes": 5089969
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_1.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_1.ab",
+          "sha256": "e399b7335ba58134d81d6a7b42079a0284d447f39da9fdcc08ef3909e3b89604",
+          "records": [
+            "config/prefabs.json#/provenance/sources/39"
+          ],
+          "bytes": 1955267
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_2.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_2.ab",
+          "sha256": "9781d097ccdddb0835cee6a2dd988a0963c63a4e7cd6e2ed9a4d25d77418b726",
+          "records": [
+            "config/prefabs.json#/provenance/sources/40"
+          ],
+          "bytes": 4890432
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_3.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_3.ab",
+          "sha256": "b4489956c3b5be0c53bc6fc0dcdf31ecbe0babb6e8099da1ecafca084f99e64c",
+          "records": [
+            "config/prefabs.json#/provenance/sources/41"
+          ],
+          "bytes": 2040978
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_4.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_4.ab",
+          "sha256": "09ef43e4a181cda91c01c5dc9658451fac30de1e87b462e5b60f71ae546ed618",
+          "records": [
+            "config/prefabs.json#/provenance/sources/42"
+          ],
+          "bytes": 3211755
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_5.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_5.ab",
+          "sha256": "4a49fe9d4535474d896e64331657773790c891f14dd99616b6774dfe5a1d7a96",
+          "records": [
+            "config/prefabs.json#/provenance/sources/43"
+          ],
+          "bytes": 2812726
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_6.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_6.ab",
+          "sha256": "f632f2d5722e63965a3e3c30445a677275c58bdf9d6d7f8a2e7aee01ce118177",
+          "records": [
+            "config/prefabs.json#/provenance/sources/44"
+          ],
+          "bytes": 994726
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "config/prefabs.json#/provenance/sources/45",
+            "runtime/fear-selector.json#/provenance/sources/1"
+          ],
+          "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
+          "records": [
+            "runtime/fear-selector.json#/provenance/sources/0"
+          ],
+          "bytes": 1367500
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

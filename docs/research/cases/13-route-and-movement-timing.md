@@ -101,6 +101,35 @@ return withinDistance(locator, sampledTarget, reachDistance);
 
 此结论针对普通 MOVE 路点。不能直接推广为“不可达终点也视作完成”；终点走另外的 Route.CheckReached 检查。
 
+### 4.1 配置来源与 Cursor 政策（2026-11-08 补核）
+
+**N：** 配置来自 Enemy Prefab 的 `_alwaysCheckCurrentPoint`，不在 RouteData。普通 `Enemy.Init` 将它传入 `DirectionCursor` 构造器，由 Cursor 保存并供 MOVE 到达检查使用。复用原 Cursor 与创建新 Cursor 的政策不同：
+
+| 操作 | alwaysCheckCurrentPoint |
+| --- | --- |
+| 普通 Enemy 初始化 | 从 Enemy Prefab 复制 |
+| ReassignRoute／ReconstructRoute | 复用原 Cursor，保留该值 |
+| Fear／Attract 创建临时 Cursor | 明确传 false，不复制主 Cursor 的值 |
+| ChangePathMotionMode 创建新主 Cursor | 明确传 false，不重新读取 Prefab 初值 |
+
+精确参数位置、原生选择器与原件引用见[参数核对](../evidence/always-check-point-20261108/runtime/)。这些结论描述普通静态方法，不保证任意同步内容回调后仍保留同一个 Cursor。
+
+**D：** 本轮成功扫描 45 个敌人／Token Prefab 包。已识别的 2,206 个 Enemy 组件中，只有以下三个配置为 true，其余 2,203 个为 false，没有字段缺失：
+
+| Prefab | EnemyData 名称 | 直接主 Wave 出生正例 |
+| --- | --- | --- |
+| enemy_10163_mnctur | 帕拉杜利斯 | act48side_07，Wave 0／Fragment 2／Action 0 |
+| enemy_10163_mnctur_2 | 神勇的帕拉杜利斯 | act48side_ex03，Wave 0／Fragment 0／Action 0 |
+| enemy_2137_shsdgo | 猎犬proto | rogue6_c-7，Wave 0／Fragment 3／Action 0 |
+
+这三个出生引用均为正数 count、无 hiddenGroup、无 Action 随机组；所绑定路线包含 MOVE。[Prefab 扫描](../evidence/always-check-point-20261108/config/prefabs.json)、[数据与关卡正例](../evidence/always-check-point-20261108/content/)。因此，true 不是仅存在于未启用模板的参数。该范围不代表扫描了客户端全部资源，也不证明所列 MOVE 实际不可达。
+
+**N／D／I：** 猎犬proto的基础 `fearedImmune=false`。妮芙 S2 的实际选择器、命中弹道、fear 数据库与模板、恐惧目标登记及 FearController 构造链已经配对：在目标存活、正常可选且位于技能范围内等条件下，它可拥有 true 的主 Cursor，同时由恐惧创建 false 的临时 Cursor；恐惧结束后返回原主 Cursor。[完整交叉与新增选择器原件](../evidence/always-check-point-20261108/runtime/README.md#猎犬proto--妮芙-s2)。这是实际内容的静态可执行组合，不是实机施放或不可达时不同走位的观测。
+
+**U：** 三个 true 对象是否实际通过 ChangePathMotionMode 将主 Cursor 政策改为 false，本轮未闭合。不能用恐惧的独立临时 Cursor 代替这项主 Cursor 替换的内容证据。
+
+**项目影响：** 配置来源与执行政策是不同问题。原生并不保证一个 Enemy 的全部 Cursor 都使用相同政策；也不能仅因值从 Prefab 读取，就将它认定为路线方案本身的字段。实际内容交叉与新 Cursor 参数应一起用于后续架构判断，本次不决定 Plan、初始化输入或 Execution 的最终字段。
+
 ## 5. 目标采样与最终完成
 
 **N：** MoveCheckpoint.OnBegin（70197）根据 randomizeReachOffset 进行随机采样或复制固定 offset，并写入本路点实例的 m_offset。后续检查与移动沿用该值。巡逻重新进入同一路点时会重新执行 OnBegin，不能把“一次进入只采样一次”误写成该静态路点永久只采样一次。[采样入口](../evidence/route-movement-20261018/70197.asm)

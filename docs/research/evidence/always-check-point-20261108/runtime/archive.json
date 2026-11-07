@@ -1,0 +1,176 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [],
+    "collectionDateSource": "not recorded",
+    "organizedOn": "2026-11-08",
+    "client": {
+      "dll": null,
+      "metadata": null
+    },
+    "sourceRecords": [
+      "fear-selector.json",
+      "parameter-evidence.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "extract_fear_selector.py",
+        "kind": "historical-script",
+        "bytes": 4056,
+        "sha256": "89b6fd879ca9cb930bf65c505a52f4e6cf1007ce9a0f54160433a38771904b08"
+      },
+      {
+        "path": "fear-selector.json",
+        "kind": "record",
+        "bytes": 4758,
+        "sha256": "ae37e2f4d18f0d97af839001dc903629f87689c39953c6d54793cd51e108c8cf"
+      },
+      {
+        "path": "parameter-evidence.json",
+        "kind": "record",
+        "bytes": 108729,
+        "sha256": "b537019e14164064af55861d26c6be563946eee41fdf41eb62ce3969bd333c70"
+      },
+      {
+        "path": "select_parameter_evidence.py",
+        "kind": "historical-script",
+        "bytes": 2893,
+        "sha256": "197c9b26a1d65d2d3b4a494f3129ecfaec366cdd3aab1c89466e19946f5669ae"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 71299,
+          "mode": "disasm",
+          "records": [
+            "parameter-evidence.json#/result/6",
+            "parameter-evidence.json#/result/6/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor.OnRouteChanged",
+          "address": "0x1808ccb80"
+        },
+        {
+          "index": 71300,
+          "mode": "disasm",
+          "records": [
+            "parameter-evidence.json#/result/8",
+            "parameter-evidence.json#/result/8/method"
+          ],
+          "fullname": "Torappu.Battle.BasicCursor.Reset",
+          "address": "0x1808ccec0"
+        },
+        {
+          "index": 71407,
+          "mode": "disasm",
+          "records": [
+            "parameter-evidence.json#/result/5",
+            "parameter-evidence.json#/result/5/method"
+          ],
+          "fullname": "Torappu.Battle.DirectionCursor.get_alwaysCheckCurrentPoint",
+          "address": "0x1808d4c70"
+        },
+        {
+          "index": 71411,
+          "mode": "disasm",
+          "records": [
+            "parameter-evidence.json#/result/4",
+            "parameter-evidence.json#/result/4/method"
+          ],
+          "fullname": "Torappu.Battle.DirectionCursor..ctor",
+          "address": "0x1808d4a70"
+        },
+        {
+          "index": 71412,
+          "mode": "disasm",
+          "records": [
+            "parameter-evidence.json#/result/7",
+            "parameter-evidence.json#/result/7/method"
+          ],
+          "fullname": "Torappu.Battle.DirectionCursor.Reset",
+          "address": "0x1808d31a0"
+        },
+        {
+          "index": 77782,
+          "mode": "disasm",
+          "records": [
+            "parameter-evidence.json#/result/0",
+            "parameter-evidence.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.Init",
+          "address": "0x180abca30"
+        },
+        {
+          "index": 77783,
+          "mode": "disasm",
+          "records": [
+            "parameter-evidence.json#/result/3",
+            "parameter-evidence.json#/result/3/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.ChangePathMotionMode",
+          "address": "0x180ab9bb0"
+        },
+        {
+          "index": 78209,
+          "mode": "disasm",
+          "records": [
+            "parameter-evidence.json#/result/1",
+            "parameter-evidence.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/FearController.UpdateFearCursor",
+          "address": "0x180adf2a0"
+        },
+        {
+          "index": 78219,
+          "mode": "disasm",
+          "records": [
+            "parameter-evidence.json#/result/2",
+            "parameter-evidence.json#/result/2/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/AttractController.UpdateAttractCursor",
+          "address": "0x180ad4d00"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
+          "records": [
+            "fear-selector.json#/provenance/sources/0"
+          ],
+          "bytes": 1367500
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "fear-selector.json#/provenance/sources/1"
+          ],
+          "bytes": 477255
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

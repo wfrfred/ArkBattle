@@ -1,0 +1,946 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-08",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/always-check-point-20261108/content/extract_content.py",
+      "bytes": 8904,
+      "sha256": "6a4e5c853a94a00dbafe5cdb9dc79eb7a8da7ec18003d29d8bd01362104baf0d"
+    },
+    "repository": "https://github.com/Kengxxiao/ArknightsGameData",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "mirror": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current",
+    "enemyDatabase": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/enemy_database.json",
+      "bytes": 15721552,
+      "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b",
+      "gitBlobSha": "62ab806926b9c8ca5c80524730caf0066f6c2c2f"
+    },
+    "levelSelection": [
+      "zh_CN/gamedata/levels/obt/**/*.json",
+      "zh_CN/gamedata/levels/activities/**/*.json"
+    ],
+    "pathAndGitBlobManifestSha256": "d1a30440f5ab3acf1c61917153a5377affa6b4ac07f5adeff8dda991f34c0bec",
+    "scope": "Pinned JSON identity/plan evidence. Actual _alwaysCheckCurrentPoint values and native cursor behaviour come from sibling evidence. No game execution or proof that an unreachable layout occurred."
+  },
+  "result": {
+    "requestedPrefabs": [
+      "enemy_10163_mnctur",
+      "enemy_10163_mnctur_2",
+      "enemy_2137_shsdgo"
+    ],
+    "inputValidation": {
+      "gitTreeJsonCount": 4025,
+      "actualJsonCount": 4025,
+      "rawGitBlobsVerified": 4025,
+      "errors": 0
+    },
+    "identities": [
+      {
+        "key": "enemy_10163_mnctur",
+        "prefabKey": "enemy_10163_mnctur",
+        "pointer": "/enemies/340/Value/0",
+        "level": 0,
+        "fields": {
+          "name": {
+            "m_defined": true,
+            "m_value": "帕拉杜利斯"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "移动方向前方有我方单位时发起冲锋，入戏状态下冲锋会越过我方单位，直至命中地形，受到大量真实伤害并晕眩"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_10163_mnctur"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "WALK"
+          },
+          "skills": [
+            {
+              "prefabKey": "rush",
+              "priority": 0,
+              "cooldown": 10.0,
+              "initCooldown": 5.0,
+              "spCost": 0,
+              "blackboard": null
+            },
+            {
+              "prefabKey": "rushEndNormal",
+              "priority": 0,
+              "cooldown": 1.0,
+              "initCooldown": 0.0,
+              "spCost": 0,
+              "blackboard": null
+            },
+            {
+              "prefabKey": "rushEndAdvance",
+              "priority": 0,
+              "cooldown": 1.0,
+              "initCooldown": 0.0,
+              "spCost": 0,
+              "blackboard": [
+                {
+                  "key": "stun",
+                  "value": 15.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "cooldown",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "atk_scale_pure",
+                  "value": 10.0,
+                  "valueStr": null
+                }
+              ]
+            }
+          ],
+          "talentBlackboard": [
+            {
+              "key": "CollideChar.atk_scale_collide",
+              "value": 2.0,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "key": "enemy_10163_mnctur_2",
+        "prefabKey": "enemy_10163_mnctur_2",
+        "pointer": "/enemies/341/Value/0",
+        "level": 0,
+        "fields": {
+          "name": {
+            "m_defined": true,
+            "m_value": "神勇的帕拉杜利斯"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "移动方向前方有我方单位时发起冲锋，入戏状态下冲锋会越过我方单位，直至命中地形，受到大量真实伤害并晕眩"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_10163_mnctur_2"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "WALK"
+          },
+          "skills": [
+            {
+              "prefabKey": "rush",
+              "priority": 0,
+              "cooldown": 10.0,
+              "initCooldown": 5.0,
+              "spCost": 0,
+              "blackboard": null
+            },
+            {
+              "prefabKey": "rushEndNormal",
+              "priority": 0,
+              "cooldown": 1.0,
+              "initCooldown": 0.0,
+              "spCost": 0,
+              "blackboard": null
+            },
+            {
+              "prefabKey": "rushEndAdvance",
+              "priority": 0,
+              "cooldown": 1.0,
+              "initCooldown": 0.0,
+              "spCost": 0,
+              "blackboard": [
+                {
+                  "key": "stun",
+                  "value": 15.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "cooldown",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "atk_scale_pure",
+                  "value": 10.0,
+                  "valueStr": null
+                }
+              ]
+            }
+          ],
+          "talentBlackboard": [
+            {
+              "key": "CollideChar.atk_scale_collide",
+              "value": 2.0,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "key": "enemy_2137_shsdgo",
+        "prefabKey": "enemy_2137_shsdgo",
+        "pointer": "/enemies/1707/Value/0",
+        "level": 0,
+        "fields": {
+          "name": {
+            "m_defined": true,
+            "m_value": "猎犬proto"
+          },
+          "description": {
+            "m_defined": true,
+            "m_value": "攻击额外造成狂躁损伤，周期性附着于单位上撕咬攻击，大幅降低目标的命中率"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_2137_shsdgo"
+          },
+          "motion": {
+            "m_defined": true,
+            "m_value": "WALK"
+          },
+          "skills": [
+            {
+              "prefabKey": "Jump",
+              "priority": 0,
+              "cooldown": 40.0,
+              "initCooldown": 15.0,
+              "spCost": 0,
+              "blackboard": [
+                {
+                  "key": "duration",
+                  "value": 10.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "hit_interval",
+                  "value": 1.5,
+                  "valueStr": null
+                },
+                {
+                  "key": "damage_hitrate_magical",
+                  "value": -0.8,
+                  "valueStr": null
+                },
+                {
+                  "key": "damage_hitrate_physical",
+                  "value": -0.8,
+                  "valueStr": null
+                },
+                {
+                  "key": "ep_damage_ratio",
+                  "value": 0.3,
+                  "valueStr": null
+                }
+              ]
+            }
+          ],
+          "talentBlackboard": [
+            {
+              "key": "epAttack.attack@ep_damage_ratio",
+              "value": 0.3,
+              "valueStr": null
+            }
+          ]
+        }
+      }
+    ],
+    "summaries": {
+      "enemy_10163_mnctur": {
+        "spawnEntries": 10,
+        "mainUngroupedPositiveEntries": 10,
+        "mainUngroupedPositiveFiles": [
+          "activities/act48side/level_act48side_07.json",
+          "obt/campaign/level_camp_r_34.json"
+        ],
+        "mainUngroupedWithMoveEntries": 10,
+        "checkpointTypeCountsInMainUngroupedEntries": {
+          "MOVE": 80,
+          "WAIT_FOR_SECONDS": 3
+        },
+        "levelFileCount": 2,
+        "mainUngroupedPositiveFileCount": 2
+      },
+      "enemy_10163_mnctur_2": {
+        "spawnEntries": 39,
+        "mainUngroupedPositiveEntries": 32,
+        "mainUngroupedPositiveFiles": [
+          "activities/act1football/level_act1football_sub-1-1.json",
+          "activities/act48side/level_act48side_ex03.json",
+          "activities/act48side/level_act48side_ex07.json",
+          "activities/act48side/level_act48side_ex08.json",
+          "obt/campaign/level_camp_r_34.json"
+        ],
+        "mainUngroupedWithMoveEntries": 23,
+        "checkpointTypeCountsInMainUngroupedEntries": {
+          "WAIT_FOR_SECONDS": 20,
+          "MOVE": 100,
+          "DISAPPEAR": 3,
+          "APPEAR_AT_POS": 3
+        },
+        "levelFileCount": 8,
+        "mainUngroupedPositiveFileCount": 5
+      },
+      "enemy_2137_shsdgo": {
+        "spawnEntries": 917,
+        "mainUngroupedPositiveEntries": 27,
+        "mainUngroupedPositiveFiles": [
+          "obt/roguelike/ro6/level_rogue6_7-2.json",
+          "obt/roguelike/ro6/level_rogue6_b-4-b.json",
+          "obt/roguelike/ro6/level_rogue6_b-4.json",
+          "obt/roguelike/ro6/level_rogue6_b-7-b.json",
+          "obt/roguelike/ro6/level_rogue6_c-1.json",
+          "obt/roguelike/ro6/level_rogue6_c-7.json",
+          "obt/roguelike/ro6/level_rogue6_t-12.json"
+        ],
+        "mainUngroupedWithMoveEntries": 23,
+        "checkpointTypeCountsInMainUngroupedEntries": {
+          "MOVE": 112,
+          "DISAPPEAR": 17,
+          "WAIT_FOR_SECONDS": 25,
+          "APPEAR_AT_POS": 17
+        },
+        "levelFileCount": 71,
+        "mainUngroupedPositiveFileCount": 7
+      }
+    },
+    "selectedExamples": [
+      {
+        "file": "activities/act48side/level_act48side_07.json",
+        "source": {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/activities/act48side/level_act48side_07.json",
+          "bytes": 75061,
+          "sha256": "0d62733f495e41ef75e220ce2fdf2556169b219cba7941feb65d29f31444345e"
+        },
+        "gitBlobSha": "b1b3e578c8f5461f7d3cd23871810479f0f21370",
+        "pointer": "/waves/0/fragments/2/actions/0",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_10163_mnctur",
+          "count": 1,
+          "preDelay": 3.0,
+          "interval": 1.0,
+          "routeIndex": 6,
+          "blockFragment": false,
+          "autoPreviewRoute": true,
+          "autoDisplayEnemyInfo": true,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": null,
+          "randomSpawnGroupPackKey": null,
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 0,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        },
+        "routePointer": "/routes/6",
+        "route": {
+          "motionMode": "WALK",
+          "startPosition": {
+            "row": 5,
+            "col": 0
+          },
+          "endPosition": {
+            "row": 2,
+            "col": 6
+          },
+          "spawnRandomRange": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "spawnOffset": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "checkpoints": [
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 5,
+                "col": 1
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "WAIT_FOR_SECONDS",
+              "time": 10.0,
+              "position": {
+                "row": 0,
+                "col": 0
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 6,
+                "col": 1
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 6,
+                "col": 3
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 4,
+                "col": 3
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 4,
+                "col": 1
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 6,
+                "col": 1
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 6,
+                "col": 3
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 4,
+                "col": 3
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 4,
+                "col": 1
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 6,
+                "col": 1
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 6,
+                "col": 3
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 4,
+                "col": 3
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 4,
+                "col": 1
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 6,
+                "col": 1
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 6,
+                "col": 3
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 4,
+                "col": 3
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 4,
+                "col": 1
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 6,
+                "col": 1
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 6,
+                "col": 3
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 4,
+                "col": 3
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 4,
+                "col": 4
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 3,
+                "col": 4
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 3,
+                "col": 6
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            }
+          ],
+          "allowDiagonalMove": true,
+          "visitEveryTileCenter": false,
+          "visitEveryNodeCenter": false,
+          "visitEveryCheckPoint": false
+        },
+        "enemyDbRefs": [
+          {
+            "pointer": "/enemyDbRefs/3",
+            "value": {
+              "useDb": true,
+              "id": "enemy_10163_mnctur",
+              "level": 0,
+              "overwrittenData": null
+            }
+          }
+        ],
+        "evidence": "Direct main Wave SPAWN, positive count, no hidden/random group; static executable plan, not game observation."
+      },
+      {
+        "file": "activities/act48side/level_act48side_ex03.json",
+        "source": {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/activities/act48side/level_act48side_ex03.json",
+          "bytes": 95199,
+          "sha256": "676dbdfab93fbba0b935f9fbb16bc925eac8887a4b485c34aa21a25ff58ffcb4"
+        },
+        "gitBlobSha": "d497355a0bf55f87c224209748743d300c9f500b",
+        "pointer": "/waves/0/fragments/0/actions/0",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_10163_mnctur_2",
+          "count": 1,
+          "preDelay": 0.0,
+          "interval": 1.0,
+          "routeIndex": 0,
+          "blockFragment": false,
+          "autoPreviewRoute": false,
+          "autoDisplayEnemyInfo": true,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": null,
+          "randomSpawnGroupPackKey": null,
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 0,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        },
+        "routePointer": "/routes/0",
+        "route": {
+          "motionMode": "WALK",
+          "startPosition": {
+            "row": 7,
+            "col": 1
+          },
+          "endPosition": {
+            "row": 1,
+            "col": 5
+          },
+          "spawnRandomRange": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "spawnOffset": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "checkpoints": [
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 7,
+                "col": 3
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 7,
+                "col": 1
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 7,
+                "col": 8
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 1,
+                "col": 8
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            }
+          ],
+          "allowDiagonalMove": true,
+          "visitEveryTileCenter": false,
+          "visitEveryNodeCenter": false,
+          "visitEveryCheckPoint": false
+        },
+        "enemyDbRefs": [
+          {
+            "pointer": "/enemyDbRefs/4",
+            "value": {
+              "useDb": true,
+              "id": "enemy_10163_mnctur_2",
+              "level": 0,
+              "overwrittenData": null
+            }
+          }
+        ],
+        "evidence": "Direct main Wave SPAWN, positive count, no hidden/random group; static executable plan, not game observation."
+      },
+      {
+        "file": "obt/roguelike/ro6/level_rogue6_c-7.json",
+        "source": {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/obt/roguelike/ro6/level_rogue6_c-7.json",
+          "bytes": 127288,
+          "sha256": "36a2290c08cad3758f28ada16216e52923dfa78875c23cf7051de50eae4ffedc"
+        },
+        "gitBlobSha": "44017a193bb3a97ea6920d5ca275921ca195c651",
+        "pointer": "/waves/0/fragments/3/actions/0",
+        "action": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_2137_shsdgo",
+          "count": 1,
+          "preDelay": 3.0,
+          "interval": 2.0,
+          "routeIndex": 28,
+          "blockFragment": false,
+          "autoPreviewRoute": true,
+          "autoDisplayEnemyInfo": true,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": null,
+          "randomSpawnGroupPackKey": null,
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 0,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        },
+        "routePointer": "/routes/28",
+        "route": {
+          "motionMode": "WALK",
+          "startPosition": {
+            "row": 5,
+            "col": 11
+          },
+          "endPosition": {
+            "row": 5,
+            "col": 0
+          },
+          "spawnRandomRange": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "spawnOffset": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "checkpoints": [
+            {
+              "type": "MOVE",
+              "time": 0.0,
+              "position": {
+                "row": 5,
+                "col": 10
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            },
+            {
+              "type": "WAIT_FOR_SECONDS",
+              "time": 8.0,
+              "position": {
+                "row": 0,
+                "col": 0
+              },
+              "reachOffset": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "randomizeReachOffset": false,
+              "reachDistance": 0.0
+            }
+          ],
+          "allowDiagonalMove": true,
+          "visitEveryTileCenter": false,
+          "visitEveryNodeCenter": false,
+          "visitEveryCheckPoint": false
+        },
+        "enemyDbRefs": [
+          {
+            "pointer": "/enemyDbRefs/1",
+            "value": {
+              "useDb": true,
+              "id": "enemy_2137_shsdgo",
+              "level": 0,
+              "overwrittenData": null
+            }
+          }
+        ],
+        "evidence": "Direct main Wave SPAWN, positive count, no hidden/random group; static executable plan, not game observation."
+      }
+    ],
+    "limits": [
+      "Counts refer to SPAWN entries, not generated enemy quantities.",
+      "Hidden/group/Branch entries are counted separately from direct main witnesses and are not presumed enabled.",
+      "Supported SideStory and integrated-strategy witnesses contain MOVE; actual path unreachability is not asserted."
+    ]
+  }
+}

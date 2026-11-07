@@ -1,0 +1,23 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-08",
+    "scope": "Community name/content cross-checks; not evidence of native field values, cursor construction parameters or actual unreachable movement."
+  },
+  "result": [
+    {
+      "url": "https://prts.wiki/w/猎犬proto",
+      "title": "猎犬proto",
+      "verified": "名称与固定 EnemyData 一致；页面显示 BF4，并列普通集成战略出场关卡。猎狗proto重定向至此页。"
+    },
+    {
+      "url": "https://prts.wiki/w/帕拉杜利斯",
+      "title": "帕拉杜利斯",
+      "verified": "名称与固定 EnemyData 一致；普通 SideStory 内容的冲锋敌人。"
+    },
+    {
+      "url": "https://prts.wiki/w/神勇的帕拉杜利斯",
+      "title": "神勇的帕拉杜利斯",
+      "verified": "名称与固定 EnemyData 一致；页面列 ME-EX-3 等普通 SideStory 出场关卡。"
+    }
+  ]
+}
