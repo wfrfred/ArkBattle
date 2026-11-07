@@ -11,7 +11,7 @@ test("typed construction and identities retain private state and capability proo
 import type { Ref } from ${module("common/ref")};
 import type { State } from ${module("battle/state")};
 import { Hooks, key, type Hook } from ${module("hook")};
-import { initialize, ref, get, all as allUnits, compose, optional, type Unit, type Change } from ${module("unit/index")};
+import { initialize, ref, get, all as allUnits, compose, optional, type Unit, type Input as UnitInput, type Change } from ${module("unit/index")};
 import { update } from ${module("battle/unit")};
 import * as actions from ${module("unit/action/index")};
 import * as effects from ${module("unit/effect/index")};
@@ -31,6 +31,7 @@ import * as projectiles from ${module("projectile/query")};
 import { setMotionMode, setAlternative, clearAlternative, type Definition as RouteDefinition, type Route } from ${module("unit/capability/route/index")};
 import * as mechanisms from ${module("battle/mechanism")};
 import { createPredefinedDefinition } from ${module("battle/steps/predefined")};
+import { initialize as initializeRouted, type Input as RoutedInput } from ${module("battle/creation/routed-unit")};
 import * as actionCapability from ${module("unit/capability/action/index")};
 import { createRegistrationOperations } from ${module("unit/registration")};
 import type { Offense } from ${module("unit/capability/offense/index")};
@@ -117,6 +118,24 @@ effects.setExpiration(battle, burstRef, { ...burst.expiration, elapsed: burst.ex
 // @ts-expect-error writes retain the Burst identity's duration contract.
 effects.setExpiration(battle, burstRef, { type: 'DEADLINE', tick: 10 });
 const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'bare', hooks: Hooks.empty() } }).value;
+const occupiedDefinition = { ...bare.definition, occupancy: { slot: 'OCCUPANT' as const } };
+const occupiedInput: UnitInput<typeof occupiedDefinition> = {
+    id: 3, definition: occupiedDefinition, position: [0, 0],
+    initial: { occupancy: { tile: [0, 0] } },
+};
+const occupied = initialize(battle, occupiedInput).value;
+const occupiedTile: readonly [number, number] = occupied.occupancy.tile;
+const { initial: occupiedInitial, ...missingInitial } = occupiedInput;
+// @ts-expect-error required capability input cannot be omitted at the Unit entry point.
+initialize(battle, missingInitial);
+// @ts-expect-error assigning an Input retains the same required construction facts.
+const incompleteInput: UnitInput<typeof occupiedDefinition> = missingInitial;
+// @ts-expect-error Occupancy requires a structural tile, independently of optional direction.
+initialize(battle, { ...occupiedInput, initial: { occupancy: { direction: 'RIGHT' } } });
+declare const routedOptions: Pick<RoutedInput, 'route' | 'timing' | 'alwaysCheckCurrentPoint'>;
+initializeRouted(battle, { ...routedOptions, ...occupiedInput });
+// @ts-expect-error routed creation must preserve required inputs before forwarding to Unit.
+initializeRouted(battle, { ...routedOptions, ...missingInitial });
 declare const skillCommandRef: Ref<Unit & SkillCapability>;
 declare const routeCommandRef: Ref<Unit & Route>;
 declare const routeDefinition: RouteDefinition;
@@ -321,11 +340,21 @@ const predefined = createPredefinedDefinition({
     id: 0, alias: null, initiallyPresent: true,
     creation: { type: 'UNIT', definition: patient.definition, position: [0, 0] },
 });
+const occupiedPredefined = createPredefinedDefinition({
+    id: 2, alias: null, initiallyPresent: true,
+    creation: { type: 'UNIT', ...occupiedInput },
+});
+const incompletePredefined = {
+    id: 3, alias: null, initiallyPresent: true,
+    creation: { type: 'UNIT' as const, ...missingInitial },
+};
+// @ts-expect-error predefined forwarding retains required capability input.
+createPredefinedDefinition(incompletePredefined);
 const account = { initialDp: 0, maxDp: 99, dpRecoveryTicks: null, slotLimit: null };
 runtime.initialize({ ...baseInput,
     deployment: { definition: account, cards: [counterCard] },
     initialMechanisms: [{ definition: counterMechanism }],
-    predefines: [predefined, createPredefinedDefinition({
+    predefines: [predefined, occupiedPredefined, createPredefinedDefinition({
         id: 1, alias: null, initiallyPresent: true,
         creation: { type: 'MECHANISM', definition: counterMechanism },
     })],
@@ -337,10 +366,14 @@ const mismatchedCard = { ...counterCard, card: { ...counterCard.card, initialize
 // @ts-expect-error aggregating a Card cannot weaken initialize/callback pairing.
 runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [mismatchedCard] }, initialMechanisms: [], predefines: [] });
 const missingOccupancy = { id: 0, alias: null, initiallyPresent: true, creation: { type: 'UNIT' as const, definition: bare.definition, position: [0, 0] as const, initial: { occupancy: { tile: [0, 0] as const } } } };
+// @ts-expect-error ordinary Unit construction cannot initialize an undeclared capability.
+initialize(battle, { id: 4, ...missingOccupancy.creation });
 // @ts-expect-error a predefined Unit cannot initialize an undeclared capability.
 createPredefinedDefinition(missingOccupancy);
 // @ts-expect-error raw Runtime input obeys the same construction constraint.
 runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [] }, initialMechanisms: [], predefines: [missingOccupancy] });
+// @ts-expect-error raw Runtime input cannot erase required capability input either.
+runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [] }, initialMechanisms: [], predefines: [incompletePredefined] });
 runtime.initialize({ ...baseInput, initialMechanisms: [], predefines: [], deployment: { definition: account, cards: [{ ...counterCard, card: { ...counterCard.card,
     onTick(state, self) {
         // @ts-expect-error aggregation must not supply an any private-state context.

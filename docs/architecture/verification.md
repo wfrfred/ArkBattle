@@ -55,7 +55,7 @@ Deployable 对 Occupancy 的构造依赖、入场与配对属于本轮协作边�
 
 已审查范围按下表集中保障。综合测试只保留新增的跨领域业务结果，不再重复所属领域的公式、输入矩阵、Setter、生命周期或 Hook 协议。文件位于 Content／Legacy 或同时涉及尚未审查领域，不构成重复测试的保留理由。
 
-构造期配对由 core-types 集中保障：Card 与 Mechanism 的初始化结果和自身回调保持同一私有类型，聚合输入不提供 any 上下文；预置 Unit 的创建输入只能对应 Definition 声明的能力。代表场景覆盖正常构造与预置／Runtime 聚合边界，不按每种能力、回调或数组长度扩展矩阵。类型守卫在 Query 与 optional 中保留已有完整宿主，Hook 派发与登记同样保持键和载荷的配对。
+构造期配对由 core-types 集中保障：Card 与 Mechanism 的初始化结果和自身回调保持同一私有类型，聚合输入不提供 any 上下文；Unit 的创建输入只能对应 Definition 声明的能力，且必须提供所选 initializer 要求的实例输入。以 Occupancy 的非空 tile 证明普通构造、Input 类型和预置／Runtime 转交都保留该要求；无必需实例输入时仍可省略 initial。代表场景覆盖这些构造边界，不按每种能力、回调或数组长度扩展矩阵。类型守卫在 Query 与 optional 中保留已有完整宿主，Hook 派发与登记同样保持键和载荷的配对。
 
 | 语义 | 集中归属与最小代表 |
 | --- | --- |

@@ -79,10 +79,6 @@ function applyChanges(state: State, changes: readonly Change[]): State {
         }
 
         const before = change.previous.occupancy.tile;
-        if (before === null) {
-            continue;
-        }
-
         const key = before[0] * state.map.columns + before[1];
         const entry = occupancy.get(key)!;
         const slot =
@@ -102,10 +98,6 @@ function applyChanges(state: State, changes: readonly Change[]): State {
 
         const unit = change.next;
         const tile = unit.occupancy.tile;
-        if (tile === null) {
-            continue;
-        }
-
         if (!contains(state.map, tile)) {
             throw new RangeError("occupancy tile is outside the battlefield");
         }

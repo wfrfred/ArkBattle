@@ -46,7 +46,7 @@ function setup(configuration = {}, targets = [], options = {}) {
     const prepared = profile(configuration);
     const content = create(prepared, options);
     const unit = initialize({ id: 0, position: [0, 0], definition: content.definition,
-        initial: { occupancy: { direction: "RIGHT" } } });
+        initial: { occupancy: { tile: [0, 0], direction: "RIGHT" } } });
     let battle = add(createBattleState(fixtureBattlefieldState([])), unit);
     for (const target of targets) battle = add(battle, target);
     return { prepared, ...content, unit, battle: advanceBlocking(battle) };

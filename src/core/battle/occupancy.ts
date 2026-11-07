@@ -8,7 +8,7 @@ import type { State } from "./state.js";
 
 export function enter(battle: State, reference: Ref<Unit & Occupancy>): State {
     const self = units.get(battle, reference);
-    if (self?.lifecycle !== "PRESENT" || self.occupancy.tile === null) {
+    if (self?.lifecycle !== "PRESENT") {
         return battle;
     }
 

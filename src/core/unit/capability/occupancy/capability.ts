@@ -28,13 +28,13 @@ export interface Pair {
 }
 
 export interface State {
-    readonly tile: TilePosition | null;
+    readonly tile: TilePosition;
     readonly direction: Direction | null;
     readonly pair: Pair | null;
 }
 
 export interface Initial {
-    readonly tile?: TilePosition | null;
+    readonly tile: TilePosition;
     readonly direction?: Direction;
 }
 
@@ -58,7 +58,7 @@ export function hasDirection<U extends Unit>(unit: U): unit is U & Directional {
 export function initialize<U extends Unit & Pick<Occupancy, "definition">>(
     battle: BattleState,
     unit: U,
-    initial?: Initial,
+    initial: Initial,
 ): Result<U & Occupancy> {
     return {
         state: battle,
@@ -80,8 +80,8 @@ export function initialize<U extends Unit & Pick<Occupancy, "definition">>(
                     }),
                 }),
             occupancy: {
-                tile: initial?.tile ?? null,
-                direction: initial?.direction ?? null,
+                tile: initial.tile,
+                direction: initial.direction ?? null,
                 pair: null,
             },
         },

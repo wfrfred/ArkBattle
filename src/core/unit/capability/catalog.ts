@@ -64,8 +64,21 @@ type SelectedKeys<D> = {
     [K in keyof States]: [D] extends [Readonly<Record<K, Definitions[K]>>] ? K : never;
 }[keyof States];
 
+type RequiredInputKeys = {
+    [K in keyof Inputs]: Parameters<(typeof initializers)[K]> extends [
+        unknown,
+        unknown,
+        unknown,
+        ...unknown[],
+    ]
+        ? K
+        : never;
+}[keyof Inputs];
+
 export type Initial<D> = {
     readonly [K in keyof Inputs]?: K extends SelectedKeys<D> ? Inputs[K] : never;
+} & {
+    readonly [K in Extract<SelectedKeys<D>, RequiredInputKeys>]: Inputs[K];
 };
 
 export type Product<D> = {

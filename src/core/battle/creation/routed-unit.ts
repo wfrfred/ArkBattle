@@ -2,20 +2,21 @@ import { Vec2 } from "../../common/vector.js";
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import { createRng } from "../../common/rng.js";
 import { Tile, type WorldPosition } from "../../geometry/coordinate.js";
-import type { Definition, Id, Unit } from "../../unit/unit.js";
+import type { Definition, Unit } from "../../unit/unit.js";
 import type { Definitions, Product } from "../../unit/capability/catalog.js";
 import type { Route } from "../../unit/capability/route/capability.js";
-import { initialize as initializeUnit } from "../../unit/initialize.js";
+import { initialize as initializeUnit, type Input as UnitInput } from "../../unit/initialize.js";
 import type { Result, State as BattleState } from "../state.js";
 import { createInput, normalize, type Input as RouteInput, type Timing } from "./route.js";
 
-export interface Input<D extends Definition & Partial<Definitions> = Definition> {
-    readonly id: Id;
-    readonly definition: D;
+export type Input<D extends Definition & Partial<Definitions> = Definition> = Omit<
+    UnitInput<D>,
+    "position" | "hooks"
+> & {
     readonly route: RouteInput;
     readonly timing: Timing;
     readonly alwaysCheckCurrentPoint: boolean;
-}
+};
 
 type RoutedDefinition<D> = D extends unknown ? Omit<D, "route"> & Route["definition"] : never;
 
@@ -32,7 +33,10 @@ export function initialize<D extends Definition & Partial<Definitions>>(
     battle: BattleState,
     spawn: Input<D>,
 ): Result<Unit & Product<RoutedDefinition<D>> & Route>;
-export function initialize(battle: BattleState, spawn: Input): Result<Unit & Route> {
+export function initialize<D extends Definition & Partial<Definitions>>(
+    battle: BattleState,
+    spawn: Input<D>,
+): Result<Unit> {
     assertNonnegativeSafeInteger(spawn.id, "unit id");
 
     const input = createInput(spawn.route);
@@ -42,9 +46,11 @@ export function initialize(battle: BattleState, spawn: Input): Result<Unit & Rou
 
     battle = { ...battle, execution: { ...battle.execution, rngState: rng.state() } };
 
-    return initializeUnit(battle, {
-        id: spawn.id,
+    const unitInput = {
+        ...spawn,
         definition: { ...spawn.definition, route },
         position: Vec2.add(Tile.center(route.startPosition), route.offset),
-    });
+    } as UnitInput<RoutedDefinition<D>>;
+
+    return initializeUnit(battle, unitInput);
 }

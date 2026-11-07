@@ -181,7 +181,7 @@ State 是一个 Unit 的 Route 聚合，组织主路线、临时路线及共享�
 
 多个 Context 的具体容器、Main 单独保存还是作为固定项、当前运动选择的字段及身份类型继续确定。`alternative: Context | null` 与 `Context[] + activeIndex` 都不能作为已定 State 声明；稳定定位要求见下文。
 
-initial.route 使用上述 Initial。创建调用者负责选取或生成 Plan、解析 offset 及确定出生位置，Route initializer 据此构造 Main Context 并捕获共享时间基准，不要求所有创建者使用统一的 SpawnRoute 类型。
+initial.route 使用上述 Initial；声明 Route Capability 的 Unit 在重构后的创建入口必须提供它，必需性按 [Catalog 初始化约定](capability.md#初始化与装配)从 initializer 签名派生。创建调用者负责选取或生成 Plan、解析 offset 及确定出生位置，Route initializer 据此构造 Main Context 并捕获共享时间基准，不要求所有创建者使用统一的 SpawnRoute 类型。
 
 ### Checkpoint
 

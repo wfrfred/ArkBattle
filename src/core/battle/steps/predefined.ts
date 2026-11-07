@@ -1,8 +1,6 @@
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import type { Definition as UnitDefinition, LeaveReason } from "../../unit/unit.js";
-import { initialize as initializeUnit } from "../../unit/initialize.js";
-import type { WorldPosition } from "../../geometry/coordinate.js";
-import type { Hooks } from "../../hook.js";
+import { initialize as initializeUnit, type Input as UnitInput } from "../../unit/initialize.js";
 import {
     get as getMechanism,
     remove as removeMechanism,
@@ -13,15 +11,11 @@ import type { Ref } from "../../common/ref.js";
 import { instantiateMechanismPlacement } from "../creation/mechanism.js";
 import { add, remove as removeUnit } from "../unit.js";
 import type { State as BattleState } from "../state.js";
-import type { Definitions, Initial } from "../../unit/capability/catalog.js";
+import type { Definitions } from "../../unit/capability/catalog.js";
 
-export interface PredefinedUnitCreation<D extends object = UnitDefinition & Partial<Definitions>> {
+export type PredefinedUnitCreation<D extends object = UnitDefinition & Partial<Definitions>> = {
     readonly type: "UNIT";
-    readonly definition: D & UnitDefinition & Partial<Definitions>;
-    readonly position: WorldPosition;
-    readonly initial?: Initial<NoInfer<D>>;
-    readonly hooks?: Hooks;
-}
+} & Omit<UnitInput<D & UnitDefinition & Partial<Definitions>>, "id">;
 
 export interface PredefinedMechanismCreation<S extends object = object> {
     readonly type: "MECHANISM";

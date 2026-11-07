@@ -65,10 +65,9 @@ export function create(configuration: Configuration): Definition {
                 id: "shooting-platform/apply-tile",
                 invoke(battle, self) {
                     return {
-                        state:
-                            !hasOccupancy(self) || self.occupancy.tile === null
-                                ? battle
-                                : apply(battle, self.occupancy.tile, tileChanges),
+                        state: hasOccupancy(self)
+                            ? apply(battle, self.occupancy.tile, tileChanges)
+                            : battle,
                         value: undefined,
                     };
                 },
@@ -76,7 +75,7 @@ export function create(configuration: Configuration): Definition {
             .set(unitHooks.leave, {
                 id: "shooting-platform/restore-tile",
                 invoke(battle, { unit }) {
-                    if (!hasOccupancy(unit) || unit.occupancy.tile === null) {
+                    if (!hasOccupancy(unit)) {
                         return { state: battle, value: undefined };
                     }
 

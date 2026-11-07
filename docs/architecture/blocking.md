@@ -340,7 +340,7 @@ Presence 与 Route 的主动空间变更先纯发布新空间事实，再按角�
 
 ## 地块阻挡资格
 
-GROUND 搜索只选一个当前根格：有非空 `occupancy.tile` 时使用登记格；没有登记格时，以 `World.toTile(unit.position)` 回退到身体所在格。随后读取该格的 `state.allowsBlocking`。不额外以登记格的 `elevation === "HIGHLAND"` 拒绝，也不把登记格高度与另一身体格的阻挡许可拼成两条条件。显式配置的 `allowsBlocking: true` 在高地上仍然有效。AIR 搜索绕过这项地块资格，不修改 Tile，也不让同格的 GROUND 阻挡者获得豁免。
+GROUND 搜索只选一个当前根格：具有 Occupancy 时使用 `occupancy.tile` 登记格；没有 Occupancy 时，以 `World.toTile(unit.position)` 使用身体所在格。随后读取该格的 `state.allowsBlocking`。不额外以登记格的 `elevation === "HIGHLAND"` 拒绝，也不把登记格高度与另一身体格的阻挡许可拼成两条条件。显式配置的 `allowsBlocking: true` 在高地上仍然有效。AIR 搜索绕过这项地块资格，不修改 Tile，也不让同格的 GROUND 阻挡者获得豁免。
 
 既有项目政策继续要求 GROUND 丢失当前根格阻挡许可时同步解除旧关系，AIR 保持关系同样豁免。搜索和保持资格分别组合这一只读地块事实，不通过 canRetain 调用 canSearch 共享整套条件。原生调查直接证明的是搜索入口的地块检查，没有证明旧关系每次都重查地块；此处同步解除是项目已有选择，不冒充额外的原生结论。
 

@@ -34,18 +34,18 @@ interface Pair {
 }
 
 interface State {
-    readonly tile: TilePosition | null;
+    readonly tile: TilePosition;
     readonly direction: Direction | null;
     readonly pair: Pair | null;
 }
 
 interface Initial {
-    readonly tile?: TilePosition | null;
+    readonly tile: TilePosition;
     readonly direction?: Direction;
 }
 ```
 
-Slot 来自静态 Definition，实例生命周期内不变。SUPPORT 按内容需要提供配对建立与解除程序。本次地块和方向由 Initial 提供，缺省为 null；静态 Definition 不包含本次方向。占格不意味着一定具有方向，基础 Unit 不增加方向字段。
+Slot 来自静态 Definition，实例生命周期内不变。SUPPORT 按内容需要提供配对建立与解除程序。选择 Occupancy 的 Unit 必须通过 Initial 提供本次 tile，State.tile 始终非空；方向可省略，缺省为 null。静态 Definition 不包含本次方向，占格不意味着一定具有方向，基础 Unit 不增加方向字段。不占格的 Unit 不选择 Occupancy。
 
 Catalog 先初始化 Occupancy，再初始化依赖它的 Deployable。Occupancy 保留已有程序并追加自己的 enter／leave。Deployment 在 fold 前已经登记的程序仍先执行；这里遵守普通登记顺序，不引入能力优先级。
 
@@ -69,7 +69,7 @@ battlefield/unit.ts 的 add／update／remove 原子维护 Unit 存储及反向�
 - 相同坐标值保留旧条目与 Ref；其他字段替换不重新登记。
 - 更新已有实例保持枚举顺序，删除不回收身份。
 
-结构登记与 Unit.position、SpatialPresence、HP 分别表达。身体移动或暂时空间消失不自动改变部署格。槽位不承担阵营、DP、地形部署许可等业务判断。
+结构登记与 Unit.position、SpatialPresence、HP 分别表达。身体移动或暂时空间消失不自动改变部署格。离场由 Battlefield 删除结构登记，离场 Unit 仍保留原 tile；Occupancy 只清理 pair，不将 tile 置空。槽位不承担阵营、DP、地形部署许可等业务判断。
 
 ## 已通知的业务配对
 
@@ -97,9 +97,9 @@ Occupancy 通过已登记的 Unit enter／leave 程序处理配对通知。普�
 
 ## 与其他领域协作
 
-Deployment 通过 Request／Rule 检查地块和槽位，落点和本次方向通过 unit.initialize 的可选 initial.occupancy 输入。关卡预置使用同一输入，开场 Unit 声明 initiallyPresent:true。实际部署通知与 Support 配对是不同事件，前者由 Deployment 登记的 enter 程序触发。
+Deployment 通过 Request／Rule 检查地块和槽位，落点和本次方向通过 unit.initialize 的 initial.occupancy 输入。具有 Occupancy 的 Definition 要求提供该输入及其 tile；关卡预置使用同一约束，开场 Unit 声明 initiallyPresent:true。实际部署通知与 Support 配对是不同事件，前者由 Deployment 登记的 enter 程序触发。
 
-Blocking 有非空登记格时，以该格作为根格读取地块允许阻挡的事实；没有登记格时回退到身体坐标。地块登记与世界位置仍是两个独立事实。
+Blocking 对具有 Occupancy 的 Unit 使用其登记格作为根格，读取地块允许阻挡的事实；没有 Occupancy 时使用身体坐标。地块登记与世界位置仍是两个独立事实。
 
 平台对乘员的阻挡限制、平台销毁是否击倒乘员等，由具体内容程序表达。射击台在 onOccupantAdded 按平台实例 ID 登记自己的 Blocking Rule，只禁止 GROUND 阻挡，AIR 仍由其余 Blocking 规则判断；onOccupantRemoved 只撤销该平台的输出。
 

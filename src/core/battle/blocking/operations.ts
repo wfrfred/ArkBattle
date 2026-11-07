@@ -30,10 +30,7 @@ function allowsTile(battle: BattleState, unit: Unit & Blocker): boolean {
         return true;
     }
 
-    const position =
-        hasOccupancy(unit) && unit.occupancy.tile !== null
-            ? unit.occupancy.tile
-            : World.toTile(unit.position);
+    const position = hasOccupancy(unit) ? unit.occupancy.tile : World.toTile(unit.position);
     const tile = getTile(battle.battlefield.map, position);
 
     return tile?.state.allowsBlocking === true;

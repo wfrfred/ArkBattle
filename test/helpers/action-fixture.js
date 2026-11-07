@@ -61,7 +61,7 @@ export function unit(
     const definition = { hooks: Hooks.empty(),
         id: `action-${id}`,
         vitality: { maxHp: hp, defense: 0, resistance: 0 },
-        targetable: { restrictions: [] }, spatialPresence: {}, occupancy: { slot: "OCCUPANT" },
+        targetable: { restrictions: [] }, spatialPresence: {},
         offense: { attack: 10 },
         allegiance: { side },
         layer: { type: "GROUND" },

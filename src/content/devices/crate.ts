@@ -18,10 +18,9 @@ export function create(configuration: Configuration): Definition {
                 id: "crate/apply-tile",
                 invoke(battle, self) {
                     return {
-                        state:
-                            !hasOccupancy(self) || self.occupancy.tile === null
-                                ? battle
-                                : apply(battle, self.occupancy.tile, tileChanges),
+                        state: hasOccupancy(self)
+                            ? apply(battle, self.occupancy.tile, tileChanges)
+                            : battle,
                         value: undefined,
                     };
                 },
@@ -30,10 +29,9 @@ export function create(configuration: Configuration): Definition {
                 id: "crate/restore-tile",
                 invoke(battle, { unit }) {
                     return {
-                        state:
-                            !hasOccupancy(unit) || unit.occupancy.tile === null
-                                ? battle
-                                : restore(battle, unit.occupancy.tile, tileChanges),
+                        state: hasOccupancy(unit)
+                            ? restore(battle, unit.occupancy.tile, tileChanges)
+                            : battle,
                         value: undefined,
                     };
                 },

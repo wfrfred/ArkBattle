@@ -33,7 +33,7 @@ const receiver = (restrictions = []) => initialize({
 });
 const source = () => initialize({
     id: 0, position: [0, 0], definition: create(profile()),
-    initial: { occupancy: { direction: "RIGHT" } },
+    initial: { occupancy: { tile: [0, 0], direction: "RIGHT" } },
 });
 
 test("Melantha's talent and S1 affect real attacks, and the talent remains after S1 ends", () => {
