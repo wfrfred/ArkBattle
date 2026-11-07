@@ -38,7 +38,7 @@ Navigation 内部维护可变派生缓存，不进入 BattleState，也不需要
 - 不可达时返回 null；能够追踪目标时保留精确世界坐标，实际移动与到达由消费方判断。
 - 路径计算及缓存保持确定结果。Hash 数值、缓存键、对象共享和命中次数属于内部实现，不形成独立玩法验收目标。
 
-Battlefield 的纯存储、地块写回与完整 Battle 操作边界见 [Battlefield](battlefield.md)。下文的类型与算法说明用于解释这些语义，不要求按每个字段或内部函数分别建立验收场景。Route 与 [Schedule](schedule.md) 一并重设计，已确认初始化与数据归属边界；完整 Checkpoint／Progress 和替代路线接口仍需逐项审查。Navigation、Locomotion 的已审查职责不因此改变。
+Battlefield 的纯存储、地块写回与完整 Battle 操作边界见 [Battlefield](battlefield.md)。下文的类型与算法说明用于解释这些语义，不要求按每个字段或内部函数分别建立验收场景。Route 与 [Schedule](schedule.md) 一并重设计，已确认初始化、数据归属边界及 Checkpoint 类型与语义；Progress 和替代路线接口仍需逐项审查。Navigation、Locomotion 的已审查职责不因此改变。
 
 ## State 与公共操作
 
@@ -127,24 +127,51 @@ Field、build、queryField 均不属于调用方使用 Navigation 所需的公�
 - 地图内的不可达路点直接利用 nextPoint 的 null 结果反馈给 Route，决定等待或跳过。当前不增加独立可达性查询、失败原因联合类型或额外的 Navigation API。
 - 地图外的位置恢复目标由 Route 的追踪点查询协调，Locomotion 负责实际位移及空间约束，不要求 Navigation 为此扩张返回类型。
 - 每 Tick 等待最多计时一次、路点可以连续推进、移动只消费一次预算。移动前后如何组织 Route 结算可以采用简单、确定的项目顺序，不强制复制客户端调用位置。
-- 静态 Route Definition 保存固定偏移与随机范围；每次出生采样的偏移保存于 Route 实例状态，初始 Unit.position 与路线计算使用同一样本。主路线与临时替代路线的样本各自配对，不将一个样本无条件应用于所有路线。
-- Route Definition 不保留 allowDiagonalMove、visitEveryTileCenter、visitEveryNodeCenter。Locomotion 若需要其他运动执行进度，由 Unit 持有，不藏进导航缓存。
+- 创建调用者处理出生偏移的配置与采样，通过 initial.route 传入 Plan 与本次 offset；初始 Unit.position 与路线计算使用同一样本。主路线与临时替代路线的样本各自配对，不将一个样本无条件应用于所有路线。
+- Plan 不保留 allowDiagonalMove、visitEveryTileCenter、visitEveryNodeCenter。Locomotion 若需要其他运动执行进度，由 Unit 持有，不藏进导航缓存。
 
 Locomotion 使用原生 Steering、八邻域地形避障和目的格反射。局部力每次积分时计算，不保存刷新缓存或计数器；完整 Unity 刚体系统及推拉不属于普通自主移动。
 
 ## Route 定义与进度
 
-Route 将不可变规则与对应实例事实配对：Definition 保存起终点、运动方式、Checkpoints、固定偏移、随机范围和完成政策；实例保存本次偏移、出生时间锚点、当前通行方式及执行进度。UnitDefinition 在出生前已经完整，实例化不改变其对象身份。
+本轮确认 Checkpoint 类型、时间与偏移语义，以及 Plan、初始化输入、Execution 与创建调用者的职责。Plan、Execution 和 State 的完整字段、替代路线及完整操作接口继续审查，下文相关运行结构不作为本轮定稿。
 
-等待指令保留相对时间语义，以下为表达示例；完整 Checkpoint 和 Progress 结构继续审查：
+Plan 描述不可变的路线方案，可以预先配置，也可以在创建时生成。它与声明 Route 能力的 Capability Definition 分开；共享 UnitDefinition 不绑定本次出生所选的 Plan。
+
+initial.route 的形状为 `{ plan, offset }`，提供本次实例的初始化事实。Route initializer 据此构造 Execution，并捕获出生时间基准；执行进度由 Route 管理。创建调用者负责选取或生成 Plan、解析本次 offset 及确定出生位置，不需要统一的 SpawnRoute 类型。
+
+### Checkpoint
+
+Checkpoint 类型已确认；完整 Plan、Execution 及主／临时路线的实例结构继续审查。
 
 ```typescript
-type Checkpoint =
-    | { readonly type: "WAIT"; readonly durationTicks: number }
-    | { readonly type: "WAIT_UNTIL"; readonly tick: number }
-    | { readonly type: "WAIT_WAVE"; readonly atTick: number }
-    | { readonly type: "WAIT_FRAGMENT"; readonly atTick: number };
+export type Checkpoint =
+    | {
+          readonly type: "MOVE";
+          readonly position: TilePosition;
+          readonly offset: WorldPosition;
+          readonly randomizeOffset: boolean;
+      }
+    | {
+          readonly type: "WAIT";
+          readonly anchor: "ENTER" | "BATTLE" | "WAVE" | "FRAGMENT";
+          readonly ticks: number;
+      }
+    | {
+          readonly type: "GOTO";
+          readonly index: number;
+      }
+    | { readonly type: "DISAPPEAR" }
+    | {
+          readonly type: "APPEAR";
+          readonly position: TilePosition;
+          readonly offset: WorldPosition;
+      };
 ```
+
+MOVE 的 randomizeOffset=false 时使用固定 offset；为 true 时，offset 各轴表示随机半宽，每次进入路点时独立采样各轴 [-offset, +offset]，后续沿用本次样本，不把固定偏移与随机偏移相加。APPEAR 始终使用固定落点偏移。
+
+GOTO.index 指向当前路线程序中的指令。程序修改负责明确处理跳转引用，不将原生数组插入的隐式巡逻分段作为本类型的编辑契约。兼容目标是已确认的实际内容语义，不要求任意原生序列及任意编辑组合都等价；当前 Insert 与巡逻交叉结果见[案例 31 第 4.1 节](../research/cases/31-route-operations-and-state.md#41-insert-是否实际改变巡逻回边)。
 
 偏移和时间锚点在 main／alternative 中的具体字段归属继续确定。原生主路线保留出生样本，恐惧／吸引临时 Cursor 可以使用零偏移，不能为了字段方便强制共享，见[原生偏移证据](../research/cases/14-route-definition-fields.md#3-出生偏移持续作用于整条路线)。
 
@@ -154,7 +181,7 @@ setMotionMode／setAlternative／clearAlternative 三个设置工厂返回不绑
 
 Alternative 接管时，Main 不推进路点，但仍独立检查终点完成资格；requireAllCheckpoints 为 true 且仍有未完成路点时，不会提前完成。符合完成条件时 Main 仍可进入 COMPLETED，由 Battle 处理正常离场。这保留了客户端恐惧／吸引分支的可观测行为，证据见 [路线字段与完成检查](../research/cases/14-route-definition-fields.md)。
 
-Route.movementTarget 从最新 BattleState 读取单位并选择活动路线。MOVE 的目标由当前指令的 position 与 offset 推导；END 的目标为 definition.endPosition。查询将身体坐标减去对应路线偏移，调用 Navigation.nextPoint，再给 nextPoint 和 goal 加回路线偏移。Locomotion 不需要知道活动路线、路线偏移或 Field；MotionMode 通过 MovementContext 传入。完成由 Phase 表达，不用 null 表示完成。
+Route.movementTarget 从最新 BattleState 读取单位并选择活动路线。MOVE 的目标由当前指令的 position 与本次进入已确定的偏移推导，查询不重新采样；END 的目标为 definition.endPosition。查询将身体坐标减去对应路线偏移，调用 Navigation.nextPoint，再给 nextPoint 和 goal 加回路线偏移。Locomotion 不需要知道活动路线、路线偏移或 Field；MotionMode 通过 MovementContext 传入。完成由 Phase 表达，不用 null 表示完成。
 
 Route 不对 Navigation 返回的追踪点追加整段射线筛选，也不回退到当前格中心。追踪点与当前实际位置之间的完整直线未必可通行；实际位移的合法性在运动结算中检查，不能借此替换导航目标或提前拒绝整段导航建议。
 
@@ -164,45 +191,45 @@ requireAllCheckpoints 承接原 visitEveryCheckPoint 的语义，控制是否允
 
 ### 指令与实例求值
 
-纯静态的指令编译在 Data 阶段完成。出生代码沿用完整 UnitDefinition，通过 initial.route 传入本次偏移；Route initializer 捕获本次出生的时间基准。Route 在自己的执行状态机中求值等待期限，不在出生时复制、改写 Checkpoints 或重新合成 UnitDefinition。
+关卡中的静态指令由 Data 编译为 Plan，运行时创建者也可以生成 Plan。出生代码沿用完整 UnitDefinition，通过 initial.route 传入 `{ plan, offset }`；Route initializer 捕获本次出生的时间基准。Route 在自己的执行状态机中求值等待期限，不为绑定路线、偏移或时基重新合成 UnitDefinition。
 
-PATROL_MOVE 归一化为 MOVE 与显式 GOTO。不保留 MAP_OFFSET_MOVE、allowDiagonalMove、visitEveryTileCenter、visitEveryNodeCenter、MOVE 的随机开关及可配置到达半径。引航者试炼不在支持范围内，不保留 Boss 波次等待指令及其计数状态。
+PATROL_MOVE 归一化为 MOVE 与显式 GOTO，循环边界由显式跳转决定。不保留 MAP_OFFSET_MOVE、allowDiagonalMove、visitEveryTileCenter、visitEveryNodeCenter 及可配置到达半径。引航者试炼不在支持范围内，不保留 Boss 波次等待指令及其计数状态。
 
 等待期限由指令与本次执行状态决定：
 
 ```text
-WAIT(durationTicks)    → 进入路点的 battle.tick + durationTicks
-WAIT_UNTIL(tick)      → tick
-WAIT_WAVE(atTick)     → 出生时捕获的 Wave 基准 + atTick
-WAIT_FRAGMENT(atTick) → 出生时捕获的 Fragment 基准 + atTick
+WAIT(ENTER, ticks)    → 本路点进入时的 battle.tick + ticks
+WAIT(BATTLE, ticks)   → ticks
+WAIT(WAVE, ticks)     → 本实例出生时捕获的 Wave 基准 + ticks
+WAIT(FRAGMENT, ticks) → 本实例出生时捕获的 Fragment 基准 + ticks
 ```
 
 Wave／Fragment 基准在实际出生时捕获；分支采用当时的主线时间上下文，不能在解析关卡或选择 Phase 时提前固定。Route 运行时使用自身保存的快照，不重新查询已推进的 Schedule 主线。Fragment 基准计入 Fragment 前延迟，其历史 Definition 的查询规则见 [Schedule](schedule.md#route-的主流程时间上下文)。
 
 进入等待路点时，将所需期限保存在该路点的执行状态。到期判断统一为 battle.tick >= deadlineTick；已经过期的等待立即满足。普通相对等待不能在出生时提前换算，因为进入时间取决于移动、阻挡及循环。
 
-跳转目标按归一化后的完整指令序列确定。执行 GOTO 时更新 index，将 checkpointState 重置为 PENDING，同 Tick 继续处理，不消耗时间或移动预算，不增加 GOTO 运行阶段。GOTO 重新进入 WAIT 时重新计算截止时间；WAIT_UNTIL 的绝对时间保持不变。切换 Alternative 后恢复 Main 保留已进入等待的 deadlineTick。阻挡、眩晕与恐惧不暂停已进入等待所使用的战斗时钟。
+跳转目标按归一化后的完整指令序列确定。执行 GOTO 时转入 index 指定的路点，按进入语义重新初始化，同 Tick 继续处理，不消耗时间或移动预算，不增加 GOTO 运行阶段。重新进入 WAIT 时按 anchor 计算截止时间：ENTER 从这次进入重新计时，BATTLE 的绝对阈值以及 WAVE／FRAGMENT 的实例基准保持不变。切换 Alternative 后恢复 Main 保留已进入等待的 deadlineTick。阻挡、眩晕与恐惧不暂停已进入等待所使用的战斗时钟。
 
 实际形成的巡逻回边没有次数上限，但并非每个 PATROL_MOVE 都产生回边；归一化必须分析完整巡逻段，不能将每个巡逻节点转换成自循环。无限巡逻保留 GOTO 回边，不能靠有限复制展开。
 
 单次 advance 必须限制即时转换次数。耗尽预算时保留当前执行进度，后续 Tick 继续，不将合法循环拒绝为无效 Definition，也不在一次调用中无限执行。现有实现使用 128 次预算；具体数值属于实现选择，不影响公开接口。
 
-advance 直接通过领域公开操作结算 DISAPPEAR、APPEAR_AT_POS 等即时指令，不向调用方返回待执行的信号队列。执行可能同步回调的操作前先记录指令已进入或消费，回调后重新读取最新单位与路线进度，防止重复执行或用旧进度覆盖替换结果。不在查询中隐式进入路点或执行 GOTO。
+advance 直接通过领域公开操作结算 DISAPPEAR、APPEAR 等即时指令，不向调用方返回待执行的信号队列。执行可能同步回调的操作前先记录指令已进入或消费，回调后重新读取最新单位与路线进度，防止重复执行或用旧进度覆盖替换结果。不在查询中隐式进入路点或执行 GOTO。
 
 ### 初始化
 
-初始化使用统一 Unit 入口：
+初始化使用统一 Unit 入口。以 Schedule 出生为例：
 
 ```text
-Spawn.definition 已包含完整静态 Route Definition
+出生代码取得 UnitDefinition，选取或生成 Plan
     ↓
 出生代码采样一次 offset，并接续更新后的 BattleState
     ↓
 position = center(startPosition) + offset
     ↓
-unit.initialize(battle, { id, definition, position, initial: { route: offset } })
+unit.initialize(battle, { id, definition, position, initial: { route: { plan, offset } } })
     → Capability fold
-    → Route initializer 接收样本，捕获出生时的时间锚点并构造 State
+    → Route initializer 据 Plan 与 offset 构造 Execution，捕获出生时间锚点
     ↓
 Schedule 登记等待关系 → unit.add 登记 Unit 并执行 enter
     ↓
@@ -211,13 +238,15 @@ Route.advance()
 Locomotion
 ```
 
-Route 初始化遵循 [Capability 约定](capability.md)，通过 Catalog 的已有创建输入通道接收 initial.route，值就是本次 offset，不接受预装的 Route State。Route initializer 读取 unit.definition.route，在输入 Unit 上装配自己的状态，不再次采样；初始 Unit.position 与路线计算共用一个样本。
+Route 初始化遵循 [Capability 约定](capability.md)，通过 Catalog 的已有创建输入通道接收 `{ plan, offset }`，在输入 Unit 上装配自己的运行状态，不再次采样或接收预装的 Execution。Plan 的来源不改变该初始化契约；复用已有 Plan 也不自动继承其他实例的执行进度。
 
-unit.add 接收完整 Unit，只负责登记和 enter，不解释 Route Definition。重构时删除 creation/routed-unit.ts；不保留出生时重新生成、合成 UnitDefinition 的包装，不另建通用 RouteInput 或创建工厂层。
+Unit Creation 的调用者处理各自的路线来源与出生业务。Schedule 在初始化后、unit.add 前登记等待关系；技能、Buff 或机制创建 Unit 时自行组织其出生与必要后继。各调用者不必共享强制的 SpawnRoute 包装。
+
+unit.add 接收完整 Unit，只负责登记和 enter，不解释 Plan 或构造 Execution。重构时删除 creation/routed-unit.ts，不保留出生时重新生成、合成 UnitDefinition 的包装。
 
 创建入口建立偏移、等待与跳转的输入约束；内部按游戏尺度计算采样范围和等待截止时间，信任合法输入，不为极端算术溢出追加结果断言。纯进度发布不执行回调，后续可直接使用已构造的新值；Presence／Blocking 等完整操作返回后，仍按续执行条件读取最新宿主和进度。
 
-Alternative 的 Definition 与执行实例也需要区分，初始化接口及运行字段随 Progress 一起审查；不再假定 Definition 必须携带已采样偏移或出生时钟。
+临时路线的 Plan 与执行实例也需要区分，初始化接口及运行字段随 Execution 一起审查；Plan 不携带其他实例已采样的偏移或出生时钟。
 
 ### Alternative 操作
 
@@ -331,7 +360,7 @@ SteeringParameters 是普通配置值，不提供只校验并复制对象的构�
 
 推进读取最新 PRESENT 且 Rule 允许的 Unit；[空间消失](presence.md)由 Presence 登记 Locomotion Rule 禁止自主移动，不由 Locomotion 读取空间存在字段。Movement 先推进全部 Blockable 位置修正，再推进 Route 并读取当前关系，只限制自主移动；独立位置计划存在或刚完成不自动禁止自主移动。Locomotion 只经内部 replace 提交位置与速度，不依赖 Blocking 维护；Blockable 的偏移推进同样只发布位置与计划。依赖当前位置或其他 Battle 事实的阻挡 Rule 在后续 Blocking 检查点复核；明确要求解除旧关系的空间操作仍自行完成清理。Blocker／Blockable 在 Unit 初始化时至多选择一种，但该约束不决定是否具有 Route、Locomotion 或何种自身 Layer。
 
-Presence Change 纯转换空间事实及所需限制，发布后按稳定能力角色调用 Blockable.release 或 Blocker.releaseAll，读取当前关系并完成清理；详细顺序见[空间存在](presence.md)。Route 在消失期间继续处理等待与出现指令；无 Presence 分支的 APPEAR_AT_POS 先发布位置，再调用相同完整操作。各释放操作自己的首个 RELEASED Hook 已可见新位置、所属计划清理和此次整批双端解除结果。release 不自动维护、搜索或取消目标计划，Blocker 的释放保留其原目标的偏移。Blocking 不同步专用禁移 Rule，见 [Blocking](blocking.md)。有效速度为 `max(minSpeed, attribute.apply(speed, contributions)) * speedMultiplier`；无目标不调 advance，速度为零或不可移动返回原 battle 并保留 velocity。
+Presence Change 纯转换空间事实及所需限制，发布后按稳定能力角色调用 Blockable.release 或 Blocker.releaseAll，读取当前关系并完成清理；详细顺序见[空间存在](presence.md)。Route 在消失期间继续处理等待与出现指令；无 Presence 分支的 APPEAR 先发布位置，再调用相同完整操作。各释放操作自己的首个 RELEASED Hook 已可见新位置、所属计划清理和此次整批双端解除结果。release 不自动维护、搜索或取消目标计划，Blocker 的释放保留其原目标的偏移。Blocking 不同步专用禁移 Rule，见 [Blocking](blocking.md)。有效速度为 `max(minSpeed, attribute.apply(speed, contributions)) * speedMultiplier`；无目标不调 advance，速度为零或不可移动返回原 battle 并保留 velocity。
 
 如果当前位置到 goal 的距离不超过本 Tick 预算，直接设置位置为 goal，保留 velocity，跳过 Steering、避障及目的格反射。nextPoint 仅用于计算 Steering 方向，不因接近中间导航节点而吸附。
 

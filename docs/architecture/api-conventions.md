@@ -128,7 +128,7 @@ Card 的 RuleContext 按用途区分：DISPLAY／SELECT 接收 Card Ref，DEPLOY
 | Common 与 Geometry | common/、geometry/ 下现有功能模块 | Ref、Query、集合、数值、坐标与几何按用途直接导入；私有 Store 不经公共入口公开。 |
 | Map、Field 与空间查询 | battlefield/map/map.ts、tile.ts、terrain.ts；battlefield/state.ts、occupancy.ts、spatial/query.ts | 保留现有自然入口及只读／纯转换边界；Tiles 等内部容器不为 index 公开，完整地块结算仍归 battle/tile.ts。 |
 | Navigation | battlefield/navigation/ 下现有状态、缓存、寻路与射线模块 | 按实际算法和依赖直接导入，不为统一模板增加聚合入口。 |
-| Mechanism 与创建 | battle/mechanism.ts；unit/initialize.ts | Mechanism 保留单模块契约、lifetime 及内部容器。普通 Unit 直接调用 unit.initialize；路线位置与 initial.route 共用本次样本，Route initializer 捕获时间基准并自建 State。creation/routed-unit.ts 的出生时 Definition 合成包装待删除，不保留为公共创建入口。Predefined 只管理关卡预置与当前实例绑定。 |
+| Mechanism 与创建 | battle/mechanism.ts；unit/initialize.ts | Mechanism 保留单模块契约、lifetime 及内部容器。普通 Unit 直接调用 unit.initialize；创建调用者处理路线来源与出生业务，通过 initial.route 提供 `{ plan, offset }`，Route initializer 捕获时间基准并构造 Execution。共享 UnitDefinition 不绑定本次 Plan；creation/routed-unit.ts 的 Definition 合成包装待删除，不强制统一的 SpawnRoute 类型。Predefined 只管理关卡预置与当前实例绑定。 |
 | Runtime 内部协作 | battle/execution/、steps/ 及 battle/occupancy.ts 等同步协作实现 | 阶段编排和登记观察按需直接依赖，不作为独立内容入口；battle/unit-hook.ts 管理真实 leave 的全局观察；占格配对由 Occupancy 自身程序处理；共享依赖析构归 core/lifetime。 |
 
 ## 2. 参数与职责

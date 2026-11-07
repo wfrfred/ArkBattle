@@ -46,6 +46,8 @@ Definition 描述主 Wave 序列与按名称查找的 Branch；Wave 包含 Fragm
 
 ## 普通 Spawn
 
+以下列出已确认的调度字段；Plan 与出生配置在 Spawn 中的具体绑定字段继续确定。
+
 ```typescript
 interface Spawn {
     readonly definition: UnitDefinition;
@@ -56,26 +58,26 @@ interface Spawn {
 type Wait = "NONE" | "FINAL" | "WAVE";
 ```
 
-每项描述一次出生、出生时刻与该 Unit 的调度等待政策。Data／Content 在生成 Schedule 前提供完整静态 UnitDefinition，包含本次绑定的 Route Definition。完整定义保留随机范围和相对时间规则，不要求其中的实例值已求值。
+每项描述一次出生、出生时刻与该 Unit 的调度等待政策。Data／Content 提供完整静态 UnitDefinition，路线方案由独立的 Plan 描述，不为每次路线选择重新合成 UnitDefinition。Schedule 出生操作负责取得 Plan、处理出生偏移与位置，Route initializer 负责构造 Execution。
 
 ### 从 Spawn 到 Unit
 
-出生代码分配 id，使用路线采样逻辑取得一次 offset，并将同一个样本用于初始位置和 Route 初始化输入：
+出生代码取得本次 Plan，分配 id，采样一次 offset，并将同一个样本用于初始位置和 Route 初始化输入：
 
 ```typescript
 const created = unit.initialize(battle, {
     id,
     definition: entry.definition,
     position: Vec2.add(Tile.center(startPosition), offset),
-    initial: { route: offset },
+    initial: { route: { plan, offset } },
 });
 ```
 
-Unit.initialize 接续 Capability initializer 的 fold。Route initializer 接收 initial.route 这个偏移值，从 Battle 捕获出生时的 Wave／Fragment 时间基准，构造自己的 Route State，不再次采样。initial.route 是具体实例输入，不是预装的 Route State。
+Unit.initialize 接续 Capability initializer 的 fold。Route initializer 接收 initial.route 的 `{ plan, offset }`，从 Battle 捕获出生时的 Wave／Fragment 时间基准，构造 Execution，不再次采样。initial.route 提供实例初始化事实，不接收预装的 Execution。
 
-初始化返回后，出生操作接续 created.state，按 entry.wait 登记 created.value.id 的等待关系，再调用 unit.add。Unit.add 登记已经完整的 Unit 并执行 enter，不解释 Route Definition 或创建 Route State。后续由 Route.advance 依据静态配置和实例状态运行路线。
+初始化返回后，出生操作接续 created.state，按 entry.wait 登记 created.value.id 的等待关系，再调用 unit.add。Unit.add 登记已经完整的 Unit 并执行 enter，不解释 Plan 或构造 Execution。后续由 Route.advance 依据 Plan 和实例状态运行路线。
 
-出生时沿用 entry.definition 的同一个对象，不重新生成或合成 UnitDefinition，也不为采样值和时间基准改写其中的 route。重构时删除 creation/routed-unit.ts 这层包装，直接复用统一 Unit 初始化。
+出生时沿用 entry.definition 的同一个对象，不为本次 Plan、偏移或时间基准重新生成或合成 UnitDefinition。重构时删除 creation/routed-unit.ts 这层包装，直接复用统一 Unit 初始化。其他创建者自行处理路线来源和出生业务，不强制使用统一的 SpawnRoute 类型。
 
 ## 出生时间
 
@@ -273,7 +275,7 @@ fragmentIndex 只存在于 MainProgress.FRAGMENT。其他阶段结合当前主�
 
 ### Route 的主流程时间上下文
 
-[Route 出生上下文](navigation.md#指令与实例求值)在实际出生时取得当时主 Wave／Fragment 的时间锚点。WAIT_FRAGMENT 使用 Fragment 前延迟结束后的基准，由保留的 fragmentStartTick 加最近进入过的 Fragment Definition.preDelayTicks 计算，并在 Route 实例中保存快照。
+[Route 出生上下文](navigation.md#指令与实例求值)在实际出生时取得当时主 Wave／Fragment 的时间锚点。WAIT 的 FRAGMENT 锚点使用 Fragment 前延迟结束后的基准，由保留的 fragmentStartTick 加最近进入过的 Fragment Definition.preDelayTicks 计算，并在 Route 实例中保存快照。
 
 | 主流程位置 | 最近进入过的 Fragment |
 | --- | --- |
@@ -351,7 +353,8 @@ Schedule 提供调度进度与等待状态，不负责决定整个 Battle 的胜
 
 | 项目 | 待确定内容 |
 | --- | --- |
-| Route 运行结构 | 静态 Definition、initial.route 偏移输入、实例时间锚点与直接 Unit 初始化链已定；完整 Checkpoint／Progress 及 main／alternative 的实例字段归属继续审查 |
+| Route 运行结构 | Plan、initial.route 的 `{ plan, offset }`、initializer 构造 Execution、实例时间锚点及 [Checkpoint 类型](navigation.md#checkpoint)已定；Plan／Execution／State 的完整字段与临时路线继续审查 |
+| Spawn 出生配置 | UnitDefinition 与本次 Plan 分开；Plan、偏移采样和出生位置配置在 Spawn 中的具体绑定字段待定，不引入强制所有创建者使用的 SpawnRoute 类型 |
 | 主流程边界 | 尚未进入任何 Fragment 时的 Route 基准、COMPLETED 时 waveIndex 的含义待明确 |
 | 个体结算 | 资格的实际归属、字段及 Finished／Killed／蓝门结算接口 |
 | 等待关系 | Unit 的 Wait 三态与 resolveUnits 接口已定；Wave 归属、出生登记及离场反馈接入待定 |

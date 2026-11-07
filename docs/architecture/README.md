@@ -16,7 +16,7 @@
 
 各领域文档记录有效的数据模型、API 和执行语义。尚未完成的重构、开放问题和验收要求保留在对应章节；[接口约定](api-conventions.md)汇总尚未统一的接口，[目标语义与实现缺口](tactical-semantics.md)记录未完成的玩法接入。
 
-Schedule 与 Route 正在一并[重新设计](schedule.md)：已确认静态调度定义、State、三个公开操作与同步重入顺序。出生直接使用完整静态 UnitDefinition，位置与 initial.route 共用本次样本，由 Route initializer 自建运行状态；出生时合成 Definition 的 routed-unit 包装待删除。完整 Route Progress／Alternative、个体结算与等待关系边界继续讨论，现有实现不作为目标模型。
+Schedule 与 Route 正在一并[重新设计](schedule.md)：已确认静态调度定义、State、三个公开操作与同步重入顺序，以及 [Route Checkpoint 类型与构造边界](navigation.md#route-定义与进度)。Plan 独立描述路线方案，创建调用者处理来源与出生业务，通过 initial.route 提供 `{ plan, offset }`，由 Route initializer 构造 Execution；不为本次 Plan 合成 UnitDefinition，不强制统一的 SpawnRoute 类型。完整 Plan／Execution／State、临时路线、个体结算与等待关系边界继续讨论，现有实现不作为目标模型。
 
 已审查部分先按[语义验收](verification.md)确定保留目标，再重新选择最小测试。当前范围为 Battlefield、Unit 独立领域、Action／Allegiance／Blocking／Deployable／Hitbox／Layer／Locomotion／Presence Capability 及对应 Battle 协作，以及 Unit 本地 Hook、HP／EP 结算和 Vitality／Elemental 的资源提交与 Burst 协作。领域文档的关键语义、接入／实现说明与未决内容分别阅读，接口和字段列表不自动成为测试清单。
 
