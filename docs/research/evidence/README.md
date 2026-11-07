@@ -90,3 +90,4 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | [scheduler-native-20261107](scheduler-native-20261107/README.md) | 分支启动、Phase 随机、隐藏组、出生及调度账本 |
 | [scheduler-action-fields-20261107](scheduler-action-fields-20261107/README.md) | ActionData 24 字段及 39 份配置；分支出生选项、预处理与卫戍模板替换，未闭合项见案例 30 |
 | [scheduler-general-20261107](scheduler-general-20261107/README.md) | 通用字段的构造至回收／结束链、主 Wave／Branch／外部入口差异、运行时载荷与 82 份跨玩法字段样本 |
+| [route-creation-20261107](route-creation-20261107/README.md) | 已有／运行时路线的出生入口、实例偏移、初始化时首次进入路点及 Wave／Fragment 快照绑定 |

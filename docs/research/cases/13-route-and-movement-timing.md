@@ -72,6 +72,8 @@ _MoveNext（70163，`0x180876920`）调用旧路点结束接口、通过该路�
 
 后三项分别见 [70226](../evidence/route-movement-20261018/70226.asm)、[70232](../evidence/route-movement-20261018/70232.asm)、[70238](../evidence/route-movement-20261018/70238.asm)。客户端区分 fixedPlayTime 与 userFixedPlayTime；不能未经核实将所有等待都解释为同一个全局时钟。
 
+2026-11-07 补核：出生入口的快照绑定、原生 Fragment 基准包含前延迟，以及 Fear／Attract 的快照继承，集中见[案例 14 第 6 节](14-route-definition-fields.md#6-路线创建与初始化2026-11-07-补核)。
+
 **N／I：** MoveState 会因眩晕、冻结、阻挡等转入其他状态或不执行普通移动；仍存活的 Enemy.OnTick 后续调用 Cursor.OnTick 的分支并不以这些移动资格为条件。因此在这条普通链上，禁止自主移动不自动暂停当前等待计时。不能推广为死亡、移出更新或所有特殊时间停止效果也继续计时。
 
 Enemy.OnTick 给正常路线、恐惧与吸引控制器传递不同的 checkReached：恐惧或吸引接管时，正常路线的推进检查被关闭，但 Cursor.OnTick 仍先调用当前路点的 OnTick。正常路线处在时间等待时可以继续计时，不因失去当前运动控制而自动冻结。这里的结论针对恐惧／吸引原生分支，不直接等同于一切自定义替代路线。

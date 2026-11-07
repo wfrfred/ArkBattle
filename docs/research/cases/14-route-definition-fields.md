@@ -2,6 +2,8 @@
 
 研究日期：2026-10-19。本文审查十个现有顶层字段的实际行为，区分语义、字段归属和可删除的配置入口，不决定最终 API，不修改实现。
 
+2026-11-07 补核见第 6 节：从出生入口追踪路线创建、位置／偏移和时间快照，作为重新审查 Route 初始化职责的依据；不以当前项目的 Definition、State 或创建接口证明其合理性。
+
 N 表示客户端原生分支直接证实；D 表示固定版本数据及引用直接证实；I 表示组合证据后的设计推断；U 表示尚未确认。客户端输入沿用 [Case 12 清单](../evidence/navigation-native-20261018/manifest.json)。本次新增方法及文件校验见 [证据清单](../evidence/route-fields-20261019/manifest.json)。
 
 ## 1. 静态配置覆盖
@@ -77,3 +79,61 @@ Enemy.OnTick（76531）每 Tick 经 Enemy.get_cursor（76397）取得主 Cursor 
 **D：** `level_tough_14-10.json` 的 `/routes/55` 起点与终点同为 `(row 3, col 0)`，指令为 MOVE `(3,1)` → WAIT 500 秒，且 visitEveryCheckPoint=true。它被 `/waves/0/fragments/2/actions/8` 的 SPAWN（enemy_1555_lrking）直接引用。若只按初始位置已到终点就结束，会改变这份配置的含义。[最小原始配置与引用](../evidence/route-fields-20261019/visit-checkpoints-case.json)。未实际运行该战斗。
 
 **设计影响：** 仅在 Phase.END 检查终点，不能同时表达 true／false 两种行为。Route.advance 需要依据完成政策处理主终点资格，或明确选择不同的项目规则。把终点追加成普通 MOVE 只覆盖严格顺序完成的一种情况。
+
+## 6. 路线创建与初始化（2026-11-07 补核）
+
+本节回答路线如何进入 Enemy，以及位置、路线偏移和时间何时成为实例事实；不扩展到替代路线的完整接管／恢复。新增原件及当前客户端指纹见[创建批次](../evidence/route-creation-20261107/README.md)。以下 N 均指未走 XLua 覆盖的静态原生分支，不是运行游戏的观测。
+
+### 6.1 路线来源与出生参数
+
+**N：** `Map.GenerateRuntimeRoute` 返回普通 `Battle.Route`，不是另一种 RuntimeRoute 类。带 key 的重载在 key 不存在时构造 Route，存在时对原对象执行 `ReconstructRoute`；另外两个重载构造新 Route，分别使用地图默认或显式提供的寻路器。[生成方法及调用节点](../evidence/route-creation-20261107/origins/route-origins-bodies.json)、[Route 类型](../evidence/route-creation-20261107/origins/route-type.json)。
+
+不同出生入口不能仅凭“召唤”或“带 host”归成同一种位置规则：
+
+| 原生入口 | 路线与位置输入 | 创建前显式处理的偏移 |
+| --- | --- | --- |
+| `SpawnEnemyWithRoute`，包括带 host 的重载 | 直接传入已有 Route；带 host 的重载不读取 host 坐标，成功出生后才设置 hostUid | 不在该入口采样，由公共 Enemy.Init 解释已有路线 |
+| `SpawnSummonedEnemyWithRuntimeRoute`，17 参数重载 | 由 sourcePos／targetPos、运动方式及路点构造 RouteData，再生成 Route | 使用 scalar offset 取随机向量，写入 **spawnOffset**；avoidHighland 分支可把候选改为零；该方法未显式写 spawnRandomRange |
+| 同名 11 参数 void 重载 | 由明确的 startGridPos／endGridPos 和路点构造 RouteData | 显式把 spawnOffset 设零；未显式写 spawnRandomRange |
+| `SpawnEnemyNpc` | 由 targetPos／endPos 构造 RouteData | spawnOffset 设零；randomOffset 分支选择向量或零写入 **spawnRandomRange** |
+| tracked RuntimeRoute 协程 | 由捕获的两个 GridPosition 构造 RouteData，随后进入公共出生链 | 显式把 spawnOffset 设零；未在该段写 spawnRandomRange |
+
+[各重载完整原件](../evidence/route-creation-20261107/origins/existing-origin-bodies.json)中，17 参数重载在 `0x180982816–0x180982835` 写 start／end／spawnOffset；void 重载在 `0x180982d0d–0x180982d65` 写对应字段；Npc 的 randomOffset 分支是 `0x18098024b–0x1809802b7`。字段解释由[当前 RouteData 布局](../evidence/route-creation-20261107/origins/route-data-type.json)确认，不能将两种 offset 写入位置混为一谈。这里记录方法的显式写入，不从未写字段推导整个构造器的默认政策。
+
+**N：** 代表 Action 节点 `SummonEnemyWithRuntimeRoute.Execute` 先从选中实体读取 **gridPosition**（`0x1811ad220`），也能以快照实体、Blackboard 格坐标或最近可通行格替代。固定格偏移在召唤调用前应用（`0x1811ad392–0x1811ad3fa`）；host 还能另外选取。因此，这条链证明的是“由内容决定出生源格”，不是“任何召唤都直接复制宿主当前连续坐标”。LevelScript 的同类节点则从配置的起终点格生成路线。上述节点原件同[生成方法批次](../evidence/route-creation-20261107/origins/route-origins-bodies.json)。
+
+**N／范围：** 所查外部入口在构造 Route 后交给 CreateEnemy，其后没有覆写出生坐标的调用。这只是所选调用体的观察，不用于证明所有内部构造或其他调用者的行为。CreateEnemy 的 Route 重载参数是 enemyData、handbookData、snapshot、route、options，没有独立的出生坐标参数；这些路径的位置求值见下一节。[Controller 创建原件](../evidence/route-creation-20261107/initialization/create-enemy-bodies.json)。tracked 的两个捕获格字段已追到 RouteData，但 wrapper 到协程字段的逐项赋值未在本批补提，不据参数名扩大证明范围。
+
+### 6.2 公共 Enemy 初始化：位置与路线偏移配对
+
+**N：** Controller.CreateEnemy 取得 Enemy 后虚调用 `Enemy.Spawn`（`0x18064eb52`，slot 232）；Spawn 保存 Options 后，再虚调用 `Enemy.Init`（`0x180ac39fd`，slot 237）。Snapshot 在这两层按值复制传递，没有在这条普通转交链中改写 Wave／Fragment 基准。见 [Controller](../evidence/route-creation-20261107/initialization/create-enemy-bodies.json)、[Spawn](../evidence/route-creation-20261107/initialization/enemy-spawn-body.json)及 [Enemy 方法布局](../evidence/route-creation-20261107/initialization/enemy-type.json)。
+
+**N：** 当前 `Enemy.Init` 仍只在本次初始化中调用一次 `Route.GetSpawnOffset`（`0x180abcb71`）。它取得路线起点（`0x180abcbeb`），相加得到身体初始坐标，交给 Entity.Init；随后把样本取负传入 DirectionCursor（`0x180abcd9e`）。本版本的完整调用见[初始化原件](../evidence/route-creation-20261107/initialization/core-init-bodies.json)，偏移公式和后续 locator／身体目标坐标转换沿用第 3 节的独立证据。
+
+因此，运行时入口预先写入 spawnOffset 的向量，与 Enemy.Init 消费路线的过程是两层。不能把所有随机性都挪成同一个“初始化时随机出生坐标”，也不能只保留位置而丢掉与 Cursor 配对的偏移。
+
+### 6.3 时间快照在实际出生链中绑定
+
+**N：** `Scheduler.TakeSnapshot` 的普通分支在 `0x180983026／0x180983032` 读取当前 Scheduler 的 waveStartTime／fragmentStartTime，并将 actionStartTime 置零。[方法](../evidence/route-creation-20261107/timing/take-snapshot.json)、[Snapshot 布局](../evidence/route-creation-20261107/timing/snapshot-type.json)。
+
+这里的原生 Wave 基准取进入 Wave 时的 userFixedPlayTime（`0x18098c391／0x18098c396`）；Fragment 基准则已经包含前延迟：当前 userFixedPlayTime 加 fragment.preDelay，再写入 Scheduler（`0x18098be72–0x18098bed6`）。原件为 [Wave](../evidence/scheduler-native-20261107/branch-bodies.json)与 [Fragment](../evidence/scheduler-native-20261107/random-bodies.json)。不能把这两个原生字段都直译为“不含前延迟的进入时刻”。
+
+普通 `_DoSpawn`、`_DoSpawnEnemyInternal(Route)` 和 Npc 都在实际 CreateEnemy 前取这个快照。对应取样／创建调用分别为 `0x18098eef4 → 0x18098ef74`、`0x1809863bd → 0x18098642e`、`0x1809805bb → 0x18098068c`。tracked RuntimeRoute 在延迟恢复后进入公共内部出生方法，而不是在发出延迟请求时就把路线时钟绑定完毕。出生入口复用[同指纹 Scheduler 原件](../evidence/scheduler-general-20261107/native-paths.json)、[普通出生](../evidence/scheduler-native-20261107/spawn-bodies.json)与[tracked 协程](../evidence/scheduler-general-20261107/lifecycle/tracked-runtime-bodies.json)。
+
+**N：** 快照随后按值传入 Enemy.Init → DirectionCursor → BasicCursor。BasicCursor 在 `0x1808cdcad／0x1808cdcb1` 将 24 字节存入自身 `+0x48／+0x58`，早于运行路点创建与首次进入。[构造原件](../evidence/route-creation-20261107/initialization/basic-cursor-bodies.json)、[字段布局](../evidence/route-creation-20261107/initialization/basic-cursor-type.json)。Wave／Fragment 等待怎样消费已保存的基准，见[案例 13](13-route-and-movement-timing.md#3-等待如何计时)。
+
+**I：** 对这些出生入口，路线可以更早取得或生成，但 Wave／Fragment 基准属于实际出生时绑定的执行上下文；不能用“取得 Route”“请求召唤”或“触发 Branch”的时刻替代。原生基准的具体写法仍沿用 Scheduler 调查，不将其倒推为项目必须保留多种原生时钟。
+
+### 6.4 初始执行与临时 Cursor 不是同一初始化政策
+
+**N：** BasicCursor 构造会建立运行 Checkpoint，并调用 Reset。DirectionCursor.Reset 调用 BasicCursor.Reset（`0x1808d31f1`）；后者把索引置为 -1，再尾转 `_MoveNext`（`0x1808ccf4c`）。`_MoveNext` 对当前选定路点调用 OnBegin（`0x1808cd9d0`，Checkpoint slot 10）。[Reset](../evidence/route-creation-20261107/initialization/cursor-reset-bodies.json)、[构造及推进](../evidence/route-creation-20261107/initialization/basic-cursor-bodies.json)、[方法签名与 slot](../evidence/route-creation-20261107/initialization/cursor-methods.json)。所以初始路点可以在 Cursor 构造期间进入，不必等到第一个运动 Tick；后续随机 MOVE 目标仍按进入路点采样，见案例 13。
+
+**N：** 当前 Fear.UpdateFearCursor 在 `0x180adf517` 读取宿主所提供 Cursor 的 snapshot，再于 `0x180adf585` 传给新 DirectionCursor；Attract 对应 `0x180ad5024／0x180ad509b`。两者同时传入零路线偏移，不重新调用 Scheduler.TakeSnapshot。[临时 Cursor 原件](../evidence/route-creation-20261107/timing/temporary-cursor-clocks.json)。这只证明这两个创建路径：不能规定一切动态／替代 Route 都重新采样主偏移，或一律重新绑定当前 Scheduler 时钟。
+
+### 6.5 本轮边界
+
+已能作为后续设计依据的事实是：路线创建不只来自 Schedule；出生源格和 host 归属独立；每个执行实例需要位置／偏移配对；出生时间快照与临时 Cursor 的继承有不同来源；初始路点有明确进入时点。
+
+这些事实不直接决定由哪个项目模块采样偏移、谁设置 Unit 初始位置，或是否在初始化还是登记后执行路点程序。下一步应结合路点副作用和完整创建／Enter 契约决定，而不是先修改当前 Route 类型再为其补理由。
+
+尚未在本批闭合：所有特殊召唤节点的实际 Prefab 启用情况、临时 Route 对原进度／等待／目标的完整保存与恢复。临时 Cursor 的两条短链不能代替第 4 项生命周期审查。
