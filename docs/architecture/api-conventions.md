@@ -149,7 +149,7 @@ Action.cancelForUnit、forUnit 和 isCasting 均要求 `Ref<Unit & ActionCapabil
 
 实例身份根据实际存储确定。Projectile 的 Typed Ref 以全场唯一的实例 ID 定位；Action 的本轮 Execution、Effect、Skill Activation 与 Elemental Burst 的实例 ID 仅在宿主内唯一，Ref 同时携带 host 与 id。Action 的 ref(source, definition) 生成跨多轮有效的 Ref<Action<P, E>>，地址为 host 与 Definition 对象，保留 P／E 配对；executionRef(source, self) 从显式宿主和当前 execution.id 生成只绑定本轮的 Ref<Execution<P, E>>。两种引用共享现有聚合条目，不要求条目保存 host，不增加存储或 ID 分配。
 
-Route Context 的长期定位需要稳定身份，不能使用数组位置，也不能使用每次 phase 更新后形成的新 Context 对象。采用 ID 还是创建者已有 Ref 等形式，随 Route 接口继续确定；不为此提前新增身份类型。
+Route Context 采用宿主内运行实例身份：Main 使用固定保留 ID，其他 Context 由 Route 动态分配宿主内唯一且不复用的 ID。对外使用地址为 `{ host: Ref<Unit & Route>, id: ContextId }` 的 Ref<Context>，宿主内使用同一个 ContextId。更新 Plan／phase 不改变身份，数组位置和 Context 对象引用不作为长期地址；Context 不必额外保存 host 运行字段。State 的集合与选择字段及操作签名继续在 [Route](navigation.md#context-身份与定位) 中确定。
 
 ### 统一 Typed Ref 与类型恢复
 

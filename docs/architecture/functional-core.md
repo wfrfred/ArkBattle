@@ -146,7 +146,7 @@ Tick 的执行顺序在 step() 中直接可读。Combat、Movement 与路线完�
 | Unit.blocker／Unit.blockable | 初始化至多选择一种，也允许两者皆无；保存唯一归属或有序关联，Blockable 另有独立站位计划；接敌、解除及维护由 Blocking 执行，真实坐标仍只有 Unit.position |
 | Unit／Capability                   | HP、控制状态、行动就绪、技能状态、路线、各自 Hook 与 Contribution 集合   |
 | Unit.effects                       | Effects 容器保存实例身份、Definition、私有 state、生效状态、来源 Ref 与 expiration；DURATION／DEADLINE／INFINITE 互斥，Scope 关系归 Lifetime |
-| Unit.route | Plan 描述路线方案，Context 保存本条路线的偏移、phase 与执行政策，State 共享出生 Wave／Fragment 时间基准；主／多临时 Context 的容器、稳定身份形式与选择接口待定，见 [Route 设计](navigation.md#route-定义与进度) |
+| Unit.route | Plan 描述路线方案，Context 保存本条路线的偏移、phase 与执行政策，State 共享出生 Wave／Fragment 时间基准；Main 属于 Unit，其他 Context 具有宿主内唯一 ID，容器、Phase 与操作签名待定，见 [Route 设计](navigation.md#route-定义与进度) |
 | Battle.deployment | DP、usedSlots 账户、Card 记录与手牌顺序、部署观察 Hook；各 Card 保存当前库存、计时及私有 state |
 | Schedule                           | 波次、片段、分支、出生进度及实际等待关系；[重设计](schedule.md)的具体 State 尚未定稿 |
 | Unit.action.actions                | 按配置 ID 聚合 Definition、持久 state、Cooldown 和当前 Execution；执行身份进度由 Capability.nextExecutionId 保存 |
@@ -155,6 +155,8 @@ Tick 的执行顺序在 step() 中直接可读。Combat、Movement 与路线完�
 | Battle.mechanisms：非空间 Mechanism | 共享额度、共享生命、周期、一次性锁和来源过程进度                         |
 | Battle                             | Tick、统计、结果，以及本 Tick 的 UI 瞬时输出和业务移除事实                 |
 | Battle.lifetime                    | 从所有权／Scope 派生的 dependencies，以及本次结算的 endings／settling |
+
+Main Context 随 Unit 初始化建立，不走动态分配。其他 Context 运行时创建、更新与移除；对外 `Ref<Context>` 使用 `{ host: Ref<Unit & Route>, id: ContextId }`，内部使用同一个 ContextId。Context 不需要保存 host 运行字段，更新 Plan 或 Phase 保留原 id；不能用数组位置或更新后新建的 Context 对象代替稳定身份。
 
 战斗状态组合这些值，没有第二份 Unit 覆盖层，也不复制 Battlefield 的索引维护职责。全局规则只有需要独立状态时才创建 Mechanism；不把所有特殊技能归成一种通用机制对象。
 

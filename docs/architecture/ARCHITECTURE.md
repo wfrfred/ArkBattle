@@ -114,7 +114,7 @@ Rule、Hook、Contribution 与 Blocker.layer 的公开工厂只接收业务输�
 | Effect             | 附着实例、私有状态、生效切换、覆写与结束       | Unit 持有实例与 expiration；时间归 Effect，依赖归 Lifetime；具体 Definition 登记 Hook 和 Contribution |
 | Lifetime           | 结束幂等、依赖传播与完成调度 | 静态描述符配对 Typed Ref；图保存 owner 与显式依赖；Pending 保存本次请求与阶段，owner 等全部依赖者完整 Finalize |
 | Projectile         | 独立空间执行实例、内容程序与终止请求／Finalize | 根实例保存身份、Definition、位置、ACTIVE／ENDING 与私有 state；运动、命中、采样和计时按内容组合，见 [Projectile 设计](projectile.md) |
-| Route              | Plan、Context 的路线进度与执行政策、State 共享出生时间基准 | 创建调用者处理路线来源与出生业务，通过 initial.route 传入 `{ plan, offset }`；initializer 构造 Context 并捕获 State 的时间基准，不另设 Route Execution。主／多临时 Context 的容器、稳定身份形式和选择接口待定，见 [Route 设计](navigation.md#route-定义与进度) |
+| Route              | Plan、Context 的路线进度与执行政策、State 共享出生时间基准 | Main 是 Unit 固有 Context，其他 Context 运行时创建、更新与移除，使用宿主内唯一 ID 及带 host／id 的 Typed Ref；Plan／Phase 更新不改身份。初始化输入仍为 `{ plan, offset }`，容器、Phase 与操作签名待定，见 [Route 设计](navigation.md#route-定义与进度) |
 | Navigation         | 基础通行图、Overlay 与建议移动点查询           | Battlefield 持有 Navigation State；有效 Map 和 Field 在内部派生并缓存 |
 | Locomotion         | 按速度与运动规则执行自主移动、避障及目的格反射 | 保存历史速度、移速贡献与规则；消费 Route 已准备好的世界坐标目标和当前模式 |
 | SpatialPresence    | 身体空间存在与主动位置覆盖 | 以 Change 变换 present 与各能力的限制 Rule，调用阻挡释放并委托 Action 取消当前执行；不改变实例身份或统一暂停持续程序 |

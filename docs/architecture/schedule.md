@@ -73,7 +73,7 @@ const created = unit.initialize(battle, {
 });
 ```
 
-Unit.initialize 接续 Capability initializer 的 fold。Route initializer 接收 initial.route 的 `{ plan, offset }`，构造 Context，自行从当前 Schedule 取得主 Wave／Fragment 时间基准并保存于 Route State。普通出怪与动态创建 Unit 都由 initializer 读取，不额外向 Initial 传入时间；主路线与多临时 Context 共享这两个基准。不另设 Route Execution，也不重新采样出生偏移或接收预装的执行状态。
+Unit.initialize 接续 Capability initializer 的 fold。Route initializer 接收 initial.route 的 `{ plan, offset }`，建立 Unit 固有的 Main Context，自行从当前 Schedule 取得主 Wave／Fragment 时间基准并保存于 Route State。Main 不走动态 Context 分配；其他 Context 的宿主内 ID 与 Typed Ref 由 Route 管理。普通出怪与动态创建 Unit 都由 initializer 读取时间，不额外向 Initial 传入；主路线与多临时 Context 共享这两个基准。不另设 Route Execution，也不重新采样出生偏移或接收预装的执行状态。
 
 初始化返回后，出生操作接续 created.state，按 entry.wait 登记 created.value.id 的等待关系，再调用 unit.add。Unit.add 登记已经完整的 Unit 并执行 enter，不解释 Plan 或构造 Route Context。后续由 Route.advance 依据 Plan 和实例状态运行路线。
 
@@ -362,7 +362,7 @@ Schedule 提供调度进度与等待状态，不负责决定整个 Battle 的胜
 
 | 项目 | 待确定内容 |
 | --- | --- |
-| Route 运行结构 | Plan／Context／State、Definition 的 alwaysCheckCurrentPoint、initial.route 的 `{ plan, offset }`、State 共享出生时间锚点及 [Checkpoint 类型](navigation.md#checkpoint)已定；主／多临时 Context 的容器、稳定身份形式与选择接口继续审查 |
+| Route 运行结构 | Plan／Context／State、Definition 的 alwaysCheckCurrentPoint、initial.route 的 `{ plan, offset }`、State 共享出生时间锚点及 [Checkpoint 类型](navigation.md#checkpoint)已定；Main 属于 Unit，其他 Context 的宿主内 ID／Typed Ref 已定，容器、Phase 与操作签名继续审查 |
 | Spawn 出生配置 | UnitDefinition 与本次 Plan 分开；Plan、偏移采样和出生位置配置在 Spawn 中的具体绑定字段待定，不引入强制所有创建者使用的 SpawnRoute 类型 |
 | 主流程边界 | 尚未进入任何 Fragment 时的 Route 基准、COMPLETED 时 waveIndex 的含义待明确 |
 | 个体结算 | 资格的实际归属、字段及 Finished／Killed／蓝门结算接口 |
