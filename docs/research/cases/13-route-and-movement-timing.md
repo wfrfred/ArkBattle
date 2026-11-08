@@ -76,7 +76,21 @@ _MoveNext（70163，`0x180876920`）通过当前路点的 NextCursor 计算后�
 
 **N／I：** MoveState 会因眩晕、冻结、阻挡等转入其他状态或不执行普通移动；仍存活的 Enemy.OnTick 后续调用 Cursor.OnTick 的分支并不以这些移动资格为条件。因此在这条普通链上，禁止自主移动不自动暂停当前等待计时。不能推广为死亡、移出更新或所有特殊时间停止效果也继续计时。
 
-Enemy.OnTick 给正常路线、恐惧与吸引控制器传递不同的 checkReached：恐惧或吸引接管时，正常路线的推进检查被关闭，但 Cursor.OnTick 仍先调用当前路点的 OnTick。正常路线处在时间等待时可以继续计时，不因失去当前运动控制而自动冻结。这里的结论针对恐惧／吸引原生分支，不直接等同于一切自定义替代路线。
+### 3.1 临时控制的实际 Tick 接收者（2026-11-08 补核）
+
+**N：** 当前客户端的 `Enemy.OnTick` 并非固定 Tick 主 Cursor。metadata 将 `get_cursor` 声明为 slot 225（vtable `+0xf50`），`get_moveCursor` 声明为 slot 226（`+0xf60`）。`Enemy.OnTick` 在 `0x180ac0b61` 取后者，`0x180ac0c09` 对返回值调用 `DirectionCursor.OnTick`。`get_moveCursor` 在普通存活且 `usingTraceCursor` 成立时返回 Trace Cursor，否则返回主 Cursor。准确虚槽、接收者字段及选录见[补核批次](../evidence/route-operations-20261107/temporary/advance-selection-20261108/README.md)。
+
+| Tick 接收者 | `checkReached` |
+| --- | --- |
+| `get_moveCursor()` 返回的主或 Trace Cursor | `!isFeared && !isAttracted` |
+| FearController 当前 Cursor | `isFeared` |
+| AttractController 当前 Cursor | `!isFeared && isAttracted` |
+
+三次 Tick 的先后为 moveCursor（`0x180ac0c09`）、主终点检查（`0x180ac0c66`）、Fear（`0x180ac0f35`）、Attract（`0x180ac102e`）；主终点检查若触发离场，会提前返回。控制器 Cursor 非空时，即使 `checkReached=false` 仍转发 Tick；DirectionCursor 先执行当前 Checkpoint.OnTick，随后才判断是否检查到达。
+
+因此，“恐惧／吸引期间 Main 相对 WAIT 继续扣时”须限定 `moveCursor` 仍为 Main。若当前选用 Trace，这次 Tick 的时间与路点检查作用于 Trace，不能因 `checkReached=true` 就推断 Main 仍推进；Main 的相对 WAIT 不经该路径扣 dt。绝对时钟继续流逝也不自动使未被检查的主路点前进。
+
+**N：** 普通 MoveState 的实际移动同样经 `_MoveByRoute` 取得 `get_moveCursor`（`0x180ac80fc`），再于 `0x180ac8121` 传给 `_MoveByCursor`；后者使用该参数，没有另取主 Cursor 作为另一推进对象。Fear／Attract 移动则优先使用各自控制器的 Cursor。故本次核对的普通移动与 Tick 两条链，都不能支持“Trace 控制期间 Main 仍经另一普通入口推进”的旧推论。主最终终点仍另取 `get_cursor` 独立检查，见第 5.1 节。本补核未运行游戏，也不排除特化子类、内容回调或 XLua 另行操作主进度。
 
 ## 4. 普通 MOVE 路点不可达时
 

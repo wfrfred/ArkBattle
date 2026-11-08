@@ -15,6 +15,7 @@ Windows x64、metadata v29。原件 `native.json` 的 provenance 保存完整来
 | 材料 | 选择范围 |
 | --- | --- |
 | `native.json` | 主 Cursor、独立 Fear／Attract Cursor、Enemy 追踪 Cursor 的选择／更新／解除及实际调用者候选；完整签名与当前字段偏移 |
+| `advance-selection-20261108/` | `get_moveCursor`／`get_cursor` 虚槽及实际 Tick 接收者补核，另提当前普通移动两方法；纠正 Trace 被选中时 Main 仍推进的旧推论 |
 | `content.json` | 妮芙 S2 的 CastSkill／RangedAttack／SelectorTrigger／Projectile，酒神 S2 Token 的相关能力，炎佑的 Priority Trace，main_14-02 的 lrmm／TraceStorm／信标及玩家可部署祭坛；所有 MonoScript 按各 SerializedFile 的外部引用表解析 |
 | `templates.json` | `nymph_s_2[trace_taregt]`、`fear_buff`、`token_phatm2_encdool_trigger`、`token_phatm2_encdool_target`、`enemy_bigstorm[traceStorm]`、`trap_stormcoord[summon_and_suicide]` 六项，含原 SerializedState 和解析后动作 |
 | `fear-data.json` | 固定 Git 修订下 `/fear` 的筛选摘录；source Git blob SHA 保留，未伪装为完整源文件 |

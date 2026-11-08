@@ -286,7 +286,7 @@ const plan: Plan = {
 
 路线缓存不保存完整旧 Cursor，也不承诺原样恢复 WAIT 剩余时间或 MOVE 已采样目标。当前证据不要求通用的“暂停整个 Context、以后原样恢复”机制，不建立暂停栈。独立 Context 并存与业务缓存恢复不能互相替代，依据见[案例 31 的状态保留与需求归纳](../research/cases/31-route-operations-and-state.md#3-状态究竟保留什么)。
 
-推进时间、推进 Checkpoint 与取得运动控制权分别处理。恐惧／诱导接管期间，Main 已进入的 WAIT 继续按战斗时钟到期，Main 的终点完成资格仍独立检查；不能让一个 activeIndex 统一决定所有 Context 是否计时、推进或完成。Trace 的控制政策不同，也不必强制包装成完整 Route Context。
+推进时间、推进 Checkpoint 与取得运动控制权分别处理。按项目已选择的统一 Tick／绝对截止时间政策，Main 已进入的 WAIT 不因暂失运动控制权而停钟，Main 的终点完成资格仍独立检查；各 Context 的具体推进资格由后续操作契约确定。原生 Trace 被选为 moveCursor 时，普通移动与 Tick 操作的是 Trace，Main 不由该路径扣相对 WAIT 或推进路点，不能再以“Trace 时 Main 仍推进”作为接口设计依据，见[接收者补核](../research/cases/13-route-and-movement-timing.md#31-临时控制的实际-tick-接收者2026-11-08-补核)。这项事实纠正不自动改写项目已定的时间模型，也不要求 Trace 必须包装成完整 Route Context。
 
 多份诱导 Effect 可以各自保存来源、目标和有效期，通过生命周期程序登记与撤销。已确认的诱导需求是按新到旧选择有效来源；旧来源暂未取得运动控制权不等于 Effect 被禁用，通用 Group 不承担诱导选择。多个诱导来源不要求每份 Effect 都有完整 Context；原生多个 Buff→Tile 登记共享一个当前 Attract Cursor，来源失效后的回退由诱导程序处理。Route 不认识具体 Effect 类型，控制来源和 Context 的对应方式随操作接口确定。
 

@@ -72,7 +72,9 @@ Reset 的 `_MoveNext` 会应用已有的指令过滤；无 Checkpoint 或全部�
 
 Direction.Reset 在中心访问政策启用时清理所需访问记录、清 cachedDirection；它不写 nextGrid、totalDist、offset 或 snapshot。OnRouteChanged 还沿用已有中心访问标志的 true 状态，不能笼统写成“所有导航局部状态全部重置”。这些是客户端具体状态处理，不自动构成项目必须复制的字段布局。
 
-**N：临时控制也不具有统一的“暂停主路线”语义。** Fear／Attract 使用独立 Cursor；主 Cursor 仍执行 `OnTick`，当前相对 WAIT 继续扣时，但 Checkpoint 到达推进按 Fear → Attract → 主路线的优先级选择。Trace 控制本身不关闭主路线的到达检查，主 Checkpoint 可能继续推进。控制结束后回到主 Cursor，不调用主线 Reset，也不重新采样主目标。主路线最终终点检查还独立于这些 Checkpoint 推进开关，见案例 14 第 5 节。[临时控制原件](../evidence/route-operations-20261107/temporary/native.json)
+**N：临时控制不具有统一的“暂停主路线”语义。** Fear／Attract 使用独立 Cursor，Tick 的到达检查按 Fear → Attract → 普通运动 Cursor 选择；但普通运动 Cursor 是 `get_moveCursor` 的返回值，不固定等于 Main。未选用 Trace 时，Main 仍收到 `checkReached=false` 的 Tick，当前相对 WAIT 可以继续扣时；选用 Trace 后，该次 Tick 改为作用于 Trace，Main 不经这条路径扣 dt 或跨路点。普通 `_MoveByRoute` 也取 `get_moveCursor`，没有同时调用 Main 的另一普通推进分支。主最终终点仍独立通过 `get_cursor` 检查。旧版“Trace 不关闭检查，因此 Main 仍可推进”的推论误认了实际接收者，已由[虚槽与移动链补核](../evidence/route-operations-20261107/temporary/advance-selection-20261108/README.md)纠正；完整条件与地址见[案例 13 第 3.1 节](13-route-and-movement-timing.md#31-临时控制的实际-tick-接收者2026-11-08-补核)。
+
+控制结束后回到原主 Cursor，不因恢复控制权自动 Reset 或重新采样主目标。绝对时钟持续前进与当前 Checkpoint 是否收到 Tick／到达检查是两件事；不能以时钟变化推出路点已经推进。本结论限所列普通静态调用链，未运行游戏或核验活跃 XLua、全部派生实现和内容回调。
 
 恢复控制权不回滚已经发生的身体移动。Fear／Attract 的路线方式由主 Route 复制；Trace 的目标路线则可以按 owner.changeableMotionMode 生成。两者不能仅因都使用临时导航就被赋予完全相同的方式选择政策。
 
