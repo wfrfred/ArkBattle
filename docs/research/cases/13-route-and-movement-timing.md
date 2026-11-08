@@ -136,6 +136,22 @@ return withinDistance(locator, sampledTarget, reachDistance);
 
 **N：** DirectionCursor.CheckReached（70272）是最终路线到达检查。visitEveryCheckPoint 为 true 且仍有未处理路点时直接返回 false；否则调用 Route.CheckReached 检查实际终点。这与普通 MOVE 路点不可达时的跳过逻辑不同。[路线完成检查](../evidence/route-movement-20261018/70272.asm)
 
+### 5.1 终点检查与蓝门离场（2026-11-08 补核）
+
+本节核对当前客户端普通 Enemy／DefaultGameMode 的静态分支，未运行游戏。准确方法、指令、枚举与版本见[定向离场批次](../evidence/route-exit-20261108/README.md)。
+
+**N：** Enemy.OnTick（77845，`0x180ac09a0`）在 alive 分支取得主 Cursor，调用其 CheckReached（`0x180ac0c66`）。成立后，继续检查 rootTile 有效、Enemy.canNotExit 为 false，再调用 BattleController.CheckEnemyCanExit（`0x180ac0d96`）。DefaultGameMode.CheckEnemyCanExit（84172，`0x180c9c120`）普通非 XLua 分支直接返回 true。canNotExit 来自 Enemy 自身的 m_canNotExit（+0x420），不是 rootTile 的字段。
+
+这条主终点路径没有读取 blocker 或阻挡关系，也不要求当前是 MoveState；不能将项目的“被阻挡时暂不离场”当作该普通原生路径的资格。rootTile 无效或禁止退出时不进入后续结束流程。
+
+**N：** 资格通过后，同一次 OnTick 直接切换 Enemy 状态为 REACH_EXIT（枚举值 7，`0x180ac0e67`），随后调用 FinishMe，原因是 FinishReason.REACH_EXIT（枚举值 1，`0x180ac0e7a`）。在这条“主终点检查 → 退出资格 → 结束”普通调用链中，没有先保存独立的 Route completed 标志、待资格恢复后再消费该标志；资格未通过时，后续 Tick 仍从当前位置重新检查。这个结论限于本次已核对的路径，不证明客户端全局不存在其他完成状态。
+
+**N：** Enemy.FinishMe 委托 Entity.FinishMe。后者确认 unfinished，写 finishReason，停止状态机并调用虚 OnFinish。Enemy.OnFinish 经 Unit／Entity 的清理与完成通知后，清理 Tile 关联、调用 ReleaseBlock，再在 REACH_EXIT 且非无害选项时调用 BattleController.OnEnemyReachedExit。默认模式读取 Enemy.lifePointReduce，取负后交 ModifyLifePoint 扣除关卡生命。原件分别在 `finish.json`、`lifecycle.json`、`settlement.json`。
+
+DefaultGameMode.DestroyEntity 对 REACH_EXIT 使用 RecycleSelfWithDelay，逻辑结束不等于立即完成资源回收。Finished／Killed 计数与 Scheduler 等待集合分别依既有资格和销毁／回收通知处理，复用[案例 30 的生命周期结论](30-scheduler-action-data-fields.md#5-四个争议字段与退出账务)，本轮不扩展全部通知与回收链。
+
+**项目影响：** requireAllCheckpoints=false 证明完成资格不只取决于指令索引，不单独证明必须锁存 completed。当前项目“保留 Main 完成状态、另行判断离场资格”的政策是独立工程选择；不能用上述原生路径为该锁存或 Blocking 门槛背书。
+
 ## 6. 末段跟踪差异与项目选择
 
 最初的 nextPoint 草案只在当前格为目标节点时返回精确 target，其他可达格返回 next 格中心。它不执行额外 Raycast，不负责 Cursor、Visits、到达或实际运动。
