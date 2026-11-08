@@ -80,6 +80,8 @@ Direction.Reset 在中心访问政策启用时清理所需访问记录、清 cac
 
 Fear／Attract 的目标刷新可以对各自现有临时 Cursor 调用 OnRouteChanged，重建的是临时 Checkpoint。追踪另有共享的 Enemy.traceTargetCursor；TracePositionCursor.MarkReached、ResetReachedOffset 只修改追踪的完成标志／到达偏移，不能因此推断主路线被重建。
 
+2026-11-09 补核：Trace 到达标记也不直接决定是否恢复 Main；启用的 Trace Ability 可以继续保留目标或追踪地块，结束某个目标后再搜索。单位目标结束、到达、移除地块、重选分别消费，莱塔召唤物的具体配置及边界见[案例 32 第 3.1 节](32-leithanien-summons-blocking-and-movement.md#31-追踪到达目标结束与继续控制)。不能从“追踪到达”直接推导 Context 自动销毁或主路线重置。
+
 2026-11-08 补核：`alwaysCheckCurrentPoint` 也是 Cursor 执行政策。同 Cursor 的重绑／重建保留它，Fear／Attract 与 ChangePathMotionMode 新建 Cursor 时传 false。已在普通战斗内容找到 Prefab 配置 true 的敌人；配置、参数与实际内容交叉见[案例 13 第 4.1 节](13-route-and-movement-timing.md#41-配置来源与-cursor-政策2026-11-08-补核)。不因这些构造参数差异直接确定项目接口。
 
 ### 3.3 执行进度操作的区别

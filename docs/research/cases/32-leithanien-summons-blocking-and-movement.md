@@ -57,6 +57,31 @@ BlockManager 的作战目标查询按阻挡列表选择首个 alive 且非 invin
 
 **结论边界：** 这条普通状态机支持“寻敌接近，接敌后停下作战”的行为，不是普通自主移动始终拖着被挡目标一起走。这里没有把特殊强制位移、无敌目标或全部派生覆盖也判成相同停走政策。
 
+### 3.1 追踪到达、目标结束与继续控制
+
+2026-11-09 定向补核，复用同指纹的 [Trace Ability 原件](../evidence/leithanien-summons-20261109/movement/trace-native.json)、[Cursor 原件](../evidence/route-operations-20261107/cursor/state-bodies.json)和[普通移动消费者](../evidence/route-operations-20261107/temporary/advance-selection-20261108/move-bodies.json)，没有新增客户端提取或实机观测。
+
+**N：到达查询与到达标记不同。** TracePositionCursor.PredictReached（71444）使用路线终点格坐标加本次 reachedOffset 与 locator 比较；本次运动距离足够时写入到达标记，返回零方向和当前 locator，不补走到终点。GetNextDirection 同样基于导航节点和 reachedOffset，不直接读取被追踪实体的连续坐标。CheckReached（71446／71447）查询 Route.CheckReached 或既有标记，本身不写标记；其中路线查询不叠加 reachedOffset。两召唤物的追踪随机偏移为零，不能据此抹平通用方法的区别。
+
+**N／D：到达后的目标与地块分别处理。** Priority.OnTick（95579）在 Cursor 已标记到达，或追踪地块存在但不可达时，按以下独立配置执行清理，然后继续后续搜索流程：
+
+| 配置语义 | 本例配置 | 消费结果 |
+| --- | --- | --- |
+| 到达后移除单位目标 | true | 只将 traceTarget 置空 |
+| 到达后移除追踪地块 | false | 本例保留 traceTile，不因到达直接撤销全部追踪控制 |
+| 不因进入攻击范围而标记到达 | true | 跳过射程内主动 MarkReached 的捷径；运动预测仍可标记到达 |
+| 本轮 Selector 无匹配项时移除旧目标 | false | 可保留仍通过存活等验证的旧目标；出现不同的新首选仍可替换 |
+
+进入攻击范围后不标记追踪到达，与状态机可以停止移动并攻击并不矛盾，见上节。
+
+**N：到达不自动恢复 Main。** Enemy.get_usingTraceCursor（77714）在存在启用的 Trace Ability 时采用 Ability 的选择结果；BaseTraceTargetAbility.get_usingTraceCursor（95246）根据有效目标或仍存在的追踪地块判断，不直接读取 Cursor 的到达标记。只有没有启用 Ability 的备用路径才采用 alwaysUsing 或尚未标记的判断。因此，不能把“MarkReached”直接翻译成销毁追踪 Cursor、结束 Context 或切回 Main。
+
+**N：目标结束不等于立即清掉全部追踪。** Priority._OnUnitFinish（95589）比较离场对象与当前目标，相同时调用 `_RegisterTraceTarget(null)`；null 分支只清单位目标，不清地块、不销毁 Cursor、不立即重新索敌。单纯 alive=false 也使目标资格失败，但不自动移除保留的地块。后续 Priority.OnTick 按搜索计时器和 Selector 处理重选或默认地块，不能断言同 Tick 必然完成重选。
+
+原生没有把到达过的单位永久排除候选，后续可以再次选中同一单位。RegisterTraceTile 对同地块／同运动方式且已标记的 Cursor 可以重置到达偏移，继续本轮追踪。这里保存的是单位目标、追踪地块和到达标记三个不同事实。
+
+**U：** 当前目标验证还有针对 Unit.shouldRenderFlag 的条件，但本轮未将其与具体 disappear／隐藏入口完整配对；不把空间消失、alive=false 和物理离场合并成同一个已证条件。本节不据这些实现字段直接确定 ArkBattle 的 TRACE 指令形状或 Context 退出协议。
+
 ## 4. 没有追踪目标时
 
 **D／N：** 默认地块 Selector 使用 GridPositionRange，只配置相对 `(0,0)`；调用时传入自身 mapPosition。原生先把该位置转格坐标，再加配置偏移，因此选择的是自身当前格，而不是地图固定原点或全场随机地块。有合法候选时注册该格作为追踪地块，通常表现为停留或靠向当前格中心；没有合法地块时不新增注册。
